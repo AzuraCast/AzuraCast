@@ -100,6 +100,9 @@ import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
 import BWrappedFormCheckbox from "~/components/Form/BWrappedFormCheckbox";
 
 const props = defineProps({
-    form: Object
+    form: {
+        type: Object,
+        required: true
+    }
 });
 </script>

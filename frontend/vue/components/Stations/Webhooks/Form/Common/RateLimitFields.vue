@@ -7,10 +7,10 @@
         <template #label>
             {{ $gettext('Only Post Once Every...') }}
         </template>
-        <template #default="props">
+        <template #default="slotProps">
             <b-form-select
-                :id="props.id"
-                v-model="props.field.$model"
+                :id="slotProps.id"
+                v-model="slotProps.field.$model"
                 :options="rateLimitOptions"
             />
         </template>
@@ -24,7 +24,10 @@ export default {
     name: 'CommonRateLimitFields',
     components: {BWrappedFormGroup},
     props: {
-        form: Object
+        form: {
+            type: Object,
+            required: true
+        }
     },
     computed: {
         langSeconds() {

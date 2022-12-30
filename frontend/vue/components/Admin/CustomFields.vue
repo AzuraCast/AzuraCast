@@ -79,8 +79,14 @@ import {useNotify} from "~/vendor/bootstrapVue";
 import {useAxios} from "~/vendor/axios";
 
 const props = defineProps({
-    listUrl: String,
-    autoAssignTypes: Object
+    listUrl: {
+        type: String,
+        required: true
+    },
+    autoAssignTypes: {
+        type: Object,
+        required: true
+    }
 });
 
 const {$gettext} = useTranslate();

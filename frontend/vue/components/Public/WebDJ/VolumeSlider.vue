@@ -26,7 +26,10 @@ import {onMounted, ref} from "vue";
 import {useVModel} from "@vueuse/core";
 
 const props = defineProps({
-    modelValue: String
+    modelValue: {
+        type: String,
+        required: true
+    }
 });
 
 const emit = defineEmits(['update:modelValue']);

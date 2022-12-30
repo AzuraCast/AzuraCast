@@ -11,7 +11,10 @@ export default {
     name: 'BaseEditModal',
     components: {ModalForm},
     props: {
-        createUrl: String
+        createUrl: {
+            type: String,
+            required: true
+        }
     },
     emits: ['relist'],
     setup() {

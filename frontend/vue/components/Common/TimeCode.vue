@@ -14,7 +14,10 @@ import {computed} from "vue";
 import _ from 'lodash';
 
 const props = defineProps({
-    modelValue: String
+    modelValue: {
+        type: String,
+        required: true
+    }
 });
 
 const emit = defineEmits(['update:modelValue']);

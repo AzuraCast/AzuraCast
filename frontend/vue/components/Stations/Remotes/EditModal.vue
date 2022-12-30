@@ -33,7 +33,7 @@ export default {
         RemoteFormBasicInfo
     },
     mixins: [BaseEditModal],
-    emits: ['needs-restart'],
+    emits: ['relist', 'needs-restart'],
     setup() {
         return {v$: useVuelidate()}
     },

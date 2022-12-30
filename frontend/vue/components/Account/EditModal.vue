@@ -26,8 +26,14 @@ import {useNotify} from "~/vendor/bootstrapVue";
 import {useAxios} from "~/vendor/axios";
 
 const props = defineProps({
-    userUrl: String,
-    supportedLocales: Object
+    userUrl: {
+        type: String,
+        required: true
+    },
+    supportedLocales: {
+        type: Object,
+        required: true
+    }
 });
 
 const emit = defineEmits(['reload']);

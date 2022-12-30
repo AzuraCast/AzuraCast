@@ -75,10 +75,10 @@
                         $gettext('Set longer to preserve more playback history and listener metadata for stations. Set shorter to save disk space.')
                     }}
                 </template>
-                <template #default="props">
+                <template #default="slotProps">
                     <b-form-radio-group
-                        :id="props.id"
-                        v-model="props.field.$model"
+                        :id="slotProps.id"
+                        v-model="slotProps.field.$model"
                         stacked
                         :options="historyKeepDaysOptions"
                     />
@@ -126,7 +126,10 @@ import {computed} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 
 const props = defineProps({
-    form: Object
+    form: {
+        type: Object,
+        required: true
+    }
 });
 
 const {$gettext} = useTranslate();

@@ -43,9 +43,18 @@
 export default {
     name: 'CustomAssetForm',
     props: {
-        id: String,
-        apiUrl: String,
-        caption: String
+        id: {
+            type: String,
+            required: true
+        },
+        apiUrl: {
+            type: String,
+            required: true
+        },
+        caption: {
+            type: String,
+            required: true
+        }
     },
     data() {
         return {

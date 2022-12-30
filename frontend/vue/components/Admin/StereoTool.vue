@@ -100,7 +100,10 @@ import {useNotify} from "~/vendor/bootstrapVue";
 import {useAxios} from "~/vendor/axios";
 
 const props = defineProps({
-    apiUrl: String
+    apiUrl: {
+        type: String,
+        required: true
+    }
 });
 
 const loading = ref(true);

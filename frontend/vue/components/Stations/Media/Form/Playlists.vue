@@ -9,10 +9,10 @@
                 <template #label>
                     {{ $gettext('Playlists') }}
                 </template>
-                <template #default="props">
+                <template #default="slotProps">
                     <b-form-checkbox-group
-                        :id="props.id"
-                        v-model="props.field.$model"
+                        :id="slotProps.id"
+                        v-model="slotProps.field.$model"
                         :options="options"
                         stacked
                     />
@@ -28,8 +28,14 @@ import {map} from "lodash";
 import {computed} from "vue";
 
 const props = defineProps({
-    form: Object,
-    playlists: Array
+    form: {
+        type: Object,
+        required: true
+    },
+    playlists: {
+        type: Array,
+        required: true
+    }
 });
 
 const options = computed(() => {

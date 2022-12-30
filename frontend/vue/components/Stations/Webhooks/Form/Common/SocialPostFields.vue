@@ -90,8 +90,14 @@ export default {
     name: 'CommonSocialPostFields',
     components: {CommonFormattingInfo, BWrappedFormGroup},
     props: {
-        form: Object,
-        nowPlayingUrl: String
+        form: {
+            type: Object,
+            required: true
+        },
+        nowPlayingUrl: {
+            type: String,
+            required: true
+        }
     },
     methods: {
         hasTrigger(trigger) {

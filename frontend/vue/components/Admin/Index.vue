@@ -472,18 +472,26 @@
 
 <script>
 import Icon from '~/components/Common/Icon';
-import InfoCard from '~/components/Common/InfoCard';
 import CpuStatsHelpModal from "./Index/CpuStatsHelpModal";
 import MemoryStatsHelpModal from "./Index/MemoryStatsHelpModal";
 import _ from 'lodash';
 
 export default {
     name: 'AdminIndex',
-    components: {InfoCard, CpuStatsHelpModal, MemoryStatsHelpModal, Icon},
+    components: {CpuStatsHelpModal, MemoryStatsHelpModal, Icon},
     props: {
-        adminPanels: Object,
-        statsUrl: String,
-        servicesUrl: String
+        adminPanels: {
+            type: Object,
+            required: true
+        },
+        statsUrl: {
+            type: String,
+            required: true
+        },
+        servicesUrl: {
+            type: String,
+            required: true
+        }
     },
     data() {
         return {

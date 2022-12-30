@@ -63,10 +63,22 @@ import {computed, toRef} from "vue";
 import {useAxios} from "~/vendor/axios";
 
 const props = defineProps({
-    modelValue: Object,
-    recordHasIntro: Boolean,
-    editIntroUrl: String,
-    newIntroUrl: String
+    modelValue: {
+        type: Object,
+        required: true
+    },
+    recordHasIntro: {
+        type: Boolean,
+        required: true
+    },
+    editIntroUrl: {
+        type: String,
+        required: true
+    },
+    newIntroUrl: {
+        type: String,
+        required: true
+    }
 });
 
 const emit = defineEmits(['update:modelValue']);

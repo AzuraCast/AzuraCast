@@ -39,7 +39,10 @@ import {syncRef} from "@vueuse/core";
 import {useAxios} from "~/vendor/axios";
 
 const props = defineProps({
-    albumArtUrl: String
+    albumArtUrl: {
+        type: String,
+        required: true
+    }
 });
 
 const albumArtSrc = ref(null);

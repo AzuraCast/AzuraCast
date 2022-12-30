@@ -97,9 +97,18 @@ import showFormatAndBitrate from "~/functions/showFormatAndBitrate";
 
 const props = defineProps({
     ...mayNeedRestartProps,
-    listUrl: String,
-    newIntroUrl: String,
-    stationFrontendType: String,
+    listUrl: {
+        type: String,
+        required: true
+    },
+    newIntroUrl: {
+        type: String,
+        required: true
+    },
+    stationFrontendType: {
+        type: String,
+        required: true
+    },
     showAdvanced: {
         type: Boolean,
         default: true

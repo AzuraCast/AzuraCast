@@ -14,10 +14,10 @@
                         $gettext('This software shuffles from playlists of music constantly and plays when no other radio source is available.')
                     }}
                 </template>
-                <template #default="props">
+                <template #default="slotProps">
                     <b-form-radio-group
-                        :id="props.id"
-                        v-model="props.field.$model"
+                        :id="slotProps.id"
+                        v-model="slotProps.field.$model"
                         stacked
                         :options="backendTypeOptions"
                     />
@@ -42,10 +42,10 @@
                             $gettext('Choose a method to use when transitioning from one song to another. Smart Mode considers the volume of the two tracks when fading for a smoother effect, but requires more CPU resources.')
                         }}
                     </template>
-                    <template #default="props">
+                    <template #default="slotProps">
                         <b-form-radio-group
-                            :id="props.id"
-                            v-model="props.field.$model"
+                            :id="slotProps.id"
+                            v-model="slotProps.field.$model"
                             stacked
                             :options="crossfadeOptions"
                         />
@@ -81,10 +81,10 @@
                             $gettext('Choose a method to use for processing audio which produces a more uniform and "full" sound for your station.')
                         }}
                     </template>
-                    <template #default="props">
+                    <template #default="slotProps">
                         <b-form-radio-group
-                            :id="props.id"
-                            v-model="props.field.$model"
+                            :id="slotProps.id"
+                            v-model="slotProps.field.$model"
                             stacked
                             :options="audioProcessingOptions"
                         />
@@ -233,10 +233,10 @@
                             $gettext('For most cases, use the default UTF-8 encoding. The older ISO-8859-1 encoding can be used if accepting connections from Shoutcast 1 DJs or using other legacy software.')
                         }}
                     </template>
-                    <template #default="props">
+                    <template #default="slotProps">
                         <b-form-radio-group
-                            :id="props.id"
-                            v-model="props.field.$model"
+                            :id="slotProps.id"
+                            v-model="slotProps.field.$model"
                             stacked
                             :options="charsetOptions"
                         />
@@ -257,10 +257,10 @@
                             $gettext('If your installation is constrained by CPU or memory, you can change this setting to tune the resources used by Liquidsoap.')
                         }}
                     </template>
-                    <template #default="props">
+                    <template #default="slotProps">
                         <b-form-radio-group
-                            :id="props.id"
-                            v-model="props.field.$model"
+                            :id="slotProps.id"
+                            v-model="slotProps.field.$model"
                             stacked
                             :options="performanceModeOptions"
                         />
@@ -305,12 +305,18 @@ import {computed} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 
 const props = defineProps({
-  form: Object,
-  station: Object,
-  isStereoToolInstalled: {
-    type: Boolean,
-    default: true
-  },
+    form: {
+        type: Object,
+        required: true
+    },
+    station: {
+        type: Object,
+        required: true
+    },
+    isStereoToolInstalled: {
+        type: Boolean,
+        default: true
+    },
     showAdvanced: {
         type: Boolean,
         default: true

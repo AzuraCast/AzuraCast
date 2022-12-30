@@ -52,8 +52,14 @@ export default {
     name: 'MountFormAdvanced',
     components: {BWrappedFormGroup},
     props: {
-        form: Object,
-        stationFrontendType: String
+        form: {
+            type: Object,
+            required: true
+        },
+        stationFrontendType: {
+            type: String,
+            required: true
+        }
     },
     computed: {
         isIcecast() {

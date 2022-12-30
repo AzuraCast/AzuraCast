@@ -91,10 +91,22 @@ export default {
     name: 'AdminPermissions',
     components: {InfoCard, Icon, EditModal, DataTable},
     props: {
-        listUrl: String,
-        stations: Array,
-        globalPermissions: Array,
-        stationPermissions: Array
+        listUrl: {
+            type: String,
+            required: true
+        },
+        stations: {
+            type: Array,
+            required: true
+        },
+        globalPermissions: {
+            type: Array,
+            required: true
+        },
+        stationPermissions: {
+            type: Array,
+            required: true
+        }
     },
     data() {
         return {

@@ -39,8 +39,11 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr v-for="row in bestAndWorst.best">
-                                    <td class="text-center text-success">
+                                <tr
+                                    v-for="row in bestAndWorst.best"
+                                    :key="row.song.id"
+                                >
+                                    <td class=" text-center text-success">
                                         <icon icon="keyboard_arrow_up" />
                                         {{ row.stat_delta }}
                                         <br>
@@ -79,7 +82,10 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr v-for="row in bestAndWorst.worst">
+                                <tr
+                                    v-for="row in bestAndWorst.worst"
+                                    :key="row.song.id"
+                                >
                                     <td class="text-center text-danger">
                                         <icon icon="keyboard_arrow_down" />
                                         {{ row.stat_delta }}
@@ -120,7 +126,10 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr v-for="row in mostPlayed">
+                                <tr
+                                    v-for="row in mostPlayed"
+                                    :key="row.song.id"
+                                >
                                     <td class="text-center">
                                         {{ row.num_plays }}
                                     </td>
@@ -145,8 +154,14 @@ import {DateTime} from "luxon";
 import {useAxios} from "~/vendor/axios";
 
 const props = defineProps({
-    dateRange: Object,
-    apiUrl: String,
+    dateRange: {
+        type: Object,
+        required: true
+    },
+    apiUrl: {
+        type: String,
+        required: true
+    },
 });
 
 const loading = ref(true);

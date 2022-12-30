@@ -7,7 +7,10 @@
             href="#"
             @click.prevent="changeDirectory('')"
         >{{ $gettext('Home') }}</a>
-        <template v-for="part in directoryParts">
+        <template
+            v-for="part in directoryParts"
+            :key="part.dir"
+        >
             &blacktriangleright;
             <a
                 href="#"
@@ -21,7 +24,10 @@
 import {computed} from "vue";
 
 const props = defineProps({
-    currentDirectory: String
+    currentDirectory: {
+        type: String,
+        required: true
+    }
 });
 
 const emit = defineEmits(['change-directory']);

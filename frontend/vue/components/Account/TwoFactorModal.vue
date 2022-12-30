@@ -86,7 +86,10 @@ import {useNotify} from "~/vendor/bootstrapVue";
 import {useAxios} from "~/vendor/axios";
 
 const props = defineProps({
-    twoFactorUrl: String
+    twoFactorUrl: {
+        type: String,
+        required: true
+    }
 });
 
 const emit = defineEmits(['relist']);

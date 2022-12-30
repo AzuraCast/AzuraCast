@@ -44,11 +44,23 @@
 import CustomAssetForm from "./Branding/CustomAssetForm.vue";
 import BrandingForm from "./Branding/BrandingForm.vue";
 
-const props = defineProps({
-    settingsApiUrl: String,
-    browserIconApiUrl: String,
-    backgroundApiUrl: String,
-    albumArtApiUrl: String
+defineProps({
+    settingsApiUrl: {
+        type: String,
+        required: true,
+    },
+    browserIconApiUrl: {
+        type: String,
+        required: true
+    },
+    backgroundApiUrl: {
+        type: String,
+        required: true
+    },
+    albumArtApiUrl: {
+        type: String,
+        required: true
+    }
 });
 </script>
 

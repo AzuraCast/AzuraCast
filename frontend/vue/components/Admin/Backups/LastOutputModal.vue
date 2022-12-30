@@ -17,7 +17,10 @@
 import {ref} from "vue";
 
 const props = defineProps({
-    lastOutput: String,
+    lastOutput: {
+        type: String,
+        required: true
+    },
 });
 
 const $modal = ref(); // Template ref

@@ -51,14 +51,20 @@ export default {
     components: {MountFormIntro, MountFormAdvanced, MountFormAutoDj, MountFormBasicInfo},
     mixins: [BaseEditModal],
     props: {
-        stationFrontendType: String,
-        newIntroUrl: String,
+        stationFrontendType: {
+            type: String,
+            required: true
+        },
+        newIntroUrl: {
+            type: String,
+            required: true
+        },
         showAdvanced: {
             type: Boolean,
             default: true
         },
     },
-    emits: ['needs-restart'],
+    emits: ['relist', 'needs-restart'],
     setup() {
         return {v$: useVuelidate()}
     },
@@ -143,7 +149,7 @@ export default {
             this.record = d;
             this.form = mergeExisting(this.form, d);
         },
-        onSubmitSuccess(response) {
+        onSubmitSuccess() {
             this.$notifySuccess();
 
             this.$emit('needs-restart');

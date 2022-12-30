@@ -25,7 +25,10 @@
 
 <script setup>
 const props = defineProps({
-    webhookTypes: Object,
+    webhookTypes: {
+        type: Object,
+        required: true
+    },
 });
 
 const emit = defineEmits(['select']);

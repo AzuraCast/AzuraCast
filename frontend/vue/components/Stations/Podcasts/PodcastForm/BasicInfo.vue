@@ -55,12 +55,12 @@
                     <template #description>
                         {{ $gettext('The language spoken on the podcast.') }}
                     </template>
-                    <template #default="props">
+                    <template #default="slotProps">
                         <b-form-select
-                            :id="props.id"
-                            v-model="props.field.$model"
+                            :id="slotProps.id"
+                            v-model="slotProps.field.$model"
                             :options="languageOptions"
-                            :state="props.state"
+                            :state="slotProps.state"
                         />
                     </template>
                 </b-wrapped-form-group>
@@ -107,12 +107,12 @@
                     <template #description>
                         {{ $gettext('Select the category/categories that best reflects the content of your podcast.') }}
                     </template>
-                    <template #default="props">
+                    <template #default="slotProps">
                         <b-form-select
-                            :id="props.id"
-                            v-model="props.field.$model"
+                            :id="slotProps.id"
+                            v-model="slotProps.field.$model"
                             :options="categoriesOptions"
-                            :state="props.state"
+                            :state="slotProps.state"
                             multiple
                         />
                     </template>
@@ -126,8 +126,17 @@
 import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
 
 const props = defineProps({
-    form: Object,
-    languageOptions: Object,
-    categoriesOptions: Object
+    form: {
+        type: Object,
+        required: true
+    },
+    languageOptions: {
+        type: Object,
+        required: true
+    },
+    categoriesOptions: {
+        type: Object,
+        required: true
+    }
 });
 </script>

@@ -40,10 +40,10 @@
                                         $gettext('Select a theme to use as a base for station public pages and the login page.')
                                     }}
                                 </template>
-                                <template #default="props">
+                                <template #default="slotProps">
                                     <b-form-radio-group
-                                        :id="props.id"
-                                        v-model="props.field.$model"
+                                        :id="slotProps.id"
+                                        v-model="slotProps.field.$model"
                                         stacked
                                         :options="publicThemeOptions"
                                     />
@@ -124,10 +124,10 @@
                                         $gettext('This CSS will be applied to the station public pages and login page.')
                                     }}
                                 </template>
-                                <template #default="props">
+                                <template #default="slotProps">
                                     <codemirror-textarea
-                                        :id="props.id"
-                                        v-model="props.field.$model"
+                                        :id="slotProps.id"
+                                        v-model="slotProps.field.$model"
                                         mode="css"
                                     />
                                 </template>
@@ -146,10 +146,10 @@
                                         $gettext('This javascript code will be applied to the station public pages and login page.')
                                     }}
                                 </template>
-                                <template #default="props">
+                                <template #default="slotProps">
                                     <codemirror-textarea
-                                        :id="props.id"
-                                        v-model="props.field.$model"
+                                        :id="slotProps.id"
+                                        v-model="slotProps.field.$model"
                                         mode="javascript"
                                     />
                                 </template>
@@ -168,10 +168,10 @@
                                         $gettext('This CSS will be applied to the main management pages, like this one.')
                                     }}
                                 </template>
-                                <template #default="props">
+                                <template #default="slotProps">
                                     <codemirror-textarea
-                                        :id="props.id"
-                                        v-model="props.field.$model"
+                                        :id="slotProps.id"
+                                        v-model="slotProps.field.$model"
                                         mode="css"
                                     />
                                 </template>
@@ -205,7 +205,10 @@ import {useTranslate} from "~/vendor/gettext";
 import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
 
 const props = defineProps({
-  apiUrl: String,
+    apiUrl: {
+        type: String,
+        required: true
+    },
 });
 
 const loading = ref(true);

@@ -139,7 +139,10 @@ import frontendPanelProps from "~/components/Stations/Profile/frontendPanelProps
 
 const props = defineProps({
     ...frontendPanelProps,
-    np: Object
+    np: {
+        type: Object,
+        required: true
+    }
 });
 
 const frontendName = computed(() => {

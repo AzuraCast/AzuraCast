@@ -27,10 +27,10 @@
                 <template #label>
                     {{ $gettext('Customize Copy') }}
                 </template>
-                <template #default="props">
+                <template #default="slotProps">
                     <b-form-checkbox-group
-                        :id="props.id"
-                        v-model="props.field.$model"
+                        :id="slotProps.id"
+                        v-model="slotProps.field.$model"
                         stacked
                     >
                         <b-form-checkbox value="media">
@@ -49,13 +49,12 @@
 <script>
 import useVuelidate from "@vuelidate/core";
 import {required} from '@vuelidate/validators';
-import InvisibleSubmitButton from '~/components/Common/InvisibleSubmitButton';
 import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
 import ModalForm from "~/components/Common/ModalForm";
 
 export default {
     name: 'CloneModal',
-    components: {ModalForm, BWrappedFormGroup, InvisibleSubmitButton},
+    components: {ModalForm, BWrappedFormGroup},
     emits: ['relist', 'needs-restart'],
     setup() {
         return {v$: useVuelidate()}

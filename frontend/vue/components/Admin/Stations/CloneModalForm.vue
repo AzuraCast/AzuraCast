@@ -29,10 +29,10 @@
             <template #label>
                 {{ $gettext('Copy to New Station') }}
             </template>
-            <template #default="props">
+            <template #default="slotProps">
                 <b-form-checkbox-group
-                    :id="props.id"
-                    v-model="props.field.$model"
+                    :id="slotProps.id"
+                    v-model="slotProps.field.$model"
                     :options="cloneOptions"
                     stacked
                 />
@@ -47,7 +47,10 @@ import {computed} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 
 const props = defineProps({
-    form: Object
+    form: {
+        type: Object,
+        required: true
+    }
 });
 
 const {$gettext} = useTranslate();

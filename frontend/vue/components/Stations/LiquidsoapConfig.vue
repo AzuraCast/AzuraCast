@@ -84,9 +84,18 @@ import {useNotify} from "~/vendor/bootstrapVue";
 
 const props = defineProps({
     ...mayNeedRestartProps,
-    settingsUrl: String,
-    config: Array,
-    sections: Array,
+    settingsUrl: {
+        type: String,
+        required: true
+    },
+    config: {
+        type: Array,
+        required: true
+    },
+    sections: {
+        type: Array,
+        required: true
+    },
 });
 
 const buildForm = () => {

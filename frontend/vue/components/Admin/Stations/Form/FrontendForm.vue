@@ -12,10 +12,10 @@
                 <template #description>
                     {{ $gettext('This software delivers your broadcast to the listening audience.') }}
                 </template>
-                <template #default="props">
+                <template #default="slotProps">
                     <b-form-radio-group
-                        :id="props.id"
-                        v-model="props.field.$model"
+                        :id="slotProps.id"
+                        v-model="slotProps.field.$model"
                         stacked
                         :options="frontendTypeOptions"
                     />
@@ -176,10 +176,10 @@
                     <template #description>
                         {{ $gettext('Select the countries that are not allowed to connect to the streams.') }}
                     </template>
-                    <template #default="props">
+                    <template #default="slotProps">
                         <b-form-select
-                            :id="props.id"
-                            v-model="props.field.$model"
+                            :id="slotProps.id"
+                            v-model="slotProps.field.$model"
                             :options="countryOptions"
                             style="min-height: 300px;"
                             multiple
@@ -236,12 +236,18 @@ import {computed} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 
 const props = defineProps({
-  form: Object,
-  isShoutcastInstalled: {
-    type: Boolean,
-    default: false
+    form: {
+        type: Object,
+        required: true
     },
-    countries: Object,
+    isShoutcastInstalled: {
+        type: Boolean,
+        default: false
+    },
+    countries: {
+        type: Object,
+        required: true
+    },
     showAdvanced: {
         type: Boolean,
         default: true

@@ -80,17 +80,30 @@ export default {
     name: 'MoveFilesModal',
     components: {Icon, DataTable},
     props: {
-        selectedItems: Object,
-        currentDirectory: String,
-        batchUrl: String,
-        listDirectoriesUrl: String
+        selectedItems: {
+            type: Object,
+            required: true
+        },
+        currentDirectory: {
+            type: String,
+            required: true
+        },
+        batchUrl: {
+            type: String,
+            required: true
+        },
+        listDirectoriesUrl: {
+            type: String,
+            required: true
+        }
     },
-    data () {
+    emits: ['relist'],
+    data() {
         return {
             destinationDirectory: '',
             dirHistory: [],
             fields: [
-                { key: 'directory', label: this.$gettext('Directory'), sortable: false }
+                {key: 'directory', label: this.$gettext('Directory'), sortable: false}
             ]
         };
     },

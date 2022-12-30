@@ -12,7 +12,10 @@
             </div>
             <table class="table table-striped mb-0">
                 <tbody>
-                    <tr v-for="row in processedScheduleItems">
+                    <tr
+                        v-for="row in processedScheduleItems"
+                        :key="row.id"
+                    >
                         <td>
                             <div class="d-flex w-100 justify-content-between align-items-center">
                                 <h5 class="m-0">
@@ -58,8 +61,14 @@ import {computed} from "vue";
 import {useAzuraCast} from "~/vendor/azuracast";
 
 const props = defineProps({
-    scheduleItems: Array,
-    stationTimeZone: String
+    scheduleItems: {
+        type: Array,
+        required: true
+    },
+    stationTimeZone: {
+        type: String,
+        required: true
+    }
 });
 
 const {timeConfig} = useAzuraCast();

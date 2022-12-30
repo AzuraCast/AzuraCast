@@ -28,12 +28,12 @@
                     <template #label>
                         {{ $gettext('Audio Format') }}
                     </template>
-                    <template #default="props">
+                    <template #default="slotProps">
                         <b-form-radio-group
-                            :id="props.id"
-                            v-model="props.field.$model"
+                            :id="slotProps.id"
+                            v-model="slotProps.field.$model"
                             stacked
-                            :state="props.state"
+                            :state="slotProps.state"
                             :options="formatOptions"
                         />
                     </template>
@@ -46,12 +46,12 @@
                     <template #label>
                         {{ $gettext('Audio Bitrate (kbps)') }}
                     </template>
-                    <template #default="props">
+                    <template #default="slotProps">
                         <b-form-radio-group
-                            :id="props.id"
-                            v-model="props.field.$model"
+                            :id="slotProps.id"
+                            v-model="slotProps.field.$model"
                             stacked
-                            :state="props.state"
+                            :state="slotProps.state"
                             :options="bitrateOptions"
                         />
                     </template>
@@ -66,8 +66,14 @@ import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
 import {map} from "lodash";
 
 const props = defineProps({
-    form: Object,
-    stationFrontendType: String
+    form: {
+        type: Object,
+        required: true
+    },
+    stationFrontendType: {
+        type: String,
+        required: true
+    }
 });
 
 const formatOptions = [

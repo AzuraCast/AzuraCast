@@ -115,18 +115,26 @@
 <script>
 import useVuelidate from "@vuelidate/core";
 import {required} from '@vuelidate/validators';
-import Icon from "~/components/Common/Icon";
 import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
 import BFormFieldset from "~/components/Form/BFormFieldset";
 import BWrappedFormCheckbox from "~/components/Form/BWrappedFormCheckbox";
 
 export default {
     name: 'StationsReportsSoundExchange',
-    components: {Icon, BWrappedFormGroup, BFormFieldset, BWrappedFormCheckbox},
+    components: {BWrappedFormGroup, BFormFieldset, BWrappedFormCheckbox},
     props: {
-        apiUrl: String,
-        startDate: String,
-        endDate: String
+        apiUrl: {
+            type: String,
+            required: true
+        },
+        startDate: {
+            type: String,
+            required: true
+        },
+        endDate: {
+            type: String,
+            required: true
+        }
     },
     setup() {
         return {v$: useVuelidate()}

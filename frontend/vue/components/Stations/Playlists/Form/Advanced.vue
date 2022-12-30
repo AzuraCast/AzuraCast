@@ -13,10 +13,10 @@
                     <template #description>
                         {{ $gettext('Control how this playlist is handled by the AutoDJ software.') }}
                     </template>
-                    <template #default="props">
+                    <template #default="slotProps">
                         <b-form-checkbox-group
-                            :id="props.id"
-                            v-model="props.field.$model"
+                            :id="slotProps.id"
+                            v-model="slotProps.field.$model"
                             stacked
                         >
                             <b-form-checkbox value="interrupt">
@@ -40,6 +40,9 @@
 import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
 
 const props = defineProps({
-    form: Object
+    form: {
+        type: Object,
+        required: true
+    }
 });
 </script>

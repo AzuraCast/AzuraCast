@@ -131,11 +131,26 @@ export default {
     name: 'StationStreamers',
     components: {AlbumArt, ConnectionInfo, Icon, EditModal, BroadcastsModal, DataTable, Schedule},
     props: {
-        listUrl: String,
-        newArtUrl: String,
-        scheduleUrl: String,
-        stationTimeZone: String,
-        connectionInfo: Object
+        listUrl: {
+            type: String,
+            required: true
+        },
+        newArtUrl: {
+            type: String,
+            required: true
+        },
+        scheduleUrl: {
+            type: String,
+            required: true
+        },
+        stationTimeZone: {
+            type: String,
+            required: true
+        },
+        connectionInfo: {
+            type: Object,
+            required: true
+        }
     },
     data() {
         return {

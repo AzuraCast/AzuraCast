@@ -49,9 +49,17 @@ import LogList from "~/components/Common/LogList";
 import StreamingLogModal from "~/components/Common/StreamingLogModal";
 import {ref} from "vue";
 
-const props = defineProps({
-    systemLogsUrl: String,
-    stationLogs: Array
+defineProps({
+    systemLogsUrl: {
+        type: String,
+        required: true,
+    },
+    stationLogs: {
+        type: Array,
+        default: () => {
+            return [];
+        }
+    }
 });
 
 const $modal = ref(); // StreamingLogModal

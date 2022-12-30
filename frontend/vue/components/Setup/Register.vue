@@ -104,8 +104,14 @@ import validatePassword from "~/functions/validatePassword";
 import useVuelidate from "@vuelidate/core";
 
 const props = defineProps({
-    csrf: String,
-    error: String,
+    csrf: {
+        type: String,
+        required: true
+    },
+    error: {
+        type: String,
+        default: null
+    },
 });
 
 const form = reactive({

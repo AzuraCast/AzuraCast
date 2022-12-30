@@ -160,9 +160,18 @@ export default {
     name: 'StationReportsListeners',
     components: {DateRangeDropdown, DataTable, StationReportsListenersMap, Icon},
     props: {
-        apiUrl: String,
-        attribution: String,
-        stationTimeZone: String,
+        apiUrl: {
+            type: String,
+            required: true
+        },
+        attribution: {
+            type: String,
+            required: true
+        },
+        stationTimeZone: {
+            type: String,
+            required: true
+        },
     },
     data() {
         const nowTz = DateTime.now().setZone(this.stationTimeZone);
@@ -242,7 +251,7 @@ export default {
                 if (this.isLive) {
                     setTimeout(this.updateListeners, (!document.hidden) ? 15000 : 30000);
                 }
-            }).catch(() => {
+            }).catch((error) => {
                 if (this.isLive && (!error.response || error.response.data.code !== 403)) {
                     setTimeout(this.updateListeners, (!document.hidden) ? 30000 : 120000);
                 }

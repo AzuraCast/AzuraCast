@@ -108,9 +108,18 @@ export default {
     name: 'StationWebhooks',
     components: {StreamingLogModal, InfoCard, Icon, EditModal, DataTable},
     props: {
-        listUrl: String,
-        nowPlayingUrl: String,
-        webhookTypes: Object
+        listUrl: {
+            type: String,
+            required: true
+        },
+        nowPlayingUrl: {
+            type: String,
+            required: true
+        },
+        webhookTypes: {
+            type: Object,
+            required: true
+        }
     },
     data() {
         return {

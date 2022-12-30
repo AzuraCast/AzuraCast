@@ -90,7 +90,10 @@ import {useTranslate} from "~/vendor/gettext";
 import {useAxios} from "~/vendor/axios";
 
 const props = defineProps({
-    apiUrl: String
+    apiUrl: {
+        type: String,
+        required: true
+    }
 });
 
 const loading = ref(true);

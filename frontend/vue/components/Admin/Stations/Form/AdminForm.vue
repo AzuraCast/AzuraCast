@@ -48,10 +48,10 @@
                         <template #label>
                             {{ $gettext('Media Storage Location') }}
                         </template>
-                        <template #default="props">
+                        <template #default="slotProps">
                             <b-form-select
-                                :id="props.id"
-                                v-model="props.field.$model"
+                                :id="slotProps.id"
+                                v-model="slotProps.field.$model"
                                 :options="storageLocationOptions.media_storage_location"
                             />
                         </template>
@@ -65,10 +65,10 @@
                         <template #label>
                             {{ $gettext('Live Recordings Storage Location') }}
                         </template>
-                        <template #default="props">
+                        <template #default="slotProps">
                             <b-form-select
-                                :id="props.id"
-                                v-model="props.field.$model"
+                                :id="slotProps.id"
+                                v-model="slotProps.field.$model"
                                 :options="storageLocationOptions.recordings_storage_location"
                             />
                         </template>
@@ -82,10 +82,10 @@
                         <template #label>
                             {{ $gettext('Podcasts Storage Location') }}
                         </template>
-                        <template #default="props">
+                        <template #default="slotProps">
                             <b-form-select
-                                :id="props.id"
-                                v-model="props.field.$model"
+                                :id="slotProps.id"
+                                v-model="slotProps.field.$model"
                                 :options="storageLocationOptions.podcasts_storage_location"
                             />
                         </template>
@@ -105,9 +105,18 @@ import {onMounted, reactive, ref} from "vue";
 import {useAxios} from "~/vendor/axios";
 
 const props = defineProps({
-    form: Object,
-    isEditMode: Boolean,
-    storageLocationApiUrl: String,
+    form: {
+        type: Object,
+        required: true
+    },
+    isEditMode: {
+        type: Boolean,
+        required: true
+    },
+    storageLocationApiUrl: {
+        type: String,
+        required: true
+    },
     showAdvanced: {
         type: Boolean,
         default: true

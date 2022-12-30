@@ -229,10 +229,10 @@
                 <template #label>
                     {{ $gettext('Avatar Service') }}
                 </template>
-                <template #default="props">
+                <template #default="slotProps">
                     <b-form-radio-group
-                        :id="props.id"
-                        v-model="props.field.$model"
+                        :id="slotProps.id"
+                        v-model="slotProps.field.$model"
                         stacked
                         :options="avatarServiceOptions"
                     />
@@ -318,10 +318,22 @@ import {useNotify} from "~/vendor/bootstrapVue";
 import {useAxios} from "~/vendor/axios";
 
 const props = defineProps({
-    form: Object,
-    releaseChannel: String,
-    testMessageUrl: String,
-    acmeUrl: String,
+    form: {
+        type: Object,
+        required: true
+    },
+    releaseChannel: {
+        type: String,
+        required: true
+    },
+    testMessageUrl: {
+        type: String,
+        required: true
+    },
+    acmeUrl: {
+        type: String,
+        required: true
+    },
 });
 
 const {$gettext} = useTranslate();

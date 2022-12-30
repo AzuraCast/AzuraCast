@@ -303,10 +303,22 @@ export default {
             required: false,
             default: () => []
         },
-        stationTimeZone: String,
-        showSftp: Boolean,
-        sftpUrl: String,
-        supportsImmediateQueue: Boolean
+        stationTimeZone: {
+            type: String,
+            required: true
+        },
+        showSftp: {
+            type: Boolean,
+            default: true
+        },
+        sftpUrl: {
+            type: String,
+            required: true
+        },
+        supportsImmediateQueue: {
+            type: Boolean,
+            required: true
+        }
     },
     data() {
         let fields = [

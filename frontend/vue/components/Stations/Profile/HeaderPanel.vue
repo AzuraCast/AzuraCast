@@ -50,6 +50,9 @@ import headerPanelProps from "~/components/Stations/Profile/headerPanelProps";
 
 const props = defineProps({
     ...headerPanelProps,
-    np: Object
+    np: {
+        type: Object,
+        required: true
+    }
 });
 </script>

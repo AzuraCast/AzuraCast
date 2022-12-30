@@ -6,9 +6,13 @@
 
 <script setup>
 import {inject, onUnmounted, ref, watch} from 'vue';
+import L from "~/vendor/leaflet";
 
 const props = defineProps({
-    position: Array
+    position: {
+        type: Array,
+        required: true
+    }
 });
 
 const $map = inject('map');

@@ -9,11 +9,21 @@ import {Tableau20} from "~/vendor/chartjs-colorschemes/colorschemes.tableau";
 import {Chart} from "chart.js";
 import {useTranslate} from "~/vendor/gettext";
 import {onMounted, onUnmounted, ref} from "vue";
+import {defaultsDeep} from "lodash";
 
 const props = defineProps({
-    options: Object,
-    data: Array,
-    labels: Array
+    options: {
+        type: Object,
+        required: true
+    },
+    data: {
+        type: Array,
+        default: []
+    },
+    labels: {
+        type: Array,
+        default: []
+    }
 });
 
 let $chart = null;
@@ -58,7 +68,7 @@ onMounted(() => {
         $chart.destroy();
     }
 
-    let chartOptions = _.defaultsDeep({}, props.options, defaultOptions);
+    let chartOptions = defaultsDeep({}, props.options, defaultOptions);
     $chart = new Chart($canvas.value.getContext('2d'), chartOptions);
 });
 

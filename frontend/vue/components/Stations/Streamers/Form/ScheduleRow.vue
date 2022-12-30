@@ -32,11 +32,11 @@
                         <template #label>
                             {{ $gettext('Start Time') }}
                         </template>
-                        <template #default="props">
+                        <template #default="slotProps">
                             <playlist-time
-                                :id="props.id"
-                                v-model="props.field.$model"
-                                :state="props.state"
+                                :id="slotProps.id"
+                                v-model="slotProps.field.$model"
+                                :state="slotProps.state"
                             />
                         </template>
                     </b-wrapped-form-group>
@@ -54,11 +54,11 @@
                                 $gettext('If the end time is before the start time, the schedule entry will continue overnight.')
                             }}
                         </template>
-                        <template #default="props">
+                        <template #default="slotProps">
                             <playlist-time
-                                :id="props.id"
-                                v-model="props.field.$model"
-                                :state="props.state"
+                                :id="slotProps.id"
+                                v-model="slotProps.field.$model"
+                                :state="slotProps.state"
                             />
                         </template>
                     </b-wrapped-form-group>
@@ -113,10 +113,10 @@
                         <template #description>
                             {{ $gettext('Leave blank to play on every day of the week.') }}
                         </template>
-                        <template #default="props">
+                        <template #default="slotProps">
                             <b-checkbox-group
-                                :id="props.id"
-                                v-model="props.field.$model"
+                                :id="slotProps.id"
+                                v-model="slotProps.field.$model"
                                 stacked
                                 :options="dayOptions"
                             />
@@ -134,15 +134,23 @@ import Icon from "~/components/Common/Icon.vue";
 import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup.vue";
 import {required} from "@vuelidate/validators";
 import useVuelidate from "@vuelidate/core";
-import BWrappedFormCheckbox from "~/components/Form/BWrappedFormCheckbox.vue";
 
 export default {
     name: 'StreamersFormScheduleRow',
-    components: {BWrappedFormCheckbox, BWrappedFormGroup, Icon, PlaylistTime},
+    components: {BWrappedFormGroup, Icon, PlaylistTime},
     props: {
-        index: Number,
-        row: Object,
-        stationTimeZone: String,
+        index: {
+            type: Number,
+            required: true
+        },
+        row: {
+            type: Object,
+            required: true
+        },
+        stationTimeZone: {
+            type: String,
+            required: true
+        },
     },
     emits: ['remove'],
     setup() {

@@ -84,6 +84,9 @@
 
 <script setup>
 const props = defineProps({
-    connectionInfo: Object
+    connectionInfo: {
+        type: Object,
+        required: true
+    }
 });
 </script>

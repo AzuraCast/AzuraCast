@@ -20,7 +20,10 @@ import {useTranslate} from "~/vendor/gettext";
 import getUrlWithoutQuery from "~/functions/getUrlWithoutQuery";
 
 const props = defineProps({
-    url: String,
+    url: {
+        type: String,
+        required: true
+    },
     isStream: {
         type: Boolean,
         default: false
@@ -29,7 +32,10 @@ const props = defineProps({
         type: Boolean,
         default: false
     },
-    iconClass: String
+    iconClass: {
+        type: String,
+        default: null
+    }
 });
 
 const $store = usePlayerStore();

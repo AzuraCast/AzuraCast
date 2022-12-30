@@ -78,7 +78,10 @@ import backendPanelProps from "~/components/Stations/Profile/backendPanelProps";
 
 const props = defineProps({
     ...backendPanelProps,
-    np: Object
+    np: {
+        type: Object,
+        required: true
+    }
 });
 
 const {$gettext, $ngettext} = useTranslate();

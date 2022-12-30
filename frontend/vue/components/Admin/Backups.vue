@@ -178,11 +178,26 @@ import {useAxios} from "~/vendor/axios";
 import {useSweetAlert} from "~/vendor/sweetalert";
 
 const props = defineProps({
-    listUrl: String,
-    settingsUrl: String,
-    runBackupUrl: String,
-    storageLocations: Object,
-    isDocker: Boolean,
+    listUrl: {
+        type: String,
+        required: true
+    },
+    settingsUrl: {
+        type: String,
+        required: true
+    },
+    runBackupUrl: {
+        type: String,
+        required: true
+    },
+    storageLocations: {
+        type: Object,
+        required: true
+    },
+    isDocker: {
+        type: Boolean,
+        default: true
+    },
 });
 
 const settingsLoading = ref(false);

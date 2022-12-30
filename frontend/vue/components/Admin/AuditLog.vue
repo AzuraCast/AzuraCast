@@ -123,7 +123,10 @@ import DateRangeDropdown from "~/components/Common/DateRangeDropdown.vue";
 import Icon from "~/components/Common/Icon.vue";
 
 const props = defineProps({
-    baseApiUrl: String,
+    baseApiUrl: {
+        type: String,
+        required: true,
+    }
 });
 
 const dateRange = ref({

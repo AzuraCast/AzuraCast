@@ -96,8 +96,9 @@ import InvisibleSubmitButton from '~/components/Common/InvisibleSubmitButton';
 
 export default {
     name: 'PlaylistImportModal',
-    components: { InvisibleSubmitButton },
-    data () {
+    components: {InvisibleSubmitButton},
+    emits: ['relist'],
+    data() {
         return {
             importPlaylistUrl: null,
             playlistFile: null,
@@ -105,7 +106,7 @@ export default {
         };
     },
     methods: {
-        open (importPlaylistUrl) {
+        open(importPlaylistUrl) {
             this.playlistFile = null;
             this.importPlaylistUrl = importPlaylistUrl;
 

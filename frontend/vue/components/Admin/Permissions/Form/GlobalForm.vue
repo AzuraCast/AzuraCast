@@ -28,10 +28,10 @@
                             $gettext('Users with this role will have these permissions across the entire installation.')
                         }}
                     </template>
-                    <template #default="props">
+                    <template #default="slotProps">
                         <b-form-checkbox-group
-                            :id="props.id"
-                            v-model="props.field.$model"
+                            :id="slotProps.id"
+                            v-model="slotProps.field.$model"
                             :options="globalPermissionOptions"
                             stacked
                         />
@@ -48,16 +48,22 @@ import {map} from 'lodash';
 import {computed} from "vue";
 
 const props = defineProps({
-  form: Object,
-  globalPermissions: Object
+    form: {
+        type: Object,
+        required: true
+    },
+    globalPermissions: {
+        type: Object,
+        required: true
+    }
 });
 
 const globalPermissionOptions = computed(() => {
-  return map(props.globalPermissions, (permissionName, permissionKey) => {
-    return {
-      text: permissionName,
-      value: permissionKey
-    };
-  });
+    return map(props.globalPermissions, (permissionName, permissionKey) => {
+        return {
+            text: permissionName,
+            value: permissionKey
+        };
+    });
 });
 </script>

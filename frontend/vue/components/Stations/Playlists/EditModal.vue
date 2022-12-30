@@ -39,10 +39,16 @@ export default {
     components: {FormSchedule, FormBasicInfo, FormAdvanced},
     mixins: [BaseEditModal],
     props: {
-        stationTimeZone: String,
-        enableAdvancedFeatures: Boolean
+        stationTimeZone: {
+            type: String,
+            required: true
+        },
+        enableAdvancedFeatures: {
+            type: Boolean,
+            required: true
+        }
     },
-    emits: ['needs-restart'],
+    emits: ['relist', 'needs-restart'],
     setup() {
         return {v$: useVuelidate()}
     },

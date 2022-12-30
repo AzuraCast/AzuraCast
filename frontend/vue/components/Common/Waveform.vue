@@ -78,8 +78,14 @@ import {onMounted, onUnmounted, ref, watch} from "vue";
 import {useAxios} from "~/vendor/axios";
 
 const props = defineProps({
-    audioUrl: String,
-    waveformUrl: String
+    audioUrl: {
+        type: String,
+        required: true
+    },
+    waveformUrl: {
+        type: String,
+        required: true
+    }
 });
 
 const emit = defineEmits(['ready']);

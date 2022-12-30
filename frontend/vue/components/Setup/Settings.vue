@@ -29,7 +29,10 @@ import SetupStep from "./SetupStep";
 import InfoCard from "~/components/Common/InfoCard";
 
 const props = defineProps({
-    apiUrl: String,
+    apiUrl: {
+        type: String,
+        required: true
+    },
     releaseChannel: {
         type: String,
         default: 'rolling',

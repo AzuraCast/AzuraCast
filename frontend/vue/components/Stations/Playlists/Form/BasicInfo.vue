@@ -38,10 +38,10 @@
                     <template #label>
                         {{ $gettext('Source') }}
                     </template>
-                    <template #default="props">
+                    <template #default="slotProps">
                         <b-form-radio-group
-                            :id="props.id"
-                            v-model="props.field.$model"
+                            :id="slotProps.id"
+                            v-model="slotProps.field.$model"
                             stacked
                         >
                             <b-form-radio value="songs">
@@ -111,10 +111,10 @@
                                     $gettext('If requests are enabled for your station, users will be able to request media that is on this playlist.')
                                 }}
                             </template>
-                            <template #default="props">
+                            <template #default="slotProps">
                                 <b-form-checkbox
-                                    :id="props.id"
-                                    v-model="props.field.$model"
+                                    :id="slotProps.id"
+                                    v-model="slotProps.field.$model"
                                 >
                                     {{ $gettext('Allow Requests from This Playlist') }}
                                 </b-form-checkbox>
@@ -131,10 +131,10 @@
                                     $gettext('Enable this setting to prevent metadata from being sent to the AutoDJ for files in this playlist. This is useful if the playlist contains jingles or bumpers.')
                                 }}
                             </template>
-                            <template #default="props">
+                            <template #default="slotProps">
                                 <b-form-checkbox
-                                    :id="props.id"
-                                    v-model="props.field.$model"
+                                    :id="slotProps.id"
+                                    v-model="slotProps.field.$model"
                                 >
                                     {{ $gettext('Hide Metadata from Listeners ("Jingle Mode")') }}
                                 </b-form-checkbox>
@@ -149,10 +149,10 @@
                             <template #label>
                                 {{ $gettext('Playlist Type') }}
                             </template>
-                            <template #default="props">
+                            <template #default="slotProps">
                                 <b-form-radio-group
-                                    :id="props.id"
-                                    v-model="props.field.$model"
+                                    :id="slotProps.id"
+                                    v-model="slotProps.field.$model"
                                     stacked
                                 >
                                     <b-form-radio value="default">
@@ -197,10 +197,10 @@
                             <template #label>
                                 {{ $gettext('Song Playback Order') }}
                             </template>
-                            <template #default="props">
+                            <template #default="slotProps">
                                 <b-form-radio-group
-                                    :id="props.id"
-                                    v-model="props.field.$model"
+                                    :id="slotProps.id"
+                                    v-model="slotProps.field.$model"
                                     stacked
                                 >
                                     <b-form-radio value="shuffle">
@@ -247,12 +247,12 @@
                                         $gettext('Higher weight playlists are played more frequently compared to other lower-weight playlists.')
                                     }}
                                 </template>
-                                <template #default="props">
+                                <template #default="slotProps">
                                     <b-form-select
-                                        :id="props.id"
-                                        v-model="props.field.$model"
+                                        :id="slotProps.id"
+                                        v-model="slotProps.field.$model"
                                         :options="weightOptions"
-                                        :state="props.state"
+                                        :state="slotProps.state"
                                     />
                                 </template>
                             </b-wrapped-form-group>
@@ -372,10 +372,10 @@
                             <template #label>
                                 {{ $gettext('Remote URL Type') }}
                             </template>
-                            <template #default="props">
+                            <template #default="slotProps">
                                 <b-form-radio-group
-                                    :id="props.id"
-                                    v-model="props.field.$model"
+                                    :id="slotProps.id"
+                                    v-model="slotProps.field.$model"
                                     stacked
                                 >
                                     <b-form-radio value="stream">
@@ -401,7 +401,7 @@
                                     $gettext('The length of playback time that Liquidsoap should buffer when playing this remote playlist. Shorter times may lead to intermittent playback on unstable connections.')
                                 }}
                             </template>
-                            <template #default="props">
+                            <template #default>
                                 <b-form-input
                                     id="form_edit_remote_buffer"
                                     v-model="form.remote_buffer.$model"
@@ -428,7 +428,10 @@ export default {
     name: 'PlaylistEditBasicInfo',
     components: {BFormFieldset, BWrappedFormCheckbox, BWrappedFormGroup},
     props: {
-        form: Object
+        form: {
+            type: Object,
+            required: true
+        }
     },
     data() {
         let weightOptions = [

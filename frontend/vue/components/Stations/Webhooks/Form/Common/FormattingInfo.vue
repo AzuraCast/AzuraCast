@@ -24,6 +24,9 @@
 
 <script setup>
 const props = defineProps({
-    nowPlayingUrl: String
+    nowPlayingUrl: {
+        type: String,
+        required: true
+    }
 });
 </script>

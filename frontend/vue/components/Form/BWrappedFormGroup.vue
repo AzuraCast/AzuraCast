@@ -94,6 +94,7 @@ const props = defineProps({
     },
     name: {
         type: String,
+        required: true
     },
     field: {
         type: Object,

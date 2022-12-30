@@ -24,7 +24,7 @@
                 </template>
                 <template
                     v-if="isEditMode"
-                    #description="{lang}"
+                    #description
                 >
                     {{ $gettext('Leave blank to use the current password.') }}
                 </template>
@@ -48,10 +48,10 @@
                 <template #label>
                     {{ $gettext('Roles') }}
                 </template>
-                <template #default="props">
+                <template #default="slotProps">
                     <b-form-checkbox-group
-                        :id="props.id"
-                        v-model="props.field.$model"
+                        :id="slotProps.id"
+                        v-model="slotProps.field.$model"
                         :options="roleOptions"
                     />
                 </template>
@@ -66,9 +66,18 @@ import objectToFormOptions from "~/functions/objectToFormOptions";
 import {computed} from "vue";
 
 const props = defineProps({
-    form: Object,
-    roles: Object,
-    isEditMode: Boolean
+    form: {
+        type: Object,
+        required: true
+    },
+    roles: {
+        type: Object,
+        required: true
+    },
+    isEditMode: {
+        type: Boolean,
+        required: true
+    }
 });
 
 const roleOptions = computed(() => {

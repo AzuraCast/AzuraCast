@@ -35,20 +35,27 @@
 
 <script>
 import Icon from '~/components/Common/Icon';
-import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
-import BWrappedFormCheckbox from "~/components/Form/BWrappedFormCheckbox";
 import PlaylistsFormScheduleRow from "~/components/Stations/Playlists/Form/ScheduleRow.vue";
 
 export default {
     name: 'PlaylistEditSchedule',
-    components: {PlaylistsFormScheduleRow, BWrappedFormCheckbox, BWrappedFormGroup, Icon},
+    components: {PlaylistsFormScheduleRow, Icon},
     props: {
-        form: Object,
-        stationTimeZone: String,
-        scheduleItems: Array
+        form: {
+            type: Object,
+            required: true
+        },
+        stationTimeZone: {
+            type: String,
+            required: true
+        },
+        scheduleItems: {
+            type: Array,
+            default: []
+        }
     },
     methods: {
-        add () {
+        add() {
             this.scheduleItems.push({
                 start_time: null,
                 end_time: null,

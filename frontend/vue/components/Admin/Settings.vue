@@ -91,9 +91,18 @@ import {useTranslate} from "~/vendor/gettext";
 import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
 
 const props = defineProps({
-    apiUrl: String,
-    testMessageUrl: String,
-    acmeUrl: String,
+    apiUrl: {
+        type: String,
+        required: true,
+    },
+    testMessageUrl: {
+        type: String,
+        required: true
+    },
+    acmeUrl: {
+        type: String,
+        required: true
+    },
     releaseChannel: {
         type: String,
         default: 'rolling',
@@ -103,7 +112,7 @@ const props = defineProps({
 
 const emit = defineEmits(['saved']);
 
-const {form, resetForm, v$} = useVuelidateOnForm(
+const {form, v$} = useVuelidateOnForm(
     {
         base_url: {required},
         instance_name: {},

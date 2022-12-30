@@ -55,11 +55,11 @@
                     <template #description>
                         {{ $gettext('The date when the episode should be published.') }}
                     </template>
-                    <template #default="props">
+                    <template #default="slotProps">
                         <b-form-datepicker
-                            :id="props.id"
-                            v-model="props.field.$model"
-                            :state="props.state"
+                            :id="slotProps.id"
+                            v-model="slotProps.field.$model"
+                            :state="slotProps.state"
                             :locale="locale"
                         />
                     </template>
@@ -78,11 +78,11 @@
                             $gettext('The time when the episode should be published (according to the stations timezone).')
                         }}
                     </template>
-                    <template #default="props">
+                    <template #default="slotProps">
                         <b-form-timepicker
-                            :id="props.id"
-                            v-model="props.field.$model"
-                            :state="props.state"
+                            :id="slotProps.id"
+                            v-model="slotProps.field.$model"
+                            :state="slotProps.state"
                             :locale="locale"
                         />
                     </template>
@@ -112,7 +112,13 @@ import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
 import BWrappedFormCheckbox from "~/components/Form/BWrappedFormCheckbox";
 
 const props = defineProps({
-    form: Object,
-    locale: String
+    form: {
+        type: Object,
+        required: true
+    },
+    locale: {
+        type: String,
+        required: true
+    }
 });
 </script>

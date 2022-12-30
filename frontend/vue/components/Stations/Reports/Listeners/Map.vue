@@ -28,15 +28,21 @@
 import InnerMap from "./InnerMap.vue";
 import MapPoint from "./MapPoint.vue";
 import {computed} from "vue";
-import _ from "lodash";
+import {filter} from "lodash";
 
 const props = defineProps({
-    attribution: String,
-    listeners: Array,
+    attribution: {
+        type: String,
+        required: true
+    },
+    listeners: {
+        type: Array,
+        default: []
+    },
 });
 
 const visibleListeners = computed(() => {
-    return _.filter(props.listeners, function (l) {
+    return filter(props.listeners, function (l) {
         return null !== l.location.lat && null !== l.location.lon;
     });
 });

@@ -25,7 +25,10 @@ export default {
     components: {StorageLocationForm},
     mixins: [BaseEditModal],
     props: {
-        type: String
+        type: {
+            type: String,
+            required: true
+        }
     },
     setup() {
         const blankForm = {

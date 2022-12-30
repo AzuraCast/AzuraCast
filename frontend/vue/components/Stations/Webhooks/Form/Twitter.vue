@@ -92,7 +92,13 @@ import CommonRateLimitFields from "./Common/RateLimitFields";
 import CommonSocialPostFields from "./Common/SocialPostFields";
 
 const props = defineProps({
-    form: Object,
-    nowPlayingUrl: String
+    form: {
+        type: Object,
+        required: true
+    },
+    nowPlayingUrl: {
+        type: String,
+        required: true
+    }
 });
 </script>

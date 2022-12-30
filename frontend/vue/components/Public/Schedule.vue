@@ -44,9 +44,18 @@
 import Schedule from '~/components/Common/ScheduleView';
 
 const props = defineProps({
-    scheduleUrl: String,
-    stationName: String,
-    stationTimeZone: String
+    scheduleUrl: {
+        type: String,
+        required: true
+    },
+    stationName: {
+        type: String,
+        required: true
+    },
+    stationTimeZone: {
+        type: String,
+        required: true
+    }
 });
 </script>
 

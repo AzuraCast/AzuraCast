@@ -212,7 +212,10 @@ import nowPlayingPanelProps from "~/components/Stations/Profile/nowPlayingPanelP
 
 const props = defineProps({
     ...nowPlayingPanelProps,
-    np: Object
+    np: {
+        type: Object,
+        required: true
+    }
 });
 
 const npElapsed = ref(0);

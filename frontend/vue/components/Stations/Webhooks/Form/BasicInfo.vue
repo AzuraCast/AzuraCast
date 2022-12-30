@@ -30,10 +30,10 @@
                         $gettext('This web hook will only run when the selected event(s) occur on this specific station.')
                     }}
                 </template>
-                <template #default="props">
+                <template #default="slotProps">
                     <b-form-checkbox-group
-                        :id="props.id"
-                        v-model="props.field.$model"
+                        :id="slotProps.id"
+                        v-model="slotProps.field.$model"
                         :options="triggerOptions"
                         stacked
                     />
@@ -47,7 +47,13 @@
 import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
 
 const props = defineProps({
-    form: Object,
-    triggerOptions: Array
+    form: {
+        type: Object,
+        required: true
+    },
+    triggerOptions: {
+        type: Array,
+        required: true
+    }
 });
 </script>

@@ -16,9 +16,18 @@ export default {
     name: 'FileUpload',
     components: {FlowUpload},
     props: {
-        uploadUrl: String,
-        currentDirectory: String,
-        searchPhrase: String,
+        uploadUrl: {
+            type: String,
+            required: true
+        },
+        currentDirectory: {
+            type: String,
+            required: true
+        },
+        searchPhrase: {
+            type: String,
+            required: true
+        },
         validMimeTypes: {
             type: Array,
             default() {
@@ -26,6 +35,7 @@ export default {
             }
         }
     },
+    emits: ['relist'],
     data() {
         return {
             flow: null,

@@ -20,7 +20,13 @@
 import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
 
 const props = defineProps({
-    form: Object,
-    customFields: Array
+    form: {
+        type: Object,
+        required: true
+    },
+    customFields: {
+        type: Array,
+        required: true
+    }
 });
 </script>

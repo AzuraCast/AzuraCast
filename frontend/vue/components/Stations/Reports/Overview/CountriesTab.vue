@@ -18,7 +18,13 @@
 import CommonMetricsView from "./CommonMetricsView";
 
 const props = defineProps({
-    dateRange: Object,
-    apiUrl: String,
+    dateRange: {
+        type: Object,
+        required: true
+    },
+    apiUrl: {
+        type: String,
+        required: true
+    },
 });
 </script>

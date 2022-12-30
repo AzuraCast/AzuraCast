@@ -123,6 +123,8 @@
             <b-table
                 ref="table"
                 v-model:current-page="currentPage"
+                v-model:sort-by="sortBy"
+                v-model:sort-desc="sortDesc"
                 show-empty
                 striped
                 hover
@@ -138,12 +140,10 @@
                 :no-provider-sorting="handleClientSide"
                 :no-provider-filtering="handleClientSide"
                 tbody-tr-class="align-middle"
-                @row-selected="onRowSelected"
                 thead-tr-class="align-middle"
                 selected-variant=""
                 :filter="filter"
-                v-model:sort-by="sortBy"
-                v-model:sort-desc="sortDesc"
+                @row-selected="onRowSelected"
                 @filtered="onFiltered"
                 @refreshed="onRefreshed"
                 @sort-changed="onSortChanged"
@@ -217,7 +217,7 @@
 
 <script>
 import store from 'store';
-import _ from 'lodash';
+import {forEach, filter, map} from 'lodash';
 import Icon from './Icon.vue';
 import {defineComponent} from "vue";
 
@@ -225,7 +225,10 @@ export default defineComponent({
     name: 'DataTable',
     components: {Icon},
     props: {
-        id: String,
+        id: {
+            type: String,
+            required: true
+        },
         apiUrl: {
             type: String,
             default: null
@@ -254,7 +257,10 @@ export default defineComponent({
             type: Number,
             default: 10
         },
-        fields: Array,
+        fields: {
+            type: Array,
+            required: true
+        },
         selectable: {
             type: Boolean,
             default: false
@@ -267,12 +273,25 @@ export default defineComponent({
             type: Boolean,
             default: false
         },
-        requestConfig: Function,
-        requestProcess: Function
+        requestConfig: {
+            type: Function,
+            default: () => {
+            }
+        },
+        requestProcess: {
+            type: Function,
+            default: () => {
+            }
+        }
     },
+    emits: [
+        'refreshed',
+        'row-selected',
+        'filtered'
+    ],
     data() {
         let allFields = [];
-        _.forEach(this.fields, function (field) {
+        forEach(this.fields, function (field) {
             allFields.push({
                 ...{
                     label: '',
@@ -345,7 +364,7 @@ export default defineComponent({
                 return fields;
             }
 
-            return _.filter(fields, (field) => {
+            return filter(fields, (field) => {
                 if (!field.selectable) {
                     return true;
                 }
@@ -354,7 +373,7 @@ export default defineComponent({
             });
         },
         selectableFields() {
-            return _.filter(this.allFields.slice(), (field) => {
+            return filter(this.allFields.slice(), (field) => {
                 return field.selectable;
             });
         },
@@ -394,7 +413,7 @@ export default defineComponent({
 
                 this.perPage = _.defaultTo(settings.perPage, this.defaultPerPage);
 
-                _.forEach(this.selectableFields, (field) => {
+                forEach(this.selectableFields, (field) => {
                     field.visible = _.includes(settings.visibleFields, field.key);
                 });
 
@@ -413,7 +432,7 @@ export default defineComponent({
                 'perPage': this.perPage,
                 'sortBy': this.sortBy,
                 'sortDesc': this.sortDesc,
-                'visibleFields': _.map(this.visibleFields, 'key')
+                'visibleFields': map(this.visibleFields, 'key')
             };
 
             store.set(this.storeKey, settings);

@@ -103,7 +103,10 @@ export default {
     name: 'AdminStorageLocations',
     components: {Icon, EditModal, DataTable},
     props: {
-        listUrl: String
+        listUrl: {
+            type: String,
+            required: true
+        }
     },
     data() {
         return {

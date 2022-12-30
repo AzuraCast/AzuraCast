@@ -14,7 +14,10 @@ import {defineComponent} from "vue";
 
 export default defineComponent({
     props: {
-        title: String,
+        title: {
+            type: String,
+            required: true
+        },
         volume: {
             type: Number,
             default: 55

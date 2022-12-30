@@ -109,7 +109,8 @@ export default defineComponent({
             default: false,
         },
         error: {
-            type: String
+            type: String,
+            default: null
         }
     },
     emits: ['submit', 'shown', 'hidden'],

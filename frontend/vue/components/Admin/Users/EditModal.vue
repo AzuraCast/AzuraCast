@@ -29,7 +29,10 @@ export default {
     components: {AdminUsersForm},
     mixins: [BaseEditModal],
     props: {
-        roles: Object
+        roles: {
+            type: Object,
+            required: true
+        }
     },
     setup() {
         return {v$: useVuelidate()}

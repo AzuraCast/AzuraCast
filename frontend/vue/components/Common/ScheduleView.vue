@@ -15,8 +15,14 @@ import {shallowRef} from "vue";
 import {useAzuraCast} from "~/vendor/azuracast";
 
 const props = defineProps({
-    scheduleUrl: String,
-    stationTimeZone: String
+    scheduleUrl: {
+        type: String,
+        required: true
+    },
+    stationTimeZone: {
+        type: String,
+        required: true
+    }
 });
 
 const emit = defineEmits(['click']);

@@ -7,7 +7,7 @@
         :title="$gettext('Run Manual Backup')"
         @hidden="clearContents"
     >
-        <template #default="slotProps">
+        <template #default>
             <b-alert
                 variant="danger"
                 :show="error != null"
@@ -30,10 +30,10 @@
                             <template #label>
                                 {{ $gettext('Storage Location') }}
                             </template>
-                            <template #default="props">
+                            <template #default="slotProps">
                                 <b-form-select
-                                    :id="props.id"
-                                    v-model="props.field.$model"
+                                    :id="slotProps.id"
+                                    v-model="slotProps.field.$model"
                                     :options="storageLocationOptions"
                                 />
                             </template>
@@ -132,8 +132,14 @@ import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
 import {BModal} from "bootstrap-vue";
 
 const props = defineProps({
-    runBackupUrl: String,
-    storageLocations: Object
+    runBackupUrl: {
+        type: String,
+        required: true
+    },
+    storageLocations: {
+        type: Object,
+        required: true
+    }
 });
 
 const emit = defineEmits(['relist']);

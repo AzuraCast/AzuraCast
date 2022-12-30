@@ -17,7 +17,10 @@
 export default {
     name: 'LogList',
     props: {
-        url: String,
+        url: {
+            type: String,
+            required: true
+        },
     },
     emits: ['view'],
     data() {

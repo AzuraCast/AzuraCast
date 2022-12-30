@@ -90,14 +90,19 @@
 import DataTable from '~/components/Common/DataTable';
 import EditModal from './Users/EditModal';
 import Icon from '~/components/Common/Icon';
-import InfoCard from '~/components/Common/InfoCard';
 
 export default {
     name: 'AdminPermissions',
-    components: {InfoCard, Icon, EditModal, DataTable},
+    components: {Icon, EditModal, DataTable},
     props: {
-        listUrl: String,
-        roles: Object
+        listUrl: {
+            type: String,
+            required: true
+        },
+        roles: {
+            type: Object,
+            required: true
+        }
     },
     data() {
         return {

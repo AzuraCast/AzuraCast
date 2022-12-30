@@ -32,7 +32,10 @@
 <script setup>
 import CopyToClipboardButton from "~/components/Common/CopyToClipboardButton.vue";
 
-const props = defineProps({
-    newKey: String
+defineProps({
+    newKey: {
+        type: String,
+        required: true
+    }
 });
 </script>

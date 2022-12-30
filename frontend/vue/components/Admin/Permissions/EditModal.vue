@@ -39,9 +39,18 @@ export default {
     components: {AdminPermissionsStationForm, AdminPermissionsGlobalForm},
     mixins: [BaseEditModal],
     props: {
-        stations: Object,
-        globalPermissions: Object,
-        stationPermissions: Object
+        stations: {
+            type: Object,
+            required: true
+        },
+        globalPermissions: {
+            type: Object,
+            required: true
+        },
+        stationPermissions: {
+            type: Object,
+            required: true
+        }
     },
     setup() {
         const {form, resetForm, v$} = useVuelidateOnForm(

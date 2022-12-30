@@ -26,7 +26,10 @@ import stationFormProps from "~/components/Admin/Stations/stationFormProps";
 
 const props = defineProps({
     ...stationFormProps,
-    editUrl: String,
+    editUrl: {
+        type: String,
+        required: true
+    },
     continueUrl: {
         type: String,
         required: true

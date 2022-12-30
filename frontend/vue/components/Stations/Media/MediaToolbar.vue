@@ -23,6 +23,7 @@
                     >
                         <div
                             v-for="playlist in playlists"
+                            :key="playlist.id"
                             class="form-group"
                         >
                             <div class="custom-control custom-checkbox">
@@ -156,13 +157,29 @@ export default {
     name: 'StationMediaToolbar',
     components: {Icon},
     props: {
-        currentDirectory: String,
-        selectedItems: Object,
-        playlists: Array,
-        batchUrl: String,
-        supportsImmediateQueue: Boolean
+        currentDirectory: {
+            type: String,
+            required: true
+        },
+        selectedItems: {
+            type: Object,
+            required: true
+        },
+        playlists: {
+            type: Array,
+            default: []
+        },
+        batchUrl: {
+            type: String,
+            required: true
+        },
+        supportsImmediateQueue: {
+            type: Boolean,
+            required: true
+        }
     },
-    data () {
+    emits: ['relist', 'add-playlist'],
+    data() {
         return {
             checkedPlaylists: [],
             newPlaylist: '',

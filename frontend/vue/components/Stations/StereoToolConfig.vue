@@ -87,8 +87,14 @@ import {useAxios} from "~/vendor/axios";
 
 const props = defineProps({
     ...mayNeedRestartProps,
-    recordHasStereoToolConfiguration: Boolean,
-    apiUrl: String
+    recordHasStereoToolConfiguration: {
+        type: Boolean,
+        required: true
+    },
+    apiUrl: {
+        type: String,
+        required: true
+    }
 });
 
 const hasStereoToolConfiguration = ref(props.recordHasStereoToolConfiguration);

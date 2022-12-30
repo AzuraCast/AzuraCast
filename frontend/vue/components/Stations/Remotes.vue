@@ -96,7 +96,10 @@ import showFormatAndBitrate from "~/functions/showFormatAndBitrate";
 
 const props = defineProps({
     ...mayNeedRestartProps,
-    listUrl: String,
+    listUrl: {
+        type: String,
+        required: true
+    },
 });
 
 const {$gettext} = useTranslate();

@@ -13,12 +13,12 @@
                     <template #label>
                         {{ $gettext('Remote Station Type') }}
                     </template>
-                    <template #default="props">
+                    <template #default="slotProps">
                         <b-form-radio-group
-                            :id="props.id"
-                            v-model="props.field.$model"
+                            :id="slotProps.id"
+                            v-model="slotProps.field.$model"
                             stacked
-                            :state="props.state"
+                            :state="slotProps.state"
                             :options="typeOptions"
                         />
                     </template>
@@ -112,7 +112,10 @@ export default {
     name: 'RemoteFormBasicInfo',
     components: {BWrappedFormCheckbox, BWrappedFormGroup},
     props: {
-        form: Object
+        form: {
+            type: Object,
+            required: true
+        }
     },
     computed: {
         typeOptions() {

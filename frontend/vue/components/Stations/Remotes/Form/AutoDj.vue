@@ -29,10 +29,10 @@
                 <template #label>
                     {{ $gettext('AutoDJ Format') }}
                 </template>
-                <template #default="props">
+                <template #default="slotProps">
                     <b-form-radio-group
-                        :id="props.id"
-                        v-model="props.field.$model"
+                        :id="slotProps.id"
+                        v-model="slotProps.field.$model"
                         stacked
                         :options="formatOptions"
                     />
@@ -48,10 +48,10 @@
                 <template #label>
                     {{ $gettext('AutoDJ Bitrate (kbps)') }}
                 </template>
-                <template #default="props">
+                <template #default="slotProps">
                     <b-form-radio-group
-                        :id="props.id"
-                        v-model="props.field.$model"
+                        :id="slotProps.id"
+                        v-model="slotProps.field.$model"
                         stacked
                         :options="bitrateOptions"
                     />
@@ -141,8 +141,14 @@ export default {
     name: 'RemoteFormAutoDj',
     components: {BWrappedFormCheckbox, BWrappedFormGroup},
     props: {
-        form: Object,
-        stationFrontendType: String
+        form: {
+            type: Object,
+            required: true
+        },
+        stationFrontendType: {
+            type: String,
+            required: true
+        }
     },
     computed: {
         formatOptions() {

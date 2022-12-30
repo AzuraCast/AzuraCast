@@ -37,7 +37,10 @@ import stationFormProps from "~/components/Admin/Stations/stationFormProps";
 
 const props = defineProps({
     ...stationFormProps,
-    createUrl: String,
+    createUrl: {
+        type: String,
+        required: true
+    },
     continueUrl: {
         type: String,
         required: true

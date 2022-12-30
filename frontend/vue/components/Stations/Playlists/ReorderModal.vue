@@ -47,7 +47,7 @@
                 >
                     <tr
                         v-for="(row,index) in media"
-                        :key="media.id"
+                        :key="row.media.id"
                         class="align-middle"
                     >
                         <td class="pr-2">

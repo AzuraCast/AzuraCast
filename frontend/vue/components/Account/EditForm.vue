@@ -37,10 +37,10 @@
                     <template #label>
                         {{ $gettext('Language') }}
                     </template>
-                    <template #default="props">
+                    <template #default="slotProps">
                         <b-form-radio-group
-                            :id="props.id"
-                            v-model="props.field.$model"
+                            :id="slotProps.id"
+                            v-model="slotProps.field.$model"
                             stacked
                             :options="localeOptions"
                         />
@@ -55,10 +55,10 @@
                     <template #label>
                         {{ $gettext('Site Theme') }}
                     </template>
-                    <template #default="props">
+                    <template #default="slotProps">
                         <b-form-radio-group
-                            :id="props.id"
-                            v-model="props.field.$model"
+                            :id="slotProps.id"
+                            v-model="slotProps.field.$model"
                             stacked
                             :options="themeOptions"
                         />
@@ -72,10 +72,10 @@
                     <template #label>
                         {{ $gettext('Time Display') }}
                     </template>
-                    <template #default="props">
+                    <template #default="slotProps">
                         <b-form-radio-group
-                            :id="props.id"
-                            v-model="props.field.$model"
+                            :id="slotProps.id"
+                            v-model="slotProps.field.$model"
                             stacked
                             :options="show24hourOptions"
                         />
@@ -94,8 +94,14 @@ import {computed} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 
 const props = defineProps({
-    form: Object,
-    supportedLocales: Object
+    form: {
+        type: Object,
+        required: true
+    },
+    supportedLocales: {
+        type: Object,
+        required: true
+    }
 });
 
 const {$gettext} = useTranslate();

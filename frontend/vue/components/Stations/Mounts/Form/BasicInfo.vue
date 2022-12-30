@@ -156,8 +156,14 @@ export default {
     name: 'MountFormBasicInfo',
     components: {BWrappedFormCheckbox, BWrappedFormGroup},
     props: {
-        form: Object,
-        stationFrontendType: String
+        form: {
+            type: Object,
+            required: true
+        },
+        stationFrontendType: {
+            type: String,
+            required: true
+        }
     },
     computed: {
         langAuthhashDesc() {

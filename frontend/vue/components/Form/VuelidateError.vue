@@ -12,7 +12,10 @@ import {get, map} from "lodash";
 import {computed} from "vue";
 
 const props = defineProps({
-    field: Object
+    field: {
+        type: Object,
+        required: true
+    }
 });
 
 const {$gettext} = useTranslate();

@@ -61,10 +61,22 @@ export default {
     components: {BasicInfo, TypeSelect},
     mixins: [BaseEditModal],
     props: {
-        nowPlayingUrl: String,
-        webhookTypes: Object,
-        triggerTitles: Object,
-        triggerDescriptions: Object
+        nowPlayingUrl: {
+            type: String,
+            required: true
+        },
+        webhookTypes: {
+            type: Object,
+            required: true
+        },
+        triggerTitles: {
+            type: Object,
+            required: true
+        },
+        triggerDescriptions: {
+            type: Object,
+            required: true
+        }
     },
     setup() {
         return {v$: useVuelidate()}

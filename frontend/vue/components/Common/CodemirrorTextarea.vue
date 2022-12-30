@@ -16,8 +16,14 @@ import {javascript} from "@codemirror/lang-javascript";
 import {useAzuraCast} from "~/vendor/azuracast";
 
 const props = defineProps({
-    modelValue: String,
-    mode: String
+    modelValue: {
+        type: String,
+        required: true
+    },
+    mode: {
+        type: String,
+        required: true
+    }
 });
 
 const emit = defineEmits(['update:modelValue']);

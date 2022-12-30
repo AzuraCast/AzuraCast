@@ -31,7 +31,7 @@
                 </b-thead>
                 <b-tbody>
                     <tr
-                        v-for="(row,index) in media"
+                        v-for="row in media"
                         :key="row.id"
                         class="align-middle"
                     >

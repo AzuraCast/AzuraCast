@@ -97,10 +97,22 @@ const props = defineProps({
     ...publicPagesPanelProps,
     ...requestsPanelProps,
     ...streamersPanelProps,
-    profileApiUri: String,
-    stationTimeZone: String,
-    stationSupportsRequests: Boolean,
-    stationSupportsStreamers: Boolean
+    profileApiUri: {
+        type: String,
+        required: true
+    },
+    stationTimeZone: {
+        type: String,
+        required: true
+    },
+    stationSupportsRequests: {
+        type: Boolean,
+        required: true
+    },
+    stationSupportsStreamers: {
+        type: Boolean,
+        required: true
+    }
 });
 
 const np = shallowRef({

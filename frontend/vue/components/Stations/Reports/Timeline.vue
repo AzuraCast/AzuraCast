@@ -103,8 +103,14 @@ export default {
     name: 'StationsReportsTimeline',
     components: {DateRangeDropdown, DataTable, Icon},
     props: {
-        baseApiUrl: String,
-        stationTimeZone: String
+        baseApiUrl: {
+            type: String,
+            required: true
+        },
+        stationTimeZone: {
+            type: String,
+            required: true
+        }
     },
     data() {
         let nowTz = DateTime.now().setZone(this.stationTimeZone);

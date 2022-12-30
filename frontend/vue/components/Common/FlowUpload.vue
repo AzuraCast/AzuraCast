@@ -74,10 +74,13 @@ import {useAzuraCast} from "~/vendor/azuracast";
 import {useTranslate} from "~/vendor/gettext";
 
 const props = defineProps({
-  targetUrl: String,
-  allowMultiple: {
-    type: Boolean,
-    default: false
+    targetUrl: {
+        type: String,
+        required: true
+    },
+    allowMultiple: {
+        type: Boolean,
+        default: false
     },
     validMimeTypes: {
         type: Array,
@@ -183,7 +186,7 @@ onMounted(() => {
     flow.on('error', (message, file, chunk) => {
         console.error(message, file, chunk);
 
-      let messageText = $gettext('Could not upload file.');
+        let messageText = $gettext('Could not upload file.');
         try {
             if (typeof message !== 'undefined') {
                 let messageJson = JSON.parse(message);
@@ -195,6 +198,7 @@ onMounted(() => {
                 }
             }
         } catch (e) {
+            // Noop
         }
 
         files.get(file).error = messageText;

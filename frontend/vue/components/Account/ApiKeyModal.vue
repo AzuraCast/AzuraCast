@@ -8,7 +8,7 @@
         no-enforce-focus
         @hidden="clearContents"
     >
-        <template #default="slotProps">
+        <template #default>
             <b-alert
                 variant="danger"
                 :show="error != null"
@@ -78,7 +78,10 @@ import {useNotify} from "~/vendor/bootstrapVue";
 import {useAxios} from "~/vendor/axios";
 
 const props = defineProps({
-    createUrl: String
+    createUrl: {
+        type: String,
+        required: true
+    }
 });
 
 const emit = defineEmits(['relist']);

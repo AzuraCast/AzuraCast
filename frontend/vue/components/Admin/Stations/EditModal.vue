@@ -17,8 +17,8 @@
             :is-edit-mode="isEditMode"
             @error="close"
             @submitted="onSubmit"
-            @validUpdate="onValidUpdate"
-            @loadingUpdate="onLoadingUpdate"
+            @valid-update="onValidUpdate"
+            @loading-update="onLoadingUpdate"
         >
             <template #submitButton>
                 <invisible-submit-button />
@@ -54,7 +54,10 @@ import stationFormProps from "~/components/Admin/Stations/stationFormProps";
 
 const props = defineProps({
     ...stationFormProps,
-    createUrl: String
+    createUrl: {
+        type: String,
+        required: true
+    }
 });
 
 const emit = defineEmits(['relist']);

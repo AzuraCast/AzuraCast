@@ -60,7 +60,10 @@ import {useAxios} from "~/vendor/axios";
 import {useTranslate} from "~/vendor/gettext";
 
 const props = defineProps({
-    changePasswordUrl: String
+    changePasswordUrl: {
+        type: String,
+        required: true
+    }
 });
 
 const emit = defineEmits(['relist']);
@@ -100,10 +103,6 @@ const open = () => {
     clearContents();
     $modal.value.show();
 };
-
-const close = () => {
-    $modal.value.hide();
-}
 
 const {wrapWithLoading} = useNotify();
 const {axios} = useAxios();

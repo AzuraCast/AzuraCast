@@ -74,8 +74,14 @@ import {ref} from "vue";
 import {useAxios} from "~/vendor/axios";
 
 const props = defineProps({
-    apiUrl: String,
-    recordHasFallback: Boolean
+    apiUrl: {
+        type: String,
+        required: true
+    },
+    recordHasFallback: {
+        type: Boolean,
+        required: true
+    }
 });
 
 const hasFallback = ref(props.recordHasFallback);

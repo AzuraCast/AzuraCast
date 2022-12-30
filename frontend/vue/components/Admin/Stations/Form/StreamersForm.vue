@@ -55,10 +55,10 @@
                                 {{ $gettext('Live Broadcast Recording Format') }}
                             </template>
 
-                            <template #default="props">
+                            <template #default="slotProps">
                                 <b-form-radio-group
-                                    :id="props.id"
-                                    v-model="props.field.$model"
+                                    :id="slotProps.id"
+                                    v-model="slotProps.field.$model"
                                     stacked
                                     :options="recordStreamsOptions"
                                 />
@@ -74,10 +74,10 @@
                                 {{ $gettext('Live Broadcast Recording Bitrate (kbps)') }}
                             </template>
 
-                            <template #default="props">
+                            <template #default="slotProps">
                                 <b-form-radio-group
-                                    :id="props.id"
-                                    v-model="props.field.$model"
+                                    :id="slotProps.id"
+                                    v-model="slotProps.field.$model"
                                     stacked
                                     :options="recordBitrateOptions"
                                 />
@@ -178,10 +178,16 @@ import BackendDisabled from "./Common/BackendDisabled.vue";
 import {computed} from "vue";
 
 const props = defineProps({
-  form: Object,
-  station: Object,
-  showAdvanced: {
-    type: Boolean,
+    form: {
+        type: Object,
+        required: true
+    },
+    station: {
+        type: Object,
+        required: true
+    },
+    showAdvanced: {
+        type: Boolean,
         default: true
     },
 });

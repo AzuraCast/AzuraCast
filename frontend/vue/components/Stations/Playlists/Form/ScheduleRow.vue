@@ -35,11 +35,11 @@
                         <template #description>
                             {{ $gettext('To play once per day, set the start and end times to the same value.') }}.00
                         </template>
-                        <template #default="props">
+                        <template #default="slotProps">
                             <playlist-time
-                                :id="props.id"
-                                v-model="props.field.$model"
-                                :state="props.state"
+                                :id="slotProps.id"
+                                v-model="slotProps.field.$model"
+                                :state="slotProps.state"
                             />
                         </template>
                     </b-wrapped-form-group>
@@ -57,11 +57,11 @@
                                 $gettext('If the end time is before the start time, the playlist will play overnight.')
                             }}
                         </template>
-                        <template #default="props">
+                        <template #default="slotProps">
                             <playlist-time
-                                :id="props.id"
-                                v-model="props.field.$model"
-                                :state="props.state"
+                                :id="slotProps.id"
+                                v-model="slotProps.field.$model"
+                                :state="slotProps.state"
                             />
                         </template>
                     </b-wrapped-form-group>
@@ -91,12 +91,12 @@
                                 $gettext('To set this schedule to run only within a certain date range, specify a start and end date.')
                             }}
                         </template>
-                        <template #default="props">
+                        <template #default="slotProps">
                             <b-form-input
-                                :id="props.id"
-                                v-model="props.field.$model"
+                                :id="slotProps.id"
+                                v-model="slotProps.field.$model"
                                 type="date"
-                                :state="props.state"
+                                :state="slotProps.state"
                             />
                         </template>
                     </b-wrapped-form-group>
@@ -109,12 +109,12 @@
                         <template #label>
                             {{ $gettext('End Date') }}
                         </template>
-                        <template #default="props">
+                        <template #default="slotProps">
                             <b-form-input
-                                :id="props.id"
-                                v-model="props.field.$model"
+                                :id="slotProps.id"
+                                v-model="slotProps.field.$model"
                                 type="date"
-                                :state="props.state"
+                                :state="slotProps.state"
                             />
                         </template>
                     </b-wrapped-form-group>
@@ -143,7 +143,7 @@
                         <template #description>
                             {{ $gettext('Leave blank to play on every day of the week.') }}
                         </template>
-                        <template #default="props">
+                        <template #default>
                             <b-checkbox-group
                                 :id="'edit_form_days_'+index"
                                 v-model="v$.row.days.$model"
@@ -170,9 +170,18 @@ export default {
     name: 'PlaylistsFormScheduleRow',
     components: {BWrappedFormCheckbox, BWrappedFormGroup, Icon, PlaylistTime},
     props: {
-        index: Number,
-        row: Object,
-        stationTimeZone: String,
+        index: {
+            type: Number,
+            required: true
+        },
+        row: {
+            type: Object,
+            required: true
+        },
+        stationTimeZone: {
+            type: String,
+            required: true
+        },
     },
     emits: ['remove'],
     setup() {

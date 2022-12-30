@@ -18,10 +18,10 @@
                         $gettext('Aggregate listener statistics are used to show station reports across the system. IP-based listener statistics are used to view live listener tracking and may be required for royalty reports.')
                     }}
                 </template>
-                <template #default="props">
+                <template #default="slotProps">
                     <b-form-radio-group
-                        :id="props.id"
-                        v-model="props.field.$model"
+                        :id="slotProps.id"
+                        v-model="slotProps.field.$model"
                         stacked
                     >
                         <b-form-radio value="all">
@@ -100,6 +100,9 @@ import BFormFieldset from "~/components/Form/BFormFieldset.vue";
 import BWrappedFormCheckbox from "~/components/Form/BWrappedFormCheckbox.vue";
 
 const props = defineProps({
-  form: Object
+    form: {
+        type: Object,
+        required: true
+    }
 });
 </script>

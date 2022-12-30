@@ -41,9 +41,18 @@ export default {
     name: 'StreamerFormSchedule',
     components: {StreamersFormScheduleRow, BWrappedFormGroup, Icon, PlaylistTime},
     props: {
-        form: Object,
-        stationTimeZone: String,
-        scheduleItems: Array
+        form: {
+            type: Object,
+            required: true
+        },
+        stationTimeZone: {
+            type: String,
+            required: true
+        },
+        scheduleItems: {
+            type: Array,
+            default: []
+        }
     },
     data() {
         return {

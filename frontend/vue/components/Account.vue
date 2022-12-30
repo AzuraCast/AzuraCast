@@ -237,11 +237,28 @@ import {useAxios} from "~/vendor/axios";
 import {useSweetAlert} from "~/vendor/sweetalert";
 
 const props = defineProps({
-    userUrl: String,
-    changePasswordUrl: String,
-    twoFactorUrl: String,
-    apiKeysApiUrl: String,
-    supportedLocales: Object
+    userUrl: {
+        type: String,
+        required: true,
+    },
+    changePasswordUrl: {
+        type: String,
+        required: true
+    },
+    twoFactorUrl: {
+        type: String,
+        required: true
+    },
+    apiKeysApiUrl: {
+        type: String,
+        required: true
+    },
+    supportedLocales: {
+        type: Object,
+        default: () => {
+            return {};
+        }
+    }
 });
 
 const userLoading = ref(true);

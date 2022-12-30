@@ -37,9 +37,18 @@ import PermissionsFormStationRow from "~/components/Admin/Permissions/Form/Stati
 import {computed} from "vue";
 
 const props = defineProps({
-    form: Object,
-    stations: Object,
-    stationPermissions: Object
+    form: {
+        type: Object,
+        required: true
+    },
+    stations: {
+        type: Object,
+        required: true
+    },
+    stationPermissions: {
+        type: Object,
+        required: true
+    }
 });
 
 const remainingStations = computed(() => {

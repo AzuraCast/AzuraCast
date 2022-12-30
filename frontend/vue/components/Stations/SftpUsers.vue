@@ -91,8 +91,14 @@ export default {
     name: 'SftpUsers',
     components: {Icon, SftpUsersEditModal, DataTable},
     props: {
-        listUrl: String,
-        connectionInfo: Object
+        listUrl: {
+            type: String,
+            required: true
+        },
+        connectionInfo: {
+            type: Object,
+            required: true
+        }
     },
     data() {
         return {

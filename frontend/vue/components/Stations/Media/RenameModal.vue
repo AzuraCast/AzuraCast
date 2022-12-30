@@ -41,8 +41,12 @@ export default {
     name: 'RenameModal',
     components: {BWrappedFormGroup},
     props: {
-        renameUrl: String
+        renameUrl: {
+            type: String,
+            required: true
+        }
     },
+    emits: ['relist'],
     setup() {
         return {v$: useVuelidate()}
     },

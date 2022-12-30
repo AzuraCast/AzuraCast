@@ -41,11 +41,11 @@
                     <template #description>
                         {{ $gettext('If the end time is before the start time, the playlist will play overnight.') }}
                     </template>
-                    <template #default="props">
+                    <template #default="slotProps">
                         <time-code
-                            :id="props.id"
-                            v-model="props.field.$model"
-                            :state="props.state"
+                            :id="slotProps.id"
+                            v-model="slotProps.field.$model"
+                            :state="slotProps.state"
                         />
                     </template>
                 </b-wrapped-form-group>
@@ -90,10 +90,10 @@
                     <template #label>
                         {{ $gettext('Storage Location') }}
                     </template>
-                    <template #default="props">
+                    <template #default="slotProps">
                         <b-form-select
-                            :id="props.id"
-                            v-model="props.field.$model"
+                            :id="slotProps.id"
+                            v-model="slotProps.field.$model"
                             :options="storageLocationOptions"
                         />
                     </template>
@@ -107,10 +107,10 @@
                     <template #label>
                         {{ $gettext('Backup Format') }}
                     </template>
-                    <template #default="props">
+                    <template #default="slotProps">
                         <b-form-radio-group
-                            :id="props.id"
-                            v-model="props.field.$model"
+                            :id="slotProps.id"
+                            v-model="slotProps.field.$model"
                             stacked
                             :options="formatOptions"
                         />
@@ -135,14 +135,19 @@ import {useNotify} from "~/vendor/bootstrapVue";
 import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
 
 const props = defineProps({
-    settingsUrl: String,
-    storageLocations: Object
+    settingsUrl: {
+        type: String,
+        required: true
+    },
+    storageLocations: {
+        type: Object,
+        required: true
+    }
 });
 
 const emit = defineEmits(['relist']);
 
 const loading = ref(true);
-const error = ref(null);
 
 const $modal = ref(); // ModalForm
 

@@ -119,13 +119,16 @@ import {useTranslate} from "~/vendor/gettext";
 import {useNotify} from "~/vendor/bootstrapVue";
 
 const props = defineProps({
-    apiUrl: String
+    apiUrl: {
+        type: String,
+        required: true
+    }
 });
 
 const loading = ref(true);
 const version = ref(null);
 
-const {form, resetForm, v$} = useVuelidateOnForm(
+const {form, v$} = useVuelidateOnForm(
     {
         key: {}
     },

@@ -72,11 +72,17 @@ import {required} from '@vuelidate/validators';
 import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
 
 const props = defineProps({
-    csrf: String,
-    error: String,
+    csrf: {
+        type: String,
+        required: true
+    },
+    error: {
+        type: String,
+        default: null
+    },
 });
 
-const {form, v$} = useVuelidateOnForm(
+const {v$} = useVuelidateOnForm(
     {
         password: {required, validatePassword}
     },

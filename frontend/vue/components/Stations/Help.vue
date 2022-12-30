@@ -64,7 +64,10 @@ import LogList from "~/components/Common/LogList";
 import {ref} from "vue";
 
 const props = defineProps({
-    logsUrl: String,
+    logsUrl: {
+        type: String,
+        required: true
+    },
 });
 
 const $modal = ref(); // BModal

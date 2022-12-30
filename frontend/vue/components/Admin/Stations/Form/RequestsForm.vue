@@ -80,10 +80,16 @@ import BackendDisabled from "./Common/BackendDisabled.vue";
 import {computed} from "vue";
 
 const props = defineProps({
-  form: Object,
-  station: Object,
-  showAdvanced: {
-    type: Boolean,
+    form: {
+        type: Object,
+        required: true
+    },
+    station: {
+        type: Object,
+        required: true
+    },
+    showAdvanced: {
+        type: Boolean,
         default: true
     },
 });

@@ -87,7 +87,6 @@
 <script>
 import DataTable from '~/components/Common/DataTable';
 import Icon from '~/components/Common/Icon';
-import InfoCard from '~/components/Common/InfoCard';
 import AdminStationsEditModal from "./Stations/EditModal";
 import _ from "lodash";
 import AdminStationsCloneModal from "./Stations/CloneModal";
@@ -95,12 +94,21 @@ import stationFormProps from "./Stations/stationFormProps";
 
 export default {
     name: 'AdminPermissions',
-    components: {AdminStationsCloneModal, AdminStationsEditModal, InfoCard, Icon, DataTable},
+    components: {AdminStationsCloneModal, AdminStationsEditModal, Icon, DataTable},
     props: {
         ...stationFormProps,
-        listUrl: String,
-        frontendTypes: Object,
-        backendTypes: Object
+        listUrl: {
+            type: String,
+            required: true
+        },
+        frontendTypes: {
+            type: Object,
+            required: true
+        },
+        backendTypes: {
+            type: Object,
+            required: true
+        }
     },
     data() {
         return {

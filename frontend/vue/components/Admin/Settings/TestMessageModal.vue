@@ -44,10 +44,13 @@ import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
 import {BModal} from "bootstrap-vue";
 
 const props = defineProps({
-    testMessageUrl: String
+    testMessageUrl: {
+        type: String,
+        required: true
+    }
 });
 
-const {form, resetForm, v$} = useVuelidateOnForm(
+const {form, v$} = useVuelidateOnForm(
     {
         emailAddress: {required, email}
     },

@@ -41,8 +41,11 @@ import {useNotify} from "~/vendor/bootstrapVue";
 import {useAxios} from "~/vendor/axios";
 import {useTranslate} from "~/vendor/gettext";
 
-const props = defineProps({
-    apiUrl: String
+defineProps({
+    apiUrl: {
+        type: String,
+        required: true
+    }
 });
 
 const {$gettext} = useTranslate();

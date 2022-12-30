@@ -95,10 +95,22 @@ import PlayButton from "~/components/Common/PlayButton";
 import {useTranslate} from "~/vendor/gettext";
 
 const props = defineProps({
-    listUrl: String,
-    stationName: String,
-    customFields: Array,
-    showDownloadButton: Boolean
+    listUrl: {
+        type: String,
+        required: true
+    },
+    stationName: {
+        type: String,
+        required: true
+    },
+    customFields: {
+        type: Array,
+        default: []
+    },
+    showDownloadButton: {
+        type: Boolean,
+        default: false
+    }
 });
 
 const {$gettext} = useTranslate();

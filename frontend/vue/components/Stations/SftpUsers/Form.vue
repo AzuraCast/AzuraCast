@@ -61,7 +61,13 @@
 import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
 
 const props = defineProps({
-    form: Object,
-    isEditMode: Boolean
+    form: {
+        type: Object,
+        required: true
+    },
+    isEditMode: {
+        type: Boolean,
+        required: true
+    }
 });
 </script>

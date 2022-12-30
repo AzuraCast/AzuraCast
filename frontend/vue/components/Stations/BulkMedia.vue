@@ -155,13 +155,13 @@
 </template>
 
 <script>
-import FlowUpload from '~/components/Common/FlowUpload';
-
 export default {
     name: 'StationsBulkMedia',
-    components: {FlowUpload},
     props: {
-        apiUrl: String
+        apiUrl: {
+            type: String,
+            required: true
+        }
     },
     data() {
         return {

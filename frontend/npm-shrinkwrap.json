@@ -52,6 +52,7 @@
         "imports-loader": "^4",
         "jquery": "^3.6.0",
         "leaflet": "^1.7.1",
+        "leaflet-defaulticon-compatibility": "^0.1.1",
         "leaflet.fullscreen": "^2",
         "lodash": "^4.17.21",
         "luxon": "^2",
@@ -7270,6 +7271,11 @@
       "version": "1.9.3",
       "resolved": "https://registry.npmjs.org/leaflet/-/leaflet-1.9.3.tgz",
       "integrity": "sha512-iB2cR9vAkDOu5l3HAay2obcUHZ7xwUBBjph8+PGtmW/2lYhbLizWtG7nTeYht36WfOslixQF9D/uSIzhZgGMfQ=="
+    },
+    "node_modules/leaflet-defaulticon-compatibility": {
+      "version": "0.1.1",
+      "resolved": "https://registry.npmjs.org/leaflet-defaulticon-compatibility/-/leaflet-defaulticon-compatibility-0.1.1.tgz",
+      "integrity": "sha512-vDBFdlUAwjSEGep9ih8kfJilf6yN8V9zTbF5NC/1ZwLeGko3RUQepspPnGCRMFV51dY3Lb3hziboicrFz+rxQA=="
     },
     "node_modules/leaflet.fullscreen": {
       "version": "2.4.0",
@@ -17323,6 +17329,11 @@
       "version": "1.9.3",
       "resolved": "https://registry.npmjs.org/leaflet/-/leaflet-1.9.3.tgz",
       "integrity": "sha512-iB2cR9vAkDOu5l3HAay2obcUHZ7xwUBBjph8+PGtmW/2lYhbLizWtG7nTeYht36WfOslixQF9D/uSIzhZgGMfQ=="
+    },
+    "leaflet-defaulticon-compatibility": {
+      "version": "0.1.1",
+      "resolved": "https://registry.npmjs.org/leaflet-defaulticon-compatibility/-/leaflet-defaulticon-compatibility-0.1.1.tgz",
+      "integrity": "sha512-vDBFdlUAwjSEGep9ih8kfJilf6yN8V9zTbF5NC/1ZwLeGko3RUQepspPnGCRMFV51dY3Lb3hziboicrFz+rxQA=="
     },
     "leaflet.fullscreen": {
       "version": "2.4.0",

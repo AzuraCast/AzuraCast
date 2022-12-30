@@ -183,7 +183,10 @@ export default {
     components: {VolumeSlider, Icon},
     extends: track,
     props: {
-        id: String
+        id: {
+            type: String,
+            required: true
+        }
     },
     data() {
         return {

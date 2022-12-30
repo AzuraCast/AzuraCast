@@ -127,15 +127,42 @@ export default {
         DateRangeDropdown
     },
     props: {
-        stationTimeZone: String,
-        showFullAnalytics: Boolean,
-        listenersByTimePeriodUrl: String,
-        bestAndWorstUrl: String,
-        byStreamUrl: String,
-        byClientUrl: String,
-        byBrowserUrl: String,
-        byCountryUrl: String,
-        listeningTimeUrl: String
+        stationTimeZone: {
+            type: String,
+            required: true
+        },
+        showFullAnalytics: {
+            type: Boolean,
+            required: true
+        },
+        listenersByTimePeriodUrl: {
+            type: String,
+            required: true
+        },
+        bestAndWorstUrl: {
+            type: String,
+            required: true
+        },
+        byStreamUrl: {
+            type: String,
+            required: true
+        },
+        byClientUrl: {
+            type: String,
+            required: true
+        },
+        byBrowserUrl: {
+            type: String,
+            required: true
+        },
+        byCountryUrl: {
+            type: String,
+            required: true
+        },
+        listeningTimeUrl: {
+            type: String,
+            required: true
+        }
     },
     data() {
         let nowTz = DateTime.now().setZone(this.stationTimeZone);

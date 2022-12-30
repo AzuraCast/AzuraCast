@@ -123,17 +123,18 @@ import DataTable from '~/components/Common/DataTable';
 import EditModal from './EpisodeEditModal';
 import Icon from '~/components/Common/Icon';
 import AlbumArt from '~/components/Common/AlbumArt';
-import EpisodeFormBasicInfo from './EpisodeForm/BasicInfo';
-import PodcastCommonArtwork from './Common/Artwork';
 import StationsCommonQuota from "~/components/Stations/Common/Quota";
 import episodesViewProps from "~/components/Stations/Podcasts/episodesViewProps";
 
 export default {
     name: 'EpisodesView',
-    components: {StationsCommonQuota, PodcastCommonArtwork, EpisodeFormBasicInfo, AlbumArt, Icon, EditModal, DataTable},
+    components: {StationsCommonQuota, AlbumArt, Icon, EditModal, DataTable},
     props: {
         ...episodesViewProps,
-        podcast: Object
+        podcast: {
+            type: Object,
+            required: true
+        }
     },
     emits: ['clear-podcast'],
     data() {

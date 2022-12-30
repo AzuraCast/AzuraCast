@@ -63,11 +63,26 @@ import {useAxios} from "~/vendor/axios";
 import {syncRef} from "@vueuse/core";
 
 const props = defineProps({
-    modelValue: Object,
-    recordHasMedia: Boolean,
-    downloadUrl: String,
-    editMediaUrl: String,
-    newMediaUrl: String
+    modelValue: {
+        type: Object,
+        required: true
+    },
+    recordHasMedia: {
+        type: Boolean,
+        required: true
+    },
+    downloadUrl: {
+        type: String,
+        required: true
+    },
+    editMediaUrl: {
+        type: String,
+        required: true
+    },
+    newMediaUrl: {
+        type: String,
+        required: true
+    }
 });
 
 const emit = defineEmits(['update:modelValue']);

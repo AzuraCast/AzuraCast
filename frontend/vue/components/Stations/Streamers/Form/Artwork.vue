@@ -50,10 +50,22 @@ import {computed, ref, toRef, watch} from "vue";
 import {useAxios} from "~/vendor/axios";
 
 const props = defineProps({
-    modelValue: Object,
-    artworkSrc: String,
-    editArtUrl: String,
-    newArtUrl: String,
+    modelValue: {
+        type: Object,
+        required: true
+    },
+    artworkSrc: {
+        type: String,
+        required: true
+    },
+    editArtUrl: {
+        type: String,
+        required: true
+    },
+    newArtUrl: {
+        type: String,
+        required: true
+    },
 });
 
 const emit = defineEmits(['update:modelValue']);

@@ -9,10 +9,10 @@
                 <template #label>
                     {{ $gettext('Storage Adapter') }}
                 </template>
-                <template #default="props">
+                <template #default="slotProps">
                     <b-form-radio-group
-                        :id="props.id"
-                        v-model="props.field.$model"
+                        :id="slotProps.id"
+                        v-model="slotProps.field.$model"
                         stacked
                     >
                         <b-form-radio value="local">
@@ -258,6 +258,9 @@
 import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup.vue";
 
 const props = defineProps({
-    form: Object
+    form: {
+        type: Object,
+        required: true
+    }
 });
 </script>

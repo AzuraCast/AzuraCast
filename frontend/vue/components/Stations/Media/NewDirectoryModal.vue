@@ -41,9 +41,16 @@ export default {
     name: 'NewDirectoryModal',
     components: {BWrappedFormGroup},
     props: {
-        currentDirectory: String,
-        mkdirUrl: String
+        currentDirectory: {
+            type: String,
+            required: true
+        },
+        mkdirUrl: {
+            type: String,
+            required: true
+        }
     },
+    emits: ['relist'],
     setup() {
         return {v$: useVuelidate()}
     },

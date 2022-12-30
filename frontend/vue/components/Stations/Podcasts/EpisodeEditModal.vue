@@ -47,11 +47,26 @@ export default {
     components: {EpisodeFormMedia, PodcastCommonArtwork, EpisodeFormBasicInfo},
     mixins: [BaseEditModal],
     props: {
-        stationTimeZone: String,
-        locale: String,
-        podcastId: String,
-        newArtUrl: String,
-        newMediaUrl: String
+        stationTimeZone: {
+            type: String,
+            required: true
+        },
+        locale: {
+            type: String,
+            required: true
+        },
+        podcastId: {
+            type: String,
+            required: true
+        },
+        newArtUrl: {
+            type: String,
+            required: true
+        },
+        newMediaUrl: {
+            type: String,
+            required: true
+        }
     },
     setup() {
         return {v$: useVuelidate()}

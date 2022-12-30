@@ -18,7 +18,10 @@
 import SongHistory from './SongHistory';
 
 const props = defineProps({
-    history: Array,
+    history: {
+        type: Array,
+        default: []
+    },
     showAlbumArt: {
         type: Boolean,
         default: true

@@ -27,7 +27,10 @@ export default defineComponent({
     components: {AdminCustomFieldsForm},
     mixins: [BaseEditModal],
     props: {
-        autoAssignTypes: Object
+        autoAssignTypes: {
+            type: Object,
+            required: true
+        }
     },
     setup() {
         const {form, resetForm, v$} = useVuelidateOnForm(

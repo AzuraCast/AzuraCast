@@ -35,10 +35,10 @@
                         <template #description>
                             {{ $gettext('Users with this role will have these permissions for this single station.') }}
                         </template>
-                        <template #default="props">
+                        <template #default="slotProps">
                             <b-form-checkbox-group
-                                :id="props.id"
-                                v-model="props.field.$model"
+                                :id="slotProps.id"
+                                v-model="slotProps.field.$model"
                                 :options="stationPermissionOptions"
                                 stacked
                             />
@@ -59,9 +59,18 @@ import {useVModel} from "@vueuse/core";
 import {computed} from "vue";
 
 const props = defineProps({
-    row: Object,
-    stations: Object,
-    stationPermissions: Object
+    row: {
+        type: Object,
+        required: true
+    },
+    stations: {
+        type: Object,
+        required: true
+    },
+    stationPermissions: {
+        type: Object,
+        required: true
+    }
 });
 
 const emit = defineEmits(['remove', 'update:row']);

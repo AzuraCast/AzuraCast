@@ -53,6 +53,7 @@
     "imports-loader": "^4",
     "jquery": "^3.6.0",
     "leaflet": "^1.7.1",
+    "leaflet-defaulticon-compatibility": "^0.1.1",
     "leaflet.fullscreen": "^2",
     "lodash": "^4.17.21",
     "luxon": "^2",

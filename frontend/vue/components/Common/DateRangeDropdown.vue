@@ -84,7 +84,7 @@ export default {
             get() {
                 return this.modelValue;
             },
-            set(newValue) {
+            set() {
                 // Noop
             }
         },

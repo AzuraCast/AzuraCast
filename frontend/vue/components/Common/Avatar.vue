@@ -20,9 +20,18 @@ import {useTranslate} from "~/vendor/gettext";
 import {computed} from "vue";
 
 const props = defineProps({
-    url: String,
-    service: String,
-    serviceUrl: String,
+    url: {
+        type: String,
+        required: true
+    },
+    service: {
+        type: String,
+        required: true
+    },
+    serviceUrl: {
+        type: String,
+        required: true
+    },
     width: {
         type: Number,
         default: 64

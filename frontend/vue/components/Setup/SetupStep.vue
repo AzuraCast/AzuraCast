@@ -39,7 +39,10 @@
 import Icon from "~/components/Common/Icon";
 
 const props = defineProps({
-    step: Number
+    step: {
+        type: Number,
+        default: 1
+    }
 });
 
 const getStepperClass = (currentStep) => {

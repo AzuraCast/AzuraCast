@@ -313,9 +313,18 @@
 export default {
     inject: ['getStream', 'resumeStream'],
     props: {
-        stationName: String,
-        libUrls: Array,
-        baseUri: String
+        stationName: {
+            type: String,
+            required: true
+        },
+        libUrls: {
+            type: Array,
+            default: []
+        },
+        baseUri: {
+            type: String,
+            required: true
+        }
     },
     data () {
         return {

@@ -121,7 +121,13 @@
 import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
 
 const props = defineProps({
-    form: Object,
-    songLength: String
+    form: {
+        type: Object,
+        required: true
+    },
+    songLength: {
+        type: String,
+        required: true
+    }
 });
 </script>

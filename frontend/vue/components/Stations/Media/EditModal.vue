@@ -90,8 +90,14 @@ import {useAxios} from "~/vendor/axios";
 import {useNotify} from "~/vendor/bootstrapVue";
 
 const props = defineProps({
-    customFields: Array,
-    playlists: Array
+    customFields: {
+        type: Array,
+        required: true
+    },
+    playlists: {
+        type: Array,
+        required: true
+    }
 });
 
 const emit = defineEmits(['relist']);

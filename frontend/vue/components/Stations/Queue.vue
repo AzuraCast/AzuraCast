@@ -81,9 +81,18 @@ export default {
     name: 'StationQueue',
     components: {QueueLogsModal, DataTable, Icon},
     props: {
-        listUrl: String,
-        clearUrl: String,
-        stationTimeZone: String
+        listUrl: {
+            type: String,
+            required: true
+        },
+        clearUrl: {
+            type: String,
+            required: true
+        },
+        stationTimeZone: {
+            type: String,
+            required: true
+        }
     },
     data() {
         return {

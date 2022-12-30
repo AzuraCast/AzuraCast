@@ -101,7 +101,13 @@ import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
 import CommonFormattingInfo from "./Common/FormattingInfo";
 
 const props = defineProps({
-    form: Object,
-    nowPlayingUrl: String
+    form: {
+        type: Object,
+        required: true
+    },
+    nowPlayingUrl: {
+        type: String,
+        required: true
+    }
 });
 </script>

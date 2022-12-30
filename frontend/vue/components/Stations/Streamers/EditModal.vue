@@ -41,8 +41,14 @@ export default {
     components: {FormBasicInfo, FormSchedule, FormArtwork},
     mixins: [BaseEditModal],
     props: {
-        stationTimeZone: String,
-        newArtUrl: String,
+        stationTimeZone: {
+            type: String,
+            required: true
+        },
+        newArtUrl: {
+            type: String,
+            required: true
+        },
     },
     setup() {
         return {v$: useVuelidate()}

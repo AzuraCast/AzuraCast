@@ -332,16 +332,46 @@ import AlbumArt from "~/components/Common/AlbumArt";
 export default {
     components: {PlayButton, Avatar, Icon, DataTable, TimeSeriesChart, AlbumArt},
     props: {
-        userUrl: String,
-        profileUrl: String,
-        adminUrl: String,
-        showAdmin: Boolean,
-        notificationsUrl: String,
-        showCharts: Boolean,
-        chartsUrl: String,
-        manageStationsUrl: String,
-        stationsUrl: String,
-        showAlbumArt: Boolean
+        userUrl: {
+            type: String,
+            required: true
+        },
+        profileUrl: {
+            type: String,
+            required: true
+        },
+        adminUrl: {
+            type: String,
+            required: true
+        },
+        showAdmin: {
+            type: Boolean,
+            required: true
+        },
+        notificationsUrl: {
+            type: String,
+            required: true
+        },
+        showCharts: {
+            type: Boolean,
+            required: true
+        },
+        chartsUrl: {
+            type: String,
+            required: true
+        },
+        manageStationsUrl: {
+            type: String,
+            required: true
+        },
+        stationsUrl: {
+            type: String,
+            required: true
+        },
+        showAlbumArt: {
+            type: Boolean,
+            required: true
+        }
     },
     data() {
         return {

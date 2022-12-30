@@ -79,10 +79,22 @@ import {useMounted} from "@vueuse/core";
 import {useAxios} from "~/vendor/axios";
 
 const props = defineProps({
-    dateRange: Object,
-    apiUrl: String,
-    fieldKey: String,
-    fieldLabel: String,
+    dateRange: {
+        type: Object,
+        required: true
+    },
+    apiUrl: {
+        type: String,
+        required: true
+    },
+    fieldKey: {
+        type: String,
+        required: true
+    },
+    fieldLabel: {
+        type: String,
+        required: true
+    },
 });
 
 const loading = ref(true);

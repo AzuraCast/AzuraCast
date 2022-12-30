@@ -41,10 +41,22 @@ export default {
     components: {PodcastCommonArtwork, PodcastFormBasicInfo},
     mixins: [BaseEditModal],
     props: {
-        stationTimeZone: String,
-        languageOptions: Object,
-        categoriesOptions: Object,
-        newArtUrl: String
+        stationTimeZone: {
+            type: String,
+            required: true
+        },
+        languageOptions: {
+            type: Object,
+            required: true
+        },
+        categoriesOptions: {
+            type: Object,
+            required: true
+        },
+        newArtUrl: {
+            type: String,
+            required: true
+        }
     },
     setup() {
         return {v$: useVuelidate()}

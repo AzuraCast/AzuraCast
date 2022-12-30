@@ -28,6 +28,7 @@
                 <tbody>
                     <tr
                         v-for="mount in np.station.mounts"
+                        :key="mount.id"
                         class="align-middle"
                     >
                         <td class="pr-1">
@@ -75,6 +76,7 @@
                 <tbody>
                     <tr
                         v-for="remote in np.station.remotes"
+                        :key="remote.id"
                         class="align-middle"
                     >
                         <td class="pr-1">
@@ -176,6 +178,9 @@ import Icon from '~/components/Common/Icon';
 import PlayButton from "~/components/Common/PlayButton";
 
 const props = defineProps({
-    np: Object
+    np: {
+        type: Object,
+        required: true
+    }
 });
 </script>

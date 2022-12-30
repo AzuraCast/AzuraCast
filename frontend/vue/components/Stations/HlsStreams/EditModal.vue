@@ -28,7 +28,7 @@ export default {
     name: 'EditModal',
     components: {FormBasicInfo},
     mixins: [BaseEditModal],
-    emits: ['needs-restart'],
+    emits: ['relist', 'needs-restart'],
     setup() {
         const {form, resetForm, v$} = useVuelidateOnForm(
             {

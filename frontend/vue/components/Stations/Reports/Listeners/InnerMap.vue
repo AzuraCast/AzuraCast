@@ -12,11 +12,14 @@
 
 <script setup>
 import {onMounted, provide, ref, shallowRef} from "vue";
-import L from "leaflet";
+import L from "~/vendor/leaflet";
 import {useAzuraCast} from "~/vendor/azuracast";
 
 const props = defineProps({
-    attribution: String
+    attribution: {
+        type: String,
+        required: true
+    }
 });
 
 const $container = ref(); // Template Ref
@@ -27,15 +30,6 @@ provide('map', $map);
 const {theme} = useAzuraCast();
 
 onMounted(() => {
-    // Fix issue with Leaflet icons being built in Webpack
-    // https://github.com/Leaflet/Leaflet/issues/4968
-    delete L.Icon.Default.prototype._getIconUrl;
-    L.Icon.Default.mergeOptions({
-        iconRetinaUrl: require('leaflet/dist/images/marker-icon-2x.png'),
-        iconUrl: require('leaflet/dist/images/marker-icon.png'),
-        shadowUrl: require('leaflet/dist/images/marker-shadow.png')
-    });
-
     // Init map
     const map = L.map($container.value);
     map.setView([40, 0], 1);

@@ -61,10 +61,10 @@
                         $gettext('Scheduled playlists and other timed items will be controlled by this time zone.')
                     }}
                 </template>
-                <template #default="props">
+                <template #default="slotProps">
                     <b-form-select
-                        :id="props.id"
-                        v-model="props.field.$model"
+                        :id="slotProps.id"
+                        v-model="slotProps.field.$model"
                         :options="timezoneOptions"
                     />
                 </template>
@@ -117,10 +117,10 @@
                         $gettext('Customize the number of songs that will appear in the "Song History" section for this station and in all public APIs.')
                     }}
                 </template>
-                <template #default="props">
+                <template #default="slotProps">
                     <b-form-select
-                        :id="props.id"
-                        v-model="props.field.$model"
+                        :id="slotProps.id"
+                        v-model="slotProps.field.$model"
                         :options="historyItemsOptions"
                     />
                 </template>
@@ -198,8 +198,14 @@ import {computed} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 
 const props = defineProps({
-    form: Object,
-    timezones: Object,
+    form: {
+        type: Object,
+        required: true
+    },
+    timezones: {
+        type: Object,
+        required: true
+    },
     showAdvanced: {
         type: Boolean,
         default: true

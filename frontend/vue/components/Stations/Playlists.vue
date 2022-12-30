@@ -100,7 +100,10 @@
                                 <b-dropdown-item @click.prevent="doClone(row.item.name, row.item.links.clone)">
                                     {{ $gettext('Duplicate') }}
                                 </b-dropdown-item>
-                                <template v-for="format in ['pls', 'm3u']">
+                                <template
+                                    v-for="format in ['pls', 'm3u']"
+                                    :key="format"
+                                >
                                     <b-dropdown-item
                                         :href="row.item.links.export[format]"
                                         target="_blank"
@@ -230,13 +233,34 @@ export default {
     name: 'StationPlaylists',
     components: {CloneModal, Icon, QueueModal, ImportModal, ReorderModal, EditModal, Schedule, DataTable},
     props: {
-        listUrl: String,
-        scheduleUrl: String,
-        filesUrl: String,
-        restartStatusUrl: String,
-        stationTimeZone: String,
-        useManualAutoDj: Boolean,
-        enableAdvancedFeatures: Boolean
+        listUrl: {
+            type: String,
+            required: true
+        },
+        scheduleUrl: {
+            type: String,
+            required: true
+        },
+        filesUrl: {
+            type: String,
+            required: true
+        },
+        restartStatusUrl: {
+            type: String,
+            required: true
+        },
+        stationTimeZone: {
+            type: String,
+            required: true
+        },
+        useManualAutoDj: {
+            type: Boolean,
+            required: true
+        },
+        enableAdvancedFeatures: {
+            type: Boolean,
+            required: true
+        }
     },
     data () {
         return {
@@ -280,16 +304,22 @@ export default {
                     return this.$gettext('General Rotation') + '<br>' + this.$gettext('Weight') + ': ' + record.weight;
 
                 case 'once_per_x_songs':
-                    let oncePerSongs = this.$gettext('Once per %{songs} Songs');
-                    return this.$gettextInterpolate(oncePerSongs, { songs: record.play_per_songs });
+                    return this.$gettext(
+                        'Once per %{songs} Songs',
+                        {songs: record.play_per_songs}
+                    );
 
                 case 'once_per_x_minutes':
-                    let oncePerMinutes = this.$gettext('Once per %{minutes} Minutes');
-                    return this.$gettextInterpolate(oncePerMinutes, { minutes: record.play_per_minutes });
+                    return this.$gettext(
+                        'Once per %{minutes} Minutes',
+                        {minutes: record.play_per_minutes}
+                    );
 
                 case 'once_per_hour':
-                    let oncePerHour = this.$gettext('Once per Hour (at %{minute})');
-                    return this.$gettextInterpolate(oncePerHour, { minute: record.play_per_hour_minute });
+                    return this.$gettext(
+                        'Once per Hour (at %{minute})',
+                        {minute: record.play_per_hour_minute}
+                    );
 
                 default:
                     return this.$gettext('Custom');

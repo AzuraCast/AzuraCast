@@ -14,8 +14,14 @@ import {onMounted, onUnmounted, ref} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 
 const props = defineProps({
-    options: Object,
-    data: Array
+    options: {
+        type: Object,
+        required: true
+    },
+    data: {
+        type: Array,
+        default: []
+    }
 });
 
 const $canvas = ref(); // Template ref

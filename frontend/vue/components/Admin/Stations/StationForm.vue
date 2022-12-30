@@ -158,9 +158,18 @@ import stationFormProps from "~/components/Admin/Stations/stationFormProps";
 
 const props = defineProps({
     ...stationFormProps,
-    createUrl: String,
-    editUrl: String,
-    isEditMode: Boolean,
+    createUrl: {
+        type: String,
+        required: true
+    },
+    editUrl: {
+        type: String,
+        required: true
+    },
+    isEditMode: {
+        type: Boolean,
+        required: true
+    },
     isModal: {
         type: Boolean,
         default: false

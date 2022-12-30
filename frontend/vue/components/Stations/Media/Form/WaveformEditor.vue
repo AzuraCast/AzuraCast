@@ -85,9 +85,18 @@ import Icon from '~/components/Common/Icon';
 import {ref} from "vue";
 
 const props = defineProps({
-    form: Object,
-    audioUrl: String,
-    waveformUrl: String
+    form: {
+        type: Object,
+        required: true
+    },
+    audioUrl: {
+        type: String,
+        required: true
+    },
+    waveformUrl: {
+        type: String,
+        required: true
+    }
 });
 
 const $waveform = ref(); // Waveform

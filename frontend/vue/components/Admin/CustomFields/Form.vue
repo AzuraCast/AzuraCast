@@ -44,10 +44,10 @@
                         $gettext('Optionally select an ID3v2 metadata field that, if present, will be used to set this field\'s value.')
                     }}
                 </template>
-                <template #default="props">
+                <template #default="slotProps">
                     <b-form-select
-                        :id="props.id"
-                        v-model="props.field.$model"
+                        :id="slotProps.id"
+                        v-model="slotProps.field.$model"
                         :options="autoAssignOptions"
                     />
                 </template>
@@ -63,8 +63,14 @@ import {useTranslate} from "~/vendor/gettext";
 import {forEach} from "lodash";
 
 const props = defineProps({
-    form: Object,
-    autoAssignTypes: Object
+    form: {
+        type: Object,
+        required: true
+    },
+    autoAssignTypes: {
+        type: Object,
+        required: true
+    }
 });
 
 const {$gettext} = useTranslate();

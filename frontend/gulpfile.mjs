@@ -2,7 +2,7 @@
 
 import gulp from 'gulp';
 import babel from 'gulp-babel';
-import { deleteAsync as del } from 'del';
+import {deleteAsync as del} from 'del';
 import rev from 'gulp-rev';
 import concat from 'gulp-concat';
 import uglify from 'gulp-uglify';
@@ -60,13 +60,7 @@ const jsFiles = {
         files: [
             'node_modules/luxon/build/global/luxon.min.js'
         ]
-    },
-    'webcaster': {
-        base: null,
-        files: [
-            'js/webcaster/*.js'
-        ]
-    },
+    }
 };
 
 const defaultTasks = Object.keys(jsFiles);

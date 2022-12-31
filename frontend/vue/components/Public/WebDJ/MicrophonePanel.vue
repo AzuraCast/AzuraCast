@@ -84,9 +84,9 @@ import {useDevicesList} from "@vueuse/core";
 import {ref, watch} from "vue";
 import {useWebDjTrack} from "~/components/Public/WebDJ/useWebDjTrack";
 
-const {node, isPlaying, trackGain, trackPassThrough, volume, prepare, stop} = useWebDjTrack();
+const {node, source, isPlaying, trackGain, trackPassThrough, volume, prepare, stop} = useWebDjTrack();
 
-const {context, createMicrophoneSource} = node;
+const {createMicrophoneSource} = node;
 
 const {audioInputs} = useDevicesList({
     requestPermissions: true,
@@ -94,28 +94,30 @@ const {audioInputs} = useDevicesList({
 
 const device = ref(audioInputs.value[0]?.deviceId);
 
-let source = null;
+let destination = null;
 
 const createSource = () => {
-    if (source != null) {
-        source.disconnect(context.destination);
+    if (source.value != null && destination !== null) {
+        source.value.disconnect(destination);
     }
 
     createMicrophoneSource(device.value, (newSource) => {
-        source = newSource;
-        source.connect(context.destination);
+        source.value = newSource;
+        if (destination !== null) {
+            newSource.connect(destination);
+        }
     });
 };
 
 watch(device, () => {
-    if (this.source == null) {
+    if (source.value == null) {
         return;
     }
     createSource();
 });
 
 const play = () => {
-    prepare();
+    destination = prepare();
     createSource();
 }
 

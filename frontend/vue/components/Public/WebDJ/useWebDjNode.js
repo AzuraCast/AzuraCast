@@ -11,16 +11,16 @@ export function useWebDjNode(webcaster) {
 
     const sink = context.createScriptProcessor(256, 2, 2);
 
-    sink.onaudioprocess((buf) => {
+    sink.onaudioprocess = (buf) => {
         for (let channel = 0; channel < buf.inputBuffer.numberOfChannels - 1; channel++) {
             let channelData = buf.inputBuffer.getChannelData(channel);
             buf.outputBuffer.getChannelData(channel).set(channelData);
         }
-    });
+    };
 
     const passThrough = context.createScriptProcessor(256, 2, 2);
 
-    passThrough.onaudioprocess((buf) => {
+    passThrough.onaudioprocess = (buf) => {
         for (let channel = 0; channel < buf.inputBuffer.numberOfChannels - 1; channel++) {
             let channelData = buf.inputBuffer.getChannelData(channel);
 
@@ -30,7 +30,7 @@ export function useWebDjNode(webcaster) {
                 buf.outputBuffer.getChannelData(channel).set(new Float32Array(channelData.length));
             }
         }
-    });
+    };
 
     sink.connect(passThrough);
     passThrough.connect(context.destination);
@@ -105,8 +105,8 @@ export function useWebDjNode(webcaster) {
         });
     };
 
-    const createFileSource = (file, cb) => {
-        return createAudioSource(file, cb);
+    const createFileSource = (file, cb, onEnd) => {
+        return createAudioSource(file, cb, onEnd);
     };
 
     const createMicrophoneSource = (audioDeviceId, cb) => {

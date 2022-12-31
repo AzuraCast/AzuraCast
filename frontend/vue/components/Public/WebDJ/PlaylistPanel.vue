@@ -187,6 +187,7 @@ const isLeftPlaylist = computed(() => {
 
 const {
     node,
+    source,
     isPlaying,
     isPaused,
     trackGain,
@@ -198,7 +199,7 @@ const {
     stop
 } = useWebDjTrack();
 
-const {context, createFileSource, updateMetadata} = node;
+const {createFileSource, sendMetadata} = node;
 
 const fileIndex = ref(-1);
 const files = ref([]);
@@ -210,8 +211,8 @@ const {$gettext} = useTranslate();
 
 const langHeader = computed(() => {
     return isLeftPlaylist.value
-        ? this.$gettext('Playlist 1')
-        : this.$gettext('Playlist 2');
+        ? $gettext('Playlist 1')
+        : $gettext('Playlist 2');
 });
 
 const addNewFiles = (newFiles) => {
@@ -225,8 +226,6 @@ const addNewFiles = (newFiles) => {
         });
     });
 };
-
-let source = null;
 
 const selectFile = (options = {}) => {
     if (files.value.length === 0) {
@@ -271,23 +270,23 @@ const play = (options = {}) => {
 
     stop();
 
-    prepare();
+    let destination = prepare();
 
     createFileSource(file, (newSource) => {
-        source = newSource;
-        source.connect(context.destination);
+        source.value = newSource;
+        newSource.connect(destination);
 
-        if (source.duration !== null) {
-            duration.value = source.duration();
+        if (newSource.duration !== null) {
+            duration.value = newSource.duration();
         } else if (file.audio !== null) {
-            duration.value = parseFloat(this.file.audio.length);
+            duration.value = parseFloat(file.audio.length);
         }
 
-        source.play(file);
+        newSource.play(file);
 
-        updateMetadata({
-            title: this.file.metadata.title,
-            artist: this.file.metadata.artist
+        sendMetadata({
+            title: file.metadata.title,
+            artist: file.metadata.artist
         });
     }, () => {
         stop();

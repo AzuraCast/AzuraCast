@@ -1,4 +1,4 @@
-import {computed, inject, ref, watch} from "vue";
+import {computed, inject, ref, shallowRef, watch} from "vue";
 
 export function useWebDjTrack() {
     const node = inject('node');
@@ -8,17 +8,7 @@ export function useWebDjTrack() {
     const position = ref(null);
     const volume = ref(0);
 
-    let source = null;
-
-    const isPlaying = computed(() => {
-        return source !== null;
-    });
-
-    const isPaused = computed(() => {
-        return (source !== null)
-            ? source.paused
-            : false;
-    });
+    let source = shallowRef(null);
 
     const createControlsNode = () => {
         const bufferSize = 4096;
@@ -27,8 +17,8 @@ export function useWebDjTrack() {
 
         let newSource = node.context.createScriptProcessor(bufferSize, 2, 2);
 
-        newSource.onaudioprocess((buf) => {
-            position.value = source?.position();
+        newSource.onaudioprocess = (buf) => {
+            position.value = source.value?.position();
 
             for (let channel = 0; channel < buf.inputBuffer.numberOfChannels; channel++) {
                 let channelData = buf.inputBuffer.getChannelData(channel);
@@ -42,7 +32,7 @@ export function useWebDjTrack() {
 
                 buf.outputBuffer.getChannelData(channel).set(channelData);
             }
-        });
+        };
 
         return newSource;
     };
@@ -50,7 +40,7 @@ export function useWebDjTrack() {
     const createPassThrough = () => {
         let newSource = node.context.createScriptProcessor(256, 2, 2);
 
-        newSource.onaudioprocess((buf) => {
+        newSource.onaudioprocess = (buf) => {
             for (let channel = 0; channel < buf.inputBuffer.numberOfChannels; channel++) {
                 let channelData = buf.inputBuffer.getChannelData(channel);
 
@@ -60,7 +50,7 @@ export function useWebDjTrack() {
                     buf.outputBuffer.getChannelData(channel).set(new Float32Array(channelData.length));
                 }
             }
-        });
+        };
 
         return newSource;
     };
@@ -90,35 +80,48 @@ export function useWebDjTrack() {
         trackGainNode.connect(passThroughNode);
 
         node.context.resume();
+
+        return trackGainNode;
     }
 
+    const isPlaying = computed(() => {
+        return source.value !== null;
+    });
+
+    const isPaused = computed(() => {
+        return (source.value !== null)
+            ? source.value.paused
+            : false;
+    });
+
     const togglePause = () => {
-        if (source === null) {
+        if (source.value === null) {
             return;
         }
 
-        if (source.paused) {
-            source.play();
+        if (source.value.paused) {
+            source.value.play();
         } else {
-            source.pause();
+            source.value.pause();
         }
     };
 
     const stop = () => {
-        source?.stop();
-        source?.disconnect();
+        source.value?.stop();
+        source.value?.disconnect();
 
         trackGainNode?.disconnect();
         controlsNode?.disconnect();
         passThroughNode?.disconnect();
 
-        source = trackGainNode = controlsNode = passThroughNode = null;
+        source.value = trackGainNode = controlsNode = passThroughNode = null;
 
         position.value = 0.0;
     };
 
     return {
         node,
+        source,
         trackGain,
         trackPassThrough,
         position,

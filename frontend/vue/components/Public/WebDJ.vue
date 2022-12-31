@@ -44,7 +44,6 @@ import SettingsPanel from './WebDJ/SettingsPanel.vue';
 import {useWebDjNode} from "~/components/Public/WebDJ/useWebDjNode";
 import {provide} from "vue";
 import {useWebcaster, webcasterProps} from "~/components/Public/WebDJ/useWebcaster";
-import '~/vendor/webcast/taglib';
 
 const props = defineProps({
     ...webcasterProps,

@@ -146,6 +146,7 @@
 <script setup>
 import {computed, inject, ref} from "vue";
 import {syncRef} from "@vueuse/core";
+import {useTranslate} from "~/vendor/gettext";
 
 const props = defineProps({
     stationName: {
@@ -166,10 +167,12 @@ const {
     sendMetadata
 } = inject('node');
 
+const {$gettext} = useTranslate();
+
 const langStreamButton = computed(() => {
     return (isStreaming.value)
-        ? this.$gettext('Stop Streaming')
-        : this.$gettext('Start Streaming');
+        ? $gettext('Stop Streaming')
+        : $gettext('Start Streaming');
 });
 
 const shownMetadata = ref({});

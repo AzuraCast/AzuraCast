@@ -60,6 +60,12 @@ const jsFiles = {
         files: [
             'node_modules/luxon/build/global/luxon.min.js'
         ]
+    },
+    'webcaster': {
+        base: null,
+        files: [
+            'js/webcaster/*.js'
+        ]
     }
 };
 

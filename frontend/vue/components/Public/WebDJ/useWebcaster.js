@@ -24,7 +24,7 @@ export function useWebcaster(props) {
         };
 
         if (null !== username) {
-            hello.username = username;
+            hello.user = username;
         }
         if (null !== password) {
             hello.password = password;
@@ -52,10 +52,12 @@ export function useWebcaster(props) {
     };
 
     const sendMetadata = (data) => {
-        socket.send(JSON.stringify({
-            type: "metadata",
-            data,
-        }));
+        if (isConnected()) {
+            socket.send(JSON.stringify({
+                type: "metadata",
+                data,
+            }));
+        }
     }
 
     return {

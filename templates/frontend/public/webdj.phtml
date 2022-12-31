@@ -15,6 +15,12 @@ $this->layout(
     ]
 );
 
+$sections->appendStart('bodyjs');
+?>
+    <script src="<?= $this->assetUrl('dist/lib/webcaster/taglib.js') ?>"></script>
+<?php
+$sections->end();
+
 echo $this->fetch(
     'partials/vue_body',
     [

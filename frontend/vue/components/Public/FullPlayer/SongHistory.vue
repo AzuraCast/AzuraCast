@@ -51,7 +51,7 @@ const unixTimestampToDate = (timestamp) => {
 };
 
 const albumAndArtist = (song) => {
-    return [song.artist, song.album].filter(str => !!str).join(', ');
+    return [song.artist, song.album].filter(str => !!str).join(' - ');
 };
 </script>
 

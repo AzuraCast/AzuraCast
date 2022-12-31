@@ -45,3 +45,6 @@ Our Ansible installation is no longer officially supported with our team's devel
 represent less than 5% of our total installed user base, and contribute much more to our support burden than that. If
 you're experiencing Ansible issues, we would gladly review and accept any pull requests to help resolve it, but we will
 not be devoting our own resources toward these issues.
+
+## Volume Slider Invisible on the Radio Player Embed Widget
+The volume slider is not visible on the Radio Player Embed Widget with Chromium-based browsers (such as Edge or Chrome), but it is visible on Firefox. See AzuraCast/AzuraCast#5537.

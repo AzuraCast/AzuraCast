@@ -1,8 +1,8 @@
 import {ref} from "vue";
-import Webcast from "~/vendor/webcast/webcast";
+import {useUserMedia} from "@vueuse/core";
 
-export function useWebDjNode() {
-    const doPlayThrough = ref(false);
+export function useWebDjNode(webcaster) {
+    const doPassThrough = ref(false);
     const isStreaming = ref(false);
 
     const context = new AudioContext({
@@ -12,22 +12,19 @@ export function useWebDjNode() {
     const sink = context.createScriptProcessor(256, 2, 2);
 
     sink.onaudioprocess((buf) => {
-        let channel;
-        let channelData = buf.inputBuffer.getChannelData(channel);
-
-        for (channel = 0; channel < buf.inputBuffer.numberOfChannels - 1; channel++) {
+        for (let channel = 0; channel < buf.inputBuffer.numberOfChannels - 1; channel++) {
+            let channelData = buf.inputBuffer.getChannelData(channel);
             buf.outputBuffer.getChannelData(channel).set(channelData);
         }
     });
 
-    const playThrough = context.createScriptProcessor(256, 2, 2);
+    const passThrough = context.createScriptProcessor(256, 2, 2);
 
-    playThrough.onaudioprocess((buf) => {
-        let channel;
-        let channelData = buf.inputBuffer.getChannelData(channel);
+    passThrough.onaudioprocess((buf) => {
+        for (let channel = 0; channel < buf.inputBuffer.numberOfChannels - 1; channel++) {
+            let channelData = buf.inputBuffer.getChannelData(channel);
 
-        for (channel = 0; channel < buf.inputBuffer.numberOfChannels - 1; channel++) {
-            if (doPlayThrough.value) {
+            if (doPassThrough.value) {
                 buf.outputBuffer.getChannelData(channel).set(channelData);
             } else {
                 buf.outputBuffer.getChannelData(channel).set(new Float32Array(channelData.length));
@@ -35,18 +32,17 @@ export function useWebDjNode() {
         }
     });
 
-    sink.connect(playThrough);
-    playThrough.connect(context.destination);
+    sink.connect(passThrough);
+    passThrough.connect(context.destination);
 
     const streamNode = context.createMediaStreamDestination();
     streamNode.channelCount = 2;
 
     sink.connect(streamNode);
 
-    let socket;
     let mediaRecorder;
 
-    const startStream = (url) => {
+    const startStream = (username = null, password = null) => {
         isStreaming.value = true;
 
         context.resume();
@@ -55,16 +51,11 @@ export function useWebDjNode() {
             streamNode.stream,
             {
                 mimeType: "audio/webm;codecs=opus",
-                audioBitsPerSecond: 128
+                audioBitsPerSecond: 128 * 1000
             }
         );
 
-        socket = new Webcast.Socket(
-            mediaRecorder,
-            {
-                url: url
-            }
-        );
+        webcaster.connect(mediaRecorder, username, password);
 
         mediaRecorder.start(1000);
     }
@@ -74,13 +65,19 @@ export function useWebDjNode() {
         isStreaming.value = false;
     };
 
-    const createAudioSource = ({file, audio}, model, cb) => {
+    const createAudioSource = ({file, audio}, cb, onEnd) => {
         const el = new Audio(URL.createObjectURL(file));
         el.controls = false;
         el.autoplay = false;
         el.loop = false;
 
         let source = null;
+
+        el.addEventListener("ended", () => {
+            if (typeof onEnd === "function") {
+                onEnd();
+            }
+        });
 
         el.addEventListener("canplay", () => {
             if (source) {
@@ -108,41 +105,45 @@ export function useWebDjNode() {
         });
     };
 
-    const createFileSource = (file, model, cb) => {
-        source?.disconnect();
-
-        return createAudioSource(file, model, cb);
+    const createFileSource = (file, cb) => {
+        return createAudioSource(file, cb);
     };
 
-    const createMicrophoneSource = (constraints, cb) => {
-        navigator.mediaDevices.getUserMedia(constraints).then((stream) => {
-            let source = context.createMediaStreamSource(stream);
-            source.stop = () => {
-                let ref = stream.getAudioTracks();
-                return (ref !== null)
-                    ? ref[0].stop()
-                    : 0;
-            }
-
-            return cb(source);
+    const createMicrophoneSource = (audioDeviceId, cb) => {
+        const {stream} = useUserMedia({
+            audioDeviceId: audioDeviceId,
         });
+
+        stream.stop = () => {
+            let ref = stream.getAudioTracks();
+            return (ref !== null)
+                ? ref[0].stop()
+                : 0;
+        }
+
+        return cb(stream);
     };
+
+    const metadata = ref({});
 
     const sendMetadata = (data) => {
-        socket?.sendMetadata(data);
+        webcaster.sendMetadata(data);
+        metadata.value = data;
     };
 
     return {
+        doPassThrough,
+        isStreaming,
         context,
         sink,
-        doPlayThrough,
-        playThrough,
+        passThrough,
         streamNode,
         startStream,
         stopStream,
         createAudioSource,
         createFileSource,
         createMicrophoneSource,
+        metadata,
         sendMetadata
     };
 }

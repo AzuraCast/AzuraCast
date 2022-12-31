@@ -7,7 +7,7 @@
         <div class="container pt-5">
             <div class="form-row">
                 <div class="col-md-4 mb-sm-4">
-                    <settings-panel v-bind="{ stationName, baseUri, libUrls }" />
+                    <settings-panel :station-name="stationName" />
                 </div>
 
                 <div class="col-md-8">
@@ -36,57 +36,25 @@
     </section>
 </template>
 
-<script>
+<script setup>
 import MixerPanel from './WebDJ/MixerPanel.vue';
 import MicrophonePanel from './WebDJ/MicrophonePanel.vue';
 import PlaylistPanel from './WebDJ/PlaylistPanel.vue';
 import SettingsPanel from './WebDJ/SettingsPanel.vue';
+import {useWebDjNode} from "~/components/Public/WebDJ/useWebDjNode";
+import {provide} from "vue";
+import {useWebcaster, webcasterProps} from "~/components/Public/WebDJ/useWebcaster";
+import '~/vendor/webcast/taglib';
 
-import Stream from './WebDJ/Stream.js';
+const props = defineProps({
+    ...webcasterProps,
+    stationName: {
+        type: String,
+        required: true
+    },
+});
 
-export default {
-    components: {
-        MixerPanel,
-        MicrophonePanel,
-        PlaylistPanel,
-        SettingsPanel
-    },
-    provide: function () {
-        return {
-            getStream: this.getStream,
-            resumeStream: this.resumeStream
-        };
-    },
-    props: {
-        stationName: {
-            type: String,
-            required: true
-        },
-        libUrls: {
-            type: Array,
-            default: () => {
-                return [];
-            }
-        },
-        baseUri: {
-            type: String,
-            required: true
-        }
-    },
-    data: function () {
-        return {
-            'stream': Stream
-        };
-    },
-    methods: {
-        getStream: function () {
-            this.stream.init();
-
-            return this.stream;
-        },
-        resumeStream: function () {
-            this.stream.resumeContext();
-        }
-    }
-};
+const webcaster = useWebcaster(props);
+const node = useWebDjNode(webcaster);
+provide('node', node);
 </script>

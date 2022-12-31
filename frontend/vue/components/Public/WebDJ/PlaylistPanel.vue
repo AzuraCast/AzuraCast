@@ -4,11 +4,11 @@
             <div class="d-flex align-items-center">
                 <div class="flex-fill text-nowrap">
                     <h5 class="card-title">
-                        {{ lang_header }}
+                        {{ langHeader }}
                     </h5>
                 </div>
                 <div class="flex-shrink-0 pl-3">
-                    <volume-slider v-model.number="volume" />
+                    <volume-slider v-model.number="trackGain" />
                 </div>
             </div>
         </div>
@@ -16,14 +16,14 @@
             <div class="control-group d-flex justify-content-center">
                 <div class="btn-group btn-group-sm">
                     <button
-                        v-if="!playing || paused"
+                        v-if="!isPlaying || isPaused"
                         class="btn btn-sm btn-success"
                         @click="play"
                     >
                         <icon icon="play_arrow" />
                     </button>
                     <button
-                        v-if="playing && !paused"
+                        v-if="isPlaying && !isPaused"
                         class="btn btn-sm btn-warning"
                         @click="togglePause()"
                     >
@@ -49,8 +49,8 @@
                     </button>
                     <button
                         class="btn btn-sm"
-                        :class="{ 'btn-primary': passThrough }"
-                        @click="cue()"
+                        :class="{ 'btn-primary': trackPassThrough }"
+                        @click="trackPassThrough = !trackPassThrough"
                     >
                         {{ $gettext('Cue') }}
                     </button>
@@ -58,7 +58,7 @@
             </div>
 
             <div
-                v-if="playing"
+                v-if="isPlaying"
                 class="mt-3"
             >
                 <div class="d-flex flex-row mb-2">
@@ -72,10 +72,7 @@
                             max="100"
                             step="0.1"
                             class="custom-range slider"
-                            :value="seekingPosition"
-                            @mousedown="isSeeking = true"
-                            @mousemove="doSeek($event)"
-                            @mouseup="isSeeking = false"
+                            :value="position"
                         >
                     </div>
                     <div class="flex-shrink-0 pt-1 pl-2">
@@ -83,16 +80,10 @@
                     </div>
                 </div>
 
-                <div class="progress mb-1">
-                    <div
-                        class="progress-bar"
-                        :style="{ width: volumeLeft+'%' }"
-                    />
-                </div>
                 <div class="progress">
                     <div
                         class="progress-bar"
-                        :style="{ width: volumeRight+'%' }"
+                        :style="{ width: volume+'%' }"
                     />
                 </div>
             </div>
@@ -156,6 +147,7 @@
         >
             <a
                 v-for="(rowFile, rowIndex) in files"
+                :key="rowFile.file.name"
                 href="#"
                 class="list-group-item list-group-item-action flex-column align-items-start"
                 :class="{ active: rowIndex === fileIndex }"
@@ -163,199 +155,164 @@
             >
                 <div class="d-flex w-100 justify-content-between">
                     <h5 class="mb-0">{{
-                            rowFile?.metadata?.title ?? $gettext('Unknown Title')
-                        }}</h5>
+                        rowFile.metadata?.title ?? $gettext('Unknown Title')
+                    }}</h5>
                     <small class="pt-1">{{ formatTime(rowFile.audio.length) }}</small>
                 </div>
-                <p class="mb-0">{{ rowFile?.metadata?.artist ?? $gettext('Unknown Artist') }}</p>
+                <p class="mb-0">{{ rowFile.metadata?.artist ?? $gettext('Unknown Artist') }}</p>
             </a>
         </div>
     </div>
 </template>
 
-<script>
-import track from './Track.js';
-import {forEach} from 'lodash';
+<script setup>
 import Icon from '~/components/Common/Icon';
 import VolumeSlider from "~/components/Public/WebDJ/VolumeSlider";
-import formatTime from "../../../functions/formatTime";
+import formatTime from "~/functions/formatTime";
+import {computed, ref} from "vue";
+import {useWebDjTrack} from "~/components/Public/WebDJ/useWebDjTrack";
+import {useTranslate} from "~/vendor/gettext";
+import {forEach} from "lodash";
 
-export default {
-    components: {VolumeSlider, Icon},
-    extends: track,
-    props: {
-        id: {
-            type: String,
-            required: true
+const props = defineProps({
+    id: {
+        type: String,
+        required: true
+    }
+});
+
+const isLeftPlaylist = computed(() => {
+    return props.id === 'playlist_1';
+});
+
+const {
+    node,
+    isPlaying,
+    isPaused,
+    trackGain,
+    trackPassThrough,
+    position,
+    volume,
+    prepare,
+    togglePause,
+    stop
+} = useWebDjTrack();
+
+const {context, createFileSource, updateMetadata} = node;
+
+const fileIndex = ref(-1);
+const files = ref([]);
+const duration = ref(0.0);
+const loop = ref(false);
+const playThrough = ref(false);
+
+const {$gettext} = useTranslate();
+
+const langHeader = computed(() => {
+    return isLeftPlaylist.value
+        ? this.$gettext('Playlist 1')
+        : this.$gettext('Playlist 2');
+});
+
+const addNewFiles = (newFiles) => {
+    forEach(newFiles, (file) => {
+        file.readTaglibMetadata((data) => {
+            files.value.push({
+                file: file,
+                audio: data.audio,
+                metadata: data.metadata || {title: '', artist: ''}
+            });
+        });
+    });
+};
+
+let source = null;
+
+const selectFile = (options = {}) => {
+    if (files.value.length === 0) {
+        return;
+    }
+
+    if (options.fileIndex) {
+        fileIndex.value = options.fileIndex;
+    } else {
+        fileIndex.value += options.backward ? -1 : 1;
+        if (fileIndex.value < 0) {
+            fileIndex.value = files.value.length - 1;
         }
-    },
-    data() {
-        return {
-            'fileIndex': -1,
-            'files': [],
 
-            'volume': 100,
-            'duration': 0.0,
-            'playThrough': true,
-            'loop': false,
+        if (fileIndex.value >= files.value.length) {
+            if (options.isAutoPlay && !loop.value) {
+                fileIndex.value = -1;
+                return;
+            }
 
-            'isSeeking': false,
-            'seekPosition': 0,
-            'mixGainObj': null
-        };
-    },
-    computed: {
-        lang_header () {
-            return (this.id === 'playlist_1')
-                ? this.$gettext('Playlist 1')
-                : this.$gettext('Playlist 2');
-        },
-        positionPercent () {
-            return (100.0 * this.position / parseFloat(this.duration));
-        },
-        seekingPosition () {
-            return (this.isSeeking) ? this.seekPosition : this.positionPercent;
-        }
-    },
-    mounted () {
-        this.mixGainObj = this.getStream().context.createGain();
-        this.mixGainObj.connect(this.getStream().webcast);
-        this.sink = this.mixGainObj;
-
-        this.$root.$on('new-mixer-value', this.setMixGain);
-        this.$root.$on('new-cue', this.onNewCue);
-    },
-    methods: {
-        formatTime,
-        cue() {
-            this.resumeStream();
-            this.$root.$emit('new-cue', (this.passThrough) ? 'off' : this.id);
-        },
-        onNewCue(new_cue) {
-            this.passThrough = (new_cue === this.id);
-        },
-        setMixGain(new_value) {
-            if (this.id === 'playlist_1') {
-                this.mixGainObj.gain.value = 1.0 - new_value;
+            if (fileIndex.value < 0) {
+                fileIndex.value = files.value.length - 1;
             } else {
-                this.mixGainObj.gain.value = new_value;
-            }
-        },
-        addNewFiles (newFiles) {
-            forEach(newFiles, (file) => {
-                file.readTaglibMetadata((data) => {
-                    this.files.push({
-                        file: file,
-                        audio: data.audio,
-                        metadata: data.metadata || {title: '', artist: ''}
-                    });
-                });
-            });
-        },
-        play (options) {
-            this.resumeStream();
-
-            if (this.paused) {
-                this.togglePause();
-                return;
-            }
-
-            this.stop();
-
-            if (!(this.file = this.selectFile(options))) {
-                return;
-            }
-
-            this.prepare();
-
-            return this.getStream().createFileSource(this.file, this, (source) => {
-                let ref1;
-                this.source = source;
-                this.source.connect(this.destination);
-                if (this.source.duration != null) {
-                    this.duration = this.source.duration();
-                } else {
-                    if (((ref1 = this.file.audio) != null ? ref1.length : void 0) != null) {
-                        this.duration = parseFloat(this.file.audio.length);
-                    }
-                }
-
-                this.source.play(this.file);
-
-                this.$root.$emit('metadata-update', {
-                    title: this.file.metadata.title,
-                    artist: this.file.metadata.artist
-                });
-
-                this.playing = true;
-                this.paused = false;
-            });
-        },
-
-        selectFile (options = {}) {
-            if (this.files.length === 0) {
-                return;
-            }
-
-            if (options.fileIndex) {
-                this.fileIndex = options.fileIndex;
-            } else {
-                this.fileIndex += options.backward ? -1 : 1;
-                if (this.fileIndex < 0) {
-                    this.fileIndex = this.files.length - 1;
-                }
-
-                if (this.fileIndex >= this.files.length) {
-                    if (options.isAutoPlay && !this.loop) {
-                        this.fileIndex = -1;
-                        return;
-                    }
-
-                    if (this.fileIndex < 0) {
-                        this.fileIndex = this.files.length - 1;
-                    } else {
-                        this.fileIndex = 0;
-                    }
-                }
-            }
-
-            return this.files[this.fileIndex];
-        },
-
-        previous () {
-            if (!this.playing) {
-                return;
-            }
-
-            return this.play({
-                backward: true
-            });
-        },
-
-        next () {
-            if (!this.playing) {
-                return;
-            }
-
-            return this.play();
-        },
-
-        onEnd () {
-            this.stop();
-
-            if (this.playThrough) {
-                return this.play({
-                    isAutoPlay: true
-                });
-            }
-        },
-
-        doSeek (e) {
-            if (this.isSeeking) {
-                this.seekPosition = e.target.value;
-                this.seek(this.seekPosition / 100);
+                fileIndex.value = 0;
             }
         }
     }
+
+    return files.value[fileIndex.value];
+};
+
+const play = (options = {}) => {
+    let file = selectFile(options);
+    if (!file) {
+        return;
+    }
+
+    if (isPaused.value) {
+        togglePause();
+        return;
+    }
+
+    stop();
+
+    prepare();
+
+    createFileSource(file, (newSource) => {
+        source = newSource;
+        source.connect(context.destination);
+
+        if (source.duration !== null) {
+            duration.value = source.duration();
+        } else if (file.audio !== null) {
+            duration.value = parseFloat(this.file.audio.length);
+        }
+
+        source.play(file);
+
+        updateMetadata({
+            title: this.file.metadata.title,
+            artist: this.file.metadata.artist
+        });
+    }, () => {
+        stop();
+
+        if (playThrough.value) {
+            play({
+                isAutoPlay: true
+            });
+        }
+    });
+};
+
+const previous = () => {
+    if (!isPlaying.value) {
+        return;
+    }
+
+    play({backward: true});
+};
+
+const next = () => {
+    if (!isPlaying.value) {
+        return;
+    }
+
+    play();
 };
 </script>

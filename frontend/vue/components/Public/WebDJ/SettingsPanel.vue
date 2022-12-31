@@ -41,156 +41,6 @@
                         >
                             <div class="form-group">
                                 <label class="mb-2">
-                                    {{ $gettext('Encoder') }}
-                                </label>
-                                <div class="controls">
-                                    <div class="custom-control custom-radio custom-control-inline">
-                                        <input
-                                            id="encoder_mp3"
-                                            v-model="encoder"
-                                            type="radio"
-                                            value="mp3"
-                                            class="custom-control-input"
-                                        >
-                                        <label
-                                            for="encoder_mp3"
-                                            class="custom-control-label"
-                                        >
-                                            {{ $gettext('MP3') }}
-                                        </label>
-                                    </div>
-                                    <div class="custom-control custom-radio custom-control-inline">
-                                        <input
-                                            id="encoder_raw"
-                                            v-model="encoder"
-                                            type="radio"
-                                            value="raw"
-                                            class="custom-control-input"
-                                        >
-                                        <label
-                                            for="encoder_raw"
-                                            class="custom-control-label"
-                                        >
-                                            {{ $gettext('Raw') }}
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label
-                                    for="select_samplerate"
-                                    class="mb-2"
-                                >
-                                    {{ $gettext('Sample Rate') }}
-                                </label>
-                                <div class="controls">
-                                    <select
-                                        id="select_samplerate"
-                                        v-model.number="samplerate"
-                                        class="form-control"
-                                    >
-                                        <option value="8000">
-                                            8 kHz
-                                        </option>
-                                        <option value="11025">
-                                            11.025 kHz
-                                        </option>
-                                        <option value="12000">
-                                            12 kHz
-                                        </option>
-                                        <option value="16000">
-                                            16 kHz
-                                        </option>
-                                        <option value="22050">
-                                            22.05 kHz
-                                        </option>
-                                        <option value="24000">
-                                            24 kHz
-                                        </option>
-                                        <option value="32000">
-                                            32 kHz
-                                        </option>
-                                        <option value="44100">
-                                            44.1 kHz
-                                        </option>
-                                        <option value="48000">
-                                            48 kHz
-                                        </option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label
-                                    for="select_bitrate"
-                                    class="mb-2"
-                                >
-                                    {{ $gettext('Bit Rate') }}
-                                </label>
-                                <div class="controls">
-                                    <select
-                                        id="select_bitrate"
-                                        v-model.number="bitrate"
-                                        class="form-control"
-                                    >
-                                        <option value="8">
-                                            8 kbps
-                                        </option>
-                                        <option value="16">
-                                            16 kbps
-                                        </option>
-                                        <option value="24">
-                                            24 kbps
-                                        </option>
-                                        <option value="32">
-                                            32 kbps
-                                        </option>
-                                        <option value="40">
-                                            40 kbps
-                                        </option>
-                                        <option value="48">
-                                            48 kbps
-                                        </option>
-                                        <option value="56">
-                                            56 kbps
-                                        </option>
-                                        <option value="64">
-                                            64 kbps
-                                        </option>
-                                        <option value="80">
-                                            80 kbps
-                                        </option>
-                                        <option value="96">
-                                            96 kbps
-                                        </option>
-                                        <option value="112">
-                                            112 kbps
-                                        </option>
-                                        <option value="128">
-                                            128 kbps
-                                        </option>
-                                        <option value="144">
-                                            144 kbps
-                                        </option>
-                                        <option value="160">
-                                            160 kbps
-                                        </option>
-                                        <option value="192">
-                                            192 kbps
-                                        </option>
-                                        <option value="224">
-                                            224 kbps
-                                        </option>
-                                        <option value="256">
-                                            256 kbps
-                                        </option>
-                                        <option value="320">
-                                            320 kbps
-                                        </option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="mb-2">
                                     {{ $gettext('DJ Credentials') }}
                                 </label>
 
@@ -213,22 +63,6 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="form-group mb-0">
-                                <div class="custom-control custom-checkbox">
-                                    <input
-                                        id="use_async_worker"
-                                        v-model="asynchronous"
-                                        type="checkbox"
-                                        class="custom-control-input"
-                                    >
-                                    <label
-                                        for="use_async_worker"
-                                        class="custom-control-label"
-                                    >
-                                        {{ $gettext('Use Asynchronous Worker') }}
-                                    </label>
-                                </div>
-                            </div>
                         </div>
                         <div
                             id="metadata"
@@ -244,7 +78,7 @@
                                 <div class="controls">
                                     <input
                                         id="metadata_title"
-                                        v-model="metadata.title"
+                                        v-model="shownMetadata.title"
                                         class="form-control"
                                         type="text"
                                         :disabled="!isStreaming"
@@ -261,7 +95,7 @@
                                 <div class="controls">
                                     <input
                                         id="metadata_artist"
-                                        v-model="metadata.artist"
+                                        v-model="shownMetadata.artist"
                                         class="form-control"
                                         type="text"
                                         :disabled="!isStreaming"
@@ -287,21 +121,21 @@
             <button
                 v-if="!isStreaming"
                 class="btn btn-success"
-                @click="startStreaming"
+                @click="startStream(djUsername, djPassword)"
             >
                 {{ langStreamButton }}
             </button>
             <button
                 v-if="isStreaming"
                 class="btn btn-danger"
-                @click="stopStreaming"
+                @click="stopStream"
             >
                 {{ langStreamButton }}
             </button>
             <button
                 class="btn"
-                :class="{ 'btn-primary': passThrough }"
-                @click="cue"
+                :class="{ 'btn-primary': doPassThrough }"
+                @click="doPassThrough = !doPassThrough"
             >
                 {{ $gettext('Cue') }}
             </button>
@@ -309,129 +143,39 @@
     </div>
 </template>
 
-<script>
-export default {
-    inject: ['getStream', 'resumeStream'],
-    props: {
-        stationName: {
-            type: String,
-            required: true
-        },
-        libUrls: {
-            type: Array,
-            default: () => {
-                return [];
-            }
-        },
-        baseUri: {
-            type: String,
-            required: true
-        }
-    },
-    data () {
-        return {
-            'isStreaming': false,
-            'djUsername': '',
-            'djPassword': '',
-            'bitrate': 256,
-            'samplerate': 44100,
-            'encoder': 'mp3',
-            'asynchronous': true,
-            'passThrough': false,
-            'metadata': {
-                'title': '',
-                'artist': ''
-            }
-        };
-    },
-    computed: {
-        langStreamButton () {
-            return (this.isStreaming)
-                ? this.$gettext('Stop Streaming')
-                : this.$gettext('Start Streaming');
-        },
-        uri () {
-            return 'wss://' + this.djUsername + ':' + this.djPassword + '@' + this.baseUri;
-        }
-    },
-    mounted () {
-        this.$root.$on('new-cue', this.onNewCue);
-        this.$root.$on('metadata-update', this.onMetadataUpdate);
-    },
-    methods: {
-        cue () {
-            this.resumeStream();
+<script setup>
+import {computed, inject, ref} from "vue";
+import {syncRef} from "@vueuse/core";
 
-            this.$root.$emit('new-cue', (this.passThrough) ? 'off' : 'master');
-        },
-        onNewCue (new_cue) {
-            this.passThrough = (new_cue === 'master');
-            this.getStream().webcast.setPassThrough(this.passThrough);
-        },
-        startStreaming () {
-            this.resumeStream();
-
-            let encoderClass;
-            switch (this.encoder) {
-                case 'mp3':
-                    encoderClass = Webcast.Encoder.Mp3;
-                    break;
-                case 'raw':
-                    encoderClass = Webcast.Encoder.Raw;
-            }
-
-            let encoder = new encoderClass({
-                channels: 2,
-                samplerate: this.samplerate,
-                bitrate: this.bitrate
-            });
-
-            if (this.samplerate !== this.getStream().context.sampleRate) {
-                encoder = new Webcast.Encoder.Resample({
-                    encoder: encoder,
-                    type: Samplerate.LINEAR,
-                    samplerate: this.getStream().context.sampleRate
-                });
-            }
-
-            if (this.asynchronous) {
-                encoder = new Webcast.Encoder.Asynchronous({
-                    encoder: encoder,
-                    scripts: this.libUrls
-                });
-            }
-
-            let socket = this.getStream().webcast.connectSocket(encoder, this.uri);
-            socket.addEventListener("open", () => {
-                this.$notifySuccess(this.$gettext('Live stream connected.'));
-                this.isStreaming = true;
-                this.updateMetadata(false);
-            });
-            socket.addEventListener("close", () => {
-                this.$notifyError(this.$gettext('Live stream disconnected.'));
-                this.isStreaming = false;
-            });
-        },
-        stopStreaming () {
-            this.getStream().webcast.close();
-            this.isStreaming = false;
-        },
-        updateMetadata(alert = true) {
-            this.$root.$emit('metadata-update', {
-                title: this.metadata.title,
-                artist: this.metadata.artist
-            });
-
-            if (alert) {
-                this.$notifySuccess(this.$gettext('Metadata updated!'));
-            }
-        },
-        onMetadataUpdate (new_metadata) {
-            this.metadata.title = new_metadata.title;
-            this.metadata.artist = new_metadata.artist;
-
-            return this.getStream().webcast.sendMetadata(new_metadata);
-        }
+const props = defineProps({
+    stationName: {
+        type: String,
+        required: true
     }
+});
+
+const djUsername = ref(null);
+const djPassword = ref(null);
+
+const {
+    doPassThrough,
+    isStreaming,
+    startStream,
+    stopStream,
+    metadata,
+    sendMetadata
+} = inject('node');
+
+const langStreamButton = computed(() => {
+    return (isStreaming.value)
+        ? this.$gettext('Stop Streaming')
+        : this.$gettext('Start Streaming');
+});
+
+const shownMetadata = ref({});
+syncRef(metadata, shownMetadata, {direction: "ltr"});
+
+const updateMetadata = () => {
+    sendMetadata(shownMetadata.value);
 };
 </script>

@@ -1,4 +1,4 @@
-import {ref, shallowRef} from "vue";
+import {inject, provide, ref, shallowRef} from "vue";
 import {useNotify} from "~/vendor/bootstrapVue";
 import {useTranslate} from "~/vendor/gettext";
 
@@ -8,6 +8,16 @@ export const webcasterProps = {
         required: true
     }
 };
+
+const injectKey = 'webDjWebcaster';
+
+export function useProvideWebcaster(webcaster) {
+    provide(injectKey, webcaster);
+}
+
+export function useInjectWebcaster() {
+    return inject(injectKey);
+}
 
 export function useWebcaster(props) {
     const {baseUri} = props;

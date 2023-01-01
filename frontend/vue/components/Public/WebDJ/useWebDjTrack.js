@@ -5,9 +5,8 @@ export function useWebDjTrack() {
     const {
         context,
         sink,
-        createMicrophoneSource,
-        createAudioSource,
-        sendMetadata
+        channelCount,
+        bufferSize
     } = useInjectWebDjNode();
 
     const trackGain = ref(55);
@@ -18,11 +17,14 @@ export function useWebDjTrack() {
     let source = ref(null);
 
     const createControlsNode = () => {
-        const bufferSize = 4096;
-        const bufferLog = Math.log(parseFloat(bufferSize));
+        const bufferLog = Math.log(parseFloat(bufferSize.value));
         const log10 = 2.0 * Math.log(10);
 
-        let newSource = context.createScriptProcessor(bufferSize, 2, 2);
+        let newSource = context.value.createScriptProcessor(
+            bufferSize.value,
+            channelCount.value,
+            channelCount.value
+        );
 
         newSource.onaudioprocess = (buf) => {
             if (typeof (source.value?.position) === "function") {
@@ -47,7 +49,11 @@ export function useWebDjTrack() {
     };
 
     const createPassThrough = () => {
-        let newSource = context.createScriptProcessor(256, 2, 2);
+        let newSource = context.value.createScriptProcessor(
+            bufferSize.value,
+            channelCount.value,
+            channelCount.value
+        );
 
         newSource.onaudioprocess = (buf) => {
             for (let channel = 0; channel < buf.inputBuffer.numberOfChannels; channel++) {
@@ -79,17 +85,17 @@ export function useWebDjTrack() {
 
     const prepare = () => {
         controlsNode = createControlsNode();
-        controlsNode.connect(sink);
+        controlsNode.connect(sink.value);
 
-        trackGainNode = context.createGain();
+        trackGainNode = context.value.createGain();
         trackGainNode.gain.value = parseFloat(trackGain.value) / 100.0;
         trackGainNode.connect(controlsNode);
 
         passThroughNode = createPassThrough();
-        passThroughNode.connect(context.destination);
+        passThroughNode.connect(context.value.destination);
         trackGainNode.connect(passThroughNode);
 
-        context.resume();
+        context.value.resume();
 
         return trackGainNode;
     }
@@ -130,9 +136,6 @@ export function useWebDjTrack() {
     };
 
     return {
-        createMicrophoneSource,
-        createAudioSource,
-        sendMetadata,
         source,
         trackGain,
         trackPassThrough,

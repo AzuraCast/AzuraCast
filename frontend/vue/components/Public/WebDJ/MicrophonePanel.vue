@@ -84,9 +84,9 @@ import {useDevicesList} from "@vueuse/core";
 import {ref, watch} from "vue";
 import {useWebDjTrack} from "~/components/Public/WebDJ/useWebDjTrack";
 import {usePassthroughSync} from "~/components/Public/WebDJ/usePassthroughSync";
+import {useWebDjSource} from "~/components/Public/WebDJ/useWebDjSource";
 
 const {
-    createMicrophoneSource,
     source,
     isPlaying,
     trackGain,
@@ -95,6 +95,10 @@ const {
     prepare,
     stop
 } = useWebDjTrack();
+
+const {
+    createMicrophoneSource
+} = useWebDjSource();
 
 usePassthroughSync(trackPassThrough, 'microphone');
 

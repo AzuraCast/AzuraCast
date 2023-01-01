@@ -177,6 +177,8 @@ import {useTranslate} from "~/vendor/gettext";
 import {forEach} from "lodash";
 import {useInjectMixer} from "~/components/Public/WebDJ/useMixerValue";
 import {usePassthroughSync} from "~/components/Public/WebDJ/usePassthroughSync";
+import {useWebDjSource} from "~/components/Public/WebDJ/useWebDjSource";
+import {useInjectWebcaster} from "~/components/Public/WebDJ/useWebcaster";
 
 const props = defineProps({
     id: {
@@ -190,8 +192,6 @@ const isLeftPlaylist = computed(() => {
 });
 
 const {
-    createAudioSource,
-    sendMetadata,
     source,
     isPlaying,
     isPaused,
@@ -203,6 +203,14 @@ const {
     togglePause,
     stop
 } = useWebDjTrack();
+
+const {
+    createAudioSource
+} = useWebDjSource();
+
+const {
+    sendMetadata
+} = useInjectWebcaster();
 
 usePassthroughSync(trackPassThrough, props.id);
 

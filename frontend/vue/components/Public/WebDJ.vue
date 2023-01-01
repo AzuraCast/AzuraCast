@@ -43,7 +43,7 @@ import PlaylistPanel from './WebDJ/PlaylistPanel.vue';
 import SettingsPanel from './WebDJ/SettingsPanel.vue';
 import {useProvideWebDjNode, useWebDjNode} from "~/components/Public/WebDJ/useWebDjNode";
 import {ref} from "vue";
-import {useWebcaster, webcasterProps} from "~/components/Public/WebDJ/useWebcaster";
+import {useProvideWebcaster, useWebcaster, webcasterProps} from "~/components/Public/WebDJ/useWebcaster";
 import {useProvideMixer} from "~/components/Public/WebDJ/useMixerValue";
 import {useProvidePassthroughSync} from "~/components/Public/WebDJ/usePassthroughSync";
 
@@ -56,6 +56,7 @@ const props = defineProps({
 });
 
 const webcaster = useWebcaster(props);
+useProvideWebcaster(webcaster);
 
 const node = useWebDjNode(webcaster);
 useProvideWebDjNode(node);

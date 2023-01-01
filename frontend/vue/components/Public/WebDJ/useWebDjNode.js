@@ -2,8 +2,9 @@ import {ref} from "vue";
 import {useUserMedia} from "@vueuse/core";
 
 export function useWebDjNode(webcaster) {
+    const {isConnected, connect: connectSocket, metadata, sendMetadata} = webcaster;
+
     const doPassThrough = ref(false);
-    const isStreaming = ref(false);
 
     const context = new AudioContext({
         sampleRate: 44100
@@ -12,7 +13,7 @@ export function useWebDjNode(webcaster) {
     const sink = context.createScriptProcessor(256, 2, 2);
 
     sink.onaudioprocess = (buf) => {
-        for (let channel = 0; channel < buf.inputBuffer.numberOfChannels - 1; channel++) {
+        for (let channel = 0; channel < buf.inputBuffer.numberOfChannels; channel++) {
             let channelData = buf.inputBuffer.getChannelData(channel);
             buf.outputBuffer.getChannelData(channel).set(channelData);
         }
@@ -21,7 +22,7 @@ export function useWebDjNode(webcaster) {
     const passThrough = context.createScriptProcessor(256, 2, 2);
 
     passThrough.onaudioprocess = (buf) => {
-        for (let channel = 0; channel < buf.inputBuffer.numberOfChannels - 1; channel++) {
+        for (let channel = 0; channel < buf.inputBuffer.numberOfChannels; channel++) {
             let channelData = buf.inputBuffer.getChannelData(channel);
 
             if (doPassThrough.value) {
@@ -43,8 +44,6 @@ export function useWebDjNode(webcaster) {
     let mediaRecorder;
 
     const startStream = (username = null, password = null) => {
-        isStreaming.value = true;
-
         context.resume();
 
         mediaRecorder = new MediaRecorder(
@@ -55,14 +54,13 @@ export function useWebDjNode(webcaster) {
             }
         );
 
-        webcaster.connect(mediaRecorder, username, password);
+        connectSocket(mediaRecorder, username, password);
 
         mediaRecorder.start(1000);
     }
 
     const stopStream = () => {
         mediaRecorder?.stop();
-        isStreaming.value = false;
     };
 
     const createAudioSource = ({file, audio}, cb, onEnd) => {
@@ -124,16 +122,9 @@ export function useWebDjNode(webcaster) {
         return cb(stream);
     };
 
-    const metadata = ref({});
-
-    const sendMetadata = (data) => {
-        webcaster.sendMetadata(data);
-        metadata.value = data;
-    };
-
     return {
         doPassThrough,
-        isStreaming,
+        isConnected,
         context,
         sink,
         passThrough,

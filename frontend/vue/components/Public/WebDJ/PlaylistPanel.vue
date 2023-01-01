@@ -8,7 +8,7 @@
                     </h5>
                 </div>
                 <div class="flex-shrink-0 pl-3">
-                    <volume-slider v-model.number="trackGain" />
+                    <volume-slider v-model.number="localGain" />
                 </div>
             </div>
         </div>
@@ -169,10 +169,12 @@
 import Icon from '~/components/Common/Icon';
 import VolumeSlider from "~/components/Public/WebDJ/VolumeSlider";
 import formatTime from "~/functions/formatTime";
-import {computed, ref} from "vue";
+import {computed, ref, watch} from "vue";
 import {useWebDjTrack} from "~/components/Public/WebDJ/useWebDjTrack";
 import {useTranslate} from "~/vendor/gettext";
 import {forEach} from "lodash";
+import {useInjectMixer} from "~/components/Public/WebDJ/useMixerValue";
+import {usePassthroughSync} from "~/components/Public/WebDJ/usePassthroughSync";
 
 const props = defineProps({
     id: {
@@ -186,7 +188,8 @@ const isLeftPlaylist = computed(() => {
 });
 
 const {
-    node,
+    createAudioSource,
+    sendMetadata,
     source,
     isPlaying,
     isPaused,
@@ -199,13 +202,35 @@ const {
     stop
 } = useWebDjTrack();
 
-const {createFileSource, sendMetadata} = node;
+usePassthroughSync(trackPassThrough, props.id);
 
 const fileIndex = ref(-1);
 const files = ref([]);
 const duration = ref(0.0);
 const loop = ref(false);
 const playThrough = ref(false);
+
+// Factor in mixer and local gain to calculate total gain.
+const localGain = ref(55);
+const mixer = useInjectMixer();
+
+const computedGain = computed(() => {
+    let multiplier;
+    if (isLeftPlaylist.value) {
+        multiplier = (mixer.value > 1)
+            ? 2.0 - (mixer.value)
+            : 1.0;
+    } else {
+        multiplier = (mixer.value < 1)
+            ? mixer.value
+            : 1.0;
+    }
+
+    return localGain.value * multiplier;
+});
+watch(computedGain, (newGain) => {
+    trackGain.value = newGain;
+}, {immediate: true});
 
 const {$gettext} = useTranslate();
 
@@ -272,7 +297,7 @@ const play = (options = {}) => {
 
     let destination = prepare();
 
-    createFileSource(file, (newSource) => {
+    createAudioSource(file, (newSource) => {
         source.value = newSource;
         newSource.connect(destination);
 

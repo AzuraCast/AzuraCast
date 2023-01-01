@@ -41,9 +41,11 @@ import MixerPanel from './WebDJ/MixerPanel.vue';
 import MicrophonePanel from './WebDJ/MicrophonePanel.vue';
 import PlaylistPanel from './WebDJ/PlaylistPanel.vue';
 import SettingsPanel from './WebDJ/SettingsPanel.vue';
-import {useWebDjNode} from "~/components/Public/WebDJ/useWebDjNode";
-import {provide} from "vue";
+import {useProvideWebDjNode, useWebDjNode} from "~/components/Public/WebDJ/useWebDjNode";
+import {ref} from "vue";
 import {useWebcaster, webcasterProps} from "~/components/Public/WebDJ/useWebcaster";
+import {useProvideMixer} from "~/components/Public/WebDJ/useMixerValue";
+import {useProvidePassthroughSync} from "~/components/Public/WebDJ/usePassthroughSync";
 
 const props = defineProps({
     ...webcasterProps,
@@ -54,6 +56,13 @@ const props = defineProps({
 });
 
 const webcaster = useWebcaster(props);
+
 const node = useWebDjNode(webcaster);
-provide('node', node);
+useProvideWebDjNode(node);
+
+const mixer = ref(1.0);
+useProvideMixer(mixer);
+
+const passthroughSync = ref('');
+useProvidePassthroughSync(passthroughSync);
 </script>

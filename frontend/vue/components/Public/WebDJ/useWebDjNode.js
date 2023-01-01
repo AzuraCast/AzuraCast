@@ -1,5 +1,14 @@
-import {ref} from "vue";
-import {useUserMedia} from "@vueuse/core";
+import {inject, provide, ref} from "vue";
+
+const injectKey = "webDjNode";
+
+export function useInjectWebDjNode() {
+    return inject(injectKey);
+}
+
+export function useProvideWebDjNode(node) {
+    provide(injectKey, node);
+}
 
 export function useWebDjNode(webcaster) {
     const {isConnected, connect: connectSocket, metadata, sendMetadata} = webcaster;
@@ -103,23 +112,23 @@ export function useWebDjNode(webcaster) {
         });
     };
 
-    const createFileSource = (file, cb, onEnd) => {
-        return createAudioSource(file, cb, onEnd);
-    };
-
     const createMicrophoneSource = (audioDeviceId, cb) => {
-        const {stream} = useUserMedia({
-            audioDeviceId: audioDeviceId,
+        navigator.mediaDevices.getUserMedia({
+            video: false,
+            audio: {
+                deviceId: audioDeviceId
+            }
+        }).then((stream) => {
+            let source = context.createMediaStreamSource(stream);
+            source.stop = () => {
+                let ref = stream.getAudioTracks();
+                return (ref !== null)
+                    ? ref[0].stop()
+                    : 0;
+            }
+
+            return cb(source);
         });
-
-        stream.stop = () => {
-            let ref = stream.getAudioTracks();
-            return (ref !== null)
-                ? ref[0].stop()
-                : 0;
-        }
-
-        return cb(stream);
     };
 
     return {
@@ -132,7 +141,6 @@ export function useWebDjNode(webcaster) {
         startStream,
         stopStream,
         createAudioSource,
-        createFileSource,
         createMicrophoneSource,
         metadata,
         sendMetadata

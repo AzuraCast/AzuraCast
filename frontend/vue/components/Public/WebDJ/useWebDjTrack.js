@@ -1,7 +1,14 @@
-import {computed, inject, ref, shallowRef, watch} from "vue";
+import {computed, ref, shallowRef, watch} from "vue";
+import {useInjectWebDjNode} from "~/components/Public/WebDJ/useWebDjNode";
 
 export function useWebDjTrack() {
-    const node = inject('node');
+    const {
+        context,
+        sink,
+        createMicrophoneSource,
+        createAudioSource,
+        sendMetadata
+    } = useInjectWebDjNode();
 
     const trackGain = ref(55);
     const trackPassThrough = ref(false);
@@ -15,7 +22,7 @@ export function useWebDjTrack() {
         const bufferLog = Math.log(parseFloat(bufferSize));
         const log10 = 2.0 * Math.log(10);
 
-        let newSource = node.context.createScriptProcessor(bufferSize, 2, 2);
+        let newSource = context.createScriptProcessor(bufferSize, 2, 2);
 
         newSource.onaudioprocess = (buf) => {
             position.value = source.value?.position();
@@ -38,7 +45,7 @@ export function useWebDjTrack() {
     };
 
     const createPassThrough = () => {
-        let newSource = node.context.createScriptProcessor(256, 2, 2);
+        let newSource = context.createScriptProcessor(256, 2, 2);
 
         newSource.onaudioprocess = (buf) => {
             for (let channel = 0; channel < buf.inputBuffer.numberOfChannels; channel++) {
@@ -70,16 +77,16 @@ export function useWebDjTrack() {
 
     const prepare = () => {
         controlsNode = createControlsNode();
-        controlsNode.connect(node.sink);
+        controlsNode.connect(sink);
 
-        trackGainNode = node.context.createGain();
+        trackGainNode = context.createGain();
         trackGainNode.connect(controlsNode);
 
         passThroughNode = createPassThrough();
-        passThroughNode.connect(node.context.destination);
+        passThroughNode.connect(context.destination);
         trackGainNode.connect(passThroughNode);
 
-        node.context.resume();
+        context.resume();
 
         return trackGainNode;
     }
@@ -120,7 +127,9 @@ export function useWebDjTrack() {
     };
 
     return {
-        node,
+        createMicrophoneSource,
+        createAudioSource,
+        sendMetadata,
         source,
         trackGain,
         trackPassThrough,

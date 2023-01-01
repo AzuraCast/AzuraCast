@@ -7,7 +7,7 @@
                 <small>{{ stationName }}</small>
             </h5>
         </div>
-        <div class="card-body pt-0">
+        <div class="card-body">
             <template v-if="isConnected">
                 <div class="form-group">
                     <label
@@ -113,8 +113,10 @@
 </template>
 
 <script setup>
-import {computed, inject, ref, watch} from "vue";
+import {computed, ref, watch} from "vue";
 import {useTranslate} from "~/vendor/gettext";
+import {useInjectWebDjNode} from "~/components/Public/WebDJ/useWebDjNode";
+import {usePassthroughSync} from "~/components/Public/WebDJ/usePassthroughSync";
 
 const props = defineProps({
     stationName: {
@@ -133,7 +135,9 @@ const {
     stopStream,
     metadata,
     sendMetadata
-} = inject('node');
+} = useInjectWebDjNode();
+
+usePassthroughSync(doPassThrough, 'global');
 
 const {$gettext} = useTranslate();
 

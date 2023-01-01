@@ -1,8 +1,11 @@
-import {createGlobalState} from "@vueuse/core";
-import {ref} from "vue";
+import {inject, provide} from "vue";
 
-export function useMixerValue() {
-    return createGlobalState(
-        () => ref(0.5)
-    );
+const injectKey = "webDjMixer";
+
+export function useProvideMixer(mixer) {
+    provide(injectKey, mixer);
+}
+
+export function useInjectMixer() {
+    return inject(injectKey);
 }

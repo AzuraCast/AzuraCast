@@ -53,15 +53,20 @@ export function useWebcaster(props) {
 
             isConnected.value = true;
 
+            // Timeout as Liquidsoap won't return any success/failure message, so the only
+            // way we know if we're still connected is to set a timer.
             setTimeout(() => {
                 if (isConnected.value) {
                     notifySuccess($gettext('WebDJ connected!'));
 
                     if (metadata.value !== null) {
-                        sendMetadata(metadata.value);
+                        socket.send(JSON.stringify({
+                            type: "metadata",
+                            data: metadata.value
+                        }));
                     }
                 }
-            }, 2000);
+            }, 1000);
         };
 
         socket.onerror = () => {
@@ -74,13 +79,13 @@ export function useWebcaster(props) {
 
         mediaRecorder.ondataavailable = async (e) => {
             const data = await e.data.arrayBuffer();
-            if (isConnected()) {
+            if (isConnected.value) {
                 socket.send(data);
             }
         };
 
         mediaRecorder.onstop = () => {
-            if (isConnected()) {
+            if (isConnected.value) {
                 socket.close();
             }
         };

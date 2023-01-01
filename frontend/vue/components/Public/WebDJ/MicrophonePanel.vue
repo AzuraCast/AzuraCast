@@ -83,34 +83,48 @@ import VolumeSlider from "~/components/Public/WebDJ/VolumeSlider";
 import {useDevicesList} from "@vueuse/core";
 import {ref, watch} from "vue";
 import {useWebDjTrack} from "~/components/Public/WebDJ/useWebDjTrack";
+import {usePassthroughSync} from "~/components/Public/WebDJ/usePassthroughSync";
 
-const {node, source, isPlaying, trackGain, trackPassThrough, volume, prepare, stop} = useWebDjTrack();
+const {
+    createMicrophoneSource,
+    source,
+    isPlaying,
+    trackGain,
+    trackPassThrough,
+    volume,
+    prepare,
+    stop
+} = useWebDjTrack();
 
-const {createMicrophoneSource} = node;
+usePassthroughSync(trackPassThrough, 'microphone');
 
 const {audioInputs} = useDevicesList({
     requestPermissions: true,
+    constraints: {audio: true, video: false}
 });
 
-const device = ref(audioInputs.value[0]?.deviceId);
+const device = ref(null);
+watch(audioInputs, (inputs) => {
+    if (device.value === null) {
+        device.value = inputs[0]?.deviceId;
+    }
+});
 
 let destination = null;
 
 const createSource = () => {
-    if (source.value != null && destination !== null) {
+    if (source.value != null) {
         source.value.disconnect(destination);
     }
 
     createMicrophoneSource(device.value, (newSource) => {
         source.value = newSource;
-        if (destination !== null) {
-            newSource.connect(destination);
-        }
+        newSource.connect(destination);
     });
 };
 
 watch(device, () => {
-    if (source.value == null) {
+    if (source.value === null || destination === null) {
         return;
     }
     createSource();

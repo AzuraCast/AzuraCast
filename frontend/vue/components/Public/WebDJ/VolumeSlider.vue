@@ -27,7 +27,7 @@ import {useVModel} from "@vueuse/core";
 
 const props = defineProps({
     modelValue: {
-        type: String,
+        type: Number,
         required: true
     }
 });

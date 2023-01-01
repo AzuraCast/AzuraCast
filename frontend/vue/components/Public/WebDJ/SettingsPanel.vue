@@ -7,8 +7,8 @@
                 <small>{{ stationName }}</small>
             </h5>
         </div>
-        <div class="card-body">
-            <template v-if="isConnected">
+        <template v-if="isConnected">
+            <div class="card-body">
                 <div class="form-group">
                     <label
                         for="metadata_title"
@@ -49,14 +49,27 @@
                         {{ $gettext('Update Metadata') }}
                     </button>
                 </div>
-            </template>
-            <template v-else>
+            </div>
+        </template>
+        <template v-else>
+            <div class="card-body alert-info">
+                <p class="card-text">
+                    {{ $gettext('The WebDJ lets you broadcast live to your station using just your web browser.') }}
+                </p>
+                <p class="card-text">
+                    {{
+                        $gettext('To use this feature, a secure (HTTPS) connection is required. Firefox is recommended to avoid static when broadcasting.')
+                    }}
+                </p>
+            </div>
+
+            <div class="card-body">
                 <div class="form-group">
                     <label
                         for="dj_username"
                         class="mb-2"
                     >
-                        {{ $gettext('Username') }}
+                        {{ $gettext('Streamer/DJ Username') }}
                     </label>
                     <div class="controls">
                         <input
@@ -72,7 +85,7 @@
                         for="dj_password"
                         class="mb-2"
                     >
-                        {{ $gettext('Password') }}
+                        {{ $gettext('Streamer/DJ Password') }}
                     </label>
                     <div class="controls">
                         <input
@@ -83,8 +96,8 @@
                         >
                     </div>
                 </div>
-            </template>
-        </div>
+            </div>
+        </template>
 
         <div class="card-actions">
             <button

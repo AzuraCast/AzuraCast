@@ -1,4 +1,4 @@
-import {computed, ref, shallowRef, watch} from "vue";
+import {computed, ref, watch} from "vue";
 import {useInjectWebDjNode} from "~/components/Public/WebDJ/useWebDjNode";
 
 export function useWebDjTrack() {
@@ -15,7 +15,7 @@ export function useWebDjTrack() {
     const position = ref(null);
     const volume = ref(0);
 
-    let source = shallowRef(null);
+    let source = ref(null);
 
     const createControlsNode = () => {
         const bufferSize = 4096;
@@ -25,7 +25,9 @@ export function useWebDjTrack() {
         let newSource = context.createScriptProcessor(bufferSize, 2, 2);
 
         newSource.onaudioprocess = (buf) => {
-            position.value = source.value?.position();
+            if (typeof (source.value?.position) === "function") {
+                position.value = source.value.position();
+            }
 
             for (let channel = 0; channel < buf.inputBuffer.numberOfChannels; channel++) {
                 let channelData = buf.inputBuffer.getChannelData(channel);
@@ -80,6 +82,7 @@ export function useWebDjTrack() {
         controlsNode.connect(sink);
 
         trackGainNode = context.createGain();
+        trackGainNode.gain.value = parseFloat(trackGain.value) / 100.0;
         trackGainNode.connect(controlsNode);
 
         passThroughNode = createPassThrough();
@@ -97,7 +100,7 @@ export function useWebDjTrack() {
 
     const isPaused = computed(() => {
         return (source.value !== null)
-            ? source.value.paused
+            ? source.value.paused()
             : false;
     });
 
@@ -106,7 +109,7 @@ export function useWebDjTrack() {
             return;
         }
 
-        if (source.value.paused) {
+        if (source.value.paused()) {
             source.value.play();
         } else {
             source.value.pause();

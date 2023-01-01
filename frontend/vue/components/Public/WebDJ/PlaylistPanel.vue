@@ -67,12 +67,14 @@
                     </div>
                     <div class="flex-fill">
                         <input
+                            v-model="seekingPosition"
                             type="range"
                             min="0"
                             max="100"
                             step="0.1"
                             class="custom-range slider"
-                            :value="position"
+                            @mousedown="isSeeking = true"
+                            @mouseup="isSeeking = false"
                         >
                     </div>
                     <div class="flex-shrink-0 pt-1 pl-2">
@@ -210,6 +212,21 @@ const duration = ref(0.0);
 const loop = ref(false);
 const playThrough = ref(false);
 
+const isSeeking = ref(false);
+
+const seekingPosition = computed({
+    get: () => {
+        return (100.0 * position.value / parseFloat(duration.value));
+    },
+    set: (val) => {
+        if (!isSeeking.value || !source.value) {
+            return;
+        }
+
+        source.value.seek(val / 100);
+    }
+});
+
 // Factor in mixer and local gain to calculate total gain.
 const localGain = ref(55);
 const mixer = useInjectMixer();
@@ -284,6 +301,7 @@ const selectFile = (options = {}) => {
 
 const play = (options = {}) => {
     let file = selectFile(options);
+
     if (!file) {
         return;
     }

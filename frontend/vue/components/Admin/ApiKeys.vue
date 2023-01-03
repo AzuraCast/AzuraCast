@@ -23,7 +23,7 @@
                 :href="myApiKeysUrl"
                 target="_blank"
             >
-                <icon icon="vpn_key"/>
+                <icon icon="vpn_key" />
                 {{ $gettext('Manage My API Keys') }}
             </b-button>
         </b-card-body>

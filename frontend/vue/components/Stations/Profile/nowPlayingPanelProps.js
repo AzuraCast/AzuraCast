@@ -1,6 +1,18 @@
 export default {
-    backendType: String,
-    userCanManageBroadcasting: Boolean,
-    backendSkipSongUri: String,
-    backendDisconnectStreamerUri: String
+    backendType: {
+        type: String,
+        required: true
+    },
+    userCanManageBroadcasting: {
+        type: Boolean,
+        required: true
+    },
+    backendSkipSongUri: {
+        type: String,
+        required: true
+    },
+    backendDisconnectStreamerUri: {
+        type: String,
+        required: true
+    }
 }

@@ -26,15 +26,33 @@ return static function (RouteCollectorProxy $group) {
                 ->setName('api:stations:profile')
                 ->add(new Middleware\Permissions(StationPermissions::View, true));
 
-            $group->get(
-                '/profile/edit',
-                Controller\Api\Stations\ProfileEditController::class . ':getProfileAction'
-            )->setName('api:stations:profile:edit')
-                ->add(new Middleware\Permissions(StationPermissions::Profile, true));
+            $group->group(
+                '',
+                function (RouteCollectorProxy $group) {
+                    $group->get(
+                        '/profile/edit',
+                        Controller\Api\Stations\ProfileEditController::class . ':getProfileAction'
+                    )->setName('api:stations:profile:edit');
 
-            $group->put(
-                '/profile/edit',
-                Controller\Api\Stations\ProfileEditController::class . ':putProfileAction'
+                    $group->put(
+                        '/profile/edit',
+                        Controller\Api\Stations\ProfileEditController::class . ':putProfileAction'
+                    );
+
+                    $group->get(
+                        '/custom_assets/{type}',
+                        Controller\Api\Stations\CustomAssets\GetCustomAssetAction::class
+                    )->setName('api:stations:custom_assets');
+
+                    $group->post(
+                        '/custom_assets/{type}',
+                        Controller\Api\Stations\CustomAssets\PostCustomAssetAction::class
+                    );
+                    $group->delete(
+                        '/custom_assets/{type}',
+                        Controller\Api\Stations\CustomAssets\DeleteCustomAssetAction::class
+                    );
+                }
             )->add(new Middleware\Permissions(StationPermissions::Profile, true));
 
             $group->get('/schedule', Controller\Api\Stations\ScheduleAction::class)

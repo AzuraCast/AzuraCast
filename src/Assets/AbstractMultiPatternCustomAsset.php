@@ -16,7 +16,7 @@ abstract class AbstractMultiPatternCustomAsset extends AbstractCustomAsset
     protected function getPathForPattern(string $pattern): string
     {
         $pattern = sprintf($pattern, '');
-        return $this->environment->getUploadsDirectory() . '/' . $pattern;
+        return $this->getBasePath() . '/' . $pattern;
     }
 
     public function getPath(): string
@@ -47,7 +47,7 @@ abstract class AbstractMultiPatternCustomAsset extends AbstractCustomAsset
             if (is_file($path)) {
                 $mtime = filemtime($path);
 
-                return $this->environment->getAssetUrl() . self::UPLOADS_URL_PREFIX . '/' . sprintf(
+                return $this->getBaseUrl() . '/' . sprintf(
                     $pattern,
                     '.' . $mtime
                 );

@@ -50,13 +50,20 @@
             </table>
             <div class="card-actions">
                 <a
-                    class="btn btn-outline-danger"
+                    class="btn btn-outline-default"
                     @click.prevent="doOpenEmbed"
                 >
                     <icon icon="code" />
                     {{ $gettext('Embed Widgets') }}
                 </a>
                 <template v-if="userCanManageProfile">
+                    <a
+                        class="btn btn-outline-default"
+                        :href="brandingUri"
+                    >
+                        <icon icon="design_services" />
+                        {{ $gettext('Edit Branding') }}
+                    </a>
                     <a
                         class="btn btn-outline-danger"
                         :data-confirm-title="$gettext('Disable public pages?')"

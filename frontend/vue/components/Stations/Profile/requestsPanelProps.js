@@ -1,7 +1,22 @@
 export default {
-    enableRequests: Boolean,
-    userCanManageReports: Boolean,
-    userCanManageProfile: Boolean,
-    requestsViewUri: String,
-    requestsToggleUri: String
+    enableRequests: {
+        type: Boolean,
+        required: true
+    },
+    userCanManageReports: {
+        type: Boolean,
+        required: true
+    },
+    userCanManageProfile: {
+        type: Boolean,
+        required: true
+    },
+    requestsViewUri: {
+        type: String,
+        required: true
+    },
+    requestsToggleUri: {
+        type: String,
+        required: true
+    }
 }

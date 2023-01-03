@@ -21,6 +21,10 @@ return static function (RouteCollectorProxy $app) {
                 }
             )->setName('stations:index:index');
 
+            $group->get('/branding', Controller\Stations\BrandingAction::class)
+                ->setName('stations:branding')
+                ->add(new Middleware\Permissions(StationPermissions::Profile, true));
+
             $group->get('/bulk-media', Controller\Stations\BulkMediaAction::class)
                 ->setName('stations:bulk-media')
                 ->add(new Middleware\Permissions(StationPermissions::Media, true));

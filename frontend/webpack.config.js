@@ -35,6 +35,7 @@ module.exports = {
         SetupRegister: '~/pages/Setup/Register.js',
         SetupSettings: '~/pages/Setup/Settings.js',
         SetupStation: '~/pages/Setup/Station.js',
+        StationsBranding: '~/pages/Stations/Branding.js',
         StationsBulkMedia: '~/pages/Stations/BulkMedia.js',
         StationsFallback: '~/pages/Stations/Fallback.js',
         StationsHelp: '~/pages/Stations/Help.js',

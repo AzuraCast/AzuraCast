@@ -1,12 +1,42 @@
 export default {
-    frontendType: String,
-    frontendAdminUri: String,
-    frontendAdminPassword: String,
-    frontendSourcePassword: String,
-    frontendRelayPassword: String,
-    frontendRestartUri: String,
-    frontendStartUri: String,
-    frontendStopUri: String,
-    hasStarted: Boolean,
-    userCanManageBroadcasting: Boolean
+    frontendType: {
+        type: String,
+        required: true
+    },
+    frontendAdminUri: {
+        type: String,
+        required: true
+    },
+    frontendAdminPassword: {
+        type: String,
+        required: true
+    },
+    frontendSourcePassword: {
+        type: String,
+        required: true
+    },
+    frontendRelayPassword: {
+        type: String,
+        required: true
+    },
+    frontendRestartUri: {
+        type: String,
+        required: true
+    },
+    frontendStartUri: {
+        type: String,
+        required: true
+    },
+    frontendStopUri: {
+        type: String,
+        required: true
+    },
+    hasStarted: {
+        type: Boolean,
+        required: true
+    },
+    userCanManageBroadcasting: {
+        type: Boolean,
+        required: true
+    }
 }

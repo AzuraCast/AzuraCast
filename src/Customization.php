@@ -138,12 +138,35 @@ final class Customization
         return $publicCss;
     }
 
+    public function getStationCustomPublicCss(Entity\Station $station): string
+    {
+        $publicCss = $station->getBrandingConfig()->getPublicCustomCss() ?? '';
+
+        $background = new BackgroundCustomAsset($this->environment, $station);
+        if ($background->isUploaded()) {
+            $backgroundUrl = $background->getUrl();
+
+            $publicCss .= <<<CSS
+            [data-theme] body.page-minimal {
+                background-image: url('{$backgroundUrl}');
+            }
+            CSS;
+        }
+
+        return $publicCss;
+    }
+
     /**
      * Return the administrator-supplied custom JS for public (minimal layout) pages, if specified.
      */
     public function getCustomPublicJs(): string
     {
         return $this->settings->getPublicCustomJs() ?? '';
+    }
+
+    public function getStationCustomPublicJs(Entity\Station $station): string
+    {
+        return $station->getBrandingConfig()->getPublicCustomJs() ?? '';
     }
 
     /**

@@ -1,0 +1,16 @@
+<?php
+/**
+ * @var \App\Customization $customization
+ * @var \App\Entity\Station $station
+ * @var App\View\GlobalSections $sections
+ */
+
+$sections->append(
+    'station_head',
+    '<style>' . $customization->getStationCustomPublicCss($station) . '</style>'
+);
+
+$sections->append(
+    'station_bodyjs',
+    '<script>' . $customization->getStationCustomPublicJs($station) . '</script>'
+);

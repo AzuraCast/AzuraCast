@@ -175,6 +175,9 @@ final class ProfileController
                     routeName: 'stations:profile:toggle',
                     routeParams: ['feature' => 'public', 'csrf' => $csrf]
                 ),
+                'brandingUri' => $router->fromHere(
+                    routeName: 'stations:branding',
+                ),
 
                 // Frontend
                 'frontendAdminUri' => (string)$frontend?->getAdminUrl($station, $router->getBaseUrl()),

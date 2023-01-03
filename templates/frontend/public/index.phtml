@@ -16,6 +16,8 @@ $this->layout(
     ]
 );
 
+$this->fetch('frontend/public/partials/station-custom', ['station' => $station]);
+
 // Register PWA service worker
 $swJsRoute = $router->named('public:sw');
 

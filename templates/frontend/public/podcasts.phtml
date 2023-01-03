@@ -1,16 +1,19 @@
 <?php
+
 $this->layout('minimal', [
     'page_class' => 'podcasts station-' . $station->getShortName(),
     'title' => 'Podcasts - ' . $this->e($station->getName()),
     'hide_footer' => true,
 ]);
 
+$this->fetch('frontend/public/partials/station-custom', ['station' => $station]);
+
 ?>
 <section id="content" role="main" class="d-flex align-items-stretch" style="height: 100vh;">
     <div class="container pt-5 pb-5 h-100" style="flex: 1;">
         <div id="station_podcasts">
             <div class="row mb-4">
-                <h1 class="mx-auto"><?=$this->e($station->getName())?></h1>
+                <h1 class="mx-auto"><?= $this->e($station->getName()) ?></h1>
             </div>
 
             <div class="row justify-content-center">

@@ -12,6 +12,8 @@ $this->layout('minimal', [
     'hide_footer' => true,
 ]);
 
+$this->fetch('frontend/public/partials/station-custom', ['station' => $station]);
+
 $episodeAudioSrc = $router->named(
     'api:stations:podcast:episode:download',
     [

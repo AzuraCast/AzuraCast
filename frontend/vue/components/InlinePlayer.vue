@@ -42,14 +42,12 @@
         </a>
         <div class="inline-volume-controls d-inline-flex align-items-center ml-1">
             <div class="flex-shrink-0">
-                <a
+                <mute-button
                     class="btn btn-sm btn-outline-light px-2"
-                    href="#"
-                    :aria-label="$gettext('Mute')"
-                    @click.prevent="mute"
-                >
-                    <icon icon="volume_mute" />
-                </a>
+                    :volume="volume"
+                    :is-muted="isMuted"
+                    @toggle-mute="toggleMute"
+                />
             </div>
             <div class="flex-fill mx-1">
                 <input
@@ -62,16 +60,6 @@
                     step="1"
                 >
             </div>
-            <div class="flex-shrink-0">
-                <a
-                    class="btn btn-sm btn-outline-light px-2"
-                    href="#"
-                    :aria-label="$gettext('Full Volume')"
-                    @click.prevent="fullVolume"
-                >
-                    <icon icon="volume_up" />
-                </a>
-            </div>
         </div>
     </div>
 </template>
@@ -83,6 +71,7 @@ import Icon from '~/components/Common/Icon.vue';
 import {usePlayerStore} from "~/store.js";
 import {useStorage} from "@vueuse/core";
 import {computed, ref, toRef} from "vue";
+import MuteButton from "~/components/Common/MuteButton.vue";
 
 const store = usePlayerStore();
 const isPlaying = toRef(store, 'isPlaying');
@@ -125,12 +114,8 @@ const stop = () => {
     });
 };
 
-const mute = () => {
+const toggleMute = () => {
     isMuted.value = !isMuted.value;
-};
-
-const fullVolume = () => {
-    volume.value = 100;
 };
 </script>
 

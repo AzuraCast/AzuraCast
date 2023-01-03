@@ -401,7 +401,7 @@ const buildForm = () => {
 };
 
 const {blankForm, validations} = buildForm();
-const {form, resetForm, v$} = useVuelidateOnForm(validations, blankForm);
+const {form, resetForm, v$, ifValid} = useVuelidateOnForm(validations, blankForm);
 
 const isValid = computed(() => {
     return !v$.value?.$invalid ?? true;
@@ -477,27 +477,24 @@ const reset = () => {
 };
 
 const submit = () => {
-    v$.value.$touch();
-    if (v$.value.$errors.length > 0) {
-        return;
-    }
-
-    error.value = null;
-    wrapWithLoading(
-        axios({
-            method: (props.isEditMode)
-                ? 'PUT'
-                : 'POST',
-            url: (props.isEditMode)
-                ? props.editUrl
-                : props.createUrl,
-            data: form.value
-        })
-    ).then(() => {
-        notifySuccess();
-        emit('submitted');
-    }).catch((err) => {
-        error.value = err.response.data.message;
+    ifValid(() => {
+        error.value = null;
+        wrapWithLoading(
+            axios({
+                method: (props.isEditMode)
+                    ? 'PUT'
+                    : 'POST',
+                url: (props.isEditMode)
+                    ? props.editUrl
+                    : props.createUrl,
+                data: form.value
+            })
+        ).then(() => {
+            notifySuccess();
+            emit('submitted');
+        }).catch((err) => {
+            error.value = err.response.data.message;
+        });
     });
 };
 

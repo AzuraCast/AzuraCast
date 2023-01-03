@@ -151,7 +151,7 @@ const loading = ref(true);
 
 const $modal = ref(); // ModalForm
 
-const {form, resetForm, v$} = useVuelidateOnForm(
+const {form, resetForm, v$, ifValid} = useVuelidateOnForm(
     {
         'backup_enabled': {},
         'backup_time_code': {},
@@ -215,21 +215,17 @@ const open = () => {
 const {wrapWithLoading, notifySuccess} = useNotify();
 
 const submit = () => {
-    v$.value.$touch();
-
-    if (v$.value.$errors.length > 0) {
-        return;
-    }
-
-    wrapWithLoading(
-        axios({
-            method: 'PUT',
-            url: props.settingsUrl,
-            data: form.value
-        })
-    ).then(() => {
-        notifySuccess();
-        close();
+    ifValid(() => {
+        wrapWithLoading(
+            axios({
+                method: 'PUT',
+                url: props.settingsUrl,
+                data: form.value
+            })
+        ).then(() => {
+            notifySuccess();
+            close();
+        });
     });
 }
 

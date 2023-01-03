@@ -74,7 +74,7 @@ const passwordsMatch = (value, siblings) => {
 
 const {$gettext} = useTranslate();
 
-const {form, resetForm, v$} = useVuelidateOnForm(
+const {form, resetForm, v$, ifValid} = useVuelidateOnForm(
     {
         current_password: {required},
         new_password: {required, validatePassword},
@@ -108,16 +108,13 @@ const {wrapWithLoading} = useNotify();
 const {axios} = useAxios();
 
 const onSubmit = () => {
-    v$.value.$touch();
-    if (v$.value.$errors.length > 0) {
-        return;
-    }
-
-    wrapWithLoading(
-        axios.put(props.changePasswordUrl, form.value)
-    ).finally(() => {
-        $modal.value.hide();
-        emit('relist');
+    ifValid(() => {
+        wrapWithLoading(
+            axios.put(props.changePasswordUrl, form.value)
+        ).finally(() => {
+            $modal.value.hide();
+            emit('relist');
+        });
     });
 };
 

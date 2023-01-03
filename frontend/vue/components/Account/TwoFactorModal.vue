@@ -97,7 +97,7 @@ const emit = defineEmits(['relist']);
 const loading = ref(true);
 const error = ref(null);
 
-const {form, resetForm, v$} = useVuelidateOnForm(
+const {form, resetForm, v$, ifValid} = useVuelidateOnForm(
     {
         otp: {
             required,
@@ -150,28 +150,25 @@ const open = () => {
 };
 
 const doSubmit = () => {
-    v$.value.$touch();
-    if (v$.value.$errors.length > 0) {
-        return;
-    }
+    ifValid(() => {
+        error.value = null;
 
-    error.value = null;
-
-    wrapWithLoading(
-        axios({
-            method: 'PUT',
-            url: props.twoFactorUrl,
-            data: {
-                secret: totp.value.secret,
-                otp: form.value.otp
-            }
-        })
-    ).then(() => {
-        notifySuccess();
-        emit('relist');
-        close();
-    }).catch((error) => {
-        error.value = error.response.data.message;
+        wrapWithLoading(
+            axios({
+                method: 'PUT',
+                url: props.twoFactorUrl,
+                data: {
+                    secret: totp.value.secret,
+                    otp: form.value.otp
+                }
+            })
+        ).then(() => {
+            notifySuccess();
+            emit('relist');
+            close();
+        }).catch((error) => {
+            error.value = error.response.data.message;
+        });
     });
 };
 

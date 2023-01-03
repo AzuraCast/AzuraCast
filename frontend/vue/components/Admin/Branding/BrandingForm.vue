@@ -214,7 +214,7 @@ const props = defineProps({
 const loading = ref(true);
 const error = ref(null);
 
-const {form, resetForm, v$} = useVuelidateOnForm(
+const {form, resetForm, v$, ifValid} = useVuelidateOnForm(
     {
         'public_theme': {},
         'hide_album_art': {},
@@ -278,20 +278,17 @@ onMounted(relist);
 const {wrapWithLoading, notifySuccess} = useNotify();
 
 const submit = () => {
-    v$.value.$touch();
-    if (v$.value.$errors.length > 0) {
-        return;
-    }
-
-    wrapWithLoading(
-        axios({
-            method: 'PUT',
-            url: props.apiUrl,
-            data: form.value
-        })
-    ).then(() => {
-        notifySuccess($gettext('Changes saved.'));
-        relist();
+    ifValid(() => {
+        wrapWithLoading(
+            axios({
+                method: 'PUT',
+                url: props.apiUrl,
+                data: form.value
+            })
+        ).then(() => {
+            notifySuccess($gettext('Changes saved.'));
+            relist();
+        });
     });
 }
 </script>

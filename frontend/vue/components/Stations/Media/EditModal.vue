@@ -157,7 +157,7 @@ const buildForm = () => {
 };
 
 const {blankForm, validations} = buildForm();
-const {form, resetForm: resetBaseForm, v$} = useVuelidateOnForm(validations, blankForm);
+const {form, resetForm: resetBaseForm, v$, ifValid} = useVuelidateOnForm(validations, blankForm);
 
 const resetForm = () => {
     resetBaseForm();
@@ -228,19 +228,16 @@ const open = (newRecordUrl, newAlbumArtUrl, newAudioUrl, newWaveformUrl) => {
 const {notifySuccess} = useNotify();
 
 const doEdit = () => {
-    v$.value.$touch();
-    if (v$.value.$errors.length > 0) {
-        return;
-    }
+    ifValid(() => {
+        error.value = null;
 
-    error.value = null;
-
-    axios.put(recordUrl.value, form.value).then(() => {
-        notifySuccess();
-        emit('relist');
-        close();
-    }).catch((error) => {
-        error.value = error.response.data.message;
+        axios.put(recordUrl.value, form.value).then(() => {
+            notifySuccess();
+            emit('relist');
+            close();
+        }).catch((error) => {
+            error.value = error.response.data.message;
+        });
     });
 };
 

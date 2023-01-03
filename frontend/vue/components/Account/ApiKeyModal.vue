@@ -89,7 +89,7 @@ const emit = defineEmits(['relist']);
 const error = ref(null);
 const newKey = ref(null);
 
-const {form, resetForm, v$} = useVuelidateOnForm(
+const {form, resetForm, v$, validate} = useVuelidateOnForm(
     {
         comment: {required}
     },
@@ -115,9 +115,9 @@ const create = () => {
 const {wrapWithLoading} = useNotify();
 const {axios} = useAxios();
 
-const doSubmit = () => {
-    v$.value.$touch();
-    if (v$.value.$errors.length > 0) {
+const doSubmit = async () => {
+    const isValid = await validate();
+    if (!isValid) {
         return;
     }
 

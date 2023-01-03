@@ -152,7 +152,7 @@ const logUrl = ref(null);
 const error = ref(null);
 const $modal = ref(); // BModal
 
-const {form, resetForm, v$} = useVuelidateOnForm(
+const {form, resetForm, v$, ifValid} = useVuelidateOnForm(
     {
         'storage_location': {},
         'path': {},
@@ -178,22 +178,19 @@ const {wrapWithLoading} = useNotify();
 const {axios} = useAxios();
 
 const submit = () => {
-    v$.value.$touch();
-    if (v$.value.$errors.length > 0) {
-        return;
-    }
-
-    error.value = null;
-    wrapWithLoading(
-        axios({
-            method: 'POST',
-            url: props.runBackupUrl,
-            data: form.value
-        })
-    ).then((resp) => {
-        logUrl.value = resp.data.links.log;
-    }).catch((error) => {
-        error.value = error.response.data.message;
+    ifValid(() => {
+        error.value = null;
+        wrapWithLoading(
+            axios({
+                method: 'POST',
+                url: props.runBackupUrl,
+                data: form.value
+            })
+        ).then((resp) => {
+            logUrl.value = resp.data.links.log;
+        }).catch((error) => {
+            error.value = error.response.data.message;
+        });
     });
 };
 

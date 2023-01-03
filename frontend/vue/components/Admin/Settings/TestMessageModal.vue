@@ -50,7 +50,7 @@ const props = defineProps({
     }
 });
 
-const {form, v$} = useVuelidateOnForm(
+const {form, v$, ifValid} = useVuelidateOnForm(
     {
         emailAddress: {required, email}
     },
@@ -74,20 +74,16 @@ const {axios} = useAxios();
 const {$gettext} = useTranslate();
 
 const doSendTest = () => {
-    v$.value.$touch();
-
-    if (v$.value.$errors.length > 0) {
-        return;
-    }
-
-    wrapWithLoading(
-        axios.post(props.testMessageUrl, {
-            'email': form.value.emailAddress
-        })
-    ).then(() => {
-        notifySuccess($gettext('Test message sent.'));
-    }).finally(() => {
-        close();
+    ifValid(() => {
+        wrapWithLoading(
+            axios.post(props.testMessageUrl, {
+                'email': form.value.emailAddress
+            })
+        ).then(() => {
+            notifySuccess($gettext('Test message sent.'));
+        }).finally(() => {
+            close();
+        });
     });
 };
 </script>

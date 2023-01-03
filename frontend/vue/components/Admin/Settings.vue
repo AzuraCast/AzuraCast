@@ -112,7 +112,7 @@ const props = defineProps({
 
 const emit = defineEmits(['saved']);
 
-const {form, v$} = useVuelidateOnForm(
+const {form, v$, ifValid} = useVuelidateOnForm(
     {
         base_url: {required},
         instance_name: {},
@@ -224,22 +224,19 @@ const {wrapWithLoading, notifySuccess} = useNotify();
 const {$gettext} = useTranslate();
 
 const submit = () => {
-    v$.value.$touch();
-    if (v$.value.$errors.length > 0) {
-        return;
-    }
+    ifValid(() => {
+        wrapWithLoading(
+            axios({
+                method: 'PUT',
+                url: props.apiUrl,
+                data: form.value
+            })
+        ).then(() => {
+            emit('saved');
 
-    wrapWithLoading(
-        axios({
-            method: 'PUT',
-            url: props.apiUrl,
-            data: form.value
-        })
-    ).then(() => {
-        emit('saved');
-
-        notifySuccess($gettext('Changes saved.'));
-        relist();
+            notifySuccess($gettext('Changes saved.'));
+            relist();
+        });
     });
 }
 </script>

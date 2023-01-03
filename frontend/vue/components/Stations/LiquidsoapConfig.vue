@@ -111,7 +111,7 @@ const buildForm = () => {
 }
 
 const {validations, blankForm} = buildForm();
-const {form, resetForm, v$} = useVuelidateOnForm(validations, blankForm);
+const {form, resetForm, v$, ifValid} = useVuelidateOnForm(validations, blankForm);
 
 const loading = ref(true);
 
@@ -134,22 +134,19 @@ onMounted(relist);
 const {wrapWithLoading, notifySuccess} = useNotify();
 
 const submit = () => {
-    v$.value.$touch();
-    if (v$.value.$errors.length > 0) {
-        return;
-    }
+    ifValid(() => {
+        wrapWithLoading(
+            axios({
+                method: 'PUT',
+                url: props.settingsUrl,
+                data: form.value,
+            })
+        ).then(() => {
+            notifySuccess();
 
-    wrapWithLoading(
-        axios({
-            method: 'PUT',
-            url: props.settingsUrl,
-            data: form.value,
-        })
-    ).then(() => {
-        notifySuccess();
-
-        mayNeedRestart();
-        relist();
+            mayNeedRestart();
+            relist();
+        });
     });
 }
 </script>

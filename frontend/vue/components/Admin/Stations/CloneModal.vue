@@ -28,7 +28,7 @@ const loading = ref(true);
 const cloneUrl = ref(null);
 const error = ref(null);
 
-const {form, resetForm, v$} = useVuelidateOnForm(
+const {form, resetForm, v$, ifValid} = useVuelidateOnForm(
     {
         name: {required},
         description: {},
@@ -71,25 +71,22 @@ const {wrapWithLoading, notifySuccess} = useNotify();
 const {axios} = useAxios();
 
 const doSubmit = () => {
-    v$.value.$touch();
-    if (v$.value.$errors.length > 0) {
-        return;
-    }
+    ifValid(() => {
+        error.value = null;
 
-    error.value = null;
-
-    wrapWithLoading(
-        axios({
-            method: 'POST',
-            url: cloneUrl.value,
-            data: form.value
-        })
-    ).then(() => {
-        notifySuccess();
-        emit('relist');
-        close();
-    }).catch((error) => {
-        error.value = error.response.data.message;
+        wrapWithLoading(
+            axios({
+                method: 'POST',
+                url: cloneUrl.value,
+                data: form.value
+            })
+        ).then(() => {
+            notifySuccess();
+            emit('relist');
+            close();
+        }).catch((error) => {
+            error.value = error.response.data.message;
+        });
     });
 };
 

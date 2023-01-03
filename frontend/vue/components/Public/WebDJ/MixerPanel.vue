@@ -14,14 +14,14 @@
                         </div>
                         <div class="flex-fill px-2">
                             <input
-                                v-model="position"
+                                v-model.number="mixer"
                                 type="range"
                                 min="0"
-                                max="1"
-                                step="0.01"
+                                max="2"
+                                step="0.05"
                                 class="custom-range slider"
                                 style="width: 200px; height: 10px;"
-                                @click.right.prevent="position = 0.5"
+                                @click.right.prevent="mixer = 1.0"
                             >
                         </div>
                         <div class="flex-shrink-0">
@@ -34,17 +34,8 @@
     </div>
 </template>
 
-<script>
-export default {
-    data () {
-        return {
-            'position': 0.5
-        };
-    },
-    watch: {
-        position(val) {
-            this.$root.$emit('new-mixer-value', val);
-        }
-    }
-};
+<script setup>
+import {useInjectMixer} from "~/components/Public/WebDJ/useMixerValue";
+
+const mixer = useInjectMixer();
 </script>

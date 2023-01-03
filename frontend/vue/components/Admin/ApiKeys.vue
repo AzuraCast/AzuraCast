@@ -9,6 +9,25 @@
             </h2>
         </b-card-header>
 
+        <info-card>
+            <p class="card-text">
+                {{
+                    $gettext('This page lists all API keys assigned to all users across the system.')
+                }}
+            </p>
+        </info-card>
+
+        <b-card-body body-class="card-padding-sm">
+            <b-button
+                variant="outline-primary"
+                :href="myApiKeysUrl"
+                target="_blank"
+            >
+                <icon icon="vpn_key" />
+                {{ $gettext('Manage My API Keys') }}
+            </b-button>
+        </b-card-body>
+
         <data-table
             id="api_keys"
             ref="$dataTable"
@@ -40,9 +59,15 @@ import {useSweetAlert} from "~/vendor/sweetalert";
 import {useNotify} from "~/vendor/bootstrapVue";
 import {useAxios} from "~/vendor/axios";
 import {useTranslate} from "~/vendor/gettext";
+import InfoCard from "~/components/Common/InfoCard.vue";
+import Icon from "~/components/Common/Icon.vue";
 
 defineProps({
     apiUrl: {
+        type: String,
+        required: true
+    },
+    myApiKeysUrl: {
         type: String,
         required: true
     }

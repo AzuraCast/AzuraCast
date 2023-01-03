@@ -181,7 +181,7 @@ final class StationRepository extends Repository
     public function getDefaultAlbumArtUrl(?Entity\Station $station = null): UriInterface
     {
         if (null !== $station) {
-            $stationCustomUri = $station->getDefaultAlbumArtUrlAsUri();
+            $stationCustomUri = $station->getBrandingConfig()->getDefaultAlbumArtUrlAsUri();
             if (null !== $stationCustomUri) {
                 return $stationCustomUri;
             }

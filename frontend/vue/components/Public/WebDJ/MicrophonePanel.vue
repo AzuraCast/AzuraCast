@@ -8,7 +8,7 @@
                     </h5>
                 </div>
                 <div class="flex-shrink-0 pl-3">
-                    <volume-slider v-model.number="volume" />
+                    <volume-slider v-model.number="trackGain" />
                 </div>
             </div>
         </div>
@@ -20,15 +20,15 @@
                         <div class="btn-group btn-group-sm">
                             <button
                                 class="btn btn-danger"
-                                :class="{ active: playing }"
-                                @click="toggleRecording"
+                                :class="{ active: isPlaying }"
+                                @click="togglePlaying"
                             >
                                 <icon icon="mic" />
                             </button>
                             <button
                                 class="btn"
-                                :class="{ 'btn-primary': passThrough }"
-                                @click="cue"
+                                :class="{ 'btn-primary': trackPassThrough }"
+                                @click="trackPassThrough = !trackPassThrough"
                             >
                                 {{ $gettext('Cue') }}
                             </button>
@@ -50,7 +50,8 @@
                                 class="form-control"
                             >
                                 <option
-                                    v-for="device_row in devices"
+                                    v-for="device_row in audioInputs"
+                                    :key="device_row.deviceId"
                                     :value="device_row.deviceId"
                                 >
                                     {{ device_row.label }}
@@ -62,138 +63,87 @@
             </div>
 
             <div
-                v-if="playing"
+                v-if="isPlaying"
                 class="mt-3"
             >
-                <div class="progress mb-1">
-                    <div
-                        class="progress-bar"
-                        :style="{ width: volumeLeft+'%' }"
-                    />
-                </div>
                 <div class="progress mb-2">
                     <div
                         class="progress-bar"
-                        :style="{ width: volumeRight+'%' }"
+                        :style="{ width: volume+'%' }"
                     />
                 </div>
             </div>
         </div>
     </div>
 </template>
-<script>
-import track from './Track.js';
-import {first, filter, isEmpty} from 'lodash';
+
+<script setup>
 import Icon from '~/components/Common/Icon';
 import VolumeSlider from "~/components/Public/WebDJ/VolumeSlider";
+import {useDevicesList} from "@vueuse/core";
+import {ref, watch} from "vue";
+import {useWebDjTrack} from "~/components/Public/WebDJ/useWebDjTrack";
+import {usePassthroughSync} from "~/components/Public/WebDJ/usePassthroughSync";
+import {useWebDjSource} from "~/components/Public/WebDJ/useWebDjSource";
 
-export default {
-    components: {VolumeSlider, Icon},
-    extends: track,
+const {
+    source,
+    isPlaying,
+    trackGain,
+    trackPassThrough,
+    volume,
+    prepare,
+    stop
+} = useWebDjTrack();
 
-    data: function () {
-        return {
-            'device': null,
-            'devices': [],
-            'isRecording': false
-        };
-    },
-    watch: {
-        device: function () {
-            if (this.source == null) {
-                return;
-            }
-            return this.createSource();
-        }
-    },
-    mounted: function () {
-        let base, base1;
+const {
+    createMicrophoneSource
+} = useWebDjSource();
 
-        // Get multimedia devices by requesting them from the browser.
-        navigator.mediaDevices || (navigator.mediaDevices = {});
+usePassthroughSync(trackPassThrough, 'microphone');
 
-        (base = navigator.mediaDevices).getUserMedia || (base.getUserMedia = function (constraints) {
-            let fn;
-            fn = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
-            if (fn == null) {
-                return Promise.reject(new Error('getUserMedia is not implemented in this browser'));
-            }
-            return new Promise(function (resolve, reject) {
-                return fn.call(navigator, constraints, resolve, reject);
-            });
-        });
+const {audioInputs} = useDevicesList({
+    requestPermissions: true,
+    constraints: {audio: true, video: false}
+});
 
-        (base1 = navigator.mediaDevices).enumerateDevices || (base1.enumerateDevices = function () {
-            return Promise.reject(new Error('enumerateDevices is not implemented on this browser'));
-        });
-
-        const vm_mic = this;
-        navigator.mediaDevices.getUserMedia({
-            audio: true,
-            video: false
-        }).then(function () {
-            return navigator.mediaDevices.enumerateDevices().then(vm_mic.setDevices);
-        });
-
-        this.$root.$on('new-cue', this.onNewCue);
-    },
-    methods: {
-        cue: function () {
-            this.resumeStream();
-            this.$root.$emit('new-cue', (this.passThrough) ? 'off' : 'microphone');
-        },
-        onNewCue: function (new_cue) {
-            this.passThrough = (new_cue === 'microphone');
-        },
-        toggleRecording: function () {
-            this.resumeStream();
-
-            if (this.playing) {
-                this.stop();
-            } else {
-                this.play();
-            }
-        },
-        createSource: function (cb) {
-            let constraints;
-            if (this.source != null) {
-                this.source.disconnect(this.destination);
-            }
-            constraints = {
-                video: false
-            };
-            if (this.device) {
-                constraints.audio = {
-                    deviceId: this.device
-                };
-            } else {
-                constraints.audio = true;
-            }
-            return this.getStream().createMicrophoneSource(constraints, (source) => {
-                this.source = source;
-                this.source.connect(this.destination);
-                return typeof cb === 'function' ? cb() : void 0;
-            });
-        },
-        play: function () {
-            this.prepare();
-
-            return this.createSource(() => {
-                this.playing = true;
-                this.paused = false;
-            });
-        },
-        setDevices: function (devices) {
-            devices = filter(devices, function ({kind}) {
-                return kind === 'audioinput';
-            });
-            if (isEmpty(devices)) {
-                return;
-            }
-
-            this.devices = devices;
-            this.device = first(devices).deviceId;
-        }
+const device = ref(null);
+watch(audioInputs, (inputs) => {
+    if (device.value === null) {
+        device.value = inputs[0]?.deviceId;
     }
+});
+
+let destination = null;
+
+const createSource = () => {
+    if (source.value != null) {
+        source.value.disconnect(destination);
+    }
+
+    createMicrophoneSource(device.value, (newSource) => {
+        source.value = newSource;
+        newSource.connect(destination);
+    });
 };
+
+watch(device, () => {
+    if (source.value === null || destination === null) {
+        return;
+    }
+    createSource();
+});
+
+const play = () => {
+    destination = prepare();
+    createSource();
+}
+
+const togglePlaying = () => {
+    if (isPlaying.value) {
+        stop();
+    } else {
+        play();
+    }
+}
 </script>

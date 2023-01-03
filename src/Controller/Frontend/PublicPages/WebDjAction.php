@@ -39,7 +39,6 @@ final class WebDjAction
         }
 
         $wss_url = (string)$backend->getWebStreamingUrl($station, $request->getRouter()->getBaseUrl());
-        $wss_url = str_replace('wss://', '', $wss_url);
 
         return $request->getView()->renderToResponse(
             response: $response->withHeader('X-Frame-Options', '*'),

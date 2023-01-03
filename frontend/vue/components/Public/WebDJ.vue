@@ -7,7 +7,7 @@
         <div class="container pt-5">
             <div class="form-row">
                 <div class="col-md-4 mb-sm-4">
-                    <settings-panel v-bind="{ stationName, baseUri, libUrls }" />
+                    <settings-panel :station-name="stationName" />
                 </div>
 
                 <div class="col-md-8">
@@ -36,57 +36,34 @@
     </section>
 </template>
 
-<script>
+<script setup>
 import MixerPanel from './WebDJ/MixerPanel.vue';
 import MicrophonePanel from './WebDJ/MicrophonePanel.vue';
 import PlaylistPanel from './WebDJ/PlaylistPanel.vue';
 import SettingsPanel from './WebDJ/SettingsPanel.vue';
+import {useProvideWebDjNode, useWebDjNode} from "~/components/Public/WebDJ/useWebDjNode";
+import {ref} from "vue";
+import {useProvideWebcaster, useWebcaster, webcasterProps} from "~/components/Public/WebDJ/useWebcaster";
+import {useProvideMixer} from "~/components/Public/WebDJ/useMixerValue";
+import {useProvidePassthroughSync} from "~/components/Public/WebDJ/usePassthroughSync";
 
-import Stream from './WebDJ/Stream.js';
+const props = defineProps({
+    ...webcasterProps,
+    stationName: {
+        type: String,
+        required: true
+    },
+});
 
-export default {
-    components: {
-        MixerPanel,
-        MicrophonePanel,
-        PlaylistPanel,
-        SettingsPanel
-    },
-    provide: function () {
-        return {
-            getStream: this.getStream,
-            resumeStream: this.resumeStream
-        };
-    },
-    props: {
-        stationName: {
-            type: String,
-            required: true
-        },
-        libUrls: {
-            type: Array,
-            default: () => {
-                return [];
-            }
-        },
-        baseUri: {
-            type: String,
-            required: true
-        }
-    },
-    data: function () {
-        return {
-            'stream': Stream
-        };
-    },
-    methods: {
-        getStream: function () {
-            this.stream.init();
+const webcaster = useWebcaster(props);
+useProvideWebcaster(webcaster);
 
-            return this.stream;
-        },
-        resumeStream: function () {
-            this.stream.resumeContext();
-        }
-    }
-};
+const node = useWebDjNode(webcaster);
+useProvideWebDjNode(node);
+
+const mixer = ref(1.0);
+useProvideMixer(mixer);
+
+const passthroughSync = ref('');
+useProvidePassthroughSync(passthroughSync);
 </script>

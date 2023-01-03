@@ -118,14 +118,12 @@
             </div>
 
             <div class="radio-control-mute-button">
-                <a
-                    href="#"
+                <mute-button
                     class="text-secondary"
-                    :title="$gettext('Mute')"
-                    @click.prevent="toggleMute"
-                >
-                    <icon icon="volume_mute" />
-                </a>
+                    :volume="volume"
+                    :is-muted="isMuted"
+                    @toggle-mute="toggleMute"
+                />
             </div>
             <div class="radio-control-volume-slider">
                 <input
@@ -136,18 +134,7 @@
                     min="0"
                     max="100"
                     step="1"
-                    :disabled="isMuted"
                 >
-            </div>
-            <div class="radio-control-max-volume-button">
-                <a
-                    href="#"
-                    class="text-secondary"
-                    :title="$gettext('Full Volume')"
-                    @click.prevent="fullVolume"
-                >
-                    <icon icon="volume_up" />
-                </a>
             </div>
         </div>
     </div>
@@ -155,7 +142,6 @@
 
 <script setup>
 import AudioPlayer from '~/components/Common/AudioPlayer';
-import Icon from '~/components/Common/Icon';
 import PlayButton from "~/components/Common/PlayButton";
 import {computed, onMounted, ref, shallowRef, watch} from "vue";
 import {useStorage} from "@vueuse/core";
@@ -163,6 +149,7 @@ import formatTime from "~/functions/formatTime";
 import {useTranslate} from "~/vendor/gettext";
 import useNowPlaying from "~/functions/useNowPlaying";
 import playerProps from "~/components/Public/playerProps";
+import MuteButton from "~/components/Common/MuteButton.vue";
 
 const props = defineProps({
     ...playerProps
@@ -257,10 +244,6 @@ const isMuted = useStorage('player_is_muted', false);
 const toggleMute = () => {
     isMuted.value = !isMuted.value;
 }
-
-const fullVolume = () => {
-    volume.value = 100;
-};
 
 const switchStream = (new_stream) => {
     currentStream.value = new_stream;

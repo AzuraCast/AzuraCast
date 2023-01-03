@@ -149,6 +149,10 @@ const types = computed(() => {
 const themes = computed(() => {
     return [
         {
+            value: 'browser',
+            text: $gettext('Browser Default')
+        },
+        {
             value: 'light',
             text: $gettext('Light')
         },
@@ -180,7 +184,9 @@ const baseEmbedUrl = computed(() => {
 });
 
 const embedUrl = computed(() => {
-    return baseEmbedUrl.value + '?theme=' + selectedTheme.value;
+    return (selectedTheme.value !== "browser")
+        ? baseEmbedUrl.value + '?theme=' + selectedTheme.value
+        : baseEmbedUrl.value;
 });
 
 const embedHeight = computed(() => {

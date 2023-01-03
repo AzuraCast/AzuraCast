@@ -48,10 +48,7 @@
                     </tr>
                 </tbody>
             </table>
-            <div
-                v-if="userCanManageProfile"
-                class="card-actions"
-            >
+            <div class="card-actions">
                 <a
                     class="btn btn-outline-danger"
                     @click.prevent="doOpenEmbed"
@@ -59,14 +56,16 @@
                     <icon icon="code" />
                     {{ $gettext('Embed Widgets') }}
                 </a>
-                <a
-                    class="btn btn-outline-danger"
-                    :data-confirm-title="$gettext('Disable public pages?')"
-                    :href="togglePublicPageUri"
-                >
-                    <icon icon="close" />
-                    {{ $gettext('Disable') }}
-                </a>
+                <template v-if="userCanManageProfile">
+                    <a
+                        class="btn btn-outline-danger"
+                        :data-confirm-title="$gettext('Disable public pages?')"
+                        :href="togglePublicPageUri"
+                    >
+                        <icon icon="close" />
+                        {{ $gettext('Disable') }}
+                    </a>
+                </template>
             </div>
             <embed-modal
                 v-bind="$props"

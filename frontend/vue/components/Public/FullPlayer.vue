@@ -8,7 +8,7 @@
 
                 <div class="stations nowplaying">
                     <radio-player
-                        v-bind="$props"
+                        v-bind="pickProps(props, playerProps)"
                         @np_updated="onNowPlayingUpdate"
                     />
                 </div>
@@ -59,6 +59,7 @@ import Icon from '~/components/Common/Icon';
 import RadioPlayer from './Player.vue';
 import {ref} from "vue";
 import playerProps from "~/components/Public/playerProps";
+import {pickProps} from "~/functions/pickProps";
 
 const props = defineProps({
     ...playerProps,

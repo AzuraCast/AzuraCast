@@ -1,5 +1,14 @@
 export default {
-    locale: String,
-    stationTimeZone: String,
-    quotaUrl: String
+    locale: {
+        type: String,
+        required: true
+    },
+    stationTimeZone: {
+        type: String,
+        required: true
+    },
+    quotaUrl: {
+        type: String,
+        required: true
+    }
 }

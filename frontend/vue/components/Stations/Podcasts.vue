@@ -1,13 +1,13 @@
 <template>
     <episodes-view
         v-if="activePodcast"
-        v-bind="$props"
+        v-bind="pickProps(props, episodesViewProps)"
         :podcast="activePodcast"
         @clear-podcast="onClearPodcast"
     />
     <list-view
         v-else
-        v-bind="$props"
+        v-bind="pickProps(props, listViewProps)"
         @select-podcast="onSelectPodcast"
     />
 </template>
@@ -18,6 +18,7 @@ import ListView from './Podcasts/ListView';
 import {ref} from "vue";
 import episodesViewProps from "./Podcasts/episodesViewProps";
 import listViewProps from "./Podcasts/listViewProps";
+import {pickProps} from "~/functions/pickProps";
 
 const props = defineProps({
     ...episodesViewProps,

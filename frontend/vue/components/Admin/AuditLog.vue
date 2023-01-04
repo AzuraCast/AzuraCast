@@ -165,7 +165,9 @@ const formatTimestamp = (unix_timestamp) => {
     const {timeConfig} = useAzuraCast();
 
     return DateTime.fromSeconds(unix_timestamp).toLocaleString(
-        {...DateTime.DATETIME_SHORT, timeConfig}
+        {
+            ...DateTime.DATETIME_SHORT, ...timeConfig
+        }
     );
 }
 </script>

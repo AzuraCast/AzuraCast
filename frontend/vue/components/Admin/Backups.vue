@@ -268,7 +268,7 @@ const toLocaleTime = (timestamp) => {
     const {timeConfig} = useAzuraCast();
 
     return DateTime.fromSeconds(timestamp).toLocaleString(
-        {...DateTime.DATETIME_SHORT, timeConfig}
+        {...DateTime.DATETIME_SHORT, ...timeConfig}
     );
 };
 

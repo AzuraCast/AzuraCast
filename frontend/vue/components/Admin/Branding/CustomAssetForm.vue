@@ -38,70 +38,69 @@
     </b-media>
 </template>
 
-<script>
+<script setup>
+import {onMounted, ref, watch} from "vue";
+import {useAxios} from "~/vendor/axios";
+import {useNotify} from "~/vendor/bootstrapVue";
 
-export default {
-    name: 'CustomAssetForm',
-    props: {
-        id: {
-            type: String,
-            required: true
-        },
-        apiUrl: {
-            type: String,
-            required: true
-        },
-        caption: {
-            type: String,
-            required: true
-        }
+const props = defineProps({
+    id: {
+        type: String,
+        required: true
     },
-    data() {
-        return {
-            loading: true,
-            isUploaded: false,
-            url: null,
-            file: null,
-        };
+    apiUrl: {
+        type: String,
+        required: true
     },
-    watch: {
-        file(newFile) {
-            if (null === newFile) {
-                return;
-            }
-
-            let formData = new FormData();
-            formData.append('file', this.file);
-
-            this.$wrapWithLoading(
-                this.axios.post(this.apiUrl, formData)
-            ).finally(() => {
-                this.relist();
-            });
-        }
-    },
-    mounted() {
-        this.relist();
-    },
-    methods: {
-        relist() {
-            this.file = null;
-            this.loading = true;
-
-            this.axios.get(this.apiUrl).then((resp) => {
-                this.isUploaded = resp.data.is_uploaded;
-                this.url = resp.data.url;
-
-                this.loading = false;
-            });
-        },
-        clear() {
-            this.$wrapWithLoading(
-                this.axios.delete(this.apiUrl)
-            ).finally(() => {
-                this.relist();
-            });
-        },
+    caption: {
+        type: String,
+        required: true
     }
-}
+});
+
+const loading = ref(true);
+const isUploaded = ref(false);
+const url = ref(null);
+const file = ref(null);
+
+const {axios} = useAxios();
+
+const relist = () => {
+    file.value = null;
+    loading.value = true;
+
+    axios.get(this.apiUrl).then((resp) => {
+        isUploaded.value = resp.data.is_uploaded;
+        url.value = resp.data.url;
+
+        loading.value = false;
+    });
+};
+
+onMounted(relist);
+
+const {wrapWithLoading} = useNotify();
+
+watch(file, (newFile) => {
+    if (null === newFile) {
+        return;
+    }
+
+    let formData = new FormData();
+    formData.append('file', newFile);
+
+    wrapWithLoading(
+        axios.post(props.apiUrl, formData)
+    ).finally(() => {
+        relist();
+    });
+});
+
+const clear = () => {
+    wrapWithLoading(
+        axios.delete(props.apiUrl)
+    ).finally(() => {
+        relist();
+    });
+};
 </script>

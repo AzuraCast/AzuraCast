@@ -32,7 +32,7 @@
 
         <data-table
             id="admin_storage_locations"
-            ref="datatable"
+            ref="$datatable"
             :show-toolbar="false"
             :fields="fields"
             :responsive="false"
@@ -87,130 +87,133 @@
     </b-card>
 
     <edit-modal
-        ref="editModal"
+        ref="$editModal"
         :create-url="listUrl"
         :type="activeType"
         @relist="relist"
     />
 </template>
 
-<script>
+<script setup>
 import DataTable from '~/components/Common/DataTable';
 import EditModal from './StorageLocations/EditModal';
 import Icon from '~/components/Common/Icon';
+import {computed, ref} from "vue";
+import {useTranslate} from "~/vendor/gettext";
+import {useNotify} from "~/vendor/bootstrapVue";
+import {useAxios} from "~/vendor/axios";
+import {useSweetAlert} from "~/vendor/sweetalert";
 
-export default {
-    name: 'AdminStorageLocations',
-    components: {Icon, EditModal, DataTable},
-    props: {
-        listUrl: {
-            type: String,
-            required: true
-        }
-    },
-    data() {
-        return {
-            activeType: 'station_media',
-            fields: [
-                {key: 'adapter', label: this.$gettext('Adapter'), sortable: false},
-                {key: 'space', label: this.$gettext('Space Used'), class: 'text-nowrap', sortable: false},
-                {key: 'stations', label: this.$gettext('Station(s)'), sortable: false},
-                {key: 'actions', label: this.$gettext('Actions'), class: 'shrink', sortable: false}
-            ]
-        };
-    },
-    computed: {
-        tabs() {
-            return [
-                {
-                    type: 'station_media',
-                    title: this.$gettext('Station Media')
-                },
-                {
-                    type: 'station_recordings',
-                    title: this.$gettext('Station Recordings')
-                },
-                {
-                    type: 'station_podcasts',
-                    title: this.$gettext('Station Podcasts'),
-                },
-                {
-                    type: 'backup',
-                    title: this.$gettext('Backups')
-                }
-            ]
-        },
-        listUrlForType() {
-            return this.listUrl + '?type=' + this.activeType;
-        }
-    },
-    methods: {
-        setType (type) {
-            this.activeType = type;
-            this.relist();
-        },
-        getAdapterName (adapter) {
-            switch (adapter) {
-                case 'local':
-                    return this.$gettext('Local');
-
-                case 's3':
-                    return this.$gettext('Remote: S3 Compatible');
-
-                case 'dropbox':
-                    return this.$gettext('Remote: Dropbox');
-                    
-                case 'sftp':
-                    return this.$gettext('Remote: SFTP');
-            }
-        },
-        getSpaceUsed(item) {
-            return (item.storageAvailable)
-                ? item.storageUsed + ' / ' + item.storageAvailable
-                : item.storageUsed;
-        },
-        getProgressVariant(percent) {
-            if (percent > 85) {
-                return 'danger';
-            } else if (percent > 65) {
-                return 'warning';
-            } else {
-                return 'default';
-            }
-        },
-        relist() {
-            this.$refs.datatable.refresh();
-        },
-        doCreate() {
-            this.$refs.editModal.create();
-        },
-        doEdit(url) {
-            this.$refs.editModal.edit(url);
-        },
-        doModify(url) {
-            this.$notify(this.$gettext('Applying changes...'), {
-                variant: 'warning'
-            });
-
-            this.axios.put(url).then((resp) => {
-                this.$notifySuccess(resp.data.message);
-                this.relist();
-            });
-        },
-        doDelete (url) {
-            this.$confirmDelete({
-                title: this.$gettext('Delete Storage Location?'),
-            }).then((result) => {
-                if (result.value) {
-                    this.$wrapWithLoading(
-                        this.axios.delete(url)
-                    ).then((resp) => {
-                        this.$notifySuccess(resp.data.message);
-                        this.relist();
-                    });
-                }
-            });
-        }
+const props = defineProps({
+    listUrl: {
+        type: String,
+        required: true
     }
+});
+
+const activeType = ref('station_media');
+
+const listUrlForType = computed(() => {
+    return props.listUrl + '?type=' + activeType.value;
+});
+
+const {$gettext} = useTranslate();
+
+const fields = [
+    {key: 'adapter', label: $gettext('Adapter'), sortable: false},
+    {key: 'space', label: $gettext('Space Used'), class: 'text-nowrap', sortable: false},
+    {key: 'stations', label: $gettext('Station(s)'), sortable: false},
+    {key: 'actions', label: $gettext('Actions'), class: 'shrink', sortable: false}
+];
+
+const tabs = [
+    {
+        type: 'station_media',
+        title: $gettext('Station Media')
+    },
+    {
+        type: 'station_recordings',
+        title: $gettext('Station Recordings')
+    },
+    {
+        type: 'station_podcasts',
+        title: $gettext('Station Podcasts'),
+    },
+    {
+        type: 'backup',
+        title: $gettext('Backups')
+    }
+];
+
+const $datatable = ref(); // Template Ref
+
+const relist = () => {
+    $datatable.value.refresh();
+};
+
+const $editModal = ref(); // Template Ref
+
+const doCreate = () => {
+    $editModal.value.create();
+};
+
+const doEdit = (url) => {
+    $editModal.value.edit(url);
+};
+
+const setType = (type) => {
+    activeType.value = type;
+    relist();
+};
+
+const getAdapterName = (adapter) => {
+    switch (adapter) {
+        case 'local':
+            return $gettext('Local');
+
+        case 's3':
+            return $gettext('Remote: S3 Compatible');
+
+        case 'dropbox':
+            return $gettext('Remote: Dropbox');
+
+        case 'sftp':
+            return $gettext('Remote: SFTP');
+    }
+};
+
+const getSpaceUsed = (item) => {
+    return (item.storageAvailable)
+        ? item.storageUsed + ' / ' + item.storageAvailable
+        : item.storageUsed;
+};
+
+const getProgressVariant = (percent) => {
+    if (percent > 85) {
+        return 'danger';
+    } else if (percent > 65) {
+        return 'warning';
+    } else {
+        return 'default';
+    }
+};
+
+const {notifySuccess, wrapWithLoading} = useNotify();
+const {confirmDelete} = useSweetAlert();
+const {axios} = useAxios();
+
+const doDelete = (url) => {
+    confirmDelete({
+        title: $gettext('Delete Storage Location?'),
+    }).then((result) => {
+        if (result.value) {
+            wrapWithLoading(
+                axios.delete(url)
+            ).then((resp) => {
+                notifySuccess(resp.data.message);
+                relist();
+            });
+        }
+    });
 };
 </script>

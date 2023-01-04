@@ -126,11 +126,3 @@ defineExpose({
     edit
 });
 </script>
-
-<script>
-import {defineComponent} from "vue";
-
-export default defineComponent({
-    inheritAttrs: false,
-});
-</script>

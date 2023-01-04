@@ -69,7 +69,7 @@ const props = defineProps({
     },
     name: {
         type: String,
-        required: true,
+        default: null
     },
     field: {
         type: Object,

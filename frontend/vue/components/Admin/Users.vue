@@ -18,7 +18,7 @@
 
         <data-table
             id="users"
-            ref="datatable"
+            ref="$datatable"
             paginated
             :fields="fields"
             :api-url="listUrl"
@@ -79,64 +79,75 @@
     </b-card>
 
     <edit-modal
-        ref="editModal"
+        ref="$editModal"
         :create-url="listUrl"
         :roles="roles"
         @relist="relist"
     />
 </template>
 
-<script>
+<script setup>
 import DataTable from '~/components/Common/DataTable';
 import EditModal from './Users/EditModal';
 import Icon from '~/components/Common/Icon';
+import {useTranslate} from "~/vendor/gettext";
+import {ref} from "vue";
+import {useNotify} from "~/vendor/bootstrapVue";
+import {useSweetAlert} from "~/vendor/sweetalert";
+import {useAxios} from "~/vendor/axios";
 
-export default {
-    name: 'AdminPermissions',
-    components: {Icon, EditModal, DataTable},
-    props: {
-        listUrl: {
-            type: String,
-            required: true
-        },
-        roles: {
-            type: Object,
-            required: true
-        }
+const props = defineProps({
+    listUrl: {
+        type: String,
+        required: true
     },
-    data() {
-        return {
-            fields: [
-                {key: 'name', isRowHeader: true, label: this.$gettext('User Name'), sortable: true},
-                {key: 'roles', label: this.$gettext('Roles'), sortable: false},
-                {key: 'actions', label: this.$gettext('Actions'), sortable: false, class: 'shrink'}
-            ]
-        };
-    },
-    methods: {
-        relist() {
-            this.$refs.datatable.refresh();
-        },
-        doCreate() {
-            this.$refs.editModal.create();
-        },
-        doEdit(url) {
-            this.$refs.editModal.edit(url);
-        },
-        doDelete(url) {
-            this.$confirmDelete({
-                title: this.$gettext('Delete User?'),
-            }).then((result) => {
-                if (result.value) {
-                    this.$wrapWithLoading(
-                        this.axios.delete(url)
-                    ).then((resp) => {
-                        this.$notifySuccess(resp.data.message);
-                        this.relist();
-                    });
-                }
+    roles: {
+        type: Object,
+        required: true
+    }
+});
+
+const {$gettext} = useTranslate();
+
+const fields = [
+    {key: 'name', isRowHeader: true, label: $gettext('User Name'), sortable: true},
+    {key: 'roles', label: $gettext('Roles'), sortable: false},
+    {key: 'actions', label: $gettext('Actions'), sortable: false, class: 'shrink'}
+];
+
+const $datatable = ref(); // Template Ref
+
+const relist = () => {
+    $datatable.value.refresh();
+};
+
+const $editModal = ref(); // Template Ref
+
+const doCreate = () => {
+    $editModal.value.create();
+};
+
+const doEdit = (url) => {
+    $editModal.value.edit(url);
+};
+
+const {wrapWithLoading, notifySuccess} = useNotify();
+const {confirmDelete} = useSweetAlert();
+const {axios} = useAxios();
+
+const doDelete = (url) => {
+    confirmDelete({
+        title: $gettext('Delete User?'),
+    }).then((result) => {
+        if (result.value) {
+            wrapWithLoading(
+                axios.delete(url)
+            ).then((resp) => {
+                notifySuccess(resp.data.message);
+                relist();
             });
         }
-    }
-};
+    });
+}
+
 </script>

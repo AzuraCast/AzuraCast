@@ -227,7 +227,7 @@ export default defineComponent({
     props: {
         id: {
             type: String,
-            required: true
+            default: null
         },
         apiUrl: {
             type: String,

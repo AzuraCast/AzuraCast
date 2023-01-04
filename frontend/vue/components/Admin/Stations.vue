@@ -18,7 +18,7 @@
 
         <data-table
             id="stations"
-            ref="datatable"
+            ref="$datatable"
             paginated
             :fields="fields"
             :api-url="listUrl"
@@ -72,87 +72,103 @@
     </b-card>
 
     <admin-stations-edit-modal
-        v-bind="$props"
-        ref="editModal"
+        v-bind="pickProps(props, stationFormProps)"
+        ref="$editModal"
         :create-url="listUrl"
         @relist="relist"
     />
 
     <admin-stations-clone-modal
-        ref="cloneModal"
+        ref="$cloneModal"
         @relist="relist"
     />
 </template>
 
-<script>
+<script setup>
 import DataTable from '~/components/Common/DataTable';
 import Icon from '~/components/Common/Icon';
 import AdminStationsEditModal from "./Stations/EditModal";
 import {get} from "lodash";
 import AdminStationsCloneModal from "./Stations/CloneModal";
 import stationFormProps from "./Stations/stationFormProps";
+import {pickProps} from "~/functions/pickProps";
+import {useTranslate} from "~/vendor/gettext";
+import {ref} from "vue";
+import {useNotify} from "~/vendor/bootstrapVue";
+import {useAxios} from "~/vendor/axios";
+import {useSweetAlert} from "~/vendor/sweetalert";
 
-export default {
-    name: 'AdminPermissions',
-    components: {AdminStationsCloneModal, AdminStationsEditModal, Icon, DataTable},
-    props: {
-        ...stationFormProps,
-        listUrl: {
-            type: String,
-            required: true
-        },
-        frontendTypes: {
-            type: Object,
-            required: true
-        },
-        backendTypes: {
-            type: Object,
-            required: true
-        }
+const props = defineProps({
+    ...stationFormProps,
+    listUrl: {
+        type: String,
+        required: true
     },
-    data() {
-        return {
-            fields: [
-                {key: 'name', isRowHeader: true, label: this.$gettext('Name'), sortable: true},
-                {key: 'frontend_type', label: this.$gettext('Broadcasting'), sortable: false},
-                {key: 'backend_type', label: this.$gettext('AutoDJ'), sortable: false},
-                {key: 'actions', label: this.$gettext('Actions'), sortable: false, class: 'shrink'}
-            ]
-        };
+    frontendTypes: {
+        type: Object,
+        required: true
     },
-    methods: {
-        relist() {
-            this.$refs.datatable.refresh();
-        },
-        doCreate() {
-            this.$refs.editModal.create();
-        },
-        doEdit(url) {
-            this.$refs.editModal.edit(url);
-        },
-        doClone(stationName, url) {
-            this.$refs.cloneModal.create(stationName, url);
-        },
-        doDelete(url) {
-            this.$confirmDelete({
-                title: this.$gettext('Delete Station?'),
-            }).then((result) => {
-                if (result.value) {
-                    this.$wrapWithLoading(
-                        this.axios.delete(url)
-                    ).then((resp) => {
-                        this.$notifySuccess(resp.data.message);
-                        this.relist();
-                    });
-                }
-            });
-        },
-        getFrontendName(frontend_type) {
-            return get(this.frontendTypes, [frontend_type, 'name'], '');
-        },
-        getBackendName(backend_type) {
-            return get(this.backendTypes, [backend_type, 'name'], '');
-        }
+    backendTypes: {
+        type: Object,
+        required: true
     }
+});
+
+const {$gettext} = useTranslate();
+
+const fields = [
+    {key: 'name', isRowHeader: true, label: $gettext('Name'), sortable: true},
+    {key: 'frontend_type', label: $gettext('Broadcasting'), sortable: false},
+    {key: 'backend_type', label: $gettext('AutoDJ'), sortable: false},
+    {key: 'actions', label: $gettext('Actions'), sortable: false, class: 'shrink'}
+];
+
+const getFrontendName = (frontend_type) => {
+    return get(props.frontendTypes, [frontend_type, 'name'], '');
+};
+
+const getBackendName = (backend_type) => {
+    return get(props.backendTypes, [backend_type, 'name'], '');
+};
+
+const $datatable = ref(); // Template Ref
+
+const relist = () => {
+    $datatable.value.refresh();
+};
+
+const $editModal = ref(); // Template Ref
+
+const doCreate = () => {
+    $editModal.value.create();
+};
+
+const doEdit = (url) => {
+    $editModal.value.edit(url);
+};
+
+const $cloneModal = ref(); // Template Ref
+
+const doClone = (stationName, url) => {
+    $cloneModal.value.create(stationName, url);
+};
+
+const {wrapWithLoading, notifySuccess} = useNotify();
+const {confirmDelete} = useSweetAlert();
+const {axios} = useAxios();
+
+const doDelete = (url) => {
+    confirmDelete({
+        title: $gettext('Delete Station?'),
+    }).then((result) => {
+        if (result.value) {
+            wrapWithLoading(
+                axios.delete(url)
+            ).then((resp) => {
+                notifySuccess(resp.data.message);
+                relist();
+            });
+        }
+    });
 };
 </script>

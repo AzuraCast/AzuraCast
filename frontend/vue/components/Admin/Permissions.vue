@@ -26,7 +26,7 @@
 
         <data-table
             id="permissions"
-            ref="datatable"
+            ref="$datatable"
             paginated
             :fields="fields"
             :api-url="listUrl"
@@ -71,7 +71,7 @@
     </b-card>
 
     <edit-modal
-        ref="editModal"
+        ref="$editModal"
         :create-url="listUrl"
         :station-permissions="stationPermissions"
         :stations="stations"
@@ -80,80 +80,93 @@
     />
 </template>
 
-<script>
+<script setup>
 import DataTable from '~/components/Common/DataTable';
 import EditModal from './Permissions/EditModal';
 import Icon from '~/components/Common/Icon';
 import InfoCard from '~/components/Common/InfoCard';
 import {filter, get, map} from 'lodash';
+import {useTranslate} from "~/vendor/gettext";
+import {ref} from "vue";
+import {useNotify} from "~/vendor/bootstrapVue";
+import {useAxios} from "~/vendor/axios";
+import {useSweetAlert} from "~/vendor/sweetalert";
 
-export default {
-    name: 'AdminPermissions',
-    components: {InfoCard, Icon, EditModal, DataTable},
-    props: {
-        listUrl: {
-            type: String,
-            required: true
-        },
-        stations: {
-            type: Array,
-            required: true
-        },
-        globalPermissions: {
-            type: Array,
-            required: true
-        },
-        stationPermissions: {
-            type: Array,
-            required: true
-        }
+const props = defineProps({
+    listUrl: {
+        type: String,
+        required: true
     },
-    data() {
-        return {
-            fields: [
-                {key: 'name', isRowHeader: true, label: this.$gettext('Role Name'), sortable: true},
-                {key: 'permissions', label: this.$gettext('Permissions'), sortable: false},
-                {key: 'actions', label: this.$gettext('Actions'), sortable: false, class: 'shrink'}
-            ]
-        };
+    stations: {
+        type: Array,
+        required: true
     },
-    methods: {
-        getGlobalPermissionNames(permissions) {
-            return filter(map(permissions, (permission) => {
-                return get(this.globalPermissions, permission, null);
-            }));
-        },
-        getStationPermissionNames(permissions) {
-            return filter(map(permissions, (permission) => {
-                return get(this.stationPermissions, permission, null);
-            }));
-        },
-        getStationName(stationId) {
-            return get(this.stations, stationId, null);
-        },
-        relist() {
-            this.$refs.datatable.refresh();
-        },
-        doCreate() {
-            this.$refs.editModal.create();
-        },
-        doEdit(url) {
-            this.$refs.editModal.edit(url);
-        },
-        doDelete(url) {
-            this.$confirmDelete({
-                title: this.$gettext('Delete Role?'),
-            }).then((result) => {
-                if (result.value) {
-                    this.$wrapWithLoading(
-                        this.axios.delete(url)
-                    ).then((resp) => {
-                        this.$notifySuccess(resp.data.message);
-                        this.relist();
-                    });
-                }
+    globalPermissions: {
+        type: Array,
+        required: true
+    },
+    stationPermissions: {
+        type: Array,
+        required: true
+    }
+});
+
+const {$gettext} = useTranslate();
+
+const fields = [
+    {key: 'name', isRowHeader: true, label: $gettext('Role Name'), sortable: true},
+    {key: 'permissions', label: $gettext('Permissions'), sortable: false},
+    {key: 'actions', label: $gettext('Actions'), sortable: false, class: 'shrink'}
+];
+
+const getGlobalPermissionNames = (permissions) => {
+    return filter(map(permissions, (permission) => {
+        return get(props.globalPermissions, permission, null);
+    }));
+};
+
+const getStationPermissionNames = (permissions) => {
+    return filter(map(permissions, (permission) => {
+        return get(props.stationPermissions, permission, null);
+    }));
+};
+
+const getStationName = (stationId) => {
+    return get(props.stations, stationId, null);
+};
+
+const $datatable = ref(); // Template Ref
+
+const relist = () => {
+    $datatable.value.refresh();
+};
+
+const $editModal = ref(); // Template Ref
+
+const doCreate = () => {
+    $editModal.value.create();
+};
+
+const doEdit = (url) => {
+    $editModal.value.edit(url);
+};
+
+const {wrapWithLoading, notifySuccess} = useNotify();
+const {confirmDelete} = useSweetAlert();
+const {axios} = useAxios();
+
+const doDelete = (url) => {
+    confirmDelete({
+        title: $gettext('Delete Role?'),
+    }).then((result) => {
+        if (result.value) {
+            wrapWithLoading(
+                axios.delete(url)
+            ).then((resp) => {
+                notifySuccess(resp.data.message);
+                relist();
             });
         }
-    }
-};
+    });
+}
 </script>

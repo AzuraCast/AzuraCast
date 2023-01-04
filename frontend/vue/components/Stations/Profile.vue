@@ -1,6 +1,6 @@
 <template>
     <profile-header
-        v-bind="$props"
+        v-bind="pickProps(props, headerPanelProps)"
         :np="np"
     />
 
@@ -10,7 +10,7 @@
     >
         <div class="col-lg-7">
             <profile-now-playing
-                v-bind="$props"
+                v-bind="pickProps(props, nowPlayingPanelProps)"
                 :np="np"
             />
 
@@ -20,34 +20,35 @@
             />
 
             <profile-streams
-                v-bind="$props"
                 :np="np"
             />
 
-            <profile-public-pages v-bind="$props" />
+            <profile-public-pages
+                v-bind="pickProps(props, {...publicPagesPanelProps,...embedModalProps})"
+            />
         </div>
 
         <div class="col-lg-5">
             <profile-requests
                 v-if="stationSupportsRequests"
-                v-bind="$props"
+                v-bind="pickProps(props, requestsPanelProps)"
             />
 
             <profile-streamers
                 v-if="stationSupportsStreamers"
-                v-bind="$props"
+                v-bind="pickProps(props, streamersPanelProps)"
             />
 
             <template v-if="hasActiveFrontend">
                 <profile-frontend
-                    v-bind="$props"
+                    v-bind="pickProps(props, frontendPanelProps)"
                     :np="np"
                 />
             </template>
 
             <template v-if="hasActiveBackend">
                 <profile-backend
-                    v-bind="$props"
+                    v-bind="pickProps(props, backendPanelProps)"
                     :np="np"
                 />
             </template>
@@ -57,12 +58,6 @@
         </div>
     </div>
 </template>
-
-<script>
-export default {
-    inheritAttrs: false
-};
-</script>
 
 <script setup>
 import ProfileStreams from './Profile/StreamsPanel';
@@ -87,6 +82,7 @@ import nowPlayingPanelProps from "./Profile/nowPlayingPanelProps";
 import publicPagesPanelProps from "./Profile/publicPagesPanelProps";
 import requestsPanelProps from "./Profile/requestsPanelProps";
 import streamersPanelProps from "./Profile/streamersPanelProps";
+import {pickProps} from "~/functions/pickProps";
 
 const props = defineProps({
     ...backendPanelProps,

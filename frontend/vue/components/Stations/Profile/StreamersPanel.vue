@@ -57,12 +57,6 @@
     </section>
 </template>
 
-<script>
-export default {
-    inheritAttrs: false
-};
-</script>
-
 <script setup>
 import Icon from "~/components/Common/Icon.vue";
 import EnabledBadge from "~/components/Common/Badges/EnabledBadge.vue";

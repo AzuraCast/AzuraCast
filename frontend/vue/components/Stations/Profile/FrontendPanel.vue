@@ -123,12 +123,6 @@
     </section>
 </template>
 
-<script>
-export default {
-    inheritAttrs: false
-};
-</script>
-
 <script setup>
 import {FRONTEND_ICECAST, FRONTEND_SHOUTCAST} from '~/components/Entity/RadioAdapters';
 import CopyToClipboardButton from '~/components/Common/CopyToClipboardButton';

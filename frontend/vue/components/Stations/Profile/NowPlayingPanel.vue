@@ -195,12 +195,6 @@
     </section>
 </template>
 
-<script>
-export default {
-    inheritAttrs: false
-};
-</script>
-
 <script setup>
 import {BACKEND_LIQUIDSOAP} from '~/components/Entity/RadioAdapters';
 import Icon from '~/components/Common/Icon';

@@ -37,12 +37,6 @@
     </div>
 </template>
 
-<script>
-export default {
-    inheritAttrs: false
-};
-</script>
-
 <script setup>
 import Icon from '~/components/Common/Icon';
 import PlayButton from "~/components/Common/PlayButton.vue";

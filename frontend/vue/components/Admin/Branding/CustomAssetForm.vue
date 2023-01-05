@@ -69,7 +69,7 @@ const relist = () => {
     file.value = null;
     loading.value = true;
 
-    axios.get(this.apiUrl).then((resp) => {
+    axios.get(props.apiUrl).then((resp) => {
         isUploaded.value = resp.data.is_uploaded;
         url.value = resp.data.url;
 

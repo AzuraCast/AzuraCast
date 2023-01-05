@@ -29,7 +29,7 @@ final class WebUpdater
         $client = $this->guzzleFactory->buildClient();
 
         $client->post(
-            'http://updater/v1/update',
+            'http://updater:8080/v1/update',
             [
                 'headers' => [
                     'Authorization' => 'Bearer ' . self::WATCHTOWER_TOKEN,

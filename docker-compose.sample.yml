@@ -205,7 +205,7 @@ services:
         max-file: "5"
 
   updater:
-    name: azuracast_updater
+    container_name: azuracast_updater
     image: ghcr.io/azuracast/updater:latest
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock

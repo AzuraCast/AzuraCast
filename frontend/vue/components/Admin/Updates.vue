@@ -105,17 +105,16 @@
                             :href="backupUrl"
                             target="_blank"
                         >
-                            <icon icon="cloud_sync" />
+                            <icon icon="backup" />
                             {{ $gettext('Backup') }}
                         </a>
                         <a
                             class="btn btn-outline-success"
-                            :data-confirm-title="$gettext('Update AzuraCast? Your installation will restart.')"
                             href="#"
                             @click.prevent="doUpdate()"
                         >
                             <icon icon="update" />
-                            {{ $gettext('Update AzuraCast via Web') }}
+                            {{ $gettext('Update via Web') }}
                         </a>
                     </div>
                 </template>
@@ -168,6 +167,7 @@ import Icon from "~/components/Common/Icon.vue";
 import {useTranslate} from "~/vendor/gettext";
 import {useNotify} from "~/vendor/bootstrapVue";
 import {useAxios} from "~/vendor/axios";
+import {useSweetAlert} from "~/vendor/sweetalert";
 
 const props = defineProps({
     releaseChannel: {
@@ -206,9 +206,9 @@ const langReleaseChannel = computed(() => {
 
 const needsUpdates = computed(() => {
     if (props.releaseChannel === 'stable') {
-        return updateInfo.value.needs_release_update;
+        return updateInfo.value?.needs_release_update ?? true;
     } else {
-        return updateInfo.value.needs_rolling_update;
+        return updateInfo.value?.needs_rolling_update ?? true;
     }
 });
 
@@ -223,13 +223,21 @@ const checkForUpdates = () => {
     });
 };
 
+const {showAlert} = useSweetAlert();
+
 const doUpdate = () => {
-    wrapWithLoading(
-        axios.put(props.updatesApiUrl)
-    ).then(() => {
-        notifySuccess(
-            $gettext('Update started. Your installation will restart shortly.')
-        );
+    showAlert({
+        title: $gettext('Update AzuraCast? Your installation will restart.')
+    }).then((result) => {
+        if (result.value) {
+            wrapWithLoading(
+                axios.put(props.updatesApiUrl)
+            ).then(() => {
+                notifySuccess(
+                    $gettext('Update started. Your installation will restart shortly.')
+                );
+            });
+        }
     });
 };
 </script>

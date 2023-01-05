@@ -115,6 +115,10 @@ return static function (RouteCollectorProxy $app) {
                 ->setName('admin:storage_locations:index')
                 ->add(new Middleware\Permissions(GlobalPermissions::StorageLocations));
 
+            $group->get('/updates', Controller\Admin\UpdatesAction::class)
+                ->setName('admin:updates:index')
+                ->add(new Middleware\Permissions(GlobalPermissions::All));
+
             $group->get('/users', Controller\Admin\UsersAction::class)
                 ->setName('admin:users:index')
                 ->add(new Middleware\Permissions(GlobalPermissions::All));

@@ -34,7 +34,8 @@ final class UpdatesAction
             props: [
                 'releaseChannel' => $this->version->getReleaseChannelEnum()->value,
                 'initialUpdateInfo' => $settings->getUpdateResults(),
-                'updatesApiUrl' => $router->fromHere('api:admin:updates'),
+                'backupUrl' => $router->named('admin:backups:index'),
+                'updatesApiUrl' => $router->named('api:admin:updates'),
                 'enableWebUpdates' => $this->environment->enableWebUpdater(),
             ],
         );

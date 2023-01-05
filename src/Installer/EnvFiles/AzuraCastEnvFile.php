@@ -227,6 +227,10 @@ final class AzuraCastEnvFile extends AbstractEnvFile
                     'options' => ['127.0.0.1', '*'],
                     'default' => '*',
                 ],
+                Environment::ENABLE_WEB_UPDATER => [
+                    'name' => __('Enable web-based Docker image updates'),
+                    'default' => true,
+                ],
             ];
 
             foreach ($config as $key => &$keyInfo) {

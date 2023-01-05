@@ -51,6 +51,8 @@ final class Environment
     public const PROFILING_EXTENSION_ALWAYS_ON = 'PROFILING_EXTENSION_ALWAYS_ON';
     public const PROFILING_EXTENSION_HTTP_KEY = 'PROFILING_EXTENSION_HTTP_KEY';
 
+    public const ENABLE_WEB_UPDATER = 'ENABLE_WEB_UPDATER';
+
     // Database and Cache Configuration Variables
     public const DB_HOST = 'MYSQL_HOST';
     public const DB_PORT = 'MYSQL_PORT';
@@ -84,6 +86,8 @@ final class Environment
         self::PROFILING_EXTENSION_ENABLED => 0,
         self::PROFILING_EXTENSION_ALWAYS_ON => 0,
         self::PROFILING_EXTENSION_HTTP_KEY => 'dev',
+
+        self::ENABLE_WEB_UPDATER => false,
     ];
 
     public function __construct(array $elements = [])
@@ -346,6 +350,11 @@ final class Environment
     public function getProfilingExtensionHttpKey(): string
     {
         return $this->data[self::PROFILING_EXTENSION_HTTP_KEY] ?? 'dev';
+    }
+
+    public function enableWebUpdater(): bool
+    {
+        return $this->isDocker() && self::envToBool($this->data[self::ENABLE_WEB_UPDATER] ?? false);
     }
 
     public static function getDefaultsForEnvironment(Environment $existingEnv): self

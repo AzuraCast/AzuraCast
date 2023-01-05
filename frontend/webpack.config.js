@@ -23,6 +23,7 @@ module.exports = {
         AdminStereoTool: '~/pages/Admin/StereoTool.js',
         AdminStations: '~/pages/Admin/Stations.js',
         AdminStorageLocations: '~/pages/Admin/StorageLocations.js',
+        AdminUpdates: '~/pages/Admin/Updates.js',
         AdminUsers: '~/pages/Admin/Users.js',
         PublicFullPlayer: '~/pages/Public/FullPlayer.js',
         PublicHistory: '~/pages/Public/History.js',

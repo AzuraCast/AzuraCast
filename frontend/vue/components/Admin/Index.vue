@@ -446,151 +446,159 @@
             </b-col>
         </b-row>
 
-        <cpu-stats-help-modal ref="cpuStatsHelpModal" />
-        <memory-stats-help-modal ref="memoryStatsHelpModal" />
+        <cpu-stats-help-modal ref="$cpuStatsHelpModal" />
+        <memory-stats-help-modal ref="$memoryStatsHelpModal" />
     </div>
 </template>
 
-<script>
+<script setup>
 import Icon from '~/components/Common/Icon';
 import CpuStatsHelpModal from "./Index/CpuStatsHelpModal";
 import MemoryStatsHelpModal from "./Index/MemoryStatsHelpModal";
 import {isObject, upperFirst} from 'lodash';
 import RunningBadge from "~/components/Common/Badges/RunningBadge.vue";
+import {onMounted, ref, shallowRef} from "vue";
+import {useAxios} from "~/vendor/axios";
+import {useNotify} from "~/vendor/bootstrapVue";
 
-export default {
-    name: 'AdminIndex',
-    components: {RunningBadge, CpuStatsHelpModal, MemoryStatsHelpModal, Icon},
-    props: {
-        adminPanels: {
-            type: Object,
-            required: true
+const props = defineProps({
+    adminPanels: {
+        type: Object,
+        required: true
+    },
+    statsUrl: {
+        type: String,
+        required: true
+    },
+    servicesUrl: {
+        type: String,
+        required: true
+    }
+});
+
+const stats = shallowRef({
+    cpu: {
+        total: {
+            name: 'Total',
+            steal: 0,
+            io_wait: 0,
+            usage: 0
         },
-        statsUrl: {
-            type: String,
-            required: true
+        cores: [],
+        load: [
+            0,
+            0,
+            0
+        ]
+    },
+    memory: {
+        bytes: {
+            total: 0,
+            used: 0,
+            cached: 0
         },
-        servicesUrl: {
-            type: String,
-            required: true
+        readable: {
+            total: '',
+            used: '',
+            cached: ''
         }
     },
-    data() {
-        return {
-            stats: {
-                cpu: {
-                    total: {
-                        name: 'Total',
-                        steal: 0,
-                        io_wait: 0,
-                        usage: 0
-                    },
-                    cores: [],
-                    load: [
-                        0,
-                        0,
-                        0
-                    ]
-                },
-                memory: {
-                    bytes: {
-                        total: 0,
-                        used: 0,
-                        cached: 0
-                    },
-                    readable: {
-                        total: '',
-                        used: '',
-                        cached: ''
-                    }
-                },
-                disk: {
-                    bytes: {
-                        total: 0,
-                        used: 0
-                    },
-                    readable: {
-                        total: '',
-                        used: ''
-                    }
-                },
-                network: []
-            },
-            services: []
-        };
+    disk: {
+        bytes: {
+            total: 0,
+            used: 0
+        },
+        readable: {
+            total: '',
+            used: ''
+        }
     },
-    created() {
-        this.updateStats();
-        this.updateServices();
-    },
-    methods: {
-        formatCpuName(cpuName) {
-            return upperFirst(cpuName);
-        },
-        formatPercentageString(value) {
-            return value + '%';
-        },
-        getNetworkInterfaceTableFields(interfaceData) {
-            let fields = [];
+    network: []
+});
 
-            Object.keys(interfaceData).forEach((key) => {
-                fields.push({
-                    key: key,
-                    sortable: false
-                });
-            });
+const services = ref([]);
 
-            return fields;
-        },
-        getNetworkInterfaceTableItems(interfaceData) {
-            let item = {};
+const formatCpuName = (cpuName) => upperFirst(cpuName);
 
-            Object.entries(interfaceData).forEach((data) => {
-                let key = data[0];
-                let value = data[1];
+const formatPercentageString = (value) => value + '%';
 
-                if (isObject(value)) {
-                    value = value.readable + '/s';
-                }
+const getNetworkInterfaceTableFields = (interfaceData) => {
+    let fields = [];
 
-                item[key] = value;
-            });
+    Object.keys(interfaceData).forEach((key) => {
+        fields.push({
+            key: key,
+            sortable: false
+        });
+    });
 
-            return [item];
-        },
-        updateStats() {
-            this.axios.get(this.statsUrl).then((response) => {
-                this.stats = response.data;
+    return fields;
+};
 
-                setTimeout(this.updateStats, (!document.hidden) ? 1000 : 5000);
-            }).catch((error) => {
-                if (!error.response || error.response.data.code !== 403) {
-                    setTimeout(this.updateStats, (!document.hidden) ? 5000 : 10000);
-                }
-            });
-        },
-        updateServices() {
-            this.axios.get(this.servicesUrl).then((response) => {
-                this.services = response.data;
+const getNetworkInterfaceTableItems = (interfaceData) => {
+    let item = {};
 
-                setTimeout(this.updateServices, (!document.hidden) ? 5000 : 15000);
-            }).catch((error) => {
-                if (!error.response || error.response.data.code !== 403) {
-                    setTimeout(this.updateServices, (!document.hidden) ? 15000 : 30000);
-                }
-            });
-        },
-        doRestart(serviceUrl) {
-            this.axios.post(serviceUrl).then((resp) => {
-                this.$notifySuccess(resp.data.message);
-            });
-        },
-        showCpuStatsHelpModal() {
-            this.$refs.cpuStatsHelpModal.create();
-        },
-        showMemoryStatsHelpModal() {
-            this.$refs.memoryStatsHelpModal.create();
-        },
-    }
+    Object.entries(interfaceData).forEach((data) => {
+        let key = data[0];
+        let value = data[1];
+
+        if (isObject(value)) {
+            value = value.readable + '/s';
+        }
+
+        item[key] = value;
+    });
+
+    return [item];
+};
+
+const {axios} = useAxios();
+
+const updateStats = () => {
+    axios.get(props.statsUrl).then((response) => {
+        stats.value = response.data;
+
+        setTimeout(updateStats, (!document.hidden) ? 1000 : 5000);
+    }).catch((error) => {
+        if (!error.response || error.response.data.code !== 403) {
+            setTimeout(updateStats, (!document.hidden) ? 5000 : 10000);
+        }
+    });
+};
+
+onMounted(updateStats);
+
+const updateServices = () => {
+    axios.get(props.servicesUrl).then((response) => {
+        services.value = response.data;
+
+        setTimeout(updateServices, (!document.hidden) ? 5000 : 15000);
+    }).catch((error) => {
+        if (!error.response || error.response.data.code !== 403) {
+            setTimeout(updateServices, (!document.hidden) ? 15000 : 30000);
+        }
+    });
+};
+
+onMounted(updateServices);
+
+const {notifySuccess} = useNotify();
+
+const doRestart = (serviceUrl) => {
+    axios.post(serviceUrl).then((resp) => {
+        notifySuccess(resp.data.message);
+    });
+};
+
+const $cpuStatsHelpModal = ref(); // Template Ref
+
+const showCpuStatsHelpModal = () => {
+    $cpuStatsHelpModal.value.create();
+};
+
+const $memoryStatsHelpModal = ref(); // Template Ref
+
+const showMemoryStatsHelpModal = () => {
+    $memoryStatsHelpModal.value.create();
 };
 </script>

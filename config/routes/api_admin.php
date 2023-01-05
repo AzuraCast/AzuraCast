@@ -211,6 +211,16 @@ return static function (RouteCollectorProxy $group) {
                         ->setName('api:admin:log');
                 }
             )->add(new Middleware\Permissions(GlobalPermissions::Logs));
+
+            $group->group(
+                '/updates',
+                function (RouteCollectorProxy $group) {
+                    $group->get('', Controller\Api\Admin\Updates\GetUpdatesAction::class)
+                        ->setName('api:admin:updates');
+
+                    $group->put('', Controller\Api\Admin\Updates\PutUpdatesAction::class);
+                }
+            )->add(new Middleware\Permissions(GlobalPermissions::All));
         }
     );
 };

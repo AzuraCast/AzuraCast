@@ -14,6 +14,8 @@ services:
   web:
     container_name: azuracast
     image: "azuracast.docker.scarf.sh/azuracast/azuracast:${AZURACAST_VERSION:-latest}"
+    labels:
+      - "com.centurylinklabs.watchtower.scope=azuracast"
     # Want to customize the HTTP/S ports? Follow the instructions here:
     # https://docs.azuracast.com/en/administration/docker#using-non-standard-ports
     ports:
@@ -197,6 +199,16 @@ services:
       nofile:
         soft: 65536
         hard: 65536
+    logging:
+      options:
+        max-size: "1m"
+        max-file: "5"
+
+  updater:
+    container_name: azuracast_updater
+    image: ghcr.io/azuracast/updater:latest
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
     logging:
       options:
         max-size: "1m"

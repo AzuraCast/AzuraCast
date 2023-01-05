@@ -5,6 +5,12 @@ release channel, you can take advantage of these new features and fixes.
 
 ## New Features/Changes
 
+- **Web Updater**: We're rolling out an initial test of our web updater component for Docker installations. Based on
+  [Watchtower](https://containrrr.dev/watchtower/), our updater sits outside our normal Docker image and can handle
+  pulling the latest image for your installation, spinning down the current version and updating to the newer one, all
+  from entirely within your web browser. Note that if you want to make any core configuration changes (i.e. change your
+  release channel or other environment configuration) you must use the regular update script.
+
 - **Per-Station Branding**: You can now provide custom album art, public page backgrounds, CSS and JavaScript on a
   per-station basis, using a new Station Branding page that is very similar to the system-wide Branding page.
 

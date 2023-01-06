@@ -19,8 +19,7 @@
                         icon="headset"
                     />
                     <span class="pl-1">
-                        {{ langListeners }}
-                        </a>
+                        {{ langListeners }}                  
                     </span>
                 </a>
                     <br>

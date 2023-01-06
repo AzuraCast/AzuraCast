@@ -107,7 +107,7 @@ ENV LANG="en_US.UTF-8" \
     PROFILING_EXTENSION_ALWAYS_ON=0 \
     PROFILING_EXTENSION_HTTP_KEY=dev \
     PROFILING_EXTENSION_HTTP_IP_WHITELIST=* \
-    ENABLE_AUTO_UPDATER="false"
+    ENABLE_AUTO_UPDATER="true"
 
 # Entrypoint and default command
 ENTRYPOINT ["tini", "--", "/usr/local/bin/my_init"]

@@ -13,14 +13,16 @@
                     class="card-subtitle text-right flex-fill my-0"
                     style="line-height: 1;"
                 >
+                <a href="reports/listeners" style="color: #fff;">
                     <icon
                         class="sm align-middle"
                         icon="headset"
                     />
                     <span class="pl-1">
                         {{ langListeners }}
+                        </a>
                     </span>
-
+                </a>
                     <br>
                     <small>
                         <span class="pr-1">{{ np.listeners.unique }}</span>

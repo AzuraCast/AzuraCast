@@ -20,9 +20,6 @@
             :fields="fields"
             :api-url="apiUrl"
         >
-            <template #cell(date_time)="row">
-                {{ formatTimestamp(row.item.timestamp) }}
-            </template>
             <template #cell(operation)="row">
                 <span
                     v-if="row.item.operation_text === 'insert'"
@@ -135,9 +132,21 @@ const dateRange = ref({
 });
 
 const {$gettext} = useTranslate();
+const {timeConfig} = useAzuraCast();
 
 const fields = [
-    {key: 'date_time', label: $gettext('Date/Time'), sortable: false},
+    {
+        key: 'timestamp',
+        label: $gettext('Date/Time'),
+        sortable: false,
+        formatter: (value) => {
+            return DateTime.fromSeconds(value).toLocaleString(
+                {
+                    ...DateTime.DATETIME_SHORT, ...timeConfig
+                }
+            );
+        }
+    },
     {key: 'user', label: $gettext('User'), sortable: false},
     {key: 'operation', isRowHeader: true, label: $gettext('Operation'), sortable: false},
     {key: 'identifier', label: $gettext('Identifier'), sortable: false},
@@ -160,16 +169,6 @@ const $dataTable = ref(); // DataTable Template Ref
 const relist = () => {
     $dataTable.value.relist();
 };
-
-const formatTimestamp = (unix_timestamp) => {
-    const {timeConfig} = useAzuraCast();
-
-    return DateTime.fromSeconds(unix_timestamp).toLocaleString(
-        {
-            ...DateTime.DATETIME_SHORT, ...timeConfig
-        }
-    );
-}
 </script>
 
 <style lang="scss">

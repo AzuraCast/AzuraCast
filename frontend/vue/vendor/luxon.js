@@ -5,5 +5,4 @@ const {localeWithDashes} = useAzuraCast();
 
 document.addEventListener('DOMContentLoaded', function () {
     Settings.defaultLocale = localeWithDashes;
-    Settings.defaultZone = 'UTC';
 });

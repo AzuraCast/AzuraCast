@@ -5,7 +5,7 @@
                 <h2 class="card-title flex-fill my-0">
                     {{ $gettext('Song Playback Timeline') }}
                 </h2>
-                <div class="flex-shrink">
+                <div class="flex-shrink buttons">
                     <a
                         id="btn-export"
                         class="btn btn-bg"
@@ -26,22 +26,13 @@
             </div>
         </div>
         <data-table
-            ref="datatable"
+            ref="$datatable"
             responsive
             paginated
             select-fields
             :fields="fields"
             :api-url="apiUrl"
         >
-            <template #cell(datetime)="row">
-                {{ formatTimestamp(row.item.played_at) }}
-            </template>
-            <template #cell(datetime_station)="row">
-                {{ formatTimestampStation(row.item.played_at) }}
-            </template>
-            <template #cell(listeners_start)="row">
-                {{ row.item.listeners_start }}
-            </template>
             <template #cell(delta)="row">
                 <span class="typography-subheading">
                     <template v-if="row.item.delta_total > 0">
@@ -92,116 +83,121 @@
     </div>
 </template>
 
-<script>
+<script setup>
 import Icon from "~/components/Common/Icon";
 import DataTable from "~/components/Common/DataTable";
 import DateRangeDropdown from "~/components/Common/DateRangeDropdown";
 import {DateTime} from 'luxon';
 import {useAzuraCast} from "~/vendor/azuracast";
+import {computed, ref} from "vue";
+import {useTranslate} from "~/vendor/gettext";
 
-export default {
-    name: 'StationsReportsTimeline',
-    components: {DateRangeDropdown, DataTable, Icon},
-    props: {
-        baseApiUrl: {
-            type: String,
-            required: true
-        },
-        stationTimeZone: {
-            type: String,
-            required: true
-        }
+const props = defineProps({
+    baseApiUrl: {
+        type: String,
+        required: true
     },
-    data() {
-        let nowTz = DateTime.now().setZone(this.stationTimeZone);
-
-        return {
-            dateRange: {
-                startDate: nowTz.minus({days: 13}).toJSDate(),
-                endDate: nowTz.toJSDate(),
-            },
-            fields: [
-                {
-                    key: 'datetime',
-                    label: this.$gettext('Date/Time (Browser)'),
-                    selectable: true,
-                    sortable: false
-                },
-                {
-                    key: 'datetime_station',
-                    label: this.$gettext('Date/Time (Station)'),
-                    sortable: false,
-                    selectable: true,
-                    visible: false
-                },
-                {
-                    key: 'listeners_start',
-                    label: this.$gettext('Listeners'),
-                    selectable: true,
-                    sortable: false
-                },
-                {
-                    key: 'delta',
-                    label: this.$gettext('Change'),
-                    selectable: true,
-                    sortable: false
-                },
-                {
-                    key: 'song',
-                    isRowHeader: true,
-                    label: this.$gettext('Song Title'),
-                    selectable: true,
-                    sortable: false
-                },
-                {
-                    key: 'source',
-                    label: this.$gettext('Source'),
-                    selectable: true,
-                    sortable: false
-                }
-            ],
-        }
-    },
-    computed: {
-        apiUrl() {
-            let apiUrl = new URL(this.baseApiUrl, document.location);
-
-            let apiUrlParams = apiUrl.searchParams;
-            apiUrlParams.set('start', DateTime.fromJSDate(this.dateRange.startDate).toISO());
-            apiUrlParams.set('end', DateTime.fromJSDate(this.dateRange.endDate).toISO());
-
-            return apiUrl.toString();
-        },
-        exportUrl() {
-            let exportUrl = new URL(this.apiUrl, document.location);
-            let exportUrlParams = exportUrl.searchParams;
-
-            exportUrlParams.set('format', 'csv');
-
-            return exportUrl.toString();
-        },
-    },
-    methods: {
-        relist() {
-            this.$refs.datatable.relist();
-        },
-        abs(val) {
-            return Math.abs(val);
-        },
-        formatTimestamp(unix_timestamp) {
-            const {timeConfig} = useAzuraCast();
-
-            return DateTime.fromSeconds(unix_timestamp).toLocaleString(
-                {...DateTime.DATETIME_SHORT, ...timeConfig}
-            );
-        },
-        formatTimestampStation(unix_timestamp) {
-            const {timeConfig} = useAzuraCast();
-
-            return DateTime.fromSeconds(unix_timestamp).setZone(this.stationTimeZone).toLocaleString(
-                {...DateTime.DATETIME_SHORT, ...timeConfig}
-            );
-        }
+    stationTimeZone: {
+        type: String,
+        required: true
     }
+});
+
+const nowTz = DateTime.now().setZone(props.stationTimeZone);
+
+const dateRange = ref(
+    {
+        startDate: nowTz.minus({days: 13}).toJSDate(),
+        endDate: nowTz.toJSDate(),
+    }
+);
+
+const {$gettext} = useTranslate();
+const {timeConfig} = useAzuraCast();
+
+const fields = [
+    {
+        key: 'played_at',
+        label: $gettext('Date/Time (Browser)'),
+        selectable: true,
+        sortable: false,
+        formatter: (value) => {
+            return DateTime.fromSeconds(
+                value,
+                {zone: 'system'}
+            ).toLocaleString(
+                {...DateTime.DATETIME_SHORT, ...timeConfig}
+            );
+        }
+    },
+    {
+        key: 'played_at_station',
+        label: $gettext('Date/Time (Station)'),
+        sortable: false,
+        selectable: true,
+        visible: false,
+        formatter: (value, key, item) => {
+            return DateTime.fromSeconds(
+                item.played_at,
+                {zone: props.stationTimeZone}
+            ).toLocaleString(
+                {...DateTime.DATETIME_SHORT, ...timeConfig}
+            );
+        }
+    },
+    {
+        key: 'listeners_start',
+        label: $gettext('Listeners'),
+        selectable: true,
+        sortable: false
+    },
+    {
+        key: 'delta',
+        label: $gettext('Change'),
+        selectable: true,
+        sortable: false
+    },
+    {
+        key: 'song',
+        isRowHeader: true,
+        label: $gettext('Song Title'),
+        selectable: true,
+        sortable: false
+    },
+    {
+        key: 'source',
+        label: $gettext('Source'),
+        selectable: true,
+        sortable: false
+    }
+];
+
+const apiUrl = computed(() => {
+    let apiUrl = new URL(props.baseApiUrl, document.location);
+
+    let apiUrlParams = apiUrl.searchParams;
+    apiUrlParams.set('start', DateTime.fromJSDate(dateRange.value.startDate).toISO());
+    apiUrlParams.set('end', DateTime.fromJSDate(dateRange.value.endDate).toISO());
+
+    return apiUrl.toString();
+});
+
+const exportUrl = computed(() => {
+    let exportUrl = new URL(apiUrl.value, document.location);
+    let exportUrlParams = exportUrl.searchParams;
+
+    exportUrlParams.set('format', 'csv');
+
+    return exportUrl.toString();
+});
+
+const abs = (val) => {
+    return Math.abs(val);
+};
+
+const $datatable = ref(); // Template Ref
+
+const relist = () => {
+    $datatable.value.relist();
 };
 </script>

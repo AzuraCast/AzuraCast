@@ -360,7 +360,7 @@ final class InstallCommand extends Command
         }
 
         // Remove web updater if disabled
-        if (!$env->getAsBool(Environment::ENABLE_WEB_UPDATER, true)) {
+        if (!$azuracastEnv->getAsBool(Environment::ENABLE_WEB_UPDATER, true)) {
             unset($yaml['services']['updater']);
         }
 

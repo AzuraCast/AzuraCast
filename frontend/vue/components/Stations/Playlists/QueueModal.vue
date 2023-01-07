@@ -1,7 +1,7 @@
 <template>
     <b-modal
         id="queue_modal"
-        ref="modal"
+        ref="$modal"
         size="lg"
         :title="$gettext('Playback Queue')"
         :busy="loading"
@@ -62,43 +62,52 @@
     </b-modal>
 </template>
 
-<script>
+<script setup>
+import {ref} from "vue";
+import {useAxios} from "~/vendor/axios";
+import {useNotify} from "~/vendor/bootstrapVue";
+import {useTranslate} from "~/vendor/gettext";
 
-export default {
-    name: 'QueueModal',
-    data () {
-        return {
-            loading: true,
-            queueUrl: null,
-            media: []
-        };
-    },
-    methods: {
-        open (queueUrl) {
-            this.$refs.modal.show();
-            this.queueUrl = queueUrl;
-            this.loading = true;
+const loading = ref(true);
+const queueUrl = ref(null);
+const media = ref([]);
 
-            this.axios.get(this.queueUrl).then((resp) => {
-                this.media = resp.data;
-                this.loading = false;
-            });
-        },
-        doClear () {
-            this.$wrapWithLoading(
-                this.axios.delete(this.queueUrl)
-            ).then(() => {
-                this.$notifySuccess(this.$gettext('Playlist queue cleared.'));
-                this.close();
-            });
-        },
-        close () {
-            this.loading = false;
-            this.error = null;
-            this.queueUrl = null;
+const $modal = ref(); // Template Ref
 
-            this.$refs.modal.hide();
-        }
-    }
+const {axios} = useAxios();
+
+const open = (newQueueUrl) => {
+    queueUrl.value = newQueueUrl;
+    loading.value = true;
+
+    axios.get(newQueueUrl).then((resp) => {
+        media.value = resp.data;
+        loading.value = false;
+    });
+
+    $modal.value.show();
 };
+
+const close = () => {
+    loading.value = false;
+    queueUrl.value = null;
+
+    $modal.value.hide();
+}
+
+const {wrapWithLoading, notifySuccess} = useNotify();
+const {$gettext} = useTranslate();
+
+const doClear = () => {
+    wrapWithLoading(
+        axios.delete(queueUrl.value)
+    ).then(() => {
+        notifySuccess($gettext('Playlist queue cleared.'));
+        close();
+    });
+};
+
+defineExpose({
+    open
+});
 </script>

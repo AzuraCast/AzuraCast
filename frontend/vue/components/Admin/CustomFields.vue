@@ -34,9 +34,6 @@
             <template #cell(name)="row">
                 {{ row.item.name }} <code>{{ row.item.short_name }}</code>
             </template>
-            <template #cell(auto_assign)="row">
-                {{ getAutoAssignName(row.item.auto_assign) }}
-            </template>
             <template #cell(actions)="row">
                 <b-button-group size="sm">
                     <b-button
@@ -92,14 +89,27 @@ const props = defineProps({
 const {$gettext} = useTranslate();
 
 const fields = [
-    {key: 'name', isRowHeader: true, label: $gettext('Field Name'), sortable: false},
-    {key: 'auto_assign', label: $gettext('Auto-Assign Value'), sortable: false},
-    {key: 'actions', label: $gettext('Actions'), sortable: false, class: 'shrink'}
+    {
+        key: 'name',
+        isRowHeader: true,
+        label: $gettext('Field Name'),
+        sortable: false
+    },
+    {
+        key: 'auto_assign',
+        label: $gettext('Auto-Assign Value'),
+        sortable: false,
+        formatter: (value) => {
+            return get(props.autoAssignTypes, value, $gettext('None'));
+        }
+    },
+    {
+        key: 'actions',
+        label: $gettext('Actions'),
+        sortable: false,
+        class: 'shrink'
+    }
 ];
-
-const getAutoAssignName = (autoAssign) => {
-    return get(props.autoAssignTypes, autoAssign, $gettext('None'));
-};
 
 const $dataTable = ref(); // DataTable
 

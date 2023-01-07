@@ -34,9 +34,6 @@
             :fields="fields"
             :api-url="apiUrl"
         >
-            <template #cell(owner)="row">
-                {{ row.item.user.email }}
-            </template>
             <template #cell(actions)="row">
                 <b-button-group size="sm">
                     <b-button
@@ -83,7 +80,7 @@ const fields = ref([
         sortable: false
     },
     {
-        key: 'owner',
+        key: 'user.email',
         label: $gettext('Owner'),
         sortable: false
     },

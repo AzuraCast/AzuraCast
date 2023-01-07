@@ -1,9 +1,8 @@
 <template>
     <modal-form
         id="clone_modal"
-        ref="modal"
+        ref="$modal"
         :title="$gettext('Duplicate Playlist')"
-        :error="error"
         :disable-save-button="v$.form.$invalid"
         @submit="doSubmit"
         @hidden="clearContents"
@@ -46,80 +45,73 @@
     </modal-form>
 </template>
 
-<script>
-import useVuelidate from "@vuelidate/core";
+<script setup>
 import {required} from '@vuelidate/validators';
 import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
 import ModalForm from "~/components/Common/ModalForm";
+import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
+import {ref} from "vue";
+import {useTranslate} from "~/vendor/gettext";
+import {useNotify} from "~/vendor/bootstrapVue";
+import {useAxios} from "~/vendor/axios";
 
-export default {
-    name: 'CloneModal',
-    components: {ModalForm, BWrappedFormGroup},
-    emits: ['relist', 'needs-restart'],
-    setup() {
-        return {v$: useVuelidate()}
+const emit = defineEmits(['relist', 'needs-restart']);
+
+const cloneUrl = ref(null);
+
+const {form, v$, resetForm, ifValid} = useVuelidateOnForm(
+    {
+        'name': {required},
+        'clone': {}
     },
-    data() {
-        return {
-            error: null,
-            cloneUrl: null,
-            form: {}
-        };
-    },
-    validations: {
-        form: {
-            'name': { required },
-            'clone': {}
-        }
-    },
-    methods: {
-        resetForm () {
-            this.form = {
-                'name': '',
-                'clone': []
-            };
-        },
-        open (name, cloneUrl) {
-            this.error = null;
-
-            this.resetForm();
-            this.cloneUrl = cloneUrl;
-
-            this.form.name = this.$gettext(
-                '%{name} - Copy',
-                {name: name}
-            );
-
-            this.$refs.modal.show();
-        },
-        async doSubmit() {
-            this.v$.$touch();
-            if (this.v$.$errors.length > 0) {
-                return;
-            }
-
-            this.error = null;
-
-            this.$wrapWithLoading(
-                this.axios({
-                    method: 'POST',
-                    url: this.cloneUrl,
-                    data: this.form
-                })
-            ).then(() => {
-                this.$notifySuccess();
-                this.$emit('needs-restart');
-                this.$emit('relist');
-                this.$refs.modal.hide();
-            });
-        },
-        clearContents() {
-            this.error = null;
-            this.cloneUrl = null;
-            this.resetForm();
-
-            this.v$.$reset();
-        }
+    {
+        'name': '',
+        'clone': []
     }
+);
+
+const clearContents = () => {
+    cloneUrl.value = null;
+    resetForm();
 };
+
+const {$gettext} = useTranslate();
+
+const $modal = ref(); // Template Ref
+
+const open = (name, newCloneUrl) => {
+    clearContents();
+
+    cloneUrl.value = newCloneUrl;
+    form.value.name = $gettext(
+        '%{name} - Copy',
+        {name: name}
+    );
+
+    $modal.value.show();
+};
+
+const {wrapWithLoading, notifySuccess} = useNotify();
+const {axios} = useAxios();
+
+const doSubmit = () => {
+    ifValid(() => {
+        wrapWithLoading(
+            axios({
+                method: 'POST',
+                url: cloneUrl.value,
+                data: form.value
+            })
+        ).then(() => {
+            notifySuccess();
+            emit('needs-restart');
+            emit('relist');
+            $modal.value.hide();
+        });
+    });
+};
+
+defineExpose({
+    open
+});
 </script>

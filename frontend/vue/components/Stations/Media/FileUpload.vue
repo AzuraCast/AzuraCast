@@ -9,55 +9,42 @@
     />
 </template>
 
-<script>
+<script setup>
 import FlowUpload from '~/components/Common/FlowUpload';
 
-export default {
-    name: 'FileUpload',
-    components: {FlowUpload},
-    props: {
-        uploadUrl: {
-            type: String,
-            required: true
-        },
-        currentDirectory: {
-            type: String,
-            required: true
-        },
-        searchPhrase: {
-            type: String,
-            required: true
-        },
-        validMimeTypes: {
-            type: Array,
-            default() {
-                return ['audio/*'];
-            }
-        }
+const props = defineProps({
+    uploadUrl: {
+        type: String,
+        required: true
     },
-    emits: ['relist'],
-    data() {
-        return {
-            flow: null,
-            files: []
-        };
+    currentDirectory: {
+        type: String,
+        required: true
     },
-    computed: {
-        flowConfiguration() {
-            return {
-                query: () => {
-                    return {
-                        'currentDirectory': this.currentDirectory,
-                        'searchPhrase': this.searchPhrase
-                    };
-                }
-            };
-        }
+    searchPhrase: {
+        type: String,
+        required: true
     },
-    methods: {
-        onFlowUpload() {
-            this.$emit('relist');
+    validMimeTypes: {
+        type: Array,
+        default() {
+            return ['audio/*'];
         }
     }
+});
+
+const emit = defineEmits(['relist']);
+
+const flowConfiguration = {
+    query: () => {
+        return {
+            'currentDirectory': props.currentDirectory,
+            'searchPhrase': props.searchPhrase
+        };
+    }
 };
+
+const onFlowUpload = () => {
+    emit('relist');
+}
 </script>

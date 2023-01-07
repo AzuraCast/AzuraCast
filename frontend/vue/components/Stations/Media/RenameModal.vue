@@ -1,7 +1,7 @@
 <template>
     <b-modal
         id="rename_file"
-        ref="modal"
+        ref="$modal"
         centered
         :title="$gettext('Rename File/Directory')"
     >
@@ -32,63 +32,69 @@
         </template>
     </b-modal>
 </template>
-<script>
-import useVuelidate from "@vuelidate/core";
+
+<script setup>
 import {required} from '@vuelidate/validators';
 import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
+import {ref} from "vue";
+import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
+import {useNotify} from "~/vendor/bootstrapVue";
+import {useAxios} from "~/vendor/axios";
 
-export default {
-    name: 'RenameModal',
-    components: {BWrappedFormGroup},
-    props: {
-        renameUrl: {
-            type: String,
-            required: true
-        }
-    },
-    emits: ['relist'],
-    setup() {
-        return {v$: useVuelidate()}
-    },
-    data() {
-        return {
-            form: {
-                file: null,
-                newPath: null
-            }
-        };
-    },
-    validations: {
-        form: {
-            newPath: {
-                required
-            }
-        }
-    },
-    methods: {
-        open(filePath) {
-            this.form.file = filePath;
-            this.form.newPath = filePath;
-
-            this.$refs.modal.show();
-        },
-        close() {
-            this.v$.$reset();
-            this.$refs.modal.hide();
-        },
-        doRename() {
-            this.v$.$touch();
-            if (this.v$.$errors.length > 0) {
-                return;
-            }
-
-            this.$wrapWithLoading(
-                this.axios.put(this.renameUrl, this.form)
-            ).finally(() => {
-                this.$refs.modal.hide();
-                this.$emit('relist');
-            });
-        }
+const props = defineProps({
+    renameUrl: {
+        type: String,
+        required: true
     }
+});
+
+const emit = defineEmits(['relist']);
+
+const file = ref(null);
+
+const {form, v$, resetForm, ifValid} = useVuelidateOnForm(
+    {
+        newPath: {required}
+    },
+    {
+        newPath: null
+    }
+);
+
+const $modal = ref(); // Template Ref
+
+const open = (filePath) => {
+    file.value = filePath;
+    form.value.newPath = filePath;
+
+    $modal.value.show();
 };
+
+const close = () => {
+    resetForm();
+    file.value = null;
+
+    $modal.value.hide();
+};
+
+const {wrapWithLoading} = useNotify();
+const {axios} = useAxios();
+
+const doRename = () => {
+    ifValid(() => {
+        wrapWithLoading(
+            axios.put(props.renameUrl, {
+                file: file.value,
+                ...form.value
+            })
+        ).finally(() => {
+            $modal.value.hide();
+            emit('relist');
+        });
+    });
+};
+
+defineExpose({
+    open
+});
 </script>

@@ -92,12 +92,6 @@
     </b-modal>
 </template>
 
-<script>
-export default {
-    inheritAttrs: false
-}
-</script>
-
 <script setup>
 import CopyToClipboardButton from '~/components/Common/CopyToClipboardButton';
 import {computed, ref} from "vue";

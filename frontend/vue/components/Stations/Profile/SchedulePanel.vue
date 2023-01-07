@@ -48,12 +48,6 @@
     </div>
 </template>
 
-<script>
-export default {
-    inheritAttrs: false
-};
-</script>
-
 <script setup>
 import {DateTime} from "luxon";
 import {map} from "lodash";

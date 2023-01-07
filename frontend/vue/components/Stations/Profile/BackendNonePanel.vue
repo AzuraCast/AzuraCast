@@ -18,9 +18,3 @@
         </div>
     </section>
 </template>
-
-<script>
-export default {
-    inheritAttrs: false,
-}
-</script>

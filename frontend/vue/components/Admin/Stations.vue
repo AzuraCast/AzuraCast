@@ -29,12 +29,6 @@
                 </div>
                 <code>{{ row.item.short_name }}</code>
             </template>
-            <template #cell(frontend_type)="row">
-                {{ getFrontendName(row.item.frontend_type) }}
-            </template>
-            <template #cell(backend_type)="row">
-                {{ getBackendName(row.item.backend_type) }}
-            </template>
             <template #cell(actions)="row">
                 <b-button-group size="sm">
                     <b-button
@@ -117,19 +111,35 @@ const props = defineProps({
 const {$gettext} = useTranslate();
 
 const fields = [
-    {key: 'name', isRowHeader: true, label: $gettext('Name'), sortable: true},
-    {key: 'frontend_type', label: $gettext('Broadcasting'), sortable: false},
-    {key: 'backend_type', label: $gettext('AutoDJ'), sortable: false},
-    {key: 'actions', label: $gettext('Actions'), sortable: false, class: 'shrink'}
+    {
+        key: 'name',
+        isRowHeader: true,
+        label: $gettext('Name'),
+        sortable: true
+    },
+    {
+        key: 'frontend_type',
+        label: $gettext('Broadcasting'),
+        sortable: false,
+        formatter: (value) => {
+            return get(props.frontendTypes, [value, 'name'], '');
+        }
+    },
+    {
+        key: 'backend_type',
+        label: $gettext('AutoDJ'),
+        sortable: false,
+        formatter: (value) => {
+            return get(props.backendTypes, [value, 'name'], '');
+        }
+    },
+    {
+        key: 'actions',
+        label: $gettext('Actions'),
+        sortable: false,
+        class: 'shrink'
+    }
 ];
-
-const getFrontendName = (frontend_type) => {
-    return get(props.frontendTypes, [frontend_type, 'name'], '');
-};
-
-const getBackendName = (backend_type) => {
-    return get(props.backendTypes, [backend_type, 'name'], '');
-};
 
 const $datatable = ref(); // Template Ref
 

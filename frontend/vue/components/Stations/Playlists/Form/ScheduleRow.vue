@@ -6,7 +6,7 @@
         <div class="card-header bg-primary-dark d-flex align-items-center">
             <div class="flex-fill">
                 <h2 class="card-title">
-                    {{ $gettext('Scheduled Time #%{num}') }}
+                    {{ $gettext('Scheduled Time #%{num}', {num: index + 1}) }}
                 </h2>
             </div>
             <div class="flex-shrink-0">
@@ -135,7 +135,7 @@
                     <b-wrapped-form-group
                         :id="'edit_form_days_'+index"
                         class="col-md-4"
-                        :field="v$.row.days"
+                        :field="v$.days"
                     >
                         <template #label>
                             {{ $gettext('Scheduled Play Days of Week') }}
@@ -143,10 +143,10 @@
                         <template #description>
                             {{ $gettext('Leave blank to play on every day of the week.') }}
                         </template>
-                        <template #default>
+                        <template #default="slotProps">
                             <b-checkbox-group
-                                :id="'edit_form_days_'+index"
-                                v-model="v$.days.$model"
+                                :id="slotProps.id"
+                                v-model="slotProps.field.$model"
                                 stacked
                                 :options="dayOptions"
                             />
@@ -166,6 +166,7 @@ import {required} from "@vuelidate/validators";
 import useVuelidate from "@vuelidate/core";
 import {toRef} from "vue";
 import {useTranslate} from "~/vendor/gettext";
+import BWrappedFormCheckbox from "~/components/Form/BWrappedFormCheckbox.vue";
 
 const props = defineProps({
     index: {
@@ -190,6 +191,7 @@ const v$ = useVuelidate(
         'end_time': {required},
         'start_date': {},
         'end_date': {},
+        'days': {},
         'loop_once': {}
     },
     toRef(props, 'row')

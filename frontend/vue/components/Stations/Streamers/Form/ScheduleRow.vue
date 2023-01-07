@@ -6,7 +6,7 @@
         <div class="card-header bg-primary-dark d-flex align-items-center">
             <div class="flex-fill">
                 <h2 class="card-title">
-                    {{ $gettext('Scheduled Time #%{num}') }}
+                    {{ $gettext('Scheduled Time #%{num}', {num: index + 1}) }}
                 </h2>
             </div>
             <div class="flex-shrink-0">

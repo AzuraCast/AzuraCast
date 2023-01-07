@@ -109,7 +109,7 @@
                         variant="outline-light"
                         size="sm"
                         class="py-2"
-                        @click="toggleCharts"
+                        @click="chartsVisible = !chartsVisible"
                     >
                         {{
                             langShowHideCharts
@@ -321,107 +321,77 @@
     </div>
 </template>
 
-<script>
+<script setup>
 import TimeSeriesChart from '~/components/Common/Charts/TimeSeriesChart.vue';
-import store from 'store';
 import Icon from '~/components/Common/Icon';
 import Avatar from '~/components/Common/Avatar';
 import PlayButton from "~/components/Common/PlayButton";
 import AlbumArt from "~/components/Common/AlbumArt";
+import {useAxios} from "~/vendor/axios";
+import {useAsyncState, useIntervalFn, useStorage} from "@vueuse/core";
+import {useTranslate} from "~/vendor/gettext";
+import {computed} from "vue";
+import useRefreshableAsyncState from "~/functions/useRefreshableAsyncState";
 
-/* TODO Options API */
+const props = defineProps({
+    userUrl: {
+        type: String,
+        required: true
+    },
+    profileUrl: {
+        type: String,
+        required: true
+    },
+    adminUrl: {
+        type: String,
+        required: true
+    },
+    showAdmin: {
+        type: Boolean,
+        required: true
+    },
+    notificationsUrl: {
+        type: String,
+        required: true
+    },
+    showCharts: {
+        type: Boolean,
+        required: true
+    },
+    chartsUrl: {
+        type: String,
+        required: true
+    },
+    manageStationsUrl: {
+        type: String,
+        required: true
+    },
+    stationsUrl: {
+        type: String,
+        required: true
+    },
+    showAlbumArt: {
+        type: Boolean,
+        required: true
+    }
+});
 
-export default {
-    components: {PlayButton, Avatar, Icon, TimeSeriesChart, AlbumArt},
-    props: {
-        userUrl: {
-            type: String,
-            required: true
-        },
-        profileUrl: {
-            type: String,
-            required: true
-        },
-        adminUrl: {
-            type: String,
-            required: true
-        },
-        showAdmin: {
-            type: Boolean,
-            required: true
-        },
-        notificationsUrl: {
-            type: String,
-            required: true
-        },
-        showCharts: {
-            type: Boolean,
-            required: true
-        },
-        chartsUrl: {
-            type: String,
-            required: true
-        },
-        manageStationsUrl: {
-            type: String,
-            required: true
-        },
-        stationsUrl: {
-            type: String,
-            required: true
-        },
-        showAlbumArt: {
-            type: Boolean,
-            required: true
-        }
-    },
-    data() {
-        return {
-            userLoading: true,
-            user: {
-                name: this.$gettext('AzuraCast User'),
-                email: null,
-                avatar: {
-                    url: null,
-                    service: null,
-                    serviceUrl: null
-                },
-            },
-            chartsLoading: true,
-            chartsVisible: null,
-            chartsData: {
-                average: {
-                    metrics: [],
-                    alt: ''
-                },
-                unique: {
-                    metrics: [],
-                    alt: ''
-                }
-            },
-            notificationsLoading: true,
-            notifications: [],
-            stationsLoading: true,
-            stations: []
-        };
-    },
-    computed: {
-        langShowHideCharts() {
-            if (this.chartsVisible) {
-                return this.$gettext('Hide Charts');
-            }
-            return this.$gettext('Show Charts');
-        }
-    },
-    created() {
-        if (store.enabled) {
-            this.chartsVisible = store.get('dashboard_show_chart', true);
-        } else {
-            this.chartsVisible = true;
-        }
+const chartsVisible = useStorage('dashboard_show_chart', true);
 
-        this.axios.get(this.userUrl).then((resp) => {
-            this.user = {
+const {$gettext} = useTranslate();
+
+const langShowHideCharts = computed(() => {
+    return (chartsVisible.value)
+        ? $gettext('Hide Charts')
+        : $gettext('Show Charts')
+});
+
+const {axios} = useAxios();
+
+const {state: user} = useAsyncState(
+    () => axios.get(props.userUrl)
+        .then((resp) => {
+            return {
                 name: resp.data.name,
                 email: resp.data.email,
                 avatar: {
@@ -430,43 +400,48 @@ export default {
                     serviceUrl: resp.data.avatar.service_url
                 }
             };
-            this.userLoading = false;
-        });
-
-        if (this.showCharts) {
-            this.axios.get(this.chartsUrl).then((response) => {
-                this.chartsData = response.data;
-                this.chartsLoading = false;
-            });
-        }
-
-        this.axios.get(this.notificationsUrl).then((response) => {
-            this.notifications = response.data;
-            this.notificationsLoading = false;
-        });
-
-        this.updateNowPlaying();
-    },
-    methods: {
-        toggleCharts() {
-            this.chartsVisible = !this.chartsVisible;
-
-            if (store.enabled) {
-                store.set('dashboard_show_chart', this.chartsVisible);
-            }
+        }),
+    {
+        name: $gettext('AzuraCast User'),
+        email: null,
+        avatar: {
+            url: null,
+            service: null,
+            serviceUrl: null
         },
-        updateNowPlaying() {
-            this.axios.get(this.stationsUrl).then((response) => {
-                this.stationsLoading = false;
-                this.stations = response.data;
+    }
+);
 
-                setTimeout(this.updateNowPlaying, (!document.hidden) ? 15000 : 30000);
-            }).catch((error) => {
-                if (!error.response || error.response.data.code !== 403) {
-                    setTimeout(this.updateNowPlaying, (!document.hidden) ? 30000 : 120000);
-                }
-            });
+const {state: chartsData, isLoading: chartsLoading} = useAsyncState(
+    () => axios.get(props.chartsUrl).then((r) => r.data),
+    {
+        average: {
+            metrics: [],
+            alt: ''
+        },
+        unique: {
+            metrics: [],
+            alt: ''
         }
     }
-};
+);
+
+const {state: notifications, isLoading: notificationsLoading} = useAsyncState(
+    () => axios.get(props.notificationsUrl).then((r) => r.data),
+    []
+);
+
+const {state: stations, isLoading: stationsLoading, execute: reloadStations} = useRefreshableAsyncState(
+    () => axios.get(props.stationsUrl).then((r) => r.data),
+    [],
+);
+
+const stationsReloadTimeout = computed(() => {
+    return (!document.hidden) ? 15000 : 30000
+});
+
+useIntervalFn(
+    reloadStations,
+    stationsReloadTimeout
+);
 </script>

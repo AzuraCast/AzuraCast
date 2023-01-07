@@ -62,72 +62,57 @@
     </b-tab>
 </template>
 
-<script>
-
+<script setup>
 import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
 import BWrappedFormCheckbox from "~/components/Form/BWrappedFormCheckbox";
+import {map} from "lodash";
+import {computed} from "vue";
 
-export default {
-    name: 'MountFormAutoDj',
-    components: {BWrappedFormCheckbox, BWrappedFormGroup},
-    props: {
-        form: {
-            type: Object,
-            required: true
-        },
-        stationFrontendType: {
-            type: String,
-            required: true
-        }
+const props = defineProps({
+    form: {
+        type: Object,
+        required: true
     },
-    computed: {
-        formatOptions() {
-            return [
-                {
-                    value: 'mp3',
-                    text: 'MP3'
-                },
-                {
-                    value: 'ogg',
-                    text: 'OGG Vorbis'
-                },
-                {
-                    value: 'opus',
-                    text: 'OGG Opus'
-                },
-                {
-                    value: 'aac',
-                    text: 'AAC+ (MPEG4 HE-AAC v2)'
-                },
-                {
-                    value: 'flac',
-                    text: 'FLAC (OGG FLAC)'
-                }
-            ];
-        },
-        bitrateOptions () {
-            let options = [];
-            [32, 48, 64, 96, 128, 192, 256, 320].forEach((val) => {
-                options.push({
-                    value: val,
-                    text: val
-                });
-            });
-            return options;
-        },
-        formatSupportsBitrateOptions () {
-            switch (this.form.autodj_format.$model) {
-                case 'flac':
-                    return false;
-
-                case 'mp3':
-                case 'ogg':
-                case 'opus':
-                case 'aac':
-                default:
-                    return true;
-            }
-        }
+    stationFrontendType: {
+        type: String,
+        required: true
     }
-};
+});
+
+const formatOptions = [
+    {
+        value: 'mp3',
+        text: 'MP3'
+    },
+    {
+        value: 'ogg',
+        text: 'OGG Vorbis'
+    },
+    {
+        value: 'opus',
+        text: 'OGG Opus'
+    },
+    {
+        value: 'aac',
+        text: 'AAC+ (MPEG4 HE-AAC v2)'
+    },
+    {
+        value: 'flac',
+        text: 'FLAC (OGG FLAC)'
+    }
+];
+
+const bitrateOptions = map(
+    [32, 48, 64, 96, 128, 192, 256, 320],
+    (val) => {
+        return {
+            value: val,
+            text: val
+        };
+    }
+);
+
+const formatSupportsBitrateOptions = computed(() => {
+    return (props.form.autodj_format.$model !== 'flac');
+});
 </script>

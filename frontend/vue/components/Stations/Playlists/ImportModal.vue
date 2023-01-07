@@ -1,7 +1,7 @@
 <template>
     <b-modal
         id="import_modal"
-        ref="modal"
+        ref="$modal"
         :title="$gettext('Import from PLS/M3U')"
         @hidden="onHidden"
     >
@@ -91,51 +91,58 @@
     </b-modal>
 </template>
 
-<script>
+<script setup>
 import InvisibleSubmitButton from '~/components/Common/InvisibleSubmitButton';
+import {ref} from "vue";
+import {useNotify} from "~/vendor/bootstrapVue";
+import {useAxios} from "~/vendor/axios";
 
-export default {
-    name: 'PlaylistImportModal',
-    components: {InvisibleSubmitButton},
-    emits: ['relist'],
-    data() {
-        return {
-            importPlaylistUrl: null,
-            playlistFile: null,
-            results: null,
-        };
-    },
-    methods: {
-        open(importPlaylistUrl) {
-            this.playlistFile = null;
-            this.importPlaylistUrl = importPlaylistUrl;
+const emit = defineEmits(['relist']);
 
-            this.$refs.modal.show();
-        },
-        doSubmit () {
-            let formData = new FormData();
-            formData.append('playlist_file', this.playlistFile);
+const importPlaylistUrl = ref(null);
+const playlistFile = ref(null);
+const results = ref(null);
 
-            this.$wrapWithLoading(
-                this.axios.post(this.importPlaylistUrl, formData)
-            ).then((resp) => {
-                if (resp.data.success) {
-                    this.results = resp.data;
+const $modal = ref(); // Template Ref
 
-                    this.$notifySuccess(resp.data.message);
-                } else {
-                    this.$notifyError(resp.data.message);
-                    this.close();
-                }
-            });
-        },
-        close () {
-            this.$refs.modal.hide();
-        },
-        onHidden () {
-            this.$emit('relist');
-            this.results = null;
-        }
-    }
+const open = (newImportPlaylistUrl) => {
+    playlistFile.value = null;
+    importPlaylistUrl.value = newImportPlaylistUrl;
+
+    $modal.value.show();
 };
+
+const {wrapWithLoading, notifySuccess, notifyError} = useNotify();
+const {axios} = useAxios();
+
+const doSubmit = () => {
+    let formData = new FormData();
+    formData.append('playlist_file', playlistFile.value);
+
+    wrapWithLoading(
+        axios.post(importPlaylistUrl.value, formData)
+    ).then((resp) => {
+        if (resp.data.success) {
+            results.value = resp.data;
+
+            notifySuccess(resp.data.message);
+        } else {
+            notifyError(resp.data.message);
+            close();
+        }
+    });
+};
+
+const close = () => {
+    $modal.value.hide();
+};
+
+const onHidden = () => {
+    emit('relist');
+    results.value = null;
+};
+
+defineExpose({
+    open
+});
 </script>

@@ -419,35 +419,26 @@
     </b-tab>
 </template>
 
-<script>
+<script setup>
 import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
 import BWrappedFormCheckbox from "~/components/Form/BWrappedFormCheckbox";
 import BFormFieldset from "~/components/Form/BFormFieldset";
+import {map, range} from "lodash";
 
-export default {
-    name: 'PlaylistEditBasicInfo',
-    components: {BFormFieldset, BWrappedFormCheckbox, BWrappedFormGroup},
-    props: {
-        form: {
-            type: Object,
-            required: true
-        }
-    },
-    data() {
-        let weightOptions = [
-            {value: 1, text: '1 - ' + this.$gettext('Low')},
-            {value: 2, text: '2'},
-            {value: 3, text: '3 - ' + this.$gettext('Default')},
-            {value: 4, text: '4'},
-            {value: 5, text: '5 - ' + this.$gettext('High')}
-        ];
-        for (let i = 6; i <= 25; i++) {
-            weightOptions.push({value: i, text: i});
-        }
-
-        return {
-            weightOptions: weightOptions
-        };
+const props = defineProps({
+    form: {
+        type: Object,
+        required: true
     }
-};
+});
+
+const weightOptions = map(
+    range(1, 26),
+    (val) => {
+        return {
+            value: val,
+            text: val
+        }
+    }
+);
 </script>

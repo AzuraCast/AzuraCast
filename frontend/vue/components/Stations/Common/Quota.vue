@@ -20,76 +20,90 @@
     </div>
 </template>
 
-<script>
+<script setup>
 import mergeExisting from "~/functions/mergeExisting";
+import {computed, onMounted, ref, shallowRef} from "vue";
+import {useTranslate} from "~/vendor/gettext";
+import {useAxios} from "~/vendor/axios";
 
-export default {
-    name: 'StationsCommonQuota',
-    props: {
-        quotaUrl: {
-            type: String,
-            required: true
-        }
-    },
-    emits: ['updated'],
-    data() {
-        return {
-            loading: true,
-            quota: {
-                used: null,
-                used_bytes: null,
-                used_percent: null,
-                available: null,
-                available_bytes: null,
-                quota: null,
-                quota_bytes: null,
-                is_full: null,
-                num_files: null
-            },
-        }
-    },
-    computed: {
-        progressVariant() {
-            if (this.quota.used_percent > 85) {
-                return 'danger';
-            } else if (this.quota.used_percent > 65) {
-                return 'warning';
-            } else {
-                return 'default';
-            }
-        },
-        langSpaceUsed() {
-            const lang = (this.quota.available)
-                ? this.$gettext('%{spaceUsed} of %{spaceTotal} Used')
-                : this.$gettext('%{spaceUsed} Used');
-
-            const langParsed = this.$gettextInterpolate(lang, {
-                spaceUsed: this.quota.used,
-                spaceTotal: this.quota.available
-            });
-
-            if (null !== this.quota.num_files) {
-                const langNumFiles = this.$ngettext('%{filesCount} File', '%{filesCount} Files', this.quota.num_files);
-                const langNumFilesParsed = this.$gettextInterpolate(langNumFiles, {filesCount: this.quota.num_files});
-                return langParsed + ' (' + langNumFilesParsed + ')';
-            }
-
-            return langParsed;
-        },
-    },
-    mounted() {
-        this.update();
-    },
-    methods: {
-        update() {
-            this.axios.get(this.quotaUrl)
-                .then((resp) => {
-                    this.quota = mergeExisting(this.quota, resp.data);
-                    this.loading = false;
-
-                    this.$emit('updated', this.quota);
-                });
-        }
+const props = defineProps({
+    quotaUrl: {
+        type: String,
+        required: true
     }
+});
+
+const emit = defineEmits(['updated']);
+
+const loading = ref(true);
+const quota = shallowRef({
+    used: null,
+    used_bytes: null,
+    used_percent: null,
+    available: null,
+    available_bytes: null,
+    quota: null,
+    quota_bytes: null,
+    is_full: null,
+    num_files: null
+});
+
+const progressVariant = computed(() => {
+    if (quota.value.used_percent > 85) {
+        return 'danger';
+    } else if (quota.value.used_percent > 65) {
+        return 'warning';
+    } else {
+        return 'default';
+    }
+});
+
+const {$gettext, $ngettext} = useTranslate();
+
+const langSpaceUsed = computed(() => {
+    let langSpaceUsed;
+
+    if (quota.value.available) {
+        langSpaceUsed = $gettext(
+            '%{spaceUsed} of %{spaceTotal} Used',
+            {
+                spaceUsed: quota.value.used,
+                spaceTotal: quota.value.available
+            }
+        );
+    } else {
+        langSpaceUsed = $gettext(
+            '%{spaceUsed} Used',
+            {
+                spaceUsed: quota.value.used,
+            }
+        )
+    }
+
+    if (null !== quota.value.num_files) {
+        const langNumFiles = $ngettext(
+            '%{filesCount} File',
+            '%{filesCount} Files',
+            quota.value.num_files,
+            {filesCount: quota.value.num_files}
+        );
+
+        return langSpaceUsed + ' (' + langNumFiles + ')';
+    }
+
+    return langSpaceUsed;
+});
+
+const {axios} = useAxios();
+
+const update = () => {
+    axios.get(props.quotaUrl).then((resp) => {
+        quota.value = mergeExisting(quota.value, resp.data);
+        loading.value = false;
+
+        emit('updated', quota.value);
+    });
 }
+
+onMounted(update);
 </script>

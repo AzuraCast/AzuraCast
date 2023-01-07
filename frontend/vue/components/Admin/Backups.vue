@@ -112,12 +112,6 @@
                 :fields="fields"
                 :api-url="listUrl"
             >
-                <template #cell(timestamp)="row">
-                    {{ toLocaleTime(row.item.timestamp) }}
-                </template>
-                <template #cell(size)="row">
-                    {{ formatFileSize(row.item.size) }}
-                </template>
                 <template #cell(actions)="row">
                     <b-button-group size="sm">
                         <b-button
@@ -211,6 +205,7 @@ const blankSettings = {
 const settings = ref({...blankSettings});
 
 const {$gettext} = useTranslate();
+const {timeConfig} = useAzuraCast();
 
 const fields = [
     {
@@ -222,12 +217,18 @@ const fields = [
     {
         key: 'timestamp',
         label: $gettext('Last Modified'),
-        sortable: false
+        sortable: false,
+        formatter: (value) => {
+            return DateTime.fromSeconds(value).toLocaleString(
+                {...DateTime.DATETIME_SHORT, ...timeConfig}
+            );
+        }
     },
     {
         key: 'size',
         label: $gettext('Size'),
-        sortable: false
+        sortable: false,
+        formatter: (value) => formatFileSize(value)
     },
     {
         key: 'actions',
@@ -262,14 +263,6 @@ onMounted(relist);
 
 const toRelativeTime = (timestamp) => {
     return DateTime.fromSeconds(timestamp).toRelative();
-};
-
-const toLocaleTime = (timestamp) => {
-    const {timeConfig} = useAzuraCast();
-
-    return DateTime.fromSeconds(timestamp).toLocaleString(
-        {...DateTime.DATETIME_SHORT, ...timeConfig}
-    );
 };
 
 const $lastOutputModal = ref(); // AdminBackupsLastOutputModal

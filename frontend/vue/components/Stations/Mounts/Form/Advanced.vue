@@ -44,27 +44,23 @@
     </b-tab>
 </template>
 
-<script>
+<script setup>
 import {FRONTEND_ICECAST} from '~/components/Entity/RadioAdapters';
 import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
+import {computed} from "vue";
 
-export default {
-    name: 'MountFormAdvanced',
-    components: {BWrappedFormGroup},
-    props: {
-        form: {
-            type: Object,
-            required: true
-        },
-        stationFrontendType: {
-            type: String,
-            required: true
-        }
+const props = defineProps({
+    form: {
+        type: Object,
+        required: true
     },
-    computed: {
-        isIcecast() {
-            return FRONTEND_ICECAST === this.stationFrontendType;
-        }
+    stationFrontendType: {
+        type: String,
+        required: true
     }
-};
+});
+
+const isIcecast = computed(() => {
+    return FRONTEND_ICECAST === props.stationFrontendType;
+});
 </script>

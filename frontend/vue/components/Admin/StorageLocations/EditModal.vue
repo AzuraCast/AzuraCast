@@ -4,11 +4,11 @@
         :loading="loading"
         :title="langTitle"
         :error="error"
-        :disable-save-button="v$.form.$invalid"
+        :disable-save-button="v$.$invalid"
         @submit="doSubmit"
         @hidden="clearContents"
     >
-        <storage-location-form :form="v$.form" />
+        <storage-location-form :form="v$" />
     </modal-form>
 </template>
 
@@ -52,7 +52,7 @@ export default {
             'storageQuota': ''
         }
 
-        const {form, resetForm} = useResettableRef(blankForm);
+        const {record: form, reset: resetForm} = useResettableRef(blankForm);
 
         const validations = computed(() => {
             let validationRules = {

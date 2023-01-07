@@ -148,17 +148,17 @@ const tabs = [
 const $datatable = ref(); // Template Ref
 
 const relist = () => {
-    $datatable.value.refresh();
+    $datatable.value?.refresh();
 };
 
 const $editModal = ref(); // Template Ref
 
 const doCreate = () => {
-    $editModal.value.create();
+    $editModal.value?.create();
 };
 
 const doEdit = (url) => {
-    $editModal.value.edit(url);
+    $editModal.value?.edit(url);
 };
 
 const setType = (type) => {

@@ -64,7 +64,7 @@
                     <b-wrapped-form-group
                         id="form_start_date"
                         name="start_date"
-                        :field="v$.form.start_date"
+                        :field="v$.start_date"
                         input-type="date"
                     >
                         <template #label>
@@ -75,7 +75,7 @@
                     <b-wrapped-form-group
                         id="form_end_date"
                         name="end_date"
-                        :field="v$.form.end_date"
+                        :field="v$.end_date"
                         input-type="date"
                     >
                         <template #label>
@@ -86,7 +86,7 @@
                     <b-wrapped-form-checkbox
                         id="form_edit_fetch_isrc"
                         name="fetch_isrc"
-                        :field="v$.form.fetch_isrc"
+                        :field="v$.fetch_isrc"
                     >
                         <template #label>
                             {{ $gettext('Attempt to Automatically Retrieve ISRC When Missing') }}
@@ -102,7 +102,7 @@
                 <b-button
                     type="submit"
                     size="lg"
-                    :variant="(v$.form.$invalid) ? 'danger' : 'primary'"
+                    :variant="(v$.$invalid) ? 'danger' : 'primary'"
                     class="mt-2"
                 >
                     {{ $gettext('Generate Report') }}
@@ -112,52 +112,38 @@
     </section>
 </template>
 
-<script>
-import useVuelidate from "@vuelidate/core";
+<script setup>
 import {required} from '@vuelidate/validators';
 import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
 import BFormFieldset from "~/components/Form/BFormFieldset";
 import BWrappedFormCheckbox from "~/components/Form/BWrappedFormCheckbox";
+import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
 
-/* TODO Options API */
-
-export default {
-    name: 'StationsReportsSoundExchange',
-    components: {BWrappedFormGroup, BFormFieldset, BWrappedFormCheckbox},
-    props: {
-        apiUrl: {
-            type: String,
-            required: true
-        },
-        startDate: {
-            type: String,
-            required: true
-        },
-        endDate: {
-            type: String,
-            required: true
-        }
+const props = defineProps({
+    apiUrl: {
+        type: String,
+        required: true
     },
-    setup() {
-        return {v$: useVuelidate()}
+    startDate: {
+        type: String,
+        required: true
     },
-    validations() {
-        return {
-            form: {
-                start_date: {required},
-                end_date: {required},
-                fetch_isrc: {}
-            }
-        }
-    },
-    data() {
-        return {
-            form: {
-                start_date: this.startDate,
-                end_date: this.endDate,
-                fetch_isrc: false
-            }
-        }
+    endDate: {
+        type: String,
+        required: true
     }
-}
+});
+
+const {v$} = useVuelidateOnForm(
+    {
+        start_date: {required},
+        end_date: {required},
+        fetch_isrc: {}
+    },
+    {
+        start_date: props.startDate,
+        end_date: props.endDate,
+        fetch_isrc: false
+    }
+);
 </script>

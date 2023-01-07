@@ -106,4 +106,8 @@ const update = () => {
 }
 
 onMounted(update);
+
+defineExpose({
+    update
+});
 </script>

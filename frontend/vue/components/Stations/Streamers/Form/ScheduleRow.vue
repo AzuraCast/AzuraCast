@@ -14,7 +14,7 @@
                     size="sm"
                     variant="outline-light"
                     class="py-2 pr-0"
-                    @click.prevent="$emit('remove')"
+                    @click.prevent="doRemove()"
                 >
                     <icon icon="remove" />
                     {{ $gettext('Remove') }}
@@ -27,7 +27,7 @@
                     <b-wrapped-form-group
                         :id="'edit_form_start_time_'+index"
                         class="col-md-4"
-                        :field="v$.row.start_time"
+                        :field="v$.start_time"
                     >
                         <template #label>
                             {{ $gettext('Start Time') }}
@@ -44,7 +44,7 @@
                     <b-wrapped-form-group
                         :id="'edit_form_end_time_'+index"
                         class="col-md-4"
-                        :field="v$.row.end_time"
+                        :field="v$.end_time"
                     >
                         <template #label>
                             {{ $gettext('End Time') }}
@@ -78,7 +78,7 @@
                     <b-wrapped-form-group
                         :id="'edit_form_start_date_'+index"
                         class="col-md-4"
-                        :field="v$.row.start_date"
+                        :field="v$.start_date"
                         input-type="date"
                     >
                         <template #label>
@@ -94,7 +94,7 @@
                     <b-wrapped-form-group
                         :id="'edit_form_end_date_'+index"
                         class="col-md-4"
-                        :field="v$.row.end_date"
+                        :field="v$.end_date"
                         input-type="date"
                     >
                         <template #label>
@@ -105,7 +105,7 @@
                     <b-wrapped-form-group
                         :id="'edit_form_days_'+index"
                         class="col-md-4"
-                        :field="v$.row.days"
+                        :field="v$.days"
                     >
                         <template #label>
                             {{ $gettext('Scheduled Play Days of Week') }}
@@ -128,57 +128,56 @@
     </b-card>
 </template>
 
-<script>
+<script setup>
 import PlaylistTime from '~/components/Common/TimeCode';
 import Icon from "~/components/Common/Icon.vue";
 import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup.vue";
 import {required} from "@vuelidate/validators";
 import useVuelidate from "@vuelidate/core";
+import {toRef} from "vue";
+import {useTranslate} from "~/vendor/gettext";
 
-/* TODO Options API */
+const props = defineProps({
+    index: {
+        type: Number,
+        required: true
+    },
+    row: {
+        type: Object,
+        required: true
+    },
+    stationTimeZone: {
+        type: String,
+        required: true
+    },
+});
 
-export default {
-    name: 'StreamersFormScheduleRow',
-    components: {BWrappedFormGroup, Icon, PlaylistTime},
-    props: {
-        index: {
-            type: Number,
-            required: true
-        },
-        row: {
-            type: Object,
-            required: true
-        },
-        stationTimeZone: {
-            type: String,
-            required: true
-        },
+const emit = defineEmits(['remove']);
+
+const v$ = useVuelidate(
+    {
+        'start_time': {required},
+        'end_time': {required},
+        'start_date': {},
+        'end_date': {},
+        'days': {}
     },
-    emits: ['remove'],
-    setup() {
-        return {v$: useVuelidate()}
-    },
-    validations: {
-        row: {
-            'start_time': {required},
-            'end_time': {required},
-            'start_date': {},
-            'end_date': {},
-            'days': {}
-        }
-    },
-    data() {
-        return {
-            dayOptions: [
-                {value: 1, text: this.$gettext('Monday')},
-                {value: 2, text: this.$gettext('Tuesday')},
-                {value: 3, text: this.$gettext('Wednesday')},
-                {value: 4, text: this.$gettext('Thursday')},
-                {value: 5, text: this.$gettext('Friday')},
-                {value: 6, text: this.$gettext('Saturday')},
-                {value: 7, text: this.$gettext('Sunday')}
-            ]
-        };
-    },
-}
+    toRef(props, 'row')
+);
+
+const {$gettext} = useTranslate();
+
+const dayOptions = [
+    {value: 1, text: $gettext('Monday')},
+    {value: 2, text: $gettext('Tuesday')},
+    {value: 3, text: $gettext('Wednesday')},
+    {value: 4, text: $gettext('Thursday')},
+    {value: 5, text: $gettext('Friday')},
+    {value: 6, text: $gettext('Saturday')},
+    {value: 7, text: $gettext('Sunday')}
+];
+
+const doRemove = () => {
+    emit('remove');
+};
 </script>

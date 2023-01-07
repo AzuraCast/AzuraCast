@@ -86,6 +86,7 @@ import {computed, ref} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import {useSweetAlert} from "~/vendor/sweetalert";
 import {useNotify} from "~/vendor/bootstrapVue";
+import {useAxios} from "~/vendor/axios";
 
 const props = defineProps({
     listUrl: {
@@ -150,6 +151,7 @@ const formatTime = (time) => {
 
 const {confirmDelete} = useSweetAlert();
 const {wrapWithLoading, notifySuccess} = useNotify();
+const {axios} = useAxios();
 
 const doDelete = (url) => {
     confirmDelete({

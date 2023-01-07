@@ -12,7 +12,7 @@
                     class="text-right text-white-50"
                 >
                     <stations-common-quota
-                        ref="quota"
+                        ref="$quota"
                         :quota-url="quotaUrl"
                     />
                 </b-col>
@@ -36,7 +36,7 @@
 
         <data-table
             id="station_podcasts"
-            ref="datatable"
+            ref="$datatable"
             paginated
             :fields="fields"
             :responsive="false"
@@ -57,9 +57,6 @@
                     :href="row.item.links.public_feed"
                     target="_blank"
                 >{{ $gettext('RSS Feed') }}</a>
-            </template>
-            <template #cell(num_episodes)="row">
-                {{ countEpisodes(row.item.episodes) }}
             </template>
             <template #cell(actions)="row">
                 <b-button-group size="sm">
@@ -90,7 +87,7 @@
     </b-card>
 
     <edit-modal
-        ref="editPodcastModal"
+        ref="$editPodcastModal"
         :create-url="listUrl"
         :station-time-zone="stationTimeZone"
         :new-art-url="newArtUrl"
@@ -100,65 +97,78 @@
     />
 </template>
 
-<script>
+<script setup>
 import DataTable from '~/components/Common/DataTable';
 import EditModal from './PodcastEditModal';
 import AlbumArt from '~/components/Common/AlbumArt';
 import StationsCommonQuota from "~/components/Stations/Common/Quota";
 import listViewProps from "./listViewProps";
+import {useTranslate} from "~/vendor/gettext";
+import {ref} from "vue";
+import {useSweetAlert} from "~/vendor/sweetalert";
+import {useNotify} from "~/vendor/bootstrapVue";
+import {useAxios} from "~/vendor/axios";
 
-/* TODO Options API */
+const props = defineProps({
+    ...listViewProps
+});
 
-export default {
-    name: 'ListView',
-    components: {StationsCommonQuota, AlbumArt, EditModal, DataTable},
-    props: {
-        ...listViewProps
+const emit = defineEmits(['select-podcast']);
+
+const {$gettext} = useTranslate();
+
+const fields = [
+    {key: 'art', label: $gettext('Art'), sortable: false, class: 'shrink pr-0'},
+    {key: 'title', label: $gettext('Podcast'), sortable: false},
+    {
+        key: 'episodes',
+        label: $gettext('# Episodes'),
+        sortable: false,
+        formatter: (val) => {
+            return val.length;
+        }
     },
-    emits: ['select-podcast'],
-    data() {
-        return {
-            fields: [
-                {key: 'art', label: this.$gettext('Art'), sortable: false, class: 'shrink pr-0'},
-                {key: 'title', label: this.$gettext('Podcast'), sortable: false},
-                {key: 'num_episodes', label: this.$gettext('# Episodes'), sortable: false},
-                {key: 'actions', label: this.$gettext('Actions'), sortable: false, class: 'shrink'}
-            ]
-        };
-    },
-    methods: {
-        countEpisodes (episodes) {
-            return episodes.length;
-        },
-        relist () {
-            this.$refs.quota.update();
-            if (this.$refs.datatable) {
-                this.$refs.datatable.refresh();
-            }
-        },
-        doCreate () {
-            this.$refs.editPodcastModal.create();
-        },
-        doEdit (url) {
-            this.$refs.editPodcastModal.edit(url);
-        },
-        doSelectPodcast (podcast) {
-            this.$emit('select-podcast', podcast);
-        },
-        doDelete (url) {
-            this.$confirmDelete({
-                title: this.$gettext('Delete Podcast?'),
-            }).then((result) => {
-                if (result.value) {
-                    this.$wrapWithLoading(
-                        this.axios.delete(url)
-                    ).then((resp) => {
-                        this.$notifySuccess(resp.data.message);
-                        this.relist();
-                    });
-                }
+    {key: 'actions', label: $gettext('Actions'), sortable: false, class: 'shrink'}
+];
+
+const $quota = ref(); // Template Ref
+const $datatable = ref(); // Template Ref
+
+const relist = () => {
+    $quota.value.update();
+    $datatable.value?.refresh();
+};
+
+const $editPodcastModal = ref(); // Template Ref
+
+const doCreate = () => {
+    $editPodcastModal.value.create();
+};
+
+const doEdit = (url) => {
+    $editPodcastModal.value.edit(url);
+};
+
+const doSelectPodcast = (podcast) => {
+    emit('select-podcast', podcast);
+};
+
+const {confirmDelete} = useSweetAlert();
+const {wrapWithLoading, notifySuccess} = useNotify();
+const {axios} = useAxios();
+
+const doDelete = (url) => {
+    confirmDelete({
+        title: $gettext('Delete Podcast?'),
+    }).then((result) => {
+        if (result.value) {
+            wrapWithLoading(
+                axios.delete(url)
+            ).then((resp) => {
+                notifySuccess(resp.data.message);
+                relist();
             });
         }
-    }
+    });
 };
 </script>

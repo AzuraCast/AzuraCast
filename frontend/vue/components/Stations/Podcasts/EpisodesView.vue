@@ -22,7 +22,7 @@
                     class="text-right text-white-50"
                 >
                     <stations-common-quota
-                        ref="quota"
+                        ref="$quota"
                         :quota-url="quotaUrl"
                     />
                 </b-col>
@@ -54,7 +54,7 @@
 
         <data-table
             id="station_podcast_episodes"
-            ref="datatable"
+            ref="$datatable"
             paginated
             :fields="fields"
             :responsive="false"
@@ -107,7 +107,7 @@
     </b-card>
 
     <edit-modal
-        ref="editEpisodeModal"
+        ref="$editEpisodeModal"
         :create-url="podcast.links.episodes"
         :station-time-zone="stationTimeZone"
         :new-art-url="podcast.links.episode_new_art"
@@ -118,68 +118,77 @@
     />
 </template>
 
-<script>
+<script setup>
 import DataTable from '~/components/Common/DataTable';
 import EditModal from './EpisodeEditModal';
 import Icon from '~/components/Common/Icon';
 import AlbumArt from '~/components/Common/AlbumArt';
 import StationsCommonQuota from "~/components/Stations/Common/Quota";
 import episodesViewProps from "~/components/Stations/Podcasts/episodesViewProps";
+import {useTranslate} from "~/vendor/gettext";
+import {ref} from "vue";
+import {useSweetAlert} from "~/vendor/sweetalert";
+import {useNotify} from "~/vendor/bootstrapVue";
+import {useAxios} from "~/vendor/axios";
 
-/* TODO Options API */
+const props = defineProps({
+    ...episodesViewProps,
+    podcast: {
+        type: Object,
+        required: true
+    }
+});
 
-export default {
-    name: 'EpisodesView',
-    components: {StationsCommonQuota, AlbumArt, Icon, EditModal, DataTable},
-    props: {
-        ...episodesViewProps,
-        podcast: {
-            type: Object,
-            required: true
-        }
-    },
-    emits: ['clear-podcast'],
-    data() {
-        return {
-            fields: [
-                {key: 'art', label: this.$gettext('Art'), sortable: false, class: 'shrink pr-0'},
-                {key: 'title', label: this.$gettext('Episode'), sortable: false},
-                {key: 'podcast_media', label: this.$gettext('File Name'), sortable: false},
-                {key: 'explicit', label: this.$gettext('Explicit'), sortable: false},
-                {key: 'actions', label: this.$gettext('Actions'), sortable: false, class: 'shrink'}
-            ]
-        };
-    },
-    methods: {
-        relist () {
-            this.$refs.quota.update();
-            if (this.$refs.datatable) {
-                this.$refs.datatable.refresh();
-            }
-        },
-        doCreate () {
-            this.$refs.editEpisodeModal.create();
-        },
-        doEdit (url) {
-            this.$refs.editEpisodeModal.edit(url);
-        },
-        doClearPodcast () {
-            this.$emit('clear-podcast');
-        },
-        doDelete (url) {
-            this.$confirmDelete({
-                title: this.$gettext('Delete Episode?'),
-            }).then((result) => {
-                if (result.value) {
-                    this.$wrapWithLoading(
-                        this.axios.delete(url)
-                    ).then((resp) => {
-                        this.$notifySuccess(resp.data.message);
-                        this.relist();
-                    });
-                }
+const emit = defineEmits(['clear-podcast']);
+
+const {$gettext} = useTranslate();
+
+const fields = [
+    {key: 'art', label: $gettext('Art'), sortable: false, class: 'shrink pr-0'},
+    {key: 'title', label: $gettext('Episode'), sortable: false},
+    {key: 'podcast_media', label: $gettext('File Name'), sortable: false},
+    {key: 'explicit', label: $gettext('Explicit'), sortable: false},
+    {key: 'actions', label: $gettext('Actions'), sortable: false, class: 'shrink'}
+];
+
+const $quota = ref(); // Template Ref
+const $datatable = ref(); // Template Ref
+
+const relist = () => {
+    $quota.value.update();
+    $datatable.value?.refresh();
+};
+
+const $editEpisodeModal = ref(); // Template Ref
+
+const doCreate = () => {
+    $editEpisodeModal.value.create();
+};
+
+const doEdit = (url) => {
+    $editEpisodeModal.value.edit(url);
+};
+
+const doClearPodcast = () => {
+    emit('clear-podcast');
+};
+
+const {confirmDelete} = useSweetAlert();
+const {wrapWithLoading, notifySuccess} = useNotify();
+const {axios} = useAxios();
+
+const doDelete = (url) => {
+    confirmDelete({
+        title: $gettext('Delete Episode?'),
+    }).then((result) => {
+        if (result.value) {
+            wrapWithLoading(
+                axios.delete(url)
+            ).then((resp) => {
+                notifySuccess(resp.data.message);
+                relist();
             });
         }
-    }
+    });
 };
 </script>

@@ -103,39 +103,30 @@
     </b-tab>
 </template>
 
-<script>
+<script setup>
 import {REMOTE_ICECAST, REMOTE_SHOUTCAST1, REMOTE_SHOUTCAST2} from '~/components/Entity/RadioAdapters';
 import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
 import BWrappedFormCheckbox from "~/components/Form/BWrappedFormCheckbox";
 
-/* TODO Options API */
-
-export default {
-    name: 'RemoteFormBasicInfo',
-    components: {BWrappedFormCheckbox, BWrappedFormGroup},
-    props: {
-        form: {
-            type: Object,
-            required: true
-        }
-    },
-    computed: {
-        typeOptions() {
-            return [
-                {
-                    value: REMOTE_ICECAST,
-                    text: 'Icecast v2.4+',
-                },
-                {
-                    value: REMOTE_SHOUTCAST1,
-                    text: 'Shoutcast v1',
-                },
-                {
-                    value: REMOTE_SHOUTCAST2,
-                    text: 'Shoutcast v2',
-                }
-            ];
-        },
+const props = defineProps({
+    form: {
+        type: Object,
+        required: true
     }
-};
+});
+
+const typeOptions = [
+    {
+        value: REMOTE_ICECAST,
+        text: 'Icecast v2.4+',
+    },
+    {
+        value: REMOTE_SHOUTCAST1,
+        text: 'Shoutcast v1',
+    },
+    {
+        value: REMOTE_SHOUTCAST2,
+        text: 'Shoutcast v2',
+    }
+];
 </script>

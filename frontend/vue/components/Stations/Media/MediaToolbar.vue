@@ -6,7 +6,7 @@
         <div class="col-md-8 buttons">
             <div class="btn-group dropdown allow-focus">
                 <b-dropdown
-                    ref="setPlaylistsDropdown"
+                    ref="$setPlaylistsDropdown"
                     v-b-tooltip.hover
                     size="sm"
                     variant="primary"
@@ -69,21 +69,23 @@
                             </div>
                         </div>
 
-                        <b-button
-                            type="submit"
-                            size="sm"
-                            variant="primary"
-                        >
-                            {{ $gettext('Save') }}
-                        </b-button>
-                        <b-button
-                            type="button"
-                            size="sm"
-                            variant="warning"
-                            @click="clearPlaylists()"
-                        >
-                            {{ $gettext('Clear') }}
-                        </b-button>
+                        <div class="buttons">
+                            <b-button
+                                type="submit"
+                                size="sm"
+                                variant="primary"
+                            >
+                                {{ $gettext('Save') }}
+                            </b-button>
+                            <b-button
+                                type="button"
+                                size="sm"
+                                variant="warning"
+                                @click="clearPlaylists()"
+                            >
+                                {{ $gettext('Clear') }}
+                            </b-button>
+                        </div>
                     </b-dropdown-form>
                 </b-dropdown>
             </div>
@@ -148,188 +150,200 @@
         </div>
     </div>
 </template>
-<script>
+
+<script setup>
 import {forEach, intersection, map} from 'lodash';
 import Icon from '~/components/Common/Icon';
 import '~/vendor/sweetalert';
+import {h, ref, toRef, watch} from "vue";
+import {useTranslate} from "~/vendor/gettext";
+import {useNotify} from "~/vendor/bootstrapVue";
+import {useAxios} from "~/vendor/axios";
+import {useSweetAlert} from "~/vendor/sweetalert";
 
-/* TODO Options API */
-
-export default {
-    name: 'StationMediaToolbar',
-    components: {Icon},
-    props: {
-        currentDirectory: {
-            type: String,
-            required: true
-        },
-        selectedItems: {
-            type: Object,
-            required: true
-        },
-        playlists: {
-            type: Array,
-            default: () => {
-                return [];
-            }
-        },
-        batchUrl: {
-            type: String,
-            required: true
-        },
-        supportsImmediateQueue: {
-            type: Boolean,
-            required: true
+const props = defineProps({
+    currentDirectory: {
+        type: String,
+        required: true
+    },
+    selectedItems: {
+        type: Object,
+        required: true
+    },
+    playlists: {
+        type: Array,
+        default: () => {
+            return [];
         }
     },
-    emits: ['relist', 'add-playlist'],
-    data() {
-        return {
-            checkedPlaylists: [],
-            newPlaylist: '',
-        };
+    batchUrl: {
+        type: String,
+        required: true
     },
-    computed: {
-        langErrors() {
-            return this.$gettext('The request could not be processed.');
-        },
-    },
-    watch: {
-        selectedItems (items) {
-            // Get all playlists that are active on ALL selected items.
-            let playlistsForItems = map(items.all, (item) => {
-                return map(item.playlists, 'id');
-            });
+    supportsImmediateQueue: {
+        type: Boolean,
+        required: true
+    }
+});
 
-            // Check the checkboxes for those playlists.
-            this.checkedPlaylists = intersection(...playlistsForItems);
-        },
-        newPlaylist (text) {
-            if (text !== '') {
-                if (!this.checkedPlaylists.includes('new')) {
-                    this.checkedPlaylists.push('new');
-                }
-            }
-        }
-    },
-    methods: {
-        doImmediateQueue() {
-            this.doBatch('immediate', this.$gettext('Files played immediately:'));
-        },
-        doQueue() {
-            this.doBatch('queue', this.$gettext('Files queued for playback:'));
-        },
-        doReprocess() {
-            this.doBatch('reprocess', this.$gettext('Files marked for reprocessing:'));
-        },
-        doDelete() {
-            let buttonConfirmText = this.$gettext('Delete %{ num } media files?');
-            let numFiles = this.selectedItems.all.length;
+const emit = defineEmits(['relist', 'add-playlist']);
 
-            this.$confirmDelete({
-                title: this.$gettextInterpolate(buttonConfirmText, {num: numFiles}),
-            }).then((result) => {
-                if (result.value) {
-                    this.doBatch('delete', this.$gettext('Files removed:'));
-                }
-            });
-        },
-        doBatch (action, notifyMessage) {
-            if (this.selectedItems.all.length) {
-                this.$wrapWithLoading(
-                    this.axios.put(this.batchUrl, {
-                        'do': action,
-                        'current_directory': this.currentDirectory,
-                        'files': this.selectedItems.files,
-                        'dirs': this.selectedItems.directories
-                    })
-                ).then((resp) => {
-                    if (resp.data.success) {
-                        let allItemNodes = [];
-                        forEach(this.selectedItems.all, (item) => {
-                            allItemNodes.push(this.$createElement('div', {}, item.path_short));
-                        });
+const checkedPlaylists = ref([]);
+const newPlaylist = ref('');
 
-                        this.$notifySuccess(allItemNodes, {
-                            title: notifyMessage
-                        });
-                    } else {
-                        let errorNodes = [];
-                        forEach(resp.data.errors, (error) => {
-                            errorNodes.push(this.$createElement('div', {}, error));
-                        });
+const {$gettext} = useTranslate();
+const langErrors = $gettext('The request could not be processed.');
 
-                        this.$notifyError(errorNodes, {
-                            title: this.langErrors
-                        });
-                    }
+watch(toRef(props, 'selectedItems'), (items) => {
+    // Get all playlists that are active on ALL selected items.
+    let playlistsForItems = map(items.all, (item) => {
+        return map(item.playlists, 'id');
+    });
 
-                    this.$emit('relist');
-                });
-            } else {
-                this.notifyNoFiles();
-            }
-        },
-        clearPlaylists () {
-            this.checkedPlaylists = [];
-            this.newPlaylist = '';
+    // Check the checkboxes for those playlists.
+    checkedPlaylists.value = intersection(...playlistsForItems);
+});
 
-            this.setPlaylists();
-        },
-        setPlaylists () {
-            this.$refs.setPlaylistsDropdown.hide();
-
-            if (this.selectedItems.all.length) {
-                this.$wrapWithLoading(
-                    this.axios.put(this.batchUrl, {
-                        'do': 'playlist',
-                        'playlists': this.checkedPlaylists,
-                        'new_playlist_name': this.newPlaylist,
-                        'currentDirectory': this.currentDirectory,
-                        'files': this.selectedItems.files,
-                        'dirs': this.selectedItems.directories
-                    })
-                ).then((resp) => {
-                    if (resp.data.success) {
-                        if (resp.data.record) {
-                            this.$emit('add-playlist', resp.data.record);
-                        }
-
-                        let notifyMessage = (this.checkedPlaylists.length > 0)
-                            ? this.$gettext('Playlists updated for selected files:')
-                            : this.$gettext('Playlists cleared for selected files:');
-
-                        let allItemNodes = [];
-                        forEach(this.selectedItems.all, (item) => {
-                            allItemNodes.push(this.$createElement('div', {}, item.path_short));
-                        });
-
-                        this.$notifySuccess(allItemNodes, {
-                            title: notifyMessage
-                        });
-
-                        this.checkedPlaylists = [];
-                        this.newPlaylist = '';
-                    } else {
-                        let errorNodes = [];
-                        forEach(resp.data.errors, (error) => {
-                            errorNodes.push(this.$createElement('div', {}, error));
-                        });
-
-                        this.$notifyError(errorNodes, {
-                            title: this.langErrors
-                        });
-                    }
-
-                    this.$emit('relist');
-                });
-            } else {
-                this.notifyNoFiles();
-            }
-        },
-        notifyNoFiles() {
-            this.$notifyError(this.$gettext('No files selected.'));
+watch(newPlaylist, (text) => {
+    if (text !== '') {
+        if (!checkedPlaylists.value.includes('new')) {
+            checkedPlaylists.value.push('new');
         }
     }
+});
+
+const {wrapWithLoading, notifySuccess, notifyError} = useNotify();
+const {axios} = useAxios();
+
+const notifyNoFiles = () => {
+    notifyError($gettext('No files selected.'));
+};
+
+const doBatch = (action, notifyMessage) => {
+    if (props.selectedItems.all.length) {
+        wrapWithLoading(
+            axios.put(props.batchUrl, {
+                'do': action,
+                'current_directory': props.currentDirectory,
+                'files': props.selectedItems.files,
+                'dirs': props.selectedItems.directories
+            })
+        ).then((resp) => {
+            if (resp.data.success) {
+                let allItemNodes = [];
+                forEach(props.selectedItems.all, (item) => {
+                    allItemNodes.push(h('div', {}, item.path_short));
+                });
+
+                notifySuccess(allItemNodes, {
+                    title: notifyMessage
+                });
+            } else {
+                let errorNodes = [];
+                forEach(resp.data.errors, (error) => {
+                    errorNodes.push(h('div', {}, error));
+                });
+
+                notifyError(errorNodes, {
+                    title: langErrors
+                });
+            }
+
+            emit('relist');
+        });
+    } else {
+        notifyNoFiles();
+    }
+};
+
+const doImmediateQueue = () => {
+    doBatch('immediate', $gettext('Files played immediately:'));
+};
+
+const doQueue = () => {
+    doBatch('queue', $gettext('Files queued for playback:'));
+};
+
+const doReprocess = () => {
+    doBatch('reprocess', $gettext('Files marked for reprocessing:'));
+};
+
+const {confirmDelete} = useSweetAlert();
+
+const doDelete = () => {
+    let numFiles = this.selectedItems.all.length;
+    let buttonConfirmText = $gettext(
+        'Delete %{ num } media files?',
+        {num: numFiles}
+    );
+
+    confirmDelete({
+        title: buttonConfirmText,
+    }).then((result) => {
+        if (result.value) {
+            doBatch('delete', $gettext('Files removed:'));
+        }
+    });
+};
+
+const $setPlaylistsDropdown = ref(); // Template Ref
+
+const setPlaylists = () => {
+    $setPlaylistsDropdown.value.hide();
+
+    if (props.selectedItems.all.length) {
+        wrapWithLoading(
+            axios.put(props.batchUrl, {
+                'do': 'playlist',
+                'playlists': checkedPlaylists.value,
+                'new_playlist_name': newPlaylist.value,
+                'currentDirectory': props.currentDirectory,
+                'files': props.selectedItems.files,
+                'dirs': props.selectedItems.directories
+            })
+        ).then((resp) => {
+            if (resp.data.success) {
+                if (resp.data.record) {
+                    emit('add-playlist', resp.data.record);
+                }
+
+                let notifyMessage = (checkedPlaylists.value.length > 0)
+                    ? $gettext('Playlists updated for selected files:')
+                    : $gettext('Playlists cleared for selected files:');
+
+                let allItemNodes = [];
+                forEach(props.selectedItems.all, (item) => {
+                    allItemNodes.push(h('div', {}, item.path_short));
+                });
+
+                notifySuccess(allItemNodes, {
+                    title: notifyMessage
+                });
+
+                checkedPlaylists.value = [];
+                newPlaylist.value = '';
+            } else {
+                let errorNodes = [];
+                forEach(resp.data.errors, (error) => {
+                    errorNodes.push(h('div', {}, error));
+                });
+
+                notifyError(errorNodes, {
+                    title: langErrors
+                });
+            }
+
+            emit('relist');
+        });
+    } else {
+        notifyNoFiles();
+    }
+};
+
+const clearPlaylists = () => {
+    checkedPlaylists.value = [];
+    newPlaylist.value = '';
+
+    setPlaylists();
 };
 </script>

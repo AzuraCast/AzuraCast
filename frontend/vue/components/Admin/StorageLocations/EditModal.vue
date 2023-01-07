@@ -20,6 +20,8 @@ import useVuelidate from "@vuelidate/core";
 import {computed} from "vue";
 import {useResettableRef} from "~/functions/useResettableRef";
 
+/* TODO Options API */
+
 export default {
     name: 'AdminStorageLocationsEditModal',
     components: {StorageLocationForm},

@@ -24,6 +24,9 @@
 </template>
 
 <script>
+
+/* TODO Options API */
+
 export default {
     name: 'StreamingLogView',
     props: {

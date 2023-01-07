@@ -137,6 +137,8 @@
 import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
 import BWrappedFormCheckbox from "~/components/Form/BWrappedFormCheckbox";
 
+/* TODO Options API */
+
 export default {
     name: 'RemoteFormAutoDj',
     components: {BWrappedFormCheckbox, BWrappedFormGroup},

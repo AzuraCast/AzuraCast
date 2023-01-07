@@ -44,6 +44,8 @@ import DataTable from '~/components/Common/DataTable';
 import {forEach} from 'lodash';
 import AlbumArt from '~/components/Common/AlbumArt';
 
+/* TODO Options API */
+
 export default {
     components: {AlbumArt, DataTable},
     props: {

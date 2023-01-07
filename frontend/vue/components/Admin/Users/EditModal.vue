@@ -24,6 +24,8 @@ import AdminUsersForm from './Form.vue';
 import {map} from 'lodash';
 import validatePassword from "~/functions/validatePassword";
 
+/* TODO Options API */
+
 export default {
     name: 'AdminUsersEditModal',
     components: {AdminUsersForm},

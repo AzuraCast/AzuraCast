@@ -164,7 +164,7 @@ const props = defineProps({
     },
     editUrl: {
         type: String,
-        required: true
+        default: null
     },
     isEditMode: {
         type: Boolean,

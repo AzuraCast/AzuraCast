@@ -108,6 +108,8 @@ import {REMOTE_ICECAST, REMOTE_SHOUTCAST1, REMOTE_SHOUTCAST2} from '~/components
 import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
 import BWrappedFormCheckbox from "~/components/Form/BWrappedFormCheckbox";
 
+/* TODO Options API */
+
 export default {
     name: 'RemoteFormBasicInfo',
     components: {BWrappedFormCheckbox, BWrappedFormGroup},

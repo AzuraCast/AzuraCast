@@ -12,6 +12,8 @@ import Hls from 'hls.js';
 import {usePlayerStore} from "~/store.js";
 import {defineComponent} from "vue";
 
+/* TODO Options API */
+
 export default defineComponent({
     props: {
         title: {

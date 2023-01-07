@@ -14,6 +14,8 @@
 </template>
 
 <script>
+/* TODO Options API */
+
 export default {
     name: 'LogList',
     props: {

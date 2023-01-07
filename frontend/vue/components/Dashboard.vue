@@ -329,6 +329,8 @@ import Avatar from '~/components/Common/Avatar';
 import PlayButton from "~/components/Common/PlayButton";
 import AlbumArt from "~/components/Common/AlbumArt";
 
+/* TODO Options API */
+
 export default {
     components: {PlayButton, Avatar, Icon, TimeSeriesChart, AlbumArt},
     props: {

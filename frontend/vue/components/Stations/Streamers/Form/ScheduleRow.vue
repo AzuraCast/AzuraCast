@@ -135,6 +135,8 @@ import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup.vue";
 import {required} from "@vuelidate/validators";
 import useVuelidate from "@vuelidate/core";
 
+/* TODO Options API */
+
 export default {
     name: 'StreamersFormScheduleRow',
     components: {BWrappedFormGroup, Icon, PlaylistTime},

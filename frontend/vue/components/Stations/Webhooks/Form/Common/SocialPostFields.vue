@@ -86,6 +86,8 @@ import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
 import CommonFormattingInfo from "./FormattingInfo";
 import {includes} from 'lodash';
 
+/* TODO Options API */
+
 export default {
     name: 'CommonSocialPostFields',
     components: {CommonFormattingInfo, BWrappedFormGroup},

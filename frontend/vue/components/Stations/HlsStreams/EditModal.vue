@@ -24,6 +24,8 @@ import FormBasicInfo from './Form/BasicInfo';
 import mergeExisting from "~/functions/mergeExisting";
 import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
 
+/* TODO Options API */
+
 export default {
     name: 'EditModal',
     components: {FormBasicInfo},

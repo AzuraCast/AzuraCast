@@ -221,6 +221,8 @@ import {forEach, filter, map, defaultTo, includes} from 'lodash';
 import Icon from './Icon.vue';
 import {defineComponent} from "vue";
 
+/* TODO Options API */
+
 export default defineComponent({
     name: 'DataTable',
     components: {Icon},

@@ -87,6 +87,8 @@ import DataTable from "~/components/Common/DataTable";
 import SftpUsersEditModal from "./SftpUsers/EditModal";
 import Icon from "~/components/Common/Icon";
 
+/* TODO Options API */
+
 export default {
     name: 'SftpUsers',
     components: {Icon, SftpUsersEditModal, DataTable},

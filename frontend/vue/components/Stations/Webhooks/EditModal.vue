@@ -56,6 +56,8 @@ import MatomoAnalytics from "./Form/MatomoAnalytics";
 import Mastodon from "./Form/Mastodon";
 import useVuelidate from "@vuelidate/core";
 
+/* TODO Options API */
+
 export default {
     name: 'EditModal',
     components: {BasicInfo, TypeSelect},

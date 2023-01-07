@@ -40,6 +40,8 @@ import DateRangePicker from 'vue3-daterange-picker';
 import Icon from "./Icon";
 import {DateTime} from 'luxon';
 
+/* TODO Options API */
+
 export default {
     name: 'DateRangeDropdown',
     components: {DateRangePicker, Icon},

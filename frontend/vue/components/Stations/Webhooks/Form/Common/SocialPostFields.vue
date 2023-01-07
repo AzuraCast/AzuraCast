@@ -81,30 +81,23 @@
     </div>
 </template>
 
-<script>
+<script setup>
 import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
 import CommonFormattingInfo from "./FormattingInfo";
 import {includes} from 'lodash';
 
-/* TODO Options API */
-
-export default {
-    name: 'CommonSocialPostFields',
-    components: {CommonFormattingInfo, BWrappedFormGroup},
-    props: {
-        form: {
-            type: Object,
-            required: true
-        },
-        nowPlayingUrl: {
-            type: String,
-            required: true
-        }
+const props = defineProps({
+    form: {
+        type: Object,
+        required: true
     },
-    methods: {
-        hasTrigger(trigger) {
-            return includes(this.form.triggers.$model, trigger);
-        }
+    nowPlayingUrl: {
+        type: String,
+        required: true
     }
-}
+});
+
+const hasTrigger = (trigger) => {
+    return includes(props.form.triggers.$model, trigger);
+};
 </script>

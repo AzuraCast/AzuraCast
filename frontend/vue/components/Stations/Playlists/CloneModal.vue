@@ -3,7 +3,7 @@
         id="clone_modal"
         ref="$modal"
         :title="$gettext('Duplicate Playlist')"
-        :disable-save-button="v$.form.$invalid"
+        :disable-save-button="v$.$invalid"
         @submit="doSubmit"
         @hidden="clearContents"
     >
@@ -11,7 +11,7 @@
             <b-wrapped-form-group
                 id="form_edit_name"
                 class="col-md-12"
-                :field="v$.form.name"
+                :field="v$.name"
             >
                 <template #label>
                     {{ $gettext('New Playlist Name') }}
@@ -21,7 +21,7 @@
             <b-wrapped-form-group
                 id="form_edit_clone"
                 class="col-md-12"
-                :field="v$.form.clone"
+                :field="v$.clone"
             >
                 <template #label>
                     {{ $gettext('Customize Copy') }}

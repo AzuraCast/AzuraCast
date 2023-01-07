@@ -17,71 +17,62 @@
     </b-wrapped-form-group>
 </template>
 
-<script>
+<script setup>
 import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
+import {useTranslate} from "~/vendor/gettext";
 
-/* TODO Options API */
-
-export default {
-    name: 'CommonRateLimitFields',
-    components: {BWrappedFormGroup},
-    props: {
-        form: {
-            type: Object,
-            required: true
-        }
-    },
-    computed: {
-        langSeconds() {
-            return this.$gettext('%{ seconds } seconds');
-        },
-        langMinutes() {
-            return this.$gettext('%{ minutes } minutes');
-        },
-        rateLimitOptions() {
-            return [
-                {
-                    text: this.$gettext('No Limit'),
-                    value: 0,
-                },
-                {
-                    text: this.$gettextInterpolate(this.langSeconds, {seconds: 15}),
-                    value: 15,
-                },
-                {
-                    text: this.$gettextInterpolate(this.langSeconds, {seconds: 30}),
-                    value: 30,
-                },
-                {
-                    text: this.$gettextInterpolate(this.langSeconds, {seconds: 60}),
-                    value: 60,
-                },
-                {
-                    text: this.$gettextInterpolate(this.langMinutes, {minutes: 2}),
-                    value: 120,
-                },
-                {
-                    text: this.$gettextInterpolate(this.langMinutes, {minutes: 5}),
-                    value: 300,
-                },
-                {
-                    text: this.$gettextInterpolate(this.langMinutes, {minutes: 10}),
-                    value: 600,
-                },
-                {
-                    text: this.$gettextInterpolate(this.langMinutes, {minutes: 15}),
-                    value: 900,
-                },
-                {
-                    text: this.$gettextInterpolate(this.langMinutes, {minutes: 30}),
-                    value: 1800,
-                },
-                {
-                    text: this.$gettextInterpolate(this.langMinutes, {minutes: 60}),
-                    value: 3600,
-                }
-            ];
-        },
+const props = defineProps({
+    form: {
+        type: Object,
+        required: true
     }
-}
+});
+
+const {$gettext, $gettextInterpolate} = useTranslate();
+
+const langSeconds = $gettext('%{ seconds } seconds');
+const langMinutes = $gettext('%{ minutes } minutes');
+
+const rateLimitOptions = [
+    {
+        text: $gettext('No Limit'),
+        value: 0,
+    },
+    {
+        text: $gettextInterpolate(langSeconds, {seconds: 15}),
+        value: 15,
+    },
+    {
+        text: $gettextInterpolate(langSeconds, {seconds: 30}),
+        value: 30,
+    },
+    {
+        text: this.$gettextInterpolate(this.langSeconds, {seconds: 60}),
+        value: 60,
+    },
+    {
+        text: $gettextInterpolate(langMinutes, {minutes: 2}),
+        value: 120,
+    },
+    {
+        text: $gettextInterpolate(langMinutes, {minutes: 5}),
+        value: 300,
+    },
+    {
+        text: $gettextInterpolate(langMinutes, {minutes: 10}),
+        value: 600,
+    },
+    {
+        text: $gettextInterpolate(langMinutes, {minutes: 15}),
+        value: 900,
+    },
+    {
+        text: $gettextInterpolate(langMinutes, {minutes: 30}),
+        value: 1800,
+    },
+    {
+        text: $gettextInterpolate(langMinutes, {minutes: 60}),
+        value: 3600,
+    }
+];
 </script>

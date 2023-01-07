@@ -104,7 +104,7 @@
     </section>
 </template>
 
-<script>
+<script setup>
 import {DateTime} from "luxon";
 import DateRangeDropdown from "~/components/Common/DateRangeDropdown";
 import ListenersByTimePeriodTab from "./Overview/ListenersByTimePeriodTab";
@@ -114,67 +114,51 @@ import CountriesTab from "./Overview/CountriesTab";
 import StreamsTab from "./Overview/StreamsTab";
 import ClientsTab from "./Overview/ClientsTab";
 import ListeningTimeTab from "~/components/Stations/Reports/Overview/ListeningTimeTab";
+import {ref} from "vue";
 
-/* TODO Options API */
+const props = defineProps({
+    stationTimeZone: {
+        type: String,
+        required: true
+    },
+    showFullAnalytics: {
+        type: Boolean,
+        required: true
+    },
+    listenersByTimePeriodUrl: {
+        type: String,
+        required: true
+    },
+    bestAndWorstUrl: {
+        type: String,
+        required: true
+    },
+    byStreamUrl: {
+        type: String,
+        required: true
+    },
+    byClientUrl: {
+        type: String,
+        required: true
+    },
+    byBrowserUrl: {
+        type: String,
+        required: true
+    },
+    byCountryUrl: {
+        type: String,
+        required: true
+    },
+    listeningTimeUrl: {
+        type: String,
+        required: true
+    }
+});
 
-export default {
-    components: {
-        ListeningTimeTab,
-        ClientsTab,
-        StreamsTab,
-        CountriesTab,
-        BrowsersTab,
-        BestAndWorstTab,
-        ListenersByTimePeriodTab,
-        DateRangeDropdown
-    },
-    props: {
-        stationTimeZone: {
-            type: String,
-            required: true
-        },
-        showFullAnalytics: {
-            type: Boolean,
-            required: true
-        },
-        listenersByTimePeriodUrl: {
-            type: String,
-            required: true
-        },
-        bestAndWorstUrl: {
-            type: String,
-            required: true
-        },
-        byStreamUrl: {
-            type: String,
-            required: true
-        },
-        byClientUrl: {
-            type: String,
-            required: true
-        },
-        byBrowserUrl: {
-            type: String,
-            required: true
-        },
-        byCountryUrl: {
-            type: String,
-            required: true
-        },
-        listeningTimeUrl: {
-            type: String,
-            required: true
-        }
-    },
-    data() {
-        let nowTz = DateTime.now().setZone(this.stationTimeZone);
+let nowTz = DateTime.now().setZone(props.stationTimeZone);
 
-        return {
-            dateRange: {
-                startDate: nowTz.minus({days: 13}).toJSDate(),
-                endDate: nowTz.toJSDate(),
-            },
-        };
-    },
-};
+const dateRange = ref({
+    startDate: nowTz.minus({days: 13}).toJSDate(),
+    endDate: nowTz.toJSDate(),
+});
 </script>

@@ -86,9 +86,6 @@
                         :responsive="false"
                         :items="listeners"
                     >
-                        <template #cell(ip)="row">
-                            {{ row.item.ip }}
-                        </template>
                         <template #cell(time)="row">
                             {{ formatTime(row.item.connected_time) }}
                         </template>
@@ -148,117 +145,109 @@
     </div>
 </template>
 
-<script>
+<script setup>
 import StationReportsListenersMap from "./Listeners/Map";
 import Icon from "~/components/Common/Icon";
 import formatTime from "~/functions/formatTime";
 import DataTable from "~/components/Common/DataTable";
 import DateRangeDropdown from "~/components/Common/DateRangeDropdown";
 import {DateTime} from 'luxon';
+import {computed, onMounted, ref, shallowRef} from "vue";
+import {useTranslate} from "~/vendor/gettext";
+import {useNotify} from "~/vendor/bootstrapVue";
+import {useAxios} from "~/vendor/axios";
 
-/* TODO Options API */
+const props = defineProps({
+  apiUrl: {
+    type: String,
+    required: true
+  },
+  attribution: {
+    type: String,
+    required: true
+  },
+  stationTimeZone: {
+    type: String,
+    required: true
+  },
+});
 
-export default {
-    name: 'StationReportsListeners',
-    components: {DateRangeDropdown, DataTable, StationReportsListenersMap, Icon},
-    props: {
-        apiUrl: {
-            type: String,
-            required: true
-        },
-        attribution: {
-            type: String,
-            required: true
-        },
-        stationTimeZone: {
-            type: String,
-            required: true
-        },
-    },
-    data() {
-        const nowTz = DateTime.now().setZone(this.stationTimeZone);
+const isLive = ref(true);
+const listeners = shallowRef([]);
 
-        return {
-            isLive: true,
-            listeners: [],
-            dateRange: {
-                startDate: nowTz.minus({days: 1}).toJSDate(),
-                endDate: nowTz.toJSDate()
-            },
-            fields: [
-                {key: 'ip', label: this.$gettext('IP'), sortable: false},
-                {key: 'time', label: this.$gettext('Time'), sortable: false},
-                {key: 'time_sec', label: this.$gettext('Time (sec)'), sortable: false},
-                {key: 'user_agent', isRowHeader: true, label: this.$gettext('User Agent'), sortable: false},
-                {key: 'stream', label: this.$gettext('Stream'), sortable: false},
-                {key: 'location', label: this.$gettext('Location'), sortable: false}
-            ]
-        };
-    },
-    computed: {
-        nowTz() {
-            return DateTime.now().setZone(this.stationTimeZone);
-        },
-        minDate() {
-            return this.nowTz.minus({years: 5}).toJSDate();
-        },
-        maxDate() {
-            return this.nowTz.plus({days: 5}).toJSDate();
-        },
-        exportUrl() {
-            let exportUrl = new URL(this.apiUrl, document.location);
-            let exportUrlParams = exportUrl.searchParams;
-            exportUrlParams.set('format', 'csv');
+const nowTz = DateTime.now().setZone(props.stationTimeZone);
 
-            if (!this.isLive) {
-                exportUrlParams.set('start', DateTime.fromJSDate(this.dateRange.startDate).toISO());
-                exportUrlParams.set('end', DateTime.fromJSDate(this.dateRange.endDate).toISO());
-            }
+const minDate = nowTz.minus({years: 5}).toJSDate();
+const maxDate = nowTz.plus({days: 5}).toJSDate();
 
-            return exportUrl.toString();
-        },
-        totalListenerHours() {
-            let tlh_seconds = 0;
-            this.listeners.forEach(function (listener) {
-                tlh_seconds += listener.connected_time;
-            });
+const dateRange = ref({
+  startDate: nowTz.minus({days: 1}).toJSDate(),
+  endDate: nowTz.toJSDate()
+});
 
-            let tlh_hours = tlh_seconds / 3600;
-            return Math.round((tlh_hours + 0.00001) * 100) / 100;
-        }
-    },
-    mounted() {
-        this.updateListeners();
-    },
-    methods: {
-        setIsLive(newValue) {
-            this.isLive = newValue;
-            this.updateListeners();
-        },
-        formatTime(time) {
-            return formatTime(time);
-        },
-        updateListeners() {
-            let params = {};
-            if (!this.isLive) {
-                params.start = DateTime.fromJSDate(this.dateRange.startDate).toISO();
-                params.end = DateTime.fromJSDate(this.dateRange.endDate).toISO();
-            }
+const {$gettext} = useTranslate();
 
-            this.$wrapWithLoading(
-                this.axios.get(this.apiUrl, {params: params})
-            ).then((resp) => {
-                this.listeners = resp.data;
+const fields = [
+  {key: 'ip', label: $gettext('IP'), sortable: false},
+  {key: 'time', label: $gettext('Time'), sortable: false},
+  {key: 'time_sec', label: $gettext('Time (sec)'), sortable: false},
+  {key: 'user_agent', isRowHeader: true, label: $gettext('User Agent'), sortable: false},
+  {key: 'stream', label: $gettext('Stream'), sortable: false},
+  {key: 'location', label: $gettext('Location'), sortable: false}
+];
 
-                if (this.isLive) {
-                    setTimeout(this.updateListeners, (!document.hidden) ? 15000 : 30000);
-                }
-            }).catch((error) => {
-                if (this.isLive && (!error.response || error.response.data.code !== 403)) {
-                    setTimeout(this.updateListeners, (!document.hidden) ? 30000 : 120000);
-                }
-            });
-        }
+const exportUrl = computed(() => {
+  let exportUrl = new URL(props.apiUrl, document.location);
+  let exportUrlParams = exportUrl.searchParams;
+  exportUrlParams.set('format', 'csv');
+
+  if (!isLive.value) {
+    exportUrlParams.set('start', DateTime.fromJSDate(dateRange.value.startDate).toISO());
+    exportUrlParams.set('end', DateTime.fromJSDate(dateRange.value.endDate).toISO());
+  }
+
+  return exportUrl.toString();
+});
+
+const totalListenerHours = computed(() => {
+  let tlh_seconds = 0;
+  listeners.value.forEach(function (listener) {
+    tlh_seconds += listener.connected_time;
+  });
+
+  let tlh_hours = tlh_seconds / 3600;
+  return Math.round((tlh_hours + 0.00001) * 100) / 100;
+});
+
+const {wrapWithLoading} = useNotify();
+const {axios} = useAxios();
+
+const updateListeners = () => {
+  let params = {};
+  if (!isLive.value) {
+    params.start = DateTime.fromJSDate(dateRange.value.startDate).toISO();
+    params.end = DateTime.fromJSDate(dateRange.value.endDate).toISO();
+  }
+
+  wrapWithLoading(
+      axios.get(props.apiUrl, {params: params})
+  ).then((resp) => {
+    listeners.value = resp.data;
+
+    if (isLive.value) {
+      setTimeout(updateListeners, (!document.hidden) ? 15000 : 30000);
     }
-}
+  }).catch((error) => {
+    if (isLive.value && (!error.response || error.response.data.code !== 403)) {
+      setTimeout(updateListeners, (!document.hidden) ? 30000 : 120000);
+    }
+  });
+};
+
+onMounted(updateListeners);
+
+const setIsLive = (newValue) => {
+  isLive.value = newValue;
+  updateListeners();
+};
 </script>

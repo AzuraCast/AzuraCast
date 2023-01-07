@@ -8,7 +8,7 @@
         <b-form @submit.prevent="doRename">
             <b-wrapped-form-group
                 id="new_directory_name"
-                :field="v$.form.newPath"
+                :field="v$.newPath"
                 autofocus
             >
                 <template #label>
@@ -24,7 +24,7 @@
                 {{ $gettext('Close') }}
             </b-button>
             <b-button
-                :variant="(v$.form.$invalid) ? 'danger' : 'primary'"
+                :variant="(v$.$invalid) ? 'danger' : 'primary'"
                 @click="doRename"
             >
                 {{ $gettext('Rename') }}

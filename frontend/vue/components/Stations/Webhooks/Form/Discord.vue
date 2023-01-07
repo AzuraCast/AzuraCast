@@ -25,6 +25,7 @@
                 id="form_config_content"
                 class="col-md-6"
                 :field="form.config.content"
+                input-type="textarea"
             >
                 <template #label>
                     {{ $gettext('Main Message Content') }}
@@ -45,6 +46,7 @@
                 id="form_config_description"
                 class="col-md-6"
                 :field="form.config.description"
+                input-type="textarea"
             >
                 <template #label>
                     {{ $gettext('Description') }}

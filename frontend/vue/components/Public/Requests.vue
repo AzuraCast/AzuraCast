@@ -39,95 +39,104 @@
     </div>
 </template>
 
-<script>
+<script setup>
 import DataTable from '~/components/Common/DataTable';
 import {forEach} from 'lodash';
 import AlbumArt from '~/components/Common/AlbumArt';
+import {computed} from "vue";
+import {useTranslate} from "~/vendor/gettext";
+import {useAxios} from "~/vendor/axios";
+import {useNotify} from "~/vendor/bootstrapVue";
 
-/* TODO Options API */
-
-export default {
-    components: {AlbumArt, DataTable},
-    props: {
-        requestListUri: {
-            type: String,
-            required: true
-        },
-        showAlbumArt: {
-            type: Boolean,
-            default: true
-        },
-        customFields: {
-            type: Array,
-            required: false,
-            default: () => []
-        }
+const props = defineProps({
+    requestListUri: {
+        type: String,
+        required: true
     },
-    emits: ['submitted'],
-    data () {
-        let fields = [
-            {key: 'name', isRowHeader: true, label: this.$gettext('Name'), sortable: true, selectable: true},
-            {
-                key: 'song.title',
-                label: this.$gettext('Title'),
-                sortable: true,
-                selectable: true,
-                visible: false,
-            },
-            {
-                key: 'song.artist',
-                label: this.$gettext('Artist'),
-                sortable: true,
-                selectable: true,
-                visible: false,
-            },
-            {
-                key: 'song.album',
-                label: this.$gettext('Album'),
-                sortable: true,
-                selectable: true,
-                visible: false
-            },
-            {
-                key: 'song.genre',
-                label: this.$gettext('Genre'),
-                sortable: true,
-                selectable: true,
-                visible: false
-            }
-        ];
-
-        forEach(this.customFields.slice(), (field) => {
-            fields.push({
-                key: 'song.custom_fields.' + field.short_name,
-                label: field.name,
-                sortable: false,
-                selectable: true,
-                visible: false
-            });
-        });
-
-        fields.push(
-            {key: 'actions', label: this.$gettext('Actions'), class: 'shrink', sortable: false}
-        );
-
-        return {
-            fields: fields,
-            pageOptions: [
-                10, 25
-            ]
-        };
+    showAlbumArt: {
+        type: Boolean,
+        default: true
     },
-    methods: {
-        doSubmitRequest (url) {
-            this.axios.post(url).then((resp) => {
-                this.$notifySuccess(resp.data.message);
-                this.$emit('submitted');
-            }).catch(() => {
-                this.$emit('submitted');
-            });
-        }
+    customFields: {
+        type: Array,
+        required: false,
+        default: () => []
     }
+});
+
+const emit = defineEmits(['submitted']);
+
+const {$gettext} = useTranslate();
+
+const fields = computed(() => {
+    let fields = [
+        {
+            key: 'name',
+            isRowHeader: true,
+            label: $gettext('Name'),
+            sortable: true,
+            selectable: true
+        },
+        {
+            key: 'song.title',
+            label: $gettext('Title'),
+            sortable: true,
+            selectable: true,
+            visible: false,
+        },
+        {
+            key: 'song.artist',
+            label: $gettext('Artist'),
+            sortable: true,
+            selectable: true,
+            visible: false,
+        },
+        {
+            key: 'song.album',
+            label: $gettext('Album'),
+            sortable: true,
+            selectable: true,
+            visible: false
+        },
+        {
+            key: 'song.genre',
+            label: $gettext('Genre'),
+            sortable: true,
+            selectable: true,
+            visible: false
+        }
+    ];
+
+    forEach({...props.customFields}, (field) => {
+        fields.push({
+            key: 'song.custom_fields.' + field.short_name,
+            label: field.name,
+            sortable: false,
+            selectable: true,
+            visible: false
+        });
+    });
+
+    fields.push(
+        {key: 'actions', label: $gettext('Actions'), class: 'shrink', sortable: false}
+    );
+
+    return fields;
+});
+
+const pageOptions = [10, 25];
+
+const {wrapWithLoading, notifySuccess} = useNotify();
+const {axios} = useAxios();
+
+const doSubmitRequest = (url) => {
+    wrapWithLoading(
+        axios.post(url)
+    ).then((resp) => {
+        notifySuccess(resp.data.message);
+    }).finally(() => {
+        emit('submitted');
+    });
 };
 </script>
 

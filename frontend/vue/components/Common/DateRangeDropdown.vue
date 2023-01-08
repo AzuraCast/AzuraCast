@@ -35,113 +35,116 @@
     </date-range-picker>
 </template>
 
-<script>
+<script setup>
 import DateRangePicker from 'vue3-daterange-picker';
 import Icon from "./Icon";
 import {DateTime} from 'luxon';
+import {computed} from "vue";
+import {useTranslate} from "~/vendor/gettext";
 
-/* TODO Options API */
+const props = defineProps({
+    tz: {
+        type: String,
+        default: 'system'
+    },
+    minDate: {
+        type: [String, Date],
+        default() {
+            return null
+        }
+    },
+    maxDate: {
+        type: [String, Date],
+        default() {
+            return null
+        }
+    },
+    timePicker: {
+        type: Boolean,
+        default: false,
+    },
+    modelValue: {
+        type: Object,
+        required: true
+    },
+    customRanges: {
+        type: [Object, Boolean],
+        default: null,
+    }
+});
 
+const emit = defineEmits(['update:modelValue', 'update']);
+
+const dateRange = computed({
+    get: () => {
+        return props.modelValue;
+    },
+    set: () => {
+        // Noop
+    }
+});
+
+const {$gettext} = useTranslate();
+
+const ranges = computed(() => {
+    if (null !== props.customRanges) {
+        return props.customRanges;
+    }
+
+    let nowTz = DateTime.now().setZone(props.tz);
+    let nowAtMidnightDate = nowTz.endOf('day').toJSDate();
+
+    let ranges = {};
+
+    ranges[$gettext('Last 24 Hours')] = [
+        nowTz.minus({days: 1}).toJSDate(),
+        nowTz.toJSDate()
+    ];
+    ranges[$gettext('Today')] = [
+        nowTz.minus({days: 1}).startOf('day').toJSDate(),
+        nowAtMidnightDate
+    ];
+    ranges[$gettext('Yesterday')] = [
+        nowTz.minus({days: 2}).startOf('day').toJSDate(),
+        nowTz.minus({days: 1}).endOf('day').toJSDate()
+    ];
+    ranges[$gettext('Last 7 Days')] = [
+        nowTz.minus({days: 7}).startOf('day').toJSDate(),
+        nowAtMidnightDate
+    ];
+    ranges[$gettext('Last 14 Days')] = [
+        nowTz.minus({days: 14}).startOf('day').toJSDate(),
+        nowAtMidnightDate
+    ];
+    ranges[$gettext('Last 30 Days')] = [
+        nowTz.minus({days: 30}).startOf('day').toJSDate(),
+        nowAtMidnightDate
+    ];
+    ranges[$gettext('This Month')] = [
+        nowTz.startOf('month').startOf('day').toJSDate(),
+        nowTz.endOf('month').endOf('day').toJSDate()
+    ];
+    ranges[$gettext('Last Month')] = [
+        nowTz.minus({months: 1}).startOf('month').startOf('day').toJSDate(),
+        nowTz.minus({months: 1}).endOf('month').endOf('day').toJSDate()
+    ];
+
+    return ranges;
+});
+
+const onSelect = (range) => {
+    emit('update:modelValue', range);
+    emit('update', range);
+};
+</script>
+
+<script>
 export default {
-    name: 'DateRangeDropdown',
-    components: {DateRangePicker, Icon},
     inheritAttrs: false,
     model: {
         prop: 'modelValue',
         event: 'update:modelValue'
     },
-    props: {
-        tz: {
-            type: String,
-            default: 'system'
-        },
-        minDate: {
-            type: [String, Date],
-            default() {
-                return null
-            }
-        },
-        maxDate: {
-            type: [String, Date],
-            default() {
-                return null
-            }
-        },
-        timePicker: {
-            type: Boolean,
-            default: false,
-        },
-        modelValue: {
-            type: Object,
-            required: true
-        },
-        customRanges: {
-            type: [Object, Boolean],
-            default: null,
-        },
-    },
-    emits: ['update:modelValue', 'update'],
-    computed: {
-        dateRange: {
-            get() {
-                return this.modelValue;
-            },
-            set() {
-                // Noop
-            }
-        },
-        ranges() {
-            let ranges = {};
-
-            if (null !== this.customRanges) {
-                return this.customRanges;
-            }
-
-            let nowTz = DateTime.now().setZone(this.tz);
-            let nowAtMidnightDate = nowTz.endOf('day').toJSDate();
-
-            ranges[this.$gettext('Last 24 Hours')] = [
-                nowTz.minus({days: 1}).toJSDate(),
-                nowTz.toJSDate()
-            ];
-            ranges[this.$gettext('Today')] = [
-                nowTz.minus({days: 1}).startOf('day').toJSDate(),
-                nowAtMidnightDate
-            ];
-            ranges[this.$gettext('Yesterday')] = [
-                nowTz.minus({days: 2}).startOf('day').toJSDate(),
-                nowTz.minus({days: 1}).endOf('day').toJSDate()
-            ];
-            ranges[this.$gettext('Last 7 Days')] = [
-                nowTz.minus({days: 7}).startOf('day').toJSDate(),
-                nowAtMidnightDate
-            ];
-            ranges[this.$gettext('Last 14 Days')] = [
-                nowTz.minus({days: 14}).startOf('day').toJSDate(),
-                nowAtMidnightDate
-            ];
-            ranges[this.$gettext('Last 30 Days')] = [
-                nowTz.minus({days: 30}).startOf('day').toJSDate(),
-                nowAtMidnightDate
-            ];
-            ranges[this.$gettext('This Month')] = [
-                nowTz.startOf('month').startOf('day').toJSDate(),
-                nowTz.endOf('month').endOf('day').toJSDate()
-            ];
-            ranges[this.$gettext('Last Month')] = [
-                nowTz.minus({months: 1}).startOf('month').startOf('day').toJSDate(),
-                nowTz.minus({months: 1}).endOf('month').endOf('day').toJSDate()
-            ];
-
-            return ranges;
-        }
-    },
-    methods: {
-        onSelect(range) {
-            this.$emit('update:modelValue', range);
-            this.$emit('update', range);
-        }
-    }
 }
 </script>
 

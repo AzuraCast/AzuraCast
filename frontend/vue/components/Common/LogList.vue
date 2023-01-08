@@ -13,41 +13,27 @@
     </div>
 </template>
 
-<script>
-/* TODO Options API */
+<script setup>
+import {useAsyncState} from "@vueuse/core";
+import {useAxios} from "~/vendor/axios";
 
-export default {
-    name: 'LogList',
-    props: {
-        url: {
-            type: String,
-            required: true
-        },
+const props = defineProps({
+    url: {
+        type: String,
+        required: true
     },
-    emits: ['view'],
-    data() {
-        return {
-            loading: true,
-            logs: []
-        }
-    },
-    mounted() {
-        this.relist();
-    },
-    methods: {
-        relist() {
-            this.loading = true;
-            this.$wrapWithLoading(
-                this.axios.get(this.url)
-            ).then((resp) => {
-                this.logs = resp.data.logs;
-            }).finally(() => {
-                this.loading = false;
-            });
-        },
-        viewLog(url) {
-            this.$emit('view', url);
-        }
-    }
-}
+});
+
+const emit = defineEmits(['view']);
+
+const {axios} = useAxios();
+
+const {state: logs} = useAsyncState(
+    () => axios.get(props.url).then((r) => r.data.logs),
+    []
+);
+
+const viewLog = (url) => {
+    emit('view', url);
+};
 </script>

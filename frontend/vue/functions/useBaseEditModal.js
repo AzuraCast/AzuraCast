@@ -15,11 +15,12 @@ export function useBaseEditModal(
     props,
     emit,
     $modal,
-    validations,
-    blankForm,
+    originalValidations,
+    originalBlankForm,
     userOptions = {}
 ) {
     const options = {
+        resetForm: null,
         clearContents: null,
         populateForm: null,
         getSubmittableFormData: null,
@@ -39,11 +40,27 @@ export function useBaseEditModal(
         return editUrl.value !== null;
     });
 
-    const {form, v$, resetForm, ifValid} = useVuelidateOnForm(validations, blankForm);
+    const validations = (typeof originalValidations === 'function')
+        ? originalValidations(isEditMode)
+        : originalValidations;
+
+    const blankForm = (typeof originalBlankForm === 'function')
+        ? originalBlankForm(isEditMode)
+        : originalBlankForm;
+
+    const {form, v$, resetForm: originalResetForm, ifValid} = useVuelidateOnForm(validations, blankForm);
+
+    const resetForm = () => {
+        if (typeof options.resetForm === 'function') {
+            return options.resetForm(originalResetForm);
+        }
+
+        originalResetForm();
+    };
 
     const clearContents = () => {
         if (typeof options.clearContents === 'function') {
-            return options.clearContents();
+            return options.clearContents(resetForm);
         }
 
         resetForm();

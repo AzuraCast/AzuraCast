@@ -45,11 +45,13 @@ const {
     props,
     emit,
     $modal,
-    {
-        username: {required},
-        password: isEditMode.value ? {} : {required},
-        publicKeys: {}
-    },
+    (formIsEditMode) => computed(() => {
+        return {
+            username: {required},
+            password: formIsEditMode.value ? {} : {required},
+            publicKeys: {}
+        }
+    }),
     {
         username: '',
         password: null,

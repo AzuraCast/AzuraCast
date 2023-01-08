@@ -137,6 +137,7 @@ const show = () => {
 };
 
 defineExpose({
-    show
+    show,
+    hide
 });
 </script>

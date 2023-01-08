@@ -1,6 +1,6 @@
 <template>
     <modal-form
-        ref="modal"
+        ref="$modal"
         :loading="loading"
         :title="langTitle"
         :error="error"
@@ -15,51 +15,63 @@
     </modal-form>
 </template>
 
-<script>
+<script setup>
 import {required} from '@vuelidate/validators';
-import BaseEditModal from '~/components/Common/BaseEditModal.vue';
+import ModalForm from "~/components/Common/ModalForm.vue";
 import AdminCustomFieldsForm from "~/components/Admin/CustomFields/Form.vue";
-import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
-import {defineComponent} from "vue";
+import {computed, ref} from "vue";
+import {baseEditModalProps, useBaseEditModal} from "~/functions/useBaseEditModal";
+import {useTranslate} from "~/vendor/gettext";
 
-/* TODO Options API */
+const props = defineProps({
+    ...baseEditModalProps,
+    autoAssignTypes: {
+        type: Object,
+        required: true
+    }
+});
 
-export default defineComponent({
-    name: 'AdminCustomFieldsEditModal',
-    components: {AdminCustomFieldsForm},
-    mixins: [BaseEditModal],
-    props: {
-        autoAssignTypes: {
-            type: Object,
-            required: true
-        }
-    },
-    setup() {
-        const {form, resetForm, v$} = useVuelidateOnForm(
-            {
-                'name': {required},
-                'short_name': {},
-                'auto_assign': {}
-            },
-            {
-                'name': '',
-                'short_name': '',
-                'auto_assign': ''
-            }
-        );
+const emit = defineEmits(['relist']);
 
-        return {
-            form,
-            resetForm,
-            v$
-        };
+const $modal = ref(); // Template Ref
+
+const {
+    loading,
+    error,
+    isEditMode,
+    v$,
+    clearContents,
+    create,
+    edit,
+    doSubmit,
+    close
+} = useBaseEditModal(
+    props,
+    emit,
+    $modal,
+    {
+        'name': {required},
+        'short_name': {},
+        'auto_assign': {}
     },
-    computed: {
-        langTitle() {
-            return this.isEditMode
-                ? this.$gettext('Edit Custom Field')
-                : this.$gettext('Add Custom Field');
-        }
+    {
+        'name': '',
+        'short_name': '',
+        'auto_assign': ''
     },
+);
+
+const {$gettext} = useTranslate();
+
+const langTitle = computed(() => {
+    return isEditMode.value
+        ? $gettext('Edit Custom Field')
+        : $gettext('Add Custom Field');
+});
+
+defineExpose({
+    create,
+    edit,
+    close
 });
 </script>

@@ -76,7 +76,7 @@ const {
     props,
     emit,
     $modal,
-    (formIsEditMode) => computed(() => {
+    (formRef, formIsEditMode) => computed(() => {
         return {
             'streamer_username': {required},
             'streamer_password': (formIsEditMode.value) ? {} : {required},

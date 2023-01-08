@@ -1,8 +1,9 @@
 import {computed, ref, toRef} from "vue";
-import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
 import mergeExisting from "~/functions/mergeExisting";
 import {useNotify} from "~/vendor/bootstrapVue";
 import {useAxios} from "~/vendor/axios";
+import {useResettableRef} from "~/functions/useResettableRef";
+import useVuelidate from "@vuelidate/core";
 
 export const baseEditModalProps = {
     createUrl: {
@@ -40,15 +41,17 @@ export function useBaseEditModal(
         return editUrl.value !== null;
     });
 
-    const validations = (typeof originalValidations === 'function')
-        ? originalValidations(isEditMode)
-        : originalValidations;
-
     const blankForm = (typeof originalBlankForm === 'function')
         ? originalBlankForm(isEditMode)
         : originalBlankForm;
 
-    const {form, v$, resetForm: originalResetForm, ifValid} = useVuelidateOnForm(validations, blankForm);
+    const {record: form, reset: originalResetForm} = useResettableRef(blankForm);
+
+    const validations = (typeof originalValidations === 'function')
+        ? originalValidations(form, isEditMode)
+        : originalValidations;
+
+    const v$ = useVuelidate(validations, form);
 
     const resetForm = () => {
         if (typeof options.resetForm === 'function') {
@@ -109,7 +112,7 @@ export function useBaseEditModal(
 
     const getSubmittableFormData = () => {
         if (typeof options.getSubmittableFormData === 'function') {
-            return options.getSubmittableFormData(form.value);
+            return options.getSubmittableFormData(form, isEditMode);
         }
 
         return form.value;
@@ -154,7 +157,12 @@ export function useBaseEditModal(
     };
 
     const doSubmit = () => {
-        ifValid(() => {
+        v$.value.$touch();
+        v$.value.$validate().then((isValid) => {
+            if (!isValid) {
+                return;
+            }
+
             error.value = null;
 
             wrapWithLoading(

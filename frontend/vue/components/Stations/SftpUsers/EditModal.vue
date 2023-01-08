@@ -45,7 +45,7 @@ const {
     props,
     emit,
     $modal,
-    (formIsEditMode) => computed(() => {
+    (formRef, formIsEditMode) => computed(() => {
         return {
             username: {required},
             password: formIsEditMode.value ? {} : {required},

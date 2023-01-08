@@ -146,8 +146,8 @@ const {
                 publish_time: publishTime
             });
         },
-        getSubmittableFormData: (formValue) => {
-            let modifiedForm = formValue;
+        getSubmittableFormData: (formRef) => {
+            let modifiedForm = formRef.value;
 
             if (modifiedForm.publish_date.length > 0 && modifiedForm.publish_time.length > 0) {
                 let publishDateTimeString = modifiedForm.publish_date + 'T' + modifiedForm.publish_time;

@@ -99,8 +99,10 @@ const {
                 }
             };
         },
-        getSubmittableFormData(formValue) {
-            let form = {
+        getSubmittableFormData(formRef) {
+            const formValue = formRef.value;
+
+            let formReturn = {
                 name: formValue.name,
                 permissions: {
                     global: formValue.permissions.global,
@@ -109,10 +111,10 @@ const {
             };
 
             forEach(formValue.permissions.station, (row) => {
-                form.permissions.station[row.station_id] = row.permissions;
+                formReturn.permissions.station[row.station_id] = row.permissions;
             });
 
-            return form;
+            return formReturn;
         },
     }
 );

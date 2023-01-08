@@ -61,7 +61,7 @@ export function useBaseEditModal(
 
     const populateForm = (data) => {
         if (typeof options.populateForm === 'function') {
-            return options.populateForm();
+            return options.populateForm(data, form);
         }
 
         form.value = mergeExisting(form.value, data);
@@ -92,7 +92,7 @@ export function useBaseEditModal(
 
     const getSubmittableFormData = () => {
         if (typeof options.getSubmittableFormData === 'function') {
-            return options.getSubmittableFormData();
+            return options.getSubmittableFormData(form.value);
         }
 
         return form.value;

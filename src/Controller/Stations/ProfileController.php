@@ -8,6 +8,7 @@ use App\Enums\StationPermissions;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Radio\Adapters;
+use App\VueComponent\NowPlayingComponent;
 use App\VueComponent\StationFormComponent;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -19,6 +20,7 @@ final class ProfileController
     public function __construct(
         private readonly EntityManagerInterface $em,
         private readonly StationFormComponent $stationFormComponent,
+        private readonly NowPlayingComponent $nowPlayingComponent,
         private readonly Adapters $adapters,
     ) {
     }
@@ -73,6 +75,8 @@ final class ProfileController
             id: 'profile',
             title: __('Profile'),
             props: [
+                ...$this->nowPlayingComponent->getProps($request),
+
                 // Common
                 'backendType' => $station->getBackendType(),
                 'frontendType' => $station->getFrontendType(),

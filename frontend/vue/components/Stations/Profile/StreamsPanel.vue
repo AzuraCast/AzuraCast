@@ -14,7 +14,7 @@
                 <col style="width: 78%;">
                 <col style="width: 20%;">
             </colgroup>
-            <template v-if="np.station.mounts.length > 0">
+            <template v-if="station.mounts.length > 0">
                 <thead>
                     <tr>
                         <th colspan="2">
@@ -27,7 +27,7 @@
                 </thead>
                 <tbody>
                     <tr
-                        v-for="mount in np.station.mounts"
+                        v-for="mount in station.mounts"
                         :key="mount.id"
                         class="align-middle"
                     >
@@ -62,7 +62,7 @@
                 </tbody>
             </template>
 
-            <template v-if="np.station.remotes.length > 0">
+            <template v-if="station.remotes.length > 0">
                 <thead>
                     <tr>
                         <th colspan="2">
@@ -75,7 +75,7 @@
                 </thead>
                 <tbody>
                     <tr
-                        v-for="remote in np.station.remotes"
+                        v-for="remote in station.remotes"
                         :key="remote.id"
                         class="align-middle"
                     >
@@ -110,7 +110,7 @@
                 </tbody>
             </template>
 
-            <template v-if="np.station.hls_enabled">
+            <template v-if="station.hls_enabled">
                 <thead>
                     <tr>
                         <th colspan="2">
@@ -126,23 +126,23 @@
                         <td class="pr-1">
                             <play-button
                                 icon-class="outlined"
-                                :url="np.station.hls_url"
+                                :url="station.hls_url"
                                 is-stream
                                 is-hls
                             />
                         </td>
                         <td class="pl-1">
                             <a
-                                :href="np.station.hls_url"
+                                :href="station.hls_url"
                                 target="_blank"
-                            >{{ np.station.hls_url }}</a>
+                            >{{ station.hls_url }}</a>
                         </td>
                         <td class="pl-1 text-right">
                             <icon
                                 class="sm align-middle"
                                 icon="headset"
                             />
-                            <span class="listeners-total pl-1">{{ np.station.hls_listeners }}</span>
+                            <span class="listeners-total pl-1">{{ station.hls_listeners }}</span>
                         </td>
                     </tr>
                 </tbody>
@@ -151,14 +151,14 @@
         <div class="card-actions">
             <a
                 class="btn btn-outline-primary"
-                :href="np.station.playlist_pls_url"
+                :href="station.playlist_pls_url"
             >
                 <icon icon="file_download" />
                 {{ $gettext('Download PLS') }}
             </a>
             <a
                 class="btn btn-outline-primary"
-                :href="np.station.playlist_m3u_url"
+                :href="station.playlist_m3u_url"
             >
                 <icon icon="file_download" />
                 {{ $gettext('Download M3U') }}
@@ -172,7 +172,7 @@ import Icon from '~/components/Common/Icon';
 import PlayButton from "~/components/Common/PlayButton";
 
 const props = defineProps({
-    np: {
+    station: {
         type: Object,
         required: true
     }

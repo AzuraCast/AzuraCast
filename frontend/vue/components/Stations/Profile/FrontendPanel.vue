@@ -8,7 +8,7 @@
             <h3 class="card-title">
                 {{ $gettext('Broadcasting Service') }}
 
-                <running-badge :running="np.services.frontend_running" />
+                <running-badge :running="frontendRunning" />
                 <br>
                 <small>{{ frontendName }}</small>
             </h3>
@@ -103,7 +103,7 @@
                     {{ $gettext('Restart') }}
                 </a>
                 <a
-                    v-show="!np.services.frontend_running"
+                    v-show="!frontendRunning"
                     class="api-call no-reload btn btn-outline-success"
                     :href="frontendStartUri"
                 >
@@ -111,7 +111,7 @@
                     {{ $gettext('Start') }}
                 </a>
                 <a
-                    v-show="np.services.frontend_running"
+                    v-show="frontendRunning"
                     class="api-call no-reload btn btn-outline-danger"
                     :href="frontendStopUri"
                 >
@@ -133,8 +133,8 @@ import frontendPanelProps from "~/components/Stations/Profile/frontendPanelProps
 
 const props = defineProps({
     ...frontendPanelProps,
-    np: {
-        type: Object,
+    frontendRunning: {
+        type: Boolean,
         required: true
     }
 });

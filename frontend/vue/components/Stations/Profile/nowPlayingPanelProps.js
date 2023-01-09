@@ -1,4 +1,7 @@
+import {nowPlayingProps} from "~/functions/useNowPlaying";
+
 export default {
+    ...nowPlayingProps,
     backendType: {
         type: String,
         required: true

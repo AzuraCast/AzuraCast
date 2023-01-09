@@ -1,12 +1,12 @@
 <template>
     <div class="outside-card-header d-flex align-items-center mb-3">
         <div
-            v-if="np.station.listen_url"
+            v-if="station.listen_url"
             class="flex-shrink-0 mr-3"
         >
             <play-button
                 icon-class="outlined xl"
-                :url="np.station.listen_url"
+                :url="station.listen_url"
                 is-stream
             />
         </div>
@@ -44,7 +44,7 @@ import headerPanelProps from "~/components/Stations/Profile/headerPanelProps";
 
 const props = defineProps({
     ...headerPanelProps,
-    np: {
+    station: {
         type: Object,
         required: true
     }

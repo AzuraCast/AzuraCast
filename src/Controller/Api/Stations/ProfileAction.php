@@ -15,7 +15,6 @@ final class ProfileAction
 {
     public function __construct(
         private readonly Entity\Repository\StationScheduleRepository $scheduleRepo,
-        private readonly Entity\ApiGenerator\NowPlayingApiGenerator $nowPlayingApiGenerator,
         private readonly Entity\ApiGenerator\StationApiGenerator $stationApiGenerator,
         private readonly Adapters $adapters,
     ) {
@@ -31,13 +30,10 @@ final class ProfileAction
         $frontend = $this->adapters->getFrontendAdapter($station);
 
         $baseUri = new Uri('');
-        $nowPlayingApi = $this->nowPlayingApiGenerator->currentOrEmpty($station, $baseUri);
 
         $apiResponse = new Entity\Api\StationProfile();
-        $apiResponse->fromParentObject($nowPlayingApi);
 
         $apiResponse->station = ($this->stationApiGenerator)($station, $baseUri, true);
-        $apiResponse->cache = 'database';
 
         $apiResponse->services = new Entity\Api\StationServiceStatus(
             null !== $backend && $backend->isRunning($station),
@@ -48,7 +44,6 @@ final class ProfileAction
 
         $apiResponse->schedule = $this->scheduleRepo->getUpcomingSchedule($station);
 
-        $apiResponse->update();
         $apiResponse->resolveUrls($request->getRouter()->getBaseUrl());
 
         return $response->withJson($apiResponse);

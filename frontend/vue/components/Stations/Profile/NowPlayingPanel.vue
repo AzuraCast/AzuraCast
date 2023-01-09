@@ -198,38 +198,17 @@
 <script setup>
 import {BACKEND_LIQUIDSOAP} from '~/components/Entity/RadioAdapters';
 import Icon from '~/components/Common/Icon';
-import {computed, onMounted, ref} from "vue";
-import {useIntervalFn} from "@vueuse/core";
+import {computed} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import formatTime from "~/functions/formatTime";
 import nowPlayingPanelProps from "~/components/Stations/Profile/nowPlayingPanelProps";
+import useNowPlaying from "~/functions/useNowPlaying";
 
 const props = defineProps({
     ...nowPlayingPanelProps,
-    np: {
-        type: Object,
-        required: true
-    }
 });
 
-const npElapsed = ref(0);
-
-onMounted(() => {
-    useIntervalFn(
-        () => {
-            let current_time = Math.floor(Date.now() / 1000);
-            let np_elapsed = current_time - props.np.now_playing.played_at;
-            if (np_elapsed < 0) {
-                np_elapsed = 0;
-            } else if (np_elapsed >= props.np.now_playing.duration) {
-                np_elapsed = props.np.now_playing.duration;
-            }
-
-            npElapsed.value = np_elapsed;
-        },
-        1000
-    );
-});
+const {np, currentTrackDuration, currentTrackElapsed} = useNowPlaying(props);
 
 const {$ngettext} = useTranslate();
 
@@ -237,8 +216,8 @@ const langListeners = computed(() => {
     return $ngettext(
         '%{listeners} Listener',
         '%{listeners} Listeners',
-        props.np.listeners.total,
-        {listeners: props.np.listeners.total}
+        np.value?.listeners?.total ?? 0,
+        {listeners: np.value?.listeners?.total ?? 0}
     );
 });
 
@@ -247,17 +226,17 @@ const isLiquidsoap = computed(() => {
 });
 
 const timeDisplay = computed(() => {
-    let time_played = npElapsed.value;
-    let time_total = props.np.now_playing.duration;
+    let currentTrackDurationValue = currentTrackDuration.value ?? null;
+    let currentTrackElapsedValue = currentTrackElapsed.value ?? null;
 
-    if (!time_total) {
+    if (!currentTrackDurationValue) {
         return null;
     }
 
-    if (time_played > time_total) {
-        time_played = time_total;
+    if (currentTrackElapsedValue > currentTrackDurationValue) {
+        currentTrackElapsedValue = currentTrackDurationValue;
     }
 
-    return formatTime(time_played) + ' / ' + formatTime(time_total);
+    return formatTime(currentTrackElapsedValue) + ' / ' + formatTime(currentTrackDurationValue);
 });
 </script>

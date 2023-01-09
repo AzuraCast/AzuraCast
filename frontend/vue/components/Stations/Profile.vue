@@ -1,7 +1,7 @@
 <template>
     <profile-header
         v-bind="pickProps(props, headerPanelProps)"
-        :np="np"
+        :station="profileInfo.station"
     />
 
     <div
@@ -11,16 +11,15 @@
         <div class="col-lg-7">
             <profile-now-playing
                 v-bind="pickProps(props, nowPlayingPanelProps)"
-                :np="np"
             />
 
             <profile-schedule
                 :station-time-zone="stationTimeZone"
-                :schedule-items="np.schedule"
+                :schedule-items="profileInfo.schedule"
             />
 
             <profile-streams
-                :np="np"
+                :station="profileInfo.station"
             />
 
             <profile-public-pages
@@ -42,14 +41,14 @@
             <template v-if="hasActiveFrontend">
                 <profile-frontend
                     v-bind="pickProps(props, frontendPanelProps)"
-                    :np="np"
+                    :frontend-running="profileInfo.services.frontend_running"
                 />
             </template>
 
             <template v-if="hasActiveBackend">
                 <profile-backend
                     v-bind="pickProps(props, backendPanelProps)"
-                    :np="np"
+                    :backend-running="profileInfo.services.backend_running"
                 />
             </template>
             <template v-else>
@@ -72,7 +71,7 @@ import ProfileBackendNone from './Profile/BackendNonePanel';
 import ProfileBackend from './Profile/BackendPanel';
 import {BACKEND_NONE, FRONTEND_REMOTE} from '~/components/Entity/RadioAdapters';
 import NowPlaying from '~/components/Entity/NowPlaying';
-import {computed, onMounted, shallowRef} from "vue";
+import {computed} from "vue";
 import {useAxios} from "~/vendor/axios";
 import backendPanelProps from "./Profile/backendPanelProps";
 import embedModalProps from "./Profile/embedModalProps";
@@ -83,6 +82,8 @@ import publicPagesPanelProps from "./Profile/publicPagesPanelProps";
 import requestsPanelProps from "./Profile/requestsPanelProps";
 import streamersPanelProps from "./Profile/streamersPanelProps";
 import {pickProps} from "~/functions/pickProps";
+import useRefreshableAsyncState from "~/functions/useRefreshableAsyncState";
+import {useIntervalFn} from "@vueuse/core";
 
 const props = defineProps({
     ...backendPanelProps,
@@ -111,16 +112,6 @@ const props = defineProps({
     }
 });
 
-const np = shallowRef({
-    ...NowPlaying,
-    loading: true,
-    services: {
-        backend_running: false,
-        frontend_running: false
-    },
-    schedule: []
-});
-
 const hasActiveFrontend = computed(() => {
     return props.frontendType !== FRONTEND_REMOTE;
 });
@@ -131,20 +122,28 @@ const hasActiveBackend = computed(() => {
 
 const {axios} = useAxios();
 
-const checkNowPlaying = () => {
-    axios.get(props.profileApiUri).then((response) => {
-        let np_new = response.data;
-        np_new.loading = false;
+const {state: profileInfo, execute: reloadProfile} = useRefreshableAsyncState(
+    () => axios.get(props.profileApiUri).then((r) => r.data),
+    {
+        station: {
+            ...NowPlaying.station
+        },
+        services: {
+            backend_running: false,
+            frontend_running: false,
+            has_started: false,
+            needs_restart: false
+        },
+        schedule: []
+    }
+);
 
-        np.value = np_new;
+const profileReloadTimeout = computed(() => {
+    return (!document.hidden) ? 15000 : 30000
+});
 
-        setTimeout(checkNowPlaying, (!document.hidden) ? 15000 : 30000);
-    }).catch((error) => {
-        if (!error.response || error.response.data.code !== 403) {
-            setTimeout(checkNowPlaying, (!document.hidden) ? 30000 : 120000);
-        }
-    });
-}
-
-onMounted(checkNowPlaying);
+useIntervalFn(
+    reloadProfile,
+    profileReloadTimeout
+);
 </script>

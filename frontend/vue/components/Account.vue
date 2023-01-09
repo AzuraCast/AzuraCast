@@ -230,11 +230,11 @@ import AccountEditModal from "./Account/EditModal";
 import Avatar from "~/components/Common/Avatar";
 import InfoCard from "~/components/Common/InfoCard";
 import EnabledBadge from "~/components/Common/Badges/EnabledBadge.vue";
-import {onMounted, ref} from "vue";
+import {ref} from "vue";
 import {useTranslate} from "~/vendor/gettext";
-import {useNotify} from "~/vendor/bootstrapVue";
 import {useAxios} from "~/vendor/axios";
-import {useSweetAlert} from "~/vendor/sweetalert";
+import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
+import useRefreshableAsyncState from "~/functions/useRefreshableAsyncState";
 
 const props = defineProps({
     userUrl: {
@@ -261,22 +261,32 @@ const props = defineProps({
     }
 });
 
-const userLoading = ref(true);
-const user = ref({
-    name: null,
-    email: null,
-    avatar: {
-        url: null,
-        service: null,
-        serviceUrl: null
-    },
-    roles: [],
-});
+const {axios} = useAxios();
 
-const securityLoading = ref(true);
-const security = ref({
-    twoFactorEnabled: false,
-});
+const {state: user, isLoading: userLoading, execute: reloadUser} = useRefreshableAsyncState(
+    () => axios.get(props.userUrl).then((r) => r.data),
+    {
+        name: null,
+        email: null,
+        avatar: {
+            url: null,
+            service: null,
+            serviceUrl: null
+        },
+        roles: [],
+    },
+);
+
+const {state: security, isLoading: securityLoading, execute: reloadSecurity} = useRefreshableAsyncState(
+    () => axios.get(props.twoFactorUrl).then((r) => {
+        return {
+            twoFactorEnabled: r.data.two_factor_enabled
+        };
+    }),
+    {
+        twoFactorEnabled: false,
+    },
+);
 
 const {$gettext} = useTranslate();
 
@@ -296,41 +306,12 @@ const apiKeyFields = [
 ];
 
 const $dataTable = ref(); // DataTable
-const {wrapWithLoading, notifySuccess} = useNotify();
-const {axios} = useAxios();
 
 const relist = () => {
-    userLoading.value = true;
-
-    wrapWithLoading(
-        axios.get(props.userUrl)
-    ).then((resp) => {
-        user.value = {
-            name: resp.data.name,
-            email: resp.data.email,
-            roles: resp.data.roles,
-            avatar: {
-                url: resp.data.avatar.url_64,
-                service: resp.data.avatar.service_name,
-                serviceUrl: resp.data.avatar.service_url
-            }
-        };
-        userLoading.value = false;
-    });
-
-    securityLoading.value = true;
-
-    wrapWithLoading(
-        axios.get(props.twoFactorUrl)
-    ).then((resp) => {
-        security.value.twoFactorEnabled = resp.data.two_factor_enabled;
-        securityLoading.value = false;
-    });
-
+    reloadUser();
+    reloadSecurity();
     $dataTable.value?.relist();
 };
-
-onMounted(relist);
 
 const reload = () => {
     location.reload();
@@ -354,22 +335,11 @@ const enableTwoFactor = () => {
     $twoFactorModal.value?.open();
 };
 
-const {confirmDelete} = useSweetAlert();
-
-const disableTwoFactor = () => {
-    confirmDelete({
-        title: $gettext('Disable two-factor authentication?'),
-    }).then((result) => {
-        if (result.value) {
-            wrapWithLoading(
-                axios.delete(props.twoFactorUrl)
-            ).then((resp) => {
-                notifySuccess(resp.data.message);
-                relist();
-            });
-        }
-    });
-};
+const {doDelete: doDisableTwoFactor} = useConfirmAndDelete(
+    $gettext('Disable two-factor authentication?'),
+    relist
+);
+const disableTwoFactor = () => doDisableTwoFactor(props.twoFactorUrl);
 
 const $apiKeyModal = ref(); // ApiKeyModal
 
@@ -377,18 +347,8 @@ const createApiKey = () => {
     $apiKeyModal.value?.create();
 };
 
-const deleteApiKey = (url) => {
-    confirmDelete({
-        title: $gettext('Delete API Key?'),
-    }).then((result) => {
-        if (result.value) {
-            wrapWithLoading(
-                axios.delete(url)
-            ).then((resp) => {
-                notifySuccess(resp.data.message);
-                relist();
-            });
-        }
-    });
-};
+const {doDelete: deleteApiKey} = useConfirmAndDelete(
+    $gettext('Delete API Key?'),
+    relist
+);
 </script>

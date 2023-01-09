@@ -7,7 +7,7 @@
         <div class="card-header bg-primary-dark">
             <h3 class="card-title">
                 {{ $gettext('AutoDJ Service') }}
-                <running-badge :running="np.services.backend_running" />
+                <running-badge :running="backendRunning" />
                 <br>
                 <small>{{ backendName }}</small>
             </h3>
@@ -43,7 +43,7 @@
                 {{ $gettext('Restart') }}
             </a>
             <a
-                v-show="!np.services.backend_running"
+                v-show="!backendRunning"
                 class="api-call no-reload btn btn-outline-success"
                 :href="backendStartUri"
             >
@@ -51,7 +51,7 @@
                 {{ $gettext('Start') }}
             </a>
             <a
-                v-show="np.services.backend_running"
+                v-show="backendRunning"
                 class="api-call no-reload btn btn-outline-danger"
                 :href="backendStopUri"
             >
@@ -72,8 +72,8 @@ import backendPanelProps from "~/components/Stations/Profile/backendPanelProps";
 
 const props = defineProps({
     ...backendPanelProps,
-    np: {
-        type: Object,
+    backendRunning: {
+        type: Boolean,
         required: true
     }
 });

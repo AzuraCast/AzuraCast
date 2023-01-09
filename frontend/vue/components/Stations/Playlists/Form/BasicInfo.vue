@@ -46,11 +46,15 @@
                         >
                             <b-form-radio value="songs">
                                 {{ $gettext('Song-Based') }}
-                                {{ $gettext('A playlist containing media files hosted on this server.') }}
+                                <span class="form-text mt-0">
+                                    {{ $gettext('A playlist containing media files hosted on this server.') }}
+                                </span>
                             </b-form-radio>
                             <b-form-radio value="remote_url">
                                 {{ $gettext('Remote URL') }}
-                                {{ $gettext('A playlist that instructs the station to play from a remote URL.') }}
+                                <span class="form-text mt-0">
+                                    {{ $gettext('A playlist that instructs the station to play from a remote URL.') }}
+                                </span>
                             </b-form-radio>
                         </b-form-radio-group>
                     </template>
@@ -157,21 +161,27 @@
                                 >
                                     <b-form-radio value="default">
                                         {{ $gettext('General Rotation') }}
-                                        {{
-                                            $gettext('Standard playlist, shuffles with other standard playlists based on weight.')
-                                        }}
+                                        <span class="form-text mt-0">
+                                            {{ $gettext('Standard playlist, shuffles with other standard playlists based on weight.') }}
+                                        </span>
                                     </b-form-radio>
                                     <b-form-radio value="once_per_x_songs">
                                         {{ $gettext('Once per x Songs') }}
-                                        {{ $gettext('Play exactly once every $x songs.') }}
+                                        <span class="form-text mt-0">
+                                            {{ $gettext('Play exactly once every $x songs.') }}
+                                        </span>
                                     </b-form-radio>
                                     <b-form-radio value="once_per_x_minutes">
                                         {{ $gettext('Once per x Minutes') }}
-                                        {{ $gettext('Play exactly once every $x minutes.') }}
+                                        <span class="form-text mt-0">
+                                            {{ $gettext('Play exactly once every $x minutes.') }}
+                                        </span>                                        
                                     </b-form-radio>
                                     <b-form-radio value="once_per_hour">
                                         {{ $gettext('Once per Hour') }}
-                                        {{ $gettext('Play once per hour at the specified minute.') }}
+                                        <span class="form-text mt-0">
+                                            {{ $gettext('Play once per hour at the specified minute.') }}
+                                        </span>
                                     </b-form-radio>
                                     <b-form-radio value="custom">
                                         {{ $gettext('Advanced') }}
@@ -205,21 +215,21 @@
                                 >
                                     <b-form-radio value="shuffle">
                                         {{ $gettext('Shuffled') }}
-                                        {{
-                                            $gettext('The full playlist is shuffled and then played through in the shuffled order.')
-                                        }}
+                                        <span class="form-text mt-0">
+                                            {{ $gettext('The full playlist is shuffled and then played through in the shuffled order.') }}
+                                        </span>
                                     </b-form-radio>
                                     <b-form-radio value="random">
                                         {{ $gettext('Random') }}
-                                        {{
-                                            $gettext('A completely random track is picked for playback every time the queue is populated.')
-                                        }}
+                                        <span class="form-text mt-0">                                        
+                                            {{ $gettext('A completely random track is picked for playback every time the queue is populated.') }}
+                                        </span>
                                     </b-form-radio>
                                     <b-form-radio value="sequential">
                                         {{ $gettext('Sequential') }}
-                                        {{
-                                            $gettext('The order of the playlist is manually specified and followed by the AutoDJ.')
-                                        }}
+                                        <span class="form-text mt-0">
+                                            {{ $gettext('The order of the playlist is manually specified and followed by the AutoDJ.') }}
+                                        </span>
                                     </b-form-radio>
                                 </b-form-radio-group>
                             </template>

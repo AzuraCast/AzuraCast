@@ -44,7 +44,7 @@
 
                         <data-table
                             id="station_streamers"
-                            ref="datatable"
+                            ref="$datatable"
                             :fields="fields"
                             :api-url="listUrl"
                         >
@@ -94,7 +94,7 @@
                         no-body
                     >
                         <schedule
-                            ref="schedule"
+                            ref="$schedule"
                             :schedule-url="scheduleUrl"
                             :station-time-zone="stationTimeZone"
                             @click="doCalendarClick"
@@ -108,17 +108,17 @@
         </div>
 
         <edit-modal
-            ref="editModal"
+            ref="$editModal"
             :create-url="listUrl"
             :station-time-zone="stationTimeZone"
             :new-art-url="newArtUrl"
             @relist="relist"
         />
-        <broadcasts-modal ref="broadcastsModal" />
+        <broadcasts-modal ref="$broadcastsModal" />
     </div>
 </template>
 
-<script>
+<script setup>
 import DataTable from '~/components/Common/DataTable';
 import EditModal from './Streamers/EditModal';
 import BroadcastsModal from './Streamers/BroadcastsModal';
@@ -126,75 +126,64 @@ import Schedule from '~/components/Common/ScheduleView';
 import Icon from '~/components/Common/Icon';
 import ConnectionInfo from "./Streamers/ConnectionInfo";
 import AlbumArt from "~/components/Common/AlbumArt";
+import {useTranslate} from "~/vendor/gettext";
+import {ref} from "vue";
+import useHasDatatable from "~/functions/useHasDatatable";
+import useHasEditModal from "~/functions/useHasEditModal";
+import confirmAndDelete from "~/functions/confirmAndDelete";
 
-/* TODO Options API */
-
-export default {
-    name: 'StationStreamers',
-    components: {AlbumArt, ConnectionInfo, Icon, EditModal, BroadcastsModal, DataTable, Schedule},
-    props: {
-        listUrl: {
-            type: String,
-            required: true
-        },
-        newArtUrl: {
-            type: String,
-            required: true
-        },
-        scheduleUrl: {
-            type: String,
-            required: true
-        },
-        stationTimeZone: {
-            type: String,
-            required: true
-        },
-        connectionInfo: {
-            type: Object,
-            required: true
-        }
+const props = defineProps({
+    listUrl: {
+        type: String,
+        required: true
     },
-    data() {
-        return {
-            fields: [
-                {key: 'art', label: this.$gettext('Art'), sortable: false, class: 'shrink pr-0'},
-                {key: 'display_name', label: this.$gettext('Display Name'), sortable: true},
-                {key: 'streamer_username', isRowHeader: true, label: this.$gettext('Username'), sortable: true},
-                {key: 'comments', label: this.$gettext('Notes'), sortable: false},
-                {key: 'actions', label: this.$gettext('Actions'), sortable: false, class: 'shrink'}
-            ]
-        };
+    newArtUrl: {
+        type: String,
+        required: true
     },
-    methods: {
-        relist() {
-            this.$refs.datatable.refresh();
-        },
-        doCreate() {
-            this.$refs.editModal.create();
-        },
-        doCalendarClick(event) {
-            this.doEdit(event.extendedProps.edit_url);
-        },
-        doEdit(url) {
-            this.$refs.editModal.edit(url);
-        },
-        doShowBroadcasts(url) {
-            this.$refs.broadcastsModal.open(url);
-        },
-        doDelete(url) {
-            this.$confirmDelete({
-                title: this.$gettext('Delete Streamer?'),
-            }).then((result) => {
-                if (result.value) {
-                    this.$wrapWithLoading(
-                        this.axios.delete(url)
-                    ).then((resp) => {
-                        this.$notifySuccess(resp.data.message);
-                        this.relist();
-                    });
-                }
-            });
-        }
+    scheduleUrl: {
+        type: String,
+        required: true
+    },
+    stationTimeZone: {
+        type: String,
+        required: true
+    },
+    connectionInfo: {
+        type: Object,
+        required: true
     }
+});
+
+const {$gettext} = useTranslate();
+
+const fields = [
+    {key: 'art', label: $gettext('Art'), sortable: false, class: 'shrink pr-0'},
+    {key: 'display_name', label: $gettext('Display Name'), sortable: true},
+    {key: 'streamer_username', isRowHeader: true, label: $gettext('Username'), sortable: true},
+    {key: 'comments', label: $gettext('Notes'), sortable: false},
+    {key: 'actions', label: $gettext('Actions'), sortable: false, class: 'shrink'}
+];
+
+const $datatable = ref(); // Template Ref
+const {relist} = useHasDatatable($datatable);
+
+const $editModal = ref(); // Template Ref
+const {doCreate, doEdit} = useHasEditModal($editModal);
+
+const doCalendarClick = (event) => {
+    doEdit(event.extendedProps.edit_url);
 };
+
+const $broadcastsModal = ref(); // Template Ref
+
+const doShowBroadcasts = (url) => {
+    $broadcastsModal.value.open(url);
+};
+
+const doDelete = (url) => confirmAndDelete(
+    url,
+    $gettext('Delete Streamer?'),
+    relist
+);
 </script>

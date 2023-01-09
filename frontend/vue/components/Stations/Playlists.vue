@@ -41,7 +41,7 @@
 
                 <data-table
                     id="station_playlists"
-                    ref="datatable"
+                    ref="$datatable"
                     paginated
                     :fields="fields"
                     :responsive="false"
@@ -185,7 +185,7 @@
                 no-body
             >
                 <schedule
-                    ref="schedule"
+                    ref="$schedule"
                     :schedule-url="scheduleUrl"
                     :station-time-zone="stationTimeZone"
                     @click="doCalendarClick"
@@ -195,28 +195,28 @@
     </b-card>
 
     <edit-modal
-        ref="editModal"
+        ref="$editModal"
         :create-url="listUrl"
         :station-time-zone="stationTimeZone"
         :enable-advanced-features="enableAdvancedFeatures"
         @relist="relist"
         @needs-restart="mayNeedRestart"
     />
-    <reorder-modal ref="reorderModal" />
-    <queue-modal ref="queueModal" />
-    <reorder-modal ref="reorderModal" />
+    <reorder-modal ref="$reorderModal" />
+    <queue-modal ref="$queueModal" />
+    <reorder-modal ref="$reorderModal" />
     <import-modal
-        ref="importModal"
+        ref="$importModal"
         @relist="relist"
     />
     <clone-modal
-        ref="cloneModal"
+        ref="$cloneModal"
         @relist="relist"
         @needs-restart="mayNeedRestart"
     />
 </template>
 
-<script>
+<script setup>
 import DataTable from '~/components/Common/DataTable';
 import Schedule from '~/components/Common/ScheduleView';
 import EditModal from './Playlists/EditModal';
@@ -225,181 +225,182 @@ import ImportModal from './Playlists/ImportModal';
 import QueueModal from './Playlists/QueueModal';
 import Icon from '~/components/Common/Icon';
 import CloneModal from './Playlists/CloneModal';
-import {DateTime} from 'luxon';
 import humanizeDuration from 'humanize-duration';
 import {useAzuraCast} from "~/vendor/azuracast";
+import {useTranslate} from "~/vendor/gettext";
+import {ref} from "vue";
+import useHasEditModal from "~/functions/useHasEditModal";
+import {mayNeedRestartProps, useMayNeedRestart} from "~/functions/useMayNeedRestart";
+import {useNotify} from "~/vendor/bootstrapVue";
+import {useAxios} from "~/vendor/axios";
+import confirmAndDelete from "~/functions/confirmAndDelete";
 
-/* TODO Options API */
-
-export default {
-    name: 'StationPlaylists',
-    components: {CloneModal, Icon, QueueModal, ImportModal, ReorderModal, EditModal, Schedule, DataTable},
-    props: {
-        listUrl: {
-            type: String,
-            required: true
-        },
-        scheduleUrl: {
-            type: String,
-            required: true
-        },
-        filesUrl: {
-            type: String,
-            required: true
-        },
-        restartStatusUrl: {
-            type: String,
-            required: true
-        },
-        stationTimeZone: {
-            type: String,
-            required: true
-        },
-        useManualAutoDj: {
-            type: Boolean,
-            required: true
-        },
-        enableAdvancedFeatures: {
-            type: Boolean,
-            required: true
-        }
+const props = defineProps({
+    ...mayNeedRestartProps,
+    listUrl: {
+        type: String,
+        required: true
     },
-    data () {
-        return {
-            fields: [
-                {key: 'name', isRowHeader: true, label: this.$gettext('Playlist'), sortable: true},
-                {key: 'scheduling', label: this.$gettext('Scheduling'), sortable: false},
-                {key: 'num_songs', label: this.$gettext('# Songs'), sortable: false},
-                {key: 'actions', label: this.$gettext('Actions'), sortable: false, class: 'shrink'}
-            ]
-        };
+    scheduleUrl: {
+        type: String,
+        required: true
     },
-    methods: {
-        langToggleButton (record) {
-            return (record.is_enabled)
-                ? this.$gettext('Disable')
-                : this.$gettext('Enable');
-        },
-        formatTime (time) {
-            const {timeConfig} = useAzuraCast();
+    filesUrl: {
+        type: String,
+        required: true
+    },
+    stationTimeZone: {
+        type: String,
+        required: true
+    },
+    useManualAutoDj: {
+        type: Boolean,
+        required: true
+    },
+    enableAdvancedFeatures: {
+        type: Boolean,
+        required: true
+    }
+});
 
-            return DateTime.fromSeconds(time).setZone(this.stationTimeZone).toLocaleString(
-                {...DateTime.DATETIME_MED, ...timeConfig}
+const {$gettext} = useTranslate();
+
+const fields = [
+    {key: 'name', isRowHeader: true, label: $gettext('Playlist'), sortable: true},
+    {key: 'scheduling', label: $gettext('Scheduling'), sortable: false},
+    {key: 'num_songs', label: $gettext('# Songs'), sortable: false},
+    {key: 'actions', label: $gettext('Actions'), sortable: false, class: 'shrink'}
+];
+
+const langToggleButton = (record) => {
+    return (record.is_enabled)
+        ? $gettext('Disable')
+        : $gettext('Enable');
+};
+
+const {localeShort} = useAzuraCast();
+
+const formatLength = (length) => humanizeDuration(
+    length * 1000,
+    {
+        round: true,
+        language: localeShort,
+        fallbacks: ['en']
+    }
+);
+
+const formatType = (record) => {
+    if (!record.is_enabled) {
+        return $gettext('Disabled');
+    }
+
+    switch (record.type) {
+        case 'default':
+            return $gettext('General Rotation') + '<br>' + $gettext('Weight') + ': ' + record.weight;
+
+        case 'once_per_x_songs':
+            return $gettext(
+                'Once per %{songs} Songs',
+                {songs: record.play_per_songs}
             );
-        },
-        formatLength (length) {
-            const {localeShort} = useAzuraCast();
 
-            return humanizeDuration(length * 1000, {
-                round: true,
-                language: localeShort,
-                fallbacks: ['en']
-            });
-        },
-        formatType (record) {
-            if (!record.is_enabled) {
-                return this.$gettext('Disabled');
-            }
+        case 'once_per_x_minutes':
+            return $gettext(
+                'Once per %{minutes} Minutes',
+                {minutes: record.play_per_minutes}
+            );
 
-            switch (record.type) {
-                case 'default':
-                    return this.$gettext('General Rotation') + '<br>' + this.$gettext('Weight') + ': ' + record.weight;
+        case 'once_per_hour':
+            return $gettext(
+                'Once per Hour (at %{minute})',
+                {minute: record.play_per_hour_minute}
+            );
 
-                case 'once_per_x_songs':
-                    return this.$gettext(
-                        'Once per %{songs} Songs',
-                        {songs: record.play_per_songs}
-                    );
-
-                case 'once_per_x_minutes':
-                    return this.$gettext(
-                        'Once per %{minutes} Minutes',
-                        {minutes: record.play_per_minutes}
-                    );
-
-                case 'once_per_hour':
-                    return this.$gettext(
-                        'Once per Hour (at %{minute})',
-                        {minute: record.play_per_hour_minute}
-                    );
-
-                default:
-                    return this.$gettext('Custom');
-            }
-        },
-        relist () {
-            if (this.$refs.datatable) {
-                this.$refs.datatable.refresh();
-            }
-            if (this.$refs.schedule) {
-                this.$refs.schedule.refresh();
-            }
-        },
-        doCreate () {
-            this.$refs.editModal.create();
-        },
-        doCalendarClick (event) {
-            this.doEdit(event.extendedProps.edit_url);
-        },
-        doEdit (url) {
-            this.$refs.editModal.edit(url);
-        },
-        doReorder (url) {
-            this.$refs.reorderModal.open(url);
-        },
-        doQueue (url) {
-            this.$refs.queueModal.open(url);
-        },
-        doImport (url) {
-            this.$refs.importModal.open(url);
-        },
-        doClone (name, url) {
-            this.$refs.cloneModal.open(name, url);
-        },
-        doModify (url) {
-            this.$wrapWithLoading(
-                this.axios.put(url)
-            ).then((resp) => {
-                this.needsRestart();
-
-                this.$notifySuccess(resp.data.message);
-                this.relist();
-            });
-        },
-        doDelete (url) {
-            this.$confirmDelete({
-                title: this.$gettext('Delete Playlist?'),
-            }).then((result) => {
-                if (result.value) {
-                    this.$wrapWithLoading(
-                        this.axios.delete(url)
-                    ).then((resp) => {
-                        this.needsRestart();
-
-                        this.$notifySuccess(resp.data.message);
-                        this.relist();
-                    });
-                }
-            });
-        },
-        mayNeedRestart() {
-            if (!this.useManualAutoDj) {
-                return;
-            }
-
-            this.axios.get(this.restartStatusUrl).then((resp) => {
-                if (resp.data.needs_restart) {
-                    this.needsRestart();
-                }
-            });
-        },
-        needsRestart() {
-            if (!this.useManualAutoDj) {
-                return;
-            }
-
-            document.dispatchEvent(new CustomEvent("station-needs-restart"));
-        }
+        default:
+            return $gettext('Custom');
     }
 };
+
+const $datatable = ref(); // Template Ref
+const $schedule = ref(); // Template Ref
+
+const relist = () => {
+    $datatable.value?.refresh();
+    $schedule.value?.refresh();
+};
+
+const $editModal = ref(); // Template Ref
+const {doCreate, doEdit} = useHasEditModal($editModal);
+
+const doCalendarClick = (event) => {
+    doEdit(event.extendedProps.edit_url);
+};
+
+const $reorderModal = ref(); // Template Ref
+
+const doReorder = (url) => {
+    $reorderModal.value?.open(url);
+};
+
+const $queueModal = ref(); // Template Ref
+
+const doQueue = (url) => {
+    $queueModal.value?.open(url);
+};
+
+const $importModal = ref(); // Template Ref
+
+const doImport = (url) => {
+    $importModal.value?.open(url);
+};
+
+const $cloneModal = ref(); // Template Ref
+
+const doClone = (name, url) => {
+    $cloneModal.value?.open(name, url);
+};
+
+const {
+    mayNeedRestart: originalMayNeedRestart,
+    needsRestart: originalNeedsRestart
+} = useMayNeedRestart(props.restartStatusUrl);
+
+const mayNeedRestart = () => {
+    if (!props.useManualAutoDj) {
+        return;
+    }
+
+    originalMayNeedRestart();
+};
+
+const needsRestart = () => {
+    if (!props.useManualAutoDj) {
+        return;
+    }
+
+    originalNeedsRestart();
+};
+
+const {wrapWithLoading, notifySuccess} = useNotify();
+const {axios} = useAxios();
+
+const doModify = (url) => {
+    wrapWithLoading(
+        axios.put(url)
+    ).then((resp) => {
+        needsRestart();
+
+        notifySuccess(resp.data.message);
+        relist();
+    });
+};
+
+const doDelete = (url) => confirmAndDelete(
+    url,
+    $gettext('Delete Playlist?'),
+    () => {
+        relist();
+        needsRestart();
+    },
+);
 </script>

@@ -84,7 +84,7 @@
 
         <b-modal
             id="import_modal"
-            ref="modal"
+            ref="$modal"
             :title="$gettext('Import Results')"
         >
             <div>
@@ -154,47 +154,49 @@
     </div>
 </template>
 
-<script>
+<script setup>
+import {ref} from "vue";
+import {useNotify} from "~/vendor/bootstrapVue";
+import {useAxios} from "~/vendor/axios";
 
-/* TODO Options API */
-
-export default {
-    name: 'StationsBulkMedia',
-    props: {
-        apiUrl: {
-            type: String,
-            required: true
-        }
-    },
-    data() {
-        return {
-            importFile: null,
-            importResults: {},
-        };
-    },
-    methods: {
-        doSubmit() {
-            let formData = new FormData();
-            formData.append('import_file', this.importFile);
-
-            this.$wrapWithLoading(
-                this.axios.post(this.apiUrl, formData)
-            ).then((resp) => {
-                this.importFile = null;
-                
-                if (resp.data.success) {
-                    this.importResults = resp.data;
-                    this.$notifySuccess(resp.data.message);
-                    this.$refs.modal.show();
-                } else {
-                    this.$notifyError(resp.data.message);
-                    this.close();
-                }
-            });
-        },
-        closeModal() {
-            this.$refs.modal.hide();
-        }
+const props = defineProps({
+    apiUrl: {
+        type: String,
+        required: true
     }
+});
+
+const importFile = ref(null);
+const importResults = ref(null);
+
+const {wrapWithLoading, notifySuccess, notifyError} = useNotify();
+const {axios} = useAxios();
+
+const $modal = ref(); // Template Ref
+
+const close = () => {
+    $modal.value.hide();
+};
+
+const doSubmit = () => {
+    let formData = new FormData();
+    formData.append('import_file', importFile.value);
+
+    wrapWithLoading(
+        axios.post(props.apiUrl, formData)
+    ).then((resp) => {
+        importFile.value = null;
+
+        if (resp.data.success) {
+            importResults.value = resp.data;
+            notifySuccess(resp.data.message);
+
+            $modal.value.show();
+        } else {
+            notifyError(resp.data.message);
+
+            close();
+        }
+    });
 };
 </script>

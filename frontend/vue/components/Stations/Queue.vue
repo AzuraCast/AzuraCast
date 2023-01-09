@@ -16,7 +16,7 @@
         </div>
         <data-table
             id="station_queue"
-            ref="datatable"
+            ref="$datatable"
             :fields="fields"
             :api-url="listUrl"
         >
@@ -67,91 +67,87 @@
         </data-table>
     </b-card>
 
-    <queue-logs-modal ref="logs_modal" />
+    <queue-logs-modal ref="$logsModal" />
 </template>
 
-<script>
+<script setup>
 import DataTable from '../Common/DataTable';
 import QueueLogsModal from './Queue/LogsModal';
 import Icon from "~/components/Common/Icon";
 import {DateTime} from 'luxon';
 import {useAzuraCast} from "~/vendor/azuracast";
+import {useTranslate} from "~/vendor/gettext";
+import {ref} from "vue";
+import confirmAndDelete from "~/functions/confirmAndDelete";
+import useHasDatatable from "~/functions/useHasDatatable";
+import {useNotify} from "~/vendor/bootstrapVue";
+import {useAxios} from "~/vendor/axios";
 
-/* TODO Options API */
-
-export default {
-    name: 'StationQueue',
-    components: {QueueLogsModal, DataTable, Icon},
-    props: {
-        listUrl: {
-            type: String,
-            required: true
-        },
-        clearUrl: {
-            type: String,
-            required: true
-        },
-        stationTimeZone: {
-            type: String,
-            required: true
-        }
+const props = defineProps({
+    listUrl: {
+        type: String,
+        required: true
     },
-    data() {
-        return {
-            fields: [
-                {key: 'actions', label: this.$gettext('Actions'), sortable: false},
-                {key: 'song_title', isRowHeader: true, label: this.$gettext('Song Title'), sortable: false},
-                {key: 'played_at', label: this.$gettext('Expected to Play at'), sortable: false},
-                {key: 'source', label: this.$gettext('Source'), sortable: false}
-            ]
-        };
+    clearUrl: {
+        type: String,
+        required: true
     },
-    methods: {
-        formatTime(time) {
-            const {timeConfig} = useAzuraCast();
-
-            return this.getDateTime(time).toLocaleString(
-                {...DateTime.TIME_WITH_SECONDS, ...timeConfig}
-            );
-        },
-        formatRelativeTime(time) {
-            return this.getDateTime(time).toRelative();
-        },
-        getDateTime(timestamp) {
-            return DateTime.fromSeconds(timestamp).setZone(this.stationTimeZone);
-        },
-        doShowLogs(logs) {
-            this.$refs.logs_modal.show(logs);
-        },
-        doDelete(url) {
-            this.$confirmDelete({
-                title: this.$gettext('Delete Queue Item?'),
-            }).then((result) => {
-                if (result.value) {
-                    this.$wrapWithLoading(
-                        this.axios.delete(url)
-                    ).then((resp) => {
-                        this.$notifySuccess(resp.data.message);
-                        this.$refs.datatable.refresh();
-                    });
-                }
-            });
-        },
-        doClear() {
-            this.$confirmDelete({
-                title: this.$gettext('Clear Upcoming Song Queue?'),
-                confirmButtonText: this.$gettext('Clear'),
-            }).then((result) => {
-                if (result.value) {
-                    this.$wrapWithLoading(
-                        this.axios.post(this.clearUrl)
-                    ).then((resp) => {
-                        this.$notifySuccess(resp.data.message);
-                        this.$refs.datatable.refresh();
-                    });
-                }
-            });
-        }
+    stationTimeZone: {
+        type: String,
+        required: true
     }
+});
+
+const {$gettext} = useTranslate();
+
+const fields = [
+    {key: 'actions', label: $gettext('Actions'), sortable: false},
+    {key: 'song_title', isRowHeader: true, label: $gettext('Song Title'), sortable: false},
+    {key: 'played_at', label: $gettext('Expected to Play at'), sortable: false},
+    {key: 'source', label: $gettext('Source'), sortable: false}
+];
+
+const getDateTime = (timestamp) =>
+    DateTime.fromSeconds(timestamp).setZone(props.stationTimeZone);
+
+const {timeConfig} = useAzuraCast();
+
+const formatTime = (time) => getDateTime(time).toLocaleString(
+    {...DateTime.TIME_WITH_SECONDS, ...timeConfig}
+);
+
+const formatRelativeTime = (time) => getDateTime(time).toRelative();
+
+const $datatable = ref(); // Template Ref
+const {relist} = useHasDatatable($datatable);
+
+const $logsModal = ref(); // Template Ref
+const doShowLogs = (logs) => {
+    $logsModal.value?.show(logs);
 };
+
+const doDelete = (url) => confirmAndDelete(
+    url,
+    $gettext('Delete Queue Item?'),
+    relist
+);
+
+const {wrapWithLoading, confirmDelete, notifySuccess} = useNotify();
+const {axios} = useAxios();
+
+const doClear = () => {
+    confirmDelete({
+        title: $gettext('Clear Upcoming Song Queue?'),
+        confirmButtonText: $gettext('Clear'),
+    }).then((result) => {
+        if (result.value) {
+            wrapWithLoading(
+                axios.post(props.clearUrl)
+            ).then((resp) => {
+                notifySuccess(resp.data.message);
+                relist();
+            });
+        }
+    });
+}
 </script>

@@ -12,65 +12,76 @@
             content-class="mt-3"
             pills
         >
-            <form-basic-info :form="v$" />
+            <form-basic-info :form="v$"/>
         </b-tabs>
     </modal-form>
 </template>
 
-<script>
+<script setup>
 import {required} from '@vuelidate/validators';
-import BaseEditModal from '~/components/Common/BaseEditModal';
 import FormBasicInfo from './Form/BasicInfo';
-import mergeExisting from "~/functions/mergeExisting";
-import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
+import {baseEditModalProps, useBaseEditModal} from "~/functions/useBaseEditModal";
+import {computed, ref} from "vue";
+import {useNotify} from "~/vendor/bootstrapVue";
+import {useTranslate} from "~/vendor/gettext";
+import ModalForm from "~/components/Common/ModalForm.vue";
 
-/* TODO Options API */
+const props = defineProps({
+    ...baseEditModalProps,
+});
 
-export default {
-    name: 'EditModal',
-    components: {FormBasicInfo},
-    mixins: [BaseEditModal],
-    emits: ['relist', 'needs-restart'],
-    setup() {
-        const {form, resetForm, v$} = useVuelidateOnForm(
-            {
-                name: {required},
-                format: {required},
-                bitrate: {required}
-            },
-            {
-                name: null,
-                format: 'aac',
-                bitrate: 128
-            }
-        );
+const emit = defineEmits(['relist', 'needs-restart']);
 
-        return {
-            form,
-            resetForm,
-            v$
-        }
+const $modal = ref(); // Template Ref
+
+const {notifySuccess} = useNotify();
+
+const {
+    loading,
+    error,
+    isEditMode,
+    form,
+    v$,
+    clearContents,
+    create,
+    edit,
+    doSubmit,
+    close
+} = useBaseEditModal(
+    props,
+    emit,
+    $modal,
+    {
+        name: {required},
+        format: {required},
+        bitrate: {required}
     },
-    computed: {
-        langTitle() {
-            return this.isEditMode
-                ? this.$gettext('Edit HLS Stream')
-                : this.$gettext('Add HLS Stream');
-        }
+    {
+        name: null,
+        format: 'aac',
+        bitrate: 128
     },
-    methods: {
-        populateForm(d) {
-            this.record = d;
-            this.form = mergeExisting(this.form, d);
-        },
-        onSubmitSuccess() {
-            this.$notifySuccess();
-
-            this.$emit('needs-restart');
-            this.$emit('relist');
-
-            this.close();
+    {
+        onSubmitSuccess: () => {
+            notifySuccess();
+            emit('relist');
+            emit('needs-restart');
+            close();
         },
     }
-};
+);
+
+const {$gettext} = useTranslate();
+
+const langTitle = computed(() => {
+    return isEditMode.value
+        ? $gettext('Edit HLS Stream')
+        : $gettext('Add HLS Stream');
+});
+
+defineExpose({
+    create,
+    edit,
+    close
+});
 </script>

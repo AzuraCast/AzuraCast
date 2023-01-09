@@ -69,10 +69,6 @@ const props = defineProps({
     form: {
         type: Object,
         required: true
-    },
-    stationFrontendType: {
-        type: String,
-        required: true
     }
 });
 

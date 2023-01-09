@@ -79,9 +79,9 @@ import InfoCard from '~/components/Common/InfoCard';
 import {useTranslate} from "~/vendor/gettext";
 import {ref} from "vue";
 import {mayNeedRestartProps, useMayNeedRestart} from "~/functions/useMayNeedRestart";
-import {useSweetAlert} from "~/vendor/sweetalert";
-import {useNotify} from "~/vendor/bootstrapVue";
-import {useAxios} from "~/vendor/axios";
+import useHasDatatable from "~/functions/useHasDatatable";
+import useHasEditModal from "~/functions/useHasEditModal";
+import confirmAndDelete from "~/functions/confirmAndDelete";
 
 const props = defineProps({
     ...mayNeedRestartProps,
@@ -109,39 +109,19 @@ const upper = (data) => {
 };
 
 const $dataTable = ref(); // DataTable
-
-const relist = () => {
-    $dataTable.value?.refresh();
-};
+const {relist} = useHasDatatable($dataTable);
 
 const $editModal = ref(); // EditModal
-
-const doCreate = () => {
-    $editModal.value?.create();
-};
-
-const doEdit = (url) => {
-    $editModal.value?.edit(url);
-};
+const {doCreate, doEdit} = useHasEditModal($editModal);
 
 const {mayNeedRestart, needsRestart} = useMayNeedRestart(props.restartStatusUrl);
-const {confirmDelete} = useSweetAlert();
-const {wrapWithLoading, notifySuccess} = useNotify();
-const {axios} = useAxios();
 
-const doDelete = (url) => {
-    confirmDelete({
-        title: $gettext('Delete HLS Stream?'),
-    }).then((result) => {
-        if (result.value) {
-            wrapWithLoading(
-                axios.delete(url)
-            ).then((resp) => {
-                notifySuccess(resp.data.message);
-                needsRestart();
-                relist();
-            });
-        }
-    });
-};
+const doDelete = (url) => confirmAndDelete(
+    url,
+    $gettext('Delete HLS Stream?'),
+    () => {
+        needsRestart();
+        relist();
+    }
+);
 </script>

@@ -14,7 +14,7 @@
 
         <textarea
             id="log-view-contents"
-            ref="textarea"
+            ref="$textarea"
             class="form-control log-viewer"
             spellcheck="false"
             readonly
@@ -23,84 +23,85 @@
     </b-overlay>
 </template>
 
-<script>
+<script setup>
+import {nextTick, onMounted, ref} from "vue";
+import {useAxios} from "~/vendor/axios";
+import {useTimeoutFn} from "@vueuse/core";
 
-/* TODO Options API */
+const props = defineProps({
+    logUrl: {
+        type: String,
+        required: true,
+    }
+});
 
-export default {
-    name: 'StreamingLogView',
-    props: {
-        logUrl: {
-            type: String,
-            required: true,
-        }
-    },
-    data() {
-        return {
-            loading: false,
-            logs: '',
-            currentLogPosition: null,
-            timeoutUpdateLog: null,
-            scrollToBottom: true,
-        };
-    },
-    mounted() {
-        this.loading = true;
+const loading = ref(false);
+const logs = ref('');
+const currentLogPosition = ref(null);
+const scrollToBottom = ref(true);
 
-        this.axios({
-            method: 'GET',
-            url: this.logUrl
-        }).then((resp) => {
-            if (resp.data.contents !== '') {
-                this.logs = resp.data.contents + "\n";
-                this.scrollTextarea();
-            } else {
-                this.logs = '';
-            }
+const {axios} = useAxios();
 
-            this.currentLogPosition = resp.data.position;
+const $textarea = ref(); // Template Ref
 
-            if (!resp.data.eof) {
-                this.timeoutUpdateLog = setTimeout(this.updateLogs, 2500);
-            }
-        }).finally(() => {
-            this.loading = false;
+const scrollTextarea = () => {
+    if (scrollToBottom.value) {
+        nextTick(() => {
+            $textarea.value.scrollTop = $textarea.value.scrollHeight;
         });
-    },
-    beforeUnmount() {
-        clearTimeout(this.timeoutUpdateLog);
-    },
-    methods: {
-        updateLogs() {
-            this.axios({
-                method: 'GET',
-                url: this.logUrl,
-                params: {
-                    position: this.currentLogPosition
-                }
-            }).then((resp) => {
-                if (resp.data.contents !== '') {
-                    this.logs = this.logs + resp.data.contents + "\n";
-                    this.scrollTextarea();
-                }
-                this.currentLogPosition = resp.data.position;
-
-                if (!resp.data.eof) {
-                    this.timeoutUpdateLog = setTimeout(this.updateLogs, 2500);
-                }
-            });
-        },
-        getContents() {
-            return this.logs;
-        },
-        scrollTextarea() {
-            if (this.scrollToBottom) {
-                this.$nextTick(() => {
-                    const textarea = this.$refs.textarea;
-                    textarea.scrollTop = textarea.scrollHeight;
-                });
-            }
-        }
     }
 };
+
+const updateLogs = () => {
+    axios({
+        method: 'GET',
+        url: props.logUrl,
+        params: {
+            position: currentLogPosition.value
+        }
+    }).then((resp) => {
+        if (resp.data.contents !== '') {
+            logs.value = logs.value + resp.data.contents + "\n";
+            scrollTextarea();
+        }
+
+        currentLogPosition.value = resp.data.position;
+
+        if (!resp.data.eof) {
+            useTimeoutFn(updateLogs, 2500);
+        }
+    });
+};
+
+onMounted(() => {
+    loading.value = true;
+
+    axios({
+        method: 'GET',
+        url: props.logUrl
+    }).then((resp) => {
+        if (resp.data.contents !== '') {
+            logs.value = resp.data.contents + "\n";
+            scrollTextarea();
+        } else {
+            logs.value = '';
+        }
+
+        currentLogPosition.value = resp.data.position;
+
+        if (!resp.data.eof) {
+            useTimeoutFn(updateLogs, 2500);
+        }
+    }).finally(() => {
+        loading.value = false;
+    });
+});
+
+const getContents = () => {
+    return logs.value;
+};
+
+defineExpose({
+    getContents
+});
 </script>

@@ -100,9 +100,9 @@ import EditModal from './StorageLocations/EditModal';
 import Icon from '~/components/Common/Icon';
 import {computed, ref} from "vue";
 import {useTranslate} from "~/vendor/gettext";
-import {useNotify} from "~/vendor/bootstrapVue";
-import {useAxios} from "~/vendor/axios";
-import {useSweetAlert} from "~/vendor/sweetalert";
+import useHasDatatable from "~/functions/useHasDatatable";
+import useHasEditModal from "~/functions/useHasEditModal";
+import confirmAndDelete from "~/functions/confirmAndDelete";
 
 const props = defineProps({
     listUrl: {
@@ -146,20 +146,10 @@ const tabs = [
 ];
 
 const $datatable = ref(); // Template Ref
-
-const relist = () => {
-    $datatable.value?.refresh();
-};
+const {relist} = useHasDatatable($datatable);
 
 const $editModal = ref(); // Template Ref
-
-const doCreate = () => {
-    $editModal.value?.create();
-};
-
-const doEdit = (url) => {
-    $editModal.value?.edit(url);
-};
+const {doCreate, doEdit} = useHasEditModal($editModal);
 
 const setType = (type) => {
     activeType.value = type;
@@ -198,22 +188,9 @@ const getProgressVariant = (percent) => {
     }
 };
 
-const {notifySuccess, wrapWithLoading} = useNotify();
-const {confirmDelete} = useSweetAlert();
-const {axios} = useAxios();
-
-const doDelete = (url) => {
-    confirmDelete({
-        title: $gettext('Delete Storage Location?'),
-    }).then((result) => {
-        if (result.value) {
-            wrapWithLoading(
-                axios.delete(url)
-            ).then((resp) => {
-                notifySuccess(resp.data.message);
-                relist();
-            });
-        }
-    });
-};
+const doDelete = (url) => confirmAndDelete(
+    url,
+    $gettext('Delete Storage Location?'),
+    relist
+);
 </script>

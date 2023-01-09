@@ -1,7 +1,10 @@
 import {useAxios} from "~/vendor/axios";
 
 export const mayNeedRestartProps = {
-    restartStatusUrl: String
+    restartStatusUrl: {
+        type: String,
+        required: true
+    }
 };
 
 export function useNeedsRestart() {

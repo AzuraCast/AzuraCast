@@ -92,9 +92,9 @@ import EditModal from './Users/EditModal';
 import Icon from '~/components/Common/Icon';
 import {useTranslate} from "~/vendor/gettext";
 import {ref} from "vue";
-import {useNotify} from "~/vendor/bootstrapVue";
-import {useSweetAlert} from "~/vendor/sweetalert";
-import {useAxios} from "~/vendor/axios";
+import useHasDatatable from "~/functions/useHasDatatable";
+import useHasEditModal from "~/functions/useHasEditModal";
+import confirmAndDelete from "~/functions/confirmAndDelete";
 
 const props = defineProps({
     listUrl: {
@@ -116,38 +116,14 @@ const fields = [
 ];
 
 const $datatable = ref(); // Template Ref
-
-const relist = () => {
-    $datatable.value.refresh();
-};
+const {relist} = useHasDatatable($datatable);
 
 const $editModal = ref(); // Template Ref
+const {doCreate, doEdit} = useHasEditModal($editModal);
 
-const doCreate = () => {
-    $editModal.value.create();
-};
-
-const doEdit = (url) => {
-    $editModal.value.edit(url);
-};
-
-const {wrapWithLoading, notifySuccess} = useNotify();
-const {confirmDelete} = useSweetAlert();
-const {axios} = useAxios();
-
-const doDelete = (url) => {
-    confirmDelete({
-        title: $gettext('Delete User?'),
-    }).then((result) => {
-        if (result.value) {
-            wrapWithLoading(
-                axios.delete(url)
-            ).then((resp) => {
-                notifySuccess(resp.data.message);
-                relist();
-            });
-        }
-    });
-}
-
+const doDelete = (url) => confirmAndDelete(
+    url,
+    $gettext('Delete User?'),
+    relist
+);
 </script>

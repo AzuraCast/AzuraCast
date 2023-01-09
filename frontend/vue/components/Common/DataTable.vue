@@ -45,7 +45,7 @@
                                 <icon icon="search" />
                             </div>
                             <b-form-input
-                                v-model="filter"
+                                v-model="searchPhrase"
                                 debounce="200"
                                 type="search"
                                 class="search-field form-control"
@@ -74,7 +74,7 @@
                                     v-for="pageOption in pageOptions"
                                     :key="pageOption"
                                     :active="(pageOption === perPage)"
-                                    @click="setPerPage(pageOption)"
+                                    @click="settings.perPage = pageOption"
                                 >
                                     {{ getPerPageLabel(pageOption) }}
                                 </b-dropdown-item>
@@ -90,28 +90,13 @@
                                     <span class="caret" />
                                 </template>
                                 <b-dropdown-form class="pt-3">
-                                    <div
-                                        v-for="field in selectableFields"
-                                        :key="field.key"
-                                        class="form-group"
-                                    >
-                                        <div class="custom-control custom-checkbox">
-                                            <input
-                                                :id="'chk_field_' + field.key"
-                                                v-model="field.visible"
-                                                type="checkbox"
-                                                class="custom-control-input"
-                                                name="is_field_visible"
-                                                @change="storeSettings"
-                                            >
-                                            <label
-                                                class="custom-control-label"
-                                                :for="'chk_field_'+field.key"
-                                            >
-                                                {{ field.label }}
-                                            </label>
-                                        </div>
-                                    </div>
+                                    <b-form-checkbox-group
+                                        v-model="settings.visibleFieldKeys"
+                                        :options="selectableFields"
+                                        value-field="key"
+                                        text-field="label"
+                                        stacked
+                                    />
                                 </b-dropdown-form>
                             </b-dropdown>
                         </b-btn-group>
@@ -121,10 +106,10 @@
         </div>
         <div class="datatable-main">
             <b-table
-                ref="table"
+                ref="$table"
                 v-model:current-page="currentPage"
-                v-model:sort-by="sortBy"
-                v-model:sort-desc="sortDesc"
+                v-model:sort-by="settings.sortBy"
+                v-model:sort-desc="settings.sortDesc"
                 show-empty
                 striped
                 hover
@@ -142,11 +127,10 @@
                 tbody-tr-class="align-middle"
                 thead-tr-class="align-middle"
                 selected-variant=""
-                :filter="filter"
+                :filter="searchPhrase"
                 @row-selected="onRowSelected"
                 @filtered="onFiltered"
                 @refreshed="onRefreshed"
-                @sort-changed="onSortChanged"
             >
                 <template #head(selected)>
                     <b-form-checkbox
@@ -215,310 +199,311 @@
     </div>
 </template>
 
-<script>
-import store from 'store';
-import {forEach, filter, map, defaultTo, includes} from 'lodash';
+<script setup>
+import {filter, map, includes, isEmpty} from 'lodash';
 import Icon from './Icon.vue';
-import {defineComponent} from "vue";
+import {computed, ref, toRef, watch} from "vue";
+import {useLocalStorage} from "@vueuse/core";
+import {useAxios} from "~/vendor/axios";
 
-/* TODO Options API */
-
-export default defineComponent({
-    name: 'DataTable',
-    components: {Icon},
-    props: {
-        id: {
-            type: String,
-            default: null
-        },
-        apiUrl: {
-            type: String,
-            default: null
-        },
-        items: {
-            type: Array,
-            default: null
-        },
-        responsive: {
-            type: [String, Boolean],
-            default: true
-        },
-        paginated: {
-            type: Boolean,
-            default: false
-        },
-        showToolbar: {
-            type: Boolean,
-            default: true
-        },
-        pageOptions: {
-            type: Array,
-            default: () => [10, 25, 50, 100, 250, 500, 0]
-        },
-        defaultPerPage: {
-            type: Number,
-            default: 10
-        },
-        fields: {
-            type: Array,
-            required: true
-        },
-        selectable: {
-            type: Boolean,
-            default: false
-        },
-        selectFields: {
-            type: Boolean,
-            default: false
-        },
-        handleClientSide: {
-            type: Boolean,
-            default: false
-        },
-        requestConfig: {
-            type: Function,
-            default: null
-        },
-        requestProcess: {
-            type: Function,
-            default: null
-        }
+const props = defineProps({
+    id: {
+        type: String,
+        default: null
     },
-    emits: [
-        'refreshed',
-        'row-selected',
-        'filtered'
-    ],
-    data() {
-        let allFields = [];
-        forEach(this.fields, function (field) {
-            allFields.push({
-                ...{
-                    label: '',
-                    isRowHeader: false,
-                    sortable: false,
-                    selectable: false,
-                    visible: true,
-                    formatter: null
-                },
-                ...field
-            });
-        });
+    apiUrl: {
+        type: String,
+        default: null
+    },
+    items: {
+        type: Array,
+        default: null
+    },
+    responsive: {
+        type: [String, Boolean],
+        default: true
+    },
+    paginated: {
+        type: Boolean,
+        default: false
+    },
+    showToolbar: {
+        type: Boolean,
+        default: true
+    },
+    pageOptions: {
+        type: Array,
+        default: () => [10, 25, 50, 100, 250, 500, 0]
+    },
+    defaultPerPage: {
+        type: Number,
+        default: 10
+    },
+    fields: {
+        type: Array,
+        required: true
+    },
+    selectable: {
+        type: Boolean,
+        default: false
+    },
+    selectFields: {
+        type: Boolean,
+        default: false
+    },
+    handleClientSide: {
+        type: Boolean,
+        default: false
+    },
+    requestConfig: {
+        type: Function,
+        default: null
+    },
+    requestProcess: {
+        type: Function,
+        default: null
+    }
+});
 
+const emit = defineEmits([
+    'refreshed',
+    'row-selected',
+    'filtered'
+]);
+
+const selectedRows = ref([]);
+const searchPhrase = ref(null);
+const currentPage = ref(1);
+const totalRows = ref(0);
+const flushCache = ref(false);
+
+watch(toRef(props, 'items'), (newVal) => {
+    if (newVal !== null) {
+        totalRows.value = newVal.length;
+    }
+});
+
+watch(filter, () => {
+    currentPage.value = 1;
+});
+
+const allFields = computed(() => {
+    return map(props.fields, (field) => {
         return {
-            allFields: allFields,
-            selected: [],
-            sortBy: null,
-            sortDesc: false,
-            storeKey: 'datatable_' + this.id + '_settings',
-            filter: null,
-            perPage: (this.paginated) ? this.defaultPerPage : 0,
-            currentPage: 1,
-            totalRows: 0,
-            flushCache: false
+            label: '',
+            isRowHeader: false,
+            sortable: false,
+            selectable: false,
+            visible: true,
+            formatter: null,
+            ...field
         };
+    });
+});
+
+const selectableFields = computed(() => {
+    return filter({...allFields.value}, (field) => {
+        return field.selectable;
+    });
+});
+
+const defaultSelectableFields = computed(() => {
+    return filter({...selectableFields.value}, (field) => {
+        return field.visible;
+    });
+});
+
+const settings = useLocalStorage(
+    'datatable_' + props.id + '_settings',
+    {
+        sortBy: null,
+        sortDesc: false,
+        perPage: props.defaultPerPage,
+        visibleFieldKeys: map(defaultSelectableFields.value, (field) => field.key),
     },
-    computed: {
-        visibleFields() {
-            let fields = this.allFields.slice();
+    {
+        mergeDefaults: true
+    }
+);
 
-            if (this.selectable) {
-                fields.unshift({
-                    key: 'selected',
-                    label: '',
-                    isRowHeader: false,
-                    sortable: false,
-                    selectable: false,
-                    visible: true
-                });
-            }
+const visibleFieldKeys = computed(() => {
+    if (!isEmpty(settings.value.visibleFieldKeys)) {
+        return settings.value.visibleFieldKeys;
+    }
 
-            if (!this.selectFields) {
-                return fields;
-            }
+    return map(defaultSelectableFields.value, (field) => field.key);
+});
 
-            return filter(fields, (field) => {
-                if (!field.selectable) {
-                    return true;
-                }
+const perPage = computed(() => {
+    return settings.value?.perPage ?? props.defaultPerPage;
+});
 
-                return field.visible;
-            });
-        },
-        selectableFields() {
-            return filter(this.allFields.slice(), (field) => {
-                return field.selectable;
-            });
-        },
-        showPagination() {
-            return this.paginated && this.perPage !== 0;
-        },
-        perPageLabel() {
-            return this.getPerPageLabel(this.perPage);
-        },
-        allSelected() {
-            return ((this.selected.length === this.totalRows)
-                || (this.showPagination && this.selected.length === this.perPage));
-        },
-        itemProvider() {
-            if (this.items !== null) {
-                return this.items;
-            }
+const visibleFields = computed(() => {
+    let fields = allFields.value.slice();
 
-            return (ctx, callback) => {
-                return this.loadItems(ctx, callback);
-            }
+    if (props.selectable) {
+        fields.unshift({
+            key: 'selected',
+            label: '',
+            isRowHeader: false,
+            sortable: false,
+            selectable: false,
+            visible: true
+        });
+    }
+
+    if (!props.selectFields) {
+        return fields;
+    }
+
+    const visibleFieldsKeysValue = visibleFieldKeys.value;
+
+    return filter(fields, (field) => {
+        if (!field.selectable) {
+            return true;
         }
-    },
-    watch: {
-        items(newVal) {
-            if (newVal !== null) {
-                this.totalRows = newVal.length;
-            }
-        },
-        filter() {
-            this.currentPage = 1;
+
+        return includes(visibleFieldsKeysValue, field.key);
+    });
+});
+
+const getPerPageLabel = (num) => {
+    return (num === 0) ? 'All' : num.toString();
+};
+
+const perPageLabel = computed(() => {
+    return getPerPageLabel(perPage.value);
+});
+
+const showPagination = computed(() => {
+    return props.paginated && perPage.value !== 0;
+});
+
+const allSelected = computed(() => {
+    return ((selectedRows.value.length === totalRows.value)
+        || (showPagination.value && selectedRows.value.length === perPage.value));
+});
+
+const {axios} = useAxios();
+
+const loadItems = (ctx) => {
+    let queryParams = {
+        internal: true
+    };
+
+    if (props.handleClientSide) {
+        queryParams.rowCount = 0;
+    } else {
+        if (props.paginated) {
+            queryParams.rowCount = ctx.perPage;
+            queryParams.current = (ctx.perPage !== 0) ? ctx.currentPage : 1;
+        } else {
+            queryParams.rowCount = 0;
         }
-    },
-    created() {
-        this.loadStoredSettings();
-    },
-    methods: {
-        loadStoredSettings() {
-            if (store.enabled && store.get(this.storeKey) !== undefined) {
-                let settings = store.get(this.storeKey);
 
-                this.perPage = defaultTo(settings.perPage, this.defaultPerPage);
+        if (flushCache.value) {
+            queryParams.flushCache = true;
+        }
 
-                forEach(this.selectableFields, (field) => {
-                    field.visible = includes(settings.visibleFields, field.key);
-                });
+        if (typeof ctx.filter === 'string') {
+            queryParams.searchPhrase = ctx.filter;
+        }
 
-                if (settings.sortBy) {
-                    this.sortBy = settings.sortBy;
-                    this.sortDesc = settings.sortDesc;
-                }
-            }
-        },
-        storeSettings() {
-            if (!store.enabled) {
-                return;
-            }
-
-            let settings = {
-                'perPage': this.perPage,
-                'sortBy': this.sortBy,
-                'sortDesc': this.sortDesc,
-                'visibleFields': map(this.visibleFields, 'key')
-            };
-
-            store.set(this.storeKey, settings);
-        },
-        getPerPageLabel(num) {
-            return (num === 0) ? 'All' : num.toString();
-        },
-        setPerPage(num) {
-            this.perPage = num;
-            this.storeSettings();
-        },
-        onClickRefresh(e) {
-            if (e.shiftKey) {
-                this.relist();
-            } else {
-                this.refresh();
-            }
-        },
-        onSortChanged() {
-            this.$nextTick(() => {
-                this.storeSettings();
-            });
-        },
-        onRefreshed() {
-            this.$emit('refreshed');
-        },
-        refresh() {
-            this.$refs.table.refresh();
-        },
-        navigate() {
-            this.filter = null;
-            this.currentPage = 1;
-            this.flushCache = true;
-            this.refresh();
-        },
-        relist() {
-            this.flushCache = true;
-            this.refresh();
-        },
-        setFilter(newTerm) {
-            this.filter = newTerm;
-        },
-        loadItems(ctx) {
-            let queryParams = {
-                internal: true
-            };
-
-            if (this.handleClientSide) {
-                queryParams.rowCount = 0;
-            } else {
-                if (this.paginated) {
-                    queryParams.rowCount = ctx.perPage;
-                    queryParams.current = (ctx.perPage !== 0) ? ctx.currentPage : 1;
-                } else {
-                    queryParams.rowCount = 0;
-                }
-
-                if (this.flushCache) {
-                    queryParams.flushCache = true;
-                }
-
-                if (typeof ctx.filter === 'string') {
-                    queryParams.searchPhrase = ctx.filter;
-                }
-
-                if ('' !== ctx.sortBy) {
-                    queryParams.sort = ctx.sortBy;
-                    queryParams.sortOrder = (ctx.sortDesc) ? 'DESC' : 'ASC';
-                }
-            }
-
-            let requestConfig = {params: queryParams};
-            if (typeof this.requestConfig === 'function') {
-                requestConfig = this.requestConfig(requestConfig);
-            }
-
-            return this.axios.get(ctx.apiUrl, requestConfig).then((resp) => {
-                this.totalRows = resp.data.total;
-
-                let rows = resp.data.rows;
-                if (typeof this.requestProcess === 'function') {
-                    rows = this.requestProcess(rows);
-                }
-
-                return rows;
-            }).catch((err) => {
-                this.totalRows = 0;
-
-                console.error(err.response.data.message);
-                return [];
-            }).finally(() => {
-                this.flushCache = false;
-            });
-        },
-        onRowSelected(items) {
-            this.selected = items;
-            this.$emit('row-selected', items);
-        },
-        toggleSelected() {
-            if (this.allSelected) {
-                this.$refs.table.clearSelected();
-            } else {
-                this.$refs.table.selectAllRows();
-            }
-        },
-        onFiltered(filter) {
-            this.$emit('filtered', filter);
+        if ('' !== ctx.sortBy) {
+            queryParams.sort = ctx.sortBy;
+            queryParams.sortOrder = (ctx.sortDesc) ? 'DESC' : 'ASC';
         }
     }
+
+    let requestConfig = {params: queryParams};
+    if (typeof props.requestConfig === 'function') {
+        requestConfig = props.requestConfig(requestConfig);
+    }
+
+    return axios.get(ctx.apiUrl, requestConfig).then((resp) => {
+        totalRows.value = resp.data.total;
+
+        let rows = resp.data.rows;
+        if (typeof props.requestProcess === 'function') {
+            rows = props.requestProcess(rows);
+        }
+
+        return rows;
+    }).catch((err) => {
+        totalRows.value = 0;
+
+        console.error(err.response.data.message);
+        return [];
+    }).finally(() => {
+        flushCache.value = false;
+    });
+};
+
+const itemProvider = computed(() => {
+    if (props.items !== null) {
+        return props.items;
+    }
+
+    return (ctx, callback) => {
+        return loadItems(ctx, callback);
+    }
+});
+
+const $table = ref(); // Template Ref
+
+const refresh = () => {
+    $table.value?.refresh();
+};
+
+const toggleSelected = () => {
+    if (allSelected.value) {
+        $table.value?.clearSelected();
+    } else {
+        $table.value?.selectAllRows();
+    }
+};
+
+const relist = () => {
+    flushCache.value = true;
+    refresh();
+};
+
+const onClickRefresh = (e) => {
+    if (e.shiftKey) {
+        relist();
+    } else {
+        refresh();
+    }
+};
+
+const onRefreshed = () => {
+    emit('refreshed');
+};
+
+const navigate = () => {
+    searchPhrase.value = null;
+    currentPage.value = 1;
+    relist();
+};
+
+const setFilter = (newTerm) => {
+    searchPhrase.value = newTerm;
+};
+
+const onRowSelected = (items) => {
+    selectedRows.value = items;
+    emit('row-selected', items);
+};
+
+const onFiltered = (filter) => {
+    emit('filtered', filter);
+};
+
+defineExpose({
+    refresh,
+    relist,
+    navigate,
+    setFilter
 });
 </script>
 

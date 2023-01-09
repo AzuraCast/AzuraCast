@@ -14,7 +14,7 @@
                             class="text-right text-white-50"
                         >
                             <stations-common-quota
-                                ref="quota"
+                                ref="$quota"
                                 :quota-url="quotaUrl"
                             />
                         </b-col>
@@ -75,7 +75,7 @@
 
                 <data-table
                     id="station_media"
-                    ref="datatable"
+                    ref="$datatable"
                     selectable
                     paginated
                     select-fields
@@ -83,6 +83,7 @@
                     :api-url="listUrl"
                     :request-config="requestConfig"
                     @row-selected="onRowSelected"
+                    @filtered="onFiltered"
                 >
                     <template #cell(path)="row">
                         <div class="d-flex align-items-center">
@@ -228,13 +229,13 @@
         />
 
         <rename-modal
-            ref="renameModal"
+            ref="$renameModal"
             :rename-url="renameUrl"
             @relist="onTriggerRelist"
         />
 
         <edit-modal
-            ref="editModal"
+            ref="$editModal"
             :custom-fields="customFields"
             :playlists="playlists"
             @relist="onTriggerRelist"
@@ -254,223 +255,232 @@ import EditModal from './Media/EditModal';
 import StationsCommonQuota from "~/components/Stations/Common/Quota";
 import Icon from '~/components/Common/Icon';
 import AlbumArt from '~/components/Common/AlbumArt';
-import PlayButton from "~/components/Common/PlayButton";</script>
-
-<script>
-import formatFileSize from '~/functions/formatFileSize.js';
-import {forEach, map, partition} from 'lodash';
-import {DateTime} from 'luxon';
+import PlayButton from "~/components/Common/PlayButton";
+import {useTranslate} from "~/vendor/gettext";
+import {computed, nextTick, onMounted, ref} from "vue";
+import {forEach, map, partition} from "lodash";
 import {useAzuraCast} from "~/vendor/azuracast";
+import {DateTime} from "luxon";
+import {useEventListener} from "@vueuse/core";
+import formatFileSize from "../../functions/formatFileSize";
 
-/* TODO Options API */
-
-export default {
-    props: {
-        listUrl: {
-            type: String,
-            required: true
-        },
-        batchUrl: {
-            type: String,
-            required: true
-        },
-        uploadUrl: {
-            type: String,
-            required: true
-        },
-        listDirectoriesUrl: {
-            type: String,
-            required: true
-        },
-        mkdirUrl: {
-            type: String,
-            required: true
-        },
-        renameUrl: {
-            type: String,
-            required: true
-        },
-        quotaUrl: {
-            type: String,
-            required: true
-        },
-        initialPlaylists: {
-            type: Array,
-            required: false,
-            default: () => []
-        },
-        customFields: {
-            type: Array,
-            required: false,
-            default: () => []
-        },
-        validMimeTypes: {
-            type: Array,
-            required: false,
-            default: () => []
-        },
-        stationTimeZone: {
-            type: String,
-            required: true
-        },
-        showSftp: {
-            type: Boolean,
-            default: true
-        },
-        sftpUrl: {
-            type: String,
-            required: true
-        },
-        supportsImmediateQueue: {
-            type: Boolean,
-            required: true
-        }
+const props = defineProps({
+    listUrl: {
+        type: String,
+        required: true
     },
-    data() {
-        let fields = [
-            {key: 'path', isRowHeader: true, label: this.$gettext('Name'), sortable: true},
-            {key: 'media.title', label: this.$gettext('Title'), sortable: true, selectable: true, visible: false},
-            {
-                key: 'media.artist',
-                label: this.$gettext('Artist'),
-                sortable: true,
-                selectable: true,
-                visible: false
-            },
-            {key: 'media.album', label: this.$gettext('Album'), sortable: true, selectable: true, visible: false},
-            {key: 'media.genre', label: this.$gettext('Genre'), sortable: true, selectable: true, visible: false},
-            {key: 'media.isrc', label: this.$gettext('ISRC'), sortable: true, selectable: true, visible: false},
-            {key: 'media.length', label: this.$gettext('Length'), sortable: true, selectable: true, visible: true}
-        ];
+    batchUrl: {
+        type: String,
+        required: true
+    },
+    uploadUrl: {
+        type: String,
+        required: true
+    },
+    listDirectoriesUrl: {
+        type: String,
+        required: true
+    },
+    mkdirUrl: {
+        type: String,
+        required: true
+    },
+    renameUrl: {
+        type: String,
+        required: true
+    },
+    quotaUrl: {
+        type: String,
+        required: true
+    },
+    initialPlaylists: {
+        type: Array,
+        required: false,
+        default: () => []
+    },
+    customFields: {
+        type: Array,
+        required: false,
+        default: () => []
+    },
+    validMimeTypes: {
+        type: Array,
+        required: false,
+        default: () => []
+    },
+    stationTimeZone: {
+        type: String,
+        required: true
+    },
+    showSftp: {
+        type: Boolean,
+        default: true
+    },
+    sftpUrl: {
+        type: String,
+        required: true
+    },
+    supportsImmediateQueue: {
+        type: Boolean,
+        required: true
+    }
+});
 
-        forEach(this.customFields.slice(), (field) => {
-            fields.push({
-                key: 'media.custom_fields[' + field.id + ']',
-                label: field.name,
-                sortable: true,
-                selectable: true,
-                visible: false
-            });
+const {$gettext} = useTranslate();
+const {timeConfig} = useAzuraCast();
+
+const fields = computed(() => {
+    let fields = [
+        {key: 'path', isRowHeader: true, label: $gettext('Name'), sortable: true},
+        {key: 'media.title', label: $gettext('Title'), sortable: true, selectable: true, visible: false},
+        {
+            key: 'media.artist',
+            label: $gettext('Artist'),
+            sortable: true,
+            selectable: true,
+            visible: false
+        },
+        {key: 'media.album', label: $gettext('Album'), sortable: true, selectable: true, visible: false},
+        {key: 'media.genre', label: $gettext('Genre'), sortable: true, selectable: true, visible: false},
+        {key: 'media.isrc', label: $gettext('ISRC'), sortable: true, selectable: true, visible: false},
+        {key: 'media.length', label: $gettext('Length'), sortable: true, selectable: true, visible: true}
+    ];
+
+    forEach({...props.customFields}, (field) => {
+        fields.push({
+            key: 'media.custom_fields[' + field.id + ']',
+            label: field.name,
+            sortable: true,
+            selectable: true,
+            visible: false
         });
+    });
 
-        fields.push(
-            {key: 'size', label: this.$gettext('Size'), sortable: true, selectable: true, visible: true},
-            {
-                key: 'timestamp',
-                label: this.$gettext('Modified'),
-                sortable: true,
-                formatter: (value) => {
-                    if (!value) {
-                        return '';
-                    }
+    fields.push(
+        {key: 'size', label: $gettext('Size'), sortable: true, selectable: true, visible: true},
+        {
+            key: 'timestamp',
+            label: $gettext('Modified'),
+            sortable: true,
+            formatter: (value) => {
+                if (!value) {
+                    return '';
+                }
 
-                    const {timeConfig} = useAzuraCast();
-
-                    return DateTime.fromSeconds(value).setZone(this.stationTimeZone).toLocaleString(
-                        {...DateTime.DATETIME_MED, ...timeConfig}
-                    );
-                },
-                selectable: true,
-                visible: true
+                return DateTime.fromSeconds(value).setZone(props.stationTimeZone).toLocaleString(
+                    {...DateTime.DATETIME_MED, ...timeConfig}
+                );
             },
-            {
-                key: 'playlists',
-                label: this.$gettext('Playlists'),
-                sortable: false,
-                selectable: true,
-                visible: true
-            },
-            {key: 'commands', label: this.$gettext('Actions'), sortable: false, class: 'shrink'}
-        );
+            selectable: true,
+            visible: true
+        },
+        {
+            key: 'playlists',
+            label: $gettext('Playlists'),
+            sortable: false,
+            selectable: true,
+            visible: true
+        },
+        {key: 'commands', label: $gettext('Actions'), sortable: false, class: 'shrink'}
+    );
 
-        return {
-            fields: fields,
-            playlists: this.initialPlaylists,
-            selectedItems: {
-                all: [],
-                files: [],
-                directories: []
-            },
-            currentDirectory: '',
-            searchPhrase: null
-        };
-    },
-    created() {
-        // Load directory from URL hash, if applicable.
-        let urlHash = decodeURIComponent(window.location.hash.substring(1).replace(/\+/g, '%20'));
+    return fields;
+});
 
-        if ('' !== urlHash) {
-            if (this.isFilterString(urlHash)) {
-                this.$nextTick(() => {
-                    this.onHashChange();
-                });
-            } else {
-                this.currentDirectory = urlHash;
-            }
-        }
+const playlists = ref(props.initialPlaylists);
+const selectedItems = ref({
+    all: [],
+    files: [],
+    directories: []
+});
+const currentDirectory = ref('');
+const searchPhrase = ref(null);
 
-        window.addEventListener('hashchange', this.onHashChange);
-    },
-    unmounted() {
-        window.removeEventListener('hashchange', this.onHashChange);
-    },
-    methods: {
-        formatFileSize(size) {
-            return formatFileSize(size);
-        },
-        onRowSelected(items) {
-            let splitItems = partition(items, 'is_dir');
+const onRowSelected = (items) => {
+    let splitItems = partition(items, 'is_dir');
 
-            this.selectedItems = {
-                all: items,
-                files: map(splitItems[1], 'path'),
-                directories: map(splitItems[0], 'path')
-            };
-        },
-        onTriggerNavigate() {
-            this.$refs.datatable.navigate();
-        },
-        onTriggerRelist() {
-            this.$refs.quota.update();
-            this.$refs.datatable.relist();
-        },
-        onAddPlaylist(row) {
-            this.playlists.push(row);
-        },
-        onHashChange() {
-            // Handle links from the sidebar for special functions.
-            let urlHash = decodeURIComponent(window.location.hash.substring(1).replace(/\+/g, '%20'));
+    selectedItems.value = {
+        all: items,
+        files: map(splitItems[1], 'path'),
+        directories: map(splitItems[0], 'path')
+    };
+};
 
-            if ('' !== urlHash && this.isFilterString(urlHash)) {
-                window.location.hash = '';
-                this.filter(urlHash);
-            }
-        },
-        isFilterString(str) {
-            return str.substring(0, 9) === 'playlist:' || str.substring(0, 8) === 'special:';
-        },
-        changeDirectory(newDir) {
-            window.location.hash = newDir;
+const $datatable = ref(); // Template Ref
 
-            this.currentDirectory = newDir;
-            this.onTriggerNavigate();
-        },
-        filter(newFilter) {
-            this.$refs.datatable.setFilter(newFilter);
-        },
-        onFiltered(newFilter) {
-            this.searchPhrase = newFilter;
-        },
-        rename(path) {
-            this.$refs.renameModal.open(path);
-        },
-        edit(recordUrl, albumArtUrl, audioUrl, waveformUrl) {
-            this.$refs.editModal.open(recordUrl, albumArtUrl, audioUrl, waveformUrl);
-        },
-        requestConfig(config) {
-            config.params.currentDirectory = this.currentDirectory;
-            return config;
-        }
+const onTriggerNavigate = () => {
+    $datatable.value?.navigate();
+};
+
+const filter = (newFilter) => {
+    $datatable.value.setFilter(newFilter);
+};
+
+const $quota = ref(); // Template Ref
+
+const onTriggerRelist = () => {
+    $quota.value?.update();
+    $datatable.value?.relist();
+};
+
+const onAddPlaylist = (row) => {
+    playlists.value.push(row);
+};
+
+const isFilterString = (str) =>
+    (str.substring(0, 9) === 'playlist:' || str.substring(0, 8) === 'special:');
+
+const onHashChange = () => {
+    // Handle links from the sidebar for special functions.
+    let urlHash = decodeURIComponent(window.location.hash.substring(1).replace(/\+/g, '%20'));
+
+    if ('' !== urlHash && isFilterString(urlHash)) {
+        window.location.hash = '';
+        filter(urlHash);
     }
 };
+
+const changeDirectory = (newDir) => {
+    window.location.hash = newDir;
+    currentDirectory.value = newDir;
+    onTriggerNavigate();
+};
+
+const onFiltered = (newFilter) => {
+    searchPhrase.value = newFilter;
+};
+
+const $renameModal = ref(); // Template Ref
+
+const rename = (path) => {
+    $renameModal.value?.open(path);
+};
+
+const $editModal = ref(); // Template Ref
+
+const edit = (recordUrl, albumArtUrl, audioUrl, waveformUrl) => {
+    $editModal.value?.open(recordUrl, albumArtUrl, audioUrl, waveformUrl);
+};
+
+const requestConfig = (config) => {
+    config.params.currentDirectory = currentDirectory.value;
+    return config;
+};
+
+onMounted(() => {
+    // Load directory from URL hash, if applicable.
+    let urlHash = decodeURIComponent(window.location.hash.substring(1).replace(/\+/g, '%20'));
+
+    if ('' !== urlHash) {
+        if (isFilterString(urlHash)) {
+            nextTick(() => {
+                onHashChange();
+            });
+        } else {
+            currentDirectory.value = urlHash;
+        }
+    }
+
+    useEventListener(window, 'hashchange', onHashChange);
+});
 </script>

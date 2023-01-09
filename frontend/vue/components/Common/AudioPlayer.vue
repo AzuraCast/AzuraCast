@@ -92,8 +92,10 @@ const play = () => {
         };
 
         $audio.value.ontimeupdate = () => {
-            duration.value = ($audio.value.duration !== Infinity && !isNaN($audio.value.duration)) ? $audio.value.duration : 0;
-            currentTime.value = $audio.value.currentTime;
+            const audioDuration = $audio.value?.duration ?? 0;
+            duration.value = (audioDuration !== Infinity && !isNaN(audioDuration)) ? audioDuration : 0;
+
+            currentTime.value = $audio.value?.currentTime ?? null;
         };
 
         $audio.value.volume = getLogarithmicVolume(props.volume);

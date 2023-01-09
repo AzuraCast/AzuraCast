@@ -130,7 +130,7 @@ const toggleMute = () => {
     }
 
     .inline-volume-controls {
-        width: 175px;
+        width: 125px;
     }
 
     input.player-volume-range,

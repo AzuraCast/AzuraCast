@@ -12,7 +12,7 @@
             content-class="mt-3"
             pills
         >
-            <form-basic-info :form="v$"/>
+            <form-basic-info :form="v$" />
         </b-tabs>
     </modal-form>
 </template>
@@ -40,7 +40,6 @@ const {
     loading,
     error,
     isEditMode,
-    form,
     v$,
     clearContents,
     create,

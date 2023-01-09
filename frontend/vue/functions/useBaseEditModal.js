@@ -182,6 +182,7 @@ export function useBaseEditModal(
         isEditMode,
         form,
         v$,
+        resetForm,
         clearContents,
         create,
         edit,

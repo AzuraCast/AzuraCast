@@ -5,10 +5,12 @@ import {useAzuraCast} from "~/vendor/azuracast";
 import {useTranslate} from "~/vendor/gettext";
 import {useNotify} from "~/vendor/bootstrapVue";
 
+const injectKey = 'axios';
+
 /* Composition API Axios utilities */
 export function useAxios() {
     return {
-        axios: inject('axios')
+        axios: inject(injectKey)
     };
 }
 
@@ -57,5 +59,5 @@ export default function installAxios(vueApp) {
 
     vueApp.use(VueAxios, axios);
 
-    vueApp.provide('axios', axios);
+    vueApp.provide(injectKey, axios);
 }

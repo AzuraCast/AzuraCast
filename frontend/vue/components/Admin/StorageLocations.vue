@@ -102,7 +102,7 @@ import {computed, ref} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import useHasDatatable from "~/functions/useHasDatatable";
 import useHasEditModal from "~/functions/useHasEditModal";
-import confirmAndDelete from "~/functions/confirmAndDelete";
+import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
 
 const props = defineProps({
     listUrl: {
@@ -188,8 +188,7 @@ const getProgressVariant = (percent) => {
     }
 };
 
-const doDelete = (url) => confirmAndDelete(
-    url,
+const {doDelete} = useConfirmAndDelete(
     $gettext('Delete Storage Location?'),
     relist
 );

@@ -169,7 +169,7 @@ import {onMounted, ref} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import {useNotify} from "~/vendor/bootstrapVue";
 import {useAxios} from "~/vendor/axios";
-import confirmAndDelete from "~/functions/confirmAndDelete";
+import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
 
 const props = defineProps({
     listUrl: {
@@ -280,8 +280,7 @@ const doRunBackup = () => {
     $runBackupModal.value.open();
 };
 
-const doDelete = (url) => confirmAndDelete(
-    url,
+const {doDelete} = useConfirmAndDelete(
     $gettext('Delete Backup?'),
     relist,
 );

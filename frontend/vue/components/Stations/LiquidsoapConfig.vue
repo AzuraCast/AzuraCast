@@ -115,7 +115,7 @@ const {form, resetForm, v$, ifValid} = useVuelidateOnForm(validations, blankForm
 
 const loading = ref(true);
 
-const {mayNeedRestart} = useMayNeedRestart(props.restartStatusUrl);
+const {mayNeedRestart} = useMayNeedRestart(props);
 
 const {axios} = useAxios();
 

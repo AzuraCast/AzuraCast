@@ -1,4 +1,5 @@
 import {useAxios} from "~/vendor/axios";
+import {toRef} from "vue";
 
 export const mayNeedRestartProps = {
     restartStatusUrl: {
@@ -17,12 +18,14 @@ export function useNeedsRestart() {
     };
 }
 
-export function useMayNeedRestart(restartStatusUrl) {
+export function useMayNeedRestart(props) {
+    const restartStatusUrl = toRef(props, 'restartStatusUrl');
+
     const {needsRestart} = useNeedsRestart();
     const {axios} = useAxios();
 
     const mayNeedRestart = () => {
-        axios.get(restartStatusUrl).then((resp) => {
+        axios.get(restartStatusUrl.value).then((resp) => {
             if (resp.data.needs_restart) {
                 needsRestart();
             }

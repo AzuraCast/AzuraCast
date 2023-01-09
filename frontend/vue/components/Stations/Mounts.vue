@@ -93,7 +93,7 @@ import {ref} from "vue";
 import showFormatAndBitrate from "~/functions/showFormatAndBitrate";
 import useHasDatatable from "~/functions/useHasDatatable";
 import useHasEditModal from "~/functions/useHasEditModal";
-import confirmAndDelete from "~/functions/confirmAndDelete";
+import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
 
 const props = defineProps({
     ...mayNeedRestartProps,
@@ -129,10 +129,9 @@ const {relist} = useHasDatatable($dataTable);
 const $editModal = ref(); // EditModal
 const {doCreate, doEdit} = useHasEditModal($editModal);
 
-const {needsRestart, mayNeedRestart} = useMayNeedRestart(props.restartStatusUrl);
+const {needsRestart, mayNeedRestart} = useMayNeedRestart(props);
 
-const doDelete = (url) => confirmAndDelete(
-    url,
+const {doDelete} = useConfirmAndDelete(
     $gettext('Delete Mount Point?'),
     () => {
         needsRestart();

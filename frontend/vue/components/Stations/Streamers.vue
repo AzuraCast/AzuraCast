@@ -130,7 +130,7 @@ import {useTranslate} from "~/vendor/gettext";
 import {ref} from "vue";
 import useHasDatatable from "~/functions/useHasDatatable";
 import useHasEditModal from "~/functions/useHasEditModal";
-import confirmAndDelete from "~/functions/confirmAndDelete";
+import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
 
 const props = defineProps({
     listUrl: {
@@ -181,8 +181,7 @@ const doShowBroadcasts = (url) => {
     $broadcastsModal.value.open(url);
 };
 
-const doDelete = (url) => confirmAndDelete(
-    url,
+const {doDelete} = useConfirmAndDelete(
     $gettext('Delete Streamer?'),
     relist
 );

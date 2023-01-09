@@ -233,7 +233,7 @@ import useHasEditModal from "~/functions/useHasEditModal";
 import {mayNeedRestartProps, useMayNeedRestart} from "~/functions/useMayNeedRestart";
 import {useNotify} from "~/vendor/bootstrapVue";
 import {useAxios} from "~/vendor/axios";
-import confirmAndDelete from "~/functions/confirmAndDelete";
+import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
 
 const props = defineProps({
     ...mayNeedRestartProps,
@@ -363,7 +363,7 @@ const doClone = (name, url) => {
 const {
     mayNeedRestart: originalMayNeedRestart,
     needsRestart: originalNeedsRestart
-} = useMayNeedRestart(props.restartStatusUrl);
+} = useMayNeedRestart(props);
 
 const mayNeedRestart = () => {
     if (!props.useManualAutoDj) {
@@ -395,8 +395,7 @@ const doModify = (url) => {
     });
 };
 
-const doDelete = (url) => confirmAndDelete(
-    url,
+const {doDelete} = useConfirmAndDelete(
     $gettext('Delete Playlist?'),
     () => {
         relist();

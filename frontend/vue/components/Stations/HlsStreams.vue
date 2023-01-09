@@ -81,7 +81,7 @@ import {ref} from "vue";
 import {mayNeedRestartProps, useMayNeedRestart} from "~/functions/useMayNeedRestart";
 import useHasDatatable from "~/functions/useHasDatatable";
 import useHasEditModal from "~/functions/useHasEditModal";
-import confirmAndDelete from "~/functions/confirmAndDelete";
+import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
 
 const props = defineProps({
     ...mayNeedRestartProps,
@@ -114,10 +114,9 @@ const {relist} = useHasDatatable($dataTable);
 const $editModal = ref(); // EditModal
 const {doCreate, doEdit} = useHasEditModal($editModal);
 
-const {mayNeedRestart, needsRestart} = useMayNeedRestart(props.restartStatusUrl);
+const {mayNeedRestart, needsRestart} = useMayNeedRestart(props);
 
-const doDelete = (url) => confirmAndDelete(
-    url,
+const {doDelete} = useConfirmAndDelete(
     $gettext('Delete HLS Stream?'),
     () => {
         needsRestart();

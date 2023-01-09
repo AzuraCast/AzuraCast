@@ -55,7 +55,7 @@ import {ref} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import InfoCard from "~/components/Common/InfoCard.vue";
 import Icon from "~/components/Common/Icon.vue";
-import confirmAndDelete from "~/functions/confirmAndDelete";
+import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
 import useHasDatatable from "~/functions/useHasDatatable";
 
 defineProps({
@@ -94,8 +94,7 @@ const fields = ref([
 const $datatable = ref();
 const {relist} = useHasDatatable($datatable);
 
-const doDelete = (url) => confirmAndDelete(
-    url,
+const {doDelete} = useConfirmAndDelete(
     $gettext('Delete API Key?'),
     relist
 );

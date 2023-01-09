@@ -10,6 +10,5 @@ export default function useHasEditModal($modalRef) {
     return {
         doCreate,
         doEdit
-    }
-
+    };
 }

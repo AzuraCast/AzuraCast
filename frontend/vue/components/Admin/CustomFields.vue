@@ -73,7 +73,7 @@ import {useTranslate} from "~/vendor/gettext";
 import {ref} from "vue";
 import useHasDatatable from "~/functions/useHasDatatable";
 import useHasEditModal from "~/functions/useHasEditModal";
-import confirmAndDelete from "~/functions/confirmAndDelete";
+import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
 
 const props = defineProps({
     listUrl: {
@@ -117,8 +117,7 @@ const {relist} = useHasDatatable($dataTable);
 const $editModal = ref(); // EditModal
 const {doCreate, doEdit} = useHasEditModal($editModal);
 
-const doDelete = (url) => confirmAndDelete(
-    url,
+const {doDelete} = useConfirmAndDelete(
     $gettext('Delete Custom Field?'),
     relist
 );

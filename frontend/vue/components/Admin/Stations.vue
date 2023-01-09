@@ -88,9 +88,9 @@ import stationFormProps from "./Stations/stationFormProps";
 import {pickProps} from "~/functions/pickProps";
 import {useTranslate} from "~/vendor/gettext";
 import {ref} from "vue";
-import {useNotify} from "~/vendor/bootstrapVue";
-import {useAxios} from "~/vendor/axios";
-import {useSweetAlert} from "~/vendor/sweetalert";
+import useHasDatatable from "~/functions/useHasDatatable";
+import useHasEditModal from "~/functions/useHasEditModal";
+import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
 
 const props = defineProps({
     ...stationFormProps,
@@ -142,20 +142,10 @@ const fields = [
 ];
 
 const $datatable = ref(); // Template Ref
-
-const relist = () => {
-    $datatable.value.refresh();
-};
+const {relist} = useHasDatatable($datatable);
 
 const $editModal = ref(); // Template Ref
-
-const doCreate = () => {
-    $editModal.value.create();
-};
-
-const doEdit = (url) => {
-    $editModal.value.edit(url);
-};
+const {doCreate, doEdit} = useHasEditModal($editModal);
 
 const $cloneModal = ref(); // Template Ref
 
@@ -163,22 +153,8 @@ const doClone = (stationName, url) => {
     $cloneModal.value.create(stationName, url);
 };
 
-const {wrapWithLoading, notifySuccess} = useNotify();
-const {confirmDelete} = useSweetAlert();
-const {axios} = useAxios();
-
-const doDelete = (url) => {
-    confirmDelete({
-        title: $gettext('Delete Station?'),
-    }).then((result) => {
-        if (result.value) {
-            wrapWithLoading(
-                axios.delete(url)
-            ).then((resp) => {
-                notifySuccess(resp.data.message);
-                relist();
-            });
-        }
-    });
-};
+const {doDelete} = useConfirmAndDelete(
+    $gettext('Delete Station?'),
+    relist
+);
 </script>

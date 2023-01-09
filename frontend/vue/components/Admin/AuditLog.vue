@@ -14,7 +14,7 @@
             </div>
         </div>
         <data-table
-            ref="$dataTable"
+            ref="$datatable"
             responsive
             paginated
             :fields="fields"
@@ -118,6 +118,7 @@ import {useAzuraCast} from "~/vendor/azuracast";
 import DataTable from "~/components/Common/DataTable.vue";
 import DateRangeDropdown from "~/components/Common/DateRangeDropdown.vue";
 import Icon from "~/components/Common/Icon.vue";
+import useHasDatatable from "~/functions/useHasDatatable";
 
 const props = defineProps({
     baseApiUrl: {
@@ -164,11 +165,8 @@ const apiUrl = computed(() => {
     return apiUrl.toString();
 });
 
-const $dataTable = ref(); // DataTable Template Ref
-
-const relist = () => {
-    $dataTable.value.relist();
-};
+const $datatable = ref(); // DataTable Template Ref
+const {relist} = useHasDatatable($datatable);
 </script>
 
 <style lang="scss">

@@ -1,7 +1,7 @@
 <template>
     <b-modal
         id="move_file"
-        ref="modal"
+        ref="$modal"
         size="xl"
         centered
         :title="langHeader"
@@ -12,7 +12,7 @@
                     size="sm"
                     variant="primary"
                     :disabled="dirHistory.length === 0"
-                    @click="pageBack"
+                    @click.prevent="pageBack"
                 >
                     <icon icon="chevron_left" />
                     {{ $gettext('Back') }}
@@ -31,7 +31,7 @@
             <b-col md="12">
                 <data-table
                     id="station_media"
-                    ref="datatable"
+                    ref="$datatable"
                     :show-toolbar="false"
                     :selectable="false"
                     :fields="fields"
@@ -71,108 +71,113 @@
         </template>
     </b-modal>
 </template>
-<script>
+
+<script setup>
 import DataTable from '~/components/Common/DataTable.vue';
 import {forEach} from 'lodash';
 import Icon from '~/components/Common/Icon';
+import {computed, h, ref} from "vue";
+import {useTranslate} from "~/vendor/gettext";
+import {useNotify} from "~/vendor/bootstrapVue";
+import {useAxios} from "~/vendor/axios";
 
-/* TODO Options API */
-
-export default {
-    name: 'MoveFilesModal',
-    components: {Icon, DataTable},
-    props: {
-        selectedItems: {
-            type: Object,
-            required: true
-        },
-        currentDirectory: {
-            type: String,
-            required: true
-        },
-        batchUrl: {
-            type: String,
-            required: true
-        },
-        listDirectoriesUrl: {
-            type: String,
-            required: true
-        }
+const props = defineProps({
+    selectedItems: {
+        type: Object,
+        required: true
     },
-    emits: ['relist'],
-    data() {
-        return {
-            destinationDirectory: '',
-            dirHistory: [],
-            fields: [
-                {key: 'directory', label: this.$gettext('Directory'), sortable: false}
-            ]
-        };
+    currentDirectory: {
+        type: String,
+        required: true
     },
-    computed: {
-        langHeader () {
-            return this.$gettext(
-                'Move %{ num } File(s) to',
-                {num: this.selectedItems.all.length}
-            );
-        }
+    batchUrl: {
+        type: String,
+        required: true
     },
-    methods: {
-        close () {
-            this.dirHistory = [];
-            this.destinationDirectory = '';
-
-            this.$refs.modal.hide();
-        },
-        doMove () {
-            (this.selectedItems.all.length) && this.$wrapWithLoading(
-                this.axios.put(this.batchUrl, {
-                    'do': 'move',
-                    'currentDirectory': this.currentDirectory,
-                    'directory': this.destinationDirectory,
-                    'files': this.selectedItems.files,
-                    'dirs': this.selectedItems.directories
-                })
-            ).then(() => {
-                let notifyMessage = this.$gettext('Files moved:');
-                let itemNameNodes = [];
-                forEach(this.selectedItems.all, (item) => {
-                    itemNameNodes.push(this.$createElement('div', {}, item.name));
-                });
-
-                this.$notifySuccess(itemNameNodes, {
-                    title: notifyMessage
-                });
-            }).finally(() => {
-                this.close();
-                this.$emit('relist');
-            });
-        },
-        enterDirectory (path) {
-            this.dirHistory.push(path);
-            this.destinationDirectory = path;
-
-            this.$refs.datatable.refresh();
-        },
-        pageBack: function (e) {
-            e.preventDefault();
-
-            this.dirHistory.pop();
-
-            let newDirectory = this.dirHistory.slice(-1)[0];
-            if (typeof newDirectory === 'undefined' || null === newDirectory) {
-                newDirectory = '';
-            }
-            this.destinationDirectory = newDirectory;
-
-            this.$refs.datatable.refresh();
-        },
-        requestConfig (config) {
-            config.params.currentDirectory = this.destinationDirectory;
-            config.params.csrf = this.csrf;
-
-            return config;
-        }
+    listDirectoriesUrl: {
+        type: String,
+        required: true
     }
+});
+
+const emit = defineEmits(['relist']);
+
+const destinationDirectory = ref('');
+const dirHistory = ref([]);
+
+const {$gettext} = useTranslate();
+
+const fields = [
+    {key: 'directory', label: $gettext('Directory'), sortable: false}
+];
+
+const langHeader = computed(() => {
+    return $gettext(
+        'Move %{ num } File(s) to',
+        {num: props.selectedItems.all.length}
+    );
+});
+
+const $modal = ref(); // Template Ref
+
+const close = () => {
+    dirHistory.value = [];
+    destinationDirectory.value = '';
+
+    $modal.value.hide();
+};
+
+const {wrapWithLoading, notifySuccess} = useNotify();
+const {axios} = useAxios();
+
+const doMove = () => {
+    (props.selectedItems.all.length) && wrapWithLoading(
+        axios.put(props.batchUrl, {
+            'do': 'move',
+            'currentDirectory': props.currentDirectory,
+            'directory': destinationDirectory.value,
+            'files': props.selectedItems.files,
+            'dirs': props.selectedItems.directories
+        })
+    ).then(() => {
+        let notifyMessage = $gettext('Files moved:');
+        let itemNameNodes = [];
+        forEach(props.selectedItems.all, (item) => {
+            itemNameNodes.push(h('div', {}, item.path_short));
+        });
+
+        notifySuccess(itemNameNodes, {
+            title: notifyMessage
+        });
+    }).finally(() => {
+        close();
+        emit('relist');
+    });
+};
+
+const $datatable = ref(); // Template Ref
+
+const enterDirectory = (path) => {
+    dirHistory.value.push(path);
+    destinationDirectory.value = path;
+
+    $datatable.value.refresh();
+};
+
+const pageBack = () => {
+    dirHistory.value.pop();
+
+    let newDirectory = dirHistory.value.slice(-1)[0];
+    if (typeof newDirectory === 'undefined' || null === newDirectory) {
+        newDirectory = '';
+    }
+
+    destinationDirectory.value = newDirectory;
+    $datatable.value.refresh();
+};
+
+const requestConfig = (config) => {
+    config.params.currentDirectory = destinationDirectory.value;
+    return config;
 };
 </script>

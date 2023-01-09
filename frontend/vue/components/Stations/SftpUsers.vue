@@ -20,7 +20,7 @@
 
                 <data-table
                     id="station_remotes"
-                    ref="datatable"
+                    ref="$datatable"
                     :show-toolbar="false"
                     :fields="fields"
                     :api-url="listUrl"
@@ -75,65 +75,49 @@
         </div>
 
         <sftp-users-edit-modal
-            ref="editModal"
+            ref="$editModal"
             :create-url="listUrl"
             @relist="relist"
         />
     </div>
 </template>
 
-<script>
+<script setup>
 import DataTable from "~/components/Common/DataTable";
 import SftpUsersEditModal from "./SftpUsers/EditModal";
 import Icon from "~/components/Common/Icon";
+import {useTranslate} from "~/vendor/gettext";
+import {ref} from "vue";
+import useHasDatatable from "~/functions/useHasDatatable";
+import useHasEditModal from "~/functions/useHasEditModal";
+import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
 
-/* TODO Options API */
-
-export default {
-    name: 'SftpUsers',
-    components: {Icon, SftpUsersEditModal, DataTable},
-    props: {
-        listUrl: {
-            type: String,
-            required: true
-        },
-        connectionInfo: {
-            type: Object,
-            required: true
-        }
+const props = defineProps({
+    listUrl: {
+        type: String,
+        required: true
     },
-    data() {
-        return {
-            fields: [
-                {key: 'username', isRowHeader: true, label: this.$gettext('Username'), sortable: false},
-                {key: 'actions', label: this.$gettext('Actions'), sortable: false, class: 'shrink'}
-            ]
-        };
-    },
-    methods: {
-        relist() {
-            this.$refs.datatable.refresh();
-        },
-        doCreate() {
-            this.$refs.editModal.create();
-        },
-        doEdit(url) {
-            this.$refs.editModal.edit(url);
-        },
-        doDelete(url) {
-            this.$confirmDelete({
-                title: this.$gettext('Delete SFTP User?')
-            }).then((result) => {
-                if (result.value) {
-                    this.$wrapWithLoading(
-                        this.axios.delete(url)
-                    ).then((resp) => {
-                        this.$notifySuccess(resp.data.message);
-                        this.relist();
-                    });
-                }
-            });
-        }
+    connectionInfo: {
+        type: Object,
+        required: true
     }
-}
+});
+
+const {$gettext} = useTranslate();
+
+const fields = [
+    {key: 'username', isRowHeader: true, label: $gettext('Username'), sortable: false},
+    {key: 'actions', label: $gettext('Actions'), sortable: false, class: 'shrink'}
+];
+
+const $datatable = ref(); // Template Ref
+const {relist} = useHasDatatable($datatable);
+
+const $editModal = ref(); // Template Ref
+const {doCreate, doEdit} = useHasEditModal($editModal);
+
+const {doDelete} = useConfirmAndDelete(
+    $gettext('Delete SFTP User?'),
+    relist
+);
 </script>

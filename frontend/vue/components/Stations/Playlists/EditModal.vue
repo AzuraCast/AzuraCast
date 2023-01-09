@@ -1,10 +1,10 @@
 <template>
     <modal-form
-        ref="modal"
+        ref="$modal"
         :loading="loading"
         :title="langTitle"
         :error="error"
-        :disable-save-button="v$.form.$invalid"
+        :disable-save-button="v$.$invalid"
         @submit="doSubmit"
         @hidden="clearContents"
     >
@@ -12,108 +12,125 @@
             content-class="mt-3"
             pills
         >
-            <form-basic-info :form="v$.form" />
+            <form-basic-info :form="v$" />
             <form-schedule
                 v-model:schedule-items="form.schedule_items"
-                :form="v$.form"
+                :form="v$"
                 :station-time-zone="stationTimeZone"
             />
             <form-advanced
                 v-if="enableAdvancedFeatures"
-                :form="v$.form"
+                :form="v$"
             />
         </b-tabs>
     </modal-form>
 </template>
 
-<script>
+<script setup>
 import {required} from '@vuelidate/validators';
 import FormBasicInfo from './Form/BasicInfo';
 import FormSchedule from './Form/Schedule';
 import FormAdvanced from './Form/Advanced';
-import BaseEditModal from '~/components/Common/BaseEditModal';
-import useVuelidate from "@vuelidate/core";
+import {baseEditModalProps, useBaseEditModal} from "~/functions/useBaseEditModal";
+import {computed, ref} from "vue";
+import {useTranslate} from "~/vendor/gettext";
+import {useNotify} from "~/vendor/bootstrapVue";
+import ModalForm from "~/components/Common/ModalForm.vue";
 
-/* TODO Options API */
+const props = defineProps({
+    ...baseEditModalProps,
+    stationTimeZone: {
+        type: String,
+        required: true
+    },
+    enableAdvancedFeatures: {
+        type: Boolean,
+        required: true
+    }
+});
 
-export default {
-    name: 'EditModal',
-    components: {FormSchedule, FormBasicInfo, FormAdvanced},
-    mixins: [BaseEditModal],
-    props: {
-        stationTimeZone: {
-            type: String,
-            required: true
-        },
-        enableAdvancedFeatures: {
-            type: Boolean,
-            required: true
-        }
-    },
-    emits: ['relist', 'needs-restart'],
-    setup() {
-        return {v$: useVuelidate()}
-    },
-    computed: {
-        langTitle() {
-            return this.isEditMode
-                ? this.$gettext('Edit Playlist')
-                : this.$gettext('Add Playlist');
-        }
-    },
-    validations: {
-        form: {
-            'name': {required},
-            'is_enabled': {},
-            'include_in_on_demand': {},
-            'weight': {},
-            'type': {},
-            'source': {},
-            'order': {},
-            'remote_url': {},
-            'remote_type': {},
-            'remote_buffer': {},
-            'is_jingle': {},
-            'play_per_songs': {},
-            'play_per_minutes': {},
-            'play_per_hour_minute': {},
-            'include_in_requests': {},
-            'avoid_duplicates': {},
-            'backend_options': {},
-            'schedule_items': {}
-        }
-    },
-    methods: {
-        resetForm() {
-            this.form = {
-                'name': '',
-                'is_enabled': true,
-                'include_in_on_demand': false,
-                'weight': 3,
-                'type': 'default',
-                'source': 'songs',
-                'order': 'shuffle',
-                'remote_url': null,
-                'remote_type': 'stream',
-                'remote_buffer': 0,
-                'is_jingle': false,
-                'play_per_songs': 0,
-                'play_per_minutes': 0,
-                'play_per_hour_minute': 0,
-                'include_in_requests': true,
-                'avoid_duplicates': true,
-                'backend_options': [],
-                'schedule_items': []
-            };
-        },
-        onSubmitSuccess() {
-            this.$notifySuccess();
+const emit = defineEmits(['relist', 'needs-restart']);
 
-            this.$emit('needs-restart');
-            this.$emit('relist');
+const $modal = ref(); // Template Ref
 
-            this.close();
+const {notifySuccess} = useNotify();
+
+const {
+    loading,
+    error,
+    isEditMode,
+    form,
+    v$,
+    clearContents,
+    create,
+    edit,
+    doSubmit,
+    close
+} = useBaseEditModal(
+    props,
+    emit,
+    $modal,
+    {
+        'name': {required},
+        'is_enabled': {},
+        'include_in_on_demand': {},
+        'weight': {},
+        'type': {},
+        'source': {},
+        'order': {},
+        'remote_url': {},
+        'remote_type': {},
+        'remote_buffer': {},
+        'is_jingle': {},
+        'play_per_songs': {},
+        'play_per_minutes': {},
+        'play_per_hour_minute': {},
+        'include_in_requests': {},
+        'avoid_duplicates': {},
+        'backend_options': {},
+        'schedule_items': {}
+    },
+    {
+        'name': '',
+        'is_enabled': true,
+        'include_in_on_demand': false,
+        'weight': 3,
+        'type': 'default',
+        'source': 'songs',
+        'order': 'shuffle',
+        'remote_url': null,
+        'remote_type': 'stream',
+        'remote_buffer': 0,
+        'is_jingle': false,
+        'play_per_songs': 0,
+        'play_per_minutes': 0,
+        'play_per_hour_minute': 0,
+        'include_in_requests': true,
+        'avoid_duplicates': true,
+        'backend_options': [],
+        'schedule_items': []
+    },
+    {
+        onSubmitSuccess: () => {
+            notifySuccess();
+            emit('relist');
+            emit('needs-restart');
+            close();
         },
     }
-};
+);
+
+const {$gettext} = useTranslate();
+
+const langTitle = computed(() => {
+    return isEditMode.value
+        ? $gettext('Edit Playlist')
+        : $gettext('Add Playlist');
+});
+
+defineExpose({
+    create,
+    edit,
+    close
+});
 </script>

@@ -88,9 +88,9 @@ import InfoCard from '~/components/Common/InfoCard';
 import {filter, get, map} from 'lodash';
 import {useTranslate} from "~/vendor/gettext";
 import {ref} from "vue";
-import {useNotify} from "~/vendor/bootstrapVue";
-import {useAxios} from "~/vendor/axios";
-import {useSweetAlert} from "~/vendor/sweetalert";
+import useHasDatatable from "~/functions/useHasDatatable";
+import useHasEditModal from "~/functions/useHasEditModal";
+import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
 
 const props = defineProps({
     listUrl: {
@@ -136,37 +136,13 @@ const getStationName = (stationId) => {
 };
 
 const $datatable = ref(); // Template Ref
-
-const relist = () => {
-    $datatable.value.refresh();
-};
+const {relist} = useHasDatatable($datatable);
 
 const $editModal = ref(); // Template Ref
+const {doCreate, doEdit} = useHasEditModal($editModal);
 
-const doCreate = () => {
-    $editModal.value.create();
-};
-
-const doEdit = (url) => {
-    $editModal.value.edit(url);
-};
-
-const {wrapWithLoading, notifySuccess} = useNotify();
-const {confirmDelete} = useSweetAlert();
-const {axios} = useAxios();
-
-const doDelete = (url) => {
-    confirmDelete({
-        title: $gettext('Delete Role?'),
-    }).then((result) => {
-        if (result.value) {
-            wrapWithLoading(
-                axios.delete(url)
-            ).then((resp) => {
-                notifySuccess(resp.data.message);
-                relist();
-            });
-        }
-    });
-}
+const {doDelete} = useConfirmAndDelete(
+    $gettext('Delete Role?'),
+    relist
+);
 </script>

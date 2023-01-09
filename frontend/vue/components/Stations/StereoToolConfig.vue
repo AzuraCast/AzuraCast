@@ -99,7 +99,7 @@ const props = defineProps({
 
 const hasStereoToolConfiguration = ref(props.recordHasStereoToolConfiguration);
 
-const {mayNeedRestart} = useMayNeedRestart(props.restartStatusUrl);
+const {mayNeedRestart} = useMayNeedRestart(props);
 
 const onFileSuccess = () => {
     mayNeedRestart();

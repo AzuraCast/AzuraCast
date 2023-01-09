@@ -108,7 +108,7 @@
 
             <data-table
                 id="api_keys"
-                ref="$dataTable"
+                ref="$datatable"
                 :fields="fields"
                 :api-url="listUrl"
             >
@@ -169,7 +169,7 @@ import {onMounted, ref} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import {useNotify} from "~/vendor/bootstrapVue";
 import {useAxios} from "~/vendor/axios";
-import {useSweetAlert} from "~/vendor/sweetalert";
+import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
 
 const props = defineProps({
     listUrl: {
@@ -238,9 +238,9 @@ const fields = [
     }
 ];
 
-const $dataTable = ref(); // DataTable
+const $datatable = ref(); // DataTable
 
-const {wrapWithLoading, notifySuccess} = useNotify();
+const {wrapWithLoading} = useNotify();
 const {axios} = useAxios();
 
 const relist = () => {
@@ -256,7 +256,7 @@ const relist = () => {
         settingsLoading.value = false;
     });
 
-    $dataTable.value.relist();
+    $datatable.value.relist();
 };
 
 onMounted(relist);
@@ -280,20 +280,8 @@ const doRunBackup = () => {
     $runBackupModal.value.open();
 };
 
-const {confirmDelete} = useSweetAlert();
-
-const doDelete = (url) => {
-    confirmDelete({
-        title: $gettext('Delete Backup?')
-    }).then((result) => {
-        if (result.value) {
-            wrapWithLoading(
-                axios.delete(url)
-            ).then((resp) => {
-                notifySuccess(resp.data.message);
-                relist();
-            });
-        }
-    });
-};
+const {doDelete} = useConfirmAndDelete(
+    $gettext('Delete Backup?'),
+    relist,
+);
 </script>

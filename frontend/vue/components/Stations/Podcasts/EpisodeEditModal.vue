@@ -1,10 +1,10 @@
 <template>
     <modal-form
-        ref="modal"
+        ref="$modal"
         :loading="loading"
         :title="langTitle"
         :error="error"
-        :disable-save-button="v$.form.$invalid"
+        :disable-save-button="v$.$invalid"
         @submit="doSubmit"
         @hidden="clearContents"
     >
@@ -12,10 +12,13 @@
             content-class="mt-3"
             pills
         >
-            <episode-form-basic-info :form="v$.form" />
+            <episode-form-basic-info
+                :form="v$"
+                :locale="locale"
+            />
 
             <episode-form-media
-                v-model="v$.form.media_file.$model"
+                v-model="v$.media_file.$model"
                 :record-has-media="record.has_media"
                 :new-media-url="newMediaUrl"
                 :edit-media-url="record.links.media"
@@ -23,7 +26,7 @@
             />
 
             <podcast-common-artwork
-                v-model="v$.form.artwork_file.$model"
+                v-model="v$.artwork_file.$model"
                 :artwork-src="record.art"
                 :new-art-url="newArtUrl"
                 :edit-art-url="record.links.art"
@@ -32,110 +35,103 @@
     </modal-form>
 </template>
 
-<script>
+<script setup>
 import {required} from '@vuelidate/validators';
-import BaseEditModal from '~/components/Common/BaseEditModal';
 import EpisodeFormBasicInfo from './EpisodeForm/BasicInfo';
 import PodcastCommonArtwork from './Common/Artwork';
 import EpisodeFormMedia from './EpisodeForm/Media';
 import {DateTime} from 'luxon';
+import {baseEditModalProps, useBaseEditModal} from "~/functions/useBaseEditModal";
+import {computed, ref} from "vue";
+import {useResettableRef} from "~/functions/useResettableRef";
 import mergeExisting from "~/functions/mergeExisting";
-import useVuelidate from "@vuelidate/core";
+import {useTranslate} from "~/vendor/gettext";
+import ModalForm from "~/components/Common/ModalForm.vue";
 
-/* TODO Options API */
+const props = defineProps({
+    ...baseEditModalProps,
+    stationTimeZone: {
+        type: String,
+        required: true
+    },
+    locale: {
+        type: String,
+        required: true
+    },
+    podcastId: {
+        type: String,
+        required: true
+    },
+    newArtUrl: {
+        type: String,
+        required: true
+    },
+    newMediaUrl: {
+        type: String,
+        required: true
+    }
+});
 
-export default {
-    name: 'EditModal',
-    components: {EpisodeFormMedia, PodcastCommonArtwork, EpisodeFormBasicInfo},
-    mixins: [BaseEditModal],
-    props: {
-        stationTimeZone: {
-            type: String,
-            required: true
-        },
-        locale: {
-            type: String,
-            required: true
-        },
-        podcastId: {
-            type: String,
-            required: true
-        },
-        newArtUrl: {
-            type: String,
-            required: true
-        },
-        newMediaUrl: {
-            type: String,
-            required: true
-        }
+const emit = defineEmits(['relist']);
+
+const $modal = ref(); // Template Ref
+
+const {record, reset} = useResettableRef({
+    has_custom_art: false,
+    art: null,
+    has_media: false,
+    media: null,
+    links: {
+        art: null,
+        media: null
+    }
+});
+
+const {
+    loading,
+    error,
+    isEditMode,
+    v$,
+    clearContents,
+    create,
+    edit,
+    doSubmit,
+    close
+} = useBaseEditModal(
+    props,
+    emit,
+    $modal,
+    {
+        'title': {required},
+        'link': {},
+        'description': {required},
+        'publish_date': {},
+        'publish_time': {},
+        'explicit': {},
+        'artwork_file': {},
+        'media_file': {}
     },
-    setup() {
-        return {v$: useVuelidate()}
+    {
+        'title': '',
+        'link': '',
+        'description': '',
+        'publish_date': '',
+        'publish_time': '',
+        'explicit': false,
+        'artwork_file': null,
+        'media_file': null
     },
-    data() {
-        return {
-            uploadPercentage: null,
-            record: {
-                has_custom_art: false,
-                art: null,
-                has_media: false,
-                media: null,
-                links: {},
-                artwork_file: null,
-                media_file: null
-            },
-        };
-    },
-    computed: {
-        langTitle () {
-            return this.isEditMode
-                ? this.$gettext('Edit Episode')
-                : this.$gettext('Add Episode');
-        }
-    },
-    validations: {
-        form: {
-            'title': { required },
-            'link': {},
-            'description': { required },
-            'publish_date': {},
-            'publish_time': {},
-            'explicit': {},
-            'artwork_file': {},
-            'media_file': {}
-        }
-    },
-    methods: {
-        resetForm () {
-            this.uploadPercentage = null;
-            this.record = {
-                has_custom_art: false,
-                art: null,
-                has_media: false,
-                media: null,
-                links: {
-                    art: null,
-                    media: null
-                }
-            };
-            this.form = {
-                'title': '',
-                'link': '',
-                'description': '',
-                'publish_date': '',
-                'publish_time': '',
-                'explicit': false,
-                'artwork_file': null,
-                'media_file': null
-            };
+    {
+        resetForm: (originalResetForm) => {
+            originalResetForm();
+            reset();
         },
-        populateForm (d) {
+        populateForm: (data, formRef) => {
             let publishDate = '';
             let publishTime = '';
 
-            if (d.publish_at !== null) {
-                let publishDateTime = DateTime.fromSeconds(d.publish_at);
+            if (data.publish_at !== null) {
+                let publishDateTime = DateTime.fromSeconds(data.publish_at);
                 publishDate = publishDateTime.toISODate();
                 publishTime = publishDateTime.toISOTime({
                     suppressMilliseconds: true,
@@ -143,15 +139,15 @@ export default {
                 });
             }
 
-            this.record = mergeExisting(this.record, d);
-            this.form = mergeExisting(this.form, {
-                ...d,
+            record.value = mergeExisting(record.value, data);
+            formRef.value = mergeExisting(formRef.value, {
+                ...data,
                 publish_date: publishDate,
                 publish_time: publishTime
             });
         },
-        getSubmittableFormData() {
-            let modifiedForm = this.form;
+        getSubmittableFormData: (formRef) => {
+            let modifiedForm = formRef.value;
 
             if (modifiedForm.publish_date.length > 0 && modifiedForm.publish_time.length > 0) {
                 let publishDateTimeString = modifiedForm.publish_date + 'T' + modifiedForm.publish_time;
@@ -161,7 +157,21 @@ export default {
             }
 
             return modifiedForm;
-        },
-    }
-};
+        }
+    },
+);
+
+const {$gettext} = useTranslate();
+
+const langTitle = computed(() => {
+    return isEditMode.value
+        ? $gettext('Edit Episode')
+        : $gettext('Add Episode');
+});
+
+defineExpose({
+    create,
+    edit,
+    close
+});
 </script>

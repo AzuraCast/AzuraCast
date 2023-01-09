@@ -1,6 +1,6 @@
 <template>
     <modal-form
-        ref="modal"
+        ref="$modal"
         :loading="loading"
         :title="langTitle"
         :error="error"
@@ -26,91 +26,110 @@
     </modal-form>
 </template>
 
-<script>
+<script setup>
+import ModalForm from "~/components/Common/ModalForm.vue";
+import {computed, ref} from "vue";
+import {baseEditModalProps, useBaseEditModal} from "~/functions/useBaseEditModal";
+import {useTranslate} from "~/vendor/gettext";
 import {required} from '@vuelidate/validators';
-import BaseEditModal from '~/components/Common/BaseEditModal';
 import AdminPermissionsGlobalForm from "./Form/GlobalForm";
 import AdminPermissionsStationForm from "./Form/StationForm";
 import {forEach, map} from 'lodash';
-import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
 
-/* TODO Options API */
+const props = defineProps({
+    ...baseEditModalProps,
+    stations: {
+        type: Object,
+        required: true
+    },
+    globalPermissions: {
+        type: Object,
+        required: true
+    },
+    stationPermissions: {
+        type: Object,
+        required: true
+    }
+});
 
-export default {
-    name: 'AdminPermissionsEditModal',
-    components: {AdminPermissionsStationForm, AdminPermissionsGlobalForm},
-    mixins: [BaseEditModal],
-    props: {
-        stations: {
-            type: Object,
-            required: true
-        },
-        globalPermissions: {
-            type: Object,
-            required: true
-        },
-        stationPermissions: {
-            type: Object,
-            required: true
+const emit = defineEmits(['relist']);
+
+const $modal = ref(); // Template Ref
+
+const {
+    loading,
+    error,
+    isEditMode,
+    v$,
+    clearContents,
+    create,
+    edit,
+    doSubmit,
+    close
+} = useBaseEditModal(
+    props,
+    emit,
+    $modal,
+    {
+        'name': {required},
+        'permissions': {
+            'global': {},
+            'station': {},
         }
     },
-    setup() {
-        const {form, resetForm, v$} = useVuelidateOnForm(
-            {
-                'name': {required},
-                'permissions': {
-                    'global': {},
-                    'station': {},
-                }
-            },
-            {
-                'name': '',
-                'permissions': {
-                    'global': [],
-                    'station': [],
-                }
-            }
-        );
-
-        return {
-            form,
-            resetForm,
-            v$
+    {
+        'name': '',
+        'permissions': {
+            'global': [],
+            'station': [],
         }
     },
-    computed: {
-        langTitle() {
-            return this.isEditMode
-                ? this.$gettext('Edit Role')
-                : this.$gettext('Add Role');
-        }
-    },
-    methods: {
-        populateForm(data) {
-            this.form.name = data.name;
-            this.form.permissions.global = data.permissions.global;
-            this.form.permissions.station = map(data.permissions.station, (permissions, stationId) => {
-                return {
-                    'station_id': stationId,
-                    'permissions': permissions
-                };
-            });
-        },
-        getSubmittableFormData() {
-            let form = {
-                name: this.form.name,
+    {
+        populateForm(data, formRef) {
+            formRef.value = {
+                name: data.name,
                 permissions: {
-                    global: this.form.permissions.global,
+                    global: data.permissions.global,
+                    station: map(data.permissions.station, (permissions, stationId) => {
+                        return {
+                            'station_id': stationId,
+                            'permissions': permissions
+                        };
+                    })
+                }
+            };
+        },
+        getSubmittableFormData(formRef) {
+            const formValue = formRef.value;
+
+            let formReturn = {
+                name: formValue.name,
+                permissions: {
+                    global: formValue.permissions.global,
                     station: {}
                 }
             };
 
-            forEach(this.form.permissions.station, (row) => {
-                form.permissions.station[row.station_id] = row.permissions;
+            forEach(formValue.permissions.station, (row) => {
+                formReturn.permissions.station[row.station_id] = row.permissions;
             });
 
-            return form;
+            return formReturn;
         },
     }
-};
+);
+
+const {$gettext} = useTranslate();
+
+const langTitle = computed(() => {
+    return isEditMode.value
+        ? $gettext('Edit Role')
+        : $gettext('Add Role');
+});
+
+defineExpose({
+    create,
+    edit,
+    close
+});
 </script>

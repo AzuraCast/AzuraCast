@@ -1,8 +1,9 @@
 import {computed, ref, toRef} from "vue";
-import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
 import mergeExisting from "~/functions/mergeExisting";
 import {useNotify} from "~/vendor/bootstrapVue";
 import {useAxios} from "~/vendor/axios";
+import {useResettableRef} from "~/functions/useResettableRef";
+import useVuelidate from "@vuelidate/core";
 
 export const baseEditModalProps = {
     createUrl: {
@@ -15,11 +16,12 @@ export function useBaseEditModal(
     props,
     emit,
     $modal,
-    validations,
-    blankForm,
+    originalValidations,
+    originalBlankForm,
     userOptions = {}
 ) {
     const options = {
+        resetForm: null,
         clearContents: null,
         populateForm: null,
         getSubmittableFormData: null,
@@ -39,11 +41,29 @@ export function useBaseEditModal(
         return editUrl.value !== null;
     });
 
-    const {form, v$, resetForm, ifValid} = useVuelidateOnForm(validations, blankForm);
+    const blankForm = (typeof originalBlankForm === 'function')
+        ? originalBlankForm(isEditMode)
+        : originalBlankForm;
+
+    const {record: form, reset: originalResetForm} = useResettableRef(blankForm);
+
+    const validations = (typeof originalValidations === 'function')
+        ? originalValidations(form, isEditMode)
+        : originalValidations;
+
+    const v$ = useVuelidate(validations, form);
+
+    const resetForm = () => {
+        if (typeof options.resetForm === 'function') {
+            return options.resetForm(originalResetForm);
+        }
+
+        originalResetForm();
+    };
 
     const clearContents = () => {
         if (typeof options.clearContents === 'function') {
-            return options.clearContents();
+            return options.clearContents(resetForm);
         }
 
         resetForm();
@@ -61,7 +81,7 @@ export function useBaseEditModal(
 
     const populateForm = (data) => {
         if (typeof options.populateForm === 'function') {
-            return options.populateForm();
+            return options.populateForm(data, form);
         }
 
         form.value = mergeExisting(form.value, data);
@@ -92,7 +112,7 @@ export function useBaseEditModal(
 
     const getSubmittableFormData = () => {
         if (typeof options.getSubmittableFormData === 'function') {
-            return options.getSubmittableFormData();
+            return options.getSubmittableFormData(form, isEditMode);
         }
 
         return form.value;
@@ -137,7 +157,12 @@ export function useBaseEditModal(
     };
 
     const doSubmit = () => {
-        ifValid(() => {
+        v$.value.$touch();
+        v$.value.$validate().then((isValid) => {
+            if (!isValid) {
+                return;
+            }
+
             error.value = null;
 
             wrapWithLoading(
@@ -157,6 +182,7 @@ export function useBaseEditModal(
         isEditMode,
         form,
         v$,
+        resetForm,
         clearContents,
         create,
         edit,

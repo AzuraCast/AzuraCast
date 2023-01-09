@@ -71,9 +71,9 @@ import InfoCard from '~/components/Common/InfoCard.vue';
 import {get} from 'lodash';
 import {useTranslate} from "~/vendor/gettext";
 import {ref} from "vue";
-import {useSweetAlert} from "~/vendor/sweetalert";
-import {useNotify} from "~/vendor/bootstrapVue";
-import {useAxios} from "~/vendor/axios";
+import useHasDatatable from "~/functions/useHasDatatable";
+import useHasEditModal from "~/functions/useHasEditModal";
+import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
 
 const props = defineProps({
     listUrl: {
@@ -112,37 +112,13 @@ const fields = [
 ];
 
 const $dataTable = ref(); // DataTable
-
-const relist = () => {
-    $dataTable.value.refresh();
-};
+const {relist} = useHasDatatable($dataTable);
 
 const $editModal = ref(); // EditModal
+const {doCreate, doEdit} = useHasEditModal($editModal);
 
-const doCreate = () => {
-    $editModal.value.create();
-}
-
-const doEdit = (url) => {
-    $editModal.value.edit(url);
-}
-
-const {confirmDelete} = useSweetAlert();
-const {wrapWithLoading, notifySuccess} = useNotify();
-const {axios} = useAxios();
-
-const doDelete = (url) => {
-    confirmDelete({
-        title: $gettext('Delete Custom Field?')
-    }).then((result) => {
-        if (result.value) {
-            wrapWithLoading(
-                axios.delete(url)
-            ).then((resp) => {
-                notifySuccess(resp.data.message);
-                relist();
-            });
-        }
-    });
-};
+const {doDelete} = useConfirmAndDelete(
+    $gettext('Delete Custom Field?'),
+    relist
+);
 </script>

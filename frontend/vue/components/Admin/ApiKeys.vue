@@ -30,7 +30,7 @@
 
         <data-table
             id="api_keys"
-            ref="$dataTable"
+            ref="$datatable"
             :fields="fields"
             :api-url="apiUrl"
         >
@@ -52,12 +52,11 @@
 <script setup>
 import DataTable from "~/components/Common/DataTable.vue";
 import {ref} from "vue";
-import {useSweetAlert} from "~/vendor/sweetalert";
-import {useNotify} from "~/vendor/bootstrapVue";
-import {useAxios} from "~/vendor/axios";
 import {useTranslate} from "~/vendor/gettext";
 import InfoCard from "~/components/Common/InfoCard.vue";
 import Icon from "~/components/Common/Icon.vue";
+import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
+import useHasDatatable from "~/functions/useHasDatatable";
 
 defineProps({
     apiUrl: {
@@ -92,28 +91,11 @@ const fields = ref([
     }
 ]);
 
-const $dataTable = ref();
+const $datatable = ref();
+const {relist} = useHasDatatable($datatable);
 
-const relist = () => {
-    $dataTable.value.relist();
-};
-
-const {confirmDelete} = useSweetAlert();
-const {wrapWithLoading, notifySuccess} = useNotify();
-const {axios} = useAxios();
-
-const doDelete = (url) => {
-    confirmDelete({
-        title: $gettext('Delete API Key?'),
-    }).then((result) => {
-        if (result.value) {
-            wrapWithLoading(
-                axios.delete(url)
-            ).then((resp) => {
-                notifySuccess(resp.data.message);
-                relist();
-            });
-        }
-    });
-}
+const {doDelete} = useConfirmAndDelete(
+    $gettext('Delete API Key?'),
+    relist
+);
 </script>

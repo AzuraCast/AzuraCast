@@ -69,7 +69,7 @@ import AudioPlayer from '~/components/Common/AudioPlayer.vue';
 import formatTime from '~/functions/formatTime.js';
 import Icon from '~/components/Common/Icon.vue';
 import {usePlayerStore} from "~/store.js";
-import {useStorage} from "@vueuse/core";
+import {useLocalStorage} from "@vueuse/core";
 import {computed, ref, toRef} from "vue";
 import MuteButton from "~/components/Common/MuteButton.vue";
 
@@ -77,8 +77,12 @@ const store = usePlayerStore();
 const isPlaying = toRef(store, 'isPlaying');
 const current = toRef(store, 'current');
 
-const volume = useStorage('player_volume', 55);
-const isMuted = useStorage('player_is_muted', false);
+const volume = useLocalStorage('player_volume', 55, {
+    listenToStorageChanges: false
+});
+const isMuted = useLocalStorage('player_is_muted', false, {
+    listenToStorageChanges: false
+});
 const $player = ref(); // AudioPlayer
 
 const duration = computed(() => {

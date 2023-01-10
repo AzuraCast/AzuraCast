@@ -146,7 +146,7 @@
 import AudioPlayer from '~/components/Common/AudioPlayer';
 import PlayButton from "~/components/Common/PlayButton";
 import {computed, onMounted, ref, shallowRef, watch} from "vue";
-import {useStorage} from "@vueuse/core";
+import {useLocalStorage} from "@vueuse/core";
 import formatTime from "~/functions/formatTime";
 import {useTranslate} from "~/vendor/gettext";
 import useNowPlaying from "~/functions/useNowPlaying";
@@ -240,8 +240,12 @@ const currentTimeTotalDisplay = computed(() => {
 
 const $player = ref(); // Template ref
 
-const volume = useStorage('player_volume', 55);
-const isMuted = useStorage('player_is_muted', false);
+const volume = useLocalStorage('player_volume', 55, {
+    listenToStorageChanges: false
+});
+const isMuted = useLocalStorage('player_is_muted', false, {
+    listenToStorageChanges: false
+});
 
 const toggleMute = () => {
     isMuted.value = !isMuted.value;

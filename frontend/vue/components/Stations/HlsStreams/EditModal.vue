@@ -1,6 +1,6 @@
 <template>
     <modal-form
-        ref="modal"
+        ref="$modal"
         :loading="loading"
         :title="langTitle"
         :error="error"

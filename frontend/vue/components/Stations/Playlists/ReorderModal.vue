@@ -1,7 +1,7 @@
 <template>
     <b-modal
         id="reorder_modal"
-        ref="modal"
+        ref="$modal"
         size="lg"
         :title="$gettext('Reorder Playlist')"
         :busy="loading"
@@ -90,60 +90,74 @@
     </b-modal>
 </template>
 
-<script>
+<script setup>
 import Draggable from 'vuedraggable';
 import Icon from '~/components/Common/Icon';
 import PlayButton from "~/components/Common/PlayButton";
 import InlinePlayer from '~/components/InlinePlayer';
+import {ref} from "vue";
+import {useAxios} from "~/vendor/axios";
+import {useNotify} from "~/vendor/bootstrapVue";
+import {useTranslate} from "~/vendor/gettext";
+
+const loading = ref(true);
+const reorderUrl = ref(null);
+const media = ref([]);
+
+const $modal = ref(); // Template Ref
+
+const {axios} = useAxios();
+
+const open = (newReorderUrl) => {
+    reorderUrl.value = newReorderUrl;
+    loading.value = true;
+    $modal.value?.show();
+
+    axios.get(newReorderUrl).then((resp) => {
+        media.value = resp.data;
+        loading.value = false;
+    });
+};
+
+const {notifySuccess} = useNotify();
+const {$gettext} = useTranslate();
+
+const save = () => {
+    let newOrder = {};
+    let i = 0;
+
+    media.value.forEach((row) => {
+        i++;
+        newOrder[row.id] = i;
+    });
+
+    axios.put(reorderUrl.value, {'order': newOrder}).then(() => {
+        notifySuccess($gettext('Playlist order set.'));
+    });
+};
+
+const moveDown = (index) => {
+    media.value.splice(index + 1, 0, media.value.splice(index, 1)[0]);
+    save();
+};
+
+const moveUp = (index) => {
+    media.value.splice(index - 1, 0, media.value.splice(index, 1)[0]);
+    save();
+};
+
+defineExpose({
+    open
+});
+</script>
+
+<script>
 
 export default {
-    name: 'ReorderModal',
-    components: {
-        Icon,
-        Draggable,
-        PlayButton,
-        InlinePlayer
-    },
     data() {
-        return {
-            loading: true,
-            reorderUrl: null,
-            media: []
-        };
+        return {};
     },
-    methods: {
-        open (reorderUrl) {
-            this.$refs.modal.show();
-            this.reorderUrl = reorderUrl;
-            this.loading = true;
-
-            this.axios.get(this.reorderUrl).then((resp) => {
-                this.media = resp.data;
-                this.loading = false;
-            });
-        },
-        moveDown (index) {
-            this.media.splice(index + 1, 0, this.media.splice(index, 1)[0]);
-            this.save();
-        },
-        moveUp (index) {
-            this.media.splice(index - 1, 0, this.media.splice(index, 1)[0]);
-            this.save();
-        },
-        save () {
-            let newOrder = {};
-            let i = 0;
-
-            this.media.forEach((row) => {
-                i++;
-                newOrder[row.id] = i;
-            });
-
-            this.axios.put(this.reorderUrl, {'order': newOrder}).then(() => {
-                this.$notifySuccess(this.$gettext('Playlist order set.'));
-            });
-        },
-    }
+    methods: {}
 };
 </script>
 

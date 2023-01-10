@@ -107,7 +107,7 @@ const play = () => {
                 hls.value = new Hls();
                 hls.value.loadSource(current.value.url);
                 hls.value.attachMedia($audio.value);
-            } else if (this.audio.canPlayType('application/vnd.apple.mpegurl')) {
+            } else if ($audio.value.canPlayType('application/vnd.apple.mpegurl')) {
                 $audio.value.src = current.value.url;
             } else {
                 console.log('Your browser does not support HLS.');

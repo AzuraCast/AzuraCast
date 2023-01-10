@@ -113,7 +113,7 @@ const deleteConfigurationFile = () => {
     wrapWithLoading(
         axios({
             method: 'DELETE',
-            url: this.apiUrl
+            url: props.apiUrl
         })
     ).then(() => {
         mayNeedRestart();

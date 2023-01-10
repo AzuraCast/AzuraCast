@@ -47,7 +47,7 @@ const rateLimitOptions = [
         value: 30,
     },
     {
-        text: this.$gettextInterpolate(this.langSeconds, {seconds: 60}),
+        text: $gettextInterpolate(langSeconds, {seconds: 60}),
         value: 60,
     },
     {

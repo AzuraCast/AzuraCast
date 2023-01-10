@@ -271,7 +271,7 @@ const doReprocess = () => {
 const {confirmDelete} = useSweetAlert();
 
 const doDelete = () => {
-    let numFiles = this.selectedItems.all.length;
+    let numFiles = props.selectedItems.all.length;
     let buttonConfirmText = $gettext(
         'Delete %{ num } media files?',
         {num: numFiles}

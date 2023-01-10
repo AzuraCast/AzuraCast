@@ -85,10 +85,11 @@
                                             : {{ np.now_playing.playlist }}</small>
                                     </div>
                                     <div
-                                        v-if="timeDisplay"
                                         class="nowplaying-progress"
                                     >
-                                        <small>{{ timeDisplay }}</small>
+                                        <small>
+                                            {{ currentTrackElapsedDisplay }} / {{ currentTrackDurationDisplay }}
+                                        </small>
                                     </div>
                                 </div>
                             </div>
@@ -200,7 +201,6 @@ import {BACKEND_LIQUIDSOAP} from '~/components/Entity/RadioAdapters';
 import Icon from '~/components/Common/Icon';
 import {computed} from "vue";
 import {useTranslate} from "~/vendor/gettext";
-import formatTime from "~/functions/formatTime";
 import nowPlayingPanelProps from "~/components/Stations/Profile/nowPlayingPanelProps";
 import useNowPlaying from "~/functions/useNowPlaying";
 
@@ -208,7 +208,11 @@ const props = defineProps({
     ...nowPlayingPanelProps,
 });
 
-const {np, currentTrackDuration, currentTrackElapsed} = useNowPlaying(props);
+const {
+    np,
+    currentTrackDurationDisplay,
+    currentTrackElapsedDisplay
+} = useNowPlaying(props);
 
 const {$ngettext} = useTranslate();
 
@@ -223,20 +227,5 @@ const langListeners = computed(() => {
 
 const isLiquidsoap = computed(() => {
     return props.backendType === BACKEND_LIQUIDSOAP;
-});
-
-const timeDisplay = computed(() => {
-    let currentTrackDurationValue = currentTrackDuration.value ?? null;
-    let currentTrackElapsedValue = currentTrackElapsed.value ?? null;
-
-    if (!currentTrackDurationValue) {
-        return null;
-    }
-
-    if (currentTrackElapsedValue > currentTrackDurationValue) {
-        currentTrackElapsedValue = currentTrackDurationValue;
-    }
-
-    return formatTime(currentTrackElapsedValue) + ' / ' + formatTime(currentTrackDurationValue);
 });
 </script>

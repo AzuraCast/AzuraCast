@@ -54,11 +54,11 @@
                 </div>
 
                 <div
-                    v-if="currentTimeElapsedDisplay != null"
+                    v-if="currentTrackElapsedDisplay != null"
                     class="time-display"
                 >
                     <div class="time-display-played text-secondary">
-                        {{ currentTimeElapsedDisplay }}
+                        {{ currentTrackElapsedDisplay }}
                     </div>
                     <div class="time-display-progress">
                         <div class="progress">
@@ -70,7 +70,7 @@
                         </div>
                     </div>
                     <div class="time-display-total text-secondary">
-                        {{ currentTimeTotalDisplay }}
+                        {{ currentTrackDurationDisplay }}
                     </div>
                 </div>
             </div>
@@ -147,7 +147,6 @@ import AudioPlayer from '~/components/Common/AudioPlayer';
 import PlayButton from "~/components/Common/PlayButton";
 import {computed, onMounted, ref, shallowRef, watch} from "vue";
 import {useLocalStorage} from "@vueuse/core";
-import formatTime from "~/functions/formatTime";
 import {useTranslate} from "~/vendor/gettext";
 import useNowPlaying from "~/functions/useNowPlaying";
 import playerProps from "~/components/Public/playerProps";
@@ -159,7 +158,12 @@ const props = defineProps({
 
 const emit = defineEmits(['np_updated']);
 
-const {np, currentTrackElapsed, currentTrackDuration} = useNowPlaying(props);
+const {
+    np,
+    currentTrackPercent,
+    currentTrackDurationDisplay,
+    currentTrackElapsedDisplay
+} = useNowPlaying(props);
 
 const currentStream = shallowRef({
     'name': '',
@@ -202,40 +206,6 @@ const streams = computed(() => {
     });
 
     return allStreams;
-});
-
-const currentTrackPercent = computed(() => {
-    let $currentTrackElapsed = currentTrackElapsed.value;
-    let $currentTrackDuration = currentTrackDuration.value;
-
-    if (!$currentTrackDuration) {
-        return 0;
-    }
-    if ($currentTrackElapsed > $currentTrackDuration) {
-        return 100;
-    }
-
-    return ($currentTrackElapsed / $currentTrackDuration) * 100;
-});
-
-const currentTimeElapsedDisplay = computed(() => {
-    let $currentTrackElapsed = currentTrackElapsed.value;
-    let $currentTrackDuration = currentTrackDuration.value;
-
-    if (!$currentTrackDuration) {
-        return null;
-    }
-
-    if ($currentTrackElapsed > $currentTrackDuration) {
-        $currentTrackElapsed = $currentTrackDuration;
-    }
-
-    return formatTime($currentTrackElapsed);
-});
-
-const currentTimeTotalDisplay = computed(() => {
-    let $currentTrackDuration = currentTrackDuration.value;
-    return ($currentTrackDuration) ? formatTime($currentTrackDuration) : null;
 });
 
 const $player = ref(); // Template ref

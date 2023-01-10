@@ -1,8 +1,9 @@
 import NowPlaying from '~/components/Entity/NowPlaying';
-import {onMounted, ref, shallowRef, watch} from "vue";
+import {computed, onMounted, ref, shallowRef, watch} from "vue";
 import {useEventSource, useIntervalFn} from "@vueuse/core";
 import {useAxios} from "~/vendor/axios";
 import {has} from "lodash";
+import formatTime from "~/functions/formatTime";
 
 export const nowPlayingProps = {
     nowPlayingUri: {
@@ -133,10 +134,47 @@ export default function useNowPlaying(props) {
         );
     });
 
+    const currentTrackPercent = computed(() => {
+        let $currentTrackElapsed = currentTrackElapsed.value;
+        let $currentTrackDuration = currentTrackDuration.value;
+
+        if (!$currentTrackDuration) {
+            return 0;
+        }
+        if ($currentTrackElapsed > $currentTrackDuration) {
+            return 100;
+        }
+
+        return ($currentTrackElapsed / $currentTrackDuration) * 100;
+    });
+
+    const currentTrackDurationDisplay = computed(() => {
+        let $currentTrackDuration = currentTrackDuration.value;
+        return ($currentTrackDuration) ? formatTime($currentTrackDuration) : null;
+    });
+
+    const currentTrackElapsedDisplay = computed(() => {
+        let $currentTrackElapsed = currentTrackElapsed.value;
+        let $currentTrackDuration = currentTrackDuration.value;
+
+        if (!$currentTrackDuration) {
+            return null;
+        }
+
+        if ($currentTrackElapsed > $currentTrackDuration) {
+            $currentTrackElapsed = $currentTrackDuration;
+        }
+
+        return formatTime($currentTrackElapsed);
+    });
+    
     return {
         np,
         currentTime,
         currentTrackDuration,
-        currentTrackElapsed
+        currentTrackElapsed,
+        currentTrackPercent,
+        currentTrackDurationDisplay,
+        currentTrackElapsedDisplay
     };
 }

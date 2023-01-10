@@ -15,86 +15,98 @@
         </div>
 
         <template v-if="userCanManageBroadcasting">
-            <b-table-simple
-                striped
-                responsive
+            <b-collapse
+                id="frontendCredentials"
+                v-model="credentialsVisible"
             >
-                <tbody>
-                    <tr class="align-middle">
-                        <td>
-                            <a
-                                :href="frontendAdminUri"
-                                target="_blank"
-                            >
-                                {{ $gettext('Administration') }}
-                            </a>
-                        </td>
-                        <td class="px-0">
-                            <div>
-                                {{ $gettext('Username:') }}
-                                <span class="text-monospace">admin</span>
-                            </div>
-                            <div>
-                                {{ $gettext('Password:') }}
-                                <span class="text-monospace">{{ frontendAdminPassword }}</span>
-                            </div>
-                        </td>
-                        <td class="px-0">
-                            <copy-to-clipboard-button
-                                :text="frontendAdminPassword"
-                                hide-text
-                            />
-                        </td>
-                    </tr>
-                    <tr class="align-middle">
-                        <td>
-                            {{ $gettext('Source') }}
-                        </td>
-                        <td class="px-0">
-                            <div>
-                                {{ $gettext('Username:') }}
-                                <span class="text-monospace">source</span>
-                            </div>
-                            <div>
-                                {{ $gettext('Password:') }}
-                                <span class="text-monospace">{{ frontendSourcePassword }}</span>
-                            </div>
-                        </td>
-                        <td class="px-0">
-                            <copy-to-clipboard-button
-                                :text="frontendSourcePassword"
-                                hide-text
-                            />
-                        </td>
-                    </tr>
-                    <tr class="align-middle">
-                        <td>
-                            {{ $gettext('Relay') }}
-                        </td>
-                        <td class="px-0">
-                            <div>
-                                {{ $gettext('Username:') }}
-                                <span class="text-monospace">relay</span>
-                            </div>
-                            <div>
-                                {{ $gettext('Password:') }}
-                                <span class="text-monospace">{{ frontendRelayPassword }}</span>
-                            </div>
-                        </td>
-                        <td class="px-0">
-                            <copy-to-clipboard-button
-                                :text="frontendRelayPassword"
-                                hide-text
-                            />
-                        </td>
-                    </tr>
-                </tbody>
-            </b-table-simple>
+                <b-table-simple
+                    striped
+                    responsive
+                >
+                    <tbody>
+                        <tr class="align-middle">
+                            <td>
+                                <a
+                                    :href="frontendAdminUri"
+                                    target="_blank"
+                                >
+                                    {{ $gettext('Administration') }}
+                                </a>
+                            </td>
+                            <td class="px-0">
+                                <div>
+                                    {{ $gettext('Username:') }}
+                                    <span class="text-monospace">admin</span>
+                                </div>
+                                <div>
+                                    {{ $gettext('Password:') }}
+                                    <span class="text-monospace">{{ frontendAdminPassword }}</span>
+                                </div>
+                            </td>
+                            <td class="px-0">
+                                <copy-to-clipboard-button
+                                    :text="frontendAdminPassword"
+                                    hide-text
+                                />
+                            </td>
+                        </tr>
+                        <tr class="align-middle">
+                            <td>
+                                {{ $gettext('Source') }}
+                            </td>
+                            <td class="px-0">
+                                <div>
+                                    {{ $gettext('Username:') }}
+                                    <span class="text-monospace">source</span>
+                                </div>
+                                <div>
+                                    {{ $gettext('Password:') }}
+                                    <span class="text-monospace">{{ frontendSourcePassword }}</span>
+                                </div>
+                            </td>
+                            <td class="px-0">
+                                <copy-to-clipboard-button
+                                    :text="frontendSourcePassword"
+                                    hide-text
+                                />
+                            </td>
+                        </tr>
+                        <tr class="align-middle">
+                            <td>
+                                {{ $gettext('Relay') }}
+                            </td>
+                            <td class="px-0">
+                                <div>
+                                    {{ $gettext('Username:') }}
+                                    <span class="text-monospace">relay</span>
+                                </div>
+                                <div>
+                                    {{ $gettext('Password:') }}
+                                    <span class="text-monospace">{{ frontendRelayPassword }}</span>
+                                </div>
+                            </td>
+                            <td class="px-0">
+                                <copy-to-clipboard-button
+                                    :text="frontendRelayPassword"
+                                    hide-text
+                                />
+                            </td>
+                        </tr>
+                    </tbody>
+                </b-table-simple>
+            </b-collapse>
 
             <div
                 v-if="hasStarted"
                 class="card-actions"
             >
+                <a
+                    class="btn btn-outline-primary"
+                    @click.prevent="credentialsVisible = !credentialsVisible"
+                >
+                    <icon icon="unfold_more" />
+                    {{ langShowHideCredentials }}
+                </a>
                 <a
                     class="api-call no-reload btn btn-outline-secondary"
                     :href="frontendRestartUri"
@@ -130,6 +142,8 @@ import Icon from '~/components/Common/Icon';
 import RunningBadge from "~/components/Common/Badges/RunningBadge.vue";
 import {computed} from "vue";
 import frontendPanelProps from "~/components/Stations/Profile/frontendPanelProps";
+import {useLocalStorage} from "@vueuse/core";
+import {useTranslate} from "~/vendor/gettext";
 
 const props = defineProps({
     ...frontendPanelProps,
@@ -137,6 +151,16 @@ const props = defineProps({
         type: Boolean,
         required: true
     }
+});
+
+const credentialsVisible = useLocalStorage('station_show_frontend_credentials', false);
+
+const {$gettext} = useTranslate();
+
+const langShowHideCredentials = computed(() => {
+    return (credentialsVisible.value)
+        ? $gettext('Hide Credentials')
+        : $gettext('Show Credentials')
 });
 
 const frontendName = computed(() => {

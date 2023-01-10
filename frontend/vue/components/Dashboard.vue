@@ -328,7 +328,7 @@ import Avatar from '~/components/Common/Avatar';
 import PlayButton from "~/components/Common/PlayButton";
 import AlbumArt from "~/components/Common/AlbumArt";
 import {useAxios} from "~/vendor/axios";
-import {useAsyncState, useIntervalFn, useStorage} from "@vueuse/core";
+import {useAsyncState, useIntervalFn, useLocalStorage} from "@vueuse/core";
 import {useTranslate} from "~/vendor/gettext";
 import {computed} from "vue";
 import useRefreshableAsyncState from "~/functions/useRefreshableAsyncState";
@@ -376,7 +376,7 @@ const props = defineProps({
     }
 });
 
-const chartsVisible = useStorage('dashboard_show_chart', true);
+const chartsVisible = useLocalStorage('dashboard_show_chart', true);
 
 const {$gettext} = useTranslate();
 

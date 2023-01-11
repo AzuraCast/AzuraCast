@@ -58,7 +58,7 @@
     "nesbot/carbon": "^2.36",
     "pagerfanta/doctrine-collections-adapter": "^3",
     "pagerfanta/doctrine-orm-adapter": "^3",
-    "php-di/php-di": "v7.x-dev",
+    "php-di/php-di": "7.0.0-rc1",
     "php-ffmpeg/php-ffmpeg": "^1.0",
     "phpmyadmin/motranslator": "^5.3",
     "phpseclib/phpseclib": "^3.0",

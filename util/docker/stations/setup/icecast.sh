@@ -26,3 +26,4 @@ cd /bd_build/stations/icecast_customizations
 git clone https://github.com/AzuraCast/icecast-kh-custom-files.git .
 
 cp -r web/* /usr/local/share/icecast/web
+cp -r admin/* /usr/local/share/icecast/admin

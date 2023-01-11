@@ -20,4 +20,9 @@ make install
 apt-get remove --purge -y build-essential libssl-dev libcurl4-openssl-dev
 
 # Copy AzuraCast Icecast customizations
-cp -r /bd_build/stations/icecast/web /usr/local/share/icecast/web
+mkdir -p /bd_build/stations/icecast_customizations
+cd /bd_build/stations/icecast_customizations
+
+git clone https://github.com/AzuraCast/icecast-kh-custom-files.git .
+
+cp -r web/* /usr/local/share/icecast/web

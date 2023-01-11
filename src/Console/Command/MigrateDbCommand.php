@@ -24,6 +24,11 @@ final class MigrateDbCommand extends AbstractDatabaseCommand
 
         $io->title(__('Database Migrations'));
 
+        $this->runCommand(
+            $output,
+            'migrations:sync-metadata-storage'
+        );
+
         if (
             0 === $this->runCommand(
                 new NullOutput(),

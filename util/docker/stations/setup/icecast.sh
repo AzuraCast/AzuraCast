@@ -6,13 +6,18 @@ set -x
 apt-get install -q -y --no-install-recommends \
    build-essential libxml2 libxslt1-dev libvorbis-dev libssl-dev libcurl4-openssl-dev openssl
 
-mkdir -p /bd_build/stations/icecast
-cd /bd_build/stations/icecast
+mkdir -p /bd_build/stations/icecast_build
+cd /bd_build/stations/icecast_build
 
-curl -fsSL -o icecast.tar.gz https://github.com/AzuraCast/icecast-kh-ac/archive/refs/tags/2.4.0-kh15-ac2.tar.gz
-tar -xzvf icecast.tar.gz --strip-components=1
+git clone https://github.com/karlheyes/icecast-kh.git .
+git checkout 4e3a1ae935c2d002aa54f218465125989e563dd5
+
 ./configure
 make
 make install
 
+# Remove build tools
 apt-get remove --purge -y build-essential libssl-dev libcurl4-openssl-dev
+
+# Copy AzuraCast Icecast customizations
+cp -r /bd_build/stations/icecast/web /usr/local/share/icecast/web

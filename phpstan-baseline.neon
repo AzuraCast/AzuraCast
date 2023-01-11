@@ -40,3 +40,38 @@ parameters:
 			count: 4
 			path: src/View.php
 
+		-
+			message: "#^Access to an undefined property XMLReader\\:\\:\\$depth\\.$#"
+			count: 1
+			path: src/Xml/Reader.php
+
+		-
+			message: "#^Access to an undefined property XMLReader\\:\\:\\$hasAttributes\\.$#"
+			count: 1
+			path: src/Xml/Reader.php
+
+		-
+			message: "#^Access to an undefined property XMLReader\\:\\:\\$isEmptyElement\\.$#"
+			count: 1
+			path: src/Xml/Reader.php
+
+		-
+			message: "#^Access to an undefined property XMLReader\\:\\:\\$localName\\.$#"
+			count: 1
+			path: src/Xml/Reader.php
+
+		-
+			message: "#^Access to an undefined property XMLReader\\:\\:\\$name\\.$#"
+			count: 1
+			path: src/Xml/Reader.php
+
+		-
+			message: "#^Access to an undefined property XMLReader\\:\\:\\$nodeType\\.$#"
+			count: 1
+			path: src/Xml/Reader.php
+
+		-
+			message: "#^Access to an undefined property XMLReader\\:\\:\\$value\\.$#"
+			count: 2
+			path: src/Xml/Reader.php
+

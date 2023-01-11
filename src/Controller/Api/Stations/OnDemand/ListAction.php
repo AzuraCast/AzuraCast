@@ -81,8 +81,8 @@ final class ListAction
         }
 
         if (!empty($queryParams['sort'])) {
-            $sortField = $queryParams['sort'];
-            $sortDirection = $queryParams['sortOrder'] ?? Criteria::ASC;
+            $sortField = (string)$queryParams['sort'];
+            $sortDirection = (string)($queryParams['sortOrder'] ?? Criteria::ASC);
 
             $criteria = new Criteria();
             $criteria->orderBy([$sortField => $sortDirection]);

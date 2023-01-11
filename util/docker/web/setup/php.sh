@@ -2,7 +2,7 @@
 set -e
 set -x
 
-PHP_VERSION=8.1
+PHP_VERSION=8.2
 
 add-apt-repository -y ppa:ondrej/php
 apt-get update

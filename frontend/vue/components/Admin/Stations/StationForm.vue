@@ -130,14 +130,6 @@
     </b-overlay>
 </template>
 
-<script>
-import {defineComponent} from "vue";
-
-export default defineComponent({
-    inheritAttrs: false
-});
-</script>
-
 <script setup>
 import AdminStationsProfileForm from "./Form/ProfileForm.vue";
 import AdminStationsFrontendForm from "./Form/FrontendForm.vue";
@@ -155,6 +147,7 @@ import mergeExisting from "~/functions/mergeExisting";
 import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
 import {isArray, merge, mergeWith} from "lodash";
 import stationFormProps from "~/components/Admin/Stations/stationFormProps";
+import {useResettableRef} from "~/functions/useResettableRef";
 
 const props = defineProps({
     ...stationFormProps,
@@ -188,7 +181,6 @@ const buildForm = () => {
         enable_public_page: {},
         enable_on_demand: {},
         enable_hls: {},
-        default_album_art_url: {},
         enable_on_demand_download: {},
         frontend_type: {required},
         frontend_config: {
@@ -218,7 +210,7 @@ const buildForm = () => {
         $validationGroups: {
             profileTab: [
                 'name', 'description', 'genre', 'url', 'timezone', 'enable_public_page',
-                'enable_on_demand', 'enable_on_demand_download', 'default_album_art_url'
+                'enable_on_demand', 'enable_on_demand_download'
             ],
             frontendTab: [
                 'frontend_type', 'frontend_config'
@@ -250,7 +242,6 @@ const buildForm = () => {
         enable_public_page: true,
         enable_on_demand: false,
         enable_hls: false,
-        default_album_art_url: '',
         enable_on_demand_download: true,
         frontend_type: FRONTEND_ICECAST,
         frontend_config: {
@@ -426,7 +417,7 @@ const blankStation = {
     }
 };
 
-const station = ref({...blankStation});
+const {record: station, reset: resetStation} = useResettableRef(blankStation);
 
 const tabContentClass = computed(() => {
     return (props.isModal)
@@ -443,9 +434,10 @@ const getTabClass = (validationGroup) => {
 
 const clear = () => {
     resetForm();
+    resetStation();
+
     loading.value = false;
     error.value = null;
-    station.value = {...blankStation};
 };
 
 const populateForm = (data) => {

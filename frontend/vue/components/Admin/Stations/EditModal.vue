@@ -9,7 +9,7 @@
         @hidden="clearContents"
     >
         <admin-stations-form
-            v-bind="$props"
+            v-bind="pickProps(props, stationFormProps)"
             ref="$form"
             is-modal
             :create-url="createUrl"
@@ -51,6 +51,7 @@ import {computed, ref} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import {BModal} from "bootstrap-vue";
 import stationFormProps from "~/components/Admin/Stations/stationFormProps";
+import {pickProps} from "~/functions/pickProps";
 
 const props = defineProps({
     ...stationFormProps,

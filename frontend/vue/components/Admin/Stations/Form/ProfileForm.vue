@@ -71,21 +71,6 @@
             </b-wrapped-form-group>
 
             <b-wrapped-form-group
-                id="edit_form_default_album_art_url"
-                class="col-md-6"
-                :field="form.default_album_art_url"
-            >
-                <template #label>
-                    {{ $gettext('Default Album Art URL') }}
-                </template>
-                <template #description>
-                    {{
-                        $gettext('If a song has no album art, this URL will be listed instead. Leave blank to use the standard placeholder art.')
-                    }}
-                </template>
-            </b-wrapped-form-group>
-
-            <b-wrapped-form-group
                 v-if="showAdvanced"
                 id="edit_form_short_name"
                 class="col-md-6"

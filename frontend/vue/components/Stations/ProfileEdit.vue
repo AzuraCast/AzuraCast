@@ -10,7 +10,7 @@
         </div>
 
         <admin-stations-form
-            v-bind="$props"
+            v-bind="pickProps(props, stationFormProps)"
             ref="$form"
             :is-edit-mode="true"
             :edit-url="editUrl"
@@ -23,6 +23,7 @@
 import AdminStationsForm from "~/components/Admin/Stations/StationForm";
 import {onMounted, ref} from "vue";
 import stationFormProps from "~/components/Admin/Stations/stationFormProps";
+import {pickProps} from "~/functions/pickProps";
 
 const props = defineProps({
     ...stationFormProps,

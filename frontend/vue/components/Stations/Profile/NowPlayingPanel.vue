@@ -85,6 +85,7 @@
                                             : {{ np.now_playing.playlist }}</small>
                                     </div>
                                     <div
+                                        v-if="currentTrackElapsedDisplay"
                                         class="nowplaying-progress"
                                     >
                                         <small>

@@ -189,8 +189,6 @@ final class Configuration
                 . '/bin/console azuracast:sync:nowplaying ' . $station->getIdRequired(),
             'directory' => $this->environment->getBaseDirectory(),
             'autorestart' => 'true',
-            'stopasgroup' => 'true',
-            'killasgroup' => 'true',
             'stdout_logfile' => '/proc/1/fd/1',
             'stdout_logfile_maxbytes' => 0,
             'stderr_logfile' => '/proc/1/fd/2',

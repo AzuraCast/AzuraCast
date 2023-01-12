@@ -4,37 +4,42 @@ declare(strict_types=1);
 
 namespace App\Console\Command\Sync;
 
-use App\Entity\Repository\SettingsRepository;
-use App\Environment;
-use App\Lock\LockFactory;
-use Doctrine\ORM\EntityManagerInterface;
-use Psr\Log\LoggerInterface;
+use App\Console\Command\CommandAbstract;
+use App\Doctrine\ReloadableEntityManagerInterface;
+use App\Entity\Repository\StationRepository;
+use App\Entity\Station;
+use App\Sync\NowPlaying\Task\BuildQueueTask;
+use App\Sync\NowPlaying\Task\NowPlayingTask;
+use Monolog\Logger;
+use Monolog\LogRecord;
 use Symfony\Component\Console\Attribute\AsCommand;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
-
-use function random_int;
+use Throwable;
 
 #[AsCommand(
     name: 'azuracast:sync:nowplaying',
-    description: 'Task to run the Now Playing worker task.'
+    description: 'Task to run the Now Playing worker task for a specific station.',
 )]
-final class NowPlayingCommand extends AbstractSyncCommand
+final class NowPlayingCommand extends CommandAbstract
 {
     public function __construct(
-        LoggerInterface $logger,
-        LockFactory $lockFactory,
-        Environment $environment,
-        private readonly EntityManagerInterface $em,
-        private readonly SettingsRepository $settingsRepo,
+        private readonly ReloadableEntityManagerInterface $em,
+        private readonly StationRepository $stationRepo,
+        private readonly BuildQueueTask $buildQueueTask,
+        private readonly NowPlayingTask $nowPlayingTask,
+        private readonly Logger $logger,
     ) {
-        parent::__construct($logger, $lockFactory, $environment);
+        parent::__construct();
     }
 
     protected function configure(): void
     {
+        $this->addArgument('station', InputArgument::REQUIRED);
+
         $this->addOption(
             'timeout',
             't',
@@ -47,69 +52,64 @@ final class NowPlayingCommand extends AbstractSyncCommand
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
+        $stationName = $input->getArgument('station');
 
-        $settings = $this->settingsRepo->readSettings();
-        if ($settings->getSyncDisabled()) {
-            $this->logger->error('Automated synchronization is temporarily disabled.');
+        $station = $this->stationRepo->findByIdentifier($stationName);
+        if (!($station instanceof Station)) {
+            $io->error('Station not found.');
             return 1;
         }
 
         $timeout = (int)$input->getOption('timeout');
-        $this->loop($io, $timeout);
+
+        $this->logger->pushProcessor(
+            function (LogRecord $record) use ($station) {
+                $record->extra['station'] = [
+                    'id' => $station->getId(),
+                    'name' => $station->getName(),
+                ];
+                return $record;
+            }
+        );
+
+        $this->logger->info('Starting Now Playing sync task.');
+
+        $this->loop($station, $timeout);
+
+        $this->logger->info('Now Playing sync task complete.');
+        $this->logger->popProcessor();
 
         return 0;
     }
 
-    private function loop(SymfonyStyle $io, int $timeout): void
+    private function loop(Station $station, int $timeout): void
     {
         $threshold = time() + $timeout;
 
-        while (time() < $threshold || !empty($this->processes)) {
-            // Check existing processes.
-            $this->checkRunningProcesses();
+        while (time() < $threshold) {
+            $station = $this->em->refetch($station);
 
-            // Ensure a process is running for every active station.
-            if (time() < $threshold - 5) {
-                $activeStations = $this->em->createQuery(
-                    <<<'DQL'
-                    SELECT s.id, s.short_name, s.nowplaying_timestamp
-                    FROM App\Entity\Station s
-                    WHERE s.is_enabled = 1 AND s.has_started = 1
-                    DQL
-                )->getArrayResult();
+            try {
+                $this->buildQueueTask->run($station);
+            } catch (Throwable $e) {
+                $this->logger->error(
+                    'Queue builder error: ' . $e->getMessage(),
+                    ['exception' => $e]
+                );
+            }
 
-                foreach ($activeStations as $activeStation) {
-                    $shortName = $activeStation['short_name'];
-
-                    if (!isset($this->processes[$shortName])) {
-                        $npTimestamp = (int)$activeStation['nowplaying_timestamp'];
-                        if (time() > $npTimestamp + random_int(5, 15)) {
-                            $this->start($io, $shortName);
-
-                            usleep(250000);
-                        }
-                    }
-                }
+            try {
+                $this->nowPlayingTask->run($station);
+            } catch (Throwable $e) {
+                $this->logger->error(
+                    'Now Playing error: ' . $e->getMessage(),
+                    ['exception' => $e]
+                );
             }
 
             $this->em->clear();
             gc_collect_cycles();
-            usleep(1000000);
+            usleep(5000000);
         }
-    }
-
-    private function start(
-        SymfonyStyle $io,
-        string $shortName
-    ): void {
-        $this->lockAndRunConsoleCommand(
-            $io,
-            $shortName,
-            'nowplaying',
-            [
-                'azuracast:sync:nowplaying:station',
-                $shortName,
-            ]
-        );
     }
 }

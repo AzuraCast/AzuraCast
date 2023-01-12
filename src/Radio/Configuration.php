@@ -127,7 +127,13 @@ final class Configuration
         }
 
         // Write group section of config
-        $programNames = [];
+        $stationGroup = self::getSupervisorGroupName($station);
+
+        $nowPlayingProgramName = self::getSupervisorProgramName($station, 'nowplaying');
+
+        $programNames = [
+            $nowPlayingProgramName,
+        ];
         $programs = [];
 
         if (null !== $backend && $backend->hasCommand($station)) {
@@ -144,12 +150,11 @@ final class Configuration
             $programNames[] = $programName;
         }
 
-        $stationGroup = self::getSupervisorGroupName($station);
-
         $supervisorConfig[] = '[group:' . $stationGroup . ']';
         $supervisorConfig[] = 'programs=' . implode(',', $programNames);
         $supervisorConfig[] = '';
 
+        // Write backend/frontend programs
         foreach ($programs as $programName => $adapter) {
             $configLines = [
                 'user' => 'azuracast',
@@ -173,6 +178,30 @@ final class Configuration
             }
             $supervisorConfig[] = '';
         }
+
+        // Write Now Playing process
+        $configLines = [
+            'user' => 'azuracast',
+            'priority' => 975,
+            'startsecs' => 10,
+            'startretries' => 5,
+            'command' => 'php ' . $this->environment->getBaseDirectory()
+                . '/bin/console azuracast:sync:nowplaying ' . $station->getIdRequired(),
+            'directory' => $this->environment->getBaseDirectory(),
+            'autorestart' => 'true',
+            'stopasgroup' => 'true',
+            'killasgroup' => 'true',
+            'stdout_logfile' => '/proc/1/fd/1',
+            'stdout_logfile_maxbytes' => 0,
+            'stderr_logfile' => '/proc/1/fd/2',
+            'stderr_logfile_maxbytes' => 0,
+        ];
+
+        $supervisorConfig[] = '[program:' . $nowPlayingProgramName . ']';
+        foreach ($configLines as $configKey => $configValue) {
+            $supervisorConfig[] = $configKey . '=' . $configValue;
+        }
+        $supervisorConfig[] = '';
 
         // Write config contents
         $supervisor_config_data = implode("\n", $supervisorConfig);

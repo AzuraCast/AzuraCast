@@ -2,7 +2,7 @@
 set -e
 set -x
 
-apt-get install -y --no-install-recommends nginx nginx-common openssl
+# Package installation handled in 00_packages.sh
 
 # Install nginx and configuration
 cp /bd_build/web/nginx/proxy_params.conf /etc/nginx/proxy_params

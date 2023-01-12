@@ -2,10 +2,7 @@
 set -e
 set -x
 
-add-apt-repository -y ppa:sftpgo/sftpgo
-apt-get update
-
-apt-get install -y --no-install-recommends sftpgo
+# Package installed in 00_packages.sh
 
 mkdir -p /var/azuracast/sftpgo/persist /var/azuracast/sftpgo/backups
 

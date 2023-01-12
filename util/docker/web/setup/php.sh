@@ -4,8 +4,7 @@ set -x
 
 PHP_VERSION=8.2
 
-add-apt-repository -y ppa:ondrej/php
-apt-get update
+# PPA set up in 00_packages.sh
 
 apt-get install -y --no-install-recommends php${PHP_VERSION}-fpm php${PHP_VERSION}-cli php${PHP_VERSION}-gd \
   php${PHP_VERSION}-curl php${PHP_VERSION}-xml php${PHP_VERSION}-zip php${PHP_VERSION}-bcmath \

@@ -9,7 +9,6 @@ use App\Entity;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\OpenApi;
-use App\Radio\AutoDJ\Queue;
 use InvalidArgumentException;
 use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
@@ -103,7 +102,7 @@ final class QueueController extends AbstractStationApiCrudController
         ValidatorInterface $validator,
         private readonly Entity\ApiGenerator\StationQueueApiGenerator $queueApiGenerator,
         private readonly Entity\Repository\StationQueueRepository $queueRepo,
-        private readonly Queue $queue,
+        // TODO Temp private readonly Queue $queue,
     ) {
         parent::__construct($em, $serializer, $validator);
     }
@@ -147,7 +146,9 @@ final class QueueController extends AbstractStationApiCrudController
         $apiResponse->sent_to_autodj = $record->getSentToAutodj();
         $apiResponse->is_played = $record->getIsPlayed();
         $apiResponse->autodj_custom_uri = $record->getAutodjCustomUri();
-        $apiResponse->log = $this->queue->getQueueRowLog($record);
+
+        // TODO Temp workaround until Monolog serializer issue is fixed.
+        $apiResponse->log = null; // $this->queue->getQueueRowLog($record);
 
         $apiResponse->links = [
             'self' => $router->fromHere(

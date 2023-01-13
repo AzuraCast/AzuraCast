@@ -13,7 +13,7 @@ apt-get update
 		echo "mariadb-server" mysql-server/root_password_again password 'unused'; \
 } | debconf-set-selections
 
-apt-get install -q -y --no-install-recommends mariadb-server mariadb-backup
+apt-get install -q -y --no-install-recommends mariadb-server mariadb-backup pwgen
 
 rm -rf /var/lib/mysql
 mkdir -p /var/lib/mysql /var/run/mysqld

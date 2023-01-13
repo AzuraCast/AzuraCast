@@ -17,5 +17,13 @@ export default {
     backendDisconnectStreamerUri: {
         type: String,
         required: true
+    },
+    userCanManageReports: {
+        type: Boolean,
+        required: true,
+    },
+    listenerReportUri: {
+        type: String,
+        required: true
     }
 }

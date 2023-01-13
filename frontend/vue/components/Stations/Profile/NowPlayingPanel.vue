@@ -27,6 +27,14 @@
                         {{ $gettext('Unique') }}
                     </small>
                 </h6>
+                <a
+                    v-if="userCanManageReports"
+                    class="flex-shrink btn btn-outline-default ml-2 px-1 py-2"
+                    :href="listenerReportUri"
+                    :title="$gettext('Listener Report')"
+                >
+                    <icon icon="assignment" />
+                </a>
             </div>
         </div>
         <b-overlay

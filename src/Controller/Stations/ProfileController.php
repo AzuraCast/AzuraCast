@@ -108,6 +108,7 @@ final class ProfileController
                     'api:stations:backend',
                     ['do' => 'disconnect']
                 ),
+                'listenerReportUri' => $router->fromHere('stations:reports:listeners'),
 
                 // Requests
                 'requestsViewUri' => $router->fromHere('stations:reports:requests'),

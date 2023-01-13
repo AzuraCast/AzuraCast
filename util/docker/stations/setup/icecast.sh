@@ -10,7 +10,7 @@ mkdir -p /bd_build/stations/icecast_build
 cd /bd_build/stations/icecast_build
 
 git clone https://github.com/karlheyes/icecast-kh.git .
-git checkout 4e3a1ae935c2d002aa54f218465125989e563dd5
+git checkout 712ff595a2fa0550f543d8c2597766cfb5ce7ec2
 
 ./configure
 make
@@ -26,4 +26,3 @@ cd /bd_build/stations/icecast_customizations
 git clone https://github.com/AzuraCast/icecast-kh-custom-files.git .
 
 cp -r web/* /usr/local/share/icecast/web
-cp -r admin/* /usr/local/share/icecast/admin

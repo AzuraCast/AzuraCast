@@ -130,10 +130,6 @@ jobs:
           cp docker-compose.sample.yml docker-compose.yml
           cp docker-compose.testing.yml docker-compose.override.yml
 
-      - name: Build Functional test image.
-        run: |
-          docker-compose build web
-
       - name: Run functional test suite.
         run: |
           chmod 777 tests/_output/

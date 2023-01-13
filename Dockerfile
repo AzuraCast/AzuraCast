@@ -13,11 +13,19 @@ RUN go install github.com/aptible/supercronic@v0.2.1
 RUN go install github.com/centrifugal/centrifugo/v4@v4.1.2
 
 #
+# MariaDB dependencies build step
+#
+FROM mariadb:10.9-jammy AS mariadb
+
+#
 # Final build image
 #
-FROM mariadb:10.9-jammy
+FROM ubuntu:jammy
 
 ENV TZ="UTC"
+
+COPY --from=mariadb /usr/local/bin/healthcheck.sh /usr/local/bin/db_healthcheck.sh
+COPY --from=mariadb /usr/local/bin/docker-entrypoint.sh /usr/local/bin/db_entrypoint.sh
 
 # Add Dockerize
 COPY --from=go-dependencies /go/bin/dockerize /usr/local/bin

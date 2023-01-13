@@ -15,4 +15,5 @@ apt-get install -y --no-install-recommends \
   nginx nginx-common openssl \
   sftpgo \
   tmpreaper \
-  zstd
+  zstd \
+  netbase

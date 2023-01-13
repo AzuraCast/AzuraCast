@@ -20,6 +20,4 @@ install_without_postinst() {
     rm -rf /tmp/install_$PACKAGE
 }
 
-apt-get install -y --no-install-recommends netbase
-
 install_without_postinst beanstalkd

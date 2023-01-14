@@ -14,6 +14,8 @@ release channel, you can take advantage of these new features and fixes.
 - **Per-Station Branding**: You can now provide custom album art, public page backgrounds, CSS and JavaScript on a
   per-station basis, using a new Station Branding page that is very similar to the system-wide Branding page.
 
+- The newer version of Google Analytics (V4) is supported as a Web Hook option now.
+
 ## Code Quality/Technical Changes
 
 - Redis was removed in version 0.17.6 in order to yield fewer running tasks on servers by default; we have noticed that,

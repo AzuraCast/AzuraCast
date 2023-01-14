@@ -35,11 +35,7 @@ final class StationPlaylistFolderRepository extends AbstractStationBasedReposito
             ->execute();
 
         foreach ($playlists as $playlistId => $playlistRecord) {
-            /** @var Entity\StationPlaylist $playlistRecord */
-            if (
-                Entity\Enums\PlaylistOrders::Sequential !== $playlistRecord->getOrderEnum()
-                && Entity\Enums\PlaylistSources::Songs === $playlistRecord->getSourceEnum()
-            ) {
+            if (Entity\Enums\PlaylistSources::Songs === $playlistRecord->getSourceEnum()) {
                 /** @var Entity\StationPlaylist $playlist */
                 $playlist = $this->em->getReference(Entity\StationPlaylist::class, $playlistId);
 

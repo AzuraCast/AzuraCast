@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4c004f346864c42ace26a2bc076ca89c",
+    "content-hash": "99fa37d49611c4023e50cbe3c4ce9dee",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -330,6 +330,53 @@
                 "source": "https://github.com/beberlei/DoctrineExtensions/tree/v1.3.0"
             },
             "time": "2020-11-29T07:37:23+00:00"
+        },
+        {
+            "name": "br33f/php-ga4-mp",
+            "version": "v0.1.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/br33f/php-GA4-Measurement-Protocol.git",
+                "reference": "e9b95e5b0cf4daf05c3739d989867f1103835acb"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/br33f/php-GA4-Measurement-Protocol/zipball/e9b95e5b0cf4daf05c3739d989867f1103835acb",
+                "reference": "e9b95e5b0cf4daf05c3739d989867f1103835acb",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "guzzlehttp/guzzle": "^6.5.5 || ^7.0.0",
+                "php": ">=7.1"
+            },
+            "require-dev": {
+                "fakerphp/faker": "^1.14",
+                "php-coveralls/php-coveralls": "^2.4",
+                "phpunit/phpunit": "^9.5"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Br33f\\Ga4\\MeasurementProtocol\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Damian Zamojski",
+                    "email": "damian.zamojski1@gmail.com"
+                }
+            ],
+            "description": "PHP GoogleAnalytics4 Measurement Protocol Library",
+            "support": {
+                "issues": "https://github.com/br33f/php-GA4-Measurement-Protocol/issues",
+                "source": "https://github.com/br33f/php-GA4-Measurement-Protocol/tree/v0.1.2"
+            },
+            "time": "2022-08-25T12:01:16+00:00"
         },
         {
             "name": "brick/math",

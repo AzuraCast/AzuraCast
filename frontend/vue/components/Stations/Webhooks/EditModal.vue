@@ -51,7 +51,8 @@ import Tunein from "./Form/Tunein";
 import Discord from "./Form/Discord";
 import Telegram from "./Form/Telegram";
 import Twitter from "./Form/Twitter";
-import GoogleAnalytics from "./Form/GoogleAnalytics";
+import GoogleAnalyticsV3 from "./Form/GoogleAnalyticsV3";
+import GoogleAnalyticsV4 from "./Form/GoogleAnalyticsV4";
 import MatomoAnalytics from "./Form/MatomoAnalytics";
 import Mastodon from "./Form/Mastodon";
 import {baseEditModalProps, useBaseEditModal} from "~/functions/useBaseEditModal";
@@ -294,12 +295,23 @@ const webhookConfig = {
         }
     },
     'google_analytics': {
-        component: GoogleAnalytics,
+        component: GoogleAnalyticsV3,
         validations: {
             tracking_id: {required}
         },
         defaultConfig: {
             tracking_id: ''
+        }
+    },
+    'google_analytics_v4': {
+        component: GoogleAnalyticsV4,
+        validations: {
+            api_secret: {required},
+            measurement_id: {required}
+        },
+        defaultConfig: {
+            api_secret: '',
+            measurement_id: ''
         }
     },
     'matomo_analytics': {

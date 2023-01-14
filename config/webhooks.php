@@ -70,9 +70,15 @@ return [
             'description' => __('Automatically publish to a Mastodon instance.'),
             'triggers' => $allTriggersExceptListeners,
         ],
-        Connector\GoogleAnalytics::NAME => [
-            'class' => Connector\GoogleAnalytics::class,
-            'name' => __('Google Analytics Integration'),
+        Connector\GoogleAnalyticsV3::NAME => [
+            'class' => Connector\GoogleAnalyticsV3::class,
+            'name' => __('Google Analytics V3 Integration'),
+            'description' => __('Send stream listener details to Google Analytics.'),
+            'triggers' => [],
+        ],
+        Connector\GoogleAnalyticsV4::NAME => [
+            'class' => Connector\GoogleAnalyticsV4::class,
+            'name' => __('Google Analytics V4 Integration'),
             'description' => __('Send stream listener details to Google Analytics.'),
             'triggers' => [],
         ],

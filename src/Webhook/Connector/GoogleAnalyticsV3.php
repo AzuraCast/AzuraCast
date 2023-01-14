@@ -5,26 +5,14 @@ declare(strict_types=1);
 namespace App\Webhook\Connector;
 
 use App\Entity\Api\NowPlaying\NowPlaying;
-use App\Entity\Repository\ListenerRepository;
 use App\Entity\Station;
 use App\Entity\StationWebhook;
-use GuzzleHttp\Client;
-use GuzzleHttp\Psr7\Uri;
-use Monolog\Logger;
 use TheIconic\Tracking\GoogleAnalytics\Analytics;
 use TheIconic\Tracking\GoogleAnalytics\Network\HttpClient;
 
-final class GoogleAnalytics extends AbstractConnector
+final class GoogleAnalyticsV3 extends AbstractGoogleAnalyticsConnector
 {
     public const NAME = 'google_analytics';
-
-    public function __construct(
-        Logger $logger,
-        Client $httpClient,
-        private readonly ListenerRepository $listenerRepo
-    ) {
-        parent::__construct($logger, $httpClient);
-    }
 
     /**
      * @inheritDoc
@@ -41,21 +29,7 @@ final class GoogleAnalytics extends AbstractConnector
         }
 
         // Get listen URLs for each mount point.
-        $radioPort = $station->getFrontendConfig()->getPort();
-
-        $mountUrls = [];
-        foreach ($station->getMounts() as $mount) {
-            $mountUrl = (new Uri())
-                ->withPath('/radio/' . $radioPort . $mount->getName());
-            $mountUrls[$mount->getId()] = (string)$mountUrl;
-        }
-
-        $remoteUrls = [];
-        foreach ($station->getRemotes() as $remote) {
-            $remoteUrl = (new Uri())
-                ->withPath('/radio/remote' . $remote->getMount());
-            $remoteUrls[$remote->getId()] = (string)$remoteUrl;
-        }
+        $listenUrls = $this->buildListenUrls($station);
 
         // Build analytics
         $httpClient = new HttpClient();
@@ -72,13 +46,7 @@ final class GoogleAnalytics extends AbstractConnector
 
         $i = 0;
         foreach ($liveListeners as $listener) {
-            $listenerUrl = null;
-            if (!empty($listener['mount_id'])) {
-                $listenerUrl = $mountUrls[$listener['mount_id']] ?? null;
-            } elseif (!empty($listener['remote_id'])) {
-                $listenerUrl = $remoteUrls[$listener['remote_id']] ?? null;
-            }
-
+            $listenerUrl = $this->getListenUrl($listener, $listenUrls);
             if (null === $listenerUrl) {
                 continue;
             }

@@ -29,6 +29,7 @@
     "azuracast/nowplaying": "dev-main",
     "bacon/bacon-qr-code": "^2.0",
     "beberlei/doctrineextensions": "^1.2",
+    "br33f/php-ga4-mp": "^0.1.2",
     "brick/math": "^0.10",
     "composer/ca-bundle": "^1.2",
     "doctrine/annotations": "^1.6",

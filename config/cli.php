@@ -22,7 +22,6 @@ return function (App\Event\BuildConsoleCommands $event) {
         'azuracast:account:reset-password' => Command\Users\ResetPasswordCommand::class,
         'azuracast:account:set-administrator' => Command\Users\SetAdministratorCommand::class,
         'azuracast:cache:clear' => Command\ClearCacheCommand::class,
-        'azuracast:setup:initialize' => Command\InitializeCommand::class,
         'azuracast:config:migrate' => Command\MigrateConfigCommand::class,
         'azuracast:setup:migrate' => Command\MigrateDbCommand::class,
         'azuracast:setup:fixtures' => Command\SetupFixturesCommand::class,

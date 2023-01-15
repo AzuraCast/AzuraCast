@@ -11,7 +11,7 @@ dockerize -template "/etc/php/${PHP_VERSION}/fpm/05-azuracast.ini.tmpl:/etc/php/
 gosu azuracast php /var/azuracast/www/bin/uptime_wait || exit 1
 
 # Initialize before running FPM
-gosu azuracast azuracast_cli azuracast:setup:initialize || exit 1
+gosu azuracast azuracast_cli azuracast:setup --init || exit 1
 
 # Run initial Acme check
 gosu azuracast azuracast_cli azuracast:acme:get-certificate || true

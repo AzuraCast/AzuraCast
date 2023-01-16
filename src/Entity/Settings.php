@@ -372,15 +372,6 @@ class Settings implements Stringable
         return $this->homepage_redirect_url;
     }
 
-    public function getHomepageRedirectUrlAsUri(): ?UriInterface
-    {
-        return Urls::tryParseUserUrl(
-            $this->homepage_redirect_url,
-            'Homepage Redirect URL',
-            false
-        );
-    }
-
     public function setHomepageRedirectUrl(?string $homepageRedirectUrl): void
     {
         $this->homepage_redirect_url = $this->truncateNullableString($homepageRedirectUrl);

@@ -31,9 +31,9 @@ final class IndexAction
 
         if (!($user instanceof Entity\User)) {
             // Redirect to a custom homepage URL if specified in settings.
-            $homepageRedirect = $settings->getHomepageRedirectUrlAsUri();
+            $homepageRedirect = $settings->getHomepageRedirectUrl();
             if (null !== $homepageRedirect) {
-                return $response->withRedirect((string)$homepageRedirect, 302);
+                return $response->withRedirect($homepageRedirect, 302);
             }
 
             return $response->withRedirect($request->getRouter()->named('account:login'));

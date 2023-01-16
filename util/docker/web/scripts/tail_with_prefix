@@ -1,6 +1,0 @@
-#!/usr/bin/env bash
-
-PREFIX=$1
-FILE=$2
-
-exec tail -q -n +0 --retry -F "$FILE" | awk -v prefix="[$PREFIX]" '{print prefix,$0}'

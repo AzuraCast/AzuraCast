@@ -92,6 +92,8 @@ return [
                 'driverOptions' => [
                     // PDO::MYSQL_ATTR_INIT_COMMAND = 1002;
                     1002 => 'SET NAMES utf8mb4 COLLATE utf8mb4_general_ci',
+                    // PDO::MYSQL_ATTR_LOCAL_INFILE = 1001
+                    1001 => true,
                 ],
                 'platform' => new Doctrine\DBAL\Platforms\MariaDb1027Platform(),
             ]

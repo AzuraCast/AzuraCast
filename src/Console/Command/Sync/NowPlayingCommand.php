@@ -8,6 +8,7 @@ use App\Console\Command\CommandAbstract;
 use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Entity\Repository\StationRepository;
 use App\Entity\Station;
+use App\Environment;
 use App\Sync\NowPlaying\Task\BuildQueueTask;
 use App\Sync\NowPlaying\Task\NowPlayingTask;
 use Monolog\Logger;
@@ -32,6 +33,7 @@ final class NowPlayingCommand extends CommandAbstract
         private readonly BuildQueueTask $buildQueueTask,
         private readonly NowPlayingTask $nowPlayingTask,
         private readonly Logger $logger,
+        private readonly Environment $environment
     ) {
         parent::__construct();
     }
@@ -74,7 +76,7 @@ final class NowPlayingCommand extends CommandAbstract
 
         $this->logger->info('Starting Now Playing sync task.');
 
-        $this->loop($station, $timeout);
+        $this->loop($station, $timeout, $this->environment->getNowPlayingDelayTime());
 
         $this->logger->info('Now Playing sync task complete.');
         $this->logger->popProcessor();
@@ -82,7 +84,7 @@ final class NowPlayingCommand extends CommandAbstract
         return 0;
     }
 
-    private function loop(Station $station, int $timeout): void
+    private function loop(Station $station, int $timeout, int $delay): void
     {
         $threshold = time() + $timeout;
 
@@ -109,7 +111,7 @@ final class NowPlayingCommand extends CommandAbstract
 
             $this->em->clear();
             gc_collect_cycles();
-            usleep(5000000);
+            sleep($delay);
         }
     }
 }

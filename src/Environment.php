@@ -43,6 +43,7 @@ final class Environment
 
     public const SYNC_SHORT_EXECUTION_TIME = 'SYNC_SHORT_EXECUTION_TIME';
     public const SYNC_LONG_EXECUTION_TIME = 'SYNC_LONG_EXECUTION_TIME';
+    public const NOW_PLAYING_DELAY_TIME = 'NOW_PLAYING_DELAY_TIME';
 
     public const LOG_LEVEL = 'LOG_LEVEL';
     public const SHOW_DETAILED_ERRORS = 'SHOW_DETAILED_ERRORS';
@@ -82,6 +83,7 @@ final class Environment
 
         self::SYNC_SHORT_EXECUTION_TIME => 600,
         self::SYNC_LONG_EXECUTION_TIME => 1800,
+        self::NOW_PLAYING_DELAY_TIME => 5,
 
         self::PROFILING_EXTENSION_ENABLED => 0,
         self::PROFILING_EXTENSION_ALWAYS_ON => 0,
@@ -247,12 +249,23 @@ final class Environment
 
     public function getSyncShortExecutionTime(): int
     {
-        return (int)($this->data[self::SYNC_SHORT_EXECUTION_TIME] ?? 600);
+        return (int)(
+            $this->data[self::SYNC_SHORT_EXECUTION_TIME] ?? $this->defaults[self::SYNC_SHORT_EXECUTION_TIME]
+        );
     }
 
     public function getSyncLongExecutionTime(): int
     {
-        return (int)($this->data[self::SYNC_LONG_EXECUTION_TIME] ?? 1800);
+        return (int)(
+            $this->data[self::SYNC_LONG_EXECUTION_TIME] ?? $this->defaults[self::SYNC_LONG_EXECUTION_TIME]
+        );
+    }
+
+    public function getNowPlayingDelayTime(): int
+    {
+        return (int)(
+            $this->data[self::NOW_PLAYING_DELAY_TIME] ?? $this->defaults[self::NOW_PLAYING_DELAY_TIME]
+        );
     }
 
     /**

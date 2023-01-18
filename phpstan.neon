@@ -28,4 +28,4 @@ parameters:
         - App\View
 
     parallel:
-        maximumNumberOfProcesses: 1
+        maximumNumberOfProcesses: 4

@@ -82,6 +82,7 @@ import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
 import useHasDatatable from "~/functions/useHasDatatable";
 import {useNotify} from "~/vendor/bootstrapVue";
 import {useAxios} from "~/vendor/axios";
+import {useSweetAlert} from "~/vendor/sweetalert";
 
 const props = defineProps({
     listUrl: {
@@ -131,7 +132,8 @@ const {doDelete} = useConfirmAndDelete(
     relist
 );
 
-const {wrapWithLoading, confirmDelete, notifySuccess} = useNotify();
+const {confirmDelete} = useSweetAlert();
+const {wrapWithLoading, notifySuccess} = useNotify();
 const {axios} = useAxios();
 
 const doClear = () => {

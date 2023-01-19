@@ -56,16 +56,10 @@ final class QueueBuilder implements EventSubscriberInterface
         $expectedPlayTime = $event->getExpectedPlayTime();
 
         $activePlaylistsByType = [];
-        $oncePerXSongHistoryCount = 15;
-
         foreach ($station->getPlaylists() as $playlist) {
             /** @var Entity\StationPlaylist $playlist */
             if ($playlist->isPlayable($event->isInterrupting())) {
                 $type = $playlist->getType();
-
-                if (Entity\Enums\PlaylistTypes::OncePerXSongs === $playlist->getTypeEnum()) {
-                    $oncePerXSongHistoryCount = max($oncePerXSongHistoryCount, $playlist->getPlayPerSongs());
-                }
 
                 $subType = ($playlist->getScheduleItems()->count() > 0) ? 'scheduled' : 'unscheduled';
                 $activePlaylistsByType[$type . '_' . $subType][$playlist->getId()] = $playlist;
@@ -77,11 +71,6 @@ final class QueueBuilder implements EventSubscriberInterface
             return;
         }
 
-        $recentPlaylistHistory = $this->queueRepo->getRecentPlaylists(
-            $station,
-            $oncePerXSongHistoryCount
-        );
-
         $recentSongHistoryForDuplicatePrevention = $this->queueRepo->getRecentlyPlayedByTimeRange(
             $station,
             $expectedPlayTime,
@@ -91,7 +80,6 @@ final class QueueBuilder implements EventSubscriberInterface
         $this->logger->debug(
             'AutoDJ recent song playback history',
             [
-                'history_once_per_x_songs' => $recentPlaylistHistory,
                 'history_duplicate_prevention' => $recentSongHistoryForDuplicatePrevention,
             ]
         );
@@ -117,7 +105,7 @@ final class QueueBuilder implements EventSubscriberInterface
             $logPlaylists = [];
             foreach ($activePlaylistsByType[$currentPlaylistType] as $playlistId => $playlist) {
                 /** @var Entity\StationPlaylist $playlist */
-                if (!$this->scheduler->shouldPlaylistPlayNow($playlist, $expectedPlayTime, $recentPlaylistHistory)) {
+                if (!$this->scheduler->shouldPlaylistPlayNow($playlist, $expectedPlayTime)) {
                     continue;
                 }
 

@@ -27,8 +27,7 @@ final class Scheduler
 
     public function shouldPlaylistPlayNow(
         Entity\StationPlaylist $playlist,
-        CarbonInterface $now = null,
-        array $recentPlaylistHistory = []
+        CarbonInterface $now = null
     ): bool {
         $this->logger->pushProcessor(
             function (LogRecord $record) use ($playlist) {
@@ -66,7 +65,7 @@ final class Scheduler
 
             case Entity\Enums\PlaylistTypes::OncePerXSongs:
                 $playPerSongs = $playlist->getPlayPerSongs();
-                $shouldPlay = !$this->wasPlaylistPlayedRecently($playlist, $recentPlaylistHistory, $playPerSongs);
+                $shouldPlay = !$this->queueRepo->isPlaylistRecentlyPlayed($playlist, $playPerSongs);
 
                 $this->logger->debug(
                     sprintf(
@@ -152,40 +151,6 @@ final class Scheduler
 
         $threshold = $now->subMinutes($minutes)->getTimestamp();
         return ($playedAt > $threshold);
-    }
-
-    private function wasPlaylistPlayedRecently(
-        Entity\StationPlaylist $playlist,
-        array $recentPlaylistHistory = [],
-        int $length = 15
-    ): bool {
-        if (empty($recentPlaylistHistory)) {
-            return false;
-        }
-
-        $playlistId = $playlist->getIdRequired();
-
-        // Only consider playlists that are this playlist or are non-jingles.
-        $relevantSongHistory = array_slice(
-            array_filter(
-                $recentPlaylistHistory,
-                static function ($row) use ($playlistId) {
-                    return $playlistId === $row['playlist_id']
-                        ? true
-                        : $row['is_visible'];
-                }
-            ),
-            0,
-            $length
-        );
-
-        foreach ($relevantSongHistory as $sh_row) {
-            if ($playlistId === (int)$sh_row['playlist_id']) {
-                return true;
-            }
-        }
-
-        return false;
     }
 
     /**

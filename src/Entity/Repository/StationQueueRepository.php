@@ -68,42 +68,28 @@ final class StationQueueRepository extends AbstractStationBasedRepository
             ->execute();
     }
 
-    /**
-     * @return int[]
-     */
-    public function getRecentPlaylists(
-        Entity\Station $station,
-        int $rows
-    ): array {
-        /*
-         * Explanation for why this is done in two queries:
-         * MariaDB won't apply indices if you order by one field ASC, then another DESC.
-         * The combiend query would order by is_played ASC, then timestamp_played DESC.
-         * This forces the use of indices at the expense of slightly more records being handled.
-         */
-        $baseQueryBuilder = $this->em->createQueryBuilder()
-            ->select('sq.timestamp_played, sq.is_visible, sq.playlist_id')
-            ->from(Entity\StationQueue::class, 'sq')
-            ->where('sq.station = :station')
-            ->setParameter('station', $station)
-            ->orderBy('sq.timestamp_played', 'DESC');
+    public function isPlaylistRecentlyPlayed(
+        Entity\StationPlaylist $playlist,
+        ?int $playPerSongs = null
+    ): bool {
+        $playPerSongs ??= $playlist->getPlayPerSongs();
 
-        $unplayedRows = (clone $baseQueryBuilder)
-            ->andWhere('sq.is_played = 0')
-            ->getQuery()
-            ->getArrayResult();
+        $recentPlayedQuery = $this->em->createQuery(
+            <<<'DQL'
+                SELECT sq.playlist_id
+                FROM App\Entity\StationQueue sq
+                WHERE sq.station = :station
+                AND sq.playlist_id IS NOT NULL
+                AND (sq.playlist = :playlist OR sq.is_visible = 1)
+                ORDER BY sq.id DESC
+            DQL
+        )->setParameters([
+            'station' => $playlist->getStation(),
+            'playlist' => $playlist,
+        ])->setMaxResults($playPerSongs);
 
-        $playedRows = (clone $baseQueryBuilder)
-            ->andWhere('sq.is_played = 1')
-            ->getQuery()
-            ->setMaxResults($rows)
-            ->getArrayResult();
-
-        return array_slice(
-            array_merge($unplayedRows, $playedRows),
-            0,
-            $rows
-        );
+        $recentPlayedPlaylists = $recentPlayedQuery->getSingleColumnResult();
+        return in_array($playlist->getIdRequired(), (array)$recentPlayedPlaylists, true);
     }
 
     /**

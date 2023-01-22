@@ -83,6 +83,6 @@ abstract class AbstractCustomAsset implements CustomAssetInterface
 
     protected function ensureDirectoryExists(string $path): void
     {
-        (new Filesystem())->mkdir(dirname($path));
+        (new Filesystem())->mkdir($path);
     }
 }

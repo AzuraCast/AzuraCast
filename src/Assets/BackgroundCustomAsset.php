@@ -38,7 +38,7 @@ final class BackgroundCustomAsset extends AbstractMultiPatternCustomAsset
         $pattern = $patterns[$mimeType] ?? $patterns['default'];
 
         $destPath = $this->getPathForPattern($pattern);
-        $this->ensureDirectoryExists($destPath);
+        $this->ensureDirectoryExists(dirname($destPath));
 
         $newImage->save($destPath, 90);
     }

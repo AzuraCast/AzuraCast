@@ -40,6 +40,8 @@ final class BrowserIconCustomAsset extends AbstractCustomAsset
 
     public function upload(Image $image): void
     {
+        $this->delete();
+
         $uploadsDir = $this->environment->getUploadsDirectory() . '/browser_icon';
         $this->ensureDirectoryExists($uploadsDir);
 

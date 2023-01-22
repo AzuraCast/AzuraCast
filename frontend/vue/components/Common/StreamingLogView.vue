@@ -85,14 +85,12 @@ watch(toRef(props, 'logUrl'), (newLogUrl) => {
     loading.value = true;
     logs.value = '';
     currentLogPosition.value = 0;
+    stop();
 
-    if (null === newLogUrl) {
-        stop();
-    } else {
+    if (null !== newLogUrl) {
         updateInterval = setInterval(updateLogs, 2500);
         updateLogs();
     }
-
 }, {immediate: true});
 
 const getContents = () => {

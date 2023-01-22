@@ -24,9 +24,9 @@
 </template>
 
 <script setup>
-import {nextTick, onMounted, ref} from "vue";
+import {nextTick, ref, toRef, watch} from "vue";
 import {useAxios} from "~/vendor/axios";
-import {useTimeoutFn} from "@vueuse/core";
+import {tryOnScopeDispose} from "@vueuse/core";
 
 const props = defineProps({
     logUrl: {
@@ -44,13 +44,15 @@ const {axios} = useAxios();
 
 const $textarea = ref(); // Template Ref
 
-const scrollTextarea = () => {
-    if (scrollToBottom.value) {
-        nextTick(() => {
-            $textarea.value.scrollTop = $textarea.value.scrollHeight;
-        });
+let updateInterval = null;
+
+const stop = () => {
+    if (updateInterval) {
+        clearInterval(updateInterval);
     }
 };
+
+tryOnScopeDispose(stop);
 
 const updateLogs = () => {
     axios({
@@ -62,40 +64,36 @@ const updateLogs = () => {
     }).then((resp) => {
         if (resp.data.contents !== '') {
             logs.value = logs.value + resp.data.contents + "\n";
-            scrollTextarea();
+            if (scrollToBottom.value) {
+                nextTick(() => {
+                    $textarea.value.scrollTop = $textarea.value.scrollHeight;
+                });
+            }
         }
 
         currentLogPosition.value = resp.data.position;
 
-        if (!resp.data.eof) {
-            useTimeoutFn(updateLogs, 2500);
-        }
-    });
-};
-
-onMounted(() => {
-    loading.value = true;
-
-    axios({
-        method: 'GET',
-        url: props.logUrl
-    }).then((resp) => {
-        if (resp.data.contents !== '') {
-            logs.value = resp.data.contents + "\n";
-            scrollTextarea();
-        } else {
-            logs.value = '';
-        }
-
-        currentLogPosition.value = resp.data.position;
-
-        if (!resp.data.eof) {
-            useTimeoutFn(updateLogs, 2500);
+        if (resp.data.eof) {
+            stop();
         }
     }).finally(() => {
         loading.value = false;
     });
-});
+};
+
+watch(toRef(props, 'logUrl'), (newLogUrl) => {
+    loading.value = true;
+    logs.value = '';
+    currentLogPosition.value = 0;
+
+    if (null === newLogUrl) {
+        stop();
+    } else {
+        updateInterval = setInterval(updateLogs, 2500);
+        updateLogs();
+    }
+
+}, {immediate: true});
 
 const getContents = () => {
     return logs.value;

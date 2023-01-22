@@ -40,24 +40,23 @@ final class BrowserIconCustomAsset extends AbstractCustomAsset
 
     public function upload(Image $image): void
     {
-        $uploadsDir = $this->environment->getUploadsDirectory() . '/browser_icon';
-        $this->ensureDirectoryExists($uploadsDir);
+        $uploadsDir = $this->environment->getUploadsDirectory();
 
         $newImage = clone $image;
         $newImage->resize(256, 256);
-        $newImage->save($uploadsDir . '/original.png');
+
+        $this->delete();
+        
+        $destPath = $this->getPath();
+        $this->ensureDirectoryExists($destPath);
+
+        $newImage->save($destPath);
 
         foreach (self::ICON_SIZES as $iconSize) {
             $newImage = clone $image;
             $newImage->resize($iconSize, $iconSize);
-            $newImage->save($uploadsDir . '/' . $iconSize . '.png');
+            $newImage->save($uploadsDir . '/browser_icon/' . $iconSize . '.png');
         }
-    }
-
-    public function delete(): void
-    {
-        $uploadsDir = $this->environment->getUploadsDirectory() . '/browser_icon';
-        (new Filesystem())->remove($uploadsDir);
     }
 
     public function getUrlForSize(int $size): string

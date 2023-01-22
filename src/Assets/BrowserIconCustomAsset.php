@@ -46,7 +46,7 @@ final class BrowserIconCustomAsset extends AbstractCustomAsset
         $newImage->resize(256, 256);
 
         $this->delete();
-        
+
         $destPath = $this->getPath();
         $this->ensureDirectoryExists($destPath);
 

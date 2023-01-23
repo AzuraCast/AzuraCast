@@ -28,7 +28,7 @@ const props = defineProps({
     }
 });
 
-const {$gettext, $gettextInterpolate} = useTranslate();
+const {$gettext, interpolate} = useTranslate();
 
 const langSeconds = $gettext('%{ seconds } seconds');
 const langMinutes = $gettext('%{ minutes } minutes');
@@ -39,39 +39,39 @@ const rateLimitOptions = [
         value: 0,
     },
     {
-        text: $gettextInterpolate(langSeconds, {seconds: 15}),
+        text: interpolate(langSeconds, {seconds: 15}),
         value: 15,
     },
     {
-        text: $gettextInterpolate(langSeconds, {seconds: 30}),
+        text: interpolate(langSeconds, {seconds: 30}),
         value: 30,
     },
     {
-        text: $gettextInterpolate(langSeconds, {seconds: 60}),
+        text: interpolate(langSeconds, {seconds: 60}),
         value: 60,
     },
     {
-        text: $gettextInterpolate(langMinutes, {minutes: 2}),
+        text: interpolate(langMinutes, {minutes: 2}),
         value: 120,
     },
     {
-        text: $gettextInterpolate(langMinutes, {minutes: 5}),
+        text: interpolate(langMinutes, {minutes: 5}),
         value: 300,
     },
     {
-        text: $gettextInterpolate(langMinutes, {minutes: 10}),
+        text: interpolate(langMinutes, {minutes: 10}),
         value: 600,
     },
     {
-        text: $gettextInterpolate(langMinutes, {minutes: 15}),
+        text: interpolate(langMinutes, {minutes: 15}),
         value: 900,
     },
     {
-        text: $gettextInterpolate(langMinutes, {minutes: 30}),
+        text: interpolate(langMinutes, {minutes: 30}),
         value: 1800,
     },
     {
-        text: $gettextInterpolate(langMinutes, {minutes: 60}),
+        text: interpolate(langMinutes, {minutes: 60}),
         value: 3600,
     }
 ];

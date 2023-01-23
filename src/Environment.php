@@ -83,7 +83,7 @@ final class Environment
 
         self::SYNC_SHORT_EXECUTION_TIME => 600,
         self::SYNC_LONG_EXECUTION_TIME => 1800,
-        self::NOW_PLAYING_DELAY_TIME => 5,
+        self::NOW_PLAYING_DELAY_TIME => 0,
 
         self::PROFILING_EXTENSION_ENABLED => 0,
         self::PROFILING_EXTENSION_ALWAYS_ON => 0,

@@ -64,6 +64,17 @@ final class NowPlayingCommand extends CommandAbstract
 
         $timeout = (int)$input->getOption('timeout');
 
+        $delay = $this->environment->getNowPlayingDelayTime();
+
+        // If delay is default value, auto-scale it with station count.
+        if ($delay < 1) {
+            $numStations = $this->stationRepo->getActiveCount();
+            $delay = (int)min(
+                4 + round($numStations / 5),
+                20
+            );
+        }
+
         $this->logger->pushProcessor(
             function (LogRecord $record) use ($station) {
                 $record->extra['station'] = [
@@ -76,7 +87,7 @@ final class NowPlayingCommand extends CommandAbstract
 
         $this->logger->info('Starting Now Playing sync task.');
 
-        $this->loop($station, $timeout, $this->environment->getNowPlayingDelayTime());
+        $this->loop($station, $timeout, $delay);
 
         $this->logger->info('Now Playing sync task complete.');
         $this->logger->popProcessor();

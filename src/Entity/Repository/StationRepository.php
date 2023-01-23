@@ -39,8 +39,15 @@ final class StationRepository extends Repository
             : $this->repository->findOneBy(['short_name' => $identifier]);
     }
 
-    /**
-     */
+    public function getActiveCount(): int
+    {
+        return $this->em->createQuery(
+            <<<'DQL'
+            SELECT COUNT(s.id) FROM App\Entity\Station s WHERE s.is_enabled = 1
+            DQL
+        )->getSingleScalarResult();
+    }
+
     public function fetchAll(): mixed
     {
         return $this->em->createQuery(

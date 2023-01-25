@@ -62,7 +62,7 @@ RUN bash /bd_build/redis/setup.sh \
 
 RUN rm -rf /bd_build
 
-VOLUME ["/var/azuracast/stations", "/var/azuracast/uploads", "/var/azuracast/backups", "/var/azuracast/sftpgo/persist", "/var/azuracast/servers/shoutcast2"]
+VOLUME ["/var/azuracast/stations", "/var/azuracast/uploads", "/var/azuracast/backups", "/var/azuracast/sftpgo/persist", "/var/azuracast/servers/shoutcast2", "/var/azuracast/meilisearch/persist"]
 
 #
 # Final build (Just environment vars and squishing the FS)
@@ -116,7 +116,8 @@ ENV TZ="UTC" \
     PROFILING_EXTENSION_ALWAYS_ON=0 \
     PROFILING_EXTENSION_HTTP_KEY=dev \
     PROFILING_EXTENSION_HTTP_IP_WHITELIST=* \
-    ENABLE_WEB_UPDATER="true"
+    ENABLE_WEB_UPDATER="true" \
+    MEILI_MASTER_KEY="azur4c457"
 
 # Entrypoint and default command
 ENTRYPOINT ["tini", "--", "/usr/local/bin/my_init"]

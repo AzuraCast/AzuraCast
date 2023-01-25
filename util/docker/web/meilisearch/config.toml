@@ -1,0 +1,3 @@
+db_path = "/var/azuracast/meilisearch/persist"
+http_addr = "localhost:6070"
+env = "production"

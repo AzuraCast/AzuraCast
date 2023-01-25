@@ -20,7 +20,7 @@ FROM mariadb:10.9-jammy AS mariadb
 #
 # Final build image
 #
-FROM ubuntu:jammy
+FROM ubuntu:jammy AS pre-final
 
 ENV TZ="UTC"
 
@@ -34,15 +34,12 @@ COPY --from=go-dependencies /go/bin/centrifugo /usr/local/bin/centrifugo
 
 # Run base build process
 COPY ./util/docker/common /bd_build/
-RUN chmod a+x /bd_build/*.sh \
-    && /bd_build/prepare.sh \
-    && /bd_build/add_user.sh \
-    && /bd_build/cleanup.sh \
+RUN bash /bd_build/prepare.sh \
+    && bash /bd_build/add_user.sh \
+    && bash /bd_build/cleanup.sh \
     && rm -rf /bd_build
 
 # Build each set of dependencies in their own step for cacheability.
-ARG ARM_FULL_BUILD
-
 COPY ./util/docker/supervisor /bd_build/supervisor/
 RUN bash /bd_build/supervisor/setup.sh \
     && rm -rf /bd_build/supervisor
@@ -63,9 +60,17 @@ COPY ./util/docker/redis /bd_build/redis/
 RUN bash /bd_build/redis/setup.sh \
     && rm -rf /bd_build/redis
 
+RUN rm -rf /bd_build
+
+VOLUME ["/var/azuracast/stations", "/var/azuracast/uploads", "/var/azuracast/backups", "/var/azuracast/sftpgo/persist", "/var/azuracast/servers/shoutcast2"]
+
 #
-# START Operations as `azuracast` user
+# Final build (Just environment vars and squishing the FS)
 #
+FROM ubuntu:jammy AS final
+
+COPY --from=pre-final / /
+
 USER azuracast
 
 WORKDIR /var/azuracast/www
@@ -82,19 +87,15 @@ COPY --chown=azuracast:azuracast . .
 RUN composer dump-autoload --optimize --classmap-authoritative \
     && touch /var/azuracast/.docker
 
-VOLUME ["/var/azuracast/stations", "/var/azuracast/uploads", "/var/azuracast/backups", "/var/azuracast/sftpgo/persist", "/var/azuracast/servers/shoutcast2"]
-ENV PATH="${PATH}:/var/azuracast/servers/shoutcast2"
-
-#
-# END Operations as `azuracast` user
-#
 USER root
 
 EXPOSE 80 2022
 EXPOSE 8000-8999
 
 # Sensible default environment variables.
-ENV LANG="en_US.UTF-8" \
+ENV TZ="UTC" \
+    LANG="en_US.UTF-8" \
+    PATH="${PATH}:/var/azuracast/servers/shoutcast2" \
     DOCKER_IS_STANDALONE="true" \
     APPLICATION_ENV="production" \
     MYSQL_HOST="localhost" \

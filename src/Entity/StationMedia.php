@@ -192,6 +192,15 @@ class StationMedia implements
     ]
     protected int $art_updated_at = 0;
 
+    #[
+        OA\Property(
+            description: "The latest time (UNIX timestamp) when the search record for this entry was updated.",
+            example: OpenApi::SAMPLE_TIMESTAMP
+        ),
+        ORM\Column
+    ]
+    protected int $search_updated_at = 0;
+
     /** @var Collection<int, StationPlaylistMedia> */
     #[
         OA\Property(type: "array", items: new OA\Items()),

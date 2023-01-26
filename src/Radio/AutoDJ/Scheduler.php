@@ -104,7 +104,8 @@ final class Scheduler
 
     public function isPlaylistScheduledToPlayNow(
         Entity\StationPlaylist $playlist,
-        CarbonInterface $now
+        CarbonInterface $now,
+        bool $excludeSpecialRules = false
     ): bool {
         $scheduleItems = $playlist->getScheduleItems();
 
@@ -113,7 +114,7 @@ final class Scheduler
             return true;
         }
 
-        $scheduleItem = $this->getActiveScheduleFromCollection($scheduleItems, $now);
+        $scheduleItem = $this->getActiveScheduleFromCollection($scheduleItems, $now, $excludeSpecialRules);
         return null !== $scheduleItem;
     }
 
@@ -199,13 +200,14 @@ final class Scheduler
      */
     private function getActiveScheduleFromCollection(
         Collection $scheduleItems,
-        CarbonInterface $now
+        CarbonInterface $now,
+        bool $excludeSpecialRules = false
     ): ?Entity\StationSchedule {
         if ($scheduleItems->count() > 0) {
             foreach ($scheduleItems as $scheduleItem) {
                 $scheduleName = (string)$scheduleItem;
 
-                if ($this->shouldSchedulePlayNow($scheduleItem, $now)) {
+                if ($this->shouldSchedulePlayNow($scheduleItem, $now, $excludeSpecialRules)) {
                     $this->logger->debug(
                         sprintf(
                             '%s - Should Play Now',
@@ -228,7 +230,8 @@ final class Scheduler
 
     public function shouldSchedulePlayNow(
         Entity\StationSchedule $schedule,
-        CarbonInterface $now
+        CarbonInterface $now,
+        bool $excludeSpecialRules = false
     ): bool {
         $startTime = Entity\StationSchedule::getDateTime($schedule->getStartTime(), $now);
         $endTime = Entity\StationSchedule::getDateTime($schedule->getEndTime(), $now);
@@ -277,7 +280,7 @@ final class Scheduler
         }
 
         foreach ($comparePeriods as $dateRange) {
-            if ($this->shouldPlayInSchedulePeriod($schedule, $dateRange, $now)) {
+            if ($this->shouldPlayInSchedulePeriod($schedule, $dateRange, $now, $excludeSpecialRules)) {
                 return true;
             }
         }
@@ -288,7 +291,8 @@ final class Scheduler
     private function shouldPlayInSchedulePeriod(
         Entity\StationSchedule $schedule,
         DateRange $dateRange,
-        CarbonInterface $now
+        CarbonInterface $now,
+        bool $excludeSpecialRules = false
     ): bool {
         if (!$dateRange->contains($now)) {
             return false;
@@ -303,6 +307,11 @@ final class Scheduler
         // Check playlist special handling rules.
         $playlist = $schedule->getPlaylist();
         if (null === $playlist) {
+            return true;
+        }
+
+        // Skip the remaining checks if we're doing a "still scheduled to play" Queue check.
+        if ($excludeSpecialRules) {
             return true;
         }
 

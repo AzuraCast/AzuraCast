@@ -53,7 +53,23 @@ return static function (App\Event\BuildStationMenu $e) {
             'profile' => [
                 'label' => __('Profile'),
                 'icon' => 'image',
-                'url' => $router->fromHere('stations:profile:index'),
+                'items' => [
+                    [
+                        'label' => __('View Profile'),
+                        'url' => $router->fromHere('stations:profile:index'),
+                    ],
+                    [
+                        'label' => __('Edit Profile'),
+                        'url' => $router->fromHere('stations:profile:edit'),
+                        'permission' => StationPermissions::Profile,
+                    ],
+                    [
+                        'label' => __('Branding'),
+                        'class' => 'text-muted',
+                        'url' => $router->fromhere('stations:branding'),
+                        'permission' => StationPermissions::Profile,
+                    ],
+                ],
             ],
             'public' => [
                 'label' => __('Public Page'),

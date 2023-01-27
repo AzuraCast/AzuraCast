@@ -5,7 +5,7 @@ info:
   license:
     name: 'Apache 2.0'
     url: 'https://www.apache.org/licenses/LICENSE-2.0.html'
-  version: 0.17.6
+  version: 0.17.7
 servers:
   -
     url: 'https://demo.azuracast.com/api'
@@ -4641,11 +4641,10 @@ components:
               type: string
               example: UTC
               nullable: true
-            default_album_art_url:
-              description: 'The station-specific default album artwork URL.'
-              type: string
-              example: 'https://example.com/image.jpg'
-              nullable: true
+            branding_config:
+              description: 'An array containing station-specific branding configuration'
+              type: array
+              items: {  }
     StationHlsStream:
       type: object
       allOf:

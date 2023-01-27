@@ -23,6 +23,18 @@ enum StreamFormats: string
         };
     }
 
+    public function formatBitrate(?int $bitrate): string
+    {
+        if (null === $bitrate) {
+            return strtoupper($this->value);
+        }
+
+        return match ($this) {
+            self::Flac => 'FLAC',
+            default => $bitrate . 'kbps ' . strtoupper($this->value)
+        };
+    }
+
     public function sendIcyMetadata(): bool
     {
         return match ($this) {

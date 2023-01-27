@@ -149,6 +149,17 @@ abstract class AbstractEnvFile implements ArrayAccess
         }
 
         $envFileStr = implode("\n", $envFile);
+
+        if (is_file($this->path)) {
+            $existingFile = file_get_contents($this->path) ?: '';
+            if ($envFileStr !== $existingFile) {
+                $currentTimeUtc = new \DateTimeImmutable('now', new \DateTimeZone('UTC'));
+                $backupPath = $this->path . '_backup_' . $currentTimeUtc->format('Ymd-his') . '.bak';
+
+                copy($this->path, $backupPath);
+            }
+        }
+
         file_put_contents($this->path, $envFileStr);
 
         return $envFileStr;

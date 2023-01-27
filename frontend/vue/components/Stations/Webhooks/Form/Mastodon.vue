@@ -1,109 +1,126 @@
 <template>
-    <div>
-        <b-form-group>
-            <template #label>
-                <translate key="lang_mastodon_hdr">Mastodon Account Details</translate>
-            </template>
+    <b-form-group>
+        <template #label>
+            {{ $gettext('Mastodon Account Details') }}
+        </template>
 
-            <p class="card-text">
-                <translate key="lang_mastodon_instructions_1">Steps for configuring a Mastodon application:</translate>
-            </p>
-            <ul>
-                <li>
-                    <translate key="lang_mastodon_instructions_1">Visit your Mastodon instance.</translate>
-                </li>
-                <li>
-                    <translate key="lang_mastodon_instructions_2">Click the "Preferences" link, then "Development" on the left side menu.</translate>
-                </li>
-                <li>
-                    <translate key="lang_mastodon_instructions_3">Click "New Application"</translate>
-                </li>
-                <li>
-                    <translate key="lang_mastodon_instructions_4">Enter "AzuraCast" as the application name. You can leave the URL fields unchanged. For "Scopes", only "write:media" and "write:statuses" are required.</translate>
-                </li>
-            </ul>
-            <p class="card-text">
-                <translate key="lang_twitter_instructions_5">Once these steps are completed, enter the "Access Token" from the application's page into the field below.</translate>
-            </p>
-        </b-form-group>
+        <p class="card-text">
+            {{ $gettext('Steps for configuring a Mastodon application:') }}
+        </p>
+        <ul>
+            <li>
+                {{ $gettext('Visit your Mastodon instance.') }}
+            </li>
+            <li>
+                {{ $gettext('Click the "Preferences" link, then "Development" on the left side menu.') }}
+            </li>
+            <li>
+                {{ $gettext('Click "New Application"') }}
+            </li>
+            <li>
+                {{
+                    $gettext('Enter "AzuraCast" as the application name. You can leave the URL fields unchanged. For "Scopes", only "write:media" and "write:statuses" are required.')
+                }}
+            </li>
+        </ul>
+        <p class="card-text">
+            {{
+                $gettext('Once these steps are completed, enter the "Access Token" from the application\'s page into the field below.')
+            }}
+        </p>
+    </b-form-group>
 
-        <b-form-group>
-            <b-form-row>
-                <b-wrapped-form-group class="col-md-6" id="form_config_instance_url" :field="form.config.instance_url">
-                    <template #label="{lang}">
-                        <translate :key="lang">Mastodon Instance URL</translate>
-                    </template>
-                    <template #description="{lang}">
-                        <translate
-                            :key="lang">If your Mastodon username is "@test@example.com", enter "example.com".</translate>
-                    </template>
-                </b-wrapped-form-group>
+    <b-form-group>
+        <div class="form-row">
+            <b-wrapped-form-group
+                id="form_config_instance_url"
+                class="col-md-6"
+                :field="form.config.instance_url"
+            >
+                <template #label>
+                    {{ $gettext('Mastodon Instance URL') }}
+                </template>
+                <template #description>
+                    {{ $gettext('If your Mastodon username is "@test@example.com", enter "example.com".') }}
+                </template>
+            </b-wrapped-form-group>
 
-                <b-wrapped-form-group class="col-md-6" id="form_config_access_token"
-                                      :field="form.config.access_token">
-                    <template #label="{lang}">
-                        <translate :key="lang">Access Token</translate>
-                    </template>
-                </b-wrapped-form-group>
+            <b-wrapped-form-group
+                id="form_config_access_token"
+                class="col-md-6"
+                :field="form.config.access_token"
+            >
+                <template #label>
+                    {{ $gettext('Access Token') }}
+                </template>
+            </b-wrapped-form-group>
 
-                <common-rate-limit-fields :form="form"></common-rate-limit-fields>
-            </b-form-row>
-        </b-form-group>
+            <common-rate-limit-fields :form="form" />
+        </div>
+    </b-form-group>
 
-        <b-form-group>
-            <b-form-row>
-                <b-wrapped-form-group class="col-md-12" id="form_config_visibility" :field="form.config.visibility">
-                    <template #label="{lang}">
-                        <translate :key="lang">Message Visibility</translate>
-                    </template>
-                    <template #default="props">
-                        <b-form-radio-group stacked :id="props.id" :options="visibilityOptions"
-                                            v-model="props.field.$model">
-                        </b-form-radio-group>
-                    </template>
-                </b-wrapped-form-group>
-            </b-form-row>
-        </b-form-group>
+    <b-form-group>
+        <div class="form-row">
+            <b-wrapped-form-group
+                id="form_config_visibility"
+                class="col-md-12"
+                :field="form.config.visibility"
+            >
+                <template #label>
+                    {{ $gettext('Message Visibility') }}
+                </template>
+                <template #default="slotProps">
+                    <b-form-radio-group
+                        :id="slotProps.id"
+                        v-model="slotProps.field.$model"
+                        stacked
+                        :options="visibilityOptions"
+                    />
+                </template>
+            </b-wrapped-form-group>
+        </div>
+    </b-form-group>
 
-        <common-social-post-fields :form="form" :now-playing-url="nowPlayingUrl"></common-social-post-fields>
-    </div>
+    <common-social-post-fields
+        :form="form"
+        :now-playing-url="nowPlayingUrl"
+    />
 </template>
 
-<script>
+<script setup>
 import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
-import RateLimitFields from "./Common/RateLimitFields";
 import CommonRateLimitFields from "./Common/RateLimitFields";
 import CommonSocialPostFields from "./Common/SocialPostFields";
+import {computed} from "vue";
+import {useTranslate} from "~/vendor/gettext";
 
-export default {
-    name: 'Mastodon',
-    components: {
-        CommonRateLimitFields,
-        CommonSocialPostFields,
-        RateLimitFields,
-        BWrappedFormGroup
+const props = defineProps({
+    form: {
+        type: Object,
+        required: true
     },
-    props: {
-        form: Object,
-        nowPlayingUrl: String
-    },
-    computed: {
-        visibilityOptions() {
-            return [
-                {
-                    text: this.$gettext('Public'),
-                    value: 'public',
-                },
-                {
-                    text: this.$gettext('Unlisted'),
-                    value: 'unlisted',
-                },
-                {
-                    text: this.$gettext('Private'),
-                    value: 'private',
-                }
-            ];
-        }
+    nowPlayingUrl: {
+        type: String,
+        required: true
     }
-}
+});
+
+const {$gettext} = useTranslate();
+
+const visibilityOptions = computed(() => {
+    return [
+        {
+            text: $gettext('Public'),
+            value: 'public',
+        },
+        {
+            text: $gettext('Unlisted'),
+            value: 'unlisted',
+        },
+        {
+            text: $gettext('Private'),
+            value: 'private',
+        }
+    ];
+});
 </script>

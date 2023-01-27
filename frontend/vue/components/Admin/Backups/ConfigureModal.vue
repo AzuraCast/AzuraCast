@@ -1,194 +1,235 @@
 <template>
-    <modal-form ref="modal" size="lg" :title="langTitle" :loading="loading" :disable-save-button="$v.form.$invalid"
-                @submit="submit" @hidden="clearContents">
+    <modal-form
+        ref="$modal"
+        size="lg"
+        :title="$gettext('Configure Backups')"
+        :loading="loading"
+        :disable-save-button="v$.$invalid"
+        @submit="submit"
+        @hidden="resetForm"
+    >
         <b-form-fieldset>
-            <b-form-row class="mb-3">
-                <b-wrapped-form-checkbox class="col-md-12" id="form_edit_backup_enabled"
-                                         :field="$v.form.backup_enabled">
-                    <template #label="{lang}">
-                        <translate :key="lang">Run Automatic Nightly Backups</translate>
+            <div class="form-row mb-3">
+                <b-wrapped-form-checkbox
+                    id="form_edit_backup_enabled"
+                    class="col-md-12"
+                    :field="v$.backup_enabled"
+                >
+                    <template #label>
+                        {{ $gettext('Run Automatic Nightly Backups') }}
                     </template>
-                    <template #description="{lang}">
-                        <translate :key="lang">Enable to have AzuraCast automatically run nightly backups at the time specified.</translate>
-                    </template>
-                </b-wrapped-form-checkbox>
-            </b-form-row>
-
-            <b-form-row v-if="$v.form.backup_enabled.$model">
-                <b-wrapped-form-group class="col-md-6" id="form_backup_time_code" :field="$v.form.backup_time_code">
-                    <template #label="{lang}">
-                        <translate :key="lang">Scheduled Backup Time</translate>
-                    </template>
-                    <template #description="{lang}">
-                        <translate :key="lang">If the end time is before the start time, the playlist will play overnight.</translate>
-                    </template>
-                    <template #default="props">
-                        <time-code :id="props.id" v-model="props.field.$model" :state="props.state"></time-code>
-                    </template>
-                </b-wrapped-form-group>
-
-                <b-wrapped-form-checkbox class="col-md-6" id="form_edit_exclude_media"
-                                         :field="$v.form.backup_exclude_media">
-                    <template #label="{lang}">
-                        <translate :key="lang">Exclude Media from Backup</translate>
-                    </template>
-                    <template #description="{lang}">
-                        <translate :key="lang">Excluding media from automated backups will save space, but you should make sure to back up your media elsewhere. Note that only locally stored media will be backed up.</translate>
+                    <template #description>
+                        {{
+                            $gettext('Enable to have AzuraCast automatically run nightly backups at the time specified.')
+                        }}
                     </template>
                 </b-wrapped-form-checkbox>
+            </div>
 
-                <b-wrapped-form-group class="col-md-6" id="form_backup_keep_copies" :field="$v.form.backup_keep_copies"
-                                      input-type="number" :input-attrs="{min: '0', max: '365'}">
-                    <template #label="{lang}">
-                        <translate :key="lang">Number of Backup Copies to Keep</translate>
+            <div
+                v-if="v$.backup_enabled.$model"
+                class="form-row"
+            >
+                <b-wrapped-form-group
+                    id="form_backup_time_code"
+                    class="col-md-6"
+                    :field="v$.backup_time_code"
+                >
+                    <template #label>
+                        {{ $gettext('Scheduled Backup Time') }}
                     </template>
-                    <template #description="{lang}">
-                        <translate :key="lang">Copies older than the specified number of days will automatically be deleted. Set to zero to disable automatic deletion.</translate>
+                    <template #description>
+                        {{ $gettext('If the end time is before the start time, the playlist will play overnight.') }}
+                    </template>
+                    <template #default="slotProps">
+                        <time-code
+                            :id="slotProps.id"
+                            v-model="slotProps.field.$model"
+                            :state="slotProps.state"
+                        />
                     </template>
                 </b-wrapped-form-group>
 
-                <b-wrapped-form-group class="col-md-6" id="edit_form_backup_storage_location"
-                                      :field="$v.form.backup_storage_location">
-                    <template #label="{lang}">
-                        <translate :key="lang">Storage Location</translate>
+                <b-wrapped-form-checkbox
+                    id="form_edit_exclude_media"
+                    class="col-md-6"
+                    :field="v$.backup_exclude_media"
+                >
+                    <template #label>
+                        {{ $gettext('Exclude Media from Backup') }}
                     </template>
-                    <template #default="props">
-                        <b-form-select :id="props.id" v-model="props.field.$model"
-                                       :options="storageLocationOptions"></b-form-select>
+                    <template #description>
+                        {{
+                            $gettext('Excluding media from automated backups will save space, but you should make sure to back up your media elsewhere. Note that only locally stored media will be backed up.')
+                        }}
+                    </template>
+                </b-wrapped-form-checkbox>
+
+                <b-wrapped-form-group
+                    id="form_backup_keep_copies"
+                    class="col-md-6"
+                    :field="v$.backup_keep_copies"
+                    input-type="number"
+                    :input-attrs="{min: '0', max: '365'}"
+                >
+                    <template #label>
+                        {{ $gettext('Number of Backup Copies to Keep') }}
+                    </template>
+                    <template #description>
+                        {{
+                            $gettext('Copies older than the specified number of days will automatically be deleted. Set to zero to disable automatic deletion.')
+                        }}
                     </template>
                 </b-wrapped-form-group>
 
-                <b-wrapped-form-group class="col-md-6" id="edit_form_backup_format" :field="$v.form.backup_format">
-                    <template #label="{lang}">
-                        <translate :key="lang">Backup Format</translate>
+                <b-wrapped-form-group
+                    id="edit_form_backup_storage_location"
+                    class="col-md-6"
+                    :field="v$.backup_storage_location"
+                >
+                    <template #label>
+                        {{ $gettext('Storage Location') }}
                     </template>
-                    <template #default="props">
-                        <b-form-radio-group stacked :id="props.id" v-model="props.field.$model"
-                                            :options="formatOptions"></b-form-radio-group>
+                    <template #default="slotProps">
+                        <b-form-select
+                            :id="slotProps.id"
+                            v-model="slotProps.field.$model"
+                            :options="storageLocationOptions"
+                        />
                     </template>
                 </b-wrapped-form-group>
-            </b-form-row>
+
+                <b-wrapped-form-group
+                    id="edit_form_backup_format"
+                    class="col-md-6"
+                    :field="v$.backup_format"
+                >
+                    <template #label>
+                        {{ $gettext('Backup Format') }}
+                    </template>
+                    <template #default="slotProps">
+                        <b-form-radio-group
+                            :id="slotProps.id"
+                            v-model="slotProps.field.$model"
+                            stacked
+                            :options="formatOptions"
+                        />
+                    </template>
+                </b-wrapped-form-group>
+            </div>
         </b-form-fieldset>
     </modal-form>
 </template>
 
-<script>
-import {validationMixin} from "vuelidate";
-import CodemirrorTextarea from "~/components/Common/CodemirrorTextarea";
-import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
-import ModalForm from "~/components/Common/ModalForm";
-import BFormFieldset from "~/components/Form/BFormFieldset";
-import mergeExisting from "~/functions/mergeExisting";
-import BWrappedFormCheckbox from "~/components/Form/BWrappedFormCheckbox";
-import TimeCode from "~/components/Common/TimeCode";
-import objectToFormOptions from "~/functions/objectToFormOptions";
+<script setup>
+import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup.vue";
+import ModalForm from "~/components/Common/ModalForm.vue";
+import BFormFieldset from "~/components/Form/BFormFieldset.vue";
+import mergeExisting from "~/functions/mergeExisting.js";
+import BWrappedFormCheckbox from "~/components/Form/BWrappedFormCheckbox.vue";
+import TimeCode from "~/components/Common/TimeCode.vue";
+import objectToFormOptions from "~/functions/objectToFormOptions.js";
+import {computed, ref} from "vue";
+import {useAxios} from "~/vendor/axios";
+import {useNotify} from "~/vendor/bootstrapVue";
+import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
 
-export default {
-    name: 'AdminBackupsConfigureModal',
-    emits: ['relist'],
-    props: {
-        settingsUrl: String,
-        storageLocations: Object
+const props = defineProps({
+    settingsUrl: {
+        type: String,
+        required: true
     },
-    components: {
-        ModalForm,
-        BFormFieldset,
-        BWrappedFormGroup,
-        BWrappedFormCheckbox,
-        CodemirrorTextarea,
-        TimeCode
-    },
-    mixins: [
-        validationMixin
-    ],
-    data() {
-        return {
-            loading: true,
-            error: null,
-            form: {},
-        };
-    },
-    validations: {
-        form: {
-            'backup_enabled': {},
-            'backup_time_code': {},
-            'backup_exclude_media': {},
-            'backup_keep_copies': {},
-            'backup_storage_location': {},
-            'backup_format': {},
-        }
-    },
-    computed: {
-        langTitle() {
-            return this.$gettext('Configure Backups');
-        },
-        storageLocationOptions() {
-            return objectToFormOptions(this.storageLocations);
-        },
-        formatOptions() {
-            return [
-                {
-                    value: 'zip',
-                    text: 'Zip',
-                },
-                {
-                    value: 'tgz',
-                    text: 'TarGz'
-                },
-                {
-                    value: 'tzst',
-                    text: 'ZStd'
-                }
-            ];
-        },
-    },
-    methods: {
-        open() {
-            this.clearContents();
-            this.loading = true;
-
-            this.$refs.modal.show();
-
-            this.axios.get(this.settingsUrl).then((resp) => {
-                this.form = mergeExisting(this.form, resp.data);
-                this.loading = false;
-            }).catch((error) => {
-                this.close();
-            });
-        },
-        clearContents() {
-            this.$v.form.$reset();
-
-            this.form = {
-                backup_enabled: false,
-                backup_time_code: null,
-                backup_exclude_media: null,
-                backup_keep_copies: null,
-                backup_storage_location: null,
-                backup_format: null,
-            };
-        },
-        close() {
-            this.$emit('relist');
-            this.$refs.modal.hide();
-        },
-        submit() {
-            this.$v.form.$touch();
-            if (this.$v.form.$anyError) {
-                return;
-            }
-
-            this.$wrapWithLoading(
-                this.axios({
-                    method: 'PUT',
-                    url: this.settingsUrl,
-                    data: this.form
-                })
-            ).then((resp) => {
-                this.$notifySuccess();
-                this.close();
-            });
-        }
+    storageLocations: {
+        type: Object,
+        required: true
     }
+});
+
+const emit = defineEmits(['relist']);
+
+const loading = ref(true);
+
+const $modal = ref(); // ModalForm
+
+const {form, resetForm, v$, ifValid} = useVuelidateOnForm(
+    {
+        'backup_enabled': {},
+        'backup_time_code': {},
+        'backup_exclude_media': {},
+        'backup_keep_copies': {},
+        'backup_storage_location': {},
+        'backup_format': {},
+    },
+    {
+        backup_enabled: false,
+        backup_time_code: null,
+        backup_exclude_media: null,
+        backup_keep_copies: null,
+        backup_storage_location: null,
+        backup_format: null,
+    }
+);
+
+const storageLocationOptions = computed(() => {
+    return objectToFormOptions(props.storageLocations);
+});
+
+const formatOptions = computed(() => {
+    return [
+        {
+            value: 'zip',
+            text: 'Zip',
+        },
+        {
+            value: 'tgz',
+            text: 'TarGz'
+        },
+        {
+            value: 'tzst',
+            text: 'ZStd'
+        }
+    ];
+});
+
+const {axios} = useAxios();
+
+const close = () => {
+    emit('relist');
+    $modal.value.hide();
+};
+
+const open = () => {
+    resetForm();
+    loading.value = true;
+
+    $modal.value.show();
+
+    axios.get(props.settingsUrl).then((resp) => {
+        form.value = mergeExisting(form.value, resp.data);
+        loading.value = false;
+    }).catch(() => {
+        close();
+    });
+};
+
+const {wrapWithLoading, notifySuccess} = useNotify();
+
+const submit = () => {
+    ifValid(() => {
+        wrapWithLoading(
+            axios({
+                method: 'PUT',
+                url: props.settingsUrl,
+                data: form.value
+            })
+        ).then(() => {
+            notifySuccess();
+            close();
+        });
+    });
 }
+
+defineExpose({
+    open
+});
 </script>

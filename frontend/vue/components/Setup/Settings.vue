@@ -1,45 +1,50 @@
 <template>
-    <admin-settings :api-url="apiUrl" :release-channel="releaseChannel" @saved="onSaved">
+    <admin-settings
+        :api-url="apiUrl"
+        :release-channel="releaseChannel"
+        @saved="onSaved"
+    >
         <template #preCard>
-            <setup-step :step="3"></setup-step>
+            <setup-step :step="3" />
         </template>
         <template #cardTitle>
-            <translate key="lang_setup_settings_hdr">Customize AzuraCast Settings</translate>
+            {{ $gettext('Customize AzuraCast Settings') }}
         </template>
         <template #cardUpper>
             <info-card>
-                <translate key="lang_setup_settings_info">Complete the setup process by providing some information about your broadcast environment. These settings can be changed later from the administration panel.</translate>
+                {{
+                    $gettext('Complete the setup process by providing some information about your broadcast environment. These settings can be changed later from the administration panel.')
+                }}
             </info-card>
         </template>
         <template #submitButtonName>
-            <translate key="lang_setup_settings_btn">Save and Continue</translate>
+            {{ $gettext('Save and Continue') }}
         </template>
     </admin-settings>
 </template>
-<script>
+
+<script setup>
 import AdminSettings from "~/components/Admin/Settings";
 import SetupStep from "./SetupStep";
 import InfoCard from "~/components/Common/InfoCard";
 
-export default {
-    name: 'SetupSettings',
-    components: {InfoCard, SetupStep, AdminSettings},
-    props: {
-        apiUrl: String,
-        releaseChannel: {
-            type: String,
-            default: 'rolling',
-            required: false
-        },
-        continueUrl: {
-            type: String,
-            required: true
-        }
+const props = defineProps({
+    apiUrl: {
+        type: String,
+        required: true
     },
-    methods: {
-        onSaved() {
-            window.location.href = this.continueUrl;
-        }
+    releaseChannel: {
+        type: String,
+        default: 'rolling',
+        required: false
+    },
+    continueUrl: {
+        type: String,
+        required: true
     }
+});
+
+const onSaved = () => {
+    window.location.href = props.continueUrl;
 }
 </script>

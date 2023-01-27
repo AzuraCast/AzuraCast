@@ -3,65 +3,108 @@
         <div class="card-header bg-primary-dark">
             <div class="d-flex align-items-center">
                 <div class="flex-fill text-nowrap">
-                    <h5 class="card-title">{{ lang_header }}</h5>
+                    <h5 class="card-title">
+                        {{ langHeader }}
+                    </h5>
                 </div>
                 <div class="flex-shrink-0 pl-3">
-                    <volume-slider v-model.number="volume"></volume-slider>
+                    <volume-slider v-model.number="localGain" />
                 </div>
             </div>
         </div>
         <div class="card-body">
             <div class="control-group d-flex justify-content-center">
                 <div class="btn-group btn-group-sm">
-                    <button class="btn btn-sm btn-success" v-if="!playing || paused" v-on:click="play">
-                        <icon icon="play_arrow"></icon>
+                    <button
+                        v-if="!isPlaying || isPaused"
+                        class="btn btn-sm btn-success"
+                        @click="play"
+                    >
+                        <icon icon="play_arrow" />
                     </button>
-                    <button class="btn btn-sm btn-warning" v-if="playing && !paused" v-on:click="togglePause()">
-                        <icon icon="pause"></icon>
+                    <button
+                        v-if="isPlaying && !isPaused"
+                        class="btn btn-sm btn-warning"
+                        @click="togglePause()"
+                    >
+                        <icon icon="pause" />
                     </button>
-                    <button class="btn btn-sm" v-on:click="previous()">
-                        <icon icon="fast_rewind"></icon>
+                    <button
+                        class="btn btn-sm"
+                        @click="previous()"
+                    >
+                        <icon icon="fast_rewind" />
                     </button>
-                    <button class="btn btn-sm" v-on:click="next()">
-                        <icon icon="fast_forward"></icon>
+                    <button
+                        class="btn btn-sm"
+                        @click="next()"
+                    >
+                        <icon icon="fast_forward" />
                     </button>
-                    <button class="btn btn-sm btn-danger" v-on:click="stop()">
-                        <icon icon="stop"></icon>
+                    <button
+                        class="btn btn-sm btn-danger"
+                        @click="stop()"
+                    >
+                        <icon icon="stop" />
                     </button>
-                    <button class="btn btn-sm" v-on:click="cue()" v-bind:class="{ 'btn-primary': passThrough }">
-                        <translate key="lang_btn_cue">Cue</translate>
+                    <button
+                        class="btn btn-sm"
+                        :class="{ 'btn-primary': trackPassThrough }"
+                        @click="trackPassThrough = !trackPassThrough"
+                    >
+                        {{ $gettext('Cue') }}
                     </button>
                 </div>
             </div>
 
-            <div class="mt-3" v-if="playing">
-
+            <div
+                v-if="isPlaying"
+                class="mt-3"
+            >
                 <div class="d-flex flex-row mb-2">
-                    <div class="flex-shrink-0 pt-1 pr-2">{{ position | prettifyTime }}</div>
-                    <div class="flex-fill">
-                        <input type="range" min="0" max="100" step="0.1" class="custom-range slider"
-                               v-bind:value="seekingPosition"
-                               v-on:mousedown="isSeeking = true"
-                               v-on:mousemove="doSeek($event)"
-                               v-on:mouseup="isSeeking = false">
+                    <div class="flex-shrink-0 pt-1 pr-2">
+                        {{ formatTime(position) }}
                     </div>
-                    <div class="flex-shrink-0 pt-1 pl-2">{{ duration | prettifyTime }}</div>
+                    <div class="flex-fill">
+                        <input
+                            v-model="seekingPosition"
+                            type="range"
+                            min="0"
+                            max="100"
+                            step="0.1"
+                            class="custom-range slider"
+                            @mousedown="isSeeking = true"
+                            @mouseup="isSeeking = false"
+                        >
+                    </div>
+                    <div class="flex-shrink-0 pt-1 pl-2">
+                        {{ formatTime(duration) }}
+                    </div>
                 </div>
 
-                <div class="progress mb-1">
-                    <div class="progress-bar" v-bind:style="{ width: volumeLeft+'%' }"></div>
-                </div>
                 <div class="progress">
-                    <div class="progress-bar" v-bind:style="{ width: volumeRight+'%' }"></div>
+                    <div
+                        class="progress-bar"
+                        :style="{ width: volume+'%' }"
+                    />
                 </div>
             </div>
 
             <div class="form-group mt-2">
                 <div class="custom-file">
-                    <input v-bind:id="id + '_files'" type="file" class="custom-file-input files" accept="audio/*"
-                           multiple="multiple" v-on:change="addNewFiles($event.target.files)">
-                    <label v-bind:for="id + '_files'" class="custom-file-label">
-                        <translate key="lang_btn_add_files_to_playlist">Add Files to Playlist</translate>
+                    <input
+                        :id="id + '_files'"
+                        type="file"
+                        class="custom-file-input files"
+                        accept="audio/*"
+                        multiple="multiple"
+                        @change="addNewFiles($event.target.files)"
+                    >
+                    <label
+                        :for="id + '_files'"
+                        class="custom-file-label"
+                    >
+                        {{ $gettext('Add Files to Playlist') }}
                     </label>
                 </div>
             </div>
@@ -69,251 +112,257 @@
             <div class="form-group mb-0">
                 <div class="controls">
                     <div class="custom-control custom-checkbox custom-control-inline">
-                        <input v-bind:id="id + '_playthrough'" type="checkbox" class="custom-control-input"
-                               v-model="playThrough">
-                        <label v-bind:for="id + '_playthrough'" class="custom-control-label">
-                            <translate key="lang_continuous_play">Continuous Play</translate>
+                        <input
+                            :id="id + '_playthrough'"
+                            v-model="playThrough"
+                            type="checkbox"
+                            class="custom-control-input"
+                        >
+                        <label
+                            :for="id + '_playthrough'"
+                            class="custom-control-label"
+                        >
+                            {{ $gettext('Continuous Play') }}
                         </label>
                     </div>
                     <div class="custom-control custom-checkbox custom-control-inline">
-                        <input v-bind:id="id + '_loop'" type="checkbox" class="custom-control-input" v-model="loop">
-                        <label v-bind:for="id + '_loop'" class="custom-control-label">
-                            <translate key="lang_repeat_playlist">Repeat</translate>
+                        <input
+                            :id="id + '_loop'"
+                            v-model="loop"
+                            type="checkbox"
+                            class="custom-control-input"
+                        >
+                        <label
+                            :for="id + '_loop'"
+                            class="custom-control-label"
+                        >
+                            {{ $gettext('Repeat') }}
                         </label>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="list-group list-group-flush" v-if="files.length > 0">
-            <a href="#" class="list-group-item list-group-item-action flex-column align-items-start"
-               v-for="(rowFile, rowIndex) in files" v-bind:class="{ active: rowIndex == fileIndex }"
-               v-on:click.prevent="play({ fileIndex: rowIndex })">
+        <div
+            v-if="files.length > 0"
+            class="list-group list-group-flush"
+        >
+            <a
+                v-for="(rowFile, rowIndex) in files"
+                :key="rowFile.file.name"
+                href="#"
+                class="list-group-item list-group-item-action flex-column align-items-start"
+                :class="{ active: rowIndex === fileIndex }"
+                @click.prevent="play({ fileIndex: rowIndex })"
+            >
                 <div class="d-flex w-100 justify-content-between">
                     <h5 class="mb-0">{{
-                            rowFile.metadata.title ? rowFile.metadata.title : lang_unknown_title
-                        }}</h5>
-                    <small class="pt-1">{{ rowFile.audio.length | prettifyTime }}</small>
+                        rowFile.metadata?.title ?? $gettext('Unknown Title')
+                    }}</h5>
+                    <small class="pt-1">{{ formatTime(rowFile.audio.length) }}</small>
                 </div>
-                <p class="mb-0">{{ rowFile.metadata.artist ? rowFile.metadata.artist : lang_unknown_artist }}</p>
+                <p class="mb-0">{{ rowFile.metadata?.artist ?? $gettext('Unknown Artist') }}</p>
             </a>
         </div>
     </div>
 </template>
 
-<script>
-import track from './Track.js';
-import _ from 'lodash';
+<script setup>
 import Icon from '~/components/Common/Icon';
 import VolumeSlider from "~/components/Public/WebDJ/VolumeSlider";
+import formatTime from "~/functions/formatTime";
+import {computed, ref, watch} from "vue";
+import {useWebDjTrack} from "~/components/Public/WebDJ/useWebDjTrack";
+import {useTranslate} from "~/vendor/gettext";
+import {forEach} from "lodash";
+import {useInjectMixer} from "~/components/Public/WebDJ/useMixerValue";
+import {usePassthroughSync} from "~/components/Public/WebDJ/usePassthroughSync";
+import {useWebDjSource} from "~/components/Public/WebDJ/useWebDjSource";
+import {useInjectWebcaster} from "~/components/Public/WebDJ/useWebcaster";
 
-export default {
-    components: {VolumeSlider, Icon},
-    extends: track,
-    data() {
-        return {
-            'fileIndex': -1,
-            'files': [],
+const props = defineProps({
+    id: {
+        type: String,
+        required: true
+    }
+});
 
-            'volume': 100,
-            'duration': 0.0,
-            'playThrough': true,
-            'loop': false,
+const isLeftPlaylist = computed(() => {
+    return props.id === 'playlist_1';
+});
 
-            'isSeeking': false,
-            'seekPosition': 0,
-            'mixGainObj': null
-        };
+const {
+    source,
+    isPlaying,
+    isPaused,
+    trackGain,
+    trackPassThrough,
+    position,
+    volume,
+    prepare,
+    togglePause,
+    stop
+} = useWebDjTrack();
+
+const {
+    createAudioSource
+} = useWebDjSource();
+
+const {
+    sendMetadata
+} = useInjectWebcaster();
+
+usePassthroughSync(trackPassThrough, props.id);
+
+const fileIndex = ref(-1);
+const files = ref([]);
+const duration = ref(0.0);
+const loop = ref(false);
+const playThrough = ref(false);
+
+const isSeeking = ref(false);
+
+const seekingPosition = computed({
+    get: () => {
+        return (100.0 * position.value / parseFloat(duration.value));
     },
-    computed: {
-        lang_header () {
-            return (this.id === 'playlist_1')
-                ? this.$gettext('Playlist 1')
-                : this.$gettext('Playlist 2');
-        },
-        lang_unknown_title () {
-            return this.$gettext('Unknown Title');
-        },
-        lang_unknown_artist () {
-            return this.$gettext('Unknown Artist');
-        },
-        positionPercent () {
-            return (100.0 * this.position / parseFloat(this.duration));
-        },
-        seekingPosition () {
-            return (this.isSeeking) ? this.seekPosition : this.positionPercent;
+    set: (val) => {
+        if (!isSeeking.value || !source.value) {
+            return;
         }
-    },
-    props: {
-        id: String
-    },
-    mounted () {
-        this.mixGainObj = this.getStream().context.createGain();
-        this.mixGainObj.connect(this.getStream().webcast);
-        this.sink = this.mixGainObj;
 
-        this.$root.$on('new-mixer-value', this.setMixGain);
-        this.$root.$on('new-cue', this.onNewCue);
-    },
-    filters: {
-        prettifyTime (time) {
-            if (typeof time === 'undefined') {
-                return 'N/A';
-            }
+        source.value.seek(val / 100);
+    }
+});
 
-            var hours = parseInt(time / 3600);
-            time %= 3600;
-            var minutes = parseInt(time / 60);
-            var seconds = parseInt(time % 60);
+// Factor in mixer and local gain to calculate total gain.
+const localGain = ref(55);
+const mixer = useInjectMixer();
 
-            if (minutes < 10) {
-                minutes = '0' + minutes;
-            }
-            if (seconds < 10) {
-                seconds = '0' + seconds;
-            }
+const computedGain = computed(() => {
+    let multiplier;
+    if (isLeftPlaylist.value) {
+        multiplier = (mixer.value > 1)
+            ? 2.0 - (mixer.value)
+            : 1.0;
+    } else {
+        multiplier = (mixer.value < 1)
+            ? mixer.value
+            : 1.0;
+    }
 
-            if (hours > 0) {
-                return hours + ':' + minutes + ':' + seconds;
-            } else {
-                return minutes + ':' + seconds;
-            }
+    return localGain.value * multiplier;
+});
+watch(computedGain, (newGain) => {
+    trackGain.value = newGain;
+}, {immediate: true});
+
+const {$gettext} = useTranslate();
+
+const langHeader = computed(() => {
+    return isLeftPlaylist.value
+        ? $gettext('Playlist 1')
+        : $gettext('Playlist 2');
+});
+
+const addNewFiles = (newFiles) => {
+    forEach(newFiles, (file) => {
+        file.readTaglibMetadata((data) => {
+            files.value.push({
+                file: file,
+                audio: data.audio,
+                metadata: data.metadata || {title: '', artist: ''}
+            });
+        });
+    });
+};
+
+const selectFile = (options = {}) => {
+    if (files.value.length === 0) {
+        return;
+    }
+
+    if (options.fileIndex) {
+        fileIndex.value = options.fileIndex;
+    } else {
+        fileIndex.value += options.backward ? -1 : 1;
+        if (fileIndex.value < 0) {
+            fileIndex.value = files.value.length - 1;
         }
-    },
-    methods: {
-        cue () {
-            this.resumeStream();
-            this.$root.$emit('new-cue', (this.passThrough) ? 'off' : this.id);
-        },
 
-        onNewCue (new_cue) {
-            this.passThrough = (new_cue === this.id);
-        },
+        if (fileIndex.value >= files.value.length) {
+            if (options.isAutoPlay && !loop.value) {
+                fileIndex.value = -1;
+                return;
+            }
 
-        setMixGain (new_value) {
-            if (this.id === 'playlist_1') {
-                this.mixGainObj.gain.value = 1.0 - new_value;
+            if (fileIndex.value < 0) {
+                fileIndex.value = files.value.length - 1;
             } else {
-                this.mixGainObj.gain.value = new_value;
-            }
-        },
-
-        addNewFiles (newFiles) {
-            _.each(newFiles, (file) => {
-                file.readTaglibMetadata((data) => {
-                    this.files.push({
-                        file: file,
-                        audio: data.audio,
-                        metadata: data.metadata || { title: '', artist: '' }
-                    });
-                });
-            });
-        },
-
-        play (options) {
-            this.resumeStream();
-
-            if (this.paused) {
-                this.togglePause();
-                return;
-            }
-
-            this.stop();
-
-            if (!(this.file = this.selectFile(options))) {
-                return;
-            }
-
-            this.prepare();
-
-            return this.getStream().createFileSource(this.file, this, (source) => {
-                var ref1;
-                this.source = source;
-                this.source.connect(this.destination);
-                if (this.source.duration != null) {
-                    this.duration = this.source.duration();
-                } else {
-                    if (((ref1 = this.file.audio) != null ? ref1.length : void 0) != null) {
-                        this.duration = parseFloat(this.file.audio.length);
-                    }
-                }
-
-                this.source.play(this.file);
-
-                this.$root.$emit('metadata-update', {
-                    title: this.file.metadata.title,
-                    artist: this.file.metadata.artist
-                });
-
-                this.playing = true;
-                this.paused = false;
-            });
-        },
-
-        selectFile (options = {}) {
-            if (this.files.length === 0) {
-                return;
-            }
-
-            if (options.fileIndex) {
-                this.fileIndex = options.fileIndex;
-            } else {
-                this.fileIndex += options.backward ? -1 : 1;
-                if (this.fileIndex < 0) {
-                    this.fileIndex = this.files.length - 1;
-                }
-
-                if (this.fileIndex >= this.files.length) {
-                    if (options.isAutoPlay && !this.loop) {
-                        this.fileIndex = -1;
-                        return;
-                    }
-
-                    if (this.fileIndex < 0) {
-                        this.fileIndex = this.files.length - 1;
-                    } else {
-                        this.fileIndex = 0;
-                    }
-                }
-            }
-
-            return this.files[this.fileIndex];
-        },
-
-        previous () {
-            if (!this.playing) {
-                return;
-            }
-
-            return this.play({
-                backward: true
-            });
-        },
-
-        next () {
-            if (!this.playing) {
-                return;
-            }
-
-            return this.play();
-        },
-
-        onEnd () {
-            this.stop();
-
-            if (this.playThrough) {
-                return this.play({
-                    isAutoPlay: true
-                });
-            }
-        },
-
-        doSeek (e) {
-            if (this.isSeeking) {
-                this.seekPosition = e.target.value;
-                this.seek(this.seekPosition / 100);
+                fileIndex.value = 0;
             }
         }
     }
+
+    return files.value[fileIndex.value];
+};
+
+const play = (options = {}) => {
+    let file = selectFile(options);
+
+    if (!file) {
+        return;
+    }
+
+    if (isPaused.value) {
+        togglePause();
+        return;
+    }
+
+    stop();
+
+    let destination = prepare();
+
+    createAudioSource(file, (newSource) => {
+        source.value = newSource;
+        newSource.connect(destination);
+
+        if (newSource.duration !== null) {
+            duration.value = newSource.duration();
+        } else if (file.audio !== null) {
+            duration.value = parseFloat(file.audio.length);
+        }
+
+        newSource.play(file);
+
+        sendMetadata({
+            title: file.metadata.title,
+            artist: file.metadata.artist
+        });
+    }, () => {
+        stop();
+
+        if (playThrough.value) {
+            play({
+                isAutoPlay: true
+            });
+        }
+    });
+};
+
+const previous = () => {
+    if (!isPlaying.value) {
+        return;
+    }
+
+    play({backward: true});
+};
+
+const next = () => {
+    if (!isPlaying.value) {
+        return;
+    }
+
+    play();
 };
 </script>

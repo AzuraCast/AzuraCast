@@ -426,7 +426,10 @@ class StationRemote implements
         }
 
         if ($this->enable_autodj) {
-            return $this->autodj_bitrate . 'kbps ' . strtoupper($this->autodj_format ?? '');
+            $format = $this->getAutodjFormatEnum();
+            if (null !== $format) {
+                return $format->formatBitrate($this->autodj_bitrate);
+            }
         }
 
         return Utilities\Strings::truncateUrl($this->url);

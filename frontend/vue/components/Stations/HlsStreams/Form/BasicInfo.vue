@@ -1,82 +1,91 @@
 <template>
-    <b-tab :title="langTabTitle" active>
+    <b-tab
+        :title="$gettext('Basic Info')"
+        active
+    >
         <b-form-group>
-            <b-form-row class="mb-3">
-                <b-wrapped-form-group class="col-md-12" id="edit_form_name" :field="form.name">
-                    <template #label="{lang}">
-                        <translate :key="lang">Programmatic Name</translate>
+            <div class="form-row mb-3">
+                <b-wrapped-form-group
+                    id="edit_form_name"
+                    class="col-md-12"
+                    :field="form.name"
+                >
+                    <template #label>
+                        {{ $gettext('Programmatic Name') }}
                     </template>
-                    <template #description="{lang}">
-                        <translate :key="lang">A name for this stream that will be used internally in code. Should only contain letters, numbers, and underscores (i.e. "stream_lofi").</translate>
+                    <template #description>
+                        {{
+                            $gettext('A name for this stream that will be used internally in code. Should only contain letters, numbers, and underscores (i.e. "stream_lofi").')
+                        }}
                     </template>
                 </b-wrapped-form-group>
 
-                <b-wrapped-form-group class="col-md-6" id="edit_form_format" :field="form.format">
-                    <template #label="{lang}">
-                        <translate :key="lang">Audio Format</translate>
+                <b-wrapped-form-group
+                    id="edit_form_format"
+                    class="col-md-6"
+                    :field="form.format"
+                >
+                    <template #label>
+                        {{ $gettext('Audio Format') }}
                     </template>
-                    <template #default="props">
+                    <template #default="slotProps">
                         <b-form-radio-group
+                            :id="slotProps.id"
+                            v-model="slotProps.field.$model"
                             stacked
-                            :id="props.id"
-                            :state="props.state"
-                            v-model="props.field.$model"
+                            :state="slotProps.state"
                             :options="formatOptions"
-                        ></b-form-radio-group>
+                        />
                     </template>
                 </b-wrapped-form-group>
-                <b-wrapped-form-group class="col-md-6" id="edit_form_bitrate" :field="form.bitrate">
-                    <template #label="{lang}">
-                        <translate :key="lang">Audio Bitrate (kbps)</translate>
+                <b-wrapped-form-group
+                    id="edit_form_bitrate"
+                    class="col-md-6"
+                    :field="form.bitrate"
+                >
+                    <template #label>
+                        {{ $gettext('Audio Bitrate (kbps)') }}
                     </template>
-                    <template #default="props">
+                    <template #default="slotProps">
                         <b-form-radio-group
+                            :id="slotProps.id"
+                            v-model="slotProps.field.$model"
                             stacked
-                            :id="props.id"
-                            :state="props.state"
-                            v-model="props.field.$model"
+                            :state="slotProps.state"
                             :options="bitrateOptions"
-                        ></b-form-radio-group>
+                        />
                     </template>
                 </b-wrapped-form-group>
-            </b-form-row>
+            </div>
         </b-form-group>
     </b-tab>
 </template>
 
-<script>
+<script setup>
 import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
-import BWrappedFormCheckbox from "~/components/Form/BWrappedFormCheckbox";
+import {map} from "lodash";
 
-export default {
-    name: 'HlsStreamFormBasicInfo',
-    components: {BWrappedFormCheckbox, BWrappedFormGroup},
-    props: {
-        form: Object,
-        stationFrontendType: String
-    },
-    computed: {
-        langTabTitle() {
-            return this.$gettext('Basic Info');
-        },
-        formatOptions() {
-            return [
-                {
-                    value: 'aac',
-                    text: 'AAC'
-                }
-            ];
-        },
-        bitrateOptions() {
-            let options = [];
-            [32, 48, 64, 96, 128, 192, 256, 320].forEach((val) => {
-                options.push({
-                    value: val,
-                    text: val
-                });
-            });
-            return options;
-        },
+const props = defineProps({
+    form: {
+        type: Object,
+        required: true
     }
-};
+});
+
+const formatOptions = [
+    {
+        value: 'aac',
+        text: 'AAC'
+    }
+];
+
+const bitrateOptions = map(
+    [32, 48, 64, 96, 128, 192, 256, 320],
+    (val) => {
+        return {
+            value: val,
+            text: val
+        }
+    },
+);
 </script>

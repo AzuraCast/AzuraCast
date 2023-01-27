@@ -2,89 +2,91 @@
     <div class="card">
         <div class="card-header bg-primary-dark">
             <h2 class="card-title">
-                <translate key="lang_connection_info_hdr">Connection Information</translate>
+                {{ $gettext('Connection Information') }}
             </h2>
         </div>
         <div class="card-body">
             <h3 class="card-subtitle mt-0">
-                <translate key="lang_connection_icecast_hdr">Icecast Clients</translate>
+                {{ $gettext('Icecast Clients') }}
             </h3>
             <dl>
                 <dt class="mb-1">
-                    <translate key="lang_connection_info_server">Server:</translate>
+                    {{ $gettext('Server:') }}
                 </dt>
                 <dd>
                     <code>{{ connectionInfo.serverUrl }}</code>
                 </dd>
                 <dd v-if="connectionInfo.ip">
-                    <translate
-                        key="lang_connection_ip">You may need to connect directly via your IP address:</translate>
+                    {{ $gettext('You may need to connect directly via your IP address:') }}
                     <code>{{ connectionInfo.ip }}</code>
                 </dd>
 
                 <dt class="mb-1">
-                    <translate key="lang_connection_info_port">Port:</translate>
+                    {{ $gettext('Port:') }}
                 </dt>
                 <dd><code>{{ connectionInfo.streamPort }}</code></dd>
 
                 <dt class="mb-1">
-                    <translate key="lang_connection_info_mount">Mount Name:</translate>
+                    {{ $gettext('Mount Name:') }}
                 </dt>
                 <dd><code>{{ connectionInfo.djMountPoint }}</code></dd>
             </dl>
         </div>
         <div class="card-body">
             <h3 class="card-subtitle mt-0">
-                <translate key="lang_connection_shoutcast_hdr">Shoutcast Clients</translate>
+                {{ $gettext('Shoutcast Clients') }}
             </h3>
             <dl>
                 <dt class="mb-1">
-                    <translate key="lang_connection_info_server">Server:</translate>
+                    {{ $gettext('Server:') }}
                 </dt>
                 <dd>
                     <code>{{ connectionInfo.serverUrl }}</code>
                 </dd>
                 <dd v-if="connectionInfo.ip">
-                    <translate
-                        key="lang_connection_ip">You may need to connect directly via your IP address:</translate>
+                    {{ $gettext('You may need to connect directly via your IP address:') }}
                     <code>{{ connectionInfo.ip }}</code>
                 </dd>
 
                 <dt class="mb-1">
-                    <translate key="lang_connection_info_port">Port:</translate>
+                    {{ $gettext('Port:') }}
                 </dt>
                 <dd><code>{{ connectionInfo.streamPort }}</code></dd>
                 <dd>
-                    <translate key="lang_connection_info_legacy">For some clients, use port:</translate>
+                    {{ $gettext('For some clients, use port:') }}
                     <code>{{ connectionInfo.streamPort + 1 }}</code>
                 </dd>
 
                 <dt class="mb-1">
-                    <translate key="lang_connection_info_password">Password:</translate>
+                    {{ $gettext('Password:') }}
                 </dt>
                 <dd>
                     <code>dj_username:dj_password</code>
-                    <translate key="lang_or">or</translate>
+                    {{ $gettext('or') }}
                     <code>dj_username,dj_password</code>
                 </dd>
             </dl>
         </div>
         <div class="card-body">
             <p class="card-text">
-                <translate key="lang_connection_wiki">Setup instructions for broadcasting software are available on the AzuraCast wiki.</translate>
+                {{ $gettext('Setup instructions for broadcasting software are available on the AzuraCast wiki.') }}
                 <br>
-                <a href="https://docs.azuracast.com/en/user-guide/streaming-software" target="_blank">
-                    <translate key="lang_connection_wiki_link">AzuraCast Wiki</translate>
+                <a
+                    href="https://docs.azuracast.com/en/user-guide/streaming-software"
+                    target="_blank"
+                >
+                    {{ $gettext('AzuraCast Wiki') }}
                 </a>
             </p>
         </div>
     </div>
 </template>
-<script>
-export default {
-    name: 'ConnectionInfo',
-    props: {
-        connectionInfo: Object
+
+<script setup>
+const props = defineProps({
+    connectionInfo: {
+        type: Object,
+        required: true
     }
-}
+});
 </script>

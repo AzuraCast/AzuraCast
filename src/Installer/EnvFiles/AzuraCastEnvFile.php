@@ -28,6 +28,7 @@ final class AzuraCastEnvFile extends AbstractEnvFile
             }
 
             $dbSettings = $emptyEnv->getDatabaseSettings();
+            $redisSettings = $emptyEnv->getRedisSettings();
 
             $config = [
                 Environment::LANG => [
@@ -151,6 +152,28 @@ final class AzuraCastEnvFile extends AbstractEnvFile
                     ),
                     'default' => 100,
                 ],
+                Environment::ENABLE_REDIS => [
+                    'name' => __('Enable Redis'),
+                    'description' => __(
+                        'Disable to use a flatfile cache instead of Redis.',
+                    ),
+                ],
+                Environment::REDIS_HOST => [
+                    'name' => __('Redis Host'),
+                    'default' => $redisSettings['host'],
+                    'required' => true,
+                ],
+                Environment::REDIS_PORT => [
+                    'name' => __('Redis Port'),
+                    'default' => $redisSettings['port'],
+                    'required' => true,
+                ],
+                Environment::REDIS_DB => [
+                    'name' => __('Redis Database Index'),
+                    'options' => range(0, 15),
+                    'default' => $redisSettings['db'],
+                    'required' => true,
+                ],
                 'PHP_MAX_FILE_SIZE' => [
                     'name' => __('PHP Maximum POST File Size'),
                     'default' => '25M',
@@ -160,20 +183,25 @@ final class AzuraCastEnvFile extends AbstractEnvFile
                     'default' => '128M',
                 ],
                 'PHP_MAX_EXECUTION_TIME' => [
-                    'name' => __('PHP Script Maximum Execution Time'),
-                    'description' => __('(in seconds)'),
+                    'name' => __('PHP Script Maximum Execution Time (Seconds)'),
                     'default' => 30,
                 ],
                 Environment::SYNC_SHORT_EXECUTION_TIME => [
-                    'name' => __('Short Sync Task Execution Time'),
+                    'name' => __('Short Sync Task Execution Time (Seconds)'),
                     'description' => __(
                         'The maximum execution time (and lock timeout) for the 15-second, 1-minute and 5-minute synchronization tasks.'
                     ),
                 ],
                 Environment::SYNC_LONG_EXECUTION_TIME => [
-                    'name' => __('Long Sync Task Execution Time'),
+                    'name' => __('Long Sync Task Execution Time (Seconds)'),
                     'description' => __(
                         'The maximum execution time (and lock timeout) for the 1-hour synchronization task.',
+                    ),
+                ],
+                Environment::NOW_PLAYING_DELAY_TIME => [
+                    'name' => __('Now Playing Delay Time (Seconds)'),
+                    'description' => __(
+                        'The delay between Now Playing checks for every station. Decrease for more frequent checks at the expense of performance; increase for less frequent checks but better performance (for large installations).'
                     ),
                 ],
                 'PHP_FPM_MAX_CHILDREN' => [
@@ -203,6 +231,10 @@ final class AzuraCastEnvFile extends AbstractEnvFile
                     'name' => __('Profiling Extension IP Allow List'),
                     'options' => ['127.0.0.1', '*'],
                     'default' => '*',
+                ],
+                Environment::ENABLE_WEB_UPDATER => [
+                    'name' => __('Enable web-based Docker image updates'),
+                    'default' => true,
                 ],
             ];
 

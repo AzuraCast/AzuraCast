@@ -1,121 +1,153 @@
 <template>
     <date-range-picker
-        ref="picker" controlContainerClass="" opens="left" show-dropdowns
         v-bind="$props"
-        :time-picker-increment="1" :ranges="ranges" @update="onUpdate">
+        ref="picker"
+        v-model="dateRange"
+        v-model:date-range="dateRange"
+        control-container-class=""
+        opens="left"
+        show-dropdowns
+        :time-picker-increment="1"
+        :ranges="ranges"
+        @select="onSelect"
+    >
         <template #input="datePicker">
-            <a class="btn btn-bg dropdown-toggle" id="reportrange" href="#" @click.prevent="">
-                <icon icon="date_range"></icon>
+            <a
+                id="reportrange"
+                class="btn btn-bg dropdown-toggle"
+                href="#"
+                @click.prevent=""
+            >
+                <icon icon="date_range" />
                 {{ datePicker.rangeText }}
             </a>
         </template>
-        <slot v-for="(_, name) in $slots" :name="name" :slot="name"/>
-        <template v-for="(_, name) in $scopedSlots" :slot="name" slot-scope="slotData">
-            <slot :name="name" v-bind="slotData"/>
+
+        <template
+            v-for="(_, slot) of $slots"
+            #[slot]="scope"
+        >
+            <slot
+                :name="slot"
+                v-bind="scope"
+            />
         </template>
     </date-range-picker>
 </template>
 
-<style lang="css">
-@import '../../../node_modules/vue2-daterange-picker/dist/vue2-daterange-picker.css';
-</style>
-
-<script>
-import DateRangePicker from 'vue2-daterange-picker';
+<script setup>
+import DateRangePicker from 'vue3-daterange-picker';
 import Icon from "./Icon";
 import {DateTime} from 'luxon';
+import {computed} from "vue";
+import {useTranslate} from "~/vendor/gettext";
 
-export default {
-    name: 'DateRangeDropdown',
-    components: {DateRangePicker, Icon},
-    emits: ['update', 'input'],
-    model: {
-        prop: 'dateRange',
-        event: 'update',
+const props = defineProps({
+    tz: {
+        type: String,
+        default: 'system'
     },
-    props: {
-        tz: {
-            type: String,
-            default: 'system'
-        },
-        minDate: {
-            type: [String, Date],
-            default() {
-                return null
-            }
-        },
-        maxDate: {
-            type: [String, Date],
-            default() {
-                return null
-            }
-        },
-        timePicker: {
-            type: Boolean,
-            default: false,
-        },
-        dateRange: { // for v-model
-            type: [Object],
-            default: null,
-            required: true
-        },
-        customRanges: {
-            type: [Object, Boolean],
-            default: null,
-        },
-    },
-    computed: {
-
-        ranges() {
-            let ranges = {};
-
-            if (null !== this.customRanges) {
-                return this.customRanges;
-            }
-
-            let nowTz = DateTime.now().setZone(this.tz);
-            let nowAtMidnightDate = nowTz.endOf('day').toJSDate();
-
-            ranges[this.$gettext('Last 24 Hours')] = [
-                nowTz.minus({days: 1}).toJSDate(),
-                nowTz.toJSDate()
-            ];
-            ranges[this.$gettext('Today')] = [
-                nowTz.minus({days: 1}).startOf('day').toJSDate(),
-                nowAtMidnightDate
-            ];
-            ranges[this.$gettext('Yesterday')] = [
-                nowTz.minus({days: 2}).startOf('day').toJSDate(),
-                nowTz.minus({days: 1}).endOf('day').toJSDate()
-            ];
-            ranges[this.$gettext('Last 7 Days')] = [
-                nowTz.minus({days: 7}).startOf('day').toJSDate(),
-                nowAtMidnightDate
-            ];
-            ranges[this.$gettext('Last 14 Days')] = [
-                nowTz.minus({days: 14}).startOf('day').toJSDate(),
-                nowAtMidnightDate
-            ];
-            ranges[this.$gettext('Last 30 Days')] = [
-                nowTz.minus({days: 30}).startOf('day').toJSDate(),
-                nowAtMidnightDate
-            ];
-            ranges[this.$gettext('This Month')] = [
-                nowTz.startOf('month').startOf('day').toJSDate(),
-                nowTz.endOf('month').endOf('day').toJSDate()
-            ];
-            ranges[this.$gettext('Last Month')] = [
-                nowTz.minus({months: 1}).startOf('month').startOf('day').toJSDate(),
-                nowTz.minus({months: 1}).endOf('month').endOf('day').toJSDate()
-            ];
-
-            return ranges;
+    minDate: {
+        type: [String, Date],
+        default() {
+            return null
         }
     },
-    methods: {
-        onUpdate(newValue) {
-            this.$emit('update', newValue);
+    maxDate: {
+        type: [String, Date],
+        default() {
+            return null
         }
+    },
+    timePicker: {
+        type: Boolean,
+        default: false,
+    },
+    modelValue: {
+        type: Object,
+        required: true
+    },
+    customRanges: {
+        type: [Object, Boolean],
+        default: null,
     }
+});
+
+const emit = defineEmits(['update:modelValue', 'update']);
+
+const dateRange = computed({
+    get: () => {
+        return props.modelValue;
+    },
+    set: () => {
+        // Noop
+    }
+});
+
+const {$gettext} = useTranslate();
+
+const ranges = computed(() => {
+    if (null !== props.customRanges) {
+        return props.customRanges;
+    }
+
+    let nowTz = DateTime.now().setZone(props.tz);
+    let nowAtMidnightDate = nowTz.endOf('day').toJSDate();
+
+    let ranges = {};
+
+    ranges[$gettext('Last 24 Hours')] = [
+        nowTz.minus({days: 1}).toJSDate(),
+        nowTz.toJSDate()
+    ];
+    ranges[$gettext('Today')] = [
+        nowTz.minus({days: 1}).startOf('day').toJSDate(),
+        nowAtMidnightDate
+    ];
+    ranges[$gettext('Yesterday')] = [
+        nowTz.minus({days: 2}).startOf('day').toJSDate(),
+        nowTz.minus({days: 1}).endOf('day').toJSDate()
+    ];
+    ranges[$gettext('Last 7 Days')] = [
+        nowTz.minus({days: 7}).startOf('day').toJSDate(),
+        nowAtMidnightDate
+    ];
+    ranges[$gettext('Last 14 Days')] = [
+        nowTz.minus({days: 14}).startOf('day').toJSDate(),
+        nowAtMidnightDate
+    ];
+    ranges[$gettext('Last 30 Days')] = [
+        nowTz.minus({days: 30}).startOf('day').toJSDate(),
+        nowAtMidnightDate
+    ];
+    ranges[$gettext('This Month')] = [
+        nowTz.startOf('month').startOf('day').toJSDate(),
+        nowTz.endOf('month').endOf('day').toJSDate()
+    ];
+    ranges[$gettext('Last Month')] = [
+        nowTz.minus({months: 1}).startOf('month').startOf('day').toJSDate(),
+        nowTz.minus({months: 1}).endOf('month').endOf('day').toJSDate()
+    ];
+
+    return ranges;
+});
+
+const onSelect = (range) => {
+    emit('update:modelValue', range);
+    emit('update', range);
+};
+</script>
+
+<script>
+export default {
+    inheritAttrs: false,
+    model: {
+        prop: 'modelValue',
+        event: 'update:modelValue'
+    },
 }
 </script>
+
+<style lang="scss">
+@import 'vue3-daterange-picker/src/assets/daterangepicker';
+</style>

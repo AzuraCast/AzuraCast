@@ -1,86 +1,114 @@
 <template>
-    <modal-form ref="modal" :loading="loading" :title="langTitle" :error="error" :disable-save-button="$v.form.$invalid"
-                @submit="doSubmit" @hidden="clearContents">
+    <modal-form
+        ref="$modal"
+        :loading="loading"
+        :title="langTitle"
+        :error="error"
+        :disable-save-button="v$.$invalid"
+        @submit="doSubmit"
+        @hidden="clearContents"
+    >
+        <b-tabs
+            content-class="mt-3"
+            pills
+        >
+            <remote-form-basic-info :form="v$" />
 
-        <b-tabs content-class="mt-3">
-            <remote-form-basic-info :form="$v.form"></remote-form-basic-info>
-
-            <remote-form-auto-dj :form="$v.form"></remote-form-auto-dj>
+            <remote-form-auto-dj :form="v$" />
         </b-tabs>
-
     </modal-form>
 </template>
-<script>
-import {required} from 'vuelidate/dist/validators.min.js';
-import BaseEditModal from '~/components/Common/BaseEditModal';
+
+<script setup>
+import {required} from '@vuelidate/validators';
 import RemoteFormBasicInfo from "./Form/BasicInfo";
 import RemoteFormAutoDj from "./Form/AutoDj";
 import {REMOTE_ICECAST} from "~/components/Entity/RadioAdapters";
+import {baseEditModalProps, useBaseEditModal} from "~/functions/useBaseEditModal";
+import {computed, ref} from "vue";
+import {useNotify} from "~/vendor/bootstrapVue";
+import {useTranslate} from "~/vendor/gettext";
+import ModalForm from "~/components/Common/ModalForm.vue";
 
-export default {
-    name: 'RemoteEditModal',
-    emits: ['needs-restart'],
-    mixins: [BaseEditModal],
-    components: {
-        RemoteFormAutoDj,
-        RemoteFormBasicInfo
-    },
-    validations() {
-        return {
-            form: {
-                display_name: {},
-                is_visible_on_public_pages: {},
-                type: {required},
-                enable_autodj: {},
-                autodj_format: {},
-                autodj_bitrate: {},
-                custom_listen_url: {},
-                url: {required},
-                mount: {},
-                admin_password: {},
-                source_port: {},
-                source_mount: {},
-                source_username: {},
-                source_password: {},
-                is_public: {},
-            }
-        };
-    },
-    computed: {
-        langTitle() {
-            return this.isEditMode
-                ? this.$gettext('Edit Remote Relay')
-                : this.$gettext('Add Remote Relay');
-        }
-    },
-    methods: {
-        resetForm() {
-            this.form = {
-                display_name: null,
-                is_visible_on_public_pages: true,
-                type: REMOTE_ICECAST,
-                enable_autodj: false,
-                autodj_format: null,
-                autodj_bitrate: null,
-                custom_listen_url: null,
-                url: null,
-                mount: null,
-                admin_password: null,
-                source_port: null,
-                source_mount: null,
-                source_username: null,
-                source_password: null,
-                is_public: false
-            };
-        },
-        onSubmitSuccess(response) {
-            this.$notifySuccess();
+const props = defineProps({
+    ...baseEditModalProps,
+});
 
-            this.$emit('needs-restart');
-            this.$emit('relist');
+const emit = defineEmits(['relist', 'needs-restart']);
 
-            this.close();
+const $modal = ref(); // Template Ref
+
+const {notifySuccess} = useNotify();
+
+const {
+    loading,
+    error,
+    isEditMode,
+    v$,
+    clearContents,
+    create,
+    edit,
+    doSubmit,
+    close
+} = useBaseEditModal(
+    props,
+    emit,
+    $modal,
+    {
+        display_name: {},
+        is_visible_on_public_pages: {},
+        type: {required},
+        enable_autodj: {},
+        autodj_format: {},
+        autodj_bitrate: {},
+        custom_listen_url: {},
+        url: {required},
+        mount: {},
+        admin_password: {},
+        source_port: {},
+        source_mount: {},
+        source_username: {},
+        source_password: {},
+        is_public: {},
+    },
+    {
+        display_name: null,
+        is_visible_on_public_pages: true,
+        type: REMOTE_ICECAST,
+        enable_autodj: false,
+        autodj_format: null,
+        autodj_bitrate: null,
+        custom_listen_url: null,
+        url: null,
+        mount: null,
+        admin_password: null,
+        source_port: null,
+        source_mount: null,
+        source_username: null,
+        source_password: null,
+        is_public: false
+    },
+    {
+        onSubmitSuccess: () => {
+            notifySuccess();
+            emit('relist');
+            emit('needs-restart');
+            close();
         },
     }
-};
+);
+
+const {$gettext} = useTranslate();
+
+const langTitle = computed(() => {
+    return isEditMode.value
+        ? $gettext('Edit Remote Relay')
+        : $gettext('Add Remote Relay');
+});
+
+defineExpose({
+    create,
+    edit,
+    close
+});
 </script>

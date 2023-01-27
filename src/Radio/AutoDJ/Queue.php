@@ -254,7 +254,8 @@ final class Queue
         return $playlist->getIsEnabled() &&
             $this->scheduler->isPlaylistScheduledToPlayNow(
                 $playlist,
-                $expectedPlayTime
+                $expectedPlayTime,
+                true
             );
     }
 

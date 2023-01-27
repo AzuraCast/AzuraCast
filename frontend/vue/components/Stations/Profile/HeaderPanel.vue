@@ -1,40 +1,52 @@
 <template>
     <div class="outside-card-header d-flex align-items-center mb-3">
-        <div class="flex-shrink-0 mr-3" v-if="np.station.listen_url">
-            <play-button icon-class="outlined xl" :url="np.station.listen_url" is-stream></play-button>
+        <div
+            v-if="station.listen_url"
+            class="flex-shrink-0 mr-3"
+        >
+            <play-button
+                icon-class="outlined xl"
+                :url="station.listen_url"
+                is-stream
+            />
         </div>
         <div class="flex-fill">
-            <h2 class="m-0">{{ stationName }}</h2>
-            <h3 class="m-0" v-if="stationDescription">{{ stationDescription }}</h3>
+            <h2 class="m-0">
+                {{ stationName }}
+            </h2>
+            <h3
+                v-if="stationDescription"
+                class="m-0"
+            >
+                {{ stationDescription }}
+            </h3>
         </div>
-        <div class="flex-shrink-0 ml-3" v-if="userCanManageProfile">
-            <a class="btn btn-primary btn-lg" role="button" :href="manageProfileUri">
-                <icon icon="edit"></icon>
-                <translate key="lang_profile_btn_edit">Edit Profile</translate>
+        <div
+            v-if="userCanManageProfile"
+            class="flex-shrink-0 ml-3"
+        >
+            <a
+                class="btn btn-primary btn-lg"
+                role="button"
+                :href="manageProfileUri"
+            >
+                <icon icon="edit" />
+                {{ $gettext('Edit Profile') }}
             </a>
         </div>
     </div>
 </template>
 
-<script>
+<script setup>
 import Icon from '~/components/Common/Icon';
-import PlayButton from "../../Common/PlayButton";
+import PlayButton from "~/components/Common/PlayButton.vue";
+import headerPanelProps from "~/components/Stations/Profile/headerPanelProps";
 
-export const profileHeaderProps = {
-    props: {
-        stationName: String,
-        stationDescription: String,
-        userCanManageProfile: Boolean,
-        manageProfileUri: String
+const props = defineProps({
+    ...headerPanelProps,
+    station: {
+        type: Object,
+        required: true
     }
-};
-
-export default {
-    inheritAttrs: false,
-    props: {
-        np: Object
-    },
-    components: {PlayButton, Icon},
-    mixins: [profileHeaderProps]
-};
+});
 </script>

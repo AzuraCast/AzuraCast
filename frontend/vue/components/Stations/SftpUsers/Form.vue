@@ -1,49 +1,73 @@
 <template>
     <b-form-group>
-        <b-form-row>
-            <b-wrapped-form-group class="col-md-6" id="edit_form_username" :field="form.username">
-                <template #label="{lang}">
-                    <translate :key="lang">Username</translate>
+        <div class="form-row">
+            <b-wrapped-form-group
+                id="edit_form_username"
+                class="col-md-6"
+                :field="form.username"
+            >
+                <template #label>
+                    {{ $gettext('Username') }}
                 </template>
             </b-wrapped-form-group>
 
-            <b-wrapped-form-group class="col-md-6" id="edit_form_password" :field="form.password"
-                                  input-type="password">
-                <template #label v-if="isEditMode">
-                    <translate key="lang_edit_form_new_password">New Password</translate>
+            <b-wrapped-form-group
+                id="edit_form_password"
+                class="col-md-6"
+                :field="form.password"
+                input-type="password"
+            >
+                <template
+                    v-if="isEditMode"
+                    #label
+                >
+                    {{ $gettext('New Password') }}
                 </template>
-                <template #label v-else>
-                    <translate key="lang_edit_form_password">Password</translate>
+                <template
+                    v-else
+                    #label
+                >
+                    {{ $gettext('Password') }}
                 </template>
 
-                <template #description v-if="isEditMode">
-                    <translate key="lang_edit_form_password_desc">Leave blank to use the current password.</translate>
+                <template
+                    v-if="isEditMode"
+                    #description
+                >
+                    {{ $gettext('Leave blank to use the current password.') }}
                 </template>
             </b-wrapped-form-group>
 
-            <b-wrapped-form-group class="col-md-12" id="edit_form_publicKeys" :field="form.publicKeys"
-                                  input-type="textarea">
-                <template #label="{lang}">
-                    <translate :key="lang">SSH Public Keys</translate>
+            <b-wrapped-form-group
+                id="edit_form_publicKeys"
+                class="col-md-12"
+                :field="form.publicKeys"
+                input-type="textarea"
+            >
+                <template #label>
+                    {{ $gettext('SSH Public Keys') }}
                 </template>
-                <template #description="{lang}">
-                    <translate :key="lang">Optionally supply SSH public keys this user can use to connect instead of a password. Enter one key per line.</translate>
+                <template #description>
+                    {{
+                        $gettext('Optionally supply SSH public keys this user can use to connect instead of a password. Enter one key per line.')
+                    }}
                 </template>
             </b-wrapped-form-group>
-
-        </b-form-row>
+        </div>
     </b-form-group>
 </template>
 
-<script>
+<script setup>
 import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
 
-export default {
-    name: 'SftpUsersForm',
-    components: {BWrappedFormGroup},
-    props: {
-        form: Object,
-        isEditMode: Boolean
+const props = defineProps({
+    form: {
+        type: Object,
+        required: true
     },
-};
+    isEditMode: {
+        type: Boolean,
+        required: true
+    }
+});
 </script>

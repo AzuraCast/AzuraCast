@@ -1,28 +1,53 @@
 <template>
-    <b-modal id="move_file" size="xl" centered ref="modal" :title="langHeader">
+    <b-modal
+        id="move_file"
+        ref="$modal"
+        size="xl"
+        centered
+        :title="langHeader"
+    >
         <b-row class="mb-3 align-items-center">
             <b-col md="6">
-                <b-button size="sm" variant="primary" @click="pageBack" :disabled="dirHistory.length === 0">
-                    <icon icon="chevron_left"></icon>
-                    <translate key="lang_btn_back">Back</translate>
+                <b-button
+                    size="sm"
+                    variant="primary"
+                    :disabled="dirHistory.length === 0"
+                    @click.prevent="pageBack"
+                >
+                    <icon icon="chevron_left" />
+                    {{ $gettext('Back') }}
                 </b-button>
             </b-col>
-            <b-col md="6" class="text-right">
-                <h6 class="m-0">{{ destinationDirectory }}</h6>
+            <b-col
+                md="6"
+                class="text-right"
+            >
+                <h6 class="m-0">
+                    {{ destinationDirectory }}
+                </h6>
             </b-col>
         </b-row>
         <b-row>
             <b-col md="12">
-                <data-table ref="datatable" id="station_media" :show-toolbar="false"
-                            :selectable="false" :fields="fields"
-                            :api-url="listDirectoriesUrl" :request-config="requestConfig">
+                <data-table
+                    id="station_media"
+                    ref="$datatable"
+                    :show-toolbar="false"
+                    :selectable="false"
+                    :fields="fields"
+                    :api-url="listDirectoriesUrl"
+                    :request-config="requestConfig"
+                >
                     <template #cell(directory)="row">
                         <div class="is_dir">
                             <span class="file-icon">
-                                <icon icon="folder"></icon>
+                                <icon icon="folder" />
                             </span>
 
-                            <a href="#" @click.prevent="enterDirectory(row.item.path)">
+                            <a
+                                href="#"
+                                @click.prevent="enterDirectory(row.item.path)"
+                            >
                                 {{ row.item.name }}
                             </a>
                         </div>
@@ -31,100 +56,128 @@
             </b-col>
         </b-row>
         <template #modal-footer>
-            <b-button variant="default" @click="close">
-                <translate key="lang_btn_close">Close</translate>
+            <b-button
+                variant="default"
+                @click="close"
+            >
+                {{ $gettext('Close') }}
             </b-button>
-            <b-button variant="primary" @click="doMove">
-                <translate key="lang_btn_move">Move to Directory</translate>
+            <b-button
+                variant="primary"
+                @click="doMove"
+            >
+                {{ $gettext('Move to Directory') }}
             </b-button>
         </template>
     </b-modal>
 </template>
-<script>
+
+<script setup>
 import DataTable from '~/components/Common/DataTable.vue';
-import _ from 'lodash';
+import {forEach} from 'lodash';
 import Icon from '~/components/Common/Icon';
+import {computed, h, ref} from "vue";
+import {useTranslate} from "~/vendor/gettext";
+import {useNotify} from "~/vendor/bootstrapVue";
+import {useAxios} from "~/vendor/axios";
 
-export default {
-    name: 'MoveFilesModal',
-    components: {Icon, DataTable},
-    props: {
-        selectedItems: Object,
-        currentDirectory: String,
-        batchUrl: String,
-        listDirectoriesUrl: String
+const props = defineProps({
+    selectedItems: {
+        type: Object,
+        required: true
     },
-    data () {
-        return {
-            destinationDirectory: '',
-            dirHistory: [],
-            fields: [
-                { key: 'directory', label: this.$gettext('Directory'), sortable: false }
-            ]
-        };
+    currentDirectory: {
+        type: String,
+        required: true
     },
-    computed: {
-        langHeader () {
-            let headerText = this.$gettext('Move %{ num } File(s) to');
-            return this.$gettextInterpolate(headerText, { num: this.selectedItems.all.length });
-        }
+    batchUrl: {
+        type: String,
+        required: true
     },
-    methods: {
-        close () {
-            this.dirHistory = [];
-            this.destinationDirectory = '';
-
-            this.$refs.modal.hide();
-        },
-        doMove () {
-            (this.selectedItems.all.length) && this.$wrapWithLoading(
-                this.axios.put(this.batchUrl, {
-                    'do': 'move',
-                    'currentDirectory': this.currentDirectory,
-                    'directory': this.destinationDirectory,
-                    'files': this.selectedItems.files,
-                    'dirs': this.selectedItems.directories
-                })
-            ).then(() => {
-                let notifyMessage = this.$gettext('Files moved:');
-                let itemNameNodes = [];
-                _.forEach(this.selectedItems.all, (item) => {
-                    itemNameNodes.push(this.$createElement('div', {}, item.name));
-                });
-
-                this.$notifySuccess(itemNameNodes, {
-                    title: notifyMessage
-                });
-            }).finally(() => {
-                this.close();
-                this.$emit('relist');
-            });
-        },
-        enterDirectory (path) {
-            this.dirHistory.push(path);
-            this.destinationDirectory = path;
-
-            this.$refs.datatable.refresh();
-        },
-        pageBack: function (e) {
-            e.preventDefault();
-
-            this.dirHistory.pop();
-
-            let newDirectory = this.dirHistory.slice(-1)[0];
-            if (typeof newDirectory === 'undefined' || null === newDirectory) {
-                newDirectory = '';
-            }
-            this.destinationDirectory = newDirectory;
-
-            this.$refs.datatable.refresh();
-        },
-        requestConfig (config) {
-            config.params.currentDirectory = this.destinationDirectory;
-            config.params.csrf = this.csrf;
-
-            return config;
-        }
+    listDirectoriesUrl: {
+        type: String,
+        required: true
     }
+});
+
+const emit = defineEmits(['relist']);
+
+const destinationDirectory = ref('');
+const dirHistory = ref([]);
+
+const {$gettext} = useTranslate();
+
+const fields = [
+    {key: 'directory', label: $gettext('Directory'), sortable: false}
+];
+
+const langHeader = computed(() => {
+    return $gettext(
+        'Move %{ num } File(s) to',
+        {num: props.selectedItems.all.length}
+    );
+});
+
+const $modal = ref(); // Template Ref
+
+const close = () => {
+    dirHistory.value = [];
+    destinationDirectory.value = '';
+
+    $modal.value.hide();
+};
+
+const {wrapWithLoading, notifySuccess} = useNotify();
+const {axios} = useAxios();
+
+const doMove = () => {
+    (props.selectedItems.all.length) && wrapWithLoading(
+        axios.put(props.batchUrl, {
+            'do': 'move',
+            'currentDirectory': props.currentDirectory,
+            'directory': destinationDirectory.value,
+            'files': props.selectedItems.files,
+            'dirs': props.selectedItems.directories
+        })
+    ).then(() => {
+        let notifyMessage = $gettext('Files moved:');
+        let itemNameNodes = [];
+        forEach(props.selectedItems.all, (item) => {
+            itemNameNodes.push(h('div', {}, item.path_short));
+        });
+
+        notifySuccess(itemNameNodes, {
+            title: notifyMessage
+        });
+    }).finally(() => {
+        close();
+        emit('relist');
+    });
+};
+
+const $datatable = ref(); // Template Ref
+
+const enterDirectory = (path) => {
+    dirHistory.value.push(path);
+    destinationDirectory.value = path;
+
+    $datatable.value.refresh();
+};
+
+const pageBack = () => {
+    dirHistory.value.pop();
+
+    let newDirectory = dirHistory.value.slice(-1)[0];
+    if (typeof newDirectory === 'undefined' || null === newDirectory) {
+        newDirectory = '';
+    }
+
+    destinationDirectory.value = newDirectory;
+    $datatable.value.refresh();
+};
+
+const requestConfig = (config) => {
+    config.params.currentDirectory = destinationDirectory.value;
+    return config;
 };
 </script>

@@ -2,20 +2,26 @@
     <div class="stepper-horiz">
         <div :class="getStepperClass(1)">
             <div class="stepper-icon">
-                <icon v-if="step > 1" icon="check"></icon>
+                <icon
+                    v-if="step > 1"
+                    icon="check"
+                />
                 <span v-else>1</span>
             </div>
             <span class="stepper-text">
-                <translate key="lang_step_register">Create Account</translate>
+                {{ $gettext('Create Account') }}
             </span>
         </div>
         <div :class="getStepperClass(2)">
             <div class="stepper-icon">
-                <icon v-if="step > 2" icon="check"></icon>
+                <icon
+                    v-if="step > 2"
+                    icon="check"
+                />
                 <span v-else>2</span>
             </div>
             <span class="stepper-text">
-                <translate key="lang_step_station">Create Station</translate>
+                {{ $gettext('Create Station') }}
             </span>
         </div>
         <div :class="getStepperClass(3)">
@@ -23,31 +29,29 @@
                 <span>3</span>
             </div>
             <span class="stepper-text">
-                <translate key="lang_step_settings">System Settings</translate>
+                {{ $gettext('System Settings') }}
             </span>
         </div>
     </div>
 </template>
 
-<script>
+<script setup>
 import Icon from "~/components/Common/Icon";
 
-export default {
-    name: 'SetupStep',
-    components: {Icon},
-    props: {
-        step: Number
-    },
-    methods: {
-        getStepperClass(currentStep) {
-            if (this.step === currentStep) {
-                return ['stepper', 'active'];
-            } else if (this.step > currentStep) {
-                return ['stepper', 'done'];
-            } else {
-                return ['stepper'];
-            }
-        }
+const props = defineProps({
+    step: {
+        type: Number,
+        default: 1
+    }
+});
+
+const getStepperClass = (currentStep) => {
+    if (props.step === currentStep) {
+        return ['stepper', 'active'];
+    } else if (props.step > currentStep) {
+        return ['stepper', 'done'];
+    } else {
+        return ['stepper'];
     }
 }
 </script>

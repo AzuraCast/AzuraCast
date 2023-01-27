@@ -39,8 +39,15 @@ final class StationRepository extends Repository
             : $this->repository->findOneBy(['short_name' => $identifier]);
     }
 
-    /**
-     */
+    public function getActiveCount(): int
+    {
+        return $this->em->createQuery(
+            <<<'DQL'
+            SELECT COUNT(s.id) FROM App\Entity\Station s WHERE s.is_enabled = 1
+            DQL
+        )->getSingleScalarResult();
+    }
+
     public function fetchAll(): mixed
     {
         return $this->em->createQuery(
@@ -181,7 +188,12 @@ final class StationRepository extends Repository
     public function getDefaultAlbumArtUrl(?Entity\Station $station = null): UriInterface
     {
         if (null !== $station) {
-            $stationCustomUri = $station->getDefaultAlbumArtUrlAsUri();
+            $stationAlbumArt = new AlbumArtCustomAsset($this->environment, $station);
+            if ($stationAlbumArt->isUploaded()) {
+                return $stationAlbumArt->getUri();
+            }
+
+            $stationCustomUri = $station->getBrandingConfig()->getDefaultAlbumArtUrlAsUri();
             if (null !== $stationCustomUri) {
                 return $stationCustomUri;
             }

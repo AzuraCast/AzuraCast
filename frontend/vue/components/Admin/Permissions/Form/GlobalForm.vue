@@ -1,55 +1,69 @@
 <template>
-    <b-tab :title="langTabTitle" active>
+    <b-tab
+        :title="$gettext('Global Permissions')"
+        active
+    >
         <b-form-group>
-            <b-form-row>
-                <b-wrapped-form-group class="col-md-12" id="edit_form_name" :field="form.name">
-                    <template #label="{lang}">
-                        <translate :key="lang">Role Name</translate>
+            <div class="form-row">
+                <b-wrapped-form-group
+                    id="edit_form_name"
+                    class="col-md-12"
+                    :field="form.name"
+                >
+                    <template #label>
+                        {{ $gettext('Role Name') }}
                     </template>
                 </b-wrapped-form-group>
 
-                <b-wrapped-form-group class="col-md-12" id="edit_form_global_permissions"
-                                      :field="form.permissions.global">
-                    <template #label="{lang}">
-                        <translate :key="lang">Global Permissions</translate>
+                <b-wrapped-form-group
+                    id="edit_form_global_permissions"
+                    class="col-md-12"
+                    :field="form.permissions.global"
+                >
+                    <template #label>
+                        {{ $gettext('Global Permissions') }}
                     </template>
-                    <template #description="{lang}">
-                        <translate :key="lang">Users with this role will have these permissions across the entire installation.</translate>
+                    <template #description>
+                        {{
+                            $gettext('Users with this role will have these permissions across the entire installation.')
+                        }}
                     </template>
-                    <template #default="props">
-                        <b-form-checkbox-group :id="props.id" :options="globalPermissionOptions"
-                                               v-model="props.field.$model">
-                        </b-form-checkbox-group>
+                    <template #default="slotProps">
+                        <b-form-checkbox-group
+                            :id="slotProps.id"
+                            v-model="slotProps.field.$model"
+                            :options="globalPermissionOptions"
+                            stacked
+                        />
                     </template>
                 </b-wrapped-form-group>
-            </b-form-row>
+            </div>
         </b-form-group>
     </b-tab>
 </template>
 
-<script>
-import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
-import _ from 'lodash';
+<script setup>
+import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup.vue";
+import {map} from 'lodash';
+import {computed} from "vue";
 
-export default {
-    name: 'AdminPermissionsGlobalForm',
-    components: {BWrappedFormGroup},
-    props: {
-        form: Object,
-        globalPermissions: Object
+const props = defineProps({
+    form: {
+        type: Object,
+        required: true
     },
-    computed: {
-        langTabTitle() {
-            return this.$gettext('Global Permissions');
-        },
-        globalPermissionOptions() {
-            return _.map(this.globalPermissions, (permissionName, permissionKey) => {
-                return {
-                    text: permissionName,
-                    value: permissionKey
-                };
-            });
-        },
+    globalPermissions: {
+        type: Object,
+        required: true
     }
-};
+});
+
+const globalPermissionOptions = computed(() => {
+    return map(props.globalPermissions, (permissionName, permissionKey) => {
+        return {
+            text: permissionName,
+            value: permissionKey
+        };
+    });
+});
 </script>

@@ -1,132 +1,166 @@
 <template>
-    <div>
-        <b-form-group>
-            <b-form-fieldset>
-                <b-form-row>
-                    <b-wrapped-form-checkbox class="col-md-6" id="edit_form_is_enabled" :field="form.is_enabled">
-                        <template #label="{lang}">
-                            <translate :key="lang">Enable Broadcasting</translate>
-                        </template>
-                        <template #description="{lang}">
-                            <translate
-                                :key="lang">If disabled, the station will not broadcast or shuffle its AutoDJ.</translate>
-                        </template>
-                    </b-wrapped-form-checkbox>
+    <b-form-group>
+        <b-form-fieldset>
+            <div class="form-row">
+                <b-wrapped-form-checkbox
+                    id="edit_form_is_enabled"
+                    class="col-md-6"
+                    :field="form.is_enabled"
+                >
+                    <template #label>
+                        {{ $gettext('Enable Broadcasting') }}
+                    </template>
+                    <template #description>
+                        {{ $gettext('If disabled, the station will not broadcast or shuffle its AutoDJ.') }}
+                    </template>
+                </b-wrapped-form-checkbox>
 
-                    <b-wrapped-form-group v-if="showAdvanced" class="col-md-6" id="edit_form_radio_base_dir"
-                                          :field="form.radio_base_dir" advanced>
-                        <template #label="{lang}">
-                            <translate :key="lang">Base Station Directory</translate>
+                <b-wrapped-form-group
+                    v-if="showAdvanced"
+                    id="edit_form_radio_base_dir"
+                    class="col-md-6"
+                    :field="form.radio_base_dir"
+                    advanced
+                >
+                    <template #label>
+                        {{ $gettext('Base Station Directory') }}
+                    </template>
+                    <template #description>
+                        {{
+                            $gettext('The parent directory where station playlist and configuration files are stored. Leave blank to use default directory.')
+                        }}
+                    </template>
+                </b-wrapped-form-group>
+            </div>
+        </b-form-fieldset>
+
+        <b-form-fieldset>
+            <b-overlay
+                variant="card"
+                :show="storageLocationsLoading"
+            >
+                <div class="form-row">
+                    <b-wrapped-form-group
+                        id="edit_form_media_storage_location"
+                        class="col-md-12"
+                        :field="form.media_storage_location"
+                    >
+                        <template #label>
+                            {{ $gettext('Media Storage Location') }}
                         </template>
-                        <template #description="{lang}">
-                            <translate :key="lang">The parent directory where station playlist and configuration files are stored. Leave blank to use default directory.</translate>
+                        <template #default="slotProps">
+                            <b-form-select
+                                :id="slotProps.id"
+                                v-model="slotProps.field.$model"
+                                :options="storageLocationOptions.media_storage_location"
+                            />
                         </template>
                     </b-wrapped-form-group>
-                </b-form-row>
-            </b-form-fieldset>
 
-            <b-form-fieldset>
-                <b-overlay variant="card" :show="storageLocationsLoading">
-                    <b-form-row>
-                        <b-wrapped-form-group class="col-md-12" id="edit_form_media_storage_location"
-                                              :field="form.media_storage_location">
-                            <template #label="{lang}">
-                                <translate :key="lang">Media Storage Location</translate>
-                            </template>
-                            <template #default="props">
-                                <b-form-select :id="props.id" v-model="props.field.$model"
-                                               :options="storageLocationOptions.media_storage_location"></b-form-select>
-                            </template>
-                        </b-wrapped-form-group>
+                    <b-wrapped-form-group
+                        id="edit_form_recordings_storage_location"
+                        class="col-md-12"
+                        :field="form.recordings_storage_location"
+                    >
+                        <template #label>
+                            {{ $gettext('Live Recordings Storage Location') }}
+                        </template>
+                        <template #default="slotProps">
+                            <b-form-select
+                                :id="slotProps.id"
+                                v-model="slotProps.field.$model"
+                                :options="storageLocationOptions.recordings_storage_location"
+                            />
+                        </template>
+                    </b-wrapped-form-group>
 
-                        <b-wrapped-form-group class="col-md-12" id="edit_form_recordings_storage_location"
-                                              :field="form.recordings_storage_location">
-                            <template #label="{lang}">
-                                <translate :key="lang">Live Recordings Storage Location</translate>
-                            </template>
-                            <template #default="props">
-                                <b-form-select :id="props.id" v-model="props.field.$model"
-                                               :options="storageLocationOptions.recordings_storage_location"></b-form-select>
-                            </template>
-                        </b-wrapped-form-group>
-
-                        <b-wrapped-form-group class="col-md-12" id="edit_form_podcasts_storage_location"
-                                              :field="form.podcasts_storage_location">
-                            <template #label="{lang}">
-                                <translate :key="lang">Podcasts Storage Location</translate>
-                            </template>
-                            <template #default="props">
-                                <b-form-select :id="props.id" v-model="props.field.$model"
-                                               :options="storageLocationOptions.podcasts_storage_location"></b-form-select>
-                            </template>
-                        </b-wrapped-form-group>
-                    </b-form-row>
-                </b-overlay>
-            </b-form-fieldset>
-        </b-form-group>
-    </div>
+                    <b-wrapped-form-group
+                        id="edit_form_podcasts_storage_location"
+                        class="col-md-12"
+                        :field="form.podcasts_storage_location"
+                    >
+                        <template #label>
+                            {{ $gettext('Podcasts Storage Location') }}
+                        </template>
+                        <template #default="slotProps">
+                            <b-form-select
+                                :id="slotProps.id"
+                                v-model="slotProps.field.$model"
+                                :options="storageLocationOptions.podcasts_storage_location"
+                            />
+                        </template>
+                    </b-wrapped-form-group>
+                </div>
+            </b-overlay>
+        </b-form-fieldset>
+    </b-form-group>
 </template>
 
-<script>
-import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
+<script setup>
+import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup.vue";
 import objectToFormOptions from "~/functions/objectToFormOptions";
-import BWrappedFormCheckbox from "~/components/Form/BWrappedFormCheckbox";
-import BFormFieldset from "~/components/Form/BFormFieldset";
+import BWrappedFormCheckbox from "~/components/Form/BWrappedFormCheckbox.vue";
+import BFormFieldset from "~/components/Form/BFormFieldset.vue";
+import {onMounted, reactive, ref} from "vue";
+import {useAxios} from "~/vendor/axios";
 
-export default {
-    name: 'AdminStationsAdminForm',
-    components: {BWrappedFormCheckbox, BWrappedFormGroup, BFormFieldset},
-    props: {
-        form: Object,
-        isEditMode: Boolean,
-        storageLocationApiUrl: String,
-        showAdvanced: {
-            type: Boolean,
-            default: true
-        },
+const props = defineProps({
+    form: {
+        type: Object,
+        required: true
     },
-    data() {
-        return {
-            storageLocationsLoading: true,
-            storageLocationOptions: {
-                media_storage_location: [],
-                recordings_storage_location: [],
-                podcasts_storage_location: []
-            }
-        }
+    isEditMode: {
+        type: Boolean,
+        required: true
     },
-    mounted() {
-        this.loadLocations();
+    storageLocationApiUrl: {
+        type: String,
+        required: true
     },
-    methods: {
-        loadLocations() {
-            this.axios.get(this.storageLocationApiUrl).then((resp) => {
-                this.storageLocationOptions.media_storage_location = objectToFormOptions(
-                    this.filterLocations(resp.data.media_storage_location)
-                );
-                this.storageLocationOptions.recordings_storage_location = objectToFormOptions(
-                    this.filterLocations(resp.data.recordings_storage_location)
-                );
-                this.storageLocationOptions.podcasts_storage_location = objectToFormOptions(
-                    this.filterLocations(resp.data.podcasts_storage_location)
-                );
-            }).finally(() => {
-                this.storageLocationsLoading = false;
-            });
-        },
-        filterLocations(group) {
-            if (!this.isEditMode) {
-                return group;
-            }
+    showAdvanced: {
+        type: Boolean,
+        default: true
+    },
+});
 
-            let newGroup = {};
-            for (const oldKey in group) {
-                if (oldKey !== "") {
-                    newGroup[oldKey] = group[oldKey];
-                }
-            }
-            return newGroup;
+const storageLocationsLoading = ref(true);
+const storageLocationOptions = reactive({
+    media_storage_location: [],
+    recordings_storage_location: [],
+    podcasts_storage_location: []
+});
+
+const filterLocations = (group) => {
+    if (!props.isEditMode) {
+        return group;
+    }
+
+    let newGroup = {};
+    for (const oldKey in group) {
+        if (oldKey !== "") {
+            newGroup[oldKey] = group[oldKey];
         }
     }
+    return newGroup;
 }
+
+const {axios} = useAxios();
+
+const loadLocations = () => {
+    axios.get(props.storageLocationApiUrl).then((resp) => {
+        storageLocationOptions.media_storage_location = objectToFormOptions(
+            filterLocations(resp.data.media_storage_location)
+        );
+        storageLocationOptions.recordings_storage_location = objectToFormOptions(
+            filterLocations(resp.data.recordings_storage_location)
+        );
+        storageLocationOptions.podcasts_storage_location = objectToFormOptions(
+            filterLocations(resp.data.podcasts_storage_location)
+        );
+    }).finally(() => {
+        storageLocationsLoading.value = false;
+    });
+};
+
+onMounted(loadLocations);
 </script>

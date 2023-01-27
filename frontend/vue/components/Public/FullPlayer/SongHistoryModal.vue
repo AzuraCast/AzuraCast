@@ -1,34 +1,32 @@
 <template>
-    <b-modal size="md" id="song_history_modal" ref="modal" :title="langTitle" centered hide-footer>
-        <song-history :show-album-art="showAlbumArt" :history="history"></song-history>
+    <b-modal
+        id="song_history_modal"
+        ref="modal"
+        size="md"
+        :title="$gettext('Song History')"
+        centered
+        hide-footer
+    >
+        <song-history
+            :show-album-art="showAlbumArt"
+            :history="history"
+        />
     </b-modal>
 </template>
 
-<script>
+<script setup>
 import SongHistory from './SongHistory';
 
-export default {
-    components: {SongHistory},
-    props: {
-        showAlbumArt: {
-            type: Boolean,
-            default: true
-        },
-    },
-    data() {
-        return {
-            history: []
-        };
-    },
-    computed: {
-        langTitle() {
-            return this.$gettext('Song History');
+const props = defineProps({
+    history: {
+        type: Array,
+        default: () => {
+            return [];
         }
     },
-    methods: {
-        updateHistory (np) {
-            this.history = np.song_history;
-        }
-    }
-};
+    showAlbumArt: {
+        type: Boolean,
+        default: true
+    },
+});
 </script>

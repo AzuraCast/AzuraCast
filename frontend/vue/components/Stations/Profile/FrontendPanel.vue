@@ -1,136 +1,174 @@
 <template>
-    <section class="card mb-4" role="region" id="profile-frontend">
+    <section
+        id="profile-frontend"
+        class="card mb-4"
+        role="region"
+    >
         <div class="card-header bg-primary-dark">
             <h3 class="card-title">
-                <translate key="lang_frontend_title">Broadcasting Service</translate>
-                <small class="badge badge-pill badge-success" v-if="np.services.frontend_running" key="lang_frontend_running">Running</small>
-                <small class="badge badge-pill badge-danger" v-else key="lang_frontend_not_running">Not Running</small>
+                {{ $gettext('Broadcasting Service') }}
+
+                <running-badge :running="frontendRunning" />
                 <br>
                 <small>{{ frontendName }}</small>
             </h3>
         </div>
 
         <template v-if="userCanManageBroadcasting">
-            <b-table-simple striped responsive>
-                <tbody>
-                <tr class="align-middle">
-                    <td>
-                        <a :href="frontendAdminUri" target="_blank">
-                            <translate key="lang_frontend_admin">Administration</translate>
-                        </a>
-                    </td>
-                    <td class="px-0">
-                        <div>
-                            <translate key="lang_username">Username:</translate>
-                            <span class="text-monospace">admin</span>
-                        </div>
-                        <div>
-                            <translate key="lang_password">Password:</translate>
-                            <span class="text-monospace">{{ frontendAdminPassword }}</span>
-                        </div>
-                    </td>
-                    <td class="px-0">
-                        <copy-to-clipboard-button :text="frontendAdminPassword" hide-text></copy-to-clipboard-button>
-                    </td>
-                </tr>
-                <tr class="align-middle">
-                    <td>
-                        <translate key="lang_frontend_source">Source</translate>
-                    </td>
-                    <td class="px-0">
-                        <div>
-                            <translate key="lang_username">Username:</translate>
-                            <span class="text-monospace">source</span>
-                        </div>
-                        <div>
-                            <translate key="lang_password">Password:</translate>
-                            <span class="text-monospace">{{ frontendSourcePassword }}</span>
-                        </div>
-                    </td>
-                    <td class="px-0">
-                        <copy-to-clipboard-button :text="frontendSourcePassword" hide-text></copy-to-clipboard-button>
-                    </td>
-                </tr>
-                <tr class="align-middle">
-                    <td>
-                        <translate key="lang_frontend_relay">Relay</translate>
-                    </td>
-                    <td class="px-0">
-                        <div>
-                            <translate key="lang_username">Username:</translate>
-                            <span class="text-monospace">relay</span>
-                        </div>
-                        <div>
-                            <translate key="lang_password">Password:</translate>
-                            <span class="text-monospace">{{ frontendRelayPassword }}</span>
-                        </div>
-                    </td>
-                    <td class="px-0">
-                        <copy-to-clipboard-button :text="frontendRelayPassword" hide-text></copy-to-clipboard-button>
-                    </td>
-                </tr>
-                </tbody>
-            </b-table-simple>
+            <b-collapse
+                id="frontendCredentials"
+                v-model="credentialsVisible"
+            >
+                <b-table-simple
+                    striped
+                    responsive
+                >
+                    <tbody>
+                        <tr class="align-middle">
+                            <td>
+                                <a
+                                    :href="frontendAdminUri"
+                                    target="_blank"
+                                >
+                                    {{ $gettext('Administration') }}
+                                </a>
+                            </td>
+                            <td class="px-0">
+                                <div>
+                                    {{ $gettext('Username:') }}
+                                    <span class="text-monospace">admin</span>
+                                </div>
+                                <div>
+                                    {{ $gettext('Password:') }}
+                                    <span class="text-monospace">{{ frontendAdminPassword }}</span>
+                                </div>
+                            </td>
+                            <td class="px-0">
+                                <copy-to-clipboard-button
+                                    :text="frontendAdminPassword"
+                                    hide-text
+                                />
+                            </td>
+                        </tr>
+                        <tr class="align-middle">
+                            <td>
+                                {{ $gettext('Source') }}
+                            </td>
+                            <td class="px-0">
+                                <div>
+                                    {{ $gettext('Username:') }}
+                                    <span class="text-monospace">source</span>
+                                </div>
+                                <div>
+                                    {{ $gettext('Password:') }}
+                                    <span class="text-monospace">{{ frontendSourcePassword }}</span>
+                                </div>
+                            </td>
+                            <td class="px-0">
+                                <copy-to-clipboard-button
+                                    :text="frontendSourcePassword"
+                                    hide-text
+                                />
+                            </td>
+                        </tr>
+                        <tr class="align-middle">
+                            <td>
+                                {{ $gettext('Relay') }}
+                            </td>
+                            <td class="px-0">
+                                <div>
+                                    {{ $gettext('Username:') }}
+                                    <span class="text-monospace">relay</span>
+                                </div>
+                                <div>
+                                    {{ $gettext('Password:') }}
+                                    <span class="text-monospace">{{ frontendRelayPassword }}</span>
+                                </div>
+                            </td>
+                            <td class="px-0">
+                                <copy-to-clipboard-button
+                                    :text="frontendRelayPassword"
+                                    hide-text
+                                />
+                            </td>
+                        </tr>
+                    </tbody>
+                </b-table-simple>
+            </b-collapse>
 
-            <div class="card-actions" v-if="hasStarted">
-                <a class="api-call no-reload btn btn-outline-secondary" :href="frontendRestartUri">
-                    <icon icon="update"></icon>
-                    <translate key="lang_profile_frontend_restart">Restart</translate>
+            <div
+                v-if="hasStarted"
+                class="card-actions"
+            >
+                <a
+                    class="btn btn-outline-primary"
+                    @click.prevent="credentialsVisible = !credentialsVisible"
+                >
+                    <icon icon="unfold_more" />
+                    {{ langShowHideCredentials }}
                 </a>
-                <a class="api-call no-reload btn btn-outline-success" v-show="!np.services.frontend_running"
-                   :href="frontendStartUri">
-                    <icon icon="play_arrow"></icon>
-                    <translate key="lang_profile_frontend_start">Start</translate>
+                <a
+                    class="api-call no-reload btn btn-outline-secondary"
+                    :href="frontendRestartUri"
+                >
+                    <icon icon="update" />
+                    {{ $gettext('Restart') }}
                 </a>
-                <a class="api-call no-reload btn btn-outline-danger" v-show="np.services.frontend_running"
-                   :href="frontendStopUri">
-                    <icon icon="stop"></icon>
-                    <translate key="lang_profile_frontend_stop">Stop</translate>
+                <a
+                    v-show="!frontendRunning"
+                    class="api-call no-reload btn btn-outline-success"
+                    :href="frontendStartUri"
+                >
+                    <icon icon="play_arrow" />
+                    {{ $gettext('Start') }}
+                </a>
+                <a
+                    v-show="frontendRunning"
+                    class="api-call no-reload btn btn-outline-danger"
+                    :href="frontendStopUri"
+                >
+                    <icon icon="stop" />
+                    {{ $gettext('Stop') }}
                 </a>
             </div>
         </template>
     </section>
 </template>
 
-<script>
-import {FRONTEND_ICECAST, FRONTEND_SHOUTCAST} from '~/components/Entity/RadioAdapters.js';
+<script setup>
+import {FRONTEND_ICECAST, FRONTEND_SHOUTCAST} from '~/components/Entity/RadioAdapters';
 import CopyToClipboardButton from '~/components/Common/CopyToClipboardButton';
 import Icon from '~/components/Common/Icon';
+import RunningBadge from "~/components/Common/Badges/RunningBadge.vue";
+import {computed} from "vue";
+import frontendPanelProps from "~/components/Stations/Profile/frontendPanelProps";
+import {useLocalStorage} from "@vueuse/core";
+import {useTranslate} from "~/vendor/gettext";
 
-export const profileFrontendProps = {
-    props: {
-        frontendType: String,
-        frontendAdminUri: String,
-        frontendAdminPassword: String,
-        frontendSourcePassword: String,
-        frontendRelayPassword: String,
-        frontendRestartUri: String,
-        frontendStartUri: String,
-        frontendStopUri: String,
-        hasStarted: Boolean,
-        userCanManageBroadcasting: Boolean
+const props = defineProps({
+    ...frontendPanelProps,
+    frontendRunning: {
+        type: Boolean,
+        required: true
     }
-};
+});
 
-export default {
-    inheritAttrs: false,
-    components: {Icon, CopyToClipboardButton},
-    mixins: [profileFrontendProps],
-    props: {
-        np: Object
-    },
-    computed: {
-        frontendName() {
-            if (this.frontendType === FRONTEND_ICECAST) {
-                return 'Icecast';
-            } else if (this.frontendType === FRONTEND_SHOUTCAST) {
-                return 'Shoutcast';
-            }
-            return '';
-        },
-        isIcecast () {
-            return this.frontendType === FRONTEND_ICECAST;
-        }
+const credentialsVisible = useLocalStorage('station_show_frontend_credentials', false);
+
+const {$gettext} = useTranslate();
+
+const langShowHideCredentials = computed(() => {
+    return (credentialsVisible.value)
+        ? $gettext('Hide Credentials')
+        : $gettext('Show Credentials')
+});
+
+const frontendName = computed(() => {
+    if (props.frontendType === FRONTEND_ICECAST) {
+        return 'Icecast';
+    } else if (props.frontendType === FRONTEND_SHOUTCAST) {
+        return 'Shoutcast';
     }
-};
+    return '';
+});
 </script>

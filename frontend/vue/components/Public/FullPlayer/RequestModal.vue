@@ -1,44 +1,43 @@
 <template>
-    <b-modal size="lg" id="request_modal" ref="modal" :title="langTitle" hide-footer>
-        <song-request :show-album-art="showAlbumArt" :request-list-uri="requestListUri" :custom-fields="customFields"
-                      @submitted="doClose"></song-request>
+    <b-modal
+        id="request_modal"
+        ref="$modal"
+        size="lg"
+        :title="$gettext('Request a Song')"
+        hide-footer
+    >
+        <song-request
+            :show-album-art="showAlbumArt"
+            :request-list-uri="requestListUri"
+            :custom-fields="customFields"
+            @submitted="doClose"
+        />
     </b-modal>
 </template>
 
-<script>
+<script setup>
 import SongRequest from '../Requests';
+import {ref} from "vue";
 
-export default {
-    components: { SongRequest },
-    props: {
-        requestListUri: {
-            type: String,
-            required: true
-        },
-        showAlbumArt: {
-            type: Boolean,
-            default: true
-        },
-        customFields: {
-            type: Array,
-            required: false,
-            default: () => []
-        }
+const props = defineProps({
+    requestListUri: {
+        type: String,
+        required: true
     },
-    data () {
-        return {
-            loading: true
-        };
+    showAlbumArt: {
+        type: Boolean,
+        default: true
     },
-    computed: {
-        langTitle () {
-            return this.$gettext('Request a Song');
-        }
-    },
-    methods: {
-        doClose () {
-            this.$refs.modal.hide();
-        }
+    customFields: {
+        type: Array,
+        required: false,
+        default: () => []
     }
+});
+
+const $modal = ref(); // BModal
+
+const doClose = () => {
+    $modal.value?.hide();
 };
 </script>

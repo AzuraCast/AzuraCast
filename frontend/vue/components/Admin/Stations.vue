@@ -1,118 +1,160 @@
 <template>
-    <div>
-        <b-card no-body>
-            <b-card-header header-bg-variant="primary-dark">
-                <h2 class="card-title" key="lang_title" v-translate>Stations</h2>
-            </b-card-header>
+    <b-card no-body>
+        <b-card-header header-bg-variant="primary-dark">
+            <h2 class="card-title">
+                {{ $gettext('Stations') }}
+            </h2>
+        </b-card-header>
 
-            <b-card-body body-class="card-padding-sm">
-                <b-button variant="outline-primary" @click.prevent="doCreate">
-                    <icon icon="add"></icon>
-                    <translate key="lang_add_btn">Add Station</translate>
-                </b-button>
-            </b-card-body>
+        <b-card-body body-class="card-padding-sm">
+            <b-button
+                variant="outline-primary"
+                @click.prevent="doCreate"
+            >
+                <icon icon="add" />
+                {{ $gettext('Add Station') }}
+            </b-button>
+        </b-card-body>
 
-            <data-table ref="datatable" id="stations" paginated :fields="fields" :api-url="listUrl">
-                <template #cell(name)="row">
-                    <big>{{ row.item.name }}</big><br>
-                    <code>{{ row.item.short_name }}</code>
-                </template>
-                <template #cell(frontend_type)="row">
-                    {{ getFrontendName(row.item.frontend_type) }}
-                </template>
-                <template #cell(backend_type)="row">
-                    {{ getBackendName(row.item.backend_type) }}
-                </template>
-                <template #cell(actions)="row">
-                    <b-button-group size="sm">
-                        <b-button size="sm" variant="secondary" :href="row.item.links.manage" target="_blank">
-                            <translate key="lang_btn_manage">Manage</translate>
-                        </b-button>
-                        <b-button size="sm" variant="secondary"
-                                  @click.prevent="doClone(row.item.name, row.item.links.clone)">
-                            <translate key="lang_btn_clone">Clone</translate>
-                        </b-button>
-                        <b-button size="sm" variant="primary" @click.prevent="doEdit(row.item.links.self)">
-                            <translate key="lang_btn_edit">Edit</translate>
-                        </b-button>
-                        <b-button size="sm" variant="danger" @click.prevent="doDelete(row.item.links.self)">
-                            <translate key="lang_btn_delete">Delete</translate>
-                        </b-button>
-                    </b-button-group>
-                </template>
-            </data-table>
-        </b-card>
+        <data-table
+            id="stations"
+            ref="$datatable"
+            paginated
+            :fields="fields"
+            :api-url="listUrl"
+        >
+            <template #cell(name)="row">
+                <div class="typography-subheading">
+                    {{ row.item.name }}
+                </div>
+                <code>{{ row.item.short_name }}</code>
+            </template>
+            <template #cell(actions)="row">
+                <b-button-group size="sm">
+                    <b-button
+                        size="sm"
+                        variant="secondary"
+                        :href="row.item.links.manage"
+                        target="_blank"
+                    >
+                        {{ $gettext('Manage') }}
+                    </b-button>
+                    <b-button
+                        size="sm"
+                        variant="secondary"
+                        @click.prevent="doClone(row.item.name, row.item.links.clone)"
+                    >
+                        {{ $gettext('Clone') }}
+                    </b-button>
+                    <b-button
+                        size="sm"
+                        variant="primary"
+                        @click.prevent="doEdit(row.item.links.self)"
+                    >
+                        {{ $gettext('Edit') }}
+                    </b-button>
+                    <b-button
+                        size="sm"
+                        variant="danger"
+                        @click.prevent="doDelete(row.item.links.self)"
+                    >
+                        {{ $gettext('Delete') }}
+                    </b-button>
+                </b-button-group>
+            </template>
+        </data-table>
+    </b-card>
 
-        <admin-stations-edit-modal ref="editModal" :create-url="listUrl" v-bind="$props"
-                                   @relist="relist"></admin-stations-edit-modal>
+    <admin-stations-edit-modal
+        v-bind="pickProps(props, stationFormProps)"
+        ref="$editModal"
+        :create-url="listUrl"
+        @relist="relist"
+    />
 
-        <admin-stations-clone-modal ref="cloneModal" @relist="relist"></admin-stations-clone-modal>
-    </div>
+    <admin-stations-clone-modal
+        ref="$cloneModal"
+        @relist="relist"
+    />
 </template>
 
-<script>
+<script setup>
 import DataTable from '~/components/Common/DataTable';
 import Icon from '~/components/Common/Icon';
-import InfoCard from '~/components/Common/InfoCard';
-import {StationFormProps} from "./Stations/StationForm";
 import AdminStationsEditModal from "./Stations/EditModal";
-import _ from "lodash";
-import AdminStationsCloneModal from "~/components/Admin/Stations/CloneModal";
+import {get} from "lodash";
+import AdminStationsCloneModal from "./Stations/CloneModal";
+import stationFormProps from "./Stations/stationFormProps";
+import {pickProps} from "~/functions/pickProps";
+import {useTranslate} from "~/vendor/gettext";
+import {ref} from "vue";
+import useHasDatatable from "~/functions/useHasDatatable";
+import useHasEditModal from "~/functions/useHasEditModal";
+import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
 
-export default {
-    name: 'AdminPermissions',
-    components: {AdminStationsCloneModal, AdminStationsEditModal, InfoCard, Icon, DataTable},
-    mixins: [
-        StationFormProps
-    ],
-    props: {
-        listUrl: String,
-        frontendTypes: Object,
-        backendTypes: Object
+const props = defineProps({
+    ...stationFormProps,
+    listUrl: {
+        type: String,
+        required: true
     },
-    data() {
-        return {
-            fields: [
-                {key: 'name', isRowHeader: true, label: this.$gettext('Name'), sortable: true},
-                {key: 'frontend_type', label: this.$gettext('Broadcasting'), sortable: false},
-                {key: 'backend_type', label: this.$gettext('AutoDJ'), sortable: false},
-                {key: 'actions', label: this.$gettext('Actions'), sortable: false, class: 'shrink'}
-            ]
-        };
+    frontendTypes: {
+        type: Object,
+        required: true
     },
-    methods: {
-        relist() {
-            this.$refs.datatable.refresh();
-        },
-        doCreate() {
-            this.$refs.editModal.create();
-        },
-        doEdit(url) {
-            this.$refs.editModal.edit(url);
-        },
-        doClone(stationName, url) {
-            this.$refs.cloneModal.create(stationName, url);
-        },
-        doDelete(url) {
-            this.$confirmDelete({
-                title: this.$gettext('Delete Station?'),
-            }).then((result) => {
-                if (result.value) {
-                    this.$wrapWithLoading(
-                        this.axios.delete(url)
-                    ).then((resp) => {
-                        this.$notifySuccess(resp.data.message);
-                        this.relist();
-                    });
-                }
-            });
-        },
-        getFrontendName(frontend_type) {
-            return _.get(this.frontendTypes, [frontend_type, 'name'], '');
-        },
-        getBackendName(backend_type) {
-            return _.get(this.backendTypes, [backend_type, 'name'], '');
-        }
+    backendTypes: {
+        type: Object,
+        required: true
     }
+});
+
+const {$gettext} = useTranslate();
+
+const fields = [
+    {
+        key: 'name',
+        isRowHeader: true,
+        label: $gettext('Name'),
+        sortable: true
+    },
+    {
+        key: 'frontend_type',
+        label: $gettext('Broadcasting'),
+        sortable: false,
+        formatter: (value) => {
+            return get(props.frontendTypes, [value, 'name'], '');
+        }
+    },
+    {
+        key: 'backend_type',
+        label: $gettext('AutoDJ'),
+        sortable: false,
+        formatter: (value) => {
+            return get(props.backendTypes, [value, 'name'], '');
+        }
+    },
+    {
+        key: 'actions',
+        label: $gettext('Actions'),
+        sortable: false,
+        class: 'shrink'
+    }
+];
+
+const $datatable = ref(); // Template Ref
+const {relist} = useHasDatatable($datatable);
+
+const $editModal = ref(); // Template Ref
+const {doCreate, doEdit} = useHasEditModal($editModal);
+
+const $cloneModal = ref(); // Template Ref
+
+const doClone = (stationName, url) => {
+    $cloneModal.value.create(stationName, url);
 };
+
+const {doDelete} = useConfirmAndDelete(
+    $gettext('Delete Station?'),
+    relist
+);
 </script>

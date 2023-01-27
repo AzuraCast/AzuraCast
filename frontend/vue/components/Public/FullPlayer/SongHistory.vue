@@ -1,20 +1,59 @@
 <template>
     <div id="station-history">
-        <p v-if="history.length <= 0">{{ langNoRecords }}</p>
-        <div class="song" v-for="(row, index) in history">
+        <p v-if="history.length <= 0">
+            {{ $gettext('No records to display.') }}
+        </p>
+        <div
+            v-for="(row, index) in history"
+            :key="row.sh_id"
+            class="song"
+        >
             <strong class="order">{{ history.length - index }}</strong>
-            <img v-if="showAlbumArt" class="art" :src="row.song.art">
+            <img
+                v-if="showAlbumArt"
+                class="art"
+                :src="row.song.art"
+            >
             <div class="name">
-                <strong v-html="row.song.title"></strong>
-                <span v-html="albumAndArtist(row.song)"></span>
+                <strong v-html="row.song.title" />
+                <span v-html="albumAndArtist(row.song)" />
             </div>
-            <div class="break"></div>
+            <div class="break" />
             <small class="date-played text-muted">
-                <span v-html="unixTimestampToDate(row.played_at)">{{ row.played_at }}</span>
+                <span v-html="unixTimestampToDate(row.played_at)" />
             </small>
         </div>
     </div>
 </template>
+
+<script setup>
+import {DateTime} from "luxon";
+
+const props = defineProps({
+    history: {
+        type: Array,
+        default: () => {
+            return [];
+        }
+    },
+    showAlbumArt: {
+        type: Boolean,
+        default: true
+    },
+});
+
+const unixTimestampToDate = (timestamp) => {
+    if (!timestamp) {
+        return '';
+    }
+
+    return DateTime.fromSeconds(timestamp).toRelative();
+};
+
+const albumAndArtist = (song) => {
+    return [song.artist, song.album].filter(str => !!str).join(' - ');
+};
+</script>
 
 <style lang="scss">
 #station-history {
@@ -76,34 +115,3 @@
     }
 }
 </style>
-
-<script>
-import {DateTime} from 'luxon';
-
-export default {
-    props: {
-        history: Array,
-        showAlbumArt: {
-            type: Boolean,
-            default: true
-        },
-    },
-    computed: {
-        langNoRecords () {
-            return this.$gettext('No records to display.');
-        }
-    },
-    methods: {
-        unixTimestampToDate (timestamp) {
-            if (!timestamp) {
-                return '';
-            }
-
-            return DateTime.fromSeconds(timestamp).toRelative();
-        },
-        albumAndArtist (song) {
-            return [song.artist, song.album].filter(str => !!str).join(', ');
-        }
-    }
-};
-</script>

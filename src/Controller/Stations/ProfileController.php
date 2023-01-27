@@ -8,6 +8,7 @@ use App\Enums\StationPermissions;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Radio\Adapters;
+use App\VueComponent\NowPlayingComponent;
 use App\VueComponent\StationFormComponent;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -19,6 +20,7 @@ final class ProfileController
     public function __construct(
         private readonly EntityManagerInterface $em,
         private readonly StationFormComponent $stationFormComponent,
+        private readonly NowPlayingComponent $nowPlayingComponent,
         private readonly Adapters $adapters,
     ) {
     }
@@ -73,6 +75,8 @@ final class ProfileController
             id: 'profile',
             title: __('Profile'),
             props: [
+                ...$this->nowPlayingComponent->getProps($request),
+
                 // Common
                 'backendType' => $station->getBackendType(),
                 'frontendType' => $station->getFrontendType(),
@@ -104,6 +108,7 @@ final class ProfileController
                     'api:stations:backend',
                     ['do' => 'disconnect']
                 ),
+                'listenerReportUri' => $router->fromHere('stations:reports:listeners'),
 
                 // Requests
                 'requestsViewUri' => $router->fromHere('stations:reports:requests'),
@@ -174,6 +179,9 @@ final class ProfileController
                 'togglePublicPageUri' => $router->fromHere(
                     routeName: 'stations:profile:toggle',
                     routeParams: ['feature' => 'public', 'csrf' => $csrf]
+                ),
+                'brandingUri' => $router->fromHere(
+                    routeName: 'stations:branding',
                 ),
 
                 // Frontend

@@ -89,12 +89,11 @@ $enable-print-styles: true !default;
 @import 'print';
 
 // Overrides for specific third-party products
-@import 'vendors/codemirror';
 @import 'vendors/fullcalendar';
-@import 'vendors/select2';
 
 // Overrides for the Daemonite Material theme
 @import 'azuracast/overrides/body';
+@import 'azuracast/overrides/buttons';
 @import 'azuracast/overrides/card';
 @import 'azuracast/overrides/footer';
 @import 'azuracast/overrides/forms';

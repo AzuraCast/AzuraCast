@@ -1,111 +1,114 @@
 <template>
-    <modal-form ref="modal" :loading="loading" :title="langTitle" :error="error" :disable-save-button="$v.form.$invalid"
-                @submit="doSubmit" @hidden="clearContents">
-
-        <account-edit-form :form="$v.form" :supported-locales="supportedLocales"></account-edit-form>
-
+    <modal-form
+        ref="$modal"
+        :loading="loading"
+        :title="$gettext('Edit Profile')"
+        :error="error"
+        :disable-save-button="v$.$invalid"
+        @submit="doSubmit"
+        @hidden="clearContents"
+    >
+        <account-edit-form
+            :form="v$"
+            :supported-locales="supportedLocales"
+        />
     </modal-form>
-
 </template>
 
-<script>
-import ModalForm from "~/components/Common/ModalForm";
-import {validationMixin} from "vuelidate";
-import {email, required} from 'vuelidate/dist/validators.min.js';
-import AccountEditForm from "./EditForm";
+<script setup>
 import mergeExisting from "~/functions/mergeExisting";
+import {email, required} from '@vuelidate/validators';
+import AccountEditForm from "./EditForm.vue";
+import ModalForm from "~/components/Common/ModalForm.vue";
+import {ref} from "vue";
+import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
+import {useNotify} from "~/vendor/bootstrapVue";
+import {useAxios} from "~/vendor/axios";
 
-export default {
-    name: 'AccountEditModal',
-    components: {AccountEditForm, ModalForm,},
-    mixins: [validationMixin],
-    emits: ['relist'],
-    props: {
-        userUrl: String,
-        supportedLocales: Object
+const props = defineProps({
+    userUrl: {
+        type: String,
+        required: true
     },
-    data() {
-        return {
-            loading: true,
-            error: null,
-            form: {}
-        };
-    },
-    validations() {
-        return {
-            form: {
-                name: {},
-                email: {required, email},
-                locale: {required},
-                theme: {required},
-                show_24_hour_time: {}
-            }
-        };
-    },
-    computed: {
-        langTitle() {
-            return this.$gettext('Edit Profile');
-        }
-    },
-    methods: {
-        resetForm() {
-            this.form = {
-                name: '',
-                email: '',
-                locale: 'default',
-                theme: 'browser',
-                show_24_hour_time: null,
-            };
-        },
-        open() {
-            this.resetForm();
-            this.loading = false;
-            this.error = null;
-
-            this.$refs.modal.show();
-
-            this.$wrapWithLoading(
-                this.axios.get(this.userUrl)
-            ).then((resp) => {
-                this.form = mergeExisting(this.form, resp.data);
-                this.loading = false;
-            }).catch((error) => {
-                this.close();
-            });
-        },
-        doSubmit() {
-            this.$v.form.$touch();
-            if (this.$v.form.$anyError) {
-                return;
-            }
-
-            this.error = null;
-
-            this.$wrapWithLoading(
-                this.axios({
-                    method: 'PUT',
-                    url: this.userUrl,
-                    data: this.form
-                })
-            ).then((resp) => {
-                this.$notifySuccess();
-                this.$emit('relist');
-                this.close();
-            }).catch((error) => {
-                this.error = error.response.data.message;
-            });
-        },
-        close() {
-            this.$refs.modal.hide();
-        },
-        clearContents() {
-            this.$v.form.$reset();
-
-            this.loading = false;
-            this.error = null;
-
-            this.resetForm();
-        },
+    supportedLocales: {
+        type: Object,
+        required: true
     }
-}
+});
+
+const emit = defineEmits(['reload']);
+
+const loading = ref(true);
+const error = ref(null);
+
+const {form, resetForm, v$, ifValid} = useVuelidateOnForm(
+    {
+        name: {},
+        email: {required, email},
+        locale: {required},
+        theme: {required},
+        show_24_hour_time: {}
+    },
+    {
+        name: '',
+        email: '',
+        locale: 'default',
+        theme: 'browser',
+        show_24_hour_time: null,
+    }
+);
+
+const clearContents = () => {
+    resetForm();
+    loading.value = false;
+    error.value = null;
+};
+
+const $modal = ref(); // BModal
+
+const close = () => {
+    $modal.value.hide();
+};
+
+const {wrapWithLoading, notifySuccess} = useNotify();
+const {axios} = useAxios();
+
+const open = () => {
+    clearContents();
+
+    $modal.value?.show();
+
+    wrapWithLoading(
+        axios.get(props.userUrl)
+    ).then((resp) => {
+        form.value = mergeExisting(form.value, resp.data);
+        loading.value = false;
+    }).catch(() => {
+        close();
+    });
+};
+
+const doSubmit = () => {
+    ifValid(() => {
+        error.value = null;
+
+        wrapWithLoading(
+            axios({
+                method: 'PUT',
+                url: props.userUrl,
+                data: form.value
+            })
+        ).then(() => {
+            notifySuccess();
+            emit('reload');
+            close();
+        }).catch((error) => {
+            error.value = error.response.data.message;
+        });
+    });
+};
+
+defineExpose({
+    open
+});
 </script>

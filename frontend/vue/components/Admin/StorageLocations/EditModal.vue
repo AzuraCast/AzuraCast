@@ -1,112 +1,141 @@
 <template>
-    <modal-form ref="modal" :loading="loading" :title="langTitle" :error="error" :disable-save-button="$v.form.$invalid"
-                @submit="doSubmit" @hidden="clearContents">
-
-        <storage-location-form :form="$v.form"></storage-location-form>
-
+    <modal-form
+        ref="$modal"
+        :loading="loading"
+        :title="langTitle"
+        :error="error"
+        :disable-save-button="v$.$invalid"
+        @submit="doSubmit"
+        @hidden="clearContents"
+    >
+        <storage-location-form :form="v$" />
     </modal-form>
 </template>
 
-<script>
-import {validationMixin} from 'vuelidate';
-import {required} from 'vuelidate/dist/validators.min.js';
-import BaseEditModal from '~/components/Common/BaseEditModal';
-import StorageLocationForm from './Form';
+<script setup>
+import {baseEditModalProps, useBaseEditModal} from "~/functions/useBaseEditModal";
+import {computed, ref} from "vue";
+import {required} from "@vuelidate/validators";
+import {useTranslate} from "~/vendor/gettext";
+import ModalForm from "~/components/Common/ModalForm.vue";
+import StorageLocationForm from "./Form.vue";
 
-export default {
-    name: 'AdminStorageLocationsEditModal',
-    components: {StorageLocationForm},
-    mixins: [validationMixin, BaseEditModal],
-    props: {
-        type: String
-    },
-    computed: {
-        langTitle() {
-            return this.isEditMode
-                ? this.$gettext('Edit Storage Location')
-                : this.$gettext('Add Storage Location');
-        }
-    },
-    validations() {
-        let validations = {
-            form: {
-                'adapter': {required},
-                'storageQuota': {},
-                'path': {},
-                's3CredentialKey': {},
-                's3CredentialSecret': {},
-                's3Region': {},
-                's3Version': {},
-                's3Bucket': {},
-                's3Endpoint': {},
-                'dropboxAuthToken': {},
-                'sftpHost': {},
-                'sftpPort': {},
-                'sftpUsername': {},
-                'sftpPassword': {},
-                'sftpPrivateKey': {},
-                'sftpPrivateKeyPassPhrase': {}
-            }
+const props = defineProps({
+    ...baseEditModalProps,
+    type: {
+        type: String,
+        required: true
+    }
+});
+
+const emit = defineEmits(['relist']);
+
+const $modal = ref(); // Template Ref
+
+const {
+    loading,
+    error,
+    isEditMode,
+    v$,
+    clearContents,
+    create,
+    edit,
+    doSubmit,
+    close
+} = useBaseEditModal(
+    props,
+    emit,
+    $modal,
+    (formRef) => computed(() => {
+        let validationRules = {
+            'adapter': {required},
+            'storageQuota': {},
+            'path': {},
+            's3CredentialKey': {},
+            's3CredentialSecret': {},
+            's3Region': {},
+            's3Version': {},
+            's3Bucket': {},
+            's3Endpoint': {},
+            'dropboxAuthToken': {},
+            'sftpHost': {},
+            'sftpPort': {},
+            'sftpUsername': {},
+            'sftpPassword': {},
+            'sftpPrivateKey': {},
+            'sftpPrivateKeyPassPhrase': {}
         };
 
-        switch (this.form.adapter) {
+        switch (formRef.value.adapter) {
             case 'local':
-                validations.form.path = {required};
+                validationRules.path = {required};
                 break;
 
             case 'dropbox':
-                validations.form.dropboxAuthToken = {required};
+                validationRules.dropboxAuthToken = {required};
                 break;
 
             case 's3':
-                validations.form.s3CredentialKey = { required };
-                validations.form.s3CredentialSecret = { required };
-                validations.form.s3Region = { required };
-                validations.form.s3Version = { required };
-                validations.form.s3Bucket = { required };
-                validations.form.s3Endpoint = { required };
+                validationRules.s3CredentialKey = {required};
+                validationRules.s3CredentialSecret = {required};
+                validationRules.s3Region = {required};
+                validationRules.s3Version = {required};
+                validationRules.s3Bucket = {required};
+                validationRules.s3Endpoint = {required};
                 break;
-                
+
             case 'sftp':
-                validations.form.sftpHost = { required };
-                validations.form.sftpPort = { required };
-                validations.form.sftpUsername = { required };
+                validationRules.sftpHost = {required};
+                validationRules.sftpPort = {required};
+                validationRules.sftpUsername = {required};
                 break;
         }
 
-        return validations;
+        return validationRules;
+    }),
+    {
+        'adapter': 'local',
+        'path': '',
+        's3CredentialKey': null,
+        's3CredentialSecret': null,
+        's3Region': null,
+        's3Version': 'latest',
+        's3Bucket': null,
+        's3Endpoint': null,
+        'dropboxAuthToken': null,
+        'sftpHost': null,
+        'sftpPort': '22',
+        'sftpUsername': null,
+        'sftpPassword': null,
+        'sftpPrivateKey': null,
+        'sftpPrivateKeyPassPhrase': null,
+        'storageQuota': ''
     },
-    methods: {
-        resetForm() {
-            this.form = {
-                'adapter': 'local',
-                'path': '',
-                's3CredentialKey': null,
-                's3CredentialSecret': null,
-                's3Region': null,
-                's3Version': 'latest',
-                's3Bucket': null,
-                's3Endpoint': null,
-                'dropboxAuthToken': null,
-                'sftpHost': null,
-                'sftpPort': '22',
-                'sftpUsername': null,
-                'sftpPassword': null,
-                'sftpPrivateKey': null,
-                'sftpPrivateKeyPassPhrase': null,
-                'storageQuota': ''
-            };
-        },
-        getSubmittableFormData() {
-            if (this.isEditMode) {
-                return this.form;
+    {
+        getSubmittableFormData: (formRef, isEditModeRef) => {
+            if (isEditModeRef.value) {
+                return formRef.value;
             }
 
             return {
-                ...this.form,
-                type: this.type
+                ...formRef.value,
+                type: props.type
             };
         }
     }
-};
+);
+
+const {$gettext} = useTranslate();
+
+const langTitle = computed(() => {
+    return isEditMode.value
+        ? $gettext('Edit Storage Location')
+        : $gettext('Add Storage Location');
+});
+
+defineExpose({
+    create,
+    edit,
+    close
+});
 </script>

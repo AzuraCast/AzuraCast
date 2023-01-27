@@ -10,6 +10,8 @@ use GuzzleHttp\Client;
 
 final class Centrifugo
 {
+    public const GLOBAL_TIME_CHANNEL = 'global:time';
+
     public function __construct(
         private readonly Environment $environment,
         private readonly Client $client,
@@ -18,23 +20,41 @@ final class Centrifugo
 
     public function isSupported(): bool
     {
-        return $this->environment->isDocker();
+        return $this->environment->isDocker() && !$this->environment->isTesting();
+    }
+
+    public function sendTime(): void
+    {
+        $this->send([
+            'method' => 'publish',
+            'params' => [
+                'channel' => self::GLOBAL_TIME_CHANNEL,
+                'data' => [
+                    'time' => time(),
+                ],
+            ],
+        ]);
     }
 
     public function publishToStation(Station $station, mixed $message): void
     {
+        $this->send([
+            'method' => 'publish',
+            'params' => [
+                'channel' => $this->getChannelName($station),
+                'data' => [
+                    'np' => $message,
+                ],
+            ],
+        ]);
+    }
+
+    private function send(array $body): void
+    {
         $this->client->post(
             'http://localhost:6025/api',
             [
-                'json' => [
-                    'method' => 'publish',
-                    'params' => [
-                        'channel' => $this->getChannelName($station),
-                        'data' => [
-                            'np' => $message,
-                        ],
-                    ],
-                ],
+                'json' => $body,
             ]
         );
     }
@@ -47,6 +67,7 @@ final class Centrifugo
                         [
                             'subs' => [
                                 $this->getChannelName($station) => [],
+                                self::GLOBAL_TIME_CHANNEL => [],
                             ],
                         ],
                         JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR | JSON_FORCE_OBJECT

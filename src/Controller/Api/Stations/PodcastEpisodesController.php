@@ -211,7 +211,7 @@ final class PodcastEpisodesController extends AbstractApiCrudController
             ->join('e.podcast', 'p')
             ->leftJoin('e.media', 'pm')
             ->where('e.podcast = :podcast')
-            ->orderBy('e.title', 'ASC')
+            ->orderBy('e.created_at', 'DESC')
             ->setParameter('podcast', $podcast);
 
         $searchPhrase = trim($request->getParam('searchPhrase', ''));

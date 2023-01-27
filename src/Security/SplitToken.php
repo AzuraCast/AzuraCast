@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Security;
 
 use InvalidArgumentException;
+use SensitiveParameter;
 
 final class SplitToken
 {
@@ -19,8 +20,9 @@ final class SplitToken
         return hash('sha512', $this->verifier);
     }
 
-    public function verify(string $hashedVerifier): bool
-    {
+    public function verify(
+        #[SensitiveParameter] string $hashedVerifier
+    ): bool {
         return hash_equals($hashedVerifier, $this->hashVerifier());
     }
 
@@ -29,8 +31,9 @@ final class SplitToken
         return $this->identifier . self::SEPARATOR . $this->verifier;
     }
 
-    public static function fromKeyString(string $key): self
-    {
+    public static function fromKeyString(
+        #[SensitiveParameter] string $key
+    ): self {
         [$identifier, $verifier] = explode(self::SEPARATOR, $key, 2);
 
         if (empty($identifier) || empty($verifier)) {
@@ -44,8 +47,9 @@ final class SplitToken
         return $token;
     }
 
-    public static function isValidKeyString(string $key): bool
-    {
+    public static function isValidKeyString(
+        #[SensitiveParameter] string $key
+    ): bool {
         return str_contains($key, self::SEPARATOR);
     }
 

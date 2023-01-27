@@ -2,6 +2,7 @@ const webpack = require('webpack');
 const WebpackAssetsManifest = require('webpack-assets-manifest');
 const {VueLoaderPlugin} = require('vue-loader');
 const path = require('path');
+const ESLintPlugin = require('eslint-webpack-plugin');
 
 module.exports = {
     mode: (process.env.NODE_ENV === 'production') ? 'production' : 'development',
@@ -22,6 +23,7 @@ module.exports = {
         AdminStereoTool: '~/pages/Admin/StereoTool.js',
         AdminStations: '~/pages/Admin/Stations.js',
         AdminStorageLocations: '~/pages/Admin/StorageLocations.js',
+        AdminUpdates: '~/pages/Admin/Updates.js',
         AdminUsers: '~/pages/Admin/Users.js',
         PublicFullPlayer: '~/pages/Public/FullPlayer.js',
         PublicHistory: '~/pages/Public/History.js',
@@ -34,6 +36,7 @@ module.exports = {
         SetupRegister: '~/pages/Setup/Register.js',
         SetupSettings: '~/pages/Setup/Settings.js',
         SetupStation: '~/pages/Setup/Station.js',
+        StationsBranding: '~/pages/Stations/Branding.js',
         StationsBulkMedia: '~/pages/Stations/BulkMedia.js',
         StationsFallback: '~/pages/Stations/Fallback.js',
         StationsHelp: '~/pages/Stations/Help.js',
@@ -60,7 +63,8 @@ module.exports = {
     resolve: {
         enforceExtension: false,
         alias: {
-            '~': path.resolve(__dirname, './vue')
+            '~': path.resolve(__dirname, './vue'),
+            vue: '@vue/compat'
         },
         extensions: ['.js', '.vue', '.json']
     },
@@ -101,9 +105,14 @@ module.exports = {
         rules: [
             {
                 test: /\.vue$/i,
-                use: [
-                    'vue-loader'
-                ]
+                loader: 'vue-loader',
+                options: {
+                    compilerOptions: {
+                        compatConfig: {
+                            MODE: 2
+                        }
+                    }
+                }
             },
             {
                 test: /\.scss$/i,
@@ -123,10 +132,14 @@ module.exports = {
             {
                 test: /\.(png|jpe?g|gif|svg|eot|ttf|woff|woff2)$/i,
                 type: 'asset/resource'
-            }
+            },
         ]
     },
     plugins: [
+        new ESLintPlugin({
+            extensions: ['js', 'vue'],
+            fix: true,
+        }),
         new WebpackAssetsManifest({
             output: path.resolve(__dirname, '../web/static/webpack.json'),
             writeToDisk: true,

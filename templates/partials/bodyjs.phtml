@@ -54,7 +54,7 @@ $app = [
     });
     <?php endif; ?>
 
-    let App = <?=json_encode($app, JSON_THROW_ON_ERROR) ?>;
+    var App = <?=json_encode($app, JSON_THROW_ON_ERROR) ?>;
 
     let currentTheme = document.documentElement.getAttribute('data-theme');
     if (currentTheme === 'browser') {

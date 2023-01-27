@@ -1,58 +1,86 @@
 <template>
-    <modal-form ref="modal" :loading="loading" :title="langTitle" :error="error" :disable-save-button="$v.form.$invalid"
-                @submit="doSubmit" @hidden="clearContents">
-        <b-tabs content-class="mt-3">
-            <form-basic-info :form="$v.form"></form-basic-info>
+    <modal-form
+        ref="$modal"
+        :loading="loading"
+        :title="langTitle"
+        :error="error"
+        :disable-save-button="v$.$invalid"
+        @submit="doSubmit"
+        @hidden="clearContents"
+    >
+        <b-tabs
+            content-class="mt-3"
+            pills
+        >
+            <form-basic-info :form="v$" />
         </b-tabs>
     </modal-form>
 </template>
-<script>
-import {required} from 'vuelidate/dist/validators.min.js';
-import BaseEditModal from '~/components/Common/BaseEditModal';
+
+<script setup>
+import {required} from '@vuelidate/validators';
 import FormBasicInfo from './Form/BasicInfo';
-import mergeExisting from "~/functions/mergeExisting";
+import {baseEditModalProps, useBaseEditModal} from "~/functions/useBaseEditModal";
+import {computed, ref} from "vue";
+import {useNotify} from "~/vendor/bootstrapVue";
+import {useTranslate} from "~/vendor/gettext";
+import ModalForm from "~/components/Common/ModalForm.vue";
 
-export default {
-    name: 'EditModal',
-    emits: ['needs-restart'],
-    mixins: [BaseEditModal],
-    components: {FormBasicInfo},
-    validations() {
-        return {
-            form: {
-                name: {required},
-                format: {required},
-                bitrate: {required}
-            }
-        };
+const props = defineProps({
+    ...baseEditModalProps,
+});
+
+const emit = defineEmits(['relist', 'needs-restart']);
+
+const $modal = ref(); // Template Ref
+
+const {notifySuccess} = useNotify();
+
+const {
+    loading,
+    error,
+    isEditMode,
+    v$,
+    clearContents,
+    create,
+    edit,
+    doSubmit,
+    close
+} = useBaseEditModal(
+    props,
+    emit,
+    $modal,
+    {
+        name: {required},
+        format: {required},
+        bitrate: {required}
     },
-    computed: {
-        langTitle() {
-            return this.isEditMode
-                ? this.$gettext('Edit HLS Stream')
-                : this.$gettext('Add HLS Stream');
-        }
+    {
+        name: null,
+        format: 'aac',
+        bitrate: 128
     },
-    methods: {
-        resetForm() {
-            this.form = {
-                name: null,
-                format: 'aac',
-                bitrate: 128
-            };
-        },
-        populateForm(d) {
-            this.record = d;
-            this.form = mergeExisting(this.form, d);
-        },
-        onSubmitSuccess(response) {
-            this.$notifySuccess();
-
-            this.$emit('needs-restart');
-            this.$emit('relist');
-
-            this.close();
+    {
+        onSubmitSuccess: () => {
+            notifySuccess();
+            emit('relist');
+            emit('needs-restart');
+            close();
         },
     }
-};
+);
+
+const {$gettext} = useTranslate();
+
+const langTitle = computed(() => {
+    return isEditMode.value
+        ? $gettext('Edit HLS Stream')
+        : $gettext('Add HLS Stream');
+});
+
+defineExpose({
+    create,
+    edit,
+    close
+});
 </script>

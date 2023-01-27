@@ -1,49 +1,50 @@
 <template>
-    <flow-upload :target-url="uploadUrl" :flow-configuration="flowConfiguration"
-                 :valid-mime-types="validMimeTypes" allow-multiple
-                 @complete="onFlowUpload" @error="onFlowUpload">
-    </flow-upload>
+    <flow-upload
+        :target-url="uploadUrl"
+        :flow-configuration="flowConfiguration"
+        :valid-mime-types="validMimeTypes"
+        allow-multiple
+        @complete="onFlowUpload"
+        @error="onFlowUpload"
+    />
 </template>
 
-<script>
+<script setup>
 import FlowUpload from '~/components/Common/FlowUpload';
 
-export default {
-    name: 'FileUpload',
-    components: {FlowUpload},
-    props: {
-        uploadUrl: String,
-        currentDirectory: String,
-        searchPhrase: String,
-        validMimeTypes: {
-            type: Array,
-            default() {
-                return ['audio/*'];
-            }
-        }
+const props = defineProps({
+    uploadUrl: {
+        type: String,
+        required: true
     },
-    data() {
-        return {
-            flow: null,
-            files: []
-        };
+    currentDirectory: {
+        type: String,
+        required: true
     },
-    computed: {
-        flowConfiguration() {
-            return {
-                query: () => {
-                    return {
-                        'currentDirectory': this.currentDirectory,
-                        'searchPhrase': this.searchPhrase
-                    };
-                }
-            };
-        }
+    searchPhrase: {
+        type: String,
+        required: true
     },
-    methods: {
-        onFlowUpload() {
-            this.$emit('relist');
+    validMimeTypes: {
+        type: Array,
+        default() {
+            return ['audio/*'];
         }
     }
+});
+
+const emit = defineEmits(['relist']);
+
+const flowConfiguration = {
+    query: () => {
+        return {
+            'currentDirectory': props.currentDirectory,
+            'searchPhrase': props.searchPhrase
+        };
+    }
 };
+
+const onFlowUpload = () => {
+    emit('relist');
+}
 </script>

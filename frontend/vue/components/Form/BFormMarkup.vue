@@ -1,54 +1,51 @@
 <template>
-    <b-form-group v-bind="$attrs" :label-for="id">
+    <b-form-group
+        v-bind="$attrs"
+        :label-for="id"
+    >
         <template #default="slotProps">
             <div :id="id">
-                <slot name="default" v-bind="slotProps"></slot>
+                <slot
+                    name="default"
+                    v-bind="slotProps"
+                />
             </div>
         </template>
 
         <template #label="slotProps">
-            <slot name="label" v-bind="slotProps"></slot>
+            <slot
+                name="label"
+                v-bind="slotProps"
+            />
         </template>
         <template #description="slotProps">
-            <slot name="description" v-bind="slotProps"></slot>
+            <slot
+                name="description"
+                v-bind="slotProps"
+            />
         </template>
 
-        <slot v-for="(_, name) in $slots" :name="name" :slot="name"/>
-        <template v-for="(_, name) in filteredScopedSlots" :slot="name" slot-scope="slotData">
-            <slot :name="name" v-bind="slotData"/>
+        <template
+            v-for="(_, slot) of filteredSlots"
+            #[slot]="scope"
+        >
+            <slot
+                :name="slot"
+                v-bind="scope"
+            />
         </template>
     </b-form-group>
 </template>
 
-<script>
-import _ from "lodash";
+<script setup>
+import useSlotsExcept from "~/functions/useSlotsExcept";
 
-export default {
-    name: 'BFormMarkup',
-    props: {
-        id: {
-            type: String,
-            required: true
-        },
-    },
-    computed: {
-        filteredScopedSlots() {
-            return _.filter(this.$scopedSlots, (slot, name) => {
-                return !_.includes([
-                    'default', 'label', 'description'
-                ], name);
-            });
-        },
-        labelClassWithRequired() {
-            let labelClass = this.labelClass;
-            if (this.isRequired) {
-                labelClass += ' required';
-            }
-            return labelClass;
-        },
-        isRequired() {
-            return _.has(this.field, 'required');
-        }
+const props = defineProps({
+    id: {
+        type: String,
+        required: true
     }
-}
+});
+
+const filteredSlots = useSlotsExcept(['default', 'label', 'description']);
 </script>

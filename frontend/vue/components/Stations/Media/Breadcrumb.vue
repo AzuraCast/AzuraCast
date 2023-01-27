@@ -1,47 +1,61 @@
 <template>
-    <h3 class="card-subtitle mt-0 mb-2" id="breadcrumb">
-        <a href="#" key="lang_home" @click.prevent="changeDirectory('')" v-translate>Home</a>
-        <template v-for="part in directoryParts">
+    <h3
+        id="breadcrumb"
+        class="card-subtitle mt-0 mb-2"
+    >
+        <a
+            href="#"
+            @click.prevent="changeDirectory('')"
+        >{{ $gettext('Home') }}</a>
+        <template
+            v-for="part in directoryParts"
+            :key="part.dir"
+        >
             &blacktriangleright;
-            <a href="#" @click.prevent="changeDirectory(part.dir)">{{ part.display }}</a>
+            <a
+                href="#"
+                @click.prevent="changeDirectory(part.dir)"
+            >{{ part.display }}</a>
         </template>
     </h3>
 </template>
 
-<script>
-export default {
-    name: 'Breadcrumb',
-    props: {
-        currentDirectory: String
-    },
-    computed: {
-        directoryParts () {
-            let dirParts = [];
+<script setup>
+import {computed} from "vue";
 
-            if (this.currentDirectory === '') {
-                return dirParts;
-            }
-
-            let builtDir = '';
-            let dirSegments = this.currentDirectory.split('/');
-
-            dirSegments.forEach((part) => {
-                if (builtDir === '') {
-                    builtDir += part;
-                } else {
-                    builtDir += '/' + part;
-                }
-
-                dirParts.push({ dir: builtDir, display: part });
-            });
-
-            return dirParts;
-        }
-    },
-    methods: {
-        changeDirectory (newDir) {
-            this.$emit('change-directory', newDir);
-        }
+const props = defineProps({
+    currentDirectory: {
+        type: String,
+        required: true
     }
-};
+});
+
+const emit = defineEmits(['change-directory']);
+
+const directoryParts = computed(() => {
+    let dirParts = [];
+
+    if (props.currentDirectory === '') {
+        return dirParts;
+    }
+
+    let builtDir = '';
+    let dirSegments = props.currentDirectory.split('/');
+
+    dirSegments.forEach((part) => {
+        if (builtDir === '') {
+            builtDir += part;
+        } else {
+            builtDir += '/' + part;
+        }
+
+        dirParts.push({dir: builtDir, display: part});
+    });
+
+    return dirParts;
+});
+
+const changeDirectory = (newDir) => {
+    emit('change-directory', newDir);
+}
 </script>

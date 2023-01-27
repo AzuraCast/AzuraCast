@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Assets;
 
+use App\Entity\Station;
 use App\Environment;
 
 enum AssetTypes: string
@@ -12,12 +13,14 @@ enum AssetTypes: string
     case Background = 'background';
     case BrowserIcon = 'browser_icon';
 
-    public function createObject(Environment $environment): CustomAssetInterface
-    {
+    public function createObject(
+        Environment $environment,
+        ?Station $station = null
+    ): CustomAssetInterface {
         return match ($this) {
-            self::AlbumArt => new AlbumArtCustomAsset($environment),
-            self::Background => new BackgroundCustomAsset($environment),
-            self::BrowserIcon => new BrowserIconCustomAsset($environment),
+            self::AlbumArt => new AlbumArtCustomAsset($environment, $station),
+            self::Background => new BackgroundCustomAsset($environment, $station),
+            self::BrowserIcon => new BrowserIconCustomAsset($environment, $station),
         };
     }
 }

@@ -3,7 +3,7 @@ export default {
     name: 'BFormFieldset',
     methods: {
         getSlot(name, scope = {}) {
-            let slot = this.$scopedSlots[name] || this.$slots[name]
+            let slot = this.$slots[name]
             return typeof slot === 'function' ? slot(scope) : slot
         }
     },

@@ -28,4 +28,5 @@ parameters:
         - App\View
 
     parallel:
-        maximumNumberOfProcesses: 1
+        jobSize: 20
+        processTimeout: 300.0

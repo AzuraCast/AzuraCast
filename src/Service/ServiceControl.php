@@ -80,8 +80,8 @@ final class ServiceControl
             'mariadb' => __('Database'),
             'nginx' => __('Web server'),
             'php-fpm' => __('PHP FastCGI Process Manager'),
-            'php-nowplaying' => __('Now Playing manager service'),
             'php-worker' => __('PHP queue processing worker'),
+            'redis' => __('Cache'),
             'sftpgo' => __('SFTP service'),
             'centrifugo' => __('Live Now Playing updates'),
         ];
@@ -92,6 +92,10 @@ final class ServiceControl
 
         if (!$this->environment->useLocalDatabase()) {
             unset($services['mariadb']);
+        }
+
+        if (!$this->environment->useLocalRedis()) {
+            unset($services['redis']);
         }
 
         return $services;

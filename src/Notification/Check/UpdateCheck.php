@@ -38,8 +38,10 @@ final class UpdateCheck
             return;
         }
 
-        $actionLabel = __('Update Instructions');
-        $actionUrl = Version::UPDATE_URL;
+        $router = $event->getRequest()->getRouter();
+
+        $actionLabel = __('Update AzuraCast');
+        $actionUrl = $router->named('admin:updates:index');
 
         $releaseChannel = $this->version->getReleaseChannelEnum();
 

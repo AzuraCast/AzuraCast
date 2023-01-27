@@ -13,7 +13,6 @@ use App\Normalizer\Attributes\DeepNormalize;
 use App\Radio\Enums\BackendAdapters;
 use App\Radio\Enums\FrontendAdapters;
 use App\Utilities\File;
-use App\Utilities\Urls;
 use App\Validator\Constraints as AppAssert;
 use DateTimeZone;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -23,7 +22,6 @@ use InvalidArgumentException;
 use League\Flysystem\UnixVisibility\PortableVisibilityConverter;
 use League\Flysystem\Visibility;
 use OpenApi\Attributes as OA;
-use Psr\Http\Message\UriInterface;
 use RuntimeException;
 use Stringable;
 use Symfony\Component\Filesystem\Filesystem;
@@ -288,13 +286,14 @@ class Station implements Stringable, IdentifiableEntityInterface
 
     #[
         OA\Property(
-            description: "The station-specific default album artwork URL.",
-            example: "https://example.com/image.jpg"
+            description: "An array containing station-specific branding configuration",
+            type: "array",
+            items: new OA\Items()
         ),
-        ORM\Column(length: 255, nullable: true),
+        ORM\Column(type: 'json', nullable: true),
         Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])
     ]
-    protected ?string $default_album_art_url = null;
+    protected ?array $branding_config = null;
 
     /** @var Collection<int, SongHistory> */
     #[
@@ -492,10 +491,6 @@ class Station implements Stringable, IdentifiableEntityInterface
         return new StationFrontendConfiguration((array)$this->frontend_config);
     }
 
-    /**
-     * @param array|StationFrontendConfiguration $frontend_config
-     * @param bool $force_overwrite
-     */
     public function setFrontendConfig(
         StationFrontendConfiguration|array $frontend_config,
         bool $force_overwrite = false
@@ -560,10 +555,6 @@ class Station implements Stringable, IdentifiableEntityInterface
             ($this->getBackendTypeEnum()->isEnabled() || $this->getFrontendTypeEnum()->isEnabled());
     }
 
-    /**
-     * @param array|StationBackendConfiguration $backend_config
-     * @param bool $force_overwrite
-     */
     public function setBackendConfig(
         StationBackendConfiguration|array $backend_config,
         bool $force_overwrite = false
@@ -930,26 +921,22 @@ class Station implements Stringable, IdentifiableEntityInterface
         $this->timezone = $timezone;
     }
 
-    public function getDefaultAlbumArtUrl(): ?string
+    public function getBrandingConfig(): StationBrandingConfiguration
     {
-        return $this->default_album_art_url;
+        return new StationBrandingConfiguration((array)$this->branding_config);
     }
 
-    public function getDefaultAlbumArtUrlAsUri(): ?UriInterface
-    {
-        return Urls::tryParseUserUrl(
-            $this->default_album_art_url,
-            'Station ' . $this->__toString() . ' Default Album Art URL',
-            false
-        );
-    }
+    public function setBrandingConfig(
+        StationBrandingConfiguration|array $brandingConfig,
+        bool $forceOverwrite = false
+    ): void {
+        if (is_array($brandingConfig)) {
+            $brandingConfig = new StationBrandingConfiguration(
+                $forceOverwrite ? $brandingConfig : array_merge((array)$this->branding_config, $brandingConfig)
+            );
+        }
 
-    /**
-     * @param string|null $default_album_art_url
-     */
-    public function setDefaultAlbumArtUrl(?string $default_album_art_url): void
-    {
-        $this->default_album_art_url = $default_album_art_url;
+        $this->branding_config = $brandingConfig->toArray();
     }
 
     /**

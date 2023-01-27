@@ -11,7 +11,54 @@ release channel, you can take advantage of these new features and fixes.
 
 ---
 
-# AzuraCast 0.17.5 (Dec 5, 2022)
+# AzuraCast 0.17.7 (Jan 27, 2023)
+
+## New Features/Changes
+
+- **Web Updater**: We're rolling out an initial test of our web updater component for Docker installations. Based on
+  [Watchtower](https://containrrr.dev/watchtower/), our updater sits outside our normal Docker image and can handle
+  pulling the latest image for your installation, spinning down the current version and updating to the newer one, all
+  from entirely within your web browser. Note that if you want to make any core configuration changes (i.e. change your
+  release channel or other environment configuration) you must use the regular update script.
+
+- **Per-Station Branding**: You can now provide custom album art, public page backgrounds, CSS and JavaScript on a
+  per-station basis, using a new Station Branding page that is very similar to the system-wide Branding page.
+
+- The newer version of Google Analytics (V4) is supported as a Web Hook option now.
+
+## Code Quality/Technical Changes
+
+- Redis was removed in version 0.17.6 in order to yield fewer running tasks on servers by default; we have noticed that,
+  for some IO-limited servers, this imposes a significant performance penalty, so we have restored Redis to our default
+  image. You can still disable it via the `ENABLE_REDIS` environment value.
+
+- Under the hood, we have updated our frontend components to Vue 3, as Vue 2 will reach End of Life (EOL) in under a
+  year. We are currently using a Vue 2 compatibility layer due to our UI library (BootstrapVue) only supporting Vue 2
+  currently. Once this library updates, we will be able to fully use Vue 3, which will afford us significant performance
+  improvements.
+
+- On public player pages, we now emit a `player-ready` event that triggers when the Vue components are fully rendered;
+  you can listen to this via `$(document).on('player-ready')` in custom JavaScript.
+
+- The list of custom ID3 tags that can be assigned to Custom Fields has been expanded back to its original value.
+
+## Bug Fixes
+
+- The elapsed playback time on our public player pages is now based on the AzuraCast server time, ensuring that even if
+  it's out of sync with your browser's time, this won't affect the elapsed play time. It's strongly recommended, if you
+  can, to use the "High-Performance Now Playing Updates" system setting for the most accurate updates.
+
+- Lossless (Flac) streams will no longer show a bitrate on Mount Points/Remote Relays.
+
+- Podcast episodes will now properly be sorted by upload date in descending order, rather than name.
+
+- If you change theme or language on the profile page, the page will reload to apply your changes.
+
+- Sorting by custom fields is once again working on the Media Manager page.
+
+---
+
+# AzuraCast 0.17.6 (Dec 5, 2022)
 
 ## New Features/Changes
 

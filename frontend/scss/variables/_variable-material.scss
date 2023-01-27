@@ -443,6 +443,11 @@ $slider-track-bg: rgba(0, 0, 0, 0.26) !default;
 $slider-track-bg-active: rgba(0, 0, 0, 0.38) !default;
 $slider-track-height: 0.125rem !default;
 
+@if $theme == 'dark' {
+  $slider-track-bg: $material-color-grey-800;
+  $slider-track-bg-active: $material-color-grey-700;
+}
+
 // Snackbar
 // Based on https://material.io/guidelines/components/snackbars-toasts.html#snackbars-toasts-specs
 

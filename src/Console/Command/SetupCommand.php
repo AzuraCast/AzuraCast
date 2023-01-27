@@ -23,6 +23,7 @@ final class SetupCommand extends CommandAbstract
         private readonly Environment $environment,
         private readonly Entity\Repository\SettingsRepository $settingsRepo,
         private readonly AzuraCastCentral $acCentral,
+        private readonly Entity\Repository\StorageLocationRepository $storageLocationRepo
     ) {
         parent::__construct();
     }
@@ -31,7 +32,8 @@ final class SetupCommand extends CommandAbstract
     {
         $this->addOption('update', null, InputOption::VALUE_NONE)
             ->addOption('load-fixtures', null, InputOption::VALUE_NONE)
-            ->addOption('release', null, InputOption::VALUE_NONE);
+            ->addOption('release', null, InputOption::VALUE_NONE)
+            ->addOption('init', null, InputOption::VALUE_NONE);
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -40,20 +42,57 @@ final class SetupCommand extends CommandAbstract
 
         $update = (bool)$input->getOption('update');
         $loadFixtures = (bool)$input->getOption('load-fixtures');
+        $isInit = (bool)$input->getOption('init');
 
-        $io->title(__('AzuraCast Setup'));
-        $io->writeln(__('Welcome to AzuraCast. Please wait while some key dependencies of AzuraCast are set up...'));
+        if ($isInit) {
+            $update = true;
+            $loadFixtures = false;
+        }
 
-        $this->runCommand($output, 'azuracast:setup:initialize');
+        if (!$update && !$this->environment->isProduction()) {
+            $loadFixtures = true;
+        }
 
-        if ($loadFixtures || (!$this->environment->isProduction() && !$update)) {
+        // Header display
+        if ($isInit) {
+            $io->title(__('AzuraCast Initializing...'));
+        } else {
+            $io->title(__('AzuraCast Setup'));
+            $io->writeln(
+                __('Welcome to AzuraCast. Please wait while some key dependencies of AzuraCast are set up...')
+            );
             $io->newLine();
+        }
+
+        $io->section(__('Running Database Migrations'));
+
+        $this->runCommand(
+            $output,
+            'azuracast:setup:migrate'
+        );
+
+        $io->newLine();
+        $io->section(__('Generating Database Proxy Classes'));
+
+        $this->runCommand($output, 'orm:generate-proxies');
+
+        $io->newLine();
+        $io->section(__('Reload System Data'));
+
+        $this->runCommand($output, 'cache:clear');
+
+        // Ensure default storage locations exist.
+        $this->storageLocationRepo->createDefaultStorageLocations();
+
+        $io->newLine();
+
+        if ($loadFixtures) {
             $io->section(__('Installing Data Fixtures'));
 
             $this->runCommand($output, 'azuracast:setup:fixtures');
+            $io->newLine();
         }
 
-        $io->newLine();
         $io->section(__('Refreshing All Stations'));
 
         $this->runCommand($output, 'azuracast:station-queues:clear');
@@ -68,6 +107,10 @@ final class SetupCommand extends CommandAbstract
             'azuracast:radio:restart',
             $restartArgs
         );
+
+        if ($isInit) {
+            return 0;
+        }
 
         // Update system setting logging when updates were last run.
         $settings = $this->settingsRepo->readSettings();

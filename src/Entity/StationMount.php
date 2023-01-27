@@ -182,7 +182,11 @@ class StationMount implements
         }
 
         if ($this->enable_autodj) {
-            return $this->name . ' (' . $this->autodj_bitrate . 'kbps ' . strtoupper($this->autodj_format ?? '') . ')';
+            $format = $this->getAutodjFormatEnum();
+
+            return (null !== $format)
+                ? $this->name . ' (' . $format->formatBitrate($this->autodj_bitrate) . ')'
+                : $this->name;
         }
 
         return $this->name;
@@ -240,10 +244,22 @@ class StationMount implements
 
     public function getRelayUrlAsUri(): ?UriInterface
     {
-        return Urls::tryParseUserUrl(
+        $relayUri = Urls::tryParseUserUrl(
             $this->relay_url,
             'Mount Point ' . $this->__toString() . ' Relay URL'
         );
+
+        if (null !== $relayUri) {
+            // Relays need port explicitly provided.
+            $port = $relayUri->getPort();
+            if ($port === null && '' !== $relayUri->getScheme()) {
+                $relayUri = $relayUri->withPort(
+                    ('https' === $relayUri->getScheme()) ? 443 : 80
+                );
+            }
+        }
+
+        return $relayUri;
     }
 
     public function setRelayUrl(?string $relay_url = null): void

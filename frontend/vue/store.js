@@ -1,45 +1,36 @@
-import Vue
-  from 'vue';
-import Vuex
-  from 'vuex';
+import {defineStore} from "pinia";
 
-Vue.use(Vuex);
+export const usePlayerStore = defineStore(
+    'player',
+    {
+        state: () => {
+            return {
+                isPlaying: false,
+                current: {
+                    url: null,
+                    isStream: true
+                }
+            };
+        },
+        actions: {
+            toggle(payload) {
+                let url = payload.url;
 
-const player = {
-  namespaced: true,
-  state: {
-    isPlaying: false,
-    current: {
-      url: null,
-      isStream: true
+                if (this.current.url === url) {
+                    this.current = {
+                        url: null,
+                        isStream: true
+                    };
+                } else {
+                    this.current = payload;
+                }
+            },
+            startPlaying() {
+                this.isPlaying = true;
+            },
+            stopPlaying() {
+                this.isPlaying = false;
+            }
+        }
     }
-  },
-  mutations: {
-    toggle (state, payload) {
-      let url = payload.url;
-
-      if (state.current.url === url) {
-        state.current = {
-          url: null,
-          isStream: true
-        };
-      } else {
-        state.current = payload;
-      }
-    },
-    startPlaying (state) {
-      state.isPlaying = true;
-    },
-    stopPlaying (state) {
-      state.isPlaying = false;
-    }
-  }
-};
-
-const store = new Vuex.Store({
-  modules: {
-    player: player
-  }
-});
-
-export default store;
+);

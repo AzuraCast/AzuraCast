@@ -1,4 +1,4 @@
-import {helpers} from 'vuelidate/dist/validators.min.js';
+import {helpers} from '@vuelidate/validators';
 import zxcvbn from "zxcvbn";
 
 export default function validatePassword(value) {

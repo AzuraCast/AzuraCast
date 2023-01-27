@@ -36,14 +36,19 @@ return static function (App\Event\BuildAdminMenu $e) {
                         'url' => $router->named('admin:storage_locations:index'),
                         'permission' => GlobalPermissions::StorageLocations,
                     ],
-                    'backups'           => [
+                    'backups' => [
                         'label' => __('Backups'),
                         'url' => $router->named('admin:backups:index'),
                         'permission' => GlobalPermissions::Backups,
                     ],
-                    'debug'             => [
+                    'debug' => [
                         'label' => __('System Debugger'),
                         'url' => $router->named('admin:debug:index'),
+                        'permission' => GlobalPermissions::All,
+                    ],
+                    'updates' => [
+                        'label' => __('Update AzuraCast'),
+                        'url' => $router->named('admin:updates:index'),
                         'permission' => GlobalPermissions::All,
                     ],
                 ],

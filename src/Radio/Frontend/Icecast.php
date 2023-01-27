@@ -234,12 +234,12 @@ final class Icecast extends AbstractFrontend
 
             $mountRelayUri = $mount_row->getRelayUrlAsUri();
             if (null !== $mountRelayUri) {
-                $config['relay'][] = [
+                $config['relay'][] = array_filter([
                     'server' => $mountRelayUri->getHost(),
                     'port' => $mountRelayUri->getPort(),
                     'mount' => $mountRelayUri->getPath(),
                     'local-mount' => $mount_row->getName(),
-                ];
+                ]);
             }
 
             if ($useListenerAuth) {

@@ -1,43 +1,49 @@
 <template>
     <b-form-group>
         <b-row>
-            <b-wrapped-form-group class="col-md-12" id="edit_form_playlists" :field="form.playlists">
+            <b-wrapped-form-group
+                id="edit_form_playlists"
+                class="col-md-12"
+                :field="form.playlists"
+            >
                 <template #label>
-                    <translate key="field_playlists">Playlists</translate>
+                    {{ $gettext('Playlists') }}
                 </template>
-                <template #default="props">
+                <template #default="slotProps">
                     <b-form-checkbox-group
-                        :id="props.id"
-                        v-model="props.field.$model"
+                        :id="slotProps.id"
+                        v-model="slotProps.field.$model"
                         :options="options"
                         stacked
-                    ></b-form-checkbox-group>
+                    />
                 </template>
             </b-wrapped-form-group>
         </b-row>
     </b-form-group>
 </template>
 
-<script>
-import _ from 'lodash';
+<script setup>
 import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
+import {map} from "lodash";
+import {computed} from "vue";
 
-export default {
-    name: 'MediaFormPlaylists',
-    components: {BWrappedFormGroup},
-    props: {
-        form: Object,
-        playlists: Array
+const props = defineProps({
+    form: {
+        type: Object,
+        required: true
     },
-    computed: {
-        options() {
-            return _.map(this.playlists, function (row) {
-                return {
-                    text: row.name,
-                    value: row.id
-                };
-            });
-        }
+    playlists: {
+        type: Array,
+        required: true
     }
-};
+});
+
+const options = computed(() => {
+    return map(props.playlists, function (row) {
+        return {
+            text: row.name,
+            value: row.id
+        };
+    });
+});
 </script>

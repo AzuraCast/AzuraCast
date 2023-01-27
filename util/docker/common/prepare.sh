@@ -11,6 +11,11 @@ export INITRD=no
 sed -i 's/^#\s*\(deb.*main restricted\)$/\1/g' /etc/apt/sources.list
 sed -i 's/^#\s*\(deb.*universe\)$/\1/g' /etc/apt/sources.list
 sed -i 's/^#\s*\(deb.*multiverse\)$/\1/g' /etc/apt/sources.list
+
+# Pick specific Ubuntu mirror
+sed -i 's/archive.ubuntu.com/mirror.genesisadaptive.com/g' /etc/apt/sources.list
+sed -i 's/security.ubuntu.com/mirror.genesisadaptive.com/g' /etc/apt/sources.list
+
 apt-get update
 
 ## Fix some issues with APT packages.

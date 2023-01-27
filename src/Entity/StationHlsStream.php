@@ -30,7 +30,7 @@ class StationHlsStream implements
     protected int $station_id;
 
     #[
-        ORM\ManyToOne(inversedBy: 'mounts'),
+        ORM\ManyToOne(inversedBy: 'hls_streams'),
         ORM\JoinColumn(name: 'station_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')
     ]
     protected Station $station;

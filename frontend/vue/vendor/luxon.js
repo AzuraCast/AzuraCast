@@ -1,7 +1,8 @@
-import { Settings } from 'luxon';
+import {Settings} from 'luxon';
+import {useAzuraCast} from "~/vendor/azuracast";
+
+const {localeWithDashes} = useAzuraCast();
 
 document.addEventListener('DOMContentLoaded', function () {
-  Settings.defaultLocale = App.locale_with_dashes;
-
-  Settings.defaultZoneName = 'UTC';
+    Settings.defaultLocale = localeWithDashes;
 });

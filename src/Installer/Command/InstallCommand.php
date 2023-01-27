@@ -245,6 +245,11 @@ final class InstallCommand extends Command
                 $azuracastEnvConfig['COMPOSER_PLUGIN_MODE']['name'],
                 $azuracastEnv->getAsBool('COMPOSER_PLUGIN_MODE', false)
             );
+
+            $azuracastEnv[Environment::ENABLE_WEB_UPDATER] = $io->confirm(
+                $azuracastEnvConfig[Environment::ENABLE_WEB_UPDATER]['name'],
+                $azuracastEnv->getAsBool(Environment::ENABLE_WEB_UPDATER, true)
+            );
         }
 
         $io->writeln(
@@ -352,6 +357,11 @@ final class InstallCommand extends Command
                 );
             }
             unset($service);
+        }
+
+        // Remove web updater if disabled
+        if (!$azuracastEnv->getAsBool(Environment::ENABLE_WEB_UPDATER, true)) {
+            unset($yaml['services']['updater']);
         }
 
         $yamlRaw = Yaml::dump($yaml, PHP_INT_MAX);

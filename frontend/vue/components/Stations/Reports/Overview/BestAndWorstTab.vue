@@ -1,14 +1,26 @@
 <template>
-    <b-overlay variant="card" :show="loading">
-        <div class="card-body py-5" v-if="loading">
+    <b-overlay
+        variant="card"
+        :show="loading"
+    >
+        <div
+            v-if="loading"
+            class="card-body py-5"
+        >
             &nbsp;
         </div>
-        <div class="card-body" v-else>
+        <div
+            v-else
+            class="card-body"
+        >
             <b-row>
-                <b-col md="6" class="mb-4">
+                <b-col
+                    md="6"
+                    class="mb-4"
+                >
                     <fieldset>
                         <legend>
-                            <translate key="reports_overview_best_songs">Best Performing Songs</translate>
+                            {{ $gettext('Best Performing Songs') }}
                         </legend>
 
                         <table class="table table-striped table-condensed table-nopadding">
@@ -17,35 +29,41 @@
                                 <col width="80%">
                             </colgroup>
                             <thead>
-                            <tr>
-                                <th>
-                                    <translate key="reports_overview_col_change">Change</translate>
-                                </th>
-                                <th>
-                                    <translate key="reports_overview_col_song">Song</translate>
-                                </th>
-                            </tr>
+                                <tr>
+                                    <th>
+                                        {{ $gettext('Change') }}
+                                    </th>
+                                    <th>
+                                        {{ $gettext('Song') }}
+                                    </th>
+                                </tr>
                             </thead>
                             <tbody>
-                            <tr v-for="row in bestAndWorst.best">
-                                <td class="text-center text-success">
-                                    <icon icon="keyboard_arrow_up"></icon>
-                                    {{ row.stat_delta }}
-                                    <br>
-                                    <small>{{ row.stat_start }} to {{ row.stat_end }}</small>
-                                </td>
-                                <td>
-                                    <span v-html="getSongText(row.song)"></span>
-                                </td>
-                            </tr>
+                                <tr
+                                    v-for="row in bestAndWorst.best"
+                                    :key="row.song.id"
+                                >
+                                    <td class=" text-center text-success">
+                                        <icon icon="keyboard_arrow_up" />
+                                        {{ row.stat_delta }}
+                                        <br>
+                                        <small>{{ row.stat_start }} to {{ row.stat_end }}</small>
+                                    </td>
+                                    <td>
+                                        <span v-html="getSongText(row.song)" />
+                                    </td>
+                                </tr>
                             </tbody>
                         </table>
                     </fieldset>
                 </b-col>
-                <b-col md="6" class="mb-4">
+                <b-col
+                    md="6"
+                    class="mb-4"
+                >
                     <fieldset>
                         <legend>
-                            <translate key="reports_overview_worst_songs">Worst Performing Songs</translate>
+                            {{ $gettext('Worst Performing Songs') }}
                         </legend>
 
                         <table class="table table-striped table-condensed table-nopadding">
@@ -54,36 +72,42 @@
                                 <col width="80%">
                             </colgroup>
                             <thead>
-                            <tr>
-                                <th>
-                                    <translate key="reports_overview_col_change">Change</translate>
-                                </th>
-                                <th>
-                                    <translate key="reports_overview_col_song">Song</translate>
-                                </th>
-                            </tr>
+                                <tr>
+                                    <th>
+                                        {{ $gettext('Change') }}
+                                    </th>
+                                    <th>
+                                        {{ $gettext('Song') }}
+                                    </th>
+                                </tr>
                             </thead>
                             <tbody>
-                            <tr v-for="row in bestAndWorst.worst">
-                                <td class="text-center text-danger">
-                                    <icon icon="keyboard_arrow_down"></icon>
-                                    {{ row.stat_delta }}
-                                    <br>
-                                    <small>{{ row.stat_start }} to {{ row.stat_end }}</small>
-                                </td>
-                                <td>
-                                    <span v-html="getSongText(row.song)"></span>
-                                </td>
-                            </tr>
+                                <tr
+                                    v-for="row in bestAndWorst.worst"
+                                    :key="row.song.id"
+                                >
+                                    <td class="text-center text-danger">
+                                        <icon icon="keyboard_arrow_down" />
+                                        {{ row.stat_delta }}
+                                        <br>
+                                        <small>{{ row.stat_start }} to {{ row.stat_end }}</small>
+                                    </td>
+                                    <td>
+                                        <span v-html="getSongText(row.song)" />
+                                    </td>
+                                </tr>
                             </tbody>
                         </table>
                     </fieldset>
                 </b-col>
 
-                <b-col md="12" class="mb-4">
+                <b-col
+                    md="12"
+                    class="mb-4"
+                >
                     <fieldset>
                         <legend>
-                            <translate key="reports_overview_most_played">Most Played Songs</translate>
+                            {{ $gettext('Most Played Songs') }}
                         </legend>
 
                         <table class="table table-striped table-condensed table-nopadding">
@@ -92,24 +116,27 @@
                                 <col width="90%">
                             </colgroup>
                             <thead>
-                            <tr>
-                                <th>
-                                    <translate key="reports_overview_col_plays">Plays</translate>
-                                </th>
-                                <th>
-                                    <translate key="reports_overview_col_song">Song</translate>
-                                </th>
-                            </tr>
+                                <tr>
+                                    <th>
+                                        {{ $gettext('Plays') }}
+                                    </th>
+                                    <th>
+                                        {{ $gettext('Song') }}
+                                    </th>
+                                </tr>
                             </thead>
                             <tbody>
-                            <tr v-for="row in mostPlayed">
-                                <td class="text-center">
-                                    {{ row.num_plays }}
-                                </td>
-                                <td>
-                                    <span v-html="getSongText(row.song)"></span>
-                                </td>
-                            </tr>
+                                <tr
+                                    v-for="row in mostPlayed"
+                                    :key="row.song.id"
+                                >
+                                    <td class="text-center">
+                                        {{ row.num_plays }}
+                                    </td>
+                                    <td>
+                                        <span v-html="getSongText(row.song)" />
+                                    </td>
+                                </tr>
                             </tbody>
                         </table>
                     </fieldset>
@@ -119,60 +146,66 @@
     </b-overlay>
 </template>
 
-<script>
-import {DateTime} from "luxon";
+<script setup>
 import Icon from "~/components/Common/Icon";
-import IsMounted from "~/components/Common/IsMounted";
+import {useMounted} from "@vueuse/core";
+import {onMounted, ref, shallowRef, toRef, watch} from "vue";
+import {DateTime} from "luxon";
+import {useAxios} from "~/vendor/axios";
 
-export default {
-    name: 'BestAndWorstTab',
-    components: {Icon},
-    mixins: [IsMounted],
-    props: {
-        dateRange: Object,
-        apiUrl: String,
+const props = defineProps({
+    dateRange: {
+        type: Object,
+        required: true
     },
-    data() {
-        return {
-            loading: true,
-            bestAndWorst: {
-                best: [],
-                worst: []
-            },
-            mostPlayed: [],
-        };
+    apiUrl: {
+        type: String,
+        required: true
     },
-    watch: {
-        dateRange() {
-            if (this.isMounted) {
-                this.relist();
-            }
-        }
-    },
-    mounted() {
-        this.relist();
-    },
-    methods: {
-        relist() {
-            this.loading = true;
-            this.axios.get(this.apiUrl, {
-                params: {
-                    start: DateTime.fromJSDate(this.dateRange.startDate).toISO(),
-                    end: DateTime.fromJSDate(this.dateRange.endDate).toISO()
-                }
-            }).then((response) => {
-                this.bestAndWorst = response.data.bestAndWorst;
-                this.mostPlayed = response.data.mostPlayed;
-                this.loading = false;
-            });
-        },
-        getSongText(song) {
-            if (song.title !== '') {
-                return '<b>' + song.title + '</b><br>' + song.artist;
-            }
+});
 
-            return song.text;
+const loading = ref(true);
+const bestAndWorst = shallowRef({
+    best: [],
+    worst: []
+});
+const mostPlayed = ref([]);
+
+const dateRange = toRef(props, 'dateRange');
+const {axios} = useAxios();
+
+const relist = () => {
+    loading.value = true;
+
+    axios.get(props.apiUrl, {
+        params: {
+            start: DateTime.fromJSDate(dateRange.value.startDate).toISO(),
+            end: DateTime.fromJSDate(dateRange.value.endDate).toISO()
         }
+    }).then((response) => {
+        bestAndWorst.value = response.data.bestAndWorst;
+        mostPlayed.value = response.data.mostPlayed;
+        loading.value = false;
+    });
+};
+
+const isMounted = useMounted();
+
+watch(dateRange, () => {
+    if (isMounted.value) {
+        relist();
     }
-}
+});
+
+onMounted(() => {
+    relist();
+});
+
+const getSongText = (song) => {
+    if (song.title !== '') {
+        return '<b>' + song.title + '</b><br>' + song.artist;
+    }
+
+    return song.text;
+};
 </script>

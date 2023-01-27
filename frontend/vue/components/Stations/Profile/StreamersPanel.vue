@@ -1,64 +1,68 @@
 <template>
-    <section class="card mb-4" role="region">
+    <section
+        class="card mb-4"
+        role="region"
+    >
         <template v-if="enableStreamers">
             <div class="card-header bg-primary-dark">
                 <h3 class="card-title">
-                    <translate key="lang_profile_streamers_title">Streamers/DJs</translate>
-                    <small class="badge badge-pill badge-success" key="lang_profile_streamers_enabled" v-translate>Enabled</small>
+                    {{ $gettext('Streamers/DJs') }}
+                    <enabled-badge :enabled="true" />
                 </h3>
             </div>
-            <div class="card-actions" v-if="userCanManageStreamers || userCanManageProfile">
-                <a class="btn btn-outline-primary" v-if="userCanManageStreamers" :href="streamersViewUri">
-                    <icon icon="settings"></icon>
-                    <translate key="lang_profile_streamers_manage">Manage</translate>
+            <div
+                v-if="userCanManageStreamers || userCanManageProfile"
+                class="card-actions"
+            >
+                <a
+                    v-if="userCanManageStreamers"
+                    class="btn btn-outline-primary"
+                    :href="streamersViewUri"
+                >
+                    <icon icon="settings" />
+                    {{ $gettext('Manage') }}
                 </a>
-                <a class="btn btn-outline-danger" v-if="userCanManageProfile" :data-confirm-title="langDisableStreamers" :href="streamersToggleUri">
-                    <icon icon="close"></icon>
-                    <translate key="lang_profile_streamers_disable">Disable</translate>
+                <a
+                    v-if="userCanManageProfile"
+                    class="btn btn-outline-danger"
+                    :data-confirm-title="$gettext('Disable streamers?')"
+                    :href="streamersToggleUri"
+                >
+                    <icon icon="close" />
+                    {{ $gettext('Disable') }}
                 </a>
             </div>
         </template>
         <template v-else>
             <div class="card-header bg-primary-dark">
                 <h3 class="card-title">
-                    <translate key="lang_profile_streamers_title">Streamers/DJs</translate>
-                    <small class="badge badge-pill badge-danger" key="lang_profile_streamers_disabled" v-translate>Disabled</small>
+                    {{ $gettext('Streamers/DJs') }}
+                    <enabled-badge :enabled="false" />
                 </h3>
             </div>
-            <div class="card-actions" v-if="userCanManageProfile">
-                <a class="btn btn-outline-success" :data-confirm-title="langEnableStreamers" :href="streamersToggleUri">
-                    <icon icon="check"></icon>
-                    <translate key="lang_profile_streamers_enable">Enable</translate>
+            <div
+                v-if="userCanManageProfile"
+                class="card-actions"
+            >
+                <a
+                    class="btn btn-outline-success"
+                    :data-confirm-title="$gettext('Enable streamers?')"
+                    :href="streamersToggleUri"
+                >
+                    <icon icon="check" />
+                    {{ $gettext('Enable') }}
                 </a>
             </div>
         </template>
     </section>
 </template>
 
-<script>
-import Icon from '~/components/Common/Icon';
+<script setup>
+import Icon from "~/components/Common/Icon.vue";
+import EnabledBadge from "~/components/Common/Badges/EnabledBadge.vue";
+import streamersPanelProps from "~/components/Stations/Profile/streamersPanelProps";
 
-export const profileStreamersProps = {
-    props: {
-        enableStreamers: Boolean,
-        userCanManageProfile: Boolean,
-        userCanManageStreamers: Boolean,
-        streamersViewUri: String,
-        streamersToggleUri: String
-    }
-};
-
-export default {
-    inheritAttrs: false,
-    components: {Icon},
-    mixins: [profileStreamersProps],
-    computed: {
-        langDisableStreamers() {
-            return this.$gettext('Disable streamers?');
-        },
-        langEnableStreamers() {
-            return this.$gettext('Enable streamers?');
-        }
-    }
-};
+const props = defineProps({
+    ...streamersPanelProps
+});
 </script>

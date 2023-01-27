@@ -1,46 +1,127 @@
 <template>
-    <div style="display: contents">
-        <audio-player ref="player"></audio-player>
+    <audio-player
+        ref="$player"
+        :volume="volume"
+        :is-muted="isMuted"
+    />
 
-        <div class="ml-3 player-inline" v-if="isPlaying">
-            <div class="inline-seek d-inline-flex align-items-center ml-1" v-if="!current.isStream && duration !== 0">
-                <div class="flex-shrink-0 mx-1 text-white-50 time-display">
-                    {{ currentTimeText }}
-                </div>
-                <div class="flex-fill mx-2">
-                    <input type="range" :title="langSeek" class="player-seek-range custom-range" min="0" max="100"
-                           step="1" v-model="progress">
-                </div>
-                <div class="flex-shrink-0 mx-1 text-white-50 time-display">
-                    {{ durationText }}
-                </div>
+    <div
+        v-if="isPlaying"
+        class="ml-3 player-inline"
+    >
+        <div
+            v-if="!current.isStream && duration !== 0"
+            class="inline-seek d-inline-flex align-items-center ml-1"
+        >
+            <div class="flex-shrink-0 mx-1 text-white-50 time-display">
+                {{ currentTimeText }}
             </div>
+            <div class="flex-fill mx-2">
+                <input
+                    v-model="progress"
+                    type="range"
+                    :title="$gettext('Seek')"
+                    class="player-seek-range custom-range"
+                    min="0"
+                    max="100"
+                    step="1"
+                >
+            </div>
+            <div class="flex-shrink-0 mx-1 text-white-50 time-display">
+                {{ durationText }}
+            </div>
+        </div>
 
-            <a class="btn btn-sm btn-outline-light px-2 ml-1" href="#" @click.prevent="stop()">
-                <icon icon="stop"></icon>
-                <span class="sr-only" key="lang_pause" v-translate>Stop</span>
-            </a>
-            <div class="inline-volume-controls d-inline-flex align-items-center ml-1">
-                <div class="flex-shrink-0">
-                    <a class="btn btn-sm btn-outline-light px-2" href="#" @click.prevent="volume = 0">
-                        <icon icon="volume_mute"></icon>
-                        <span class="sr-only" key="lang_mute" v-translate>Mute</span>
-                    </a>
-                </div>
-                <div class="flex-fill mx-1">
-                    <input type="range" :title="langVolume" class="player-volume-range custom-range" min="0" max="100"
-                           step="1" v-model="volume">
-                </div>
-                <div class="flex-shrink-0">
-                    <a class="btn btn-sm btn-outline-light px-2" href="#" @click.prevent="volume = 100">
-                        <icon icon="volume_up"></icon>
-                        <span class="sr-only" key="lang_full_volume" v-translate>Full Volume</span>
-                    </a>
-                </div>
+        <a
+            class="btn btn-sm btn-outline-light px-2 ml-1"
+            href="#"
+            :aria-label="$gettext('Stop')"
+            @click.prevent="stop()"
+        >
+            <icon icon="stop" />
+        </a>
+        <div class="inline-volume-controls d-inline-flex align-items-center ml-1">
+            <div class="flex-shrink-0">
+                <mute-button
+                    class="btn btn-sm btn-outline-light px-2"
+                    :volume="volume"
+                    :is-muted="isMuted"
+                    @toggle-mute="toggleMute"
+                />
+            </div>
+            <div class="flex-fill mx-1">
+                <input
+                    v-model.number="volume"
+                    type="range"
+                    :title="$gettext('Volume')"
+                    class="player-volume-range custom-range"
+                    min="0"
+                    max="100"
+                    step="1"
+                >
             </div>
         </div>
     </div>
 </template>
+
+<script setup>
+import AudioPlayer from '~/components/Common/AudioPlayer.vue';
+import formatTime from '~/functions/formatTime.js';
+import Icon from '~/components/Common/Icon.vue';
+import {usePlayerStore} from "~/store.js";
+import {useLocalStorage} from "@vueuse/core";
+import {computed, ref, toRef} from "vue";
+import MuteButton from "~/components/Common/MuteButton.vue";
+
+const store = usePlayerStore();
+const isPlaying = toRef(store, 'isPlaying');
+const current = toRef(store, 'current');
+
+const volume = useLocalStorage('player_volume', 55, {
+    listenToStorageChanges: false
+});
+const isMuted = useLocalStorage('player_is_muted', false, {
+    listenToStorageChanges: false
+});
+const $player = ref(); // AudioPlayer
+
+const duration = computed(() => {
+    return $player.value?.getDuration();
+});
+
+const durationText = computed(() => {
+    return formatTime(duration.value);
+});
+
+const currentTime = computed(() => {
+    return $player.value?.getCurrentTime();
+});
+
+const currentTimeText = computed(() => {
+    return formatTime(currentTime.value);
+});
+
+const progress = computed({
+    get: () => {
+        return $player.value?.getProgress();
+    },
+    set: (prog) => {
+        $player.value?.setProgress(prog);
+    }
+});
+
+const stop = () => {
+    store.toggle({
+        url: null,
+        isStream: true,
+        isHls: false,
+    });
+};
+
+const toggleMute = () => {
+    isMuted.value = !isMuted.value;
+};
+</script>
 
 <style lang="scss">
 .player-inline {
@@ -53,7 +134,7 @@
     }
 
     .inline-volume-controls {
-        width: 175px;
+        width: 125px;
     }
 
     input.player-volume-range,
@@ -63,88 +144,3 @@
     }
 }
 </style>
-
-<script>
-import AudioPlayer from '~/components/Common/AudioPlayer';
-import formatTime from '~/functions/formatTime.js';
-import Icon from '~/components/Common/Icon';
-import store from '~/store.js';
-
-export default {
-    components: {Icon, AudioPlayer},
-    data() {
-        return {
-            is_mounted: false
-        };
-    },
-    mounted() {
-        this.is_mounted = true;
-    },
-    computed: {
-        langSeek() {
-            return this.$gettext('Seek');
-        },
-        langVolume () {
-            return this.$gettext('Volume');
-        },
-        durationText () {
-            return formatTime(this.duration);
-        },
-        currentTimeText () {
-            return formatTime(this.currentTime);
-        },
-        duration () {
-            if (!this.is_mounted) {
-                return;
-            }
-
-            return this.$refs.player.getDuration();
-        },
-        currentTime () {
-            if (!this.is_mounted) {
-                return;
-            }
-
-            return this.$refs.player.getCurrentTime();
-        },
-        volume: {
-            get () {
-                if (!this.is_mounted) {
-                    return;
-                }
-
-                return this.$refs.player.getVolume();
-            },
-            set (vol) {
-                this.$refs.player.setVolume(vol);
-            }
-        },
-        progress: {
-            get() {
-                if (!this.is_mounted) {
-                    return;
-                }
-
-                return this.$refs.player.getProgress();
-            },
-            set(progress) {
-                this.$refs.player.setProgress(progress);
-            }
-        },
-        isPlaying() {
-            return store.state.player.isPlaying;
-        },
-        current() {
-            return store.state.player.current;
-        }
-    },
-    methods: {
-        stop () {
-            store.commit('player/toggle', {
-                url: null,
-                isStream: true
-            });
-        }
-    }
-};
-</script>

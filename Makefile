@@ -34,7 +34,7 @@ update: # Update everything (i.e. after a branch update)
 	docker-compose build
 	$(MAKE) down
 	docker-compose run --rm web gosu azuracast composer install
-	docker-compose run --rm web azuracast_cli azuracast:setup:initialize
+	docker-compose run --rm web azuracast_cli azuracast:setup --update
 	$(MAKE) frontend-build
 	$(MAKE) up
 

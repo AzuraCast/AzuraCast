@@ -69,12 +69,10 @@ $enable-print-styles: true !default;
 
 // Overrides for specific third-party products
 @import 'vendors/bootgrid-colors';
-@import 'vendors/codemirror-colors';
 @import 'vendors/daterangepicker-colors';
 @import 'vendors/fullcalendar-colors';
 @import 'vendors/waveform-colors';
 @import 'vendors/sweetalert2-colors';
-@import 'vendors/select2-colors';
 
 // Overrides for the Daemonite Material theme
 @import 'azuracast/overrides/body-colors';

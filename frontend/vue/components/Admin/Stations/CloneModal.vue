@@ -1,95 +1,96 @@
 <template>
-    <modal-form ref="modal" :loading="loading" :title="langTitle" :error="error" :disable-save-button="$v.form.$invalid"
-                @submit="doSubmit" @hidden="clearContents">
-
-        <admin-stations-clone-modal-form :form="$v.form"></admin-stations-clone-modal-form>
-
+    <modal-form
+        ref="$modal"
+        :loading="loading"
+        :title="$gettext('Clone Station')"
+        :error="error"
+        :disable-save-button="v$.$invalid"
+        @submit="doSubmit"
+        @hidden="clearContents"
+    >
+        <admin-stations-clone-modal-form :form="v$" />
     </modal-form>
 </template>
 
-<script>
-import ModalForm from "~/components/Common/ModalForm";
-import {validationMixin} from "vuelidate";
-import {required} from 'vuelidate/dist/validators.min.js';
-import AdminStationsCloneModalForm from "~/components/Admin/Stations/CloneModalForm";
+<script setup>
+import {required} from '@vuelidate/validators';
+import ModalForm from "~/components/Common/ModalForm.vue";
+import AdminStationsCloneModalForm from "~/components/Admin/Stations/CloneModalForm.vue";
+import {ref} from "vue";
+import {useTranslate} from "~/vendor/gettext";
+import {useNotify} from "~/vendor/bootstrapVue";
+import {useAxios} from "~/vendor/axios";
+import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
 
-export default {
-    name: 'AdminStationsCloneModal',
-    components: {AdminStationsCloneModalForm, ModalForm},
-    emits: ['relist'],
-    data() {
-        return {
-            loading: true,
-            cloneUrl: null,
-            error: null,
-            form: {},
-        }
+const emit = defineEmits(['relist']);
+
+const loading = ref(true);
+const cloneUrl = ref(null);
+const error = ref(null);
+
+const {form, resetForm, v$, ifValid} = useVuelidateOnForm(
+    {
+        name: {required},
+        description: {},
+        clone: {}
     },
-    mixins: [
-        validationMixin
-    ],
-    validations() {
-        return {
-            form: {
-                name: {required},
-                description: {},
-                clone: {}
-            }
-        };
-    },
-    computed: {
-        langTitle() {
-            return this.$gettext('Clone Station');
-        },
-    },
-    methods: {
-        resetForm() {
-            this.form = {
-                name: '',
-                description: '',
-                clone: [],
-            };
-        },
-        create(stationName, cloneUrl) {
-            this.resetForm();
-
-            const newStationName = this.$gettext('%{station} - Copy');
-            this.form.name = this.$gettextInterpolate(newStationName, {station: stationName});
-
-            this.loading = false;
-            this.error = null;
-            this.cloneUrl = cloneUrl;
-
-            this.$refs.modal.show();
-        },
-        clearContents() {
-            this.resetForm();
-            this.cloneUrl = null;
-        },
-        close() {
-            this.$refs.modal.hide();
-        },
-        doSubmit() {
-            this.$v.form.$touch();
-            if (this.$v.form.$anyError) {
-                return;
-            }
-
-            this.error = null;
-            this.$wrapWithLoading(
-                this.axios({
-                    method: 'POST',
-                    url: this.cloneUrl,
-                    data: this.form
-                })
-            ).then((resp) => {
-                this.$notifySuccess();
-                this.$emit('relist');
-                this.close();
-            }).catch((error) => {
-                this.error = error.response.data.message;
-            });
-        },
+    {
+        name: '',
+        description: '',
+        clone: [],
     }
-}
+);
+
+const $modal = ref(); // ModalForm
+const {$gettext} = useTranslate();
+
+const create = (stationName, stationCloneUrl) => {
+    resetForm();
+
+    form.value.name = $gettext(
+        '%{station} - Copy',
+        {station: stationName}
+    );
+    loading.value = false;
+    error.value = null;
+    cloneUrl.value = stationCloneUrl;
+
+    $modal.value.show();
+};
+
+const clearContents = () => {
+    resetForm();
+    cloneUrl.value = null;
+};
+
+const close = () => {
+    $modal.value.hide();
+};
+
+const {wrapWithLoading, notifySuccess} = useNotify();
+const {axios} = useAxios();
+
+const doSubmit = () => {
+    ifValid(() => {
+        error.value = null;
+
+        wrapWithLoading(
+            axios({
+                method: 'POST',
+                url: cloneUrl.value,
+                data: form.value
+            })
+        ).then(() => {
+            notifySuccess();
+            emit('relist');
+            close();
+        }).catch((error) => {
+            error.value = error.response.data.message;
+        });
+    });
+};
+
+defineExpose({
+    create
+});
 </script>

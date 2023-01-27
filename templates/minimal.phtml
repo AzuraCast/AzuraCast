@@ -31,6 +31,8 @@ $hide_footer ??= false;
     <style>
         <?=$customization->getCustomPublicCss() ?>
     </style>
+
+    <?= $sections->get('station_head') ?>
 </head>
 
 <body class="page-minimal <?= $page_class ?? '' ?>">
@@ -42,6 +44,8 @@ $hide_footer ??= false;
 <script>
     <?=$customization->getCustomPublicJs() ?>
 </script>
+
+<?= $sections->get('station_bodyjs') ?>
 
 <?= $this->section('content') ?>
 

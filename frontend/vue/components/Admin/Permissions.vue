@@ -1,116 +1,148 @@
 <template>
-    <div>
-        <b-card no-body>
-            <b-card-header header-bg-variant="primary-dark">
-                <h2 class="card-title" key="lang_title" v-translate>Roles & Permissions</h2>
-            </b-card-header>
+    <b-card no-body>
+        <b-card-header header-bg-variant="primary-dark">
+            <h2 class="card-title">
+                {{ $gettext('Roles & Permissions') }}
+            </h2>
+        </b-card-header>
 
-            <info-card>
-                <p class="card-text">
-                    <translate key="lang_card_info">AzuraCast uses a role-based access control system. Roles are given permissions to certain sections of the site, then users are assigned into those roles.</translate>
-                </p>
-            </info-card>
+        <info-card>
+            <p class="card-text">
+                {{
+                    $gettext('AzuraCast uses a role-based access control system. Roles are given permissions to certain sections of the site, then users are assigned into those roles.')
+                }}
+            </p>
+        </info-card>
 
-            <b-card-body body-class="card-padding-sm">
-                <b-button variant="outline-primary" @click.prevent="doCreate">
-                    <icon icon="add"></icon>
-                    <translate key="lang_add_btn">Add Role</translate>
-                </b-button>
-            </b-card-body>
+        <b-card-body body-class="card-padding-sm">
+            <b-button
+                variant="outline-primary"
+                @click.prevent="doCreate"
+            >
+                <icon icon="add" />
+                {{ $gettext('Add Role') }}
+            </b-button>
+        </b-card-body>
 
-            <data-table ref="datatable" id="permissions" paginated :fields="fields" :api-url="listUrl">
-                <template #cell(permissions)="row">
-                    <div v-if="row.item.permissions.global.length > 0">
-                        <translate key="lang_permissions_global">Global</translate>
-                        :
-                        {{ getGlobalPermissionNames(row.item.permissions.global).join(', ') }}
-                    </div>
-                    <div v-for="(permissions, stationId) in row.item.permissions.station" :key="stationId">
-                        <b>{{ getStationName(stationId) }}</b>:
-                        {{ getStationPermissionNames(permissions).join(', ') }}
-                    </div>
-                </template>
-                <template #cell(actions)="row">
-                    <b-button-group size="sm" v-if="!row.item.is_super_admin">
-                        <b-button size="sm" variant="primary" @click.prevent="doEdit(row.item.links.self)">
-                            <translate key="lang_btn_edit">Edit</translate>
-                        </b-button>
-                        <b-button v-if="row.item.id !== 1" size="sm" variant="danger"
-                                  @click.prevent="doDelete(row.item.links.self)">
-                            <translate key="lang_btn_delete">Delete</translate>
-                        </b-button>
-                    </b-button-group>
-                </template>
-            </data-table>
-        </b-card>
+        <data-table
+            id="permissions"
+            ref="$datatable"
+            paginated
+            :fields="fields"
+            :api-url="listUrl"
+        >
+            <template #cell(permissions)="row">
+                <div v-if="row.item.permissions.global.length > 0">
+                    {{ $gettext('Global') }}
+                    :
+                    {{ getGlobalPermissionNames(row.item.permissions.global).join(', ') }}
+                </div>
+                <div
+                    v-for="(permissions, stationId) in row.item.permissions.station"
+                    :key="stationId"
+                >
+                    <b>{{ getStationName(stationId) }}</b>:
+                    {{ getStationPermissionNames(permissions).join(', ') }}
+                </div>
+            </template>
+            <template #cell(actions)="row">
+                <b-button-group
+                    v-if="!row.item.is_super_admin"
+                    size="sm"
+                >
+                    <b-button
+                        size="sm"
+                        variant="primary"
+                        @click.prevent="doEdit(row.item.links.self)"
+                    >
+                        {{ $gettext('Edit') }}
+                    </b-button>
+                    <b-button
+                        v-if="row.item.id !== 1"
+                        size="sm"
+                        variant="danger"
+                        @click.prevent="doDelete(row.item.links.self)"
+                    >
+                        {{ $gettext('Delete') }}
+                    </b-button>
+                </b-button-group>
+            </template>
+        </data-table>
+    </b-card>
 
-        <edit-modal ref="editModal" :create-url="listUrl" :station-permissions="stationPermissions" :stations="stations"
-                    :global-permissions="globalPermissions" @relist="relist"></edit-modal>
-    </div>
+    <edit-modal
+        ref="$editModal"
+        :create-url="listUrl"
+        :station-permissions="stationPermissions"
+        :stations="stations"
+        :global-permissions="globalPermissions"
+        @relist="relist"
+    />
 </template>
 
-<script>
+<script setup>
 import DataTable from '~/components/Common/DataTable';
 import EditModal from './Permissions/EditModal';
 import Icon from '~/components/Common/Icon';
 import InfoCard from '~/components/Common/InfoCard';
-import _ from 'lodash';
+import {filter, get, map} from 'lodash';
+import {useTranslate} from "~/vendor/gettext";
+import {ref} from "vue";
+import useHasDatatable from "~/functions/useHasDatatable";
+import useHasEditModal from "~/functions/useHasEditModal";
+import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
 
-export default {
-    name: 'AdminPermissions',
-    components: {InfoCard, Icon, EditModal, DataTable},
-    props: {
-        listUrl: String,
-        stations: Array,
-        globalPermissions: Array,
-        stationPermissions: Array
+const props = defineProps({
+    listUrl: {
+        type: String,
+        required: true
     },
-    data() {
-        return {
-            fields: [
-                {key: 'name', isRowHeader: true, label: this.$gettext('Role Name'), sortable: true},
-                {key: 'permissions', label: this.$gettext('Permissions'), sortable: false},
-                {key: 'actions', label: this.$gettext('Actions'), sortable: false, class: 'shrink'}
-            ]
-        };
+    stations: {
+        type: Array,
+        required: true
     },
-    methods: {
-        getGlobalPermissionNames(permissions) {
-            return _.filter(_.map(permissions, (permission) => {
-                return _.get(this.globalPermissions, permission, null);
-            }));
-        },
-        getStationPermissionNames(permissions) {
-            return _.filter(_.map(permissions, (permission) => {
-                return _.get(this.stationPermissions, permission, null);
-            }));
-        },
-        getStationName(stationId) {
-            return _.get(this.stations, stationId, null);
-        },
-        relist() {
-            this.$refs.datatable.refresh();
-        },
-        doCreate() {
-            this.$refs.editModal.create();
-        },
-        doEdit(url) {
-            this.$refs.editModal.edit(url);
-        },
-        doDelete(url) {
-            this.$confirmDelete({
-                title: this.$gettext('Delete Role?'),
-            }).then((result) => {
-                if (result.value) {
-                    this.$wrapWithLoading(
-                        this.axios.delete(url)
-                    ).then((resp) => {
-                        this.$notifySuccess(resp.data.message);
-                        this.relist();
-                    });
-                }
-            });
-        }
+    globalPermissions: {
+        type: Array,
+        required: true
+    },
+    stationPermissions: {
+        type: Array,
+        required: true
     }
+});
+
+const {$gettext} = useTranslate();
+
+const fields = [
+    {key: 'name', isRowHeader: true, label: $gettext('Role Name'), sortable: true},
+    {key: 'permissions', label: $gettext('Permissions'), sortable: false},
+    {key: 'actions', label: $gettext('Actions'), sortable: false, class: 'shrink'}
+];
+
+const getGlobalPermissionNames = (permissions) => {
+    return filter(map(permissions, (permission) => {
+        return get(props.globalPermissions, permission, null);
+    }));
 };
+
+const getStationPermissionNames = (permissions) => {
+    return filter(map(permissions, (permission) => {
+        return get(props.stationPermissions, permission, null);
+    }));
+};
+
+const getStationName = (stationId) => {
+    return get(props.stations, stationId, null);
+};
+
+const $datatable = ref(); // Template Ref
+const {relist} = useHasDatatable($datatable);
+
+const $editModal = ref(); // Template Ref
+const {doCreate, doEdit} = useHasEditModal($editModal);
+
+const {doDelete} = useConfirmAndDelete(
+    $gettext('Delete Role?'),
+    relist
+);
 </script>

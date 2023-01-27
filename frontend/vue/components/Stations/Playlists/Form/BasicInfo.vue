@@ -1,331 +1,454 @@
 <template>
-    <b-tab :title="langTabTitle" active>
+    <b-tab
+        :title="$gettext('Basic Info')"
+        active
+    >
         <b-form-group>
-            <b-form-row>
-                <b-wrapped-form-group class="col-md-6" id="form_edit_name" :field="form.name">
-                    <template #label="{lang}">
-                        <translate :key="lang">Playlist Name</translate>
+            <div class="form-row">
+                <b-wrapped-form-group
+                    id="form_edit_name"
+                    class="col-md-6"
+                    :field="form.name"
+                >
+                    <template #label>
+                        {{ $gettext('Playlist Name') }}
                     </template>
                 </b-wrapped-form-group>
 
-                <b-wrapped-form-checkbox class="col-md-6" id="form_edit_is_enabled" :field="form.is_enabled">
-                    <template #label="{lang}">
-                        <translate :key="lang">Enable</translate>
+                <b-wrapped-form-checkbox
+                    id="form_edit_is_enabled"
+                    class="col-md-6"
+                    :field="form.is_enabled"
+                >
+                    <template #label>
+                        {{ $gettext('Enable') }}
                     </template>
-                    <template #description="{lang}">
-                        <translate :key="lang">If disabled, the playlist will not be included in radio playback, but can still be managed.</translate>
+                    <template #description>
+                        {{
+                            $gettext('If disabled, the playlist will not be included in radio playback, but can still be managed.')
+                        }}
                     </template>
                 </b-wrapped-form-checkbox>
 
-                <b-wrapped-form-group class="col-md-12" id="edit_form_source" :field="form.source">
-                    <template #label="{lang}">
-                        <translate :key="lang">Source</translate>
+                <b-wrapped-form-group
+                    id="edit_form_source"
+                    class="col-md-12"
+                    :field="form.source"
+                >
+                    <template #label>
+                        {{ $gettext('Source') }}
                     </template>
-                    <template #default="props">
-                        <b-form-radio-group stacked :id="props.id" v-model="props.field.$model">
+                    <template #default="slotProps">
+                        <b-form-radio-group
+                            :id="slotProps.id"
+                            v-model="slotProps.field.$model"
+                            stacked
+                        >
                             <b-form-radio value="songs">
-                                <translate key="lang_edit_form_source_songs">Song-Based</translate>
-                                <translate class="form-text mt-0" key="lang_edit_form_source_songs_desc">A playlist containing media files hosted on this server.</translate>
+                                {{ $gettext('Song-Based') }}
+                                <span class="form-text mt-0">
+                                    {{ $gettext('A playlist containing media files hosted on this server.') }}
+                                </span>
                             </b-form-radio>
                             <b-form-radio value="remote_url">
-                                <translate key="lang_edit_form_source_remote_url">Remote URL</translate>
-                                <translate class="form-text mt-0" key="lang_edit_form_source_remote_url_desc">A playlist that instructs the station to play from a remote URL.</translate>
+                                {{ $gettext('Remote URL') }}
+                                <span class="form-text mt-0">
+                                    {{ $gettext('A playlist that instructs the station to play from a remote URL.') }}
+                                </span>
                             </b-form-radio>
                         </b-form-radio-group>
                     </template>
                 </b-wrapped-form-group>
-            </b-form-row>
+            </div>
         </b-form-group>
 
-        <b-card v-show="form.source.$model === 'songs'" class="mb-3" no-body>
+        <b-card
+            v-show="form.source.$model === 'songs'"
+            class="mb-3"
+            no-body
+        >
             <div class="card-header bg-primary-dark">
                 <h2 class="card-title">
-                    <translate key="lang_source_songs">Song-Based Playlist</translate>
+                    {{ $gettext('Song-Based Playlist') }}
                 </h2>
             </div>
             <b-card-body>
                 <b-form-group>
-                    <b-form-row>
-                        <b-wrapped-form-checkbox class="col-md-6" id="form_edit_avoid_duplicates"
-                                                 :field="form.avoid_duplicates">
-                            <template #label="{lang}">
-                                <translate :key="lang">Avoid Duplicate Artists/Titles</translate>
+                    <div class="form-row">
+                        <b-wrapped-form-checkbox
+                            id="form_edit_avoid_duplicates"
+                            class="col-md-6"
+                            :field="form.avoid_duplicates"
+                        >
+                            <template #label>
+                                {{ $gettext('Avoid Duplicate Artists/Titles') }}
                             </template>
-                            <template #description="{lang}">
-                                <translate :key="lang">Whether the AutoDJ should attempt to avoid duplicate artists and track titles when playing media from this playlist.</translate>
-                            </template>
-                        </b-wrapped-form-checkbox>
-
-                        <b-wrapped-form-checkbox class="col-md-6" id="form_edit_include_in_on_demand"
-                                                 :field="form.include_in_on_demand">
-                            <template #label="{lang}">
-                                <translate :key="lang">Include in On-Demand Player</translate>
-                            </template>
-                            <template #description="{lang}">
-                                <translate :key="lang">If this station has on-demand streaming and downloading enabled, only songs that are in playlists with this setting enabled will be visible.</translate>
+                            <template #description>
+                                {{
+                                    $gettext('Whether the AutoDJ should attempt to avoid duplicate artists and track titles when playing media from this playlist.')
+                                }}
                             </template>
                         </b-wrapped-form-checkbox>
 
-                        <b-wrapped-form-group class="col-md-6" id="form_edit_include_in_requests"
-                                              :field="form.include_in_requests">
-                            <template #description="{lang}">
-                                <translate :key="lang">If requests are enabled for your station, users will be able to request media that is on this playlist.</translate>
+                        <b-wrapped-form-checkbox
+                            id="form_edit_include_in_on_demand"
+                            class="col-md-6"
+                            :field="form.include_in_on_demand"
+                        >
+                            <template #label>
+                                {{ $gettext('Include in On-Demand Player') }}
                             </template>
-                            <template #default="props">
-                                <b-form-checkbox :id="props.id" v-model="props.field.$model">
-                                    <translate key="lang_form_edit_include_in_requests">Allow Requests from This Playlist</translate>
+                            <template #description>
+                                {{
+                                    $gettext('If this station has on-demand streaming and downloading enabled, only songs that are in playlists with this setting enabled will be visible.')
+                                }}
+                            </template>
+                        </b-wrapped-form-checkbox>
+
+                        <b-wrapped-form-group
+                            id="form_edit_include_in_requests"
+                            class="col-md-6"
+                            :field="form.include_in_requests"
+                        >
+                            <template #description>
+                                {{
+                                    $gettext('If requests are enabled for your station, users will be able to request media that is on this playlist.')
+                                }}
+                            </template>
+                            <template #default="slotProps">
+                                <b-form-checkbox
+                                    :id="slotProps.id"
+                                    v-model="slotProps.field.$model"
+                                >
+                                    {{ $gettext('Allow Requests from This Playlist') }}
                                 </b-form-checkbox>
                             </template>
                         </b-wrapped-form-group>
 
-                        <b-wrapped-form-group class="col-md-6" id="form_edit_is_jingle" :field="form.is_jingle">
-                            <template #description="{lang}">
-                                <translate :key="lang">Enable this setting to prevent metadata from being sent to the AutoDJ for files in this playlist. This is useful if the playlist contains jingles or bumpers.</translate>
+                        <b-wrapped-form-group
+                            id="form_edit_is_jingle"
+                            class="col-md-6"
+                            :field="form.is_jingle"
+                        >
+                            <template #description>
+                                {{
+                                    $gettext('Enable this setting to prevent metadata from being sent to the AutoDJ for files in this playlist. This is useful if the playlist contains jingles or bumpers.')
+                                }}
                             </template>
-                            <template #default="props">
-                                <b-form-checkbox :id="props.id" v-model="props.field.$model">
-                                    <translate key="lang_form_edit_is_jingle">Hide Metadata from Listeners ("Jingle Mode")</translate>
+                            <template #default="slotProps">
+                                <b-form-checkbox
+                                    :id="slotProps.id"
+                                    v-model="slotProps.field.$model"
+                                >
+                                    {{ $gettext('Hide Metadata from Listeners ("Jingle Mode")') }}
                                 </b-form-checkbox>
                             </template>
                         </b-wrapped-form-group>
 
-                        <b-wrapped-form-group class="col-md-6" id="edit_form_type" :field="form.type">
-                            <template #label="{lang}">
-                                <translate :key="lang">Playlist Type</translate>
+                        <b-wrapped-form-group
+                            id="edit_form_type"
+                            class="col-md-6"
+                            :field="form.type"
+                        >
+                            <template #label>
+                                {{ $gettext('Playlist Type') }}
                             </template>
-                            <template #default="props">
-                                <b-form-radio-group stacked :id="props.id" v-model="props.field.$model">
+                            <template #default="slotProps">
+                                <b-form-radio-group
+                                    :id="slotProps.id"
+                                    v-model="slotProps.field.$model"
+                                    stacked
+                                >
                                     <b-form-radio value="default">
-                                        <translate key="lang_form_type_default">General Rotation</translate>
-                                        <translate class="form-text mt-0" key="lang_form_type_default_desc">Standard playlist, shuffles with other standard playlists based on weight.</translate>
+                                        {{ $gettext('General Rotation') }}
+                                        <span class="form-text mt-0">
+                                            {{ $gettext('Standard playlist, shuffles with other standard playlists based on weight.') }}
+                                        </span>
                                     </b-form-radio>
                                     <b-form-radio value="once_per_x_songs">
-                                        <translate key="lang_form_type_once_per_x_songs">Once per x Songs</translate>
-                                        <translate class="form-text mt-0" key="lang_form_type_once_per_x_songs_desc">Play exactly once every $x songs.</translate>
+                                        {{ $gettext('Once per x Songs') }}
+                                        <span class="form-text mt-0">
+                                            {{ $gettext('Play exactly once every $x songs.') }}
+                                        </span>
                                     </b-form-radio>
                                     <b-form-radio value="once_per_x_minutes">
-                                        <translate
-                                            key="lang_form_type_once_per_x_minutes">Once per x Minutes</translate>
-                                        <translate class="form-text mt-0" key="lang_form_type_once_per_x_minutes_desc">Play exactly once every $x minutes.</translate>
+                                        {{ $gettext('Once per x Minutes') }}
+                                        <span class="form-text mt-0">
+                                            {{ $gettext('Play exactly once every $x minutes.') }}
+                                        </span>                                        
                                     </b-form-radio>
                                     <b-form-radio value="once_per_hour">
-                                        <translate key="lang_form_type_once_per_hour">Once per Hour</translate>
-                                        <translate class="form-text mt-0" key="lang_form_type_once_per_hour_desc">Play once per hour at the specified minute.</translate>
+                                        {{ $gettext('Once per Hour') }}
+                                        <span class="form-text mt-0">
+                                            {{ $gettext('Play once per hour at the specified minute.') }}
+                                        </span>
                                     </b-form-radio>
                                     <b-form-radio value="custom">
-                                        <translate key="lang_form_type_custom">Advanced</translate>
+                                        {{ $gettext('Advanced') }}
                                         <span class="form-text mt-0">
-                                <translate key="lang_form_type_custom_desc">Manually define how this playlist is used in Liquidsoap configuration.</translate>
-                                <a href="https://docs.azuracast.com/en/user-guide/playlists/advanced-playlists"
-                                   target="_blank">
-                                    <translate
-                                        key="lang_form_type_custom_more">Learn about Advanced Playlists</translate>
-                                </a>
-                            </span>
+                                            {{ $gettext('Manually define how this playlist is used in Liquidsoap configuration.') }}
+                                            <a
+                                                href="https://docs.azuracast.com/en/user-guide/playlists/advanced-playlists"
+                                                target="_blank"
+                                            >
+                                                {{ $gettext('Learn about Advanced Playlists') }}
+                                            </a>
+                                        </span>
                                     </b-form-radio>
                                 </b-form-radio-group>
                             </template>
                         </b-wrapped-form-group>
 
-                        <b-wrapped-form-group class="col-md-6" id="edit_form_order" :field="form.order">
-                            <template #label="{lang}">
-                                <translate :key="lang">Song Playback Order</translate>
+                        <b-wrapped-form-group
+                            id="edit_form_order"
+                            class="col-md-6"
+                            :field="form.order"
+                        >
+                            <template #label>
+                                {{ $gettext('Song Playback Order') }}
                             </template>
-                            <template #default="props">
-                                <b-form-radio-group stacked :id="props.id" v-model="props.field.$model">
+                            <template #default="slotProps">
+                                <b-form-radio-group
+                                    :id="slotProps.id"
+                                    v-model="slotProps.field.$model"
+                                    stacked
+                                >
                                     <b-form-radio value="shuffle">
-                                        <translate key="lang_edit_form_order_shuffle">Shuffled</translate>
-                                        <translate class="form-text mt-0" key="lang_edit_form_order_shuffle_info">The full playlist is shuffled and then played through in the shuffled order.</translate>
+                                        {{ $gettext('Shuffled') }}
+                                        <span class="form-text mt-0">
+                                            {{ $gettext('The full playlist is shuffled and then played through in the shuffled order.') }}
+                                        </span>
                                     </b-form-radio>
                                     <b-form-radio value="random">
-                                        <translate key="lang_edit_form_order_random">Random</translate>
-                                        <translate class="form-text mt-0" key="lang_edit_form_order_random_info">A completely random track is picked for playback every time the queue is populated.</translate>
+                                        {{ $gettext('Random') }}
+                                        <span class="form-text mt-0">                                        
+                                            {{ $gettext('A completely random track is picked for playback every time the queue is populated.') }}
+                                        </span>
                                     </b-form-radio>
                                     <b-form-radio value="sequential">
-                                        <translate key="lang_edit_form_order_sequential">Sequential</translate>
-                                        <translate class="form-text mt-0" key="lang_edit_form_order_sequential_info">The order of the playlist is manually specified and followed by the AutoDJ.</translate>
+                                        {{ $gettext('Sequential') }}
+                                        <span class="form-text mt-0">
+                                            {{ $gettext('The order of the playlist is manually specified and followed by the AutoDJ.') }}
+                                        </span>
                                     </b-form-radio>
                                 </b-form-radio-group>
                             </template>
                         </b-wrapped-form-group>
-                    </b-form-row>
+                    </div>
                 </b-form-group>
 
                 <b-form-fieldset v-show="form.type.$model === 'default'">
                     <template #label>
-                        <translate key="lang_type_default">General Rotation</translate>
+                        {{ $gettext('General Rotation') }}
                     </template>
 
                     <b-form-group>
-                        <b-form-row>
-                            <b-wrapped-form-group class="col-md-12" id="form_edit_weight" :field="form.weight">
-                                <template #label="{lang}">
-                                    <translate :key="lang">Playlist Weight</translate>
+                        <div class="form-row">
+                            <b-wrapped-form-group
+                                id="form_edit_weight"
+                                class="col-md-12"
+                                :field="form.weight"
+                            >
+                                <template #label>
+                                    {{ $gettext('Playlist Weight') }}
                                 </template>
-                                <template #description="{lang}">
-                                    <translate :key="lang">Higher weight playlists are played more frequently compared to other lower-weight playlists.</translate>
+                                <template #description>
+                                    {{
+                                        $gettext('Higher weight playlists are played more frequently compared to other lower-weight playlists.')
+                                    }}
                                 </template>
-                                <template #default="props">
-                                    <b-form-select :id="props.id" v-model="props.field.$model" :options="weightOptions"
-                                                   :state="props.state"></b-form-select>
+                                <template #default="slotProps">
+                                    <b-form-select
+                                        :id="slotProps.id"
+                                        v-model="slotProps.field.$model"
+                                        :options="weightOptions"
+                                        :state="slotProps.state"
+                                    />
                                 </template>
                             </b-wrapped-form-group>
-                        </b-form-row>
+                        </div>
                     </b-form-group>
                 </b-form-fieldset>
 
                 <b-form-fieldset v-show="form.type.$model === 'once_per_x_songs'">
                     <template #label>
-                        <translate key="lang_type_once_per_x_songs">Once per x Songs</translate>
+                        {{ $gettext('Once per x Songs') }}
                     </template>
 
                     <b-form-group>
-                        <b-form-row>
-                            <b-wrapped-form-group class="col-md-12" id="form_edit_play_per_songs"
-                                                  :field="form.play_per_songs" input-type="number"
-                                                  :input-attrs="{min: '0', max: '150'}">
-                                <template #label="{lang}">
-                                    <translate :key="lang">Number of Songs Between Plays</translate>
+                        <div class="form-row">
+                            <b-wrapped-form-group
+                                id="form_edit_play_per_songs"
+                                class="col-md-12"
+                                :field="form.play_per_songs"
+                                input-type="number"
+                                :input-attrs="{min: '0', max: '150'}"
+                            >
+                                <template #label>
+                                    {{ $gettext('Number of Songs Between Plays') }}
                                 </template>
-                                <template #description="{lang}">
-                                    <translate :key="lang">This playlist will play every $x songs, where $x is specified here.</translate>
+                                <template #description>
+                                    {{
+                                        $gettext('This playlist will play every $x songs, where $x is specified here.')
+                                    }}
                                 </template>
                             </b-wrapped-form-group>
-                        </b-form-row>
+                        </div>
                     </b-form-group>
                 </b-form-fieldset>
 
                 <b-form-fieldset v-show="form.type.$model === 'once_per_x_minutes'">
                     <template #label>
-                        <translate key="lang_form_type_once_per_x_minutes">Once per x Minutes</translate>
+                        {{ $gettext('Once per x Minutes') }}
                     </template>
 
                     <b-form-group>
-                        <b-form-row>
-
-                            <b-wrapped-form-group class="col-md-12" id="form_edit_play_per_minutes"
-                                                  :field="form.play_per_minutes" input-type="number"
-                                                  :input-attrs="{min: '0', max: '360'}">
-                                <template #label="{lang}">
-                                    <translate :key="lang">Number of Minutes Between Plays</translate>
+                        <div class="form-row">
+                            <b-wrapped-form-group
+                                id="form_edit_play_per_minutes"
+                                class="col-md-12"
+                                :field="form.play_per_minutes"
+                                input-type="number"
+                                :input-attrs="{min: '0', max: '360'}"
+                            >
+                                <template #label>
+                                    {{ $gettext('Number of Minutes Between Plays') }}
                                 </template>
-                                <template #description="{lang}">
-                                    <translate :key="lang">This playlist will play every $x minutes, where $x is specified here.</translate>
+                                <template #description>
+                                    {{
+                                        $gettext('This playlist will play every $x minutes, where $x is specified here.')
+                                    }}
                                 </template>
                             </b-wrapped-form-group>
-
-                        </b-form-row>
+                        </div>
                     </b-form-group>
                 </b-form-fieldset>
 
                 <b-form-fieldset v-show="form.type.$model === 'once_per_hour'">
                     <template #label>
-                        <translate key="lang_type_once_per_hour">Once per Hour</translate>
+                        {{ $gettext('Once per Hour') }}
                     </template>
 
                     <b-form-group>
-                        <b-form-row>
-                            <b-wrapped-form-group class="col-md-12" id="form_edit_play_per_hour_minute"
-                                                  :field="form.play_per_hour_minute" input-type="number"
-                                                  :input-attrs="{min: '0', max: '59'}">
-                                <template #label="{lang}">
-                                    <translate :key="lang">Minute of Hour to Play</translate>
+                        <div class="form-row">
+                            <b-wrapped-form-group
+                                id="form_edit_play_per_hour_minute"
+                                class="col-md-12"
+                                :field="form.play_per_hour_minute"
+                                input-type="number"
+                                :input-attrs="{min: '0', max: '59'}"
+                            >
+                                <template #label>
+                                    {{ $gettext('Minute of Hour to Play') }}
                                 </template>
-                                <template #description="{lang}">
-                                <translate
-                                    :key="lang">Specify the minute of every hour that this playlist should play.</translate>
+                                <template #description>
+                                    {{ $gettext('Specify the minute of every hour that this playlist should play.') }}
                                 </template>
                             </b-wrapped-form-group>
-                        </b-form-row>
+                        </div>
                     </b-form-group>
                 </b-form-fieldset>
             </b-card-body>
         </b-card>
 
-        <b-card v-show="form.source.$model === 'remote_url'" class="mb-3" no-body>
+        <b-card
+            v-show="form.source.$model === 'remote_url'"
+            class="mb-3"
+            no-body
+        >
             <div class="card-header bg-primary-dark">
                 <h2 class="card-title">
-                    <translate key="lang_source_remote_url">Remote URL Playlist</translate>
+                    {{ $gettext('Remote URL Playlist') }}
                 </h2>
             </div>
             <b-card-body>
                 <b-form-group>
-                    <b-form-row>
-                        <b-wrapped-form-group class="col-md-6" id="form_edit_remote_url" :field="form.remote_url">
-                            <template #label="{lang}">
-                                <translate :key="lang">Remote URL</translate>
+                    <div class="form-row">
+                        <b-wrapped-form-group
+                            id="form_edit_remote_url"
+                            class="col-md-6"
+                            :field="form.remote_url"
+                        >
+                            <template #label>
+                                {{ $gettext('Remote URL') }}
                             </template>
                         </b-wrapped-form-group>
 
-                        <b-wrapped-form-group class="col-md-6" id="edit_form_remote_type" :field="form.remote_type">
-                            <template #label="{lang}">
-                                <translate :key="lang">Remote URL Type</translate>
+                        <b-wrapped-form-group
+                            id="edit_form_remote_type"
+                            class="col-md-6"
+                            :field="form.remote_type"
+                        >
+                            <template #label>
+                                {{ $gettext('Remote URL Type') }}
                             </template>
-                            <template #default="props">
-                                <b-form-radio-group stacked :id="props.id" v-model="props.field.$model">
+                            <template #default="slotProps">
+                                <b-form-radio-group
+                                    :id="slotProps.id"
+                                    v-model="slotProps.field.$model"
+                                    stacked
+                                >
                                     <b-form-radio value="stream">
-                                        <translate key="lang_edit_form_remote_type_stream">Direct Stream URL</translate>
+                                        {{ $gettext('Direct Stream URL') }}
                                     </b-form-radio>
                                     <b-form-radio value="playlist">
-                                        <translate
-                                            key="lang_edit_form_remote_type_playlist">Playlist (M3U/PLS) URL</translate>
+                                        {{ $gettext('Playlist (M3U/PLS) URL') }}
                                     </b-form-radio>
                                 </b-form-radio-group>
                             </template>
                         </b-wrapped-form-group>
 
-                        <b-wrapped-form-group class="col-md-6" id="form_edit_remote_buffer" :field="form.remote_buffer">
-                            <template #label="{lang}">
-                                <translate :key="lang">Remote Playback Buffer (Seconds)</translate>
+                        <b-wrapped-form-group
+                            id="form_edit_remote_buffer"
+                            class="col-md-6"
+                            :field="form.remote_buffer"
+                        >
+                            <template #label>
+                                {{ $gettext('Remote Playback Buffer (Seconds)') }}
                             </template>
-                            <template #description="{lang}">
-                                <translate :key="lang">The length of playback time that Liquidsoap should buffer when playing this remote playlist. Shorter times may lead to intermittent playback on unstable connections.</translate>
+                            <template #description>
+                                {{
+                                    $gettext('The length of playback time that Liquidsoap should buffer when playing this remote playlist. Shorter times may lead to intermittent playback on unstable connections.')
+                                }}
                             </template>
-                            <template #default="props">
-                                <b-form-input id="form_edit_remote_buffer" type="number" min="0" max="120"
-                                              v-model="form.remote_buffer.$model"
-                                              :state="form.remote_buffer.$dirty ? !form.remote_buffer.$error : null"></b-form-input>
+                            <template #default>
+                                <b-form-input
+                                    id="form_edit_remote_buffer"
+                                    v-model="form.remote_buffer.$model"
+                                    type="number"
+                                    min="0"
+                                    max="120"
+                                    :state="form.remote_buffer.$dirty ? !form.remote_buffer.$error : null"
+                                />
                             </template>
                         </b-wrapped-form-group>
-
-                    </b-form-row>
+                    </div>
                 </b-form-group>
             </b-card-body>
         </b-card>
     </b-tab>
 </template>
 
-<script>
+<script setup>
 import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
 import BWrappedFormCheckbox from "~/components/Form/BWrappedFormCheckbox";
 import BFormFieldset from "~/components/Form/BFormFieldset";
+import {map, range} from "lodash";
 
-export default {
-    name: 'PlaylistEditBasicInfo',
-    components: {BFormFieldset, BWrappedFormCheckbox, BWrappedFormGroup},
-    props: {
-        form: Object
-    },
-    data() {
-        let weightOptions = [
-            {value: 1, text: '1 - ' + this.$gettext('Low')},
-            {value: 2, text: '2'},
-            {value: 3, text: '3 - ' + this.$gettext('Default')},
-            {value: 4, text: '4'},
-            {value: 5, text: '5 - ' + this.$gettext('High')}
-        ];
-        for (var i = 6; i <= 25; i++) {
-            weightOptions.push({value: i, text: i});
-        }
+const props = defineProps({
+    form: {
+        type: Object,
+        required: true
+    }
+});
 
+const weightOptions = map(
+    range(1, 26),
+    (val) => {
         return {
-            weightOptions: weightOptions
-        };
-    },
-    computed: {
-        langTabTitle() {
-            return this.$gettext('Basic Info');
+            value: val,
+            text: val
         }
     }
-};
+);
 </script>

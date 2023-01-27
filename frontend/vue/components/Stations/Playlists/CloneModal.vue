@@ -1,112 +1,117 @@
 <template>
-    <modal-form ref="modal" id="clone_modal" :title="langTitle" :error="error"
-                :disable-save-button="$v.form.$invalid" @submit="doSubmit" @hidden="clearContents">
-
-        <b-form-row>
-            <b-wrapped-form-group class="col-md-12" id="form_edit_name" :field="$v.form.name">
-                <template #label="{lang}">
-                    <translate :key="lang">New Playlist Name</translate>
+    <modal-form
+        id="clone_modal"
+        ref="$modal"
+        :title="$gettext('Duplicate Playlist')"
+        :disable-save-button="v$.$invalid"
+        @submit="doSubmit"
+        @hidden="clearContents"
+    >
+        <div class="form-row">
+            <b-wrapped-form-group
+                id="form_edit_name"
+                class="col-md-12"
+                :field="v$.name"
+            >
+                <template #label>
+                    {{ $gettext('New Playlist Name') }}
                 </template>
             </b-wrapped-form-group>
 
-            <b-wrapped-form-group class="col-md-12" id="form_edit_clone" :field="$v.form.clone">
-                <template #label="{lang}">
-                    <translate :key="lang">Customize Copy</translate>
+            <b-wrapped-form-group
+                id="form_edit_clone"
+                class="col-md-12"
+                :field="v$.clone"
+            >
+                <template #label>
+                    {{ $gettext('Customize Copy') }}
                 </template>
-                <template #default="props">
-                    <b-form-checkbox-group stacked :id="props.id" v-model="props.field.$model">
+                <template #default="slotProps">
+                    <b-form-checkbox-group
+                        :id="slotProps.id"
+                        v-model="slotProps.field.$model"
+                        stacked
+                    >
                         <b-form-checkbox value="media">
-                            <translate key="lang_clone_media">Copy associated media and folders.</translate>
+                            {{ $gettext('Copy associated media and folders.') }}
                         </b-form-checkbox>
                         <b-form-checkbox value="schedule">
-                            <translate key="lang_clone_schedule">Copy scheduled playback times.</translate>
+                            {{ $gettext('Copy scheduled playback times.') }}
                         </b-form-checkbox>
                     </b-form-checkbox-group>
                 </template>
             </b-wrapped-form-group>
-        </b-form-row>
-
+        </div>
     </modal-form>
 </template>
 
-<script>
-import {required} from 'vuelidate/dist/validators.min.js';
-import InvisibleSubmitButton from '~/components/Common/InvisibleSubmitButton';
-import {validationMixin} from 'vuelidate';
+<script setup>
+import {required} from '@vuelidate/validators';
 import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
 import ModalForm from "~/components/Common/ModalForm";
+import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
+import {ref} from "vue";
+import {useTranslate} from "~/vendor/gettext";
+import {useNotify} from "~/vendor/bootstrapVue";
+import {useAxios} from "~/vendor/axios";
 
-export default {
-    name: 'CloneModal',
-    components: {ModalForm, BWrappedFormGroup, InvisibleSubmitButton},
-    emits: ['relist', 'needs-restart'],
-    mixins: [
-        validationMixin
-    ],
-    data() {
-        return {
-            error: null,
-            cloneUrl: null,
-            form: {}
-        };
+const emit = defineEmits(['relist', 'needs-restart']);
+
+const cloneUrl = ref(null);
+
+const {form, v$, resetForm, ifValid} = useVuelidateOnForm(
+    {
+        'name': {required},
+        'clone': {}
     },
-    computed: {
-        langTitle () {
-            return this.$gettext('Duplicate Playlist');
-        }
-    },
-    validations: {
-        form: {
-            'name': { required },
-            'clone': {}
-        }
-    },
-    methods: {
-        resetForm () {
-            this.form = {
-                'name': '',
-                'clone': []
-            };
-        },
-        open (name, cloneUrl) {
-            this.error = null;
-
-            this.resetForm();
-            this.cloneUrl = cloneUrl;
-
-            let langNewName = this.$gettext('%{name} - Copy');
-            this.form.name = this.$gettextInterpolate(langNewName, { name: name });
-
-            this.$refs.modal.show();
-        },
-        doSubmit () {
-            this.$v.form.$touch();
-            if (this.$v.form.$anyError) {
-                return;
-            }
-
-            this.error = null;
-
-            this.$wrapWithLoading(
-                this.axios({
-                    method: 'POST',
-                    url: this.cloneUrl,
-                    data: this.form
-                })
-            ).then((resp) => {
-                this.$notifySuccess();
-                this.$emit('needs-restart');
-                this.$emit('relist');
-                this.$refs.modal.hide();
-            });
-        },
-        clearContents() {
-            this.error = null;
-            this.cloneUrl = null;
-            this.resetForm();
-
-            this.$v.form.$reset();
-        }
+    {
+        'name': '',
+        'clone': []
     }
+);
+
+const clearContents = () => {
+    cloneUrl.value = null;
+    resetForm();
 };
+
+const {$gettext} = useTranslate();
+
+const $modal = ref(); // Template Ref
+
+const open = (name, newCloneUrl) => {
+    clearContents();
+
+    cloneUrl.value = newCloneUrl;
+    form.value.name = $gettext(
+        '%{name} - Copy',
+        {name: name}
+    );
+
+    $modal.value.show();
+};
+
+const {wrapWithLoading, notifySuccess} = useNotify();
+const {axios} = useAxios();
+
+const doSubmit = () => {
+    ifValid(() => {
+        wrapWithLoading(
+            axios({
+                method: 'POST',
+                url: cloneUrl.value,
+                data: form.value
+            })
+        ).then(() => {
+            notifySuccess();
+            emit('needs-restart');
+            emit('relist');
+            $modal.value.hide();
+        });
+    });
+};
+
+defineExpose({
+    open
+});
 </script>

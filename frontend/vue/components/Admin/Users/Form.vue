@@ -1,59 +1,86 @@
 <template>
     <b-form-group>
-        <b-form-row>
-            <b-wrapped-form-group class="col-md-6" id="edit_form_email" :field="form.email" input-type="email">
-                <template #label="{lang}">
-                    <translate :key="lang">E-mail Address</translate>
+        <div class="form-row">
+            <b-wrapped-form-group
+                id="edit_form_email"
+                class="col-md-6"
+                :field="form.email"
+                input-type="email"
+            >
+                <template #label>
+                    {{ $gettext('E-mail Address') }}
                 </template>
             </b-wrapped-form-group>
 
-            <b-wrapped-form-group class="col-md-6" id="edit_form_new_password" :field="form.new_password"
-                                  input-type="password">
-                <template #label="{lang}">
-                    <translate v-if="isEditMode" :key="lang+'a'">Reset Password</translate>
-                    <translate v-else :key="lang+'b'">Password</translate>
+            <b-wrapped-form-group
+                id="edit_form_new_password"
+                class="col-md-6"
+                :field="form.new_password"
+                input-type="password"
+            >
+                <template #label>
+                    {{ $gettext('Reset Password') }}
+                    {{ $gettext('Password') }}
                 </template>
-                <template v-if="isEditMode" #description="{lang}">
-                    <translate :key="lang">Leave blank to use the current password.</translate>
+                <template
+                    v-if="isEditMode"
+                    #description
+                >
+                    {{ $gettext('Leave blank to use the current password.') }}
                 </template>
             </b-wrapped-form-group>
 
-            <b-wrapped-form-group class="col-md-12" id="edit_form_name" :field="form.name">
-                <template #label="{lang}">
-                    <translate :key="lang">Display Name</translate>
+            <b-wrapped-form-group
+                id="edit_form_name"
+                class="col-md-12"
+                :field="form.name"
+            >
+                <template #label>
+                    {{ $gettext('Display Name') }}
                 </template>
             </b-wrapped-form-group>
 
-            <b-wrapped-form-group class="col-md-12" id="edit_form_roles"
-                                  :field="form.roles">
-                <template #label="{lang}">
-                    <translate :key="lang">Roles</translate>
+            <b-wrapped-form-group
+                id="edit_form_roles"
+                class="col-md-12"
+                :field="form.roles"
+            >
+                <template #label>
+                    {{ $gettext('Roles') }}
                 </template>
-                <template #default="props">
-                    <b-form-checkbox-group :id="props.id" :options="roleOptions" v-model="props.field.$model">
-                    </b-form-checkbox-group>
+                <template #default="slotProps">
+                    <b-form-checkbox-group
+                        :id="slotProps.id"
+                        v-model="slotProps.field.$model"
+                        :options="roleOptions"
+                    />
                 </template>
             </b-wrapped-form-group>
-        </b-form-row>
+        </div>
     </b-form-group>
 </template>
 
-<script>
-import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
+<script setup>
+import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup.vue";
 import objectToFormOptions from "~/functions/objectToFormOptions";
+import {computed} from "vue";
 
-export default {
-    name: 'AdminUserForm',
-    components: {BWrappedFormGroup},
-    props: {
-        form: Object,
-        roles: Object,
-        isEditMode: Boolean
+const props = defineProps({
+    form: {
+        type: Object,
+        required: true
     },
-    computed: {
-        roleOptions() {
-            return objectToFormOptions(this.roles);
-        }
+    roles: {
+        type: Object,
+        required: true
+    },
+    isEditMode: {
+        type: Boolean,
+        required: true
     }
-};
+});
+
+const roleOptions = computed(() => {
+    return objectToFormOptions(props.roles);
+});
 </script>

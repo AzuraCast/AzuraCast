@@ -3,46 +3,54 @@
         <div class="card-header bg-primary-dark">
             <div class="d-flex align-items-center">
                 <h2 class="card-title flex-fill my-0">
-                    <translate key="lang_title">Song Playback Timeline</translate>
+                    {{ $gettext('Song Playback Timeline') }}
                 </h2>
-                <div class="flex-shrink">
-                    <a class="btn btn-bg" id="btn-export" :href="exportUrl" target="_blank">
-                        <icon icon="file_download"></icon>
-                        <translate key="lang_download_csv_button">Download CSV</translate>
+                <div class="flex-shrink buttons">
+                    <a
+                        id="btn-export"
+                        class="btn btn-bg"
+                        :href="exportUrl"
+                        target="_blank"
+                    >
+                        <icon icon="file_download" />
+                        {{ $gettext('Download CSV') }}
                     </a>
 
-                    <date-range-dropdown time-picker v-model="dateRange" :tz="stationTimeZone"
-                                         @update="relist"></date-range-dropdown>
+                    <date-range-dropdown
+                        v-model="dateRange"
+                        time-picker
+                        :tz="stationTimeZone"
+                        @update="relist"
+                    />
                 </div>
             </div>
         </div>
-        <data-table ref="datatable" responsive paginated select-fields
-                    :fields="fields" :apiUrl="apiUrl">
-            <template #cell(datetime)="row">
-                {{ formatTimestamp(row.item.played_at) }}
-            </template>
-            <template #cell(datetime_station)="row">
-                {{ formatTimestampStation(row.item.played_at) }}
-            </template>
-            <template #cell(listeners_start)="row">
-                {{ row.item.listeners_start }}
-            </template>
+        <data-table
+            ref="$datatable"
+            responsive
+            paginated
+            select-fields
+            :fields="fields"
+            :api-url="apiUrl"
+        >
             <template #cell(delta)="row">
-                <template v-if="row.item.delta_total > 0">
-                    <big><span class="text-success">
-                        <icon icon="trending_up"></icon>
-                        {{ abs(row.item.delta_total) }}
-                    </span></big>
-                </template>
-                <template v-else-if="row.item.delta_total < 0">
-                    <big><span class="text-danger">
-                        <icon icon="trending_down"></icon>
-                        {{ abs(row.item.delta_total) }}
-                    </span></big>
-                </template>
-                <template v-else>
-                    <big>0</big>
-                </template>
+                <span class="typography-subheading">
+                    <template v-if="row.item.delta_total > 0">
+                        <span class="text-success">
+                            <icon icon="trending_up" />
+                            {{ abs(row.item.delta_total) }}
+                        </span>
+                    </template>
+                    <template v-else-if="row.item.delta_total < 0">
+                        <span class="text-danger">
+                            <icon icon="trending_down" />
+                            {{ abs(row.item.delta_total) }}
+                        </span>
+                    </template>
+                    <template v-else>
+                        0
+                    </template>
+                </span>
             </template>
             <template #cell(song)="row">
                 <div :class="{'text-muted': !row.item.is_visible}">
@@ -57,14 +65,14 @@
             </template>
             <template #cell(source)="row">
                 <template v-if="row.item.is_request">
-                    <translate key="lang_source_request">Listener Request</translate>
+                    {{ $gettext('Listener Request') }}
                 </template>
                 <template v-else-if="row.item.playlist">
-                    <translate key="lang_playlist">Playlist:</translate>
+                    {{ $gettext('Playlist:') }}
                     {{ row.item.playlist }}
                 </template>
                 <template v-else-if="row.item.streamer">
-                    <translate key="lang_streamer">Live Streamer:</translate>
+                    {{ $gettext('Live Streamer:') }}
                     {{ row.item.streamer }}
                 </template>
                 <template v-else>
@@ -75,105 +83,121 @@
     </div>
 </template>
 
-<script>
+<script setup>
 import Icon from "~/components/Common/Icon";
 import DataTable from "~/components/Common/DataTable";
 import DateRangeDropdown from "~/components/Common/DateRangeDropdown";
 import {DateTime} from 'luxon';
+import {useAzuraCast} from "~/vendor/azuracast";
+import {computed, ref} from "vue";
+import {useTranslate} from "~/vendor/gettext";
 
-export default {
-    name: 'StationsReportsTimeline',
-    components: {DateRangeDropdown, DataTable, Icon},
-    props: {
-        baseApiUrl: String,
-        stationTimeZone: String
+const props = defineProps({
+    baseApiUrl: {
+        type: String,
+        required: true
     },
-    data() {
-        let nowTz = DateTime.now().setZone(this.stationTimeZone);
-
-        return {
-            dateRange: {
-                startDate: nowTz.minus({days: 13}).toJSDate(),
-                endDate: nowTz.toJSDate(),
-            },
-            fields: [
-                {
-                    key: 'datetime',
-                    label: this.$gettext('Date/Time (Browser)'),
-                    selectable: true,
-                    sortable: false
-                },
-                {
-                    key: 'datetime_station',
-                    label: this.$gettext('Date/Time (Station)'),
-                    sortable: false,
-                    selectable: true,
-                    visible: false
-                },
-                {
-                    key: 'listeners_start',
-                    label: this.$gettext('Listeners'),
-                    selectable: true,
-                    sortable: false
-                },
-                {
-                    key: 'delta',
-                    label: this.$gettext('Change'),
-                    selectable: true,
-                    sortable: false
-                },
-                {
-                    key: 'song',
-                    isRowHeader: true,
-                    label: this.$gettext('Song Title'),
-                    selectable: true,
-                    sortable: false
-                },
-                {
-                    key: 'source',
-                    label: this.$gettext('Source'),
-                    selectable: true,
-                    sortable: false
-                }
-            ],
-        }
-    },
-    computed: {
-        apiUrl() {
-            let apiUrl = new URL(this.baseApiUrl, document.location);
-
-            let apiUrlParams = apiUrl.searchParams;
-            apiUrlParams.set('start', DateTime.fromJSDate(this.dateRange.startDate).toISO());
-            apiUrlParams.set('end', DateTime.fromJSDate(this.dateRange.endDate).toISO());
-
-            return apiUrl.toString();
-        },
-        exportUrl() {
-            let exportUrl = new URL(this.apiUrl, document.location);
-            let exportUrlParams = exportUrl.searchParams;
-
-            exportUrlParams.set('format', 'csv');
-
-            return exportUrl.toString();
-        },
-    },
-    methods: {
-        relist() {
-            this.$refs.datatable.relist();
-        },
-        abs(val) {
-            return Math.abs(val);
-        },
-        formatTimestamp(unix_timestamp) {
-            return DateTime.fromSeconds(unix_timestamp).toLocaleString(
-                {...DateTime.DATETIME_SHORT, ...App.time_config}
-            );
-        },
-        formatTimestampStation(unix_timestamp) {
-            return DateTime.fromSeconds(unix_timestamp).setZone(this.stationTimeZone).toLocaleString(
-                {...DateTime.DATETIME_SHORT, ...App.time_config}
-            );
-        }
+    stationTimeZone: {
+        type: String,
+        required: true
     }
+});
+
+const nowTz = DateTime.now().setZone(props.stationTimeZone);
+
+const dateRange = ref(
+    {
+        startDate: nowTz.minus({days: 13}).toJSDate(),
+        endDate: nowTz.toJSDate(),
+    }
+);
+
+const {$gettext} = useTranslate();
+const {timeConfig} = useAzuraCast();
+
+const fields = [
+    {
+        key: 'played_at',
+        label: $gettext('Date/Time (Browser)'),
+        selectable: true,
+        sortable: false,
+        formatter: (value) => {
+            return DateTime.fromSeconds(
+                value,
+                {zone: 'system'}
+            ).toLocaleString(
+                {...DateTime.DATETIME_SHORT, ...timeConfig}
+            );
+        }
+    },
+    {
+        key: 'played_at_station',
+        label: $gettext('Date/Time (Station)'),
+        sortable: false,
+        selectable: true,
+        visible: false,
+        formatter: (value, key, item) => {
+            return DateTime.fromSeconds(
+                item.played_at,
+                {zone: props.stationTimeZone}
+            ).toLocaleString(
+                {...DateTime.DATETIME_SHORT, ...timeConfig}
+            );
+        }
+    },
+    {
+        key: 'listeners_start',
+        label: $gettext('Listeners'),
+        selectable: true,
+        sortable: false
+    },
+    {
+        key: 'delta',
+        label: $gettext('Change'),
+        selectable: true,
+        sortable: false
+    },
+    {
+        key: 'song',
+        isRowHeader: true,
+        label: $gettext('Song Title'),
+        selectable: true,
+        sortable: false
+    },
+    {
+        key: 'source',
+        label: $gettext('Source'),
+        selectable: true,
+        sortable: false
+    }
+];
+
+const apiUrl = computed(() => {
+    let apiUrl = new URL(props.baseApiUrl, document.location);
+
+    let apiUrlParams = apiUrl.searchParams;
+    apiUrlParams.set('start', DateTime.fromJSDate(dateRange.value.startDate).toISO());
+    apiUrlParams.set('end', DateTime.fromJSDate(dateRange.value.endDate).toISO());
+
+    return apiUrl.toString();
+});
+
+const exportUrl = computed(() => {
+    let exportUrl = new URL(apiUrl.value, document.location);
+    let exportUrlParams = exportUrl.searchParams;
+
+    exportUrlParams.set('format', 'csv');
+
+    return exportUrl.toString();
+});
+
+const abs = (val) => {
+    return Math.abs(val);
+};
+
+const $datatable = ref(); // Template Ref
+
+const relist = () => {
+    $datatable.value.relist();
 };
 </script>

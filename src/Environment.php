@@ -43,6 +43,7 @@ final class Environment
 
     public const SYNC_SHORT_EXECUTION_TIME = 'SYNC_SHORT_EXECUTION_TIME';
     public const SYNC_LONG_EXECUTION_TIME = 'SYNC_LONG_EXECUTION_TIME';
+    public const NOW_PLAYING_DELAY_TIME = 'NOW_PLAYING_DELAY_TIME';
 
     public const LOG_LEVEL = 'LOG_LEVEL';
     public const SHOW_DETAILED_ERRORS = 'SHOW_DETAILED_ERRORS';
@@ -51,12 +52,19 @@ final class Environment
     public const PROFILING_EXTENSION_ALWAYS_ON = 'PROFILING_EXTENSION_ALWAYS_ON';
     public const PROFILING_EXTENSION_HTTP_KEY = 'PROFILING_EXTENSION_HTTP_KEY';
 
+    public const ENABLE_WEB_UPDATER = 'ENABLE_WEB_UPDATER';
+
     // Database and Cache Configuration Variables
     public const DB_HOST = 'MYSQL_HOST';
     public const DB_PORT = 'MYSQL_PORT';
     public const DB_NAME = 'MYSQL_DATABASE';
     public const DB_USER = 'MYSQL_USER';
     public const DB_PASSWORD = 'MYSQL_PASSWORD';
+
+    public const ENABLE_REDIS = 'ENABLE_REDIS';
+    public const REDIS_HOST = 'REDIS_HOST';
+    public const REDIS_PORT = 'REDIS_PORT';
+    public const REDIS_DB = 'REDIS_DB';
 
     // Default settings
     private array $defaults = [
@@ -71,12 +79,17 @@ final class Environment
         self::AUTO_ASSIGN_PORT_MIN => 8000,
         self::AUTO_ASSIGN_PORT_MAX => 8499,
 
+        self::ENABLE_REDIS => true,
+
         self::SYNC_SHORT_EXECUTION_TIME => 600,
         self::SYNC_LONG_EXECUTION_TIME => 1800,
+        self::NOW_PLAYING_DELAY_TIME => 0,
 
         self::PROFILING_EXTENSION_ENABLED => 0,
         self::PROFILING_EXTENSION_ALWAYS_ON => 0,
         self::PROFILING_EXTENSION_HTTP_KEY => 'dev',
+
+        self::ENABLE_WEB_UPDATER => false,
     ];
 
     public function __construct(array $elements = [])
@@ -236,12 +249,23 @@ final class Environment
 
     public function getSyncShortExecutionTime(): int
     {
-        return (int)($this->data[self::SYNC_SHORT_EXECUTION_TIME] ?? 600);
+        return (int)(
+            $this->data[self::SYNC_SHORT_EXECUTION_TIME] ?? $this->defaults[self::SYNC_SHORT_EXECUTION_TIME]
+        );
     }
 
     public function getSyncLongExecutionTime(): int
     {
-        return (int)($this->data[self::SYNC_LONG_EXECUTION_TIME] ?? 1800);
+        return (int)(
+            $this->data[self::SYNC_LONG_EXECUTION_TIME] ?? $this->defaults[self::SYNC_LONG_EXECUTION_TIME]
+        );
+    }
+
+    public function getNowPlayingDelayTime(): int
+    {
+        return (int)(
+            $this->data[self::NOW_PLAYING_DELAY_TIME] ?? $this->defaults[self::NOW_PLAYING_DELAY_TIME]
+        );
     }
 
     /**
@@ -298,6 +322,34 @@ final class Environment
         return 'localhost' === ($this->data[self::DB_HOST] ?? 'localhost');
     }
 
+    public function enableRedis(): bool
+    {
+        return self::envToBool($this->data[self::ENABLE_REDIS] ?? true);
+    }
+
+    /**
+     * @return mixed[]
+     */
+    public function getRedisSettings(): array
+    {
+        $redisSettings = [
+            'host' => $this->data[self::REDIS_HOST] ?? 'localhost',
+            'port' => (int)($this->data[self::REDIS_PORT] ?? 6379),
+            'db' => (int)($this->data[self::REDIS_DB] ?? 1),
+        ];
+
+        if ('localhost' === $redisSettings['host'] && $this->isDocker()) {
+            $redisSettings['socket'] = '/run/redis/redis.sock';
+        }
+
+        return $redisSettings;
+    }
+
+    public function useLocalRedis(): bool
+    {
+        return $this->enableRedis() && 'localhost' === ($this->data[self::REDIS_HOST] ?? 'localhost');
+    }
+
     public function isProfilingExtensionEnabled(): bool
     {
         return self::envToBool($this->data[self::PROFILING_EXTENSION_ENABLED] ?? false);
@@ -311,6 +363,11 @@ final class Environment
     public function getProfilingExtensionHttpKey(): string
     {
         return $this->data[self::PROFILING_EXTENSION_HTTP_KEY] ?? 'dev';
+    }
+
+    public function enableWebUpdater(): bool
+    {
+        return $this->isDocker() && self::envToBool($this->data[self::ENABLE_WEB_UPDATER] ?? false);
     }
 
     public static function getDefaultsForEnvironment(Environment $existingEnv): self

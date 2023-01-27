@@ -1,121 +1,149 @@
 <template>
-    <div>
-        <profile-header v-bind="$props" :np="np"></profile-header>
+    <profile-header
+        v-bind="pickProps(props, headerPanelProps)"
+        :station="profileInfo.station"
+    />
 
-        <div class="row" id="profile">
-            <div class="col-lg-7">
-                <profile-now-playing :np="np" v-bind="$props"></profile-now-playing>
+    <div
+        id="profile"
+        class="row"
+    >
+        <div class="col-lg-7">
+            <profile-now-playing
+                v-bind="pickProps(props, nowPlayingPanelProps)"
+            />
 
-                <profile-schedule :station-time-zone="stationTimeZone" :schedule-items="np.schedule"></profile-schedule>
+            <profile-schedule
+                :station-time-zone="stationTimeZone"
+                :schedule-items="profileInfo.schedule"
+            />
 
-                <profile-streams :np="np" v-bind="$props"></profile-streams>
+            <profile-streams
+                :station="profileInfo.station"
+            />
 
-                <profile-public-pages v-bind="$props"></profile-public-pages>
-            </div>
+            <profile-public-pages
+                v-bind="pickProps(props, {...publicPagesPanelProps,...embedModalProps})"
+            />
+        </div>
 
-            <div class="col-lg-5">
-                <profile-requests v-if="stationSupportsRequests" v-bind="$props"></profile-requests>
+        <div class="col-lg-5">
+            <profile-requests
+                v-if="stationSupportsRequests"
+                v-bind="pickProps(props, requestsPanelProps)"
+            />
 
-                <profile-streamers v-if="stationSupportsStreamers" v-bind="$props"></profile-streamers>
+            <profile-streamers
+                v-if="stationSupportsStreamers"
+                v-bind="pickProps(props, streamersPanelProps)"
+            />
 
-                <template v-if="hasActiveFrontend">
-                    <profile-frontend :np="np" v-bind="$props"></profile-frontend>
-                </template>
+            <template v-if="hasActiveFrontend">
+                <profile-frontend
+                    v-bind="pickProps(props, frontendPanelProps)"
+                    :frontend-running="profileInfo.services.frontend_running"
+                />
+            </template>
 
-                <template v-if="hasActiveBackend">
-                    <profile-backend :np="np" v-bind="$props"></profile-backend>
-                </template>
-                <template v-else>
-                    <profile-backend-none></profile-backend-none>
-                </template>
-            </div>
+            <template v-if="hasActiveBackend">
+                <profile-backend
+                    v-bind="pickProps(props, backendPanelProps)"
+                    :backend-running="profileInfo.services.backend_running"
+                />
+            </template>
+            <template v-else>
+                <profile-backend-none />
+            </template>
         </div>
     </div>
 </template>
 
-<script>
+<script setup>
 import ProfileStreams from './Profile/StreamsPanel';
-import ProfileHeader, {profileHeaderProps} from './Profile/HeaderPanel';
-import ProfileNowPlaying, {profileNowPlayingProps} from './Profile/NowPlayingPanel';
+import ProfileHeader from './Profile/HeaderPanel';
+import ProfileNowPlaying from './Profile/NowPlayingPanel';
 import ProfileSchedule from './Profile/SchedulePanel';
-import ProfileRequests, {profileRequestsProps} from './Profile/RequestsPanel';
-import ProfileStreamers, {profileStreamersProps} from './Profile/StreamersPanel';
-import ProfilePublicPages, {profilePublicProps} from './Profile/PublicPagesPanel';
-import ProfileFrontend, {profileFrontendProps} from './Profile/FrontendPanel';
+import ProfileRequests from './Profile/RequestsPanel';
+import ProfileStreamers from './Profile/StreamersPanel';
+import ProfilePublicPages from './Profile/PublicPagesPanel';
+import ProfileFrontend from './Profile/FrontendPanel';
 import ProfileBackendNone from './Profile/BackendNonePanel';
-import ProfileBackend, {profileBackendProps} from './Profile/BackendPanel';
-import {profileEmbedModalProps} from './Profile/EmbedModal';
-import {BACKEND_NONE, FRONTEND_REMOTE} from '~/components/Entity/RadioAdapters.js';
+import ProfileBackend from './Profile/BackendPanel';
+import {BACKEND_NONE, FRONTEND_REMOTE} from '~/components/Entity/RadioAdapters';
 import NowPlaying from '~/components/Entity/NowPlaying';
+import {computed} from "vue";
+import {useAxios} from "~/vendor/axios";
+import backendPanelProps from "./Profile/backendPanelProps";
+import embedModalProps from "./Profile/embedModalProps";
+import frontendPanelProps from "./Profile/frontendPanelProps";
+import headerPanelProps from "./Profile/headerPanelProps";
+import nowPlayingPanelProps from "./Profile/nowPlayingPanelProps";
+import publicPagesPanelProps from "./Profile/publicPagesPanelProps";
+import requestsPanelProps from "./Profile/requestsPanelProps";
+import streamersPanelProps from "./Profile/streamersPanelProps";
+import {pickProps} from "~/functions/pickProps";
+import useRefreshableAsyncState from "~/functions/useRefreshableAsyncState";
+import {useIntervalFn} from "@vueuse/core";
 
-export default {
-    inheritAttrs: false,
-    components: {
-        ProfileBackend,
-        ProfileBackendNone,
-        ProfileFrontend,
-        ProfilePublicPages,
-        ProfileStreamers,
-        ProfileRequests,
-        ProfileSchedule,
-        ProfileNowPlaying,
-        ProfileHeader,
-        ProfileStreams
+const props = defineProps({
+    ...backendPanelProps,
+    ...embedModalProps,
+    ...frontendPanelProps,
+    ...headerPanelProps,
+    ...nowPlayingPanelProps,
+    ...publicPagesPanelProps,
+    ...requestsPanelProps,
+    ...streamersPanelProps,
+    profileApiUri: {
+        type: String,
+        required: true
     },
-    mixins: [
-        profileHeaderProps,
-        profileNowPlayingProps,
-        profileRequestsProps,
-        profileStreamersProps,
-        profilePublicProps,
-        profileFrontendProps,
-        profileBackendProps,
-        profileEmbedModalProps
-    ],
-    props: {
-        profileApiUri: String,
-        stationTimeZone: String,
-        stationSupportsRequests: Boolean,
-        stationSupportsStreamers: Boolean
+    stationTimeZone: {
+        type: String,
+        required: true
     },
-    data() {
-        return {
-            np: {
-                ...NowPlaying,
-                loading: true,
-                services: {
-                    backend_running: false,
-                    frontend_running: false
-                },
-                schedule: []
-            }
-        };
+    stationSupportsRequests: {
+        type: Boolean,
+        required: true
     },
-    mounted() {
-        this.checkNowPlaying();
-    },
-    computed: {
-        hasActiveFrontend() {
-            return this.frontendType !== FRONTEND_REMOTE;
-        },
-        hasActiveBackend() {
-            return this.backendType !== BACKEND_NONE;
-        },
-    },
-    methods: {
-        checkNowPlaying() {
-            this.axios.get(this.profileApiUri).then((response) => {
-                let np = response.data;
-                np.loading = false;
-                this.np = np;
-
-                setTimeout(this.checkNowPlaying, (!document.hidden) ? 15000 : 30000);
-            }).catch((error) => {
-                if (!error.response || error.response.data.code !== 403) {
-                    setTimeout(this.checkNowPlaying, (!document.hidden) ? 30000 : 120000);
-                }
-            });
-        }
+    stationSupportsStreamers: {
+        type: Boolean,
+        required: true
     }
-};
+});
+
+const hasActiveFrontend = computed(() => {
+    return props.frontendType !== FRONTEND_REMOTE;
+});
+
+const hasActiveBackend = computed(() => {
+    return props.backendType !== BACKEND_NONE;
+});
+
+const {axios} = useAxios();
+
+const {state: profileInfo, execute: reloadProfile} = useRefreshableAsyncState(
+    () => axios.get(props.profileApiUri).then((r) => r.data),
+    {
+        station: {
+            ...NowPlaying.station
+        },
+        services: {
+            backend_running: false,
+            frontend_running: false,
+            has_started: false,
+            needs_restart: false
+        },
+        schedule: []
+    }
+);
+
+const profileReloadTimeout = computed(() => {
+    return (!document.hidden) ? 15000 : 30000
+});
+
+useIntervalFn(
+    reloadProfile,
+    profileReloadTimeout
+);
 </script>

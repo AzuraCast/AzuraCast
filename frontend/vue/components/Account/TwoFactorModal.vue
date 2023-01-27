@@ -1,163 +1,178 @@
 <template>
-    <modal-form ref="modal" :loading="loading" :title="langTitle" :error="error" :disable-save-button="$v.form.$invalid"
-                @submit="doSubmit" @hidden="clearContents" no-enforce-focus>
-
+    <modal-form
+        ref="$modal"
+        :loading="loading"
+        :title="$gettext('Enable Two-Factor Authentication')"
+        :error="error"
+        :disable-save-button="v$.$invalid"
+        no-enforce-focus
+        @submit="doSubmit"
+        @hidden="clearContents"
+    >
         <b-row>
             <b-col md="7">
                 <h5 class="mt-2">
-                    <translate key="lang_2fa_hdr_1">Step 1: Scan QR Code</translate>
+                    {{ $gettext('Step 1: Scan QR Code') }}
                 </h5>
 
                 <p class="card-text">
-                    <translate key="lang_2fa_1">From your smartphone, scan the code to the right using an authentication app of your choice (FreeOTP, Authy, etc).</translate>
+                    {{
+                        $gettext('From your smartphone, scan the code to the right using an authentication app of your choice (FreeOTP, Authy, etc).')
+                    }}
                 </p>
 
                 <h5 class="mt-0">
-                    <translate key="lang_2fa_hdr_2">Step 2: Verify Generated Code</translate>
+                    {{ $gettext('Step 2: Verify Generated Code') }}
                 </h5>
 
                 <p class="card-text">
-                    <translate key="lang_2fa_2">To verify that the code was set up correctly, enter the 6-digit code the app shows you.</translate>
+                    {{
+                        $gettext('To verify that the code was set up correctly, enter the 6-digit code the app shows you.')
+                    }}
                 </p>
 
                 <b-form-fieldset>
-                    <b-wrapped-form-group id="form_otp" :field="$v.form.otp" autofocus>
-                        <template #label="{lang}">
-                            <translate :key="lang">Code from Authenticator App</translate>
+                    <b-wrapped-form-group
+                        id="form_otp"
+                        :field="v$.otp"
+                        autofocus
+                    >
+                        <template #label>
+                            {{ $gettext('Code from Authenticator App') }}
                         </template>
-                        <template #description="{lang}">
-                            <translate :key="lang">Enter the current code provided by your authenticator app to verify that it's working correctly.</translate>
+                        <template #description>
+                            {{
+                                $gettext('Enter the current code provided by your authenticator app to verify that it\'s working correctly.')
+                            }}
                         </template>
                     </b-wrapped-form-group>
                 </b-form-fieldset>
             </b-col>
             <b-col md="5">
-                <b-img :src="totp.qr_code"></b-img>
+                <b-img :src="totp.qr_code" />
 
-                <div v-if="totp.totp_uri" class="mt-2">
-                    <code id="totp_uri" class="d-inline-block text-truncate" style="width: 100%;">
+                <div
+                    v-if="totp.totp_uri"
+                    class="mt-2"
+                >
+                    <code
+                        id="totp_uri"
+                        class="d-inline-block text-truncate"
+                        style="width: 100%;"
+                    >
                         {{ totp.totp_uri }}
                     </code>
-                    <copy-to-clipboard-button :text="totp.totp_uri"></copy-to-clipboard-button>
+                    <copy-to-clipboard-button :text="totp.totp_uri" />
                 </div>
             </b-col>
         </b-row>
 
         <template #save-button-name>
-            <translate key="lang_btn_submit">Submit Code</translate>
+            {{ $gettext('Submit Code') }}
         </template>
     </modal-form>
-
 </template>
 
-<script>
+<script setup>
 import ModalForm from "~/components/Common/ModalForm";
-import {validationMixin} from "vuelidate";
-import {minLength, required} from 'vuelidate/dist/validators.min.js';
 import CopyToClipboardButton from "~/components/Common/CopyToClipboardButton";
 import BFormFieldset from "~/components/Form/BFormFieldset";
 import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
+import {minLength, required} from "@vuelidate/validators";
+import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
+import {ref} from "vue";
+import {useResettableRef} from "~/functions/useResettableRef";
+import {useNotify} from "~/vendor/bootstrapVue";
+import {useAxios} from "~/vendor/axios";
 
-export default {
-    name: 'AccountTwoFactorModal',
-    components: {ModalForm, CopyToClipboardButton, BFormFieldset, BWrappedFormGroup},
-    mixins: [validationMixin],
-    emits: ['relist'],
-    props: {
-        twoFactorUrl: String
-    },
-    data() {
-        return {
-            loading: true,
-            error: null,
-            totp: {
-                secret: null,
-                totp_uri: null,
-                qr_code: null
-            },
-            form: {
-                otp: null
-            }
-        };
-    },
-    validations() {
-        return {
-            form: {
-                otp: {
-                    required,
-                    minLength: minLength(6)
-                }
-            }
-        };
-    },
-    computed: {
-        langTitle() {
-            return this.$gettext('Enable Two-Factor Authentication');
+const props = defineProps({
+    twoFactorUrl: {
+        type: String,
+        required: true
+    }
+});
+
+const emit = defineEmits(['relist']);
+
+const loading = ref(true);
+const error = ref(null);
+
+const {form, resetForm, v$, ifValid} = useVuelidateOnForm(
+    {
+        otp: {
+            required,
+            minLength: minLength(6)
         }
     },
-    methods: {
-        resetForm() {
-            this.totp = {
-                secret: null,
-                totp_uri: null,
-                qr_code: null
-            };
-            this.form = {
-                otp: '',
-            };
-        },
-        open() {
-            this.resetForm();
-            this.loading = false;
-            this.error = null;
-
-            this.$refs.modal.show();
-
-            this.$wrapWithLoading(
-                this.axios.put(this.twoFactorUrl)
-            ).then((resp) => {
-                this.totp = resp.data;
-                this.loading = false;
-            }).catch((error) => {
-                this.close();
-            });
-        },
-        doSubmit() {
-            this.$v.form.$touch();
-            if (this.$v.form.$anyError) {
-                return;
-            }
-
-            this.error = null;
-
-            this.$wrapWithLoading(
-                this.axios({
-                    method: 'PUT',
-                    url: this.twoFactorUrl,
-                    data: {
-                        secret: this.totp.secret,
-                        otp: this.form.otp
-                    }
-                })
-            ).then((resp) => {
-                this.$notifySuccess();
-                this.$emit('relist');
-                this.close();
-            }).catch((error) => {
-                this.error = error.response.data.message;
-            });
-        },
-        close() {
-            this.$refs.modal.hide();
-        },
-        clearContents() {
-            this.$v.form.$reset();
-
-            this.loading = false;
-            this.error = null;
-
-            this.resetForm();
-        },
+    {
+        otp: ''
     }
-}
+);
+
+const {record: totp, reset: resetTotp} = useResettableRef({
+    secret: null,
+    totp_uri: null,
+    qr_code: null
+});
+
+const clearContents = () => {
+    resetForm();
+    resetTotp();
+
+    loading.value = false;
+    error.value = null;
+};
+
+const $modal = ref(); // BModal
+
+const close = () => {
+    $modal.value?.hide();
+};
+
+const {wrapWithLoading, notifySuccess} = useNotify();
+const {axios} = useAxios();
+
+const open = () => {
+    clearContents();
+
+    loading.value = true;
+
+    $modal.value?.show();
+
+    wrapWithLoading(
+        axios.put(props.twoFactorUrl)
+    ).then((resp) => {
+        totp.value = resp.data;
+        loading.value = false;
+    }).catch(() => {
+        close();
+    });
+};
+
+const doSubmit = () => {
+    ifValid(() => {
+        error.value = null;
+
+        wrapWithLoading(
+            axios({
+                method: 'PUT',
+                url: props.twoFactorUrl,
+                data: {
+                    secret: totp.value.secret,
+                    otp: form.value.otp
+                }
+            })
+        ).then(() => {
+            notifySuccess();
+            emit('relist');
+            close();
+        }).catch((error) => {
+            error.value = error.response.data.message;
+        });
+    });
+};
+
+defineExpose({
+    open
+});
 </script>

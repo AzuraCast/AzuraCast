@@ -8,6 +8,7 @@ use App\Http\ServerRequest;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\PropertyAccess\PropertyAccess;
+use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 
 trait CanSortResults
 {
@@ -48,36 +49,11 @@ trait CanSortResults
             return $results;
         }
 
-        $propertyAccessor = PropertyAccess::createPropertyAccessorBuilder()
-            ->disableExceptionOnInvalidIndex()
-            ->disableExceptionOnInvalidPropertyPath()
-            ->disableMagicMethods()
-            ->getPropertyAccessor();
+        $propertyAccessor = self::getPropertyAccessor();
 
         usort(
             $results,
-            static function (
-                mixed $a,
-                mixed $b
-            ) use (
-                $propertyAccessor,
-                $sortValue,
-                $sortOrder
-            ) {
-                $aVal = $propertyAccessor->getValue($a, $sortValue);
-                $bVal = $propertyAccessor->getValue($b, $sortValue);
-
-                if (is_string($aVal)) {
-                    $aVal = mb_strtolower($aVal, 'UTF-8');
-                }
-                if (is_string($bVal)) {
-                    $bVal = mb_strtolower($bVal, 'UTF-8');
-                }
-
-                return (Criteria::ASC === $sortOrder)
-                    ? $aVal <=> $bVal
-                    : $bVal <=> $aVal;
-            }
+            static fn(mixed $a, mixed $b) => self::sortByDotNotation($a, $b, $propertyAccessor, $sortValue, $sortOrder)
         );
 
         return $results;
@@ -93,5 +69,42 @@ trait CanSortResults
                 ? Criteria::DESC
                 : Criteria::ASC,
         ];
+    }
+
+    protected static function sortByDotNotation(
+        mixed $a,
+        mixed $b,
+        PropertyAccessorInterface $propertyAccessor,
+        string $sortValue,
+        string $sortOrder
+    ): int {
+        $aVal = $propertyAccessor->getValue($a, $sortValue);
+        $bVal = $propertyAccessor->getValue($b, $sortValue);
+
+        if (is_string($aVal)) {
+            $aVal = mb_strtolower($aVal, 'UTF-8');
+        }
+        if (is_string($bVal)) {
+            $bVal = mb_strtolower($bVal, 'UTF-8');
+        }
+
+        return (Criteria::ASC === $sortOrder)
+            ? $aVal <=> $bVal
+            : $bVal <=> $aVal;
+    }
+
+    protected static ?PropertyAccessorInterface $propertyAccessor = null;
+
+    protected static function getPropertyAccessor(): PropertyAccessorInterface
+    {
+        if (null === self::$propertyAccessor) {
+            self::$propertyAccessor = PropertyAccess::createPropertyAccessorBuilder()
+                ->disableExceptionOnInvalidIndex()
+                ->disableExceptionOnInvalidPropertyPath()
+                ->disableMagicMethods()
+                ->getPropertyAccessor();
+        }
+
+        return self::$propertyAccessor;
     }
 }

@@ -1,98 +1,124 @@
 <template>
-    <div>
-        <b-card no-body>
-            <b-card-header header-bg-variant="primary-dark">
-                <h2 class="card-title" key="lang_title" v-translate>Custom Fields</h2>
-            </b-card-header>
+    <b-card no-body>
+        <b-card-header header-bg-variant="primary-dark">
+            <h2 class="card-title">
+                {{ $gettext('Custom Fields') }}
+            </h2>
+        </b-card-header>
 
-            <info-card>
-                <p class="card-text">
-                    <translate key="lang_card_info">Create custom fields to store extra metadata about each media file uploaded to your station libraries.</translate>
-                </p>
-            </info-card>
+        <info-card>
+            <p class="card-text">
+                {{
+                    $gettext('Create custom fields to store extra metadata about each media file uploaded to your station libraries.')
+                }}
+            </p>
+        </info-card>
 
-            <b-card-body body-class="card-padding-sm">
-                <b-button variant="outline-primary" @click.prevent="doCreate">
-                    <icon icon="add"></icon>
-                    <translate key="lang_add_btn">Add Custom Field</translate>
-                </b-button>
-            </b-card-body>
+        <b-card-body body-class="card-padding-sm">
+            <b-button
+                variant="outline-primary"
+                @click.prevent="doCreate"
+            >
+                <icon icon="add" />
+                {{ $gettext('Add Custom Field') }}
+            </b-button>
+        </b-card-body>
 
-            <data-table ref="datatable" id="custom_fields" :fields="fields" :show-toolbar="false" :api-url="listUrl">
-                <template #cell(name)="row">
-                    {{ row.item.name }} <code>{{ row.item.short_name }}</code>
-                </template>
-                <template #cell(auto_assign)="row">
-                    {{ getAutoAssignName(row.item.auto_assign) }}
-                </template>
-                <template #cell(actions)="row">
-                    <b-button-group size="sm">
-                        <b-button size="sm" variant="primary" @click.prevent="doEdit(row.item.links.self)">
-                            <translate key="lang_btn_edit">Edit</translate>
-                        </b-button>
-                        <b-button size="sm" variant="danger" @click.prevent="doDelete(row.item.links.self)">
-                            <translate key="lang_btn_delete">Delete</translate>
-                        </b-button>
-                    </b-button-group>
-                </template>
-            </data-table>
-        </b-card>
+        <data-table
+            id="custom_fields"
+            ref="$dataTable"
+            :fields="fields"
+            :show-toolbar="false"
+            :api-url="listUrl"
+        >
+            <template #cell(name)="row">
+                {{ row.item.name }} <code>{{ row.item.short_name }}</code>
+            </template>
+            <template #cell(actions)="row">
+                <b-button-group size="sm">
+                    <b-button
+                        size="sm"
+                        variant="primary"
+                        @click.prevent="doEdit(row.item.links.self)"
+                    >
+                        {{ $gettext('Edit') }}
+                    </b-button>
+                    <b-button
+                        size="sm"
+                        variant="danger"
+                        @click.prevent="doDelete(row.item.links.self)"
+                    >
+                        {{ $gettext('Delete') }}
+                    </b-button>
+                </b-button-group>
+            </template>
+        </data-table>
+    </b-card>
 
-        <edit-modal ref="editModal" :create-url="listUrl" :auto-assign-types="autoAssignTypes"
-                    @relist="relist"></edit-modal>
-    </div>
+    <edit-modal
+        ref="$editModal"
+        :create-url="listUrl"
+        :auto-assign-types="autoAssignTypes"
+        @relist="relist"
+    />
 </template>
 
-<script>
-import DataTable from '~/components/Common/DataTable';
-import EditModal from './CustomFields/EditModal';
-import Icon from '~/components/Common/Icon';
-import InfoCard from '~/components/Common/InfoCard';
-import _ from 'lodash';
+<script setup>
+import DataTable from '~/components/Common/DataTable.vue';
+import EditModal from './CustomFields/EditModal.vue';
+import Icon from '~/components/Common/Icon.vue';
+import InfoCard from '~/components/Common/InfoCard.vue';
+import {get} from 'lodash';
+import {useTranslate} from "~/vendor/gettext";
+import {ref} from "vue";
+import useHasDatatable from "~/functions/useHasDatatable";
+import useHasEditModal from "~/functions/useHasEditModal";
+import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
 
-export default {
-    name: 'AdminCustomFields',
-    components: {InfoCard, Icon, EditModal, DataTable},
-    props: {
-        listUrl: String,
-        autoAssignTypes: Object
+const props = defineProps({
+    listUrl: {
+        type: String,
+        required: true
     },
-    data() {
-        return {
-            fields: [
-                {key: 'name', isRowHeader: true, label: this.$gettext('Field Name'), sortable: false},
-                {key: 'auto_assign', label: this.$gettext('Auto-Assign Value'), sortable: false},
-                {key: 'actions', label: this.$gettext('Actions'), sortable: false, class: 'shrink'}
-            ]
-        };
-    },
-    methods: {
-        getAutoAssignName(autoAssign) {
-            return _.get(this.autoAssignTypes, autoAssign, this.$gettext('None'));
-        },
-        relist() {
-            this.$refs.datatable.refresh();
-        },
-        doCreate() {
-            this.$refs.editModal.create();
-        },
-        doEdit(url) {
-            this.$refs.editModal.edit(url);
-        },
-        doDelete(url) {
-            this.$confirmDelete({
-                title: this.$gettext('Delete Custom Field?')
-            }).then((result) => {
-                if (result.value) {
-                    this.$wrapWithLoading(
-                        this.axios.delete(url)
-                    ).then((resp) => {
-                        this.$notifySuccess(resp.data.message);
-                        this.relist();
-                    });
-                }
-            });
-        }
+    autoAssignTypes: {
+        type: Object,
+        required: true
     }
-};
+});
+
+const {$gettext} = useTranslate();
+
+const fields = [
+    {
+        key: 'name',
+        isRowHeader: true,
+        label: $gettext('Field Name'),
+        sortable: false
+    },
+    {
+        key: 'auto_assign',
+        label: $gettext('Auto-Assign Value'),
+        sortable: false,
+        formatter: (value) => {
+            return get(props.autoAssignTypes, value, $gettext('None'));
+        }
+    },
+    {
+        key: 'actions',
+        label: $gettext('Actions'),
+        sortable: false,
+        class: 'shrink'
+    }
+];
+
+const $dataTable = ref(); // DataTable
+const {relist} = useHasDatatable($dataTable);
+
+const $editModal = ref(); // EditModal
+const {doCreate, doEdit} = useHasEditModal($editModal);
+
+const {doDelete} = useConfirmAndDelete(
+    $gettext('Delete Custom Field?'),
+    relist
+);
 </script>

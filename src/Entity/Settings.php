@@ -9,6 +9,7 @@ use App\Entity;
 use App\Enums\SupportedThemes;
 use App\OpenApi;
 use App\Service\Avatar;
+use App\Utilities\Strings;
 use App\Utilities\Urls;
 use Doctrine\ORM\Mapping as ORM;
 use InvalidArgumentException;
@@ -369,21 +370,14 @@ class Settings implements Stringable
 
     public function getHomepageRedirectUrl(): ?string
     {
-        return $this->homepage_redirect_url;
-    }
-
-    public function getHomepageRedirectUrlAsUri(): ?UriInterface
-    {
-        return Urls::tryParseUserUrl(
-            $this->homepage_redirect_url,
-            'Homepage Redirect URL',
-            false
-        );
+        return Strings::nonEmptyOrNull($this->homepage_redirect_url);
     }
 
     public function setHomepageRedirectUrl(?string $homepageRedirectUrl): void
     {
-        $this->homepage_redirect_url = $this->truncateNullableString($homepageRedirectUrl);
+        $this->homepage_redirect_url = $this->truncateNullableString(
+            Strings::nonEmptyOrNull($homepageRedirectUrl)
+        );
     }
 
     #[
@@ -395,13 +389,13 @@ class Settings implements Stringable
 
     public function getDefaultAlbumArtUrl(): ?string
     {
-        return $this->default_album_art_url;
+        return Strings::nonEmptyOrNull($this->default_album_art_url);
     }
 
     public function getDefaultAlbumArtUrlAsUri(): ?UriInterface
     {
         return Urls::tryParseUserUrl(
-            $this->default_album_art_url,
+            $this->getDefaultAlbumArtUrl(),
             'Default Album Art URL',
             false
         );
@@ -409,7 +403,9 @@ class Settings implements Stringable
 
     public function setDefaultAlbumArtUrl(?string $defaultAlbumArtUrl): void
     {
-        $this->default_album_art_url = $this->truncateNullableString($defaultAlbumArtUrl);
+        $this->default_album_art_url = $this->truncateNullableString(
+            Strings::nonEmptyOrNull($defaultAlbumArtUrl)
+        );
     }
 
     #[
@@ -464,15 +460,14 @@ class Settings implements Stringable
 
     public function getLastFmApiKey(): ?string
     {
-        return $this->last_fm_api_key;
+        return Strings::nonEmptyOrNull($this->last_fm_api_key);
     }
 
     public function setLastFmApiKey(?string $lastFmApiKey): void
     {
-        $lastFmApiKey = trim($lastFmApiKey ?? '');
-        $lastFmApiKey = (!empty($lastFmApiKey)) ? $lastFmApiKey : null;
-
-        $this->last_fm_api_key = $this->truncateNullableString($lastFmApiKey);
+        $this->last_fm_api_key = $this->truncateNullableString(
+            Strings::nonEmptyOrNull($lastFmApiKey)
+        );
     }
 
     #[
@@ -501,12 +496,12 @@ class Settings implements Stringable
 
     public function getPublicCustomCss(): ?string
     {
-        return $this->public_custom_css;
+        return Strings::nonEmptyOrNull($this->public_custom_css);
     }
 
     public function setPublicCustomCss(?string $publicCustomCss): void
     {
-        $this->public_custom_css = $publicCustomCss;
+        $this->public_custom_css = Strings::nonEmptyOrNull($publicCustomCss);
     }
 
     #[
@@ -518,12 +513,12 @@ class Settings implements Stringable
 
     public function getPublicCustomJs(): ?string
     {
-        return $this->public_custom_js;
+        return Strings::nonEmptyOrNull($this->public_custom_js);
     }
 
     public function setPublicCustomJs(?string $publicCustomJs): void
     {
-        $this->public_custom_js = $publicCustomJs;
+        $this->public_custom_js = Strings::nonEmptyOrNull($publicCustomJs);
     }
 
     #[
@@ -535,12 +530,12 @@ class Settings implements Stringable
 
     public function getInternalCustomCss(): ?string
     {
-        return $this->internal_custom_css;
+        return Strings::nonEmptyOrNull($this->internal_custom_css);
     }
 
     public function setInternalCustomCss(?string $internalCustomCss): void
     {
-        $this->internal_custom_css = $internalCustomCss;
+        $this->internal_custom_css = Strings::nonEmptyOrNull($internalCustomCss);
     }
 
     #[
@@ -572,12 +567,12 @@ class Settings implements Stringable
 
     public function getBackupTimeCode(): ?string
     {
-        return $this->backup_time_code;
+        return Strings::nonEmptyOrNull($this->backup_time_code);
     }
 
     public function setBackupTimeCode(?string $backupTimeCode): void
     {
-        $this->backup_time_code = $backupTimeCode;
+        $this->backup_time_code = Strings::nonEmptyOrNull($backupTimeCode);
     }
 
     #[
@@ -640,12 +635,12 @@ class Settings implements Stringable
 
     public function getBackupFormat(): ?string
     {
-        return $this->backup_format;
+        return Strings::nonEmptyOrNull($this->backup_format);
     }
 
     public function setBackupFormat(?string $backup_format): void
     {
-        $this->backup_format = $backup_format;
+        $this->backup_format = Strings::nonEmptyOrNull($backup_format);
     }
 
     #[
@@ -1039,11 +1034,13 @@ class Settings implements Stringable
 
     public function getAcmeDomains(): ?string
     {
-        return $this->acme_domains;
+        return Strings::nonEmptyOrNull($this->acme_domains);
     }
 
     public function setAcmeDomains(?string $acme_domains): void
     {
+        $acme_domains = Strings::nonEmptyOrNull($acme_domains);
+
         if (null !== $acme_domains) {
             $acme_domains = implode(
                 ', ',

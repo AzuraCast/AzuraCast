@@ -5,6 +5,16 @@ release channel, you can take advantage of these new features and fixes.
 
 ## New Features/Changes
 
+## Code Quality/Technical Changes
+
+## Bug Fixes
+
+---
+
+# AzuraCast 0.17.7 (Jan 27, 2023)
+
+## New Features/Changes
+
 - **Web Updater**: We're rolling out an initial test of our web updater component for Docker installations. Based on
   [Watchtower](https://containrrr.dev/watchtower/), our updater sits outside our normal Docker image and can handle
   pulling the latest image for your installation, spinning down the current version and updating to the newer one, all

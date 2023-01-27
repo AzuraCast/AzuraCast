@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace App\Service;
 
-use App\Entity\Repository\CustomFieldRepository;
 use App\Entity\StorageLocation;
 use App\Environment;
+use App\Service\Meilisearch\Index;
+use DI\FactoryInterface;
 use GuzzleHttp\Client as GuzzleClient;
 use GuzzleHttp\Psr7\HttpFactory;
 use Meilisearch\Client;
@@ -18,7 +19,7 @@ final class Meilisearch
     public function __construct(
         private readonly Environment $environment,
         private readonly GuzzleClient $httpClient,
-        private readonly CustomFieldRepository $customFieldRepo,
+        private readonly FactoryInterface $factory
     ) {
     }
 
@@ -49,47 +50,20 @@ final class Meilisearch
         return $client;
     }
 
-    public function setupIndex(StorageLocation $storageLocation): void
+    public function getIndex(StorageLocation $storageLocation): Index
     {
-        $indexSettings = [
-            'primaryKey' => 'id',
-            'filterableAttributes' => [
-                'playlists',
-                'is_requestable',
-                'is_on_demand'
-            ],
-            'sortableAttributes' => [
-                'path',
-                'mtime',
-                'length',
-                'title',
-                'artist',
-                'album',
-                'genre',
-                'isrc',
-            ],
-        ];
-
-        foreach($this->customFieldRepo->getFieldIds() as $fieldId => $fieldShortCode) {
-            $indexSettings['sortableAttributes'][] = 'custom_field_'.$fieldId;
-        }
-
-        $client = $this->getClient();
-        $client->updateIndex(
-            self::getIndexId($storageLocation),
-            $indexSettings
+        return $this->factory->make(
+            Index::class,
+            [
+                'storageLocation' => $storageLocation,
+                'indexUid' => self::getIndexUid($storageLocation),
+                'client' => $this->getClient(),
+            ]
         );
     }
 
-    public function addToIndex(
-        StorageLocation $storageLocation,
-        array $ids
-    ): void {
-
-    }
-
-    public static function getIndexId(StorageLocation $storageLocation): string
+    public static function getIndexUid(StorageLocation $storageLocation): string
     {
-        return 'media_'.$storageLocation->getIdRequired();
+        return 'media_' . $storageLocation->getIdRequired();
     }
 }

@@ -14,7 +14,7 @@ use Meilisearch\Client;
 
 final class Meilisearch
 {
-    public const BATCH_SIZE = 50;
+    public const BATCH_SIZE = 100;
 
     public function __construct(
         private readonly Environment $environment,
@@ -52,12 +52,13 @@ final class Meilisearch
 
     public function getIndex(StorageLocation $storageLocation): Index
     {
+        $client = $this->getClient();
+
         return $this->factory->make(
             Index::class,
             [
                 'storageLocation' => $storageLocation,
-                'indexUid' => self::getIndexUid($storageLocation),
-                'client' => $this->getClient(),
+                'indexClient' => $client->index(self::getIndexUid($storageLocation)),
             ]
         );
     }

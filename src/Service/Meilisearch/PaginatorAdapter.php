@@ -16,14 +16,14 @@ use Pagerfanta\Adapter\AdapterInterface;
  * @template T
  * @implements AdapterInterface<T>
  */
-final readonly class PaginatorAdapter implements AdapterInterface
+final class PaginatorAdapter implements AdapterInterface
 {
     public function __construct(
-        private Indexes $indexClient,
-        private Closure $hydrateCallback,
-        private ?string $query,
-        private array $searchParams = [],
-        private array $options = [],
+        private readonly Indexes $indexClient,
+        private readonly Closure $hydrateCallback,
+        private readonly ?string $query,
+        private readonly array $searchParams = [],
+        private readonly array $options = [],
     ) {
     }
 

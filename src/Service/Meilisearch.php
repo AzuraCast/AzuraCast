@@ -12,14 +12,14 @@ use GuzzleHttp\Client as GuzzleClient;
 use GuzzleHttp\Psr7\HttpFactory;
 use Meilisearch\Client;
 
-final readonly class Meilisearch
+final class Meilisearch
 {
     public const BATCH_SIZE = 100;
 
     public function __construct(
-        private Environment $environment,
-        private GuzzleClient $httpClient,
-        private FactoryInterface $factory
+        private readonly Environment $environment,
+        private readonly GuzzleClient $httpClient,
+        private readonly FactoryInterface $factory
     ) {
     }
 

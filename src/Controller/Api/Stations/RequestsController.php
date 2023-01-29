@@ -61,13 +61,13 @@ use Psr\Http\Message\ResponseInterface;
         ]
     )
 ]
-final readonly class RequestsController
+final class RequestsController
 {
     public function __construct(
-        private EntityManagerInterface $em,
-        private Entity\Repository\StationRequestRepository $requestRepo,
-        private Entity\ApiGenerator\SongApiGenerator $songApiGenerator,
-        private Meilisearch $meilisearch
+        private readonly EntityManagerInterface $em,
+        private readonly Entity\Repository\StationRequestRepository $requestRepo,
+        private readonly Entity\ApiGenerator\SongApiGenerator $songApiGenerator,
+        private readonly Meilisearch $meilisearch
     ) {
     }
 

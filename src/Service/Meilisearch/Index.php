@@ -15,14 +15,14 @@ use Meilisearch\Contracts\DocumentsQuery;
 use Meilisearch\Endpoints\Indexes;
 use Meilisearch\Exceptions\ApiException;
 
-final readonly class Index
+final class Index
 {
     public function __construct(
-        private ReloadableEntityManagerInterface $em,
-        private CustomFieldRepository $customFieldRepo,
-        private Environment $environment,
-        private StorageLocation $storageLocation,
-        private Indexes $indexClient,
+        private readonly ReloadableEntityManagerInterface $em,
+        private readonly CustomFieldRepository $customFieldRepo,
+        private readonly Environment $environment,
+        private readonly StorageLocation $storageLocation,
+        private readonly Indexes $indexClient,
     ) {
     }
 

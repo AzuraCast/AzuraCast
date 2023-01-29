@@ -14,13 +14,13 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Messenger\MessageBus;
 use Throwable;
 
-final readonly class BatchUtilities
+final class BatchUtilities
 {
     public function __construct(
-        private EntityManagerInterface $em,
-        private Entity\Repository\StationMediaRepository $mediaRepo,
-        private Entity\Repository\UnprocessableMediaRepository $unprocessableMediaRepo,
-        private MessageBus $messageBus,
+        private readonly EntityManagerInterface $em,
+        private readonly Entity\Repository\StationMediaRepository $mediaRepo,
+        private readonly Entity\Repository\UnprocessableMediaRepository $unprocessableMediaRepo,
+        private readonly MessageBus $messageBus,
     ) {
     }
 

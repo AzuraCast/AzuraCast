@@ -12,12 +12,12 @@ use App\Service\Meilisearch;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Http\Message\ResponseInterface;
 
-final readonly class ListAction
+final class ListAction
 {
     public function __construct(
-        private EntityManagerInterface $em,
-        private Entity\ApiGenerator\SongApiGenerator $songApiGenerator,
-        private Meilisearch $meilisearch
+        private readonly EntityManagerInterface $em,
+        private readonly Entity\ApiGenerator\SongApiGenerator $songApiGenerator,
+        private readonly Meilisearch $meilisearch
     ) {
     }
 

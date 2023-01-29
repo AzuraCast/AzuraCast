@@ -13,12 +13,12 @@ use App\Message\Meilisearch\AddMediaMessage;
 use App\Message\Meilisearch\UpdatePlaylistsMessage;
 use App\Service\Meilisearch;
 
-final readonly class MessageHandler
+final class MessageHandler
 {
     public function __construct(
-        private Meilisearch $meilisearch,
-        private StorageLocationRepository $storageLocationRepo,
-        private StationRepository $stationRepo
+        private readonly Meilisearch $meilisearch,
+        private readonly StorageLocationRepository $storageLocationRepo,
+        private readonly StationRepository $stationRepo
     ) {
     }
 

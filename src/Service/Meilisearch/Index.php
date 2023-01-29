@@ -7,6 +7,7 @@ namespace App\Service\Meilisearch;
 use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Entity\Repository\CustomFieldRepository;
 use App\Entity\Station;
+use App\Entity\StationPlaylist;
 use App\Entity\StorageLocation;
 use App\Environment;
 use App\Service\Meilisearch;
@@ -14,6 +15,7 @@ use Doctrine\ORM\AbstractQuery;
 use Meilisearch\Contracts\DocumentsQuery;
 use Meilisearch\Endpoints\Indexes;
 use Meilisearch\Exceptions\ApiException;
+use Meilisearch\Search\SearchResult;
 
 final class Index
 {
@@ -444,6 +446,33 @@ final class Index
             $searchParams,
             $options,
         );
+    }
+
+    public function searchMedia(
+        string $query,
+        ?StationPlaylist $playlist = null
+    ): array {
+        $searchParams = [
+            'hitsPerPage' => PHP_INT_MAX,
+            'page' => 1,
+        ];
+
+        if (null !== $playlist) {
+            $station = $playlist->getStation();
+            $searchParams['filter'] = [
+                [
+                    'station_' . $station->getIdRequired() . '_playlists = ' . $playlist->getIdRequired(),
+                ],
+            ];
+        }
+
+        /** @var SearchResult $searchResult */
+        $searchResult = $this->indexClient->search(
+            $query,
+            $searchParams
+        );
+
+        return array_column($searchResult->getHits(), 'id');
     }
 
     /** @return int[] */

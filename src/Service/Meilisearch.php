@@ -25,7 +25,7 @@ final class Meilisearch
 
     public function isSupported(): bool
     {
-        return $this->environment->isDocker();
+        return $this->environment->isDocker() && !$this->environment->isTesting();
     }
 
     public function getClient(): Client

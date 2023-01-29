@@ -10,17 +10,19 @@ use App\Entity\Station;
 use App\Entity\StorageLocation;
 use App\Environment;
 use App\Service\Meilisearch;
+use Doctrine\ORM\AbstractQuery;
 use Meilisearch\Contracts\DocumentsQuery;
 use Meilisearch\Endpoints\Indexes;
+use Meilisearch\Exceptions\ApiException;
 
-final class Index
+final readonly class Index
 {
     public function __construct(
-        private readonly ReloadableEntityManagerInterface $em,
-        private readonly CustomFieldRepository $customFieldRepo,
-        private readonly Environment $environment,
-        private readonly StorageLocation $storageLocation,
-        private readonly Indexes $indexClient,
+        private ReloadableEntityManagerInterface $em,
+        private CustomFieldRepository $customFieldRepo,
+        private Environment $environment,
+        private StorageLocation $storageLocation,
+        private Indexes $indexClient,
     ) {
     }
 
@@ -59,38 +61,54 @@ final class Index
         ];
 
         // Avoid updating settings unless necessary to avoid triggering a reindex.
-        $this->indexClient->create(
-            $this->indexClient->getUid(),
-            ['primaryKey' => 'id']
-        );
+        try {
+            $this->indexClient->fetchRawInfo();
+        } catch (ApiException) {
+            $response = $this->indexClient->create(
+                $this->indexClient->getUid() ?? '',
+                ['primaryKey' => 'id']
+            );
+
+            $this->indexClient->waitForTask($response['taskUid']);
+        }
 
         $currentSettings = $this->indexClient->getSettings();
         $settingsToUpdate = [];
 
         foreach ($indexSettings as $settingKey => $setting) {
             $currentSetting = $currentSettings[$settingKey] ?? [];
+            sort($setting);
             if ($currentSetting !== $setting) {
                 $settingsToUpdate[$settingKey] = $setting;
             }
         }
 
         if (!empty($settingsToUpdate)) {
-            $this->indexClient->updateSettings($settingsToUpdate);
+            $response = $this->indexClient->updateSettings($settingsToUpdate);
+            $this->indexClient->waitForTask($response['taskUid']);
         }
     }
 
-    public function getIdsInIndex(): iterable
+    public function getIdsInIndex(): array
+    {
+        $ids = [];
+        foreach ($this->getAllDocuments(['id', 'mtime']) as $document) {
+            $ids[$document['id']] = $document['mtime'];
+        }
+
+        return $ids;
+    }
+
+    public function getAllDocuments(array $fields = ['*']): iterable
     {
         $perPage = Meilisearch::BATCH_SIZE;
         $documentsQuery = (new DocumentsQuery())
             ->setOffset(0)
             ->setLimit($perPage)
-            ->setFields(['id']);
+            ->setFields($fields);
 
         $documents = $this->indexClient->getDocuments($documentsQuery);
-        foreach ($documents->getIterator() as $document) {
-            yield $document['id'];
-        }
+        yield from $documents->getIterator();
 
         if ($documents->getTotal() <= $perPage) {
             return;
@@ -100,20 +118,13 @@ final class Index
         for ($page = 1; $page <= $totalPages; $page++) {
             $documentsQuery->setOffset($page * $perPage);
             $documents = $this->indexClient->getDocuments($documentsQuery);
-            foreach ($documents->getIterator() as $document) {
-                yield $document['id'];
-            }
+            yield from $documents->getIterator();
         }
     }
 
     public function deleteIds(array $ids): void
     {
         $this->indexClient->deleteDocuments($ids);
-    }
-
-    public function addMedia(array $ids): void
-    {
-        $this->refreshMedia($ids, true);
     }
 
     public function refreshMedia(
@@ -182,7 +193,6 @@ final class Index
         $mediaRaw = $this->em->createQuery(
             <<<'DQL'
             SELECT sm.id,
-                sm.unique_id,
                 sm.path,
                 sm.mtime,
                 sm.length_text,
@@ -197,7 +207,7 @@ final class Index
             DQL
         )->setParameter('storageLocation', $this->storageLocation)
             ->setParameter('ids', $ids)
-            ->toIterable();
+            ->toIterable([], AbstractQuery::HYDRATE_ARRAY);
 
         $media = [];
 
@@ -205,7 +215,7 @@ final class Index
             $mediaId = $row['id'];
 
             $record = [
-                'id' => $row['unique_id'],
+                'id' => $row['id'],
                 'path' => $row['path'],
                 'mtime' => $row['mtime'],
                 'duration' => $row['length_text'],
@@ -264,30 +274,44 @@ final class Index
         }
     }
 
-    public function refreshPlaylists(Station $station): void
-    {
+    public function refreshPlaylists(
+        Station $station,
+        ?array $ids = null
+    ): void {
         $stationId = $station->getIdRequired();
 
         $playlistsKey = 'station_' . $stationId . '_playlists';
         $isRequestableKey = 'station_' . $stationId . '_is_requestable';
         $isOnDemandKey = 'station_' . $stationId . '_is_on_demand';
 
-        $allMediaRaw = $this->em->createQuery(
-            <<<'DQL'
-            SELECT m.id, m.unique_id FROM App\Entity\StationMedia m
-            WHERE m.storage_location = :storageLocation
-            DQL
-        )->setParameter('storageLocation', $this->storageLocation)
-            ->getArrayResult();
-
         $media = [];
-        foreach ($allMediaRaw as $mediaRow) {
-            $media[$mediaRow['id']] = [
-                'id' => $mediaRow['unique_id'],
-                $playlistsKey => [],
-                $isRequestableKey => false,
-                $isOnDemandKey => false,
-            ];
+
+        if (null === $ids) {
+            $allMediaRaw = $this->em->createQuery(
+                <<<'DQL'
+                SELECT m.id FROM App\Entity\StationMedia m
+                WHERE m.storage_location = :storageLocation
+                DQL
+            )->setParameter('storageLocation', $this->storageLocation)
+                ->toIterable([], AbstractQuery::HYDRATE_ARRAY);
+
+            foreach ($allMediaRaw as $mediaRow) {
+                $media[$mediaRow['id']] = [
+                    'id' => $mediaRow['id'],
+                    $playlistsKey => [],
+                    $isRequestableKey => false,
+                    $isOnDemandKey => false,
+                ];
+            }
+        } else {
+            foreach ($ids as $mediaId) {
+                $media[$mediaId] = [
+                    'id' => $mediaId,
+                    $playlistsKey => [],
+                    $isRequestableKey => false,
+                    $isOnDemandKey => false,
+                ];
+            }
         }
 
         $allPlaylists = $this->em->createQuery(
@@ -313,14 +337,27 @@ final class Index
             }
         }
 
-        $mediaInPlaylists = $this->em->createQuery(
-            <<<'DQL'
-            SELECT spm.media_id, spm.playlist_id
-            FROM App\Entity\StationPlaylistMedia spm
-            WHERE spm.playlist_id IN (:allPlaylistIds)
-            DQL
-        )->setParameter('allPlaylistIds', $allPlaylistIds)
-            ->toIterable();
+        if (null === $ids) {
+            $mediaInPlaylists = $this->em->createQuery(
+                <<<'DQL'
+                SELECT spm.media_id, spm.playlist_id
+                FROM App\Entity\StationPlaylistMedia spm
+                WHERE spm.playlist_id IN (:allPlaylistIds)
+                DQL
+            )->setParameter('allPlaylistIds', $allPlaylistIds)
+                ->toIterable([], AbstractQuery::HYDRATE_ARRAY);
+        } else {
+            $mediaInPlaylists = $this->em->createQuery(
+                <<<'DQL'
+                SELECT spm.media_id, spm.playlist_id
+                FROM App\Entity\StationPlaylistMedia spm
+                WHERE spm.playlist_id IN (:allPlaylistIds)
+                AND spm.media_id IN (:mediaIds)
+                DQL
+            )->setParameter('allPlaylistIds', $allPlaylistIds)
+                ->setParameter('mediaIds', $ids)
+                ->toIterable([], AbstractQuery::HYDRATE_ARRAY);
+        }
 
         foreach ($mediaInPlaylists as $spmRow) {
             $mediaId = $spmRow['media_id'];
@@ -338,6 +375,74 @@ final class Index
         $this->indexClient->updateDocumentsInBatches(
             array_values($media),
             Meilisearch::BATCH_SIZE
+        );
+    }
+
+    /**
+     * @return PaginatorAdapter<int|string, mixed>
+     */
+    public function getRequestableSearchPaginator(
+        Station $station,
+        callable $hydrateCallback,
+        ?string $query,
+        array $searchParams = [],
+        array $options = [],
+    ): PaginatorAdapter {
+        return $this->getSearchPaginator(
+            $hydrateCallback,
+            $query,
+            [
+                ...$searchParams,
+                'filter' => [
+                    [
+                        'station_' . $station->getIdRequired() . '_is_requestable = true',
+                    ],
+                ],
+            ],
+            $options
+        );
+    }
+
+    /**
+     * @return PaginatorAdapter<int|string, mixed>
+     */
+    public function getOnDemandSearchPaginator(
+        Station $station,
+        callable $hydrateCallback,
+        ?string $query,
+        array $searchParams = [],
+        array $options = [],
+    ): PaginatorAdapter {
+        return $this->getSearchPaginator(
+            $hydrateCallback,
+            $query,
+            [
+                ...$searchParams,
+                'filter' => [
+                    [
+                        'station_' . $station->getIdRequired() . '_is_on_demand = true',
+                    ],
+                ],
+            ],
+            $options
+        );
+    }
+
+    /**
+     * @return PaginatorAdapter<int|string, mixed>
+     */
+    public function getSearchPaginator(
+        callable $hydrateCallback,
+        ?string $query,
+        array $searchParams = [],
+        array $options = [],
+    ): PaginatorAdapter {
+        return new PaginatorAdapter(
+            $this->indexClient,
+            $hydrateCallback(...),
+            $query,
+            $searchParams,
+            $options,
         );
     }
 

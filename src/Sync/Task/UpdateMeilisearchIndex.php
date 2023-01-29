@@ -6,7 +6,7 @@ namespace App\Sync\Task;
 
 use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Entity;
-use App\Message\AddMediaToSearchIndexMessage;
+use App\Message\Meilisearch\AddMediaMessage;
 use App\MessageQueue\QueueManagerInterface;
 use App\Service\Meilisearch;
 use Doctrine\ORM\AbstractQuery;
@@ -57,11 +57,19 @@ final class UpdateMeilisearchIndex extends AbstractTask
 
     public function updateIndex(Entity\StorageLocation $storageLocation): void
     {
+        $stats = [
+            'existing' => 0,
+            'queued' => 0,
+            'added' => 0,
+            'updated' => 0,
+            'deleted' => 0,
+        ];
+
         $index = $this->meilisearch->getIndex($storageLocation);
         $index->configure();
 
-        $existingIdsRaw = iterator_to_array($index->getIdsInIndex(), false);
-        $existingIds = array_combine($existingIdsRaw, $existingIdsRaw);
+        $existingIds = $index->getIdsInIndex();
+        $stats['existing'] = count($existingIds);
 
         $queuedMedia = [];
 
@@ -70,16 +78,17 @@ final class UpdateMeilisearchIndex extends AbstractTask
                 QueueManagerInterface::QUEUE_NORMAL_PRIORITY
             ) as $message
         ) {
-            if ($message instanceof AddMediaToSearchIndexMessage) {
-                foreach ($message->media as $mediaId) {
+            if ($message instanceof AddMediaMessage) {
+                foreach ($message->media_ids as $mediaId) {
                     $queuedMedia[$mediaId] = $mediaId;
+                    $stats['queued']++;
                 }
             }
         }
 
         $mediaRaw = $this->em->createQuery(
             <<<'DQL'
-            SELECT sm.id, sm.unique_id
+            SELECT sm.id, sm.mtime
             FROM App\Entity\StationMedia sm
             WHERE sm.storage_location = :storageLocation
             DQL
@@ -87,28 +96,53 @@ final class UpdateMeilisearchIndex extends AbstractTask
             ->toIterable([], AbstractQuery::HYDRATE_ARRAY);
 
         $newIds = [];
+        $idsToUpdate = [];
 
         foreach ($mediaRaw as $row) {
-            if (
-                isset($existingIds[$row['unique_id']])
-                || isset($queuedMedia[$row['id']])
-            ) {
-                unset($existingIds[$row['unique_id']]);
+            $mediaId = $row['id'];
+
+            if (isset($queuedMedia[$mediaId])) {
+                unset($existingIds[$mediaId]);
                 continue;
             }
 
-            $newIds[] = $row['id'];
+            if (isset($existingIds[$mediaId])) {
+                if ($existingIds[$mediaId] < $row['mtime']) {
+                    $idsToUpdate[] = $mediaId;
+                    $stats['updated']++;
+                }
+
+                unset($existingIds[$mediaId]);
+                continue;
+            }
+
+            $newIds[] = $mediaId;
+            $stats['added']++;
+        }
+
+        foreach (array_chunk($idsToUpdate, Meilisearch::BATCH_SIZE) as $batchIds) {
+            $message = new AddMediaMessage();
+            $message->storage_location_id = $storageLocation->getIdRequired();
+            $message->media_ids = $batchIds;
+            $message->include_playlists = true;
+
+            $this->messageBus->dispatch($message);
         }
 
         foreach (array_chunk($newIds, Meilisearch::BATCH_SIZE) as $batchIds) {
-            $message = new AddMediaToSearchIndexMessage();
+            $message = new AddMediaMessage();
             $message->storage_location_id = $storageLocation->getIdRequired();
-            $message->media = $batchIds;
+            $message->media_ids = $batchIds;
+            $message->include_playlists = true;
+
             $this->messageBus->dispatch($message);
         }
 
         if (!empty($existingIds)) {
+            $stats['deleted'] = count($existingIds);
             $index->deleteIds($existingIds);
         }
+
+        $this->logger->debug(sprintf('Meilisearch processed for "%s".', $storageLocation), $stats);
     }
 }

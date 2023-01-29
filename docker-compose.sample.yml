@@ -191,7 +191,6 @@ services:
       - stereo_tool_install:/var/azuracast/servers/stereo_tool
       - geolite_install:/var/azuracast/geoip
       - sftpgo_data:/var/azuracast/sftpgo/persist
-      - meilisearch_data:/var/azuracast/meilisearch/persist
       - backups:/var/azuracast/backups
       - acme:/var/azuracast/acme
       - db_data:/var/lib/mysql
@@ -222,7 +221,6 @@ volumes:
   stereo_tool_install: { }
   geolite_install: { }
   sftpgo_data: { }
-  meilisearch_data: { }
   station_data: { }
   www_uploads: { }
   backups: { }

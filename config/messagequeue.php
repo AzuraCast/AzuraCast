@@ -20,5 +20,8 @@ return [
     Message\DispatchWebhookMessage::class => App\Webhook\Dispatcher::class,
     Message\TestWebhookMessage::class => App\Webhook\Dispatcher::class,
 
+    Message\Meilisearch\AddMediaMessage::class => App\Service\Meilisearch\MessageHandler::class,
+    Message\Meilisearch\UpdatePlaylistsMessage::class => App\Service\Meilisearch\MessageHandler::class,
+
     Mailer\Messenger\SendEmailMessage::class => Mailer\Messenger\MessageHandler::class,
 ];

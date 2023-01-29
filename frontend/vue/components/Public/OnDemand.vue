@@ -32,7 +32,7 @@
                 </div>
 
                 <data-table
-                    id="station_on_demand_table"
+                    id="public_on_demand"
                     ref="datatable"
                     paginated
                     select-fields

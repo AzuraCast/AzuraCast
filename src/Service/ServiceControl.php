@@ -84,7 +84,6 @@ final class ServiceControl
             'redis' => __('Cache'),
             'sftpgo' => __('SFTP service'),
             'centrifugo' => __('Live Now Playing updates'),
-            'meilisearch' => __('Meilisearch'),
         ];
 
         if (!$this->centrifugo->isSupported()) {

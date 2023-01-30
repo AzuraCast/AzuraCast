@@ -5,10 +5,6 @@ release channel, you can take advantage of these new features and fixes.
 
 ## New Features/Changes
 
-- **Smarter, Faster Searches**: For searches in the Media Manager, as well as the public-facing Requests and On Demand
-  pages, we now use a new search tool called Meilisearch that allows for very fast, very accurate search results, as
-  well as more complex search queries (and other goodies, like typo correction).
-
 ## Code Quality/Technical Changes
 
 ## Bug Fixes

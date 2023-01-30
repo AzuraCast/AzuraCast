@@ -39,6 +39,7 @@ final class UpdateMeilisearchIndex extends AbstractTask
     {
         if (!$this->meilisearch->isSupported()) {
             $this->logger->debug('Meilisearch is not supported on this instance. Skipping sync task.');
+            return;
         }
 
         $storageLocations = $this->iterateStorageLocations(Entity\Enums\StorageLocationTypes::StationMedia);

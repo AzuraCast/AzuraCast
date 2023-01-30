@@ -13,6 +13,21 @@ RUN go install github.com/aptible/supercronic@v0.2.1
 RUN go install github.com/centrifugal/centrifugo/v4@v4.1.2
 
 #
+# Rust dependencies build step
+#
+FROM rust:1-bullseye AS rust-dependencies
+
+RUN mkdir -p /tmp/meilisearch
+
+WORKDIR /tmp/meilisearch
+
+RUN curl -fsSL https://github.com/meilisearch/meilisearch/archive/refs/tags/v1.0.0-rc.2.tar.gz -o meilisearch.tar.gz \
+    && tar -xvzf meilisearch.tar.gz --strip-components=1 \
+    && cargo build --release \
+    && chmod a+x ./target/release/meilisearch \
+    && mv ./target/release/meilisearch /usr/local/bin/meilisearch
+
+#
 # MariaDB dependencies build step
 #
 FROM mariadb:10.9-jammy AS mariadb
@@ -24,13 +39,17 @@ FROM ubuntu:jammy AS pre-final
 
 ENV TZ="UTC"
 
-COPY --from=mariadb /usr/local/bin/healthcheck.sh /usr/local/bin/db_healthcheck.sh
-COPY --from=mariadb /usr/local/bin/docker-entrypoint.sh /usr/local/bin/db_entrypoint.sh
-
-# Add Dockerize
+# Add Go dependencies
 COPY --from=go-dependencies /go/bin/dockerize /usr/local/bin
 COPY --from=go-dependencies /go/bin/supercronic /usr/local/bin/supercronic
 COPY --from=go-dependencies /go/bin/centrifugo /usr/local/bin/centrifugo
+
+# Add Meilisearch
+COPY --from=rust-dependencies /usr/local/bin/meilisearch /usr/local/bin/meilisearch
+
+# Add MariaDB dependencies
+COPY --from=mariadb /usr/local/bin/healthcheck.sh /usr/local/bin/db_healthcheck.sh
+COPY --from=mariadb /usr/local/bin/docker-entrypoint.sh /usr/local/bin/db_entrypoint.sh
 
 # Run base build process
 COPY ./util/docker/common /bd_build/
@@ -117,7 +136,7 @@ ENV TZ="UTC" \
     PROFILING_EXTENSION_HTTP_KEY=dev \
     PROFILING_EXTENSION_HTTP_IP_WHITELIST=* \
     ENABLE_WEB_UPDATER="true" \
-    MEILI_MASTER_KEY="azur4c457"
+    MEILI_MASTER_KEY="zejNISMlGe_6IUGBsdjfG6c6Qi8g2RngTxOmWsTbwvw"
 
 # Entrypoint and default command
 ENTRYPOINT ["tini", "--", "/usr/local/bin/my_init"]

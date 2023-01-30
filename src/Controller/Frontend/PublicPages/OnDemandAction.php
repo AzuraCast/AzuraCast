@@ -45,7 +45,7 @@ final class OnDemandAction
         $customFields = [];
         foreach ($customFieldsRaw as $row) {
             $customFields[] = [
-                'display_key' => 'media_custom_fields_' . $row['short_name'],
+                'display_key' => 'custom_field_' . $row['id'],
                 'key' => $row['short_name'],
                 'label' => $row['name'],
             ];

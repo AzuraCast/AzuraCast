@@ -8,6 +8,8 @@ add-apt-repository -y ppa:chris-needham/ppa
 add-apt-repository -y ppa:sftpgo/sftpgo
 add-apt-repository -y ppa:ondrej/php
 
+echo "deb [trusted=yes] https://apt.fury.io/meilisearch/ /" | sudo tee /etc/apt/sources.list.d/fury.list
+
 apt-get update
 
 apt-get install -y --no-install-recommends \
@@ -16,4 +18,5 @@ apt-get install -y --no-install-recommends \
   sftpgo \
   tmpreaper \
   zstd \
-  netbase
+  netbase \
+  meilisearch-http

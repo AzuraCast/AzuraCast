@@ -12,6 +12,7 @@ use App\Http\RouterInterface;
 use App\Http\ServerRequest;
 use App\Media\MimeType;
 use App\Paginator;
+use App\Service\Meilisearch;
 use App\Utilities;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityManagerInterface;
@@ -27,7 +28,8 @@ final class ListAction
 
     public function __construct(
         private readonly EntityManagerInterface $em,
-        private readonly CacheInterface $cache
+        private readonly CacheInterface $cache,
+        private readonly Meilisearch $meilisearch
     ) {
     }
 
@@ -104,7 +106,7 @@ final class ListAction
             )->setParameter('storageLocation', $storageLocation)
                 ->setParameter('path', $pathLike);
 
-            if (!empty($searchPhrase)) {
+            if ($isSearch) {
                 if ('special:unprocessable' === $searchPhrase) {
                     $mediaInDirRaw = [];
 
@@ -130,29 +132,30 @@ final class ListAction
                         $mediaQueryBuilder->andWhere(
                             'sm.id NOT IN (SELECT spm2.media_id FROM App\Entity\StationPlaylistMedia spm2)'
                         );
-                    } elseif (str_starts_with($searchPhrase, 'playlist:')) {
-                        [, $playlistName] = explode(':', $searchPhrase, 2);
+                    } else {
+                        [$searchPhrase, $playlist] = $this->parseSearchQuery($station, $searchPhrase);
 
-                        $playlist = $this->em->getRepository(Entity\StationPlaylist::class)
-                            ->findOneBy(
-                                [
-                                    'station' => $station,
-                                    'name' => $playlistName,
-                                ]
-                            );
+                        if ($this->meilisearch->isSupported()) {
+                            $ids = $this->meilisearch
+                                ->getIndex($storageLocation)
+                                ->searchMedia($searchPhrase, $playlist);
 
-                        if (!$playlist instanceof Entity\StationPlaylist) {
-                            return $response->withStatus(400)
-                                ->withJson(new Entity\Api\Error(400, 'Playlist not found.'));
+                            $mediaQueryBuilder->andWhere(
+                                'sm.id IN (:ids)'
+                            )->setParameter('ids', $ids);
+                        } else {
+                            if (null !== $playlist) {
+                                $mediaQueryBuilder->andWhere(
+                                    'sm.id IN (SELECT spm2.media_id FROM App\Entity\StationPlaylistMedia spm2 '
+                                    . 'WHERE spm2.playlist = :playlist)'
+                                )->setParameter('playlist', $playlist);
+                            }
+
+                            if (!empty($searchPhrase)) {
+                                $mediaQueryBuilder->andWhere('(sm.title LIKE :query OR sm.artist LIKE :query)')
+                                    ->setParameter('query', '%' . $searchPhrase . '%');
+                            }
                         }
-
-                        $mediaQueryBuilder->andWhere(
-                            'sm.id IN (SELECT spm2.media_id FROM App\Entity\StationPlaylistMedia spm2 '
-                            . 'WHERE spm2.playlist = :playlist)'
-                        )->setParameter('playlist', $playlist);
-                    } elseif (!in_array($searchPhrase, ['*', '%'], true)) {
-                        $mediaQueryBuilder->andWhere('(sm.title LIKE :query OR sm.artist LIKE :query)')
-                            ->setParameter('query', '%' . $searchPhrase . '%');
                     }
 
                     $mediaQuery = $mediaQueryBuilder->getQuery();
@@ -246,7 +249,7 @@ final class ListAction
                 $unprocessableMedia[$unprocessableRow['path']] = $unprocessableRow['error'];
             }
 
-            if (!empty($searchPhrase)) {
+            if ($isSearch) {
                 if ('special:unprocessable' === $searchPhrase) {
                     $files = array_keys($unprocessableMedia);
                 } else {
@@ -284,7 +287,7 @@ final class ListAction
 
                 $row->size = ($row->is_dir) ? 0 : $fs->fileSize($row->path);
 
-                $shortname = (!empty($searchPhrase))
+                $shortname = ($isSearch)
                     ? $row->path
                     : basename($row->path);
 
@@ -351,6 +354,35 @@ final class ListAction
         );
 
         return $paginator->write($response);
+    }
+
+    private function parseSearchQuery(
+        Entity\Station $station,
+        string $query
+    ): array {
+        $playlist = null;
+
+        if (str_contains($query, 'playlist:')) {
+            preg_match('/playlist:(\w*)/', $query, $matches, PREG_UNMATCHED_AS_NULL);
+
+            if ($matches[1]) {
+                $playlist = $this->em->getRepository(Entity\StationPlaylist::class)
+                    ->findOneBy(
+                        [
+                            'station' => $station,
+                            'name' => $matches[1],
+                        ]
+                    );
+            }
+
+            $query = trim(str_replace($matches[0] ?? '', '', $query));
+        }
+
+        if (in_array($query, ['*', '%'], true)) {
+            $query = '';
+        }
+
+        return [$query, $playlist];
     }
 
     private static function sortRows(

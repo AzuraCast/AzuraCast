@@ -46,7 +46,15 @@ final class PlayerAction
             $pageClasses[] = 'page-station-public-player-embed station-' . $station->getShortName();
             $pageClasses[] = ('social' === $embed) ? 'embed-social' : 'embed';
 
-            return $request->getView()->renderVuePage(
+            $view = $request->getView();
+
+            // Add station public code.
+            $view->fetch(
+                'frontend/public/partials/station-custom',
+                ['station' => $station]
+            );
+
+            return $view->renderVuePage(
                 response: $response,
                 component: 'Vue_PublicPlayer',
                 id: 'station-nowplaying',

@@ -58,7 +58,15 @@ final class OnDemandAction
             $pageClass .= ' embed';
         }
 
-        return $request->getView()->renderVuePage(
+        $view = $request->getView();
+
+        // Add station public code.
+        $view->fetch(
+            'frontend/public/partials/station-custom',
+            ['station' => $station]
+        );
+
+        return $view->renderVuePage(
             response: $response->withHeader('X-Frame-Options', '*'),
             component: 'Vue_PublicOnDemand',
             id: 'station-on-demand',

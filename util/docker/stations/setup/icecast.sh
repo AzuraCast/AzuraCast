@@ -21,7 +21,7 @@ make
 make install
 
 # Remove build tools
-apt-get remove --purge -y build-essential libssl-dev libcurl4-openssl-dev
+apt-get remove --purge -y build-essential libxslt1-dev libvorbis-dev libssl-dev libcurl4-openssl-dev
 
 # Copy AzuraCast Icecast customizations
 mkdir -p /bd_build/stations/icecast_customizations

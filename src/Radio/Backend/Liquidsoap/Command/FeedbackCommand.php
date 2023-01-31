@@ -29,6 +29,7 @@ final class FeedbackCommand extends AbstractCommand
         // Process extra metadata sent by Liquidsoap (if it exists).
         try {
             $historyRow = $this->getSongHistory($station, $payload);
+            $this->em->persist($historyRow);
 
             $this->historyRepo->changeCurrentSong($station, $historyRow);
 
@@ -99,10 +100,7 @@ final class FeedbackCommand extends AbstractCommand
 
             $this->queueRepo->trackPlayed($station, $sq);
 
-            $sh = Entity\SongHistory::fromQueue($sq);
-            $this->em->persist($sh);
-
-            return $sh;
+            return Entity\SongHistory::fromQueue($sq);
         }
 
         $history = new Entity\SongHistory($station, $media);

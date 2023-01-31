@@ -209,6 +209,8 @@ final class Configuration
         $frontend?->write($station);
         $backend?->write($station);
 
+        $this->markAsStarted($station);
+
         // Reload Supervisord and process groups
         if ($reloadSupervisor) {
             $affected_groups = $this->reloadSupervisor();
@@ -227,8 +229,6 @@ final class Configuration
                 }
             }
         }
-
-        $this->markAsStarted($station);
     }
 
     private function getSupervisorConfigFile(Station $station): string
@@ -241,22 +241,24 @@ final class Configuration
         Station $station,
         bool $reloadSupervisor = true
     ): void {
-        $supervisorConfigFile = $this->getSupervisorConfigFile($station);
-        @unlink($supervisorConfigFile);
-        if ($reloadSupervisor) {
-            $this->stopForStation($station);
-        }
-
         $station->setHasStarted(false);
         $station->setNeedsRestart(false);
         $station->clearCache();
 
         $this->em->persist($station);
         $this->em->flush();
+
+        $supervisorConfigFile = $this->getSupervisorConfigFile($station);
+        @unlink($supervisorConfigFile);
+        if ($reloadSupervisor) {
+            $this->stopForStation($station);
+        }
     }
 
     private function stopForStation(Station $station): void
     {
+        $this->markAsStarted($station);
+
         $station_group = 'station_' . $station->getId();
         $affected_groups = $this->reloadSupervisor();
 
@@ -266,8 +268,6 @@ final class Configuration
             } catch (SupervisorException) {
             }
         }
-
-        $this->markAsStarted($station);
     }
 
     private function markAsStarted(Station $station): void

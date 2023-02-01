@@ -9,6 +9,12 @@ release channel, you can take advantage of these new features and fixes.
 
 ## Bug Fixes
 
+- A bug causing stations to show as "Station Offline" immediately after an initial start or restart has been fixed.
+
+- The error placeholder track (by default, "AzuraCast - AzuraCast is live!") will no longer show up in track history.
+
+- A bug preventing station-specific branding changes from applying to embedded pages has been fixed.
+
 ---
 
 # AzuraCast 0.17.7 (Jan 27, 2023)

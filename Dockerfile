@@ -1,7 +1,7 @@
 #
 # Golang dependencies build step
 #
-FROM golang:1-bullseye AS go-dependencies
+FROM golang:1.19-bullseye AS go-dependencies
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends openssl git

@@ -130,34 +130,29 @@ final class ListAction
                         $mediaQueryBuilder->andWhere(
                             'sm.id NOT IN (SELECT spm2.media_id FROM App\Entity\StationPlaylistMedia spm2)'
                         );
-                    } else {
-                        if (str_contains($searchPhrase, 'playlist:')) {
-                            preg_match('/playlist:(\w*)/', $searchPhrase, $matches, PREG_UNMATCHED_AS_NULL);
+                    } elseif (str_starts_with($searchPhrase, 'playlist:')) {
+                        [, $playlistName] = explode(':', $searchPhrase, 2);
 
-                            if ($matches[1]) {
-                                $playlist = $this->em->getRepository(Entity\StationPlaylist::class)
-                                    ->findOneBy(
-                                        [
-                                            'station' => $station,
-                                            'name' => $matches[1],
-                                        ]
-                                    );
+                        $playlist = $this->em->getRepository(Entity\StationPlaylist::class)
+                            ->findOneBy(
+                                [
+                                    'station' => $station,
+                                    'name' => $playlistName,
+                                ]
+                            );
 
-                                if ($playlist instanceof Entity\StationPlaylist) {
-                                    $mediaQueryBuilder->andWhere(
-                                        'sm.id IN (SELECT spm2.media_id FROM App\Entity\StationPlaylistMedia spm2 '
-                                        . 'WHERE spm2.playlist = :playlist)'
-                                    )->setParameter('playlist', $playlist);
-                                }
-
-                                $searchPhrase = trim(str_replace($matches[0] ?? '', '', $searchPhrase));
-                            }
+                        if (!$playlist instanceof Entity\StationPlaylist) {
+                            return $response->withStatus(400)
+                                ->withJson(new Entity\Api\Error(400, 'Playlist not found.'));
                         }
 
-                        if (!in_array($searchPhrase, ['*', '%'], true)) {
-                            $mediaQueryBuilder->andWhere('(sm.title LIKE :query OR sm.artist LIKE :query)')
-                                ->setParameter('query', '%' . $searchPhrase . '%');
-                        }
+                        $mediaQueryBuilder->andWhere(
+                            'sm.id IN (SELECT spm2.media_id FROM App\Entity\StationPlaylistMedia spm2 '
+                            . 'WHERE spm2.playlist = :playlist)'
+                        )->setParameter('playlist', $playlist);
+                    } elseif (!in_array($searchPhrase, ['*', '%'], true)) {
+                        $mediaQueryBuilder->andWhere('(sm.title LIKE :query OR sm.artist LIKE :query)')
+                            ->setParameter('query', '%' . $searchPhrase . '%');
                     }
 
                     $mediaQuery = $mediaQueryBuilder->getQuery();
@@ -251,7 +246,7 @@ final class ListAction
                 $unprocessableMedia[$unprocessableRow['path']] = $unprocessableRow['error'];
             }
 
-            if ($isSearch) {
+            if (!empty($searchPhrase)) {
                 if ('special:unprocessable' === $searchPhrase) {
                     $files = array_keys($unprocessableMedia);
                 } else {
@@ -289,7 +284,7 @@ final class ListAction
 
                 $row->size = ($row->is_dir) ? 0 : $fs->fileSize($row->path);
 
-                $shortname = ($isSearch)
+                $shortname = (!empty($searchPhrase))
                     ? $row->path
                     : basename($row->path);
 
@@ -330,27 +325,21 @@ final class ListAction
         }
 
         // Apply sorting
-        if ('special:duplicates' === $searchPhrase) {
-            usort(
-                $result,
-                static fn(Entity\Api\FileList $a, Entity\Api\FileList $b) => $a->media->id <=> $b->media->id
-            );
-        } else {
-            [$sort, $sortOrder] = $this->getSortFromRequest($request);
+        [$sort, $sortOrder] = $this->getSortFromRequest($request);
 
-            $propertyAccessor = self::getPropertyAccessor();
+        $propertyAccessor = self::getPropertyAccessor();
 
-            usort(
-                $result,
-                static fn(Entity\Api\FileList $a, Entity\Api\FileList $b) => self::sortRows(
-                    $a,
-                    $b,
-                    $propertyAccessor,
-                    $sort,
-                    $sortOrder
-                )
-            );
-        }
+        usort(
+            $result,
+            static fn(Entity\Api\FileList $a, Entity\Api\FileList $b) => self::sortRows(
+                $a,
+                $b,
+                $propertyAccessor,
+                $searchPhrase,
+                $sort,
+                $sortOrder
+            )
+        );
 
         $paginator = Paginator::fromArray($result, $request);
 
@@ -368,9 +357,14 @@ final class ListAction
         Entity\Api\FileList $a,
         Entity\Api\FileList $b,
         PropertyAccessorInterface $propertyAccessor,
+        ?string $searchPhrase = null,
         ?string $sort = null,
         string $sortOrder = Criteria::ASC
     ): int {
+        if ('special:duplicates' === $searchPhrase) {
+            return $a->media->id <=> $b->media->id;
+        }
+
         $isDirComp = $b->is_dir <=> $a->is_dir;
         if (0 !== $isDirComp) {
             return $isDirComp;

@@ -117,6 +117,12 @@ jobs:
           bash util/write_git_info.sh
           chmod 777 .gitinfo
 
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+        id: qemu
+        with:
+          platforms: arm64
+
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
 
@@ -126,7 +132,9 @@ jobs:
           context: .
           load: true
           tags: ghcr.io/azuracast/azuracast:latest
+          platforms: linux/amd64,linux/arm64
           cache-from: type=registry,ref=ghcr.io/azuracast/azuracast:buildcache
+          cache-to: type=gha,mode=max
 
       - name: Set up functional test environment.
         run: |
@@ -220,5 +228,5 @@ jobs:
           platforms: linux/amd64,linux/arm64
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          cache-from: type=registry,ref=ghcr.io/azuracast/azuracast:buildcache
+          cache-from: type=gha
           cache-to: type=registry,ref=ghcr.io/azuracast/azuracast:buildcache,mode=max

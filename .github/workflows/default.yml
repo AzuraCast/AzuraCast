@@ -130,11 +130,18 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           context: .
-          load: true
           tags: ghcr.io/azuracast/azuracast:latest
           platforms: linux/amd64,linux/arm64
           cache-from: type=registry,ref=ghcr.io/azuracast/azuracast:buildcache
           cache-to: type=gha,mode=max
+
+      - name: Load Web Image for Testing
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          load: true
+          tags: ghcr.io/azuracast/azuracast:latest
+          cache-from: type=gha
 
       - name: Set up functional test environment.
         run: |

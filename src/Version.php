@@ -80,9 +80,7 @@ final class Version
                     $details['commit_date'] = 'N/A';
                 }
 
-                if (empty($details['tag'])) {
-                    $details['tag'] = self::FALLBACK_VERSION;
-                }
+                $details['tag'] = self::FALLBACK_VERSION;
 
                 $ttl = $this->environment->isProduction() ? 86400 : 600;
 
@@ -108,7 +106,6 @@ final class Version
                     return [
                         'commit' => $gitInfo['COMMIT_LONG'] ?? null,
                         'commit_date_raw' => $gitInfo['COMMIT_DATE'] ?? null,
-                        'tag' => $gitInfo['TAG'] ?? null,
                         'branch' => $gitInfo['BRANCH'] ?? null,
                     ];
                 } catch (\Throwable) {
@@ -118,14 +115,9 @@ final class Version
         }
 
         if (is_dir($this->repoDir . '/.git')) {
-            $last_tagged_commit = $this->runProcess(['git', 'rev-list', '--tags', '--max-count=1']);
-
             return [
                 'commit' => $this->runProcess(['git', 'log', '--pretty=%H', '-n1', 'HEAD']),
                 'commit_date_raw' => $this->runProcess(['git', 'log', '-n1', '--pretty=%ci', 'HEAD']),
-                'tag' => (!empty($last_tagged_commit))
-                    ? $this->runProcess(['git', 'describe', '--tags', $last_tagged_commit], 'N/A')
-                    : null,
                 'branch' => $this->runProcess(['git', 'rev-parse', '--abbrev-ref', 'HEAD'], 'main'),
             ];
         }

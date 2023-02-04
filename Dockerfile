@@ -76,14 +76,26 @@ USER azuracast
 
 WORKDIR /var/azuracast/www
 
-COPY --chown=azuracast:azuracast ./composer.json ./composer.lock ./
+COPY --chown=azuracast:azuracast \
+    ./composer.json \
+    ./composer.lock \
+    ./
+
 RUN composer install \
     --no-dev \
     --no-ansi \
     --no-autoloader \
     --no-interaction
 
-COPY --chown=azuracast:azuracast . .
+COPY --chown=azuracast:azuracast \
+    ./bin \
+    ./config \
+    ./plugins \
+    ./src \
+    ./templates \
+    ./translations/*/LC_MESSAGES/*.mo \
+    ./web \
+    ./
 
 RUN composer dump-autoload --optimize --classmap-authoritative \
     && touch /var/azuracast/.docker

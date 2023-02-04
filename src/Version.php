@@ -7,6 +7,7 @@ namespace App;
 use App\Enums\ReleaseChannel;
 use DateTime;
 use DateTimeZone;
+use Dotenv\Dotenv;
 use Psr\SimpleCache\CacheInterface;
 use Symfony\Component\Process\Process;
 
@@ -65,6 +66,22 @@ final class Version
 
             if (empty($details)) {
                 $details = $this->getRawDetails();
+
+                $details['commit_short'] = substr($details['commit'] ?? '', 0, 7);
+
+                if (!empty($details['commit_date_raw'])) {
+                    $commit_date = new DateTime($details['commit_date_raw']);
+                    $commit_date->setTimezone(new DateTimeZone('UTC'));
+
+                    $details['commit_timestamp'] = $commit_date->getTimestamp();
+                    $details['commit_date'] = $commit_date->format('Y-m-d G:i');
+                } else {
+                    $details['commit_timestamp'] = 0;
+                    $details['commit_date'] = 'N/A';
+                }
+
+                $details['tag'] = self::FALLBACK_VERSION;
+
                 $ttl = $this->environment->isProduction() ? 86400 : 600;
 
                 $this->cache->set('app_version_details', $details, $ttl);
@@ -81,42 +98,31 @@ final class Version
      */
     private function getRawDetails(): array
     {
-        if (!is_dir($this->repoDir . '/.git')) {
-            return [];
+        if (is_file($this->repoDir . '/.gitinfo')) {
+            $fileContents = file_get_contents($this->repoDir . '/.gitinfo');
+            if (!empty($fileContents)) {
+                try {
+                    $gitInfo = Dotenv::parse($fileContents);
+                    return [
+                        'commit' => $gitInfo['COMMIT_LONG'] ?? null,
+                        'commit_date_raw' => $gitInfo['COMMIT_DATE'] ?? null,
+                        'branch' => $gitInfo['BRANCH'] ?? null,
+                    ];
+                } catch (\Throwable) {
+                    // Noop
+                }
+            }
         }
 
-        $details = [];
-
-        // Get the long form of the latest commit's hash.
-        $latest_commit_hash = $this->runProcess(['git', 'log', '--pretty=%H', '-n1', 'HEAD']);
-
-        $details['commit'] = $latest_commit_hash;
-        $details['commit_short'] = substr($latest_commit_hash, 0, 7);
-
-        // Get the last commit's timestamp.
-        $latest_commit_date = $this->runProcess(['git', 'log', '-n1', '--pretty=%ci', 'HEAD']);
-
-        if (!empty($latest_commit_date)) {
-            $commit_date = new DateTime($latest_commit_date);
-            $commit_date->setTimezone(new DateTimeZone('UTC'));
-
-            $details['commit_timestamp'] = $commit_date->getTimestamp();
-            $details['commit_date'] = $commit_date->format('Y-m-d G:i');
-        } else {
-            $details['commit_timestamp'] = 0;
-            $details['commit_date'] = 'N/A';
+        if (is_dir($this->repoDir . '/.git')) {
+            return [
+                'commit' => $this->runProcess(['git', 'log', '--pretty=%H', '-n1', 'HEAD']),
+                'commit_date_raw' => $this->runProcess(['git', 'log', '-n1', '--pretty=%ci', 'HEAD']),
+                'branch' => $this->runProcess(['git', 'rev-parse', '--abbrev-ref', 'HEAD'], 'main'),
+            ];
         }
 
-        $last_tagged_commit = $this->runProcess(['git', 'rev-list', '--tags', '--max-count=1']);
-        if (!empty($last_tagged_commit)) {
-            $details['tag'] = $this->runProcess(['git', 'describe', '--tags', $last_tagged_commit], 'N/A');
-        } else {
-            $details['tag'] = self::FALLBACK_VERSION;
-        }
-
-        $details['branch'] = $this->runProcess(['git', 'rev-parse', '--abbrev-ref', 'HEAD'], 'main');
-
-        return $details;
+        return [];
     }
 
     /**

@@ -1,5 +1,8 @@
 <template>
-    <div id="dashboard row-of-cards">
+    <div
+        id="dashboard"
+        class="row-of-cards"
+    >
         <section
             class="card"
             role="region"

@@ -6,7 +6,7 @@
 
     <div
         id="profile"
-        class="row"
+        class="row row-of-cards"
     >
         <div class="col-lg-7">
             <template v-if="hasStarted">

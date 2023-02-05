@@ -4,14 +4,10 @@
             {{ $gettext('My Account') }}
         </h2>
 
-        <b-row>
-            <b-col
-                sm="12"
-                md="6"
-                lg="5"
-            >
+        <div class="row row-of-cards">
+            <div class="col-sm-12 col-md-6 col-lg-5">
                 <section
-                    class="card mb-3"
+                    class="card"
                     role="region"
                 >
                     <b-card-header header-bg-variant="primary-dark">
@@ -135,12 +131,8 @@
                         </b-button>
                     </div>
                 </section>
-            </b-col>
-            <b-col
-                sm="12"
-                md="6"
-                lg="7"
-            >
+            </div>
+            <div class="col-sm-12 col-md-6 col-lg-7">
                 <b-card no-body>
                     <b-card-header header-bg-variant="primary-dark">
                         <h2 class="card-title">
@@ -190,8 +182,8 @@
                         </template>
                     </data-table>
                 </b-card>
-            </b-col>
-        </b-row>
+            </div>
+        </div>
 
         <account-edit-modal
             ref="$editModal"

@@ -1,7 +1,7 @@
 <template>
-    <div id="dashboard">
+    <div id="dashboard row-of-cards">
         <section
-            class="card mb-4"
+            class="card"
             role="region"
         >
             <div class="card-header bg-primary-dark d-flex flex-wrap align-items-center">
@@ -95,7 +95,7 @@
 
         <section
             v-if="showCharts"
-            class="card mb-4"
+            class="card"
             role="region"
         >
             <div class="card-header bg-primary-dark d-flex align-items-center">

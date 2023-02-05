@@ -4,13 +4,11 @@
             {{ $gettext('Administration') }}
         </h2>
 
-        <b-row>
-            <b-col
+        <div class="row row-of-cards">
+            <div
                 v-for="(panel, key) in adminPanels"
                 :key="key"
-                sm="12"
-                lg="4"
-                class="mb-4"
+                class="col-sm-12 col-lg-4"
             >
                 <b-card no-body>
                     <b-card-header
@@ -42,20 +40,15 @@
                         </b-list-group-item>
                     </b-list-group>
                 </b-card>
-            </b-col>
-        </b-row>
+            </div>
+        </div>
 
         <h2 class="outside-card-header mb-1">
             {{ $gettext('Server Status') }}
         </h2>
 
-        <b-row>
-            <b-col
-                sm="12"
-                lg="6"
-                xl="6"
-                class="mb-4"
-            >
+        <div class="row row-of-cards">
+            <div class="col-sm-12 col-lg-6 col-xl-6">
                 <b-card no-body>
                     <b-card-header
                         header-bg-variant="primary-dark"
@@ -117,7 +110,7 @@
                                     pill
                                     variant="warning"
                                 >
-&nbsp;&nbsp;
+                                    &nbsp;&nbsp;
                                 </b-badge>&nbsp;
                                 {{ $gettext('Cached') }}
                                 : {{ stats.memory.readable.cached }}
@@ -125,14 +118,9 @@
                         </b-row>
                     </b-card-body>
                 </b-card>
-            </b-col>
+            </div>
 
-            <b-col
-                sm="12"
-                lg="6"
-                xl="6"
-                class="mb-4"
-            >
+            <div class="col-sm-12 col-lg-6 col-xl-6">
                 <b-card no-body>
                     <b-card-header header-bg-variant="primary-dark">
                         <h2 class="card-title">
@@ -164,7 +152,7 @@
                                     pill
                                     variant="primary"
                                 >
-&nbsp;&nbsp;
+                                    &nbsp;&nbsp;
                                 </b-badge>&nbsp;
                                 {{ $gettext('Used') }}
                                 :
@@ -173,16 +161,11 @@
                         </b-row>
                     </b-card-body>
                 </b-card>
-            </b-col>
-        </b-row>
+            </div>
+        </div>
 
-        <b-row>
-            <b-col
-                sm="12"
-                lg="8"
-                xl="6"
-                class="mb-4"
-            >
+        <div class="row row-of-cards">
+            <div class="col-sm-12 col-lg-8 col-xl-6">
                 <b-card no-body>
                     <b-card-header
                         header-bg-variant="primary-dark"
@@ -335,14 +318,9 @@
                         </b-row>
                     </b-card-footer>
                 </b-card>
-            </b-col>
+            </div>
 
-            <b-col
-                sm="12"
-                lg="4"
-                xl="6"
-                class="mb-4"
-            >
+            <div class="col-sm-12 col-lg-4 col-xl-6">
                 <b-card no-body>
                     <b-card-header
                         header-bg-variant="primary-dark"
@@ -394,11 +372,11 @@
                         </tbody>
                     </table>
                 </b-card>
-            </b-col>
-        </b-row>
+            </div>
+        </div>
 
-        <b-row>
-            <b-col>
+        <div class="row row-of-cards">
+            <div class="col">
                 <b-card no-body>
                     <b-card-header header-bg-variant="primary-dark">
                         <h2 class="card-title">
@@ -443,8 +421,8 @@
                         </b-tab>
                     </b-tabs>
                 </b-card>
-            </b-col>
-        </b-row>
+            </div>
+        </div>
 
         <cpu-stats-help-modal ref="$cpuStatsHelpModal" />
         <memory-stats-help-modal ref="$memoryStatsHelpModal" />

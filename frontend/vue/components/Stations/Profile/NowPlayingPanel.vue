@@ -1,7 +1,7 @@
 <template>
     <section
         id="profile-nowplaying"
-        class="card mb-4 nowplaying"
+        class="card nowplaying"
         role="region"
     >
         <div class="card-header bg-primary-dark">

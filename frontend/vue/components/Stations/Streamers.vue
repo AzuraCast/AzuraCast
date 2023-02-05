@@ -1,5 +1,5 @@
 <template>
-    <div class="row">
+    <div class="row row-of-cards">
         <div class="col-md-8">
             <b-card no-body>
                 <b-card-header header-bg-variant="primary-dark">

@@ -1,7 +1,7 @@
 <template>
     <section
         id="profile-backend"
-        class="card mb-4"
+        class="card"
         role="region"
     >
         <div class="card-header bg-primary-dark">

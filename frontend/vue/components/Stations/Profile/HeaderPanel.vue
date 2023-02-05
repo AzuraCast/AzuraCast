@@ -1,7 +1,7 @@
 <template>
     <div class="outside-card-header d-flex align-items-center mb-3">
         <div
-            v-if="station.listen_url"
+            v-if="station.listen_url && hasStarted"
             class="flex-shrink-0 mr-3"
         >
             <play-button

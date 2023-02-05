@@ -14,5 +14,9 @@ export default {
     manageProfileUri: {
         type: String,
         required: true
-    }
+    },
+    hasStarted: {
+        type: Boolean,
+        required: true
+    },
 }

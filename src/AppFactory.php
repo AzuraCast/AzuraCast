@@ -131,9 +131,9 @@ final class AppFactory
         $environment[Environment::VIEWS_DIR] ??= $baseDir . '/templates';
         $environment[Environment::UPLOADS_DIR] ??= $parentBaseDir . '/uploads';
 
-        if ($environment[Environment::IS_DOCKER]) {
-            $_ENV = getenv();
-        } else {
+        $_ENV = getenv();
+
+        if (!$environment[Environment::IS_DOCKER]) {
             $envPaths = [
                 $parentBaseDir . '/env.ini',
                 $baseDir . '/env.ini',

@@ -421,6 +421,8 @@ install() {
     echo "Podman was detected and will be used instead of Docker..."
 
     if [[ $(command -v podman-compose) ]]; then
+      echo "Podman-compose is installed!"
+    else
       echo "Podman mode is active, but podman-compose is not found."
       echo "Install it by following the instructions on this page:"
       echo "https://github.com/containers/podman-compose"

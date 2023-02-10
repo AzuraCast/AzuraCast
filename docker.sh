@@ -1,6 +1,24 @@
 #!/usr/bin/env bash
 # shellcheck disable=SC2145,SC2178,SC2120,SC2162
 
+PODMAN_MODE=0
+
+docker() {
+  if [[ $PODMAN_MODE -ne 0 ]]; then
+    podman "$@"
+  else
+    docker "$@"
+  fi
+}
+
+docker-compose() {
+  if [[ $PODMAN_MODE -ne 0 ]]; then
+    podman-compose "$@"
+  else
+    docker-compose "$@"
+  fi
+}
+
 # Functions to manage .env files
 __dotenv=
 __dotenv_file=
@@ -399,19 +417,30 @@ run-installer() {
 install() {
   check-install-requirements
 
-  if [[ $(command -v docker) && $(docker --version) ]]; then
-    echo "Docker is already installed! Continuing..."
-  else
-    if ask "Docker does not appear to be installed. Install Docker now?" Y; then
-      install-docker
-    fi
-  fi
+  if [[ $PODMAN_MODE -ne 0 ]]; then
+    echo "Podman was detected and will be used instead of Docker..."
 
-  if [[ $(command -v docker-compose) ]]; then
-    echo "Docker Compose is already installed. Continuing..."
+    if [[ $(command -v podman-compose) ]]; then
+      echo "Podman mode is active, but podman-compose is not found."
+      echo "Install it by following the instructions on this page:"
+      echo "https://github.com/containers/podman-compose"
+      exit 1
+    fi
   else
-    if ask "Docker Compose does not appear to be installed. Install Docker Compose now?" Y; then
-      install-docker-compose
+    if [[ $(command -v docker) && $(docker --version) ]]; then
+      echo "Docker is already installed! Continuing..."
+    else
+      if ask "Docker does not appear to be installed. Install Docker now?" Y; then
+        install-docker
+      fi
+    fi
+
+    if [[ $(command -v docker-compose) ]]; then
+      echo "Docker Compose is already installed. Continuing..."
+    else
+      if ask "Docker Compose does not appear to be installed. Install Docker Compose now?" Y; then
+        install-docker-compose
+      fi
     fi
   fi
 
@@ -478,6 +507,10 @@ install-dev() {
   if [[ $EUID -ne 0 ]]; then
     .env --file .env set AZURACAST_PUID="$(id -u)"
     .env --file .env set AZURACAST_PGID="$(id -g)"
+  fi
+
+  if [[ $PODMAN_MODE -ne 0 ]]; then
+    .env --file .env set AZURACAST_PODMAN_MODE=true
   fi
 
   chmod 777 ./frontend/ ./web/ ./vendor/ \
@@ -854,5 +887,10 @@ restart() {
 
 # Ensure we're in the same directory as this script.
 cd "$( dirname "${BASH_SOURCE[0]}" )" || exit
+
+# Podman support
+if [[ $(command -v podman) ]]; then
+  PODMAN_MODE=1
+fi
 
 "$@"

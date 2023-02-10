@@ -80,6 +80,10 @@ final class EnvFile extends AbstractEnvFile
                     ),
                     'default' => 1000,
                 ],
+                'AZURACAST_PODMAN_MODE' => [
+                    'name' => __('Use Podman instead of Docker.'),
+                    'default' => false,
+                ],
                 'AZURACAST_COMPOSE_PRIVILEGED' => [
                     'name' => __('Advanced: Use Privileged Docker Settings'),
                     'default' => true,

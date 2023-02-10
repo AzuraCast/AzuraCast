@@ -194,6 +194,7 @@ services:
       - backups:/var/azuracast/backups
       - acme:/var/azuracast/acme
       - db_data:/var/lib/mysql
+    user: root
     restart: unless-stopped
     ulimits:
       nofile:
@@ -209,6 +210,7 @@ services:
     image: ghcr.io/azuracast/updater:latest
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
+    user: root
     logging:
       options:
         max-size: "1m"

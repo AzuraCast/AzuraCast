@@ -210,7 +210,6 @@ services:
     image: ghcr.io/azuracast/updater:latest
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-    user: root
     logging:
       options:
         max-size: "1m"

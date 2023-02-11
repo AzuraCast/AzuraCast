@@ -126,6 +126,11 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
 
+      - name: Create temp docker image file
+        run: |
+          mkdir -p /tmp/docker_image
+          chmod -R 777 /tmp/docker_image
+
       - name: Build Web Image
         uses: docker/build-push-action@v3
         with:

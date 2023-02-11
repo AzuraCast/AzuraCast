@@ -3,21 +3,7 @@
 
 PODMAN_MODE=0
 
-docker() {
-  if [[ $PODMAN_MODE -ne 0 ]]; then
-    podman "$@"
-  else
-    docker "$@"
-  fi
-}
-
-docker-compose() {
-  if [[ $PODMAN_MODE -ne 0 ]]; then
-    podman-compose "$@"
-  else
-    docker-compose "$@"
-  fi
-}
+shopt -s expand_aliases
 
 # Functions to manage .env files
 __dotenv=
@@ -893,6 +879,9 @@ cd "$( dirname "${BASH_SOURCE[0]}" )" || exit
 # Podman support
 if [[ $(command -v podman) ]]; then
   PODMAN_MODE=1
+
+  alias docker=podman
+  alias docker-compose=podman-compose
 fi
 
 "$@"

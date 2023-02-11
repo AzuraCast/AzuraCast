@@ -26,11 +26,8 @@ concurrency:
 
 jobs:
   build:
-    name: Build and Test
+    name: Test Suite
     runs-on: ubuntu-latest
-    env:
-      APPLICATION_ENV: testing
-      NODE_ENV: production
     steps:
       - uses: actions/checkout@master
 
@@ -64,8 +61,11 @@ jobs:
           vendor/bin/phpcs --report=checkstyle | cs2pr
 
   publish:
-    name: Publish
+    name: Build & Publish
     needs: build
+    env:
+      APPLICATION_ENV: testing
+      NODE_ENV: production
     runs-on: ubuntu-latest
     if: github.event_name == 'push' || github.event_name == 'schedule'
     steps:

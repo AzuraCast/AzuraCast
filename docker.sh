@@ -554,15 +554,17 @@ update() {
     fi
 
     # Check Docker version.
-    DOCKER_VERSION=$(docker version -f "{{.Server.Version}}")
-    DOCKER_VERSION_MAJOR=$(echo "$DOCKER_VERSION"| cut -d'.' -f 1)
+    if [[ $PODMAN_MODE -eq 0 ]]; then
+      DOCKER_VERSION=$(docker version -f "{{.Server.Version}}")
+      DOCKER_VERSION_MAJOR=$(echo "$DOCKER_VERSION"| cut -d'.' -f 1)
 
-    if [ "${DOCKER_VERSION_MAJOR}" -ge 20 ]; then
-      echo "Docker server (version ${DOCKER_VERSION}) meets minimum version requirements."
-    else
-      if ask "Docker is out of date on this server. Attempt automatic upgrade?" Y; then
-        install-docker
-        install-docker-compose
+      if [ "${DOCKER_VERSION_MAJOR}" -ge 20 ]; then
+        echo "Docker server (version ${DOCKER_VERSION}) meets minimum version requirements."
+      else
+        if ask "Docker is out of date on this server. Attempt automatic upgrade?" Y; then
+          install-docker
+          install-docker-compose
+        fi
       fi
     fi
 
@@ -613,7 +615,9 @@ update-self() {
   local AZURACAST_RELEASE_BRANCH
   AZURACAST_RELEASE_BRANCH=$(get-release-branch-name)
 
-  curl -fsSL https://raw.githubusercontent.com/AzuraCast/AzuraCast/$AZURACAST_RELEASE_BRANCH/docker.sh -o docker.sh
+  curl -H 'Cache-Control: no-cache, no-store' -fsSL \
+    https://raw.githubusercontent.com/AzuraCast/AzuraCast/$AZURACAST_RELEASE_BRANCH/docker.sh?$(date +%s) \
+    -o docker.sh
   chmod a+x docker.sh
 
   echo "New Docker utility script downloaded."
@@ -625,8 +629,7 @@ update-self() {
 # Usage: ./docker.sh cli [command]
 #
 cli() {
-  docker-compose exec --user="azuracast" web azuracast_cli "$@"
-  exit
+  exec docker-compose exec --user="azuracast" web azuracast_cli "$@"
 }
 
 #
@@ -634,35 +637,14 @@ cli() {
 # Usage: ./docker.sh bash
 #
 bash() {
-  docker-compose exec --user="azuracast" web bash
-  exit
+  exec docker-compose exec --user="azuracast" web bash
 }
 
 #
 # Enter the MariaDB database management terminal with the correct credentials.
 #
 db() {
-  local MYSQL_HOST MYSQL_PORT MYSQL_USER MYSQL_PASSWORD MYSQL_DATABASE
-
-  .env --file azuracast.env get MYSQL_HOST
-  MYSQL_HOST="${REPLY:-localhost}"
-
-  .env --file azuracast.env get MYSQL_PORT
-  MYSQL_PORT="${REPLY:-3306}"
-
-  .env --file azuracast.env get MYSQL_USER
-  MYSQL_USER="${REPLY:-azuracast}"
-
-  .env --file azuracast.env get MYSQL_PASSWORD
-  MYSQL_PASSWORD="${REPLY:-azur4c457}"
-
-  .env --file azuracast.env get MYSQL_DATABASE
-  MYSQL_DATABASE="${REPLY:-azuracast}"
-
-  docker-compose exec --user="mysql" web mysql --user=${MYSQL_USER} --password=${MYSQL_PASSWORD} \
-    --host=${MYSQL_HOST} --port=${MYSQL_PORT} --database=${MYSQL_DATABASE}
-
-  exit
+  exec docker-compose exec web azuracast_db
 }
 
 #
@@ -690,6 +672,9 @@ backup() {
   docker run --rm -v "azuracast_backups:/backup_src" \
   -v "$BACKUP_DIR:/backup_dest" \
   busybox mv "/backup_src/${BACKUP_FILENAME}" "/backup_dest/${BACKUP_FILENAME}"
+
+  echo "Backup completed."
+  exit
 }
 
 #
@@ -793,18 +778,6 @@ restore-legacy() {
     exit 1
   fi
 
-  exit
-}
-
-#
-# DEVELOPER TOOL:
-# Access the static console as a developer.
-# Usage: ./docker.sh static [static_container_command]
-#
-static() {
-  docker-compose -f docker-compose.frontend.yml down -v
-  docker-compose -f docker-compose.frontend.yml build
-  docker-compose --env-file=.env -f docker-compose.frontend.yml run --rm frontend "$@"
   exit
 }
 

@@ -367,9 +367,14 @@ final class InstallCommand extends Command
             unset($service);
         }
 
-        // Remove web updater if disabled or in Podman mode.
+        // Remove web updater if disabled.
         if (!$azuracastEnv->getAsBool(Environment::ENABLE_WEB_UPDATER, true)) {
             unset($yaml['services']['updater']);
+        }
+
+        // Podman privileged mode explicit specification.
+        if ($env->getAsBool('AZURACAST_PODMAN_MODE', false)) {
+            $yaml['services']['web']['privileged'] = 'true';
         }
 
         $yamlRaw = Yaml::dump($yaml, PHP_INT_MAX);

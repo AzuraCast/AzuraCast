@@ -194,7 +194,6 @@ services:
       - backups:/var/azuracast/backups
       - acme:/var/azuracast/acme
       - db_data:/var/lib/mysql
-    user: root
     restart: unless-stopped
     ulimits:
       nofile:

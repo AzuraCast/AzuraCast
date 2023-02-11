@@ -85,6 +85,12 @@ final class InstallCommand extends Command
             $azuracastEnv = new AzuraCastEnvFile($envPath);
         }
 
+        // Podman support
+        $isPodman = $env->getAsBool('AZURACAST_PODMAN_MODE', false);
+        if ($isPodman) {
+            $azuracastEnv[Environment::ENABLE_WEB_UPDATER] = 'false';
+        }
+
         // Initialize locale for translated installer/updater.
         if (!$defaults && ($isNewInstall || empty($azuracastEnv[Environment::LANG]))) {
             $langOptions = [];
@@ -246,10 +252,12 @@ final class InstallCommand extends Command
                 $azuracastEnv->getAsBool('COMPOSER_PLUGIN_MODE', false)
             );
 
-            $azuracastEnv[Environment::ENABLE_WEB_UPDATER] = $io->confirm(
-                $azuracastEnvConfig[Environment::ENABLE_WEB_UPDATER]['name'],
-                $azuracastEnv->getAsBool(Environment::ENABLE_WEB_UPDATER, true)
-            );
+            if (!$isPodman) {
+                $azuracastEnv[Environment::ENABLE_WEB_UPDATER] = $io->confirm(
+                    $azuracastEnvConfig[Environment::ENABLE_WEB_UPDATER]['name'],
+                    $azuracastEnv->getAsBool(Environment::ENABLE_WEB_UPDATER, true)
+                );
+            }
         }
 
         $io->writeln(
@@ -360,10 +368,7 @@ final class InstallCommand extends Command
         }
 
         // Remove web updater if disabled or in Podman mode.
-        if (
-            !$azuracastEnv->getAsBool(Environment::ENABLE_WEB_UPDATER, true)
-            || $env->getAsBool('AZURACAST_PODMAN_MODE', false)
-        ) {
+        if (!$azuracastEnv->getAsBool(Environment::ENABLE_WEB_UPDATER, true)) {
             unset($yaml['services']['updater']);
         }
 

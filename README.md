@@ -85,6 +85,23 @@ Note that our social media channels aren't the best way to report issues to us; 
 issues instructions above, as this allows our whole team to help resolve and track the progress of the issue in one
 location.
 
+## Contribute to AzuraCast
+AzuraCast is an Open Source Software. If you want to contribute please follow the guidelines listed below.
+
+Comment on it and say you're working on that issue. This is to avoid conflicts with others also working on the issue. If you've followed the guidelines above, you don't need to ask permission to start work on an issue.
+Write your code and submit your pull request. Be sure to read and follow our pull request guidelines!
+Wait for code review and address any issues raised as soon as you can.
+
+The following tags mark issues that are open for community contribution:
+**help wanted:** Open to participation from the community but not necessarily beginner-friendly
+**good first issue:** Open to participation from the community and friendly towards new contributors
+You do not need our permission to work on one of these issues.
+You may work on an issue labeled good first issue even if it's not your first issue.
+
+For tips on contributing to Open Source projects, see the following guides:
+[Github](https://github.com/freeCodeCamp/how-to-contribute-to-open-source/blob/main/README.md) for new developers and contributors.
+[OpenSourceGuide](https://opensource.guide/how-to-contribute/) for general guidelienes and tips.
+
 ## Friends of AzuraCast
 
 We would like to thank the following organizations for their support of AzuraCast's ongoing development:

@@ -648,7 +648,8 @@ update-self() {
 # Usage: ./docker.sh cli [command]
 #
 cli() {
-  exec dc exec --user="azuracast" web azuracast_cli "$@"
+  dc exec --user="azuracast" web azuracast_cli "$@"
+  exit
 }
 
 #
@@ -656,14 +657,16 @@ cli() {
 # Usage: ./docker.sh bash
 #
 bash() {
-  exec dc exec --user="azuracast" web bash
+  dc exec --user="azuracast" web bash
+  exit
 }
 
 #
 # Enter the MariaDB database management terminal with the correct credentials.
 #
 db() {
-  exec dc exec web azuracast_db
+  dc exec web azuracast_db
+  exit
 }
 
 #

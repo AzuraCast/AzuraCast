@@ -13,7 +13,6 @@ use App\Exception;
 use App\Radio\Enums\BackendAdapters;
 use App\Radio\Enums\FrontendAdapters;
 use Doctrine\ORM\EntityManagerInterface;
-use Monolog\Logger;
 use RuntimeException;
 use Supervisor\Exception\SupervisorException;
 use Supervisor\SupervisorInterface;
@@ -36,7 +35,6 @@ final class Configuration
         private readonly EntityManagerInterface $em,
         private readonly Adapters $adapters,
         private readonly SupervisorInterface $supervisor,
-        private readonly Logger $logger,
         private readonly Environment $environment,
         private readonly StationPlaylistMediaRepository $spmRepo,
     ) {

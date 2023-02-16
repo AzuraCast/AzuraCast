@@ -6538,12 +6538,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/supervisorphp/supervisor.git",
-                "reference": "e8a5ac306748c5fc6f53ada6a68648eef5a1a286"
+                "reference": "2c84202360aef07ba2130948c73172b22a6f1389"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/supervisorphp/supervisor/zipball/e8a5ac306748c5fc6f53ada6a68648eef5a1a286",
-                "reference": "e8a5ac306748c5fc6f53ada6a68648eef5a1a286",
+                "url": "https://api.github.com/repos/supervisorphp/supervisor/zipball/2c84202360aef07ba2130948c73172b22a6f1389",
+                "reference": "2c84202360aef07ba2130948c73172b22a6f1389",
                 "shasum": ""
             },
             "require": {
@@ -6555,7 +6555,7 @@
                 "behat/behat": "^3.0",
                 "ext-pcntl": "*",
                 "ext-posix": "*",
-                "guzzlehttp/guzzle": "^7",
+                "guzzlehttp/guzzle": "^7.5",
                 "php-http/httplug": "^2.1",
                 "php-http/message": "^1.8",
                 "php-parallel-lint/php-console-highlighter": "^1",
@@ -6595,9 +6595,9 @@
             ],
             "support": {
                 "issues": "https://github.com/supervisorphp/supervisor/issues",
-                "source": "https://github.com/supervisorphp/supervisor/tree/5.1.0"
+                "source": "https://github.com/supervisorphp/supervisor/tree/main"
             },
-            "time": "2022-11-21T11:48:01+00:00"
+            "time": "2023-02-16T04:08:41+00:00"
         },
         {
             "name": "symfony/beanstalkd-messenger",

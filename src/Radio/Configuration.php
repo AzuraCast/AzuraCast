@@ -285,55 +285,7 @@ final class Configuration
      */
     private function reloadSupervisor(): array
     {
-        $reload_result = $this->supervisor->reloadConfig();
-
-        $affected_groups = [];
-
-        [$reload_added, $reload_changed, $reload_removed] = $reload_result[0];
-
-        if (!empty($reload_removed)) {
-            $this->logger->debug('Removing supervisor groups.', $reload_removed);
-
-            foreach ($reload_removed as $group) {
-                $affected_groups[] = $group;
-
-                try {
-                    $this->supervisor->stopProcessGroup($group);
-                    $this->supervisor->removeProcessGroup($group);
-                } catch (SupervisorException) {
-                }
-            }
-        }
-
-        if (!empty($reload_changed)) {
-            $this->logger->debug('Reloading modified supervisor groups.', $reload_changed);
-
-            foreach ($reload_changed as $group) {
-                $affected_groups[] = $group;
-
-                try {
-                    $this->supervisor->stopProcessGroup($group);
-                    $this->supervisor->removeProcessGroup($group);
-                    $this->supervisor->addProcessGroup($group);
-                } catch (SupervisorException) {
-                }
-            }
-        }
-
-        if (!empty($reload_added)) {
-            $this->logger->debug('Adding new supervisor groups.', $reload_added);
-
-            foreach ($reload_added as $group) {
-                $affected_groups[] = $group;
-
-                try {
-                    $this->supervisor->addProcessGroup($group);
-                } catch (SupervisorException) {
-                }
-            }
-        }
-
-        return $affected_groups;
+        return $this->supervisor->reloadAndApplyConfig()->getAffected();
     }
 
     /**

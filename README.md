@@ -90,8 +90,8 @@ location.
 
 We would like to thank the following organizations for their support of AzuraCast's ongoing development:
 
-- [DigitalOcean](https://m.do.co/c/21612b90440f) for generously providing the server resources we use for our
-  demonstration instance, our staging and testing environments, and more
+- [Vultr](https://www.vultr.com/marketplace/apps/azuracast?ref=8888059) for providing the server resources we use for
+  our demonstration instance, staging and testing environments, and more
 - [JetBrains](https://www.jetbrains.com/) for making our development faster, easier and more productive with tools like
   PhpStorm
 - [CrowdIn](https://crowdin.com/) for giving us a simple and powerful tool to help translate our application for users

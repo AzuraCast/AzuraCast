@@ -73,7 +73,6 @@
     "spatie/flysystem-dropbox": "^2",
     "spomky-labs/otphp": "^11",
     "supervisorphp/supervisor": "dev-main",
-    "symfony/beanstalkd-messenger": "^6",
     "symfony/cache": "^6",
     "symfony/console": "^6",
     "symfony/event-dispatcher": "^6",

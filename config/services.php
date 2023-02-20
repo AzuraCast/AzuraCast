@@ -143,41 +143,24 @@ return [
     App\Doctrine\ReloadableEntityManagerInterface::class => DI\Get(App\Doctrine\DecoratedEntityManager::class),
     Doctrine\ORM\EntityManagerInterface::class => DI\Get(App\Doctrine\DecoratedEntityManager::class),
 
-    // Redis cache
-    Redis::class => static function (Environment $environment) {
-        if (!$environment->enableRedis()) {
-            throw new App\Exception\BootstrapException('Redis is disabled on this installation.');
-        }
-
-        $settings = $environment->getRedisSettings();
-
-        $redis = new Redis();
-        if (isset($settings['socket'])) {
-            $redis->connect($settings['socket']);
-        } else {
-            $redis->connect($settings['host'], $settings['port'], 15);
-        }
-        $redis->select($settings['db']);
-
-        return $redis;
-    },
-
     Symfony\Contracts\Cache\CacheInterface::class => static function (
         Environment $environment,
         Psr\Log\LoggerInterface $logger,
-        ContainerInterface $di
+        App\Service\RedisFactory $redisFactory
     ) {
         if ($environment->isTesting()) {
             $cacheInterface = new Symfony\Component\Cache\Adapter\ArrayAdapter();
-        } elseif (!$environment->enableRedis()) {
+        } elseif ($redisFactory->isSupported()) {
+            $cacheInterface = new Symfony\Component\Cache\Adapter\RedisAdapter(
+                $redisFactory->createInstance()
+            );
+        } else {
             $tempDir = $environment->getTempDirectory() . DIRECTORY_SEPARATOR . 'cache';
             $cacheInterface = new Symfony\Component\Cache\Adapter\FilesystemAdapter(
                 '',
                 0,
                 $tempDir
             );
-        } else {
-            $cacheInterface = new Symfony\Component\Cache\Adapter\RedisAdapter($di->get(Redis::class));
         }
 
         $cacheInterface->setLogger($logger);
@@ -196,17 +179,12 @@ return [
 
     // Symfony Lock adapter
     Symfony\Component\Lock\PersistingStoreInterface::class => static function (
-        ContainerInterface $di,
-        Environment $environment
+        Environment $environment,
+        App\Service\RedisFactory $redisFactory
     ) {
-        if ($environment->enableRedis()) {
-            $redis = $di->get(Redis::class);
-            $store = new Symfony\Component\Lock\Store\RedisStore($redis);
-        } else {
-            $store = new Symfony\Component\Lock\Store\FlockStore($environment->getTempDirectory());
-        }
-
-        return $store;
+        return ($redisFactory->isSupported())
+            ? new Symfony\Component\Lock\Store\RedisStore($redisFactory->createInstance())
+            : new Symfony\Component\Lock\Store\FlockStore($environment->getTempDirectory());
     },
 
     // Console
@@ -330,15 +308,11 @@ return [
     Pheanstalk\Pheanstalk::class => static fn() => Pheanstalk\Pheanstalk::create('127.0.0.1', 11300),
 
     App\MessageQueue\QueueManagerInterface::class => static function (
-        Environment $environment,
-        ContainerInterface $di
+        App\Service\RedisFactory $redisFactory,
     ) {
-        if ($environment->isTesting()) {
-            return new App\MessageQueue\TestQueueManager();
-        }
-
-        $pheanstalk = $di->get(Pheanstalk\Pheanstalk::class);
-        return new App\MessageQueue\QueueManager($pheanstalk);
+        return ($redisFactory->isSupported())
+            ? new App\MessageQueue\QueueManager($redisFactory)
+            : new App\MessageQueue\TestQueueManager();
     },
 
     Symfony\Component\Messenger\MessageBus::class => static function (
@@ -347,14 +321,11 @@ return [
         Monolog\Logger $logger,
         ContainerInterface $di,
         App\Plugins $plugins,
+        App\Service\RedisFactory $redisFactory,
         Environment $environment
     ) {
         $loggingLevel = $environment->getLogLevel();
         $busLogger = new Psr\Log\NullLogger();
-
-        // Configure message sending middleware
-        $sendMessageMiddleware = new Symfony\Component\Messenger\Middleware\SendMessageMiddleware($queueManager);
-        $sendMessageMiddleware->setLogger($busLogger);
 
         // Configure message handling middleware
         $handlers = [];
@@ -378,17 +349,21 @@ return [
         );
         $handleMessageMiddleware->setLogger($busLogger);
 
-        // Add unique protection middleware
-        $uniqueMiddleware = new App\MessageQueue\HandleUniqueMiddleware($lockFactory);
-
         // On testing, messages are handled directly when called
-        if ($environment->isTesting()) {
+        if (!$redisFactory->isSupported()) {
             return new Symfony\Component\Messenger\MessageBus(
                 [
                     $handleMessageMiddleware,
                 ]
             );
         }
+
+        // Add unique protection middleware
+        $uniqueMiddleware = new App\MessageQueue\HandleUniqueMiddleware($lockFactory);
+
+        // Configure message sending middleware
+        $sendMessageMiddleware = new Symfony\Component\Messenger\Middleware\SendMessageMiddleware($queueManager);
+        $sendMessageMiddleware->setLogger($busLogger);
 
         // Compile finished message bus.
         return new Symfony\Component\Messenger\MessageBus(

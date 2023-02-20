@@ -7,18 +7,17 @@ namespace App\Controller\Api\Stations\Files;
 use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Entity;
 use App\Event\Radio\AnnotateNextSong;
+use App\Flysystem\ExtendedFilesystemInterface;
 use App\Flysystem\StationFilesystems;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Media\BatchUtilities;
 use App\Message;
-use App\MessageQueue\QueueManagerInterface;
 use App\Radio\Adapters;
 use App\Radio\Backend\Liquidsoap;
 use App\Radio\Enums\BackendAdapters;
 use App\Radio\Enums\LiquidsoapQueues;
 use App\Utilities\File;
-use App\Flysystem\ExtendedFilesystemInterface;
 use Exception;
 use InvalidArgumentException;
 use League\Flysystem\StorageAttributes;
@@ -34,7 +33,6 @@ final class BatchAction
         private readonly BatchUtilities $batchUtilities,
         private readonly ReloadableEntityManagerInterface $em,
         private readonly MessageBus $messageBus,
-        private readonly QueueManagerInterface $queueManager,
         private readonly Adapters $adapters,
         private readonly EventDispatcherInterface $eventDispatcher,
         private readonly Entity\Repository\StationPlaylistMediaRepository $playlistMediaRepo,
@@ -368,44 +366,23 @@ final class BatchAction
     ): Entity\Api\BatchResult {
         $result = $this->parseRequest($request, $fs, true);
 
-        // Get existing queue items
-        $queuedMediaUpdates = [];
-        $queuedNewFiles = [];
-
-        foreach ($this->queueManager->getMessagesInTransport(QueueManagerInterface::QUEUE_MEDIA) as $message) {
-            if ($message instanceof Message\ReprocessMediaMessage) {
-                $queuedMediaUpdates[$message->media_id] = true;
-            } elseif (
-                $message instanceof Message\AddNewMediaMessage
-                && $message->storage_location_id === $storageLocation->getId()
-            ) {
-                $queuedNewFiles[$message->path] = true;
-            }
-        }
-
         foreach ($this->batchUtilities->iterateMedia($storageLocation, $result->files) as $media) {
             $mediaId = (int)$media->getId();
 
-            if (!isset($queuedMediaUpdates[$mediaId])) {
-                $message = new Message\ReprocessMediaMessage();
-                $message->storage_location_id = $storageLocation->getIdRequired();
-                $message->media_id = $mediaId;
-                $message->force = true;
+            $message = new Message\ReprocessMediaMessage();
+            $message->storage_location_id = $storageLocation->getIdRequired();
+            $message->media_id = $mediaId;
+            $message->force = true;
 
-                $this->messageBus->dispatch($message);
-            }
+            $this->messageBus->dispatch($message);
         }
 
         foreach ($this->batchUtilities->iterateUnprocessableMedia($storageLocation, $result->files) as $unprocessable) {
-            $path = $unprocessable->getPath();
+            $message = new Message\AddNewMediaMessage();
+            $message->storage_location_id = $storageLocation->getIdRequired();
+            $message->path = $unprocessable->getPath();
 
-            if (!isset($queuedNewFiles[$path])) {
-                $message = new Message\AddNewMediaMessage();
-                $message->storage_location_id = $storageLocation->getIdRequired();
-                $message->path = $unprocessable->getPath();
-
-                $this->messageBus->dispatch($message);
-            }
+            $this->messageBus->dispatch($message);
         }
 
         return $result;

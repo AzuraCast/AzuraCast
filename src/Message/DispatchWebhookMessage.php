@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Message;
 
 use App\Entity\Api\NowPlaying\NowPlaying;
-use App\MessageQueue\QueueManagerInterface;
+use App\MessageQueue\QueueNames;
 
 final class DispatchWebhookMessage extends AbstractUniqueMessage
 {
@@ -21,8 +21,8 @@ final class DispatchWebhookMessage extends AbstractUniqueMessage
         return 'DispatchWebhookMessage_' . $this->station_id;
     }
 
-    public function getQueue(): string
+    public function getQueue(): QueueNames
     {
-        return QueueManagerInterface::QUEUE_HIGH_PRIORITY;
+        return QueueNames::HighPriority;
     }
 }

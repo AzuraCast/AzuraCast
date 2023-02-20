@@ -4,66 +4,69 @@ declare(strict_types=1);
 
 namespace App\MessageQueue;
 
-use Pheanstalk\Exception\JobNotFoundException;
-use Pheanstalk\Pheanstalk;
-use Symfony\Component\Messenger\Bridge\Beanstalkd\Transport\BeanstalkdTransport;
-use Symfony\Component\Messenger\Bridge\Beanstalkd\Transport\Connection as MessengerConnection;
+use App\Service\RedisFactory;
+use Symfony\Component\Messenger\Bridge\Redis\Transport\Connection;
+use Symfony\Component\Messenger\Bridge\Redis\Transport\RedisTransport;
 use Symfony\Component\Messenger\Exception\TransportException;
-use Symfony\Component\Messenger\Transport\Serialization\PhpSerializer;
 
 final class QueueManager extends AbstractQueueManager
 {
+    /** @var Connection[] */
+    private array $connections = [];
+
     public function __construct(
-        private readonly Pheanstalk $pheanstalk
+        private readonly RedisFactory $redisFactory
     ) {
     }
 
-    public function clearQueue(string $queueName): void
+    public function clearQueue(QueueNames $queue): void
     {
-        $pheanstalk = $this->pheanstalk->useTube($queueName);
+        $connection = $this->getConnection($queue);
 
-        while ($job = $pheanstalk->peekReady()) {
-            try {
-                $pheanstalk->delete($job);
-            } catch (JobNotFoundException) {
-            }
-        }
-        while ($job = $pheanstalk->peekBuried()) {
-            try {
-                $pheanstalk->delete($job);
-            } catch (JobNotFoundException) {
-            }
-        }
-        while ($job = $pheanstalk->peekDelayed()) {
-            try {
-                $pheanstalk->delete($job);
-            } catch (JobNotFoundException) {
-            }
-        }
+        $connection->cleanup();
+        $connection->setup();
     }
 
-    public function getTransport(string $queueName): BeanstalkdTransport
+    public function getTransport(QueueNames $queue): RedisTransport
     {
-        return new BeanstalkdTransport(
-            $this->getConnection($queueName),
-            new PhpSerializer()
-        );
+        return new RedisTransport($this->getConnection($queue));
     }
 
-    private function getConnection(string $queueName): MessengerConnection
+    /**
+     * @return RedisTransport[]
+     */
+    public function getTransports(): array
     {
-        return new MessengerConnection(
-            [
-                'tube_name' => $queueName,
-            ],
-            $this->pheanstalk
-        );
+        $transports = [];
+        foreach (QueueNames::cases() as $queue) {
+            $transports[$queue->value] = $this->getTransport($queue);
+        }
+        return $transports;
     }
 
-    public function getQueueCount(string $queueName): int
+    private function getConnection(QueueNames $queue): Connection
+    {
+        $queueName = $queue->value;
+
+        if (!isset($this->connections[$queueName])) {
+            $this->connections[$queueName] = new Connection(
+                [
+                    'stream' => 'messages.' . $queueName,
+                    'delete_after_ack' => true,
+                    'redeliver_timeout' => 43200,
+                    'claim_interval' => 86400,
+                ],
+                $this->redisFactory->createInstance()
+            );
+        }
+
+        return $this->connections[$queueName];
+    }
+
+    public function getQueueCount(QueueNames $queue): int
     {
         try {
-            return $this->getConnection($queueName)->getMessageCount();
+            return $this->getConnection($queue)->getMessageCount();
         } catch (TransportException) {
             return 0;
         }

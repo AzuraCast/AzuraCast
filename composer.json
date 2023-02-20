@@ -141,7 +141,8 @@
       "dealerdirect/phpcodesniffer-composer-installer": true,
       "ergebnis/composer-normalize": true,
       "pyrech/composer-changelogs": true,
-      "wikimedia/composer-merge-plugin": true
+      "wikimedia/composer-merge-plugin": true,
+      "php-http/discovery": true
     }
   },
   "extra": {

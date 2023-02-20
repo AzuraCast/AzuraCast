@@ -305,8 +305,6 @@ return [
         return $builder->getValidator();
     },
 
-    Pheanstalk\Pheanstalk::class => static fn() => Pheanstalk\Pheanstalk::create('127.0.0.1', 11300),
-
     App\MessageQueue\QueueManagerInterface::class => static function (
         App\Service\RedisFactory $redisFactory,
     ) {

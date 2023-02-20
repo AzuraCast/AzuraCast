@@ -9,7 +9,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Messenger\Event\WorkerMessageReceivedEvent;
 use Symfony\Contracts\Cache\CacheInterface;
 
-final class ResetArrayCacheMiddleware implements EventSubscriberInterface
+final class ResetArrayCacheSubscriber implements EventSubscriberInterface
 {
     public function __construct(
         private readonly CacheInterface $cache

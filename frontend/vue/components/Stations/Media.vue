@@ -185,7 +185,7 @@
                                 class="btn-search"
                                 href="#"
                                 :title="$gettext('View tracks in playlist')"
-                                @click.prevent="filter('playlist:'+playlist.name)"
+                                @click.prevent="filter('playlist:'+playlist.short_name)"
                             >{{ playlist.name }}</a>
                             <span v-if="index+1 < row.item.playlists.length">, </span>
                         </template>

@@ -216,9 +216,12 @@ final class ListAction
                     if (isset($playlists[$playlistId])) {
                         $playlists[$playlistId]['count']++;
                     } else {
+                        $playlistName = $spmRow['playlist']['name'];
+
                         $playlists[$playlistId] = [
                             'id' => $playlistId,
-                            'name' => $spmRow['playlist']['name'],
+                            'name' => $playlistName,
+                            'short_name' => Entity\StationPlaylist::generateShortName($playlistName),
                             'count' => 1,
                         ];
                     }
@@ -241,6 +244,9 @@ final class ListAction
                 $foldersInDir[$folderRow['path']]['playlists'][] = [
                     'id' => $folderRow['playlist']['id'],
                     'name' => $folderRow['playlist']['name'],
+                    'short_name' => Entity\StationPlaylist::generateShortName(
+                        $folderRow['playlist']['name']
+                    ),
                 ];
             }
 
@@ -366,11 +372,32 @@ final class ListAction
             preg_match('/playlist:(\w*)/', $query, $matches, PREG_UNMATCHED_AS_NULL);
 
             if ($matches[1]) {
+                $playlistId = $matches[1];
+
+                if (!is_numeric($playlistId)) {
+                    $playlistNameLookupRaw = $this->em->createQuery(
+                        <<<'DQL'
+                        SELECT sp.id, sp.name
+                        FROM App\Entity\StationPlaylist sp
+                        WHERE sp.station = :station
+                        DQL
+                    )->setParameter('station', $station)
+                        ->getArrayResult();
+
+                    foreach ($playlistNameLookupRaw as $playlistRow) {
+                        $shortName = Entity\StationPlaylist::generateShortName($playlistRow['name']);
+                        if ($shortName === $playlistId) {
+                            $playlistId = $playlistRow['id'];
+                            break;
+                        }
+                    }
+                }
+
                 $playlist = $this->em->getRepository(Entity\StationPlaylist::class)
                     ->findOneBy(
                         [
                             'station' => $station,
-                            'name' => $matches[1],
+                            'id' => $playlistId,
                         ]
                     );
             }

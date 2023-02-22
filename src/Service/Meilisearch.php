@@ -25,7 +25,7 @@ final class Meilisearch
 
     public function isSupported(): bool
     {
-        return $this->environment->isDocker() && !$this->environment->isTesting();
+        return $this->environment->enableMeilisearch();
     }
 
     public function getClient(): Client
@@ -40,7 +40,7 @@ final class Meilisearch
             $psrFactory = new HttpFactory();
             $client = new Client(
                 'http://localhost:6070',
-                $this->environment->getMeiliMasterKey(),
+                $this->environment->getMeilisearchMasterKey(),
                 $this->httpClient,
                 requestFactory: $psrFactory,
                 streamFactory: $psrFactory

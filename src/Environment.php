@@ -54,7 +54,8 @@ final class Environment
 
     public const ENABLE_WEB_UPDATER = 'ENABLE_WEB_UPDATER';
 
-    public const MEILI_MASTER_KEY = 'MEILI_MASTER_KEY';
+    public const ENABLE_MEILISEARCH = 'ENABLE_MEILISEARCH';
+    public const MEILISEARCH_MASTER_KEY = 'MEILISEARCH_MASTER_KEY';
 
     // Database and Cache Configuration Variables
     public const DB_HOST = 'MYSQL_HOST';
@@ -93,7 +94,8 @@ final class Environment
 
         self::ENABLE_WEB_UPDATER => false,
 
-        self::MEILI_MASTER_KEY => 'azur4c457',
+        self::ENABLE_MEILISEARCH => false,
+        self::MEILISEARCH_MASTER_KEY => '',
     ];
 
     public function __construct(array $elements = [])
@@ -374,9 +376,15 @@ final class Environment
         return $this->isDocker() && self::envToBool($this->data[self::ENABLE_WEB_UPDATER] ?? false);
     }
 
-    public function getMeiliMasterKey(): string
+    public function enableMeilisearch(): bool
     {
-        return $this->data[self::MEILI_MASTER_KEY] ?? $this->defaults[self::MEILI_MASTER_KEY];
+        return $this->isDocker() && !$this->isTesting() &&
+            self::envToBool($this->data[self::ENABLE_MEILISEARCH] ?? false);
+    }
+
+    public function getMeilisearchMasterKey(): string
+    {
+        return $this->data[self::MEILISEARCH_MASTER_KEY] ?? $this->defaults[self::MEILISEARCH_MASTER_KEY];
     }
 
     public static function getDefaultsForEnvironment(Environment $existingEnv): self

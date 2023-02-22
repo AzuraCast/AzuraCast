@@ -8,6 +8,7 @@ use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Entity;
 use App\Message\Meilisearch\AddMediaMessage;
 use App\MessageQueue\QueueManagerInterface;
+use App\MessageQueue\QueueNames;
 use App\Service\Meilisearch;
 use Doctrine\ORM\AbstractQuery;
 use Psr\Log\LoggerInterface;
@@ -42,6 +43,8 @@ final class UpdateMeilisearchIndex extends AbstractTask
             return;
         }
 
+        $this->queueManager->clearQueue(QueueNames::SearchIndex);
+
         $storageLocations = $this->iterateStorageLocations(Entity\Enums\StorageLocationTypes::StationMedia);
 
         foreach ($storageLocations as $storageLocation) {
@@ -72,21 +75,6 @@ final class UpdateMeilisearchIndex extends AbstractTask
         $existingIds = $index->getIdsInIndex();
         $stats['existing'] = count($existingIds);
 
-        $queuedMedia = [];
-
-        foreach (
-            $this->queueManager->getMessagesInTransport(
-                QueueManagerInterface::QUEUE_NORMAL_PRIORITY
-            ) as $message
-        ) {
-            if ($message instanceof AddMediaMessage) {
-                foreach ($message->media_ids as $mediaId) {
-                    $queuedMedia[$mediaId] = $mediaId;
-                    $stats['queued']++;
-                }
-            }
-        }
-
         $mediaRaw = $this->em->createQuery(
             <<<'DQL'
             SELECT sm.id, sm.mtime
@@ -101,11 +89,6 @@ final class UpdateMeilisearchIndex extends AbstractTask
 
         foreach ($mediaRaw as $row) {
             $mediaId = $row['id'];
-
-            if (isset($queuedMedia[$mediaId])) {
-                unset($existingIds[$mediaId]);
-                continue;
-            }
 
             if (isset($existingIds[$mediaId])) {
                 if ($existingIds[$mediaId] < $row['mtime']) {

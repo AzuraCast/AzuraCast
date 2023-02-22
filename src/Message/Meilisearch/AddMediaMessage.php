@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Message\Meilisearch;
 
 use App\Message\AbstractMessage;
+use App\MessageQueue\QueueNames;
 
 final class AddMediaMessage extends AbstractMessage
 {
@@ -16,4 +17,9 @@ final class AddMediaMessage extends AbstractMessage
 
     /** @var bool Whether to include playlist data. */
     public bool $include_playlists = false;
+
+    public function getQueue(): QueueNames
+    {
+        return QueueNames::SearchIndex;
+    }
 }

@@ -267,6 +267,8 @@ final class PlaylistsController extends AbstractScheduledEntityController
         )->setParameter('playlist', $record)
             ->getArrayResult();
 
+        $return['short_name'] = Entity\StationPlaylist::generateShortName($return['name']);
+
         $return['num_songs'] = (int)$song_totals[0]['num_songs'];
         $return['total_length'] = (int)$song_totals[0]['total_length'];
 

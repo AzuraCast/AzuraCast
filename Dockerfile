@@ -136,7 +136,8 @@ ENV TZ="UTC" \
     PROFILING_EXTENSION_HTTP_KEY=dev \
     PROFILING_EXTENSION_HTTP_IP_WHITELIST=* \
     ENABLE_WEB_UPDATER="true" \
-    MEILI_MASTER_KEY="zejNISMlGe_6IUGBsdjfG6c6Qi8g2RngTxOmWsTbwvw"
+    ENABLE_MEILISEARCH="true" \
+    MEILISEARCH_MASTER_KEY="zejNISMlGe_6IUGBsdjfG6c6Qi8g2RngTxOmWsTbwvw"
 
 # Entrypoint and default command
 ENTRYPOINT ["tini", "--", "/usr/local/bin/my_init"]

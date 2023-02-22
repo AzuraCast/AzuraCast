@@ -32,7 +32,7 @@
                 </div>
 
                 <data-table
-                    id="station_on_demand_table"
+                    id="public_on_demand"
                     ref="datatable"
                     paginated
                     select-fields
@@ -58,9 +58,9 @@
                             </a>
                         </template>
                     </template>
-                    <template #cell(media_art)="row">
+                    <template #cell(art)="row">
                         <a
-                            :href="row.item.media_art"
+                            :href="row.item.media.art"
                             class="album-art"
                             target="_blank"
                             data-fancybox="gallery"
@@ -68,7 +68,7 @@
                             <img
                                 class="media_manager_album_art"
                                 :alt="$gettext('Album Art')"
-                                :src="row.item.media_art"
+                                :src="row.item.media.art"
                             >
                         </a>
                     </template>
@@ -93,6 +93,7 @@ import {forEach} from 'lodash';
 import Icon from '~/components/Common/Icon';
 import PlayButton from "~/components/Common/PlayButton";
 import {useTranslate} from "~/vendor/gettext";
+import formatFileSize from "../../functions/formatFileSize";
 
 const props = defineProps({
     listUrl: {
@@ -119,11 +120,29 @@ const {$gettext} = useTranslate();
 
 let fields = [
     {key: 'download_url', label: ' '},
-    {key: 'media_art', label: $gettext('Art')},
-    {key: 'media_title', label: $gettext('Title'), sortable: true, selectable: true},
-    {key: 'media_artist', label: $gettext('Artist'), sortable: true, selectable: true},
-    {key: 'media_album', label: $gettext('Album'), sortable: true, selectable: true, visible: false},
-    {key: 'playlist', label: $gettext('Playlist'), sortable: true, selectable: true, visible: false}
+    {key: 'art', label: $gettext('Art')},
+    {
+        key: 'title',
+        label: $gettext('Title'),
+        sortable: true,
+        selectable: true,
+        formatter: (value, key, item) => item.media.title,
+    },
+    {
+        key: 'artist',
+        label: $gettext('Artist'),
+        sortable: true,
+        selectable: true,
+        formatter: (value, key, item) => item.media.artist,
+    },
+    {
+        key: 'album',
+        label: $gettext('Album'),
+        sortable: true,
+        selectable: true,
+        visible: false,
+        formatter: (value, key, item) => item.media.album
+    }
 ];
 
 forEach(props.customFields.slice(), (field) => {
@@ -132,7 +151,8 @@ forEach(props.customFields.slice(), (field) => {
         label: field.label,
         sortable: true,
         selectable: true,
-        visible: false
+        visible: false,
+        formatter: (value, key, item) => item.media.custom_fields[field.key]
     });
 });
 </script>

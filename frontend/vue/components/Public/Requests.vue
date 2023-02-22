@@ -1,7 +1,7 @@
 <template>
     <div style="overflow-x: hidden">
         <data-table
-            id="song_requests"
+            id="public_requests"
             ref="datatable"
             paginated
             select-fields
@@ -74,46 +74,51 @@ const fields = computed(() => {
             key: 'name',
             isRowHeader: true,
             label: $gettext('Name'),
-            sortable: true,
+            sortable: false,
             selectable: true
         },
         {
-            key: 'song.title',
+            key: 'title',
             label: $gettext('Title'),
             sortable: true,
             selectable: true,
             visible: false,
+            formatter: (value, key, item) => item.song.title
         },
         {
-            key: 'song.artist',
+            key: 'artist',
             label: $gettext('Artist'),
             sortable: true,
             selectable: true,
             visible: false,
+            formatter: (value, key, item) => item.song.artist
         },
         {
-            key: 'song.album',
+            key: 'album',
             label: $gettext('Album'),
             sortable: true,
             selectable: true,
-            visible: false
+            visible: false,
+            formatter: (value, key, item) => item.song.album
         },
         {
-            key: 'song.genre',
+            key: 'genre',
             label: $gettext('Genre'),
             sortable: true,
             selectable: true,
-            visible: false
+            visible: false,
+            formatter: (value, key, item) => item.song.genre
         }
     ];
 
     forEach({...props.customFields}, (field) => {
         fields.push({
-            key: 'song.custom_fields.' + field.short_name,
+            key: 'custom_field_' + field.id,
             label: field.name,
             sortable: false,
             selectable: true,
-            visible: false
+            visible: false,
+            formatter: (value, key, item) => item.song.custom_fields[field.short_name]
         });
     });
 

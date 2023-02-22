@@ -7,3 +7,4 @@ services:
     restart: 'no'
     entrypoint: docker_installer
     command: install
+    privileged: true

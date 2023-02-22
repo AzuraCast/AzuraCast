@@ -61,6 +61,46 @@ http {
       https on;
     }
 
+    # Enable Gzip compression
+    gzip on;
+
+    gzip_vary on;
+    gzip_buffers 128 4k;
+
+    # Compression level (1-9)
+    gzip_comp_level 5;
+
+    # Don't compress anything under 256 bytes
+    gzip_min_length 256;
+
+    # Compress output of these MIME-types
+    gzip_types
+        application/atom+xml
+        application/javascript
+        application/json
+        application/rss+xml
+        application/vnd.ms-fontobject
+        application/x-font-ttf
+        application/x-font-opentype
+        application/x-font-truetype
+        application/x-javascript
+        application/x-web-app-manifest+json
+        application/xhtml+xml
+        application/xml
+        font/eot
+        font/opentype
+        font/otf
+        image/svg+xml
+        image/x-icon
+        image/vnd.microsoft.icon
+        text/css
+        text/plain
+        text/javascript
+        text/x-component;
+
+    # Disable gzip for bad browsers
+    gzip_disable "MSIE [1-6]\.(?!.*SV1)";
+
     include /etc/nginx/conf.d/*.conf;
     include /etc/nginx/sites-enabled/*;
 }

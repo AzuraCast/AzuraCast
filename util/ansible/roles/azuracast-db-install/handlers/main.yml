@@ -1,4 +1,0 @@
----
-- name: send mysql notification
-  debug:
-    msg: "The MySQL 'azuracast'@'localhost' account has been created. Its password is: {{ mysql_user_password }}"

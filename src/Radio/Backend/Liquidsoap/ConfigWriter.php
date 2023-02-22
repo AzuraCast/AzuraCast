@@ -1004,7 +1004,14 @@ final class ConfigWriter implements EventSubscriberInterface
 
         $event->appendBlock(
             <<<LIQ
-            radio = fallback(id="safe_fallback", track_sensitive = false, [radio, single(id="error_jingle", "{$errorFile}")])
+            error_file = single(id="error_jingle", "{$errorFile}") 
+            
+            def tag_error_file(m) =
+                [("is_error_file", "true")]
+            end
+            error_file = metadata.map(tag_error_file, error_file)
+            
+            radio = fallback(id="safe_fallback", track_sensitive = false, [radio, error_file])
             LIQ
         );
 
@@ -1016,25 +1023,27 @@ final class ConfigWriter implements EventSubscriberInterface
             
             def metadata_updated(m) =
                 def f() =
-                    if (m["title"] != !last_title or m["artist"] != !last_artist) then
-                        last_title := m["title"]
-                        last_artist := m["artist"]
-                        
-                        j = json()
-                        
-                        if (m["song_id"] != "") then
-                            j.add("song_id", m["song_id"])
-                            j.add("media_id", m["media_id"])
-                            j.add("playlist_id", m["playlist_id"])
-                        else
-                            j.add("artist", m["artist"])
-                            j.add("title", m["title"])
+                    if (m["is_error_file"] != "true") then
+                        if (m["title"] != !last_title or m["artist"] != !last_artist) then
+                            last_title := m["title"]
+                            last_artist := m["artist"]
+                            
+                            j = json()
+                            
+                            if (m["song_id"] != "") then
+                                j.add("song_id", m["song_id"])
+                                j.add("media_id", m["media_id"])
+                                j.add("playlist_id", m["playlist_id"])
+                            else
+                                j.add("artist", m["artist"])
+                                j.add("title", m["title"])
+                            end
+                            
+                            _ = azuracast_api_call(
+                                "feedback",
+                                json.stringify(j)
+                            )
                         end
-                        
-                        _ = azuracast_api_call(
-                            "feedback",
-                            json.stringify(j)
-                        )
                     end
                 end
                 

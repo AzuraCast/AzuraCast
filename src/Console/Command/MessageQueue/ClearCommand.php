@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Console\Command\MessageQueue;
 
 use App\Console\Command\CommandAbstract;
-use App\MessageQueue\AbstractQueueManager;
 use App\MessageQueue\QueueManagerInterface;
+use App\MessageQueue\QueueNames;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -35,23 +35,20 @@ final class ClearCommand extends CommandAbstract
     {
         $io = new SymfonyStyle($input, $output);
 
-        $queue = $input->getArgument('queue');
-        $allQueues = AbstractQueueManager::getAllQueues();
+        $queueName = $input->getArgument('queue');
 
-        if (!empty($queue)) {
-            if (in_array($queue, $allQueues, true)) {
+        if (!empty($queueName)) {
+            $queue = QueueNames::tryFrom($queueName);
+
+            if (null !== $queue) {
                 $this->queueManager->clearQueue($queue);
-
-                $io->success(sprintf('Message queue "%s" cleared.', $queue));
+                $io->success(sprintf('Message queue "%s" cleared.', $queue->value));
             } else {
-                $io->error(sprintf('Message queue "%s" does not exist.', $queue));
+                $io->error(sprintf('Message queue "%s" does not exist.', $queueName));
                 return 1;
             }
         } else {
-            foreach ($allQueues as $queueName) {
-                $this->queueManager->clearQueue($queueName);
-            }
-
+            $this->queueManager->clearAllQueues();
             $io->success('All message queues cleared.');
         }
 

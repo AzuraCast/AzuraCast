@@ -31,6 +31,7 @@ final class WebUpdater
         $client->post(
             'http://updater:8080/v1/update',
             [
+                'timeout' => 0,
                 'headers' => [
                     'Authorization' => 'Bearer ' . self::WATCHTOWER_TOKEN,
                 ],

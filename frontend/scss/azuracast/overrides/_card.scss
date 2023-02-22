@@ -6,3 +6,9 @@
   padding: $card-padding-y $card-padding-x;
   margin-bottom: $card-inner-spacer-y;
 }
+
+.row-of-cards {
+  & .card {
+    margin-bottom: 1.5rem !important;
+  }
+}

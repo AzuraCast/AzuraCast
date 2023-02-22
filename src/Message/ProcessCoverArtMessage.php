@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Message;
 
-use App\MessageQueue\QueueManagerInterface;
+use App\MessageQueue\QueueNames;
 
 final class ProcessCoverArtMessage extends AbstractUniqueMessage
 {
@@ -17,8 +17,8 @@ final class ProcessCoverArtMessage extends AbstractUniqueMessage
     /** @var string The hash of the folder (used for storing and indexing the cover art). */
     public string $folder_hash;
 
-    public function getQueue(): string
+    public function getQueue(): QueueNames
     {
-        return QueueManagerInterface::QUEUE_MEDIA;
+        return QueueNames::Media;
     }
 }

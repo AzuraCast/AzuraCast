@@ -28,7 +28,15 @@ final class HistoryAction
             throw new StationNotFoundException();
         }
 
-        return $request->getView()->renderVuePage(
+        $view = $request->getView();
+
+        // Add station public code.
+        $view->fetch(
+            'frontend/public/partials/station-custom',
+            ['station' => $station]
+        );
+
+        return $view->renderVuePage(
             response: $response->withHeader('X-Frame-Options', '*'),
             component: 'Vue_PublicHistory',
             id: 'song-history',

@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace App\Message;
 
-use App\MessageQueue\QueueManagerInterface;
+use App\MessageQueue\QueueNames;
 
 abstract class AbstractMessage
 {
-    public function getQueue(): string
+    public function getQueue(): QueueNames
     {
-        return QueueManagerInterface::QUEUE_NORMAL_PRIORITY;
+        return QueueNames::NormalPriority;
     }
 }

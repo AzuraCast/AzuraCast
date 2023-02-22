@@ -13,7 +13,6 @@ use App\Exception;
 use App\Radio\Enums\BackendAdapters;
 use App\Radio\Enums\FrontendAdapters;
 use Doctrine\ORM\EntityManagerInterface;
-use Monolog\Logger;
 use RuntimeException;
 use Supervisor\Exception\SupervisorException;
 use Supervisor\SupervisorInterface;
@@ -36,7 +35,6 @@ final class Configuration
         private readonly EntityManagerInterface $em,
         private readonly Adapters $adapters,
         private readonly SupervisorInterface $supervisor,
-        private readonly Logger $logger,
         private readonly Environment $environment,
         private readonly StationPlaylistMediaRepository $spmRepo,
     ) {
@@ -209,6 +207,8 @@ final class Configuration
         $frontend?->write($station);
         $backend?->write($station);
 
+        $this->markAsStarted($station);
+
         // Reload Supervisord and process groups
         if ($reloadSupervisor) {
             $affected_groups = $this->reloadSupervisor();
@@ -227,8 +227,6 @@ final class Configuration
                 }
             }
         }
-
-        $this->markAsStarted($station);
     }
 
     private function getSupervisorConfigFile(Station $station): string
@@ -241,22 +239,24 @@ final class Configuration
         Station $station,
         bool $reloadSupervisor = true
     ): void {
-        $supervisorConfigFile = $this->getSupervisorConfigFile($station);
-        @unlink($supervisorConfigFile);
-        if ($reloadSupervisor) {
-            $this->stopForStation($station);
-        }
-
         $station->setHasStarted(false);
         $station->setNeedsRestart(false);
         $station->clearCache();
 
         $this->em->persist($station);
         $this->em->flush();
+
+        $supervisorConfigFile = $this->getSupervisorConfigFile($station);
+        @unlink($supervisorConfigFile);
+        if ($reloadSupervisor) {
+            $this->stopForStation($station);
+        }
     }
 
     private function stopForStation(Station $station): void
     {
+        $this->markAsStarted($station);
+
         $station_group = 'station_' . $station->getId();
         $affected_groups = $this->reloadSupervisor();
 
@@ -266,8 +266,6 @@ final class Configuration
             } catch (SupervisorException) {
             }
         }
-
-        $this->markAsStarted($station);
     }
 
     private function markAsStarted(Station $station): void
@@ -285,55 +283,7 @@ final class Configuration
      */
     private function reloadSupervisor(): array
     {
-        $reload_result = $this->supervisor->reloadConfig();
-
-        $affected_groups = [];
-
-        [$reload_added, $reload_changed, $reload_removed] = $reload_result[0];
-
-        if (!empty($reload_removed)) {
-            $this->logger->debug('Removing supervisor groups.', $reload_removed);
-
-            foreach ($reload_removed as $group) {
-                $affected_groups[] = $group;
-
-                try {
-                    $this->supervisor->stopProcessGroup($group);
-                    $this->supervisor->removeProcessGroup($group);
-                } catch (SupervisorException) {
-                }
-            }
-        }
-
-        if (!empty($reload_changed)) {
-            $this->logger->debug('Reloading modified supervisor groups.', $reload_changed);
-
-            foreach ($reload_changed as $group) {
-                $affected_groups[] = $group;
-
-                try {
-                    $this->supervisor->stopProcessGroup($group);
-                    $this->supervisor->removeProcessGroup($group);
-                    $this->supervisor->addProcessGroup($group);
-                } catch (SupervisorException) {
-                }
-            }
-        }
-
-        if (!empty($reload_added)) {
-            $this->logger->debug('Adding new supervisor groups.', $reload_added);
-
-            foreach ($reload_added as $group) {
-                $affected_groups[] = $group;
-
-                try {
-                    $this->supervisor->addProcessGroup($group);
-                } catch (SupervisorException) {
-                }
-            }
-        }
-
-        return $affected_groups;
+        return $this->supervisor->reloadAndApplyConfig()->getAffected();
     }
 
     /**

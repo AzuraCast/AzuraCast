@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Message;
 
-use App\MessageQueue\QueueManagerInterface;
+use App\MessageQueue\QueueNames;
 
 final class ReprocessMediaMessage extends AbstractUniqueMessage
 {
@@ -22,8 +22,8 @@ final class ReprocessMediaMessage extends AbstractUniqueMessage
         return 'ReprocessMediaMessage_' . $this->media_id;
     }
 
-    public function getQueue(): string
+    public function getQueue(): QueueNames
     {
-        return QueueManagerInterface::QUEUE_MEDIA;
+        return QueueNames::Media;
     }
 }

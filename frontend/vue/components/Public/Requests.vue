@@ -1,7 +1,7 @@
 <template>
     <div style="overflow-x: hidden">
         <data-table
-            id="public_requests"
+            id="song_requests"
             ref="datatable"
             paginated
             select-fields
@@ -74,51 +74,46 @@ const fields = computed(() => {
             key: 'name',
             isRowHeader: true,
             label: $gettext('Name'),
-            sortable: false,
+            sortable: true,
             selectable: true
         },
         {
-            key: 'title',
+            key: 'song.title',
             label: $gettext('Title'),
             sortable: true,
             selectable: true,
             visible: false,
-            formatter: (value, key, item) => item.song.title
         },
         {
-            key: 'artist',
+            key: 'song.artist',
             label: $gettext('Artist'),
             sortable: true,
             selectable: true,
             visible: false,
-            formatter: (value, key, item) => item.song.artist
         },
         {
-            key: 'album',
+            key: 'song.album',
             label: $gettext('Album'),
             sortable: true,
             selectable: true,
-            visible: false,
-            formatter: (value, key, item) => item.song.album
+            visible: false
         },
         {
-            key: 'genre',
+            key: 'song.genre',
             label: $gettext('Genre'),
             sortable: true,
             selectable: true,
-            visible: false,
-            formatter: (value, key, item) => item.song.genre
+            visible: false
         }
     ];
 
     forEach({...props.customFields}, (field) => {
         fields.push({
-            key: 'custom_field_' + field.id,
+            key: 'song.custom_fields.' + field.short_name,
             label: field.name,
             sortable: false,
             selectable: true,
-            visible: false,
-            formatter: (value, key, item) => item.song.custom_fields[field.short_name]
+            visible: false
         });
     });
 

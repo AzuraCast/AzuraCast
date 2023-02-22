@@ -9,17 +9,17 @@ use Symfony\Component\Messenger\Transport\TransportInterface;
 
 final class TestQueueManager extends AbstractQueueManager
 {
-    public function clearQueue(string $queueName): void
+    public function clearQueue(QueueNames $queue): void
     {
         // Noop
     }
 
-    public function getTransport(string $queueName): TransportInterface
+    public function getTransport(QueueNames $queue): TransportInterface
     {
         return new InMemoryTransport();
     }
 
-    public function getQueueCount(string $queueName): int
+    public function getQueueCount(QueueNames $queue): int
     {
         return 0;
     }

@@ -13,7 +13,6 @@ use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Media\BatchUtilities;
 use App\Message;
-use App\MessageQueue\QueueManagerInterface;
 use App\Radio\Adapters;
 use App\Radio\Backend\Liquidsoap;
 use App\Radio\Enums\BackendAdapters;
@@ -34,7 +33,6 @@ final class BatchAction
         private readonly BatchUtilities $batchUtilities,
         private readonly ReloadableEntityManagerInterface $em,
         private readonly MessageBus $messageBus,
-        private readonly QueueManagerInterface $queueManager,
         private readonly Adapters $adapters,
         private readonly EventDispatcherInterface $eventDispatcher,
         private readonly Entity\Repository\StationPlaylistMediaRepository $playlistMediaRepo,
@@ -154,11 +152,7 @@ final class BatchAction
         /*
          * NOTE: This iteration clears the entity manager.
          */
-        $mediaToReindex = [];
-
         foreach ($this->batchUtilities->iterateMedia($storageLocation, $result->files) as $media) {
-            $mediaToReindex[] = $media->getIdRequired();
-
             try {
                 $mediaPlaylists = $this->playlistMediaRepo->clearPlaylistsFromMedia($media, $station);
                 foreach ($mediaPlaylists as $playlistId => $playlistRecord) {
@@ -197,11 +191,6 @@ final class BatchAction
 
         $this->em->flush();
 
-        $this->batchUtilities->queuePlaylistsForUpdate(
-            $station,
-            $mediaToReindex
-        );
-
         $this->writePlaylistChanges($station, $affectedPlaylists);
 
         return $result;
@@ -223,17 +212,11 @@ final class BatchAction
             $this->batchUtilities->iterateUnprocessableMedia($storageLocation, $result->files),
         ];
 
-        $mediaToReindex = [];
-
         foreach ($toMove as $iterator) {
             foreach ($iterator as $record) {
                 /** @var Entity\Interfaces\PathAwareInterface $record */
                 $oldPath = $record->getPath();
                 $newPath = File::renameDirectoryInPath($oldPath, $from, $to);
-
-                if ($record instanceof Entity\StationMedia) {
-                    $mediaToReindex[] = $record->getIdRequired();
-                }
 
                 try {
                     $fs->move($oldPath, $newPath);
@@ -257,10 +240,6 @@ final class BatchAction
 
             foreach ($toMove as $iterator) {
                 foreach ($iterator as $record) {
-                    if ($record instanceof Entity\StationMedia) {
-                        $mediaToReindex[] = $record->getIdRequired();
-                    }
-
                     /** @var Entity\Interfaces\PathAwareInterface $record */
                     try {
                         $record->setPath(
@@ -272,10 +251,6 @@ final class BatchAction
                     }
                 }
             }
-        }
-
-        if (!empty($mediaToReindex)) {
-            $this->batchUtilities->queueMediaForIndex($storageLocation, $mediaToReindex);
         }
 
         return $result;
@@ -391,44 +366,23 @@ final class BatchAction
     ): Entity\Api\BatchResult {
         $result = $this->parseRequest($request, $fs, true);
 
-        // Get existing queue items
-        $queuedMediaUpdates = [];
-        $queuedNewFiles = [];
-
-        foreach ($this->queueManager->getMessagesInTransport(QueueManagerInterface::QUEUE_MEDIA) as $message) {
-            if ($message instanceof Message\ReprocessMediaMessage) {
-                $queuedMediaUpdates[$message->media_id] = true;
-            } elseif (
-                $message instanceof Message\AddNewMediaMessage
-                && $message->storage_location_id === $storageLocation->getId()
-            ) {
-                $queuedNewFiles[$message->path] = true;
-            }
-        }
-
         foreach ($this->batchUtilities->iterateMedia($storageLocation, $result->files) as $media) {
             $mediaId = (int)$media->getId();
 
-            if (!isset($queuedMediaUpdates[$mediaId])) {
-                $message = new Message\ReprocessMediaMessage();
-                $message->storage_location_id = $storageLocation->getIdRequired();
-                $message->media_id = $mediaId;
-                $message->force = true;
+            $message = new Message\ReprocessMediaMessage();
+            $message->storage_location_id = $storageLocation->getIdRequired();
+            $message->media_id = $mediaId;
+            $message->force = true;
 
-                $this->messageBus->dispatch($message);
-            }
+            $this->messageBus->dispatch($message);
         }
 
         foreach ($this->batchUtilities->iterateUnprocessableMedia($storageLocation, $result->files) as $unprocessable) {
-            $path = $unprocessable->getPath();
+            $message = new Message\AddNewMediaMessage();
+            $message->storage_location_id = $storageLocation->getIdRequired();
+            $message->path = $unprocessable->getPath();
 
-            if (!isset($queuedNewFiles[$path])) {
-                $message = new Message\AddNewMediaMessage();
-                $message->storage_location_id = $storageLocation->getIdRequired();
-                $message->path = $unprocessable->getPath();
-
-                $this->messageBus->dispatch($message);
-            }
+            $this->messageBus->dispatch($message);
         }
 
         return $result;

@@ -10,6 +10,7 @@ tmp/cache/*---*
 .idea
 /ubuntu-*-console.log
 .phplint-cache
+.gitinfo
 
 # Local development files.
 /config/routes.dev.php

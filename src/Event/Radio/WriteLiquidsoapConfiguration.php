@@ -59,6 +59,17 @@ final class WriteLiquidsoapConfiguration extends Event
     }
 
     /**
+     * Replace the line at the specified index with the specified string.
+     *
+     * @param int $index
+     * @param string $line
+     */
+    public function replaceLine(int $index, string $line): void
+    {
+        $this->configLines[$index] = $line;
+    }
+
+    /**
      * Compile the configuration lines together and return the result.
      */
     public function buildConfiguration(): string

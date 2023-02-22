@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Message;
 
-use App\MessageQueue\QueueManagerInterface;
+use App\MessageQueue\QueueNames;
 
 final class AddNewMediaMessage extends AbstractUniqueMessage
 {
@@ -14,8 +14,8 @@ final class AddNewMediaMessage extends AbstractUniqueMessage
     /** @var string The relative path for the media file to be processed. */
     public string $path;
 
-    public function getQueue(): string
+    public function getQueue(): QueueNames
     {
-        return QueueManagerInterface::QUEUE_MEDIA;
+        return QueueNames::Media;
     }
 }

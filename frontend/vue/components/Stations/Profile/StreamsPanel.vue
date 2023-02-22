@@ -1,6 +1,6 @@
 <template>
     <section
-        class="card mb-4"
+        class="card"
         role="region"
     >
         <div class="card-header bg-primary-dark">

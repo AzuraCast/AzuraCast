@@ -1,6 +1,0 @@
----
-- name: Dump all vars
-  template:
-    src: dumpall.j2
-    dest: "{{ app_base }}/ansible/vars.txt"
-    mode: 0644

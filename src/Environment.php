@@ -54,8 +54,6 @@ final class Environment
 
     public const ENABLE_WEB_UPDATER = 'ENABLE_WEB_UPDATER';
 
-    public const MEILI_MASTER_KEY = 'MEILI_MASTER_KEY';
-
     // Database and Cache Configuration Variables
     public const DB_HOST = 'MYSQL_HOST';
     public const DB_PORT = 'MYSQL_PORT';
@@ -92,8 +90,6 @@ final class Environment
         self::PROFILING_EXTENSION_HTTP_KEY => 'dev',
 
         self::ENABLE_WEB_UPDATER => false,
-
-        self::MEILI_MASTER_KEY => 'azur4c457',
     ];
 
     public function __construct(array $elements = [])
@@ -372,11 +368,6 @@ final class Environment
     public function enableWebUpdater(): bool
     {
         return $this->isDocker() && self::envToBool($this->data[self::ENABLE_WEB_UPDATER] ?? false);
-    }
-
-    public function getMeiliMasterKey(): string
-    {
-        return $this->data[self::MEILI_MASTER_KEY] ?? $this->defaults[self::MEILI_MASTER_KEY];
     }
 
     public static function getDefaultsForEnvironment(Environment $existingEnv): self

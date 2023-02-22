@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Message;
 
-use App\MessageQueue\QueueManagerInterface;
+use App\MessageQueue\QueueNames;
 
 final class WritePlaylistFileMessage extends AbstractUniqueMessage
 {
@@ -16,8 +16,8 @@ final class WritePlaylistFileMessage extends AbstractUniqueMessage
         return 'WritePlaylistFileMessage_' . $this->playlist_id;
     }
 
-    public function getQueue(): string
+    public function getQueue(): QueueNames
     {
-        return QueueManagerInterface::QUEUE_LOW_PRIORITY;
+        return QueueNames::LowPriority;
     }
 }

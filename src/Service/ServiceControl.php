@@ -75,7 +75,6 @@ final class ServiceControl
     public function getServiceNames(): array
     {
         $services = [
-            'beanstalkd' => __('Message queue delivery service'),
             'cron' => __('Runs routine synchronized tasks'),
             'mariadb' => __('Database'),
             'nginx' => __('Web server'),
@@ -84,7 +83,6 @@ final class ServiceControl
             'redis' => __('Cache'),
             'sftpgo' => __('SFTP service'),
             'centrifugo' => __('Live Now Playing updates'),
-            'meilisearch' => __('Meilisearch'),
         ];
 
         if (!$this->centrifugo->isSupported()) {

@@ -1,7 +1,7 @@
 #
 # Golang dependencies build step
 #
-FROM golang:1-bullseye AS go-dependencies
+FROM golang:1.19-bullseye AS go-dependencies
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends openssl git
@@ -24,13 +24,14 @@ FROM ubuntu:jammy AS pre-final
 
 ENV TZ="UTC"
 
-COPY --from=mariadb /usr/local/bin/healthcheck.sh /usr/local/bin/db_healthcheck.sh
-COPY --from=mariadb /usr/local/bin/docker-entrypoint.sh /usr/local/bin/db_entrypoint.sh
-
-# Add Dockerize
+# Add Go dependencies
 COPY --from=go-dependencies /go/bin/dockerize /usr/local/bin
 COPY --from=go-dependencies /go/bin/supercronic /usr/local/bin/supercronic
 COPY --from=go-dependencies /go/bin/centrifugo /usr/local/bin/centrifugo
+
+# Add MariaDB dependencies
+COPY --from=mariadb /usr/local/bin/healthcheck.sh /usr/local/bin/db_healthcheck.sh
+COPY --from=mariadb /usr/local/bin/docker-entrypoint.sh /usr/local/bin/db_entrypoint.sh
 
 # Run base build process
 COPY ./util/docker/common /bd_build/
@@ -62,7 +63,7 @@ RUN bash /bd_build/redis/setup.sh \
 
 RUN rm -rf /bd_build
 
-VOLUME ["/var/azuracast/stations", "/var/azuracast/uploads", "/var/azuracast/backups", "/var/azuracast/sftpgo/persist", "/var/azuracast/servers/shoutcast2", "/var/azuracast/meilisearch/persist"]
+VOLUME ["/var/azuracast/stations", "/var/azuracast/uploads", "/var/azuracast/backups", "/var/azuracast/sftpgo/persist", "/var/azuracast/servers/shoutcast2"]
 
 #
 # Final build (Just environment vars and squishing the FS)
@@ -116,8 +117,7 @@ ENV TZ="UTC" \
     PROFILING_EXTENSION_ALWAYS_ON=0 \
     PROFILING_EXTENSION_HTTP_KEY=dev \
     PROFILING_EXTENSION_HTTP_IP_WHITELIST=* \
-    ENABLE_WEB_UPDATER="true" \
-    MEILI_MASTER_KEY="azur4c457"
+    ENABLE_WEB_UPDATER="true"
 
 # Entrypoint and default command
 ENTRYPOINT ["tini", "--", "/usr/local/bin/my_init"]

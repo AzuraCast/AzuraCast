@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\MessageQueue;
 
 use App\Message\AbstractMessage;
-use Generator;
 use Symfony\Component\Messenger\Envelope;
 
 abstract class AbstractQueueManager implements QueueManagerInterface
@@ -17,6 +16,13 @@ abstract class AbstractQueueManager implements QueueManagerInterface
         $this->workerName = $workerName;
     }
 
+    public function clearAllQueues(): void
+    {
+        foreach (QueueNames::cases() as $queue) {
+            $this->clearQueue($queue);
+        }
+    }
+
     /**
      * @inheritDoc
      */
@@ -26,51 +32,22 @@ abstract class AbstractQueueManager implements QueueManagerInterface
 
         if (!$message instanceof AbstractMessage) {
             return [
-                self::QUEUE_NORMAL_PRIORITY => $this->getTransport(self::QUEUE_NORMAL_PRIORITY),
+                QueueNames::NormalPriority->value => $this->getTransport(QueueNames::NormalPriority),
             ];
         }
 
         $queue = $message->getQueue();
         return [
-            $queue => $this->getTransport($queue),
+            $queue->value => $this->getTransport($queue),
         ];
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getMessagesInTransport(string $queueName): Generator
-    {
-        foreach ($this->getTransport($queueName)->get() as $envelope) {
-            $message = $envelope->getMessage();
-            if ($message instanceof AbstractMessage) {
-                yield $message;
-            }
-        }
     }
 
     public function getTransports(): array
     {
-        $allQueues = self::getAllQueues();
-
         $transports = [];
-        foreach ($allQueues as $queueName) {
-            $transports[$queueName] = $this->getTransport($queueName);
+        foreach (QueueNames::cases() as $queue) {
+            $transports[$queue->value] = $this->getTransport($queue);
         }
         return $transports;
-    }
-
-    /**
-     * @return string[]
-     */
-    public static function getAllQueues(): array
-    {
-        return [
-            self::QUEUE_HIGH_PRIORITY,
-            self::QUEUE_NORMAL_PRIORITY,
-            self::QUEUE_LOW_PRIORITY,
-            self::QUEUE_MEDIA,
-            self::QUEUE_PODCAST_MEDIA,
-        ];
     }
 }

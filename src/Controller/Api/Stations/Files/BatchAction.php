@@ -152,7 +152,11 @@ final class BatchAction
         /*
          * NOTE: This iteration clears the entity manager.
          */
+        $mediaToReindex = [];
+
         foreach ($this->batchUtilities->iterateMedia($storageLocation, $result->files) as $media) {
+            $mediaToReindex[] = $media->getIdRequired();
+
             try {
                 $mediaPlaylists = $this->playlistMediaRepo->clearPlaylistsFromMedia($media, $station);
                 foreach ($mediaPlaylists as $playlistId => $playlistRecord) {
@@ -191,6 +195,11 @@ final class BatchAction
 
         $this->em->flush();
 
+        $this->batchUtilities->queuePlaylistsForUpdate(
+            $station,
+            $mediaToReindex
+        );
+
         $this->writePlaylistChanges($station, $affectedPlaylists);
 
         return $result;
@@ -212,11 +221,17 @@ final class BatchAction
             $this->batchUtilities->iterateUnprocessableMedia($storageLocation, $result->files),
         ];
 
+        $mediaToReindex = [];
+
         foreach ($toMove as $iterator) {
             foreach ($iterator as $record) {
                 /** @var Entity\Interfaces\PathAwareInterface $record */
                 $oldPath = $record->getPath();
                 $newPath = File::renameDirectoryInPath($oldPath, $from, $to);
+
+                if ($record instanceof Entity\StationMedia) {
+                    $mediaToReindex[] = $record->getIdRequired();
+                }
 
                 try {
                     $fs->move($oldPath, $newPath);
@@ -240,6 +255,10 @@ final class BatchAction
 
             foreach ($toMove as $iterator) {
                 foreach ($iterator as $record) {
+                    if ($record instanceof Entity\StationMedia) {
+                        $mediaToReindex[] = $record->getIdRequired();
+                    }
+
                     /** @var Entity\Interfaces\PathAwareInterface $record */
                     try {
                         $record->setPath(
@@ -251,6 +270,10 @@ final class BatchAction
                     }
                 }
             }
+        }
+
+        if (!empty($mediaToReindex)) {
+            $this->batchUtilities->queueMediaForIndex($storageLocation, $mediaToReindex);
         }
 
         return $result;

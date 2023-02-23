@@ -78,14 +78,14 @@ return static function (RouteCollectorProxy $group) {
             /*
              * Song Requests
              */
-            $group->get('/requests', Controller\Api\Stations\RequestsController::class . ':listAction')
+            $group->get('/requests', Controller\Api\Stations\Requests\ListAction::class)
                 ->add(new Middleware\StationSupportsFeature(StationFeatures::Requests))
                 ->setName('api:requests:list');
 
             $group->map(
                 ['GET', 'POST'],
                 '/request/{media_id}',
-                Controller\Api\Stations\RequestsController::class . ':submitAction'
+                Controller\Api\Stations\Requests\SubmitAction::class
             )
                 ->setName('api:requests:submit')
                 ->add(new Middleware\StationSupportsFeature(StationFeatures::Requests))

@@ -2,23 +2,51 @@
 
 declare(strict_types=1);
 
-namespace App\Controller\Api\Stations\OnDemand;
+namespace App\Controller\Api\Stations\Requests;
 
 use App\Doctrine\Paginator\HydratingAdapter;
-use App\Entity;
+use App\Entity\Api\Error;
+use App\Entity\Api\StationRequest;
+use App\Entity\ApiGenerator\SongApiGenerator;
 use App\Entity\StationMedia;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use App\OpenApi;
 use App\Paginator;
 use App\Service\Meilisearch;
 use Doctrine\ORM\EntityManagerInterface;
+use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 
+#[
+    OA\Get(
+        path: '/station/{station_id}/requests',
+        operationId: 'getRequestableSongs',
+        description: 'Return a list of requestable songs.',
+        tags: ['Stations: Song Requests'],
+        parameters: [
+            new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
+        ],
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: 'Success',
+                content: new OA\JsonContent(
+                    type: 'array',
+                    items: new OA\Items(ref: '#/components/schemas/Api_StationRequest')
+                )
+            ),
+            new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
+            new OA\Response(ref: OpenApi::REF_RESPONSE_NOT_FOUND, response: 404),
+            new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
+        ]
+    )
+]
 final class ListAction
 {
     public function __construct(
         private readonly EntityManagerInterface $em,
-        private readonly Entity\ApiGenerator\SongApiGenerator $songApiGenerator,
+        private readonly SongApiGenerator $songApiGenerator,
         private readonly Meilisearch $meilisearch
     ) {
     }
@@ -31,14 +59,13 @@ final class ListAction
         $station = $request->getStation();
 
         // Verify that the station supports on-demand streaming.
-        if (!$station->getEnableOnDemand()) {
+        if (!$station->getEnableRequests()) {
             return $response->withStatus(403)
-                ->withJson(new Entity\Api\Error(403, __('This station does not support on-demand streaming.')));
+                ->withJson(new Error(403, __('This station does not support requests.')));
         }
 
         $queryParams = $request->getQueryParams();
         $searchPhrase = trim($queryParams['searchPhrase'] ?? '');
-
         $sortField = (string)($queryParams['sort'] ?? '');
         $sortDirection = strtolower($queryParams['sortOrder'] ?? 'asc');
 
@@ -50,7 +77,7 @@ final class ListAction
                 $searchParams['sort'] = [$sortField . ':' . $sortDirection];
             }
 
-            $paginatorAdapter = $index->getOnDemandSearchPaginator(
+            $paginatorAdapter = $index->getRequestableSearchPaginator(
                 $station,
                 $searchPhrase,
                 $searchParams,
@@ -70,18 +97,18 @@ final class ListAction
                     ->toIterable();
             };
 
-            $hydrateAdapter = new HydratingAdapter(
+            $hydratingAdapter = new HydratingAdapter(
                 $paginatorAdapter,
                 $hydrateCallback(...)
             );
 
-            $paginator = Paginator::fromAdapter($hydrateAdapter, $request);
+            $paginator = Paginator::fromAdapter($hydratingAdapter, $request);
         } else {
             $playlistsRaw = $this->em->createQuery(
                 <<<'DQL'
                 SELECT sp.id FROM App\Entity\StationPlaylist sp
                 WHERE sp.station = :station
-                AND sp.is_enabled = 1 AND sp.include_in_on_demand = 1
+                AND sp.is_enabled = 1 AND sp.include_in_requests = 1
                 DQL
             )->setParameter('station', $station)
                 ->getArrayResult();
@@ -122,17 +149,12 @@ final class ListAction
         $router = $request->getRouter();
 
         $paginator->setPostprocessor(
-            function (Entity\StationMedia $media) use ($station, $router) {
-                $row = new Entity\Api\StationOnDemand();
-
-                $row->track_id = $media->getUniqueId();
-                $row->media = ($this->songApiGenerator)(
-                    song: $media,
-                    station: $station
-                );
-
-                $row->download_url = $router->named(
-                    'api:stations:ondemand:download',
+            function (StationMedia $media) use ($station, $router) {
+                $row = new StationRequest();
+                $row->song = ($this->songApiGenerator)($media, $station, $router->getBaseUrl());
+                $row->request_id = $media->getUniqueId();
+                $row->request_url = $router->named(
+                    'api:requests:submit',
                     [
                         'station_id' => $station->getId(),
                         'media_id' => $media->getUniqueId(),

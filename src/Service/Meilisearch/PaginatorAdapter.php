@@ -4,23 +4,20 @@ declare(strict_types=1);
 
 namespace App\Service\Meilisearch;
 
-use Closure;
 use Meilisearch\Endpoints\Indexes;
 use Meilisearch\Search\SearchResult;
 use Pagerfanta\Adapter\AdapterInterface;
 
 /**
- * Adapter which uses Meilisearch to perform a search, then uses a callback to hydrate with database records.
+ * Adapter which uses Meilisearch to perform a search.
  *
- * @template TKey of array-key
- * @template T
+ * @template T of array
  * @implements AdapterInterface<T>
  */
 final class PaginatorAdapter implements AdapterInterface
 {
     public function __construct(
         private readonly Indexes $indexClient,
-        private readonly Closure $hydrateCallback,
         private readonly ?string $query,
         private readonly array $searchParams = [],
         private readonly array $options = [],
@@ -55,6 +52,6 @@ final class PaginatorAdapter implements AdapterInterface
             $this->options
         );
 
-        return ($this->hydrateCallback)($results->getHits());
+        yield from $results->getHits();
     }
 }

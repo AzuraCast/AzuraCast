@@ -381,17 +381,15 @@ final class Index
     }
 
     /**
-     * @return PaginatorAdapter<int|string, mixed>
+     * @return PaginatorAdapter<array>
      */
     public function getRequestableSearchPaginator(
         Station $station,
-        callable $hydrateCallback,
         ?string $query,
         array $searchParams = [],
         array $options = [],
     ): PaginatorAdapter {
         return $this->getSearchPaginator(
-            $hydrateCallback,
             $query,
             [
                 ...$searchParams,
@@ -406,17 +404,15 @@ final class Index
     }
 
     /**
-     * @return PaginatorAdapter<int|string, mixed>
+     * @return PaginatorAdapter<array>
      */
     public function getOnDemandSearchPaginator(
         Station $station,
-        callable $hydrateCallback,
         ?string $query,
         array $searchParams = [],
         array $options = [],
     ): PaginatorAdapter {
         return $this->getSearchPaginator(
-            $hydrateCallback,
             $query,
             [
                 ...$searchParams,
@@ -431,17 +427,15 @@ final class Index
     }
 
     /**
-     * @return PaginatorAdapter<int|string, mixed>
+     * @return PaginatorAdapter<array>
      */
     public function getSearchPaginator(
-        callable $hydrateCallback,
         ?string $query,
         array $searchParams = [],
         array $options = [],
     ): PaginatorAdapter {
         return new PaginatorAdapter(
             $this->indexClient,
-            $hydrateCallback(...),
             $query,
             $searchParams,
             $options,

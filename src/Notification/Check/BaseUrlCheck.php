@@ -8,7 +8,7 @@ use App\Entity\Api\Notification;
 use App\Entity\Repository\SettingsRepository;
 use App\Enums\GlobalPermissions;
 use App\Event\GetNotifications;
-use App\Session\Flash;
+use App\Session\FlashLevels;
 
 final class BaseUrlCheck
 {
@@ -57,7 +57,7 @@ final class BaseUrlCheck
                 (string)$baseUriWithRequest
             );
             $notification->body = implode(' ', $notificationBodyParts);
-            $notification->type = Flash::WARNING;
+            $notification->type = FlashLevels::Warning->value;
             $notification->actionLabel = __('System Settings');
             $notification->actionUrl = $router->named('admin:settings:index');
 

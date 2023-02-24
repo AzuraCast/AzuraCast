@@ -8,7 +8,7 @@ use App\Entity;
 use App\Enums\GlobalPermissions;
 use App\Environment;
 use App\Event\GetNotifications;
-use App\Session\Flash;
+use App\Session\FlashLevels;
 use Carbon\CarbonImmutable;
 
 final class RecentBackupCheck
@@ -48,7 +48,7 @@ final class RecentBackupCheck
             $notification = new Entity\Api\Notification();
             $notification->title = __('Installation Not Recently Backed Up');
             $notification->body = __('This installation has not been backed up in the last two weeks.');
-            $notification->type = Flash::INFO;
+            $notification->type = FlashLevels::Info->value;
 
             $router = $request->getRouter();
             $notification->actionLabel = __('Backups');

@@ -7,7 +7,6 @@ namespace App\Controller\Admin\Debug;
 use App\Console\Application;
 use App\Http\Response;
 use App\Http\ServerRequest;
-use App\Session\Flash;
 use Psr\Http\Message\ResponseInterface;
 
 final class ClearCacheAction
@@ -26,7 +25,7 @@ final class ClearCacheAction
         );
 
         // Flash an update to ensure the session is recreated.
-        $request->getFlash()->addMessage($resultOutput, Flash::SUCCESS);
+        $request->getFlash()->success($resultOutput);
 
         return $response->withRedirect($request->getRouter()->fromHere('admin:debug:index'));
     }

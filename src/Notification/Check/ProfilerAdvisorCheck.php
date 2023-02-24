@@ -8,7 +8,7 @@ use App\Entity\Api\Notification;
 use App\Enums\GlobalPermissions;
 use App\Environment;
 use App\Event\GetNotifications;
-use App\Session\Flash;
+use App\Session\FlashLevels;
 
 final class ProfilerAdvisorCheck
 {
@@ -39,7 +39,7 @@ final class ProfilerAdvisorCheck
             'You can track the execution time and memory usage of any AzuraCast page or application ' .
             'from the profiler page.',
         );
-        $notification->type = Flash::INFO;
+        $notification->type = FlashLevels::Info->value;
 
         $notification->actionLabel = __('Profiler Control Panel');
         $notification->actionUrl = '/?' . http_build_query(
@@ -58,7 +58,7 @@ final class ProfilerAdvisorCheck
                 'This can have an adverse impact on system performance. ' .
                 'You should disable this when possible.'
             );
-            $notification->type = Flash::WARNING;
+            $notification->type = FlashLevels::Warning->value;
 
             $event->addNotification($notification);
         }

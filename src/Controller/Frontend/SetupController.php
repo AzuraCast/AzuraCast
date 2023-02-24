@@ -10,7 +10,6 @@ use App\Exception\NotLoggedInException;
 use App\Exception\ValidationException;
 use App\Http\Response;
 use App\Http\ServerRequest;
-use App\Session\Flash;
 use App\Version;
 use App\VueComponent\StationFormComponent;
 use Doctrine\ORM\EntityManagerInterface;
@@ -188,7 +187,7 @@ final class SetupController
         ServerRequest $request,
         Response $response
     ): ResponseInterface {
-        $request->getFlash()->addMessage('<b>' . __('Setup has already been completed!') . '</b>', Flash::ERROR);
+        $request->getFlash()->error('<b>' . __('Setup has already been completed!') . '</b>');
 
         return $response->withRedirect($request->getRouter()->named('dashboard'));
     }

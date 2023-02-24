@@ -175,7 +175,7 @@ final class ErrorHandler extends \Slim\Handlers\ErrorHandler
             $session = $sessionPersistence->initializeSessionFromRequest($this->request);
 
             $flash = new Flash($session);
-            $flash->addMessage(__('You must be logged in to access this page.'), Flash::ERROR);
+            $flash->error(__('You must be logged in to access this page.'));
 
             // Set referrer for login redirection.
             $session->set('login_referrer', $this->request->getUri()->getPath());
@@ -204,9 +204,8 @@ final class ErrorHandler extends \Slim\Handlers\ErrorHandler
             $session = $sessionPersistence->initializeSessionFromRequest($this->request);
 
             $flash = new Flash($session);
-            $flash->addMessage(
+            $flash->error(
                 __('You do not have permission to access this portion of the site.'),
-                Flash::ERROR
             );
 
             $response = $sessionPersistence->persistSession($session, $response);

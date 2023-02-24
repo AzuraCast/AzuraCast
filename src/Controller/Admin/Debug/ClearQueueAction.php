@@ -8,7 +8,6 @@ use App\Http\Response;
 use App\Http\ServerRequest;
 use App\MessageQueue\QueueManagerInterface;
 use App\MessageQueue\QueueNames;
-use App\Session\Flash;
 use Psr\Http\Message\ResponseInterface;
 
 final class ClearQueueAction
@@ -32,10 +31,7 @@ final class ClearQueueAction
         }
 
         // Flash an update to ensure the session is recreated.
-        $request->getFlash()->addMessage(
-            __('Message queue cleared.'),
-            Flash::SUCCESS
-        );
+        $request->getFlash()->success(__('Message queue cleared.'));
 
         return $response->withRedirect($request->getRouter()->fromHere('admin:debug:index'));
     }

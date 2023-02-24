@@ -13,11 +13,6 @@ final class Flash
 {
     public const SESSION_KEY = 'flash';
 
-    public const SUCCESS = 'success';
-    public const WARNING = 'warning';
-    public const ERROR = 'danger';
-    public const INFO = 'info';
-
     private ?array $messages = null;
 
     public function __construct(
@@ -25,43 +20,42 @@ final class Flash
     ) {
     }
 
-    /**
-     * Alias of addMessage.
-     *
-     * @param string $message
-     * @param string $level
-     * @param bool $saveInSession
-     */
-    public function alert(string $message, string $level = self::INFO, bool $saveInSession = true): void
-    {
-        $this->addMessage($message, $level, $saveInSession);
+    public function success(
+        string $message,
+        bool $saveInSession = true
+    ): void {
+        $this->addMessage($message, FlashLevels::Success, $saveInSession);
     }
 
-    /**
-     * Add a message to the flash message queue.
-     *
-     * @param string $message
-     * @param string $level
-     * @param bool $saveInSession
-     */
-    public function addMessage(string $message, string $level = self::INFO, bool $saveInSession = true): void
-    {
-        $colorChart = [
-            'green' => self::SUCCESS,
-            'success' => self::SUCCESS,
-            'yellow' => self::WARNING,
-            'warning' => self::WARNING,
-            'red' => self::ERROR,
-            'error' => self::ERROR,
-            'danger' => self::ERROR,
-            'info' => self::INFO,
-            'blue' => self::INFO,
-            'default' => '',
-        ];
+    public function warning(
+        string $message,
+        bool $saveInSession = true
+    ): void {
+        $this->addMessage($message, FlashLevels::Warning, $saveInSession);
+    }
 
+    public function error(
+        string $message,
+        bool $saveInSession = true
+    ): void {
+        $this->addMessage($message, FlashLevels::Error, $saveInSession);
+    }
+
+    public function info(
+        string $message,
+        bool $saveInSession = true
+    ): void {
+        $this->addMessage($message, FlashLevels::Info, $saveInSession);
+    }
+
+    public function addMessage(
+        string $message,
+        FlashLevels $level = FlashLevels::Info,
+        bool $saveInSession = true
+    ): void {
         $messageRow = [
             'text' => $message,
-            'color' => $colorChart[$level] ?? $level,
+            'color' => $level->value,
         ];
 
         $this->getMessages();

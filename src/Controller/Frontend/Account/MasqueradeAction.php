@@ -8,7 +8,6 @@ use App\Entity;
 use App\Exception\NotFoundException;
 use App\Http\Response;
 use App\Http\ServerRequest;
-use App\Session\Flash;
 use Psr\Http\Message\ResponseInterface;
 
 final class MasqueradeAction
@@ -37,9 +36,8 @@ final class MasqueradeAction
         $auth = $request->getAuth();
         $auth->masqueradeAsUser($user);
 
-        $request->getFlash()->addMessage(
+        $request->getFlash()->success(
             '<b>' . __('Logged in successfully.') . '</b><br>' . $user->getEmail(),
-            Flash::SUCCESS
         );
 
         return $response->withRedirect($request->getRouter()->named('dashboard'));

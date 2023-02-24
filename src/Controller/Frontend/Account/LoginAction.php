@@ -9,7 +9,6 @@ use App\Exception\RateLimitExceededException;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\RateLimit;
-use App\Session\Flash;
 use Doctrine\ORM\EntityManagerInterface;
 use Mezzio\Session\SessionCookiePersistenceInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -55,13 +54,12 @@ final class LoginAction
             try {
                 $this->rateLimit->checkRequestRateLimit($request, 'login', 30, 5);
             } catch (RateLimitExceededException) {
-                $flash->addMessage(
+                $flash->error(
                     sprintf(
                         '<b>%s</b><br>%s',
                         __('Too many login attempts'),
                         __('You have attempted to log in too many times. Please wait 30 seconds and try again.')
                     ),
-                    Flash::ERROR
                 );
 
                 return $response->withRedirect($request->getUri()->getPath());
@@ -93,20 +91,18 @@ final class LoginAction
 
                 // Redirect to complete setup if it's not completed yet.
                 if (!$settings->isSetupComplete()) {
-                    $flash->addMessage(
+                    $flash->success(
                         sprintf(
                             '<b>%s</b><br>%s',
                             __('Logged in successfully.'),
                             __('Complete the setup process to get started.')
                         ),
-                        Flash::SUCCESS
                     );
                     return $response->withRedirect($request->getRouter()->named('setup:index'));
                 }
 
-                $flash->addMessage(
+                $flash->success(
                     '<b>' . __('Logged in successfully.') . '</b><br>' . $user->getEmail(),
-                    Flash::SUCCESS
                 );
 
                 $referrer = $session->get('login_referrer');
@@ -115,9 +111,8 @@ final class LoginAction
                 );
             }
 
-            $flash->addMessage(
+            $flash->error(
                 '<b>' . __('Login unsuccessful') . '</b><br>' . __('Your credentials could not be verified.'),
-                Flash::ERROR
             );
 
             return $response->withRedirect((string)$request->getUri());

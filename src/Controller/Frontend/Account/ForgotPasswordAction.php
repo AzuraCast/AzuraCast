@@ -10,7 +10,6 @@ use App\Http\Response;
 use App\Http\ServerRequest;
 use App\RateLimit;
 use App\Service\Mail;
-use App\Session\Flash;
 use Psr\Http\Message\ResponseInterface;
 
 final class ForgotPasswordAction
@@ -38,7 +37,7 @@ final class ForgotPasswordAction
             try {
                 $this->rateLimit->checkRequestRateLimit($request, 'forgot', 30, 3);
             } catch (RateLimitExceededException) {
-                $flash->addMessage(
+                $flash->error(
                     sprintf(
                         '<b>%s</b><br>%s',
                         __('Too many forgot password attempts'),
@@ -47,7 +46,6 @@ final class ForgotPasswordAction
                             . '30 seconds and try again.'
                         )
                     ),
-                    Flash::ERROR
                 );
 
                 return $response->withRedirect($request->getUri()->getPath());
@@ -75,7 +73,7 @@ final class ForgotPasswordAction
                 $this->mail->send($email);
             }
 
-            $flash->addMessage(
+            $flash->success(
                 sprintf(
                     '<b>%s</b><br>%s',
                     __('Account recovery e-mail sent.'),
@@ -84,7 +82,6 @@ final class ForgotPasswordAction
                         . 'for a password reset message.'
                     )
                 ),
-                Flash::SUCCESS
             );
 
             return $response->withRedirect($request->getRouter()->named('account:login'));

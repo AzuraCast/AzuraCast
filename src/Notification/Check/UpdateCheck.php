@@ -8,7 +8,7 @@ use App\Entity;
 use App\Enums\GlobalPermissions;
 use App\Enums\ReleaseChannel;
 use App\Event\GetNotifications;
-use App\Session\Flash;
+use App\Session\FlashLevels;
 use App\Version;
 
 final class UpdateCheck
@@ -61,7 +61,7 @@ final class UpdateCheck
             $notification = new Entity\Api\Notification();
             $notification->title = __('New AzuraCast Release Version Available');
             $notification->body = implode(' ', $notificationParts);
-            $notification->type = Flash::INFO;
+            $notification->type = FlashLevels::Info->value;
             $notification->actionLabel = $actionLabel;
             $notification->actionUrl = $actionUrl;
 
@@ -86,7 +86,7 @@ final class UpdateCheck
             $notification = new Entity\Api\Notification();
             $notification->title = __('New AzuraCast Updates Available');
             $notification->body = implode(' ', $notificationParts);
-            $notification->type = Flash::INFO;
+            $notification->type = FlashLevels::Info->value;
             $notification->actionLabel = $actionLabel;
             $notification->actionUrl = $actionUrl;
 

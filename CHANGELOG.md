@@ -11,7 +11,18 @@ release channel, you can take advantage of these new features and fixes.
 
 ## Code Quality/Technical Changes
 
+- **Initial Podman Support**: Podman is an increasingly popular drop-in replacement for Docker, originally from the
+  RedHat Enterprise Linux community of distributions. We have updated our Docker utility script to include a Podman
+  support mode. Feel free to report any bugs to us!
+
+- We have made more changes to how our Message Queue system works in order to ensure we don't encounter a "runaway
+  queue" problem with larger libraries.
+
+- Icecast-KH has been updated to version KH-18.
+
 ## Bug Fixes
+
+- A minor bug causing timeouts with the Web Updater has been fixed.
 
 - A bug causing stations to show as "Station Offline" immediately after an initial start or restart has been fixed.
 

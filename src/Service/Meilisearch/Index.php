@@ -72,6 +72,10 @@ final class Index
             );
 
             $this->indexClient->waitForTask($response['taskUid']);
+
+            $this->indexClient->updatePagination([
+                'maxTotalHits' => 100000,
+            ]);
         }
 
         $currentSettings = $this->indexClient->getSettings();

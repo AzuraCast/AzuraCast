@@ -21,7 +21,7 @@ RUN mkdir -p /tmp/meilisearch
 
 WORKDIR /tmp/meilisearch
 
-RUN curl -fsSL https://github.com/meilisearch/meilisearch/archive/refs/tags/v1.0.0-rc.2.tar.gz -o meilisearch.tar.gz \
+RUN curl -fsSL https://github.com/meilisearch/meilisearch/archive/refs/tags/v1.0.2.tar.gz -o meilisearch.tar.gz \
     && tar -xvzf meilisearch.tar.gz --strip-components=1 \
     && cargo build --release \
     && chmod a+x ./target/release/meilisearch \

@@ -72,16 +72,16 @@ final class ListAction extends AbstractSearchableListAction
         $item = $this->psr6Cache->getItem('station_' . $station->getIdRequired() . '_on_demand_playlists');
 
         if (!$item->isHit()) {
-            $playlistsRaw = $this->em->createQuery(
+            $playlistIds = $this->em->createQuery(
                 <<<'DQL'
                 SELECT sp.id FROM App\Entity\StationPlaylist sp
                 WHERE sp.station = :station
                 AND sp.is_enabled = 1 AND sp.include_in_on_demand = 1
                 DQL
             )->setParameter('station', $station)
-                ->getArrayResult();
+                ->getSingleColumnResult();
 
-            $item->set(array_column($playlistsRaw, 'id'));
+            $item->set($playlistIds);
             $item->expiresAfter(600);
 
             $this->psr6Cache->saveDeferred($item);

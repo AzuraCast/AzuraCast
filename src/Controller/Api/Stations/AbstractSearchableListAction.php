@@ -31,6 +31,10 @@ abstract class AbstractSearchableListAction
         ServerRequest $request,
         array $playlists
     ): Paginator {
+        if (empty($playlists)) {
+            throw new \RuntimeException('This station has no qualifying playlists for this feature.');
+        }
+
         $station = $request->getStation();
 
         $queryParams = $request->getQueryParams();

@@ -19,31 +19,46 @@
                     <tr>
                         <td>{{ $gettext('Public Page') }}</td>
                         <td>
-                            <a :href="publicPageUri">{{ publicPageUri }}</a>
+                            <a
+                                :href="publicPageUri"
+                                target="_blank"
+                            >{{ publicPageUri }}</a>
                         </td>
                     </tr>
                     <tr v-if="stationSupportsStreamers && enableStreamers">
                         <td>{{ $gettext('Web DJ') }}</td>
                         <td>
-                            <a :href="publicWebDjUri">{{ publicWebDjUri }}</a>
+                            <a
+                                :href="publicWebDjUri"
+                                target="_blank"
+                            >{{ publicWebDjUri }}</a>
                         </td>
                     </tr>
                     <tr v-if="enableOnDemand">
                         <td>{{ $gettext('On-Demand Media') }}</td>
                         <td>
-                            <a :href="publicOnDemandUri">{{ publicOnDemandUri }}</a>
+                            <a
+                                :href="publicOnDemandUri"
+                                target="_blank"
+                            >{{ publicOnDemandUri }}</a>
                         </td>
                     </tr>
                     <tr>
                         <td>{{ $gettext('Podcasts') }}</td>
                         <td>
-                            <a :href="publicPodcastsUri">{{ publicPodcastsUri }}</a>
+                            <a
+                                :href="publicPodcastsUri"
+                                target="_blank"
+                            >{{ publicPodcastsUri }}</a>
                         </td>
                     </tr>
                     <tr>
                         <td>{{ $gettext('Schedule') }}</td>
                         <td>
-                            <a :href="publicScheduleUri">{{ publicScheduleUri }}</a>
+                            <a
+                                :href="publicScheduleUri"
+                                target="_blank"
+                            >{{ publicScheduleUri }}</a>
                         </td>
                     </tr>
                 </tbody>

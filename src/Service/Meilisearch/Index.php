@@ -239,8 +239,6 @@ final class Index
             if ($includePlaylists) {
                 foreach ($stationIds as $stationId) {
                     $record['station_' . $stationId . '_playlists'] = [];
-                    $record['station_' . $stationId . '_is_requestable'] = false;
-                    $record['station_' . $stationId . '_is_on_demand'] = false;
                 }
 
                 if (isset($mediaPlaylists[$mediaId])) {
@@ -253,13 +251,6 @@ final class Index
                         $stationId = $playlist['station_id'];
 
                         $record['station_' . $stationId . '_playlists'][] = $mediaPlaylistId;
-
-                        if ($playlist['include_in_requests']) {
-                            $record['station_' . $stationId . '_is_requestable'] = true;
-                        }
-                        if ($playlist['include_in_on_demand']) {
-                            $record['station_' . $stationId . '_is_on_demand'] = true;
-                        }
                     }
                 }
             }
@@ -287,8 +278,6 @@ final class Index
         $stationId = $station->getIdRequired();
 
         $playlistsKey = 'station_' . $stationId . '_playlists';
-        $isRequestableKey = 'station_' . $stationId . '_is_requestable';
-        $isOnDemandKey = 'station_' . $stationId . '_is_on_demand';
 
         $media = [];
 
@@ -305,8 +294,6 @@ final class Index
                 $media[$mediaRow['id']] = [
                     'id' => $mediaRow['id'],
                     $playlistsKey => [],
-                    $isRequestableKey => false,
-                    $isOnDemandKey => false,
                 ];
             }
         } else {
@@ -314,34 +301,18 @@ final class Index
                 $media[$mediaId] = [
                     'id' => $mediaId,
                     $playlistsKey => [],
-                    $isRequestableKey => false,
-                    $isOnDemandKey => false,
                 ];
             }
         }
 
-        $allPlaylists = $this->em->createQuery(
+        $allPlaylistIds = $this->em->createQuery(
             <<<'DQL'
-            SELECT p.id, p.include_in_on_demand, p.include_in_requests
+            SELECT p.id
             FROM App\Entity\StationPlaylist p
             WHERE p.station = :station AND p.is_enabled = 1
             DQL
         )->setParameter('station', $station)
-            ->getArrayResult();
-
-        $allPlaylistIds = [];
-        $onDemandPlaylists = [];
-        $requestablePlaylists = [];
-
-        foreach ($allPlaylists as $playlist) {
-            $allPlaylistIds[] = $playlist['id'];
-            if ($playlist['include_in_on_demand']) {
-                $onDemandPlaylists[$playlist['id']] = $playlist['id'];
-            }
-            if ($playlist['include_in_requests']) {
-                $requestablePlaylists[$playlist['id']] = $playlist['id'];
-            }
-        }
+            ->getSingleColumnResult();
 
         if (null === $ids) {
             $mediaInPlaylists = $this->em->createQuery(
@@ -366,16 +337,7 @@ final class Index
         }
 
         foreach ($mediaInPlaylists as $spmRow) {
-            $mediaId = $spmRow['media_id'];
-            $playlistId = $spmRow['playlist_id'];
-
-            $media[$mediaId][$playlistsKey][] = $playlistId;
-            if (isset($requestablePlaylists[$playlistId])) {
-                $media[$mediaId][$isRequestableKey] = true;
-            }
-            if (isset($onDemandPlaylists[$playlistId])) {
-                $media[$mediaId][$isOnDemandKey] = true;
-            }
+            $media[$spmRow['media_id']][$playlistsKey][] = $spmRow['playlist_id'];
         }
 
         $this->indexClient->updateDocumentsInBatches(

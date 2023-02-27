@@ -169,7 +169,7 @@
                     </template>
                     <template #cell(num_songs)="row">
                         <template v-if="row.item.source === 'songs'">
-                            <a :href="filesUrl+'#playlist:'+encodeURIComponent(row.item.name)">
+                            <a :href="filesUrl+'#playlist:'+encodeURIComponent(row.item.short_name)">
                                 {{ row.item.num_songs }}
                             </a>
                             ({{ formatLength(row.item.total_length) }})

@@ -4,18 +4,22 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Stations\Requests;
 
-use App\Doctrine\Paginator\HydratingAdapter;
+use App\Controller\Api\Stations\AbstractSearchableListAction;
 use App\Entity\Api\Error;
 use App\Entity\Api\StationRequest;
 use App\Entity\ApiGenerator\SongApiGenerator;
+use App\Entity\Station;
 use App\Entity\StationMedia;
+use App\Entity\StationPlaylist;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\OpenApi;
-use App\Paginator;
+use App\Radio\AutoDJ\Scheduler;
 use App\Service\Meilisearch;
+use Carbon\CarbonImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use OpenApi\Attributes as OA;
+use Psr\Cache\CacheItemPoolInterface;
 use Psr\Http\Message\ResponseInterface;
 
 #[
@@ -42,13 +46,16 @@ use Psr\Http\Message\ResponseInterface;
         ]
     )
 ]
-final class ListAction
+final class ListAction extends AbstractSearchableListAction
 {
     public function __construct(
-        private readonly EntityManagerInterface $em,
-        private readonly SongApiGenerator $songApiGenerator,
-        private readonly Meilisearch $meilisearch
+        EntityManagerInterface $em,
+        SongApiGenerator $songApiGenerator,
+        Meilisearch $meilisearch,
+        CacheItemPoolInterface $psr6Cache,
+        private readonly Scheduler $scheduler
     ) {
+        parent::__construct($em, $songApiGenerator, $meilisearch, $psr6Cache);
     }
 
     public function __invoke(
@@ -64,87 +71,10 @@ final class ListAction
                 ->withJson(new Error(403, __('This station does not support requests.')));
         }
 
-        $queryParams = $request->getQueryParams();
-        $searchPhrase = trim($queryParams['searchPhrase'] ?? '');
-        $sortField = (string)($queryParams['sort'] ?? '');
-        $sortDirection = strtolower($queryParams['sortOrder'] ?? 'asc');
-
-        if ($this->meilisearch->isSupported()) {
-            $index = $this->meilisearch->getIndex($station->getMediaStorageLocation());
-
-            $searchParams = [];
-            if (!empty($sortField)) {
-                $searchParams['sort'] = [$sortField . ':' . $sortDirection];
-            }
-
-            $paginatorAdapter = $index->getRequestableSearchPaginator(
-                $station,
-                $searchPhrase,
-                $searchParams,
-            );
-
-            $hydrateCallback = function (iterable $results) {
-                $ids = array_column([...$results], 'id');
-
-                return $this->em->createQuery(
-                    <<<'DQL'
-                    SELECT sm
-                    FROM App\Entity\StationMedia sm
-                    WHERE sm.id IN (:ids)
-                    ORDER BY FIELD(sm.id, :ids)
-                DQL
-                )->setParameter('ids', $ids)
-                    ->toIterable();
-            };
-
-            $hydratingAdapter = new HydratingAdapter(
-                $paginatorAdapter,
-                $hydrateCallback(...)
-            );
-
-            $paginator = Paginator::fromAdapter($hydratingAdapter, $request);
-        } else {
-            $playlistsRaw = $this->em->createQuery(
-                <<<'DQL'
-                SELECT sp.id FROM App\Entity\StationPlaylist sp
-                WHERE sp.station = :station
-                AND sp.is_enabled = 1 AND sp.include_in_requests = 1
-                DQL
-            )->setParameter('station', $station)
-                ->getArrayResult();
-
-            $playlistIds = array_column($playlistsRaw, 'id');
-
-            $qb = $this->em->createQueryBuilder();
-            $qb->select('sm, spm, sp')
-                ->from(StationMedia::class, 'sm')
-                ->leftJoin('sm.playlists', 'spm')
-                ->leftJoin('spm.playlist', 'sp')
-                ->where('sm.storage_location = :storageLocation')
-                ->andWhere('sp.id IN (:playlistIds)')
-                ->setParameter('storageLocation', $station->getMediaStorageLocation())
-                ->setParameter('playlistIds', $playlistIds);
-
-            if (!empty($sortField)) {
-                match ($sortField) {
-                    'name', 'title' => $qb->addOrderBy('sm.title', $sortDirection),
-                    'artist' => $qb->addOrderBy('sm.artist', $sortDirection),
-                    'album' => $qb->addOrderBy('sm.album', $sortDirection),
-                    'genre' => $qb->addOrderBy('sm.genre', $sortDirection),
-                    default => null,
-                };
-            } else {
-                $qb->orderBy('sm.artist', 'ASC')
-                    ->addOrderBy('sm.title', 'ASC');
-            }
-
-            if (!empty($searchPhrase)) {
-                $qb->andWhere('(sm.title LIKE :query OR sm.artist LIKE :query OR sm.album LIKE :query)')
-                    ->setParameter('query', '%' . $searchPhrase . '%');
-            }
-
-            $paginator = Paginator::fromQueryBuilder($qb, $request);
-        }
+        $paginator = $this->getPaginator(
+            $request,
+            $this->getPlaylists($station)
+        );
 
         $router = $request->getRouter();
 
@@ -168,5 +98,43 @@ final class ListAction
         );
 
         return $paginator->write($response);
+    }
+
+    /**
+     * @param Station $station
+     * @return int[]
+     */
+    private function getPlaylists(
+        Station $station
+    ): array {
+        $item = $this->psr6Cache->getItem('station_' . $station->getIdRequired() . '_requestable_playlists');
+
+        if (!$item->isHit()) {
+            $playlists = $this->em->createQuery(
+                <<<DQL
+                SELECT sp FROM App\Entity\StationPlaylist sp
+                WHERE sp.station = :station
+                AND sp.is_enabled = 1 AND sp.include_in_requests = 1
+                DQL
+            )->setParameter('station', $station)
+                ->toIterable();
+
+            $ids = [];
+            $now = CarbonImmutable::now($station->getTimezoneObject());
+
+            /** @var StationPlaylist $playlist */
+            foreach ($playlists as $playlist) {
+                if ($this->scheduler->isPlaylistScheduledToPlayNow($playlist, $now)) {
+                    $ids[] = $playlist->getIdRequired();
+                }
+            }
+
+            $item->set($ids);
+            $item->expiresAfter(600);
+
+            $this->psr6Cache->saveDeferred($item);
+        }
+
+        return $item->get();
     }
 }

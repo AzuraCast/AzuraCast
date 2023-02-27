@@ -387,52 +387,6 @@ final class Index
     /**
      * @return PaginatorAdapter<array>
      */
-    public function getRequestableSearchPaginator(
-        Station $station,
-        ?string $query,
-        array $searchParams = [],
-        array $options = [],
-    ): PaginatorAdapter {
-        return $this->getSearchPaginator(
-            $query,
-            [
-                ...$searchParams,
-                'filter' => [
-                    [
-                        'station_' . $station->getIdRequired() . '_is_requestable = true',
-                    ],
-                ],
-            ],
-            $options
-        );
-    }
-
-    /**
-     * @return PaginatorAdapter<array>
-     */
-    public function getOnDemandSearchPaginator(
-        Station $station,
-        ?string $query,
-        array $searchParams = [],
-        array $options = [],
-    ): PaginatorAdapter {
-        return $this->getSearchPaginator(
-            $query,
-            [
-                ...$searchParams,
-                'filter' => [
-                    [
-                        'station_' . $station->getIdRequired() . '_is_on_demand = true',
-                    ],
-                ],
-            ],
-            $options
-        );
-    }
-
-    /**
-     * @return PaginatorAdapter<array>
-     */
     public function getSearchPaginator(
         ?string $query,
         array $searchParams = [],

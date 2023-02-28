@@ -369,7 +369,7 @@ final class ListAction
         $playlist = null;
 
         if (str_contains($query, 'playlist:')) {
-            preg_match('/playlist:(\w*)/', $query, $matches, PREG_UNMATCHED_AS_NULL);
+            preg_match('/playlist:(\S*)/', $query, $matches, PREG_UNMATCHED_AS_NULL);
 
             if ($matches[1]) {
                 $playlistId = $matches[1];

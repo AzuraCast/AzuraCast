@@ -52,7 +52,7 @@
     "lstrojny/fxmlrpc": "dev-master",
     "marcw/rss-writer": "^0.4.0",
     "matomo/device-detector": "^6",
-    "meilisearch/meilisearch-php": "^0.27.0",
+    "meilisearch/meilisearch-php": "^1",
     "mezzio/mezzio-session": "^1.3",
     "mezzio/mezzio-session-cache": "^1.7",
     "monolog/monolog": "^3",

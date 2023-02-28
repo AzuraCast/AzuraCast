@@ -153,7 +153,10 @@ return [
             $cacheInterface = new Symfony\Component\Cache\Adapter\ArrayAdapter();
         } elseif ($redisFactory->isSupported()) {
             $cacheInterface = new Symfony\Component\Cache\Adapter\RedisAdapter(
-                $redisFactory->createInstance()
+                $redisFactory->createInstance(),
+                marshaller: new Symfony\Component\Cache\Marshaller\DefaultMarshaller(
+                    $environment->isProduction() ? null : false
+                )
             );
         } else {
             $tempDir = $environment->getTempDirectory() . DIRECTORY_SEPARATOR . 'cache';

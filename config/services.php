@@ -174,22 +174,22 @@ return [
     Symfony\Component\Cache\Adapter\AdapterInterface::class => DI\get(
         Symfony\Contracts\Cache\CacheInterface::class
     ),
+
     Psr\Cache\CacheItemPoolInterface::class => DI\get(
         Symfony\Contracts\Cache\CacheInterface::class
     ),
-    Psr\SimpleCache\CacheInterface::class => static function (Psr\Cache\CacheItemPoolInterface $cache) {
-        return new Symfony\Component\Cache\Psr16Cache($cache);
-    },
+
+    Psr\SimpleCache\CacheInterface::class => static fn(
+        Psr\Cache\CacheItemPoolInterface $cache
+    ) => new Symfony\Component\Cache\Psr16Cache($cache),
 
     // Symfony Lock adapter
-    Symfony\Component\Lock\PersistingStoreInterface::class => static function (
+    Symfony\Component\Lock\PersistingStoreInterface::class => static fn(
         Environment $environment,
         App\Service\RedisFactory $redisFactory
-    ) {
-        return ($redisFactory->isSupported())
-            ? new Symfony\Component\Lock\Store\RedisStore($redisFactory->createInstance())
-            : new Symfony\Component\Lock\Store\FlockStore($environment->getTempDirectory());
-    },
+    ) => ($redisFactory->isSupported())
+        ? new Symfony\Component\Lock\Store\RedisStore($redisFactory->createInstance())
+        : new Symfony\Component\Lock\Store\FlockStore($environment->getTempDirectory()),
 
     // Console
     App\Console\Application::class => static function (
@@ -235,6 +235,7 @@ return [
 
         return $dispatcher;
     },
+
     Psr\EventDispatcher\EventDispatcherInterface::class => DI\get(
         App\CallableEventDispatcherInterface::class
     ),
@@ -259,6 +260,7 @@ return [
 
         return $logger;
     },
+
     Psr\Log\LoggerInterface::class => DI\get(Monolog\Logger::class),
 
     // Doctrine annotations reader

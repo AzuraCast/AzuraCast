@@ -10,8 +10,6 @@ use MaxMind\Db\Reader;
 use Psr\Cache\CacheItemPoolInterface;
 use RuntimeException;
 use Symfony\Component\Cache\Adapter\ProxyAdapter;
-use Symfony\Component\Cache\CacheItem;
-use Symfony\Contracts\Cache\CacheInterface;
 
 final class IpGeolocation
 {
@@ -23,11 +21,11 @@ final class IpGeolocation
 
     private string $attribution = '';
 
-    private CacheInterface $cache;
+    private CacheItemPoolInterface $psr6Cache;
 
     public function __construct(CacheItemPoolInterface $psr6Cache)
     {
-        $this->cache = new ProxyAdapter($psr6Cache, 'ip_geo.');
+        $this->psr6Cache = new ProxyAdapter($psr6Cache, 'ip_geo.');
     }
 
     private function initialize(): void
@@ -82,30 +80,33 @@ final class IpGeolocation
 
         $cacheKey = $this->readerShortName . '_' . str_replace([':', '.'], '_', $ip);
 
-        $ipInfo = $this->cache->get(
-            $cacheKey,
-            function (CacheItem $item) use ($ip, $reader) {
-                /** @noinspection SummerTimeUnsafeTimeManipulationInspection */
-                $item->expiresAfter(86400 * 7);
+        $cacheItem = $this->psr6Cache->getItem($cacheKey);
 
-                try {
-                    $ipInfo = $reader->get($ip);
-                    if (!empty($ipInfo)) {
-                        return $ipInfo;
-                    }
-
-                    return [
-                        'status' => 'error',
-                        'message' => 'Internal/Reserved IP',
-                    ];
-                } catch (Exception $e) {
-                    return [
-                        'status' => 'error',
-                        'message' => $e->getMessage(),
-                    ];
+        if (!$cacheItem->isHit()) {
+            try {
+                $ipInfo = $reader->get($ip);
+                if (!empty($ipInfo)) {
+                    return $ipInfo;
                 }
+
+                $cacheItem->set([
+                    'status' => 'error',
+                    'message' => 'Internal/Reserved IP',
+                ]);
+            } catch (Exception $e) {
+                $cacheItem->set([
+                    'status' => 'error',
+                    'message' => $e->getMessage(),
+                ]);
             }
-        );
+
+            /** @noinspection SummerTimeUnsafeTimeManipulationInspection */
+            $cacheItem->expiresAfter(86400 * 7);
+
+            $this->psr6Cache->saveDeferred($cacheItem);
+        }
+
+        $ipInfo = $cacheItem->get();
 
         return IpGeolocator\IpResult::fromIpInfo($ip, $ipInfo);
     }

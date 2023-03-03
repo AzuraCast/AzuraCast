@@ -73,32 +73,11 @@ final class IpGeolocation
             $this->initialize();
         }
 
-        $reader = $this->reader;
-        if (null === $reader) {
-            throw new RuntimeException('No IP Geolocation reader available.');
-        }
-
         $cacheKey = $this->readerShortName . '_' . str_replace([':', '.'], '_', $ip);
-
         $cacheItem = $this->psr6Cache->getItem($cacheKey);
 
         if (!$cacheItem->isHit()) {
-            try {
-                $ipInfo = $reader->get($ip);
-                if (!empty($ipInfo)) {
-                    return $ipInfo;
-                }
-
-                $cacheItem->set([
-                    'status' => 'error',
-                    'message' => 'Internal/Reserved IP',
-                ]);
-            } catch (Exception $e) {
-                $cacheItem->set([
-                    'status' => 'error',
-                    'message' => $e->getMessage(),
-                ]);
-            }
+            $cacheItem->set($this->getUncachedLocationInfo($ip));
 
             /** @noinspection SummerTimeUnsafeTimeManipulationInspection */
             $cacheItem->expiresAfter(86400 * 7);
@@ -109,5 +88,30 @@ final class IpGeolocation
         $ipInfo = $cacheItem->get();
 
         return IpGeolocator\IpResult::fromIpInfo($ip, $ipInfo);
+    }
+
+    private function getUncachedLocationInfo(string $ip): array
+    {
+        $reader = $this->reader;
+        if (null === $reader) {
+            throw new RuntimeException('No IP Geolocation reader available.');
+        }
+
+        try {
+            $ipInfo = $reader->get($ip);
+            if (!empty($ipInfo)) {
+                return $ipInfo;
+            }
+
+            return [
+                'status' => 'error',
+                'message' => 'Internal/Reserved IP',
+            ];
+        } catch (Exception $e) {
+            return [
+                'status' => 'error',
+                'message' => $e->getMessage(),
+            ];
+        }
     }
 }

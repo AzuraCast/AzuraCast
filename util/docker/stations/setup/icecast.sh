@@ -9,13 +9,20 @@ apt-get install -q -y --no-install-recommends \
 mkdir -p /bd_build/stations/icecast_build
 cd /bd_build/stations/icecast_build
 
-curl -fsSL https://github.com/karlheyes/icecast-kh/archive/refs/tags/icecast-2.4.0-kh20.tar.gz \
-  -o icecast.tar.gz
+# Get the latest release tag name for Icecast
+tag_name=$(curl -s https://api.github.com/repos/karlheyes/icecast-kh/releases/latest | grep "tag_name" | cut -d '"' -f 4)
+
+# Construct the release URL for Icecast
+release_url="https://github.com/karlheyes/icecast-kh/archive/refs/tags/$tag_name.tar.gz"
+
+# Download and extract the Icecast source code
+curl -fsSL -o icecast.tar.gz "$release_url"
 tar -xvzf icecast.tar.gz --strip-components=1
 
 # git clone https://github.com/karlheyes/icecast-kh.git .
 # git checkout 3b04a78133b7c4b8f879b55e83c139532976de87
 
+# Build and install Icecast
 ./configure
 make
 make install

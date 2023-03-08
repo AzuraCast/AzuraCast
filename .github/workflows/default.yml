@@ -203,7 +203,7 @@ jobs:
         with:
           images: |
             azuracast/azuracast
-            ghcr.io/azuracast/azuracast,
+            ghcr.io/azuracast/azuracast
             709825985650.dkr.ecr.us-east-1.amazonaws.com/azuracast/azuracast
           tags: |
             type=raw,value=latest,enable=${{ endsWith(github.ref, github.event.repository.default_branch) }}

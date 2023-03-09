@@ -187,16 +187,6 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v2
-        with:
-          role-to-assume: arn:aws:iam::168166115991:role/githubactions
-          aws-region: us-east-1
-
-      - name: Login to Amazon ECR
-        id: login-ecr
-        uses: aws-actions/amazon-ecr-login@v1
-
       - name: Build Docker Metadata
         id: meta
         uses: docker/metadata-action@v4
@@ -204,7 +194,6 @@ jobs:
           images: |
             azuracast/azuracast
             ghcr.io/azuracast/azuracast
-            709825985650.dkr.ecr.us-east-1.amazonaws.com/azuracast/azuracast
           tags: |
             type=raw,value=latest,enable=${{ endsWith(github.ref, github.event.repository.default_branch) }}
             type=ref,event=branch

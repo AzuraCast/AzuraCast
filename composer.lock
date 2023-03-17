@@ -58,16 +58,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.261.13",
+            "version": "3.261.14",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "233b70c951707830dd205959375c98be35cbb36e"
+                "reference": "121638bb7e62ee2f71838c52e79884f4301a9400"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/233b70c951707830dd205959375c98be35cbb36e",
-                "reference": "233b70c951707830dd205959375c98be35cbb36e",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/121638bb7e62ee2f71838c52e79884f4301a9400",
+                "reference": "121638bb7e62ee2f71838c52e79884f4301a9400",
                 "shasum": ""
             },
             "require": {
@@ -146,9 +146,9 @@
             "support": {
                 "forum": "https://forums.aws.amazon.com/forum.jspa?forumID=80",
                 "issues": "https://github.com/aws/aws-sdk-php/issues",
-                "source": "https://github.com/aws/aws-sdk-php/tree/3.261.13"
+                "source": "https://github.com/aws/aws-sdk-php/tree/3.261.14"
             },
-            "time": "2023-03-16T18:22:32+00:00"
+            "time": "2023-03-17T18:21:00+00:00"
         },
         {
             "name": "azuracast/nowplaying",
@@ -2285,16 +2285,16 @@
         },
         {
             "name": "graham-campbell/guzzle-factory",
-            "version": "v5.1.2",
+            "version": "v6.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/GrahamCampbell/Guzzle-Factory.git",
-                "reference": "2cf8469e3ede97b62a4e8164f5cbf90b0ee58abb"
+                "reference": "cf888363ff70e47e09c1e459a032287255ecfdb6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/GrahamCampbell/Guzzle-Factory/zipball/2cf8469e3ede97b62a4e8164f5cbf90b0ee58abb",
-                "reference": "2cf8469e3ede97b62a4e8164f5cbf90b0ee58abb",
+                "url": "https://api.github.com/repos/GrahamCampbell/Guzzle-Factory/zipball/cf888363ff70e47e09c1e459a032287255ecfdb6",
+                "reference": "cf888363ff70e47e09c1e459a032287255ecfdb6",
                 "shasum": ""
             },
             "require": {
@@ -2303,8 +2303,8 @@
                 "php": "^7.4.15 || ^8.0.2"
             },
             "require-dev": {
-                "graham-campbell/analyzer": "^3.1",
-                "phpunit/phpunit": "^9.5"
+                "graham-campbell/analyzer": "^4.0",
+                "phpunit/phpunit": "^9.6.3 || ^10.0.12"
             },
             "type": "library",
             "autoload": {
@@ -2334,7 +2334,7 @@
             ],
             "support": {
                 "issues": "https://github.com/GrahamCampbell/Guzzle-Factory/issues",
-                "source": "https://github.com/GrahamCampbell/Guzzle-Factory/tree/v5.1.2"
+                "source": "https://github.com/GrahamCampbell/Guzzle-Factory/tree/v6.0.0"
             },
             "funding": [
                 {
@@ -2346,7 +2346,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-11-06T17:37:38+00:00"
+            "time": "2023-02-25T20:48:53+00:00"
         },
         {
             "name": "graham-campbell/result-type",
@@ -6514,21 +6514,21 @@
         },
         {
             "name": "spatie/dropbox-api",
-            "version": "1.21.0",
+            "version": "1.21.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/dropbox-api.git",
-                "reference": "0fec337ca1244f21f0467f73a43893f7bd7fdcdb"
+                "reference": "d42f572e0d7fd645d41f26fa7e9ade6625a02296"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/dropbox-api/zipball/0fec337ca1244f21f0467f73a43893f7bd7fdcdb",
-                "reference": "0fec337ca1244f21f0467f73a43893f7bd7fdcdb",
+                "url": "https://api.github.com/repos/spatie/dropbox-api/zipball/d42f572e0d7fd645d41f26fa7e9ade6625a02296",
+                "reference": "d42f572e0d7fd645d41f26fa7e9ade6625a02296",
                 "shasum": ""
             },
             "require": {
                 "ext-json": "*",
-                "graham-campbell/guzzle-factory": "^3.0|^4.0|^5.0",
+                "graham-campbell/guzzle-factory": "^3.0|^4.0|^5.0|^6.0",
                 "guzzlehttp/guzzle": "^6.2|^7.0",
                 "php": "^7.1|^8.0"
             },
@@ -6573,7 +6573,7 @@
             ],
             "support": {
                 "issues": "https://github.com/spatie/dropbox-api/issues",
-                "source": "https://github.com/spatie/dropbox-api/tree/1.21.0"
+                "source": "https://github.com/spatie/dropbox-api/tree/1.21.1"
             },
             "funding": [
                 {
@@ -6585,7 +6585,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2022-09-27T13:37:04+00:00"
+            "time": "2023-03-17T14:11:20+00:00"
         },
         {
             "name": "spatie/flysystem-dropbox",
@@ -9759,16 +9759,16 @@
         },
         {
             "name": "zircote/swagger-php",
-            "version": "4.7.3",
+            "version": "4.7.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zircote/swagger-php.git",
-                "reference": "0299edc47eb4813a2c598a0348eaf205704adc92"
+                "reference": "1661f99005655b77d0b9c4d93dba12ed9352e3be"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zircote/swagger-php/zipball/0299edc47eb4813a2c598a0348eaf205704adc92",
-                "reference": "0299edc47eb4813a2c598a0348eaf205704adc92",
+                "url": "https://api.github.com/repos/zircote/swagger-php/zipball/1661f99005655b77d0b9c4d93dba12ed9352e3be",
+                "reference": "1661f99005655b77d0b9c4d93dba12ed9352e3be",
                 "shasum": ""
             },
             "require": {
@@ -9831,9 +9831,9 @@
             ],
             "support": {
                 "issues": "https://github.com/zircote/swagger-php/issues",
-                "source": "https://github.com/zircote/swagger-php/tree/4.7.3"
+                "source": "https://github.com/zircote/swagger-php/tree/4.7.4"
             },
-            "time": "2023-03-08T02:27:27+00:00"
+            "time": "2023-03-17T19:58:25+00:00"
         }
     ],
     "packages-dev": [
@@ -11420,16 +11420,16 @@
         },
         {
             "name": "phpstan/phpstan-doctrine",
-            "version": "1.3.36",
+            "version": "1.3.37",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpstan-doctrine.git",
-                "reference": "8c22f2499444897941f9162c25f8538217c16f15"
+                "reference": "62bd362b432fe29e175168689510ddd927b698f8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan-doctrine/zipball/8c22f2499444897941f9162c25f8538217c16f15",
-                "reference": "8c22f2499444897941f9162c25f8538217c16f15",
+                "url": "https://api.github.com/repos/phpstan/phpstan-doctrine/zipball/62bd362b432fe29e175168689510ddd927b698f8",
+                "reference": "62bd362b432fe29e175168689510ddd927b698f8",
                 "shasum": ""
             },
             "require": {
@@ -11484,9 +11484,9 @@
             "description": "Doctrine extensions for PHPStan",
             "support": {
                 "issues": "https://github.com/phpstan/phpstan-doctrine/issues",
-                "source": "https://github.com/phpstan/phpstan-doctrine/tree/1.3.36"
+                "source": "https://github.com/phpstan/phpstan-doctrine/tree/1.3.37"
             },
-            "time": "2023-03-15T15:10:43+00:00"
+            "time": "2023-03-17T14:57:03+00:00"
         },
         {
             "name": "phpunit/php-code-coverage",
@@ -12045,12 +12045,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Roave/SecurityAdvisories.git",
-                "reference": "0aad20933686be0e30c54a0e1adf36b3b6dc7173"
+                "reference": "ad434708152844968e15adf8eb3f4a2d7066242e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/0aad20933686be0e30c54a0e1adf36b3b6dc7173",
-                "reference": "0aad20933686be0e30c54a0e1adf36b3b6dc7173",
+                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/ad434708152844968e15adf8eb3f4a2d7066242e",
+                "reference": "ad434708152844968e15adf8eb3f4a2d7066242e",
                 "shasum": ""
             },
             "conflict": {
@@ -12262,6 +12262,7 @@
                 "kimai/kimai": "<1.1",
                 "kitodo/presentation": "<3.1.2",
                 "klaviyo/magento2-extension": ">=1,<3",
+                "knplabs/knp-snappy": "<=1.4.1",
                 "krayin/laravel-crm": "<1.2.2",
                 "kreait/firebase-php": ">=3.2,<3.8.1",
                 "la-haute-societe/tcpdf": "<6.2.22",
@@ -12630,7 +12631,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-03-15T23:04:16+00:00"
+            "time": "2023-03-17T19:03:58+00:00"
         },
         {
             "name": "sebastian/cli-parser",

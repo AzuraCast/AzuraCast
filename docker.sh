@@ -16,7 +16,11 @@ dc() {
   if [[ $PODMAN_MODE -ne 0 ]]; then
     podman-compose "$@"
   else
-    docker-compose "$@"
+    if [[ $(docker compose version) ]]; then
+      docker compose "$@"
+    else
+      docker-compose "$@"
+    fi
   fi
 }
 
@@ -438,11 +442,15 @@ install() {
       fi
     fi
 
-    if [[ $(command -v docker-compose) ]]; then
-      echo "Docker Compose is already installed. Continuing..."
+    if [[ $(docker compose version) ]]; then
+      echo "Docker Compose v2 is already installed. Continuing..."
     else
-      if ask "Docker Compose does not appear to be installed. Install Docker Compose now?" Y; then
-        install-docker-compose
+      if [[ $(command -v docker-compose) ]]; then
+        echo "Docker Compose is already installed. Continuing..."
+      else
+        if ask "Docker Compose does not appear to be installed. Install Docker Compose now?" Y; then
+          install-docker-compose
+        fi
       fi
     fi
   fi
@@ -486,11 +494,15 @@ install-dev() {
     fi
   fi
 
-  if [[ $(command -v docker-compose) ]]; then
-    echo "Docker Compose is already installed. Continuing..."
+  if [[ $(docker compose version) ]]; then
+    echo "Docker Compose v2 is already installed. Continuing..."
   else
-    if ask "Docker Compose does not appear to be installed. Install Docker Compose now?" Y; then
-      install-docker-compose
+    if [[ $(command -v docker-compose) ]]; then
+      echo "Docker Compose is already installed. Continuing..."
+    else
+      if ask "Docker Compose does not appear to be installed. Install Docker Compose now?" Y; then
+        install-docker-compose
+      fi
     fi
   fi
 

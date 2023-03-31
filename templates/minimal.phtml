@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <?php
 /**
  * @var League\Plates\Template\Template $this
@@ -16,7 +15,9 @@
 $title ??= null;
 $hide_footer ??= false;
 ?>
-<html data-theme="<?= $customization->getPublicTheme()->value ?>">
+<!DOCTYPE html>
+<html lang="<?= $customization->getLocale()->getHtmlLang() ?>"
+      data-theme="<?= $customization->getPublicTheme()->value ?>">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">

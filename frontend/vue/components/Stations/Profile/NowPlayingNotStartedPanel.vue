@@ -3,9 +3,13 @@
         id="profile-now-playing"
         class="card"
         role="region"
+        aria-labelledby="hdr_now_playing"
     >
         <div class="card-header bg-primary-dark">
-            <h3 class="card-title">
+            <h3
+                id="hdr_now_playing"
+                class="card-title"
+            >
                 {{ $gettext('On the Air') }}
             </h3>
         </div>

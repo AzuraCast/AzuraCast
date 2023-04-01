@@ -48,12 +48,14 @@ $hide_footer ??= false;
 
 <?= $sections->get('station_bodyjs') ?>
 
-<?= $this->section('content') ?>
+<main>
+    <?= $this->section('content') ?>
+</main>
 
 <?php
 $hide_footer ??= false;
 if (!$customization->hideProductName() && !$hide_footer): ?>
-    <footer id="footer" class="footer-alt" role="contentinfo">
+    <footer id="footer" class="footer-alt" role="contentinfo" aria-label="<?= __('Footer') ?>">
         <?= sprintf(
             __('Powered by %s'),
             '<a href="https://azuracast.com/" target="_blank">' . $environment->getAppName() . '</a>' . ' '

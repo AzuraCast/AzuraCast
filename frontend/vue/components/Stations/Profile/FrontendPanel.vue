@@ -3,9 +3,13 @@
         id="profile-frontend"
         class="card mb-4"
         role="region"
+        aria-labelledby="hdr_frontend"
     >
         <div class="card-header bg-primary-dark">
-            <h3 class="card-title">
+            <h3
+                id="hdr_frontend"
+                class="card-title"
+            >
                 {{ $gettext('Broadcasting Service') }}
 
                 <running-badge :running="frontendRunning" />

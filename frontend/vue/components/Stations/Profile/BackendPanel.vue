@@ -3,9 +3,13 @@
         id="profile-backend"
         class="card"
         role="region"
+        aria-labelledby="hdr_backend"
     >
         <div class="card-header bg-primary-dark">
-            <h3 class="card-title">
+            <h3
+                id="hdr_backend"
+                class="card-title"
+            >
                 {{ $gettext('AutoDJ Service') }}
                 <running-badge :running="backendRunning" />
                 <br>

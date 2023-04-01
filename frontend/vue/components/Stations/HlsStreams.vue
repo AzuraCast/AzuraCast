@@ -1,7 +1,14 @@
 <template>
-    <b-card no-body>
+    <section
+        class="card"
+        role="region"
+        aria-labelledby="hdr_hls_streams"
+    >
         <b-card-header header-bg-variant="primary-dark">
-            <h2 class="card-title">
+            <h2
+                id="hdr_hls_streams"
+                class="card-title"
+            >
                 {{ $gettext('HLS Streams') }}
             </h2>
         </b-card-header>
@@ -61,7 +68,7 @@
                 </b-button-group>
             </template>
         </data-table>
-    </b-card>
+    </section>
 
     <edit-modal
         ref="$editModal"

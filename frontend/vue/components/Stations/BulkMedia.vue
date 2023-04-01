@@ -4,9 +4,13 @@
             <section
                 class="card"
                 role="region"
+                aria-labelledby="hdr_export_media"
             >
                 <div class="card-header bg-primary-dark">
-                    <h2 class="card-title">
+                    <h2
+                        id="hdr_export_media"
+                        class="card-title"
+                    >
                         {{ $gettext('Export Media to CSV') }}
                     </h2>
                 </div>

@@ -2,9 +2,13 @@
     <section
         class="card"
         role="region"
+        aria-labelledby="hdr_edit_profile"
     >
         <div class="card-header bg-primary-dark">
-            <h3 class="card-title">
+            <h3
+                id="hdr_edit_profile"
+                class="card-title"
+            >
                 {{ $gettext('Edit Station Profile') }}
             </h3>
         </div>

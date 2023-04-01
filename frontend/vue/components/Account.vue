@@ -9,9 +9,13 @@
                 <section
                     class="card"
                     role="region"
+                    aria-labelledby="hdr_profile"
                 >
                     <b-card-header header-bg-variant="primary-dark">
-                        <h2 class="card-title">
+                        <h2
+                            id="hdr_profile"
+                            class="card-title"
+                        >
                             {{ $gettext('Profile') }}
                         </h2>
                     </b-card-header>
@@ -80,9 +84,13 @@
                 <section
                     class="card"
                     role="region"
+                    aria-labelledby="hdr_security"
                 >
                     <b-card-header header-bg-variant="primary-dark">
-                        <h2 class="card-title">
+                        <h2
+                            id="hdr_security"
+                            class="card-title"
+                        >
                             {{ $gettext('Security') }}
                         </h2>
                     </b-card-header>
@@ -133,9 +141,16 @@
                 </section>
             </div>
             <div class="col-sm-12 col-md-6 col-lg-7">
-                <b-card no-body>
+                <section
+                    class="card"
+                    role="region"
+                    aria-labelledby="hdr_api_keys"
+                >
                     <b-card-header header-bg-variant="primary-dark">
-                        <h2 class="card-title">
+                        <h2
+                            id="hdr_api_keys"
+                            class="card-title"
+                        >
                             {{ $gettext('API Keys') }}
                         </h2>
                     </b-card-header>
@@ -181,7 +196,7 @@
                             </b-button-group>
                         </template>
                     </data-table>
-                </b-card>
+                </section>
             </div>
         </div>
 

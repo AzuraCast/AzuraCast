@@ -2,10 +2,14 @@
     <section
         class="card"
         role="region"
+        aria-labelledby="hdr_song_requests"
     >
         <template v-if="enableRequests">
             <div class="card-header bg-primary-dark">
-                <h3 class="card-title">
+                <h3
+                    id="hdr_song_requests"
+                    class="card-title"
+                >
                     {{ $gettext('Song Requests') }}
                     <enabled-badge :enabled="true" />
                 </h3>

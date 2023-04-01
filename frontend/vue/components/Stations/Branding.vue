@@ -3,9 +3,13 @@
         <section
             class="card"
             role="region"
+            aria-labelledby="hdr_custom_assets"
         >
             <div class="card-header bg-primary-dark">
-                <h2 class="card-title">
+                <h2
+                    id="hdr_custom_assets"
+                    class="card-title"
+                >
                     {{ $gettext('Upload Custom Assets') }}
                 </h2>
             </div>

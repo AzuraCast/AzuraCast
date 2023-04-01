@@ -2,9 +2,13 @@
     <section
         class="card"
         role="region"
+        aria-labelledby="hdr_fallback_file"
     >
         <div class="card-header bg-primary-dark">
-            <h2 class="card-title">
+            <h2
+                id="hdr_fallback_file"
+                class="card-title"
+            >
                 {{ $gettext('Custom Fallback File') }}
             </h2>
         </div>

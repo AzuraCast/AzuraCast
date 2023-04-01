@@ -6,9 +6,13 @@
         <section
             class="card"
             role="region"
+            aria-labelledby="hdr_edit_ls_config"
         >
             <div class="card-header bg-primary-dark">
-                <h2 class="card-title">
+                <h2
+                    id="hdr_edit_ls_config"
+                    class="card-title"
+                >
                     {{ $gettext('Edit Liquidsoap Configuration') }}
                 </h2>
             </div>

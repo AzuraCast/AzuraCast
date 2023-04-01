@@ -1,7 +1,14 @@
 <template>
-    <b-card no-body>
+    <section
+        class="card"
+        role="region"
+        aria-labelledby="hdr_remote_relays"
+    >
         <b-card-header header-bg-variant="primary-dark">
-            <h2 class="card-title">
+            <h2
+                id="hdr_remote_relays"
+                class="card-title"
+            >
                 {{ $gettext('Remote Relays') }}
             </h2>
         </b-card-header>
@@ -70,7 +77,7 @@
                 </b-button-group>
             </template>
         </data-table>
-    </b-card>
+    </section>
 
     <remote-edit-modal
         ref="$editModal"

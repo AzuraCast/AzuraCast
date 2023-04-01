@@ -1,7 +1,14 @@
 <template>
-    <b-card no-body>
+    <section
+        class="card"
+        role="region"
+        aria-labelledby="hdr_mount_points"
+    >
         <b-card-header header-bg-variant="primary-dark">
-            <h2 class="card-title">
+            <h2
+                id="hdr_mount_points"
+                class="card-title"
+            >
                 {{ $gettext('Mount Points') }}
             </h2>
         </b-card-header>
@@ -69,7 +76,7 @@
                 </b-button-group>
             </template>
         </data-table>
-    </b-card>
+    </section>
 
     <edit-modal
         ref="$editModal"

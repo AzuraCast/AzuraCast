@@ -2,9 +2,13 @@
     <section
         class="card"
         role="region"
+        aria-labelledby="hdr_streams"
     >
         <div class="card-header bg-primary-dark">
-            <h3 class="card-title">
+            <h3
+                id="hdr_streams"
+                class="card-title"
+            >
                 {{ $gettext('Streams') }}
             </h3>
         </div>

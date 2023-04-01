@@ -2,10 +2,14 @@
     <section
         class="card"
         role="region"
+        aria-labelledby="hdr_public_pages"
     >
         <template v-if="enablePublicPage">
             <div class="card-header bg-primary-dark">
-                <h3 class="card-title">
+                <h3
+                    id="hdr_public_pages"
+                    class="card-title"
+                >
                     {{ $gettext('Public Pages') }}
                     <enabled-badge :enabled="true" />
                 </h3>

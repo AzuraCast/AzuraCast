@@ -3,9 +3,13 @@
         id="profile-backend"
         class="card"
         role="region"
+        aria-labelledby="hdr_backend_disabled"
     >
         <div class="card-header bg-primary-dark">
-            <h3 class="card-title">
+            <h3
+                id="hdr_backend_disabled"
+                class="card-title"
+            >
                 {{ $gettext('AutoDJ Disabled') }}
             </h3>
         </div>

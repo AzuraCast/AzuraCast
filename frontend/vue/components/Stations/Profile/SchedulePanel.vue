@@ -3,9 +3,13 @@
         v-if="processedScheduleItems.length > 0"
         class="card scheduled"
         role="region"
+        aria-labelledby="hdr_scheduled"
     >
         <div class="card-header bg-primary-dark">
-            <h3 class="card-title">
+            <h3
+                id="hdr_scheduled"
+                class="card-title"
+            >
                 {{ $gettext('Scheduled') }}
             </h3>
         </div>

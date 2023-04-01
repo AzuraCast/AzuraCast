@@ -1,7 +1,14 @@
 <template>
-    <div class="card">
+    <section
+        class="card"
+        role="region"
+        aria-labelledby="hdr_connection_info"
+    >
         <div class="card-header bg-primary-dark">
-            <h2 class="card-title">
+            <h2
+                id="hdr_connection_info"
+                class="card-title"
+            >
                 {{ $gettext('Connection Information') }}
             </h2>
         </div>
@@ -79,7 +86,7 @@
                 </a>
             </p>
         </div>
-    </div>
+    </section>
 </template>
 
 <script setup>

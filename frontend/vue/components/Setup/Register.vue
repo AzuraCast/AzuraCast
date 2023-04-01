@@ -1,10 +1,17 @@
 <template>
     <div class="public-page">
-        <div class="card">
+        <section
+            class="card"
+            role="region"
+            aria-labelledby="hdr_first_time_setup"
+        >
             <div class="card-body p-4">
                 <div class="row mb-2">
                     <div class="col-sm">
-                        <h2 class="card-title mb-0 text-center">
+                        <h2
+                            id="hdr_first_time_setup"
+                            class="card-title mb-0 text-center"
+                        >
                             {{ $gettext('AzuraCast First-Time Setup') }}
                         </h2>
                         <h3 class="text-center">
@@ -91,7 +98,7 @@
                     </b-button>
                 </form>
             </div>
-        </div>
+        </section>
     </div>
 </template>
 

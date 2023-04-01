@@ -1,9 +1,16 @@
 <template>
     <setup-step :step="2" />
 
-    <b-card no-body>
+    <section
+        class="card"
+        role="region"
+        aria-labelledby="hdr_new_station"
+    >
         <div class="card-header bg-primary-dark">
-            <h3 class="card-title">
+            <h3
+                id="hdr_new_station"
+                class="card-title"
+            >
                 {{ $gettext('Create a New Radio Station') }}
             </h3>
         </div>
@@ -25,7 +32,7 @@
                 {{ $gettext('Create and Continue') }}
             </template>
         </admin-stations-form>
-    </b-card>
+    </section>
 </template>
 
 <script setup>

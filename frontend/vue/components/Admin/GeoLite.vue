@@ -1,7 +1,14 @@
 <template>
-    <div class="card">
+    <section
+        class="card"
+        role="region"
+        aria-labelledby="hdr_install_geolite"
+    >
         <div class="card-header bg-primary-dark">
-            <h2 class="card-title">
+            <h2
+                id="hdr_install_geolite"
+                class="card-title"
+            >
                 {{ $gettext('Install GeoLite IP Database') }}
             </h2>
         </div>
@@ -105,7 +112,7 @@
                 </div>
             </b-overlay>
         </div>
-    </div>
+    </section>
 </template>
 
 <script setup>

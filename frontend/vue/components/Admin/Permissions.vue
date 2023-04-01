@@ -1,7 +1,14 @@
 <template>
-    <b-card no-body>
+    <section
+        class="card"
+        role="region"
+        aria-labelledby="hdr_roles_permissions"
+    >
         <b-card-header header-bg-variant="primary-dark">
-            <h2 class="card-title">
+            <h2
+                id="hdr_roles_permissions"
+                class="card-title"
+            >
                 {{ $gettext('Roles & Permissions') }}
             </h2>
         </b-card-header>
@@ -68,7 +75,7 @@
                 </b-button-group>
             </template>
         </data-table>
-    </b-card>
+    </section>
 
     <edit-modal
         ref="$editModal"

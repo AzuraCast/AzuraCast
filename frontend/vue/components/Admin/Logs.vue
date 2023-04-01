@@ -1,8 +1,15 @@
 <template>
     <div class="row-of-cards">
-        <div class="card">
+        <section
+            class="card"
+            role="region"
+            aria-labelledby="hdr_system_logs"
+        >
             <div class="card-header bg-primary-dark">
-                <h2 class="card-title">
+                <h2
+                    id="hdr_system_logs"
+                    class="card-title"
+                >
                     {{ $gettext('System Logs') }}
                 </h2>
             </div>
@@ -11,14 +18,19 @@
                 :url="systemLogsUrl"
                 @view="viewLog"
             />
-        </div>
+        </section>
 
-        <div
+        <section
             v-if="stationLogs.length > 0"
             class="card"
+            role="region"
+            aria-labelledby="hdr_logs_by_station"
         >
             <div class="card-header bg-primary-dark">
-                <h2 class="card-title">
+                <h2
+                    id="hdr_logs_by_station"
+                    class="card-title"
+                >
                     {{ $gettext('Logs by Station') }}
                 </h2>
             </div>
@@ -40,7 +52,7 @@
                     />
                 </b-tab>
             </b-tabs>
-        </div>
+        </section>
     </div>
 
     <streaming-log-modal ref="$modal" />

@@ -1,7 +1,14 @@
 <template>
-    <b-card no-body>
+    <section
+        class="card"
+        role="region"
+        aria-labelledby="hdr_users"
+    >
         <b-card-header header-bg-variant="primary-dark">
-            <h2 class="card-title">
+            <h2
+                id="hdr_users"
+                class="card-title"
+            >
                 {{ $gettext('Users') }}
             </h2>
         </b-card-header>
@@ -76,7 +83,7 @@
                 </b-button-group>
             </template>
         </data-table>
-    </b-card>
+    </section>
 
     <edit-modal
         ref="$editModal"

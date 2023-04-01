@@ -1,8 +1,15 @@
 <template>
-    <div class="card">
+    <section
+        class="card"
+        role="region"
+        aria-labelledby="hdr_audit_log"
+    >
         <div class="card-header bg-primary-dark">
             <div class="d-flex align-items-center">
-                <h2 class="card-title flex-fill my-0">
+                <h2
+                    id="hdr_audit_log"
+                    class="card-title flex-fill my-0"
+                >
                     {{ $gettext('Audit Log') }}
                 </h2>
                 <div class="flex-shrink">
@@ -107,7 +114,7 @@
                 </table>
             </template>
         </data-table>
-    </div>
+    </section>
 </template>
 
 <script setup>

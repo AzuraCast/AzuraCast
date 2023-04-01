@@ -54,6 +54,7 @@
                     class="card-body d-flex align-items-center"
                     :class="'alert-'+notification.type"
                     role="alert"
+                    aria-live="polite"
                 >
                     <div
                         v-if="'info' === notification.type"

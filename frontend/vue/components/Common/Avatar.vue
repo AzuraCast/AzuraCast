@@ -6,6 +6,7 @@
         class="avatar"
         target="_blank"
         :title="langAvatar"
+        :aria-label="$gettext('Manage Avatar')"
     >
         <img
             :src="url"

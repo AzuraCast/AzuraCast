@@ -191,7 +191,7 @@ endif; ?>
 
 <footer id="footer" <?php
 if (!$sections->has('sidebar')): ?>class="footer-alt"<?php
-endif; ?> role="contentinfo">
+endif; ?> role="contentinfo" aria-label="<?= __('Footer') ?>">
     <?= sprintf(
         __('Powered by %s'),
         '<a href="https://www.azuracast.com/" target="_blank">' . $environment->getAppName(

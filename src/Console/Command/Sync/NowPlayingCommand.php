@@ -4,17 +4,8 @@ declare(strict_types=1);
 
 namespace App\Console\Command\Sync;
 
-use App\Console\Command\CommandAbstract;
-use App\Doctrine\ReloadableEntityManagerInterface;
-use App\Entity\Repository\StationRepository;
-use App\Entity\Station;
 use App\Environment;
-use App\Sync\NowPlaying\Task\BuildQueueTask;
-use App\Sync\NowPlaying\Task\NowPlayingTask;
-use Monolog\Logger;
-use Monolog\LogRecord;
 use App\Entity\Repository\SettingsRepository;
-use App\Environment;
 use App\Lock\LockFactory;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
@@ -32,6 +23,8 @@ use function random_int;
 )]
 final class NowPlayingCommand extends AbstractSyncCommand
 {
+    public final const MAX_CONCURRENT_PROCESSES = 5;
+
     public function __construct(
         LoggerInterface $logger,
         LockFactory $lockFactory,
@@ -77,27 +70,32 @@ final class NowPlayingCommand extends AbstractSyncCommand
             // Check existing processes.
             $this->checkRunningProcesses();
 
-            // Ensure a process is running for every active station.
-            if (time() < $threshold - 5) {
+            $numProcesses = count($this->processes);
+
+            if (
+                $numProcesses < self::MAX_CONCURRENT_PROCESSES
+                && time() < $threshold - 5
+            ) {
+                $numRemaining = self::MAX_CONCURRENT_PROCESSES - $numProcesses;
+
+                // Ensure a process is running for every active station.
                 $activeStations = $this->em->createQuery(
                     <<<'DQL'
-                    SELECT s.id, s.short_name, s.nowplaying_timestamp
+                    SELECT s.short_name
                     FROM App\Entity\Station s
                     WHERE s.is_enabled = 1 AND s.has_started = 1
+                    AND s.short_name NOT IN (:currentProcesses)
+                    AND s.nowplaying_timestamp < :threshold
+                    ORDER BY s.nowplaying_timestamp ASC
                     DQL
-                )->getArrayResult();
+                )->setParameter('currentProcesses', array_keys($this->processes))
+                    ->setParameter('threshold', time() - $this->environment->getNowPlayingDelayTime())
+                    ->setMaxResults($numRemaining)
+                    ->getSingleColumnResult();
 
-                foreach ($activeStations as $activeStation) {
-                    $shortName = $activeStation['short_name'];
-
-                    if (!isset($this->processes[$shortName])) {
-                        $npTimestamp = (int)$activeStation['nowplaying_timestamp'];
-                        if (time() > $npTimestamp + random_int(5, 15)) {
-                            $this->start($io, $shortName);
-
-                            usleep(250000);
-                        }
-                    }
+                foreach ($activeStations as $shortName) {
+                    $this->start($io, $shortName);
+                    usleep(250000);
                 }
             }
 

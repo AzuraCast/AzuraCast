@@ -44,6 +44,12 @@ abstract class AbstractSyncCommand extends CommandAbstract
                 continue;
             }
 
+            $this->logger->debug(sprintf(
+                'Sync process %s ended with status code %d.',
+                $processName,
+                $process->getExitCode()
+            ));
+
             $lock->release();
             unset($this->processes[$processName]);
         }

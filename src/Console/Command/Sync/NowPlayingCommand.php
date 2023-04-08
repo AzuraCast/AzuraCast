@@ -76,24 +76,31 @@ final class NowPlayingCommand extends AbstractSyncCommand
                 $numProcesses < self::MAX_CONCURRENT_PROCESSES
                 && time() < $threshold - 5
             ) {
-                $numRemaining = self::MAX_CONCURRENT_PROCESSES - $numProcesses;
-
                 // Ensure a process is running for every active station.
+                $npDelay = max(min($this->environment->getNowPlayingDelayTime(), 60), 5);
+                $npThreshold = time() - $npDelay - random_int(0, 5);
+
                 $activeStations = $this->em->createQuery(
                     <<<'DQL'
                     SELECT s.short_name
                     FROM App\Entity\Station s
                     WHERE s.is_enabled = 1 AND s.has_started = 1
-                    AND s.short_name NOT IN (:currentProcesses)
                     AND s.nowplaying_timestamp < :threshold
                     ORDER BY s.nowplaying_timestamp ASC
                     DQL
-                )->setParameter('currentProcesses', array_keys($this->processes))
-                    ->setParameter('threshold', time() - $this->environment->getNowPlayingDelayTime())
-                    ->setMaxResults($numRemaining)
+                )->setParameter('threshold', $npThreshold)
                     ->getSingleColumnResult();
 
                 foreach ($activeStations as $shortName) {
+                    if (count($this->processes) >= self::MAX_CONCURRENT_PROCESSES) {
+                        break;
+                    }
+                    if (isset($this->processes[$shortName])) {
+                        continue;
+                    }
+
+                    $this->logger->debug('Starting NP process for station: ' . $shortName);
+
                     $this->start($io, $shortName);
                     usleep(250000);
                 }

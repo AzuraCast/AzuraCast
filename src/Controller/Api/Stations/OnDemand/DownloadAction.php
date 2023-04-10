@@ -13,7 +13,8 @@ use Psr\Http\Message\ResponseInterface;
 final class DownloadAction
 {
     public function __construct(
-        private readonly Entity\Repository\StationMediaRepository $mediaRepo
+        private readonly Entity\Repository\StationMediaRepository $mediaRepo,
+        private readonly StationFilesystems $stationFilesystems,
     ) {
     }
 
@@ -33,7 +34,7 @@ final class DownloadAction
 
         $media = $this->mediaRepo->requireByUniqueId($media_id, $station);
 
-        $fsMedia = (new StationFilesystems($station))->getMediaFilesystem();
+        $fsMedia = $this->stationFilesystems->getMediaFilesystem($station);
 
         set_time_limit(600);
         return $response->streamFilesystemFile($fsMedia, $media->getPath());

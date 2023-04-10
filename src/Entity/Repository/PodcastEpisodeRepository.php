@@ -22,7 +22,8 @@ final class PodcastEpisodeRepository extends Repository
 {
     public function __construct(
         ReloadableEntityManagerInterface $entityManager,
-        private readonly MetadataManager $metadataManager
+        private readonly MetadataManager $metadataManager,
+        private readonly StorageLocationRepository $storageLocationRepo,
     ) {
         parent::__construct($entityManager);
     }
@@ -81,7 +82,8 @@ final class PodcastEpisodeRepository extends Repository
         $episodeArtworkString = AlbumArt::resize($rawArtworkString);
 
         $storageLocation = $episode->getPodcast()->getStorageLocation();
-        $fs = $storageLocation->getFilesystem();
+        $fs = $this->storageLocationRepo->getAdapter($storageLocation)
+            ->getFilesystem();
 
         $episodeArtworkSize = strlen($episodeArtworkString);
         if (!$storageLocation->canHoldFile($episodeArtworkSize)) {
@@ -105,7 +107,8 @@ final class PodcastEpisodeRepository extends Repository
         $artworkPath = Entity\PodcastEpisode::getArtPath($episode->getIdRequired());
 
         $storageLocation = $episode->getPodcast()->getStorageLocation();
-        $fs ??= $storageLocation->getFilesystem();
+        $fs ??= $this->storageLocationRepo->getAdapter($storageLocation)
+            ->getFilesystem();
 
         try {
             $size = $fs->fileSize($artworkPath);
@@ -134,7 +137,8 @@ final class PodcastEpisodeRepository extends Repository
         $podcast = $episode->getPodcast();
         $storageLocation = $podcast->getStorageLocation();
 
-        $fs ??= $storageLocation->getFilesystem();
+        $fs ??= $this->storageLocationRepo->getAdapter($storageLocation)
+            ->getFilesystem();
 
         $size = filesize($uploadPath) ?: 0;
         if (!$storageLocation->canHoldFile($size)) {
@@ -195,7 +199,8 @@ final class PodcastEpisodeRepository extends Repository
         ?ExtendedFilesystemInterface $fs = null
     ): void {
         $storageLocation = $media->getStorageLocation();
-        $fs ??= $storageLocation->getFilesystem();
+        $fs ??= $this->storageLocationRepo->getAdapter($storageLocation)
+            ->getFilesystem();
 
         $mediaPath = $media->getPath();
 
@@ -221,8 +226,8 @@ final class PodcastEpisodeRepository extends Repository
         Entity\PodcastEpisode $episode,
         ?ExtendedFilesystemInterface $fs = null
     ): void {
-        $storageLocation = $episode->getPodcast()->getStorageLocation();
-        $fs ??= $storageLocation->getFilesystem();
+        $fs ??= $this->storageLocationRepo->getAdapter($episode->getPodcast()->getStorageLocation())
+            ->getFilesystem();
 
         $media = $episode->getMedia();
         if (null !== $media) {

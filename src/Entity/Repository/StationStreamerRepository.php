@@ -116,7 +116,7 @@ final class StationStreamerRepository extends AbstractStationBasedRepository
         $artworkPath = Entity\StationStreamer::getArtworkPath($streamer->getIdRequired());
         $artworkString = AlbumArt::resize($rawArtworkString);
 
-        $fsConfig = (new StationFilesystems($streamer->getStation()))->getConfigFilesystem();
+        $fsConfig = StationFilesystems::buildConfigFilesystem($streamer->getStation());
         $fsConfig->write($artworkPath, $artworkString);
 
         $streamer->setArtUpdatedAt(time());
@@ -128,7 +128,7 @@ final class StationStreamerRepository extends AbstractStationBasedRepository
     ): void {
         $artworkPath = Entity\StationStreamer::getArtworkPath($streamer->getIdRequired());
 
-        $fsConfig = (new StationFilesystems($streamer->getStation()))->getConfigFilesystem();
+        $fsConfig = StationFilesystems::buildConfigFilesystem($streamer->getStation());
         $fsConfig->delete($artworkPath);
 
         $streamer->setArtUpdatedAt(0);

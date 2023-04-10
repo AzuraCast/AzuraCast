@@ -7,12 +7,9 @@ namespace App\Entity;
 use App\Entity\Enums\StorageLocationAdapters;
 use App\Entity\Enums\StorageLocationTypes;
 use App\Entity\Interfaces\IdentifiableEntityInterface;
-use App\Entity\StorageLocationAdapter\StorageLocationAdapterInterface;
 use App\Exception\StorageLocationFullException;
 use App\Radio\Quota;
 use App\Validator\Constraints as AppAssert;
-use App\Flysystem\Adapter\ExtendedAdapterInterface;
-use App\Flysystem\ExtendedFilesystemInterface;
 use Brick\Math\BigInteger;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -440,35 +437,16 @@ class StorageLocation implements Stringable, IdentifiableEntityInterface
         return $this->media;
     }
 
-    public function getStorageLocationAdapter(): StorageLocationAdapterInterface
-    {
-        $adapterClass = $this->getAdapterEnum()->getAdapterClass();
-        return new $adapterClass($this);
-    }
-
     public function getUri(?string $suffix = null): string
     {
-        return $this->getStorageLocationAdapter()->getUri($suffix);
+        $adapterClass = $this->getAdapterEnum()->getAdapterClass();
+        return $adapterClass::getUri($this, $suffix);
     }
 
     public function getFilteredPath(): string
     {
-        return $this->getStorageLocationAdapter()::filterPath($this->path);
-    }
-
-    public function validate(): void
-    {
-        $this->getStorageLocationAdapter()->validate();
-    }
-
-    public function getStorageAdapter(): ExtendedAdapterInterface
-    {
-        return $this->getStorageLocationAdapter()->getStorageAdapter();
-    }
-
-    public function getFilesystem(): ExtendedFilesystemInterface
-    {
-        return $this->getStorageLocationAdapter()->getFilesystem();
+        $adapterClass = $this->getAdapterEnum()->getAdapterClass();
+        return $adapterClass::filterPath($this->path);
     }
 
     public function __toString(): string

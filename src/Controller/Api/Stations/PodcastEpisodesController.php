@@ -190,7 +190,8 @@ final class PodcastEpisodesController extends AbstractApiCrudController
         Serializer $serializer,
         ValidatorInterface $validator,
         private readonly Entity\Repository\PodcastRepository $podcastRepository,
-        private readonly Entity\Repository\PodcastEpisodeRepository $episodeRepository
+        private readonly Entity\Repository\PodcastEpisodeRepository $episodeRepository,
+        private readonly StationFilesystems $stationFilesystems
     ) {
         parent::__construct($em, $serializer, $validator);
     }
@@ -320,8 +321,10 @@ final class PodcastEpisodesController extends AbstractApiCrudController
                 ->withJson(Entity\Api\Error::notFound());
         }
 
-        $fsStation = new StationFilesystems($station);
-        $this->episodeRepository->delete($record, $fsStation->getPodcastsFilesystem());
+        $this->episodeRepository->delete(
+            $record,
+            $this->stationFilesystems->getPodcastsFilesystem($station)
+        );
 
         return $response->withJson(Entity\Api\Status::deleted());
     }

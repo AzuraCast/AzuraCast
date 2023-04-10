@@ -12,6 +12,11 @@ use Psr\Http\Message\ResponseInterface;
 
 final class DownloadAction
 {
+    public function __construct(
+        private readonly StationFilesystems $stationFilesystems
+    ) {
+    }
+
     public function __invoke(
         ServerRequest $request,
         Response $response,
@@ -20,7 +25,8 @@ final class DownloadAction
         set_time_limit(600);
 
         $station = $request->getStation();
-        $fsMedia = (new StationFilesystems($station))->getMediaFilesystem();
+
+        $fsMedia = $this->stationFilesystems->getMediaFilesystem($station);
 
         $path = $request->getParam('file');
 

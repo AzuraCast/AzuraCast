@@ -20,6 +20,7 @@ final class BatchUtilities
         private readonly EntityManagerInterface $em,
         private readonly Entity\Repository\StationMediaRepository $mediaRepo,
         private readonly Entity\Repository\UnprocessableMediaRepository $unprocessableMediaRepo,
+        private readonly Entity\Repository\StorageLocationRepository $storageLocationRepo,
         private readonly MessageBus $messageBus,
     ) {
     }
@@ -30,7 +31,7 @@ final class BatchUtilities
         Entity\StorageLocation $storageLocation,
         ?ExtendedFilesystemInterface $fs = null
     ): void {
-        $fs ??= $storageLocation->getFilesystem();
+        $fs ??= $this->storageLocationRepo->getAdapter($storageLocation)->getFilesystem();
 
         if ($fs->isDir($to)) {
             // Update the paths of all media contained within the directory.
@@ -92,7 +93,7 @@ final class BatchUtilities
         Entity\StorageLocation $storageLocation,
         ?ExtendedFilesystemInterface $fs = null
     ): array {
-        $fs ??= $storageLocation->getFilesystem();
+        $fs ??= $this->storageLocationRepo->getAdapter($storageLocation)->getFilesystem();
         $affectedPlaylists = [];
 
         /*

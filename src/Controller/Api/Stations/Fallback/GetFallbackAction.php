@@ -43,8 +43,7 @@ final class GetFallbackAction
 
         $fallbackPath = $station->getFallbackPath();
         if (!empty($fallbackPath)) {
-            $fsConfig = (new StationFilesystems($station))->getConfigFilesystem();
-
+            $fsConfig = StationFilesystems::buildConfigFilesystem($station);
             if ($fsConfig->fileExists($fallbackPath)) {
                 return $response->streamFilesystemFile(
                     $fsConfig,

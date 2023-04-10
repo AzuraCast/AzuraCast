@@ -159,6 +159,7 @@ final class FilesController extends AbstractStationApiCrudController
         private readonly Entity\Repository\StationMediaRepository $mediaRepo,
         private readonly Entity\Repository\StationPlaylistMediaRepository $playlistMediaRepo,
         private readonly MediaProcessor $mediaProcessor,
+        private readonly StationFilesystems $stationFilesystems,
         ReloadableEntityManagerInterface $em,
         Serializer $serializer,
         ValidatorInterface $validator
@@ -249,7 +250,7 @@ final class FilesController extends AbstractStationApiCrudController
         $playlists = $data['playlists'] ?? null;
         unset($data['custom_fields'], $data['playlists']);
 
-        $fsMedia = (new StationFilesystems($station))->getMediaFilesystem();
+        $fsMedia = $this->stationFilesystems->getMediaFilesystem($station);
 
         $record = $this->fromArray(
             $data,

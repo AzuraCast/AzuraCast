@@ -53,7 +53,7 @@ final class MoveBroadcastsTask extends AbstractTask
             return;
         }
 
-        $fs = $storageLocation->getFilesystem();
+        $fs = $this->storageLocationRepo->getAdapter($storageLocation)->getFilesystem();
 
         $stations = $this->storageLocationRepo->getStationsUsingLocation($storageLocation);
         foreach ($stations as $station) {

@@ -4,22 +4,23 @@ declare(strict_types=1);
 
 namespace App\Entity\Repository;
 
-use App\Entity;
+use App\Entity\Station;
+use App\Entity\StationMount;
+use App\Flysystem\ExtendedFilesystemInterface;
 use App\Flysystem\StationFilesystems;
 use App\Service\Flow\UploadedFile;
-use App\Flysystem\ExtendedFilesystemInterface;
 
 /**
- * @extends AbstractStationBasedRepository<Entity\StationMount>
+ * @extends AbstractStationBasedRepository<StationMount>
  */
 final class StationMountRepository extends AbstractStationBasedRepository
 {
     public function setIntro(
-        Entity\StationMount $mount,
+        StationMount $mount,
         UploadedFile $file,
         ?ExtendedFilesystemInterface $fs = null
     ): void {
-        $fs ??= (new StationFilesystems($mount->getStation()))->getConfigFilesystem();
+        $fs ??= StationFilesystems::buildConfigFilesystem($mount->getStation());
 
         if (!empty($mount->getIntroPath())) {
             $this->doDeleteIntro($mount, $fs);
@@ -38,10 +39,10 @@ final class StationMountRepository extends AbstractStationBasedRepository
     }
 
     private function doDeleteIntro(
-        Entity\StationMount $mount,
+        StationMount $mount,
         ?ExtendedFilesystemInterface $fs = null
     ): void {
-        $fs ??= (new StationFilesystems($mount->getStation()))->getConfigFilesystem();
+        $fs ??= StationFilesystems::buildConfigFilesystem($mount->getStation());
 
         $introPath = $mount->getIntroPath();
         if (empty($introPath)) {
@@ -52,7 +53,7 @@ final class StationMountRepository extends AbstractStationBasedRepository
     }
 
     public function clearIntro(
-        Entity\StationMount $mount,
+        StationMount $mount,
         ?ExtendedFilesystemInterface $fs = null
     ): void {
         $this->doDeleteIntro($mount, $fs);
@@ -63,7 +64,7 @@ final class StationMountRepository extends AbstractStationBasedRepository
     }
 
     public function destroy(
-        Entity\StationMount $mount
+        StationMount $mount
     ): void {
         $this->doDeleteIntro($mount);
 
@@ -72,38 +73,36 @@ final class StationMountRepository extends AbstractStationBasedRepository
     }
 
     /**
-     * @param Entity\Station $station
+     * @param Station $station
      *
      * @return mixed[]
      */
-    public function getDisplayNames(Entity\Station $station): array
+    public function getDisplayNames(Station $station): array
     {
         $mounts = $this->repository->findBy(['station' => $station]);
 
         $displayNames = [];
+
+        /** @var StationMount $mount */
         foreach ($mounts as $mount) {
-            /** @var Entity\StationMount $mount */
             $displayNames[$mount->getId()] = $mount->getDisplayName();
         }
 
         return $displayNames;
     }
 
-    /**
-     * @param Entity\Station $station
-     */
-    public function getDefaultMount(Entity\Station $station): ?Entity\StationMount
+    public function getDefaultMount(Station $station): ?StationMount
     {
         $mount = $this->repository->findOneBy(['station_id' => $station->getId(), 'is_default' => true]);
 
-        if ($mount instanceof Entity\StationMount) {
+        if ($mount instanceof StationMount) {
             return $mount;
         }
 
         // Use the first mount if none is specified as default.
         $mount = $station->getMounts()->first();
 
-        if ($mount instanceof Entity\StationMount) {
+        if ($mount instanceof StationMount) {
             $mount->setIsDefault(true);
             $this->em->persist($mount);
             $this->em->flush();

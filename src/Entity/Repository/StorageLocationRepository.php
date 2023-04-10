@@ -4,20 +4,32 @@ declare(strict_types=1);
 
 namespace App\Entity\Repository;
 
+use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Doctrine\Repository;
-use App\Entity;
-use Brick\Math\BigInteger;
+use App\Entity\Enums\StorageLocationAdapters;
+use App\Entity\Enums\StorageLocationTypes;
+use App\Entity\Station;
+use App\Entity\StorageLocation;
+use App\Entity\StorageLocationAdapter\StorageLocationAdapterInterface;
+use Psr\Container\ContainerInterface;
 
 /**
- * @extends Repository<Entity\StorageLocation>
+ * @extends Repository<StorageLocation>
  */
 final class StorageLocationRepository extends Repository
 {
+    public function __construct(
+        private readonly ContainerInterface $adapters,
+        ReloadableEntityManagerInterface $em
+    ) {
+        parent::__construct($em);
+    }
+
     public function findByType(
-        string|Entity\Enums\StorageLocationTypes $type,
+        string|StorageLocationTypes $type,
         int $id
-    ): ?Entity\StorageLocation {
-        if ($type instanceof Entity\Enums\StorageLocationTypes) {
+    ): ?StorageLocation {
+        if ($type instanceof StorageLocationTypes) {
             $type = $type->value;
         }
 
@@ -30,13 +42,13 @@ final class StorageLocationRepository extends Repository
     }
 
     /**
-     * @param string|Entity\Enums\StorageLocationTypes $type
+     * @param string|StorageLocationTypes $type
      *
-     * @return Entity\StorageLocation[]
+     * @return StorageLocation[]
      */
-    public function findAllByType(string|Entity\Enums\StorageLocationTypes $type): array
+    public function findAllByType(string|StorageLocationTypes $type): array
     {
-        if ($type instanceof Entity\Enums\StorageLocationTypes) {
+        if ($type instanceof StorageLocationTypes) {
             $type = $type->value;
         }
 
@@ -48,14 +60,14 @@ final class StorageLocationRepository extends Repository
     }
 
     /**
-     * @param string|Entity\Enums\StorageLocationTypes $type
+     * @param string|StorageLocationTypes $type
      * @param bool $addBlank
      * @param string|null $emptyString
      *
      * @return string[]
      */
     public function fetchSelectByType(
-        string|Entity\Enums\StorageLocationTypes $type,
+        string|StorageLocationTypes $type,
         bool $addBlank = false,
         ?string $emptyString = null
     ): array {
@@ -75,14 +87,14 @@ final class StorageLocationRepository extends Repository
 
     public function createDefaultStorageLocations(): void
     {
-        $backupLocations = $this->findAllByType(Entity\Enums\StorageLocationTypes::Backup);
+        $backupLocations = $this->findAllByType(StorageLocationTypes::Backup);
 
         if (0 === count($backupLocations)) {
-            $record = new Entity\StorageLocation(
-                Entity\Enums\StorageLocationTypes::Backup,
-                Entity\Enums\StorageLocationAdapters::Local
+            $record = new StorageLocation(
+                StorageLocationTypes::Backup,
+                StorageLocationAdapters::Local
             );
-            $record->setPath(Entity\StorageLocation::DEFAULT_BACKUPS_PATH);
+            $record->setPath(StorageLocation::DEFAULT_BACKUPS_PATH);
             $this->em->persist($record);
         }
 
@@ -90,54 +102,49 @@ final class StorageLocationRepository extends Repository
     }
 
     /**
-     * @param Entity\StorageLocation $storageLocation
+     * @param StorageLocation $storageLocation
      *
-     * @return Entity\Station[]
+     * @return Station[]
      */
-    public function getStationsUsingLocation(Entity\StorageLocation $storageLocation): array
+    public function getStationsUsingLocation(StorageLocation $storageLocation): array
     {
         $qb = $this->em->createQueryBuilder()
             ->select('s')
-            ->from(Entity\Station::class, 's');
+            ->from(Station::class, 's');
 
         switch ($storageLocation->getTypeEnum()) {
-            case Entity\Enums\StorageLocationTypes::StationMedia:
+            case StorageLocationTypes::StationMedia:
                 $qb->where('s.media_storage_location = :storageLocation')
                     ->setParameter('storageLocation', $storageLocation);
                 break;
 
-            case Entity\Enums\StorageLocationTypes::StationRecordings:
+            case StorageLocationTypes::StationRecordings:
                 $qb->where('s.recordings_storage_location = :storageLocation')
                     ->setParameter('storageLocation', $storageLocation);
                 break;
 
-            case Entity\Enums\StorageLocationTypes::StationPodcasts:
+            case StorageLocationTypes::StationPodcasts:
                 $qb->where('s.podcasts_storage_location = :storageLocation')
                     ->setParameter('storageLocation', $storageLocation);
                 break;
 
-            case Entity\Enums\StorageLocationTypes::Backup:
+            case StorageLocationTypes::Backup:
                 return [];
         }
 
         return $qb->getQuery()->execute();
     }
 
-    public function addStorageUsed(
-        Entity\StorageLocation $storageLocation,
-        BigInteger|int|string $newStorageAmount
-    ): void {
-        $storageLocation->addStorageUsed($newStorageAmount);
-        $this->em->persist($storageLocation);
-        $this->em->flush();
-    }
+    public function getAdapter(StorageLocation $storageLocation): StorageLocationAdapterInterface
+    {
+        $adapterClass = $storageLocation->getAdapterEnum()->getAdapterClass();
 
-    public function removeStorageUsed(
-        Entity\StorageLocation $storageLocation,
-        BigInteger|int|string $amountToRemove
-    ): void {
-        $storageLocation->removeStorageUsed($amountToRemove);
-        $this->em->persist($storageLocation);
-        $this->em->flush();
+        if (!$this->adapters->has($adapterClass)) {
+            throw new \InvalidArgumentException(sprintf('Class not found: %s', $adapterClass));
+        }
+
+        /** @var StorageLocationAdapterInterface $adapter */
+        $adapter = $this->adapters->get($adapterClass);
+        return $adapter->withStorageLocation($storageLocation);
     }
 }

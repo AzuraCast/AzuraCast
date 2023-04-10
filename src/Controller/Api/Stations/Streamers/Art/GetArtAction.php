@@ -30,7 +30,7 @@ final class GetArtAction
 
         $artworkPath = Entity\StationStreamer::getArtworkPath($id);
 
-        $fsConfig = (new StationFilesystems($station))->getConfigFilesystem();
+        $fsConfig = StationFilesystems::buildConfigFilesystem($station);
         if ($fsConfig->fileExists($artworkPath)) {
             return $response->withCacheLifetime(Response::CACHE_ONE_YEAR)
                 ->streamFilesystemFile($fsConfig, $artworkPath, null, 'inline', false);

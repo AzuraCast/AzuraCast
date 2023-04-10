@@ -29,6 +29,7 @@ final class CheckMediaTask extends AbstractTask
     public function __construct(
         private readonly Entity\Repository\StationMediaRepository $mediaRepo,
         private readonly Entity\Repository\UnprocessableMediaRepository $unprocessableMediaRepo,
+        private readonly Entity\Repository\StorageLocationRepository $storageLocationRepo,
         private readonly MessageBus $messageBus,
         private readonly QueueManagerInterface $queueManager,
         ReloadableEntityManagerInterface $em,
@@ -72,7 +73,7 @@ final class CheckMediaTask extends AbstractTask
     public function importMusic(
         Entity\StorageLocation $storageLocation
     ): void {
-        $fs = $storageLocation->getFilesystem();
+        $fs = $this->storageLocationRepo->getAdapter($storageLocation)->getFilesystem();
 
         $stats = [
             'total_size' => '0',

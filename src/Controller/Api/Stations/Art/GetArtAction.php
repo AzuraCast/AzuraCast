@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace App\Controller\Api\Stations\Art;
 
 use App\Entity;
+use App\Flysystem\ExtendedFilesystemInterface;
 use App\Flysystem\StationFilesystems;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\OpenApi;
-use App\Flysystem\ExtendedFilesystemInterface;
 use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 
@@ -43,6 +43,7 @@ final class GetArtAction
     public function __construct(
         private readonly Entity\Repository\StationRepository $stationRepo,
         private readonly Entity\Repository\StationMediaRepository $mediaRepo,
+        private readonly StationFilesystems $stationFilesystems
     ) {
     }
 
@@ -61,7 +62,7 @@ final class GetArtAction
         // If a timestamp delimiter is added, strip it automatically.
         $media_id = explode('-', $media_id, 2)[0];
 
-        $fsMedia = (new StationFilesystems($station))->getMediaFilesystem();
+        $fsMedia = $this->stationFilesystems->getMediaFilesystem($station);
 
         $mediaPath = $this->getMediaPath($station, $fsMedia, $media_id);
         if (null !== $mediaPath) {

@@ -38,6 +38,7 @@ final class BatchAction
         private readonly Entity\Repository\StationPlaylistMediaRepository $playlistMediaRepo,
         private readonly Entity\Repository\StationPlaylistFolderRepository $playlistFolderRepo,
         private readonly Entity\Repository\StationQueueRepository $queueRepo,
+        private readonly StationFilesystems $stationFilesystems
     ) {
     }
 
@@ -49,7 +50,7 @@ final class BatchAction
         $station = $request->getStation();
         $storageLocation = $station->getMediaStorageLocation();
 
-        $fsMedia = (new StationFilesystems($station))->getMediaFilesystem();
+        $fsMedia = $this->stationFilesystems->getMediaFilesystem($station);
 
         $result = match ($request->getParam('do')) {
             'delete' => $this->doDelete($request, $station, $storageLocation, $fsMedia),

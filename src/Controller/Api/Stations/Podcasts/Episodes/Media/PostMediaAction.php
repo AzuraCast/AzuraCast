@@ -46,6 +46,7 @@ final class PostMediaAction
 {
     public function __construct(
         private readonly Entity\Repository\PodcastEpisodeRepository $episodeRepo,
+        private readonly StationFilesystems $stationFilesystems
     ) {
     }
 
@@ -71,12 +72,11 @@ final class PostMediaAction
                     ->withJson(Entity\Api\Error::notFound());
             }
 
-            $fsStation = new StationFilesystems($station);
             $this->episodeRepo->uploadMedia(
                 $episode,
                 $flowResponse->getClientFilename(),
                 $flowResponse->getUploadedPath(),
-                $fsStation->getPodcastsFilesystem()
+                $this->stationFilesystems->getPodcastsFilesystem($station)
             );
 
             return $response->withJson(Entity\Api\Status::updated());

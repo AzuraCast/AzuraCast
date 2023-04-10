@@ -59,8 +59,7 @@ final class GetIntroAction
             $introPath = $mount->getIntroPath();
 
             if (!empty($introPath)) {
-                $fsConfig = (new StationFilesystems($station))->getConfigFilesystem();
-
+                $fsConfig = StationFilesystems::buildConfigFilesystem($station);
                 if ($fsConfig->fileExists($introPath)) {
                     return $response->streamFilesystemFile(
                         $fsConfig,

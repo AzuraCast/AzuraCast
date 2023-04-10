@@ -83,7 +83,7 @@ final class RotateLogsTask extends AbstractTask
         Entity\StorageLocation $storageLocation,
         int $copiesToKeep
     ): void {
-        $fs = $storageLocation->getFilesystem();
+        $fs = $this->storageLocationRepo->getAdapter($storageLocation)->getFilesystem();
 
         $iterator = $fs->listContents('', false)->filter(
             function (StorageAttributes $attrs) {

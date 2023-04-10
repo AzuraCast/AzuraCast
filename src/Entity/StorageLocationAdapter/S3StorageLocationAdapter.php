@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace App\Entity\StorageLocationAdapter;
 
 use App\Entity\Enums\StorageLocationAdapters;
+use App\Entity\StorageLocation;
 use App\Flysystem\Adapter\AwsS3Adapter;
 use App\Flysystem\Adapter\ExtendedAdapterInterface;
 use Aws\S3\S3Client;
-use InvalidArgumentException;
 
 final class S3StorageLocationAdapter extends AbstractStorageLocationLocationAdapter
 {
@@ -20,28 +20,6 @@ final class S3StorageLocationAdapter extends AbstractStorageLocationLocationAdap
     public static function filterPath(string $path): string
     {
         return trim($path, '/');
-    }
-
-    public function getUri(?string $suffix = null): string
-    {
-        $path = $this->applyPath($suffix);
-
-        $bucket = $this->storageLocation->getS3Bucket();
-        if (null === $bucket) {
-            return 'No S3 Bucket Specified';
-        }
-
-        try {
-            $client = $this->getClient();
-            if (empty($path)) {
-                $objectUrl = $client->getObjectUrl($bucket, '/');
-                return rtrim($objectUrl, '/');
-            }
-
-            return $client->getObjectUrl($bucket, ltrim($path, '/'));
-        } catch (InvalidArgumentException $e) {
-            return 'Invalid URI (' . $e->getMessage() . ')';
-        }
     }
 
     public function getStorageAdapter(): ExtendedAdapterInterface
@@ -83,5 +61,11 @@ final class S3StorageLocationAdapter extends AbstractStorageLocationLocationAdap
             ]
         );
         return new S3Client($s3Options);
+    }
+
+    public static function getUri(StorageLocation $storageLocation, ?string $suffix = null): string
+    {
+        $path = self::applyPath($storageLocation->getPath(), $suffix);
+        return 's3://' . $storageLocation->getS3Bucket() . '/' . ltrim($path, '/');
     }
 }

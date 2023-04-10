@@ -18,6 +18,7 @@ final class CheckFolderPlaylistsTask extends AbstractTask
     public function __construct(
         private readonly Entity\Repository\StationPlaylistMediaRepository $spmRepo,
         private readonly MessageBus $messageBus,
+        private readonly StationFilesystems $stationFilesystems,
         ReloadableEntityManagerInterface $em,
         LoggerInterface $logger,
     ) {
@@ -45,7 +46,7 @@ final class CheckFolderPlaylistsTask extends AbstractTask
             ]
         );
 
-        $fsMedia = (new StationFilesystems($station))->getMediaFilesystem();
+        $fsMedia = $this->stationFilesystems->getMediaFilesystem($station);
 
         $mediaInPlaylistQuery = $this->em->createQuery(
             <<<'DQL'

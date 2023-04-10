@@ -29,7 +29,8 @@ final class ListAction
     public function __construct(
         private readonly EntityManagerInterface $em,
         private readonly CacheInterface $cache,
-        private readonly Meilisearch $meilisearch
+        private readonly Meilisearch $meilisearch,
+        private readonly StationFilesystems $stationFilesystems
     ) {
     }
 
@@ -43,7 +44,7 @@ final class ListAction
         $station = $request->getStation();
         $storageLocation = $station->getMediaStorageLocation();
 
-        $fs = (new StationFilesystems($station))->getMediaFilesystem();
+        $fs = $this->stationFilesystems->getMediaFilesystem($station);
 
         $currentDir = $request->getParam('currentDirectory', '');
 

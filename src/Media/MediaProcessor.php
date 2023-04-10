@@ -6,6 +6,7 @@ namespace App\Media;
 
 use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Entity\Repository\StationMediaRepository;
+use App\Entity\Repository\StorageLocationRepository;
 use App\Entity\Repository\UnprocessableMediaRepository;
 use App\Entity\StationMedia;
 use App\Entity\StorageLocation;
@@ -20,7 +21,8 @@ final class MediaProcessor
     public function __construct(
         private readonly ReloadableEntityManagerInterface $em,
         private readonly StationMediaRepository $mediaRepo,
-        private readonly UnprocessableMediaRepository $unprocessableMediaRepo
+        private readonly UnprocessableMediaRepository $unprocessableMediaRepo,
+        private readonly StorageLocationRepository $storageLocationRepo
     ) {
     }
 
@@ -47,7 +49,7 @@ final class MediaProcessor
         string $path,
         string $localPath
     ): ?StationMedia {
-        $fs = $storageLocation->getFilesystem();
+        $fs = $this->storageLocationRepo->getAdapter($storageLocation)->getFilesystem();
 
         if (!(new Filesystem())->exists($localPath)) {
             throw CannotProcessMediaException::forPath(
@@ -162,7 +164,7 @@ final class MediaProcessor
         StationMedia $media,
         bool $force = false
     ): bool {
-        $fs = $storageLocation->getFilesystem();
+        $fs = $this->storageLocationRepo->getAdapter($storageLocation)->getFilesystem();
         $path = $media->getPath();
 
         if (!$fs->fileExists($path)) {
@@ -197,7 +199,7 @@ final class MediaProcessor
         string $path,
         ?string $contents = null
     ): void {
-        $fs = $storageLocation->getFilesystem();
+        $fs = $this->storageLocationRepo->getAdapter($storageLocation)->getFilesystem();
 
         if (null === $contents) {
             if (!$fs->fileExists($path)) {

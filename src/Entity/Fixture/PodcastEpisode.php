@@ -13,7 +13,8 @@ use Symfony\Component\Finder\Finder;
 final class PodcastEpisode extends AbstractFixture implements DependentFixtureInterface
 {
     public function __construct(
-        protected Entity\Repository\PodcastEpisodeRepository $episodeRepo
+        protected Entity\Repository\PodcastEpisodeRepository $episodeRepo,
+        protected Entity\Repository\StorageLocationRepository $storageLocationRepo
     ) {
     }
 
@@ -28,7 +29,8 @@ final class PodcastEpisode extends AbstractFixture implements DependentFixtureIn
         /** @var Entity\Podcast $podcast */
         $podcast = $this->getReference('podcast');
 
-        $fs = $podcast->getStorageLocation()->getFilesystem();
+        $fs = $this->storageLocationRepo->getAdapter($podcast->getStorageLocation())
+            ->getFilesystem();
 
         $finder = (new Finder())
             ->files()

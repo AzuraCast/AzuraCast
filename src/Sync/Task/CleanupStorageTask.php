@@ -4,14 +4,24 @@ declare(strict_types=1);
 
 namespace App\Sync\Task;
 
+use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Entity;
 use Exception;
 use League\Flysystem\StorageAttributes;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Finder\Finder;
 use Throwable;
 
 final class CleanupStorageTask extends AbstractTask
 {
+    public function __construct(
+        private readonly Entity\Repository\StorageLocationRepository $storageLocationRepo,
+        ReloadableEntityManagerInterface $em,
+        LoggerInterface $logger
+    ) {
+        parent::__construct($em, $logger);
+    }
+
     public static function getSchedulePattern(): string
     {
         return '24 * * * *';
@@ -63,7 +73,7 @@ final class CleanupStorageTask extends AbstractTask
 
     private function cleanMediaStorageLocation(Entity\StorageLocation $storageLocation): void
     {
-        $fs = $storageLocation->getFilesystem();
+        $fs = $this->storageLocationRepo->getAdapter($storageLocation)->getFilesystem();
 
         $allUniqueIdsRaw = $this->em->createQuery(
             <<<'DQL'

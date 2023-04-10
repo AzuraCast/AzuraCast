@@ -8,10 +8,16 @@ use App\Entity\Enums\StorageLocationAdapters;
 use App\Entity\StorageLocation;
 use App\Flysystem\Adapter\DropboxAdapter;
 use App\Flysystem\Adapter\ExtendedAdapterInterface;
+use App\Service\Dropbox\OAuthAdapter;
 use Spatie\Dropbox\Client;
 
 final class DropboxStorageLocationAdapter extends AbstractStorageLocationLocationAdapter
 {
+    public function __construct(
+        private readonly OAuthAdapter $oauthAdapter
+    ) {
+    }
+
     public function getType(): StorageLocationAdapters
     {
         return StorageLocationAdapters::Dropbox;
@@ -26,7 +32,15 @@ final class DropboxStorageLocationAdapter extends AbstractStorageLocationLocatio
 
     private function getClient(): Client
     {
-        return new Client($this->storageLocation->getDropboxAuthToken());
+        return new Client($this->oauthAdapter->withStorageLocation($this->storageLocation));
+    }
+
+    public function validate(): void
+    {
+        $adapter = $this->oauthAdapter->withStorageLocation($this->storageLocation);
+        $adapter->setup();
+
+        parent::validate();
     }
 
     public static function filterPath(string $path): string
@@ -40,9 +54,9 @@ final class DropboxStorageLocationAdapter extends AbstractStorageLocationLocatio
 
         $token = (!empty($storageLocation->getDropboxAuthToken()))
             ? $storageLocation->getDropboxAuthToken()
-            : '';
+            : $storageLocation->getDropboxRefreshToken();
 
-        $token = substr(md5($token), 0, 10);
+        $token = substr(md5($token ?? ''), 0, 10);
 
         return 'dropbox://' . $token . '/' . ltrim($path, '/');
     }

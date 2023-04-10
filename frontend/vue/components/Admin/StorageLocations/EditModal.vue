@@ -57,6 +57,8 @@ const {
             's3Version': {},
             's3Bucket': {},
             's3Endpoint': {},
+            'dropboxAppKey': {},
+            'dropboxAppSecret': {},
             'dropboxAuthToken': {},
             'sftpHost': {},
             'sftpPort': {},

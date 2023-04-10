@@ -140,37 +140,10 @@
         </b-card-body>
     </b-card>
 
-    <b-card
+    <dropbox
         v-show="form.adapter.$model === 'dropbox'"
-        class="mb-3"
-        no-body
-    >
-        <div class="card-header bg-primary-dark">
-            <h2 class="card-title">
-                {{ $gettext('Remote: Dropbox') }}
-            </h2>
-        </div>
-        <b-card-body>
-            <b-form-group>
-                <div class="form-row">
-                    <b-wrapped-form-group
-                        id="form_edit_dropboxAuthToken"
-                        class="col-md-12"
-                        :field="form.dropboxAuthToken"
-                    >
-                        <template #label>
-                            {{ $gettext('Dropbox Generated Access Token') }}
-                        </template>
-                        <template #description>
-                            {{
-                                $gettext('Note: Dropbox now only issues short-lived tokens that will not work for this purpose. If your token begins with "sl", it is short-lived and will not work correctly.')
-                            }}
-                        </template>
-                    </b-wrapped-form-group>
-                </div>
-            </b-form-group>
-        </b-card-body>
-    </b-card>
+        :form="form"
+    />
 
     <b-card
         v-show="form.adapter.$model === 'sftp'"
@@ -256,6 +229,7 @@
 
 <script setup>
 import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup.vue";
+import Dropbox from "./Dropbox.vue";
 
 const props = defineProps({
     form: {

@@ -56,8 +56,17 @@ class StorageLocation implements Stringable, IdentifiableEntityInterface
     #[ORM\Column(name: 's3_endpoint', length: 255, nullable: true)]
     protected ?string $s3Endpoint = null;
 
+    #[ORM\Column(name: 'dropbox_app_key', length: 50, nullable: true)]
+    protected ?string $dropboxAppKey = null;
+
+    #[ORM\Column(name: 'dropbox_app_secret', length: 150, nullable: true)]
+    protected ?string $dropboxAppSecret = null;
+
     #[ORM\Column(name: 'dropbox_auth_token', length: 255, nullable: true)]
     protected ?string $dropboxAuthToken = null;
+
+    #[ORM\Column(name: 'dropbox_refresh_token', length: 255, nullable: true)]
+    protected ?string $dropboxRefreshToken = null;
 
     #[ORM\Column(name: 'sftp_host', length: 255, nullable: true)]
     protected ?string $sftpHost = null;
@@ -195,6 +204,26 @@ class StorageLocation implements Stringable, IdentifiableEntityInterface
         $this->s3Endpoint = $this->truncateNullableString($s3Endpoint);
     }
 
+    public function getDropboxAppKey(): ?string
+    {
+        return $this->dropboxAppKey;
+    }
+
+    public function setDropboxAppKey(?string $dropboxAppKey): void
+    {
+        $this->dropboxAppKey = $dropboxAppKey;
+    }
+
+    public function getDropboxAppSecret(): ?string
+    {
+        return $this->dropboxAppSecret;
+    }
+
+    public function setDropboxAppSecret(?string $dropboxAppSecret): void
+    {
+        $this->dropboxAppSecret = $dropboxAppSecret;
+    }
+
     public function getDropboxAuthToken(): ?string
     {
         return $this->dropboxAuthToken;
@@ -203,6 +232,16 @@ class StorageLocation implements Stringable, IdentifiableEntityInterface
     public function setDropboxAuthToken(?string $dropboxAuthToken): void
     {
         $this->dropboxAuthToken = $dropboxAuthToken;
+    }
+
+    public function getDropboxRefreshToken(): ?string
+    {
+        return $this->dropboxRefreshToken;
+    }
+
+    public function setDropboxRefreshToken(?string $dropboxRefreshToken): void
+    {
+        $this->dropboxRefreshToken = $dropboxRefreshToken;
     }
 
     public function getSftpHost(): ?string

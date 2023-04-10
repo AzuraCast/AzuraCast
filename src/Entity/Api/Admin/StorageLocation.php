@@ -75,6 +75,18 @@ final class StorageLocation
     public ?string $s3Endpoint = null;
 
     #[OA\Property(
+        description: 'The optional Dropbox App Key.',
+        example: ''
+    )]
+    public ?string $dropboxAppKey = null;
+
+    #[OA\Property(
+        description: 'The optional Dropbox App Secret.',
+        example: ''
+    )]
+    public ?string $dropboxAppSecret = null;
+
+    #[OA\Property(
         description: 'The optional Dropbox Auth Token.',
         example: ''
     )]

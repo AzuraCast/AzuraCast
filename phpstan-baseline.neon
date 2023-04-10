@@ -26,6 +26,11 @@ parameters:
 			path: src/Entity/Migration/Version20201204043539.php
 
 		-
+			message: "#^Parameter \\#1 \\$accessTokenOrAppCredentials of class Spatie\\\\Dropbox\\\\Client constructor expects array\\|string\\|null, App\\\\Service\\\\Dropbox\\\\OAuthAdapter given\\.$#"
+			count: 1
+			path: src/Entity/StorageLocationAdapter/DropboxStorageLocationAdapter.php
+
+		-
 			message: "#^Cannot cast Symfony\\\\Component\\\\Validator\\\\ConstraintViolationListInterface to string\\.$#"
 			count: 1
 			path: src/Exception/ValidationException.php

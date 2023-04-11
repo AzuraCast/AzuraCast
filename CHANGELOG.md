@@ -15,10 +15,20 @@ release channel, you can take advantage of these new features and fixes.
   RedHat Enterprise Linux community of distributions. We have updated our Docker utility script to include a Podman
   support mode. Feel free to report any bugs to us!
 
+- Our Docker Utility Script now directly supports version 2 of Docker Compose (invoked using `docker compose` rather
+  than `docker-compose`).
+
+- Our Dropbox storage location support now includes support for Dropbox's new short-lived access tokens. We include
+  instructions on how to set up and use Dropbox as an AzuraCast storage location on the Storage Locations administration
+  page.
+
+- We've re-tuned the Now Playing updates from how they worked in version 0.17.7 so they will no longer consume very high
+  amounts of CPU and RAM on installations with many (30+) stations.
+
 - We have made more changes to how our Message Queue system works in order to ensure we don't encounter a "runaway
   queue" problem with larger libraries.
 
-- Icecast-KH has been updated to version KH-18.
+- Icecast-KH has been updated to its latest version.
 
 ## Bug Fixes
 

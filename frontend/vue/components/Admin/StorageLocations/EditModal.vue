@@ -104,6 +104,8 @@ const {
         's3Version': 'latest',
         's3Bucket': null,
         's3Endpoint': null,
+        'dropboxAppKey': null,
+        'dropboxAppSecret': null,
         'dropboxAuthToken': null,
         'sftpHost': null,
         'sftpPort': '22',

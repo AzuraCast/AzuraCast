@@ -64,7 +64,7 @@
                                 </a>
                             </li>
                             <li>
-                                {{ $gettext('Enter the authorization code you receive below.') }}
+                                {{ $gettext('Enter the access code you receive below.') }}
                             </li>
                         </ul>
                     </div>
@@ -75,7 +75,7 @@
                         :field="form.dropboxAuthToken"
                     >
                         <template #label>
-                            {{ $gettext('Access Token') }}
+                            {{ $gettext('Access Code') }}
                         </template>
                     </b-wrapped-form-group>
                 </div>

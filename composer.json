@@ -189,7 +189,7 @@
     "phpcbf": "phpcbf",
     "phpcs": "phpcs",
     "phplint": "parallel-lint . --exclude vendor",
-    "phpstan": "phpstan analyze --memory-limit=-1 --xdebug",
+    "phpstan": "phpstan analyze --memory-limit=-1",
     "shell": "psysh"
   }
 }

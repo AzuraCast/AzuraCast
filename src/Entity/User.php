@@ -269,8 +269,11 @@ class User implements Stringable, IdentifiableEntityInterface
 
     public function verifyTwoFactor(string $otp): bool
     {
-        if (null === $this->two_factor_secret) {
+        if (empty($this->two_factor_secret)) {
             return true;
+        }
+        if (empty($otp)) {
+            return false;
         }
 
         return Factory::loadFromProvisioningUri($this->two_factor_secret)->verify($otp, null, Auth::TOTP_WINDOW);

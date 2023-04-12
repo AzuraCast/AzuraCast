@@ -28,6 +28,28 @@ RUN curl -fsSL https://github.com/meilisearch/meilisearch/archive/refs/tags/v1.1
     && mv ./target/release/meilisearch /usr/local/bin/meilisearch
 
 #
+# master_me build step
+#
+FROM debian:bookworm AS masterme
+
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends build-essential git faust python3-pip ladspa-sdk \
+    && mkdir -p /tmp/faustpp \
+    && mkdir -p /tmp/masterme \
+    && mkdir -p /usr/lib/ladspa
+
+WORKDIR /tmp/faustpp
+
+RUN git clone https://github.com/jpcima/faustpp . \
+    && pip install --break-system-packages .
+
+WORKDIR /tmp/masterme
+
+RUN git clone https://github.com/trummerschlunk/master_me.git . \
+    && faust2ladspa master_me.dsp \
+    && mv master_me.so /usr/lib/ladspa/master_me.so
+
+#
 # MariaDB dependencies build step
 #
 FROM mariadb:10.9-jammy AS mariadb
@@ -66,6 +88,9 @@ RUN bash /bd_build/supervisor/setup.sh \
 COPY ./util/docker/stations /bd_build/stations/
 RUN bash /bd_build/stations/setup.sh \
     && rm -rf /bd_build/stations
+
+# Add master_me
+COPY --from=masterme /usr/lib/ladspa/master_me.so /usr/lib/ladspa/master_me.so
 
 COPY ./util/docker/web /bd_build/web/
 RUN bash /bd_build/web/setup.sh \

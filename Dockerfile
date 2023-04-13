@@ -90,7 +90,7 @@ RUN bash /bd_build/stations/setup.sh \
     && rm -rf /bd_build/stations
 
 # Add master_me
-COPY --from=masterme /usr/lib/ladspa/master_me.so /usr/lib/ladspa/master_me.so
+# COPY --from=masterme /usr/lib/ladspa/master_me.so /usr/lib/ladspa/master_me.so
 
 COPY ./util/docker/web /bd_build/web/
 RUN bash /bd_build/web/setup.sh \

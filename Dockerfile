@@ -33,6 +33,23 @@ RUN curl -fsSL https://github.com/meilisearch/meilisearch/archive/refs/tags/v1.1
 FROM mariadb:10.9-jammy AS mariadb
 
 #
+# master_me build step
+#
+FROM debian:bookworm AS masterme
+
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends curl build-essential ca-certificates git faust ladspa-sdk \
+    && mkdir -p /tmp/masterme \
+    && mkdir -p /usr/lib/ladspa
+
+WORKDIR /tmp/masterme
+
+RUN curl -sSL https://github.com/trummerschlunk/master_me/archive/refs/tags/1.1.0.tar.gz -o master_me.tar.gz \
+    && tar -xvzf master_me.tar.gz --strip-components=1 \
+    && faust2ladspa master_me.dsp \
+    && mv master_me.so /usr/lib/ladspa/master_me.so
+
+#
 # Final build image
 #
 FROM ubuntu:jammy AS pre-final
@@ -66,6 +83,9 @@ RUN bash /bd_build/supervisor/setup.sh \
 COPY ./util/docker/stations /bd_build/stations/
 RUN bash /bd_build/stations/setup.sh \
     && rm -rf /bd_build/stations
+
+# Add master_me
+COPY --from=masterme /usr/lib/ladspa/master_me.so /usr/lib/ladspa/master_me.so
 
 COPY ./util/docker/web /bd_build/web/
 RUN bash /bd_build/web/setup.sh \

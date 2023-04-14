@@ -9,6 +9,12 @@ release channel, you can take advantage of these new features and fixes.
   pages, we now use a new search tool called Meilisearch that allows for very fast, very accurate search results, as
   well as more complex search queries (and other goodies, like typo correction).
 
+- **Master_me and Post-Processing Tweaks:** We now have built-in support
+  for [master_me](https://github.com/trummerschlunk/master_me), an open-source audio mastering tool that helps add
+  polish and "punch" to your streams. Its functionality is similar to Stereo Tool, but because it's open-source, we
+  include it in every AzuraCast installation. You can now also customize whether our post-processing step includes your
+  live DJ performances.
+
 ## Code Quality/Technical Changes
 
 - **Initial Podman Support**: Podman is an increasingly popular drop-in replacement for Docker, originally from the

@@ -7,6 +7,7 @@ namespace App\Entity;
 use App\Entity\Enums\StationBackendPerformanceModes;
 use App\Radio\Enums\AudioProcessingMethods;
 use App\Radio\Enums\CrossfadeModes;
+use App\Radio\Enums\MasterMePresets;
 use App\Radio\Enums\StreamFormats;
 use InvalidArgumentException;
 use LogicException;
@@ -166,6 +167,11 @@ class StationBackendConfiguration extends AbstractStationConfiguration
             ?? AudioProcessingMethods::default();
     }
 
+    public function isAudioProcessingEnabled(): bool
+    {
+        return AudioProcessingMethods::None !== $this->getAudioProcessingMethodEnum();
+    }
+
     public function setAudioProcessingMethod(?string $method): void
     {
         if (null !== $method) {
@@ -177,6 +183,18 @@ class StationBackendConfiguration extends AbstractStationConfiguration
         }
 
         $this->set(self::AUDIO_PROCESSING_METHOD, $method);
+    }
+
+    public const POST_PROCESSING_INCLUDE_LIVE = 'post_processing_include_live';
+
+    public function getPostProcessingIncludeLive(): bool
+    {
+        return $this->get(self::POST_PROCESSING_INCLUDE_LIVE, false);
+    }
+
+    public function setPostProcessingIncludeLive(bool $postProcessingIncludeLive): void
+    {
+        $this->set(self::POST_PROCESSING_INCLUDE_LIVE, $postProcessingIncludeLive);
     }
 
     public const STEREO_TOOL_LICENSE_KEY = 'stereo_tool_license_key';
@@ -201,6 +219,32 @@ class StationBackendConfiguration extends AbstractStationConfiguration
     public function setStereoToolConfigurationPath(?string $stereoToolConfigurationPath): void
     {
         $this->set(self::STEREO_TOOL_CONFIGURATION_PATH, $stereoToolConfigurationPath);
+    }
+
+    public const MASTER_ME_PRESET = 'master_me_preset';
+
+    public function getMasterMePreset(): ?string
+    {
+        return $this->get(self::MASTER_ME_PRESET);
+    }
+
+    public function getMasterMePresetEnum(): MasterMePresets
+    {
+        return MasterMePresets::tryFrom($this->get(self::MASTER_ME_PRESET) ?? '')
+            ?? MasterMePresets::default();
+    }
+
+    public function setMasterMePreset(?string $masterMePreset): void
+    {
+        if (null !== $masterMePreset) {
+            $masterMePreset = strtolower($masterMePreset);
+        }
+
+        if (null !== $masterMePreset && null === MasterMePresets::tryFrom($masterMePreset)) {
+            throw new InvalidArgumentException('Invalid master_me preset specified.');
+        }
+
+        $this->set(self::MASTER_ME_PRESET, $masterMePreset);
     }
 
     public const USE_REPLAYGAIN = 'enable_replaygain_metadata';

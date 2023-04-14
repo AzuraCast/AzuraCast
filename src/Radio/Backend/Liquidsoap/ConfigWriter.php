@@ -99,7 +99,26 @@ final class ConfigWriter implements EventSubscriberInterface
 
             case AudioProcessingMethods::MasterMe:
                 // MasterMe Presets
-                
+
+                $lines = [
+                    'radio = ladspa.master_me(',
+                ];
+
+                $preset = $settings->getMasterMePresetEnum();
+                foreach ($preset->getOptions() as $presetKey => $presetVal) {
+                    if (is_numeric($presetVal)) {
+                        $presetVal = self::toFloat($presetVal);
+                    } elseif (is_bool($presetVal)) {
+                        $presetVal = ($presetVal) ? 'true' : 'false';
+                    }
+
+                    $lines[] = '    ' . $presetKey . ' = ' . $presetVal . ',';
+                }
+
+                $lines[] = '    radio';
+                $lines[] = ')';
+
+                $event->appendLines($lines);
                 break;
 
             case AudioProcessingMethods::StereoTool:

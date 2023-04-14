@@ -67,81 +67,161 @@
                     </template>
                 </b-wrapped-form-group>
             </div>
-            <div class="form-row">
-                <b-wrapped-form-group
-                    id="edit_form_backend_config_audio_processing_method"
-                    class="col-md-12"
-                    :field="form.backend_config.audio_processing_method"
-                >
-                    <template #label>
-                        {{ $gettext('Audio Processing Method') }}
-                    </template>
-                    <template #description>
-                        {{
-                            $gettext('Choose a method to use for processing audio which produces a more uniform and "full" sound for your station.')
-                        }}
-                    </template>
-                    <template #default="slotProps">
-                        <b-form-radio-group
-                            :id="slotProps.id"
-                            v-model="slotProps.field.$model"
-                            stacked
-                            :options="audioProcessingOptions"
-                        />
-                    </template>
-                </b-wrapped-form-group>
-            </div>
         </b-form-fieldset>
 
-        <b-form-fieldset v-if="isStereoToolEnabled && isStereoToolInstalled">
-            <template #label>
-                {{ $gettext('Stereo Tool') }}
-            </template>
-            <template #description>
-                {{
-                    $gettext('Stereo Tool is an industry standard for software audio processing. For more information on how to configure it, please refer to the')
-                }}
-                <a
-                    href="https://www.thimeo.com/stereo-tool/"
-                    target="_blank"
-                >
-                    {{ $gettext('Stereo Tool documentation.') }}
-                </a>
-            </template>
-
+        <b-form-fieldset v-if="isBackendEnabled">
             <b-form-fieldset>
-                <div class="form-row">
-                    <b-wrapped-form-group
-                        id="edit_form_backend_stereo_tool_license_key"
-                        class="col-md-7"
-                        :field="form.backend_config.stereo_tool_license_key"
-                        input-type="text"
-                    >
-                        <template #label>
-                            {{ $gettext('Stereo Tool License Key') }}
-                        </template>
-                        <template #description>
-                            {{
-                                $gettext('Provide a valid license key from Thimeo. Functionality is limited without a license key.')
-                            }}
-                        </template>
-                    </b-wrapped-form-group>
+                <template #label>
+                    {{ $gettext('Audio Post-processing') }}
+                </template>
+                <template #description>
+                    {{
+                        $gettext('Post-processing allows you to apply audio processors (like compressors, limiters, or equalizers) to your stream to create a more uniform sound or enhance the listening experience. Post-processing requires extra CPU resources, so it may slow down your server.')
+                    }}
+                </template>
 
-                    <b-form-markup
-                        id="edit_form_backend_stereo_tool_config"
-                        class="col-md-5"
-                    >
+                <b-form-fieldset>
+                    <div class="form-row">
+                        <b-wrapped-form-group
+                            id="edit_form_backend_config_audio_processing_method"
+                            class="col-md-6"
+                            :field="form.backend_config.audio_processing_method"
+                        >
+                            <template #label>
+                                {{ $gettext('Audio Post-processing Method') }}
+                            </template>
+                            <template #description>
+                                {{
+                                    $gettext('Select an option here to apply post-processing using an easy preset or tool. You can also manually apply post-processing by editing your Liquidsoap configuration manually.')
+                                }}
+                            </template>
+                            <template #default="slotProps">
+                                <b-form-radio-group
+                                    :id="slotProps.id"
+                                    v-model="slotProps.field.$model"
+                                    stacked
+                                    :options="audioProcessingOptions"
+                                />
+                            </template>
+                        </b-wrapped-form-group>
+
+                        <template v-if="isPostProcessingEnabled">
+                            <b-wrapped-form-checkbox
+                                id="edit_form_backend_config_post_processing_include_live"
+                                class="col-md-6"
+                                :field="form.backend_config.post_processing_include_live"
+                            >
+                                <template #label>
+                                    {{ $gettext('Apply Post-processing to Live Streams') }}
+                                </template>
+                                <template #description>
+                                    {{
+                                        $gettext('Check this box to apply post-processing to all audio, including live streams. Uncheck this box to only apply post-processing to the AutoDJ.')
+                                    }}
+                                </template>
+                            </b-wrapped-form-checkbox>
+                        </template>
+                    </div>
+                </b-form-fieldset>
+
+                <b-form-fieldset v-if="isMasterMeEnabled">
+                    <b-form-markup id="master_me_info">
                         <template #label>
-                            {{ $gettext('Upload Stereo Tool Configuration') }}
+                            {{ $gettext('About Master_me') }}
                         </template>
 
                         <p class="card-text">
                             {{
-                                $gettext('Upload a Stereo Tool configuration file from the "Broadcasting" submenu in the station profile.')
+                                $gettext('Master_me is an open-source automatic mastering plugin for streaming, podcasts and Internet radio.')
                             }}
                         </p>
+                        <p class="card-text">
+                            <a
+                                href="https://github.com/trummerschlunk/master_me"
+                                target="_blank"
+                            >
+                                {{ $gettext('Master_me Project Homepage') }}
+                            </a>
+                        </p>
                     </b-form-markup>
-                </div>
+
+                    <b-form-fieldset>
+                        <div class="form-row">
+                            <b-wrapped-form-group
+                                id="edit_form_backend_master_me_preset"
+                                class="col-md-7"
+                                :field="form.backend_config.master_me_preset"
+                            >
+                                <template #label>
+                                    {{ $gettext('Master_me Preset') }}
+                                </template>
+                                <template #default="slotProps">
+                                    <b-form-radio-group
+                                        :id="slotProps.id"
+                                        v-model="slotProps.field.$model"
+                                        stacked
+                                        :options="masterMePresetOptions"
+                                    />
+                                </template>
+                            </b-wrapped-form-group>
+                        </div>
+                    </b-form-fieldset>
+                </b-form-fieldset>
+
+                <b-form-fieldset v-if="isStereoToolEnabled && isStereoToolInstalled">
+                    <b-form-markup id="stereo_tool_info">
+                        <template #label>
+                            {{ $gettext('Stereo Tool') }}
+                        </template>
+
+                        <p class="card-text">
+                            {{
+                                $gettext('Stereo Tool is an industry standard for software audio processing. For more information on how to configure it, please refer to the')
+                            }}
+                            <a
+                                href="https://www.thimeo.com/stereo-tool/"
+                                target="_blank"
+                            >
+                                {{ $gettext('Stereo Tool documentation.') }}
+                            </a>
+                        </p>
+                    </b-form-markup>
+
+                    <b-form-fieldset>
+                        <div class="form-row">
+                            <b-wrapped-form-group
+                                id="edit_form_backend_stereo_tool_license_key"
+                                class="col-md-7"
+                                :field="form.backend_config.stereo_tool_license_key"
+                                input-type="text"
+                            >
+                                <template #label>
+                                    {{ $gettext('Stereo Tool License Key') }}
+                                </template>
+                                <template #description>
+                                    {{
+                                        $gettext('Provide a valid license key from Thimeo. Functionality is limited without a license key.')
+                                    }}
+                                </template>
+                            </b-wrapped-form-group>
+
+                            <b-form-markup
+                                id="edit_form_backend_stereo_tool_config"
+                                class="col-md-5"
+                            >
+                                <template #label>
+                                    {{ $gettext('Upload Stereo Tool Configuration') }}
+                                </template>
+
+                                <p class="card-text">
+                                    {{
+                                        $gettext('Upload a Stereo Tool configuration file from the "Broadcasting" submenu in the station profile.')
+                                    }}
+                                </p>
+                            </b-form-markup>
+                        </div>
+                    </b-form-fieldset>
+                </b-form-fieldset>
             </b-form-fieldset>
         </b-form-fieldset>
 
@@ -293,11 +373,16 @@
 import BFormFieldset from "~/components/Form/BFormFieldset.vue";
 import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup.vue";
 import {
-  AUDIO_PROCESSING_LIQUIDSOAP,
-  AUDIO_PROCESSING_NONE,
-  AUDIO_PROCESSING_STEREO_TOOL,
-  BACKEND_LIQUIDSOAP,
-  BACKEND_NONE
+    AUDIO_PROCESSING_LIQUIDSOAP,
+    AUDIO_PROCESSING_MASTER_ME,
+    AUDIO_PROCESSING_NONE,
+    AUDIO_PROCESSING_STEREO_TOOL,
+    BACKEND_LIQUIDSOAP,
+    BACKEND_NONE,
+    MASTER_ME_PRESET_APPLE_PODCASTS,
+    MASTER_ME_PRESET_EBU_R128, MASTER_ME_PRESET_MUSIC_GENERAL,
+    MASTER_ME_PRESET_SPEECH_GENERAL,
+    MASTER_ME_PRESET_YOUTUBE
 } from "~/components/Entity/RadioAdapters";
 import BWrappedFormCheckbox from "~/components/Form/BWrappedFormCheckbox.vue";
 import BFormMarkup from "~/components/Form/BFormMarkup.vue";
@@ -329,6 +414,14 @@ const isBackendEnabled = computed(() => {
 
 const isStereoToolEnabled = computed(() => {
     return props.form.backend_config.audio_processing_method.$model === AUDIO_PROCESSING_STEREO_TOOL;
+});
+
+const isMasterMeEnabled = computed(() => {
+    return props.form.backend_config.audio_processing_method.$model === AUDIO_PROCESSING_MASTER_ME;
+});
+
+const isPostProcessingEnabled = computed(() => {
+    return props.form.backend_config.audio_processing_method.$model !== AUDIO_PROCESSING_NONE;
 });
 
 const {$gettext} = useTranslate();
@@ -366,17 +459,21 @@ const crossfadeOptions = computed(() => {
 const audioProcessingOptions = computed(() => {
     const audioProcessingOptions = [
         {
-            text: $gettext('Liquidsoap'),
+            text: $gettext('No Post-processing'),
+            value: AUDIO_PROCESSING_NONE,
+        },
+        {
+            text: $gettext('Basic Normalization and Compression'),
             value: AUDIO_PROCESSING_LIQUIDSOAP,
         },
         {
-            text: $gettext('Disable Processing'),
-            value: AUDIO_PROCESSING_NONE,
-        }
+            text: $gettext('Master_me Post-processing'),
+            value: AUDIO_PROCESSING_MASTER_ME,
+        },
     ];
 
     if (props.isStereoToolInstalled) {
-        audioProcessingOptions.splice(1, 0,
+        audioProcessingOptions.push(
             {
                 text: $gettext('Stereo Tool'),
                 value: AUDIO_PROCESSING_STEREO_TOOL,
@@ -392,6 +489,31 @@ const charsetOptions = computed(() => {
         {text: 'UTF-8', value: 'UTF-8'},
         {text: 'ISO-8859-1', value: 'ISO-8859-1'}
     ];
+});
+
+const masterMePresetOptions = computed(() => {
+    return [
+        {
+            text: $gettext('Music General'),
+            value: MASTER_ME_PRESET_MUSIC_GENERAL
+        },
+        {
+            text: $gettext('Speech General'),
+            value: MASTER_ME_PRESET_SPEECH_GENERAL
+        },
+        {
+            text: $gettext('EBU R128'),
+            value: MASTER_ME_PRESET_EBU_R128
+        },
+        {
+            text: $gettext('Apple Podcasts'),
+            value: MASTER_ME_PRESET_APPLE_PODCASTS
+        },
+        {
+            text: $gettext('YouTube'),
+            value: MASTER_ME_PRESET_YOUTUBE
+        }
+    ]
 });
 
 const performanceModeOptions = computed(() => {

@@ -6,10 +6,9 @@ namespace App\Radio\Enums;
 
 enum AudioProcessingMethods: string
 {
-    case None = 'none';
     case Liquidsoap = 'nrj';
-    case MasterMe = 'master_me';
     case StereoTool = 'stereo_tool';
+    case None = 'none';
 
     public function getValue(): string
     {

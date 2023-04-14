@@ -236,6 +236,12 @@ final class AzuraCastEnvFile extends AbstractEnvFile
                     'name' => __('Enable web-based Docker image updates'),
                     'default' => true,
                 ],
+                'INSTALL_PACKAGES_ON_STARTUP' => [
+                    'name' => __('Extra Ubuntu packages to install upon startup'),
+                    'default' => __(
+                        'Separate package names with a space. Packages will be installed during container startup.'
+                    ),
+                ],
             ];
 
             foreach ($config as $key => &$keyInfo) {

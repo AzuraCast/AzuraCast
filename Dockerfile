@@ -53,33 +53,28 @@ COPY --from=mariadb /usr/local/bin/docker-entrypoint.sh /usr/local/bin/db_entryp
 
 # Run base build process
 COPY ./util/docker/common /bd_build/
+
 RUN bash /bd_build/prepare.sh \
-    && bash /bd_build/add_user.sh \
-    && bash /bd_build/cleanup.sh \
-    && rm -rf /bd_build
+    && bash /bd_build/add_user.sh
 
 # Build each set of dependencies in their own step for cacheability.
 COPY ./util/docker/supervisor /bd_build/supervisor/
-RUN bash /bd_build/supervisor/setup.sh \
-    && rm -rf /bd_build/supervisor
+RUN bash /bd_build/supervisor/setup.sh
 
 COPY ./util/docker/stations /bd_build/stations/
-RUN bash /bd_build/stations/setup.sh \
-    && rm -rf /bd_build/stations
+RUN bash /bd_build/stations/setup.sh
 
 COPY ./util/docker/web /bd_build/web/
-RUN bash /bd_build/web/setup.sh \
-    && rm -rf /bd_build/web
+RUN bash /bd_build/web/setup.sh
 
 COPY ./util/docker/mariadb /bd_build/mariadb/
-RUN bash /bd_build/mariadb/setup.sh \
-    && rm -rf /bd_build/mariadb
+RUN bash /bd_build/mariadb/setup.sh
 
 COPY ./util/docker/redis /bd_build/redis/
-RUN bash /bd_build/redis/setup.sh \
-    && rm -rf /bd_build/redis
+RUN bash /bd_build/redis/setup.sh
 
-RUN rm -rf /bd_build
+RUN bash /bd_build/cleanup.sh \
+    && rm -rf /bd_build
 
 VOLUME ["/var/azuracast/stations", "/var/azuracast/uploads", "/var/azuracast/backups", "/var/azuracast/sftpgo/persist", "/var/azuracast/servers/shoutcast2", "/var/azuracast/meilisearch/persist"]
 

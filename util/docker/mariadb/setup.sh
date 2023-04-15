@@ -2,6 +2,8 @@
 set -e
 set -x
 
+export DEBIAN_FRONTEND=noninteractive
+
 apt-get update
 
 # Install common scripts

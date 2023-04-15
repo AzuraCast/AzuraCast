@@ -21,6 +21,16 @@ release channel, you can take advantage of these new features and fixes.
   RedHat Enterprise Linux community of distributions. We have updated our Docker utility script to include a Podman
   support mode. Feel free to report any bugs to us!
 
+- **Install Custom Packages at Startup**: If you want to take advantage of specific Ubuntu packages available
+  via `apt-get install`, you can now specify those files in an `azuracast.env` environment variable
+  named `INSTALL_PACKAGES_ON_STARTUP`. Because users can now install any extra packages they need, we are removing some
+  non-essential packages from our shipped Docker image, namely several LADSPA audio plugins; to reinstall the full set
+  of plugins that were previously available, add this line to your `azuracast.env` file:
+
+  ```
+  INSTALL_PACKAGES_ON_STARTUP="frei0r-plugins-dev multimedia-audio-plugins swh-plugins tap-plugins lsp-plugins-ladspa"
+  ```
+
 - Our Docker Utility Script now directly supports version 2 of Docker Compose (invoked using `docker compose` rather
   than `docker-compose`).
 

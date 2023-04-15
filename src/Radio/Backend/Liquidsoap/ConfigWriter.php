@@ -106,11 +106,12 @@ final class ConfigWriter implements EventSubscriberInterface
 
                 $preset = $settings->getMasterMePresetEnum();
                 foreach ($preset->getOptions() as $presetKey => $presetVal) {
-                    if (is_numeric($presetVal)) {
-                        $presetVal = self::toFloat($presetVal);
-                    } elseif (is_bool($presetVal)) {
-                        $presetVal = ($presetVal) ? 'true' : 'false';
-                    }
+                    $presetVal = match (true) {
+                        is_int($presetVal) => self::toFloat($presetVal, 0),
+                        is_float($presetVal) => self::toFloat($presetVal),
+                        is_bool($presetVal) => ($presetVal) ? 'true' : 'false',
+                        default => $presetVal
+                    };
 
                     $lines[] = '    ' . $presetKey . ' = ' . $presetVal . ',';
                 }

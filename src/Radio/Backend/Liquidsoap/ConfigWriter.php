@@ -80,6 +80,79 @@ final class ConfigWriter implements EventSubscriberInterface
         }
     }
 
+    public function writePostProcessingSection(WriteLiquidsoapConfiguration $event): void
+    {
+        $station = $event->getStation();
+        $settings = $station->getBackendConfig();
+
+        switch ($settings->getAudioProcessingMethodEnum()) {
+            case AudioProcessingMethods::Liquidsoap:
+                // NRJ normalization
+                $event->appendBlock(
+                    <<<LIQ
+                    # Normalization and Compression
+                    radio = normalize(target = 0., window = 0.03, gain_min = -16., gain_max = 0., radio)
+                    radio = compress.exponential(radio, mu = 1.0)
+                    LIQ
+                );
+                break;
+
+            case AudioProcessingMethods::MasterMe:
+                // MasterMe Presets
+
+                $lines = [
+                    'radio = ladspa.master_me(',
+                ];
+
+                $preset = $settings->getMasterMePresetEnum();
+                foreach ($preset->getOptions() as $presetKey => $presetVal) {
+                    $presetVal = match (true) {
+                        is_int($presetVal) => self::toFloat($presetVal, 0),
+                        is_float($presetVal) => self::toFloat($presetVal),
+                        is_bool($presetVal) => ($presetVal) ? 'true' : 'false',
+                        default => $presetVal
+                    };
+
+                    $lines[] = '    ' . $presetKey . ' = ' . $presetVal . ',';
+                }
+
+                $lines[] = '    radio';
+                $lines[] = ')';
+
+                $event->appendLines($lines);
+                break;
+
+            case AudioProcessingMethods::StereoTool:
+                // Stereo Tool processing
+                if (!StereoTool::isReady($station)) {
+                    return;
+                }
+
+                $stereoToolBinary = StereoTool::getBinaryPath();
+
+                $stereoToolConfiguration = $station->getRadioConfigDir()
+                    . DIRECTORY_SEPARATOR . $settings->getStereoToolConfigurationPath();
+                $stereoToolProcess = $stereoToolBinary . ' --silent - - -s ' . $stereoToolConfiguration;
+
+                $stereoToolLicenseKey = $settings->getStereoToolLicenseKey();
+                if (!empty($stereoToolLicenseKey)) {
+                    $stereoToolProcess .= ' -k "' . $stereoToolLicenseKey . '"';
+                }
+
+                $event->appendBlock(
+                    <<<LIQ
+                    # Stereo Tool Pipe
+                    radio = pipe(replay_delay=1.0, process='{$stereoToolProcess}', radio)
+                    LIQ
+                );
+                break;
+
+            case AudioProcessingMethods::None:
+                // Noop
+                break;
+        }
+    }
+
     public static function getDividerString(): string
     {
         return chr(7);
@@ -767,6 +840,10 @@ final class ConfigWriter implements EventSubscriberInterface
                 LS
             );
         }
+
+        if ($settings->isAudioProcessingEnabled() && !$settings->getPostProcessingIncludeLive()) {
+            $this->writePostProcessingSection($event);
+        }
     }
 
     public function writeHarborConfiguration(WriteLiquidsoapConfiguration $event): void
@@ -953,39 +1030,8 @@ final class ConfigWriter implements EventSubscriberInterface
             LIQ
         );
 
-        // NRJ normalization
-        if (AudioProcessingMethods::Liquidsoap === $settings->getAudioProcessingMethodEnum()) {
-            $event->appendBlock(
-                <<<LIQ
-                # Normalization and Compression
-                radio = normalize(target = 0., window = 0.03, gain_min = -16., gain_max = 0., radio)
-                radio = compress.exponential(radio, mu = 1.0)
-                LIQ
-            );
-        }
-
-        // Stereo Tool processing
-        if (
-            AudioProcessingMethods::StereoTool === $settings->getAudioProcessingMethodEnum()
-            && StereoTool::isReady($station)
-        ) {
-            $stereoToolBinary = StereoTool::getBinaryPath();
-
-            $stereoToolConfiguration = $station->getRadioConfigDir()
-                . DIRECTORY_SEPARATOR . $settings->getStereoToolConfigurationPath();
-            $stereoToolProcess = $stereoToolBinary . ' --silent - - -s ' . $stereoToolConfiguration;
-
-            $stereoToolLicenseKey = $settings->getStereoToolLicenseKey();
-            if (!empty($stereoToolLicenseKey)) {
-                $stereoToolProcess .= ' -k "' . $stereoToolLicenseKey . '"';
-            }
-
-            $event->appendBlock(
-                <<<LIQ
-                # Stereo Tool Pipe
-                radio = pipe(replay_delay=1.0, process='{$stereoToolProcess}', radio)
-                LIQ
-            );
+        if ($settings->isAudioProcessingEnabled() && $settings->getPostProcessingIncludeLive()) {
+            $this->writePostProcessingSection($event);
         }
 
         // Replaygain metadata

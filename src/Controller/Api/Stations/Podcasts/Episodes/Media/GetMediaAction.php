@@ -68,7 +68,7 @@ final class GetMediaAction
             $podcastMedia = $episode->getMedia();
 
             if ($podcastMedia instanceof Entity\PodcastMedia) {
-                $fsPodcasts = $this->stationFilesystems->getRecordingsFilesystem($station);
+                $fsPodcasts = $this->stationFilesystems->getPodcastsFilesystem($station);
 
                 $path = $podcastMedia->getPath();
 

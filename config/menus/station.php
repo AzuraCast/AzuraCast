@@ -65,7 +65,6 @@ return static function (App\Event\BuildStationMenu $e) {
                     ],
                     [
                         'label' => __('Branding'),
-                        'class' => 'text-muted',
                         'url' => $router->fromhere('stations:branding'),
                         'permission' => StationPermissions::Profile,
                     ],
@@ -91,25 +90,21 @@ return static function (App\Event\BuildStationMenu $e) {
                     ],
                     'reports_duplicates' => [
                         'label' => __('Duplicate Songs'),
-                        'class' => 'text-muted',
                         'url' => $router->fromHere('stations:files:index') . '#special:duplicates',
                         'permission' => StationPermissions::Media,
                     ],
                     'reports_unprocessable' => [
                         'label' => __('Unprocessable Files'),
-                        'class' => 'text-muted',
                         'url' => $router->fromHere('stations:files:index') . '#special:unprocessable',
                         'permission' => StationPermissions::Media,
                     ],
                     'reports_unassigned' => [
                         'label' => __('Unassigned Files'),
-                        'class' => 'text-muted',
                         'url' => $router->fromHere('stations:files:index') . '#special:unassigned',
                         'permission' => StationPermissions::Media,
                     ],
                     'ondemand' => [
                         'label' => __('On-Demand Media'),
-                        'class' => 'text-muted',
                         'icon' => 'cloud_download',
                         'url' => $router->named('public:ondemand', ['station_id' => $station->getShortName()]),
                         'external' => true,
@@ -117,14 +112,12 @@ return static function (App\Event\BuildStationMenu $e) {
                     ],
                     'sftp_users' => [
                         'label' => __('SFTP Users'),
-                        'class' => 'text-muted',
                         'url' => $router->fromHere('stations:sftp_users:index'),
                         'visible' => StationFeatures::Sftp->supportedForStation($station),
                         'permission' => StationPermissions::Media,
                     ],
                     'bulk_media' => [
                         'label' => __('Bulk Media Import/Export'),
-                        'class' => 'text-muted',
                         'url' => $router->fromHere('stations:bulk-media'),
                         'permission' => StationPermissions::Media,
                     ],
@@ -239,21 +232,18 @@ return static function (App\Event\BuildStationMenu $e) {
                     ],
                     'fallback' => [
                         'label' => __('Custom Fallback File'),
-                        'class' => 'text-muted',
                         'url' => $router->fromHere('stations:fallback'),
                         'visible' => StationFeatures::Media->supportedForStation($station),
                         'permission' => StationPermissions::Broadcasting,
                     ],
                     'ls_config' => [
                         'label' => __('Edit Liquidsoap Configuration'),
-                        'class' => 'text-muted',
                         'url' => $router->fromHere('stations:util:ls_config'),
                         'visible' => StationFeatures::CustomLiquidsoapConfig->supportedForStation($station),
                         'permission' => StationPermissions::Broadcasting,
                     ],
                     'stations:stereo_tool_config' => [
                         'label' => __('Upload Stereo Tool Configuration'),
-                        'class' => 'text-muted',
                         'url' => $router->fromHere('stations:stereo_tool_config'),
                         'visible' => $settings->getEnableAdvancedFeatures()
                             && StationFeatures::Media->supportedForStation($station)
@@ -262,14 +252,13 @@ return static function (App\Event\BuildStationMenu $e) {
                     ],
                     'queue' => [
                         'label' => __('Upcoming Song Queue'),
-                        'class' => 'text-muted',
                         'url' => $router->fromHere('stations:queue:index'),
                         'permission' => StationPermissions::Broadcasting,
                         'visible' => $station->supportsAutoDjQueue(),
                     ],
                     'reload' => [
                         'label' => __('Reload Configuration'),
-                        'class' => 'text-muted api-call',
+                        'class' => 'api-call',
                         'url' => $router->fromHere('api:stations:reload'),
                         'confirm' => $willNotDisconnectMessage,
                         'permission' => StationPermissions::Broadcasting,
@@ -277,7 +266,7 @@ return static function (App\Event\BuildStationMenu $e) {
                     ],
                     'restart' => [
                         'label' => __('Restart Broadcasting'),
-                        'class' => 'text-muted api-call',
+                        'class' => 'api-call',
                         'url' => $router->fromHere('api:stations:restart'),
                         'confirm' => $willDisconnectMessage,
                         'permission' => StationPermissions::Broadcasting,

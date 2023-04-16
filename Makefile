@@ -44,6 +44,9 @@ test:
 bash:
 	docker-compose exec --user=azuracast web bash
 
+bash-root:
+	docker-compose exec web bash
+
 frontend-bash:
 	docker-compose -p azuracast_frontend -f docker-compose.frontend.yml build
 	docker-compose -p azuracast_frontend -f docker-compose.frontend.yml run -e NODE_ENV=development --rm frontend

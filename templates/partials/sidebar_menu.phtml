@@ -46,7 +46,7 @@ $sections->end();
                 <?=$category['label']?>
                 <?php
                 if ($category['external'] ?? false): ?>
-                    <i class="material-icons sm">open_in_new</i>
+                    <i class="material-icons sm" aria-label="<?= $this->e(__('External')) ?>">open_in_new</i>
                 <?php
                 endif; ?>
             </a>

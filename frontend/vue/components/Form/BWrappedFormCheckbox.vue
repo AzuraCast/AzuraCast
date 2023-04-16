@@ -23,12 +23,7 @@
                         <span aria-hidden="true">*</span>
                         <span class="sr-only">Required</span>
                     </span>
-                    <span
-                        v-if="advanced"
-                        class="badge small badge-primary"
-                    >
-                        {{ $gettext('Advanced') }}
-                    </span>
+                    <advanced-tag v-if="advanced" />
                 </b-form-checkbox>
 
                 <b-form-invalid-feedback :state="fieldState">
@@ -61,6 +56,7 @@ import {has} from "lodash";
 import VuelidateError from "./VuelidateError";
 import useSlotsExcept from "~/functions/useSlotsExcept";
 import {computed} from "vue";
+import AdvancedTag from "./AdvancedTag";
 
 const props = defineProps({
     id: {

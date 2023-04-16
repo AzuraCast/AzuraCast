@@ -55,12 +55,7 @@
                 <span aria-hidden="true">*</span>
                 <span class="sr-only">Required</span>
             </span>
-            <span
-                v-if="advanced"
-                class="badge small badge-primary ml-2"
-            >
-                {{ $gettext('Advanced') }}
-            </span>
+            <advanced-tag v-if="advanced" />
         </template>
         <template #description="slotProps">
             <slot
@@ -86,6 +81,7 @@ import VuelidateError from "./VuelidateError";
 import {computed, ref} from "vue";
 import useSlotsExcept from "~/functions/useSlotsExcept";
 import {has} from "lodash";
+import AdvancedTag from "./AdvancedTag";
 
 const props = defineProps({
     id: {

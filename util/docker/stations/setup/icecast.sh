@@ -9,12 +9,12 @@ apt-get install -q -y --no-install-recommends \
 mkdir -p /bd_build/stations/icecast_build
 cd /bd_build/stations/icecast_build
 
-curl -fsSL https://github.com/karlheyes/icecast-kh/archive/refs/tags/icecast-2.4.0-kh20.5.tar.gz \
-  -o icecast.tar.gz
-tar -xvzf icecast.tar.gz --strip-components=1
+# curl -fsSL https://github.com/karlheyes/icecast-kh/archive/refs/tags/icecast-2.4.0-kh20.5.tar.gz \
+#   -o icecast.tar.gz
+# tar -xvzf icecast.tar.gz --strip-components=1
 
-# git clone https://github.com/karlheyes/icecast-kh.git .
-# git checkout 3b04a78133b7c4b8f879b55e83c139532976de87
+git clone https://github.com/karlheyes/icecast-kh.git .
+git checkout 781ec1156a7f81febe18a7a8a382a60e2d42c949
 
 ./configure
 make

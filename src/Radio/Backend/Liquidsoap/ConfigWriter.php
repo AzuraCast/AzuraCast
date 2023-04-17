@@ -1030,10 +1030,6 @@ final class ConfigWriter implements EventSubscriberInterface
             LIQ
         );
 
-        if ($settings->isAudioProcessingEnabled() && $settings->getPostProcessingIncludeLive()) {
-            $this->writePostProcessingSection($event);
-        }
-
         // Replaygain metadata
         if ($settings->useReplayGain()) {
             $event->appendBlock(
@@ -1043,6 +1039,10 @@ final class ConfigWriter implements EventSubscriberInterface
                 radio = replaygain(radio)
                 LIQ
             );
+        }
+
+        if ($settings->isAudioProcessingEnabled() && $settings->getPostProcessingIncludeLive()) {
+            $this->writePostProcessingSection($event);
         }
 
         // Write fallback to safety file to ensure infallible source for the broadcast outputs.

@@ -128,12 +128,16 @@ const props = defineProps({
     }
 });
 
+const isNumeric = computed(() => {
+    return props.inputNumber || props.inputType === "number" || props.inputType === "range";
+});
+
 const modelValue = computed({
     get() {
         return props.field.$model;
     },
     set(newValue) {
-        if ((props.isNumeric || props.inputEmptyIsNull) && '' === newValue) {
+        if ((isNumeric.value || props.inputEmptyIsNull) && '' === newValue) {
             newValue = null;
         }
 
@@ -149,10 +153,6 @@ const fieldState = computed(() => {
 
 const isRequired = computed(() => {
     return has(props.field, 'required');
-});
-
-const isNumeric = computed(() => {
-    return props.inputNumber || props.inputType === "number";
 });
 
 const $input = ref(); // Input

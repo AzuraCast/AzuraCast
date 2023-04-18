@@ -6,7 +6,7 @@
                 class="col-md-12"
                 :field="form.backend_type"
             >
-                <template #label>
+            <template #label>
                     {{ $gettext('AutoDJ Service') }}
                 </template>
                 <template #description>
@@ -149,7 +149,7 @@
                         <div class="form-row">
                             <b-wrapped-form-group
                                 id="edit_form_backend_master_me_preset"
-                                class="col-md-7"
+                                class="col-md-6"
                                 :field="form.backend_config.master_me_preset"
                             >
                                 <template #label>
@@ -162,6 +162,23 @@
                                         stacked
                                         :options="masterMePresetOptions"
                                     />
+                                </template>
+                            </b-wrapped-form-group>
+
+                            <b-wrapped-form-group
+                                id="edit_form_backend_master_me_loudness_target"
+                                class="col-md-6"
+                                :field="form.backend_config.master_me_loudness_target"
+                                input-type="number"
+                                :input-attrs="{ min: '-50', max: '-2', step: '0.5' }"
+                            >
+                                <template #label>
+                                    {{ $gettext('Master_me Loudness Target (LUFS)') }}
+                                </template>
+                                <template #description>
+                                    {{
+                                        $gettext('The average target loudness (measured in LUFS) for the broadcasted stream. Values between -14 and -18 LUFS are common for Internet radio stations.')
+                                    }}
                                 </template>
                             </b-wrapped-form-group>
                         </div>

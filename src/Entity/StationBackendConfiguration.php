@@ -247,6 +247,20 @@ class StationBackendConfiguration extends AbstractStationConfiguration
         $this->set(self::MASTER_ME_PRESET, $masterMePreset);
     }
 
+    public const MASTER_ME_LOUDNESS_TARGET = 'master_me_loudness_target';
+
+    protected const MASTER_ME_DEFAULT_LOUDNESS_TARGET = -16;
+
+    public function getMasterMeLoudnessTarget(): int
+    {
+        return (int)$this->get(self::MASTER_ME_LOUDNESS_TARGET, self::MASTER_ME_DEFAULT_LOUDNESS_TARGET);
+    }
+
+    public function setMasterMeLoudnessTarget(?int $masterMeLoudnessTarget): void
+    {
+        $this->set(self::MASTER_ME_LOUDNESS_TARGET, $masterMeLoudnessTarget);
+    }
+
     public const USE_REPLAYGAIN = 'enable_replaygain_metadata';
 
     public function useReplayGain(): bool
@@ -260,10 +274,6 @@ class StationBackendConfiguration extends AbstractStationConfiguration
     }
 
     public const CROSSFADE_TYPE = 'crossfade_type';
-
-    protected const CROSSFADE_NORMAL = 'normal';
-    protected const CROSSFADE_DISABLED = 'none';
-    protected const CROSSFADE_SMART = 'smart';
 
     public function getCrossfadeTypeEnum(): CrossfadeModes
     {

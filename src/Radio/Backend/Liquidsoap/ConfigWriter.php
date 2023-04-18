@@ -105,7 +105,13 @@ final class ConfigWriter implements EventSubscriberInterface
                 ];
 
                 $preset = $settings->getMasterMePresetEnum();
-                foreach ($preset->getOptions() as $presetKey => $presetVal) {
+                $presetOptions = $preset->getOptions();
+
+                if (0 !== ($loudnessTarget = $settings->getMasterMeLoudnessTarget())) {
+                    $presetOptions['target'] = $loudnessTarget;
+                }
+
+                foreach ($presetOptions as $presetKey => $presetVal) {
                     $presetVal = match (true) {
                         is_int($presetVal) => self::toFloat($presetVal, 0),
                         is_float($presetVal) => self::toFloat($presetVal),

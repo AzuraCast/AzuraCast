@@ -203,6 +203,7 @@ const buildForm = () => {
             audio_processing_method: {},
             post_processing_include_live: {},
             master_me_preset: {},
+            master_me_loudness_target: {},
             stereo_tool_license_key: {},
             record_streams: {},
             record_streams_format: {},
@@ -266,6 +267,7 @@ const buildForm = () => {
             audio_processing_method: AUDIO_PROCESSING_NONE,
             post_processing_include_live: true,
             master_me_preset: MASTER_ME_PRESET_MUSIC_GENERAL,
+            master_me_loudness_target: -16,
             stereo_tool_license_key: '',
             record_streams: false,
             record_streams_format: 'mp3',
@@ -463,6 +465,8 @@ const doLoad = () => {
         axios.get(props.editUrl)
     ).then((resp) => {
         populateForm(resp.data);
+
+        console.log(form.value);
     }).catch((err) => {
         emit('error', err);
     }).finally(() => {

@@ -21,7 +21,10 @@ abstract class AbstractStationConfiguration implements JsonSerializable
 
         $return = [];
         foreach ($reflClass->getConstants(ReflectionClassConstant::IS_PUBLIC) as $constantVal) {
-            $return[(string)$constantVal] = $this->get($constantVal);
+            $constantResult = $this->get($constantVal);
+            if (null !== $constantResult) {
+                $return[(string)$constantVal] = $constantResult;
+            }
         }
         return $return;
     }

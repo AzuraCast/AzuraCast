@@ -108,7 +108,7 @@ final class ConfigWriter implements EventSubscriberInterface
                 $presetOptions = $preset->getOptions();
 
                 if (0 !== ($loudnessTarget = $settings->getMasterMeLoudnessTarget())) {
-                    $presetOptions['target'] = $loudnessTarget;
+                    $presetOptions['target'] = (int)$loudnessTarget;
                 }
 
                 foreach ($presetOptions as $presetKey => $presetVal) {

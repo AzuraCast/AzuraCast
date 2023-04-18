@@ -249,14 +249,14 @@ class StationBackendConfiguration extends AbstractStationConfiguration
 
     public const MASTER_ME_LOUDNESS_TARGET = 'master_me_loudness_target';
 
-    protected const MASTER_ME_DEFAULT_LOUDNESS_TARGET = -16;
+    protected const MASTER_ME_DEFAULT_LOUDNESS_TARGET = -16.0;
 
-    public function getMasterMeLoudnessTarget(): int
+    public function getMasterMeLoudnessTarget(): float
     {
-        return (int)$this->get(self::MASTER_ME_LOUDNESS_TARGET, self::MASTER_ME_DEFAULT_LOUDNESS_TARGET);
+        return (float)$this->get(self::MASTER_ME_LOUDNESS_TARGET, self::MASTER_ME_DEFAULT_LOUDNESS_TARGET);
     }
 
-    public function setMasterMeLoudnessTarget(?int $masterMeLoudnessTarget): void
+    public function setMasterMeLoudnessTarget(?float $masterMeLoudnessTarget): void
     {
         $this->set(self::MASTER_ME_LOUDNESS_TARGET, $masterMeLoudnessTarget);
     }

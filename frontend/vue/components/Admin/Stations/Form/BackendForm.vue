@@ -6,7 +6,7 @@
                 class="col-md-12"
                 :field="form.backend_type"
             >
-            <template #label>
+                <template #label>
                     {{ $gettext('AutoDJ Service') }}
                 </template>
                 <template #description>
@@ -170,7 +170,7 @@
                                 class="col-md-6"
                                 :field="form.backend_config.master_me_loudness_target"
                                 input-type="number"
-                                :input-attrs="{ min: '-50', max: '-2', step: '0.5' }"
+                                :input-attrs="{ min: '-50', max: '-2', step: '1' }"
                             >
                                 <template #label>
                                     {{ $gettext('Master_me Loudness Target (LUFS)') }}

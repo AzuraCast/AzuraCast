@@ -76,10 +76,9 @@
                     </div>
                     <div class="flex-fill">
                         <h4>{{ notification.title }}</h4>
-                        <p
-                            class="card-text"
-                            v-html="notification.body"
-                        />
+                        <p class="card-text">
+                            {{ notification.body }}
+                        </p>
                     </div>
                     <div
                         v-if="notification.actionLabel && notification.actionUrl"

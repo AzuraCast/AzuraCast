@@ -5,11 +5,32 @@ release channel, you can take advantage of these new features and fixes.
 
 ## New Features/Changes
 
+## Code Quality/Technical Changes
+
+## Bug Fixes
+
+---
+
+# AzuraCast 0.18.0 (Apr 19, 2023)
+
+This release includes numerous important new features and a vulnerability fix that is particularly important for
+multi-tenant installations (i.e. resellers). Upgrading is strongly recommended in these environments.
+
+## New Features/Changes
+
+- **Fix for [CVE-2023-2191](https://nvd.nist.gov/vuln/detail/CVE-2023-21910)**: An issue was identified where a user who
+  already had an AzuraCast account could update their display name to inject malicious JavaScript into the header menu
+  of the site. In a majority of cases, this menu is only visible to the current logged-in user (pages like the "
+  Administer Users" page are unaffected by this vulnerability), but if a higher-privileged administrator uses the "Log
+  In As" feature to masquerade as a user, then the JavaScript injection could exfiltrate certain data. Anonymous members
+  of the public cannot exploit this vulnerability in an AzuraCast installation, so it is primarily of concern for
+  multi-tenant installations (i.e. resellers).
+
 - **Smarter, Faster Searches**: For searches in the Media Manager, as well as the public-facing Requests and On Demand
   pages, we now use a new search tool called Meilisearch that allows for very fast, very accurate search results, as
   well as more complex search queries (and other goodies, like typo correction).
 
-- **Master_me and Post-Processing Tweaks:** We now have built-in support
+- **Master_me and Post-Processing Tweaks**: We now have built-in support
   for [master_me](https://github.com/trummerschlunk/master_me), an open-source audio mastering tool that helps add
   polish and "punch" to your streams. Its functionality is similar to Stereo Tool, but because it's open-source, we
   include it in every AzuraCast installation. You can now also customize whether our post-processing step includes your

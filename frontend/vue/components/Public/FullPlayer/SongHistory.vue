@@ -9,18 +9,21 @@
             class="song"
         >
             <strong class="order">{{ history.length - index }}</strong>
-            <img
+
+            <album-art
                 v-if="showAlbumArt"
-                class="art"
+                class="mr-3"
                 :src="row.song.art"
-            >
+            />
+
             <div class="name">
-                <strong v-html="row.song.title" />
-                <span v-html="albumAndArtist(row.song)" />
+                <strong>{{ row.song.title }}</strong>
+                <span>
+                    {{ albumAndArtist(row.song) }}
+                </span>
             </div>
-            <div class="break" />
-            <small class="date-played text-muted">
-                <span v-html="unixTimestampToDate(row.played_at)" />
+            <small class="date-played text-muted ml-3">
+                {{ unixTimestampToDate(row.played_at) }}
             </small>
         </div>
     </div>
@@ -28,6 +31,7 @@
 
 <script setup>
 import {DateTime} from "luxon";
+import AlbumArt from "~/components/Common/AlbumArt.vue";
 
 const props = defineProps({
     history: {
@@ -78,11 +82,10 @@ const albumAndArtist = (song) => {
             text-align: center;
         }
 
-        .art {
-            width: 40px;
-            height: 40px;
-            border-radius: 4px;
-            margin-right: 5px;
+        a.album-art {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
 
         .name {
@@ -96,21 +99,6 @@ const albumAndArtist = (song) => {
             display: flex;
             flex-direction: column;
             justify-content: center;
-            margin: 4px 0 0 40px;
-        }
-
-        .break {
-            flex-basis: 100%;
-            height: 0;
-        }
-
-        @media (min-width: 576px) {
-            .date-played {
-                margin-left: auto;
-            }
-            .break {
-                display: none;
-            }
         }
     }
 }

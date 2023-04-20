@@ -122,7 +122,16 @@
                             {{ $gettext('YP Directory Authorization Hash') }}
                         </template>
                         <template #description>
-                            <span v-html="langAuthhashDesc" />
+                            {{
+                                $gettext('If your stream is set to advertise to YP directories above, you must specify an authorization hash. You can manage these on the Shoutcast web site.')
+                            }}
+                            <br>
+                            <a
+                                href="https://radiomanager.shoutcast.com/"
+                                target="_blank"
+                            >
+                                {{ $gettext('Shoutcast Radio Manager') }}
+                            </a>
                         </template>
                     </b-wrapped-form-group>
                 </template>
@@ -151,7 +160,6 @@
 import {FRONTEND_ICECAST, FRONTEND_SHOUTCAST} from '~/components/Entity/RadioAdapters';
 import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
 import BWrappedFormCheckbox from "~/components/Form/BWrappedFormCheckbox";
-import {useTranslate} from "~/vendor/gettext";
 import {computed} from "vue";
 
 const props = defineProps({
@@ -164,13 +172,6 @@ const props = defineProps({
         required: true
     }
 });
-
-const {$gettext} = useTranslate();
-
-const langAuthhashDesc = $gettext(
-    'If your stream is set to advertise to YP directories above, you must specify an authorization hash. You can manage authhashes <a href="%{ url }" target="_blank">on the Shoutcast web site</a>.',
-    {url: 'https://radiomanager.shoutcast.com/'}
-);
 
 const isIcecast = computed(() => {
     return FRONTEND_ICECAST === props.stationFrontendType;

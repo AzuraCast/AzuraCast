@@ -26,9 +26,8 @@
                         <time-series-chart
                             style="width: 100%;"
                             :data="chartData.daily.metrics"
-                        >
-                            <span v-html="chartData.daily.alt" />
-                        </time-series-chart>
+                            :alt="chartData.daily.alt"
+                        />
                     </fieldset>
                 </b-col>
                 <b-col
@@ -44,9 +43,8 @@
                             style="width: 100%;"
                             :data="chartData.day_of_week.metrics"
                             :labels="chartData.day_of_week.labels"
-                        >
-                            <span v-html="chartData.day_of_week.alt" />
-                        </pie-chart>
+                            :alt="chartData.day_of_week.alt"
+                        />
                     </fieldset>
                 </b-col>
                 <b-col
@@ -62,9 +60,8 @@
                             style="width: 100%;"
                             :data="chartData.hourly.metrics"
                             :labels="chartData.hourly.labels"
-                        >
-                            <span v-html="chartData.hourly.alt" />
-                        </hour-chart>
+                            :alt="chartData.hourly.alt"
+                        />
                     </fieldset>
                 </b-col>
             </b-row>
@@ -95,16 +92,20 @@ const props = defineProps({
 const loading = ref(true);
 
 const chartData = shallowRef({
-    daily: {},
+    daily: {
+        labels: [],
+        metrics: [],
+        alt: []
+    },
     day_of_week: {
         labels: [],
         metrics: [],
-        alt: ''
+        alt: []
     },
     hourly: {
         labels: [],
         metrics: [],
-        alt: ''
+        alt: []
     }
 });
 

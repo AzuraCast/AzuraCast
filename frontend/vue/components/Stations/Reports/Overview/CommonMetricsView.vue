@@ -25,9 +25,8 @@
                                 style="width: 100%;"
                                 :data="stats.top_listeners.datasets"
                                 :labels="stats.top_listeners.labels"
-                            >
-                                <span v-html="stats.top_listeners.alt" />
-                            </pie-chart>
+                                :alt="stats.top_listeners.alt"
+                            />
                         </fieldset>
                     </b-col>
                     <b-col
@@ -43,9 +42,8 @@
                                 style="width: 100%;"
                                 :data="stats.top_connected_time.datasets"
                                 :labels="stats.top_connected_time.labels"
-                            >
-                                <span v-html="stats.top_connected_time.alt" />
-                            </pie-chart>
+                                :alt="stats.top_connected_time.alt"
+                            />
                         </fieldset>
                     </b-col>
                 </b-row>
@@ -103,12 +101,12 @@ const stats = shallowRef({
     top_listeners: {
         labels: [],
         datasets: [],
-        alt: ''
+        alt: []
     },
     top_connected_time: {
         labels: [],
         datasets: [],
-        alt: ''
+        alt: []
     },
 });
 

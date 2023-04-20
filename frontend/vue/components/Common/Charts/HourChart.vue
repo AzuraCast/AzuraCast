@@ -1,6 +1,11 @@
 <template>
     <canvas ref="$canvas">
-        <slot />
+        <slot>
+            <chart-alt-values
+                v-if="alt.length > 0"
+                :alt="alt"
+            />
+        </slot>
     </canvas>
 </template>
 
@@ -10,6 +15,7 @@ import {Chart} from "chart.js";
 import {useTranslate} from "~/vendor/gettext";
 import {onMounted, onUnmounted, ref} from "vue";
 import {defaultsDeep} from "lodash";
+import ChartAltValues from "~/components/Common/Charts/ChartAltValues.vue";
 
 const props = defineProps({
     options: {
@@ -17,6 +23,12 @@ const props = defineProps({
         required: true
     },
     data: {
+        type: Array,
+        default: () => {
+            return [];
+        }
+    },
+    alt: {
         type: Array,
         default: () => {
             return [];

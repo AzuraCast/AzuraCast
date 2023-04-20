@@ -40,7 +40,11 @@ abstract class AbstractReportAction
             ? array_slice($rows, 0, $limitResults)
             : $rows;
 
-        $alt = ['<dl>'];
+        $alt = [
+            'label' => $valueLabel,
+            'values' => [],
+        ];
+
         $labels = [];
         $data = [];
 
@@ -48,11 +52,12 @@ abstract class AbstractReportAction
             $labels[] = $key;
             $data[] = (int)$value;
 
-            $alt[] = '<dt>' . $key . '</dt>';
-            $alt[] = '<dd>' . $value . ' ' . $valueLabel . '</dd>';
+            $alt['values'][] = [
+                'label' => $key,
+                'type' => 'string',
+                'value' => $value . ' ' . $valueLabel,
+            ];
         }
-
-        $alt[] = '</dl>';
 
         return [
             'labels' => $labels,
@@ -62,7 +67,9 @@ abstract class AbstractReportAction
                     'data' => $data,
                 ],
             ],
-            'alt' => implode('', $alt),
+            'alt' => [
+                $alt,
+            ],
         ];
     }
 }

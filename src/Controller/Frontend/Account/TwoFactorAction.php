@@ -7,7 +7,6 @@ namespace App\Controller\Frontend\Account;
 use App\Entity\User;
 use App\Http\Response;
 use App\Http\ServerRequest;
-use App\Session\Flash;
 use Psr\Http\Message\ResponseInterface;
 
 final class TwoFactorAction
@@ -26,9 +25,8 @@ final class TwoFactorAction
                 /** @var User $user */
                 $user = $auth->getUser();
 
-                $flash->addMessage(
+                $flash->success(
                     '<b>' . __('Logged in successfully.') . '</b><br>' . $user->getEmail(),
-                    Flash::SUCCESS
                 );
 
                 $referrer = $request->getSession()->get('login_referrer');
@@ -39,9 +37,8 @@ final class TwoFactorAction
                 return $response->withRedirect($request->getRouter()->named('dashboard'));
             }
 
-            $flash->addMessage(
+            $flash->error(
                 '<b>' . __('Login unsuccessful') . '</b><br>' . __('Your credentials could not be verified.'),
-                Flash::ERROR
             );
 
             return $response->withRedirect((string)$request->getUri());

@@ -6,21 +6,26 @@
 
     <div
         id="profile"
-        class="row"
+        class="row row-of-cards"
     >
         <div class="col-lg-7">
-            <profile-now-playing
-                v-bind="pickProps(props, nowPlayingPanelProps)"
-            />
+            <template v-if="hasStarted">
+                <profile-now-playing
+                    v-bind="pickProps(props, nowPlayingPanelProps)"
+                />
 
-            <profile-schedule
-                :station-time-zone="stationTimeZone"
-                :schedule-items="profileInfo.schedule"
-            />
+                <profile-schedule
+                    :station-time-zone="stationTimeZone"
+                    :schedule-items="profileInfo.schedule"
+                />
 
-            <profile-streams
-                :station="profileInfo.station"
-            />
+                <profile-streams
+                    :station="profileInfo.station"
+                />
+            </template>
+            <template v-else>
+                <now-playing-not-started-panel />
+            </template>
 
             <profile-public-pages
                 v-bind="pickProps(props, {...publicPagesPanelProps,...embedModalProps})"
@@ -69,6 +74,7 @@ import ProfilePublicPages from './Profile/PublicPagesPanel';
 import ProfileFrontend from './Profile/FrontendPanel';
 import ProfileBackendNone from './Profile/BackendNonePanel';
 import ProfileBackend from './Profile/BackendPanel';
+import NowPlayingNotStartedPanel from "./Profile/NowPlayingNotStartedPanel.vue";
 import {BACKEND_NONE, FRONTEND_REMOTE} from '~/components/Entity/RadioAdapters';
 import NowPlaying from '~/components/Entity/NowPlaying';
 import {computed} from "vue";

@@ -9,8 +9,8 @@ use App\Entity\Repository\StationRepository;
 use App\Event\GetSyncTasks;
 use App\Http\Response;
 use App\Http\ServerRequest;
-use App\MessageQueue\AbstractQueueManager;
 use App\MessageQueue\QueueManagerInterface;
+use App\MessageQueue\QueueNames;
 use Carbon\CarbonImmutable;
 use Cron\CronExpression;
 use DateTimeZone;
@@ -32,11 +32,9 @@ final class IndexAction
         ServerRequest $request,
         Response $response
     ): ResponseInterface {
-        $queues = AbstractQueueManager::getAllQueues();
-
         $queueTotals = [];
-        foreach ($queues as $queue) {
-            $queueTotals[$queue] = $this->queueManager->getQueueCount($queue);
+        foreach (QueueNames::cases() as $queue) {
+            $queueTotals[$queue->value] = $this->queueManager->getQueueCount($queue);
         }
 
         $syncTimes = [];

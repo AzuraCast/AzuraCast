@@ -1,11 +1,15 @@
 <template>
     <section
-        class="card mb-4"
+        class="card"
         role="region"
+        aria-labelledby="hdr_streamers"
     >
         <template v-if="enableStreamers">
             <div class="card-header bg-primary-dark">
-                <h3 class="card-title">
+                <h3
+                    id="hdr_streamers"
+                    class="card-title"
+                >
                     {{ $gettext('Streamers/DJs') }}
                     <enabled-badge :enabled="true" />
                 </h3>

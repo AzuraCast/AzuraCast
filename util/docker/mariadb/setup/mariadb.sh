@@ -2,7 +2,8 @@
 set -e
 set -x
 
-apt-get install apt-transport-https curl
+apt-get install -q -y --no-install-recommends apt-transport-https curl
+
 curl -o /etc/apt/trusted.gpg.d/mariadb_release_signing_key.asc 'https://mariadb.org/mariadb_release_signing_key.asc'
 echo 'deb https://mirrors.gigenet.com/mariadb/repo/10.9/ubuntu jammy main' >> /etc/apt/sources.list
 
@@ -13,7 +14,7 @@ apt-get update
 		echo "mariadb-server" mysql-server/root_password_again password 'unused'; \
 } | debconf-set-selections
 
-DEBIAN_FRONTEND=noninteractive apt-get install -q -y --no-install-recommends \
+apt-get install -q -y --no-install-recommends \
   mariadb-server mariadb-backup \
   ca-certificates gpg gpgv libjemalloc2 pwgen tzdata xz-utils zstd
 

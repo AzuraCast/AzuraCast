@@ -11,6 +11,7 @@ use App\Flysystem\StationFilesystems;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Media\MediaProcessor;
+use App\Message\Meilisearch\AddMediaMessage;
 use App\Message\WritePlaylistFileMessage;
 use App\OpenApi;
 use App\Radio\Adapters;
@@ -158,6 +159,7 @@ final class FilesController extends AbstractStationApiCrudController
         private readonly Entity\Repository\StationMediaRepository $mediaRepo,
         private readonly Entity\Repository\StationPlaylistMediaRepository $playlistMediaRepo,
         private readonly MediaProcessor $mediaProcessor,
+        private readonly StationFilesystems $stationFilesystems,
         ReloadableEntityManagerInterface $em,
         Serializer $serializer,
         ValidatorInterface $validator
@@ -248,7 +250,7 @@ final class FilesController extends AbstractStationApiCrudController
         $playlists = $data['playlists'] ?? null;
         unset($data['custom_fields'], $data['playlists']);
 
-        $fsMedia = (new StationFilesystems($station))->getMediaFilesystem();
+        $fsMedia = $this->stationFilesystems->getMediaFilesystem($station);
 
         $record = $this->fromArray(
             $data,
@@ -319,6 +321,9 @@ final class FilesController extends AbstractStationApiCrudController
                 }
 
                 $this->em->flush();
+
+                // Reindex file in search.
+                $this->reindexMedia($record);
 
                 // Handle playlist changes.
                 $backend = $this->adapters->getBackendAdapter($station);
@@ -396,6 +401,9 @@ final class FilesController extends AbstractStationApiCrudController
             throw new InvalidArgumentException(sprintf('Record must be an instance of %s.', $this->entityClass));
         }
 
+        // Trigger search reindex.
+        $this->reindexMedia($record);
+
         // Delete the media file off the filesystem.
         // Write new PLS playlist configuration.
         foreach ($this->mediaRepo->remove($record, true) as $playlist_id => $playlist) {
@@ -408,5 +416,16 @@ final class FilesController extends AbstractStationApiCrudController
                 $this->messageBus->dispatch($message);
             }
         }
+    }
+
+    private function reindexMedia(Entity\StationMedia $media): void
+    {
+        $indexMessage = new AddMediaMessage();
+        $indexMessage->storage_location_id = $media->getStorageLocation()->getIdRequired();
+        $indexMessage->media_ids = [
+            $media->getIdRequired(),
+        ];
+        $indexMessage->include_playlists = true;
+        $this->messageBus->dispatch($indexMessage);
     }
 }

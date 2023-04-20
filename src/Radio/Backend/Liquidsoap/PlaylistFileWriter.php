@@ -26,7 +26,7 @@ final class PlaylistFileWriter implements EventSubscriberInterface
         private readonly EventDispatcherInterface $eventDispatcher,
         private readonly ReloadableEntityManagerInterface $em,
         private readonly Filesystem $fsUtils,
-        private readonly Liquidsoap $liquidsoap,
+        private readonly Liquidsoap $liquidsoap
     ) {
     }
 
@@ -81,7 +81,7 @@ final class PlaylistFileWriter implements EventSubscriberInterface
     public function writeAllPlaylistFiles(Entity\Station $station): void
     {
         // Clear out existing playlists directory.
-        $fsPlaylists = (new StationFilesystems($station))->getPlaylistsFilesystem();
+        $fsPlaylists = StationFilesystems::buildPlaylistsFilesystem($station);
 
         foreach ($fsPlaylists->listContents('', false) as $file) {
             /** @var StorageAttributes $file */

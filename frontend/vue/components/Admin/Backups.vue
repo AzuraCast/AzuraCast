@@ -1,158 +1,168 @@
 <template>
-    <div>
-        <h2 class="outside-card-header mb-1">
-            {{ $gettext('Backups') }}
-        </h2>
+    <h2 class="outside-card-header mb-1">
+        {{ $gettext('Backups') }}
+    </h2>
 
-        <div class="card-deck">
-            <section
-                class="card mb-3"
-                role="region"
-            >
-                <b-card-header header-bg-variant="primary-dark">
-                    <h2 class="card-title">
-                        {{ $gettext('Automatic Backups') }}
-                        <enabled-badge :enabled="settings.backupEnabled" />
-                    </h2>
-                </b-card-header>
-
-                <b-overlay
-                    variant="card"
-                    :show="settingsLoading"
+    <div class="card-deck">
+        <section
+            class="card mb-3"
+            role="region"
+            aria-labelledby="hdr_automatic_backups"
+        >
+            <b-card-header header-bg-variant="primary-dark">
+                <h2
+                    id="hdr_automatic_backups"
+                    class="card-title"
                 >
-                    <div
-                        v-if="settings.backupEnabled"
-                        class="card-body"
-                    >
-                        <p
-                            v-if="settings.backupLastRun > 0"
-                            class="card-text"
-                        >
-                            {{ $gettext('Last run:') }}
-                            {{ toRelativeTime(settings.backupLastRun) }}
-                        </p>
-                        <p
-                            v-else
-                            class="card-text"
-                        >
-                            {{ $gettext('Never run') }}
-                        </p>
-                    </div>
-                </b-overlay>
+                    {{ $gettext('Automatic Backups') }}
+                    <enabled-badge :enabled="settings.backupEnabled" />
+                </h2>
+            </b-card-header>
 
-                <div class="card-actions">
-                    <b-button
-                        variant="outline-primary"
-                        @click.prevent="doConfigure"
-                    >
-                        <icon icon="settings" />
-                        {{ $gettext('Configure') }}
-                    </b-button>
-                    <b-button
-                        v-if="settings.backupEnabled && settings.backupLastOutput !== ''"
-                        variant="outline-secondary"
-                        @click.prevent="showLastOutput"
-                    >
-                        <icon icon="assignment" />
-                        {{ $gettext('Most Recent Backup Log') }}
-                    </b-button>
-                </div>
-            </section>
-
-            <section
-                class="card mb-3"
-                role="region"
+            <b-overlay
+                variant="card"
+                :show="settingsLoading"
             >
-                <b-card-header header-bg-variant="primary-dark">
-                    <h2 class="card-title">
-                        {{ $gettext('Restoring Backups') }}
-                    </h2>
-                </b-card-header>
-
-                <div class="card-body">
-                    <p class="card-text">
-                        {{ $gettext('To restore a backup from your host computer, run:') }}
+                <div
+                    v-if="settings.backupEnabled"
+                    class="card-body"
+                >
+                    <p
+                        v-if="settings.backupLastRun > 0"
+                        class="card-text"
+                    >
+                        {{ $gettext('Last run:') }}
+                        {{ toRelativeTime(settings.backupLastRun) }}
                     </p>
-
-                    <pre v-if="isDocker"><code>./docker.sh restore path_to_backup.zip</code></pre>
-                    <pre v-else><code>/var/azuracast/www/bin/console azuracast:restore path_to_backup.zip</code></pre>
-
-                    <p class="card-text text-warning">
-                        {{
-                            $gettext('Note that restoring a backup will clear your existing database. Never restore backup files from untrusted users.')
-                        }}
+                    <p
+                        v-else
+                        class="card-text"
+                    >
+                        {{ $gettext('Never run') }}
                     </p>
                 </div>
-            </section>
-        </div>
+            </b-overlay>
+
+            <div class="card-actions">
+                <b-button
+                    variant="outline-primary"
+                    @click.prevent="doConfigure"
+                >
+                    <icon icon="settings" />
+                    {{ $gettext('Configure') }}
+                </b-button>
+                <b-button
+                    v-if="settings.backupEnabled && settings.backupLastOutput !== ''"
+                    variant="outline-secondary"
+                    @click.prevent="showLastOutput"
+                >
+                    <icon icon="assignment" />
+                    {{ $gettext('Most Recent Backup Log') }}
+                </b-button>
+            </div>
+        </section>
 
         <section
             class="card mb-3"
             role="region"
+            aria-labelledby="hdr_restoring_backups"
         >
             <b-card-header header-bg-variant="primary-dark">
-                <h2 class="card-title">
-                    {{ $gettext('Backups') }}
+                <h2
+                    id="hdr_restoring_backups"
+                    class="card-title"
+                >
+                    {{ $gettext('Restoring Backups') }}
                 </h2>
             </b-card-header>
 
-            <b-card-body body-class="card-padding-sm">
-                <b-button
-                    variant="outline-primary"
-                    @click.prevent="doRunBackup"
-                >
-                    <icon icon="send" />
-                    {{ $gettext('Run Manual Backup') }}
-                </b-button>
-            </b-card-body>
+            <div class="card-body">
+                <p class="card-text">
+                    {{ $gettext('To restore a backup from your host computer, run:') }}
+                </p>
 
-            <data-table
-                id="api_keys"
-                ref="$datatable"
-                :fields="fields"
-                :api-url="listUrl"
-            >
-                <template #cell(actions)="row">
-                    <b-button-group size="sm">
-                        <b-button
-                            size="sm"
-                            variant="primary"
-                            :href="row.item.links.download"
-                            target="_blank"
-                        >
-                            {{ $gettext('Download') }}
-                        </b-button>
-                        <b-button
-                            size="sm"
-                            variant="danger"
-                            @click.prevent="doDelete(row.item.links.delete)"
-                        >
-                            {{ $gettext('Delete') }}
-                        </b-button>
-                    </b-button-group>
-                </template>
-            </data-table>
+                <pre v-if="isDocker"><code>./docker.sh restore path_to_backup.zip</code></pre>
+                <pre v-else><code>/var/azuracast/www/bin/console azuracast:restore path_to_backup.zip</code></pre>
+
+                <p class="card-text text-warning">
+                    {{
+                        $gettext('Note that restoring a backup will clear your existing database. Never restore backup files from untrusted users.')
+                    }}
+                </p>
+            </div>
         </section>
-
-        <admin-backups-configure-modal
-            ref="$configureModal"
-            :settings-url="settingsUrl"
-            :storage-locations="storageLocations"
-            @relist="relist"
-        />
-
-        <admin-backups-run-backup-modal
-            ref="$runBackupModal"
-            :run-backup-url="runBackupUrl"
-            :storage-locations="storageLocations"
-            @relist="relist"
-        />
-
-        <admin-backups-last-output-modal
-            ref="$lastOutputModal"
-            :last-output="settings.backupLastOutput"
-        />
     </div>
+
+    <section
+        class="card mb-3"
+        role="region"
+        aria-labelledby="hdr_backups"
+    >
+        <b-card-header header-bg-variant="primary-dark">
+            <h2
+                id="hdr_backups"
+                class="card-title"
+            >
+                {{ $gettext('Backups') }}
+            </h2>
+        </b-card-header>
+
+        <b-card-body body-class="card-padding-sm">
+            <b-button
+                variant="outline-primary"
+                @click.prevent="doRunBackup"
+            >
+                <icon icon="send" />
+                {{ $gettext('Run Manual Backup') }}
+            </b-button>
+        </b-card-body>
+
+        <data-table
+            id="api_keys"
+            ref="$datatable"
+            :fields="fields"
+            :api-url="listUrl"
+        >
+            <template #cell(actions)="row">
+                <b-button-group size="sm">
+                    <b-button
+                        size="sm"
+                        variant="primary"
+                        :href="row.item.links.download"
+                        target="_blank"
+                    >
+                        {{ $gettext('Download') }}
+                    </b-button>
+                    <b-button
+                        size="sm"
+                        variant="danger"
+                        @click.prevent="doDelete(row.item.links.delete)"
+                    >
+                        {{ $gettext('Delete') }}
+                    </b-button>
+                </b-button-group>
+            </template>
+        </data-table>
+    </section>
+
+    <admin-backups-configure-modal
+        ref="$configureModal"
+        :settings-url="settingsUrl"
+        :storage-locations="storageLocations"
+        @relist="relist"
+    />
+
+    <admin-backups-run-backup-modal
+        ref="$runBackupModal"
+        :run-backup-url="runBackupUrl"
+        :storage-locations="storageLocations"
+        @relist="relist"
+    />
+
+    <admin-backups-last-output-modal
+        ref="$lastOutputModal"
+        :last-output="settings.backupLastOutput"
+    />
 </template>
 
 <script setup>

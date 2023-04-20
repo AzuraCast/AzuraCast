@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace App\Controller\Api\Admin\Backups;
 
 use App\Entity;
+use App\Flysystem\Attributes\FileAttributes;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Paginator;
-use App\Flysystem\Attributes\FileAttributes;
 use League\Flysystem\StorageAttributes;
 use Psr\Http\Message\ResponseInterface;
 
@@ -29,8 +29,11 @@ final class GetAction
         $storageLocations = $this->storageLocationRepo->findAllByType(Entity\Enums\StorageLocationTypes::Backup);
 
         foreach ($storageLocations as $storageLocation) {
+            $fs = $this->storageLocationRepo->getAdapter($storageLocation)
+                ->getFilesystem();
+
             /** @var StorageAttributes $file */
-            foreach ($storageLocation->getFilesystem()->listContents('', true) as $file) {
+            foreach ($fs->listContents('', true) as $file) {
                 if ($file->isDir()) {
                     continue;
                 }

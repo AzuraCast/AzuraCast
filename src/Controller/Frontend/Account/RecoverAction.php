@@ -7,7 +7,6 @@ namespace App\Controller\Frontend\Account;
 use App\Entity;
 use App\Http\Response;
 use App\Http\ServerRequest;
-use App\Session\Flash;
 use Doctrine\ORM\EntityManagerInterface;
 use InvalidArgumentException;
 use Psr\Http\Message\ResponseInterface;
@@ -30,12 +29,11 @@ final class RecoverAction
         $flash = $request->getFlash();
 
         if (!$user instanceof Entity\User) {
-            $flash->addMessage(
+            $flash->error(
                 sprintf(
                     '<b>%s</b>',
                     __('Invalid token specified.'),
                 ),
-                Flash::ERROR
             );
 
             return $response->withRedirect($request->getRouter()->named('account:login'));
@@ -64,13 +62,12 @@ final class RecoverAction
 
                 $this->loginTokenRepo->revokeForUser($user);
 
-                $flash->addMessage(
+                $flash->success(
                     sprintf(
                         '<b>%s</b><br>%s',
                         __('Logged in using account recovery token'),
                         __('Your password has been updated.')
                     ),
-                    Flash::SUCCESS
                 );
 
                 return $response->withRedirect($request->getRouter()->named('dashboard'));

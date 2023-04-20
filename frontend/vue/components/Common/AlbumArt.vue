@@ -5,6 +5,8 @@
         class="album-art"
         target="_blank"
         data-fancybox="gallery"
+        :aria-label="$gettext('Enlarge Album Art')"
+        :title="$gettext('Enlarge Album Art')"
     >
         <img
             class="album_art"

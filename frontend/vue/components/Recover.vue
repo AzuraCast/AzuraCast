@@ -1,9 +1,16 @@
 <template>
     <div class="public-page">
-        <div class="card">
+        <section
+            class="card"
+            role="region"
+            aria-labelledby="hdr_recover_account"
+        >
             <div class="card-body p-4">
                 <div class="mb-3">
-                    <h2 class="card-title mb-0 text-center">
+                    <h2
+                        id="hdr_recover_account"
+                        class="card-title mb-0 text-center"
+                    >
                         {{ $gettext('Recover Account') }}
                     </h2>
                     <h3 class="text-center">
@@ -60,7 +67,7 @@
                     </b-button>
                 </form>
             </div>
-        </div>
+        </section>
     </div>
 </template>
 

@@ -4,18 +4,18 @@
             {{ $gettext('My Account') }}
         </h2>
 
-        <b-row>
-            <b-col
-                sm="12"
-                md="6"
-                lg="5"
-            >
+        <div class="row row-of-cards">
+            <div class="col-sm-12 col-md-6 col-lg-5">
                 <section
-                    class="card mb-3"
+                    class="card"
                     role="region"
+                    aria-labelledby="hdr_profile"
                 >
                     <b-card-header header-bg-variant="primary-dark">
-                        <h2 class="card-title">
+                        <h2
+                            id="hdr_profile"
+                            class="card-title"
+                        >
                             {{ $gettext('Profile') }}
                         </h2>
                     </b-card-header>
@@ -84,9 +84,13 @@
                 <section
                     class="card"
                     role="region"
+                    aria-labelledby="hdr_security"
                 >
                     <b-card-header header-bg-variant="primary-dark">
-                        <h2 class="card-title">
+                        <h2
+                            id="hdr_security"
+                            class="card-title"
+                        >
                             {{ $gettext('Security') }}
                         </h2>
                     </b-card-header>
@@ -135,15 +139,18 @@
                         </b-button>
                     </div>
                 </section>
-            </b-col>
-            <b-col
-                sm="12"
-                md="6"
-                lg="7"
-            >
-                <b-card no-body>
+            </div>
+            <div class="col-sm-12 col-md-6 col-lg-7">
+                <section
+                    class="card"
+                    role="region"
+                    aria-labelledby="hdr_api_keys"
+                >
                     <b-card-header header-bg-variant="primary-dark">
-                        <h2 class="card-title">
+                        <h2
+                            id="hdr_api_keys"
+                            class="card-title"
+                        >
                             {{ $gettext('API Keys') }}
                         </h2>
                     </b-card-header>
@@ -189,9 +196,9 @@
                             </b-button-group>
                         </template>
                     </data-table>
-                </b-card>
-            </b-col>
-        </b-row>
+                </section>
+            </div>
+        </div>
 
         <account-edit-modal
             ref="$editModal"

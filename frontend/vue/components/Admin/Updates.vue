@@ -8,9 +8,13 @@
             <section
                 class="card mb-4"
                 role="region"
+                aria-labelledby="hdr_update_details"
             >
                 <div class="card-header bg-primary-dark">
-                    <h3 class="card-title">
+                    <h3
+                        id="hdr_update_details"
+                        class="card-title"
+                    >
                         {{ $gettext('Update Details') }}
                     </h3>
                 </div>
@@ -48,9 +52,13 @@
             <section
                 class="card mb-4"
                 role="region"
+                aria-labelledby="hdr_release_channel"
             >
                 <div class="card-header bg-primary-dark">
-                    <h3 class="card-title">
+                    <h3
+                        id="hdr_release_channel"
+                        class="card-title"
+                    >
                         {{ $gettext('Release Channel') }}
                     </h3>
                 </div>
@@ -80,9 +88,13 @@
             <section
                 class="card mb-4"
                 role="region"
+                aria-labelledby="hdr_update_via_web"
             >
                 <div class="card-header bg-primary-dark">
-                    <h3 class="card-title">
+                    <h3
+                        id="hdr_update_via_web"
+                        class="card-title"
+                    >
                         {{ $gettext('Update AzuraCast via Web') }}
                     </h3>
                 </div>
@@ -133,9 +145,13 @@
             <section
                 class="card mb-4"
                 role="region"
+                aria-labelledby="hdr_manual_updates"
             >
                 <div class="card-header bg-primary-dark">
-                    <h3 class="card-title">
+                    <h3
+                        id="hdr_manual_updates"
+                        class="card-title"
+                    >
                         {{ $gettext('Manual Updates') }}
                     </h3>
                 </div>

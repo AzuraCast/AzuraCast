@@ -2,6 +2,7 @@
     <a
         href="#"
         :title="langTitle"
+        :aria-label="langTitle"
         @click.prevent="toggle"
     >
         <icon

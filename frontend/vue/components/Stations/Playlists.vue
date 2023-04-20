@@ -1,9 +1,16 @@
 <template>
-    <b-card no-body>
+    <section
+        class="card"
+        role="region"
+        aria-labelledby="hdr_playlists"
+    >
         <b-card-header header-bg-variant="primary-dark">
             <b-row class="align-items-center">
                 <b-col md="6">
-                    <h2 class="card-title">
+                    <h2
+                        id="hdr_playlists"
+                        class="card-title"
+                    >
                         {{ $gettext('Playlists') }}
                     </h2>
                 </b-col>
@@ -169,7 +176,7 @@
                     </template>
                     <template #cell(num_songs)="row">
                         <template v-if="row.item.source === 'songs'">
-                            <a :href="filesUrl+'#playlist:'+encodeURIComponent(row.item.name)">
+                            <a :href="filesUrl+'#playlist:'+encodeURIComponent(row.item.short_name)">
                                 {{ row.item.num_songs }}
                             </a>
                             ({{ formatLength(row.item.total_length) }})
@@ -192,7 +199,7 @@
                 />
             </b-tab>
         </b-tabs>
-    </b-card>
+    </section>
 
     <edit-modal
         ref="$editModal"

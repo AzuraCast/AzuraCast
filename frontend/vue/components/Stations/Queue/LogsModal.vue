@@ -41,7 +41,7 @@ const $modal = ref(); // Template Ref
 const show = (newLogs) => {
     let logDisplay = [];
     newLogs.forEach((log) => {
-        logDisplay.push(log.formatted);
+        logDisplay.push(log);
     });
 
     logs.value = logDisplay.join('');

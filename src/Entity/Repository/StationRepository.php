@@ -208,7 +208,7 @@ final class StationRepository extends Repository
         UploadedFile $file,
         ?ExtendedFilesystemInterface $fs = null
     ): void {
-        $fs ??= (new StationFilesystems($station))->getConfigFilesystem();
+        $fs ??= StationFilesystems::buildConfigFilesystem($station);
 
         if (!empty($station->getFallbackPath())) {
             $this->doDeleteFallback($station, $fs);
@@ -230,7 +230,7 @@ final class StationRepository extends Repository
         Entity\Station $station,
         ?ExtendedFilesystemInterface $fs = null
     ): void {
-        $fs ??= (new StationFilesystems($station))->getConfigFilesystem();
+        $fs ??= StationFilesystems::buildConfigFilesystem($station);
 
         $fallbackPath = $station->getFallbackPath();
         if (empty($fallbackPath)) {
@@ -256,7 +256,7 @@ final class StationRepository extends Repository
         UploadedFile $file,
         ?ExtendedFilesystemInterface $fs = null
     ): void {
-        $fs ??= (new StationFilesystems($station))->getConfigFilesystem();
+        $fs ??= StationFilesystems::buildConfigFilesystem($station);
 
         $backendConfig = $station->getBackendConfig();
 
@@ -284,7 +284,7 @@ final class StationRepository extends Repository
             return;
         }
 
-        $fs ??= (new StationFilesystems($station))->getConfigFilesystem();
+        $fs ??= StationFilesystems::buildConfigFilesystem($station);
         $fs->delete($backendConfig->getStereoToolConfigurationPath());
     }
 

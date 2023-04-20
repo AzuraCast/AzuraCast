@@ -6,8 +6,9 @@
 [![Latest Stable Release](https://img.shields.io/packagist/v/azuracast/azuracast.svg?label=latest+stable+version)]()
 [![AGPL-3.0 License](https://img.shields.io/github/license/azuracast/azuracast.svg)]()
 [![Ethical Open Source](https://img.shields.io/badge/open-ethical-%234baaaa)](https://ethicalsource.dev/definition/)
-[![Docker Pulls](https://img.shields.io/docker/pulls/azuracast/azuracast_radio.svg)](https://hub.docker.com/r/azuracast/azuracast/)
-[![Twitter Follow](https://img.shields.io/twitter/follow/azuracast.svg?style=social&label=Follow)](https://twitter.com/azuracast)
+[![Mastodon Follow](https://img.shields.io/mastodon/follow/000062116?domain=https%3A%2F%2Ffosstodon.org&style=social)](https://fosstodon.org/@AzuraCast)
+
+[![Built with Depot](https://depot.dev/badges/built-with-depot.svg)](https://depot.dev/?utm_source=AzuraCast)
 
 **AzuraCast** is a self-hosted, all-in-one web radio management suite. Using its easy installer and powerful but
 intuitive web interface, you can start up a fully working web radio station in a few quick minutes. AzuraCast works for
@@ -89,8 +90,8 @@ location.
 
 We would like to thank the following organizations for their support of AzuraCast's ongoing development:
 
-- [DigitalOcean](https://m.do.co/c/21612b90440f) for generously providing the server resources we use for our
-  demonstration instance, our staging and testing environments, and more
+- [Vultr](https://www.vultr.com/marketplace/apps/azuracast?ref=8888059) for providing the server resources we use for
+  our demonstration instance, staging and testing environments, and more
 - [JetBrains](https://www.jetbrains.com/) for making our development faster, easier and more productive with tools like
   PhpStorm
 - [CrowdIn](https://crowdin.com/) for giving us a simple and powerful tool to help translate our application for users
@@ -99,6 +100,7 @@ We would like to thank the following organizations for their support of AzuraCas
   primary [azuracast.com](https://www.azuracast.com/) web site.
 - [BrowserStack](https://www.browserstack.com/) for giving us tools to help test our software's accessibility and
   features across multiple browsers and operating systems.
+- [Depot](https://depot.dev/?utm_source=AzuraCast) for powering our Docker image builds.
 
 - The creators and maintainers of the many free and open-source tools that AzuraCast is built on, who have done so much
   to help move FOSS forward

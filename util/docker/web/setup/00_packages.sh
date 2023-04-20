@@ -7,7 +7,6 @@ set -x
 add-apt-repository -y ppa:chris-needham/ppa
 add-apt-repository -y ppa:sftpgo/sftpgo
 add-apt-repository -y ppa:ondrej/php
-
 apt-get update
 
 apt-get install -y --no-install-recommends \

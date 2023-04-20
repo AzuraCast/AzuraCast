@@ -8,12 +8,12 @@ use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Doctrine\Repository;
 use App\Entity;
 use App\Exception\NotFoundException;
+use App\Flysystem\ExtendedFilesystemInterface;
 use App\Media\AlbumArt;
 use App\Media\MetadataManager;
 use App\Media\RemoteAlbumArt;
 use App\Service\AudioWaveform;
 use App\Utilities\Logger;
-use App\Flysystem\ExtendedFilesystemInterface;
 use Exception;
 use Generator;
 use League\Flysystem\FilesystemException;
@@ -32,7 +32,8 @@ final class StationMediaRepository extends Repository
         private readonly MetadataManager $metadataManager,
         private readonly RemoteAlbumArt $remoteAlbumArt,
         private readonly CustomFieldRepository $customFieldRepo,
-        private readonly StationPlaylistMediaRepository $spmRepo
+        private readonly StationPlaylistMediaRepository $spmRepo,
+        private readonly StorageLocationRepository $storageLocationRepo,
     ) {
         parent::__construct($em);
     }
@@ -365,6 +366,7 @@ final class StationMediaRepository extends Repository
 
     private function getFilesystem(Entity\StationMedia $media): ExtendedFilesystemInterface
     {
-        return $media->getStorageLocation()->getFilesystem();
+        return $this->storageLocationRepo->getAdapter($media->getStorageLocation())
+            ->getFilesystem();
     }
 }

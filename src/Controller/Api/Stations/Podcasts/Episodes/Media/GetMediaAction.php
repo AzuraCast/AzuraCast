@@ -48,6 +48,7 @@ final class GetMediaAction
 {
     public function __construct(
         private readonly Entity\Repository\PodcastEpisodeRepository $episodeRepo,
+        private readonly StationFilesystems $stationFilesystems,
     ) {
     }
 
@@ -67,7 +68,7 @@ final class GetMediaAction
             $podcastMedia = $episode->getMedia();
 
             if ($podcastMedia instanceof Entity\PodcastMedia) {
-                $fsPodcasts = (new StationFilesystems($station))->getPodcastsFilesystem();
+                $fsPodcasts = $this->stationFilesystems->getPodcastsFilesystem($station);
 
                 $path = $podcastMedia->getPath();
 

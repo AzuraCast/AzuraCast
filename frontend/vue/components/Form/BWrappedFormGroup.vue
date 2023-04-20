@@ -55,12 +55,7 @@
                 <span aria-hidden="true">*</span>
                 <span class="sr-only">Required</span>
             </span>
-            <span
-                v-if="advanced"
-                class="badge small badge-primary ml-2"
-            >
-                {{ $gettext('Advanced') }}
-            </span>
+            <advanced-tag v-if="advanced" />
         </template>
         <template #description="slotProps">
             <slot
@@ -86,6 +81,7 @@ import VuelidateError from "./VuelidateError";
 import {computed, ref} from "vue";
 import useSlotsExcept from "~/functions/useSlotsExcept";
 import {has} from "lodash";
+import AdvancedTag from "./AdvancedTag";
 
 const props = defineProps({
     id: {
@@ -132,12 +128,16 @@ const props = defineProps({
     }
 });
 
+const isNumeric = computed(() => {
+    return props.inputNumber || props.inputType === "number" || props.inputType === "range";
+});
+
 const modelValue = computed({
     get() {
         return props.field.$model;
     },
     set(newValue) {
-        if ((props.isNumeric || props.inputEmptyIsNull) && '' === newValue) {
+        if ((isNumeric.value || props.inputEmptyIsNull) && '' === newValue) {
             newValue = null;
         }
 
@@ -153,10 +153,6 @@ const fieldState = computed(() => {
 
 const isRequired = computed(() => {
     return has(props.field, 'required');
-});
-
-const isNumeric = computed(() => {
-    return props.inputNumber || props.inputType === "number";
 });
 
 const $input = ref(); // Input

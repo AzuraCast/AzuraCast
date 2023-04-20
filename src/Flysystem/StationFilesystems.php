@@ -4,101 +4,87 @@ declare(strict_types=1);
 
 namespace App\Flysystem;
 
-use App\Entity;
+use App\Entity\Repository\StorageLocationRepository;
+use App\Entity\Station;
 use App\Flysystem\Adapter\LocalAdapterInterface;
 use App\Flysystem\Adapter\LocalFilesystemAdapter;
 
 final class StationFilesystems
 {
-    private ExtendedFilesystemInterface $fsMedia;
-
-    private ExtendedFilesystemInterface $fsRecordings;
-
-    private ExtendedFilesystemInterface $fsPodcasts;
-
-    private LocalFilesystem $fsPlaylists;
-
-    private LocalFilesystem $fsConfig;
-
-    private LocalFilesystem $fsTemp;
-
     public function __construct(
-        private readonly Entity\Station $station
+        private readonly StorageLocationRepository $storageLocationRepo
     ) {
     }
 
-    public function getMediaFilesystem(): ExtendedFilesystemInterface
+    public function getMediaFilesystem(Station $station): ExtendedFilesystemInterface
     {
-        if (!isset($this->fsMedia)) {
-            $mediaAdapter = $this->station->getMediaStorageLocation()->getStorageAdapter();
-            if ($mediaAdapter instanceof LocalAdapterInterface) {
-                $this->fsMedia = new LocalFilesystem($mediaAdapter);
-            } else {
-                $tempDir = $this->station->getRadioTempDir();
-                $this->fsMedia = new RemoteFilesystem($mediaAdapter, $tempDir);
-            }
-        }
+        $mediaAdapter = $this->storageLocationRepo->getAdapter(
+            $station->getMediaStorageLocation()
+        )->getStorageAdapter();
 
-        return $this->fsMedia;
+        return ($mediaAdapter instanceof LocalAdapterInterface)
+            ? new LocalFilesystem($mediaAdapter)
+            : new RemoteFilesystem($mediaAdapter, $station->getRadioTempDir());
     }
 
-    public function getRecordingsFilesystem(): ExtendedFilesystemInterface
+    public function getRecordingsFilesystem(Station $station): ExtendedFilesystemInterface
     {
-        if (!isset($this->fsRecordings)) {
-            $recordingsAdapter = $this->station->getRecordingsStorageLocation()->getStorageAdapter();
-            if ($recordingsAdapter instanceof LocalAdapterInterface) {
-                $this->fsRecordings = new LocalFilesystem($recordingsAdapter);
-            } else {
-                $tempDir = $this->station->getRadioTempDir();
-                $this->fsRecordings = new RemoteFilesystem($recordingsAdapter, $tempDir);
-            }
-        }
+        $recordingsAdapter = $this->storageLocationRepo->getAdapter(
+            $station->getRecordingsStorageLocation()
+        )->getStorageAdapter();
 
-        return $this->fsRecordings;
+        return ($recordingsAdapter instanceof LocalAdapterInterface)
+            ? new LocalFilesystem($recordingsAdapter)
+            : new RemoteFilesystem($recordingsAdapter, $station->getRadioTempDir());
     }
 
-    public function getPodcastsFilesystem(): ExtendedFilesystemInterface
+    public function getPodcastsFilesystem(Station $station): ExtendedFilesystemInterface
     {
-        if (!isset($this->fsPodcasts)) {
-            $podcastsAdapter = $this->station->getPodcastsStorageLocation()->getStorageAdapter();
-            if ($podcastsAdapter instanceof LocalAdapterInterface) {
-                $this->fsPodcasts = new LocalFilesystem($podcastsAdapter);
-            } else {
-                $tempDir = $this->station->getRadioTempDir();
-                $this->fsPodcasts = new RemoteFilesystem($podcastsAdapter, $tempDir);
-            }
-        }
+        $podcastsAdapter = $this->storageLocationRepo->getAdapter(
+            $station->getPodcastsStorageLocation()
+        )->getStorageAdapter();
 
-        return $this->fsPodcasts;
+        return ($podcastsAdapter instanceof LocalAdapterInterface)
+            ? new LocalFilesystem($podcastsAdapter)
+            : new RemoteFilesystem($podcastsAdapter, $station->getRadioTempDir());
     }
 
-    public function getPlaylistsFilesystem(): LocalFilesystem
+    public function getPlaylistsFilesystem(Station $station): LocalFilesystem
     {
-        if (!isset($this->fsPlaylists)) {
-            $playlistsDir = $this->station->getRadioPlaylistsDir();
-            $this->fsPlaylists = new LocalFilesystem(new LocalFilesystemAdapter($playlistsDir));
-        }
-
-        return $this->fsPlaylists;
+        return self::buildPlaylistsFilesystem($station);
     }
 
-    public function getConfigFilesystem(): LocalFilesystem
-    {
-        if (!isset($this->fsConfig)) {
-            $configDir = $this->station->getRadioConfigDir();
-            $this->fsConfig = new LocalFilesystem(new LocalFilesystemAdapter($configDir));
-        }
-
-        return $this->fsConfig;
+    public static function buildPlaylistsFilesystem(
+        Station $station
+    ): LocalFilesystem {
+        return self::buildLocalFilesystemForPath($station->getRadioPlaylistsDir());
     }
 
-    public function getTempFilesystem(): LocalFilesystem
+    public function getConfigFilesystem(Station $station): LocalFilesystem
     {
-        if (!isset($this->fsTemp)) {
-            $tempDir = $this->station->getRadioTempDir();
-            $this->fsTemp = new LocalFilesystem(new LocalFilesystemAdapter($tempDir));
-        }
+        return self::buildConfigFilesystem($station);
+    }
 
-        return $this->fsTemp;
+    public static function buildConfigFilesystem(
+        Station $station
+    ): LocalFilesystem {
+        return self::buildLocalFilesystemForPath($station->getRadioConfigDir());
+    }
+
+    public function getTempFilesystem(Station $station): LocalFilesystem
+    {
+        return self::buildTempFilesystem($station);
+    }
+
+    public static function buildTempFilesystem(
+        Station $station
+    ): LocalFilesystem {
+        return self::buildLocalFilesystemForPath($station->getRadioTempDir());
+    }
+
+    public static function buildLocalFilesystemForPath(
+        string $path
+    ): LocalFilesystem {
+        return new LocalFilesystem(new LocalFilesystemAdapter($path));
     }
 }

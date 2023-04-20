@@ -1,11 +1,18 @@
 <template>
-    <div class="row">
+    <div class="row row-of-cards">
         <div class="col-md-8">
-            <b-card no-body>
+            <section
+                class="card"
+                role="region"
+                aria-labelledby="hdr_streamer_accounts"
+            >
                 <b-card-header header-bg-variant="primary-dark">
                     <b-row class="align-items-center">
                         <b-col md="6">
-                            <h2 class="card-title">
+                            <h2
+                                id="hdr_streamer_accounts"
+                                class="card-title"
+                            >
                                 {{ $gettext('Streamer/DJ Accounts') }}
                             </h2>
                         </b-col>
@@ -101,7 +108,7 @@
                         />
                     </b-tab>
                 </b-tabs>
-            </b-card>
+            </section>
         </div>
         <div class="col-md-4">
             <connection-info :connection-info="connectionInfo" />

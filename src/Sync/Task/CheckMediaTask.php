@@ -6,14 +6,15 @@ namespace App\Sync\Task;
 
 use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Entity;
+use App\Flysystem\Attributes\FileAttributes;
+use App\Flysystem\ExtendedFilesystemInterface;
 use App\Media\MimeType;
 use App\Message\AddNewMediaMessage;
 use App\Message\ProcessCoverArtMessage;
 use App\Message\ReprocessMediaMessage;
 use App\MessageQueue\QueueManagerInterface;
+use App\MessageQueue\QueueNames;
 use App\Radio\Quota;
-use App\Flysystem\Attributes\FileAttributes;
-use App\Flysystem\ExtendedFilesystemInterface;
 use Brick\Math\BigInteger;
 use Doctrine\ORM\AbstractQuery;
 use League\Flysystem\FilesystemException;
@@ -28,6 +29,7 @@ final class CheckMediaTask extends AbstractTask
     public function __construct(
         private readonly Entity\Repository\StationMediaRepository $mediaRepo,
         private readonly Entity\Repository\UnprocessableMediaRepository $unprocessableMediaRepo,
+        private readonly Entity\Repository\StorageLocationRepository $storageLocationRepo,
         private readonly MessageBus $messageBus,
         private readonly QueueManagerInterface $queueManager,
         ReloadableEntityManagerInterface $em,
@@ -48,6 +50,10 @@ final class CheckMediaTask extends AbstractTask
 
     public function run(bool $force = false): void
     {
+        // Clear existing media queue.
+        $this->queueManager->clearQueue(QueueNames::Media);
+
+        // Process for each storage location.
         $storageLocations = $this->iterateStorageLocations(Entity\Enums\StorageLocationTypes::StationMedia);
 
         foreach ($storageLocations as $storageLocation) {
@@ -58,18 +64,20 @@ final class CheckMediaTask extends AbstractTask
                 )
             );
 
-            $this->importMusic($storageLocation);
+            $this->importMusic(
+                $storageLocation
+            );
         }
     }
 
-    public function importMusic(Entity\StorageLocation $storageLocation): void
-    {
-        $fs = $storageLocation->getFilesystem();
+    public function importMusic(
+        Entity\StorageLocation $storageLocation
+    ): void {
+        $fs = $this->storageLocationRepo->getAdapter($storageLocation)->getFilesystem();
 
         $stats = [
             'total_size' => '0',
             'total_files' => 0,
-            'already_queued' => 0,
             'unchanged' => 0,
             'updated' => 0,
             'created' => 0,
@@ -139,32 +147,11 @@ final class CheckMediaTask extends AbstractTask
         $stats['total_size'] = $total_size . ' (' . Quota::getReadableSize($total_size) . ')';
         $stats['total_files'] = count($musicFiles);
 
-        // Check queue for existing pending processing entries.
-        $queuedMediaUpdates = [];
-        $queuedNewFiles = [];
-        $queuedCoverArt = [];
-
-        foreach ($this->queueManager->getMessagesInTransport(QueueManagerInterface::QUEUE_MEDIA) as $message) {
-            if ($message instanceof ReprocessMediaMessage) {
-                $queuedMediaUpdates[$message->media_id] = true;
-            } elseif (
-                $message instanceof AddNewMediaMessage
-                && $message->storage_location_id === $storageLocation->getId()
-            ) {
-                $queuedNewFiles[md5($message->path)] = true;
-            } elseif (
-                $message instanceof ProcessCoverArtMessage
-                && $message->storage_location_id === $storageLocation->getId()
-            ) {
-                $queuedCoverArt[$message->folder_hash] = true;
-            }
-        }
-
         // Process cover art.
-        $this->processCoverArt($storageLocation, $fs, $coverFiles, $queuedCoverArt);
+        $this->processCoverArt($storageLocation, $fs, $coverFiles);
 
         // Check queue for existing pending processing entries.
-        $this->processExistingMediaRows($storageLocation, $queuedMediaUpdates, $musicFiles, $stats);
+        $this->processExistingMediaRows($storageLocation, $musicFiles, $stats);
 
         $storageLocation = $this->em->refetch($storageLocation);
 
@@ -173,7 +160,7 @@ final class CheckMediaTask extends AbstractTask
 
         $storageLocation = $this->em->refetch($storageLocation);
 
-        $this->processNewFiles($storageLocation, $queuedNewFiles, $musicFiles, $stats);
+        $this->processNewFiles($storageLocation, $musicFiles, $stats);
 
         $this->logger->debug(sprintf('Media processed for "%s".', $storageLocation), $stats);
     }
@@ -181,8 +168,7 @@ final class CheckMediaTask extends AbstractTask
     private function processCoverArt(
         Entity\StorageLocation $storageLocation,
         ExtendedFilesystemInterface $fs,
-        array $coverFiles,
-        array $queuedCoverArt,
+        array $coverFiles
     ): void {
         $fsIterator = $fs->listContents(Entity\StationMedia::DIR_FOLDER_COVERS, true)->filter(
             fn(StorageAttributes $attrs) => $attrs->isFile()
@@ -200,10 +186,6 @@ final class CheckMediaTask extends AbstractTask
         }
 
         foreach ($coverFiles as $folderHash => $coverFile) {
-            if (isset($queuedCoverArt[$folderHash])) {
-                continue;
-            }
-
             $message = new ProcessCoverArtMessage();
             $message->storage_location_id = $storageLocation->getIdRequired();
             $message->path = $coverFile[StorageAttributes::ATTRIBUTE_PATH];
@@ -215,7 +197,6 @@ final class CheckMediaTask extends AbstractTask
 
     private function processExistingMediaRows(
         Entity\StorageLocation $storageLocation,
-        array $queuedMediaUpdates,
         array &$musicFiles,
         array &$stats
     ): void {
@@ -233,12 +214,6 @@ final class CheckMediaTask extends AbstractTask
             $pathHash = md5($path);
 
             if (isset($musicFiles[$pathHash])) {
-                if (isset($queuedMediaUpdates[$mediaRow['id']])) {
-                    $stats['already_queued']++;
-                    unset($musicFiles[$pathHash]);
-                    continue;
-                }
-
                 $fileInfo = $musicFiles[$pathHash];
                 $mtime = $fileInfo[StorageAttributes::ATTRIBUTE_LAST_MODIFIED] ?? 0;
 
@@ -316,24 +291,19 @@ final class CheckMediaTask extends AbstractTask
 
     private function processNewFiles(
         Entity\StorageLocation $storageLocation,
-        array $queuedNewFiles,
         array $musicFiles,
         array &$stats
     ): void {
         foreach ($musicFiles as $pathHash => $newMusicFile) {
             $path = $newMusicFile[StorageAttributes::ATTRIBUTE_PATH];
 
-            if (isset($queuedNewFiles[$pathHash])) {
-                $stats['already_queued']++;
-            } else {
-                $message = new AddNewMediaMessage();
-                $message->storage_location_id = $storageLocation->getIdRequired();
-                $message->path = $path;
+            $message = new AddNewMediaMessage();
+            $message->storage_location_id = $storageLocation->getIdRequired();
+            $message->path = $path;
 
-                $this->messageBus->dispatch($message);
+            $this->messageBus->dispatch($message);
 
-                $stats['created']++;
-            }
+            $stats['created']++;
         }
     }
 }

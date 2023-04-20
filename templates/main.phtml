@@ -18,7 +18,7 @@ $title ??= null;
 $header ??= null;
 ?>
 <!DOCTYPE html>
-<html data-theme="<?= $customization->getTheme()->value ?>">
+<html lang="<?= $customization->getLocale()->getHtmlLang() ?>" data-theme="<?= $customization->getTheme()->value ?>">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -82,7 +82,7 @@ endif; ?>">
 
     <div class="dropdown ml-3 d-inline-flex align-items-center">
         <div class="mr-2">
-            <?= $user->getDisplayName() ?>
+            <?= $this->e($user->getDisplayName()) ?>
         </div>
 
         <button aria-expanded="false" aria-haspopup="true" class="navbar-toggler" aria-label="<?= __(
@@ -151,7 +151,7 @@ endif; ?>">
 <?php
 if ($sections->has('sidebar')): ?>
     <div class="navdrawer navdrawer-permanent-lg navdrawer-permanent-clipped" id="sidebar" tabindex="-1">
-        <nav class="navdrawer-content">
+        <nav class="navdrawer-content" aria-label="<?= __('Sidebar') ?>">
             <?= $sections->get('sidebar') ?>
         </nav>
     </div>
@@ -159,19 +159,19 @@ if ($sections->has('sidebar')): ?>
 endif; ?>
 
 <section id="main">
-    <section id="content" <?php
+    <main id="content" <?php
     if (!$sections->has('sidebar')): ?>class="content-alt"<?php
-    endif; ?> role="main">
+    endif; ?>>
         <div class="container">
             <?php
             if ($manual): ?>
-                <?=$this->section('content')?>
+                <?= $this->section('content') ?>
             <?php
             else: ?>
                 <?php
                 if ($header): ?>
                     <div class="block-header">
-                        <h2><?=$header?></h2>
+                        <h2><?= $header ?></h2>
                     </div>
                 <?php
                 endif; ?>
@@ -186,12 +186,12 @@ endif; ?>
             <?php
             endif; ?>
         </div>
-    </section>
+    </main>
 </section>
 
 <footer id="footer" <?php
 if (!$sections->has('sidebar')): ?>class="footer-alt"<?php
-endif; ?> role="contentinfo">
+endif; ?> role="contentinfo" aria-label="<?= __('Footer') ?>">
     <?= sprintf(
         __('Powered by %s'),
         '<a href="https://www.azuracast.com/" target="_blank">' . $environment->getAppName(

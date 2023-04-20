@@ -14,7 +14,8 @@ use Psr\Http\Message\ResponseInterface;
 final class RenameAction
 {
     public function __construct(
-        private readonly BatchUtilities $batchUtilities
+        private readonly BatchUtilities $batchUtilities,
+        private readonly StationFilesystems $stationFilesystems,
     ) {
     }
 
@@ -43,8 +44,7 @@ final class RenameAction
         $station = $request->getStation();
         $storageLocation = $station->getMediaStorageLocation();
 
-        $fsMedia = (new StationFilesystems($station))->getMediaFilesystem();
-
+        $fsMedia = $this->stationFilesystems->getMediaFilesystem($station);
         $fsMedia->move($from, $to);
 
         $this->batchUtilities->handleRename($from, $to, $storageLocation, $fsMedia);

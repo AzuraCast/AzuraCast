@@ -1,7 +1,14 @@
 <template>
-    <b-card no-body>
+    <section
+        class="card"
+        role="region"
+        aria-labelledby="hdr_stations"
+    >
         <b-card-header header-bg-variant="primary-dark">
-            <h2 class="card-title">
+            <h2
+                id="hdr_stations"
+                class="card-title"
+            >
                 {{ $gettext('Stations') }}
             </h2>
         </b-card-header>
@@ -63,7 +70,7 @@
                 </b-button-group>
             </template>
         </data-table>
-    </b-card>
+    </section>
 
     <admin-stations-edit-modal
         v-bind="pickProps(props, stationFormProps)"

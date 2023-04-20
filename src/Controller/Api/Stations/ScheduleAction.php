@@ -12,9 +12,8 @@ use App\OpenApi;
 use App\Radio\AutoDJ\Scheduler;
 use Carbon\CarbonImmutable;
 use OpenApi\Attributes as OA;
+use Psr\Cache\CacheItemPoolInterface;
 use Psr\Http\Message\ResponseInterface;
-use Symfony\Component\Cache\CacheItem;
-use Symfony\Contracts\Cache\CacheInterface;
 
 #[OA\Get(
     path: '/station/{station_id}/schedule',
@@ -57,9 +56,9 @@ final class ScheduleAction
 
     public function __construct(
         private readonly Scheduler $scheduler,
-        private readonly CacheInterface $cache,
         private readonly Entity\ApiGenerator\ScheduleApiGenerator $scheduleApiGenerator,
-        private readonly Entity\Repository\StationScheduleRepository $scheduleRepo
+        private readonly Entity\Repository\StationScheduleRepository $scheduleRepo,
+        private readonly CacheItemPoolInterface $psr6Cache
     ) {
     }
 
@@ -80,26 +79,27 @@ final class ScheduleAction
                 . $dateRange->getStart()->format('Ymd') . '-'
                 . $dateRange->getEnd()->format('Ymd');
 
-            $events = $this->cache->get(
-                $cacheKey,
-                function (CacheItem $item) use (
-                    $station,
-                    $dateRange
-                ) {
-                    $item->expiresAfter(600);
+            $cacheItem = $this->psr6Cache->getItem($cacheKey);
 
-                    $nowTz = CarbonImmutable::now($station->getTimezoneObject());
-                    $events = $this->scheduleRepo->getAllScheduledItemsForStation($station);
+            if (!$cacheItem->isHit()) {
+                $nowTz = CarbonImmutable::now($station->getTimezoneObject());
+                $events = $this->scheduleRepo->getAllScheduledItemsForStation($station);
 
-                    return $this->getEvents(
+                $cacheItem->set(
+                    $this->getEvents(
                         $dateRange,
                         $nowTz,
                         $this->scheduler,
                         $events,
                         [$this->scheduleApiGenerator, '__invoke']
-                    );
-                }
-            );
+                    )
+                );
+                $cacheItem->expiresAfter(600);
+
+                $this->psr6Cache->saveDeferred($cacheItem);
+            }
+
+            $events = $cacheItem->get();
         } else {
             if (!empty($queryParams['now'])) {
                 $now = CarbonImmutable::parse($queryParams['now'], $tz);
@@ -109,13 +109,16 @@ final class ScheduleAction
                 $cacheKey = 'api_station_' . $station->getId() . '_schedule_upcoming';
             }
 
-            $events = $this->cache->get(
-                $cacheKey,
-                function (CacheItem $item) use ($station, $now) {
-                    $item->expiresAfter(60);
-                    return $this->scheduleRepo->getUpcomingSchedule($station, $now);
-                }
-            );
+            $cacheItem = $this->psr6Cache->getItem($cacheKey);
+
+            if (!$cacheItem->isHit()) {
+                $cacheItem->set($this->scheduleRepo->getUpcomingSchedule($station, $now));
+                $cacheItem->expiresAfter(60);
+
+                $this->psr6Cache->saveDeferred($cacheItem);
+            }
+
+            $events = $cacheItem->get();
 
             $rows = (int)$request->getQueryParam('rows', 5);
             $events = array_slice($events, 0, $rows);

@@ -8,7 +8,7 @@ use App\Entity\Api\Notification;
 use App\Enums\GlobalPermissions;
 use App\Event\GetNotifications;
 use App\Service\ServiceControl;
-use App\Session\Flash;
+use App\Session\FlashLevels;
 
 final class ServiceCheck
 {
@@ -35,7 +35,7 @@ final class ServiceCheck
                 $notification->body = __(
                     'One of the essential services on this installation is not currently running. Visit the system administration and check the system logs to find the cause of this issue.'
                 );
-                $notification->type = Flash::ERROR;
+                $notification->type = FlashLevels::Error->value;
 
                 $router = $request->getRouter();
 

@@ -2,9 +2,13 @@
     <section
         class="card"
         role="region"
+        aria-labelledby="hdr_api_keys"
     >
         <b-card-header header-bg-variant="primary-dark">
-            <h2 class="card-title">
+            <h2
+                id="hdr_api_keys"
+                class="card-title"
+            >
                 {{ $gettext('API Keys') }}
             </h2>
         </b-card-header>

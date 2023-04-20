@@ -7,12 +7,9 @@ namespace App\Entity;
 use App\Entity\Enums\StorageLocationAdapters;
 use App\Entity\Enums\StorageLocationTypes;
 use App\Entity\Interfaces\IdentifiableEntityInterface;
-use App\Entity\StorageLocationAdapter\StorageLocationAdapterInterface;
 use App\Exception\StorageLocationFullException;
 use App\Radio\Quota;
 use App\Validator\Constraints as AppAssert;
-use App\Flysystem\Adapter\ExtendedAdapterInterface;
-use App\Flysystem\ExtendedFilesystemInterface;
 use Brick\Math\BigInteger;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -59,8 +56,17 @@ class StorageLocation implements Stringable, IdentifiableEntityInterface
     #[ORM\Column(name: 's3_endpoint', length: 255, nullable: true)]
     protected ?string $s3Endpoint = null;
 
+    #[ORM\Column(name: 'dropbox_app_key', length: 50, nullable: true)]
+    protected ?string $dropboxAppKey = null;
+
+    #[ORM\Column(name: 'dropbox_app_secret', length: 150, nullable: true)]
+    protected ?string $dropboxAppSecret = null;
+
     #[ORM\Column(name: 'dropbox_auth_token', length: 255, nullable: true)]
     protected ?string $dropboxAuthToken = null;
+
+    #[ORM\Column(name: 'dropbox_refresh_token', length: 255, nullable: true)]
+    protected ?string $dropboxRefreshToken = null;
 
     #[ORM\Column(name: 'sftp_host', length: 255, nullable: true)]
     protected ?string $sftpHost = null;
@@ -198,6 +204,26 @@ class StorageLocation implements Stringable, IdentifiableEntityInterface
         $this->s3Endpoint = $this->truncateNullableString($s3Endpoint);
     }
 
+    public function getDropboxAppKey(): ?string
+    {
+        return $this->dropboxAppKey;
+    }
+
+    public function setDropboxAppKey(?string $dropboxAppKey): void
+    {
+        $this->dropboxAppKey = $dropboxAppKey;
+    }
+
+    public function getDropboxAppSecret(): ?string
+    {
+        return $this->dropboxAppSecret;
+    }
+
+    public function setDropboxAppSecret(?string $dropboxAppSecret): void
+    {
+        $this->dropboxAppSecret = $dropboxAppSecret;
+    }
+
     public function getDropboxAuthToken(): ?string
     {
         return $this->dropboxAuthToken;
@@ -206,6 +232,16 @@ class StorageLocation implements Stringable, IdentifiableEntityInterface
     public function setDropboxAuthToken(?string $dropboxAuthToken): void
     {
         $this->dropboxAuthToken = $dropboxAuthToken;
+    }
+
+    public function getDropboxRefreshToken(): ?string
+    {
+        return $this->dropboxRefreshToken;
+    }
+
+    public function setDropboxRefreshToken(?string $dropboxRefreshToken): void
+    {
+        $this->dropboxRefreshToken = $dropboxRefreshToken;
     }
 
     public function getSftpHost(): ?string
@@ -440,35 +476,16 @@ class StorageLocation implements Stringable, IdentifiableEntityInterface
         return $this->media;
     }
 
-    public function getStorageLocationAdapter(): StorageLocationAdapterInterface
-    {
-        $adapterClass = $this->getAdapterEnum()->getAdapterClass();
-        return new $adapterClass($this);
-    }
-
     public function getUri(?string $suffix = null): string
     {
-        return $this->getStorageLocationAdapter()->getUri($suffix);
+        $adapterClass = $this->getAdapterEnum()->getAdapterClass();
+        return $adapterClass::getUri($this, $suffix);
     }
 
     public function getFilteredPath(): string
     {
-        return $this->getStorageLocationAdapter()::filterPath($this->path);
-    }
-
-    public function validate(): void
-    {
-        $this->getStorageLocationAdapter()->validate();
-    }
-
-    public function getStorageAdapter(): ExtendedAdapterInterface
-    {
-        return $this->getStorageLocationAdapter()->getStorageAdapter();
-    }
-
-    public function getFilesystem(): ExtendedFilesystemInterface
-    {
-        return $this->getStorageLocationAdapter()->getFilesystem();
+        $adapterClass = $this->getAdapterEnum()->getAdapterClass();
+        return $adapterClass::filterPath($this->path);
     }
 
     public function __toString(): string

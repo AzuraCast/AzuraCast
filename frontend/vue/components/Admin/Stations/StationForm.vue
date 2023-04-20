@@ -139,7 +139,12 @@ import AdminStationsHlsForm from "./Form/HlsForm.vue";
 import AdminStationsRequestsForm from "./Form/RequestsForm.vue";
 import AdminStationsStreamersForm from "./Form/StreamersForm.vue";
 import {decimal, numeric, required, url} from '@vuelidate/validators';
-import {AUDIO_PROCESSING_NONE, BACKEND_LIQUIDSOAP, FRONTEND_ICECAST} from "~/components/Entity/RadioAdapters";
+import {
+    AUDIO_PROCESSING_NONE,
+    BACKEND_LIQUIDSOAP,
+    FRONTEND_ICECAST,
+    MASTER_ME_PRESET_MUSIC_GENERAL
+} from "~/components/Entity/RadioAdapters";
 import {computed, ref, watch} from "vue";
 import {useNotify} from "~/vendor/bootstrapVue";
 import {useAxios} from "~/vendor/axios";
@@ -196,6 +201,9 @@ const buildForm = () => {
             crossfade_type: {},
             crossfade: {decimal},
             audio_processing_method: {},
+            post_processing_include_live: {},
+            master_me_preset: {},
+            master_me_loudness_target: {},
             stereo_tool_license_key: {},
             record_streams: {},
             record_streams_format: {},
@@ -257,6 +265,9 @@ const buildForm = () => {
             crossfade_type: 'normal',
             crossfade: 2,
             audio_processing_method: AUDIO_PROCESSING_NONE,
+            post_processing_include_live: true,
+            master_me_preset: MASTER_ME_PRESET_MUSIC_GENERAL,
+            master_me_loudness_target: -16,
             stereo_tool_license_key: '',
             record_streams: false,
             record_streams_format: 'mp3',
@@ -454,6 +465,8 @@ const doLoad = () => {
         axios.get(props.editUrl)
     ).then((resp) => {
         populateForm(resp.data);
+
+        console.log(form.value);
     }).catch((err) => {
         emit('error', err);
     }).finally(() => {

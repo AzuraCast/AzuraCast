@@ -8,12 +8,12 @@ use App\Entity;
 use App\Entity\Attributes\Auditable;
 use App\Entity\Attributes\AuditIgnore;
 use Doctrine\Common\EventSubscriber;
+use Doctrine\Common\Util\ClassUtils;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Event\OnFlushEventArgs;
 use Doctrine\ORM\Events;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use Doctrine\ORM\PersistentCollection;
-use Doctrine\ORM\Proxy\Proxy;
 use Doctrine\ORM\UnitOfWork;
 use ProxyManager\Proxy\GhostObjectInterface;
 use ReflectionClass;
@@ -243,9 +243,7 @@ final class AuditLog implements EventSubscriber
     private function isEntity(EntityManagerInterface $em, mixed $class): bool
     {
         if (is_object($class)) {
-            $class = ($class instanceof Proxy || $class instanceof GhostObjectInterface)
-                ? get_parent_class($class)
-                : get_class($class);
+            $class = ClassUtils::getClass($class);
         }
 
         if (!is_string($class)) {

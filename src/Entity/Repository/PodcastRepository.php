@@ -8,8 +8,8 @@ use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Doctrine\Repository;
 use App\Entity;
 use App\Exception\StorageLocationFullException;
-use App\Media\AlbumArt;
 use App\Flysystem\ExtendedFilesystemInterface;
+use App\Media\AlbumArt;
 use League\Flysystem\UnableToDeleteFile;
 use League\Flysystem\UnableToRetrieveMetadata;
 
@@ -21,6 +21,7 @@ final class PodcastRepository extends Repository
     public function __construct(
         ReloadableEntityManagerInterface $entityManager,
         private readonly PodcastEpisodeRepository $podcastEpisodeRepo,
+        private readonly StorageLocationRepository $storageLocationRepo
     ) {
         parent::__construct($entityManager);
     }
@@ -77,7 +78,7 @@ final class PodcastRepository extends Repository
         ?ExtendedFilesystemInterface $fs = null
     ): void {
         $storageLocation = $podcast->getStorageLocation();
-        $fs ??= $storageLocation->getFilesystem();
+        $fs ??= $this->storageLocationRepo->getAdapter($storageLocation)->getFilesystem();
 
         $podcastArtworkString = AlbumArt::resize($rawArtworkString);
 
@@ -101,7 +102,7 @@ final class PodcastRepository extends Repository
         ?ExtendedFilesystemInterface $fs = null
     ): void {
         $storageLocation = $podcast->getStorageLocation();
-        $fs ??= $storageLocation->getFilesystem();
+        $fs ??= $this->storageLocationRepo->getAdapter($storageLocation)->getFilesystem();
 
         $artworkPath = Entity\Podcast::getArtPath($podcast->getIdRequired());
 
@@ -127,7 +128,8 @@ final class PodcastRepository extends Repository
         Entity\Podcast $podcast,
         ?ExtendedFilesystemInterface $fs = null
     ): void {
-        $fs ??= $podcast->getStorageLocation()->getFilesystem();
+        $fs ??= $this->storageLocationRepo->getAdapter($podcast->getStorageLocation())
+            ->getFilesystem();
 
         foreach ($podcast->getEpisodes() as $episode) {
             $this->podcastEpisodeRepo->delete($episode, $fs);

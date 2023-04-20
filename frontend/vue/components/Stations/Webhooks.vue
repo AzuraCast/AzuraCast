@@ -1,7 +1,14 @@
 <template>
-    <b-card no-body>
+    <section
+        class="card"
+        role="region"
+        aria-labelledby="hdr_web_hooks"
+    >
         <b-card-header header-bg-variant="primary-dark">
-            <h2 class="card-title">
+            <h2
+                id="hdr_web_hooks"
+                class="card-title"
+            >
                 {{ $gettext('Web Hooks') }}
             </h2>
         </b-card-header>
@@ -82,7 +89,7 @@
                 </b-button-group>
             </template>
         </data-table>
-    </b-card>
+    </section>
 
     <streaming-log-modal ref="$logModal" />
     <edit-modal

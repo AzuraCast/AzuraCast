@@ -63,199 +63,27 @@
         </div>
     </b-form-group>
 
-    <b-card
-        v-show="form.adapter.$model === 's3'"
-        class="mb-3"
-        no-body
-    >
-        <div class="card-header bg-primary-dark">
-            <h2 class="card-title">
-                {{ $gettext('Remote: S3 Compatible') }}
-            </h2>
-        </div>
-        <b-card-body>
-            <b-form-group>
-                <div class="form-row">
-                    <b-wrapped-form-group
-                        id="form_edit_s3CredentialKey"
-                        class="col-md-6"
-                        :field="form.s3CredentialKey"
-                    >
-                        <template #label>
-                            {{ $gettext('Access Key ID') }}
-                        </template>
-                    </b-wrapped-form-group>
+    <s3
+        v-if="form.adapter.$model === 's3'"
+        :form="form"
+    />
 
-                    <b-wrapped-form-group
-                        id="form_edit_s3CredentialSecret"
-                        class="col-md-6"
-                        :field="form.s3CredentialSecret"
-                    >
-                        <template #label>
-                            {{ $gettext('Secret Key') }}
-                        </template>
-                    </b-wrapped-form-group>
+    <dropbox
+        v-if="form.adapter.$model === 'dropbox'"
+        :form="form"
+    />
 
-                    <b-wrapped-form-group
-                        id="form_edit_s3Endpoint"
-                        class="col-md-6"
-                        :field="form.s3Endpoint"
-                    >
-                        <template #label>
-                            {{ $gettext('Endpoint') }}
-                        </template>
-                    </b-wrapped-form-group>
-
-                    <b-wrapped-form-group
-                        id="form_edit_s3Bucket"
-                        class="col-md-6"
-                        :field="form.s3Bucket"
-                    >
-                        <template #label>
-                            {{ $gettext('Bucket Name') }}
-                        </template>
-                    </b-wrapped-form-group>
-
-                    <b-wrapped-form-group
-                        id="form_edit_s3Region"
-                        class="col-md-6"
-                        :field="form.s3Region"
-                    >
-                        <template #label>
-                            {{ $gettext('Region') }}
-                        </template>
-                    </b-wrapped-form-group>
-
-                    <b-wrapped-form-group
-                        id="form_edit_s3Version"
-                        class="col-md-6"
-                        :field="form.s3Version"
-                    >
-                        <template #label>
-                            {{ $gettext('API Version') }}
-                        </template>
-                    </b-wrapped-form-group>
-                </div>
-            </b-form-group>
-        </b-card-body>
-    </b-card>
-
-    <b-card
-        v-show="form.adapter.$model === 'dropbox'"
-        class="mb-3"
-        no-body
-    >
-        <div class="card-header bg-primary-dark">
-            <h2 class="card-title">
-                {{ $gettext('Remote: Dropbox') }}
-            </h2>
-        </div>
-        <b-card-body>
-            <b-form-group>
-                <div class="form-row">
-                    <b-wrapped-form-group
-                        id="form_edit_dropboxAuthToken"
-                        class="col-md-12"
-                        :field="form.dropboxAuthToken"
-                    >
-                        <template #label>
-                            {{ $gettext('Dropbox Generated Access Token') }}
-                        </template>
-                        <template #description>
-                            {{
-                                $gettext('Note: Dropbox now only issues short-lived tokens that will not work for this purpose. If your token begins with "sl", it is short-lived and will not work correctly.')
-                            }}
-                        </template>
-                    </b-wrapped-form-group>
-                </div>
-            </b-form-group>
-        </b-card-body>
-    </b-card>
-
-    <b-card
-        v-show="form.adapter.$model === 'sftp'"
-        class="mb-3"
-        no-body
-    >
-        <div class="card-header bg-primary-dark">
-            <h2 class="card-title">
-                {{ $gettext('Remote: SFTP') }}
-            </h2>
-        </div>
-        <b-card-body>
-            <b-form-group>
-                <div class="form-row">
-                    <b-wrapped-form-group
-                        id="form_edit_sftpHost"
-                        class="col-md-12 col-lg-6"
-                        :field="form.sftpHost"
-                    >
-                        <template #label>
-                            {{ $gettext('SFTP Host') }}
-                        </template>
-                    </b-wrapped-form-group>
-
-                    <b-wrapped-form-group
-                        id="form_edit_sftpPort"
-                        class="col-md-12 col-lg-6"
-                        input-type="number"
-                        min="1"
-                        step="1"
-                        :field="form.sftpPort"
-                    >
-                        <template #label>
-                            {{ $gettext('SFTP Port') }}
-                        </template>
-                    </b-wrapped-form-group>
-
-                    <b-wrapped-form-group
-                        id="form_edit_sftpUsername"
-                        class="col-md-12 col-lg-6"
-                        :field="form.sftpUsername"
-                    >
-                        <template #label>
-                            {{ $gettext('SFTP Username') }}
-                        </template>
-                    </b-wrapped-form-group>
-
-                    <b-wrapped-form-group
-                        id="form_edit_sftpPassword"
-                        class="col-md-12 col-lg-6"
-                        :field="form.sftpPassword"
-                    >
-                        <template #label>
-                            {{ $gettext('SFTP Password') }}
-                        </template>
-                    </b-wrapped-form-group>
-
-                    <b-wrapped-form-group
-                        id="form_edit_sftpPrivateKeyPassPhrase"
-                        class="col-md-12"
-                        :field="form.sftpPrivateKeyPassPhrase"
-                    >
-                        <template #label>
-                            {{ $gettext('SFTP Private Key Pass Phrase') }}
-                        </template>
-                    </b-wrapped-form-group>
-
-                    <b-wrapped-form-group
-                        id="form_edit_sftpPrivateKey"
-                        class="col-md-12"
-                        input-type="textarea"
-                        :field="form.sftpPrivateKey"
-                    >
-                        <template #label>
-                            {{ $gettext('SFTP Private Key') }}
-                        </template>
-                    </b-wrapped-form-group>
-                </div>
-            </b-form-group>
-        </b-card-body>
-    </b-card>
+    <sftp
+        v-if="form.adapter.$model === 'sftp'"
+        :form="form"
+    />
 </template>
 
 <script setup>
 import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup.vue";
+import Dropbox from "./Form/Dropbox.vue";
+import S3 from "./Form/S3.vue";
+import Sftp from "./Form/Sftp.vue";
 
 const props = defineProps({
     form: {

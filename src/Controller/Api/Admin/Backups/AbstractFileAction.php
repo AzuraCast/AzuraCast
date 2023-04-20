@@ -29,7 +29,8 @@ abstract class AbstractFileAction
             throw new InvalidArgumentException('Invalid storage location.');
         }
 
-        $fs = $storageLocation->getFilesystem();
+        $fs = $this->storageLocationRepo->getAdapter($storageLocation)
+            ->getFilesystem();
 
         if (!$fs->fileExists($path)) {
             throw new NotFoundException(__('Backup not found.'));

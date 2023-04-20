@@ -1,8 +1,12 @@
 <template>
-    <div id="dashboard">
+    <div
+        id="dashboard"
+        class="row-of-cards"
+    >
         <section
-            class="card mb-4"
+            class="card"
             role="region"
+            :aria-label="$gettext('Account Details')"
         >
             <div class="card-header bg-primary-dark d-flex flex-wrap align-items-center">
                 <avatar
@@ -50,6 +54,7 @@
                     class="card-body d-flex align-items-center"
                     :class="'alert-'+notification.type"
                     role="alert"
+                    aria-live="polite"
                 >
                     <div
                         v-if="'info' === notification.type"
@@ -95,12 +100,16 @@
 
         <section
             v-if="showCharts"
-            class="card mb-4"
+            class="card"
             role="region"
+            aria-labelledby="hdr_listeners_per_station"
         >
             <div class="card-header bg-primary-dark d-flex align-items-center">
                 <div class="flex-fill">
-                    <h3 class="card-title">
+                    <h3
+                        id="hdr_listeners_per_station"
+                        class="card-title"
+                    >
                         {{ $gettext('Listeners Per Station') }}
                     </h3>
                 </div>
@@ -169,10 +178,14 @@
         <section
             class="card"
             role="region"
+            aria-labelledby="hdr_stations"
         >
             <div class="card-header bg-primary-dark d-flex flex-wrap align-items-center">
                 <div class="flex-fill">
-                    <h2 class="card-title">
+                    <h2
+                        id="hdr_stations"
+                        class="card-title"
+                    >
                         {{ $gettext('Station Overview') }}
                     </h2>
                 </div>
@@ -264,7 +277,10 @@
                                     />
                                 </span>
                                 <template v-if="item.links.listeners">
-                                    <a :href="item.links.listeners">
+                                    <a
+                                        :href="item.links.listeners"
+                                        :aria-label="$gettext('View Listener Report')"
+                                    >
                                         {{ item.listeners.total }}
                                     </a>
                                 </template>
@@ -309,6 +325,7 @@
                                 <a
                                     class="btn btn-primary"
                                     :href="item.links.manage"
+                                    role="button"
                                 >
                                     {{ $gettext('Manage') }}
                                 </a>

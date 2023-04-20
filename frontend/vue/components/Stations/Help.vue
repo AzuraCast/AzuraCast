@@ -1,9 +1,16 @@
 <template>
-    <div class="row">
+    <div class="row row-of-cards">
         <div class="col-md-8">
-            <div class="card">
+            <section
+                class="card"
+                role="region"
+                aria-labelledby="hdr_available_logs"
+            >
                 <div class="card-header bg-primary-dark">
-                    <h2 class="card-title">
+                    <h2
+                        id="hdr_available_logs"
+                        class="card-title"
+                    >
                         {{ $gettext('Available Logs') }}
                     </h2>
                 </div>
@@ -12,14 +19,21 @@
                     :url="logsUrl"
                     @view="viewLog"
                 />
-            </div>
+            </section>
 
             <streaming-log-modal ref="$modal" />
         </div>
         <div class="col-md-4">
-            <div class="card">
+            <section
+                class="card"
+                role="region"
+                aria-labelledby="hdr_need_help"
+            >
                 <div class="card-header bg-primary-dark">
-                    <h2 class="card-title">
+                    <h2
+                        id="hdr_need_help"
+                        class="card-title"
+                    >
                         {{ $gettext('Need Help?') }}
                     </h2>
                 </div>
@@ -52,7 +66,7 @@
                         {{ $gettext('Add New GitHub Issue') }}
                     </a>
                 </div>
-            </div>
+            </section>
         </div>
     </div>
 </template>

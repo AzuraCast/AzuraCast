@@ -10,31 +10,22 @@ use App\Flysystem\RemoteFilesystem;
 
 abstract class AbstractStorageLocationLocationAdapter implements StorageLocationAdapterInterface
 {
-    public function __construct(
-        protected readonly StorageLocation $storageLocation
-    ) {
+    protected StorageLocation $storageLocation;
+
+    public function withStorageLocation(StorageLocation $storageLocation): static
+    {
+        $clone = clone $this;
+        $clone->setStorageLocation($storageLocation);
+        return $clone;
+    }
+
+    protected function setStorageLocation(StorageLocation $storageLocation): void
+    {
         if ($this->getType() !== $storageLocation->getAdapterEnum()) {
             throw new \InvalidArgumentException('This storage location is not using the specified adapter.');
         }
-    }
 
-    public static function filterPath(string $path): string
-    {
-        return rtrim($path, '/');
-    }
-
-    public function getUri(?string $suffix = null): string
-    {
-        return $this->applyPath($suffix);
-    }
-
-    protected function applyPath(?string $suffix = null): string
-    {
-        $suffix = (null !== $suffix)
-            ? '/' . ltrim($suffix, '/')
-            : '';
-
-        return $this->storageLocation->getPath() . $suffix;
+        $this->storageLocation = $storageLocation;
     }
 
     public function getFilesystem(): ExtendedFilesystemInterface
@@ -46,5 +37,28 @@ abstract class AbstractStorageLocationLocationAdapter implements StorageLocation
     {
         $adapter = $this->getStorageAdapter();
         $adapter->fileExists('/test');
+    }
+
+    public static function filterPath(string $path): string
+    {
+        return rtrim($path, '/');
+    }
+
+    public static function getUri(
+        StorageLocation $storageLocation,
+        ?string $suffix = null
+    ): string {
+        return self::applyPath($storageLocation->getPath(), $suffix);
+    }
+
+    protected static function applyPath(
+        string $path,
+        ?string $suffix = null
+    ): string {
+        $suffix = (null !== $suffix)
+            ? '/' . ltrim($suffix, '/')
+            : '';
+
+        return $path . $suffix;
     }
 }

@@ -28,15 +28,21 @@ final class MigrateConfigCommand extends CommandAbstract
 
         $envSettings = [];
 
-        $iniPath = $this->environment->getBaseDirectory() . '/env.ini';
+        $iniPath = $this->environment->getParentDirectory() . '/env.ini';
         if (is_file($iniPath)) {
             $envSettings = (array)parse_ini_file($iniPath);
         }
 
         // Migrate from existing legacy config files.
-        $legacyIniPath = $this->environment->getBaseDirectory() . '/app/env.ini';
-        if (is_file($legacyIniPath)) {
-            $iniSettings = parse_ini_file($legacyIniPath);
+        $legacyIniPath1 = $this->environment->getBaseDirectory() . '/env.ini';
+        if (is_file($legacyIniPath1)) {
+            $iniSettings = parse_ini_file($legacyIniPath1);
+            $envSettings = array_merge($envSettings, (array)$iniSettings);
+        }
+
+        $legacyIniPath2 = $this->environment->getBaseDirectory() . '/app/env.ini';
+        if (is_file($legacyIniPath2)) {
+            $iniSettings = parse_ini_file($legacyIniPath2);
             $envSettings = array_merge($envSettings, (array)$iniSettings);
         }
 
@@ -97,7 +103,8 @@ final class MigrateConfigCommand extends CommandAbstract
         file_put_contents($iniPath, implode("\n", $iniData));
 
         // Remove legacy files.
-        @unlink($legacyIniPath);
+        @unlink($legacyIniPath1);
+        @unlink($legacyIniPath2);
         @unlink($legacyAppEnvFile);
         @unlink($legacyDbConfFile);
 

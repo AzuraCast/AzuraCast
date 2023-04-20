@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <?php
 /**
  * @var League\Plates\Template\Template $this
@@ -16,7 +15,9 @@
 $title ??= null;
 $hide_footer ??= false;
 ?>
-<html data-theme="<?= $customization->getPublicTheme()->value ?>">
+<!DOCTYPE html>
+<html lang="<?= $customization->getLocale()->getHtmlLang() ?>"
+      data-theme="<?= $customization->getPublicTheme()->value ?>">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -47,12 +48,14 @@ $hide_footer ??= false;
 
 <?= $sections->get('station_bodyjs') ?>
 
-<?= $this->section('content') ?>
+<main>
+    <?= $this->section('content') ?>
+</main>
 
 <?php
 $hide_footer ??= false;
 if (!$customization->hideProductName() && !$hide_footer): ?>
-    <footer id="footer" class="footer-alt" role="contentinfo">
+    <footer id="footer" class="footer-alt" role="contentinfo" aria-label="<?= __('Footer') ?>">
         <?= sprintf(
             __('Powered by %s'),
             '<a href="https://azuracast.com/" target="_blank">' . $environment->getAppName() . '</a>' . ' '

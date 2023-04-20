@@ -26,6 +26,11 @@ parameters:
 			path: src/Entity/Migration/Version20201204043539.php
 
 		-
+			message: "#^Parameter \\#1 \\$accessTokenOrAppCredentials of class Spatie\\\\Dropbox\\\\Client constructor expects array\\|string\\|null, App\\\\Service\\\\Dropbox\\\\OAuthAdapter given\\.$#"
+			count: 1
+			path: src/Entity/StorageLocationAdapter/DropboxStorageLocationAdapter.php
+
+		-
 			message: "#^Cannot cast Symfony\\\\Component\\\\Validator\\\\ConstraintViolationListInterface to string\\.$#"
 			count: 1
 			path: src/Exception/ValidationException.php
@@ -34,11 +39,6 @@ parameters:
 			message: "#^Parameter \\#1 \\$className of method Doctrine\\\\ORM\\\\EntityManagerInterface\\:\\:getRepository\\(\\) expects class\\-string\\<object\\>, class\\-string\\|false given\\.$#"
 			count: 1
 			path: src/Validator/Constraints/UniqueEntityValidator.php
-
-		-
-			message: "#^Parameter \\#2 \\$callback of method League\\\\Plates\\\\Engine\\:\\:registerFunction\\(\\) expects League\\\\Plates\\\\callback, Closure given\\.$#"
-			count: 4
-			path: src/View.php
 
 		-
 			message: "#^Access to an undefined property XMLReader\\:\\:\\$depth\\.$#"

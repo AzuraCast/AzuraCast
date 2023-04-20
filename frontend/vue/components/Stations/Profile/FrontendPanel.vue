@@ -3,9 +3,13 @@
         id="profile-frontend"
         class="card mb-4"
         role="region"
+        aria-labelledby="hdr_frontend"
     >
         <div class="card-header bg-primary-dark">
-            <h3 class="card-title">
+            <h3
+                id="hdr_frontend"
+                class="card-title"
+            >
                 {{ $gettext('Broadcasting Service') }}
 
                 <running-badge :running="frontendRunning" />
@@ -96,10 +100,7 @@
                 </b-table-simple>
             </b-collapse>
 
-            <div
-                v-if="hasStarted"
-                class="card-actions"
-            >
+            <div class="card-actions">
                 <a
                     class="btn btn-outline-primary"
                     @click.prevent="credentialsVisible = !credentialsVisible"
@@ -107,29 +108,31 @@
                     <icon icon="unfold_more" />
                     {{ langShowHideCredentials }}
                 </a>
-                <a
-                    class="api-call no-reload btn btn-outline-secondary"
-                    :href="frontendRestartUri"
-                >
-                    <icon icon="update" />
-                    {{ $gettext('Restart') }}
-                </a>
-                <a
-                    v-show="!frontendRunning"
-                    class="api-call no-reload btn btn-outline-success"
-                    :href="frontendStartUri"
-                >
-                    <icon icon="play_arrow" />
-                    {{ $gettext('Start') }}
-                </a>
-                <a
-                    v-show="frontendRunning"
-                    class="api-call no-reload btn btn-outline-danger"
-                    :href="frontendStopUri"
-                >
-                    <icon icon="stop" />
-                    {{ $gettext('Stop') }}
-                </a>
+                <template v-if="hasStarted">
+                    <a
+                        class="api-call no-reload btn btn-outline-secondary"
+                        :href="frontendRestartUri"
+                    >
+                        <icon icon="update" />
+                        {{ $gettext('Restart') }}
+                    </a>
+                    <a
+                        v-show="!frontendRunning"
+                        class="api-call no-reload btn btn-outline-success"
+                        :href="frontendStartUri"
+                    >
+                        <icon icon="play_arrow" />
+                        {{ $gettext('Start') }}
+                    </a>
+                    <a
+                        v-show="frontendRunning"
+                        class="api-call no-reload btn btn-outline-danger"
+                        :href="frontendStopUri"
+                    >
+                        <icon icon="stop" />
+                        {{ $gettext('Stop') }}
+                    </a>
+                </template>
             </div>
         </template>
     </section>

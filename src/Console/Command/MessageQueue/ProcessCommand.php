@@ -10,7 +10,7 @@ use App\Doctrine\Messenger\ClearEntityManagerSubscriber;
 use App\Environment;
 use App\MessageQueue\LogWorkerExceptionSubscriber;
 use App\MessageQueue\QueueManagerInterface;
-use App\MessageQueue\ResetArrayCacheMiddleware;
+use App\MessageQueue\ResetArrayCacheSubscriber;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
 use Psr\Log\NullLogger;
@@ -19,6 +19,7 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Messenger\EventListener\StopWorkerOnFailureLimitListener;
 use Symfony\Component\Messenger\EventListener\StopWorkerOnTimeLimitListener;
 use Symfony\Component\Messenger\MessageBus;
 use Symfony\Component\Messenger\Worker;
@@ -68,7 +69,7 @@ final class ProcessCommand extends CommandAbstract
 
         $this->eventDispatcher->addServiceSubscriber(ClearEntityManagerSubscriber::class);
         $this->eventDispatcher->addServiceSubscriber(LogWorkerExceptionSubscriber::class);
-        $this->eventDispatcher->addServiceSubscriber(ResetArrayCacheMiddleware::class);
+        $this->eventDispatcher->addServiceSubscriber(ResetArrayCacheSubscriber::class);
 
         if ($runtime <= 0) {
             $runtime = $this->environment->isProduction()
@@ -80,7 +81,12 @@ final class ProcessCommand extends CommandAbstract
             ? $this->logger
             : new NullLogger();
 
-        $this->eventDispatcher->addSubscriber(new StopWorkerOnTimeLimitListener($runtime, $busLogger));
+        $this->eventDispatcher->addSubscriber(
+            new StopWorkerOnTimeLimitListener($runtime, $busLogger)
+        );
+        $this->eventDispatcher->addSubscriber(
+            new StopWorkerOnFailureLimitListener(5, $busLogger)
+        );
 
         try {
             $worker = new Worker($receivers, $this->messageBus, $this->eventDispatcher, $busLogger);

@@ -5,9 +5,16 @@
     >
         <slot name="preCard" />
 
-        <b-card no-body>
+        <section
+            class="card"
+            role="region"
+            aria-labelledby="hdr_system_settings"
+        >
             <div class="card-header bg-primary-dark">
-                <h2 class="card-title">
+                <h2
+                    id="hdr_system_settings"
+                    class="card-title"
+                >
                     <slot name="cardTitle">
                         {{ $gettext('System Settings') }}
                     </slot>
@@ -74,7 +81,7 @@
                     </slot>
                 </b-button>
             </b-card-body>
-        </b-card>
+        </section>
     </form>
 </template>
 

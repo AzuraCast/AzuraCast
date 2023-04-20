@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Internal;
 
+use App\Entity\Repository\StorageLocationRepository;
 use App\Entity\SftpUser;
 use App\Entity\StorageLocation;
 use App\Http\Response;
@@ -25,6 +26,7 @@ final class SftpEventAction
         private readonly MessageBus $messageBus,
         private readonly LoggerInterface $logger,
         private readonly BatchUtilities $batchUtilities,
+        private readonly StorageLocationRepository $storageLocationRepo
     ) {
     }
 
@@ -143,7 +145,7 @@ final class SftpEventAction
             $files[] = $relativePath;
         }
 
-        $fs = $storageLocation->getFilesystem();
+        $fs = $this->storageLocationRepo->getAdapter($storageLocation)->getFilesystem();
 
         $this->batchUtilities->handleDelete(
             $files,

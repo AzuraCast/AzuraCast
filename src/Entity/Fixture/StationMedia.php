@@ -14,7 +14,8 @@ use Symfony\Component\Finder\Finder;
 final class StationMedia extends AbstractFixture implements DependentFixtureInterface
 {
     public function __construct(
-        private readonly MediaProcessor $mediaProcessor
+        private readonly MediaProcessor $mediaProcessor,
+        private readonly Entity\Repository\StorageLocationRepository $storageLocationRepo,
     ) {
     }
 
@@ -30,7 +31,7 @@ final class StationMedia extends AbstractFixture implements DependentFixtureInte
         $station = $this->getReference('station');
 
         $mediaStorage = $station->getMediaStorageLocation();
-        $fs = $mediaStorage->getFilesystem();
+        $fs = $this->storageLocationRepo->getAdapter($mediaStorage)->getFilesystem();
 
         /** @var Entity\StationPlaylist $playlist */
         $playlist = $this->getReference('station_playlist');

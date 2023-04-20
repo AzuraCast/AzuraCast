@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Message;
 
-use App\MessageQueue\QueueManagerInterface;
+use App\MessageQueue\QueueNames;
 
 final class BackupMessage extends AbstractUniqueMessage
 {
@@ -31,8 +31,8 @@ final class BackupMessage extends AbstractUniqueMessage
         return 86400;
     }
 
-    public function getQueue(): string
+    public function getQueue(): QueueNames
     {
-        return QueueManagerInterface::QUEUE_LOW_PRIORITY;
+        return QueueNames::LowPriority;
     }
 }

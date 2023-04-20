@@ -11,6 +11,7 @@ use Carbon\CarbonInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Monolog\Handler\TestHandler;
 use Monolog\Logger;
+use Monolog\LogRecord;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Log\LogLevel;
 use Psr\SimpleCache\CacheInterface;
@@ -268,6 +269,13 @@ final class Queue
 
     public function setQueueRowLog(Entity\StationQueue $queueRow, ?array $log): void
     {
+        if (null !== $log) {
+            $log = array_map(
+                fn(LogRecord $logRecord) => $logRecord->formatted,
+                $log
+            );
+        }
+
         $this->cache->set(
             $this->getQueueRowLogCacheKey($queueRow),
             $log,

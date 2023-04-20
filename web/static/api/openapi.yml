@@ -5,7 +5,7 @@ info:
   license:
     name: 'Apache 2.0'
     url: 'https://www.apache.org/licenses/LICENSE-2.0.html'
-  version: 0.17.7
+  version: 0.18.0
 servers:
   -
     url: 'https://demo.azuracast.com/api'
@@ -3341,7 +3341,6 @@ components:
           type: string
           example: p4ssw0rd
         mounts:
-          description: '*/'
           type: array
           items:
             $ref: '#/components/schemas/Api_NowPlaying_StationMount'
@@ -3393,6 +3392,16 @@ components:
           description: 'The optional custom S3 endpoint S3 adapters.'
           type: string
           example: 'https://your-region.digitaloceanspaces.com'
+          nullable: true
+        dropboxAppKey:
+          description: 'The optional Dropbox App Key.'
+          type: string
+          example: ''
+          nullable: true
+        dropboxAppSecret:
+          description: 'The optional Dropbox App Secret.'
+          type: string
+          example: ''
           nullable: true
         dropboxAuthToken:
           description: 'The optional Dropbox Auth Token.'
@@ -3645,7 +3654,6 @@ components:
             -
               $ref: '#/components/schemas/Api_NowPlaying_StationQueue'
         song_history:
-          description: '*/'
           type: array
           items:
             $ref: '#/components/schemas/Api_NowPlaying_SongHistory'
@@ -3739,12 +3747,10 @@ components:
           type: boolean
           example: true
         mounts:
-          description: '*/'
           type: array
           items:
             $ref: '#/components/schemas/Api_NowPlaying_StationMount'
         remotes:
-          description: '*/'
           type: array
           items:
             $ref: '#/components/schemas/Api_NowPlaying_StationRemote'
@@ -4291,7 +4297,7 @@ components:
               type: string
               example: 'Super Administrator'
             permissions:
-              description: 'RolePermission> */'
+              description: RolePermission>
               type: array
               items: {  }
     Settings:
@@ -4758,7 +4764,7 @@ components:
               type: integer
               example: 1609480800
             playlists:
-              description: 'StationPlaylistMedia> */'
+              description: StationPlaylistMedia>
               type: array
               items: {  }
     StationMount:
@@ -4890,7 +4896,7 @@ components:
               type: boolean
               example: true
             schedule_items:
-              description: 'StationSchedule> */'
+              description: StationSchedule>
               type: array
               items: {  }
     StationSchedule:
@@ -4947,7 +4953,7 @@ components:
               example: 1609480800
               nullable: true
             schedule_items:
-              description: 'StationSchedule> */'
+              description: StationSchedule>
               type: array
               items: {  }
     StationStreamerBroadcast:
@@ -5054,7 +5060,7 @@ components:
               type: integer
               example: 1609480800
             roles:
-              description: 'Role> */'
+              description: Role>
               type: array
               items: {  }
   responses:

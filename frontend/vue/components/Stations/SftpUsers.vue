@@ -1,9 +1,16 @@
 <template>
     <div class="row">
         <div class="col-md-8">
-            <b-card no-body>
+            <section
+                class="card"
+                role="region"
+                aria-labelledby="hdr_sftp_users"
+            >
                 <b-card-header header-bg-variant="primary-dark">
-                    <h2 class="card-title">
+                    <h2
+                        id="hdr_sftp_users"
+                        class="card-title"
+                    >
                         {{ $gettext('SFTP Users') }}
                     </h2>
                 </b-card-header>
@@ -44,12 +51,19 @@
                         </b-button-group>
                     </template>
                 </data-table>
-            </b-card>
+            </section>
         </div>
         <div class="col-md-4">
-            <div class="card">
+            <section
+                class="card"
+                role="region"
+                aria-labelledby="hdr_connection_info"
+            >
                 <div class="card-header bg-primary-dark">
-                    <h2 class="card-title">
+                    <h2
+                        id="hdr_connection_info"
+                        class="card-title"
+                    >
                         {{ $gettext('Connection Information') }}
                     </h2>
                 </div>
@@ -71,7 +85,7 @@
                         <dd><code>{{ connectionInfo.port }}</code></dd>
                     </dl>
                 </div>
-            </div>
+            </section>
         </div>
 
         <sftp-users-edit-modal

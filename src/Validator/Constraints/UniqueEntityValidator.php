@@ -28,7 +28,6 @@ use function count;
 use function get_class;
 use function is_array;
 use function is_object;
-use function is_string;
 
 /**
  * Unique Entity Validator checks if one or a set of fields contain unique values.
@@ -46,14 +45,6 @@ final class UniqueEntityValidator extends ConstraintValidator
     {
         if (!$constraint instanceof UniqueEntity) {
             throw new UnexpectedTypeException($constraint, UniqueEntity::class);
-        }
-
-        if (!is_array($constraint->fields) && !is_string($constraint->fields)) {
-            throw new UnexpectedTypeException($constraint->fields, 'array');
-        }
-
-        if (null !== $constraint->errorPath && !is_string($constraint->errorPath)) {
-            throw new UnexpectedTypeException($constraint->errorPath, 'string or null');
         }
 
         $fields = (array)$constraint->fields;

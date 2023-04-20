@@ -1,7 +1,14 @@
 <template>
-    <b-card no-body>
+    <section
+        class="card"
+        role="region"
+        aria-labelledby="hdr_song_queue"
+    >
         <b-card-header header-bg-variant="primary-dark">
-            <h2 class="card-title">
+            <h2
+                id="hdr_song_queue"
+                class="card-title"
+            >
                 {{ $gettext('Upcoming Song Queue') }}
             </h2>
         </b-card-header>
@@ -65,7 +72,7 @@
                 </div>
             </template>
         </data-table>
-    </b-card>
+    </section>
 
     <queue-logs-modal ref="$logsModal" />
 </template>

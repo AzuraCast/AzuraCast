@@ -29,7 +29,7 @@ final class BackupCommand extends AbstractDatabaseCommand
     public function __construct(
         Environment $environment,
         EntityManagerInterface $em,
-        private readonly Entity\Repository\StorageLocationRepository $storageLocationRepo,
+        private readonly Entity\Repository\StorageLocationRepository $storageLocationRepo
     ) {
         parent::__construct($environment, $em);
     }
@@ -207,7 +207,7 @@ final class BackupCommand extends AbstractDatabaseCommand
         }
 
         if (null !== $storageLocation) {
-            $fs = $storageLocation->getFilesystem();
+            $fs = $this->storageLocationRepo->getAdapter($storageLocation)->getFilesystem();
             $fs->uploadAndDeleteOriginal($tmpPath, $path);
         }
 

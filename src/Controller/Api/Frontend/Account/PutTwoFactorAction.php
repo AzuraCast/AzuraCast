@@ -39,12 +39,12 @@ final class PutTwoFactorAction extends UsersController
             $user = $request->getUser();
 
             $totp = TOTP::create($secret);
-            $totp->setLabel($user->getEmail());
+            $totp->setLabel($user->getEmail() ?: 'AzuraCast');
 
             if (!empty($params['otp'])) {
                 $otp = $params['otp'];
 
-                if ($totp->verify($otp, null, Auth::TOTP_WINDOW)) {
+                if ($totp->verify($params['otp'], null, Auth::TOTP_WINDOW)) {
                     $user = $this->em->refetch($user);
                     $user->setTwoFactorSecret($totp->getProvisioningUri());
 

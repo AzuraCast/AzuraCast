@@ -5,15 +5,21 @@ declare(strict_types=1);
 namespace App\Controller\Api\Stations;
 
 use App\Controller\Api\Traits\CanSortResults;
+use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Entity;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use App\Message\Meilisearch\UpdatePlaylistsMessage;
 use App\OpenApi;
+use App\Radio\AutoDJ\Scheduler;
 use Carbon\CarbonInterface;
 use InvalidArgumentException;
 use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
+use Symfony\Component\Messenger\MessageBus;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
+use Symfony\Component\Serializer\Serializer;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /** @extends AbstractScheduledEntityController<Entity\StationPlaylist> */
 #[
@@ -145,6 +151,17 @@ final class PlaylistsController extends AbstractScheduledEntityController
     protected string $entityClass = Entity\StationPlaylist::class;
     protected string $resourceRouteName = 'api:stations:playlist';
 
+    public function __construct(
+        Entity\Repository\StationScheduleRepository $scheduleRepo,
+        Scheduler $scheduler,
+        ReloadableEntityManagerInterface $em,
+        Serializer $serializer,
+        ValidatorInterface $validator,
+        private readonly MessageBus $messageBus
+    ) {
+        parent::__construct($scheduleRepo, $scheduler, $em, $serializer, $validator);
+    }
+
     public function listAction(
         ServerRequest $request,
         Response $response,
@@ -250,6 +267,8 @@ final class PlaylistsController extends AbstractScheduledEntityController
         )->setParameter('playlist', $record)
             ->getArrayResult();
 
+        $return['short_name'] = Entity\StationPlaylist::generateShortName($return['name']);
+
         $return['num_songs'] = (int)$song_totals[0]['num_songs'];
         $return['total_length'] = (int)$song_totals[0]['total_length'];
 
@@ -322,5 +341,39 @@ final class PlaylistsController extends AbstractScheduledEntityController
                 ]
             )
         );
+    }
+
+    public function editAction(
+        ServerRequest $request,
+        Response $response,
+        string $station_id,
+        string $id
+    ): ResponseInterface {
+        $result = parent::editAction($request, $response, $station_id, $id);
+
+        $this->reindexPlaylists($request->getStation());
+
+        return $result;
+    }
+
+    public function deleteAction(
+        ServerRequest $request,
+        Response $response,
+        string $station_id,
+        string $id
+    ): ResponseInterface {
+        $result = parent::deleteAction($request, $response, $station_id, $id);
+
+        $this->reindexPlaylists($request->getStation());
+
+        return $result;
+    }
+
+    private function reindexPlaylists(Entity\Station $station): void
+    {
+        $indexMessage = new UpdatePlaylistsMessage();
+        $indexMessage->station_id = $station->getIdRequired();
+
+        $this->messageBus->dispatch($indexMessage);
     }
 }

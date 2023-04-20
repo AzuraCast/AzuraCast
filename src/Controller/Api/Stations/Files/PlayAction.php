@@ -13,7 +13,8 @@ use Psr\Http\Message\ResponseInterface;
 final class PlayAction
 {
     public function __construct(
-        private readonly Entity\Repository\StationMediaRepository $mediaRepo
+        private readonly Entity\Repository\StationMediaRepository $mediaRepo,
+        private readonly StationFilesystems $stationFilesystems
     ) {
     }
 
@@ -29,7 +30,7 @@ final class PlayAction
 
         $media = $this->mediaRepo->requireForStation($id, $station);
 
-        $fsMedia = (new StationFilesystems($station))->getMediaFilesystem();
+        $fsMedia = $this->stationFilesystems->getMediaFilesystem($station);
 
         return $response->streamFilesystemFile($fsMedia, $media->getPath());
     }

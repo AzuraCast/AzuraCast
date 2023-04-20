@@ -157,7 +157,9 @@ abstract class CestAbstract
 
         $storageLocation = $testStation->getMediaStorageLocation();
 
-        $storageFs = $storageLocation->getFilesystem();
+        $storageLocationRepo = $this->di->get(Entity\Repository\StorageLocationRepository::class);
+        $storageFs = $storageLocationRepo->getAdapter($storageLocation)->getFilesystem();
+        
         $storageFs->upload($songSrc, 'test.mp3');
 
         /** @var MediaProcessor $mediaProcessor */

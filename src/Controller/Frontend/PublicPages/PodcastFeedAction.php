@@ -46,7 +46,8 @@ final class PodcastFeedAction
 
     public function __construct(
         private readonly StationRepository $stationRepository,
-        private readonly PodcastRepository $podcastRepository
+        private readonly PodcastRepository $podcastRepository,
+        private readonly StationFilesystems $stationFilesystems
     ) {
     }
 
@@ -227,7 +228,7 @@ final class PodcastFeedAction
 
     private function buildRssImageForPodcast(Podcast $podcast, Station $station): RssImage
     {
-        $podcastsFilesystem = (new StationFilesystems($station))->getPodcastsFilesystem();
+        $podcastsFilesystem = $this->stationFilesystems->getPodcastsFilesystem($station);
 
         $rssImage = new RssImage();
 
@@ -337,7 +338,7 @@ final class PodcastFeedAction
 
     private function buildItunesImageForEpisode(PodcastEpisode $episode, Station $station): string
     {
-        $podcastsFilesystem = (new StationFilesystems($station))->getPodcastsFilesystem();
+        $podcastsFilesystem = $this->stationFilesystems->getPodcastsFilesystem($station);
 
         $episodeArtworkSrc = (string)UriResolver::resolve(
             $this->router->getBaseUrl(),

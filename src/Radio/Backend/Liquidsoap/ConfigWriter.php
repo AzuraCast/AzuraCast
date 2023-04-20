@@ -80,6 +80,85 @@ final class ConfigWriter implements EventSubscriberInterface
         }
     }
 
+    public function writePostProcessingSection(WriteLiquidsoapConfiguration $event): void
+    {
+        $station = $event->getStation();
+        $settings = $station->getBackendConfig();
+
+        switch ($settings->getAudioProcessingMethodEnum()) {
+            case AudioProcessingMethods::Liquidsoap:
+                // NRJ normalization
+                $event->appendBlock(
+                    <<<LIQ
+                    # Normalization and Compression
+                    radio = normalize(target = 0., window = 0.03, gain_min = -16., gain_max = 0., radio)
+                    radio = compress.exponential(radio, mu = 1.0)
+                    LIQ
+                );
+                break;
+
+            case AudioProcessingMethods::MasterMe:
+                // MasterMe Presets
+
+                $lines = [
+                    'radio = ladspa.master_me(',
+                ];
+
+                $preset = $settings->getMasterMePresetEnum();
+                $presetOptions = $preset->getOptions();
+
+                if (0 !== ($loudnessTarget = $settings->getMasterMeLoudnessTarget())) {
+                    $presetOptions['target'] = (int)$loudnessTarget;
+                }
+
+                foreach ($presetOptions as $presetKey => $presetVal) {
+                    $presetVal = match (true) {
+                        is_int($presetVal) => self::toFloat($presetVal, 0),
+                        is_float($presetVal) => self::toFloat($presetVal),
+                        is_bool($presetVal) => ($presetVal) ? 'true' : 'false',
+                        default => $presetVal
+                    };
+
+                    $lines[] = '    ' . $presetKey . ' = ' . $presetVal . ',';
+                }
+
+                $lines[] = '    radio';
+                $lines[] = ')';
+
+                $event->appendLines($lines);
+                break;
+
+            case AudioProcessingMethods::StereoTool:
+                // Stereo Tool processing
+                if (!StereoTool::isReady($station)) {
+                    return;
+                }
+
+                $stereoToolBinary = StereoTool::getBinaryPath();
+
+                $stereoToolConfiguration = $station->getRadioConfigDir()
+                    . DIRECTORY_SEPARATOR . $settings->getStereoToolConfigurationPath();
+                $stereoToolProcess = $stereoToolBinary . ' --silent - - -s ' . $stereoToolConfiguration;
+
+                $stereoToolLicenseKey = $settings->getStereoToolLicenseKey();
+                if (!empty($stereoToolLicenseKey)) {
+                    $stereoToolProcess .= ' -k "' . $stereoToolLicenseKey . '"';
+                }
+
+                $event->appendBlock(
+                    <<<LIQ
+                    # Stereo Tool Pipe
+                    radio = pipe(replay_delay=1.0, process='{$stereoToolProcess}', radio)
+                    LIQ
+                );
+                break;
+
+            case AudioProcessingMethods::None:
+                // Noop
+                break;
+        }
+    }
+
     public static function getDividerString(): string
     {
         return chr(7);
@@ -767,6 +846,10 @@ final class ConfigWriter implements EventSubscriberInterface
                 LS
             );
         }
+
+        if ($settings->isAudioProcessingEnabled() && !$settings->getPostProcessingIncludeLive()) {
+            $this->writePostProcessingSection($event);
+        }
     }
 
     public function writeHarborConfiguration(WriteLiquidsoapConfiguration $event): void
@@ -953,41 +1036,6 @@ final class ConfigWriter implements EventSubscriberInterface
             LIQ
         );
 
-        // NRJ normalization
-        if (AudioProcessingMethods::Liquidsoap === $settings->getAudioProcessingMethodEnum()) {
-            $event->appendBlock(
-                <<<LIQ
-                # Normalization and Compression
-                radio = normalize(target = 0., window = 0.03, gain_min = -16., gain_max = 0., radio)
-                radio = compress.exponential(radio, mu = 1.0)
-                LIQ
-            );
-        }
-
-        // Stereo Tool processing
-        if (
-            AudioProcessingMethods::StereoTool === $settings->getAudioProcessingMethodEnum()
-            && StereoTool::isReady($station)
-        ) {
-            $stereoToolBinary = StereoTool::getBinaryPath();
-
-            $stereoToolConfiguration = $station->getRadioConfigDir()
-                . DIRECTORY_SEPARATOR . $settings->getStereoToolConfigurationPath();
-            $stereoToolProcess = $stereoToolBinary . ' --silent - - -s ' . $stereoToolConfiguration;
-
-            $stereoToolLicenseKey = $settings->getStereoToolLicenseKey();
-            if (!empty($stereoToolLicenseKey)) {
-                $stereoToolProcess .= ' -k "' . $stereoToolLicenseKey . '"';
-            }
-
-            $event->appendBlock(
-                <<<LIQ
-                # Stereo Tool Pipe
-                radio = pipe(replay_delay=1.0, process='{$stereoToolProcess}', radio)
-                LIQ
-            );
-        }
-
         // Replaygain metadata
         if ($settings->useReplayGain()) {
             $event->appendBlock(
@@ -999,12 +1047,23 @@ final class ConfigWriter implements EventSubscriberInterface
             );
         }
 
+        if ($settings->isAudioProcessingEnabled() && $settings->getPostProcessingIncludeLive()) {
+            $this->writePostProcessingSection($event);
+        }
+
         // Write fallback to safety file to ensure infallible source for the broadcast outputs.
         $errorFile = $this->fallbackFile->getFallbackPathForStation($station);
 
         $event->appendBlock(
             <<<LIQ
-            radio = fallback(id="safe_fallback", track_sensitive = false, [radio, single(id="error_jingle", "{$errorFile}")])
+            error_file = single(id="error_jingle", "{$errorFile}") 
+            
+            def tag_error_file(m) =
+                [("is_error_file", "true")]
+            end
+            error_file = metadata.map(tag_error_file, error_file)
+            
+            radio = fallback(id="safe_fallback", track_sensitive = false, [radio, error_file])
             LIQ
         );
 
@@ -1016,25 +1075,27 @@ final class ConfigWriter implements EventSubscriberInterface
             
             def metadata_updated(m) =
                 def f() =
-                    if (m["title"] != !last_title or m["artist"] != !last_artist) then
-                        last_title := m["title"]
-                        last_artist := m["artist"]
-                        
-                        j = json()
-                        
-                        if (m["song_id"] != "") then
-                            j.add("song_id", m["song_id"])
-                            j.add("media_id", m["media_id"])
-                            j.add("playlist_id", m["playlist_id"])
-                        else
-                            j.add("artist", m["artist"])
-                            j.add("title", m["title"])
+                    if (m["is_error_file"] != "true") then
+                        if (m["title"] != !last_title or m["artist"] != !last_artist) then
+                            last_title := m["title"]
+                            last_artist := m["artist"]
+                            
+                            j = json()
+                            
+                            if (m["song_id"] != "") then
+                                j.add("song_id", m["song_id"])
+                                j.add("media_id", m["media_id"])
+                                j.add("playlist_id", m["playlist_id"])
+                            else
+                                j.add("artist", m["artist"])
+                                j.add("title", m["title"])
+                            end
+                            
+                            _ = azuracast_api_call(
+                                "feedback",
+                                json.stringify(j)
+                            )
                         end
-                        
-                        _ = azuracast_api_call(
-                            "feedback",
-                            json.stringify(j)
-                        )
                     end
                 end
                 

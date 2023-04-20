@@ -7,7 +7,7 @@ namespace App\Notification\Check;
 use App\Entity;
 use App\Enums\GlobalPermissions;
 use App\Event\GetNotifications;
-use App\Session\Flash;
+use App\Session\FlashLevels;
 
 final class SyncTaskCheck
 {
@@ -39,7 +39,7 @@ final class SyncTaskCheck
             $notification->body = __(
                 'Routine synchronization is currently disabled. Make sure to re-enable it to resume routine maintenance tasks.'
             );
-            $notification->type = Flash::ERROR;
+            $notification->type = FlashLevels::Error->value;
             // phpcs:enable
 
             $event->addNotification($notification);
@@ -54,7 +54,7 @@ final class SyncTaskCheck
             $notification->body = __(
                 'The routine synchronization task has not run recently. This may indicate an error with your installation.'
             );
-            $notification->type = Flash::ERROR;
+            $notification->type = FlashLevels::Error->value;
 
             $router = $request->getRouter();
 

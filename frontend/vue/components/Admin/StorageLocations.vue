@@ -1,7 +1,14 @@
 <template>
-    <b-card no-body>
+    <section
+        class="card"
+        role="region"
+        aria-labelledby="hdr_storage_locations"
+    >
         <b-card-header header-bg-variant="primary-dark">
-            <h2 class="card-title">
+            <h2
+                id="hdr_storage_locations"
+                class="card-title"
+            >
                 {{ $gettext('Storage Locations') }}
             </h2>
         </b-card-header>
@@ -84,7 +91,7 @@
                 {{ row.item.stations.join(', ') }}
             </template>
         </data-table>
-    </b-card>
+    </section>
 
     <edit-modal
         ref="$editModal"

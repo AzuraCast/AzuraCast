@@ -61,6 +61,14 @@ enum SupportedLocales: string
         return self::stripLocaleEncoding($this);
     }
 
+    /**
+     * @return string The first two characters of the locale (for HTML `lang` attribute).
+     */
+    public function getHtmlLang(): string
+    {
+        return strtolower(substr($this->value, 0, 2));
+    }
+
     public function register(Environment $environment): void
     {
         // Skip translation file reading for default locale.

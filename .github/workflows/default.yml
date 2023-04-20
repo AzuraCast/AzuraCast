@@ -25,12 +25,52 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  build:
-    name: Build and Test
+  test:
+    name: Test Suite
     runs-on: ubuntu-latest
     env:
       APPLICATION_ENV: testing
       NODE_ENV: production
+    steps:
+      - uses: actions/checkout@master
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: intl, xdebug
+          tools: composer:v2, cs2pr
+
+      - name: Cache PHP dependencies
+        uses: actions/cache@v3
+        with:
+          path: vendor
+          key: ${{ runner.OS }}-build-${{ hashFiles('composer.lock') }}
+
+      - name: Run Composer install
+        run: |
+          composer install --no-interaction --ignore-platform-reqs
+
+      - name: Run PHP Linter
+        run: |
+          vendor/bin/parallel-lint . --exclude vendor --checkstyle | cs2pr
+
+      - name: Run PHPStan
+        run: |
+          vendor/bin/phpstan analyze --memory-limit=-1 --error-format=checkstyle | cs2pr
+
+      - name: Run PHP Code Sniffer
+        run: |
+          vendor/bin/phpcs --report=checkstyle | cs2pr
+
+  prepare:
+    name: Prepare Codebase
+    needs: test
+    runs-on: ubuntu-latest
+    env:
+      APPLICATION_ENV: testing
+      NODE_ENV: production
+    if: github.event_name == 'push' || github.event_name == 'schedule'
     steps:
       - uses: actions/checkout@master
 
@@ -53,31 +93,14 @@ jobs:
           rm -rf web/static/webpack_dist
           rm -rf web/static/webpack.json
           rm -rf web/static/assets.json
+          rm -rf translations/*.UTF-8
           chmod a+x bin/console
 
       - name: Run Composer install
         run: |
           composer install --no-interaction --ignore-platform-reqs
 
-      - name: Run PHP Linter
-        run: |
-          vendor/bin/parallel-lint . --exclude vendor --checkstyle | cs2pr
-
-      - name: Run PHPStan
-        run: |
-          vendor/bin/phpstan analyze --memory-limit=-1 --xdebug --error-format=checkstyle | cs2pr
-
-      - name: Run PHP Code Sniffer
-        run: |
-          vendor/bin/phpcs --report=checkstyle | cs2pr
-
-      - name: Clear existing locales.
-        if: github.event_name == 'push' || github.event_name == 'schedule'
-        run: |
-          rm -rf translations/*.UTF-8
-
       - name: Generate new translations from existing code.
-        if: github.event_name == 'push' || github.event_name == 'schedule'
         run: |
           cd frontend
           npm ci
@@ -87,7 +110,6 @@ jobs:
           bin/console locale:generate
 
       - name: Pull latest translations.
-        if: github.event_name == 'push' || github.event_name == 'schedule'
         uses: crowdin/github-action@1.5.3
         with:
           upload_sources: true
@@ -104,7 +126,7 @@ jobs:
       - name: Import locales, build static assets.
         run: |
           bin/console locale:import
-
+          
           cd frontend
           npm run import-locales
           npm run build
@@ -112,78 +134,45 @@ jobs:
       - name: Build OpenAPI Docs
         run: bin/console azuracast:api:docs
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
-
-      - name: Build Web Image
-        uses: docker/build-push-action@v3
-        with:
-          context: .
-          load: true
-          tags: ghcr.io/azuracast/azuracast:latest
-          cache-from: type=registry,ref=ghcr.io/azuracast/azuracast:buildcache
-
-      - name: Set up functional test environment.
+      - name: Write .gitinfo File
         run: |
-          cp sample.env .env
-          cp azuracast.sample.env azuracast.env
-          cp docker-compose.sample.yml docker-compose.yml
-          cp docker-compose.testing.yml docker-compose.override.yml
-
-      - name: Run functional test suite.
-        run: |
-          chmod 777 tests/_output/
-          chmod 777 tests/_support/_generated
-          docker-compose run --rm web azuracast_ci
-
-      - name: Stop all running containers.
-        run: |
-          docker-compose down
-
-      - name: Echo test output directory
-        if: failure()
-        run: |
-          docker-compose logs
-          cat tests/_output/*
+          bash util/write_git_info.sh
+          chmod 777 .gitinfo
 
       - name: Upload built static assets and translations
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v2
         with:
           name: assets
           if-no-files-found: error
           path: |
+            .gitinfo
             translations
             web/static/dist
             web/static/webpack_dist
             web/static/webpack.json
             web/static/assets.json
             web/static/api/openapi.yml
-
-  publish:
-    name: Publish
-    needs: build
+  
+  
+  build:
+    name: Build & Publish
+    needs: prepare
+    permissions:
+      contents: read
+      id-token: write
+      packages: write
     runs-on: ubuntu-latest
     if: github.event_name == 'push' || github.event_name == 'schedule'
     steps:
       - uses: actions/checkout@master
 
-      - name: Reduce Git repository size.
-        run: |
-          git gc --prune=now --aggressive
-
       - name: Download built static assets from previous step
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v2
         with:
           name: assets
 
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v2
-        id: qemu
-        with:
-          platforms: arm64
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
+      - name: Set up Depot
+        uses: depot/setup-action@v1
 
       - name: Login to DockerHub
         uses: docker/login-action@v2
@@ -211,12 +200,11 @@ jobs:
             type=semver,pattern={{version}}
 
       - name: Publish to Docker Hub
-        uses: docker/build-push-action@v3
+        uses: depot/build-push-action@v1
         with:
+          project: qvjwqlcn6p
           context: .
           push: true
           platforms: linux/amd64,linux/arm64
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          cache-from: type=registry,ref=ghcr.io/azuracast/azuracast:buildcache
-          cache-to: type=registry,ref=ghcr.io/azuracast/azuracast:buildcache,mode=max

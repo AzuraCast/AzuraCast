@@ -44,8 +44,7 @@ final class GetStereoToolConfigurationAction
         $stereoToolConfigurationPath = $station->getBackendConfig()->getStereoToolConfigurationPath();
 
         if (!empty($stereoToolConfigurationPath)) {
-            $fsConfig = (new StationFilesystems($station))->getConfigFilesystem();
-
+            $fsConfig = StationFilesystems::buildConfigFilesystem($station);
             if ($fsConfig->fileExists($stereoToolConfigurationPath)) {
                 return $response->streamFilesystemFile(
                     $fsConfig,

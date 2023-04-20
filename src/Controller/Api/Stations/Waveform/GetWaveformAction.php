@@ -15,6 +15,7 @@ final class GetWaveformAction
 {
     public function __construct(
         private readonly StationMediaRepository $mediaRepo,
+        private readonly StationFilesystems $stationFilesystems
     ) {
     }
 
@@ -28,7 +29,7 @@ final class GetWaveformAction
 
         $station = $request->getStation();
 
-        $fsMedia = (new StationFilesystems($station))->getMediaFilesystem();
+        $fsMedia = $this->stationFilesystems->getMediaFilesystem($station);
 
         // If a timestamp delimiter is added, strip it automatically.
         $media_id = explode('-', $media_id, 2)[0];

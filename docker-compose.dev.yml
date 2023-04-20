@@ -6,6 +6,7 @@ services:
       - "127.0.0.1:3306:3306" # MariaDB
       - "127.0.0.1:6025:6025" # Centrifugo
       - "127.0.0.1:6379:6379" # Redis
+      - "127.0.0.1:6070:6070" # Meilisearch
     volumes:
       - $PWD/util/local_ssl/default.crt:/var/azuracast/acme/ssl.crt:ro
       - $PWD/util/local_ssl/default.key:/var/azuracast/acme/ssl.key:ro

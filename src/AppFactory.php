@@ -121,22 +121,33 @@ final class AppFactory
             throw new Exception\BootstrapException('No base directory specified!');
         }
 
-        $environment[Environment::IS_DOCKER] = file_exists(
-            dirname($environment[Environment::BASE_DIR]) . '/.docker'
-        );
+        $baseDir = $environment[Environment::BASE_DIR];
+        $parentBaseDir = dirname($baseDir);
 
-        $environment[Environment::TEMP_DIR] ??= dirname($environment[Environment::BASE_DIR]) . '/www_tmp';
-        $environment[Environment::CONFIG_DIR] ??= $environment[Environment::BASE_DIR] . '/config';
-        $environment[Environment::VIEWS_DIR] ??= $environment[Environment::BASE_DIR] . '/templates';
-        $environment[Environment::UPLOADS_DIR] ??= dirname($environment[Environment::BASE_DIR]) . '/uploads';
+        $environment[Environment::IS_DOCKER] = file_exists($parentBaseDir . '/.docker');
 
-        if (file_exists($environment[Environment::BASE_DIR] . '/env.ini')) {
-            $envIni = parse_ini_file($environment[Environment::BASE_DIR] . '/env.ini');
-            if (false !== $envIni) {
-                $_ENV = array_merge($_ENV, $envIni);
+        $environment[Environment::TEMP_DIR] ??= $parentBaseDir . '/www_tmp';
+        $environment[Environment::CONFIG_DIR] ??= $baseDir . '/config';
+        $environment[Environment::VIEWS_DIR] ??= $baseDir . '/templates';
+        $environment[Environment::UPLOADS_DIR] ??= $parentBaseDir . '/uploads';
+
+        $_ENV = getenv();
+
+        if (!$environment[Environment::IS_DOCKER]) {
+            $envPaths = [
+                $parentBaseDir . '/env.ini',
+                $baseDir . '/env.ini',
+            ];
+
+            foreach ($envPaths as $envPath) {
+                if (file_exists($envPath)) {
+                    $envIni = parse_ini_file($envPath);
+                    if (false !== $envIni) {
+                        $_ENV = array_merge($_ENV, $envIni);
+                        break;
+                    }
+                }
             }
-        } else {
-            $_ENV = getenv();
         }
 
         $environment = array_merge(array_filter($_ENV), $environment);

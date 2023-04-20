@@ -13,6 +13,11 @@ use Psr\Http\Message\ResponseInterface;
 
 final class MakeDirectoryAction
 {
+    public function __construct(
+        private readonly StationFilesystems $stationFilesystems
+    ) {
+    }
+
     public function __invoke(
         ServerRequest $request,
         Response $response,
@@ -28,7 +33,7 @@ final class MakeDirectoryAction
 
         $station = $request->getStation();
 
-        $fsMedia = (new StationFilesystems($station))->getMediaFilesystem();
+        $fsMedia = $this->stationFilesystems->getMediaFilesystem($station);
 
         $newDir = $currentDir . '/' . $newDirName;
 

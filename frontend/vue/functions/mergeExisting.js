@@ -1,10 +1,14 @@
 import isObject from "./isObject.js";
+import {toRaw} from "vue";
 
 /*
  * A "deep" merge that only merges items from the source into the destination that already exist in the destination.
  * Useful for merging in form values with API returns.
  */
-export default function mergeExisting(dest, source) {
+export default function mergeExisting(destRaw, sourceRaw) {
+    const dest = toRaw(destRaw);
+    const source = toRaw(sourceRaw);
+
     let ret = {};
     for (const destKey in dest) {
         if (destKey in source) {
@@ -20,5 +24,6 @@ export default function mergeExisting(dest, source) {
             ret[destKey] = dest[destKey];
         }
     }
+
     return ret;
 }

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Api\Stations\Streamers;
 
 use App\Controller\Api\AbstractApiCrudController;
+use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Entity;
 use App\Flysystem\StationFilesystems;
 use App\Http\Response;
@@ -12,6 +13,8 @@ use App\Http\ServerRequest;
 use App\Paginator;
 use App\Utilities\File;
 use Psr\Http\Message\ResponseInterface;
+use Symfony\Component\Serializer\Serializer;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * @extends AbstractApiCrudController<Entity\StationStreamerBroadcast>
@@ -19,6 +22,15 @@ use Psr\Http\Message\ResponseInterface;
 final class BroadcastsController extends AbstractApiCrudController
 {
     protected string $entityClass = Entity\StationStreamerBroadcast::class;
+
+    public function __construct(
+        private readonly StationFilesystems $stationFilesystems,
+        ReloadableEntityManagerInterface $em,
+        Serializer $serializer,
+        ValidatorInterface $validator
+    ) {
+        parent::__construct($em, $serializer, $validator);
+    }
 
     public function listAction(
         ServerRequest $request,
@@ -61,7 +73,7 @@ final class BroadcastsController extends AbstractApiCrudController
 
         $router = $request->getRouter();
         $isInternal = ('true' === $request->getParam('internal', 'false'));
-        $fsRecordings = (new StationFilesystems($station))->getRecordingsFilesystem();
+        $fsRecordings = $this->stationFilesystems->getRecordingsFilesystem($station);
 
         $paginator->setPostprocessor(
             function ($row) use ($id, $router, $isInternal, $fsRecordings) {
@@ -141,7 +153,7 @@ final class BroadcastsController extends AbstractApiCrudController
 
         $filename = basename($recordingPath);
 
-        $fsRecordings = (new StationFilesystems($station))->getRecordingsFilesystem();
+        $fsRecordings = $this->stationFilesystems->getRecordingsFilesystem($station);
 
         return $response->streamFilesystemFile(
             $fsRecordings,
@@ -168,7 +180,7 @@ final class BroadcastsController extends AbstractApiCrudController
         $recordingPath = $broadcast->getRecordingPath();
 
         if (!empty($recordingPath)) {
-            $fsRecordings = (new StationFilesystems($station))->getRecordingsFilesystem();
+            $fsRecordings = $this->stationFilesystems->getRecordingsFilesystem($station);
             $fsRecordings->delete($recordingPath);
         }
 

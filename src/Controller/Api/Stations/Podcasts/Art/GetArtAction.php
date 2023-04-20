@@ -41,6 +41,7 @@ final class GetArtAction
 {
     public function __construct(
         private readonly Entity\Repository\StationRepository $stationRepo,
+        private readonly StationFilesystems $stationFilesystems,
     ) {
     }
 
@@ -57,7 +58,7 @@ final class GetArtAction
 
         $podcastPath = Entity\Podcast::getArtPath($podcast_id);
 
-        $fsPodcasts = (new StationFilesystems($station))->getPodcastsFilesystem();
+        $fsPodcasts = $this->stationFilesystems->getPodcastsFilesystem($station);
 
         if ($fsPodcasts->fileExists($podcastPath)) {
             return $response->withCacheLifetime(Response::CACHE_ONE_YEAR)

@@ -13,6 +13,11 @@ use Psr\Http\Message\ResponseInterface;
 
 final class ListDirectoriesAction
 {
+    public function __construct(
+        private readonly StationFilesystems $stationFilesystems
+    ) {
+    }
+
     public function __invoke(
         ServerRequest $request,
         Response $response,
@@ -22,7 +27,7 @@ final class ListDirectoriesAction
 
         $currentDir = $request->getParam('currentDirectory', '');
 
-        $fsMedia = (new StationFilesystems($station))->getMediaFilesystem();
+        $fsMedia = $this->stationFilesystems->getMediaFilesystem($station);
 
         $protectedPaths = [
             Entity\StationMedia::DIR_ALBUM_ART,

@@ -1,44 +1,58 @@
 <template>
-    <div class="card mb-3">
-        <div class="card-header bg-primary-dark">
-            <h2 class="card-title">
-                {{ $gettext('System Logs') }}
-            </h2>
-        </div>
-
-        <log-list
-            :url="systemLogsUrl"
-            @view="viewLog"
-        />
-    </div>
-
-    <div
-        v-if="stationLogs.length > 0"
-        class="card"
-    >
-        <div class="card-header bg-primary-dark">
-            <h2 class="card-title">
-                {{ $gettext('Logs by Station') }}
-            </h2>
-        </div>
-
-        <b-tabs
-            pills
-            lazy
-            nav-class="card-header-pills"
-            nav-wrapper-class="card-header"
+    <div class="row-of-cards">
+        <section
+            class="card"
+            role="region"
+            aria-labelledby="hdr_system_logs"
         >
-            <b-tab
-                v-for="row in stationLogs"
-                :key="row.id"
-                :title="row.name"
+            <div class="card-header bg-primary-dark">
+                <h2
+                    id="hdr_system_logs"
+                    class="card-title"
+                >
+                    {{ $gettext('System Logs') }}
+                </h2>
+            </div>
+
+            <log-list
+                :url="systemLogsUrl"
+                @view="viewLog"
+            />
+        </section>
+
+        <section
+            v-if="stationLogs.length > 0"
+            class="card"
+            role="region"
+            aria-labelledby="hdr_logs_by_station"
+        >
+            <div class="card-header bg-primary-dark">
+                <h2
+                    id="hdr_logs_by_station"
+                    class="card-title"
+                >
+                    {{ $gettext('Logs by Station') }}
+                </h2>
+            </div>
+
+            <b-tabs
+                pills
+                lazy
+                nav-class="card-header-pills"
+                nav-wrapper-class="card-header"
             >
-                <log-list
-                    :url="row.url"
-                    @view="viewLog"
-                />
-            </b-tab>
-        </b-tabs>
+                <b-tab
+                    v-for="row in stationLogs"
+                    :key="row.id"
+                    :title="row.name"
+                >
+                    <log-list
+                        :url="row.url"
+                        @view="viewLog"
+                    />
+                </b-tab>
+            </b-tabs>
+        </section>
     </div>
 
     <streaming-log-modal ref="$modal" />

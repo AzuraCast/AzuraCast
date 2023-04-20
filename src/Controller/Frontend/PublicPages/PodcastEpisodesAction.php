@@ -11,7 +11,6 @@ use App\Exception\PodcastNotFoundException;
 use App\Exception\StationNotFoundException;
 use App\Http\Response;
 use App\Http\ServerRequest;
-use App\Session\Flash;
 use Psr\Http\Message\ResponseInterface;
 
 final class PodcastEpisodesAction
@@ -65,7 +64,7 @@ final class PodcastEpisodesAction
         );
 
         if (count($publishedEpisodes) === 0) {
-            $request->getFlash()->addMessage(__('No episodes found.'), Flash::ERROR);
+            $request->getFlash()->error(__('No episodes found.'));
             return $response->withRedirect($podcastsLink);
         }
 

@@ -28,6 +28,7 @@ return function (App\Event\BuildConsoleCommands $event) {
         'azuracast:setup' => Command\SetupCommand::class,
         'azuracast:radio:restart' => Command\RestartRadioCommand::class,
         'azuracast:sync:nowplaying' => Command\Sync\NowPlayingCommand::class,
+        'azuracast:sync:nowplaying:station' => Command\Sync\NowPlayingPerStationCommand::class,
         'azuracast:sync:run' => Command\Sync\RunnerCommand::class,
         'azuracast:sync:task' => Command\Sync\SingleTaskCommand::class,
         'azuracast:media:reprocess' => Command\ReprocessMediaCommand::class,

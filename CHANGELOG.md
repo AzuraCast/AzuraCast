@@ -11,6 +11,26 @@ release channel, you can take advantage of these new features and fixes.
 
 ---
 
+# AzuraCast 0.18.1 (Apr 21, 2023)
+
+This is an incremental bug-fix release to apply fixes for an issue identified after the release of 0.18.0.
+
+## New Features/Changes
+
+- None
+
+## Code Quality/Technical Changes
+
+- Added improved HTML escaping at multiple points across the application. This is a precautionary measure in the wake of
+  the CVE announced (and fixed in version 0.18.0). There are no known exploits targeting the sections of code remedied,
+  but this helps ensure we are better insulated against such vulnerabilities moving forward.
+
+## Bug Fixes
+
+- Fixed a bug in newer builds of Icecast-KH that caused the service to fail to start up intermittently.
+
+---
+
 # AzuraCast 0.18.0 (Apr 19, 2023)
 
 This release includes numerous important new features and a vulnerability fix that is particularly important for

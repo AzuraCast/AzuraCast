@@ -51,10 +51,11 @@ final class ChartsAction extends AbstractReportAction
         $daily_chart->type = 'line';
         $daily_chart->fill = false;
 
-        $daily_alt = [
-            '<p>' . $daily_chart->label . '</p>',
-            '<dl>',
+        $dailyAlt = [
+            'label' => $daily_chart->label,
+            'values' => [],
         ];
+
         $daily_averages = [];
 
         $days_of_week = [];
@@ -70,29 +71,35 @@ final class ChartsAction extends AbstractReportAction
             $daily_averages[] = $avg_row;
 
             $row_date = $statTime->format('Y-m-d');
-            $daily_alt[] = '<dt><time data-original="' . $avg_row->x . '">' . $row_date . '</time></dt>';
-            $daily_alt[] = '<dd>' . $avg_row->y . ' ' . __('Listeners') . '</dd>';
+
+            $dailyAlt['values'][] = [
+                'label' => $row_date,
+                'type' => 'time',
+                'original' => $avg_row->x,
+                'value' => $avg_row->y . ' ' . __('Listeners'),
+            ];
 
             $day_of_week = (int)$statTime->format('N') - 1;
             $days_of_week[$day_of_week][] = $stat['number_avg'];
         }
 
-        $daily_alt[] = '</dl>';
         $daily_chart->data = $daily_averages;
 
         $stats['daily'] = [
             'metrics' => [
                 $daily_chart,
             ],
-            'alt' => implode('', $daily_alt),
+            'alt' => [
+                $dailyAlt,
+            ],
         ];
 
         $day_of_week_chart = new stdClass();
         $day_of_week_chart->label = __('Listeners by Day of Week');
 
-        $day_of_week_alt = [
-            '<p>' . $day_of_week_chart->label . '</p>',
-            '<dl>',
+        $dayOfWeekAlt = [
+            'label' => $day_of_week_chart->label,
+            'values' => [],
         ];
 
         $days_of_week_names = [
@@ -113,11 +120,13 @@ final class ChartsAction extends AbstractReportAction
             $stat_value = round(array_sum($day_totals) / count($day_totals), 2);
             $day_of_week_stats[] = $stat_value;
 
-            $day_of_week_alt[] = '<dt>' . $day_name . '</dt>';
-            $day_of_week_alt[] = '<dd>' . $stat_value . ' ' . __('Listeners') . '</dd>';
+            $dayOfWeekAlt['values'][] = [
+                'label' => $day_name,
+                'type' => 'string',
+                'value' => $stat_value . ' ' . __('Listeners'),
+            ];
         }
 
-        $day_of_week_alt[] = '</dl>';
         $day_of_week_chart->data = $day_of_week_stats;
 
         $stats['day_of_week'] = [
@@ -125,7 +134,9 @@ final class ChartsAction extends AbstractReportAction
             'metrics' => [
                 $day_of_week_chart,
             ],
-            'alt' => implode('', $day_of_week_alt),
+            'alt' => [
+                $dayOfWeekAlt,
+            ],
         ];
 
         // Statistics by hour.
@@ -151,9 +162,10 @@ final class ChartsAction extends AbstractReportAction
         $hourly_chart->label = __('Listeners by Hour');
 
         $hourly_rows = [];
-        $hourly_alt = [
-            '<p>' . $hourly_chart->label . '</p>',
-            '<dl>',
+
+        $hourlyAlt = [
+            'label' => $hourly_chart->label,
+            'values' => [],
         ];
 
         for ($i = 0; $i < 24; $i++) {
@@ -163,11 +175,13 @@ final class ChartsAction extends AbstractReportAction
             $stat_value = round(array_sum($totals) / count($totals), 2);
             $hourly_rows[] = $stat_value;
 
-            $hourly_alt[] = '<dt>' . $i . ':00</dt>';
-            $hourly_alt[] = '<dd>' . $stat_value . ' ' . __('Listeners') . '</dd>';
+            $hourlyAlt['values'][] = [
+                'label' => $i . ':00',
+                'type' => 'string',
+                'value' => $stat_value . ' ' . __('Listeners'),
+            ];
         }
 
-        $hourly_alt[] = '</dl>';
         $hourly_chart->data = $hourly_rows;
 
         $stats['hourly'] = [
@@ -175,7 +189,9 @@ final class ChartsAction extends AbstractReportAction
             'metrics' => [
                 $hourly_chart,
             ],
-            'alt' => implode('', $hourly_alt),
+            'alt' => [
+                $hourlyAlt,
+            ],
         ];
 
         return $response->withJson($stats);

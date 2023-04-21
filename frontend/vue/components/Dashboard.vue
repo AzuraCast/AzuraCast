@@ -76,10 +76,9 @@
                     </div>
                     <div class="flex-fill">
                         <h4>{{ notification.title }}</h4>
-                        <p
-                            class="card-text"
-                            v-html="notification.body"
-                        />
+                        <p class="card-text">
+                            {{ notification.body }}
+                        </p>
                     </div>
                     <div
                         v-if="notification.actionLabel && notification.actionUrl"
@@ -154,9 +153,8 @@
                             <time-series-chart
                                 style="width: 100%;"
                                 :data="chartsData.average.metrics"
-                            >
-                                <span v-html="chartsData.average.alt" />
-                            </time-series-chart>
+                                :alt="chartsData.average.alt"
+                            />
                         </b-tab>
                         <b-tab>
                             <template #title>
@@ -166,9 +164,8 @@
                             <time-series-chart
                                 style="width: 100%;"
                                 :data="chartsData.unique.metrics"
-                            >
-                                <span v-html="chartsData.unique.alt" />
-                            </time-series-chart>
+                                :alt="chartsData.unique.alt"
+                            />
                         </b-tab>
                     </b-tabs>
                 </b-overlay>

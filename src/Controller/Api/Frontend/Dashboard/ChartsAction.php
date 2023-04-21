@@ -137,11 +137,11 @@ final class ChartsAction
             $stationStats = [
                 'average' => [
                     'metrics' => [],
-                    'alt' => '',
+                    'alt' => [],
                 ],
                 'unique' => [
                     'metrics' => [],
-                    'alt' => '',
+                    'alt' => [],
                 ],
             ];
 
@@ -158,8 +158,10 @@ final class ChartsAction
                         'data' => [],
                     ];
 
-                    $stationStats[$statKey]['alt'] .= '<p>' . $stationName . '</p>';
-                    $stationStats[$statKey]['alt'] .= '<dl>';
+                    $stationAlt = [
+                        'label' => $stationName,
+                        'values' => [],
+                    ];
 
                     ksort($statRows[$stationId]);
 
@@ -169,15 +171,15 @@ final class ChartsAction
                             'y' => $value,
                         ];
 
-                        $stationStats[$statKey]['alt'] .= sprintf(
-                            '<dt><time data-original="%s">%s</time></dt>',
-                            $jsTimestamp,
-                            $sortableKey
-                        );
-                        $stationStats[$statKey]['alt'] .= '<dd>' . $value . ' ' . __('Listeners') . '</dd>';
+                        $stationAlt['values'][] = [
+                            'label' => $sortableKey,
+                            'type' => 'time',
+                            'original' => $jsTimestamp,
+                            'value' => $value . ' ' . __('Listeners'),
+                        ];
                     }
 
-                    $stationStats[$statKey]['alt'] .= '</dl>';
+                    $stationStats[$statKey]['alt'][] = $stationAlt;
                     $stationStats[$statKey]['metrics'][] = $series;
                 }
             }

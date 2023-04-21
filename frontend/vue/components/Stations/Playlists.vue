@@ -171,8 +171,41 @@
                             </span>
                         </div>
                     </template>
-                    <template #cell(scheduling)="row">
-                        <span v-html="formatType(row.item)" />
+                    <template #cell(scheduling)="{ item }">
+                        <template v-if="!item.is_enabled">
+                            {{ $gettext('Disabled') }}
+                        </template>
+                        <template v-else-if="item.type === 'default'">
+                            {{ $gettext('General Rotation') }}<br>
+                            {{ $gettext('Weight') }}: {{ item.weight }}
+                        </template>
+                        <template v-else-if="item.type === 'once_per_x_songs'">
+                            {{
+                                $gettext(
+                                    'Once per %{songs} Songs',
+                                    {songs: item.play_per_songs}
+                                )
+                            }}
+                        </template>
+                        <template v-else-if="item.type === 'once_per_x_minutes'">
+                            {{
+                                $gettext(
+                                    'Once per %{minutes} Minutes',
+                                    {minutes: item.play_per_minutes}
+                                )
+                            }}
+                        </template>
+                        <template v-else-if="item.type === 'once_per_hour'">
+                            {{
+                                $gettext(
+                                    'Once per Hour (at %{minute})',
+                                    {minute: item.play_per_hour_minute}
+                                )
+                            }}
+                        </template>
+                        <template v-else>
+                            {{ $gettext('Custom') }}
+                        </template>
                     </template>
                     <template #cell(num_songs)="row">
                         <template v-if="row.item.source === 'songs'">
@@ -182,7 +215,7 @@
                             ({{ formatLength(row.item.total_length) }})
                         </template>
                         <template v-else>
-&nbsp;
+                            &nbsp;
                         </template>
                     </template>
                 </data-table>
@@ -295,38 +328,6 @@ const formatLength = (length) => humanizeDuration(
         fallbacks: ['en']
     }
 );
-
-const formatType = (record) => {
-    if (!record.is_enabled) {
-        return $gettext('Disabled');
-    }
-
-    switch (record.type) {
-        case 'default':
-            return $gettext('General Rotation') + '<br>' + $gettext('Weight') + ': ' + record.weight;
-
-        case 'once_per_x_songs':
-            return $gettext(
-                'Once per %{songs} Songs',
-                {songs: record.play_per_songs}
-            );
-
-        case 'once_per_x_minutes':
-            return $gettext(
-                'Once per %{minutes} Minutes',
-                {minutes: record.play_per_minutes}
-            );
-
-        case 'once_per_hour':
-            return $gettext(
-                'Once per Hour (at %{minute})',
-                {minute: record.play_per_hour_minute}
-            );
-
-        default:
-            return $gettext('Custom');
-    }
-};
 
 const $datatable = ref(); // Template Ref
 const $schedule = ref(); // Template Ref

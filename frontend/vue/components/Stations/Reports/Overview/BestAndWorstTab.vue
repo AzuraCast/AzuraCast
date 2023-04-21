@@ -50,7 +50,7 @@
                                         <small>{{ row.stat_start }} to {{ row.stat_end }}</small>
                                     </td>
                                     <td>
-                                        <span v-html="getSongText(row.song)" />
+                                        <song-text :song="row.song" />
                                     </td>
                                 </tr>
                             </tbody>
@@ -93,7 +93,7 @@
                                         <small>{{ row.stat_start }} to {{ row.stat_end }}</small>
                                     </td>
                                     <td>
-                                        <span v-html="getSongText(row.song)" />
+                                        <song-text :song="row.song" />
                                     </td>
                                 </tr>
                             </tbody>
@@ -134,7 +134,7 @@
                                         {{ row.num_plays }}
                                     </td>
                                     <td>
-                                        <span v-html="getSongText(row.song)" />
+                                        <song-text :song="row.song" />
                                     </td>
                                 </tr>
                             </tbody>
@@ -152,6 +152,7 @@ import {useMounted} from "@vueuse/core";
 import {onMounted, ref, shallowRef, toRef, watch} from "vue";
 import {DateTime} from "luxon";
 import {useAxios} from "~/vendor/axios";
+import SongText from "~/components/Stations/Reports/Overview/SongText.vue";
 
 const props = defineProps({
     dateRange: {
@@ -200,12 +201,4 @@ watch(dateRange, () => {
 onMounted(() => {
     relist();
 });
-
-const getSongText = (song) => {
-    if (song.title !== '') {
-        return '<b>' + song.title + '</b><br>' + song.artist;
-    }
-
-    return song.text;
-};
 </script>

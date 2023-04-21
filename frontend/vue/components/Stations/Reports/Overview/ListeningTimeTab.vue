@@ -20,10 +20,9 @@
                         style="width: 100%;"
                         :data="stats.chart.datasets"
                         :labels="stats.chart.labels"
+                        :alt="stats.chart.alt"
                         :aspect-ratio="4"
-                    >
-                        <span v-html="stats.chart.alt" />
-                    </pie-chart>
+                    />
                 </fieldset>
             </div>
 
@@ -66,7 +65,7 @@ const stats = shallowRef({
     chart: {
         labels: [],
         datasets: [],
-        alt: ''
+        alt: []
     }
 });
 

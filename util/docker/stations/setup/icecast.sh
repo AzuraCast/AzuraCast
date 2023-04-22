@@ -14,7 +14,7 @@ cd /bd_build/stations/icecast_build
 # tar -xvzf icecast.tar.gz --strip-components=1
 
 git clone https://github.com/karlheyes/icecast-kh.git .
-git checkout f4084d99c5456ce73f6d46a7b071d189611bcc77
+git checkout b28cc11a7fd4809cd501fe79a77b1b6bbb1fbb71
 
 ./configure
 make

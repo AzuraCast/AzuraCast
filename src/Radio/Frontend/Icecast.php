@@ -14,6 +14,7 @@ use GuzzleHttp\Psr7\Uri;
 use NowPlaying\Result\Result;
 use Psr\Http\Message\UriInterface;
 use Supervisor\Exception\SupervisorException as SupervisorLibException;
+use Symfony\Component\Filesystem\Path;
 
 final class Icecast extends AbstractFrontend
 {
@@ -205,8 +206,11 @@ final class Icecast extends AbstractFrontend
 
             if (!empty($mount_row->getIntroPath())) {
                 $introPath = $mount_row->getIntroPath();
-                // The intro path is appended to webroot, hence the 5 ../es. Amazingly, this works!
-                $mount['intro'] = '../../../../../' . $station->getRadioConfigDir() . '/' . $introPath;
+                // The intro path is appended to webroot, so the path should be relative to it.
+                $mount['intro'] = Path::makeRelative(
+                    $station->getRadioConfigDir() . '/' . $introPath,
+                    '/usr/local/share/icecast/web'
+                );
             }
 
             if (!empty($mount_row->getFallbackMount())) {

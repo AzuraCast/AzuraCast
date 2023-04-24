@@ -102,7 +102,9 @@ final class ScheduleAction
             $events = $cacheItem->get();
         } else {
             if (!empty($queryParams['now'])) {
-                $now = CarbonImmutable::parse($queryParams['now'], $tz);
+                $now = CarbonImmutable::parse($queryParams['now'], $tz)
+                    ->shiftTimezone($tz);
+
                 $cacheKey = 'api_station_' . $station->getId() . '_schedule_' . $now->format('Ymd_gia');
             } else {
                 $now = CarbonImmutable::now($tz);

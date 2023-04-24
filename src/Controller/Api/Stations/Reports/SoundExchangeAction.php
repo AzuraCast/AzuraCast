@@ -32,16 +32,24 @@ final class SoundExchangeAction
         $station = $request->getStation();
         $tzObject = $station->getTimezoneObject();
 
-        $defaultStartDate = CarbonImmutable::parse('first day of last month', $tzObject)->format('Y-m-d');
-        $defaultEndDate = CarbonImmutable::parse('last day of last month', $tzObject)->format('Y-m-d');
+        $defaultStartDate = CarbonImmutable::parse('first day of last month', $tzObject)
+            ->shiftTimezone($tzObject)
+            ->format('Y-m-d');
+
+        $defaultEndDate = CarbonImmutable::parse('last day of last month', $tzObject)
+            ->shiftTimezone($tzObject)
+            ->format('Y-m-d');
 
         $data = $request->getParams();
 
         $data['start_date'] ??= $defaultStartDate;
         $data['end_date'] ??= $defaultEndDate;
 
-        $startDate = CarbonImmutable::parse($data['start_date'] . ' 00:00:00', $tzObject);
-        $endDate = CarbonImmutable::parse($data['end_date'] . ' 23:59:59', $tzObject);
+        $startDate = CarbonImmutable::parse($data['start_date'] . ' 00:00:00', $tzObject)
+            ->shiftTimezone($tzObject);
+
+        $endDate = CarbonImmutable::parse($data['end_date'] . ' 23:59:59', $tzObject)
+            ->shiftTimezone($tzObject);
 
         $fetchIsrc = 'true' === ($data['fetch_isrc'] ?? 'false');
 

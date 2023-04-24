@@ -67,7 +67,8 @@ use OpenApi\Attributes as OA;
         )
     ),
     OA\Parameter(
-        name: "StationIdRequired",
+        parameter: "StationIdRequired",
+        name: "station_id",
         in: "path",
         required: true,
         schema: new OA\Schema(

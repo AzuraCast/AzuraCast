@@ -19,8 +19,8 @@ use Psr\Http\Message\ResponseInterface;
 
 #[
     OA\Get(
-        path: '/admin/cpu/stats',
-        operationId: 'getCpuStats',
+        path: '/admin/server/stats',
+        operationId: 'getServerStats',
         description: 'Return a list of all CPU usage stats.',
         security: OpenApi::API_KEY_SECURITY,
         tags: ['Administration: CPU stats'],

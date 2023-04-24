@@ -14,13 +14,7 @@ enum StreamFormats: string
 
     public function getExtension(): string
     {
-        return match ($this) {
-            self::Aac => 'mp4',
-            self::Ogg => 'ogg',
-            self::Opus => 'opus',
-            self::Flac => 'flac',
-            default => 'mp3',
-        };
+        return $this->value;
     }
 
     public function formatBitrate(?int $bitrate): string

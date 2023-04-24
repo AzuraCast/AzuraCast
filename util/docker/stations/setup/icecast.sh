@@ -29,7 +29,7 @@ cd /bd_build/stations/icecast_customizations
 
 # git clone https://github.com/AzuraCast/icecast-kh-custom-files.git .
 
-curl -fsSL https://github.com/AzuraCast/icecast-kh-custom-files/archive/refs/tags/2023-01-21.tar.gz \
+curl -fsSL https://github.com/AzuraCast/icecast-kh-custom-files/archive/refs/tags/2023-04-23.tar.gz \
   -o custom-files.tar.gz
 tar -xvzf custom-files.tar.gz --strip-components=1
 

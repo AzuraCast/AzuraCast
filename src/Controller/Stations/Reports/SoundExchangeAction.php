@@ -19,11 +19,9 @@ final class SoundExchangeAction
         $tzObject = $request->getStation()->getTimezoneObject();
 
         $defaultStartDate = CarbonImmutable::parse('first day of last month', $tzObject)
-            ->shiftTimezone($tzObject)
             ->format('Y-m-d');
 
         $defaultEndDate = CarbonImmutable::parse('last day of last month', $tzObject)
-            ->shiftTimezone($tzObject)
             ->format('Y-m-d');
 
         $router = $request->getRouter();

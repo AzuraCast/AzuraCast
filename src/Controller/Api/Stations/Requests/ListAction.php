@@ -124,7 +124,7 @@ final class ListAction extends AbstractSearchableListAction
 
             /** @var StationPlaylist $playlist */
             foreach ($playlists as $playlist) {
-                if ($this->scheduler->isPlaylistScheduledToPlayNow($playlist, $now)) {
+                if ($this->scheduler->isPlaylistScheduledToPlayNow($playlist, $now, true)) {
                     $ids[] = $playlist->getIdRequired();
                 }
             }

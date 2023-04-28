@@ -133,6 +133,7 @@ const {form, v$, ifValid} = useVuelidateOnForm(
 
         always_use_ssl: {},
         api_access_control: {},
+        ip_source: {},
 
         check_for_updates: {},
         acme_email: {},
@@ -150,13 +151,14 @@ const {form, v$, ifValid} = useVuelidateOnForm(
         use_external_album_art_in_apis: {},
         use_external_album_art_when_processing_media: {},
         last_fm_api_key: {},
+
         $validationGroups: {
             generalTab: [
                 'base_url', 'instance_name', 'prefer_browser_url', 'use_radio_proxy',
                 'history_keep_days', 'enable_static_nowplaying', 'enable_advanced_features'
             ],
             securityPrivacyTab: [
-                'analytics', 'always_use_ssl', 'api_access_control'
+                'analytics', 'always_use_ssl', 'ip_source', 'api_access_control'
             ],
             servicesTab: [
                 'check_for_updates',
@@ -179,6 +181,7 @@ const {form, v$, ifValid} = useVuelidateOnForm(
         enable_advanced_features: true,
         analytics: null,
         always_use_ssl: false,
+        ip_source: 'local',
         api_access_control: '*',
         check_for_updates: 1,
         acme_email: '',

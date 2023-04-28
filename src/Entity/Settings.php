@@ -14,6 +14,7 @@ use App\Utilities\Urls;
 use Doctrine\ORM\Mapping as ORM;
 use InvalidArgumentException;
 use OpenApi\Attributes as OA;
+use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\UriInterface;
 use RuntimeException;
 use Stringable;
@@ -1057,6 +1058,37 @@ class Settings implements Stringable
         }
 
         $this->acme_domains = $acme_domains;
+    }
+
+    #[
+        OA\Property(description: "IP Address Source"),
+        ORM\Column(length: 50, nullable: true),
+        Groups(self::GROUP_GENERAL)
+    ]
+    protected ?string $ip_source = null;
+
+    public function getIpSource(): string
+    {
+        return $this->ip_source ?? Entity\Enums\IpSources::default()->value;
+    }
+
+    public function getIpSourceEnum(): Entity\Enums\IpSources
+    {
+        return Entity\Enums\IpSources::tryFrom($this->ip_source ?? '') ?? Entity\Enums\IpSources::default();
+    }
+
+    public function getIp(ServerRequestInterface $request): string
+    {
+        return $this->getIpSourceEnum()->getIp($request);
+    }
+
+    public function setIpSource(?string $ipSource): void
+    {
+        if (null !== $ipSource && null === Entity\Enums\IpSources::tryFrom($ipSource)) {
+            throw new InvalidArgumentException('Invalid IP source.');
+        }
+
+        $this->ip_source = $ipSource;
     }
 
     public function __toString(): string

@@ -38,7 +38,8 @@ final class RelaysController
 {
     public function __construct(
         private readonly EntityManagerInterface $em,
-        private readonly Adapters $adapters
+        private readonly Adapters $adapters,
+        private readonly Entity\Repository\SettingsRepository $settingsRepo
     ) {
     }
 
@@ -126,7 +127,7 @@ final class RelaysController
             $base_url = $body['base_url'];
         } else {
             /** @noinspection HttpUrlsUsage */
-            $base_url = 'http://' . $request->getIp();
+            $base_url = 'http://' . $this->settingsRepo->readSettings()->getIp($request);
         }
 
         $relay = $relay_repo->findOneBy(['base_url' => $base_url]);

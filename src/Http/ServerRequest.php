@@ -14,7 +14,6 @@ use App\RateLimit;
 use App\Session;
 use App\View;
 use Mezzio\Session\SessionInterface;
-use RuntimeException;
 
 final class ServerRequest extends \Slim\Http\ServerRequest
 {
@@ -121,31 +120,5 @@ final class ServerRequest extends \Slim\Http\ServerRequest
         }
 
         return $object;
-    }
-
-    /**
-     * Get the remote user's IP address as indicated by HTTP headers.
-     */
-    public function getIp(): string
-    {
-        $params = $this->serverRequest->getServerParams();
-
-        $ip = $params['HTTP_CLIENT_IP']
-            ?? $params['HTTP_X_FORWARDED_FOR']
-            ?? $params['HTTP_X_FORWARDED']
-            ?? $params['HTTP_FORWARDED_FOR']
-            ?? $params['HTTP_FORWARDED']
-            ?? $params['REMOTE_ADDR']
-            ?? null;
-
-        if (null === $ip) {
-            throw new RuntimeException('No IP address attached to this request.');
-        }
-
-        // Handle the IP being separated by commas.
-        $ipParts = explode(',', $ip);
-        $ip = array_shift($ipParts);
-
-        return trim($ip);
     }
 }

@@ -7,6 +7,10 @@ release channel, you can take advantage of these new features and fixes.
 
 ## Code Quality/Technical Changes
 
+- In sections of our application that depend on IP addresses, we've tightened our allowed IP addresses significantly to
+  improve security and prevent brute-force flooding. If you're using a reverse proxy or CloudFlare, you should update
+  your "IP Address Source" under the "System Settings" page.
+
 ## Bug Fixes
 
 ---

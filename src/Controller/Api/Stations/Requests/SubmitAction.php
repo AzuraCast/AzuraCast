@@ -6,6 +6,7 @@ namespace App\Controller\Api\Stations\Requests;
 
 use App\Entity\Api\Error;
 use App\Entity\Api\Status;
+use App\Entity\Repository\SettingsRepository;
 use App\Entity\Repository\StationRequestRepository;
 use App\Entity\User;
 use App\Exception\InvalidRequestAttribute;
@@ -43,7 +44,8 @@ use Psr\Http\Message\ResponseInterface;
 final class SubmitAction
 {
     public function __construct(
-        private readonly StationRequestRepository $requestRepo
+        private readonly StationRequestRepository $requestRepo,
+        private readonly SettingsRepository $settingsRepo
     ) {
     }
 
@@ -64,11 +66,13 @@ final class SubmitAction
         $isAuthenticated = ($user instanceof User);
 
         try {
+            $ip = $this->settingsRepo->readSettings()->getIp($request);
+
             $this->requestRepo->submit(
                 $station,
                 $media_id,
                 $isAuthenticated,
-                $request->getIp(),
+                $ip,
                 $request->getHeaderLine('User-Agent')
             );
 

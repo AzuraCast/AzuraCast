@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App;
 
+use App\Entity\Repository\SettingsRepository;
 use App\Http\ServerRequest;
 use App\Lock\LockFactory;
 use Psr\Cache\CacheItemPoolInterface;
@@ -18,6 +19,7 @@ final class RateLimit
     public function __construct(
         private readonly LockFactory $lockFactory,
         private readonly Environment $environment,
+        private readonly SettingsRepository $settingsRepo,
         CacheItemPoolInterface $cacheItemPool
     ) {
         $this->psr6Cache = new ProxyAdapter($cacheItemPool, 'ratelimit.');
@@ -41,7 +43,9 @@ final class RateLimit
             return;
         }
 
-        $ipKey = str_replace([':', '.'], '_', $request->getIp());
+        $ip = $this->settingsRepo->readSettings()->getIp($request);
+
+        $ipKey = str_replace([':', '.'], '_', $ip);
         $this->checkRateLimit($groupName, $ipKey, $interval, $limit);
     }
 

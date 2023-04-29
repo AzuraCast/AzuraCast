@@ -420,6 +420,14 @@ class StationMount implements
         return $this->getStation()->getFrontendTypeEnum();
     }
 
+    public function getIsShoutcast(): bool
+    {
+        return match ($this->getAutodjAdapterTypeEnum()) {
+            FrontendAdapters::Shoutcast => true,
+            default => false
+        };
+    }
+
     /**
      * Retrieve the API version of the object/array.
      *

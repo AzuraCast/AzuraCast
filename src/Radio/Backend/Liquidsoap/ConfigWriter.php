@@ -1272,6 +1272,7 @@ final class ConfigWriter implements EventSubscriberInterface
         $output_params[] = 'password = "' . $password . '"';
 
         $protocol = $mount->getAutodjProtocolEnum();
+
         if (!empty($mount->getAutodjMount())) {
             if (StreamProtocols::Icy === $protocol) {
                 $output_params[] = 'icy_id = ' . $id;
@@ -1281,7 +1282,10 @@ final class ConfigWriter implements EventSubscriberInterface
         }
 
         $output_params[] = 'name = "' . self::cleanUpString($station->getName()) . '"';
-        $output_params[] = 'description = "' . self::cleanUpString($station->getDescription()) . '"';
+
+        if (!$mount->getIsShoutcast()) {
+            $output_params[] = 'description = "' . self::cleanUpString($station->getDescription()) . '"';
+        }
         $output_params[] = 'genre = "' . self::cleanUpString($station->getGenre()) . '"';
 
         if (!empty($station->getUrl())) {
@@ -1291,7 +1295,7 @@ final class ConfigWriter implements EventSubscriberInterface
         $output_params[] = 'public = ' . ($mount->getIsPublic() ? 'true' : 'false');
         $output_params[] = 'encoding = "' . $charset . '"';
 
-        if (null !== $protocol) {
+        if (!$mount->getIsShoutcast() && null !== $protocol) {
             $output_params[] = 'protocol="' . $protocol->value . '"';
         }
 

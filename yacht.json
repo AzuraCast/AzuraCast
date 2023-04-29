@@ -58,6 +58,7 @@
       "bind": "db_data"
     }
   ],
+  "privileged": true,
   "env": [
     {
       "name": "PUID",

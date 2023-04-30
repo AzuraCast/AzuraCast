@@ -31,7 +31,6 @@ final class RolePermission extends AbstractFixture implements DependentFixtureIn
                 [StationPermissions::RemoteRelays, $station],
                 [StationPermissions::Media, $station],
                 [StationPermissions::Automation, $station],
-                [StationPermissions::WebHooks, $station],
             ],
         ];
 

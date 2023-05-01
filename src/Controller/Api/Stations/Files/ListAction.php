@@ -258,8 +258,10 @@ final class ListAction
 
             if ($isSearch) {
                 if ('special:unprocessable' === $searchPhrase) {
+                    /** @var string[] $files */
                     $files = array_keys($unprocessableMedia);
                 } else {
+                    /** @var string[] $files */
                     $files = array_keys($mediaInDir);
                 }
             } else {

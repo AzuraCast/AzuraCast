@@ -201,6 +201,8 @@ final class ConfigWriter implements EventSubscriberInterface
             settings.server.socket.path.set("{$socketFile}")
 
             settings.harbor.bind_addrs.set(["0.0.0.0"])
+            
+            settings.tag.encodings.set(["UTF-8","ISO-8859-1"])
             settings.encoder.metadata.export.set(["artist","title","album","song"])
 
             environment.set("TZ", "{$stationTz}")
@@ -231,8 +233,8 @@ final class ConfigWriter implements EventSubscriberInterface
             <<<LIQ
             azuracast_api_url = "{$stationApiUrl}"
             azuracast_api_key = "{$stationApiAuth}"
-
-            def azuracast_api_call(~timeout=2.0, url, payload) =
+            
+            def azuracast_api_call(~timeout_ms=2000, url, payload) =
                 full_url = "#{azuracast_api_url}/#{url}"
 
                 log("API #{url} - Sending POST request to '#{full_url}' with body: #{payload}")
@@ -243,7 +245,7 @@ final class ConfigWriter implements EventSubscriberInterface
                             ("User-Agent", "Liquidsoap AzuraCast"),
                             ("X-Liquidsoap-Api-Key", "#{azuracast_api_key}")
                         ],
-                        timeout=timeout,
+                        timeout_ms=timeout_ms,
                         data=payload
                     )
 
@@ -281,12 +283,12 @@ final class ConfigWriter implements EventSubscriberInterface
             $event->appendBlock(
                 <<<LIQ
                 def azuracast_media_protocol(~rlog=_,~maxtime,arg) =
-                    timeout = 1000.0 * (maxtime - time())
-
+                    timeout_ms = 1000 * (int_of_float(maxtime) - int_of_float(time()))
+                    
                     j = json()
                     j.add("uri", arg)
-
-                    [azuracast_api_call(timeout=timeout, "cp", json.stringify(j))]
+                    
+                    [azuracast_api_call(timeout_ms=timeout_ms, "cp", json.stringify(j))]
                 end
 
                 protocol.add(
@@ -603,22 +605,22 @@ final class ConfigWriter implements EventSubscriberInterface
 
                 # Delayed ping for AutoDJ Next Song
                 def wait_for_next_song(autodj)
-                    autodj_ping_attempts.set(autodj_ping_attempts() + 1)
-
+                    autodj_ping_attempts := !autodj_ping_attempts + 1
+                    
                     if source.is_ready(autodj) then
                         log("AutoDJ is ready!")
-                        autodj_is_loading.set(false)
+                        autodj_is_loading := false
                         -1.0
-                    elsif autodj_ping_attempts() > 200 then
+                    elsif !autodj_ping_attempts > 200 then
                         log("AutoDJ could not be initialized within the specified timeout.")
-                        autodj_is_loading.set(false)
+                        autodj_is_loading := false
                         -1.0
                     else
                         0.5
                     end
                 end
-
-                dynamic = request.dynamic(id="next_song", timeout=20.0, retry_delay=10., autodj_next_song)
+                
+                dynamic = request.dynamic(id="next_song", timeout=20., retry_delay=10., autodj_next_song)
                 dynamic = cue_cut(id="cue_next_song", dynamic)
 
                 dynamic_startup = fallback(
@@ -628,14 +630,14 @@ final class ConfigWriter implements EventSubscriberInterface
                         dynamic,
                         source.available(
                             blank(id = "autodj_startup_blank", duration = 120.),
-                            predicate.activates({autodj_is_loading()})
+                            predicate.activates({!autodj_is_loading})
                         )
                     ]
                 )
                 radio = fallback(id="autodj_fallback", track_sensitive = true, [dynamic_startup, radio])
 
                 ref_dynamic = ref(dynamic);
-                thread.run.recurrent(delay=0.25, { wait_for_next_song(ref_dynamic()) })
+                thread.run.recurrent(delay=0.25, { wait_for_next_song(!ref_dynamic) })
                 LIQ
             );
         }
@@ -831,7 +833,7 @@ final class ConfigWriter implements EventSubscriberInterface
             $event->appendBlock(
                 <<<LS
                 def live_aware_crossfade(old, new) =
-                    if to_live() then
+                    if !to_live then
                         # If going to the live show, play a simple sequence
                         sequence([fade.out(old.source),fade.in(new.source)])
                     else
@@ -882,13 +884,13 @@ final class ConfigWriter implements EventSubscriberInterface
                     end
 
                 response = azuracast_api_call(
-                    timeout=5.0,
+                    timeout_ms=5000,
                     "auth",
                     json.stringify(auth_info)
                 )
 
                 if (response == "true") then
-                    last_authenticated_dj.set(auth_info.user)
+                    last_authenticated_dj := auth_info.user
                     true
                 else
                     false
@@ -896,14 +898,14 @@ final class ConfigWriter implements EventSubscriberInterface
             end
 
             def live_connected(header) =
-                dj = last_authenticated_dj()
+                dj = !last_authenticated_dj
                 log("DJ Source connected! Last authenticated DJ: #{dj} - #{header}")
-
-                live_enabled.set(true)
-                live_dj.set(dj)
-
+            
+                live_enabled := true
+                live_dj := dj
+                
                 _ = azuracast_api_call(
-                    timeout=5.0,
+                    timeout_ms=5000,
                     "djon",
                     json.stringify({user = dj})
                 )
@@ -911,13 +913,13 @@ final class ConfigWriter implements EventSubscriberInterface
 
             def live_disconnected() =
                 _ = azuracast_api_call(
-                    timeout=5.0,
+                    timeout_ms=5000,
                     "djoff",
-                    json.stringify({user = live_dj()})
+                    json.stringify({user = !live_dj})
                 )
-
-                live_enabled.set(false)
-                live_dj.set("")
+                
+                live_enabled := false
+                live_dj := ""
             end
             LIQ
         );
@@ -965,12 +967,12 @@ final class ConfigWriter implements EventSubscriberInterface
             # Skip non-live track when live DJ goes live.
             def check_live() =
                 if live.is_ready() then
-                    if not to_live() then
-                        to_live.set(true)
+                    if not !to_live then
+                        to_live := true
                         radio_without_live.skip()
                     end
                 else
-                    to_live.set(false)
+                    to_live := false
                 end
             end
 
@@ -997,8 +999,8 @@ final class ConfigWriter implements EventSubscriberInterface
                 output.file(
                     {$formatString},
                     fun () -> begin
-                        if (live_enabled()) then
-                            "#{recording_base_path}/#{live_dj()}/{$recordPathPrefix}_%Y%m%d-%H%M%S.#{recording_extension}.tmp"
+                        if (!live_enabled) then
+                            "#{recording_base_path}/#{!live_dj}/{$recordPathPrefix}_%Y%m%d-%H%M%S.#{recording_extension}.tmp"
                         else
                             ""
                         end
@@ -1075,10 +1077,10 @@ final class ConfigWriter implements EventSubscriberInterface
             def metadata_updated(m) =
                 def f() =
                     if (m["is_error_file"] != "true") then
-                        if (m["title"] != last_title() or m["artist"] != last_artist()) then
-                            last_title.set(m["title"])
-                            last_artist.set(m["artist"])
-
+                        if (m["title"] != !last_title or m["artist"] != !last_artist) then
+                            last_title := m["title"]
+                            last_artist := m["artist"]
+                            
                             j = json()
 
                             if (m["song_id"] != "") then
@@ -1107,9 +1109,9 @@ final class ConfigWriter implements EventSubscriberInterface
             last_metadata = ref([])
             def handle_jingle_mode(m) =
                 if (m["jingle_mode"] == "true") then
-                    last_metadata()
+                    !last_metadata    
                 else
-                    last_metadata.set(m)
+                    last_metadata := m
                     m
                 end
             end
@@ -1273,7 +1275,6 @@ final class ConfigWriter implements EventSubscriberInterface
         $output_params[] = 'password = "' . $password . '"';
 
         $protocol = $mount->getAutodjProtocolEnum();
-
         if (!empty($mount->getAutodjMount())) {
             if (StreamProtocols::Icy === $protocol) {
                 $output_params[] = 'icy_id = ' . $id;
@@ -1283,10 +1284,7 @@ final class ConfigWriter implements EventSubscriberInterface
         }
 
         $output_params[] = 'name = "' . self::cleanUpString($station->getName()) . '"';
-
-        if (!$mount->getIsShoutcast()) {
-            $output_params[] = 'description = "' . self::cleanUpString($station->getDescription()) . '"';
-        }
+        $output_params[] = 'description = "' . self::cleanUpString($station->getDescription()) . '"';
         $output_params[] = 'genre = "' . self::cleanUpString($station->getGenre()) . '"';
 
         if (!empty($station->getUrl())) {
@@ -1296,21 +1294,17 @@ final class ConfigWriter implements EventSubscriberInterface
         $output_params[] = 'public = ' . ($mount->getIsPublic() ? 'true' : 'false');
         $output_params[] = 'encoding = "' . $charset . '"';
 
-        if (!$mount->getIsShoutcast() && null !== $protocol) {
+        if (null !== $protocol) {
             $output_params[] = 'protocol="' . $protocol->value . '"';
         }
 
         if ($format->sendIcyMetadata()) {
-            $output_params[] = 'send_icy_metadata="true"';
+            $output_params[] = 'icy_metadata="true"';
         }
 
         $output_params[] = 'radio';
 
-        $outputCommand = ($mount->getIsShoutcast())
-            ? 'output.shoutcast'
-            : 'output.icecast';
-
-        return $outputCommand . '(' . implode(', ', $output_params) . ')';
+        return 'output.icecast(' . implode(', ', $output_params) . ')';
     }
 
     private function getOutputFormatString(StreamFormats $format, int $bitrate = 128): string

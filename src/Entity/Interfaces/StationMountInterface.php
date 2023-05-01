@@ -31,6 +31,4 @@ interface StationMountInterface
     public function getAutodjAdapterTypeEnum(): AdapterTypeInterface;
 
     public function getIsPublic(): bool;
-
-    public function getIsShoutcast(): bool;
 }

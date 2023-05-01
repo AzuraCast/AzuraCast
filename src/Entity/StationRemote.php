@@ -392,14 +392,6 @@ class StationRemote implements
         return (RemoteAdapters::AzuraRelay !== $this->getTypeEnum());
     }
 
-    public function getIsShoutcast(): bool
-    {
-        return match ($this->getAutodjAdapterTypeEnum()) {
-            RemoteAdapters::Shoutcast1, RemoteAdapters::Shoutcast2 => true,
-            default => false,
-        };
-    }
-
     /**
      * Retrieve the API version of the object/array.
      *

@@ -205,7 +205,7 @@ final class ConfigWriter implements EventSubscriberInterface
             settings.tag.encodings.set(["UTF-8","ISO-8859-1"])
             settings.encoder.metadata.export.set(["artist","title","album","song"])
 
-            environment.set("TZ", "{$stationTz}")
+            setenv("TZ", "{$stationTz}")
 
             autodj_is_loading = ref(true)
             ignore(autodj_is_loading)
@@ -271,7 +271,7 @@ final class ConfigWriter implements EventSubscriberInterface
                     ["#{station_media_dir}/#{arg}"]
                 end
 
-                protocol.add(
+                add_protocol(
                     "media",
                     azuracast_media_protocol,
                     doc="Pull files from AzuraCast media directory.",
@@ -291,7 +291,7 @@ final class ConfigWriter implements EventSubscriberInterface
                     [azuracast_api_call(timeout_ms=timeout_ms, "cp", json.stringify(j))]
                 end
 
-                protocol.add(
+                add_protocol(
                     "media",
                     azuracast_media_protocol,
                     temporary=true,

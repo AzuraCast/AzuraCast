@@ -24,16 +24,25 @@ final class Urls
         }
 
         $uri = new Uri($url);
-        if ($mustBeAbsolute && '' === $uri->getHost() && '' === $uri->getScheme()) {
-            return self::getUri('https://' . $url);
+
+        if ($mustBeAbsolute) {
+            if ('' === $uri->getHost() && '' === $uri->getScheme()) {
+                return self::getUri('https://' . $url);
+            }
+
+            if ('' === $uri->getScheme()) {
+                $uri = $uri->withScheme('http');
+            }
         }
 
-        if ('' === $uri->getScheme()) {
-            $uri = $uri->withScheme('http');
+        if (!in_array($uri->getScheme(), ['', 'http', 'https'], true)) {
+            throw new \RuntimeException('Invalid URL scheme.');
         }
+
         if ('/' === $uri->getPath()) {
             $uri = $uri->withPath('');
         }
+
         if (Uri::isDefaultPort($uri)) {
             $uri = $uri->withPort(null);
         }

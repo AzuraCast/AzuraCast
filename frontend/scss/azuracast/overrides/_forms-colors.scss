@@ -2,6 +2,13 @@ select.form-control, select.custom-select {
   option, optgroup {
     background: $menu-bg;
   }
+
+  &[multiple] {
+    option:checked, optgroup:checked {
+      background: theme-color-dark(primary);
+      color: theme-color-light(light);
+    }
+  }
 }
 
 .form {

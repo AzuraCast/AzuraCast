@@ -15,6 +15,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Stringable;
+use Symfony\Component\Filesystem\Path;
 
 #[
     ORM\Entity,
@@ -141,7 +142,9 @@ class StorageLocation implements Stringable, IdentifiableEntityInterface
 
     public function setPath(string $path): void
     {
-        $this->path = $this->truncateString($path);
+        $this->path = $this->truncateString(
+            Path::canonicalize($path)
+        );
     }
 
     public function getS3CredentialKey(): ?string

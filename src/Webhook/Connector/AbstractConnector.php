@@ -8,7 +8,7 @@ use App\Entity;
 use App\Utilities;
 use GuzzleHttp\Client;
 use Monolog\Logger;
-use Symfony\Component\Validator\Constraints\UrlValidator;
+use PhpIP\IP;
 
 abstract class AbstractConnector implements ConnectorInterface
 {
@@ -109,9 +109,26 @@ abstract class AbstractConnector implements ConnectorInterface
      */
     protected function getValidUrl(?string $url_string = null): ?string
     {
-        $url = trim($url_string ?? '');
-        $pattern = sprintf(UrlValidator::PATTERN, 'http|https');
-        return (preg_match($pattern, $url)) ? $url : null;
+        $uri = Utilities\Urls::tryParseUserUrl(
+            $url_string,
+            'Webhook'
+        );
+
+        if (null === $uri) {
+            return null;
+        }
+
+        // Check for IP addresses that shouldn't be used in user-provided URLs.
+        try {
+            $ip = IP::create($uri->getHost());
+            if ($ip->isReserved()) {
+                throw new \RuntimeException('URL references an IANA reserved block.');
+            }
+        } catch (\InvalidArgumentException) {
+            // Noop, URL is not an IP
+        }
+
+        return (string)$uri;
     }
 
     protected function incompleteConfigException(string $name): \InvalidArgumentException

@@ -996,6 +996,7 @@ final class ConfigWriter implements EventSubscriberInterface
 
                 output.file(
                     {$formatString},
+                    {$formatString},
                     fun () -> begin
                         if (live_enabled()) then
                             "#{recording_base_path}/#{live_dj()}/{$recordPathPrefix}_%Y%m%d-%H%M%S.#{recording_extension}.tmp"
@@ -1056,7 +1057,10 @@ final class ConfigWriter implements EventSubscriberInterface
             <<<LIQ
             error_file = single(id="error_jingle", "{$errorFile}")
 
+            error_file = single(id="error_jingle", "{$errorFile}")
+
             def tag_error_file(m) =
+                ignore(m)
                 ignore(m)
                 [("is_error_file", "true")]
             end

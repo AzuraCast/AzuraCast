@@ -15,7 +15,7 @@ apt-get update
 } | debconf-set-selections
 
 apt-get install -q -y --no-install-recommends \
-  mariadb-server mariadb-backup \
+  mariadb-server.10.9 mariadb-backup \
   ca-certificates gpg gpgv libjemalloc2 pwgen tzdata xz-utils zstd
 
 rm -rf /var/lib/mysql

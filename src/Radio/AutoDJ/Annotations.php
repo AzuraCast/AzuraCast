@@ -83,44 +83,56 @@ final class Annotations implements EventSubscriberInterface
             return;
         }
 
-        $backendConfig = $station->getBackendConfig();
-
         $annotations = [];
-        $annotationsRaw = [
+        $annotationsRaw = array_filter([
             'title' => $media->getTitle(),
             'artist' => $media->getArtist(),
             'duration' => $media->getLength(),
             'song_id' => $media->getSongId(),
             'media_id' => $media->getId(),
-            'liq_amplify' => $media->getAmplify() ?? 0.0,
-            'liq_cross_duration' => $media->getFadeOverlap() ?? $backendConfig->getCrossfadeDuration(),
-            'liq_fade_in' => $media->getFadeIn() ?? $backendConfig->getCrossfade(),
-            'liq_fade_out' => $media->getFadeOut() ?? $backendConfig->getCrossfade(),
+            'liq_amplify' => $media->getAmplify(),
+            'liq_cross_duration' => $media->getFadeOverlap(),
+            'liq_fade_in' => $media->getFadeIn(),
+            'liq_fade_out' => $media->getFadeOut(),
             'liq_cue_in' => $media->getCueIn(),
             'liq_cue_out' => $media->getCueOut(),
-        ];
+        ]);
 
         // Safety checks for cue lengths.
-        if ($annotationsRaw['liq_cue_out'] < 0) {
+        if (
+            isset($annotationsRaw['liq_cue_out'])
+            && $annotationsRaw['liq_cue_out'] < 0
+        ) {
             $cue_out = abs($annotationsRaw['liq_cue_out']);
-            if (0.0 === $cue_out || $cue_out > $annotationsRaw['duration']) {
-                $annotationsRaw['liq_cue_out'] = null;
-            } else {
-                $annotationsRaw['liq_cue_out'] = max(0, $annotationsRaw['duration'] - $cue_out);
+
+            if (0.0 === $cue_out) {
+                unset($annotationsRaw['liq_cue_out']);
+            }
+
+            if (isset($annotationsRaw['duration'])) {
+                if ($cue_out > $annotationsRaw['duration']) {
+                    unset($annotationsRaw['liq_cue_out']);
+                } else {
+                    $annotationsRaw['liq_cue_out'] = max(0, $annotationsRaw['duration'] - $cue_out);
+                }
             }
         }
-        if ($annotationsRaw['liq_cue_out'] > $annotationsRaw['duration']) {
-            $annotationsRaw['liq_cue_out'] = null;
+
+        if (
+            isset($annotationsRaw['liq_cue_out'], $annotationsRaw['duration'])
+            && $annotationsRaw['liq_cue_out'] > $annotationsRaw['duration']
+        ) {
+            unset($annotationsRaw['liq_cue_out']);
         }
-        if ($annotationsRaw['liq_cue_in'] > $annotationsRaw['duration']) {
-            $annotationsRaw['liq_cue_in'] = null;
+
+        if (
+            isset($annotationsRaw['liq_cue_in'], $annotationsRaw['duration'])
+            && $annotationsRaw['liq_cue_in'] > $annotationsRaw['duration']
+        ) {
+            unset($annotationsRaw['liq_cue_in']);
         }
 
         foreach ($annotationsRaw as $name => $prop) {
-            if (null === $prop) {
-                continue;
-            }
-
             $prop = ConfigWriter::annotateString((string)$prop);
 
             // Convert Liquidsoap-specific annotations to floats.

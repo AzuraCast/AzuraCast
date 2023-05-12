@@ -13,8 +13,7 @@ use Psr\Http\Message\ResponseInterface;
 final class WebhooksAction
 {
     public function __construct(
-        private readonly SettingsRepository $settingsRepo,
-        private readonly ConnectorLocator $connectorLocator
+        private readonly SettingsRepository $settingsRepo
     ) {
     }
 
@@ -27,8 +26,6 @@ final class WebhooksAction
 
         $settings = $this->settingsRepo->readSettings();
 
-        $webhookConfig = $this->connectorLocator->getWebhookConfig();
-
         return $request->getView()->renderVuePage(
             response: $response,
             component: 'Vue_StationsWebhooks',
@@ -37,7 +34,6 @@ final class WebhooksAction
             props: [
                 'listUrl' => $router->fromHere('api:stations:webhooks'),
                 'nowPlayingUrl' => $router->fromHere('api:nowplaying:index'),
-                'webhookTypes' => $webhookConfig['webhooks'],
                 'enableAdvancedFeatures' => $settings->getEnableAdvancedFeatures(),
             ]
         );

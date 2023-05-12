@@ -20,6 +20,10 @@
     text-decoration: none;
   }
 
+  &:first-child {
+    @include border-top-radius($expansion-panel-border-radius);
+  }
+
   &:last-child {
     @include border-bottom-radius($expansion-panel-border-radius);
   }

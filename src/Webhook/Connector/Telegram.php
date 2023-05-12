@@ -15,8 +15,6 @@ use App\Entity\StationWebhook;
  */
 final class Telegram extends AbstractConnector
 {
-    public const NAME = 'telegram';
-
     /**
      * @inheritDoc
      */
@@ -32,7 +30,7 @@ final class Telegram extends AbstractConnector
         $chat_id = trim($config['chat_id'] ?? '');
 
         if (empty($bot_token) || empty($chat_id)) {
-            throw $this->incompleteConfigException(self::NAME);
+            throw $this->incompleteConfigException($webhook);
         }
 
         $messages = $this->replaceVariables(
@@ -63,7 +61,7 @@ final class Telegram extends AbstractConnector
         );
 
         $this->logger->debug(
-            sprintf('Webhook %s returned code %d', self::NAME, $response->getStatusCode()),
+            sprintf('Webhook "%s" returned code %d', $webhook->getName(), $response->getStatusCode()),
             [
                 'request_url' => $webhook_url,
                 'request_params' => $request_params,

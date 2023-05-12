@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
-use App\Entity\Enums\WebhookTriggers;
+use App\Webhook\Enums\WebhookTriggers;
+use App\Webhook\Enums\WebhookTypes;
 use Doctrine\ORM\Mapping as ORM;
 use OpenApi\Attributes as OA;
 use Stringable;
@@ -120,6 +121,11 @@ class StationWebhook implements
     public function getType(): string
     {
         return $this->type;
+    }
+
+    public function getTypeEnum(): WebhookTypes
+    {
+        return WebhookTypes::from($this->type);
     }
 
     public function getIsEnabled(): bool

@@ -13,8 +13,6 @@ use Monolog\Logger;
 
 final class Email extends AbstractConnector
 {
-    public const NAME = 'email';
-
     public function __construct(
         Logger $logger,
         Client $httpClient,
@@ -42,7 +40,7 @@ final class Email extends AbstractConnector
         $emailBody = $config['message'];
 
         if (empty($emailTo) || empty($emailSubject) || empty($emailBody)) {
-            throw $this->incompleteConfigException(self::NAME);
+            throw $this->incompleteConfigException($webhook);
         }
 
         $email = $this->mail->createMessage();

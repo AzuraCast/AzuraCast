@@ -473,9 +473,4 @@ return [
             $logger
         );
     },
-
-    App\Webhook\ConnectorLocator::class => static fn(ContainerInterface $di) => new App\Webhook\ConnectorLocator(
-        $di,
-        require __DIR__ . '/webhooks.php'
-    ),
 ];

@@ -14,8 +14,6 @@ use App\Utilities\Urls;
  */
 final class Mastodon extends AbstractSocialConnector
 {
-    public const NAME = 'mastodon';
-
     protected function getRateLimitTime(StationWebhook $webhook): ?int
     {
         $config = $webhook->getConfig();
@@ -36,7 +34,7 @@ final class Mastodon extends AbstractSocialConnector
         $accessToken = trim($config['access_token'] ?? '');
 
         if (empty($instanceUrl) || empty($accessToken)) {
-            throw $this->incompleteConfigException(self::NAME);
+            throw $this->incompleteConfigException($webhook);
         }
 
         $instanceUri = Urls::parseUserUrl($instanceUrl, 'Mastodon Instance URL');
@@ -66,7 +64,7 @@ final class Mastodon extends AbstractSocialConnector
             );
 
             $this->logger->debug(
-                sprintf('Webhook %s returned code %d', self::NAME, $response->getStatusCode()),
+                sprintf('Webhook "%s" returned code %d', $webhook->getName(), $response->getStatusCode()),
                 [
                     'instanceUri' => (string)$instanceUri,
                     'response' => $response->getBody()->getContents(),

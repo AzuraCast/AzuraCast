@@ -5,14 +5,12 @@ declare(strict_types=1);
 namespace App\Webhook\Connector;
 
 use App\Entity\Api\NowPlaying\NowPlaying;
-use App\Entity\Enums\WebhookTriggers;
+use App\Webhook\Enums\WebhookTriggers;
 use App\Entity\Station;
 use App\Entity\StationWebhook;
 
 final class TuneIn extends AbstractConnector
 {
-    public const NAME = 'tunein';
-
     protected function webhookShouldTrigger(StationWebhook $webhook, array $triggers = []): bool
     {
         return in_array(WebhookTriggers::SongChanged->value, $triggers, true);
@@ -30,7 +28,7 @@ final class TuneIn extends AbstractConnector
         $config = $webhook->getConfig();
 
         if (empty($config['partner_id']) || empty($config['partner_key']) || empty($config['station_id'])) {
-            throw $this->incompleteConfigException(self::NAME);
+            throw $this->incompleteConfigException($webhook);
         }
 
         $this->logger->debug('Dispatching TuneIn AIR API call...');

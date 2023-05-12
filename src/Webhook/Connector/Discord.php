@@ -63,8 +63,6 @@ use Monolog\Level;
 
 final class Discord extends AbstractConnector
 {
-    public const NAME = 'discord';
-
     /**
      * @inheritDoc
      */
@@ -79,7 +77,7 @@ final class Discord extends AbstractConnector
         $webhook_url = $this->getValidUrl($config['webhook_url']);
 
         if (empty($webhook_url)) {
-            throw $this->incompleteConfigException(self::NAME);
+            throw $this->incompleteConfigException($webhook);
         }
 
         $raw_vars = [
@@ -144,7 +142,11 @@ final class Discord extends AbstractConnector
 
         $this->logger->addRecord(
             ($response->getStatusCode() !== 204 ? Level::Error : Level::Debug),
-            sprintf('Webhook %s returned code %d', self::NAME, $response->getStatusCode()),
+            sprintf(
+                'Webhook "%s" returned code %d',
+                $webhook->getName(),
+                $response->getStatusCode()
+            ),
             ['message_sent' => $webhook_body, 'response_body' => $response->getBody()->getContents()]
         );
     }

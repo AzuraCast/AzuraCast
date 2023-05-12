@@ -131,12 +131,13 @@ abstract class AbstractConnector implements ConnectorInterface
         return (string)$uri;
     }
 
-    protected function incompleteConfigException(string $name): \InvalidArgumentException
+    protected function incompleteConfigException(Entity\StationWebhook $webhook): \InvalidArgumentException
     {
         return new \InvalidArgumentException(
             sprintf(
-                'Webhook %s is missing necessary configuration. Skipping...',
-                $name
+                'Webhook "%s" (type "%s") is missing necessary configuration. Skipping...',
+                $webhook->getName(),
+                $webhook->getType()
             ),
         );
     }

@@ -14,8 +14,6 @@ use Monolog\Logger;
 
 final class Twitter extends AbstractSocialConnector
 {
-    public const NAME = 'twitter';
-
     public function __construct(
         Logger $logger,
         Client $httpClient,
@@ -49,7 +47,7 @@ final class Twitter extends AbstractSocialConnector
             || empty($config['token'])
             || empty($config['token_secret'])
         ) {
-            throw $this->incompleteConfigException(self::NAME);
+            throw $this->incompleteConfigException($webhook);
         }
 
         // Set up Twitter OAuth

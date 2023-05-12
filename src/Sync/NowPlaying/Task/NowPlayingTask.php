@@ -7,7 +7,7 @@ namespace App\Sync\NowPlaying\Task;
 use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Entity\Api\NowPlaying\NowPlaying;
 use App\Entity\ApiGenerator\NowPlayingApiGenerator;
-use App\Entity\Enums\WebhookTriggers;
+use App\Webhook\Enums\WebhookTriggers;
 use App\Entity\Repository\ListenerRepository;
 use App\Entity\Repository\SettingsRepository;
 use App\Entity\Station;

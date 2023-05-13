@@ -15,7 +15,6 @@ use Doctrine\ORM\Events;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use Doctrine\ORM\PersistentCollection;
 use Doctrine\ORM\UnitOfWork;
-use ProxyManager\Proxy\GhostObjectInterface;
 use ReflectionClass;
 use ReflectionObject;
 use Stringable;
@@ -65,12 +64,21 @@ final class AuditLog implements EventSubscriber
         $newRecords = [];
 
         $collections = [
-            Entity\AuditLog::OPER_INSERT => $uow->getScheduledEntityInsertions(),
-            Entity\AuditLog::OPER_UPDATE => $uow->getScheduledEntityUpdates(),
-            Entity\AuditLog::OPER_DELETE => $uow->getScheduledEntityDeletions(),
+            [
+                Entity\Enums\AuditLogOperations::Insert,
+                $uow->getScheduledEntityInsertions(),
+            ],
+            [
+                Entity\Enums\AuditLogOperations::Update,
+                $uow->getScheduledEntityUpdates(),
+            ],
+            [
+                Entity\Enums\AuditLogOperations::Delete,
+                $uow->getScheduledEntityDeletions(),
+            ],
         ];
 
-        foreach ($collections as $changeType => $collection) {
+        foreach ($collections as [$changeType, $collection]) {
             foreach ($collection as $entity) {
                 // Check that the entity being managed is "Auditable".
                 $reflectionClass = new ReflectionObject($entity);
@@ -107,7 +115,7 @@ final class AuditLog implements EventSubscriber
                     $changes[$changeField] = [$fieldPrev, $fieldNow];
                 }
 
-                if (Entity\AuditLog::OPER_UPDATE === $changeType && empty($changes)) {
+                if (Entity\Enums\AuditLogOperations::Update === $changeType && empty($changes)) {
                     continue;
                 }
 
@@ -217,7 +225,7 @@ final class AuditLog implements EventSubscriber
 
         foreach ($associated as [$owner, $ownerIdentifier, $entity, $entityIdentifier]) {
             $newRecords[] = new Entity\AuditLog(
-                Entity\AuditLog::OPER_INSERT,
+                Entity\Enums\AuditLogOperations::Insert,
                 get_class($owner),
                 $ownerIdentifier,
                 (string)get_class($entity),
@@ -228,7 +236,7 @@ final class AuditLog implements EventSubscriber
 
         foreach ($disassociated as [$owner, $ownerIdentifier, $entity, $entityIdentifier]) {
             $newRecords[] = new Entity\AuditLog(
-                Entity\AuditLog::OPER_DELETE,
+                Entity\Enums\AuditLogOperations::Delete,
                 get_class($owner),
                 $ownerIdentifier,
                 (string)get_class($entity),

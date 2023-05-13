@@ -51,12 +51,6 @@ final class AuditLogAction
 
         $paginator->setPostprocessor(
             function (Entity\AuditLog $row) {
-                $operations = [
-                    Entity\AuditLog::OPER_UPDATE => 'update',
-                    Entity\AuditLog::OPER_DELETE => 'delete',
-                    Entity\AuditLog::OPER_INSERT => 'insert',
-                ];
-
                 $changesRaw = $row->getChanges();
                 $changes = [];
 
@@ -68,11 +62,13 @@ final class AuditLogAction
                     ];
                 }
 
+                $operation = $row->getOperation();
+
                 return [
                     'id' => $row->getId(),
                     'timestamp' => $row->getTimestamp(),
-                    'operation' => $row->getOperation(),
-                    'operation_text' => $operations[$row->getOperation()],
+                    'operation' => $operation->value,
+                    'operation_text' => $operation->getName(),
                     'class' => $row->getClass(),
                     'identifier' => $row->getIdentifier(),
                     'target_class' => $row->getTargetClass(),

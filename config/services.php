@@ -287,6 +287,7 @@ return [
         );
 
         $normalizers = [
+            new Symfony\Component\Serializer\Normalizer\BackedEnumNormalizer(),
             new Symfony\Component\Serializer\Normalizer\JsonSerializableNormalizer(),
             new App\Normalizer\DoctrineEntityNormalizer($em, $classMetaFactory),
             new Symfony\Component\Serializer\Normalizer\ObjectNormalizer($classMetaFactory),

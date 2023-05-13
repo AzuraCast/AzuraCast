@@ -42,7 +42,7 @@ final class Analytics extends AbstractFixture implements DependentFixtureInterfa
                 $stationPoint = new Entity\Analytics(
                     $day,
                     $station,
-                    Entity\Analytics::INTERVAL_DAILY,
+                    Entity\Enums\AnalyticsIntervals::Daily,
                     $station_min,
                     $station_max,
                     $station_listeners,
@@ -54,7 +54,7 @@ final class Analytics extends AbstractFixture implements DependentFixtureInterfa
             $totalPoint = new Entity\Analytics(
                 $day,
                 null,
-                Entity\Analytics::INTERVAL_DAILY,
+                Entity\Enums\AnalyticsIntervals::Daily,
                 $day_min,
                 $day_max,
                 $day_listeners,

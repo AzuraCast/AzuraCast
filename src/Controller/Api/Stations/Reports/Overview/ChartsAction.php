@@ -143,7 +143,7 @@ final class ChartsAction extends AbstractReportAction
         $hourlyStats = $this->analyticsRepo->findForStationInRange(
             $station,
             $dateRange,
-            Entity\Analytics::INTERVAL_HOURLY
+            Entity\Enums\AnalyticsIntervals::Hourly
         );
 
         $totals_by_hour = [];

@@ -24,13 +24,13 @@ final class StorageLocation
         description: 'The type of storage location.',
         example: 'station_media'
     )]
-    public string $type;
+    public Entity\Enums\StorageLocationTypes $type;
 
     #[OA\Property(
         description: 'The storage adapter to use for this location.',
         example: 'local'
     )]
-    public string $adapter;
+    public Entity\Enums\StorageLocationAdapters $adapter;
 
     #[OA\Property(
         description: 'The local path, if the local adapter is used, or path prefix for S3/remote adapters.',

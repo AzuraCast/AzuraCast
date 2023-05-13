@@ -21,7 +21,7 @@ abstract class AbstractStorageLocationLocationAdapter implements StorageLocation
 
     protected function setStorageLocation(StorageLocation $storageLocation): void
     {
-        if ($this->getType() !== $storageLocation->getAdapterEnum()) {
+        if ($this->getType() !== $storageLocation->getAdapter()) {
             throw new \InvalidArgumentException('This storage location is not using the specified adapter.');
         }
 

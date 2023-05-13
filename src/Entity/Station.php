@@ -977,7 +977,7 @@ class Station implements Stringable, IdentifiableEntityInterface
 
     public function setMediaStorageLocation(?StorageLocation $storageLocation = null): void
     {
-        if (null !== $storageLocation && StorageLocationTypes::StationMedia !== $storageLocation->getTypeEnum()) {
+        if (null !== $storageLocation && StorageLocationTypes::StationMedia !== $storageLocation->getType()) {
             throw new RuntimeException('Invalid storage location.');
         }
 
@@ -994,7 +994,7 @@ class Station implements Stringable, IdentifiableEntityInterface
 
     public function setRecordingsStorageLocation(?StorageLocation $storageLocation = null): void
     {
-        if (null !== $storageLocation && StorageLocationTypes::StationRecordings !== $storageLocation->getTypeEnum()) {
+        if (null !== $storageLocation && StorageLocationTypes::StationRecordings !== $storageLocation->getType()) {
             throw new RuntimeException('Invalid storage location.');
         }
 
@@ -1011,7 +1011,7 @@ class Station implements Stringable, IdentifiableEntityInterface
 
     public function setPodcastsStorageLocation(?StorageLocation $storageLocation = null): void
     {
-        if (null !== $storageLocation && StorageLocationTypes::StationPodcasts !== $storageLocation->getTypeEnum()) {
+        if (null !== $storageLocation && StorageLocationTypes::StationPodcasts !== $storageLocation->getType()) {
             throw new RuntimeException('Invalid storage location.');
         }
 

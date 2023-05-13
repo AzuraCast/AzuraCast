@@ -30,11 +30,11 @@ class StorageLocation implements Stringable, IdentifiableEntityInterface
 
     public const DEFAULT_BACKUPS_PATH = '/var/azuracast/backups';
 
-    #[ORM\Column(length: 50)]
-    protected string $type;
+    #[ORM\Column(type: 'string', length: 50, enumType: StorageLocationTypes::class)]
+    protected StorageLocationTypes $type;
 
-    #[ORM\Column(length: 50)]
-    protected string $adapter;
+    #[ORM\Column(type: 'string', length: 50, enumType: StorageLocationAdapters::class)]
+    protected StorageLocationAdapters $adapter;
 
     #[ORM\Column(length: 255, nullable: false)]
     protected string $path = '';
@@ -99,40 +99,23 @@ class StorageLocation implements Stringable, IdentifiableEntityInterface
     protected Collection $media;
 
     public function __construct(
-        string|StorageLocationTypes $type,
-        string|StorageLocationAdapters $adapter
+        StorageLocationTypes $type,
+        StorageLocationAdapters $adapter
     ) {
-        if (!($type instanceof StorageLocationTypes)) {
-            $type = StorageLocationTypes::from($type);
-        }
-        if (!($adapter instanceof StorageLocationAdapters)) {
-            $adapter = StorageLocationAdapters::from($adapter);
-        }
-
-        $this->type = $type->value;
-        $this->adapter = $adapter->value;
+        $this->type = $type;
+        $this->adapter = $adapter;
 
         $this->media = new ArrayCollection();
     }
 
-    public function getType(): string
+    public function getType(): StorageLocationTypes
     {
         return $this->type;
     }
 
-    public function getTypeEnum(): StorageLocationTypes
-    {
-        return StorageLocationTypes::from($this->type);
-    }
-
-    public function getAdapter(): string
+    public function getAdapter(): StorageLocationAdapters
     {
         return $this->adapter;
-    }
-
-    public function getAdapterEnum(): StorageLocationAdapters
-    {
-        return StorageLocationAdapters::from($this->adapter);
     }
 
     public function getPath(): string
@@ -309,7 +292,7 @@ class StorageLocation implements Stringable, IdentifiableEntityInterface
 
     public function isLocal(): bool
     {
-        return $this->getAdapterEnum()->isLocal();
+        return $this->getAdapter()->isLocal();
     }
 
     public function getStorageQuota(): ?string
@@ -481,18 +464,18 @@ class StorageLocation implements Stringable, IdentifiableEntityInterface
 
     public function getUri(?string $suffix = null): string
     {
-        $adapterClass = $this->getAdapterEnum()->getAdapterClass();
+        $adapterClass = $this->getAdapter()->getAdapterClass();
         return $adapterClass::getUri($this, $suffix);
     }
 
     public function getFilteredPath(): string
     {
-        $adapterClass = $this->getAdapterEnum()->getAdapterClass();
+        $adapterClass = $this->getAdapter()->getAdapterClass();
         return $adapterClass::filterPath($this->path);
     }
 
     public function __toString(): string
     {
-        return $this->getAdapterEnum()->getName() . ': ' . $this->getUri();
+        return $this->getAdapter()->getName() . ': ' . $this->getUri();
     }
 }

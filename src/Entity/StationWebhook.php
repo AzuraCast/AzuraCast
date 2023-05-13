@@ -50,10 +50,10 @@ class StationWebhook implements
             description: "The type of webhook connector to use.",
             example: "twitter"
         ),
-        ORM\Column(length: 100),
+        ORM\Column(type: "string", length: 100, enumType: WebhookTypes::class),
         Assert\NotBlank
     ]
-    protected string $type;
+    protected WebhookTypes $type;
 
     #[
         OA\Property(example: true),
@@ -92,7 +92,7 @@ class StationWebhook implements
     ]
     protected ?array $metadata = null;
 
-    public function __construct(Station $station, string $type)
+    public function __construct(Station $station, WebhookTypes $type)
     {
         $this->station = $station;
         $this->type = $type;
@@ -118,14 +118,9 @@ class StationWebhook implements
         $this->name = $this->truncateNullableString($name, 100);
     }
 
-    public function getType(): string
+    public function getType(): WebhookTypes
     {
         return $this->type;
-    }
-
-    public function getTypeEnum(): WebhookTypes
-    {
-        return WebhookTypes::from($this->type);
     }
 
     public function getIsEnabled(): bool

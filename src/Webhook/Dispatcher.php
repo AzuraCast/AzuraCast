@@ -82,7 +82,7 @@ final class Dispatcher
         $this->logger->debug('Webhook dispatch: triggering events: ' . implode(', ', $triggers));
 
         foreach ($enabledWebhooks as $webhook) {
-            $webhookType = $webhook->getTypeEnum();
+            $webhookType = $webhook->getType();
             $webhookClass = $webhookType->getClass();
 
             $this->logger->debug(
@@ -141,7 +141,7 @@ final class Dispatcher
 
             $this->localHandler->dispatch($station, $np);
 
-            $webhookType = $webhook->getTypeEnum();
+            $webhookType = $webhook->getType();
             $webhookClass = $webhookType->getClass();
 
             /** @var AbstractConnector $webhookObj */

@@ -137,7 +137,7 @@ abstract class AbstractConnector implements ConnectorInterface
             sprintf(
                 'Webhook "%s" (type "%s") is missing necessary configuration. Skipping...',
                 $webhook->getName(),
-                $webhook->getType()
+                $webhook->getType()->value
             ),
         );
     }

@@ -1170,7 +1170,7 @@ final class ConfigWriter implements EventSubscriberInterface
         foreach ($station->getHlsStreams() as $hlsStream) {
             $streamVarName = self::cleanUpVarName($hlsStream->getName());
 
-            if (StreamFormats::Aac !== $hlsStream->getFormatEnum()) {
+            if (StreamFormats::Aac !== $hlsStream->getFormat()) {
                 continue;
             }
 

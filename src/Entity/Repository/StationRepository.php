@@ -135,7 +135,7 @@ final class StationRepository extends Repository
             foreach ($streams as $name => $bitrate) {
                 $record = new Entity\StationHlsStream($station);
                 $record->setName($name);
-                $record->setFormat(StreamFormats::Aac->value);
+                $record->setFormat(StreamFormats::Aac);
                 $record->setBitrate($bitrate);
                 $this->em->persist($record);
             }

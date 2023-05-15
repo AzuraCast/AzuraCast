@@ -44,9 +44,9 @@ class StationHlsStream implements
 
     #[
         OA\Property(example: "aac"),
-        ORM\Column(length: 10, nullable: true)
+        ORM\Column(type: 'string', length: 10, nullable: true, enumType: StreamFormats::class)
     ]
-    protected ?string $format = 'mp3';
+    protected ?StreamFormats $format = StreamFormats::Aac;
 
     #[
         OA\Property(example: 128),
@@ -86,19 +86,12 @@ class StationHlsStream implements
         $this->name = $this->truncateString(Strings::getProgrammaticString($new_name), 100);
     }
 
-    public function getFormat(): ?string
+    public function getFormat(): ?StreamFormats
     {
         return $this->format;
     }
 
-    public function getFormatEnum(): ?StreamFormats
-    {
-        return (null !== $this->format)
-            ? StreamFormats::from(strtolower($this->format))
-            : null;
-    }
-
-    public function setFormat(?string $format): void
+    public function setFormat(?StreamFormats $format): void
     {
         $this->format = $format;
     }

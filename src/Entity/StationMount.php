@@ -104,9 +104,9 @@ class StationMount implements
 
     #[
         OA\Property(example: "mp3"),
-        ORM\Column(length: 10, nullable: true)
+        ORM\Column(type: 'string', length: 10, nullable: true, enumType: StreamFormats::class)
     ]
-    protected ?string $autodj_format = 'mp3';
+    protected ?StreamFormats $autodj_format = StreamFormats::Mp3;
 
     #[
         OA\Property(example: 128),
@@ -182,7 +182,7 @@ class StationMount implements
         }
 
         if ($this->enable_autodj) {
-            $format = $this->getAutodjFormatEnum();
+            $format = $this->getAutodjFormat();
 
             return (null !== $format)
                 ? $this->name . ' (' . $format->formatBitrate($this->autodj_bitrate) . ')'
@@ -297,21 +297,14 @@ class StationMount implements
         $this->enable_autodj = $enable_autodj;
     }
 
-    public function getAutodjFormat(): ?string
+    public function getAutodjFormat(): ?StreamFormats
     {
         return $this->autodj_format;
     }
 
-    public function getAutodjFormatEnum(): ?StreamFormats
+    public function setAutodjFormat(?StreamFormats $autodj_format = null): void
     {
-        return (null !== $this->autodj_format)
-            ? StreamFormats::from(strtolower($this->autodj_format))
-            : null;
-    }
-
-    public function setAutodjFormat(?string $autodj_format = null): void
-    {
-        $this->autodj_format = $this->truncateNullableString($autodj_format, 10);
+        $this->autodj_format = $autodj_format;
     }
 
     public function getAutodjBitrate(): ?int
@@ -392,9 +385,9 @@ class StationMount implements
         return $this->getStation()->getFrontendConfig()->getPort();
     }
 
-    public function getAutodjProtocolEnum(): ?StreamProtocols
+    public function getAutodjProtocol(): ?StreamProtocols
     {
-        return match ($this->getAutodjAdapterTypeEnum()) {
+        return match ($this->getAutodjAdapterType()) {
             FrontendAdapters::Shoutcast => StreamProtocols::Icy,
             default => null
         };
@@ -415,7 +408,7 @@ class StationMount implements
         return $this->getName();
     }
 
-    public function getAutodjAdapterTypeEnum(): AdapterTypeInterface
+    public function getAutodjAdapterType(): AdapterTypeInterface
     {
         return $this->getStation()->getFrontendTypeEnum();
     }
@@ -445,7 +438,7 @@ class StationMount implements
 
         if ($this->enable_autodj) {
             $response->bitrate = (int)$this->autodj_bitrate;
-            $response->format = (string)$this->autodj_format;
+            $response->format = $this->autodj_format?->value;
         }
 
         return $response;

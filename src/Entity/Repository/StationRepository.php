@@ -110,7 +110,7 @@ final class StationRepository extends Repository
             $record->setName('/radio.mp3');
             $record->setIsDefault(true);
             $record->setEnableAutodj(true);
-            $record->setAutodjFormat(StreamFormats::Mp3->value);
+            $record->setAutodjFormat(StreamFormats::Mp3);
             $record->setAutodjBitrate(128);
             $this->em->persist($record);
         }

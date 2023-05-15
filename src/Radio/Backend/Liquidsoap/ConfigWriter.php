@@ -1247,7 +1247,7 @@ final class ConfigWriter implements EventSubscriberInterface
     ): string {
         $charset = $station->getBackendConfig()->getCharset();
 
-        $format = $mount->getAutodjFormatEnum() ?? StreamFormats::default();
+        $format = $mount->getAutodjFormat() ?? StreamFormats::default();
         $output_format = $this->getOutputFormatString(
             $format,
             $mount->getAutodjBitrate() ?? 128
@@ -1267,14 +1267,14 @@ final class ConfigWriter implements EventSubscriberInterface
 
         $password = self::cleanUpString($mount->getAutodjPassword());
 
-        $adapterType = $mount->getAutodjAdapterTypeEnum();
+        $adapterType = $mount->getAutodjAdapterType();
         if (FrontendAdapters::Shoutcast === $adapterType) {
             $password .= ':#' . $id;
         }
 
         $output_params[] = 'password = "' . $password . '"';
 
-        $protocol = $mount->getAutodjProtocolEnum();
+        $protocol = $mount->getAutodjProtocol();
         if (!empty($mount->getAutodjMount())) {
             if (StreamProtocols::Icy === $protocol) {
                 $output_params[] = 'icy_id = ' . $id;

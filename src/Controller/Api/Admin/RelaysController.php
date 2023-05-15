@@ -168,7 +168,7 @@ final class RelaysController
                 }
 
                 $remote->setRelay($relay);
-                $remote->setType(RemoteAdapters::AzuraRelay->value);
+                $remote->setType(RemoteAdapters::AzuraRelay);
                 $remote->setDisplayName($mount->getDisplayName() . ' (' . $relay->getName() . ')');
                 $remote->setIsVisibleOnPublicPages($relay->getIsVisibleOnPublicPages());
                 $remote->setAutodjBitrate($mount->getAutodjBitrate());

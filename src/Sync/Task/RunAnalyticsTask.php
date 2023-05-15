@@ -34,7 +34,7 @@ final class RunAnalyticsTask extends AbstractTask
 
     public function run(bool $force = false): void
     {
-        switch ($this->settingsRepo->readSettings()->getAnalyticsEnum()) {
+        switch ($this->settingsRepo->readSettings()->getAnalytics()) {
             case Entity\Enums\AnalyticsLevel::None:
                 $this->purgeListeners();
                 $this->purgeAnalytics();

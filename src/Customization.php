@@ -39,7 +39,7 @@ final class Customization
 
         $this->user = null;
         $this->theme = SupportedThemes::default();
-        $this->publicTheme = $this->settings->getPublicThemeEnum();
+        $this->publicTheme = $this->settings->getPublicTheme();
 
         $this->locale = SupportedLocales::default();
     }
@@ -81,7 +81,7 @@ final class Customization
         }
 
         return ($isPublicTheme)
-            ? $this->settings->getPublicThemeEnum()
+            ? $this->settings->getPublicTheme()
             : SupportedThemes::default();
     }
 

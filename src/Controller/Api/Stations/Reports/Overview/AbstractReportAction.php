@@ -21,7 +21,7 @@ abstract class AbstractReportAction
 
     protected function isAllAnalyticsEnabled(): bool
     {
-        return AnalyticsLevel::All === $this->settingsRepo->readSettings()->getAnalyticsEnum();
+        return AnalyticsLevel::All === $this->settingsRepo->readSettings()->getAnalytics();
     }
 
     protected function isAnalyticsEnabled(): bool

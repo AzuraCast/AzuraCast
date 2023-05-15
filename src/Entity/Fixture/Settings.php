@@ -29,7 +29,7 @@ final class Settings extends AbstractFixture
         $settings->setEnableAdvancedFeatures(true);
 
         if (!empty(getenv('INIT_DEMO_API_KEY') ?: '')) {
-            $settings->setAnalytics(Entity\Enums\AnalyticsLevel::NoIp->value);
+            $settings->setAnalytics(Entity\Enums\AnalyticsLevel::NoIp);
             $settings->setCheckForUpdates(false);
 
             $settings->setPublicCustomJs(

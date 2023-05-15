@@ -23,12 +23,12 @@ final class ThemeAction
     ): ResponseInterface {
         $user = $request->getUser();
 
-        $currentTheme = $user->getThemeEnum();
+        $currentTheme = $user->getTheme();
         $newTheme = match ($currentTheme) {
             SupportedThemes::Dark => SupportedThemes::Light,
             default => SupportedThemes::Dark
         };
-        $user->setTheme($newTheme->value);
+        $user->setTheme($newTheme);
 
         $this->em->persist($user);
         $this->em->flush();

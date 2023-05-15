@@ -74,12 +74,9 @@ final class Customization
         }
 
         if (null !== $this->user) {
-            $themeName = $this->user->getTheme();
-            if (!empty($themeName)) {
-                $theme = SupportedThemes::tryFrom($themeName);
-                if (null !== $theme) {
-                    return $theme;
-                }
+            $userTheme = $this->user->getTheme();
+            if (null !== $userTheme) {
+                return $userTheme;
             }
         }
 

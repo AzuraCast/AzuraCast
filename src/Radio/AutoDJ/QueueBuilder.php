@@ -59,7 +59,7 @@ final class QueueBuilder implements EventSubscriberInterface
         foreach ($station->getPlaylists() as $playlist) {
             /** @var Entity\StationPlaylist $playlist */
             if ($playlist->isPlayable($event->isInterrupting())) {
-                $type = $playlist->getType();
+                $type = $playlist->getType()->value;
 
                 $subType = ($playlist->getScheduleItems()->count() > 0) ? 'scheduled' : 'unscheduled';
                 $activePlaylistsByType[$type . '_' . $subType][$playlist->getId()] = $playlist;
@@ -212,7 +212,7 @@ final class QueueBuilder implements EventSubscriberInterface
         CarbonInterface $expectedPlayTime,
         bool $allowDuplicates = false
     ): Entity\StationQueue|array|null {
-        if (Entity\Enums\PlaylistSources::RemoteUrl === $playlist->getSourceEnum()) {
+        if (Entity\Enums\PlaylistSources::RemoteUrl === $playlist->getSource()) {
             return $this->getSongFromRemotePlaylist($playlist, $expectedPlayTime);
         }
 
@@ -234,7 +234,7 @@ final class QueueBuilder implements EventSubscriberInterface
                 return $queueEntries;
             }
         } else {
-            $validTrack = match ($playlist->getOrderEnum()) {
+            $validTrack = match ($playlist->getOrder()) {
                 Entity\Enums\PlaylistOrders::Random => $this->getRandomMediaIdFromPlaylist(
                     $playlist,
                     $recentSongHistory,
@@ -263,7 +263,7 @@ final class QueueBuilder implements EventSubscriberInterface
             sprintf('Playlist "%s" did not return a playable track.', $playlist->getName()),
             [
                 'playlist_id' => $playlist->getId(),
-                'playlist_order' => $playlist->getOrder(),
+                'playlist_order' => $playlist->getOrder()->value,
                 'allow_duplicates' => $allowDuplicates,
             ]
         );
@@ -330,7 +330,7 @@ final class QueueBuilder implements EventSubscriberInterface
      */
     private function getMediaFromRemoteUrl(Entity\StationPlaylist $playlist): ?array
     {
-        $remoteType = $playlist->getRemoteTypeEnum() ?? Entity\Enums\PlaylistRemoteTypes::Stream;
+        $remoteType = $playlist->getRemoteType() ?? Entity\Enums\PlaylistRemoteTypes::Stream;
 
         // Handle a raw stream URL of possibly indeterminate length.
         if (Entity\Enums\PlaylistRemoteTypes::Stream === $remoteType) {

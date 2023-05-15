@@ -71,7 +71,7 @@ class StationPlaylistTest extends Unit
 
         $playlist = new Entity\StationPlaylist($station);
         $playlist->setName('Test Playlist');
-        $playlist->setType(Entity\Enums\PlaylistTypes::OncePerXMinutes->value);
+        $playlist->setType(Entity\Enums\PlaylistTypes::OncePerXMinutes);
         $playlist->setPlayPerMinutes(30);
 
         $utc = new DateTimeZone('UTC');
@@ -97,7 +97,7 @@ class StationPlaylistTest extends Unit
 
         $playlist = new Entity\StationPlaylist($station);
         $playlist->setName('Test Playlist');
-        $playlist->setType(Entity\Enums\PlaylistTypes::OncePerHour->value);
+        $playlist->setType(Entity\Enums\PlaylistTypes::OncePerHour);
         $playlist->setPlayPerHourMinute(50);
 
         $utc = new DateTimeZone('UTC');

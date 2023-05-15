@@ -60,7 +60,7 @@ final class Configuration
         // Check for at least one playlist, and create one if it doesn't exist.
         $defaultPlaylists = $station->getPlaylists()->filter(
             function (StationPlaylist $row) {
-                return $row->getIsEnabled() && PlaylistTypes::default() === $row->getTypeEnum();
+                return $row->getIsEnabled() && PlaylistTypes::default() === $row->getType();
             }
         );
 

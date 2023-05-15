@@ -41,12 +41,12 @@ final class StationPlaylistMediaRepository extends Repository
         Entity\StationPlaylist $playlist,
         int $weight = 0
     ): int {
-        if (Entity\Enums\PlaylistSources::Songs !== $playlist->getSourceEnum()) {
+        if (Entity\Enums\PlaylistSources::Songs !== $playlist->getSource()) {
             throw new RuntimeException('This playlist is not meant to contain songs!');
         }
 
         // Only update existing record for random-order playlists.
-        $isNonSequential = Entity\Enums\PlaylistOrders::Sequential !== $playlist->getOrderEnum();
+        $isNonSequential = Entity\Enums\PlaylistOrders::Sequential !== $playlist->getOrder();
 
         $record = ($isNonSequential)
             ? $this->repository->findOneBy(
@@ -164,11 +164,11 @@ final class StationPlaylistMediaRepository extends Repository
 
     public function resetQueue(Entity\StationPlaylist $playlist, CarbonInterface $now = null): void
     {
-        if (Entity\Enums\PlaylistSources::Songs !== $playlist->getSourceEnum()) {
+        if (Entity\Enums\PlaylistSources::Songs !== $playlist->getSource()) {
             throw new InvalidArgumentException('Playlist must contain songs.');
         }
 
-        if (Entity\Enums\PlaylistOrders::Sequential === $playlist->getOrderEnum()) {
+        if (Entity\Enums\PlaylistOrders::Sequential === $playlist->getOrder()) {
             $this->em->createQuery(
                 <<<'DQL'
                     UPDATE App\Entity\StationPlaylistMedia spm
@@ -177,7 +177,7 @@ final class StationPlaylistMediaRepository extends Repository
                 DQL
             )->setParameter('playlist', $playlist)
                 ->execute();
-        } elseif (Entity\Enums\PlaylistOrders::Shuffle === $playlist->getOrderEnum()) {
+        } elseif (Entity\Enums\PlaylistOrders::Shuffle === $playlist->getOrder()) {
             $this->em->wrapInTransaction(
                 function () use ($playlist): void {
                     $allSpmRecordsQuery = $this->em->createQuery(
@@ -223,7 +223,7 @@ final class StationPlaylistMediaRepository extends Repository
         $now = CarbonImmutable::now($station->getTimezoneObject());
 
         foreach ($station->getPlaylists() as $playlist) {
-            if (Entity\Enums\PlaylistSources::Songs !== $playlist->getSourceEnum()) {
+            if (Entity\Enums\PlaylistSources::Songs !== $playlist->getSource()) {
                 continue;
             }
 
@@ -236,7 +236,7 @@ final class StationPlaylistMediaRepository extends Repository
      */
     public function getQueue(Entity\StationPlaylist $playlist): array
     {
-        if (Entity\Enums\PlaylistSources::Songs !== $playlist->getSourceEnum()) {
+        if (Entity\Enums\PlaylistSources::Songs !== $playlist->getSource()) {
             throw new InvalidArgumentException('Playlist must contain songs.');
         }
 
@@ -247,7 +247,7 @@ final class StationPlaylistMediaRepository extends Repository
             ->where('spm.playlist = :playlist')
             ->setParameter('playlist', $playlist);
 
-        if (Entity\Enums\PlaylistOrders::Random === $playlist->getOrderEnum()) {
+        if (Entity\Enums\PlaylistOrders::Random === $playlist->getOrder()) {
             $queuedMediaQuery = $queuedMediaQuery->orderBy('RAND()');
         } else {
             $queuedMediaQuery = $queuedMediaQuery->andWhere('spm.is_queued = 1')
@@ -273,11 +273,11 @@ final class StationPlaylistMediaRepository extends Repository
 
     public function isQueueCompletelyFilled(Entity\StationPlaylist $playlist): bool
     {
-        if (Entity\Enums\PlaylistSources::Songs !== $playlist->getSourceEnum()) {
+        if (Entity\Enums\PlaylistSources::Songs !== $playlist->getSource()) {
             return true;
         }
 
-        if (Entity\Enums\PlaylistOrders::Random === $playlist->getOrderEnum()) {
+        if (Entity\Enums\PlaylistOrders::Random === $playlist->getOrder()) {
             return true;
         }
 
@@ -291,11 +291,11 @@ final class StationPlaylistMediaRepository extends Repository
 
     public function isQueueEmpty(Entity\StationPlaylist $playlist): bool
     {
-        if (Entity\Enums\PlaylistSources::Songs !== $playlist->getSourceEnum()) {
+        if (Entity\Enums\PlaylistSources::Songs !== $playlist->getSource()) {
             return false;
         }
 
-        if (Entity\Enums\PlaylistOrders::Random === $playlist->getOrderEnum()) {
+        if (Entity\Enums\PlaylistOrders::Random === $playlist->getOrder()) {
             return false;
         }
 

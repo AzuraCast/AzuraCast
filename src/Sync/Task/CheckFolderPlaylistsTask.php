@@ -66,7 +66,7 @@ final class CheckFolderPlaylistsTask extends AbstractTask
         )->setParameter('storageLocation', $station->getMediaStorageLocation());
 
         foreach ($station->getPlaylists() as $playlist) {
-            if (Entity\Enums\PlaylistSources::Songs !== $playlist->getSourceEnum()) {
+            if (Entity\Enums\PlaylistSources::Songs !== $playlist->getSource()) {
                 continue;
             }
 

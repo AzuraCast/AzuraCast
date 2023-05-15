@@ -367,7 +367,7 @@ final class ConfigWriter implements EventSubscriberInterface
             $playlistVarNames[] = $playlistVarName;
             $playlistConfigLines = [];
 
-            if (Entity\Enums\PlaylistSources::Songs === $playlist->getSourceEnum()) {
+            if (Entity\Enums\PlaylistSources::Songs === $playlist->getSource()) {
                 $playlistFilePath = PlaylistFileWriter::getPlaylistFilePath($playlist);
 
                 $playlistParams = [
@@ -375,7 +375,7 @@ final class ConfigWriter implements EventSubscriberInterface
                     'mime_type="audio/x-mpegurl"',
                 ];
 
-                $playlistMode = match ($playlist->getOrderEnum()) {
+                $playlistMode = match ($playlist->getOrder()) {
                     Entity\Enums\PlaylistOrders::Sequential => 'normal',
                     Entity\Enums\PlaylistOrders::Shuffle => 'randomize',
                     Entity\Enums\PlaylistOrders::Random => 'random'
@@ -394,7 +394,7 @@ final class ConfigWriter implements EventSubscriberInterface
 
                 $playlistConfigLines[] = $playlistVarName . ' = cue_cut(id="cue_'
                     . self::cleanUpString($playlistVarName) . '", ' . $playlistVarName . ')';
-            } elseif (Entity\Enums\PlaylistRemoteTypes::Playlist === $playlist->getRemoteTypeEnum()) {
+            } elseif (Entity\Enums\PlaylistRemoteTypes::Playlist === $playlist->getRemoteType()) {
                 $playlistFunc = 'playlist("'
                     . self::cleanUpString($playlist->getRemoteUrl())
                     . '")';
@@ -437,7 +437,7 @@ final class ConfigWriter implements EventSubscriberInterface
                 $playlistConfigLines[] = $playlistVarName . ' = drop_metadata(' . $playlistVarName . ')';
             }
 
-            if (Entity\Enums\PlaylistTypes::Advanced === $playlist->getTypeEnum()) {
+            if (Entity\Enums\PlaylistTypes::Advanced === $playlist->getType()) {
                 $playlistConfigLines[] = 'ignore(' . $playlistVarName . ')';
             }
 
@@ -447,7 +447,7 @@ final class ConfigWriter implements EventSubscriberInterface
                 $playlistVarName = 'once(' . $playlistVarName . ')';
             }
 
-            switch ($playlist->getTypeEnum()) {
+            switch ($playlist->getType()) {
                 case Entity\Enums\PlaylistTypes::Standard:
                     if ($scheduleItems->count() > 0) {
                         foreach ($scheduleItems as $scheduleItem) {
@@ -469,7 +469,7 @@ final class ConfigWriter implements EventSubscriberInterface
 
                 case Entity\Enums\PlaylistTypes::OncePerXSongs:
                 case Entity\Enums\PlaylistTypes::OncePerXMinutes:
-                    if (Entity\Enums\PlaylistTypes::OncePerXSongs === $playlist->getTypeEnum()) {
+                    if (Entity\Enums\PlaylistTypes::OncePerXSongs === $playlist->getType()) {
                         $playlistScheduleVar = 'rotate(weights=[1,'
                             . $playlist->getPlayPerSongs() . '], [' . $playlistVarName . ', radio])';
                     } else {
@@ -492,7 +492,7 @@ final class ConfigWriter implements EventSubscriberInterface
                             }
                         }
                     } else {
-                        $specialPlaylists[$playlist->getType()][] = 'radio = ' . $playlistScheduleVar;
+                        $specialPlaylists[$playlist->getType()->value][] = 'radio = ' . $playlistScheduleVar;
                     }
                     break;
 

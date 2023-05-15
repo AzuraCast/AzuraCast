@@ -231,8 +231,8 @@ class StationsController extends AbstractAdminApiCrudController
 
         foreach (Entity\Station::getStorageLocationTypes() as $locationKey => $storageLocationType) {
             $context[AbstractNormalizer::CALLBACKS][$locationKey] = static fn(
-                array $value
-            ) => $value['id'];
+                Entity\StorageLocation $value
+            ) => $value->getIdRequired();
         }
 
         return parent::toArray($record, $context);

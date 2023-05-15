@@ -377,35 +377,31 @@ final class PodcastsController extends AbstractApiCrudController
      */
     protected function fromArray($data, $record = null, array $context = []): object
     {
-        return parent::fromArray(
-            $data,
-            $record,
-            array_merge(
-                $context,
-                [
-                    AbstractNormalizer::CALLBACKS => [
-                        'categories' => function (array $newCategories, $record): void {
-                            if (!($record instanceof Entity\Podcast)) {
-                                return;
-                            }
+        $newCategories = null;
+        if (isset($data['categories'])) {
+            $newCategories = (array)$data['categories'];
+            unset($data['categories']);
+        }
 
-                            $categories = $record->getCategories();
-                            if ($categories->count() > 0) {
-                                foreach ($categories as $existingCategories) {
-                                    $this->em->remove($existingCategories);
-                                }
-                                $categories->clear();
-                            }
+        $record = parent::fromArray($data, $record, $context);
 
-                            foreach ($newCategories as $category) {
-                                $podcastCategory = new Entity\PodcastCategory($record, $category);
-                                $this->em->persist($podcastCategory);
-                                $categories->add($podcastCategory);
-                            }
-                        },
-                    ],
-                ]
-            )
-        );
+        if (null !== $newCategories) {
+            $categories = $record->getCategories();
+            if ($categories->count() > 0) {
+                foreach ($categories as $existingCategories) {
+                    $this->em->remove($existingCategories);
+                }
+                $categories->clear();
+            }
+
+            foreach ($newCategories as $category) {
+                $podcastCategory = new Entity\PodcastCategory($record, $category);
+                $this->em->persist($podcastCategory);
+
+                $categories->add($podcastCategory);
+            }
+        }
+
+        return $record;
     }
 }

@@ -12,32 +12,27 @@ use Doctrine\ORM\EntityManagerInterface;
 use ReflectionClass;
 use ReflectionProperty;
 use Symfony\Component\Serializer\Mapping\Factory\ClassMetadataFactoryInterface;
-use Symfony\Component\Serializer\NameConverter\NameConverterInterface;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
-use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
-use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
+use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
 
-use function is_array;
-
-final class DoctrineEntityNormalizer extends AbstractNormalizer implements NormalizerAwareInterface
+final class DoctrineEntityNormalizer extends AbstractObjectNormalizer
 {
-    use NormalizerAwareTrait;
-
-    public const NORMALIZE_TO_IDENTIFIERS = 'form_mode';
-
-    public const CLASS_METADATA = 'class_metadata';
-    public const ASSOCIATION_MAPPINGS = 'association_mappings';
+    private const CLASS_METADATA = 'class_metadata';
+    private const ASSOCIATION_MAPPINGS = 'association_mappings';
 
     private readonly Inflector $inflector;
 
     public function __construct(
         private readonly EntityManagerInterface $em,
         ClassMetadataFactoryInterface $classMetadataFactory = null,
-        NameConverterInterface $nameConverter = null,
         array $defaultContext = []
     ) {
-        $defaultContext[self::ALLOW_EXTRA_ATTRIBUTES] = false;
-        parent::__construct($classMetadataFactory, $nameConverter, $defaultContext);
+        $defaultContext[AbstractNormalizer::ALLOW_EXTRA_ATTRIBUTES] = true;
+
+        parent::__construct(
+            classMetadataFactory: $classMetadataFactory,
+            defaultContext: $defaultContext
+        );
 
         $this->inflector = InflectorFactory::create()->build();
     }
@@ -53,38 +48,9 @@ final class DoctrineEntityNormalizer extends AbstractNormalizer implements Norma
             throw new \InvalidArgumentException('Cannot normalize non-object.');
         }
 
-        if ($this->isCircularReference($object, $context)) {
-            return $this->handleCircularReference($object, $format, $context);
-        }
+        $context = $this->addDoctrineContext($object::class, $context);
 
-        $context[self::CLASS_METADATA] = $this->em->getClassMetadata($object::class);
-
-        $props = $this->getAllowedAttributes($object, $context);
-
-        $return_arr = [];
-        if ($props) {
-            foreach ($props as $property) {
-                $attribute = $property->getName();
-
-                try {
-                    $value = $this->getAttributeValue($object, $attribute, $format, $context);
-
-                    /** @var callable|null $callback */
-                    $callback = $context[self::CALLBACKS][$attribute]
-                        ?? $this->defaultContext[self::CALLBACKS][$attribute]
-                        ?? null;
-
-                    if ($callback) {
-                        $value = $callback($value, $object, $attribute, $format, $context);
-                    }
-
-                    $return_arr[$attribute] = $value;
-                } catch (NoGetterAvailableException) {
-                }
-            }
-        }
-
-        return $return_arr;
+        return parent::normalize($object, $format, $context);
     }
 
     /**
@@ -99,12 +65,21 @@ final class DoctrineEntityNormalizer extends AbstractNormalizer implements Norma
      */
     public function denormalize(mixed $data, string $type, string $format = null, array $context = []): object
     {
-        /** @var T $object */
-        $object = $this->instantiateObject($data, $type, $context, new ReflectionClass($type), false, $format);
+        $context = $this->addDoctrineContext($type, $context);
 
-        $type = get_class($object);
+        return parent::denormalize($data, $type, $format, $context);
+    }
 
-        $context[self::CLASS_METADATA] = $this->em->getMetadataFactory()->getMetadataFor($type);
+    /**
+     * @param class-string<object> $className
+     * @param array $context
+     * @return array
+     */
+    private function addDoctrineContext(
+        string $className,
+        array $context
+    ): array {
+        $context[self::CLASS_METADATA] =  $this->em->getClassMetadata($className);
         $context[self::ASSOCIATION_MAPPINGS] = [];
 
         if ($context[self::CLASS_METADATA]->associationMappings) {
@@ -132,142 +107,148 @@ final class DoctrineEntityNormalizer extends AbstractNormalizer implements Norma
             }
         }
 
-        foreach ((array)$data as $attribute => $value) {
-            /** @var callable|null $callback */
-            $callback = $context[self::CALLBACKS][$attribute]
-                ?? $this->defaultContext[self::CALLBACKS][$attribute]
-                ?? null;
-
-            if ($callback) {
-                $value = $callback($value, $object, $attribute, $format, $context);
-            }
-
-            $this->setAttributeValue($object, $attribute, $value, $format, $context);
-        }
-
-        return $object;
+        return $context;
     }
 
-    /**
-     * @inheritdoc
-     */
     public function supportsNormalization($data, string $format = null): bool
     {
         return $this->isEntity($data);
     }
 
-    /**
-     * @inheritdoc
-     */
     public function supportsDenormalization($data, $type, string $format = null): bool
     {
         return $this->isEntity($type);
     }
 
     /**
-     * @param object|class-string $classOrObject
+     * @param object|class-string<object> $classOrObject
      * @param array $context
      * @param bool $attributesAsString
-     *
+     * @return array|false
      */
     protected function getAllowedAttributes(
         $classOrObject,
         array $context,
         bool $attributesAsString = false
     ): array|false {
-        $meta = $this->classMetadataFactory?->getMetadataFor($classOrObject)?->getAttributesMetadata();
-        if (null === $meta) {
-            throw new \RuntimeException('Class metadata factory not specified.');
+        $groups = $this->getGroups($context);
+        if (empty($groups)) {
+            return false;
         }
 
-        $props_raw = (new ReflectionClass($classOrObject))->getProperties(
+        return parent::getAllowedAttributes($classOrObject, $context, $attributesAsString);
+    }
+
+    protected function extractAttributes(object $object, string $format = null, array $context = []): array
+    {
+        $rawProps = (new ReflectionClass($object))->getProperties(
             ReflectionProperty::IS_PUBLIC | ReflectionProperty::IS_PROTECTED
         );
+
         $props = [];
-        foreach ($props_raw as $prop_raw) {
-            $props[$prop_raw->getName()] = $prop_raw;
+        foreach ($rawProps as $rawProp) {
+            $props[] = $rawProp->getName();
         }
 
-        $props = array_intersect_key($meta, $props);
+        return array_filter(
+            $props,
+            fn($attribute) => $this->isAllowedAttribute($object, $attribute, $format, $context)
+        );
+    }
 
-        $tmpGroups = $context[self::GROUPS] ?? $this->defaultContext[self::GROUPS] ?? null;
-        $groups = (is_array($tmpGroups) || is_scalar($tmpGroups)) ? (array)$tmpGroups : false;
+    /**
+     * @param object|class-string<object> $classOrObject
+     * @param string $attribute
+     * @param string|null $format
+     * @param array $context
+     * @return bool
+     * @throws \ReflectionException
+     */
+    protected function isAllowedAttribute(
+        object|string $classOrObject,
+        string $attribute,
+        string $format = null,
+        array $context = []
+    ): bool {
+        if (!parent::isAllowedAttribute($classOrObject, $attribute, $format, $context)) {
+            return false;
+        }
 
-        $allowedAttributes = [];
-        foreach ($props as $attributeMetadata) {
-            $name = $attributeMetadata->getName();
+        $reflectionClass = new \ReflectionClass($classOrObject);
+        if (!$reflectionClass->hasProperty($attribute)) {
+            return false;
+        }
 
-            if (
-                (false === $groups || array_intersect($attributeMetadata->getGroups(), $groups)) &&
-                $this->isAllowedAttribute($classOrObject, $name, null, $context)
-            ) {
-                $allowedAttributes[] = $attributesAsString ? $name : $attributeMetadata;
+        if (isset($context[self::CLASS_METADATA]->associationMappings[$attribute])) {
+            if (!$this->supportsDeepNormalization($reflectionClass, $attribute)) {
+                return false;
             }
         }
 
-        return $allowedAttributes;
+        return $this->hasGetter($reflectionClass, $attribute);
     }
 
-    private function getAttributeValue(
+    /**
+     * @param ReflectionClass<object> $reflectionClass
+     * @param string $attribute
+     * @return bool
+     */
+    private function hasGetter(\ReflectionClass $reflectionClass, string $attribute): bool
+    {
+        // Default to "getStatus", "getConfig", etc...
+        $getterMethod = $this->getMethodName($attribute, 'get');
+        if ($reflectionClass->hasMethod($getterMethod)) {
+            return true;
+        }
+
+        $rawMethod = $this->getMethodName($attribute);
+        return $reflectionClass->hasMethod($rawMethod);
+    }
+
+    protected function getAttributeValue(
         object $object,
-        string $prop_name,
+        string $attribute,
         string $format = null,
         array $context = []
     ): mixed {
-        $form_mode = $context[self::NORMALIZE_TO_IDENTIFIERS] ?? false;
-
-        if (isset($context[self::CLASS_METADATA]->associationMappings[$prop_name])) {
-            $deepNormalizeAttrs = (new ReflectionClass($object))->getProperty($prop_name)->getAttributes(
-                DeepNormalize::class
-            );
-            if (!empty($deepNormalizeAttrs)) {
-                /** @var DeepNormalize $deepNormalize */
-                $deepNormalize = current($deepNormalizeAttrs)->newInstance();
-
-                $deep = $deepNormalize->getDeepNormalize();
-            } else {
-                $deep = false;
-            }
-
-            if (!$deep) {
+        if (isset($context[self::CLASS_METADATA]->associationMappings[$attribute])) {
+            if (!$this->supportsDeepNormalization(new \ReflectionClass($object), $attribute)) {
                 throw new NoGetterAvailableException(
                     sprintf(
                         'Deep normalization disabled for property %s.',
-                        $prop_name
+                        $attribute
                     )
                 );
             }
-
-            $prop_val = $this->getProperty($object, $prop_name);
-
-            if ($prop_val instanceof Collection) {
-                $return_val = [];
-                if (count($prop_val) > 0) {
-                    /** @var object $val_obj */
-                    foreach ($prop_val as $val_obj) {
-                        if ($form_mode) {
-                            $id_field = $this->em->getClassMetadata($val_obj::class)->identifier;
-
-                            if ($id_field && count($id_field) === 1) {
-                                $return_val[] = $this->getProperty($val_obj, $id_field[0]);
-                            }
-                        } else {
-                            $return_val[] = $this->normalizer->normalize($val_obj, $format, $context);
-                        }
-                    }
-                }
-                return $return_val;
-            }
-
-            return $this->normalizer->normalize($prop_val, $format, $context);
         }
 
-        $value = $this->getProperty($object, $prop_name);
+        $value = $this->getProperty($object, $attribute);
         if ($value instanceof Collection) {
-            $value = $value->toArray();
+            $value = $value->getValues();
         }
 
         return $value;
+    }
+
+    /**
+     * @param ReflectionClass<object> $reflectionClass
+     * @param string $attribute
+     * @return bool
+     * @throws \ReflectionException
+     */
+    private function supportsDeepNormalization(\ReflectionClass $reflectionClass, string $attribute): bool
+    {
+        $deepNormalizeAttrs = $reflectionClass->getProperty($attribute)->getAttributes(
+            DeepNormalize::class
+        );
+
+        if (empty($deepNormalizeAttrs)) {
+            return false;
+        }
+
+        /** @var DeepNormalize $deepNormalize */
+        $deepNormalize = current($deepNormalizeAttrs)->newInstance();
+        return $deepNormalize->getDeepNormalize();
     }
 
     private function getProperty(object $entity, string $key): mixed
@@ -297,34 +278,34 @@ final class DoctrineEntityNormalizer extends AbstractNormalizer implements Norma
 
     /**
      * @param object $object
-     * @param string $field
+     * @param string $attribute
      * @param mixed $value
      * @param string|null $format
      * @param array $context
      */
-    private function setAttributeValue(
+    protected function setAttributeValue(
         object $object,
-        string $field,
+        string $attribute,
         mixed $value,
         ?string $format = null,
         array $context = []
     ): void {
-        if (isset($context[self::ASSOCIATION_MAPPINGS][$field])) {
+        if (isset($context[self::ASSOCIATION_MAPPINGS][$attribute])) {
             // Handle a mapping to another entity.
-            $mapping = $context[self::ASSOCIATION_MAPPINGS][$field];
+            $mapping = $context[self::ASSOCIATION_MAPPINGS][$attribute];
 
             if ('one' === $mapping['type']) {
                 if (empty($value)) {
-                    $this->setProperty($object, $field, null);
+                    $this->setProperty($object, $attribute, null, $format, $context);
                 } else {
                     /** @var class-string $entity */
                     $entity = $mapping['entity'];
                     if (($field_item = $this->em->find($entity, $value)) instanceof $entity) {
-                        $this->setProperty($object, $field, $field_item);
+                        $this->setProperty($object, $attribute, $field_item, $format, $context);
                     }
                 }
             } elseif ($mapping['is_owning_side']) {
-                $collection = $this->getProperty($object, $field);
+                $collection = $this->getProperty($object, $attribute);
 
                 if ($collection instanceof Collection) {
                     $collection->clear();
@@ -343,18 +324,42 @@ final class DoctrineEntityNormalizer extends AbstractNormalizer implements Norma
                 }
             }
         } else {
-            $this->setProperty($object, $field, $value);
+            $this->setProperty($object, $attribute, $value, $format, $context);
         }
     }
 
-    private function setProperty(object $entity, string $key, mixed $value): void
-    {
-        $method_name = $this->getMethodName($key, 'set');
-        if (!method_exists($entity, $method_name)) {
+    private function setProperty(
+        object $entity,
+        string $attribute,
+        mixed $value,
+        ?string $format = null,
+        array $context = []
+    ): void {
+        $methodName = $this->getMethodName($attribute, 'set');
+
+        $reflClass = new \ReflectionClass($entity);
+        if (!$reflClass->hasMethod($methodName)) {
             return;
         }
 
-        $entity->$method_name($value);
+        // If setter parameter is a special class, normalize to it.
+        $methodParams = $reflClass->getMethod($methodName)->getParameters();
+        $parameter = $methodParams[0];
+
+        if (null === $value && $parameter->allowsNull()) {
+            $value = null;
+        } else {
+            $value = $this->denormalizeParameter(
+                $reflClass,
+                $parameter,
+                $attribute,
+                $value,
+                $this->createChildContext($context, $attribute, $format),
+                $format
+            );
+        }
+
+        $entity->$methodName($value);
     }
 
     private function isEntity(mixed $class): bool

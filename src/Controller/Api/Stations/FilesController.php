@@ -252,22 +252,14 @@ final class FilesController extends AbstractStationApiCrudController
 
         $fsMedia = $this->stationFilesystems->getMediaFilesystem($station);
 
-        $record = $this->fromArray(
-            $data,
-            $record,
-            [
-                AbstractNormalizer::CALLBACKS => [
-                    'path' => function ($new_value, $record) use ($fsMedia) {
-                        // Detect and handle a rename.
-                        if (($record instanceof Entity\StationMedia) && $new_value !== $record->getPath()) {
-                            $fsMedia->move($record->getPath(), $new_value);
-                        }
+        $oldPath = $record->getPath();
+        $isRenamed = (isset($data['path']) && $data['path'] !== $oldPath);
 
-                        return $new_value;
-                    },
-                ],
-            ]
-        );
+        $record = $this->fromArray($data, $record);
+
+        if ($isRenamed) {
+            $fsMedia->move($oldPath, $record->getPath());
+        }
 
         $errors = $this->validator->validate($record);
         if (count($errors) > 0) {

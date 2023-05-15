@@ -46,6 +46,11 @@ parameters:
 			path: src/Exception/ValidationException.php
 
 		-
+			message: "#^Method App\\\\Normalizer\\\\DoctrineEntityNormalizer\\:\\:getAllowedAttributes\\(\\) should return array\\|false but returns array\\<string\\|Symfony\\\\Component\\\\Serializer\\\\Mapping\\\\AttributeMetadataInterface\\>\\|bool\\.$#"
+			count: 1
+			path: src/Normalizer/DoctrineEntityNormalizer.php
+
+		-
 			message: "#^Parameter \\#1 \\$className of method Doctrine\\\\ORM\\\\EntityManagerInterface\\:\\:getRepository\\(\\) expects class\\-string\\<object\\>, class\\-string\\|false given\\.$#"
 			count: 1
 			path: src/Validator/Constraints/UniqueEntityValidator.php

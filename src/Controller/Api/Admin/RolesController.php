@@ -219,21 +219,19 @@ final class RolesController extends AbstractAdminApiCrudController
 
     protected function fromArray(array $data, $record = null, array $context = []): object
     {
-        return parent::fromArray(
-            $data,
-            $record,
-            array_merge(
-                $context,
-                [
-                    AbstractNormalizer::CALLBACKS => [
-                        'permissions' => function (array $value, Entity\Role $record) {
-                            $this->doUpdatePermissions($record, $value);
-                            return null;
-                        },
-                    ],
-                ]
-            )
-        );
+        $permissions = null;
+        if (isset($data['permissions'])) {
+            $permissions = (array)$data['permissions'];
+            unset($data['permissions']);
+        }
+
+        $record = parent::fromArray($data, $record, $context);
+
+        if (null !== $permissions) {
+            $this->doUpdatePermissions($record, $permissions);
+        }
+
+        return $record;
     }
 
     private function doUpdatePermissions(Entity\Role $role, array $newPermissions): void

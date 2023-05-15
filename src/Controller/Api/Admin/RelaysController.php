@@ -61,7 +61,7 @@ final class RelaysController
             $row->url = $station->getUrl();
             $row->genre = $station->getGenre();
 
-            $row->type = $station->getFrontendType();
+            $row->type = $station->getFrontendType()->value;
 
             $frontend_config = $station->getFrontendConfig();
             $row->port = $frontend_config->getPort();

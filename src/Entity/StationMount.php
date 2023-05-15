@@ -410,7 +410,7 @@ class StationMount implements
 
     public function getAutodjAdapterType(): AdapterTypeInterface
     {
-        return $this->getStation()->getFrontendTypeEnum();
+        return $this->getStation()->getFrontendType();
     }
 
     /**

@@ -1128,7 +1128,7 @@ final class ConfigWriter implements EventSubscriberInterface
     {
         $station = $event->getStation();
 
-        if (FrontendAdapters::Remote === $station->getFrontendTypeEnum()) {
+        if (FrontendAdapters::Remote === $station->getFrontendType()) {
             return;
         }
 

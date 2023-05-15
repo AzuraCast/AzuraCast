@@ -21,13 +21,13 @@ enum StationFeatures
 
     public function supportedForStation(Station $station): bool
     {
-        $backendEnabled = $station->getBackendTypeEnum()->isEnabled();
+        $backendEnabled = $station->getBackendType()->isEnabled();
 
         return match ($this) {
             self::Media, self::CustomLiquidsoapConfig => $backendEnabled,
             self::Streamers => $backendEnabled && $station->getEnableStreamers(),
             self::Sftp => $backendEnabled && $station->getMediaStorageLocation()->isLocal(),
-            self::MountPoints => $station->getFrontendTypeEnum()->supportsMounts(),
+            self::MountPoints => $station->getFrontendType()->supportsMounts(),
             self::HlsStreams => $backendEnabled && $station->getEnableHls(),
             self::Requests => $backendEnabled && $station->getEnableRequests(),
             self::Webhooks, self::Podcasts, self::RemoteRelays => true,

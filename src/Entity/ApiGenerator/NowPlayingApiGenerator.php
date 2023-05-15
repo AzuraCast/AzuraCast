@@ -33,7 +33,7 @@ final class NowPlayingApiGenerator
     ): Entity\Api\NowPlaying\NowPlaying {
         $baseUri = new Uri('');
 
-        $updateSongFromNowPlaying = !$station->getBackendTypeEnum()->isEnabled();
+        $updateSongFromNowPlaying = !$station->getBackendType()->isEnabled();
 
         if ($updateSongFromNowPlaying && empty($npResult->currentSong->text)) {
             return $this->offlineApi($station, $baseUri);

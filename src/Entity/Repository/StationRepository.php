@@ -105,7 +105,7 @@ final class StationRepository extends Repository
         }
 
         // Create default mountpoints if station supports them.
-        if ($station->getFrontendTypeEnum()->supportsMounts()) {
+        if ($station->getFrontendType()->supportsMounts()) {
             $record = new Entity\StationMount($station);
             $record->setName('/radio.mp3');
             $record->setIsDefault(true);
@@ -125,7 +125,7 @@ final class StationRepository extends Repository
             $this->em->remove($hlsStream);
         }
 
-        if ($station->getEnableHls() && $station->getBackendTypeEnum()->isEnabled()) {
+        if ($station->getEnableHls() && $station->getBackendType()->isEnabled()) {
             $streams = [
                 'aac_lofi' => 48,
                 'aac_midfi' => 96,

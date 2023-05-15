@@ -15,7 +15,7 @@ return static function (App\Event\BuildStationMenu $e) {
     $backendConfig = $station->getBackendConfig();
 
     $router = $request->getRouter();
-    $frontendEnum = $station->getFrontendTypeEnum();
+    $frontendEnum = $station->getFrontendType();
 
     $willDisconnectMessage = __('Restart broadcasting? This will disconnect any current listeners.');
     $willNotDisconnectMessage = __('Reload broadcasting? Current listeners will not be disconnected.');

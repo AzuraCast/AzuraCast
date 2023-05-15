@@ -31,7 +31,7 @@ final class ConfigWriter implements EventSubscriberInterface
         $station = $event->getStation();
 
         // Only forward local radio
-        if (FrontendAdapters::Remote === $station->getFrontendTypeEnum()) {
+        if (FrontendAdapters::Remote === $station->getFrontendType()) {
             return;
         }
 
@@ -64,7 +64,7 @@ final class ConfigWriter implements EventSubscriberInterface
         $station = $event->getStation();
 
         // Only forward Liquidsoap
-        if (BackendAdapters::Liquidsoap !== $station->getBackendTypeEnum()) {
+        if (BackendAdapters::Liquidsoap !== $station->getBackendType()) {
             return;
         }
 

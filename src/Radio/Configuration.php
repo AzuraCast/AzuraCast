@@ -109,8 +109,8 @@ final class Configuration
             throw new RuntimeException('Station is disabled.');
         }
 
-        $frontendEnum = $station->getFrontendTypeEnum();
-        $backendEnum = $station->getBackendTypeEnum();
+        $frontendEnum = $station->getFrontendType();
+        $backendEnum = $station->getBackendType();
 
         $frontend = $this->adapters->getFrontendAdapter($station);
         $backend = $this->adapters->getBackendAdapter($station);
@@ -265,8 +265,8 @@ final class Configuration
     public function assignRadioPorts(Station $station, bool $force = false): void
     {
         if (
-            $station->getFrontendTypeEnum()->isEnabled()
-            || $station->getBackendTypeEnum()->isEnabled()
+            $station->getFrontendType()->isEnabled()
+            || $station->getBackendType()->isEnabled()
         ) {
             $frontend_config = $station->getFrontendConfig();
             $backend_config = $station->getBackendConfig();

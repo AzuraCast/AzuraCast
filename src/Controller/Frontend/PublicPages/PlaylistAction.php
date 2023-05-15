@@ -61,7 +61,7 @@ final class PlaylistAction
             ];
         }
 
-        if ($station->getEnableHls() && $station->getBackendTypeEnum()->isEnabled()) {
+        if ($station->getEnableHls() && $station->getBackendType()->isEnabled()) {
             $backend = $this->adapters->getBackendAdapter($station);
             $backendConfig = $station->getBackendConfig();
 

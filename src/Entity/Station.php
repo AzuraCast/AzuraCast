@@ -78,10 +78,10 @@ class Station implements Stringable, IdentifiableEntityInterface
             description: "The frontend adapter (icecast,shoutcast,remote,etc)",
             example: "icecast"
         ),
-        ORM\Column(length: 100, nullable: true),
+        ORM\Column(type: 'string', length: 100, nullable: true, enumType: FrontendAdapters::class),
         Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])
     ]
-    protected ?string $frontend_type = null;
+    protected ?FrontendAdapters $frontend_type = null;
 
     #[
         OA\Property(
@@ -99,10 +99,10 @@ class Station implements Stringable, IdentifiableEntityInterface
             description: "The backend adapter (liquidsoap,etc)",
             example: "liquidsoap"
         ),
-        ORM\Column(length: 100, nullable: true),
+        ORM\Column(type: 'string', length: 100, nullable: true, enumType: BackendAdapters::class),
         Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])
     ]
-    protected ?string $backend_type = null;
+    protected ?BackendAdapters $backend_type = null;
 
     #[
         OA\Property(
@@ -409,8 +409,8 @@ class Station implements Stringable, IdentifiableEntityInterface
 
     public function __construct()
     {
-        $this->frontend_type = FrontendAdapters::Icecast->value;
-        $this->backend_type = BackendAdapters::Liquidsoap->value;
+        $this->frontend_type = FrontendAdapters::Icecast;
+        $this->backend_type = BackendAdapters::Liquidsoap;
 
         $this->history = new ArrayCollection();
         $this->permissions = new ArrayCollection();
@@ -465,24 +465,13 @@ class Station implements Stringable, IdentifiableEntityInterface
         $this->is_enabled = $is_enabled;
     }
 
-    public function getFrontendType(): ?string
+    public function getFrontendType(): FrontendAdapters
     {
-        return $this->frontend_type;
+        return $this->frontend_type ?? FrontendAdapters::default();
     }
 
-    public function getFrontendTypeEnum(): FrontendAdapters
+    public function setFrontendType(?FrontendAdapters $frontend_type = null): void
     {
-        return (null !== $this->frontend_type)
-            ? FrontendAdapters::from($this->frontend_type)
-            : FrontendAdapters::default();
-    }
-
-    public function setFrontendType(?string $frontend_type = null): void
-    {
-        if (null !== $frontend_type && null === FrontendAdapters::tryFrom($frontend_type)) {
-            throw new InvalidArgumentException('Invalid frontend type specified.');
-        }
-
         $this->frontend_type = $frontend_type;
     }
 
@@ -508,24 +497,13 @@ class Station implements Stringable, IdentifiableEntityInterface
         $this->frontend_config = $config;
     }
 
-    public function getBackendType(): ?string
+    public function getBackendType(): BackendAdapters
     {
-        return $this->backend_type;
+        return $this->backend_type ?? BackendAdapters::default();
     }
 
-    public function getBackendTypeEnum(): BackendAdapters
+    public function setBackendType(BackendAdapters $backend_type = null): void
     {
-        return (null !== $this->backend_type)
-            ? BackendAdapters::from($this->backend_type)
-            : BackendAdapters::default();
-    }
-
-    public function setBackendType(string $backend_type = null): void
-    {
-        if (null !== $backend_type && null === BackendAdapters::tryFrom($backend_type)) {
-            throw new InvalidArgumentException('Invalid frontend type specified.');
-        }
-
         $this->backend_type = $backend_type;
     }
 
@@ -541,7 +519,7 @@ class Station implements Stringable, IdentifiableEntityInterface
     {
         return $this->getIsEnabled()
             && !$this->useManualAutoDJ()
-            && BackendAdapters::None !== $this->getBackendTypeEnum();
+            && BackendAdapters::None !== $this->getBackendType();
     }
 
     public function getBackendConfig(): StationBackendConfiguration
@@ -552,7 +530,7 @@ class Station implements Stringable, IdentifiableEntityInterface
     public function hasLocalServices(): bool
     {
         return $this->getIsEnabled() &&
-            ($this->getBackendTypeEnum()->isEnabled() || $this->getFrontendTypeEnum()->isEnabled());
+            ($this->getBackendType()->isEnabled() || $this->getFrontendType()->isEnabled());
     }
 
     public function setBackendConfig(

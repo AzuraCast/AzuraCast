@@ -329,7 +329,7 @@ final class BatchAction
     ): Entity\Api\BatchResult {
         $result = $this->parseRequest($request, $fs, true);
 
-        if (BackendAdapters::Liquidsoap !== $station->getBackendTypeEnum()) {
+        if (BackendAdapters::Liquidsoap !== $station->getBackendType()) {
             throw new RuntimeException('This functionality can only be used on stations that use Liquidsoap.');
         }
 
@@ -446,7 +446,7 @@ final class BatchAction
         array $playlists
     ): void {
         // Write new PLS playlist configuration.
-        if ($station->getBackendTypeEnum()->isEnabled()) {
+        if ($station->getBackendType()->isEnabled()) {
             foreach ($playlists as $playlistId => $playlistRow) {
                 // Instruct the message queue to start a new "write playlist to file" task.
                 $message = new Message\WritePlaylistFileMessage();

@@ -314,8 +314,8 @@ class StationsController extends AbstractAdminApiCrudController
         $old_backend = $original_record['backend_type'];
         $old_hls = (bool)$original_record['enable_hls'];
 
-        $frontend_changed = ($old_frontend !== $station->getFrontendType()->value);
-        $backend_changed = ($old_backend !== $station->getBackendType()->value);
+        $frontend_changed = ($old_frontend !== $station->getFrontendType());
+        $backend_changed = ($old_backend !== $station->getBackendType());
         $adapter_changed = $frontend_changed || $backend_changed;
 
         $hls_changed = $old_hls !== $station->getEnableHls();

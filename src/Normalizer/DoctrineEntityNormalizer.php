@@ -296,12 +296,12 @@ final class DoctrineEntityNormalizer extends AbstractObjectNormalizer
 
             if ('one' === $mapping['type']) {
                 if (empty($value)) {
-                    $this->setProperty($object, $attribute, null, $format, $context);
+                    $this->setProperty($object, $attribute, null);
                 } else {
                     /** @var class-string $entity */
                     $entity = $mapping['entity'];
                     if (($field_item = $this->em->find($entity, $value)) instanceof $entity) {
-                        $this->setProperty($object, $attribute, $field_item, $format, $context);
+                        $this->setProperty($object, $attribute, $field_item);
                     }
                 }
             } elseif ($mapping['is_owning_side']) {
@@ -324,39 +324,42 @@ final class DoctrineEntityNormalizer extends AbstractObjectNormalizer
                 }
             }
         } else {
-            $this->setProperty($object, $attribute, $value, $format, $context);
+            $methodName = $this->getMethodName($attribute, 'set');
+
+            $reflClass = new \ReflectionClass($object);
+            if (!$reflClass->hasMethod($methodName)) {
+                return;
+            }
+
+            // If setter parameter is a special class, normalize to it.
+            $methodParams = $reflClass->getMethod($methodName)->getParameters();
+            $parameter = $methodParams[0];
+
+            if (null === $value && $parameter->allowsNull()) {
+                $value = null;
+            } else {
+                $value = $this->denormalizeParameter(
+                    $reflClass,
+                    $parameter,
+                    $attribute,
+                    $value,
+                    $this->createChildContext($context, $attribute, $format),
+                    $format
+                );
+            }
+
+            $this->setProperty($object, $attribute, $value);
         }
     }
 
     private function setProperty(
         object $entity,
         string $attribute,
-        mixed $value,
-        ?string $format = null,
-        array $context = []
+        mixed $value
     ): void {
         $methodName = $this->getMethodName($attribute, 'set');
-
-        $reflClass = new \ReflectionClass($entity);
-        if (!$reflClass->hasMethod($methodName)) {
+        if (!method_exists($entity, $methodName)) {
             return;
-        }
-
-        // If setter parameter is a special class, normalize to it.
-        $methodParams = $reflClass->getMethod($methodName)->getParameters();
-        $parameter = $methodParams[0];
-
-        if (null === $value && $parameter->allowsNull()) {
-            $value = null;
-        } else {
-            $value = $this->denormalizeParameter(
-                $reflClass,
-                $parameter,
-                $attribute,
-                $value,
-                $this->createChildContext($context, $attribute, $format),
-                $format
-            );
         }
 
         $entity->$methodName($value);

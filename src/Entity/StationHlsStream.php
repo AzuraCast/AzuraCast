@@ -26,14 +26,14 @@ class StationHlsStream implements
     use Traits\TruncateStrings;
     use Traits\TruncateInts;
 
-    #[ORM\Column(nullable: false)]
-    protected int $station_id;
-
     #[
         ORM\ManyToOne(inversedBy: 'hls_streams'),
         ORM\JoinColumn(name: 'station_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')
     ]
     protected Station $station;
+
+    #[ORM\Column(nullable: false, insertable: false, updatable: false)]
+    protected int $station_id;
 
     #[
         OA\Property(example: "aac_lofi"),

@@ -19,19 +19,19 @@ class StationRequest implements
 {
     use Traits\HasAutoIncrementId;
 
-    #[ORM\Column(nullable: false)]
-    protected int $station_id;
-
     #[ORM\ManyToOne(inversedBy: 'media')]
     #[ORM\JoinColumn(name: 'station_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     protected Station $station;
 
-    #[ORM\Column(nullable: false)]
-    protected int $track_id;
+    #[ORM\Column(nullable: false, insertable: false, updatable: false)]
+    protected int $station_id;
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(name: 'track_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     protected StationMedia $track;
+
+    #[ORM\Column(nullable: false, insertable: false, updatable: false)]
+    protected int $track_id;
 
     #[ORM\Column]
     protected int $timestamp;

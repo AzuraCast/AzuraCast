@@ -349,17 +349,17 @@ class Station implements Stringable, IdentifiableEntityInterface
     protected Collection $streamers;
 
     #[
-        ORM\Column(nullable: true),
-        Attributes\AuditIgnore
-    ]
-    private ?int $current_streamer_id = null;
-
-    #[
         ORM\ManyToOne,
         ORM\JoinColumn(name: 'current_streamer_id', referencedColumnName: 'id', nullable: true, onDelete: 'SET NULL'),
         Attributes\AuditIgnore
     ]
     protected ?StationStreamer $current_streamer = null;
+
+    #[
+        ORM\Column(nullable: true, insertable: false, updatable: false),
+        Attributes\AuditIgnore
+    ]
+    private ?int $current_streamer_id = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     protected ?string $fallback_path = null;

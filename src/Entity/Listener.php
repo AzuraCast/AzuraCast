@@ -22,33 +22,33 @@ class Listener implements
     use Traits\HasAutoIncrementId;
     use Traits\TruncateStrings;
 
-    #[ORM\Column(nullable: false)]
-    protected int $station_id;
-
     #[ORM\ManyToOne(inversedBy: 'history')]
     #[ORM\JoinColumn(name: 'station_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     protected Station $station;
 
-    #[ORM\Column(nullable: true)]
-    protected ?int $mount_id = null;
+    #[ORM\Column(nullable: false, insertable: false, updatable: false)]
+    protected int $station_id;
 
     #[ORM\ManyToOne(targetEntity: StationMount::class)]
     #[ORM\JoinColumn(name: 'mount_id', referencedColumnName: 'id', nullable: true, onDelete: 'SET NULL')]
     protected ?StationMount $mount = null;
 
-    #[ORM\Column(nullable: true)]
-    protected ?int $remote_id = null;
+    #[ORM\Column(nullable: true, insertable: false, updatable: false)]
+    protected ?int $mount_id = null;
 
     #[ORM\ManyToOne(targetEntity: StationRemote::class)]
     #[ORM\JoinColumn(name: 'remote_id', referencedColumnName: 'id', nullable: true, onDelete: 'SET NULL')]
     protected ?StationRemote $remote = null;
 
-    #[ORM\Column(nullable: true)]
-    protected ?int $hls_stream_id = null;
+    #[ORM\Column(nullable: true, insertable: false, updatable: false)]
+    protected ?int $remote_id = null;
 
     #[ORM\ManyToOne(targetEntity: StationHlsStream::class)]
     #[ORM\JoinColumn(name: 'hls_stream_id', referencedColumnName: 'id', nullable: true, onDelete: 'SET NULL')]
     protected ?StationHlsStream $hls_stream = null;
+
+    #[ORM\Column(nullable: true, insertable: false, updatable: false)]
+    protected ?int $hls_stream_id = null;
 
     #[ORM\Column]
     protected int $listener_uid;

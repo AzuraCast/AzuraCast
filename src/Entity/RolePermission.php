@@ -20,22 +20,22 @@ class RolePermission implements
 {
     use Traits\HasAutoIncrementId;
 
-    #[ORM\Column]
-    protected int $role_id;
-
     #[ORM\ManyToOne(inversedBy: 'permissions')]
     #[ORM\JoinColumn(name: 'role_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     protected Role $role;
 
+    #[ORM\Column(insertable: false, updatable: false)]
+    protected int $role_id;
+
     #[ORM\Column(length: 50)]
     protected string $action_name;
-
-    #[ORM\Column(nullable: true)]
-    protected ?int $station_id = null;
 
     #[ORM\ManyToOne(inversedBy: 'permissions')]
     #[ORM\JoinColumn(name: 'station_id', referencedColumnName: 'id', nullable: true, onDelete: 'CASCADE')]
     protected ?Station $station = null;
+
+    #[ORM\Column(nullable: true, insertable: false, updatable: false)]
+    protected ?int $station_id = null;
 
     public function __construct(
         Role $role,

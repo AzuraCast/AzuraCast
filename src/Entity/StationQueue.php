@@ -26,33 +26,33 @@ class StationQueue implements
     public const DAYS_TO_KEEP = 7;
     public const QUEUE_LOG_TTL = 86400;
 
-    #[ORM\Column(nullable: false)]
-    protected int $station_id;
-
     #[ORM\ManyToOne(inversedBy: 'history')]
     #[ORM\JoinColumn(name: 'station_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     protected Station $station;
 
-    #[ORM\Column(nullable: true)]
-    protected ?int $playlist_id = null;
+    #[ORM\Column(nullable: false, insertable: false, updatable: false)]
+    protected int $station_id;
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(name: 'playlist_id', referencedColumnName: 'id', nullable: true, onDelete: 'CASCADE')]
     protected ?StationPlaylist $playlist = null;
 
-    #[ORM\Column(nullable: true)]
-    protected ?int $media_id = null;
+    #[ORM\Column(nullable: true, insertable: false, updatable: false)]
+    protected ?int $playlist_id = null;
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(name: 'media_id', referencedColumnName: 'id', nullable: true, onDelete: 'CASCADE')]
     protected ?StationMedia $media = null;
 
-    #[ORM\Column(nullable: true)]
-    protected ?int $request_id = null;
+    #[ORM\Column(nullable: true, insertable: false, updatable: false)]
+    protected ?int $media_id = null;
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(name: 'request_id', referencedColumnName: 'id', nullable: true, onDelete: 'CASCADE')]
     protected ?StationRequest $request = null;
+
+    #[ORM\Column(nullable: true, insertable: false, updatable: false)]
+    protected ?int $request_id = null;
 
     #[ORM\Column]
     protected bool $sent_to_autodj = false;

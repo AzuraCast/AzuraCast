@@ -41,14 +41,14 @@ class StationPlaylist implements
     public const OPTION_PLAY_SINGLE_TRACK = 'single_track';
     public const OPTION_MERGE = 'merge';
 
-    #[ORM\Column(nullable: false)]
-    protected int $station_id;
-
     #[
         ORM\ManyToOne(inversedBy: 'playlists'),
         ORM\JoinColumn(name: 'station_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')
     ]
     protected Station $station;
+
+    #[ORM\Column(nullable: false, insertable: false, updatable: false)]
+    protected int $station_id;
 
     #[
         OA\Property(example: "Test Playlist"),

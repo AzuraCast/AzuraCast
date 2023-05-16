@@ -37,14 +37,14 @@ class StationStreamer implements
     use Traits\HasAutoIncrementId;
     use Traits\TruncateStrings;
 
-    #[ORM\Column(nullable: false)]
-    protected int $station_id;
-
     #[
         ORM\ManyToOne(inversedBy: 'streamers'),
         ORM\JoinColumn(name: 'station_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')
     ]
     protected Station $station;
+
+    #[ORM\Column(nullable: false, insertable: false, updatable: false)]
+    protected int $station_id;
 
     #[
         OA\Property(example: "dj_test"),

@@ -22,12 +22,12 @@ class Analytics implements IdentifiableEntityInterface
 {
     use Traits\HasAutoIncrementId;
 
-    #[ORM\Column(nullable: true)]
-    protected ?int $station_id = null;
-
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(name: 'station_id', referencedColumnName: 'id', nullable: true, onDelete: 'CASCADE')]
     protected ?Station $station = null;
+
+    #[ORM\Column(nullable: true, insertable: false, updatable: false)]
+    protected ?int $station_id = null;
 
     #[ORM\Column(type: 'string', length: 15, enumType: AnalyticsIntervals::class)]
     protected AnalyticsIntervals $type;

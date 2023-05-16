@@ -29,19 +29,19 @@ class StationRemote implements
     use Traits\HasAutoIncrementId;
     use Traits\TruncateStrings;
 
-    #[ORM\Column(nullable: false)]
-    protected int $station_id;
-
     #[ORM\ManyToOne(inversedBy: 'remotes')]
     #[ORM\JoinColumn(name: 'station_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     protected Station $station;
 
-    #[ORM\Column(nullable: true)]
-    protected ?int $relay_id = null;
+    #[ORM\Column(nullable: false, insertable: false, updatable: false)]
+    protected int $station_id;
 
     #[ORM\ManyToOne(inversedBy: 'remotes')]
     #[ORM\JoinColumn(name: 'relay_id', referencedColumnName: 'id', nullable: true, onDelete: 'CASCADE')]
     protected ?Relay $relay = null;
+
+    #[ORM\Column(nullable: true, insertable: false, updatable: false)]
+    protected ?int $relay_id = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     protected ?string $display_name = null;

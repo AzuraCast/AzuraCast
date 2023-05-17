@@ -144,7 +144,6 @@ final class AuditLog implements EventSubscriber
         $associated = [];
         $disassociated = [];
 
-        /** @var PersistentCollection<int, object> $collection */
         foreach ($uow->getScheduledCollectionUpdates() as $collection) {
             $owner = $collection->getOwner();
 
@@ -159,9 +158,6 @@ final class AuditLog implements EventSubscriber
 
             // Ignore inverse side or one to many relations
             $mapping = $collection->getMapping();
-            if (null === $mapping) {
-                continue;
-            }
             if (!$mapping['isOwningSide'] || $mapping['type'] !== ClassMetadataInfo::MANY_TO_MANY) {
                 continue;
             }
@@ -188,7 +184,6 @@ final class AuditLog implements EventSubscriber
             }
         }
 
-        /** @var PersistentCollection<int, object> $collection */
         foreach ($uow->getScheduledCollectionDeletions() as $collection) {
             $owner = $collection->getOwner();
 
@@ -203,9 +198,6 @@ final class AuditLog implements EventSubscriber
 
             // Ignore inverse side or one to many relations
             $mapping = $collection->getMapping();
-            if (null === $mapping) {
-                continue;
-            }
             if (!$mapping['isOwningSide'] || $mapping['type'] !== ClassMetadataInfo::MANY_TO_MANY) {
                 continue;
             }

@@ -35,8 +35,6 @@ ports:
 tasks:
   - name: Backend
     init: |
-      bash docker.sh install-docker
-      bash docker.sh install-docker-compose
       docker-compose build
     command: |
       bash util/setup_gitpod.sh

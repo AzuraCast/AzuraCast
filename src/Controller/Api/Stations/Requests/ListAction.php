@@ -15,7 +15,6 @@ use App\Http\Response;
 use App\Http\ServerRequest;
 use App\OpenApi;
 use App\Radio\AutoDJ\Scheduler;
-use App\Service\Meilisearch;
 use Carbon\CarbonImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use OpenApi\Attributes as OA;
@@ -51,11 +50,10 @@ final class ListAction extends AbstractSearchableListAction
     public function __construct(
         EntityManagerInterface $em,
         SongApiGenerator $songApiGenerator,
-        Meilisearch $meilisearch,
         CacheItemPoolInterface $psr6Cache,
         private readonly Scheduler $scheduler
     ) {
-        parent::__construct($em, $songApiGenerator, $meilisearch, $psr6Cache);
+        parent::__construct($em, $songApiGenerator, $psr6Cache);
     }
 
     public function __invoke(

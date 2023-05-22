@@ -12,7 +12,6 @@ use App\Http\RouterInterface;
 use App\Http\ServerRequest;
 use App\Media\MimeType;
 use App\Paginator;
-use App\Service\Meilisearch;
 use App\Utilities;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityManagerInterface;
@@ -29,7 +28,6 @@ final class ListAction
     public function __construct(
         private readonly EntityManagerInterface $em,
         private readonly CacheInterface $cache,
-        private readonly Meilisearch $meilisearch,
         private readonly StationFilesystems $stationFilesystems
     ) {
     }
@@ -136,26 +134,16 @@ final class ListAction
                     } else {
                         [$searchPhrase, $playlist] = $this->parseSearchQuery($station, $searchPhrase);
 
-                        if ($this->meilisearch->isSupported()) {
-                            $ids = $this->meilisearch
-                                ->getIndex($storageLocation)
-                                ->searchMedia($searchPhrase, $playlist);
-
+                        if (null !== $playlist) {
                             $mediaQueryBuilder->andWhere(
-                                'sm.id IN (:ids)'
-                            )->setParameter('ids', $ids);
-                        } else {
-                            if (null !== $playlist) {
-                                $mediaQueryBuilder->andWhere(
-                                    'sm.id IN (SELECT spm2.media_id FROM App\Entity\StationPlaylistMedia spm2 '
-                                    . 'WHERE spm2.playlist = :playlist)'
-                                )->setParameter('playlist', $playlist);
-                            }
+                                'sm.id IN (SELECT spm2.media_id FROM App\Entity\StationPlaylistMedia spm2 '
+                                . 'WHERE spm2.playlist = :playlist)'
+                            )->setParameter('playlist', $playlist);
+                        }
 
-                            if (!empty($searchPhrase)) {
-                                $mediaQueryBuilder->andWhere('(sm.title LIKE :query OR sm.artist LIKE :query)')
-                                    ->setParameter('query', '%' . $searchPhrase . '%');
-                            }
+                        if (!empty($searchPhrase)) {
+                            $mediaQueryBuilder->andWhere('(sm.title LIKE :query OR sm.artist LIKE :query)')
+                                ->setParameter('query', '%' . $searchPhrase . '%');
                         }
                     }
 

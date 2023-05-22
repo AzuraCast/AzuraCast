@@ -114,9 +114,6 @@ __dotenv_cmd=.env
 cd "$( dirname "${BASH_SOURCE[0]}" )" || exit
 cd ..
 
-cp dev.env .env
-cp azuracast.dev.env azuracast.env
-
 # Download mkcert
 curl -JLO "https://dl.filippo.io/mkcert/latest?for=linux/amd64"
 chmod +x mkcert-v*-linux-amd64

@@ -272,7 +272,7 @@ const emit = defineEmits([
 ]);
 
 const selectedRows = ref([]);
-const searchPhrase = ref(null);
+const searchPhrase = ref('');
 const currentPage = ref(1);
 const totalRows = ref(0);
 const flushCache = ref(false);

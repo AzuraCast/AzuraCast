@@ -210,6 +210,9 @@ final class ListenerRepository extends Repository
         } finally {
             @unlink($tempCsvPath);
         }
+
+        $this->deviceDetector->saveCache();
+        $this->ipGeolocation->saveCache();
     }
 
     private function batchAddRow(Entity\Station $station, Client $client): array

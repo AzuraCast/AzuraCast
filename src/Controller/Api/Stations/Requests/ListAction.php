@@ -130,7 +130,7 @@ final class ListAction extends AbstractSearchableListAction
             $item->set($ids);
             $item->expiresAfter(600);
 
-            $this->psr6Cache->saveDeferred($item);
+            $this->psr6Cache->save($item);
         }
 
         return $item->get();

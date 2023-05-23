@@ -46,7 +46,7 @@
                             </div>
                             <b-form-input
                                 v-model="searchPhrase"
-                                debounce="200"
+                                debounce="500"
                                 type="search"
                                 class="search-field form-control"
                                 :placeholder="$gettext('Search')"

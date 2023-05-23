@@ -277,14 +277,14 @@ const currentPage = ref(1);
 const totalRows = ref(0);
 const flushCache = ref(false);
 
+watch(searchPhrase, () => {
+    currentPage.value = 1;
+});
+
 watch(toRef(props, 'items'), (newVal) => {
     if (newVal !== null) {
         totalRows.value = newVal.length;
     }
-});
-
-watch(filter, () => {
-    currentPage.value = 1;
 });
 
 const allFields = computed(() => {

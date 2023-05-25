@@ -78,10 +78,10 @@ class Station implements Stringable, IdentifiableEntityInterface
             description: "The frontend adapter (icecast,shoutcast,remote,etc)",
             example: "icecast"
         ),
-        ORM\Column(type: 'string', length: 100, nullable: true, enumType: FrontendAdapters::class),
+        ORM\Column(type: 'string', length: 100, enumType: FrontendAdapters::class),
         Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])
     ]
-    protected ?FrontendAdapters $frontend_type = null;
+    protected FrontendAdapters $frontend_type;
 
     #[
         OA\Property(
@@ -99,10 +99,10 @@ class Station implements Stringable, IdentifiableEntityInterface
             description: "The backend adapter (liquidsoap,etc)",
             example: "liquidsoap"
         ),
-        ORM\Column(type: 'string', length: 100, nullable: true, enumType: BackendAdapters::class),
+        ORM\Column(type: 'string', length: 100, enumType: BackendAdapters::class),
         Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])
     ]
-    protected ?BackendAdapters $backend_type = null;
+    protected BackendAdapters $backend_type;
 
     #[
         OA\Property(
@@ -409,8 +409,8 @@ class Station implements Stringable, IdentifiableEntityInterface
 
     public function __construct()
     {
-        $this->frontend_type = FrontendAdapters::Icecast;
-        $this->backend_type = BackendAdapters::Liquidsoap;
+        $this->frontend_type = FrontendAdapters::default();
+        $this->backend_type = BackendAdapters::default();
 
         $this->history = new ArrayCollection();
         $this->permissions = new ArrayCollection();
@@ -467,10 +467,10 @@ class Station implements Stringable, IdentifiableEntityInterface
 
     public function getFrontendType(): FrontendAdapters
     {
-        return $this->frontend_type ?? FrontendAdapters::default();
+        return $this->frontend_type;
     }
 
-    public function setFrontendType(?FrontendAdapters $frontend_type = null): void
+    public function setFrontendType(FrontendAdapters $frontend_type): void
     {
         $this->frontend_type = $frontend_type;
     }
@@ -499,10 +499,10 @@ class Station implements Stringable, IdentifiableEntityInterface
 
     public function getBackendType(): BackendAdapters
     {
-        return $this->backend_type ?? BackendAdapters::default();
+        return $this->backend_type;
     }
 
-    public function setBackendType(BackendAdapters $backend_type = null): void
+    public function setBackendType(BackendAdapters $backend_type): void
     {
         $this->backend_type = $backend_type;
     }

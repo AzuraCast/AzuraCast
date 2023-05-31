@@ -214,7 +214,8 @@ final class Configuration
     ): void {
         $station->setHasStarted(false);
         $station->setNeedsRestart(false);
-        $station->clearCache();
+        $station->setCurrentStreamer(null);
+        $station->setCurrentSong(null);
 
         $this->em->persist($station);
         $this->em->flush();
@@ -245,7 +246,8 @@ final class Configuration
     {
         $station->setHasStarted(true);
         $station->setNeedsRestart(false);
-        $station->clearCache();
+        $station->setCurrentStreamer(null);
+        $station->setCurrentSong(null);
 
         $this->em->persist($station);
         $this->em->flush();

@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace App\Console\Command\Sync;
 
-use App\Environment;
+use App\Cache\NowPlayingCache;
 use App\Entity\Repository\SettingsRepository;
+use App\Environment;
 use App\Lock\LockFactory;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
@@ -31,6 +32,7 @@ final class NowPlayingCommand extends AbstractSyncCommand
         Environment $environment,
         private readonly EntityManagerInterface $em,
         private readonly SettingsRepository $settingsRepo,
+        private readonly NowPlayingCache $nowPlayingCache
     ) {
         parent::__construct($logger, $lockFactory, $environment);
     }
@@ -80,18 +82,7 @@ final class NowPlayingCommand extends AbstractSyncCommand
                 $npDelay = max(min($this->environment->getNowPlayingDelayTime(), 60), 5);
                 $npThreshold = time() - $npDelay - random_int(0, 5);
 
-                $activeStations = $this->em->createQuery(
-                    <<<'DQL'
-                    SELECT s.short_name
-                    FROM App\Entity\Station s
-                    WHERE s.is_enabled = 1 AND s.has_started = 1
-                    AND s.nowplaying_timestamp < :threshold
-                    ORDER BY s.nowplaying_timestamp ASC
-                    DQL
-                )->setParameter('threshold', $npThreshold)
-                    ->getSingleColumnResult();
-
-                foreach ($activeStations as $shortName) {
+                foreach ($this->getStationsToRun($npThreshold) as $shortName) {
                     if (count($this->processes) >= self::MAX_CONCURRENT_PROCESSES) {
                         break;
                     }
@@ -110,6 +101,38 @@ final class NowPlayingCommand extends AbstractSyncCommand
             gc_collect_cycles();
             usleep(1000000);
         }
+    }
+
+    public function getStationsToRun(
+        int $threshold
+    ): array {
+        $lookupRaw = $this->nowPlayingCache->getLookup();
+        $lookup = [];
+        foreach ($lookupRaw as $stationRow) {
+            $lookup[$stationRow['short_name']] = (int)($stationRow['updated_at'] ?? 0);
+        }
+
+        $allStations = $this->em->createQuery(
+            <<<'DQL'
+            SELECT s.short_name
+            FROM App\Entity\Station s
+            WHERE s.is_enabled = 1 AND s.has_started = 1
+            DQL
+        )->getSingleColumnResult();
+
+        $stationsByUpdated = [];
+        foreach ($allStations as $shortName) {
+            $stationsByUpdated[$shortName] = $lookup[$shortName] ?? 0;
+        }
+
+        asort($stationsByUpdated, SORT_NUMERIC);
+
+        return array_keys(
+            array_filter(
+                $stationsByUpdated,
+                fn($timestamp) => $timestamp < $threshold
+            )
+        );
     }
 
     private function start(

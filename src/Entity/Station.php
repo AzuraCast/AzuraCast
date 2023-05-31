@@ -150,18 +150,6 @@ class Station implements Stringable, IdentifiableEntityInterface
     protected ?string $radio_base_dir = null;
 
     #[
-        ORM\Column(type: 'array', nullable: true),
-        Attributes\AuditIgnore
-    ]
-    protected mixed $nowplaying;
-
-    #[
-        ORM\Column(nullable: true),
-        Attributes\AuditIgnore
-    ]
-    protected ?int $nowplaying_timestamp = null;
-
-    #[
         OA\Property(
             description: "Whether listeners can request songs to play on this station.",
             example: true
@@ -714,33 +702,6 @@ class Station implements Stringable, IdentifiableEntityInterface
         return $this->radio_base_dir . '/hls';
     }
 
-    public function getNowplaying(): ?Api\NowPlaying\NowPlaying
-    {
-        if ($this->nowplaying instanceof Api\NowPlaying\NowPlaying) {
-            return $this->nowplaying;
-        }
-        return null;
-    }
-
-    public function setNowplaying(?Api\NowPlaying\NowPlaying $nowplaying = null): void
-    {
-        $this->nowplaying = $nowplaying;
-
-        if (null !== $nowplaying) {
-            $this->nowplaying_timestamp = time();
-        }
-    }
-
-    public function getNowplayingTimestamp(): int
-    {
-        return (int)$this->nowplaying_timestamp;
-    }
-
-    public function setNowPlayingTimestamp(int $nowplaying_timestamp): void
-    {
-        $this->nowplaying_timestamp = $nowplaying_timestamp;
-    }
-
     public function getEnableRequests(): bool
     {
         return $this->enable_requests;
@@ -938,7 +899,7 @@ class Station implements Stringable, IdentifiableEntityInterface
         return $this->current_streamer;
     }
 
-    public function setCurrentStreamer(?StationStreamer $current_streamer = null): void
+    public function setCurrentStreamer(?StationStreamer $current_streamer): void
     {
         if (null !== $this->current_streamer || null !== $current_streamer) {
             $this->current_streamer = $current_streamer;
@@ -1115,14 +1076,6 @@ class Station implements Stringable, IdentifiableEntityInterface
         $this->current_song = $current_song;
     }
 
-    public function clearCache(): void
-    {
-        $this->nowplaying = null;
-        $this->nowplaying_timestamp = 0;
-
-        $this->current_song = null;
-    }
-
     public function __toString(): string
     {
         $name = $this->getName();
@@ -1140,8 +1093,6 @@ class Station implements Stringable, IdentifiableEntityInterface
         $this->short_name = '';
         $this->radio_base_dir = null;
         $this->adapter_api_key = null;
-        $this->nowplaying = null;
-        $this->nowplaying_timestamp = null;
         $this->current_streamer = null;
         $this->current_streamer_id = null;
         $this->is_streamer_live = false;

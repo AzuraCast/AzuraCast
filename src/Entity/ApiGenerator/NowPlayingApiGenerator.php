@@ -4,7 +4,17 @@ declare(strict_types=1);
 
 namespace App\Entity\ApiGenerator;
 
-use App\Entity;
+use App\Cache\NowPlayingCache;
+use App\Entity\Api\NowPlaying\CurrentSong;
+use App\Entity\Api\NowPlaying\Listeners;
+use App\Entity\Api\NowPlaying\Live;
+use App\Entity\Api\NowPlaying\NowPlaying;
+use App\Entity\Repository\SongHistoryRepository;
+use App\Entity\Repository\StationQueueRepository;
+use App\Entity\Repository\StationStreamerBroadcastRepository;
+use App\Entity\Song;
+use App\Entity\Station;
+use App\Entity\StationQueue;
 use App\Http\Router;
 use App\Utilities\Logger;
 use Exception;
@@ -20,17 +30,19 @@ final class NowPlayingApiGenerator
         private readonly SongHistoryApiGenerator $songHistoryApiGenerator,
         private readonly StationApiGenerator $stationApiGenerator,
         private readonly StationQueueApiGenerator $stationQueueApiGenerator,
-        private readonly Entity\Repository\SongHistoryRepository $historyRepo,
-        private readonly Entity\Repository\StationQueueRepository $queueRepo,
-        private readonly Entity\Repository\StationStreamerBroadcastRepository $broadcastRepo,
+        private readonly SongHistoryRepository $historyRepo,
+        private readonly StationQueueRepository $queueRepo,
+        private readonly StationStreamerBroadcastRepository $broadcastRepo,
         private readonly Router $router,
+        private readonly NowPlayingCache $nowPlayingCache
     ) {
     }
 
     public function __invoke(
-        Entity\Station $station,
-        Result $npResult
-    ): Entity\Api\NowPlaying\NowPlaying {
+        Station $station,
+        Result $npResult,
+        ?NowPlaying $npOld
+    ): NowPlaying {
         $baseUri = new Uri('');
 
         $updateSongFromNowPlaying = !$station->getBackendType()->isEnabled();
@@ -39,12 +51,10 @@ final class NowPlayingApiGenerator
             return $this->offlineApi($station, $baseUri);
         }
 
-        $npOld = $station->getNowplaying();
-
-        $np = new Entity\Api\NowPlaying\NowPlaying();
+        $np = new NowPlaying();
         $np->is_online = $npResult->meta->online;
-        $np->station = ($this->stationApiGenerator)($station, $baseUri);
-        $np->listeners = new Entity\Api\NowPlaying\Listeners(
+        $np->station = $this->stationApiGenerator->__invoke($station, $baseUri);
+        $np->listeners = new Listeners(
             total: $npResult->listeners->total,
             unique: $npResult->listeners->unique
         );
@@ -53,7 +63,7 @@ final class NowPlayingApiGenerator
             if ($updateSongFromNowPlaying) {
                 $this->historyRepo->updateSongFromNowPlaying(
                     $station,
-                    Entity\Song::createFromNowPlayingSong($npResult->currentSong)
+                    Song::createFromNowPlayingSong($npResult->currentSong)
                 );
             }
 
@@ -78,14 +88,14 @@ final class NowPlayingApiGenerator
             return $this->offlineApi($station, $baseUri);
         }
 
-        $apiSongHistory = ($this->songHistoryApiGenerator)(
+        $apiSongHistory = $this->songHistoryApiGenerator->__invoke(
             record: $currentSong,
             baseUri: $baseUri,
             allowRemoteArt: true,
             isNowPlaying: true
         );
 
-        $apiCurrentSong = new Entity\Api\NowPlaying\CurrentSong();
+        $apiCurrentSong = new CurrentSong();
         $apiCurrentSong->fromParentObject($apiSongHistory);
         $np->now_playing = $apiCurrentSong;
 
@@ -112,7 +122,7 @@ final class NowPlayingApiGenerator
         if (null !== $currentStreamer) {
             $broadcastStart = $this->broadcastRepo->getLatestBroadcast($station)?->getTimestampStart();
 
-            $live = new Entity\Api\NowPlaying\Live();
+            $live = new Live();
             $live->is_live = true;
             $live->streamer_name = $currentStreamer->getDisplayName();
             $live->broadcast_start = $broadcastStart;
@@ -129,44 +139,34 @@ final class NowPlayingApiGenerator
 
             $np->live = $live;
         } else {
-            $np->live = new Entity\Api\NowPlaying\Live();
+            $np->live = new Live();
         }
 
         $np->update();
         return $np;
     }
 
-    /**
-     * If a station doesn't already have a cached "Now Playing", generate a blank one.
-     * This is useful for situations that *require* a valid NowPlaying API model, like
-     * Vue initial data structures.
-     *
-     * @param Entity\Station $station
-     * @param UriInterface|null $baseUri
-     *
-     */
     public function currentOrEmpty(
-        Entity\Station $station,
-        ?UriInterface $baseUri = null
-    ): Entity\Api\NowPlaying\NowPlaying {
-        $np = $station->getNowplaying();
-        return $np ?? $this->offlineApi($station, $baseUri);
+        Station $station
+    ): NowPlaying {
+        $np = $this->nowPlayingCache->getForStation($station);
+        return $np ?? $this->offlineApi($station);
     }
 
     private function offlineApi(
-        Entity\Station $station,
+        Station $station,
         ?UriInterface $baseUri = null
-    ): Entity\Api\NowPlaying\NowPlaying {
-        $np = new Entity\Api\NowPlaying\NowPlaying();
+    ): NowPlaying {
+        $np = new NowPlaying();
 
-        $np->station = ($this->stationApiGenerator)($station, $baseUri);
-        $np->listeners = new Entity\Api\NowPlaying\Listeners();
+        $np->station = $this->stationApiGenerator->__invoke($station, $baseUri);
+        $np->listeners = new Listeners();
 
-        $songObj = Entity\Song::createOffline();
+        $songObj = Song::createOffline();
 
-        $offlineApiNowPlaying = new Entity\Api\NowPlaying\CurrentSong();
+        $offlineApiNowPlaying = new CurrentSong();
         $offlineApiNowPlaying->sh_id = 0;
-        $offlineApiNowPlaying->song = ($this->songApiGenerator)(
+        $offlineApiNowPlaying->song = $this->songApiGenerator->__invoke(
             song: $songObj,
             station: $station,
             baseUri: $baseUri
@@ -180,7 +180,7 @@ final class NowPlayingApiGenerator
         );
 
         $nextVisible = $this->queueRepo->getNextVisible($station);
-        if ($nextVisible instanceof Entity\StationQueue) {
+        if ($nextVisible instanceof StationQueue) {
             $np->playing_next = ($this->stationQueueApiGenerator)(
                 $nextVisible,
                 $baseUri,
@@ -188,7 +188,7 @@ final class NowPlayingApiGenerator
             );
         }
 
-        $np->live = new Entity\Api\NowPlaying\Live();
+        $np->live = new Live();
 
         $np->update();
         return $np;

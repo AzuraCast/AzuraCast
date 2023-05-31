@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Sync\NowPlaying\Task;
 
+use App\Cache\NowPlayingCache;
 use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Entity\Api\NowPlaying\NowPlaying;
 use App\Entity\ApiGenerator\NowPlayingApiGenerator;
-use App\Webhook\Enums\WebhookTriggers;
 use App\Entity\Repository\ListenerRepository;
 use App\Entity\Repository\SettingsRepository;
 use App\Entity\Station;
@@ -17,13 +17,13 @@ use App\Http\RouterInterface;
 use App\Message;
 use App\Nginx\HlsListeners;
 use App\Radio\Adapters;
+use App\Webhook\Enums\WebhookTriggers;
 use DeepCopy\DeepCopy;
 use Exception;
 use GuzzleHttp\Promise\Utils;
 use NowPlaying\Result\Result;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Log\LoggerInterface;
-use Psr\SimpleCache\CacheInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Messenger\MessageBus;
 
@@ -31,7 +31,7 @@ final class NowPlayingTask implements NowPlayingTaskInterface, EventSubscriberIn
 {
     public function __construct(
         private readonly Adapters $adapters,
-        private readonly CacheInterface $cache,
+        private readonly NowPlayingCache $nowPlayingCache,
         private readonly EventDispatcherInterface $eventDispatcher,
         private readonly MessageBus $messageBus,
         private readonly RouterInterface $router,
@@ -107,16 +107,21 @@ final class NowPlayingTask implements NowPlayingTaskInterface, EventSubscriberIn
             $this->listenerRepo->update($station, $npResult->clients);
         }
 
-        $np = ($this->nowPlayingApiGenerator)($station, $npResult);
+        $npOld = $this->nowPlayingCache->getForStation($station);
 
-        // Trigger the dispatching of webhooks.
-        $this->dispatchWebhooks($station, $np);
+        $np = $this->nowPlayingApiGenerator->__invoke(
+            $station,
+            $npResult,
+            $npOld
+        );
 
         // Update caches
-        $this->cache->set('nowplaying.' . $station->getIdRequired(), $np, 120);
-        $this->cache->set('nowplaying.' . $station->getShortName(), $np, 120);
+        $this->nowPlayingCache->setForStation($station, $np);
 
-        $station->setNowplaying($np);
+        // Trigger the dispatching of webhooks.
+        $this->dispatchWebhooks($station, $np, $npOld);
+
+        // Handle any entity changes persisted during NP update.
         $this->em->persist($station);
         $this->em->flush();
     }
@@ -175,14 +180,14 @@ final class NowPlayingTask implements NowPlayingTaskInterface, EventSubscriberIn
 
     private function dispatchWebhooks(
         Station $station,
-        NowPlaying $npOriginal
+        NowPlaying $npOriginal,
+        ?NowPlaying $npOld
     ): void {
         /** @var NowPlaying $np */
         $np = (new DeepCopy())->copy($npOriginal);
         $np->resolveUrls($this->router->getBaseUrl());
         $np->cache = 'event';
 
-        $npOld = $station->getNowplaying();
         $triggers = [];
 
         if ($npOld instanceof NowPlaying) {
@@ -214,7 +219,7 @@ final class NowPlayingTask implements NowPlayingTaskInterface, EventSubscriberIn
         }
 
         $message = new Message\DispatchWebhookMessage();
-        $message->station_id = (int)$station->getId();
+        $message->station_id = $station->getIdRequired();
         $message->np = $np;
         $message->triggers = $triggers;
 

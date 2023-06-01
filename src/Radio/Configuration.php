@@ -99,16 +99,6 @@ final class Configuration
         $supervisorConfig = [];
         $supervisorConfigFile = $this->getSupervisorConfigFile($station);
 
-        if (!$station->getHasStarted()) {
-            $this->unlinkAndStopStation($station, $reloadSupervisor);
-            throw new RuntimeException('Station has not started yet.');
-        }
-
-        if (!$station->getIsEnabled()) {
-            $this->unlinkAndStopStation($station, $reloadSupervisor);
-            throw new RuntimeException('Station is disabled.');
-        }
-
         $frontendEnum = $station->getFrontendType();
         $backendEnum = $station->getBackendType();
 
@@ -120,8 +110,18 @@ final class Configuration
             (null === $frontend || !$frontend->hasCommand($station))
             && (null === $backend || !$backend->hasCommand($station))
         ) {
-            $this->unlinkAndStopStation($station, $reloadSupervisor);
+            $this->unlinkAndStopStation($station, $reloadSupervisor, true);
             throw new RuntimeException('Station has no local services.');
+        }
+
+        if (!$station->getHasStarted()) {
+            $this->unlinkAndStopStation($station, $reloadSupervisor);
+            throw new RuntimeException('Station has not started yet.');
+        }
+
+        if (!$station->getIsEnabled()) {
+            $this->unlinkAndStopStation($station, $reloadSupervisor);
+            throw new RuntimeException('Station is disabled.');
         }
 
         // Write group section of config
@@ -210,9 +210,10 @@ final class Configuration
 
     private function unlinkAndStopStation(
         Station $station,
-        bool $reloadSupervisor = true
+        bool $reloadSupervisor = true,
+        bool $isRemoteOnly = false
     ): void {
-        $station->setHasStarted(false);
+        $station->setHasStarted($isRemoteOnly);
         $station->setNeedsRestart(false);
         $station->setCurrentStreamer(null);
         $station->setCurrentSong(null);

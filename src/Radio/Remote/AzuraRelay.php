@@ -15,6 +15,7 @@ use GuzzleHttp\Psr7\Uri;
 use InvalidArgumentException;
 use Monolog\Logger;
 use NowPlaying\AdapterFactory;
+use NowPlaying\Enums\AdapterTypes;
 use NowPlaying\Result\Result;
 
 final class AzuraRelay extends AbstractRemote
@@ -67,9 +68,10 @@ final class AzuraRelay extends AbstractRemote
         return Create::promiseFor(null);
     }
 
-    protected function getAdapterType(): string
+    protected function getAdapterType(): AdapterTypes
     {
-        return '';
+        // Not used for this adapter.
+        return AdapterTypes::Icecast;
     }
 
     /**

@@ -10,6 +10,7 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Promise\PromiseInterface;
 use Monolog\Logger;
 use NowPlaying\AdapterFactory;
+use NowPlaying\Enums\AdapterTypes;
 use NowPlaying\Result\Result;
 
 abstract class AbstractRemote
@@ -55,7 +56,7 @@ abstract class AbstractRemote
         );
     }
 
-    abstract protected function getAdapterType(): string;
+    abstract protected function getAdapterType(): AdapterTypes;
 
     /**
      * Return the likely "public" listen URL for the remote.

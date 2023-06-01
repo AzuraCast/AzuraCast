@@ -40,9 +40,6 @@ class Relay implements IdentifiableEntityInterface
     ]
     protected bool $is_visible_on_public_pages = true;
 
-    #[ORM\Column(type: 'array', nullable: true)]
-    protected mixed $nowplaying;
-
     #[
         OA\Property(example: OpenApi::SAMPLE_TIMESTAMP),
         ORM\Column
@@ -98,16 +95,6 @@ class Relay implements IdentifiableEntityInterface
     public function setIsVisibleOnPublicPages(bool $is_visible_on_public_pages): void
     {
         $this->is_visible_on_public_pages = $is_visible_on_public_pages;
-    }
-
-    public function getNowplaying(): mixed
-    {
-        return $this->nowplaying;
-    }
-
-    public function setNowplaying(mixed $nowplaying): void
-    {
-        $this->nowplaying = $nowplaying;
     }
 
     public function getCreatedAt(): int

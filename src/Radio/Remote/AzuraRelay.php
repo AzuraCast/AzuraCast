@@ -4,16 +4,32 @@ declare(strict_types=1);
 
 namespace App\Radio\Remote;
 
+use App\Cache\AzuraRelayCache;
 use App\Entity;
 use App\Environment;
+use Doctrine\ORM\EntityManagerInterface;
+use GuzzleHttp\Client;
 use GuzzleHttp\Promise\Create;
 use GuzzleHttp\Promise\PromiseInterface;
 use GuzzleHttp\Psr7\Uri;
 use InvalidArgumentException;
+use Monolog\Logger;
+use NowPlaying\AdapterFactory;
 use NowPlaying\Result\Result;
 
 final class AzuraRelay extends AbstractRemote
 {
+    public function __construct(
+        EntityManagerInterface $em,
+        Entity\Repository\SettingsRepository $settingsRepo,
+        Client $http_client,
+        Logger $logger,
+        AdapterFactory $adapterFactory,
+        private readonly AzuraRelayCache $azuraRelayCache
+    ) {
+        parent::__construct($em, $settingsRepo, $http_client, $logger, $adapterFactory);
+    }
+
     public function getNowPlayingAsync(Entity\StationRemote $remote, bool $includeClients = false): PromiseInterface
     {
         $station = $remote->getStation();
@@ -23,7 +39,7 @@ final class AzuraRelay extends AbstractRemote
             throw new InvalidArgumentException('AzuraRelay remote must have a corresponding relay.');
         }
 
-        $npRawRelay = $relay->getNowplaying();
+        $npRawRelay = $this->azuraRelayCache->getForRelay($relay);
 
         if (isset($npRawRelay[$station->getId()][$remote->getMount()])) {
             $npRaw = $npRawRelay[$station->getId()][$remote->getMount()];

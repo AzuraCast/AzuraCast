@@ -82,10 +82,11 @@ abstract class AbstractRemote
         $uri = $remote->getUrlAsUri();
 
         if (!empty($customPath)) {
-            if (!str_starts_with($customPath, '/')) {
-                $customPath = '/' . $customPath;
-            }
-            return (string)$uri->withPath($uri->getPath() . $customPath);
+            return (string)$uri->withPath(
+                rtrim($uri->getPath(), '/')
+                . '/'
+                . ltrim($customPath, '/')
+            );
         }
 
         return (string)$uri;

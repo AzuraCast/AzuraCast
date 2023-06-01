@@ -103,7 +103,7 @@ final class NowPlayingCommand extends AbstractSyncCommand
         }
     }
 
-    public function getStationsToRun(
+    private function getStationsToRun(
         int $threshold
     ): array {
         $lookupRaw = $this->nowPlayingCache->getLookup();

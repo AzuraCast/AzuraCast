@@ -38,7 +38,7 @@ class AuditLog implements IdentifiableEntityInterface
     #[ORM\Column(length: 255, nullable: true)]
     protected ?string $target;
 
-    #[ORM\Column(type: 'array')]
+    #[ORM\Column(type: 'json')]
     protected array $changes;
 
     #[ORM\Column(length: 255, nullable: true)]

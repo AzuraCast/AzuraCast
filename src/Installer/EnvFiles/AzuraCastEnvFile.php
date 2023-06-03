@@ -152,6 +152,20 @@ final class AzuraCastEnvFile extends AbstractEnvFile
                     ),
                     'default' => 100,
                 ],
+                'MYSQL_INNODB_BUFFER_POOL_SIZE' => [
+                    'name' => __('MariaDB InnoDB Buffer Pool Size'),
+                    'description' => __(
+                        'The InnoDB buffer pool size controls how much data & indexes are kept in memory. Making sure that this value is as large as possible reduces the amount of disk IO.',
+                    ),
+                    'default' => '128M',
+                ],
+                'MYSQL_INNODB_LOG_FILE_SIZE' => [
+                    'name' => __('MariaDB InnoDB Log File Size'),
+                    'description' => __(
+                        'The InnoDB log file is used to achieve data durability in case of crashes or unexpected shutoffs and to allow the DB to better optimize IO for write operations.',
+                    ),
+                    'default' => '16M',
+                ],
                 Environment::ENABLE_REDIS => [
                     'name' => __('Enable Redis'),
                     'description' => __(

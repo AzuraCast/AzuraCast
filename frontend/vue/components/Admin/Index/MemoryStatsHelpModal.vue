@@ -10,7 +10,7 @@
             <h6>
                 <b-badge
                     pill
-                    variant="danger"
+                    variant="warning"
                 >
 &nbsp;&nbsp;
                 </b-badge>&nbsp;

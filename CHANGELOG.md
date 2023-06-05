@@ -3,6 +3,17 @@
 These changes have not yet been incorporated into a stable release, but if you are on the latest version of the rolling
 release channel, you can take advantage of these new features and fixes.
 
+---
+
+# AzuraCast 0.18.3 (Jun 5, 2023)
+
+This release solely exists to bump the version of AzuraCast up to 0.18.3, which was erroneously listed as the stable
+release where the bug reports in 0.18.2 were fixed.
+
+---
+
+# AzuraCast 0.18.2 (Jun 5, 2023)
+
 ## New Features/Changes
 
 ## Code Quality/Technical Changes

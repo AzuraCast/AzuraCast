@@ -11,7 +11,6 @@ use App\Radio\Enums\StreamProtocols;
 use App\Radio\Remote\AbstractRemote;
 use App\Utilities;
 use Doctrine\ORM\Mapping as ORM;
-use InvalidArgumentException;
 use Psr\Http\Message\UriInterface;
 use Stringable;
 
@@ -374,6 +373,14 @@ class StationRemote implements
     public function isEditable(): bool
     {
         return (RemoteAdapters::AzuraRelay !== $this->getType());
+    }
+
+    public function getIsShoutcast(): bool
+    {
+        return match ($this->getAutodjAdapterType()) {
+            RemoteAdapters::Shoutcast1, RemoteAdapters::Shoutcast2 => true,
+            default => false,
+        };
     }
 
     /**

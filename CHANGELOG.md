@@ -3,6 +3,20 @@
 These changes have not yet been incorporated into a stable release, but if you are on the latest version of the rolling
 release channel, you can take advantage of these new features and fixes.
 
+## New Features/Changes
+
+- **Update to Liquidsoap 2.2.x**: We're updating to the latest version of Liquidsoap, which includes many bug fixes,
+  performance improvements and other changes. We have adopted our syntax to match Liquidsoap's new supported syntax, but
+  if you use custom Liquidsoap code, you will need to update your code accordingly. You can see the most important
+  changes in this [migration guide](https://www.liquidsoap.info/doc-dev/migrating.html#from-2.1.x-to-2.2.x). The most
+  common changes you will need to make are to mutable (`ref()`) variables:
+    - `!var` becomes `var()`
+    - `var := value` optionally becomes `var.set(value)`
+
+## Code Quality/Technical Changes
+
+## Bug Fixes
+
 ---
 
 # AzuraCast 0.18.3 (Jun 5, 2023)

@@ -17,7 +17,7 @@
             </b-wrapped-form-group>
 
             <b-wrapped-form-group
-                v-if="triggerOptions.length > 0"
+                v-if="triggers.length > 0"
                 id="edit_form_triggers"
                 class="col-md-12"
                 :field="form.triggers"
@@ -34,9 +34,21 @@
                     <b-form-checkbox-group
                         :id="slotProps.id"
                         v-model="slotProps.field.$model"
-                        :options="triggerOptions"
                         stacked
-                    />
+                    >
+                        <b-form-checkbox
+                            v-for="(trigger) in triggers"
+                            :key="trigger.key"
+                            :value="trigger.key"
+                        >
+                            <h6 class="font-weight-bold mb-0">
+                                {{ trigger.title }}
+                            </h6>
+                            <p class="card-text small">
+                                {{ trigger.description }}
+                            </p>
+                        </b-form-checkbox>
+                    </b-form-checkbox-group>
                 </template>
             </b-wrapped-form-group>
         </div>
@@ -51,7 +63,7 @@ const props = defineProps({
         type: Object,
         required: true
     },
-    triggerOptions: {
+    triggers: {
         type: Array,
         required: true
     }

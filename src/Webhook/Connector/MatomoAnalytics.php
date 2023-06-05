@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Webhook\Connector;
 
+use App\Entity;
 use App\Entity\Api\NowPlaying\NowPlaying;
 use App\Entity\Repository\ListenerRepository;
 use App\Entity\Station;
@@ -16,8 +17,6 @@ use Psr\Http\Message\UriInterface;
 
 final class MatomoAnalytics extends AbstractConnector
 {
-    public const NAME = 'matomo_analytics';
-
     public function __construct(
         Logger $logger,
         Client $httpClient,
@@ -25,6 +24,11 @@ final class MatomoAnalytics extends AbstractConnector
         private readonly ListenerRepository $listenerRepo
     ) {
         parent::__construct($logger, $httpClient);
+    }
+
+    protected function webhookShouldTrigger(Entity\StationWebhook $webhook, array $triggers = []): bool
+    {
+        return true;
     }
 
     /**
@@ -39,7 +43,7 @@ final class MatomoAnalytics extends AbstractConnector
         $config = $webhook->getConfig();
 
         if (empty($config['matomo_url']) || empty($config['site_id'])) {
-            throw $this->incompleteConfigException(self::NAME);
+            throw $this->incompleteConfigException($webhook);
         }
 
         // Get listen URLs for each mount point.

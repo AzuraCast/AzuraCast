@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use App\Entity\Enums\AuditLogOperations;
 use App\Entity\Interfaces\IdentifiableEntityInterface;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -17,17 +18,13 @@ class AuditLog implements IdentifiableEntityInterface
     use Traits\HasAutoIncrementId;
     use Traits\TruncateStrings;
 
-    public const OPER_INSERT = 1;
-    public const OPER_UPDATE = 2;
-    public const OPER_DELETE = 3;
-
     protected static ?string $currentUser = null;
 
     #[ORM\Column]
     protected int $timestamp;
 
-    #[ORM\Column(type: 'smallint')]
-    protected int $operation;
+    #[ORM\Column(type: 'smallint', enumType: AuditLogOperations::class)]
+    protected AuditLogOperations $operation;
 
     #[ORM\Column(length: 255)]
     protected string $class;
@@ -41,14 +38,14 @@ class AuditLog implements IdentifiableEntityInterface
     #[ORM\Column(length: 255, nullable: true)]
     protected ?string $target;
 
-    #[ORM\Column(type: 'array')]
+    #[ORM\Column(type: 'json')]
     protected array $changes;
 
     #[ORM\Column(length: 255, nullable: true)]
     protected ?string $user;
 
     public function __construct(
-        int $operation,
+        AuditLogOperations $operation,
         string $class,
         string $identifier,
         ?string $targetClass,
@@ -98,7 +95,7 @@ class AuditLog implements IdentifiableEntityInterface
         return $this->timestamp;
     }
 
-    public function getOperation(): int
+    public function getOperation(): AuditLogOperations
     {
         return $this->operation;
     }

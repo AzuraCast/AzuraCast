@@ -44,7 +44,7 @@ final class BlocklistParser
 
     private function hasAllowedIps(Entity\Station $station): bool
     {
-        if (FrontendAdapters::Remote === $station->getFrontendTypeEnum()) {
+        if (FrontendAdapters::Remote === $station->getFrontendType()) {
             return false;
         }
 
@@ -56,7 +56,7 @@ final class BlocklistParser
         Entity\Station $station,
         string $ip
     ): bool {
-        if (FrontendAdapters::Remote === $station->getFrontendTypeEnum()) {
+        if (FrontendAdapters::Remote === $station->getFrontendType()) {
             return false;
         }
 
@@ -68,7 +68,7 @@ final class BlocklistParser
         Entity\Station $station,
         string $ip
     ): bool {
-        if (FrontendAdapters::Remote === $station->getFrontendTypeEnum()) {
+        if (FrontendAdapters::Remote === $station->getFrontendType()) {
             return false;
         }
 
@@ -110,7 +110,7 @@ final class BlocklistParser
         Entity\Station $station,
         string $listenerIp
     ): bool {
-        if (FrontendAdapters::Remote === $station->getFrontendTypeEnum()) {
+        if (FrontendAdapters::Remote === $station->getFrontendType()) {
             return false;
         }
 
@@ -129,7 +129,7 @@ final class BlocklistParser
         Entity\Station $station,
         string $listenerUserAgent
     ): bool {
-        if (FrontendAdapters::Remote === $station->getFrontendTypeEnum()) {
+        if (FrontendAdapters::Remote === $station->getFrontendType()) {
             return false;
         }
 

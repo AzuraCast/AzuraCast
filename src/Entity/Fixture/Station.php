@@ -18,8 +18,8 @@ final class Station extends AbstractFixture
         $station->setName('AzuraTest Radio');
         $station->setDescription('A test radio station.');
         $station->setEnableRequests(true);
-        $station->setFrontendType(FrontendAdapters::Icecast->value);
-        $station->setBackendType(BackendAdapters::Liquidsoap->value);
+        $station->setFrontendType(FrontendAdapters::Icecast);
+        $station->setBackendType(BackendAdapters::Liquidsoap);
         $station->setEnableHls(true);
         $station->setRadioBaseDir('/var/azuracast/stations/azuratest_radio');
         $station->setHasStarted(true);

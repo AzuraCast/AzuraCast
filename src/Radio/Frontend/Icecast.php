@@ -217,7 +217,7 @@ final class Icecast extends AbstractFrontend
                 $mount['fallback-mount'] = $mount_row->getFallbackMount();
                 $mount['fallback-override'] = 1;
             } elseif ($mount_row->getEnableAutodj()) {
-                $autoDjFormat = $mount_row->getAutodjFormatEnum() ?? StreamFormats::default();
+                $autoDjFormat = $mount_row->getAutodjFormat() ?? StreamFormats::default();
                 $autoDjBitrate = $mount_row->getAutodjBitrate();
 
                 $mount['fallback-mount'] = '/fallback-[' . $autoDjBitrate . '].' . $autoDjFormat->getExtension();

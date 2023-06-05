@@ -79,7 +79,7 @@ final class Annotations implements EventSubscriberInterface
         }
 
         $station = $event->getStation();
-        if (!$station->getBackendTypeEnum()->isEnabled()) {
+        if (!$station->getBackendType()->isEnabled()) {
             return;
         }
 

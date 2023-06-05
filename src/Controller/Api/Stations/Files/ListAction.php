@@ -12,11 +12,10 @@ use App\Http\RouterInterface;
 use App\Http\ServerRequest;
 use App\Media\MimeType;
 use App\Paginator;
-use App\Service\Meilisearch;
 use App\Utilities;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\Query\Expr;
+use Doctrine\ORM\QueryBuilder;
 use League\Flysystem\StorageAttributes;
 use Psr\Http\Message\ResponseInterface;
 use Psr\SimpleCache\CacheInterface;
@@ -29,7 +28,6 @@ final class ListAction
     public function __construct(
         private readonly EntityManagerInterface $em,
         private readonly CacheInterface $cache,
-        private readonly Meilisearch $meilisearch,
         private readonly StationFilesystems $stationFilesystems
     ) {
     }
@@ -74,15 +72,11 @@ final class ListAction
                 : $currentDir . '/%';
 
             $mediaQueryBuilder = $this->em->createQueryBuilder()
-                ->select(['sm', 'spm', 'sp', 'smcf'])
+                ->select('sm')
                 ->from(Entity\StationMedia::class, 'sm')
-                ->leftJoin('sm.custom_fields', 'smcf')
-                ->leftJoin('sm.playlists', 'spm')
-                ->leftJoin('spm.playlist', 'sp', Expr\Join::WITH, 'sp.station = :station')
                 ->where('sm.storage_location = :storageLocation')
                 ->andWhere('sm.path LIKE :path')
                 ->setParameter('storageLocation', $station->getMediaStorageLocation())
-                ->setParameter('station', $station)
                 ->setParameter('path', $pathLike);
 
             // Apply searching
@@ -109,7 +103,7 @@ final class ListAction
 
             if ($isSearch) {
                 if ('special:unprocessable' === $searchPhrase) {
-                    $mediaInDirRaw = [];
+                    $mediaQueryBuilder = null;
 
                     $unprocessableMediaRaw = $unprocessableMediaQuery->toIterable(
                         [],
@@ -136,31 +130,18 @@ final class ListAction
                     } else {
                         [$searchPhrase, $playlist] = $this->parseSearchQuery($station, $searchPhrase);
 
-                        if ($this->meilisearch->isSupported()) {
-                            $ids = $this->meilisearch
-                                ->getIndex($storageLocation)
-                                ->searchMedia($searchPhrase, $playlist);
-
+                        if (null !== $playlist) {
                             $mediaQueryBuilder->andWhere(
-                                'sm.id IN (:ids)'
-                            )->setParameter('ids', $ids);
-                        } else {
-                            if (null !== $playlist) {
-                                $mediaQueryBuilder->andWhere(
-                                    'sm.id IN (SELECT spm2.media_id FROM App\Entity\StationPlaylistMedia spm2 '
-                                    . 'WHERE spm2.playlist = :playlist)'
-                                )->setParameter('playlist', $playlist);
-                            }
+                                'sm.id IN (SELECT spm2.media_id FROM App\Entity\StationPlaylistMedia spm2 '
+                                . 'WHERE spm2.playlist = :playlist)'
+                            )->setParameter('playlist', $playlist);
+                        }
 
-                            if (!empty($searchPhrase)) {
-                                $mediaQueryBuilder->andWhere('(sm.title LIKE :query OR sm.artist LIKE :query)')
-                                    ->setParameter('query', '%' . $searchPhrase . '%');
-                            }
+                        if (!empty($searchPhrase)) {
+                            $mediaQueryBuilder->andWhere('(sm.title LIKE :query OR sm.artist LIKE :query)')
+                                ->setParameter('query', '%' . $searchPhrase . '%');
                         }
                     }
-
-                    $mediaQuery = $mediaQueryBuilder->getQuery();
-                    $mediaInDirRaw = $mediaQuery->getArrayResult();
 
                     $unprocessableMediaRaw = [];
                 }
@@ -171,9 +152,6 @@ final class ListAction
                 $mediaQueryBuilder->andWhere('sm.path NOT LIKE :pathWithSubfolders')
                     ->setParameter('pathWithSubfolders', $pathLike . '/%');
 
-                $mediaQuery = $mediaQueryBuilder->getQuery();
-                $mediaInDirRaw = $mediaQuery->getArrayResult();
-
                 $foldersInDirRaw = $foldersInDirQuery->getArrayResult();
 
                 $unprocessableMediaRaw = $unprocessableMediaQuery->toIterable(
@@ -183,56 +161,7 @@ final class ListAction
             }
 
             // Process all database results.
-            $mediaInDir = [];
-            foreach ($mediaInDirRaw as $row) {
-                $media = new Entity\Api\FileListMedia();
-
-                $media->id = (string)$row['song_id'];
-                $media->title = (string)$row['title'];
-                $media->artist = (string)$row['artist'];
-                $media->text = $row['artist'] . ' - ' . $row['title'];
-                $media->album = (string)$row['album'];
-                $media->genre = (string)$row['genre'];
-                $media->isrc = (string)$row['isrc'];
-
-                $media->is_playable = ($row['length'] !== 0);
-                $media->length = (int)$row['length'];
-                $media->length_text = $row['length_text'];
-
-                $media->media_id = $row['id'];
-                $media->unique_id = $row['unique_id'];
-                $media->art_updated_at = $row['art_updated_at'];
-
-                foreach ((array)$row['custom_fields'] as $custom_field) {
-                    $media->custom_fields[$custom_field['field_id']] = $custom_field['value'];
-                }
-
-                $playlists = [];
-                foreach ($row['playlists'] as $spmRow) {
-                    if (!isset($spmRow['playlist'])) {
-                        continue;
-                    }
-
-                    $playlistId = $spmRow['playlist']['id'];
-                    if (isset($playlists[$playlistId])) {
-                        $playlists[$playlistId]['count']++;
-                    } else {
-                        $playlistName = $spmRow['playlist']['name'];
-
-                        $playlists[$playlistId] = [
-                            'id' => $playlistId,
-                            'name' => $playlistName,
-                            'short_name' => Entity\StationPlaylist::generateShortName($playlistName),
-                            'count' => 1,
-                        ];
-                    }
-                }
-
-                $mediaInDir[$row['path']] = [
-                    'media' => $media,
-                    'playlists' => array_values($playlists),
-                ];
-            }
+            $mediaInDir = $this->processMediaInDir($station, $mediaQueryBuilder);
 
             $foldersInDir = [];
             foreach ($foldersInDirRaw as $folderRow) {
@@ -413,6 +342,113 @@ final class ListAction
         }
 
         return [$query, $playlist];
+    }
+
+    private function processMediaInDir(
+        Entity\Station $station,
+        ?QueryBuilder $qb = null
+    ): array {
+        if (null === $qb) {
+            return [];
+        }
+
+        $qb->select(
+            'sm.id',
+            'sm.unique_id',
+            'sm.song_id',
+            'sm.path',
+            'sm.artist',
+            'sm.title',
+            'sm.album',
+            'sm.genre',
+            'sm.isrc',
+            'sm.length',
+            'sm.length_text',
+            'sm.art_updated_at'
+        );
+
+        $mediaInDirRaw = $qb->getQuery()->getScalarResult();
+
+        $mediaIds = array_column($mediaInDirRaw, 'id');
+
+        // Fetch custom fields for all shown media.
+        $customFieldsRaw = $this->em->createQuery(
+            <<<'DQL'
+            SELECT smcf.media_id, smcf.field_id, smcf.value
+            FROM App\Entity\StationMediaCustomField smcf
+            WHERE smcf.media_id IN (:ids)
+            DQL
+        )->setParameter('ids', $mediaIds)
+            ->getScalarResult();
+
+        $customFields = [];
+        foreach ($customFieldsRaw as $row) {
+            $customFields[$row['media_id']] ??= [];
+            $customFields[$row['media_id']][$row['field_id']] = $row['value'];
+        }
+
+        // Fetch playlists for all shown media.
+        $allPlaylistsRaw = $this->em->createQuery(
+            <<<'DQL'
+            SELECT spm.media_id, spm.playlist_id, sp.name
+            FROM App\Entity\StationPlaylistMedia spm
+            JOIN spm.playlist sp
+            WHERE sp.station = :station AND spm.media_id IN (:ids) 
+            DQL
+        )->setParameter('station', $station)
+            ->setParameter('ids', $mediaIds)
+            ->getScalarResult();
+
+        $allPlaylists = [];
+        foreach ($allPlaylistsRaw as $row) {
+            $allPlaylists[$row['media_id']] ??= [];
+            $allPlaylists[$row['media_id']][$row['playlist_id']] = $row['name'];
+        }
+
+        $mediaInDir = [];
+        foreach ($mediaInDirRaw as $row) {
+            $id = $row['id'];
+            $media = new Entity\Api\FileListMedia();
+
+            $media->id = (string)$row['song_id'];
+            $media->title = (string)$row['title'];
+            $media->artist = (string)$row['artist'];
+            $media->text = $row['artist'] . ' - ' . $row['title'];
+            $media->album = (string)$row['album'];
+            $media->genre = (string)$row['genre'];
+            $media->isrc = (string)$row['isrc'];
+
+            $media->is_playable = ($row['length'] !== 0);
+            $media->length = (int)$row['length'];
+            $media->length_text = $row['length_text'];
+
+            $media->media_id = $id;
+            $media->unique_id = $row['unique_id'];
+            $media->art_updated_at = $row['art_updated_at'];
+
+            $media->custom_fields = $customFields[$id] ?? [];
+
+            $playlists = [];
+            foreach ($allPlaylists[$id] ?? [] as $playlistId => $playlistName) {
+                if (isset($playlists[$playlistId])) {
+                    $playlists[$playlistId]['count']++;
+                } else {
+                    $playlists[$playlistId] = [
+                        'id' => $playlistId,
+                        'name' => $playlistName,
+                        'short_name' => Entity\StationPlaylist::generateShortName($playlistName),
+                        'count' => 1,
+                    ];
+                }
+            }
+
+            $mediaInDir[$row['path']] = [
+                'media' => $media,
+                'playlists' => array_values($playlists),
+            ];
+        }
+
+        return $mediaInDir;
     }
 
     private static function sortRows(

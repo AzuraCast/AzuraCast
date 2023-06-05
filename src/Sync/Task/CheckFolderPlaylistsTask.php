@@ -8,16 +8,13 @@ use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Entity;
 use App\Flysystem\ExtendedFilesystemInterface;
 use App\Flysystem\StationFilesystems;
-use App\Message\Meilisearch\UpdatePlaylistsMessage;
 use Doctrine\ORM\Query;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\Messenger\MessageBus;
 
 final class CheckFolderPlaylistsTask extends AbstractTask
 {
     public function __construct(
         private readonly Entity\Repository\StationPlaylistMediaRepository $spmRepo,
-        private readonly MessageBus $messageBus,
         private readonly StationFilesystems $stationFilesystems,
         ReloadableEntityManagerInterface $em,
         LoggerInterface $logger,
@@ -66,7 +63,7 @@ final class CheckFolderPlaylistsTask extends AbstractTask
         )->setParameter('storageLocation', $station->getMediaStorageLocation());
 
         foreach ($station->getPlaylists() as $playlist) {
-            if (Entity\Enums\PlaylistSources::Songs !== $playlist->getSourceEnum()) {
+            if (Entity\Enums\PlaylistSources::Songs !== $playlist->getSource()) {
                 continue;
             }
 
@@ -114,7 +111,6 @@ final class CheckFolderPlaylistsTask extends AbstractTask
                 ->getArrayResult();
 
             $addedRecords = 0;
-            $mediaToIndex = [];
 
             foreach ($mediaInFolderRaw as $row) {
                 $mediaId = $row['id'];
@@ -125,19 +121,10 @@ final class CheckFolderPlaylistsTask extends AbstractTask
                     if ($media instanceof Entity\StationMedia) {
                         $this->spmRepo->addMediaToPlaylist($media, $playlist);
 
-                        $mediaToIndex[] = $mediaId;
                         $mediaInPlaylist[$mediaId] = $mediaId;
                         $addedRecords++;
                     }
                 }
-            }
-
-            if (!empty($mediaToIndex)) {
-                $indexMessage = new UpdatePlaylistsMessage();
-                $indexMessage->station_id = $station->getIdRequired();
-                $indexMessage->media_ids = $mediaToIndex;
-
-                $this->messageBus->dispatch($indexMessage);
             }
 
             $logMessage = (0 === $addedRecords)

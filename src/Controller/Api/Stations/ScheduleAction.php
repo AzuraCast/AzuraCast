@@ -96,7 +96,7 @@ final class ScheduleAction
                 );
                 $cacheItem->expiresAfter(600);
 
-                $this->psr6Cache->saveDeferred($cacheItem);
+                $this->psr6Cache->save($cacheItem);
             }
 
             $events = $cacheItem->get();
@@ -117,7 +117,7 @@ final class ScheduleAction
                 $cacheItem->set($this->scheduleRepo->getUpcomingSchedule($station, $now));
                 $cacheItem->expiresAfter(60);
 
-                $this->psr6Cache->saveDeferred($cacheItem);
+                $this->psr6Cache->save($cacheItem);
             }
 
             $events = $cacheItem->get();

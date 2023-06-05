@@ -61,7 +61,7 @@ final class ProfileController
 
         $csrf = $request->getCsrf()->generate(self::CSRF_NAMESPACE);
 
-        $backendEnum = $station->getBackendTypeEnum();
+        $backendEnum = $station->getBackendType();
 
         $frontend = $this->adapters->getFrontendAdapter($station);
         $frontendConfig = $station->getFrontendConfig();
@@ -78,8 +78,8 @@ final class ProfileController
                 ...$this->nowPlayingComponent->getProps($request),
 
                 // Common
-                'backendType' => $station->getBackendType(),
-                'frontendType' => $station->getFrontendType(),
+                'backendType' => $station->getBackendType()->value,
+                'frontendType' => $station->getFrontendType()->value,
                 'stationTimeZone' => $station->getTimezone(),
                 'stationSupportsRequests' => $backendEnum->isEnabled(),
                 'stationSupportsStreamers' => $backendEnum->isEnabled(),

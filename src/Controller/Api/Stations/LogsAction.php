@@ -85,7 +85,7 @@ final class LogsAction
             'tail' => false,
         ];
 
-        if (BackendAdapters::Liquidsoap === $station->getBackendTypeEnum()) {
+        if (BackendAdapters::Liquidsoap === $station->getBackendType()) {
             $logPaths['liquidsoap_log'] = [
                 'name' => __('Liquidsoap Log'),
                 'path' => $stationConfigDir . '/liquidsoap.log',
@@ -98,7 +98,7 @@ final class LogsAction
             ];
         }
 
-        switch ($station->getFrontendTypeEnum()) {
+        switch ($station->getFrontendType()) {
             case FrontendAdapters::Icecast:
                 $logPaths['icecast_access_log'] = [
                     'name' => __('Icecast Access Log'),

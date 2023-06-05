@@ -1,16 +1,6 @@
 parameters:
 	ignoreErrors:
 		-
-			message: "#^Method App\\\\Entity\\\\Analytics\\:\\:getMomentInStationTimeZone\\(\\) should return Carbon\\\\CarbonImmutable but returns Carbon\\\\Carbon\\|Carbon\\\\CarbonImmutable\\.$#"
-			count: 1
-			path: src/Entity/Analytics.php
-
-		-
-			message: "#^Property App\\\\Entity\\\\Analytics\\:\\:\\$moment \\(Carbon\\\\CarbonImmutable\\) does not accept Carbon\\\\Carbon\\|Carbon\\\\CarbonImmutable\\.$#"
-			count: 1
-			path: src/Entity/Analytics.php
-
-		-
 			message: "#^Parameter \\#3 \\$criteria of method Doctrine\\\\DBAL\\\\Connection\\:\\:update\\(\\) expects array\\<string, mixed\\>, array\\<int, int\\> given\\.$#"
 			count: 1
 			path: src/Entity/Migration/Version20180412055024.php
@@ -44,6 +34,11 @@ parameters:
 			message: "#^Cannot cast Symfony\\\\Component\\\\Validator\\\\ConstraintViolationListInterface to string\\.$#"
 			count: 1
 			path: src/Exception/ValidationException.php
+
+		-
+			message: "#^Method App\\\\Normalizer\\\\DoctrineEntityNormalizer\\:\\:getAllowedAttributes\\(\\) should return array\\|false but returns array\\<string\\|Symfony\\\\Component\\\\Serializer\\\\Mapping\\\\AttributeMetadataInterface\\>\\|bool\\.$#"
+			count: 1
+			path: src/Normalizer/DoctrineEntityNormalizer.php
 
 		-
 			message: "#^Parameter \\#1 \\$className of method Doctrine\\\\ORM\\\\EntityManagerInterface\\:\\:getRepository\\(\\) expects class\\-string\\<object\\>, class\\-string\\|false given\\.$#"

@@ -40,7 +40,7 @@ final class FilesAction
 
         $router = $request->getRouter();
 
-        $backendEnum = $station->getBackendTypeEnum();
+        $backendEnum = $station->getBackendType();
 
         return $request->getView()->renderVuePage(
             response: $response,

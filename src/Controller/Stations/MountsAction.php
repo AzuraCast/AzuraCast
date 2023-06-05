@@ -35,7 +35,7 @@ final class MountsAction
                 'listUrl' => $router->fromHere('api:stations:mounts'),
                 'newIntroUrl' => $router->fromHere('api:stations:mounts:new-intro'),
                 'restartStatusUrl' => $router->fromHere('api:stations:restart-status'),
-                'stationFrontendType' => $station->getFrontendType(),
+                'stationFrontendType' => $station->getFrontendType()->value,
                 'showAdvanced' => $settings->getEnableAdvancedFeatures(),
             ],
         );

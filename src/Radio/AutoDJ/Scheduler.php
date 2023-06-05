@@ -51,7 +51,7 @@ final class Scheduler
 
         $shouldPlay = true;
 
-        switch ($playlist->getTypeEnum()) {
+        switch ($playlist->getType()) {
             case Entity\Enums\PlaylistTypes::OncePerHour:
                 $shouldPlay = $this->shouldPlaylistPlayNowPerHour($playlist, $now);
 

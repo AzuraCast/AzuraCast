@@ -60,7 +60,7 @@ final class Configuration
         // Check for at least one playlist, and create one if it doesn't exist.
         $defaultPlaylists = $station->getPlaylists()->filter(
             function (StationPlaylist $row) {
-                return $row->getIsEnabled() && PlaylistTypes::default() === $row->getTypeEnum();
+                return $row->getIsEnabled() && PlaylistTypes::default() === $row->getType();
             }
         );
 
@@ -99,18 +99,8 @@ final class Configuration
         $supervisorConfig = [];
         $supervisorConfigFile = $this->getSupervisorConfigFile($station);
 
-        if (!$station->getHasStarted()) {
-            $this->unlinkAndStopStation($station, $reloadSupervisor);
-            throw new RuntimeException('Station has not started yet.');
-        }
-
-        if (!$station->getIsEnabled()) {
-            $this->unlinkAndStopStation($station, $reloadSupervisor);
-            throw new RuntimeException('Station is disabled.');
-        }
-
-        $frontendEnum = $station->getFrontendTypeEnum();
-        $backendEnum = $station->getBackendTypeEnum();
+        $frontendEnum = $station->getFrontendType();
+        $backendEnum = $station->getBackendType();
 
         $frontend = $this->adapters->getFrontendAdapter($station);
         $backend = $this->adapters->getBackendAdapter($station);
@@ -120,8 +110,18 @@ final class Configuration
             (null === $frontend || !$frontend->hasCommand($station))
             && (null === $backend || !$backend->hasCommand($station))
         ) {
-            $this->unlinkAndStopStation($station, $reloadSupervisor);
+            $this->unlinkAndStopStation($station, $reloadSupervisor, true);
             throw new RuntimeException('Station has no local services.');
+        }
+
+        if (!$station->getHasStarted()) {
+            $this->unlinkAndStopStation($station, $reloadSupervisor);
+            throw new RuntimeException('Station has not started yet.');
+        }
+
+        if (!$station->getIsEnabled()) {
+            $this->unlinkAndStopStation($station, $reloadSupervisor);
+            throw new RuntimeException('Station is disabled.');
         }
 
         // Write group section of config
@@ -210,11 +210,13 @@ final class Configuration
 
     private function unlinkAndStopStation(
         Station $station,
-        bool $reloadSupervisor = true
+        bool $reloadSupervisor = true,
+        bool $isRemoteOnly = false
     ): void {
-        $station->setHasStarted(false);
+        $station->setHasStarted($isRemoteOnly);
         $station->setNeedsRestart(false);
-        $station->clearCache();
+        $station->setCurrentStreamer(null);
+        $station->setCurrentSong(null);
 
         $this->em->persist($station);
         $this->em->flush();
@@ -245,7 +247,8 @@ final class Configuration
     {
         $station->setHasStarted(true);
         $station->setNeedsRestart(false);
-        $station->clearCache();
+        $station->setCurrentStreamer(null);
+        $station->setCurrentSong(null);
 
         $this->em->persist($station);
         $this->em->flush();
@@ -265,8 +268,8 @@ final class Configuration
     public function assignRadioPorts(Station $station, bool $force = false): void
     {
         if (
-            $station->getFrontendTypeEnum()->isEnabled()
-            || $station->getBackendTypeEnum()->isEnabled()
+            $station->getFrontendType()->isEnabled()
+            || $station->getBackendType()->isEnabled()
         ) {
             $frontend_config = $station->getFrontendConfig();
             $backend_config = $station->getBackendConfig();

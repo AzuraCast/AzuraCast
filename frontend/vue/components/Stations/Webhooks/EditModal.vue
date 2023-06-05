@@ -10,9 +10,10 @@
     >
         <type-select
             v-if="!type"
-            :webhook-types="webhookTypes"
+            :type-details="typeDetails"
             @select="setType"
         />
+
         <b-tabs
             v-else
             lazy
@@ -25,7 +26,8 @@
                 </template>
 
                 <basic-info
-                    :trigger-options="triggerOptions"
+                    :trigger-details="triggerDetails"
+                    :triggers="triggers"
                     :form="v$"
                 />
             </b-tab>
@@ -59,6 +61,18 @@ import {baseEditModalProps, useBaseEditModal} from "~/functions/useBaseEditModal
 import {computed, ref} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import ModalForm from "~/components/Common/ModalForm.vue";
+import {
+    getTriggers,
+    WEBHOOK_TYPE_DISCORD,
+    WEBHOOK_TYPE_EMAIL,
+    WEBHOOK_TYPE_GENERIC,
+    WEBHOOK_TYPE_GOOGLE_ANALYTICS_V3,
+    WEBHOOK_TYPE_GOOGLE_ANALYTICS_V4,
+    WEBHOOK_TYPE_MASTODON, WEBHOOK_TYPE_MATOMO_ANALYTICS,
+    WEBHOOK_TYPE_TELEGRAM,
+    WEBHOOK_TYPE_TUNEIN,
+    WEBHOOK_TYPE_TWITTER
+} from "~/components/Entity/Webhooks";
 
 const props = defineProps({
     ...baseEditModalProps,
@@ -66,15 +80,11 @@ const props = defineProps({
         type: String,
         required: true
     },
-    webhookTypes: {
+    typeDetails: {
         type: Object,
         required: true
     },
-    triggerTitles: {
-        type: Object,
-        required: true
-    },
-    triggerDescriptions: {
+    triggerDetails: {
         type: Object,
         required: true
     }
@@ -157,7 +167,7 @@ const langTwitterStationOnlineMessage = $gettext(
 );
 
 const webhookConfig = {
-    'generic': {
+    [WEBHOOK_TYPE_GENERIC]: {
         component: Generic,
         validations: {
             webhook_url: {required},
@@ -172,7 +182,7 @@ const webhookConfig = {
             timeout: '5',
         }
     },
-    'email': {
+    [WEBHOOK_TYPE_EMAIL]: {
         component: Email,
         validations: {
             to: {required},
@@ -185,7 +195,7 @@ const webhookConfig = {
             message: ''
         }
     },
-    'tunein': {
+    [WEBHOOK_TYPE_TUNEIN]: {
         component: Tunein,
         validations: {
             station_id: {required},
@@ -198,7 +208,7 @@ const webhookConfig = {
             partner_key: ''
         }
     },
-    'discord': {
+    [WEBHOOK_TYPE_DISCORD]: {
         component: Discord,
         validations: {
             webhook_url: {required},
@@ -221,7 +231,7 @@ const webhookConfig = {
             footer: langPoweredByAzuraCast,
         }
     },
-    'telegram': {
+    [WEBHOOK_TYPE_TELEGRAM]: {
         component: Telegram,
         validations: {
             bot_token: {required},
@@ -238,7 +248,7 @@ const webhookConfig = {
             parse_mode: 'Markdown'
         }
     },
-    'twitter': {
+    [WEBHOOK_TYPE_TWITTER]: {
         component: Twitter,
         validations: {
             consumer_key: {required},
@@ -267,7 +277,7 @@ const webhookConfig = {
             message_station_online: langTwitterStationOnlineMessage
         }
     },
-    'mastodon': {
+    [WEBHOOK_TYPE_MASTODON]: {
         component: Mastodon,
         validations: {
             instance_url: {required},
@@ -294,7 +304,7 @@ const webhookConfig = {
             message_station_online: langTwitterStationOnlineMessage
         }
     },
-    'google_analytics': {
+    [WEBHOOK_TYPE_GOOGLE_ANALYTICS_V3]: {
         component: GoogleAnalyticsV3,
         validations: {
             tracking_id: {required}
@@ -303,7 +313,7 @@ const webhookConfig = {
             tracking_id: ''
         }
     },
-    'google_analytics_v4': {
+    [WEBHOOK_TYPE_GOOGLE_ANALYTICS_V4]: {
         component: GoogleAnalyticsV4,
         validations: {
             api_secret: {required},
@@ -314,7 +324,7 @@ const webhookConfig = {
             measurement_id: ''
         }
     },
-    'matomo_analytics': {
+    [WEBHOOK_TYPE_MATOMO_ANALYTICS]: {
         component: MatomoAnalytics,
         validations: {
             matomo_url: {required},
@@ -329,24 +339,25 @@ const webhookConfig = {
     }
 };
 
-const triggerOptions = computed(() => {
+const triggers = computed(() => {
     if (!type.value) {
         return [];
     }
 
-    let webhookKeys = get(props.webhookTypes, [type.value, 'triggers'], []);
-    return map(webhookKeys, (key) => {
-        return {
-            html:
-                '<h6 class="font-weight-bold mb-0">' + props.triggerTitles[key] + '</h6>'
-                + '<p class="card-text small">' + props.triggerDescriptions[key] + '</p>',
-            value: key
-        };
-    });
+    return map(
+        getTriggers(type.value),
+        (trigger) => {
+            return {
+                key: trigger,
+                title: get(props.triggerDetails, [trigger, 'title']),
+                description: get(props.triggerDetails, [trigger, 'description'])
+            };
+        }
+    );
 });
 
 const typeTitle = computed(() => {
-    return get(props.webhookTypes, [type.value, 'name'], '');
+    return get(props.typeDetails, [type.value, 'title'], '');
 });
 
 const formComponent = computed(() => {
@@ -375,8 +386,8 @@ const {
             config: {}
         };
 
-        const triggerOptionsValue = triggerOptions.value;
-        if (triggerOptionsValue.length > 0) {
+        const triggersValue = triggers.value;
+        if (triggersValue.length > 0) {
             validations.triggers = {required};
         }
 

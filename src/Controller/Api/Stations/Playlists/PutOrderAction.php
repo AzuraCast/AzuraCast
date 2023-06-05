@@ -30,8 +30,8 @@ final class PutOrderAction
         $record = $this->playlistRepo->requireForStation($id, $request->getStation());
 
         if (
-            PlaylistSources::Songs !== $record->getSourceEnum()
-            || PlaylistOrders::Sequential !== $record->getOrderEnum()
+            PlaylistSources::Songs !== $record->getSource()
+            || PlaylistOrders::Sequential !== $record->getOrder()
         ) {
             throw new Exception(__('This playlist is not a sequential playlist.'));
         }

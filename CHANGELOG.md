@@ -5,8 +5,6 @@ release channel, you can take advantage of these new features and fixes.
 
 ## New Features/Changes
 
-## Code Quality/Technical Changes
-
 - **Update to Liquidsoap 2.2.x**: We're updating to the latest version of Liquidsoap, which includes many bug fixes,
   performance improvements and other changes. We have adopted our syntax to match Liquidsoap's new supported syntax, but
   if you use custom Liquidsoap code, you will need to update your code accordingly. You can see the most important
@@ -15,11 +13,40 @@ release channel, you can take advantage of these new features and fixes.
     - `!var` becomes `var()`
     - `var := value` optionally becomes `var.set(value)`
 
+## Code Quality/Technical Changes
+
+## Bug Fixes
+
+---
+
+# AzuraCast 0.18.3 (Jun 5, 2023)
+
+This release solely exists to bump the version of AzuraCast up to 0.18.3, which was erroneously listed as the stable
+release where the bug reports in 0.18.2 were fixed.
+
+---
+
+# AzuraCast 0.18.2 (Jun 5, 2023)
+
+## New Features/Changes
+
+## Code Quality/Technical Changes
+
+- We have disabled the Meilisearch search tool, as it consumed a large amount of resources on smaller systems and it was
+  difficult to ensure the index exactly matched the current state of the filesystem. We will be working to further
+  optimize search queries to achieve similar improvements without any extra services.
+
 - In sections of our application that depend on IP addresses, we've tightened our allowed IP addresses significantly to
   improve security and prevent brute-force flooding. If you're using a reverse proxy or CloudFlare, you should update
   your "IP Address Source" under the "System Settings" page.
 
 ## Bug Fixes
+
+- File downloads will preserve the "Access-Control-Allowed-Origin" header you set in System Settings.
+
+- Added extra reliability to fetching Now Playing information from remote relays.
+
+- Charts won't attempt to load on the dashboard if analytics are disabled.
 
 ---
 

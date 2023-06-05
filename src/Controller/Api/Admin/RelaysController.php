@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Admin;
 
+use App\Cache\AzuraRelayCache;
 use App\Entity;
 use App\Enums\StationPermissions;
 use App\Http\Response;
@@ -39,7 +40,8 @@ final class RelaysController
     public function __construct(
         private readonly EntityManagerInterface $em,
         private readonly Adapters $adapters,
-        private readonly Entity\Repository\SettingsRepository $settingsRepo
+        private readonly Entity\Repository\SettingsRepository $settingsRepo,
+        private readonly AzuraRelayCache $azuraRelayCache
     ) {
     }
 
@@ -61,7 +63,7 @@ final class RelaysController
             $row->url = $station->getUrl();
             $row->genre = $station->getGenre();
 
-            $row->type = $station->getFrontendType();
+            $row->type = $station->getFrontendType()->value;
 
             $frontend_config = $station->getFrontendConfig();
             $row->port = $frontend_config->getPort();
@@ -137,7 +139,6 @@ final class RelaysController
 
         $relay->setName($body['name'] ?? 'Relay');
         $relay->setIsVisibleOnPublicPages($body['is_visible_on_public_pages'] ?? true);
-        $relay->setNowplaying((array)$body['nowplaying']);
         $relay->setUpdatedAt(time());
 
         $this->em->persist($relay);
@@ -168,7 +169,7 @@ final class RelaysController
                 }
 
                 $remote->setRelay($relay);
-                $remote->setType(RemoteAdapters::AzuraRelay->value);
+                $remote->setType(RemoteAdapters::AzuraRelay);
                 $remote->setDisplayName($mount->getDisplayName() . ' (' . $relay->getName() . ')');
                 $remote->setIsVisibleOnPublicPages($relay->getIsVisibleOnPublicPages());
                 $remote->setAutodjBitrate($mount->getAutodjBitrate());
@@ -188,6 +189,8 @@ final class RelaysController
         }
 
         $this->em->flush();
+
+        $this->azuraRelayCache->setForRelay($relay, (array)$body['nowplaying']);
 
         return $response->withJson(Entity\Api\Status::success());
     }

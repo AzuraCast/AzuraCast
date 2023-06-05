@@ -4,16 +4,14 @@ declare(strict_types=1);
 
 namespace App\Controller\Api;
 
-use App\Entity;
+use App\Cache\NowPlayingCache;
+use App\Entity\Api\Error;
+use App\Entity\Api\NowPlaying\NowPlaying;
 use App\Http\Response;
-use App\Http\RouterInterface;
 use App\Http\ServerRequest;
 use App\OpenApi;
-use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\NoResultException;
 use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
-use Psr\SimpleCache\CacheInterface;
 
 #[
     OA\Get(
@@ -52,8 +50,7 @@ use Psr\SimpleCache\CacheInterface;
 final class NowPlayingController
 {
     public function __construct(
-        private readonly EntityManagerInterface $em,
-        private readonly CacheInterface $cache
+        private readonly NowPlayingCache $nowPlayingCache
     ) {
     }
 
@@ -65,22 +62,36 @@ final class NowPlayingController
         $router = $request->getRouter();
 
         if (!empty($station_id)) {
-            $np = $this->getForStation($station_id, $router);
+            $np = $this->nowPlayingCache->getForStation($station_id);
 
-            if (null !== $np) {
+            if ($np instanceof NowPlaying) {
+                $np->resolveUrls($router->getBaseUrl());
+                $np->update();
+
                 return $response->withJson($np);
             }
 
             return $response->withStatus(404)
-                ->withJson(Entity\Api\Error::notFound());
+                ->withJson(Error::notFound());
         }
 
-        return $response->withJson(
-            $this->getForAllStations(
-                $router,
-                $request->getAttribute('user') === null // If unauthenticated, hide non-public stations from full view.
-            )
+        $baseUrl = $router->getBaseUrl();
+
+        // If unauthenticated, hide non-public stations from full view.
+        $np = $this->nowPlayingCache->getForAllStations(
+            $request->getAttribute('user') === null
         );
+
+        $np = array_map(
+            function (NowPlaying $npRow) use ($baseUrl) {
+                $npRow->resolveUrls($baseUrl);
+                $npRow->update();
+                return $npRow;
+            },
+            $np
+        );
+
+        return $response->withJson($np);
     }
 
     public function getArtAction(
@@ -89,87 +100,19 @@ final class NowPlayingController
         string $station_id,
         ?string $timestamp = null
     ): ResponseInterface {
-        $np = $this->getForStation($station_id, $request->getRouter());
+        $np = $this->nowPlayingCache->getForStation($station_id);
 
-        $currentArt = $np?->now_playing?->song?->art;
-        if (null !== $currentArt) {
-            return $response->withRedirect((string)$currentArt, 302);
+        if ($np instanceof NowPlaying) {
+            $np->resolveUrls($request->getRouter()->getBaseUrl());
+            $np->update();
+
+            $currentArt = $np->now_playing?->song?->art;
+            if (null !== $currentArt) {
+                return $response->withRedirect((string)$currentArt, 302);
+            }
         }
 
         return $response->withStatus(404)
-            ->withJson(Entity\Api\Error::notFound());
-    }
-
-    private function getForStation(
-        string $station,
-        RouterInterface $router
-    ): ?Entity\Api\NowPlaying\NowPlaying {
-        // Check cache first.
-        $np = $this->cache->get('nowplaying.' . $station);
-
-        if (!($np instanceof Entity\Api\NowPlaying\NowPlaying)) {
-            // Pull from DB if possible.
-            if (is_numeric($station)) {
-                $dql = <<<'DQL'
-                    SELECT s.nowplaying FROM App\Entity\Station s
-                    WHERE s.id = :id
-                DQL;
-            } else {
-                $dql = <<<'DQL'
-                    SELECT s.nowplaying FROM App\Entity\Station s
-                    WHERE s.short_name = :id
-                DQL;
-            }
-
-            try {
-                $npResult = $this->em->createQuery($dql)
-                    ->setParameter('id', $station)
-                    ->setMaxResults(1)
-                    ->getSingleResult();
-
-                $np = $npResult['nowplaying'] ?? null;
-            } catch (NoResultException) {
-                return null;
-            }
-        }
-
-        if ($np instanceof Entity\Api\NowPlaying\NowPlaying) {
-            $np->resolveUrls($router->getBaseUrl());
-            $np->update();
-            return $np;
-        }
-
-        return null;
-    }
-
-    private function getForAllStations(
-        RouterInterface $router,
-        bool $publicOnly = false,
-    ): array {
-        if ($publicOnly) {
-            $dql = <<<'DQL'
-                SELECT s.nowplaying FROM App\Entity\Station s 
-                WHERE s.is_enabled = 1 AND s.enable_public_page = 1
-            DQL;
-        } else {
-            $dql = <<<'DQL'
-                SELECT s.nowplaying FROM App\Entity\Station s 
-                WHERE s.is_enabled = 1
-            DQL;
-        }
-
-        $np = [];
-        $baseUrl = $router->getBaseUrl();
-
-        foreach ($this->em->createQuery($dql)->getArrayResult() as $row) {
-            $npRow = $row['nowplaying'];
-            if ($npRow instanceof Entity\Api\NowPlaying\NowPlaying) {
-                $npRow->resolveUrls($baseUrl);
-                $npRow->update();
-                $np[] = $npRow;
-            }
-        }
-
-        return $np;
+            ->withJson(Error::notFound());
     }
 }

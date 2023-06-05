@@ -1,0 +1,51 @@
+gitConfig:
+  core.autocrlf: input
+
+github:
+  prebuilds:
+    master: true
+    branches: true
+    pullRequests: true
+    pullRequestsFromForks: true
+    addCheck: false
+    addComment: false
+    addBadge: true
+
+ports:
+  - name: AzuraCast HTTP
+    port: 80
+    onOpen: ignore
+  - name: AzuraCast HTTPS
+    port: 443
+    onOpen: open-browser
+    visibility: public
+  - name: SFTP
+    port: 2022
+    onOpen: ignore
+  - name: MariaDB
+    port: 3306
+    onOpen: ignore
+  - name: Redis
+    port: 6379
+    onOpen: ignore
+  - name: Broadcast Ports
+    port: 8000-8999
+    onOpen: ignore
+
+tasks:
+  - name: Backend
+    init: |
+      cp dev.env .env
+      cp azuracast.dev.env azuracast.env
+      cp docker-compose.sample.yml docker-compose.yml
+      cp docker-compose.dev.yml docker-compose.override.yml
+      docker-compose build
+    command: |
+      bash util/setup_gitpod.sh
+      bash docker.sh install-dev
+      gp sync-done install
+      make bash
+  - name: Frontend
+    command: |
+      gp sync-await install
+      make frontend-bash

@@ -287,9 +287,15 @@ return [
         );
 
         $normalizers = [
+            new Symfony\Component\Serializer\Normalizer\BackedEnumNormalizer(),
             new Symfony\Component\Serializer\Normalizer\JsonSerializableNormalizer(),
-            new App\Normalizer\DoctrineEntityNormalizer($em, $classMetaFactory),
-            new Symfony\Component\Serializer\Normalizer\ObjectNormalizer($classMetaFactory),
+            new App\Normalizer\DoctrineEntityNormalizer(
+                $em,
+                classMetadataFactory: $classMetaFactory
+            ),
+            new Symfony\Component\Serializer\Normalizer\ObjectNormalizer(
+                classMetadataFactory: $classMetaFactory
+            ),
         ];
         $encoders = [
             new Symfony\Component\Serializer\Encoder\JsonEncoder(),
@@ -473,9 +479,4 @@ return [
             $logger
         );
     },
-
-    App\Webhook\ConnectorLocator::class => static fn(ContainerInterface $di) => new App\Webhook\ConnectorLocator(
-        $di,
-        require __DIR__ . '/webhooks.php'
-    ),
 ];

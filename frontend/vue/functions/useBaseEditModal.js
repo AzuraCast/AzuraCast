@@ -58,6 +58,7 @@ export function useBaseEditModal(
             return options.resetForm(originalResetForm);
         }
 
+        v$.value.$reset();
         originalResetForm();
     };
 

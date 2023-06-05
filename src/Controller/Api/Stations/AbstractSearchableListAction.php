@@ -4,12 +4,10 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Stations;
 
-use App\Doctrine\Paginator\HydratingAdapter;
 use App\Entity\ApiGenerator\SongApiGenerator;
 use App\Entity\StationMedia;
 use App\Http\ServerRequest;
 use App\Paginator;
-use App\Service\Meilisearch;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Cache\CacheItemPoolInterface;
 
@@ -18,7 +16,6 @@ abstract class AbstractSearchableListAction
     public function __construct(
         protected readonly EntityManagerInterface $em,
         protected readonly SongApiGenerator $songApiGenerator,
-        protected readonly Meilisearch $meilisearch,
         protected readonly CacheItemPoolInterface $psr6Cache,
     ) {
     }
@@ -42,45 +39,6 @@ abstract class AbstractSearchableListAction
 
         $sortField = (string)($queryParams['sort'] ?? '');
         $sortDirection = strtolower($queryParams['sortOrder'] ?? 'asc');
-
-        if ($this->meilisearch->isSupported()) {
-            $index = $this->meilisearch->getIndex($station->getMediaStorageLocation());
-
-            $searchParams = [];
-            if (!empty($sortField)) {
-                $searchParams['sort'] = [$sortField . ':' . $sortDirection];
-            }
-
-            $searchParams['filter'] = [
-                'station_' . $station->getIdRequired() . '_playlists IN [' . implode(', ', $playlists) . ']',
-            ];
-
-            $paginatorAdapter = $index->getSearchPaginator(
-                $searchPhrase,
-                $searchParams,
-            );
-
-            $hydrateCallback = function (iterable $results) {
-                $ids = array_column([...$results], 'id');
-
-                return $this->em->createQuery(
-                    <<<'DQL'
-                    SELECT sm
-                    FROM App\Entity\StationMedia sm
-                    WHERE sm.id IN (:ids)
-                    ORDER BY FIELD(sm.id, :ids)
-                DQL
-                )->setParameter('ids', $ids)
-                    ->toIterable();
-            };
-
-            $hydrateAdapter = new HydratingAdapter(
-                $paginatorAdapter,
-                $hydrateCallback(...)
-            );
-
-            return Paginator::fromAdapter($hydrateAdapter, $request);
-        }
 
         $qb = $this->em->createQueryBuilder();
         $qb->select('sm, spm, sp')

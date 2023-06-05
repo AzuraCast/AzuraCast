@@ -181,7 +181,7 @@ final class Acme
             $this->nginx->reload();
 
             foreach ($this->stationRepo->iterateEnabledStations() as $station) {
-                $frontendType = $station->getFrontendTypeEnum();
+                $frontendType = $station->getFrontendType();
                 if (!$station->getHasStarted() || !$frontendType->supportsReload()) {
                     continue;
                 }

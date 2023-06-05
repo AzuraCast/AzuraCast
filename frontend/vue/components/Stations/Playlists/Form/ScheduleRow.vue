@@ -1,8 +1,5 @@
 <template>
-    <b-card
-        class="mb-3"
-        no-body
-    >
+    <section class="card mb-3">
         <div class="card-header bg-primary-dark d-flex align-items-center">
             <div class="flex-fill">
                 <h2 class="card-title">
@@ -155,7 +152,7 @@
                 </div>
             </b-form-group>
         </b-card-body>
-    </b-card>
+    </section>
 </template>
 
 <script setup>

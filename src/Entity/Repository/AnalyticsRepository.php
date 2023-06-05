@@ -21,7 +21,7 @@ final class AnalyticsRepository extends Repository
     public function findForStationInRange(
         Entity\Station $station,
         DateRange $dateRange,
-        string $type = Entity\Analytics::INTERVAL_DAILY
+        Entity\Enums\AnalyticsIntervals $type = Entity\Enums\AnalyticsIntervals::Daily
     ): array {
         return $this->em->createQuery(
             <<<'DQL'
@@ -54,13 +54,13 @@ final class AnalyticsRepository extends Repository
                 DELETE FROM App\Entity\Analytics a
                 WHERE a.type = :type AND a.moment <= :threshold
             DQL
-        )->setParameter('type', Entity\Analytics::INTERVAL_HOURLY)
+        )->setParameter('type', Entity\Enums\AnalyticsIntervals::Hourly)
             ->setParameter('threshold', $hourlyRetention)
             ->execute();
     }
 
     public function clearSingleMetric(
-        string $type,
+        Entity\Enums\AnalyticsIntervals $type,
         CarbonInterface $moment,
         ?Entity\Station $station = null
     ): void {

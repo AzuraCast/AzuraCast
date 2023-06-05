@@ -43,7 +43,7 @@ abstract class AbstractCommand
         );
 
         try {
-            if (BackendAdapters::Liquidsoap !== $station->getBackendTypeEnum()) {
+            if (BackendAdapters::Liquidsoap !== $station->getBackendType()) {
                 $this->logger->error('Station does not use Liquidsoap backend.');
                 return 'false';
             }

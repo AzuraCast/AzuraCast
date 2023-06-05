@@ -77,7 +77,7 @@ final class OAuthAdapter implements RefreshableTokenProvider
             }
 
             $cacheItem->expiresAfter(600);
-            $this->psr6Cache->saveDeferred($cacheItem);
+            $this->psr6Cache->save($cacheItem);
         }
 
         return $cacheItem->get();

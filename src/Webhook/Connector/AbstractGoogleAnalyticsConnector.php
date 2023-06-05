@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Webhook\Connector;
 
+use App\Entity;
 use App\Entity\Repository\ListenerRepository;
 use App\Entity\Station;
 use App\Nginx\CustomUrls;
@@ -18,6 +19,11 @@ abstract class AbstractGoogleAnalyticsConnector extends AbstractConnector
         protected readonly ListenerRepository $listenerRepo
     ) {
         parent::__construct($logger, $httpClient);
+    }
+
+    protected function webhookShouldTrigger(Entity\StationWebhook $webhook, array $triggers = []): bool
+    {
+        return true;
     }
 
     protected function buildListenUrls(Station $station): array

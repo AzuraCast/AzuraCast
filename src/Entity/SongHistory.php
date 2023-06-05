@@ -29,40 +29,40 @@ class SongHistory implements
     /** @var int */
     public const DEFAULT_DAYS_TO_KEEP = 60;
 
-    #[ORM\Column(nullable: false)]
-    protected int $station_id;
-
     #[ORM\ManyToOne(inversedBy: 'history')]
     #[ORM\JoinColumn(name: 'station_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     protected Station $station;
 
-    #[ORM\Column(nullable: true)]
-    protected ?int $playlist_id = null;
+    #[ORM\Column(nullable: false, insertable: false, updatable: false)]
+    protected int $station_id;
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(name: 'playlist_id', referencedColumnName: 'id', nullable: true, onDelete: 'SET NULL')]
     protected ?StationPlaylist $playlist = null;
 
-    #[ORM\Column(nullable: true)]
-    protected ?int $streamer_id = null;
+    #[ORM\Column(nullable: true, insertable: false, updatable: false)]
+    protected ?int $playlist_id = null;
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(name: 'streamer_id', referencedColumnName: 'id', nullable: true, onDelete: 'SET NULL')]
     protected ?StationStreamer $streamer = null;
 
-    #[ORM\Column(nullable: true)]
-    protected ?int $media_id = null;
+    #[ORM\Column(nullable: true, insertable: false, updatable: false)]
+    protected ?int $streamer_id = null;
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(name: 'media_id', referencedColumnName: 'id', nullable: true, onDelete: 'SET NULL')]
     protected ?StationMedia $media = null;
 
-    #[ORM\Column(nullable: true)]
-    protected ?int $request_id = null;
+    #[ORM\Column(nullable: true, insertable: false, updatable: false)]
+    protected ?int $media_id = null;
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(name: 'request_id', referencedColumnName: 'id', nullable: true, onDelete: 'SET NULL')]
     protected ?StationRequest $request = null;
+
+    #[ORM\Column(nullable: true, insertable: false, updatable: false)]
+    protected ?int $request_id = null;
 
     #[ORM\Column]
     protected int $timestamp_start = 0;

@@ -69,7 +69,7 @@ final class ChartsAction
                     AND a.moment >= :threshold
                 DQL
             )->setParameter('stations', $stationIds)
-                ->setParameter('type', Entity\Analytics::INTERVAL_DAILY)
+                ->setParameter('type', Entity\Enums\AnalyticsIntervals::Daily)
                 ->setParameter('threshold', $threshold)
                 ->getArrayResult();
 

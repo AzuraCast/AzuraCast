@@ -28,7 +28,7 @@ final class StationPlaylistRepository extends AbstractStationBasedRepository
                 continue;
             }
 
-            if (Entity\Enums\PlaylistSources::RemoteUrl === $playlist->getSourceEnum()) {
+            if (Entity\Enums\PlaylistSources::RemoteUrl === $playlist->getSource()) {
                 return true;
             }
 

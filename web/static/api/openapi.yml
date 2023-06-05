@@ -5,7 +5,7 @@ info:
   license:
     name: 'Apache 2.0'
     url: 'https://www.apache.org/licenses/LICENSE-2.0.html'
-  version: 0.18.1
+  version: 0.18.3
 servers:
   -
     url: 'https://demo.azuracast.com/api'
@@ -312,12 +312,12 @@ paths:
       security:
         -
           ApiKey: []
-  /admin/cpu/stats:
+  /admin/server/stats:
     get:
       tags:
         - 'Administration: CPU stats'
       description: 'Return a list of all CPU usage stats.'
-      operationId: getCpuStats
+      operationId: getServerStats
       responses:
         '200':
           description: Success
@@ -4340,7 +4340,6 @@ components:
           example: 'false'
         analytics:
           description: 'Listener Analytics Collection'
-          type: string
           nullable: true
         check_for_updates:
           description: 'Check for Updates and Announcements'
@@ -4358,7 +4357,6 @@ components:
           example: 1609480800
         public_theme:
           description: 'Base Theme for Public Pages'
-          type: string
           example: light
           nullable: true
         hide_album_art:
@@ -4530,6 +4528,9 @@ components:
           type: string
           example: ''
           nullable: true
+        ip_source:
+          description: 'IP Address Source'
+          nullable: true
       type: object
     SftpUser:
       type: object
@@ -4566,18 +4567,14 @@ components:
               example: true
             frontend_type:
               description: 'The frontend adapter (icecast,shoutcast,remote,etc)'
-              type: string
               example: icecast
-              nullable: true
             frontend_config:
               description: 'An array containing station-specific frontend configuration'
               type: array
               items: {  }
             backend_type:
               description: 'The backend adapter (liquidsoap,etc)'
-              type: string
               example: liquidsoap
-              nullable: true
             backend_config:
               description: 'An array containing station-specific backend configuration'
               type: array
@@ -4662,7 +4659,6 @@ components:
               type: string
               example: aac_lofi
             format:
-              type: string
               example: aac
               nullable: true
             bitrate:
@@ -4809,7 +4805,6 @@ components:
               type: boolean
               example: true
             autodj_format:
-              type: string
               example: mp3
               nullable: true
             autodj_bitrate:
@@ -4842,20 +4837,16 @@ components:
               type: string
               example: 'Test Playlist'
             type:
-              type: string
               example: default
             source:
-              type: string
               example: songs
             order:
-              type: string
               example: shuffle
             remote_url:
               type: string
               example: 'https://remote-url.example.com/stream.mp3'
               nullable: true
             remote_type:
-              type: string
               example: stream
               nullable: true
             remote_buffer:
@@ -4976,7 +4967,6 @@ components:
               nullable: true
             type:
               description: 'The type of webhook connector to use.'
-              type: string
               example: twitter
             is_enabled:
               type: boolean
@@ -5042,7 +5032,6 @@ components:
               example: en_US
               nullable: true
             theme:
-              type: string
               example: dark
               nullable: true
             show_24_hour_time:

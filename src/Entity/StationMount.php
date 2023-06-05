@@ -415,7 +415,7 @@ class StationMount implements
 
     public function getIsShoutcast(): bool
     {
-        return match ($this->getAutodjAdapterTypeEnum()) {
+        return match ($this->getAutodjAdapterType()) {
             FrontendAdapters::Shoutcast => true,
             default => false
         };

@@ -14,8 +14,6 @@ use Br33f\Ga4\MeasurementProtocol\Service;
 
 final class GoogleAnalyticsV4 extends AbstractGoogleAnalyticsConnector
 {
-    public const NAME = 'google_analytics_v4';
-
     /**
      * @inheritDoc
      */
@@ -28,7 +26,7 @@ final class GoogleAnalyticsV4 extends AbstractGoogleAnalyticsConnector
         $config = $webhook->getConfig();
 
         if (empty($config['api_secret']) || empty($config['measurement_id'])) {
-            throw $this->incompleteConfigException(self::NAME);
+            throw $this->incompleteConfigException($webhook);
         }
 
         // Get listen URLs for each mount point.

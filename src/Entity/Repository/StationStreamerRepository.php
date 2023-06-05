@@ -82,7 +82,7 @@ final class StationStreamerRepository extends AbstractStationBasedRepository
         }
 
         $station->setIsStreamerLive(false);
-        $station->setCurrentStreamer();
+        $station->setCurrentStreamer(null);
         $this->em->persist($station);
         $this->em->flush();
 

@@ -25,7 +25,7 @@ final class Adapters
 
     public function getFrontendAdapter(Entity\Station $station): ?Frontend\AbstractFrontend
     {
-        $className = $station->getFrontendTypeEnum()->getClass();
+        $className = $station->getFrontendType()->getClass();
 
         return (null !== $className && $this->adapters->has($className))
             ? $this->adapters->get($className)
@@ -43,7 +43,7 @@ final class Adapters
 
     public function getBackendAdapter(Entity\Station $station): ?Liquidsoap
     {
-        $className = $station->getBackendTypeEnum()->getClass();
+        $className = $station->getBackendType()->getClass();
 
         return (null !== $className && $this->adapters->has($className))
             ? $this->adapters->get($className)
@@ -61,7 +61,7 @@ final class Adapters
 
     public function getRemoteAdapter(Entity\Station $station, Entity\StationRemote $remote): Remote\AbstractRemote
     {
-        $class_name = $remote->getTypeEnum()->getClass();
+        $class_name = $remote->getType()->getClass();
         if ($this->adapters->has($class_name)) {
             return $this->adapters->get($class_name);
         }

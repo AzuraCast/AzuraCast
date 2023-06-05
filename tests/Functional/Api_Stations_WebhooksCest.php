@@ -2,6 +2,8 @@
 
 namespace Functional;
 
+use App\Webhook\Enums\WebhookTypes;
+
 class Api_Stations_WebhooksCest extends CestAbstract
 {
     /**
@@ -18,7 +20,7 @@ class Api_Stations_WebhooksCest extends CestAbstract
             $I,
             '/api/station/' . $station->getId() . '/webhooks',
             [
-                'type' => \App\Webhook\Connector\Generic::NAME,
+                'type' => WebhookTypes::Generic->value,
                 'name' => 'Test Webhook',
             ],
             [

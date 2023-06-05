@@ -7,7 +7,21 @@ release channel, you can take advantage of these new features and fixes.
 
 ## Code Quality/Technical Changes
 
+- We have disabled the Meilisearch search tool, as it consumed a large amount of resources on smaller systems and it was
+  difficult to ensure the index exactly matched the current state of the filesystem. We will be working to further
+  optimize search queries to achieve similar improvements without any extra services.
+
+- In sections of our application that depend on IP addresses, we've tightened our allowed IP addresses significantly to
+  improve security and prevent brute-force flooding. If you're using a reverse proxy or CloudFlare, you should update
+  your "IP Address Source" under the "System Settings" page.
+
 ## Bug Fixes
+
+- File downloads will preserve the "Access-Control-Allowed-Origin" header you set in System Settings.
+
+- Added extra reliability to fetching Now Playing information from remote relays.
+
+- Charts won't attempt to load on the dashboard if analytics are disabled.
 
 ---
 

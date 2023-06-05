@@ -8,24 +8,9 @@ RUN apt-get update \
 
 RUN go install github.com/jwilder/dockerize@v0.6.1
 
-RUN go install github.com/aptible/supercronic@v0.2.1
+RUN go install github.com/aptible/supercronic@v0.2.24
 
-RUN go install github.com/centrifugal/centrifugo/v4@v4.1.2
-
-#
-# Rust dependencies build step
-#
-FROM rust:1-bullseye AS rust-dependencies
-
-RUN mkdir -p /tmp/meilisearch
-
-WORKDIR /tmp/meilisearch
-
-RUN curl -fsSL https://github.com/meilisearch/meilisearch/archive/refs/tags/v1.1.0.tar.gz -o meilisearch.tar.gz \
-    && tar -xvzf meilisearch.tar.gz --strip-components=1 \
-    && cargo build --release \
-    && chmod a+x ./target/release/meilisearch \
-    && mv ./target/release/meilisearch /usr/local/bin/meilisearch
+RUN go install github.com/centrifugal/centrifugo/v4@v4.1.3
 
 #
 # MariaDB dependencies build step
@@ -43,9 +28,6 @@ ENV TZ="UTC"
 COPY --from=go-dependencies /go/bin/dockerize /usr/local/bin
 COPY --from=go-dependencies /go/bin/supercronic /usr/local/bin/supercronic
 COPY --from=go-dependencies /go/bin/centrifugo /usr/local/bin/centrifugo
-
-# Add Meilisearch
-COPY --from=rust-dependencies /usr/local/bin/meilisearch /usr/local/bin/meilisearch
 
 # Add MariaDB dependencies
 COPY --from=mariadb /usr/local/bin/healthcheck.sh /usr/local/bin/db_healthcheck.sh

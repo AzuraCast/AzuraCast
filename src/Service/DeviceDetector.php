@@ -52,4 +52,9 @@ final class DeviceDetector
 
         return $deviceResult;
     }
+
+    public function saveCache(): bool
+    {
+        return $this->psr6Cache->commit();
+    }
 }

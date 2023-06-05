@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Entity\Fixture;
 
 use App\Entity;
+use App\Enums\SupportedThemes;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
@@ -34,7 +35,7 @@ final class User extends AbstractFixture implements DependentFixtureInterface
             $admin_user->setEmail($admin_email);
             $admin_user->setName('System Administrator');
             $admin_user->setNewPassword($admin_password);
-            $admin_user->setTheme('dark');
+            $admin_user->setTheme(SupportedThemes::Browser);
 
             /** @var Entity\Role $adminRole */
             $adminRole = $this->getReference('admin_role');

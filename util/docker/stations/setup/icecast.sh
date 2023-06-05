@@ -9,12 +9,12 @@ apt-get install -q -y --no-install-recommends \
 mkdir -p /bd_build/stations/icecast_build
 cd /bd_build/stations/icecast_build
 
-# curl -fsSL https://github.com/karlheyes/icecast-kh/archive/refs/tags/icecast-2.4.0-kh20.5.tar.gz \
-#   -o icecast.tar.gz
-# tar -xvzf icecast.tar.gz --strip-components=1
+curl -fsSL https://github.com/karlheyes/icecast-kh/archive/refs/tags/icecast-2.4.0-kh21.6.tar.gz \
+  -o icecast.tar.gz
+tar -xvzf icecast.tar.gz --strip-components=1
 
-git clone https://github.com/karlheyes/icecast-kh.git .
-git checkout f4084d99c5456ce73f6d46a7b071d189611bcc77
+# git clone https://github.com/karlheyes/icecast-kh.git .
+# git checkout 5f5564ddd7fed4ee69ee07b96d563a8bebf6e996
 
 ./configure
 make
@@ -29,7 +29,7 @@ cd /bd_build/stations/icecast_customizations
 
 # git clone https://github.com/AzuraCast/icecast-kh-custom-files.git .
 
-curl -fsSL https://github.com/AzuraCast/icecast-kh-custom-files/archive/refs/tags/2023-01-21.tar.gz \
+curl -fsSL https://github.com/AzuraCast/icecast-kh-custom-files/archive/refs/tags/2023-04-23.tar.gz \
   -o custom-files.tar.gz
 tar -xvzf custom-files.tar.gz --strip-components=1
 

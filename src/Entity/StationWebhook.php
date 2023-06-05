@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
-use App\Entity\Enums\WebhookTriggers;
+use App\Webhook\Enums\WebhookTriggers;
+use App\Webhook\Enums\WebhookTypes;
 use Doctrine\ORM\Mapping as ORM;
 use OpenApi\Attributes as OA;
 use Stringable;
@@ -26,14 +27,14 @@ class StationWebhook implements
 
     public const LAST_SENT_TIMESTAMP_KEY = 'last_message_sent';
 
-    #[ORM\Column(nullable: false)]
-    protected int $station_id;
-
     #[
         ORM\ManyToOne(inversedBy: 'webhooks'),
         ORM\JoinColumn(name: 'station_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')
     ]
     protected Station $station;
+
+    #[ORM\Column(nullable: false, insertable: false, updatable: false)]
+    protected int $station_id;
 
     #[
         OA\Property(
@@ -49,10 +50,10 @@ class StationWebhook implements
             description: "The type of webhook connector to use.",
             example: "twitter"
         ),
-        ORM\Column(length: 100),
+        ORM\Column(type: "string", length: 100, enumType: WebhookTypes::class),
         Assert\NotBlank
     ]
-    protected string $type;
+    protected WebhookTypes $type;
 
     #[
         OA\Property(example: true),
@@ -91,7 +92,7 @@ class StationWebhook implements
     ]
     protected ?array $metadata = null;
 
-    public function __construct(Station $station, string $type)
+    public function __construct(Station $station, WebhookTypes $type)
     {
         $this->station = $station;
         $this->type = $type;
@@ -117,7 +118,7 @@ class StationWebhook implements
         $this->name = $this->truncateNullableString($name, 100);
     }
 
-    public function getType(): string
+    public function getType(): WebhookTypes
     {
         return $this->type;
     }

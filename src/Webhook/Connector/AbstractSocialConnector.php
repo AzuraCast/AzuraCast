@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Webhook\Connector;
 
 use App\Entity\Api\NowPlaying\NowPlaying;
-use App\Entity\Enums\WebhookTriggers;
+use App\Webhook\Enums\WebhookTriggers;
 use App\Entity\StationWebhook;
 
 abstract class AbstractSocialConnector extends AbstractConnector

@@ -106,6 +106,7 @@ $enable-print-styles: true !default;
 @import 'azuracast/overrides/toasts';
 
 // Individual AzuraCast pages
+@import 'azuracast/pages/search';
 @import 'azuracast/pages/embed';
 @import 'azuracast/pages/public';
 @import 'azuracast/pages/log_viewer';

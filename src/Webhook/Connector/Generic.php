@@ -10,8 +10,6 @@ use App\Entity\StationWebhook;
 
 final class Generic extends AbstractConnector
 {
-    public const NAME = 'generic';
-
     /**
      * @inheritDoc
      */
@@ -23,10 +21,10 @@ final class Generic extends AbstractConnector
     ): void {
         $config = $webhook->getConfig();
 
-        $webhook_url = $this->getValidUrl($config['webhook_url'] ?? '');
+        $webhook_url = $this->getValidUrl($config['webhook_url']);
 
         if (empty($webhook_url)) {
-            throw $this->incompleteConfigException(self::NAME);
+            throw $this->incompleteConfigException($webhook);
         }
 
         $request_options = [

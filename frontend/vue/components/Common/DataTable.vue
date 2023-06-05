@@ -46,7 +46,7 @@
                             </div>
                             <b-form-input
                                 v-model="searchPhrase"
-                                debounce="200"
+                                debounce="500"
                                 type="search"
                                 class="search-field form-control"
                                 :placeholder="$gettext('Search')"
@@ -272,19 +272,19 @@ const emit = defineEmits([
 ]);
 
 const selectedRows = ref([]);
-const searchPhrase = ref(null);
+const searchPhrase = ref('');
 const currentPage = ref(1);
 const totalRows = ref(0);
 const flushCache = ref(false);
+
+watch(searchPhrase, () => {
+    currentPage.value = 1;
+});
 
 watch(toRef(props, 'items'), (newVal) => {
     if (newVal !== null) {
         totalRows.value = newVal.length;
     }
-});
-
-watch(filter, () => {
-    currentPage.value = 1;
 });
 
 const allFields = computed(() => {

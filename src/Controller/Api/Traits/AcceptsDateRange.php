@@ -31,8 +31,11 @@ trait AcceptsDateRange
             return $default;
         }
 
-        $start = CarbonImmutable::parse($queryParams[$startParam], $tz);
-        $end = CarbonImmutable::parse($queryParams[$endParam], $tz);
+        $start = CarbonImmutable::parse($queryParams[$startParam], $tz)
+            ->setTimezone($tz);
+
+        $end = CarbonImmutable::parse($queryParams[$endParam], $tz)
+            ->setTimezone($tz);
 
         if ($start->equalTo($end)) {
             return $default;

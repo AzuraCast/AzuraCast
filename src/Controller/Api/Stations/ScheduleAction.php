@@ -96,13 +96,15 @@ final class ScheduleAction
                 );
                 $cacheItem->expiresAfter(600);
 
-                $this->psr6Cache->saveDeferred($cacheItem);
+                $this->psr6Cache->save($cacheItem);
             }
 
             $events = $cacheItem->get();
         } else {
             if (!empty($queryParams['now'])) {
-                $now = CarbonImmutable::parse($queryParams['now'], $tz);
+                $now = CarbonImmutable::parse($queryParams['now'], $tz)
+                    ->setTimezone($tz);
+
                 $cacheKey = 'api_station_' . $station->getId() . '_schedule_' . $now->format('Ymd_gia');
             } else {
                 $now = CarbonImmutable::now($tz);
@@ -115,7 +117,7 @@ final class ScheduleAction
                 $cacheItem->set($this->scheduleRepo->getUpcomingSchedule($station, $now));
                 $cacheItem->expiresAfter(60);
 
-                $this->psr6Cache->saveDeferred($cacheItem);
+                $this->psr6Cache->save($cacheItem);
             }
 
             $events = $cacheItem->get();

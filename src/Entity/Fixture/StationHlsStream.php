@@ -19,19 +19,19 @@ final class StationHlsStream extends AbstractFixture implements DependentFixture
 
         $mountLofi = new Entity\StationHlsStream($station);
         $mountLofi->setName('aac_lofi');
-        $mountLofi->setFormat(StreamFormats::Aac->value);
+        $mountLofi->setFormat(StreamFormats::Aac);
         $mountLofi->setBitrate(64);
         $manager->persist($mountLofi);
 
         $mountMidfi = new Entity\StationHlsStream($station);
         $mountMidfi->setName('aac_midfi');
-        $mountMidfi->setFormat(StreamFormats::Aac->value);
+        $mountMidfi->setFormat(StreamFormats::Aac);
         $mountMidfi->setBitrate(128);
         $manager->persist($mountMidfi);
 
         $mountHifi = new Entity\StationHlsStream($station);
         $mountHifi->setName('aac_hifi');
-        $mountHifi->setFormat(StreamFormats::Aac->value);
+        $mountHifi->setFormat(StreamFormats::Aac);
         $mountHifi->setBitrate(256);
         $manager->persist($mountHifi);
 

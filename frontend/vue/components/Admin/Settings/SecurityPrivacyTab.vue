@@ -70,8 +70,31 @@
             </b-wrapped-form-checkbox>
 
             <b-wrapped-form-group
+                id="edit_form_ip_source"
+                class="col-md-6"
+                :field="form.ip_source"
+            >
+                <template #label>
+                    {{ $gettext('IP Address Source') }}
+                </template>
+                <template #description>
+                    {{
+                        $gettext('Customize this setting to ensure you get the correct IP address for remote users. Only change this setting if you use a reverse proxy, either within Docker or a third-party service like CloudFlare.')
+                    }}
+                </template>
+                <template #default="slotProps">
+                    <b-form-radio-group
+                        :id="slotProps.id"
+                        v-model="slotProps.field.$model"
+                        stacked
+                        :options="ipSourceOptions"
+                    />
+                </template>
+            </b-wrapped-form-group>
+
+            <b-wrapped-form-group
                 id="edit_form_api_access_control"
-                class="col-md-12"
+                class="col-md-6"
                 :field="form.api_access_control"
             >
                 <template #label>
@@ -98,11 +121,32 @@
 import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup.vue";
 import BFormFieldset from "~/components/Form/BFormFieldset.vue";
 import BWrappedFormCheckbox from "~/components/Form/BWrappedFormCheckbox.vue";
+import {useTranslate} from "~/vendor/gettext";
+import {computed} from "vue";
 
 const props = defineProps({
     form: {
         type: Object,
         required: true
     }
+});
+
+const {$gettext} = useTranslate();
+
+const ipSourceOptions = computed(() => {
+    return [
+        {
+            value: 'local',
+            text: $gettext('Local IP (Default)')
+        },
+        {
+            value: 'cloudflare',
+            text: $gettext('CloudFlare (CF-Connecting-IP)')
+        },
+        {
+            value: 'xff',
+            text: $gettext('Reverse Proxy (X-Forwarded-For)')
+        }
+    ]
 });
 </script>

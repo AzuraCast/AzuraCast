@@ -7,11 +7,8 @@ namespace App\Media;
 use App\Doctrine\ReadWriteBatchIteratorAggregate;
 use App\Entity;
 use App\Flysystem\ExtendedFilesystemInterface;
-use App\Message\Meilisearch\AddMediaMessage;
-use App\Message\Meilisearch\UpdatePlaylistsMessage;
 use App\Utilities\File;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\Messenger\MessageBus;
 use Throwable;
 
 final class BatchUtilities
@@ -21,7 +18,6 @@ final class BatchUtilities
         private readonly Entity\Repository\StationMediaRepository $mediaRepo,
         private readonly Entity\Repository\UnprocessableMediaRepository $unprocessableMediaRepo,
         private readonly Entity\Repository\StorageLocationRepository $storageLocationRepo,
-        private readonly MessageBus $messageBus,
     ) {
     }
 
@@ -41,14 +37,8 @@ final class BatchUtilities
                 $this->iteratePlaylistFoldersInDirectory($storageLocation, $from),
             ];
 
-            $mediaToReindex = [];
-
             foreach ($toRename as $iterator) {
                 foreach ($iterator as $record) {
-                    if ($record instanceof Entity\StationMedia) {
-                        $mediaToReindex[] = $record->getIdRequired();
-                    }
-
                     /** @var Entity\Interfaces\PathAwareInterface $record */
                     $record->setPath(
                         File::renameDirectoryInPath($record->getPath(), $from, $to)
@@ -56,8 +46,6 @@ final class BatchUtilities
                     $this->em->persist($record);
                 }
             }
-
-            $this->queueMediaForIndex($storageLocation, $mediaToReindex);
         } else {
             $record = $this->mediaRepo->findByPath($from, $storageLocation);
 
@@ -65,8 +53,6 @@ final class BatchUtilities
                 $record->setPath($to);
                 $this->em->persist($record);
                 $this->em->flush();
-
-                $this->queueMediaForIndex($storageLocation, [$record->getIdRequired()]);
             } else {
                 $record = $this->unprocessableMediaRepo->findByPath($from, $storageLocation);
 
@@ -99,11 +85,7 @@ final class BatchUtilities
         /*
          * NOTE: This iteration clears the entity manager.
          */
-        $mediaToReindex = [];
-
         foreach ($this->iterateMedia($storageLocation, $files) as $media) {
-            $mediaToReindex[] = $media->getIdRequired();
-
             try {
                 foreach ($this->mediaRepo->remove($media, false, $fs) as $playlistId => $playlist) {
                     if (!isset($affectedPlaylists[$playlistId])) {
@@ -113,8 +95,6 @@ final class BatchUtilities
             } catch (Throwable) {
             }
         }
-
-        $this->queueMediaForIndex($storageLocation, $mediaToReindex);
 
         /*
          * NOTE: This iteration clears the entity manager.
@@ -132,30 +112,6 @@ final class BatchUtilities
         $this->em->flush();
 
         return $affectedPlaylists;
-    }
-
-    public function queueMediaForIndex(
-        Entity\StorageLocation $storageLocation,
-        array $ids,
-        bool $includePlaylists = false
-    ): void {
-        $queueMessage = new AddMediaMessage();
-        $queueMessage->storage_location_id = $storageLocation->getIdRequired();
-        $queueMessage->media_ids = $ids;
-        $queueMessage->include_playlists = $includePlaylists;
-
-        $this->messageBus->dispatch($queueMessage);
-    }
-
-    public function queuePlaylistsForUpdate(
-        Entity\Station $station,
-        ?array $ids = null
-    ): void {
-        $queueMessage = new UpdatePlaylistsMessage();
-        $queueMessage->station_id = $station->getIdRequired();
-        $queueMessage->media_ids = $ids;
-
-        $this->messageBus->dispatch($queueMessage);
     }
 
     /**

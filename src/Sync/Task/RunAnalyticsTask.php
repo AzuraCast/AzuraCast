@@ -34,7 +34,7 @@ final class RunAnalyticsTask extends AbstractTask
 
     public function run(bool $force = false): void
     {
-        switch ($this->settingsRepo->readSettings()->getAnalyticsEnum()) {
+        switch ($this->settingsRepo->readSettings()->getAnalytics()) {
             case Entity\Enums\AnalyticsLevel::None:
                 $this->purgeListeners();
                 $this->purgeAnalytics();
@@ -118,7 +118,7 @@ final class RunAnalyticsTask extends AbstractTask
                 }
 
                 $this->analyticsRepo->clearSingleMetric(
-                    Entity\Analytics::INTERVAL_HOURLY,
+                    Entity\Enums\AnalyticsIntervals::Hourly,
                     $hourUtc,
                     $station
                 );
@@ -126,7 +126,7 @@ final class RunAnalyticsTask extends AbstractTask
                 $hourlyRow = new Entity\Analytics(
                     $hourUtc,
                     $station,
-                    Entity\Analytics::INTERVAL_HOURLY,
+                    Entity\Enums\AnalyticsIntervals::Hourly,
                     $min,
                     $max,
                     $avg,
@@ -152,14 +152,14 @@ final class RunAnalyticsTask extends AbstractTask
 
             // Post the all-stations hourly totals.
             $this->analyticsRepo->clearSingleMetric(
-                Entity\Analytics::INTERVAL_HOURLY,
+                Entity\Enums\AnalyticsIntervals::Hourly,
                 $hourUtc
             );
 
             $hourlyAllStationsRow = new Entity\Analytics(
                 $hourUtc,
                 null,
-                Entity\Analytics::INTERVAL_HOURLY,
+                Entity\Enums\AnalyticsIntervals::Hourly,
                 $hourlyMin ?? 0,
                 $hourlyMax ?? 0,
                 $hourlyAverage,
@@ -213,7 +213,7 @@ final class RunAnalyticsTask extends AbstractTask
             }
 
             $this->analyticsRepo->clearSingleMetric(
-                Entity\Analytics::INTERVAL_DAILY,
+                Entity\Enums\AnalyticsIntervals::Daily,
                 $day,
                 $station
             );
@@ -221,7 +221,7 @@ final class RunAnalyticsTask extends AbstractTask
             $dailyStationRow = new Entity\Analytics(
                 $day,
                 $station,
-                Entity\Analytics::INTERVAL_DAILY,
+                Entity\Enums\AnalyticsIntervals::Daily,
                 $dailyStationMin,
                 $dailyStationMax,
                 $dailyStationAverage,
@@ -233,14 +233,14 @@ final class RunAnalyticsTask extends AbstractTask
 
         // Post the all-stations daily total.
         $this->analyticsRepo->clearSingleMetric(
-            Entity\Analytics::INTERVAL_DAILY,
+            Entity\Enums\AnalyticsIntervals::Daily,
             $day
         );
 
         $dailyAllStationsRow = new Entity\Analytics(
             $day,
             null,
-            Entity\Analytics::INTERVAL_DAILY,
+            Entity\Enums\AnalyticsIntervals::Daily,
             $dailyMin ?? 0,
             $dailyMax ?? 0,
             $dailyAverage,

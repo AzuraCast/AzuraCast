@@ -18,17 +18,17 @@ interface StationMountInterface
 
     public function getAutodjBitrate(): ?int;
 
-    public function getAutodjFormatEnum(): ?StreamFormats;
+    public function getAutodjFormat(): ?StreamFormats;
 
     public function getAutodjHost(): ?string;
 
     public function getAutodjPort(): ?int;
 
-    public function getAutodjProtocolEnum(): ?StreamProtocols;
+    public function getAutodjProtocol(): ?StreamProtocols;
 
     public function getAutodjMount(): ?string;
 
-    public function getAutodjAdapterTypeEnum(): AdapterTypeInterface;
+    public function getAutodjAdapterType(): AdapterTypeInterface;
 
     public function getIsPublic(): bool;
 }

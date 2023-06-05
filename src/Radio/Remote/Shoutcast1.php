@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace App\Radio\Remote;
 
 use App\Entity;
-use NowPlaying\AdapterFactory;
+use NowPlaying\Enums\AdapterTypes;
 
 final class Shoutcast1 extends AbstractRemote
 {
-    protected function getAdapterType(): string
+    protected function getAdapterType(): AdapterTypes
     {
-        return AdapterFactory::ADAPTER_SHOUTCAST1;
+        return AdapterTypes::Shoutcast1;
     }
 
     /** @inheritDoc */

@@ -190,33 +190,33 @@ final class ConfigWriter implements EventSubscriberInterface
             <<<LIQ
             init.daemon.set(false)
             init.daemon.pidfile.path.set("{$pidfile}")
-            
+
             log.stdout.set(true)
             log.file.set(false)
-            
+
             settings.server.log.level.set(4)
-            
+
             settings.server.socket.set(true)
             settings.server.socket.permissions.set(0o660)
             settings.server.socket.path.set("{$socketFile}")
-            
+
             settings.harbor.bind_addrs.set(["0.0.0.0"])
             
             settings.tag.encodings.set(["UTF-8","ISO-8859-1"])
             settings.encoder.metadata.export.set(["artist","title","album","song"])
-            
+
             setenv("TZ", "{$stationTz}")
-            
+
             autodj_is_loading = ref(true)
             ignore(autodj_is_loading)
-            
+
             autodj_ping_attempts = ref(0)
             ignore(autodj_ping_attempts)
-            
+
             # Track live-enabled status.
             live_enabled = ref(false)
             ignore(live_enabled)
-            
+
             # Track live transition for crossfades.
             to_live = ref(false)
             ignore(to_live)
@@ -236,7 +236,7 @@ final class ConfigWriter implements EventSubscriberInterface
             
             def azuracast_api_call(~timeout_ms=2000, url, payload) =
                 full_url = "#{azuracast_api_url}/#{url}"
-                
+
                 log("API #{url} - Sending POST request to '#{full_url}' with body: #{payload}")
                 try
                     response = http.post(full_url,
@@ -248,7 +248,7 @@ final class ConfigWriter implements EventSubscriberInterface
                         timeout_ms=timeout_ms,
                         data=payload
                     )
-                    
+
                     log("API #{url} - Response (#{response.status_code}): #{response}")
                     "#{response}"
                 catch err do
@@ -270,7 +270,7 @@ final class ConfigWriter implements EventSubscriberInterface
                 def azuracast_media_protocol(~rlog=_,~maxtime=_,arg) =
                     ["#{station_media_dir}/#{arg}"]
                 end
-                
+
                 add_protocol(
                     "media",
                     azuracast_media_protocol,
@@ -290,7 +290,7 @@ final class ConfigWriter implements EventSubscriberInterface
                     
                     [azuracast_api_call(timeout_ms=timeout_ms, "cp", json.stringify(j))]
                 end
-                
+
                 add_protocol(
                     "media",
                     azuracast_media_protocol,
@@ -367,7 +367,7 @@ final class ConfigWriter implements EventSubscriberInterface
             $playlistVarNames[] = $playlistVarName;
             $playlistConfigLines = [];
 
-            if (Entity\Enums\PlaylistSources::Songs === $playlist->getSourceEnum()) {
+            if (Entity\Enums\PlaylistSources::Songs === $playlist->getSource()) {
                 $playlistFilePath = PlaylistFileWriter::getPlaylistFilePath($playlist);
 
                 $playlistParams = [
@@ -375,7 +375,7 @@ final class ConfigWriter implements EventSubscriberInterface
                     'mime_type="audio/x-mpegurl"',
                 ];
 
-                $playlistMode = match ($playlist->getOrderEnum()) {
+                $playlistMode = match ($playlist->getOrder()) {
                     Entity\Enums\PlaylistOrders::Sequential => 'normal',
                     Entity\Enums\PlaylistOrders::Shuffle => 'randomize',
                     Entity\Enums\PlaylistOrders::Random => 'random'
@@ -394,7 +394,7 @@ final class ConfigWriter implements EventSubscriberInterface
 
                 $playlistConfigLines[] = $playlistVarName . ' = cue_cut(id="cue_'
                     . self::cleanUpString($playlistVarName) . '", ' . $playlistVarName . ')';
-            } elseif (Entity\Enums\PlaylistRemoteTypes::Playlist === $playlist->getRemoteTypeEnum()) {
+            } elseif (Entity\Enums\PlaylistRemoteTypes::Playlist === $playlist->getRemoteType()) {
                 $playlistFunc = 'playlist("'
                     . self::cleanUpString($playlist->getRemoteUrl())
                     . '")';
@@ -437,7 +437,7 @@ final class ConfigWriter implements EventSubscriberInterface
                 $playlistConfigLines[] = $playlistVarName . ' = drop_metadata(' . $playlistVarName . ')';
             }
 
-            if (Entity\Enums\PlaylistTypes::Advanced === $playlist->getTypeEnum()) {
+            if (Entity\Enums\PlaylistTypes::Advanced === $playlist->getType()) {
                 $playlistConfigLines[] = 'ignore(' . $playlistVarName . ')';
             }
 
@@ -447,7 +447,7 @@ final class ConfigWriter implements EventSubscriberInterface
                 $playlistVarName = 'once(' . $playlistVarName . ')';
             }
 
-            switch ($playlist->getTypeEnum()) {
+            switch ($playlist->getType()) {
                 case Entity\Enums\PlaylistTypes::Standard:
                     if ($scheduleItems->count() > 0) {
                         foreach ($scheduleItems as $scheduleItem) {
@@ -469,7 +469,7 @@ final class ConfigWriter implements EventSubscriberInterface
 
                 case Entity\Enums\PlaylistTypes::OncePerXSongs:
                 case Entity\Enums\PlaylistTypes::OncePerXMinutes:
-                    if (Entity\Enums\PlaylistTypes::OncePerXSongs === $playlist->getTypeEnum()) {
+                    if (Entity\Enums\PlaylistTypes::OncePerXSongs === $playlist->getType()) {
                         $playlistScheduleVar = 'rotate(weights=[1,'
                             . $playlist->getPlayPerSongs() . '], [' . $playlistVarName . ', radio])';
                     } else {
@@ -492,7 +492,7 @@ final class ConfigWriter implements EventSubscriberInterface
                             }
                         }
                     } else {
-                        $specialPlaylists[$playlist->getType()][] = 'radio = ' . $playlistScheduleVar;
+                        $specialPlaylists[$playlist->getType()->value][] = 'radio = ' . $playlistScheduleVar;
                     }
                     break;
 
@@ -602,7 +602,7 @@ final class ConfigWriter implements EventSubscriberInterface
                        end
                     end
                 end
-                
+
                 # Delayed ping for AutoDJ Next Song
                 def wait_for_next_song(autodj)
                     autodj_ping_attempts := !autodj_ping_attempts + 1
@@ -622,7 +622,7 @@ final class ConfigWriter implements EventSubscriberInterface
                 
                 dynamic = request.dynamic(id="next_song", timeout=20., retry_delay=10., autodj_next_song)
                 dynamic = cue_cut(id="cue_next_song", dynamic)
-                
+
                 dynamic_startup = fallback(
                     id = "dynamic_startup",
                     track_sensitive = false,
@@ -635,7 +635,7 @@ final class ConfigWriter implements EventSubscriberInterface
                     ]
                 )
                 radio = fallback(id="autodj_fallback", track_sensitive = true, [dynamic_startup, radio])
-                
+
                 ref_dynamic = ref(dynamic);
                 thread.run.recurrent(delay=0.25, { wait_for_next_song(!ref_dynamic) })
                 LIQ
@@ -660,7 +660,7 @@ final class ConfigWriter implements EventSubscriberInterface
             requests = request.queue(id="{$requestsQueueName}")
             requests = cue_cut(id="cue_{$requestsQueueName}", requests)
             radio = fallback(id="requests_fallback", track_sensitive = true, [requests, radio])
-            
+
             interrupting_queue = request.queue(id="{$interruptingQueueName}")
             interrupting_queue = cue_cut(id="cue_{$interruptingQueueName}", interrupting_queue)
             radio = fallback(id="interrupting_fallback", track_sensitive = false, [interrupting_queue, radio])
@@ -690,10 +690,10 @@ final class ConfigWriter implements EventSubscriberInterface
                     source.skip(s)
                     "Done!"
                 end
-                
+
                 server.register(namespace="radio", usage="skip", description="Skip the current song.", "skip",skip)
             end
-            
+
             add_skip_command(radio)
             LIQ
         );
@@ -841,7 +841,7 @@ final class ConfigWriter implements EventSubscriberInterface
                         {$crossfadeFunc}
                     end
                 end
-                
+
                 radio = cross(minimum=0., duration={$crossDuration}, live_aware_crossfade, radio)
                 LS
             );
@@ -872,7 +872,7 @@ final class ConfigWriter implements EventSubscriberInterface
             # DJ Authentication
             last_authenticated_dj = ref("")
             live_dj = ref("")
-            
+
             def dj_auth(login) =
                 auth_info =
                     if (login.user == "source" or login.user == "") and (string.match(pattern="(:|,)+", login.password)) then
@@ -882,13 +882,13 @@ final class ConfigWriter implements EventSubscriberInterface
                     else
                         {user = login.user, password = login.password}
                     end
-                
+
                 response = azuracast_api_call(
                     timeout_ms=5000,
                     "auth",
                     json.stringify(auth_info)
                 )
-                
+
                 if (response == "true") then
                     last_authenticated_dj := auth_info.user
                     true
@@ -896,7 +896,7 @@ final class ConfigWriter implements EventSubscriberInterface
                     false
                 end
             end
-            
+
             def live_connected(header) =
                 dj = !last_authenticated_dj
                 log("DJ Source connected! Last authenticated DJ: #{dj} - #{header}")
@@ -910,7 +910,7 @@ final class ConfigWriter implements EventSubscriberInterface
                     json.stringify({user = dj})
                 )
             end
-            
+
             def live_disconnected() =
                 _ = azuracast_api_call(
                     timeout_ms=5000,
@@ -949,10 +949,10 @@ final class ConfigWriter implements EventSubscriberInterface
             # A Pre-DJ source of radio that can be broadcast if needed',
             radio_without_live = radio
             ignore(radio_without_live)
-            
+
             # Live Broadcasting
             live = input.harbor({$harborParams})
-            
+
             def insert_missing(m) =
                 if m == [] then
                     [("title", "Live Broadcast"), ("is_live", "true")]
@@ -961,10 +961,10 @@ final class ConfigWriter implements EventSubscriberInterface
                 end
             end
             live = metadata.map(insert_missing, live)
-            
+
             radio = fallback(id="live_fallback", replay_metadata=true, [live, radio])
-            
-            # Skip non-live track when live DJ goes live. 
+
+            # Skip non-live track when live DJ goes live.
             def check_live() =
                 if live.is_ready() then
                     if not !to_live then
@@ -975,7 +975,7 @@ final class ConfigWriter implements EventSubscriberInterface
                     to_live := false
                 end
             end
-            
+
             # Continuously check on live.
             radio = source.on_frame(radio, check_live)
             LIQ
@@ -995,23 +995,23 @@ final class ConfigWriter implements EventSubscriberInterface
                 # Record Live Broadcasts
                 recording_base_path = "{$recordBasePath}"
                 recording_extension = "{$recordExtension}"
-                
+
                 output.file(
-                    {$formatString}, 
+                    {$formatString},
                     fun () -> begin
                         if (!live_enabled) then
                             "#{recording_base_path}/#{!live_dj}/{$recordPathPrefix}_%Y%m%d-%H%M%S.#{recording_extension}.tmp"
                         else
                             ""
                         end
-                    end, 
-                    live, 
-                    fallible=true, 
+                    end,
+                    live,
+                    fallible=true,
                     on_close=fun (tempPath) -> begin
                         path = string.replace(pattern=".tmp$", (fun(_) -> ""), tempPath)
-                    
+
                         log("Recording stopped: Switching from #{tempPath} to #{path}")
-                        
+
                         process.run("mv #{tempPath} #{path}")
                         ()
                     end
@@ -1030,7 +1030,7 @@ final class ConfigWriter implements EventSubscriberInterface
             <<<LIQ
             # Allow for Telnet-driven insertion of custom metadata.
             radio = server.insert_metadata(id="custom_metadata", radio)
-            
+
             # Apply amplification metadata (if supplied)
             radio = amplify(override="liq_amplify", 1., radio)
             LIQ
@@ -1056,13 +1056,14 @@ final class ConfigWriter implements EventSubscriberInterface
 
         $event->appendBlock(
             <<<LIQ
-            error_file = single(id="error_jingle", "{$errorFile}") 
-            
+            error_file = single(id="error_jingle", "{$errorFile}")
+
             def tag_error_file(m) =
+                ignore(m)
                 [("is_error_file", "true")]
             end
             error_file = metadata.map(tag_error_file, error_file)
-            
+
             radio = fallback(id="safe_fallback", track_sensitive = false, [radio, error_file])
             LIQ
         );
@@ -1072,7 +1073,7 @@ final class ConfigWriter implements EventSubscriberInterface
             # Send metadata changes back to AzuraCast
             last_title = ref("")
             last_artist = ref("")
-            
+
             def metadata_updated(m) =
                 def f() =
                     if (m["is_error_file"] != "true") then
@@ -1081,7 +1082,7 @@ final class ConfigWriter implements EventSubscriberInterface
                             last_artist := m["artist"]
                             
                             j = json()
-                            
+
                             if (m["song_id"] != "") then
                                 j.add("song_id", m["song_id"])
                                 j.add("media_id", m["media_id"])
@@ -1090,7 +1091,7 @@ final class ConfigWriter implements EventSubscriberInterface
                                 j.add("artist", m["artist"])
                                 j.add("title", m["title"])
                             end
-                            
+
                             _ = azuracast_api_call(
                                 "feedback",
                                 json.stringify(j)
@@ -1098,15 +1099,15 @@ final class ConfigWriter implements EventSubscriberInterface
                         end
                     end
                 end
-                
+
                 thread.run(f)
             end
-            
+
             radio.on_metadata(metadata_updated)
-            
+
             # Handle "Jingle Mode" tracks by replaying the previous metadata.
             last_metadata = ref([])
-            def handle_jingle_mode(m) = 
+            def handle_jingle_mode(m) =
                 if (m["jingle_mode"] == "true") then
                     !last_metadata    
                 else
@@ -1114,7 +1115,7 @@ final class ConfigWriter implements EventSubscriberInterface
                     m
                 end
             end
-            
+
             radio = metadata.map(update=false, strip=true, handle_jingle_mode, radio)
             LIQ
         );
@@ -1127,7 +1128,7 @@ final class ConfigWriter implements EventSubscriberInterface
     {
         $station = $event->getStation();
 
-        if (FrontendAdapters::Remote === $station->getFrontendTypeEnum()) {
+        if (FrontendAdapters::Remote === $station->getFrontendType()) {
             return;
         }
 
@@ -1169,7 +1170,7 @@ final class ConfigWriter implements EventSubscriberInterface
         foreach ($station->getHlsStreams() as $hlsStream) {
             $streamVarName = self::cleanUpVarName($hlsStream->getName());
 
-            if (StreamFormats::Aac !== $hlsStream->getFormatEnum()) {
+            if (StreamFormats::Aac !== $hlsStream->getFormat()) {
                 continue;
             }
 
@@ -1220,7 +1221,7 @@ final class ConfigWriter implements EventSubscriberInterface
                 duration = {$hlsSegmentLength}
                 "#{stream_name}_#{duration}_#{timestamp}_#{position}.#{extname}"
             end
-            
+
             output.file.hls(playlist="live.m3u8",
                 segment_duration={$hlsSegmentLength}.0,
                 segments={$hlsSegmentsInPlaylist},
@@ -1246,7 +1247,7 @@ final class ConfigWriter implements EventSubscriberInterface
     ): string {
         $charset = $station->getBackendConfig()->getCharset();
 
-        $format = $mount->getAutodjFormatEnum() ?? StreamFormats::default();
+        $format = $mount->getAutodjFormat() ?? StreamFormats::default();
         $output_format = $this->getOutputFormatString(
             $format,
             $mount->getAutodjBitrate() ?? 128
@@ -1266,14 +1267,14 @@ final class ConfigWriter implements EventSubscriberInterface
 
         $password = self::cleanUpString($mount->getAutodjPassword());
 
-        $adapterType = $mount->getAutodjAdapterTypeEnum();
+        $adapterType = $mount->getAutodjAdapterType();
         if (FrontendAdapters::Shoutcast === $adapterType) {
             $password .= ':#' . $id;
         }
 
         $output_params[] = 'password = "' . $password . '"';
 
-        $protocol = $mount->getAutodjProtocolEnum();
+        $protocol = $mount->getAutodjProtocol();
         if (!empty($mount->getAutodjMount())) {
             if (StreamProtocols::Icy === $protocol) {
                 $output_params[] = 'icy_id = ' . $id;

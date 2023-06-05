@@ -75,11 +75,11 @@ class User implements Stringable, IdentifiableEntityInterface
 
     #[
         OA\Property(example: "dark"),
-        ORM\Column(length: 25, nullable: true),
+        ORM\Column(type: 'string', length: 25, nullable: true, enumType: SupportedThemes::class),
         Attributes\AuditIgnore,
         Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])
     ]
-    protected ?string $theme = null;
+    protected ?SupportedThemes $theme = null;
 
     #[
         OA\Property(example: true),
@@ -225,24 +225,12 @@ class User implements Stringable, IdentifiableEntityInterface
         $this->locale = $locale;
     }
 
-    public function getTheme(): ?string
+    public function getTheme(): ?SupportedThemes
     {
         return $this->theme;
     }
 
-    public function getThemeEnum(): SupportedThemes
-    {
-        if (null !== $this->theme) {
-            $theme = SupportedThemes::tryFrom($this->theme);
-            if (null !== $theme) {
-                return $theme;
-            }
-        }
-
-        return SupportedThemes::default();
-    }
-
-    public function setTheme(?string $theme = null): void
+    public function setTheme(?SupportedThemes $theme = null): void
     {
         $this->theme = $theme;
     }

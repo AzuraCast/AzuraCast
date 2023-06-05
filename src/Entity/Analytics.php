@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use App\Entity\Enums\AnalyticsIntervals;
 use App\Entity\Interfaces\IdentifiableEntityInterface;
 use Carbon\CarbonImmutable;
 use DateTimeInterface;
@@ -21,18 +22,15 @@ class Analytics implements IdentifiableEntityInterface
 {
     use Traits\HasAutoIncrementId;
 
-    public const INTERVAL_DAILY = 'day';
-    public const INTERVAL_HOURLY = 'hour';
-
-    #[ORM\Column(nullable: true)]
-    protected ?int $station_id = null;
-
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(name: 'station_id', referencedColumnName: 'id', nullable: true, onDelete: 'CASCADE')]
     protected ?Station $station = null;
 
-    #[ORM\Column(length: 15)]
-    protected string $type;
+    #[ORM\Column(nullable: true, insertable: false, updatable: false)]
+    protected ?int $station_id = null;
+
+    #[ORM\Column(type: 'string', length: 15, enumType: AnalyticsIntervals::class)]
+    protected AnalyticsIntervals $type;
 
     #[ORM\Column(type: 'carbon_immutable')]
     protected CarbonImmutable $moment;
@@ -52,7 +50,7 @@ class Analytics implements IdentifiableEntityInterface
     public function __construct(
         DateTimeInterface $moment,
         ?Station $station = null,
-        string $type = self::INTERVAL_DAILY,
+        AnalyticsIntervals $type = AnalyticsIntervals::Daily,
         int $number_min = 0,
         int $number_max = 0,
         float $number_avg = 0,
@@ -76,7 +74,7 @@ class Analytics implements IdentifiableEntityInterface
         return $this->station;
     }
 
-    public function getType(): string
+    public function getType(): AnalyticsIntervals
     {
         return $this->type;
     }

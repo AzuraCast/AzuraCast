@@ -112,7 +112,7 @@ final class StorageLocationRepository extends Repository
             ->select('s')
             ->from(Station::class, 's');
 
-        switch ($storageLocation->getTypeEnum()) {
+        switch ($storageLocation->getType()) {
             case StorageLocationTypes::StationMedia:
                 $qb->where('s.media_storage_location = :storageLocation')
                     ->setParameter('storageLocation', $storageLocation);
@@ -137,7 +137,7 @@ final class StorageLocationRepository extends Repository
 
     public function getAdapter(StorageLocation $storageLocation): StorageLocationAdapterInterface
     {
-        $adapterClass = $storageLocation->getAdapterEnum()->getAdapterClass();
+        $adapterClass = $storageLocation->getAdapter()->getAdapterClass();
 
         if (!$this->adapters->has($adapterClass)) {
             throw new \InvalidArgumentException(sprintf('Class not found: %s', $adapterClass));

@@ -30,7 +30,7 @@ final class OverviewAction
         }
 
         $router = $request->getRouter();
-        $analyticsLevel = $settings->getAnalyticsEnum();
+        $analyticsLevel = $settings->getAnalytics();
 
         return $request->getView()->renderVuePage(
             response: $response,

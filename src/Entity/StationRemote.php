@@ -29,19 +29,19 @@ class StationRemote implements
     use Traits\HasAutoIncrementId;
     use Traits\TruncateStrings;
 
-    #[ORM\Column(nullable: false)]
-    protected int $station_id;
-
     #[ORM\ManyToOne(inversedBy: 'remotes')]
     #[ORM\JoinColumn(name: 'station_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     protected Station $station;
 
-    #[ORM\Column(nullable: true)]
-    protected ?int $relay_id = null;
+    #[ORM\Column(nullable: false, insertable: false, updatable: false)]
+    protected int $station_id;
 
     #[ORM\ManyToOne(inversedBy: 'remotes')]
     #[ORM\JoinColumn(name: 'relay_id', referencedColumnName: 'id', nullable: true, onDelete: 'CASCADE')]
     protected ?Relay $relay = null;
+
+    #[ORM\Column(nullable: true, insertable: false, updatable: false)]
+    protected ?int $relay_id = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     protected ?string $display_name = null;
@@ -49,14 +49,14 @@ class StationRemote implements
     #[ORM\Column]
     protected bool $is_visible_on_public_pages = true;
 
-    #[ORM\Column(length: 50)]
-    protected string $type;
+    #[ORM\Column(type: 'string', length: 50, enumType: RemoteAdapters::class)]
+    protected RemoteAdapters $type;
 
     #[ORM\Column]
     protected bool $enable_autodj = false;
 
-    #[ORM\Column(length: 10, nullable: true)]
-    protected ?string $autodj_format = null;
+    #[ORM\Column(type: 'string', length: 10, nullable: true, enumType: StreamFormats::class)]
+    protected ?StreamFormats $autodj_format = null;
 
     #[ORM\Column(type: 'smallint', nullable: true)]
     protected ?int $autodj_bitrate = null;
@@ -141,19 +141,12 @@ class StationRemote implements
         $this->enable_autodj = $enable_autodj;
     }
 
-    public function getAutodjFormat(): ?string
+    public function getAutodjFormat(): ?StreamFormats
     {
         return $this->autodj_format;
     }
 
-    public function getAutodjFormatEnum(): ?StreamFormats
-    {
-        return (null !== $this->autodj_format)
-            ? StreamFormats::from(strtolower($this->autodj_format))
-            : null;
-    }
-
-    public function setAutodjFormat(string $autodj_format = null): void
+    public function setAutodjFormat(?StreamFormats $autodj_format = null): void
     {
         $this->autodj_format = $autodj_format;
     }
@@ -197,7 +190,7 @@ class StationRemote implements
     {
         $password = $this->getSourcePassword();
 
-        if (RemoteAdapters::Shoutcast2 === $this->getTypeEnum()) {
+        if (RemoteAdapters::Shoutcast2 === $this->getType()) {
             $mount = $this->getSourceMount();
             if (empty($mount)) {
                 $mount = $this->getMount();
@@ -221,22 +214,13 @@ class StationRemote implements
         $this->source_password = $this->truncateNullableString($source_password, 100);
     }
 
-    public function getType(): string
+    public function getType(): RemoteAdapters
     {
         return $this->type;
     }
 
-    public function getTypeEnum(): RemoteAdapters
+    public function setType(RemoteAdapters $type): void
     {
-        return RemoteAdapters::from($this->type);
-    }
-
-    public function setType(string $type): void
-    {
-        if (null === RemoteAdapters::tryFrom($type)) {
-            throw new InvalidArgumentException('Invalid type specified.');
-        }
-
         $this->type = $type;
     }
 
@@ -272,7 +256,7 @@ class StationRemote implements
 
     public function getAutodjMount(): ?string
     {
-        if (RemoteAdapters::Icecast !== $this->getTypeEnum()) {
+        if (RemoteAdapters::Icecast !== $this->getType()) {
             return null;
         }
 
@@ -339,19 +323,19 @@ class StationRemote implements
         $this->source_port = $source_port;
     }
 
-    public function getAutodjProtocolEnum(): ?StreamProtocols
+    public function getAutodjProtocol(): ?StreamProtocols
     {
         $urlScheme = $this->getUrlAsUri()->getScheme();
 
-        return match ($this->getAutodjAdapterTypeEnum()) {
+        return match ($this->getAutodjAdapterType()) {
             RemoteAdapters::Shoutcast1, RemoteAdapters::Shoutcast2 => StreamProtocols::Icy,
             default => ('https' === $urlScheme) ? StreamProtocols::Https : StreamProtocols::Http
         };
     }
 
-    public function getAutodjAdapterTypeEnum(): AdapterTypeInterface
+    public function getAutodjAdapterType(): AdapterTypeInterface
     {
-        return $this->getTypeEnum();
+        return $this->getType();
     }
 
     public function getIsPublic(): bool
@@ -389,7 +373,7 @@ class StationRemote implements
      */
     public function isEditable(): bool
     {
-        return (RemoteAdapters::AzuraRelay !== $this->getTypeEnum());
+        return (RemoteAdapters::AzuraRelay !== $this->getType());
     }
 
     /**
@@ -411,9 +395,9 @@ class StationRemote implements
             unique: $this->listeners_unique
         );
 
-        if ($this->enable_autodj || (RemoteAdapters::AzuraRelay === $this->getTypeEnum())) {
+        if ($this->enable_autodj || (RemoteAdapters::AzuraRelay === $this->getType())) {
             $response->bitrate = (int)$this->autodj_bitrate;
-            $response->format = (string)$this->autodj_format;
+            $response->format = $this->autodj_format?->value;
         }
 
         return $response;
@@ -426,7 +410,7 @@ class StationRemote implements
         }
 
         if ($this->enable_autodj) {
-            $format = $this->getAutodjFormatEnum();
+            $format = $this->getAutodjFormat();
             if (null !== $format) {
                 return $format->formatBitrate($this->autodj_bitrate);
             }

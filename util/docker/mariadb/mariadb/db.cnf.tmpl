@@ -7,5 +7,8 @@ long_query_time = 0.2
 
 max_connections = {{ default .Env.MYSQL_MAX_CONNECTIONS "100" }}
 
+innodb_buffer_pool_size = {{ default .Env.MYSQL_INNODB_BUFFER_POOL_SIZE "128M" }}
+innodb_log_file_size = {{ default .Env.MYSQL_INNODB_LOG_FILE_SIZE "16M" }}
+
 [client]
 default-character-set=utf8mb4

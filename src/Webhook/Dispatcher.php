@@ -5,7 +5,8 @@ declare(strict_types=1);
 namespace App\Webhook;
 
 use App\Entity\ApiGenerator\NowPlayingApiGenerator;
-use App\Entity\Enums\WebhookTriggers;
+use App\Webhook\Connector\AbstractConnector;
+use App\Webhook\Enums\WebhookTriggers;
 use App\Entity\Station;
 use App\Entity\StationWebhook;
 use App\Environment;
@@ -15,6 +16,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Monolog\Handler\StreamHandler;
 use Monolog\Level;
 use Monolog\Logger;
+use Psr\Container\ContainerInterface;
 
 final class Dispatcher
 {
@@ -24,8 +26,8 @@ final class Dispatcher
         private readonly EntityManagerInterface $em,
         private readonly RouterInterface $router,
         private readonly LocalWebhookHandler $localHandler,
-        private readonly ConnectorLocator $connectors,
-        private readonly NowPlayingApiGenerator $nowPlayingApiGen
+        private readonly NowPlayingApiGenerator $nowPlayingApiGen,
+        private readonly ContainerInterface $di
     ) {
     }
 
@@ -80,11 +82,24 @@ final class Dispatcher
         $this->logger->debug('Webhook dispatch: triggering events: ' . implode(', ', $triggers));
 
         foreach ($enabledWebhooks as $webhook) {
-            $connectorObj = $this->connectors->getConnector($webhook->getType());
+            $webhookType = $webhook->getType();
+            $webhookClass = $webhookType->getClass();
+
+            $this->logger->debug(
+                sprintf('Dispatching connector "%s".', $webhookType->value)
+            );
+
+            if (!$this->di->has($webhookClass)) {
+                $this->logger->error(
+                    sprintf('Webhook class "%s" not found.', $webhookClass)
+                );
+                continue;
+            }
+
+            /** @var AbstractConnector $connectorObj */
+            $connectorObj = $this->di->get($webhookClass);
 
             if ($connectorObj->shouldDispatch($webhook, $triggers)) {
-                $this->logger->debug(sprintf('Dispatching connector "%s".', $webhook->getType()));
-
                 try {
                     $connectorObj->dispatch($station, $webhook, $np, $triggers);
                     $webhook->updateLastSentTimestamp();
@@ -126,8 +141,12 @@ final class Dispatcher
 
             $this->localHandler->dispatch($station, $np);
 
-            $connectorObj = $this->connectors->getConnector($webhook->getType());
-            $connectorObj->dispatch($station, $webhook, $np, [
+            $webhookType = $webhook->getType();
+            $webhookClass = $webhookType->getClass();
+
+            /** @var AbstractConnector $webhookObj */
+            $webhookObj = $this->di->get($webhookClass);
+            $webhookObj->dispatch($station, $webhook, $np, [
                 WebhookTriggers::SongChanged->value,
             ]);
         } catch (\Throwable $e) {

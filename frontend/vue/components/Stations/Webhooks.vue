@@ -95,9 +95,8 @@
     <edit-modal
         ref="$editModal"
         :create-url="listUrl"
-        :webhook-types="webhookTypes"
-        :trigger-titles="langTriggerTitles"
-        :trigger-descriptions="langTriggerDescriptions"
+        :type-details="langTypeDetails"
+        :trigger-details="langTriggerDetails"
         :now-playing-url="nowPlayingUrl"
         @relist="relist"
     />
@@ -117,6 +116,7 @@ import useHasEditModal from "~/functions/useHasEditModal";
 import {useNotify} from "~/vendor/bootstrapVue";
 import {useAxios} from "~/vendor/axios";
 import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
+import {useTriggerDetails, useTypeDetails} from "~/components/Entity/Webhooks";
 
 const props = defineProps({
     listUrl: {
@@ -125,10 +125,6 @@ const props = defineProps({
     },
     nowPlayingUrl: {
         type: String,
-        required: true
-    },
-    webhookTypes: {
-        type: Object,
         required: true
     }
 });
@@ -141,27 +137,8 @@ const fields = [
     {key: 'actions', label: $gettext('Actions'), sortable: false, class: 'shrink'}
 ];
 
-const langTriggerTitles = {
-    song_changed: $gettext('Song Change'),
-    song_changed_live: $gettext('Song Change (Live Only)'),
-    listener_gained: $gettext('Listener Gained'),
-    listener_lost: $gettext('Listener Lost'),
-    live_connect: $gettext('Live Streamer/DJ Connected'),
-    live_disconnect: $gettext('Live Streamer/DJ Disconnected'),
-    station_offline: $gettext('Station Goes Offline'),
-    station_online: $gettext('Station Goes Online'),
-};
-
-const langTriggerDescriptions = {
-    song_changed: $gettext('Any time the currently playing song changes'),
-    song_changed_live: $gettext('When the song changes and a live streamer/DJ is connected'),
-    listener_gained: $gettext('Any time the listener count increases'),
-    listener_lost: $gettext('Any time the listener count decreases'),
-    live_connect: $gettext('Any time a live streamer/DJ connects to the stream'),
-    live_disconnect: $gettext('Any time a live streamer/DJ disconnects from the stream'),
-    station_offline: $gettext('When the station broadcast goes offline'),
-    station_online: $gettext('When the station broadcast comes online'),
-};
+const langTypeDetails = useTypeDetails();
+const langTriggerDetails = useTriggerDetails();
 
 const langToggleButton = (record) => {
     return (record.is_enabled)
@@ -176,12 +153,12 @@ const getToggleVariant = (record) => {
 };
 
 const getWebhookName = (key) => {
-    return get(props.webhookTypes, [key, 'name'], '');
+    return get(langTypeDetails, [key, 'title'], '');
 };
 
 const getTriggerNames = (triggers) => {
     return map(triggers, (trigger) => {
-        return get(langTriggerTitles, trigger, '');
+        return get(langTriggerDetails, [trigger, 'title'], '');
     });
 };
 

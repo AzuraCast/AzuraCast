@@ -11,7 +11,6 @@ use App\Flysystem\StationFilesystems;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Media\MediaProcessor;
-use App\Message\Meilisearch\AddMediaMessage;
 use App\Message\WritePlaylistFileMessage;
 use App\OpenApi;
 use App\Radio\Adapters;
@@ -252,22 +251,14 @@ final class FilesController extends AbstractStationApiCrudController
 
         $fsMedia = $this->stationFilesystems->getMediaFilesystem($station);
 
-        $record = $this->fromArray(
-            $data,
-            $record,
-            [
-                AbstractNormalizer::CALLBACKS => [
-                    'path' => function ($new_value, $record) use ($fsMedia) {
-                        // Detect and handle a rename.
-                        if (($record instanceof Entity\StationMedia) && $new_value !== $record->getPath()) {
-                            $fsMedia->move($record->getPath(), $new_value);
-                        }
+        $oldPath = $record->getPath();
+        $isRenamed = (isset($data['path']) && $data['path'] !== $oldPath);
 
-                        return $new_value;
-                    },
-                ],
-            ]
-        );
+        $record = $this->fromArray($data, $record);
+
+        if ($isRenamed) {
+            $fsMedia->move($oldPath, $record->getPath());
+        }
 
         $errors = $this->validator->validate($record);
         if (count($errors) > 0) {
@@ -321,9 +312,6 @@ final class FilesController extends AbstractStationApiCrudController
                 }
 
                 $this->em->flush();
-
-                // Reindex file in search.
-                $this->reindexMedia($record);
 
                 // Handle playlist changes.
                 $backend = $this->adapters->getBackendAdapter($station);
@@ -401,9 +389,6 @@ final class FilesController extends AbstractStationApiCrudController
             throw new InvalidArgumentException(sprintf('Record must be an instance of %s.', $this->entityClass));
         }
 
-        // Trigger search reindex.
-        $this->reindexMedia($record);
-
         // Delete the media file off the filesystem.
         // Write new PLS playlist configuration.
         foreach ($this->mediaRepo->remove($record, true) as $playlist_id => $playlist) {
@@ -416,16 +401,5 @@ final class FilesController extends AbstractStationApiCrudController
                 $this->messageBus->dispatch($message);
             }
         }
-    }
-
-    private function reindexMedia(Entity\StationMedia $media): void
-    {
-        $indexMessage = new AddMediaMessage();
-        $indexMessage->storage_location_id = $media->getStorageLocation()->getIdRequired();
-        $indexMessage->media_ids = [
-            $media->getIdRequired(),
-        ];
-        $indexMessage->include_playlists = true;
-        $this->messageBus->dispatch($indexMessage);
     }
 }

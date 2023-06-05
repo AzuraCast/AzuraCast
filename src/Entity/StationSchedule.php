@@ -7,7 +7,6 @@ namespace App\Entity;
 use App\Entity\Interfaces\IdentifiableEntityInterface;
 use Carbon\CarbonImmutable;
 use Carbon\CarbonInterface;
-use DateTimeZone;
 use Doctrine\ORM\Mapping as ORM;
 use OpenApi\Attributes as OA;
 
@@ -122,9 +121,12 @@ class StationSchedule implements IdentifiableEntityInterface
      */
     public function getDuration(): int
     {
-        $start_time = self::getDateTime($this->start_time)
+        $now = CarbonImmutable::now(new \DateTimeZone('UTC'));
+
+        $start_time = self::getDateTime($this->start_time, $now)
             ->getTimestamp();
-        $end_time = self::getDateTime($this->end_time)
+
+        $end_time = self::getDateTime($this->end_time, $now)
             ->getTimestamp();
 
         if ($start_time > $end_time) {
@@ -238,16 +240,18 @@ class StationSchedule implements IdentifiableEntityInterface
      * Return a \DateTime object (or null) for a given time code, by default in the UTC time zone.
      *
      * @param int|string $timeCode
-     * @param CarbonInterface|null $now
+     * @param CarbonInterface $now The current date/time. Note that this time MUST be using the station's timezone
+     *   for this function to be accurate.
+     * @return CarbonInterface The current date/time, with the time set to the time code specified.
      */
-    public static function getDateTime(int|string $timeCode, CarbonInterface $now = null): CarbonInterface
+    public static function getDateTime(int|string $timeCode, CarbonInterface $now): CarbonInterface
     {
-        if (null === $now) {
-            $now = CarbonImmutable::now(new DateTimeZone('UTC'));
-        }
-
         $timeCode = str_pad((string)$timeCode, 4, '0', STR_PAD_LEFT);
-        return $now->setTime((int)substr($timeCode, 0, 2), (int)substr($timeCode, 2));
+
+        return $now->setTime(
+            (int)substr($timeCode, 0, 2),
+            (int)substr($timeCode, 2)
+        );
     }
 
     public static function displayTimeCode(string|int $timeCode): string

@@ -78,10 +78,10 @@ class Station implements Stringable, IdentifiableEntityInterface
             description: "The frontend adapter (icecast,shoutcast,remote,etc)",
             example: "icecast"
         ),
-        ORM\Column(length: 100, nullable: true),
+        ORM\Column(type: 'string', length: 100, enumType: FrontendAdapters::class),
         Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])
     ]
-    protected ?string $frontend_type = null;
+    protected FrontendAdapters $frontend_type;
 
     #[
         OA\Property(
@@ -99,10 +99,10 @@ class Station implements Stringable, IdentifiableEntityInterface
             description: "The backend adapter (liquidsoap,etc)",
             example: "liquidsoap"
         ),
-        ORM\Column(length: 100, nullable: true),
+        ORM\Column(type: 'string', length: 100, enumType: BackendAdapters::class),
         Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])
     ]
-    protected ?string $backend_type = null;
+    protected BackendAdapters $backend_type;
 
     #[
         OA\Property(
@@ -148,18 +148,6 @@ class Station implements Stringable, IdentifiableEntityInterface
         Serializer\Groups([EntityGroupsInterface::GROUP_ADMIN, EntityGroupsInterface::GROUP_ALL])
     ]
     protected ?string $radio_base_dir = null;
-
-    #[
-        ORM\Column(type: 'array', nullable: true),
-        Attributes\AuditIgnore
-    ]
-    protected mixed $nowplaying;
-
-    #[
-        ORM\Column(nullable: true),
-        Attributes\AuditIgnore
-    ]
-    protected ?int $nowplaying_timestamp = null;
 
     #[
         OA\Property(
@@ -349,17 +337,17 @@ class Station implements Stringable, IdentifiableEntityInterface
     protected Collection $streamers;
 
     #[
-        ORM\Column(nullable: true),
-        Attributes\AuditIgnore
-    ]
-    private ?int $current_streamer_id = null;
-
-    #[
         ORM\ManyToOne,
         ORM\JoinColumn(name: 'current_streamer_id', referencedColumnName: 'id', nullable: true, onDelete: 'SET NULL'),
         Attributes\AuditIgnore
     ]
     protected ?StationStreamer $current_streamer = null;
+
+    #[
+        ORM\Column(nullable: true, insertable: false, updatable: false),
+        Attributes\AuditIgnore
+    ]
+    private ?int $current_streamer_id = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     protected ?string $fallback_path = null;
@@ -409,8 +397,8 @@ class Station implements Stringable, IdentifiableEntityInterface
 
     public function __construct()
     {
-        $this->frontend_type = FrontendAdapters::Icecast->value;
-        $this->backend_type = BackendAdapters::Liquidsoap->value;
+        $this->frontend_type = FrontendAdapters::default();
+        $this->backend_type = BackendAdapters::default();
 
         $this->history = new ArrayCollection();
         $this->permissions = new ArrayCollection();
@@ -465,24 +453,13 @@ class Station implements Stringable, IdentifiableEntityInterface
         $this->is_enabled = $is_enabled;
     }
 
-    public function getFrontendType(): ?string
+    public function getFrontendType(): FrontendAdapters
     {
         return $this->frontend_type;
     }
 
-    public function getFrontendTypeEnum(): FrontendAdapters
+    public function setFrontendType(FrontendAdapters $frontend_type): void
     {
-        return (null !== $this->frontend_type)
-            ? FrontendAdapters::from($this->frontend_type)
-            : FrontendAdapters::default();
-    }
-
-    public function setFrontendType(?string $frontend_type = null): void
-    {
-        if (null !== $frontend_type && null === FrontendAdapters::tryFrom($frontend_type)) {
-            throw new InvalidArgumentException('Invalid frontend type specified.');
-        }
-
         $this->frontend_type = $frontend_type;
     }
 
@@ -508,24 +485,13 @@ class Station implements Stringable, IdentifiableEntityInterface
         $this->frontend_config = $config;
     }
 
-    public function getBackendType(): ?string
+    public function getBackendType(): BackendAdapters
     {
         return $this->backend_type;
     }
 
-    public function getBackendTypeEnum(): BackendAdapters
+    public function setBackendType(BackendAdapters $backend_type): void
     {
-        return (null !== $this->backend_type)
-            ? BackendAdapters::from($this->backend_type)
-            : BackendAdapters::default();
-    }
-
-    public function setBackendType(string $backend_type = null): void
-    {
-        if (null !== $backend_type && null === BackendAdapters::tryFrom($backend_type)) {
-            throw new InvalidArgumentException('Invalid frontend type specified.');
-        }
-
         $this->backend_type = $backend_type;
     }
 
@@ -541,7 +507,7 @@ class Station implements Stringable, IdentifiableEntityInterface
     {
         return $this->getIsEnabled()
             && !$this->useManualAutoDJ()
-            && BackendAdapters::None !== $this->getBackendTypeEnum();
+            && BackendAdapters::None !== $this->getBackendType();
     }
 
     public function getBackendConfig(): StationBackendConfiguration
@@ -552,7 +518,7 @@ class Station implements Stringable, IdentifiableEntityInterface
     public function hasLocalServices(): bool
     {
         return $this->getIsEnabled() &&
-            ($this->getBackendTypeEnum()->isEnabled() || $this->getFrontendTypeEnum()->isEnabled());
+            ($this->getBackendType()->isEnabled() || $this->getFrontendType()->isEnabled());
     }
 
     public function setBackendConfig(
@@ -734,33 +700,6 @@ class Station implements Stringable, IdentifiableEntityInterface
     public function getRadioHlsDir(): string
     {
         return $this->radio_base_dir . '/hls';
-    }
-
-    public function getNowplaying(): ?Api\NowPlaying\NowPlaying
-    {
-        if ($this->nowplaying instanceof Api\NowPlaying\NowPlaying) {
-            return $this->nowplaying;
-        }
-        return null;
-    }
-
-    public function setNowplaying(?Api\NowPlaying\NowPlaying $nowplaying = null): void
-    {
-        $this->nowplaying = $nowplaying;
-
-        if (null !== $nowplaying) {
-            $this->nowplaying_timestamp = time();
-        }
-    }
-
-    public function getNowplayingTimestamp(): int
-    {
-        return (int)$this->nowplaying_timestamp;
-    }
-
-    public function setNowPlayingTimestamp(int $nowplaying_timestamp): void
-    {
-        $this->nowplaying_timestamp = $nowplaying_timestamp;
     }
 
     public function getEnableRequests(): bool
@@ -960,7 +899,7 @@ class Station implements Stringable, IdentifiableEntityInterface
         return $this->current_streamer;
     }
 
-    public function setCurrentStreamer(?StationStreamer $current_streamer = null): void
+    public function setCurrentStreamer(?StationStreamer $current_streamer): void
     {
         if (null !== $this->current_streamer || null !== $current_streamer) {
             $this->current_streamer = $current_streamer;
@@ -977,7 +916,7 @@ class Station implements Stringable, IdentifiableEntityInterface
 
     public function setMediaStorageLocation(?StorageLocation $storageLocation = null): void
     {
-        if (null !== $storageLocation && StorageLocationTypes::StationMedia !== $storageLocation->getTypeEnum()) {
+        if (null !== $storageLocation && StorageLocationTypes::StationMedia !== $storageLocation->getType()) {
             throw new RuntimeException('Invalid storage location.');
         }
 
@@ -994,7 +933,7 @@ class Station implements Stringable, IdentifiableEntityInterface
 
     public function setRecordingsStorageLocation(?StorageLocation $storageLocation = null): void
     {
-        if (null !== $storageLocation && StorageLocationTypes::StationRecordings !== $storageLocation->getTypeEnum()) {
+        if (null !== $storageLocation && StorageLocationTypes::StationRecordings !== $storageLocation->getType()) {
             throw new RuntimeException('Invalid storage location.');
         }
 
@@ -1011,7 +950,7 @@ class Station implements Stringable, IdentifiableEntityInterface
 
     public function setPodcastsStorageLocation(?StorageLocation $storageLocation = null): void
     {
-        if (null !== $storageLocation && StorageLocationTypes::StationPodcasts !== $storageLocation->getTypeEnum()) {
+        if (null !== $storageLocation && StorageLocationTypes::StationPodcasts !== $storageLocation->getType()) {
             throw new RuntimeException('Invalid storage location.');
         }
 
@@ -1137,14 +1076,6 @@ class Station implements Stringable, IdentifiableEntityInterface
         $this->current_song = $current_song;
     }
 
-    public function clearCache(): void
-    {
-        $this->nowplaying = null;
-        $this->nowplaying_timestamp = 0;
-
-        $this->current_song = null;
-    }
-
     public function __toString(): string
     {
         $name = $this->getName();
@@ -1162,8 +1093,6 @@ class Station implements Stringable, IdentifiableEntityInterface
         $this->short_name = '';
         $this->radio_base_dir = null;
         $this->adapter_api_key = null;
-        $this->nowplaying = null;
-        $this->nowplaying_timestamp = null;
         $this->current_streamer = null;
         $this->current_streamer_id = null;
         $this->is_streamer_live = false;

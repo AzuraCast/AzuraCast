@@ -39,7 +39,7 @@ final class Customization
 
         $this->user = null;
         $this->theme = SupportedThemes::default();
-        $this->publicTheme = $this->settings->getPublicThemeEnum();
+        $this->publicTheme = $this->settings->getPublicTheme();
 
         $this->locale = SupportedLocales::default();
     }
@@ -74,17 +74,14 @@ final class Customization
         }
 
         if (null !== $this->user) {
-            $themeName = $this->user->getTheme();
-            if (!empty($themeName)) {
-                $theme = SupportedThemes::tryFrom($themeName);
-                if (null !== $theme) {
-                    return $theme;
-                }
+            $userTheme = $this->user->getTheme();
+            if (null !== $userTheme) {
+                return $userTheme;
             }
         }
 
         return ($isPublicTheme)
-            ? $this->settings->getPublicThemeEnum()
+            ? $this->settings->getPublicTheme()
             : SupportedThemes::default();
     }
 

@@ -12,8 +12,6 @@ use TheIconic\Tracking\GoogleAnalytics\Network\HttpClient;
 
 final class GoogleAnalyticsV3 extends AbstractGoogleAnalyticsConnector
 {
-    public const NAME = 'google_analytics';
-
     /**
      * @inheritDoc
      */
@@ -25,7 +23,7 @@ final class GoogleAnalyticsV3 extends AbstractGoogleAnalyticsConnector
     ): void {
         $config = $webhook->getConfig();
         if (empty($config['tracking_id'])) {
-            throw $this->incompleteConfigException(self::NAME);
+            throw $this->incompleteConfigException($webhook);
         }
 
         // Get listen URLs for each mount point.

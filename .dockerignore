@@ -1,5 +1,4 @@
 .git
-.devcontainer
 .github
 .run
 frontend/node_modules

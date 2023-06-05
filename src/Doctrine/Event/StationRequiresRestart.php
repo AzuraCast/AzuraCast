@@ -33,14 +33,23 @@ final class StationRequiresRestart implements EventSubscriber
         $uow = $em->getUnitOfWork();
 
         $collections_to_check = [
-            Entity\AuditLog::OPER_INSERT => $uow->getScheduledEntityInsertions(),
-            Entity\AuditLog::OPER_UPDATE => $uow->getScheduledEntityUpdates(),
-            Entity\AuditLog::OPER_DELETE => $uow->getScheduledEntityDeletions(),
+            [
+                Entity\Enums\AuditLogOperations::Insert,
+                $uow->getScheduledEntityInsertions(),
+            ],
+            [
+                Entity\Enums\AuditLogOperations::Update,
+                $uow->getScheduledEntityUpdates(),
+            ],
+            [
+                Entity\Enums\AuditLogOperations::Delete,
+                $uow->getScheduledEntityDeletions(),
+            ],
         ];
 
         $stations_to_restart = [];
 
-        foreach ($collections_to_check as $change_type => $collection) {
+        foreach ($collections_to_check as [$change_type, $collection]) {
             foreach ($collection as $entity) {
                 if (
                     ($entity instanceof Entity\StationMount)
@@ -48,7 +57,7 @@ final class StationRequiresRestart implements EventSubscriber
                     || ($entity instanceof Entity\StationRemote && $entity->isEditable())
                     || ($entity instanceof Entity\StationPlaylist && $entity->getStation()->useManualAutoDJ())
                 ) {
-                    if (Entity\AuditLog::OPER_UPDATE === $change_type) {
+                    if (Entity\Enums\AuditLogOperations::Update === $change_type) {
                         $changes = $uow->getEntityChangeSet($entity);
 
                         // Look for the @AuditIgnore annotation on a property.

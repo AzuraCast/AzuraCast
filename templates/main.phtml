@@ -24,7 +24,7 @@ $header ??= null;
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title><?= $customization->getPageTitle($title) ?></title>
+    <title><?= $this->e($customization->getPageTitle($title)) ?></title>
 
     <?= $this->fetch('partials/head') ?>
 
@@ -177,7 +177,7 @@ endif; ?>
                 endif; ?>
                 <div class="card mb-3" role="region">
                     <div class="card-header bg-primary-dark">
-                        <h3 class="card-title"><?=$title?></h3>
+                        <h3 class="card-title"><?=$this->e($title) ?></h3>
                     </div>
                     <div class="card-body">
                         <?=$this->section('content')?>

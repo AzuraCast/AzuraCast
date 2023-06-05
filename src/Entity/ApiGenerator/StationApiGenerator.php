@@ -30,8 +30,8 @@ final class StationApiGenerator
         $response->name = (string)$station->getName();
         $response->shortcode = $station->getShortName();
         $response->description = (string)$station->getDescription();
-        $response->frontend = (string)$station->getFrontendType();
-        $response->backend = (string)$station->getBackendType();
+        $response->frontend = $station->getFrontendType()->value;
+        $response->backend = $station->getBackendType()->value;
         $response->url = $station->getUrl();
         $response->is_public = $station->getEnablePublicPage();
         $response->listen_url = $frontend?->getStreamUrl($station, $baseUri);
@@ -51,8 +51,9 @@ final class StationApiGenerator
 
         $mounts = [];
         if (
-            null !== $frontend && $station->getFrontendTypeEnum()->supportsMounts() && $station->getMounts()->count(
-            ) > 0
+            null !== $frontend
+            && $station->getFrontendType()->supportsMounts()
+            && $station->getMounts()->count() > 0
         ) {
             foreach ($station->getMounts() as $mount) {
                 if ($showAllMounts || $mount->getIsVisibleOnPublicPages()) {
@@ -73,7 +74,7 @@ final class StationApiGenerator
 
         $response->remotes = $remotes;
 
-        $response->hls_enabled = $station->getBackendTypeEnum()->isEnabled() && $station->getEnableHls();
+        $response->hls_enabled = $station->getBackendType()->isEnabled() && $station->getEnableHls();
         $response->hls_url = (null !== $backend && $response->hls_enabled)
             ? $backend->getHlsUrl($station, $baseUri)
             : null;

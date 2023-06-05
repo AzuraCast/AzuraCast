@@ -16,7 +16,7 @@ final class StationFiles
 {
     public function __invoke(ServerRequest $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        if (!$request->getStation()->getBackendTypeEnum()->isEnabled()) {
+        if (!$request->getStation()->getBackendType()->isEnabled()) {
             throw new Exception(__('This feature is not currently supported on this station.'));
         }
 

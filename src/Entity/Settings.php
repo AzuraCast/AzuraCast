@@ -5,7 +5,8 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use App\Doctrine\Generator\UuidV6Generator;
-use App\Entity;
+use App\Entity\Enums\AnalyticsLevel;
+use App\Entity\Enums\IpSources;
 use App\Enums\SupportedThemes;
 use App\OpenApi;
 use App\Service\Avatar;
@@ -14,6 +15,7 @@ use App\Utilities\Urls;
 use Doctrine\ORM\Mapping as ORM;
 use InvalidArgumentException;
 use OpenApi\Attributes as OA;
+use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\UriInterface;
 use RuntimeException;
 use Stringable;
@@ -28,8 +30,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 ]
 class Settings implements Stringable
 {
-    use Entity\Traits\TruncateStrings;
-    use Entity\Traits\TruncateInts;
+    use Traits\TruncateStrings;
+    use Traits\TruncateInts;
 
     // Sorting groups for settings, as used in Symfony serialization.
     public const GROUP_GENERAL = 'general';
@@ -155,7 +157,7 @@ class Settings implements Stringable
         Assert\Choice([0, 14, 30, 60, 365, 730]),
         Groups(self::GROUP_GENERAL)
     ]
-    protected int $history_keep_days = Entity\SongHistory::DEFAULT_DAYS_TO_KEEP;
+    protected int $history_keep_days = SongHistory::DEFAULT_DAYS_TO_KEEP;
 
     public function getHistoryKeepDays(): int
     {
@@ -223,32 +225,23 @@ class Settings implements Stringable
 
     #[
         OA\Property(description: "Listener Analytics Collection"),
-        ORM\Column(length: 50, nullable: true),
+        ORM\Column(type: 'string', length: 50, nullable: true, enumType: AnalyticsLevel::class),
         Groups(self::GROUP_GENERAL)
     ]
-    protected ?string $analytics = null;
+    protected ?AnalyticsLevel $analytics = null;
 
-    public function getAnalytics(): string
+    public function getAnalytics(): AnalyticsLevel
     {
-        return $this->analytics ?? Entity\Enums\AnalyticsLevel::default()->value;
-    }
-
-    public function getAnalyticsEnum(): Entity\Enums\AnalyticsLevel
-    {
-        return Entity\Enums\AnalyticsLevel::tryFrom($this->analytics ?? '') ?? Entity\Enums\AnalyticsLevel::default();
+        return $this->analytics ?? AnalyticsLevel::default();
     }
 
     public function isAnalyticsEnabled(): bool
     {
-        return Entity\Enums\AnalyticsLevel::None !== $this->getAnalyticsEnum();
+        return AnalyticsLevel::None !== $this->getAnalytics();
     }
 
-    public function setAnalytics(?string $analytics): void
+    public function setAnalytics(?AnalyticsLevel $analytics): void
     {
-        if (null !== $analytics && null === Entity\Enums\AnalyticsLevel::tryFrom($analytics)) {
-            throw new InvalidArgumentException('Invalid analytics level.');
-        }
-
         $this->analytics = $analytics;
     }
 
@@ -319,28 +312,18 @@ class Settings implements Stringable
 
     #[
         OA\Property(description: "Base Theme for Public Pages", example: "light"),
-        ORM\Column(length: 50, nullable: true),
+        ORM\Column(type: 'string', length: 50, nullable: true, enumType: SupportedThemes::class),
         Groups(self::GROUP_BRANDING)
     ]
-    protected ?string $public_theme = null;
+    protected ?SupportedThemes $public_theme = null;
 
-    public function getPublicTheme(): string
+    public function getPublicTheme(): SupportedThemes
     {
-        return $this->getPublicThemeEnum()->value;
+        return $this->public_theme ?? SupportedThemes::default();
     }
 
-    public function getPublicThemeEnum(): SupportedThemes
+    public function setPublicTheme(?SupportedThemes $publicTheme): void
     {
-        return SupportedThemes::tryFrom($this->public_theme ?? '')
-            ?? SupportedThemes::default();
-    }
-
-    public function setPublicTheme(?string $publicTheme): void
-    {
-        if (null !== $publicTheme && null === SupportedThemes::tryFrom($publicTheme)) {
-            throw new InvalidArgumentException('Unsupported theme specified.');
-        }
-
         $this->public_theme = $publicTheme;
     }
 
@@ -1057,6 +1040,28 @@ class Settings implements Stringable
         }
 
         $this->acme_domains = $acme_domains;
+    }
+
+    #[
+        OA\Property(description: "IP Address Source"),
+        ORM\Column(type: 'string', length: 50, nullable: true, enumType: IpSources::class),
+        Groups(self::GROUP_GENERAL)
+    ]
+    protected ?IpSources $ip_source = null;
+
+    public function getIpSource(): IpSources
+    {
+        return $this->ip_source ?? IpSources::default();
+    }
+
+    public function getIp(ServerRequestInterface $request): string
+    {
+        return $this->getIpSource()->getIp($request);
+    }
+
+    public function setIpSource(?IpSources $ipSource): void
+    {
+        $this->ip_source = $ipSource;
     }
 
     public function __toString(): string

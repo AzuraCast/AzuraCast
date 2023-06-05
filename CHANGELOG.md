@@ -17,6 +17,12 @@ release channel, you can take advantage of these new features and fixes.
 
 ## Bug Fixes
 
+- File downloads will preserve the "Access-Control-Allowed-Origin" header you set in System Settings.
+
+- Added extra reliability to fetching Now Playing information from remote relays.
+
+- Charts won't attempt to load on the dashboard if analytics are disabled.
+
 ---
 
 # AzuraCast 0.18.1 (Apr 21, 2023)

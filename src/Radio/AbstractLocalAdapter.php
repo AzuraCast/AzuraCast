@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Radio;
 
+use App\Container\EntityManagerAwareTrait;
 use App\Container\LoggerAwareTrait;
 use App\Entity;
 use App\Environment;
@@ -11,7 +12,6 @@ use App\Exception\Supervisor\AlreadyRunningException;
 use App\Exception\Supervisor\NotRunningException;
 use App\Exception\SupervisorException;
 use App\Http\Router;
-use Doctrine\ORM\EntityManagerInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Supervisor\Exception\Fault;
 use Supervisor\Exception\SupervisorException as SupervisorLibException;
@@ -20,10 +20,10 @@ use Supervisor\SupervisorInterface;
 abstract class AbstractLocalAdapter
 {
     use LoggerAwareTrait;
+    use EntityManagerAwareTrait;
 
     public function __construct(
         protected Environment $environment,
-        protected EntityManagerInterface $em,
         protected SupervisorInterface $supervisor,
         protected EventDispatcherInterface $dispatcher,
         protected Router $router,

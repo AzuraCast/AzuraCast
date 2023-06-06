@@ -4,16 +4,13 @@ declare(strict_types=1);
 
 namespace App\Sync\Task;
 
-use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Service\Centrifugo;
 
 final class SendTimeOnSocketTask extends AbstractTask
 {
     public function __construct(
-        ReloadableEntityManagerInterface $em,
         private readonly Centrifugo $centrifugo,
     ) {
-        parent::__construct($em);
     }
 
     public static function getSchedulePattern(): string

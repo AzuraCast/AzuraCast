@@ -8,18 +8,16 @@ use App\Entity;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use Carbon\CarbonImmutable;
-use Doctrine\ORM\EntityManagerInterface;
 use Psr\Http\Message\ResponseInterface;
 use stdClass;
 
 final class ChartsAction extends AbstractReportAction
 {
     public function __construct(
-        Entity\Repository\SettingsRepository $settingsRepo,
-        EntityManagerInterface $em,
         private readonly Entity\Repository\AnalyticsRepository $analyticsRepo,
+        Entity\Repository\SettingsRepository $settingsRepo,
     ) {
-        parent::__construct($settingsRepo, $em);
+        parent::__construct($settingsRepo);
     }
 
     public function __invoke(

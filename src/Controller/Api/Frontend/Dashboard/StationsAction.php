@@ -4,18 +4,19 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Frontend\Dashboard;
 
+use App\Container\EntityManagerAwareTrait;
 use App\Entity;
 use App\Enums\StationPermissions;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Paginator;
-use Doctrine\ORM\EntityManagerInterface;
 use Psr\Http\Message\ResponseInterface;
 
 final class StationsAction
 {
+    use EntityManagerAwareTrait;
+
     public function __construct(
-        private readonly EntityManagerInterface $em,
         private readonly Entity\Repository\SettingsRepository $settingsRepo,
         private readonly Entity\ApiGenerator\NowPlayingApiGenerator $npApiGenerator
     ) {

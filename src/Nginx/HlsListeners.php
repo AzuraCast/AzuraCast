@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Nginx;
 
+use App\Container\EntityManagerAwareTrait;
 use App\Container\LoggerAwareTrait;
 use App\Entity\Station;
-use Doctrine\ORM\EntityManagerInterface;
 use JsonException;
 use NowPlaying\Result\Client;
 use NowPlaying\Result\Result;
@@ -14,11 +14,7 @@ use NowPlaying\Result\Result;
 final class HlsListeners
 {
     use LoggerAwareTrait;
-
-    public function __construct(
-        private readonly EntityManagerInterface $em,
-    ) {
-    }
+    use EntityManagerAwareTrait;
 
     public function updateNowPlaying(
         Result $np,

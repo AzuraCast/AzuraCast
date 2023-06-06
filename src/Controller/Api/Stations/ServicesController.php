@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Stations;
 
+use App\Container\EntityManagerAwareTrait;
 use App\Entity;
 use App\Exception\StationUnsupportedException;
 use App\Exception\Supervisor\NotRunningException;
@@ -13,7 +14,6 @@ use App\Nginx\Nginx;
 use App\OpenApi;
 use App\Radio\Adapters;
 use App\Radio\Configuration;
-use Doctrine\ORM\EntityManagerInterface;
 use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 use Throwable;
@@ -106,8 +106,9 @@ use Throwable;
 ]
 final class ServicesController
 {
+    use EntityManagerAwareTrait;
+
     public function __construct(
-        private readonly EntityManagerInterface $em,
         private readonly Configuration $configuration,
         private readonly Nginx $nginx,
         private readonly Adapters $adapters,

@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Console\Command;
 
+use App\Container\EntityManagerAwareTrait;
 use App\Entity;
 use App\Entity\Station;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -19,8 +19,9 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 )]
 final class ReprocessMediaCommand extends CommandAbstract
 {
+    use EntityManagerAwareTrait;
+
     public function __construct(
-        private readonly EntityManagerInterface $em,
         private readonly Entity\Repository\StationRepository $stationRepo,
     ) {
         parent::__construct();

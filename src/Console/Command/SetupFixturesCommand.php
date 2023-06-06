@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace App\Console\Command;
 
 use App\Container\ContainerAwareTrait;
+use App\Container\EntityManagerAwareTrait;
 use App\Environment;
 use Doctrine\Common\DataFixtures\Executor\ORMExecutor;
 use Doctrine\Common\DataFixtures\Loader;
 use Doctrine\Common\DataFixtures\Purger\ORMPurger;
-use Doctrine\ORM\EntityManagerInterface;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -24,9 +24,9 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 final class SetupFixturesCommand extends CommandAbstract
 {
     use ContainerAwareTrait;
+    use EntityManagerAwareTrait;
 
     public function __construct(
-        private readonly EntityManagerInterface $em,
         private readonly Environment $environment,
     ) {
         parent::__construct();

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Stations\Playlists;
 
-use App\Doctrine\ReloadableEntityManagerInterface;
+use App\Container\EntityManagerAwareTrait;
 use App\Entity\Api\Status;
 use App\Entity\Repository\StationPlaylistRepository;
 use App\Entity\StationPlaylist;
@@ -19,9 +19,10 @@ use Psr\Http\Message\ResponseInterface;
 
 final class CloneAction
 {
+    use EntityManagerAwareTrait;
+
     public function __construct(
-        private readonly StationPlaylistRepository $playlistRepo,
-        private readonly ReloadableEntityManagerInterface $em,
+        private readonly StationPlaylistRepository $playlistRepo
     ) {
     }
 

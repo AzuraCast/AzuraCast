@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace App;
 
+use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Entity;
 use App\Enums\GlobalPermissions;
 use App\Enums\PermissionInterface;
 use App\Enums\StationPermissions;
 use App\Http\ServerRequest;
 use App\Traits\RequestAwareTrait;
-use Doctrine\ORM\EntityManagerInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
@@ -26,7 +26,7 @@ final class Acl
     private ?array $actions;
 
     public function __construct(
-        private readonly EntityManagerInterface $em,
+        private readonly ReloadableEntityManagerInterface $em,
         private readonly EventDispatcherInterface $dispatcher
     ) {
         $this->reload();

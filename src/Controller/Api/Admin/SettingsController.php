@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Controller\Api\Admin;
 
 use App\Controller\Api\AbstractApiCrudController;
-use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Entity;
 use App\Http\Response;
 use App\Http\ServerRequest;
@@ -56,11 +55,10 @@ final class SettingsController extends AbstractApiCrudController
 
     public function __construct(
         protected Entity\Repository\SettingsRepository $settingsRepo,
-        ReloadableEntityManagerInterface $em,
         Serializer $serializer,
         ValidatorInterface $validator
     ) {
-        parent::__construct($em, $serializer, $validator);
+        parent::__construct($serializer, $validator);
     }
 
     public function listAction(

@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace App\Console\Command\Users;
 
 use App\Console\Command\CommandAbstract;
+use App\Container\EntityManagerAwareTrait;
 use App\Entity;
 use App\Utilities;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -20,11 +20,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 )]
 final class ResetPasswordCommand extends CommandAbstract
 {
-    public function __construct(
-        private readonly EntityManagerInterface $em
-    ) {
-        parent::__construct();
-    }
+    use EntityManagerAwareTrait;
 
     protected function configure(): void
     {

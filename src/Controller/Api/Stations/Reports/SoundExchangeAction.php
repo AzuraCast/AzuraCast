@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Stations\Reports;
 
+use App\Container\EntityManagerAwareTrait;
 use App\Entity;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Service\MusicBrainz;
 use Carbon\CarbonImmutable;
-use Doctrine\ORM\EntityManagerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Throwable;
 
@@ -18,8 +18,9 @@ use Throwable;
  */
 final class SoundExchangeAction
 {
+    use EntityManagerAwareTrait;
+
     public function __construct(
-        private readonly EntityManagerInterface $em,
         private readonly MusicBrainz $musicBrainz
     ) {
     }

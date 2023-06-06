@@ -4,17 +4,18 @@ declare(strict_types=1);
 
 namespace App\Radio\AutoDJ;
 
+use App\Container\EntityManagerAwareTrait;
 use App\Entity;
 use App\Event\Radio\AnnotateNextSong;
 use App\Radio\Backend\Liquidsoap\ConfigWriter;
-use Doctrine\ORM\EntityManagerInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 final class Annotations implements EventSubscriberInterface
 {
+    use EntityManagerAwareTrait;
+
     public function __construct(
-        private readonly EntityManagerInterface $em,
         private readonly Entity\Repository\StationQueueRepository $queueRepo,
         private readonly EventDispatcherInterface $eventDispatcher,
     ) {

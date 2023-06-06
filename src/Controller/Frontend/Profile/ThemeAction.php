@@ -4,18 +4,15 @@ declare(strict_types=1);
 
 namespace App\Controller\Frontend\Profile;
 
+use App\Container\EntityManagerAwareTrait;
 use App\Enums\SupportedThemes;
 use App\Http\Response;
 use App\Http\ServerRequest;
-use Doctrine\ORM\EntityManagerInterface;
 use Psr\Http\Message\ResponseInterface;
 
 final class ThemeAction
 {
-    public function __construct(
-        private readonly EntityManagerInterface $em
-    ) {
-    }
+    use EntityManagerAwareTrait;
 
     public function __invoke(
         ServerRequest $request,

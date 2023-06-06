@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Sync\Task;
 
-use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Entity;
 use App\Environment;
 use App\Service\AzuraCastCentral;
@@ -16,10 +15,8 @@ final class CheckUpdatesTask extends AbstractTask
 
     public function __construct(
         private readonly Entity\Repository\SettingsRepository $settingsRepo,
-        private readonly AzuraCastCentral $azuracastCentral,
-        ReloadableEntityManagerInterface $em,
+        private readonly AzuraCastCentral $azuracastCentral
     ) {
-        parent::__construct($em);
     }
 
     public static function getSchedulePattern(): string

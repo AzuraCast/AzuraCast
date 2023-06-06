@@ -4,18 +4,19 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Stations\Reports;
 
+use App\Container\EntityManagerAwareTrait;
 use App\Entity;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Paginator;
 use Doctrine\ORM\AbstractQuery;
-use Doctrine\ORM\EntityManagerInterface;
 use Psr\Http\Message\ResponseInterface;
 
 final class RequestsController
 {
+    use EntityManagerAwareTrait;
+
     public function __construct(
-        private readonly EntityManagerInterface $em,
         private readonly Entity\Repository\StationRequestRepository $requestRepo
     ) {
     }

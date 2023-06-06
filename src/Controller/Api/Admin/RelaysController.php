@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Api\Admin;
 
 use App\Cache\AzuraRelayCache;
+use App\Container\EntityManagerAwareTrait;
 use App\Entity;
 use App\Enums\StationPermissions;
 use App\Http\Response;
@@ -12,7 +13,6 @@ use App\Http\ServerRequest;
 use App\Radio\Adapters;
 use App\Radio\Enums\FrontendAdapters;
 use App\Radio\Enums\RemoteAdapters;
-use Doctrine\ORM\EntityManagerInterface;
 use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 
@@ -37,8 +37,9 @@ use Psr\Http\Message\ResponseInterface;
 ]
 final class RelaysController
 {
+    use EntityManagerAwareTrait;
+
     public function __construct(
-        private readonly EntityManagerInterface $em,
         private readonly Adapters $adapters,
         private readonly Entity\Repository\SettingsRepository $settingsRepo,
         private readonly AzuraRelayCache $azuraRelayCache

@@ -16,7 +16,6 @@ use App\Http\ServerRequest;
 use App\OpenApi;
 use App\Radio\AutoDJ\Scheduler;
 use Carbon\CarbonImmutable;
-use Doctrine\ORM\EntityManagerInterface;
 use OpenApi\Attributes as OA;
 use Psr\Cache\CacheItemPoolInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -48,12 +47,11 @@ use Psr\Http\Message\ResponseInterface;
 final class ListAction extends AbstractSearchableListAction
 {
     public function __construct(
-        EntityManagerInterface $em,
+        private readonly Scheduler $scheduler,
         SongApiGenerator $songApiGenerator,
         CacheItemPoolInterface $psr6Cache,
-        private readonly Scheduler $scheduler
     ) {
-        parent::__construct($em, $songApiGenerator, $psr6Cache);
+        parent::__construct($songApiGenerator, $psr6Cache);
     }
 
     public function __invoke(

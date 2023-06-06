@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Controller\Api\Admin\Stations;
 
 use App\Controller\Api\Admin\StationsController;
-use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Entity;
 use App\Environment;
 use App\Http\Response;
@@ -36,7 +35,6 @@ final class CloneAction extends StationsController
         Entity\Repository\StorageLocationRepository $storageLocationRepo,
         Entity\Repository\StationQueueRepository $queueRepo,
         Configuration $configuration,
-        ReloadableEntityManagerInterface $reloadableEm,
         Serializer $serializer,
         ValidatorInterface $validator,
         private readonly Environment $environment
@@ -46,7 +44,6 @@ final class CloneAction extends StationsController
             $storageLocationRepo,
             $queueRepo,
             $configuration,
-            $reloadableEm,
             $serializer,
             $validator
         );
@@ -152,25 +149,25 @@ final class CloneAction extends StationsController
                 }
             };
 
-            $record = $this->reloadableEm->refetch($record);
+            $record = $this->em->refetch($record);
             $this->cloneCollection($record->getPlaylists(), $newStation, $copier, $afterCloning);
         }
 
         if (in_array(self::CLONE_MOUNTS, $toClone, true)) {
-            $record = $this->reloadableEm->refetch($record);
+            $record = $this->em->refetch($record);
             $this->cloneCollection($record->getMounts(), $newStation, $copier);
         } else {
-            $newStation = $this->reloadableEm->refetch($newStation);
+            $newStation = $this->em->refetch($newStation);
             $this->stationRepo->resetMounts($newStation);
         }
 
         if (in_array(self::CLONE_REMOTES, $toClone, true)) {
-            $record = $this->reloadableEm->refetch($record);
+            $record = $this->em->refetch($record);
             $this->cloneCollection($record->getRemotes(), $newStation, $copier);
         }
 
         if (in_array(self::CLONE_STREAMERS, $toClone, true)) {
-            $record = $this->reloadableEm->refetch($record);
+            $record = $this->em->refetch($record);
 
             $afterCloning = function (
                 Entity\StationStreamer $oldStreamer,
@@ -192,17 +189,17 @@ final class CloneAction extends StationsController
         }
 
         if (in_array(self::CLONE_PERMISSIONS, $toClone, true)) {
-            $record = $this->reloadableEm->refetch($record);
+            $record = $this->em->refetch($record);
             $this->cloneCollection($record->getPermissions(), $newStation, $copier);
         }
 
         if (in_array(self::CLONE_WEBHOOKS, $toClone, true)) {
-            $record = $this->reloadableEm->refetch($record);
+            $record = $this->em->refetch($record);
             $this->cloneCollection($record->getWebhooks(), $newStation, $copier);
         }
 
         // Clear the EntityManager for later functions.
-        $newStation = $this->reloadableEm->refetch($newStation);
+        $newStation = $this->em->refetch($newStation);
 
         $this->configuration->assignRadioPorts($newStation, true);
 
@@ -225,7 +222,7 @@ final class CloneAction extends StationsController
         DeepCopy\DeepCopy $copier,
         ?callable $afterCloning = null
     ): void {
-        $newStation = $this->reloadableEm->refetch($newStation);
+        $newStation = $this->em->refetch($newStation);
 
         foreach ($collection as $oldRecord) {
             /** @var Entity\Interfaces\StationCloneAwareInterface $newRecord */

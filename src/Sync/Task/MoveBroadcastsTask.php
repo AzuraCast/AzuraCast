@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Sync\Task;
 
-use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Entity;
 use Symfony\Component\Finder\Finder;
 use Throwable;
@@ -18,10 +17,8 @@ final class MoveBroadcastsTask extends AbstractTask
 
     public function __construct(
         private readonly Entity\Repository\StationStreamerBroadcastRepository $broadcastRepo,
-        private readonly Entity\Repository\StorageLocationRepository $storageLocationRepo,
-        ReloadableEntityManagerInterface $em,
+        private readonly Entity\Repository\StorageLocationRepository $storageLocationRepo
     ) {
-        parent::__construct($em);
     }
 
     public function run(bool $force = false): void

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Sync\Task;
 
-use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Entity;
 use App\Flysystem\Attributes\FileAttributes;
 use App\Flysystem\ExtendedFilesystemInterface;
@@ -30,10 +29,8 @@ final class CheckMediaTask extends AbstractTask
         private readonly Entity\Repository\UnprocessableMediaRepository $unprocessableMediaRepo,
         private readonly Entity\Repository\StorageLocationRepository $storageLocationRepo,
         private readonly MessageBus $messageBus,
-        private readonly QueueManagerInterface $queueManager,
-        ReloadableEntityManagerInterface $em,
+        private readonly QueueManagerInterface $queueManager
     ) {
-        parent::__construct($em);
     }
 
     public static function getSchedulePattern(): string

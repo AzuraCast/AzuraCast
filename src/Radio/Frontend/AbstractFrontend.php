@@ -11,7 +11,6 @@ use App\Nginx\CustomUrls;
 use App\Radio\AbstractLocalAdapter;
 use App\Radio\Configuration;
 use App\Xml\Reader;
-use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use GuzzleHttp\Client;
 use InvalidArgumentException;
@@ -26,17 +25,16 @@ use Supervisor\SupervisorInterface;
 abstract class AbstractFrontend extends AbstractLocalAdapter
 {
     public function __construct(
-        Environment $environment,
-        EntityManagerInterface $em,
-        SupervisorInterface $supervisor,
-        EventDispatcherInterface $dispatcher,
-        Router $router,
         protected AdapterFactory $adapterFactory,
         protected Client $http_client,
         protected Entity\Repository\SettingsRepository $settingsRepo,
         protected Entity\Repository\StationMountRepository $stationMountRepo,
+        Environment $environment,
+        SupervisorInterface $supervisor,
+        EventDispatcherInterface $dispatcher,
+        Router $router
     ) {
-        parent::__construct($environment, $em, $supervisor, $dispatcher, $router);
+        parent::__construct($environment, $supervisor, $dispatcher, $router);
     }
 
     /**

@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Admin;
 
+use App\Container\EntityManagerAwareTrait;
 use App\Controller\Api\Traits\AcceptsDateRange;
 use App\Entity;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Paginator;
-use Doctrine\ORM\EntityManagerInterface;
 use Psr\Http\Message\ResponseInterface;
 
 use const JSON_PRETTY_PRINT;
@@ -17,11 +17,7 @@ use const JSON_PRETTY_PRINT;
 final class AuditLogAction
 {
     use AcceptsDateRange;
-
-    public function __construct(
-        protected EntityManagerInterface $em
-    ) {
-    }
+    use EntityManagerAwareTrait;
 
     public function __invoke(
         ServerRequest $request,

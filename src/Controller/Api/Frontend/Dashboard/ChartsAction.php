@@ -4,20 +4,21 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Frontend\Dashboard;
 
+use App\Container\EntityManagerAwareTrait;
 use App\Entity;
 use App\Enums\GlobalPermissions;
 use App\Enums\StationPermissions;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use Carbon\CarbonImmutable;
-use Doctrine\ORM\EntityManagerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\SimpleCache\CacheInterface;
 
 final class ChartsAction
 {
+    use EntityManagerAwareTrait;
+
     public function __construct(
-        private readonly EntityManagerInterface $em,
         private readonly CacheInterface $cache,
         private readonly Entity\Repository\SettingsRepository $settingsRepo
     ) {

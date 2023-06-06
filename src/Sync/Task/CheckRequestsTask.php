@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Sync\Task;
 
-use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Entity;
 use App\Event\Radio\AnnotateNextSong;
 use App\Radio\Adapters;
@@ -17,10 +16,8 @@ final class CheckRequestsTask extends AbstractTask
     public function __construct(
         private readonly Entity\Repository\StationRequestRepository $requestRepo,
         private readonly Adapters $adapters,
-        private readonly EventDispatcherInterface $dispatcher,
-        ReloadableEntityManagerInterface $em
+        private readonly EventDispatcherInterface $dispatcher
     ) {
-        parent::__construct($em);
     }
 
     public static function getSchedulePattern(): string

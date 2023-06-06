@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace App\Console\Command\Sync;
 
 use App\Cache\NowPlayingCache;
+use App\Container\EntityManagerAwareTrait;
 use App\Entity\Repository\SettingsRepository;
 use App\Environment;
 use App\Lock\LockFactory;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -23,14 +23,15 @@ use function random_int;
 )]
 final class NowPlayingCommand extends AbstractSyncCommand
 {
+    use EntityManagerAwareTrait;
+
     public final const MAX_CONCURRENT_PROCESSES = 5;
 
     public function __construct(
-        LockFactory $lockFactory,
-        Environment $environment,
-        private readonly EntityManagerInterface $em,
         private readonly SettingsRepository $settingsRepo,
-        private readonly NowPlayingCache $nowPlayingCache
+        private readonly NowPlayingCache $nowPlayingCache,
+        LockFactory $lockFactory,
+        Environment $environment
     ) {
         parent::__construct($lockFactory, $environment);
     }

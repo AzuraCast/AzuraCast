@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Sync\Task;
 
 use App\Doctrine\ReadWriteBatchIteratorAggregate;
-use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Entity;
 use App\Radio\Quota;
 use Brick\Math\BigInteger;
@@ -16,10 +15,8 @@ use League\Flysystem\StorageAttributes;
 final class UpdateStorageLocationSizesTask extends AbstractTask
 {
     public function __construct(
-        private readonly Entity\Repository\StorageLocationRepository $storageLocationRepo,
-        ReloadableEntityManagerInterface $em
+        private readonly Entity\Repository\StorageLocationRepository $storageLocationRepo
     ) {
-        parent::__construct($em);
     }
 
     public static function getSchedulePattern(): string

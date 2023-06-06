@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Stations\Files;
 
+use App\Container\EntityManagerAwareTrait;
 use App\Container\LoggerAwareTrait;
 use App\Entity;
 use App\Exception\CannotProcessMediaException;
@@ -12,15 +13,14 @@ use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Media\MediaProcessor;
 use App\Service\Flow;
-use Doctrine\ORM\EntityManagerInterface;
 use Psr\Http\Message\ResponseInterface;
 
 final class FlowUploadAction
 {
     use LoggerAwareTrait;
+    use EntityManagerAwareTrait;
 
     public function __construct(
-        private readonly EntityManagerInterface $em,
         private readonly MediaProcessor $mediaProcessor,
         private readonly Entity\Repository\StationPlaylistMediaRepository $spmRepo,
     ) {

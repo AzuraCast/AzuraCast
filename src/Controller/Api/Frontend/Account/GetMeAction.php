@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Frontend\Account;
 
+use App\Container\EntityManagerAwareTrait;
 use App\Controller\Api\Admin\UsersController;
-use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Entity\Interfaces\EntityGroupsInterface;
 use App\Http\Response;
 use App\Http\ServerRequest;
@@ -17,13 +17,14 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 final class GetMeAction extends UsersController
 {
+    use EntityManagerAwareTrait;
+
     public function __construct(
-        ReloadableEntityManagerInterface $em,
+        private readonly Avatar $avatar,
         Serializer $serializer,
         ValidatorInterface $validator,
-        private readonly Avatar $avatar,
     ) {
-        parent::__construct($em, $serializer, $validator);
+        parent::__construct($serializer, $validator);
     }
 
     public function __invoke(

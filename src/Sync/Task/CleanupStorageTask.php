@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Sync\Task;
 
-use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Entity;
 use Exception;
 use League\Flysystem\StorageAttributes;
@@ -15,9 +14,7 @@ final class CleanupStorageTask extends AbstractTask
 {
     public function __construct(
         private readonly Entity\Repository\StorageLocationRepository $storageLocationRepo,
-        ReloadableEntityManagerInterface $em,
     ) {
-        parent::__construct($em);
     }
 
     public static function getSchedulePattern(): string

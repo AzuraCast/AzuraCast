@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Controller\Api\Stations;
 
 use App\Controller\Api\AbstractApiCrudController;
-use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Entity;
 use App\Enums\StationPermissions;
 use App\Flysystem\StationFilesystems;
@@ -150,13 +149,12 @@ final class PodcastsController extends AbstractApiCrudController
     protected string $resourceRouteName = 'api:stations:podcast';
 
     public function __construct(
-        ReloadableEntityManagerInterface $em,
+        private readonly Entity\Repository\PodcastRepository $podcastRepository,
+        private readonly StationFilesystems $stationFilesystems,
         Serializer $serializer,
         ValidatorInterface $validator,
-        private readonly Entity\Repository\PodcastRepository $podcastRepository,
-        private readonly StationFilesystems $stationFilesystems
     ) {
-        parent::__construct($em, $serializer, $validator);
+        parent::__construct($serializer, $validator);
     }
 
     public function listAction(

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Controller\Api\Stations;
 
 use App\Controller\Api\Traits\CanSortResults;
-use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Entity;
 use App\Http\Response;
 use App\Http\Router;
@@ -149,13 +148,12 @@ final class MountsController extends AbstractStationApiCrudController
     protected string $resourceRouteName = 'api:stations:mount';
 
     public function __construct(
-        ReloadableEntityManagerInterface $em,
         Serializer $serializer,
         ValidatorInterface $validator,
         private readonly Entity\Repository\StationMountRepository $mountRepo,
         private readonly Adapters $adapters,
     ) {
-        parent::__construct($em, $serializer, $validator);
+        parent::__construct($serializer, $validator);
     }
 
     public function listAction(

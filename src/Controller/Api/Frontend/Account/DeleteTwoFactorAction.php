@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Frontend\Account;
 
-use App\Doctrine\ReloadableEntityManagerInterface;
+use App\Container\EntityManagerAwareTrait;
 use App\Entity;
 use App\Http\Response;
 use App\Http\ServerRequest;
@@ -12,10 +12,7 @@ use Psr\Http\Message\ResponseInterface;
 
 final class DeleteTwoFactorAction
 {
-    public function __construct(
-        private readonly ReloadableEntityManagerInterface $em,
-    ) {
-    }
+    use EntityManagerAwareTrait;
 
     public function __invoke(
         ServerRequest $request,

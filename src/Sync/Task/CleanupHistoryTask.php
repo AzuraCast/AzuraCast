@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Sync\Task;
 
-use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Entity;
 
 final class CleanupHistoryTask extends AbstractTask
@@ -14,9 +13,7 @@ final class CleanupHistoryTask extends AbstractTask
         private readonly Entity\Repository\SongHistoryRepository $historyRepo,
         private readonly Entity\Repository\StationQueueRepository $queueRepo,
         private readonly Entity\Repository\ListenerRepository $listenerRepo,
-        ReloadableEntityManagerInterface $em,
     ) {
-        parent::__construct($em);
     }
 
     public static function getSchedulePattern(): string

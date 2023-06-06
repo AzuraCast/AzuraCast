@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Admin;
 
-use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Entity;
 use App\Http\Response;
 use App\Http\ServerRequest;
@@ -137,11 +136,10 @@ final class StorageLocationsController extends AbstractAdminApiCrudController
 
     public function __construct(
         private readonly Entity\Repository\StorageLocationRepository $storageLocationRepo,
-        ReloadableEntityManagerInterface $em,
         Serializer $serializer,
         ValidatorInterface $validator
     ) {
-        parent::__construct($em, $serializer, $validator);
+        parent::__construct($serializer, $validator);
     }
 
     public function listAction(

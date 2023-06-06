@@ -4,19 +4,20 @@ declare(strict_types=1);
 
 namespace App\Controller\Frontend\Account;
 
+use App\Container\EntityManagerAwareTrait;
 use App\Entity;
 use App\Http\Response;
 use App\Http\ServerRequest;
-use Doctrine\ORM\EntityManagerInterface;
 use InvalidArgumentException;
 use Psr\Http\Message\ResponseInterface;
 use Throwable;
 
 final class RecoverAction
 {
+    use EntityManagerAwareTrait;
+
     public function __construct(
         private readonly Entity\Repository\UserLoginTokenRepository $loginTokenRepo,
-        private readonly EntityManagerInterface $em
     ) {
     }
 

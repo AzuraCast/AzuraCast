@@ -4,19 +4,15 @@ declare(strict_types=1);
 
 namespace App\Sync\Task;
 
+use App\Container\EntityManagerAwareTrait;
 use App\Container\LoggerAwareTrait;
 use App\Doctrine\ReadWriteBatchIteratorAggregate;
-use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Entity;
 
 abstract class AbstractTask implements ScheduledTaskInterface
 {
     use LoggerAwareTrait;
-
-    public function __construct(
-        protected ReloadableEntityManagerInterface $em
-    ) {
-    }
+    use EntityManagerAwareTrait;
 
     public static function isLongTask(): bool
     {

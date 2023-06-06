@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace App\Radio\AutoDJ;
 
+use App\Container\EntityManagerAwareTrait;
 use App\Container\LoggerAwareTrait;
 use App\Entity;
 use App\Event\Radio\BuildQueue;
 use Carbon\CarbonImmutable;
 use Carbon\CarbonInterface;
-use Doctrine\ORM\EntityManagerInterface;
 use Monolog\Handler\TestHandler;
 use Monolog\LogRecord;
 use Psr\EventDispatcher\EventDispatcherInterface;
@@ -22,9 +22,9 @@ use Psr\SimpleCache\CacheInterface;
 final class Queue
 {
     use LoggerAwareTrait;
+    use EntityManagerAwareTrait;
 
     public function __construct(
-        private readonly EntityManagerInterface $em,
         private readonly CacheInterface $cache,
         private readonly EventDispatcherInterface $dispatcher,
         private readonly Entity\Repository\StationQueueRepository $queueRepo,

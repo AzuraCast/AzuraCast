@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Controller\Api\Stations;
 
 use App\Controller\Api\Traits\CanSortResults;
-use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Entity;
 use App\Http\Response;
 use App\Http\ServerRequest;
@@ -152,14 +151,13 @@ final class StreamersController extends AbstractScheduledEntityController
     protected string $resourceRouteName = 'api:stations:streamer';
 
     public function __construct(
+        private readonly Entity\Repository\StationStreamerRepository $streamerRepo,
         Entity\Repository\StationScheduleRepository $scheduleRepo,
         Scheduler $scheduler,
-        ReloadableEntityManagerInterface $em,
         Serializer $serializer,
-        ValidatorInterface $validator,
-        private readonly Entity\Repository\StationStreamerRepository $streamerRepo,
+        ValidatorInterface $validator
     ) {
-        parent::__construct($scheduleRepo, $scheduler, $em, $serializer, $validator);
+        parent::__construct($scheduleRepo, $scheduler, $serializer, $validator);
     }
 
     public function listAction(

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Stations;
 
-use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Entity;
 use App\Exception\ValidationException;
 use App\Flysystem\StationFilesystems;
@@ -159,11 +158,10 @@ final class FilesController extends AbstractStationApiCrudController
         private readonly Entity\Repository\StationPlaylistMediaRepository $playlistMediaRepo,
         private readonly MediaProcessor $mediaProcessor,
         private readonly StationFilesystems $stationFilesystems,
-        ReloadableEntityManagerInterface $em,
         Serializer $serializer,
         ValidatorInterface $validator
     ) {
-        parent::__construct($em, $serializer, $validator);
+        parent::__construct($serializer, $validator);
     }
 
     public function listAction(

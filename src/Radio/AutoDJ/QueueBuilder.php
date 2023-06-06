@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace App\Radio\AutoDJ;
 
+use App\Container\EntityManagerAwareTrait;
 use App\Container\LoggerAwareTrait;
 use App\Entity;
 use App\Event\Radio\BuildQueue;
 use App\Radio\PlaylistParser;
 use Carbon\CarbonInterface;
-use Doctrine\ORM\EntityManagerInterface;
 use Psr\SimpleCache\CacheInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -19,9 +19,9 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 final class QueueBuilder implements EventSubscriberInterface
 {
     use LoggerAwareTrait;
+    use EntityManagerAwareTrait;
 
     public function __construct(
-        private readonly EntityManagerInterface $em,
         private readonly Scheduler $scheduler,
         private readonly DuplicatePrevention $duplicatePrevention,
         private readonly CacheInterface $cache,

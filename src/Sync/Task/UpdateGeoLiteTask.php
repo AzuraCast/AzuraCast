@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Sync\Task;
 
-use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Entity;
 use App\Service\IpGeolocator\GeoLite;
 use Exception;
@@ -19,10 +18,8 @@ final class UpdateGeoLiteTask extends AbstractTask
 
     public function __construct(
         private readonly Client $httpClient,
-        private readonly Entity\Repository\SettingsRepository $settingsRepo,
-        ReloadableEntityManagerInterface $em
+        private readonly Entity\Repository\SettingsRepository $settingsRepo
     ) {
-        parent::__construct($em);
     }
 
     public static function getSchedulePattern(): string

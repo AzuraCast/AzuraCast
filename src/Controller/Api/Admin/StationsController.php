@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Controller\Api\Admin;
 
 use App\Controller\Api\Traits\CanSortResults;
-use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Entity;
 use App\Exception\ValidationException;
 use App\Http\Response;
@@ -147,11 +146,10 @@ class StationsController extends AbstractAdminApiCrudController
         protected Entity\Repository\StorageLocationRepository $storageLocationRepo,
         protected Entity\Repository\StationQueueRepository $queueRepo,
         protected Configuration $configuration,
-        protected ReloadableEntityManagerInterface $reloadableEm,
         Serializer $serializer,
         ValidatorInterface $validator
     ) {
-        parent::__construct($reloadableEm, $serializer, $validator);
+        parent::__construct($serializer, $validator);
     }
 
     public function listAction(

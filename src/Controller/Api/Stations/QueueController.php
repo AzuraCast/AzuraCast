@@ -98,14 +98,13 @@ final class QueueController extends AbstractStationApiCrudController
     protected string $resourceRouteName = 'api:stations:queue:record';
 
     public function __construct(
-        App\Doctrine\ReloadableEntityManagerInterface $em,
-        Serializer $serializer,
-        ValidatorInterface $validator,
         private readonly Entity\ApiGenerator\StationQueueApiGenerator $queueApiGenerator,
         private readonly Entity\Repository\StationQueueRepository $queueRepo,
         private readonly Queue $queue,
+        Serializer $serializer,
+        ValidatorInterface $validator
     ) {
-        parent::__construct($em, $serializer, $validator);
+        parent::__construct($serializer, $validator);
     }
 
     public function listAction(

@@ -4,19 +4,20 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Stations\BulkMedia;
 
+use App\Container\EntityManagerAwareTrait;
 use App\Entity\Repository\CustomFieldRepository;
 use App\Entity\Repository\StationPlaylistRepository;
 use App\Http\Response;
 use App\Http\ServerRequest;
-use Doctrine\ORM\EntityManagerInterface;
 use League\Csv\Writer;
 use Psr\Http\Message\ResponseInterface;
 use RuntimeException;
 
 final class DownloadAction
 {
+    use EntityManagerAwareTrait;
+
     public function __construct(
-        private readonly EntityManagerInterface $em,
         private readonly CustomFieldRepository $customFieldRepo,
         private readonly StationPlaylistRepository $playlistRepo,
     ) {

@@ -281,7 +281,7 @@ return [
     // Symfony Serializer
     Symfony\Component\Serializer\Serializer::class => static function (
         Doctrine\Common\Annotations\Reader $reader,
-        Doctrine\ORM\EntityManagerInterface $em
+        App\Doctrine\ReloadableEntityManagerInterface $em,
     ) {
         $classMetaFactory = new Symfony\Component\Serializer\Mapping\Factory\ClassMetadataFactory(
             new Symfony\Component\Serializer\Mapping\Loader\AnnotationLoader($reader)

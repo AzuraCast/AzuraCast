@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Stations\Files;
 
-use App\Doctrine\ReloadableEntityManagerInterface;
+use App\Container\EntityManagerAwareTrait;
 use App\Entity;
 use App\Event\Radio\AnnotateNextSong;
 use App\Flysystem\ExtendedFilesystemInterface;
@@ -29,9 +29,10 @@ use Throwable;
 
 final class BatchAction
 {
+    use EntityManagerAwareTrait;
+
     public function __construct(
         private readonly BatchUtilities $batchUtilities,
-        private readonly ReloadableEntityManagerInterface $em,
         private readonly MessageBus $messageBus,
         private readonly Adapters $adapters,
         private readonly EventDispatcherInterface $eventDispatcher,

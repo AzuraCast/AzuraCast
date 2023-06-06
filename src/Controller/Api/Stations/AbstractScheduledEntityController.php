@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Controller\Api\Stations;
 
 use App\Controller\Api\Traits\HasScheduleDisplay;
-use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Entity;
 use App\Exception\ValidationException;
 use App\Http\Response;
@@ -28,11 +27,10 @@ abstract class AbstractScheduledEntityController extends AbstractStationApiCrudC
     public function __construct(
         protected Entity\Repository\StationScheduleRepository $scheduleRepo,
         protected Scheduler $scheduler,
-        ReloadableEntityManagerInterface $em,
         Serializer $serializer,
         ValidatorInterface $validator,
     ) {
-        parent::__construct($em, $serializer, $validator);
+        parent::__construct($serializer, $validator);
     }
 
     protected function renderEvents(

@@ -4,21 +4,17 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Internal;
 
+use App\Container\EntityManagerAwareTrait;
 use App\Container\LoggerAwareTrait;
 use App\Entity\SftpUser;
 use App\Http\Response;
 use App\Http\ServerRequest;
-use Doctrine\ORM\EntityManagerInterface;
 use Psr\Http\Message\ResponseInterface;
 
 final class SftpAuthAction
 {
     use LoggerAwareTrait;
-
-    public function __construct(
-        private readonly EntityManagerInterface $em
-    ) {
-    }
+    use EntityManagerAwareTrait;
 
     public function __invoke(
         ServerRequest $request,

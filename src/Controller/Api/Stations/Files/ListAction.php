@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Stations\Files;
 
+use App\Container\EntityManagerAwareTrait;
 use App\Controller\Api\Traits\CanSortResults;
 use App\Entity;
 use App\Flysystem\StationFilesystems;
@@ -14,7 +15,6 @@ use App\Media\MimeType;
 use App\Paginator;
 use App\Utilities;
 use Doctrine\Common\Collections\Criteria;
-use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
 use League\Flysystem\StorageAttributes;
 use Psr\Http\Message\ResponseInterface;
@@ -24,9 +24,9 @@ use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 final class ListAction
 {
     use CanSortResults;
+    use EntityManagerAwareTrait;
 
     public function __construct(
-        private readonly EntityManagerInterface $em,
         private readonly CacheInterface $cache,
         private readonly StationFilesystems $stationFilesystems
     ) {

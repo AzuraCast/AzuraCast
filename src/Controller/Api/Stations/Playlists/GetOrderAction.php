@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Stations\Playlists;
 
-use App\Doctrine\ReloadableEntityManagerInterface;
+use App\Container\EntityManagerAwareTrait;
 use App\Entity\Enums\PlaylistOrders;
 use App\Entity\Enums\PlaylistSources;
 use App\Entity\Repository\StationPlaylistRepository;
@@ -15,9 +15,10 @@ use Psr\Http\Message\ResponseInterface;
 
 final class GetOrderAction
 {
+    use EntityManagerAwareTrait;
+
     public function __construct(
         private readonly StationPlaylistRepository $playlistRepo,
-        private readonly ReloadableEntityManagerInterface $em,
     ) {
     }
 

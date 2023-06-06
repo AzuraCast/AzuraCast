@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Api\Stations;
 
 use App;
+use App\Container\EntityManagerAwareTrait;
 use App\Controller\Api\Traits\AcceptsDateRange;
 use App\Doctrine\ReadOnlyBatchIteratorAggregate;
 use App\Entity;
@@ -13,7 +14,6 @@ use App\Http\Response;
 use App\Http\ServerRequest;
 use App\OpenApi;
 use Carbon\CarbonImmutable;
-use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Query;
 use League\Csv\Writer;
 use OpenApi\Attributes as OA;
@@ -62,9 +62,9 @@ use RuntimeException;
 final class HistoryController
 {
     use AcceptsDateRange;
+    use EntityManagerAwareTrait;
 
     public function __construct(
-        private readonly EntityManagerInterface $em,
         private readonly Entity\ApiGenerator\SongHistoryApiGenerator $songHistoryApiGenerator,
         private readonly Environment $environment
     ) {

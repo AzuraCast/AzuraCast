@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Stations\Art;
 
+use App\Container\EntityManagerAwareTrait;
 use App\Entity;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\OpenApi;
 use App\Service\Flow;
-use Doctrine\ORM\EntityManagerInterface;
 use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 
@@ -42,9 +42,10 @@ use Psr\Http\Message\ResponseInterface;
 )]
 final class PostArtAction
 {
+    use EntityManagerAwareTrait;
+
     public function __construct(
-        private readonly Entity\Repository\StationMediaRepository $mediaRepo,
-        private readonly EntityManagerInterface $em,
+        private readonly Entity\Repository\StationMediaRepository $mediaRepo
     ) {
     }
 

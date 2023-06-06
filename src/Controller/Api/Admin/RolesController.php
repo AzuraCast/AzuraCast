@@ -6,7 +6,6 @@ namespace App\Controller\Api\Admin;
 
 use App\Acl;
 use App\Controller\Api\Traits\CanSortResults;
-use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Entity;
 use App\Http\Response;
 use App\Http\ServerRequest;
@@ -142,13 +141,12 @@ final class RolesController extends AbstractAdminApiCrudController
     private readonly Entity\Role $superAdminRole;
 
     public function __construct(
-        ReloadableEntityManagerInterface $em,
         Serializer $serializer,
         ValidatorInterface $validator,
         Entity\Repository\RolePermissionRepository $permissionRepo,
         private readonly Acl $acl,
     ) {
-        parent::__construct($em, $serializer, $validator);
+        parent::__construct($serializer, $validator);
 
         $this->superAdminRole = $permissionRepo->ensureSuperAdministratorRole();
     }

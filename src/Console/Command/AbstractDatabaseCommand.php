@@ -5,17 +5,17 @@ declare(strict_types=1);
 namespace App\Console\Command;
 
 use App\Console\Command\Traits\PassThruProcess;
+use App\Container\EntityManagerAwareTrait;
 use App\Environment;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
 abstract class AbstractDatabaseCommand extends CommandAbstract
 {
     use PassThruProcess;
+    use EntityManagerAwareTrait;
 
     public function __construct(
-        protected Environment $environment,
-        protected EntityManagerInterface $em
+        protected Environment $environment
     ) {
         parent::__construct();
     }

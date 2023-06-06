@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Sync\NowPlaying\Task;
 
 use App\Cache\NowPlayingCache;
+use App\Container\EntityManagerAwareTrait;
 use App\Container\LoggerAwareTrait;
-use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Entity\Api\NowPlaying\NowPlaying;
 use App\Entity\ApiGenerator\NowPlayingApiGenerator;
 use App\Entity\Repository\ListenerRepository;
@@ -30,6 +30,7 @@ use Symfony\Component\Messenger\MessageBus;
 final class NowPlayingTask implements NowPlayingTaskInterface, EventSubscriberInterface
 {
     use LoggerAwareTrait;
+    use EntityManagerAwareTrait;
 
     public function __construct(
         private readonly Adapters $adapters,
@@ -40,7 +41,6 @@ final class NowPlayingTask implements NowPlayingTaskInterface, EventSubscriberIn
         private readonly ListenerRepository $listenerRepo,
         private readonly SettingsRepository $settingsRepo,
         private readonly NowPlayingApiGenerator $nowPlayingApiGenerator,
-        private readonly ReloadableEntityManagerInterface $em,
         private readonly HlsListeners $hlsListeners,
     ) {
     }

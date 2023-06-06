@@ -4,21 +4,22 @@ declare(strict_types=1);
 
 namespace App\Controller\Stations;
 
+use App\Container\EntityManagerAwareTrait;
 use App\Enums\StationPermissions;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Radio\Adapters;
 use App\VueComponent\NowPlayingComponent;
 use App\VueComponent\StationFormComponent;
-use Doctrine\ORM\EntityManagerInterface;
 use Psr\Http\Message\ResponseInterface;
 
 final class ProfileController
 {
+    use EntityManagerAwareTrait;
+
     private const CSRF_NAMESPACE = 'stations_profile';
 
     public function __construct(
-        private readonly EntityManagerInterface $em,
         private readonly StationFormComponent $stationFormComponent,
         private readonly NowPlayingComponent $nowPlayingComponent,
         private readonly Adapters $adapters,

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Stations;
 
+use App\Container\EntityManagerAwareTrait;
 use App\Controller\Api\Traits\AcceptsDateRange;
 use App\Entity;
 use App\Http\Response;
@@ -11,7 +12,6 @@ use App\Http\ServerRequest;
 use App\OpenApi;
 use Carbon\CarbonImmutable;
 use Doctrine\ORM\AbstractQuery;
-use Doctrine\ORM\EntityManagerInterface;
 use League\Csv\Writer;
 use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
@@ -45,9 +45,9 @@ use RuntimeException;
 final class ListenersAction
 {
     use AcceptsDateRange;
+    use EntityManagerAwareTrait;
 
     public function __construct(
-        private readonly EntityManagerInterface $em,
         private readonly Entity\Repository\ListenerRepository $listenerRepo,
         private readonly Entity\Repository\StationMountRepository $mountRepo,
         private readonly Entity\Repository\StationRemoteRepository $remoteRepo,

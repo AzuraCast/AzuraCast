@@ -4,17 +4,18 @@ declare(strict_types=1);
 
 namespace App\Media;
 
+use App\Container\EntityManagerAwareTrait;
 use App\Doctrine\ReadWriteBatchIteratorAggregate;
 use App\Entity;
 use App\Flysystem\ExtendedFilesystemInterface;
 use App\Utilities\File;
-use Doctrine\ORM\EntityManagerInterface;
 use Throwable;
 
 final class BatchUtilities
 {
+    use EntityManagerAwareTrait;
+
     public function __construct(
-        private readonly EntityManagerInterface $em,
         private readonly Entity\Repository\StationMediaRepository $mediaRepo,
         private readonly Entity\Repository\UnprocessableMediaRepository $unprocessableMediaRepo,
         private readonly Entity\Repository\StorageLocationRepository $storageLocationRepo,

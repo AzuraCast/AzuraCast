@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Stations\Playlists;
 
-use App\Doctrine\ReloadableEntityManagerInterface;
+use App\Container\EntityManagerAwareTrait;
 use App\Entity\Api\Error;
 use App\Entity\Api\StationPlaylistImportResult;
 use App\Entity\Repository\StationPlaylistMediaRepository;
@@ -20,10 +20,11 @@ use Symfony\Component\Filesystem\Path;
 
 final class ImportAction
 {
+    use EntityManagerAwareTrait;
+
     public function __construct(
         private readonly StationPlaylistRepository $playlistRepo,
-        private readonly StationPlaylistMediaRepository $spmRepo,
-        private readonly ReloadableEntityManagerInterface $em,
+        private readonly StationPlaylistMediaRepository $spmRepo
     ) {
     }
 

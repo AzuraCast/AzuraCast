@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Sync\Task;
 
-use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Entity;
 use App\Nginx\ConfigWriter;
 use App\Nginx\Nginx;
@@ -19,9 +18,7 @@ final class RotateLogsTask extends AbstractTask
         private readonly Entity\Repository\SettingsRepository $settingsRepo,
         private readonly Entity\Repository\StorageLocationRepository $storageLocationRepo,
         private readonly Nginx $nginx,
-        ReloadableEntityManagerInterface $em,
     ) {
-        parent::__construct($em);
     }
 
     public static function getSchedulePattern(): string

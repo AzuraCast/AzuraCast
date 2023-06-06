@@ -4,19 +4,16 @@ declare(strict_types=1);
 
 namespace App\Controller\Frontend\PublicPages;
 
+use App\Container\EntityManagerAwareTrait;
 use App\Exception\StationNotFoundException;
 use App\Exception\StationUnsupportedException;
 use App\Http\Response;
 use App\Http\ServerRequest;
-use Doctrine\ORM\EntityManagerInterface;
 use Psr\Http\Message\ResponseInterface;
 
 final class OnDemandAction
 {
-    public function __construct(
-        private readonly EntityManagerInterface $em,
-    ) {
-    }
+    use EntityManagerAwareTrait;
 
     public function __invoke(
         ServerRequest $request,

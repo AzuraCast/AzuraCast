@@ -2,13 +2,13 @@
 
 namespace App\Normalizer;
 
+use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Normalizer\Attributes\DeepNormalize;
 use App\Normalizer\Exception\NoGetterAvailableException;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Util\ClassUtils;
 use Doctrine\Inflector\Inflector;
 use Doctrine\Inflector\InflectorFactory;
-use Doctrine\ORM\EntityManagerInterface;
 use ReflectionClass;
 use ReflectionProperty;
 use Symfony\Component\Serializer\Mapping\Factory\ClassMetadataFactoryInterface;
@@ -23,7 +23,7 @@ final class DoctrineEntityNormalizer extends AbstractObjectNormalizer
     private readonly Inflector $inflector;
 
     public function __construct(
-        private readonly EntityManagerInterface $em,
+        private readonly ReloadableEntityManagerInterface $em,
         ClassMetadataFactoryInterface $classMetadataFactory = null,
         array $defaultContext = []
     ) {

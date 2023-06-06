@@ -4,18 +4,19 @@ declare(strict_types=1);
 
 namespace App\Controller\Stations;
 
+use App\Container\EntityManagerAwareTrait;
 use App\Entity;
 use App\Enums\StationFeatures;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Media\MimeType;
-use Doctrine\ORM\EntityManagerInterface;
 use Psr\Http\Message\ResponseInterface;
 
 final class FilesAction
 {
+    use EntityManagerAwareTrait;
+
     public function __construct(
-        private readonly EntityManagerInterface $em,
         private readonly Entity\Repository\CustomFieldRepository $customFieldRepo
     ) {
     }

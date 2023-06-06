@@ -4,15 +4,16 @@ declare(strict_types=1);
 
 namespace App\Radio\Backend\Liquidsoap\Command;
 
+use App\Container\EntityManagerAwareTrait;
 use App\Entity;
-use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use RuntimeException;
 
 final class FeedbackCommand extends AbstractCommand
 {
+    use EntityManagerAwareTrait;
+
     public function __construct(
-        private readonly EntityManagerInterface $em,
         private readonly Entity\Repository\StationQueueRepository $queueRepo,
         private readonly Entity\Repository\SongHistoryRepository $historyRepo
     ) {

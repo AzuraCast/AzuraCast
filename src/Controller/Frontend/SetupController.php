@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Frontend;
 
+use App\Container\EntityManagerAwareTrait;
 use App\Entity;
 use App\Environment;
 use App\Exception\NotLoggedInException;
@@ -12,7 +13,6 @@ use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Version;
 use App\VueComponent\StationFormComponent;
-use Doctrine\ORM\EntityManagerInterface;
 use InvalidArgumentException;
 use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -20,8 +20,9 @@ use Throwable;
 
 final class SetupController
 {
+    use EntityManagerAwareTrait;
+
     public function __construct(
-        private readonly EntityManagerInterface $em,
         private readonly Entity\Repository\SettingsRepository $settingsRepo,
         private readonly Environment $environment,
         private readonly Entity\Repository\RolePermissionRepository $permissionRepo,

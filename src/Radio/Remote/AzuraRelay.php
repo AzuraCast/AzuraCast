@@ -7,7 +7,6 @@ namespace App\Radio\Remote;
 use App\Cache\AzuraRelayCache;
 use App\Entity;
 use App\Environment;
-use Doctrine\ORM\EntityManagerInterface;
 use GuzzleHttp\Client;
 use GuzzleHttp\Promise\Create;
 use GuzzleHttp\Promise\PromiseInterface;
@@ -20,13 +19,12 @@ use NowPlaying\Result\Result;
 final class AzuraRelay extends AbstractRemote
 {
     public function __construct(
-        EntityManagerInterface $em,
+        private readonly AzuraRelayCache $azuraRelayCache,
         Entity\Repository\SettingsRepository $settingsRepo,
         Client $http_client,
         AdapterFactory $adapterFactory,
-        private readonly AzuraRelayCache $azuraRelayCache
     ) {
-        parent::__construct($em, $settingsRepo, $http_client, $adapterFactory);
+        parent::__construct($settingsRepo, $http_client, $adapterFactory);
     }
 
     public function getNowPlayingAsync(Entity\StationRemote $remote, bool $includeClients = false): PromiseInterface

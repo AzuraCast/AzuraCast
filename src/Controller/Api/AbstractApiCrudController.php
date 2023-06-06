@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Api;
 
-use App\Doctrine\ReloadableEntityManagerInterface;
+use App\Container\EntityManagerAwareTrait;
 use App\Entity\Interfaces\IdentifiableEntityInterface;
 use App\Exception\ValidationException;
 use App\Http\Response;
@@ -24,6 +24,8 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 abstract class AbstractApiCrudController
 {
+    use EntityManagerAwareTrait;
+
     /** @var class-string<TEntity> The fully-qualified (::class) class name of the entity being managed. */
     protected string $entityClass;
 
@@ -31,7 +33,6 @@ abstract class AbstractApiCrudController
     protected string $resourceRouteName;
 
     public function __construct(
-        protected ReloadableEntityManagerInterface $em,
         protected Serializer $serializer,
         protected ValidatorInterface $validator
     ) {

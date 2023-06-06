@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Sync\Task;
 
 use App\Console\Application;
-use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Entity;
 use App\Message;
 use Carbon\CarbonImmutable;
@@ -18,9 +17,7 @@ final class RunBackupTask extends AbstractTask
         private readonly MessageBus $messageBus,
         private readonly Application $console,
         private readonly Entity\Repository\SettingsRepository $settingsRepo,
-        ReloadableEntityManagerInterface $em,
     ) {
-        parent::__construct($em);
     }
 
     public static function getSchedulePattern(): string

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Radio\Backend\Liquidsoap;
 
+use App\Container\EntityManagerAwareTrait;
 use App\Container\LoggerAwareTrait;
-use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Entity;
 use App\Event\Radio\AnnotateNextSong;
 use App\Event\Radio\WriteLiquidsoapConfiguration;
@@ -22,10 +22,10 @@ use Throwable;
 final class PlaylistFileWriter implements EventSubscriberInterface
 {
     use LoggerAwareTrait;
+    use EntityManagerAwareTrait;
 
     public function __construct(
         private readonly EventDispatcherInterface $eventDispatcher,
-        private readonly ReloadableEntityManagerInterface $em,
         private readonly Filesystem $fsUtils,
         private readonly Liquidsoap $liquidsoap
     ) {

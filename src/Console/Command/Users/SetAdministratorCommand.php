@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Console\Command\Users;
 
 use App\Console\Command\CommandAbstract;
+use App\Container\EntityManagerAwareTrait;
 use App\Entity;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -19,8 +19,9 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 )]
 final class SetAdministratorCommand extends CommandAbstract
 {
+    use EntityManagerAwareTrait;
+
     public function __construct(
-        private readonly EntityManagerInterface $em,
         private readonly Entity\Repository\RolePermissionRepository $permsRepo,
     ) {
         parent::__construct();

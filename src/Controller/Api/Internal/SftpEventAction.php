@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Internal;
 
+use App\Container\EntityManagerAwareTrait;
 use App\Container\LoggerAwareTrait;
 use App\Entity\Repository\StorageLocationRepository;
 use App\Entity\SftpUser;
@@ -12,7 +13,6 @@ use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Media\BatchUtilities;
 use App\Message\AddNewMediaMessage;
-use Doctrine\ORM\EntityManagerInterface;
 use League\Flysystem\PathPrefixer;
 use LogicException;
 use Psr\Http\Message\ResponseInterface;
@@ -22,9 +22,9 @@ use Throwable;
 final class SftpEventAction
 {
     use LoggerAwareTrait;
+    use EntityManagerAwareTrait;
 
     public function __construct(
-        private readonly EntityManagerInterface $em,
         private readonly MessageBus $messageBus,
         private readonly BatchUtilities $batchUtilities,
         private readonly StorageLocationRepository $storageLocationRepo

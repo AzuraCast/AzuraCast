@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Controller\Api\Stations\Streamers;
 
 use App\Controller\Api\AbstractApiCrudController;
-use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Entity;
 use App\Flysystem\StationFilesystems;
 use App\Http\Response;
@@ -25,11 +24,10 @@ final class BroadcastsController extends AbstractApiCrudController
 
     public function __construct(
         private readonly StationFilesystems $stationFilesystems,
-        ReloadableEntityManagerInterface $em,
         Serializer $serializer,
         ValidatorInterface $validator
     ) {
-        parent::__construct($em, $serializer, $validator);
+        parent::__construct($serializer, $validator);
     }
 
     public function listAction(

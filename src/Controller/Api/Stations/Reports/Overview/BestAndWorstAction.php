@@ -8,17 +8,15 @@ use App\Entity;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Utilities\DateRange;
-use Doctrine\ORM\EntityManagerInterface;
 use Psr\Http\Message\ResponseInterface;
 
 final class BestAndWorstAction extends AbstractReportAction
 {
     public function __construct(
-        Entity\Repository\SettingsRepository $settingsRepo,
-        EntityManagerInterface $em,
-        private readonly Entity\ApiGenerator\SongApiGenerator $songApiGenerator
+        private readonly Entity\ApiGenerator\SongApiGenerator $songApiGenerator,
+        Entity\Repository\SettingsRepository $settingsRepo
     ) {
-        parent::__construct($settingsRepo, $em);
+        parent::__construct($settingsRepo);
     }
 
     public function __invoke(

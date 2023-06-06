@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Radio;
 
+use App\Container\EntityManagerAwareTrait;
 use App\Entity\Enums\PlaylistTypes;
 use App\Entity\Repository\StationPlaylistMediaRepository;
 use App\Entity\Station;
@@ -12,13 +13,14 @@ use App\Environment;
 use App\Exception;
 use App\Radio\Enums\BackendAdapters;
 use App\Radio\Enums\FrontendAdapters;
-use Doctrine\ORM\EntityManagerInterface;
 use RuntimeException;
 use Supervisor\Exception\SupervisorException;
 use Supervisor\SupervisorInterface;
 
 final class Configuration
 {
+    use EntityManagerAwareTrait;
+
     public const DEFAULT_PORT_MIN = 8000;
     public const DEFAULT_PORT_MAX = 8499;
     public const PROTECTED_PORTS = [
@@ -32,7 +34,6 @@ final class Configuration
     ];
 
     public function __construct(
-        private readonly EntityManagerInterface $em,
         private readonly Adapters $adapters,
         private readonly SupervisorInterface $supervisor,
         private readonly Environment $environment,

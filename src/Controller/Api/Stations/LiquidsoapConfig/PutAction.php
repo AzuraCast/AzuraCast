@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Stations\LiquidsoapConfig;
 
-use App\Doctrine\ReloadableEntityManagerInterface;
+use App\Container\EntityManagerAwareTrait;
 use App\Entity;
 use App\Event\Radio\WriteLiquidsoapConfiguration;
 use App\Http\Response;
@@ -16,8 +16,9 @@ use Throwable;
 
 final class PutAction
 {
+    use EntityManagerAwareTrait;
+
     public function __construct(
-        private readonly ReloadableEntityManagerInterface $em,
         private readonly EventDispatcherInterface $eventDispatcher,
         private readonly Liquidsoap $liquidsoap,
     ) {

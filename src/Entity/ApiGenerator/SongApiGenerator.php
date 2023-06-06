@@ -4,18 +4,19 @@ declare(strict_types=1);
 
 namespace App\Entity\ApiGenerator;
 
+use App\Container\EntityManagerAwareTrait;
 use App\Entity;
 use App\Http\Router;
 use App\Media\RemoteAlbumArt;
-use Doctrine\ORM\EntityManagerInterface;
 use GuzzleHttp\Psr7\UriResolver;
 use GuzzleHttp\Psr7\Utils;
 use Psr\Http\Message\UriInterface;
 
 final class SongApiGenerator
 {
+    use EntityManagerAwareTrait;
+
     public function __construct(
-        private readonly EntityManagerInterface $em,
         private readonly Router $router,
         private readonly Entity\Repository\StationRepository $stationRepo,
         private readonly Entity\Repository\CustomFieldRepository $customFieldRepo,

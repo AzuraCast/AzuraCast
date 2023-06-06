@@ -4,18 +4,18 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Stations\Reports\Overview;
 
+use App\Container\EntityManagerAwareTrait;
 use App\Controller\Api\Traits\AcceptsDateRange;
 use App\Entity\Enums\AnalyticsLevel;
 use App\Entity\Repository\SettingsRepository;
-use Doctrine\ORM\EntityManagerInterface;
 
 abstract class AbstractReportAction
 {
     use AcceptsDateRange;
+    use EntityManagerAwareTrait;
 
     public function __construct(
-        protected readonly SettingsRepository $settingsRepo,
-        protected readonly EntityManagerInterface $em,
+        protected readonly SettingsRepository $settingsRepo
     ) {
     }
 

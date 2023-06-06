@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Stations\BulkMedia;
 
+use App\Container\EntityManagerAwareTrait;
 use App\Entity;
 use App\Exception\ValidationException;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Service\Flow;
-use Doctrine\ORM\EntityManagerInterface;
 use League\Csv\Reader;
 use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
@@ -22,6 +22,8 @@ use function str_starts_with;
 
 final class UploadAction
 {
+    use EntityManagerAwareTrait;
+
     private const ALLOWED_MEDIA_FIELDS = [
         'title',
         'artist',
@@ -38,7 +40,6 @@ final class UploadAction
     ];
 
     public function __construct(
-        private readonly EntityManagerInterface $em,
         private readonly Entity\Repository\CustomFieldRepository $customFieldRepo,
         private readonly Entity\Repository\StationPlaylistRepository $playlistRepo,
         private readonly Entity\Repository\StationPlaylistMediaRepository $spmRepo,

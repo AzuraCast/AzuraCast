@@ -4,19 +4,20 @@ declare(strict_types=1);
 
 namespace App\Controller\Frontend\Account;
 
+use App\Container\EntityManagerAwareTrait;
 use App\Entity;
 use App\Exception\RateLimitExceededException;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\RateLimit;
-use Doctrine\ORM\EntityManagerInterface;
 use Mezzio\Session\SessionCookiePersistenceInterface;
 use Psr\Http\Message\ResponseInterface;
 
 final class LoginAction
 {
+    use EntityManagerAwareTrait;
+
     public function __construct(
-        private readonly EntityManagerInterface $em,
         private readonly RateLimit $rateLimit,
         private readonly Entity\Repository\SettingsRepository $settingsRepo
     ) {

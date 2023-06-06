@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace App\Validator\Constraints;
 
+use App\Container\EntityManagerAwareTrait;
 use Countable;
 use DateTimeInterface;
-use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Iterator;
 use IteratorAggregate;
@@ -36,10 +36,7 @@ use function is_object;
  */
 final class UniqueEntityValidator extends ConstraintValidator
 {
-    public function __construct(
-        private readonly EntityManagerInterface $em
-    ) {
-    }
+    use EntityManagerAwareTrait;
 
     public function validate(mixed $value, Constraint $constraint): void
     {

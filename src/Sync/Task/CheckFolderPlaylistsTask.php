@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Sync\Task;
 
-use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Entity;
 use App\Flysystem\ExtendedFilesystemInterface;
 use App\Flysystem\StationFilesystems;
@@ -14,10 +13,8 @@ final class CheckFolderPlaylistsTask extends AbstractTask
 {
     public function __construct(
         private readonly Entity\Repository\StationPlaylistMediaRepository $spmRepo,
-        private readonly StationFilesystems $stationFilesystems,
-        ReloadableEntityManagerInterface $em
+        private readonly StationFilesystems $stationFilesystems
     ) {
-        parent::__construct($em);
     }
 
     public static function getSchedulePattern(): string

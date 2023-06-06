@@ -8,19 +8,17 @@ use App\Entity;
 use App\Entity\Repository\SettingsRepository;
 use App\Http\Response;
 use App\Http\ServerRequest;
-use Doctrine\ORM\EntityManagerInterface;
 use Psr\Http\Message\ResponseInterface;
 
 final class ByStream extends AbstractReportAction
 {
     public function __construct(
-        SettingsRepository $settingsRepo,
-        EntityManagerInterface $em,
         private readonly Entity\Repository\StationMountRepository $mountRepo,
         private readonly Entity\Repository\StationRemoteRepository $remoteRepo,
         private readonly Entity\Repository\StationHlsStreamRepository $hlsStreamRepo,
+        SettingsRepository $settingsRepo,
     ) {
-        parent::__construct($settingsRepo, $em);
+        parent::__construct($settingsRepo);
     }
 
     public function __invoke(

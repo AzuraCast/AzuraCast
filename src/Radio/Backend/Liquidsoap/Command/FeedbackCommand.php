@@ -7,18 +7,15 @@ namespace App\Radio\Backend\Liquidsoap\Command;
 use App\Entity;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
-use Monolog\Logger;
 use RuntimeException;
 
 final class FeedbackCommand extends AbstractCommand
 {
     public function __construct(
-        Logger $logger,
         private readonly EntityManagerInterface $em,
         private readonly Entity\Repository\StationQueueRepository $queueRepo,
         private readonly Entity\Repository\SongHistoryRepository $historyRepo
     ) {
-        parent::__construct($logger);
     }
 
     protected function doRun(

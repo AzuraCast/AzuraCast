@@ -13,7 +13,6 @@ use Carbon\CarbonImmutable;
 use Cron\CronExpression;
 use DateTimeZone;
 use Psr\EventDispatcher\EventDispatcherInterface;
-use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -28,13 +27,12 @@ use function usleep;
 final class RunnerCommand extends AbstractSyncCommand
 {
     public function __construct(
-        LoggerInterface $logger,
         LockFactory $lockFactory,
         Environment $environment,
         private readonly EventDispatcherInterface $dispatcher,
         private readonly SettingsRepository $settingsRepo,
     ) {
-        parent::__construct($logger, $lockFactory, $environment);
+        parent::__construct($lockFactory, $environment);
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int

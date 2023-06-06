@@ -87,6 +87,7 @@ final class AppFactory
 
         $containerBuilder = new DI\ContainerBuilder();
         $containerBuilder->useAutowiring(true);
+        $containerBuilder->useAttributes(true);
 
         if ($environment->isProduction()) {
             $containerBuilder->enableCompilation($environment->getTempDirectory());

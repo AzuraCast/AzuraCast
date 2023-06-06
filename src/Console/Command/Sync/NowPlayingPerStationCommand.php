@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace App\Console\Command\Sync;
 
 use App\Console\Command\CommandAbstract;
+use App\Container\LoggerAwareTrait;
 use App\Entity\Repository\StationRepository;
 use App\Entity\Station;
 use App\Sync\NowPlaying\Task\BuildQueueTask;
 use App\Sync\NowPlaying\Task\NowPlayingTask;
-use Monolog\Logger;
 use Monolog\LogRecord;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputArgument;
@@ -24,11 +24,12 @@ use Throwable;
 )]
 final class NowPlayingPerStationCommand extends CommandAbstract
 {
+    use LoggerAwareTrait;
+
     public function __construct(
         private readonly StationRepository $stationRepo,
         private readonly BuildQueueTask $buildQueueTask,
-        private readonly NowPlayingTask $nowPlayingTask,
-        private readonly Logger $logger,
+        private readonly NowPlayingTask $nowPlayingTask
     ) {
         parent::__construct();
     }

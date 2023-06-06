@@ -4,16 +4,17 @@ declare(strict_types=1);
 
 namespace App\Webhook\Connector;
 
+use App\Container\LoggerAwareTrait;
 use App\Entity;
 use App\Utilities;
 use GuzzleHttp\Client;
-use Monolog\Logger;
 use PhpIP\IP;
 
 abstract class AbstractConnector implements ConnectorInterface
 {
+    use LoggerAwareTrait;
+
     public function __construct(
-        protected Logger $logger,
         protected Client $httpClient
     ) {
     }

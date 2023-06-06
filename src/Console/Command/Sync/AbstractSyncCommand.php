@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace App\Console\Command\Sync;
 
 use App\Console\Command\CommandAbstract;
+use App\Container\LoggerAwareTrait;
 use App\Environment;
 use App\Lock\LockFactory;
-use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Lock\Lock;
 use Symfony\Component\Process\Process;
@@ -16,10 +16,11 @@ use function random_int;
 
 abstract class AbstractSyncCommand extends CommandAbstract
 {
+    use LoggerAwareTrait;
+
     protected array $processes = [];
 
     public function __construct(
-        protected LoggerInterface $logger,
         protected LockFactory $lockFactory,
         protected Environment $environment,
     ) {

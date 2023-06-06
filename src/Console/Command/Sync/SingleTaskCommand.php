@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace App\Console\Command\Sync;
 
 use App\Console\Command\CommandAbstract;
+use App\Container\ContainerAwareTrait;
+use App\Container\LoggerAwareTrait;
 use App\Sync\Task\AbstractTask;
 use InvalidArgumentException;
-use Monolog\Logger;
 use Monolog\LogRecord;
-use Psr\Container\ContainerInterface;
 use Psr\SimpleCache\CacheInterface;
 use ReflectionClass;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -24,10 +24,11 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 )]
 final class SingleTaskCommand extends CommandAbstract
 {
+    use ContainerAwareTrait;
+    use LoggerAwareTrait;
+
     public function __construct(
-        private readonly ContainerInterface $di,
-        private readonly CacheInterface $cache,
-        private readonly Logger $logger,
+        private readonly CacheInterface $cache
     ) {
         parent::__construct();
     }

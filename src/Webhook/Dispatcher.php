@@ -4,30 +4,31 @@ declare(strict_types=1);
 
 namespace App\Webhook;
 
+use App\Container\ContainerAwareTrait;
+use App\Container\LoggerAwareTrait;
 use App\Entity\ApiGenerator\NowPlayingApiGenerator;
-use App\Webhook\Connector\AbstractConnector;
-use App\Webhook\Enums\WebhookTriggers;
 use App\Entity\Station;
 use App\Entity\StationWebhook;
 use App\Environment;
 use App\Http\RouterInterface;
 use App\Message;
+use App\Webhook\Connector\AbstractConnector;
+use App\Webhook\Enums\WebhookTriggers;
 use Doctrine\ORM\EntityManagerInterface;
 use Monolog\Handler\StreamHandler;
 use Monolog\Level;
-use Monolog\Logger;
-use Psr\Container\ContainerInterface;
 
 final class Dispatcher
 {
+    use LoggerAwareTrait;
+    use ContainerAwareTrait;
+
     public function __construct(
         private readonly Environment $environment,
-        private readonly Logger $logger,
         private readonly EntityManagerInterface $em,
         private readonly RouterInterface $router,
         private readonly LocalWebhookHandler $localHandler,
-        private readonly NowPlayingApiGenerator $nowPlayingApiGen,
-        private readonly ContainerInterface $di
+        private readonly NowPlayingApiGenerator $nowPlayingApiGen
     ) {
     }
 

@@ -6,15 +6,12 @@ namespace App\Media\AlbumArtHandler;
 
 use App\Entity;
 use App\Service\LastFm;
-use Psr\Log\LoggerInterface;
 
 final class LastFmAlbumArtHandler extends AbstractAlbumArtHandler
 {
     public function __construct(
         private readonly LastFm $lastFm,
-        LoggerInterface $logger
     ) {
-        parent::__construct($logger);
     }
 
     protected function getServiceName(): string

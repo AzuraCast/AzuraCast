@@ -12,16 +12,14 @@ use Brick\Math\BigInteger;
 use Exception;
 use League\Flysystem\FileAttributes;
 use League\Flysystem\StorageAttributes;
-use Psr\Log\LoggerInterface;
 
 final class UpdateStorageLocationSizesTask extends AbstractTask
 {
     public function __construct(
         private readonly Entity\Repository\StorageLocationRepository $storageLocationRepo,
-        ReloadableEntityManagerInterface $em,
-        LoggerInterface $logger
+        ReloadableEntityManagerInterface $em
     ) {
-        parent::__construct($em, $logger);
+        parent::__construct($em);
     }
 
     public static function getSchedulePattern(): string

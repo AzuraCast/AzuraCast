@@ -8,7 +8,6 @@ use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Entity;
 use Exception;
 use League\Flysystem\StorageAttributes;
-use Psr\Log\LoggerInterface;
 use Symfony\Component\Finder\Finder;
 use Throwable;
 
@@ -17,9 +16,8 @@ final class CleanupStorageTask extends AbstractTask
     public function __construct(
         private readonly Entity\Repository\StorageLocationRepository $storageLocationRepo,
         ReloadableEntityManagerInterface $em,
-        LoggerInterface $logger
     ) {
-        parent::__construct($em, $logger);
+        parent::__construct($em);
     }
 
     public static function getSchedulePattern(): string

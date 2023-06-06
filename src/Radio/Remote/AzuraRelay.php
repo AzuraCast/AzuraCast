@@ -13,7 +13,6 @@ use GuzzleHttp\Promise\Create;
 use GuzzleHttp\Promise\PromiseInterface;
 use GuzzleHttp\Psr7\Uri;
 use InvalidArgumentException;
-use Monolog\Logger;
 use NowPlaying\AdapterFactory;
 use NowPlaying\Enums\AdapterTypes;
 use NowPlaying\Result\Result;
@@ -24,11 +23,10 @@ final class AzuraRelay extends AbstractRemote
         EntityManagerInterface $em,
         Entity\Repository\SettingsRepository $settingsRepo,
         Client $http_client,
-        Logger $logger,
         AdapterFactory $adapterFactory,
         private readonly AzuraRelayCache $azuraRelayCache
     ) {
-        parent::__construct($em, $settingsRepo, $http_client, $logger, $adapterFactory);
+        parent::__construct($em, $settingsRepo, $http_client, $adapterFactory);
     }
 
     public function getNowPlayingAsync(Entity\StationRemote $remote, bool $includeClients = false): PromiseInterface

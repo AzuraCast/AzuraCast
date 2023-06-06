@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Service;
 
+use App\Container\LoggerAwareTrait;
 use App\Entity\Repository\SettingsRepository;
 use App\Entity\Repository\StationRepository;
 use App\Environment;
@@ -13,7 +14,6 @@ use App\Nginx\Nginx;
 use App\Radio\Adapters;
 use Exception;
 use Monolog\Handler\StreamHandler;
-use Monolog\Logger;
 use Psr\Log\LogLevel;
 use RuntimeException;
 use skoerfgen\ACMECert\ACMECert;
@@ -21,6 +21,8 @@ use Symfony\Component\Filesystem\Filesystem;
 
 final class Acme
 {
+    use LoggerAwareTrait;
+
     public const LETSENCRYPT_PROD = 'https://acme-v02.api.letsencrypt.org/directory';
     public const LETSENCRYPT_DEV = 'https://acme-staging-v02.api.letsencrypt.org/directory';
     public const THRESHOLD_DAYS = 30;
@@ -29,7 +31,6 @@ final class Acme
         private readonly SettingsRepository $settingsRepo,
         private readonly StationRepository $stationRepo,
         private readonly Environment $environment,
-        private readonly Logger $logger,
         private readonly Nginx $nginx,
         private readonly Adapters $adapters,
     ) {

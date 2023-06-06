@@ -6,22 +6,23 @@ declare(strict_types=1);
 
 namespace App\Media;
 
+use App\Container\LoggerAwareTrait;
 use App\Entity;
 use App\Event\Media\GetAlbumArt;
 use App\Version;
 use GuzzleHttp\Client;
 use GuzzleHttp\RequestOptions;
 use Psr\EventDispatcher\EventDispatcherInterface;
-use Psr\Log\LoggerInterface;
 use Psr\SimpleCache\CacheInterface;
 use Throwable;
 
 final class RemoteAlbumArt
 {
+    use LoggerAwareTrait;
+
     public const CACHE_LIFETIME = 86400 * 14; // Two Weeks
 
     public function __construct(
-        private readonly LoggerInterface $logger,
         private readonly CacheInterface $cache,
         private readonly Entity\Repository\SettingsRepository $settingsRepo,
         private readonly EventDispatcherInterface $eventDispatcher,

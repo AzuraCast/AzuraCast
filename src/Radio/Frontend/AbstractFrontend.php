@@ -21,7 +21,6 @@ use PhpIP\IP;
 use PhpIP\IPBlock;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\UriInterface;
-use Psr\Log\LoggerInterface;
 use Supervisor\SupervisorInterface;
 
 abstract class AbstractFrontend extends AbstractLocalAdapter
@@ -31,14 +30,13 @@ abstract class AbstractFrontend extends AbstractLocalAdapter
         EntityManagerInterface $em,
         SupervisorInterface $supervisor,
         EventDispatcherInterface $dispatcher,
-        LoggerInterface $logger,
         Router $router,
         protected AdapterFactory $adapterFactory,
         protected Client $http_client,
         protected Entity\Repository\SettingsRepository $settingsRepo,
         protected Entity\Repository\StationMountRepository $stationMountRepo,
     ) {
-        parent::__construct($environment, $em, $supervisor, $dispatcher, $logger, $router);
+        parent::__construct($environment, $em, $supervisor, $dispatcher, $router);
     }
 
     /**

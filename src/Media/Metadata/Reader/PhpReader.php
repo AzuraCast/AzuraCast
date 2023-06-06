@@ -4,22 +4,19 @@ declare(strict_types=1);
 
 namespace App\Media\Metadata\Reader;
 
+use App\Container\LoggerAwareTrait;
 use App\Event\Media\ReadMetadata;
 use App\Media\Metadata;
 use App\Utilities\Arrays;
 use App\Utilities\Strings;
 use App\Utilities\Time;
 use JamesHeinrich\GetID3\GetID3;
-use Psr\Log\LoggerInterface;
 
 use const JSON_THROW_ON_ERROR;
 
 final class PhpReader
 {
-    public function __construct(
-        private readonly LoggerInterface $logger
-    ) {
-    }
+    use LoggerAwareTrait;
 
     public function __invoke(ReadMetadata $event): void
     {

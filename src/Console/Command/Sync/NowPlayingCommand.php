@@ -9,7 +9,6 @@ use App\Entity\Repository\SettingsRepository;
 use App\Environment;
 use App\Lock\LockFactory;
 use Doctrine\ORM\EntityManagerInterface;
-use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -27,14 +26,13 @@ final class NowPlayingCommand extends AbstractSyncCommand
     public final const MAX_CONCURRENT_PROCESSES = 5;
 
     public function __construct(
-        LoggerInterface $logger,
         LockFactory $lockFactory,
         Environment $environment,
         private readonly EntityManagerInterface $em,
         private readonly SettingsRepository $settingsRepo,
         private readonly NowPlayingCache $nowPlayingCache
     ) {
-        parent::__construct($logger, $lockFactory, $environment);
+        parent::__construct($lockFactory, $environment);
     }
 
     protected function configure(): void

@@ -11,7 +11,6 @@ use App\Radio\Adapters;
 use App\Radio\Backend\Liquidsoap;
 use App\Radio\Enums\LiquidsoapQueues;
 use Psr\EventDispatcher\EventDispatcherInterface;
-use Psr\Log\LoggerInterface;
 
 final class CheckRequestsTask extends AbstractTask
 {
@@ -19,10 +18,9 @@ final class CheckRequestsTask extends AbstractTask
         private readonly Entity\Repository\StationRequestRepository $requestRepo,
         private readonly Adapters $adapters,
         private readonly EventDispatcherInterface $dispatcher,
-        ReloadableEntityManagerInterface $em,
-        LoggerInterface $logger
+        ReloadableEntityManagerInterface $em
     ) {
-        parent::__construct($em, $logger);
+        parent::__construct($em);
     }
 
     public static function getSchedulePattern(): string

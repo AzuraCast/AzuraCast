@@ -4,19 +4,20 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin\Debug;
 
+use App\Container\LoggerAwareTrait;
 use App\Entity\Repository\StationQueueRepository;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Radio\AutoDJ\Queue;
 use Monolog\Handler\TestHandler;
 use Monolog\Level;
-use Monolog\Logger;
 use Psr\Http\Message\ResponseInterface;
 
 final class ClearStationQueueAction
 {
+    use LoggerAwareTrait;
+
     public function __construct(
-        private readonly Logger $logger,
         private readonly StationQueueRepository $queueRepo,
         private readonly Queue $queue,
     ) {

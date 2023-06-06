@@ -11,7 +11,6 @@ use App\Radio\Adapters;
 use App\Radio\AutoDJ\Queue;
 use App\Radio\Backend\Liquidsoap;
 use App\Radio\Enums\LiquidsoapQueues;
-use Monolog\Logger;
 use Monolog\LogRecord;
 use Psr\EventDispatcher\EventDispatcherInterface;
 
@@ -21,10 +20,9 @@ final class QueueInterruptingTracks extends AbstractTask
         private readonly Queue $queue,
         private readonly Adapters $adapters,
         private readonly EventDispatcherInterface $eventDispatcher,
-        private readonly Logger $monolog,
         ReloadableEntityManagerInterface $em,
     ) {
-        parent::__construct($em, $monolog);
+        parent::__construct($em);
     }
 
     public static function getSchedulePattern(): string
@@ -40,7 +38,7 @@ final class QueueInterruptingTracks extends AbstractTask
     public function run(bool $force = false): void
     {
         foreach ($this->iterateStations() as $station) {
-            $this->monolog->pushProcessor(
+            $this->logger->pushProcessor(
                 function (LogRecord $record) use ($station) {
                     $record->extra['station'] = [
                         'id' => $station->getId(),
@@ -53,7 +51,7 @@ final class QueueInterruptingTracks extends AbstractTask
             try {
                 $this->queueForStation($station);
             } finally {
-                $this->monolog->popProcessor();
+                $this->logger->popProcessor();
             }
         }
     }

@@ -9,7 +9,6 @@ use App\Entity;
 use App\Nginx\ConfigWriter;
 use App\Nginx\Nginx;
 use League\Flysystem\StorageAttributes;
-use Psr\Log\LoggerInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Throwable;
@@ -17,13 +16,12 @@ use Throwable;
 final class RotateLogsTask extends AbstractTask
 {
     public function __construct(
-        ReloadableEntityManagerInterface $em,
-        LoggerInterface $logger,
         private readonly Entity\Repository\SettingsRepository $settingsRepo,
         private readonly Entity\Repository\StorageLocationRepository $storageLocationRepo,
         private readonly Nginx $nginx,
+        ReloadableEntityManagerInterface $em,
     ) {
-        parent::__construct($em, $logger);
+        parent::__construct($em);
     }
 
     public static function getSchedulePattern(): string

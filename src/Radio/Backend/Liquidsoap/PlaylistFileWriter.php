@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Radio\Backend\Liquidsoap;
 
+use App\Container\LoggerAwareTrait;
 use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Entity;
 use App\Event\Radio\AnnotateNextSong;
@@ -14,15 +15,15 @@ use App\Message;
 use App\Radio\Backend\Liquidsoap;
 use League\Flysystem\StorageAttributes;
 use Psr\EventDispatcher\EventDispatcherInterface;
-use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Throwable;
 
 final class PlaylistFileWriter implements EventSubscriberInterface
 {
+    use LoggerAwareTrait;
+
     public function __construct(
-        private readonly LoggerInterface $logger,
         private readonly EventDispatcherInterface $eventDispatcher,
         private readonly ReloadableEntityManagerInterface $em,
         private readonly Filesystem $fsUtils,

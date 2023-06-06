@@ -4,16 +4,17 @@ declare(strict_types=1);
 
 namespace App\Sync\Task;
 
+use App\Container\LoggerAwareTrait;
 use App\Doctrine\ReadWriteBatchIteratorAggregate;
 use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Entity;
-use Psr\Log\LoggerInterface;
 
 abstract class AbstractTask implements ScheduledTaskInterface
 {
+    use LoggerAwareTrait;
+
     public function __construct(
-        protected ReloadableEntityManagerInterface $em,
-        protected LoggerInterface $logger
+        protected ReloadableEntityManagerInterface $em
     ) {
     }
 

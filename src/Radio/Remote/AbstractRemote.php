@@ -4,22 +4,23 @@ declare(strict_types=1);
 
 namespace App\Radio\Remote;
 
+use App\Container\LoggerAwareTrait;
 use App\Entity;
 use Doctrine\ORM\EntityManagerInterface;
 use GuzzleHttp\Client;
 use GuzzleHttp\Promise\PromiseInterface;
-use Monolog\Logger;
 use NowPlaying\AdapterFactory;
 use NowPlaying\Enums\AdapterTypes;
 use NowPlaying\Result\Result;
 
 abstract class AbstractRemote
 {
+    use LoggerAwareTrait;
+
     public function __construct(
         protected EntityManagerInterface $em,
         protected Entity\Repository\SettingsRepository $settingsRepo,
         protected Client $http_client,
-        protected Logger $logger,
         protected AdapterFactory $adapterFactory
     ) {
     }

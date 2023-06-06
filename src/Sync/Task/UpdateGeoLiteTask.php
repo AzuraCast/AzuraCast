@@ -10,7 +10,6 @@ use App\Service\IpGeolocator\GeoLite;
 use Exception;
 use GuzzleHttp\Client;
 use GuzzleHttp\RequestOptions;
-use Psr\Log\LoggerInterface;
 use RuntimeException;
 use Symfony\Component\Process\Process;
 
@@ -21,10 +20,9 @@ final class UpdateGeoLiteTask extends AbstractTask
     public function __construct(
         private readonly Client $httpClient,
         private readonly Entity\Repository\SettingsRepository $settingsRepo,
-        ReloadableEntityManagerInterface $em,
-        LoggerInterface $logger,
+        ReloadableEntityManagerInterface $em
     ) {
-        parent::__construct($em, $logger);
+        parent::__construct($em);
     }
 
     public static function getSchedulePattern(): string

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Internal;
 
+use App\Container\LoggerAwareTrait;
 use App\Entity\Repository\StorageLocationRepository;
 use App\Entity\SftpUser;
 use App\Entity\StorageLocation;
@@ -15,16 +16,16 @@ use Doctrine\ORM\EntityManagerInterface;
 use League\Flysystem\PathPrefixer;
 use LogicException;
 use Psr\Http\Message\ResponseInterface;
-use Psr\Log\LoggerInterface;
 use Symfony\Component\Messenger\MessageBus;
 use Throwable;
 
 final class SftpEventAction
 {
+    use LoggerAwareTrait;
+
     public function __construct(
         private readonly EntityManagerInterface $em,
         private readonly MessageBus $messageBus,
-        private readonly LoggerInterface $logger,
         private readonly BatchUtilities $batchUtilities,
         private readonly StorageLocationRepository $storageLocationRepo
     ) {

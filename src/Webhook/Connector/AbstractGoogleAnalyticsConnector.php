@@ -9,16 +9,14 @@ use App\Entity\Repository\ListenerRepository;
 use App\Entity\Station;
 use App\Nginx\CustomUrls;
 use GuzzleHttp\Client;
-use Monolog\Logger;
 
 abstract class AbstractGoogleAnalyticsConnector extends AbstractConnector
 {
     public function __construct(
-        Logger $logger,
         Client $httpClient,
         protected readonly ListenerRepository $listenerRepo
     ) {
-        parent::__construct($logger, $httpClient);
+        parent::__construct($httpClient);
     }
 
     protected function webhookShouldTrigger(Entity\StationWebhook $webhook, array $triggers = []): bool

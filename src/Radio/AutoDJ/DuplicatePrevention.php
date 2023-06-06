@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace App\Radio\AutoDJ;
 
+use App\Container\LoggerAwareTrait;
 use App\Entity;
-use Monolog\Logger;
 
 final class DuplicatePrevention
 {
+    use LoggerAwareTrait;
+
     public const ARTIST_SEPARATORS = [
         ', ',
         ' feat ',
@@ -19,11 +21,6 @@ final class DuplicatePrevention
         ' & ',
         ' vs. ',
     ];
-
-    public function __construct(
-        protected Logger $logger
-    ) {
-    }
 
     /**
      * @param Entity\Api\StationPlaylistQueue[] $eligibleTracks

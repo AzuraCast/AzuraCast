@@ -223,7 +223,8 @@ return [
         DI\Container $di,
         App\Plugins $plugins
     ) {
-        $dispatcher = new App\CallableEventDispatcher($di);
+        $dispatcher = new App\CallableEventDispatcher();
+        $dispatcher->setContainer($di);
 
         // Register application default events.
         if (file_exists(__DIR__ . '/events.php')) {

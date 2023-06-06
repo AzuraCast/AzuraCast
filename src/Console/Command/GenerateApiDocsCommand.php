@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace App\Console\Command;
 
+use App\Container\LoggerAwareTrait;
 use App\Environment;
 use App\Version;
 use OpenApi\Annotations\OpenApi;
 use OpenApi\Generator;
 use OpenApi\Util;
-use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -21,10 +21,11 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 )]
 final class GenerateApiDocsCommand extends CommandAbstract
 {
+    use LoggerAwareTrait;
+
     public function __construct(
         private readonly Environment $environment,
-        private readonly Version $version,
-        private readonly LoggerInterface $logger
+        private readonly Version $version
     ) {
         parent::__construct();
     }

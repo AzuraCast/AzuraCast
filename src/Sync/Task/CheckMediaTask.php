@@ -20,7 +20,6 @@ use Doctrine\ORM\AbstractQuery;
 use League\Flysystem\FilesystemException;
 use League\Flysystem\StorageAttributes;
 use League\Flysystem\UnableToRetrieveMetadata;
-use Psr\Log\LoggerInterface;
 use Symfony\Component\Filesystem\Path;
 use Symfony\Component\Messenger\MessageBus;
 
@@ -33,9 +32,8 @@ final class CheckMediaTask extends AbstractTask
         private readonly MessageBus $messageBus,
         private readonly QueueManagerInterface $queueManager,
         ReloadableEntityManagerInterface $em,
-        LoggerInterface $logger
     ) {
-        parent::__construct($em, $logger);
+        parent::__construct($em);
     }
 
     public static function getSchedulePattern(): string

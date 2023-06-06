@@ -12,18 +12,16 @@ use App\Entity\StationWebhook;
 use App\Http\RouterInterface;
 use App\Utilities\Urls;
 use GuzzleHttp\Client;
-use Monolog\Logger;
 use Psr\Http\Message\UriInterface;
 
 final class MatomoAnalytics extends AbstractConnector
 {
     public function __construct(
-        Logger $logger,
         Client $httpClient,
         private readonly RouterInterface $router,
         private readonly ListenerRepository $listenerRepo
     ) {
-        parent::__construct($logger, $httpClient);
+        parent::__construct($httpClient);
     }
 
     protected function webhookShouldTrigger(Entity\StationWebhook $webhook, array $triggers = []): bool

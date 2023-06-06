@@ -4,19 +4,20 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin\Debug;
 
+use App\Container\LoggerAwareTrait;
 use App\Exception\StationUnsupportedException;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Radio\Adapters;
 use Monolog\Handler\TestHandler;
 use Monolog\Level;
-use Monolog\Logger;
 use Psr\Http\Message\ResponseInterface;
 
 final class TelnetAction
 {
+    use LoggerAwareTrait;
+
     public function __construct(
-        private readonly Logger $logger,
         private readonly Adapters $adapters
     ) {
     }

@@ -6,15 +6,12 @@ namespace App\Media\AlbumArtHandler;
 
 use App\Entity;
 use App\Service\MusicBrainz;
-use Psr\Log\LoggerInterface;
 
 final class MusicBrainzAlbumArtHandler extends AbstractAlbumArtHandler
 {
     public function __construct(
-        private readonly MusicBrainz $musicBrainz,
-        LoggerInterface $logger
+        private readonly MusicBrainz $musicBrainz
     ) {
-        parent::__construct($logger);
     }
 
     protected function getServiceName(): string

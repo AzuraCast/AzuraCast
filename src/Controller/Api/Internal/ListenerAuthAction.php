@@ -4,18 +4,19 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Internal;
 
+use App\Container\LoggerAwareTrait;
 use App\Enums\StationPermissions;
 use App\Exception\PermissionDeniedException;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Radio\Frontend\Blocklist\BlocklistParser;
 use Psr\Http\Message\ResponseInterface;
-use Psr\Log\LoggerInterface;
 
 final class ListenerAuthAction
 {
+    use LoggerAwareTrait;
+
     public function __construct(
-        private readonly LoggerInterface $logger,
         private readonly BlocklistParser $blocklistParser
     ) {
     }

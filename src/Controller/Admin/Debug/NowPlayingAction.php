@@ -4,18 +4,19 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin\Debug;
 
+use App\Container\LoggerAwareTrait;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Sync\NowPlaying\Task\NowPlayingTask;
 use Monolog\Handler\TestHandler;
 use Monolog\Level;
-use Monolog\Logger;
 use Psr\Http\Message\ResponseInterface;
 
 final class NowPlayingAction
 {
+    use LoggerAwareTrait;
+
     public function __construct(
-        private readonly Logger $logger,
         private readonly NowPlayingTask $nowPlayingTask
     ) {
     }

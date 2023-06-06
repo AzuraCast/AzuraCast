@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Entity\Repository;
 
+use App\Container\LoggerAwareTrait;
 use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Doctrine\Repository;
 use App\Entity;
@@ -13,7 +14,6 @@ use App\Media\AlbumArt;
 use App\Media\MetadataManager;
 use App\Media\RemoteAlbumArt;
 use App\Service\AudioWaveform;
-use App\Utilities\Logger;
 use Exception;
 use Generator;
 use League\Flysystem\FilesystemException;
@@ -27,6 +27,8 @@ use const JSON_UNESCAPED_SLASHES;
  */
 final class StationMediaRepository extends Repository
 {
+    use LoggerAwareTrait;
+
     public function __construct(
         ReloadableEntityManagerInterface $em,
         private readonly MetadataManager $metadataManager,
@@ -195,7 +197,7 @@ final class StationMediaRepository extends Repository
             try {
                 $this->writeAlbumArt($media, $artwork, $fs);
             } catch (Exception $exception) {
-                Logger::getInstance()->error(
+                $this->logger->error(
                     sprintf(
                         'Album Artwork for "%s" could not be processed: "%s"',
                         $filePath,

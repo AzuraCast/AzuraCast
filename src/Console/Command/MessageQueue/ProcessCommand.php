@@ -6,12 +6,12 @@ namespace App\Console\Command\MessageQueue;
 
 use App\CallableEventDispatcherInterface;
 use App\Console\Command\CommandAbstract;
+use App\Container\LoggerAwareTrait;
 use App\Doctrine\Messenger\ClearEntityManagerSubscriber;
 use App\Environment;
 use App\MessageQueue\LogWorkerExceptionSubscriber;
 use App\MessageQueue\QueueManagerInterface;
 use App\MessageQueue\ResetArrayCacheSubscriber;
-use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
 use Psr\Log\NullLogger;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -32,11 +32,12 @@ use Throwable;
 )]
 final class ProcessCommand extends CommandAbstract
 {
+    use LoggerAwareTrait;
+
     public function __construct(
         private readonly MessageBus $messageBus,
         private readonly CallableEventDispatcherInterface $eventDispatcher,
         private readonly QueueManagerInterface $queueManager,
-        private readonly LoggerInterface $logger,
         private readonly Environment $environment,
     ) {
         parent::__construct();

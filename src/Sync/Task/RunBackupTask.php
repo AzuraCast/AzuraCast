@@ -10,7 +10,6 @@ use App\Entity;
 use App\Message;
 use Carbon\CarbonImmutable;
 use Carbon\CarbonInterface;
-use Psr\Log\LoggerInterface;
 use Symfony\Component\Messenger\MessageBus;
 
 final class RunBackupTask extends AbstractTask
@@ -20,9 +19,8 @@ final class RunBackupTask extends AbstractTask
         private readonly Application $console,
         private readonly Entity\Repository\SettingsRepository $settingsRepo,
         ReloadableEntityManagerInterface $em,
-        LoggerInterface $logger
     ) {
-        parent::__construct($em, $logger);
+        parent::__construct($em);
     }
 
     public static function getSchedulePattern(): string

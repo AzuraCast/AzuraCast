@@ -9,16 +9,14 @@ use App\Entity\Station;
 use App\Entity\StationWebhook;
 use App\Service\Mail;
 use GuzzleHttp\Client;
-use Monolog\Logger;
 
 final class Email extends AbstractConnector
 {
     public function __construct(
-        Logger $logger,
         Client $httpClient,
         private readonly Mail $mail
     ) {
-        parent::__construct($logger, $httpClient);
+        parent::__construct($httpClient);
     }
 
     /**

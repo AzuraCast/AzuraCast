@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App;
 
-use Psr\Container\ContainerInterface;
+use App\Container\ContainerAwareTrait;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
 use function is_array;
@@ -12,11 +12,7 @@ use function is_string;
 
 final class CallableEventDispatcher extends EventDispatcher implements CallableEventDispatcherInterface
 {
-    public function __construct(
-        private readonly ContainerInterface $di
-    ) {
-        parent::__construct();
-    }
+    use ContainerAwareTrait;
 
     /**
      * @param array|class-string $className

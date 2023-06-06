@@ -9,7 +9,6 @@ use App\Entity;
 use App\Environment;
 use App\Service\AzuraCastCentral;
 use GuzzleHttp\Exception\TransferException;
-use Psr\Log\LoggerInterface;
 
 final class CheckUpdatesTask extends AbstractTask
 {
@@ -19,9 +18,8 @@ final class CheckUpdatesTask extends AbstractTask
         private readonly Entity\Repository\SettingsRepository $settingsRepo,
         private readonly AzuraCastCentral $azuracastCentral,
         ReloadableEntityManagerInterface $em,
-        LoggerInterface $logger
     ) {
-        parent::__construct($em, $logger);
+        parent::__construct($em);
     }
 
     public static function getSchedulePattern(): string

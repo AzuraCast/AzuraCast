@@ -6,7 +6,6 @@ namespace App\Sync\Task;
 
 use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Entity;
-use Psr\Log\LoggerInterface;
 
 final class CleanupHistoryTask extends AbstractTask
 {
@@ -16,9 +15,8 @@ final class CleanupHistoryTask extends AbstractTask
         private readonly Entity\Repository\StationQueueRepository $queueRepo,
         private readonly Entity\Repository\ListenerRepository $listenerRepo,
         ReloadableEntityManagerInterface $em,
-        LoggerInterface $logger
     ) {
-        parent::__construct($em, $logger);
+        parent::__construct($em);
     }
 
     public static function getSchedulePattern(): string

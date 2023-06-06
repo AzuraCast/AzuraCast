@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Radio\AutoDJ;
 
+use App\Container\LoggerAwareTrait;
 use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Entity;
 use App\Entity\Repository\StationPlaylistMediaRepository;
@@ -12,13 +13,13 @@ use App\Utilities\DateRange;
 use Carbon\CarbonImmutable;
 use Carbon\CarbonInterface;
 use Doctrine\Common\Collections\Collection;
-use Monolog\Logger;
 use Monolog\LogRecord;
 
 final class Scheduler
 {
+    use LoggerAwareTrait;
+
     public function __construct(
-        private readonly Logger $logger,
         private readonly StationPlaylistMediaRepository $spmRepo,
         private readonly StationQueueRepository $queueRepo,
         private readonly ReloadableEntityManagerInterface $em,

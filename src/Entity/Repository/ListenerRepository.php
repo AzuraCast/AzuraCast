@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Entity\Repository;
 
+use App\Container\LoggerAwareTrait;
 use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Doctrine\Repository;
 use App\Entity;
@@ -15,7 +16,6 @@ use DateTimeInterface;
 use Doctrine\DBAL\Connection;
 use League\Csv\Writer;
 use NowPlaying\Result\Client;
-use Psr\Log\LoggerInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Throwable;
 
@@ -24,6 +24,7 @@ use Throwable;
  */
 final class ListenerRepository extends Repository
 {
+    use LoggerAwareTrait;
     use Entity\Traits\TruncateStrings;
 
     private string $tableName;
@@ -33,8 +34,7 @@ final class ListenerRepository extends Repository
     public function __construct(
         ReloadableEntityManagerInterface $em,
         private readonly DeviceDetector $deviceDetector,
-        private readonly IpGeolocation $ipGeolocation,
-        private readonly LoggerInterface $logger
+        private readonly IpGeolocation $ipGeolocation
     ) {
         parent::__construct($em);
 

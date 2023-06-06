@@ -7,7 +7,6 @@ namespace App\Sync\Task;
 use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Entity;
 use Carbon\CarbonImmutable;
-use Psr\Log\LoggerInterface;
 
 final class RunAnalyticsTask extends AbstractTask
 {
@@ -17,9 +16,8 @@ final class RunAnalyticsTask extends AbstractTask
         private readonly Entity\Repository\ListenerRepository $listenerRepo,
         private readonly Entity\Repository\SongHistoryRepository $historyRepo,
         ReloadableEntityManagerInterface $em,
-        LoggerInterface $logger
     ) {
-        parent::__construct($em, $logger);
+        parent::__construct($em);
     }
 
     public static function getSchedulePattern(): string

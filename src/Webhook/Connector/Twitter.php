@@ -10,16 +10,14 @@ use App\Entity\StationWebhook;
 use App\Service\GuzzleFactory;
 use GuzzleHttp\Client;
 use GuzzleHttp\Subscriber\Oauth\Oauth1;
-use Monolog\Logger;
 
 final class Twitter extends AbstractSocialConnector
 {
     public function __construct(
-        Logger $logger,
         Client $httpClient,
         private readonly GuzzleFactory $guzzleFactory,
     ) {
-        parent::__construct($logger, $httpClient);
+        parent::__construct($httpClient);
     }
 
     protected function getRateLimitTime(StationWebhook $webhook): ?int

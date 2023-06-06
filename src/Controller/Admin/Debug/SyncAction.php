@@ -5,19 +5,20 @@ declare(strict_types=1);
 namespace App\Controller\Admin\Debug;
 
 use App\Console\Command\Sync\SingleTaskCommand;
+use App\Container\LoggerAwareTrait;
 use App\Event\GetSyncTasks;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use Monolog\Handler\TestHandler;
 use Monolog\Level;
-use Monolog\Logger;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ResponseInterface;
 
 final class SyncAction
 {
+    use LoggerAwareTrait;
+
     public function __construct(
-        private readonly Logger $logger,
         private readonly SingleTaskCommand $taskCommand,
         private readonly EventDispatcherInterface $eventDispatcher,
     ) {

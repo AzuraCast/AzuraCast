@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Sync\NowPlaying\Task;
 
 use App\Cache\NowPlayingCache;
+use App\Container\LoggerAwareTrait;
 use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Entity\Api\NowPlaying\NowPlaying;
 use App\Entity\ApiGenerator\NowPlayingApiGenerator;
@@ -23,12 +24,13 @@ use Exception;
 use GuzzleHttp\Promise\Utils;
 use NowPlaying\Result\Result;
 use Psr\EventDispatcher\EventDispatcherInterface;
-use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Messenger\MessageBus;
 
 final class NowPlayingTask implements NowPlayingTaskInterface, EventSubscriberInterface
 {
+    use LoggerAwareTrait;
+
     public function __construct(
         private readonly Adapters $adapters,
         private readonly NowPlayingCache $nowPlayingCache,
@@ -39,7 +41,6 @@ final class NowPlayingTask implements NowPlayingTaskInterface, EventSubscriberIn
         private readonly SettingsRepository $settingsRepo,
         private readonly NowPlayingApiGenerator $nowPlayingApiGenerator,
         private readonly ReloadableEntityManagerInterface $em,
-        private readonly LoggerInterface $logger,
         private readonly HlsListeners $hlsListeners,
     ) {
     }

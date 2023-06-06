@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Radio;
 
+use App\Container\ContainerAwareTrait;
 use App\Entity;
 use App\Exception\NotFoundException;
 use App\Radio\Backend\Liquidsoap;
@@ -11,24 +12,20 @@ use App\Radio\Enums\AdapterTypeInterface;
 use App\Radio\Enums\BackendAdapters;
 use App\Radio\Enums\FrontendAdapters;
 use App\Radio\Enums\RemoteAdapters;
-use Psr\Container\ContainerInterface;
 
 /**
  * Manager class for radio adapters.
  */
 final class Adapters
 {
-    public function __construct(
-        private readonly ContainerInterface $adapters
-    ) {
-    }
+    use ContainerAwareTrait;
 
     public function getFrontendAdapter(Entity\Station $station): ?Frontend\AbstractFrontend
     {
         $className = $station->getFrontendType()->getClass();
 
-        return (null !== $className && $this->adapters->has($className))
-            ? $this->adapters->get($className)
+        return (null !== $className && $this->di->has($className))
+            ? $this->di->get($className)
             : null;
     }
 
@@ -45,8 +42,8 @@ final class Adapters
     {
         $className = $station->getBackendType()->getClass();
 
-        return (null !== $className && $this->adapters->has($className))
-            ? $this->adapters->get($className)
+        return (null !== $className && $this->di->has($className))
+            ? $this->di->get($className)
             : null;
     }
 
@@ -62,8 +59,8 @@ final class Adapters
     public function getRemoteAdapter(Entity\StationRemote $remote): Remote\AbstractRemote
     {
         $class_name = $remote->getType()->getClass();
-        if ($this->adapters->has($class_name)) {
-            return $this->adapters->get($class_name);
+        if ($this->di->has($class_name)) {
+            return $this->di->get($class_name);
         }
 
         throw new NotFoundException('Adapter not found: ' . $class_name);
@@ -102,7 +99,7 @@ final class Adapters
                     }
 
                     /** @var AbstractLocalAdapter $adapter */
-                    $adapter = $this->adapters->get($adapter_info['class']);
+                    $adapter = $this->di->get($adapter_info['class']);
                     return $adapter->isInstalled();
                 }
             );

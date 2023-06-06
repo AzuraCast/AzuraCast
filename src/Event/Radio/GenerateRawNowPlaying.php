@@ -44,7 +44,7 @@ final class GenerateRawNowPlaying extends Event
 
     public function getRemoteAdapter(StationRemote $remote): AbstractRemote
     {
-        return $this->adapters->getRemoteAdapter($this->station, $remote);
+        return $this->adapters->getRemoteAdapter($remote);
     }
 
     public function includeClients(): bool

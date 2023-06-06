@@ -59,7 +59,7 @@ final class Adapters
         return $this->listAdaptersFromEnum(BackendAdapters::cases(), $checkInstalled);
     }
 
-    public function getRemoteAdapter(Entity\Station $station, Entity\StationRemote $remote): Remote\AbstractRemote
+    public function getRemoteAdapter(Entity\StationRemote $remote): Remote\AbstractRemote
     {
         $class_name = $remote->getType()->getClass();
         if ($this->adapters->has($class_name)) {

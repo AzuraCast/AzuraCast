@@ -94,23 +94,13 @@ abstract class AbstractApiCrudController
             array_merge(
                 $context,
                 [
-                    AbstractObjectNormalizer::ENABLE_MAX_DEPTH   => true,
-                    AbstractObjectNormalizer::MAX_DEPTH_HANDLER    => function (
-                        $innerObject,
-                        $outerObject,
-                        string $attributeName,
-                        string $format = null,
-                        array $context = []
-                    ) {
-                        return $this->displayShortenedObject($innerObject);
-                    },
-                    AbstractNormalizer::CIRCULAR_REFERENCE_HANDLER => function (
-                        $object,
-                        string $format = null,
-                        array $context = []
-                    ) {
-                        return $this->displayShortenedObject($object);
-                    },
+                    AbstractObjectNormalizer::ENABLE_MAX_DEPTH => true,
+                    AbstractObjectNormalizer::MAX_DEPTH_HANDLER => fn($innerObject) => $this->displayShortenedObject(
+                        $innerObject
+                    ),
+                    AbstractNormalizer::CIRCULAR_REFERENCE_HANDLER => fn($object) => $this->displayShortenedObject(
+                        $object
+                    ),
                 ]
             )
         );

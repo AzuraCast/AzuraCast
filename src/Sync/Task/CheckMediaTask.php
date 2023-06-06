@@ -294,7 +294,7 @@ final class CheckMediaTask extends AbstractTask
         array $musicFiles,
         array &$stats
     ): void {
-        foreach ($musicFiles as $pathHash => $newMusicFile) {
+        foreach ($musicFiles as $newMusicFile) {
             $path = $newMusicFile[StorageAttributes::ATTRIBUTE_PATH];
 
             $message = new AddNewMediaMessage();

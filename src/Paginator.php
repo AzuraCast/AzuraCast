@@ -34,7 +34,7 @@ final class Paginator implements IteratorAggregate, Countable
     private int $maxPerPage = 25;
 
     /** @var bool Whether the user is currently authenticated on this request. */
-    private bool $isAuthenticated = false;
+    private bool $isAuthenticated;
 
     /** @var bool Whether to show pagination controls. */
     private bool $isDisabled = true;

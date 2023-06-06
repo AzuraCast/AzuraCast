@@ -61,7 +61,7 @@ final class RunnerCommand extends AbstractSyncCommand
             }
         }
 
-        $this->manageStartedEvents($io);
+        $this->manageStartedEvents();
 
         $settings->updateSyncLastRun();
         $this->settingsRepo->writeSettings($settings);
@@ -69,7 +69,7 @@ final class RunnerCommand extends AbstractSyncCommand
         return 0;
     }
 
-    private function manageStartedEvents(SymfonyStyle $io): void
+    private function manageStartedEvents(): void
     {
         while ($this->processes) {
             $this->checkRunningProcesses();

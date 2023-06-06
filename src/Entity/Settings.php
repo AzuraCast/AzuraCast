@@ -13,7 +13,6 @@ use App\Service\Avatar;
 use App\Utilities\Strings;
 use App\Utilities\Urls;
 use Doctrine\ORM\Mapping as ORM;
-use InvalidArgumentException;
 use OpenApi\Attributes as OA;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\UriInterface;

@@ -39,7 +39,7 @@ abstract class AbstractFilesystem extends Filesystem implements ExtendedFilesyst
     {
         try {
             return $this->getMetadata($path)->isDir();
-        } catch (UnableToRetrieveMetadata $e) {
+        } catch (UnableToRetrieveMetadata) {
             return false;
         }
     }
@@ -48,7 +48,7 @@ abstract class AbstractFilesystem extends Filesystem implements ExtendedFilesyst
     {
         try {
             return $this->getMetadata($path)->isFile();
-        } catch (UnableToRetrieveMetadata $e) {
+        } catch (UnableToRetrieveMetadata) {
             return false;
         }
     }

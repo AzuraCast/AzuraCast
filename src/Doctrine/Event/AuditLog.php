@@ -13,7 +13,6 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Event\OnFlushEventArgs;
 use Doctrine\ORM\Events;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
-use Doctrine\ORM\PersistentCollection;
 use Doctrine\ORM\UnitOfWork;
 use ReflectionClass;
 use ReflectionObject;

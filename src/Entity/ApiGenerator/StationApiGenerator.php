@@ -67,7 +67,7 @@ final class StationApiGenerator
         foreach ($station->getRemotes() as $remote) {
             if ($showAllMounts || $remote->getIsVisibleOnPublicPages()) {
                 $remotes[] = $remote->api(
-                    $this->adapters->getRemoteAdapter($station, $remote)
+                    $this->adapters->getRemoteAdapter($remote)
                 );
             }
         }

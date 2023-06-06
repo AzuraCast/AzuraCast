@@ -18,7 +18,7 @@ final class LastFm
 {
     public const API_BASE_URL = 'https://ws.audioscrobbler.com/2.0/';
 
-    private ?string $apiKey = null;
+    private ?string $apiKey;
 
     public function __construct(
         private readonly Client $httpClient,

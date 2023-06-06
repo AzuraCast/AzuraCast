@@ -28,7 +28,7 @@ final class ResetArrayCacheSubscriber implements EventSubscriberInterface
         ];
     }
 
-    public function resetArrayCache(WorkerMessageReceivedEvent $event): void
+    public function resetArrayCache(): void
     {
         if ($this->cache instanceof ArrayAdapter) {
             $this->cache->reset();

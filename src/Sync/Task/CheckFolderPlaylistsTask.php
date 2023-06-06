@@ -68,21 +68,17 @@ final class CheckFolderPlaylistsTask extends AbstractTask
             }
 
             $this->em->wrapInTransaction(
-                function () use ($station, $playlist, $fsMedia, $mediaInPlaylistQuery, $mediaInFolderQuery): void {
-                    $this->processPlaylist(
-                        $station,
-                        $playlist,
-                        $fsMedia,
-                        $mediaInPlaylistQuery,
-                        $mediaInFolderQuery
-                    );
-                }
+                fn() => $this->processPlaylist(
+                    $playlist,
+                    $fsMedia,
+                    $mediaInPlaylistQuery,
+                    $mediaInFolderQuery
+                )
             );
         }
     }
 
     private function processPlaylist(
-        Entity\Station $station,
         Entity\StationPlaylist $playlist,
         ExtendedFilesystemInterface $fsMedia,
         Query $mediaInPlaylistQuery,

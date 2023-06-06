@@ -51,7 +51,7 @@ final class PlaylistAction
                 continue;
             }
 
-            $stream_url = $this->adapters->getRemoteAdapter($station, $remote)
+            $stream_url = $this->adapters->getRemoteAdapter($remote)
                 ->getPublicUrl($remote);
 
             $stream_urls[] = $stream_url;

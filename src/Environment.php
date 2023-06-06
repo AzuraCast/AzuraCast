@@ -15,7 +15,7 @@ final class Environment
 {
     private static Environment $instance;
 
-    private array $data = [];
+    private array $data;
 
     // Core settings values
     public const APP_NAME = 'APP_NAME';

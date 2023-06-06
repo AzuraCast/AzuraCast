@@ -17,7 +17,7 @@ final class Customization
 {
     use RequestAwareTrait;
 
-    private ?Entity\User $user = null;
+    private ?Entity\User $user;
 
     private Entity\Settings $settings;
 
@@ -27,7 +27,7 @@ final class Customization
 
     private SupportedThemes $publicTheme;
 
-    private string $instanceName = '';
+    private string $instanceName;
 
     public function __construct(
         private readonly Environment $environment,

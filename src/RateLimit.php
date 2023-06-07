@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App;
 
+use App\Container\EnvironmentAwareTrait;
 use App\Entity\Repository\SettingsRepository;
 use App\Http\ServerRequest;
 use App\Lock\LockFactory;
@@ -14,11 +15,12 @@ use Symfony\Component\RateLimiter\Storage\CacheStorage;
 
 final class RateLimit
 {
+    use EnvironmentAwareTrait;
+
     private CacheItemPoolInterface $psr6Cache;
 
     public function __construct(
         private readonly LockFactory $lockFactory,
-        private readonly Environment $environment,
         private readonly SettingsRepository $settingsRepo,
         CacheItemPoolInterface $cacheItemPool
     ) {

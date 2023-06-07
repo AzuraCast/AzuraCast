@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Radio\Remote;
 
 use App\Cache\AzuraRelayCache;
+use App\Container\EnvironmentAwareTrait;
 use App\Entity;
-use App\Environment;
 use GuzzleHttp\Client;
 use GuzzleHttp\Promise\Create;
 use GuzzleHttp\Promise\PromiseInterface;
@@ -18,6 +18,8 @@ use NowPlaying\Result\Result;
 
 final class AzuraRelay extends AbstractRemote
 {
+    use EnvironmentAwareTrait;
+
     public function __construct(
         private readonly AzuraRelayCache $azuraRelayCache,
         Entity\Repository\SettingsRepository $settingsRepo,
@@ -91,7 +93,7 @@ final class AzuraRelay extends AbstractRemote
         if (
             $use_radio_proxy
             || 'https' === $base_url->getScheme()
-            || (!Environment::getInstance()->isProduction() && !Environment::getInstance()->isDocker())
+            || (!$this->environment->isProduction() && !$this->environment->isDocker())
         ) {
             // Web proxy support.
             return (string)$base_url

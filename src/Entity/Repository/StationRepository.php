@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Entity\Repository;
 
-use App\Assets\AlbumArtCustomAsset;
+use App\Assets\AssetTypes;
+use App\Container\EnvironmentAwareTrait;
 use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Doctrine\Repository;
 use App\Entity;
-use App\Environment;
 use App\Flysystem\ExtendedFilesystemInterface;
 use App\Flysystem\StationFilesystems;
 use App\Radio\Enums\StreamFormats;
@@ -21,10 +21,11 @@ use Psr\Http\Message\UriInterface;
  */
 final class StationRepository extends Repository
 {
+    use EnvironmentAwareTrait;
+
     public function __construct(
         ReloadableEntityManagerInterface $em,
         private readonly SettingsRepository $settingsRepo,
-        private readonly Environment $environment
     ) {
         parent::__construct($em);
     }
@@ -188,7 +189,7 @@ final class StationRepository extends Repository
     public function getDefaultAlbumArtUrl(?Entity\Station $station = null): UriInterface
     {
         if (null !== $station) {
-            $stationAlbumArt = new AlbumArtCustomAsset($this->environment, $station);
+            $stationAlbumArt = AssetTypes::AlbumArt->createObject($this->environment, $station);
             if ($stationAlbumArt->isUploaded()) {
                 return $stationAlbumArt->getUri();
             }
@@ -200,7 +201,7 @@ final class StationRepository extends Repository
         }
 
         $customUrl = $this->settingsRepo->readSettings()->getDefaultAlbumArtUrlAsUri();
-        return $customUrl ?? (new AlbumArtCustomAsset($this->environment))->getUri();
+        return $customUrl ?? AssetTypes::AlbumArt->createObject($this->environment)->getUri();
     }
 
     public function setFallback(

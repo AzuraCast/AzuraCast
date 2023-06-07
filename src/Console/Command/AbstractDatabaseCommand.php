@@ -6,19 +6,14 @@ namespace App\Console\Command;
 
 use App\Console\Command\Traits\PassThruProcess;
 use App\Container\EntityManagerAwareTrait;
-use App\Environment;
+use App\Container\EnvironmentAwareTrait;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
 abstract class AbstractDatabaseCommand extends CommandAbstract
 {
     use PassThruProcess;
     use EntityManagerAwareTrait;
-
-    public function __construct(
-        protected Environment $environment
-    ) {
-        parent::__construct();
-    }
+    use EnvironmentAwareTrait;
 
     protected function getDatabaseSettingsAsCliFlags(): array
     {

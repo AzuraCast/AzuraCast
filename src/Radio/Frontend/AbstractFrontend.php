@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Radio\Frontend;
 
 use App\Entity;
-use App\Environment;
 use App\Http\Router;
 use App\Nginx\CustomUrls;
 use App\Radio\AbstractLocalAdapter;
@@ -29,12 +28,11 @@ abstract class AbstractFrontend extends AbstractLocalAdapter
         protected Client $http_client,
         protected Entity\Repository\SettingsRepository $settingsRepo,
         protected Entity\Repository\StationMountRepository $stationMountRepo,
-        Environment $environment,
         SupervisorInterface $supervisor,
         EventDispatcherInterface $dispatcher,
         Router $router
     ) {
-        parent::__construct($environment, $supervisor, $dispatcher, $router);
+        parent::__construct($supervisor, $dispatcher, $router);
     }
 
     /**

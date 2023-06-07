@@ -6,7 +6,6 @@ namespace App\Console\Command\Backup;
 
 use App\Console\Command\AbstractDatabaseCommand;
 use App\Entity;
-use App\Environment;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -26,10 +25,9 @@ use const PATHINFO_EXTENSION;
 final class BackupCommand extends AbstractDatabaseCommand
 {
     public function __construct(
-        Environment $environment,
         private readonly Entity\Repository\StorageLocationRepository $storageLocationRepo
     ) {
-        parent::__construct($environment);
+        parent::__construct();
     }
 
     protected function configure(): void

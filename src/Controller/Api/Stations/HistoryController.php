@@ -6,10 +6,10 @@ namespace App\Controller\Api\Stations;
 
 use App;
 use App\Container\EntityManagerAwareTrait;
+use App\Container\EnvironmentAwareTrait;
 use App\Controller\Api\Traits\AcceptsDateRange;
 use App\Doctrine\ReadOnlyBatchIteratorAggregate;
 use App\Entity;
-use App\Environment;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\OpenApi;
@@ -63,10 +63,10 @@ final class HistoryController
 {
     use AcceptsDateRange;
     use EntityManagerAwareTrait;
+    use EnvironmentAwareTrait;
 
     public function __construct(
-        private readonly Entity\ApiGenerator\SongHistoryApiGenerator $songHistoryApiGenerator,
-        private readonly Environment $environment
+        private readonly Entity\ApiGenerator\SongHistoryApiGenerator $songHistoryApiGenerator
     ) {
     }
 

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App;
 
+use App\Container\EnvironmentAwareTrait;
 use App\Entity\Repository\UserRepository;
 use App\Entity\User;
 use App\Exception\NotLoggedInException;
@@ -11,6 +12,8 @@ use Mezzio\Session\SessionInterface;
 
 final class Auth
 {
+    use EnvironmentAwareTrait;
+
     public const SESSION_IS_LOGIN_COMPLETE_KEY = 'is_login_complete';
     public const SESSION_USER_ID_KEY = 'user_id';
     public const SESSION_MASQUERADE_USER_ID_KEY = 'masquerade_user_id';
@@ -24,8 +27,7 @@ final class Auth
 
     public function __construct(
         private readonly UserRepository $userRepo,
-        private readonly SessionInterface $session,
-        private readonly Environment $environment
+        private readonly SessionInterface $session
     ) {
     }
 

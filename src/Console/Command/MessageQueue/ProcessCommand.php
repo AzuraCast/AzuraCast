@@ -6,9 +6,9 @@ namespace App\Console\Command\MessageQueue;
 
 use App\CallableEventDispatcherInterface;
 use App\Console\Command\CommandAbstract;
+use App\Container\EnvironmentAwareTrait;
 use App\Container\LoggerAwareTrait;
 use App\Doctrine\Messenger\ClearEntityManagerSubscriber;
-use App\Environment;
 use App\MessageQueue\LogWorkerExceptionSubscriber;
 use App\MessageQueue\QueueManagerInterface;
 use App\MessageQueue\ResetArrayCacheSubscriber;
@@ -33,12 +33,12 @@ use Throwable;
 final class ProcessCommand extends CommandAbstract
 {
     use LoggerAwareTrait;
+    use EnvironmentAwareTrait;
 
     public function __construct(
         private readonly MessageBus $messageBus,
         private readonly CallableEventDispatcherInterface $eventDispatcher,
         private readonly QueueManagerInterface $queueManager,
-        private readonly Environment $environment,
     ) {
         parent::__construct();
     }

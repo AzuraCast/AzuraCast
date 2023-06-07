@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Middleware\Module;
 
+use App\Container\EnvironmentAwareTrait;
 use App\Entity;
-use App\Environment;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Utilities\Urls;
@@ -21,9 +21,10 @@ use Symfony\Component\VarDumper\VarDumper;
  */
 final class Api
 {
+    use EnvironmentAwareTrait;
+
     public function __construct(
-        private readonly Entity\Repository\SettingsRepository $settingsRepo,
-        private readonly Environment $environment
+        private readonly Entity\Repository\SettingsRepository $settingsRepo
     ) {
     }
 

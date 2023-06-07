@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Admin;
 
+use App\Container\EnvironmentAwareTrait;
 use App\Controller\Api\Traits\HasLogViewer;
-use App\Environment;
 use App\Exception;
 use App\Http\Response;
 use App\Http\ServerRequest;
@@ -15,9 +15,9 @@ use Psr\Http\Message\ResponseInterface;
 final class LogsAction
 {
     use HasLogViewer;
+    use EnvironmentAwareTrait;
 
     public function __construct(
-        private readonly Environment $environment,
         private readonly ServiceControl $serviceControl,
     ) {
     }

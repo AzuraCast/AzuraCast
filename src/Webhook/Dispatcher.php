@@ -6,11 +6,11 @@ namespace App\Webhook;
 
 use App\Container\ContainerAwareTrait;
 use App\Container\EntityManagerAwareTrait;
+use App\Container\EnvironmentAwareTrait;
 use App\Container\LoggerAwareTrait;
 use App\Entity\ApiGenerator\NowPlayingApiGenerator;
 use App\Entity\Station;
 use App\Entity\StationWebhook;
-use App\Environment;
 use App\Http\RouterInterface;
 use App\Message;
 use App\Webhook\Connector\AbstractConnector;
@@ -23,9 +23,9 @@ final class Dispatcher
     use LoggerAwareTrait;
     use ContainerAwareTrait;
     use EntityManagerAwareTrait;
+    use EnvironmentAwareTrait;
 
     public function __construct(
-        private readonly Environment $environment,
         private readonly RouterInterface $router,
         private readonly LocalWebhookHandler $localHandler,
         private readonly NowPlayingApiGenerator $nowPlayingApiGen

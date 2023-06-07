@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Radio\Backend\Liquidsoap;
 
+use App\Container\EnvironmentAwareTrait;
 use App\Entity;
-use App\Environment;
 use App\Event\Radio\WriteLiquidsoapConfiguration;
 use App\Radio\Backend\Liquidsoap;
 use App\Radio\Enums\AudioProcessingMethods;
@@ -22,10 +22,11 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 final class ConfigWriter implements EventSubscriberInterface
 {
+    use EnvironmentAwareTrait;
+
     public function __construct(
         private readonly Entity\Repository\SettingsRepository $settingsRepo,
         private readonly Liquidsoap $liquidsoap,
-        private readonly Environment $environment,
         private readonly FallbackFile $fallbackFile
     ) {
     }

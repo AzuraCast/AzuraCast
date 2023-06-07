@@ -4,16 +4,13 @@ declare(strict_types=1);
 
 namespace App\Service;
 
-use App\Environment;
+use App\Container\EnvironmentAwareTrait;
 use Redis;
 use RuntimeException;
 
 final class RedisFactory
 {
-    public function __construct(
-        private readonly Environment $environment
-    ) {
-    }
+    use EnvironmentAwareTrait;
 
     public function isSupported(): bool
     {

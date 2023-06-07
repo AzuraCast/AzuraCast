@@ -2,15 +2,16 @@
 
 namespace App\Service;
 
-use App\Environment;
+use App\Container\EnvironmentAwareTrait;
 
 final class WebUpdater
 {
+    use EnvironmentAwareTrait;
+
     // Don't worry that this is insecure; it's only ever used for internal communications.
     public const WATCHTOWER_TOKEN = 'azur4c457';
 
     public function __construct(
-        private readonly Environment $environment,
         private readonly GuzzleFactory $guzzleFactory
     ) {
     }

@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Console\Command\Locale;
 
 use App\Console\Command\CommandAbstract;
+use App\Container\EnvironmentAwareTrait;
 use App\Enums\SupportedLocales;
-use App\Environment;
 use Gettext\Generator\MoGenerator;
 use Gettext\Loader\PoLoader;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -21,11 +21,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 )]
 final class ImportCommand extends CommandAbstract
 {
-    public function __construct(
-        private readonly Environment $environment
-    ) {
-        parent::__construct();
-    }
+    use EnvironmentAwareTrait;
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {

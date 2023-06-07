@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Webhook;
 
+use App\Container\EnvironmentAwareTrait;
 use App\Container\LoggerAwareTrait;
 use App\Entity;
-use App\Environment;
 use App\Service\Centrifugo;
 use Symfony\Component\Filesystem\Filesystem;
 
@@ -15,11 +15,11 @@ use const JSON_PRETTY_PRINT;
 final class LocalWebhookHandler
 {
     use LoggerAwareTrait;
+    use EnvironmentAwareTrait;
 
     public const NAME = 'local';
 
     public function __construct(
-        private readonly Environment $environment,
         private readonly Centrifugo $centrifugo
     ) {
     }

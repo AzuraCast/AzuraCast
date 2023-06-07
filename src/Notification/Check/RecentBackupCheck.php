@@ -4,17 +4,18 @@ declare(strict_types=1);
 
 namespace App\Notification\Check;
 
+use App\Container\EnvironmentAwareTrait;
 use App\Entity;
 use App\Enums\GlobalPermissions;
-use App\Environment;
 use App\Event\GetNotifications;
 use App\Session\FlashLevels;
 use Carbon\CarbonImmutable;
 
 final class RecentBackupCheck
 {
+    use EnvironmentAwareTrait;
+
     public function __construct(
-        private readonly Environment $environment,
         private readonly Entity\Repository\SettingsRepository $settingsRepo
     ) {
     }

@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Controller\Frontend;
 
 use App\Container\EntityManagerAwareTrait;
+use App\Container\EnvironmentAwareTrait;
 use App\Entity;
-use App\Environment;
 use App\Exception\NotLoggedInException;
 use App\Exception\ValidationException;
 use App\Http\Response;
@@ -21,10 +21,10 @@ use Throwable;
 final class SetupController
 {
     use EntityManagerAwareTrait;
+    use EnvironmentAwareTrait;
 
     public function __construct(
         private readonly Entity\Repository\SettingsRepository $settingsRepo,
-        private readonly Environment $environment,
         private readonly Entity\Repository\RolePermissionRepository $permissionRepo,
         private readonly ValidatorInterface $validator,
         private readonly StationFormComponent $stationFormComponent,

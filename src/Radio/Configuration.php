@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace App\Radio;
 
 use App\Container\EntityManagerAwareTrait;
+use App\Container\EnvironmentAwareTrait;
 use App\Entity\Enums\PlaylistTypes;
 use App\Entity\Repository\StationPlaylistMediaRepository;
 use App\Entity\Station;
 use App\Entity\StationPlaylist;
-use App\Environment;
 use App\Exception;
 use App\Radio\Enums\BackendAdapters;
 use App\Radio\Enums\FrontendAdapters;
@@ -20,6 +20,7 @@ use Supervisor\SupervisorInterface;
 final class Configuration
 {
     use EntityManagerAwareTrait;
+    use EnvironmentAwareTrait;
 
     public const DEFAULT_PORT_MIN = 8000;
     public const DEFAULT_PORT_MAX = 8499;
@@ -36,7 +37,6 @@ final class Configuration
     public function __construct(
         private readonly Adapters $adapters,
         private readonly SupervisorInterface $supervisor,
-        private readonly Environment $environment,
         private readonly StationPlaylistMediaRepository $spmRepo,
     ) {
     }
@@ -400,7 +400,7 @@ final class Configuration
      */
     public function removeConfiguration(Station $station): void
     {
-        if (Environment::getInstance()->isTesting()) {
+        if ($this->environment->isTesting()) {
             return;
         }
 

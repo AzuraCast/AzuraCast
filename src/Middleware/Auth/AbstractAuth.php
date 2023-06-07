@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace App\Middleware\Auth;
 
 use App\Acl;
+use App\Container\EnvironmentAwareTrait;
 use App\Customization;
 use App\Entity;
-use App\Environment;
 use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -16,9 +16,10 @@ use Psr\Http\Server\RequestHandlerInterface;
 
 abstract class AbstractAuth implements MiddlewareInterface
 {
+    use EnvironmentAwareTrait;
+
     public function __construct(
         protected readonly Entity\Repository\UserRepository $userRepo,
-        protected readonly Environment $environment,
         protected readonly Acl $acl,
         protected readonly Customization $customization
     ) {

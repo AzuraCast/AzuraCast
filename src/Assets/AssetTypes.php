@@ -17,10 +17,12 @@ enum AssetTypes: string
         Environment $environment,
         ?Station $station = null
     ): CustomAssetInterface {
-        return match ($this) {
-            self::AlbumArt => new AlbumArtCustomAsset($environment, $station),
-            self::Background => new BackgroundCustomAsset($environment, $station),
-            self::BrowserIcon => new BrowserIconCustomAsset($environment, $station),
+        $instance = match ($this) {
+            self::AlbumArt => new AlbumArtCustomAsset($station),
+            self::Background => new BackgroundCustomAsset($station),
+            self::BrowserIcon => new BrowserIconCustomAsset($station),
         };
+        $instance->setEnvironment($environment);
+        return $instance;
     }
 }

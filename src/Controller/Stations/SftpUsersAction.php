@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Stations;
 
-use App\Environment;
+use App\Container\EnvironmentAwareTrait;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Service\AzuraCastCentral;
@@ -12,8 +12,9 @@ use Psr\Http\Message\ResponseInterface;
 
 final class SftpUsersAction
 {
+    use EnvironmentAwareTrait;
+
     public function __construct(
-        private readonly Environment $environment,
         private readonly AzuraCastCentral $acCentral
     ) {
     }

@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace App\Radio;
 
 use App\Container\EntityManagerAwareTrait;
+use App\Container\EnvironmentAwareTrait;
 use App\Container\LoggerAwareTrait;
 use App\Entity;
-use App\Environment;
 use App\Exception\Supervisor\AlreadyRunningException;
 use App\Exception\Supervisor\NotRunningException;
 use App\Exception\SupervisorException;
@@ -21,9 +21,9 @@ abstract class AbstractLocalAdapter
 {
     use LoggerAwareTrait;
     use EntityManagerAwareTrait;
+    use EnvironmentAwareTrait;
 
     public function __construct(
-        protected Environment $environment,
         protected SupervisorInterface $supervisor,
         protected EventDispatcherInterface $dispatcher,
         protected Router $router,

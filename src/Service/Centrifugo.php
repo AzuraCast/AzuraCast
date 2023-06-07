@@ -4,16 +4,17 @@ declare(strict_types=1);
 
 namespace App\Service;
 
+use App\Container\EnvironmentAwareTrait;
 use App\Entity\Station;
-use App\Environment;
 use GuzzleHttp\Client;
 
 final class Centrifugo
 {
+    use EnvironmentAwareTrait;
+
     public const GLOBAL_TIME_CHANNEL = 'global:time';
 
     public function __construct(
-        private readonly Environment $environment,
         private readonly Client $client,
     ) {
     }

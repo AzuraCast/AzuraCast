@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Http;
 
+use App\Container\EnvironmentAwareTrait;
 use App\Entity;
 use App\Enums\SupportedLocales;
-use App\Environment;
 use App\Exception;
 use App\Exception\NotLoggedInException;
 use App\Exception\PermissionDeniedException;
@@ -26,6 +26,8 @@ use Whoops\Run;
 
 final class ErrorHandler extends \Slim\Handlers\ErrorHandler
 {
+    use EnvironmentAwareTrait;
+
     private bool $returnJson = false;
 
     private bool $showDetailed = false;
@@ -36,7 +38,6 @@ final class ErrorHandler extends \Slim\Handlers\ErrorHandler
         private readonly View $view,
         private readonly Router $router,
         private readonly InjectSession $injectSession,
-        private readonly Environment $environment,
         App $app,
         Logger $logger,
     ) {

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Admin;
 
-use App\Environment;
+use App\Container\EnvironmentAwareTrait;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\OpenApi;
@@ -37,10 +37,7 @@ use Psr\Http\Message\ResponseInterface;
 ]
 final class ServerStatsAction
 {
-    public function __construct(
-        private readonly Environment $environment,
-    ) {
-    }
+    use EnvironmentAwareTrait;
 
     public function __invoke(
         ServerRequest $request,

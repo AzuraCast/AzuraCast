@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Admin\Shoutcast;
 
+use App\Container\EnvironmentAwareTrait;
 use App\Entity;
-use App\Environment;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Service\Flow;
@@ -15,10 +15,7 @@ use Symfony\Component\Process\Process;
 
 final class PostAction
 {
-    public function __construct(
-        private readonly Environment $environment,
-    ) {
-    }
+    use EnvironmentAwareTrait;
 
     public function __invoke(
         ServerRequest $request,

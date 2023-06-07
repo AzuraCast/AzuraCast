@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Service;
 
-use App\Environment;
+use App\Container\EnvironmentAwareTrait;
 use App\Exception\SupervisorException;
 use App\Service\ServiceControl\ServiceData;
 use Supervisor\Exception\Fault\BadNameException;
@@ -15,9 +15,10 @@ use Supervisor\SupervisorInterface;
 
 final class ServiceControl
 {
+    use EnvironmentAwareTrait;
+
     public function __construct(
         private readonly SupervisorInterface $supervisor,
-        private readonly Environment $environment,
         private readonly Centrifugo $centrifugo
     ) {
     }

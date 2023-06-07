@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace App;
 
-use App\Assets\BackgroundCustomAsset;
+use App\Assets\AssetTypes;
 use App\Assets\BrowserIconCustomAsset;
+use App\Container\EnvironmentAwareTrait;
 use App\Entity;
 use App\Enums\SupportedLocales;
 use App\Enums\SupportedThemes;
@@ -16,6 +17,7 @@ use Psr\Http\Message\ServerRequestInterface;
 final class Customization
 {
     use RequestAwareTrait;
+    use EnvironmentAwareTrait;
 
     private ?Entity\User $user;
 
@@ -30,7 +32,6 @@ final class Customization
     private string $instanceName;
 
     public function __construct(
-        private readonly Environment $environment,
         Entity\Repository\SettingsRepository $settingsRepo
     ) {
         $this->settings = $settingsRepo->readSettings();
@@ -121,7 +122,7 @@ final class Customization
     {
         $publicCss = $this->settings->getPublicCustomCss() ?? '';
 
-        $background = new BackgroundCustomAsset($this->environment);
+        $background = AssetTypes::Background->createObject($this->environment);
         if ($background->isUploaded()) {
             $backgroundUrl = $background->getUrl();
 
@@ -139,7 +140,8 @@ final class Customization
     {
         $publicCss = $station->getBrandingConfig()->getPublicCustomCss() ?? '';
 
-        $background = new BackgroundCustomAsset($this->environment, $station);
+        $background = AssetTypes::Background->createObject($this->environment, $station);
+
         if ($background->isUploaded()) {
             $backgroundUrl = $background->getUrl();
 
@@ -176,7 +178,10 @@ final class Customization
 
     public function getBrowserIconUrl(int $size = 256): string
     {
-        return (new BrowserIconCustomAsset($this->environment))->getUrlForSize($size);
+        /** @var BrowserIconCustomAsset $browserIcon */
+        $browserIcon = AssetTypes::BrowserIcon->createObject($this->environment);
+
+        return $browserIcon->getUrlForSize($size);
     }
 
     /**

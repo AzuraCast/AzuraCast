@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Controller\Api\Stations\CustomAssets;
 
 use App\Assets\AssetTypes;
+use App\Container\EnvironmentAwareTrait;
 use App\Entity;
-use App\Environment;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Media\AlbumArt;
@@ -15,10 +15,7 @@ use Psr\Http\Message\ResponseInterface;
 
 final class PostCustomAssetAction
 {
-    public function __construct(
-        private readonly Environment $environment
-    ) {
-    }
+    use EnvironmentAwareTrait;
 
     public function __invoke(
         ServerRequest $request,

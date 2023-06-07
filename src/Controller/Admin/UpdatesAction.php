@@ -2,8 +2,8 @@
 
 namespace App\Controller\Admin;
 
+use App\Container\EnvironmentAwareTrait;
 use App\Entity\Repository\SettingsRepository;
-use App\Environment;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Version;
@@ -11,9 +11,10 @@ use Psr\Http\Message\ResponseInterface;
 
 final class UpdatesAction
 {
+    use EnvironmentAwareTrait;
+
     public function __construct(
         private readonly SettingsRepository $settingsRepo,
-        private readonly Environment $environment,
         private readonly Version $version
     ) {
     }

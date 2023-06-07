@@ -4,13 +4,15 @@ declare(strict_types=1);
 
 namespace App\Sync\Task;
 
+use App\Container\EnvironmentAwareTrait;
 use App\Entity;
-use App\Environment;
 use App\Service\AzuraCastCentral;
 use GuzzleHttp\Exception\TransferException;
 
 final class CheckUpdatesTask extends AbstractTask
 {
+    use EnvironmentAwareTrait;
+
     private const UPDATE_THRESHOLD = 3780;
 
     public function __construct(
@@ -37,7 +39,7 @@ final class CheckUpdatesTask extends AbstractTask
             }
         }
 
-        if (Environment::getInstance()->isTesting()) {
+        if ($this->environment->isTesting()) {
             $this->logger->info('Update checks are currently disabled for this AzuraCast instance.');
             return;
         }

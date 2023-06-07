@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Console\Command;
 
+use App\Container\EnvironmentAwareTrait;
 use App\Container\LoggerAwareTrait;
-use App\Environment;
 use App\Version;
 use OpenApi\Annotations\OpenApi;
 use OpenApi\Generator;
@@ -22,9 +22,9 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 final class GenerateApiDocsCommand extends CommandAbstract
 {
     use LoggerAwareTrait;
+    use EnvironmentAwareTrait;
 
     public function __construct(
-        private readonly Environment $environment,
         private readonly Version $version
     ) {
         parent::__construct();

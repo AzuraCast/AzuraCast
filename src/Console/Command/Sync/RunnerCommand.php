@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Console\Command\Sync;
 
 use App\Entity\Repository\SettingsRepository;
-use App\Environment;
 use App\Event\GetSyncTasks;
 use App\Lock\LockFactory;
 use App\Sync\Task\AbstractTask;
@@ -27,12 +26,11 @@ use function usleep;
 final class RunnerCommand extends AbstractSyncCommand
 {
     public function __construct(
-        LockFactory $lockFactory,
-        Environment $environment,
         private readonly EventDispatcherInterface $dispatcher,
         private readonly SettingsRepository $settingsRepo,
+        LockFactory $lockFactory
     ) {
-        parent::__construct($lockFactory, $environment);
+        parent::__construct($lockFactory);
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int

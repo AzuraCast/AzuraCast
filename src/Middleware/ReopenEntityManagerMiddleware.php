@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Middleware;
 
+use App\Container\EnvironmentAwareTrait;
 use App\Doctrine\DecoratedEntityManager;
-use App\Environment;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
@@ -13,9 +13,10 @@ use Psr\Http\Server\RequestHandlerInterface;
 
 final class ReopenEntityManagerMiddleware implements MiddlewareInterface
 {
+    use EnvironmentAwareTrait;
+
     public function __construct(
         private readonly DecoratedEntityManager $em,
-        private readonly Environment $environment
     ) {
     }
 

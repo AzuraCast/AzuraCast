@@ -8,7 +8,6 @@ use App\Acl;
 use App\Auth;
 use App\Customization;
 use App\Entity;
-use App\Environment;
 use App\Exception\CsrfValidationException;
 use App\Http\ServerRequest;
 use App\Security\SplitToken;
@@ -24,11 +23,10 @@ final class ApiAuth extends AbstractAuth
     public function __construct(
         protected Entity\Repository\ApiKeyRepository $apiKeyRepo,
         Entity\Repository\UserRepository $userRepo,
-        Environment $environment,
         Acl $acl,
         Customization $customization
     ) {
-        parent::__construct($userRepo, $environment, $acl, $customization);
+        parent::__construct($userRepo, $acl, $customization);
     }
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
@@ -56,8 +54,8 @@ final class ApiAuth extends AbstractAuth
         $auth = new Auth(
             userRepo: $this->userRepo,
             session: $request->getAttribute(ServerRequest::ATTR_SESSION),
-            environment: $this->environment,
         );
+        $auth->setEnvironment($this->environment);
 
         if ($auth->isLoggedIn()) {
             $user = $auth->getLoggedInUser();

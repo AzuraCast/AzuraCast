@@ -6,7 +6,7 @@ namespace App\Console\Command;
 
 use App\Container\ContainerAwareTrait;
 use App\Container\EntityManagerAwareTrait;
-use App\Environment;
+use App\Container\EnvironmentAwareTrait;
 use Doctrine\Common\DataFixtures\Executor\ORMExecutor;
 use Doctrine\Common\DataFixtures\Loader;
 use Doctrine\Common\DataFixtures\Purger\ORMPurger;
@@ -25,12 +25,7 @@ final class SetupFixturesCommand extends CommandAbstract
 {
     use ContainerAwareTrait;
     use EntityManagerAwareTrait;
-
-    public function __construct(
-        private readonly Environment $environment,
-    ) {
-        parent::__construct();
-    }
+    use EnvironmentAwareTrait;
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {

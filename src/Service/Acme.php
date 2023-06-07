@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Service;
 
+use App\Container\EnvironmentAwareTrait;
 use App\Container\LoggerAwareTrait;
 use App\Entity\Repository\SettingsRepository;
 use App\Entity\Repository\StationRepository;
@@ -22,6 +23,7 @@ use Symfony\Component\Filesystem\Filesystem;
 final class Acme
 {
     use LoggerAwareTrait;
+    use EnvironmentAwareTrait;
 
     public const LETSENCRYPT_PROD = 'https://acme-v02.api.letsencrypt.org/directory';
     public const LETSENCRYPT_DEV = 'https://acme-staging-v02.api.letsencrypt.org/directory';
@@ -30,7 +32,6 @@ final class Acme
     public function __construct(
         private readonly SettingsRepository $settingsRepo,
         private readonly StationRepository $stationRepo,
-        private readonly Environment $environment,
         private readonly Nginx $nginx,
         private readonly Adapters $adapters,
     ) {

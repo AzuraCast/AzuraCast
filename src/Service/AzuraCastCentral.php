@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Service;
 
+use App\Container\EnvironmentAwareTrait;
 use App\Container\LoggerAwareTrait;
 use App\Entity;
-use App\Environment;
 use App\Version;
 use Exception;
 use GuzzleHttp\Client;
@@ -14,11 +14,11 @@ use GuzzleHttp\Client;
 final class AzuraCastCentral
 {
     use LoggerAwareTrait;
+    use EnvironmentAwareTrait;
 
     private const BASE_URL = 'https://central.azuracast.com';
 
     public function __construct(
-        private readonly Environment $environment,
         private readonly Version $version,
         private readonly Client $httpClient,
         private readonly Entity\Repository\SettingsRepository $settingsRepo

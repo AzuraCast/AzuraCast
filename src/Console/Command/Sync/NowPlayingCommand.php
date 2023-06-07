@@ -7,7 +7,6 @@ namespace App\Console\Command\Sync;
 use App\Cache\NowPlayingCache;
 use App\Container\EntityManagerAwareTrait;
 use App\Entity\Repository\SettingsRepository;
-use App\Environment;
 use App\Lock\LockFactory;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputInterface;
@@ -31,9 +30,8 @@ final class NowPlayingCommand extends AbstractSyncCommand
         private readonly SettingsRepository $settingsRepo,
         private readonly NowPlayingCache $nowPlayingCache,
         LockFactory $lockFactory,
-        Environment $environment
     ) {
-        parent::__construct($lockFactory, $environment);
+        parent::__construct($lockFactory);
     }
 
     protected function configure(): void

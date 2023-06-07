@@ -4,21 +4,20 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Admin\Stations;
 
+use App\Container\EnvironmentAwareTrait;
 use App\Controller\Api\Admin\StationsController;
 use App\Entity;
-use App\Environment;
 use App\Http\Response;
 use App\Http\ServerRequest;
-use App\Radio\Configuration;
 use DeepCopy;
 use Doctrine\Common\Collections\Collection;
 use Psr\Http\Message\ResponseInterface;
-use Symfony\Component\Serializer\Serializer;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Throwable;
 
 final class CloneAction extends StationsController
 {
+    use EnvironmentAwareTrait;
+
     public const CLONE_MEDIA_STORAGE = 'media_storage';
     public const CLONE_RECORDINGS_STORAGE = 'recordings_storage';
     public const CLONE_PODCASTS_STORAGE = 'podcasts_storage';
@@ -29,25 +28,6 @@ final class CloneAction extends StationsController
     public const CLONE_STREAMERS = 'streamers';
     public const CLONE_PERMISSIONS = 'permissions';
     public const CLONE_WEBHOOKS = 'webhooks';
-
-    public function __construct(
-        Entity\Repository\StationRepository $stationRepo,
-        Entity\Repository\StorageLocationRepository $storageLocationRepo,
-        Entity\Repository\StationQueueRepository $queueRepo,
-        Configuration $configuration,
-        Serializer $serializer,
-        ValidatorInterface $validator,
-        private readonly Environment $environment
-    ) {
-        parent::__construct(
-            $stationRepo,
-            $storageLocationRepo,
-            $queueRepo,
-            $configuration,
-            $serializer,
-            $validator
-        );
-    }
 
     public function __invoke(
         ServerRequest $request,

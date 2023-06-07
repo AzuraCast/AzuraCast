@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Entity\StorageLocationAdapter;
 
+use App\Container\EnvironmentAwareTrait;
 use App\Entity\Enums\StorageLocationAdapters;
-use App\Environment;
 use App\Flysystem\Adapter\LocalAdapterInterface;
 use App\Flysystem\Adapter\LocalFilesystemAdapter;
 use App\Flysystem\ExtendedFilesystemInterface;
@@ -14,10 +14,7 @@ use Symfony\Component\Filesystem\Path;
 
 final class LocalStorageLocationAdapter extends AbstractStorageLocationLocationAdapter
 {
-    public function __construct(
-        private readonly Environment $environment
-    ) {
-    }
+    use EnvironmentAwareTrait;
 
     public function getType(): StorageLocationAdapters
     {

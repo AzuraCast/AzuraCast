@@ -4,18 +4,15 @@ declare(strict_types=1);
 
 namespace App\Notification\Check;
 
+use App\Container\EnvironmentAwareTrait;
 use App\Entity\Api\Notification;
 use App\Enums\GlobalPermissions;
-use App\Environment;
 use App\Event\GetNotifications;
 use App\Session\FlashLevels;
 
 final class ProfilerAdvisorCheck
 {
-    public function __construct(
-        private readonly Environment $environment
-    ) {
-    }
+    use EnvironmentAwareTrait;
 
     public function __invoke(GetNotifications $event): void
     {

@@ -4,16 +4,17 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin;
 
+use App\Container\EnvironmentAwareTrait;
 use App\Entity;
-use App\Environment;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
 
 final class BackupsAction
 {
+    use EnvironmentAwareTrait;
+
     public function __construct(
-        private readonly Environment $environment,
         private readonly Entity\Repository\StorageLocationRepository $storageLocationRepo
     ) {
     }

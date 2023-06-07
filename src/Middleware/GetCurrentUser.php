@@ -8,12 +8,13 @@ use App\Acl;
 use App\Auth;
 use App\Container\EnvironmentAwareTrait;
 use App\Customization;
-use App\Entity;
 use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use App\Entity\Repository\UserRepository;
+use App\Entity\AuditLog;
 
 /**
  * Get the current user entity object and assign it into the request if it exists.
@@ -23,7 +24,7 @@ final class GetCurrentUser implements MiddlewareInterface
     use EnvironmentAwareTrait;
 
     public function __construct(
-        private readonly Entity\Repository\UserRepository $userRepo,
+        private readonly UserRepository $userRepo,
         private readonly Acl $acl,
         private readonly Customization $customization
     ) {
@@ -57,11 +58,11 @@ final class GetCurrentUser implements MiddlewareInterface
             ->withAttribute(ServerRequest::ATTR_ACL, $acl);
 
         // Set the Audit Log user.
-        Entity\AuditLog::setCurrentUser($user);
+        AuditLog::setCurrentUser($user);
 
         $response = $handler->handle($request);
 
-        Entity\AuditLog::setCurrentUser();
+        AuditLog::setCurrentUser();
 
         return $response;
     }

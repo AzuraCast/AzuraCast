@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Sync\Task;
 
-use App\Entity;
 use App\Event\Radio\AnnotateNextSong;
 use App\Radio\Adapters;
 use App\Radio\AutoDJ\Queue;
@@ -12,6 +11,7 @@ use App\Radio\Backend\Liquidsoap;
 use App\Radio\Enums\LiquidsoapQueues;
 use Monolog\LogRecord;
 use Psr\EventDispatcher\EventDispatcherInterface;
+use App\Entity\Station;
 
 final class QueueInterruptingTracks extends AbstractTask
 {
@@ -53,7 +53,7 @@ final class QueueInterruptingTracks extends AbstractTask
         }
     }
 
-    private function queueForStation(Entity\Station $station): void
+    private function queueForStation(Station $station): void
     {
         if (!$station->supportsAutoDjQueue()) {
             return;

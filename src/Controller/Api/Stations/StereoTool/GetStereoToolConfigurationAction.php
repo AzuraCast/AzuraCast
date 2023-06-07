@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Stations\StereoTool;
 
-use App\Entity;
 use App\Flysystem\StationFilesystems;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\OpenApi;
 use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
+use App\Entity\Api\Error;
 
 #[OA\Get(
     path: '/station/{station_id}/stereo-tool-configuration',
@@ -55,6 +55,6 @@ final class GetStereoToolConfigurationAction
         }
 
         return $response->withStatus(404)
-            ->withJson(Entity\Api\Error::notFound());
+            ->withJson(Error::notFound());
     }
 }

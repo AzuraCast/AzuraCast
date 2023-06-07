@@ -5,12 +5,14 @@ declare(strict_types=1);
 namespace App\Controller\Api\Stations\Podcasts\Episodes\Art;
 
 use App\Container\EntityManagerAwareTrait;
-use App\Entity;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\OpenApi;
 use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
+use App\Entity\Repository\PodcastEpisodeRepository;
+use App\Entity\Api\Error;
+use App\Entity\Api\Status;
 
 #[OA\Delete(
     path: '/station/{station_id}/podcast/{podcast_id}/episode/{episode_id}/art',
@@ -57,7 +59,7 @@ final class DeleteArtAction
     use EntityManagerAwareTrait;
 
     public function __construct(
-        private readonly Entity\Repository\PodcastEpisodeRepository $episodeRepo,
+        private readonly PodcastEpisodeRepository $episodeRepo,
     ) {
     }
 
@@ -73,13 +75,13 @@ final class DeleteArtAction
         $episode = $this->episodeRepo->fetchEpisodeForStation($station, $episode_id);
         if ($episode === null) {
             return $response->withStatus(404)
-                ->withJson(Entity\Api\Error::notFound());
+                ->withJson(Error::notFound());
         }
 
         $this->episodeRepo->removeEpisodeArt($episode);
         $this->em->persist($episode);
         $this->em->flush();
 
-        return $response->withJson(Entity\Api\Status::deleted());
+        return $response->withJson(Status::deleted());
     }
 }

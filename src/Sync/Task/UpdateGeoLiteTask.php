@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace App\Sync\Task;
 
-use App\Entity;
 use App\Service\IpGeolocator\GeoLite;
 use Exception;
 use GuzzleHttp\Client;
 use GuzzleHttp\RequestOptions;
 use RuntimeException;
 use Symfony\Component\Process\Process;
+use App\Entity\Repository\SettingsRepository;
 
 final class UpdateGeoLiteTask extends AbstractTask
 {
@@ -18,7 +18,7 @@ final class UpdateGeoLiteTask extends AbstractTask
 
     public function __construct(
         private readonly Client $httpClient,
-        private readonly Entity\Repository\SettingsRepository $settingsRepo
+        private readonly SettingsRepository $settingsRepo
     ) {
     }
 

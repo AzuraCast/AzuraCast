@@ -4,19 +4,23 @@ declare(strict_types=1);
 
 namespace App\Sync\Task;
 
-use App\Entity;
 use App\Nginx\ConfigWriter;
 use App\Nginx\Nginx;
 use League\Flysystem\StorageAttributes;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Throwable;
+use App\Entity\Repository\SettingsRepository;
+use App\Entity\Repository\StorageLocationRepository;
+use App\Entity\Enums\StorageLocationTypes;
+use App\Entity\StorageLocation;
+use App\Entity\Station;
 
 final class RotateLogsTask extends AbstractTask
 {
     public function __construct(
-        private readonly Entity\Repository\SettingsRepository $settingsRepo,
-        private readonly Entity\Repository\StorageLocationRepository $storageLocationRepo,
+        private readonly SettingsRepository $settingsRepo,
+        private readonly StorageLocationRepository $storageLocationRepo,
         private readonly Nginx $nginx,
     ) {
     }
@@ -63,11 +67,11 @@ final class RotateLogsTask extends AbstractTask
 
             if ($backupStorageId > 0) {
                 $storageLocation = $this->storageLocationRepo->findByType(
-                    Entity\Enums\StorageLocationTypes::Backup,
+                    StorageLocationTypes::Backup,
                     $backupStorageId
                 );
 
-                if ($storageLocation instanceof Entity\StorageLocation) {
+                if ($storageLocation instanceof StorageLocation) {
                     $this->rotateBackupStorage($storageLocation, $copiesToKeep);
                 }
             }
@@ -75,7 +79,7 @@ final class RotateLogsTask extends AbstractTask
     }
 
     private function rotateBackupStorage(
-        Entity\StorageLocation $storageLocation,
+        StorageLocation $storageLocation,
         int $copiesToKeep
     ): void {
         $fs = $this->storageLocationRepo->getAdapter($storageLocation)->getFilesystem();
@@ -104,7 +108,7 @@ final class RotateLogsTask extends AbstractTask
         }
     }
 
-    private function cleanUpIcecastLog(Entity\Station $station): void
+    private function cleanUpIcecastLog(Station $station): void
     {
         $config_path = $station->getRadioConfigDir();
 
@@ -124,7 +128,7 @@ final class RotateLogsTask extends AbstractTask
         }
     }
 
-    private function rotateHlsLog(Entity\Station $station): bool
+    private function rotateHlsLog(Station $station): bool
     {
         $hlsLogFile = ConfigWriter::getHlsLogFile($station);
         $hlsLogBackup = $hlsLogFile . '.1';

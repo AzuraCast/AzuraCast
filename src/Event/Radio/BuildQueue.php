@@ -4,14 +4,15 @@ declare(strict_types=1);
 
 namespace App\Event\Radio;
 
-use App\Entity;
 use Carbon\CarbonImmutable;
 use Carbon\CarbonInterface;
 use Symfony\Contracts\EventDispatcher\Event;
+use App\Entity\Station;
+use App\Entity\StationQueue;
 
 final class BuildQueue extends Event
 {
-    /** @var Entity\StationQueue[] */
+    /** @var \App\Entity\StationQueue[] */
     private array $nextSongs = [];
 
     private CarbonInterface $expectedCueTime;
@@ -19,7 +20,7 @@ final class BuildQueue extends Event
     private CarbonInterface $expectedPlayTime;
 
     public function __construct(
-        private readonly Entity\Station $station,
+        private readonly Station $station,
         ?CarbonInterface $expectedCueTime = null,
         ?CarbonInterface $expectedPlayTime = null,
         private readonly ?string $lastPlayedSongId = null,
@@ -29,7 +30,7 @@ final class BuildQueue extends Event
         $this->expectedPlayTime = $expectedPlayTime ?? CarbonImmutable::now($station->getTimezoneObject());
     }
 
-    public function getStation(): Entity\Station
+    public function getStation(): Station
     {
         return $this->station;
     }
@@ -55,7 +56,7 @@ final class BuildQueue extends Event
     }
 
     /**
-     * @return Entity\StationQueue[]
+     * @return \App\Entity\StationQueue[]
      */
     public function getNextSongs(): array
     {
@@ -63,10 +64,10 @@ final class BuildQueue extends Event
     }
 
     /**
-     * @param Entity\StationQueue|Entity\StationQueue[]|null $nextSongs
+     * @param \App\Entity\StationQueue|\App\Entity\StationQueue[]|null $nextSongs
      * @return bool
      */
-    public function setNextSongs(Entity\StationQueue|array|null $nextSongs): bool
+    public function setNextSongs(StationQueue|array|null $nextSongs): bool
     {
         if (null === $nextSongs) {
             return false;

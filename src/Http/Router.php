@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Http;
 
-use App\Entity;
 use App\Traits\RequestAwareTrait;
 use GuzzleHttp\Psr7\Uri;
 use GuzzleHttp\Psr7\UriResolver;
@@ -14,6 +13,7 @@ use Psr\Http\Message\UriInterface;
 use Slim\Interfaces\RouteInterface;
 use Slim\Interfaces\RouteParserInterface;
 use Slim\Routing\RouteContext;
+use App\Entity\Repository\SettingsRepository;
 
 final class Router implements RouterInterface
 {
@@ -24,7 +24,7 @@ final class Router implements RouterInterface
     private ?RouteInterface $currentRoute = null;
 
     public function __construct(
-        private readonly Entity\Repository\SettingsRepository $settingsRepo,
+        private readonly SettingsRepository $settingsRepo,
         private readonly RouteParserInterface $routeParser,
     ) {
     }

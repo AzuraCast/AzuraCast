@@ -4,13 +4,14 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Stations\StereoTool;
 
-use App\Entity;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\OpenApi;
 use App\Service\Flow;
 use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
+use App\Entity\Repository\StationRepository;
+use App\Entity\Api\Status;
 
 #[OA\Post(
     path: '/station/{station_id}/stereo-tool-configuration',
@@ -30,7 +31,7 @@ use Psr\Http\Message\ResponseInterface;
 final class PostStereoToolConfigurationAction
 {
     public function __construct(
-        private readonly Entity\Repository\StationRepository $stationRepo
+        private readonly StationRepository $stationRepo
     ) {
     }
 
@@ -48,6 +49,6 @@ final class PostStereoToolConfigurationAction
 
         $this->stationRepo->setStereoToolConfiguration($station, $flowResponse);
 
-        return $response->withJson(Entity\Api\Status::updated());
+        return $response->withJson(Status::updated());
     }
 }

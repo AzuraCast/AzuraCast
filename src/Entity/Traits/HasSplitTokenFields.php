@@ -4,20 +4,24 @@ declare(strict_types=1);
 
 namespace App\Entity\Traits;
 
-use App\Entity;
 use App\Security\SplitToken;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
+use App\Entity\Interfaces\EntityGroupsInterface;
+use App\Entity\Attributes\AuditIgnore;
 
 trait HasSplitTokenFields
 {
     #[ORM\Column(length: 16)]
     #[ORM\Id]
-    #[Groups([Entity\Interfaces\EntityGroupsInterface::GROUP_ID, Entity\Interfaces\EntityGroupsInterface::GROUP_ALL])]
+    #[Groups([
+        EntityGroupsInterface::GROUP_ID,
+        EntityGroupsInterface::GROUP_ALL,
+    ])]
     protected string $id;
 
     #[ORM\Column(length: 128)]
-    #[Entity\Attributes\AuditIgnore]
+    #[AuditIgnore]
     protected string $verifier;
 
     protected function setFromToken(SplitToken $token): void

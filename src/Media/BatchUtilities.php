@@ -6,26 +6,31 @@ namespace App\Media;
 
 use App\Container\EntityManagerAwareTrait;
 use App\Doctrine\ReadWriteBatchIteratorAggregate;
-use App\Entity;
 use App\Flysystem\ExtendedFilesystemInterface;
 use App\Utilities\File;
 use Throwable;
+use App\Entity\Repository\StationMediaRepository;
+use App\Entity\Repository\UnprocessableMediaRepository;
+use App\Entity\Repository\StorageLocationRepository;
+use App\Entity\StorageLocation;
+use App\Entity\StationMedia;
+use App\Entity\UnprocessableMedia;
 
 final class BatchUtilities
 {
     use EntityManagerAwareTrait;
 
     public function __construct(
-        private readonly Entity\Repository\StationMediaRepository $mediaRepo,
-        private readonly Entity\Repository\UnprocessableMediaRepository $unprocessableMediaRepo,
-        private readonly Entity\Repository\StorageLocationRepository $storageLocationRepo,
+        private readonly StationMediaRepository $mediaRepo,
+        private readonly UnprocessableMediaRepository $unprocessableMediaRepo,
+        private readonly StorageLocationRepository $storageLocationRepo,
     ) {
     }
 
     public function handleRename(
         string $from,
         string $to,
-        Entity\StorageLocation $storageLocation,
+        StorageLocation $storageLocation,
         ?ExtendedFilesystemInterface $fs = null
     ): void {
         $fs ??= $this->storageLocationRepo->getAdapter($storageLocation)->getFilesystem();
@@ -40,7 +45,7 @@ final class BatchUtilities
 
             foreach ($toRename as $iterator) {
                 foreach ($iterator as $record) {
-                    /** @var Entity\Interfaces\PathAwareInterface $record */
+                    /** @var \App\Entity\Interfaces\PathAwareInterface $record */
                     $record->setPath(
                         File::renameDirectoryInPath($record->getPath(), $from, $to)
                     );
@@ -50,14 +55,14 @@ final class BatchUtilities
         } else {
             $record = $this->mediaRepo->findByPath($from, $storageLocation);
 
-            if ($record instanceof Entity\StationMedia) {
+            if ($record instanceof StationMedia) {
                 $record->setPath($to);
                 $this->em->persist($record);
                 $this->em->flush();
             } else {
                 $record = $this->unprocessableMediaRepo->findByPath($from, $storageLocation);
 
-                if ($record instanceof Entity\UnprocessableMedia) {
+                if ($record instanceof UnprocessableMedia) {
                     $record->setPath($to);
                     $this->em->persist($record);
                     $this->em->flush();
@@ -69,15 +74,15 @@ final class BatchUtilities
     /**
      * @param array $files
      * @param array $directories
-     * @param Entity\StorageLocation $storageLocation
+     * @param \App\Entity\StorageLocation $storageLocation
      * @param ExtendedFilesystemInterface|null $fs
      *
-     * @return Entity\StationPlaylist[] Affected playlists
+     * @return \App\Entity\StationPlaylist[] Affected playlists
      */
     public function handleDelete(
         array $files,
         array $directories,
-        Entity\StorageLocation $storageLocation,
+        StorageLocation $storageLocation,
         ?ExtendedFilesystemInterface $fs = null
     ): array {
         $fs ??= $this->storageLocationRepo->getAdapter($storageLocation)->getFilesystem();
@@ -120,12 +125,12 @@ final class BatchUtilities
      *
      * @note This function flushes the entity manager.
      *
-     * @param Entity\StorageLocation $storageLocation
+     * @param \App\Entity\StorageLocation $storageLocation
      * @param array $paths
      *
-     * @return iterable|Entity\StationMedia[]
+     * @return iterable|\App\Entity\StationMedia[]
      */
-    public function iterateMedia(Entity\StorageLocation $storageLocation, array $paths): iterable
+    public function iterateMedia(StorageLocation $storageLocation, array $paths): iterable
     {
         return ReadWriteBatchIteratorAggregate::fromTraversableResult(
             $this->mediaRepo->iteratePaths($paths, $storageLocation),
@@ -135,17 +140,17 @@ final class BatchUtilities
     }
 
     /**
-     * @param Entity\StorageLocation $storageLocation
+     * @param \App\Entity\StorageLocation $storageLocation
      * @param string $dir
      *
-     * @return iterable|Entity\StationMedia[]
+     * @return iterable|\App\Entity\StationMedia[]
      */
-    public function iterateMediaInDirectory(Entity\StorageLocation $storageLocation, string $dir): iterable
+    public function iterateMediaInDirectory(StorageLocation $storageLocation, string $dir): iterable
     {
         $query = $this->em->createQuery(
             <<<'DQL'
                 SELECT sm
-                FROM App\Entity\StationMedia sm
+                FROM App\\App\Entity\StationMedia sm
                 WHERE sm.storage_location = :storageLocation
                 AND sm.path LIKE :path
             DQL
@@ -160,12 +165,12 @@ final class BatchUtilities
      *
      * @note This function flushes the entity manager.
      *
-     * @param Entity\StorageLocation $storageLocation
+     * @param \App\Entity\StorageLocation $storageLocation
      * @param array $paths
      *
-     * @return iterable|Entity\UnprocessableMedia[]
+     * @return iterable|\App\Entity\UnprocessableMedia[]
      */
-    public function iterateUnprocessableMedia(Entity\StorageLocation $storageLocation, array $paths): iterable
+    public function iterateUnprocessableMedia(StorageLocation $storageLocation, array $paths): iterable
     {
         return ReadWriteBatchIteratorAggregate::fromTraversableResult(
             $this->unprocessableMediaRepo->iteratePaths($paths, $storageLocation),
@@ -175,19 +180,19 @@ final class BatchUtilities
     }
 
     /**
-     * @param Entity\StorageLocation $storageLocation
+     * @param \App\Entity\StorageLocation $storageLocation
      * @param string $dir
      *
-     * @return iterable|Entity\UnprocessableMedia[]
+     * @return iterable|\App\Entity\UnprocessableMedia[]
      */
     public function iterateUnprocessableMediaInDirectory(
-        Entity\StorageLocation $storageLocation,
+        StorageLocation $storageLocation,
         string $dir
     ): iterable {
         $query = $this->em->createQuery(
             <<<'DQL'
                 SELECT upm
-                FROM App\Entity\UnprocessableMedia upm
+                FROM App\\App\Entity\UnprocessableMedia upm
                 WHERE upm.storage_location = :storageLocation
                 AND upm.path LIKE :path
             DQL
@@ -198,21 +203,21 @@ final class BatchUtilities
     }
 
     /**
-     * @param Entity\StorageLocation $storageLocation
+     * @param \App\Entity\StorageLocation $storageLocation
      * @param string $dir
      *
-     * @return iterable|Entity\StationPlaylistFolder[]
+     * @return iterable|\App\Entity\StationPlaylistFolder[]
      */
     public function iteratePlaylistFoldersInDirectory(
-        Entity\StorageLocation $storageLocation,
+        StorageLocation $storageLocation,
         string $dir
     ): iterable {
         $query = $this->em->createQuery(
             <<<'DQL'
                 SELECT spf
-                FROM App\Entity\StationPlaylistFolder spf
+                FROM App\\App\Entity\StationPlaylistFolder spf
                 WHERE spf.station IN (
-                  SELECT s FROM App\Entity\Station s
+                  SELECT s FROM App\\App\Entity\Station s
                   WHERE s.media_storage_location = :storageLocation
                 )
                 AND spf.path LIKE :path

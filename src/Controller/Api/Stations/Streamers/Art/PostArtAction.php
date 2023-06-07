@@ -4,16 +4,17 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Stations\Streamers\Art;
 
-use App\Entity;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Service\Flow;
 use Psr\Http\Message\ResponseInterface;
+use App\Entity\Repository\StationStreamerRepository;
+use App\Entity\Api\Status;
 
 final class PostArtAction
 {
     public function __construct(
-        private readonly Entity\Repository\StationStreamerRepository $streamerRepo,
+        private readonly StationStreamerRepository $streamerRepo,
     ) {
     }
 
@@ -41,7 +42,7 @@ final class PostArtAction
             $this->streamerRepo->getEntityManager()
                 ->flush();
 
-            return $response->withJson(Entity\Api\Status::updated());
+            return $response->withJson(Status::updated());
         }
 
         return $response->withJson($flowResponse);

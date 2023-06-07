@@ -5,19 +5,20 @@ declare(strict_types=1);
 namespace App\Controller\Frontend\Account;
 
 use App\Container\EntityManagerAwareTrait;
-use App\Entity;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use InvalidArgumentException;
 use Psr\Http\Message\ResponseInterface;
 use Throwable;
+use App\Entity\Repository\UserLoginTokenRepository;
+use App\Entity\User;
 
 final class RecoverAction
 {
     use EntityManagerAwareTrait;
 
     public function __construct(
-        private readonly Entity\Repository\UserLoginTokenRepository $loginTokenRepo,
+        private readonly UserLoginTokenRepository $loginTokenRepo,
     ) {
     }
 
@@ -29,7 +30,7 @@ final class RecoverAction
         $user = $this->loginTokenRepo->authenticate($token);
         $flash = $request->getFlash();
 
-        if (!$user instanceof Entity\User) {
+        if (!$user instanceof User) {
             $flash->error(
                 sprintf(
                     '<b>%s</b>',

@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace App\Media\AlbumArtHandler;
 
 use App\Container\LoggerAwareTrait;
-use App\Entity;
 use App\Event\Media\GetAlbumArt;
 use App\Exception\RateLimitExceededException;
 use RuntimeException;
 use Throwable;
+use App\Entity\Interfaces\SongInterface;
 
 abstract class AbstractAlbumArtHandler
 {
@@ -68,5 +68,5 @@ abstract class AbstractAlbumArtHandler
 
     abstract protected function getServiceName(): string;
 
-    abstract protected function getAlbumArt(Entity\Interfaces\SongInterface $song): ?string;
+    abstract protected function getAlbumArt(SongInterface $song): ?string;
 }

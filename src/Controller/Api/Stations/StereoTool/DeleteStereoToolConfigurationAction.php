@@ -4,12 +4,13 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Stations\StereoTool;
 
-use App\Entity;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\OpenApi;
 use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
+use App\Entity\Repository\StationRepository;
+use App\Entity\Api\Status;
 
 #[OA\Delete(
     path: '/station/{station_id}/stereo-tool-configuration',
@@ -29,7 +30,7 @@ use Psr\Http\Message\ResponseInterface;
 final class DeleteStereoToolConfigurationAction
 {
     public function __construct(
-        private readonly Entity\Repository\StationRepository $stationRepo
+        private readonly StationRepository $stationRepo
     ) {
     }
 
@@ -42,6 +43,6 @@ final class DeleteStereoToolConfigurationAction
 
         $this->stationRepo->clearStereoToolConfiguration($station);
 
-        return $response->withJson(Entity\Api\Status::deleted());
+        return $response->withJson(Status::deleted());
     }
 }

@@ -4,12 +4,16 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Stations\Podcasts\Episodes\Media;
 
-use App\Entity;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\OpenApi;
 use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
+use App\Entity\Repository\PodcastEpisodeRepository;
+use App\Entity\PodcastEpisode;
+use App\Entity\Api\Error;
+use App\Entity\PodcastMedia;
+use App\Entity\Api\Status;
 
 #[OA\Delete(
     path: '/station/{station_id}/podcast/{podcast_id}/episode/{episode_id}/media',
@@ -43,7 +47,7 @@ use Psr\Http\Message\ResponseInterface;
 final class DeleteMediaAction
 {
     public function __construct(
-        private readonly Entity\Repository\PodcastEpisodeRepository $episodeRepo,
+        private readonly PodcastEpisodeRepository $episodeRepo,
     ) {
     }
 
@@ -57,17 +61,17 @@ final class DeleteMediaAction
         $station = $request->getStation();
         $episode = $this->episodeRepo->fetchEpisodeForStation($station, $episode_id);
 
-        if (!($episode instanceof Entity\PodcastEpisode)) {
+        if (!($episode instanceof PodcastEpisode)) {
             return $response->withStatus(404)
-                ->withJson(Entity\Api\Error::notFound());
+                ->withJson(Error::notFound());
         }
 
         $podcastMedia = $episode->getMedia();
 
-        if ($podcastMedia instanceof Entity\PodcastMedia) {
+        if ($podcastMedia instanceof PodcastMedia) {
             $this->episodeRepo->deleteMedia($podcastMedia);
         }
 
-        return $response->withJson(Entity\Api\Status::deleted());
+        return $response->withJson(Status::deleted());
     }
 }

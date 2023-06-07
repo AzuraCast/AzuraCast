@@ -4,17 +4,17 @@ declare(strict_types=1);
 
 namespace App\Controller\Stations;
 
-use App\Entity;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Service\AzuraCastCentral;
 use Psr\Http\Message\ResponseInterface;
+use App\Entity\Repository\SettingsRepository;
 
 final class StreamersAction
 {
     public function __construct(
         private readonly AzuraCastCentral $acCentral,
-        private readonly Entity\Repository\SettingsRepository $settingsRepo
+        private readonly SettingsRepository $settingsRepo
     ) {
     }
 

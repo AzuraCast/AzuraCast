@@ -4,16 +4,16 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Stations\Files;
 
-use App\Entity;
 use App\Flysystem\StationFilesystems;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
+use App\Entity\Repository\StationMediaRepository;
 
 final class PlayAction
 {
     public function __construct(
-        private readonly Entity\Repository\StationMediaRepository $mediaRepo,
+        private readonly StationMediaRepository $mediaRepo,
         private readonly StationFilesystems $stationFilesystems
     ) {
     }

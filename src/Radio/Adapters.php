@@ -5,13 +5,14 @@ declare(strict_types=1);
 namespace App\Radio;
 
 use App\Container\ContainerAwareTrait;
-use App\Entity;
 use App\Exception\NotFoundException;
 use App\Radio\Backend\Liquidsoap;
 use App\Radio\Enums\AdapterTypeInterface;
 use App\Radio\Enums\BackendAdapters;
 use App\Radio\Enums\FrontendAdapters;
 use App\Radio\Enums\RemoteAdapters;
+use App\Entity\Station;
+use App\Entity\StationRemote;
 
 /**
  * Manager class for radio adapters.
@@ -20,7 +21,7 @@ final class Adapters
 {
     use ContainerAwareTrait;
 
-    public function getFrontendAdapter(Entity\Station $station): ?Frontend\AbstractFrontend
+    public function getFrontendAdapter(Station $station): ?Frontend\AbstractFrontend
     {
         $className = $station->getFrontendType()->getClass();
 
@@ -38,7 +39,7 @@ final class Adapters
         return $this->listAdaptersFromEnum(FrontendAdapters::cases(), $checkInstalled);
     }
 
-    public function getBackendAdapter(Entity\Station $station): ?Liquidsoap
+    public function getBackendAdapter(Station $station): ?Liquidsoap
     {
         $className = $station->getBackendType()->getClass();
 
@@ -56,7 +57,7 @@ final class Adapters
         return $this->listAdaptersFromEnum(BackendAdapters::cases(), $checkInstalled);
     }
 
-    public function getRemoteAdapter(Entity\StationRemote $remote): Remote\AbstractRemote
+    public function getRemoteAdapter(StationRemote $remote): Remote\AbstractRemote
     {
         $class_name = $remote->getType()->getClass();
         if ($this->di->has($class_name)) {

@@ -4,16 +4,17 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Stations\Streamers\Art;
 
-use App\Entity;
 use App\Flysystem\StationFilesystems;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
+use App\Entity\Repository\StationRepository;
+use App\Entity\StationStreamer;
 
 final class GetArtAction
 {
     public function __construct(
-        private readonly Entity\Repository\StationRepository $stationRepo,
+        private readonly StationRepository $stationRepo,
     ) {
     }
 
@@ -28,7 +29,7 @@ final class GetArtAction
 
         $station = $request->getStation();
 
-        $artworkPath = Entity\StationStreamer::getArtworkPath($id);
+        $artworkPath = StationStreamer::getArtworkPath($id);
 
         $fsConfig = StationFilesystems::buildConfigFilesystem($station);
         if ($fsConfig->fileExists($artworkPath)) {

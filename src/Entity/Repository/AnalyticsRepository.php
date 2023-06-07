@@ -5,13 +5,14 @@ declare(strict_types=1);
 namespace App\Entity\Repository;
 
 use App\Doctrine\Repository;
-use App\Entity;
 use App\Utilities\DateRange;
 use Carbon\CarbonImmutable;
 use Carbon\CarbonInterface;
+use App\Entity\Station;
+use App\Entity\Enums\AnalyticsIntervals;
 
 /**
- * @extends Repository<Entity\Analytics>
+ * @extends Repository<\App\Entity\Analytics>
  */
 final class AnalyticsRepository extends Repository
 {
@@ -19,13 +20,13 @@ final class AnalyticsRepository extends Repository
      * @return mixed[]
      */
     public function findForStationInRange(
-        Entity\Station $station,
+        Station $station,
         DateRange $dateRange,
-        Entity\Enums\AnalyticsIntervals $type = Entity\Enums\AnalyticsIntervals::Daily
+        AnalyticsIntervals $type = AnalyticsIntervals::Daily
     ): array {
         return $this->em->createQuery(
             <<<'DQL'
-                SELECT a FROM App\Entity\Analytics a
+                SELECT a FROM App\\App\Entity\Analytics a
                 WHERE a.station = :station AND a.type = :type AND a.moment BETWEEN :start AND :end
             DQL
         )->setParameter('station', $station)
@@ -39,7 +40,7 @@ final class AnalyticsRepository extends Repository
     {
         $this->em->createQuery(
             <<<'DQL'
-                DELETE FROM App\Entity\Analytics a
+                DELETE FROM App\\App\Entity\Analytics a
             DQL
         )->execute();
     }
@@ -51,23 +52,23 @@ final class AnalyticsRepository extends Repository
 
         $this->em->createQuery(
             <<<'DQL'
-                DELETE FROM App\Entity\Analytics a
+                DELETE FROM App\\App\Entity\Analytics a
                 WHERE a.type = :type AND a.moment <= :threshold
             DQL
-        )->setParameter('type', Entity\Enums\AnalyticsIntervals::Hourly)
+        )->setParameter('type', AnalyticsIntervals::Hourly)
             ->setParameter('threshold', $hourlyRetention)
             ->execute();
     }
 
     public function clearSingleMetric(
-        Entity\Enums\AnalyticsIntervals $type,
+        AnalyticsIntervals $type,
         CarbonInterface $moment,
-        ?Entity\Station $station = null
+        ?Station $station = null
     ): void {
         if (null === $station) {
             $this->em->createQuery(
                 <<<'DQL'
-                    DELETE FROM App\Entity\Analytics a
+                    DELETE FROM App\\App\Entity\Analytics a
                     WHERE a.station IS NULL AND a.type = :type AND a.moment = :moment
                 DQL
             )->setParameter('type', $type)
@@ -76,7 +77,7 @@ final class AnalyticsRepository extends Repository
         } else {
             $this->em->createQuery(
                 <<<'DQL'
-                    DELETE FROM App\Entity\Analytics a
+                    DELETE FROM App\\App\Entity\Analytics a
                     WHERE a.station = :station AND a.type = :type AND a.moment = :moment
                 DQL
             )->setParameter('station', $station)

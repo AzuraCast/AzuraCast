@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Radio\AutoDJ;
 
 use App\Container\LoggerAwareTrait;
-use App\Entity;
+use App\Entity\Api\StationPlaylistQueue;
 
 final class DuplicatePrevention
 {
@@ -23,7 +23,7 @@ final class DuplicatePrevention
     ];
 
     /**
-     * @param Entity\Api\StationPlaylistQueue[] $eligibleTracks
+     * @param \App\Entity\Api\StationPlaylistQueue[] $eligibleTracks
      * @param array $playedTracks
      * @param bool $allowDuplicates Whether to return a media ID even if duplicates can't be prevented.
      */
@@ -31,7 +31,7 @@ final class DuplicatePrevention
         array $eligibleTracks = [],
         array $playedTracks = [],
         bool $allowDuplicates = false
-    ): ?Entity\Api\StationPlaylistQueue {
+    ): ?StationPlaylistQueue {
         if (empty($eligibleTracks)) {
             $this->logger->debug('Eligible song queue is empty!');
             return null;
@@ -47,7 +47,7 @@ final class DuplicatePrevention
             }
         }
 
-        /** @var Entity\Api\StationPlaylistQueue[] $notPlayedEligibleTracks */
+        /** @var \App\Entity\Api\StationPlaylistQueue[] $notPlayedEligibleTracks */
         $notPlayedEligibleTracks = [];
 
         foreach ($eligibleTracks as $mediaId => $track) {
@@ -75,7 +75,7 @@ final class DuplicatePrevention
 
         // If we reach this point, there's no way to avoid a duplicate title and artist.
         if ($allowDuplicates) {
-            /** @var Entity\Api\StationPlaylistQueue[] $mediaIdsByTimePlayed */
+            /** @var \App\Entity\Api\StationPlaylistQueue[] $mediaIdsByTimePlayed */
             $mediaIdsByTimePlayed = [];
 
             // For each piece of eligible media, get its latest played timestamp.
@@ -114,14 +114,14 @@ final class DuplicatePrevention
      * Both should be in the form of an array, i.e.:
      *  [ 'id' => ['artist' => 'Foo', 'title' => 'Fighters'] ]
      *
-     * @param Entity\Api\StationPlaylistQueue[] $eligibleTracks
+     * @param \App\Entity\Api\StationPlaylistQueue[] $eligibleTracks
      * @param array $playedTracks
      *
      */
     public function getDistinctTrack(
         array $eligibleTracks,
         array $playedTracks
-    ): ?Entity\Api\StationPlaylistQueue {
+    ): ?StationPlaylistQueue {
         $artists = [];
         $titles = [];
         foreach ($playedTracks as $playedTrack) {

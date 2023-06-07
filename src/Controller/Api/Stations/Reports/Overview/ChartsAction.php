@@ -4,18 +4,21 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Stations\Reports\Overview;
 
-use App\Entity;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use Carbon\CarbonImmutable;
 use Psr\Http\Message\ResponseInterface;
 use stdClass;
+use App\Entity\Repository\AnalyticsRepository;
+use App\Entity\Repository\SettingsRepository;
+use App\Entity\Api\Status;
+use App\Entity\Enums\AnalyticsIntervals;
 
 final class ChartsAction extends AbstractReportAction
 {
     public function __construct(
-        private readonly Entity\Repository\AnalyticsRepository $analyticsRepo,
-        Entity\Repository\SettingsRepository $settingsRepo,
+        private readonly AnalyticsRepository $analyticsRepo,
+        SettingsRepository $settingsRepo,
     ) {
         parent::__construct($settingsRepo);
     }
@@ -28,7 +31,7 @@ final class ChartsAction extends AbstractReportAction
         // Get current analytics level.
         if (!$this->isAnalyticsEnabled()) {
             return $response->withStatus(400)
-                ->withJson(new Entity\Api\Status(false, 'Reporting is restricted due to system analytics level.'));
+                ->withJson(new Status(false, 'Reporting is restricted due to system analytics level.'));
         }
 
         $station = $request->getStation();
@@ -141,7 +144,7 @@ final class ChartsAction extends AbstractReportAction
         $hourlyStats = $this->analyticsRepo->findForStationInRange(
             $station,
             $dateRange,
-            Entity\Enums\AnalyticsIntervals::Hourly
+            AnalyticsIntervals::Hourly
         );
 
         $totals_by_hour = [];

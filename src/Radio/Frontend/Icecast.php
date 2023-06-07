@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Radio\Frontend;
 
-use App\Entity;
 use App\Radio\Enums\StreamFormats;
 use App\Service\Acme;
 use App\Utilities;
@@ -15,6 +14,7 @@ use NowPlaying\Result\Result;
 use Psr\Http\Message\UriInterface;
 use Supervisor\Exception\SupervisorException as SupervisorLibException;
 use Symfony\Component\Filesystem\Path;
+use App\Entity\Station;
 
 final class Icecast extends AbstractFrontend
 {
@@ -23,7 +23,7 @@ final class Icecast extends AbstractFrontend
     public const LOGLEVEL_WARN = 2;
     public const LOGLEVEL_ERROR = 1;
 
-    public function reload(Entity\Station $station): void
+    public function reload(Station $station): void
     {
         if ($this->hasCommand($station)) {
             $program_name = $this->getSupervisorFullName($station);
@@ -40,7 +40,7 @@ final class Icecast extends AbstractFrontend
         }
     }
 
-    public function getNowPlaying(Entity\Station $station, bool $includeClients = true): Result
+    public function getNowPlaying(Station $station, bool $includeClients = true): Result
     {
         $feConfig = $station->getFrontendConfig();
         $radioPort = $feConfig->getPort();
@@ -101,12 +101,12 @@ final class Icecast extends AbstractFrontend
         return $defaultResult;
     }
 
-    public function getConfigurationPath(Entity\Station $station): ?string
+    public function getConfigurationPath(Station $station): ?string
     {
         return $station->getRadioConfigDir() . '/icecast.xml';
     }
 
-    public function getCurrentConfiguration(Entity\Station $station): ?string
+    public function getCurrentConfiguration(Station $station): ?string
     {
         $frontendConfig = $station->getFrontendConfig();
         $configDir = $station->getRadioConfigDir();
@@ -179,7 +179,7 @@ final class Icecast extends AbstractFrontend
         $useListenerAuth = !empty($bannedCountries) || !empty($allowedIps);
 
         foreach ($station->getMounts() as $mount_row) {
-            /** @var Entity\StationMount $mount_row */
+            /** @var \App\Entity\StationMount $mount_row */
 
             $mount = [
                 '@type' => 'normal',
@@ -297,7 +297,7 @@ final class Icecast extends AbstractFrontend
         return substr($configString, strpos($configString, "\n") + 1);
     }
 
-    public function getCommand(Entity\Station $station): ?string
+    public function getCommand(Station $station): ?string
     {
         if ($binary = $this->getBinary()) {
             return $binary . ' -c ' . $this->getConfigurationPath($station);
@@ -324,7 +324,7 @@ final class Icecast extends AbstractFrontend
         return null;
     }
 
-    public function getAdminUrl(Entity\Station $station, UriInterface $base_url = null): UriInterface
+    public function getAdminUrl(Station $station, UriInterface $base_url = null): UriInterface
     {
         $public_url = $this->getPublicUrl($station, $base_url);
         return $public_url

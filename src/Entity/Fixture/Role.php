@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Entity\Fixture;
 
-use App\Entity;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Persistence\ObjectManager;
 
@@ -12,10 +11,10 @@ final class Role extends AbstractFixture
 {
     public function load(ObjectManager $manager): void
     {
-        $admin_role = new Entity\Role();
+        $admin_role = new \App\Entity\Role();
         $admin_role->setName('Super Administrator');
 
-        $demo_role = new Entity\Role();
+        $demo_role = new \App\Entity\Role();
         $demo_role->setName('Demo Account');
 
         $manager->persist($admin_role);

@@ -5,18 +5,19 @@ declare(strict_types=1);
 namespace App\Notification\Check;
 
 use App\Container\EnvironmentAwareTrait;
-use App\Entity;
 use App\Enums\GlobalPermissions;
 use App\Event\GetNotifications;
 use App\Session\FlashLevels;
 use Carbon\CarbonImmutable;
+use App\Entity\Repository\SettingsRepository;
+use App\Entity\Api\Notification;
 
 final class RecentBackupCheck
 {
     use EnvironmentAwareTrait;
 
     public function __construct(
-        private readonly Entity\Repository\SettingsRepository $settingsRepo
+        private readonly SettingsRepository $settingsRepo
     ) {
     }
 
@@ -46,7 +47,7 @@ final class RecentBackupCheck
         $backupLastRun = $settings->getBackupLastRun();
 
         if ($backupLastRun < $threshold) {
-            $notification = new Entity\Api\Notification();
+            $notification = new Notification();
             $notification->title = __('Installation Not Recently Backed Up');
             $notification->body = __('This installation has not been backed up in the last two weeks.');
             $notification->type = FlashLevels::Info->value;

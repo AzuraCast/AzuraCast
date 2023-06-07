@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Controller\Api\Stations\Streamers;
 
 use App\Controller\Api\AbstractApiCrudController;
-use App\Entity;
 use App\Flysystem\StationFilesystems;
 use App\Http\Response;
 use App\Http\ServerRequest;
@@ -14,13 +13,18 @@ use App\Utilities\File;
 use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use App\Entity\StationStreamerBroadcast;
+use App\Entity\Api\Error;
+use App\Entity\Api\Status;
+use App\Entity\Station;
+use App\Entity\StationStreamer;
 
 /**
- * @extends AbstractApiCrudController<Entity\StationStreamerBroadcast>
+ * @extends AbstractApiCrudController<\App\Entity\StationStreamerBroadcast>
  */
 final class BroadcastsController extends AbstractApiCrudController
 {
-    protected string $entityClass = Entity\StationStreamerBroadcast::class;
+    protected string $entityClass = StationStreamerBroadcast::class;
 
     public function __construct(
         private readonly StationFilesystems $stationFilesystems,
@@ -43,13 +47,13 @@ final class BroadcastsController extends AbstractApiCrudController
 
             if (null === $streamer) {
                 return $response->withStatus(404)
-                    ->withJson(Entity\Api\Error::notFound());
+                    ->withJson(Error::notFound());
             }
 
             $query = $this->em->createQuery(
                 <<<'DQL'
                     SELECT ssb
-                    FROM App\Entity\StationStreamerBroadcast ssb
+                    FROM App\\App\Entity\StationStreamerBroadcast ssb
                     WHERE ssb.station = :station AND ssb.streamer = :streamer
                     ORDER BY ssb.timestampStart DESC
                 DQL
@@ -59,7 +63,7 @@ final class BroadcastsController extends AbstractApiCrudController
             $query = $this->em->createQuery(
                 <<<'DQL'
                     SELECT ssb, ss
-                    FROM App\Entity\StationStreamerBroadcast ssb
+                    FROM App\\App\Entity\StationStreamerBroadcast ssb
                     JOIN ssb.streamer ss
                     WHERE ssb.station = :station
                     ORDER BY ssb.timestampStart DESC
@@ -139,14 +143,14 @@ final class BroadcastsController extends AbstractApiCrudController
 
         if (null === $broadcast) {
             return $response->withStatus(404)
-                ->withJson(Entity\Api\Error::notFound());
+                ->withJson(Error::notFound());
         }
 
         $recordingPath = $broadcast->getRecordingPath();
 
         if (empty($recordingPath)) {
             return $response->withStatus(400)
-                ->withJson(new Entity\Api\Error(400, __('No recording available.')));
+                ->withJson(new Error(400, __('No recording available.')));
         }
 
         $filename = basename($recordingPath);
@@ -172,7 +176,7 @@ final class BroadcastsController extends AbstractApiCrudController
 
         if (null === $broadcast) {
             return $response->withStatus(404)
-                ->withJson(Entity\Api\Error::notFound());
+                ->withJson(Error::notFound());
         }
 
         $recordingPath = $broadcast->getRecordingPath();
@@ -185,13 +189,13 @@ final class BroadcastsController extends AbstractApiCrudController
         $this->em->remove($broadcast);
         $this->em->flush();
 
-        return $response->withJson(Entity\Api\Status::deleted());
+        return $response->withJson(Status::deleted());
     }
 
-    private function getRecord(Entity\Station $station, int|string $id): ?Entity\StationStreamerBroadcast
+    private function getRecord(Station $station, int|string $id): ?StationStreamerBroadcast
     {
-        /** @var Entity\StationStreamerBroadcast|null $broadcast */
-        $broadcast = $this->em->getRepository(Entity\StationStreamerBroadcast::class)->findOneBy(
+        /** @var \App\Entity\StationStreamerBroadcast|null $broadcast */
+        $broadcast = $this->em->getRepository(StationStreamerBroadcast::class)->findOneBy(
             [
                 'id' => (int)$id,
                 'station' => $station,
@@ -200,10 +204,10 @@ final class BroadcastsController extends AbstractApiCrudController
         return $broadcast;
     }
 
-    private function getStreamer(Entity\Station $station, int|string $id): ?Entity\StationStreamer
+    private function getStreamer(Station $station, int|string $id): ?StationStreamer
     {
-        /** @var Entity\StationStreamer|null $streamer */
-        $streamer = $this->em->getRepository(Entity\StationStreamer::class)->findOneBy(
+        /** @var \App\Entity\StationStreamer|null $streamer */
+        $streamer = $this->em->getRepository(StationStreamer::class)->findOneBy(
             [
                 'id' => (int)$id,
                 'station' => $station,

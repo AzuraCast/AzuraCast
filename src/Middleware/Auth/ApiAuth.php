@@ -7,7 +7,6 @@ namespace App\Middleware\Auth;
 use App\Acl;
 use App\Auth;
 use App\Customization;
-use App\Entity;
 use App\Exception\CsrfValidationException;
 use App\Http\ServerRequest;
 use App\Security\SplitToken;
@@ -15,14 +14,17 @@ use App\Session\Csrf;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use App\Entity\Repository\ApiKeyRepository;
+use App\Entity\Repository\UserRepository;
+use App\Entity\User;
 
 final class ApiAuth extends AbstractAuth
 {
     public const API_CSRF_NAMESPACE = 'api';
 
     public function __construct(
-        protected Entity\Repository\ApiKeyRepository $apiKeyRepo,
-        Entity\Repository\UserRepository $userRepo,
+        protected ApiKeyRepository $apiKeyRepo,
+        UserRepository $userRepo,
         Acl $acl,
         Customization $customization
     ) {
@@ -39,7 +41,7 @@ final class ApiAuth extends AbstractAuth
         return parent::process($request, $handler);
     }
 
-    private function getApiUser(ServerRequestInterface $request): ?Entity\User
+    private function getApiUser(ServerRequestInterface $request): ?User
     {
         $apiKey = $this->getApiKey($request);
 

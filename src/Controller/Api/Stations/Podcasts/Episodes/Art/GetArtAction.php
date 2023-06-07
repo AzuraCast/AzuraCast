@@ -4,13 +4,15 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Stations\Podcasts\Episodes\Art;
 
-use App\Entity;
 use App\Flysystem\StationFilesystems;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\OpenApi;
 use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
+use App\Entity\Repository\StationRepository;
+use App\Entity\PodcastEpisode;
+use App\Entity\Podcast;
 
 #[OA\Get(
     path: '/station/{station_id}/podcast/{podcast_id}/episode/{episode_id}/art',
@@ -47,7 +49,7 @@ use Psr\Http\Message\ResponseInterface;
 final class GetArtAction
 {
     public function __construct(
-        private readonly Entity\Repository\StationRepository $stationRepo,
+        private readonly StationRepository $stationRepo,
         private readonly StationFilesystems $stationFilesystems
     ) {
     }
@@ -64,7 +66,7 @@ final class GetArtAction
         // If a timestamp delimiter is added, strip it automatically.
         $episode_id = explode('|', $episode_id, 2)[0];
 
-        $episodeArtPath = Entity\PodcastEpisode::getArtPath($episode_id);
+        $episodeArtPath = PodcastEpisode::getArtPath($episode_id);
 
         $fsPodcasts = $this->stationFilesystems->getPodcastsFilesystem($station);
         if ($fsPodcasts->fileExists($episodeArtPath)) {
@@ -72,7 +74,7 @@ final class GetArtAction
                 ->streamFilesystemFile($fsPodcasts, $episodeArtPath, null, 'inline', false);
         }
 
-        $podcastArtPath = Entity\Podcast::getArtPath($podcast_id);
+        $podcastArtPath = Podcast::getArtPath($podcast_id);
 
         if ($fsPodcasts->fileExists($podcastArtPath)) {
             return $response->withCacheLifetime(Response::CACHE_ONE_DAY)

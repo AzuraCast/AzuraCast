@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace App\Radio\Frontend;
 
-use App\Entity;
 use App\Service\Acme;
 use GuzzleHttp\Promise\Utils;
 use NowPlaying\Result\Result;
 use Psr\Http\Message\UriInterface;
 use Symfony\Component\Process\Process;
+use App\Entity\Station;
 
 final class Shoutcast extends AbstractFrontend
 {
@@ -44,7 +44,7 @@ final class Shoutcast extends AbstractFrontend
             : null;
     }
 
-    public function getNowPlaying(Entity\Station $station, bool $includeClients = true): Result
+    public function getNowPlaying(Station $station, bool $includeClients = true): Result
     {
         $feConfig = $station->getFrontendConfig();
         $radioPort = $feConfig->getPort();
@@ -107,12 +107,12 @@ final class Shoutcast extends AbstractFrontend
         return $defaultResult;
     }
 
-    public function getConfigurationPath(Entity\Station $station): ?string
+    public function getConfigurationPath(Station $station): ?string
     {
         return $station->getRadioConfigDir() . '/sc_serv.conf';
     }
 
-    public function getCurrentConfiguration(Entity\Station $station): ?string
+    public function getCurrentConfiguration(Station $station): ?string
     {
         $configPath = $station->getRadioConfigDir();
         $frontendConfig = $station->getFrontendConfig();
@@ -155,7 +155,7 @@ final class Shoutcast extends AbstractFrontend
 
         $i = 0;
         foreach ($station->getMounts() as $mount_row) {
-            /** @var Entity\StationMount $mount_row */
+            /** @var \App\Entity\StationMount $mount_row */
             $i++;
             $config['streamid_' . $i] = $i;
             $config['streampath_' . $i] = $mount_row->getName();
@@ -186,7 +186,7 @@ final class Shoutcast extends AbstractFrontend
         return $configFileOutput;
     }
 
-    public function getCommand(Entity\Station $station): ?string
+    public function getCommand(Station $station): ?string
     {
         if ($binary = $this->getBinary()) {
             return $binary . ' ' . $this->getConfigurationPath($station);
@@ -194,7 +194,7 @@ final class Shoutcast extends AbstractFrontend
         return null;
     }
 
-    public function getAdminUrl(Entity\Station $station, UriInterface $base_url = null): UriInterface
+    public function getAdminUrl(Station $station, UriInterface $base_url = null): UriInterface
     {
         $public_url = $this->getPublicUrl($station, $base_url);
         return $public_url
@@ -202,7 +202,7 @@ final class Shoutcast extends AbstractFrontend
     }
 
     protected function writeIpBansFile(
-        Entity\Station $station,
+        Station $station,
         string $fileName = 'sc_serv.ban',
         string $ipsSeparator = ";255;\n"
     ): string {

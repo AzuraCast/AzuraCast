@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace App\Sync\Task;
 
-use App\Entity;
+use App\Entity\Repository\UserLoginTokenRepository;
 
 final class CleanupLoginTokensTask extends AbstractTask
 {
     public function __construct(
-        private readonly Entity\Repository\UserLoginTokenRepository $loginTokenRepo,
+        private readonly UserLoginTokenRepository $loginTokenRepo,
     ) {
     }
 

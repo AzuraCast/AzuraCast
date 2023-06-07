@@ -4,17 +4,17 @@ declare(strict_types=1);
 
 namespace App\Controller\Frontend\PublicPages;
 
-use App\Entity;
 use App\Exception\StationNotFoundException;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\VueComponent\NowPlayingComponent;
 use Psr\Http\Message\ResponseInterface;
+use App\Entity\Repository\CustomFieldRepository;
 
 final class PlayerAction
 {
     public function __construct(
-        private readonly Entity\Repository\CustomFieldRepository $customFieldRepo,
+        private readonly CustomFieldRepository $customFieldRepo,
         private readonly NowPlayingComponent $nowPlayingComponent
     ) {
     }

@@ -5,13 +5,14 @@ declare(strict_types=1);
 namespace App\Controller\Frontend\Account;
 
 use App\Container\EntityManagerAwareTrait;
-use App\Entity;
 use App\Exception\RateLimitExceededException;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\RateLimit;
 use Mezzio\Session\SessionCookiePersistenceInterface;
 use Psr\Http\Message\ResponseInterface;
+use App\Entity\Repository\SettingsRepository;
+use App\Entity\User;
 
 final class LoginAction
 {
@@ -19,7 +20,7 @@ final class LoginAction
 
     public function __construct(
         private readonly RateLimit $rateLimit,
-        private readonly Entity\Repository\SettingsRepository $settingsRepo
+        private readonly SettingsRepository $settingsRepo
     ) {
     }
 
@@ -36,7 +37,7 @@ final class LoginAction
         if (!$settings->isSetupComplete()) {
             $num_users = (int)$this->em->createQuery(
                 <<<'DQL'
-                    SELECT COUNT(u.id) FROM App\Entity\User u
+                    SELECT COUNT(u.id) FROM App\\App\Entity\User u
                 DQL
             )->getSingleScalarResult();
 
@@ -68,7 +69,7 @@ final class LoginAction
 
             $user = $auth->authenticate($request->getParam('username'), $request->getParam('password'));
 
-            if ($user instanceof Entity\User) {
+            if ($user instanceof User) {
                 $session = $request->getSession();
 
                 // If user selects "remember me", extend the cookie/session lifetime.

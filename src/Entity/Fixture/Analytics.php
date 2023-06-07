@@ -4,17 +4,17 @@ declare(strict_types=1);
 
 namespace App\Entity\Fixture;
 
-use App\Entity;
 use Carbon\CarbonImmutable;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
+use App\Entity\Enums\AnalyticsIntervals;
 
 final class Analytics extends AbstractFixture implements DependentFixtureInterface
 {
     public function load(ObjectManager $manager): void
     {
-        $stations = $manager->getRepository(Entity\Station::class)->findAll();
+        $stations = $manager->getRepository(\App\Entity\Station::class)->findAll();
 
         $midnight_utc = CarbonImmutable::now('UTC')->setTime(0, 0);
 
@@ -27,7 +27,7 @@ final class Analytics extends AbstractFixture implements DependentFixtureInterfa
             $day_unique = 0;
 
             foreach ($stations as $station) {
-                /** @var Entity\Station $station */
+                /** @var \App\Entity\Station $station */
                 $station_listeners = random_int(10, 50);
                 $station_min = random_int(1, $station_listeners);
                 $station_max = random_int($station_listeners, 150);
@@ -39,10 +39,10 @@ final class Analytics extends AbstractFixture implements DependentFixtureInterfa
                 $day_listeners += $station_listeners;
                 $day_unique += $station_unique;
 
-                $stationPoint = new Entity\Analytics(
+                $stationPoint = new \App\Entity\Analytics(
                     $day,
                     $station,
-                    Entity\Enums\AnalyticsIntervals::Daily,
+                    AnalyticsIntervals::Daily,
                     $station_min,
                     $station_max,
                     $station_listeners,
@@ -51,10 +51,10 @@ final class Analytics extends AbstractFixture implements DependentFixtureInterfa
                 $manager->persist($stationPoint);
             }
 
-            $totalPoint = new Entity\Analytics(
+            $totalPoint = new \App\Entity\Analytics(
                 $day,
                 null,
-                Entity\Enums\AnalyticsIntervals::Daily,
+                AnalyticsIntervals::Daily,
                 $day_min,
                 $day_max,
                 $day_listeners,

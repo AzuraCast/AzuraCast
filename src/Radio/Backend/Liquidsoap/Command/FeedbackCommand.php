@@ -5,22 +5,28 @@ declare(strict_types=1);
 namespace App\Radio\Backend\Liquidsoap\Command;
 
 use App\Container\EntityManagerAwareTrait;
-use App\Entity;
 use Exception;
 use RuntimeException;
+use App\Entity\Repository\StationQueueRepository;
+use App\Entity\Repository\SongHistoryRepository;
+use App\Entity\Station;
+use App\Entity\SongHistory;
+use App\Entity\Song;
+use App\Entity\StationMedia;
+use App\Entity\StationPlaylist;
 
 final class FeedbackCommand extends AbstractCommand
 {
     use EntityManagerAwareTrait;
 
     public function __construct(
-        private readonly Entity\Repository\StationQueueRepository $queueRepo,
-        private readonly Entity\Repository\SongHistoryRepository $historyRepo
+        private readonly StationQueueRepository $queueRepo,
+        private readonly SongHistoryRepository $historyRepo
     ) {
     }
 
     protected function doRun(
-        Entity\Station $station,
+        Station $station,
         bool $asAutoDj = false,
         array $payload = []
     ): bool {
@@ -46,11 +52,11 @@ final class FeedbackCommand extends AbstractCommand
     }
 
     private function getSongHistory(
-        Entity\Station $station,
+        Station $station,
         array $payload
-    ): Entity\SongHistory {
+    ): SongHistory {
         if (isset($payload['artist'])) {
-            $newSong = Entity\Song::createFromArray([
+            $newSong = Song::createFromArray([
                 'artist' => $payload['artist'],
                 'title' => $payload['title'] ?? '',
             ]);
@@ -59,7 +65,7 @@ final class FeedbackCommand extends AbstractCommand
                 throw new RuntimeException('Song is not different from current song.');
             }
 
-            return new Entity\SongHistory(
+            return new SongHistory(
                 $station,
                 $newSong
             );
@@ -69,8 +75,8 @@ final class FeedbackCommand extends AbstractCommand
             throw new RuntimeException('No payload provided.');
         }
 
-        $media = $this->em->find(Entity\StationMedia::class, $payload['media_id']);
-        if (!$media instanceof Entity\StationMedia) {
+        $media = $this->em->find(StationMedia::class, $payload['media_id']);
+        if (!$media instanceof StationMedia) {
             throw new RuntimeException('Media ID does not exist for station.');
         }
 
@@ -87,8 +93,8 @@ final class FeedbackCommand extends AbstractCommand
             }
 
             if (!empty($payload['playlist_id']) && null === $sq->getPlaylist()) {
-                $playlist = $this->em->find(Entity\StationPlaylist::class, $payload['playlist_id']);
-                if ($playlist instanceof Entity\StationPlaylist) {
+                $playlist = $this->em->find(StationPlaylist::class, $payload['playlist_id']);
+                if ($playlist instanceof StationPlaylist) {
                     $sq->setPlaylist($playlist);
                 }
             }
@@ -98,15 +104,15 @@ final class FeedbackCommand extends AbstractCommand
 
             $this->queueRepo->trackPlayed($station, $sq);
 
-            return Entity\SongHistory::fromQueue($sq);
+            return SongHistory::fromQueue($sq);
         }
 
-        $history = new Entity\SongHistory($station, $media);
+        $history = new SongHistory($station, $media);
         $history->setMedia($media);
 
         if (!empty($payload['playlist_id'])) {
-            $playlist = $this->em->find(Entity\StationPlaylist::class, $payload['playlist_id']);
-            if ($playlist instanceof Entity\StationPlaylist) {
+            $playlist = $this->em->find(StationPlaylist::class, $payload['playlist_id']);
+            if ($playlist instanceof StationPlaylist) {
                 $history->setPlaylist($playlist);
             }
         }

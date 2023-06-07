@@ -6,16 +6,22 @@ namespace App\Entity\Repository;
 
 use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Doctrine\Repository;
-use App\Entity;
 use Carbon\CarbonImmutable;
 use Carbon\CarbonInterface;
 use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\QueryBuilder;
 use InvalidArgumentException;
 use RuntimeException;
+use App\Entity\StationMedia;
+use App\Entity\StationPlaylist;
+use App\Entity\Enums\PlaylistSources;
+use App\Entity\Enums\PlaylistOrders;
+use App\Entity\StationPlaylistMedia;
+use App\Entity\Station;
+use App\Entity\Api\StationPlaylistQueue;
 
 /**
- * @extends Repository<Entity\StationPlaylistMedia>
+ * @extends Repository<\App\Entity\StationPlaylistMedia>
  */
 final class StationPlaylistMediaRepository extends Repository
 {
@@ -30,23 +36,23 @@ final class StationPlaylistMediaRepository extends Repository
      * Add the specified media to the specified playlist.
      * Must flush the EntityManager after using.
      *
-     * @param Entity\StationMedia $media
-     * @param Entity\StationPlaylist $playlist
+     * @param \App\Entity\StationMedia $media
+     * @param \App\Entity\StationPlaylist $playlist
      * @param int $weight
      *
      * @return int The weight assigned to the newly added record.
      */
     public function addMediaToPlaylist(
-        Entity\StationMedia $media,
-        Entity\StationPlaylist $playlist,
+        StationMedia $media,
+        StationPlaylist $playlist,
         int $weight = 0
     ): int {
-        if (Entity\Enums\PlaylistSources::Songs !== $playlist->getSource()) {
+        if (PlaylistSources::Songs !== $playlist->getSource()) {
             throw new RuntimeException('This playlist is not meant to contain songs!');
         }
 
         // Only update existing record for random-order playlists.
-        $isNonSequential = Entity\Enums\PlaylistOrders::Sequential !== $playlist->getOrder();
+        $isNonSequential = PlaylistOrders::Sequential !== $playlist->getOrder();
 
         $record = ($isNonSequential)
             ? $this->repository->findOneBy(
@@ -56,7 +62,7 @@ final class StationPlaylistMediaRepository extends Repository
                 ]
             ) : null;
 
-        if ($record instanceof Entity\StationPlaylistMedia) {
+        if ($record instanceof StationPlaylistMedia) {
             if (0 !== $weight) {
                 $record->setWeight($weight);
                 $this->em->persist($record);
@@ -69,7 +75,7 @@ final class StationPlaylistMediaRepository extends Repository
                 $weight = random_int(1, $weight);
             }
 
-            $record = new Entity\StationPlaylistMedia($playlist, $media);
+            $record = new StationPlaylistMedia($playlist, $media);
             $record->setWeight($weight);
             $this->em->persist($record);
         }
@@ -77,13 +83,13 @@ final class StationPlaylistMediaRepository extends Repository
         return $weight;
     }
 
-    public function getHighestSongWeight(Entity\StationPlaylist $playlist): int
+    public function getHighestSongWeight(StationPlaylist $playlist): int
     {
         try {
             $highest_weight = $this->em->createQuery(
                 <<<'DQL'
                     SELECT MAX(e.weight)
-                    FROM App\Entity\StationPlaylistMedia e
+                    FROM App\\App\Entity\StationPlaylistMedia e
                     WHERE e.playlist_id = :playlist_id
                 DQL
             )->setParameter('playlist_id', $playlist->getId())
@@ -98,21 +104,21 @@ final class StationPlaylistMediaRepository extends Repository
     /**
      * Remove all playlist associations from the specified media object.
      *
-     * @param Entity\StationMedia $media
-     * @param Entity\Station|null $station
+     * @param \App\Entity\StationMedia $media
+     * @param \App\Entity\Station|null $station
      *
-     * @return Entity\StationPlaylist[] The IDs as keys and records as values for all affected playlists.
+     * @return \App\Entity\StationPlaylist[] The IDs as keys and records as values for all affected playlists.
      */
     public function clearPlaylistsFromMedia(
-        Entity\StationMedia $media,
-        ?Entity\Station $station = null
+        StationMedia $media,
+        ?Station $station = null
     ): array {
         $affectedPlaylists = [];
 
         $playlists = $media->getPlaylists();
         if (null !== $station) {
             $playlists = $playlists->filter(
-                function (Entity\StationPlaylistMedia $spm) use ($station) {
+                function (StationPlaylistMedia $spm) use ($station) {
                     return $spm->getPlaylist()->getStation()->getId() === $station->getId();
                 }
             );
@@ -137,14 +143,14 @@ final class StationPlaylistMediaRepository extends Repository
      *    ...
      * ]
      *
-     * @param Entity\StationPlaylist $playlist
+     * @param \App\Entity\StationPlaylist $playlist
      * @param array $mapping
      */
-    public function setMediaOrder(Entity\StationPlaylist $playlist, array $mapping): void
+    public function setMediaOrder(StationPlaylist $playlist, array $mapping): void
     {
         $update_query = $this->em->createQuery(
             <<<'DQL'
-                UPDATE App\Entity\StationPlaylistMedia e
+                UPDATE App\\App\Entity\StationPlaylistMedia e
                 SET e.weight = :weight
                 WHERE e.playlist_id = :playlist_id
                 AND e.id = :id
@@ -162,28 +168,28 @@ final class StationPlaylistMediaRepository extends Repository
         );
     }
 
-    public function resetQueue(Entity\StationPlaylist $playlist, CarbonInterface $now = null): void
+    public function resetQueue(StationPlaylist $playlist, CarbonInterface $now = null): void
     {
-        if (Entity\Enums\PlaylistSources::Songs !== $playlist->getSource()) {
+        if (PlaylistSources::Songs !== $playlist->getSource()) {
             throw new InvalidArgumentException('Playlist must contain songs.');
         }
 
-        if (Entity\Enums\PlaylistOrders::Sequential === $playlist->getOrder()) {
+        if (PlaylistOrders::Sequential === $playlist->getOrder()) {
             $this->em->createQuery(
                 <<<'DQL'
-                    UPDATE App\Entity\StationPlaylistMedia spm
+                    UPDATE App\\App\Entity\StationPlaylistMedia spm
                     SET spm.is_queued = 1
                     WHERE spm.playlist = :playlist
                 DQL
             )->setParameter('playlist', $playlist)
                 ->execute();
-        } elseif (Entity\Enums\PlaylistOrders::Shuffle === $playlist->getOrder()) {
+        } elseif (PlaylistOrders::Shuffle === $playlist->getOrder()) {
             $this->em->wrapInTransaction(
                 function () use ($playlist): void {
                     $allSpmRecordsQuery = $this->em->createQuery(
                         <<<'DQL'
                             SELECT spm.id
-                            FROM App\Entity\StationPlaylistMedia spm
+                            FROM App\\App\Entity\StationPlaylistMedia spm
                             WHERE spm.playlist = :playlist
                             ORDER BY RAND()
                         DQL
@@ -191,7 +197,7 @@ final class StationPlaylistMediaRepository extends Repository
 
                     $updateSpmWeightQuery = $this->em->createQuery(
                         <<<'DQL'
-                            UPDATE App\Entity\StationPlaylistMedia spm
+                            UPDATE App\\App\Entity\StationPlaylistMedia spm
                             SET spm.weight=:weight, spm.is_queued=1
                             WHERE spm.id = :id
                         DQL
@@ -218,12 +224,12 @@ final class StationPlaylistMediaRepository extends Repository
         $this->em->flush();
     }
 
-    public function resetAllQueues(Entity\Station $station): void
+    public function resetAllQueues(Station $station): void
     {
         $now = CarbonImmutable::now($station->getTimezoneObject());
 
         foreach ($station->getPlaylists() as $playlist) {
-            if (Entity\Enums\PlaylistSources::Songs !== $playlist->getSource()) {
+            if (PlaylistSources::Songs !== $playlist->getSource()) {
                 continue;
             }
 
@@ -232,22 +238,22 @@ final class StationPlaylistMediaRepository extends Repository
     }
 
     /**
-     * @return Entity\Api\StationPlaylistQueue[]
+     * @return \App\Entity\Api\StationPlaylistQueue[]
      */
-    public function getQueue(Entity\StationPlaylist $playlist): array
+    public function getQueue(StationPlaylist $playlist): array
     {
-        if (Entity\Enums\PlaylistSources::Songs !== $playlist->getSource()) {
+        if (PlaylistSources::Songs !== $playlist->getSource()) {
             throw new InvalidArgumentException('Playlist must contain songs.');
         }
 
         $queuedMediaQuery = $this->em->createQueryBuilder()
             ->select(['spm.id AS spm_id', 'sm.id', 'sm.song_id', 'sm.artist', 'sm.title'])
-            ->from(Entity\StationMedia::class, 'sm')
+            ->from(StationMedia::class, 'sm')
             ->join('sm.playlists', 'spm')
             ->where('spm.playlist = :playlist')
             ->setParameter('playlist', $playlist);
 
-        if (Entity\Enums\PlaylistOrders::Random === $playlist->getOrder()) {
+        if (PlaylistOrders::Random === $playlist->getOrder()) {
             $queuedMediaQuery = $queuedMediaQuery->orderBy('RAND()');
         } else {
             $queuedMediaQuery = $queuedMediaQuery->andWhere('spm.is_queued = 1')
@@ -257,8 +263,8 @@ final class StationPlaylistMediaRepository extends Repository
         $queuedMedia = $queuedMediaQuery->getQuery()->getArrayResult();
 
         return array_map(
-            static function ($val): Entity\Api\StationPlaylistQueue {
-                $record = new Entity\Api\StationPlaylistQueue();
+            static function ($val): StationPlaylistQueue {
+                $record = new StationPlaylistQueue();
                 $record->spm_id = $val['spm_id'];
                 $record->media_id = $val['id'];
                 $record->song_id = $val['song_id'];
@@ -271,13 +277,13 @@ final class StationPlaylistMediaRepository extends Repository
         );
     }
 
-    public function isQueueCompletelyFilled(Entity\StationPlaylist $playlist): bool
+    public function isQueueCompletelyFilled(StationPlaylist $playlist): bool
     {
-        if (Entity\Enums\PlaylistSources::Songs !== $playlist->getSource()) {
+        if (PlaylistSources::Songs !== $playlist->getSource()) {
             return true;
         }
 
-        if (Entity\Enums\PlaylistOrders::Random === $playlist->getOrder()) {
+        if (PlaylistOrders::Random === $playlist->getOrder()) {
             return true;
         }
 
@@ -289,13 +295,13 @@ final class StationPlaylistMediaRepository extends Repository
         return $notQueuedMediaCount === 0;
     }
 
-    public function isQueueEmpty(Entity\StationPlaylist $playlist): bool
+    public function isQueueEmpty(StationPlaylist $playlist): bool
     {
-        if (Entity\Enums\PlaylistSources::Songs !== $playlist->getSource()) {
+        if (PlaylistSources::Songs !== $playlist->getSource()) {
             return false;
         }
 
-        if (Entity\Enums\PlaylistOrders::Random === $playlist->getOrder()) {
+        if (PlaylistOrders::Random === $playlist->getOrder()) {
             return false;
         }
 
@@ -311,11 +317,11 @@ final class StationPlaylistMediaRepository extends Repository
         return $notQueuedMediaCount === $totalMediaCount;
     }
 
-    private function getCountPlaylistMediaBaseQuery(Entity\StationPlaylist $playlist): QueryBuilder
+    private function getCountPlaylistMediaBaseQuery(StationPlaylist $playlist): QueryBuilder
     {
         return $this->em->createQueryBuilder()
             ->select('count(spm.id)')
-            ->from(Entity\StationMedia::class, 'sm')
+            ->from(StationMedia::class, 'sm')
             ->join('sm.playlists', 'spm')
             ->where('spm.playlist = :playlist')
             ->setParameter('playlist', $playlist);

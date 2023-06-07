@@ -5,13 +5,15 @@ declare(strict_types=1);
 namespace App\Entity\Repository;
 
 use App\Doctrine\ReloadableEntityManagerInterface;
-use App\Entity;
 use App\Flysystem\StationFilesystems;
 use App\Media\AlbumArt;
 use App\Radio\AutoDJ\Scheduler;
+use App\Entity\Station;
+use App\Entity\StationStreamer;
+use App\Entity\StationStreamerBroadcast;
 
 /**
- * @extends AbstractStationBasedRepository<Entity\StationStreamer>
+ * @extends AbstractStationBasedRepository<\App\Entity\StationStreamer>
  */
 final class StationStreamerRepository extends AbstractStationBasedRepository
 {
@@ -26,12 +28,12 @@ final class StationStreamerRepository extends AbstractStationBasedRepository
     /**
      * Attempt to authenticate a streamer.
      *
-     * @param Entity\Station $station
+     * @param \App\Entity\Station $station
      * @param string $username
      * @param string $password
      */
     public function authenticate(
-        Entity\Station $station,
+        Station $station,
         string $username = '',
         string $password = ''
     ): bool {
@@ -41,7 +43,7 @@ final class StationStreamerRepository extends AbstractStationBasedRepository
         }
 
         $streamer = $this->getStreamer($station, $username);
-        if (!($streamer instanceof Entity\StationStreamer)) {
+        if (!($streamer instanceof StationStreamer)) {
             return false;
         }
 
@@ -49,17 +51,17 @@ final class StationStreamerRepository extends AbstractStationBasedRepository
     }
 
     /**
-     * @param Entity\Station $station
+     * @param \App\Entity\Station $station
      * @param string $username
      *
      */
-    public function onConnect(Entity\Station $station, string $username = ''): string|bool
+    public function onConnect(Station $station, string $username = ''): string|bool
     {
         // End all current streamer sessions.
         $this->broadcastRepo->endAllActiveBroadcasts($station);
 
         $streamer = $this->getStreamer($station, $username);
-        if (!($streamer instanceof Entity\StationStreamer)) {
+        if (!($streamer instanceof StationStreamer)) {
             return false;
         }
 
@@ -67,14 +69,14 @@ final class StationStreamerRepository extends AbstractStationBasedRepository
         $station->setCurrentStreamer($streamer);
         $this->em->persist($station);
 
-        $record = new Entity\StationStreamerBroadcast($streamer);
+        $record = new StationStreamerBroadcast($streamer);
         $this->em->persist($record);
         $this->em->flush();
 
         return true;
     }
 
-    public function onDisconnect(Entity\Station $station): bool
+    public function onDisconnect(Station $station): bool
     {
         foreach ($this->broadcastRepo->getActiveBroadcasts($station) as $broadcast) {
             $broadcast->setTimestampEnd(time());
@@ -90,10 +92,10 @@ final class StationStreamerRepository extends AbstractStationBasedRepository
     }
 
     public function getStreamer(
-        Entity\Station $station,
+        Station $station,
         string $username = '',
         bool $activeOnly = true
-    ): ?Entity\StationStreamer {
+    ): ?StationStreamer {
         $criteria = [
             'station' => $station,
             'streamer_username' => $username,
@@ -103,17 +105,17 @@ final class StationStreamerRepository extends AbstractStationBasedRepository
             $criteria['is_active'] = 1;
         }
 
-        /** @var Entity\StationStreamer|null $streamer */
+        /** @var \App\Entity\StationStreamer|null $streamer */
         $streamer = $this->repository->findOneBy($criteria);
 
         return $streamer;
     }
 
     public function writeArtwork(
-        Entity\StationStreamer $streamer,
+        StationStreamer $streamer,
         string $rawArtworkString
     ): void {
-        $artworkPath = Entity\StationStreamer::getArtworkPath($streamer->getIdRequired());
+        $artworkPath = StationStreamer::getArtworkPath($streamer->getIdRequired());
         $artworkString = AlbumArt::resize($rawArtworkString);
 
         $fsConfig = StationFilesystems::buildConfigFilesystem($streamer->getStation());
@@ -124,9 +126,9 @@ final class StationStreamerRepository extends AbstractStationBasedRepository
     }
 
     public function removeArtwork(
-        Entity\StationStreamer $streamer
+        StationStreamer $streamer
     ): void {
-        $artworkPath = Entity\StationStreamer::getArtworkPath($streamer->getIdRequired());
+        $artworkPath = StationStreamer::getArtworkPath($streamer->getIdRequired());
 
         $fsConfig = StationFilesystems::buildConfigFilesystem($streamer->getStation());
         $fsConfig->delete($artworkPath);
@@ -136,7 +138,7 @@ final class StationStreamerRepository extends AbstractStationBasedRepository
     }
 
     public function delete(
-        Entity\StationStreamer $streamer
+        StationStreamer $streamer
     ): void {
         $this->removeArtwork($streamer);
 

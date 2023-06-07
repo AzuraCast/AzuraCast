@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Sync\Task;
 
-use App\Entity;
 use App\Flysystem\Attributes\FileAttributes;
 use App\Flysystem\ExtendedFilesystemInterface;
 use App\Media\MimeType;
@@ -21,13 +20,20 @@ use League\Flysystem\StorageAttributes;
 use League\Flysystem\UnableToRetrieveMetadata;
 use Symfony\Component\Filesystem\Path;
 use Symfony\Component\Messenger\MessageBus;
+use App\Entity\Repository\StationMediaRepository;
+use App\Entity\Repository\UnprocessableMediaRepository;
+use App\Entity\Repository\StorageLocationRepository;
+use App\Entity\Enums\StorageLocationTypes;
+use App\Entity\StorageLocation;
+use App\Entity\StationMedia;
+use App\Entity\UnprocessableMedia;
 
 final class CheckMediaTask extends AbstractTask
 {
     public function __construct(
-        private readonly Entity\Repository\StationMediaRepository $mediaRepo,
-        private readonly Entity\Repository\UnprocessableMediaRepository $unprocessableMediaRepo,
-        private readonly Entity\Repository\StorageLocationRepository $storageLocationRepo,
+        private readonly StationMediaRepository $mediaRepo,
+        private readonly UnprocessableMediaRepository $unprocessableMediaRepo,
+        private readonly StorageLocationRepository $storageLocationRepo,
         private readonly MessageBus $messageBus,
         private readonly QueueManagerInterface $queueManager
     ) {
@@ -49,7 +55,7 @@ final class CheckMediaTask extends AbstractTask
         $this->queueManager->clearQueue(QueueNames::Media);
 
         // Process for each storage location.
-        $storageLocations = $this->iterateStorageLocations(Entity\Enums\StorageLocationTypes::StationMedia);
+        $storageLocations = $this->iterateStorageLocations(StorageLocationTypes::StationMedia);
 
         foreach ($storageLocations as $storageLocation) {
             $this->logger->info(
@@ -66,7 +72,7 @@ final class CheckMediaTask extends AbstractTask
     }
 
     public function importMusic(
-        Entity\StorageLocation $storageLocation
+        StorageLocation $storageLocation
     ): void {
         $fs = $this->storageLocationRepo->getAdapter($storageLocation)->getFilesystem();
 
@@ -87,9 +93,9 @@ final class CheckMediaTask extends AbstractTask
             $fsIterator = $fs->listContents('/', true)->filter(
                 function (StorageAttributes $attrs) {
                     return ($attrs->isFile()
-                        && !str_starts_with($attrs->path(), Entity\StationMedia::DIR_ALBUM_ART)
-                        && !str_starts_with($attrs->path(), Entity\StationMedia::DIR_WAVEFORMS)
-                        && !str_starts_with($attrs->path(), Entity\StationMedia::DIR_FOLDER_COVERS));
+                        && !str_starts_with($attrs->path(), StationMedia::DIR_ALBUM_ART)
+                        && !str_starts_with($attrs->path(), StationMedia::DIR_WAVEFORMS)
+                        && !str_starts_with($attrs->path(), StationMedia::DIR_FOLDER_COVERS));
                 }
             );
         } catch (FilesystemException $e) {
@@ -125,7 +131,7 @@ final class CheckMediaTask extends AbstractTask
             } elseif (MimeType::isPathImage($file->path())) {
                 $stats['cover_art']++;
 
-                $dirHash = Entity\StationMedia::getFolderHashForPath($file->path());
+                $dirHash = StationMedia::getFolderHashForPath($file->path());
                 $coverFiles[$dirHash] = [
                     StorageAttributes::ATTRIBUTE_PATH => $file->path(),
                     StorageAttributes::ATTRIBUTE_LAST_MODIFIED => $file->lastModified(),
@@ -161,11 +167,11 @@ final class CheckMediaTask extends AbstractTask
     }
 
     private function processCoverArt(
-        Entity\StorageLocation $storageLocation,
+        StorageLocation $storageLocation,
         ExtendedFilesystemInterface $fs,
         array $coverFiles
     ): void {
-        $fsIterator = $fs->listContents(Entity\StationMedia::DIR_FOLDER_COVERS, true)->filter(
+        $fsIterator = $fs->listContents(StationMedia::DIR_FOLDER_COVERS, true)->filter(
             fn(StorageAttributes $attrs) => $attrs->isFile()
         );
 
@@ -191,14 +197,14 @@ final class CheckMediaTask extends AbstractTask
     }
 
     private function processExistingMediaRows(
-        Entity\StorageLocation $storageLocation,
+        StorageLocation $storageLocation,
         array &$musicFiles,
         array &$stats
     ): void {
         $existingMediaQuery = $this->em->createQuery(
             <<<'DQL'
                 SELECT sm.id, sm.path, sm.mtime, sm.unique_id
-                FROM App\Entity\StationMedia sm
+                FROM App\\App\Entity\StationMedia sm
                 WHERE sm.storage_location = :storageLocation
             DQL
         )->setParameter('storageLocation', $storageLocation);
@@ -214,7 +220,7 @@ final class CheckMediaTask extends AbstractTask
 
                 if (
                     empty($mediaRow['unique_id'])
-                    || Entity\StationMedia::needsReprocessing($mtime, $mediaRow['mtime'] ?? 0)
+                    || StationMedia::needsReprocessing($mtime, $mediaRow['mtime'] ?? 0)
                 ) {
                     $message = new ReprocessMediaMessage();
                     $message->storage_location_id = $storageLocation->getIdRequired();
@@ -229,8 +235,8 @@ final class CheckMediaTask extends AbstractTask
 
                 unset($musicFiles[$pathHash]);
             } else {
-                $media = $this->em->find(Entity\StationMedia::class, $mediaRow['id']);
-                if ($media instanceof Entity\StationMedia) {
+                $media = $this->em->find(StationMedia::class, $mediaRow['id']);
+                if ($media instanceof StationMedia) {
                     $this->mediaRepo->remove($media);
                 }
 
@@ -242,14 +248,14 @@ final class CheckMediaTask extends AbstractTask
     }
 
     private function processUnprocessableMediaRows(
-        Entity\StorageLocation $storageLocation,
+        StorageLocation $storageLocation,
         array &$musicFiles,
         array &$stats
     ): void {
         $unprocessableMediaQuery = $this->em->createQuery(
             <<<'DQL'
                 SELECT upm.id, upm.path, upm.mtime
-                FROM App\Entity\UnprocessableMedia upm
+                FROM App\\App\Entity\UnprocessableMedia upm
                 WHERE upm.storage_location = :storageLocation
             DQL
         )->setParameter('storageLocation', $storageLocation);
@@ -263,7 +269,7 @@ final class CheckMediaTask extends AbstractTask
                 $fileInfo = $musicFiles[$pathHash];
                 $mtime = $fileInfo[StorageAttributes::ATTRIBUTE_LAST_MODIFIED] ?? 0;
 
-                if (Entity\UnprocessableMedia::needsReprocessing($mtime, $unprocessableRow['mtime'] ?? 0)) {
+                if (UnprocessableMedia::needsReprocessing($mtime, $unprocessableRow['mtime'] ?? 0)) {
                     $message = new AddNewMediaMessage();
                     $message->storage_location_id = $storageLocation->getIdRequired();
                     $message->path = $unprocessableRow['path'];
@@ -285,7 +291,7 @@ final class CheckMediaTask extends AbstractTask
     }
 
     private function processNewFiles(
-        Entity\StorageLocation $storageLocation,
+        StorageLocation $storageLocation,
         array $musicFiles,
         array &$stats
     ): void {

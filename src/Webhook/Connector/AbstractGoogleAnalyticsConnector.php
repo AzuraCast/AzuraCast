@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Webhook\Connector;
 
-use App\Entity;
 use App\Entity\Repository\ListenerRepository;
 use App\Entity\Station;
 use App\Nginx\CustomUrls;
 use GuzzleHttp\Client;
+use App\Entity\StationWebhook;
 
 abstract class AbstractGoogleAnalyticsConnector extends AbstractConnector
 {
@@ -19,7 +19,7 @@ abstract class AbstractGoogleAnalyticsConnector extends AbstractConnector
         parent::__construct($httpClient);
     }
 
-    protected function webhookShouldTrigger(Entity\StationWebhook $webhook, array $triggers = []): bool
+    protected function webhookShouldTrigger(StationWebhook $webhook, array $triggers = []): bool
     {
         return true;
     }

@@ -6,7 +6,6 @@ namespace App\Radio\Backend\Liquidsoap;
 
 use App\Container\EntityManagerAwareTrait;
 use App\Container\LoggerAwareTrait;
-use App\Entity;
 use App\Event\Radio\AnnotateNextSong;
 use App\Event\Radio\WriteLiquidsoapConfiguration;
 use App\Exception;
@@ -18,6 +17,8 @@ use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Throwable;
+use App\Entity\StationPlaylist;
+use App\Entity\Station;
 
 final class PlaylistFileWriter implements EventSubscriberInterface
 {
@@ -39,9 +40,9 @@ final class PlaylistFileWriter implements EventSubscriberInterface
     public function __invoke(Message\AbstractMessage $message): void
     {
         if ($message instanceof Message\WritePlaylistFileMessage) {
-            $playlist = $this->em->find(Entity\StationPlaylist::class, $message->playlist_id);
+            $playlist = $this->em->find(StationPlaylist::class, $message->playlist_id);
 
-            if ($playlist instanceof Entity\StationPlaylist) {
+            if ($playlist instanceof StationPlaylist) {
                 $this->writePlaylistFile($playlist);
 
                 $playlistVarName = ConfigWriter::getPlaylistVariableName($playlist);
@@ -79,7 +80,7 @@ final class PlaylistFileWriter implements EventSubscriberInterface
         }
     }
 
-    public function writeAllPlaylistFiles(Entity\Station $station): void
+    public function writeAllPlaylistFiles(Station $station): void
     {
         // Clear out existing playlists directory.
         $fsPlaylists = StationFilesystems::buildPlaylistsFilesystem($station);
@@ -102,7 +103,7 @@ final class PlaylistFileWriter implements EventSubscriberInterface
         }
     }
 
-    private function writePlaylistFile(Entity\StationPlaylist $playlist): void
+    private function writePlaylistFile(StationPlaylist $playlist): void
     {
         $station = $playlist->getStation();
 
@@ -119,14 +120,14 @@ final class PlaylistFileWriter implements EventSubscriberInterface
         $mediaQuery = $this->em->createQuery(
             <<<'DQL'
                 SELECT DISTINCT sm
-                FROM App\Entity\StationMedia sm
+                FROM App\\App\Entity\StationMedia sm
                 JOIN sm.playlists spm
                 WHERE spm.playlist = :playlist
                 ORDER BY spm.weight ASC
             DQL
         )->setParameter('playlist', $playlist);
 
-        /** @var Entity\StationMedia $mediaFile */
+        /** @var \App\Entity\StationMedia $mediaFile */
         foreach ($mediaQuery->toIterable() as $mediaFile) {
             $event = new AnnotateNextSong(
                 station: $station,
@@ -149,7 +150,7 @@ final class PlaylistFileWriter implements EventSubscriberInterface
         );
     }
 
-    public static function getPlaylistFilePath(Entity\StationPlaylist $playlist): string
+    public static function getPlaylistFilePath(StationPlaylist $playlist): string
     {
         return $playlist->getStation()->getRadioPlaylistsDir() . '/'
             . ConfigWriter::getPlaylistVariableName($playlist) . '.m3u';

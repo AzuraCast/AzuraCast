@@ -4,13 +4,16 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Stations\Podcasts\Episodes\Media;
 
-use App\Entity;
 use App\Flysystem\StationFilesystems;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\OpenApi;
 use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
+use App\Entity\Repository\PodcastEpisodeRepository;
+use App\Entity\PodcastEpisode;
+use App\Entity\PodcastMedia;
+use App\Entity\Api\Error;
 
 #[OA\Get(
     path: '/station/{station_id}/podcast/{podcast_id}/episode/{episode_id}/media',
@@ -47,7 +50,7 @@ use Psr\Http\Message\ResponseInterface;
 final class GetMediaAction
 {
     public function __construct(
-        private readonly Entity\Repository\PodcastEpisodeRepository $episodeRepo,
+        private readonly PodcastEpisodeRepository $episodeRepo,
         private readonly StationFilesystems $stationFilesystems,
     ) {
     }
@@ -64,10 +67,10 @@ final class GetMediaAction
         $station = $request->getStation();
         $episode = $this->episodeRepo->fetchEpisodeForStation($station, $episode_id);
 
-        if ($episode instanceof Entity\PodcastEpisode) {
+        if ($episode instanceof PodcastEpisode) {
             $podcastMedia = $episode->getMedia();
 
-            if ($podcastMedia instanceof Entity\PodcastMedia) {
+            if ($podcastMedia instanceof PodcastMedia) {
                 $fsPodcasts = $this->stationFilesystems->getPodcastsFilesystem($station);
 
                 $path = $podcastMedia->getPath();
@@ -83,6 +86,6 @@ final class GetMediaAction
         }
 
         return $response->withStatus(404)
-            ->withJson(Entity\Api\Error::notFound());
+            ->withJson(Error::notFound());
     }
 }

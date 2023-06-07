@@ -5,14 +5,14 @@ declare(strict_types=1);
 namespace App\Radio;
 
 use App\Container\EnvironmentAwareTrait;
-use App\Entity;
 use App\Flysystem\StationFilesystems;
+use App\Entity\Station;
 
 final class FallbackFile
 {
     use EnvironmentAwareTrait;
 
-    public function getFallbackPathForStation(Entity\Station $station): string
+    public function getFallbackPathForStation(Station $station): string
     {
         $stationFallback = $station->getFallbackPath();
         if (!empty($stationFallback)) {

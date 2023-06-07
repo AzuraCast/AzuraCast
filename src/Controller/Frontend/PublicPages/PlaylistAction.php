@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Controller\Frontend\PublicPages;
 
-use App\Entity;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Radio\Adapters;
@@ -31,7 +30,7 @@ final class PlaylistAction
         $fa = $this->adapters->getFrontendAdapter($station);
         if (null !== $fa) {
             foreach ($station->getMounts() as $mount) {
-                /** @var Entity\StationMount $mount */
+                /** @var \App\Entity\StationMount $mount */
                 if (!$mount->getIsVisibleOnPublicPages()) {
                     continue;
                 }

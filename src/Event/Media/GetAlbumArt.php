@@ -4,19 +4,19 @@ declare(strict_types=1);
 
 namespace App\Event\Media;
 
-use App\Entity;
 use Symfony\Contracts\EventDispatcher\Event;
+use App\Entity\Interfaces\SongInterface;
 
 final class GetAlbumArt extends Event
 {
     private ?string $albumArt = null;
 
     public function __construct(
-        private readonly Entity\Interfaces\SongInterface $song
+        private readonly SongInterface $song
     ) {
     }
 
-    public function getSong(): Entity\Interfaces\SongInterface
+    public function getSong(): SongInterface
     {
         return $this->song;
     }

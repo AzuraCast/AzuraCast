@@ -4,18 +4,19 @@ declare(strict_types=1);
 
 namespace App\Entity\Fixture;
 
-use App\Entity;
 use App\Media\MediaProcessor;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\Finder\Finder;
+use App\Entity\Repository\StorageLocationRepository;
+use App\Entity\StationPlaylistMedia;
 
 final class StationMedia extends AbstractFixture implements DependentFixtureInterface
 {
     public function __construct(
         private readonly MediaProcessor $mediaProcessor,
-        private readonly Entity\Repository\StorageLocationRepository $storageLocationRepo,
+        private readonly StorageLocationRepository $storageLocationRepo,
     ) {
     }
 
@@ -27,13 +28,13 @@ final class StationMedia extends AbstractFixture implements DependentFixtureInte
             return;
         }
 
-        /** @var Entity\Station $station */
+        /** @var \App\Entity\Station $station */
         $station = $this->getReference('station');
 
         $mediaStorage = $station->getMediaStorageLocation();
         $fs = $this->storageLocationRepo->getAdapter($mediaStorage)->getFilesystem();
 
-        /** @var Entity\StationPlaylist $playlist */
+        /** @var \App\Entity\StationPlaylist $playlist */
         $playlist = $this->getReference('station_playlist');
 
         $finder = (new Finder())
@@ -56,7 +57,7 @@ final class StationMedia extends AbstractFixture implements DependentFixtureInte
             $manager->persist($mediaRow);
 
             // Add the file to the playlist.
-            $spmRow = new Entity\StationPlaylistMedia($playlist, $mediaRow);
+            $spmRow = new StationPlaylistMedia($playlist, $mediaRow);
             $spmRow->setWeight(1);
             $manager->persist($spmRow);
         }

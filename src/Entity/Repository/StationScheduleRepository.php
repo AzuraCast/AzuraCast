@@ -6,30 +6,36 @@ namespace App\Entity\Repository;
 
 use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Doctrine\Repository;
-use App\Entity;
 use App\Radio\AutoDJ\Scheduler;
 use Carbon\CarbonImmutable;
 use Carbon\CarbonInterface;
+use App\Entity\ApiGenerator\ScheduleApiGenerator;
+use App\Entity\StationPlaylist;
+use App\Entity\StationStreamer;
+use App\Entity\StationSchedule;
+use App\Entity\Station;
 
 /**
- * @extends Repository<Entity\StationSchedule>
+ * @extends Repository<\App\Entity\StationSchedule>
  */
 final class StationScheduleRepository extends Repository
 {
     public function __construct(
         ReloadableEntityManagerInterface $em,
         private readonly Scheduler $scheduler,
-        private readonly Entity\ApiGenerator\ScheduleApiGenerator $scheduleApiGenerator
+        private readonly ScheduleApiGenerator $scheduleApiGenerator
     ) {
         parent::__construct($em);
     }
 
     /**
-     * @param Entity\StationPlaylist|Entity\StationStreamer $relation
+     * @param \App\Entity\StationPlaylist|\App\Entity\StationStreamer $relation
      * @param array $items
      */
-    public function setScheduleItems(Entity\StationPlaylist|Entity\StationStreamer $relation, array $items = []): void
-    {
+    public function setScheduleItems(
+        StationPlaylist|StationStreamer $relation,
+        array $items = []
+    ): void {
         $rawScheduleItems = $this->findByRelation($relation);
 
         $scheduleItems = [];
@@ -42,7 +48,7 @@ final class StationScheduleRepository extends Repository
                 $record = $scheduleItems[$item['id']];
                 unset($scheduleItems[$item['id']]);
             } else {
-                $record = new Entity\StationSchedule($relation);
+                $record = new StationSchedule($relation);
             }
 
             $record->setStartTime((int)$item['start_time']);
@@ -63,13 +69,13 @@ final class StationScheduleRepository extends Repository
     }
 
     /**
-     * @param Entity\StationPlaylist|Entity\StationStreamer $relation
+     * @param \App\Entity\StationPlaylist|\App\Entity\StationStreamer $relation
      *
-     * @return Entity\StationSchedule[]
+     * @return \App\Entity\StationSchedule[]
      */
-    public function findByRelation(Entity\StationPlaylist|Entity\StationStreamer $relation): array
+    public function findByRelation(StationPlaylist|StationStreamer $relation): array
     {
-        if ($relation instanceof Entity\StationPlaylist) {
+        if ($relation instanceof StationPlaylist) {
             return $this->repository->findBy(['playlist' => $relation]);
         }
 
@@ -77,16 +83,16 @@ final class StationScheduleRepository extends Repository
     }
 
     /**
-     * @param Entity\Station $station
+     * @param \App\Entity\Station $station
      *
-     * @return Entity\StationSchedule[]
+     * @return \App\Entity\StationSchedule[]
      */
-    public function getAllScheduledItemsForStation(Entity\Station $station): array
+    public function getAllScheduledItemsForStation(Station $station): array
     {
         return $this->em->createQuery(
             <<<'DQL'
                 SELECT ssc, sp, sst
-                FROM App\Entity\StationSchedule ssc
+                FROM App\\App\Entity\StationSchedule ssc
                 LEFT JOIN ssc.playlist sp
                 LEFT JOIN ssc.streamer sst
                 WHERE (sp.station = :station AND sp.is_jingle = 0 AND sp.is_enabled = 1)
@@ -97,12 +103,12 @@ final class StationScheduleRepository extends Repository
     }
 
     /**
-     * @param Entity\Station $station
+     * @param \App\Entity\Station $station
      * @param CarbonInterface|null $now
      *
-     * @return Entity\Api\StationSchedule[]
+     * @return \App\Entity\Api\StationSchedule[]
      */
-    public function getUpcomingSchedule(Entity\Station $station, CarbonInterface $now = null): array
+    public function getUpcomingSchedule(Station $station, CarbonInterface $now = null): array
     {
         if (null === $now) {
             $now = CarbonImmutable::now($station->getTimezoneObject());
@@ -114,7 +120,7 @@ final class StationScheduleRepository extends Repository
         $events = [];
 
         foreach ($this->getAllScheduledItemsForStation($station) as $scheduleItem) {
-            /** @var Entity\StationSchedule $scheduleItem */
+            /** @var \App\Entity\StationSchedule $scheduleItem */
             $i = $startDate;
 
             while ($i <= $endDate) {
@@ -124,8 +130,8 @@ final class StationScheduleRepository extends Repository
                     $this->scheduler->shouldSchedulePlayOnCurrentDate($scheduleItem, $i)
                     && $this->scheduler->isScheduleScheduledToPlayToday($scheduleItem, $dayOfWeek)
                 ) {
-                    $start = Entity\StationSchedule::getDateTime($scheduleItem->getStartTime(), $i);
-                    $end = Entity\StationSchedule::getDateTime($scheduleItem->getEndTime(), $i);
+                    $start = StationSchedule::getDateTime($scheduleItem->getStartTime(), $i);
+                    $end = StationSchedule::getDateTime($scheduleItem->getEndTime(), $i);
 
                     // Handle overnight schedule items
                     if ($end < $start) {

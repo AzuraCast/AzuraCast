@@ -6,11 +6,13 @@ namespace App\Webhook;
 
 use App\Container\EnvironmentAwareTrait;
 use App\Container\LoggerAwareTrait;
-use App\Entity;
 use App\Service\Centrifugo;
 use Symfony\Component\Filesystem\Filesystem;
 
 use const JSON_PRETTY_PRINT;
+
+use App\Entity\Station;
+use App\Entity\Api\NowPlaying\NowPlaying;
 
 final class LocalWebhookHandler
 {
@@ -25,8 +27,8 @@ final class LocalWebhookHandler
     }
 
     public function dispatch(
-        Entity\Station $station,
-        Entity\Api\NowPlaying\NowPlaying $np
+        Station $station,
+        NowPlaying $np
     ): void {
         $fsUtils = new Filesystem();
 

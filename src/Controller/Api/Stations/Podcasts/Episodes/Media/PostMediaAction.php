@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Stations\Podcasts\Episodes\Media;
 
-use App\Entity;
 use App\Flysystem\StationFilesystems;
 use App\Http\Response;
 use App\Http\ServerRequest;
@@ -12,6 +11,9 @@ use App\OpenApi;
 use App\Service\Flow;
 use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
+use App\Entity\Repository\PodcastEpisodeRepository;
+use App\Entity\Api\Error;
+use App\Entity\Api\Status;
 
 #[OA\Post(
     path: '/station/{station_id}/podcast/{podcast_id}/episode/{episode_id}/media',
@@ -45,7 +47,7 @@ use Psr\Http\Message\ResponseInterface;
 final class PostMediaAction
 {
     public function __construct(
-        private readonly Entity\Repository\PodcastEpisodeRepository $episodeRepo,
+        private readonly PodcastEpisodeRepository $episodeRepo,
         private readonly StationFilesystems $stationFilesystems
     ) {
     }
@@ -69,7 +71,7 @@ final class PostMediaAction
 
             if (null === $episode) {
                 return $response->withStatus(404)
-                    ->withJson(Entity\Api\Error::notFound());
+                    ->withJson(Error::notFound());
             }
 
             $this->episodeRepo->uploadMedia(
@@ -79,7 +81,7 @@ final class PostMediaAction
                 $this->stationFilesystems->getPodcastsFilesystem($station)
             );
 
-            return $response->withJson(Entity\Api\Status::updated());
+            return $response->withJson(Status::updated());
         }
 
         return $response->withJson($flowResponse);

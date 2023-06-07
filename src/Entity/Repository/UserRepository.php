@@ -5,23 +5,23 @@ declare(strict_types=1);
 namespace App\Entity\Repository;
 
 use App\Doctrine\Repository;
-use App\Entity;
+use App\Entity\User;
 
 /**
- * @extends Repository<Entity\User>
+ * @extends Repository<\App\Entity\User>
  */
 final class UserRepository extends Repository
 {
-    public function findByEmail(string $email): ?Entity\User
+    public function findByEmail(string $email): ?User
     {
         return $this->repository->findOneby(['email' => $email]);
     }
 
-    public function authenticate(string $username, string $password): ?Entity\User
+    public function authenticate(string $username, string $password): ?User
     {
         $user = $this->findByEmail($username);
 
-        if ($user instanceof Entity\User && $user->verifyPassword($password)) {
+        if ($user instanceof User && $user->verifyPassword($password)) {
             return $user;
         }
 
@@ -34,11 +34,11 @@ final class UserRepository extends Repository
         return null;
     }
 
-    public function getOrCreate(string $email): Entity\User
+    public function getOrCreate(string $email): User
     {
         $user = $this->findByEmail($email);
-        if (!($user instanceof Entity\User)) {
-            $user = new Entity\User();
+        if (!($user instanceof User)) {
+            $user = new User();
             $user->setEmail($email);
             $user->setName($email);
         }

@@ -4,15 +4,19 @@ declare(strict_types=1);
 
 namespace App\Sync\Task;
 
-use App\Entity;
+use App\Entity\Repository\SettingsRepository;
+use App\Entity\Repository\SongHistoryRepository;
+use App\Entity\Repository\StationQueueRepository;
+use App\Entity\Repository\ListenerRepository;
+use App\Entity\StationQueue;
 
 final class CleanupHistoryTask extends AbstractTask
 {
     public function __construct(
-        private readonly Entity\Repository\SettingsRepository $settingsRepo,
-        private readonly Entity\Repository\SongHistoryRepository $historyRepo,
-        private readonly Entity\Repository\StationQueueRepository $queueRepo,
-        private readonly Entity\Repository\ListenerRepository $listenerRepo,
+        private readonly SettingsRepository $settingsRepo,
+        private readonly SongHistoryRepository $historyRepo,
+        private readonly StationQueueRepository $queueRepo,
+        private readonly ListenerRepository $listenerRepo,
     ) {
     }
 
@@ -24,7 +28,7 @@ final class CleanupHistoryTask extends AbstractTask
     public function run(bool $force = false): void
     {
         // Clear station queue independent of history settings.
-        $this->queueRepo->cleanup(Entity\StationQueue::DAYS_TO_KEEP);
+        $this->queueRepo->cleanup(StationQueue::DAYS_TO_KEEP);
 
         // Clean up history and listeners according to user settings.
         $daysToKeep = $this->settingsRepo->readSettings()->getHistoryKeepDays();

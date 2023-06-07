@@ -4,16 +4,17 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Stations\OnDemand;
 
-use App\Entity;
 use App\Flysystem\StationFilesystems;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
+use App\Entity\Repository\StationMediaRepository;
+use App\Entity\Api\Error;
 
 final class DownloadAction
 {
     public function __construct(
-        private readonly Entity\Repository\StationMediaRepository $mediaRepo,
+        private readonly StationMediaRepository $mediaRepo,
         private readonly StationFilesystems $stationFilesystems,
     ) {
     }
@@ -29,7 +30,7 @@ final class DownloadAction
         // Verify that the station supports on-demand streaming.
         if (!$station->getEnableOnDemand()) {
             return $response->withStatus(403)
-                ->withJson(new Entity\Api\Error(403, __('This station does not support on-demand streaming.')));
+                ->withJson(new Error(403, __('This station does not support on-demand streaming.')));
         }
 
         $media = $this->mediaRepo->requireByUniqueId($media_id, $station);

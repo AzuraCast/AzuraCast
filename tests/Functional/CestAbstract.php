@@ -4,7 +4,6 @@ namespace Functional;
 
 use App\Acl;
 use App\Doctrine\ReloadableEntityManagerInterface;
-use App\Entity;
 use App\Enums\GlobalPermissions;
 use App\Environment;
 use App\Media\MediaProcessor;
@@ -18,9 +17,9 @@ abstract class CestAbstract
 
     protected Environment $environment;
 
-    protected Entity\Repository\SettingsRepository $settingsRepo;
+    protected \App\Entity\Repository\SettingsRepository $settingsRepo;
 
-    protected Entity\Repository\StationRepository $stationRepo;
+    protected \App\Entity\Repository\StationRepository $stationRepo;
 
     protected ReloadableEntityManagerInterface $em;
 
@@ -29,15 +28,15 @@ abstract class CestAbstract
 
     protected ?string $login_api_key = null;
 
-    private ?Entity\Station $test_station = null;
+    private ?\App\Entity\Station $test_station = null;
 
     protected function _inject(Module $tests_module): void
     {
         $this->di = $tests_module->container;
         $this->em = $tests_module->em;
 
-        $this->settingsRepo = $this->di->get(Entity\Repository\SettingsRepository::class);
-        $this->stationRepo = $this->di->get(Entity\Repository\StationRepository::class);
+        $this->settingsRepo = $this->di->get(\App\Entity\Repository\SettingsRepository::class);
+        $this->stationRepo = $this->di->get(\App\Entity\Repository\StationRepository::class);
         $this->environment = $this->di->get(Environment::class);
     }
 
@@ -78,16 +77,16 @@ abstract class CestAbstract
     protected function setupCompleteUser(\FunctionalTester $I): void
     {
         // Create administrator account.
-        $role = new Entity\Role;
+        $role = new \App\Entity\Role;
         $role->setName('Super Administrator');
         $this->em->persist($role);
 
-        $rha = new Entity\RolePermission($role);
+        $rha = new \App\Entity\RolePermission($role);
         $rha->setActionName(GlobalPermissions::All);
         $this->em->persist($rha);
 
         // Create user account.
-        $user = new Entity\User;
+        $user = new \App\Entity\User;
         $user->setName('AzuraCast Test User');
         $user->setEmail($this->login_username);
         $user->setNewPassword($this->login_password);
@@ -99,7 +98,7 @@ abstract class CestAbstract
         // Create API key
         $key = SplitToken::generate();
 
-        $apiKey = new Entity\ApiKey($user, $key);
+        $apiKey = new \App\Entity\ApiKey($user, $key);
         $apiKey->setComment('Test Suite');
 
         $this->em->persist($apiKey);
@@ -122,24 +121,24 @@ abstract class CestAbstract
         );
 
         $stationId = $I->grabDataFromResponseByJsonPath('id');
-        $this->test_station = $this->em->find(Entity\Station::class, $stationId[0]);
+        $this->test_station = $this->em->find(\App\Entity\Station::class, $stationId[0]);
     }
 
     protected function setupCompleteSettings(\FunctionalTester $I): void
     {
         $I->sendPut(
-            '/api/admin/settings/' . Entity\Settings::GROUP_GENERAL,
+            '/api/admin/settings/' . \App\Entity\Settings::GROUP_GENERAL,
             [
                 'base_url' => 'http://localhost',
             ]
         );
     }
 
-    protected function getTestStation(): Entity\Station
+    protected function getTestStation(): \App\Entity\Station
     {
-        if ($this->test_station instanceof Entity\Station) {
+        if ($this->test_station instanceof \App\Entity\Station) {
             $testStation = $this->em->refetch($this->test_station);
-            if ($testStation instanceof Entity\Station) {
+            if ($testStation instanceof \App\Entity\Station) {
                 return $testStation;
             }
 
@@ -149,7 +148,7 @@ abstract class CestAbstract
         throw new \RuntimeException('Test station is not established.');
     }
 
-    protected function uploadTestSong(): Entity\StationMedia
+    protected function uploadTestSong(): \App\Entity\StationMedia
     {
         $testStation = $this->getTestStation();
 
@@ -157,7 +156,7 @@ abstract class CestAbstract
 
         $storageLocation = $testStation->getMediaStorageLocation();
 
-        $storageLocationRepo = $this->di->get(Entity\Repository\StorageLocationRepository::class);
+        $storageLocationRepo = $this->di->get(\App\Entity\Repository\StorageLocationRepository::class);
         $storageFs = $storageLocationRepo->getAdapter($storageLocation)->getFilesystem();
         
         $storageFs->upload($songSrc, 'test.mp3');
@@ -171,10 +170,10 @@ abstract class CestAbstract
     protected function _cleanTables(): void
     {
         $clean_tables = [
-            Entity\User::class,
-            Entity\Role::class,
-            Entity\Station::class,
-            Entity\Settings::class,
+            \App\Entity\User::class,
+            \App\Entity\Role::class,
+            \App\Entity\Station::class,
+            \App\Entity\Settings::class,
         ];
 
         foreach ($clean_tables as $clean_table) {

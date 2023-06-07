@@ -4,22 +4,28 @@ declare(strict_types=1);
 
 namespace App\Entity\Repository;
 
-use App\Entity;
 use Carbon\CarbonImmutable;
 use Carbon\CarbonInterface;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
+use App\Entity\StationMedia;
+use App\Entity\StationPlaylist;
+use App\Entity\Station;
+use App\Entity\StationQueue;
+use App\Entity\Interfaces\SongInterface;
 
 /**
- * @extends AbstractStationBasedRepository<Entity\StationQueue>
+ * @extends AbstractStationBasedRepository<\App\Entity\StationQueue>
  */
 final class StationQueueRepository extends AbstractStationBasedRepository
 {
-    public function clearForMediaAndPlaylist(Entity\StationMedia $media, Entity\StationPlaylist $playlist): void
-    {
+    public function clearForMediaAndPlaylist(
+        StationMedia $media,
+        StationPlaylist $playlist
+    ): void {
         $this->em->createQuery(
             <<<'DQL'
-                DELETE FROM App\Entity\StationQueue sq
+                DELETE FROM App\\App\Entity\StationQueue sq
                 WHERE sq.media = :media 
                 AND sq.playlist = :playlist
                 AND sq.is_played = 0
@@ -29,7 +35,7 @@ final class StationQueueRepository extends AbstractStationBasedRepository
             ->execute();
     }
 
-    public function getNextVisible(Entity\Station $station): ?Entity\StationQueue
+    public function getNextVisible(Station $station): ?StationQueue
     {
         return $this->getUnplayedBaseQuery($station)
             ->andWhere('sq.is_visible = 1')
@@ -39,12 +45,12 @@ final class StationQueueRepository extends AbstractStationBasedRepository
     }
 
     public function trackPlayed(
-        Entity\Station $station,
-        Entity\StationQueue $row
+        Station $station,
+        StationQueue $row
     ): void {
         $this->em->createQuery(
             <<<'DQL'
-            UPDATE App\Entity\StationQueue sq
+            UPDATE App\\App\Entity\StationQueue sq
             SET sq.timestamp_played = :timestamp
             WHERE sq.station = :station
             AND sq.id = :id
@@ -56,7 +62,7 @@ final class StationQueueRepository extends AbstractStationBasedRepository
 
         $this->em->createQuery(
             <<<'DQL'
-            UPDATE App\Entity\StationQueue sq
+            UPDATE App\\App\Entity\StationQueue sq
             SET sq.is_played=1, sq.sent_to_autodj=1
             WHERE sq.station = :station 
             AND sq.is_played = 0 
@@ -69,7 +75,7 @@ final class StationQueueRepository extends AbstractStationBasedRepository
     }
 
     public function isPlaylistRecentlyPlayed(
-        Entity\StationPlaylist $playlist,
+        StationPlaylist $playlist,
         ?int $playPerSongs = null
     ): bool {
         $playPerSongs ??= $playlist->getPlayPerSongs();
@@ -77,7 +83,7 @@ final class StationQueueRepository extends AbstractStationBasedRepository
         $recentPlayedQuery = $this->em->createQuery(
             <<<'DQL'
                 SELECT sq.playlist_id
-                FROM App\Entity\StationQueue sq
+                FROM App\\App\Entity\StationQueue sq
                 WHERE sq.station = :station
                 AND sq.playlist_id IS NOT NULL
                 AND (sq.playlist = :playlist OR sq.is_visible = 1)
@@ -96,7 +102,7 @@ final class StationQueueRepository extends AbstractStationBasedRepository
      * @return mixed[]
      */
     public function getRecentlyPlayedByTimeRange(
-        Entity\Station $station,
+        Station $station,
         CarbonInterface $now,
         int $minutes
     ): array {
@@ -105,7 +111,7 @@ final class StationQueueRepository extends AbstractStationBasedRepository
         return $this->em->createQuery(
             <<<'DQL'
                 SELECT sq.song_id, sq.timestamp_played, sq.title, sq.artist
-                FROM App\Entity\StationQueue sq
+                FROM App\\App\Entity\StationQueue sq
                 WHERE sq.station = :station
                 AND (sq.is_played = 0 OR sq.timestamp_played >= :threshold)
                 ORDER BY sq.timestamp_played DESC
@@ -116,24 +122,24 @@ final class StationQueueRepository extends AbstractStationBasedRepository
     }
 
     /**
-     * @param Entity\Station $station
-     * @return Entity\StationQueue[]
+     * @param \App\Entity\Station $station
+     * @return \App\Entity\StationQueue[]
      */
-    public function getUnplayedQueue(Entity\Station $station): array
+    public function getUnplayedQueue(Station $station): array
     {
         return $this->getUnplayedQuery($station)->execute();
     }
 
-    public function getUnplayedQuery(Entity\Station $station): Query
+    public function getUnplayedQuery(Station $station): Query
     {
         return $this->getUnplayedBaseQuery($station)->getQuery();
     }
 
-    public function clearUpcomingQueue(Entity\Station $station): void
+    public function clearUpcomingQueue(Station $station): void
     {
         $this->em->createQuery(
             <<<'DQL'
-                DELETE FROM App\Entity\StationQueue sq
+                DELETE FROM App\\App\Entity\StationQueue sq
                 WHERE sq.station = :station
                 AND sq.sent_to_autodj = 0
             DQL
@@ -141,7 +147,7 @@ final class StationQueueRepository extends AbstractStationBasedRepository
             ->execute();
     }
 
-    public function getNextToSendToAutoDj(Entity\Station $station): ?Entity\StationQueue
+    public function getNextToSendToAutoDj(Station $station): ?StationQueue
     {
         return $this->getBaseQuery($station)
             ->andWhere('sq.sent_to_autodj = 0')
@@ -152,9 +158,9 @@ final class StationQueueRepository extends AbstractStationBasedRepository
     }
 
     public function findRecentlyCuedSong(
-        Entity\Station $station,
-        Entity\Interfaces\SongInterface $song
-    ): ?Entity\StationQueue {
+        Station $station,
+        SongInterface $song
+    ): ?StationQueue {
         return $this->getUnplayedBaseQuery($station)
             ->andWhere('sq.sent_to_autodj = 1')
             ->andWhere('sq.song_id = :song_id')
@@ -164,7 +170,7 @@ final class StationQueueRepository extends AbstractStationBasedRepository
             ->getOneOrNullResult();
     }
 
-    public function hasCuedPlaylistMedia(Entity\StationPlaylist $playlist): bool
+    public function hasCuedPlaylistMedia(StationPlaylist $playlist): bool
     {
         $station = $playlist->getStation();
 
@@ -178,7 +184,7 @@ final class StationQueueRepository extends AbstractStationBasedRepository
         return $cuedPlaylistContentCount > 0;
     }
 
-    private function getUnplayedBaseQuery(Entity\Station $station): QueryBuilder
+    private function getUnplayedBaseQuery(Station $station): QueryBuilder
     {
         return $this->getBaseQuery($station)
             ->andWhere('sq.is_played = 0')
@@ -186,21 +192,21 @@ final class StationQueueRepository extends AbstractStationBasedRepository
             ->addOrderBy('sq.timestamp_cued', 'ASC');
     }
 
-    private function getBaseQuery(Entity\Station $station): QueryBuilder
+    private function getBaseQuery(Station $station): QueryBuilder
     {
         return $this->em->createQueryBuilder()
             ->select('sq, sm, sp')
-            ->from(Entity\StationQueue::class, 'sq')
+            ->from(StationQueue::class, 'sq')
             ->leftJoin('sq.media', 'sm')
             ->leftJoin('sq.playlist', 'sp')
             ->where('sq.station = :station')
             ->setParameter('station', $station);
     }
 
-    public function clearUnplayed(?Entity\Station $station = null): void
+    public function clearUnplayed(?Station $station = null): void
     {
         $qb = $this->em->createQueryBuilder()
-            ->delete(Entity\StationQueue::class, 'sq')
+            ->delete(StationQueue::class, 'sq')
             ->where('sq.is_played = 0');
 
         if (null !== $station) {
@@ -219,7 +225,7 @@ final class StationQueueRepository extends AbstractStationBasedRepository
 
         $this->em->createQuery(
             <<<'DQL'
-                DELETE FROM App\Entity\StationQueue sq
+                DELETE FROM App\\App\Entity\StationQueue sq
                 WHERE sq.timestamp_cued <= :threshold
             DQL
         )->setParameter('threshold', $threshold)

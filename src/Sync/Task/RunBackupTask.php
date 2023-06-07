@@ -5,18 +5,19 @@ declare(strict_types=1);
 namespace App\Sync\Task;
 
 use App\Console\Application;
-use App\Entity;
 use App\Message;
 use Carbon\CarbonImmutable;
 use Carbon\CarbonInterface;
 use Symfony\Component\Messenger\MessageBus;
+use App\Entity\Repository\SettingsRepository;
+use App\Entity\StationSchedule;
 
 final class RunBackupTask extends AbstractTask
 {
     public function __construct(
         private readonly MessageBus $messageBus,
         private readonly Application $console,
-        private readonly Entity\Repository\SettingsRepository $settingsRepo,
+        private readonly SettingsRepository $settingsRepo,
     ) {
     }
 
@@ -105,7 +106,7 @@ final class RunBackupTask extends AbstractTask
 
             if (null !== $backupTimecode && '' !== $backupTimecode) {
                 $isWithinTimecode = false;
-                $backupDt = Entity\StationSchedule::getDateTime($backupTimecode, $nowUtc);
+                $backupDt = StationSchedule::getDateTime($backupTimecode, $nowUtc);
 
                 /** @var CarbonInterface[] $backupTimesToCheck */
                 $backupTimesToCheck = [

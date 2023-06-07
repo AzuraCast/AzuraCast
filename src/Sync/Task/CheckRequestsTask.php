@@ -4,17 +4,20 @@ declare(strict_types=1);
 
 namespace App\Sync\Task;
 
-use App\Entity;
 use App\Event\Radio\AnnotateNextSong;
 use App\Radio\Adapters;
 use App\Radio\Backend\Liquidsoap;
 use App\Radio\Enums\LiquidsoapQueues;
 use Psr\EventDispatcher\EventDispatcherInterface;
+use App\Entity\Repository\StationRequestRepository;
+use App\Entity\Station;
+use App\Entity\StationRequest;
+use App\Entity\StationQueue;
 
 final class CheckRequestsTask extends AbstractTask
 {
     public function __construct(
-        private readonly Entity\Repository\StationRequestRepository $requestRepo,
+        private readonly StationRequestRepository $requestRepo,
         private readonly Adapters $adapters,
         private readonly EventDispatcherInterface $dispatcher
     ) {
@@ -46,7 +49,7 @@ final class CheckRequestsTask extends AbstractTask
         }
     }
 
-    private function submitRequest(Entity\Station $station, Entity\StationRequest $request): bool
+    private function submitRequest(Station $station, StationRequest $request): bool
     {
         // Send request to the station to play the request.
         $backend = $this->adapters->getBackendAdapter($station);
@@ -56,16 +59,16 @@ final class CheckRequestsTask extends AbstractTask
         }
 
         // Check for an existing SongHistory record and skip if one exists.
-        $sq = $this->em->getRepository(Entity\StationQueue::class)->findOneBy(
+        $sq = $this->em->getRepository(StationQueue::class)->findOneBy(
             [
                 'station' => $station,
                 'request' => $request,
             ]
         );
 
-        if (!$sq instanceof Entity\StationQueue) {
+        if (!$sq instanceof StationQueue) {
             // Log the item in SongHistory.
-            $sq = Entity\StationQueue::fromRequest($request);
+            $sq = StationQueue::fromRequest($request);
             $sq->setSentToAutodj();
             $sq->setTimestampCued(time());
 

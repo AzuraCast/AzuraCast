@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Entity\Fixture;
 
-use App\Entity;
 use App\Enums\SupportedThemes;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
@@ -18,12 +17,12 @@ final class User extends AbstractFixture implements DependentFixtureInterface
         $admin_password = getenv('INIT_ADMIN_PASSWORD');
 
         if (!empty($admin_email) && !empty($admin_password)) {
-            $demo_user = new Entity\User();
+            $demo_user = new \App\Entity\User();
             $demo_user->setEmail('demo@azuracast.com');
             $demo_user->setNewPassword('demo');
             $demo_user->setName('AzuraCast Demo User');
 
-            /** @var Entity\Role $demoRole */
+            /** @var \App\Entity\Role $demoRole */
             $demoRole = $this->getReference('demo_role');
             $demo_user->getRoles()->add($demoRole);
 
@@ -31,13 +30,13 @@ final class User extends AbstractFixture implements DependentFixtureInterface
 
             $this->addReference('demo_user', $demo_user);
 
-            $admin_user = new Entity\User();
+            $admin_user = new \App\Entity\User();
             $admin_user->setEmail($admin_email);
             $admin_user->setName('System Administrator');
             $admin_user->setNewPassword($admin_password);
             $admin_user->setTheme(SupportedThemes::Browser);
 
-            /** @var Entity\Role $adminRole */
+            /** @var \App\Entity\Role $adminRole */
             $adminRole = $this->getReference('admin_role');
             $admin_user->getRoles()->add($adminRole);
 

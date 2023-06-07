@@ -5,13 +5,15 @@ declare(strict_types=1);
 namespace App\Controller\Api\Stations\Podcasts\Art;
 
 use App\Container\EntityManagerAwareTrait;
-use App\Entity;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\OpenApi;
 use App\Service\Flow;
 use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
+use App\Entity\Repository\PodcastRepository;
+use App\Entity\Api\Error;
+use App\Entity\Api\Status;
 
 #[OA\Post(
     path: '/station/{station_id}/podcast/{podcast_id}/art',
@@ -40,7 +42,7 @@ final class PostArtAction
     use EntityManagerAwareTrait;
 
     public function __construct(
-        private readonly Entity\Repository\PodcastRepository $podcastRepo,
+        private readonly PodcastRepository $podcastRepo,
     ) {
     }
 
@@ -65,7 +67,7 @@ final class PostArtAction
 
             if (null === $podcast) {
                 return $response->withStatus(404)
-                    ->withJson(Entity\Api\Error::notFound());
+                    ->withJson(Error::notFound());
             }
 
             $this->podcastRepo->writePodcastArt(
@@ -75,7 +77,7 @@ final class PostArtAction
 
             $this->em->flush();
 
-            return $response->withJson(Entity\Api\Status::updated());
+            return $response->withJson(Status::updated());
         }
 
         return $response->withJson($flowResponse);

@@ -5,19 +5,21 @@ declare(strict_types=1);
 namespace App\Controller\Api\Stations\Reports;
 
 use App\Container\EntityManagerAwareTrait;
-use App\Entity;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Paginator;
 use Doctrine\ORM\AbstractQuery;
 use Psr\Http\Message\ResponseInterface;
+use App\Entity\Repository\StationRequestRepository;
+use App\Entity\StationRequest;
+use App\Entity\Api\Status;
 
 final class RequestsController
 {
     use EntityManagerAwareTrait;
 
     public function __construct(
-        private readonly Entity\Repository\StationRequestRepository $requestRepo
+        private readonly StationRequestRepository $requestRepo
     ) {
     }
 
@@ -30,7 +32,7 @@ final class RequestsController
 
         $qb = $this->em->createQueryBuilder()
             ->select('sr, sm')
-            ->from(Entity\StationRequest::class, 'sr')
+            ->from(StationRequest::class, 'sr')
             ->join('sr.track', 'sm')
             ->where('sr.station = :station')
             ->setParameter('station', $station)
@@ -73,12 +75,12 @@ final class RequestsController
         $station = $request->getStation();
         $media = $this->requestRepo->getPendingRequest($request_id, $station);
 
-        if ($media instanceof Entity\StationRequest) {
+        if ($media instanceof StationRequest) {
             $this->em->remove($media);
             $this->em->flush();
         }
 
-        return $response->withJson(Entity\Api\Status::deleted());
+        return $response->withJson(Status::deleted());
     }
 
     public function clearAction(
@@ -89,6 +91,6 @@ final class RequestsController
         $station = $request->getStation();
         $this->requestRepo->clearPendingRequests($station);
 
-        return $response->withJson(Entity\Api\Status::deleted());
+        return $response->withJson(Status::deleted());
     }
 }

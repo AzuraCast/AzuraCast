@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Validator\Constraints;
 
-use App\Entity;
 use App\Radio\Configuration;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
+use App\Entity\Station;
 
 final class StationPortCheckerValidator extends ConstraintValidator
 {
@@ -22,8 +22,8 @@ final class StationPortCheckerValidator extends ConstraintValidator
         if (!$constraint instanceof StationPortChecker) {
             throw new UnexpectedTypeException($constraint, StationPortChecker::class);
         }
-        if (!$value instanceof Entity\Station) {
-            throw new UnexpectedTypeException($value, Entity\Station::class);
+        if (!$value instanceof Station) {
+            throw new UnexpectedTypeException($value, Station::class);
         }
 
         $frontend_config = $value->getFrontendConfig();

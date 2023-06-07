@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Radio\Frontend;
 
-use App\Entity;
 use App\Http\Router;
 use App\Nginx\CustomUrls;
 use App\Radio\AbstractLocalAdapter;
@@ -20,14 +19,18 @@ use PhpIP\IPBlock;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\UriInterface;
 use Supervisor\SupervisorInterface;
+use App\Entity\Repository\SettingsRepository;
+use App\Entity\Repository\StationMountRepository;
+use App\Entity\Station;
+use App\Entity\StationMount;
 
 abstract class AbstractFrontend extends AbstractLocalAdapter
 {
     public function __construct(
         protected AdapterFactory $adapterFactory,
         protected Client $http_client,
-        protected Entity\Repository\SettingsRepository $settingsRepo,
-        protected Entity\Repository\StationMountRepository $stationMountRepo,
+        protected SettingsRepository $settingsRepo,
+        protected StationMountRepository $stationMountRepo,
         SupervisorInterface $supervisor,
         EventDispatcherInterface $dispatcher,
         Router $router
@@ -38,16 +41,16 @@ abstract class AbstractFrontend extends AbstractLocalAdapter
     /**
      * @inheritdoc
      */
-    public function getSupervisorProgramName(Entity\Station $station): string
+    public function getSupervisorProgramName(Station $station): string
     {
         return Configuration::getSupervisorProgramName($station, 'frontend');
     }
 
     /**
-     * @param Entity\Station $station
+     * @param \App\Entity\Station $station
      * @param UriInterface|null $base_url
      */
-    public function getStreamUrl(Entity\Station $station, UriInterface $base_url = null): UriInterface
+    public function getStreamUrl(Station $station, UriInterface $base_url = null): UriInterface
     {
         $default_mount = $this->stationMountRepo->getDefaultMount($station);
 
@@ -55,8 +58,8 @@ abstract class AbstractFrontend extends AbstractLocalAdapter
     }
 
     public function getUrlForMount(
-        Entity\Station $station,
-        ?Entity\StationMount $mount = null,
+        Station $station,
+        ?StationMount $mount = null,
         ?UriInterface $base_url = null
     ): UriInterface {
         if ($mount === null) {
@@ -72,7 +75,7 @@ abstract class AbstractFrontend extends AbstractLocalAdapter
         return $public_url->withPath($public_url->getPath() . $mount->getName());
     }
 
-    public function getPublicUrl(Entity\Station $station, ?UriInterface $base_url = null): UriInterface
+    public function getPublicUrl(Station $station, ?UriInterface $base_url = null): UriInterface
     {
         $radio_port = $station->getFrontendConfig()->getPort();
         $base_url ??= $this->router->getBaseUrl();
@@ -96,12 +99,12 @@ abstract class AbstractFrontend extends AbstractLocalAdapter
     }
 
     /**
-     * @param Entity\Station $station
+     * @param \App\Entity\Station $station
      * @param UriInterface|null $base_url
      *
      * @return UriInterface[]
      */
-    public function getStreamUrls(Entity\Station $station, UriInterface $base_url = null): array
+    public function getStreamUrls(Station $station, UriInterface $base_url = null): array
     {
         $urls = [];
         foreach ($station->getMounts() as $mount) {
@@ -111,9 +114,9 @@ abstract class AbstractFrontend extends AbstractLocalAdapter
         return $urls;
     }
 
-    abstract public function getAdminUrl(Entity\Station $station, UriInterface $base_url = null): UriInterface;
+    abstract public function getAdminUrl(Station $station, UriInterface $base_url = null): UriInterface;
 
-    public function getNowPlaying(Entity\Station $station, bool $includeClients = true): Result
+    public function getNowPlaying(Station $station, bool $includeClients = true): Result
     {
         return Result::blank();
     }
@@ -150,7 +153,7 @@ abstract class AbstractFrontend extends AbstractLocalAdapter
     }
 
     protected function writeUserAgentBansFile(
-        Entity\Station $station,
+        Station $station,
         string $fileName = 'user_agent_bans.txt',
     ): string {
         $bannedUserAgents = array_filter(
@@ -169,7 +172,7 @@ abstract class AbstractFrontend extends AbstractLocalAdapter
     }
 
     protected function writeIpBansFile(
-        Entity\Station $station,
+        Station $station,
         string $fileName = 'ip_bans.txt',
         string $ipsSeparator = "\n"
     ): string {
@@ -183,7 +186,7 @@ abstract class AbstractFrontend extends AbstractLocalAdapter
         return $bansFile;
     }
 
-    protected function getBannedIps(Entity\Station $station): array
+    protected function getBannedIps(Station $station): array
     {
         return $this->getIpsAsArray($station->getFrontendConfig()->getBannedIps());
     }

@@ -5,18 +5,22 @@ declare(strict_types=1);
 namespace App\Radio\AutoDJ;
 
 use App\Container\EntityManagerAwareTrait;
-use App\Entity;
 use App\Event\Radio\AnnotateNextSong;
 use App\Radio\Backend\Liquidsoap\ConfigWriter;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use App\Entity\Repository\StationQueueRepository;
+use App\Entity\Station;
+use App\Entity\StationMedia;
+use App\Entity\StationQueue;
+use App\Entity\StationRequest;
 
 final class Annotations implements EventSubscriberInterface
 {
     use EntityManagerAwareTrait;
 
     public function __construct(
-        private readonly Entity\Repository\StationQueueRepository $queueRepo,
+        private readonly StationQueueRepository $queueRepo,
         private readonly EventDispatcherInterface $eventDispatcher,
     ) {
     }
@@ -41,7 +45,7 @@ final class Annotations implements EventSubscriberInterface
      * Pulls the next song from the AutoDJ, dispatches the AnnotateNextSong event and returns the built result.
      */
     public function annotateNextSong(
-        Entity\Station $station,
+        Station $station,
         bool $asAutoDj = false,
     ): string|bool {
         $queueRow = $this->queueRepo->getNextToSendToAutoDj($station);
@@ -59,11 +63,11 @@ final class Annotations implements EventSubscriberInterface
     public function annotateSongPath(AnnotateNextSong $event): void
     {
         $media = $event->getMedia();
-        if ($media instanceof Entity\StationMedia) {
+        if ($media instanceof StationMedia) {
             $event->setSongPath('media:' . ltrim($media->getPath(), '/'));
         } else {
             $queue = $event->getQueue();
-            if ($queue instanceof Entity\StationQueue) {
+            if ($queue instanceof StationQueue) {
                 $customUri = $queue->getAutodjCustomUri();
                 if (!empty($customUri)) {
                     $event->setSongPath($customUri);
@@ -172,7 +176,7 @@ final class Annotations implements EventSubscriberInterface
     public function annotateRequest(AnnotateNextSong $event): void
     {
         $request = $event->getRequest();
-        if ($request instanceof Entity\StationRequest) {
+        if ($request instanceof StationRequest) {
             $event->addAnnotations([
                 'request_id' => $request->getId(),
             ]);
@@ -186,7 +190,7 @@ final class Annotations implements EventSubscriberInterface
         }
 
         $queueRow = $event->getQueue();
-        if ($queueRow instanceof Entity\StationQueue) {
+        if ($queueRow instanceof StationQueue) {
             $queueRow->setSentToAutodj();
             $queueRow->setTimestampCued(time());
             $this->em->persist($queueRow);

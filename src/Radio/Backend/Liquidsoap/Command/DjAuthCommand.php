@@ -4,18 +4,19 @@ declare(strict_types=1);
 
 namespace App\Radio\Backend\Liquidsoap\Command;
 
-use App\Entity;
 use RuntimeException;
+use App\Entity\Repository\StationStreamerRepository;
+use App\Entity\Station;
 
 final class DjAuthCommand extends AbstractCommand
 {
     public function __construct(
-        private readonly Entity\Repository\StationStreamerRepository $streamerRepo,
+        private readonly StationStreamerRepository $streamerRepo,
     ) {
     }
 
     protected function doRun(
-        Entity\Station $station,
+        Station $station,
         bool $asAutoDj = false,
         array $payload = []
     ): bool {

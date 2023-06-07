@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Webhook\Connector;
 
-use App\Entity;
 use App\Entity\Api\NowPlaying\NowPlaying;
 use App\Entity\Repository\ListenerRepository;
 use App\Entity\Station;
@@ -24,7 +23,7 @@ final class MatomoAnalytics extends AbstractConnector
         parent::__construct($httpClient);
     }
 
-    protected function webhookShouldTrigger(Entity\StationWebhook $webhook, array $triggers = []): bool
+    protected function webhookShouldTrigger(StationWebhook $webhook, array $triggers = []): bool
     {
         return true;
     }

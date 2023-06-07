@@ -4,18 +4,21 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Stations\Reports\Overview;
 
-use App\Entity;
 use App\Entity\Repository\SettingsRepository;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
+use App\Entity\Repository\StationMountRepository;
+use App\Entity\Repository\StationRemoteRepository;
+use App\Entity\Repository\StationHlsStreamRepository;
+use App\Entity\Api\Status;
 
 final class ByStream extends AbstractReportAction
 {
     public function __construct(
-        private readonly Entity\Repository\StationMountRepository $mountRepo,
-        private readonly Entity\Repository\StationRemoteRepository $remoteRepo,
-        private readonly Entity\Repository\StationHlsStreamRepository $hlsStreamRepo,
+        private readonly StationMountRepository $mountRepo,
+        private readonly StationRemoteRepository $remoteRepo,
+        private readonly StationHlsStreamRepository $hlsStreamRepo,
         SettingsRepository $settingsRepo,
     ) {
         parent::__construct($settingsRepo);
@@ -29,7 +32,7 @@ final class ByStream extends AbstractReportAction
         // Get current analytics level.
         if (!$this->isAnalyticsEnabled()) {
             return $response->withStatus(400)
-                ->withJson(new Entity\Api\Status(false, 'Reporting is restricted due to system analytics level.'));
+                ->withJson(new Status(false, 'Reporting is restricted due to system analytics level.'));
         }
 
         $station = $request->getStation();

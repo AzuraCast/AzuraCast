@@ -7,7 +7,7 @@ namespace App\Sync\Task;
 use App\Container\EntityManagerAwareTrait;
 use App\Container\LoggerAwareTrait;
 use App\Doctrine\ReadWriteBatchIteratorAggregate;
-use App\Entity;
+use App\Entity\Enums\StorageLocationTypes;
 
 abstract class AbstractTask implements ScheduledTaskInterface
 {
@@ -22,14 +22,14 @@ abstract class AbstractTask implements ScheduledTaskInterface
     abstract public function run(bool $force = false): void;
 
     /**
-     * @return ReadWriteBatchIteratorAggregate<int, Entity\Station>
+     * @return ReadWriteBatchIteratorAggregate<int, \App\Entity\Station>
      */
     protected function iterateStations(): ReadWriteBatchIteratorAggregate
     {
         return ReadWriteBatchIteratorAggregate::fromQuery(
             $this->em->createQuery(
                 <<<'DQL'
-                    SELECT s FROM App\Entity\Station s
+                    SELECT s FROM App\\App\Entity\Station s
                 DQL
             ),
             1
@@ -37,17 +37,17 @@ abstract class AbstractTask implements ScheduledTaskInterface
     }
 
     /**
-     * @param Entity\Enums\StorageLocationTypes $type
+     * @param \App\Entity\Enums\StorageLocationTypes $type
      *
-     * @return ReadWriteBatchIteratorAggregate<int, Entity\StorageLocation>
+     * @return ReadWriteBatchIteratorAggregate<int, \App\Entity\StorageLocation>
      */
-    protected function iterateStorageLocations(Entity\Enums\StorageLocationTypes $type): ReadWriteBatchIteratorAggregate
+    protected function iterateStorageLocations(StorageLocationTypes $type): ReadWriteBatchIteratorAggregate
     {
         return ReadWriteBatchIteratorAggregate::fromQuery(
             $this->em->createQuery(
                 <<<'DQL'
                     SELECT sl
-                    FROM App\Entity\StorageLocation sl
+                    FROM App\\App\Entity\StorageLocation sl
                     WHERE sl.type = :type
                 DQL
             )->setParameter('type', $type->value),

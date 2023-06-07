@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Stations\Webhooks;
 
-use App\Entity;
 use App\Entity\Repository\StationWebhookRepository;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
+use App\Entity\Api\Status;
 
 final class ToggleAction
 {
@@ -36,6 +36,6 @@ final class ToggleAction
             ? __('Web hook enabled.')
             : __('Web hook disabled.');
 
-        return $response->withJson(new Entity\Api\Status(true, $flash_message));
+        return $response->withJson(new Status(true, $flash_message));
     }
 }

@@ -6,12 +6,13 @@ namespace App\Radio\Remote;
 
 use App\Container\EntityManagerAwareTrait;
 use App\Container\LoggerAwareTrait;
-use App\Entity;
 use GuzzleHttp\Client;
 use GuzzleHttp\Promise\PromiseInterface;
 use NowPlaying\AdapterFactory;
 use NowPlaying\Enums\AdapterTypes;
 use NowPlaying\Result\Result;
+use App\Entity\Repository\SettingsRepository;
+use App\Entity\StationRemote;
 
 abstract class AbstractRemote
 {
@@ -19,14 +20,14 @@ abstract class AbstractRemote
     use EntityManagerAwareTrait;
 
     public function __construct(
-        protected Entity\Repository\SettingsRepository $settingsRepo,
+        protected SettingsRepository $settingsRepo,
         protected Client $http_client,
         protected AdapterFactory $adapterFactory
     ) {
     }
 
     public function getNowPlayingAsync(
-        Entity\StationRemote $remote,
+        StationRemote $remote,
         bool $includeClients = false
     ): PromiseInterface {
         $adapterType = $this->getAdapterType();
@@ -62,9 +63,9 @@ abstract class AbstractRemote
     /**
      * Return the likely "public" listen URL for the remote.
      *
-     * @param Entity\StationRemote $remote
+     * @param \App\Entity\StationRemote $remote
      */
-    public function getPublicUrl(Entity\StationRemote $remote): string
+    public function getPublicUrl(StationRemote $remote): string
     {
         $custom_listen_url = $remote->getCustomListenUrl();
 
@@ -76,10 +77,10 @@ abstract class AbstractRemote
     /**
      * Format and return a URL for the remote path.
      *
-     * @param Entity\StationRemote $remote
+     * @param \App\Entity\StationRemote $remote
      * @param string|null $customPath
      */
-    protected function getRemoteUrl(Entity\StationRemote $remote, ?string $customPath = null): string
+    protected function getRemoteUrl(StationRemote $remote, ?string $customPath = null): string
     {
         $uri = $remote->getUrlAsUri();
 

@@ -5,25 +5,26 @@ declare(strict_types=1);
 namespace App\Entity\Repository;
 
 use App\Doctrine\Repository;
-use App\Entity;
 use App\Enums\GlobalPermissions;
+use App\Entity\Role;
+use App\Entity\RolePermission;
 
 /**
- * @extends Repository<Entity\RolePermission>
+ * @extends Repository<\App\Entity\RolePermission>
  */
 final class RolePermissionRepository extends Repository
 {
     /**
-     * @param Entity\Role $role
+     * @param \App\Entity\Role $role
      *
      * @return mixed[]
      */
-    public function getActionsForRole(Entity\Role $role): array
+    public function getActionsForRole(Role $role): array
     {
         $role_has_action = $this->em->createQuery(
             <<<'DQL'
                 SELECT e
-                FROM App\Entity\RolePermission e
+                FROM App\\App\Entity\RolePermission e
                 WHERE e.role_id = :role_id
             DQL
         )->setParameter('role_id', $role->getId())
@@ -41,27 +42,27 @@ final class RolePermissionRepository extends Repository
         return $result;
     }
 
-    public function ensureSuperAdministratorRole(): Entity\Role
+    public function ensureSuperAdministratorRole(): Role
     {
         $superAdminRole = $this->em->createQuery(
             <<<'DQL'
             SELECT r FROM
-            App\Entity\Role r LEFT JOIN r.permissions rp
+            App\\App\Entity\Role r LEFT JOIN r.permissions rp
             WHERE rp.station IS NULL AND rp.action_name = :action
             DQL
         )->setParameter('action', GlobalPermissions::All->value)
             ->setMaxResults(1)
             ->getOneOrNullResult();
 
-        if ($superAdminRole instanceof Entity\Role) {
+        if ($superAdminRole instanceof Role) {
             return $superAdminRole;
         }
 
-        $newRole = new Entity\Role();
+        $newRole = new Role();
         $newRole->setName('Super Administrator');
         $this->em->persist($newRole);
 
-        $newPerm = new Entity\RolePermission($newRole, null, GlobalPermissions::All);
+        $newPerm = new RolePermission($newRole, null, GlobalPermissions::All);
         $this->em->persist($newPerm);
 
         $this->em->flush();

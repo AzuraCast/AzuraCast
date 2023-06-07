@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Radio;
 
-use App\Entity;
 use App\Environment;
 use RuntimeException;
 use Symfony\Component\Process\Process;
+use App\Entity\Station;
 
 final class StereoTool
 {
@@ -22,7 +22,7 @@ final class StereoTool
         return $environment->getParentDirectory() . '/servers/stereo_tool/stereo_tool';
     }
 
-    public static function isReady(Entity\Station $station): bool
+    public static function isReady(Station $station): bool
     {
         if (!self::isInstalled()) {
             return false;

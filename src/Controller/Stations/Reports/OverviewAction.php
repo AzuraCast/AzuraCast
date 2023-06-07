@@ -4,15 +4,16 @@ declare(strict_types=1);
 
 namespace App\Controller\Stations\Reports;
 
-use App\Entity;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
+use App\Entity\Repository\SettingsRepository;
+use App\Entity\Enums\AnalyticsLevel;
 
 final class OverviewAction
 {
     public function __construct(
-        private readonly Entity\Repository\SettingsRepository $settingsRepo
+        private readonly SettingsRepository $settingsRepo
     ) {
     }
 
@@ -39,7 +40,7 @@ final class OverviewAction
             title: __('Station Statistics'),
             props: [
                 'stationTz' => $request->getStation()->getTimezone(),
-                'showFullAnalytics' => Entity\Enums\AnalyticsLevel::All === $analyticsLevel,
+                'showFullAnalytics' => AnalyticsLevel::All === $analyticsLevel,
                 'listenersByTimePeriodUrl' => $router->fromHere('api:stations:reports:overview-charts'),
                 'bestAndWorstUrl' => $router->fromHere('api:stations:reports:best-and-worst'),
                 'byStreamUrl' => $router->fromHere('api:stations:reports:by-stream'),

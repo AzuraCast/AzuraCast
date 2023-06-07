@@ -6,12 +6,24 @@ namespace App\Radio\AutoDJ;
 
 use App\Container\EntityManagerAwareTrait;
 use App\Container\LoggerAwareTrait;
-use App\Entity;
 use App\Event\Radio\BuildQueue;
 use App\Radio\PlaylistParser;
 use Carbon\CarbonInterface;
 use Psr\SimpleCache\CacheInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use App\Entity\Repository\StationPlaylistMediaRepository;
+use App\Entity\Repository\StationRequestRepository;
+use App\Entity\Repository\StationQueueRepository;
+use App\Entity\Enums\PlaylistTypes;
+use App\Entity\StationPlaylist;
+use App\Entity\StationQueue;
+use App\Entity\Enums\PlaylistSources;
+use App\Entity\Api\StationPlaylistQueue;
+use App\Entity\Enums\PlaylistOrders;
+use App\Entity\StationMedia;
+use App\Entity\StationPlaylistMedia;
+use App\Entity\Song;
+use App\Entity\Enums\PlaylistRemoteTypes;
 
 /**
  * The internal steps of the AutoDJ Queue building process.
@@ -25,9 +37,9 @@ final class QueueBuilder implements EventSubscriberInterface
         private readonly Scheduler $scheduler,
         private readonly DuplicatePrevention $duplicatePrevention,
         private readonly CacheInterface $cache,
-        private readonly Entity\Repository\StationPlaylistMediaRepository $spmRepo,
-        private readonly Entity\Repository\StationRequestRepository $requestRepo,
-        private readonly Entity\Repository\StationQueueRepository $queueRepo
+        private readonly StationPlaylistMediaRepository $spmRepo,
+        private readonly StationRequestRepository $requestRepo,
+        private readonly StationQueueRepository $queueRepo
     ) {
     }
 
@@ -58,7 +70,7 @@ final class QueueBuilder implements EventSubscriberInterface
 
         $activePlaylistsByType = [];
         foreach ($station->getPlaylists() as $playlist) {
-            /** @var Entity\StationPlaylist $playlist */
+            /** @var \App\Entity\StationPlaylist $playlist */
             if ($playlist->isPlayable($event->isInterrupting())) {
                 $type = $playlist->getType()->value;
 
@@ -86,10 +98,10 @@ final class QueueBuilder implements EventSubscriberInterface
         );
 
         $typesToPlay = [
-            Entity\Enums\PlaylistTypes::OncePerHour->value,
-            Entity\Enums\PlaylistTypes::OncePerXSongs->value,
-            Entity\Enums\PlaylistTypes::OncePerXMinutes->value,
-            Entity\Enums\PlaylistTypes::Standard->value,
+            PlaylistTypes::OncePerHour->value,
+            PlaylistTypes::OncePerXSongs->value,
+            PlaylistTypes::OncePerXMinutes->value,
+            PlaylistTypes::Standard->value,
         ];
         $typesToPlayByPriority = [];
         foreach ($typesToPlay as $type) {
@@ -105,7 +117,7 @@ final class QueueBuilder implements EventSubscriberInterface
             $eligiblePlaylists = [];
             $logPlaylists = [];
             foreach ($activePlaylistsByType[$currentPlaylistType] as $playlistId => $playlist) {
-                /** @var Entity\StationPlaylist $playlist */
+                /** @var \App\Entity\StationPlaylist $playlist */
                 if (!$this->scheduler->shouldPlaylistPlayNow($playlist, $expectedPlayTime)) {
                     continue;
                 }
@@ -201,19 +213,19 @@ final class QueueBuilder implements EventSubscriberInterface
     /**
      * Given a specified (sequential or shuffled) playlist, choose a song from the playlist to play and return it.
      *
-     * @param Entity\StationPlaylist $playlist
+     * @param \App\Entity\StationPlaylist $playlist
      * @param array $recentSongHistory
      * @param CarbonInterface $expectedPlayTime
      * @param bool $allowDuplicates Whether to return a media ID even if duplicates can't be prevented.
-     * @return Entity\StationQueue|Entity\StationQueue[]|null
+     * @return \App\Entity\StationQueue|\App\Entity\StationQueue[]|null
      */
     private function playSongFromPlaylist(
-        Entity\StationPlaylist $playlist,
+        StationPlaylist $playlist,
         array $recentSongHistory,
         CarbonInterface $expectedPlayTime,
         bool $allowDuplicates = false
-    ): Entity\StationQueue|array|null {
-        if (Entity\Enums\PlaylistSources::RemoteUrl === $playlist->getSource()) {
+    ): StationQueue|array|null {
+        if (PlaylistSources::RemoteUrl === $playlist->getSource()) {
             return $this->getSongFromRemotePlaylist($playlist, $expectedPlayTime);
         }
 
@@ -222,7 +234,7 @@ final class QueueBuilder implements EventSubscriberInterface
 
             $queueEntries = array_filter(
                 array_map(
-                    function (Entity\Api\StationPlaylistQueue $validTrack) use ($playlist, $expectedPlayTime) {
+                    function (StationPlaylistQueue $validTrack) use ($playlist, $expectedPlayTime) {
                         return $this->makeQueueFromApi($validTrack, $playlist, $expectedPlayTime);
                     },
                     $this->spmRepo->getQueue($playlist)
@@ -236,13 +248,13 @@ final class QueueBuilder implements EventSubscriberInterface
             }
         } else {
             $validTrack = match ($playlist->getOrder()) {
-                Entity\Enums\PlaylistOrders::Random => $this->getRandomMediaIdFromPlaylist(
+                PlaylistOrders::Random => $this->getRandomMediaIdFromPlaylist(
                     $playlist,
                     $recentSongHistory,
                     $allowDuplicates
                 ),
-                Entity\Enums\PlaylistOrders::Sequential => $this->getSequentialMediaIdFromPlaylist($playlist),
-                Entity\Enums\PlaylistOrders::Shuffle => $this->getShuffledMediaIdFromPlaylist(
+                PlaylistOrders::Sequential => $this->getSequentialMediaIdFromPlaylist($playlist),
+                PlaylistOrders::Shuffle => $this->getShuffledMediaIdFromPlaylist(
                     $playlist,
                     $recentSongHistory,
                     $allowDuplicates
@@ -272,22 +284,22 @@ final class QueueBuilder implements EventSubscriberInterface
     }
 
     private function makeQueueFromApi(
-        Entity\Api\StationPlaylistQueue $validTrack,
-        Entity\StationPlaylist $playlist,
+        StationPlaylistQueue $validTrack,
+        StationPlaylist $playlist,
         CarbonInterface $expectedPlayTime,
-    ): ?Entity\StationQueue {
-        $mediaToPlay = $this->em->find(Entity\StationMedia::class, $validTrack->media_id);
-        if (!$mediaToPlay instanceof Entity\StationMedia) {
+    ): ?StationQueue {
+        $mediaToPlay = $this->em->find(StationMedia::class, $validTrack->media_id);
+        if (!$mediaToPlay instanceof StationMedia) {
             return null;
         }
 
-        $spm = $this->em->find(Entity\StationPlaylistMedia::class, $validTrack->spm_id);
-        if ($spm instanceof Entity\StationPlaylistMedia) {
+        $spm = $this->em->find(StationPlaylistMedia::class, $validTrack->spm_id);
+        if ($spm instanceof StationPlaylistMedia) {
             $spm->played($expectedPlayTime->getTimestamp());
             $this->em->persist($spm);
         }
 
-        $stationQueueEntry = Entity\StationQueue::fromMedia($playlist->getStation(), $mediaToPlay);
+        $stationQueueEntry = StationQueue::fromMedia($playlist->getStation(), $mediaToPlay);
         $stationQueueEntry->setPlaylist($playlist);
         $this->em->persist($stationQueueEntry);
 
@@ -295,9 +307,9 @@ final class QueueBuilder implements EventSubscriberInterface
     }
 
     private function getSongFromRemotePlaylist(
-        Entity\StationPlaylist $playlist,
+        StationPlaylist $playlist,
         CarbonInterface $expectedPlayTime
-    ): ?Entity\StationQueue {
+    ): ?StationQueue {
         $mediaToPlay = $this->getMediaFromRemoteUrl($playlist);
 
         if (is_array($mediaToPlay)) {
@@ -306,9 +318,9 @@ final class QueueBuilder implements EventSubscriberInterface
             $playlist->setPlayedAt($expectedPlayTime->getTimestamp());
             $this->em->persist($playlist);
 
-            $stationQueueEntry = new Entity\StationQueue(
+            $stationQueueEntry = new StationQueue(
                 $playlist->getStation(),
-                Entity\Song::createFromText('Remote Playlist URL')
+                Song::createFromText('Remote Playlist URL')
             );
 
             $stationQueueEntry->setPlaylist($playlist);
@@ -329,12 +341,12 @@ final class QueueBuilder implements EventSubscriberInterface
      *
      * @return mixed[]|null
      */
-    private function getMediaFromRemoteUrl(Entity\StationPlaylist $playlist): ?array
+    private function getMediaFromRemoteUrl(StationPlaylist $playlist): ?array
     {
-        $remoteType = $playlist->getRemoteType() ?? Entity\Enums\PlaylistRemoteTypes::Stream;
+        $remoteType = $playlist->getRemoteType() ?? PlaylistRemoteTypes::Stream;
 
         // Handle a raw stream URL of possibly indeterminate length.
-        if (Entity\Enums\PlaylistRemoteTypes::Stream === $remoteType) {
+        if (PlaylistRemoteTypes::Stream === $remoteType) {
             // Annotate a hard-coded "duration" parameter to avoid infinite play for scheduled playlists.
             $duration = $this->scheduler->getPlaylistScheduleDuration($playlist);
             return [$playlist->getRemoteUrl(), $duration];
@@ -370,10 +382,10 @@ final class QueueBuilder implements EventSubscriberInterface
     }
 
     private function getRandomMediaIdFromPlaylist(
-        Entity\StationPlaylist $playlist,
+        StationPlaylist $playlist,
         array $recentSongHistory,
         bool $allowDuplicates
-    ): ?Entity\Api\StationPlaylistQueue {
+    ): ?StationPlaylistQueue {
         $mediaQueue = $this->spmRepo->getQueue($playlist);
 
         if ($playlist->getAvoidDuplicates()) {
@@ -384,8 +396,8 @@ final class QueueBuilder implements EventSubscriberInterface
     }
 
     private function getSequentialMediaIdFromPlaylist(
-        Entity\StationPlaylist $playlist
-    ): ?Entity\Api\StationPlaylistQueue {
+        StationPlaylist $playlist
+    ): ?StationPlaylistQueue {
         $mediaQueue = $this->spmRepo->getQueue($playlist);
         if (empty($mediaQueue)) {
             $this->spmRepo->resetQueue($playlist);
@@ -396,10 +408,10 @@ final class QueueBuilder implements EventSubscriberInterface
     }
 
     private function getShuffledMediaIdFromPlaylist(
-        Entity\StationPlaylist $playlist,
+        StationPlaylist $playlist,
         array $recentSongHistory,
         bool $allowDuplicates
-    ): ?Entity\Api\StationPlaylistQueue {
+    ): ?StationPlaylistQueue {
         $mediaQueue = $this->spmRepo->getQueue($playlist);
         if (empty($mediaQueue)) {
             $this->spmRepo->resetQueue($playlist);
@@ -442,7 +454,7 @@ final class QueueBuilder implements EventSubscriberInterface
 
         $this->logger->debug(sprintf('Queueing next song from request ID %d.', $request->getId()));
 
-        $stationQueueEntry = Entity\StationQueue::fromRequest($request);
+        $stationQueueEntry = StationQueue::fromRequest($request);
         $this->em->persist($stationQueueEntry);
 
         $request->setPlayedAt($expectedPlayTime->getTimestamp());

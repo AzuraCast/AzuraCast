@@ -8,16 +8,18 @@ use App\Assets\AssetTypes;
 use App\Container\EnvironmentAwareTrait;
 use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Doctrine\Repository;
-use App\Entity;
 use App\Flysystem\ExtendedFilesystemInterface;
 use App\Flysystem\StationFilesystems;
 use App\Radio\Enums\StreamFormats;
 use App\Service\Flow\UploadedFile;
 use Closure;
 use Psr\Http\Message\UriInterface;
+use App\Entity\Station;
+use App\Entity\StationMount;
+use App\Entity\StationHlsStream;
 
 /**
- * @extends Repository<Entity\Station>
+ * @extends Repository<\App\Entity\Station>
  */
 final class StationRepository extends Repository
 {
@@ -33,7 +35,7 @@ final class StationRepository extends Repository
     /**
      * @param string $identifier A numeric or string identifier for a station.
      */
-    public function findByIdentifier(string $identifier): ?Entity\Station
+    public function findByIdentifier(string $identifier): ?Station
     {
         return is_numeric($identifier)
             ? $this->repository->find($identifier)
@@ -44,19 +46,19 @@ final class StationRepository extends Repository
     {
         return $this->em->createQuery(
             <<<'DQL'
-            SELECT COUNT(s.id) FROM App\Entity\Station s WHERE s.is_enabled = 1
+            SELECT COUNT(s.id) FROM App\\App\Entity\Station s WHERE s.is_enabled = 1
             DQL
         )->getSingleScalarResult();
     }
 
     /**
-     * @return array<array-key, Entity\Station>
+     * @return array<array-key, \App\Entity\Station>
      */
     public function fetchAll(): mixed
     {
         return $this->em->createQuery(
             <<<'DQL'
-                SELECT s FROM App\Entity\Station s ORDER BY s.name ASC
+                SELECT s FROM App\\App\Entity\Station s ORDER BY s.name ASC
             DQL
         )->execute();
     }
@@ -88,13 +90,13 @@ final class StationRepository extends Repository
     }
 
     /**
-     * @return iterable<Entity\Station>
+     * @return iterable<\App\Entity\Station>
      */
     public function iterateEnabledStations(): iterable
     {
         return $this->em->createQuery(
             <<<DQL
-            SELECT s FROM App\Entity\Station s WHERE s.is_enabled = 1
+            SELECT s FROM App\\App\Entity\Station s WHERE s.is_enabled = 1
             DQL
         )->toIterable();
     }
@@ -102,7 +104,7 @@ final class StationRepository extends Repository
     /**
      * Reset mount points to their adapter defaults (in the event of an adapter change).
      */
-    public function resetMounts(Entity\Station $station): void
+    public function resetMounts(Station $station): void
     {
         foreach ($station->getMounts() as $mount) {
             $this->em->remove($mount);
@@ -110,7 +112,7 @@ final class StationRepository extends Repository
 
         // Create default mountpoints if station supports them.
         if ($station->getFrontendType()->supportsMounts()) {
-            $record = new Entity\StationMount($station);
+            $record = new StationMount($station);
             $record->setName('/radio.mp3');
             $record->setIsDefault(true);
             $record->setEnableAutodj(true);
@@ -123,7 +125,7 @@ final class StationRepository extends Repository
         $this->em->refresh($station);
     }
 
-    public function resetHls(Entity\Station $station): void
+    public function resetHls(Station $station): void
     {
         foreach ($station->getHlsStreams() as $hlsStream) {
             $this->em->remove($hlsStream);
@@ -137,7 +139,7 @@ final class StationRepository extends Repository
             ];
 
             foreach ($streams as $name => $bitrate) {
-                $record = new Entity\StationHlsStream($station);
+                $record = new StationHlsStream($station);
                 $record->setName($name);
                 $record->setFormat(StreamFormats::Aac);
                 $record->setBitrate($bitrate);
@@ -149,11 +151,11 @@ final class StationRepository extends Repository
         $this->em->refresh($station);
     }
 
-    public function flushRelatedMedia(Entity\Station $station): void
+    public function flushRelatedMedia(Station $station): void
     {
         $this->em->createQuery(
             <<<'DQL'
-                UPDATE App\Entity\SongHistory sh SET sh.media = null
+                UPDATE App\\App\Entity\SongHistory sh SET sh.media = null
                 WHERE sh.station = :station
             DQL
         )->setParameter('station', $station)
@@ -161,9 +163,9 @@ final class StationRepository extends Repository
 
         $this->em->createQuery(
             <<<'DQL'
-                DELETE FROM App\Entity\StationPlaylistMedia spm
+                DELETE FROM App\\App\Entity\StationPlaylistMedia spm
                 WHERE spm.playlist_id IN (
-                    SELECT sp.id FROM App\Entity\StationPlaylist sp WHERE sp.station = :station
+                    SELECT sp.id FROM App\\App\Entity\StationPlaylist sp WHERE sp.station = :station
                 )
             DQL
         )->setParameter('station', $station)
@@ -171,14 +173,14 @@ final class StationRepository extends Repository
 
         $this->em->createQuery(
             <<<'DQL'
-                DELETE FROM App\Entity\StationQueue sq WHERE sq.station = :station
+                DELETE FROM App\\App\Entity\StationQueue sq WHERE sq.station = :station
             DQL
         )->setParameter('station', $station)
             ->execute();
 
         $this->em->createQuery(
             <<<'DQL'
-                DELETE FROM App\Entity\StationRequest sr WHERE sr.station = :station
+                DELETE FROM App\\App\Entity\StationRequest sr WHERE sr.station = :station
             DQL
         )->setParameter('station', $station)
             ->execute();
@@ -187,9 +189,9 @@ final class StationRepository extends Repository
     /**
      * Return the URL to use for songs with no specified album artwork, when artwork is displayed.
      *
-     * @param Entity\Station|null $station
+     * @param \App\Entity\Station|null $station
      */
-    public function getDefaultAlbumArtUrl(?Entity\Station $station = null): UriInterface
+    public function getDefaultAlbumArtUrl(?Station $station = null): UriInterface
     {
         if (null !== $station) {
             $stationAlbumArt = AssetTypes::AlbumArt->createObject($this->environment, $station);
@@ -208,7 +210,7 @@ final class StationRepository extends Repository
     }
 
     public function setFallback(
-        Entity\Station $station,
+        Station $station,
         UploadedFile $file,
         ?ExtendedFilesystemInterface $fs = null
     ): void {
@@ -231,7 +233,7 @@ final class StationRepository extends Repository
     }
 
     public function doDeleteFallback(
-        Entity\Station $station,
+        Station $station,
         ?ExtendedFilesystemInterface $fs = null
     ): void {
         $fs ??= StationFilesystems::buildConfigFilesystem($station);
@@ -245,7 +247,7 @@ final class StationRepository extends Repository
     }
 
     public function clearFallback(
-        Entity\Station $station,
+        Station $station,
         ?ExtendedFilesystemInterface $fs = null
     ): void {
         $this->doDeleteFallback($station, $fs);
@@ -256,7 +258,7 @@ final class StationRepository extends Repository
     }
 
     public function setStereoToolConfiguration(
-        Entity\Station $station,
+        Station $station,
         UploadedFile $file,
         ?ExtendedFilesystemInterface $fs = null
     ): void {
@@ -280,7 +282,7 @@ final class StationRepository extends Repository
     }
 
     public function doDeleteStereoToolConfiguration(
-        Entity\Station $station,
+        Station $station,
         ?ExtendedFilesystemInterface $fs = null
     ): void {
         $backendConfig = $station->getBackendConfig();
@@ -293,7 +295,7 @@ final class StationRepository extends Repository
     }
 
     public function clearStereoToolConfiguration(
-        Entity\Station $station,
+        Station $station,
         ?ExtendedFilesystemInterface $fs = null
     ): void {
         $this->doDeleteStereoToolConfiguration($station, $fs);

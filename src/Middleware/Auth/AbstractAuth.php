@@ -7,19 +7,20 @@ namespace App\Middleware\Auth;
 use App\Acl;
 use App\Container\EnvironmentAwareTrait;
 use App\Customization;
-use App\Entity;
 use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use App\Entity\Repository\UserRepository;
+use App\Entity\AuditLog;
 
 abstract class AbstractAuth implements MiddlewareInterface
 {
     use EnvironmentAwareTrait;
 
     public function __construct(
-        protected readonly Entity\Repository\UserRepository $userRepo,
+        protected readonly UserRepository $userRepo,
         protected readonly Acl $acl,
         protected readonly Customization $customization
     ) {
@@ -38,11 +39,11 @@ abstract class AbstractAuth implements MiddlewareInterface
             ->withAttribute(ServerRequest::ATTR_ACL, $acl);
 
         // Set the Audit Log user.
-        Entity\AuditLog::setCurrentUser($request->getAttribute(ServerRequest::ATTR_USER));
+        AuditLog::setCurrentUser($request->getAttribute(ServerRequest::ATTR_USER));
 
         $response = $handler->handle($request);
 
-        Entity\AuditLog::setCurrentUser();
+        AuditLog::setCurrentUser();
 
         return $response;
     }

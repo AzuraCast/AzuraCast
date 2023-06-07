@@ -4,25 +4,25 @@ declare(strict_types=1);
 
 namespace App\Entity\Repository;
 
-use App\Entity;
+use App\Entity\Station;
 
 /**
- * @extends AbstractStationBasedRepository<Entity\StationHlsStream>
+ * @extends AbstractStationBasedRepository<\App\Entity\StationHlsStream>
  */
 final class StationHlsStreamRepository extends AbstractStationBasedRepository
 {
     /**
-     * @param Entity\Station $station
+     * @param \App\Entity\Station $station
      *
      * @return mixed[]
      */
-    public function getDisplayNames(Entity\Station $station): array
+    public function getDisplayNames(Station $station): array
     {
         $streams = $this->repository->findBy(['station' => $station]);
 
         $displayNames = [];
 
-        /** @var Entity\StationHlsStream $stream */
+        /** @var \App\Entity\StationHlsStream $stream */
         foreach ($streams as $stream) {
             $displayNames[$stream->getIdRequired()] = 'HLS: ' . $stream->getName();
         }

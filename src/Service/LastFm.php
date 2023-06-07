@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Service;
 
-use App\Entity;
 use App\Exception\RateLimitExceededException;
 use App\Lock\LockFactory;
 use App\Version;
@@ -13,6 +12,7 @@ use GuzzleHttp\RequestOptions;
 use InvalidArgumentException;
 use RuntimeException;
 use Symfony\Component\Lock\Exception\LockConflictedException;
+use App\Entity\Repository\SettingsRepository;
 
 final class LastFm
 {
@@ -23,7 +23,7 @@ final class LastFm
     public function __construct(
         private readonly Client $httpClient,
         private readonly LockFactory $lockFactory,
-        Entity\Repository\SettingsRepository $settingsRepo
+        SettingsRepository $settingsRepo
     ) {
         $this->apiKey = $settingsRepo->readSettings()->getLastFmApiKey();
     }

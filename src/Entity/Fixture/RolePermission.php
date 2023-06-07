@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Entity\Fixture;
 
-use App\Entity;
 use App\Enums\GlobalPermissions;
 use App\Enums\StationPermissions;
 use Doctrine\Common\DataFixtures\AbstractFixture;
@@ -15,7 +14,7 @@ final class RolePermission extends AbstractFixture implements DependentFixtureIn
 {
     public function load(ObjectManager $manager): void
     {
-        /** @var Entity\Station $station */
+        /** @var \App\Entity\Station $station */
         $station = $this->getReference('station');
 
         $permissions = [
@@ -35,11 +34,11 @@ final class RolePermission extends AbstractFixture implements DependentFixtureIn
         ];
 
         foreach ($permissions as $role_reference => $perm_names) {
-            /** @var Entity\Role $role */
+            /** @var \App\Entity\Role $role */
             $role = $this->getReference($role_reference);
 
             foreach ($perm_names as $perm_name) {
-                $rp = new Entity\RolePermission($role, $perm_name[1], $perm_name[0]);
+                $rp = new \App\Entity\RolePermission($role, $perm_name[1], $perm_name[0]);
                 $manager->persist($rp);
             }
         }

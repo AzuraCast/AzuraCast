@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Radio\Backend\Liquidsoap\Command;
 
-use App\Entity;
 use App\Flysystem\StationFilesystems;
 use RuntimeException;
+use App\Entity\Station;
 
 final class CopyCommand extends AbstractCommand
 {
@@ -15,7 +15,7 @@ final class CopyCommand extends AbstractCommand
     ) {
     }
 
-    protected function doRun(Entity\Station $station, bool $asAutoDj = false, array $payload = []): string
+    protected function doRun(Station $station, bool $asAutoDj = false, array $payload = []): string
     {
         if (empty($payload['uri'])) {
             throw new RuntimeException('No URI provided.');

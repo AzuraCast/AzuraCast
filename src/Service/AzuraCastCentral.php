@@ -6,10 +6,10 @@ namespace App\Service;
 
 use App\Container\EnvironmentAwareTrait;
 use App\Container\LoggerAwareTrait;
-use App\Entity;
 use App\Version;
 use Exception;
 use GuzzleHttp\Client;
+use App\Entity\Repository\SettingsRepository;
 
 final class AzuraCastCentral
 {
@@ -21,7 +21,7 @@ final class AzuraCastCentral
     public function __construct(
         private readonly Version $version,
         private readonly Client $httpClient,
-        private readonly Entity\Repository\SettingsRepository $settingsRepo
+        private readonly SettingsRepository $settingsRepo
     ) {
     }
 

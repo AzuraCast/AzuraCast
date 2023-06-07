@@ -2,7 +2,6 @@
 
 namespace Unit;
 
-use App\Entity;
 use Carbon\CarbonImmutable;
 use Codeception\Test\Unit;
 use DateTimeZone;
@@ -33,6 +32,6 @@ class ListenerIntervalTest extends Unit
         ];
 
         $expected = 6 * 60 * 60;
-        self::assertEquals($expected, Entity\Listener::getListenerSeconds($intervals));
+        self::assertEquals($expected, \App\Entity\Listener::getListenerSeconds($intervals));
     }
 }

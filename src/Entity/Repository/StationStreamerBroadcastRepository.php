@@ -5,26 +5,28 @@ declare(strict_types=1);
 namespace App\Entity\Repository;
 
 use App\Doctrine\Repository;
-use App\Entity;
 use Carbon\CarbonImmutable;
+use App\Entity\Station;
+use App\Entity\StationStreamerBroadcast;
+use App\Entity\StationStreamer;
 
 /**
- * @extends Repository<Entity\StationStreamerBroadcast>
+ * @extends Repository<\App\Entity\StationStreamerBroadcast>
  */
 final class StationStreamerBroadcastRepository extends Repository
 {
-    public function getLatestBroadcast(Entity\Station $station): ?Entity\StationStreamerBroadcast
+    public function getLatestBroadcast(Station $station): ?StationStreamerBroadcast
     {
         $currentStreamer = $station->getCurrentStreamer();
         if (null === $currentStreamer) {
             return null;
         }
 
-        /** @var Entity\StationStreamerBroadcast|null $latestBroadcast */
+        /** @var \App\Entity\StationStreamerBroadcast|null $latestBroadcast */
         $latestBroadcast = $this->em->createQuery(
             <<<'DQL'
                 SELECT ssb
-                FROM App\Entity\StationStreamerBroadcast ssb
+                FROM App\\App\Entity\StationStreamerBroadcast ssb
                 WHERE ssb.station = :station AND ssb.streamer = :streamer
                 ORDER BY ssb.timestampStart DESC
             DQL
@@ -36,11 +38,11 @@ final class StationStreamerBroadcastRepository extends Repository
         return $latestBroadcast;
     }
 
-    public function endAllActiveBroadcasts(Entity\Station $station): void
+    public function endAllActiveBroadcasts(Station $station): void
     {
         $this->em->createQuery(
             <<<'DQL'
-                UPDATE App\Entity\StationStreamerBroadcast ssb
+                UPDATE App\\App\Entity\StationStreamerBroadcast ssb
                 SET ssb.timestampEnd = :time
                 WHERE ssb.station = :station
                 AND ssb.timestampEnd = 0
@@ -51,11 +53,11 @@ final class StationStreamerBroadcastRepository extends Repository
     }
 
     /**
-     * @param Entity\Station $station
+     * @param \App\Entity\Station $station
      *
-     * @return Entity\StationStreamerBroadcast[]
+     * @return \App\Entity\StationStreamerBroadcast[]
      */
-    public function getActiveBroadcasts(Entity\Station $station): array
+    public function getActiveBroadcasts(Station $station): array
     {
         return $this->repository->findBy([
             'station' => $station,
@@ -63,7 +65,7 @@ final class StationStreamerBroadcastRepository extends Repository
         ]);
     }
 
-    public function findByPath(Entity\Station $station, string $path): ?Entity\StationStreamerBroadcast
+    public function findByPath(Station $station, string $path): ?StationStreamerBroadcast
     {
         return $this->repository->findOneBy([
             'station' => $station,
@@ -72,12 +74,12 @@ final class StationStreamerBroadcastRepository extends Repository
     }
 
     public function getOrCreateFromPath(
-        Entity\Station $station,
+        Station $station,
         string $recordingPath,
-    ): ?Entity\StationStreamerBroadcast {
+    ): ?StationStreamerBroadcast {
         $streamerUsername = pathinfo($recordingPath, PATHINFO_DIRNAME);
 
-        $streamer = $this->em->getRepository(Entity\StationStreamer::class)
+        $streamer = $this->em->getRepository(StationStreamer::class)
             ->findOneBy([
                 'station' => $station,
                 'streamer_username' => $streamerUsername,
@@ -89,7 +91,7 @@ final class StationStreamerBroadcastRepository extends Repository
         }
 
         $startTimeRaw = str_replace(
-            Entity\StationStreamerBroadcast::PATH_PREFIX . '_',
+            StationStreamerBroadcast::PATH_PREFIX . '_',
             '',
             pathinfo($recordingPath, PATHINFO_FILENAME)
         );
@@ -106,7 +108,7 @@ final class StationStreamerBroadcastRepository extends Repository
         $record = $this->em->createQuery(
             <<<'DQL'
             SELECT ssb
-            FROM App\Entity\StationStreamerBroadcast ssb
+            FROM App\\App\Entity\StationStreamerBroadcast ssb
             WHERE ssb.streamer = :streamer
             AND ssb.timestampStart >= :start AND ssb.timestampStart <= :end
             AND ssb.recordingPath IS NULL  
@@ -118,7 +120,7 @@ final class StationStreamerBroadcastRepository extends Repository
             ->getOneOrNullResult();
 
         if (null === $record) {
-            $record = new Entity\StationStreamerBroadcast($streamer);
+            $record = new StationStreamerBroadcast($streamer);
         }
 
         $record->setTimestampStart($startTime->getTimestamp());

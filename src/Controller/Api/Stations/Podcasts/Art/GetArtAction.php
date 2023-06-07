@@ -4,13 +4,14 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Stations\Podcasts\Art;
 
-use App\Entity;
 use App\Flysystem\StationFilesystems;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\OpenApi;
 use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
+use App\Entity\Repository\StationRepository;
+use App\Entity\Podcast;
 
 #[OA\Get(
     path: '/station/{station_id}/podcast/{podcast_id}/art',
@@ -40,7 +41,7 @@ use Psr\Http\Message\ResponseInterface;
 final class GetArtAction
 {
     public function __construct(
-        private readonly Entity\Repository\StationRepository $stationRepo,
+        private readonly StationRepository $stationRepo,
         private readonly StationFilesystems $stationFilesystems,
     ) {
     }
@@ -56,7 +57,7 @@ final class GetArtAction
         // If a timestamp delimiter is added, strip it automatically.
         $podcast_id = explode('|', $podcast_id, 2)[0];
 
-        $podcastPath = Entity\Podcast::getArtPath($podcast_id);
+        $podcastPath = Podcast::getArtPath($podcast_id);
 
         $fsPodcasts = $this->stationFilesystems->getPodcastsFilesystem($station);
 

@@ -4,16 +4,23 @@ declare(strict_types=1);
 
 namespace App\Sync\Task;
 
-use App\Entity;
 use Carbon\CarbonImmutable;
+use App\Entity\Repository\SettingsRepository;
+use App\Entity\Repository\AnalyticsRepository;
+use App\Entity\Repository\ListenerRepository;
+use App\Entity\Repository\SongHistoryRepository;
+use App\Entity\Enums\AnalyticsLevel;
+use App\Entity\Station;
+use App\Entity\Enums\AnalyticsIntervals;
+use App\Entity\Analytics;
 
 final class RunAnalyticsTask extends AbstractTask
 {
     public function __construct(
-        private readonly Entity\Repository\SettingsRepository $settingsRepo,
-        private readonly Entity\Repository\AnalyticsRepository $analyticsRepo,
-        private readonly Entity\Repository\ListenerRepository $listenerRepo,
-        private readonly Entity\Repository\SongHistoryRepository $historyRepo,
+        private readonly SettingsRepository $settingsRepo,
+        private readonly AnalyticsRepository $analyticsRepo,
+        private readonly ListenerRepository $listenerRepo,
+        private readonly SongHistoryRepository $historyRepo,
     ) {
     }
 
@@ -30,17 +37,17 @@ final class RunAnalyticsTask extends AbstractTask
     public function run(bool $force = false): void
     {
         switch ($this->settingsRepo->readSettings()->getAnalytics()) {
-            case Entity\Enums\AnalyticsLevel::None:
+            case AnalyticsLevel::None:
                 $this->purgeListeners();
                 $this->purgeAnalytics();
                 break;
 
-            case Entity\Enums\AnalyticsLevel::NoIp:
+            case AnalyticsLevel::NoIp:
                 $this->purgeListeners();
                 $this->updateAnalytics(false);
                 break;
 
-            case Entity\Enums\AnalyticsLevel::All:
+            case AnalyticsLevel::All:
                 $this->updateAnalytics(true);
                 break;
         }
@@ -48,13 +55,13 @@ final class RunAnalyticsTask extends AbstractTask
 
     private function updateAnalytics(bool $withListeners): void
     {
-        $stationsRaw = $this->em->getRepository(Entity\Station::class)
+        $stationsRaw = $this->em->getRepository(Station::class)
             ->findAll();
 
-        /** @var Entity\Station[] $stations */
+        /** @var \App\Entity\Station[] $stations */
         $stations = [];
         foreach ($stationsRaw as $station) {
-            /** @var Entity\Station $station */
+            /** @var \App\Entity\Station $station */
             $stations[$station->getId()] = $station;
         }
 
@@ -76,7 +83,7 @@ final class RunAnalyticsTask extends AbstractTask
 
     /**
      * @param CarbonImmutable $day
-     * @param Entity\Station[] $stations
+     * @param \App\Entity\Station[] $stations
      * @param bool $withListeners
      */
     private function processDay(
@@ -113,15 +120,15 @@ final class RunAnalyticsTask extends AbstractTask
                 }
 
                 $this->analyticsRepo->clearSingleMetric(
-                    Entity\Enums\AnalyticsIntervals::Hourly,
+                    AnalyticsIntervals::Hourly,
                     $hourUtc,
                     $station
                 );
 
-                $hourlyRow = new Entity\Analytics(
+                $hourlyRow = new Analytics(
                     $hourUtc,
                     $station,
-                    Entity\Enums\AnalyticsIntervals::Hourly,
+                    AnalyticsIntervals::Hourly,
                     $min,
                     $max,
                     $avg,
@@ -147,14 +154,14 @@ final class RunAnalyticsTask extends AbstractTask
 
             // Post the all-stations hourly totals.
             $this->analyticsRepo->clearSingleMetric(
-                Entity\Enums\AnalyticsIntervals::Hourly,
+                AnalyticsIntervals::Hourly,
                 $hourUtc
             );
 
-            $hourlyAllStationsRow = new Entity\Analytics(
+            $hourlyAllStationsRow = new Analytics(
                 $hourUtc,
                 null,
-                Entity\Enums\AnalyticsIntervals::Hourly,
+                AnalyticsIntervals::Hourly,
                 $hourlyMin ?? 0,
                 $hourlyMax ?? 0,
                 $hourlyAverage,
@@ -208,15 +215,15 @@ final class RunAnalyticsTask extends AbstractTask
             }
 
             $this->analyticsRepo->clearSingleMetric(
-                Entity\Enums\AnalyticsIntervals::Daily,
+                AnalyticsIntervals::Daily,
                 $day,
                 $station
             );
 
-            $dailyStationRow = new Entity\Analytics(
+            $dailyStationRow = new Analytics(
                 $day,
                 $station,
-                Entity\Enums\AnalyticsIntervals::Daily,
+                AnalyticsIntervals::Daily,
                 $dailyStationMin,
                 $dailyStationMax,
                 $dailyStationAverage,
@@ -228,14 +235,14 @@ final class RunAnalyticsTask extends AbstractTask
 
         // Post the all-stations daily total.
         $this->analyticsRepo->clearSingleMetric(
-            Entity\Enums\AnalyticsIntervals::Daily,
+            AnalyticsIntervals::Daily,
             $day
         );
 
-        $dailyAllStationsRow = new Entity\Analytics(
+        $dailyAllStationsRow = new Analytics(
             $day,
             null,
-            Entity\Enums\AnalyticsIntervals::Daily,
+            AnalyticsIntervals::Daily,
             $dailyMin ?? 0,
             $dailyMax ?? 0,
             $dailyAverage,

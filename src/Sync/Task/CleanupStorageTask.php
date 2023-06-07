@@ -4,16 +4,20 @@ declare(strict_types=1);
 
 namespace App\Sync\Task;
 
-use App\Entity;
 use Exception;
 use League\Flysystem\StorageAttributes;
 use Symfony\Component\Finder\Finder;
 use Throwable;
+use App\Entity\Repository\StorageLocationRepository;
+use App\Entity\Enums\StorageLocationTypes;
+use App\Entity\Station;
+use App\Entity\StorageLocation;
+use App\Entity\StationMedia;
 
 final class CleanupStorageTask extends AbstractTask
 {
     public function __construct(
-        private readonly Entity\Repository\StorageLocationRepository $storageLocationRepo,
+        private readonly StorageLocationRepository $storageLocationRepo,
     ) {
     }
 
@@ -26,7 +30,7 @@ final class CleanupStorageTask extends AbstractTask
     {
         foreach ($this->iterateStations() as $station) {
             try {
-                /** @var Entity\Station $station */
+                /** @var \App\Entity\Station $station */
                 $this->cleanStationTempFiles($station);
             } catch (Throwable $e) {
                 $this->logger->error($e->getMessage(), [
@@ -35,10 +39,10 @@ final class CleanupStorageTask extends AbstractTask
             }
         }
 
-        $storageLocations = $this->iterateStorageLocations(Entity\Enums\StorageLocationTypes::StationMedia);
+        $storageLocations = $this->iterateStorageLocations(StorageLocationTypes::StationMedia);
         foreach ($storageLocations as $storageLocation) {
             try {
-                /** @var Entity\StorageLocation $storageLocation */
+                /** @var \App\Entity\StorageLocation $storageLocation */
                 $this->cleanMediaStorageLocation($storageLocation);
             } catch (Throwable $e) {
                 $this->logger->error($e->getMessage(), [
@@ -48,7 +52,7 @@ final class CleanupStorageTask extends AbstractTask
         }
     }
 
-    private function cleanStationTempFiles(Entity\Station $station): void
+    private function cleanStationTempFiles(Station $station): void
     {
         $tempDir = $station->getRadioTempDir();
         $finder = new Finder();
@@ -66,14 +70,14 @@ final class CleanupStorageTask extends AbstractTask
         }
     }
 
-    private function cleanMediaStorageLocation(Entity\StorageLocation $storageLocation): void
+    private function cleanMediaStorageLocation(StorageLocation $storageLocation): void
     {
         $fs = $this->storageLocationRepo->getAdapter($storageLocation)->getFilesystem();
 
         $allUniqueIdsRaw = $this->em->createQuery(
             <<<'DQL'
                 SELECT sm.unique_id
-                FROM App\Entity\StationMedia sm
+                FROM App\\App\Entity\StationMedia sm
                 WHERE sm.storage_location = :storageLocation
             DQL
         )->setParameter('storageLocation', $storageLocation)
@@ -97,8 +101,8 @@ final class CleanupStorageTask extends AbstractTask
         ];
 
         $cleanupDirs = [
-            'albumart' => Entity\StationMedia::DIR_ALBUM_ART,
-            'waveform' => Entity\StationMedia::DIR_WAVEFORMS,
+            'albumart' => StationMedia::DIR_ALBUM_ART,
+            'waveform' => StationMedia::DIR_WAVEFORMS,
         ];
 
         foreach ($cleanupDirs as $key => $dirBase) {

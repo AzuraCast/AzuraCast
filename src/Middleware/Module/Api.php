@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Middleware\Module;
 
 use App\Container\EnvironmentAwareTrait;
-use App\Entity;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Utilities\Urls;
@@ -15,6 +14,8 @@ use Symfony\Component\VarDumper\Caster\ReflectionCaster;
 use Symfony\Component\VarDumper\Cloner\VarCloner;
 use Symfony\Component\VarDumper\Dumper\CliDumper;
 use Symfony\Component\VarDumper\VarDumper;
+use App\Entity\Repository\SettingsRepository;
+use App\Entity\User;
 
 /**
  * Handle API calls and wrap exceptions in JSON formatting.
@@ -24,7 +25,7 @@ final class Api
     use EnvironmentAwareTrait;
 
     public function __construct(
-        private readonly Entity\Repository\SettingsRepository $settingsRepo
+        private readonly SettingsRepository $settingsRepo
     ) {
     }
 
@@ -93,7 +94,7 @@ final class Api
                     }
                 }
             }
-        } elseif ($apiUser instanceof Entity\User || in_array($request->getMethod(), ['GET', 'OPTIONS'])) {
+        } elseif ($apiUser instanceof User || in_array($request->getMethod(), ['GET', 'OPTIONS'])) {
             // Default behavior:
             // Only set global CORS for GET requests and API-authenticated requests;
             // Session-authenticated, non-GET requests should only be made in a same-host situation.
@@ -101,7 +102,7 @@ final class Api
         }
 
         if ($response instanceof Response && !$response->hasCacheLifetime()) {
-            if ($preferBrowserUrl || $request->getAttribute(ServerRequest::ATTR_USER) instanceof Entity\User) {
+            if ($preferBrowserUrl || $request->getAttribute(ServerRequest::ATTR_USER) instanceof User) {
                 $response = $response->withNoCache();
             } else {
                 $response = $response->withCacheLifetime(15);

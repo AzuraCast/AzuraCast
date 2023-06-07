@@ -7,13 +7,14 @@ namespace App\Http;
 use App\Acl;
 use App\Auth;
 use App\Customization;
-use App\Entity;
 use App\Enums\SupportedLocales;
 use App\Exception;
 use App\RateLimit;
 use App\Session;
 use App\View;
 use Mezzio\Session\SessionInterface;
+use App\Entity\User;
+use App\Entity\Station;
 
 final class ServerRequest extends \Slim\Http\ServerRequest
 {
@@ -80,14 +81,14 @@ final class ServerRequest extends \Slim\Http\ServerRequest
         return $this->getAttributeOfClass(self::ATTR_ACL, Acl::class);
     }
 
-    public function getUser(): Entity\User
+    public function getUser(): User
     {
-        return $this->getAttributeOfClass(self::ATTR_USER, Entity\User::class);
+        return $this->getAttributeOfClass(self::ATTR_USER, User::class);
     }
 
-    public function getStation(): Entity\Station
+    public function getStation(): Station
     {
-        return $this->getAttributeOfClass(self::ATTR_STATION, Entity\Station::class);
+        return $this->getAttributeOfClass(self::ATTR_STATION, Station::class);
     }
 
     /**

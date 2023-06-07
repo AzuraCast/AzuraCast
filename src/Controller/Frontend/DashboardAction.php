@@ -4,16 +4,16 @@ declare(strict_types=1);
 
 namespace App\Controller\Frontend;
 
-use App\Entity;
 use App\Enums\GlobalPermissions;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
+use App\Entity\Repository\SettingsRepository;
 
 final class DashboardAction
 {
     public function __construct(
-        private readonly Entity\Repository\SettingsRepository $settingsRepo
+        private readonly SettingsRepository $settingsRepo
     ) {
     }
 

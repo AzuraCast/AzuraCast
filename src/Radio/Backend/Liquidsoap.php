@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Radio\Backend;
 
-use App\Entity;
 use App\Event\Radio\WriteLiquidsoapConfiguration;
 use App\Exception;
 use App\Nginx\CustomUrls;
@@ -15,13 +14,15 @@ use App\Radio\Enums\LiquidsoapQueues;
 use LogicException;
 use Psr\Http\Message\UriInterface;
 use Symfony\Component\Process\Process;
+use App\Entity\Station;
+use App\Entity\StationStreamer;
 
 final class Liquidsoap extends AbstractLocalAdapter
 {
     /**
      * @inheritDoc
      */
-    public function getConfigurationPath(Entity\Station $station): ?string
+    public function getConfigurationPath(Station $station): ?string
     {
         return $station->getRadioConfigDir() . '/liquidsoap.liq';
     }
@@ -29,7 +30,7 @@ final class Liquidsoap extends AbstractLocalAdapter
     /**
      * @inheritDoc
      */
-    public function getCurrentConfiguration(Entity\Station $station): ?string
+    public function getCurrentConfiguration(Station $station): ?string
     {
         $event = new WriteLiquidsoapConfiguration($station, false, true);
         $this->dispatcher->dispatch($event);
@@ -40,11 +41,11 @@ final class Liquidsoap extends AbstractLocalAdapter
     /**
      * Returns the port used for DJs/Streamers to connect to LiquidSoap for broadcasting.
      *
-     * @param Entity\Station $station
+     * @param \App\Entity\Station $station
      *
      * @return int The port number to use for this station.
      */
-    public function getStreamPort(Entity\Station $station): int
+    public function getStreamPort(Station $station): int
     {
         $djPort = $station->getBackendConfig()->getDjPort();
         if (null !== $djPort) {
@@ -61,14 +62,14 @@ final class Liquidsoap extends AbstractLocalAdapter
     /**
      * Execute the specified remote command on LiquidSoap via the telnet API.
      *
-     * @param Entity\Station $station
+     * @param \App\Entity\Station $station
      * @param string $command_str
      *
      * @return string[]
      *
      * @throws Exception
      */
-    public function command(Entity\Station $station, string $command_str): array
+    public function command(Station $station, string $command_str): array
     {
         $socketPath = 'unix://' . $station->getRadioConfigDir() . '/liquidsoap.sock';
 
@@ -98,7 +99,7 @@ final class Liquidsoap extends AbstractLocalAdapter
     /**
      * @inheritdoc
      */
-    public function getCommand(Entity\Station $station): ?string
+    public function getCommand(Station $station): ?string
     {
         if ($binary = $this->getBinary()) {
             $config_path = $station->getRadioConfigDir() . '/liquidsoap.liq';
@@ -135,7 +136,7 @@ final class Liquidsoap extends AbstractLocalAdapter
             : null;
     }
 
-    public function getHlsUrl(Entity\Station $station, UriInterface $baseUrl = null): UriInterface
+    public function getHlsUrl(Station $station, UriInterface $baseUrl = null): UriInterface
     {
         $baseUrl ??= $this->router->getBaseUrl();
         return $baseUrl->withPath(
@@ -144,7 +145,7 @@ final class Liquidsoap extends AbstractLocalAdapter
     }
 
     public function isQueueEmpty(
-        Entity\Station $station,
+        Station $station,
         LiquidsoapQueues $queue
     ): bool {
         $queueResult = $this->command(
@@ -158,7 +159,7 @@ final class Liquidsoap extends AbstractLocalAdapter
      * @return string[]
      */
     public function enqueue(
-        Entity\Station $station,
+        Station $station,
         LiquidsoapQueues $queue,
         string $music_file
     ): array {
@@ -171,7 +172,7 @@ final class Liquidsoap extends AbstractLocalAdapter
     /**
      * @return string[]
      */
-    public function skip(Entity\Station $station): array
+    public function skip(Station $station): array
     {
         return $this->command(
             $station,
@@ -182,7 +183,7 @@ final class Liquidsoap extends AbstractLocalAdapter
     /**
      * @return string[]
      */
-    public function updateMetadata(Entity\Station $station, array $newMeta): array
+    public function updateMetadata(Station $station, array $newMeta): array
     {
         $metaStr = [];
         foreach ($newMeta as $metaKey => $metaVal) {
@@ -198,16 +199,16 @@ final class Liquidsoap extends AbstractLocalAdapter
     /**
      * Tell LiquidSoap to disconnect the current live streamer.
      *
-     * @param Entity\Station $station
+     * @param \App\Entity\Station $station
      *
      * @return string[]
      */
-    public function disconnectStreamer(Entity\Station $station): array
+    public function disconnectStreamer(Station $station): array
     {
         $current_streamer = $station->getCurrentStreamer();
         $disconnect_timeout = $station->getDisconnectDeactivateStreamer();
 
-        if ($current_streamer instanceof Entity\StationStreamer && $disconnect_timeout > 0) {
+        if ($current_streamer instanceof StationStreamer && $disconnect_timeout > 0) {
             $current_streamer->deactivateFor($disconnect_timeout);
 
             $this->em->persist($current_streamer);
@@ -220,7 +221,7 @@ final class Liquidsoap extends AbstractLocalAdapter
         );
     }
 
-    public function getWebStreamingUrl(Entity\Station $station, UriInterface $base_url): UriInterface
+    public function getWebStreamingUrl(Station $station, UriInterface $base_url): UriInterface
     {
         $djMount = $station->getBackendConfig()->getDjMountPoint();
 
@@ -247,7 +248,7 @@ final class Liquidsoap extends AbstractLocalAdapter
         }
     }
 
-    public function getSupervisorProgramName(Entity\Station $station): string
+    public function getSupervisorProgramName(Station $station): string
     {
         return Configuration::getSupervisorProgramName($station, 'backend');
     }

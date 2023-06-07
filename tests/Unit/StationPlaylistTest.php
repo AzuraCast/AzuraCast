@@ -2,7 +2,6 @@
 
 namespace Unit;
 
-use App\Entity;
 use App\Radio\AutoDJ\Scheduler;
 use App\Tests\Module;
 use Carbon\CarbonImmutable;
@@ -25,14 +24,14 @@ class StationPlaylistTest extends Unit
 
     public function testScheduledPlaylist(): void
     {
-        /** @var Entity\Station $station */
-        $station = Mockery::mock(Entity\Station::class);
+        /** @var \App\Entity\Station $station */
+        $station = Mockery::mock(\App\Entity\Station::class);
 
-        $playlist = new Entity\StationPlaylist($station);
+        $playlist = new \App\Entity\StationPlaylist($station);
         $playlist->setName('Test Playlist');
 
         // Sample playlist that plays from 10PM to 4AM the next day.
-        $scheduleEntry = new Entity\StationSchedule($playlist);
+        $scheduleEntry = new \App\Entity\StationSchedule($playlist);
         $scheduleEntry->setStartTime(2200);
         $scheduleEntry->setEndTime(400);
         $scheduleEntry->setDays([1, 2, 3]); // Monday, Tuesday, Wednesday
@@ -66,12 +65,12 @@ class StationPlaylistTest extends Unit
 
     public function testOncePerXMinutesPlaylist()
     {
-        /** @var Entity\Station $station */
-        $station = Mockery::mock(Entity\Station::class);
+        /** @var \App\Entity\Station $station */
+        $station = Mockery::mock(\App\Entity\Station::class);
 
-        $playlist = new Entity\StationPlaylist($station);
+        $playlist = new \App\Entity\StationPlaylist($station);
         $playlist->setName('Test Playlist');
-        $playlist->setType(Entity\Enums\PlaylistTypes::OncePerXMinutes);
+        $playlist->setType(\App\Entity\Enums\PlaylistTypes::OncePerXMinutes);
         $playlist->setPlayPerMinutes(30);
 
         $utc = new DateTimeZone('UTC');
@@ -92,12 +91,12 @@ class StationPlaylistTest extends Unit
 
     public function testOncePerHourPlaylist()
     {
-        /** @var Entity\Station $station */
-        $station = Mockery::mock(Entity\Station::class);
+        /** @var \App\Entity\Station $station */
+        $station = Mockery::mock(\App\Entity\Station::class);
 
-        $playlist = new Entity\StationPlaylist($station);
+        $playlist = new \App\Entity\StationPlaylist($station);
         $playlist->setName('Test Playlist');
-        $playlist->setType(Entity\Enums\PlaylistTypes::OncePerHour);
+        $playlist->setType(\App\Entity\Enums\PlaylistTypes::OncePerHour);
         $playlist->setPlayPerHourMinute(50);
 
         $utc = new DateTimeZone('UTC');

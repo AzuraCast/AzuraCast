@@ -6,7 +6,6 @@ namespace App\Radio\Remote;
 
 use App\Cache\AzuraRelayCache;
 use App\Container\EnvironmentAwareTrait;
-use App\Entity;
 use GuzzleHttp\Client;
 use GuzzleHttp\Promise\Create;
 use GuzzleHttp\Promise\PromiseInterface;
@@ -15,6 +14,9 @@ use InvalidArgumentException;
 use NowPlaying\AdapterFactory;
 use NowPlaying\Enums\AdapterTypes;
 use NowPlaying\Result\Result;
+use App\Entity\Repository\SettingsRepository;
+use App\Entity\StationRemote;
+use App\Entity\Relay;
 
 final class AzuraRelay extends AbstractRemote
 {
@@ -22,19 +24,19 @@ final class AzuraRelay extends AbstractRemote
 
     public function __construct(
         private readonly AzuraRelayCache $azuraRelayCache,
-        Entity\Repository\SettingsRepository $settingsRepo,
+        SettingsRepository $settingsRepo,
         Client $http_client,
         AdapterFactory $adapterFactory,
     ) {
         parent::__construct($settingsRepo, $http_client, $adapterFactory);
     }
 
-    public function getNowPlayingAsync(Entity\StationRemote $remote, bool $includeClients = false): PromiseInterface
+    public function getNowPlayingAsync(StationRemote $remote, bool $includeClients = false): PromiseInterface
     {
         $station = $remote->getStation();
         $relay = $remote->getRelay();
 
-        if (!$relay instanceof Entity\Relay) {
+        if (!$relay instanceof Relay) {
             throw new InvalidArgumentException('AzuraRelay remote must have a corresponding relay.');
         }
 
@@ -75,12 +77,12 @@ final class AzuraRelay extends AbstractRemote
     /**
      * @inheritDoc
      */
-    public function getPublicUrl(Entity\StationRemote $remote): string
+    public function getPublicUrl(StationRemote $remote): string
     {
         $station = $remote->getStation();
         $relay = $remote->getRelay();
 
-        if (!$relay instanceof Entity\Relay) {
+        if (!$relay instanceof Relay) {
             throw new InvalidArgumentException('AzuraRelay remote must have a corresponding relay.');
         }
 

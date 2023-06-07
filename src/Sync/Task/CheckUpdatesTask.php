@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace App\Sync\Task;
 
 use App\Container\EnvironmentAwareTrait;
-use App\Entity;
 use App\Service\AzuraCastCentral;
 use GuzzleHttp\Exception\TransferException;
+use App\Entity\Repository\SettingsRepository;
 
 final class CheckUpdatesTask extends AbstractTask
 {
@@ -16,7 +16,7 @@ final class CheckUpdatesTask extends AbstractTask
     private const UPDATE_THRESHOLD = 3780;
 
     public function __construct(
-        private readonly Entity\Repository\SettingsRepository $settingsRepo,
+        private readonly SettingsRepository $settingsRepo,
         private readonly AzuraCastCentral $azuracastCentral
     ) {
     }

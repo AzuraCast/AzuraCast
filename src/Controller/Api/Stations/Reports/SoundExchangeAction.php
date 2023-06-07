@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace App\Controller\Api\Stations\Reports;
 
 use App\Container\EntityManagerAwareTrait;
-use App\Entity;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Service\MusicBrainz;
 use Carbon\CarbonImmutable;
 use Psr\Http\Message\ResponseInterface;
 use Throwable;
+use App\Entity\Song;
 
 /**
  * Produce a report in SoundExchange (the US webcaster licensing agency) format.
@@ -68,7 +68,7 @@ final class SoundExchangeAction
         $all_media = $this->em->createQuery(
             <<<'DQL'
                 SELECT sm, spm, sp, smcf
-                FROM App\Entity\StationMedia sm
+                FROM App\\App\Entity\StationMedia sm
                 LEFT JOIN sm.custom_fields smcf
                 LEFT JOIN sm.playlists spm
                 LEFT JOIN spm.playlist sp
@@ -85,7 +85,7 @@ final class SoundExchangeAction
             <<<'DQL'
                 SELECT sh.song_id AS song_id, sh.text, sh.artist, sh.title, sh.media_id, COUNT(sh.id) AS plays,
                     SUM(sh.unique_listeners) AS unique_listeners
-                FROM App\Entity\SongHistory sh
+                FROM App\\App\Entity\SongHistory sh
                 WHERE sh.station = :station
                 AND sh.timestamp_start <= :time_end
                 AND sh.timestamp_end >= :time_start
@@ -100,7 +100,7 @@ final class SoundExchangeAction
         $history_rows_by_id = array_column($history_rows, null, 'media_id');
 
         // Remove any reference to the "Stream Offline" song.
-        $offline_song_hash = Entity\Song::createOffline()->getSongId();
+        $offline_song_hash = Song::createOffline()->getSongId();
         unset($history_rows_by_id[$offline_song_hash]);
 
         // Assemble report items
@@ -108,7 +108,7 @@ final class SoundExchangeAction
 
         $set_isrc_query = $this->em->createQuery(
             <<<'DQL'
-                UPDATE App\Entity\StationMedia sm
+                UPDATE App\\App\Entity\StationMedia sm
                 SET sm.isrc = :isrc
                 WHERE sm.id = :media_id
             DQL
@@ -163,7 +163,7 @@ final class SoundExchangeAction
 
     private function findISRC(array $song_row): ?string
     {
-        $song = Entity\Song::createFromArray($song_row);
+        $song = Song::createFromArray($song_row);
 
         try {
             foreach ($this->musicBrainz->findRecordingsForSong($song, 'isrcs') as $recording) {

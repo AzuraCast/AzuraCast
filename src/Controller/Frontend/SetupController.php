@@ -6,7 +6,6 @@ namespace App\Controller\Frontend;
 
 use App\Container\EntityManagerAwareTrait;
 use App\Container\EnvironmentAwareTrait;
-use App\Entity;
 use App\Exception\NotLoggedInException;
 use App\Exception\ValidationException;
 use App\Http\Response;
@@ -17,6 +16,10 @@ use InvalidArgumentException;
 use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Throwable;
+use App\Entity\Repository\SettingsRepository;
+use App\Entity\Repository\RolePermissionRepository;
+use App\Entity\User;
+use App\Entity\Settings;
 
 final class SetupController
 {
@@ -24,8 +27,8 @@ final class SetupController
     use EnvironmentAwareTrait;
 
     public function __construct(
-        private readonly Entity\Repository\SettingsRepository $settingsRepo,
-        private readonly Entity\Repository\RolePermissionRepository $permissionRepo,
+        private readonly SettingsRepository $settingsRepo,
+        private readonly RolePermissionRepository $permissionRepo,
         private readonly ValidatorInterface $validator,
         private readonly StationFormComponent $stationFormComponent,
         private readonly Version $version
@@ -77,7 +80,7 @@ final class SetupController
                 $role = $this->permissionRepo->ensureSuperAdministratorRole();
 
                 // Create user account.
-                $user = new Entity\User();
+                $user = new User();
                 $user->setEmail($data['username']);
                 $user->setNewPassword($data['password']);
                 $user->getRoles()->add($role);
@@ -170,7 +173,7 @@ final class SetupController
             title: __('System Settings'),
             props: [
                 'apiUrl' => $router->named('api:admin:settings', [
-                    'group' => Entity\Settings::GROUP_GENERAL,
+                    'group' => Settings::GROUP_GENERAL,
                 ]),
                 'releaseChannel' => $this->version->getReleaseChannelEnum()->value,
                 'continueUrl' => $router->named('dashboard'),
@@ -208,7 +211,7 @@ final class SetupController
         // Step 1: Register
         $num_users = (int)$this->em->createQuery(
             <<<'DQL'
-                SELECT COUNT(u.id) FROM App\Entity\User u
+                SELECT COUNT(u.id) FROM App\\App\Entity\User u
             DQL
         )->getSingleScalarResult();
 
@@ -225,7 +228,7 @@ final class SetupController
         // Step 2: Set up Station
         $num_stations = (int)$this->em->createQuery(
             <<<'DQL'
-                SELECT COUNT(s.id) FROM App\Entity\Station s
+                SELECT COUNT(s.id) FROM App\\App\Entity\Station s
             DQL
         )->getSingleScalarResult();
 

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Media\AlbumArtHandler;
 
-use App\Entity;
 use App\Service\MusicBrainz;
+use App\Entity\Interfaces\SongInterface;
 
 final class MusicBrainzAlbumArtHandler extends AbstractAlbumArtHandler
 {
@@ -19,7 +19,7 @@ final class MusicBrainzAlbumArtHandler extends AbstractAlbumArtHandler
         return 'MusicBrainz';
     }
 
-    public function getAlbumArt(Entity\Interfaces\SongInterface $song): ?string
+    public function getAlbumArt(SongInterface $song): ?string
     {
         $releaseGroupIds = [];
         foreach ($this->musicBrainz->findRecordingsForSong($song) as $recording) {

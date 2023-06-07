@@ -4,17 +4,17 @@ declare(strict_types=1);
 
 namespace App\Service;
 
-use App\Entity;
 use Symfony\Component\Mailer\Envelope;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\Email;
 use Symfony\Component\Mime\RawMessage;
+use App\Entity\Repository\SettingsRepository;
 
 final class Mail implements MailerInterface
 {
     public function __construct(
-        private readonly Entity\Repository\SettingsRepository $settingsRepo,
+        private readonly SettingsRepository $settingsRepo,
         private readonly MailerInterface $mailer
     ) {
     }

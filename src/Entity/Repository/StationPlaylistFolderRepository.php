@@ -4,20 +4,23 @@ declare(strict_types=1);
 
 namespace App\Entity\Repository;
 
-use App\Entity;
+use App\Entity\Station;
+use App\Entity\Enums\PlaylistSources;
+use App\Entity\StationPlaylist;
+use App\Entity\StationPlaylistFolder;
 
 /**
- * @extends AbstractStationBasedRepository<Entity\StationPlaylistFolder>
+ * @extends AbstractStationBasedRepository<\App\Entity\StationPlaylistFolder>
  */
 final class StationPlaylistFolderRepository extends AbstractStationBasedRepository
 {
     /**
-     * @param Entity\Station $station
-     * @param Entity\StationPlaylist[] $playlists
+     * @param \App\Entity\Station $station
+     * @param \App\Entity\StationPlaylist[] $playlists
      * @param string $path
      */
     public function setPlaylistsForFolder(
-        Entity\Station $station,
+        Station $station,
         array $playlists,
         string $path
     ): void {
@@ -27,7 +30,7 @@ final class StationPlaylistFolderRepository extends AbstractStationBasedReposito
 
         $this->em->createQuery(
             <<<'DQL'
-                DELETE FROM App\Entity\StationPlaylistFolder spf
+                DELETE FROM App\\App\Entity\StationPlaylistFolder spf
                 WHERE spf.station = :station AND spf.path = :path
             DQL
         )->setParameter('station', $station)
@@ -35,11 +38,11 @@ final class StationPlaylistFolderRepository extends AbstractStationBasedReposito
             ->execute();
 
         foreach ($playlists as $playlistId => $playlistRecord) {
-            if (Entity\Enums\PlaylistSources::Songs === $playlistRecord->getSource()) {
-                /** @var Entity\StationPlaylist $playlist */
-                $playlist = $this->em->getReference(Entity\StationPlaylist::class, $playlistId);
+            if (PlaylistSources::Songs === $playlistRecord->getSource()) {
+                /** @var \App\Entity\StationPlaylist $playlist */
+                $playlist = $this->em->getReference(StationPlaylist::class, $playlistId);
 
-                $newRecord = new Entity\StationPlaylistFolder($station, $playlist, $path);
+                $newRecord = new StationPlaylistFolder($station, $playlist, $path);
                 $this->em->persist($newRecord);
             }
         }

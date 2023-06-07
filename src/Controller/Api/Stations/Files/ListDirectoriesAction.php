@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Stations\Files;
 
-use App\Entity;
 use App\Flysystem\StationFilesystems;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use League\Flysystem\StorageAttributes;
 use Psr\Http\Message\ResponseInterface;
+use App\Entity\StationMedia;
 
 final class ListDirectoriesAction
 {
@@ -30,9 +30,9 @@ final class ListDirectoriesAction
         $fsMedia = $this->stationFilesystems->getMediaFilesystem($station);
 
         $protectedPaths = [
-            Entity\StationMedia::DIR_ALBUM_ART,
-            Entity\StationMedia::DIR_WAVEFORMS,
-            Entity\StationMedia::DIR_FOLDER_COVERS,
+            StationMedia::DIR_ALBUM_ART,
+            StationMedia::DIR_WAVEFORMS,
+            StationMedia::DIR_FOLDER_COVERS,
         ];
 
         $directoriesRaw = $fsMedia->listContents($currentDir, false)->filter(

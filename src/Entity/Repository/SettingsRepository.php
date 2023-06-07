@@ -6,18 +6,18 @@ namespace App\Entity\Repository;
 
 use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Doctrine\Repository;
-use App\Entity;
 use App\Exception\ValidationException;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use App\Entity\Settings;
 
 /**
- * @extends Repository<Entity\Settings>
+ * @extends Repository<\App\Entity\Settings>
  */
 final class SettingsRepository extends Repository
 {
-    protected string $entityClass = Entity\Settings::class;
+    protected string $entityClass = Settings::class;
 
     public function __construct(
         ReloadableEntityManagerInterface $em,
@@ -27,21 +27,21 @@ final class SettingsRepository extends Repository
         parent::__construct($em);
     }
 
-    public function readSettings(): Entity\Settings
+    public function readSettings(): Settings
     {
         static $settingsId = null;
 
         if (null !== $settingsId) {
             $settings = $this->repository->find($settingsId);
-            if ($settings instanceof Entity\Settings) {
+            if ($settings instanceof Settings) {
                 return $settings;
             }
         }
 
         $settings = $this->repository->findOneBy([]);
 
-        if (!($settings instanceof Entity\Settings)) {
-            $settings = new Entity\Settings();
+        if (!($settings instanceof Settings)) {
+            $settings = new Settings();
             $this->em->persist($settings);
             $this->em->flush();
         }
@@ -52,9 +52,9 @@ final class SettingsRepository extends Repository
     }
 
     /**
-     * @param Entity\Settings|array $settingsObj
+     * @param \App\Entity\Settings|array $settingsObj
      */
-    public function writeSettings(Entity\Settings|array $settingsObj): void
+    public function writeSettings(Settings|array $settingsObj): void
     {
         if (is_array($settingsObj)) {
             $settings = $this->readSettings();
@@ -72,11 +72,11 @@ final class SettingsRepository extends Repository
         $this->em->flush();
     }
 
-    public function fromArray(Entity\Settings $entity, array $source): Entity\Settings
+    public function fromArray(Settings $entity, array $source): Settings
     {
         return $this->serializer->denormalize(
             $source,
-            Entity\Settings::class,
+            Settings::class,
             null,
             [
                 AbstractNormalizer::OBJECT_TO_POPULATE => $entity,
@@ -84,7 +84,7 @@ final class SettingsRepository extends Repository
         );
     }
 
-    public function toArray(Entity\Settings $entity): array
+    public function toArray(Settings $entity): array
     {
         return (array)$this->serializer->normalize(
             $entity

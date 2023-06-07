@@ -5,19 +5,21 @@ declare(strict_types=1);
 namespace App\Controller\Stations;
 
 use App\Container\EntityManagerAwareTrait;
-use App\Entity;
 use App\Enums\StationFeatures;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Media\MimeType;
 use Psr\Http\Message\ResponseInterface;
+use App\Entity\Repository\CustomFieldRepository;
+use App\Entity\Enums\PlaylistSources;
+use App\Entity\Enums\StorageLocationTypes;
 
 final class FilesAction
 {
     use EntityManagerAwareTrait;
 
     public function __construct(
-        private readonly Entity\Repository\CustomFieldRepository $customFieldRepo
+        private readonly CustomFieldRepository $customFieldRepo
     ) {
     }
 
@@ -31,12 +33,12 @@ final class FilesAction
         $playlists = $this->em->createQuery(
             <<<'DQL'
                 SELECT sp.id, sp.name
-                FROM App\Entity\StationPlaylist sp
+                FROM App\\App\Entity\StationPlaylist sp
                 WHERE sp.station_id = :station_id AND sp.source = :source
                 ORDER BY sp.name ASC
             DQL
         )->setParameter('station_id', $station->getId())
-            ->setParameter('source', Entity\Enums\PlaylistSources::Songs->value)
+            ->setParameter('source', PlaylistSources::Songs->value)
             ->getArrayResult();
 
         $router = $request->getRouter();
@@ -56,7 +58,7 @@ final class FilesAction
                 'mkdirUrl' => $router->fromHere('api:stations:files:mkdir'),
                 'renameUrl' => $router->fromHere('api:stations:files:rename'),
                 'quotaUrl' => $router->fromHere('api:stations:quota', [
-                    'type' => Entity\Enums\StorageLocationTypes::StationMedia->value,
+                    'type' => StorageLocationTypes::StationMedia->value,
                 ]),
                 'initialPlaylists' => $playlists,
                 'customFields' => $this->customFieldRepo->fetchArray(),

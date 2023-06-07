@@ -5,16 +5,19 @@ declare(strict_types=1);
 namespace App\Entity\Repository;
 
 use App\Doctrine\ReloadableEntityManagerInterface;
-use App\Entity;
 use App\Exception;
 use App\Radio\AutoDJ;
 use App\Radio\Frontend\Blocklist\BlocklistParser;
 use App\Service\DeviceDetector;
 use Carbon\CarbonImmutable;
 use Carbon\CarbonInterface;
+use App\Entity\Station;
+use App\Entity\StationRequest;
+use App\Entity\StationMedia;
+use App\Entity\Api\StationPlaylistQueue;
 
 /**
- * @extends AbstractStationBasedRepository<Entity\StationRequest>
+ * @extends AbstractStationBasedRepository<\App\Entity\StationRequest>
  */
 final class StationRequestRepository extends AbstractStationBasedRepository
 {
@@ -28,7 +31,7 @@ final class StationRequestRepository extends AbstractStationBasedRepository
         parent::__construct($em);
     }
 
-    public function getPendingRequest(int|string $id, Entity\Station $station): ?Entity\StationRequest
+    public function getPendingRequest(int|string $id, Station $station): ?StationRequest
     {
         return $this->repository->findOneBy(
             [
@@ -39,11 +42,11 @@ final class StationRequestRepository extends AbstractStationBasedRepository
         );
     }
 
-    public function clearPendingRequests(Entity\Station $station): void
+    public function clearPendingRequests(Station $station): void
     {
         $this->em->createQuery(
             <<<'DQL'
-                DELETE FROM App\Entity\StationRequest sr
+                DELETE FROM App\\App\Entity\StationRequest sr
                 WHERE sr.station = :station
                 AND sr.played_at = 0
             DQL
@@ -52,7 +55,7 @@ final class StationRequestRepository extends AbstractStationBasedRepository
     }
 
     public function submit(
-        Entity\Station $station,
+        Station $station,
         string $trackId,
         bool $isAuthenticated,
         string $ip,
@@ -100,7 +103,7 @@ final class StationRequestRepository extends AbstractStationBasedRepository
 
             $recentRequests = (int)$this->em->createQuery(
                 <<<'DQL'
-                    SELECT COUNT(sr.id) FROM App\Entity\StationRequest sr
+                    SELECT COUNT(sr.id) FROM App\\App\Entity\StationRequest sr
                     WHERE sr.ip = :user_ip
                     AND sr.timestamp >= :threshold
                 DQL
@@ -116,7 +119,7 @@ final class StationRequestRepository extends AbstractStationBasedRepository
         }
 
         // Save request locally.
-        $record = new Entity\StationRequest($station, $media_item, $ip);
+        $record = new StationRequest($station, $media_item, $ip);
         $this->em->persist($record);
         $this->em->flush();
 
@@ -126,12 +129,12 @@ final class StationRequestRepository extends AbstractStationBasedRepository
     /**
      * Check if the song is already enqueued as a request.
      *
-     * @param Entity\StationMedia $media
-     * @param Entity\Station $station
+     * @param \App\Entity\StationMedia $media
+     * @param \App\Entity\Station $station
      *
      * @throws Exception
      */
-    public function checkPendingRequest(Entity\StationMedia $media, Entity\Station $station): bool
+    public function checkPendingRequest(StationMedia $media, Station $station): bool
     {
         $pending_request_threshold = time() - (60 * 10);
 
@@ -139,7 +142,7 @@ final class StationRequestRepository extends AbstractStationBasedRepository
             $pending_request = $this->em->createQuery(
                 <<<'DQL'
                     SELECT sr.timestamp
-                    FROM App\Entity\StationRequest sr
+                    FROM App\\App\Entity\StationRequest sr
                     WHERE sr.track_id = :track_id
                     AND sr.station_id = :station_id
                     AND (sr.timestamp >= :threshold OR sr.played_at = 0)
@@ -162,16 +165,16 @@ final class StationRequestRepository extends AbstractStationBasedRepository
     }
 
     public function getNextPlayableRequest(
-        Entity\Station $station,
+        Station $station,
         ?CarbonInterface $now = null
-    ): ?Entity\StationRequest {
+    ): ?StationRequest {
         $now ??= CarbonImmutable::now($station->getTimezoneObject());
 
         // Look up all requests that have at least waited as long as the threshold.
         $requests = $this->em->createQuery(
             <<<'DQL'
                 SELECT sr, sm
-                FROM App\Entity\StationRequest sr JOIN sr.track sm
+                FROM App\\App\Entity\StationRequest sr JOIN sr.track sm
                 WHERE sr.played_at = 0
                 AND sr.station = :station
                 ORDER BY sr.skip_delay DESC, sr.id ASC
@@ -180,7 +183,7 @@ final class StationRequestRepository extends AbstractStationBasedRepository
             ->execute();
 
         foreach ($requests as $request) {
-            /** @var Entity\StationRequest $request */
+            /** @var \App\Entity\StationRequest $request */
             if ($request->shouldPlayNow($now)) {
                 try {
                     $this->checkRecentPlay($request->getTrack(), $station);
@@ -198,12 +201,12 @@ final class StationRequestRepository extends AbstractStationBasedRepository
     /**
      * Check the most recent song history.
      *
-     * @param Entity\StationMedia $media
-     * @param Entity\Station $station
+     * @param \App\Entity\StationMedia $media
+     * @param \App\Entity\Station $station
      *
      * @throws Exception
      */
-    public function checkRecentPlay(Entity\StationMedia $media, Entity\Station $station): bool
+    public function checkRecentPlay(StationMedia $media, Station $station): bool
     {
         $lastPlayThresholdMins = ($station->getRequestThreshold() ?? 15);
 
@@ -215,7 +218,7 @@ final class StationRequestRepository extends AbstractStationBasedRepository
 
         $recentTracks = $this->em->createQuery(
             <<<'DQL'
-                SELECT sh FROM App\Entity\SongHistory sh
+                SELECT sh FROM App\\App\Entity\SongHistory sh
                 WHERE sh.station = :station
                 AND sh.timestamp_start >= :threshold
                 ORDER BY sh.timestamp_start DESC
@@ -224,7 +227,7 @@ final class StationRequestRepository extends AbstractStationBasedRepository
             ->setParameter('threshold', $lastPlayThreshold)
             ->getArrayResult();
 
-        $eligibleTrack = new Entity\Api\StationPlaylistQueue();
+        $eligibleTrack = new StationPlaylistQueue();
         $eligibleTrack->media_id = $media->getIdRequired();
         $eligibleTrack->song_id = $media->getSongId();
         $eligibleTrack->title = $media->getTitle() ?? '';

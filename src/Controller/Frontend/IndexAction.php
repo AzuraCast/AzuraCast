@@ -4,15 +4,16 @@ declare(strict_types=1);
 
 namespace App\Controller\Frontend;
 
-use App\Entity;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
+use App\Entity\Repository\SettingsRepository;
+use App\Entity\User;
 
 final class IndexAction
 {
     public function __construct(
-        private readonly Entity\Repository\SettingsRepository $settingsRepo
+        private readonly SettingsRepository $settingsRepo
     ) {
     }
 
@@ -29,7 +30,7 @@ final class IndexAction
         // Redirect to login screen if the user isn't logged in.
         $user = $request->getAttribute(ServerRequest::ATTR_USER);
 
-        if (!($user instanceof Entity\User)) {
+        if (!($user instanceof User)) {
             // Redirect to a custom homepage URL if specified in settings.
             $homepageRedirect = $settings->getHomepageRedirectUrl();
             if (null !== $homepageRedirect) {

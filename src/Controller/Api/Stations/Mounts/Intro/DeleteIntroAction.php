@@ -4,12 +4,13 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Stations\Mounts\Intro;
 
-use App\Entity;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\OpenApi;
 use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
+use App\Entity\Repository\StationMountRepository;
+use App\Entity\Api\Status;
 
 #[OA\Delete(
     path: '/station/{station_id}/mount/{id}/intro',
@@ -36,7 +37,7 @@ use Psr\Http\Message\ResponseInterface;
 final class DeleteIntroAction
 {
     public function __construct(
-        private readonly Entity\Repository\StationMountRepository $mountRepo,
+        private readonly StationMountRepository $mountRepo,
     ) {
     }
 
@@ -51,6 +52,6 @@ final class DeleteIntroAction
         $mount = $this->mountRepo->requireForStation($id, $station);
         $this->mountRepo->clearIntro($mount);
 
-        return $response->withJson(Entity\Api\Status::deleted());
+        return $response->withJson(Status::deleted());
     }
 }

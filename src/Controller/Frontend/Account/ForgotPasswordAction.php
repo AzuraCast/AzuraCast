@@ -4,19 +4,21 @@ declare(strict_types=1);
 
 namespace App\Controller\Frontend\Account;
 
-use App\Entity;
 use App\Exception\RateLimitExceededException;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\RateLimit;
 use App\Service\Mail;
 use Psr\Http\Message\ResponseInterface;
+use App\Entity\Repository\UserRepository;
+use App\Entity\Repository\UserLoginTokenRepository;
+use App\Entity\User;
 
 final class ForgotPasswordAction
 {
     public function __construct(
-        private readonly Entity\Repository\UserRepository $userRepo,
-        private readonly Entity\Repository\UserLoginTokenRepository $loginTokenRepo,
+        private readonly UserRepository $userRepo,
+        private readonly UserLoginTokenRepository $loginTokenRepo,
         private readonly RateLimit $rateLimit,
         private readonly Mail $mail
     ) {
@@ -54,7 +56,7 @@ final class ForgotPasswordAction
             $email = $request->getParsedBodyParam('email', '');
             $user = $this->userRepo->findByEmail($email);
 
-            if ($user instanceof Entity\User) {
+            if ($user instanceof User) {
                 $email = $this->mail->createMessage();
                 $email->to($user->getEmail());
 

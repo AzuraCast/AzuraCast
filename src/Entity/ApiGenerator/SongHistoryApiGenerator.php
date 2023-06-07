@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace App\Entity\ApiGenerator;
 
-use App\Entity;
 use App\Entity\Api\NowPlaying\SongHistory;
 use Psr\Http\Message\UriInterface;
+use App\Entity\StationPlaylist;
+use App\Entity\StationStreamer;
+use App\Entity\Api\DetailedSongHistory;
 
 final class SongHistoryApiGenerator
 {
@@ -16,7 +18,7 @@ final class SongHistoryApiGenerator
     }
 
     public function __invoke(
-        Entity\SongHistory $record,
+        \App\Entity\SongHistory $record,
         ?UriInterface $baseUri = null,
         bool $allowRemoteArt = false,
         bool $isNowPlaying = false,
@@ -25,16 +27,16 @@ final class SongHistoryApiGenerator
         $response->sh_id = $record->getIdRequired();
         $response->played_at = (0 === $record->getTimestampStart())
             ? 0
-            : $record->getTimestampStart() + Entity\SongHistory::PLAYBACK_DELAY_SECONDS;
+            : $record->getTimestampStart() + \App\Entity\SongHistory::PLAYBACK_DELAY_SECONDS;
         $response->duration = (int)$record->getDuration();
         $response->is_request = ($record->getRequest() !== null);
-        if ($record->getPlaylist() instanceof Entity\StationPlaylist) {
+        if ($record->getPlaylist() instanceof StationPlaylist) {
             $response->playlist = $record->getPlaylist()->getName();
         } else {
             $response->playlist = '';
         }
 
-        if ($record->getStreamer() instanceof Entity\StationStreamer) {
+        if ($record->getStreamer() instanceof StationStreamer) {
             $response->streamer = $record->getStreamer()->getDisplayName();
         } else {
             $response->streamer = '';
@@ -62,7 +64,7 @@ final class SongHistoryApiGenerator
     }
 
     /**
-     * @param Entity\SongHistory[] $records
+     * @param \App\Entity\SongHistory[] $records
      * @param UriInterface|null $baseUri
      * @param bool $allowRemoteArt
      *
@@ -80,10 +82,12 @@ final class SongHistoryApiGenerator
         return $apiRecords;
     }
 
-    public function detailed(Entity\SongHistory $record, ?UriInterface $baseUri = null): Entity\Api\DetailedSongHistory
-    {
+    public function detailed(
+        \App\Entity\SongHistory $record,
+        ?UriInterface $baseUri = null
+    ): DetailedSongHistory {
         $apiHistory = ($this)($record, $baseUri);
-        $response = new Entity\Api\DetailedSongHistory();
+        $response = new DetailedSongHistory();
         $response->fromParentObject($apiHistory);
         $response->listeners_start = (int)$record->getListenersStart();
         $response->listeners_end = (int)$record->getListenersEnd();

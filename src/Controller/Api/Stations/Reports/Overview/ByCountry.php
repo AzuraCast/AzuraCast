@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Stations\Reports\Overview;
 
-use App\Entity;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\Intl\Countries;
+use App\Entity\Api\Status;
 
 final class ByCountry extends AbstractReportAction
 {
@@ -20,7 +20,7 @@ final class ByCountry extends AbstractReportAction
         // Get current analytics level.
         if (!$this->isAllAnalyticsEnabled()) {
             return $response->withStatus(400)
-                ->withJson(new Entity\Api\Status(false, 'Reporting is restricted due to system analytics level.'));
+                ->withJson(new Status(false, 'Reporting is restricted due to system analytics level.'));
         }
 
         $station = $request->getStation();

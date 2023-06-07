@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace App\Controller\Api\Stations\Webhooks;
 
 use App\Controller\Api\Traits\HasLogViewer;
-use App\Entity;
 use App\Entity\Repository\StationWebhookRepository;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Utilities\File;
 use Psr\Http\Message\ResponseInterface;
+use App\Entity\Api\Error;
 
 final class TestLogAction
 {
@@ -34,7 +34,7 @@ final class TestLogAction
         if (!str_contains($path, $logPathPortion)) {
             return $response
                 ->withStatus(403)
-                ->withJson(new Entity\Api\Error(403, 'Invalid log path.'));
+                ->withJson(new Error(403, 'Invalid log path.'));
         }
 
         $tempPath = File::validateTempPath($path);

@@ -4,30 +4,31 @@ declare(strict_types=1);
 
 namespace App\Entity\Repository;
 
-use App\Entity;
 use App\Security\SplitToken;
+use App\Entity\User;
+use App\Entity\UserLoginToken;
 
 /**
- * @extends AbstractSplitTokenRepository<Entity\UserLoginToken>
+ * @extends AbstractSplitTokenRepository<\App\Entity\UserLoginToken>
  */
 final class UserLoginTokenRepository extends AbstractSplitTokenRepository
 {
-    public function createToken(Entity\User $user): SplitToken
+    public function createToken(User $user): SplitToken
     {
         $token = SplitToken::generate();
 
-        $loginToken = new Entity\UserLoginToken($user, $token);
+        $loginToken = new UserLoginToken($user, $token);
         $this->em->persist($loginToken);
         $this->em->flush();
 
         return $token;
     }
 
-    public function revokeForUser(Entity\User $user): void
+    public function revokeForUser(User $user): void
     {
         $this->em->createQuery(
             <<<'DQL'
-                DELETE FROM App\Entity\UserLoginToken ult
+                DELETE FROM App\\App\Entity\UserLoginToken ult
                 WHERE ult.user = :user
             DQL
         )->setParameter('user', $user)
@@ -41,7 +42,7 @@ final class UserLoginTokenRepository extends AbstractSplitTokenRepository
 
         $this->em->createQuery(
             <<<'DQL'
-                DELETE FROM App\Entity\UserLoginToken ut WHERE ut.created_at <= :threshold
+                DELETE FROM App\\App\Entity\UserLoginToken ut WHERE ut.created_at <= :threshold
             DQL
         )->setParameter('threshold', $threshold)
             ->execute();

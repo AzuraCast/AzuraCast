@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace App\Middleware;
 
-use App\Entity;
 use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Slim\App;
+use App\Entity\Repository\SettingsRepository;
 
 /**
  * Remove trailing slash from all URLs when routing.
@@ -20,7 +20,7 @@ final class EnforceSecurity implements MiddlewareInterface
     private ResponseFactoryInterface $responseFactory;
 
     public function __construct(
-        private readonly Entity\Repository\SettingsRepository $settingsRepo,
+        private readonly SettingsRepository $settingsRepo,
         App $app
     ) {
         $this->responseFactory = $app->getResponseFactory();

@@ -4,18 +4,19 @@ declare(strict_types=1);
 
 namespace App\Controller\Frontend\Account;
 
-use App\Entity;
 use App\Exception\NotFoundException;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
+use App\Entity\Repository\UserRepository;
+use App\Entity\User;
 
 final class MasqueradeAction
 {
     public const CSRF_NAMESPACE = 'user_masquerade';
 
     public function __construct(
-        private readonly Entity\Repository\UserRepository $userRepo,
+        private readonly UserRepository $userRepo,
     ) {
     }
 
@@ -29,7 +30,7 @@ final class MasqueradeAction
 
         $user = $this->userRepo->find($id);
 
-        if (!($user instanceof Entity\User)) {
+        if (!($user instanceof User)) {
             throw new NotFoundException(__('User not found.'));
         }
 

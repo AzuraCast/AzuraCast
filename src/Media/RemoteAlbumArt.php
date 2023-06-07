@@ -7,7 +7,6 @@ declare(strict_types=1);
 namespace App\Media;
 
 use App\Container\LoggerAwareTrait;
-use App\Entity;
 use App\Event\Media\GetAlbumArt;
 use App\Version;
 use GuzzleHttp\Client;
@@ -15,6 +14,9 @@ use GuzzleHttp\RequestOptions;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\SimpleCache\CacheInterface;
 use Throwable;
+use App\Entity\Repository\SettingsRepository;
+use App\Entity\Interfaces\SongInterface;
+use App\Entity\Song;
 
 final class RemoteAlbumArt
 {
@@ -24,7 +26,7 @@ final class RemoteAlbumArt
 
     public function __construct(
         private readonly CacheInterface $cache,
-        private readonly Entity\Repository\SettingsRepository $settingsRepo,
+        private readonly SettingsRepository $settingsRepo,
         private readonly EventDispatcherInterface $eventDispatcher,
         private readonly Client $httpClient
     ) {
@@ -40,7 +42,7 @@ final class RemoteAlbumArt
         return $this->settingsRepo->readSettings()->getUseExternalAlbumArtWhenProcessingMedia();
     }
 
-    public function getArtwork(Entity\Interfaces\SongInterface $media): ?string
+    public function getArtwork(SongInterface $media): ?string
     {
         $artUri = $this->getUrlForSong($media);
         if (empty($artUri)) {
@@ -62,10 +64,10 @@ final class RemoteAlbumArt
         return (string)$response->getBody();
     }
 
-    public function getUrlForSong(Entity\Interfaces\SongInterface $song): ?string
+    public function getUrlForSong(SongInterface $song): ?string
     {
         // Avoid tracks that shouldn't ever hit remote APIs.
-        $offlineSong = Entity\Song::createOffline();
+        $offlineSong = Song::createOffline();
         if ($song->getSongId() === $offlineSong->getSongId()) {
             return null;
         }

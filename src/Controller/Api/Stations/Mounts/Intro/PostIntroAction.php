@@ -4,13 +4,14 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Stations\Mounts\Intro;
 
-use App\Entity;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\OpenApi;
 use App\Service\Flow;
 use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
+use App\Entity\Repository\StationMountRepository;
+use App\Entity\Api\Status;
 
 #[OA\Post(
     path: '/station/{station_id}/mount/{id}/intro',
@@ -37,7 +38,7 @@ use Psr\Http\Message\ResponseInterface;
 final class PostIntroAction
 {
     public function __construct(
-        private readonly Entity\Repository\StationMountRepository $mountRepo,
+        private readonly StationMountRepository $mountRepo,
     ) {
     }
 
@@ -58,7 +59,7 @@ final class PostIntroAction
             $mount = $this->mountRepo->requireForStation($id, $station);
             $this->mountRepo->setIntro($mount, $flowResponse);
 
-            return $response->withJson(Entity\Api\Status::updated());
+            return $response->withJson(Status::updated());
         }
 
         return $response->withJson($flowResponse);

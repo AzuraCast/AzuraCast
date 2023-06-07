@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace App\Controller\Stations;
 
-use App\Entity;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\Intl\Languages;
+use App\Entity\PodcastCategory;
+use App\Entity\Enums\StorageLocationTypes;
 
 final class PodcastsAction
 {
@@ -24,7 +25,7 @@ final class PodcastsAction
         $userLocale = $locale->value;
 
         $languageOptions = Languages::getNames($userLocale);
-        $categoriesOptions = Entity\PodcastCategory::getAvailableCategories();
+        $categoriesOptions = PodcastCategory::getAvailableCategories();
 
         return $request->getView()->renderVuePage(
             response: $response,
@@ -36,7 +37,7 @@ final class PodcastsAction
                 'newArtUrl' => $router->fromHere('api:stations:podcasts:new-art'),
                 'stationUrl' => $router->fromHere('stations:index:index'),
                 'quotaUrl' => $router->fromHere('api:stations:quota', [
-                    'type' => Entity\Enums\StorageLocationTypes::StationPodcasts->value,
+                    'type' => StorageLocationTypes::StationPodcasts->value,
                 ]),
                 'locale' => substr($locale->value, 0, 2),
                 'stationTimeZone' => $station->getTimezone(),

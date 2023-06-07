@@ -4,15 +4,16 @@ declare(strict_types=1);
 
 namespace App\Notification\Check;
 
-use App\Entity;
 use App\Enums\GlobalPermissions;
 use App\Event\GetNotifications;
 use App\Session\FlashLevels;
+use App\Entity\Repository\SettingsRepository;
+use App\Entity\Api\Notification;
 
 final class SyncTaskCheck
 {
     public function __construct(
-        private readonly Entity\Repository\SettingsRepository $settingsRepo
+        private readonly SettingsRepository $settingsRepo
     ) {
     }
 
@@ -34,7 +35,7 @@ final class SyncTaskCheck
 
         if ($settings->getSyncDisabled()) {
             // phpcs:disable Generic.Files.LineLength
-            $notification = new Entity\Api\Notification();
+            $notification = new Notification();
             $notification->title = __('Synchronization Disabled');
             $notification->body = __(
                 'Routine synchronization is currently disabled. Make sure to re-enable it to resume routine maintenance tasks.'
@@ -49,7 +50,7 @@ final class SyncTaskCheck
         $syncLastRun = $settings->getSyncLastRun();
         if ($syncLastRun < (time() - 60 * 5)) {
             // phpcs:disable Generic.Files.LineLength
-            $notification = new Entity\Api\Notification();
+            $notification = new Notification();
             $notification->title = __('Synchronization Not Recently Run');
             $notification->body = __(
                 'The routine synchronization task has not run recently. This may indicate an error with your installation.'

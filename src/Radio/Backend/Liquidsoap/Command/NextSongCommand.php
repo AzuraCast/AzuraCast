@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Radio\Backend\Liquidsoap\Command;
 
-use App\Entity;
 use App\Radio\AutoDJ\Annotations;
+use App\Entity\Station;
 
 final class NextSongCommand extends AbstractCommand
 {
@@ -15,7 +15,7 @@ final class NextSongCommand extends AbstractCommand
     }
 
     protected function doRun(
-        Entity\Station $station,
+        Station $station,
         bool $asAutoDj = false,
         array $payload = []
     ): string|bool {

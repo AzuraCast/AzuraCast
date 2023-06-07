@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace App\Radio\Frontend\Blocklist;
 
-use App\Entity;
 use App\Radio\Enums\FrontendAdapters;
 use App\Service\IpGeolocation;
 use InvalidArgumentException;
 use PhpIP\IP;
 use PhpIP\IPBlock;
+use App\Entity\Station;
 
 final class BlocklistParser
 {
@@ -19,7 +19,7 @@ final class BlocklistParser
     }
 
     public function isAllowed(
-        Entity\Station $station,
+        Station $station,
         string $ip,
         ?string $userAgent = null
     ): bool {
@@ -42,7 +42,7 @@ final class BlocklistParser
         return true;
     }
 
-    private function hasAllowedIps(Entity\Station $station): bool
+    private function hasAllowedIps(Station $station): bool
     {
         if (FrontendAdapters::Remote === $station->getFrontendType()) {
             return false;
@@ -53,7 +53,7 @@ final class BlocklistParser
     }
 
     private function isIpExplicitlyAllowed(
-        Entity\Station $station,
+        Station $station,
         string $ip
     ): bool {
         if (FrontendAdapters::Remote === $station->getFrontendType()) {
@@ -65,7 +65,7 @@ final class BlocklistParser
     }
 
     private function isIpExplicitlyBanned(
-        Entity\Station $station,
+        Station $station,
         string $ip
     ): bool {
         if (FrontendAdapters::Remote === $station->getFrontendType()) {
@@ -107,7 +107,7 @@ final class BlocklistParser
     }
 
     private function isCountryBanned(
-        Entity\Station $station,
+        Station $station,
         string $listenerIp
     ): bool {
         if (FrontendAdapters::Remote === $station->getFrontendType()) {
@@ -126,7 +126,7 @@ final class BlocklistParser
     }
 
     public function isUserAgentBanned(
-        Entity\Station $station,
+        Station $station,
         string $listenerUserAgent
     ): bool {
         if (FrontendAdapters::Remote === $station->getFrontendType()) {

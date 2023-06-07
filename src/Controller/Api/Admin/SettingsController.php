@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace App\Controller\Api\Admin;
 
 use App\Controller\Api\AbstractApiCrudController;
-use App\Entity;
+use App\Entity\Api\Status;
+use App\Entity\Repository\SettingsRepository;
+use App\Entity\Settings;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\OpenApi;
@@ -15,7 +17,7 @@ use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-/** @extends AbstractApiCrudController<Entity\Settings> */
+/** @extends AbstractApiCrudController<Settings> */
 #[
     OA\Get(
         path: '/admin/settings',
@@ -51,10 +53,10 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 ]
 final class SettingsController extends AbstractApiCrudController
 {
-    protected string $entityClass = Entity\Settings::class;
+    protected string $entityClass = Settings::class;
 
     public function __construct(
-        protected Entity\Repository\SettingsRepository $settingsRepo,
+        protected SettingsRepository $settingsRepo,
         Serializer $serializer,
         ValidatorInterface $validator
     ) {
@@ -67,7 +69,7 @@ final class SettingsController extends AbstractApiCrudController
         ?string $group = null
     ): ResponseInterface {
         $context = [];
-        if (null !== $group && in_array($group, Entity\Settings::VALID_GROUPS, true)) {
+        if (null !== $group && in_array($group, Settings::VALID_GROUPS, true)) {
             $context[AbstractNormalizer::GROUPS] = [$group];
         }
 
@@ -81,18 +83,18 @@ final class SettingsController extends AbstractApiCrudController
         ?string $group = null
     ): ResponseInterface {
         $context = [];
-        if (null !== $group && in_array($group, Entity\Settings::VALID_GROUPS, true)) {
+        if (null !== $group && in_array($group, Settings::VALID_GROUPS, true)) {
             $context[AbstractNormalizer::GROUPS] = [$group];
         }
 
         $settings = $this->settingsRepo->readSettings();
 
-        if ($group === Entity\Settings::GROUP_GENERAL && !$settings->isSetupComplete()) {
+        if ($group === Settings::GROUP_GENERAL && !$settings->isSetupComplete()) {
             $settings->updateSetupComplete();
         }
 
         $this->editRecord((array)$request->getParsedBody(), $settings, $context);
 
-        return $response->withJson(Entity\Api\Status::success());
+        return $response->withJson(Status::success());
     }
 }

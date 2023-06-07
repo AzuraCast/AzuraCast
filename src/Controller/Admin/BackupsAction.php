@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace App\Controller\Admin;
 
 use App\Container\EnvironmentAwareTrait;
-use App\Entity;
+use App\Entity\Enums\StorageLocationTypes;
+use App\Entity\Repository\StorageLocationRepository;
+use App\Entity\Settings;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
@@ -15,7 +17,7 @@ final class BackupsAction
     use EnvironmentAwareTrait;
 
     public function __construct(
-        private readonly Entity\Repository\StorageLocationRepository $storageLocationRepo
+        private readonly StorageLocationRepository $storageLocationRepo
     ) {
     }
 
@@ -34,11 +36,11 @@ final class BackupsAction
                 'listUrl' => $router->named('api:admin:backups'),
                 'runBackupUrl' => $router->named('api:admin:backups:run'),
                 'settingsUrl' => $router->named('api:admin:settings', [
-                    'group' => Entity\Settings::GROUP_BACKUP,
+                    'group' => Settings::GROUP_BACKUP,
                 ]),
                 'isDocker' => $this->environment->isDocker(),
                 'storageLocations' => $this->storageLocationRepo->fetchSelectByType(
-                    Entity\Enums\StorageLocationTypes::Backup
+                    StorageLocationTypes::Backup
                 ),
             ],
         );

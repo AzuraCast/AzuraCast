@@ -6,7 +6,7 @@ namespace App\Controller\Api\Admin;
 
 use App\Container\EntityManagerAwareTrait;
 use App\Controller\Api\Traits\AcceptsDateRange;
-use App\Entity;
+use App\Entity\AuditLog;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Paginator;
@@ -30,7 +30,7 @@ final class AuditLogAction
         $qb = $this->em->createQueryBuilder();
 
         $qb->select('a')
-            ->from(Entity\AuditLog::class, 'a')
+            ->from(AuditLog::class, 'a')
             ->andWhere('a.timestamp >= :start AND a.timestamp <= :end')
             ->setParameter('start', $start->getTimestamp())
             ->setParameter('end', $end->getTimestamp());
@@ -46,7 +46,7 @@ final class AuditLogAction
         $paginator = Paginator::fromQueryBuilder($qb, $request);
 
         $paginator->setPostprocessor(
-            function (Entity\AuditLog $row) {
+            function (AuditLog $row) {
                 $changesRaw = $row->getChanges();
                 $changes = [];
 

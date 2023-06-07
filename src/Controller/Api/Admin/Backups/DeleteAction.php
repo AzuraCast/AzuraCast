@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Admin\Backups;
 
-use App\Entity;
+use App\Entity\Api\Status;
+use App\Flysystem\ExtendedFilesystemInterface;
 use App\Http\Response;
 use App\Http\ServerRequest;
-use App\Flysystem\ExtendedFilesystemInterface;
 use Psr\Http\Message\ResponseInterface;
 
 final class DeleteAction extends AbstractFileAction
@@ -22,6 +22,6 @@ final class DeleteAction extends AbstractFileAction
         /** @var ExtendedFilesystemInterface $fs */
         $fs->delete($path);
 
-        return $response->withJson(Entity\Api\Status::deleted());
+        return $response->withJson(Status::deleted());
     }
 }

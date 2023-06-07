@@ -5,7 +5,11 @@ declare(strict_types=1);
 namespace App\Controller\Api\Frontend\Account;
 
 use App\Controller\Api\AbstractApiCrudController;
-use App\Entity;
+use App\Entity\Api\Error;
+use App\Entity\Api\Status;
+use App\Entity\ApiKey;
+use App\Entity\Interfaces\EntityGroupsInterface;
+use App\Entity\User;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Security\SplitToken;
@@ -13,12 +17,12 @@ use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 
 /**
- * @template TEntity as Entity\ApiKey
+ * @template TEntity as ApiKey
  * @extends AbstractApiCrudController<TEntity>
  */
 final class ApiKeysController extends AbstractApiCrudController
 {
-    protected string $entityClass = Entity\ApiKey::class;
+    protected string $entityClass = ApiKey::class;
     protected string $resourceRouteName = 'api:frontend:api-key';
 
     public function listAction(
@@ -40,7 +44,7 @@ final class ApiKeysController extends AbstractApiCrudController
     ): ResponseInterface {
         $newKey = SplitToken::generate();
 
-        $record = new Entity\ApiKey(
+        $record = new ApiKey(
             $request->getUser(),
             $newKey
         );
@@ -63,7 +67,7 @@ final class ApiKeysController extends AbstractApiCrudController
 
         if (null === $record) {
             return $response->withStatus(404)
-                ->withJson(Entity\Api\Error::notFound());
+                ->withJson(Error::notFound());
         }
 
         $return = $this->viewRecord($record, $request);
@@ -79,12 +83,12 @@ final class ApiKeysController extends AbstractApiCrudController
 
         if (null === $record) {
             return $response->withStatus(404)
-                ->withJson(Entity\Api\Error::notFound());
+                ->withJson(Error::notFound());
         }
 
         $this->deleteRecord($record);
 
-        return $response->withJson(Entity\Api\Status::deleted());
+        return $response->withJson(Status::deleted());
     }
 
     /**
@@ -92,10 +96,10 @@ final class ApiKeysController extends AbstractApiCrudController
      *
      * @return TEntity|null
      */
-    private function getRecord(Entity\User $user, string $id): ?object
+    private function getRecord(User $user, string $id): ?object
     {
         /** @var TEntity|null $record */
-        $record = $this->em->getRepository(Entity\ApiKey::class)->findOneBy([
+        $record = $this->em->getRepository(ApiKey::class)->findOneBy([
             'id' => $id,
             'user' => $user,
         ]);
@@ -108,7 +112,7 @@ final class ApiKeysController extends AbstractApiCrudController
     protected function editRecord(?array $data, ?object $record = null, array $context = []): object
     {
         $context[AbstractNormalizer::GROUPS] = [
-            Entity\Interfaces\EntityGroupsInterface::GROUP_GENERAL,
+            EntityGroupsInterface::GROUP_GENERAL,
         ];
 
         return parent::editRecord($data, $record, $context);
@@ -123,8 +127,8 @@ final class ApiKeysController extends AbstractApiCrudController
     protected function toArray(object $record, array $context = []): array
     {
         $context[AbstractNormalizer::GROUPS] = [
-            Entity\Interfaces\EntityGroupsInterface::GROUP_ID,
-            Entity\Interfaces\EntityGroupsInterface::GROUP_GENERAL,
+            EntityGroupsInterface::GROUP_ID,
+            EntityGroupsInterface::GROUP_GENERAL,
         ];
 
         return parent::toArray($record, $context);

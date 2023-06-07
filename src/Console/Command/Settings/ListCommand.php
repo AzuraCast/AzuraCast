@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Console\Command\Settings;
 
 use App\Console\Command\CommandAbstract;
-use App\Entity;
+use App\Entity\Repository\SettingsRepository;
 use App\Utilities;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputInterface;
@@ -19,7 +19,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 final class ListCommand extends CommandAbstract
 {
     public function __construct(
-        private readonly Entity\Repository\SettingsRepository $settingsTableRepo,
+        private readonly SettingsRepository $settingsTableRepo,
     ) {
         parent::__construct();
     }

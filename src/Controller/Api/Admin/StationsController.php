@@ -5,7 +5,11 @@ declare(strict_types=1);
 namespace App\Controller\Api\Admin;
 
 use App\Controller\Api\Traits\CanSortResults;
-use App\Entity;
+use App\Entity\Repository\StationQueueRepository;
+use App\Entity\Repository\StationRepository;
+use App\Entity\Repository\StorageLocationRepository;
+use App\Entity\Station;
+use App\Entity\StorageLocation;
 use App\Exception\ValidationException;
 use App\Http\Response;
 use App\Http\ServerRequest;
@@ -20,7 +24,7 @@ use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Throwable;
 
-/** @extends AbstractAdminApiCrudController<Entity\Station> */
+/** @extends AbstractAdminApiCrudController<Station> */
 #[
     OA\Get(
         path: '/admin/stations',
@@ -138,13 +142,13 @@ class StationsController extends AbstractAdminApiCrudController
 {
     use CanSortResults;
 
-    protected string $entityClass = Entity\Station::class;
+    protected string $entityClass = Station::class;
     protected string $resourceRouteName = 'api:admin:station';
 
     public function __construct(
-        protected Entity\Repository\StationRepository $stationRepo,
-        protected Entity\Repository\StorageLocationRepository $storageLocationRepo,
-        protected Entity\Repository\StationQueueRepository $queueRepo,
+        protected StationRepository $stationRepo,
+        protected StorageLocationRepository $storageLocationRepo,
+        protected StationQueueRepository $queueRepo,
         protected Configuration $configuration,
         Serializer $serializer,
         ValidatorInterface $validator
@@ -158,7 +162,7 @@ class StationsController extends AbstractAdminApiCrudController
     ): ResponseInterface {
         $qb = $this->em->createQueryBuilder()
             ->select('e')
-            ->from(Entity\Station::class, 'e');
+            ->from(Station::class, 'e');
 
         $qb = $this->sortQueryBuilder(
             $request,
@@ -211,7 +215,7 @@ class StationsController extends AbstractAdminApiCrudController
     }
 
     /**
-     * @param Entity\Station $record
+     * @param Station $record
      * @param array<string, mixed> $context
      *
      * @return array<mixed>
@@ -227,9 +231,9 @@ class StationsController extends AbstractAdminApiCrudController
             'has_started',
         ];
 
-        foreach (Entity\Station::getStorageLocationTypes() as $locationKey => $storageLocationType) {
+        foreach (Station::getStorageLocationTypes() as $locationKey => $storageLocationType) {
             $context[AbstractNormalizer::CALLBACKS][$locationKey] = static fn(
-                Entity\StorageLocation $value
+                StorageLocation $value
             ) => $value->getIdRequired();
         }
 
@@ -238,7 +242,7 @@ class StationsController extends AbstractAdminApiCrudController
 
     protected function fromArray(array $data, ?object $record = null, array $context = []): object
     {
-        foreach (Entity\Station::getStorageLocationTypes() as $locationKey => $storageLocationType) {
+        foreach (Station::getStorageLocationTypes() as $locationKey => $storageLocationType) {
             $idKey = $locationKey . '_id';
             if (!empty($data[$idKey])) {
                 $data[$locationKey] = $data[$idKey];
@@ -251,10 +255,10 @@ class StationsController extends AbstractAdminApiCrudController
 
     /**
      * @param array<mixed>|null $data
-     * @param Entity\Station|null $record
+     * @param Station|null $record
      * @param array<string, mixed> $context
      *
-     * @return Entity\Station
+     * @return Station
      */
     protected function editRecord(?array $data, object $record = null, array $context = []): object
     {
@@ -277,14 +281,14 @@ class StationsController extends AbstractAdminApiCrudController
     }
 
     /**
-     * @param Entity\Station $record
+     * @param Station $record
      */
     protected function deleteRecord(object $record): void
     {
         $this->handleDelete($record);
     }
 
-    protected function handleEdit(Entity\Station $station): Entity\Station
+    protected function handleEdit(Station $station): Station
     {
         $original_record = $this->em->getUnitOfWork()->getOriginalEntityData($station);
 
@@ -294,7 +298,7 @@ class StationsController extends AbstractAdminApiCrudController
         $this->configuration->initializeConfiguration($station);
 
         // Delete media-related items if the media storage is changed.
-        /** @var Entity\StorageLocation|null $oldMediaStorage */
+        /** @var StorageLocation|null $oldMediaStorage */
         $oldMediaStorage = $original_record['media_storage_location'];
         $newMediaStorage = $station->getMediaStorageLocation();
 
@@ -339,7 +343,7 @@ class StationsController extends AbstractAdminApiCrudController
         return $station;
     }
 
-    protected function handleCreate(Entity\Station $station): Entity\Station
+    protected function handleCreate(Station $station): Station
     {
         $station->generateAdapterApiKey();
 
@@ -362,7 +366,7 @@ class StationsController extends AbstractAdminApiCrudController
         return $station;
     }
 
-    protected function handleDelete(Entity\Station $station): void
+    protected function handleDelete(Station $station): void
     {
         $this->configuration->removeConfiguration($station);
 

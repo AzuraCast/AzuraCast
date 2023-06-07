@@ -6,7 +6,8 @@ namespace App\Controller\Api\Frontend\Account;
 
 use App\Auth;
 use App\Controller\Api\Admin\UsersController;
-use App\Entity;
+use App\Entity\Api\Error;
+use App\Entity\Api\Status;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use BaconQrCode;
@@ -49,7 +50,7 @@ final class PutTwoFactorAction extends UsersController
                     $this->em->persist($user);
                     $this->em->flush();
 
-                    return $response->withJson(Entity\Api\Status::success());
+                    return $response->withJson(Status::success());
                 }
 
                 throw new InvalidArgumentException('Could not verify TOTP code.');
@@ -75,7 +76,7 @@ final class PutTwoFactorAction extends UsersController
                 'qr_code' => $qrCodeBase64,
             ]);
         } catch (Throwable $e) {
-            return $response->withStatus(400)->withJson(Entity\Api\Error::fromException($e));
+            return $response->withStatus(400)->withJson(Error::fromException($e));
         }
     }
 }

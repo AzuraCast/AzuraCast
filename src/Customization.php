@@ -7,7 +7,10 @@ namespace App;
 use App\Assets\AssetTypes;
 use App\Assets\BrowserIconCustomAsset;
 use App\Container\EnvironmentAwareTrait;
-use App\Entity;
+use App\Entity\Repository\SettingsRepository;
+use App\Entity\Settings;
+use App\Entity\Station;
+use App\Entity\User;
 use App\Enums\SupportedLocales;
 use App\Enums\SupportedThemes;
 use App\Http\ServerRequest;
@@ -19,9 +22,9 @@ final class Customization
     use RequestAwareTrait;
     use EnvironmentAwareTrait;
 
-    private ?Entity\User $user;
+    private ?User $user;
 
-    private Entity\Settings $settings;
+    private Settings $settings;
 
     private SupportedLocales $locale;
 
@@ -32,7 +35,7 @@ final class Customization
     private string $instanceName;
 
     public function __construct(
-        Entity\Repository\SettingsRepository $settingsRepo
+        SettingsRepository $settingsRepo
     ) {
         $this->settings = $settingsRepo->readSettings();
 
@@ -136,7 +139,7 @@ final class Customization
         return $publicCss;
     }
 
-    public function getStationCustomPublicCss(Entity\Station $station): string
+    public function getStationCustomPublicCss(Station $station): string
     {
         $publicCss = $station->getBrandingConfig()->getPublicCustomCss() ?? '';
 
@@ -163,7 +166,7 @@ final class Customization
         return $this->settings->getPublicCustomJs() ?? '';
     }
 
-    public function getStationCustomPublicJs(Entity\Station $station): string
+    public function getStationCustomPublicJs(Station $station): string
     {
         return $station->getBrandingConfig()->getPublicCustomJs() ?? '';
     }

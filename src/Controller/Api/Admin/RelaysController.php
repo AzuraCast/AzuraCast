@@ -6,7 +6,13 @@ namespace App\Controller\Api\Admin;
 
 use App\Cache\AzuraRelayCache;
 use App\Container\EntityManagerAwareTrait;
-use App\Entity;
+use App\Entity\Api\Admin\Relay as ApiRelay;
+use App\Entity\Api\Status;
+use App\Entity\Relay;
+use App\Entity\Repository\SettingsRepository;
+use App\Entity\Station;
+use App\Entity\StationMount;
+use App\Entity\StationRemote;
 use App\Enums\StationPermissions;
 use App\Http\Response;
 use App\Http\ServerRequest;
@@ -41,7 +47,7 @@ final class RelaysController
 
     public function __construct(
         private readonly Adapters $adapters,
-        private readonly Entity\Repository\SettingsRepository $settingsRepo,
+        private readonly SettingsRepository $settingsRepo,
         private readonly AzuraRelayCache $azuraRelayCache
     ) {
     }
@@ -56,7 +62,7 @@ final class RelaysController
 
         $return = [];
         foreach ($stations as $station) {
-            $row = new Entity\Api\Admin\Relay();
+            $row = new ApiRelay();
             $row->id = $station->getIdRequired();
             $row->name = $station->getName();
             $row->shortcode = $station->getShortName();
@@ -76,7 +82,7 @@ final class RelaysController
             $fa = $this->adapters->getFrontendAdapter($station);
             if (null !== $fa && $station->getMounts()->count() > 0) {
                 foreach ($station->getMounts() as $mount) {
-                    /** @var Entity\StationMount $mount */
+                    /** @var StationMount $mount */
                     $mounts[] = $mount->api($fa);
                 }
             }
@@ -93,7 +99,7 @@ final class RelaysController
     /**
      * @param ServerRequest $request
      *
-     * @return Entity\Station[]
+     * @return Station[]
      */
     private function getManageableStations(ServerRequest $request): array
     {
@@ -112,7 +118,7 @@ final class RelaysController
 
         return array_filter(
             $all_stations,
-            static function (Entity\Station $station) use ($acl) {
+            static function (Station $station) use ($acl) {
                 return $acl->isAllowed(StationPermissions::Broadcasting, $station->getId());
             }
         );
@@ -122,7 +128,7 @@ final class RelaysController
         ServerRequest $request,
         Response $response
     ): ResponseInterface {
-        $relay_repo = $this->em->getRepository(Entity\Relay::class);
+        $relay_repo = $this->em->getRepository(Relay::class);
 
         $body = (array)$request->getParsedBody();
 
@@ -134,8 +140,8 @@ final class RelaysController
         }
 
         $relay = $relay_repo->findOneBy(['base_url' => $base_url]);
-        if (!$relay instanceof Entity\Relay) {
-            $relay = new Entity\Relay($base_url);
+        if (!$relay instanceof Relay) {
+            $relay = new Relay($base_url);
         }
 
         $relay->setName($body['name'] ?? 'Relay');
@@ -148,7 +154,7 @@ final class RelaysController
         $existing_remotes = [];
 
         foreach ($relay->getRemotes() as $remote) {
-            /** @var Entity\StationRemote $remote */
+            /** @var StationRemote $remote */
             $existing_remotes[$remote->getStation()->getId()][$remote->getMount()] = $remote;
         }
 
@@ -157,16 +163,16 @@ final class RelaysController
             $station_id = $station->getId();
 
             foreach ($station->getMounts() as $mount) {
-                /** @var Entity\StationMount $mount */
+                /** @var StationMount $mount */
                 $mount_path = $mount->getName();
 
                 if (isset($existing_remotes[$station_id][$mount_path])) {
-                    /** @var Entity\StationRemote $remote */
+                    /** @var StationRemote $remote */
                     $remote = $existing_remotes[$station_id][$mount_path];
 
                     unset($existing_remotes[$station_id][$mount_path]);
                 } else {
-                    $remote = new Entity\StationRemote($station);
+                    $remote = new StationRemote($station);
                 }
 
                 $remote->setRelay($relay);
@@ -193,6 +199,6 @@ final class RelaysController
 
         $this->azuraRelayCache->setForRelay($relay, (array)$body['nowplaying']);
 
-        return $response->withJson(Entity\Api\Status::success());
+        return $response->withJson(Status::success());
     }
 }

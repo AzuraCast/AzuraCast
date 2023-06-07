@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Admin\StereoTool;
 
-use App\Entity;
+use App\Entity\Api\Error;
+use App\Entity\Api\Status;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Radio\StereoTool;
@@ -34,10 +35,10 @@ final class PostAction
         if (!StereoTool::getVersion()) {
             @unlink($binaryPath);
             return $response->withStatus(400)->withJson(
-                new Entity\Api\Error(400, __('Invalid binary uploaded.'))
+                new Error(400, __('Invalid binary uploaded.'))
             );
         }
 
-        return $response->withJson(Entity\Api\Status::success());
+        return $response->withJson(Status::success());
     }
 }

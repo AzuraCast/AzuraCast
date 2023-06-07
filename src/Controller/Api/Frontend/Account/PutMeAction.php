@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Api\Frontend\Account;
 
 use App\Controller\Api\Admin\UsersController;
-use App\Entity;
+use App\Entity\Api\Status;
 use App\Entity\Interfaces\EntityGroupsInterface;
 use App\Http\Response;
 use App\Http\ServerRequest;
@@ -32,6 +32,6 @@ final class PutMeAction extends UsersController
             ]
         );
 
-        return $response->withJson(Entity\Api\Status::updated());
+        return $response->withJson(Status::updated());
     }
 }

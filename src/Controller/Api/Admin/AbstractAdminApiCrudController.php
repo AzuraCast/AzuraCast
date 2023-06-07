@@ -5,7 +5,8 @@ declare(strict_types=1);
 namespace App\Controller\Api\Admin;
 
 use App\Controller\Api\AbstractApiCrudController;
-use App\Entity;
+use App\Entity\Api\Error;
+use App\Entity\Api\Status;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
@@ -53,7 +54,7 @@ abstract class AbstractAdminApiCrudController extends AbstractApiCrudController
 
         if (null === $record) {
             return $response->withStatus(404)
-                ->withJson(Entity\Api\Error::notFound());
+                ->withJson(Error::notFound());
         }
 
         $return = $this->viewRecord($record, $request);
@@ -79,12 +80,12 @@ abstract class AbstractAdminApiCrudController extends AbstractApiCrudController
 
         if (null === $record) {
             return $response->withStatus(404)
-                ->withJson(Entity\Api\Error::notFound());
+                ->withJson(Error::notFound());
         }
 
         $this->editRecord((array)$request->getParsedBody(), $record);
 
-        return $response->withJson(Entity\Api\Status::updated());
+        return $response->withJson(Status::updated());
     }
 
     public function deleteAction(
@@ -96,11 +97,11 @@ abstract class AbstractAdminApiCrudController extends AbstractApiCrudController
 
         if (null === $record) {
             return $response->withStatus(404)
-                ->withJson(Entity\Api\Error::notFound());
+                ->withJson(Error::notFound());
         }
 
         $this->deleteRecord($record);
 
-        return $response->withJson(Entity\Api\Status::deleted());
+        return $response->withJson(Status::deleted());
     }
 }

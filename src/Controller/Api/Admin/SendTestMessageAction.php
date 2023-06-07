@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Admin;
 
-use App\Entity;
+use App\Entity\Api\Error;
+use App\Entity\Api\Status;
 use App\Exception\ValidationException;
 use App\Http\Response;
 use App\Http\ServerRequest;
@@ -55,11 +56,11 @@ final class SendTestMessageAction
 
             $this->mail->send($email);
         } catch (TransportException $e) {
-            return $response->withStatus(400)->withJson(Entity\Api\Error::fromException($e));
+            return $response->withStatus(400)->withJson(Error::fromException($e));
         }
 
         return $response->withJson(
-            new Entity\Api\Status(
+            new Status(
                 true,
                 __('Test message sent successfully.')
             )

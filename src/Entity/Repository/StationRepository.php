@@ -49,6 +49,9 @@ final class StationRepository extends Repository
         )->getSingleScalarResult();
     }
 
+    /**
+     * @return array<array-key, Entity\Station>
+     */
     public function fetchAll(): mixed
     {
         return $this->em->createQuery(

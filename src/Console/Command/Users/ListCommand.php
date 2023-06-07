@@ -6,7 +6,7 @@ namespace App\Console\Command\Users;
 
 use App\Console\Command\CommandAbstract;
 use App\Container\EntityManagerAwareTrait;
-use App\Entity;
+use App\Entity\User;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -25,7 +25,7 @@ final class ListCommand extends CommandAbstract
         $io = new SymfonyStyle($input, $output);
         $io->title('AzuraCast User Accounts');
 
-        $usersRaw = $this->em->getRepository(Entity\User::class)
+        $usersRaw = $this->em->getRepository(User::class)
             ->findAll();
 
         $headers = [
@@ -38,7 +38,7 @@ final class ListCommand extends CommandAbstract
         $users = [];
 
         foreach ($usersRaw as $row) {
-            /** @var Entity\User $row */
+            /** @var User $row */
             $roles = [];
             foreach ($row->getRoles() as $role) {
                 $roles[] = $role->getName();

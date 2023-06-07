@@ -5,7 +5,10 @@ declare(strict_types=1);
 namespace App\Console\Command\Backup;
 
 use App\Console\Command\AbstractDatabaseCommand;
-use App\Entity;
+use App\Entity\Enums\StorageLocationTypes;
+use App\Entity\Repository\StorageLocationRepository;
+use App\Entity\Station;
+use App\Entity\StorageLocation;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -25,7 +28,7 @@ use const PATHINFO_EXTENSION;
 final class BackupCommand extends AbstractDatabaseCommand
 {
     public function __construct(
-        private readonly Entity\Repository\StorageLocationRepository $storageLocationRepo
+        private readonly StorageLocationRepository $storageLocationRepo
     ) {
         parent::__construct();
     }
@@ -73,10 +76,10 @@ final class BackupCommand extends AbstractDatabaseCommand
             }
 
             $storageLocation = $this->storageLocationRepo->findByType(
-                Entity\Enums\StorageLocationTypes::Backup,
+                StorageLocationTypes::Backup,
                 $storageLocationId
             );
-            if (!($storageLocation instanceof Entity\StorageLocation)) {
+            if (!($storageLocation instanceof StorageLocation)) {
                 $io->error('Invalid storage location specified.');
                 return 1;
             }
@@ -123,9 +126,8 @@ final class BackupCommand extends AbstractDatabaseCommand
                 DQL
             )->execute();
 
+            /** @var Station $station */
             foreach ($stations as $station) {
-                /** @var Entity\Station $station */
-
                 $mediaAdapter = $station->getMediaStorageLocation();
                 if ($mediaAdapter->isLocal()) {
                     $files_to_backup[] = $mediaAdapter->getPath();

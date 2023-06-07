@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Api\Admin\Shoutcast;
 
 use App\Container\EnvironmentAwareTrait;
-use App\Entity;
+use App\Entity\Api\Status;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Service\Flow;
@@ -51,6 +51,6 @@ final class PostAction
 
         unlink($scTgzPath);
 
-        return $response->withJson(Entity\Api\Status::success());
+        return $response->withJson(Status::success());
     }
 }

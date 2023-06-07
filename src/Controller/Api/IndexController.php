@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace App\Controller\Api;
 
-use App\Entity;
+use App\Entity\Api\SystemStatus;
+use App\Entity\Api\Time;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use OpenApi\Attributes as OA;
@@ -29,7 +30,7 @@ final class IndexController
         ServerRequest $request,
         Response $response
     ): ResponseInterface {
-        return $response->withJson(new Entity\Api\SystemStatus());
+        return $response->withJson(new SystemStatus());
     }
 
     #[OA\Get(
@@ -49,6 +50,6 @@ final class IndexController
         ServerRequest $request,
         Response $response
     ): ResponseInterface {
-        return $response->withJson(new Entity\Api\Time());
+        return $response->withJson(new Time());
     }
 }

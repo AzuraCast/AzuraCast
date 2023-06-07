@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace App;
 
 use App\Doctrine\ReloadableEntityManagerInterface;
-use App\Entity;
+use App\Entity\Role;
+use App\Entity\Station;
+use App\Entity\User;
 use App\Enums\GlobalPermissions;
 use App\Enums\PermissionInterface;
 use App\Enums\StationPermissions;
@@ -98,11 +100,11 @@ final class Acl
      * Check if the current user associated with the request has the specified permission.
      *
      * @param array<string|PermissionInterface>|string|PermissionInterface $action
-     * @param int|Entity\Station|null $stationId
+     * @param int|Station|null $stationId
      */
     public function isAllowed(
         array|string|PermissionInterface $action,
-        Entity\Station|int $stationId = null
+        Station|int $stationId = null
     ): bool {
         if ($this->request instanceof ServerRequestInterface) {
             $user = $this->request->getAttribute(ServerRequest::ATTR_USER);
@@ -115,27 +117,27 @@ final class Acl
     /**
      * Check if a specified User entity is allowed to perform an action (or array of actions).
      *
-     * @param Entity\User|null $user
+     * @param User|null $user
      * @param array<string|PermissionInterface>|string|PermissionInterface $action
-     * @param int|Entity\Station|null $stationId
+     * @param int|Station|null $stationId
      */
     public function userAllowed(
-        ?Entity\User $user = null,
+        ?User $user = null,
         array|string|PermissionInterface $action = null,
-        Entity\Station|int $stationId = null
+        Station|int $stationId = null
     ): bool {
         if (null === $user || null === $action) {
             return false;
         }
 
-        if ($stationId instanceof Entity\Station) {
+        if ($stationId instanceof Station) {
             $stationId = $stationId->getId();
         }
 
         $numRoles = $user->getRoles()->count();
         if ($numRoles > 0) {
             if ($numRoles === 1) {
-                /** @var Entity\Role $role */
+                /** @var Role $role */
                 $role = $user->getRoles()->first();
 
                 return $this->roleAllowed($role->getIdRequired(), $action, $stationId);
@@ -157,14 +159,14 @@ final class Acl
      *
      * @param array|int $role_id
      * @param array<string|PermissionInterface>|string|PermissionInterface $action
-     * @param int|Entity\Station|null $station_id
+     * @param int|Station|null $station_id
      */
     public function roleAllowed(
         array|int $role_id,
         array|string|PermissionInterface $action,
-        Entity\Station|int $station_id = null
+        Station|int $station_id = null
     ): bool {
-        if ($station_id instanceof Entity\Station) {
+        if ($station_id instanceof Station) {
             $station_id = $station_id->getId();
         }
 

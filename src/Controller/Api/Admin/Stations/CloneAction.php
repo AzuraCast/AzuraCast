@@ -6,7 +6,15 @@ namespace App\Controller\Api\Admin\Stations;
 
 use App\Container\EnvironmentAwareTrait;
 use App\Controller\Api\Admin\StationsController;
-use App\Entity;
+use App\Entity\Api\Status;
+use App\Entity\Interfaces\StationCloneAwareInterface;
+use App\Entity\RolePermission;
+use App\Entity\Station;
+use App\Entity\StationPlaylist;
+use App\Entity\StationPlaylistFolder;
+use App\Entity\StationPlaylistMedia;
+use App\Entity\StationSchedule;
+use App\Entity\StationStreamer;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use DeepCopy;
@@ -55,15 +63,15 @@ final class CloneAction extends StationsController
 
         $copier->addFilter(
             new DeepCopy\Filter\KeepFilter(),
-            new DeepCopy\Matcher\PropertyMatcher(Entity\RolePermission::class, 'role')
+            new DeepCopy\Matcher\PropertyMatcher(RolePermission::class, 'role')
         );
         $copier->addFilter(
             new DeepCopy\Filter\KeepFilter(),
-            new DeepCopy\Matcher\PropertyMatcher(Entity\StationPlaylistMedia::class, 'media')
+            new DeepCopy\Matcher\PropertyMatcher(StationPlaylistMedia::class, 'media')
         );
 
-        /** @var Entity\Station $record */
-        /** @var Entity\Station $newStation */
+        /** @var Station $record */
+        /** @var Station $newStation */
         $newStation = $copier->copy($record);
 
         $newStation->setName($data['name'] ?? ($newStation->getName() . ' - Copy'));
@@ -95,15 +103,15 @@ final class CloneAction extends StationsController
 
         if (in_array(self::CLONE_PLAYLISTS, $toClone, true)) {
             $afterCloning = function (
-                Entity\StationPlaylist $oldPlaylist,
-                Entity\StationPlaylist $newPlaylist,
-                Entity\Station $newStation
+                StationPlaylist $oldPlaylist,
+                StationPlaylist $newPlaylist,
+                Station $newStation
             ) use (
                 $copier,
                 $toClone
             ): void {
                 foreach ($oldPlaylist->getScheduleItems() as $oldScheduleItem) {
-                    /** @var Entity\StationSchedule $newScheduleItem */
+                    /** @var StationSchedule $newScheduleItem */
                     $newScheduleItem = $copier->copy($oldScheduleItem);
                     $newScheduleItem->setPlaylist($newPlaylist);
 
@@ -112,7 +120,7 @@ final class CloneAction extends StationsController
 
                 if (in_array(self::CLONE_MEDIA_STORAGE, $toClone, true)) {
                     foreach ($oldPlaylist->getFolders() as $oldPlaylistFolder) {
-                        /** @var Entity\StationPlaylistFolder $newPlaylistFolder */
+                        /** @var StationPlaylistFolder $newPlaylistFolder */
                         $newPlaylistFolder = $copier->copy($oldPlaylistFolder);
                         $newPlaylistFolder->setStation($newStation);
                         $newPlaylistFolder->setPlaylist($newPlaylist);
@@ -120,7 +128,7 @@ final class CloneAction extends StationsController
                     }
 
                     foreach ($oldPlaylist->getMediaItems() as $oldMediaItem) {
-                        /** @var Entity\StationPlaylistMedia $newMediaItem */
+                        /** @var StationPlaylistMedia $newMediaItem */
                         $newMediaItem = $copier->copy($oldMediaItem);
 
                         $newMediaItem->setPlaylist($newPlaylist);
@@ -150,14 +158,14 @@ final class CloneAction extends StationsController
             $record = $this->em->refetch($record);
 
             $afterCloning = function (
-                Entity\StationStreamer $oldStreamer,
-                Entity\StationStreamer $newStreamer,
-                Entity\Station $station
+                StationStreamer $oldStreamer,
+                StationStreamer $newStreamer,
+                Station $station
             ) use (
                 $copier
             ): void {
                 foreach ($oldStreamer->getScheduleItems() as $oldScheduleItem) {
-                    /** @var Entity\StationSchedule $newScheduleItem */
+                    /** @var StationSchedule $newScheduleItem */
                     $newScheduleItem = $copier->copy($oldScheduleItem);
                     $newScheduleItem->setStreamer($newStreamer);
 
@@ -190,7 +198,7 @@ final class CloneAction extends StationsController
 
         $this->em->flush();
 
-        return $response->withJson(Entity\Api\Status::created());
+        return $response->withJson(Status::created());
     }
 
     /**
@@ -198,14 +206,14 @@ final class CloneAction extends StationsController
      */
     private function cloneCollection(
         Collection $collection,
-        Entity\Station $newStation,
+        Station $newStation,
         DeepCopy\DeepCopy $copier,
         ?callable $afterCloning = null
     ): void {
         $newStation = $this->em->refetch($newStation);
 
         foreach ($collection as $oldRecord) {
-            /** @var Entity\Interfaces\StationCloneAwareInterface $newRecord */
+            /** @var StationCloneAwareInterface $newRecord */
             $newRecord = $copier->copy($oldRecord);
             $newRecord->setStation($newStation);
 

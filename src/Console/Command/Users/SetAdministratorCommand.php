@@ -6,7 +6,8 @@ namespace App\Console\Command\Users;
 
 use App\Console\Command\CommandAbstract;
 use App\Container\EntityManagerAwareTrait;
-use App\Entity;
+use App\Entity\Repository\RolePermissionRepository;
+use App\Entity\User;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -22,7 +23,7 @@ final class SetAdministratorCommand extends CommandAbstract
     use EntityManagerAwareTrait;
 
     public function __construct(
-        private readonly Entity\Repository\RolePermissionRepository $permsRepo,
+        private readonly RolePermissionRepository $permsRepo,
     ) {
         parent::__construct();
     }
@@ -40,10 +41,10 @@ final class SetAdministratorCommand extends CommandAbstract
 
         $io->title('Set Administrator');
 
-        $user = $this->em->getRepository(Entity\User::class)
+        $user = $this->em->getRepository(User::class)
             ->findOneBy(['email' => $email]);
 
-        if ($user instanceof Entity\User) {
+        if ($user instanceof User) {
             $adminRole = $this->permsRepo->ensureSuperAdministratorRole();
 
             $user_roles = $user->getRoles();

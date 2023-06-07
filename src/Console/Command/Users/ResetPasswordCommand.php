@@ -6,7 +6,7 @@ namespace App\Console\Command\Users;
 
 use App\Console\Command\CommandAbstract;
 use App\Container\EntityManagerAwareTrait;
-use App\Entity;
+use App\Entity\User;
 use App\Utilities;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputArgument;
@@ -35,10 +35,10 @@ final class ResetPasswordCommand extends CommandAbstract
 
         $io->title('Reset Account Password');
 
-        $user = $this->em->getRepository(Entity\User::class)
+        $user = $this->em->getRepository(User::class)
             ->findOneBy(['email' => $email]);
 
-        if ($user instanceof Entity\User) {
+        if ($user instanceof User) {
             $temp_pw = Utilities\Strings::generatePassword(15);
 
             $user->setNewPassword($temp_pw);

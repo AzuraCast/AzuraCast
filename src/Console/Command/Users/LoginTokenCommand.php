@@ -6,7 +6,8 @@ namespace App\Console\Command\Users;
 
 use App\Console\Command\CommandAbstract;
 use App\Container\EntityManagerAwareTrait;
-use App\Entity;
+use App\Entity\Repository\UserLoginTokenRepository;
+use App\Entity\User;
 use App\Http\RouterInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputArgument;
@@ -23,7 +24,7 @@ final class LoginTokenCommand extends CommandAbstract
     use EntityManagerAwareTrait;
 
     public function __construct(
-        private readonly Entity\Repository\UserLoginTokenRepository $loginTokenRepo,
+        private readonly UserLoginTokenRepository $loginTokenRepo,
         private readonly RouterInterface $router,
     ) {
         parent::__construct();
@@ -42,10 +43,10 @@ final class LoginTokenCommand extends CommandAbstract
 
         $io->title('Generate Account Login Recovery URL');
 
-        $user = $this->em->getRepository(Entity\User::class)
+        $user = $this->em->getRepository(User::class)
             ->findOneBy(['email' => $email]);
 
-        if ($user instanceof Entity\User) {
+        if ($user instanceof User) {
             $loginToken = $this->loginTokenRepo->createToken($user);
 
             $url = $this->router->named(

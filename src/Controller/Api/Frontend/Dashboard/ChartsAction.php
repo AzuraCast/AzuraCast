@@ -5,7 +5,10 @@ declare(strict_types=1);
 namespace App\Controller\Api\Frontend\Dashboard;
 
 use App\Container\EntityManagerAwareTrait;
-use App\Entity;
+use App\Entity\Api\Error;
+use App\Entity\Enums\AnalyticsIntervals;
+use App\Entity\Repository\SettingsRepository;
+use App\Entity\Station;
 use App\Enums\GlobalPermissions;
 use App\Enums\StationPermissions;
 use App\Http\Response;
@@ -20,7 +23,7 @@ final class ChartsAction
 
     public function __construct(
         private readonly CacheInterface $cache,
-        private readonly Entity\Repository\SettingsRepository $settingsRepo
+        private readonly SettingsRepository $settingsRepo
     ) {
     }
 
@@ -30,7 +33,7 @@ final class ChartsAction
     ): ResponseInterface {
         if (!$this->settingsRepo->readSettings()->isAnalyticsEnabled()) {
             return $response->withStatus(403, 'Forbidden')
-                ->withJson(new Entity\Api\Error(403, 'Analytics are disabled for this installation.'));
+                ->withJson(new Error(403, 'Analytics are disabled for this installation.'));
         }
 
         $acl = $request->getAcl();
@@ -38,11 +41,11 @@ final class ChartsAction
         // Don't show stations the user can't manage.
         $showAdmin = $acl->isAllowed(GlobalPermissions::View);
 
-        /** @var Entity\Station[] $stations */
+        /** @var Station[] $stations */
         $stations = array_filter(
-            $this->em->getRepository(Entity\Station::class)->findAll(),
+            $this->em->getRepository(Station::class)->findAll(),
             static function ($station) use ($acl) {
-                /** @var Entity\Station $station */
+                /** @var Station $station */
                 return $station->getIsEnabled() &&
                     $acl->isAllowed(StationPermissions::View, $station->getId());
             }
@@ -70,7 +73,7 @@ final class ChartsAction
                     AND a.moment >= :threshold
                 DQL
             )->setParameter('stations', $stationIds)
-                ->setParameter('type', Entity\Enums\AnalyticsIntervals::Daily)
+                ->setParameter('type', AnalyticsIntervals::Daily)
                 ->setParameter('threshold', $threshold)
                 ->getArrayResult();
 

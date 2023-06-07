@@ -5,7 +5,8 @@ declare(strict_types=1);
 namespace App\Console\Command;
 
 use App\Container\EnvironmentAwareTrait;
-use App\Entity;
+use App\Entity\Repository\SettingsRepository;
+use App\Entity\Repository\StorageLocationRepository;
 use App\Service\AzuraCastCentral;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputInterface;
@@ -22,9 +23,9 @@ final class SetupCommand extends CommandAbstract
     use EnvironmentAwareTrait;
 
     public function __construct(
-        private readonly Entity\Repository\SettingsRepository $settingsRepo,
+        private readonly SettingsRepository $settingsRepo,
         private readonly AzuraCastCentral $acCentral,
-        private readonly Entity\Repository\StorageLocationRepository $storageLocationRepo
+        private readonly StorageLocationRepository $storageLocationRepo
     ) {
         parent::__construct();
     }

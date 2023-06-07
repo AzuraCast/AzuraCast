@@ -6,7 +6,7 @@ namespace App\Controller\Api\Admin\CustomAssets;
 
 use App\Assets\AssetTypes;
 use App\Container\EnvironmentAwareTrait;
-use App\Entity;
+use App\Entity\Api\Status;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
@@ -23,6 +23,6 @@ final class DeleteCustomAssetAction
         $customAsset = AssetTypes::from($type)->createObject($this->environment);
         $customAsset->delete();
 
-        return $response->withJson(Entity\Api\Status::success());
+        return $response->withJson(Status::success());
     }
 }

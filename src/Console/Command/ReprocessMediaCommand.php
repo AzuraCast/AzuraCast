@@ -5,8 +5,9 @@ declare(strict_types=1);
 namespace App\Console\Command;
 
 use App\Container\EntityManagerAwareTrait;
-use App\Entity;
+use App\Entity\Repository\StationRepository;
 use App\Entity\Station;
+use App\Entity\StationMedia;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -22,7 +23,7 @@ final class ReprocessMediaCommand extends CommandAbstract
     use EntityManagerAwareTrait;
 
     public function __construct(
-        private readonly Entity\Repository\StationRepository $stationRepo,
+        private readonly StationRepository $stationRepo,
     ) {
         parent::__construct();
     }
@@ -57,7 +58,7 @@ final class ReprocessMediaCommand extends CommandAbstract
         }
 
         $reprocessMediaQueue = $this->em->createQueryBuilder()
-            ->update(Entity\StationMedia::class, 'sm')
+            ->update(StationMedia::class, 'sm')
             ->set('sm.mtime', 'NULL');
 
         if (null !== $storageLocation) {

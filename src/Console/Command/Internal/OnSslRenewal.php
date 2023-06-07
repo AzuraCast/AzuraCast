@@ -6,7 +6,7 @@ namespace App\Console\Command\Internal;
 
 use App\Console\Command\CommandAbstract;
 use App\Container\EntityManagerAwareTrait;
-use App\Entity;
+use App\Entity\Station;
 use App\Radio\Adapters;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputInterface;
@@ -34,8 +34,8 @@ final class OnSslRenewal extends CommandAbstract
                 DQL
         )->toIterable();
 
+        /** @var Station $station */
         foreach ($stations as $station) {
-            /** @var Entity\Station $station */
             if ($station->getFrontendType()->supportsReload()) {
                 $frontend = $this->adapters->getFrontendAdapter($station);
                 if (null !== $frontend) {

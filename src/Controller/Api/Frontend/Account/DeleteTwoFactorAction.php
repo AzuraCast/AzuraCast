@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Api\Frontend\Account;
 
 use App\Container\EntityManagerAwareTrait;
-use App\Entity;
+use App\Entity\Api\Status;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
@@ -25,6 +25,6 @@ final class DeleteTwoFactorAction
         $this->em->persist($user);
         $this->em->flush();
 
-        return $response->withJson(Entity\Api\Status::updated());
+        return $response->withJson(Status::updated());
     }
 }

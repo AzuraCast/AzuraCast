@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Admin;
 
 use App\Container\EntityManagerAwareTrait;
-use App\Entity;
+use App\Entity\Relay;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
@@ -20,7 +20,7 @@ final class RelaysAction
     ): ResponseInterface {
         $relays = $this->em->createQueryBuilder()
             ->select('e')
-            ->from(Entity\Relay::class, 'e')
+            ->from(Relay::class, 'e')
             ->getQuery()->getArrayResult();
 
         return $request->getView()->renderToResponse(

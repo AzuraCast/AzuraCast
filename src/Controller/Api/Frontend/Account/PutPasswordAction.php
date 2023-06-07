@@ -5,7 +5,8 @@ declare(strict_types=1);
 namespace App\Controller\Api\Frontend\Account;
 
 use App\Controller\Api\Admin\UsersController;
-use App\Entity;
+use App\Entity\Api\Error;
+use App\Entity\Api\Status;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use InvalidArgumentException;
@@ -41,9 +42,9 @@ final class PutPasswordAction extends UsersController
             $this->em->persist($user);
             $this->em->flush();
 
-            return $response->withJson(Entity\Api\Status::updated());
+            return $response->withJson(Status::updated());
         } catch (Throwable $e) {
-            return $response->withStatus(400)->withJson(Entity\Api\Error::fromException($e));
+            return $response->withStatus(400)->withJson(Error::fromException($e));
         }
     }
 }

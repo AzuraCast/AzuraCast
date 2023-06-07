@@ -13,6 +13,8 @@ use function is_array;
 use function is_object;
 use function key;
 
+use Traversable;
+
 /**
  * @template TKey
  * @template TValue
@@ -30,7 +32,7 @@ final class ReadWriteBatchIteratorAggregate extends AbstractBatchIteratorAggrega
     }
 
     /** @inheritDoc */
-    public function getIterator(): \Traversable
+    public function getIterator(): Traversable
     {
         $iteration = 0;
         $resultSet = $this->resultSet;

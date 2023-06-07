@@ -9,6 +9,8 @@ use App\Entity;
 use App\Utilities;
 use GuzzleHttp\Client;
 use PhpIP\IP;
+use RuntimeException;
+use InvalidArgumentException;
 
 abstract class AbstractConnector implements ConnectorInterface
 {
@@ -123,18 +125,18 @@ abstract class AbstractConnector implements ConnectorInterface
         try {
             $ip = IP::create($uri->getHost());
             if ($ip->isReserved()) {
-                throw new \RuntimeException('URL references an IANA reserved block.');
+                throw new RuntimeException('URL references an IANA reserved block.');
             }
-        } catch (\InvalidArgumentException) {
+        } catch (InvalidArgumentException) {
             // Noop, URL is not an IP
         }
 
         return (string)$uri;
     }
 
-    protected function incompleteConfigException(Entity\StationWebhook $webhook): \InvalidArgumentException
+    protected function incompleteConfigException(Entity\StationWebhook $webhook): InvalidArgumentException
     {
-        return new \InvalidArgumentException(
+        return new InvalidArgumentException(
             sprintf(
                 'Webhook "%s" (type "%s") is missing necessary configuration. Skipping...',
                 $webhook->getName(),

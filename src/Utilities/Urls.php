@@ -7,6 +7,8 @@ namespace App\Utilities;
 use GuzzleHttp\Psr7\Uri;
 use LogicException;
 use Psr\Http\Message\UriInterface;
+use RuntimeException;
+use Throwable;
 
 final class Urls
 {
@@ -15,12 +17,12 @@ final class Urls
         bool $mustBeAbsolute = true
     ): UriInterface {
         if (null === $url) {
-            throw new \RuntimeException('URL field is empty.');
+            throw new RuntimeException('URL field is empty.');
         }
 
         $url = trim($url);
         if (empty($url)) {
-            throw new \RuntimeException('URL field is empty.');
+            throw new RuntimeException('URL field is empty.');
         }
 
         $uri = new Uri($url);
@@ -36,7 +38,7 @@ final class Urls
         }
 
         if (!in_array($uri->getScheme(), ['', 'http', 'https'], true)) {
-            throw new \RuntimeException('Invalid URL scheme.');
+            throw new RuntimeException('Invalid URL scheme.');
         }
 
         if ('/' === $uri->getPath()) {
@@ -57,7 +59,7 @@ final class Urls
     ): UriInterface {
         try {
             return self::getUri($url, $mustBeAbsolute);
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             throw new LogicException(
                 message: sprintf('Could not parse %s URL "%s": %s', $context, $url, $e->getMessage()),
                 previous: $e
@@ -76,7 +78,7 @@ final class Urls
 
         try {
             return self::getUri($url, $mustBeAbsolute);
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             Logger::getInstance()->notice(
                 sprintf('Could not parse %s URL "%s"', $context, $url),
                 [

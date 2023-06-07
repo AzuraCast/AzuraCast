@@ -10,6 +10,7 @@ use DateTimeZone;
 use Dotenv\Dotenv;
 use Psr\SimpleCache\CacheInterface;
 use Symfony\Component\Process\Process;
+use Throwable;
 
 /**
  * App Core Framework Version
@@ -105,7 +106,7 @@ final class Version
                         'commit_date_raw' => $gitInfo['COMMIT_DATE'] ?? null,
                         'branch' => $gitInfo['BRANCH'] ?? null,
                     ];
-                } catch (\Throwable) {
+                } catch (Throwable) {
                     // Noop
                 }
             }

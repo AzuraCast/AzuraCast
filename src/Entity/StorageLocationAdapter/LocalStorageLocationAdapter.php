@@ -11,6 +11,7 @@ use App\Flysystem\Adapter\LocalFilesystemAdapter;
 use App\Flysystem\ExtendedFilesystemInterface;
 use App\Flysystem\LocalFilesystem;
 use Symfony\Component\Filesystem\Path;
+use InvalidArgumentException;
 
 final class LocalStorageLocationAdapter extends AbstractStorageLocationLocationAdapter
 {
@@ -40,11 +41,11 @@ final class LocalStorageLocationAdapter extends AbstractStorageLocationLocationA
         $baseDir = $this->environment->getBaseDirectory();
 
         if (Path::isBasePath($baseDir, $path)) {
-            throw new \InvalidArgumentException('Directory is within the web root.');
+            throw new InvalidArgumentException('Directory is within the web root.');
         }
 
         if (Path::isBasePath($path, $baseDir)) {
-            throw new \InvalidArgumentException('Directory is a parent directory of the web root.');
+            throw new InvalidArgumentException('Directory is a parent directory of the web root.');
         }
 
         parent::validate();

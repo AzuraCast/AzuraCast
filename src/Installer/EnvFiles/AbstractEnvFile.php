@@ -10,6 +10,8 @@ use ArrayAccess;
 use Dotenv\Dotenv;
 use Dotenv\Exception\ExceptionInterface;
 use InvalidArgumentException;
+use DateTimeImmutable;
+use DateTimeZone;
 
 /**
  * @implements ArrayAccess<string, mixed>
@@ -153,7 +155,7 @@ abstract class AbstractEnvFile implements ArrayAccess
         if (is_file($this->path)) {
             $existingFile = file_get_contents($this->path) ?: '';
             if ($envFileStr !== $existingFile) {
-                $currentTimeUtc = new \DateTimeImmutable('now', new \DateTimeZone('UTC'));
+                $currentTimeUtc = new DateTimeImmutable('now', new DateTimeZone('UTC'));
                 $backupPath = $this->path . '_backup_' . $currentTimeUtc->format('Ymd-his') . '.bak';
 
                 copy($this->path, $backupPath);

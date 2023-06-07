@@ -14,6 +14,9 @@ use JamesHeinrich\GetID3\GetID3;
 
 use const JSON_THROW_ON_ERROR;
 
+use RuntimeException;
+use Throwable;
+
 final class PhpReader
 {
     use LoggerAwareTrait;
@@ -32,7 +35,7 @@ final class PhpReader
             $getid3->CopyTagsToComments($info);
 
             if (!empty($info['error'])) {
-                throw new \RuntimeException(
+                throw new RuntimeException(
                     json_encode($info['error'], JSON_THROW_ON_ERROR)
                 );
             }
@@ -72,7 +75,7 @@ final class PhpReader
 
             $event->setMetadata($metadata);
             $event->stopPropagation();
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             $this->logger->info(
                 sprintf(
                     'getid3 failed for file %s: %s',

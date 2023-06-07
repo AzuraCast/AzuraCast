@@ -8,6 +8,7 @@ use App\Console\Command\Traits\PassThruProcess;
 use App\Container\EntityManagerAwareTrait;
 use App\Container\EnvironmentAwareTrait;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use RuntimeException;
 
 abstract class AbstractDatabaseCommand extends CommandAbstract
 {
@@ -67,7 +68,7 @@ abstract class AbstractDatabaseCommand extends CommandAbstract
         string $path
     ): void {
         if (!file_exists($path)) {
-            throw new \RuntimeException('Database backup file not found!');
+            throw new RuntimeException('Database backup file not found!');
         }
 
         $conn = $this->em->getConnection();

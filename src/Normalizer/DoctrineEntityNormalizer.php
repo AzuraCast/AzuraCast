@@ -14,6 +14,7 @@ use ReflectionProperty;
 use Symfony\Component\Serializer\Mapping\Factory\ClassMetadataFactoryInterface;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
+use InvalidArgumentException;
 
 final class DoctrineEntityNormalizer extends AbstractObjectNormalizer
 {
@@ -45,7 +46,7 @@ final class DoctrineEntityNormalizer extends AbstractObjectNormalizer
     public function normalize(mixed $object, ?string $format = null, array $context = []): mixed
     {
         if (!is_object($object)) {
-            throw new \InvalidArgumentException('Cannot normalize non-object.');
+            throw new InvalidArgumentException('Cannot normalize non-object.');
         }
 
         $context = $this->addDoctrineContext($object::class, $context);
@@ -174,7 +175,7 @@ final class DoctrineEntityNormalizer extends AbstractObjectNormalizer
             return false;
         }
 
-        $reflectionClass = new \ReflectionClass($classOrObject);
+        $reflectionClass = new ReflectionClass($classOrObject);
         if (!$reflectionClass->hasProperty($attribute)) {
             return false;
         }
@@ -193,7 +194,7 @@ final class DoctrineEntityNormalizer extends AbstractObjectNormalizer
      * @param string $attribute
      * @return bool
      */
-    private function hasGetter(\ReflectionClass $reflectionClass, string $attribute): bool
+    private function hasGetter(ReflectionClass $reflectionClass, string $attribute): bool
     {
         // Default to "getStatus", "getConfig", etc...
         $getterMethod = $this->getMethodName($attribute, 'get');
@@ -212,7 +213,7 @@ final class DoctrineEntityNormalizer extends AbstractObjectNormalizer
         array $context = []
     ): mixed {
         if (isset($context[self::CLASS_METADATA]->associationMappings[$attribute])) {
-            if (!$this->supportsDeepNormalization(new \ReflectionClass($object), $attribute)) {
+            if (!$this->supportsDeepNormalization(new ReflectionClass($object), $attribute)) {
                 throw new NoGetterAvailableException(
                     sprintf(
                         'Deep normalization disabled for property %s.',
@@ -236,7 +237,7 @@ final class DoctrineEntityNormalizer extends AbstractObjectNormalizer
      * @return bool
      * @throws \ReflectionException
      */
-    private function supportsDeepNormalization(\ReflectionClass $reflectionClass, string $attribute): bool
+    private function supportsDeepNormalization(ReflectionClass $reflectionClass, string $attribute): bool
     {
         $deepNormalizeAttrs = $reflectionClass->getProperty($attribute)->getAttributes(
             DeepNormalize::class
@@ -326,7 +327,7 @@ final class DoctrineEntityNormalizer extends AbstractObjectNormalizer
         } else {
             $methodName = $this->getMethodName($attribute, 'set');
 
-            $reflClass = new \ReflectionClass($object);
+            $reflClass = new ReflectionClass($object);
             if (!$reflClass->hasMethod($methodName)) {
                 return;
             }

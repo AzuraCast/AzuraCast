@@ -12,6 +12,7 @@ use Supervisor\Exception\Fault\NotRunningException;
 use Supervisor\Exception\SupervisorException as SupervisorLibException;
 use Supervisor\ProcessStates;
 use Supervisor\SupervisorInterface;
+use InvalidArgumentException;
 
 final class ServiceControl
 {
@@ -56,7 +57,7 @@ final class ServiceControl
     {
         $serviceNames = $this->getServiceNames();
         if (!isset($serviceNames[$service])) {
-            throw new \InvalidArgumentException(
+            throw new InvalidArgumentException(
                 sprintf('Service "%s" is not managed by AzuraCast.', $service)
             );
         }

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Entity\Enums;
 
 use Psr\Http\Message\ServerRequestInterface;
+use RuntimeException;
 
 enum IpSources: string
 {
@@ -37,7 +38,7 @@ enum IpSources: string
         $ip = $serverParams['REMOTE_ADDR'] ?? null;
 
         if (empty($ip)) {
-            throw new \RuntimeException('No IP address attached to this request.');
+            throw new RuntimeException('No IP address attached to this request.');
         }
 
         return $this->parseIp($ip);

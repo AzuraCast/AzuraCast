@@ -10,6 +10,8 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
 use function is_array;
 use function is_string;
 
+use Closure;
+
 final class CallableEventDispatcher extends EventDispatcher implements CallableEventDispatcherInterface
 {
     use ContainerAwareTrait;
@@ -111,7 +113,7 @@ final class CallableEventDispatcher extends EventDispatcher implements CallableE
     private function getCallable(
         string $className,
         ?string $method = '__invoke'
-    ): \Closure {
+    ): Closure {
         return fn(...$args) => $this->di->get($className)->$method(...$args);
     }
 }

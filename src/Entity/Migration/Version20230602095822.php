@@ -6,6 +6,7 @@ namespace App\Entity\Migration;
 
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
+use Exception;
 
 final class Version20230602095822 extends AbstractMigration
 {
@@ -46,7 +47,7 @@ final class Version20230602095822 extends AbstractMigration
                     @unserialize($row['changes']),
                     JSON_THROW_ON_ERROR | JSON_PRESERVE_ZERO_FRACTION
                 );
-            } catch (\Exception) {
+            } catch (Exception) {
                 $newChanges = null;
             }
 

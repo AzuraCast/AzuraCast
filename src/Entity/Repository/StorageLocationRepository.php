@@ -11,6 +11,7 @@ use App\Entity\Enums\StorageLocationTypes;
 use App\Entity\Station;
 use App\Entity\StorageLocation;
 use App\Entity\StorageLocationAdapter\StorageLocationAdapterInterface;
+use InvalidArgumentException;
 
 /**
  * @extends Repository<StorageLocation>
@@ -134,7 +135,7 @@ final class StorageLocationRepository extends Repository
         $adapterClass = $storageLocation->getAdapter()->getAdapterClass();
 
         if (!$this->di->has($adapterClass)) {
-            throw new \InvalidArgumentException(sprintf('Class not found: %s', $adapterClass));
+            throw new InvalidArgumentException(sprintf('Class not found: %s', $adapterClass));
         }
 
         /** @var StorageLocationAdapterInterface $adapter */

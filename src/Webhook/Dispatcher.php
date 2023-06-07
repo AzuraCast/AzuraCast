@@ -17,6 +17,7 @@ use App\Webhook\Connector\AbstractConnector;
 use App\Webhook\Enums\WebhookTriggers;
 use Monolog\Handler\StreamHandler;
 use Monolog\Level;
+use Throwable;
 
 final class Dispatcher
 {
@@ -59,7 +60,7 @@ final class Dispatcher
         // Always dispatch the special "local" updater task.
         try {
             $this->localHandler->dispatch($station, $np);
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             $this->logger->error(
                 sprintf('%s L%d: %s', $e->getFile(), $e->getLine(), $e->getMessage()),
                 [
@@ -105,7 +106,7 @@ final class Dispatcher
                     $connectorObj->dispatch($station, $webhook, $np, $triggers);
                     $webhook->updateLastSentTimestamp();
                     $this->em->persist($webhook);
-                } catch (\Throwable $e) {
+                } catch (Throwable $e) {
                     $this->logger->error(
                         sprintf('%s L%d: %s', $e->getFile(), $e->getLine(), $e->getMessage()),
                         [
@@ -150,7 +151,7 @@ final class Dispatcher
             $webhookObj->dispatch($station, $webhook, $np, [
                 WebhookTriggers::SongChanged->value,
             ]);
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             $this->logger->error(
                 sprintf(
                     '%s L%d: %s',

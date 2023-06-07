@@ -3,6 +3,7 @@
 namespace App\Service;
 
 use App\Container\EnvironmentAwareTrait;
+use RuntimeException;
 
 final class WebUpdater
 {
@@ -24,7 +25,7 @@ final class WebUpdater
     public function triggerUpdate(): void
     {
         if (!$this->isSupported()) {
-            throw new \RuntimeException('Web updates are not supported on this installation.');
+            throw new RuntimeException('Web updates are not supported on this installation.');
         }
 
         $client = $this->guzzleFactory->buildClient();

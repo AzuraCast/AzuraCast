@@ -75,5 +75,5 @@ abstract class AbstractBatchIteratorAggregate implements IteratorAggregate
     /**
      * @return Traversable<TKey, TValue>
      */
-    abstract public function getIterator(): \Traversable;
+    abstract public function getIterator(): Traversable;
 }

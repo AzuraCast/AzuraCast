@@ -9,6 +9,7 @@ use Carbon\CarbonImmutable;
 use Carbon\CarbonInterface;
 use Doctrine\ORM\Mapping as ORM;
 use OpenApi\Attributes as OA;
+use DateTimeZone;
 
 #[
     OA\Schema(type: "object"),
@@ -121,7 +122,7 @@ class StationSchedule implements IdentifiableEntityInterface
      */
     public function getDuration(): int
     {
-        $now = CarbonImmutable::now(new \DateTimeZone('UTC'));
+        $now = CarbonImmutable::now(new DateTimeZone('UTC'));
 
         $start_time = self::getDateTime($this->start_time, $now)
             ->getTimestamp();

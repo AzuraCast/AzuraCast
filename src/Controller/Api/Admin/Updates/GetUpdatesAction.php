@@ -10,6 +10,7 @@ use App\Http\ServerRequest;
 use App\Service\AzuraCastCentral;
 use GuzzleHttp\Exception\TransferException;
 use Psr\Http\Message\ResponseInterface;
+use RuntimeException;
 
 final class GetUpdatesAction
 {
@@ -36,9 +37,9 @@ final class GetUpdatesAction
                 return $response->withJson($updates);
             }
 
-            throw new \RuntimeException('Error parsing update data response from AzuraCast central.');
+            throw new RuntimeException('Error parsing update data response from AzuraCast central.');
         } catch (TransferException $e) {
-            throw new \RuntimeException(
+            throw new RuntimeException(
                 sprintf('Error from AzuraCast Central (%d): %s', $e->getCode(), $e->getMessage())
             );
         }

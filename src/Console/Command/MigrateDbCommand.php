@@ -11,6 +11,7 @@ use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Filesystem\Filesystem;
+use Exception;
 
 #[AsCommand(
     name: 'azuracast:setup:migrate',
@@ -55,7 +56,7 @@ final class MigrateDbCommand extends AbstractDatabaseCommand
 
             try {
                 $this->restoreDatabaseDump($io, $dbDumpPath);
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 $io->error(
                     sprintf(
                         __('Restore failed: %s'),
@@ -67,7 +68,7 @@ final class MigrateDbCommand extends AbstractDatabaseCommand
         } else {
             try {
                 $this->dumpDatabase($io, $dbDumpPath);
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 $io->error(
                     sprintf(
                         __('Initial backup failed: %s'),
@@ -89,7 +90,7 @@ final class MigrateDbCommand extends AbstractDatabaseCommand
                     '--allow-no-migration' => true,
                 ]
             );
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             // Rollback to the DB dump from earlier.
             $io->error(
                 sprintf(
@@ -108,7 +109,7 @@ final class MigrateDbCommand extends AbstractDatabaseCommand
                     __('Please report this bug to our developers.'),
                 ]);
                 return 0;
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 $io->error(
                     sprintf(
                         __('Restore failed: %s'),

@@ -44,4 +44,12 @@
     <rule ref="SlevomatCodingStandard.TypeHints.ReturnTypeHint">
         <exclude-pattern>src/Entity/Migration/*$</exclude-pattern>
     </rule>
+
+    <rule ref="SlevomatCodingStandard.Namespaces.ReferenceUsedNamesOnly">
+        <properties>
+            <property name="allowPartialUses" value="false"/>
+        </properties>
+
+        <exclude-pattern>config/*$</exclude-pattern>
+    </rule>
 </ruleset>

@@ -377,4 +377,9 @@ final class DoctrineEntityNormalizer extends AbstractObjectNormalizer
 
         return !$this->em->getMetadataFactory()->isTransient($class);
     }
+
+    public function getSupportedTypes(?string $format): array
+    {
+        return ['object' => true];
+    }
 }

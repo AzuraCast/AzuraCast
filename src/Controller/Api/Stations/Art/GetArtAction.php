@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Stations\Art;
 
-use App\Entity;
+use App\Entity\Repository\StationMediaRepository;
+use App\Entity\Repository\StationRepository;
+use App\Entity\Station;
+use App\Entity\StationMedia;
 use App\Flysystem\ExtendedFilesystemInterface;
 use App\Flysystem\StationFilesystems;
 use App\Http\Response;
@@ -41,8 +44,8 @@ use Psr\Http\Message\ResponseInterface;
 final class GetArtAction
 {
     public function __construct(
-        private readonly Entity\Repository\StationRepository $stationRepo,
-        private readonly Entity\Repository\StationMediaRepository $mediaRepo,
+        private readonly StationRepository $stationRepo,
+        private readonly StationMediaRepository $mediaRepo,
         private readonly StationFilesystems $stationFilesystems
     ) {
     }
@@ -79,12 +82,12 @@ final class GetArtAction
     }
 
     private function getMediaPath(
-        Entity\Station $station,
+        Station $station,
         ExtendedFilesystemInterface $fsMedia,
         string $media_id
     ): ?string {
-        if (Entity\StationMedia::UNIQUE_ID_LENGTH === strlen($media_id)) {
-            $mediaPath = Entity\StationMedia::getArtPath($media_id);
+        if (StationMedia::UNIQUE_ID_LENGTH === strlen($media_id)) {
+            $mediaPath = StationMedia::getArtPath($media_id);
 
             if ($fsMedia->fileExists($mediaPath)) {
                 return $mediaPath;
@@ -92,17 +95,17 @@ final class GetArtAction
         }
 
         $media = $this->mediaRepo->findForStation($media_id, $station);
-        if (!($media instanceof Entity\StationMedia)) {
+        if (!($media instanceof StationMedia)) {
             return null;
         }
 
-        $mediaPath = Entity\StationMedia::getArtPath($media->getUniqueId());
+        $mediaPath = StationMedia::getArtPath($media->getUniqueId());
         if ($fsMedia->fileExists($mediaPath)) {
             return $mediaPath;
         }
 
-        $folderPath = Entity\StationMedia::getFolderArtPath(
-            Entity\StationMedia::getFolderHashForPath($media->getPath())
+        $folderPath = StationMedia::getFolderArtPath(
+            StationMedia::getFolderHashForPath($media->getPath())
         );
         if ($fsMedia->fileExists($folderPath)) {
             return $folderPath;

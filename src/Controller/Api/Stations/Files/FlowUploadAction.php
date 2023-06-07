@@ -6,7 +6,11 @@ namespace App\Controller\Api\Stations\Files;
 
 use App\Container\EntityManagerAwareTrait;
 use App\Container\LoggerAwareTrait;
-use App\Entity;
+use App\Entity\Api\Error;
+use App\Entity\Api\Status;
+use App\Entity\Repository\StationPlaylistMediaRepository;
+use App\Entity\StationMedia;
+use App\Entity\StationPlaylist;
 use App\Exception\CannotProcessMediaException;
 use App\Exception\StorageLocationFullException;
 use App\Http\Response;
@@ -22,7 +26,7 @@ final class FlowUploadAction
 
     public function __construct(
         private readonly MediaProcessor $mediaProcessor,
-        private readonly Entity\Repository\StationPlaylistMediaRepository $spmRepo,
+        private readonly StationPlaylistMediaRepository $spmRepo,
     ) {
     }
 
@@ -71,24 +75,24 @@ final class FlowUploadAction
                 ]
             );
 
-            return $response->withJson(Entity\Api\Error::fromException($e));
+            return $response->withJson(Error::fromException($e));
         }
 
         // If the user is looking at a playlist's contents, add uploaded media to that playlist.
-        if ($stationMedia instanceof Entity\StationMedia && !empty($allParams['searchPhrase'])) {
+        if ($stationMedia instanceof StationMedia && !empty($allParams['searchPhrase'])) {
             $search_phrase = $allParams['searchPhrase'];
 
             if (str_starts_with($search_phrase, 'playlist:')) {
                 $playlist_name = substr($search_phrase, 9);
 
-                $playlist = $this->em->getRepository(Entity\StationPlaylist::class)->findOneBy(
+                $playlist = $this->em->getRepository(StationPlaylist::class)->findOneBy(
                     [
                         'station_id' => $station->getId(),
                         'name' => $playlist_name,
                     ]
                 );
 
-                if ($playlist instanceof Entity\StationPlaylist) {
+                if ($playlist instanceof StationPlaylist) {
                     $this->spmRepo->addMediaToPlaylist($stationMedia, $playlist);
                     $this->em->flush();
                 }
@@ -99,6 +103,6 @@ final class FlowUploadAction
         $this->em->persist($mediaStorage);
         $this->em->flush();
 
-        return $response->withJson(Entity\Api\Status::created());
+        return $response->withJson(Status::created());
     }
 }

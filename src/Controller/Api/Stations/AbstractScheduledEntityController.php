@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace App\Controller\Api\Stations;
 
 use App\Controller\Api\Traits\HasScheduleDisplay;
-use App\Entity;
+use App\Entity\Repository\StationScheduleRepository;
+use App\Entity\StationPlaylist;
+use App\Entity\StationStreamer;
 use App\Exception\ValidationException;
 use App\Http\Response;
 use App\Http\ServerRequest;
@@ -17,7 +19,7 @@ use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
- * @template TEntity as Entity\StationPlaylist|Entity\StationStreamer
+ * @template TEntity as StationPlaylist|StationStreamer
  * @extends AbstractStationApiCrudController<TEntity>
  */
 abstract class AbstractScheduledEntityController extends AbstractStationApiCrudController
@@ -25,7 +27,7 @@ abstract class AbstractScheduledEntityController extends AbstractStationApiCrudC
     use HasScheduleDisplay;
 
     public function __construct(
-        protected Entity\Repository\StationScheduleRepository $scheduleRepo,
+        protected StationScheduleRepository $scheduleRepo,
         protected Scheduler $scheduler,
         Serializer $serializer,
         ValidatorInterface $validator,

@@ -6,7 +6,7 @@ namespace App\Controller\Api\Stations\CustomAssets;
 
 use App\Assets\AssetTypes;
 use App\Container\EnvironmentAwareTrait;
-use App\Entity;
+use App\Entity\Api\Status;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Media\AlbumArt;
@@ -38,6 +38,6 @@ final class PostCustomAssetAction
             AlbumArt::getImageManager()->make($imageContents)
         );
 
-        return $response->withJson(Entity\Api\Status::success());
+        return $response->withJson(Status::success());
     }
 }

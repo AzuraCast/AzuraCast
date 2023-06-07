@@ -5,7 +5,8 @@ declare(strict_types=1);
 namespace App\Controller\Api\Stations;
 
 use App\Container\EntityManagerAwareTrait;
-use App\Entity;
+use App\Entity\Enums\StorageLocationTypes;
+use App\Entity\Station;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
@@ -20,15 +21,15 @@ final class GetQuotaAction
         string $station_id,
         string $type = null
     ): ResponseInterface {
-        $typeEnum = Entity\Enums\StorageLocationTypes::tryFrom($type ?? '')
-            ?? Entity\Enums\StorageLocationTypes::StationMedia;
+        $typeEnum = StorageLocationTypes::tryFrom($type ?? '')
+            ?? StorageLocationTypes::StationMedia;
 
         $station = $request->getStation();
         $storageLocation = $station->getStorageLocation($typeEnum);
 
         $numFiles = match ($typeEnum) {
-            Entity\Enums\StorageLocationTypes::StationMedia => $this->getNumStationMedia($station),
-            Entity\Enums\StorageLocationTypes::StationPodcasts => $this->getNumStationPodcastMedia($station),
+            StorageLocationTypes::StationMedia => $this->getNumStationMedia($station),
+            StorageLocationTypes::StationPodcasts => $this->getNumStationPodcastMedia($station),
             default => null,
         };
 
@@ -45,7 +46,7 @@ final class GetQuotaAction
         ]);
     }
 
-    private function getNumStationMedia(Entity\Station $station): int
+    private function getNumStationMedia(Station $station): int
     {
         return (int)$this->em->createQuery(
             <<<'DQL'
@@ -56,7 +57,7 @@ final class GetQuotaAction
             ->getSingleScalarResult();
     }
 
-    private function getNumStationPodcastMedia(Entity\Station $station): int
+    private function getNumStationPodcastMedia(Station $station): int
     {
         return (int)$this->em->createQuery(
             <<<'DQL'

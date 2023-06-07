@@ -5,7 +5,16 @@ declare(strict_types=1);
 namespace App\Controller\Api\Stations\Files;
 
 use App\Container\EntityManagerAwareTrait;
-use App\Entity;
+use App\Entity\Api\BatchResult;
+use App\Entity\Interfaces\PathAwareInterface;
+use App\Entity\Repository\StationPlaylistFolderRepository;
+use App\Entity\Repository\StationPlaylistMediaRepository;
+use App\Entity\Repository\StationQueueRepository;
+use App\Entity\Station;
+use App\Entity\StationPlaylist;
+use App\Entity\StationQueue;
+use App\Entity\StationRequest;
+use App\Entity\StorageLocation;
 use App\Event\Radio\AnnotateNextSong;
 use App\Flysystem\ExtendedFilesystemInterface;
 use App\Flysystem\StationFilesystems;
@@ -36,9 +45,9 @@ final class BatchAction
         private readonly MessageBus $messageBus,
         private readonly Adapters $adapters,
         private readonly EventDispatcherInterface $eventDispatcher,
-        private readonly Entity\Repository\StationPlaylistMediaRepository $playlistMediaRepo,
-        private readonly Entity\Repository\StationPlaylistFolderRepository $playlistFolderRepo,
-        private readonly Entity\Repository\StationQueueRepository $queueRepo,
+        private readonly StationPlaylistMediaRepository $playlistMediaRepo,
+        private readonly StationPlaylistFolderRepository $playlistFolderRepo,
+        private readonly StationQueueRepository $queueRepo,
         private readonly StationFilesystems $stationFilesystems
     ) {
     }
@@ -72,10 +81,10 @@ final class BatchAction
 
     private function doDelete(
         ServerRequest $request,
-        Entity\Station $station,
-        Entity\StorageLocation $storageLocation,
+        Station $station,
+        StorageLocation $storageLocation,
         ExtendedFilesystemInterface $fs
-    ): Entity\Api\BatchResult {
+    ): BatchResult {
         $result = $this->parseRequest($request, $fs, true);
 
         foreach ($result->files as $file) {
@@ -108,20 +117,20 @@ final class BatchAction
 
     private function doPlaylist(
         ServerRequest $request,
-        Entity\Station $station,
-        Entity\StorageLocation $storageLocation,
+        Station $station,
+        StorageLocation $storageLocation,
         ExtendedFilesystemInterface $fs
-    ): Entity\Api\BatchResult {
+    ): BatchResult {
         $result = $this->parseRequest($request, $fs, true);
 
-        /** @var Entity\StationPlaylist[] $playlists */
+        /** @var StationPlaylist[] $playlists */
         $playlists = [];
         $playlistWeights = [];
         $affectedPlaylists = [];
 
         foreach ($request->getParam('playlists') as $playlistId) {
             if ('new' === $playlistId) {
-                $playlist = new Entity\StationPlaylist($station);
+                $playlist = new StationPlaylist($station);
                 $playlist->setName($request->getParam('new_playlist_name'));
 
                 $this->em->persist($playlist);
@@ -136,14 +145,14 @@ final class BatchAction
                 $playlists[$playlist->getId()] = $playlist;
                 $playlistWeights[$playlist->getId()] = 0;
             } else {
-                $playlist = $this->em->getRepository(Entity\StationPlaylist::class)->findOneBy(
+                $playlist = $this->em->getRepository(StationPlaylist::class)->findOneBy(
                     [
                         'station_id' => $station->getId(),
                         'id' => (int)$playlistId,
                     ]
                 );
 
-                if ($playlist instanceof Entity\StationPlaylist) {
+                if ($playlist instanceof StationPlaylist) {
                     $affectedPlaylists[$playlist->getId()] = $playlist->getId();
                     $playlists[$playlist->getId()] = $playlist;
                     $playlistWeights[$playlist->getId()] = $this->playlistMediaRepo->getHighestSongWeight($playlist);
@@ -166,7 +175,7 @@ final class BatchAction
                 $this->em->flush();
 
                 foreach ($playlists as $playlistRecord) {
-                    /** @var Entity\StationPlaylist $playlist */
+                    /** @var StationPlaylist $playlist */
                     $playlist = $this->em->refetchAsReference($playlistRecord);
 
                     $playlistWeights[$playlist->getId()]++;
@@ -180,7 +189,7 @@ final class BatchAction
             }
         }
 
-        /** @var Entity\Station $station */
+        /** @var Station $station */
         $station = $this->em->refetch($station);
 
         foreach ($result->directories as $dir) {
@@ -200,10 +209,10 @@ final class BatchAction
 
     private function doMove(
         ServerRequest $request,
-        Entity\Station $station,
-        Entity\StorageLocation $storageLocation,
+        Station $station,
+        StorageLocation $storageLocation,
         ExtendedFilesystemInterface $fs
-    ): Entity\Api\BatchResult {
+    ): BatchResult {
         $result = $this->parseRequest($request, $fs);
 
         $from = $request->getParam('currentDirectory', '');
@@ -216,7 +225,7 @@ final class BatchAction
 
         foreach ($toMove as $iterator) {
             foreach ($iterator as $record) {
-                /** @var Entity\Interfaces\PathAwareInterface $record */
+                /** @var PathAwareInterface $record */
                 $oldPath = $record->getPath();
                 $newPath = File::renameDirectoryInPath($oldPath, $from, $to);
 
@@ -242,8 +251,7 @@ final class BatchAction
 
             foreach ($toMove as $iterator) {
                 foreach ($iterator as $record) {
-
-                    /** @var Entity\Interfaces\PathAwareInterface $record */
+                    /** @var PathAwareInterface $record */
                     try {
                         $record->setPath(
                             File::renameDirectoryInPath($record->getPath(), $from, $to)
@@ -261,18 +269,18 @@ final class BatchAction
 
     private function doQueue(
         ServerRequest $request,
-        Entity\Station $station,
-        Entity\StorageLocation $storageLocation,
+        Station $station,
+        StorageLocation $storageLocation,
         ExtendedFilesystemInterface $fs
-    ): Entity\Api\BatchResult {
+    ): BatchResult {
         $result = $this->parseRequest($request, $fs, true);
 
         if ($station->useManualAutoDJ()) {
             foreach ($this->batchUtilities->iterateMedia($storageLocation, $result->files) as $media) {
-                /** @var Entity\Station $stationRef */
-                $stationRef = $this->em->getReference(Entity\Station::class, $station->getId());
+                /** @var Station $stationRef */
+                $stationRef = $this->em->getReference(Station::class, $station->getId());
 
-                $newRequest = new Entity\StationRequest($stationRef, $media, null, true);
+                $newRequest = new StationRequest($stationRef, $media, null, true);
                 $this->em->persist($newRequest);
             }
         } else {
@@ -283,10 +291,10 @@ final class BatchAction
 
             foreach ($this->batchUtilities->iterateMedia($storageLocation, $result->files) as $media) {
                 try {
-                    /** @var Entity\Station $stationRef */
-                    $stationRef = $this->em->getReference(Entity\Station::class, $station->getId());
+                    /** @var Station $stationRef */
+                    $stationRef = $this->em->getReference(Station::class, $station->getId());
 
-                    $newQueue = Entity\StationQueue::fromMedia($stationRef, $media);
+                    $newQueue = StationQueue::fromMedia($stationRef, $media);
                     $newQueue->setTimestampCued($cuedTimestamp);
                     $this->em->persist($newQueue);
                 } catch (Throwable $e) {
@@ -302,10 +310,10 @@ final class BatchAction
 
     private function doPlayImmediately(
         ServerRequest $request,
-        Entity\Station $station,
-        Entity\StorageLocation $storageLocation,
+        Station $station,
+        StorageLocation $storageLocation,
         ExtendedFilesystemInterface $fs
-    ): Entity\Api\BatchResult {
+    ): BatchResult {
         $result = $this->parseRequest($request, $fs, true);
 
         if (BackendAdapters::Liquidsoap !== $station->getBackendType()) {
@@ -317,8 +325,8 @@ final class BatchAction
 
         if ($station->useManualAutoDJ()) {
             foreach ($this->batchUtilities->iterateMedia($storageLocation, $result->files) as $media) {
-                /** @var Entity\Station $station */
-                $station = $this->em->find(Entity\Station::class, $station->getIdRequired());
+                /** @var Station $station */
+                $station = $this->em->find(Station::class, $station->getIdRequired());
 
                 $event = AnnotateNextSong::fromStationMedia($station, $media, true);
                 $this->eventDispatcher->dispatch($event);
@@ -334,10 +342,10 @@ final class BatchAction
 
             foreach ($this->batchUtilities->iterateMedia($storageLocation, $result->files) as $media) {
                 try {
-                    /** @var Entity\Station $station */
-                    $station = $this->em->find(Entity\Station::class, $station->getIdRequired());
+                    /** @var Station $station */
+                    $station = $this->em->find(Station::class, $station->getIdRequired());
 
-                    $newQueue = Entity\StationQueue::fromMedia($station, $media);
+                    $newQueue = StationQueue::fromMedia($station, $media);
                     $newQueue->setTimestampCued($cuedTimestamp);
                     $newQueue->setIsPlayed();
                     $this->em->persist($newQueue);
@@ -363,10 +371,10 @@ final class BatchAction
 
     private function doReprocess(
         ServerRequest $request,
-        Entity\Station $station,
-        Entity\StorageLocation $storageLocation,
+        Station $station,
+        StorageLocation $storageLocation,
         ExtendedFilesystemInterface $fs
-    ): Entity\Api\BatchResult {
+    ): BatchResult {
         $result = $this->parseRequest($request, $fs, true);
 
         foreach ($this->batchUtilities->iterateMedia($storageLocation, $result->files) as $media) {
@@ -395,7 +403,7 @@ final class BatchAction
         ServerRequest $request,
         ExtendedFilesystemInterface $fs,
         bool $recursive = false
-    ): Entity\Api\BatchResult {
+    ): BatchResult {
         $files = array_values((array)$request->getParam('files', []));
         $directories = array_values((array)$request->getParam('dirs', []));
 
@@ -413,7 +421,7 @@ final class BatchAction
             }
         }
 
-        $result = new Entity\Api\BatchResult();
+        $result = new BatchResult();
         $result->files = $files;
         $result->directories = $directories;
 
@@ -421,7 +429,7 @@ final class BatchAction
     }
 
     private function writePlaylistChanges(
-        Entity\Station $station,
+        Station $station,
         array $playlists
     ): void {
         // Write new PLS playlist configuration.

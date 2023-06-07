@@ -4,7 +4,15 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Stations;
 
-use App\Entity;
+use App\Entity\Api\Error;
+use App\Entity\Api\Status;
+use App\Entity\Api\UploadFile;
+use App\Entity\Repository\CustomFieldRepository;
+use App\Entity\Repository\StationMediaRepository;
+use App\Entity\Repository\StationPlaylistMediaRepository;
+use App\Entity\Station;
+use App\Entity\StationMedia;
+use App\Entity\StationPlaylist;
 use App\Exception\ValidationException;
 use App\Flysystem\StationFilesystems;
 use App\Http\Response;
@@ -22,7 +30,7 @@ use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-/** @extends AbstractStationApiCrudController<Entity\StationMedia> */
+/** @extends AbstractStationApiCrudController<StationMedia> */
 #[
     OA\Get(
         path: '/station/{station_id}/files',
@@ -147,15 +155,15 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 ]
 final class FilesController extends AbstractStationApiCrudController
 {
-    protected string $entityClass = Entity\StationMedia::class;
+    protected string $entityClass = StationMedia::class;
     protected string $resourceRouteName = 'api:stations:file';
 
     public function __construct(
         private readonly Adapters $adapters,
         private readonly MessageBus $messageBus,
-        private readonly Entity\Repository\CustomFieldRepository $customFieldsRepo,
-        private readonly Entity\Repository\StationMediaRepository $mediaRepo,
-        private readonly Entity\Repository\StationPlaylistMediaRepository $playlistMediaRepo,
+        private readonly CustomFieldRepository $customFieldsRepo,
+        private readonly StationMediaRepository $mediaRepo,
+        private readonly StationPlaylistMediaRepository $playlistMediaRepo,
         private readonly MediaProcessor $mediaProcessor,
         private readonly StationFilesystems $stationFilesystems,
         Serializer $serializer,
@@ -191,14 +199,14 @@ final class FilesController extends AbstractStationApiCrudController
         $mediaStorage = $station->getMediaStorageLocation();
         if ($mediaStorage->isStorageFull()) {
             return $response->withStatus(500)
-                ->withJson(new Entity\Api\Error(500, __('This station is out of available storage space.')));
+                ->withJson(new Error(500, __('This station is out of available storage space.')));
         }
 
         $request->getParsedBody();
 
         // Convert the body into an UploadFile API entity first.
-        /** @var Entity\Api\UploadFile $api_record */
-        $api_record = $this->serializer->denormalize($request->getParsedBody(), Entity\Api\UploadFile::class, null, []);
+        /** @var UploadFile $api_record */
+        $api_record = $this->serializer->denormalize($request->getParsedBody(), UploadFile::class, null, []);
 
         // Validate the UploadFile API record.
         $errors = $this->validator->validate($api_record);
@@ -219,7 +227,7 @@ final class FilesController extends AbstractStationApiCrudController
 
         $return = (null !== $record)
             ? $this->viewRecord($record, $request)
-            : Entity\Api\Status::success();
+            : Status::success();
 
         return $response->withJson($return);
     }
@@ -235,7 +243,7 @@ final class FilesController extends AbstractStationApiCrudController
 
         if (null === $record) {
             return $response->withStatus(404)
-                ->withJson(Entity\Api\Error::notFound());
+                ->withJson(Error::notFound());
         }
 
         $data = $request->getParsedBody();
@@ -263,7 +271,7 @@ final class FilesController extends AbstractStationApiCrudController
             throw ValidationException::fromValidationErrors($errors);
         }
 
-        if ($record instanceof Entity\StationMedia) {
+        if ($record instanceof StationMedia) {
             $this->mediaRepo->writeToFile($record);
             $this->em->persist($record);
             $this->em->flush();
@@ -273,7 +281,7 @@ final class FilesController extends AbstractStationApiCrudController
             }
 
             if (null !== $playlists) {
-                /** @var Entity\StationPlaylist[] $affected_playlists */
+                /** @var StationPlaylist[] $affected_playlists */
                 $affected_playlists = [];
 
                 // Remove existing playlists.
@@ -296,14 +304,14 @@ final class FilesController extends AbstractStationApiCrudController
                         $playlist_weight = 0;
                     }
 
-                    $playlist = $this->em->getRepository(Entity\StationPlaylist::class)->findOneBy(
+                    $playlist = $this->em->getRepository(StationPlaylist::class)->findOneBy(
                         [
                             'station' => $station,
                             'id' => $playlist_id,
                         ]
                     );
 
-                    if ($playlist instanceof Entity\StationPlaylist) {
+                    if ($playlist instanceof StationPlaylist) {
                         $affected_playlists[$playlist->getId()] = $playlist;
                         $this->playlistMediaRepo->addMediaToPlaylist($record, $playlist, $playlist_weight);
                     }
@@ -325,10 +333,10 @@ final class FilesController extends AbstractStationApiCrudController
             }
         }
 
-        return $response->withJson(Entity\Api\Status::updated());
+        return $response->withJson(Status::updated());
     }
 
-    protected function createRecord(array $data, Entity\Station $station): object
+    protected function createRecord(array $data, Station $station): object
     {
         $mediaStorage = $station->getMediaStorageLocation();
 
@@ -346,7 +354,7 @@ final class FilesController extends AbstractStationApiCrudController
         );
     }
 
-    protected function getRecord(Entity\Station $station, int|string $id): ?object
+    protected function getRecord(Station $station, int|string $id): ?object
     {
         $mediaStorage = $station->getMediaStorageLocation();
         $repo = $this->em->getRepository($this->entityClass);
@@ -372,7 +380,7 @@ final class FilesController extends AbstractStationApiCrudController
     {
         $row = parent::toArray($record, $context);
 
-        if ($record instanceof Entity\StationMedia) {
+        if ($record instanceof StationMedia) {
             $row['custom_fields'] = $this->customFieldsRepo->getCustomFields($record);
         }
         return $row;
@@ -383,7 +391,7 @@ final class FilesController extends AbstractStationApiCrudController
      */
     protected function deleteRecord(object $record): void
     {
-        if (!($record instanceof Entity\StationMedia)) {
+        if (!($record instanceof StationMedia)) {
             throw new InvalidArgumentException(sprintf('Record must be an instance of %s.', $this->entityClass));
         }
 

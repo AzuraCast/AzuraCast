@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Stations\Fallback;
 
-use App\Entity;
+use App\Entity\Api\Error;
 use App\Flysystem\StationFilesystems;
 use App\Http\Response;
 use App\Http\ServerRequest;
@@ -54,6 +54,6 @@ final class GetFallbackAction
         }
 
         return $response->withStatus(404)
-            ->withJson(Entity\Api\Error::notFound());
+            ->withJson(Error::notFound());
     }
 }

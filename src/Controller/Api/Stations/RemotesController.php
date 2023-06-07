@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace App\Controller\Api\Stations;
 
 use App\Controller\Api\Traits\CanSortResults;
-use App\Entity;
+use App\Entity\Api\StationRemote as ApiStationRemote;
+use App\Entity\Station;
+use App\Entity\StationRemote;
 use App\Exception\PermissionDeniedException;
 use App\Http\Response;
 use App\Http\ServerRequest;
@@ -14,7 +16,7 @@ use InvalidArgumentException;
 use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 
-/** @extends AbstractStationApiCrudController<Entity\StationRemote> */
+/** @extends AbstractStationApiCrudController<StationRemote> */
 #[
     OA\Get(
         path: '/station/{station_id}/remotes',
@@ -143,7 +145,7 @@ final class RemotesController extends AbstractStationApiCrudController
 {
     use CanSortResults;
 
-    protected string $entityClass = Entity\StationRemote::class;
+    protected string $entityClass = StationRemote::class;
     protected string $resourceRouteName = 'api:stations:remote';
 
     public function listAction(
@@ -155,7 +157,7 @@ final class RemotesController extends AbstractStationApiCrudController
 
         $qb = $this->em->createQueryBuilder()
             ->select('e')
-            ->from(Entity\StationRemote::class, 'e')
+            ->from(StationRemote::class, 'e')
             ->where('e.station = :station')
             ->setParameter('station', $station);
 
@@ -178,17 +180,17 @@ final class RemotesController extends AbstractStationApiCrudController
         return $this->listPaginatedFromQuery($request, $response, $qb->getQuery());
     }
 
-    protected function viewRecord(object $record, ServerRequest $request): Entity\Api\StationRemote
+    protected function viewRecord(object $record, ServerRequest $request): ApiStationRemote
     {
-        if (!($record instanceof Entity\StationRemote)) {
+        if (!($record instanceof StationRemote)) {
             throw new InvalidArgumentException(
-                sprintf('Record must be an instance of %s.', Entity\StationRemote::class)
+                sprintf('Record must be an instance of %s.', StationRemote::class)
             );
         }
 
         $returnArray = $this->toArray($record);
 
-        $return = new Entity\Api\StationRemote();
+        $return = new ApiStationRemote();
         $return->fromParentObject($returnArray);
 
         $isInternal = ('true' === $request->getParam('internal', 'false'));
@@ -210,11 +212,11 @@ final class RemotesController extends AbstractStationApiCrudController
     /**
      * @inheritDoc
      */
-    protected function getRecord(Entity\Station $station, int|string $id): ?object
+    protected function getRecord(Station $station, int|string $id): ?object
     {
         $record = parent::getRecord($station, $id);
 
-        if ($record instanceof Entity\StationRemote && !$record->isEditable()) {
+        if ($record instanceof StationRemote && !$record->isEditable()) {
             throw new PermissionDeniedException('This record cannot be edited.');
         }
 

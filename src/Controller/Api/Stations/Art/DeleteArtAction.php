@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Stations\Art;
 
-use App\Entity;
+use App\Entity\Api\Status;
+use App\Entity\Repository\StationMediaRepository;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\OpenApi;
@@ -41,7 +42,7 @@ use Psr\Http\Message\ResponseInterface;
 final class DeleteArtAction
 {
     public function __construct(
-        private readonly Entity\Repository\StationMediaRepository $mediaRepo,
+        private readonly StationMediaRepository $mediaRepo,
     ) {
     }
 
@@ -56,6 +57,6 @@ final class DeleteArtAction
         $media = $this->mediaRepo->requireForStation($media_id, $station);
         $this->mediaRepo->removeAlbumArt($media);
 
-        return $response->withJson(Entity\Api\Status::deleted());
+        return $response->withJson(Status::deleted());
     }
 }

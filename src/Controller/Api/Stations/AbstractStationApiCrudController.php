@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace App\Controller\Api\Stations;
 
 use App\Controller\Api\AbstractApiCrudController;
-use App\Entity;
+use App\Entity\Api\Error;
+use App\Entity\Api\Status;
+use App\Entity\Station;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
@@ -40,7 +42,7 @@ abstract class AbstractStationApiCrudController extends AbstractApiCrudControlle
      *
      * @param ServerRequest $request
      */
-    protected function getStation(ServerRequest $request): Entity\Station
+    protected function getStation(ServerRequest $request): Station
     {
         return $request->getStation();
     }
@@ -60,11 +62,11 @@ abstract class AbstractStationApiCrudController extends AbstractApiCrudControlle
 
     /**
      * @param array $data
-     * @param Entity\Station $station
+     * @param Station $station
      *
      * @return TEntity
      */
-    protected function createRecord(array $data, Entity\Station $station): object
+    protected function createRecord(array $data, Station $station): object
     {
         return $this->editRecord(
             $data,
@@ -90,7 +92,7 @@ abstract class AbstractStationApiCrudController extends AbstractApiCrudControlle
 
         if (null === $record) {
             return $response->withStatus(404)
-                ->withJson(Entity\Api\Error::notFound());
+                ->withJson(Error::notFound());
         }
 
         $return = $this->viewRecord($record, $request);
@@ -98,12 +100,12 @@ abstract class AbstractStationApiCrudController extends AbstractApiCrudControlle
     }
 
     /**
-     * @param Entity\Station $station
+     * @param Station $station
      * @param int|string $id
      *
      * @return TEntity
      */
-    protected function getRecord(Entity\Station $station, int|string $id): ?object
+    protected function getRecord(Station $station, int|string $id): ?object
     {
         return $this->em->getRepository($this->entityClass)->findOneBy(
             [
@@ -123,12 +125,12 @@ abstract class AbstractStationApiCrudController extends AbstractApiCrudControlle
 
         if (null === $record) {
             return $response->withStatus(404)
-                ->withJson(Entity\Api\Error::notFound());
+                ->withJson(Error::notFound());
         }
 
         $this->editRecord((array)$request->getParsedBody(), $record);
 
-        return $response->withJson(Entity\Api\Status::updated());
+        return $response->withJson(Status::updated());
     }
 
     public function deleteAction(
@@ -141,11 +143,11 @@ abstract class AbstractStationApiCrudController extends AbstractApiCrudControlle
 
         if (null === $record) {
             return $response->withStatus(404)
-                ->withJson(Entity\Api\Error::notFound());
+                ->withJson(Error::notFound());
         }
 
         $this->deleteRecord($record);
 
-        return $response->withJson(Entity\Api\Status::deleted());
+        return $response->withJson(Status::deleted());
     }
 }

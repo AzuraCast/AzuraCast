@@ -5,7 +5,8 @@ declare(strict_types=1);
 namespace App\Controller\Api\Stations;
 
 use App\Container\EntityManagerAwareTrait;
-use App\Entity;
+use App\Entity\ApiGenerator\StationApiGenerator;
+use App\Entity\Station;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\OpenApi;
@@ -53,7 +54,7 @@ final class IndexController
     use EntityManagerAwareTrait;
 
     public function __construct(
-        private readonly Entity\ApiGenerator\StationApiGenerator $stationApiGenerator
+        private readonly StationApiGenerator $stationApiGenerator
     ) {
     }
 
@@ -74,12 +75,12 @@ final class IndexController
         ServerRequest $request,
         Response $response
     ): ResponseInterface {
-        $stations_raw = $this->em->getRepository(Entity\Station::class)
+        $stations_raw = $this->em->getRepository(Station::class)
             ->findBy(['is_enabled' => 1]);
 
         $stations = [];
         foreach ($stations_raw as $row) {
-            /** @var Entity\Station $row */
+            /** @var Station $row */
             $api_row = ($this->stationApiGenerator)($row);
             $api_row->resolveUrls($request->getRouter()->getBaseUrl());
 

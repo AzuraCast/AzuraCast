@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Stations;
 
-use App\Entity;
+use App\Entity\Api\Status;
 use App\Exception\StationUnsupportedException;
 use App\Http\Response;
 use App\Http\ServerRequest;
@@ -58,7 +58,7 @@ final class UpdateMetadataAction
         $output = $backend->updateMetadata($station, $metadata);
 
         return $response->withJson(
-            new Entity\Api\Status(true, 'Metadata updated successfully: ' . implode(', ', $output))
+            new Status(true, 'Metadata updated successfully: ' . implode(', ', $output))
         );
     }
 }

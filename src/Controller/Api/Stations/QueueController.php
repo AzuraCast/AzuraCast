@@ -5,7 +5,11 @@ declare(strict_types=1);
 namespace App\Controller\Api\Stations;
 
 use App;
-use App\Entity;
+use App\Entity\Api\StationQueueDetailed;
+use App\Entity\Api\Status;
+use App\Entity\ApiGenerator\StationQueueApiGenerator;
+use App\Entity\Repository\StationQueueRepository;
+use App\Entity\StationQueue;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\OpenApi;
@@ -16,7 +20,7 @@ use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-/** @extends AbstractStationApiCrudController<Entity\StationQueue> */
+/** @extends AbstractStationApiCrudController<StationQueue> */
 #[
     OA\Get(
         path: '/station/{station_id}/queue',
@@ -94,12 +98,12 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 ]
 final class QueueController extends AbstractStationApiCrudController
 {
-    protected string $entityClass = Entity\StationQueue::class;
+    protected string $entityClass = StationQueue::class;
     protected string $resourceRouteName = 'api:stations:queue:record';
 
     public function __construct(
-        private readonly Entity\ApiGenerator\StationQueueApiGenerator $queueApiGenerator,
-        private readonly Entity\Repository\StationQueueRepository $queueRepo,
+        private readonly StationQueueApiGenerator $queueApiGenerator,
+        private readonly StationQueueRepository $queueRepo,
         private readonly Queue $queue,
         Serializer $serializer,
         ValidatorInterface $validator
@@ -126,7 +130,7 @@ final class QueueController extends AbstractStationApiCrudController
      * @param object $record
      * @param ServerRequest $request
      */
-    protected function viewRecord(object $record, ServerRequest $request): Entity\Api\StationQueueDetailed
+    protected function viewRecord(object $record, ServerRequest $request): StationQueueDetailed
     {
         if (!($record instanceof $this->entityClass)) {
             throw new InvalidArgumentException(sprintf('Record must be an instance of %s.', $this->entityClass));
@@ -134,13 +138,13 @@ final class QueueController extends AbstractStationApiCrudController
 
         $router = $request->getRouter();
 
-        /** @var Entity\StationQueue $record */
+        /** @var StationQueue $record */
         $row = ($this->queueApiGenerator)($record);
         $row->resolveUrls($router->getBaseUrl());
 
         $isInternal = ('true' === $request->getParam('internal', 'false'));
 
-        $apiResponse = new Entity\Api\StationQueueDetailed();
+        $apiResponse = new StationQueueDetailed();
         $apiResponse->fromParentObject($row);
 
         $apiResponse->sent_to_autodj = $record->getSentToAutodj();
@@ -168,6 +172,6 @@ final class QueueController extends AbstractStationApiCrudController
         $station = $request->getStation();
         $this->queueRepo->clearUpcomingQueue($station);
 
-        return $response->withJson(Entity\Api\Status::deleted());
+        return $response->withJson(Status::deleted());
     }
 }

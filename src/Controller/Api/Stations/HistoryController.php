@@ -9,7 +9,9 @@ use App\Container\EntityManagerAwareTrait;
 use App\Container\EnvironmentAwareTrait;
 use App\Controller\Api\Traits\AcceptsDateRange;
 use App\Doctrine\ReadOnlyBatchIteratorAggregate;
-use App\Entity;
+use App\Entity\ApiGenerator\SongHistoryApiGenerator;
+use App\Entity\SongHistory;
+use App\Entity\Station;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\OpenApi;
@@ -66,7 +68,7 @@ final class HistoryController
     use EnvironmentAwareTrait;
 
     public function __construct(
-        private readonly Entity\ApiGenerator\SongHistoryApiGenerator $songHistoryApiGenerator
+        private readonly SongHistoryApiGenerator $songHistoryApiGenerator
     ) {
     }
 
@@ -87,7 +89,7 @@ final class HistoryController
         $qb = $this->em->createQueryBuilder();
 
         $qb->select('sh, sr, sp, ss')
-            ->from(Entity\SongHistory::class, 'sh')
+            ->from(SongHistory::class, 'sh')
             ->leftJoin('sh.request', 'sr')
             ->leftJoin('sh.playlist', 'sp')
             ->leftJoin('sh.streamer', 'ss')
@@ -130,7 +132,7 @@ final class HistoryController
 
         $paginator->setPostprocessor(
             function ($sh_row) use ($router) {
-                /** @var Entity\SongHistory $sh_row */
+                /** @var SongHistory $sh_row */
                 $row = $this->songHistoryApiGenerator->detailed($sh_row);
                 $row->resolveUrls($router->getBaseUrl());
 
@@ -143,7 +145,7 @@ final class HistoryController
 
     private function exportReportAsCsv(
         Response $response,
-        Entity\Station $station,
+        Station $station,
         Query $query,
         string $filename
     ): ResponseInterface {
@@ -163,7 +165,7 @@ final class HistoryController
             'Streamer',
         ]);
 
-        /** @var Entity\SongHistory $sh */
+        /** @var SongHistory $sh */
         foreach (ReadOnlyBatchIteratorAggregate::fromQuery($query, 100) as $sh) {
             $datetime = CarbonImmutable::createFromTimestamp(
                 $sh->getTimestampStart(),

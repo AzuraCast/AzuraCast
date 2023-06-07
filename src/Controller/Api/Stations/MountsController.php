@@ -5,7 +5,10 @@ declare(strict_types=1);
 namespace App\Controller\Api\Stations;
 
 use App\Controller\Api\Traits\CanSortResults;
-use App\Entity;
+use App\Entity\Api\Error;
+use App\Entity\Api\Status;
+use App\Entity\Repository\StationMountRepository;
+use App\Entity\StationMount;
 use App\Http\Response;
 use App\Http\Router;
 use App\Http\ServerRequest;
@@ -17,7 +20,7 @@ use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-/** @extends AbstractStationApiCrudController<Entity\StationMount> */
+/** @extends AbstractStationApiCrudController<StationMount> */
 #[
     OA\Get(
         path: '/station/{station_id}/mounts',
@@ -144,13 +147,13 @@ final class MountsController extends AbstractStationApiCrudController
 {
     use CanSortResults;
 
-    protected string $entityClass = Entity\StationMount::class;
+    protected string $entityClass = StationMount::class;
     protected string $resourceRouteName = 'api:stations:mount';
 
     public function __construct(
         Serializer $serializer,
         ValidatorInterface $validator,
-        private readonly Entity\Repository\StationMountRepository $mountRepo,
+        private readonly StationMountRepository $mountRepo,
         private readonly Adapters $adapters,
     ) {
         parent::__construct($serializer, $validator);
@@ -165,7 +168,7 @@ final class MountsController extends AbstractStationApiCrudController
 
         $qb = $this->em->createQueryBuilder()
             ->select('e')
-            ->from(Entity\StationMount::class, 'e')
+            ->from(StationMount::class, 'e')
             ->where('e.station = :station')
             ->setParameter('station', $station);
 
@@ -190,7 +193,7 @@ final class MountsController extends AbstractStationApiCrudController
 
     protected function viewRecord(object $record, ServerRequest $request): mixed
     {
-        /** @var Entity\StationMount $record */
+        /** @var StationMount $record */
         $return = parent::viewRecord($record, $request);
 
         $station = $request->getStation();
@@ -225,7 +228,7 @@ final class MountsController extends AbstractStationApiCrudController
         $parsedBody = (array)$request->getParsedBody();
         $record = $this->editRecord(
             $parsedBody,
-            new Entity\StationMount($station)
+            new StationMount($station)
         );
 
         if (!empty($parsedBody['intro_file'])) {
@@ -246,11 +249,11 @@ final class MountsController extends AbstractStationApiCrudController
 
         if (null === $record) {
             return $response->withStatus(404)
-                ->withJson(Entity\Api\Error::notFound());
+                ->withJson(Error::notFound());
         }
 
         $this->mountRepo->destroy($record);
 
-        return $response->withJson(Entity\Api\Status::deleted());
+        return $response->withJson(Status::deleted());
     }
 }

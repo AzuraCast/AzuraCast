@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Stations\Fallback;
 
-use App\Entity;
+use App\Entity\Api\Status;
+use App\Entity\Repository\StationRepository;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\OpenApi;
@@ -29,7 +30,7 @@ use Psr\Http\Message\ResponseInterface;
 final class DeleteFallbackAction
 {
     public function __construct(
-        private readonly Entity\Repository\StationRepository $stationRepo,
+        private readonly StationRepository $stationRepo,
     ) {
     }
 
@@ -41,6 +42,6 @@ final class DeleteFallbackAction
         $station = $request->getStation();
         $this->stationRepo->clearFallback($station);
 
-        return $response->withJson(Entity\Api\Status::deleted());
+        return $response->withJson(Status::deleted());
     }
 }

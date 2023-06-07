@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Api\Stations;
 
 use App\Controller\Api\Admin\StationsController;
-use App\Entity;
+use App\Entity\Api\Status;
 use App\Entity\Interfaces\EntityGroupsInterface;
 use App\Enums\GlobalPermissions;
 use App\Http\Response;
@@ -40,7 +40,7 @@ final class ProfileEditController extends StationsController
 
         $this->editRecord((array)$request->getParsedBody(), $station, $this->getContext($request));
 
-        return $response->withJson(Entity\Api\Status::updated());
+        return $response->withJson(Status::updated());
     }
 
     private function getContext(ServerRequest $request): array

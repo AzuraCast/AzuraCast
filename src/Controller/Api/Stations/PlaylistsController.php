@@ -5,7 +5,8 @@ declare(strict_types=1);
 namespace App\Controller\Api\Stations;
 
 use App\Controller\Api\Traits\CanSortResults;
-use App\Entity;
+use App\Entity\StationPlaylist;
+use App\Entity\StationSchedule;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\OpenApi;
@@ -15,7 +16,7 @@ use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 
-/** @extends AbstractScheduledEntityController<Entity\StationPlaylist> */
+/** @extends AbstractScheduledEntityController<StationPlaylist> */
 #[
     OA\Get(
         path: '/station/{station_id}/playlists',
@@ -142,7 +143,7 @@ final class PlaylistsController extends AbstractScheduledEntityController
 {
     use CanSortResults;
 
-    protected string $entityClass = Entity\StationPlaylist::class;
+    protected string $entityClass = StationPlaylist::class;
     protected string $resourceRouteName = 'api:stations:playlist';
 
     public function listAction(
@@ -154,7 +155,7 @@ final class PlaylistsController extends AbstractScheduledEntityController
 
         $qb = $this->em->createQueryBuilder()
             ->select('sp, spc')
-            ->from(Entity\StationPlaylist::class, 'sp')
+            ->from(StationPlaylist::class, 'sp')
             ->leftJoin('sp.schedule_items', 'spc')
             ->where('sp.station = :station')
             ->setParameter('station', $station);
@@ -205,14 +206,14 @@ final class PlaylistsController extends AbstractScheduledEntityController
             $response,
             $scheduleItems,
             function (
-                Entity\StationSchedule $scheduleItem,
+                StationSchedule $scheduleItem,
                 CarbonInterface $start,
                 CarbonInterface $end
             ) use (
                 $request,
                 $station
             ) {
-                /** @var Entity\StationPlaylist $playlist */
+                /** @var StationPlaylist $playlist */
                 $playlist = $scheduleItem->getPlaylist();
 
                 return [
@@ -250,7 +251,7 @@ final class PlaylistsController extends AbstractScheduledEntityController
         )->setParameter('playlist', $record)
             ->getArrayResult();
 
-        $return['short_name'] = Entity\StationPlaylist::generateShortName($return['name']);
+        $return['short_name'] = StationPlaylist::generateShortName($return['name']);
 
         $return['num_songs'] = (int)$song_totals[0]['num_songs'];
         $return['total_length'] = (int)$song_totals[0]['total_length'];

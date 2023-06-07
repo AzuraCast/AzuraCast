@@ -5,7 +5,12 @@ declare(strict_types=1);
 namespace App\Controller\Api\Stations\BulkMedia;
 
 use App\Container\EntityManagerAwareTrait;
-use App\Entity;
+use App\Entity\Api\StationPlaylistImportResult;
+use App\Entity\Repository\CustomFieldRepository;
+use App\Entity\Repository\StationPlaylistMediaRepository;
+use App\Entity\Repository\StationPlaylistRepository;
+use App\Entity\StationMedia;
+use App\Entity\StationPlaylist;
 use App\Exception\ValidationException;
 use App\Http\Response;
 use App\Http\ServerRequest;
@@ -40,9 +45,9 @@ final class UploadAction
     ];
 
     public function __construct(
-        private readonly Entity\Repository\CustomFieldRepository $customFieldRepo,
-        private readonly Entity\Repository\StationPlaylistRepository $playlistRepo,
-        private readonly Entity\Repository\StationPlaylistMediaRepository $spmRepo,
+        private readonly CustomFieldRepository $customFieldRepo,
+        private readonly StationPlaylistRepository $playlistRepo,
+        private readonly StationPlaylistMediaRepository $spmRepo,
         private readonly Serializer $serializer,
         private readonly ValidatorInterface $validator,
     ) {
@@ -88,7 +93,7 @@ final class UploadAction
 
         $playlistsByName = [];
         foreach ($this->playlistRepo->getAllForStation($station) as $playlist) {
-            $shortName = Entity\StationPlaylist::generateShortName($playlist->getName());
+            $shortName = StationPlaylist::generateShortName($playlist->getName());
             $playlistsByName[$shortName] = $playlist->getIdRequired();
         }
 
@@ -114,8 +119,8 @@ final class UploadAction
                 continue;
             }
 
-            $record = $this->em->find(Entity\StationMedia::class, $mediaId);
-            if (!$record instanceof Entity\StationMedia) {
+            $record = $this->em->find(StationMedia::class, $mediaId);
+            if (!$record instanceof StationMedia) {
                 continue;
             }
 
@@ -159,7 +164,7 @@ final class UploadAction
         @unlink($csvPath);
 
         return $response->withJson(
-            new Entity\Api\StationPlaylistImportResult(
+            new StationPlaylistImportResult(
                 message: sprintf(__('%d files processed.'), $processed),
                 import_results: $importResults
             )
@@ -167,7 +172,7 @@ final class UploadAction
     }
 
     private function processRow(
-        Entity\StationMedia $record,
+        StationMedia $record,
         array $row,
         array $customFieldShortNames,
         array $playlistsByName
@@ -195,7 +200,7 @@ final class UploadAction
                 $hasPlaylists = true;
                 if (null !== $value) {
                     foreach (explode(',', $value) as $playlistName) {
-                        $playlistShortName = Entity\StationPlaylist::generateShortName($playlistName);
+                        $playlistShortName = StationPlaylist::generateShortName($playlistName);
                         if (isset($playlistsByName[$playlistShortName])) {
                             $playlists[] = $playlistsByName[$playlistShortName];
                         }
@@ -211,7 +216,7 @@ final class UploadAction
         if (!empty($mediaRow)) {
             $this->serializer->denormalize(
                 $mediaRow,
-                Entity\StationMedia::class,
+                StationMedia::class,
                 context: [
                     AbstractNormalizer::OBJECT_TO_POPULATE => $record,
                 ]
@@ -229,8 +234,8 @@ final class UploadAction
         if ($hasPlaylists) {
             $this->spmRepo->clearPlaylistsFromMedia($record);
             foreach ($playlists as $playlistId) {
-                $playlist = $this->em->find(Entity\StationPlaylist::class, $playlistId);
-                if ($playlist instanceof Entity\StationPlaylist) {
+                $playlist = $this->em->find(StationPlaylist::class, $playlistId);
+                if ($playlist instanceof StationPlaylist) {
                     $this->spmRepo->addMediaToPlaylist($record, $playlist);
                 }
             }

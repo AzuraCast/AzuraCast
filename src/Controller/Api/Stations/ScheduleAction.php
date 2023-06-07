@@ -5,7 +5,8 @@ declare(strict_types=1);
 namespace App\Controller\Api\Stations;
 
 use App\Controller\Api\Traits\HasScheduleDisplay;
-use App\Entity;
+use App\Entity\ApiGenerator\ScheduleApiGenerator;
+use App\Entity\Repository\StationScheduleRepository;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\OpenApi;
@@ -56,8 +57,8 @@ final class ScheduleAction
 
     public function __construct(
         private readonly Scheduler $scheduler,
-        private readonly Entity\ApiGenerator\ScheduleApiGenerator $scheduleApiGenerator,
-        private readonly Entity\Repository\StationScheduleRepository $scheduleRepo,
+        private readonly ScheduleApiGenerator $scheduleApiGenerator,
+        private readonly StationScheduleRepository $scheduleRepo,
         private readonly CacheItemPoolInterface $psr6Cache
     ) {
     }

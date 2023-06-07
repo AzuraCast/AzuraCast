@@ -5,12 +5,11 @@ declare(strict_types=1);
 namespace App;
 
 use App\Container\ContainerAwareTrait;
+use Closure;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
 use function is_array;
 use function is_string;
-
-use Closure;
 
 final class CallableEventDispatcher extends EventDispatcher implements CallableEventDispatcherInterface
 {

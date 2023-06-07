@@ -4,15 +4,17 @@ declare(strict_types=1);
 
 namespace App\Entity\Fixture;
 
+use App\Entity\Repository\StorageLocationRepository;
+use App\Entity\Station;
+use App\Entity\StationPlaylist;
+use App\Entity\StationPlaylistMedia;
 use App\Media\MediaProcessor;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\Finder\Finder;
-use App\Entity\Repository\StorageLocationRepository;
-use App\Entity\StationPlaylistMedia;
 
-final class StationMedia extends AbstractFixture implements DependentFixtureInterface
+final class StationMediaFixture extends AbstractFixture implements DependentFixtureInterface
 {
     public function __construct(
         private readonly MediaProcessor $mediaProcessor,
@@ -28,13 +30,13 @@ final class StationMedia extends AbstractFixture implements DependentFixtureInte
             return;
         }
 
-        /** @var \App\Entity\Station $station */
+        /** @var Station $station */
         $station = $this->getReference('station');
 
         $mediaStorage = $station->getMediaStorageLocation();
         $fs = $this->storageLocationRepo->getAdapter($mediaStorage)->getFilesystem();
 
-        /** @var \App\Entity\StationPlaylist $playlist */
+        /** @var StationPlaylist $playlist */
         $playlist = $this->getReference('station_playlist');
 
         $finder = (new Finder())
@@ -71,8 +73,8 @@ final class StationMedia extends AbstractFixture implements DependentFixtureInte
     public function getDependencies(): array
     {
         return [
-            Station::class,
-            StationPlaylist::class,
+            StationFixture::class,
+            StationPlaylistFixture::class,
         ];
     }
 }

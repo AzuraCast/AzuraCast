@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace App\Sync\Task;
 
 use App\Doctrine\ReadWriteBatchIteratorAggregate;
+use App\Entity\Repository\StorageLocationRepository;
+use App\Entity\StorageLocation;
 use App\Radio\Quota;
 use Brick\Math\BigInteger;
 use Exception;
 use League\Flysystem\FileAttributes;
 use League\Flysystem\StorageAttributes;
-use App\Entity\Repository\StorageLocationRepository;
-use App\Entity\StorageLocation;
 
 final class UpdateStorageLocationSizesTask extends AbstractTask
 {
@@ -36,7 +36,7 @@ final class UpdateStorageLocationSizesTask extends AbstractTask
             $this->em->createQuery(
                 <<<'DQL'
                     SELECT sl
-                    FROM App\\App\Entity\StorageLocation sl
+                    FROM App\Entity\StorageLocation sl
                 DQL
             ),
             1

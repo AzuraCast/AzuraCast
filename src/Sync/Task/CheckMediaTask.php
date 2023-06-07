@@ -4,6 +4,13 @@ declare(strict_types=1);
 
 namespace App\Sync\Task;
 
+use App\Entity\Enums\StorageLocationTypes;
+use App\Entity\Repository\StationMediaRepository;
+use App\Entity\Repository\StorageLocationRepository;
+use App\Entity\Repository\UnprocessableMediaRepository;
+use App\Entity\StationMedia;
+use App\Entity\StorageLocation;
+use App\Entity\UnprocessableMedia;
 use App\Flysystem\Attributes\FileAttributes;
 use App\Flysystem\ExtendedFilesystemInterface;
 use App\Media\MimeType;
@@ -20,13 +27,6 @@ use League\Flysystem\StorageAttributes;
 use League\Flysystem\UnableToRetrieveMetadata;
 use Symfony\Component\Filesystem\Path;
 use Symfony\Component\Messenger\MessageBus;
-use App\Entity\Repository\StationMediaRepository;
-use App\Entity\Repository\UnprocessableMediaRepository;
-use App\Entity\Repository\StorageLocationRepository;
-use App\Entity\Enums\StorageLocationTypes;
-use App\Entity\StorageLocation;
-use App\Entity\StationMedia;
-use App\Entity\UnprocessableMedia;
 
 final class CheckMediaTask extends AbstractTask
 {
@@ -204,7 +204,7 @@ final class CheckMediaTask extends AbstractTask
         $existingMediaQuery = $this->em->createQuery(
             <<<'DQL'
                 SELECT sm.id, sm.path, sm.mtime, sm.unique_id
-                FROM App\\App\Entity\StationMedia sm
+                FROM App\Entity\StationMedia sm
                 WHERE sm.storage_location = :storageLocation
             DQL
         )->setParameter('storageLocation', $storageLocation);
@@ -255,7 +255,7 @@ final class CheckMediaTask extends AbstractTask
         $unprocessableMediaQuery = $this->em->createQuery(
             <<<'DQL'
                 SELECT upm.id, upm.path, upm.mtime
-                FROM App\\App\Entity\UnprocessableMedia upm
+                FROM App\Entity\UnprocessableMedia upm
                 WHERE upm.storage_location = :storageLocation
             DQL
         )->setParameter('storageLocation', $storageLocation);

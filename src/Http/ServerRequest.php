@@ -7,16 +7,17 @@ namespace App\Http;
 use App\Acl;
 use App\Auth;
 use App\Customization;
+use App\Entity\Station;
+use App\Entity\User;
 use App\Enums\SupportedLocales;
 use App\Exception;
 use App\RateLimit;
 use App\Session;
 use App\View;
 use Mezzio\Session\SessionInterface;
-use App\Entity\User;
-use App\Entity\Station;
+use Slim\Http\ServerRequest as SlimServerRequest;
 
-final class ServerRequest extends \Slim\Http\ServerRequest
+final class ServerRequest extends SlimServerRequest
 {
     public const ATTR_VIEW = 'app_view';
     public const ATTR_SESSION = 'app_session';

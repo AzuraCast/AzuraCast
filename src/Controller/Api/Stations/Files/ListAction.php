@@ -87,7 +87,7 @@ final class ListAction
             $foldersInDirQuery = $this->em->createQuery(
                 <<<'DQL'
                     SELECT spf, sp
-                    FROM App\\App\Entity\StationPlaylistFolder spf
+                    FROM App\Entity\StationPlaylistFolder spf
                     JOIN spf.playlist sp
                     WHERE spf.station = :station
                     AND spf.path LIKE :path
@@ -98,7 +98,7 @@ final class ListAction
             $unprocessableMediaQuery = $this->em->createQuery(
                 <<<'DQL'
                     SELECT upm
-                    FROM App\\App\Entity\UnprocessableMedia upm
+                    FROM App\Entity\UnprocessableMedia upm
                     WHERE upm.storage_location = :storageLocation
                     AND upm.path LIKE :path
                 DQL
@@ -120,7 +120,7 @@ final class ListAction
                                 'sm.song_id',
                                 <<<'DQL'
                                     SELECT sm2.song_id FROM
-                                    App\\App\Entity\StationMedia sm2
+                                    App\Entity\StationMedia sm2
                                     WHERE sm2.storage_location = :storageLocation
                                     GROUP BY sm2.song_id
                                     HAVING COUNT(sm2.id) > 1
@@ -129,14 +129,14 @@ final class ListAction
                         );
                     } elseif ('special:unassigned' === $searchPhrase) {
                         $mediaQueryBuilder->andWhere(
-                            'sm.id NOT IN (SELECT spm2.media_id FROM App\\App\Entity\StationPlaylistMedia spm2)'
+                            'sm.id NOT IN (SELECT spm2.media_id FROM App\Entity\StationPlaylistMedia spm2)'
                         );
                     } else {
                         [$searchPhrase, $playlist] = $this->parseSearchQuery($station, $searchPhrase);
 
                         if (null !== $playlist) {
                             $mediaQueryBuilder->andWhere(
-                                'sm.id IN (SELECT spm2.media_id FROM App\\App\Entity\StationPlaylistMedia spm2 '
+                                'sm.id IN (SELECT spm2.media_id FROM App\Entity\StationPlaylistMedia spm2 '
                                 . 'WHERE spm2.playlist = :playlist)'
                             )->setParameter('playlist', $playlist);
                         }
@@ -314,7 +314,7 @@ final class ListAction
                     $playlistNameLookupRaw = $this->em->createQuery(
                         <<<'DQL'
                         SELECT sp.id, sp.name
-                        FROM App\\App\Entity\StationPlaylist sp
+                        FROM App\Entity\StationPlaylist sp
                         WHERE sp.station = :station
                         DQL
                     )->setParameter('station', $station)
@@ -379,7 +379,7 @@ final class ListAction
         $customFieldsRaw = $this->em->createQuery(
             <<<'DQL'
             SELECT smcf.media_id, smcf.field_id, smcf.value
-            FROM App\\App\Entity\StationMediaCustomField smcf
+            FROM App\Entity\StationMediaCustomField smcf
             WHERE smcf.media_id IN (:ids)
             DQL
         )->setParameter('ids', $mediaIds)
@@ -395,7 +395,7 @@ final class ListAction
         $allPlaylistsRaw = $this->em->createQuery(
             <<<'DQL'
             SELECT spm.media_id, spm.playlist_id, sp.name
-            FROM App\\App\Entity\StationPlaylistMedia spm
+            FROM App\Entity\StationPlaylistMedia spm
             JOIN spm.playlist sp
             WHERE sp.station = :station AND spm.media_id IN (:ids) 
             DQL

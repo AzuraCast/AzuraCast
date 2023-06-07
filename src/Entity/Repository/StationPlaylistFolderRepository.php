@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Entity\Repository;
 
-use App\Entity\Station;
 use App\Entity\Enums\PlaylistSources;
+use App\Entity\Station;
 use App\Entity\StationPlaylist;
 use App\Entity\StationPlaylistFolder;
 
@@ -30,7 +30,7 @@ final class StationPlaylistFolderRepository extends AbstractStationBasedReposito
 
         $this->em->createQuery(
             <<<'DQL'
-                DELETE FROM App\\App\Entity\StationPlaylistFolder spf
+                DELETE FROM App\Entity\StationPlaylistFolder spf
                 WHERE spf.station = :station AND spf.path = :path
             DQL
         )->setParameter('station', $station)

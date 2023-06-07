@@ -4,18 +4,20 @@ declare(strict_types=1);
 
 namespace App\Entity\Fixture;
 
+use App\Entity\Station;
+use App\Entity\StationPlaylist;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 
-final class StationPlaylist extends AbstractFixture implements DependentFixtureInterface
+final class StationPlaylistFixture extends AbstractFixture implements DependentFixtureInterface
 {
     public function load(ObjectManager $manager): void
     {
-        /** @var \App\Entity\Station $station */
+        /** @var Station $station */
         $station = $this->getReference('station');
 
-        $playlist = new \App\Entity\StationPlaylist($station);
+        $playlist = new StationPlaylist($station);
         $playlist->setName('default');
         $manager->persist($playlist);
         $manager->flush();
@@ -29,7 +31,7 @@ final class StationPlaylist extends AbstractFixture implements DependentFixtureI
     public function getDependencies(): array
     {
         return [
-            Station::class,
+            StationFixture::class,
         ];
     }
 }

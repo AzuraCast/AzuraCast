@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace App\Entity\Repository;
 
 use App\Doctrine\Repository;
-use App\Enums\GlobalPermissions;
 use App\Entity\Role;
 use App\Entity\RolePermission;
+use App\Enums\GlobalPermissions;
 
 /**
  * @extends Repository<\App\Entity\RolePermission>
@@ -24,7 +24,7 @@ final class RolePermissionRepository extends Repository
         $role_has_action = $this->em->createQuery(
             <<<'DQL'
                 SELECT e
-                FROM App\\App\Entity\RolePermission e
+                FROM App\Entity\RolePermission e
                 WHERE e.role_id = :role_id
             DQL
         )->setParameter('role_id', $role->getId())
@@ -47,7 +47,7 @@ final class RolePermissionRepository extends Repository
         $superAdminRole = $this->em->createQuery(
             <<<'DQL'
             SELECT r FROM
-            App\\App\Entity\Role r LEFT JOIN r.permissions rp
+            App\Entity\Role r LEFT JOIN r.permissions rp
             WHERE rp.station IS NULL AND rp.action_name = :action
             DQL
         )->setParameter('action', GlobalPermissions::All->value)

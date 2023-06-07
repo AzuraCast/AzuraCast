@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Service;
 
 use App\Service\DeviceDetector\DeviceResult;
+use DeviceDetector\DeviceDetector as ParentDeviceDetector;
 use Psr\Cache\CacheItemPoolInterface;
 use Symfony\Component\Cache\Adapter\ProxyAdapter;
 
@@ -12,7 +13,7 @@ final class DeviceDetector
 {
     private CacheItemPoolInterface $psr6Cache;
 
-    private \DeviceDetector\DeviceDetector $dd;
+    private ParentDeviceDetector $dd;
 
     /** @var array<string, DeviceResult> */
     private array $deviceResults = [];
@@ -22,7 +23,7 @@ final class DeviceDetector
     ) {
         $this->psr6Cache = new ProxyAdapter($psr6Cache, 'device_detector.');
 
-        $this->dd = new \DeviceDetector\DeviceDetector();
+        $this->dd = new ParentDeviceDetector();
     }
 
     public function parse(string $userAgent): DeviceResult

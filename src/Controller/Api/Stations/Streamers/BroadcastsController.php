@@ -53,7 +53,7 @@ final class BroadcastsController extends AbstractApiCrudController
             $query = $this->em->createQuery(
                 <<<'DQL'
                     SELECT ssb
-                    FROM App\\App\Entity\StationStreamerBroadcast ssb
+                    FROM App\Entity\StationStreamerBroadcast ssb
                     WHERE ssb.station = :station AND ssb.streamer = :streamer
                     ORDER BY ssb.timestampStart DESC
                 DQL
@@ -63,7 +63,7 @@ final class BroadcastsController extends AbstractApiCrudController
             $query = $this->em->createQuery(
                 <<<'DQL'
                     SELECT ssb, ss
-                    FROM App\\App\Entity\StationStreamerBroadcast ssb
+                    FROM App\Entity\StationStreamerBroadcast ssb
                     JOIN ssb.streamer ss
                     WHERE ssb.station = :station
                     ORDER BY ssb.timestampStart DESC

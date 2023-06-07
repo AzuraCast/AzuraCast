@@ -8,15 +8,15 @@ use App\Assets\AssetTypes;
 use App\Container\EnvironmentAwareTrait;
 use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Doctrine\Repository;
+use App\Entity\Station;
+use App\Entity\StationHlsStream;
+use App\Entity\StationMount;
 use App\Flysystem\ExtendedFilesystemInterface;
 use App\Flysystem\StationFilesystems;
 use App\Radio\Enums\StreamFormats;
 use App\Service\Flow\UploadedFile;
 use Closure;
 use Psr\Http\Message\UriInterface;
-use App\Entity\Station;
-use App\Entity\StationMount;
-use App\Entity\StationHlsStream;
 
 /**
  * @extends Repository<\App\Entity\Station>
@@ -46,7 +46,7 @@ final class StationRepository extends Repository
     {
         return $this->em->createQuery(
             <<<'DQL'
-            SELECT COUNT(s.id) FROM App\\App\Entity\Station s WHERE s.is_enabled = 1
+            SELECT COUNT(s.id) FROM App\Entity\Station s WHERE s.is_enabled = 1
             DQL
         )->getSingleScalarResult();
     }
@@ -58,7 +58,7 @@ final class StationRepository extends Repository
     {
         return $this->em->createQuery(
             <<<'DQL'
-                SELECT s FROM App\\App\Entity\Station s ORDER BY s.name ASC
+                SELECT s FROM App\Entity\Station s ORDER BY s.name ASC
             DQL
         )->execute();
     }
@@ -96,7 +96,7 @@ final class StationRepository extends Repository
     {
         return $this->em->createQuery(
             <<<DQL
-            SELECT s FROM App\\App\Entity\Station s WHERE s.is_enabled = 1
+            SELECT s FROM App\Entity\Station s WHERE s.is_enabled = 1
             DQL
         )->toIterable();
     }
@@ -155,7 +155,7 @@ final class StationRepository extends Repository
     {
         $this->em->createQuery(
             <<<'DQL'
-                UPDATE App\\App\Entity\SongHistory sh SET sh.media = null
+                UPDATE App\Entity\SongHistory sh SET sh.media = null
                 WHERE sh.station = :station
             DQL
         )->setParameter('station', $station)
@@ -163,9 +163,9 @@ final class StationRepository extends Repository
 
         $this->em->createQuery(
             <<<'DQL'
-                DELETE FROM App\\App\Entity\StationPlaylistMedia spm
+                DELETE FROM App\Entity\StationPlaylistMedia spm
                 WHERE spm.playlist_id IN (
-                    SELECT sp.id FROM App\\App\Entity\StationPlaylist sp WHERE sp.station = :station
+                    SELECT sp.id FROM App\Entity\StationPlaylist sp WHERE sp.station = :station
                 )
             DQL
         )->setParameter('station', $station)
@@ -173,14 +173,14 @@ final class StationRepository extends Repository
 
         $this->em->createQuery(
             <<<'DQL'
-                DELETE FROM App\\App\Entity\StationQueue sq WHERE sq.station = :station
+                DELETE FROM App\Entity\StationQueue sq WHERE sq.station = :station
             DQL
         )->setParameter('station', $station)
             ->execute();
 
         $this->em->createQuery(
             <<<'DQL'
-                DELETE FROM App\\App\Entity\StationRequest sr WHERE sr.station = :station
+                DELETE FROM App\Entity\StationRequest sr WHERE sr.station = :station
             DQL
         )->setParameter('station', $station)
             ->execute();

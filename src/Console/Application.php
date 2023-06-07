@@ -5,10 +5,11 @@ declare(strict_types=1);
 namespace App\Console;
 
 use RuntimeException;
+use Symfony\Component\Console\Application as SymfonyApplication;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\StreamOutput;
 
-final class Application extends \Symfony\Component\Console\Application
+final class Application extends SymfonyApplication
 {
     /**
      * Run a one-off command from elsewhere in the application, and pass through the results.

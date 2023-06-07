@@ -5,14 +5,14 @@ declare(strict_types=1);
 namespace App\Controller\Frontend\Account;
 
 use App\Container\EntityManagerAwareTrait;
+use App\Entity\Repository\SettingsRepository;
+use App\Entity\User;
 use App\Exception\RateLimitExceededException;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\RateLimit;
 use Mezzio\Session\SessionCookiePersistenceInterface;
 use Psr\Http\Message\ResponseInterface;
-use App\Entity\Repository\SettingsRepository;
-use App\Entity\User;
 
 final class LoginAction
 {
@@ -37,7 +37,7 @@ final class LoginAction
         if (!$settings->isSetupComplete()) {
             $num_users = (int)$this->em->createQuery(
                 <<<'DQL'
-                    SELECT COUNT(u.id) FROM App\\App\Entity\User u
+                    SELECT COUNT(u.id) FROM App\Entity\User u
                 DQL
             )->getSingleScalarResult();
 

@@ -4,14 +4,15 @@ declare(strict_types=1);
 
 namespace App\Http;
 
-use App\Nginx\CustomUrls;
 use App\Flysystem\Adapter\LocalAdapterInterface;
 use App\Flysystem\ExtendedFilesystemInterface;
+use App\Nginx\CustomUrls;
 use InvalidArgumentException;
 use League\Flysystem\FileAttributes;
 use Psr\Http\Message\ResponseInterface;
+use Slim\Http\Response as SlimResponse;
 
-final class Response extends \Slim\Http\Response
+final class Response extends SlimResponse
 {
     public const CACHE_ONE_MINUTE = 60;
     public const CACHE_ONE_HOUR = 3600;

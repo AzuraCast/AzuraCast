@@ -6,6 +6,8 @@ namespace App\Radio\Backend\Liquidsoap;
 
 use App\Container\EntityManagerAwareTrait;
 use App\Container\LoggerAwareTrait;
+use App\Entity\Station;
+use App\Entity\StationPlaylist;
 use App\Event\Radio\AnnotateNextSong;
 use App\Event\Radio\WriteLiquidsoapConfiguration;
 use App\Exception;
@@ -17,8 +19,6 @@ use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Throwable;
-use App\Entity\StationPlaylist;
-use App\Entity\Station;
 
 final class PlaylistFileWriter implements EventSubscriberInterface
 {
@@ -120,7 +120,7 @@ final class PlaylistFileWriter implements EventSubscriberInterface
         $mediaQuery = $this->em->createQuery(
             <<<'DQL'
                 SELECT DISTINCT sm
-                FROM App\\App\Entity\StationMedia sm
+                FROM App\Entity\StationMedia sm
                 JOIN sm.playlists spm
                 WHERE spm.playlist = :playlist
                 ORDER BY spm.weight ASC

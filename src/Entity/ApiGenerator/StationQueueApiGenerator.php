@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace App\Entity\ApiGenerator;
 
-use Psr\Http\Message\UriInterface;
-use App\Entity\StationQueue;
+use App\Entity\Api\NowPlaying\StationQueue as NowPlayingStationQueue;
 use App\Entity\StationPlaylist;
+use App\Entity\StationQueue;
+use Psr\Http\Message\UriInterface;
 
 final class StationQueueApiGenerator
 {
@@ -19,8 +20,8 @@ final class StationQueueApiGenerator
         StationQueue $record,
         ?UriInterface $baseUri = null,
         bool $allowRemoteArt = false
-    ): \App\Entity\Api\NowPlaying\StationQueue {
-        $response = new \App\Entity\Api\NowPlaying\StationQueue();
+    ): NowPlayingStationQueue {
+        $response = new NowPlayingStationQueue();
         $response->cued_at = $record->getTimestampCued();
         $response->played_at = $record->getTimestampPlayed();
         $response->duration = (int)$record->getDuration();

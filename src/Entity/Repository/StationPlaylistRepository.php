@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Entity\Repository;
 
-use App\Entity\Station;
 use App\Entity\Enums\PlaylistSources;
+use App\Entity\Station;
 
 /**
  * @extends AbstractStationBasedRepository<\App\Entity\StationPlaylist>
@@ -35,7 +35,7 @@ final class StationPlaylistRepository extends AbstractStationBasedRepository
 
             $mediaCount = $this->em->createQuery(
                 <<<DQL
-                    SELECT COUNT(spm.id) FROM App\\App\Entity\StationPlaylistMedia spm
+                    SELECT COUNT(spm.id) FROM App\Entity\StationPlaylistMedia spm
                     JOIN spm.playlist sp
                     WHERE sp.station = :station
                 DQL

@@ -11,11 +11,10 @@ use App\Utilities\Arrays;
 use App\Utilities\Strings;
 use App\Utilities\Time;
 use JamesHeinrich\GetID3\GetID3;
-
-use const JSON_THROW_ON_ERROR;
-
 use RuntimeException;
 use Throwable;
+
+use const JSON_THROW_ON_ERROR;
 
 final class PhpReader
 {

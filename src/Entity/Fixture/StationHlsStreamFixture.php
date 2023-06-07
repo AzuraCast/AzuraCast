@@ -4,31 +4,33 @@ declare(strict_types=1);
 
 namespace App\Entity\Fixture;
 
+use App\Entity\Station;
+use App\Entity\StationHlsStream;
 use App\Radio\Enums\StreamFormats;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 
-final class StationHlsStream extends AbstractFixture implements DependentFixtureInterface
+final class StationHlsStreamFixture extends AbstractFixture implements DependentFixtureInterface
 {
     public function load(ObjectManager $manager): void
     {
-        /** @var \App\Entity\Station $station */
+        /** @var Station $station */
         $station = $this->getReference('station');
 
-        $mountLofi = new \App\Entity\StationHlsStream($station);
+        $mountLofi = new StationHlsStream($station);
         $mountLofi->setName('aac_lofi');
         $mountLofi->setFormat(StreamFormats::Aac);
         $mountLofi->setBitrate(64);
         $manager->persist($mountLofi);
 
-        $mountMidfi = new \App\Entity\StationHlsStream($station);
+        $mountMidfi = new StationHlsStream($station);
         $mountMidfi->setName('aac_midfi');
         $mountMidfi->setFormat(StreamFormats::Aac);
         $mountMidfi->setBitrate(128);
         $manager->persist($mountMidfi);
 
-        $mountHifi = new \App\Entity\StationHlsStream($station);
+        $mountHifi = new StationHlsStream($station);
         $mountHifi->setName('aac_hifi');
         $mountHifi->setFormat(StreamFormats::Aac);
         $mountHifi->setBitrate(256);
@@ -43,7 +45,7 @@ final class StationHlsStream extends AbstractFixture implements DependentFixture
     public function getDependencies(): array
     {
         return [
-            Station::class,
+            StationFixture::class,
         ];
     }
 }

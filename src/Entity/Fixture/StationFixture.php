@@ -4,16 +4,17 @@ declare(strict_types=1);
 
 namespace App\Entity\Fixture;
 
+use App\Entity\Station;
 use App\Radio\Enums\BackendAdapters;
 use App\Radio\Enums\FrontendAdapters;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Persistence\ObjectManager;
 
-final class Station extends AbstractFixture
+final class StationFixture extends AbstractFixture
 {
     public function load(ObjectManager $manager): void
     {
-        $station = new \App\Entity\Station();
+        $station = new Station();
         $station->setName('AzuraTest Radio');
         $station->setDescription('A test radio station.');
         $station->setEnableRequests(true);

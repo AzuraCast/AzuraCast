@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace App\Entity\Repository;
 
 use App\Doctrine\Repository;
-use Carbon\CarbonImmutable;
 use App\Entity\Station;
-use App\Entity\StationStreamerBroadcast;
 use App\Entity\StationStreamer;
+use App\Entity\StationStreamerBroadcast;
+use Carbon\CarbonImmutable;
 
 /**
  * @extends Repository<\App\Entity\StationStreamerBroadcast>
@@ -26,7 +26,7 @@ final class StationStreamerBroadcastRepository extends Repository
         $latestBroadcast = $this->em->createQuery(
             <<<'DQL'
                 SELECT ssb
-                FROM App\\App\Entity\StationStreamerBroadcast ssb
+                FROM App\Entity\StationStreamerBroadcast ssb
                 WHERE ssb.station = :station AND ssb.streamer = :streamer
                 ORDER BY ssb.timestampStart DESC
             DQL
@@ -42,7 +42,7 @@ final class StationStreamerBroadcastRepository extends Repository
     {
         $this->em->createQuery(
             <<<'DQL'
-                UPDATE App\\App\Entity\StationStreamerBroadcast ssb
+                UPDATE App\Entity\StationStreamerBroadcast ssb
                 SET ssb.timestampEnd = :time
                 WHERE ssb.station = :station
                 AND ssb.timestampEnd = 0
@@ -108,7 +108,7 @@ final class StationStreamerBroadcastRepository extends Repository
         $record = $this->em->createQuery(
             <<<'DQL'
             SELECT ssb
-            FROM App\\App\Entity\StationStreamerBroadcast ssb
+            FROM App\Entity\StationStreamerBroadcast ssb
             WHERE ssb.streamer = :streamer
             AND ssb.timestampStart >= :start AND ssb.timestampStart <= :end
             AND ssb.recordingPath IS NULL  

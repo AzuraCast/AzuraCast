@@ -7,6 +7,9 @@ namespace App\Entity\Repository;
 use App\Container\LoggerAwareTrait;
 use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Doctrine\Repository;
+use App\Entity\Listener;
+use App\Entity\Station;
+use App\Entity\Traits\TruncateStrings;
 use App\Service\DeviceDetector;
 use App\Service\IpGeolocation;
 use App\Utilities\File;
@@ -17,9 +20,6 @@ use League\Csv\Writer;
 use NowPlaying\Result\Client;
 use Symfony\Component\Filesystem\Filesystem;
 use Throwable;
-use App\Entity\Traits\TruncateStrings;
-use App\Entity\Listener;
-use App\Entity\Station;
 
 /**
  * @extends Repository<\App\Entity\Listener>
@@ -66,7 +66,7 @@ final class ListenerRepository extends Repository
         return (int)$this->em->createQuery(
             <<<'DQL'
                 SELECT COUNT(DISTINCT l.listener_hash)
-                FROM App\\App\Entity\Listener l
+                FROM App\Entity\Listener l
                 WHERE l.station_id = :station_id
                 AND l.timestamp_start <= :time_end
                 AND l.timestamp_end >= :time_start
@@ -82,7 +82,7 @@ final class ListenerRepository extends Repository
         $query = $this->em->createQuery(
             <<<'DQL'
                     SELECT l
-                    FROM App\\App\Entity\Listener l
+                    FROM App\Entity\Listener l
                     WHERE l.station = :station
                     AND l.timestamp_end = 0
                     ORDER BY l.timestamp_start ASC
@@ -105,7 +105,7 @@ final class ListenerRepository extends Repository
                 $existingClientsRaw = $this->em->createQuery(
                     <<<'DQL'
                         SELECT l.id, l.listener_hash
-                        FROM App\\App\Entity\Listener l
+                        FROM App\Entity\Listener l
                         WHERE l.station = :station
                         AND l.timestamp_end = 0
                     DQL
@@ -127,7 +127,7 @@ final class ListenerRepository extends Repository
                 if (!empty($existingClients)) {
                     $this->em->createQuery(
                         <<<'DQL'
-                            UPDATE App\\App\Entity\Listener l
+                            UPDATE App\Entity\Listener l
                             SET l.timestamp_end = :time
                             WHERE l.id IN (:ids)
                         DQL
@@ -310,7 +310,7 @@ final class ListenerRepository extends Repository
     {
         $this->em->createQuery(
             <<<'DQL'
-                DELETE FROM App\\App\Entity\Listener l
+                DELETE FROM App\Entity\Listener l
             DQL
         )->execute();
     }
@@ -323,7 +323,7 @@ final class ListenerRepository extends Repository
 
         $this->em->createQuery(
             <<<'DQL'
-                DELETE FROM App\\App\Entity\Listener sh
+                DELETE FROM App\Entity\Listener sh
                 WHERE sh.timestamp_start != 0
                 AND sh.timestamp_start <= :threshold
             DQL

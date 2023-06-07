@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace App\Entity\ApiGenerator;
 
+use App\Entity\Api\StationSchedule as StationScheduleApi;
+use App\Entity\StationPlaylist;
+use App\Entity\StationSchedule;
+use App\Entity\StationStreamer;
 use Carbon\CarbonImmutable;
 use Carbon\CarbonInterface;
-use App\Entity\StationSchedule;
-use App\Entity\StationPlaylist;
-use App\Entity\StationStreamer;
 
 final class ScheduleApiGenerator
 {
@@ -17,7 +18,7 @@ final class ScheduleApiGenerator
         ?CarbonInterface $start,
         ?CarbonInterface $end,
         ?CarbonInterface $now
-    ): \App\Entity\Api\StationSchedule {
+    ): StationScheduleApi {
         $playlist = $scheduleItem->getPlaylist();
         $streamer = $scheduleItem->getStreamer();
 
@@ -43,7 +44,7 @@ final class ScheduleApiGenerator
             }
         }
 
-        $row = new \App\Entity\Api\StationSchedule();
+        $row = new StationScheduleApi();
         $row->id = $scheduleItem->getIdRequired();
         $row->start_timestamp = $start->getTimestamp();
         $row->start = $start->toIso8601String();
@@ -52,12 +53,12 @@ final class ScheduleApiGenerator
         $row->is_now = ($start <= $now && $end >= $now);
 
         if ($playlist instanceof StationPlaylist) {
-            $row->type = \App\Entity\Api\StationSchedule::TYPE_PLAYLIST;
+            $row->type = StationScheduleApi::TYPE_PLAYLIST;
             $row->name = $playlist->getName();
             $row->title = $row->name;
             $row->description = sprintf(__('Playlist: %s'), $row->name);
         } elseif ($streamer instanceof StationStreamer) {
-            $row->type = \App\Entity\Api\StationSchedule::TYPE_STREAMER;
+            $row->type = StationScheduleApi::TYPE_STREAMER;
             $row->name = $streamer->getDisplayName();
             $row->title = $row->name;
             $row->description = sprintf(__('Streamer: %s'), $row->name);

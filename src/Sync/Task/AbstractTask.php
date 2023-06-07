@@ -29,7 +29,7 @@ abstract class AbstractTask implements ScheduledTaskInterface
         return ReadWriteBatchIteratorAggregate::fromQuery(
             $this->em->createQuery(
                 <<<'DQL'
-                    SELECT s FROM App\\App\Entity\Station s
+                    SELECT s FROM App\Entity\Station s
                 DQL
             ),
             1
@@ -47,7 +47,7 @@ abstract class AbstractTask implements ScheduledTaskInterface
             $this->em->createQuery(
                 <<<'DQL'
                     SELECT sl
-                    FROM App\\App\Entity\StorageLocation sl
+                    FROM App\Entity\StorageLocation sl
                     WHERE sl.type = :type
                 DQL
             )->setParameter('type', $type->value),

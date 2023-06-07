@@ -4,14 +4,16 @@ declare(strict_types=1);
 
 namespace App\Entity\Fixture;
 
+use App\Entity\Podcast;
+use App\Entity\PodcastEpisode;
+use App\Entity\Repository\PodcastEpisodeRepository;
+use App\Entity\Repository\StorageLocationRepository;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\Finder\Finder;
-use App\Entity\Repository\PodcastEpisodeRepository;
-use App\Entity\Repository\StorageLocationRepository;
 
-final class PodcastEpisode extends AbstractFixture implements DependentFixtureInterface
+final class PodcastEpisodeFixture extends AbstractFixture implements DependentFixtureInterface
 {
     public function __construct(
         protected PodcastEpisodeRepository $episodeRepo,
@@ -27,7 +29,7 @@ final class PodcastEpisode extends AbstractFixture implements DependentFixtureIn
             return;
         }
 
-        /** @var \App\Entity\Podcast $podcast */
+        /** @var Podcast $podcast */
         $podcast = $this->getReference('podcast');
 
         $fs = $this->storageLocationRepo->getAdapter($podcast->getStorageLocation())
@@ -62,7 +64,7 @@ final class PodcastEpisode extends AbstractFixture implements DependentFixtureIn
             copy($filePath, $tempPath);
 
             // Create an episode and associate it with the podcast/media.
-            $episode = new \App\Entity\PodcastEpisode($podcast);
+            $episode = new PodcastEpisode($podcast);
 
             /** @noinspection NonSecureArrayRandUsageInspection */
             $podcastName = $podcastNames[array_rand($podcastNames)];
@@ -94,7 +96,7 @@ final class PodcastEpisode extends AbstractFixture implements DependentFixtureIn
     public function getDependencies(): array
     {
         return [
-            Podcast::class,
+            PodcastFixture::class,
         ];
     }
 }

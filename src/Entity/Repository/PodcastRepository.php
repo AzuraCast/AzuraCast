@@ -6,14 +6,14 @@ namespace App\Entity\Repository;
 
 use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Doctrine\Repository;
+use App\Entity\Podcast;
+use App\Entity\Station;
+use App\Entity\StorageLocation;
 use App\Exception\StorageLocationFullException;
 use App\Flysystem\ExtendedFilesystemInterface;
 use App\Media\AlbumArt;
 use League\Flysystem\UnableToDeleteFile;
 use League\Flysystem\UnableToRetrieveMetadata;
-use App\Entity\Station;
-use App\Entity\Podcast;
-use App\Entity\StorageLocation;
 
 /**
  * @extends Repository<\App\Entity\Podcast>
@@ -53,7 +53,7 @@ final class PodcastRepository extends Repository
         $podcasts = $this->em->createQuery(
             <<<'DQL'
                 SELECT p, pe
-                FROM App\\App\Entity\Podcast p
+                FROM App\Entity\Podcast p
                 LEFT JOIN p.episodes pe
                 WHERE p.storage_location = :storageLocation
             DQL

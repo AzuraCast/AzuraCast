@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace App\Entity\Repository;
 
 use App\Doctrine\ReloadableEntityManagerInterface;
-use Carbon\CarbonImmutable;
-use RuntimeException;
-use App\Entity\Station;
 use App\Entity\Interfaces\SongInterface;
 use App\Entity\SongHistory;
+use App\Entity\Station;
+use Carbon\CarbonImmutable;
+use RuntimeException;
 
 /**
  * @extends AbstractStationBasedRepository<\App\Entity\SongHistory>
@@ -40,7 +40,7 @@ final class SongHistoryRepository extends AbstractStationBasedRepository
 
         return $this->em->createQuery(
             <<<'DQL'
-                SELECT sh FROM App\\App\Entity\SongHistory sh
+                SELECT sh FROM App\Entity\SongHistory sh
                 LEFT JOIN sh.media sm
                 WHERE sh.station = :station
                 AND sh.is_visible = 1
@@ -146,7 +146,7 @@ final class SongHistoryRepository extends AbstractStationBasedRepository
             <<<'DQL'
                 SELECT AVG(sh.listeners_end) AS listeners_avg, MAX(sh.listeners_end) AS listeners_max,
                     MIN(sh.listeners_end) AS listeners_min
-                FROM App\\App\Entity\SongHistory sh
+                FROM App\Entity\SongHistory sh
                 WHERE sh.station = :station
                 AND sh.timestamp_end >= :start
                 AND sh.timestamp_start <= :end
@@ -171,7 +171,7 @@ final class SongHistoryRepository extends AbstractStationBasedRepository
 
         $this->em->createQuery(
             <<<'DQL'
-                DELETE FROM App\\App\Entity\SongHistory sh
+                DELETE FROM App\Entity\SongHistory sh
                 WHERE sh.timestamp_start != 0
                 AND sh.timestamp_start <= :threshold
             DQL

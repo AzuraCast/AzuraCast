@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http;
 
 use App\Container\EnvironmentAwareTrait;
+use App\Entity\Api\Error;
 use App\Enums\SupportedLocales;
 use App\Exception;
 use App\Exception\NotLoggedInException;
@@ -19,12 +20,12 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\LogLevel;
 use Slim\App;
 use Slim\Exception\HttpException;
+use Slim\Handlers\ErrorHandler as SlimErrorHandler;
 use Throwable;
 use Whoops\Handler\PrettyPageHandler;
 use Whoops\Run;
-use App\Entity\Api\Error;
 
-final class ErrorHandler extends \Slim\Handlers\ErrorHandler
+final class ErrorHandler extends SlimErrorHandler
 {
     use EnvironmentAwareTrait;
 

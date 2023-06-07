@@ -6,13 +6,12 @@ namespace App\Webhook;
 
 use App\Container\EnvironmentAwareTrait;
 use App\Container\LoggerAwareTrait;
+use App\Entity\Api\NowPlaying\NowPlaying;
+use App\Entity\Station;
 use App\Service\Centrifugo;
 use Symfony\Component\Filesystem\Filesystem;
 
 use const JSON_PRETTY_PRINT;
-
-use App\Entity\Station;
-use App\Entity\Api\NowPlaying\NowPlaying;
 
 final class LocalWebhookHandler
 {

@@ -7,6 +7,11 @@ namespace App\Entity\Repository;
 use App\Container\LoggerAwareTrait;
 use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Doctrine\Repository;
+use App\Entity\Song;
+use App\Entity\Station;
+use App\Entity\StationMedia;
+use App\Entity\StationMediaCustomField;
+use App\Entity\StorageLocation;
 use App\Exception\NotFoundException;
 use App\Flysystem\ExtendedFilesystemInterface;
 use App\Media\AlbumArt;
@@ -21,14 +26,8 @@ use const JSON_PRETTY_PRINT;
 use const JSON_THROW_ON_ERROR;
 use const JSON_UNESCAPED_SLASHES;
 
-use App\Entity\Station;
-use App\Entity\StationMedia;
-use App\Entity\StorageLocation;
-use App\Entity\StationMediaCustomField;
-use App\Entity\Song;
-
 /**
- * @extends Repository<\App\Entity\StationMedia>
+ * @extends Repository<StationMedia>
  */
 final class StationMediaRepository extends Repository
 {

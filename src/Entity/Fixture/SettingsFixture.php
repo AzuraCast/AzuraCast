@@ -4,19 +4,20 @@ declare(strict_types=1);
 
 namespace App\Entity\Fixture;
 
+use App\Entity\Enums\AnalyticsLevel;
+use App\Entity\Settings;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Persistence\ObjectManager;
-use App\Entity\Enums\AnalyticsLevel;
 
-final class Settings extends AbstractFixture
+final class SettingsFixture extends AbstractFixture
 {
     public function load(ObjectManager $manager): void
     {
-        foreach ($manager->getRepository(\App\Entity\Settings::class)->findAll() as $row) {
+        foreach ($manager->getRepository(Settings::class)->findAll() as $row) {
             $manager->remove($row);
         }
 
-        $settings = new \App\Entity\Settings();
+        $settings = new Settings();
         $settings->setBaseUrl((string)(getenv('INIT_BASE_URL') ?: 'http://docker.local'));
         $settings->setInstanceName((string)(getenv('INIT_INSTANCE_NAME') ?: 'local test'));
         $settings->setGeoliteLicenseKey((string)(getenv('INIT_GEOLITE_LICENSE_KEY') ?: ''));

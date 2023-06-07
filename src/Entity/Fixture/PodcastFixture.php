@@ -4,21 +4,23 @@ declare(strict_types=1);
 
 namespace App\Entity\Fixture;
 
+use App\Entity\Podcast;
+use App\Entity\PodcastCategory;
+use App\Entity\Station;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
-use App\Entity\PodcastCategory;
 
-final class Podcast extends AbstractFixture implements DependentFixtureInterface
+final class PodcastFixture extends AbstractFixture implements DependentFixtureInterface
 {
     public function load(ObjectManager $manager): void
     {
-        /** @var \App\Entity\Station $station */
+        /** @var Station $station */
         $station = $this->getReference('station');
 
         $podcastStorage = $station->getPodcastsStorageLocation();
 
-        $podcast = new \App\Entity\Podcast($podcastStorage);
+        $podcast = new Podcast($podcastStorage);
 
         $podcast->setTitle('The AzuraTest Podcast');
         $podcast->setLink('https://demo.azuracast.com');
@@ -42,7 +44,7 @@ final class Podcast extends AbstractFixture implements DependentFixtureInterface
     public function getDependencies(): array
     {
         return [
-            Station::class,
+            StationFixture::class,
         ];
     }
 }

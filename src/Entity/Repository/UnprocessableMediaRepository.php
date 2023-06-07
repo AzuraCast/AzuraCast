@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace App\Entity\Repository;
 
 use App\Doctrine\Repository;
-use Generator;
 use App\Entity\StorageLocation;
 use App\Entity\UnprocessableMedia;
+use Generator;
 
 /**
  * @extends Repository<\App\Entity\UnprocessableMedia>
@@ -45,7 +45,7 @@ final class UnprocessableMediaRepository extends Repository
     ): void {
         $this->em->createQuery(
             <<<'DQL'
-                DELETE FROM App\\App\Entity\UnprocessableMedia upm
+                DELETE FROM App\Entity\UnprocessableMedia upm
                 WHERE upm.storage_location = :storageLocation
                 AND upm.path = :path
             DQL

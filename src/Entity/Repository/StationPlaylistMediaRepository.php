@@ -6,19 +6,19 @@ namespace App\Entity\Repository;
 
 use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Doctrine\Repository;
+use App\Entity\Api\StationPlaylistQueue;
+use App\Entity\Enums\PlaylistOrders;
+use App\Entity\Enums\PlaylistSources;
+use App\Entity\Station;
+use App\Entity\StationMedia;
+use App\Entity\StationPlaylist;
+use App\Entity\StationPlaylistMedia;
 use Carbon\CarbonImmutable;
 use Carbon\CarbonInterface;
 use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\QueryBuilder;
 use InvalidArgumentException;
 use RuntimeException;
-use App\Entity\StationMedia;
-use App\Entity\StationPlaylist;
-use App\Entity\Enums\PlaylistSources;
-use App\Entity\Enums\PlaylistOrders;
-use App\Entity\StationPlaylistMedia;
-use App\Entity\Station;
-use App\Entity\Api\StationPlaylistQueue;
 
 /**
  * @extends Repository<\App\Entity\StationPlaylistMedia>
@@ -89,7 +89,7 @@ final class StationPlaylistMediaRepository extends Repository
             $highest_weight = $this->em->createQuery(
                 <<<'DQL'
                     SELECT MAX(e.weight)
-                    FROM App\\App\Entity\StationPlaylistMedia e
+                    FROM App\Entity\StationPlaylistMedia e
                     WHERE e.playlist_id = :playlist_id
                 DQL
             )->setParameter('playlist_id', $playlist->getId())
@@ -150,7 +150,7 @@ final class StationPlaylistMediaRepository extends Repository
     {
         $update_query = $this->em->createQuery(
             <<<'DQL'
-                UPDATE App\\App\Entity\StationPlaylistMedia e
+                UPDATE App\Entity\StationPlaylistMedia e
                 SET e.weight = :weight
                 WHERE e.playlist_id = :playlist_id
                 AND e.id = :id
@@ -177,7 +177,7 @@ final class StationPlaylistMediaRepository extends Repository
         if (PlaylistOrders::Sequential === $playlist->getOrder()) {
             $this->em->createQuery(
                 <<<'DQL'
-                    UPDATE App\\App\Entity\StationPlaylistMedia spm
+                    UPDATE App\Entity\StationPlaylistMedia spm
                     SET spm.is_queued = 1
                     WHERE spm.playlist = :playlist
                 DQL
@@ -189,7 +189,7 @@ final class StationPlaylistMediaRepository extends Repository
                     $allSpmRecordsQuery = $this->em->createQuery(
                         <<<'DQL'
                             SELECT spm.id
-                            FROM App\\App\Entity\StationPlaylistMedia spm
+                            FROM App\Entity\StationPlaylistMedia spm
                             WHERE spm.playlist = :playlist
                             ORDER BY RAND()
                         DQL
@@ -197,7 +197,7 @@ final class StationPlaylistMediaRepository extends Repository
 
                     $updateSpmWeightQuery = $this->em->createQuery(
                         <<<'DQL'
-                            UPDATE App\\App\Entity\StationPlaylistMedia spm
+                            UPDATE App\Entity\StationPlaylistMedia spm
                             SET spm.weight=:weight, spm.is_queued=1
                             WHERE spm.id = :id
                         DQL

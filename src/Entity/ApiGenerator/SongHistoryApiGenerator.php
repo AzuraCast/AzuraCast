@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace App\Entity\ApiGenerator;
 
+use App\Entity\Api\DetailedSongHistory;
 use App\Entity\Api\NowPlaying\SongHistory;
-use Psr\Http\Message\UriInterface;
+use App\Entity\SongHistory as SongHistoryEntity;
 use App\Entity\StationPlaylist;
 use App\Entity\StationStreamer;
-use App\Entity\Api\DetailedSongHistory;
+use Psr\Http\Message\UriInterface;
 
 final class SongHistoryApiGenerator
 {
@@ -18,7 +19,7 @@ final class SongHistoryApiGenerator
     }
 
     public function __invoke(
-        \App\Entity\SongHistory $record,
+        SongHistoryEntity $record,
         ?UriInterface $baseUri = null,
         bool $allowRemoteArt = false,
         bool $isNowPlaying = false,
@@ -27,7 +28,7 @@ final class SongHistoryApiGenerator
         $response->sh_id = $record->getIdRequired();
         $response->played_at = (0 === $record->getTimestampStart())
             ? 0
-            : $record->getTimestampStart() + \App\Entity\SongHistory::PLAYBACK_DELAY_SECONDS;
+            : $record->getTimestampStart() + SongHistoryEntity::PLAYBACK_DELAY_SECONDS;
         $response->duration = (int)$record->getDuration();
         $response->is_request = ($record->getRequest() !== null);
         if ($record->getPlaylist() instanceof StationPlaylist) {
@@ -64,7 +65,7 @@ final class SongHistoryApiGenerator
     }
 
     /**
-     * @param \App\Entity\SongHistory[] $records
+     * @param SongHistoryEntity[] $records
      * @param UriInterface|null $baseUri
      * @param bool $allowRemoteArt
      *
@@ -83,7 +84,7 @@ final class SongHistoryApiGenerator
     }
 
     public function detailed(
-        \App\Entity\SongHistory $record,
+        SongHistoryEntity $record,
         ?UriInterface $baseUri = null
     ): DetailedSongHistory {
         $apiHistory = ($this)($record, $baseUri);

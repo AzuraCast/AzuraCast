@@ -7,13 +7,12 @@ namespace App\Doctrine;
 use Closure;
 use RuntimeException;
 use Throwable;
+use Traversable;
 
 use function get_class;
 use function is_array;
 use function is_object;
 use function key;
-
-use Traversable;
 
 /**
  * @template TKey

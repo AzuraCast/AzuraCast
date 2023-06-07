@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace App\Sync\Task;
 
+use App\Entity\Enums\PlaylistSources;
+use App\Entity\Repository\StationPlaylistMediaRepository;
+use App\Entity\Station;
+use App\Entity\StationMedia;
+use App\Entity\StationPlaylist;
 use App\Flysystem\ExtendedFilesystemInterface;
 use App\Flysystem\StationFilesystems;
 use Doctrine\ORM\Query;
-use App\Entity\Repository\StationPlaylistMediaRepository;
-use App\Entity\Station;
-use App\Entity\Enums\PlaylistSources;
-use App\Entity\StationPlaylist;
-use App\Entity\StationMedia;
 
 final class CheckFolderPlaylistsTask extends AbstractTask
 {
@@ -47,7 +47,7 @@ final class CheckFolderPlaylistsTask extends AbstractTask
         $mediaInPlaylistQuery = $this->em->createQuery(
             <<<'DQL'
                 SELECT spm.media_id
-                FROM App\\App\Entity\StationPlaylistMedia spm
+                FROM App\Entity\StationPlaylistMedia spm
                 WHERE spm.playlist_id = :playlist_id
             DQL
         );
@@ -55,7 +55,7 @@ final class CheckFolderPlaylistsTask extends AbstractTask
         $mediaInFolderQuery = $this->em->createQuery(
             <<<'DQL'
                 SELECT sm.id
-                FROM App\\App\Entity\StationMedia sm
+                FROM App\Entity\StationMedia sm
                 WHERE sm.storage_location = :storageLocation
                 AND sm.path LIKE :path
             DQL

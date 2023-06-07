@@ -6,6 +6,7 @@ namespace App\Console\Command\Backup;
 
 use App\Console\Command\AbstractDatabaseCommand;
 use App\Entity\StorageLocation;
+use Exception;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -15,8 +16,6 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Filesystem\Filesystem;
 
 use const PATHINFO_EXTENSION;
-
-use Exception;
 
 #[AsCommand(
     name: 'azuracast:restore',

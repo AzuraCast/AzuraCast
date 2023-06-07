@@ -122,7 +122,7 @@ final class SongApiGenerator
             $mediaFieldsRaw = $this->em->createQuery(
                 <<<'DQL'
                     SELECT smcf.field_id, smcf.value
-                    FROM App\\App\Entity\StationMediaCustomField smcf
+                    FROM App\Entity\StationMediaCustomField smcf
                     WHERE smcf.media_id = :media_id
                 DQL
             )->setParameter('media_id', $media_id)

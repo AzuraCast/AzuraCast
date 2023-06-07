@@ -6,6 +6,10 @@ namespace App\Controller\Frontend;
 
 use App\Container\EntityManagerAwareTrait;
 use App\Container\EnvironmentAwareTrait;
+use App\Entity\Repository\RolePermissionRepository;
+use App\Entity\Repository\SettingsRepository;
+use App\Entity\Settings;
+use App\Entity\User;
 use App\Exception\NotLoggedInException;
 use App\Exception\ValidationException;
 use App\Http\Response;
@@ -16,10 +20,6 @@ use InvalidArgumentException;
 use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Throwable;
-use App\Entity\Repository\SettingsRepository;
-use App\Entity\Repository\RolePermissionRepository;
-use App\Entity\User;
-use App\Entity\Settings;
 
 final class SetupController
 {
@@ -211,7 +211,7 @@ final class SetupController
         // Step 1: Register
         $num_users = (int)$this->em->createQuery(
             <<<'DQL'
-                SELECT COUNT(u.id) FROM App\\App\Entity\User u
+                SELECT COUNT(u.id) FROM App\Entity\User u
             DQL
         )->getSingleScalarResult();
 
@@ -228,7 +228,7 @@ final class SetupController
         // Step 2: Set up Station
         $num_stations = (int)$this->em->createQuery(
             <<<'DQL'
-                SELECT COUNT(s.id) FROM App\\App\Entity\Station s
+                SELECT COUNT(s.id) FROM App\Entity\Station s
             DQL
         )->getSingleScalarResult();
 

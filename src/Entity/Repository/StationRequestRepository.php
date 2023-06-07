@@ -5,16 +5,17 @@ declare(strict_types=1);
 namespace App\Entity\Repository;
 
 use App\Doctrine\ReloadableEntityManagerInterface;
+use App\Entity\Api\StationPlaylistQueue;
+use App\Entity\Station;
+use App\Entity\StationMedia;
+use App\Entity\StationRequest;
 use App\Exception;
 use App\Radio\AutoDJ;
 use App\Radio\Frontend\Blocklist\BlocklistParser;
 use App\Service\DeviceDetector;
 use Carbon\CarbonImmutable;
 use Carbon\CarbonInterface;
-use App\Entity\Station;
-use App\Entity\StationRequest;
-use App\Entity\StationMedia;
-use App\Entity\Api\StationPlaylistQueue;
+use Exception as PhpException;
 
 /**
  * @extends AbstractStationBasedRepository<\App\Entity\StationRequest>
@@ -46,7 +47,7 @@ final class StationRequestRepository extends AbstractStationBasedRepository
     {
         $this->em->createQuery(
             <<<'DQL'
-                DELETE FROM App\\App\Entity\StationRequest sr
+                DELETE FROM App\Entity\StationRequest sr
                 WHERE sr.station = :station
                 AND sr.played_at = 0
             DQL
@@ -103,7 +104,7 @@ final class StationRequestRepository extends AbstractStationBasedRepository
 
             $recentRequests = (int)$this->em->createQuery(
                 <<<'DQL'
-                    SELECT COUNT(sr.id) FROM App\\App\Entity\StationRequest sr
+                    SELECT COUNT(sr.id) FROM App\Entity\StationRequest sr
                     WHERE sr.ip = :user_ip
                     AND sr.timestamp >= :threshold
                 DQL
@@ -142,7 +143,7 @@ final class StationRequestRepository extends AbstractStationBasedRepository
             $pending_request = $this->em->createQuery(
                 <<<'DQL'
                     SELECT sr.timestamp
-                    FROM App\\App\Entity\StationRequest sr
+                    FROM App\Entity\StationRequest sr
                     WHERE sr.track_id = :track_id
                     AND sr.station_id = :station_id
                     AND (sr.timestamp >= :threshold OR sr.played_at = 0)
@@ -153,7 +154,7 @@ final class StationRequestRepository extends AbstractStationBasedRepository
                 ->setParameter('threshold', $pending_request_threshold)
                 ->setMaxResults(1)
                 ->getSingleScalarResult();
-        } catch (\Exception) {
+        } catch (PhpException) {
             return true;
         }
 
@@ -174,7 +175,7 @@ final class StationRequestRepository extends AbstractStationBasedRepository
         $requests = $this->em->createQuery(
             <<<'DQL'
                 SELECT sr, sm
-                FROM App\\App\Entity\StationRequest sr JOIN sr.track sm
+                FROM App\Entity\StationRequest sr JOIN sr.track sm
                 WHERE sr.played_at = 0
                 AND sr.station = :station
                 ORDER BY sr.skip_delay DESC, sr.id ASC
@@ -187,7 +188,7 @@ final class StationRequestRepository extends AbstractStationBasedRepository
             if ($request->shouldPlayNow($now)) {
                 try {
                     $this->checkRecentPlay($request->getTrack(), $station);
-                } catch (\Exception) {
+                } catch (PhpException) {
                     continue;
                 }
 
@@ -218,7 +219,7 @@ final class StationRequestRepository extends AbstractStationBasedRepository
 
         $recentTracks = $this->em->createQuery(
             <<<'DQL'
-                SELECT sh FROM App\\App\Entity\SongHistory sh
+                SELECT sh FROM App\Entity\SongHistory sh
                 WHERE sh.station = :station
                 AND sh.timestamp_start >= :threshold
                 ORDER BY sh.timestamp_start DESC

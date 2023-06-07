@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Entity\Repository;
 
-use App\Security\SplitToken;
 use App\Entity\User;
 use App\Entity\UserLoginToken;
+use App\Security\SplitToken;
 
 /**
  * @extends AbstractSplitTokenRepository<\App\Entity\UserLoginToken>
@@ -28,7 +28,7 @@ final class UserLoginTokenRepository extends AbstractSplitTokenRepository
     {
         $this->em->createQuery(
             <<<'DQL'
-                DELETE FROM App\\App\Entity\UserLoginToken ult
+                DELETE FROM App\Entity\UserLoginToken ult
                 WHERE ult.user = :user
             DQL
         )->setParameter('user', $user)
@@ -42,7 +42,7 @@ final class UserLoginTokenRepository extends AbstractSplitTokenRepository
 
         $this->em->createQuery(
             <<<'DQL'
-                DELETE FROM App\\App\Entity\UserLoginToken ut WHERE ut.created_at <= :threshold
+                DELETE FROM App\Entity\UserLoginToken ut WHERE ut.created_at <= :threshold
             DQL
         )->setParameter('threshold', $threshold)
             ->execute();

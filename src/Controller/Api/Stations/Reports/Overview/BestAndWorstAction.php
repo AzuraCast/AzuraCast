@@ -101,7 +101,7 @@ final class BestAndWorstAction extends AbstractReportAction
         $rawRows = $this->em->createQuery(
             <<<'DQL'
                 SELECT sh.song_id, sh.text, sh.artist, sh.title, COUNT(sh.id) AS records
-                FROM App\\App\Entity\SongHistory sh
+                FROM App\Entity\SongHistory sh
                 WHERE sh.station = :station 
                 AND sh.is_visible = 1
                 AND sh.timestamp_start <= :end

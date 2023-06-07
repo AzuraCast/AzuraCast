@@ -6,14 +6,14 @@ namespace App\Entity\Repository;
 
 use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Doctrine\Repository;
+use App\Entity\ApiGenerator\ScheduleApiGenerator;
+use App\Entity\Station;
+use App\Entity\StationPlaylist;
+use App\Entity\StationSchedule;
+use App\Entity\StationStreamer;
 use App\Radio\AutoDJ\Scheduler;
 use Carbon\CarbonImmutable;
 use Carbon\CarbonInterface;
-use App\Entity\ApiGenerator\ScheduleApiGenerator;
-use App\Entity\StationPlaylist;
-use App\Entity\StationStreamer;
-use App\Entity\StationSchedule;
-use App\Entity\Station;
 
 /**
  * @extends Repository<\App\Entity\StationSchedule>
@@ -92,7 +92,7 @@ final class StationScheduleRepository extends Repository
         return $this->em->createQuery(
             <<<'DQL'
                 SELECT ssc, sp, sst
-                FROM App\\App\Entity\StationSchedule ssc
+                FROM App\Entity\StationSchedule ssc
                 LEFT JOIN ssc.playlist sp
                 LEFT JOIN ssc.streamer sst
                 WHERE (sp.station = :station AND sp.is_jingle = 0 AND sp.is_enabled = 1)

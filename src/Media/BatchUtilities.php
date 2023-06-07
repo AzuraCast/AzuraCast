@@ -6,15 +6,15 @@ namespace App\Media;
 
 use App\Container\EntityManagerAwareTrait;
 use App\Doctrine\ReadWriteBatchIteratorAggregate;
+use App\Entity\Repository\StationMediaRepository;
+use App\Entity\Repository\StorageLocationRepository;
+use App\Entity\Repository\UnprocessableMediaRepository;
+use App\Entity\StationMedia;
+use App\Entity\StorageLocation;
+use App\Entity\UnprocessableMedia;
 use App\Flysystem\ExtendedFilesystemInterface;
 use App\Utilities\File;
 use Throwable;
-use App\Entity\Repository\StationMediaRepository;
-use App\Entity\Repository\UnprocessableMediaRepository;
-use App\Entity\Repository\StorageLocationRepository;
-use App\Entity\StorageLocation;
-use App\Entity\StationMedia;
-use App\Entity\UnprocessableMedia;
 
 final class BatchUtilities
 {
@@ -150,7 +150,7 @@ final class BatchUtilities
         $query = $this->em->createQuery(
             <<<'DQL'
                 SELECT sm
-                FROM App\\App\Entity\StationMedia sm
+                FROM App\Entity\StationMedia sm
                 WHERE sm.storage_location = :storageLocation
                 AND sm.path LIKE :path
             DQL
@@ -192,7 +192,7 @@ final class BatchUtilities
         $query = $this->em->createQuery(
             <<<'DQL'
                 SELECT upm
-                FROM App\\App\Entity\UnprocessableMedia upm
+                FROM App\Entity\UnprocessableMedia upm
                 WHERE upm.storage_location = :storageLocation
                 AND upm.path LIKE :path
             DQL
@@ -215,9 +215,9 @@ final class BatchUtilities
         $query = $this->em->createQuery(
             <<<'DQL'
                 SELECT spf
-                FROM App\\App\Entity\StationPlaylistFolder spf
+                FROM App\Entity\StationPlaylistFolder spf
                 WHERE spf.station IN (
-                  SELECT s FROM App\\App\Entity\Station s
+                  SELECT s FROM App\Entity\Station s
                   WHERE s.media_storage_location = :storageLocation
                 )
                 AND spf.path LIKE :path

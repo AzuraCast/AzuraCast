@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace App\Entity\ApiGenerator;
 
+use App\Entity\Api\NowPlaying\Station as NowPlayingStation;
+use App\Entity\Station;
 use App\Http\Router;
 use App\Radio\Adapters;
 use Psr\Http\Message\UriInterface;
-use App\Entity\Station;
 
 final class StationApiGenerator
 {
@@ -21,11 +22,11 @@ final class StationApiGenerator
         Station $station,
         ?UriInterface $baseUri = null,
         bool $showAllMounts = false
-    ): \App\Entity\Api\NowPlaying\Station {
+    ): NowPlayingStation {
         $frontend = $this->adapters->getFrontendAdapter($station);
         $backend = $this->adapters->getBackendAdapter($station);
 
-        $response = new \App\Entity\Api\NowPlaying\Station();
+        $response = new NowPlayingStation();
         $response->id = (int)$station->getId();
         $response->name = (string)$station->getName();
         $response->shortcode = $station->getShortName();

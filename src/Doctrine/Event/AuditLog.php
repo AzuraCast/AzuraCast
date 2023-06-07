@@ -6,6 +6,9 @@ namespace App\Doctrine\Event;
 
 use App\Entity\Attributes\Auditable;
 use App\Entity\Attributes\AuditIgnore;
+use App\Entity\AuditLog as AuditLogEntity;
+use App\Entity\Enums\AuditLogOperations;
+use App\Entity\Interfaces\IdentifiableEntityInterface;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\Common\Util\ClassUtils;
 use Doctrine\ORM\EntityManagerInterface;
@@ -16,8 +19,6 @@ use Doctrine\ORM\UnitOfWork;
 use ReflectionClass;
 use ReflectionObject;
 use Stringable;
-use App\Entity\Enums\AuditLogOperations;
-use App\Entity\Interfaces\IdentifiableEntityInterface;
 
 /**
  * A hook into Doctrine's event listener to write changes to "Auditable"
@@ -48,7 +49,7 @@ final class AuditLog implements EventSubscriber
         $newAuditLogs = array_merge($singleAuditLogs, $collectionAuditLogs);
 
         if (!empty($newAuditLogs)) {
-            $auditLogMetadata = $em->getClassMetadata(\App\Entity\AuditLog::class);
+            $auditLogMetadata = $em->getClassMetadata(AuditLogEntity::class);
             foreach ($newAuditLogs as $auditLog) {
                 $uow->persist($auditLog);
                 $uow->computeChangeSet($auditLogMetadata, $auditLog);
@@ -56,7 +57,7 @@ final class AuditLog implements EventSubscriber
         }
     }
 
-    /** @return \App\Entity\AuditLog[] */
+    /** @return AuditLogEntity[] */
     private function handleSingleUpdates(
         EntityManagerInterface $em,
         UnitOfWork $uow
@@ -122,7 +123,7 @@ final class AuditLog implements EventSubscriber
                 // Find the identifier method or property.
                 $identifier = $this->getIdentifier($entity);
 
-                $newRecords[] = new \App\Entity\AuditLog(
+                $newRecords[] = new AuditLogEntity(
                     $changeType,
                     get_class($entity),
                     $identifier,
@@ -136,7 +137,7 @@ final class AuditLog implements EventSubscriber
         return $newRecords;
     }
 
-    /** @return \App\Entity\AuditLog[] */
+    /** @return AuditLogEntity[] */
     private function handleCollectionUpdates(
         UnitOfWork $uow
     ): array {
@@ -216,7 +217,7 @@ final class AuditLog implements EventSubscriber
         }
 
         foreach ($associated as [$owner, $ownerIdentifier, $entity, $entityIdentifier]) {
-            $newRecords[] = new \App\Entity\AuditLog(
+            $newRecords[] = new AuditLogEntity(
                 AuditLogOperations::Insert,
                 get_class($owner),
                 $ownerIdentifier,
@@ -227,7 +228,7 @@ final class AuditLog implements EventSubscriber
         }
 
         foreach ($disassociated as [$owner, $ownerIdentifier, $entity, $entityIdentifier]) {
-            $newRecords[] = new \App\Entity\AuditLog(
+            $newRecords[] = new AuditLogEntity(
                 AuditLogOperations::Delete,
                 get_class($owner),
                 $ownerIdentifier,

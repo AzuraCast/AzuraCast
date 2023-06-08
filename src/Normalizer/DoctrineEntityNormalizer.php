@@ -9,12 +9,12 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Util\ClassUtils;
 use Doctrine\Inflector\Inflector;
 use Doctrine\Inflector\InflectorFactory;
+use InvalidArgumentException;
 use ReflectionClass;
 use ReflectionProperty;
 use Symfony\Component\Serializer\Mapping\Factory\ClassMetadataFactoryInterface;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
-use InvalidArgumentException;
 
 final class DoctrineEntityNormalizer extends AbstractObjectNormalizer
 {

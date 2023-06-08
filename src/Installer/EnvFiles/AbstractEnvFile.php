@@ -7,11 +7,11 @@ namespace App\Installer\EnvFiles;
 use App\Environment;
 use App\Utilities\Strings;
 use ArrayAccess;
+use DateTimeImmutable;
+use DateTimeZone;
 use Dotenv\Dotenv;
 use Dotenv\Exception\ExceptionInterface;
 use InvalidArgumentException;
-use DateTimeImmutable;
-use DateTimeZone;
 
 /**
  * @implements ArrayAccess<string, mixed>

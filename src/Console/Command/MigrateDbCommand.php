@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace App\Console\Command;
 
 use App\Entity\StorageLocation;
+use Exception;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Filesystem\Filesystem;
-use Exception;
 
 #[AsCommand(
     name: 'azuracast:setup:migrate',

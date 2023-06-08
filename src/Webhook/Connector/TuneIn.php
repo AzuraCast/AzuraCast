@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace App\Webhook\Connector;
 
 use App\Entity\Api\NowPlaying\NowPlaying;
-use App\Webhook\Enums\WebhookTriggers;
 use App\Entity\Station;
 use App\Entity\StationWebhook;
+use App\Webhook\Enums\WebhookTriggers;
 
 final class TuneIn extends AbstractConnector
 {

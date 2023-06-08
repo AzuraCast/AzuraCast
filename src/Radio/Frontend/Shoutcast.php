@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace App\Radio\Frontend;
 
+use App\Entity\Station;
 use App\Service\Acme;
 use GuzzleHttp\Promise\Utils;
 use NowPlaying\Result\Result;
 use Psr\Http\Message\UriInterface;
 use Symfony\Component\Process\Process;
-use App\Entity\Station;
 
 final class Shoutcast extends AbstractFrontend
 {

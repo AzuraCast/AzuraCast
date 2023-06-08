@@ -7,6 +7,7 @@ namespace App\Radio;
 use App\Container\EntityManagerAwareTrait;
 use App\Container\EnvironmentAwareTrait;
 use App\Container\LoggerAwareTrait;
+use App\Entity\Station;
 use App\Exception\Supervisor\AlreadyRunningException;
 use App\Exception\Supervisor\NotRunningException;
 use App\Exception\SupervisorException;
@@ -15,7 +16,6 @@ use Psr\EventDispatcher\EventDispatcherInterface;
 use Supervisor\Exception\Fault;
 use Supervisor\Exception\SupervisorException as SupervisorLibException;
 use Supervisor\SupervisorInterface;
-use App\Entity\Station;
 
 abstract class AbstractLocalAdapter
 {

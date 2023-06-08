@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Service;
 
+use App\Entity\Interfaces\SongInterface;
+use App\Entity\StationMedia;
 use App\Exception\RateLimitExceededException;
 use App\Lock\LockFactory;
 use App\Version;
@@ -14,8 +16,6 @@ use GuzzleHttp\RequestOptions;
 use JsonException;
 use Psr\Http\Message\UriInterface;
 use Symfony\Component\Lock\Exception\LockConflictedException;
-use App\Entity\Interfaces\SongInterface;
-use App\Entity\StationMedia;
 
 final class MusicBrainz
 {

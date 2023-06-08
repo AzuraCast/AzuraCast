@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Entity\Api\Admin;
 
+use App\Entity\Api\Traits\HasLinks;
 use App\Traits\LoadFromParentObject;
 use OpenApi\Attributes as OA;
-use App\Entity\Api\Traits\HasLinks;
 
 #[OA\Schema(
     schema: 'Api_Admin_StorageLocation',

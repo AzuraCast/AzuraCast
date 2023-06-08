@@ -6,6 +6,9 @@ namespace App\Radio\AutoDJ;
 
 use App\Container\EntityManagerAwareTrait;
 use App\Container\LoggerAwareTrait;
+use App\Entity\Repository\StationQueueRepository;
+use App\Entity\Station;
+use App\Entity\StationQueue;
 use App\Event\Radio\BuildQueue;
 use Carbon\CarbonImmutable;
 use Carbon\CarbonInterface;
@@ -14,9 +17,6 @@ use Monolog\LogRecord;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Log\LogLevel;
 use Psr\SimpleCache\CacheInterface;
-use App\Entity\Repository\StationQueueRepository;
-use App\Entity\Station;
-use App\Entity\StationQueue;
 
 /**
  * Public methods related to the AutoDJ Queue process.

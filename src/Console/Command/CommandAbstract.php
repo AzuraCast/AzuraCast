@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Console\Command;
 
+use RuntimeException;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\OutputInterface;
-use RuntimeException;
 
 abstract class CommandAbstract extends Command
 {

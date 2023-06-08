@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Stations\Reports\Overview;
 
+use App\Entity\Api\Status;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\Intl\Countries;
-use App\Entity\Api\Status;
 
 final class ByCountry extends AbstractReportAction
 {

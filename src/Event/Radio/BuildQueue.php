@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Event\Radio;
 
+use App\Entity\Station;
+use App\Entity\StationQueue;
 use Carbon\CarbonImmutable;
 use Carbon\CarbonInterface;
 use Symfony\Contracts\EventDispatcher\Event;
-use App\Entity\Station;
-use App\Entity\StationQueue;
 
 final class BuildQueue extends Event
 {

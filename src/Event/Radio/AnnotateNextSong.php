@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace App\Event\Radio;
 
-use RuntimeException;
-use Symfony\Contracts\EventDispatcher\Event;
 use App\Entity\Station;
-use App\Entity\StationQueue;
 use App\Entity\StationMedia;
 use App\Entity\StationPlaylist;
+use App\Entity\StationQueue;
 use App\Entity\StationRequest;
+use RuntimeException;
+use Symfony\Contracts\EventDispatcher\Event;
 
 /**
  * Event triggered every time the next-playing song is preparing to be annotated for delivery to Liquidsoap.

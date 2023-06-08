@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Middleware;
 
+use App\Entity\Repository\SettingsRepository;
 use App\Environment;
 use App\Http\ServerRequest;
 use App\Session\Csrf;
@@ -18,7 +19,6 @@ use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Symfony\Component\Cache\Adapter\ArrayAdapter;
 use Symfony\Component\Cache\Adapter\ProxyAdapter;
-use App\Entity\Repository\SettingsRepository;
 
 /**
  * Inject the session object into the request.

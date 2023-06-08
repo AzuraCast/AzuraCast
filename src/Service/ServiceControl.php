@@ -7,12 +7,12 @@ namespace App\Service;
 use App\Container\EnvironmentAwareTrait;
 use App\Exception\SupervisorException;
 use App\Service\ServiceControl\ServiceData;
+use InvalidArgumentException;
 use Supervisor\Exception\Fault\BadNameException;
 use Supervisor\Exception\Fault\NotRunningException;
 use Supervisor\Exception\SupervisorException as SupervisorLibException;
 use Supervisor\ProcessStates;
 use Supervisor\SupervisorInterface;
-use InvalidArgumentException;
 
 final class ServiceControl
 {

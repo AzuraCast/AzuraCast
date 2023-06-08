@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace App\Controller\Frontend\Account;
 
+use App\Entity\Repository\UserLoginTokenRepository;
+use App\Entity\Repository\UserRepository;
+use App\Entity\User;
 use App\Exception\RateLimitExceededException;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\RateLimit;
 use App\Service\Mail;
 use Psr\Http\Message\ResponseInterface;
-use App\Entity\Repository\UserRepository;
-use App\Entity\Repository\UserLoginTokenRepository;
-use App\Entity\User;
 
 final class ForgotPasswordAction
 {

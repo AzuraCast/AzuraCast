@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Radio\Backend;
 
+use App\Entity\Station;
+use App\Entity\StationStreamer;
 use App\Event\Radio\WriteLiquidsoapConfiguration;
 use App\Exception;
 use App\Nginx\CustomUrls;
@@ -14,8 +16,6 @@ use App\Radio\Enums\LiquidsoapQueues;
 use LogicException;
 use Psr\Http\Message\UriInterface;
 use Symfony\Component\Process\Process;
-use App\Entity\Station;
-use App\Entity\StationStreamer;
 
 final class Liquidsoap extends AbstractLocalAdapter
 {

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Sync\Task;
 
+use App\Entity\Station;
 use App\Event\Radio\AnnotateNextSong;
 use App\Radio\Adapters;
 use App\Radio\AutoDJ\Queue;
@@ -11,7 +12,6 @@ use App\Radio\Backend\Liquidsoap;
 use App\Radio\Enums\LiquidsoapQueues;
 use Monolog\LogRecord;
 use Psr\EventDispatcher\EventDispatcherInterface;
-use App\Entity\Station;
 
 final class QueueInterruptingTracks extends AbstractTask
 {

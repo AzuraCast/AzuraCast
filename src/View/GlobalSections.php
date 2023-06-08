@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\View;
 
+use ArrayAccess;
 use League\Plates\Template\Template;
 use LogicException;
-use ArrayAccess;
 
 /**
  * A global section container for templates.

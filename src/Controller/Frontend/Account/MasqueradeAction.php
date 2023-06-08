@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace App\Controller\Frontend\Account;
 
+use App\Entity\Repository\UserRepository;
+use App\Entity\User;
 use App\Exception\NotFoundException;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
-use App\Entity\Repository\UserRepository;
-use App\Entity\User;
 
 final class MasqueradeAction
 {

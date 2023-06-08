@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Stations\Podcasts\Art;
 
+use App\Entity\Podcast;
+use App\Entity\Repository\StationRepository;
 use App\Flysystem\StationFilesystems;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\OpenApi;
 use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
-use App\Entity\Repository\StationRepository;
-use App\Entity\Podcast;
 
 #[OA\Get(
     path: '/station/{station_id}/podcast/{podcast_id}/art',

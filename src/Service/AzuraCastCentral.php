@@ -6,10 +6,10 @@ namespace App\Service;
 
 use App\Container\EnvironmentAwareTrait;
 use App\Container\LoggerAwareTrait;
+use App\Entity\Repository\SettingsRepository;
 use App\Version;
 use Exception;
 use GuzzleHttp\Client;
-use App\Entity\Repository\SettingsRepository;
 
 final class AzuraCastCentral
 {

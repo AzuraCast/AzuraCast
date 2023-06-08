@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace App\Controller\Frontend\Account;
 
 use App\Container\EntityManagerAwareTrait;
+use App\Entity\Repository\UserLoginTokenRepository;
+use App\Entity\User;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use InvalidArgumentException;
 use Psr\Http\Message\ResponseInterface;
 use Throwable;
-use App\Entity\Repository\UserLoginTokenRepository;
-use App\Entity\User;
 
 final class RecoverAction
 {

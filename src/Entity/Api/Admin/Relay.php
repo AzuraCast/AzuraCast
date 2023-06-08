@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Entity\Api\Admin;
 
+use App\Entity\Api\ResolvableUrlInterface;
 use OpenApi\Attributes as OA;
 use Psr\Http\Message\UriInterface;
-use App\Entity\Api\ResolvableUrlInterface;
 
 #[OA\Schema(
     schema: 'Api_Admin_Relay',

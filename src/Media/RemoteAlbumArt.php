@@ -7,6 +7,9 @@ declare(strict_types=1);
 namespace App\Media;
 
 use App\Container\LoggerAwareTrait;
+use App\Entity\Interfaces\SongInterface;
+use App\Entity\Repository\SettingsRepository;
+use App\Entity\Song;
 use App\Event\Media\GetAlbumArt;
 use App\Version;
 use GuzzleHttp\Client;
@@ -14,9 +17,6 @@ use GuzzleHttp\RequestOptions;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\SimpleCache\CacheInterface;
 use Throwable;
-use App\Entity\Repository\SettingsRepository;
-use App\Entity\Interfaces\SongInterface;
-use App\Entity\Song;
 
 final class RemoteAlbumArt
 {

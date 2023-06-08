@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Entity\Repository;
 
 use App\Doctrine\Repository;
-use App\Security\SplitToken;
 use App\Entity\User;
+use App\Security\SplitToken;
 
 /**
  * @template TEntity of \App\Entity\ApiKey|\App\Entity\UserLoginToken

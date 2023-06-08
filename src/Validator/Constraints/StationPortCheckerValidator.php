@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Validator\Constraints;
 
+use App\Entity\Station;
 use App\Radio\Configuration;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
-use App\Entity\Station;
 
 final class StationPortCheckerValidator extends ConstraintValidator
 {

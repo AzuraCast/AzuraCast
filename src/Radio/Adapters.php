@@ -5,14 +5,14 @@ declare(strict_types=1);
 namespace App\Radio;
 
 use App\Container\ContainerAwareTrait;
+use App\Entity\Station;
+use App\Entity\StationRemote;
 use App\Exception\NotFoundException;
 use App\Radio\Backend\Liquidsoap;
 use App\Radio\Enums\AdapterTypeInterface;
 use App\Radio\Enums\BackendAdapters;
 use App\Radio\Enums\FrontendAdapters;
 use App\Radio\Enums\RemoteAdapters;
-use App\Entity\Station;
-use App\Entity\StationRemote;
 
 /**
  * Manager class for radio adapters.

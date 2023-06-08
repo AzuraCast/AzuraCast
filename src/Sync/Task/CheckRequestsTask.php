@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace App\Sync\Task;
 
+use App\Entity\Repository\StationRequestRepository;
+use App\Entity\Station;
+use App\Entity\StationQueue;
+use App\Entity\StationRequest;
 use App\Event\Radio\AnnotateNextSong;
 use App\Radio\Adapters;
 use App\Radio\Backend\Liquidsoap;
 use App\Radio\Enums\LiquidsoapQueues;
 use Psr\EventDispatcher\EventDispatcherInterface;
-use App\Entity\Repository\StationRequestRepository;
-use App\Entity\Station;
-use App\Entity\StationRequest;
-use App\Entity\StationQueue;
 
 final class CheckRequestsTask extends AbstractTask
 {

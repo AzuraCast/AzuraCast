@@ -6,13 +6,13 @@ namespace App\Radio\Remote;
 
 use App\Container\EntityManagerAwareTrait;
 use App\Container\LoggerAwareTrait;
+use App\Entity\Repository\SettingsRepository;
+use App\Entity\StationRemote;
 use GuzzleHttp\Client;
 use GuzzleHttp\Promise\PromiseInterface;
 use NowPlaying\AdapterFactory;
 use NowPlaying\Enums\AdapterTypes;
 use NowPlaying\Result\Result;
-use App\Entity\Repository\SettingsRepository;
-use App\Entity\StationRemote;
 
 abstract class AbstractRemote
 {

@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace App\Sync\Task;
 
 use App\Console\Application;
+use App\Entity\Repository\SettingsRepository;
+use App\Entity\StationSchedule;
 use App\Message;
 use Carbon\CarbonImmutable;
 use Carbon\CarbonInterface;
 use Symfony\Component\Messenger\MessageBus;
-use App\Entity\Repository\SettingsRepository;
-use App\Entity\StationSchedule;
 
 final class RunBackupTask extends AbstractTask
 {

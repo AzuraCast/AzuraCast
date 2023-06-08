@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Stations\Streamers\Art;
 
+use App\Entity\Api\Status;
+use App\Entity\Repository\StationStreamerRepository;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Service\Flow;
 use Psr\Http\Message\ResponseInterface;
-use App\Entity\Repository\StationStreamerRepository;
-use App\Entity\Api\Status;
 
 final class PostArtAction
 {

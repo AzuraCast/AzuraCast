@@ -7,9 +7,9 @@ namespace App\Entity;
 use App\Entity\Interfaces\IdentifiableEntityInterface;
 use Carbon\CarbonImmutable;
 use Carbon\CarbonInterface;
+use DateTimeZone;
 use Doctrine\ORM\Mapping as ORM;
 use OpenApi\Attributes as OA;
-use DateTimeZone;
 
 #[
     OA\Schema(type: "object"),

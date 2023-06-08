@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Entity\Traits;
 
+use App\Entity\Attributes\AuditIgnore;
+use App\Entity\Interfaces\EntityGroupsInterface;
 use App\Security\SplitToken;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
-use App\Entity\Interfaces\EntityGroupsInterface;
-use App\Entity\Attributes\AuditIgnore;
 
 trait HasSplitTokenFields
 {

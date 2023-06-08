@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace App\Sync\Task;
 
 use App\Container\EnvironmentAwareTrait;
+use App\Entity\Repository\SettingsRepository;
 use App\Service\AzuraCastCentral;
 use GuzzleHttp\Exception\TransferException;
-use App\Entity\Repository\SettingsRepository;
 
 final class CheckUpdatesTask extends AbstractTask
 {

@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Notification\Check;
 
+use App\Entity\Api\Notification;
+use App\Entity\Repository\SettingsRepository;
 use App\Enums\GlobalPermissions;
 use App\Event\GetNotifications;
 use App\Session\FlashLevels;
-use App\Entity\Repository\SettingsRepository;
-use App\Entity\Api\Notification;
 
 final class SyncTaskCheck
 {

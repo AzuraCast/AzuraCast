@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Stations\Webhooks;
 
+use App\Entity\Api\Status;
 use App\Entity\Repository\StationWebhookRepository;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
-use App\Entity\Api\Status;
 
 final class ToggleAction
 {

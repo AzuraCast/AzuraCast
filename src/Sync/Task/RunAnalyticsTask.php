@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace App\Sync\Task;
 
-use Carbon\CarbonImmutable;
-use App\Entity\Repository\SettingsRepository;
+use App\Entity\Analytics;
+use App\Entity\Enums\AnalyticsIntervals;
+use App\Entity\Enums\AnalyticsLevel;
 use App\Entity\Repository\AnalyticsRepository;
 use App\Entity\Repository\ListenerRepository;
+use App\Entity\Repository\SettingsRepository;
 use App\Entity\Repository\SongHistoryRepository;
-use App\Entity\Enums\AnalyticsLevel;
 use App\Entity\Station;
-use App\Entity\Enums\AnalyticsIntervals;
-use App\Entity\Analytics;
+use Carbon\CarbonImmutable;
 
 final class RunAnalyticsTask extends AbstractTask
 {

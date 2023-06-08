@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Radio\Frontend;
 
+use App\Entity\Station;
 use App\Radio\Enums\StreamFormats;
 use App\Service\Acme;
 use App\Utilities;
@@ -14,7 +15,6 @@ use NowPlaying\Result\Result;
 use Psr\Http\Message\UriInterface;
 use Supervisor\Exception\SupervisorException as SupervisorLibException;
 use Symfony\Component\Filesystem\Path;
-use App\Entity\Station;
 
 final class Icecast extends AbstractFrontend
 {

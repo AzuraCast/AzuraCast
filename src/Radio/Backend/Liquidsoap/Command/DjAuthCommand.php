@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Radio\Backend\Liquidsoap\Command;
 
-use RuntimeException;
 use App\Entity\Repository\StationStreamerRepository;
 use App\Entity\Station;
+use RuntimeException;
 
 final class DjAuthCommand extends AbstractCommand
 {

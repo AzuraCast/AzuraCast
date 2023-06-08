@@ -6,6 +6,11 @@ namespace App\Controller\Api\Stations\Files;
 
 use App\Container\EntityManagerAwareTrait;
 use App\Controller\Api\Traits\CanSortResults;
+use App\Entity\Api\FileList;
+use App\Entity\Api\FileListMedia;
+use App\Entity\Station;
+use App\Entity\StationMedia;
+use App\Entity\StationPlaylist;
 use App\Flysystem\StationFilesystems;
 use App\Http\Response;
 use App\Http\RouterInterface;
@@ -19,11 +24,6 @@ use League\Flysystem\StorageAttributes;
 use Psr\Http\Message\ResponseInterface;
 use Psr\SimpleCache\CacheInterface;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
-use App\Entity\StationMedia;
-use App\Entity\StationPlaylist;
-use App\Entity\Api\FileList;
-use App\Entity\Api\FileListMedia;
-use App\Entity\Station;
 
 final class ListAction
 {

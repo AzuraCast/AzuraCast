@@ -6,11 +6,11 @@ namespace App\Entity\Repository;
 
 use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Doctrine\Repository;
+use App\Entity\Settings;
 use App\Exception\ValidationException;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
-use App\Entity\Settings;
 
 /**
  * @extends Repository<\App\Entity\Settings>

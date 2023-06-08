@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Stations\Reports\Overview;
 
+use App\Entity\Api\Status;
+use App\Entity\ApiGenerator\SongApiGenerator;
+use App\Entity\Repository\SettingsRepository;
+use App\Entity\Song;
+use App\Entity\SongHistory;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Utilities\DateRange;
 use Psr\Http\Message\ResponseInterface;
-use App\Entity\ApiGenerator\SongApiGenerator;
-use App\Entity\Repository\SettingsRepository;
-use App\Entity\Api\Status;
-use App\Entity\SongHistory;
-use App\Entity\Song;
 
 final class BestAndWorstAction extends AbstractReportAction
 {

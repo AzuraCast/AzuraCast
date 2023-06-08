@@ -10,8 +10,8 @@ use App\Flysystem\Adapter\LocalAdapterInterface;
 use App\Flysystem\Adapter\LocalFilesystemAdapter;
 use App\Flysystem\ExtendedFilesystemInterface;
 use App\Flysystem\LocalFilesystem;
-use Symfony\Component\Filesystem\Path;
 use InvalidArgumentException;
+use Symfony\Component\Filesystem\Path;
 
 final class LocalStorageLocationAdapter extends AbstractStorageLocationLocationAdapter
 {

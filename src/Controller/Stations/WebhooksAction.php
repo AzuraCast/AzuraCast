@@ -7,7 +7,6 @@ namespace App\Controller\Stations;
 use App\Entity\Repository\SettingsRepository;
 use App\Http\Response;
 use App\Http\ServerRequest;
-use App\Webhook\ConnectorLocator;
 use Psr\Http\Message\ResponseInterface;
 
 final class WebhooksAction

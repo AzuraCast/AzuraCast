@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace App\Radio\Frontend\Blocklist;
 
+use App\Entity\Station;
 use App\Radio\Enums\FrontendAdapters;
 use App\Service\IpGeolocation;
 use InvalidArgumentException;
 use PhpIP\IP;
 use PhpIP\IPBlock;
-use App\Entity\Station;
 
 final class BlocklistParser
 {

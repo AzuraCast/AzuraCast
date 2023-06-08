@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace App\Radio\Backend\Liquidsoap\Command;
 
 use App\Container\LoggerAwareTrait;
+use App\Entity\Station;
 use App\Radio\Enums\BackendAdapters;
 use Monolog\LogRecord;
 use ReflectionClass;
 use Throwable;
-use App\Entity\Station;
 
 abstract class AbstractCommand
 {

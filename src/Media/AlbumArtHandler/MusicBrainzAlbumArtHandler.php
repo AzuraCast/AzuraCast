@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Media\AlbumArtHandler;
 
-use App\Service\MusicBrainz;
 use App\Entity\Interfaces\SongInterface;
+use App\Service\MusicBrainz;
 
 final class MusicBrainzAlbumArtHandler extends AbstractAlbumArtHandler
 {

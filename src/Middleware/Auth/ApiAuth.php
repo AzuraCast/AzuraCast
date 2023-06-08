@@ -7,6 +7,9 @@ namespace App\Middleware\Auth;
 use App\Acl;
 use App\Auth;
 use App\Customization;
+use App\Entity\Repository\ApiKeyRepository;
+use App\Entity\Repository\UserRepository;
+use App\Entity\User;
 use App\Exception\CsrfValidationException;
 use App\Http\ServerRequest;
 use App\Security\SplitToken;
@@ -14,9 +17,6 @@ use App\Session\Csrf;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use App\Entity\Repository\ApiKeyRepository;
-use App\Entity\Repository\UserRepository;
-use App\Entity\User;
 
 final class ApiAuth extends AbstractAuth
 {

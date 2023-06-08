@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Radio\Backend\Liquidsoap\Command;
 
-use App\Radio\AutoDJ\Annotations;
 use App\Entity\Station;
+use App\Radio\AutoDJ\Annotations;
 
 final class NextSongCommand extends AbstractCommand
 {

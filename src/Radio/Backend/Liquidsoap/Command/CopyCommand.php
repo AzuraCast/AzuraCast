@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Radio\Backend\Liquidsoap\Command;
 
+use App\Entity\Station;
 use App\Flysystem\StationFilesystems;
 use RuntimeException;
-use App\Entity\Station;
 
 final class CopyCommand extends AbstractCommand
 {

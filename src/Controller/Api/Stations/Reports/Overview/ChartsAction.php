@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Stations\Reports\Overview;
 
+use App\Entity\Api\Status;
+use App\Entity\Enums\AnalyticsIntervals;
+use App\Entity\Repository\AnalyticsRepository;
+use App\Entity\Repository\SettingsRepository;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use Carbon\CarbonImmutable;
 use Psr\Http\Message\ResponseInterface;
 use stdClass;
-use App\Entity\Repository\AnalyticsRepository;
-use App\Entity\Repository\SettingsRepository;
-use App\Entity\Api\Status;
-use App\Entity\Enums\AnalyticsIntervals;
 
 final class ChartsAction extends AbstractReportAction
 {

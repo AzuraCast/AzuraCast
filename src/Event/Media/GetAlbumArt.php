@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Event\Media;
 
-use Symfony\Contracts\EventDispatcher\Event;
 use App\Entity\Interfaces\SongInterface;
+use Symfony\Contracts\EventDispatcher\Event;
 
 final class GetAlbumArt extends Event
 {

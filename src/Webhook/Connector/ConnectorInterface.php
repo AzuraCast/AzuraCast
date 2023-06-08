@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Webhook\Connector;
 
-use App\Entity\StationWebhook;
-use App\Entity\Station;
 use App\Entity\Api\NowPlaying\NowPlaying;
+use App\Entity\Station;
+use App\Entity\StationWebhook;
 
 interface ConnectorInterface
 {

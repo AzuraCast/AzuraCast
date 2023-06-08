@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Stations;
 
-use App;
 use App\Entity\Api\StationQueueDetailed;
 use App\Entity\Api\Status;
 use App\Entity\ApiGenerator\StationQueueApiGenerator;

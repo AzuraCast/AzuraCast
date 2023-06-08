@@ -5,16 +5,16 @@ declare(strict_types=1);
 namespace App\Doctrine\Event;
 
 use App\Entity\Attributes\AuditIgnore;
+use App\Entity\Enums\AuditLogOperations;
+use App\Entity\Station;
+use App\Entity\StationHlsStream;
+use App\Entity\StationMount;
+use App\Entity\StationPlaylist;
+use App\Entity\StationRemote;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Event\OnFlushEventArgs;
 use Doctrine\ORM\Events;
 use ReflectionObject;
-use App\Entity\Enums\AuditLogOperations;
-use App\Entity\StationMount;
-use App\Entity\StationHlsStream;
-use App\Entity\StationRemote;
-use App\Entity\StationPlaylist;
-use App\Entity\Station;
 
 /**
  * A hook into Doctrine's event listener to mark a station as

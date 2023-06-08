@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Stations\Files;
 
+use App\Entity\StationMedia;
 use App\Flysystem\StationFilesystems;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use League\Flysystem\StorageAttributes;
 use Psr\Http\Message\ResponseInterface;
-use App\Entity\StationMedia;
 
 final class ListDirectoriesAction
 {

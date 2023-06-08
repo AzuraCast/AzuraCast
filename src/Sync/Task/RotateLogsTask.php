@@ -4,17 +4,17 @@ declare(strict_types=1);
 
 namespace App\Sync\Task;
 
+use App\Entity\Enums\StorageLocationTypes;
+use App\Entity\Repository\SettingsRepository;
+use App\Entity\Repository\StorageLocationRepository;
+use App\Entity\Station;
+use App\Entity\StorageLocation;
 use App\Nginx\ConfigWriter;
 use App\Nginx\Nginx;
 use League\Flysystem\StorageAttributes;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Throwable;
-use App\Entity\Repository\SettingsRepository;
-use App\Entity\Repository\StorageLocationRepository;
-use App\Entity\Enums\StorageLocationTypes;
-use App\Entity\StorageLocation;
-use App\Entity\Station;
 
 final class RotateLogsTask extends AbstractTask
 {

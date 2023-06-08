@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Radio;
 
+use App\Entity\Station;
 use App\Environment;
 use RuntimeException;
 use Symfony\Component\Process\Process;
-use App\Entity\Station;
 
 final class StereoTool
 {

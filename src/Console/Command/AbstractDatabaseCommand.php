@@ -7,8 +7,8 @@ namespace App\Console\Command;
 use App\Console\Command\Traits\PassThruProcess;
 use App\Container\EntityManagerAwareTrait;
 use App\Container\EnvironmentAwareTrait;
-use Symfony\Component\Console\Style\SymfonyStyle;
 use RuntimeException;
+use Symfony\Component\Console\Style\SymfonyStyle;
 
 abstract class AbstractDatabaseCommand extends CommandAbstract
 {

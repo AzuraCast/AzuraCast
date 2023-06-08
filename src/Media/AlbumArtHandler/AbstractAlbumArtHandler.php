@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace App\Media\AlbumArtHandler;
 
 use App\Container\LoggerAwareTrait;
+use App\Entity\Interfaces\SongInterface;
 use App\Event\Media\GetAlbumArt;
 use App\Exception\RateLimitExceededException;
 use RuntimeException;
 use Throwable;
-use App\Entity\Interfaces\SongInterface;
 
 abstract class AbstractAlbumArtHandler
 {

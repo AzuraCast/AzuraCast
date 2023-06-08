@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Sync\Task;
 
+use App\Entity\Repository\ListenerRepository;
 use App\Entity\Repository\SettingsRepository;
 use App\Entity\Repository\SongHistoryRepository;
 use App\Entity\Repository\StationQueueRepository;
-use App\Entity\Repository\ListenerRepository;
 use App\Entity\StationQueue;
 
 final class CleanupHistoryTask extends AbstractTask

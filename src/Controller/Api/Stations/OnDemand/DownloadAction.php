@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Stations\OnDemand;
 
+use App\Entity\Api\Error;
+use App\Entity\Repository\StationMediaRepository;
 use App\Flysystem\StationFilesystems;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
-use App\Entity\Repository\StationMediaRepository;
-use App\Entity\Api\Error;
 
 final class DownloadAction
 {

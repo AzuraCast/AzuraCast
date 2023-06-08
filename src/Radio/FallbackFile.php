@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Radio;
 
 use App\Container\EnvironmentAwareTrait;
-use App\Flysystem\StationFilesystems;
 use App\Entity\Station;
+use App\Flysystem\StationFilesystems;
 
 final class FallbackFile
 {

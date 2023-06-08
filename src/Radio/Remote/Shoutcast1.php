@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Radio\Remote;
 
-use NowPlaying\Enums\AdapterTypes;
 use App\Entity\StationRemote;
+use NowPlaying\Enums\AdapterTypes;
 
 final class Shoutcast1 extends AbstractRemote
 {

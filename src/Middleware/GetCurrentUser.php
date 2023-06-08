@@ -8,13 +8,13 @@ use App\Acl;
 use App\Auth;
 use App\Container\EnvironmentAwareTrait;
 use App\Customization;
+use App\Entity\AuditLog;
+use App\Entity\Repository\UserRepository;
 use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use App\Entity\Repository\UserRepository;
-use App\Entity\AuditLog;
 
 /**
  * Get the current user entity object and assign it into the request if it exists.

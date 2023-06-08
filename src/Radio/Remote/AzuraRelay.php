@@ -6,6 +6,9 @@ namespace App\Radio\Remote;
 
 use App\Cache\AzuraRelayCache;
 use App\Container\EnvironmentAwareTrait;
+use App\Entity\Relay;
+use App\Entity\Repository\SettingsRepository;
+use App\Entity\StationRemote;
 use GuzzleHttp\Client;
 use GuzzleHttp\Promise\Create;
 use GuzzleHttp\Promise\PromiseInterface;
@@ -14,9 +17,6 @@ use InvalidArgumentException;
 use NowPlaying\AdapterFactory;
 use NowPlaying\Enums\AdapterTypes;
 use NowPlaying\Result\Result;
-use App\Entity\Repository\SettingsRepository;
-use App\Entity\StationRemote;
-use App\Entity\Relay;
 
 final class AzuraRelay extends AbstractRemote
 {

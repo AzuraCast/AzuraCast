@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Controller\Frontend;
 
+use App\Entity\Repository\SettingsRepository;
+use App\Entity\User;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
-use App\Entity\Repository\SettingsRepository;
-use App\Entity\User;
 
 final class IndexAction
 {

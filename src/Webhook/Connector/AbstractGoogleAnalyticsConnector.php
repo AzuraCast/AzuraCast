@@ -6,9 +6,9 @@ namespace App\Webhook\Connector;
 
 use App\Entity\Repository\ListenerRepository;
 use App\Entity\Station;
+use App\Entity\StationWebhook;
 use App\Nginx\CustomUrls;
 use GuzzleHttp\Client;
-use App\Entity\StationWebhook;
 
 abstract class AbstractGoogleAnalyticsConnector extends AbstractConnector
 {

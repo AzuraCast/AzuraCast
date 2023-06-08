@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Traits;
 
+use App\Entity\StationSchedule;
 use App\Http\ServerRequest;
 use App\Radio\AutoDJ\Scheduler;
 use App\Utilities\DateRange;
 use Carbon\CarbonInterface;
-use App\Entity\StationSchedule;
 
 trait HasScheduleDisplay
 {

@@ -5,17 +5,17 @@ declare(strict_types=1);
 namespace App\Entity\ApiGenerator;
 
 use App\Container\EntityManagerAwareTrait;
+use App\Entity\Api\Song;
+use App\Entity\Interfaces\SongInterface;
+use App\Entity\Repository\CustomFieldRepository;
+use App\Entity\Repository\StationRepository;
+use App\Entity\Station;
+use App\Entity\StationMedia;
 use App\Http\Router;
 use App\Media\RemoteAlbumArt;
 use GuzzleHttp\Psr7\UriResolver;
 use GuzzleHttp\Psr7\Utils;
 use Psr\Http\Message\UriInterface;
-use App\Entity\Repository\StationRepository;
-use App\Entity\Repository\CustomFieldRepository;
-use App\Entity\Interfaces\SongInterface;
-use App\Entity\Station;
-use App\Entity\Api\Song;
-use App\Entity\StationMedia;
 
 final class SongApiGenerator
 {

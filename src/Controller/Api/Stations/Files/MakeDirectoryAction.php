@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Stations\Files;
 
+use App\Entity\Api\Error;
+use App\Entity\Api\Status;
 use App\Flysystem\StationFilesystems;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use League\Flysystem\UnableToCreateDirectory;
 use Psr\Http\Message\ResponseInterface;
-use App\Entity\Api\Error;
-use App\Entity\Api\Status;
 
 final class MakeDirectoryAction
 {

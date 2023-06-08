@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Controller\Stations\Reports;
 
+use App\Entity\Enums\AnalyticsLevel;
+use App\Entity\Repository\SettingsRepository;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
-use App\Entity\Repository\SettingsRepository;
-use App\Entity\Enums\AnalyticsLevel;
 
 final class OverviewAction
 {

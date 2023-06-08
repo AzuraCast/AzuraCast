@@ -5,6 +5,11 @@ declare(strict_types=1);
 namespace App\Controller\Api\Stations\Streamers;
 
 use App\Controller\Api\AbstractApiCrudController;
+use App\Entity\Api\Error;
+use App\Entity\Api\Status;
+use App\Entity\Station;
+use App\Entity\StationStreamer;
+use App\Entity\StationStreamerBroadcast;
 use App\Flysystem\StationFilesystems;
 use App\Http\Response;
 use App\Http\ServerRequest;
@@ -13,11 +18,6 @@ use App\Utilities\File;
 use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
-use App\Entity\StationStreamerBroadcast;
-use App\Entity\Api\Error;
-use App\Entity\Api\Status;
-use App\Entity\Station;
-use App\Entity\StationStreamer;
 
 /**
  * @extends AbstractApiCrudController<\App\Entity\StationStreamerBroadcast>

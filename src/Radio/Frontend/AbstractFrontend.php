@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace App\Radio\Frontend;
 
+use App\Entity\Repository\SettingsRepository;
+use App\Entity\Repository\StationMountRepository;
+use App\Entity\Station;
+use App\Entity\StationMount;
 use App\Http\Router;
 use App\Nginx\CustomUrls;
 use App\Radio\AbstractLocalAdapter;
@@ -19,10 +23,6 @@ use PhpIP\IPBlock;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\UriInterface;
 use Supervisor\SupervisorInterface;
-use App\Entity\Repository\SettingsRepository;
-use App\Entity\Repository\StationMountRepository;
-use App\Entity\Station;
-use App\Entity\StationMount;
 
 abstract class AbstractFrontend extends AbstractLocalAdapter
 {

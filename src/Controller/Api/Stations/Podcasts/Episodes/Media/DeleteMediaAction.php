@@ -4,16 +4,16 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Stations\Podcasts\Episodes\Media;
 
+use App\Entity\Api\Error;
+use App\Entity\Api\Status;
+use App\Entity\PodcastEpisode;
+use App\Entity\PodcastMedia;
+use App\Entity\Repository\PodcastEpisodeRepository;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\OpenApi;
 use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
-use App\Entity\Repository\PodcastEpisodeRepository;
-use App\Entity\PodcastEpisode;
-use App\Entity\Api\Error;
-use App\Entity\PodcastMedia;
-use App\Entity\Api\Status;
 
 #[OA\Delete(
     path: '/station/{station_id}/podcast/{podcast_id}/episode/{episode_id}/media',

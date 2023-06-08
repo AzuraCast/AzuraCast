@@ -5,15 +5,15 @@ declare(strict_types=1);
 namespace App\Radio\AutoDJ;
 
 use App\Container\EntityManagerAwareTrait;
-use App\Event\Radio\AnnotateNextSong;
-use App\Radio\Backend\Liquidsoap\ConfigWriter;
-use Psr\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use App\Entity\Repository\StationQueueRepository;
 use App\Entity\Station;
 use App\Entity\StationMedia;
 use App\Entity\StationQueue;
 use App\Entity\StationRequest;
+use App\Event\Radio\AnnotateNextSong;
+use App\Radio\Backend\Liquidsoap\ConfigWriter;
+use Psr\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 final class Annotations implements EventSubscriberInterface
 {

@@ -5,14 +5,14 @@ declare(strict_types=1);
 namespace App\Controller\Api\Stations\Reports;
 
 use App\Container\EntityManagerAwareTrait;
+use App\Entity\Api\Status;
+use App\Entity\Repository\StationRequestRepository;
+use App\Entity\StationRequest;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Paginator;
 use Doctrine\ORM\AbstractQuery;
 use Psr\Http\Message\ResponseInterface;
-use App\Entity\Repository\StationRequestRepository;
-use App\Entity\StationRequest;
-use App\Entity\Api\Status;
 
 final class RequestsController
 {

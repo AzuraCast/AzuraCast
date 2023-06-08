@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace App\Webhook\Connector;
 
 use App\Container\LoggerAwareTrait;
+use App\Entity\Api\NowPlaying\NowPlaying;
+use App\Entity\StationWebhook;
 use App\Utilities;
 use GuzzleHttp\Client;
 use InvalidArgumentException;
 use PhpIP\IP;
 use RuntimeException;
-use App\Entity\StationWebhook;
-use App\Entity\Api\NowPlaying\NowPlaying;
 
 abstract class AbstractConnector implements ConnectorInterface
 {

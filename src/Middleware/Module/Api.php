@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Middleware\Module;
 
 use App\Container\EnvironmentAwareTrait;
+use App\Entity\Repository\SettingsRepository;
+use App\Entity\User;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Utilities\Urls;
@@ -14,8 +16,6 @@ use Symfony\Component\VarDumper\Caster\ReflectionCaster;
 use Symfony\Component\VarDumper\Cloner\VarCloner;
 use Symfony\Component\VarDumper\Dumper\CliDumper;
 use Symfony\Component\VarDumper\VarDumper;
-use App\Entity\Repository\SettingsRepository;
-use App\Entity\User;
 
 /**
  * Handle API calls and wrap exceptions in JSON formatting.

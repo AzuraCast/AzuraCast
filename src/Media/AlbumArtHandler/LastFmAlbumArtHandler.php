@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Media\AlbumArtHandler;
 
-use App\Service\LastFm;
 use App\Entity\Interfaces\SongInterface;
 use App\Entity\StationMedia;
+use App\Service\LastFm;
 
 final class LastFmAlbumArtHandler extends AbstractAlbumArtHandler
 {

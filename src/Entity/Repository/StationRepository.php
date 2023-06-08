@@ -6,7 +6,7 @@ namespace App\Entity\Repository;
 
 use App\Assets\AssetTypes;
 use App\Container\EnvironmentAwareTrait;
-use App\Doctrine\ReloadableEntityManagerInterface;
+use App\Container\SettingsAwareTrait;
 use App\Doctrine\Repository;
 use App\Entity\Station;
 use App\Entity\StationHlsStream;
@@ -24,13 +24,7 @@ use Psr\Http\Message\UriInterface;
 final class StationRepository extends Repository
 {
     use EnvironmentAwareTrait;
-
-    public function __construct(
-        ReloadableEntityManagerInterface $em,
-        private readonly SettingsRepository $settingsRepo,
-    ) {
-        parent::__construct($em);
-    }
+    use SettingsAwareTrait;
 
     /**
      * @param string $identifier A numeric or string identifier for a station.
@@ -205,7 +199,7 @@ final class StationRepository extends Repository
             }
         }
 
-        $customUrl = $this->settingsRepo->readSettings()->getDefaultAlbumArtUrlAsUri();
+        $customUrl = $this->readSettings()->getDefaultAlbumArtUrlAsUri();
         return $customUrl ?? AssetTypes::AlbumArt->createObject($this->environment)->getUri();
     }
 

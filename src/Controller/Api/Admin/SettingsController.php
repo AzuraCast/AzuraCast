@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Admin;
 
+use App\Container\SettingsAwareTrait;
 use App\Controller\Api\AbstractApiCrudController;
 use App\Entity\Api\Status;
-use App\Entity\Repository\SettingsRepository;
 use App\Entity\Settings;
 use App\Http\Response;
 use App\Http\ServerRequest;
@@ -53,10 +53,11 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 ]
 final class SettingsController extends AbstractApiCrudController
 {
+    use SettingsAwareTrait;
+
     protected string $entityClass = Settings::class;
 
     public function __construct(
-        protected SettingsRepository $settingsRepo,
         Serializer $serializer,
         ValidatorInterface $validator
     ) {
@@ -73,7 +74,7 @@ final class SettingsController extends AbstractApiCrudController
             $context[AbstractNormalizer::GROUPS] = [$group];
         }
 
-        $settings = $this->settingsRepo->readSettings();
+        $settings = $this->readSettings();
         return $response->withJson($this->toArray($settings, $context));
     }
 

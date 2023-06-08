@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Stations\Requests;
 
+use App\Container\SettingsAwareTrait;
 use App\Entity\Api\Error;
 use App\Entity\Api\Status;
-use App\Entity\Repository\SettingsRepository;
 use App\Entity\Repository\StationRequestRepository;
 use App\Entity\User;
 use App\Exception\InvalidRequestAttribute;
@@ -43,9 +43,10 @@ use Psr\Http\Message\ResponseInterface;
 ]
 final class SubmitAction
 {
+    use SettingsAwareTrait;
+
     public function __construct(
         private readonly StationRequestRepository $requestRepo,
-        private readonly SettingsRepository $settingsRepo
     ) {
     }
 
@@ -66,7 +67,7 @@ final class SubmitAction
         $isAuthenticated = ($user instanceof User);
 
         try {
-            $ip = $this->settingsRepo->readSettings()->getIp($request);
+            $ip = $this->readSettings()->getIp($request);
 
             $this->requestRepo->submit(
                 $station,

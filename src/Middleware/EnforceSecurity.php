@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Middleware;
 
-use App\Entity\Repository\SettingsRepository;
+use App\Container\SettingsAwareTrait;
 use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -17,10 +17,11 @@ use Slim\App;
  */
 final class EnforceSecurity implements MiddlewareInterface
 {
+    use SettingsAwareTrait;
+
     private ResponseFactoryInterface $responseFactory;
 
     public function __construct(
-        private readonly SettingsRepository $settingsRepo,
         App $app
     ) {
         $this->responseFactory = $app->getResponseFactory();
@@ -32,7 +33,7 @@ final class EnforceSecurity implements MiddlewareInterface
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        $always_use_ssl = $this->settingsRepo->readSettings()->getAlwaysUseSsl();
+        $always_use_ssl = $this->readSettings()->getAlwaysUseSsl();
 
         $internal_api_url = mb_stripos($request->getUri()->getPath(), '/api/internal') === 0;
 

@@ -6,10 +6,10 @@ namespace App\Controller\Api\Admin;
 
 use App\Cache\AzuraRelayCache;
 use App\Container\EntityManagerAwareTrait;
+use App\Container\SettingsAwareTrait;
 use App\Entity\Api\Admin\Relay as ApiRelay;
 use App\Entity\Api\Status;
 use App\Entity\Relay;
-use App\Entity\Repository\SettingsRepository;
 use App\Entity\Station;
 use App\Entity\StationMount;
 use App\Entity\StationRemote;
@@ -44,10 +44,10 @@ use Psr\Http\Message\ResponseInterface;
 final class RelaysController
 {
     use EntityManagerAwareTrait;
+    use SettingsAwareTrait;
 
     public function __construct(
         private readonly Adapters $adapters,
-        private readonly SettingsRepository $settingsRepo,
         private readonly AzuraRelayCache $azuraRelayCache
     ) {
     }
@@ -136,7 +136,7 @@ final class RelaysController
             $base_url = $body['base_url'];
         } else {
             /** @noinspection HttpUrlsUsage */
-            $base_url = 'http://' . $this->settingsRepo->readSettings()->getIp($request);
+            $base_url = 'http://' . $this->readSettings()->getIp($request);
         }
 
         $relay = $relay_repo->findOneBy(['base_url' => $base_url]);

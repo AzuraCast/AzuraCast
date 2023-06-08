@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Middleware\Module;
 
-use App\Entity\Repository\SettingsRepository;
+use App\Container\SettingsAwareTrait;
 use App\Event;
 use App\Http\ServerRequest;
 use Psr\EventDispatcher\EventDispatcherInterface;
@@ -18,15 +18,16 @@ use Slim\Routing\RouteContext;
  */
 final class Admin
 {
+    use SettingsAwareTrait;
+
     public function __construct(
         private readonly EventDispatcherInterface $dispatcher,
-        private readonly SettingsRepository $settingsRepo
     ) {
     }
 
     public function __invoke(ServerRequest $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        $settings = $this->settingsRepo->readSettings();
+        $settings = $this->readSettings();
 
         $event = new Event\BuildAdminMenu($request, $settings);
         $this->dispatcher->dispatch($event);

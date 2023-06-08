@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Notification\Check;
 
+use App\Container\SettingsAwareTrait;
 use App\Entity\Api\Notification;
-use App\Entity\Repository\SettingsRepository;
 use App\Enums\GlobalPermissions;
 use App\Enums\ReleaseChannel;
 use App\Event\GetNotifications;
@@ -14,9 +14,10 @@ use App\Version;
 
 final class UpdateCheck
 {
+    use SettingsAwareTrait;
+
     public function __construct(
         private readonly Version $version,
-        private readonly SettingsRepository $settingsRepo
     ) {
     }
 
@@ -28,7 +29,7 @@ final class UpdateCheck
             return;
         }
 
-        $settings = $this->settingsRepo->readSettings();
+        $settings = $this->readSettings();
         if (!$settings->getCheckForUpdates()) {
             return;
         }

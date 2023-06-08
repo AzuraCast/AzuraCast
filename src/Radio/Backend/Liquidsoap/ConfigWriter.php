@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace App\Radio\Backend\Liquidsoap;
 
 use App\Container\EnvironmentAwareTrait;
+use App\Container\SettingsAwareTrait;
 use App\Entity\Enums\PlaylistOrders;
 use App\Entity\Enums\PlaylistRemoteTypes;
 use App\Entity\Enums\PlaylistSources;
 use App\Entity\Enums\PlaylistTypes;
 use App\Entity\Enums\StationBackendPerformanceModes;
 use App\Entity\Interfaces\StationMountInterface;
-use App\Entity\Repository\SettingsRepository;
 use App\Entity\Station;
 use App\Entity\StationBackendConfiguration;
 use App\Entity\StationPlaylist;
@@ -34,9 +34,9 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 final class ConfigWriter implements EventSubscriberInterface
 {
     use EnvironmentAwareTrait;
+    use SettingsAwareTrait;
 
     public function __construct(
-        private readonly SettingsRepository $settingsRepo,
         private readonly Liquidsoap $liquidsoap,
         private readonly FallbackFile $fallbackFile
     ) {
@@ -74,7 +74,7 @@ final class ConfigWriter implements EventSubscriberInterface
             return;
         }
 
-        $settings = $this->settingsRepo->readSettings();
+        $settings = $this->readSettings();
         if (!$settings->getEnableAdvancedFeatures()) {
             return;
         }

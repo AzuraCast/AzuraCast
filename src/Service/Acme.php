@@ -6,7 +6,7 @@ namespace App\Service;
 
 use App\Container\EnvironmentAwareTrait;
 use App\Container\LoggerAwareTrait;
-use App\Entity\Repository\SettingsRepository;
+use App\Container\SettingsAwareTrait;
 use App\Entity\Repository\StationRepository;
 use App\Environment;
 use App\Message\AbstractMessage;
@@ -24,13 +24,13 @@ final class Acme
 {
     use LoggerAwareTrait;
     use EnvironmentAwareTrait;
+    use SettingsAwareTrait;
 
     public const LETSENCRYPT_PROD = 'https://acme-v02.api.letsencrypt.org/directory';
     public const LETSENCRYPT_DEV = 'https://acme-staging-v02.api.letsencrypt.org/directory';
     public const THRESHOLD_DAYS = 30;
 
     public function __construct(
-        private readonly SettingsRepository $settingsRepo,
         private readonly StationRepository $stationRepo,
         private readonly Nginx $nginx,
         private readonly Adapters $adapters,
@@ -80,7 +80,7 @@ final class Acme
         $acme = new ACMECert($directoryUrl);
 
         // Build LetsEncrypt settings.
-        $settings = $this->settingsRepo->readSettings();
+        $settings = $this->readSettings();
 
         $acmeEmail = $settings->getAcmeEmail();
         $acmeDomain = $settings->getAcmeDomains();
@@ -89,7 +89,7 @@ final class Acme
             $acmeEmail = getenv('LETSENCRYPT_EMAIL');
             if (!empty($acmeEmail)) {
                 $settings->setAcmeEmail($acmeEmail);
-                $this->settingsRepo->writeSettings($settings);
+                $this->writeSettings($settings);
             }
         }
 
@@ -99,7 +99,7 @@ final class Acme
                 throw new RuntimeException('Skipping LetsEncrypt; no domain(s) set.');
             } else {
                 $settings->setAcmeDomains($acmeDomain);
-                $this->settingsRepo->writeSettings($settings);
+                $this->writeSettings($settings);
             }
         }
 

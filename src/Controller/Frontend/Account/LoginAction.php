@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Frontend\Account;
 
 use App\Container\EntityManagerAwareTrait;
-use App\Entity\Repository\SettingsRepository;
+use App\Container\SettingsAwareTrait;
 use App\Entity\User;
 use App\Exception\RateLimitExceededException;
 use App\Http\Response;
@@ -17,10 +17,10 @@ use Psr\Http\Message\ResponseInterface;
 final class LoginAction
 {
     use EntityManagerAwareTrait;
+    use SettingsAwareTrait;
 
     public function __construct(
-        private readonly RateLimit $rateLimit,
-        private readonly SettingsRepository $settingsRepo
+        private readonly RateLimit $rateLimit
     ) {
     }
 
@@ -32,7 +32,7 @@ final class LoginAction
         $acl = $request->getAcl();
 
         // Check installation completion progress.
-        $settings = $this->settingsRepo->readSettings();
+        $settings = $this->readSettings();
 
         if (!$settings->isSetupComplete()) {
             $num_users = (int)$this->em->createQuery(

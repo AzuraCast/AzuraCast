@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Middleware;
 
-use App\Entity\Repository\SettingsRepository;
+use App\Container\SettingsAwareTrait;
 use App\Environment;
 use App\Http\ServerRequest;
 use App\Session\Csrf;
@@ -25,11 +25,12 @@ use Symfony\Component\Cache\Adapter\ProxyAdapter;
  */
 final class InjectSession implements MiddlewareInterface
 {
+    use SettingsAwareTrait;
+
     private CacheItemPoolInterface $cachePool;
 
     public function __construct(
         CacheItemPoolInterface $cachePool,
-        private readonly SettingsRepository $settingsRepo,
         private readonly Environment $environment
     ) {
         if ($environment->isCli()) {
@@ -41,7 +42,7 @@ final class InjectSession implements MiddlewareInterface
 
     public function getSessionPersistence(ServerRequestInterface $request): SessionPersistenceInterface
     {
-        $alwaysUseSsl = $this->settingsRepo->readSettings()->getAlwaysUseSsl();
+        $alwaysUseSsl = $this->readSettings()->getAlwaysUseSsl();
         $isHttpsUrl = ('https' === $request->getUri()->getScheme());
 
         return new CacheSessionPersistence(

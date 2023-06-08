@@ -5,18 +5,18 @@ declare(strict_types=1);
 namespace App\Sync\Task;
 
 use App\Container\EnvironmentAwareTrait;
-use App\Entity\Repository\SettingsRepository;
+use App\Container\SettingsAwareTrait;
 use App\Service\AzuraCastCentral;
 use GuzzleHttp\Exception\TransferException;
 
 final class CheckUpdatesTask extends AbstractTask
 {
     use EnvironmentAwareTrait;
+    use SettingsAwareTrait;
 
     private const UPDATE_THRESHOLD = 3780;
 
     public function __construct(
-        private readonly SettingsRepository $settingsRepo,
         private readonly AzuraCastCentral $azuracastCentral
     ) {
     }
@@ -28,7 +28,7 @@ final class CheckUpdatesTask extends AbstractTask
 
     public function run(bool $force = false): void
     {
-        $settings = $this->settingsRepo->readSettings();
+        $settings = $this->readSettings();
 
         if (!$force) {
             $update_last_run = $settings->getUpdateLastRun();
@@ -60,6 +60,6 @@ final class CheckUpdatesTask extends AbstractTask
         }
 
         $settings->updateUpdateLastRun();
-        $this->settingsRepo->writeSettings($settings);
+        $this->writeSettings($settings);
     }
 }

@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Notification\Check;
 
 use App\Container\EnvironmentAwareTrait;
+use App\Container\SettingsAwareTrait;
 use App\Entity\Api\Notification;
-use App\Entity\Repository\SettingsRepository;
 use App\Enums\GlobalPermissions;
 use App\Event\GetNotifications;
 use App\Session\FlashLevels;
@@ -15,11 +15,7 @@ use Carbon\CarbonImmutable;
 final class RecentBackupCheck
 {
     use EnvironmentAwareTrait;
-
-    public function __construct(
-        private readonly SettingsRepository $settingsRepo
-    ) {
-    }
+    use SettingsAwareTrait;
 
     public function __invoke(GetNotifications $event): void
     {
@@ -37,7 +33,7 @@ final class RecentBackupCheck
         $threshold = CarbonImmutable::now()->subWeeks(2)->getTimestamp();
 
         // Don't show backup warning for freshly created installations.
-        $settings = $this->settingsRepo->readSettings();
+        $settings = $this->readSettings();
 
         $setupComplete = $settings->getSetupCompleteTime();
         if ($setupComplete >= $threshold) {

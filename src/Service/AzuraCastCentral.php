@@ -6,7 +6,7 @@ namespace App\Service;
 
 use App\Container\EnvironmentAwareTrait;
 use App\Container\LoggerAwareTrait;
-use App\Entity\Repository\SettingsRepository;
+use App\Container\SettingsAwareTrait;
 use App\Version;
 use Exception;
 use GuzzleHttp\Client;
@@ -15,13 +15,13 @@ final class AzuraCastCentral
 {
     use LoggerAwareTrait;
     use EnvironmentAwareTrait;
+    use SettingsAwareTrait;
 
     private const BASE_URL = 'https://central.azuracast.com';
 
     public function __construct(
         private readonly Version $version,
         private readonly Client $httpClient,
-        private readonly SettingsRepository $settingsRepo
     ) {
     }
 
@@ -73,7 +73,7 @@ final class AzuraCastCentral
 
     public function getUniqueIdentifier(): string
     {
-        return $this->settingsRepo->readSettings()->getAppUniqueIdentifier();
+        return $this->readSettings()->getAppUniqueIdentifier();
     }
 
     /**
@@ -83,7 +83,7 @@ final class AzuraCastCentral
      */
     public function getIp(bool $cached = true): ?string
     {
-        $settings = $this->settingsRepo->readSettings();
+        $settings = $this->readSettings();
         $ip = ($cached)
             ? $settings->getExternalIp()
             : null;
@@ -106,7 +106,7 @@ final class AzuraCastCentral
 
             if (!empty($ip) && $cached) {
                 $settings->setExternalIp($ip);
-                $this->settingsRepo->writeSettings($settings);
+                $this->writeSettings($settings);
             }
         }
 

@@ -4,17 +4,14 @@ declare(strict_types=1);
 
 namespace App\Controller\Stations;
 
-use App\Entity\Repository\SettingsRepository;
+use App\Container\SettingsAwareTrait;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
 
 final class MountsAction
 {
-    public function __construct(
-        private readonly SettingsRepository $settingsRepo
-    ) {
-    }
+    use SettingsAwareTrait;
 
     public function __invoke(
         ServerRequest $request,
@@ -24,7 +21,7 @@ final class MountsAction
         $router = $request->getRouter();
         $station = $request->getStation();
 
-        $settings = $this->settingsRepo->readSettings();
+        $settings = $this->readSettings();
 
         return $request->getView()->renderVuePage(
             response: $response,

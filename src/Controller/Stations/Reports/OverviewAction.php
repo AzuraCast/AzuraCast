@@ -4,18 +4,15 @@ declare(strict_types=1);
 
 namespace App\Controller\Stations\Reports;
 
+use App\Container\SettingsAwareTrait;
 use App\Entity\Enums\AnalyticsLevel;
-use App\Entity\Repository\SettingsRepository;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
 
 final class OverviewAction
 {
-    public function __construct(
-        private readonly SettingsRepository $settingsRepo
-    ) {
-    }
+    use SettingsAwareTrait;
 
     public function __invoke(
         ServerRequest $request,
@@ -23,7 +20,7 @@ final class OverviewAction
         string $station_id
     ): ResponseInterface {
         // Get current analytics level.
-        $settings = $this->settingsRepo->readSettings();
+        $settings = $this->readSettings();
 
         if (!$settings->isAnalyticsEnabled()) {
             // The entirety of the dashboard can't be shown, so redirect user to the profile page.

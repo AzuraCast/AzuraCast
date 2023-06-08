@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Admin\GeoLite;
 
-use App\Entity\Repository\SettingsRepository;
+use App\Container\SettingsAwareTrait;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Service\IpGeolocator\GeoLite;
@@ -13,8 +13,9 @@ use Psr\Http\Message\ResponseInterface;
 
 final class PostAction
 {
+    use SettingsAwareTrait;
+
     public function __construct(
-        private readonly SettingsRepository $settingsRepo,
         private readonly UpdateGeoLiteTask $geoLiteTask
     ) {
     }
@@ -25,9 +26,9 @@ final class PostAction
     ): ResponseInterface {
         $newKey = trim($request->getParsedBodyParam('geolite_license_key', ''));
 
-        $settings = $this->settingsRepo->readSettings();
+        $settings = $this->readSettings();
         $settings->setGeoliteLicenseKey($newKey);
-        $this->settingsRepo->writeSettings($settings);
+        $this->writeSettings($settings);
 
         if (!empty($newKey)) {
             $this->geoLiteTask->updateDatabase($newKey);

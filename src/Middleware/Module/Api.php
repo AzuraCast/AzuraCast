@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Middleware\Module;
 
 use App\Container\EnvironmentAwareTrait;
-use App\Entity\Repository\SettingsRepository;
+use App\Container\SettingsAwareTrait;
 use App\Entity\User;
 use App\Http\Response;
 use App\Http\ServerRequest;
@@ -23,11 +23,7 @@ use Symfony\Component\VarDumper\VarDumper;
 final class Api
 {
     use EnvironmentAwareTrait;
-
-    public function __construct(
-        private readonly SettingsRepository $settingsRepo
-    ) {
-    }
+    use SettingsAwareTrait;
 
     public function __invoke(ServerRequest $request, RequestHandlerInterface $handler): ResponseInterface
     {
@@ -47,7 +43,7 @@ final class Api
         $apiUser = $request->getAttribute(ServerRequest::ATTR_USER);
 
         // Set default cache control for API pages.
-        $settings = $this->settingsRepo->readSettings();
+        $settings = $this->readSettings();
 
         $preferBrowserUrl = $settings->getPreferBrowserUrl();
 

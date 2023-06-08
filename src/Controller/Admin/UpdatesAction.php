@@ -3,7 +3,7 @@
 namespace App\Controller\Admin;
 
 use App\Container\EnvironmentAwareTrait;
-use App\Entity\Repository\SettingsRepository;
+use App\Container\SettingsAwareTrait;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Version;
@@ -12,9 +12,9 @@ use Psr\Http\Message\ResponseInterface;
 final class UpdatesAction
 {
     use EnvironmentAwareTrait;
+    use SettingsAwareTrait;
 
     public function __construct(
-        private readonly SettingsRepository $settingsRepo,
         private readonly Version $version
     ) {
     }
@@ -23,7 +23,7 @@ final class UpdatesAction
         ServerRequest $request,
         Response $response
     ): ResponseInterface {
-        $settings = $this->settingsRepo->readSettings();
+        $settings = $this->readSettings();
 
         $router = $request->getRouter();
 

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Sync\Task;
 
+use App\Container\SettingsAwareTrait;
 use App\Entity\Enums\StorageLocationTypes;
-use App\Entity\Repository\SettingsRepository;
 use App\Entity\Repository\StorageLocationRepository;
 use App\Entity\Station;
 use App\Entity\StorageLocation;
@@ -18,8 +18,9 @@ use Throwable;
 
 final class RotateLogsTask extends AbstractTask
 {
+    use SettingsAwareTrait;
+
     public function __construct(
-        private readonly SettingsRepository $settingsRepo,
         private readonly StorageLocationRepository $storageLocationRepo,
         private readonly Nginx $nginx,
     ) {
@@ -59,7 +60,7 @@ final class RotateLogsTask extends AbstractTask
         }
 
         // Rotate the automated backups.
-        $settings = $this->settingsRepo->readSettings();
+        $settings = $this->readSettings();
 
         $copiesToKeep = $settings->getBackupKeepCopies();
         if ($copiesToKeep > 0) {

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Sync\Task;
 
 use App\Console\Application;
-use App\Entity\Repository\SettingsRepository;
+use App\Container\SettingsAwareTrait;
 use App\Entity\StationSchedule;
 use App\Message;
 use Carbon\CarbonImmutable;
@@ -14,10 +14,11 @@ use Symfony\Component\Messenger\MessageBus;
 
 final class RunBackupTask extends AbstractTask
 {
+    use SettingsAwareTrait;
+
     public function __construct(
         private readonly MessageBus $messageBus,
         private readonly Application $console,
-        private readonly SettingsRepository $settingsRepo,
     ) {
     }
 
@@ -34,10 +35,10 @@ final class RunBackupTask extends AbstractTask
     public function __invoke(Message\AbstractMessage $message): void
     {
         if ($message instanceof Message\BackupMessage) {
-            $settings = $this->settingsRepo->readSettings();
+            $settings = $this->readSettings();
             $settings->updateBackupLastRun();
 
-            $this->settingsRepo->writeSettings($settings);
+            $this->writeSettings($settings);
 
             [$result_code, $result_output] = $this->runBackup(
                 $message->path,
@@ -48,9 +49,9 @@ final class RunBackupTask extends AbstractTask
 
             $result_output = 'Exited with code ' . $result_code . ":\n" . $result_output;
 
-            $settings = $this->settingsRepo->readSettings();
+            $settings = $this->readSettings();
             $settings->setBackupLastOutput($result_output);
-            $this->settingsRepo->writeSettings($settings);
+            $this->writeSettings($settings);
         }
     }
 
@@ -88,8 +89,7 @@ final class RunBackupTask extends AbstractTask
 
     public function run(bool $force = false): void
     {
-        $settings = $this->settingsRepo->readSettings();
-
+        $settings = $this->readSettings();
         if (!$settings->getBackupEnabled()) {
             $this->logger->debug('Automated backups disabled; skipping...');
             return;

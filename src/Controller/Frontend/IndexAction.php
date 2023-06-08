@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Frontend;
 
-use App\Entity\Repository\SettingsRepository;
+use App\Container\SettingsAwareTrait;
 use App\Entity\User;
 use App\Http\Response;
 use App\Http\ServerRequest;
@@ -12,17 +12,14 @@ use Psr\Http\Message\ResponseInterface;
 
 final class IndexAction
 {
-    public function __construct(
-        private readonly SettingsRepository $settingsRepo
-    ) {
-    }
+    use SettingsAwareTrait;
 
     public function __invoke(
         ServerRequest $request,
         Response $response
     ): ResponseInterface {
         // Redirect to complete setup, if it hasn't been completed yet.
-        $settings = $this->settingsRepo->readSettings();
+        $settings = $this->readSettings();
         if (!$settings->isSetupComplete()) {
             return $response->withRedirect($request->getRouter()->named('setup:index'));
         }

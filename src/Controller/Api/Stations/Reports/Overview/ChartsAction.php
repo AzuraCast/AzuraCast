@@ -7,7 +7,6 @@ namespace App\Controller\Api\Stations\Reports\Overview;
 use App\Entity\Api\Status;
 use App\Entity\Enums\AnalyticsIntervals;
 use App\Entity\Repository\AnalyticsRepository;
-use App\Entity\Repository\SettingsRepository;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use Carbon\CarbonImmutable;
@@ -17,10 +16,8 @@ use stdClass;
 final class ChartsAction extends AbstractReportAction
 {
     public function __construct(
-        private readonly AnalyticsRepository $analyticsRepo,
-        SettingsRepository $settingsRepo,
+        private readonly AnalyticsRepository $analyticsRepo
     ) {
-        parent::__construct($settingsRepo);
     }
 
     public function __invoke(

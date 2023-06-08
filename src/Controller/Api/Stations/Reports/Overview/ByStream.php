@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Controller\Api\Stations\Reports\Overview;
 
 use App\Entity\Api\Status;
-use App\Entity\Repository\SettingsRepository;
 use App\Entity\Repository\StationHlsStreamRepository;
 use App\Entity\Repository\StationMountRepository;
 use App\Entity\Repository\StationRemoteRepository;
@@ -18,10 +17,8 @@ final class ByStream extends AbstractReportAction
     public function __construct(
         private readonly StationMountRepository $mountRepo,
         private readonly StationRemoteRepository $remoteRepo,
-        private readonly StationHlsStreamRepository $hlsStreamRepo,
-        SettingsRepository $settingsRepo,
+        private readonly StationHlsStreamRepository $hlsStreamRepo
     ) {
-        parent::__construct($settingsRepo);
     }
 
     public function __invoke(

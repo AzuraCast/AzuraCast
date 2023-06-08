@@ -6,7 +6,7 @@ namespace App\Console\Command\Sync;
 
 use App\Cache\NowPlayingCache;
 use App\Container\EntityManagerAwareTrait;
-use App\Entity\Repository\SettingsRepository;
+use App\Container\SettingsAwareTrait;
 use App\Lock\LockFactory;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputInterface;
@@ -23,11 +23,11 @@ use function random_int;
 final class NowPlayingCommand extends AbstractSyncCommand
 {
     use EntityManagerAwareTrait;
+    use SettingsAwareTrait;
 
     public final const MAX_CONCURRENT_PROCESSES = 5;
 
     public function __construct(
-        private readonly SettingsRepository $settingsRepo,
         private readonly NowPlayingCache $nowPlayingCache,
         LockFactory $lockFactory,
     ) {
@@ -49,7 +49,7 @@ final class NowPlayingCommand extends AbstractSyncCommand
     {
         $io = new SymfonyStyle($input, $output);
 
-        $settings = $this->settingsRepo->readSettings();
+        $settings = $this->readSettings();
         if ($settings->getSyncDisabled()) {
             $this->logger->error('Automated synchronization is temporarily disabled.');
             return 1;

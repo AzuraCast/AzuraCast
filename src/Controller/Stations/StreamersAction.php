@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Stations;
 
-use App\Entity\Repository\SettingsRepository;
+use App\Container\SettingsAwareTrait;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Service\AzuraCastCentral;
@@ -12,9 +12,10 @@ use Psr\Http\Message\ResponseInterface;
 
 final class StreamersAction
 {
+    use SettingsAwareTrait;
+
     public function __construct(
         private readonly AzuraCastCentral $acCentral,
-        private readonly SettingsRepository $settingsRepo
     ) {
     }
 
@@ -25,7 +26,7 @@ final class StreamersAction
     ): ResponseInterface {
         $station = $request->getStation();
 
-        $settings = $this->settingsRepo->readSettings();
+        $settings = $this->readSettings();
         $backendConfig = $station->getBackendConfig();
 
         $router = $request->getRouter();

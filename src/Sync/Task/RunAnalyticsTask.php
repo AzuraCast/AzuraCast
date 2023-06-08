@@ -4,20 +4,21 @@ declare(strict_types=1);
 
 namespace App\Sync\Task;
 
+use App\Container\SettingsAwareTrait;
 use App\Entity\Analytics;
 use App\Entity\Enums\AnalyticsIntervals;
 use App\Entity\Enums\AnalyticsLevel;
 use App\Entity\Repository\AnalyticsRepository;
 use App\Entity\Repository\ListenerRepository;
-use App\Entity\Repository\SettingsRepository;
 use App\Entity\Repository\SongHistoryRepository;
 use App\Entity\Station;
 use Carbon\CarbonImmutable;
 
 final class RunAnalyticsTask extends AbstractTask
 {
+    use SettingsAwareTrait;
+
     public function __construct(
-        private readonly SettingsRepository $settingsRepo,
         private readonly AnalyticsRepository $analyticsRepo,
         private readonly ListenerRepository $listenerRepo,
         private readonly SongHistoryRepository $historyRepo,
@@ -36,7 +37,7 @@ final class RunAnalyticsTask extends AbstractTask
 
     public function run(bool $force = false): void
     {
-        switch ($this->settingsRepo->readSettings()->getAnalytics()) {
+        switch ($this->readSettings()->getAnalytics()) {
             case AnalyticsLevel::None:
                 $this->purgeListeners();
                 $this->purgeAnalytics();

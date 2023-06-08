@@ -7,8 +7,8 @@ declare(strict_types=1);
 namespace App\Media;
 
 use App\Container\LoggerAwareTrait;
+use App\Container\SettingsAwareTrait;
 use App\Entity\Interfaces\SongInterface;
-use App\Entity\Repository\SettingsRepository;
 use App\Entity\Song;
 use App\Event\Media\GetAlbumArt;
 use App\Version;
@@ -21,12 +21,12 @@ use Throwable;
 final class RemoteAlbumArt
 {
     use LoggerAwareTrait;
+    use SettingsAwareTrait;
 
     public const CACHE_LIFETIME = 86400 * 14; // Two Weeks
 
     public function __construct(
         private readonly CacheInterface $cache,
-        private readonly SettingsRepository $settingsRepo,
         private readonly EventDispatcherInterface $eventDispatcher,
         private readonly Client $httpClient
     ) {
@@ -34,12 +34,12 @@ final class RemoteAlbumArt
 
     public function enableForApis(): bool
     {
-        return $this->settingsRepo->readSettings()->getUseExternalAlbumArtInApis();
+        return $this->readSettings()->getUseExternalAlbumArtInApis();
     }
 
     public function enableForMedia(): bool
     {
-        return $this->settingsRepo->readSettings()->getUseExternalAlbumArtWhenProcessingMedia();
+        return $this->readSettings()->getUseExternalAlbumArtWhenProcessingMedia();
     }
 
     public function getArtwork(SongInterface $media): ?string

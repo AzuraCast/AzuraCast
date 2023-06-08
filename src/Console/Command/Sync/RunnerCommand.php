@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Console\Command\Sync;
 
-use App\Entity\Repository\SettingsRepository;
+use App\Container\SettingsAwareTrait;
 use App\Event\GetSyncTasks;
 use App\Lock\LockFactory;
 use App\Sync\Task\AbstractTask;
@@ -25,9 +25,10 @@ use function usleep;
 )]
 final class RunnerCommand extends AbstractSyncCommand
 {
+    use SettingsAwareTrait;
+
     public function __construct(
         private readonly EventDispatcherInterface $dispatcher,
-        private readonly SettingsRepository $settingsRepo,
         LockFactory $lockFactory
     ) {
         parent::__construct($lockFactory);
@@ -37,7 +38,7 @@ final class RunnerCommand extends AbstractSyncCommand
     {
         $io = new SymfonyStyle($input, $output);
 
-        $settings = $this->settingsRepo->readSettings();
+        $settings = $this->readSettings();
         if ($settings->getSyncDisabled()) {
             $io->error('Automated synchronization is temporarily disabled.');
             return 1;
@@ -60,7 +61,7 @@ final class RunnerCommand extends AbstractSyncCommand
         $this->manageStartedEvents();
 
         $settings->updateSyncLastRun();
-        $this->settingsRepo->writeSettings($settings);
+        $this->writeSettings($settings);
 
         return 0;
     }

@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace App\Controller\Api\Frontend\Dashboard;
 
 use App\Container\EntityManagerAwareTrait;
+use App\Container\SettingsAwareTrait;
 use App\Entity\Api\Dashboard;
 use App\Entity\ApiGenerator\NowPlayingApiGenerator;
-use App\Entity\Repository\SettingsRepository;
 use App\Entity\Station;
 use App\Enums\StationPermissions;
 use App\Http\Response;
@@ -18,9 +18,9 @@ use Psr\Http\Message\ResponseInterface;
 final class StationsAction
 {
     use EntityManagerAwareTrait;
+    use SettingsAwareTrait;
 
     public function __construct(
-        private readonly SettingsRepository $settingsRepo,
         private readonly NowPlayingApiGenerator $npApiGenerator
     ) {
     }
@@ -42,7 +42,7 @@ final class StationsAction
             }
         );
 
-        $listenersEnabled = $this->settingsRepo->readSettings()->isAnalyticsEnabled();
+        $listenersEnabled = $this->readSettings()->isAnalyticsEnabled();
 
         $viewStations = [];
         foreach ($stations as $station) {

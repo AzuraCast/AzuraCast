@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Service;
 
-use App\Entity\Repository\SettingsRepository;
+use App\Container\SettingsAwareTrait;
 use Symfony\Component\Mailer\Envelope;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Address;
@@ -13,20 +13,21 @@ use Symfony\Component\Mime\RawMessage;
 
 final class Mail implements MailerInterface
 {
+    use SettingsAwareTrait;
+
     public function __construct(
-        private readonly SettingsRepository $settingsRepo,
         private readonly MailerInterface $mailer
     ) {
     }
 
     public function isEnabled(): bool
     {
-        return $this->settingsRepo->readSettings()->getMailEnabled();
+        return $this->readSettings()->getMailEnabled();
     }
 
     public function createMessage(): Email
     {
-        $settings = $this->settingsRepo->readSettings();
+        $settings = $this->readSettings();
 
         $email = new Email();
         $email->from(new Address($settings->getMailSenderEmail(), $settings->getMailSenderName()));

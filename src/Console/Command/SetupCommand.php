@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Console\Command;
 
 use App\Container\EnvironmentAwareTrait;
-use App\Entity\Repository\SettingsRepository;
+use App\Container\SettingsAwareTrait;
 use App\Entity\Repository\StorageLocationRepository;
 use App\Service\AzuraCastCentral;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -21,9 +21,9 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 final class SetupCommand extends CommandAbstract
 {
     use EnvironmentAwareTrait;
+    use SettingsAwareTrait;
 
     public function __construct(
-        private readonly SettingsRepository $settingsRepo,
         private readonly AzuraCastCentral $acCentral,
         private readonly StorageLocationRepository $storageLocationRepo
     ) {
@@ -115,9 +115,9 @@ final class SetupCommand extends CommandAbstract
         }
 
         // Update system setting logging when updates were last run.
-        $settings = $this->settingsRepo->readSettings();
+        $settings = $this->readSettings();
         $settings->updateUpdateLastRun();
-        $this->settingsRepo->writeSettings($settings);
+        $this->writeSettings($settings);
 
         if ($update) {
             $io->success(

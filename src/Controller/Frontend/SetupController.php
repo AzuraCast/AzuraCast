@@ -6,8 +6,8 @@ namespace App\Controller\Frontend;
 
 use App\Container\EntityManagerAwareTrait;
 use App\Container\EnvironmentAwareTrait;
+use App\Container\SettingsAwareTrait;
 use App\Entity\Repository\RolePermissionRepository;
-use App\Entity\Repository\SettingsRepository;
 use App\Entity\Settings;
 use App\Entity\User;
 use App\Exception\NotLoggedInException;
@@ -25,9 +25,9 @@ final class SetupController
 {
     use EntityManagerAwareTrait;
     use EnvironmentAwareTrait;
+    use SettingsAwareTrait;
 
     public function __construct(
-        private readonly SettingsRepository $settingsRepo,
         private readonly RolePermissionRepository $permissionRepo,
         private readonly ValidatorInterface $validator,
         private readonly StationFormComponent $stationFormComponent,
@@ -203,7 +203,7 @@ final class SetupController
      */
     private function getSetupStep(ServerRequest $request): string
     {
-        $settings = $this->settingsRepo->readSettings();
+        $settings = $this->readSettings();
         if ($settings->isSetupComplete()) {
             return 'complete';
         }

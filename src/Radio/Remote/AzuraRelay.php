@@ -6,8 +6,8 @@ namespace App\Radio\Remote;
 
 use App\Cache\AzuraRelayCache;
 use App\Container\EnvironmentAwareTrait;
+use App\Container\SettingsAwareTrait;
 use App\Entity\Relay;
-use App\Entity\Repository\SettingsRepository;
 use App\Entity\StationRemote;
 use GuzzleHttp\Client;
 use GuzzleHttp\Promise\Create;
@@ -21,14 +21,14 @@ use NowPlaying\Result\Result;
 final class AzuraRelay extends AbstractRemote
 {
     use EnvironmentAwareTrait;
+    use SettingsAwareTrait;
 
     public function __construct(
         private readonly AzuraRelayCache $azuraRelayCache,
-        SettingsRepository $settingsRepo,
         Client $http_client,
         AdapterFactory $adapterFactory,
     ) {
-        parent::__construct($settingsRepo, $http_client, $adapterFactory);
+        parent::__construct($http_client, $adapterFactory);
     }
 
     public function getNowPlayingAsync(StationRemote $remote, bool $includeClients = false): PromiseInterface
@@ -90,7 +90,7 @@ final class AzuraRelay extends AbstractRemote
 
         $radio_port = $station->getFrontendConfig()->getPort();
 
-        $use_radio_proxy = $this->settingsRepo->readSettings()->getUseRadioProxy();
+        $use_radio_proxy = $this->readSettings()->getUseRadioProxy();
 
         if (
             $use_radio_proxy

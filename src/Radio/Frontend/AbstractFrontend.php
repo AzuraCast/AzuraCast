@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Radio\Frontend;
 
-use App\Entity\Repository\SettingsRepository;
+use App\Container\SettingsAwareTrait;
 use App\Entity\Repository\StationMountRepository;
 use App\Entity\Station;
 use App\Entity\StationMount;
@@ -26,10 +26,11 @@ use Supervisor\SupervisorInterface;
 
 abstract class AbstractFrontend extends AbstractLocalAdapter
 {
+    use SettingsAwareTrait;
+
     public function __construct(
         protected AdapterFactory $adapterFactory,
         protected Client $http_client,
-        protected SettingsRepository $settingsRepo,
         protected StationMountRepository $stationMountRepo,
         SupervisorInterface $supervisor,
         EventDispatcherInterface $dispatcher,
@@ -80,7 +81,7 @@ abstract class AbstractFrontend extends AbstractLocalAdapter
         $radio_port = $station->getFrontendConfig()->getPort();
         $base_url ??= $this->router->getBaseUrl();
 
-        $use_radio_proxy = $this->settingsRepo->readSettings()->getUseRadioProxy();
+        $use_radio_proxy = $this->readSettings()->getUseRadioProxy();
 
         if (
             $use_radio_proxy

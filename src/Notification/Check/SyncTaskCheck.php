@@ -4,18 +4,15 @@ declare(strict_types=1);
 
 namespace App\Notification\Check;
 
+use App\Container\SettingsAwareTrait;
 use App\Entity\Api\Notification;
-use App\Entity\Repository\SettingsRepository;
 use App\Enums\GlobalPermissions;
 use App\Event\GetNotifications;
 use App\Session\FlashLevels;
 
 final class SyncTaskCheck
 {
-    public function __construct(
-        private readonly SettingsRepository $settingsRepo
-    ) {
-    }
+    use SettingsAwareTrait;
 
     public function __invoke(GetNotifications $event): void
     {
@@ -26,7 +23,7 @@ final class SyncTaskCheck
             return;
         }
 
-        $settings = $this->settingsRepo->readSettings();
+        $settings = $this->readSettings();
 
         $setupComplete = $settings->getSetupCompleteTime();
         if ($setupComplete > (time() - 60 * 60 * 2)) {

@@ -6,7 +6,6 @@ namespace App\Radio\Remote;
 
 use App\Container\EntityManagerAwareTrait;
 use App\Container\LoggerAwareTrait;
-use App\Entity\Repository\SettingsRepository;
 use App\Entity\StationRemote;
 use GuzzleHttp\Client;
 use GuzzleHttp\Promise\PromiseInterface;
@@ -20,7 +19,6 @@ abstract class AbstractRemote
     use EntityManagerAwareTrait;
 
     public function __construct(
-        protected SettingsRepository $settingsRepo,
         protected Client $http_client,
         protected AdapterFactory $adapterFactory
     ) {

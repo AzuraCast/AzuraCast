@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Admin\Updates;
 
-use App\Entity\Repository\SettingsRepository;
+use App\Container\SettingsAwareTrait;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Service\AzuraCastCentral;
@@ -14,8 +14,9 @@ use RuntimeException;
 
 final class GetUpdatesAction
 {
+    use SettingsAwareTrait;
+
     public function __construct(
-        private readonly SettingsRepository $settingsRepo,
         private readonly AzuraCastCentral $azuracastCentral
     ) {
     }
@@ -24,7 +25,7 @@ final class GetUpdatesAction
         ServerRequest $request,
         Response $response
     ): ResponseInterface {
-        $settings = $this->settingsRepo->readSettings();
+        $settings = $this->readSettings();
 
         try {
             $updates = $this->azuracastCentral->checkForUpdates();
@@ -32,7 +33,7 @@ final class GetUpdatesAction
             if (!empty($updates)) {
                 $settings->setUpdateResults($updates);
                 $settings->updateUpdateLastRun();
-                $this->settingsRepo->writeSettings($settings);
+                $this->writeSettings($settings);
 
                 return $response->withJson($updates);
             }

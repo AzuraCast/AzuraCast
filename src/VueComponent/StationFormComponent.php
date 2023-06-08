@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\VueComponent;
 
-use App\Entity\Repository\SettingsRepository;
+use App\Container\SettingsAwareTrait;
 use App\Enums\GlobalPermissions;
 use App\Http\ServerRequest;
 use App\Radio\Adapters;
@@ -16,9 +16,10 @@ use Symfony\Component\Intl\Countries;
 
 final class StationFormComponent implements VueComponentInterface
 {
+    use SettingsAwareTrait;
+
     public function __construct(
-        private readonly Adapters $adapters,
-        private readonly SettingsRepository $settingsRepo
+        private readonly Adapters $adapters
     ) {
     }
 
@@ -26,7 +27,7 @@ final class StationFormComponent implements VueComponentInterface
     {
         $installedFrontends = $this->adapters->listFrontendAdapters(true);
 
-        $settings = $this->settingsRepo->readSettings();
+        $settings = $this->readSettings();
 
         return [
             'showAdminTab' => $request->getAcl()->isAllowed(GlobalPermissions::Stations),

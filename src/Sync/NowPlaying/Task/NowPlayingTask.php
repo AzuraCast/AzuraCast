@@ -7,10 +7,10 @@ namespace App\Sync\NowPlaying\Task;
 use App\Cache\NowPlayingCache;
 use App\Container\EntityManagerAwareTrait;
 use App\Container\LoggerAwareTrait;
+use App\Container\SettingsAwareTrait;
 use App\Entity\Api\NowPlaying\NowPlaying;
 use App\Entity\ApiGenerator\NowPlayingApiGenerator;
 use App\Entity\Repository\ListenerRepository;
-use App\Entity\Repository\SettingsRepository;
 use App\Entity\Station;
 use App\Environment;
 use App\Event\Radio\GenerateRawNowPlaying;
@@ -31,6 +31,7 @@ final class NowPlayingTask implements NowPlayingTaskInterface, EventSubscriberIn
 {
     use LoggerAwareTrait;
     use EntityManagerAwareTrait;
+    use SettingsAwareTrait;
 
     public function __construct(
         private readonly Adapters $adapters,
@@ -39,7 +40,6 @@ final class NowPlayingTask implements NowPlayingTaskInterface, EventSubscriberIn
         private readonly MessageBus $messageBus,
         private readonly RouterInterface $router,
         private readonly ListenerRepository $listenerRepo,
-        private readonly SettingsRepository $settingsRepo,
         private readonly NowPlayingApiGenerator $nowPlayingApiGenerator,
         private readonly HlsListeners $hlsListeners,
     ) {

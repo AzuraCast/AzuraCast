@@ -6,7 +6,6 @@ namespace App\Controller\Api\Stations\Reports\Overview;
 
 use App\Entity\Api\Status;
 use App\Entity\ApiGenerator\SongApiGenerator;
-use App\Entity\Repository\SettingsRepository;
 use App\Entity\Song;
 use App\Entity\SongHistory;
 use App\Http\Response;
@@ -18,9 +17,7 @@ final class BestAndWorstAction extends AbstractReportAction
 {
     public function __construct(
         private readonly SongApiGenerator $songApiGenerator,
-        SettingsRepository $settingsRepo
     ) {
-        parent::__construct($settingsRepo);
     }
 
     public function __invoke(

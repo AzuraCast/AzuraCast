@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Frontend;
 
-use App\Entity\Repository\SettingsRepository;
+use App\Container\SettingsAwareTrait;
 use App\Enums\GlobalPermissions;
 use App\Http\Response;
 use App\Http\ServerRequest;
@@ -12,16 +12,13 @@ use Psr\Http\Message\ResponseInterface;
 
 final class DashboardAction
 {
-    public function __construct(
-        private readonly SettingsRepository $settingsRepo
-    ) {
-    }
+    use SettingsAwareTrait;
 
     public function __invoke(
         ServerRequest $request,
         Response $response
     ): ResponseInterface {
-        $settings = $this->settingsRepo->readSettings();
+        $settings = $this->readSettings();
 
         // Detect current analytics level.
         $showCharts = $settings->isAnalyticsEnabled();

@@ -4,6 +4,8 @@ namespace Functional;
 
 use App\Acl;
 use App\Doctrine\ReloadableEntityManagerInterface;
+use App\Entity\Repository\SettingsRepository;
+use App\Entity\Repository\StationRepository;
 use App\Enums\GlobalPermissions;
 use App\Environment;
 use App\Media\MediaProcessor;
@@ -17,9 +19,9 @@ abstract class CestAbstract
 
     protected Environment $environment;
 
-    protected \App\Entity\Repository\SettingsRepository $settingsRepo;
+    protected SettingsRepository $settingsRepo;
 
-    protected \App\Entity\Repository\StationRepository $stationRepo;
+    protected StationRepository $stationRepo;
 
     protected ReloadableEntityManagerInterface $em;
 
@@ -35,8 +37,8 @@ abstract class CestAbstract
         $this->di = $tests_module->container;
         $this->em = $tests_module->em;
 
-        $this->settingsRepo = $this->di->get(\App\Entity\Repository\SettingsRepository::class);
-        $this->stationRepo = $this->di->get(\App\Entity\Repository\StationRepository::class);
+        $this->settingsRepo = $this->di->get(SettingsRepository::class);
+        $this->stationRepo = $this->di->get(StationRepository::class);
         $this->environment = $this->di->get(Environment::class);
     }
 

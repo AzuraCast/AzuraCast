@@ -246,23 +246,23 @@ final class RolesController extends AbstractAdminApiCrudController
         }
 
         if (isset($newPermissions['global'])) {
-            foreach ($newPermissions['global'] as $perm_name) {
-                if ($this->acl->isValidPermission($perm_name, true)) {
-                    $perm_record = new RolePermission($role, null, $perm_name);
-                    $this->em->persist($perm_record);
+            foreach ($newPermissions['global'] as $permName) {
+                if ($this->acl->isValidPermission($permName, true)) {
+                    $permRecord = new RolePermission($role, null, $permName);
+                    $this->em->persist($permRecord);
                 }
             }
         }
 
         if (isset($newPermissions['station'])) {
-            foreach ($newPermissions['station'] as $station_id => $station_perms) {
-                $station = $this->em->find(Station::class, $station_id);
+            foreach ($newPermissions['station'] as $stationId => $stationPerms) {
+                $station = $this->em->find(Station::class, $stationId);
 
                 if ($station instanceof Station) {
-                    foreach ($station_perms as $perm_name) {
-                        if ($this->acl->isValidPermission($perm_name, false)) {
-                            $perm_record = new RolePermission($role, $station, $perm_name);
-                            $this->em->persist($perm_record);
+                    foreach ($stationPerms as $permName) {
+                        if ($this->acl->isValidPermission($permName, false)) {
+                            $permRecord = new RolePermission($role, $station, $permName);
+                            $this->em->persist($permRecord);
                         }
                     }
                 }

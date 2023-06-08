@@ -241,7 +241,7 @@ final class PlaylistsController extends AbstractScheduledEntityController
 
         $return = $this->toArray($record);
 
-        $song_totals = $this->em->createQuery(
+        $songTotals = $this->em->createQuery(
             <<<'DQL'
                 SELECT count(sm.id) AS num_songs, sum(sm.length) AS total_length
                 FROM App\Entity\StationMedia sm
@@ -253,8 +253,8 @@ final class PlaylistsController extends AbstractScheduledEntityController
 
         $return['short_name'] = StationPlaylist::generateShortName($return['name']);
 
-        $return['num_songs'] = (int)$song_totals[0]['num_songs'];
-        $return['total_length'] = (int)$song_totals[0]['total_length'];
+        $return['num_songs'] = (int)$songTotals[0]['num_songs'];
+        $return['total_length'] = (int)$songTotals[0]['total_length'];
 
         $isInternal = ('true' === $request->getParam('internal', 'false'));
         $router = $request->getRouter();

@@ -45,8 +45,8 @@ final class SetupController
         ServerRequest $request,
         Response $response
     ): ResponseInterface {
-        $current_step = $this->getSetupStep($request);
-        return $response->withRedirect($request->getRouter()->named('setup:' . $current_step));
+        $currentStep = $this->getSetupStep($request);
+        return $response->withRedirect($request->getRouter()->named('setup:' . $currentStep));
     }
 
     /**
@@ -58,9 +58,9 @@ final class SetupController
         Response $response
     ): ResponseInterface {
         // Verify current step.
-        $current_step = $this->getSetupStep($request);
-        if ($current_step !== 'register' && $this->environment->isProduction()) {
-            return $response->withRedirect($request->getRouter()->named('setup:' . $current_step));
+        $currentStep = $this->getSetupStep($request);
+        if ($currentStep !== 'register' && $this->environment->isProduction()) {
+            return $response->withRedirect($request->getRouter()->named('setup:' . $currentStep));
         }
 
         $csrf = $request->getCsrf();
@@ -128,9 +128,9 @@ final class SetupController
         Response $response
     ): ResponseInterface {
         // Verify current step.
-        $current_step = $this->getSetupStep($request);
-        if ($current_step !== 'station' && $this->environment->isProduction()) {
-            return $response->withRedirect($request->getRouter()->named('setup:' . $current_step));
+        $currentStep = $this->getSetupStep($request);
+        if ($currentStep !== 'station' && $this->environment->isProduction()) {
+            return $response->withRedirect($request->getRouter()->named('setup:' . $currentStep));
         }
 
         $router = $request->getRouter();
@@ -161,9 +161,9 @@ final class SetupController
         $router = $request->getRouter();
 
         // Verify current step.
-        $current_step = $this->getSetupStep($request);
-        if ($current_step !== 'settings' && $this->environment->isProduction()) {
-            return $response->withRedirect($router->named('setup:' . $current_step));
+        $currentStep = $this->getSetupStep($request);
+        if ($currentStep !== 'settings' && $this->environment->isProduction()) {
+            return $response->withRedirect($router->named('setup:' . $currentStep));
         }
 
         return $request->getView()->renderVuePage(
@@ -209,13 +209,13 @@ final class SetupController
         }
 
         // Step 1: Register
-        $num_users = (int)$this->em->createQuery(
+        $numUsers = (int)$this->em->createQuery(
             <<<'DQL'
                 SELECT COUNT(u.id) FROM App\Entity\User u
             DQL
         )->getSingleScalarResult();
 
-        if (0 === $num_users) {
+        if (0 === $numUsers) {
             return 'register';
         }
 
@@ -226,13 +226,13 @@ final class SetupController
         }
 
         // Step 2: Set up Station
-        $num_stations = (int)$this->em->createQuery(
+        $numStations = (int)$this->em->createQuery(
             <<<'DQL'
                 SELECT COUNT(s.id) FROM App\Entity\Station s
             DQL
         )->getSingleScalarResult();
 
-        if (0 === $num_stations) {
+        if (0 === $numStations) {
             return 'station';
         }
 

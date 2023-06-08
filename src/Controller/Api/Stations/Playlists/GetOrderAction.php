@@ -38,7 +38,7 @@ final class GetOrderAction
             throw new Exception(__('This playlist is not a sequential playlist.'));
         }
 
-        $media_items = $this->em->createQuery(
+        $mediaItems = $this->em->createQuery(
             <<<'DQL'
                 SELECT spm, sm
                 FROM App\Entity\StationPlaylistMedia spm
@@ -64,7 +64,7 @@ final class GetOrderAction
                     ];
                     return $row;
                 },
-                $media_items
+                $mediaItems
             )
         );
     }

@@ -42,10 +42,10 @@ final class PermissionsAction
     ): ResponseInterface {
         $permissions = [];
         foreach ($this->acl->listPermissions() as $group => $actions) {
-            foreach ($actions as $action_id => $action_name) {
+            foreach ($actions as $actionId => $actionName) {
                 $permissions[$group][] = [
-                    'id' => $action_id,
-                    'name' => $action_name,
+                    'id' => $actionId,
+                    'name' => $actionName,
                 ];
             }
         }

@@ -25,17 +25,17 @@ final class ToggleAction
     ): ResponseInterface {
         $record = $this->playlistRepo->requireForStation($id, $request->getStation());
 
-        $new_value = !$record->getIsEnabled();
-        $record->setIsEnabled($new_value);
+        $newValue = !$record->getIsEnabled();
+        $record->setIsEnabled($newValue);
 
         $em = $this->playlistRepo->getEntityManager();
         $em->persist($record);
         $em->flush();
 
-        $flash_message = ($new_value)
+        $flashMessage = ($newValue)
             ? __('Playlist enabled.')
             : __('Playlist disabled.');
 
-        return $response->withJson(new Status(true, $flash_message));
+        return $response->withJson(new Status(true, $flashMessage));
     }
 }

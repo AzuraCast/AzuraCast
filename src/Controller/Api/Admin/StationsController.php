@@ -262,7 +262,7 @@ class StationsController extends AbstractAdminApiCrudController
      */
     protected function editRecord(?array $data, object $record = null, array $context = []): object
     {
-        $create_mode = (null === $record);
+        $createMode = (null === $record);
 
         if (null === $data) {
             throw new InvalidArgumentException('Could not parse input data.');
@@ -275,7 +275,7 @@ class StationsController extends AbstractAdminApiCrudController
             throw ValidationException::fromValidationErrors($errors);
         }
 
-        return ($create_mode)
+        return ($createMode)
             ? $this->handleCreate($record)
             : $this->handleEdit($record);
     }
@@ -290,7 +290,7 @@ class StationsController extends AbstractAdminApiCrudController
 
     protected function handleEdit(Station $station): Station
     {
-        $original_record = $this->em->getUnitOfWork()->getOriginalEntityData($station);
+        $originalRecord = $this->em->getUnitOfWork()->getOriginalEntityData($station);
 
         $this->em->persist($station);
         $this->em->flush();
@@ -299,7 +299,7 @@ class StationsController extends AbstractAdminApiCrudController
 
         // Delete media-related items if the media storage is changed.
         /** @var StorageLocation|null $oldMediaStorage */
-        $oldMediaStorage = $original_record['media_storage_location'];
+        $oldMediaStorage = $originalRecord['media_storage_location'];
         $newMediaStorage = $station->getMediaStorageLocation();
 
         if (null === $oldMediaStorage || $oldMediaStorage->getId() !== $newMediaStorage->getId()) {
@@ -312,25 +312,25 @@ class StationsController extends AbstractAdminApiCrudController
         }
 
         // Get the original values to check for changes.
-        $old_frontend = $original_record['frontend_type'];
-        $old_backend = $original_record['backend_type'];
-        $old_hls = (bool)$original_record['enable_hls'];
+        $oldFrontend = $originalRecord['frontend_type'];
+        $oldBackend = $originalRecord['backend_type'];
+        $oldHls = (bool)$originalRecord['enable_hls'];
 
-        $frontend_changed = ($old_frontend !== $station->getFrontendType());
-        $backend_changed = ($old_backend !== $station->getBackendType());
-        $adapter_changed = $frontend_changed || $backend_changed;
+        $frontendChanged = ($oldFrontend !== $station->getFrontendType());
+        $backendChanged = ($oldBackend !== $station->getBackendType());
+        $adapterChanged = $frontendChanged || $backendChanged;
 
-        $hls_changed = $old_hls !== $station->getEnableHls();
+        $hlsChanged = $oldHls !== $station->getEnableHls();
 
-        if ($frontend_changed) {
+        if ($frontendChanged) {
             $this->stationRepo->resetMounts($station);
         }
 
-        if ($hls_changed || $backend_changed) {
+        if ($hlsChanged || $backendChanged) {
             $this->stationRepo->resetHls($station);
         }
 
-        if ($adapter_changed || !$station->getIsEnabled()) {
+        if ($adapterChanged || !$station->getIsEnabled()) {
             try {
                 $this->configuration->writeConfiguration(
                     station: $station,

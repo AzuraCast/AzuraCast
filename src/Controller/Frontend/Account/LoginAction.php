@@ -35,13 +35,13 @@ final class LoginAction
         $settings = $this->readSettings();
 
         if (!$settings->isSetupComplete()) {
-            $num_users = (int)$this->em->createQuery(
+            $numUsers = (int)$this->em->createQuery(
                 <<<'DQL'
                     SELECT COUNT(u.id) FROM App\Entity\User u
                 DQL
             )->getSingleScalarResult();
 
-            if (0 === $num_users) {
+            if (0 === $numUsers) {
                 return $response->withRedirect($request->getRouter()->named('setup:index'));
             }
         }

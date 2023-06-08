@@ -61,18 +61,18 @@ final class PutTwoFactorAction extends UsersController
             $totp->setParameter('image', 'https://www.azuracast.com/img/logo.png');
 
             // Generate QR code
-            $totp_uri = $totp->getProvisioningUri();
+            $totpUri = $totp->getProvisioningUri();
 
             $renderer = new BaconQrCode\Renderer\ImageRenderer(
                 new BaconQrCode\Renderer\RendererStyle\RendererStyle(300),
                 new BaconQrCode\Renderer\Image\SvgImageBackEnd()
             );
-            $qrCodeImage = (new BaconQrCode\Writer($renderer))->writeString($totp_uri);
+            $qrCodeImage = (new BaconQrCode\Writer($renderer))->writeString($totpUri);
             $qrCodeBase64 = 'data:image/svg+xml;base64,' . base64_encode($qrCodeImage);
 
             return $response->withJson([
                 'secret' => $secret,
-                'totp_uri' => $totp_uri,
+                'totp_uri' => $totpUri,
                 'qr_code' => $qrCodeBase64,
             ]);
         } catch (Throwable $e) {

@@ -205,23 +205,23 @@ final class FilesController extends AbstractStationApiCrudController
         $request->getParsedBody();
 
         // Convert the body into an UploadFile API entity first.
-        /** @var UploadFile $api_record */
-        $api_record = $this->serializer->denormalize($request->getParsedBody(), UploadFile::class, null, []);
+        /** @var UploadFile $apiRecord */
+        $apiRecord = $this->serializer->denormalize($request->getParsedBody(), UploadFile::class, null, []);
 
         // Validate the UploadFile API record.
-        $errors = $this->validator->validate($api_record);
+        $errors = $this->validator->validate($apiRecord);
         if (count($errors) > 0) {
             throw ValidationException::fromValidationErrors($errors);
         }
 
         // Write file to temp path.
-        $tempPath = $station->getRadioTempDir() . '/' . $api_record->getSanitizedFilename();
-        file_put_contents($tempPath, $api_record->getFileContents());
+        $tempPath = $station->getRadioTempDir() . '/' . $apiRecord->getSanitizedFilename();
+        file_put_contents($tempPath, $apiRecord->getFileContents());
 
         // Process temp path as regular media record.
         $record = $this->mediaProcessor->processAndUpload(
             $mediaStorage,
-            $api_record->getSanitizedPath(),
+            $apiRecord->getSanitizedPath(),
             $tempPath
         );
 
@@ -235,7 +235,7 @@ final class FilesController extends AbstractStationApiCrudController
     public function editAction(
         ServerRequest $request,
         Response $response,
-        string $station_id,
+        string $stationId,
         string $id
     ): ResponseInterface {
         $station = $this->getStation($request);
@@ -251,7 +251,7 @@ final class FilesController extends AbstractStationApiCrudController
             throw new InvalidArgumentException('Could not parse input data.');
         }
 
-        $custom_fields = $data['custom_fields'] ?? null;
+        $customFields = $data['custom_fields'] ?? null;
         $playlists = $data['playlists'] ?? null;
         unset($data['custom_fields'], $data['playlists']);
 
@@ -276,44 +276,44 @@ final class FilesController extends AbstractStationApiCrudController
             $this->em->persist($record);
             $this->em->flush();
 
-            if (null !== $custom_fields) {
-                $this->customFieldsRepo->setCustomFields($record, $custom_fields);
+            if (null !== $customFields) {
+                $this->customFieldsRepo->setCustomFields($record, $customFields);
             }
 
             if (null !== $playlists) {
-                /** @var StationPlaylist[] $affected_playlists */
-                $affected_playlists = [];
+                /** @var StationPlaylist[] $affectedPlaylists */
+                $affectedPlaylists = [];
 
                 // Remove existing playlists.
-                $media_playlists = $this->playlistMediaRepo->clearPlaylistsFromMedia($record, $station);
+                $mediaPlaylists = $this->playlistMediaRepo->clearPlaylistsFromMedia($record, $station);
                 $this->em->flush();
 
-                foreach ($media_playlists as $playlist_id => $playlist) {
-                    if (!isset($affected_playlists[$playlist_id])) {
-                        $affected_playlists[$playlist_id] = $playlist;
+                foreach ($mediaPlaylists as $playlistId => $playlist) {
+                    if (!isset($affectedPlaylists[$playlistId])) {
+                        $affectedPlaylists[$playlistId] = $playlist;
                     }
                 }
 
                 // Set new playlists.
-                foreach ($playlists as $new_playlist) {
-                    if (is_array($new_playlist)) {
-                        $playlist_id = $new_playlist['id'];
-                        $playlist_weight = $new_playlist['weight'] ?? 0;
+                foreach ($playlists as $newPlaylist) {
+                    if (is_array($newPlaylist)) {
+                        $playlistId = $newPlaylist['id'];
+                        $playlistWeight = $newPlaylist['weight'] ?? 0;
                     } else {
-                        $playlist_id = (int)$new_playlist;
-                        $playlist_weight = 0;
+                        $playlistId = (int)$newPlaylist;
+                        $playlistWeight = 0;
                     }
 
                     $playlist = $this->em->getRepository(StationPlaylist::class)->findOneBy(
                         [
                             'station' => $station,
-                            'id' => $playlist_id,
+                            'id' => $playlistId,
                         ]
                     );
 
                     if ($playlist instanceof StationPlaylist) {
-                        $affected_playlists[$playlist->getId()] = $playlist;
-                        $this->playlistMediaRepo->addMediaToPlaylist($record, $playlist, $playlist_weight);
+                        $affectedPlaylists[$playlist->getId()] = $playlist;
+                        $this->playlistMediaRepo->addMediaToPlaylist($record, $playlist, $playlistWeight);
                     }
                 }
 
@@ -322,10 +322,10 @@ final class FilesController extends AbstractStationApiCrudController
                 // Handle playlist changes.
                 $backend = $this->adapters->getBackendAdapter($station);
                 if ($backend instanceof Liquidsoap) {
-                    foreach ($affected_playlists as $playlist_id => $playlist_row) {
+                    foreach ($affectedPlaylists as $playlistId => $playlistRow) {
                         // Instruct the message queue to start a new "write playlist to file" task.
                         $message = new WritePlaylistFileMessage();
-                        $message->playlist_id = $playlist_id;
+                        $message->playlist_id = $playlistId;
 
                         $this->messageBus->dispatch($message);
                     }
@@ -397,12 +397,12 @@ final class FilesController extends AbstractStationApiCrudController
 
         // Delete the media file off the filesystem.
         // Write new PLS playlist configuration.
-        foreach ($this->mediaRepo->remove($record, true) as $playlist_id => $playlist) {
+        foreach ($this->mediaRepo->remove($record, true) as $playlistId => $playlist) {
             $backend = $this->adapters->getBackendAdapter($playlist->getStation());
             if ($backend instanceof Liquidsoap) {
                 // Instruct the message queue to start a new "write playlist to file" task.
                 $message = new WritePlaylistFileMessage();
-                $message->playlist_id = $playlist_id;
+                $message->playlist_id = $playlistId;
 
                 $this->messageBus->dispatch($message);
             }

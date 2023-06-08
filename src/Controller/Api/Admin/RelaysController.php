@@ -72,10 +72,10 @@ final class RelaysController
 
             $row->type = $station->getFrontendType()->value;
 
-            $frontend_config = $station->getFrontendConfig();
-            $row->port = $frontend_config->getPort();
-            $row->relay_pw = $frontend_config->getRelayPassword();
-            $row->admin_pw = $frontend_config->getAdminPassword();
+            $frontendConfig = $station->getFrontendConfig();
+            $row->port = $frontendConfig->getPort();
+            $row->relay_pw = $frontendConfig->getRelayPassword();
+            $row->admin_pw = $frontendConfig->getAdminPassword();
 
             $mounts = [];
 
@@ -103,7 +103,7 @@ final class RelaysController
      */
     private function getManageableStations(ServerRequest $request): array
     {
-        $all_stations = $this->em->createQuery(
+        $allStations = $this->em->createQuery(
             <<<'DQL'
                 SELECT s, sm
                 FROM App\Entity\Station s
@@ -117,7 +117,7 @@ final class RelaysController
         $acl = $request->getAcl();
 
         return array_filter(
-            $all_stations,
+            $allStations,
             static function (Station $station) use ($acl) {
                 return $acl->isAllowed(StationPermissions::Broadcasting, $station->getId());
             }
@@ -128,20 +128,20 @@ final class RelaysController
         ServerRequest $request,
         Response $response
     ): ResponseInterface {
-        $relay_repo = $this->em->getRepository(Relay::class);
+        $relayRepo = $this->em->getRepository(Relay::class);
 
         $body = (array)$request->getParsedBody();
 
         if (!empty($body['base_url'])) {
-            $base_url = $body['base_url'];
+            $baseUrl = $body['base_url'];
         } else {
             /** @noinspection HttpUrlsUsage */
-            $base_url = 'http://' . $this->readSettings()->getIp($request);
+            $baseUrl = 'http://' . $this->readSettings()->getIp($request);
         }
 
-        $relay = $relay_repo->findOneBy(['base_url' => $base_url]);
+        $relay = $relayRepo->findOneBy(['base_url' => $baseUrl]);
         if (!$relay instanceof Relay) {
-            $relay = new Relay($base_url);
+            $relay = new Relay($baseUrl);
         }
 
         $relay->setName($body['name'] ?? 'Relay');
@@ -151,26 +151,26 @@ final class RelaysController
         $this->em->persist($relay);
 
         // List existing remotes to avoid duplication.
-        $existing_remotes = [];
+        $existingRemotes = [];
 
         foreach ($relay->getRemotes() as $remote) {
             /** @var StationRemote $remote */
-            $existing_remotes[$remote->getStation()->getId()][$remote->getMount()] = $remote;
+            $existingRemotes[$remote->getStation()->getId()][$remote->getMount()] = $remote;
         }
 
         // Iterate through all remotes that *should* exist.
         foreach ($this->getManageableStations($request) as $station) {
-            $station_id = $station->getId();
+            $stationId = $station->getId();
 
             foreach ($station->getMounts() as $mount) {
                 /** @var StationMount $mount */
-                $mount_path = $mount->getName();
+                $mountPath = $mount->getName();
 
-                if (isset($existing_remotes[$station_id][$mount_path])) {
+                if (isset($existingRemotes[$stationId][$mountPath])) {
                     /** @var StationRemote $remote */
-                    $remote = $existing_remotes[$station_id][$mount_path];
+                    $remote = $existingRemotes[$stationId][$mountPath];
 
-                    unset($existing_remotes[$station_id][$mount_path]);
+                    unset($existingRemotes[$stationId][$mountPath]);
                 } else {
                     $remote = new StationRemote($station);
                 }
@@ -189,9 +189,9 @@ final class RelaysController
         }
 
         // Remove all remotes that weren't processed earlier.
-        foreach ($existing_remotes as $existing_remote_station) {
-            foreach ($existing_remote_station as $existing_remote) {
-                $this->em->remove($existing_remote);
+        foreach ($existingRemotes as $existingRemoteStation) {
+            foreach ($existingRemoteStation as $existingRemote) {
+                $this->em->remove($existingRemote);
             }
         }
 

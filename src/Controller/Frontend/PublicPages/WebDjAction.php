@@ -38,14 +38,14 @@ final class WebDjAction
             throw new StationUnsupportedException();
         }
 
-        $wss_url = (string)$backend->getWebStreamingUrl($station, $request->getRouter()->getBaseUrl());
+        $wssUrl = (string)$backend->getWebStreamingUrl($station, $request->getRouter()->getBaseUrl());
 
         return $request->getView()->renderToResponse(
             response: $response->withHeader('X-Frame-Options', '*'),
             templateName: 'frontend/public/webdj',
             templateArgs: [
                 'station' => $station,
-                'wss_url' => $wss_url,
+                'wss_url' => $wssUrl,
             ]
         );
     }

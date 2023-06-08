@@ -80,9 +80,9 @@ final class HistoryController
         set_time_limit($this->environment->getSyncLongExecutionTime());
 
         $station = $request->getStation();
-        $station_tz = $station->getTimezoneObject();
+        $stationTz = $station->getTimezoneObject();
 
-        $dateRange = $this->getDateRange($request, $station_tz);
+        $dateRange = $this->getDateRange($request, $stationTz);
         $start = $dateRange->getStart();
         $end = $dateRange->getEnd();
 
@@ -118,10 +118,10 @@ final class HistoryController
             );
         }
 
-        $search_phrase = trim($request->getQueryParam('searchPhrase') ?? '');
-        if (!empty($search_phrase)) {
+        $searchPhrase = trim($request->getQueryParam('searchPhrase') ?? '');
+        if (!empty($searchPhrase)) {
             $qb->andWhere('(sh.title LIKE :query OR sh.artist LIKE :query)')
-                ->setParameter('query', '%' . $search_phrase . '%');
+                ->setParameter('query', '%' . $searchPhrase . '%');
         }
 
         $qb->orderBy('sh.timestamp_start', 'DESC');
@@ -131,9 +131,9 @@ final class HistoryController
         $router = $request->getRouter();
 
         $paginator->setPostprocessor(
-            function ($sh_row) use ($router) {
-                /** @var SongHistory $sh_row */
-                $row = $this->songHistoryApiGenerator->detailed($sh_row);
+            function ($shRow) use ($router) {
+                /** @var SongHistory $shRow */
+                $row = $this->songHistoryApiGenerator->detailed($shRow);
                 $row->resolveUrls($router->getBaseUrl());
 
                 return $row;

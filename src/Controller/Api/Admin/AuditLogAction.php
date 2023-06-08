@@ -35,10 +35,10 @@ final class AuditLogAction
             ->setParameter('start', $start->getTimestamp())
             ->setParameter('end', $end->getTimestamp());
 
-        $search_phrase = trim($request->getQueryParam('searchPhrase', ''));
-        if (!empty($search_phrase)) {
+        $searchPhrase = trim($request->getQueryParam('searchPhrase', ''));
+        if (!empty($searchPhrase)) {
             $qb->andWhere('(a.user LIKE :query OR a.identifier LIKE :query OR a.target LIKE :query)')
-                ->setParameter('query', '%' . $search_phrase . '%');
+                ->setParameter('query', '%' . $searchPhrase . '%');
         }
 
         $qb->orderBy('a.timestamp', 'DESC');

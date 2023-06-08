@@ -166,7 +166,7 @@ final class UploadAction
         return $response->withJson(
             new StationPlaylistImportResult(
                 message: sprintf(__('%d files processed.'), $processed),
-                import_results: $importResults
+                importResults: $importResults
             )
         );
     }

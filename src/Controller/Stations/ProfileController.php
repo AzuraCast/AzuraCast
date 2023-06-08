@@ -39,7 +39,7 @@ final class ProfileController
         }
 
         // Statistics about backend playback.
-        $num_songs = $this->em->createQuery(
+        $numSongs = $this->em->createQuery(
             <<<'DQL'
                 SELECT COUNT(sm.id)
                 FROM App\Entity\StationMedia sm
@@ -51,7 +51,7 @@ final class ProfileController
         )->setParameter('station_id', $station->getId())
             ->getSingleScalarResult();
 
-        $num_playlists = $this->em->createQuery(
+        $numPlaylists = $this->em->createQuery(
             <<<'DQL'
                 SELECT COUNT(sp.id)
                 FROM App\Entity\StationPlaylist sp
@@ -195,8 +195,8 @@ final class ProfileController
                 'frontendStopUri' => $router->fromHere('api:stations:frontend', ['do' => 'stop']),
 
                 // Backend
-                'numSongs' => (int)$num_songs,
-                'numPlaylists' => (int)$num_playlists,
+                'numSongs' => (int)$numSongs,
+                'numPlaylists' => (int)$numPlaylists,
                 'manageMediaUri' => $router->fromHere('stations:files:index'),
                 'managePlaylistsUri' => $router->fromHere('stations:playlists:index'),
                 'backendRestartUri' => $router->fromHere('api:stations:backend', ['do' => 'restart']),
@@ -209,7 +209,7 @@ final class ProfileController
     public function editAction(
         ServerRequest $request,
         Response $response,
-        string $station_id
+        string $stationId
     ): ResponseInterface {
         $router = $request->getRouter();
 

@@ -233,9 +233,9 @@ final class ListAction
                     ? $row->path
                     : basename($row->path);
 
-                $max_length = 60;
-                if (mb_strlen($shortname) > $max_length) {
-                    $shortname = mb_substr($shortname, 0, $max_length - 15) . '...' . mb_substr($shortname, -12);
+                $maxLength = 60;
+                if (mb_strlen($shortname) > $maxLength) {
+                    $shortname = mb_substr($shortname, 0, $maxLength - 15) . '...' . mb_substr($shortname, -12);
                 }
                 $row->path_short = $shortname;
 

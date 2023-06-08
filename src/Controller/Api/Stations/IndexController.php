@@ -75,17 +75,17 @@ final class IndexController
         ServerRequest $request,
         Response $response
     ): ResponseInterface {
-        $stations_raw = $this->em->getRepository(Station::class)
+        $stationsRaw = $this->em->getRepository(Station::class)
             ->findBy(['is_enabled' => 1]);
 
         $stations = [];
-        foreach ($stations_raw as $row) {
+        foreach ($stationsRaw as $row) {
             /** @var Station $row */
-            $api_row = ($this->stationApiGenerator)($row);
-            $api_row->resolveUrls($request->getRouter()->getBaseUrl());
+            $apiRow = ($this->stationApiGenerator)($row);
+            $apiRow->resolveUrls($request->getRouter()->getBaseUrl());
 
-            if ($api_row->is_public) {
-                $stations[] = $api_row;
+            if ($apiRow->is_public) {
+                $stations[] = $apiRow;
             }
         }
 

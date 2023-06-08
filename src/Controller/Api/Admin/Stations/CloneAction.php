@@ -88,8 +88,8 @@ final class CloneAction extends StationsController
         }
 
         // Set new radio base directory
-        $station_base_dir = $this->environment->getStationDirectory();
-        $newStation->setRadioBaseDir($station_base_dir . '/' . $newStation->getShortName());
+        $stationBaseDir = $this->environment->getStationDirectory();
+        $newStation->setRadioBaseDir($stationBaseDir . '/' . $newStation->getShortName());
 
         $newStation->ensureDirectoriesExist();
 

@@ -80,15 +80,15 @@ final class FlowUploadAction
 
         // If the user is looking at a playlist's contents, add uploaded media to that playlist.
         if ($stationMedia instanceof StationMedia && !empty($allParams['searchPhrase'])) {
-            $search_phrase = $allParams['searchPhrase'];
+            $searchPhrase = $allParams['searchPhrase'];
 
-            if (str_starts_with($search_phrase, 'playlist:')) {
-                $playlist_name = substr($search_phrase, 9);
+            if (str_starts_with($searchPhrase, 'playlist:')) {
+                $playlistName = substr($searchPhrase, 9);
 
                 $playlist = $this->em->getRepository(StationPlaylist::class)->findOneBy(
                     [
                         'station_id' => $station->getId(),
-                        'name' => $playlist_name,
+                        'name' => $playlistName,
                     ]
                 );
 

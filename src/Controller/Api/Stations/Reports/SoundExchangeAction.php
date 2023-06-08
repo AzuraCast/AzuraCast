@@ -65,7 +65,7 @@ final class SoundExchangeAction
             ],
         ];
 
-        $all_media = $this->em->createQuery(
+        $allMedia = $this->em->createQuery(
             <<<'DQL'
                 SELECT sm, spm, sp, smcf
                 FROM App\Entity\StationMedia sm
@@ -79,9 +79,9 @@ final class SoundExchangeAction
             ->setParameter('storageLocation', $station->getMediaStorageLocation())
             ->getArrayResult();
 
-        $media_by_id = array_column($all_media, null, 'id');
+        $mediaById = array_column($allMedia, null, 'id');
 
-        $history_rows = $this->em->createQuery(
+        $historyRows = $this->em->createQuery(
             <<<'DQL'
                 SELECT sh.song_id AS song_id, sh.text, sh.artist, sh.title, sh.media_id, COUNT(sh.id) AS plays,
                     SUM(sh.unique_listeners) AS unique_listeners
@@ -97,16 +97,16 @@ final class SoundExchangeAction
             ->getArrayResult();
 
         // TODO: Fix this (not all song rows have a media_id)
-        $history_rows_by_id = array_column($history_rows, null, 'media_id');
+        $historyRowsById = array_column($historyRows, null, 'media_id');
 
         // Remove any reference to the "Stream Offline" song.
-        $offline_song_hash = Song::createOffline()->getSongId();
-        unset($history_rows_by_id[$offline_song_hash]);
+        $offlineSongHash = Song::createOffline()->getSongId();
+        unset($historyRowsById[$offlineSongHash]);
 
         // Assemble report items
-        $station_name = $station->getName();
+        $stationName = $station->getName();
 
-        $set_isrc_query = $this->em->createQuery(
+        $setIsrcQuery = $this->em->createQuery(
             <<<'DQL'
                 UPDATE App\Entity\StationMedia sm
                 SET sm.isrc = :isrc
@@ -114,56 +114,56 @@ final class SoundExchangeAction
             DQL
         );
 
-        foreach ($history_rows_by_id as $song_id => $history_row) {
-            $song_row = $media_by_id[$song_id] ?? $history_row;
+        foreach ($historyRowsById as $songId => $historyRow) {
+            $songRow = $mediaById[$songId] ?? $historyRow;
 
             // Try to find the ISRC if it's not already listed.
-            if ($fetchIsrc && empty($song_row['isrc'])) {
-                $isrc = $this->findISRC($song_row);
-                $song_row['isrc'] = $isrc;
+            if ($fetchIsrc && empty($songRow['isrc'])) {
+                $isrc = $this->findISRC($songRow);
+                $songRow['isrc'] = $isrc;
 
-                if (null !== $isrc && isset($song_row['media_id'])) {
-                    $set_isrc_query->setParameter('isrc', $isrc)
-                        ->setParameter('media_id', $song_row['media_id'])
+                if (null !== $isrc && isset($songRow['media_id'])) {
+                    $setIsrcQuery->setParameter('isrc', $isrc)
+                        ->setParameter('media_id', $songRow['media_id'])
                         ->execute();
                 }
             }
 
             $export[] = [
-                $station_name,
+                $stationName,
                 'A',
-                $song_row['artist'] ?? '',
-                $song_row['title'] ?? '',
-                $song_row['isrc'] ?? '',
-                $song_row['album'] ?? '',
+                $songRow['artist'] ?? '',
+                $songRow['title'] ?? '',
+                $songRow['isrc'] ?? '',
+                $songRow['album'] ?? '',
                 '',
-                $history_row['unique_listeners'],
+                $historyRow['unique_listeners'],
             ];
         }
 
         // Assemble export into SoundExchange format
-        $export_txt_raw = [];
-        foreach ($export as $export_row) {
-            foreach ($export_row as $i => $export_col) {
-                if (!is_numeric($export_col)) {
-                    $export_row[$i] = '^' . str_replace(['^', '|'], ['', ''], strtoupper($export_col)) . '^';
+        $exportTxtRaw = [];
+        foreach ($export as $exportRow) {
+            foreach ($exportRow as $i => $exportCol) {
+                if (!is_numeric($exportCol)) {
+                    $exportRow[$i] = '^' . str_replace(['^', '|'], ['', ''], strtoupper($exportCol)) . '^';
                 }
             }
-            $export_txt_raw[] = implode('|', $export_row);
+            $exportTxtRaw[] = implode('|', $exportRow);
         }
-        $export_txt = implode("\n", $export_txt_raw);
+        $exportTxt = implode("\n", $exportTxtRaw);
 
         // Example: WABC01012009-31012009_A.txt
-        $export_filename = strtoupper($station->getShortName())
+        $exportFilename = strtoupper($station->getShortName())
             . $startDate->format('dmY') . '-'
             . $endDate->format('dmY') . '_A.txt';
 
-        return $response->renderStringAsFile($export_txt, 'text/plain', $export_filename);
+        return $response->renderStringAsFile($exportTxt, 'text/plain', $exportFilename);
     }
 
-    private function findISRC(array $song_row): ?string
+    private function findISRC(array $songRow): ?string
     {
-        $song = Song::createFromArray($song_row);
+        $song = Song::createFromArray($songRow);
 
         try {
             foreach ($this->musicBrainz->findRecordingsForSong($song, 'isrcs') as $recording) {

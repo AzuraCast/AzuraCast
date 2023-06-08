@@ -32,10 +32,10 @@ final class ToggleAction
         $em->persist($record);
         $em->flush();
 
-        $flash_message = ($newValue)
+        $flashMessage = ($newValue)
             ? __('Web hook enabled.')
             : __('Web hook disabled.');
 
-        return $response->withJson(new Status(true, $flash_message));
+        return $response->withJson(new Status(true, $flashMessage));
     }
 }

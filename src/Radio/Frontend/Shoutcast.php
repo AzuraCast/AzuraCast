@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Radio\Frontend;
 
 use App\Entity\Station;
+use App\Entity\StationMount;
 use App\Service\Acme;
 use GuzzleHttp\Promise\Utils;
 use NowPlaying\Result\Result;
@@ -155,7 +156,7 @@ final class Shoutcast extends AbstractFrontend
 
         $i = 0;
         foreach ($station->getMounts() as $mount_row) {
-            /** @var \App\Entity\StationMount $mount_row */
+            /** @var StationMount $mount_row */
             $i++;
             $config['streamid_' . $i] = $i;
             $config['streampath_' . $i] = $mount_row->getName();

@@ -11,19 +11,19 @@ use App\Entity\StationMedia;
 use App\Entity\StationMediaCustomField;
 
 /**
- * @extends Repository<\App\Entity\CustomField>
+ * @extends Repository<CustomField>
  */
 final class CustomFieldRepository extends Repository
 {
     /**
-     * @return \App\Entity\CustomField[]
+     * @return CustomField[]
      */
     public function getAutoAssignableFields(): array
     {
         $fields = [];
 
         foreach ($this->repository->findAll() as $field) {
-            /** @var \App\Entity\CustomField $field */
+            /** @var CustomField $field */
             if (!$field->hasAutoAssign()) {
                 continue;
             }
@@ -62,7 +62,7 @@ final class CustomFieldRepository extends Repository
     /**
      * Retrieve a key-value representation of all custom metadata for the specified media.
      *
-     * @param \App\Entity\StationMedia $media
+     * @param StationMedia $media
      *
      * @return mixed[]
      */
@@ -88,7 +88,7 @@ final class CustomFieldRepository extends Repository
     /**
      * Set the custom metadata for a specified station based on a provided key-value array.
      *
-     * @param \App\Entity\StationMedia $media
+     * @param StationMedia $media
      * @param array $custom_fields
      */
     public function setCustomFields(StationMedia $media, array $custom_fields): void

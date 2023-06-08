@@ -6,10 +6,13 @@ namespace App\Media;
 
 use App\Container\EntityManagerAwareTrait;
 use App\Doctrine\ReadWriteBatchIteratorAggregate;
+use App\Entity\Interfaces\PathAwareInterface;
 use App\Entity\Repository\StationMediaRepository;
 use App\Entity\Repository\StorageLocationRepository;
 use App\Entity\Repository\UnprocessableMediaRepository;
 use App\Entity\StationMedia;
+use App\Entity\StationPlaylist;
+use App\Entity\StationPlaylistFolder;
 use App\Entity\StorageLocation;
 use App\Entity\UnprocessableMedia;
 use App\Flysystem\ExtendedFilesystemInterface;
@@ -45,7 +48,7 @@ final class BatchUtilities
 
             foreach ($toRename as $iterator) {
                 foreach ($iterator as $record) {
-                    /** @var \App\Entity\Interfaces\PathAwareInterface $record */
+                    /** @var PathAwareInterface $record */
                     $record->setPath(
                         File::renameDirectoryInPath($record->getPath(), $from, $to)
                     );
@@ -74,10 +77,10 @@ final class BatchUtilities
     /**
      * @param array $files
      * @param array $directories
-     * @param \App\Entity\StorageLocation $storageLocation
+     * @param StorageLocation $storageLocation
      * @param ExtendedFilesystemInterface|null $fs
      *
-     * @return \App\Entity\StationPlaylist[] Affected playlists
+     * @return StationPlaylist[] Affected playlists
      */
     public function handleDelete(
         array $files,
@@ -125,10 +128,10 @@ final class BatchUtilities
      *
      * @note This function flushes the entity manager.
      *
-     * @param \App\Entity\StorageLocation $storageLocation
+     * @param StorageLocation $storageLocation
      * @param array $paths
      *
-     * @return iterable|\App\Entity\StationMedia[]
+     * @return iterable|StationMedia[]
      */
     public function iterateMedia(StorageLocation $storageLocation, array $paths): iterable
     {
@@ -140,10 +143,10 @@ final class BatchUtilities
     }
 
     /**
-     * @param \App\Entity\StorageLocation $storageLocation
+     * @param StorageLocation $storageLocation
      * @param string $dir
      *
-     * @return iterable|\App\Entity\StationMedia[]
+     * @return iterable|StationMedia[]
      */
     public function iterateMediaInDirectory(StorageLocation $storageLocation, string $dir): iterable
     {
@@ -165,10 +168,10 @@ final class BatchUtilities
      *
      * @note This function flushes the entity manager.
      *
-     * @param \App\Entity\StorageLocation $storageLocation
+     * @param StorageLocation $storageLocation
      * @param array $paths
      *
-     * @return iterable|\App\Entity\UnprocessableMedia[]
+     * @return iterable|UnprocessableMedia[]
      */
     public function iterateUnprocessableMedia(StorageLocation $storageLocation, array $paths): iterable
     {
@@ -180,10 +183,10 @@ final class BatchUtilities
     }
 
     /**
-     * @param \App\Entity\StorageLocation $storageLocation
+     * @param StorageLocation $storageLocation
      * @param string $dir
      *
-     * @return iterable|\App\Entity\UnprocessableMedia[]
+     * @return iterable|UnprocessableMedia[]
      */
     public function iterateUnprocessableMediaInDirectory(
         StorageLocation $storageLocation,
@@ -203,10 +206,10 @@ final class BatchUtilities
     }
 
     /**
-     * @param \App\Entity\StorageLocation $storageLocation
+     * @param StorageLocation $storageLocation
      * @param string $dir
      *
-     * @return iterable|\App\Entity\StationPlaylistFolder[]
+     * @return iterable|StationPlaylistFolder[]
      */
     public function iteratePlaylistFoldersInDirectory(
         StorageLocation $storageLocation,

@@ -59,10 +59,10 @@ final class RunAnalyticsTask extends AbstractTask
         $stationsRaw = $this->em->getRepository(Station::class)
             ->findAll();
 
-        /** @var \App\Entity\Station[] $stations */
+        /** @var Station[] $stations */
         $stations = [];
         foreach ($stationsRaw as $station) {
-            /** @var \App\Entity\Station $station */
+            /** @var Station $station */
             $stations[$station->getId()] = $station;
         }
 
@@ -84,7 +84,7 @@ final class RunAnalyticsTask extends AbstractTask
 
     /**
      * @param CarbonImmutable $day
-     * @param \App\Entity\Station[] $stations
+     * @param Station[] $stations
      * @param bool $withListeners
      */
     private function processDay(

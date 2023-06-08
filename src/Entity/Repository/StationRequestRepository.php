@@ -18,7 +18,7 @@ use Carbon\CarbonInterface;
 use Exception as PhpException;
 
 /**
- * @extends AbstractStationBasedRepository<\App\Entity\StationRequest>
+ * @extends AbstractStationBasedRepository<StationRequest>
  */
 final class StationRequestRepository extends AbstractStationBasedRepository
 {
@@ -130,8 +130,8 @@ final class StationRequestRepository extends AbstractStationBasedRepository
     /**
      * Check if the song is already enqueued as a request.
      *
-     * @param \App\Entity\StationMedia $media
-     * @param \App\Entity\Station $station
+     * @param StationMedia $media
+     * @param Station $station
      *
      * @throws Exception
      */
@@ -184,7 +184,7 @@ final class StationRequestRepository extends AbstractStationBasedRepository
             ->execute();
 
         foreach ($requests as $request) {
-            /** @var \App\Entity\StationRequest $request */
+            /** @var StationRequest $request */
             if ($request->shouldPlayNow($now)) {
                 try {
                     $this->checkRecentPlay($request->getTrack(), $station);
@@ -202,8 +202,8 @@ final class StationRequestRepository extends AbstractStationBasedRepository
     /**
      * Check the most recent song history.
      *
-     * @param \App\Entity\StationMedia $media
-     * @param \App\Entity\Station $station
+     * @param StationMedia $media
+     * @param Station $station
      *
      * @throws Exception
      */

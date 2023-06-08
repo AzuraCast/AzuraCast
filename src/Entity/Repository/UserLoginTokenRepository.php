@@ -9,7 +9,7 @@ use App\Entity\UserLoginToken;
 use App\Security\SplitToken;
 
 /**
- * @extends AbstractSplitTokenRepository<\App\Entity\UserLoginToken>
+ * @extends AbstractSplitTokenRepository<UserLoginToken>
  */
 final class UserLoginTokenRepository extends AbstractSplitTokenRepository
 {

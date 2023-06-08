@@ -5,14 +5,15 @@ declare(strict_types=1);
 namespace App\Entity\Repository;
 
 use App\Entity\Station;
+use App\Entity\StationRemote;
 
 /**
- * @extends AbstractStationBasedRepository<\App\Entity\StationRemote>
+ * @extends AbstractStationBasedRepository<StationRemote>
  */
 final class StationRemoteRepository extends AbstractStationBasedRepository
 {
     /**
-     * @param \App\Entity\Station $station
+     * @param Station $station
      *
      * @return mixed[]
      */
@@ -23,7 +24,7 @@ final class StationRemoteRepository extends AbstractStationBasedRepository
         $displayNames = [];
 
         foreach ($remotes as $remote) {
-            /** @var \App\Entity\StationRemote $remote */
+            /** @var StationRemote $remote */
             $displayNames[$remote->getId()] = $remote->getDisplayName();
         }
 

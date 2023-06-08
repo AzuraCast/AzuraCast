@@ -10,7 +10,7 @@ use App\Entity\UnprocessableMedia;
 use Generator;
 
 /**
- * @extends Repository<\App\Entity\UnprocessableMedia>
+ * @extends Repository<UnprocessableMedia>
  */
 final class UnprocessableMediaRepository extends Repository
 {
@@ -18,7 +18,7 @@ final class UnprocessableMediaRepository extends Repository
         string $path,
         StorageLocation $storageLocation
     ): ?UnprocessableMedia {
-        /** @var \App\Entity\UnprocessableMedia|null $record */
+        /** @var UnprocessableMedia|null $record */
         $record = $this->repository->findOneBy(
             [
                 'storage_location' => $storageLocation,

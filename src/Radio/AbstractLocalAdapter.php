@@ -33,7 +33,7 @@ abstract class AbstractLocalAdapter
     /**
      * Write configuration from Station object to the external service.
      *
-     * @param \App\Entity\Station $station
+     * @param Station $station
      *
      * @return bool Whether the newly written configuration differs from what was already on disk.
      */
@@ -58,7 +58,7 @@ abstract class AbstractLocalAdapter
     /**
      * Generate the configuration for this adapter as it would exist with current database settings.
      *
-     * @param \App\Entity\Station $station
+     * @param Station $station
      *
      */
     public function getCurrentConfiguration(Station $station): ?string
@@ -96,7 +96,7 @@ abstract class AbstractLocalAdapter
     /**
      * Check if the service is running.
      *
-     * @param \App\Entity\Station $station
+     * @param Station $station
      */
     public function isRunning(Station $station): bool
     {
@@ -116,7 +116,7 @@ abstract class AbstractLocalAdapter
     /**
      * Return a boolean indicating whether the adapter has an executable command associated with it.
      *
-     * @param \App\Entity\Station $station
+     * @param Station $station
      */
     public function hasCommand(Station $station): bool
     {
@@ -130,7 +130,7 @@ abstract class AbstractLocalAdapter
     /**
      * Return the shell command required to run the program.
      *
-     * @param \App\Entity\Station $station
+     * @param Station $station
      */
     public function getCommand(Station $station): ?string
     {
@@ -140,7 +140,7 @@ abstract class AbstractLocalAdapter
     /**
      * Return the program's fully qualified supervisord name.
      *
-     * @param \App\Entity\Station $station
+     * @param Station $station
      */
     abstract public function getSupervisorProgramName(Station $station): string;
 
@@ -156,7 +156,7 @@ abstract class AbstractLocalAdapter
     /**
      * Restart the executable service.
      *
-     * @param \App\Entity\Station $station
+     * @param Station $station
      */
     public function restart(Station $station): void
     {
@@ -167,7 +167,7 @@ abstract class AbstractLocalAdapter
     /**
      * Execute a non-destructive reload if the adapter supports it.
      *
-     * @param \App\Entity\Station $station
+     * @param Station $station
      */
     public function reload(Station $station): void
     {
@@ -177,7 +177,7 @@ abstract class AbstractLocalAdapter
     /**
      * Stop the executable service.
      *
-     * @param \App\Entity\Station $station
+     * @param Station $station
      *
      * @throws SupervisorException
      * @throws NotRunningException
@@ -202,7 +202,7 @@ abstract class AbstractLocalAdapter
     /**
      * Start the executable service.
      *
-     * @param \App\Entity\Station $station
+     * @param Station $station
      *
      * @throws SupervisorException
      * @throws AlreadyRunningException
@@ -229,7 +229,7 @@ abstract class AbstractLocalAdapter
      *
      * @param SupervisorLibException $e
      * @param string $program_name
-     * @param \App\Entity\Station $station
+     * @param Station $station
      *
      * @throws SupervisorException
      */
@@ -248,7 +248,7 @@ abstract class AbstractLocalAdapter
     /**
      * Return the path where logs are written to.
      *
-     * @param \App\Entity\Station $station
+     * @param Station $station
      */
     public function getLogPath(Station $station): string
     {

@@ -5,11 +5,13 @@ declare(strict_types=1);
 namespace App\Entity\Repository;
 
 use App\Doctrine\Repository;
+use App\Entity\ApiKey;
 use App\Entity\User;
+use App\Entity\UserLoginToken;
 use App\Security\SplitToken;
 
 /**
- * @template TEntity of \App\Entity\ApiKey|\App\Entity\UserLoginToken
+ * @template TEntity of ApiKey|UserLoginToken
  * @extends Repository<TEntity>
  */
 abstract class AbstractSplitTokenRepository extends Repository

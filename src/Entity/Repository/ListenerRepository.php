@@ -22,7 +22,7 @@ use Symfony\Component\Filesystem\Filesystem;
 use Throwable;
 
 /**
- * @extends Repository<\App\Entity\Listener>
+ * @extends Repository<Listener>
  */
 final class ListenerRepository extends Repository
 {
@@ -47,7 +47,7 @@ final class ListenerRepository extends Repository
     /**
      * Get the number of unique listeners for a station during a specified time period.
      *
-     * @param \App\Entity\Station $station
+     * @param Station $station
      * @param DateTimeInterface|int $start
      * @param DateTimeInterface|int $end
      */
@@ -95,7 +95,7 @@ final class ListenerRepository extends Repository
     /**
      * Update listener data for a station.
      *
-     * @param \App\Entity\Station $station
+     * @param Station $station
      * @param Client[] $clients
      */
     public function update(Station $station, array $clients): void

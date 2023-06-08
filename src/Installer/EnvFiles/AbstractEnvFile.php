@@ -41,7 +41,7 @@ abstract class AbstractEnvFile implements ArrayAccess
         $defaults = [];
         foreach (static::getConfiguration($environment) as $key => $keyInfo) {
             if (isset($keyInfo['default'])) {
-                $defaults[$key] = $keyInfo['default'] ?? null;
+                $defaults[$key] = $keyInfo['default'];
             }
         }
 

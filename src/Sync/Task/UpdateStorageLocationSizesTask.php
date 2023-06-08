@@ -43,7 +43,7 @@ final class UpdateStorageLocationSizesTask extends AbstractTask
         );
 
         foreach ($iterator as $storageLocation) {
-            /** @var \App\Entity\StorageLocation $storageLocation */
+            /** @var StorageLocation $storageLocation */
             $this->updateStorageLocationSize($storageLocation);
         }
     }

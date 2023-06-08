@@ -15,7 +15,7 @@ use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
 
 /**
- * @extends AbstractStationBasedRepository<\App\Entity\StationQueue>
+ * @extends AbstractStationBasedRepository<StationQueue>
  */
 final class StationQueueRepository extends AbstractStationBasedRepository
 {
@@ -122,8 +122,8 @@ final class StationQueueRepository extends AbstractStationBasedRepository
     }
 
     /**
-     * @param \App\Entity\Station $station
-     * @return \App\Entity\StationQueue[]
+     * @param Station $station
+     * @return StationQueue[]
      */
     public function getUnplayedQueue(Station $station): array
     {

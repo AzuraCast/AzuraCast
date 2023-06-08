@@ -14,7 +14,9 @@ use App\Entity\Enums\StationBackendPerformanceModes;
 use App\Entity\Interfaces\StationMountInterface;
 use App\Entity\Station;
 use App\Entity\StationBackendConfiguration;
+use App\Entity\StationMount;
 use App\Entity\StationPlaylist;
+use App\Entity\StationRemote;
 use App\Entity\StationSchedule;
 use App\Entity\StationStreamerBroadcast;
 use App\Event\Radio\WriteLiquidsoapConfiguration;
@@ -713,7 +715,7 @@ final class ConfigWriter implements EventSubscriberInterface
      * Given a scheduled playlist, return the time criteria that Liquidsoap can use to determine when to play it.
      *
      * @param WriteLiquidsoapConfiguration $event
-     * @param \App\Entity\StationSchedule $playlistSchedule
+     * @param StationSchedule $playlistSchedule
      * @return string
      */
     private function getScheduledPlaylistPlayTime(
@@ -1151,7 +1153,7 @@ final class ConfigWriter implements EventSubscriberInterface
         foreach ($station->getMounts() as $mount_row) {
             $i++;
 
-            /** @var \App\Entity\StationMount $mount_row */
+            /** @var StationMount $mount_row */
             if (!$mount_row->getEnableAutodj()) {
                 continue;
             }
@@ -1362,7 +1364,7 @@ final class ConfigWriter implements EventSubscriberInterface
         foreach ($station->getRemotes() as $remote_row) {
             $i++;
 
-            /** @var \App\Entity\StationRemote $remote_row */
+            /** @var StationRemote $remote_row */
             if (!$remote_row->getEnableAutodj()) {
                 continue;
             }

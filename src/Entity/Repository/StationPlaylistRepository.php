@@ -6,14 +6,15 @@ namespace App\Entity\Repository;
 
 use App\Entity\Enums\PlaylistSources;
 use App\Entity\Station;
+use App\Entity\StationPlaylist;
 
 /**
- * @extends AbstractStationBasedRepository<\App\Entity\StationPlaylist>
+ * @extends AbstractStationBasedRepository<StationPlaylist>
  */
 final class StationPlaylistRepository extends AbstractStationBasedRepository
 {
     /**
-     * @return \App\Entity\StationPlaylist[]
+     * @return StationPlaylist[]
      */
     public function getAllForStation(Station $station): array
     {

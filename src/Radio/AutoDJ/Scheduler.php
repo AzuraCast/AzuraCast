@@ -161,7 +161,7 @@ final class Scheduler
     /**
      * Get the duration of scheduled play time in seconds (used for remote URLs of indeterminate length).
      *
-     * @param \App\Entity\StationPlaylist $playlist
+     * @param StationPlaylist $playlist
      */
     public function getPlaylistScheduleDuration(StationPlaylist $playlist): int
     {
@@ -198,9 +198,9 @@ final class Scheduler
     }
 
     /**
-     * @param Collection<int, \App\Entity\StationSchedule> $scheduleItems
+     * @param Collection<int, StationSchedule> $scheduleItems
      * @param CarbonInterface $now
-     * @return \App\Entity\StationSchedule|null
+     * @return StationSchedule|null
      */
     private function getActiveScheduleFromCollection(
         Collection $scheduleItems,
@@ -431,7 +431,7 @@ final class Scheduler
     /**
      * Given an ISO-8601 date, return if the playlist can be played on that day.
      *
-     * @param \App\Entity\StationSchedule $schedule
+     * @param StationSchedule $schedule
      * @param int $dayToCheck ISO-8601 date (1 for Monday, 7 for Sunday)
      */
     public function isScheduleScheduledToPlayToday(

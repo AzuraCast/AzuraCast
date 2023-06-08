@@ -14,7 +14,7 @@ interface ConnectorInterface
      * Return a boolean indicating whether this connector should dispatch, given the current events
      * that are set to be triggered, and the configured triggers for this connector.
      *
-     * @param \App\Entity\StationWebhook $webhook
+     * @param StationWebhook $webhook
      * @param array<string> $triggers
      *
      * @return bool Whether the given webhook should dispatch with these triggers.
@@ -27,9 +27,9 @@ interface ConnectorInterface
     /**
      * Trigger the webhook for the specified station, now playing entry, and specified configuration.
      *
-     * @param \App\Entity\Station $station
-     * @param \App\Entity\StationWebhook $webhook
-     * @param \App\Entity\Api\NowPlaying\NowPlaying $np
+     * @param Station $station
+     * @param StationWebhook $webhook
+     * @param NowPlaying $np
      * @param array<string> $triggers
      */
     public function dispatch(

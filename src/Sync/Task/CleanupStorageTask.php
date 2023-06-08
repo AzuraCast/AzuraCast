@@ -30,7 +30,7 @@ final class CleanupStorageTask extends AbstractTask
     {
         foreach ($this->iterateStations() as $station) {
             try {
-                /** @var \App\Entity\Station $station */
+                /** @var Station $station */
                 $this->cleanStationTempFiles($station);
             } catch (Throwable $e) {
                 $this->logger->error($e->getMessage(), [
@@ -42,7 +42,7 @@ final class CleanupStorageTask extends AbstractTask
         $storageLocations = $this->iterateStorageLocations(StorageLocationTypes::StationMedia);
         foreach ($storageLocations as $storageLocation) {
             try {
-                /** @var \App\Entity\StorageLocation $storageLocation */
+                /** @var StorageLocation $storageLocation */
                 $this->cleanMediaStorageLocation($storageLocation);
             } catch (Throwable $e) {
                 $this->logger->error($e->getMessage(), [

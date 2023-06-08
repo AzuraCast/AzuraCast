@@ -61,7 +61,7 @@ abstract class AbstractRemote
     /**
      * Return the likely "public" listen URL for the remote.
      *
-     * @param \App\Entity\StationRemote $remote
+     * @param StationRemote $remote
      */
     public function getPublicUrl(StationRemote $remote): string
     {
@@ -75,7 +75,7 @@ abstract class AbstractRemote
     /**
      * Format and return a URL for the remote path.
      *
-     * @param \App\Entity\StationRemote $remote
+     * @param StationRemote $remote
      * @param string|null $customPath
      */
     protected function getRemoteUrl(StationRemote $remote, ?string $customPath = null): string

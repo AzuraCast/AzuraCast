@@ -7,6 +7,7 @@ namespace App\Radio\Backend\Liquidsoap;
 use App\Container\EntityManagerAwareTrait;
 use App\Container\LoggerAwareTrait;
 use App\Entity\Station;
+use App\Entity\StationMedia;
 use App\Entity\StationPlaylist;
 use App\Event\Radio\AnnotateNextSong;
 use App\Event\Radio\WriteLiquidsoapConfiguration;
@@ -127,7 +128,7 @@ final class PlaylistFileWriter implements EventSubscriberInterface
             DQL
         )->setParameter('playlist', $playlist);
 
-        /** @var \App\Entity\StationMedia $mediaFile */
+        /** @var StationMedia $mediaFile */
         foreach ($mediaQuery->toIterable() as $mediaFile) {
             $event = new AnnotateNextSong(
                 station: $station,

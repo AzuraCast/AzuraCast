@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Entity\Repository;
 
 use App\Doctrine\Repository;
+use App\Entity\Analytics;
 use App\Entity\Enums\AnalyticsIntervals;
 use App\Entity\Station;
 use App\Utilities\DateRange;
@@ -12,7 +13,7 @@ use Carbon\CarbonImmutable;
 use Carbon\CarbonInterface;
 
 /**
- * @extends Repository<\App\Entity\Analytics>
+ * @extends Repository<Analytics>
  */
 final class AnalyticsRepository extends Repository
 {

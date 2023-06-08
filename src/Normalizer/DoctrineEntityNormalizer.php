@@ -5,12 +5,14 @@ namespace App\Normalizer;
 use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Normalizer\Attributes\DeepNormalize;
 use App\Normalizer\Exception\NoGetterAvailableException;
+use ArrayObject;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Util\ClassUtils;
 use Doctrine\Inflector\Inflector;
 use Doctrine\Inflector\InflectorFactory;
 use InvalidArgumentException;
 use ReflectionClass;
+use ReflectionException;
 use ReflectionProperty;
 use Symfony\Component\Serializer\Mapping\Factory\ClassMetadataFactoryInterface;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
@@ -41,7 +43,7 @@ final class DoctrineEntityNormalizer extends AbstractObjectNormalizer
     /**
      * Replicates the "toArray" functionality previously present in Doctrine 1.
      *
-     * @return array|string|int|float|bool|\ArrayObject<int, mixed>|null
+     * @return array|string|int|float|bool|ArrayObject<int, mixed>|null
      */
     public function normalize(mixed $object, ?string $format = null, array $context = []): mixed
     {
@@ -163,7 +165,7 @@ final class DoctrineEntityNormalizer extends AbstractObjectNormalizer
      * @param string|null $format
      * @param array $context
      * @return bool
-     * @throws \ReflectionException
+     * @throws ReflectionException
      */
     protected function isAllowedAttribute(
         object|string $classOrObject,
@@ -235,7 +237,7 @@ final class DoctrineEntityNormalizer extends AbstractObjectNormalizer
      * @param ReflectionClass<object> $reflectionClass
      * @param string $attribute
      * @return bool
-     * @throws \ReflectionException
+     * @throws ReflectionException
      */
     private function supportsDeepNormalization(ReflectionClass $reflectionClass, string $attribute): bool
     {

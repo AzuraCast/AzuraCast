@@ -16,7 +16,7 @@ use League\Flysystem\UnableToDeleteFile;
 use League\Flysystem\UnableToRetrieveMetadata;
 
 /**
- * @extends Repository<\App\Entity\Podcast>
+ * @extends Repository<Podcast>
  */
 final class PodcastRepository extends Repository
 {
@@ -46,7 +46,7 @@ final class PodcastRepository extends Repository
     }
 
     /**
-     * @return \App\Entity\Podcast[]
+     * @return Podcast[]
      */
     public function fetchPublishedPodcastsForStation(Station $station): array
     {

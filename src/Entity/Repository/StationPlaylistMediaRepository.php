@@ -21,7 +21,7 @@ use InvalidArgumentException;
 use RuntimeException;
 
 /**
- * @extends Repository<\App\Entity\StationPlaylistMedia>
+ * @extends Repository<StationPlaylistMedia>
  */
 final class StationPlaylistMediaRepository extends Repository
 {
@@ -36,8 +36,8 @@ final class StationPlaylistMediaRepository extends Repository
      * Add the specified media to the specified playlist.
      * Must flush the EntityManager after using.
      *
-     * @param \App\Entity\StationMedia $media
-     * @param \App\Entity\StationPlaylist $playlist
+     * @param StationMedia $media
+     * @param StationPlaylist $playlist
      * @param int $weight
      *
      * @return int The weight assigned to the newly added record.
@@ -104,10 +104,10 @@ final class StationPlaylistMediaRepository extends Repository
     /**
      * Remove all playlist associations from the specified media object.
      *
-     * @param \App\Entity\StationMedia $media
-     * @param \App\Entity\Station|null $station
+     * @param StationMedia $media
+     * @param Station|null $station
      *
-     * @return \App\Entity\StationPlaylist[] The IDs as keys and records as values for all affected playlists.
+     * @return StationPlaylist[] The IDs as keys and records as values for all affected playlists.
      */
     public function clearPlaylistsFromMedia(
         StationMedia $media,
@@ -143,7 +143,7 @@ final class StationPlaylistMediaRepository extends Repository
      *    ...
      * ]
      *
-     * @param \App\Entity\StationPlaylist $playlist
+     * @param StationPlaylist $playlist
      * @param array $mapping
      */
     public function setMediaOrder(StationPlaylist $playlist, array $mapping): void
@@ -238,7 +238,7 @@ final class StationPlaylistMediaRepository extends Repository
     }
 
     /**
-     * @return \App\Entity\Api\StationPlaylistQueue[]
+     * @return StationPlaylistQueue[]
      */
     public function getQueue(StationPlaylist $playlist): array
     {

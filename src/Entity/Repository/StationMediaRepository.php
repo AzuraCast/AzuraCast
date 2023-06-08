@@ -11,6 +11,7 @@ use App\Entity\Song;
 use App\Entity\Station;
 use App\Entity\StationMedia;
 use App\Entity\StationMediaCustomField;
+use App\Entity\StationPlaylist;
 use App\Entity\StorageLocation;
 use App\Exception\NotFoundException;
 use App\Flysystem\ExtendedFilesystemInterface;
@@ -55,7 +56,7 @@ final class StationMediaRepository extends Repository
 
         $storageLocation = $this->getStorageLocation($station);
 
-        /** @var \App\Entity\StationMedia|null $media */
+        /** @var StationMedia|null $media */
         $media = $this->repository->findOneBy(
             [
                 'storage_location' => $storageLocation,
@@ -77,7 +78,7 @@ final class StationMediaRepository extends Repository
 
     /**
      * @param string $path
-     * @param \App\Entity\Station|\App\Entity\StorageLocation $source
+     * @param Station|StorageLocation $source
      *
      */
     public function findByPath(
@@ -86,7 +87,7 @@ final class StationMediaRepository extends Repository
     ): ?StationMedia {
         $storageLocation = $this->getStorageLocation($source);
 
-        /** @var \App\Entity\StationMedia|null $media */
+        /** @var StationMedia|null $media */
         $media = $this->repository->findOneBy(
             [
                 'storage_location' => $storageLocation,
@@ -111,7 +112,7 @@ final class StationMediaRepository extends Repository
 
     /**
      * @param string $uniqueId
-     * @param \App\Entity\Station|\App\Entity\StorageLocation $source
+     * @param Station|StorageLocation $source
      *
      */
     public function findByUniqueId(
@@ -120,7 +121,7 @@ final class StationMediaRepository extends Repository
     ): ?StationMedia {
         $storageLocation = $this->getStorageLocation($source);
 
-        /** @var \App\Entity\StationMedia|null $media */
+        /** @var StationMedia|null $media */
         $media = $this->repository->findOneBy(
             [
                 'storage_location' => $storageLocation,
@@ -154,7 +155,7 @@ final class StationMediaRepository extends Repository
     /**
      * Process metadata information from media file.
      *
-     * @param \App\Entity\StationMedia $media
+     * @param StationMedia $media
      * @param string $filePath
      * @param ExtendedFilesystemInterface|null $fs
      */
@@ -174,7 +175,7 @@ final class StationMediaRepository extends Repository
         // Clear existing auto-assigned custom fields.
         $fieldCollection = $media->getCustomFields();
         foreach ($fieldCollection as $existingCustomField) {
-            /** @var \App\Entity\StationMediaCustomField $existingCustomField */
+            /** @var StationMediaCustomField $existingCustomField */
             if ($existingCustomField->getField()->hasAutoAssign()) {
                 $this->em->remove($existingCustomField);
                 $fieldCollection->removeElement($existingCustomField);
@@ -334,11 +335,11 @@ final class StationMediaRepository extends Repository
     }
 
     /**
-     * @param \App\Entity\StationMedia $media
+     * @param StationMedia $media
      * @param bool $deleteFile Whether to remove the media file itself (disabled for batch operations).
      * @param ExtendedFilesystemInterface|null $fs
      *
-     * @return \App\Entity\StationPlaylist[] The IDs as keys and records as values for all affected playlists.
+     * @return StationPlaylist[] The IDs as keys and records as values for all affected playlists.
      */
     public function remove(
         StationMedia $media,

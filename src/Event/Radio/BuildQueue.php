@@ -12,7 +12,7 @@ use Symfony\Contracts\EventDispatcher\Event;
 
 final class BuildQueue extends Event
 {
-    /** @var \App\Entity\StationQueue[] */
+    /** @var StationQueue[] */
     private array $nextSongs = [];
 
     private CarbonInterface $expectedCueTime;
@@ -56,7 +56,7 @@ final class BuildQueue extends Event
     }
 
     /**
-     * @return \App\Entity\StationQueue[]
+     * @return StationQueue[]
      */
     public function getNextSongs(): array
     {
@@ -64,7 +64,7 @@ final class BuildQueue extends Event
     }
 
     /**
-     * @param \App\Entity\StationQueue|\App\Entity\StationQueue[]|null $nextSongs
+     * @param StationQueue|StationQueue[]|null $nextSongs
      * @return bool
      */
     public function setNextSongs(StationQueue|array|null $nextSongs): bool

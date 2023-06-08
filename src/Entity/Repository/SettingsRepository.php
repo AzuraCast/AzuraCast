@@ -13,7 +13,7 @@ use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
- * @extends Repository<\App\Entity\Settings>
+ * @extends Repository<Settings>
  */
 final class SettingsRepository extends Repository
 {
@@ -52,7 +52,7 @@ final class SettingsRepository extends Repository
     }
 
     /**
-     * @param \App\Entity\Settings|array $settingsObj
+     * @param Settings|array $settingsObj
      */
     public function writeSettings(Settings|array $settingsObj): void
     {

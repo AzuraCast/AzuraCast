@@ -41,7 +41,7 @@ final class Liquidsoap extends AbstractLocalAdapter
     /**
      * Returns the port used for DJs/Streamers to connect to LiquidSoap for broadcasting.
      *
-     * @param \App\Entity\Station $station
+     * @param Station $station
      *
      * @return int The port number to use for this station.
      */
@@ -62,7 +62,7 @@ final class Liquidsoap extends AbstractLocalAdapter
     /**
      * Execute the specified remote command on LiquidSoap via the telnet API.
      *
-     * @param \App\Entity\Station $station
+     * @param Station $station
      * @param string $command_str
      *
      * @return string[]
@@ -199,7 +199,7 @@ final class Liquidsoap extends AbstractLocalAdapter
     /**
      * Tell LiquidSoap to disconnect the current live streamer.
      *
-     * @param \App\Entity\Station $station
+     * @param Station $station
      *
      * @return string[]
      */

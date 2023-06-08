@@ -29,17 +29,17 @@ final class ListDirectoriesAction
 
         $fsMedia = $this->stationFilesystems->getMediaFilesystem($station);
 
-        $protectedPaths = [
-            StationMedia::DIR_ALBUM_ART,
-            StationMedia::DIR_WAVEFORMS,
-            StationMedia::DIR_FOLDER_COVERS,
-        ];
-
         $directoriesRaw = $fsMedia->listContents($currentDir, false)->filter(
-            function (StorageAttributes $attrs) use ($protectedPaths) {
+            function (StorageAttributes $attrs) {
                 if (!$attrs->isDir()) {
                     return false;
                 }
+
+                $protectedPaths = [
+                    StationMedia::DIR_ALBUM_ART,
+                    StationMedia::DIR_WAVEFORMS,
+                    StationMedia::DIR_FOLDER_COVERS,
+                ];
 
                 if (in_array($attrs->path(), $protectedPaths, true)) {
                     return false;

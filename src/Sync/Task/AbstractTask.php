@@ -8,6 +8,8 @@ use App\Container\EntityManagerAwareTrait;
 use App\Container\LoggerAwareTrait;
 use App\Doctrine\ReadWriteBatchIteratorAggregate;
 use App\Entity\Enums\StorageLocationTypes;
+use App\Entity\Station;
+use App\Entity\StorageLocation;
 
 abstract class AbstractTask implements ScheduledTaskInterface
 {
@@ -22,7 +24,7 @@ abstract class AbstractTask implements ScheduledTaskInterface
     abstract public function run(bool $force = false): void;
 
     /**
-     * @return ReadWriteBatchIteratorAggregate<int, \App\Entity\Station>
+     * @return ReadWriteBatchIteratorAggregate<int, Station>
      */
     protected function iterateStations(): ReadWriteBatchIteratorAggregate
     {
@@ -37,9 +39,9 @@ abstract class AbstractTask implements ScheduledTaskInterface
     }
 
     /**
-     * @param \App\Entity\Enums\StorageLocationTypes $type
+     * @param StorageLocationTypes $type
      *
-     * @return ReadWriteBatchIteratorAggregate<int, \App\Entity\StorageLocation>
+     * @return ReadWriteBatchIteratorAggregate<int, StorageLocation>
      */
     protected function iterateStorageLocations(StorageLocationTypes $type): ReadWriteBatchIteratorAggregate
     {

@@ -38,7 +38,7 @@ trait HasScheduleDisplay
         $endDate = $dateRange->getEnd();
 
         foreach ($scheduleItems as $scheduleItem) {
-            /** @var \App\Entity\StationSchedule $scheduleItem */
+            /** @var StationSchedule $scheduleItem */
             $i = $startDate;
 
             while ($i <= $endDate) {

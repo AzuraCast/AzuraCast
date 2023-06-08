@@ -23,7 +23,7 @@ final class DuplicatePrevention
     ];
 
     /**
-     * @param \App\Entity\Api\StationPlaylistQueue[] $eligibleTracks
+     * @param StationPlaylistQueue[] $eligibleTracks
      * @param array $playedTracks
      * @param bool $allowDuplicates Whether to return a media ID even if duplicates can't be prevented.
      */
@@ -47,7 +47,7 @@ final class DuplicatePrevention
             }
         }
 
-        /** @var \App\Entity\Api\StationPlaylistQueue[] $notPlayedEligibleTracks */
+        /** @var StationPlaylistQueue[] $notPlayedEligibleTracks */
         $notPlayedEligibleTracks = [];
 
         foreach ($eligibleTracks as $mediaId => $track) {
@@ -75,7 +75,7 @@ final class DuplicatePrevention
 
         // If we reach this point, there's no way to avoid a duplicate title and artist.
         if ($allowDuplicates) {
-            /** @var \App\Entity\Api\StationPlaylistQueue[] $mediaIdsByTimePlayed */
+            /** @var StationPlaylistQueue[] $mediaIdsByTimePlayed */
             $mediaIdsByTimePlayed = [];
 
             // For each piece of eligible media, get its latest played timestamp.
@@ -114,7 +114,7 @@ final class DuplicatePrevention
      * Both should be in the form of an array, i.e.:
      *  [ 'id' => ['artist' => 'Foo', 'title' => 'Fighters'] ]
      *
-     * @param \App\Entity\Api\StationPlaylistQueue[] $eligibleTracks
+     * @param StationPlaylistQueue[] $eligibleTracks
      * @param array $playedTracks
      *
      */

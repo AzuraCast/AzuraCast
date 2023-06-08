@@ -48,7 +48,7 @@ abstract class AbstractFrontend extends AbstractLocalAdapter
     }
 
     /**
-     * @param \App\Entity\Station $station
+     * @param Station $station
      * @param UriInterface|null $base_url
      */
     public function getStreamUrl(Station $station, UriInterface $base_url = null): UriInterface
@@ -100,7 +100,7 @@ abstract class AbstractFrontend extends AbstractLocalAdapter
     }
 
     /**
-     * @param \App\Entity\Station $station
+     * @param Station $station
      * @param UriInterface|null $base_url
      *
      * @return UriInterface[]

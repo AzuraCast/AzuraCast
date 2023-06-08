@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Radio\Frontend;
 
 use App\Entity\Station;
+use App\Entity\StationMount;
 use App\Radio\Enums\StreamFormats;
 use App\Service\Acme;
 use App\Utilities;
@@ -179,7 +180,7 @@ final class Icecast extends AbstractFrontend
         $useListenerAuth = !empty($bannedCountries) || !empty($allowedIps);
 
         foreach ($station->getMounts() as $mount_row) {
-            /** @var \App\Entity\StationMount $mount_row */
+            /** @var StationMount $mount_row */
 
             $mount = [
                 '@type' => 'normal',

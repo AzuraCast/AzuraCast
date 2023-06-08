@@ -13,7 +13,7 @@ use App\Media\AlbumArt;
 use App\Radio\AutoDJ\Scheduler;
 
 /**
- * @extends AbstractStationBasedRepository<\App\Entity\StationStreamer>
+ * @extends AbstractStationBasedRepository<StationStreamer>
  */
 final class StationStreamerRepository extends AbstractStationBasedRepository
 {
@@ -28,7 +28,7 @@ final class StationStreamerRepository extends AbstractStationBasedRepository
     /**
      * Attempt to authenticate a streamer.
      *
-     * @param \App\Entity\Station $station
+     * @param Station $station
      * @param string $username
      * @param string $password
      */
@@ -51,7 +51,7 @@ final class StationStreamerRepository extends AbstractStationBasedRepository
     }
 
     /**
-     * @param \App\Entity\Station $station
+     * @param Station $station
      * @param string $username
      *
      */
@@ -105,7 +105,7 @@ final class StationStreamerRepository extends AbstractStationBasedRepository
             $criteria['is_active'] = 1;
         }
 
-        /** @var \App\Entity\StationStreamer|null $streamer */
+        /** @var StationStreamer|null $streamer */
         $streamer = $this->repository->findOneBy($criteria);
 
         return $streamer;

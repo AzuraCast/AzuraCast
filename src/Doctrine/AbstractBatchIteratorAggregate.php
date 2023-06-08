@@ -12,7 +12,7 @@ use Traversable;
 /**
  * @template TKey
  * @template TValue
- * @implements \IteratorAggregate<TKey, TValue>
+ * @implements IteratorAggregate<TKey, TValue>
  */
 abstract class AbstractBatchIteratorAggregate implements IteratorAggregate
 {

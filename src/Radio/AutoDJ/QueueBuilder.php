@@ -70,7 +70,7 @@ final class QueueBuilder implements EventSubscriberInterface
 
         $activePlaylistsByType = [];
         foreach ($station->getPlaylists() as $playlist) {
-            /** @var \App\Entity\StationPlaylist $playlist */
+            /** @var StationPlaylist $playlist */
             if ($playlist->isPlayable($event->isInterrupting())) {
                 $type = $playlist->getType()->value;
 
@@ -117,7 +117,7 @@ final class QueueBuilder implements EventSubscriberInterface
             $eligiblePlaylists = [];
             $logPlaylists = [];
             foreach ($activePlaylistsByType[$currentPlaylistType] as $playlistId => $playlist) {
-                /** @var \App\Entity\StationPlaylist $playlist */
+                /** @var StationPlaylist $playlist */
                 if (!$this->scheduler->shouldPlaylistPlayNow($playlist, $expectedPlayTime)) {
                     continue;
                 }
@@ -213,11 +213,11 @@ final class QueueBuilder implements EventSubscriberInterface
     /**
      * Given a specified (sequential or shuffled) playlist, choose a song from the playlist to play and return it.
      *
-     * @param \App\Entity\StationPlaylist $playlist
+     * @param StationPlaylist $playlist
      * @param array $recentSongHistory
      * @param CarbonInterface $expectedPlayTime
      * @param bool $allowDuplicates Whether to return a media ID even if duplicates can't be prevented.
-     * @return \App\Entity\StationQueue|\App\Entity\StationQueue[]|null
+     * @return StationQueue|StationQueue[]|null
      */
     private function playSongFromPlaylist(
         StationPlaylist $playlist,
@@ -435,7 +435,7 @@ final class QueueBuilder implements EventSubscriberInterface
         $this->spmRepo->resetQueue($playlist);
         $mediaQueue = $this->spmRepo->getQueue($playlist);
 
-        return $this->duplicatePrevention->preventDuplicates($mediaQueue, $recentSongHistory, $allowDuplicates);
+        return $this->duplicatePrevention->preventDuplicates($mediaQueue, $recentSongHistory, false);
     }
 
     public function getNextSongFromRequests(BuildQueue $event): void

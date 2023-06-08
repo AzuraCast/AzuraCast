@@ -10,12 +10,12 @@ use App\Entity\RolePermission;
 use App\Enums\GlobalPermissions;
 
 /**
- * @extends Repository<\App\Entity\RolePermission>
+ * @extends Repository<RolePermission>
  */
 final class RolePermissionRepository extends Repository
 {
     /**
-     * @param \App\Entity\Role $role
+     * @param Role $role
      *
      * @return mixed[]
      */

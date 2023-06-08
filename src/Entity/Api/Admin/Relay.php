@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Entity\Api\Admin;
 
+use App\Entity\Api\NowPlaying\StationMount;
 use App\Entity\Api\ResolvableUrlInterface;
 use OpenApi\Attributes as OA;
 use Psr\Http\Message\UriInterface;
@@ -74,7 +75,7 @@ final class Relay implements ResolvableUrlInterface
     )]
     public string $admin_pw;
 
-    /** @var \App\Entity\Api\NowPlaying\StationMount[] */
+    /** @var StationMount[] */
     #[OA\Property]
     public array $mounts = [];
 

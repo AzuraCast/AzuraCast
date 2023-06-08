@@ -54,7 +54,7 @@ abstract class AbstractConnector implements ConnectorInterface
     }
 
     /**
-     * @param \App\Entity\StationWebhook $webhook
+     * @param StationWebhook $webhook
      * @param array<string> $triggers
      *
      */
@@ -82,7 +82,7 @@ abstract class AbstractConnector implements ConnectorInterface
      * Replace variables in the format {{ blah }} with the flattened contents of the NowPlaying API array.
      *
      * @param array $raw_vars
-     * @param \App\Entity\Api\NowPlaying\NowPlaying $np
+     * @param NowPlaying $np
      *
      * @return array
      */

@@ -27,7 +27,7 @@ final class ReadWriteBatchIteratorAggregate extends AbstractBatchIteratorAggrega
     {
         $this->customFetchFunction = (null === $customFetchFunction)
             ? null
-            : Closure::fromCallable($customFetchFunction);
+            : $customFetchFunction(...);
     }
 
     /** @inheritDoc */

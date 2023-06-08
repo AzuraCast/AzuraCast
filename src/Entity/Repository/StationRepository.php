@@ -19,7 +19,7 @@ use Closure;
 use Psr\Http\Message\UriInterface;
 
 /**
- * @extends Repository<\App\Entity\Station>
+ * @extends Repository<Station>
  */
 final class StationRepository extends Repository
 {
@@ -46,7 +46,7 @@ final class StationRepository extends Repository
     }
 
     /**
-     * @return array<array-key, \App\Entity\Station>
+     * @return array<array-key, Station>
      */
     public function fetchAll(): mixed
     {
@@ -84,7 +84,7 @@ final class StationRepository extends Repository
     }
 
     /**
-     * @return iterable<\App\Entity\Station>
+     * @return iterable<Station>
      */
     public function iterateEnabledStations(): iterable
     {
@@ -183,7 +183,7 @@ final class StationRepository extends Repository
     /**
      * Return the URL to use for songs with no specified album artwork, when artwork is displayed.
      *
-     * @param \App\Entity\Station|null $station
+     * @param Station|null $station
      */
     public function getDefaultAlbumArtUrl(?Station $station = null): UriInterface
     {

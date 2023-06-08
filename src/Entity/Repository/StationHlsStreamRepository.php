@@ -5,14 +5,15 @@ declare(strict_types=1);
 namespace App\Entity\Repository;
 
 use App\Entity\Station;
+use App\Entity\StationHlsStream;
 
 /**
- * @extends AbstractStationBasedRepository<\App\Entity\StationHlsStream>
+ * @extends AbstractStationBasedRepository<StationHlsStream>
  */
 final class StationHlsStreamRepository extends AbstractStationBasedRepository
 {
     /**
-     * @param \App\Entity\Station $station
+     * @param Station $station
      *
      * @return mixed[]
      */
@@ -22,7 +23,7 @@ final class StationHlsStreamRepository extends AbstractStationBasedRepository
 
         $displayNames = [];
 
-        /** @var \App\Entity\StationHlsStream $stream */
+        /** @var StationHlsStream $stream */
         foreach ($streams as $stream) {
             $displayNames[$stream->getIdRequired()] = 'HLS: ' . $stream->getName();
         }

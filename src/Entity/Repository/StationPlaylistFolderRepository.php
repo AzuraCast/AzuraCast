@@ -10,13 +10,13 @@ use App\Entity\StationPlaylist;
 use App\Entity\StationPlaylistFolder;
 
 /**
- * @extends AbstractStationBasedRepository<\App\Entity\StationPlaylistFolder>
+ * @extends AbstractStationBasedRepository<StationPlaylistFolder>
  */
 final class StationPlaylistFolderRepository extends AbstractStationBasedRepository
 {
     /**
-     * @param \App\Entity\Station $station
-     * @param \App\Entity\StationPlaylist[] $playlists
+     * @param Station $station
+     * @param StationPlaylist[] $playlists
      * @param string $path
      */
     public function setPlaylistsForFolder(
@@ -39,7 +39,7 @@ final class StationPlaylistFolderRepository extends AbstractStationBasedReposito
 
         foreach ($playlists as $playlistId => $playlistRecord) {
             if (PlaylistSources::Songs === $playlistRecord->getSource()) {
-                /** @var \App\Entity\StationPlaylist $playlist */
+                /** @var StationPlaylist $playlist */
                 $playlist = $this->em->getReference(StationPlaylist::class, $playlistId);
 
                 $newRecord = new StationPlaylistFolder($station, $playlist, $path);

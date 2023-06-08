@@ -49,13 +49,13 @@ final class CheckRequestsTask extends AbstractTask
         }
     }
 
-    private function submitRequest(Station $station, StationRequest $request): bool
+    private function submitRequest(Station $station, StationRequest $request): void
     {
         // Send request to the station to play the request.
         $backend = $this->adapters->getBackendAdapter($station);
 
         if (!($backend instanceof Liquidsoap)) {
-            return false;
+            return;
         }
 
         // Check for an existing SongHistory record and skip if one exists.
@@ -87,7 +87,7 @@ final class CheckRequestsTask extends AbstractTask
 
         if (!$backend->isQueueEmpty($station, $queue)) {
             $this->logger->error('Skipping submitting request to Liquidsoap; current queue is occupied.');
-            return false;
+            return;
         }
 
         $this->logger->debug('Submitting request to AutoDJ.', ['track' => $track]);
@@ -100,7 +100,5 @@ final class CheckRequestsTask extends AbstractTask
 
         $this->em->persist($request);
         $this->em->flush();
-
-        return true;
     }
 }

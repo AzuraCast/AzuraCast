@@ -68,7 +68,7 @@ final class ListAction
         $flushCache = (bool)$request->getParam('flushCache', false);
 
         if (!$flushCache && $this->cache->has($cacheKey)) {
-            /** @var array<int, \App\Entity\Api\FileList> $result */
+            /** @var array<int, FileList> $result */
             $result = $this->cache->get($cacheKey);
         } else {
             $pathLike = (empty($currentDir))

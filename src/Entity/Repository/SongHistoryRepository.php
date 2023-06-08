@@ -12,7 +12,7 @@ use Carbon\CarbonImmutable;
 use RuntimeException;
 
 /**
- * @extends AbstractStationBasedRepository<\App\Entity\SongHistory>
+ * @extends AbstractStationBasedRepository<SongHistory>
  */
 final class SongHistoryRepository extends AbstractStationBasedRepository
 {
@@ -25,9 +25,9 @@ final class SongHistoryRepository extends AbstractStationBasedRepository
     }
 
     /**
-     * @param \App\Entity\Station $station
+     * @param Station $station
      *
-     * @return \App\Entity\SongHistory[]
+     * @return SongHistory[]
      */
     public function getVisibleHistory(
         Station $station,
@@ -134,7 +134,7 @@ final class SongHistoryRepository extends AbstractStationBasedRepository
     }
 
     /**
-     * @param \App\Entity\Station $station
+     * @param Station $station
      * @param int $start
      * @param int $end
      *

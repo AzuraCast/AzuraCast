@@ -5,6 +5,9 @@ declare(strict_types=1);
 namespace App\Controller\Api\Stations\LiquidsoapConfig;
 
 use App\Container\EntityManagerAwareTrait;
+use App\Entity\Api\Error;
+use App\Entity\Api\Status;
+use App\Entity\StationBackendConfiguration;
 use App\Event\Radio\WriteLiquidsoapConfiguration;
 use App\Http\Response;
 use App\Http\ServerRequest;
@@ -33,7 +36,7 @@ final class PutAction
         $station = $this->em->refetch($request->getStation());
 
         $backendConfig = $station->getBackendConfig();
-        foreach (\App\Entity\StationBackendConfiguration::getCustomConfigurationSections() as $field) {
+        foreach (StationBackendConfiguration::getCustomConfigurationSections() as $field) {
             if (isset($body[$field])) {
                 $backendConfig->setCustomConfigurationSection($field, $body[$field]);
             }
@@ -51,9 +54,9 @@ final class PutAction
             $config = $event->buildConfiguration();
             $this->liquidsoap->verifyConfig($config);
         } catch (Throwable $e) {
-            return $response->withStatus(500)->withJson(\App\Entity\Api\Error::fromException($e));
+            return $response->withStatus(500)->withJson(Error::fromException($e));
         }
 
-        return $response->withJson(\App\Entity\Api\Status::updated());
+        return $response->withJson(Status::updated());
     }
 }

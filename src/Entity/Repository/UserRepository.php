@@ -8,7 +8,7 @@ use App\Doctrine\Repository;
 use App\Entity\User;
 
 /**
- * @extends Repository<\App\Entity\User>
+ * @extends Repository<User>
  */
 final class UserRepository extends Repository
 {

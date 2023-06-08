@@ -33,7 +33,7 @@ final class MoveBroadcastsTask extends AbstractTask
             ) as $storageLocation
         ) {
             try {
-                /** @var \App\Entity\StorageLocation $storageLocation */
+                /** @var StorageLocation $storageLocation */
                 $this->processForStorageLocation($storageLocation);
             } catch (Throwable $e) {
                 $this->logger->error($e->getMessage(), [

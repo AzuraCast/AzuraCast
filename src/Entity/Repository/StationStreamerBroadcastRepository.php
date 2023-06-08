@@ -11,7 +11,7 @@ use App\Entity\StationStreamerBroadcast;
 use Carbon\CarbonImmutable;
 
 /**
- * @extends Repository<\App\Entity\StationStreamerBroadcast>
+ * @extends Repository<StationStreamerBroadcast>
  */
 final class StationStreamerBroadcastRepository extends Repository
 {
@@ -22,7 +22,7 @@ final class StationStreamerBroadcastRepository extends Repository
             return null;
         }
 
-        /** @var \App\Entity\StationStreamerBroadcast|null $latestBroadcast */
+        /** @var StationStreamerBroadcast|null $latestBroadcast */
         $latestBroadcast = $this->em->createQuery(
             <<<'DQL'
                 SELECT ssb
@@ -53,9 +53,9 @@ final class StationStreamerBroadcastRepository extends Repository
     }
 
     /**
-     * @param \App\Entity\Station $station
+     * @param Station $station
      *
-     * @return \App\Entity\StationStreamerBroadcast[]
+     * @return StationStreamerBroadcast[]
      */
     public function getActiveBroadcasts(Station $station): array
     {

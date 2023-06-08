@@ -11,7 +11,7 @@ use LogicException;
 /**
  * A global section container for templates.
  *
- * @implements \ArrayAccess<string, string>
+ * @implements ArrayAccess<string, string>
  */
 final class GlobalSections implements ArrayAccess
 {

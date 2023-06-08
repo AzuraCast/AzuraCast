@@ -16,7 +16,7 @@ use Carbon\CarbonImmutable;
 use Carbon\CarbonInterface;
 
 /**
- * @extends Repository<\App\Entity\StationSchedule>
+ * @extends Repository<StationSchedule>
  */
 final class StationScheduleRepository extends Repository
 {
@@ -29,7 +29,7 @@ final class StationScheduleRepository extends Repository
     }
 
     /**
-     * @param \App\Entity\StationPlaylist|\App\Entity\StationStreamer $relation
+     * @param StationPlaylist|StationStreamer $relation
      * @param array $items
      */
     public function setScheduleItems(
@@ -69,9 +69,9 @@ final class StationScheduleRepository extends Repository
     }
 
     /**
-     * @param \App\Entity\StationPlaylist|\App\Entity\StationStreamer $relation
+     * @param StationPlaylist|StationStreamer $relation
      *
-     * @return \App\Entity\StationSchedule[]
+     * @return StationSchedule[]
      */
     public function findByRelation(StationPlaylist|StationStreamer $relation): array
     {
@@ -83,9 +83,9 @@ final class StationScheduleRepository extends Repository
     }
 
     /**
-     * @param \App\Entity\Station $station
+     * @param Station $station
      *
-     * @return \App\Entity\StationSchedule[]
+     * @return StationSchedule[]
      */
     public function getAllScheduledItemsForStation(Station $station): array
     {
@@ -103,7 +103,7 @@ final class StationScheduleRepository extends Repository
     }
 
     /**
-     * @param \App\Entity\Station $station
+     * @param Station $station
      * @param CarbonInterface|null $now
      *
      * @return \App\Entity\Api\StationSchedule[]
@@ -120,7 +120,7 @@ final class StationScheduleRepository extends Repository
         $events = [];
 
         foreach ($this->getAllScheduledItemsForStation($station) as $scheduleItem) {
-            /** @var \App\Entity\StationSchedule $scheduleItem */
+            /** @var StationSchedule $scheduleItem */
             $i = $startDate;
 
             while ($i <= $endDate) {

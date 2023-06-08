@@ -167,8 +167,8 @@ final class Queue
     }
 
     /**
-     * @param \App\Entity\Station $station
-     * @return \App\Entity\StationQueue[]|null
+     * @param Station $station
+     * @return StationQueue[]|null
      */
     public function getInterruptingQueue(Station $station): ?array
     {

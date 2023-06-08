@@ -20,7 +20,7 @@ use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
- * @extends AbstractApiCrudController<\App\Entity\StationStreamerBroadcast>
+ * @extends AbstractApiCrudController<StationStreamerBroadcast>
  */
 final class BroadcastsController extends AbstractApiCrudController
 {
@@ -194,7 +194,7 @@ final class BroadcastsController extends AbstractApiCrudController
 
     private function getRecord(Station $station, int|string $id): ?StationStreamerBroadcast
     {
-        /** @var \App\Entity\StationStreamerBroadcast|null $broadcast */
+        /** @var StationStreamerBroadcast|null $broadcast */
         $broadcast = $this->em->getRepository(StationStreamerBroadcast::class)->findOneBy(
             [
                 'id' => (int)$id,
@@ -206,7 +206,7 @@ final class BroadcastsController extends AbstractApiCrudController
 
     private function getStreamer(Station $station, int|string $id): ?StationStreamer
     {
-        /** @var \App\Entity\StationStreamer|null $streamer */
+        /** @var StationStreamer|null $streamer */
         $streamer = $this->em->getRepository(StationStreamer::class)->findOneBy(
             [
                 'id' => (int)$id,

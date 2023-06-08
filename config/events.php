@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use App\CallableEventDispatcherInterface;
 use App\Environment;
 use App\Event;

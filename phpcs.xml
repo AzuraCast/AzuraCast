@@ -35,26 +35,40 @@
         <exclude-pattern>src/Installer/EnvFiles/*.php</exclude-pattern>
     </rule>
 
+    <!--
+    <rule ref="Squiz.NamingConventions.ValidVariableName">
+
+    </rule>
+    -->
+
     <rule ref="SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingTraversableTypeHintSpecification">
         <exclude name="SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingTraversableTypeHintSpecification"/>
     </rule>
 
     <rule ref="SlevomatCodingStandard.Arrays.TrailingArrayComma"/>
-    <rule ref="SlevomatCodingStandard.Namespaces.DisallowGroupUse"/>
     <rule ref="SlevomatCodingStandard.Namespaces.AlphabeticallySortedUses"/>
     <rule ref="SlevomatCodingStandard.Namespaces.UseDoesNotStartWithBackslash"/>
 
-    <rule ref="SlevomatCodingStandard.Namespaces.UnusedUses">
+    <rule ref="SlevomatCodingStandard.TypeHints.DeclareStrictTypes">
         <properties>
-            <property name="searchAnnotations" value="true"/>
+            <property name="declareOnFirstLine" value="false"/>
+            <property name="linesCountBeforeDeclare" value="1"/>
+            <property name="linesCountAfterDeclare" value="1"/>
+            <property name="spacesCountAroundEqualsSign" value="0"/>
         </properties>
+
+        <exclude-pattern>src/Normalizer/DoctrineEntityNormalizer.php</exclude-pattern>
     </rule>
-    
+
     <rule ref="SlevomatCodingStandard.TypeHints.ReturnTypeHint">
         <exclude-pattern>src/Entity/Migration/*$</exclude-pattern>
     </rule>
 
     <rule ref="SlevomatCodingStandard.Namespaces.ReferenceUsedNamesOnly">
+        <properties>
+            <property name="searchAnnotations" value="true"/>
+        </properties>
+
         <exclude-pattern>config/*$</exclude-pattern>
     </rule>
 </ruleset>

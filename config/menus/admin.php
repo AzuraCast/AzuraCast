@@ -4,6 +4,8 @@
  * Administrative dashboard configuration.
  */
 
+declare(strict_types=1);
+
 use App\Enums\GlobalPermissions;
 
 return static function (App\Event\BuildAdminMenu $e) {

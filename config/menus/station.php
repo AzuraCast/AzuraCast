@@ -4,6 +4,8 @@
  * Administrative dashboard configuration.
  */
 
+declare(strict_types=1);
+
 use App\Enums\StationFeatures;
 use App\Enums\StationPermissions;
 use App\Radio\Enums\AudioProcessingMethods;

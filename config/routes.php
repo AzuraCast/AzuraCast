@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Middleware;
 use Slim\App;
 use Slim\Routing\RouteCollectorProxy;

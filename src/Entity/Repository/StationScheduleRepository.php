@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Entity\Repository;
 
 use App\Doctrine\Repository;
+use App\Entity\Api\StationSchedule as ApiStationSchedule;
 use App\Entity\ApiGenerator\ScheduleApiGenerator;
 use App\Entity\Station;
 use App\Entity\StationPlaylist;
@@ -105,7 +106,7 @@ final class StationScheduleRepository extends Repository
      * @param Station $station
      * @param CarbonInterface|null $now
      *
-     * @return \App\Entity\Api\StationSchedule[]
+     * @return ApiStationSchedule[]
      */
     public function getUpcomingSchedule(Station $station, CarbonInterface $now = null): array
     {

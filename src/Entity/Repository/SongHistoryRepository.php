@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Entity\Repository;
 
-use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Entity\Interfaces\SongInterface;
 use App\Entity\SongHistory;
 use App\Entity\Station;
@@ -16,12 +15,12 @@ use RuntimeException;
  */
 final class SongHistoryRepository extends AbstractStationBasedRepository
 {
+    protected string $entityClass = SongHistory::class;
+
     public function __construct(
-        ReloadableEntityManagerInterface $em,
         private readonly ListenerRepository $listenerRepository,
         private readonly StationQueueRepository $stationQueueRepository
     ) {
-        parent::__construct($em);
     }
 
     /**

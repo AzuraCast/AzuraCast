@@ -14,6 +14,8 @@ use Generator;
  */
 final class UnprocessableMediaRepository extends Repository
 {
+    protected string $entityClass = UnprocessableMedia::class;
+
     public function findByPath(
         string $path,
         StorageLocation $storageLocation

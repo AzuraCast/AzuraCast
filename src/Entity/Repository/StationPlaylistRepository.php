@@ -13,6 +13,8 @@ use App\Entity\StationPlaylist;
  */
 final class StationPlaylistRepository extends AbstractStationBasedRepository
 {
+    protected string $entityClass = StationPlaylist::class;
+
     /**
      * @return StationPlaylist[]
      */

@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace App\Doctrine;
 
+use App\Container\EntityManagerAwareTrait;
 use App\Exception\NotFoundException;
 use Closure;
+use DI\Attribute\Inject;
 use Doctrine\Persistence\ObjectRepository;
 
 /**
@@ -13,24 +15,19 @@ use Doctrine\Persistence\ObjectRepository;
  */
 class Repository
 {
+    use EntityManagerAwareTrait;
+
     /** @var class-string<TEntity> */
     protected string $entityClass;
 
     /** @var ObjectRepository<TEntity> */
     protected ObjectRepository $repository;
 
-    public function __construct(
-        protected ReloadableEntityManagerInterface $em
-    ) {
-        if (!isset($this->entityClass)) {
-            /** @var class-string<TEntity> $defaultClass */
-            $defaultClass = str_replace(['Repository', '\\\\'], ['', '\\'], static::class);
-            $this->entityClass = $defaultClass;
-        }
-
-        if (!isset($this->repository)) {
-            $this->repository = $em->getRepository($this->entityClass);
-        }
+    #[Inject]
+    public function setEntityManager(ReloadableEntityManagerInterface $em): void
+    {
+        $this->em = $em;
+        $this->repository = $em->getRepository($this->entityClass);
     }
 
     /**

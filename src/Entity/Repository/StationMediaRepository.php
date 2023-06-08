@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Entity\Repository;
 
 use App\Container\LoggerAwareTrait;
-use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Doctrine\Repository;
 use App\Entity\Song;
 use App\Entity\Station;
@@ -34,15 +33,15 @@ final class StationMediaRepository extends Repository
 {
     use LoggerAwareTrait;
 
+    protected string $entityClass = StationMedia::class;
+
     public function __construct(
-        ReloadableEntityManagerInterface $em,
         private readonly MetadataManager $metadataManager,
         private readonly RemoteAlbumArt $remoteAlbumArt,
         private readonly CustomFieldRepository $customFieldRepo,
         private readonly StationPlaylistMediaRepository $spmRepo,
         private readonly StorageLocationRepository $storageLocationRepo,
     ) {
-        parent::__construct($em);
     }
 
     public function findForStation(int|string $id, Station $station): ?StationMedia

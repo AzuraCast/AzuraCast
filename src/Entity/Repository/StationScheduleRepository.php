@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Entity\Repository;
 
-use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Doctrine\Repository;
 use App\Entity\ApiGenerator\ScheduleApiGenerator;
 use App\Entity\Station;
@@ -20,12 +19,12 @@ use Carbon\CarbonInterface;
  */
 final class StationScheduleRepository extends Repository
 {
+    protected string $entityClass = StationSchedule::class;
+
     public function __construct(
-        ReloadableEntityManagerInterface $em,
         private readonly Scheduler $scheduler,
         private readonly ScheduleApiGenerator $scheduleApiGenerator
     ) {
-        parent::__construct($em);
     }
 
     /**

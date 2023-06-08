@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Entity\Repository;
 
-use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Entity\Api\StationPlaylistQueue;
 use App\Entity\Station;
 use App\Entity\StationMedia;
@@ -22,14 +21,14 @@ use Exception as PhpException;
  */
 final class StationRequestRepository extends AbstractStationBasedRepository
 {
+    protected string $entityClass = StationRequest::class;
+
     public function __construct(
-        ReloadableEntityManagerInterface $em,
         private readonly StationMediaRepository $mediaRepo,
         private readonly DeviceDetector $deviceDetector,
         private readonly BlocklistParser $blocklistParser,
         private readonly AutoDJ\DuplicatePrevention $duplicatePrevention,
     ) {
-        parent::__construct($em);
     }
 
     public function getPendingRequest(int|string $id, Station $station): ?StationRequest

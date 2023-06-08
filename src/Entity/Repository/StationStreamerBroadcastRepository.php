@@ -15,6 +15,8 @@ use Carbon\CarbonImmutable;
  */
 final class StationStreamerBroadcastRepository extends Repository
 {
+    protected string $entityClass = StationStreamerBroadcast::class;
+
     public function getLatestBroadcast(Station $station): ?StationStreamerBroadcast
     {
         $currentStreamer = $station->getCurrentStreamer();

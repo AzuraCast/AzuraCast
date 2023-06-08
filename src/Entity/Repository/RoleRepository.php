@@ -12,4 +12,5 @@ use App\Entity\Role;
  */
 final class RoleRepository extends Repository
 {
+    protected string $entityClass = Role::class;
 }

@@ -11,4 +11,5 @@ use App\Entity\StationWebhook;
  */
 final class StationWebhookRepository extends AbstractStationBasedRepository
 {
+    protected string $entityClass = StationWebhook::class;
 }

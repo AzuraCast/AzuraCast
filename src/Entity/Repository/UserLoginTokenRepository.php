@@ -13,6 +13,8 @@ use App\Security\SplitToken;
  */
 final class UserLoginTokenRepository extends AbstractSplitTokenRepository
 {
+    protected string $entityClass = UserLoginToken::class;
+
     public function createToken(User $user): SplitToken
     {
         $token = SplitToken::generate();

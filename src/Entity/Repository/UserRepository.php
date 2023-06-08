@@ -12,6 +12,8 @@ use App\Entity\User;
  */
 final class UserRepository extends Repository
 {
+    protected string $entityClass = User::class;
+
     public function findByEmail(string $email): ?User
     {
         return $this->repository->findOneby(['email' => $email]);

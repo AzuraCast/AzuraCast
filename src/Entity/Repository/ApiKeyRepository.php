@@ -11,4 +11,5 @@ use App\Entity\ApiKey;
  */
 final class ApiKeyRepository extends AbstractSplitTokenRepository
 {
+    protected string $entityClass = ApiKey::class;
 }

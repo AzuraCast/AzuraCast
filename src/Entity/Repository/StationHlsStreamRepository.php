@@ -12,6 +12,8 @@ use App\Entity\StationHlsStream;
  */
 final class StationHlsStreamRepository extends AbstractStationBasedRepository
 {
+    protected string $entityClass = StationHlsStream::class;
+
     /**
      * @param Station $station
      *

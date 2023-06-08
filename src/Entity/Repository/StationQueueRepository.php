@@ -19,6 +19,8 @@ use Doctrine\ORM\QueryBuilder;
  */
 final class StationQueueRepository extends AbstractStationBasedRepository
 {
+    protected string $entityClass = StationQueue::class;
+
     public function clearForMediaAndPlaylist(
         StationMedia $media,
         StationPlaylist $playlist

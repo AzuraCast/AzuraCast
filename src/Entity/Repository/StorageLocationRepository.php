@@ -20,6 +20,8 @@ final class StorageLocationRepository extends Repository
 {
     use ContainerAwareTrait;
 
+    protected string $entityClass = StorageLocation::class;
+
     public function findByType(
         string|StorageLocationTypes $type,
         int $id

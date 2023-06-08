@@ -15,6 +15,8 @@ use App\Entity\StationMediaCustomField;
  */
 final class CustomFieldRepository extends Repository
 {
+    protected string $entityClass = CustomField::class;
+
     /**
      * @return CustomField[]
      */

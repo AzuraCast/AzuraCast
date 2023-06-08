@@ -15,6 +15,7 @@ use App\Service\IpGeolocation;
 use App\Utilities\File;
 use Carbon\CarbonImmutable;
 use DateTimeInterface;
+use DI\Attribute\Inject;
 use Doctrine\DBAL\Connection;
 use League\Csv\Writer;
 use NowPlaying\Result\Client;
@@ -29,16 +30,22 @@ final class ListenerRepository extends Repository
     use LoggerAwareTrait;
     use TruncateStrings;
 
+    protected string $entityClass = Listener::class;
+
     private string $tableName;
 
     private Connection $conn;
 
     public function __construct(
-        ReloadableEntityManagerInterface $em,
         private readonly DeviceDetector $deviceDetector,
         private readonly IpGeolocation $ipGeolocation
     ) {
-        parent::__construct($em);
+    }
+
+    #[Inject]
+    public function setEntityManager(ReloadableEntityManagerInterface $em): void
+    {
+        parent::setEntityManager($em);
 
         $this->tableName = $this->em->getClassMetadata(Listener::class)->getTableName();
         $this->conn = $this->em->getConnection();

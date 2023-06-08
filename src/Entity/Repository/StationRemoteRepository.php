@@ -12,6 +12,8 @@ use App\Entity\StationRemote;
  */
 final class StationRemoteRepository extends AbstractStationBasedRepository
 {
+    protected string $entityClass = StationRemote::class;
+
     /**
      * @param Station $station
      *

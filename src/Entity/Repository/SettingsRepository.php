@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Entity\Repository;
 
-use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Doctrine\Repository;
 use App\Entity\Settings;
 use App\Exception\ValidationException;
@@ -20,11 +19,9 @@ final class SettingsRepository extends Repository
     protected string $entityClass = Settings::class;
 
     public function __construct(
-        ReloadableEntityManagerInterface $em,
         private readonly Serializer $serializer,
         private readonly ValidatorInterface $validator
     ) {
-        parent::__construct($em);
     }
 
     public function readSettings(): Settings

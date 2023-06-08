@@ -14,6 +14,8 @@ use App\Entity\StationPlaylistFolder;
  */
 final class StationPlaylistFolderRepository extends AbstractStationBasedRepository
 {
+    protected string $entityClass = StationPlaylistFolder::class;
+
     /**
      * @param Station $station
      * @param StationPlaylist[] $playlists

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Entity\Repository;
 
-use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Entity\Station;
 use App\Entity\StationStreamer;
 use App\Entity\StationStreamerBroadcast;
@@ -17,12 +16,12 @@ use App\Radio\AutoDJ\Scheduler;
  */
 final class StationStreamerRepository extends AbstractStationBasedRepository
 {
+    protected string $entityClass = StationStreamer::class;
+
     public function __construct(
-        ReloadableEntityManagerInterface $em,
         private readonly Scheduler $scheduler,
         private readonly StationStreamerBroadcastRepository $broadcastRepo
     ) {
-        parent::__construct($em);
     }
 
     /**

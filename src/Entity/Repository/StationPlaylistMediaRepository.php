@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Entity\Repository;
 
-use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Doctrine\Repository;
 use App\Entity\Api\StationPlaylistQueue;
 use App\Entity\Enums\PlaylistOrders;
@@ -25,11 +24,11 @@ use RuntimeException;
  */
 final class StationPlaylistMediaRepository extends Repository
 {
+    protected string $entityClass = StationPlaylistMedia::class;
+
     public function __construct(
-        ReloadableEntityManagerInterface $em,
         private readonly StationQueueRepository $queueRepo
     ) {
-        parent::__construct($em);
     }
 
     /**

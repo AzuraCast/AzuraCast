@@ -14,6 +14,8 @@ use App\Enums\GlobalPermissions;
  */
 final class RolePermissionRepository extends Repository
 {
+    protected string $entityClass = RolePermission::class;
+
     /**
      * @param Role $role
      *

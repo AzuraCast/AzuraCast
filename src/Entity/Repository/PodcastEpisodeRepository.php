@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Entity\Repository;
 
-use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Doctrine\Repository;
 use App\Entity\Podcast;
 use App\Entity\PodcastEpisode;
@@ -24,12 +23,12 @@ use League\Flysystem\UnableToRetrieveMetadata;
  */
 final class PodcastEpisodeRepository extends Repository
 {
+    protected string $entityClass = PodcastEpisode::class;
+
     public function __construct(
-        ReloadableEntityManagerInterface $entityManager,
         private readonly MetadataManager $metadataManager,
         private readonly StorageLocationRepository $storageLocationRepo,
     ) {
-        parent::__construct($entityManager);
     }
 
     public function fetchEpisodeForStation(Station $station, string $episodeId): ?PodcastEpisode

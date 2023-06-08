@@ -26,6 +26,8 @@ final class StationRepository extends Repository
     use EnvironmentAwareTrait;
     use SettingsAwareTrait;
 
+    protected string $entityClass = Station::class;
+
     /**
      * @param string $identifier A numeric or string identifier for a station.
      */

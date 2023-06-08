@@ -17,6 +17,8 @@ use Carbon\CarbonInterface;
  */
 final class AnalyticsRepository extends Repository
 {
+    protected string $entityClass = Analytics::class;
+
     /**
      * @return mixed[]
      */

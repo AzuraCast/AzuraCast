@@ -209,7 +209,7 @@ final class ProfileController
     public function editAction(
         ServerRequest $request,
         Response $response,
-        string $stationId
+        string $station_id
     ): ResponseInterface {
         $router = $request->getRouter();
 

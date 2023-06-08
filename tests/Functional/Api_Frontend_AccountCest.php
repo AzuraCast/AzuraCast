@@ -1,6 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Functional;
+
+use FunctionalTester;
 
 class Api_Frontend_AccountCest extends CestAbstract
 {
@@ -8,7 +12,7 @@ class Api_Frontend_AccountCest extends CestAbstract
      * @before setupComplete
      * @before login
      */
-    public function checkAccount(\FunctionalTester $I): void
+    public function checkAccount(FunctionalTester $I): void
     {
         $I->wantTo('Check frontend account API functions.');
 

@@ -1,6 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Functional;
+
+use FunctionalTester;
 
 class Station_ReportsCest extends CestAbstract
 {
@@ -8,7 +12,7 @@ class Station_ReportsCest extends CestAbstract
      * @before setupComplete
      * @before login
      */
-    public function viewReports(\FunctionalTester $I): void
+    public function viewReports(FunctionalTester $I): void
     {
         $I->wantTo('View station reports.');
 

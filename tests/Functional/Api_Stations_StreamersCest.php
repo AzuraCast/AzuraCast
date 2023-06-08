@@ -1,6 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Functional;
+
+use FunctionalTester;
 
 class Api_Stations_StreamersCest extends CestAbstract
 {
@@ -8,7 +12,7 @@ class Api_Stations_StreamersCest extends CestAbstract
      * @before setupComplete
      * @before login
      */
-    public function manageStreamers(\FunctionalTester $I): void
+    public function manageStreamers(FunctionalTester $I): void
     {
         $I->wantTo('Manage station streamers via API.');
 

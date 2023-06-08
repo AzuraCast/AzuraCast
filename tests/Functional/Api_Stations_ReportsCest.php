@@ -1,8 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Functional;
 
 use Codeception\Util\Shared\Asserts;
+use DateInterval;
+use DateTime;
+use FunctionalTester;
 use League\Csv\Reader;
 
 class Api_Stations_ReportsCest extends CestAbstract
@@ -13,7 +18,7 @@ class Api_Stations_ReportsCest extends CestAbstract
      * @before setupComplete
      * @before login
      */
-    public function viewReports(\FunctionalTester $I): void
+    public function viewReports(FunctionalTester $I): void
     {
         $I->wantTo('View various station reports via API.');
 
@@ -40,23 +45,23 @@ class Api_Stations_ReportsCest extends CestAbstract
      * @before setupComplete
      * @before login
      */
-    public function downloadListenerReportsCsv(\FunctionalTester $I): void
+    public function downloadListenerReportsCsv(FunctionalTester $I): void
     {
         $I->wantTo('Download station listener report CSV via API.');
 
         $station = $this->getTestStation();
         $uriBase = '/api/station/' . $station->getId();
 
-        $startDateTime = (new \DateTime())->sub(\DateInterval::createFromDateString('30 days'));
-        $endDateTime = new \DateTime();
+        $startDateTime = (new DateTime())->sub(DateInterval::createFromDateString('30 days'));
+        $endDateTime = new DateTime();
 
         $requestUrl = $uriBase . '/listeners?' . http_build_query(
-                [
+            [
                     'format' => 'csv',
                     'start' => $startDateTime->format('Y-m-d\TH:i:s.v\Z'),
                     'end' => $endDateTime->format('Y-m-d\TH:i:s.v\Z'),
                 ]
-            );
+        );
 
         $csvHeaders = [
             'IP',
@@ -87,23 +92,23 @@ class Api_Stations_ReportsCest extends CestAbstract
      * @before setupComplete
      * @before login
      */
-    public function downloadHistoryReportCsv(\FunctionalTester $I): void
+    public function downloadHistoryReportCsv(FunctionalTester $I): void
     {
         $I->wantTo('Download station timeline report CSV via API.');
 
         $station = $this->getTestStation();
         $uriBase = '/api/station/' . $station->getId();
 
-        $startDateTime = (new \DateTime())->sub(\DateInterval::createFromDateString('30 days'));
-        $endDateTime = new \DateTime();
+        $startDateTime = (new DateTime())->sub(DateInterval::createFromDateString('30 days'));
+        $endDateTime = new DateTime();
 
         $requestUrl = $uriBase . '/history?' . http_build_query(
-                [
+            [
                     'format' => 'csv',
                     'start' => $startDateTime->format('Y-m-d\TH:i:s.v\Z'),
                     'end' => $endDateTime->format('Y-m-d\TH:i:s.v\Z'),
                 ]
-            );
+        );
 
         $csvHeaders = [
             'Date',
@@ -120,7 +125,7 @@ class Api_Stations_ReportsCest extends CestAbstract
     }
 
     protected function testReportCsv(
-        \FunctionalTester $I,
+        FunctionalTester $I,
         string $url,
         array $headerFields
     ): void {

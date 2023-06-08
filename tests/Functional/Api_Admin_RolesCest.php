@@ -1,9 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Functional;
 
 use App\Entity\Repository\RolePermissionRepository;
 use App\Enums\GlobalPermissions;
+use FunctionalTester;
 
 class Api_Admin_RolesCest extends CestAbstract
 {
@@ -11,7 +14,7 @@ class Api_Admin_RolesCest extends CestAbstract
      * @before setupComplete
      * @before login
      */
-    public function manageRoles(\FunctionalTester $I): void
+    public function manageRoles(FunctionalTester $I): void
     {
         $I->wantTo('Manage roles via API.');
 
@@ -32,7 +35,7 @@ class Api_Admin_RolesCest extends CestAbstract
         );
     }
 
-    public function checkSuperAdminRole(\FunctionalTester $I): void
+    public function checkSuperAdminRole(FunctionalTester $I): void
     {
         $I->wantTo('Ensure super administrator is not editable.');
 

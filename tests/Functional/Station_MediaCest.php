@@ -1,6 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Functional;
+
+use FunctionalTester;
 
 class Station_MediaCest extends CestAbstract
 {
@@ -8,7 +12,7 @@ class Station_MediaCest extends CestAbstract
      * @before setupComplete
      * @before login
      */
-    public function editMedia(\FunctionalTester $I): void
+    public function editMedia(FunctionalTester $I): void
     {
         $I->wantTo('Upload a song to a station.');
 

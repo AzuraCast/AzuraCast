@@ -1,6 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Functional;
+
+use FunctionalTester;
 
 class Frontend_SetupCest extends CestAbstract
 {
@@ -10,7 +14,7 @@ class Frontend_SetupCest extends CestAbstract
      * @after setupStation
      * @after setupSettings
      */
-    public function setupStart(\FunctionalTester $I): void
+    public function setupStart(FunctionalTester $I): void
     {
         $I->wantTo('Complete the initial setup process.');
 
@@ -22,7 +26,7 @@ class Frontend_SetupCest extends CestAbstract
         $I->comment('Setup redirect found.');
     }
 
-    protected function setupRegister(\FunctionalTester $I): void
+    protected function setupRegister(FunctionalTester $I): void
     {
         $I->amOnPage('/setup');
 
@@ -42,7 +46,7 @@ class Frontend_SetupCest extends CestAbstract
         );
     }
 
-    protected function setupStation(\FunctionalTester $I): void
+    protected function setupStation(FunctionalTester $I): void
     {
         $I->amOnPage('/setup');
         $I->seeCurrentUrlEquals('/setup/station');
@@ -51,7 +55,7 @@ class Frontend_SetupCest extends CestAbstract
         $this->setupCompleteStations($I);
     }
 
-    protected function setupSettings(\FunctionalTester $I): void
+    protected function setupSettings(FunctionalTester $I): void
     {
         $I->amOnPage('/setup');
         $I->seeCurrentUrlEquals('/setup/settings');

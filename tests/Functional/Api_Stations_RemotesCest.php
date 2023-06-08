@@ -1,8 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Functional;
 
 use App\Radio\Enums\RemoteAdapters;
+use FunctionalTester;
 
 class Api_Stations_RemotesCest extends CestAbstract
 {
@@ -10,7 +13,7 @@ class Api_Stations_RemotesCest extends CestAbstract
      * @before setupComplete
      * @before login
      */
-    public function manageRemotes(\FunctionalTester $I): void
+    public function manageRemotes(FunctionalTester $I): void
     {
         $I->wantTo('Manage station remote relays via API.');
 

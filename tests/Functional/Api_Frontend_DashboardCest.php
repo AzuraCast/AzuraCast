@@ -1,6 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Functional;
+
+use FunctionalTester;
 
 class Api_Frontend_DashboardCest extends CestAbstract
 {
@@ -8,7 +12,7 @@ class Api_Frontend_DashboardCest extends CestAbstract
      * @before setupComplete
      * @before login
      */
-    public function checkDashboard(\FunctionalTester $I): void
+    public function checkDashboard(FunctionalTester $I): void
     {
         $I->wantTo('Check dashboard API functions.');
 

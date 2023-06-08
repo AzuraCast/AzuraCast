@@ -1,6 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Functional;
+
+use FunctionalTester;
 
 class Station_PlaylistsCest extends CestAbstract
 {
@@ -8,7 +12,7 @@ class Station_PlaylistsCest extends CestAbstract
      * @before setupComplete
      * @before login
      */
-    public function editPlaylists(\FunctionalTester $I): void
+    public function editPlaylists(FunctionalTester $I): void
     {
         $I->wantTo('Create a station playlist.');
 

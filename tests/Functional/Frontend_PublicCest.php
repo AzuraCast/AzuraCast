@@ -1,13 +1,17 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Functional;
+
+use FunctionalTester;
 
 class Frontend_PublicCest extends CestAbstract
 {
     /**
      * @before setupComplete
      */
-    public function seePublicPage(\FunctionalTester $I): void
+    public function seePublicPage(FunctionalTester $I): void
     {
         $I->wantTo('Verify that the public page displays.');
 

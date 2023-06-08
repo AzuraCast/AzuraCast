@@ -1,6 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Functional;
+
+use FunctionalTester;
 
 class Admin_RecordsCest extends CestAbstract
 {
@@ -8,7 +12,7 @@ class Admin_RecordsCest extends CestAbstract
      * @before setupComplete
      * @before login
      */
-    public function manageUsers(\FunctionalTester $I): void
+    public function manageUsers(FunctionalTester $I): void
     {
         $I->wantTo('Manage users.');
 
@@ -52,7 +56,7 @@ class Admin_RecordsCest extends CestAbstract
      * @before setupComplete
      * @before login
      */
-    public function manageStations(\FunctionalTester $I): void
+    public function manageStations(FunctionalTester $I): void
     {
         $I->wantTo('Manage stations.');
 
@@ -79,7 +83,7 @@ class Admin_RecordsCest extends CestAbstract
      * @before setupComplete
      * @before login
      */
-    public function manageSettings(\FunctionalTester $I): void
+    public function manageSettings(FunctionalTester $I): void
     {
         $I->wantTo('Manage settings.');
 

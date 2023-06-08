@@ -1,8 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Functional;
 
 use App\Webhook\Enums\WebhookTypes;
+use FunctionalTester;
 
 class Api_Stations_WebhooksCest extends CestAbstract
 {
@@ -10,7 +13,7 @@ class Api_Stations_WebhooksCest extends CestAbstract
      * @before setupComplete
      * @before login
      */
-    public function manageWebhooks(\FunctionalTester $I): void
+    public function manageWebhooks(FunctionalTester $I): void
     {
         $I->wantTo('Manage station webhooks via API.');
 

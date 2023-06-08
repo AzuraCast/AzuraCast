@@ -1,6 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Functional;
+
+use FunctionalTester;
 
 class Station_ProfileCest extends CestAbstract
 {
@@ -8,7 +12,7 @@ class Station_ProfileCest extends CestAbstract
      * @before setupComplete
      * @before login
      */
-    public function editStationProfile(\FunctionalTester $I): void
+    public function editStationProfile(FunctionalTester $I): void
     {
         $I->wantTo('View and edit a station profile.');
 

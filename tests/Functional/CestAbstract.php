@@ -1,17 +1,29 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Functional;
 
 use App\Acl;
 use App\Doctrine\ReloadableEntityManagerInterface;
+use App\Entity\ApiKey;
 use App\Entity\Repository\SettingsRepository;
 use App\Entity\Repository\StationRepository;
+use App\Entity\Repository\StorageLocationRepository;
+use App\Entity\Role;
+use App\Entity\RolePermission;
+use App\Entity\Settings;
+use App\Entity\Station;
+use App\Entity\StationMedia;
+use App\Entity\User;
 use App\Enums\GlobalPermissions;
 use App\Environment;
 use App\Media\MediaProcessor;
 use App\Security\SplitToken;
 use App\Tests\Module;
+use FunctionalTester;
 use Psr\Container\ContainerInterface;
+use RuntimeException;
 
 abstract class CestAbstract
 {
@@ -30,7 +42,7 @@ abstract class CestAbstract
 
     protected ?string $login_api_key = null;
 
-    private ?\App\Entity\Station $test_station = null;
+    private ?Station $test_station = null;
 
     protected function _inject(Module $testsModule): void
     {
@@ -42,7 +54,7 @@ abstract class CestAbstract
         $this->environment = $this->di->get(Environment::class);
     }
 
-    public function _after(\FunctionalTester $I): void
+    public function _after(FunctionalTester $I): void
     {
         $this->em->clear();
 
@@ -53,7 +65,7 @@ abstract class CestAbstract
         }
     }
 
-    protected function setupIncomplete(\FunctionalTester $I): void
+    protected function setupIncomplete(FunctionalTester $I): void
     {
         $I->wantTo('Start with an incomplete setup.');
 
@@ -65,7 +77,7 @@ abstract class CestAbstract
         $this->settingsRepo->writeSettings($settings);
     }
 
-    protected function setupComplete(\FunctionalTester $I): void
+    protected function setupComplete(FunctionalTester $I): void
     {
         $this->_cleanTables();
 
@@ -76,19 +88,19 @@ abstract class CestAbstract
         $this->setupCompleteSettings($I);
     }
 
-    protected function setupCompleteUser(\FunctionalTester $I): void
+    protected function setupCompleteUser(FunctionalTester $I): void
     {
         // Create administrator account.
-        $role = new \App\Entity\Role;
+        $role = new Role();
         $role->setName('Super Administrator');
         $this->em->persist($role);
 
-        $rha = new \App\Entity\RolePermission($role);
+        $rha = new RolePermission($role);
         $rha->setActionName(GlobalPermissions::All);
         $this->em->persist($rha);
 
         // Create user account.
-        $user = new \App\Entity\User;
+        $user = new User();
         $user->setName('AzuraCast Test User');
         $user->setEmail($this->login_username);
         $user->setNewPassword($this->login_password);
@@ -100,7 +112,7 @@ abstract class CestAbstract
         // Create API key
         $key = SplitToken::generate();
 
-        $apiKey = new \App\Entity\ApiKey($user, $key);
+        $apiKey = new ApiKey($user, $key);
         $apiKey->setComment('Test Suite');
 
         $this->em->persist($apiKey);
@@ -112,7 +124,7 @@ abstract class CestAbstract
         $this->di->get(Acl::class)->reload();
     }
 
-    protected function setupCompleteStations(\FunctionalTester $I): void
+    protected function setupCompleteStations(FunctionalTester $I): void
     {
         $I->sendPost(
             '/api/admin/stations',
@@ -123,34 +135,34 @@ abstract class CestAbstract
         );
 
         $stationId = $I->grabDataFromResponseByJsonPath('id');
-        $this->test_station = $this->em->find(\App\Entity\Station::class, $stationId[0]);
+        $this->test_station = $this->em->find(Station::class, $stationId[0]);
     }
 
-    protected function setupCompleteSettings(\FunctionalTester $I): void
+    protected function setupCompleteSettings(FunctionalTester $I): void
     {
         $I->sendPut(
-            '/api/admin/settings/' . \App\Entity\Settings::GROUP_GENERAL,
+            '/api/admin/settings/' . Settings::GROUP_GENERAL,
             [
                 'base_url' => 'http://localhost',
             ]
         );
     }
 
-    protected function getTestStation(): \App\Entity\Station
+    protected function getTestStation(): Station
     {
-        if ($this->test_station instanceof \App\Entity\Station) {
+        if ($this->test_station instanceof Station) {
             $testStation = $this->em->refetch($this->test_station);
-            if ($testStation instanceof \App\Entity\Station) {
+            if ($testStation instanceof Station) {
                 return $testStation;
             }
 
             $this->test_station = null;
         }
 
-        throw new \RuntimeException('Test station is not established.');
+        throw new RuntimeException('Test station is not established.');
     }
 
-    protected function uploadTestSong(): \App\Entity\StationMedia
+    protected function uploadTestSong(): StationMedia
     {
         $testStation = $this->getTestStation();
 
@@ -158,9 +170,9 @@ abstract class CestAbstract
 
         $storageLocation = $testStation->getMediaStorageLocation();
 
-        $storageLocationRepo = $this->di->get(\App\Entity\Repository\StorageLocationRepository::class);
+        $storageLocationRepo = $this->di->get(StorageLocationRepository::class);
         $storageFs = $storageLocationRepo->getAdapter($storageLocation)->getFilesystem();
-        
+
         $storageFs->upload($songSrc, 'test.mp3');
 
         /** @var MediaProcessor $mediaProcessor */
@@ -172,10 +184,10 @@ abstract class CestAbstract
     protected function _cleanTables(): void
     {
         $cleanTables = [
-            \App\Entity\User::class,
-            \App\Entity\Role::class,
-            \App\Entity\Station::class,
-            \App\Entity\Settings::class,
+            User::class,
+            Role::class,
+            Station::class,
+            Settings::class,
         ];
 
         foreach ($cleanTables as $cleanTable) {
@@ -185,7 +197,7 @@ abstract class CestAbstract
         $this->em->clear();
     }
 
-    protected function login(\FunctionalTester $I): void
+    protected function login(FunctionalTester $I): void
     {
         $this->setupComplete($I);
 
@@ -204,7 +216,7 @@ abstract class CestAbstract
     }
 
     protected function testCrudApi(
-        \FunctionalTester $I,
+        FunctionalTester $I,
         string $listUrl,
         array $createJson = [],
         array $editJson = []

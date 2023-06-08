@@ -18,37 +18,37 @@ final class AnalyticsFixture extends AbstractFixture implements DependentFixture
     {
         $stations = $manager->getRepository(Station::class)->findAll();
 
-        $midnight_utc = CarbonImmutable::now('UTC')->setTime(0, 0);
+        $midnightUtc = CarbonImmutable::now('UTC')->setTime(0, 0);
 
         for ($i = 1; $i <= 14; $i++) {
-            $day = $midnight_utc->subDays($i);
+            $day = $midnightUtc->subDays($i);
 
-            $day_min = 0;
-            $day_max = 0;
-            $day_listeners = 0;
-            $day_unique = 0;
+            $dayMin = 0;
+            $dayMax = 0;
+            $dayListeners = 0;
+            $dayUnique = 0;
 
             foreach ($stations as $station) {
                 /** @var Station $station */
-                $station_listeners = random_int(10, 50);
-                $station_min = random_int(1, $station_listeners);
-                $station_max = random_int($station_listeners, 150);
+                $stationListeners = random_int(10, 50);
+                $stationMin = random_int(1, $stationListeners);
+                $stationMax = random_int($stationListeners, 150);
 
-                $station_unique = random_int(1, 250);
+                $stationUnique = random_int(1, 250);
 
-                $day_min = min($day_min, $station_min);
-                $day_max = max($day_max, $station_max);
-                $day_listeners += $station_listeners;
-                $day_unique += $station_unique;
+                $dayMin = min($dayMin, $stationMin);
+                $dayMax = max($dayMax, $stationMax);
+                $dayListeners += $stationListeners;
+                $dayUnique += $stationUnique;
 
                 $stationPoint = new Analytics(
                     $day,
                     $station,
                     AnalyticsIntervals::Daily,
-                    $station_min,
-                    $station_max,
-                    $station_listeners,
-                    $station_unique
+                    $stationMin,
+                    $stationMax,
+                    $stationListeners,
+                    $stationUnique
                 );
                 $manager->persist($stationPoint);
             }
@@ -57,10 +57,10 @@ final class AnalyticsFixture extends AbstractFixture implements DependentFixture
                 $day,
                 null,
                 AnalyticsIntervals::Daily,
-                $day_min,
-                $day_max,
-                $day_listeners,
-                $day_unique
+                $dayMin,
+                $dayMax,
+                $dayListeners,
+                $dayUnique
             );
             $manager->persist($totalPoint);
         }

@@ -54,14 +54,14 @@ final class Error
     public function __construct(
         int $code = 500,
         string $message = 'General Error',
-        ?string $formatted_message = null,
-        array $extra_data = [],
+        ?string $formattedMessage = null,
+        array $extraData = [],
         string $type = 'Error'
     ) {
         $this->code = $code;
         $this->message = $message;
-        $this->formatted_message = ($formatted_message ?? $message);
-        $this->extra_data = $extra_data;
+        $this->formatted_message = ($formattedMessage ?? $message);
+        $this->extra_data = $extraData;
         $this->type = $type;
         $this->success = false;
     }

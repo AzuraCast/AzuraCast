@@ -108,17 +108,17 @@ final class Annotations implements EventSubscriberInterface
             isset($annotationsRaw['liq_cue_out'])
             && $annotationsRaw['liq_cue_out'] < 0
         ) {
-            $cue_out = abs($annotationsRaw['liq_cue_out']);
+            $cueOut = abs($annotationsRaw['liq_cue_out']);
 
-            if (0.0 === $cue_out) {
+            if (0.0 === $cueOut) {
                 unset($annotationsRaw['liq_cue_out']);
             }
 
             if (isset($annotationsRaw['duration'])) {
-                if ($cue_out > $annotationsRaw['duration']) {
+                if ($cueOut > $annotationsRaw['duration']) {
                     unset($annotationsRaw['liq_cue_out']);
                 } else {
-                    $annotationsRaw['liq_cue_out'] = max(0, $annotationsRaw['duration'] - $cue_out);
+                    $annotationsRaw['liq_cue_out'] = max(0, $annotationsRaw['duration'] - $cueOut);
                 }
             }
         }

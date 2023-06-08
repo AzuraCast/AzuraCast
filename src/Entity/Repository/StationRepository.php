@@ -63,16 +63,16 @@ final class StationRepository extends Repository
      * @inheritDoc
      */
     public function fetchSelect(
-        bool|string $add_blank = false,
+        bool|string $addBlank = false,
         Closure $display = null,
         string $pk = 'id',
-        string $order_by = 'name'
+        string $orderBy = 'name'
     ): array {
         $select = [];
 
         // Specify custom text in the $add_blank parameter to override.
-        if ($add_blank !== false) {
-            $select[''] = ($add_blank === true) ? 'Select...' : $add_blank;
+        if ($addBlank !== false) {
+            $select[''] = ($addBlank === true) ? 'Select...' : $addBlank;
         }
 
         // Build query for records.

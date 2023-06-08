@@ -156,9 +156,9 @@ class PodcastMedia implements IdentifiableEntityInterface
         return $this->art_updated_at;
     }
 
-    public function setArtUpdatedAt(int $art_updated_at): self
+    public function setArtUpdatedAt(int $artUpdatedAt): self
     {
-        $this->art_updated_at = $art_updated_at;
+        $this->art_updated_at = $artUpdatedAt;
 
         return $this;
     }

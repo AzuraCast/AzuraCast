@@ -13,9 +13,9 @@ class DuplicatePreventionTest extends Unit
 
     protected DuplicatePrevention $duplicatePrevention;
 
-    protected function _inject(Module $tests_module): void
+    protected function _inject(Module $testsModule): void
     {
-        $di = $tests_module->container;
+        $di = $testsModule->container;
         $this->duplicatePrevention = $di->get(DuplicatePrevention::class);
     }
 

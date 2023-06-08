@@ -11,14 +11,14 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 abstract class CommandAbstract extends Command
 {
-    protected function runCommand(OutputInterface $output, string $command_name, array $command_args = []): int
+    protected function runCommand(OutputInterface $output, string $commandName, array $commandArgs = []): int
     {
-        $command = $this->getApplication()?->find($command_name);
+        $command = $this->getApplication()?->find($commandName);
         if (null === $command) {
-            throw new RuntimeException(sprintf('Command %s not found.', $command_name));
+            throw new RuntimeException(sprintf('Command %s not found.', $commandName));
         }
 
-        $input = new ArrayInput(['command' => $command_name] + $command_args);
+        $input = new ArrayInput(['command' => $commandName] + $commandArgs);
         $input->setInteractive(false);
 
         return $command->run($input, $output);

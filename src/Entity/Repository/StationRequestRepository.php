@@ -79,17 +79,17 @@ final class StationRequestRepository extends AbstractStationBasedRepository
         }
 
         // Verify that Track ID exists with station.
-        $media_item = $this->mediaRepo->requireByUniqueId($trackId, $station);
+        $mediaItem = $this->mediaRepo->requireByUniqueId($trackId, $station);
 
-        if (!$media_item->isRequestable()) {
+        if (!$mediaItem->isRequestable()) {
             throw new Exception(__('The song ID you specified cannot be requested for this station.'));
         }
 
         // Check if the song is already enqueued as a request.
-        $this->checkPendingRequest($media_item, $station);
+        $this->checkPendingRequest($mediaItem, $station);
 
         // Check the most recent song history.
-        $this->checkRecentPlay($media_item, $station);
+        $this->checkRecentPlay($mediaItem, $station);
 
         if (!$isAuthenticated) {
             // Check for any request (on any station) within the last $threshold_seconds.
@@ -119,7 +119,7 @@ final class StationRequestRepository extends AbstractStationBasedRepository
         }
 
         // Save request locally.
-        $record = new StationRequest($station, $media_item, $ip);
+        $record = new StationRequest($station, $mediaItem, $ip);
         $this->em->persist($record);
         $this->em->flush();
 
@@ -136,10 +136,10 @@ final class StationRequestRepository extends AbstractStationBasedRepository
      */
     public function checkPendingRequest(StationMedia $media, Station $station): bool
     {
-        $pending_request_threshold = time() - (60 * 10);
+        $pendingRequestThreshold = time() - (60 * 10);
 
         try {
-            $pending_request = $this->em->createQuery(
+            $pendingRequest = $this->em->createQuery(
                 <<<'DQL'
                     SELECT sr.timestamp
                     FROM App\Entity\StationRequest sr
@@ -150,14 +150,14 @@ final class StationRequestRepository extends AbstractStationBasedRepository
                 DQL
             )->setParameter('track_id', $media->getId())
                 ->setParameter('station_id', $station->getId())
-                ->setParameter('threshold', $pending_request_threshold)
+                ->setParameter('threshold', $pendingRequestThreshold)
                 ->setMaxResults(1)
                 ->getSingleScalarResult();
         } catch (PhpException) {
             return true;
         }
 
-        if ($pending_request > 0) {
+        if ($pendingRequest > 0) {
             throw new Exception(__('Duplicate request: this song was already requested and will play soon.'));
         }
 

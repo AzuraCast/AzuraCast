@@ -36,20 +36,20 @@ final class Strings
             return $text;
         }
 
-        $wrapped_text = self::mbWordwrap($text, $limit, '{N}', true);
-        $shortened_text = mb_substr(
-            $wrapped_text,
+        $wrappedText = self::mbWordwrap($text, $limit, '{N}', true);
+        $shortenedText = mb_substr(
+            $wrappedText,
             0,
-            strpos($wrapped_text, '{N}') ?: null
+            strpos($wrappedText, '{N}') ?: null
         );
 
         // Prevent the padding string from bumping up against punctuation.
         $punctuation = ['.', ',', ';', '?', '!'];
-        if (in_array(mb_substr($shortened_text, -1), $punctuation, true)) {
-            $shortened_text = mb_substr($shortened_text, 0, -1);
+        if (in_array(mb_substr($shortenedText, -1), $punctuation, true)) {
+            $shortenedText = mb_substr($shortenedText, 0, -1);
         }
 
-        return $shortened_text . $pad;
+        return $shortenedText . $pad;
     }
 
     /**

@@ -111,20 +111,20 @@ final class RotateLogsTask extends AbstractTask
 
     private function cleanUpIcecastLog(Station $station): void
     {
-        $config_path = $station->getRadioConfigDir();
+        $configPath = $station->getRadioConfigDir();
 
         $finder = new Finder();
 
         $finder
             ->files()
-            ->in($config_path)
+            ->in($configPath)
             ->name('icecast_*.log.*')
             ->date('before 1 month ago');
 
         foreach ($finder as $file) {
-            $file_path = $file->getRealPath();
-            if ($file_path) {
-                @unlink($file_path);
+            $filePath = $file->getRealPath();
+            if ($filePath) {
+                @unlink($filePath);
             }
         }
     }

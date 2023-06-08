@@ -11,9 +11,9 @@ class Station_RemoteRelaysCest extends CestAbstract
     public function editRemoteRelays(\FunctionalTester $I): void
     {
         $testStation = $this->getTestStation();
-        $station_id = $testStation->getId();
+        $stationId = $testStation->getId();
 
-        $I->amOnPage('/station/' . $station_id . '/remotes');
+        $I->amOnPage('/station/' . $stationId . '/remotes');
 
         $I->see('Remote Relays');
     }

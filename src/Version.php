@@ -68,11 +68,11 @@ final class Version
                 $details['commit_short'] = substr($details['commit'] ?? '', 0, 7);
 
                 if (!empty($details['commit_date_raw'])) {
-                    $commit_date = new DateTime($details['commit_date_raw']);
-                    $commit_date->setTimezone(new DateTimeZone('UTC'));
+                    $commitDate = new DateTime($details['commit_date_raw']);
+                    $commitDate->setTimezone(new DateTimeZone('UTC'));
 
-                    $details['commit_timestamp'] = $commit_date->getTimestamp();
-                    $details['commit_date'] = $commit_date->format('Y-m-d G:i');
+                    $details['commit_timestamp'] = $commitDate->getTimestamp();
+                    $details['commit_date'] = $commitDate->format('Y-m-d G:i');
                 } else {
                     $details['commit_timestamp'] = 0;
                     $details['commit_date'] = 'N/A';

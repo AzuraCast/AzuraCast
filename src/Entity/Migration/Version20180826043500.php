@@ -22,7 +22,7 @@ final class Version20180826043500 extends AbstractMigration
 
     private function changeCharset(string $collate): void
     {
-        $db_name = $this->connection->getDatabase() ?? 'azuracast';
+        $dbName = $this->connection->getDatabase() ?? 'azuracast';
 
         $tables = [
             'analytics',
@@ -52,7 +52,7 @@ final class Version20180826043500 extends AbstractMigration
 
         $sqlLines = [
             'ALTER DATABASE ' . $this->connection->quoteIdentifier(
-                $db_name
+                $dbName
             ) . ' CHARACTER SET = utf8mb4 COLLATE = ' . $collate,
             'ALTER TABLE `song_history` DROP FOREIGN KEY FK_2AD16164A0BDB2F3',
             'ALTER TABLE `station_media` DROP FOREIGN KEY FK_32AADE3AA0BDB2F3',
@@ -61,10 +61,10 @@ final class Version20180826043500 extends AbstractMigration
             $this->addSql($sql);
         }
 
-        foreach ($tables as $table_name) {
+        foreach ($tables as $tableName) {
             $this->addSql(
                 'ALTER TABLE ' . $this->connection->quoteIdentifier(
-                    $table_name
+                    $tableName
                 ) . ' CONVERT TO CHARACTER SET utf8mb4 COLLATE ' . $collate
             );
         }

@@ -32,11 +32,11 @@ final class ListCommand extends CommandAbstract
         $rows = [];
 
         $settings = $this->readSettings();
-        foreach ($this->settingsRepo->toArray($settings) as $setting_key => $setting_value) {
-            $value = print_r($setting_value, true);
+        foreach ($this->settingsRepo->toArray($settings) as $settingKey => $settingValue) {
+            $value = print_r($settingValue, true);
             $value = Utilities\Strings::truncateText($value, 600);
 
-            $rows[] = [$setting_key, $value];
+            $rows[] = [$settingKey, $value];
         }
 
         $io->table($headers, $rows);

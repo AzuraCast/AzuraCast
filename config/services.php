@@ -249,17 +249,17 @@ return [
         $loggingLevel = $environment->getLogLevel();
 
         if ($environment->isCli() || $environment->isDocker()) {
-            $log_stderr = new Monolog\Handler\StreamHandler('php://stderr', $loggingLevel, true);
-            $logger->pushHandler($log_stderr);
+            $logStderr = new Monolog\Handler\StreamHandler('php://stderr', $loggingLevel, true);
+            $logger->pushHandler($logStderr);
         }
 
-        $log_file = new Monolog\Handler\RotatingFileHandler(
+        $logFile = new Monolog\Handler\RotatingFileHandler(
             $environment->getTempDirectory() . '/app.log',
             5,
             $loggingLevel,
             true
         );
-        $logger->pushHandler($log_file);
+        $logger->pushHandler($logFile);
 
         return $logger;
     },

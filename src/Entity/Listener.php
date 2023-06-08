@@ -135,9 +135,9 @@ class Listener implements
         return $this->hls_stream_id;
     }
 
-    public function setHlsStream(?StationHlsStream $hls_stream): void
+    public function setHlsStream(?StationHlsStream $hlsStream): void
     {
-        $this->hls_stream = $hls_stream;
+        $this->hls_stream = $hlsStream;
     }
 
     public function getListenerUid(): int
@@ -175,9 +175,9 @@ class Listener implements
         return $this->timestamp_end;
     }
 
-    public function setTimestampEnd(int $timestamp_end): void
+    public function setTimestampEnd(int $timestampEnd): void
     {
-        $this->timestamp_end = $timestamp_end;
+        $this->timestamp_end = $timestampEnd;
     }
 
     public function getConnectedSeconds(): int

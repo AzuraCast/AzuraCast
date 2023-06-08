@@ -20,12 +20,12 @@ final class Libravatar implements AvatarServiceInterface
 
     public function getAvatar(string $email, int $size = 50, ?string $default = 'mm'): string
     {
-        $url_params = [
+        $urlParams = [
             'd' => $default,
             'size' => $size,
         ];
 
-        $avatarUrl = self::BASE_URL . '/' . md5(strtolower($email)) . '?' . http_build_query($url_params);
+        $avatarUrl = self::BASE_URL . '/' . md5(strtolower($email)) . '?' . http_build_query($urlParams);
         return htmlspecialchars($avatarUrl, ENT_QUOTES | ENT_HTML5);
     }
 }

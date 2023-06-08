@@ -51,10 +51,10 @@ class Analytics implements IdentifiableEntityInterface
         DateTimeInterface $moment,
         ?Station $station = null,
         AnalyticsIntervals $type = AnalyticsIntervals::Daily,
-        int $number_min = 0,
-        int $number_max = 0,
-        float $number_avg = 0,
-        ?int $number_unique = null
+        int $numberMin = 0,
+        int $numberMax = 0,
+        float $numberAvg = 0,
+        ?int $numberUnique = null
     ) {
         $utc = new DateTimeZone('UTC');
 
@@ -63,10 +63,10 @@ class Analytics implements IdentifiableEntityInterface
         $this->station = $station;
         $this->type = $type;
 
-        $this->number_min = $number_min;
-        $this->number_max = $number_max;
-        $this->number_avg = (string)round($number_avg, 2);
-        $this->number_unique = $number_unique;
+        $this->number_min = $numberMin;
+        $this->number_max = $numberMax;
+        $this->number_avg = (string)round($numberAvg, 2);
+        $this->number_unique = $numberUnique;
     }
 
     public function getStation(): ?Station

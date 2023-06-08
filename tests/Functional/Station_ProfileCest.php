@@ -13,9 +13,9 @@ class Station_ProfileCest extends CestAbstract
         $I->wantTo('View and edit a station profile.');
 
         $testStation = $this->getTestStation();
-        $station_id = $testStation->getId();
+        $stationId = $testStation->getId();
 
-        $I->amOnPage('/station/' . $station_id . '/profile');
+        $I->amOnPage('/station/' . $stationId . '/profile');
 
         $I->see('Functional Test Radio');
         /*

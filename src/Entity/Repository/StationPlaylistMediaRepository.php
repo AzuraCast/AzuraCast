@@ -85,7 +85,7 @@ final class StationPlaylistMediaRepository extends Repository
     public function getHighestSongWeight(StationPlaylist $playlist): int
     {
         try {
-            $highest_weight = $this->em->createQuery(
+            $highestWeight = $this->em->createQuery(
                 <<<'DQL'
                     SELECT MAX(e.weight)
                     FROM App\Entity\StationPlaylistMedia e
@@ -94,10 +94,10 @@ final class StationPlaylistMediaRepository extends Repository
             )->setParameter('playlist_id', $playlist->getId())
                 ->getSingleScalarResult();
         } catch (NoResultException) {
-            $highest_weight = 1;
+            $highestWeight = 1;
         }
 
-        return (int)$highest_weight;
+        return (int)$highestWeight;
     }
 
     /**
@@ -147,7 +147,7 @@ final class StationPlaylistMediaRepository extends Repository
      */
     public function setMediaOrder(StationPlaylist $playlist, array $mapping): void
     {
-        $update_query = $this->em->createQuery(
+        $updateQuery = $this->em->createQuery(
             <<<'DQL'
                 UPDATE App\Entity\StationPlaylistMedia e
                 SET e.weight = :weight
@@ -157,9 +157,9 @@ final class StationPlaylistMediaRepository extends Repository
         )->setParameter('playlist_id', $playlist->getId());
 
         $this->em->wrapInTransaction(
-            function () use ($update_query, $mapping): void {
+            function () use ($updateQuery, $mapping): void {
                 foreach ($mapping as $id => $weight) {
-                    $update_query->setParameter('id', $id)
+                    $updateQuery->setParameter('id', $id)
                         ->setParameter('weight', $weight)
                         ->execute();
                 }

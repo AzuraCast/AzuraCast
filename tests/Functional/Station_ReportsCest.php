@@ -13,29 +13,29 @@ class Station_ReportsCest extends CestAbstract
         $I->wantTo('View station reports.');
 
         $testStation = $this->getTestStation();
-        $station_id = $testStation->getId();
+        $stationId = $testStation->getId();
 
-        $I->amOnPAge('/station/' . $station_id . '/reports/overview');
+        $I->amOnPAge('/station/' . $stationId . '/reports/overview');
 
         $I->seeResponseCodeIs(200);
         $I->see('Station Statistics');
 
-        $I->amOnPage('/station/' . $station_id . '/reports/timeline');
+        $I->amOnPage('/station/' . $stationId . '/reports/timeline');
 
         $I->seeResponseCodeIs(200);
         $I->see('Song Playback Timeline');
 
-        $I->amOnPage('/station/' . $station_id . '/reports/requests');
+        $I->amOnPage('/station/' . $stationId . '/reports/requests');
 
         $I->seeResponseCodeIs(200);
         $I->see('Song Requests');
 
-        $I->amOnPage('/station/' . $station_id . '/reports/listeners');
+        $I->amOnPage('/station/' . $stationId . '/reports/listeners');
 
         $I->seeResponseCodeIs(200);
         $I->see('Listeners');
 
-        $I->amOnPage('/station/' . $station_id . '/reports/soundexchange');
+        $I->amOnPage('/station/' . $stationId . '/reports/soundexchange');
         $I->seeResponseCodeIs(200);
         $I->see('SoundExchange Report');
     }

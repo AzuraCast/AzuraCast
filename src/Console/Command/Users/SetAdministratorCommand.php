@@ -47,9 +47,9 @@ final class SetAdministratorCommand extends CommandAbstract
         if ($user instanceof User) {
             $adminRole = $this->permsRepo->ensureSuperAdministratorRole();
 
-            $user_roles = $user->getRoles();
-            if (!$user_roles->contains($adminRole)) {
-                $user_roles->add($adminRole);
+            $userRoles = $user->getRoles();
+            if (!$userRoles->contains($adminRole)) {
+                $userRoles->add($adminRole);
             }
 
             $this->em->persist($user);

@@ -437,10 +437,10 @@ final class ConfigWriter implements EventSubscriberInterface
                 $event->appendLines($playlistConfigLines);
 
                 foreach ($scheduleItems as $scheduleItem) {
-                    $play_time = $this->getScheduledPlaylistPlayTime($event, $scheduleItem);
+                    $playTime = $this->getScheduledPlaylistPlayTime($event, $scheduleItem);
 
-                    $schedule_timing = '({ ' . $play_time . ' }, ' . $playlistVarName . ')';
-                    $scheduleSwitchesRemoteUrl[] = $schedule_timing;
+                    $scheduleTiming = '({ ' . $playTime . ' }, ' . $playlistVarName . ')';
+                    $scheduleSwitchesRemoteUrl[] = $scheduleTiming;
                 }
                 continue;
             }
@@ -463,14 +463,14 @@ final class ConfigWriter implements EventSubscriberInterface
                 case PlaylistTypes::Standard:
                     if ($scheduleItems->count() > 0) {
                         foreach ($scheduleItems as $scheduleItem) {
-                            $play_time = $this->getScheduledPlaylistPlayTime($event, $scheduleItem);
+                            $playTime = $this->getScheduledPlaylistPlayTime($event, $scheduleItem);
 
-                            $schedule_timing = '({ ' . $play_time . ' }, ' . $playlistVarName . ')';
+                            $scheduleTiming = '({ ' . $playTime . ' }, ' . $playlistVarName . ')';
 
                             if ($playlist->backendInterruptOtherSongs()) {
-                                $scheduleSwitchesInterrupting[] = $schedule_timing;
+                                $scheduleSwitchesInterrupting[] = $scheduleTiming;
                             } else {
-                                $scheduleSwitches[] = $schedule_timing;
+                                $scheduleSwitches[] = $scheduleTiming;
                             }
                         }
                     } else {
@@ -493,14 +493,14 @@ final class ConfigWriter implements EventSubscriberInterface
 
                     if ($scheduleItems->count() > 0) {
                         foreach ($scheduleItems as $scheduleItem) {
-                            $play_time = $this->getScheduledPlaylistPlayTime($event, $scheduleItem);
+                            $playTime = $this->getScheduledPlaylistPlayTime($event, $scheduleItem);
 
-                            $schedule_timing = '({ ' . $play_time . ' }, ' . $playlistScheduleVar . ')';
+                            $scheduleTiming = '({ ' . $playTime . ' }, ' . $playlistScheduleVar . ')';
 
                             if ($playlist->backendInterruptOtherSongs()) {
-                                $scheduleSwitchesInterrupting[] = $schedule_timing;
+                                $scheduleSwitchesInterrupting[] = $scheduleTiming;
                             } else {
-                                $scheduleSwitches[] = $schedule_timing;
+                                $scheduleSwitches[] = $scheduleTiming;
                             }
                         }
                     } else {
@@ -516,21 +516,21 @@ final class ConfigWriter implements EventSubscriberInterface
                             $playTime = '(' . $minutePlayTime . ') and ('
                                 . $this->getScheduledPlaylistPlayTime($event, $scheduleItem) . ')';
 
-                            $schedule_timing = '({ ' . $playTime . ' }, ' . $playlistVarName . ')';
+                            $scheduleTiming = '({ ' . $playTime . ' }, ' . $playlistVarName . ')';
 
                             if ($playlist->backendInterruptOtherSongs()) {
-                                $scheduleSwitchesInterrupting[] = $schedule_timing;
+                                $scheduleSwitchesInterrupting[] = $scheduleTiming;
                             } else {
-                                $scheduleSwitches[] = $schedule_timing;
+                                $scheduleSwitches[] = $scheduleTiming;
                             }
                         }
                     } else {
-                        $schedule_timing = '({ ' . $minutePlayTime . ' }, ' . $playlistVarName . ')';
+                        $scheduleTiming = '({ ' . $minutePlayTime . ' }, ' . $playlistVarName . ')';
 
                         if ($playlist->backendInterruptOtherSongs()) {
-                            $scheduleSwitchesInterrupting[] = $schedule_timing;
+                            $scheduleSwitchesInterrupting[] = $scheduleTiming;
                         } else {
-                            $scheduleSwitches[] = $schedule_timing;
+                            $scheduleSwitches[] = $scheduleTiming;
                         }
                     }
                     break;
@@ -722,51 +722,51 @@ final class ConfigWriter implements EventSubscriberInterface
         WriteLiquidsoapConfiguration $event,
         StationSchedule $playlistSchedule
     ): string {
-        $start_time = $playlistSchedule->getStartTime();
-        $end_time = $playlistSchedule->getEndTime();
+        $startTime = $playlistSchedule->getStartTime();
+        $endTime = $playlistSchedule->getEndTime();
 
         // Handle multi-day playlists.
-        if ($start_time > $end_time) {
-            $play_times = [
-                self::formatTimeCode($start_time) . '-23h59m59s',
-                '00h00m-' . self::formatTimeCode($end_time),
+        if ($startTime > $endTime) {
+            $playTimes = [
+                self::formatTimeCode($startTime) . '-23h59m59s',
+                '00h00m-' . self::formatTimeCode($endTime),
             ];
 
-            $playlist_schedule_days = $playlistSchedule->getDays();
-            if (!empty($playlist_schedule_days) && count($playlist_schedule_days) < 7) {
-                $current_play_days = [];
-                $next_play_days = [];
+            $playlistScheduleDays = $playlistSchedule->getDays();
+            if (!empty($playlistScheduleDays) && count($playlistScheduleDays) < 7) {
+                $currentPlayDays = [];
+                $nextPlayDays = [];
 
-                foreach ($playlist_schedule_days as $day) {
-                    $current_play_days[] = (($day === 7) ? '0' : $day) . 'w';
+                foreach ($playlistScheduleDays as $day) {
+                    $currentPlayDays[] = (($day === 7) ? '0' : $day) . 'w';
 
                     $day++;
                     if ($day > 7) {
                         $day = 1;
                     }
-                    $next_play_days[] = (($day === 7) ? '0' : $day) . 'w';
+                    $nextPlayDays[] = (($day === 7) ? '0' : $day) . 'w';
                 }
 
-                $play_times[0] = '(' . implode(' or ', $current_play_days) . ') and ' . $play_times[0];
-                $play_times[1] = '(' . implode(' or ', $next_play_days) . ') and ' . $play_times[1];
+                $playTimes[0] = '(' . implode(' or ', $currentPlayDays) . ') and ' . $playTimes[0];
+                $playTimes[1] = '(' . implode(' or ', $nextPlayDays) . ') and ' . $playTimes[1];
             }
 
-            return '(' . implode(') or (', $play_times) . ')';
+            return '(' . implode(') or (', $playTimes) . ')';
         }
 
         // Handle once-per-day playlists.
-        $play_time = ($start_time === $end_time)
-            ? self::formatTimeCode($start_time)
-            : self::formatTimeCode($start_time) . '-' . self::formatTimeCode($end_time);
+        $playTime = ($startTime === $endTime)
+            ? self::formatTimeCode($startTime)
+            : self::formatTimeCode($startTime) . '-' . self::formatTimeCode($endTime);
 
-        $playlist_schedule_days = $playlistSchedule->getDays();
-        if (!empty($playlist_schedule_days) && count($playlist_schedule_days) < 7) {
-            $play_days = [];
+        $playlistScheduleDays = $playlistSchedule->getDays();
+        if (!empty($playlistScheduleDays) && count($playlistScheduleDays) < 7) {
+            $playDays = [];
 
-            foreach ($playlist_schedule_days as $day) {
-                $play_days[] = (($day === 7) ? '0' : $day) . 'w';
+            foreach ($playlistScheduleDays as $day) {
+                $playDays[] = (($day === 7) ? '0' : $day) . 'w';
             }
-            $play_time = '(' . implode(' or ', $play_days) . ') and ' . $play_time;
+            $playTime = '(' . implode(' or ', $playDays) . ') and ' . $playTime;
         }
 
         // Handle start-date and end-date boundaries.
@@ -814,10 +814,10 @@ final class ConfigWriter implements EventSubscriberInterface
             $customFunctionBody[] = 'end';
             $event->appendLines($customFunctionBody);
 
-            $play_time = $scheduleMethod . '() and ' . $play_time;
+            $playTime = $scheduleMethod . '() and ' . $playTime;
         }
 
-        return $play_time;
+        return $playTime;
     }
 
     public function writeCrossfadeConfiguration(WriteLiquidsoapConfiguration $event): void
@@ -876,7 +876,7 @@ final class ConfigWriter implements EventSubscriberInterface
 
         $settings = $station->getBackendConfig();
         $charset = $settings->getCharset();
-        $dj_mount = $settings->getDjMountPoint();
+        $djMount = $settings->getDjMountPoint();
         $recordLiveStreams = $settings->recordStreams();
 
         $event->appendBlock(
@@ -936,8 +936,8 @@ final class ConfigWriter implements EventSubscriberInterface
             LIQ
         );
 
-        $harbor_params = [
-            '"' . self::cleanUpString($dj_mount) . '"',
+        $harborParams = [
+            '"' . self::cleanUpString($djMount) . '"',
             'id = "input_streamer"',
             'port = ' . $this->liquidsoap->getStreamPort($station),
             'auth = dj_auth',
@@ -950,11 +950,11 @@ final class ConfigWriter implements EventSubscriberInterface
 
         $djBuffer = $settings->getDjBuffer();
         if (0 !== $djBuffer) {
-            $harbor_params[] = 'buffer = ' . self::toFloat($djBuffer);
-            $harbor_params[] = 'max = ' . self::toFloat(max($djBuffer + 5, 10));
+            $harborParams[] = 'buffer = ' . self::toFloat($djBuffer);
+            $harborParams[] = 'max = ' . self::toFloat(max($djBuffer + 5, 10));
         }
 
-        $harborParams = implode(', ', $harbor_params);
+        $harborParams = implode(', ', $harborParams);
 
         $event->appendBlock(
             <<<LIQ
@@ -1144,24 +1144,24 @@ final class ConfigWriter implements EventSubscriberInterface
             return;
         }
 
-        $ls_config = [
+        $lsConfig = [
             '# Local Broadcasts',
         ];
 
         // Configure the outbound broadcast.
         $i = 0;
-        foreach ($station->getMounts() as $mount_row) {
+        foreach ($station->getMounts() as $mountRow) {
             $i++;
 
-            /** @var StationMount $mount_row */
-            if (!$mount_row->getEnableAutodj()) {
+            /** @var StationMount $mountRow */
+            if (!$mountRow->getEnableAutodj()) {
                 continue;
             }
 
-            $ls_config[] = $this->getOutputString($station, $mount_row, 'local_', $i);
+            $lsConfig[] = $this->getOutputString($station, $mountRow, 'local_', $i);
         }
 
-        $event->appendLines($ls_config);
+        $event->appendLines($lsConfig);
     }
 
     public function writeHlsBroadcastConfiguration(WriteLiquidsoapConfiguration $event): void
@@ -1260,21 +1260,21 @@ final class ConfigWriter implements EventSubscriberInterface
         $charset = $station->getBackendConfig()->getCharset();
 
         $format = $mount->getAutodjFormat() ?? StreamFormats::default();
-        $output_format = $this->getOutputFormatString(
+        $outputFormat = $this->getOutputFormatString(
             $format,
             $mount->getAutodjBitrate() ?? 128
         );
 
-        $output_params = [];
-        $output_params[] = $output_format;
-        $output_params[] = 'id="' . $idPrefix . $id . '"';
+        $outputParams = [];
+        $outputParams[] = $outputFormat;
+        $outputParams[] = 'id="' . $idPrefix . $id . '"';
 
-        $output_params[] = 'host = "' . self::cleanUpString($mount->getAutodjHost()) . '"';
-        $output_params[] = 'port = ' . (int)$mount->getAutodjPort();
+        $outputParams[] = 'host = "' . self::cleanUpString($mount->getAutodjHost()) . '"';
+        $outputParams[] = 'port = ' . (int)$mount->getAutodjPort();
 
         $username = $mount->getAutodjUsername();
         if (!empty($username)) {
-            $output_params[] = 'user = "' . self::cleanUpString($username) . '"';
+            $outputParams[] = 'user = "' . self::cleanUpString($username) . '"';
         }
 
         $password = self::cleanUpString($mount->getAutodjPassword());
@@ -1284,46 +1284,46 @@ final class ConfigWriter implements EventSubscriberInterface
             $password .= ':#' . $id;
         }
 
-        $output_params[] = 'password = "' . $password . '"';
+        $outputParams[] = 'password = "' . $password . '"';
 
         $protocol = $mount->getAutodjProtocol();
         if (!empty($mount->getAutodjMount())) {
             if (StreamProtocols::Icy === $protocol) {
-                $output_params[] = 'icy_id = ' . $id;
+                $outputParams[] = 'icy_id = ' . $id;
             } else {
-                $output_params[] = 'mount = "' . self::cleanUpString($mount->getAutodjMount()) . '"';
+                $outputParams[] = 'mount = "' . self::cleanUpString($mount->getAutodjMount()) . '"';
             }
         }
 
-        $output_params[] = 'name = "' . self::cleanUpString($station->getName()) . '"';
+        $outputParams[] = 'name = "' . self::cleanUpString($station->getName()) . '"';
 
         if (!$mount->getIsShoutcast()) {
-            $output_params[] = 'description = "' . self::cleanUpString($station->getDescription()) . '"';
+            $outputParams[] = 'description = "' . self::cleanUpString($station->getDescription()) . '"';
         }
-        $output_params[] = 'genre = "' . self::cleanUpString($station->getGenre()) . '"';
+        $outputParams[] = 'genre = "' . self::cleanUpString($station->getGenre()) . '"';
 
         if (!empty($station->getUrl())) {
-            $output_params[] = 'url = "' . self::cleanUpString($station->getUrl()) . '"';
+            $outputParams[] = 'url = "' . self::cleanUpString($station->getUrl()) . '"';
         }
 
-        $output_params[] = 'public = ' . ($mount->getIsPublic() ? 'true' : 'false');
-        $output_params[] = 'encoding = "' . $charset . '"';
+        $outputParams[] = 'public = ' . ($mount->getIsPublic() ? 'true' : 'false');
+        $outputParams[] = 'encoding = "' . $charset . '"';
 
         if (!$mount->getIsShoutcast() && null !== $protocol) {
-            $output_params[] = 'protocol="' . $protocol->value . '"';
+            $outputParams[] = 'protocol="' . $protocol->value . '"';
         }
 
         if ($format->sendIcyMetadata()) {
-            $output_params[] = 'send_icy_metadata="true"';
+            $outputParams[] = 'send_icy_metadata="true"';
         }
 
-        $output_params[] = 'radio';
+        $outputParams[] = 'radio';
 
         $outputCommand = ($mount->getIsShoutcast())
             ? 'output.shoutcast'
             : 'output.icecast';
 
-        return $outputCommand . '(' . implode(', ', $output_params) . ')';
+        return $outputCommand . '(' . implode(', ', $outputParams) . ')';
     }
 
     private function getOutputFormatString(StreamFormats $format, int $bitrate = 128): string
@@ -1355,24 +1355,24 @@ final class ConfigWriter implements EventSubscriberInterface
     {
         $station = $event->getStation();
 
-        $ls_config = [
+        $lsConfig = [
             '# Remote Relays',
         ];
 
         // Set up broadcast to remote relays.
         $i = 0;
-        foreach ($station->getRemotes() as $remote_row) {
+        foreach ($station->getRemotes() as $remoteRow) {
             $i++;
 
-            /** @var StationRemote $remote_row */
-            if (!$remote_row->getEnableAutodj()) {
+            /** @var StationRemote $remoteRow */
+            if (!$remoteRow->getEnableAutodj()) {
                 continue;
             }
 
-            $ls_config[] = $this->getOutputString($station, $remote_row, 'relay_', $i);
+            $lsConfig[] = $this->getOutputString($station, $remoteRow, 'relay_', $i);
         }
 
-        $event->appendLines($ls_config);
+        $event->appendLines($lsConfig);
     }
 
     public function writePostBroadcastConfiguration(WriteLiquidsoapConfiguration $event): void
@@ -1391,10 +1391,10 @@ final class ConfigWriter implements EventSubscriberInterface
         return number_format((float)$number, $decimals, '.', '');
     }
 
-    public static function formatTimeCode(int $time_code): string
+    public static function formatTimeCode(int $timeCode): string
     {
-        $hours = floor($time_code / 100);
-        $mins = $time_code % 100;
+        $hours = floor($timeCode / 100);
+        $mins = $timeCode % 100;
 
         return $hours . 'h' . $mins . 'm';
     }

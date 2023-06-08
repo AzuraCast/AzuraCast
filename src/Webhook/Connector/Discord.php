@@ -74,13 +74,13 @@ final class Discord extends AbstractConnector
     ): void {
         $config = $webhook->getConfig();
 
-        $webhook_url = $this->getValidUrl($config['webhook_url']);
+        $webhookUrl = $this->getValidUrl($config['webhook_url']);
 
-        if (empty($webhook_url)) {
+        if (empty($webhookUrl)) {
             throw $this->incompleteConfigException($webhook);
         }
 
-        $raw_vars = [
+        $rawVars = [
             'content' => $config['content'] ?? '',
             'title' => $config['title'] ?? '',
             'description' => $config['description'] ?? '',
@@ -90,7 +90,7 @@ final class Discord extends AbstractConnector
             'footer' => $config['footer'] ?? '',
         ];
 
-        $vars = $this->replaceVariables($raw_vars, $np);
+        $vars = $this->replaceVariables($rawVars, $np);
 
         // Compose webhook
         $embed = array_filter(
@@ -118,12 +118,12 @@ final class Discord extends AbstractConnector
             ];
         }
 
-        $webhook_body = [];
-        $webhook_body['content'] = $vars['content'] ?? '';
+        $webhookBody = [];
+        $webhookBody['content'] = $vars['content'] ?? '';
 
         // Don't include an embed if all relevant fields are empty.
         if (count($embed) > 1) {
-            $webhook_body['embeds'] = [$embed];
+            $webhookBody['embeds'] = [$embed];
         }
 
         // Dispatch webhook
@@ -131,12 +131,12 @@ final class Discord extends AbstractConnector
 
         $response = $this->httpClient->request(
             'POST',
-            $webhook_url,
+            $webhookUrl,
             [
                 'headers' => [
                     'Content-Type' => 'application/json',
                 ],
-                'json' => $webhook_body,
+                'json' => $webhookBody,
             ]
         );
 
@@ -147,7 +147,7 @@ final class Discord extends AbstractConnector
                 $webhook->getName(),
                 $response->getStatusCode()
             ),
-            ['message_sent' => $webhook_body, 'response_body' => $response->getBody()->getContents()]
+            ['message_sent' => $webhookBody, 'response_body' => $response->getBody()->getContents()]
         );
     }
 

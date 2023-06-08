@@ -49,13 +49,13 @@ final class BackupCommand extends AbstractDatabaseCommand
         $excludeMedia = (bool)$input->getOption('exclude-media');
         $storageLocationId = $input->getOption('storage-location-id');
 
-        $start_time = microtime(true);
+        $startTime = microtime(true);
 
         if (empty($path)) {
             $path = 'manual_backup_' . gmdate('Ymd_Hi') . '.zip';
         }
 
-        $file_ext = strtolower(pathinfo($path, PATHINFO_EXTENSION));
+        $fileExt = strtolower(pathinfo($path, PATHINFO_EXTENSION));
 
         if (Path::isAbsolute($path)) {
             $tmpPath = $path;
@@ -64,7 +64,7 @@ final class BackupCommand extends AbstractDatabaseCommand
             $tmpPath = $fsUtils->tempnam(
                 sys_get_temp_dir(),
                 'backup_',
-                '.' . $file_ext
+                '.' . $fileExt
             );
 
             // Zip command cannot handle an existing file (even an empty one)
@@ -91,7 +91,7 @@ final class BackupCommand extends AbstractDatabaseCommand
         }
 
         $includeMedia = !$excludeMedia;
-        $files_to_backup = [];
+        $filesToBackup = [];
 
         $io->title(__('AzuraCast Backup'));
         $io->writeln(__('Please wait while a backup is generated...'));
@@ -99,9 +99,9 @@ final class BackupCommand extends AbstractDatabaseCommand
         // Create temp directories
         $io->section(__('Creating temporary directories...'));
 
-        $tmp_dir_mariadb = '/tmp/azuracast_backup_mariadb';
+        $tmpDirMariadb = '/tmp/azuracast_backup_mariadb';
         try {
-            $fsUtils->mkdir($tmp_dir_mariadb);
+            $fsUtils->mkdir($tmpDirMariadb);
         } catch (Throwable $e) {
             $io->error($e->getMessage());
             return 1;
@@ -112,10 +112,10 @@ final class BackupCommand extends AbstractDatabaseCommand
         // Back up MariaDB
         $io->section(__('Backing up MariaDB...'));
 
-        $path_db_dump = $tmp_dir_mariadb . '/db.sql';
-        $this->dumpDatabase($io, $path_db_dump);
+        $pathDbDump = $tmpDirMariadb . '/db.sql';
+        $this->dumpDatabase($io, $pathDbDump);
 
-        $files_to_backup[] = $path_db_dump;
+        $filesToBackup[] = $pathDbDump;
         $io->newLine();
 
         // Include station media if specified.
@@ -130,7 +130,7 @@ final class BackupCommand extends AbstractDatabaseCommand
             foreach ($stations as $station) {
                 $mediaAdapter = $station->getMediaStorageLocation();
                 if ($mediaAdapter->isLocal()) {
-                    $files_to_backup[] = $mediaAdapter->getPath();
+                    $filesToBackup[] = $mediaAdapter->getPath();
                 }
             }
         }
@@ -139,17 +139,17 @@ final class BackupCommand extends AbstractDatabaseCommand
         $io->section(__('Creating backup archive...'));
 
         // Strip leading slashes from backup paths.
-        $files_to_backup = array_map(
+        $filesToBackup = array_map(
             static function (string $val) {
                 if (str_starts_with($val, '/')) {
                     return substr($val, 1);
                 }
                 return $val;
             },
-            $files_to_backup
+            $filesToBackup
         );
 
-        switch ($file_ext) {
+        switch ($fileExt) {
             case 'tzst':
                 $this->passThruProcess(
                     $io,
@@ -161,7 +161,7 @@ final class BackupCommand extends AbstractDatabaseCommand
                             '-cvf',
                             $tmpPath,
                         ],
-                        $files_to_backup
+                        $filesToBackup
                     ),
                     '/'
                 );
@@ -177,7 +177,7 @@ final class BackupCommand extends AbstractDatabaseCommand
                             'zcvf',
                             $tmpPath,
                         ],
-                        $files_to_backup
+                        $filesToBackup
                     ),
                     '/'
                 );
@@ -185,7 +185,7 @@ final class BackupCommand extends AbstractDatabaseCommand
 
             case 'zip':
             default:
-                $dont_compress = ['.tar.gz', '.zip', '.jpg', '.mp3', '.ogg', '.flac', '.aac', '.wav'];
+                $dontCompress = ['.tar.gz', '.zip', '.jpg', '.mp3', '.ogg', '.flac', '.aac', '.wav'];
 
                 $this->passThruProcess(
                     $io,
@@ -194,10 +194,10 @@ final class BackupCommand extends AbstractDatabaseCommand
                             'zip',
                             '-r',
                             '-n',
-                            implode(':', $dont_compress),
+                            implode(':', $dontCompress),
                             $tmpPath,
                         ],
-                        $files_to_backup
+                        $filesToBackup
                     ),
                     '/'
                 );
@@ -214,18 +214,18 @@ final class BackupCommand extends AbstractDatabaseCommand
         // Cleanup
         $io->section(__('Cleaning up temporary files...'));
 
-        $fsUtils->remove($tmp_dir_mariadb);
+        $fsUtils->remove($tmpDirMariadb);
 
         $io->newLine();
 
-        $end_time = microtime(true);
-        $time_diff = $end_time - $start_time;
+        $endTime = microtime(true);
+        $timeDiff = $endTime - $startTime;
 
         $io->success(
             [
                 sprintf(
                     __('Backup complete in %.2f seconds.'),
-                    $time_diff
+                    $timeDiff
                 ),
             ]
         );

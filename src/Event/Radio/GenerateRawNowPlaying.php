@@ -20,7 +20,7 @@ final class GenerateRawNowPlaying extends Event
     public function __construct(
         private readonly Adapters $adapters,
         private readonly Station $station,
-        private readonly bool $include_clients = false
+        private readonly bool $includeClients = false
     ) {
     }
 
@@ -49,7 +49,7 @@ final class GenerateRawNowPlaying extends Event
 
     public function includeClients(): bool
     {
-        return $this->include_clients;
+        return $this->includeClients;
     }
 
     public function getResult(): Result

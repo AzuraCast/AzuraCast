@@ -15,28 +15,28 @@ final class ApiKeyFixture extends AbstractFixture implements DependentFixtureInt
 {
     public function load(ObjectManager $manager): void
     {
-        $demo_api_key = getenv('INIT_DEMO_API_KEY');
+        $demoApiKey = getenv('INIT_DEMO_API_KEY');
 
-        if (!empty($demo_api_key) && $this->hasReference('demo_user')) {
-            /** @var User $demo_user */
-            $demo_user = $this->getReference('demo_user');
+        if (!empty($demoApiKey) && $this->hasReference('demo_user')) {
+            /** @var User $demoUser */
+            $demoUser = $this->getReference('demo_user');
 
-            $api_key = new ApiKey($demo_user, SplitToken::fromKeyString($demo_api_key));
-            $api_key->setComment('Demo User');
+            $apiKey = new ApiKey($demoUser, SplitToken::fromKeyString($demoApiKey));
+            $apiKey->setComment('Demo User');
 
-            $manager->persist($api_key);
+            $manager->persist($apiKey);
         }
 
-        $admin_api_key = getenv('INIT_ADMIN_API_KEY');
+        $adminApiKey = getenv('INIT_ADMIN_API_KEY');
 
-        if (!empty($admin_api_key) && $this->hasReference('admin_user')) {
-            /** @var User $admin_user */
-            $admin_user = $this->getReference('admin_user');
+        if (!empty($adminApiKey) && $this->hasReference('admin_user')) {
+            /** @var User $adminUser */
+            $adminUser = $this->getReference('admin_user');
 
-            $api_key = new ApiKey($admin_user, SplitToken::fromKeyString($admin_api_key));
-            $api_key->setComment('Administrator');
+            $apiKey = new ApiKey($adminUser, SplitToken::fromKeyString($adminApiKey));
+            $apiKey->setComment('Administrator');
 
-            $manager->persist($api_key);
+            $manager->persist($apiKey);
         }
 
         $manager->flush();

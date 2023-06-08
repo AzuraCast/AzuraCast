@@ -36,12 +36,12 @@ final class RolePermissionFixture extends AbstractFixture implements DependentFi
             ],
         ];
 
-        foreach ($permissions as $role_reference => $perm_names) {
+        foreach ($permissions as $roleReference => $permNames) {
             /** @var Role $role */
-            $role = $this->getReference($role_reference);
+            $role = $this->getReference($roleReference);
 
-            foreach ($perm_names as $perm_name) {
-                $rp = new RolePermission($role, $perm_name[1], $perm_name[0]);
+            foreach ($permNames as $permName) {
+                $rp = new RolePermission($role, $permName[1], $permName[0]);
                 $manager->persist($rp);
             }
         }

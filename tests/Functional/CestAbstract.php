@@ -32,10 +32,10 @@ abstract class CestAbstract
 
     private ?\App\Entity\Station $test_station = null;
 
-    protected function _inject(Module $tests_module): void
+    protected function _inject(Module $testsModule): void
     {
-        $this->di = $tests_module->container;
-        $this->em = $tests_module->em;
+        $this->di = $testsModule->container;
+        $this->em = $testsModule->em;
 
         $this->settingsRepo = $this->di->get(SettingsRepository::class);
         $this->stationRepo = $this->di->get(StationRepository::class);
@@ -171,15 +171,15 @@ abstract class CestAbstract
 
     protected function _cleanTables(): void
     {
-        $clean_tables = [
+        $cleanTables = [
             \App\Entity\User::class,
             \App\Entity\Role::class,
             \App\Entity\Station::class,
             \App\Entity\Settings::class,
         ];
 
-        foreach ($clean_tables as $clean_table) {
-            $this->em->createQuery('DELETE FROM ' . $clean_table . ' t')->execute();
+        foreach ($cleanTables as $cleanTable) {
+            $this->em->createQuery('DELETE FROM ' . $cleanTable . ' t')->execute();
         }
 
         $this->em->clear();

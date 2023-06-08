@@ -55,11 +55,11 @@ final class SplitToken
 
     public static function generate(): self
     {
-        $random_str = hash('sha256', random_bytes(32));
+        $randomStr = hash('sha256', random_bytes(32));
 
         $token = new self();
-        $token->identifier = substr($random_str, 0, 16);
-        $token->verifier = substr($random_str, 16, 32);
+        $token->identifier = substr($randomStr, 0, 16);
+        $token->verifier = substr($randomStr, 16, 32);
 
         return $token;
     }

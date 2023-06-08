@@ -19,7 +19,7 @@ abstract class AbstractRemote
     use EntityManagerAwareTrait;
 
     public function __construct(
-        protected Client $http_client,
+        protected Client $httpClient,
         protected AdapterFactory $adapterFactory
     ) {
     }
@@ -65,10 +65,10 @@ abstract class AbstractRemote
      */
     public function getPublicUrl(StationRemote $remote): string
     {
-        $custom_listen_url = $remote->getCustomListenUrl();
+        $customListenUrl = $remote->getCustomListenUrl();
 
-        return (!empty($custom_listen_url))
-            ? $custom_listen_url
+        return (!empty($customListenUrl))
+            ? $customListenUrl
             : $this->getRemoteUrl($remote, $remote->getMount());
     }
 

@@ -21,13 +21,13 @@ final class Generic extends AbstractConnector
     ): void {
         $config = $webhook->getConfig();
 
-        $webhook_url = $this->getValidUrl($config['webhook_url']);
+        $webhookUrl = $this->getValidUrl($config['webhook_url']);
 
-        if (empty($webhook_url)) {
+        if (empty($webhookUrl)) {
             throw $this->incompleteConfigException($webhook);
         }
 
-        $request_options = [
+        $requestOptions = [
             'headers' => [
                 'Content-Type' => 'application/json',
             ],
@@ -36,13 +36,13 @@ final class Generic extends AbstractConnector
         ];
 
         if (!empty($config['basic_auth_username']) && !empty($config['basic_auth_password'])) {
-            $request_options['auth'] = [
+            $requestOptions['auth'] = [
                 $config['basic_auth_username'],
                 $config['basic_auth_password'],
             ];
         }
 
-        $response = $this->httpClient->request('POST', $webhook_url, $request_options);
+        $response = $this->httpClient->request('POST', $webhookUrl, $requestOptions);
 
         $this->logger->debug(
             sprintf('Generic webhook returned code %d', $response->getStatusCode()),

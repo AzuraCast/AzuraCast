@@ -32,12 +32,12 @@ abstract class AbstractBuildMenu extends Event
     /**
      * Add a single item to the menu.
      *
-     * @param string $item_id
-     * @param array $item_details
+     * @param string $itemId
+     * @param array $itemDetails
      */
-    public function addItem(string $item_id, array $item_details): void
+    public function addItem(string $itemId, array $itemDetails): void
     {
-        $this->merge([$item_id => $item_details]);
+        $this->merge([$itemId => $itemDetails]);
     }
 
     /**
@@ -86,8 +86,8 @@ abstract class AbstractBuildMenu extends Event
         return true;
     }
 
-    public function checkPermission(string|PermissionInterface $permission_name): bool
+    public function checkPermission(string|PermissionInterface $permissionName): bool
     {
-        return $this->request->getAcl()->isAllowed($permission_name);
+        return $this->request->getAcl()->isAllowed($permissionName);
     }
 }

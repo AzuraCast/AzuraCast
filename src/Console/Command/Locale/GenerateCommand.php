@@ -61,8 +61,8 @@ final class GenerateCommand extends CommandAbstract
             $iterator = new RecursiveIteratorIterator($directory);
             $regex = new RegexIterator($iterator, '/^.+\.(phtml|php)$/i', RegexIterator::GET_MATCH);
 
-            foreach ($regex as $path_match) {
-                $path = $path_match[0];
+            foreach ($regex as $pathMatch) {
+                $path = $pathMatch[0];
                 $phpScanner->scanFile($path);
             }
         }

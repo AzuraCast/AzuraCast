@@ -39,9 +39,9 @@ final class ResetPasswordCommand extends CommandAbstract
             ->findOneBy(['email' => $email]);
 
         if ($user instanceof User) {
-            $temp_pw = Utilities\Strings::generatePassword(15);
+            $tempPw = Utilities\Strings::generatePassword(15);
 
-            $user->setNewPassword($temp_pw);
+            $user->setNewPassword($tempPw);
             $user->setTwoFactorSecret();
 
             $this->em->persist($user);
@@ -50,7 +50,7 @@ final class ResetPasswordCommand extends CommandAbstract
             $io->text([
                 'The account password has been reset. The new temporary password is:',
                 '',
-                '    ' . $temp_pw,
+                '    ' . $tempPw,
                 '',
                 'Log in using this temporary password and set a new password using the web interface.',
                 '',

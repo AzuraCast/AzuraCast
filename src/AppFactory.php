@@ -96,9 +96,9 @@ final class AppFactory
         $containerBuilder->addDefinitions($diDefinitions);
 
         // Check for services.php file and include it if one exists.
-        $config_dir = $environment->getConfigDirectory();
-        if (file_exists($config_dir . '/services.php')) {
-            $containerBuilder->addDefinitions($config_dir . '/services.php');
+        $configDir = $environment->getConfigDirectory();
+        if (file_exists($configDir . '/services.php')) {
+            $containerBuilder->addDefinitions($configDir . '/services.php');
         }
 
         $di = $containerBuilder->build();

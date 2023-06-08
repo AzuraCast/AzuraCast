@@ -12,17 +12,17 @@ final class RoleFixture extends AbstractFixture
 {
     public function load(ObjectManager $manager): void
     {
-        $admin_role = new Role();
-        $admin_role->setName('Super Administrator');
+        $adminRole = new Role();
+        $adminRole->setName('Super Administrator');
 
-        $demo_role = new Role();
-        $demo_role->setName('Demo Account');
+        $demoRole = new Role();
+        $demoRole->setName('Demo Account');
 
-        $manager->persist($admin_role);
-        $manager->persist($demo_role);
+        $manager->persist($adminRole);
+        $manager->persist($demoRole);
         $manager->flush();
 
-        $this->addReference('admin_role', $admin_role);
-        $this->addReference('demo_role', $demo_role);
+        $this->addReference('admin_role', $adminRole);
+        $this->addReference('demo_role', $demoRole);
     }
 }

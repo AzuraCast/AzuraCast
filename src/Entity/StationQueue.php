@@ -128,9 +128,9 @@ class StationQueue implements
         return $this->autodj_custom_uri;
     }
 
-    public function setAutodjCustomUri(?string $autodj_custom_uri): void
+    public function setAutodjCustomUri(?string $autodjCustomUri): void
     {
-        $this->autodj_custom_uri = $autodj_custom_uri;
+        $this->autodj_custom_uri = $autodjCustomUri;
     }
 
     public function getTimestampCued(): int
@@ -138,9 +138,9 @@ class StationQueue implements
         return $this->timestamp_cued;
     }
 
-    public function setTimestampCued(int $timestamp_cued): void
+    public function setTimestampCued(int $timestampCued): void
     {
-        $this->timestamp_cued = $timestamp_cued;
+        $this->timestamp_cued = $timestampCued;
     }
 
     public function getDuration(): ?int
@@ -182,9 +182,9 @@ class StationQueue implements
         return $this->is_visible;
     }
 
-    public function setIsVisible(bool $is_visible): void
+    public function setIsVisible(bool $isVisible): void
     {
-        $this->is_visible = $is_visible;
+        $this->is_visible = $isVisible;
     }
 
     public function updateVisibility(): void
@@ -197,9 +197,9 @@ class StationQueue implements
         return $this->timestamp_played;
     }
 
-    public function setTimestampPlayed(int $timestamp_played): void
+    public function setTimestampPlayed(int $timestampPlayed): void
     {
-        $this->timestamp_played = $timestamp_played;
+        $this->timestamp_played = $timestampPlayed;
     }
 
     public function __toString(): string

@@ -25,10 +25,10 @@ final class AzuraRelay extends AbstractRemote
 
     public function __construct(
         private readonly AzuraRelayCache $azuraRelayCache,
-        Client $http_client,
+        Client $httpClient,
         AdapterFactory $adapterFactory,
     ) {
-        parent::__construct($http_client, $adapterFactory);
+        parent::__construct($httpClient, $adapterFactory);
     }
 
     public function getNowPlayingAsync(StationRemote $remote, bool $includeClients = false): PromiseInterface
@@ -86,25 +86,25 @@ final class AzuraRelay extends AbstractRemote
             throw new InvalidArgumentException('AzuraRelay remote must have a corresponding relay.');
         }
 
-        $base_url = new Uri(rtrim($relay->getBaseUrl(), '/'));
+        $baseUrl = new Uri(rtrim($relay->getBaseUrl(), '/'));
 
-        $radio_port = $station->getFrontendConfig()->getPort();
+        $radioPort = $station->getFrontendConfig()->getPort();
 
-        $use_radio_proxy = $this->readSettings()->getUseRadioProxy();
+        $useRadioProxy = $this->readSettings()->getUseRadioProxy();
 
         if (
-            $use_radio_proxy
-            || 'https' === $base_url->getScheme()
+            $useRadioProxy
+            || 'https' === $baseUrl->getScheme()
             || (!$this->environment->isProduction() && !$this->environment->isDocker())
         ) {
             // Web proxy support.
-            return (string)$base_url
-                ->withPath($base_url->getPath() . '/radio/' . $radio_port . $remote->getMount());
+            return (string)$baseUrl
+                ->withPath($baseUrl->getPath() . '/radio/' . $radioPort . $remote->getMount());
         }
 
         // Remove port number and other decorations.
-        return (string)$base_url
-            ->withPort($radio_port)
+        return (string)$baseUrl
+            ->withPort($radioPort)
             ->withPath($remote->getMount() ?? '');
     }
 }

@@ -63,9 +63,9 @@ final class CleanupStorageTask extends AbstractTask
             ->date('before 2 days ago');
 
         foreach ($finder as $file) {
-            $file_path = $file->getRealPath();
-            if (false !== $file_path) {
-                @unlink($file_path);
+            $filePath = $file->getRealPath();
+            if (false !== $filePath) {
+                @unlink($filePath);
             }
         }
     }

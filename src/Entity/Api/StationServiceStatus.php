@@ -25,14 +25,14 @@ final class StationServiceStatus
     public bool $station_needs_restart;
 
     public function __construct(
-        bool $backend_running,
-        bool $frontend_running,
-        bool $station_has_started,
-        bool $station_needs_restart
+        bool $backendRunning,
+        bool $frontendRunning,
+        bool $stationHasStarted,
+        bool $stationNeedsRestart
     ) {
-        $this->backend_running = $backend_running;
-        $this->frontend_running = $frontend_running;
-        $this->station_has_started = $station_has_started;
-        $this->station_needs_restart = $station_needs_restart;
+        $this->backend_running = $backendRunning;
+        $this->frontend_running = $frontendRunning;
+        $this->station_has_started = $stationHasStarted;
+        $this->station_needs_restart = $stationNeedsRestart;
     }
 }

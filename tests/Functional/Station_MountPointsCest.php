@@ -11,9 +11,9 @@ class Station_MountPointsCest extends CestAbstract
     public function editMountPoints(\FunctionalTester $I): void
     {
         $testStation = $this->getTestStation();
-        $station_id = $testStation->getId();
+        $stationId = $testStation->getId();
 
-        $I->amOnPage('/station/' . $station_id . '/mounts');
+        $I->amOnPage('/station/' . $stationId . '/mounts');
 
         $I->see('Mount Points');
     }

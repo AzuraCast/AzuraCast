@@ -35,12 +35,6 @@
         <exclude-pattern>src/Installer/EnvFiles/*.php</exclude-pattern>
     </rule>
 
-    <!--
-    <rule ref="Squiz.NamingConventions.ValidVariableName">
-
-    </rule>
-    -->
-
     <rule ref="SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingTraversableTypeHintSpecification">
         <exclude name="SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingTraversableTypeHintSpecification"/>
     </rule>

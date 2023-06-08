@@ -91,12 +91,12 @@ final class AnnotateNextSong extends Event
         $this->annotations = array_filter($this->annotations);
 
         if (!empty($this->annotations)) {
-            $annotations_str = [];
-            foreach ($this->annotations as $annotation_key => $annotation_val) {
-                $annotations_str[] = $annotation_key . '="' . $annotation_val . '"';
+            $annotationsStr = [];
+            foreach ($this->annotations as $annotationKey => $annotationVal) {
+                $annotationsStr[] = $annotationKey . '="' . $annotationVal . '"';
             }
 
-            return 'annotate:' . implode(',', $annotations_str) . ':' . $this->songPath;
+            return 'annotate:' . implode(',', $annotationsStr) . ':' . $this->songPath;
         }
 
         return $this->songPath;

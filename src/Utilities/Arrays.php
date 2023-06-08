@@ -39,11 +39,11 @@ final class Arrays
         $return = [];
 
         foreach ($array as $key => $value) {
-            $return_key = (string)($prefix ? $prefix . $separator . $key : $key);
+            $returnKey = (string)($prefix ? $prefix . $separator . $key : $key);
             if (is_array($value)) {
-                $return = array_merge($return, self::flattenArray($value, $separator, $return_key));
+                $return = array_merge($return, self::flattenArray($value, $separator, $returnKey));
             } else {
-                $return[$return_key] = $value;
+                $return[$returnKey] = $value;
             }
         }
 

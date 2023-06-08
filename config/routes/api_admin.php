@@ -159,7 +159,7 @@ return static function (RouteCollectorProxy $group) {
                 }
             )->add(new Middleware\Permissions(GlobalPermissions::Settings));
 
-            $admin_api_endpoints = [
+            $adminApiEndpoints = [
                 [
                     'custom_field',
                     'custom_fields',
@@ -177,7 +177,7 @@ return static function (RouteCollectorProxy $group) {
                 ],
             ];
 
-            foreach ($admin_api_endpoints as [$singular, $plural, $class, $permission]) {
+            foreach ($adminApiEndpoints as [$singular, $plural, $class, $permission]) {
                 $group->group(
                     '',
                     function (RouteCollectorProxy $group) use ($singular, $plural, $class) {

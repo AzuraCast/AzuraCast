@@ -35,7 +35,7 @@ final class RestoreCommand extends AbstractDatabaseCommand
         $io = new SymfonyStyle($input, $output);
 
         $path = $input->getArgument('path');
-        $start_time = microtime(true);
+        $startTime = microtime(true);
 
         $io->title('AzuraCast Restore');
 
@@ -85,9 +85,9 @@ final class RestoreCommand extends AbstractDatabaseCommand
         // Extract tar.gz archive
         $io->section('Extracting backup file...');
 
-        $file_ext = strtolower(pathinfo($path, PATHINFO_EXTENSION));
+        $fileExt = strtolower(pathinfo($path, PATHINFO_EXTENSION));
 
-        switch ($file_ext) {
+        switch ($fileExt) {
             case 'tzst':
                 $this->passThruProcess(
                     $io,
@@ -134,17 +134,17 @@ final class RestoreCommand extends AbstractDatabaseCommand
         // Handle DB dump
         $io->section('Importing database...');
 
-        $tmp_dir_mariadb = '/tmp/azuracast_backup_mariadb';
+        $tmpDirMariadb = '/tmp/azuracast_backup_mariadb';
 
         try {
-            $path_db_dump = $tmp_dir_mariadb . '/db.sql';
-            $this->restoreDatabaseDump($io, $path_db_dump);
+            $pathDbDump = $tmpDirMariadb . '/db.sql';
+            $this->restoreDatabaseDump($io, $pathDbDump);
         } catch (Exception $e) {
             $io->getErrorStyle()->error($e->getMessage());
             return 1;
         }
 
-        (new Filesystem())->remove($tmp_dir_mariadb);
+        (new Filesystem())->remove($tmpDirMariadb);
         $io->newLine();
 
         // Update from current version to latest.
@@ -152,12 +152,12 @@ final class RestoreCommand extends AbstractDatabaseCommand
 
         $this->runCommand($output, 'azuracast:setup', ['--update' => true]);
 
-        $end_time = microtime(true);
-        $time_diff = $end_time - $start_time;
+        $endTime = microtime(true);
+        $timeDiff = $endTime - $startTime;
 
         $io->success(
             [
-                'Restore complete in ' . round($time_diff, 3) . ' seconds.',
+                'Restore complete in ' . round($timeDiff, 3) . ' seconds.',
             ]
         );
         return 0;

@@ -40,17 +40,17 @@ final class RunBackupTask extends AbstractTask
 
             $this->writeSettings($settings);
 
-            [$result_code, $result_output] = $this->runBackup(
+            [$resultCode, $resultOutput] = $this->runBackup(
                 $message->path,
                 $message->excludeMedia,
                 $message->outputPath,
                 $message->storageLocationId
             );
 
-            $result_output = 'Exited with code ' . $result_code . ":\n" . $result_output;
+            $resultOutput = 'Exited with code ' . $resultCode . ":\n" . $resultOutput;
 
             $settings = $this->readSettings();
-            $settings->setBackupLastOutput($result_output);
+            $settings->setBackupLastOutput($resultOutput);
             $this->writeSettings($settings);
         }
     }
@@ -69,20 +69,20 @@ final class RunBackupTask extends AbstractTask
         ?string $outputPath = null,
         ?int $storageLocationId = null
     ): array {
-        $input_params = [];
+        $inputParams = [];
         if (null !== $path) {
-            $input_params['path'] = $path;
+            $inputParams['path'] = $path;
         }
         if (null !== $storageLocationId) {
-            $input_params['--storage-location-id'] = $storageLocationId;
+            $inputParams['--storage-location-id'] = $storageLocationId;
         }
         if ($excludeMedia) {
-            $input_params['--exclude-media'] = true;
+            $inputParams['--exclude-media'] = true;
         }
 
         return $this->console->runCommandWithArgs(
             'azuracast:backup',
-            $input_params,
+            $inputParams,
             $outputPath ?? 'php://temp'
         );
     }
@@ -98,9 +98,9 @@ final class RunBackupTask extends AbstractTask
         $nowUtc = CarbonImmutable::now('UTC');
 
         $threshold = $nowUtc->subDay()->getTimestamp();
-        $last_run = $settings->getBackupLastRun();
+        $lastRun = $settings->getBackupLastRun();
 
-        if ($last_run <= $threshold) {
+        if ($lastRun <= $threshold) {
             // Check if the backup time matches (if it's set).
             $backupTimecode = $settings->getBackupTimeCode();
 

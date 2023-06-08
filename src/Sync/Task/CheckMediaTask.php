@@ -87,7 +87,7 @@ final class CheckMediaTask extends AbstractTask
             'not_processable' => 0,
         ];
 
-        $total_size = BigInteger::zero();
+        $totalSize = BigInteger::zero();
 
         try {
             $fsIterator = $fs->listContents('/', true)->filter(
@@ -116,7 +116,7 @@ final class CheckMediaTask extends AbstractTask
             try {
                 $size = $file->fileSize();
                 if (null !== $size) {
-                    $total_size = $total_size->plus($size);
+                    $totalSize = $totalSize->plus($size);
                 }
             } catch (UnableToRetrieveMetadata) {
                 continue;
@@ -141,11 +141,11 @@ final class CheckMediaTask extends AbstractTask
             }
         }
 
-        $storageLocation->setStorageUsed($total_size);
+        $storageLocation->setStorageUsed($totalSize);
         $this->em->persist($storageLocation);
         $this->em->flush();
 
-        $stats['total_size'] = $total_size . ' (' . Quota::getReadableSize($total_size) . ')';
+        $stats['total_size'] = $totalSize . ' (' . Quota::getReadableSize($totalSize) . ')';
         $stats['total_files'] = count($musicFiles);
 
         // Process cover art.

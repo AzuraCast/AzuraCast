@@ -86,22 +86,22 @@ final class DoctrineEntityNormalizer extends AbstractObjectNormalizer
         $context[self::ASSOCIATION_MAPPINGS] = [];
 
         if ($context[self::CLASS_METADATA]->associationMappings) {
-            foreach ($context[self::CLASS_METADATA]->associationMappings as $mapping_name => $mapping_info) {
-                $entity = $mapping_info['targetEntity'];
+            foreach ($context[self::CLASS_METADATA]->associationMappings as $mappingName => $mappingInfo) {
+                $entity = $mappingInfo['targetEntity'];
 
-                if (isset($mapping_info['joinTable'])) {
-                    $context[self::ASSOCIATION_MAPPINGS][$mapping_info['fieldName']] = [
+                if (isset($mappingInfo['joinTable'])) {
+                    $context[self::ASSOCIATION_MAPPINGS][$mappingInfo['fieldName']] = [
                         'type' => 'many',
                         'entity' => $entity,
-                        'is_owning_side' => ($mapping_info['isOwningSide'] == 1),
+                        'is_owning_side' => ($mappingInfo['isOwningSide'] == 1),
                     ];
-                } elseif (isset($mapping_info['joinColumns'])) {
-                    foreach ($mapping_info['joinColumns'] as $col) {
-                        $col_name = $col['name'];
-                        $col_name = $context[self::CLASS_METADATA]->fieldNames[$col_name] ?? $col_name;
+                } elseif (isset($mappingInfo['joinColumns'])) {
+                    foreach ($mappingInfo['joinColumns'] as $col) {
+                        $colName = $col['name'];
+                        $colName = $context[self::CLASS_METADATA]->fieldNames[$colName] ?? $colName;
 
-                        $context[self::ASSOCIATION_MAPPINGS][$mapping_name] = [
-                            'name' => $col_name,
+                        $context[self::ASSOCIATION_MAPPINGS][$mappingName] = [
+                            'name' => $colName,
                             'type' => 'one',
                             'entity' => $entity,
                         ];
@@ -257,15 +257,15 @@ final class DoctrineEntityNormalizer extends AbstractObjectNormalizer
     private function getProperty(object $entity, string $key): mixed
     {
         // Default to "getStatus", "getConfig", etc...
-        $getter_method = $this->getMethodName($key, 'get');
-        if (method_exists($entity, $getter_method)) {
-            return $entity->{$getter_method}();
+        $getterMethod = $this->getMethodName($key, 'get');
+        if (method_exists($entity, $getterMethod)) {
+            return $entity->{$getterMethod}();
         }
 
         // but also allow "isEnabled" instead of "getIsEnabled"
-        $raw_method = $this->getMethodName($key);
-        if (method_exists($entity, $raw_method)) {
-            return $entity->{$raw_method}();
+        $rawMethod = $this->getMethodName($key);
+        if (method_exists($entity, $rawMethod)) {
+            return $entity->{$rawMethod}();
         }
 
         throw new NoGetterAvailableException(sprintf('No getter is available for property %s.', $key));
@@ -303,8 +303,8 @@ final class DoctrineEntityNormalizer extends AbstractObjectNormalizer
                 } else {
                     /** @var class-string $entity */
                     $entity = $mapping['entity'];
-                    if (($field_item = $this->em->find($entity, $value)) instanceof $entity) {
-                        $this->setProperty($object, $attribute, $field_item);
+                    if (($fieldItem = $this->em->find($entity, $value)) instanceof $entity) {
+                        $this->setProperty($object, $attribute, $fieldItem);
                     }
                 }
             } elseif ($mapping['is_owning_side']) {
@@ -314,13 +314,13 @@ final class DoctrineEntityNormalizer extends AbstractObjectNormalizer
                     $collection->clear();
 
                     if ($value) {
-                        foreach ((array)$value as $field_id) {
+                        foreach ((array)$value as $fieldId) {
                             /** @var class-string $entity */
                             $entity = $mapping['entity'];
 
-                            $field_item = $this->em->find($entity, $field_id);
-                            if ($field_item instanceof $entity) {
-                                $collection->add($field_item);
+                            $fieldItem = $this->em->find($entity, $fieldId);
+                            if ($fieldItem instanceof $entity) {
+                                $collection->add($fieldItem);
                             }
                         }
                     }

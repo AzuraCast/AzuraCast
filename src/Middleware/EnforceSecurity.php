@@ -33,14 +33,14 @@ final class EnforceSecurity implements MiddlewareInterface
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        $always_use_ssl = $this->readSettings()->getAlwaysUseSsl();
+        $alwaysUseSsl = $this->readSettings()->getAlwaysUseSsl();
 
-        $internal_api_url = mb_stripos($request->getUri()->getPath(), '/api/internal') === 0;
+        $internalApiUrl = mb_stripos($request->getUri()->getPath(), '/api/internal') === 0;
 
         $addHstsHeader = false;
         if ('https' === $request->getUri()->getScheme()) {
             $addHstsHeader = true;
-        } elseif ($always_use_ssl && !$internal_api_url) {
+        } elseif ($alwaysUseSsl && !$internalApiUrl) {
             return $this->responseFactory->createResponse(307)
                 ->withHeader('Location', (string)$request->getUri()->withScheme('https'));
         }

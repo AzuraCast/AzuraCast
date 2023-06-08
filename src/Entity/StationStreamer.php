@@ -128,9 +128,9 @@ class StationStreamer implements
         return $this->streamer_username;
     }
 
-    public function setStreamerUsername(string $streamer_username): void
+    public function setStreamerUsername(string $streamerUsername): void
     {
-        $this->streamer_username = $this->truncateString($streamer_username, 50);
+        $this->streamer_username = $this->truncateString($streamerUsername, 50);
     }
 
     public function getStreamerPassword(): string
@@ -138,12 +138,12 @@ class StationStreamer implements
         return '';
     }
 
-    public function setStreamerPassword(?string $streamer_password): void
+    public function setStreamerPassword(?string $streamerPassword): void
     {
-        $streamer_password = trim($streamer_password ?? '');
+        $streamerPassword = trim($streamerPassword ?? '');
 
-        if (!empty($streamer_password)) {
-            $this->streamer_password = password_hash($streamer_password, PASSWORD_ARGON2ID);
+        if (!empty($streamerPassword)) {
+            $this->streamer_password = password_hash($streamerPassword, PASSWORD_ARGON2ID);
         }
     }
 
@@ -159,9 +159,9 @@ class StationStreamer implements
             : $this->streamer_username;
     }
 
-    public function setDisplayName(?string $display_name): void
+    public function setDisplayName(?string $displayName): void
     {
-        $this->display_name = $this->truncateNullableString($display_name);
+        $this->display_name = $this->truncateNullableString($displayName);
     }
 
     public function getComments(): ?string
@@ -179,12 +179,12 @@ class StationStreamer implements
         return $this->is_active;
     }
 
-    public function setIsActive(bool $is_active): void
+    public function setIsActive(bool $isActive): void
     {
-        $this->is_active = $is_active;
+        $this->is_active = $isActive;
 
         // Automatically set the "reactivate_at" flag to null if the DJ is for any reason reactivated.
-        if (true === $is_active) {
+        if (true === $isActive) {
             $this->reactivate_at = null;
         }
     }
@@ -194,9 +194,9 @@ class StationStreamer implements
         return $this->enforce_schedule;
     }
 
-    public function setEnforceSchedule(bool $enforce_schedule): void
+    public function setEnforceSchedule(bool $enforceSchedule): void
     {
-        $this->enforce_schedule = $enforce_schedule;
+        $this->enforce_schedule = $enforceSchedule;
     }
 
     public function getReactivateAt(): ?int
@@ -204,9 +204,9 @@ class StationStreamer implements
         return $this->reactivate_at;
     }
 
-    public function setReactivateAt(?int $reactivate_at): void
+    public function setReactivateAt(?int $reactivateAt): void
     {
-        $this->reactivate_at = $reactivate_at;
+        $this->reactivate_at = $reactivateAt;
     }
 
     public function deactivateFor(int $seconds): void
@@ -220,9 +220,9 @@ class StationStreamer implements
         return $this->art_updated_at;
     }
 
-    public function setArtUpdatedAt(int $art_updated_at): self
+    public function setArtUpdatedAt(int $artUpdatedAt): self
     {
-        $this->art_updated_at = $art_updated_at;
+        $this->art_updated_at = $artUpdatedAt;
 
         return $this;
     }
@@ -245,8 +245,8 @@ class StationStreamer implements
         $this->reactivate_at = null;
     }
 
-    public static function getArtworkPath(int|string $streamer_id): string
+    public static function getArtworkPath(int|string $streamerId): string
     {
-        return 'streamer_' . $streamer_id . '.jpg';
+        return 'streamer_' . $streamerId . '.jpg';
     }
 }

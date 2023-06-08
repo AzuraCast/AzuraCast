@@ -37,7 +37,7 @@ final class StationRequiresRestart implements EventSubscriber
         $em = $args->getObjectManager();
         $uow = $em->getUnitOfWork();
 
-        $collections_to_check = [
+        $collectionsToCheck = [
             [
                 AuditLogOperations::Insert,
                 $uow->getScheduledEntityInsertions(),
@@ -52,9 +52,9 @@ final class StationRequiresRestart implements EventSubscriber
             ],
         ];
 
-        $stations_to_restart = [];
+        $stationsToRestart = [];
 
-        foreach ($collections_to_check as [$change_type, $collection]) {
+        foreach ($collectionsToCheck as [$changeType, $collection]) {
             foreach ($collection as $entity) {
                 if (
                     ($entity instanceof StationMount)
@@ -62,17 +62,17 @@ final class StationRequiresRestart implements EventSubscriber
                     || ($entity instanceof StationRemote && $entity->isEditable())
                     || ($entity instanceof StationPlaylist && $entity->getStation()->useManualAutoDJ())
                 ) {
-                    if (AuditLogOperations::Update === $change_type) {
+                    if (AuditLogOperations::Update === $changeType) {
                         $changes = $uow->getEntityChangeSet($entity);
 
                         // Look for the @AuditIgnore annotation on a property.
-                        $class_reflection = new ReflectionObject($entity);
-                        foreach ($changes as $change_field => $changeset) {
-                            $ignoreAttr = $class_reflection->getProperty($change_field)->getAttributes(
+                        $classReflection = new ReflectionObject($entity);
+                        foreach ($changes as $changeField => $changeset) {
+                            $ignoreAttr = $classReflection->getProperty($changeField)->getAttributes(
                                 AuditIgnore::class
                             );
                             if (!empty($ignoreAttr)) {
-                                unset($changes[$change_field]);
+                                unset($changes[$changeField]);
                             }
                         }
 
@@ -82,18 +82,18 @@ final class StationRequiresRestart implements EventSubscriber
                     }
 
                     $station = $entity->getStation();
-                    $stations_to_restart[$station->getId()] = $station;
+                    $stationsToRestart[$station->getId()] = $station;
                 }
             }
         }
 
-        if (count($stations_to_restart) > 0) {
-            foreach ($stations_to_restart as $station) {
+        if (count($stationsToRestart) > 0) {
+            foreach ($stationsToRestart as $station) {
                 $station->setNeedsRestart(true);
                 $em->persist($station);
 
-                $station_meta = $em->getClassMetadata(Station::class);
-                $uow->recomputeSingleEntityChangeSet($station_meta, $station);
+                $stationMeta = $em->getClassMetadata(Station::class);
+                $uow->recomputeSingleEntityChangeSet($stationMeta, $station);
             }
         }
     }

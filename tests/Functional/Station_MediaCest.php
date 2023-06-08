@@ -13,15 +13,15 @@ class Station_MediaCest extends CestAbstract
         $I->wantTo('Upload a song to a station.');
 
         $testStation = $this->getTestStation();
-        $station_id = $testStation->getId();
+        $stationId = $testStation->getId();
 
         // Upload test song
-        $test_song_orig = $this->environment->getBaseDirectory() . '/resources/error.mp3';
+        $testSongOrig = $this->environment->getBaseDirectory() . '/resources/error.mp3';
         $I->sendPOST(
-            '/api/station/' . $station_id . '/files',
+            '/api/station/' . $stationId . '/files',
             [
                 'path' => 'error.mp3',
-                'file' => base64_encode(file_get_contents($test_song_orig)),
+                'file' => base64_encode(file_get_contents($testSongOrig)),
             ]
         );
 
@@ -32,7 +32,7 @@ class Station_MediaCest extends CestAbstract
             ]
         );
 
-        $I->sendGET('/api/station/' . $station_id . '/files/list');
+        $I->sendGET('/api/station/' . $stationId . '/files/list');
 
         $I->seeResponseContainsJson(
             [
@@ -40,7 +40,7 @@ class Station_MediaCest extends CestAbstract
             ]
         );
 
-        $I->amOnPage('/station/' . $station_id . '/files');
+        $I->amOnPage('/station/' . $stationId . '/files');
 
         $I->see('Music Files');
     }

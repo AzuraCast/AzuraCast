@@ -94,11 +94,11 @@ final class ServerRequest extends SlimServerRequest
 
     /**
      * @param string $attr
-     * @param string $class_name
+     * @param string $className
      *
      * @throws Exception\InvalidRequestAttribute
      */
-    private function getAttributeOfClass(string $attr, string $class_name): mixed
+    private function getAttributeOfClass(string $attr, string $className): mixed
     {
         $object = $this->serverRequest->getAttribute($attr);
 
@@ -111,12 +111,12 @@ final class ServerRequest extends SlimServerRequest
             );
         }
 
-        if (!($object instanceof $class_name)) {
+        if (!($object instanceof $className)) {
             throw new Exception\InvalidRequestAttribute(
                 sprintf(
                     'Attribute "%s" must be of type "%s".',
                     $attr,
-                    $class_name
+                    $className
                 )
             );
         }

@@ -59,12 +59,12 @@ final class Adapters
 
     public function getRemoteAdapter(StationRemote $remote): Remote\AbstractRemote
     {
-        $class_name = $remote->getType()->getClass();
-        if ($this->di->has($class_name)) {
-            return $this->di->get($class_name);
+        $className = $remote->getType()->getClass();
+        if ($this->di->has($className)) {
+            return $this->di->get($className);
         }
 
-        throw new NotFoundException('Adapter not found: ' . $class_name);
+        throw new NotFoundException('Adapter not found: ' . $className);
     }
 
     /**
@@ -94,13 +94,13 @@ final class Adapters
         if ($checkInstalled) {
             return array_filter(
                 $adapters,
-                function ($adapter_info) {
-                    if (null === $adapter_info['class']) {
+                function ($adapterInfo) {
+                    if (null === $adapterInfo['class']) {
                         return true;
                     }
 
                     /** @var AbstractLocalAdapter $adapter */
-                    $adapter = $this->di->get($adapter_info['class']);
+                    $adapter = $this->di->get($adapterInfo['class']);
                     return $adapter->isInstalled();
                 }
             );

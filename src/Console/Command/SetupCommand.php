@@ -126,7 +126,7 @@ final class SetupCommand extends CommandAbstract
                 ]
             );
         } else {
-            $public_ip = $this->acCentral->getIp(false);
+            $publicIp = $this->acCentral->getIp(false);
 
             /** @noinspection HttpUrlsUsage */
             $io->success(
@@ -134,7 +134,7 @@ final class SetupCommand extends CommandAbstract
                     __('AzuraCast installation complete!'),
                     sprintf(
                         __('Visit %s to complete setup.'),
-                        'http://' . $public_ip
+                        'http://' . $publicIp
                     ),
                 ]
             );

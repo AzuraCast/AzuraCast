@@ -15,41 +15,41 @@ final class UserFixture extends AbstractFixture implements DependentFixtureInter
 {
     public function load(ObjectManager $manager): void
     {
-        $admin_email = getenv('INIT_ADMIN_EMAIL');
-        $admin_password = getenv('INIT_ADMIN_PASSWORD');
+        $adminEmail = getenv('INIT_ADMIN_EMAIL');
+        $adminPassword = getenv('INIT_ADMIN_PASSWORD');
 
-        if (!empty($admin_email) && !empty($admin_password)) {
-            $demo_user = new User();
-            $demo_user->setEmail('demo@azuracast.com');
-            $demo_user->setNewPassword('demo');
-            $demo_user->setName('AzuraCast Demo User');
+        if (!empty($adminEmail) && !empty($adminPassword)) {
+            $demoUser = new User();
+            $demoUser->setEmail('demo@azuracast.com');
+            $demoUser->setNewPassword('demo');
+            $demoUser->setName('AzuraCast Demo User');
 
             /** @var Role $demoRole */
             $demoRole = $this->getReference('demo_role');
-            $demo_user->getRoles()->add($demoRole);
+            $demoUser->getRoles()->add($demoRole);
 
-            $manager->persist($demo_user);
+            $manager->persist($demoUser);
 
-            $this->addReference('demo_user', $demo_user);
+            $this->addReference('demo_user', $demoUser);
 
-            $admin_user = new User();
-            $admin_user->setEmail($admin_email);
-            $admin_user->setName('System Administrator');
-            $admin_user->setNewPassword($admin_password);
-            $admin_user->setTheme(SupportedThemes::Browser);
+            $adminUser = new User();
+            $adminUser->setEmail($adminEmail);
+            $adminUser->setName('System Administrator');
+            $adminUser->setNewPassword($adminPassword);
+            $adminUser->setTheme(SupportedThemes::Browser);
 
             /** @var Role $adminRole */
             $adminRole = $this->getReference('admin_role');
-            $admin_user->getRoles()->add($adminRole);
+            $adminUser->getRoles()->add($adminRole);
 
-            $admin_2fa_secret = getenv('INIT_ADMIN_2FA_SECRET');
-            if (!empty($admin_2fa_secret)) {
-                $admin_user->setTwoFactorSecret($admin_2fa_secret);
+            $admin2faSecret = getenv('INIT_ADMIN_2FA_SECRET');
+            if (!empty($admin2faSecret)) {
+                $adminUser->setTwoFactorSecret($admin2faSecret);
             }
 
-            $manager->persist($admin_user);
+            $manager->persist($adminUser);
 
-            $this->addReference('admin_user', $admin_user);
+            $this->addReference('admin_user', $adminUser);
         }
 
         $manager->flush();

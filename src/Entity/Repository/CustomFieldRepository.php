@@ -70,7 +70,7 @@ final class CustomFieldRepository extends Repository
      */
     public function getCustomFields(StationMedia $media): array
     {
-        $metadata_raw = $this->em->createQuery(
+        $metadataRaw = $this->em->createQuery(
             <<<'DQL'
                 SELECT cf.short_name, e.value
                 FROM App\Entity\StationMediaCustomField e JOIN e.field cf
@@ -80,7 +80,7 @@ final class CustomFieldRepository extends Repository
             ->getArrayResult();
 
         $result = [];
-        foreach ($metadata_raw as $row) {
+        foreach ($metadataRaw as $row) {
             $result[$row['short_name']] = $row['value'];
         }
 
@@ -91,9 +91,9 @@ final class CustomFieldRepository extends Repository
      * Set the custom metadata for a specified station based on a provided key-value array.
      *
      * @param StationMedia $media
-     * @param array $custom_fields
+     * @param array $customFields
      */
-    public function setCustomFields(StationMedia $media, array $custom_fields): void
+    public function setCustomFields(StationMedia $media, array $customFields): void
     {
         $this->em->createQuery(
             <<<'DQL'
@@ -102,14 +102,14 @@ final class CustomFieldRepository extends Repository
         )->setParameter('media_id', $media->getId())
             ->execute();
 
-        foreach ($custom_fields as $field_id => $field_value) {
-            $field = is_numeric($field_id)
-                ? $this->em->find(CustomField::class, $field_id)
-                : $this->em->getRepository(CustomField::class)->findOneBy(['short_name' => $field_id]);
+        foreach ($customFields as $fieldId => $fieldValue) {
+            $field = is_numeric($fieldId)
+                ? $this->em->find(CustomField::class, $fieldId)
+                : $this->em->getRepository(CustomField::class)->findOneBy(['short_name' => $fieldId]);
 
             if ($field instanceof CustomField) {
                 $record = new StationMediaCustomField($media, $field);
-                $record->setValue($field_value);
+                $record->setValue($fieldValue);
                 $this->em->persist($record);
             }
         }

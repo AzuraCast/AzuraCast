@@ -47,7 +47,7 @@ class Song implements SongInterface
             );
         }
 
-        $song_text = mb_substr($songText, 0, 150, 'UTF-8');
+        $songText = mb_substr($songText, 0, 150, 'UTF-8');
 
         // Strip out characters that are likely to not be properly translated or relayed through the radio.
         $removeChars = [
@@ -60,10 +60,10 @@ class Song implements SongInterface
             "\r",
         ];
 
-        $song_text = str_replace($removeChars, '', $song_text);
+        $songText = str_replace($removeChars, '', $songText);
 
-        $hash_base = mb_strtolower($song_text, 'UTF-8');
-        return md5($hash_base);
+        $hashBase = mb_strtolower($songText, 'UTF-8');
+        return md5($hashBase);
     }
 
     public static function createFromApiSong(Api\Song $apiSong): self

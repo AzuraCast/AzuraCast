@@ -228,13 +228,13 @@ class StationMedia implements
     /**
      * Generate a new unique ID for this item.
      *
-     * @param bool $force_new
+     * @param bool $forceNew
      *
      * @throws Exception
      */
-    public function generateUniqueId(bool $force_new = false): void
+    public function generateUniqueId(bool $forceNew = false): void
     {
-        if (!isset($this->unique_id) || $force_new) {
+        if (!isset($this->unique_id) || $forceNew) {
             $this->unique_id = bin2hex(random_bytes(12));
         }
     }
@@ -305,11 +305,11 @@ class StationMedia implements
      */
     public function setLength(int $length): void
     {
-        $length_min = floor($length / 60);
-        $length_sec = $length % 60;
+        $lengthMin = floor($length / 60);
+        $lengthSec = $length % 60;
 
         $this->length = (float)$length;
-        $this->length_text = $length_min . ':' . str_pad((string)$length_sec, 2, '0', STR_PAD_LEFT);
+        $this->length_text = $lengthMin . ':' . str_pad((string)$lengthSec, 2, '0', STR_PAD_LEFT);
     }
 
     public function getLengthText(): ?string
@@ -317,9 +317,9 @@ class StationMedia implements
         return $this->length_text;
     }
 
-    public function setLengthText(?string $length_text = null): void
+    public function setLengthText(?string $lengthText = null): void
     {
-        $this->length_text = $length_text;
+        $this->length_text = $lengthText;
     }
 
     public function getPath(): string
@@ -357,9 +357,9 @@ class StationMedia implements
         return $this->fade_overlap;
     }
 
-    public function setFadeOverlap(?float $fade_overlap = null): void
+    public function setFadeOverlap(?float $fadeOverlap = null): void
     {
-        $this->fade_overlap = $fade_overlap;
+        $this->fade_overlap = $fadeOverlap;
     }
 
     public function getFadeIn(): ?float
@@ -367,9 +367,9 @@ class StationMedia implements
         return $this->fade_in;
     }
 
-    public function setFadeIn(string|int|float $fade_in = null): void
+    public function setFadeIn(string|int|float $fadeIn = null): void
     {
-        $this->fade_in = Time::displayTimeToSeconds($fade_in);
+        $this->fade_in = Time::displayTimeToSeconds($fadeIn);
     }
 
     public function getFadeOut(): ?float
@@ -377,9 +377,9 @@ class StationMedia implements
         return $this->fade_out;
     }
 
-    public function setFadeOut(string|int|float $fade_out = null): void
+    public function setFadeOut(string|int|float $fadeOut = null): void
     {
-        $this->fade_out = Time::displayTimeToSeconds($fade_out);
+        $this->fade_out = Time::displayTimeToSeconds($fadeOut);
     }
 
     public function getCueIn(): ?float
@@ -387,9 +387,9 @@ class StationMedia implements
         return $this->cue_in;
     }
 
-    public function setCueIn(string|int|float $cue_in = null): void
+    public function setCueIn(string|int|float $cueIn = null): void
     {
-        $this->cue_in = Time::displayTimeToSeconds($cue_in);
+        $this->cue_in = Time::displayTimeToSeconds($cueIn);
     }
 
     public function getCueOut(): ?float
@@ -397,9 +397,9 @@ class StationMedia implements
         return $this->cue_out;
     }
 
-    public function setCueOut(string|int|float $cue_out = null): void
+    public function setCueOut(string|int|float $cueOut = null): void
     {
-        $this->cue_out = Time::displayTimeToSeconds($cue_out);
+        $this->cue_out = Time::displayTimeToSeconds($cueOut);
     }
 
     /**
@@ -410,8 +410,8 @@ class StationMedia implements
         $length = (int)$this->length;
 
         if ((int)$this->cue_out > 0) {
-            $length_removed = $length - (int)$this->cue_out;
-            $length -= $length_removed;
+            $lengthRemoved = $length - (int)$this->cue_out;
+            $length -= $lengthRemoved;
         }
         if ((int)$this->cue_in > 0) {
             $length -= $this->cue_in;
@@ -425,9 +425,9 @@ class StationMedia implements
         return $this->art_updated_at;
     }
 
-    public function setArtUpdatedAt(int $art_updated_at): void
+    public function setArtUpdatedAt(int $artUpdatedAt): void
     {
-        $this->art_updated_at = $art_updated_at;
+        $this->art_updated_at = $artUpdatedAt;
     }
 
     /**
@@ -439,11 +439,11 @@ class StationMedia implements
     }
 
     /**
-     * @param Collection<int, StationMediaCustomField> $custom_fields
+     * @param Collection<int, StationMediaCustomField> $customFields
      */
-    public function setCustomFields(Collection $custom_fields): void
+    public function setCustomFields(Collection $customFields): void
     {
-        $this->custom_fields = $custom_fields;
+        $this->custom_fields = $customFields;
     }
 
     public static function needsReprocessing(int $fileModifiedTime = 0, int $dbModifiedTime = 0): bool
@@ -456,8 +456,8 @@ class StationMedia implements
      */
     public function isRequestable(): bool
     {
-        foreach ($this->getPlaylists() as $playlist_item) {
-            $playlist = $playlist_item->getPlaylist();
+        foreach ($this->getPlaylists() as $playlistItem) {
+            $playlist = $playlistItem->getPlaylist();
             /** @var StationPlaylist $playlist */
             if ($playlist->isRequestable()) {
                 return true;

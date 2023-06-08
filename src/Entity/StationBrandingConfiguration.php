@@ -25,9 +25,9 @@ class StationBrandingConfiguration extends AbstractStationConfiguration
         );
     }
 
-    public function setDefaultAlbumArtUrl(?string $default_album_art_url): void
+    public function setDefaultAlbumArtUrl(?string $defaultAlbumArtUrl): void
     {
-        $this->set(self::DEFAULT_ALBUM_ART_URL, $default_album_art_url);
+        $this->set(self::DEFAULT_ALBUM_ART_URL, $defaultAlbumArtUrl);
     }
 
     public const PUBLIC_CUSTOM_CSS = 'public_custom_css';

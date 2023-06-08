@@ -32,14 +32,14 @@ final class Plugins
             ->depth('== 0')
             ->in($dir);
 
-        foreach ($plugins as $plugin_dir) {
-            /** @var SplFileInfo $plugin_dir */
-            $plugin_prefix = $plugin_dir->getRelativePathname();
-            $plugin_namespace = 'Plugin\\' . $this->inflector->classify($plugin_prefix) . '\\';
+        foreach ($plugins as $pluginDir) {
+            /** @var SplFileInfo $pluginDir */
+            $pluginPrefix = $pluginDir->getRelativePathname();
+            $pluginNamespace = 'Plugin\\' . $this->inflector->classify($pluginPrefix) . '\\';
 
-            $this->plugins[$plugin_prefix] = [
-                'namespace' => $plugin_namespace,
-                'path' => $plugin_dir->getPathname(),
+            $this->plugins[$pluginPrefix] = [
+                'namespace' => $pluginNamespace,
+                'path' => $pluginDir->getPathname(),
             ];
         }
     }
@@ -54,10 +54,10 @@ final class Plugins
     public function registerServices(array $diDefinitions = []): array
     {
         foreach ($this->plugins as $plugin) {
-            $plugin_path = $plugin['path'];
+            $pluginPath = $plugin['path'];
 
-            if (is_file($plugin_path . '/services.php')) {
-                $services = include $plugin_path . '/services.php';
+            if (is_file($pluginPath . '/services.php')) {
+                $services = include $pluginPath . '/services.php';
                 $diDefinitions = array_merge($diDefinitions, $services);
             }
         }
@@ -73,10 +73,10 @@ final class Plugins
     public function registerEvents(CallableEventDispatcherInterface $dispatcher): void
     {
         foreach ($this->plugins as $plugin) {
-            $plugin_path = $plugin['path'];
+            $pluginPath = $plugin['path'];
 
-            if (file_exists($plugin_path . '/events.php')) {
-                call_user_func(include($plugin_path . '/events.php'), $dispatcher);
+            if (file_exists($pluginPath . '/events.php')) {
+                call_user_func(include($pluginPath . '/events.php'), $dispatcher);
             }
         }
     }

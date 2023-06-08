@@ -28,13 +28,13 @@ final class Version20200129010322 extends AbstractMigration
         $accounts = [];
 
         foreach ($streamers as $row) {
-            $station_id = $row['station_id'];
+            $stationId = $row['station_id'];
             $username = $row['streamer_username'];
 
-            if (isset($accounts[$station_id][$username])) {
+            if (isset($accounts[$stationId][$username])) {
                 $this->connection->delete('station_streamers', ['id' => $row['id']]);
             } else {
-                $accounts[$station_id][$username] = $username;
+                $accounts[$stationId][$username] = $username;
             }
         }
     }

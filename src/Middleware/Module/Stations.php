@@ -41,11 +41,11 @@ final class Stations
         $event = new Event\BuildStationMenu($station, $request, $settings);
         $this->dispatcher->dispatch($event);
 
-        $active_tab = null;
-        $current_route = RouteContext::fromRequest($request)->getRoute();
-        if ($current_route instanceof RouteInterface) {
-            $route_parts = explode(':', $current_route->getName() ?? '');
-            $active_tab = $route_parts[1];
+        $activeTab = null;
+        $currentRoute = RouteContext::fromRequest($request)->getRoute();
+        if ($currentRoute instanceof RouteInterface) {
+            $routeParts = explode(':', $currentRoute->getName() ?? '');
+            $activeTab = $routeParts[1];
         }
 
         $view->getSections()->set(
@@ -54,7 +54,7 @@ final class Stations
                 'stations/sidebar',
                 [
                     'menu' => $event->getFilteredMenu(),
-                    'active' => $active_tab,
+                    'active' => $activeTab,
                 ]
             ),
         );

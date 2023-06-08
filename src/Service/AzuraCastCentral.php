@@ -32,24 +32,24 @@ final class AzuraCastCentral
      */
     public function checkForUpdates(): ?array
     {
-        $request_body = [
+        $requestBody = [
             'id' => $this->getUniqueIdentifier(),
             'is_docker' => $this->environment->isDocker(),
             'environment' => $this->environment->getAppEnvironmentEnum()->value,
             'release_channel' => $this->version->getReleaseChannelEnum()->value,
         ];
 
-        $commit_hash = $this->version->getCommitHash();
-        if ($commit_hash) {
-            $request_body['version'] = $commit_hash;
+        $commitHash = $this->version->getCommitHash();
+        if ($commitHash) {
+            $requestBody['version'] = $commitHash;
         } else {
-            $request_body['release'] = Version::FALLBACK_VERSION;
+            $requestBody['release'] = Version::FALLBACK_VERSION;
         }
 
         $this->logger->debug(
             'Update request body',
             [
-                'body' => $request_body,
+                'body' => $requestBody,
             ]
         );
 
@@ -57,13 +57,13 @@ final class AzuraCastCentral
             $response = $this->httpClient->request(
                 'POST',
                 self::BASE_URL . '/api/update',
-                ['json' => $request_body]
+                ['json' => $requestBody]
             );
 
-            $update_data_raw = $response->getBody()->getContents();
+            $updateDataRaw = $response->getBody()->getContents();
 
-            $update_data = json_decode($update_data_raw, true, 512, JSON_THROW_ON_ERROR);
-            return $update_data['updates'] ?? null;
+            $updateData = json_decode($updateDataRaw, true, 512, JSON_THROW_ON_ERROR);
+            return $updateData['updates'] ?? null;
         } catch (Exception $e) {
             $this->logger->error('Error checking for updates: ' . $e->getMessage());
         }
@@ -95,8 +95,8 @@ final class AzuraCastCentral
                     self::BASE_URL . '/ip'
                 );
 
-                $body_raw = $response->getBody()->getContents();
-                $body = json_decode($body_raw, true, 512, JSON_THROW_ON_ERROR);
+                $bodyRaw = $response->getBody()->getContents();
+                $body = json_decode($bodyRaw, true, 512, JSON_THROW_ON_ERROR);
 
                 $ip = $body['ip'] ?? null;
             } catch (Exception $e) {

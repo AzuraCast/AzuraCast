@@ -17,15 +17,15 @@ final class StationMountFixture extends AbstractFixture implements DependentFixt
         /** @var Station $station */
         $station = $this->getReference('station');
 
-        $mount_radio = new StationMount($station);
-        $mount_radio->setName('/radio.mp3');
-        $mount_radio->setIsDefault(true);
-        $manager->persist($mount_radio);
+        $mountRadio = new StationMount($station);
+        $mountRadio->setName('/radio.mp3');
+        $mountRadio->setIsDefault(true);
+        $manager->persist($mountRadio);
 
-        $mount_mobile = new StationMount($station);
-        $mount_mobile->setName('/mobile.mp3');
-        $mount_mobile->setAutodjBitrate(64);
-        $manager->persist($mount_mobile);
+        $mountMobile = new StationMount($station);
+        $mountMobile->setName('/mobile.mp3');
+        $mountMobile->setAutodjBitrate(64);
+        $manager->persist($mountMobile);
 
         $manager->flush();
     }

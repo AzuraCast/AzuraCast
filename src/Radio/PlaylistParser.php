@@ -13,10 +13,10 @@ final class PlaylistParser
     {
         // Process as full PLS if the header is present.
         if (str_starts_with($playlistRaw, '[playlist]')) {
-            $parsed_playlist = (array)parse_ini_string($playlistRaw, true, INI_SCANNER_RAW);
+            $parsedPlaylist = (array)parse_ini_string($playlistRaw, true, INI_SCANNER_RAW);
 
             return array_filter(
-                $parsed_playlist['playlist'],
+                $parsedPlaylist['playlist'],
                 static function ($key) {
                     return str_starts_with(strtolower($key), 'file');
                 },

@@ -25,20 +25,20 @@ final class Quota
 
     public static function getReadableSize(Math\BigInteger $bytes, int $decimals = 1): string
     {
-        $bytes_str = (string)$bytes;
+        $bytesStr = (string)$bytes;
 
         $size = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
-        $factor = (int)floor((strlen($bytes_str) - 1) / 3);
+        $factor = (int)floor((strlen($bytesStr) - 1) / 3);
 
         if (isset($size[$factor])) {
-            $byte_divisor = Math\BigInteger::of(1000)->power($factor);
-            $size_string = $bytes->toBigDecimal()
-                ->dividedBy($byte_divisor, $decimals, Math\RoundingMode::HALF_DOWN);
+            $byteDivisor = Math\BigInteger::of(1000)->power($factor);
+            $sizeString = $bytes->toBigDecimal()
+                ->dividedBy($byteDivisor, $decimals, Math\RoundingMode::HALF_DOWN);
 
-            return $size_string . ' ' . $size[$factor];
+            return $sizeString . ' ' . $size[$factor];
         }
 
-        return $bytes_str;
+        return $bytesStr;
     }
 
     public static function convertFromReadableSize(Math\BigInteger|string|null $size): ?Math\BigInteger
@@ -62,14 +62,14 @@ final class Quota
             // of magnitude to multiply a kilobyte by.
 
             /** @noinspection StringFragmentMisplacedInspection */
-            $byte_power = stripos(
+            $bytePower = stripos(
                 haystack: 'bkmgtpezy',
                 needle: $unit[0]
             ) ?: 0;
-            $byte_multiplier = Math\BigInteger::of(1000)->power($byte_power);
+            $byteMultiplier = Math\BigInteger::of(1000)->power($bytePower);
 
             return Math\BigDecimal::of($size)
-                ->multipliedBy($byte_multiplier)
+                ->multipliedBy($byteMultiplier)
                 ->toScale(0, Math\RoundingMode::FLOOR)
                 ->toBigInteger();
         }

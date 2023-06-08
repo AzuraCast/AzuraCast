@@ -25,24 +25,24 @@ final class Application extends SymfonyApplication
         $input = new ArrayInput(array_merge(['command' => $command], $args));
         $input->setInteractive(false);
 
-        $temp_stream = fopen($outputFile, 'wb+');
-        if (false === $temp_stream) {
+        $tempStream = fopen($outputFile, 'wb+');
+        if (false === $tempStream) {
             throw new RuntimeException(sprintf('Could not open output file: "%s"', $outputFile));
         }
 
-        $output = new StreamOutput($temp_stream);
+        $output = new StreamOutput($tempStream);
 
-        $result_code = $this->find($command)->run($input, $output);
+        $resultCode = $this->find($command)->run($input, $output);
 
-        rewind($temp_stream);
-        $result_output = stream_get_contents($temp_stream);
-        fclose($temp_stream);
+        rewind($tempStream);
+        $resultOutput = stream_get_contents($tempStream);
+        fclose($tempStream);
 
-        $result_output = trim((string)$result_output);
+        $resultOutput = trim((string)$resultOutput);
 
         return [
-            $result_code,
-            $result_output,
+            $resultCode,
+            $resultOutput,
         ];
     }
 }

@@ -80,10 +80,10 @@ class StationHlsStream implements
         return $this->name;
     }
 
-    public function setName(string $new_name): void
+    public function setName(string $newName): void
     {
         // Ensure all mount point names start with a leading slash.
-        $this->name = $this->truncateString(Strings::getProgrammaticString($new_name), 100);
+        $this->name = $this->truncateString(Strings::getProgrammaticString($newName), 100);
     }
 
     public function getFormat(): ?StreamFormats

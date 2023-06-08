@@ -81,25 +81,25 @@ abstract class AbstractConnector implements ConnectorInterface
     /**
      * Replace variables in the format {{ blah }} with the flattened contents of the NowPlaying API array.
      *
-     * @param array $raw_vars
+     * @param array $rawVars
      * @param NowPlaying $np
      *
      * @return array
      */
-    public function replaceVariables(array $raw_vars, NowPlaying $np): array
+    public function replaceVariables(array $rawVars, NowPlaying $np): array
     {
         $values = Utilities\Arrays::flattenArray($np);
         $vars = [];
 
-        foreach ($raw_vars as $var_key => $var_value) {
+        foreach ($rawVars as $varKey => $varValue) {
             // Replaces {{ var.name }} with the flattened $values['var.name']
-            $vars[$var_key] = preg_replace_callback(
+            $vars[$varKey] = preg_replace_callback(
                 "/\{\{(\s*)([a-zA-Z\d\-_.]+)(\s*)}}/",
                 static function ($matches) use ($values) {
-                    $inner_value = strtolower(trim($matches[2]));
-                    return $values[$inner_value] ?? '';
+                    $innerValue = strtolower(trim($matches[2]));
+                    return $values[$innerValue] ?? '';
                 },
-                $var_value
+                $varValue
             );
         }
 
@@ -109,12 +109,12 @@ abstract class AbstractConnector implements ConnectorInterface
     /**
      * Determine if a passed URL is valid and return it if so, or return null otherwise.
      *
-     * @param string|null $url_string
+     * @param string|null $urlString
      */
-    protected function getValidUrl(?string $url_string = null): ?string
+    protected function getValidUrl(?string $urlString = null): ?string
     {
         $uri = Utilities\Urls::tryParseUserUrl(
-            $url_string,
+            $urlString,
             'Webhook'
         );
 

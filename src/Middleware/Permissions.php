@@ -18,16 +18,16 @@ final class Permissions
 {
     public function __construct(
         private readonly string|PermissionInterface $action,
-        private readonly bool $use_station = false
+        private readonly bool $useStation = false
     ) {
     }
 
     public function __invoke(ServerRequest $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        if ($this->use_station) {
-            $station_id = $request->getStation()->getId();
+        if ($this->useStation) {
+            $stationId = $request->getStation()->getId();
         } else {
-            $station_id = null;
+            $stationId = null;
         }
 
         try {
@@ -37,7 +37,7 @@ final class Permissions
         }
 
         $acl = $request->getAcl();
-        if (!$acl->userAllowed($user, $this->action, $station_id)) {
+        if (!$acl->userAllowed($user, $this->action, $stationId)) {
             throw new PermissionDeniedException();
         }
 

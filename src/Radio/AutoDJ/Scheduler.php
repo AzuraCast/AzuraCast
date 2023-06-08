@@ -126,18 +126,18 @@ final class Scheduler
         StationPlaylist $playlist,
         CarbonInterface $now
     ): bool {
-        $current_minute = $now->minute;
-        $target_minute = $playlist->getPlayPerHourMinute();
+        $currentMinute = $now->minute;
+        $targetMinute = $playlist->getPlayPerHourMinute();
 
-        if ($current_minute < $target_minute) {
-            $target_time = $now->subHour()->minute($target_minute);
+        if ($currentMinute < $targetMinute) {
+            $targetTime = $now->subHour()->minute($targetMinute);
         } else {
-            $target_time = $now->minute($target_minute);
+            $targetTime = $now->minute($targetMinute);
         }
 
-        $playlist_diff = $target_time->diffInMinutes($now, false);
+        $playlistDiff = $targetTime->diffInMinutes($now, false);
 
-        if ($playlist_diff < 0 || $playlist_diff > 15) {
+        if ($playlistDiff < 0 || $playlistDiff > 15) {
             return false;
         }
 

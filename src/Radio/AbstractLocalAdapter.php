@@ -104,10 +104,10 @@ abstract class AbstractLocalAdapter
             return true;
         }
 
-        $program_name = $this->getSupervisorFullName($station);
+        $programName = $this->getSupervisorFullName($station);
 
         try {
-            return $this->supervisor->getProcess($program_name)->isRunning();
+            return $this->supervisor->getProcess($programName)->isRunning();
         } catch (Fault\BadNameException) {
             return false;
         }
@@ -185,16 +185,16 @@ abstract class AbstractLocalAdapter
     public function stop(Station $station): void
     {
         if ($this->hasCommand($station)) {
-            $program_name = $this->getSupervisorFullName($station);
+            $programName = $this->getSupervisorFullName($station);
 
             try {
-                $this->supervisor->stopProcess($program_name);
+                $this->supervisor->stopProcess($programName);
                 $this->logger->info(
                     'Adapter "' . static::class . '" stopped.',
                     ['station_id' => $station->getId(), 'station_name' => $station->getName()]
                 );
             } catch (SupervisorLibException $e) {
-                $this->handleSupervisorException($e, $program_name, $station);
+                $this->handleSupervisorException($e, $programName, $station);
             }
         }
     }
@@ -210,16 +210,16 @@ abstract class AbstractLocalAdapter
     public function start(Station $station): void
     {
         if ($this->hasCommand($station)) {
-            $program_name = $this->getSupervisorFullName($station);
+            $programName = $this->getSupervisorFullName($station);
 
             try {
-                $this->supervisor->startProcess($program_name);
+                $this->supervisor->startProcess($programName);
                 $this->logger->info(
                     'Adapter "' . static::class . '" started.',
                     ['station_id' => $station->getId(), 'station_name' => $station->getName()]
                 );
             } catch (SupervisorLibException $e) {
-                $this->handleSupervisorException($e, $program_name, $station);
+                $this->handleSupervisorException($e, $programName, $station);
             }
         }
     }
@@ -228,17 +228,17 @@ abstract class AbstractLocalAdapter
      * Internal handling of any Supervisor-related exception, to add richer data to it.
      *
      * @param SupervisorLibException $e
-     * @param string $program_name
+     * @param string $programName
      * @param Station $station
      *
      * @throws SupervisorException
      */
     protected function handleSupervisorException(
         SupervisorLibException $e,
-        string $program_name,
+        string $programName,
         Station $station
     ): void {
-        $eNew = SupervisorException::fromSupervisorLibException($e, $program_name);
+        $eNew = SupervisorException::fromSupervisorLibException($e, $programName);
         $eNew->addLoggingContext('station_id', $station->getId());
         $eNew->addLoggingContext('station_name', $station->getName());
 
@@ -252,11 +252,11 @@ abstract class AbstractLocalAdapter
      */
     public function getLogPath(Station $station): string
     {
-        $config_dir = $station->getRadioConfigDir();
+        $configDir = $station->getRadioConfigDir();
 
-        $class_parts = explode('\\', static::class);
-        $class_name = array_pop($class_parts);
+        $classParts = explode('\\', static::class);
+        $className = array_pop($classParts);
 
-        return $config_dir . '/' . strtolower($class_name) . '.log';
+        return $configDir . '/' . strtolower($className) . '.log';
     }
 }

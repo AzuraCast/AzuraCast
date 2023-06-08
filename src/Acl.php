@@ -56,16 +56,16 @@ final class Acl
     }
 
     /**
-     * @param string $permission_name
-     * @param bool $is_global
+     * @param string $permissionName
+     * @param bool $isGlobal
      */
-    public function isValidPermission(string $permission_name, bool $is_global): bool
+    public function isValidPermission(string $permissionName, bool $isGlobal): bool
     {
         $permissions = $this->listPermissions();
 
-        return $is_global
-            ? isset($permissions['global'][$permission_name])
-            : isset($permissions['station'][$permission_name]);
+        return $isGlobal
+            ? isset($permissions['global'][$permissionName])
+            : isset($permissions['station'][$permissionName]);
     }
 
     /**
@@ -157,17 +157,17 @@ final class Acl
     /**
      * Check if a role (or array of roles) is allowed to perform an action (or array of actions).
      *
-     * @param array|int $role_id
-     * @param array<string|PermissionInterface>|string|PermissionInterface $action
-     * @param int|Station|null $station_id
+     * @param array|int $roleId
+     * @param array<(string | PermissionInterface)>|string|PermissionInterface $action
+     * @param int|Station|null $stationId
      */
     public function roleAllowed(
-        array|int $role_id,
+        array|int $roleId,
         array|string|PermissionInterface $action,
-        Station|int $station_id = null
+        Station|int $stationId = null
     ): bool {
-        if ($station_id instanceof Station) {
-            $station_id = $station_id->getId();
+        if ($stationId instanceof Station) {
+            $stationId = $stationId->getId();
         }
 
         if ($action instanceof PermissionInterface) {
@@ -175,9 +175,9 @@ final class Acl
         }
 
         // Iterate through an array of roles and return with the first "true" response, or "false" otherwise.
-        if (is_array($role_id)) {
-            foreach ($role_id as $r) {
-                if ($this->roleAllowed($r, $action, $station_id)) {
+        if (is_array($roleId)) {
+            foreach ($roleId as $r) {
+                if ($this->roleAllowed($r, $action, $stationId)) {
                     return true;
                 }
             }
@@ -188,7 +188,7 @@ final class Acl
         // If multiple actions are supplied, treat the list as "x OR y OR z", returning if any action is allowed.
         if (is_array($action)) {
             foreach ($action as $a) {
-                if ($this->roleAllowed($role_id, $a, $station_id)) {
+                if ($this->roleAllowed($roleId, $a, $stationId)) {
                     return true;
                 }
             }
@@ -196,45 +196,45 @@ final class Acl
             return false;
         }
 
-        if (!empty($this->actions[$role_id])) {
-            $role_actions = (array)$this->actions[$role_id];
+        if (!empty($this->actions[$roleId])) {
+            $roleActions = (array)$this->actions[$roleId];
 
             if (
                 in_array(
                     GlobalPermissions::All->value,
-                    (array)$role_actions['global'],
+                    (array)$roleActions['global'],
                     true
                 )
             ) {
                 return true;
             }
 
-            if ($station_id !== null) {
+            if ($stationId !== null) {
                 if (
                     in_array(
                         GlobalPermissions::Stations->value,
-                        (array)$role_actions['global'],
+                        (array)$roleActions['global'],
                         true
                     )
                 ) {
                     return true;
                 }
 
-                if (!empty($role_actions['stations'][$station_id])) {
+                if (!empty($roleActions['stations'][$stationId])) {
                     if (
                         in_array(
                             StationPermissions::All->value,
-                            $role_actions['stations'][$station_id],
+                            $roleActions['stations'][$stationId],
                             true
                         )
                     ) {
                         return true;
                     }
 
-                    return in_array($action, (array)$role_actions['stations'][$station_id], true);
+                    return in_array($action, (array)$roleActions['stations'][$stationId], true);
                 }
             } else {
-                return in_array($action, (array)$role_actions['global'], true);
+                return in_array($action, (array)$roleActions['global'], true);
             }
         }
 

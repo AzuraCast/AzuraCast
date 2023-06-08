@@ -49,19 +49,19 @@ trait TruncateInts
     }
 
     protected function truncateIntToLimit(
-        int $signed_limit,
-        int $unsigned_limit,
+        int $signedLimit,
+        int $unsignedLimit,
         bool $unsigned,
         int $int
     ): int {
-        $lower_limit = $unsigned ? 0 : 0 - $signed_limit;
-        $upper_limit = $unsigned ? $unsigned_limit : $signed_limit;
+        $lowerLimit = $unsigned ? 0 : 0 - $signedLimit;
+        $upperLimit = $unsigned ? $unsignedLimit : $signedLimit;
 
-        if ($int < $lower_limit) {
-            return $lower_limit;
+        if ($int < $lowerLimit) {
+            return $lowerLimit;
         }
-        if ($int > $upper_limit) {
-            return $upper_limit;
+        if ($int > $upperLimit) {
+            return $upperLimit;
         }
 
         return $int;

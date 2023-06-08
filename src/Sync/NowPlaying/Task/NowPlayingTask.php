@@ -69,14 +69,14 @@ final class NowPlayingTask implements NowPlayingTaskInterface, EventSubscriberIn
             return;
         }
 
-        $include_clients = $this->settingsRepo->readSettings()->isAnalyticsEnabled();
+        $includeClients = $this->settingsRepo->readSettings()->isAnalyticsEnabled();
 
         // Build the new "raw" NowPlaying data.
         try {
             $event = new GenerateRawNowPlaying(
                 $this->adapters,
                 $station,
-                $include_clients
+                $includeClients
             );
             $this->eventDispatcher->dispatch($event);
 
@@ -104,7 +104,7 @@ final class NowPlayingTask implements NowPlayingTaskInterface, EventSubscriberIn
         );
 
         // Update detailed listener statistics, if they exist for the station
-        if ($include_clients && null !== $npResult->clients) {
+        if ($includeClients && null !== $npResult->clients) {
             $this->listenerRepo->update($station, $npResult->clients);
         }
 

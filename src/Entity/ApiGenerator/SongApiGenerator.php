@@ -109,23 +109,23 @@ final class SongApiGenerator
     /**
      * Return all custom fields, either with a null value or with the custom value assigned to the given Media ID.
      *
-     * @param int|null $media_id
+     * @param int|null $mediaId
      *
      * @return mixed[]
      */
-    private function getCustomFields(?int $media_id = null): array
+    private function getCustomFields(?int $mediaId = null): array
     {
         $fields = $this->customFieldRepo->getFieldIds();
 
         $mediaFields = [];
-        if ($media_id !== null) {
+        if ($mediaId !== null) {
             $mediaFieldsRaw = $this->em->createQuery(
                 <<<'DQL'
                     SELECT smcf.field_id, smcf.value
                     FROM App\Entity\StationMediaCustomField smcf
                     WHERE smcf.media_id = :media_id
                 DQL
-            )->setParameter('media_id', $media_id)
+            )->setParameter('media_id', $mediaId)
                 ->getArrayResult();
 
             foreach ($mediaFieldsRaw as $row) {

@@ -12,14 +12,14 @@ class Api_StationsCest extends CestAbstract
         $I->wantTo('Check station API endpoints.');
 
         $testStation = $this->getTestStation();
-        $station_id = $testStation->getId();
+        $stationId = $testStation->getId();
 
         $I->sendGET('/api/stations');
         $I->seeResponseContainsJson([
             'name' => $testStation->getName(),
         ]);
 
-        $I->sendGET('/api/station/' . $station_id);
+        $I->sendGET('/api/station/' . $stationId);
         $I->seeResponseContainsJson([
             'name' => $testStation->getName(),
         ]);

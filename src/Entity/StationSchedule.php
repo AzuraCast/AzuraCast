@@ -102,9 +102,9 @@ class StationSchedule implements IdentifiableEntityInterface
         return $this->start_time;
     }
 
-    public function setStartTime(int $start_time): void
+    public function setStartTime(int $startTime): void
     {
-        $this->start_time = $start_time;
+        $this->start_time = $startTime;
     }
 
     public function getEndTime(): int
@@ -112,9 +112,9 @@ class StationSchedule implements IdentifiableEntityInterface
         return $this->end_time;
     }
 
-    public function setEndTime(int $end_time): void
+    public function setEndTime(int $endTime): void
     {
-        $this->end_time = $end_time;
+        $this->end_time = $endTime;
     }
 
     /**
@@ -124,18 +124,18 @@ class StationSchedule implements IdentifiableEntityInterface
     {
         $now = CarbonImmutable::now(new DateTimeZone('UTC'));
 
-        $start_time = self::getDateTime($this->start_time, $now)
+        $startTime = self::getDateTime($this->start_time, $now)
             ->getTimestamp();
 
-        $end_time = self::getDateTime($this->end_time, $now)
+        $endTime = self::getDateTime($this->end_time, $now)
             ->getTimestamp();
 
-        if ($start_time > $end_time) {
+        if ($startTime > $endTime) {
             /** @noinspection SummerTimeUnsafeTimeManipulationInspection */
-            return 86400 - ($start_time - $end_time);
+            return 86400 - ($startTime - $endTime);
         }
 
-        return $end_time - $start_time;
+        return $endTime - $startTime;
     }
 
     public function getStartDate(): ?string
@@ -143,9 +143,9 @@ class StationSchedule implements IdentifiableEntityInterface
         return $this->start_date;
     }
 
-    public function setStartDate(?string $start_date): void
+    public function setStartDate(?string $startDate): void
     {
-        $this->start_date = $start_date;
+        $this->start_date = $startDate;
     }
 
     public function getEndDate(): ?string
@@ -153,9 +153,9 @@ class StationSchedule implements IdentifiableEntityInterface
         return $this->end_date;
     }
 
-    public function setEndDate(?string $end_date): void
+    public function setEndDate(?string $endDate): void
     {
-        $this->end_date = $end_date;
+        $this->end_date = $endDate;
     }
 
     /**
@@ -185,9 +185,9 @@ class StationSchedule implements IdentifiableEntityInterface
         return $this->loop_once;
     }
 
-    public function setLoopOnce(bool $loop_once): void
+    public function setLoopOnce(bool $loopOnce): void
     {
-        $this->loop_once = $loop_once;
+        $this->loop_once = $loopOnce;
     }
 
     public function __toString(): string

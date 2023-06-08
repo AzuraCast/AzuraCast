@@ -177,9 +177,9 @@ class User implements Stringable, IdentifiableEntityInterface
     public function verifyPassword(string $password): bool
     {
         if (password_verify($password, $this->auth_password)) {
-            [$algo, $algo_opts] = $this->getPasswordAlgorithm();
+            [$algo, $algoOpts] = $this->getPasswordAlgorithm();
 
-            if (password_needs_rehash($this->auth_password, $algo, $algo_opts)) {
+            if (password_needs_rehash($this->auth_password, $algo, $algoOpts)) {
                 $this->setNewPassword($password);
             }
             return true;
@@ -205,8 +205,8 @@ class User implements Stringable, IdentifiableEntityInterface
     public function setNewPassword(?string $password): void
     {
         if (null !== $password && trim($password)) {
-            [$algo, $algo_opts] = $this->getPasswordAlgorithm();
-            $this->auth_password = password_hash($password, $algo, $algo_opts);
+            [$algo, $algoOpts] = $this->getPasswordAlgorithm();
+            $this->auth_password = password_hash($password, $algo, $algoOpts);
         }
     }
 
@@ -240,9 +240,9 @@ class User implements Stringable, IdentifiableEntityInterface
         return $this->show_24_hour_time;
     }
 
-    public function setShow24HourTime(?bool $show_24_hour_time): void
+    public function setShow24HourTime(?bool $show24HourTime): void
     {
-        $this->show_24_hour_time = $show_24_hour_time;
+        $this->show_24_hour_time = $show24HourTime;
     }
 
     public function getTwoFactorSecret(): ?string
@@ -250,9 +250,9 @@ class User implements Stringable, IdentifiableEntityInterface
         return $this->two_factor_secret;
     }
 
-    public function setTwoFactorSecret(?string $two_factor_secret = null): void
+    public function setTwoFactorSecret(?string $twoFactorSecret = null): void
     {
-        $this->two_factor_secret = $two_factor_secret;
+        $this->two_factor_secret = $twoFactorSecret;
     }
 
     public function verifyTwoFactor(string $otp): bool

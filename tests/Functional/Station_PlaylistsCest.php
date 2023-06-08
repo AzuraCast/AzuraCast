@@ -13,9 +13,9 @@ class Station_PlaylistsCest extends CestAbstract
         $I->wantTo('Create a station playlist.');
 
         $testStation = $this->getTestStation();
-        $station_id = $testStation->getId();
+        $stationId = $testStation->getId();
 
-        $I->amOnPage('/station/' . $station_id . '/playlists');
+        $I->amOnPage('/station/' . $stationId . '/playlists');
 
         $I->see('Playlists');
     }

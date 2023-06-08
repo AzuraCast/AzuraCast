@@ -169,10 +169,10 @@ class StationMount implements
         return $this->name;
     }
 
-    public function setName(string $new_name): void
+    public function setName(string $newName): void
     {
         // Ensure all mount point names start with a leading slash.
-        $this->name = $this->truncateString('/' . ltrim($new_name, '/'), 100);
+        $this->name = $this->truncateString('/' . ltrim($newName, '/'), 100);
     }
 
     public function getDisplayName(): string
@@ -192,9 +192,9 @@ class StationMount implements
         return $this->name;
     }
 
-    public function setDisplayName(?string $display_name): void
+    public function setDisplayName(?string $displayName): void
     {
-        $this->display_name = $this->truncateNullableString($display_name);
+        $this->display_name = $this->truncateNullableString($displayName);
     }
 
     public function getIsVisibleOnPublicPages(): bool
@@ -202,9 +202,9 @@ class StationMount implements
         return $this->is_visible_on_public_pages;
     }
 
-    public function setIsVisibleOnPublicPages(bool $is_visible_on_public_pages): void
+    public function setIsVisibleOnPublicPages(bool $isVisibleOnPublicPages): void
     {
-        $this->is_visible_on_public_pages = $is_visible_on_public_pages;
+        $this->is_visible_on_public_pages = $isVisibleOnPublicPages;
     }
 
     public function getIsDefault(): bool
@@ -212,9 +212,9 @@ class StationMount implements
         return $this->is_default;
     }
 
-    public function setIsDefault(bool $is_default): void
+    public function setIsDefault(bool $isDefault): void
     {
-        $this->is_default = $is_default;
+        $this->is_default = $isDefault;
     }
 
     public function getIsPublic(): bool
@@ -222,9 +222,9 @@ class StationMount implements
         return $this->is_public;
     }
 
-    public function setIsPublic(bool $is_public): void
+    public function setIsPublic(bool $isPublic): void
     {
-        $this->is_public = $is_public;
+        $this->is_public = $isPublic;
     }
 
     public function getFallbackMount(): ?string
@@ -232,9 +232,9 @@ class StationMount implements
         return $this->fallback_mount;
     }
 
-    public function setFallbackMount(?string $fallback_mount = null): void
+    public function setFallbackMount(?string $fallbackMount = null): void
     {
-        $this->fallback_mount = $fallback_mount;
+        $this->fallback_mount = $fallbackMount;
     }
 
     public function getRelayUrl(): ?string
@@ -262,9 +262,9 @@ class StationMount implements
         return $relayUri;
     }
 
-    public function setRelayUrl(?string $relay_url = null): void
+    public function setRelayUrl(?string $relayUrl = null): void
     {
-        $this->relay_url = $this->truncateNullableString($relay_url);
+        $this->relay_url = $this->truncateNullableString($relayUrl);
     }
 
     public function getAuthhash(): ?string
@@ -282,9 +282,9 @@ class StationMount implements
         return $this->max_listener_duration;
     }
 
-    public function setMaxListenerDuration(int $max_listener_duration): void
+    public function setMaxListenerDuration(int $maxListenerDuration): void
     {
-        $this->max_listener_duration = $this->truncateInt($max_listener_duration);
+        $this->max_listener_duration = $this->truncateInt($maxListenerDuration);
     }
 
     public function getEnableAutodj(): bool
@@ -292,9 +292,9 @@ class StationMount implements
         return $this->enable_autodj;
     }
 
-    public function setEnableAutodj(bool $enable_autodj): void
+    public function setEnableAutodj(bool $enableAutodj): void
     {
-        $this->enable_autodj = $enable_autodj;
+        $this->enable_autodj = $enableAutodj;
     }
 
     public function getAutodjFormat(): ?StreamFormats
@@ -302,9 +302,9 @@ class StationMount implements
         return $this->autodj_format;
     }
 
-    public function setAutodjFormat(?StreamFormats $autodj_format = null): void
+    public function setAutodjFormat(?StreamFormats $autodjFormat = null): void
     {
-        $this->autodj_format = $autodj_format;
+        $this->autodj_format = $autodjFormat;
     }
 
     public function getAutodjBitrate(): ?int
@@ -312,9 +312,9 @@ class StationMount implements
         return $this->autodj_bitrate;
     }
 
-    public function setAutodjBitrate(?int $autodj_bitrate = null): void
+    public function setAutodjBitrate(?int $autodjBitrate = null): void
     {
-        $this->autodj_bitrate = $autodj_bitrate;
+        $this->autodj_bitrate = $autodjBitrate;
     }
 
     public function getCustomListenUrl(): ?string
@@ -330,9 +330,9 @@ class StationMount implements
         );
     }
 
-    public function setCustomListenUrl(?string $custom_listen_url = null): void
+    public function setCustomListenUrl(?string $customListenUrl = null): void
     {
-        $this->custom_listen_url = $this->truncateNullableString($custom_listen_url);
+        $this->custom_listen_url = $this->truncateNullableString($customListenUrl);
     }
 
     public function getFrontendConfig(): ?string
@@ -340,9 +340,9 @@ class StationMount implements
         return $this->frontend_config;
     }
 
-    public function setFrontendConfig(?string $frontend_config = null): void
+    public function setFrontendConfig(?string $frontendConfig = null): void
     {
-        $this->frontend_config = $frontend_config;
+        $this->frontend_config = $frontendConfig;
     }
 
     public function getListenersUnique(): int
@@ -350,9 +350,9 @@ class StationMount implements
         return $this->listeners_unique;
     }
 
-    public function setListenersUnique(int $listeners_unique): void
+    public function setListenersUnique(int $listenersUnique): void
     {
-        $this->listeners_unique = $listeners_unique;
+        $this->listeners_unique = $listenersUnique;
     }
 
     public function getListenersTotal(): int
@@ -360,9 +360,9 @@ class StationMount implements
         return $this->listeners_total;
     }
 
-    public function setListenersTotal(int $listeners_total): void
+    public function setListenersTotal(int $listenersTotal): void
     {
-        $this->listeners_total = $listeners_total;
+        $this->listeners_total = $listenersTotal;
     }
 
     public function getIntroPath(): ?string
@@ -370,9 +370,9 @@ class StationMount implements
         return $this->intro_path;
     }
 
-    public function setIntroPath(?string $intro_path): void
+    public function setIntroPath(?string $introPath): void
     {
-        $this->intro_path = $intro_path;
+        $this->intro_path = $introPath;
     }
 
     public function getAutodjHost(): ?string
@@ -425,11 +425,11 @@ class StationMount implements
      * Retrieve the API version of the object/array.
      *
      * @param AbstractFrontend $fa
-     * @param UriInterface|null $base_url
+     * @param UriInterface|null $baseUrl
      */
     public function api(
         AbstractFrontend $fa,
-        UriInterface $base_url = null
+        UriInterface $baseUrl = null
     ): Api\NowPlaying\StationMount {
         $response = new Api\NowPlaying\StationMount();
 
@@ -437,7 +437,7 @@ class StationMount implements
         $response->name = $this->getDisplayName();
         $response->path = $this->getName();
         $response->is_default = $this->is_default;
-        $response->url = $fa->getUrlForMount($this->station, $this, $base_url);
+        $response->url = $fa->getUrlForMount($this->station, $this, $baseUrl);
 
         $response->listeners = new Api\NowPlaying\Listeners(
             total: $this->listeners_total,

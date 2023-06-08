@@ -19,10 +19,10 @@ final class Version20181202180617 extends AbstractMigration
         foreach ($this->connection->fetchAllAssociative('SELECT s.* FROM station AS s') as $station) {
             $this->write('Migrating album art for station "' . $station['name'] . '"...');
 
-            $base_dir = $station['radio_base_dir'];
-            $art_dir = $base_dir . '/album_art';
-            if (!mkdir($art_dir) && !is_dir($art_dir)) {
-                throw new RuntimeException(sprintf('Directory "%s" was not created', $art_dir));
+            $baseDir = $station['radio_base_dir'];
+            $artDir = $baseDir . '/album_art';
+            if (!mkdir($artDir) && !is_dir($artDir)) {
+                throw new RuntimeException(sprintf('Directory "%s" was not created', $artDir));
             }
 
             $stmt = $this->connection->executeQuery(
@@ -34,9 +34,9 @@ final class Version20181202180617 extends AbstractMigration
                 [ParameterType::INTEGER]
             );
 
-            while ($art_row = $stmt->fetchAssociative()) {
-                $art_path = $art_dir . '/' . $art_row['unique_id'] . '.jpg';
-                file_put_contents($art_path, $art_row['art']);
+            while ($artRow = $stmt->fetchAssociative()) {
+                $artPath = $artDir . '/' . $artRow['unique_id'] . '.jpg';
+                file_put_contents($artPath, $artRow['art']);
             }
         }
     }

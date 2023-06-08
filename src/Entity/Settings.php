@@ -620,9 +620,9 @@ class Settings implements Stringable
         return Strings::nonEmptyOrNull($this->backup_format);
     }
 
-    public function setBackupFormat(?string $backup_format): void
+    public function setBackupFormat(?string $backupFormat): void
     {
-        $this->backup_format = Strings::nonEmptyOrNull($backup_format);
+        $this->backup_format = Strings::nonEmptyOrNull($backupFormat);
     }
 
     #[
@@ -710,9 +710,9 @@ class Settings implements Stringable
         return $this->sync_disabled;
     }
 
-    public function setSyncDisabled(bool $sync_disabled): void
+    public function setSyncDisabled(bool $syncDisabled): void
     {
-        $this->sync_disabled = $sync_disabled;
+        $this->sync_disabled = $syncDisabled;
     }
 
     #[
@@ -1002,9 +1002,9 @@ class Settings implements Stringable
         return $this->acme_email;
     }
 
-    public function setAcmeEmail(?string $acme_email): void
+    public function setAcmeEmail(?string $acmeEmail): void
     {
-        $this->acme_email = $acme_email;
+        $this->acme_email = $acmeEmail;
     }
 
     #[
@@ -1019,12 +1019,12 @@ class Settings implements Stringable
         return Strings::nonEmptyOrNull($this->acme_domains);
     }
 
-    public function setAcmeDomains(?string $acme_domains): void
+    public function setAcmeDomains(?string $acmeDomains): void
     {
-        $acme_domains = Strings::nonEmptyOrNull($acme_domains);
+        $acmeDomains = Strings::nonEmptyOrNull($acmeDomains);
 
-        if (null !== $acme_domains) {
-            $acme_domains = implode(
+        if (null !== $acmeDomains) {
+            $acmeDomains = implode(
                 ', ',
                 array_map(
                     static function ($str) {
@@ -1033,12 +1033,12 @@ class Settings implements Stringable
                         $str = str_replace(['http://', 'https://'], '', $str);
                         return $str;
                     },
-                    explode(',', $acme_domains)
+                    explode(',', $acmeDomains)
                 )
             );
         }
 
-        $this->acme_domains = $acme_domains;
+        $this->acme_domains = $acmeDomains;
     }
 
     #[

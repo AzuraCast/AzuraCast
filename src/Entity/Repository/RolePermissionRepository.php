@@ -23,7 +23,7 @@ final class RolePermissionRepository extends Repository
      */
     public function getActionsForRole(Role $role): array
     {
-        $role_has_action = $this->em->createQuery(
+        $roleHasAction = $this->em->createQuery(
             <<<'DQL'
                 SELECT e
                 FROM App\Entity\RolePermission e
@@ -33,7 +33,7 @@ final class RolePermissionRepository extends Repository
             ->getArrayResult();
 
         $result = [];
-        foreach ($role_has_action as $row) {
+        foreach ($roleHasAction as $row) {
             if ($row['station_id']) {
                 $result['actions_' . $row['station_id']][] = $row['action_name'];
             } else {

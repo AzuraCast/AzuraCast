@@ -31,9 +31,9 @@ final class CheckUpdatesTask extends AbstractTask
         $settings = $this->readSettings();
 
         if (!$force) {
-            $update_last_run = $settings->getUpdateLastRun();
+            $updateLastRun = $settings->getUpdateLastRun();
 
-            if ($update_last_run > (time() - self::UPDATE_THRESHOLD)) {
+            if ($updateLastRun > (time() - self::UPDATE_THRESHOLD)) {
                 $this->logger->debug('Not checking for updates; checked too recently.');
                 return;
             }

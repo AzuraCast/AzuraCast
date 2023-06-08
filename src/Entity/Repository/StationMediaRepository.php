@@ -283,9 +283,9 @@ final class StationMediaRepository extends Repository
 
         $metadata = $media->toMetadata();
 
-        $art_path = StationMedia::getArtPath($media->getUniqueId());
-        if ($fs->fileExists($art_path)) {
-            $metadata->setArtwork($fs->read($art_path));
+        $artPath = StationMedia::getArtPath($media->getUniqueId());
+        if ($fs->fileExists($artPath)) {
+            $metadata->setArtwork($fs->read($artPath));
         }
 
         // Write tags to the Media file.

@@ -14,6 +14,7 @@ module.exports = {
         AdminBackups: '~/pages/Admin/Backups.js',
         AdminBranding: '~/pages/Admin/Branding.js',
         AdminCustomFields: '~/pages/Admin/CustomFields.js',
+        AdminDebug: '~/pages/Admin/Debug.js',
         AdminGeoLite: '~/pages/Admin/GeoLite.js',
         AdminIndex: '~/pages/Admin/Index.js',
         AdminLogs: '~/pages/Admin/Logs.js',

@@ -32,12 +32,21 @@ final class IndexAction
         ServerRequest $request,
         Response $response
     ): ResponseInterface {
+        $router = $request->getRouter();
+
         $queueTotals = [];
         foreach (QueueNames::cases() as $queue) {
-            $queueTotals[$queue->value] = $this->queueManager->getQueueCount($queue);
+            $queueTotals[] = [
+                'name' => $queue->value,
+                'count' => $this->queueManager->getQueueCount($queue),
+                'url' => $router->named(
+                    'admin:debug:clear-queue',
+                    ['queue' => $queue->value]
+                ),
+            ];
         }
 
-        $syncTimes = [];
+        $syncTasks = [];
         $now = CarbonImmutable::now(new DateTimeZone('UTC'));
         $syncTasksEvent = new GetSyncTasks();
         $this->dispatcher->dispatch($syncTasksEvent);
@@ -48,20 +57,49 @@ final class IndexAction
 
             $cronExpression = new CronExpression($pattern);
 
-            $syncTimes[$task] = [
+            $syncTasks[] = [
+                'task' => $task,
                 'pattern' => $pattern,
                 'time' => $this->cache->get($cacheKey, 0),
                 'nextRun' => $cronExpression->getNextRunDate($now)->getTimestamp(),
+                'url' => $router->named(
+                    'admin:debug:sync',
+                    ['task' => rawurlencode($task)]
+                ),
             ];
         }
 
-        return $request->getView()->renderToResponse(
-            $response,
-            'admin/debug/index',
-            [
-                'queue_totals' => $queueTotals,
-                'sync_times' => $syncTimes,
-                'stations' => $this->stationRepo->fetchArray(),
+        $stations = [];
+        foreach ($this->stationRepo->fetchArray() as $station) {
+            $stations[] = [
+                'id' => $station['id'],
+                'name' => $station['name'],
+                'clearQueueUrl' => $router->named(
+                    'admin:debug:clear-station-queue',
+                    ['station_id' => $station['id']]
+                ),
+                'getNextSongUrl' => $router->named(
+                    'admin:debug:nextsong',
+                    ['station_id' => $station['id']]
+                ),
+                'getNowPlayingUrl' => $router->named(
+                    'admin:debug:nowplaying',
+                    ['station_id' => $station['id']]
+                ),
+            ];
+        }
+
+        return $request->getView()->renderVuePage(
+            response: $response,
+            component: 'Vue_AdminDebug',
+            id: 'admin-debug',
+            title: __('System Debugger'),
+            props: [
+                'clearCacheUrl' => $router->named('admin:debug:clear-cache'),
+                'clearQueuesUrl' => $router->named('admin:debug:clear-queue'),
+                'syncTasks' => $syncTasks,
+                'queueTotals' => $queueTotals,
+                'stations' => $stations,
             ]
         );
     }

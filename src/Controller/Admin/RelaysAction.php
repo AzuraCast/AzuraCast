@@ -20,7 +20,7 @@ final class RelaysAction
             response: $response,
             component: 'Vue_AdminRelays',
             id: 'admin-relays',
-            title: __('Connected Relays'),
+            title: __('Connected AzuraRelays'),
             props: [
                 'listUrl' => $router->fromHere('api:admin:relays'),
             ]

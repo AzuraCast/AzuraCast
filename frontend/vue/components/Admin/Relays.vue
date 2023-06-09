@@ -9,7 +9,7 @@
                 id="hdr_relays"
                 class="card-title"
             >
-                {{ $gettext('Connected Relays') }}
+                {{ $gettext('Connected AzuraRelays') }}
             </h2>
         </b-card-header>
 

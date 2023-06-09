@@ -4,30 +4,25 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin;
 
-use App\Container\EntityManagerAwareTrait;
-use App\Entity\Relay;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
 
 final class RelaysAction
 {
-    use EntityManagerAwareTrait;
-
     public function __invoke(
         ServerRequest $request,
         Response $response
     ): ResponseInterface {
-        $relays = $this->em->createQueryBuilder()
-            ->select('e')
-            ->from(Relay::class, 'e')
-            ->getQuery()->getArrayResult();
+        $router = $request->getRouter();
 
-        return $request->getView()->renderToResponse(
-            $response,
-            'admin/relays/index',
-            [
-                'relays' => $relays,
+        return $request->getView()->renderVuePage(
+            response: $response,
+            component: 'Vue_AdminRelays',
+            id: 'admin-relays',
+            title: __('Connected Relays'),
+            props: [
+                'listUrl' => $router->fromHere('api:admin:relays'),
             ]
         );
     }

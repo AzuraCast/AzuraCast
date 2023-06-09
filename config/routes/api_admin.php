@@ -75,6 +75,10 @@ return static function (RouteCollectorProxy $group) {
             $group->get('/permissions', Controller\Api\Admin\PermissionsAction::class)
                 ->add(new Middleware\Permissions(GlobalPermissions::All));
 
+            $group->get('/relays/list', Controller\Api\Admin\RelaysAction::class)
+                ->setName('api:admin:relays')
+                ->add(new Middleware\Permissions(GlobalPermissions::Stations));
+
             $group->map(
                 ['GET', 'POST'],
                 '/relays',

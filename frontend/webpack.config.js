@@ -18,6 +18,7 @@ module.exports = {
         AdminIndex: '~/pages/Admin/Index.js',
         AdminLogs: '~/pages/Admin/Logs.js',
         AdminPermissions: '~/pages/Admin/Permissions.js',
+        AdminRelays: '~/pages/Admin/Relays.js',
         AdminSettings: '~/pages/Admin/Settings.js',
         AdminShoutcast: '~/pages/Admin/Shoutcast.js',
         AdminStereoTool: '~/pages/Admin/StereoTool.js',

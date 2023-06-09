@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Controller\Api\Admin;
+namespace App\Controller\Api\Internal;
 
 use App\Cache\AzuraRelayCache;
 use App\Container\EntityManagerAwareTrait;

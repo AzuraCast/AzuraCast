@@ -575,6 +575,16 @@ return static function (RouteCollectorProxy $group) {
                                 '/export[/{format}]',
                                 Controller\Api\Stations\Playlists\ExportAction::class
                             )->setName('api:stations:playlist:export');
+
+                            $group->get(
+                                '/apply-to',
+                                Controller\Api\Stations\Playlists\GetApplyToAction::class
+                            )->setName('api:stations:playlist:applyto');
+
+                            $group->put(
+                                '/apply-to',
+                                Controller\Api\Stations\Playlists\PutApplyToAction::class
+                            );
                         }
                     );
                 }

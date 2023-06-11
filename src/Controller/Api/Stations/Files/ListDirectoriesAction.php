@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Controller\Api\Stations\Files;
 
 use App\Controller\SingleActionInterface;
-use App\Entity\StationMedia;
 use App\Flysystem\StationFilesystems;
 use App\Http\Response;
 use App\Http\ServerRequest;
@@ -31,23 +30,8 @@ final class ListDirectoriesAction implements SingleActionInterface
         $fsMedia = $this->stationFilesystems->getMediaFilesystem($station);
 
         $directoriesRaw = $fsMedia->listContents($currentDir, false)->filter(
-            function (StorageAttributes $attrs) {
-                if (!$attrs->isDir()) {
-                    return false;
-                }
-
-                $protectedPaths = [
-                    StationMedia::DIR_ALBUM_ART,
-                    StationMedia::DIR_WAVEFORMS,
-                    StationMedia::DIR_FOLDER_COVERS,
-                ];
-
-                if (in_array($attrs->path(), $protectedPaths, true)) {
-                    return false;
-                }
-
-                return true;
-            }
+            fn(StorageAttributes $attrs) => $attrs->isDir()
+                && !StationFilesystems::isProtectedDir($attrs->path())
         )->sortByPath();
 
         $directories = [];

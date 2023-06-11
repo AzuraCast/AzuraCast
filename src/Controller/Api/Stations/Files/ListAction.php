@@ -199,18 +199,9 @@ final class ListAction implements SingleActionInterface
                     $files = array_keys($mediaInDir);
                 }
             } else {
-                $protectedPaths = [
-                    StationMedia::DIR_ALBUM_ART,
-                    StationMedia::DIR_WAVEFORMS,
-                    StationMedia::DIR_FOLDER_COVERS,
-                ];
-
                 $files = $fs->listContents($currentDir, false)->filter(
-                    fn(StorageAttributes $attributes) => !($currentDir === '' && in_array(
-                        $attributes->path(),
-                        $protectedPaths,
-                        true
-                    ))
+                    fn(StorageAttributes $attributes) => $currentDir !== ''
+                        && !StationFilesystems::isProtectedDir($attributes->path())
                 );
             }
 

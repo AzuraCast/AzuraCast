@@ -7,8 +7,8 @@ namespace App\Sync\Task;
 use App\Entity\Enums\StorageLocationTypes;
 use App\Entity\Repository\StorageLocationRepository;
 use App\Entity\Station;
-use App\Entity\StationMedia;
 use App\Entity\StorageLocation;
+use App\Flysystem\StationFilesystems;
 use Exception;
 use League\Flysystem\StorageAttributes;
 use Symfony\Component\Finder\Finder;
@@ -101,8 +101,8 @@ final class CleanupStorageTask extends AbstractTask
         ];
 
         $cleanupDirs = [
-            'albumart' => StationMedia::DIR_ALBUM_ART,
-            'waveform' => StationMedia::DIR_WAVEFORMS,
+            'albumart' => StationFilesystems::DIR_ALBUM_ART,
+            'waveform' => StationFilesystems::DIR_WAVEFORMS,
         ];
 
         foreach ($cleanupDirs as $key => $dirBase) {

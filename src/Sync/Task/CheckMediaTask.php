@@ -13,6 +13,7 @@ use App\Entity\StorageLocation;
 use App\Entity\UnprocessableMedia;
 use App\Flysystem\Attributes\FileAttributes;
 use App\Flysystem\ExtendedFilesystemInterface;
+use App\Flysystem\StationFilesystems;
 use App\Media\MimeType;
 use App\Message\AddNewMediaMessage;
 use App\Message\ProcessCoverArtMessage;
@@ -91,12 +92,7 @@ final class CheckMediaTask extends AbstractTask
 
         try {
             $fsIterator = $fs->listContents('/', true)->filter(
-                function (StorageAttributes $attrs) {
-                    return ($attrs->isFile()
-                        && !str_starts_with($attrs->path(), StationMedia::DIR_ALBUM_ART)
-                        && !str_starts_with($attrs->path(), StationMedia::DIR_WAVEFORMS)
-                        && !str_starts_with($attrs->path(), StationMedia::DIR_FOLDER_COVERS));
-                }
+                fn(StorageAttributes $attrs) => $attrs->isFile() && !StationFilesystems::isProtectedDir($attrs->path())
             );
         } catch (FilesystemException $e) {
             $this->logger->error(
@@ -171,7 +167,7 @@ final class CheckMediaTask extends AbstractTask
         ExtendedFilesystemInterface $fs,
         array $coverFiles
     ): void {
-        $fsIterator = $fs->listContents(StationMedia::DIR_FOLDER_COVERS, true)->filter(
+        $fsIterator = $fs->listContents(StationFilesystems::DIR_FOLDER_COVERS, true)->filter(
             fn(StorageAttributes $attrs) => $attrs->isFile()
         );
 

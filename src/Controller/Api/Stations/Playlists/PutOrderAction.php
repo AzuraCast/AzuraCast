@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Stations\Playlists;
 
+use App\Controller\SingleActionInterface;
 use App\Entity\Enums\PlaylistOrders;
 use App\Entity\Enums\PlaylistSources;
 use App\Entity\Repository\StationPlaylistMediaRepository;
@@ -13,7 +14,7 @@ use App\Http\Response;
 use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
 
-final class PutOrderAction
+final class PutOrderAction implements SingleActionInterface
 {
     public function __construct(
         private readonly StationPlaylistRepository $playlistRepo,
@@ -24,9 +25,11 @@ final class PutOrderAction
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        string $station_id,
-        string $id
+        array $params
     ): ResponseInterface {
+        /** @var string $id */
+        $id = $params['id'];
+
         $record = $this->playlistRepo->requireForStation($id, $request->getStation());
 
         if (

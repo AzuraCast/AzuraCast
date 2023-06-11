@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Api\Stations\Playlists;
 
 use App\Container\EntityManagerAwareTrait;
+use App\Controller\SingleActionInterface;
 use App\Entity\Api\Status;
 use App\Entity\Repository\StationPlaylistRepository;
 use App\Entity\StationPlaylist;
@@ -17,7 +18,7 @@ use DeepCopy;
 use Doctrine\Common\Collections\Collection;
 use Psr\Http\Message\ResponseInterface;
 
-final class CloneAction
+final class CloneAction implements SingleActionInterface
 {
     use EntityManagerAwareTrait;
 
@@ -29,9 +30,11 @@ final class CloneAction
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        string $station_id,
-        string $id
+        array $params
     ): ResponseInterface {
+        /** @var string $id */
+        $id = $params['id'];
+
         $record = $this->playlistRepo->requireForStation($id, $request->getStation());
 
         $data = (array)$request->getParsedBody();

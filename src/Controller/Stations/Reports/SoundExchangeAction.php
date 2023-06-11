@@ -4,17 +4,18 @@ declare(strict_types=1);
 
 namespace App\Controller\Stations\Reports;
 
+use App\Controller\SingleActionInterface;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use Carbon\CarbonImmutable;
 use Psr\Http\Message\ResponseInterface;
 
-final class SoundExchangeAction
+final class SoundExchangeAction implements SingleActionInterface
 {
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        string $station_id
+        array $params
     ): ResponseInterface {
         $tzObject = $request->getStation()->getTimezoneObject();
 

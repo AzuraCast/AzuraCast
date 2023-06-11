@@ -6,6 +6,7 @@ namespace App\Controller\Api\Stations\Files;
 
 use App\Container\EntityManagerAwareTrait;
 use App\Controller\Api\Traits\CanSortResults;
+use App\Controller\SingleActionInterface;
 use App\Entity\Api\FileList;
 use App\Entity\Api\FileListMedia;
 use App\Entity\Station;
@@ -25,7 +26,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\SimpleCache\CacheInterface;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 
-final class ListAction
+final class ListAction implements SingleActionInterface
 {
     use CanSortResults;
     use EntityManagerAwareTrait;
@@ -39,7 +40,7 @@ final class ListAction
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        string $station_id
+        array $params
     ): ResponseInterface {
         $router = $request->getRouter();
 

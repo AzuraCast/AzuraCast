@@ -5,12 +5,13 @@ declare(strict_types=1);
 namespace App\Controller\Stations;
 
 use App\Container\EnvironmentAwareTrait;
+use App\Controller\SingleActionInterface;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Service\AzuraCastCentral;
 use Psr\Http\Message\ResponseInterface;
 
-final class SftpUsersAction
+final class SftpUsersAction implements SingleActionInterface
 {
     use EnvironmentAwareTrait;
 
@@ -22,7 +23,7 @@ final class SftpUsersAction
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        string $station_id
+        array $params
     ): ResponseInterface {
         $baseUrl = $request->getRouter()->getBaseUrl()
             ->withScheme('sftp')

@@ -4,13 +4,14 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin\Debug;
 
+use App\Controller\SingleActionInterface;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\MessageQueue\QueueManagerInterface;
 use App\MessageQueue\QueueNames;
 use Psr\Http\Message\ResponseInterface;
 
-final class ClearQueueAction
+final class ClearQueueAction implements SingleActionInterface
 {
     public function __construct(
         private readonly QueueManagerInterface $queueManager
@@ -20,8 +21,11 @@ final class ClearQueueAction
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        ?string $queue = null
+        array $params
     ): ResponseInterface {
+        /** @var string|null $queue */
+        $queue = $params['queue'] ?? null;
+
         if (!empty($queue)) {
             $this->queueManager->clearQueue(
                 QueueNames::from($queue)

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Frontend\PublicPages;
 
+use App\Controller\SingleActionInterface;
 use App\Entity\Repository\CustomFieldRepository;
 use App\Exception\StationNotFoundException;
 use App\Http\Response;
@@ -11,7 +12,7 @@ use App\Http\ServerRequest;
 use App\VueComponent\NowPlayingComponent;
 use Psr\Http\Message\ResponseInterface;
 
-final class PlayerAction
+final class PlayerAction implements SingleActionInterface
 {
     public function __construct(
         private readonly CustomFieldRepository $customFieldRepo,
@@ -22,9 +23,11 @@ final class PlayerAction
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        string $station_id,
-        ?string $embed = null,
+        array $params
     ): ResponseInterface {
+        /** @var string|null $embed */
+        $embed = $params['embed'] ?? null;
+
         $response = $response
             ->withHeader('X-Frame-Options', '*')
             ->withHeader('X-Robots-Tag', 'index, nofollow');

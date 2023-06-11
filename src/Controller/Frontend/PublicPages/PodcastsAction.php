@@ -4,13 +4,14 @@ declare(strict_types=1);
 
 namespace App\Controller\Frontend\PublicPages;
 
+use App\Controller\SingleActionInterface;
 use App\Entity\Repository\PodcastRepository;
 use App\Exception\StationNotFoundException;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
 
-final class PodcastsController
+final class PodcastsAction implements SingleActionInterface
 {
     public function __construct(
         private readonly PodcastRepository $podcastRepository
@@ -20,7 +21,7 @@ final class PodcastsController
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        string $station_id
+        array $params
     ): ResponseInterface {
         $station = $request->getStation();
 

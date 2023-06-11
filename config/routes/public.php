@@ -52,7 +52,7 @@ return static function (RouteCollectorProxy $app) {
             $group->get('/schedule[/{embed:embed}]', Controller\Frontend\PublicPages\ScheduleAction::class)
                 ->setName('public:schedule');
 
-            $group->get('/podcasts', Controller\Frontend\PublicPages\PodcastsController::class)
+            $group->get('/podcasts', Controller\Frontend\PublicPages\PodcastsAction::class)
                 ->setName('public:podcasts');
 
             $group->get(

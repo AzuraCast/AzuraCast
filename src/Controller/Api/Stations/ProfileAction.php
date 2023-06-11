@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Stations;
 
+use App\Controller\SingleActionInterface;
 use App\Entity\Api\StationProfile;
 use App\Entity\Api\StationServiceStatus;
 use App\Entity\ApiGenerator\StationApiGenerator;
@@ -14,7 +15,7 @@ use App\Radio\Adapters;
 use GuzzleHttp\Psr7\Uri;
 use Psr\Http\Message\ResponseInterface;
 
-final class ProfileAction
+final class ProfileAction implements SingleActionInterface
 {
     public function __construct(
         private readonly StationScheduleRepository $scheduleRepo,
@@ -26,7 +27,7 @@ final class ProfileAction
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        string $station_id
+        array $params
     ): ResponseInterface {
         $station = $request->getStation();
         $backend = $this->adapters->getBackendAdapter($station);

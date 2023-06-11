@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Api\Stations\BulkMedia;
 
 use App\Container\EntityManagerAwareTrait;
+use App\Controller\SingleActionInterface;
 use App\Entity\Api\StationPlaylistImportResult;
 use App\Entity\Repository\CustomFieldRepository;
 use App\Entity\Repository\StationPlaylistMediaRepository;
@@ -25,7 +26,7 @@ use Throwable;
 use function count;
 use function str_starts_with;
 
-final class UploadAction
+final class UploadAction implements SingleActionInterface
 {
     use EntityManagerAwareTrait;
 
@@ -56,7 +57,7 @@ final class UploadAction
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        string $station_id
+        array $params
     ): ResponseInterface {
         $station = $request->getStation();
 

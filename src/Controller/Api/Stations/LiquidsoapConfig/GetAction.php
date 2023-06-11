@@ -4,17 +4,18 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Stations\LiquidsoapConfig;
 
+use App\Controller\SingleActionInterface;
 use App\Entity\StationBackendConfiguration;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
 
-final class GetAction
+final class GetAction implements SingleActionInterface
 {
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        string $station_id
+        array $params
     ): ResponseInterface {
         $backendConfig = $request->getStation()->getBackendConfig();
 

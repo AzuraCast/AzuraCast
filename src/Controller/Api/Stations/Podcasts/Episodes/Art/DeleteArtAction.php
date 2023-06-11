@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Api\Stations\Podcasts\Episodes\Art;
 
 use App\Container\EntityManagerAwareTrait;
+use App\Controller\SingleActionInterface;
 use App\Entity\Api\Error;
 use App\Entity\Api\Status;
 use App\Entity\Repository\PodcastEpisodeRepository;
@@ -54,7 +55,7 @@ use Psr\Http\Message\ResponseInterface;
         ),
     ]
 )]
-final class DeleteArtAction
+final class DeleteArtAction implements SingleActionInterface
 {
     use EntityManagerAwareTrait;
 
@@ -66,13 +67,14 @@ final class DeleteArtAction
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        string $station_id,
-        string $podcast_id,
-        string $episode_id
+        array $params
     ): ResponseInterface {
+        /** @var string $episodeId */
+        $episodeId = $params['episode_id'];
+
         $station = $request->getStation();
 
-        $episode = $this->episodeRepo->fetchEpisodeForStation($station, $episode_id);
+        $episode = $this->episodeRepo->fetchEpisodeForStation($station, $episodeId);
         if ($episode === null) {
             return $response->withStatus(404)
                 ->withJson(Error::notFound());

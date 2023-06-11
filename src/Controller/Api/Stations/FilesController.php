@@ -10,7 +10,6 @@ use App\Entity\Api\UploadFile;
 use App\Entity\Repository\CustomFieldRepository;
 use App\Entity\Repository\StationMediaRepository;
 use App\Entity\Repository\StationPlaylistMediaRepository;
-use App\Entity\Station;
 use App\Entity\StationMedia;
 use App\Entity\StationPlaylist;
 use App\Exception\ValidationException;
@@ -175,7 +174,7 @@ final class FilesController extends AbstractStationApiCrudController
     public function listAction(
         ServerRequest $request,
         Response $response,
-        string $station_id
+        array $params
     ): ResponseInterface {
         $storageLocation = $this->getStation($request)->getMediaStorageLocation();
 
@@ -192,7 +191,7 @@ final class FilesController extends AbstractStationApiCrudController
     public function createAction(
         ServerRequest $request,
         Response $response,
-        string $station_id
+        array $params
     ): ResponseInterface {
         $station = $this->getStation($request);
 
@@ -235,11 +234,10 @@ final class FilesController extends AbstractStationApiCrudController
     public function editAction(
         ServerRequest $request,
         Response $response,
-        string $station_id,
-        string $id
+        array $params
     ): ResponseInterface {
         $station = $this->getStation($request);
-        $record = $this->getRecord($station, $id);
+        $record = $this->getRecord($request, $params);
 
         if (null === $record) {
             return $response->withStatus(404)
@@ -336,8 +334,9 @@ final class FilesController extends AbstractStationApiCrudController
         return $response->withJson(Status::updated());
     }
 
-    protected function createRecord(array $data, Station $station): object
+    protected function createRecord(ServerRequest $request, array $data): object
     {
+        $station = $request->getStation();
         $mediaStorage = $station->getMediaStorageLocation();
 
         return $this->editRecord(
@@ -354,8 +353,13 @@ final class FilesController extends AbstractStationApiCrudController
         );
     }
 
-    protected function getRecord(Station $station, int|string $id): ?object
+    protected function getRecord(ServerRequest $request, array $params): ?object
     {
+        /** @var string $id */
+        $id = $params['id'];
+
+        $station = $request->getStation();
+
         $mediaStorage = $station->getMediaStorageLocation();
         $repo = $this->em->getRepository($this->entityClass);
 

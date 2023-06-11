@@ -60,8 +60,7 @@ final class IndexController
 
     public function indexAction(
         ServerRequest $request,
-        Response $response,
-        string $station_id
+        Response $response
     ): ResponseInterface {
         $station = $request->getStation();
 

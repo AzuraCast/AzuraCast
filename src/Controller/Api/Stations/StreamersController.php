@@ -166,7 +166,7 @@ final class StreamersController extends AbstractScheduledEntityController
     public function listAction(
         ServerRequest $request,
         Response $response,
-        string $station_id
+        array $params
     ): ResponseInterface {
         $station = $request->getStation();
 
@@ -195,23 +195,18 @@ final class StreamersController extends AbstractScheduledEntityController
         return $this->listPaginatedFromQuery($request, $response, $qb->getQuery());
     }
 
-    public function createAction(
-        ServerRequest $request,
-        Response $response,
-        string $station_id
-    ): ResponseInterface {
+    protected function createRecord(ServerRequest $request, array $data): object
+    {
         $station = $request->getStation();
-
-        $parsedBody = (array)$request->getParsedBody();
 
         /** @var StationStreamer $record */
         $record = $this->editRecord(
-            $parsedBody,
+            $data,
             new StationStreamer($station)
         );
 
-        if (!empty($parsedBody['artwork_file'])) {
-            $artwork = UploadedFile::fromArray($parsedBody['artwork_file'], $station->getRadioTempDir());
+        if (!empty($data['artwork_file'])) {
+            $artwork = UploadedFile::fromArray($data['artwork_file'], $station->getRadioTempDir());
             $this->streamerRepo->writeArtwork(
                 $record,
                 $artwork->readAndDeleteUploadedFile()
@@ -221,13 +216,12 @@ final class StreamersController extends AbstractScheduledEntityController
             $this->em->flush();
         }
 
-        return $response->withJson($this->viewRecord($record, $request));
+        return $record;
     }
 
     public function scheduleAction(
         ServerRequest $request,
-        Response $response,
-        string $station_id
+        Response $response
     ): ResponseInterface {
         $station = $request->getStation();
 

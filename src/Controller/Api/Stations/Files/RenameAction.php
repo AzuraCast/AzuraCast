@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Stations\Files;
 
+use App\Controller\SingleActionInterface;
 use App\Entity\Api\Error;
 use App\Entity\Api\Status;
 use App\Flysystem\StationFilesystems;
@@ -12,7 +13,7 @@ use App\Http\ServerRequest;
 use App\Media\BatchUtilities;
 use Psr\Http\Message\ResponseInterface;
 
-final class RenameAction
+final class RenameAction implements SingleActionInterface
 {
     public function __construct(
         private readonly BatchUtilities $batchUtilities,
@@ -23,7 +24,7 @@ final class RenameAction
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        string $station_id
+        array $params
     ): ResponseInterface {
         $from = $request->getParam('file');
         if (empty($from)) {

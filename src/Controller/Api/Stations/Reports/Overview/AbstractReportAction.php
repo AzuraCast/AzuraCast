@@ -7,9 +7,10 @@ namespace App\Controller\Api\Stations\Reports\Overview;
 use App\Container\EntityManagerAwareTrait;
 use App\Container\SettingsAwareTrait;
 use App\Controller\Api\Traits\AcceptsDateRange;
+use App\Controller\SingleActionInterface;
 use App\Entity\Enums\AnalyticsLevel;
 
-abstract class AbstractReportAction
+abstract class AbstractReportAction implements SingleActionInterface
 {
     use AcceptsDateRange;
     use EntityManagerAwareTrait;

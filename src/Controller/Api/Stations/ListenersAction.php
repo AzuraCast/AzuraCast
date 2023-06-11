@@ -6,6 +6,7 @@ namespace App\Controller\Api\Stations;
 
 use App\Container\EntityManagerAwareTrait;
 use App\Controller\Api\Traits\AcceptsDateRange;
+use App\Controller\SingleActionInterface;
 use App\Entity\Api\Listener as ApiListener;
 use App\Entity\Listener;
 use App\Entity\Repository\ListenerRepository;
@@ -48,7 +49,7 @@ use RuntimeException;
         ]
     )
 ]
-final class ListenersAction
+final class ListenersAction implements SingleActionInterface
 {
     use AcceptsDateRange;
     use EntityManagerAwareTrait;
@@ -64,7 +65,7 @@ final class ListenersAction
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        string $station_id
+        array $params
     ): ResponseInterface {
         $station = $request->getStation();
         $stationTz = $station->getTimezoneObject();

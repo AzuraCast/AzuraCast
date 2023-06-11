@@ -5,19 +5,20 @@ declare(strict_types=1);
 namespace App\Controller\Stations\Reports;
 
 use App\Container\SettingsAwareTrait;
+use App\Controller\SingleActionInterface;
 use App\Entity\Enums\AnalyticsLevel;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
 
-final class OverviewAction
+final class OverviewAction implements SingleActionInterface
 {
     use SettingsAwareTrait;
 
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        string $station_id
+        array $params
     ): ResponseInterface {
         // Get current analytics level.
         $settings = $this->readSettings();

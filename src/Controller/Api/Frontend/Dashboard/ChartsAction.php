@@ -6,6 +6,7 @@ namespace App\Controller\Api\Frontend\Dashboard;
 
 use App\Container\EntityManagerAwareTrait;
 use App\Container\SettingsAwareTrait;
+use App\Controller\SingleActionInterface;
 use App\Entity\Api\Error;
 use App\Entity\Enums\AnalyticsIntervals;
 use App\Entity\Station;
@@ -17,7 +18,7 @@ use Carbon\CarbonImmutable;
 use Psr\Http\Message\ResponseInterface;
 use Psr\SimpleCache\CacheInterface;
 
-final class ChartsAction
+final class ChartsAction implements SingleActionInterface
 {
     use EntityManagerAwareTrait;
     use SettingsAwareTrait;
@@ -29,7 +30,8 @@ final class ChartsAction
 
     public function __invoke(
         ServerRequest $request,
-        Response $response
+        Response $response,
+        array $params
     ): ResponseInterface {
         if (!$this->readSettings()->isAnalyticsEnabled()) {
             return $response->withStatus(403, 'Forbidden')

@@ -6,6 +6,7 @@ namespace App\Controller\Api\Admin\Stations;
 
 use App\Container\EnvironmentAwareTrait;
 use App\Controller\Api\Admin\StationsController;
+use App\Controller\SingleActionInterface;
 use App\Entity\Api\Status;
 use App\Entity\Interfaces\StationCloneAwareInterface;
 use App\Entity\RolePermission;
@@ -22,7 +23,7 @@ use Doctrine\Common\Collections\Collection;
 use Psr\Http\Message\ResponseInterface;
 use Throwable;
 
-final class CloneAction extends StationsController
+final class CloneAction extends StationsController implements SingleActionInterface
 {
     use EnvironmentAwareTrait;
 
@@ -40,9 +41,9 @@ final class CloneAction extends StationsController
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        string $id
+        array $params
     ): ResponseInterface {
-        $record = $this->getRecord($id);
+        $record = $this->getRecord($request, $params);
         $data = (array)$request->getParsedBody();
 
         $toClone = $data['clone'];

@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Frontend\Account;
 
-use App\Controller\Api\Admin\UsersController;
+use App\Container\EntityManagerAwareTrait;
+use App\Controller\SingleActionInterface;
 use App\Entity\Api\Error;
 use App\Entity\Api\Status;
 use App\Http\Response;
@@ -13,11 +14,14 @@ use InvalidArgumentException;
 use Psr\Http\Message\ResponseInterface;
 use Throwable;
 
-final class PutPasswordAction extends UsersController
+final class PutPasswordAction implements SingleActionInterface
 {
+    use EntityManagerAwareTrait;
+
     public function __invoke(
         ServerRequest $request,
-        Response $response
+        Response $response,
+        array $params
     ): ResponseInterface {
         $user = $request->getUser();
         $body = (array)$request->getParsedBody();

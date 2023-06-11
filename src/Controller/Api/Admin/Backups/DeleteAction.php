@@ -15,8 +15,11 @@ final class DeleteAction extends AbstractFileAction
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        string $path
+        array $params
     ): ResponseInterface {
+        /** @var string $path */
+        $path = $params['path'];
+
         [$path, $fs] = $this->getFile($path);
 
         /** @var ExtendedFilesystemInterface $fs */

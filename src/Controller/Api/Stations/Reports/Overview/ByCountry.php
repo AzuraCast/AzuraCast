@@ -15,7 +15,7 @@ final class ByCountry extends AbstractReportAction
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        string $station_id
+        array $params
     ): ResponseInterface {
         // Get current analytics level.
         if (!$this->isAllAnalyticsEnabled()) {

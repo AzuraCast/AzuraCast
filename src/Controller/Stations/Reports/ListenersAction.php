@@ -4,16 +4,17 @@ declare(strict_types=1);
 
 namespace App\Controller\Stations\Reports;
 
+use App\Controller\SingleActionInterface;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
 
-final class ListenersAction
+final class ListenersAction implements SingleActionInterface
 {
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        string $station_id
+        array $params
     ): ResponseInterface {
         $station = $request->getStation();
         $router = $request->getRouter();

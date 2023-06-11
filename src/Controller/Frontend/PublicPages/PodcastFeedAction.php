@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Frontend\PublicPages;
 
+use App\Controller\SingleActionInterface;
 use App\Entity\Podcast;
 use App\Entity\PodcastCategory;
 use App\Entity\PodcastEpisode;
@@ -40,7 +41,7 @@ use MarcW\RssWriter\Extension\Sy\SyWriter;
 use MarcW\RssWriter\RssWriter;
 use Psr\Http\Message\ResponseInterface;
 
-final class PodcastFeedAction
+final class PodcastFeedAction implements SingleActionInterface
 {
     private RouterInterface $router;
 
@@ -54,9 +55,11 @@ final class PodcastFeedAction
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        string $station_id,
-        string $podcast_id
+        array $params
     ): ResponseInterface {
+        /** @var string $podcastId */
+        $podcastId = $params['podcast_id'];
+
         $this->router = $request->getRouter();
 
         $station = $request->getStation();
@@ -65,7 +68,7 @@ final class PodcastFeedAction
             throw new StationNotFoundException();
         }
 
-        $podcast = $this->podcastRepository->fetchPodcastForStation($station, $podcast_id);
+        $podcast = $this->podcastRepository->fetchPodcastForStation($station, $podcastId);
 
         if ($podcast === null) {
             throw new PodcastNotFoundException();

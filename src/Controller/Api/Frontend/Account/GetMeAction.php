@@ -6,6 +6,7 @@ namespace App\Controller\Api\Frontend\Account;
 
 use App\Container\EntityManagerAwareTrait;
 use App\Controller\Api\Admin\UsersController;
+use App\Controller\SingleActionInterface;
 use App\Entity\Interfaces\EntityGroupsInterface;
 use App\Http\Response;
 use App\Http\ServerRequest;
@@ -15,7 +16,7 @@ use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-final class GetMeAction extends UsersController
+final class GetMeAction extends UsersController implements SingleActionInterface
 {
     use EntityManagerAwareTrait;
 
@@ -29,7 +30,8 @@ final class GetMeAction extends UsersController
 
     public function __invoke(
         ServerRequest $request,
-        Response $response
+        Response $response,
+        array $params
     ): ResponseInterface {
         $user = $request->getUser();
         $user = $this->em->refetch($user);

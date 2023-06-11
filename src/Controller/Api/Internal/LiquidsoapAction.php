@@ -6,6 +6,7 @@ namespace App\Controller\Api\Internal;
 
 use App\Container\ContainerAwareTrait;
 use App\Container\LoggerAwareTrait;
+use App\Controller\SingleActionInterface;
 use App\Enums\StationPermissions;
 use App\Http\Response;
 use App\Http\ServerRequest;
@@ -16,7 +17,7 @@ use Psr\Http\Message\ResponseInterface;
 use RuntimeException;
 use Throwable;
 
-final class LiquidsoapAction
+final class LiquidsoapAction implements SingleActionInterface
 {
     use LoggerAwareTrait;
     use ContainerAwareTrait;
@@ -24,9 +25,11 @@ final class LiquidsoapAction
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        string $station_id,
-        string $action
+        array $params
     ): ResponseInterface {
+        /** @var string $action */
+        $action = $params['action'];
+
         $station = $request->getStation();
         $asAutoDj = $request->hasHeader('X-Liquidsoap-Api-Key');
         $payload = (array)$request->getParsedBody();

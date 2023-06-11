@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Stations;
 
+use App\Controller\SingleActionInterface;
 use App\Entity\StationBackendConfiguration;
 use App\Event\Radio\WriteLiquidsoapConfiguration;
 use App\Http\Response;
@@ -12,7 +13,7 @@ use App\Radio\Backend\Liquidsoap;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ResponseInterface;
 
-final class EditLiquidsoapConfigAction
+final class EditLiquidsoapConfigAction implements SingleActionInterface
 {
     public function __construct(
         private readonly EventDispatcherInterface $eventDispatcher,
@@ -22,7 +23,7 @@ final class EditLiquidsoapConfigAction
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        string $station_id
+        array $params
     ): ResponseInterface {
         $station = $request->getStation();
 

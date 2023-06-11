@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Api\Stations\Files;
 
 use App\Container\EntityManagerAwareTrait;
+use App\Controller\SingleActionInterface;
 use App\Entity\Api\BatchResult;
 use App\Entity\Interfaces\PathAwareInterface;
 use App\Entity\Repository\StationPlaylistFolderRepository;
@@ -36,7 +37,7 @@ use RuntimeException;
 use Symfony\Component\Messenger\MessageBus;
 use Throwable;
 
-final class BatchAction
+final class BatchAction implements SingleActionInterface
 {
     use EntityManagerAwareTrait;
 
@@ -55,7 +56,7 @@ final class BatchAction
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        string $station_id
+        array $params
     ): ResponseInterface {
         $station = $request->getStation();
         $storageLocation = $station->getMediaStorageLocation();

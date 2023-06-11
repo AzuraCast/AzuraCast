@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Frontend\PublicPages;
 
+use App\Controller\SingleActionInterface;
 use App\Entity\PodcastEpisode;
 use App\Entity\Repository\PodcastEpisodeRepository;
 use App\Entity\Repository\PodcastRepository;
@@ -13,7 +14,7 @@ use App\Http\Response;
 use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
 
-final class PodcastEpisodesAction
+final class PodcastEpisodesAction implements SingleActionInterface
 {
     public function __construct(
         private readonly PodcastRepository $podcastRepository,
@@ -24,9 +25,11 @@ final class PodcastEpisodesAction
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        string $station_id,
-        string $podcast_id
+        array $params
     ): ResponseInterface {
+        /** @var string $podcastId */
+        $podcastId = $params['podcast_id'];
+
         $router = $request->getRouter();
         $station = $request->getStation();
 
@@ -34,7 +37,7 @@ final class PodcastEpisodesAction
             throw new StationNotFoundException();
         }
 
-        $podcast = $this->podcastRepository->fetchPodcastForStation($station, $podcast_id);
+        $podcast = $this->podcastRepository->fetchPodcastForStation($station, $podcastId);
 
         if ($podcast === null) {
             throw new PodcastNotFoundException();

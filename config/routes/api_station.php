@@ -585,7 +585,7 @@ return static function (RouteCollectorProxy $group) {
              * Reports
              */
 
-            $group->get('/history', Controller\Api\Stations\HistoryController::class)
+            $group->get('/history', Controller\Api\Stations\HistoryAction::class)
                 ->setName('api:stations:history')
                 ->add(new Middleware\Permissions(StationPermissions::Reports, true));
 

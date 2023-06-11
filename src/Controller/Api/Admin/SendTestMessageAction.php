@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Admin;
 
+use App\Controller\SingleActionInterface;
 use App\Entity\Api\Error;
 use App\Entity\Api\Status;
 use App\Exception\ValidationException;
@@ -16,7 +17,7 @@ use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Constraints\Required;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-final class SendTestMessageAction
+final class SendTestMessageAction implements SingleActionInterface
 {
     public function __construct(
         private readonly ValidatorInterface $validator,
@@ -26,7 +27,8 @@ final class SendTestMessageAction
 
     public function __invoke(
         ServerRequest $request,
-        Response $response
+        Response $response,
+        array $params
     ): ResponseInterface {
         $emailAddress = $request->getParam('email', '');
 

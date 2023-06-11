@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Stations\Files;
 
+use App\Controller\SingleActionInterface;
 use App\Entity\Api\Error;
 use App\Entity\Api\Status;
 use App\Flysystem\StationFilesystems;
@@ -12,7 +13,7 @@ use App\Http\ServerRequest;
 use League\Flysystem\UnableToCreateDirectory;
 use Psr\Http\Message\ResponseInterface;
 
-final class MakeDirectoryAction
+final class MakeDirectoryAction implements SingleActionInterface
 {
     public function __construct(
         private readonly StationFilesystems $stationFilesystems
@@ -22,7 +23,7 @@ final class MakeDirectoryAction
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        string $station_id
+        array $params
     ): ResponseInterface {
         $currentDir = $request->getParam('currentDirectory', '');
         $newDirName = $request->getParam('name', '');

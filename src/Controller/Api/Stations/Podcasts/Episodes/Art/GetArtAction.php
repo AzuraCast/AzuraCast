@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Stations\Podcasts\Episodes\Art;
 
+use App\Controller\SingleActionInterface;
 use App\Entity\Podcast;
 use App\Entity\PodcastEpisode;
 use App\Entity\Repository\StationRepository;
@@ -46,7 +47,7 @@ use Psr\Http\Message\ResponseInterface;
         new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
     ]
 )]
-final class GetArtAction
+final class GetArtAction implements SingleActionInterface
 {
     public function __construct(
         private readonly StationRepository $stationRepo,
@@ -57,14 +58,18 @@ final class GetArtAction
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        string $station_id,
-        string $podcast_id,
-        string $episode_id
+        array $params
     ): ResponseInterface {
+        /** @var string $podcastId */
+        $podcastId = $params['podcast_id'];
+
+        /** @var string $episodeId */
+        $episodeId = $params['episode_id'];
+
         $station = $request->getStation();
 
         // If a timestamp delimiter is added, strip it automatically.
-        $episode_id = explode('|', $episode_id, 2)[0];
+        $episode_id = explode('|', $episodeId, 2)[0];
 
         $episodeArtPath = PodcastEpisode::getArtPath($episode_id);
 
@@ -74,7 +79,7 @@ final class GetArtAction
                 ->streamFilesystemFile($fsPodcasts, $episodeArtPath, null, 'inline', false);
         }
 
-        $podcastArtPath = Podcast::getArtPath($podcast_id);
+        $podcastArtPath = Podcast::getArtPath($podcastId);
 
         if ($fsPodcasts->fileExists($podcastArtPath)) {
             return $response->withCacheLifetime(Response::CACHE_ONE_DAY)

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Api\Stations\LiquidsoapConfig;
 
 use App\Container\EntityManagerAwareTrait;
+use App\Controller\SingleActionInterface;
 use App\Entity\Api\Error;
 use App\Entity\Api\Status;
 use App\Entity\StationBackendConfiguration;
@@ -16,7 +17,7 @@ use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ResponseInterface;
 use Throwable;
 
-final class PutAction
+final class PutAction implements SingleActionInterface
 {
     use EntityManagerAwareTrait;
 
@@ -29,7 +30,7 @@ final class PutAction
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        string $station_id
+        array $params
     ): ResponseInterface {
         $body = (array)$request->getParsedBody();
 

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Api\Stations\Reports;
 
 use App\Container\EntityManagerAwareTrait;
+use App\Controller\SingleActionInterface;
 use App\Entity\Song;
 use App\Http\Response;
 use App\Http\ServerRequest;
@@ -16,7 +17,7 @@ use Throwable;
 /**
  * Produce a report in SoundExchange (the US webcaster licensing agency) format.
  */
-final class SoundExchangeAction
+final class SoundExchangeAction implements SingleActionInterface
 {
     use EntityManagerAwareTrait;
 
@@ -28,7 +29,7 @@ final class SoundExchangeAction
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        string $station_id
+        array $params
     ): ResponseInterface {
         $station = $request->getStation();
         $tzObject = $station->getTimezoneObject();

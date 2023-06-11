@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Api\Stations\Podcasts\Art;
 
 use App\Container\EntityManagerAwareTrait;
+use App\Controller\SingleActionInterface;
 use App\Entity\Api\Error;
 use App\Entity\Api\Status;
 use App\Entity\Repository\PodcastRepository;
@@ -37,7 +38,7 @@ use Psr\Http\Message\ResponseInterface;
         new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
     ]
 )]
-final class PostArtAction
+final class PostArtAction implements SingleActionInterface
 {
     use EntityManagerAwareTrait;
 
@@ -49,9 +50,11 @@ final class PostArtAction
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        string $station_id,
-        ?string $podcast_id = null
+        array $params
     ): ResponseInterface {
+        /** @var string|null $podcastId */
+        $podcastId = $params['podcast_id'] ?? null;
+
         $station = $request->getStation();
 
         $mediaStorage = $station->getPodcastsStorageLocation();
@@ -62,8 +65,8 @@ final class PostArtAction
             return $flowResponse;
         }
 
-        if (null !== $podcast_id) {
-            $podcast = $this->podcastRepo->fetchPodcastForStation($station, $podcast_id);
+        if (null !== $podcastId) {
+            $podcast = $this->podcastRepo->fetchPodcastForStation($station, $podcastId);
 
             if (null === $podcast) {
                 return $response->withStatus(404)

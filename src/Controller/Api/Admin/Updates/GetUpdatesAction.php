@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Api\Admin\Updates;
 
 use App\Container\SettingsAwareTrait;
+use App\Controller\SingleActionInterface;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Service\AzuraCastCentral;
@@ -12,7 +13,7 @@ use GuzzleHttp\Exception\TransferException;
 use Psr\Http\Message\ResponseInterface;
 use RuntimeException;
 
-final class GetUpdatesAction
+final class GetUpdatesAction implements SingleActionInterface
 {
     use SettingsAwareTrait;
 
@@ -23,7 +24,8 @@ final class GetUpdatesAction
 
     public function __invoke(
         ServerRequest $request,
-        Response $response
+        Response $response,
+        array $params
     ): ResponseInterface {
         $settings = $this->readSettings();
 

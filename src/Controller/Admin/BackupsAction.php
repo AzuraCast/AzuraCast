@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Admin;
 
 use App\Container\EnvironmentAwareTrait;
+use App\Controller\SingleActionInterface;
 use App\Entity\Enums\StorageLocationTypes;
 use App\Entity\Repository\StorageLocationRepository;
 use App\Entity\Settings;
@@ -12,7 +13,7 @@ use App\Http\Response;
 use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
 
-final class BackupsAction
+final class BackupsAction implements SingleActionInterface
 {
     use EnvironmentAwareTrait;
 
@@ -23,7 +24,8 @@ final class BackupsAction
 
     public function __invoke(
         ServerRequest $request,
-        Response $response
+        Response $response,
+        array $params
     ): ResponseInterface {
         $router = $request->getRouter();
 

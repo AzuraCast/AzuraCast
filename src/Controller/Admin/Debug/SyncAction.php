@@ -6,6 +6,7 @@ namespace App\Controller\Admin\Debug;
 
 use App\Console\Command\Sync\SingleTaskCommand;
 use App\Container\LoggerAwareTrait;
+use App\Controller\SingleActionInterface;
 use App\Event\GetSyncTasks;
 use App\Http\Response;
 use App\Http\ServerRequest;
@@ -14,7 +15,7 @@ use Monolog\Level;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ResponseInterface;
 
-final class SyncAction
+final class SyncAction implements SingleActionInterface
 {
     use LoggerAwareTrait;
 
@@ -24,14 +25,14 @@ final class SyncAction
     ) {
     }
 
-    /**
-     * @param class-string|string $task
-     */
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        string $task
+        array $params
     ): ResponseInterface {
+        /** @var class-string|string $task */
+        $task = $params['task'];
+
         $testHandler = new TestHandler(Level::Debug, false);
         $this->logger->pushHandler($testHandler);
 

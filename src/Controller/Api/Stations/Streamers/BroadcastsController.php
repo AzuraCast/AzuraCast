@@ -37,9 +37,11 @@ final class BroadcastsController extends AbstractApiCrudController
     public function listAction(
         ServerRequest $request,
         Response $response,
-        string $station_id,
-        ?string $id = null
+        array $params
     ): ResponseInterface {
+        /** @var string|null $id */
+        $id = $params['id'] ?? null;
+
         $station = $request->getStation();
 
         if (null !== $id) {
@@ -134,12 +136,10 @@ final class BroadcastsController extends AbstractApiCrudController
     public function downloadAction(
         ServerRequest $request,
         Response $response,
-        string $station_id,
-        string $id,
-        string $broadcast_id
+        array $params
     ): ResponseInterface {
         $station = $request->getStation();
-        $broadcast = $this->getRecord($station, $broadcast_id);
+        $broadcast = $this->getRecord($request, $params);
 
         if (null === $broadcast) {
             return $response->withStatus(404)
@@ -167,12 +167,10 @@ final class BroadcastsController extends AbstractApiCrudController
     public function deleteAction(
         ServerRequest $request,
         Response $response,
-        string $station_id,
-        string $id,
-        string $broadcast_id
+        array $params
     ): ResponseInterface {
         $station = $request->getStation();
-        $broadcast = $this->getRecord($station, $broadcast_id);
+        $broadcast = $this->getRecord($request, $params);
 
         if (null === $broadcast) {
             return $response->withStatus(404)
@@ -192,13 +190,13 @@ final class BroadcastsController extends AbstractApiCrudController
         return $response->withJson(Status::deleted());
     }
 
-    private function getRecord(Station $station, int|string $id): ?StationStreamerBroadcast
+    protected function getRecord(ServerRequest $request, array $params): ?object
     {
         /** @var StationStreamerBroadcast|null $broadcast */
         $broadcast = $this->em->getRepository(StationStreamerBroadcast::class)->findOneBy(
             [
-                'id' => (int)$id,
-                'station' => $station,
+                'id' => (int)$params['broadcast_id'],
+                'station' => $request->getStation(),
             ]
         );
         return $broadcast;

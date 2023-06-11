@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Frontend\Account;
 
 use App\Container\EntityManagerAwareTrait;
+use App\Controller\SingleActionInterface;
 use App\Entity\Repository\UserLoginTokenRepository;
 use App\Entity\User;
 use App\Http\Response;
@@ -13,7 +14,7 @@ use InvalidArgumentException;
 use Psr\Http\Message\ResponseInterface;
 use Throwable;
 
-final class RecoverAction
+final class RecoverAction implements SingleActionInterface
 {
     use EntityManagerAwareTrait;
 
@@ -25,8 +26,11 @@ final class RecoverAction
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        string $token
+        array $params
     ): ResponseInterface {
+        /** @var string $token */
+        $token = $params['token'];
+
         $user = $this->loginTokenRepo->authenticate($token);
         $flash = $request->getFlash();
 

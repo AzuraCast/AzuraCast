@@ -6,6 +6,7 @@ namespace App\Controller\Api\Admin\CustomAssets;
 
 use App\Assets\AssetTypes;
 use App\Container\EnvironmentAwareTrait;
+use App\Controller\SingleActionInterface;
 use App\Entity\Api\Status;
 use App\Http\Response;
 use App\Http\ServerRequest;
@@ -13,15 +14,18 @@ use App\Media\AlbumArt;
 use App\Service\Flow;
 use Psr\Http\Message\ResponseInterface;
 
-final class PostCustomAssetAction
+final class PostCustomAssetAction implements SingleActionInterface
 {
     use EnvironmentAwareTrait;
 
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        string $type
+        array $params
     ): ResponseInterface {
+        /** @var string $type */
+        $type = $params['type'];
+
         $customAsset = AssetTypes::from($type)->createObject($this->environment);
 
         $flowResponse = Flow::process($request, $response);

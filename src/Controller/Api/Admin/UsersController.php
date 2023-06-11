@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Admin;
 
+use App\Controller\Api\AbstractApiCrudController;
 use App\Controller\Api\Traits\CanSortResults;
 use App\Controller\Frontend\Account\MasqueradeAction;
 use App\Entity\Api\Error;
@@ -16,7 +17,7 @@ use InvalidArgumentException;
 use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 
-/** @extends AbstractAdminApiCrudController<User> */
+/** @extends AbstractApiCrudController<User> */
 #[
     OA\Get(
         path: '/admin/users',
@@ -130,7 +131,7 @@ use Psr\Http\Message\ResponseInterface;
         ]
     )
 ]
-class UsersController extends AbstractAdminApiCrudController
+class UsersController extends AbstractApiCrudController
 {
     use CanSortResults;
 
@@ -139,7 +140,8 @@ class UsersController extends AbstractAdminApiCrudController
 
     public function listAction(
         ServerRequest $request,
-        Response $response
+        Response $response,
+        array $params
     ): ResponseInterface {
         $qb = $this->em->createQueryBuilder()
             ->select('e')
@@ -200,9 +202,9 @@ class UsersController extends AbstractAdminApiCrudController
     public function editAction(
         ServerRequest $request,
         Response $response,
-        string $id
+        array $params
     ): ResponseInterface {
-        $record = $this->getRecord($id);
+        $record = $this->getRecord($request, $params);
 
         if (null === $record) {
             return $response->withStatus(404)
@@ -223,9 +225,9 @@ class UsersController extends AbstractAdminApiCrudController
     public function deleteAction(
         ServerRequest $request,
         Response $response,
-        string $id
+        array $params
     ): ResponseInterface {
-        $record = $this->getRecord($id);
+        $record = $this->getRecord($request, $params);
 
         if (null === $record) {
             return $response->withStatus(404)

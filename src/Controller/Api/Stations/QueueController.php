@@ -113,7 +113,7 @@ final class QueueController extends AbstractStationApiCrudController
     public function listAction(
         ServerRequest $request,
         Response $response,
-        string $station_id
+        array $params
     ): ResponseInterface {
         $station = $request->getStation();
         $query = $this->queueRepo->getUnplayedQuery($station);
@@ -165,8 +165,7 @@ final class QueueController extends AbstractStationApiCrudController
 
     public function clearAction(
         ServerRequest $request,
-        Response $response,
-        string $station_id
+        Response $response
     ): ResponseInterface {
         $station = $request->getStation();
         $this->queueRepo->clearUpcomingQueue($station);

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Stations;
 
+use App\Controller\SingleActionInterface;
 use App\Entity\Api\Status;
 use App\Exception\StationUnsupportedException;
 use App\Http\Response;
@@ -13,7 +14,7 @@ use Psr\Http\Message\ResponseInterface;
 
 use const ARRAY_FILTER_USE_KEY;
 
-final class UpdateMetadataAction
+final class UpdateMetadataAction implements SingleActionInterface
 {
     public function __construct(
         private readonly Adapters $adapters,
@@ -23,7 +24,7 @@ final class UpdateMetadataAction
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        string $station_id
+        array $params
     ): ResponseInterface {
         $station = $request->getStation();
 

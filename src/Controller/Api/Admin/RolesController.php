@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Api\Admin;
 
 use App\Acl;
+use App\Controller\Api\AbstractApiCrudController;
 use App\Controller\Api\Traits\CanSortResults;
 use App\Entity\Repository\RolePermissionRepository;
 use App\Entity\Role;
@@ -20,7 +21,7 @@ use RuntimeException;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-/** @extends AbstractAdminApiCrudController<Role> */
+/** @extends AbstractApiCrudController<Role> */
 #[
     OA\Get(
         path: '/admin/roles',
@@ -134,7 +135,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
         ]
     )
 ]
-final class RolesController extends AbstractAdminApiCrudController
+final class RolesController extends AbstractApiCrudController
 {
     use CanSortResults;
 
@@ -156,7 +157,8 @@ final class RolesController extends AbstractAdminApiCrudController
 
     public function listAction(
         ServerRequest $request,
-        Response $response
+        Response $response,
+        array $params
     ): ResponseInterface {
         $qb = $this->em->createQueryBuilder()
             ->select('r, rp')

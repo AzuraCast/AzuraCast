@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Stations\Streamers\Art;
 
+use App\Controller\SingleActionInterface;
 use App\Entity\Repository\StationRepository;
 use App\Entity\StationStreamer;
 use App\Flysystem\StationFilesystems;
@@ -11,7 +12,7 @@ use App\Http\Response;
 use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
 
-final class GetArtAction
+final class GetArtAction implements SingleActionInterface
 {
     public function __construct(
         private readonly StationRepository $stationRepo,
@@ -21,9 +22,11 @@ final class GetArtAction
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        string $station_id,
-        string $id
+        array $params
     ): ResponseInterface {
+        /** @var string $id */
+        $id = $params['id'];
+
         // If a timestamp delimiter is added, strip it automatically.
         $id = explode('|', $id, 2)[0];
 

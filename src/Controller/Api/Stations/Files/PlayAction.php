@@ -4,13 +4,14 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Stations\Files;
 
+use App\Controller\SingleActionInterface;
 use App\Entity\Repository\StationMediaRepository;
 use App\Flysystem\StationFilesystems;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
 
-final class PlayAction
+final class PlayAction implements SingleActionInterface
 {
     public function __construct(
         private readonly StationMediaRepository $mediaRepo,
@@ -21,10 +22,12 @@ final class PlayAction
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        string $station_id,
-        string $id
+        array $params
     ): ResponseInterface {
         set_time_limit(600);
+
+        /** @var string $id */
+        $id = $params['id'];
 
         $station = $request->getStation();
 

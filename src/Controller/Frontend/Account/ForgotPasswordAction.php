@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Frontend\Account;
 
+use App\Controller\SingleActionInterface;
 use App\Entity\Repository\UserLoginTokenRepository;
 use App\Entity\Repository\UserRepository;
 use App\Entity\User;
@@ -14,7 +15,7 @@ use App\RateLimit;
 use App\Service\Mail;
 use Psr\Http\Message\ResponseInterface;
 
-final class ForgotPasswordAction
+final class ForgotPasswordAction implements SingleActionInterface
 {
     public function __construct(
         private readonly UserRepository $userRepo,
@@ -26,7 +27,8 @@ final class ForgotPasswordAction
 
     public function __invoke(
         ServerRequest $request,
-        Response $response
+        Response $response,
+        array $params
     ): ResponseInterface {
         $flash = $request->getFlash();
         $view = $request->getView();

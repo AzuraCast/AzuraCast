@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Api\Stations\Playlists;
 
 use App\Container\EntityManagerAwareTrait;
+use App\Controller\SingleActionInterface;
 use App\Entity\Api\Error;
 use App\Entity\Api\StationPlaylistImportResult;
 use App\Entity\Repository\StationPlaylistMediaRepository;
@@ -18,7 +19,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\UploadedFileInterface;
 use Symfony\Component\Filesystem\Path;
 
-final class ImportAction
+final class ImportAction implements SingleActionInterface
 {
     use EntityManagerAwareTrait;
 
@@ -31,9 +32,11 @@ final class ImportAction
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        string $station_id,
-        string $id
+        array $params
     ): ResponseInterface {
+        /** @var string $id */
+        $id = $params['id'];
+
         $playlist = $this->playlistRepo->requireForStation($id, $request->getStation());
 
         $files = $request->getUploadedFiles();

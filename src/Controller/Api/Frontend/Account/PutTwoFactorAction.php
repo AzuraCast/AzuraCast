@@ -5,7 +5,8 @@ declare(strict_types=1);
 namespace App\Controller\Api\Frontend\Account;
 
 use App\Auth;
-use App\Controller\Api\Admin\UsersController;
+use App\Container\EntityManagerAwareTrait;
+use App\Controller\SingleActionInterface;
 use App\Entity\Api\Error;
 use App\Entity\Api\Status;
 use App\Http\Response;
@@ -17,11 +18,14 @@ use ParagonIE\ConstantTime\Base32;
 use Psr\Http\Message\ResponseInterface;
 use Throwable;
 
-final class PutTwoFactorAction extends UsersController
+final class PutTwoFactorAction implements SingleActionInterface
 {
+    use EntityManagerAwareTrait;
+
     public function __invoke(
         ServerRequest $request,
-        Response $response
+        Response $response,
+        array $params
     ): ResponseInterface {
         $params = (array)$request->getParsedBody();
 

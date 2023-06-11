@@ -6,6 +6,7 @@ namespace App\Controller\Api\Frontend\Dashboard;
 
 use App\Container\EntityManagerAwareTrait;
 use App\Container\SettingsAwareTrait;
+use App\Controller\SingleActionInterface;
 use App\Entity\Api\Dashboard;
 use App\Entity\ApiGenerator\NowPlayingApiGenerator;
 use App\Entity\Station;
@@ -15,7 +16,7 @@ use App\Http\ServerRequest;
 use App\Paginator;
 use Psr\Http\Message\ResponseInterface;
 
-final class StationsAction
+final class StationsAction implements SingleActionInterface
 {
     use EntityManagerAwareTrait;
     use SettingsAwareTrait;
@@ -27,7 +28,8 @@ final class StationsAction
 
     public function __invoke(
         ServerRequest $request,
-        Response $response
+        Response $response,
+        array $params
     ): ResponseInterface {
         $router = $request->getRouter();
         $acl = $request->getAcl();

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Admin\Debug;
 
 use App\Console\Command\Sync\SingleTaskCommand;
+use App\Controller\SingleActionInterface;
 use App\Entity\Repository\StationRepository;
 use App\Event\GetSyncTasks;
 use App\Http\Response;
@@ -18,7 +19,7 @@ use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\SimpleCache\CacheInterface;
 
-final class IndexAction
+final class IndexAction implements SingleActionInterface
 {
     public function __construct(
         private readonly StationRepository $stationRepo,
@@ -30,7 +31,8 @@ final class IndexAction
 
     public function __invoke(
         ServerRequest $request,
-        Response $response
+        Response $response,
+        array $params
     ): ResponseInterface {
         $router = $request->getRouter();
 

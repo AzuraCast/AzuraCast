@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Stations\Files;
 
+use App\Controller\SingleActionInterface;
 use App\Entity\StationMedia;
 use App\Flysystem\StationFilesystems;
 use App\Http\Response;
@@ -11,7 +12,7 @@ use App\Http\ServerRequest;
 use League\Flysystem\StorageAttributes;
 use Psr\Http\Message\ResponseInterface;
 
-final class ListDirectoriesAction
+final class ListDirectoriesAction implements SingleActionInterface
 {
     public function __construct(
         private readonly StationFilesystems $stationFilesystems
@@ -21,7 +22,7 @@ final class ListDirectoriesAction
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        string $station_id
+        array $params
     ): ResponseInterface {
         $station = $request->getStation();
 

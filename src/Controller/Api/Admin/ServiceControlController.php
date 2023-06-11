@@ -48,8 +48,11 @@ final class ServiceControlController
     public function restartAction(
         ServerRequest $request,
         Response $response,
-        string $service
+        array $params
     ): ResponseInterface {
+        /** @var string $service */
+        $service = $params['service'];
+
         $this->serviceControl->restart($service);
 
         return $response->withJson(Status::success());

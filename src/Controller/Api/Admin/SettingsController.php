@@ -67,8 +67,11 @@ final class SettingsController extends AbstractApiCrudController
     public function listAction(
         ServerRequest $request,
         Response $response,
-        ?string $group = null
+        array $params
     ): ResponseInterface {
+        /** @var string|null $group */
+        $group = $params['group'] ?? null;
+
         $context = [];
         if (null !== $group && in_array($group, Settings::VALID_GROUPS, true)) {
             $context[AbstractNormalizer::GROUPS] = [$group];
@@ -81,8 +84,11 @@ final class SettingsController extends AbstractApiCrudController
     public function updateAction(
         ServerRequest $request,
         Response $response,
-        ?string $group = null
+        array $params
     ): ResponseInterface {
+        /** @var string|null $group */
+        $group = $params['group'] ?? null;
+
         $context = [];
         if (null !== $group && in_array($group, Settings::VALID_GROUPS, true)) {
             $context[AbstractNormalizer::GROUPS] = [$group];

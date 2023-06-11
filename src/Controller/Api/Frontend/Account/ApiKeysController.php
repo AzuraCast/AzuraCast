@@ -5,11 +5,8 @@ declare(strict_types=1);
 namespace App\Controller\Api\Frontend\Account;
 
 use App\Controller\Api\AbstractApiCrudController;
-use App\Entity\Api\Error;
-use App\Entity\Api\Status;
 use App\Entity\ApiKey;
 use App\Entity\Interfaces\EntityGroupsInterface;
-use App\Entity\User;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Security\SplitToken;
@@ -27,7 +24,8 @@ final class ApiKeysController extends AbstractApiCrudController
 
     public function listAction(
         ServerRequest $request,
-        Response $response
+        Response $response,
+        array $params
     ): ResponseInterface {
         $query = $this->em->createQuery(
             <<<'DQL'
@@ -40,7 +38,8 @@ final class ApiKeysController extends AbstractApiCrudController
 
     public function createAction(
         ServerRequest $request,
-        Response $response
+        Response $response,
+        array $params
     ): ResponseInterface {
         $newKey = SplitToken::generate();
 
@@ -58,50 +57,18 @@ final class ApiKeysController extends AbstractApiCrudController
         return $response->withJson($return);
     }
 
-    public function getAction(
-        ServerRequest $request,
-        Response $response,
-        string $id
-    ): ResponseInterface {
-        $record = $this->getRecord($request->getUser(), $id);
-
-        if (null === $record) {
-            return $response->withStatus(404)
-                ->withJson(Error::notFound());
-        }
-
-        $return = $this->viewRecord($record, $request);
-        return $response->withJson($return);
-    }
-
-    public function deleteAction(
-        ServerRequest $request,
-        Response $response,
-        string $id
-    ): ResponseInterface {
-        $record = $this->getRecord($request->getUser(), $id);
-
-        if (null === $record) {
-            return $response->withStatus(404)
-                ->withJson(Error::notFound());
-        }
-
-        $this->deleteRecord($record);
-
-        return $response->withJson(Status::deleted());
-    }
-
     /**
-     * @param string $id
-     *
      * @return TEntity|null
      */
-    private function getRecord(User $user, string $id): ?object
+    protected function getRecord(ServerRequest $request, array $params): ?object
     {
+        /** @var string $id */
+        $id = $params['id'];
+
         /** @var TEntity|null $record */
         $record = $this->em->getRepository(ApiKey::class)->findOneBy([
             'id' => $id,
-            'user' => $user,
+            'user' => $request->getUser(),
         ]);
         return $record;
     }

@@ -5,22 +5,25 @@ declare(strict_types=1);
 namespace App\Controller\Api\Stations;
 
 use App\Container\EntityManagerAwareTrait;
+use App\Controller\SingleActionInterface;
 use App\Entity\Enums\StorageLocationTypes;
 use App\Entity\Station;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
 
-final class GetQuotaAction
+final class GetQuotaAction implements SingleActionInterface
 {
     use EntityManagerAwareTrait;
 
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        string $station_id,
-        string $type = null
+        array $params
     ): ResponseInterface {
+        /** @var string|null $type */
+        $type = $params['type'] ?? null;
+
         $typeEnum = StorageLocationTypes::tryFrom($type ?? '')
             ?? StorageLocationTypes::StationMedia;
 

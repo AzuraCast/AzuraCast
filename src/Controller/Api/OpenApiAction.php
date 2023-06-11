@@ -5,11 +5,12 @@ declare(strict_types=1);
 namespace App\Controller\Api;
 
 use App\Console\Command\GenerateApiDocsCommand;
+use App\Controller\SingleActionInterface;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
 
-final class OpenApiAction
+final class OpenApiAction implements SingleActionInterface
 {
     public function __construct(
         private readonly GenerateApiDocsCommand $apiDocsCommand
@@ -18,7 +19,8 @@ final class OpenApiAction
 
     public function __invoke(
         ServerRequest $request,
-        Response $response
+        Response $response,
+        array $params
     ): ResponseInterface {
         $apiBaseUrl = str_replace(
             '/openapi.yml',

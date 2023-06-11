@@ -6,6 +6,7 @@ namespace App\Controller\Api\Stations\Files;
 
 use App\Container\EntityManagerAwareTrait;
 use App\Container\LoggerAwareTrait;
+use App\Controller\SingleActionInterface;
 use App\Entity\Api\Error;
 use App\Entity\Api\Status;
 use App\Entity\Repository\StationPlaylistMediaRepository;
@@ -19,7 +20,7 @@ use App\Media\MediaProcessor;
 use App\Service\Flow;
 use Psr\Http\Message\ResponseInterface;
 
-final class FlowUploadAction
+final class FlowUploadAction implements SingleActionInterface
 {
     use LoggerAwareTrait;
     use EntityManagerAwareTrait;
@@ -33,7 +34,7 @@ final class FlowUploadAction
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        string $station_id
+        array $params
     ): ResponseInterface {
         $allParams = $request->getParams();
         $station = $request->getStation();

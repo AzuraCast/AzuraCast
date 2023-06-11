@@ -4,15 +4,17 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin;
 
+use App\Controller\SingleActionInterface;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
 
-final class IndexAction
+final class IndexAction implements SingleActionInterface
 {
     public function __invoke(
         ServerRequest $request,
-        Response $response
+        Response $response,
+        array $params
     ): ResponseInterface {
         $router = $request->getRouter();
         $view = $request->getView();

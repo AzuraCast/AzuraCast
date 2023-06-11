@@ -6,7 +6,6 @@ namespace App\Controller\Api\Stations;
 
 use App\Controller\Api\Traits\CanSortResults;
 use App\Entity\Api\StationRemote as ApiStationRemote;
-use App\Entity\Station;
 use App\Entity\StationRemote;
 use App\Exception\PermissionDeniedException;
 use App\Http\Response;
@@ -151,7 +150,7 @@ final class RemotesController extends AbstractStationApiCrudController
     public function listAction(
         ServerRequest $request,
         Response $response,
-        string $station_id
+        array $params
     ): ResponseInterface {
         $station = $request->getStation();
 
@@ -209,12 +208,9 @@ final class RemotesController extends AbstractStationApiCrudController
         return $return;
     }
 
-    /**
-     * @inheritDoc
-     */
-    protected function getRecord(Station $station, int|string $id): ?object
+    protected function getRecord(ServerRequest $request, array $params): ?object
     {
-        $record = parent::getRecord($station, $id);
+        $record = parent::getRecord($request, $params);
 
         if ($record instanceof StationRemote && !$record->isEditable()) {
             throw new PermissionDeniedException('This record cannot be edited.');

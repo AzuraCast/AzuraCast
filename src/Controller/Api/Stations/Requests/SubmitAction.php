@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Api\Stations\Requests;
 
 use App\Container\SettingsAwareTrait;
+use App\Controller\SingleActionInterface;
 use App\Entity\Api\Error;
 use App\Entity\Api\Status;
 use App\Entity\Repository\StationRequestRepository;
@@ -41,7 +42,7 @@ use Psr\Http\Message\ResponseInterface;
         ]
     )
 ]
-final class SubmitAction
+final class SubmitAction implements SingleActionInterface
 {
     use SettingsAwareTrait;
 
@@ -53,9 +54,11 @@ final class SubmitAction
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        string $station_id,
-        string $media_id
+        array $params
     ): ResponseInterface {
+        /** @var string $mediaId */
+        $mediaId = $params['media_id'];
+
         $station = $request->getStation();
 
         try {
@@ -71,7 +74,7 @@ final class SubmitAction
 
             $this->requestRepo->submit(
                 $station,
-                $media_id,
+                $mediaId,
                 $isAuthenticated,
                 $ip,
                 $request->getHeaderLine('User-Agent')

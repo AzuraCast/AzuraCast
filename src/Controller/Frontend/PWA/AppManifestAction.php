@@ -4,18 +4,19 @@ declare(strict_types=1);
 
 namespace App\Controller\Frontend\PWA;
 
+use App\Controller\SingleActionInterface;
 use App\Enums\SupportedThemes;
 use App\Exception\StationNotFoundException;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
 
-final class AppManifestAction
+final class AppManifestAction implements SingleActionInterface
 {
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        string $station_id
+        array $params
     ): ResponseInterface {
         $station = $request->getStation();
 

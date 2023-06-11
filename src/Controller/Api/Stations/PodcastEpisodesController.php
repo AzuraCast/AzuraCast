@@ -5,17 +5,13 @@ declare(strict_types=1);
 namespace App\Controller\Api\Stations;
 
 use App\Controller\Api\AbstractApiCrudController;
-use App\Entity\Api\Error;
 use App\Entity\Api\PodcastEpisode as ApiPodcastEpisode;
 use App\Entity\Api\PodcastMedia as ApiPodcastMedia;
-use App\Entity\Api\Status;
 use App\Entity\PodcastEpisode;
 use App\Entity\PodcastMedia;
 use App\Entity\Repository\PodcastEpisodeRepository;
 use App\Entity\Repository\PodcastRepository;
-use App\Entity\Station;
 use App\Enums\StationPermissions;
-use App\Flysystem\StationFilesystems;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\OpenApi;
@@ -195,7 +191,6 @@ final class PodcastEpisodesController extends AbstractApiCrudController
     public function __construct(
         private readonly PodcastRepository $podcastRepository,
         private readonly PodcastEpisodeRepository $episodeRepository,
-        private readonly StationFilesystems $stationFilesystems,
         Serializer $serializer,
         ValidatorInterface $validator,
     ) {
@@ -205,12 +200,14 @@ final class PodcastEpisodesController extends AbstractApiCrudController
     public function listAction(
         ServerRequest $request,
         Response $response,
-        string $station_id,
-        string $podcast_id
+        array $params
     ): ResponseInterface {
+        /** @var string $podcastId */
+        $podcastId = $params['podcast_id'];
+
         $station = $request->getStation();
 
-        $podcast = $this->podcastRepository->fetchPodcastForStation($station, $podcast_id);
+        $podcast = $this->podcastRepository->fetchPodcastForStation($station, $podcastId);
 
         $queryBuilder = $this->em->createQueryBuilder()
             ->select('e, p, pm')
@@ -230,47 +227,42 @@ final class PodcastEpisodesController extends AbstractApiCrudController
         return $this->listPaginatedFromQuery($request, $response, $queryBuilder->getQuery());
     }
 
-    public function getAction(
-        ServerRequest $request,
-        Response $response,
-        string $station_id,
-        string $podcast_id,
-        string $episode_id
-    ): ResponseInterface {
-        $station = $request->getStation();
-        $record = $this->getRecord($station, $episode_id);
+    /**
+     * @return PodcastEpisode|null
+     */
+    protected function getRecord(ServerRequest $request, array $params): ?object
+    {
+        /** @var string $id */
+        $id = $params['episode_id'];
 
-        if (null === $record) {
-            return $response->withStatus(404)
-                ->withJson(Error::notFound());
-        }
-
-        $return = $this->viewRecord($record, $request);
-        return $response->withJson($return);
+        return $this->episodeRepository->fetchEpisodeForStation(
+            $request->getStation(),
+            $id
+        );
     }
 
-    public function createAction(
-        ServerRequest $request,
-        Response $response,
-        string $station_id,
-        string $podcast_id
-    ): ResponseInterface {
+    protected function createRecord(ServerRequest $request, array $data): object
+    {
         $station = $request->getStation();
 
-        $podcast = $this->podcastRepository->fetchPodcastForStation($station, $podcast_id);
+        $podcastId = $request->getAttribute('podcast_id');
+
+        $podcast = $this->podcastRepository->fetchPodcastForStation(
+            $station,
+            $podcastId
+        );
+
         if (null === $podcast) {
             throw new RuntimeException('Podcast not found.');
         }
 
-        $parsedBody = (array)$request->getParsedBody();
-
         $record = $this->editRecord(
-            $parsedBody,
+            $data,
             new PodcastEpisode($podcast)
         );
 
-        if (!empty($parsedBody['artwork_file'])) {
-            $artwork = UploadedFile::fromArray($parsedBody['artwork_file'], $station->getRadioTempDir());
+        if (!empty($data['artwork_file'])) {
+            $artwork = UploadedFile::fromArray($data['artwork_file'], $station->getRadioTempDir());
             $this->episodeRepository->writeEpisodeArt(
                 $record,
                 $artwork->readAndDeleteUploadedFile()
@@ -280,8 +272,8 @@ final class PodcastEpisodesController extends AbstractApiCrudController
             $this->em->flush();
         }
 
-        if (!empty($parsedBody['media_file'])) {
-            $media = UploadedFile::fromArray($parsedBody['media_file'], $station->getRadioTempDir());
+        if (!empty($data['media_file'])) {
+            $media = UploadedFile::fromArray($data['media_file'], $station->getRadioTempDir());
 
             $this->episodeRepository->uploadMedia(
                 $record,
@@ -290,60 +282,12 @@ final class PodcastEpisodesController extends AbstractApiCrudController
             );
         }
 
-        return $response->withJson($this->viewRecord($record, $request));
+        return $record;
     }
 
-    public function editAction(
-        ServerRequest $request,
-        Response $response,
-        string $station_id,
-        string $podcast_id,
-        string $episode_id
-    ): ResponseInterface {
-        $podcast = $this->getRecord($request->getStation(), $episode_id);
-
-        if ($podcast === null) {
-            return $response->withStatus(404)
-                ->withJson(Error::notFound());
-        }
-
-        $this->editRecord((array)$request->getParsedBody(), $podcast);
-
-        return $response->withJson(Status::updated());
-    }
-
-    public function deleteAction(
-        ServerRequest $request,
-        Response $response,
-        string $station_id,
-        string $podcast_id,
-        string $episode_id
-    ): ResponseInterface {
-        $station = $request->getStation();
-        $record = $this->getRecord($station, $episode_id);
-
-        if (null === $record) {
-            return $response->withStatus(404)
-                ->withJson(Error::notFound());
-        }
-
-        $this->episodeRepository->delete(
-            $record,
-            $this->stationFilesystems->getPodcastsFilesystem($station)
-        );
-
-        return $response->withJson(Status::deleted());
-    }
-
-    /**
-     * @param Station $station
-     * @param string $id
-     *
-     * @return PodcastEpisode|null
-     */
-    private function getRecord(Station $station, string $id): ?object
+    protected function deleteRecord(object $record): void
     {
-        return $this->episodeRepository->fetchEpisodeForStation($station, $id);
+        $this->episodeRepository->delete($record);
     }
 
     /**

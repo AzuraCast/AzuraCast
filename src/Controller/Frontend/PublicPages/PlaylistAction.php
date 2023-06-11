@@ -4,13 +4,14 @@ declare(strict_types=1);
 
 namespace App\Controller\Frontend\PublicPages;
 
+use App\Controller\SingleActionInterface;
 use App\Entity\StationMount;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Radio\Adapters;
 use Psr\Http\Message\ResponseInterface;
 
-final class PlaylistAction
+final class PlaylistAction implements SingleActionInterface
 {
     public function __construct(
         private readonly Adapters $adapters,
@@ -20,9 +21,11 @@ final class PlaylistAction
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        string $station_id,
-        string $format = 'pls'
+        array $params
     ): ResponseInterface {
+        /** @var string $format */
+        $format = $params['format'] ?? 'pls';
+
         $station = $request->getStation();
 
         $streams = [];

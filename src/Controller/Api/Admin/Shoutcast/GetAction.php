@@ -4,12 +4,13 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Admin\Shoutcast;
 
+use App\Controller\SingleActionInterface;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Radio\Frontend\Shoutcast;
 use Psr\Http\Message\ResponseInterface;
 
-final class GetAction
+final class GetAction implements SingleActionInterface
 {
     public function __construct(
         private readonly Shoutcast $shoutcast,
@@ -18,7 +19,8 @@ final class GetAction
 
     public function __invoke(
         ServerRequest $request,
-        Response $response
+        Response $response,
+        array $params
     ): ResponseInterface {
         return $response->withJson(
             [

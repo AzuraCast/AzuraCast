@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Stations\Art;
 
+use App\Controller\SingleActionInterface;
 use App\Entity\Api\Status;
 use App\Entity\Repository\StationMediaRepository;
 use App\Http\Response;
@@ -39,7 +40,7 @@ use Psr\Http\Message\ResponseInterface;
         new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
     ]
 )]
-final class DeleteArtAction
+final class DeleteArtAction implements SingleActionInterface
 {
     public function __construct(
         private readonly StationMediaRepository $mediaRepo,
@@ -49,12 +50,14 @@ final class DeleteArtAction
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        string $station_id,
-        string $media_id
+        array $params
     ): ResponseInterface {
+        /** @var string $mediaId */
+        $mediaId = $params['media_id'];
+
         $station = $request->getStation();
 
-        $media = $this->mediaRepo->requireForStation($media_id, $station);
+        $media = $this->mediaRepo->requireForStation($mediaId, $station);
         $this->mediaRepo->removeAlbumArt($media);
 
         return $response->withJson(Status::deleted());

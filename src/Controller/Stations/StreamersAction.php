@@ -5,12 +5,13 @@ declare(strict_types=1);
 namespace App\Controller\Stations;
 
 use App\Container\SettingsAwareTrait;
+use App\Controller\SingleActionInterface;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Service\AzuraCastCentral;
 use Psr\Http\Message\ResponseInterface;
 
-final class StreamersAction
+final class StreamersAction implements SingleActionInterface
 {
     use SettingsAwareTrait;
 
@@ -22,7 +23,7 @@ final class StreamersAction
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        string $station_id
+        array $params
     ): ResponseInterface {
         $station = $request->getStation();
 

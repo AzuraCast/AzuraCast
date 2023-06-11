@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Stations\Podcasts\Episodes\Media;
 
+use App\Controller\SingleActionInterface;
 use App\Entity\Api\Error;
 use App\Entity\PodcastEpisode;
 use App\Entity\PodcastMedia;
@@ -47,7 +48,7 @@ use Psr\Http\Message\ResponseInterface;
         new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
     ]
 )]
-final class GetMediaAction
+final class GetMediaAction implements SingleActionInterface
 {
     public function __construct(
         private readonly PodcastEpisodeRepository $episodeRepo,
@@ -58,14 +59,15 @@ final class GetMediaAction
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        string $station_id,
-        string $podcast_id,
-        string $episode_id
+        array $params
     ): ResponseInterface {
         set_time_limit(600);
 
+        /** @var string $episodeId */
+        $episodeId = $params['episode_id'];
+
         $station = $request->getStation();
-        $episode = $this->episodeRepo->fetchEpisodeForStation($station, $episode_id);
+        $episode = $this->episodeRepo->fetchEpisodeForStation($station, $episodeId);
 
         if ($episode instanceof PodcastEpisode) {
             $podcastMedia = $episode->getMedia();

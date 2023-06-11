@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Stations\Podcasts\Episodes\Media;
 
+use App\Controller\SingleActionInterface;
 use App\Entity\Api\Error;
 use App\Entity\Api\Status;
 use App\Entity\Repository\PodcastEpisodeRepository;
@@ -44,7 +45,7 @@ use Psr\Http\Message\ResponseInterface;
         new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
     ]
 )]
-final class PostMediaAction
+final class PostMediaAction implements SingleActionInterface
 {
     public function __construct(
         private readonly PodcastEpisodeRepository $episodeRepo,
@@ -55,10 +56,11 @@ final class PostMediaAction
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        string $station_id,
-        string $podcast_id,
-        ?string $episode_id = null
+        array $params
     ): ResponseInterface {
+        /** @var string|null $episodeId */
+        $episodeId = $params['episode_id'] ?? null;
+
         $station = $request->getStation();
 
         $flowResponse = Flow::process($request, $response, $station->getRadioTempDir());
@@ -66,8 +68,8 @@ final class PostMediaAction
             return $flowResponse;
         }
 
-        if (null !== $episode_id) {
-            $episode = $this->episodeRepo->fetchEpisodeForStation($station, $episode_id);
+        if (null !== $episodeId) {
+            $episode = $this->episodeRepo->fetchEpisodeForStation($station, $episodeId);
 
             if (null === $episode) {
                 return $response->withStatus(404)

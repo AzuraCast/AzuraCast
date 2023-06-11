@@ -152,7 +152,7 @@ final class WebhooksController extends AbstractStationApiCrudController
     public function listAction(
         ServerRequest $request,
         Response $response,
-        string $station_id
+        array $params
     ): ResponseInterface {
         $station = $request->getStation();
 

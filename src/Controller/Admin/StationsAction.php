@@ -4,13 +4,14 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin;
 
+use App\Controller\SingleActionInterface;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Radio\Adapters;
 use App\VueComponent\StationFormComponent;
 use Psr\Http\Message\ResponseInterface;
 
-final class StationsAction
+final class StationsAction implements SingleActionInterface
 {
     public function __construct(
         private readonly StationFormComponent $stationFormComponent,
@@ -20,7 +21,8 @@ final class StationsAction
 
     public function __invoke(
         ServerRequest $request,
-        Response $response
+        Response $response,
+        array $params
     ): ResponseInterface {
         $router = $request->getRouter();
 

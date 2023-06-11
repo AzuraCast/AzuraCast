@@ -5,18 +5,20 @@ declare(strict_types=1);
 namespace App\Controller\Frontend;
 
 use App\Container\SettingsAwareTrait;
+use App\Controller\SingleActionInterface;
 use App\Entity\User;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
 
-final class IndexAction
+final class IndexAction implements SingleActionInterface
 {
     use SettingsAwareTrait;
 
     public function __invoke(
         ServerRequest $request,
-        Response $response
+        Response $response,
+        array $params
     ): ResponseInterface {
         // Redirect to complete setup, if it hasn't been completed yet.
         $settings = $this->readSettings();

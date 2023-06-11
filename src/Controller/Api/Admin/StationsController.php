@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Admin;
 
+use App\Controller\Api\AbstractApiCrudController;
 use App\Controller\Api\Traits\CanSortResults;
 use App\Entity\Repository\StationQueueRepository;
 use App\Entity\Repository\StationRepository;
@@ -24,7 +25,7 @@ use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Throwable;
 
-/** @extends AbstractAdminApiCrudController<Station> */
+/** @extends AbstractApiCrudController<Station> */
 #[
     OA\Get(
         path: '/admin/stations',
@@ -138,7 +139,7 @@ use Throwable;
         ]
     )
 ]
-class StationsController extends AbstractAdminApiCrudController
+class StationsController extends AbstractApiCrudController
 {
     use CanSortResults;
 
@@ -158,7 +159,8 @@ class StationsController extends AbstractAdminApiCrudController
 
     public function listAction(
         ServerRequest $request,
-        Response $response
+        Response $response,
+        array $params
     ): ResponseInterface {
         $qb = $this->em->createQueryBuilder()
             ->select('e')

@@ -6,6 +6,7 @@ namespace App\Controller\Frontend\Account;
 
 use App\Container\EntityManagerAwareTrait;
 use App\Container\SettingsAwareTrait;
+use App\Controller\SingleActionInterface;
 use App\Entity\User;
 use App\Exception\RateLimitExceededException;
 use App\Http\Response;
@@ -14,7 +15,7 @@ use App\RateLimit;
 use Mezzio\Session\SessionCookiePersistenceInterface;
 use Psr\Http\Message\ResponseInterface;
 
-final class LoginAction
+final class LoginAction implements SingleActionInterface
 {
     use EntityManagerAwareTrait;
     use SettingsAwareTrait;
@@ -26,7 +27,8 @@ final class LoginAction
 
     public function __invoke(
         ServerRequest $request,
-        Response $response
+        Response $response,
+        array $params
     ): ResponseInterface {
         $auth = $request->getAuth();
         $acl = $request->getAcl();

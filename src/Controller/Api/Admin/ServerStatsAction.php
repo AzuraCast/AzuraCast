@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Api\Admin;
 
 use App\Container\EnvironmentAwareTrait;
+use App\Controller\SingleActionInterface;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\OpenApi;
@@ -35,13 +36,14 @@ use Psr\Http\Message\ResponseInterface;
         ]
     )
 ]
-final class ServerStatsAction
+final class ServerStatsAction implements SingleActionInterface
 {
     use EnvironmentAwareTrait;
 
     public function __invoke(
         ServerRequest $request,
-        Response $response
+        Response $response,
+        array $params
     ): ResponseInterface {
         $firstCpuMeasurement = CpuStats::getCurrentLoad();
         $firstNetworkMeasurement = NetworkStats::getNetworkUsage();

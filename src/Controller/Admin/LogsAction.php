@@ -4,13 +4,14 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin;
 
+use App\Controller\SingleActionInterface;
 use App\Entity\Repository\StationRepository;
 use App\Enums\StationPermissions;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
 
-final class LogsAction
+final class LogsAction implements SingleActionInterface
 {
     public function __construct(
         private readonly StationRepository $stationRepo
@@ -19,7 +20,8 @@ final class LogsAction
 
     public function __invoke(
         ServerRequest $request,
-        Response $response
+        Response $response,
+        array $params
     ): ResponseInterface {
         $router = $request->getRouter();
 

@@ -8,6 +8,7 @@ use App;
 use App\Container\EntityManagerAwareTrait;
 use App\Container\EnvironmentAwareTrait;
 use App\Controller\Api\Traits\AcceptsDateRange;
+use App\Controller\SingleActionInterface;
 use App\Doctrine\ReadOnlyBatchIteratorAggregate;
 use App\Entity\ApiGenerator\SongHistoryApiGenerator;
 use App\Entity\SongHistory;
@@ -61,7 +62,7 @@ use RuntimeException;
         ]
     )
 ]
-final class HistoryController
+final class HistoryAction implements SingleActionInterface
 {
     use AcceptsDateRange;
     use EntityManagerAwareTrait;
@@ -75,7 +76,7 @@ final class HistoryController
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        string $station_id
+        array $params
     ): ResponseInterface {
         set_time_limit($this->environment->getSyncLongExecutionTime());
 

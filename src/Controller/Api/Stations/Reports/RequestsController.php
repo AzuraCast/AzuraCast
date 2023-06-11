@@ -25,8 +25,7 @@ final class RequestsController
 
     public function listAction(
         ServerRequest $request,
-        Response $response,
-        string $station_id
+        Response $response
     ): ResponseInterface {
         $station = $request->getStation();
 
@@ -69,11 +68,13 @@ final class RequestsController
     public function deleteAction(
         ServerRequest $request,
         Response $response,
-        string $station_id,
-        string $request_id
+        array $params
     ): ResponseInterface {
+        /** @var string $requestId */
+        $requestId = $params['request_id'];
+
         $station = $request->getStation();
-        $media = $this->requestRepo->getPendingRequest($request_id, $station);
+        $media = $this->requestRepo->getPendingRequest($requestId, $station);
 
         if ($media instanceof StationRequest) {
             $this->em->remove($media);
@@ -85,8 +86,7 @@ final class RequestsController
 
     public function clearAction(
         ServerRequest $request,
-        Response $response,
-        string $station_id
+        Response $response
     ): ResponseInterface {
         $station = $request->getStation();
         $this->requestRepo->clearPendingRequests($station);

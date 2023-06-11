@@ -5,15 +5,11 @@ declare(strict_types=1);
 namespace App\Controller\Api\Stations;
 
 use App\Controller\Api\AbstractApiCrudController;
-use App\Entity\Api\Error;
 use App\Entity\Api\Podcast as ApiPodcast;
-use App\Entity\Api\Status;
 use App\Entity\Podcast;
 use App\Entity\PodcastCategory;
 use App\Entity\Repository\PodcastRepository;
-use App\Entity\Station;
 use App\Enums\StationPermissions;
-use App\Flysystem\StationFilesystems;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\OpenApi;
@@ -156,7 +152,6 @@ final class PodcastsController extends AbstractApiCrudController
 
     public function __construct(
         private readonly PodcastRepository $podcastRepository,
-        private readonly StationFilesystems $stationFilesystems,
         Serializer $serializer,
         ValidatorInterface $validator,
     ) {
@@ -166,7 +161,7 @@ final class PodcastsController extends AbstractApiCrudController
     public function listAction(
         ServerRequest $request,
         Response $response,
-        string $station_id
+        array $params
     ): ResponseInterface {
         $station = $request->getStation();
 
@@ -187,41 +182,29 @@ final class PodcastsController extends AbstractApiCrudController
         return $this->listPaginatedFromQuery($request, $response, $queryBuilder->getQuery());
     }
 
-    public function getAction(
-        ServerRequest $request,
-        Response $response,
-        string $station_id,
-        string $podcast_id,
-    ): ResponseInterface {
-        $station = $request->getStation();
-        $record = $this->getRecord($station, $podcast_id);
+    protected function getRecord(ServerRequest $request, array $params): ?object
+    {
+        /** @var string $id */
+        $id = $params['podcast_id'];
 
-        if (null === $record) {
-            return $response->withStatus(404)
-                ->withJson(Error::notFound());
-        }
-
-        $return = $this->viewRecord($record, $request);
-        return $response->withJson($return);
+        return $this->podcastRepository->fetchPodcastForStation(
+            $request->getStation(),
+            $id
+        );
     }
 
-    public function createAction(
-        ServerRequest $request,
-        Response $response,
-        string $station_id
-    ): ResponseInterface {
+    protected function createRecord(ServerRequest $request, array $data): object
+    {
         $station = $request->getStation();
-
-        $parsedBody = (array)$request->getParsedBody();
 
         /** @var Podcast $record */
         $record = $this->editRecord(
-            $parsedBody,
+            $data,
             new Podcast($station->getPodcastsStorageLocation())
         );
 
-        if (!empty($parsedBody['artwork_file'])) {
-            $artwork = UploadedFile::fromArray($parsedBody['artwork_file'], $station->getRadioTempDir());
+        if (!empty($data['artwork_file'])) {
+            $artwork = UploadedFile::fromArray($data['artwork_file'], $station->getRadioTempDir());
             $this->podcastRepository->writePodcastArt(
                 $record,
                 $artwork->readAndDeleteUploadedFile()
@@ -231,58 +214,12 @@ final class PodcastsController extends AbstractApiCrudController
             $this->em->flush();
         }
 
-        return $response->withJson($this->viewRecord($record, $request));
+        return $record;
     }
 
-    public function editAction(
-        ServerRequest $request,
-        Response $response,
-        string $station_id,
-        string $podcast_id
-    ): ResponseInterface {
-        $podcast = $this->getRecord($request->getStation(), $podcast_id);
-
-        if ($podcast === null) {
-            return $response->withStatus(404)
-                ->withJson(Error::notFound());
-        }
-
-        $this->editRecord((array)$request->getParsedBody(), $podcast);
-
-        return $response->withJson(Status::updated());
-    }
-
-    public function deleteAction(
-        ServerRequest $request,
-        Response $response,
-        string $station_id,
-        string $podcast_id
-    ): ResponseInterface {
-        $station = $request->getStation();
-        $record = $this->getRecord($station, $podcast_id);
-
-        if (null === $record) {
-            return $response->withStatus(404)
-                ->withJson(Error::notFound());
-        }
-
-        $this->podcastRepository->delete(
-            $record,
-            $this->stationFilesystems->getPodcastsFilesystem($station)
-        );
-
-        return $response->withJson(Status::deleted());
-    }
-
-    /**
-     * @param Station $station
-     * @param string $id
-     *
-     * @return Podcast|null
-     */
-    private function getRecord(Station $station, string $id): ?object
+    protected function deleteRecord(object $record): void
     {
-        return $this->podcastRepository->fetchPodcastForStation($station, $id);
+        $this->podcastRepository->delete($record);
     }
 
     protected function viewRecord(object $record, ServerRequest $request): ApiPodcast

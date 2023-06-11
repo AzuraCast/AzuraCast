@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Stations\Fallback;
 
+use App\Controller\SingleActionInterface;
 use App\Entity\Api\Status;
 use App\Entity\Repository\StationRepository;
 use App\Http\Response;
@@ -27,7 +28,7 @@ use Psr\Http\Message\ResponseInterface;
         new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
     ]
 )]
-final class DeleteFallbackAction
+final class DeleteFallbackAction implements SingleActionInterface
 {
     public function __construct(
         private readonly StationRepository $stationRepo,
@@ -37,7 +38,7 @@ final class DeleteFallbackAction
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        string $station_id
+        array $params
     ): ResponseInterface {
         $station = $request->getStation();
         $this->stationRepo->clearFallback($station);

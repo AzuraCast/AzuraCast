@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Stations\Waveform;
 
+use App\Controller\SingleActionInterface;
 use App\Entity\Repository\StationMediaRepository;
 use App\Entity\StationMedia;
 use App\Flysystem\StationFilesystems;
@@ -11,7 +12,7 @@ use App\Http\Response;
 use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
 
-final class GetWaveformAction
+final class GetWaveformAction implements SingleActionInterface
 {
     public function __construct(
         private readonly StationMediaRepository $mediaRepo,
@@ -22,9 +23,11 @@ final class GetWaveformAction
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        string $station_id,
-        string $media_id
+        array $params
     ): ResponseInterface {
+        /** @var string $mediaId */
+        $mediaId = $params['media_id'];
+
         $response = $response->withCacheLifetime(Response::CACHE_ONE_YEAR);
 
         $station = $request->getStation();
@@ -32,16 +35,16 @@ final class GetWaveformAction
         $fsMedia = $this->stationFilesystems->getMediaFilesystem($station);
 
         // If a timestamp delimiter is added, strip it automatically.
-        $media_id = explode('-', $media_id, 2)[0];
+        $mediaId = explode('-', $mediaId, 2)[0];
 
-        if (StationMedia::UNIQUE_ID_LENGTH === strlen($media_id)) {
-            $waveformPath = StationMedia::getWaveformPath($media_id);
+        if (StationMedia::UNIQUE_ID_LENGTH === strlen($mediaId)) {
+            $waveformPath = StationMedia::getWaveformPath($mediaId);
             if ($fsMedia->fileExists($waveformPath)) {
                 return $response->streamFilesystemFile($fsMedia, $waveformPath, null, 'inline');
             }
         }
 
-        $media = $this->mediaRepo->requireByUniqueId($media_id, $station);
+        $media = $this->mediaRepo->requireByUniqueId($mediaId, $station);
 
         $waveformPath = StationMedia::getWaveformPath($media->getUniqueId());
         if (!$fsMedia->fileExists($waveformPath)) {

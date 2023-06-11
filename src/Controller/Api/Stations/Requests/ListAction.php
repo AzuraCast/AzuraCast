@@ -57,7 +57,7 @@ final class ListAction extends AbstractSearchableListAction
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        string $station_id
+        array $params
     ): ResponseInterface {
         $station = $request->getStation();
 

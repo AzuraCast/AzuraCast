@@ -6,21 +6,24 @@ namespace App\Controller\Api\Stations\CustomAssets;
 
 use App\Assets\AssetTypes;
 use App\Container\EnvironmentAwareTrait;
+use App\Controller\SingleActionInterface;
 use App\Entity\Api\Status;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
 
-final class DeleteCustomAssetAction
+final class DeleteCustomAssetAction implements SingleActionInterface
 {
     use EnvironmentAwareTrait;
 
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        string $station_id,
-        string $type
+        array $params
     ): ResponseInterface {
+        /** @var string $type */
+        $type = $params['type'];
+
         $customAsset = AssetTypes::from($type)->createObject(
             $this->environment,
             $request->getStation()

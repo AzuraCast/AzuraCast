@@ -4,15 +4,17 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Frontend\Account;
 
+use App\Controller\SingleActionInterface;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
 
-final class GetTwoFactorAction
+final class GetTwoFactorAction implements SingleActionInterface
 {
     public function __invoke(
         ServerRequest $request,
-        Response $response
+        Response $response,
+        array $params
     ): ResponseInterface {
         $user = $request->getUser();
 

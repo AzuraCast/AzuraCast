@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Controller\Api;
 
 use App\Container\EntityManagerAwareTrait;
+use App\Entity\Api\Error;
+use App\Entity\Api\Status;
 use App\Entity\Interfaces\IdentifiableEntityInterface;
 use App\Exception\ValidationException;
 use App\Http\Response;
@@ -38,6 +40,16 @@ abstract class AbstractApiCrudController
     ) {
     }
 
+    public function listAction(
+        ServerRequest $request,
+        Response $response,
+        array $params
+    ): ResponseInterface {
+        $query = $this->em->createQuery('SELECT e FROM ' . $this->entityClass . ' e');
+
+        return $this->listPaginatedFromQuery($request, $response, $query);
+    }
+
     protected function listPaginatedFromQuery(
         ServerRequest $request,
         Response $response,
@@ -50,6 +62,53 @@ abstract class AbstractApiCrudController
         $paginator->setPostprocessor($postProcessor);
 
         return $paginator->write($response);
+    }
+
+    public function createAction(
+        ServerRequest $request,
+        Response $response,
+        array $params
+    ): ResponseInterface {
+        $row = $this->createRecord($request, (array)$request->getParsedBody());
+
+        $return = $this->viewRecord($row, $request);
+        return $response->withJson($return);
+    }
+
+    /**
+     * @param array $data
+     * @return TEntity
+     */
+    protected function createRecord(ServerRequest $request, array $data): object
+    {
+        return $this->editRecord($data);
+    }
+
+    public function getAction(
+        ServerRequest $request,
+        Response $response,
+        array $params
+    ): ResponseInterface {
+        $record = $this->getRecord($request, $params);
+
+        if (null === $record) {
+            return $response->withStatus(404)
+                ->withJson(Error::notFound());
+        }
+
+        $return = $this->viewRecord($record, $request);
+        return $response->withJson($return);
+    }
+
+    /**
+     * @return TEntity|null
+     */
+    protected function getRecord(ServerRequest $request, array $params): ?object
+    {
+        /** @var string $id */
+        $id = $params['id'];
+
+        return $this->em->find($this->entityClass, $id);
     }
 
     /**
@@ -128,6 +187,23 @@ abstract class AbstractApiCrudController
         return get_class($object) . ': ' . spl_object_hash($object);
     }
 
+    public function editAction(
+        ServerRequest $request,
+        Response $response,
+        array $params
+    ): ResponseInterface {
+        $record = $this->getRecord($request, $params);
+
+        if (null === $record) {
+            return $response->withStatus(404)
+                ->withJson(Error::notFound());
+        }
+
+        $this->editRecord((array)$request->getParsedBody(), $record);
+
+        return $response->withJson(Status::updated());
+    }
+
     /**
      * @param array<mixed>|null $data
      * @param TEntity|null $record
@@ -168,6 +244,23 @@ abstract class AbstractApiCrudController
         }
 
         return $this->serializer->denormalize($data, $this->entityClass, null, $context);
+    }
+
+    public function deleteAction(
+        ServerRequest $request,
+        Response $response,
+        array $params
+    ): ResponseInterface {
+        $record = $this->getRecord($request, $params);
+
+        if (null === $record) {
+            return $response->withStatus(404)
+                ->withJson(Error::notFound());
+        }
+
+        $this->deleteRecord($record);
+
+        return $response->withJson(Status::deleted());
     }
 
     /**

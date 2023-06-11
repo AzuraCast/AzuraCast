@@ -5,18 +5,19 @@ declare(strict_types=1);
 namespace App\Controller\Stations;
 
 use App\Container\SettingsAwareTrait;
+use App\Controller\SingleActionInterface;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
 
-final class MountsAction
+final class MountsAction implements SingleActionInterface
 {
     use SettingsAwareTrait;
 
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        string $station_id
+        array $params
     ): ResponseInterface {
         $router = $request->getRouter();
         $station = $request->getStation();

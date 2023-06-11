@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Stations\Art;
 
+use App\Controller\SingleActionInterface;
 use App\Entity\Repository\StationMediaRepository;
 use App\Entity\Repository\StationRepository;
 use App\Entity\Station;
@@ -41,7 +42,7 @@ use Psr\Http\Message\ResponseInterface;
         ),
     ]
 )]
-final class GetArtAction
+final class GetArtAction implements SingleActionInterface
 {
     public function __construct(
         private readonly StationRepository $stationRepo,
@@ -53,21 +54,23 @@ final class GetArtAction
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        string $station_id,
-        string $media_id
+        array $params
     ): ResponseInterface {
+        /** @var string $mediaId */
+        $mediaId = $params['media_id'];
+
         $station = $request->getStation();
 
-        if (str_contains($media_id, '-')) {
+        if (str_contains($mediaId, '-')) {
             $response = $response->withCacheLifetime(Response::CACHE_ONE_YEAR);
         }
 
         // If a timestamp delimiter is added, strip it automatically.
-        $media_id = explode('-', $media_id, 2)[0];
+        $mediaId = explode('-', $mediaId, 2)[0];
 
         $fsMedia = $this->stationFilesystems->getMediaFilesystem($station);
 
-        $mediaPath = $this->getMediaPath($station, $fsMedia, $media_id);
+        $mediaPath = $this->getMediaPath($station, $fsMedia, $mediaId);
         if (null !== $mediaPath) {
             return $response->streamFilesystemFile(
                 $fsMedia,
@@ -84,17 +87,17 @@ final class GetArtAction
     private function getMediaPath(
         Station $station,
         ExtendedFilesystemInterface $fsMedia,
-        string $media_id
+        string $mediaId
     ): ?string {
-        if (StationMedia::UNIQUE_ID_LENGTH === strlen($media_id)) {
-            $mediaPath = StationMedia::getArtPath($media_id);
+        if (StationMedia::UNIQUE_ID_LENGTH === strlen($mediaId)) {
+            $mediaPath = StationMedia::getArtPath($mediaId);
 
             if ($fsMedia->fileExists($mediaPath)) {
                 return $mediaPath;
             }
         }
 
-        $media = $this->mediaRepo->findForStation($media_id, $station);
+        $media = $this->mediaRepo->findForStation($mediaId, $station);
         if (!($media instanceof StationMedia)) {
             return null;
         }

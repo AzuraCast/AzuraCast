@@ -57,12 +57,15 @@ final class NowPlayingController
     public function getAction(
         ServerRequest $request,
         Response $response,
-        ?string $station_id = null
+        array $params
     ): ResponseInterface {
+        /** @var string|null $stationId */
+        $stationId = $params['station_id'] ?? null;
+
         $router = $request->getRouter();
 
-        if (!empty($station_id)) {
-            $np = $this->nowPlayingCache->getForStation($station_id);
+        if (!empty($stationId)) {
+            $np = $this->nowPlayingCache->getForStation($stationId);
 
             if ($np instanceof NowPlaying) {
                 $np->resolveUrls($router->getBaseUrl());
@@ -97,10 +100,12 @@ final class NowPlayingController
     public function getArtAction(
         ServerRequest $request,
         Response $response,
-        string $station_id,
-        ?string $timestamp = null
+        array $params
     ): ResponseInterface {
-        $np = $this->nowPlayingCache->getForStation($station_id);
+        /** @var string $stationId */
+        $stationId = $params['station_id'];
+
+        $np = $this->nowPlayingCache->getForStation($stationId);
 
         if ($np instanceof NowPlaying) {
             $np->resolveUrls($request->getRouter()->getBaseUrl());

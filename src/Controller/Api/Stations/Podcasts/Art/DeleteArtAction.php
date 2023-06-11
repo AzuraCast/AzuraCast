@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Api\Stations\Podcasts\Art;
 
 use App\Container\EntityManagerAwareTrait;
+use App\Controller\SingleActionInterface;
 use App\Entity\Api\Error;
 use App\Entity\Api\Status;
 use App\Entity\Repository\PodcastRepository;
@@ -36,7 +37,7 @@ use Psr\Http\Message\ResponseInterface;
         new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
     ]
 )]
-final class DeleteArtAction
+final class DeleteArtAction implements SingleActionInterface
 {
     use EntityManagerAwareTrait;
 
@@ -48,12 +49,14 @@ final class DeleteArtAction
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        string $station_id,
-        string $podcast_id
+        array $params
     ): ResponseInterface {
+        /** @var string $podcastId */
+        $podcastId = $params['podcast_id'];
+
         $station = $request->getStation();
 
-        $podcast = $this->podcastRepo->fetchPodcastForStation($station, $podcast_id);
+        $podcast = $this->podcastRepo->fetchPodcastForStation($station, $podcastId);
 
         if ($podcast === null) {
             return $response->withStatus(404)

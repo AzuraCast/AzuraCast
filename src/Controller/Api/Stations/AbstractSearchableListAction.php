@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Api\Stations;
 
 use App\Container\EntityManagerAwareTrait;
+use App\Controller\SingleActionInterface;
 use App\Entity\ApiGenerator\SongApiGenerator;
 use App\Entity\StationMedia;
 use App\Http\ServerRequest;
@@ -12,7 +13,7 @@ use App\Paginator;
 use Psr\Cache\CacheItemPoolInterface;
 use RuntimeException;
 
-abstract class AbstractSearchableListAction
+abstract class AbstractSearchableListAction implements SingleActionInterface
 {
     use EntityManagerAwareTrait;
 

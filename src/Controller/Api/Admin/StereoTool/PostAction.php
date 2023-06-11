@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Admin\StereoTool;
 
+use App\Controller\SingleActionInterface;
 use App\Entity\Api\Error;
 use App\Entity\Api\Status;
 use App\Http\Response;
@@ -12,11 +13,12 @@ use App\Radio\StereoTool;
 use App\Service\Flow;
 use Psr\Http\Message\ResponseInterface;
 
-final class PostAction
+final class PostAction implements SingleActionInterface
 {
     public function __invoke(
         ServerRequest $request,
         Response $response,
+        array $params
     ): ResponseInterface {
         $flowResponse = Flow::process($request, $response);
         if ($flowResponse instanceof ResponseInterface) {

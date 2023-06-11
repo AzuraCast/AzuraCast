@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Frontend\Account;
 
+use App\Controller\SingleActionInterface;
 use App\Entity\Repository\UserRepository;
 use App\Entity\User;
 use App\Exception\NotFoundException;
@@ -11,7 +12,7 @@ use App\Http\Response;
 use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
 
-final class MasqueradeAction
+final class MasqueradeAction implements SingleActionInterface
 {
     public const CSRF_NAMESPACE = 'user_masquerade';
 
@@ -23,9 +24,14 @@ final class MasqueradeAction
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        string $id,
-        string $csrf
+        array $params
     ): ResponseInterface {
+        /** @var string $id */
+        $id = $params['id'];
+
+        /** @var string $csrf */
+        $csrf = $params['csrf'];
+
         $request->getCsrf()->verify($csrf, self::CSRF_NAMESPACE);
 
         $user = $this->userRepo->find($id);

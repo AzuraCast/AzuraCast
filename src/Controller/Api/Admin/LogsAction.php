@@ -25,8 +25,11 @@ final class LogsAction
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        ?string $log = null
+        array $params
     ): ResponseInterface {
+        /** @var string|null $log */
+        $log = $params['log'] ?? null;
+
         $logPaths = $this->getGlobalLogs();
 
         if (null === $log) {

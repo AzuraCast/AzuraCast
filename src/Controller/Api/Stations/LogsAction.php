@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Api\Stations;
 
 use App\Controller\Api\Traits\HasLogViewer;
+use App\Controller\SingleActionInterface;
 use App\Entity\Station;
 use App\Exception;
 use App\Http\Response;
@@ -13,16 +14,18 @@ use App\Radio\Enums\BackendAdapters;
 use App\Radio\Enums\FrontendAdapters;
 use Psr\Http\Message\ResponseInterface;
 
-final class LogsAction
+final class LogsAction implements SingleActionInterface
 {
     use HasLogViewer;
 
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        string $station_id,
-        ?string $log = null
+        array $params
     ): ResponseInterface {
+        /** @var string|null $log */
+        $log = $params['log'] ?? null;
+
         $station = $request->getStation();
 
         $logPaths = $this->getStationLogs($station);
@@ -32,13 +35,13 @@ final class LogsAction
             return $response->withJson(
                 [
                     'logs' => array_map(
-                        function (string $key, array $row) use ($router, $station_id) {
+                        function (string $key, array $row) use ($router, $station) {
                             $row['key'] = $key;
                             $row['links'] = [
                                 'self' => $router->named(
                                     'api:stations:log',
                                     [
-                                        'station_id' => $station_id,
+                                        'station_id' => $station->getIdRequired(),
                                         'log' => $key,
                                     ]
                                 ),

@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace App\Controller\Api\Stations;
 
 use App\Controller\Api\Traits\CanSortResults;
-use App\Entity\Api\Error;
-use App\Entity\Api\Status;
 use App\Entity\Repository\StationMountRepository;
 use App\Entity\StationMount;
 use App\Http\Response;
@@ -162,7 +160,7 @@ final class MountsController extends AbstractStationApiCrudController
     public function listAction(
         ServerRequest $request,
         Response $response,
-        string $station_id
+        array $params
     ): ResponseInterface {
         $station = $request->getStation();
 
@@ -218,42 +216,23 @@ final class MountsController extends AbstractStationApiCrudController
         return $return;
     }
 
-    public function createAction(
-        ServerRequest $request,
-        Response $response,
-        string $station_id
-    ): ResponseInterface {
-        $station = $request->getStation();
+    protected function createRecord(ServerRequest $request, array $data): object
+    {
+        $record = parent::createRecord($request, $data);
 
-        $parsedBody = (array)$request->getParsedBody();
-        $record = $this->editRecord(
-            $parsedBody,
-            new StationMount($station)
-        );
-
-        if (!empty($parsedBody['intro_file'])) {
-            $intro = UploadedFile::fromArray($parsedBody['intro_file'], $station->getRadioTempDir());
+        if (!empty($data['intro_file'])) {
+            $station = $request->getStation();
+            $intro = UploadedFile::fromArray($data['intro_file'], $station->getRadioTempDir());
             $this->mountRepo->setIntro($record, $intro);
         }
 
-        return $response->withJson($this->viewRecord($record, $request));
+        return $record;
     }
 
-    public function deleteAction(
-        ServerRequest $request,
-        Response $response,
-        string $station_id,
-        string $id,
-    ): ResponseInterface {
-        $record = $this->getRecord($this->getStation($request), $id);
-
-        if (null === $record) {
-            return $response->withStatus(404)
-                ->withJson(Error::notFound());
-        }
+    protected function deleteRecord(object $record): void
+    {
+        parent::deleteRecord($record);
 
         $this->mountRepo->destroy($record);
-
-        return $response->withJson(Status::deleted());
     }
 }

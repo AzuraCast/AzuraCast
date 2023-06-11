@@ -4,13 +4,14 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin;
 
+use App\Controller\SingleActionInterface;
 use App\Entity\Settings;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Version;
 use Psr\Http\Message\ResponseInterface;
 
-final class SettingsAction
+final class SettingsAction implements SingleActionInterface
 {
     public function __construct(
         private readonly Version $version,
@@ -19,7 +20,8 @@ final class SettingsAction
 
     public function __invoke(
         ServerRequest $request,
-        Response $response
+        Response $response,
+        array $params
     ): ResponseInterface {
         $router = $request->getRouter();
 

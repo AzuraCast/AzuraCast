@@ -119,8 +119,7 @@ final class ServicesController
 
     public function statusAction(
         ServerRequest $request,
-        Response $response,
-        string $station_id
+        Response $response
     ): ResponseInterface {
         $station = $request->getStation();
 
@@ -139,8 +138,7 @@ final class ServicesController
 
     public function reloadAction(
         ServerRequest $request,
-        Response $response,
-        string $station_id
+        Response $response
     ): ResponseInterface {
         // Reloading attempts to update configuration without restarting broadcasting, if possible and supported.
         $station = $request->getStation();
@@ -165,8 +163,7 @@ final class ServicesController
 
     public function restartAction(
         ServerRequest $request,
-        Response $response,
-        string $station_id
+        Response $response
     ): ResponseInterface {
         // Restarting will always shut down and restart any services.
         $station = $request->getStation();
@@ -193,9 +190,11 @@ final class ServicesController
     public function frontendAction(
         ServerRequest $request,
         Response $response,
-        string $station_id,
-        string $do = 'restart'
+        array $params
     ): ResponseInterface {
+        /** @var string $do */
+        $do = $params['do'] ?? 'restart';
+
         $station = $request->getStation();
         $frontend = $this->adapters->getFrontendAdapter($station);
 
@@ -237,9 +236,11 @@ final class ServicesController
     public function backendAction(
         ServerRequest $request,
         Response $response,
-        string $station_id,
-        string $do = 'restart'
+        array $params
     ): ResponseInterface {
+        /** @var string $do */
+        $do = $params['do'] ?? 'restart';
+
         $station = $request->getStation();
         $backend = $this->adapters->getBackendAdapter($station);
 

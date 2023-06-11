@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Admin\Debug;
 
 use App\Container\LoggerAwareTrait;
+use App\Controller\SingleActionInterface;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Sync\NowPlaying\Task\NowPlayingTask;
@@ -12,7 +13,7 @@ use Monolog\Handler\TestHandler;
 use Monolog\Level;
 use Psr\Http\Message\ResponseInterface;
 
-final class NowPlayingAction
+final class NowPlayingAction implements SingleActionInterface
 {
     use LoggerAwareTrait;
 
@@ -24,7 +25,7 @@ final class NowPlayingAction
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        string $station_id
+        array $params
     ): ResponseInterface {
         $testHandler = new TestHandler(Level::Debug, false);
         $this->logger->pushHandler($testHandler);

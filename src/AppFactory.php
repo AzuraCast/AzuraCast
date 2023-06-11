@@ -16,7 +16,7 @@ use Monolog\Registry;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Slim\App;
 use Slim\Factory\ServerRequestCreatorFactory;
-use Slim\Handlers\Strategies\RequestResponseNamedArgs;
+use Slim\Handlers\Strategies\RequestResponse;
 
 final class AppFactory
 {
@@ -54,8 +54,7 @@ final class AppFactory
         $container->set(App::class, $app);
 
         $routeCollector = $app->getRouteCollector();
-
-        $routeCollector->setDefaultInvocationStrategy(new RequestResponseNamedArgs());
+        $routeCollector->setDefaultInvocationStrategy(new RequestResponse());
 
         $environment = $container->get(Environment::class);
         if ($environment->isProduction()) {

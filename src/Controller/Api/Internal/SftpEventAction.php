@@ -6,6 +6,7 @@ namespace App\Controller\Api\Internal;
 
 use App\Container\EntityManagerAwareTrait;
 use App\Container\LoggerAwareTrait;
+use App\Controller\SingleActionInterface;
 use App\Entity\Repository\StorageLocationRepository;
 use App\Entity\SftpUser;
 use App\Entity\StorageLocation;
@@ -19,7 +20,7 @@ use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\Messenger\MessageBus;
 use Throwable;
 
-final class SftpEventAction
+final class SftpEventAction implements SingleActionInterface
 {
     use LoggerAwareTrait;
     use EntityManagerAwareTrait;
@@ -33,7 +34,8 @@ final class SftpEventAction
 
     public function __invoke(
         ServerRequest $request,
-        Response $response
+        Response $response,
+        array $params
     ): ResponseInterface {
         $errorResponse = $response->withStatus(500)->withJson(['success' => false]);
 

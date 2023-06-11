@@ -4,13 +4,14 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Admin\Backups;
 
+use App\Controller\SingleActionInterface;
 use App\Entity\Enums\StorageLocationTypes;
 use App\Entity\Repository\StorageLocationRepository;
 use App\Entity\StorageLocation;
 use App\Exception\NotFoundException;
 use InvalidArgumentException;
 
-abstract class AbstractFileAction
+abstract class AbstractFileAction implements SingleActionInterface
 {
     public function __construct(
         protected readonly StorageLocationRepository $storageLocationRepo

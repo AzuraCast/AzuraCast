@@ -6,19 +6,21 @@ namespace App\Controller\Api\Internal;
 
 use App\Container\EntityManagerAwareTrait;
 use App\Container\LoggerAwareTrait;
+use App\Controller\SingleActionInterface;
 use App\Entity\SftpUser;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
 
-final class SftpAuthAction
+final class SftpAuthAction implements SingleActionInterface
 {
     use LoggerAwareTrait;
     use EntityManagerAwareTrait;
 
     public function __invoke(
         ServerRequest $request,
-        Response $response
+        Response $response,
+        array $params
     ): ResponseInterface {
         $errorResponse = $response
             ->withStatus(500)

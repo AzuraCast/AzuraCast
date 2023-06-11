@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Api\Internal;
 
 use App\Container\LoggerAwareTrait;
+use App\Controller\SingleActionInterface;
 use App\Enums\StationPermissions;
 use App\Exception\PermissionDeniedException;
 use App\Http\Response;
@@ -12,7 +13,7 @@ use App\Http\ServerRequest;
 use App\Radio\Frontend\Blocklist\BlocklistParser;
 use Psr\Http\Message\ResponseInterface;
 
-final class ListenerAuthAction
+final class ListenerAuthAction implements SingleActionInterface
 {
     use LoggerAwareTrait;
 
@@ -24,7 +25,7 @@ final class ListenerAuthAction
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        string $station_id
+        array $params
     ): ResponseInterface {
         $station = $request->getStation();
 

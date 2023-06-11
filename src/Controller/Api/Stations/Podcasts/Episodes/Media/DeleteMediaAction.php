@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Stations\Podcasts\Episodes\Media;
 
+use App\Controller\SingleActionInterface;
 use App\Entity\Api\Error;
 use App\Entity\Api\Status;
 use App\Entity\PodcastEpisode;
@@ -44,7 +45,7 @@ use Psr\Http\Message\ResponseInterface;
         new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
     ]
 )]
-final class DeleteMediaAction
+final class DeleteMediaAction implements SingleActionInterface
 {
     public function __construct(
         private readonly PodcastEpisodeRepository $episodeRepo,
@@ -54,12 +55,13 @@ final class DeleteMediaAction
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        string $station_id,
-        string $podcast_id,
-        string $episode_id
+        array $params
     ): ResponseInterface {
+        /** @var string $episodeId */
+        $episodeId = $params['episode_id'];
+
         $station = $request->getStation();
-        $episode = $this->episodeRepo->fetchEpisodeForStation($station, $episode_id);
+        $episode = $this->episodeRepo->fetchEpisodeForStation($station, $episodeId);
 
         if (!($episode instanceof PodcastEpisode)) {
             return $response->withStatus(404)

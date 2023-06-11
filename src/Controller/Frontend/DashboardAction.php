@@ -5,18 +5,20 @@ declare(strict_types=1);
 namespace App\Controller\Frontend;
 
 use App\Container\SettingsAwareTrait;
+use App\Controller\SingleActionInterface;
 use App\Enums\GlobalPermissions;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
 
-final class DashboardAction
+final class DashboardAction implements SingleActionInterface
 {
     use SettingsAwareTrait;
 
     public function __invoke(
         ServerRequest $request,
-        Response $response
+        Response $response,
+        array $params
     ): ResponseInterface {
         $settings = $this->readSettings();
 

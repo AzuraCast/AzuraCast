@@ -5,22 +5,25 @@ declare(strict_types=1);
 namespace App\Controller\Frontend\PublicPages;
 
 use App\Container\EntityManagerAwareTrait;
+use App\Controller\SingleActionInterface;
 use App\Exception\StationNotFoundException;
 use App\Exception\StationUnsupportedException;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
 
-final class OnDemandAction
+final class OnDemandAction implements SingleActionInterface
 {
     use EntityManagerAwareTrait;
 
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        string $station_id,
-        ?string $embed = null
+        array $params
     ): ResponseInterface {
+        /** @var string|null $embed */
+        $embed = $params['embed'] ?? null;
+
         $station = $request->getStation();
 
         if (!$station->getEnablePublicPage()) {

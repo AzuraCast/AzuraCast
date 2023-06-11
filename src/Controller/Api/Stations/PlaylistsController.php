@@ -149,7 +149,7 @@ final class PlaylistsController extends AbstractScheduledEntityController
     public function listAction(
         ServerRequest $request,
         Response $response,
-        string $station_id
+        array $params
     ): ResponseInterface {
         $station = $request->getStation();
 
@@ -186,8 +186,7 @@ final class PlaylistsController extends AbstractScheduledEntityController
      */
     public function scheduleAction(
         ServerRequest $request,
-        Response $response,
-        string $station_id
+        Response $response
     ): ResponseInterface {
         $station = $request->getStation();
 

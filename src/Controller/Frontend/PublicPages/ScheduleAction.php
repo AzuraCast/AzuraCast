@@ -4,19 +4,22 @@ declare(strict_types=1);
 
 namespace App\Controller\Frontend\PublicPages;
 
+use App\Controller\SingleActionInterface;
 use App\Exception\StationNotFoundException;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
 
-final class ScheduleAction
+final class ScheduleAction implements SingleActionInterface
 {
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        string $station_id,
-        ?string $embed = null
+        array $params
     ): ResponseInterface {
+        /** @var string|null $embed */
+        $embed = $params['embed'] ?? null;
+
         $station = $request->getStation();
 
         if (!$station->getEnablePublicPage()) {

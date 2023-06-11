@@ -5,18 +5,20 @@ declare(strict_types=1);
 namespace App\Controller\Frontend\Profile;
 
 use App\Container\EntityManagerAwareTrait;
+use App\Controller\SingleActionInterface;
 use App\Enums\SupportedThemes;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
 
-final class ThemeAction
+final class ThemeAction implements SingleActionInterface
 {
     use EntityManagerAwareTrait;
 
     public function __invoke(
         ServerRequest $request,
-        Response $response
+        Response $response,
+        array $params
     ): ResponseInterface {
         $user = $request->getUser();
 

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Stations\Mounts\Intro;
 
+use App\Controller\SingleActionInterface;
 use App\Entity\Api\Status;
 use App\Entity\Repository\StationMountRepository;
 use App\Http\Response;
@@ -34,7 +35,7 @@ use Psr\Http\Message\ResponseInterface;
         new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
     ]
 )]
-final class DeleteIntroAction
+final class DeleteIntroAction implements SingleActionInterface
 {
     public function __construct(
         private readonly StationMountRepository $mountRepo,
@@ -44,9 +45,11 @@ final class DeleteIntroAction
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        string $station_id,
-        string $id
+        array $params
     ): ResponseInterface {
+        /** @var string $id */
+        $id = $params['id'];
+
         $station = $request->getStation();
 
         $mount = $this->mountRepo->requireForStation($id, $station);

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Admin;
 
+use App\Controller\Api\AbstractApiCrudController;
 use App\Entity\Api\Admin\StorageLocation as ApiStorageLocation;
 use App\Entity\Repository\StorageLocationRepository;
 use App\Entity\StorageLocation;
@@ -17,7 +18,7 @@ use RuntimeException;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-/** @extends AbstractAdminApiCrudController<StorageLocation> */
+/** @extends AbstractApiCrudController<StorageLocation> */
 #[
     OA\Get(
         path: '/admin/storage_locations',
@@ -131,7 +132,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
         ]
     )
 ]
-final class StorageLocationsController extends AbstractAdminApiCrudController
+final class StorageLocationsController extends AbstractApiCrudController
 {
     protected string $entityClass = StorageLocation::class;
     protected string $resourceRouteName = 'api:admin:storage_location';
@@ -146,7 +147,8 @@ final class StorageLocationsController extends AbstractAdminApiCrudController
 
     public function listAction(
         ServerRequest $request,
-        Response $response
+        Response $response,
+        array $params
     ): ResponseInterface {
         $qb = $this->em->createQueryBuilder();
 

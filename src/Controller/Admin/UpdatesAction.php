@@ -6,12 +6,13 @@ namespace App\Controller\Admin;
 
 use App\Container\EnvironmentAwareTrait;
 use App\Container\SettingsAwareTrait;
+use App\Controller\SingleActionInterface;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Version;
 use Psr\Http\Message\ResponseInterface;
 
-final class UpdatesAction
+final class UpdatesAction implements SingleActionInterface
 {
     use EnvironmentAwareTrait;
     use SettingsAwareTrait;
@@ -23,7 +24,8 @@ final class UpdatesAction
 
     public function __invoke(
         ServerRequest $request,
-        Response $response
+        Response $response,
+        array $params
     ): ResponseInterface {
         $settings = $this->readSettings();
 

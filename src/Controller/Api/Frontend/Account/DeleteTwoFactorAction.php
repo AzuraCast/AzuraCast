@@ -5,18 +5,20 @@ declare(strict_types=1);
 namespace App\Controller\Api\Frontend\Account;
 
 use App\Container\EntityManagerAwareTrait;
+use App\Controller\SingleActionInterface;
 use App\Entity\Api\Status;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
 
-final class DeleteTwoFactorAction
+final class DeleteTwoFactorAction implements SingleActionInterface
 {
     use EntityManagerAwareTrait;
 
     public function __invoke(
         ServerRequest $request,
-        Response $response
+        Response $response,
+        array $params
     ): ResponseInterface {
         $user = $request->getUser();
         $user = $this->em->refetch($user);

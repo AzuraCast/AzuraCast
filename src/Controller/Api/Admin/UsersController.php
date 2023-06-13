@@ -218,6 +218,18 @@ class UsersController extends AbstractAdminApiCrudController
         return $response->withJson(Entity\Api\Status::updated());
     }
 
+    protected function fromArray(array $data, ?object $record = null, array $context = []): object
+    {
+        /** @var User $record */
+        $record = parent::fromArray($data, $record, $context);
+
+        if (!empty($data['new_password'])) {
+            $record->setNewPassword($data['new_password']);
+        }
+
+        return $record;
+    }
+
     public function deleteAction(
         ServerRequest $request,
         Response $response,

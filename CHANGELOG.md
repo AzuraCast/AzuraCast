@@ -3,6 +3,9 @@
 These changes have not yet been incorporated into a stable release, but if you are on the latest version of the rolling
 release channel, you can take advantage of these new features and fixes.
 
+- A bug preventing administrators from properly setting passwords for users via the Administer Users panel has been
+  fixed.
+
 ---
 
 # AzuraCast 0.18.3 (Jun 5, 2023)

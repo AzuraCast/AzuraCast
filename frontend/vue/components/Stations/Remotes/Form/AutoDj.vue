@@ -68,7 +68,7 @@
                 </template>
                 <template #description>
                     {{
-                        $gettext('If the port you broadcast to is different from the one you listed in the URL above, specify the source port here.')
+                        $gettext('If the port you broadcast to is different from the stream URL, specify the source port here.')
                     }}
                 </template>
             </b-wrapped-form-group>
@@ -83,7 +83,7 @@
                 </template>
                 <template #description>
                     {{
-                        $gettext('If the mountpoint (i.e. /radio.mp3) or Shoutcast SID (i.e. 2) you broadcast to is different from the one listed above, specify the source mount point here.')
+                        $gettext('If the mountpoint (i.e. /radio.mp3) or Shoutcast SID (i.e. 2) you broadcast to is different from the stream URL, specify the source mount point here.')
                     }}
                 </template>
             </b-wrapped-form-group>

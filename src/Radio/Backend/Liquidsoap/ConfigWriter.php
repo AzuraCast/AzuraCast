@@ -1012,7 +1012,7 @@ final class ConfigWriter implements EventSubscriberInterface
                     {$formatString},
                     fun () -> begin
                         if (live_enabled()) then
-                            "#{recording_base_path}/#{live_dj()}/{$recordPathPrefix}_%Y%m%d-%H%M%S.#{recording_extension}.tmp"
+                            time.string("#{recording_base_path}/#{live_dj()}/{$recordPathPrefix}_%Y%m%d-%H%M%S.#{recording_extension}.tmp")
                         else
                             ""
                         end

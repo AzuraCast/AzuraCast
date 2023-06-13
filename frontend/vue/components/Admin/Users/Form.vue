@@ -19,7 +19,6 @@
                 input-type="password"
             >
                 <template #label>
-                    {{ $gettext('Reset Password') }}
                     {{ $gettext('Password') }}
                 </template>
                 <template

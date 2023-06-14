@@ -48,6 +48,8 @@ final class GetMeAction extends UsersController implements SingleActionInterface
 
         $email = $user->getEmail();
 
+        $return['roles'] = [];
+
         $return['avatar'] = [
             'url_32' => $this->avatar->getAvatar($email, 32),
             'url_64' => $this->avatar->getAvatar($email, 64),

@@ -232,6 +232,16 @@ final class ConfigWriter implements EventSubscriberInterface
             # Track live transition for crossfades.
             to_live = ref(false)
             ignore(to_live)
+            
+            # Reimplement LS's now-deprecated drop_metadata function.
+            def drop_metadata(~id=null(), s)
+                let {metadata=_, ...tracks} = source.tracks(s)
+                source(id=id, tracks)
+            end
+            
+            # Transport for HTTPS outputs.
+            https_transport = http.transport.ssl()
+            ignore(https_transport)
             LIQ
         );
 
@@ -1287,12 +1297,19 @@ final class ConfigWriter implements EventSubscriberInterface
         $outputParams[] = 'password = "' . $password . '"';
 
         $protocol = $mount->getAutodjProtocol();
-        if (!empty($mount->getAutodjMount())) {
-            if (StreamProtocols::Icy === $protocol) {
+
+        $mountPoint = $mount->getAutodjMount();
+
+        if (StreamProtocols::Icy === $protocol) {
+            if (!empty($mountPoint)) {
                 $outputParams[] = 'icy_id = ' . $id;
-            } else {
-                $outputParams[] = 'mount = "' . self::cleanUpString($mount->getAutodjMount()) . '"';
             }
+        } else {
+            if (empty($mountPoint)) {
+                $mountPoint = '/';
+            }
+
+            $outputParams[] = 'mount = "' . self::cleanUpString($mountPoint) . '"';
         }
 
         $outputParams[] = 'name = "' . self::cleanUpString($station->getName()) . '"';
@@ -1309,8 +1326,8 @@ final class ConfigWriter implements EventSubscriberInterface
         $outputParams[] = 'public = ' . ($mount->getIsPublic() ? 'true' : 'false');
         $outputParams[] = 'encoding = "' . $charset . '"';
 
-        if (!$mount->getIsShoutcast() && null !== $protocol) {
-            $outputParams[] = 'protocol="' . $protocol->value . '"';
+        if (StreamProtocols::Https === $protocol) {
+            $outputParams[] = 'transport=https_transport';
         }
 
         if ($format->sendIcyMetadata()) {

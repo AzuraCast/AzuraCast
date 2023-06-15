@@ -335,6 +335,10 @@ const visibleFieldKeys = computed(() => {
 });
 
 const perPage = computed(() => {
+    if (!props.paginated) {
+        return -1;
+    }
+
     return settings.value?.perPage ?? props.defaultPerPage;
 });
 

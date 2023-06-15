@@ -4,88 +4,40 @@
         ref="$modal"
         size="xl"
         centered
-        :title="langHeader"
+        :loading="loading"
+        :title="$gettext('Apply Playlist to Folders')"
+        @hidden="clearContents"
     >
-        <div class="form-row">
-            <div class="col-md-6">
-                <b-form-fieldset>
-                    <b-form-markup>
-                        <template #label>
-                            {{ $gettext('Playlist:') }}
-                        </template>
+        <b-overlay
+            variant="card"
+            :show="loading"
+        >
+            <div class="form-row">
+                <div class="col-md-6">
+                    <b-form-fieldset>
+                        <b-form-markup id="apply_to_playlist_name">
+                            <template #label>
+                                {{ $gettext('Playlist:') }}
+                            </template>
 
-                        
-                        <pre class="typography-body-1">{{ row.markup }}</pre>
-                    </b-form-markup>
-                </b-form-fieldset>
+                            {{ applyToResults.playlist.name }}
+                        </b-form-markup>
+                    </b-form-fieldset>
+                </div>
+                <div class="col-md-6"/>
             </div>
-            <div class="col-md-6">
 
-            </div>
-        </div>
-
-
-        <b-row class="mb-3 align-items-center">
-            <b-col md="6">
-
-                <b-wrapped-form-group
-                    v-if="row.is_field"
-                    :id="'form_edit_'+row.field_name"
-                    :field="v$[row.field_name]"
-                    input-type="textarea"
-                    :input-attrs="{class: 'text-preformatted mb-3', spellcheck: 'false', 'max-rows': 20, rows: 5}"
-                />
-
-                </b-form-fieldset>
-
-
-                <b-button
-                    size="sm"
-                    variant="primary"
-                    :disabled="dirHistory.length === 0"
-                    @click.prevent="pageBack"
-                >
-                    <icon icon="chevron_left"/>
-                    {{ $gettext('Back') }}
-                </b-button>
-            </b-col>
-            <b-col
-                md="6"
-                class="text-right"
-            >
-                <h6 class="m-0">
-                    {{ destinationDirectory }}
-                </h6>
-            </b-col>
-        </b-row>
-        <b-row>
-            <b-col md="12">
+            <div style="max-height: 400px; overflow-y: scroll">
                 <data-table
-                    id="station_media"
-                    ref="$datatable"
-                    :show-toolbar="false"
-                    :selectable="false"
                     :fields="fields"
-                    :api-url="listDirectoriesUrl"
-                    :request-config="requestConfig"
-                >
-                    <template #cell(directory)="row">
-                        <div class="is_dir">
-                            <span class="file-icon">
-                                <icon icon="folder"/>
-                            </span>
+                    :items="applyToResults.directories"
+                    :show-toolbar="false"
+                    selectable
+                    @row-selected="onRowSelected"
+                />
+            </div>
+        </b-overlay>
 
-                            <a
-                                href="#"
-                                @click.prevent="enterDirectory(row.item.path)"
-                            >
-                                {{ row.item.name }}
-                            </a>
-                        </div>
-                    </template>
-                </data-table>
-            </b-col>
-        </b-row>
         <template #modal-footer>
             <b-button
                 variant="default"
@@ -95,9 +47,9 @@
             </b-button>
             <b-button
                 variant="primary"
-                @click="doMove"
+                @click="save"
             >
-                {{ $gettext('Move to Directory') }}
+                {{ $gettext('Apply to Folders') }}
             </b-button>
         </template>
     </b-modal>
@@ -105,110 +57,98 @@
 
 <script setup>
 import DataTable from '~/components/Common/DataTable.vue';
-import {forEach} from 'lodash';
-import Icon from '~/components/Common/Icon';
-import {computed, h, ref} from "vue";
+import {ref} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import {useNotify} from "~/vendor/bootstrapVue";
 import {useAxios} from "~/vendor/axios";
 import BFormFieldset from "~/components/Form/BFormFieldset.vue";
 import BFormMarkup from "~/components/Form/BFormMarkup.vue";
-
-const props = defineProps({
-    selectedItems: {
-        type: Object,
-        required: true
-    },
-    currentDirectory: {
-        type: String,
-        required: true
-    },
-    batchUrl: {
-        type: String,
-        required: true
-    },
-    listDirectoriesUrl: {
-        type: String,
-        required: true
-    }
-});
+import {useVuelidateOnForm} from '~/functions/useVuelidateOnForm';
+import {map} from "lodash";
+import {useResettableRef} from "~/functions/useResettableRef";
 
 const emit = defineEmits(['relist']);
 
-
-const destinationDirectory = ref('');
-const dirHistory = ref([]);
+const $modal = ref(); // Template Ref
 
 const {$gettext} = useTranslate();
 
-const fields = [
-    {key: 'directory', label: $gettext('Directory'), sortable: false}
+let fields = [
+    {
+        key: 'name',
+        isRowHeader: true,
+        label: $gettext('Directory')
+    }
 ];
 
-const langHeader = computed(() => {
-    return $gettext('Apply Playlist to Folders');
+const loading = ref(true);
+const applyToUrl = ref(null);
+const {record: applyToResults, reset: resetApplyToResults} = useResettableRef({
+    playlist: {
+        id: null,
+        name: ''
+    },
+    directories: [],
 });
 
-const $modal = ref(); // Template Ref
+const selectedDirs = ref([]);
+const onRowSelected = (items) => {
+    selectedDirs.value = map(items, 'path');
+};
+
+const {form, resetForm} = useVuelidateOnForm(
+    {
+        copyPlaylist: {}
+    },
+    {
+        copyPlaylist: false
+    }
+);
+
+const clearContents = () => {
+    applyToUrl.value = null;
+    selectedDirs.value = [];
+
+    resetApplyToResults();
+    resetForm();
+};
+
+const {axios} = useAxios();
+
+const open = (newApplyToUrl) => {
+    clearContents();
+
+    applyToUrl.value = newApplyToUrl;
+    loading.value = true;
+    $modal.value?.show();
+
+    axios.get(newApplyToUrl).then((resp) => {
+        applyToResults.value = resp.data;
+        loading.value = false;
+    });
+};
 
 const close = () => {
-    dirHistory.value = [];
-    destinationDirectory.value = '';
-
     $modal.value.hide();
 };
 
 const {wrapWithLoading, notifySuccess} = useNotify();
-const {axios} = useAxios();
 
-const doMove = () => {
-    (props.selectedItems.all.length) && wrapWithLoading(
-        axios.put(props.batchUrl, {
-            'do': 'move',
-            'currentDirectory': props.currentDirectory,
-            'directory': destinationDirectory.value,
-            'files': props.selectedItems.files,
-            'dirs': props.selectedItems.directories
+const save = () => {
+    (form.dirs.length) && wrapWithLoading(
+        axios.put(applyToUrl.value, {
+            ...form,
+            dirs: selectedDirs.value
         })
     ).then(() => {
-        let notifyMessage = $gettext('Files moved:');
-        let itemNameNodes = [];
-        forEach(props.selectedItems.all, (item) => {
-            itemNameNodes.push(h('div', {}, item.path_short));
-        });
-
-        notifySuccess(itemNameNodes, {
-            title: notifyMessage
-        });
+        notifySuccess($gettext('Playlist successfully applied to folders.'));
     }).finally(() => {
         close();
         emit('relist');
     });
 };
 
-const $datatable = ref(); // Template Ref
-
-const enterDirectory = (path) => {
-    dirHistory.value.push(path);
-    destinationDirectory.value = path;
-
-    $datatable.value.refresh();
-};
-
-const pageBack = () => {
-    dirHistory.value.pop();
-
-    let newDirectory = dirHistory.value.slice(-1)[0];
-    if (typeof newDirectory === 'undefined' || null === newDirectory) {
-        newDirectory = '';
-    }
-
-    destinationDirectory.value = newDirectory;
-    $datatable.value.refresh();
-};
-
-const requestConfig = (config) => {
-    config.params.currentDirectory = destinationDirectory.value;
-    return config;
-};
+defineExpose({
+    open
+});
 </script>

@@ -81,28 +81,34 @@
                                     {{ langToggleButton(row.item) }}
                                 </b-dropdown-item>
                                 <b-dropdown-item
-                                    v-if="row.item.source === 'songs'"
+                                    v-if="row.item.links.reshuffle"
+                                    @click.prevent="doModify(row.item.links.reshuffle)"
+                                >
+                                    {{ $gettext('Reshuffle') }}
+                                </b-dropdown-item>
+                                <b-dropdown-item
+                                    v-if="row.item.links.import"
                                     @click.prevent="doImport(row.item.links.import)"
                                 >
                                     {{ $gettext('Import from PLS/M3U') }}
                                 </b-dropdown-item>
                                 <b-dropdown-item
-                                    v-if="row.item.source === 'songs' && row.item.order === 'sequential'"
+                                    v-if="row.item.links.order"
                                     @click.prevent="doReorder(row.item.links.order)"
                                 >
                                     {{ $gettext('Reorder') }}
                                 </b-dropdown-item>
                                 <b-dropdown-item
-                                    v-if="row.item.source === 'songs' && row.item.order !== 'random'"
+                                    v-if="row.item.links.queue"
                                     @click.prevent="doQueue(row.item.links.queue)"
                                 >
                                     {{ $gettext('Playback Queue') }}
                                 </b-dropdown-item>
                                 <b-dropdown-item
-                                    v-if="row.item.order === 'shuffle'"
-                                    @click.prevent="doModify(row.item.links.reshuffle)"
+                                    v-if="row.item.links.applyto"
+                                    @click.prevent="doApplyTo(row.item.links.applyto)"
                                 >
-                                    {{ $gettext('Reshuffle') }}
+                                    {{ $gettext('Apply to Folders') }}
                                 </b-dropdown-item>
                                 <b-dropdown-item @click.prevent="doClone(row.item.name, row.item.links.clone)">
                                     {{ $gettext('Duplicate') }}
@@ -254,6 +260,10 @@
         @relist="relist"
         @needs-restart="mayNeedRestart"
     />
+    <apply-to-modal
+        ref="$applyToModal"
+        @relist="relist"
+    />
 </template>
 
 <script setup>
@@ -265,6 +275,7 @@ import ImportModal from './Playlists/ImportModal';
 import QueueModal from './Playlists/QueueModal';
 import Icon from '~/components/Common/Icon';
 import CloneModal from './Playlists/CloneModal';
+import ApplyToModal from "./Playlists/ApplyToModal.vue";
 import humanizeDuration from 'humanize-duration';
 import {useAzuraCast} from "~/vendor/azuracast";
 import {useTranslate} from "~/vendor/gettext";
@@ -367,6 +378,12 @@ const $cloneModal = ref(); // Template Ref
 const doClone = (name, url) => {
     $cloneModal.value?.open(name, url);
 };
+
+const $applyToModal = ref(); // Template Ref
+
+const doApplyTo = (url) => {
+    $applyToModal.value?.open(url);
+}
 
 const {
     mayNeedRestart: originalMayNeedRestart,

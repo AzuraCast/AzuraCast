@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Api\Stations\Playlists;
 
 use App\Controller\SingleActionInterface;
+use App\Entity\Repository\StationPlaylistRepository;
 use App\Flysystem\StationFilesystems;
 use App\Http\Response;
 use App\Http\ServerRequest;
@@ -14,6 +15,7 @@ use Psr\Http\Message\ResponseInterface;
 final class GetApplyToAction implements SingleActionInterface
 {
     public function __construct(
+        private readonly StationPlaylistRepository $playlistRepo,
         private readonly StationFilesystems $stationFilesystems
     ) {
     }
@@ -22,8 +24,14 @@ final class GetApplyToAction implements SingleActionInterface
         ServerRequest $request,
         Response $response,
         array $params
-    ): ResponseInterface {
+    ): ResponseInterface
+    {
+        /** @var string $id */
+        $id = $params['id'];
+
         $station = $request->getStation();
+
+        $record = $this->playlistRepo->requireForStation($id, $station);
         $fsMedia = $this->stationFilesystems->getMediaFilesystem($station);
 
         // Iterate all directories to show them as selectable.
@@ -32,16 +40,26 @@ final class GetApplyToAction implements SingleActionInterface
         )->sortByPath();
 
         $directories = [
-            '/' => '/ (' . __('Base Directory') . ')',
+            [
+                'path' => '/',
+                'name' => '/ (' . __('Base Directory') . ')',
+            ],
         ];
 
         /** @var StorageAttributes $dir */
         foreach ($fsIterator->getIterator() as $dir) {
-            $directories[$dir->path()] = $dir->path();
+            $directories[] = [
+                'path' => $dir->path(),
+                'name' => $dir->path(),
+            ];
         }
 
         return $response->withJson(
             [
+                'playlist' => [
+                    'id' => $record->getIdRequired(),
+                    'name' => $record->getName(),
+                ],
                 'directories' => $directories,
             ]
         );

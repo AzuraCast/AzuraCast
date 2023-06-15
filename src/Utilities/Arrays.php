@@ -106,4 +106,21 @@ final class Arrays
 
         return $merged;
     }
+
+    /**
+     * @template T of object
+     *
+     * @param array<array-key, T> $objects
+     * @param callable $keyFunction
+     * @return array<array-key, T>
+     */
+    public static function keyByCallable(array $objects, callable $keyFunction): array
+    {
+        $newArray = [];
+        foreach ($objects as $object) {
+            $newArray[$keyFunction($object)] = $object;
+        }
+
+        return $newArray;
+    }
 }

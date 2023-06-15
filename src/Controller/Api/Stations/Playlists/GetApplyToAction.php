@@ -24,8 +24,7 @@ final class GetApplyToAction implements SingleActionInterface
         ServerRequest $request,
         Response $response,
         array $params
-    ): ResponseInterface
-    {
+    ): ResponseInterface {
         /** @var string $id */
         $id = $params['id'];
 

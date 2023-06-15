@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Api\Stations\Playlists;
 
 use App\Controller\SingleActionInterface;
+use App\Entity\Api\Status;
 use App\Entity\Repository\StationPlaylistFolderRepository;
 use App\Entity\Repository\StationPlaylistRepository;
 use App\Http\Response;
@@ -42,9 +43,22 @@ final class PutApplyToAction extends AbstractClonableAction implements SingleAct
                     $record,
                     $record->getName() . ' - ' . $directory
                 );
+            } else {
+                $playlist = $record;
             }
 
-            $this->folderRepo->setPlaylistsForFolder();
+            $this->folderRepo->addPlaylistsToFolder(
+                $station,
+                $directory,
+                [$playlist]
+            );
         }
+
+        return $response->withJson(
+            new Status(
+                true,
+                __('Playlist applied to folders.')
+            )
+        );
     }
 }

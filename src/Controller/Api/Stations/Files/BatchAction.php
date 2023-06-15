@@ -195,7 +195,7 @@ final class BatchAction implements SingleActionInterface
 
         foreach ($result->directories as $dir) {
             try {
-                $this->playlistFolderRepo->setPlaylistsForFolder($station, $playlists, $dir);
+                $this->playlistFolderRepo->setPlaylistsForFolder($station, $dir, $playlists);
             } catch (Exception $e) {
                 $result->errors[] = $dir . ': ' . $e->getMessage();
             }

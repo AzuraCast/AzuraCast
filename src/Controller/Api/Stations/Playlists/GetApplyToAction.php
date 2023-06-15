@@ -41,7 +41,7 @@ final class GetApplyToAction implements SingleActionInterface
 
         $directories = [
             [
-                'path' => '/',
+                'path' => "",
                 'name' => '/ (' . __('Base Directory') . ')',
             ],
         ];
@@ -50,7 +50,7 @@ final class GetApplyToAction implements SingleActionInterface
         foreach ($fsIterator->getIterator() as $dir) {
             $directories[] = [
                 'path' => $dir->path(),
-                'name' => $dir->path(),
+                'name' => '/' . $dir->path(),
             ];
         }
 

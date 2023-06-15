@@ -13,7 +13,7 @@
             :show="loading"
         >
             <div class="form-row">
-                <div class="col-md-6">
+                <div class="col-md-4">
                     <b-form-fieldset>
                         <b-form-markup id="apply_to_playlist_name">
                             <template #label>
@@ -24,10 +24,21 @@
                         </b-form-markup>
                     </b-form-fieldset>
                 </div>
-                <div class="col-md-6"/>
+                <div class="col-md-8">
+                    <b-form-fieldset>
+                        <b-wrapped-form-checkbox
+                            id="form_applyto_copy_playlist"
+                            :field="v$.copyPlaylist"
+                        >
+                            <template #label>
+                                {{ $gettext('Create New Playlist for Each Folder') }}
+                            </template>
+                        </b-wrapped-form-checkbox>
+                    </b-form-fieldset>
+                </div>
             </div>
 
-            <div style="max-height: 400px; overflow-y: scroll">
+            <div style="max-height: 300px; overflow-y: scroll">
                 <data-table
                     :fields="fields"
                     :items="applyToResults.directories"
@@ -66,6 +77,7 @@ import BFormMarkup from "~/components/Form/BFormMarkup.vue";
 import {useVuelidateOnForm} from '~/functions/useVuelidateOnForm';
 import {map} from "lodash";
 import {useResettableRef} from "~/functions/useResettableRef";
+import BWrappedFormCheckbox from "~/components/Form/BWrappedFormCheckbox.vue";
 
 const emit = defineEmits(['relist']);
 
@@ -96,7 +108,7 @@ const onRowSelected = (items) => {
     selectedDirs.value = map(items, 'path');
 };
 
-const {form, resetForm} = useVuelidateOnForm(
+const {form, v$, resetForm} = useVuelidateOnForm(
     {
         copyPlaylist: {}
     },
@@ -135,16 +147,23 @@ const close = () => {
 const {wrapWithLoading, notifySuccess} = useNotify();
 
 const save = () => {
-    (form.dirs.length) && wrapWithLoading(
-        axios.put(applyToUrl.value, {
-            ...form,
-            dirs: selectedDirs.value
-        })
-    ).then(() => {
-        notifySuccess($gettext('Playlist successfully applied to folders.'));
-    }).finally(() => {
-        close();
-        emit('relist');
+    v$.value.$touch();
+    v$.value.$validate().then((isValid) => {
+        if (!isValid) {
+            return;
+        }
+
+        (selectedDirs.value.length) && wrapWithLoading(
+            axios.put(applyToUrl.value, {
+                ...form.value,
+                directories: selectedDirs.value
+            })
+        ).then(() => {
+            notifySuccess($gettext('Playlist successfully applied to folders.'));
+        }).finally(() => {
+            close();
+            emit('relist');
+        });
     });
 };
 

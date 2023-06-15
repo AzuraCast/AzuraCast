@@ -84,7 +84,6 @@ final class ListAction implements SingleActionInterface
                 ->setParameter('storageLocation', $station->getMediaStorageLocation())
                 ->setParameter('path', $pathLike);
 
-            // Apply searching
             $foldersInDirQuery = $this->em->createQuery(
                 <<<'DQL'
                     SELECT spf, sp
@@ -106,6 +105,7 @@ final class ListAction implements SingleActionInterface
             )->setParameter('storageLocation', $storageLocation)
                 ->setParameter('path', $pathLike);
 
+            // Apply searching
             if ($isSearch) {
                 if ('special:unprocessable' === $searchPhrase) {
                     $mediaQueryBuilder = null;
@@ -200,8 +200,10 @@ final class ListAction implements SingleActionInterface
                 }
             } else {
                 $files = $fs->listContents($currentDir, false)->filter(
-                    fn(StorageAttributes $attributes) => $currentDir !== ''
-                        && !StationFilesystems::isProtectedDir($attributes->path())
+                    fn(StorageAttributes $attributes) => !(
+                        $currentDir === ''
+                        && StationFilesystems::isProtectedDir($attributes->path())
+                    )
                 );
             }
 

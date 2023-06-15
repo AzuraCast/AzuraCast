@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use App\Flysystem\StationFilesystems;
 use App\Media\Metadata;
 use App\Media\MetadataInterface;
 use App\Normalizer\Attributes\DeepNormalize;
@@ -38,6 +39,12 @@ class StationMedia implements
     public const DIR_ALBUM_ART = '.albumart';
     public const DIR_FOLDER_COVERS = '.covers';
     public const DIR_WAVEFORMS = '.waveforms';
+
+    public const PROTECTED_DIRS = [
+        self::DIR_ALBUM_ART,
+        self::DIR_FOLDER_COVERS,
+        self::DIR_WAVEFORMS,
+    ];
 
     #[
         OA\Property(
@@ -531,12 +538,12 @@ class StationMedia implements
 
     public static function getArtPath(string $uniqueId): string
     {
-        return self::DIR_ALBUM_ART . '/' . $uniqueId . '.jpg';
+        return StationFilesystems::DIR_ALBUM_ART . '/' . $uniqueId . '.jpg';
     }
 
     public static function getFolderArtPath(string $folderHash): string
     {
-        return self::DIR_FOLDER_COVERS . '/' . $folderHash . '.jpg';
+        return StationFilesystems::DIR_FOLDER_COVERS . '/' . $folderHash . '.jpg';
     }
 
     public static function getFolderHashForPath(string $path): string
@@ -549,6 +556,6 @@ class StationMedia implements
 
     public static function getWaveformPath(string $uniqueId): string
     {
-        return self::DIR_WAVEFORMS . '/' . $uniqueId . '.json';
+        return StationFilesystems::DIR_WAVEFORMS . '/' . $uniqueId . '.json';
     }
 }

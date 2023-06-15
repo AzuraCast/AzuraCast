@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Controller\Api\Stations;
 
 use App\Controller\Api\Traits\CanSortResults;
+use App\Entity\Enums\PlaylistOrders;
+use App\Entity\Enums\PlaylistSources;
 use App\Entity\StationPlaylist;
 use App\Entity\StationSchedule;
 use App\Http\Response;
@@ -238,6 +240,8 @@ final class PlaylistsController extends AbstractScheduledEntityController
             throw new InvalidArgumentException(sprintf('Record must be an instance of %s.', $this->entityClass));
         }
 
+        /** @var StationPlaylist $record */
+
         $return = $this->toArray($record);
 
         $songTotals = $this->em->createQuery(
@@ -259,30 +263,13 @@ final class PlaylistsController extends AbstractScheduledEntityController
         $router = $request->getRouter();
 
         $return['links'] = [
+            'self' => $router->fromHere(
+                routeName: $this->resourceRouteName,
+                routeParams: ['id' => $record->getId()],
+                absolute: !$isInternal
+            ),
             'toggle' => $router->fromHere(
-                'api:stations:playlist:toggle',
-                ['id' => $record->getId()],
-                [],
-                !$isInternal
-            ),
-            'order' => $router->fromHere(
-                'api:stations:playlist:order',
-                ['id' => $record->getId()],
-                [],
-                !$isInternal
-            ),
-            'reshuffle' => $router->fromHere(
-                routeName: 'api:stations:playlist:reshuffle',
-                routeParams: ['id' => $record->getId()],
-                absolute: !$isInternal
-            ),
-            'queue' => $router->fromHere(
-                routeName: 'api:stations:playlist:queue',
-                routeParams: ['id' => $record->getId()],
-                absolute: !$isInternal
-            ),
-            'import' => $router->fromHere(
-                routeName: 'api:stations:playlist:import',
+                routeName: 'api:stations:playlist:toggle',
                 routeParams: ['id' => $record->getId()],
                 absolute: !$isInternal
             ),
@@ -291,13 +278,43 @@ final class PlaylistsController extends AbstractScheduledEntityController
                 routeParams: ['id' => $record->getId()],
                 absolute: !$isInternal
             ),
-            'self' => $router->fromHere(
-                $this->resourceRouteName,
-                ['id' => $record->getId()],
-                [],
-                !$isInternal
-            ),
         ];
+
+        if (PlaylistSources::Songs === $record->getSource()) {
+            if (PlaylistOrders::Sequential === $record->getOrder()) {
+                $return['links']['order'] = $router->fromHere(
+                    routeName: 'api:stations:playlist:order',
+                    routeParams: ['id' => $record->getId()],
+                    absolute: !$isInternal
+                );
+            }
+
+            if (PlaylistOrders::Random !== $record->getOrder()) {
+                $return['links']['queue'] = $router->fromHere(
+                    routeName: 'api:stations:playlist:queue',
+                    routeParams: ['id' => $record->getId()],
+                    absolute: !$isInternal
+                );
+            }
+
+            $return['links']['import'] = $router->fromHere(
+                routeName: 'api:stations:playlist:import',
+                routeParams: ['id' => $record->getId()],
+                absolute: !$isInternal
+            );
+
+            $return['links']['reshuffle'] = $router->fromHere(
+                routeName: 'api:stations:playlist:reshuffle',
+                routeParams: ['id' => $record->getId()],
+                absolute: !$isInternal
+            );
+
+            $return['links']['applyto'] = $router->fromHere(
+                routeName: 'api:stations:playlist:applyto',
+                routeParams: ['id' => $record->getId()],
+                absolute: !$isInternal
+            );
+        }
 
         foreach (['pls', 'm3u'] as $format) {
             $return['links']['export'][$format] = $router->fromHere(

@@ -1,4 +1,9 @@
 {
+  "compilerOptions": {
+    "paths": {
+      "~/*": ["./vue/*"]
+    },
+  },
   "vueCompilerOptions": {
     "target": 3
   }

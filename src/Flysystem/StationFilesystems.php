@@ -11,6 +11,16 @@ use App\Flysystem\Adapter\LocalFilesystemAdapter;
 
 final class StationFilesystems
 {
+    public const DIR_ALBUM_ART = '.albumart';
+    public const DIR_FOLDER_COVERS = '.covers';
+    public const DIR_WAVEFORMS = '.waveforms';
+
+    public const PROTECTED_DIRS = [
+        self::DIR_ALBUM_ART,
+        self::DIR_FOLDER_COVERS,
+        self::DIR_WAVEFORMS,
+    ];
+
     public function __construct(
         private readonly StorageLocationRepository $storageLocationRepo
     ) {
@@ -86,5 +96,16 @@ final class StationFilesystems
         string $path
     ): LocalFilesystem {
         return new LocalFilesystem(new LocalFilesystemAdapter($path));
+    }
+
+    public static function isProtectedDir(string $path): bool
+    {
+        foreach (self::PROTECTED_DIRS as $protectedDir) {
+            if (str_starts_with($path, $protectedDir)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

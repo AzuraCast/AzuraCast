@@ -3,6 +3,19 @@
 These changes have not yet been incorporated into a stable release, but if you are on the latest version of the rolling
 release channel, you can take advantage of these new features and fixes.
 
+## New Features/Changes
+
+## Code Quality/Technical Changes
+
+## Bug Fixes
+
+---
+
+# AzuraCast 0.18.4 (Jun 16, 2023)
+
+This release backports a bug fix from the current Rolling Release version so that users can take advantage of it
+immediately:
+
 - A bug preventing administrators from properly setting passwords for users via the Administer Users panel has been
   fixed.
 

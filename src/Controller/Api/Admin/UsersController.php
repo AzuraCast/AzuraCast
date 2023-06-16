@@ -220,7 +220,7 @@ class UsersController extends AbstractAdminApiCrudController
 
     protected function fromArray(array $data, ?object $record = null, array $context = []): object
     {
-        /** @var User $record */
+        /** @var Entity\User $record */
         $record = parent::fromArray($data, $record, $context);
 
         if (!empty($data['new_password'])) {

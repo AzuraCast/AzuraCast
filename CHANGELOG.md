@@ -11,7 +11,7 @@ release channel, you can take advantage of these new features and fixes.
 
 ---
 
-# AzuraCast 0.18.4 (Jun 16, 2023)
+# AzuraCast 0.18.5 (Jun 16, 2023)
 
 This release backports a bug fix from the current Rolling Release version so that users can take advantage of it
 immediately:

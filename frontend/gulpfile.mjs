@@ -106,7 +106,7 @@ task('concat-js', function () {
         .pipe(dest('../web/static/dist'));
 });
 
-task('build-vue', run('webpack -c webpack.config.js'));
+task('build-vue', run('webpack -c webpack.config.mjs'));
 
 task('build-js', function () {
     return src(['./js/*.js'])

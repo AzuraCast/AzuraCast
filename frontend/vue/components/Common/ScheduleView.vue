@@ -6,10 +6,9 @@
 </template>
 
 <script setup>
-import '@fullcalendar/core/vdom';
 import FullCalendar from '@fullcalendar/vue3';
 import allLocales from '@fullcalendar/core/locales-all';
-import luxon2Plugin from '@fullcalendar/luxon2';
+import luxon3Plugin from '@fullcalendar/luxon3';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import {shallowRef} from "vue";
 import {useAzuraCast} from "~/vendor/azuracast";
@@ -51,7 +50,7 @@ const {localeShort, timeConfig} = useAzuraCast();
 const calendarOptions = shallowRef({
     locale: localeShort,
     locales: allLocales,
-    plugins: [luxon2Plugin, timeGridPlugin],
+    plugins: [luxon3Plugin, timeGridPlugin],
     initialView: 'timeGridWeek',
     timeZone: props.stationTimeZone,
     themeSystem: 'bootstrap',

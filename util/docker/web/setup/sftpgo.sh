@@ -2,7 +2,13 @@
 set -e
 set -x
 
-# Package installed in 00_packages.sh
+ARCHITECTURE=amd64
+if [[ "$(uname -m)" = "aarch64" ]]; then
+    ARCHITECTURE=arm64
+fi
+
+wget -O /tmp/liquidsoap.deb "https://github.com/drakkan/sftpgo/releases/download/v2.5.2/sftpgo_2.5.2-1_${ARCHITECTURE}.deb"
+dpkg -i /tmp/liquidsoap.deb
 
 mkdir -p /var/azuracast/sftpgo/persist /var/azuracast/sftpgo/backups
 

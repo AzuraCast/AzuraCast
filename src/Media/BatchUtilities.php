@@ -11,7 +11,6 @@ use App\Entity\Repository\StationMediaRepository;
 use App\Entity\Repository\StorageLocationRepository;
 use App\Entity\Repository\UnprocessableMediaRepository;
 use App\Entity\StationMedia;
-use App\Entity\StationPlaylist;
 use App\Entity\StationPlaylistFolder;
 use App\Entity\StorageLocation;
 use App\Entity\UnprocessableMedia;
@@ -80,7 +79,7 @@ final class BatchUtilities
      * @param StorageLocation $storageLocation
      * @param ExtendedFilesystemInterface|null $fs
      *
-     * @return StationPlaylist[] Affected playlists
+     * @return array<int, int> Affected playlist IDs
      */
     public function handleDelete(
         array $files,
@@ -96,11 +95,7 @@ final class BatchUtilities
          */
         foreach ($this->iterateMedia($storageLocation, $files) as $media) {
             try {
-                foreach ($this->mediaRepo->remove($media, false, $fs) as $playlistId => $playlist) {
-                    if (!isset($affectedPlaylists[$playlistId])) {
-                        $affectedPlaylists[$playlistId] = $playlist;
-                    }
-                }
+                $affectedPlaylists += $this->mediaRepo->remove($media, false, $fs);
             } catch (Throwable) {
             }
         }

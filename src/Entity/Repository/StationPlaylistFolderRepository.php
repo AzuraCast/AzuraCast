@@ -4,11 +4,9 @@ declare(strict_types=1);
 
 namespace App\Entity\Repository;
 
-use App\Entity\Enums\PlaylistSources;
 use App\Entity\Station;
 use App\Entity\StationPlaylist;
 use App\Entity\StationPlaylistFolder;
-use App\Utilities\Arrays;
 
 /**
  * @extends AbstractStationBasedRepository<StationPlaylistFolder>
@@ -17,18 +15,21 @@ final class StationPlaylistFolderRepository extends AbstractStationBasedReposito
 {
     protected string $entityClass = StationPlaylistFolder::class;
 
+    /**
+     * @param Station $station
+     * @param string $path
+     * @param array<int, int> $playlists An array of Playlist IDs (id => weight)
+     */
     public function addPlaylistsToFolder(
         Station $station,
         string $path,
         array $playlists
     ): void {
-        $playlists = $this->getEligiblePlaylists($playlists);
-
         foreach ($this->getPlaylistIdsForFolder($station, $path) as $playlistId) {
             unset($playlists[$playlistId]);
         }
 
-        foreach ($playlists as $playlistId => $playlistRecord) {
+        foreach ($playlists as $playlistId => $playlistWeight) {
             /** @var StationPlaylist $playlist */
             $playlist = $this->em->getReference(StationPlaylist::class, $playlistId);
 
@@ -42,15 +43,13 @@ final class StationPlaylistFolderRepository extends AbstractStationBasedReposito
     /**
      * @param Station $station
      * @param string $path
-     * @param StationPlaylist[] $playlists
+     * @param array<int, int> $playlists An array of Playlist IDs (id => weight)
      */
     public function setPlaylistsForFolder(
         Station $station,
         string $path,
         array $playlists
     ): void {
-        $playlists = $this->getEligiblePlaylists($playlists);
-
         $toDelete = [];
 
         foreach ($this->getPlaylistIdsForFolder($station, $path) as $playlistId) {
@@ -75,7 +74,7 @@ final class StationPlaylistFolderRepository extends AbstractStationBasedReposito
                 ->execute();
         }
 
-        foreach ($playlists as $playlistId => $playlistRecord) {
+        foreach ($playlists as $playlistId => $playlistWeight) {
             /** @var StationPlaylist $playlist */
             $playlist = $this->em->getReference(StationPlaylist::class, $playlistId);
 
@@ -84,21 +83,6 @@ final class StationPlaylistFolderRepository extends AbstractStationBasedReposito
         }
 
         $this->em->flush();
-    }
-
-    /**
-     * @param array<array-key, StationPlaylist> $playlists
-     * @return array<int, StationPlaylist>
-     */
-    protected function getEligiblePlaylists(array $playlists): array
-    {
-        return Arrays::keyByCallable(
-            array_filter(
-                $playlists,
-                fn(StationPlaylist $playlist) => PlaylistSources::Songs === $playlist->getSource()
-            ),
-            fn(StationPlaylist $playlist) => $playlist->getIdRequired()
-        );
     }
 
     /**

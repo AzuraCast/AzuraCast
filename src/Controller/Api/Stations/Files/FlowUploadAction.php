@@ -6,12 +6,12 @@ namespace App\Controller\Api\Stations\Files;
 
 use App\Container\EntityManagerAwareTrait;
 use App\Container\LoggerAwareTrait;
+use App\Controller\Api\Traits\HasMediaSearch;
 use App\Controller\SingleActionInterface;
 use App\Entity\Api\Error;
 use App\Entity\Api\Status;
 use App\Entity\Repository\StationPlaylistMediaRepository;
 use App\Entity\StationMedia;
-use App\Entity\StationPlaylist;
 use App\Exception\CannotProcessMediaException;
 use App\Exception\StorageLocationFullException;
 use App\Http\Response;
@@ -24,6 +24,7 @@ final class FlowUploadAction implements SingleActionInterface
 {
     use LoggerAwareTrait;
     use EntityManagerAwareTrait;
+    use HasMediaSearch;
 
     public function __construct(
         private readonly MediaProcessor $mediaProcessor,
@@ -81,22 +82,14 @@ final class FlowUploadAction implements SingleActionInterface
 
         // If the user is looking at a playlist's contents, add uploaded media to that playlist.
         if ($stationMedia instanceof StationMedia && !empty($allParams['searchPhrase'])) {
-            $searchPhrase = $allParams['searchPhrase'];
+            [$searchPhrase, $playlist] = $this->parseSearchQuery(
+                $station,
+                $allParams['searchPhrase']
+            );
 
-            if (str_starts_with($searchPhrase, 'playlist:')) {
-                $playlistName = substr($searchPhrase, 9);
-
-                $playlist = $this->em->getRepository(StationPlaylist::class)->findOneBy(
-                    [
-                        'station_id' => $station->getId(),
-                        'name' => $playlistName,
-                    ]
-                );
-
-                if ($playlist instanceof StationPlaylist) {
-                    $this->spmRepo->addMediaToPlaylist($stationMedia, $playlist);
-                    $this->em->flush();
-                }
+            if (null !== $playlist) {
+                $this->spmRepo->addMediaToPlaylist($stationMedia, $playlist);
+                $this->em->flush();
             }
         }
 

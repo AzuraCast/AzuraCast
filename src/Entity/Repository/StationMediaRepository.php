@@ -10,7 +10,6 @@ use App\Entity\Song;
 use App\Entity\Station;
 use App\Entity\StationMedia;
 use App\Entity\StationMediaCustomField;
-use App\Entity\StationPlaylist;
 use App\Entity\StorageLocation;
 use App\Exception\NotFoundException;
 use App\Flysystem\ExtendedFilesystemInterface;
@@ -338,7 +337,7 @@ final class StationMediaRepository extends Repository
      * @param bool $deleteFile Whether to remove the media file itself (disabled for batch operations).
      * @param ExtendedFilesystemInterface|null $fs
      *
-     * @return StationPlaylist[] The IDs as keys and records as values for all affected playlists.
+     * @return array<int, int> Affected playlist records (id => id)
      */
     public function remove(
         StationMedia $media,

@@ -6,6 +6,7 @@ namespace App\Controller\Api\Stations\Files;
 
 use App\Container\EntityManagerAwareTrait;
 use App\Controller\Api\Traits\CanSortResults;
+use App\Controller\Api\Traits\HasMediaSearch;
 use App\Controller\SingleActionInterface;
 use App\Entity\Api\FileList;
 use App\Entity\Api\FileListMedia;
@@ -30,6 +31,7 @@ final class ListAction implements SingleActionInterface
 {
     use CanSortResults;
     use EntityManagerAwareTrait;
+    use HasMediaSearch;
 
     public function __construct(
         private readonly CacheInterface $cache,
@@ -51,8 +53,13 @@ final class ListAction implements SingleActionInterface
 
         $currentDir = $request->getParam('currentDirectory', '');
 
-        $searchPhrase = trim($request->getParam('searchPhrase', ''));
-        $isSearch = !empty($searchPhrase);
+        $searchPhraseFull = trim($request->getParam('searchPhrase', ''));
+        $isSearch = !empty($searchPhraseFull);
+
+        [$searchPhrase, $playlist, $special] = $this->parseSearchQuery(
+            $station,
+            $searchPhraseFull
+        );
 
         $cacheKeyParts = [
             'files_list',
@@ -61,7 +68,7 @@ final class ListAction implements SingleActionInterface
         ];
 
         if ($isSearch) {
-            $cacheKeyParts[] = 'search_' . rawurlencode($searchPhrase);
+            $cacheKeyParts[] = 'search_' . rawurlencode($searchPhraseFull);
         }
 
         $cacheKey = implode('.', $cacheKeyParts);
@@ -107,7 +114,7 @@ final class ListAction implements SingleActionInterface
 
             // Apply searching
             if ($isSearch) {
-                if ('special:unprocessable' === $searchPhrase) {
+                if ('unprocessable' === $special) {
                     $mediaQueryBuilder = null;
 
                     $unprocessableMediaRaw = $unprocessableMediaQuery->toIterable(
@@ -115,37 +122,33 @@ final class ListAction implements SingleActionInterface
                         $unprocessableMediaQuery::HYDRATE_ARRAY
                     );
                 } else {
-                    if ('special:duplicates' === $searchPhrase) {
+                    if ('duplicates' === $special) {
                         $mediaQueryBuilder->andWhere(
                             $mediaQueryBuilder->expr()->in(
                                 'sm.song_id',
                                 <<<'DQL'
-                                    SELECT sm2.song_id FROM
-                                    App\Entity\StationMedia sm2
-                                    WHERE sm2.storage_location = :storageLocation
-                                    GROUP BY sm2.song_id
-                                    HAVING COUNT(sm2.id) > 1
+                                SELECT sm2.song_id FROM
+                                App\Entity\StationMedia sm2
+                                WHERE sm2.storage_location = :storageLocation
+                                GROUP BY sm2.song_id
+                                HAVING COUNT(sm2.id) > 1
                                 DQL
                             )
                         );
-                    } elseif ('special:unassigned' === $searchPhrase) {
+                    } elseif ('unassigned' === $special) {
                         $mediaQueryBuilder->andWhere(
                             'sm.id NOT IN (SELECT spm2.media_id FROM App\Entity\StationPlaylistMedia spm2)'
                         );
-                    } else {
-                        [$searchPhrase, $playlist] = $this->parseSearchQuery($station, $searchPhrase);
+                    } elseif (null !== $playlist) {
+                        $mediaQueryBuilder->andWhere(
+                            'sm.id IN (SELECT spm2.media_id FROM App\Entity\StationPlaylistMedia spm2 '
+                            . 'WHERE spm2.playlist = :playlist)'
+                        )->setParameter('playlist', $playlist);
+                    }
 
-                        if (null !== $playlist) {
-                            $mediaQueryBuilder->andWhere(
-                                'sm.id IN (SELECT spm2.media_id FROM App\Entity\StationPlaylistMedia spm2 '
-                                . 'WHERE spm2.playlist = :playlist)'
-                            )->setParameter('playlist', $playlist);
-                        }
-
-                        if (!empty($searchPhrase)) {
-                            $mediaQueryBuilder->andWhere('(sm.title LIKE :query OR sm.artist LIKE :query)')
-                                ->setParameter('query', '%' . $searchPhrase . '%');
-                        }
+                    if (!empty($searchPhrase)) {
+                        $mediaQueryBuilder->andWhere('(sm.title LIKE :query OR sm.artist LIKE :query)')
+                            ->setParameter('query', '%' . $searchPhrase . '%');
                     }
 
                     $unprocessableMediaRaw = [];
@@ -191,7 +194,7 @@ final class ListAction implements SingleActionInterface
             }
 
             if ($isSearch) {
-                if ('special:unprocessable' === $searchPhrase) {
+                if ('unprocessable' === $special) {
                     /** @var string[] $files */
                     $files = array_keys($unprocessableMedia);
                 } else {
@@ -290,56 +293,6 @@ final class ListAction implements SingleActionInterface
         );
 
         return $paginator->write($response);
-    }
-
-    private function parseSearchQuery(
-        Station $station,
-        string $query
-    ): array {
-        $playlist = null;
-
-        if (str_contains($query, 'playlist:')) {
-            preg_match('/playlist:(\S*)/', $query, $matches, PREG_UNMATCHED_AS_NULL);
-
-            if ($matches[1]) {
-                $playlistId = $matches[1];
-
-                if (!is_numeric($playlistId)) {
-                    $playlistNameLookupRaw = $this->em->createQuery(
-                        <<<'DQL'
-                        SELECT sp.id, sp.name
-                        FROM App\Entity\StationPlaylist sp
-                        WHERE sp.station = :station
-                        DQL
-                    )->setParameter('station', $station)
-                        ->getArrayResult();
-
-                    foreach ($playlistNameLookupRaw as $playlistRow) {
-                        $shortName = StationPlaylist::generateShortName($playlistRow['name']);
-                        if ($shortName === $playlistId) {
-                            $playlistId = $playlistRow['id'];
-                            break;
-                        }
-                    }
-                }
-
-                $playlist = $this->em->getRepository(StationPlaylist::class)
-                    ->findOneBy(
-                        [
-                            'station' => $station,
-                            'id' => $playlistId,
-                        ]
-                    );
-            }
-
-            $query = trim(str_replace($matches[0] ?? '', '', $query));
-        }
-
-        if (in_array($query, ['*', '%'], true)) {
-            $query = '';
-        }
-
-        return [$query, $playlist];
     }
 
     private function processMediaInDir(

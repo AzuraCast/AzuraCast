@@ -50,7 +50,9 @@ final class PutApplyToAction extends AbstractClonableAction implements SingleAct
             $this->folderRepo->addPlaylistsToFolder(
                 $station,
                 $directory,
-                [$playlist]
+                [
+                    $playlist->getIdRequired() => 0,
+                ]
             );
         }
 

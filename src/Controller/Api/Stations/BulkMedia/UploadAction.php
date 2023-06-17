@@ -10,6 +10,7 @@ use App\Entity\Api\StationPlaylistImportResult;
 use App\Entity\Repository\CustomFieldRepository;
 use App\Entity\Repository\StationPlaylistMediaRepository;
 use App\Entity\Repository\StationPlaylistRepository;
+use App\Entity\Station;
 use App\Entity\StationMedia;
 use App\Entity\StationPlaylist;
 use App\Exception\ValidationException;
@@ -138,6 +139,7 @@ final class UploadAction implements SingleActionInterface
             try {
                 $rowResult = $this->processRow(
                     $record,
+                    $station,
                     $row,
                     $customFieldShortNames,
                     $playlistsByName
@@ -174,6 +176,7 @@ final class UploadAction implements SingleActionInterface
 
     private function processRow(
         StationMedia $record,
+        Station $station,
         array $row,
         array $customFieldShortNames,
         array $playlistsByName
@@ -203,7 +206,9 @@ final class UploadAction implements SingleActionInterface
                     foreach (explode(',', $value) as $playlistName) {
                         $playlistShortName = StationPlaylist::generateShortName($playlistName);
                         if (isset($playlistsByName[$playlistShortName])) {
-                            $playlists[] = $playlistsByName[$playlistShortName];
+                            /** @var StationPlaylist $playlist */
+                            $playlist = $playlistsByName[$playlistShortName];
+                            $playlists[$playlist->getIdRequired()] = 0;
                         }
                     }
                 }
@@ -233,13 +238,11 @@ final class UploadAction implements SingleActionInterface
         }
 
         if ($hasPlaylists) {
-            $this->spmRepo->clearPlaylistsFromMedia($record);
-            foreach ($playlists as $playlistId) {
-                $playlist = $this->em->find(StationPlaylist::class, $playlistId);
-                if ($playlist instanceof StationPlaylist) {
-                    $this->spmRepo->addMediaToPlaylist($record, $playlist);
-                }
-            }
+            $this->spmRepo->setPlaylistsForMedia(
+                $record,
+                $station,
+                $playlists
+            );
         }
 
         if ($hasCustomFields) {

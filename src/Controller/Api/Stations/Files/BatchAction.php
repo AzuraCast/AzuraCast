@@ -104,14 +104,14 @@ final class BatchAction implements SingleActionInterface
             }
         }
 
-        $affectedPlaylists = $this->batchUtilities->handleDelete(
+        $affectedPlaylistIds = $this->batchUtilities->handleDelete(
             $result->files,
             $result->directories,
             $storageLocation,
             $fs
         );
 
-        $this->writePlaylistChanges($station, $affectedPlaylists);
+        $this->writePlaylistChanges($station, $affectedPlaylistIds);
 
         return $result;
     }
@@ -124,10 +124,11 @@ final class BatchAction implements SingleActionInterface
     ): BatchResult {
         $result = $this->parseRequest($request, $fs, true);
 
-        /** @var StationPlaylist[] $playlists */
+        /** @var array<int, int> $playlists */
         $playlists = [];
-        $playlistWeights = [];
-        $affectedPlaylists = [];
+
+        /** @var array<int, int> $affectedPlaylistIds */
+        $affectedPlaylistIds = [];
 
         foreach ($request->getParam('playlists') as $playlistId) {
             if ('new' === $playlistId) {
@@ -138,25 +139,23 @@ final class BatchAction implements SingleActionInterface
                 $this->em->flush();
 
                 $result->responseRecord = [
-                    'id' => $playlist->getId(),
+                    'id' => $playlist->getIdRequired(),
                     'name' => $playlist->getName(),
                 ];
 
-                $affectedPlaylists[$playlist->getId()] = $playlist->getId();
-                $playlists[$playlist->getId()] = $playlist;
-                $playlistWeights[$playlist->getId()] = 0;
+                $affectedPlaylistIds[$playlist->getIdRequired()] = $playlist->getIdRequired();
+                $playlists[$playlist->getIdRequired()] = 0;
             } else {
                 $playlist = $this->em->getRepository(StationPlaylist::class)->findOneBy(
                     [
-                        'station_id' => $station->getId(),
+                        'station_id' => $station->getIdRequired(),
                         'id' => (int)$playlistId,
                     ]
                 );
 
                 if ($playlist instanceof StationPlaylist) {
-                    $affectedPlaylists[$playlist->getId()] = $playlist->getId();
-                    $playlists[$playlist->getId()] = $playlist;
-                    $playlistWeights[$playlist->getId()] = $this->playlistMediaRepo->getHighestSongWeight($playlist);
+                    $affectedPlaylistIds[$playlist->getIdRequired()] = $playlist->getIdRequired();
+                    $playlists[$playlist->getIdRequired()] = $this->playlistMediaRepo->getHighestSongWeight($playlist);
                 }
             }
         }
@@ -166,27 +165,13 @@ final class BatchAction implements SingleActionInterface
          */
         foreach ($this->batchUtilities->iterateMedia($storageLocation, $result->files) as $media) {
             try {
-                $mediaPlaylists = $this->playlistMediaRepo->clearPlaylistsFromMedia($media, $station);
-                foreach ($mediaPlaylists as $playlistId => $playlistRecord) {
-                    if (!isset($affectedPlaylists[$playlistId])) {
-                        $affectedPlaylists[$playlistId] = $playlistRecord;
-                    }
-                }
-
-                $this->em->flush();
-
-                foreach ($playlists as $playlistRecord) {
-                    /** @var StationPlaylist $playlist */
-                    $playlist = $this->em->refetchAsReference($playlistRecord);
-
-                    $playlistWeights[$playlist->getId()]++;
-                    $weight = $playlistWeights[$playlist->getId()];
-
-                    $this->playlistMediaRepo->addMediaToPlaylist($media, $playlist, $weight);
-                }
+                $affectedPlaylistIds += $this->playlistMediaRepo->setPlaylistsForMedia(
+                    $media,
+                    $station,
+                    $playlists
+                );
             } catch (Exception $e) {
                 $result->errors[] = $media->getPath() . ': ' . $e->getMessage();
-                throw $e;
             }
         }
 
@@ -195,7 +180,11 @@ final class BatchAction implements SingleActionInterface
 
         foreach ($result->directories as $dir) {
             try {
-                $this->playlistFolderRepo->setPlaylistsForFolder($station, $dir, $playlists);
+                $this->playlistFolderRepo->setPlaylistsForFolder(
+                    $station,
+                    $dir,
+                    $playlists
+                );
             } catch (Exception $e) {
                 $result->errors[] = $dir . ': ' . $e->getMessage();
             }
@@ -203,7 +192,7 @@ final class BatchAction implements SingleActionInterface
 
         $this->em->flush();
 
-        $this->writePlaylistChanges($station, $affectedPlaylists);
+        $this->writePlaylistChanges($station, $affectedPlaylistIds);
 
         return $result;
     }

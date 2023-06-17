@@ -31,6 +31,88 @@ final class StationPlaylistMediaRepository extends Repository
     ) {
     }
 
+
+    /**
+     * @param StationMedia $media
+     * @param array<int, int> $playlists Playlists with weight as value (id => weight)
+     * @return array<int, int> Affected playlist IDs (id => id)
+     */
+    public function setPlaylistsForMedia(
+        StationMedia $media,
+        Station $station,
+        array $playlists
+    ): array {
+        $toDelete = [];
+
+        foreach ($this->getPlaylistsForMedia($media, $station) as $playlistId) {
+            if (isset($playlists[$playlistId])) {
+                unset($playlists[$playlistId]);
+            } else {
+                $toDelete[$playlistId] = $playlistId;
+            }
+        }
+
+        if (0 !== count($toDelete)) {
+            $this->em->createQuery(
+                <<<'DQL'
+                DELETE FROM App\Entity\StationPlaylistMedia spm
+                WHERE spm.media = :media
+                AND spm.playlist_id IN (:playlistIds)
+                DQL
+            )->setParameter('media', $media)
+                ->setParameter('playlistIds', $toDelete)
+                ->execute();
+        }
+
+        $added = [];
+
+        foreach ($playlists as $playlistId => $weight) {
+            $playlist = $this->em->find(StationPlaylist::class, $playlistId);
+            if (!($playlist instanceof StationPlaylist)) {
+                continue;
+            }
+
+            if (0 === $weight) {
+                $weight = $this->getHighestSongWeight($playlist) + 1;
+            }
+            if (PlaylistOrders::Sequential !== $playlist->getOrder()) {
+                $weight = random_int(1, $weight);
+            }
+
+            $record = new StationPlaylistMedia($playlist, $media);
+            $record->setWeight($weight);
+            $this->em->persist($record);
+
+            $added[$playlistId] = $playlistId;
+        }
+
+        $this->em->flush();
+
+        return $toDelete + $added;
+    }
+
+    /**
+     * @param StationMedia $media
+     * @param Station $station
+     * @return array<array-key, int>
+     */
+    public function getPlaylistsForMedia(
+        StationMedia $media,
+        Station $station
+    ): array {
+        return $this->em->createQuery(
+            <<<'DQL'
+                SELECT sp.id
+                FROM App\Entity\StationPlaylistMedia spm
+                LEFT JOIN spm.playlist sp
+                WHERE spm.media = :media
+                AND sp.station = :station
+            DQL
+        )->setParameter('media', $media)
+            ->setParameter('station', $station)
+            ->getSingleColumnResult();
+    }
+
     /**
      * Add the specified media to the specified playlist.
      * Must flush the EntityManager after using.
@@ -106,7 +188,7 @@ final class StationPlaylistMediaRepository extends Repository
      * @param StationMedia $media
      * @param Station|null $station
      *
-     * @return StationPlaylist[] The IDs as keys and records as values for all affected playlists.
+     * @return array<int, int> Affected Playlist records (id => id)
      */
     public function clearPlaylistsFromMedia(
         StationMedia $media,
@@ -125,7 +207,7 @@ final class StationPlaylistMediaRepository extends Repository
 
         foreach ($playlists as $spmRow) {
             $playlist = $spmRow->getPlaylist();
-            $affectedPlaylists[$playlist->getId()] = $playlist;
+            $affectedPlaylists[$playlist->getIdRequired()] = $playlist->getIdRequired();
 
             $this->queueRepo->clearForMediaAndPlaylist($media, $playlist);
 

@@ -7,8 +7,9 @@ if [[ "$(uname -m)" = "aarch64" ]]; then
     ARCHITECTURE=arm64
 fi
 
-wget -O /tmp/liquidsoap.deb "https://github.com/drakkan/sftpgo/releases/download/v2.5.2/sftpgo_2.5.2-1_${ARCHITECTURE}.deb"
-dpkg -i /tmp/liquidsoap.deb
+wget -O /tmp/sftpgo.deb "https://github.com/drakkan/sftpgo/releases/download/v2.5.2/sftpgo_2.5.2-1_${ARCHITECTURE}.deb"
+dpkg -i /tmp/sftpgo.deb
+rm -f /tmp/sftpgo.deb
 
 mkdir -p /var/azuracast/sftpgo/persist /var/azuracast/sftpgo/backups
 

@@ -17,6 +17,10 @@ release channel, you can take advantage of these new features and fixes.
 
 ## Bug Fixes
 
+- When adding media to playlists, the system will no longer remove the media from all playlists and then re-add it; it
+  will instead check the existing playlist associations and only add or remove modified ones. This will prevent issues
+  with losing the playback order of media on sequential playlists and other related issues.
+
 ---
 
 # AzuraCast 0.18.5 (Jun 16, 2023)

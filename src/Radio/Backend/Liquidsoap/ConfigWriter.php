@@ -1331,7 +1331,7 @@ final class ConfigWriter implements EventSubscriberInterface
         }
 
         if ($format->sendIcyMetadata()) {
-            $outputParams[] = 'send_icy_metadata="true"';
+            $outputParams[] = 'send_icy_metadata=true';
         }
 
         $outputParams[] = 'radio';

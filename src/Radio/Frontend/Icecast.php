@@ -186,6 +186,7 @@ final class Icecast extends AbstractFrontend
                 'mount-name' => $mountRow->getName(),
                 'charset' => 'UTF8',
                 'stream-name' => $station->getName(),
+                'listenurl' => $this->getUrlForMount($station, $mountRow),
             ];
 
             if (!empty($station->getDescription())) {

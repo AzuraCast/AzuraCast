@@ -49,23 +49,6 @@
             </b-col>
             <b-col md="6">
                 <b-wrapped-form-group
-                    id="edit_form_theme"
-                    :field="form.theme"
-                >
-                    <template #label>
-                        {{ $gettext('Site Theme') }}
-                    </template>
-                    <template #default="slotProps">
-                        <b-form-radio-group
-                            :id="slotProps.id"
-                            v-model="slotProps.field.$model"
-                            stacked
-                            :options="themeOptions"
-                        />
-                    </template>
-                </b-wrapped-form-group>
-
-                <b-wrapped-form-group
                     id="edit_form_show_24_hour_time"
                     :field="form.show_24_hour_time"
                 >
@@ -113,23 +96,6 @@ const localeOptions = computed(() => {
         value: 'default'
     });
     return localeOptions;
-});
-
-const themeOptions = computed(() => {
-    return [
-        {
-            text: $gettext('Prefer System Default'),
-            value: 'browser'
-        },
-        {
-            text: $gettext('Light'),
-            value: 'light'
-        },
-        {
-            text: $gettext('Dark'),
-            value: 'dark'
-        }
-    ];
 });
 
 const show24hourOptions = computed(() => {

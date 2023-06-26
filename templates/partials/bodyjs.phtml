@@ -55,11 +55,4 @@ $app = [
     <?php endif; ?>
 
     var App = <?=json_encode($app, JSON_THROW_ON_ERROR) ?>;
-
-    let currentTheme = document.documentElement.getAttribute('data-theme');
-    if (currentTheme === 'browser') {
-        currentTheme = (window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light';
-    }
-
-    App.theme = currentTheme;
 </script>

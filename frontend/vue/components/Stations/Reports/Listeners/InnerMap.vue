@@ -11,9 +11,9 @@
 </template>
 
 <script setup>
-import {onMounted, provide, ref, shallowRef} from "vue";
+import {onMounted, provide, ref, shallowRef, watch} from "vue";
 import L from "~/vendor/leaflet";
-import {useAzuraCast} from "~/vendor/azuracast";
+import useGetTheme from "~/functions/useGetTheme";
 
 const props = defineProps({
     attribution: {
@@ -27,7 +27,7 @@ const $map = shallowRef();
 
 provide('map', $map);
 
-const {theme} = useAzuraCast();
+const {theme} = useGetTheme();
 
 onMounted(() => {
     // Init map
@@ -41,9 +41,16 @@ onMounted(() => {
     const tileAttribution = 'Map tiles by Carto, under CC BY 3.0. Data by OpenStreetMap, under ODbL.';
 
     L.tileLayer(tileUrl, {
-        theme: theme,
+        theme: theme.value,
         attribution: tileAttribution,
     }).addTo(map);
+
+    watch(theme, (newTheme) => {
+        L.tileLayer(tileUrl, {
+            theme: newTheme,
+            attribution: tileAttribution,
+        }).addTo(map);
+    });
 
     /*
     // Add fullscreen control

@@ -316,9 +316,9 @@ class Settings implements Stringable
     ]
     protected ?SupportedThemes $public_theme = null;
 
-    public function getPublicTheme(): SupportedThemes
+    public function getPublicTheme(): ?SupportedThemes
     {
-        return $this->public_theme ?? SupportedThemes::default();
+        return $this->public_theme;
     }
 
     public function setPublicTheme(?SupportedThemes $publicTheme): void

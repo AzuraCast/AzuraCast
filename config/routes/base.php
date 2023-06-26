@@ -39,9 +39,6 @@ return static function (RouteCollectorProxy $app) {
 
             $group->get('/profile', Controller\Frontend\Profile\IndexAction::class)
                 ->setName('profile:index');
-
-            $group->get('/profile/theme', Controller\Frontend\Profile\ThemeAction::class)
-                ->setName('profile:theme');
         }
     )->add(Middleware\EnableView::class)
         ->add(Middleware\RequireLogin::class);

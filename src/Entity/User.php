@@ -7,7 +7,6 @@ namespace App\Entity;
 use App\Auth;
 use App\Entity\Interfaces\EntityGroupsInterface;
 use App\Entity\Interfaces\IdentifiableEntityInterface;
-use App\Enums\SupportedThemes;
 use App\Normalizer\Attributes\DeepNormalize;
 use App\OpenApi;
 use App\Utilities\Strings;
@@ -72,14 +71,6 @@ class User implements Stringable, IdentifiableEntityInterface
         Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])
     ]
     protected ?string $locale = null;
-
-    #[
-        OA\Property(example: "dark"),
-        ORM\Column(type: 'string', length: 25, nullable: true, enumType: SupportedThemes::class),
-        Attributes\AuditIgnore,
-        Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])
-    ]
-    protected ?SupportedThemes $theme = null;
 
     #[
         OA\Property(example: true),
@@ -223,16 +214,6 @@ class User implements Stringable, IdentifiableEntityInterface
     public function setLocale(?string $locale = null): void
     {
         $this->locale = $locale;
-    }
-
-    public function getTheme(): ?SupportedThemes
-    {
-        return $this->theme;
-    }
-
-    public function setTheme(?SupportedThemes $theme = null): void
-    {
-        $this->theme = $theme;
     }
 
     public function getShow24HourTime(): ?bool

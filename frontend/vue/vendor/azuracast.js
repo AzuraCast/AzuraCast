@@ -10,7 +10,6 @@ export function useAzuraCast() {
         localeShort: App.locale_short ?? 'en',
         localeWithDashes: App.locale_with_dashes ?? 'en-US',
         timeConfig: App.time_config ?? {},
-        apiCsrf: App.api_csrf ?? null,
-        theme: App.theme ?? 'light'
+        apiCsrf: App.api_csrf ?? null
     }
 }

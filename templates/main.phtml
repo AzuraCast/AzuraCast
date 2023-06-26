@@ -18,7 +18,7 @@ $title ??= null;
 $header ??= null;
 ?>
 <!DOCTYPE html>
-<html lang="<?= $customization->getLocale()->getHtmlLang() ?>" data-theme="<?= $customization->getTheme()->value ?>">
+<html lang="<?= $customization->getLocale()->getHtmlLang() ?>">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -115,7 +115,7 @@ endif; ?>">
                 </a>
             </li>
             <li>
-                <a class="dropdown-item" href="<?= $router->named('profile:theme') ?>">
+                <a class="dropdown-item theme-switcher" href="javascript:">
                     <i class="material-icons" aria-hidden="true">invert_colors</i>
                     <?= __('Switch Theme') ?>
                 </a>

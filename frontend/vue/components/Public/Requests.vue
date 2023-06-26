@@ -46,7 +46,7 @@ import AlbumArt from '~/components/Common/AlbumArt';
 import {computed} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import {useAxios} from "~/vendor/axios";
-import {useNotify} from "~/vendor/bootstrapVue";
+import {useNotify} from "~/functions/useNotify";
 
 const props = defineProps({
     requestListUri: {

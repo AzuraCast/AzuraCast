@@ -1,13 +1,10 @@
-import {BootstrapVue} from 'bootstrap-vue';
-
-import 'bootstrap-vue/dist/bootstrap-vue.css';
 import {useTranslate} from "~/vendor/gettext";
-import {useNotifyBus} from "~/vendor/events";
+import {useProgrammatic} from "@oruga-ui/oruga-next";
 
 /* Composition API BootstrapVue utilities */
 export function useNotify() {
     const {$gettext} = useTranslate();
-    const notifyBus = useNotifyBus();
+    const {oruga} = useProgrammatic();
 
     const notify = (message = null, options = {}) => {
         if (document.hidden) {
@@ -15,15 +12,16 @@ export function useNotify() {
         }
 
         const defaults = {
-            variant: 'default',
-            toaster: 'b-toaster-top-right',
-            autoHideDelay: 3000,
-            solid: true
+            rootClass: 'toast-notification',
+            duration: 3000,
+            position: 'top-right',
+            closable: true
         };
 
-        notifyBus.emit('show', {
-            message: message,
-            options: {...defaults, ...options}
+        oruga.notification.open({
+            ...defaults,
+            ...options,
+            message: message
         });
     };
 
@@ -33,8 +31,7 @@ export function useNotify() {
         }
 
         const defaults = {
-            variant: 'danger',
-            title: $gettext('Error')
+            variant: 'danger'
         };
 
         notify(message, {...defaults, ...options});
@@ -48,8 +45,7 @@ export function useNotify() {
         }
 
         const defaults = {
-            variant: 'success',
-            title: $gettext('Success')
+            variant: 'success'
         };
 
         notify(message, {...defaults, ...options});
@@ -57,29 +53,18 @@ export function useNotify() {
         return message;
     };
 
-    const LOADING_TOAST_ID = 'toast-loading';
+    let $loadingComponent;
 
     const showLoading = (message = null, options = {}) => {
-        if (message === null) {
-            message = $gettext('Applying changes...');
-        }
-
-        const defaults = {
-            id: LOADING_TOAST_ID,
-            variant: 'warning',
-            title: $gettext('Please wait...'),
-            autoHideDelay: 10000,
-            isStatus: true
-        };
-
-        notify(message, {...defaults, ...options});
-        return message;
+        $loadingComponent = oruga.loading.open({
+            fullPage: true,
+            container: null
+        });
+        setTimeout(() => $loadingComponent.close(), 3 * 1000);
     };
 
     const hideLoading = () => {
-        notifyBus.emit('hide', {
-            id: LOADING_TOAST_ID
-        });
+        $loadingComponent.close();
     };
 
     let $isAxiosLoading = false;
@@ -114,15 +99,6 @@ export function useNotify() {
     };
 
     return {
-        install(app) {
-            app.config.globalProperties.$notify = notify;
-            app.config.globalProperties.$notifyError = notifyError;
-            app.config.globalProperties.$notifySuccess = notifySuccess;
-            app.config.globalProperties.$showLoading = showLoading;
-            app.config.globalProperties.$hideLoading = hideLoading;
-            app.config.globalProperties.$setLoading = setLoading;
-            app.config.globalProperties.$wrapWithLoading = wrapWithLoading;
-        },
         notify,
         notifyError,
         notifySuccess,
@@ -131,9 +107,4 @@ export function useNotify() {
         setLoading,
         wrapWithLoading
     };
-}
-
-export default function installBootstrapVue(vueApp) {
-    vueApp.use(BootstrapVue);
-    vueApp.use(useNotify());
 }

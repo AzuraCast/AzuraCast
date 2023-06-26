@@ -146,7 +146,7 @@ import {
     MASTER_ME_PRESET_MUSIC_GENERAL
 } from "~/components/Entity/RadioAdapters";
 import {computed, ref, watch} from "vue";
-import {useNotify} from "~/vendor/bootstrapVue";
+import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
 import mergeExisting from "~/functions/mergeExisting";
 import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";

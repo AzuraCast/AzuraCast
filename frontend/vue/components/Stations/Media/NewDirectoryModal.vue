@@ -38,7 +38,7 @@ import {required} from '@vuelidate/validators';
 import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
 import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
 import {ref} from "vue";
-import {useNotify} from "~/vendor/bootstrapVue";
+import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
 import {useTranslate} from "~/vendor/gettext";
 

@@ -1,63 +1,52 @@
 <template>
-    <b-modal
-        :id="id"
-        ref="$modal"
-        :size="size"
-        :centered="centered"
-        :title="title"
-        :busy="loading"
-        :no-enforce-focus="noEnforceFocus"
-        @shown="onShown"
-        @hidden="onHidden"
-    >
+    <modal :id="id"
+           ref="$modal"
+           :size="size"
+           :title="title"
+           :busy="loading"
+           @shown="onShown"
+           @hidden="onHidden">
         <template #default="slotProps">
-            <b-overlay
-                variant="card"
-                :show="loading"
+            <b-alert
+                variant="danger"
+                :show="error != null"
             >
-                <b-alert
-                    variant="danger"
-                    :show="error != null"
-                >
-                    {{ error }}
-                </b-alert>
+                {{ error }}
+            </b-alert>
 
-                <b-form
-                    class="form vue-form"
-                    @submit.prevent="doSubmit"
-                >
-                    <slot
-                        name="default"
-                        v-bind="slotProps"
-                    />
-
-                    <invisible-submit-button />
-                </b-form>
-            </b-overlay>
+            <form class="form vue-form" @submit.prevent="doSubmit">
+                <slot
+                    name="default"
+                    v-bind="slotProps"
+                />
+                <invisible-submit-button/>
+            </form>
         </template>
+    </modal>
 
-        <template #modal-footer="slotProps">
-            <slot
-                name="modal-footer"
-                v-bind="slotProps"
+
+    <template #modal-footer="slotProps">
+        <slot
+            name="modal-footer"
+            v-bind="slotProps"
+        >
+            <o-button
+                variant="default"
+                type="button"
+                @click="hide"
             >
-                <b-button
-                    variant="default"
-                    type="button"
-                    @click="hide"
-                >
-                    {{ $gettext('Close') }}
-                </b-button>
-                <b-button
-                    :variant="(disableSaveButton) ? 'danger' : 'primary'"
-                    type="submit"
-                    @click="doSubmit"
-                >
-                    <slot name="save-button-name">
-                        {{ $gettext('Save Changes') }}
-                    </slot>
-                </b-button>
-            </slot>
+                {{ $gettext('Close') }}
+            </o-button>
+            <o-button
+                :variant="(disableSaveButton) ? 'danger' : 'primary'"
+                type="submit"
+                @click="doSubmit"
+            >
+                <slot name="save-button-name">
+                    {{ $gettext('Save Changes') }}
+                </slot>
+            </o-button>
+        </slot>
         </template>
 
         <template
@@ -76,6 +65,7 @@
 import InvisibleSubmitButton from "~/components/Common/InvisibleSubmitButton.vue";
 import {ref} from "vue";
 import useSlotsExcept from "~/functions/useSlotsExcept";
+import Modal from "~/components/Common/Modal.vue";
 
 const props = defineProps({
     title: {

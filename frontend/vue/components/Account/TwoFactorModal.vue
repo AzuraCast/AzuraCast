@@ -82,7 +82,7 @@ import {minLength, required} from "@vuelidate/validators";
 import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
 import {ref} from "vue";
 import {useResettableRef} from "~/functions/useResettableRef";
-import {useNotify} from "~/vendor/bootstrapVue";
+import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
 
 const props = defineProps({

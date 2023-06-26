@@ -126,7 +126,7 @@ import BWrappedFormCheckbox from "~/components/Form/BWrappedFormCheckbox.vue";
 import objectToFormOptions from "~/functions/objectToFormOptions";
 import StreamingLogView from "~/components/Common/StreamingLogView.vue";
 import {computed, ref} from "vue";
-import {useNotify} from "~/vendor/bootstrapVue";
+import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
 import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
 import {BModal} from "bootstrap-vue";

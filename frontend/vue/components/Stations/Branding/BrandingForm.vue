@@ -108,7 +108,7 @@ import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup.vue";
 import {onMounted, ref} from "vue";
 import {useAxios} from "~/vendor/axios";
 import mergeExisting from "~/functions/mergeExisting";
-import {useNotify} from "~/vendor/bootstrapVue";
+import {useNotify} from "~/functions/useNotify";
 import {useTranslate} from "~/vendor/gettext";
 import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
 

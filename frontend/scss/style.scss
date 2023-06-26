@@ -1,10 +1,31 @@
-@at-root {
-  $theme: 'light';
-  @import 'common';
-  @import 'common-colors';
-}
+// Include functions first (so you can manipulate colors, SVGs, calc, etc)
+@import "bootstrap/scss/functions";
 
-[data-theme="dark"] {
-  $theme: 'dark';
-  @import 'common-colors';
-}
+// Include any default variable overrides here
+
+// Include remainder of required Bootstrap stylesheets (including any separate color mode stylesheets)
+@import "bootstrap/scss/variables";
+@import "bootstrap/scss/variables-dark";
+
+// Include any default map overrides here
+
+// Include remainder of required parts
+@import "bootstrap/scss/maps";
+@import "bootstrap/scss/mixins";
+@import "bootstrap/scss/root";
+
+// Optionally include any other parts as needed
+@import "bootstrap/scss/utilities";
+@import "bootstrap/scss/reboot";
+@import "bootstrap/scss/type";
+@import "bootstrap/scss/images";
+@import "bootstrap/scss/containers";
+@import "bootstrap/scss/grid";
+@import "bootstrap/scss/helpers";
+@import "bootstrap/scss/utilities/api";
+
+// Load Oruga UI
+@import "@oruga-ui/theme-bootstrap/src/assets/scss/bootstrap";
+
+// Add additional custom code here
+

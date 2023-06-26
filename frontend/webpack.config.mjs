@@ -20,8 +20,7 @@ export default {
     resolve: {
         enforceExtension: false,
         alias: {
-            '~': path.resolve(__dirname, './vue'),
-            vue: '@vue/compat'
+            '~': path.resolve(__dirname, './vue')
         },
         extensions: ['.js', '.vue', '.json']
     },

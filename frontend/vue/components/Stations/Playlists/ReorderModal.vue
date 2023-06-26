@@ -97,7 +97,7 @@ import PlayButton from "~/components/Common/PlayButton";
 import InlinePlayer from '~/components/InlinePlayer';
 import {ref} from "vue";
 import {useAxios} from "~/vendor/axios";
-import {useNotify} from "~/vendor/bootstrapVue";
+import {useNotify} from "~/functions/useNotify";
 import {useTranslate} from "~/vendor/gettext";
 
 const loading = ref(true);

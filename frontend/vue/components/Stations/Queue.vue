@@ -87,7 +87,7 @@ import {useTranslate} from "~/vendor/gettext";
 import {ref} from "vue";
 import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
 import useHasDatatable from "~/functions/useHasDatatable";
-import {useNotify} from "~/vendor/bootstrapVue";
+import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
 import {useSweetAlert} from "~/vendor/sweetalert";
 

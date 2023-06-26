@@ -78,7 +78,7 @@ import {useAzuraCast} from "~/vendor/azuracast";
 import {ref} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import {useSweetAlert} from "~/vendor/sweetalert";
-import {useNotify} from "~/vendor/bootstrapVue";
+import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
 
 const listUrl = ref(null);

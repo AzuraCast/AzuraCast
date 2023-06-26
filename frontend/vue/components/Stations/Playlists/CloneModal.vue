@@ -52,7 +52,7 @@ import ModalForm from "~/components/Common/ModalForm";
 import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
 import {ref} from "vue";
 import {useTranslate} from "~/vendor/gettext";
-import {useNotify} from "~/vendor/bootstrapVue";
+import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
 
 const emit = defineEmits(['relist', 'needs-restart']);

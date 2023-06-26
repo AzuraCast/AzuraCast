@@ -118,8 +118,10 @@ task('build-js', function () {
 
 task('build-css', function () {
     return src(['./scss/style.scss'])
-        .pipe(mode.development(init()))
-        .pipe(sass())
+            .pipe(mode.development(init()))
+            .pipe(sass({
+                includePaths: ['node_modules']
+            }))
         .pipe(clean_css())
         .pipe(mode.development(write()))
         .pipe(dest('../web/static/dist'));

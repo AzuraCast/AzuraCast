@@ -18,7 +18,7 @@ import ModalForm from "~/components/Common/ModalForm.vue";
 import AdminStationsCloneModalForm from "~/components/Admin/Stations/CloneModalForm.vue";
 import {ref} from "vue";
 import {useTranslate} from "~/vendor/gettext";
-import {useNotify} from "~/vendor/bootstrapVue";
+import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
 import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
 

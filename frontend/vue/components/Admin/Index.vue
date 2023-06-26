@@ -437,7 +437,7 @@ import {isObject, upperFirst} from 'lodash';
 import RunningBadge from "~/components/Common/Badges/RunningBadge.vue";
 import {onMounted, ref, shallowRef} from "vue";
 import {useAxios} from "~/vendor/axios";
-import {useNotify} from "~/vendor/bootstrapVue";
+import {useNotify} from "~/functions/useNotify";
 
 const props = defineProps({
     adminPanels: {

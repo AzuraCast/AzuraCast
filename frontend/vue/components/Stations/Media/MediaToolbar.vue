@@ -157,7 +157,7 @@ import Icon from '~/components/Common/Icon';
 import '~/vendor/sweetalert';
 import {h, ref, toRef, watch} from "vue";
 import {useTranslate} from "~/vendor/gettext";
-import {useNotify} from "~/vendor/bootstrapVue";
+import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
 import {useSweetAlert} from "~/vendor/sweetalert";
 

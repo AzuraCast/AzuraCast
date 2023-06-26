@@ -1,5 +1,5 @@
 import {inject, provide, ref, shallowRef} from "vue";
-import {useNotify} from "~/vendor/bootstrapVue";
+import {useNotify} from "~/functions/useNotify";
 import {useTranslate} from "~/vendor/gettext";
 
 export const webcasterProps = {

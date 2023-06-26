@@ -181,7 +181,7 @@
 import {computed, ref} from "vue";
 import Icon from "~/components/Common/Icon.vue";
 import {useTranslate} from "~/vendor/gettext";
-import {useNotify} from "~/vendor/bootstrapVue";
+import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
 import {useSweetAlert} from "~/vendor/sweetalert";
 

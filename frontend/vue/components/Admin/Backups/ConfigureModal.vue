@@ -131,7 +131,7 @@ import TimeCode from "~/components/Common/TimeCode.vue";
 import objectToFormOptions from "~/functions/objectToFormOptions.js";
 import {computed, ref} from "vue";
 import {useAxios} from "~/vendor/axios";
-import {useNotify} from "~/vendor/bootstrapVue";
+import {useNotify} from "~/functions/useNotify";
 import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
 
 const props = defineProps({

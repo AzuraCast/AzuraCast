@@ -3,7 +3,7 @@ import VueAxios from "vue-axios";
 import {inject} from "vue";
 import {useAzuraCast} from "~/vendor/azuracast";
 import {useTranslate} from "~/vendor/gettext";
-import {useNotify} from "~/vendor/bootstrapVue";
+import {useNotify} from "~/functions/useNotify";
 
 const injectKey = 'axios';
 

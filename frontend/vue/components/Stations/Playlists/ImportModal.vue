@@ -94,7 +94,7 @@
 <script setup>
 import InvisibleSubmitButton from '~/components/Common/InvisibleSubmitButton';
 import {ref} from "vue";
-import {useNotify} from "~/vendor/bootstrapVue";
+import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
 
 const emit = defineEmits(['relist']);

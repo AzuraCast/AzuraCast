@@ -41,7 +41,7 @@
 <script setup>
 import {onMounted, ref, watch} from "vue";
 import {useAxios} from "~/vendor/axios";
-import {useNotify} from "~/vendor/bootstrapVue";
+import {useNotify} from "~/functions/useNotify";
 
 const props = defineProps({
     id: {

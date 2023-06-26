@@ -84,7 +84,7 @@ import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
 import {onMounted, ref} from "vue";
 import {mayNeedRestartProps, useMayNeedRestart} from "~/functions/useMayNeedRestart";
 import {useAxios} from "~/vendor/axios";
-import {useNotify} from "~/vendor/bootstrapVue";
+import {useNotify} from "~/functions/useNotify";
 
 const props = defineProps({
     ...mayNeedRestartProps,

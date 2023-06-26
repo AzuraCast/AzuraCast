@@ -113,7 +113,7 @@ import {useTranslate} from "~/vendor/gettext";
 import {ref} from "vue";
 import useHasDatatable from "~/functions/useHasDatatable";
 import useHasEditModal from "~/functions/useHasEditModal";
-import {useNotify} from "~/vendor/bootstrapVue";
+import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
 import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
 import {useTriggerDetails, useTypeDetails} from "~/components/Entity/Webhooks";

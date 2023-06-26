@@ -123,7 +123,7 @@ import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
 import {useSweetAlert} from "~/vendor/sweetalert";
 import {useAxios} from "~/vendor/axios";
 import {useTranslate} from "~/vendor/gettext";
-import {useNotify} from "~/vendor/bootstrapVue";
+import {useNotify} from "~/functions/useNotify";
 
 const props = defineProps({
     apiUrl: {

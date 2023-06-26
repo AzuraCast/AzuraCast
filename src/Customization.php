@@ -10,10 +10,8 @@ use App\Container\EnvironmentAwareTrait;
 use App\Entity\Repository\SettingsRepository;
 use App\Entity\Settings;
 use App\Entity\Station;
-use App\Entity\User;
 use App\Enums\SupportedLocales;
 use App\Enums\SupportedThemes;
-use App\Http\ServerRequest;
 use App\Traits\RequestAwareTrait;
 use Psr\Http\Message\ServerRequestInterface;
 
@@ -21,8 +19,6 @@ final class Customization
 {
     use RequestAwareTrait;
     use EnvironmentAwareTrait;
-
-    private ?User $user;
 
     private Settings $settings;
 
@@ -36,12 +32,8 @@ final class Customization
         SettingsRepository $settingsRepo
     ) {
         $this->settings = $settingsRepo->readSettings();
-
         $this->instanceName = $this->settings->getInstanceName() ?? '';
-
-        $this->user = null;
         $this->publicTheme = $this->settings->getPublicTheme();
-
         $this->locale = SupportedLocales::default();
     }
 
@@ -50,9 +42,6 @@ final class Customization
         $this->request = $request;
 
         if (null !== $request) {
-            // Register current user
-            $this->user = $request->getAttribute(ServerRequest::ATTR_USER);
-
             // Register current theme
             $queryParams = $request->getQueryParams();
             if (!empty($queryParams['theme'])) {

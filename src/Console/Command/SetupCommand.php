@@ -57,11 +57,11 @@ final class SetupCommand extends CommandAbstract
 
         // Header display
         if ($isInit) {
-            $io->title(__('AzuraCast Initializing...'));
+            $io->title(__('BoostCast Initializing...'));
         } else {
-            $io->title(__('AzuraCast Setup'));
+            $io->title(__('BoostCast Setup'));
             $io->writeln(
-                __('Welcome to AzuraCast. Please wait while some key dependencies of AzuraCast are set up...')
+                __('Welcome to BoostCast. Please wait while some key dependencies of BoostCast are set up...')
             );
             $io->newLine();
         }
@@ -122,7 +122,7 @@ final class SetupCommand extends CommandAbstract
         if ($update) {
             $io->success(
                 [
-                    __('AzuraCast is now updated to the latest version!'),
+                    __('BoostCast is now updated to the latest version!'),
                 ]
             );
         } else {
@@ -131,7 +131,7 @@ final class SetupCommand extends CommandAbstract
             /** @noinspection HttpUrlsUsage */
             $io->success(
                 [
-                    __('AzuraCast installation complete!'),
+                    __('BoostCast installation complete!'),
                     sprintf(
                         __('Visit %s to complete setup.'),
                         'http://' . $publicIp

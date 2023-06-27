@@ -48,11 +48,11 @@ return static function (App\Event\BuildAdminMenu $e) {
                         'url' => $router->named('admin:debug:index'),
                         'permission' => GlobalPermissions::All,
                     ],
-                    'updates' => [
-                        'label' => __('Update AzuraCast'),
-                        'url' => $router->named('admin:updates:index'),
-                        'permission' => GlobalPermissions::All,
-                    ],
+                    // 'updates' => [
+                    //     'label' => __('Update AzuraCast'),
+                    //     'url' => $router->named('admin:updates:index'),
+                    //     'permission' => GlobalPermissions::All,
+                    // ],
                 ],
             ],
             'users'       => [
@@ -74,11 +74,11 @@ return static function (App\Event\BuildAdminMenu $e) {
                         'url' => $router->named('admin:auditlog:index'),
                         'permission' => GlobalPermissions::Logs,
                     ],
-                    'api_keys'     => [
-                        'label' => __('API Keys'),
-                        'url' => $router->named('admin:api:index'),
-                        'permission' => GlobalPermissions::ApiKeys,
-                    ],
+                    // 'api_keys'     => [
+                    //     'label' => __('API Keys'),
+                    //     'url' => $router->named('admin:api:index'),
+                    //     'permission' => GlobalPermissions::ApiKeys,
+                    // ],
                 ],
             ],
             'stations'    => [
@@ -90,21 +90,21 @@ return static function (App\Event\BuildAdminMenu $e) {
                         'url' => $router->named('admin:stations:index'),
                         'permission' => GlobalPermissions::Stations,
                     ],
-                    'custom_fields'   => [
-                        'label' => __('Custom Fields'),
-                        'url' => $router->named('admin:custom_fields:index'),
-                        'permission' => GlobalPermissions::CustomFields,
-                    ],
-                    'relays' => [
-                        'label' => __('Connected AzuraRelays'),
-                        'url' => $router->named('admin:relays:index'),
-                        'permission' => GlobalPermissions::Stations,
-                    ],
-                    'shoutcast' => [
-                        'label' => __('Install Shoutcast'),
-                        'url' => $router->named('admin:install_shoutcast:index'),
-                        'permission' => GlobalPermissions::All,
-                    ],
+                    // 'custom_fields'   => [
+                    //     'label' => __('Custom Fields'),
+                    //     'url' => $router->named('admin:custom_fields:index'),
+                    //     'permission' => GlobalPermissions::CustomFields,
+                    // ],
+                    // 'relays' => [
+                    //     'label' => __('Connected AzuraRelays'),
+                    //     'url' => $router->named('admin:relays:index'),
+                    //     'permission' => GlobalPermissions::Stations,
+                    // ],
+                    // 'shoutcast' => [
+                    //     'label' => __('Install Shoutcast'),
+                    //     'url' => $router->named('admin:install_shoutcast:index'),
+                    //     'permission' => GlobalPermissions::All,
+                    // ],
                     'stereo_tool' => [
                         'label' => __('Install Stereo Tool'),
                         'url' => $router->named('admin:install_stereo_tool:index'),

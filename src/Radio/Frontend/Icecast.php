@@ -118,7 +118,8 @@ final class Icecast extends AbstractFrontend
         [$certPath, $certKey] = Acme::getCertificatePaths();
 
         $config = [
-            'location' => 'AzuraCast',
+            // 'location' => 'AzuraCast',
+            'location' => 'BoostCast',
             'admin' => 'icemaster@localhost',
             'hostname' => $baseUrl->getHost(),
             'limits' => [

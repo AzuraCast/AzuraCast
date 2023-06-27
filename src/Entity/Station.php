@@ -45,7 +45,7 @@ class Station implements Stringable, IdentifiableEntityInterface
     use Traits\TruncateStrings;
 
     #[
-        OA\Property(description: "The full display name of the station.", example: "AzuraTest Radio"),
+        OA\Property(description: "The full display name of the station.", example: "BoostTest Radio"),
         ORM\Column(length: 100, nullable: false),
         Assert\NotBlank,
         Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])
@@ -55,7 +55,7 @@ class Station implements Stringable, IdentifiableEntityInterface
     #[
         OA\Property(
             description: "The URL-friendly name for the station, typically auto-generated from the full station name.",
-            example: "azuratest_radio"
+            example: "boosttest_radio"
         ),
         ORM\Column(length: 100, nullable: false),
         Assert\NotBlank,
@@ -129,7 +129,7 @@ class Station implements Stringable, IdentifiableEntityInterface
     protected ?string $description = null;
 
     #[
-        OA\Property(example: "https://demo.azuracast.com/"),
+        OA\Property(example: "https://demo.boostcast.mn/"),
         ORM\Column(length: 255, nullable: true),
         Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])
     ]
@@ -143,7 +143,7 @@ class Station implements Stringable, IdentifiableEntityInterface
     protected ?string $genre = null;
 
     #[
-        OA\Property(example: "/var/azuracast/stations/azuratest_radio"),
+        OA\Property(example: "/var/azuracast/stations/boosttest_radio"),
         ORM\Column(length: 255, nullable: true),
         Serializer\Groups([EntityGroupsInterface::GROUP_ADMIN, EntityGroupsInterface::GROUP_ALL])
     ]

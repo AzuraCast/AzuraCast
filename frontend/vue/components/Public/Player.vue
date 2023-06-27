@@ -88,7 +88,14 @@
             />
 
             <div class="radio-control-select-stream">
-                <div
+                <!-- <a
+                    class="btn btn-sm btn-outline-secondary"
+                    :href="downloadPlaylistUri"
+                >
+                    <icon icon="file_download" />
+                    {{ $gettext('Playlist') }}
+                </a> -->
+                <!-- <div
                     v-if="streams.length > 1"
                     class="dropdown"
                 >
@@ -116,7 +123,7 @@
                             {{ stream.name }}
                         </a>
                     </div>
-                </div>
+                </div> -->
             </div>
 
             <div class="radio-control-mute-button">
@@ -143,6 +150,7 @@
 </template>
 
 <script setup>
+// import Icon from '~/components/Common/Icon';
 import AudioPlayer from '~/components/Common/AudioPlayer';
 import PlayButton from "~/components/Common/PlayButton";
 import {computed, onMounted, ref, shallowRef, watch} from "vue";
@@ -154,6 +162,10 @@ import MuteButton from "~/components/Common/MuteButton.vue";
 
 const props = defineProps({
     ...playerProps
+    // downloadPlaylistUri: {
+    //     type: String,
+    //     required: true
+    // }
 });
 
 const emit = defineEmits(['np_updated']);

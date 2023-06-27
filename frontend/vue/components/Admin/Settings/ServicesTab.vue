@@ -1,7 +1,7 @@
 <template>
     <b-form-fieldset>
         <template #label>
-            {{ $gettext('AzuraCast Update Checks') }}
+            {{ $gettext('BoostCast Update Checks') }}
         </template>
 
         <div class="form-row">

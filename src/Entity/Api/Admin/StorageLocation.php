@@ -34,7 +34,7 @@ final class StorageLocation
 
     #[OA\Property(
         description: 'The local path, if the local adapter is used, or path prefix for S3/remote adapters.',
-        example: '/var/azuracast/stations/azuratest_radio/media'
+        example: '/var/azuracast/stations/boosttest_radio/media'
     )]
     public ?string $path = null;
 
@@ -158,7 +158,7 @@ final class StorageLocation
 
     #[OA\Property(
         description: 'The stations using this storage location, if any.',
-        items: new OA\Items(type: 'string', example: 'AzuraTest Radio')
+        items: new OA\Items(type: 'string', example: 'BoostTest Radio')
     )
     ]
     public ?array $stations = [];

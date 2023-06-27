@@ -3300,12 +3300,12 @@ components:
         name:
           description: 'Station name'
           type: string
-          example: 'AzuraTest Radio'
+          example: 'BoostTest Radio'
           nullable: true
         shortcode:
           description: 'Station "short code", used for URL and folder paths'
           type: string
-          example: azuratest_radio
+          example: boosttest_radio
           nullable: true
         description:
           description: 'Station description'
@@ -3315,7 +3315,7 @@ components:
         url:
           description: 'Station homepage URL'
           type: string
-          example: 'https://www.azuracast.com/'
+          example: 'https://www.boostcast.mn/'
           nullable: true
         genre:
           description: 'The genre of the station'
@@ -3361,7 +3361,7 @@ components:
         path:
           description: 'The local path, if the local adapter is used, or path prefix for S3/remote adapters.'
           type: string
-          example: /var/azuracast/stations/azuratest_radio/media
+          example: /var/azuracast/stations/boosttest_radio/media
           nullable: true
         s3CredentialKey:
           description: 'The credential key for S3 adapters.'
@@ -3476,7 +3476,7 @@ components:
           type: array
           items:
             type: string
-            example: 'AzuraTest Radio'
+            example: 'BoostTest Radio'
           nullable: true
       type: object
     Api_DetailedSongHistory:
@@ -3708,11 +3708,11 @@ components:
         name:
           description: 'Station name'
           type: string
-          example: 'AzuraTest Radio'
+          example: 'BoostTest Radio'
         shortcode:
           description: 'Station "short code", used for URL and folder paths'
           type: string
-          example: azuratest_radio
+          example: boosttest_radio
         description:
           description: 'Station description'
           type: string
@@ -3760,7 +3760,7 @@ components:
           example: true
         hls_url:
           description: 'The full URL to listen to the HLS stream for the station.'
-          example: 'https://example.com/hls/azuratest_radio/live.m3u8'
+          example: 'https://example.com/hls/boosttest_radio/live.m3u8'
           nullable: true
         hls_listeners:
           description: 'HLS Listeners'
@@ -4556,11 +4556,11 @@ components:
             name:
               description: 'The full display name of the station.'
               type: string
-              example: 'AzuraTest Radio'
+              example: 'BoostTest Radio'
             short_name:
               description: 'The URL-friendly name for the station, typically auto-generated from the full station name.'
               type: string
-              example: azuratest_radio
+              example: boosttest_radio
             is_enabled:
               description: "If set to 'false', prevents the station from broadcasting but leaves it in the database."
               type: boolean
@@ -4593,7 +4593,7 @@ components:
               nullable: true
             radio_base_dir:
               type: string
-              example: /var/azuracast/stations/azuratest_radio
+              example: /var/azuracast/stations/boosttest_radio
               nullable: true
             enable_requests:
               description: 'Whether listeners can request songs to play on this station.'

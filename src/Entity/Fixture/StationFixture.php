@@ -15,13 +15,13 @@ final class StationFixture extends AbstractFixture
     public function load(ObjectManager $manager): void
     {
         $station = new Station();
-        $station->setName('AzuraTest Radio');
+        $station->setName('BoostTest Radio');
         $station->setDescription('A test radio station.');
         $station->setEnableRequests(true);
         $station->setFrontendType(FrontendAdapters::Icecast);
         $station->setBackendType(BackendAdapters::Liquidsoap);
         $station->setEnableHls(true);
-        $station->setRadioBaseDir('/var/azuracast/stations/azuratest_radio');
+        $station->setRadioBaseDir('/var/azuracast/stations/boosttest_radio');
         $station->setHasStarted(true);
         $station->ensureDirectoriesExist();
 

@@ -22,7 +22,8 @@ final class EnvFile extends AbstractEnvFile
                     'name' => __(
                         '(Docker Compose) All Docker containers are prefixed by this name. Do not change this after installation.'
                     ),
-                    'default' => 'azuracast',
+                    // 'default' => 'azuracast',
+                    'default' => 'boostcast',
                     'required' => true,
                 ],
                 'COMPOSE_HTTP_TIMEOUT' => [

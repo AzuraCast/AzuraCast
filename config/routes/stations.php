@@ -63,10 +63,10 @@ return static function (RouteCollectorProxy $app) {
                 ->add(new Middleware\StationSupportsFeature(StationFeatures::Media))
                 ->add(new Middleware\Permissions(StationPermissions::Media, true));
 
-            $group->get('/podcasts', Controller\Stations\PodcastsAction::class)
-                ->setName('stations:podcasts:index')
-                ->add(new Middleware\StationSupportsFeature(StationFeatures::Podcasts))
-                ->add(new Middleware\Permissions(StationPermissions::Podcasts, true));
+            // $group->get('/podcasts', Controller\Stations\PodcastsAction::class)
+            //     ->setName('stations:podcasts:index')
+            //     ->add(new Middleware\StationSupportsFeature(StationFeatures::Podcasts))
+            //     ->add(new Middleware\Permissions(StationPermissions::Podcasts, true));
 
             $group->get('/mounts', Controller\Stations\MountsAction::class)
                 ->setName('stations:mounts:index')
@@ -131,10 +131,10 @@ return static function (RouteCollectorProxy $app) {
                 ->add(new Middleware\StationSupportsFeature(StationFeatures::Streamers))
                 ->add(new Middleware\Permissions(StationPermissions::Streamers, true));
 
-            $group->get('/webhooks', Controller\Stations\WebhooksAction::class)
-                ->setName('stations:webhooks:index')
-                ->add(new Middleware\StationSupportsFeature(StationFeatures::Webhooks))
-                ->add(new Middleware\Permissions(StationPermissions::WebHooks, true));
+            // $group->get('/webhooks', Controller\Stations\WebhooksAction::class)
+            //     ->setName('stations:webhooks:index')
+            //     ->add(new Middleware\StationSupportsFeature(StationFeatures::Webhooks))
+            //     ->add(new Middleware\Permissions(StationPermissions::WebHooks, true));
         }
     )
         ->add(Middleware\Module\Stations::class)

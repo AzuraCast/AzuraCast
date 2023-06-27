@@ -68,7 +68,7 @@ final class Environment
 
     // Default settings
     private array $defaults = [
-        self::APP_NAME => 'AzuraCast',
+        self::APP_NAME => 'BoostCast',
 
         self::LOG_LEVEL => LogLevel::NOTICE,
         self::IS_DOCKER => true,

@@ -23,25 +23,25 @@ final class Relay implements ResolvableUrlInterface
 
     #[OA\Property(
         description: 'Station name',
-        example: 'AzuraTest Radio'
+        example: 'BoostTest Radio'
     )]
     public ?string $name = null;
 
     #[OA\Property(
         description: 'Station "short code", used for URL and folder paths',
-        example: 'azuratest_radio'
+        example: 'boosttest_radio'
     )]
     public ?string $shortcode = null;
 
     #[OA\Property(
         description: 'Station description',
-        example: 'An AzuraCast station!'
+        example: 'An BoostCast station!'
     )]
     public ?string $description;
 
     #[OA\Property(
         description: 'Station homepage URL',
-        example: 'https://www.azuracast.com/'
+        example: 'https://www.boost.mn/'
     )]
     public ?string $url;
 

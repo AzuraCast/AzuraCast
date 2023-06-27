@@ -23,7 +23,7 @@
                 :field="form.instance_name"
             >
                 <template #label>
-                    {{ $gettext('AzuraCast Instance Name') }}
+                    {{ $gettext('BoostCast Instance Name') }}
                 </template>
                 <template #description>
                     {{

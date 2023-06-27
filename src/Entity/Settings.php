@@ -100,7 +100,7 @@ class Settings implements Stringable
     }
 
     #[
-        OA\Property(description: "AzuraCast Instance Name", example: "My AzuraCast Instance"),
+        OA\Property(description: "BoostCast Instance Name", example: "My BoostCast Instance"),
         ORM\Column(length: 255, nullable: true),
         Groups(self::GROUP_GENERAL)
     ]
@@ -453,7 +453,7 @@ class Settings implements Stringable
     }
 
     #[
-        OA\Property(description: "Hide AzuraCast Branding on Public Pages", example: "false"),
+        OA\Property(description: "Hide BoostCast Branding on Public Pages", example: "false"),
         ORM\Column,
         Groups(self::GROUP_BRANDING)
     ]

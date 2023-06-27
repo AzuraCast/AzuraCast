@@ -134,13 +134,13 @@ return static function (App\Event\BuildStationMenu $e) {
                 'permission' => StationPermissions::Media,
             ],
 
-            'podcasts' => [
-                'label' => __('Podcasts'),
-                'icon' => 'cast',
-                'url' => $router->fromHere('stations:podcasts:index'),
-                'visible' => StationFeatures::Podcasts->supportedForStation($station),
-                'permission' => StationPermissions::Podcasts,
-            ],
+            // 'podcasts' => [
+            //     'label' => __('Podcasts'),
+            //     'icon' => 'cast',
+            //     'url' => $router->fromHere('stations:podcasts:index'),
+            //     'visible' => StationFeatures::Podcasts->supportedForStation($station),
+            //     'permission' => StationPermissions::Podcasts,
+            // ],
 
             'live_streaming' => [
                 'label' => __('Live Streaming'),
@@ -171,42 +171,42 @@ return static function (App\Event\BuildStationMenu $e) {
                 ],
             ],
 
-            'webhooks' => [
-                'label' => __('Web Hooks'),
-                'icon' => 'code',
-                'url' => $router->fromHere('stations:webhooks:index'),
-                'visible' => StationFeatures::Webhooks->supportedForStation($station),
-                'permission' => StationPermissions::WebHooks,
-            ],
+            // 'webhooks' => [
+            //     'label' => __('Web Hooks'),
+            //     'icon' => 'code',
+            //     'url' => $router->fromHere('stations:webhooks:index'),
+            //     'visible' => StationFeatures::Webhooks->supportedForStation($station),
+            //     'permission' => StationPermissions::WebHooks,
+            // ],
 
-            'reports' => [
-                'label' => __('Reports'),
-                'icon' => 'assignment',
-                'permission' => StationPermissions::Reports,
-                'items' => [
-                    'reports_overview' => [
-                        'label' => __('Station Statistics'),
-                        'url' => $router->fromHere('stations:reports:overview'),
-                    ],
-                    'reports_listeners' => [
-                        'label' => __('Listeners'),
-                        'url' => $router->fromHere('stations:reports:listeners'),
-                    ],
-                    'reports_requests' => [
-                        'label' => __('Song Requests'),
-                        'url' => $router->fromHere('stations:reports:requests'),
-                        'visible' => $station->getEnableRequests(),
-                    ],
-                    'reports_timeline' => [
-                        'label' => __('Song Playback Timeline'),
-                        'url' => $router->fromHere('stations:reports:timeline'),
-                    ],
-                    'reports_soundexchange' => [
-                        'label' => __('SoundExchange Royalties'),
-                        'url' => $router->fromHere('stations:reports:soundexchange'),
-                    ],
-                ],
-            ],
+            // 'reports' => [
+            //     'label' => __('Reports'),
+            //     'icon' => 'assignment',
+            //     'permission' => StationPermissions::Reports,
+            //     'items' => [
+            //         'reports_overview' => [
+            //             'label' => __('Station Statistics'),
+            //             'url' => $router->fromHere('stations:reports:overview'),
+            //         ],
+            //         'reports_listeners' => [
+            //             'label' => __('Listeners'),
+            //             'url' => $router->fromHere('stations:reports:listeners'),
+            //         ],
+            //         'reports_requests' => [
+            //             'label' => __('Song Requests'),
+            //             'url' => $router->fromHere('stations:reports:requests'),
+            //             'visible' => $station->getEnableRequests(),
+            //         ],
+            //         'reports_timeline' => [
+            //             'label' => __('Song Playback Timeline'),
+            //             'url' => $router->fromHere('stations:reports:timeline'),
+            //         ],
+            //         'reports_soundexchange' => [
+            //             'label' => __('SoundExchange Royalties'),
+            //             'url' => $router->fromHere('stations:reports:soundexchange'),
+            //         ],
+            //     ],
+            // ],
 
             'broadcasting' => [
                 'label' => __('Broadcasting'),

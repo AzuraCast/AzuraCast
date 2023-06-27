@@ -122,7 +122,7 @@ final class HlsListeners
          *   "ua": "Mozilla/5.0 (Windows NT 10.0;...Chrome/102.0.0.0 Safari/537.36",
          *   "ip": "192.168.48.1",
          *   "ip_xff": "",
-         *   "uri": "/hls/azuratest_radio/aac_hifi.m3u8"
+         *   "uri": "/hls/boosttest_radio/aac_hifi.m3u8"
          * }
          */
 

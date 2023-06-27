@@ -23,19 +23,19 @@ final class Station implements ResolvableUrlInterface
 
     #[OA\Property(
         description: 'Station name',
-        example: 'AzuraTest Radio'
+        example: 'BoostTest Radio'
     )]
     public string $name;
 
     #[OA\Property(
         description: 'Station "short code", used for URL and folder paths',
-        example: 'azuratest_radio'
+        example: 'boosttest_radio'
     )]
     public string $shortcode = '';
 
     #[OA\Property(
         description: 'Station description',
-        example: 'An AzuraCast station!'
+        example: 'An BoostCast station!'
     )]
     public string $description = '';
 
@@ -103,7 +103,7 @@ final class Station implements ResolvableUrlInterface
 
     #[OA\Property(
         description: 'The full URL to listen to the HLS stream for the station.',
-        example: 'https://example.com/hls/azuratest_radio/live.m3u8',
+        example: 'https://example.com/hls/boosttest_radio/live.m3u8',
         nullable: true
     )]
     public string|UriInterface|null $hls_url = null;

@@ -72,10 +72,12 @@ endif; ?>">
     endif; ?>
 
     <a class="navbar-brand ml-0 mr-auto" href="<?= $router->named('dashboard') ?>">
-        azura<strong>cast</strong> <?php
+    <img src="<?= $this->assetUrl('img/gs25-header-logo.png') ?>" alt="BoostCast" class="d-inline-block align-top" height="40">
+        <!-- boost<strong>cast</strong>-->
+         <!--<?php
         if (!empty($customization->getInstanceName())): ?>
             <small><?= $this->e($customization->getInstanceName()) ?></small><?php
-        endif; ?>
+        endif; ?> -->
     </a>
 
     <div id="radio-player-controls"></div>
@@ -118,13 +120,6 @@ endif; ?>">
                 <a class="dropdown-item" href="<?= $router->named('profile:theme') ?>">
                     <i class="material-icons" aria-hidden="true">invert_colors</i>
                     <?= __('Switch Theme') ?>
-                </a>
-            </li>
-            <li>
-                <a class="dropdown-item" href="https://docs.azuracast.com/en/user-guide/troubleshooting"
-                   target="_blank">
-                    <i class="material-icons" aria-hidden="true">help</i>
-                    <?= __('Help') ?>
                 </a>
             </li>
             <li class="dropdown-divider">&nbsp;</li>
@@ -194,14 +189,12 @@ if (!$sections->has('sidebar')): ?>class="footer-alt"<?php
 endif; ?> role="contentinfo" aria-label="<?= __('Footer') ?>">
     <?= sprintf(
         __('Powered by %s'),
-        '<a href="https://www.azuracast.com/" target="_blank">' . $environment->getAppName(
+        '<a href="https://www.boost.mn/" target="_blank">' . $environment->getAppName(
         ) . '</a> &bull; ' . $version->getVersionText() . ' &bull; ' . ($environment->isDocker(
         ) ? 'Docker' : 'Ansible') . ' &bull; PHP ' . \PHP_MAJOR_VERSION . '.' . \PHP_MINOR_VERSION
     ) ?>
     <br>
-    <?= __('Like our software?') ?> <a href="https://docs.azuracast.com/en/contribute/donate"><?= __(
-            'Donate to support AzuraCast!'
-        ) ?></a>
+    <?=date('Y') ?> &copy; <?= $this->e($customization->getInstanceName()) ?>
 </footer>
 
 <div id="radio-player"></div>

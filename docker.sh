@@ -228,7 +228,7 @@ setup-ports() {
 #
 setup-release() {
   if [[ ! -f .env ]]; then
-    curl -fsSL https://raw.githubusercontent.com/AzuraCast/AzuraCast/main/sample.env -o .env
+    curl -fsSL https://raw.githubusercontent.com/boostmn/boostcast/main/sample.env -o .env
   fi
 
   local OLD_RELEASE_CHANNEL
@@ -389,13 +389,13 @@ run-installer() {
   AZURACAST_RELEASE_BRANCH=$(get-release-branch-name)
 
   if [[ ! -f .env ]]; then
-    curl -fsSL https://raw.githubusercontent.com/AzuraCast/AzuraCast/$AZURACAST_RELEASE_BRANCH/sample.env -o .env
+    curl -fsSL https://raw.githubusercontent.com/boostmn/boostcast/$AZURACAST_RELEASE_BRANCH/sample.env -o .env
   fi
   if [[ ! -f azuracast.env ]]; then
-    curl -fsSL https://raw.githubusercontent.com/AzuraCast/AzuraCast/$AZURACAST_RELEASE_BRANCH/azuracast.sample.env -o azuracast.env
+    curl -fsSL https://raw.githubusercontent.com/boostmn/boostcast/$AZURACAST_RELEASE_BRANCH/azuracast.sample.env -o azuracast.env
   fi
   if [[ ! -f docker-compose.yml ]]; then
-    curl -fsSL https://raw.githubusercontent.com/AzuraCast/AzuraCast/$AZURACAST_RELEASE_BRANCH/docker-compose.sample.yml -o docker-compose.yml
+    curl -fsSL https://raw.githubusercontent.com/boostmn/boostcast/$AZURACAST_RELEASE_BRANCH/docker-compose.sample.yml -o docker-compose.yml
   fi
 
   touch docker-compose.new.yml
@@ -407,7 +407,7 @@ run-installer() {
     fi
   fi
 
-  curl -fsSL https://raw.githubusercontent.com/AzuraCast/AzuraCast/$AZURACAST_RELEASE_BRANCH/docker-compose.installer.yml -o docker-compose.installer.yml
+  curl -fsSL https://raw.githubusercontent.com/boostmn/boostcast/$AZURACAST_RELEASE_BRANCH/docker-compose.installer.yml -o docker-compose.installer.yml
 
   dc -p azuracast_installer -f docker-compose.installer.yml pull
   dc -p azuracast_installer -f docker-compose.installer.yml run --rm installer install "$@"
@@ -558,7 +558,7 @@ update() {
     local AZURACAST_RELEASE_BRANCH
     AZURACAST_RELEASE_BRANCH=$(get-release-branch-name)
 
-    curl -fsSL https://raw.githubusercontent.com/AzuraCast/AzuraCast/$AZURACAST_RELEASE_BRANCH/docker.sh -o docker.new.sh
+    curl -fsSL https://raw.githubusercontent.com/boostmn/boostcast/$AZURACAST_RELEASE_BRANCH/docker.sh -o docker.new.sh
 
     local UTILITY_FILES_MATCH
     UTILITY_FILES_MATCH="$(
@@ -605,7 +605,7 @@ update() {
     local COMPOSE_FILES_MATCH
 
     if [[ ! -s docker-compose.new.yml ]]; then
-      curl -fsSL https://raw.githubusercontent.com/AzuraCast/AzuraCast/$AZURACAST_RELEASE_BRANCH/docker-compose.sample.yml -o docker-compose.new.yml
+      curl -fsSL https://raw.githubusercontent.com/boostmn/boostcast/$AZURACAST_RELEASE_BRANCH/docker-compose.sample.yml -o docker-compose.new.yml
     fi
 
     COMPOSE_FILES_MATCH="$(
@@ -647,7 +647,7 @@ update-self() {
   AZURACAST_RELEASE_BRANCH=$(get-release-branch-name)
 
   curl -H 'Cache-Control: no-cache, no-store' -fsSL \
-    https://raw.githubusercontent.com/AzuraCast/AzuraCast/$AZURACAST_RELEASE_BRANCH/docker.sh?$(date +%s) \
+    https://raw.githubusercontent.com/boostmn/boostcast/$AZURACAST_RELEASE_BRANCH/docker.sh?$(date +%s) \
     -o docker.sh
   chmod a+x docker.sh
 

@@ -9,23 +9,63 @@
 
 // Include any default map overrides here
 
-// Include remainder of required parts
+// Configuration
 @import "bootstrap/scss/maps";
 @import "bootstrap/scss/mixins";
-@import "bootstrap/scss/root";
-
-// Optionally include any other parts as needed
 @import "bootstrap/scss/utilities";
+
+// Layout & components
+@import "bootstrap/scss/root";
 @import "bootstrap/scss/reboot";
 @import "bootstrap/scss/type";
 @import "bootstrap/scss/images";
 @import "bootstrap/scss/containers";
 @import "bootstrap/scss/grid";
+@import "bootstrap/scss/tables";
+@import "bootstrap/scss/forms";
+@import "bootstrap/scss/buttons";
+@import "bootstrap/scss/transitions";
+@import "bootstrap/scss/dropdown";
+@import "bootstrap/scss/button-group";
+@import "bootstrap/scss/nav";
+@import "bootstrap/scss/navbar";
+@import "bootstrap/scss/card";
+@import "bootstrap/scss/accordion";
+@import "bootstrap/scss/breadcrumb";
+@import "bootstrap/scss/pagination";
+@import "bootstrap/scss/badge";
+@import "bootstrap/scss/alert";
+@import "bootstrap/scss/progress";
+@import "bootstrap/scss/list-group";
+@import "bootstrap/scss/close";
+@import "bootstrap/scss/toasts";
+@import "bootstrap/scss/modal";
+@import "bootstrap/scss/tooltip";
+@import "bootstrap/scss/popover";
+@import "bootstrap/scss/carousel";
+@import "bootstrap/scss/spinners";
+@import "bootstrap/scss/offcanvas";
+@import "bootstrap/scss/placeholders";
+
+// Helpers
 @import "bootstrap/scss/helpers";
+
+// Utilities
 @import "bootstrap/scss/utilities/api";
 
 // Load Oruga UI
-@import "@oruga-ui/theme-bootstrap/src/assets/scss/bootstrap";
+@import '@oruga-ui/theme-bootstrap/dist/scss/bootstrap';
+
+// Load BootstrapVueNext
+@import "bootstrap-vue-next/src/components/BAvatar/avatar";
+@import "bootstrap-vue-next/src/components/BButton/button";
+@import "bootstrap-vue-next/src/components/BCard/card";
+@import "bootstrap-vue-next/src/components/BFormTags/form-tags";
+@import "bootstrap-vue-next/src/components/BInputGroup/input-group";
+@import "bootstrap-vue-next/src/components/BPagination/pagination";
+@import "bootstrap-vue-next/src/components/BTable/table";
+@import "bootstrap-vue-next/src/components/BFormInput/form-input";
+@import "bootstrap-vue-next/src/components/BFormSpinButton/spinbutton";
 
 // Add additional custom code here
 

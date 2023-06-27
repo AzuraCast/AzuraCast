@@ -55,7 +55,7 @@ export function useNotify() {
 
     let $loadingComponent;
 
-    const showLoading = (message = null, options = {}) => {
+    const showLoading = () => {
         $loadingComponent = oruga.loading.open({
             fullPage: true,
             container: null

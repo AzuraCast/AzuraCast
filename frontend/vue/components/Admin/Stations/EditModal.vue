@@ -26,8 +26,6 @@
         </admin-stations-form>
 
         <template #modal-footer>
-
-            
             <b-button
                 variant="default"
                 type="button"
@@ -51,7 +49,6 @@ import AdminStationsForm from "~/components/Admin/Stations/StationForm.vue";
 import InvisibleSubmitButton from "~/components/Common/InvisibleSubmitButton.vue";
 import {computed, ref} from "vue";
 import {useTranslate} from "~/vendor/gettext";
-import {BModal} from "bootstrap-vue";
 import stationFormProps from "~/components/Admin/Stations/stationFormProps";
 import {pickProps} from "~/functions/pickProps";
 

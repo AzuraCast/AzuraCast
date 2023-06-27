@@ -20,7 +20,7 @@
     }
 
     const setTheme = theme => {
-        document.documentElement.setAttribute('data-theme', theme)
+        document.documentElement.setAttribute('data-bs-theme', theme)
 
         document.documentElement.dispatchEvent(new CustomEvent(
             "theme-change",
@@ -30,7 +30,7 @@
         ));
     }
 
-    const currentTheme = document.documentElement.getAttribute('data-theme');
+    const currentTheme = document.documentElement.getAttribute('data-bs-theme');
     if (currentTheme !== 'light' && currentTheme !== 'dark') {
         setTheme(getPreferredTheme())
     }

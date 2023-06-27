@@ -5,6 +5,7 @@ import {installPinia} from '~/vendor/pinia';
 import {installTranslate} from "~/vendor/gettext";
 import Oruga from "@oruga-ui/oruga-next";
 import {bootstrapConfig} from "@oruga-ui/theme-bootstrap";
+import {BootstrapVueNext} from "bootstrap-vue-next";
 
 export default function (component) {
     const vueApp = createApp({
@@ -24,6 +25,9 @@ export default function (component) {
 
     /* Oruga */
     vueApp.use(Oruga, bootstrapConfig);
+
+    /* BootstrapVueNext */
+    vueApp.use(BootstrapVueNext);
 
     /* SweetAlert */
     installSweetAlert(vueApp);

@@ -41,7 +41,6 @@ import {useNotify} from "~/functions/useNotify";
 import {useTranslate} from "~/vendor/gettext";
 import {useAxios} from "~/vendor/axios";
 import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
-import {BModal} from "bootstrap-vue";
 
 const props = defineProps({
     testMessageUrl: {

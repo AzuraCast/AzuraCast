@@ -1,23 +1,48 @@
 <template>
-    <o-modal ref="$modal" v-model:active="isActive" :aria-label="title">
+    <o-modal
+        ref="$modal"
+        v-model:active="isActive"
+        :aria-label="title"
+    >
         <o-loading :active="busy">
-            <div class="modal fade" id="exampleModalToggle" aria-hidden="true" aria-labelledby="exampleModalToggleLabel"
-                 tabindex="-1">
-                <div class="modal-dialog modal-dialog-centered" :class="'modal_'+size">
+            <div
+                id="exampleModalToggle"
+                class="modal fade"
+                aria-hidden="true"
+                aria-labelledby="exampleModalToggleLabel"
+                tabindex="-1"
+            >
+                <div
+                    class="modal-dialog modal-dialog-centered"
+                    :class="'modal_'+size"
+                >
                     <div class="modal-content">
-                        <div class="modal-header" v-if="slots['modal-header'] || title">
-                            <h1 class="modal-title fs-5" v-if="title">
+                        <div
+                            v-if="slots['modal-header'] || title"
+                            class="modal-header"
+                        >
+                            <h1
+                                v-if="title"
+                                class="modal-title fs-5"
+                            >
                                 {{ title }}
                             </h1>
-                            <slot name="modal-header"></slot>
-                            <button type="button" class="btn-close" @click.prevent="close"
-                                    :aria-label="$gettext('Close')"/>
+                            <slot name="modal-header" />
+                            <button
+                                type="button"
+                                class="btn-close"
+                                :aria-label="$gettext('Close')"
+                                @click.prevent="close"
+                            />
                         </div>
                         <div class="modal-body">
-                            <slot></slot>
+                            <slot />
                         </div>
-                        <div class="modal-footer" v-if="slots['modal-footer']">
-                            <slot name="modal-footer"></slot>
+                        <div
+                            v-if="slots['modal-footer']"
+                            class="modal-footer"
+                        >
+                            <slot name="modal-footer" />
                         </div>
                     </div>
                 </div>

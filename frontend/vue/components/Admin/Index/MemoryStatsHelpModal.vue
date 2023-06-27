@@ -60,7 +60,6 @@
 
 <script setup>
 import {ref} from "vue";
-import {BModal} from "bootstrap-vue";
 
 const $modal = ref(); // BModal
 

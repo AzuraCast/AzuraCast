@@ -64,14 +64,14 @@ endif; ?>">
     if ($sections->has('sidebar')): ?>
         <button aria-controls="sidebar" aria-expanded="false" aria-label="<?= __(
             'Toggle Sidebar'
-        ) ?>" class="navbar-toggler d-inline-flex d-lg-none mr-3" data-breakpoint="lg" data-target="#sidebar"
+        ) ?>" class="navbar-toggler d-inline-flex d-lg-none me-3" data-breakpoint="lg" data-target="#sidebar"
                 data-toggle="navdrawer" data-type="permanent">
             <span class="navbar-toggler-icon"></span>
         </button>
     <?php
     endif; ?>
 
-    <a class="navbar-brand ml-0 mr-auto" href="<?= $router->named('dashboard') ?>">
+    <a class="navbar-brand ms-0 me-auto" href="<?= $router->named('dashboard') ?>">
         azura<strong>cast</strong> <?php
         if (!empty($customization->getInstanceName())): ?>
             <small><?= $this->e($customization->getInstanceName()) ?></small><?php
@@ -80,17 +80,17 @@ endif; ?>">
 
     <div id="radio-player-controls"></div>
 
-    <div class="dropdown ml-3 d-inline-flex align-items-center">
-        <div class="mr-2">
+    <div class="dropdown ms-3 d-inline-flex align-items-center">
+        <div class="me-2">
             <?= $this->e($user->getDisplayName()) ?>
         </div>
 
         <button aria-expanded="false" aria-haspopup="true" class="navbar-toggler" aria-label="<?= __(
             'Toggle Menu'
         ) ?>" data-bs-toggle="dropdown" type="button">
-            <i class="material-icons" aria-hidden="true">menu_open</i>
+            <i class="material-icons xl" aria-hidden="true">menu_open</i>
         </button>
-        <ul class="dropdown-menu dropdown-menu-right">
+        <ul class="dropdown-menu dropdown-menu-end">
             <li>
                 <a class="dropdown-item" href="<?= $router->named('dashboard') ?>">
                     <i class="material-icons" aria-hidden="true">home</i>

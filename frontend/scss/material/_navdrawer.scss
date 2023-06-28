@@ -1,12 +1,14 @@
 .navdrawer {
-  display: none;
   outline: 0;
   overflow: hidden;
   position: fixed;
-  top: 0;
-  right: 0;
   bottom: 0;
   left: 0;
+  top: 4.5rem;
+  display: block !important;
+  right: auto;
+  width: var(--navdrawer-width);
+  z-index: auto;
 }
 
 // Backdrop
@@ -35,10 +37,11 @@
   transform: translate3d(-100%, 0, 0);
   width: var(--navdrawer-width);
 
-  .navdrawer-right & {
-    right: 0;
-    left: auto;
-    transform: translate3d(100%, 0, 0);
+  @include media-breakpoint-up(lg) {
+    max-width: none;
+    position: absolute;
+    transform: translate3d(0, 0, 0);
+    width: 100%;
   }
 
   .navdrawer.show & {

@@ -53,22 +53,24 @@
                                 <icon icon="music_note" />
                                 {{ $gettext('Now Playing') }}
                             </h6>
-                            <div class="media">
-                                <a
-                                    v-if="np.now_playing.song.art"
-                                    class="me-2"
-                                    :href="np.now_playing.song.art"
-                                    data-fancybox
-                                    target="_blank"
-                                >
-                                    <img
-                                        class="rounded"
-                                        :src="np.now_playing.song.art"
-                                        alt="Album Art"
-                                        style="width: 50px;"
+                            <div class="d-flex align-items-center">
+                                <div class="flex-shrink-0">
+                                    <a
+                                        v-if="np.now_playing.song.art"
+                                        class="me-2"
+                                        :href="np.now_playing.song.art"
+                                        data-fancybox
+                                        target="_blank"
                                     >
-                                </a>
-                                <div class="media-body">
+                                        <img
+                                            class="rounded"
+                                            :src="np.now_playing.song.art"
+                                            alt="Album Art"
+                                            style="width: 50px;"
+                                        >
+                                    </a>
+                                </div>
+                                <div class="flex-grow-1 ms-3">
                                     <div v-if="!np.is_online">
                                         <h5 class="media-heading m-0 text-muted">
                                             {{ $gettext('Station Offline') }}
@@ -118,22 +120,24 @@
                                 {{ $gettext('Playing Next') }}
                             </h6>
 
-                            <div class="media">
-                                <a
-                                    v-if="np.playing_next.song.art"
-                                    class="me-2"
-                                    :href="np.playing_next.song.art"
-                                    data-fancybox
-                                    target="_blank"
-                                >
-                                    <img
-                                        :src="np.playing_next.song.art"
-                                        class="rounded"
-                                        alt="Album Art"
-                                        style="width: 40px;"
+                            <div class="d-flex align-items-center">
+                                <div class="flex-shrink-0">
+                                    <a
+                                        v-if="np.playing_next.song.art"
+                                        class="me-2"
+                                        :href="np.playing_next.song.art"
+                                        data-fancybox
+                                        target="_blank"
                                     >
-                                </a>
-                                <div class="media-body">
+                                        <img
+                                            :src="np.playing_next.song.art"
+                                            class="rounded"
+                                            alt="Album Art"
+                                            style="width: 40px;"
+                                        >
+                                    </a>
+                                </div>
+                                <div class="flex-grow-1 ms-3">
                                     <div v-if="np.playing_next.song.title !== ''">
                                         <h5
                                             class="media-heading m-0"

@@ -1,13 +1,18 @@
-// Default background of public pages
-:root,
-[data-bs-theme="light"] {
-  --public-page-bg: '../img/hexbg.webp';
+$primary: #1e88e5;
 
-  --scrollbar-color: #{$gray-400};
-}
+$body-bg-dark: #22252f;
 
-@include color-mode(dark, true) {
-  --public-page-bg: '../img/hexbg_dark.webp';
+$card-cap-padding-y: 1rem;
 
-  --scrollbar-color: #{$gray-800};
-}
+$font-family-sans-serif: "Roboto", system-ui, -apple-system, "Segoe UI", "Helvetica Neue", "Noto Sans", "Liberation Sans", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+$font-size-root: 14px;
+
+$header-nav-height: 4.5rem;
+
+$navbar-light-brand-color: #FFF;
+$navbar-dark-brand-color: #FFF;
+
+$navbar-light-color: #FFF;
+$navbar-dark-color: #FFF;
+
+$dropdown-item-padding-y: .75rem;

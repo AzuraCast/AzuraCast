@@ -31,7 +31,7 @@ $sections->end();
             endif; ?>"
                <?php
                if (empty($category['items'])): ?>href="<?= $category['url'] ?>" <?php
-               else: ?>data-toggle="collapse" href="#sidebar-submenu-<?= $category_id ?>"<?php
+               else: ?>data-bs-toggle="collapse" href="#sidebar-submenu-<?= $category_id ?>"<?php
             endif; ?>
                <?php
                if ($category['external'] ?? false): ?>target="_blank"<?php

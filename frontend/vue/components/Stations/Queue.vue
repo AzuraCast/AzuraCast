@@ -1,26 +1,15 @@
 <template>
-    <section
-        class="card"
-        role="region"
-        aria-labelledby="hdr_song_queue"
-    >
-        <b-card-header header-bg-variant="primary-dark">
-            <h2
-                id="hdr_song_queue"
-                class="card-title"
-            >
-                {{ $gettext('Upcoming Song Queue') }}
-            </h2>
-        </b-card-header>
-        <div class="card-actions">
+    <card-page :title="$gettext('Upcoming Song Queue')">
+        <template #actions>
             <b-button
-                variant="outline-danger"
+                variant="danger"
                 @click="doClear()"
             >
                 <icon icon="remove" />
                 {{ $gettext('Clear Upcoming Song Queue') }}
             </b-button>
-        </div>
+        </template>
+
         <data-table
             id="station_queue"
             ref="$datatable"
@@ -72,7 +61,7 @@
                 </div>
             </template>
         </data-table>
-    </section>
+    </card-page>
 
     <queue-logs-modal ref="$logsModal" />
 </template>
@@ -90,6 +79,7 @@ import useHasDatatable from "~/functions/useHasDatatable";
 import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
 import {useSweetAlert} from "~/vendor/sweetalert";
+import CardPage from "~/components/Common/CardPage.vue";
 
 const props = defineProps({
     listUrl: {

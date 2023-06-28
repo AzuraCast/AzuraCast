@@ -7,7 +7,7 @@
             class="card mb-3"
             role="region"
         >
-            <div class="card-header bg-primary-dark">
+            <div class="card-header text-bg-primary">
                 <h2 class="card-title">
                     {{ $gettext('Branding Settings') }}
                 </h2>

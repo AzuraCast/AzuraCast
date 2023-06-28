@@ -49,7 +49,7 @@
                         <template #label>
                             <icon
                                 icon="vpn_key"
-                                class="mr-1"
+                                class="me-1"
                             />
                             {{ $gettext('Password') }}
                         </template>

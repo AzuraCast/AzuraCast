@@ -1,6 +1,6 @@
 <template>
     <div class="card settings">
-        <div class="card-header bg-primary-dark">
+        <div class="card-header text-bg-primary">
             <h5 class="card-title">
                 {{ $gettext('WebDJ') }}
                 <br>
@@ -224,7 +224,7 @@
             </div>
         </template>
 
-        <div class="card-actions">
+        <div class="card-body">
             <button
                 v-if="!isConnected"
                 class="btn btn-success"

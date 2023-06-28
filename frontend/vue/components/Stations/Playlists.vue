@@ -4,29 +4,27 @@
         role="region"
         aria-labelledby="hdr_playlists"
     >
-        <b-card-header header-bg-variant="primary-dark">
-            <b-row class="align-items-center">
-                <b-col md="6">
+        <div class="card-header text-bg-primary">
+            <div class="row align-items-center">
+                <div class="col-md-6">
                     <h2
                         id="hdr_playlists"
                         class="card-title"
                     >
                         {{ $gettext('Playlists') }}
                     </h2>
-                </b-col>
-                <b-col
-                    md="6"
-                    class="text-right text-muted"
-                >
+                </div>
+                <div class="col-md-6 text-right text-muted">
                     {{
                         $gettext(
                             'This station\'s time zone is currently %{tz}.',
                             {tz: stationTimeZone}
                         )
                     }}
-                </b-col>
-            </b-row>
-        </b-card-header>
+                </div>
+            </div>
+        </div>
+
         <b-tabs
             pills
             card
@@ -36,15 +34,15 @@
                 :title="$gettext('All Playlists')"
                 no-body
             >
-                <b-card-body body-class="card-padding-sm">
+                <div class="card-body">
                     <b-button
-                        variant="outline-primary"
+                        variant="primary"
                         @click.prevent="doCreate"
                     >
                         <icon icon="add" />
                         {{ $gettext('Add Playlist') }}
                     </b-button>
-                </b-card-body>
+                </div>
 
                 <data-table
                     id="station_playlists"

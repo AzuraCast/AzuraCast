@@ -2,7 +2,7 @@
     <div class="outside-card-header d-flex align-items-center mb-3">
         <div
             v-if="station.listen_url && hasStarted"
-            class="flex-shrink-0 mr-3"
+            class="flex-shrink-0 me-3"
         >
             <play-button
                 icon-class="outlined xl"
@@ -23,7 +23,7 @@
         </div>
         <div
             v-if="userCanManageProfile"
-            class="flex-shrink-0 ml-3"
+            class="flex-shrink-0 ms-3"
         >
             <a
                 class="btn btn-primary btn-lg"

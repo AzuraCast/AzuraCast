@@ -12,7 +12,7 @@
 
             <album-art
                 v-if="showAlbumArt"
-                class="mr-3"
+                class="me-3"
                 :src="row.song.art"
             />
 
@@ -22,7 +22,7 @@
                     {{ albumAndArtist(row.song) }}
                 </span>
             </div>
-            <small class="date-played text-muted ml-3">
+            <small class="date-played text-muted ms-3">
                 {{ unixTimestampToDate(row.played_at) }}
             </small>
         </div>

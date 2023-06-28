@@ -3,7 +3,7 @@
         class="card mb-4"
         role="region"
     >
-        <div class="card-header bg-primary-dark">
+        <div class="card-header text-bg-primary">
             <div class="d-flex align-items-center">
                 <h2 class="card-title flex-fill my-0">
                     {{ $gettext('Station Statistics') }}

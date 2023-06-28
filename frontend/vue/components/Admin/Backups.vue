@@ -9,7 +9,7 @@
             role="region"
             aria-labelledby="hdr_automatic_backups"
         >
-            <b-card-header header-bg-variant="primary-dark">
+            <div class="card-header text-bg-primary">
                 <h2
                     id="hdr_automatic_backups"
                     class="card-title"
@@ -17,7 +17,7 @@
                     {{ $gettext('Automatic Backups') }}
                     <enabled-badge :enabled="settings.backupEnabled" />
                 </h2>
-            </b-card-header>
+            </div>
 
             <b-overlay
                 variant="card"
@@ -43,9 +43,9 @@
                 </div>
             </b-overlay>
 
-            <div class="card-actions">
+            <div class="card-body">
                 <b-button
-                    variant="outline-primary"
+                    variant="primary"
                     @click.prevent="doConfigure"
                 >
                     <icon icon="settings" />
@@ -53,7 +53,7 @@
                 </b-button>
                 <b-button
                     v-if="settings.backupEnabled && settings.backupLastOutput !== ''"
-                    variant="outline-secondary"
+                    variant="secondary"
                     @click.prevent="showLastOutput"
                 >
                     <icon icon="assignment" />
@@ -67,14 +67,14 @@
             role="region"
             aria-labelledby="hdr_restoring_backups"
         >
-            <b-card-header header-bg-variant="primary-dark">
+            <div class="card-header text-bg-primary">
                 <h2
                     id="hdr_restoring_backups"
                     class="card-title"
                 >
                     {{ $gettext('Restoring Backups') }}
                 </h2>
-            </b-card-header>
+            </div>
 
             <div class="card-body">
                 <p class="card-text">
@@ -98,14 +98,14 @@
         role="region"
         aria-labelledby="hdr_backups"
     >
-        <b-card-header header-bg-variant="primary-dark">
+        <div class="card-header text-bg-primary">
             <h2
                 id="hdr_backups"
                 class="card-title"
             >
                 {{ $gettext('Backups') }}
             </h2>
-        </b-card-header>
+        </div>
 
         <b-card-body body-class="card-padding-sm">
             <b-button

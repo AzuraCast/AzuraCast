@@ -67,7 +67,7 @@
             class="mb-3"
             no-body
         >
-            <div class="card-header bg-primary-dark">
+            <div class="card-header text-bg-primary">
                 <h2 class="card-title">
                     {{ $gettext('Song-Based Playlist') }}
                 </h2>
@@ -356,7 +356,7 @@
             class="mb-3"
             no-body
         >
-            <div class="card-header bg-primary-dark">
+            <div class="card-header text-bg-primary">
                 <h2 class="card-title">
                     {{ $gettext('Remote URL Playlist') }}
                 </h2>

@@ -1,6 +1,6 @@
 <template>
     <section class="card mt-3">
-        <div class="card-header bg-primary-dark">
+        <div class="card-header text-bg-primary">
             <h2 class="card-title">
                 {{ $gettext('Remote: SFTP') }}
             </h2>

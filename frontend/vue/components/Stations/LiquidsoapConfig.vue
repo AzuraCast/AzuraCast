@@ -8,7 +8,7 @@
             role="region"
             aria-labelledby="hdr_edit_ls_config"
         >
-            <div class="card-header bg-primary-dark">
+            <div class="card-header text-bg-primary">
                 <h2
                     id="hdr_edit_ls_config"
                     class="card-title"

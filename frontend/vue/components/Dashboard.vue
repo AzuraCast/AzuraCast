@@ -8,10 +8,10 @@
             role="region"
             :aria-label="$gettext('Account Details')"
         >
-            <div class="card-header bg-primary-dark d-flex flex-wrap align-items-center">
+            <div class="card-header text-bg-primary d-flex flex-wrap align-items-center">
                 <avatar
                     v-if="user.avatar.url"
-                    class="flex-shrink-0 mr-3"
+                    class="flex-shrink-0 me-3"
                     :url="user.avatar.url"
                     :service="user.avatar.service"
                     :service-url="user.avatar.serviceUrl"
@@ -28,7 +28,7 @@
 
                 <div class="flex-md-shrink-0 mt-3 mt-md-0 buttons">
                     <a
-                        class="btn btn-bg"
+                        class="btn btn-dark btn-lg"
                         role="button"
                         :href="profileUrl"
                     >
@@ -37,7 +37,7 @@
                     </a>
                     <a
                         v-if="showAdmin"
-                        class="btn btn-bg"
+                        class="btn btn-dark btn-lg"
                         role="button"
                         :href="adminUrl"
                     >
@@ -51,14 +51,14 @@
                 <div
                     v-for="notification in notifications"
                     :key="notification.title"
-                    class="card-body d-flex align-items-center"
+                    class="card-body d-flex align-items-center alert"
                     :class="'alert-'+notification.type"
                     role="alert"
                     aria-live="polite"
                 >
                     <div
                         v-if="'info' === notification.type"
-                        class="flex-shrink-0 mr-3"
+                        class="flex-shrink-0 me-3"
                     >
                         <icon
                             class="lg"
@@ -67,7 +67,7 @@
                     </div>
                     <div
                         v-else
-                        class="flex-shrink-0 mr-3"
+                        class="flex-shrink-0 me-3"
                     >
                         <icon
                             class="lg"
@@ -82,13 +82,13 @@
                     </div>
                     <div
                         v-if="notification.actionLabel && notification.actionUrl"
-                        class="flex-shrink-0 ml-3"
+                        class="flex-shrink-0 ms-3"
                     >
                         <b-button
                             :href="notification.actionUrl"
                             target="_blank"
                             size="sm"
-                            variant="light"
+                            :variant="notification.type"
                         >
                             {{ notification.actionLabel }}
                         </b-button>
@@ -103,7 +103,7 @@
             role="region"
             aria-labelledby="hdr_listeners_per_station"
         >
-            <div class="card-header bg-primary-dark d-flex align-items-center">
+            <div class="card-header text-bg-primary d-flex align-items-center">
                 <div class="flex-fill">
                     <h3
                         id="hdr_listeners_per_station"
@@ -141,7 +141,7 @@
             role="region"
             aria-labelledby="hdr_stations"
         >
-            <div class="card-header bg-primary-dark d-flex flex-wrap align-items-center">
+            <div class="card-header text-bg-primary d-flex flex-wrap align-items-center">
                 <div class="flex-fill">
                     <h2
                         id="hdr_stations"
@@ -155,8 +155,7 @@
                     class="flex-shrink-0"
                 >
                     <b-button
-                        variant="outline-light"
-                        size="sm"
+                        variant="dark"
                         class="py-2"
                         :href="manageStationsUrl"
                     >

@@ -3,7 +3,7 @@
         class="mb-3"
         no-body
     >
-        <div class="card-header bg-primary-dark d-flex align-items-center">
+        <div class="card-header text-bg-primary d-flex align-items-center">
             <div class="flex-fill">
                 <h2 class="card-title">
                     {{ $gettext('Scheduled Time #%{num}', {num: index + 1}) }}

@@ -1,27 +1,13 @@
 <template>
-    <section
-        class="card"
-        role="region"
-        aria-labelledby="hdr_api_keys"
-    >
-        <b-card-header header-bg-variant="primary-dark">
-            <h2
-                id="hdr_api_keys"
-                class="card-title"
-            >
-                {{ $gettext('API Keys') }}
-            </h2>
-        </b-card-header>
-
-        <info-card>
+    <card-page :title="$gettext('API Keys')">
+        <template #info>
             <p class="card-text">
                 {{
                     $gettext('This page lists all API keys assigned to all users across the system.')
                 }}
             </p>
-        </info-card>
-
-        <b-card-body body-class="card-padding-sm">
+        </template>
+        <template #actions>
             <b-button
                 variant="outline-primary"
                 :href="myApiKeysUrl"
@@ -30,7 +16,7 @@
                 <icon icon="vpn_key" />
                 {{ $gettext('Manage My API Keys') }}
             </b-button>
-        </b-card-body>
+        </template>
 
         <data-table
             id="api_keys"
@@ -50,17 +36,17 @@
                 </b-button-group>
             </template>
         </data-table>
-    </section>
+    </card-page>
 </template>
 
 <script setup>
 import DataTable from "~/components/Common/DataTable.vue";
 import {ref} from "vue";
 import {useTranslate} from "~/vendor/gettext";
-import InfoCard from "~/components/Common/InfoCard.vue";
 import Icon from "~/components/Common/Icon.vue";
 import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
 import useHasDatatable from "~/functions/useHasDatatable";
+import CardPage from "~/components/Common/CardPage.vue";
 
 defineProps({
     apiUrl: {

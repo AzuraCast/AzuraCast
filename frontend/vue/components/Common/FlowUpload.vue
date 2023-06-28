@@ -47,7 +47,7 @@
             {{ $gettext('Drag file(s) here to upload or') }}
             <button
                 ref="$fileBrowseTarget"
-                class="file-upload btn btn-primary text-center ml-1"
+                class="file-upload btn btn-primary text-center ms-1"
                 type="button"
             >
                 <icon icon="cloud_upload" />

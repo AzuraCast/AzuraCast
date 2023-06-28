@@ -11,7 +11,6 @@
         </div>
         <b-tabs
             v-else
-            pills
             card
             lazy
         >

@@ -10,7 +10,7 @@
                 role="region"
                 aria-labelledby="hdr_update_details"
             >
-                <div class="card-header bg-primary-dark">
+                <div class="card-header text-bg-primary">
                     <h3
                         id="hdr_update_details"
                         class="card-title"
@@ -36,9 +36,9 @@
                         }}
                     </div>
                 </div>
-                <div class="card-actions buttons">
+                <div class="card-body">
                     <a
-                        class="btn btn-outline-info"
+                        class="btn btn-info"
                         href="#"
                         @click.prevent="checkForUpdates()"
                     >
@@ -54,7 +54,7 @@
                 role="region"
                 aria-labelledby="hdr_release_channel"
             >
-                <div class="card-header bg-primary-dark">
+                <div class="card-header text-bg-primary">
                     <h3
                         id="hdr_release_channel"
                         class="card-title"
@@ -70,9 +70,9 @@
                         {{ langReleaseChannel }}
                     </p>
                 </div>
-                <div class="card-actions buttons">
+                <div class="card-body">
                     <a
-                        class="btn btn-outline-info"
+                        class="btn btn-info"
                         href="https://docs.azuracast.com/en/getting-started/updates/release-channels"
                         target="_blank"
                     >
@@ -90,7 +90,7 @@
                 role="region"
                 aria-labelledby="hdr_update_via_web"
             >
-                <div class="card-header bg-primary-dark">
+                <div class="card-header text-bg-primary">
                     <h3
                         id="hdr_update_via_web"
                         class="card-title"
@@ -111,9 +111,9 @@
                             }}
                         </p>
                     </div>
-                    <div class="card-actions buttons">
+                    <div class="card-body">
                         <a
-                            class="btn btn-outline-default"
+                            class="btn btn-dark"
                             :href="backupUrl"
                             target="_blank"
                         >
@@ -121,7 +121,7 @@
                             {{ $gettext('Backup') }}
                         </a>
                         <a
-                            class="btn btn-outline-success"
+                            class="btn btn-success"
                             href="#"
                             @click.prevent="doUpdate()"
                         >
@@ -147,7 +147,7 @@
                 role="region"
                 aria-labelledby="hdr_manual_updates"
             >
-                <div class="card-header bg-primary-dark">
+                <div class="card-header text-bg-primary">
                     <h3
                         id="hdr_manual_updates"
                         class="card-title"
@@ -161,10 +161,9 @@
                             $gettext('To customize installation settings, or if automatic updates are disabled, you can follow our standard update instructions to update via your SSH console.')
                         }}
                     </p>
-                </div>
-                <div class="card-actions buttons">
+
                     <a
-                        class="btn btn-outline-info"
+                        class="btn btn-info"
                         href="https://docs.azuracast.com/en/getting-started/updates"
                         target="_blank"
                     >

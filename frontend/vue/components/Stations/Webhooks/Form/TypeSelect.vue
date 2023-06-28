@@ -7,7 +7,7 @@
         <div class="form-row">
             <div class="col-md-6">
                 <section class="card mb-3">
-                    <div class="card-header bg-primary-dark">
+                    <div class="card-header text-bg-primary">
                         <h2 class="card-title">
                             {{ $gettext('Generic Web Hooks') }}
                         </h2>
@@ -26,7 +26,7 @@
                     </b-list-group>
                 </section>
                 <section class="card mb-3">
-                    <div class="card-header bg-primary-dark">
+                    <div class="card-header text-bg-primary">
                         <h2 class="card-title">
                             {{ $gettext('Social Media') }}
                         </h2>
@@ -57,7 +57,7 @@
             </div>
             <div class="col-md-6">
                 <section class="card mb-3">
-                    <div class="card-header bg-primary-dark">
+                    <div class="card-header text-bg-primary">
                         <h2 class="card-title">
                             {{ $gettext('Station Directories') }}
                         </h2>
@@ -72,7 +72,7 @@
                 </section>
 
                 <section class="card mb-3">
-                    <div class="card-header bg-primary-dark">
+                    <div class="card-header text-bg-primary">
                         <h2 class="card-title">
                             {{ $gettext('Analytics') }}
                         </h2>

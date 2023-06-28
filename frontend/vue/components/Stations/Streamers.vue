@@ -1,34 +1,27 @@
 <template>
     <div class="row row-of-cards">
         <div class="col-md-8">
-            <section
-                class="card"
-                role="region"
-                aria-labelledby="hdr_streamer_accounts"
-            >
-                <b-card-header header-bg-variant="primary-dark">
-                    <b-row class="align-items-center">
-                        <b-col md="6">
+            <card-page header-id="hdr_streamer_accounts">
+                <template #header="{id}">
+                    <div class="row align-items-center">
+                        <div class="col-md-6">
                             <h2
-                                id="hdr_streamer_accounts"
+                                :id="id"
                                 class="card-title"
                             >
                                 {{ $gettext('Streamer/DJ Accounts') }}
                             </h2>
-                        </b-col>
-                        <b-col
-                            md="6"
-                            class="text-right text-muted"
-                        >
+                        </div>
+                        <div class="col-md-6 text-right text-muted">
                             {{
                                 $gettext(
                                     'This station\'s time zone is currently %{tz}.',
                                     {tz: stationTimeZone}
                                 )
                             }}
-                        </b-col>
-                    </b-row>
-                </b-card-header>
+                        </div>
+                    </div>
+                </template>
 
                 <b-tabs
                     pills
@@ -108,7 +101,7 @@
                         />
                     </b-tab>
                 </b-tabs>
-            </section>
+            </card-page>
         </div>
         <div class="col-md-4">
             <connection-info :connection-info="connectionInfo" />
@@ -138,6 +131,7 @@ import {ref} from "vue";
 import useHasDatatable from "~/functions/useHasDatatable";
 import useHasEditModal from "~/functions/useHasEditModal";
 import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
+import CardPage from "~/components/Common/CardPage.vue";
 
 const props = defineProps({
     listUrl: {

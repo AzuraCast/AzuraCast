@@ -5,7 +5,7 @@
         aria-labelledby="hdr_streamers"
     >
         <template v-if="enableStreamers">
-            <div class="card-header bg-primary-dark">
+            <div class="card-header text-bg-primary">
                 <h3
                     id="hdr_streamers"
                     class="card-title"
@@ -16,11 +16,11 @@
             </div>
             <div
                 v-if="userCanManageStreamers || userCanManageProfile"
-                class="card-actions"
+                class="card-body"
             >
                 <a
                     v-if="userCanManageStreamers"
-                    class="btn btn-outline-primary"
+                    class="btn btn-primary"
                     :href="streamersViewUri"
                 >
                     <icon icon="settings" />
@@ -28,7 +28,7 @@
                 </a>
                 <a
                     v-if="userCanManageProfile"
-                    class="btn btn-outline-danger"
+                    class="btn btn-danger"
                     :data-confirm-title="$gettext('Disable streamers?')"
                     :href="streamersToggleUri"
                 >
@@ -38,7 +38,7 @@
             </div>
         </template>
         <template v-else>
-            <div class="card-header bg-primary-dark">
+            <div class="card-header text-bg-primary">
                 <h3 class="card-title">
                     {{ $gettext('Streamers/DJs') }}
                     <enabled-badge :enabled="false" />
@@ -46,10 +46,10 @@
             </div>
             <div
                 v-if="userCanManageProfile"
-                class="card-actions"
+                class="card-body"
             >
                 <a
-                    class="btn btn-outline-success"
+                    class="btn btn-success"
                     :data-confirm-title="$gettext('Enable streamers?')"
                     :href="streamersToggleUri"
                 >

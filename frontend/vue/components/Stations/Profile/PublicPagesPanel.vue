@@ -5,7 +5,7 @@
         aria-labelledby="hdr_public_pages"
     >
         <template v-if="enablePublicPage">
-            <div class="card-header bg-primary-dark">
+            <div class="card-header text-bg-primary">
                 <h3
                     id="hdr_public_pages"
                     class="card-title"
@@ -67,9 +67,9 @@
                     </tr>
                 </tbody>
             </table>
-            <div class="card-actions">
+            <div class="card-body">
                 <a
-                    class="btn btn-outline-default"
+                    class="btn btn-secondary"
                     @click.prevent="doOpenEmbed"
                 >
                     <icon icon="code" />
@@ -77,14 +77,14 @@
                 </a>
                 <template v-if="userCanManageProfile">
                     <a
-                        class="btn btn-outline-default"
+                        class="btn btn-secondary"
                         :href="brandingUri"
                     >
                         <icon icon="design_services" />
                         {{ $gettext('Edit Branding') }}
                     </a>
                     <a
-                        class="btn btn-outline-danger"
+                        class="btn btn-danger"
                         :data-confirm-title="$gettext('Disable public pages?')"
                         :href="togglePublicPageUri"
                     >
@@ -99,7 +99,7 @@
             />
         </template>
         <template v-else>
-            <div class="card-header bg-primary-dark">
+            <div class="card-header text-bg-primary">
                 <h3 class="card-title">
                     {{ $gettext('Public Pages') }}
                     <enabled-badge :enabled="false" />
@@ -107,10 +107,10 @@
             </div>
             <div
                 v-if="userCanManageProfile"
-                class="card-actions"
+                class="card-body"
             >
                 <a
-                    class="btn btn-outline-success"
+                    class="btn btn-success"
                     :data-confirm-title="$gettext('Enable public pages?')"
                     :href="togglePublicPageUri"
                 >

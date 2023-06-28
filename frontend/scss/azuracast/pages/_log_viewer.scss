@@ -1,0 +1,9 @@
+textarea.log-viewer {
+  white-space: pre;
+  font-family: $font-family-monospace;
+  font-size: $font-size-sm;
+  min-height: 300px !important;
+  max-height: 500px;
+  overflow-x: auto;
+  overflow-y: scroll;
+}

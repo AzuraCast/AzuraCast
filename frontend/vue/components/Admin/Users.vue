@@ -1,27 +1,14 @@
 <template>
-    <section
-        class="card"
-        role="region"
-        aria-labelledby="hdr_users"
-    >
-        <b-card-header header-bg-variant="primary-dark">
-            <h2
-                id="hdr_users"
-                class="card-title"
-            >
-                {{ $gettext('Users') }}
-            </h2>
-        </b-card-header>
-
-        <b-card-body body-class="card-padding-sm">
+    <card-page :title="$gettext('Users')">
+        <template #actions>
             <b-button
-                variant="outline-primary"
+                variant="primary"
                 @click.prevent="doCreate"
             >
                 <icon icon="add" />
                 {{ $gettext('Add User') }}
             </b-button>
-        </b-card-body>
+        </template>
 
         <data-table
             id="users"
@@ -83,7 +70,7 @@
                 </b-button-group>
             </template>
         </data-table>
-    </section>
+    </card-page>
 
     <edit-modal
         ref="$editModal"
@@ -102,6 +89,7 @@ import {ref} from "vue";
 import useHasDatatable from "~/functions/useHasDatatable";
 import useHasEditModal from "~/functions/useHasEditModal";
 import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
+import CardPage from "~/components/Common/CardPage.vue";
 
 const props = defineProps({
     listUrl: {

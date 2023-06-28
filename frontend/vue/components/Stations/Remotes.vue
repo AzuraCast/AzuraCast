@@ -1,27 +1,13 @@
 <template>
-    <section
-        class="card"
-        role="region"
-        aria-labelledby="hdr_remote_relays"
-    >
-        <b-card-header header-bg-variant="primary-dark">
-            <h2
-                id="hdr_remote_relays"
-                class="card-title"
-            >
-                {{ $gettext('Remote Relays') }}
-            </h2>
-        </b-card-header>
-
-        <info-card>
+    <card-page :title="$gettext('Remote Relays')">
+        <template #info>
             <p class="card-text">
                 {{
                     $gettext('Remote relays let you work with broadcasting software outside this server. Any relay you include here will be included in your station\'s statistics. You can also broadcast from this server to remote relays.')
                 }}
             </p>
-        </info-card>
-
-        <b-card-body body-class="card-padding-sm">
+        </template>
+        <template #actions>
             <b-button
                 variant="outline-primary"
                 @click.prevent="doCreate"
@@ -29,7 +15,7 @@
                 <icon icon="add" />
                 {{ $gettext('Add Remote Relay') }}
             </b-button>
-        </b-card-body>
+        </template>
 
         <data-table
             id="station_remotes"
@@ -77,7 +63,7 @@
                 </b-button-group>
             </template>
         </data-table>
-    </section>
+    </card-page>
 
     <remote-edit-modal
         ref="$editModal"
@@ -90,7 +76,6 @@
 <script setup>
 import DataTable from '~/components/Common/DataTable';
 import Icon from '~/components/Common/Icon';
-import InfoCard from '~/components/Common/InfoCard';
 import RemoteEditModal from "./Remotes/EditModal";
 import '~/vendor/sweetalert';
 import {mayNeedRestartProps, useMayNeedRestart} from "~/functions/useMayNeedRestart";
@@ -100,6 +85,7 @@ import showFormatAndBitrate from "~/functions/showFormatAndBitrate";
 import useHasDatatable from "~/functions/useHasDatatable";
 import useHasEditModal from "~/functions/useHasEditModal";
 import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
+import CardPage from "~/components/Common/CardPage.vue";
 
 const props = defineProps({
     ...mayNeedRestartProps,

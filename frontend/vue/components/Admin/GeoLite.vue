@@ -4,7 +4,7 @@
         role="region"
         aria-labelledby="hdr_install_geolite"
     >
-        <div class="card-header bg-primary-dark">
+        <div class="card-header text-bg-primary">
             <h2
                 id="hdr_install_geolite"
                 class="card-title"

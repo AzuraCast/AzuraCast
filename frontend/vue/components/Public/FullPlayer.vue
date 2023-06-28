@@ -14,7 +14,7 @@
                 </div>
             </div>
 
-            <div class="card-actions">
+            <div class="card-body">
                 <a
                     v-b-modal.song_history_modal
                     class="btn btn-sm btn-outline-secondary"

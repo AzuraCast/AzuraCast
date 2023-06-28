@@ -5,7 +5,7 @@
         role="region"
         aria-labelledby="hdr_now_playing"
     >
-        <div class="card-header bg-primary-dark">
+        <div class="card-header text-bg-primary">
             <h3
                 id="hdr_now_playing"
                 class="card-title"

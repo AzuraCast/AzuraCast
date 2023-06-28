@@ -2,7 +2,7 @@
     <div class="row">
         <div class="col-sm-12">
             <div class="card">
-                <div class="card-header bg-primary-dark">
+                <div class="card-header text-bg-primary">
                     <div class="d-flex align-items-center">
                         <div class="flex-fill my-0">
                             <h2 class="card-title">

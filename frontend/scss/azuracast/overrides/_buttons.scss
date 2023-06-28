@@ -1,0 +1,34 @@
+.btn {
+  display: inline-flex;
+  align-items: center;
+
+  & > .material-icons {
+    margin-right: calc($btn-padding-x / 2);
+  }
+
+  &.btn-lg > .material-icons {
+    margin-right: calc($btn-padding-x-lg / 2);
+  }
+
+  &.btn-sm > .material-icons {
+    margin-right: calc($btn-padding-x-sm / 2);
+  }
+
+  &,
+  &.btn-lg,
+  &.btn-sm {
+    .material-icons:only-child {
+      margin-right: 0;
+    }
+  }
+}
+
+.buttons {
+  & > * {
+    margin-right: .5rem;
+  }
+
+  & > *:last-child {
+    margin-right: 0;
+  }
+}

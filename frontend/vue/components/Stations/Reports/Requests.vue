@@ -1,10 +1,14 @@
 <template>
-    <b-card no-body>
-        <b-card-header header-bg-variant="primary-dark">
+    <section
+        class="card"
+        role="region"
+    >
+        <div class="card-header text-bg-primary">
             <h2 class="card-title">
                 {{ $gettext('Song Requests') }}
             </h2>
-        </b-card-header>
+        </div>
+
         <b-tabs
             pills
             card
@@ -21,10 +25,10 @@
 
         <div
             v-if="activeType === 'pending'"
-            class="card-actions"
+            class="card-body"
         >
             <b-button
-                variant="outline-danger"
+                variant="danger"
                 @click="doClear()"
             >
                 <icon icon="remove" />
@@ -74,7 +78,7 @@
                 </b-button-group>
             </template>
         </data-table>
-    </b-card>
+    </section>
 </template>
 
 <script setup>

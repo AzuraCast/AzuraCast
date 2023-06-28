@@ -1,38 +1,33 @@
 <template>
-    <b-card no-body>
-        <b-card-header header-bg-variant="primary-dark">
-            <b-row class="align-items-center">
-                <b-col md="7">
+    <section
+        class="card"
+        role="region"
+    >
+        <div class="card-header text-bg-primary">
+            <div class="row align-items-center">
+                <div class="col-md-7">
                     <h2 class="card-title">
                         {{ $gettext('Podcasts') }}
                     </h2>
-                </b-col>
-                <b-col
-                    md="5"
-                    class="text-right text-white-50"
-                >
+                </div>
+                <div class="col-md-5 text-right text-muted">
                     <stations-common-quota
                         ref="$quota"
                         :quota-url="quotaUrl"
                     />
-                </b-col>
-            </b-row>
-        </b-card-header>
-
-        <b-card-body body-class="card-padding-sm">
-            <div class="buttons">
-                <b-button
-                    variant="outline-primary"
-                    @click.prevent="doCreate"
-                >
-                    <i
-                        class="material-icons"
-                        aria-hidden="true"
-                    >add</i>
-                    {{ $gettext('Add Podcast') }}
-                </b-button>
+                </div>
             </div>
-        </b-card-body>
+        </div>
+
+        <div class="card-body">
+            <b-button
+                variant="primary"
+                @click.prevent="doCreate"
+            >
+                <icon icon="add" />
+                {{ $gettext('Add Podcast') }}
+            </b-button>
+        </div>
 
         <data-table
             id="station_podcasts"
@@ -84,7 +79,7 @@
                 </b-button-group>
             </template>
         </data-table>
-    </b-card>
+    </section>
 
     <edit-modal
         ref="$editPodcastModal"
@@ -108,6 +103,7 @@ import {ref} from "vue";
 import {useSweetAlert} from "~/vendor/sweetalert";
 import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
+import Icon from "~/components/InlinePlayer.vue";
 
 const props = defineProps({
     ...listViewProps

@@ -28,7 +28,7 @@
                     v-if="np.live.is_live"
                     class="now-playing-live"
                 >
-                    <span class="badge badge-primary mr-2">
+                    <span class="badge badge-primary me-2">
                         {{ $gettext('Live') }}
                     </span>
                     {{ np.live.streamer_name }}

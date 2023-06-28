@@ -6,19 +6,19 @@
 
         <div class="row row-of-cards">
             <div class="col-sm-12 col-md-6 col-lg-5">
-                <section
-                    class="card"
-                    role="region"
-                    aria-labelledby="hdr_profile"
+                <card-page
+                    header-id="hdr_profile"
+                    :title="$gettext('Profile')"
                 >
-                    <b-card-header header-bg-variant="primary-dark">
-                        <h2
-                            id="hdr_profile"
-                            class="card-title"
+                    <template #actions>
+                        <b-button
+                            variant="primary"
+                            @click.prevent="doEditProfile"
                         >
-                            {{ $gettext('Profile') }}
-                        </h2>
-                    </b-card-header>
+                            <icon icon="edit" />
+                            {{ $gettext('Edit Profile') }}
+                        </b-button>
+                    </template>
 
                     <b-overlay
                         variant="card"
@@ -63,37 +63,43 @@
                                     <span
                                         v-for="role in user.roles"
                                         :key="role.id"
-                                        class="badge badge-secondary mr-2"
+                                        class="badge badge-secondary me-2"
                                     >{{ role.name }}</span>
                                 </div>
                             </b-media>
                         </b-card-body>
                     </b-overlay>
+                </card-page>
 
-                    <div class="card-actions">
-                        <b-button
-                            variant="outline-primary"
-                            @click.prevent="doEditProfile"
-                        >
-                            <icon icon="edit" />
-                            {{ $gettext('Edit Profile') }}
-                        </b-button>
-                    </div>
-                </section>
-
-                <section
-                    class="card"
-                    role="region"
-                    aria-labelledby="hdr_security"
+                <card-page
+                    header-id="hdr_security"
+                    :title="$gettext('Security')"
                 >
-                    <b-card-header header-bg-variant="primary-dark">
-                        <h2
-                            id="hdr_security"
-                            class="card-title"
+                    <template #actions>
+                        <b-button
+                            variant="primary"
+                            @click.prevent="doChangePassword"
                         >
-                            {{ $gettext('Security') }}
-                        </h2>
-                    </b-card-header>
+                            <icon icon="vpn_key" />
+                            {{ $gettext('Change Password') }}
+                        </b-button>
+                        <b-button
+                            v-if="security.twoFactorEnabled"
+                            variant="danger"
+                            @click.prevent="disableTwoFactor"
+                        >
+                            <icon icon="lock_open" />
+                            {{ $gettext('Disable Two-Factor') }}
+                        </b-button>
+                        <b-button
+                            v-else
+                            variant="success"
+                            @click.prevent="enableTwoFactor"
+                        >
+                            <icon icon="lock" />
+                            {{ $gettext('Enable Two-Factor') }}
+                        </b-button>
+                    </template>
 
                     <b-overlay
                         variant="card"
@@ -112,70 +118,34 @@
                             </p>
                         </b-card-body>
                     </b-overlay>
-
-                    <div class="card-actions">
-                        <b-button
-                            variant="outline-primary"
-                            @click.prevent="doChangePassword"
-                        >
-                            <icon icon="vpn_key" />
-                            {{ $gettext('Change Password') }}
-                        </b-button>
-                        <b-button
-                            v-if="security.twoFactorEnabled"
-                            variant="outline-danger"
-                            @click.prevent="disableTwoFactor"
-                        >
-                            <icon icon="lock_open" />
-                            {{ $gettext('Disable Two-Factor') }}
-                        </b-button>
-                        <b-button
-                            v-else
-                            variant="outline-success"
-                            @click.prevent="enableTwoFactor"
-                        >
-                            <icon icon="lock" />
-                            {{ $gettext('Enable Two-Factor') }}
-                        </b-button>
-                    </div>
-                </section>
+                </card-page>
             </div>
             <div class="col-sm-12 col-md-6 col-lg-7">
-                <section
-                    class="card"
-                    role="region"
-                    aria-labelledby="hdr_api_keys"
+                <card-page
+                    header-id="hdr_api_keys"
+                    :title="$gettext('API Keys')"
                 >
-                    <b-card-header header-bg-variant="primary-dark">
-                        <h2
-                            id="hdr_api_keys"
-                            class="card-title"
-                        >
-                            {{ $gettext('API Keys') }}
-                        </h2>
-                    </b-card-header>
-
-                    <info-card>
+                    <template #info>
                         {{
                             $gettext('Use API keys to authenticate with the AzuraCast API using the same permissions as your user account.')
                         }}
+
                         <a
                             href="/api"
                             target="_blank"
                         >
                             {{ $gettext('API Documentation') }}
                         </a>
-                    </info-card>
-
-                    <b-card-body body-class="card-padding-sm">
+                    </template>
+                    <template #actions>
                         <b-button
-                            variant="outline-primary"
+                            variant="primary"
                             @click.prevent="createApiKey"
                         >
                             <icon icon="add" />
                             {{ $gettext('Add API Key') }}
                         </b-button>
-                    </b-card-body>
+                    </template>
 
                     <data-table
                         id="account_api_keys"
@@ -196,7 +166,7 @@
                             </b-button-group>
                         </template>
                     </data-table>
-                </section>
+                </card-page>
             </div>
         </div>
 
@@ -235,13 +205,13 @@ import AccountApiKeyModal from "./Account/ApiKeyModal";
 import AccountTwoFactorModal from "./Account/TwoFactorModal";
 import AccountEditModal from "./Account/EditModal";
 import Avatar from "~/components/Common/Avatar";
-import InfoCard from "~/components/Common/InfoCard";
 import EnabledBadge from "~/components/Common/Badges/EnabledBadge.vue";
 import {ref} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import {useAxios} from "~/vendor/axios";
 import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
 import useRefreshableAsyncState from "~/functions/useRefreshableAsyncState";
+import CardPage from "~/components/Common/CardPage.vue";
 
 const props = defineProps({
     userUrl: {

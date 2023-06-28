@@ -1,8 +1,11 @@
 <template>
-    <b-card no-body>
-        <b-card-header header-bg-variant="primary-dark">
-            <b-row class="row align-items-center">
-                <b-col md="7">
+    <section
+        class="card"
+        role="region"
+    >
+        <div class="card-header text-bg-primary">
+            <div class="row align-items-center">
+                <div class="col-md-7">
                     <div class="d-flex align-items-center">
                         <div class="flex-shrink-0 pr-3">
                             <album-art :src="podcast.art" />
@@ -16,41 +19,33 @@
                             </h4>
                         </div>
                     </div>
-                </b-col>
-                <b-col
-                    md="5"
-                    class="text-right text-white-50"
-                >
+                </div>
+                <div class="col-md-5 text-right text-muted">
                     <stations-common-quota
                         ref="$quota"
                         :quota-url="quotaUrl"
                     />
-                </b-col>
-            </b-row>
-        </b-card-header>
-
-        <b-card-body body-class="card-padding-sm">
-            <div class="buttons">
-                <b-button
-                    variant="bg"
-                    @click="doClearPodcast()"
-                >
-                    <icon icon="arrow_back" />
-                    {{ $gettext('All Podcasts') }}
-                </b-button>
-
-                <b-button
-                    variant="outline-primary"
-                    @click.prevent="doCreate"
-                >
-                    <i
-                        class="material-icons"
-                        aria-hidden="true"
-                    >add</i>
-                    {{ $gettext('Add Episode') }}
-                </b-button>
+                </div>
             </div>
-        </b-card-body>
+        </div>
+
+        <div class="card-body">
+            <b-button
+                variant="secondary"
+                @click="doClearPodcast()"
+            >
+                <icon icon="arrow_back" />
+                {{ $gettext('All Podcasts') }}
+            </b-button>
+
+            <b-button
+                variant="primary"
+                @click.prevent="doCreate"
+            >
+                <icon icon="add" />
+                {{ $gettext('Add Episode') }}
+            </b-button>
+        </div>
 
         <data-table
             id="station_podcast_episodes"
@@ -104,7 +99,7 @@
                 </b-button-group>
             </template>
         </data-table>
-    </b-card>
+    </section>
 
     <edit-modal
         ref="$editEpisodeModal"

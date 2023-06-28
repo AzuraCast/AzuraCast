@@ -6,7 +6,7 @@
                 role="region"
                 aria-labelledby="hdr_export_media"
             >
-                <div class="card-header bg-primary-dark">
+                <div class="card-header text-bg-primary">
                     <h2
                         id="hdr_export_media"
                         class="card-title"
@@ -45,7 +45,7 @@
                 class="card"
                 role="region"
             >
-                <div class="card-header bg-primary-dark">
+                <div class="card-header text-bg-primary">
                     <h2 class="card-title">
                         {{ $gettext('Import Changes from CSV') }}
                     </h2>

@@ -1,0 +1,42 @@
+.outside-card-header {
+  &:first-child {
+    padding-top: 0;
+  }
+
+  padding: $card-spacer-y $card-spacer-x;
+  margin-bottom: $card-spacer-y;
+}
+
+.card {
+  .card-title {
+    @include font-size($h4-font-size);
+    margin-bottom: 0;
+  }
+
+  .card-subtitle {
+    @include font-size($h5-font-size);
+    margin-bottom: 0;
+  }
+
+  .alert {
+    border: 0;
+    border-radius: 0;
+    margin-bottom: 0;
+
+    &:first-child {
+      border-top-left-radius: var(--bs-card-border-radius);
+      border-top-right-radius: var(--bs-card-border-radius);
+    }
+
+    &:last-child {
+      border-bottom-left-radius: var(--bs-card-border-radius);
+      border-bottom-right-radius: var(--bs-card-border-radius);
+    }
+  }
+}
+
+.row-of-cards {
+  & .card {
+    margin-bottom: 1.5rem !important;
+  }
+}

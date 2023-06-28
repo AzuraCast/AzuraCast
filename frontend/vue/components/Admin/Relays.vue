@@ -1,19 +1,6 @@
 <template>
-    <section
-        class="card"
-        role="region"
-        aria-labelledby="hdr_relays"
-    >
-        <b-card-header header-bg-variant="primary-dark">
-            <h2
-                id="hdr_relays"
-                class="card-title"
-            >
-                {{ $gettext('Connected AzuraRelays') }}
-            </h2>
-        </b-card-header>
-
-        <info-card>
+    <card-page :title="$gettext('Connected AzuraRelays')">
+        <template #info>
             <p class="card-text">
                 {{
                     $gettext('AzuraRelay is a standalone service that connects to your AzuraCast instance, automatically relays your stations via its own server, then reports the listener details back to your main instance. This page shows all currently connected instances.')
@@ -27,7 +14,7 @@
             >
                 {{ $gettext('About AzuraRelay') }}
             </a>
-        </info-card>
+        </template>
 
         <data-table
             id="relays"
@@ -56,7 +43,7 @@
                 </span>
             </template>
         </data-table>
-    </section>
+    </card-page>
 </template>
 
 <script setup>
@@ -64,9 +51,9 @@ import DataTable from '~/components/Common/DataTable';
 import {useTranslate} from "~/vendor/gettext";
 import {ref} from "vue";
 import useHasDatatable from "~/functions/useHasDatatable";
-import InfoCard from "~/components/Common/InfoCard.vue";
 import {DateTime} from "luxon";
 import {useAzuraCast} from "~/vendor/azuracast";
+import CardPage from "~/components/Common/CardPage.vue";
 
 const props = defineProps({
     listUrl: {

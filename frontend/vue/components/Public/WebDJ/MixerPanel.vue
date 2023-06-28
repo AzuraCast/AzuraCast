@@ -1,6 +1,6 @@
 <template>
     <div class="mixer card">
-        <div class="card-header bg-primary-dark">
+        <div class="card-header text-bg-primary">
             <div class="d-flex align-items-center">
                 <div class="flex-fill">
                     <h5 class="card-title">

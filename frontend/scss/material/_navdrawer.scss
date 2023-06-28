@@ -1,0 +1,106 @@
+.navdrawer {
+  display: none;
+  outline: 0;
+  overflow: hidden;
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+
+// Backdrop
+.navdrawer-backdrop {
+  opacity: 0;
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+
+  &.show {
+    opacity: 1;
+  }
+}
+
+// Content
+.navdrawer-content {
+  max-width: calc(100% - var(--navdrawer-gutter-width));
+  overflow-x: hidden;
+  overflow-y: auto;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  transform: translate3d(-100%, 0, 0);
+  width: var(--navdrawer-width);
+
+  .navdrawer-right & {
+    right: 0;
+    left: auto;
+    transform: translate3d(100%, 0, 0);
+  }
+
+  .navdrawer.show & {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+// Misc
+.navdrawer-body {
+  margin-bottom: var(--navdrawer-inner-spacer-y);
+  padding-right: var(--navdrawer-inner-spacer-x);
+  padding-left: var(--navdrawer-inner-spacer-x);
+}
+
+.navdrawer-header {
+  display: block;
+  margin-bottom: var(--navdrawer-inner-spacer-y);
+  padding: var(--navdrawer-inner-spacer-y) var(--navdrawer-inner-spacer-x);
+}
+
+.navdrawer-subheader {
+  @include text-truncate;
+
+  display: block;
+  height: var(--navdrawer-subheader-height);
+  line-height: 1;
+  margin-top: 0;
+  margin-bottom: 0;
+  padding: calc(var(--navdrawer-subheader-height) * 0.5) var(--navdrawer-inner-spacer-x);
+
+  .navdrawer-divider + & {
+    margin-top: calc(var(--navdrawer-inner-spacer-y) * -1);
+  }
+}
+
+// Nav
+.navdrawer-nav {
+  display: flex;
+  flex-direction: column;
+  list-style: none;
+  margin-top: var(--navdrawer-inner-spacer-y);
+  margin-bottom: var(--navdrawer-inner-spacer-y);
+  padding-left: 0;
+
+  .navdrawer-header + &,
+  .navdrawer-subheader + & {
+    margin-top: 0;
+  }
+
+  .nav-link {
+    @include text-truncate;
+
+    font-size: var(--navdrawer-nav-link-font-size);
+    line-height: 1;
+    padding: calc((var(--navdrawer-link-height) - var(--navdrawer-nav-link-font-size)) * 0.5) var(--navdrawer-inner-spacer-x);
+
+    &:focus {
+      outline: 0;
+    }
+  }
+}
+
+.navdrawer-nav-icon {
+  width: var(--navdrawer-icon-width);
+}

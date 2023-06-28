@@ -1,35 +1,21 @@
 <template>
-    <section
-        class="card"
-        role="region"
-        aria-labelledby="hdr_roles_permissions"
-    >
-        <b-card-header header-bg-variant="primary-dark">
-            <h2
-                id="hdr_roles_permissions"
-                class="card-title"
-            >
-                {{ $gettext('Roles & Permissions') }}
-            </h2>
-        </b-card-header>
-
-        <info-card>
+    <card-page :title="$gettext('Roles & Permissions')">
+        <template #info>
             <p class="card-text">
                 {{
                     $gettext('AzuraCast uses a role-based access control system. Roles are given permissions to certain sections of the site, then users are assigned into those roles.')
                 }}
             </p>
-        </info-card>
-
-        <b-card-body body-class="card-padding-sm">
+        </template>
+        <template #actions>
             <b-button
-                variant="outline-primary"
+                variant="primary"
                 @click.prevent="doCreate"
             >
                 <icon icon="add" />
                 {{ $gettext('Add Role') }}
             </b-button>
-        </b-card-body>
+        </template>
 
         <data-table
             id="permissions"
@@ -75,7 +61,7 @@
                 </b-button-group>
             </template>
         </data-table>
-    </section>
+    </card-page>
 
     <edit-modal
         ref="$editModal"
@@ -91,13 +77,13 @@
 import DataTable from '~/components/Common/DataTable';
 import EditModal from './Permissions/EditModal';
 import Icon from '~/components/Common/Icon';
-import InfoCard from '~/components/Common/InfoCard';
 import {filter, get, map} from 'lodash';
 import {useTranslate} from "~/vendor/gettext";
 import {ref} from "vue";
 import useHasDatatable from "~/functions/useHasDatatable";
 import useHasEditModal from "~/functions/useHasEditModal";
 import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
+import CardPage from "~/components/Common/CardPage.vue";
 
 const props = defineProps({
     listUrl: {

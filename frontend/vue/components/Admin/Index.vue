@@ -10,11 +10,8 @@
                 :key="key"
                 class="col-sm-12 col-lg-4"
             >
-                <b-card no-body>
-                    <b-card-header
-                        header-bg-variant="primary-dark"
-                        class="d-flex align-items-center"
-                    >
+                <section class="card">
+                    <div class="card-header text-bg-primary d-flex align-items-center">
                         <div class="flex-fill">
                             <h2 class="card-title">
                                 {{ panel.label }}
@@ -26,9 +23,9 @@
                                 :icon="panel.icon"
                             />
                         </div>
-                    </b-card-header>
+                    </div>
 
-                    <b-list-group>
+                    <div class="list-group list-group-flush">
                         <b-list-group-item
                             v-for="(item, itemKey) in panel.items"
                             :key="itemKey"
@@ -38,8 +35,8 @@
                                 item.label
                             }}
                         </b-list-group-item>
-                    </b-list-group>
-                </b-card>
+                    </div>
+                </section>
             </div>
         </div>
 
@@ -49,11 +46,8 @@
 
         <div class="row row-of-cards">
             <div class="col-sm-12 col-lg-6 col-xl-6">
-                <b-card no-body>
-                    <b-card-header
-                        header-bg-variant="primary-dark"
-                        class="d-flex align-items-center"
-                    >
+                <section class="card">
+                    <div class="card-header text-bg-primary d-flex align-items-center">
                         <div class="flex-fill">
                             <h2 class="card-title">
                                 {{ $gettext('Memory') }}
@@ -70,9 +64,9 @@
                                 <icon icon="help_outline" />
                             </b-button>
                         </div>
-                    </b-card-header>
+                    </div>
 
-                    <b-card-body>
+                    <div class="card-body">
                         <h6 class="mb-1 text-center">
                             {{ $gettext('Total RAM') }}
                             :
@@ -100,7 +94,7 @@
                                     pill
                                     variant="primary"
                                 >
-&nbsp;&nbsp;
+                                    &nbsp;&nbsp;
                                 </b-badge>&nbsp;
                                 {{ $gettext('Used') }}
                                 : {{ stats.memory.readable.used }}
@@ -116,19 +110,19 @@
                                 : {{ stats.memory.readable.cached }}
                             </b-col>
                         </b-row>
-                    </b-card-body>
-                </b-card>
+                    </div>
+                </section>
             </div>
 
             <div class="col-sm-12 col-lg-6 col-xl-6">
-                <b-card no-body>
-                    <b-card-header header-bg-variant="primary-dark">
+                <section class="card">
+                    <div class="card-header text-bg-primary">
                         <h2 class="card-title">
                             {{ $gettext('Disk Space') }}
                         </h2>
-                    </b-card-header>
+                    </div>
 
-                    <b-card-body>
+                    <div class="card-body">
                         <h6 class="mb-1 text-center">
                             {{ $gettext('Total Disk Space') }}
                             :
@@ -159,18 +153,15 @@
                                 {{ stats.disk.readable.used }}
                             </b-col>
                         </b-row>
-                    </b-card-body>
-                </b-card>
+                    </div>
+                </section>
             </div>
         </div>
 
         <div class="row row-of-cards">
             <div class="col-sm-12 col-lg-8 col-xl-6">
-                <b-card no-body>
-                    <b-card-header
-                        header-bg-variant="primary-dark"
-                        class="d-flex align-items-center"
-                    >
+                <section class="card">
+                    <div class="card-header text-bg-primary d-flex align-items-center">
                         <div class="flex-fill">
                             <h2 class="card-title">
                                 {{ $gettext('CPU Load') }}
@@ -187,9 +178,9 @@
                                 <icon icon="help_outline" />
                             </b-button>
                         </div>
-                    </b-card-header>
+                    </div>
 
-                    <b-card-body>
+                    <div class="card-body">
                         <h5 class="mb-1 text-center">
                             {{ formatCpuName(stats.cpu.total.name) }}
                         </h5>
@@ -293,9 +284,9 @@
                                 </b-row>
                             </b-col>
                         </b-row>
-                    </b-card-body>
+                    </div>
 
-                    <b-card-footer>
+                    <div class="card-footer">
                         <h6 class="mb-1 text-center">
                             {{ $gettext('Load Average') }}
                         </h6>
@@ -316,24 +307,19 @@
                                 {{ stats.cpu.load[2].toFixed(2) }}
                             </b-col>
                         </b-row>
-                    </b-card-footer>
-                </b-card>
+                    </div>
+                </section>
             </div>
 
             <div class="col-sm-12 col-lg-4 col-xl-6">
-                <b-card no-body>
-                    <b-card-header
-                        header-bg-variant="primary-dark"
-                        class="d-flex align-items-center"
-                    >
-                        <div class="flex-fill">
-                            <h2 class="card-title">
-                                {{ $gettext('Services') }}
-                            </h2>
-                        </div>
-                    </b-card-header>
+                <section class="card">
+                    <div class="card-header text-bg-primary">
+                        <h2 class="card-title mb-0">
+                            {{ $gettext('Services') }}
+                        </h2>
+                    </div>
 
-                    <table class="table table-sm table-striped table-responsive mb-0">
+                    <table class="table table-striped table-responsive mb-0">
                         <colgroup>
                             <col style="width: 5%;">
                             <col style="width: 75%;">
@@ -371,18 +357,18 @@
                             </tr>
                         </tbody>
                     </table>
-                </b-card>
+                </section>
             </div>
         </div>
 
         <div class="row row-of-cards">
             <div class="col">
-                <b-card no-body>
-                    <b-card-header header-bg-variant="primary-dark">
-                        <h2 class="card-title">
+                <section class="card">
+                    <div class="card-header text-bg-primary">
+                        <h2 class="card-title mb-0">
                             {{ $gettext('Network Interfaces') }}
                         </h2>
-                    </b-card-header>
+                    </div>
 
                     <b-tabs
                         content-class="mt-3"
@@ -420,7 +406,7 @@
                             </b-row>
                         </b-tab>
                     </b-tabs>
-                </b-card>
+                </section>
             </div>
         </div>
 

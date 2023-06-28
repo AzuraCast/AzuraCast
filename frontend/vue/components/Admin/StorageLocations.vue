@@ -4,14 +4,15 @@
         role="region"
         aria-labelledby="hdr_storage_locations"
     >
-        <b-card-header header-bg-variant="primary-dark">
+        <div class="card-header text-bg-primary">
             <h2
                 id="hdr_storage_locations"
                 class="card-title"
             >
                 {{ $gettext('Storage Locations') }}
             </h2>
-        </b-card-header>
+        </div>
+        
         <b-tabs
             pills
             card

@@ -5,7 +5,7 @@
         role="region"
         aria-labelledby="hdr_backend"
     >
-        <div class="card-header bg-primary-dark">
+        <div class="card-header text-bg-primary">
             <h3
                 id="hdr_backend"
                 class="card-title"
@@ -37,10 +37,10 @@
         </div>
         <div
             v-if="userCanManageBroadcasting && hasStarted"
-            class="card-actions"
+            class="card-body"
         >
             <a
-                class="api-call no-reload btn btn-outline-secondary"
+                class="api-call no-reload btn btn-secondary"
                 :href="backendRestartUri"
             >
                 <icon icon="update" />
@@ -48,7 +48,7 @@
             </a>
             <a
                 v-show="!backendRunning"
-                class="api-call no-reload btn btn-outline-success"
+                class="api-call no-reload btn btn-success"
                 :href="backendStartUri"
             >
                 <icon icon="play_arrow" />
@@ -56,7 +56,7 @@
             </a>
             <a
                 v-show="backendRunning"
-                class="api-call no-reload btn btn-outline-danger"
+                class="api-call no-reload btn btn-danger"
                 :href="backendStopUri"
             >
                 <icon icon="stop" />

@@ -9,7 +9,7 @@
                 class="card mb-3"
                 aria-labelledby="hdr_clear_cache"
             >
-                <div class="card-header bg-primary-dark">
+                <div class="card-header text-bg-primary">
                     <h2
                         id="hdr_clear_cache"
                         class="card-title"
@@ -39,7 +39,7 @@
                 class="card mb-3"
                 aria-labelledby="hdr_clear_queues"
             >
-                <div class="card-header bg-primary-dark">
+                <div class="card-header text-bg-primary">
                     <h2
                         id="hdr_clear_queues"
                         class="card-title"
@@ -69,7 +69,7 @@
         class="card mb-3"
         aria-labelledby="hdr_sync_tasks"
     >
-        <div class="card-header bg-primary-dark">
+        <div class="card-header text-bg-primary">
             <h2
                 id="hdr_sync_tasks"
                 class="card-title"
@@ -104,7 +104,7 @@
         class="card mb-3"
         aria-labelledby="hdr_message_queues"
     >
-        <div class="card-header bg-primary-dark">
+        <div class="card-header text-bg-primary">
             <h2
                 id="hdr_message_queues"
                 class="card-title"
@@ -150,7 +150,7 @@
         class="card"
         aria-labelledby="hdr_station_debugging"
     >
-        <div class="card-header bg-primary-dark">
+        <div class="card-header text-bg-primary">
             <h2
                 id="hdr_station_debugging"
                 class="card-title"

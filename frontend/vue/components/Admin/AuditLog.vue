@@ -4,7 +4,7 @@
         role="region"
         aria-labelledby="hdr_audit_log"
     >
-        <div class="card-header bg-primary-dark">
+        <div class="card-header text-bg-primary">
             <div class="d-flex align-items-center">
                 <h2
                     id="hdr_audit_log"

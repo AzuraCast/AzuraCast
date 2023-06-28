@@ -4,7 +4,7 @@
         role="region"
         aria-labelledby="hdr_edit_profile"
     >
-        <div class="card-header bg-primary-dark">
+        <div class="card-header text-bg-primary">
             <h3
                 id="hdr_edit_profile"
                 class="card-title"

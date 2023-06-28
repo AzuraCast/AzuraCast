@@ -3,7 +3,7 @@
         class="card"
         role="region"
     >
-        <div class="card-header bg-primary-dark">
+        <div class="card-header text-bg-primary">
             <h3 class="card-title">
                 {{ $gettext('SoundExchange Report') }}
             </h3>

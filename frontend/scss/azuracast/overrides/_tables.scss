@@ -1,0 +1,27 @@
+
+$aligns: top, text-top, middle, baseline, text-bottom, bottom;
+
+table {
+
+  @each $align in $aligns {
+    &.align-#{$align} tr,
+    tr.align-#{$align} {
+      td, th {
+        vertical-align: $align;
+      }
+    }
+  }
+
+  tr.text-center {
+    td, th {
+      text-align: center;
+    }
+  }
+
+  td, th {
+    &.text-center {
+      text-align: center;
+    }
+  }
+
+}

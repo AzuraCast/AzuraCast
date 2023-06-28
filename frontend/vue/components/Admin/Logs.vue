@@ -5,7 +5,7 @@
             role="region"
             aria-labelledby="hdr_system_logs"
         >
-            <div class="card-header bg-primary-dark">
+            <div class="card-header text-bg-primary">
                 <h2
                     id="hdr_system_logs"
                     class="card-title"
@@ -26,7 +26,7 @@
             role="region"
             aria-labelledby="hdr_logs_by_station"
         >
-            <div class="card-header bg-primary-dark">
+            <div class="card-header text-bg-primary">
                 <h2
                     id="hdr_logs_by_station"
                     class="card-title"

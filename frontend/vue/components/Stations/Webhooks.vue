@@ -1,33 +1,21 @@
 <template>
-    <section
-        class="card"
-        role="region"
-        aria-labelledby="hdr_web_hooks"
-    >
-        <b-card-header header-bg-variant="primary-dark">
-            <h2
-                id="hdr_web_hooks"
-                class="card-title"
-            >
-                {{ $gettext('Web Hooks') }}
-            </h2>
-        </b-card-header>
-
-        <info-card>
-            {{
-                $gettext('Web hooks let you connect to external web services and broadcast changes to your station to them.')
-            }}
-        </info-card>
-
-        <b-card-body body-class="card-padding-sm">
+    <card-page :title="$gettext('Web Hooks')">
+        <template #info>
+            <p class="card-text">
+                {{
+                    $gettext('Web hooks let you connect to external web services and broadcast changes to your station to them.')
+                }}
+            </p>
+        </template>
+        <template #actions>
             <b-button
-                variant="outline-primary"
+                variant="primary"
                 @click.prevent="doCreate"
             >
                 <icon icon="add" />
                 {{ $gettext('Add Web Hook') }}
             </b-button>
-        </b-card-body>
+        </template>
 
         <data-table
             id="station_webhooks"
@@ -89,7 +77,7 @@
                 </b-button-group>
             </template>
         </data-table>
-    </section>
+    </card-page>
 
     <streaming-log-modal ref="$logModal" />
     <edit-modal
@@ -106,7 +94,6 @@
 import DataTable from '~/components/Common/DataTable';
 import EditModal from './Webhooks/EditModal';
 import Icon from '~/components/Common/Icon';
-import InfoCard from "~/components/Common/InfoCard";
 import {get, map} from 'lodash';
 import StreamingLogModal from "~/components/Common/StreamingLogModal";
 import {useTranslate} from "~/vendor/gettext";
@@ -117,6 +104,7 @@ import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
 import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
 import {useTriggerDetails, useTypeDetails} from "~/components/Entity/Webhooks";
+import CardPage from "~/components/Common/CardPage.vue";
 
 const props = defineProps({
     listUrl: {

@@ -17,7 +17,7 @@
                 {{ $gettext('Cached') }}:
                 {{ $gettext('The amount of memory Linux is using for disk caching.') }}
             </h6>
-            <div class="ml-4">
+            <div class="ms-4">
                 <p>
                     {{
                         $gettext('This can make it look like your memory is low while it actually is not. Some monitoring solutions/panels include cached memory in their used memory statistics without indicating this.')

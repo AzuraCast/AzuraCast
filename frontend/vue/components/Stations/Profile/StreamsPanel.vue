@@ -4,7 +4,7 @@
         role="region"
         aria-labelledby="hdr_streams"
     >
-        <div class="card-header bg-primary-dark">
+        <div class="card-header text-bg-primary">
             <h3
                 id="hdr_streams"
                 class="card-title"
@@ -152,16 +152,16 @@
                 </tbody>
             </template>
         </table>
-        <div class="card-actions">
+        <div class="card-body">
             <a
-                class="btn btn-outline-primary"
+                class="btn btn-primary"
                 :href="station.playlist_pls_url"
             >
                 <icon icon="file_download" />
                 {{ $gettext('Download PLS') }}
             </a>
             <a
-                class="btn btn-outline-primary"
+                class="btn btn-primary"
                 :href="station.playlist_m3u_url"
             >
                 <icon icon="file_download" />

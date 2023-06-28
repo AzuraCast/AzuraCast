@@ -4,34 +4,31 @@
         role="region"
         aria-labelledby="hdr_music_files"
     >
-        <b-card-header header-bg-variant="primary-dark">
-            <b-row class="align-items-center">
-                <b-col md="7">
+        <div class="card-header text-bg-primary">
+            <div class="row align-items-center">
+                <div class="col-md-7">
                     <h2
                         id="hdr_music_files"
                         class="card-title"
                     >
                         {{ $gettext('Music Files') }}
                     </h2>
-                </b-col>
-                <b-col
-                    md="5"
-                    class="text-right text-white-50"
-                >
+                </div>
+                <div class="col-md-5 text-right text-white-50">
                     <stations-common-quota
                         ref="$quota"
                         :quota-url="quotaUrl"
                     />
-                </b-col>
-            </b-row>
-        </b-card-header>
+                </div>
+            </div>
+        </div>
 
         <div
             v-if="showSftp"
             class="card-body alert-info d-flex align-items-center"
             role="alert"
         >
-            <div class="flex-shrink-0 mr-2">
+            <div class="flex-shrink-0 me-2">
                 <i
                     class="material-icons"
                     aria-hidden="true"
@@ -42,7 +39,7 @@
                     {{ $gettext('You can also upload files in bulk via SFTP.') }}
                 </p>
             </div>
-            <div class="flex-shrink-0 ml-2">
+            <div class="flex-shrink-0 ms-2">
                 <a
                     class="btn btn-sm btn-light"
                     target="_blank"

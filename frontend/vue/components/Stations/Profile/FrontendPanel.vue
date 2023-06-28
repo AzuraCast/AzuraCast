@@ -5,7 +5,7 @@
         role="region"
         aria-labelledby="hdr_frontend"
     >
-        <div class="card-header bg-primary-dark">
+        <div class="card-header text-bg-primary">
             <h3
                 id="hdr_frontend"
                 class="card-title"
@@ -100,9 +100,9 @@
                 </b-table-simple>
             </b-collapse>
 
-            <div class="card-actions">
+            <div class="card-body">
                 <a
-                    class="btn btn-outline-primary"
+                    class="btn btn-primary"
                     @click.prevent="credentialsVisible = !credentialsVisible"
                 >
                     <icon icon="unfold_more" />
@@ -110,7 +110,7 @@
                 </a>
                 <template v-if="hasStarted">
                     <a
-                        class="api-call no-reload btn btn-outline-secondary"
+                        class="api-call no-reload btn btn-secondary"
                         :href="frontendRestartUri"
                     >
                         <icon icon="update" />
@@ -118,7 +118,7 @@
                     </a>
                     <a
                         v-show="!frontendRunning"
-                        class="api-call no-reload btn btn-outline-success"
+                        class="api-call no-reload btn btn-success"
                         :href="frontendStartUri"
                     >
                         <icon icon="play_arrow" />
@@ -126,7 +126,7 @@
                     </a>
                     <a
                         v-show="frontendRunning"
-                        class="api-call no-reload btn btn-outline-danger"
+                        class="api-call no-reload btn btn-danger"
                         :href="frontendStopUri"
                     >
                         <icon icon="stop" />

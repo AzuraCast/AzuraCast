@@ -5,7 +5,7 @@
         role="region"
         aria-labelledby="hdr_now_playing"
     >
-        <div class="card-header bg-primary-dark">
+        <div class="card-header text-bg-primary">
             <div class="d-flex align-items-center">
                 <h3
                     id="hdr_now_playing"
@@ -33,7 +33,7 @@
                 </h6>
                 <a
                     v-if="userCanManageReports"
-                    class="flex-shrink btn btn-outline-default ml-2 px-1 py-2"
+                    class="flex-shrink btn btn-outline-default ms-2 px-1 py-2"
                     :href="listenerReportUri"
                     :title="$gettext('Listener Report')"
                 >
@@ -56,7 +56,7 @@
                             <div class="media">
                                 <a
                                     v-if="np.now_playing.song.art"
-                                    class="mr-2"
+                                    class="me-2"
                                     :href="np.now_playing.song.art"
                                     data-fancybox
                                     target="_blank"
@@ -121,7 +121,7 @@
                             <div class="media">
                                 <a
                                     v-if="np.playing_next.song.art"
-                                    class="mr-2"
+                                    class="me-2"
                                     :href="np.playing_next.song.art"
                                     data-fancybox
                                     target="_blank"
@@ -183,12 +183,12 @@
 
         <div
             v-if="isLiquidsoap && userCanManageBroadcasting"
-            class="card-actions flex-shrink"
+            class="card-body flex-shrink"
         >
             <a
                 v-if="!np.live.is_live"
                 id="btn_skip_song"
-                class="btn btn-outline-primary api-call no-reload"
+                class="btn btn-primary api-call no-reload"
                 role="button"
                 :href="backendSkipSongUri"
             >
@@ -198,7 +198,7 @@
             <a
                 v-if="np.live.is_live"
                 id="btn_disconnect_streamer"
-                class="btn btn-outline-primary api-call no-reload"
+                class="btn btn-primary api-call no-reload"
                 role="button"
                 :href="backendDisconnectStreamerUri"
             >

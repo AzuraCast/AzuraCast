@@ -6,7 +6,7 @@
         role="region"
         aria-labelledby="hdr_new_station"
     >
-        <div class="card-header bg-primary-dark">
+        <div class="card-header text-bg-primary">
             <h3
                 id="hdr_new_station"
                 class="card-title"

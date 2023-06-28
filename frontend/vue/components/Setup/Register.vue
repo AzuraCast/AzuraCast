@@ -64,7 +64,7 @@
                         <template #label>
                             <icon
                                 icon="email"
-                                class="mr-1"
+                                class="me-1"
                             />
                             {{ $gettext('E-mail Address') }}
                         </template>
@@ -80,7 +80,7 @@
                         <template #label>
                             <icon
                                 icon="vpn_key"
-                                class="mr-1"
+                                class="me-1"
                             />
                             {{ $gettext('Password') }}
                         </template>

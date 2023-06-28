@@ -111,7 +111,7 @@ final class SetupController
             component: 'Vue_SetupRegister',
             id: 'setup-register',
             layout: 'minimal',
-            title: __('Set Up AzuraCast'),
+            title: __('Set Up BoostCast'),
             props: [
                 'csrf' => $csrf->generate('register'),
                 'error' => $error,

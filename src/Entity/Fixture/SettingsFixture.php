@@ -37,7 +37,7 @@ final class SettingsFixture extends AbstractFixture
                 <<<'JS'
                 $(function() {
                   if ($('body').hasClass('login-content')) {
-                    $('input[name="username"]').val('demo@azuracast.com');
+                    $('input[name="username"]').val('demo@boost.mn');
                     $('input[name="password"]').val('demo');
                   }
                 });

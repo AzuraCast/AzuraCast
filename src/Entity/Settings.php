@@ -64,7 +64,7 @@ class Settings implements Stringable
     }
 
     #[
-        OA\Property(description: "Site Base URL", example: "https://your.azuracast.site"),
+        OA\Property(description: "Site Base URL", example: "https://your.boost.site"),
         ORM\Column(length: 255, nullable: true),
         Groups(self::GROUP_GENERAL)
     ]
@@ -835,7 +835,7 @@ class Settings implements Stringable
     }
 
     #[
-        OA\Property(description: "The name of the sender of system e-mails.", example: "AzuraCast"),
+        OA\Property(description: "The name of the sender of system e-mails.", example: "BoostCast"),
         ORM\Column(length: 255, nullable: true),
         Groups(self::GROUP_GENERAL)
     ]

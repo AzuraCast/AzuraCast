@@ -16,7 +16,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 #[AsCommand(
     name: 'azuracast:setup',
-    description: 'Run all general AzuraCast setup steps.',
+    description: 'Run all general BoostCast setup steps.',
 )]
 final class SetupCommand extends CommandAbstract
 {

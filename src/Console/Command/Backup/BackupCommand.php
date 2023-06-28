@@ -23,7 +23,7 @@ use const PATHINFO_EXTENSION;
 
 #[AsCommand(
     name: 'azuracast:backup',
-    description: 'Back up the AzuraCast database and statistics (and optionally media).',
+    description: 'Back up the BoostCast database and statistics (and optionally media).',
 )]
 final class BackupCommand extends AbstractDatabaseCommand
 {
@@ -93,7 +93,7 @@ final class BackupCommand extends AbstractDatabaseCommand
         $includeMedia = !$excludeMedia;
         $filesToBackup = [];
 
-        $io->title(__('AzuraCast Backup'));
+        $io->title(__('BoostCast Backup'));
         $io->writeln(__('Please wait while a backup is generated...'));
 
         // Create temp directories

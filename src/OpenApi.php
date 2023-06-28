@@ -11,9 +11,9 @@ use OpenApi\Attributes as OA;
         openapi: '3.0.0',
         info: new OA\Info(
             version: AZURACAST_VERSION,
-            description: "AzuraCast is a standalone, turnkey web radio management tool. Radio stations hosted by"
-            . " AzuraCast expose a public API for viewing now playing data, making requests and more.",
-            title: 'AzuraCast',
+            description: "BoostCast is a standalone, turnkey web radio management tool. Radio stations hosted by"
+            . " BoostCast expose a public API for viewing now playing data, making requests and more.",
+            title: 'BoostCast',
             license: new OA\License(
                 name: 'Apache 2.0',
                 url: "https://www.apache.org/licenses/LICENSE-2.0.html"
@@ -62,8 +62,8 @@ use OpenApi\Attributes as OA;
             new OA\Tag(name: "Miscellaneous"),
         ],
         externalDocs: new OA\ExternalDocumentation(
-            description: "AzuraCast on GitHub",
-            url: "https://github.com/AzuraCast/AzuraCast"
+            description: "BoostCast on GitHub",
+            url: "https://github.com/boostmn/boostcast"
         )
     ),
     OA\Parameter(

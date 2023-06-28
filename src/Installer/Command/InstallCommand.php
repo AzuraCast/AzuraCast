@@ -172,16 +172,16 @@ final class InstallCommand extends Command
         // Display header messages
         if ($isNewInstall) {
             $io->title(
-                __('AzuraCast Installer')
+                __('BoostCast Installer')
             );
             $io->block(
-                __('Welcome to AzuraCast! Complete the initial server setup by answering a few questions.')
+                __('Welcome to BoostCast! Complete the initial server setup by answering a few questions.')
             );
 
             $customize = !$defaults;
         } else {
             $io->title(
-                __('AzuraCast Updater')
+                __('BoostCast Updater')
             );
 
             if ($defaults) {
@@ -197,7 +197,7 @@ final class InstallCommand extends Command
         if ($customize) {
             // Port customization
             $io->writeln(
-                __('AzuraCast is currently configured to listen on the following ports:'),
+                __('BoostCast is currently configured to listen on the following ports:'),
             );
             $io->listing(
                 [

@@ -28,25 +28,25 @@ return static function (RouteCollectorProxy $group) {
 
                     $group->delete('/two-factor', Controller\Api\Frontend\Account\DeleteTwoFactorAction::class);
 
-                    $group->get(
-                        '/api-keys',
-                        Controller\Api\Frontend\Account\ApiKeysController::class . ':listAction'
-                    )->setName('api:frontend:api-keys');
+                    // $group->get(
+                    //     '/api-keys',
+                    //     Controller\Api\Frontend\Account\ApiKeysController::class . ':listAction'
+                    // )->setName('api:frontend:api-keys');
 
-                    $group->post(
-                        '/api-keys',
-                        Controller\Api\Frontend\Account\ApiKeysController::class . ':createAction'
-                    );
+                    // $group->post(
+                    //     '/api-keys',
+                    //     Controller\Api\Frontend\Account\ApiKeysController::class . ':createAction'
+                    // );
 
-                    $group->get(
-                        '/api-key/{id}',
-                        Controller\Api\Frontend\Account\ApiKeysController::class . ':getAction'
-                    )->setName('api:frontend:api-key');
+                    // $group->get(
+                    //     '/api-key/{id}',
+                    //     Controller\Api\Frontend\Account\ApiKeysController::class . ':getAction'
+                    // )->setName('api:frontend:api-key');
 
-                    $group->delete(
-                        '/api-key/{id}',
-                        Controller\Api\Frontend\Account\ApiKeysController::class . ':deleteAction'
-                    );
+                    // $group->delete(
+                    //     '/api-key/{id}',
+                    //     Controller\Api\Frontend\Account\ApiKeysController::class . ':deleteAction'
+                    // );
                 }
             );
 

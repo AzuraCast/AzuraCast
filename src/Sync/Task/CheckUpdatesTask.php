@@ -40,7 +40,7 @@ final class CheckUpdatesTask extends AbstractTask
         }
 
         if ($this->environment->isTesting()) {
-            $this->logger->info('Update checks are currently disabled for this AzuraCast instance.');
+            $this->logger->info('Update checks are currently disabled for this BoostCast instance.');
             return;
         }
 
@@ -52,10 +52,10 @@ final class CheckUpdatesTask extends AbstractTask
 
                 $this->logger->info('Successfully checked for updates.', ['results' => $updates]);
             } else {
-                $this->logger->error('Error parsing update data response from AzuraCast central.');
+                $this->logger->error('Error parsing update data response from BoostCast central.');
             }
         } catch (TransferException $e) {
-            $this->logger->error(sprintf('Error from AzuraCast Central (%d): %s', $e->getCode(), $e->getMessage()));
+            $this->logger->error(sprintf('Error from BoostCast Central (%d): %s', $e->getCode(), $e->getMessage()));
             return;
         }
 

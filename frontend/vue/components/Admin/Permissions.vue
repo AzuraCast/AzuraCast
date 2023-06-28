@@ -16,7 +16,7 @@
         <info-card>
             <p class="card-text">
                 {{
-                    $gettext('AzuraCast uses a role-based access control system. Roles are given permissions to certain sections of the site, then users are assigned into those roles.')
+                    $gettext('BoostCast uses a role-based access control system. Roles are given permissions to certain sections of the site, then users are assigned into those roles.')
                 }}
             </p>
         </info-card>

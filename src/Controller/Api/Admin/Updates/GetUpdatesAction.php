@@ -40,10 +40,10 @@ final class GetUpdatesAction implements SingleActionInterface
                 return $response->withJson($updates);
             }
 
-            throw new RuntimeException('Error parsing update data response from AzuraCast central.');
+            throw new RuntimeException('Error parsing update data response from BoostCast central.');
         } catch (TransferException $e) {
             throw new RuntimeException(
-                sprintf('Error from AzuraCast Central (%d): %s', $e->getCode(), $e->getMessage())
+                sprintf('Error from BoostCast Central (%d): %s', $e->getCode(), $e->getMessage())
             );
         }
     }

@@ -142,34 +142,34 @@ return static function (App\Event\BuildStationMenu $e) {
             //     'permission' => StationPermissions::Podcasts,
             // ],
 
-            'live_streaming' => [
-                'label' => __('Live Streaming'),
-                'icon' => 'mic',
-                'visible' => StationFeatures::Streamers->supportedForStation($station),
-                'items' => [
-                    'streamers' => [
-                        'label' => __('Streamer/DJ Accounts'),
-                        'icon' => 'mic',
-                        'url' => $router->fromHere('stations:streamers:index'),
-                        'permission' => StationPermissions::Streamers,
-                    ],
+            // 'live_streaming' => [
+            //     'label' => __('Live Streaming'),
+            //     'icon' => 'mic',
+            //     'visible' => StationFeatures::Streamers->supportedForStation($station),
+            //     'items' => [
+            //         'streamers' => [
+            //             'label' => __('Streamer/DJ Accounts'),
+            //             'icon' => 'mic',
+            //             'url' => $router->fromHere('stations:streamers:index'),
+            //             'permission' => StationPermissions::Streamers,
+            //         ],
 
-                    'web_dj' => [
-                        'label' => __('Web DJ'),
-                        'icon' => 'surround_sound',
-                        'url' => (string)(
-                        $router->namedAsUri(
-                            'public:dj',
-                            ['station_id' => $station->getShortName()],
-                            [],
-                            true
-                        )->withScheme('https')
-                        ),
-                        'visible' => $station->getEnablePublicPage(),
-                        'external' => true,
-                    ],
-                ],
-            ],
+            //         'web_dj' => [
+            //             'label' => __('Web DJ'),
+            //             'icon' => 'surround_sound',
+            //             'url' => (string)(
+            //             $router->namedAsUri(
+            //                 'public:dj',
+            //                 ['station_id' => $station->getShortName()],
+            //                 [],
+            //                 true
+            //             )->withScheme('https')
+            //             ),
+            //             'visible' => $station->getEnablePublicPage(),
+            //             'external' => true,
+            //         ],
+            //     ],
+            // ],
 
             // 'webhooks' => [
             //     'label' => __('Web Hooks'),
@@ -179,34 +179,34 @@ return static function (App\Event\BuildStationMenu $e) {
             //     'permission' => StationPermissions::WebHooks,
             // ],
 
-            // 'reports' => [
-            //     'label' => __('Reports'),
-            //     'icon' => 'assignment',
-            //     'permission' => StationPermissions::Reports,
-            //     'items' => [
-            //         'reports_overview' => [
-            //             'label' => __('Station Statistics'),
-            //             'url' => $router->fromHere('stations:reports:overview'),
-            //         ],
-            //         'reports_listeners' => [
-            //             'label' => __('Listeners'),
-            //             'url' => $router->fromHere('stations:reports:listeners'),
-            //         ],
-            //         'reports_requests' => [
-            //             'label' => __('Song Requests'),
-            //             'url' => $router->fromHere('stations:reports:requests'),
-            //             'visible' => $station->getEnableRequests(),
-            //         ],
-            //         'reports_timeline' => [
-            //             'label' => __('Song Playback Timeline'),
-            //             'url' => $router->fromHere('stations:reports:timeline'),
-            //         ],
-            //         'reports_soundexchange' => [
-            //             'label' => __('SoundExchange Royalties'),
-            //             'url' => $router->fromHere('stations:reports:soundexchange'),
-            //         ],
-            //     ],
-            // ],
+            'reports' => [
+                'label' => __('Reports'),
+                'icon' => 'assignment',
+                'permission' => StationPermissions::Reports,
+                'items' => [
+                    'reports_overview' => [
+                        'label' => __('Station Statistics'),
+                        'url' => $router->fromHere('stations:reports:overview'),
+                    ],
+                    'reports_listeners' => [
+                        'label' => __('Listeners'),
+                        'url' => $router->fromHere('stations:reports:listeners'),
+                    ],
+                    'reports_requests' => [
+                        'label' => __('Song Requests'),
+                        'url' => $router->fromHere('stations:reports:requests'),
+                        'visible' => $station->getEnableRequests(),
+                    ],
+                    'reports_timeline' => [
+                        'label' => __('Song Playback Timeline'),
+                        'url' => $router->fromHere('stations:reports:timeline'),
+                    ],
+                    'reports_soundexchange' => [
+                        'label' => __('SoundExchange Royalties'),
+                        'url' => $router->fromHere('stations:reports:soundexchange'),
+                    ],
+                ],
+            ],
 
             'broadcasting' => [
                 'label' => __('Broadcasting'),
@@ -225,13 +225,13 @@ return static function (App\Event\BuildStationMenu $e) {
                         'visible' => StationFeatures::HlsStreams->supportedForStation($station),
                         'permission' => StationPermissions::MountPoints,
                     ],
-                    'remotes' => [
-                        'label' => __('Remote Relays'),
-                        'icon' => 'router',
-                        'url' => $router->fromHere('stations:remotes:index'),
-                        'visible' => StationFeatures::RemoteRelays->supportedForStation($station),
-                        'permission' => StationPermissions::RemoteRelays,
-                    ],
+                    // 'remotes' => [
+                    //     'label' => __('Remote Relays'),
+                    //     'icon' => 'router',
+                    //     'url' => $router->fromHere('stations:remotes:index'),
+                    //     'visible' => StationFeatures::RemoteRelays->supportedForStation($station),
+                    //     'permission' => StationPermissions::RemoteRelays,
+                    // ],
                     'fallback' => [
                         'label' => __('Custom Fallback File'),
                         'url' => $router->fromHere('stations:fallback'),

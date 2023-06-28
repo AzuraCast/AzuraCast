@@ -9,14 +9,14 @@
                 id="hdr_relays"
                 class="card-title"
             >
-                {{ $gettext('Connected AzuraRelays') }}
+                {{ $gettext('Connected BoostRelays') }}
             </h2>
         </b-card-header>
 
         <info-card>
             <p class="card-text">
                 {{
-                    $gettext('AzuraRelay is a standalone service that connects to your AzuraCast instance, automatically relays your stations via its own server, then reports the listener details back to your main instance. This page shows all currently connected instances.')
+                    $gettext('BoostRelay is a standalone service that connects to your BoostCast instance, automatically relays your stations via its own server, then reports the listener details back to your main instance. This page shows all currently connected instances.')
                 }}
             </p>
 
@@ -25,7 +25,7 @@
                 target="_blank"
                 href="https://github.com/AzuraCast/AzuraRelay"
             >
-                {{ $gettext('About AzuraRelay') }}
+                {{ $gettext('About BoostRelay') }}
             </a>
         </info-card>
 

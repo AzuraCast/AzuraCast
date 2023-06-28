@@ -81,7 +81,7 @@ final class LastFm
             [
                 RequestOptions::HTTP_ERRORS => true,
                 RequestOptions::HEADERS => [
-                    'User-Agent' => 'AzuraCast ' . Version::FALLBACK_VERSION,
+                    'User-Agent' => 'BoostCast ' . Version::FALLBACK_VERSION,
                     'Accept' => 'application/json',
                 ],
                 RequestOptions::QUERY => $query,

@@ -43,7 +43,7 @@ final class BaseUrlCheck
                 'You may want to update your base URL to ensure it is correct.'
             );
             $notificationBodyParts[] = __(
-                'If you regularly use different URLs to access AzuraCast, you should enable the "Prefer Browser URL" setting.'
+                'If you regularly use different URLs to access BoostCast, you should enable the "Prefer Browser URL" setting.'
             );
             // phpcs:enable Generic.Files.LineLength
 

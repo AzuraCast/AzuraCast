@@ -35,7 +35,7 @@ final class UpdatesAction implements SingleActionInterface
             response: $response,
             component: 'Vue_AdminUpdates',
             id: 'admin-updates',
-            title: __('Update AzuraCast'),
+            title: __('Update BoostCast'),
             props: [
                 'releaseChannel' => $this->version->getReleaseChannelEnum()->value,
                 'initialUpdateInfo' => $settings->getUpdateResults(),

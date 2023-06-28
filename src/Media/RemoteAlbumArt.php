@@ -56,7 +56,7 @@ final class RemoteAlbumArt
             [
                 RequestOptions::TIMEOUT => 10,
                 RequestOptions::HEADERS => [
-                    'User-Agent' => 'AzuraCast ' . Version::FALLBACK_VERSION,
+                    'User-Agent' => 'BoostCast ' . Version::FALLBACK_VERSION,
                 ],
             ]
         );
@@ -73,7 +73,7 @@ final class RemoteAlbumArt
         }
 
         // Catch the default error track and derivatives.
-        if (false !== mb_stripos($song->getText() ?? '', 'AzuraCast')) {
+        if (false !== mb_stripos($song->getText() ?? '', 'BoostCast')) {
             return null;
         }
 

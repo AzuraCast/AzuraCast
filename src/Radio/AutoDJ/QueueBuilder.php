@@ -63,7 +63,7 @@ final class QueueBuilder implements EventSubscriberInterface
      */
     public function calculateNextSong(BuildQueue $event): void
     {
-        $this->logger->info('AzuraCast AutoDJ is calculating the next song to play...');
+        $this->logger->info('BoostCast AutoDJ is calculating the next song to play...');
 
         $station = $event->getStation();
         $expectedPlayTime = $event->getExpectedPlayTime();

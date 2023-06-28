@@ -4,7 +4,7 @@
             <div class="card-body">
                 <div class="card-title">
                     <img
-                        src="/static/img/public-player-header.png"
+                        src="/static/img/public-player-header.svg"
                         height="16"
                         alt="Public Player"
                     >

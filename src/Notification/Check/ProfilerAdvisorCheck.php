@@ -33,7 +33,7 @@ final class ProfilerAdvisorCheck
         $notification = new Notification();
         $notification->title = __('The performance profiling extension is currently enabled on this installation.');
         $notification->body = __(
-            'You can track the execution time and memory usage of any AzuraCast page or application ' .
+            'You can track the execution time and memory usage of any BoostCast page or application ' .
             'from the profiler page.',
         );
         $notification->type = FlashLevels::Info->value;

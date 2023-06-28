@@ -71,11 +71,11 @@
                                     :field="v$.hide_product_name"
                                 >
                                     <template #label>
-                                        {{ $gettext('Hide AzuraCast Branding on Public Pages') }}
+                                        {{ $gettext('Hide BoostCast Branding on Public Pages') }}
                                     </template>
                                     <template #description>
                                         {{
-                                            $gettext('If selected, this will remove the AzuraCast branding from public-facing pages.')
+                                            $gettext('If selected, this will remove the BoostCast branding from public-facing pages.')
                                         }}
                                     </template>
                                 </b-wrapped-form-checkbox>
@@ -91,7 +91,7 @@
                                 </template>
                                 <template #description>
                                     {{
-                                        $gettext('If a visitor is not signed in and visits the AzuraCast homepage, you can automatically redirect them to the URL specified here. Leave blank to redirect them to the login screen by default.')
+                                        $gettext('If a visitor is not signed in and visits the BoostCast homepage, you can automatically redirect them to the URL specified here. Leave blank to redirect them to the login screen by default.')
                                     }}
                                 </template>
                             </b-wrapped-form-group>

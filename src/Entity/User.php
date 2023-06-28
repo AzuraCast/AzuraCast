@@ -38,7 +38,7 @@ class User implements Stringable, IdentifiableEntityInterface
     use Traits\TruncateStrings;
 
     #[
-        OA\Property(example: "demo@azuracast.com"),
+        OA\Property(example: "demo@boost.mn"),
         ORM\Column(length: 100, nullable: false),
         Assert\NotBlank,
         Assert\Email,

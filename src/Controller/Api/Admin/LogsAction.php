@@ -77,7 +77,7 @@ final class LogsAction
         $logPaths = [];
 
         $logPaths['azuracast_log'] = [
-            'name' => __('AzuraCast Application Log'),
+            'name' => __('BoostCast Application Log'),
             'path' => $tempDir . '/app-' . gmdate('Y-m-d') . '.log',
             'tail' => true,
         ];

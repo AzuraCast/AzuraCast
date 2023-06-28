@@ -51,7 +51,7 @@ final class SendTestMessageAction implements SingleActionInterface
             );
             $email->text(
                 __(
-                    'This is a test message from AzuraCast. If you are receiving this message, it means your '
+                    'This is a test message from BoostCast. If you are receiving this message, it means your '
                     . 'e-mail settings are configured correctly.'
                 )
             );

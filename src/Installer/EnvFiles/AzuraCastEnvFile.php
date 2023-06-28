@@ -226,7 +226,7 @@ final class AzuraCastEnvFile extends AbstractEnvFile
                     'name' => __('Enable Performance Profiling Extension'),
                     'description' => sprintf(
                         __('Profiling data can be viewed by visiting %s.'),
-                        'http://your-azuracast-site/?SPX_KEY=dev&SPX_UI_URI=/',
+                        'http://your-boost-site/?SPX_KEY=dev&SPX_UI_URI=/',
                     ),
                 ],
                 Environment::PROFILING_EXTENSION_ALWAYS_ON => [

@@ -14,7 +14,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 #[AsCommand(
     name: 'azuracast:settings:list',
-    description: 'List all settings in the AzuraCast settings database.',
+    description: 'List all settings in the BoostCast settings database.',
 )]
 final class ListCommand extends CommandAbstract
 {
@@ -23,7 +23,7 @@ final class ListCommand extends CommandAbstract
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
-        $io->title(__('AzuraCast Settings'));
+        $io->title(__('BoostCast Settings'));
 
         $headers = [
             __('Setting Key'),

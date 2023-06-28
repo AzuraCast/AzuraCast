@@ -14,7 +14,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 #[AsCommand(
     name: 'azuracast:settings:set',
-    description: 'Set the value of a setting in the AzuraCast settings database.',
+    description: 'Set the value of a setting in the BoostCast settings database.',
 )]
 final class SetCommand extends CommandAbstract
 {
@@ -33,7 +33,7 @@ final class SetCommand extends CommandAbstract
         $settingKey = $input->getArgument('setting-key');
         $settingValue = $input->getArgument('setting-value');
 
-        $io->title('AzuraCast Settings');
+        $io->title('BoostCast Settings');
 
         if (strtolower($settingValue) === 'null') {
             $this->writeSettings([$settingKey => null]);

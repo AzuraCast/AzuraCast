@@ -41,7 +41,7 @@ final class UpdateCheck
 
         $router = $event->getRequest()->getRouter();
 
-        $actionLabel = __('Update AzuraCast');
+        $actionLabel = __('Update BoostCast');
         $actionUrl = $router->named('admin:updates:index');
 
         $releaseChannel = $this->version->getReleaseChannelEnum();
@@ -52,7 +52,7 @@ final class UpdateCheck
         ) {
             $notification = new Notification();
             $notification->title = __(
-                'New AzuraCast Stable Release Available',
+                'New BoostCast Stable Release Available',
             );
             $notification->body = sprintf(
                 __(
@@ -73,7 +73,7 @@ final class UpdateCheck
             if ($updateData['needs_rolling_update'] ?? false) {
                 $notification = new Notification();
                 $notification->title = __(
-                    'New AzuraCast Rolling Release Available'
+                    'New BoostCast Rolling Release Available'
                 );
                 $notification->body = sprintf(
                     __(
@@ -98,7 +98,7 @@ final class UpdateCheck
                 );
                 $notification->type = FlashLevels::Info->value;
                 $notification->actionLabel = __('About Release Channels');
-                $notification->actionUrl = 'https://docs.azuracast.com/en/getting-started/updates/release-channels';
+                $notification->actionUrl = 'https://docs.boost.mn/en/getting-started/updates/release-channels';
 
                 $event->addNotification($notification);
             }

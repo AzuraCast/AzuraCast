@@ -17,8 +17,8 @@ on:
       - stable
     tags:
       - "*"
-  schedule:
-    - cron: "0 2 * * 0" # Weekly on Sundays at 02:00
+#  schedule:
+#    - cron: "0 2 * * 0" # Weekly on Sundays at 02:00
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}

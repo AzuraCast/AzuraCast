@@ -164,11 +164,10 @@ final class Customization
     public function getPageTitle(?string $title = null): string
     {
         if (!$this->hideProductName()) {
-            if ($title == null) { 
+            if ($title == null) {
                 $title = $this->environment->getAppName();
             }
         }
-
         if (!$this->environment->isProduction()) {
             $title = '(' . $this->environment->getAppEnvironmentEnum()->getName() . ') ' . $title;
         }

@@ -78,8 +78,6 @@ RUN composer install \
     --no-autoloader \
     --no-interaction
 
-RUN vendor/bin/phpcs --report=checkstyle | cs2pr
-
 COPY --chown=azuracast:azuracast . .
 
 RUN composer dump-autoload --optimize --classmap-authoritative \

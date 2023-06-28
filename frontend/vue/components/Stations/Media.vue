@@ -14,7 +14,7 @@
                         {{ $gettext('Music Files') }}
                     </h2>
                 </div>
-                <div class="col-md-5 text-right text-white-50">
+                <div class="col-md-5 text-end text-muted">
                     <stations-common-quota
                         ref="$quota"
                         :quota-url="quotaUrl"
@@ -89,7 +89,7 @@
         >
             <template #cell(path)="row">
                 <div class="d-flex align-items-center">
-                    <div class="flex-shrink-0 pr-2">
+                    <div class="flex-shrink-0 pe-2">
                         <template v-if="row.item.media.is_playable">
                             <play-button
                                 :url="row.item.media.links.play"
@@ -157,12 +157,12 @@
                     <album-art
                         v-if="row.item.media.art"
                         :src="row.item.media.art"
-                        class="flex-shrink-1 pl-2"
+                        class="flex-shrink-1 ps-2"
                     />
                     <album-art
                         v-else-if="row.item.is_cover_art"
                         :src="row.item.links.download"
-                        class="flex-shrink-1 pl-2"
+                        class="flex-shrink-1 ps-2"
                     />
                 </div>
             </template>
@@ -194,22 +194,20 @@
             </template>
             <template #cell(commands)="row">
                 <template v-if="row.item.media.links.edit">
-                    <b-button
-                        size="sm"
-                        variant="primary"
+                    <button
+                        class="btn btn-sm btn-primary"
                         @click.prevent="edit(row.item.media.links.edit, row.item.media.links.art, row.item.media.links.play, row.item.media.links.waveform)"
                     >
                         {{ $gettext('Edit') }}
-                    </b-button>
+                    </button>
                 </template>
                 <template v-else>
-                    <b-button
-                        size="sm"
-                        variant="primary"
+                    <button
+                        class="btn btn-sm btn-primary"
                         @click.prevent="rename(row.item.path)"
                     >
                         {{ $gettext('Rename') }}
-                    </b-button>
+                    </button>
                 </template>
             </template>
         </data-table>

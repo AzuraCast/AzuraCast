@@ -99,14 +99,13 @@
                     </b-wrapped-form-checkbox>
                 </b-form-fieldset>
 
-                <b-button
+                <button
                     type="submit"
-                    size="lg"
-                    :variant="(v$.$invalid) ? 'danger' : 'primary'"
-                    class="mt-2"
+                    class="btn btn-lg mt-2"
+                    :class="(v$.$invalid) ? 'btn-danger' : 'btn-primary'"
                 >
                     {{ $gettext('Generate Report') }}
-                </b-button>
+                </button>
             </div>
         </form>
     </section>

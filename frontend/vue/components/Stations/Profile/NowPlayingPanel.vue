@@ -14,20 +14,20 @@
                     {{ $gettext('On the Air') }}
                 </h3>
                 <h6
-                    class="card-subtitle text-right flex-fill my-0"
+                    class="card-subtitle text-end flex-fill my-0"
                     style="line-height: 1;"
                 >
                     <icon
                         class="sm align-middle"
                         icon="headset"
                     />
-                    <span class="pl-1">
+                    <span class="ps-1">
                         {{ langListeners }}
                     </span>
 
                     <br>
                     <small>
-                        <span class="pr-1">{{ np.listeners.unique }}</span>
+                        <span class="pe-1">{{ np.listeners.unique }}</span>
                         {{ $gettext('Unique') }}
                     </small>
                 </h6>
@@ -193,7 +193,9 @@
                 :href="backendSkipSongUri"
             >
                 <icon icon="skip_next" />
-                {{ $gettext('Skip Song') }}
+                <span>
+                    {{ $gettext('Skip Song') }}
+                </span>
             </a>
             <a
                 v-if="np.live.is_live"
@@ -203,7 +205,9 @@
                 :href="backendDisconnectStreamerUri"
             >
                 <icon icon="volume_off" />
-                {{ $gettext('Disconnect Streamer') }}
+                <span>
+                    {{ $gettext('Disconnect Streamer') }}
+                </span>
             </a>
         </div>
     </section>

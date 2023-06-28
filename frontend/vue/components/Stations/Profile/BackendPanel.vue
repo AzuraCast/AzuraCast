@@ -26,11 +26,11 @@
                 class="buttons"
             >
                 <a
-                    class="btn btn-primary"
+                    class="btn btn-link"
                     :href="manageMediaUri"
                 >{{ $gettext('Music Files') }}</a>
                 <a
-                    class="btn btn-primary"
+                    class="btn btn-link"
                     :href="managePlaylistsUri"
                 >{{ $gettext('Playlists') }}</a>
             </div>
@@ -44,7 +44,9 @@
                 :href="backendRestartUri"
             >
                 <icon icon="update" />
-                {{ $gettext('Restart') }}
+                <span>
+                    {{ $gettext('Restart') }}
+                </span>
             </a>
             <a
                 v-show="!backendRunning"
@@ -52,7 +54,9 @@
                 :href="backendStartUri"
             >
                 <icon icon="play_arrow" />
-                {{ $gettext('Start') }}
+                <span>
+                    {{ $gettext('Start') }}
+                </span>
             </a>
             <a
                 v-show="backendRunning"
@@ -60,7 +64,9 @@
                 :href="backendStopUri"
             >
                 <icon icon="stop" />
-                {{ $gettext('Stop') }}
+                <span>
+                    {{ $gettext('Stop') }}
+                </span>
             </a>
         </div>
     </section>

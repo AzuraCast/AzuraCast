@@ -70,17 +70,17 @@
                 </b-tabs>
             </b-overlay>
 
-            <b-card-body body-class="card-padding-sm">
-                <b-button
-                    size="lg"
+            <div class="card-body">
+                <button
                     type="submit"
-                    :variant="(v$.$invalid) ? 'danger' : 'primary'"
+                    class="btn btn-lg"
+                    :class="(v$.$invalid) ? 'btn-danger' : 'btn-primary'"
                 >
                     <slot name="submitButtonName">
                         {{ $gettext('Save Changes') }}
                     </slot>
-                </b-button>
-            </b-card-body>
+                </button>
+            </div>
         </section>
     </form>
 </template>

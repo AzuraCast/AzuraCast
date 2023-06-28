@@ -1,13 +1,15 @@
 <template>
     <card-page :title="$gettext('Stations')">
         <template #actions>
-            <b-button
-                variant="primary"
+            <button
+                class="btn btn-primary"
                 @click.prevent="doCreate"
             >
                 <icon icon="add" />
-                {{ $gettext('Add Station') }}
-            </b-button>
+                <span>
+                    {{ $gettext('Add Station') }}
+                </span>
+            </button>
         </template>
 
         <data-table
@@ -24,37 +26,33 @@
                 <code>{{ row.item.short_name }}</code>
             </template>
             <template #cell(actions)="row">
-                <b-button-group size="sm">
-                    <b-button
-                        size="sm"
-                        variant="secondary"
+                <div class="btn-group btn-group-sm">
+                    <a
+                        class="btn btn-secondary"
                         :href="row.item.links.manage"
                         target="_blank"
                     >
                         {{ $gettext('Manage') }}
-                    </b-button>
-                    <b-button
-                        size="sm"
-                        variant="secondary"
+                    </a>
+                    <button
+                        class="btn btn-secondary"
                         @click.prevent="doClone(row.item.name, row.item.links.clone)"
                     >
                         {{ $gettext('Clone') }}
-                    </b-button>
-                    <b-button
-                        size="sm"
-                        variant="primary"
+                    </button>
+                    <button
+                        class="btn btn-primary"
                         @click.prevent="doEdit(row.item.links.self)"
                     >
                         {{ $gettext('Edit') }}
-                    </b-button>
-                    <b-button
-                        size="sm"
-                        variant="danger"
+                    </button>
+                    <button
+                        class="btn btn-danger"
                         @click.prevent="doDelete(row.item.links.self)"
                     >
                         {{ $gettext('Delete') }}
-                    </b-button>
-                </b-button-group>
+                    </button>
+                </div>
             </template>
         </data-table>
     </card-page>

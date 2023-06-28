@@ -8,13 +8,15 @@
             </p>
         </template>
         <template #actions>
-            <b-button
-                variant="outline-primary"
+            <button
+                class="btn btn-primary"
                 @click.prevent="doCreate"
             >
                 <icon icon="add" />
-                {{ $gettext('Add Remote Relay') }}
-            </b-button>
+                <span>
+                    {{ $gettext('Add Remote Relay') }}
+                </span>
+            </button>
         </template>
 
         <data-table
@@ -42,25 +44,23 @@
                 </template>
             </template>
             <template #cell(actions)="row">
-                <b-button-group
+                <div
                     v-if="row.item.is_editable"
-                    size="sm"
+                    class="btn-group btn-group-sm"
                 >
-                    <b-button
-                        size="sm"
-                        variant="primary"
+                    <button
+                        class="btn btn-primary"
                         @click.prevent="doEdit(row.item.links.self)"
                     >
                         {{ $gettext('Edit') }}
-                    </b-button>
-                    <b-button
-                        size="sm"
-                        variant="danger"
+                    </button>
+                    <button
+                        class="btn btn-danger"
                         @click.prevent="doDelete(row.item.links.self)"
                     >
                         {{ $gettext('Delete') }}
-                    </b-button>
-                </b-button-group>
+                    </button>
+                </div>
             </template>
         </data-table>
     </card-page>

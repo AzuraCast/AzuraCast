@@ -31,7 +31,9 @@
                 @click="retry"
             >
                 <icon icon="refresh" />
-                {{ $gettext('Reload') }}
+                <span>
+                    {{ $gettext('Reload') }}
+                </span>
             </a>
         </error-card>
         <admin-stations-form

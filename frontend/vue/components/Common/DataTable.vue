@@ -53,20 +53,20 @@
                             />
                         </div>
                     </div>
-                    <div class="flex-shrink-1 pl-3 pr-3">
-                        <b-btn-group class="actions">
-                            <b-button
+                    <div class="flex-shrink-1 ps-3 pe-3">
+                        <div class="btn-group actions">
+                            <button
                                 v-b-tooltip.hover
-                                variant="default"
+                                class="btn btn-secondary"
                                 :title="$gettext('Refresh rows')"
                                 @click="onClickRefresh"
                             >
                                 <icon icon="refresh" />
-                            </b-button>
+                            </button>
                             <b-dropdown
                                 v-if="paginated"
                                 v-b-tooltip.hover
-                                variant="default"
+                                variant="secondary"
                                 :text="perPageLabel"
                                 :title="$gettext('Rows per page')"
                             >
@@ -99,7 +99,7 @@
                                     />
                                 </b-dropdown-form>
                             </b-dropdown>
-                        </b-btn-group>
+                        </div>
                     </div>
                 </b-col>
             </b-row>

@@ -114,17 +114,17 @@
             </b-tabs>
 
             <slot name="submitButton">
-                <b-card-body body-class="card-padding-sm">
-                    <b-button
-                        size="lg"
+                <div class="card-body">
+                    <button
                         type="submit"
-                        :variant="(!isValid) ? 'danger' : 'primary'"
+                        class="btn btn-lg"
+                        :class="(!isValid) ? 'btn-danger' : 'btn-primary'"
                     >
                         <slot name="submitButtonText">
                             {{ $gettext('Save Changes') }}
                         </slot>
-                    </b-button>
-                </b-card-body>
+                    </button>
+                </div>
             </slot>
         </b-form>
     </b-overlay>

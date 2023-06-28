@@ -8,14 +8,16 @@
             </p>
         </template>
         <template #actions>
-            <b-button
-                variant="outline-primary"
+            <a
+                class="btn btn-primary"
                 :href="myApiKeysUrl"
                 target="_blank"
             >
                 <icon icon="vpn_key" />
-                {{ $gettext('Manage My API Keys') }}
-            </b-button>
+                <span>
+                    {{ $gettext('Manage My API Keys') }}
+                </span>
+            </a>
         </template>
 
         <data-table
@@ -25,15 +27,14 @@
             :api-url="apiUrl"
         >
             <template #cell(actions)="row">
-                <b-button-group size="sm">
-                    <b-button
-                        size="sm"
-                        variant="danger"
+                <div class="btn-group btn-group-sm">
+                    <button
+                        class="btn btn-sm btn-danger"
                         @click.prevent="doDelete(row.item.links.self)"
                     >
                         {{ $gettext('Delete') }}
-                    </b-button>
-                </b-button-group>
+                    </button>
+                </div>
             </template>
         </data-table>
     </card-page>

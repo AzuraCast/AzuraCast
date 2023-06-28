@@ -50,18 +50,18 @@
         </b-overlay>
 
         <template #modal-footer>
-            <b-button
-                variant="default"
+            <button
+                class="btn btn-secondary"
                 @click="close"
             >
                 {{ $gettext('Close') }}
-            </b-button>
-            <b-button
-                variant="primary"
+            </button>
+            <button
+                class="btn btn-primary"
                 @click="save"
             >
                 {{ $gettext('Apply to Folders') }}
-            </b-button>
+            </button>
         </template>
     </b-modal>
 </template>

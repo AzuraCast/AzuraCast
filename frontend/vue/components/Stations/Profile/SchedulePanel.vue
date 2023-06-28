@@ -32,7 +32,7 @@
                                 </small><br>
                                 {{ row.name }}
                             </h5>
-                            <p class="text-right m-0">
+                            <p class="text-end m-0">
                                 <small>{{ row.start_formatted }} - {{ row.end_formatted }}</small>
                                 <br>
                                 <strong>

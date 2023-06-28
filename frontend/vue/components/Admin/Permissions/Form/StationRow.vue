@@ -10,15 +10,15 @@
                 </h2>
             </div>
             <div class="flex-shrink-0">
-                <b-button
-                    size="sm"
-                    variant="outline-light"
-                    class="py-2 pr-0"
+                <button
+                    class="btn btn-sm btn-light py-2 pe-0"
                     @click.prevent="$emit('remove')"
                 >
                     <icon icon="remove" />
-                    {{ $gettext('Remove') }}
-                </b-button>
+                    <span>
+                        {{ $gettext('Remove') }}
+                    </span>
+                </button>
             </div>
         </div>
         <b-card-body>

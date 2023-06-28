@@ -93,19 +93,18 @@
                             </fieldset>
 
                             <div class="buttons">
-                                <b-button
-                                    variant="primary"
+                                <button
                                     type="submit"
+                                    class="btn btn-primary"
                                 >
                                     {{ $gettext('Save Changes') }}
-                                </b-button>
-                                <b-button
-                                    variant="danger"
-                                    type="button"
+                                </button>
+                                <button
+                                    class="btn btn-danger"
                                     @click.prevent="doDelete"
                                 >
                                     {{ $gettext('Remove Key') }}
-                                </b-button>
+                                </button>
                             </div>
                         </form>
                     </div>

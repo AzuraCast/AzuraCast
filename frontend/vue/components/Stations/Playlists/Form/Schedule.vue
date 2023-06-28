@@ -20,16 +20,17 @@
             @remove="remove(index)"
         />
 
-        <b-button-group>
-            <b-button
-                size="sm"
-                variant="outline-primary"
+        <div class="buttons">
+            <button
+                class="btn btn-sm btn-primary"
                 @click.prevent="add"
             >
                 <icon icon="add" />
-                {{ $gettext('Add Schedule Item') }}
-            </b-button>
-        </b-button-group>
+                <span>
+                    {{ $gettext('Add Schedule Item') }}
+                </span>
+            </button>
+        </div>
     </b-tab>
 </template>
 

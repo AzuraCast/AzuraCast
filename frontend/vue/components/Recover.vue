@@ -55,16 +55,13 @@
                         </template>
                     </b-wrapped-form-group>
 
-                    <b-button
+                    <button
                         type="submit"
-                        size="lg"
-                        block
-                        variant="primary"
+                        class="btn btn-lg btn-primary btn-block mt-2"
                         :disabled="v$.$invalid"
-                        class="mt-2"
                     >
                         {{ $gettext('Recover Account') }}
-                    </b-button>
+                    </button>
                 </form>
             </div>
         </section>

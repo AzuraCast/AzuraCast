@@ -70,40 +70,41 @@
                         </div>
 
                         <div class="buttons">
-                            <b-button
+                            <button
+                                class="btn btn-sm btn-primary"
                                 type="submit"
-                                size="sm"
-                                variant="primary"
                             >
                                 {{ $gettext('Save') }}
-                            </b-button>
-                            <b-button
+                            </button>
+                            <button
+                                class="btn btn-sm btn-warning"
                                 type="button"
-                                size="sm"
-                                variant="warning"
                                 @click="clearPlaylists()"
                             >
                                 {{ $gettext('Clear') }}
-                            </b-button>
+                            </button>
                         </div>
                     </b-dropdown-form>
                 </b-dropdown>
             </div>
-            <b-button
+            <button
                 v-b-modal.move_file
-                size="sm"
-                variant="primary"
+                class="btn btn-sm btn-primary"
             >
                 <icon icon="open_with" />
-                {{ $gettext('Move') }}
-            </b-button>
+                <span>
+                    {{ $gettext('Move') }}
+                </span>
+            </button>
             <b-dropdown
                 size="sm"
                 variant="default"
             >
                 <template #button-content>
                     <icon icon="more_horiz" />
-                    {{ $gettext('More') }}
+                    <span>
+                        {{ $gettext('More') }}
+                    </span>
                 </template>
                 <b-dropdown-item
                     v-b-tooltip.hover
@@ -129,24 +130,26 @@
                 </b-dropdown-item>
             </b-dropdown>
 
-            <b-button
-                size="sm"
-                variant="danger"
+            <button
+                class="btn btn-sm btn-danger"
                 @click="doDelete"
             >
                 <icon icon="delete" />
-                {{ $gettext('Delete') }}
-            </b-button>
+                <span>
+                    {{ $gettext('Delete') }}
+                </span>
+            </button>
         </div>
-        <div class="col-md-4 text-right">
-            <b-button
+        <div class="col-md-4 text-end">
+            <button
                 v-b-modal.create_directory
-                size="sm"
-                variant="primary"
+                class="btn btn-sm btn-primary"
             >
                 <icon icon="folder" />
-                {{ $gettext('New Folder') }}
-            </b-button>
+                <span>
+                    {{ $gettext('New Folder') }}
+                </span>
+            </button>
         </div>
     </div>
 </template>

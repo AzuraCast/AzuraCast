@@ -8,13 +8,15 @@
             </p>
         </template>
         <template #actions>
-            <b-button
-                variant="primary"
+            <button
+                class="btn btn-primary"
                 @click.prevent="doCreate"
             >
                 <icon icon="add" />
-                {{ $gettext('Add Role') }}
-            </b-button>
+                <span>
+                    {{ $gettext('Add Role') }}
+                </span>
+            </button>
         </template>
 
         <data-table
@@ -39,26 +41,24 @@
                 </div>
             </template>
             <template #cell(actions)="row">
-                <b-button-group
+                <div
                     v-if="!row.item.is_super_admin"
-                    size="sm"
+                    class="btn-group btn-group-sm"
                 >
-                    <b-button
-                        size="sm"
-                        variant="primary"
+                    <button
+                        class="btn btn-primary"
                         @click.prevent="doEdit(row.item.links.self)"
                     >
                         {{ $gettext('Edit') }}
-                    </b-button>
-                    <b-button
+                    </button>
+                    <button
                         v-if="row.item.id !== 1"
-                        size="sm"
-                        variant="danger"
+                        class="btn btn-danger"
                         @click.prevent="doDelete(row.item.links.self)"
                     >
                         {{ $gettext('Delete') }}
-                    </b-button>
-                </b-button-group>
+                    </button>
+                </div>
             </template>
         </data-table>
     </card-page>

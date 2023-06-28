@@ -20,7 +20,9 @@
                     class="btn btn-sm btn-outline-secondary"
                 >
                     <icon icon="history" />
-                    {{ $gettext('Song History') }}
+                    <span>
+                        {{ $gettext('Song History') }}
+                    </span>
                 </a>
                 <a
                     v-if="enableRequests"
@@ -28,14 +30,18 @@
                     class="btn btn-sm btn-outline-secondary"
                 >
                     <icon icon="help_outline" />
-                    {{ $gettext('Request Song') }}
+                    <span>
+                        {{ $gettext('Request Song') }}
+                    </span>
                 </a>
                 <a
                     class="btn btn-sm btn-outline-secondary"
                     :href="downloadPlaylistUri"
                 >
                     <icon icon="file_download" />
-                    {{ $gettext('Playlist') }}
+                    <span>
+                        {{ $gettext('Playlist') }}
+                    </span>
                 </a>
             </div>
         </div>

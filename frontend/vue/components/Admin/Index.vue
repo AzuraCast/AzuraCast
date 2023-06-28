@@ -55,14 +55,12 @@
                         </div>
 
                         <div class="flex-shrink-0">
-                            <b-button
-                                variant="outline-light"
-                                size="sm"
-                                class="py-2"
+                            <button
+                                class="btn btn-dark btn-sm py-2"
                                 @click.prevent="showMemoryStatsHelpModal"
                             >
                                 <icon icon="help_outline" />
-                            </b-button>
+                            </button>
                         </div>
                     </div>
 
@@ -169,14 +167,12 @@
                         </div>
 
                         <div class="flex-shrink-0">
-                            <b-button
-                                variant="outline-light"
-                                size="sm"
-                                class="py-2"
+                            <button
+                                class="btn btn-dark btn-sm py-2"
                                 @click.prevent="showCpuStatsHelpModal"
                             >
                                 <icon icon="help_outline" />
-                            </b-button>
+                            </button>
                         </div>
                     </div>
 
@@ -331,28 +327,24 @@
                                 :key="service.name"
                                 class="align-middle"
                             >
-                                <td class="text-center pr-2">
+                                <td class="text-center pe-2">
                                     <running-badge :running="service.running" />
                                 </td>
-                                <td class="pl-2">
+                                <td class="ps-2">
                                     <h6 class="mb-0">
                                         {{ service.name }}<br>
                                         <small>{{ service.description }}</small>
                                     </h6>
                                 </td>
                                 <td>
-                                    <b-button-group
+                                    <button
                                         v-if="service.links.restart"
-                                        size="sm"
+                                        class="btn btn-sm"
+                                        :class="service.running ? 'btn-dark' : 'btn-danger'"
+                                        @click.prevent="doRestart(service.links.restart)"
                                     >
-                                        <b-button
-                                            size="sm"
-                                            :variant="service.running ? 'bg' : 'danger'"
-                                            @click.prevent="doRestart(service.links.restart)"
-                                        >
-                                            {{ $gettext('Restart') }}
-                                        </b-button>
-                                    </b-button-group>
+                                        {{ $gettext('Restart') }}
+                                    </button>
                                 </td>
                             </tr>
                         </tbody>

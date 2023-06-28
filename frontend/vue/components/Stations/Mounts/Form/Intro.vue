@@ -29,22 +29,20 @@
 
                     <div v-if="hasIntro">
                         <div class="buttons pt-3">
-                            <b-button
+                            <a
                                 v-if="editIntroUrl"
-                                block
-                                variant="bg"
+                                class="btn btn-block btn-dark"
                                 :href="editIntroUrl"
                                 target="_blank"
                             >
                                 {{ $gettext('Download') }}
-                            </b-button>
-                            <b-button
-                                block
-                                variant="danger"
+                            </a>
+                            <button
+                                class="btn btn-block btn-danger"
                                 @click="deleteIntro"
                             >
                                 {{ $gettext('Clear File') }}
-                            </b-button>
+                            </button>
                         </div>
                     </div>
                     <div v-else>

@@ -98,21 +98,21 @@
                 name="modal-footer"
                 v-bind="slotProps"
             >
-                <b-button
-                    variant="default"
-                    type="button"
+                <button
+                    class="btn btn-secondary"
                     @click="close"
                 >
                     {{ $gettext('Close') }}
-                </b-button>
-                <b-button
+                </button>
+                <button
                     v-if="logUrl === null"
-                    :variant="(v$.$invalid) ? 'danger' : 'primary'"
+                    class="btn"
+                    :class="(v$.$invalid) ? 'btn-danger' : 'btn-primary'"
                     type="submit"
                     @click="submit"
                 >
                     {{ $gettext('Run Manual Backup') }}
-                </b-button>
+                </button>
             </slot>
         </template>
     </b-modal>

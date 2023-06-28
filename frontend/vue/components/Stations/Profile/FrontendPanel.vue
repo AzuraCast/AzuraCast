@@ -106,7 +106,9 @@
                     @click.prevent="credentialsVisible = !credentialsVisible"
                 >
                     <icon icon="unfold_more" />
-                    {{ langShowHideCredentials }}
+                    <span>
+                        {{ langShowHideCredentials }}
+                    </span>
                 </a>
                 <template v-if="hasStarted">
                     <a
@@ -114,7 +116,9 @@
                         :href="frontendRestartUri"
                     >
                         <icon icon="update" />
-                        {{ $gettext('Restart') }}
+                        <span>
+                            {{ $gettext('Restart') }}
+                        </span>
                     </a>
                     <a
                         v-show="!frontendRunning"
@@ -122,7 +126,9 @@
                         :href="frontendStartUri"
                     >
                         <icon icon="play_arrow" />
-                        {{ $gettext('Start') }}
+                        <span>
+                            {{ $gettext('Start') }}
+                        </span>
                     </a>
                     <a
                         v-show="frontendRunning"
@@ -130,7 +136,9 @@
                         :href="frontendStopUri"
                     >
                         <icon icon="stop" />
-                        {{ $gettext('Stop') }}
+                        <span>
+                            {{ $gettext('Stop') }}
+                        </span>
                     </a>
                 </template>
             </div>

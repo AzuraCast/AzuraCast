@@ -33,7 +33,7 @@
                         :href="profileUrl"
                     >
                         <icon icon="account_circle" />
-                        {{ $gettext('My Account') }}
+                        <span>{{ $gettext('My Account') }}</span>
                     </a>
                     <a
                         v-if="showAdmin"
@@ -42,7 +42,7 @@
                         :href="adminUrl"
                     >
                         <icon icon="settings" />
-                        {{ $gettext('Administration') }}
+                        <span>{{ $gettext('Administration') }}</span>
                     </a>
                 </div>
             </div>
@@ -84,14 +84,14 @@
                         v-if="notification.actionLabel && notification.actionUrl"
                         class="flex-shrink-0 ms-3"
                     >
-                        <b-button
+                        <a
+                            class="btn btn-sm"
+                            :class="'btn-'+notification.type"
                             :href="notification.actionUrl"
                             target="_blank"
-                            size="sm"
-                            :variant="notification.type"
                         >
                             {{ notification.actionLabel }}
-                        </b-button>
+                        </a>
                     </div>
                 </div>
             </template>
@@ -113,16 +113,14 @@
                     </h3>
                 </div>
                 <div class="flex-shrink-0">
-                    <b-button
-                        variant="outline-light"
-                        size="sm"
-                        class="py-2"
+                    <button
+                        class="btn btn-sm btn-dark py-2"
                         @click="chartsVisible = !chartsVisible"
                     >
                         {{
                             langShowHideCharts
                         }}
-                    </b-button>
+                    </button>
                 </div>
             </div>
             <b-collapse
@@ -154,14 +152,15 @@
                     v-if="showAdmin"
                     class="flex-shrink-0"
                 >
-                    <b-button
-                        variant="dark"
-                        class="py-2"
+                    <a
+                        class="btn btn-dark py-2"
                         :href="manageStationsUrl"
                     >
                         <icon icon="settings" />
-                        {{ $gettext('Manage Stations') }}
-                    </b-button>
+                        <span>
+                            {{ $gettext('Manage Stations') }}
+                        </span>
+                    </a>
                 </div>
             </div>
 
@@ -189,17 +188,17 @@
                     </colgroup>
                     <thead>
                         <tr>
-                            <th class="pr-3">
-&nbsp;
+                            <th class="pe-3">
+                                &nbsp;
                             </th>
-                            <th class="pl-2">
+                            <th class="ps-2">
                                 {{ $gettext('Station Name') }}
                             </th>
                             <th class="text-center">
                                 {{ $gettext('Listeners') }}
                             </th>
                             <th>{{ $gettext('Now Playing') }}</th>
-                            <th class="text-right" />
+                            <th class="text-end" />
                         </tr>
                     </thead>
                     <tbody>
@@ -208,7 +207,7 @@
                             :key="item.station.id"
                             class="align-middle"
                         >
-                            <td class="text-center pr-3">
+                            <td class="text-center pe-3">
                                 <play-button
                                     class="file-icon"
                                     icon-class="lg outlined align-middle"
@@ -216,7 +215,7 @@
                                     is-stream
                                 />
                             </td>
-                            <td class="pl-2">
+                            <td class="ps-2">
                                 <div class="typography-subheading">
                                     {{ item.station.name }}
                                 </div>
@@ -230,7 +229,7 @@
                                 </div>
                             </td>
                             <td class="text-center">
-                                <span class="pr-1">
+                                <span class="pe-1">
                                     <icon
                                         class="sm align-middle"
                                         icon="headset"
@@ -253,7 +252,7 @@
                                     <album-art
                                         v-if="showAlbumArt"
                                         :src="item.now_playing.song.art"
-                                        class="flex-shrink-0 pr-3"
+                                        class="flex-shrink-0 pe-3"
                                     />
 
                                     <div
@@ -281,7 +280,7 @@
                                     </div>
                                 </div>
                             </td>
-                            <td class="text-right">
+                            <td class="text-end">
                                 <a
                                     class="btn btn-primary"
                                     :href="item.links.manage"

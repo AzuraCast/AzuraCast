@@ -13,7 +13,7 @@
         >
             <div
                 style="min-height: 40px;"
-                class="flex-fill text-left bg-primary rounded mb-2"
+                class="flex-fill text-start bg-primary rounded mb-2"
             >
                 <inline-player ref="player" />
             </div>
@@ -50,38 +50,36 @@
                         :key="row.media.id"
                         class="align-middle"
                     >
-                        <td class="pr-2">
+                        <td class="pe-2">
                             <play-button
                                 :url="row.media.links.play"
                                 icon-class="lg outlined"
                             />
                         </td>
-                        <td class="pl-2">
+                        <td class="ps-2">
                             <span class="typography-subheading">{{ row.media.title }}</span>
                         </td>
                         <td>{{ row.media.artist }}</td>
                         <td>{{ row.media.album }}</td>
                         <td>
-                            <b-button-group size="sm">
-                                <b-button
+                            <div class="btn-group btn-group-sm">
+                                <button
                                     v-if="index+1 < media.length"
-                                    size="sm"
-                                    variant="primary"
+                                    class="btn btn-primary"
                                     :title="$gettext('Down')"
                                     @click.prevent="moveDown(index)"
                                 >
                                     <icon icon="arrow_downward" />
-                                </b-button>
-                                <b-button
+                                </button>
+                                <button
                                     v-if="index > 0"
-                                    size="sm"
-                                    variant="primary"
+                                    class="btn btn-primary"
                                     :title="$gettext('Up')"
                                     @click.prevent="moveUp(index)"
                                 >
                                     <icon icon="arrow_upward" />
-                                </b-button>
-                            </b-button-group>
+                                </button>
+                            </div>
                         </td>
                     </tr>
                 </draggable>

@@ -8,12 +8,14 @@
                 <div class="flex-shrink buttons">
                     <a
                         id="btn-export"
-                        class="btn btn-bg"
+                        class="btn btn-dark"
                         :href="exportUrl"
                         target="_blank"
                     >
                         <icon icon="file_download" />
-                        {{ $gettext('Download CSV') }}
+                        <span>
+                            {{ $gettext('Download CSV') }}
+                        </span>
                     </a>
 
                     <date-range-dropdown

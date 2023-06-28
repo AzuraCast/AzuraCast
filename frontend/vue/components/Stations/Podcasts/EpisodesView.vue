@@ -7,7 +7,7 @@
             <div class="row align-items-center">
                 <div class="col-md-7">
                     <div class="d-flex align-items-center">
-                        <div class="flex-shrink-0 pr-3">
+                        <div class="flex-shrink-0 pe-3">
                             <album-art :src="podcast.art" />
                         </div>
                         <div class="flex-fill">
@@ -20,7 +20,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-5 text-right text-muted">
+                <div class="col-md-5 text-end text-muted">
                     <stations-common-quota
                         ref="$quota"
                         :quota-url="quotaUrl"
@@ -29,22 +29,25 @@
             </div>
         </div>
 
-        <div class="card-body">
-            <b-button
-                variant="secondary"
+        <div class="card-body buttons">
+            <button
+                class="btn btn-secondary"
                 @click="doClearPodcast()"
             >
                 <icon icon="arrow_back" />
-                {{ $gettext('All Podcasts') }}
-            </b-button>
-
-            <b-button
-                variant="primary"
+                <span>
+                    {{ $gettext('All Podcasts') }}
+                </span>
+            </button>
+            <button
+                class="btn btn-primary"
                 @click.prevent="doCreate"
             >
                 <icon icon="add" />
-                {{ $gettext('Add Episode') }}
-            </b-button>
+                <span>
+                    {{ $gettext('Add Episode') }}
+                </span>
+            </button>
         </div>
 
         <data-table
@@ -81,22 +84,20 @@
                 >{{ $gettext('Explicit') }}</span>
             </template>
             <template #cell(actions)="row">
-                <b-button-group size="sm">
-                    <b-button
-                        size="sm"
-                        variant="primary"
+                <div class="btn-group btn-group-sm">
+                    <button
+                        class="btn btn-primary"
                         @click.prevent="doEdit(row.item.links.self)"
                     >
                         {{ $gettext('Edit') }}
-                    </b-button>
-                    <b-button
-                        size="sm"
-                        variant="danger"
+                    </button>
+                    <button
+                        class="btn btn-danger"
                         @click.prevent="doDelete(row.item.links.self)"
                     >
                         {{ $gettext('Delete') }}
-                    </b-button>
-                </b-button-group>
+                    </button>
+                </div>
             </template>
         </data-table>
     </section>
@@ -139,11 +140,11 @@ const emit = defineEmits(['clear-podcast']);
 const {$gettext} = useTranslate();
 
 const fields = [
-    {key: 'art', label: $gettext('Art'), sortable: false, class: 'shrink pr-0'},
-    {key: 'title', label: $gettext('Episode'), sortable: false},
-    {key: 'podcast_media', label: $gettext('File Name'), sortable: false},
-    {key: 'explicit', label: $gettext('Explicit'), sortable: false},
-    {key: 'actions', label: $gettext('Actions'), sortable: false, class: 'shrink'}
+  {key: 'art', label: $gettext('Art'), sortable: false, class: 'shrink pe-0'},
+  {key: 'title', label: $gettext('Episode'), sortable: false},
+  {key: 'podcast_media', label: $gettext('File Name'), sortable: false},
+  {key: 'explicit', label: $gettext('Explicit'), sortable: false},
+  {key: 'actions', label: $gettext('Actions'), sortable: false, class: 'shrink'}
 ];
 
 const $quota = ref(); // Template Ref

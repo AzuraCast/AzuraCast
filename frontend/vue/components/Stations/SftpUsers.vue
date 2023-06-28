@@ -6,13 +6,15 @@
                 :title="$gettext('SFTP Users')"
             >
                 <template #actions>
-                    <b-button
-                        variant="outline-primary"
+                    <button
+                        class="btn btn-primary"
                         @click.prevent="doCreate"
                     >
                         <icon icon="add" />
-                        {{ $gettext('Add SFTP User') }}
-                    </b-button>
+                        <span>
+                            {{ $gettext('Add SFTP User') }}
+                        </span>
+                    </button>
                 </template>
 
                 <data-table
@@ -23,22 +25,20 @@
                     :api-url="listUrl"
                 >
                     <template #cell(actions)="row">
-                        <b-button-group size="sm">
-                            <b-button
-                                size="sm"
-                                variant="primary"
+                        <div class="btn-group btn-group-sm">
+                            <button
+                                class="btn btn-primary"
                                 @click.prevent="doEdit(row.item.links.self)"
                             >
                                 {{ $gettext('Edit') }}
-                            </b-button>
-                            <b-button
-                                size="sm"
-                                variant="danger"
+                            </button>
+                            <button
+                                class="btn btn-danger"
                                 @click.prevent="doDelete(row.item.links.self)"
                             >
                                 {{ $gettext('Delete') }}
-                            </b-button>
-                        </b-button-group>
+                            </button>
+                        </div>
                     </template>
                 </data-table>
             </card-page>

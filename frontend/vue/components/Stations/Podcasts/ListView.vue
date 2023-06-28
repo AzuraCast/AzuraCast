@@ -10,7 +10,7 @@
                         {{ $gettext('Podcasts') }}
                     </h2>
                 </div>
-                <div class="col-md-5 text-right text-muted">
+                <div class="col-md-5 text-end text-muted">
                     <stations-common-quota
                         ref="$quota"
                         :quota-url="quotaUrl"
@@ -19,14 +19,16 @@
             </div>
         </div>
 
-        <div class="card-body">
-            <b-button
-                variant="primary"
+        <div class="card-body buttons">
+            <button
+                class="btn btn-primary"
                 @click.prevent="doCreate"
             >
                 <icon icon="add" />
-                {{ $gettext('Add Podcast') }}
-            </b-button>
+                <span>
+                    {{ $gettext('Add Podcast') }}
+                </span>
+            </button>
         </div>
 
         <data-table
@@ -54,29 +56,26 @@
                 >{{ $gettext('RSS Feed') }}</a>
             </template>
             <template #cell(actions)="row">
-                <b-button-group size="sm">
-                    <b-button
-                        size="sm"
-                        variant="primary"
+                <div class="btn-group btn-group-sm">
+                    <button
+                        class="btn btn-primary"
                         @click.prevent="doEdit(row.item.links.self)"
                     >
                         {{ $gettext('Edit') }}
-                    </b-button>
-                    <b-button
-                        size="sm"
-                        variant="danger"
+                    </button>
+                    <button
+                        class="btn btn-danger"
                         @click.prevent="doDelete(row.item.links.self)"
                     >
                         {{ $gettext('Delete') }}
-                    </b-button>
-                    <b-button
-                        size="sm"
-                        variant="dark"
+                    </button>
+                    <button
+                        class="btn btn-dark"
                         @click.prevent="doSelectPodcast(row.item)"
                     >
                         {{ $gettext('Episodes') }}
-                    </b-button>
-                </b-button-group>
+                    </button>
+                </div>
             </template>
         </data-table>
     </section>
@@ -114,7 +113,7 @@ const emit = defineEmits(['select-podcast']);
 const {$gettext} = useTranslate();
 
 const fields = [
-    {key: 'art', label: $gettext('Art'), sortable: false, class: 'shrink pr-0'},
+    {key: 'art', label: $gettext('Art'), sortable: false, class: 'shrink pe-0'},
     {key: 'title', label: $gettext('Podcast'), sortable: false},
     {
         key: 'episodes',

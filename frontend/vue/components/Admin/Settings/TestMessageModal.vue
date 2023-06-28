@@ -17,18 +17,19 @@
             </b-wrapped-form-group>
         </b-form>
         <template #modal-footer>
-            <b-button
-                variant="default"
+            <button
+                class="btn btn-secondary"
                 @click="close"
             >
                 {{ $gettext('Close') }}
-            </b-button>
-            <b-button
-                :variant="(v$.$invalid) ? 'danger' : 'primary'"
+            </button>
+            <button
+                class="btn"
+                :class="(v$.$invalid) ? 'btn-danger' : 'btn-primary'"
                 @click="doSendTest"
             >
                 {{ $gettext('Send Test Message') }}
-            </b-button>
+            </button>
         </template>
     </b-modal>
 </template>

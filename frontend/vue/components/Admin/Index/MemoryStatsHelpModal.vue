@@ -46,13 +46,12 @@
 
         <template #modal-footer>
             <slot name="modal-footer">
-                <b-button
-                    variant="default"
-                    type="button"
+                <button
+                    class="btn btn-secondary"
                     @click="close"
                 >
                     {{ $gettext('Close') }}
-                </b-button>
+                </button>
             </slot>
         </template>
     </b-modal>

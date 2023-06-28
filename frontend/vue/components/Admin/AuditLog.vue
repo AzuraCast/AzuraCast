@@ -74,13 +74,12 @@
             </template>
             <template #cell(actions)="row">
                 <template v-if="row.item.changes.length > 0">
-                    <b-button
-                        size="sm"
-                        variant="primary"
+                    <button
+                        class="btn btn-sm btn-primary"
                         @click="row.toggleDetails"
                     >
                         {{ $gettext('Changes') }}
-                    </b-button>
+                    </button>
                 </template>
             </template>
             <template #row-details="row">

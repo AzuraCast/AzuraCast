@@ -29,22 +29,20 @@
 
                     <div v-if="hasMedia">
                         <div class="buttons pt-3">
-                            <b-button
+                            <a
                                 v-if="downloadUrl"
-                                block
-                                variant="bg"
+                                class="btn btn-block btn-dark"
                                 :href="downloadUrl"
                                 target="_blank"
                             >
                                 {{ $gettext('Download') }}
-                            </b-button>
-                            <b-button
-                                block
-                                variant="danger"
+                            </a>
+                            <button
+                                class="btn btn-block btn-danger"
                                 @click="deleteMedia"
                             >
                                 {{ $gettext('Clear Media') }}
-                            </b-button>
+                            </button>
                         </div>
                     </div>
                     <div v-else>

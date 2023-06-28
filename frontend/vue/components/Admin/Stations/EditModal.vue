@@ -26,20 +26,21 @@
         </admin-stations-form>
 
         <template #modal-footer>
-            <b-button
-                variant="default"
+            <button
+                class="btn btn-secondary"
                 type="button"
                 @click="close"
             >
                 {{ $gettext('Close') }}
-            </b-button>
-            <b-button
-                :variant="(disableSaveButton) ? 'danger' : 'primary'"
+            </button>
+            <button
+                class="btn"
+                :class="(disableSaveButton) ? 'btn-danger' : 'btn-primary'"
                 type="submit"
                 @click="doSubmit"
             >
                 {{ $gettext('Save Changes') }}
-            </b-button>
+            </button>
         </template>
     </b-modal>
 </template>

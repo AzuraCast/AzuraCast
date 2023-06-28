@@ -9,7 +9,7 @@
         <template v-if="listUrl">
             <div
                 style="min-height: 40px;"
-                class="flex-fill text-left bg-primary rounded mb-2"
+                class="flex-fill text-start bg-primary rounded mb-2"
             >
                 <inline-player ref="$player" />
             </div>
@@ -28,7 +28,7 @@
                             icon-class="outlined"
                             :url="row.item.recording?.links?.download"
                         />
-                        &nbsp;
+                      &nbsp;
                         <a
                             class="name"
                             :href="row.item.recording?.links?.download"
@@ -39,29 +39,26 @@
                         </a>
                     </template>
                     <template v-else>
-&nbsp;
+                    &nbsp;
                     </template>
                 </template>
                 <template #cell(actions)="row">
-                    <b-button-group size="sm">
-                        <b-button
-                            size="sm"
-                            variant="danger"
-                            @click.prevent="doDelete(row.item.links.delete)"
-                        >
-                            {{ $gettext('Delete') }}
-                        </b-button>
-                    </b-button-group>
+                    <button
+                        class="btn btn-sm btn-danger"
+                        @click.prevent="doDelete(row.item.links.delete)"
+                    >
+                        {{ $gettext('Delete') }}
+                    </button>
                 </template>
             </data-table>
         </template>
         <template #modal-footer>
-            <b-button
-                variant="default"
+            <button
+                class="btn btn-secondary"
                 @click="close"
             >
                 {{ $gettext('Close') }}
-            </b-button>
+            </button>
         </template>
     </b-modal>
 </template>
@@ -91,7 +88,7 @@ const fields = [
         key: 'download',
         label: ' ',
         sortable: false,
-        class: 'shrink pr-3'
+      class: 'shrink pe-3'
     },
     {
         key: 'timestampStart',
@@ -102,7 +99,7 @@ const fields = [
                 {...DateTime.DATETIME_MED, ...timeConfig}
             );
         },
-        class: 'pl-3'
+      class: 'ps-3'
     },
     {
         key: 'timestampEnd',

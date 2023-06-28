@@ -63,7 +63,9 @@
                         target="_blank"
                     >
                         <icon icon="contact_support" />
-                        {{ $gettext('Add New GitHub Issue') }}
+                        <span>
+                            {{ $gettext('Add New GitHub Issue') }}
+                        </span>
                     </a>
                 </div>
             </section>

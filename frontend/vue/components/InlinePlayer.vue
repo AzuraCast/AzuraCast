@@ -13,7 +13,7 @@
             v-if="!current.isStream && duration !== 0"
             class="inline-seek d-inline-flex align-items-center ms-1"
         >
-            <div class="flex-shrink-0 mx-1 text-white-50 time-display">
+            <div class="flex-shrink-0 mx-1 text-muted time-display">
                 {{ currentTimeText }}
             </div>
             <div class="flex-fill mx-2">
@@ -27,7 +27,7 @@
                     step="1"
                 >
             </div>
-            <div class="flex-shrink-0 mx-1 text-white-50 time-display">
+            <div class="flex-shrink-0 mx-1 text-muted time-display">
                 {{ durationText }}
             </div>
         </div>

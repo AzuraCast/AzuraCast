@@ -12,7 +12,7 @@
                 {{ $gettext('Storage Locations') }}
             </h2>
         </div>
-        
+
         <b-tabs
             pills
             card
@@ -28,15 +28,17 @@
             />
         </b-tabs>
 
-        <b-card-body body-class="card-padding-sm">
-            <b-button
-                variant="outline-primary"
+        <div class="card-body buttons">
+            <button
+                class="btn btn-primary"
                 @click.prevent="doCreate"
             >
                 <icon icon="add" />
-                {{ $gettext('Add Storage Location') }}
-            </b-button>
-        </b-card-body>
+                <span>
+                    {{ $gettext('Add Storage Location') }}
+                </span>
+            </button>
+        </div>
 
         <data-table
             id="admin_storage_locations"
@@ -47,22 +49,20 @@
             :api-url="listUrlForType"
         >
             <template #cell(actions)="row">
-                <b-button-group size="sm">
-                    <b-button
-                        size="sm"
-                        variant="primary"
+                <div class="btn-group btn-group-sm">
+                    <button
+                        class="btn btn-primary"
                         @click.prevent="doEdit(row.item.links.self)"
                     >
                         {{ $gettext('Edit') }}
-                    </b-button>
-                    <b-button
-                        size="sm"
-                        variant="danger"
+                    </button>
+                    <button
+                        class="btn btn-danger"
                         @click.prevent="doDelete(row.item.links.self)"
                     >
                         {{ $gettext('Delete') }}
-                    </b-button>
-                </b-button-group>
+                    </button>
+                </div>
             </template>
             <template #cell(adapter)="row">
                 <h5 class="m-0">

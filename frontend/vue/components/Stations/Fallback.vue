@@ -44,21 +44,19 @@
 
                         <div v-if="hasFallback">
                             <div class="buttons pt-3">
-                                <b-button
-                                    block
-                                    variant="bg"
+                                <a
+                                    class="btn btn-block btn-dark"
                                     :href="apiUrl"
                                     target="_blank"
                                 >
                                     {{ $gettext('Download') }}
-                                </b-button>
-                                <b-button
-                                    block
-                                    variant="danger"
+                                </a>
+                                <button
+                                    class="btn btn-block btn-danger"
                                     @click="deleteFallback"
                                 >
                                     {{ $gettext('Clear File') }}
-                                </b-button>
+                                </button>
                             </div>
                         </div>
                         <div v-else>

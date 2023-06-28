@@ -86,16 +86,13 @@
                         </template>
                     </b-wrapped-form-group>
 
-                    <b-button
+                    <button
                         type="submit"
-                        size="lg"
-                        block
-                        variant="primary"
+                        class="btn btn-lg btn-block btn-primary mt-2"
                         :disabled="v$.$invalid"
-                        class="mt-2"
                     >
                         {{ $gettext('Create Account') }}
-                    </b-button>
+                    </button>
                 </form>
             </div>
         </section>

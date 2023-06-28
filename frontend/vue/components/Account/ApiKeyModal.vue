@@ -46,21 +46,20 @@
                 name="modal-footer"
                 v-bind="slotProps"
             >
-                <b-button
-                    variant="default"
-                    type="button"
+                <button
+                    class="btn btn-secondary"
                     @click="close"
                 >
                     {{ $gettext('Close') }}
-                </b-button>
-                <b-button
-                    v-if="newKey === null"
-                    :variant="(v$.$invalid) ? 'danger' : 'primary'"
+                </button>
+                <button
+                    class="btn"
+                    :class="(v$.$invalid) ? 'btn-danger' : 'btn-primary'"
                     type="submit"
                     @click="doSubmit"
                 >
                     {{ $gettext('Create New Key') }}
-                </b-button>
+                </button>
             </slot>
         </template>
     </b-modal>

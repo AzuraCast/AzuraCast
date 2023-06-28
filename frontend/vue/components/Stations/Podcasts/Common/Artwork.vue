@@ -31,13 +31,12 @@
                     />
 
                     <div class="buttons pt-3">
-                        <b-button
-                            block
-                            variant="danger"
+                        <button
+                            class="btn btn-block btn-danger"
                             @click="deleteArt"
                         >
                             {{ $gettext('Clear Artwork') }}
-                        </b-button>
+                        </button>
                     </div>
                 </b-col>
             </b-row>

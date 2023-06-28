@@ -51,7 +51,9 @@
                 type="button"
             >
                 <icon icon="cloud_upload" />
-                {{ $gettext('Select File') }}
+                <span>
+                    {{ $gettext('Select File') }}
+                </span>
             </button>
             <small class="file-name" />
             <input

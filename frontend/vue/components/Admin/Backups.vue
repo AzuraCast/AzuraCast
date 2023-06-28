@@ -43,22 +43,26 @@
                 </div>
             </b-overlay>
 
-            <div class="card-body">
-                <b-button
-                    variant="primary"
+            <div class="card-body buttons">
+                <button
+                    class="btn btn-primary"
                     @click.prevent="doConfigure"
                 >
                     <icon icon="settings" />
-                    {{ $gettext('Configure') }}
-                </b-button>
-                <b-button
+                    <span>
+                        {{ $gettext('Configure') }}
+                    </span>
+                </button>
+                <button
                     v-if="settings.backupEnabled && settings.backupLastOutput !== ''"
-                    variant="secondary"
+                    class="btn btn-secondary"
                     @click.prevent="showLastOutput"
                 >
                     <icon icon="assignment" />
-                    {{ $gettext('Most Recent Backup Log') }}
-                </b-button>
+                    <span>
+                        {{ $gettext('Most Recent Backup Log') }}
+                    </span>
+                </button>
             </div>
         </section>
 
@@ -108,13 +112,15 @@
         </div>
 
         <b-card-body body-class="card-padding-sm">
-            <b-button
-                variant="outline-primary"
+            <button
+                class="btn btn-primary"
                 @click.prevent="doRunBackup"
             >
                 <icon icon="send" />
-                {{ $gettext('Run Manual Backup') }}
-            </b-button>
+                <span>
+                    {{ $gettext('Run Manual Backup') }}
+                </span>
+            </button>
         </b-card-body>
 
         <data-table
@@ -124,23 +130,21 @@
             :api-url="listUrl"
         >
             <template #cell(actions)="row">
-                <b-button-group size="sm">
-                    <b-button
-                        size="sm"
-                        variant="primary"
+                <div class="btn-group btn-group-sm">
+                    <a
+                        class="btn btn-primary"
                         :href="row.item.links.download"
                         target="_blank"
                     >
                         {{ $gettext('Download') }}
-                    </b-button>
-                    <b-button
-                        size="sm"
-                        variant="danger"
+                    </a>
+                    <button
+                        class="btn btn-danger"
                         @click.prevent="doDelete(row.item.links.delete)"
                     >
                         {{ $gettext('Delete') }}
-                    </b-button>
-                </b-button-group>
+                    </button>
+                </div>
             </template>
         </data-table>
     </section>

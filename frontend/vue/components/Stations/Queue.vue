@@ -1,13 +1,15 @@
 <template>
     <card-page :title="$gettext('Upcoming Song Queue')">
         <template #actions>
-            <b-button
-                variant="danger"
+            <button
+                class="btn btn-danger"
                 @click="doClear()"
             >
                 <icon icon="remove" />
-                {{ $gettext('Clear Upcoming Song Queue') }}
-            </b-button>
+                <span>
+                    {{ $gettext('Clear Upcoming Song Queue') }}
+                </span>
+            </button>
         </template>
 
         <data-table
@@ -17,24 +19,22 @@
             :api-url="listUrl"
         >
             <template #cell(actions)="row">
-                <b-button-group>
-                    <b-button
+                <div class="btn-group btn-group-sm">
+                    <button
                         v-if="row.item.log"
-                        size="sm"
-                        variant="primary"
+                        class="btn btn-primary"
                         @click.prevent="doShowLogs(row.item.log)"
                     >
                         {{ $gettext('Logs') }}
-                    </b-button>
-                    <b-button
+                    </button>
+                    <button
                         v-if="!row.item.sent_to_autodj"
-                        size="sm"
-                        variant="danger"
+                        class="btn btn-danger"
                         @click.prevent="doDelete(row.item.links.self)"
                     >
                         {{ $gettext('Delete') }}
-                    </b-button>
-                </b-button-group>
+                    </button>
+                </div>
             </template>
             <template #cell(song_title)="row">
                 <div v-if="row.item.autodj_custom_uri">

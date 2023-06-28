@@ -31,7 +31,9 @@
                 :href="manageProfileUri"
             >
                 <icon icon="edit" />
-                {{ $gettext('Edit Profile') }}
+                <span>
+                    {{ $gettext('Edit Profile') }}
+                </span>
             </a>
         </div>
     </div>

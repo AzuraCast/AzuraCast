@@ -16,7 +16,7 @@
                         v-if="showAlbumArt"
                         :src="row.item.song.art"
                         :width="40"
-                        class="flex-shrink-1 pr-3"
+                        class="flex-shrink-1 pe-3"
                     />
                     <div class="flex-fill">
                         {{ row.item.song.title }}<br>
@@ -25,15 +25,12 @@
                 </div>
             </template>
             <template #cell(actions)="row">
-                <b-button-group size="sm">
-                    <b-button
-                        size="sm"
-                        variant="primary"
-                        @click.prevent="doSubmitRequest(row.item.request_url)"
-                    >
-                        {{ $gettext('Request') }}
-                    </b-button>
-                </b-button-group>
+                <button
+                    class="btn btn-sm btn-primary"
+                    @click.prevent="doSubmitRequest(row.item.request_url)"
+                >
+                    {{ $gettext('Request') }}
+                </button>
             </template>
         </data-table>
     </div>

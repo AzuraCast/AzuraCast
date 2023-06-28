@@ -178,14 +178,12 @@
                             </b-wrapped-form-group>
                         </div>
 
-                        <b-button
-                            size="lg"
+                        <button
+                            class="btn btn-lg btn-primary mt-3"
                             type="submit"
-                            class="mt-3"
-                            variant="primary"
                         >
                             {{ $gettext('Save Changes') }}
-                        </b-button>
+                        </button>
                     </b-form-group>
                 </div>
             </b-overlay>

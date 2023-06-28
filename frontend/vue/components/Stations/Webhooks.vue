@@ -8,13 +8,15 @@
             </p>
         </template>
         <template #actions>
-            <b-button
-                variant="primary"
+            <button
+                class="btn btn-primary"
                 @click.prevent="doCreate"
             >
                 <icon icon="add" />
-                {{ $gettext('Add Web Hook') }}
-            </b-button>
+                <span>
+                    {{ $gettext('Add Web Hook') }}
+                </span>
+            </button>
         </template>
 
         <data-table
@@ -45,36 +47,33 @@
                 </div>
             </template>
             <template #cell(actions)="row">
-                <b-button-group size="sm">
-                    <b-button
-                        size="sm"
-                        variant="primary"
+                <div class="btn-group btn-group-sm">
+                    <button
+                        class="btn btn-primary"
                         @click.prevent="doEdit(row.item.links.self)"
                     >
                         {{ $gettext('Edit') }}
-                    </b-button>
-                    <b-button
-                        size="sm"
-                        :variant="getToggleVariant(row.item)"
+                    </button>
+                    <button
+                        class="btn"
+                        :class="getToggleVariant(row.item)"
                         @click.prevent="doToggle(row.item.links.toggle)"
                     >
                         {{ langToggleButton(row.item) }}
-                    </b-button>
-                    <b-button
-                        size="sm"
-                        variant="default"
+                    </button>
+                    <button
+                        class="btn btn-secondary"
                         @click.prevent="doTest(row.item.links.test)"
                     >
                         {{ $gettext('Test') }}
-                    </b-button>
-                    <b-button
-                        size="sm"
-                        variant="danger"
+                    </button>
+                    <button
+                        class="btn btn-danger"
                         @click.prevent="doDelete(row.item.links.self)"
                     >
                         {{ $gettext('Delete') }}
-                    </b-button>
-                </b-button-group>
+                    </button>
+                </div>
             </template>
         </data-table>
     </card-page>
@@ -136,8 +135,8 @@ const langToggleButton = (record) => {
 
 const getToggleVariant = (record) => {
     return (record.is_enabled)
-        ? 'warning'
-        : 'success';
+        ? 'btn-warning'
+        : 'btn-success';
 };
 
 const getWebhookName = (key) => {

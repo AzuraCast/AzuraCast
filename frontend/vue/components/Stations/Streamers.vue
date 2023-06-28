@@ -12,7 +12,7 @@
                                 {{ $gettext('Streamer/DJ Accounts') }}
                             </h2>
                         </div>
-                        <div class="col-md-6 text-right text-muted">
+                        <div class="col-md-6 text-end text-muted">
                             {{
                                 $gettext(
                                     'This station\'s time zone is currently %{tz}.',
@@ -32,15 +32,17 @@
                         :title="$gettext('Account List')"
                         no-body
                     >
-                        <b-card-body body-class="card-padding-sm">
-                            <b-button
-                                variant="outline-primary"
+                        <div class="card-body buttons">
+                            <button
+                                class="btn btn-primary"
                                 @click.prevent="doCreate"
                             >
                                 <icon icon="add" />
-                                {{ $gettext('Add Streamer') }}
-                            </b-button>
-                        </b-card-body>
+                                <span>
+                                    {{ $gettext('Add Streamer') }}
+                                </span>
+                            </button>
+                        </div>
 
                         <data-table
                             id="station_streamers"
@@ -63,29 +65,26 @@
                                 </div>
                             </template>
                             <template #cell(actions)="row">
-                                <b-button-group size="sm">
-                                    <b-button
-                                        size="sm"
-                                        variant="primary"
+                                <div class="btn-group btn-group-sm">
+                                    <button
+                                        class="btn btn-primary"
                                         @click.prevent="doEdit(row.item.links.self)"
                                     >
                                         {{ $gettext('Edit') }}
-                                    </b-button>
-                                    <b-button
-                                        size="sm"
-                                        variant="default"
+                                    </button>
+                                    <button
+                                        class="btn btn-secondary"
                                         @click.prevent="doShowBroadcasts(row.item.links.broadcasts)"
                                     >
                                         {{ $gettext('Broadcasts') }}
-                                    </b-button>
-                                    <b-button
-                                        size="sm"
-                                        variant="danger"
+                                    </button>
+                                    <button
+                                        class="btn btn-danger"
                                         @click.prevent="doDelete(row.item.links.self)"
                                     >
                                         {{ $gettext('Delete') }}
-                                    </b-button>
-                                </b-button-group>
+                                    </button>
+                                </div>
                             </template>
                         </data-table>
                     </b-tab>
@@ -159,7 +158,7 @@ const props = defineProps({
 const {$gettext} = useTranslate();
 
 const fields = [
-    {key: 'art', label: $gettext('Art'), sortable: false, class: 'shrink pr-0'},
+    {key: 'art', label: $gettext('Art'), sortable: false, class: 'shrink pe-0'},
     {key: 'display_name', label: $gettext('Display Name'), sortable: true},
     {key: 'streamer_username', isRowHeader: true, label: $gettext('Username'), sortable: true},
     {key: 'comments', label: $gettext('Notes'), sortable: false},

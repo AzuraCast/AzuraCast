@@ -8,14 +8,12 @@
                     fluid
                 />
                 <br>
-                <b-button
-                    block
-                    variant="link"
-                    class="text-danger mt-2"
+                <button
+                    class="btn btn-link btn-block text-danger mt-2"
                     @click="deleteArt"
                 >
                     {{ $gettext('Delete Album Art') }}
-                </b-button>
+                </button>
             </b-col>
             <b-col md="8">
                 <b-form-group label-for="edit_form_art">

@@ -11,13 +11,15 @@
                     :title="$gettext('Profile')"
                 >
                     <template #actions>
-                        <b-button
-                            variant="primary"
+                        <button
+                            class="btn btn-primary"
                             @click.prevent="doEditProfile"
                         >
                             <icon icon="edit" />
-                            {{ $gettext('Edit Profile') }}
-                        </b-button>
+                            <span>
+                                {{ $gettext('Edit Profile') }}
+                            </span>
+                        </button>
                     </template>
 
                     <b-overlay
@@ -76,29 +78,35 @@
                     :title="$gettext('Security')"
                 >
                     <template #actions>
-                        <b-button
-                            variant="primary"
+                        <button
+                            class="btn btn-primary"
                             @click.prevent="doChangePassword"
                         >
                             <icon icon="vpn_key" />
-                            {{ $gettext('Change Password') }}
-                        </b-button>
-                        <b-button
+                            <span>
+                                {{ $gettext('Change Password') }}
+                            </span>
+                        </button>
+                        <button
                             v-if="security.twoFactorEnabled"
-                            variant="danger"
+                            class="btn btn-danger"
                             @click.prevent="disableTwoFactor"
                         >
                             <icon icon="lock_open" />
-                            {{ $gettext('Disable Two-Factor') }}
-                        </b-button>
-                        <b-button
+                            <span>
+                                {{ $gettext('Disable Two-Factor') }}
+                            </span>
+                        </button>
+                        <button
                             v-else
-                            variant="success"
+                            class="btn btn-success"
                             @click.prevent="enableTwoFactor"
                         >
                             <icon icon="lock" />
-                            {{ $gettext('Enable Two-Factor') }}
-                        </b-button>
+                            <span>
+                                {{ $gettext('Enable Two-Factor') }}
+                            </span>
+                        </button>
                     </template>
 
                     <b-overlay
@@ -138,13 +146,15 @@
                         </a>
                     </template>
                     <template #actions>
-                        <b-button
-                            variant="primary"
+                        <button
+                            class="btn btn-primary"
                             @click.prevent="createApiKey"
                         >
                             <icon icon="add" />
-                            {{ $gettext('Add API Key') }}
-                        </b-button>
+                            <span>
+                                {{ $gettext('Add API Key') }}
+                            </span>
+                        </button>
                     </template>
 
                     <data-table
@@ -155,15 +165,14 @@
                         :api-url="apiKeysApiUrl"
                     >
                         <template #cell(actions)="row">
-                            <b-button-group size="sm">
-                                <b-button
-                                    size="sm"
-                                    variant="danger"
+                            <div class="btn-group btn-group-sm">
+                                <button
+                                    class="btn btn-danger"
                                     @click.prevent="deleteApiKey(row.item.links.self)"
                                 >
                                     {{ $gettext('Delete') }}
-                                </b-button>
-                            </b-button-group>
+                                </button>
+                            </div>
                         </template>
                     </data-table>
                 </card-page>

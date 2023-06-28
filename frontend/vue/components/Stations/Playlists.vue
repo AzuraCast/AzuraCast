@@ -14,7 +14,7 @@
                         {{ $gettext('Playlists') }}
                     </h2>
                 </div>
-                <div class="col-md-6 text-right text-muted">
+                <div class="col-md-6 text-end text-muted">
                     {{
                         $gettext(
                             'This station\'s time zone is currently %{tz}.',
@@ -34,14 +34,16 @@
                 :title="$gettext('All Playlists')"
                 no-body
             >
-                <div class="card-body">
-                    <b-button
-                        variant="primary"
+                <div class="card-body buttons">
+                    <button
+                        class="btn btn-primary"
                         @click.prevent="doCreate"
                     >
                         <icon icon="add" />
-                        {{ $gettext('Add Playlist') }}
-                    </b-button>
+                        <span>
+                            {{ $gettext('Add Playlist') }}
+                        </span>
+                    </button>
                 </div>
 
                 <data-table
@@ -53,21 +55,19 @@
                     :api-url="listUrl"
                 >
                     <template #cell(actions)="row">
-                        <b-button-group size="sm">
-                            <b-button
-                                size="sm"
-                                variant="primary"
+                        <div class="btn-group btn-group-sm">
+                            <button
+                                class="btn btn-primary"
                                 @click.prevent="doEdit(row.item.links.self)"
                             >
                                 {{ $gettext('Edit') }}
-                            </b-button>
-                            <b-button
-                                size="sm"
-                                variant="danger"
+                            </button>
+                            <button
+                                class="btn btn-danger"
                                 @click.prevent="doDelete(row.item.links.self)"
                             >
                                 {{ $gettext('Delete') }}
-                            </b-button>
+                            </button>
 
                             <b-dropdown
                                 size="sm"
@@ -128,7 +128,7 @@
                                     </b-dropdown-item>
                                 </template>
                             </b-dropdown>
-                        </b-button-group>
+                        </div>
                     </template>
                     <template #cell(name)="row">
                         <h5 class="m-0">

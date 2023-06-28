@@ -27,13 +27,14 @@
                     accept="image/*"
                 />
             </b-form-group>
-            <b-button
+            
+            <button
                 v-if="isUploaded"
-                variant="outline-danger"
+                class="btn btn-danger"
                 @click.prevent="clear()"
             >
                 {{ $gettext('Clear Image') }}
-            </b-button>
+            </button>
         </b-overlay>
     </b-media>
 </template>

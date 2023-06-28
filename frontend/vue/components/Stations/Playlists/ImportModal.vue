@@ -72,21 +72,20 @@
             <invisible-submit-button />
         </b-form>
         <template #modal-footer>
-            <b-button
-                variant="default"
-                type="button"
+            <button
+                class="btn btn-secondary"
                 @click="close"
             >
                 {{ $gettext('Close') }}
-            </b-button>
-            <b-button
+            </button>
+            <button
                 v-if="!results"
-                variant="primary"
+                class="btn btn-primary"
                 type="submit"
                 @click="doSubmit"
             >
                 {{ $gettext('Import from PLS/M3U') }}
-            </b-button>
+            </button>
         </template>
     </b-modal>
 </template>

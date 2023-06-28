@@ -73,7 +73,9 @@
                     @click.prevent="doOpenEmbed"
                 >
                     <icon icon="code" />
-                    {{ $gettext('Embed Widgets') }}
+                    <span>
+                        {{ $gettext('Embed Widgets') }}
+                    </span>
                 </a>
                 <template v-if="userCanManageProfile">
                     <a
@@ -81,7 +83,9 @@
                         :href="brandingUri"
                     >
                         <icon icon="design_services" />
-                        {{ $gettext('Edit Branding') }}
+                        <span>
+                            {{ $gettext('Edit Branding') }}
+                        </span>
                     </a>
                     <a
                         class="btn btn-danger"
@@ -89,7 +93,9 @@
                         :href="togglePublicPageUri"
                     >
                         <icon icon="close" />
-                        {{ $gettext('Disable') }}
+                        <span>
+                            {{ $gettext('Disable') }}
+                        </span>
                     </a>
                 </template>
             </div>
@@ -115,7 +121,9 @@
                     :href="togglePublicPageUri"
                 >
                     <icon icon="check" />
-                    {{ $gettext('Enable') }}
+                    <span>
+                        {{ $gettext('Enable') }}
+                    </span>
                 </a>
             </div>
         </template>

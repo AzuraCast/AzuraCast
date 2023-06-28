@@ -82,18 +82,19 @@
             </b-wrapped-form-group>
 
             <div class="form-group col">
-                <b-button
-                    size="sm"
-                    variant="primary"
+                <button
+                    class="btn btn-primary btn-sm"
                     :disabled="form.$anyDirty"
                     @click="generateAcmeCert"
                 >
                     <icon icon="badge" />
-                    {{ $gettext('Generate/Renew Certificate') }}
-                    <span v-if="form.$anyDirty">
-                        ({{ $gettext('Save Changes first') }})
+                    <span>
+                        {{ $gettext('Generate/Renew Certificate') }}
+                        <span v-if="form.$anyDirty">
+                            ({{ $gettext('Save Changes first') }})
+                        </span>
                     </span>
-                </b-button>
+                </button>
             </div>
         </div>
     </b-form-fieldset>
@@ -199,18 +200,19 @@
             </b-wrapped-form-group>
 
             <div class="form-group col">
-                <b-button
-                    v-b-modal.send_test_message
-                    size="sm"
-                    variant="primary"
+                <button
+                    class="btn btn-sm btn-primary"
                     :disabled="form.$anyDirty"
+                    @click.prevent="openTestMessage"
                 >
                     <icon icon="send" />
-                    {{ $gettext('Send Test Message') }}
-                    <span v-if="form.$anyDirty">
-                        ({{ $gettext('Save Changes first') }})
+                    <span>
+                        {{ $gettext('Send Test Message') }}
+                        <span v-if="form.$anyDirty">
+                            ({{ $gettext('Save Changes first') }})
+                        </span>
                     </span>
-                </b-button>
+                </button>
             </div>
         </div>
     </b-form-fieldset>
@@ -301,7 +303,10 @@
 
     <streaming-log-modal ref="$acmeModal" />
 
-    <admin-settings-test-message-modal :test-message-url="testMessageUrl" />
+    <admin-settings-test-message-modal
+        ref="$testMessageModal"
+        :test-message-url="testMessageUrl"
+    />
 </template>
 
 <script setup>
@@ -371,5 +376,11 @@ const generateAcmeCert = () => {
     ).then((resp) => {
         $acmeModal.value.show(resp.data.links.log);
     });
+}
+
+const $testMessageModal = ref(); // TestMessageModal
+
+const openTestMessage = () => {
+    $testMessageModal.value.open();
 }
 </script>

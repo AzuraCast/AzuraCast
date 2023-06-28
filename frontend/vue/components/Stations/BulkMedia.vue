@@ -28,14 +28,12 @@
                     </p>
 
                     <div class="buttons">
-                        <b-button
-                            variant="primary"
-                            size="lg"
-                            block
+                        <a
+                            class="btn btn-lg btn-block btn-primary"
                             :href="apiUrl"
                         >
                             {{ $gettext('Export Media to CSV') }}
-                        </b-button>
+                        </a>
                     </div>
                 </div>
             </section>
@@ -72,15 +70,12 @@
                             />
                         </b-form-group>
 
-                        <b-button
+                        <button
                             type="submit"
-                            size="lg"
-                            block
-                            variant="primary"
-                            class="mt-2"
+                            class="btn btn-lg btn-block btn-primary mt-2"
                         >
                             {{ $gettext('Import Changes from CSV') }}
-                        </b-button>
+                        </button>
                     </b-form>
                 </div>
             </section>
@@ -146,13 +141,13 @@
                 </b-table-simple>
             </div>
             <template #modal-footer>
-                <b-button
-                    variant="default"
+                <button
+                    class="btn btn-secondary"
                     type="button"
-                    @click="closeModal"
+                    @click="close"
                 >
                     {{ $gettext('Close') }}
-                </b-button>
+                </button>
             </template>
         </b-modal>
     </div>

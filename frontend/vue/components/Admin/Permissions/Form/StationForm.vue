@@ -9,7 +9,10 @@
             @remove="remove(index)"
         />
 
-        <b-button-group v-if="hasRemainingStations">
+        <div
+            v-if="hasRemainingStations"
+            class="btn-group btn-group-sm"
+        >
             <b-dropdown
                 size="sm"
                 variant="outline-primary"
@@ -27,7 +30,7 @@
                     </b-dropdown-item-button>
                 </div>
             </b-dropdown>
-        </b-button-group>
+        </div>
     </b-tab>
 </template>
 

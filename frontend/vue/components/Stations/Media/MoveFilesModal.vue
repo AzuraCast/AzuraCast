@@ -8,19 +8,20 @@
     >
         <b-row class="mb-3 align-items-center">
             <b-col md="6">
-                <b-button
-                    size="sm"
-                    variant="primary"
+                <button
+                    class="btn btn-sm btn-primary"
                     :disabled="dirHistory.length === 0"
                     @click.prevent="pageBack"
                 >
                     <icon icon="chevron_left" />
-                    {{ $gettext('Back') }}
-                </b-button>
+                    <span>
+                        {{ $gettext('Back') }}
+                    </span>
+                </button>
             </b-col>
             <b-col
                 md="6"
-                class="text-right"
+                class="text-end"
             >
                 <h6 class="m-0">
                     {{ destinationDirectory }}
@@ -56,18 +57,18 @@
             </b-col>
         </b-row>
         <template #modal-footer>
-            <b-button
-                variant="default"
+            <button
+                class="btn btn-secondary"
                 @click="close"
             >
                 {{ $gettext('Close') }}
-            </b-button>
-            <b-button
-                variant="primary"
+            </button>
+            <button
+                class="btn btn-primary"
                 @click="doMove"
             >
                 {{ $gettext('Move to Directory') }}
-            </b-button>
+            </button>
         </template>
     </b-modal>
 </template>

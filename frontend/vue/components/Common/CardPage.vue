@@ -22,7 +22,7 @@
         </info-card>
         <div
             v-if="slots.actions"
-            class="card-body"
+            class="card-body buttons"
         >
             <slot name="actions" />
         </div>

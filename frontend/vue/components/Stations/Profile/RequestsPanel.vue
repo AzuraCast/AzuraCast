@@ -24,7 +24,9 @@
                     :href="requestsViewUri"
                 >
                     <icon icon="assignment" />
-                    {{ $gettext('View') }}
+                    <span>
+                        {{ $gettext('View') }}
+                    </span>
                 </a>
                 <a
                     v-if="userCanManageProfile"
@@ -33,7 +35,9 @@
                     :href="requestsToggleUri"
                 >
                     <icon icon="close" />
-                    {{ $gettext('Disable') }}
+                    <span>
+                        {{ $gettext('Disable') }}
+                    </span>
                 </a>
             </div>
         </template>
@@ -54,7 +58,9 @@
                     :href="requestsToggleUri"
                 >
                     <icon icon="check" />
-                    {{ $gettext('Enable') }}
+                    <span>
+                        {{ $gettext('Enable') }}
+                    </span>
                 </a>
             </div>
         </template>

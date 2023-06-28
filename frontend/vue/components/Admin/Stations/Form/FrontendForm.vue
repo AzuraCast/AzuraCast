@@ -185,13 +185,12 @@
                             multiple
                         />
 
-                        <b-button
-                            block
-                            variant="outline-primary"
+                        <button
+                            class="btn btn-block btn-primary"
                             @click.prevent="clearCountries"
                         >
                             {{ $gettext('Clear List') }}
-                        </b-button>
+                        </button>
                     </template>
                 </b-wrapped-form-group>
             </div>

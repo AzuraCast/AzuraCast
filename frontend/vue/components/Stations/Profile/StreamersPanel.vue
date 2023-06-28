@@ -24,7 +24,9 @@
                     :href="streamersViewUri"
                 >
                     <icon icon="settings" />
-                    {{ $gettext('Manage') }}
+                    <span>
+                        {{ $gettext('Manage') }}
+                    </span>
                 </a>
                 <a
                     v-if="userCanManageProfile"
@@ -33,7 +35,9 @@
                     :href="streamersToggleUri"
                 >
                     <icon icon="close" />
-                    {{ $gettext('Disable') }}
+                    <span>
+                        {{ $gettext('Disable') }}
+                    </span>
                 </a>
             </div>
         </template>
@@ -54,7 +58,9 @@
                     :href="streamersToggleUri"
                 >
                     <icon icon="check" />
-                    {{ $gettext('Enable') }}
+                    <span>
+                        {{ $gettext('Enable') }}
+                    </span>
                 </a>
             </div>
         </template>

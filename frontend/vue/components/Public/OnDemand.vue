@@ -25,7 +25,7 @@
                                 </template>
                             </h2>
                         </div>
-                        <div class="flex-fill text-right">
+                        <div class="flex-fill text-end">
                             <inline-player ref="player" />
                         </div>
                     </div>

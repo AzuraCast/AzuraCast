@@ -60,13 +60,13 @@
                         </b-form-markup>
                     </b-form-fieldset>
 
-                    <b-button
-                        size="lg"
+                    <button
                         type="submit"
-                        :variant="(v$.$invalid) ? 'danger' : 'primary'"
+                        class="btn btn-lg"
+                        :class="(v$.$invalid) ? 'btn-danger' : 'btn-primary'"
                     >
                         {{ $gettext('Save Changes') }}
-                    </b-button>
+                    </button>
                 </div>
             </b-overlay>
         </section>

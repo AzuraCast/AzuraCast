@@ -44,20 +44,20 @@
             </b-table-simple>
         </b-overlay>
         <template #modal-footer>
-            <b-button
-                variant="default"
+            <button
+                class="btn btn-secondary"
                 type="button"
                 @click="close"
             >
                 {{ $gettext('Close') }}
-            </b-button>
-            <b-button
-                variant="danger"
+            </button>
+            <button
+                class="btn btn-danger"
                 type="submit"
                 @click="doClear"
             >
                 {{ $gettext('Clear Queue') }}
-            </b-button>
+            </button>
         </template>
     </b-modal>
 </template>

@@ -8,13 +8,15 @@
             </p>
         </template>
         <template #actions>
-            <b-button
-                variant="outline-primary"
+            <button
+                class="btn btn-primary"
                 @click.prevent="doCreate"
             >
                 <icon icon="add" />
-                {{ $gettext('Add HLS Stream') }}
-            </b-button>
+                <span>
+                    {{ $gettext('Add HLS Stream') }}
+                </span>
+            </button>
         </template>
 
         <data-table
@@ -36,22 +38,20 @@
                 {{ row.item.bitrate }}kbps
             </template>
             <template #cell(actions)="row">
-                <b-button-group size="sm">
-                    <b-button
-                        size="sm"
-                        variant="primary"
+                <div class="btn-group btn-group-sm">
+                    <button
+                        class="btn btn-primary"
                         @click.prevent="doEdit(row.item.links.self)"
                     >
                         {{ $gettext('Edit') }}
-                    </b-button>
-                    <b-button
-                        size="sm"
-                        variant="danger"
+                    </button>
+                    <button
+                        class="btn btn-danger"
                         @click.prevent="doDelete(row.item.links.self)"
                     >
                         {{ $gettext('Delete') }}
-                    </b-button>
-                </b-button-group>
+                    </button>
+                </div>
             </template>
         </data-table>
     </card-page>

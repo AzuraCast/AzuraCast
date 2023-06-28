@@ -14,12 +14,14 @@
         <template #input="datePicker">
             <a
                 id="reportrange"
-                class="btn btn-bg dropdown-toggle"
+                class="btn btn-dark dropdown-toggle"
                 href="#"
                 @click.prevent=""
             >
                 <icon icon="date_range" />
-                {{ datePicker.rangeText }}
+                <span>
+                    {{ datePicker.rangeText }}
+                </span>
             </a>
         </template>
 

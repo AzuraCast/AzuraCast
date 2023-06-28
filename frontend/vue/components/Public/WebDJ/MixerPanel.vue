@@ -7,7 +7,7 @@
                         {{ $gettext('Mixer') }}
                     </h5>
                 </div>
-                <div class="flex-shrink-0 pl-3">
+                <div class="flex-shrink-0 ps-3">
                     <div class="d-flex flex-row align-items-center">
                         <div class="flex-shrink-0">
                             {{ $gettext('Playlist 1') }}

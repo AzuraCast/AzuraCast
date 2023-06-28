@@ -27,13 +27,15 @@
             v-if="activeType === 'pending'"
             class="card-body"
         >
-            <b-button
-                variant="danger"
+            <button
+                class="btn btn-danger"
                 @click="doClear()"
             >
                 <icon icon="remove" />
-                {{ $gettext('Clear Pending Requests') }}
-            </b-button>
+                <span>
+                    {{ $gettext('Clear Pending Requests') }}
+                </span>
+            </button>
         </div>
 
         <data-table
@@ -66,16 +68,13 @@
                 {{ row.item.ip }}
             </template>
             <template #cell(actions)="row">
-                <b-button-group>
-                    <b-button
-                        v-if="row.item.played_at === 0"
-                        size="sm"
-                        variant="danger"
-                        @click.prevent="doDelete(row.item.links.delete)"
-                    >
-                        {{ $gettext('Delete') }}
-                    </b-button>
-                </b-button-group>
+                <button
+                    v-if="row.item.played_at === 0"
+                    class="btn btn-sm btn-danger"
+                    @click.prevent="doDelete(row.item.links.delete)"
+                >
+                    {{ $gettext('Delete') }}
+                </button>
             </template>
         </data-table>
     </section>

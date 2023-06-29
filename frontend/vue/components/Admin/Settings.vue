@@ -35,7 +35,6 @@
                 :show="loading"
             >
                 <b-tabs
-                    pills
                     card
                     lazy
                 >

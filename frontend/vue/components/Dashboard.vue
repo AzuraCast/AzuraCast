@@ -134,40 +134,39 @@
             </b-collapse>
         </section>
 
-        <section
-            class="card"
-            role="region"
-            aria-labelledby="hdr_stations"
+        <b-overlay
+            variant="card"
+            :show="stationsLoading"
         >
-            <div class="card-header text-bg-primary d-flex flex-wrap align-items-center">
-                <div class="flex-fill">
-                    <h2
-                        id="hdr_stations"
-                        class="card-title"
-                    >
-                        {{ $gettext('Station Overview') }}
-                    </h2>
-                </div>
-                <div
-                    v-if="showAdmin"
-                    class="flex-shrink-0"
-                >
-                    <a
-                        class="btn btn-dark py-2"
-                        :href="manageStationsUrl"
-                    >
-                        <icon icon="settings" />
-                        <span>
-                            {{ $gettext('Manage Stations') }}
-                        </span>
-                    </a>
-                </div>
-            </div>
-
-            <b-overlay
-                variant="card"
-                :show="stationsLoading"
+            <section
+                class="card"
+                role="region"
+                aria-labelledby="hdr_stations"
             >
+                <div class="card-header text-bg-primary d-flex flex-wrap align-items-center">
+                    <div class="flex-fill">
+                        <h2
+                            id="hdr_stations"
+                            class="card-title"
+                        >
+                            {{ $gettext('Station Overview') }}
+                        </h2>
+                    </div>
+                    <div
+                        v-if="showAdmin"
+                        class="flex-shrink-0"
+                    >
+                        <a
+                            class="btn btn-dark py-2"
+                            :href="manageStationsUrl"
+                        >
+                            <icon icon="settings" />
+                            <span>
+                                {{ $gettext('Manage Stations') }}
+                            </span>
+                        </a>
+                    </div>
+                </div>
                 <div
                     v-if="stationsLoading"
                     class="card-body py-3"
@@ -189,7 +188,7 @@
                     <thead>
                         <tr>
                             <th class="pe-3">
-                                &nbsp;
+                            &nbsp;
                             </th>
                             <th class="ps-2">
                                 {{ $gettext('Station Name') }}
@@ -292,8 +291,8 @@
                         </tr>
                     </tbody>
                 </table>
-            </b-overlay>
-        </section>
+            </section>
+        </b-overlay>
     </div>
 </template>
 

@@ -10,7 +10,6 @@
     >
         <b-tabs
             content-class="mt-3"
-            pills
         >
             <b-tab active>
                 <template #title>

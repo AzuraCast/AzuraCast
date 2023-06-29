@@ -53,7 +53,7 @@
                 class="text-danger"
             >
                 <span aria-hidden="true">*</span>
-                <span class="sr-only">Required</span>
+                <span class="visually-hidden">Required</span>
             </span>
             <advanced-tag v-if="advanced" />
         </template>

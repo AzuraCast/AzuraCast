@@ -25,7 +25,7 @@
 
         <div
             v-if="showSftp"
-            class="card-body alert-info d-flex align-items-center"
+            class="card-body alert alert-info d-flex align-items-center"
             role="alert"
         >
             <div class="flex-shrink-0 me-2">
@@ -41,7 +41,7 @@
             </div>
             <div class="flex-shrink-0 ms-2">
                 <a
-                    class="btn btn-sm btn-light"
+                    class="btn btn-sm btn-info"
                     target="_blank"
                     :href="sftpUrl"
                 >

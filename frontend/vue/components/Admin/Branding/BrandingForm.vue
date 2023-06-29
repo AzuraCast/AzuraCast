@@ -50,7 +50,7 @@
                                 </template>
                             </b-wrapped-form-group>
 
-                            <b-col md="6">
+                            <div class="col-md-6">
                                 <b-wrapped-form-checkbox
                                     id="form_edit_hide_album_art"
                                     class="mb-2"
@@ -79,7 +79,7 @@
                                         }}
                                     </template>
                                 </b-wrapped-form-checkbox>
-                            </b-col>
+                            </div>
 
                             <b-wrapped-form-group
                                 id="form_edit_homepage_redirect_url"

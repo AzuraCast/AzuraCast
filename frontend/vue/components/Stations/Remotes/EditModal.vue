@@ -10,7 +10,6 @@
     >
         <b-tabs
             content-class="mt-3"
-            pills
         >
             <remote-form-basic-info :form="v$" />
 

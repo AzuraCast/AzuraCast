@@ -3,18 +3,27 @@
     padding-top: 0;
   }
 
+  h1, h2, h3, h4 {
+    @include font-size($h2-font-size);
+    margin: 0;
+  }
+
   padding: $card-spacer-y $card-spacer-x;
   margin-bottom: $card-spacer-y;
 }
 
 .card {
+  box-shadow: 0 0 4px 0 rgba(0, 0, 0, .14), 0 3px 4px 0 rgba(0, 0, 0, .12), 0 1px 5px 0 rgba(0, 0, 0, .2);
+
   .card-title {
     @include font-size($h4-font-size);
+    font-weight: normal;
     margin-bottom: 0;
   }
 
   .card-subtitle {
     @include font-size($h5-font-size);
+    font-weight: normal;
     margin-bottom: 0;
   }
 
@@ -22,7 +31,10 @@
     border: 0;
     border-radius: 0;
     margin-bottom: 0;
+  }
 
+  .card-header,
+  .alert {
     &:first-child {
       border-top-left-radius: var(--bs-card-border-radius);
       border-top-right-radius: var(--bs-card-border-radius);

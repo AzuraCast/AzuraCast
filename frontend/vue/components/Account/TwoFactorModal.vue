@@ -9,8 +9,8 @@
         @submit="doSubmit"
         @hidden="clearContents"
     >
-        <b-row>
-            <b-col md="7">
+        <div class="row">
+            <div class="col-md-7">
                 <h5 class="mt-2">
                     {{ $gettext('Step 1: Scan QR Code') }}
                 </h5>
@@ -47,8 +47,8 @@
                         </template>
                     </b-wrapped-form-group>
                 </b-form-fieldset>
-            </b-col>
-            <b-col md="5">
+            </div>
+            <div class="col-md-5">
                 <b-img :src="totp.qr_code" />
 
                 <div
@@ -64,8 +64,8 @@
                     </code>
                     <copy-to-clipboard-button :text="totp.totp_uri" />
                 </div>
-            </b-col>
-        </b-row>
+            </div>
+        </div>
 
         <template #save-button-name>
             {{ $gettext('Submit Code') }}

@@ -2,15 +2,21 @@
   display: inline-flex;
   align-items: center;
 
+  font-weight: bold;
+  text-transform: uppercase;
+
   & > .material-icons {
+    font-size: 1.5rem;
     margin-right: calc($btn-padding-x / 2);
   }
 
   &.btn-lg > .material-icons {
+    font-size: 1.75rem;
     margin-right: calc($btn-padding-x-lg / 2);
   }
 
   &.btn-sm > .material-icons {
+    font-size: 1rem;
     margin-right: calc($btn-padding-x-sm / 2);
   }
 
@@ -25,7 +31,7 @@
 
 .buttons {
   & > * {
-    margin-right: .5rem;
+    margin-right: .75rem;
   }
 
   & > *:last-child {

@@ -29,7 +29,7 @@
         </template>
 
         <div class="form-row">
-            <b-col md="6">
+            <div class="col-md-6">
                 <b-wrapped-form-group
                     id="edit_form_locale"
                     :field="form.locale"
@@ -46,8 +46,8 @@
                         />
                     </template>
                 </b-wrapped-form-group>
-            </b-col>
-            <b-col md="6">
+            </div>
+            <div class="col-md-6">
                 <b-wrapped-form-group
                     id="edit_form_show_24_hour_time"
                     :field="form.show_24_hour_time"
@@ -64,7 +64,7 @@
                         />
                     </template>
                 </b-wrapped-form-group>
-            </b-col>
+            </div>
         </div>
     </b-form-fieldset>
 </template>

@@ -16,7 +16,6 @@
         >
             <b-tabs
                 :card="!isModal"
-                pills
                 :content-class="tabContentClass"
             >
                 <b-tab

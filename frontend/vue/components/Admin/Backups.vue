@@ -111,7 +111,7 @@
             </h2>
         </div>
 
-        <b-card-body body-class="card-padding-sm">
+        <div class="card-body">
             <button
                 class="btn btn-primary"
                 @click.prevent="doRunBackup"
@@ -121,7 +121,7 @@
                     {{ $gettext('Run Manual Backup') }}
                 </span>
             </button>
-        </b-card-body>
+        </div>
 
         <data-table
             id="api_keys"

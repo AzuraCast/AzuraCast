@@ -26,21 +26,18 @@
                         variant="card"
                         :show="userLoading"
                     >
-                        <b-card-body body-class="card-padding-sm">
-                            <b-media
-                                right-align
-                                vertical-align="center"
-                            >
-                                <template
+                        <div class="card-body">
+                            <div class="d-flex align-items-center">
+                                <div
                                     v-if="user.avatar.url"
-                                    #aside
+                                    class="flex-shrink-0"
                                 >
                                     <avatar
                                         :url="user.avatar.url"
                                         :service="user.avatar.service"
                                         :service-url="user.avatar.serviceUrl"
                                     />
-                                </template>
+                                </div>
 
                                 <h2
                                     v-if="user.name"
@@ -68,8 +65,8 @@
                                         class="badge badge-secondary me-2"
                                     >{{ role.name }}</span>
                                 </div>
-                            </b-media>
-                        </b-card-body>
+                            </div>
+                        </div>
                     </b-overlay>
                 </card-page>
 
@@ -113,7 +110,7 @@
                         variant="card"
                         :show="securityLoading"
                     >
-                        <b-card-body>
+                        <div class="card-body">
                             <h5>
                                 {{ $gettext('Two-Factor Authentication') }}
                                 <enabled-badge :enabled="security.twoFactorEnabled" />
@@ -124,7 +121,7 @@
                                     $gettext('Two-factor authentication improves the security of your account by requiring a second one-time access code in addition to your password when you log in.')
                                 }}
                             </p>
-                        </b-card-body>
+                        </div>
                     </b-overlay>
                 </card-page>
             </div>

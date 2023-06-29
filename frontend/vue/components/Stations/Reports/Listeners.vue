@@ -35,7 +35,6 @@
                     </div>
                 </div>
                 <b-tabs
-                    pills
                     card
                 >
                     <b-tab
@@ -98,13 +97,13 @@
                             <div>
                                 <span v-if="row.item.is_mobile">
                                     <icon icon="smartphone" />
-                                    <span class="sr-only">
+                                    <span class="visually-hidden">
                                         {{ $gettext('Mobile Device') }}
                                     </span>
                                 </span>
                                 <span v-else>
                                     <icon icon="desktop_windows" />
-                                    <span class="sr-only">
+                                    <span class="visually-hidden">
                                         {{ $gettext('Desktop Device') }}
                                     </span>
                                 </span>

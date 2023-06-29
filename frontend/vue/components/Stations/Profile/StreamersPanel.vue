@@ -16,7 +16,7 @@
             </div>
             <div
                 v-if="userCanManageStreamers || userCanManageProfile"
-                class="card-body"
+                class="card-body buttons"
             >
                 <a
                     v-if="userCanManageStreamers"
@@ -50,7 +50,7 @@
             </div>
             <div
                 v-if="userCanManageProfile"
-                class="card-body"
+                class="card-body buttons"
             >
                 <a
                     class="btn btn-success"

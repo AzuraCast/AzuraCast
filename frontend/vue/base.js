@@ -24,7 +24,13 @@ export default function (component) {
     installPinia(vueApp);
 
     /* Oruga */
-    vueApp.use(Oruga, bootstrapConfig);
+    vueApp.use(Oruga, {
+        ...bootstrapConfig,
+        pagination: {
+            ...bootstrapConfig.pagination,
+            orderClass: '',
+        }
+    });
 
     /* BootstrapVueNext */
     vueApp.use(BootstrapVueNext);

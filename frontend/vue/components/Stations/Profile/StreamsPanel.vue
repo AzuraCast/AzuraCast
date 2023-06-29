@@ -152,7 +152,7 @@
                 </tbody>
             </template>
         </table>
-        <div class="card-body">
+        <div class="card-body buttons">
             <a
                 class="btn btn-primary"
                 :href="station.playlist_pls_url"

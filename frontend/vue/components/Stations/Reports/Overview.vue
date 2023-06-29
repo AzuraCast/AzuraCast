@@ -19,7 +19,6 @@
         </div>
 
         <b-tabs
-            pills
             lazy
             nav-class="card-header-pills"
             nav-wrapper-class="card-header"

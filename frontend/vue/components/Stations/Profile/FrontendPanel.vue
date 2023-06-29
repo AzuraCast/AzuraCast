@@ -100,7 +100,7 @@
                 </b-table-simple>
             </b-collapse>
 
-            <div class="card-body">
+            <div class="card-body buttons">
                 <a
                     class="btn btn-primary"
                     @click.prevent="credentialsVisible = !credentialsVisible"

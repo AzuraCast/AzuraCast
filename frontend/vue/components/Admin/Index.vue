@@ -86,8 +86,8 @@
                             />
                         </b-progress>
 
-                        <b-row>
-                            <b-col>
+                        <div class="row">
+                            <div class="col">
                                 <b-badge
                                     pill
                                     variant="primary"
@@ -96,8 +96,8 @@
                                 </b-badge>&nbsp;
                                 {{ $gettext('Used') }}
                                 : {{ stats.memory.readable.used }}
-                            </b-col>
-                            <b-col>
+                            </div>
+                            <div class="col">
                                 <b-badge
                                     pill
                                     variant="warning"
@@ -106,8 +106,8 @@
                                 </b-badge>&nbsp;
                                 {{ $gettext('Cached') }}
                                 : {{ stats.memory.readable.cached }}
-                            </b-col>
-                        </b-row>
+                            </div>
+                        </div>
                     </div>
                 </section>
             </div>
@@ -138,8 +138,8 @@
                             />
                         </b-progress>
 
-                        <b-row>
-                            <b-col>
+                        <div class="row">
+                            <div class="col">
                                 <b-badge
                                     pill
                                     variant="primary"
@@ -149,8 +149,8 @@
                                 {{ $gettext('Used') }}
                                 :
                                 {{ stats.disk.readable.used }}
-                            </b-col>
-                        </b-row>
+                            </div>
+                        </div>
                     </div>
                 </section>
             </div>
@@ -200,46 +200,46 @@
                             />
                         </b-progress>
 
-                        <b-row>
-                            <b-col>
+                        <div class="row">
+                            <div class="col">
                                 <b-badge
                                     pill
                                     variant="danger"
                                 >
-&nbsp;&nbsp;
+                                    &nbsp;&nbsp;
                                 </b-badge>&nbsp;
                                 {{ $gettext('Steal') }}
                                 : {{ stats.cpu.total.steal }}%
-                            </b-col>
-                            <b-col>
+                            </div>
+                            <div class="col">
                                 <b-badge
                                     pill
                                     variant="warning"
                                 >
-&nbsp;&nbsp;
+                                    &nbsp;&nbsp;
                                 </b-badge>&nbsp;
                                 {{ $gettext('Wait') }}
                                 : {{ stats.cpu.total.io_wait }}%
-                            </b-col>
-                            <b-col>
+                            </div>
+                            <div class="col">
                                 <b-badge
                                     pill
                                     variant="primary"
                                 >
-&nbsp;&nbsp;
+                                    &nbsp;&nbsp;
                                 </b-badge>&nbsp;
                                 {{ $gettext('Use') }}
                                 : {{ stats.cpu.total.usage }}%
-                            </b-col>
-                        </b-row>
+                            </div>
+                        </div>
 
                         <hr>
 
-                        <b-row>
-                            <b-col
+                        <div class="row">
+                            <div
                                 v-for="core in stats.cpu.cores"
                                 :key="core.name"
-                                lg="6"
+                                class="col-lg-6"
                             >
                                 <h6 class="mb-1 text-center">
                                     {{ formatCpuName(core.name) }}
@@ -264,45 +264,39 @@
                                     />
                                 </b-progress>
 
-                                <b-row
-                                    no-gutters
-                                    class="mb-2 mt-1"
-                                >
-                                    <b-col>
+                                <div class="b-row mb-2 mt-1">
+                                    <div class="col">
                                         St: {{ core.steal }}%
-                                    </b-col>
-                                    <b-col>
+                                    </div>
+                                    <div class="col">
                                         Wa: {{ core.io_wait }}%
-                                    </b-col>
-                                    <b-col>
+                                    </div>
+                                    <div class="col">
                                         Us: {{ core.usage }}%
-                                    </b-col>
-                                </b-row>
-                            </b-col>
-                        </b-row>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="card-footer">
                         <h6 class="mb-1 text-center">
                             {{ $gettext('Load Average') }}
                         </h6>
-                        <b-row
-                            class="text-center"
-                            no-gutters
-                        >
-                            <b-col>
+                        <div class="row text-center">
+                            <div class="row">
                                 <h6>1-Min</h6>
                                 {{ stats.cpu.load[0].toFixed(2) }}
-                            </b-col>
-                            <b-col>
+                            </div>
+                            <div class="row">
                                 <h6>5-Min</h6>
                                 {{ stats.cpu.load[1].toFixed(2) }}
-                            </b-col>
-                            <b-col>
+                            </div>
+                            <div class="row">
                                 <h6>15-Min</h6>
                                 {{ stats.cpu.load[2].toFixed(2) }}
-                            </b-col>
-                        </b-row>
+                            </div>
+                        </div>
                     </div>
                 </section>
             </div>
@@ -364,7 +358,6 @@
 
                     <b-tabs
                         content-class="mt-3"
-                        pills
                         card
                     >
                         <b-tab
@@ -372,8 +365,8 @@
                             :key="netInterface.interface_name"
                             :title="netInterface.interface_name"
                         >
-                            <b-row class="mb-3">
-                                <b-col class="mb-3">
+                            <div class="row mb-3">
+                                <div class="col mb-3">
                                     <h5 class="mb-1 text-center">
                                         {{ $gettext('Received') }}
                                     </h5>
@@ -383,8 +376,8 @@
                                         :items="getNetworkInterfaceTableItems(netInterface.received)"
                                         :fields="getNetworkInterfaceTableFields(netInterface.received)"
                                     />
-                                </b-col>
-                                <b-col>
+                                </div>
+                                <div class="col">
                                     <h5 class="mb-1 text-center">
                                         {{ $gettext('Transmitted') }}
                                     </h5>
@@ -394,8 +387,8 @@
                                         :items="getNetworkInterfaceTableItems(netInterface.transmitted)"
                                         :fields="getNetworkInterfaceTableFields(netInterface.transmitted)"
                                     />
-                                </b-col>
-                            </b-row>
+                                </div>
+                            </div>
                         </b-tab>
                     </b-tabs>
                 </section>

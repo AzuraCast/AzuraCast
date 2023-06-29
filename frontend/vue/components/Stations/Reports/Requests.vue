@@ -10,7 +10,6 @@
         </div>
 
         <b-tabs
-            pills
             card
         >
             <b-tab

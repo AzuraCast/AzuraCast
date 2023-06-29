@@ -117,7 +117,7 @@
 
         <b-form-fieldset v-if="showAdvanced">
             <div class="form-row">
-                <b-col md="5">
+                <div class="col-md-5">
                     <b-wrapped-form-group
                         id="edit_form_frontend_banned_ips"
                         :field="form.frontend_config.banned_ips"
@@ -162,7 +162,7 @@
                             {{ $gettext('List one user agent per line. Wildcards (*) are allowed.') }}
                         </template>
                     </b-wrapped-form-group>
-                </b-col>
+                </div>
 
                 <b-wrapped-form-group
                     id="edit_form_frontend_banned_countries"

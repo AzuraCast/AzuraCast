@@ -5,7 +5,7 @@
                 {{ $gettext('Remote: S3 Compatible') }}
             </h2>
         </div>
-        <b-card-body>
+        <div class="card-body">
             <b-form-group>
                 <div class="form-row">
                     <b-wrapped-form-group
@@ -69,7 +69,7 @@
                     </b-wrapped-form-group>
                 </div>
             </b-form-group>
-        </b-card-body>
+        </div>
     </section>
 </template>
 

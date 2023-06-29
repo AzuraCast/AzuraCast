@@ -37,7 +37,7 @@
         </div>
         <div
             v-if="userCanManageBroadcasting && hasStarted"
-            class="card-body"
+            class="card-body buttons"
         >
             <a
                 class="api-call no-reload btn btn-secondary"

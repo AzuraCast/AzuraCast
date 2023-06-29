@@ -67,7 +67,7 @@
                     </tr>
                 </tbody>
             </table>
-            <div class="card-body">
+            <div class="card-body buttons">
                 <a
                     class="btn btn-secondary"
                     @click.prevent="doOpenEmbed"

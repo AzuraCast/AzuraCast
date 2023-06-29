@@ -24,7 +24,6 @@
                 </template>
 
                 <b-tabs
-                    pills
                     card
                     lazy
                 >

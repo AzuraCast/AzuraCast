@@ -84,10 +84,10 @@ const emit = defineEmits([
 
 const isActive = useVModel(props, 'active', emit);
 
-const open = () => {
+const show = () => {
     isActive.value = true;
 };
-const close = () => {
+const hide = () => {
     isActive.value = false;
 };
 
@@ -100,7 +100,7 @@ watch(isActive, (value) => {
 });
 
 defineExpose({
-    open,
-    close
+    show,
+    hide
 });
 </script>

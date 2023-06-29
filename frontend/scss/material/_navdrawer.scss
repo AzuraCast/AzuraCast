@@ -4,24 +4,27 @@
   position: fixed;
   bottom: 0;
   left: 0;
-  top: 4.5rem;
+  top: $header-nav-height;
   display: block !important;
   right: auto;
   width: var(--navdrawer-width);
-  z-index: auto;
+  z-index: 100;
 }
 
 // Backdrop
 .navdrawer-backdrop {
   opacity: 0;
+  z-index: 50;
   position: fixed;
   top: 0;
   right: 0;
   bottom: 0;
   left: 0;
 
+  background-color: var(--bs-body-bg);
+
   &.show {
-    opacity: 1;
+    opacity: 0.5;
   }
 }
 
@@ -36,6 +39,8 @@
   left: 0;
   transform: translate3d(-100%, 0, 0);
   width: var(--navdrawer-width);
+
+  background: var(--bs-tertiary-bg);
 
   @include media-breakpoint-up(lg) {
     max-width: none;
@@ -60,6 +65,12 @@
   display: block;
   margin-bottom: var(--navdrawer-inner-spacer-y);
   padding: var(--navdrawer-inner-spacer-y) var(--navdrawer-inner-spacer-x);
+
+  background-color: var(--bs-secondary-bg);
+
+  .navbar-brand {
+    font-size: 1.25rem;
+  }
 }
 
 .navdrawer-subheader {
@@ -71,6 +82,8 @@
   margin-top: 0;
   margin-bottom: 0;
   padding: calc(var(--navdrawer-subheader-height) * 0.5) var(--navdrawer-inner-spacer-x);
+
+  color: var(--bs-secondary-color);
 
   .navdrawer-divider + & {
     margin-top: calc(var(--navdrawer-inner-spacer-y) * -1);
@@ -94,16 +107,39 @@
   .nav-link {
     @include text-truncate;
 
-    font-size: var(--navdrawer-nav-link-font-size);
+    display: inline-flex;
+    align-items: center;
+    width: 100%;
+
+    font-size: 1rem;
+    font-weight: 500;
+
     line-height: 1;
-    padding: calc((var(--navdrawer-link-height) - var(--navdrawer-nav-link-font-size)) * 0.5) var(--navdrawer-inner-spacer-x);
+    padding: .75rem 1rem;
+
+    color: var(--bs-body-color);
+
+    & > .navdrawer-nav-icon {
+      font-size: 1.5rem;
+      margin-right: .75rem;
+    }
 
     &:focus {
       outline: 0;
     }
-  }
-}
 
-.navdrawer-nav-icon {
-  width: var(--navdrawer-icon-width);
+    &.active,
+    &:active {
+      color: var(--bs-primary);
+    }
+
+    &:hover {
+      background-color: var(--bs-secondary-bg);
+    }
+
+    &.disabled {
+      background-color: transparent;
+      color: var(--bs-nav-link-disabled-color);
+    }
+  }
 }

@@ -159,7 +159,6 @@
             </h2>
         </div>
         <b-tabs
-            pills
             card
         >
             <b-tab

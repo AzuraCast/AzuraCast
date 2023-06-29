@@ -42,8 +42,10 @@ $sections->end();
                <?php
                if (isset($category['title'])): ?>title="<?= $this->e($category['title']) ?>"<?php
             endif; ?>>
-                <i class="navdrawer-nav-icon material-icons" aria-hidden="true"><?=$category['icon']?></i>
-                <?=$category['label']?>
+                <i class="navdrawer-nav-icon material-icons" aria-hidden="true"><?= $category['icon'] ?></i>
+                <span>
+                    <?= $category['label'] ?>
+                </span>
                 <?php
                 if ($category['external'] ?? false): ?>
                     <i class="material-icons sm" aria-label="<?= $this->e(__('External')) ?>">open_in_new</i>
@@ -52,7 +54,7 @@ $sections->end();
             </a>
             <?php
             if (!empty($category['items'])): ?>
-                <div class="collapse pb-2" id="sidebar-submenu-<?=$category_id?>">
+                <div class="collapse pb-2" id="sidebar-submenu-<?= $category_id ?>">
                     <ul class="navdrawer-nav">
                         <?php
                         foreach ($category['items'] as $item_id => $item): ?>

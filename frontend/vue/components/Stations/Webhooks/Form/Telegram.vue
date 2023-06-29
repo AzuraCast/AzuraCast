@@ -1,6 +1,6 @@
 <template>
     <b-form-group>
-        <div class="form-row">
+        <div class="row g-3">
             <b-wrapped-form-group
                 id="form_config_bot_token"
                 class="col-md-6"
@@ -52,7 +52,7 @@
     <common-formatting-info :now-playing-url="nowPlayingUrl" />
 
     <b-form-group>
-        <div class="form-row">
+        <div class="row g-3">
             <b-wrapped-form-group
                 id="form_config_text"
                 class="col-md-12"

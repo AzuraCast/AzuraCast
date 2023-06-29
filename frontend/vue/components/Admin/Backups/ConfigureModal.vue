@@ -9,7 +9,7 @@
         @hidden="resetForm"
     >
         <b-form-fieldset>
-            <div class="form-row mb-3">
+            <div class="row g-3 mb-3">
                 <b-wrapped-form-checkbox
                     id="form_edit_backup_enabled"
                     class="col-md-12"
@@ -28,7 +28,7 @@
 
             <div
                 v-if="v$.backup_enabled.$model"
-                class="form-row"
+                class="row g-3"
             >
                 <b-wrapped-form-group
                     id="form_backup_time_code"

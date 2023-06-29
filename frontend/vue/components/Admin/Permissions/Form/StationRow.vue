@@ -23,7 +23,7 @@
         </div>
         <b-card-body>
             <b-form-group>
-                <div class="form-row">
+                <div class="row g-3">
                     <b-wrapped-form-group
                         :id="'edit_form_station_permissions_'+row.station_id"
                         class="col-md-12"

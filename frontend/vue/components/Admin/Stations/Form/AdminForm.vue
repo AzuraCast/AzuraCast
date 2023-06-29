@@ -1,7 +1,7 @@
 <template>
     <b-form-group>
         <b-form-fieldset>
-            <div class="form-row">
+            <div class="row g-3">
                 <b-wrapped-form-checkbox
                     id="edit_form_is_enabled"
                     class="col-md-6"
@@ -39,7 +39,7 @@
                 variant="card"
                 :show="storageLocationsLoading"
             >
-                <div class="form-row">
+                <div class="row g-3">
                     <b-wrapped-form-group
                         id="edit_form_media_storage_location"
                         class="col-md-12"

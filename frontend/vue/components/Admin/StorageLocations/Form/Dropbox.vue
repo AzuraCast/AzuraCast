@@ -7,7 +7,7 @@
         </div>
         <div class="card-body">
             <b-form-group>
-                <div class="form-row">
+                <div class="row g-3">
                     <div class="col-md-12">
                         <h3>{{ $gettext('Dropbox Setup Instructions') }}</h3>
 

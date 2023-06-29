@@ -5,10 +5,21 @@
   bottom: 0;
   left: 0;
   top: $header-nav-height;
-  display: block !important;
   right: auto;
   width: var(--navdrawer-width);
   z-index: 100;
+
+  display: none;
+
+  &.show {
+    display: block;
+  }
+
+  @include media-breakpoint-up(lg) {
+    & {
+      display: block;
+    }
+  }
 }
 
 // Backdrop
@@ -43,10 +54,12 @@
   background: var(--bs-tertiary-bg);
 
   @include media-breakpoint-up(lg) {
-    max-width: none;
-    position: absolute;
-    transform: translate3d(0, 0, 0);
-    width: 100%;
+    & {
+      max-width: none;
+      position: absolute;
+      transform: translate3d(0, 0, 0);
+      width: 100%;
+    }
   }
 
   .navdrawer.show & {

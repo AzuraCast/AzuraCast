@@ -8,7 +8,8 @@
         @submit="doSubmit"
         @hidden="clearContents"
     >
-        <b-tabs
+        <o-tabs
+            nav-tabs-class="nav-tabs"
             content-class="mt-3"
         >
             <podcast-form-basic-info
@@ -23,7 +24,7 @@
                 :new-art-url="newArtUrl"
                 :edit-art-url="record.links.art"
             />
-        </b-tabs>
+        </o-tabs>
     </modal-form>
 </template>
 

@@ -9,12 +9,12 @@
         @hidden="onHidden"
     >
         <template #default="slotProps">
-            <b-alert
-                variant="danger"
-                :show="error != null"
+            <div
+                v-if="error != null"
+                class="alert alert-danger"
             >
                 {{ error }}
-            </b-alert>
+            </div>
 
             <form
                 class="form vue-form"
@@ -33,22 +33,23 @@
                 name="modal-footer"
                 v-bind="slotProps"
             >
-                <o-button
-                    variant="default"
+                <button
+                    class="btn btn-secondary"
                     type="button"
                     @click="hide"
                 >
                     {{ $gettext('Close') }}
-                </o-button>
-                <o-button
-                    :variant="(disableSaveButton) ? 'danger' : 'primary'"
+                </button>
+                <button
+                    class="btn"
+                    :class="(disableSaveButton) ? 'btn-danger' : 'btn-primary'"
                     type="submit"
                     @click="doSubmit"
                 >
                     <slot name="save-button-name">
                         {{ $gettext('Save Changes') }}
                     </slot>
-                </o-button>
+                </button>
             </slot>
         </template>
 

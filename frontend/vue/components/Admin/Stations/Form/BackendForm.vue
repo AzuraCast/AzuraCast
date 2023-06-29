@@ -1,6 +1,6 @@
 <template>
     <b-form-fieldset>
-        <div class="form-row">
+        <div class="row g-3">
             <b-wrapped-form-group
                 id="edit_form_backend_type"
                 class="col-md-12"
@@ -28,7 +28,7 @@
 
     <b-form-fieldset v-if="isBackendEnabled">
         <b-form-fieldset>
-            <div class="form-row">
+            <div class="row g-3">
                 <b-wrapped-form-group
                     id="edit_form_backend_crossfade_type"
                     class="col-md-7"
@@ -81,7 +81,7 @@
                 </template>
 
                 <b-form-fieldset>
-                    <div class="form-row">
+                    <div class="row g-3">
                         <b-wrapped-form-group
                             id="edit_form_backend_config_audio_processing_method"
                             class="col-md-6"
@@ -146,7 +146,7 @@
                     </b-form-markup>
 
                     <b-form-fieldset>
-                        <div class="form-row">
+                        <div class="row g-3">
                             <b-wrapped-form-group
                                 id="edit_form_backend_master_me_preset"
                                 class="col-md-6"
@@ -205,7 +205,7 @@
                     </b-form-markup>
 
                     <b-form-fieldset>
-                        <div class="form-row">
+                        <div class="row g-3">
                             <b-wrapped-form-group
                                 id="edit_form_backend_stereo_tool_license_key"
                                 class="col-md-7"
@@ -247,7 +247,7 @@
                 {{ $gettext('Advanced Configuration') }}
             </template>
 
-            <div class="form-row">
+            <div class="row g-3">
                 <b-wrapped-form-checkbox
                     id="edit_form_backend_use_manual_autodj"
                     class="col-md-6"

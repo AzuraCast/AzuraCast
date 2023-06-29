@@ -1,6 +1,6 @@
 <template>
     <b-form-group>
-        <div class="form-row">
+        <div class="row g-3">
             <b-wrapped-form-group
                 id="form_config_webhook_url"
                 class="col-md-12"
@@ -20,7 +20,7 @@
     <common-formatting-info :now-playing-url="nowPlayingUrl" />
 
     <b-form-group>
-        <div class="form-row">
+        <div class="row g-3">
             <b-wrapped-form-group
                 id="form_config_content"
                 class="col-md-6"

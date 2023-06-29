@@ -4,7 +4,7 @@
             {{ $gettext('Privacy') }}
         </template>
 
-        <div class="form-row">
+        <div class="row g-3">
             <b-wrapped-form-group
                 id="edit_form_analytics"
                 class="col-md-12"
@@ -53,7 +53,7 @@
             {{ $gettext('Security') }}
         </template>
 
-        <div class="form-row">
+        <div class="row g-3">
             <b-wrapped-form-checkbox
                 id="edit_form_always_use_ssl"
                 class="col-md-12"

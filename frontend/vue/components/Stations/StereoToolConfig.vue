@@ -27,7 +27,7 @@
 
         <div class="card-body">
             <b-form-group>
-                <div class="form-row">
+                <div class="row g-3">
                     <b-form-group
                         class="col-md-6"
                         label-for="stereo_tool_configuration_file"

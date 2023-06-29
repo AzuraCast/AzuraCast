@@ -7,7 +7,7 @@
         </div>
         <div class="card-body">
             <b-form-group>
-                <div class="form-row">
+                <div class="row g-3">
                     <b-wrapped-form-group
                         id="form_edit_sftpHost"
                         class="col-md-12 col-lg-6"

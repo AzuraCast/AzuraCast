@@ -4,7 +4,7 @@
             {{ $gettext('AzuraCast Update Checks') }}
         </template>
 
-        <div class="form-row">
+        <div class="row g-3">
             <b-form-markup
                 id="form_release_channel"
                 class="col-md-6"
@@ -51,7 +51,7 @@
             }}
         </template>
 
-        <div class="form-row">
+        <div class="row g-3">
             <b-wrapped-form-group
                 id="edit_form_acme_domains"
                 class="col-md-6"
@@ -107,7 +107,7 @@
             {{ $gettext('Used for "Forgot Password" functionality, web hooks and other functions.') }}
         </template>
 
-        <div class="form-row">
+        <div class="row g-3">
             <b-wrapped-form-checkbox
                 id="edit_form_mail_enabled"
                 class="col-md-12"
@@ -121,7 +121,7 @@
 
         <div
             v-if="form.mail_enabled.$model"
-            class="form-row mt-2"
+            class="row g-3 mt-2"
         >
             <b-wrapped-form-group
                 id="edit_form_mail_sender_name"
@@ -222,7 +222,7 @@
             {{ $gettext('Avatar Service') }}
         </template>
 
-        <div class="form-row">
+        <div class="row g-3">
             <b-wrapped-form-group
                 id="edit_form_avatar_service"
                 class="col-md-6"
@@ -258,7 +258,7 @@
             {{ $gettext('Album Art') }}
         </template>
 
-        <div class="form-row">
+        <div class="row g-3">
             <b-wrapped-form-checkbox
                 id="use_external_album_art_in_apis"
                 class="col-md-6"

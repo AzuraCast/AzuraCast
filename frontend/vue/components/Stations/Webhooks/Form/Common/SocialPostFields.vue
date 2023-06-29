@@ -3,7 +3,7 @@
         <common-formatting-info :now-playing-url="nowPlayingUrl" />
 
         <b-form-group>
-            <div class="form-row">
+            <div class="row g-3">
                 <template v-if="hasTrigger('song_changed')">
                     <b-wrapped-form-group
                         id="form_config_message"

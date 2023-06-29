@@ -7,7 +7,7 @@
         @submit="doSubmit"
         @hidden="clearContents"
     >
-        <div class="form-row">
+        <div class="row g-3">
             <b-wrapped-form-group
                 id="form_edit_name"
                 class="col-md-12"

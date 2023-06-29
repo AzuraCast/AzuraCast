@@ -11,7 +11,7 @@
             </template>
 
             <b-form-fieldset>
-                <div class="form-row">
+                <div class="row g-3">
                     <b-wrapped-form-checkbox
                         id="edit_form_enable_hls"
                         class="col-md-12"
@@ -25,7 +25,7 @@
             </b-form-fieldset>
 
             <b-form-fieldset v-if="form.enable_hls.$model">
-                <div class="form-row">
+                <div class="row g-3">
                     <b-wrapped-form-checkbox
                         id="edit_form_backend_hls_enable_on_public_player"
                         class="col-md-12"
@@ -49,7 +49,7 @@
             </b-form-fieldset>
 
             <b-form-fieldset v-if="showAdvanced && form.enable_hls.$model">
-                <div class="form-row">
+                <div class="row g-3">
                     <b-wrapped-form-group
                         id="edit_form_backend_hls_segment_length"
                         class="col-md-4"

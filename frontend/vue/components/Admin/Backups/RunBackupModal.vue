@@ -21,7 +21,7 @@
                 @submit.prevent="submit"
             >
                 <b-form-fieldset>
-                    <div class="form-row">
+                    <div class="row g-3">
                         <b-wrapped-form-group
                             id="edit_form_storage_location"
                             class="col-md-12"

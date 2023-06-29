@@ -32,7 +32,7 @@
     </b-form-group>
 
     <b-form-group>
-        <div class="form-row">
+        <div class="row g-3">
             <b-wrapped-form-group
                 id="form_config_webhook_url"
                 class="col-md-12"

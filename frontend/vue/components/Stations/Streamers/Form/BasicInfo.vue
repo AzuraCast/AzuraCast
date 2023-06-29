@@ -4,7 +4,7 @@
         active
     >
         <b-form-group>
-            <div class="form-row">
+            <div class="row g-3">
                 <b-wrapped-form-group
                     id="edit_form_streamer_username"
                     class="col-md-6"
@@ -32,7 +32,7 @@
                     </template>
                 </b-wrapped-form-group>
             </div>
-            <div class="form-row">
+            <div class="row g-3">
                 <b-wrapped-form-group
                     id="edit_form_display_name"
                     class="col-md-6"
@@ -62,7 +62,7 @@
                     </template>
                 </b-wrapped-form-group>
             </div>
-            <div class="form-row mt-3">
+            <div class="row g-3 mt-3">
                 <b-wrapped-form-checkbox
                     id="form_edit_is_active"
                     class="col-md-6"

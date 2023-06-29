@@ -12,7 +12,7 @@
             variant="card"
             :show="loading"
         >
-            <div class="form-row">
+            <div class="row g-3">
                 <div class="col-md-4">
                     <b-form-fieldset>
                         <b-form-markup id="apply_to_playlist_name">

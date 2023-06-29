@@ -1,5 +1,5 @@
 <template>
-    <div class="form-row">
+    <div class="row g-3">
         <b-wrapped-form-group
             id="edit_form_name"
             class="col-md-12"

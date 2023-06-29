@@ -24,7 +24,7 @@
                 variant="card"
                 :show="loading"
             >
-                <div class="form-row">
+                <div class="row g-3">
                     <div class="col-md-7">
                         <fieldset>
                             <legend>{{ $gettext('Instructions') }}</legend>

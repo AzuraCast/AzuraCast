@@ -1,7 +1,7 @@
 <template>
     <b-tab :title="$gettext('AutoDJ')">
         <b-form-group>
-            <div class="form-row mb-3">
+            <div class="row g-3 mb-3">
                 <b-wrapped-form-checkbox
                     id="edit_form_enable_autodj"
                     class="col-md-12"
@@ -18,7 +18,7 @@
 
             <div
                 v-if="form.enable_autodj.$model"
-                class="form-row"
+                class="row g-3"
             >
                 <b-wrapped-form-group
                     id="edit_form_autodj_format"

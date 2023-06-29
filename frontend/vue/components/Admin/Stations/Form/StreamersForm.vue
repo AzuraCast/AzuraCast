@@ -6,7 +6,7 @@
             </template>
 
             <b-form-fieldset>
-                <div class="form-row">
+                <div class="row g-3">
                     <b-wrapped-form-checkbox
                         id="edit_form_enable_streamers"
                         class="col-md-12"
@@ -26,7 +26,7 @@
 
             <b-form-fieldset v-if="form.enable_streamers.$model">
                 <b-form-fieldset>
-                    <div class="form-row">
+                    <div class="row g-3">
                         <b-wrapped-form-checkbox
                             id="edit_form_backend_record_streams"
                             class="col-md-12"
@@ -45,7 +45,7 @@
                 </b-form-fieldset>
 
                 <b-form-fieldset v-if="form.backend_config.record_streams.$model">
-                    <div class="form-row">
+                    <div class="row g-3">
                         <b-wrapped-form-group
                             id="edit_form_backend_record_streams_format"
                             class="col-md-6"
@@ -87,7 +87,7 @@
                 </b-form-fieldset>
 
                 <b-form-fieldset>
-                    <div class="form-row">
+                    <div class="row g-3">
                         <b-wrapped-form-group
                             id="edit_form_disconnect_deactivate_streamer"
                             class="col-md-6"

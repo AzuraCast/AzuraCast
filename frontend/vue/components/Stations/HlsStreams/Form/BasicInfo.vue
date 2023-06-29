@@ -4,7 +4,7 @@
         active
     >
         <b-form-group>
-            <div class="form-row mb-3">
+            <div class="row g-3 mb-3">
                 <b-wrapped-form-group
                     id="edit_form_name"
                     class="col-md-12"

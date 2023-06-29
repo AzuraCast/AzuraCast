@@ -1,6 +1,6 @@
 <template>
     <b-form-fieldset>
-        <div class="form-row">
+        <div class="row g-3">
             <b-wrapped-form-group
                 id="edit_form_frontend_type"
                 class="col-md-12"
@@ -26,7 +26,7 @@
 
     <b-form-fieldset v-if="isLocalFrontend">
         <b-form-fieldset v-if="isShoutcastFrontend">
-            <div class="form-row">
+            <div class="row g-3">
                 <b-wrapped-form-group
                     id="edit_form_frontend_sc_license_id"
                     class="col-md-6"
@@ -50,7 +50,7 @@
         </b-form-fieldset>
 
         <b-form-fieldset>
-            <div class="form-row">
+            <div class="row g-3">
                 <b-wrapped-form-group
                     id="edit_form_frontend_source_pw"
                     class="col-md-6"
@@ -116,7 +116,7 @@
         </b-form-fieldset>
 
         <b-form-fieldset v-if="showAdvanced">
-            <div class="form-row">
+            <div class="row g-3">
                 <div class="col-md-5">
                     <b-wrapped-form-group
                         id="edit_form_frontend_banned_ips"
@@ -208,7 +208,7 @@
                 </ul>
             </template>
 
-            <div class="form-row">
+            <div class="row g-3">
                 <b-wrapped-form-group
                     id="edit_form_frontend_custom_config"
                     class="col-md-12"

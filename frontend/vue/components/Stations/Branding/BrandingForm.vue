@@ -26,7 +26,7 @@
             >
                 <div class="card-body">
                     <b-form-group>
-                        <div class="form-row">
+                        <div class="row g-3">
                             <b-wrapped-form-group
                                 id="form_edit_default_album_art_url"
                                 class="col-md-6"

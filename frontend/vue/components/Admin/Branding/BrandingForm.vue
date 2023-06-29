@@ -26,7 +26,7 @@
             >
                 <div class="card-body">
                     <b-form-group>
-                        <div class="form-row">
+                        <div class="row g-3">
                             <b-wrapped-form-group
                                 id="edit_form_public_theme"
                                 class="col-md-6"

@@ -1,6 +1,6 @@
 <template>
     <b-form-fieldset>
-        <div class="form-row">
+        <div class="row g-3">
             <b-wrapped-form-group
                 id="edit_form_name"
                 class="col-md-12"
@@ -118,7 +118,7 @@
             {{ $gettext('Public Pages') }}
         </template>
 
-        <div class="form-row">
+        <div class="row g-3">
             <b-wrapped-form-checkbox
                 id="edit_form_enable_public_page"
                 class="col-md-12"
@@ -139,7 +139,7 @@
             {{ $gettext('On-Demand Streaming') }}
         </template>
 
-        <div class="form-row">
+        <div class="row g-3">
             <b-wrapped-form-checkbox
                 id="edit_form_enable_on_demand"
                 class="col-md-12"

@@ -4,7 +4,7 @@
             {{ $gettext('Select Web Hook Type') }}
         </template>
 
-        <div class="form-row">
+        <div class="row g-3">
             <div class="col-md-6">
                 <section class="card mb-3">
                     <div class="card-header text-bg-primary">

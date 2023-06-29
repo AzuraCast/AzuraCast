@@ -1,59 +1,48 @@
 <template>
     <o-modal
         ref="$modal"
-        v-model:active="isActive"
+        v-model:active="isActiveLocal"
         :aria-label="title"
+        :content-class="'modal-'+size"
+        :width="null"
     >
-        <o-loading :active="busy">
+        <div class="modal-content">
             <div
-                id="exampleModalToggle"
-                class="modal fade"
-                aria-hidden="true"
-                aria-labelledby="exampleModalToggleLabel"
-                tabindex="-1"
+                v-if="slots['modal-header'] || title"
+                class="modal-header"
             >
-                <div
-                    class="modal-dialog modal-dialog-centered"
-                    :class="'modal_'+size"
+                <h1
+                    v-if="title"
+                    class="modal-title fs-5"
                 >
-                    <div class="modal-content">
-                        <div
-                            v-if="slots['modal-header'] || title"
-                            class="modal-header"
-                        >
-                            <h1
-                                v-if="title"
-                                class="modal-title fs-5"
-                            >
-                                {{ title }}
-                            </h1>
-                            <slot name="modal-header" />
-                            <button
-                                type="button"
-                                class="btn-close"
-                                :aria-label="$gettext('Close')"
-                                @click.prevent="close"
-                            />
-                        </div>
-                        <div class="modal-body">
-                            <slot />
-                        </div>
-                        <div
-                            v-if="slots['modal-footer']"
-                            class="modal-footer"
-                        >
-                            <slot name="modal-footer" />
-                        </div>
-                    </div>
-                </div>
+                    {{ title }}
+                </h1>
+                <slot name="modal-header" />
+                <button
+                    type="button"
+                    class="btn-close"
+                    :aria-label="$gettext('Close')"
+                    @click.prevent="hide"
+                />
             </div>
-        </o-loading>
+            <div class="modal-body">
+                <b-overlay :show="busy">
+                    <slot name="default" />
+                </b-overlay>
+            </div>
+            <div
+                v-if="slots['modal-footer']"
+                class="modal-footer"
+            >
+                <slot name="modal-footer" />
+            </div>
+        </div>
     </o-modal>
 </template>
 
 <script setup>
-import {useSlots, watch} from 'vue';
-import {useVModel} from "@vueuse/core";
+import {ref, useSlots, watch} from 'vue';
+import {syncRef, useVModel} from "@vueuse/core";
 
 const slots = useSlots();
 
@@ -82,16 +71,19 @@ const emit = defineEmits([
     'update:active'
 ]);
 
-const isActive = useVModel(props, 'active', emit);
+const isActiveProp = useVModel(props, 'active', emit);
+const isActiveLocal = ref(isActiveProp.value);
 
 const show = () => {
-    isActive.value = true;
+    isActiveLocal.value = true;
 };
 const hide = () => {
-    isActive.value = false;
+    isActiveLocal.value = false;
 };
 
-watch(isActive, (value) => {
+syncRef(isActiveProp, isActiveLocal);
+
+watch(isActiveLocal, (value) => {
     if (value) {
         emit('shown');
     } else {

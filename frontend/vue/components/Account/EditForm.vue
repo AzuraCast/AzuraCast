@@ -1,6 +1,6 @@
 <template>
     <b-form-fieldset>
-        <div class="form-row">
+        <div class="row g-3">
             <b-wrapped-form-group
                 id="form_name"
                 class="col-md-6"
@@ -28,7 +28,7 @@
             {{ $gettext('Customization') }}
         </template>
 
-        <div class="form-row">
+        <div class="row g-3">
             <div class="col-md-6">
                 <b-wrapped-form-group
                     id="edit_form_locale"

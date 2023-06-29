@@ -1,10 +1,10 @@
 <template>
-    <b-tab
-        :title="$gettext('Basic Information')"
+    <o-tab-item
+        :label="$gettext('Basic Information')"
         active
     >
         <b-form-group>
-            <div class="form-row">
+            <div class="row g-3">
                 <b-wrapped-form-group
                     id="form_edit_title"
                     class="col-md-6"
@@ -119,7 +119,7 @@
                 </b-wrapped-form-group>
             </div>
         </b-form-group>
-    </b-tab>
+    </o-tab-item>
 </template>
 
 <script setup>

@@ -4,7 +4,7 @@
         active
     >
         <b-form-group>
-            <div class="form-row">
+            <div class="row g-3">
                 <b-wrapped-form-group
                     id="form_edit_name"
                     class="col-md-6"
@@ -74,7 +74,7 @@
             </div>
             <b-card-body>
                 <b-form-group>
-                    <div class="form-row">
+                    <div class="row g-3">
                         <b-wrapped-form-checkbox
                             id="form_edit_avoid_duplicates"
                             class="col-md-6"
@@ -243,7 +243,7 @@
                     </template>
 
                     <b-form-group>
-                        <div class="form-row">
+                        <div class="row g-3">
                             <b-wrapped-form-group
                                 id="form_edit_weight"
                                 class="col-md-12"
@@ -276,7 +276,7 @@
                     </template>
 
                     <b-form-group>
-                        <div class="form-row">
+                        <div class="row g-3">
                             <b-wrapped-form-group
                                 id="form_edit_play_per_songs"
                                 class="col-md-12"
@@ -303,7 +303,7 @@
                     </template>
 
                     <b-form-group>
-                        <div class="form-row">
+                        <div class="row g-3">
                             <b-wrapped-form-group
                                 id="form_edit_play_per_minutes"
                                 class="col-md-12"
@@ -330,7 +330,7 @@
                     </template>
 
                     <b-form-group>
-                        <div class="form-row">
+                        <div class="row g-3">
                             <b-wrapped-form-group
                                 id="form_edit_play_per_hour_minute"
                                 class="col-md-12"
@@ -363,7 +363,7 @@
             </div>
             <b-card-body>
                 <b-form-group>
-                    <div class="form-row">
+                    <div class="row g-3">
                         <b-wrapped-form-group
                             id="form_edit_remote_url"
                             class="col-md-6"

@@ -1,8 +1,10 @@
 @use "sass:math";
 
 .modal-body {
-  ul.nav-tabs {
-    margin: (0 - math.div($modal-header-padding-x, 2)) (0-$modal-header-padding-y) 0 (0-$modal-header-padding-y);
-    padding: 0 $modal-header-padding-y;
+  nav.nav-tabs {
+    background: var(--bs-tertiary-bg);
+
+    margin: (0-$modal-inner-padding) (0-$modal-inner-padding) 0 (0-$modal-inner-padding);
+    padding: math.div($modal-inner-padding, 2) $modal-inner-padding 0 $modal-inner-padding;
   }
 }

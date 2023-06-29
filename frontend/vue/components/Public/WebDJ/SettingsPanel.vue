@@ -64,7 +64,7 @@
             </div>
 
             <div class="card-body">
-                <div class="form-row">
+                <div class="row g-3">
                     <div class="col md-6">
                         <div class="form-group">
                             <label
@@ -102,7 +102,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="form-row">
+                <div class="row g-3">
                     <div class="col md-6">
                         <div class="form-group">
                             <label

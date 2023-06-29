@@ -11,7 +11,7 @@
             </template>
 
             <b-form-fieldset>
-                <div class="form-row">
+                <div class="row g-3">
                     <b-wrapped-form-checkbox
                         id="edit_form_enable_requests"
                         class="col-md-12"
@@ -30,7 +30,7 @@
             </b-form-fieldset>
 
             <b-form-fieldset v-if="form.enable_requests.$model">
-                <div class="form-row">
+                <div class="row g-3">
                     <b-wrapped-form-group
                         id="edit_form_request_delay"
                         class="col-md-6"

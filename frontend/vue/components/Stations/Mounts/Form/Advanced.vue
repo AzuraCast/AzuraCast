@@ -1,7 +1,7 @@
 <template>
     <b-tab :title="$gettext('Advanced')">
         <b-form-group>
-            <div class="form-row mb-3">
+            <div class="row g-3 mb-3">
                 <b-wrapped-form-group
                     id="edit_form_custom_listen_url"
                     class="col-md-12"
@@ -20,7 +20,7 @@
             </div>
             <div
                 v-if="isIcecast"
-                class="form-row"
+                class="row g-3"
             >
                 <b-wrapped-form-group
                     id="edit_form_frontend_config"

@@ -1,6 +1,6 @@
 <template>
     <b-form-fieldset>
-        <div class="form-row">
+        <div class="row g-3">
             <b-wrapped-form-group
                 id="edit_form_base_url"
                 class="col-md-6"

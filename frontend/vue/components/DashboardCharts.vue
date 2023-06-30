@@ -9,8 +9,10 @@
         >
             &nbsp;
         </div>
-        <b-tabs
+        <o-tabs
             v-else
+            nav-tabs-class="nav-tabs"
+            content-class="mt-3"
             card
             lazy
         >
@@ -36,7 +38,7 @@
                     :alt="chartsData.unique.alt"
                 />
             </b-tab>
-        </b-tabs>
+        </o-tabs>
     </b-overlay>
 </template>
 

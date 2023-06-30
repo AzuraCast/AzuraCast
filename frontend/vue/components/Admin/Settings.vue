@@ -34,39 +34,36 @@
                 variant="card"
                 :show="loading"
             >
-                <b-tabs
-                    card
-                    lazy
-                >
-                    <b-tab :title-link-class="getTabClass(v$.$validationGroups.generalTab)">
-                        <template #title>
-                            {{ $gettext('Settings') }}
-                        </template>
-
-                        <settings-general-tab :form="v$" />
-                    </b-tab>
-
-                    <b-tab :title-link-class="getTabClass(v$.$validationGroups.securityPrivacyTab)">
-                        <template #title>
-                            {{ $gettext('Security & Privacy') }}
-                        </template>
-
-                        <settings-security-privacy-tab :form="v$" />
-                    </b-tab>
-
-                    <b-tab :title-link-class="getTabClass(v$.$validationGroups.servicesTab)">
-                        <template #title>
-                            {{ $gettext('Services') }}
-                        </template>
-
-                        <settings-services-tab
-                            :form="v$"
-                            :release-channel="releaseChannel"
-                            :test-message-url="testMessageUrl"
-                            :acme-url="acmeUrl"
-                        />
-                    </b-tab>
-                </b-tabs>
+                <div class="card-body">
+                    <o-tabs
+                        nav-tabs-class="nav-tabs"
+                        content-class="mt-3"
+                    >
+                        <o-tab-item
+                            :label="$gettext('Settings')"
+                            :item-header-class="getTabClass(v$.$validationGroups.generalTab)"
+                        >
+                            <settings-general-tab :form="v$" />
+                        </o-tab-item>
+                        <o-tab-item
+                            :label="$gettext('Security & Privacy')"
+                            :item-header-class="getTabClass(v$.$validationGroups.securityPrivacyTab)"
+                        >
+                            <settings-security-privacy-tab :form="v$" />
+                        </o-tab-item>
+                        <o-tab-item
+                            :label="$gettext('Services')"
+                            :item-header-class="getTabClass(v$.$validationGroups.servicesTab)"
+                        >
+                            <settings-services-tab
+                                :form="v$"
+                                :release-channel="releaseChannel"
+                                :test-message-url="testMessageUrl"
+                                :acme-url="acmeUrl"
+                            />
+                        </o-tab-item>
+                    </o-tabs>
+                </div>
             </b-overlay>
 
             <div class="card-body">

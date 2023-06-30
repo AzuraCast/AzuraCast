@@ -26,8 +26,9 @@
         </div>
 
         <b-tabs
-            card
-            lazy
+            nav-tabs-class="nav-tabs"
+            content-class="mt-3"
+            destroy-on-hide
         >
             <b-tab
                 :title="$gettext('All Playlists')"
@@ -134,7 +135,7 @@
                             {{ row.item.name }}
                         </h5>
                         <div>
-                            <span class="badge badge-dark">
+                            <span class="badge text-bg-dark">
                                 <template v-if="row.item.source === 'songs'">
                                     {{ $gettext('Song-based') }}
                                 </template>
@@ -144,31 +145,31 @@
                             </span>
                             <span
                                 v-if="row.item.is_jingle"
-                                class="badge badge-primary"
+                                class="badge text-bg-primary"
                             >
                                 {{ $gettext('Jingle Mode') }}
                             </span>
                             <span
                                 v-if="row.item.source === 'songs' && row.item.order === 'sequential'"
-                                class="badge badge-info"
+                                class="badge text-bg-info"
                             >
                                 {{ $gettext('Sequential') }}
                             </span>
                             <span
                                 v-if="row.item.include_in_on_demand"
-                                class="badge badge-info"
+                                class="badge text-bg-info"
                             >
                                 {{ $gettext('On-Demand') }}
                             </span>
                             <span
                                 v-if="row.item.include_in_automation"
-                                class="badge badge-success"
+                                class="badge text-bg-success"
                             >
                                 {{ $gettext('Auto-Assigned') }}
                             </span>
                             <span
                                 v-if="!row.item.is_enabled"
-                                class="badge badge-danger"
+                                class="badge text-bg-danger"
                             >
                                 {{ $gettext('Disabled') }}
                             </span>

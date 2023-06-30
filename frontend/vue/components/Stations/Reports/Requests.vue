@@ -9,18 +9,29 @@
             </h2>
         </div>
 
-        <b-tabs
-            card
-        >
-            <b-tab
-                v-for="tab in tabs"
-                :key="tab.type"
-                :active="activeType === tab.type"
-                :title="tab.title"
-                no-body
-                @click="setType(tab.type)"
-            />
-        </b-tabs>
+        <div class="card-body">
+            <nav
+                class="nav nav-tabs"
+                role="tablist"
+            >
+                <div
+                    v-for="tab in tabs"
+                    :key="tab.type"
+                    class="nav-item"
+                    role="presentation"
+                >
+                    <button
+                        class="nav-link"
+                        :class="(activeType === tab.type) ? 'active' : ''"
+                        type="button"
+                        role="tab"
+                        @click="setType(tab.type)"
+                    >
+                        {{ tab.title }}
+                    </button>
+                </div>
+            </nav>
+        </div>
 
         <div
             v-if="activeType === 'pending'"

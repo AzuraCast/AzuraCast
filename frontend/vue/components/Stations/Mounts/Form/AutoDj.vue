@@ -1,5 +1,5 @@
 <template>
-    <b-tab :title="$gettext('AutoDJ')">
+    <o-tab-item :label="$gettext('AutoDJ')">
         <b-form-group>
             <div class="row g-3 mb-3">
                 <b-wrapped-form-checkbox
@@ -59,7 +59,7 @@
                 </b-wrapped-form-group>
             </div>
         </b-form-group>
-    </b-tab>
+    </o-tab-item>
 </template>
 
 <script setup>

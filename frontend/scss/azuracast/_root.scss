@@ -1,10 +1,10 @@
 :root,
 [data-bs-theme="light"] {
-  --public-page-bg: '../img/hexbg.webp';
+  --public-page-bg: url('../img/hexbg.webp');
   --scrollbar-color: #{$gray-400};
 }
 
 @include color-mode(dark, true) {
-  --public-page-bg: '../img/hexbg_dark.webp';
+  --public-page-bg: url('../img/hexbg_dark.webp');
   --scrollbar-color: #{$gray-800};
 }

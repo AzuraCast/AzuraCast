@@ -8,11 +8,12 @@
         @submit="doSubmit"
         @hidden="clearContents"
     >
-        <b-tabs
+        <o-tabs
+            nav-tabs-class="nav-tabs"
             content-class="mt-3"
         >
             <form-basic-info :form="v$" />
-        </b-tabs>
+        </o-tabs>
     </modal-form>
 </template>
 

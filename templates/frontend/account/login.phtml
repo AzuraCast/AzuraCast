@@ -19,65 +19,68 @@ $this->layout(
         <div class="card-body">
             <div class="row mb-4">
                 <div class="col-sm">
-                    <h2 class="card-title mb-0 text-center">
+                    <h2 class="card-title text-center">
                         <?php
                         if ($customization->hideProductName()): ?>
-                            <?=__('Welcome!')?>
+                            <?= __('Welcome!') ?>
                         <?php
                         else: ?>
-                            <?=sprintf(__('Welcome to %s!'), $environment->getAppName())?>
+                            <?= sprintf(__('Welcome to %s!'), $environment->getAppName()) ?>
                         <?php
                         endif; ?>
                     </h2>
-                    <h3 class="text-center">
-                        <?php
-                        if (!empty($customization->getInstanceName())): ?>
-                            <small class="text-muted"><?=$this->e($customization->getInstanceName())?></small>
-                        <?php
-                        endif; ?>
-                    </h3>
+                    <?php
+                    if (!empty($customization->getInstanceName())): ?>
+                        <h3 class="card-subtitle text-center text-muted">
+                            <?= $this->e($customization->getInstanceName()) ?>
+                        </h3>
+                    <?php
+                    endif; ?>
                 </div>
             </div>
 
             <form id="login-form" action="" method="post">
                 <div class="form-group">
                     <label for="username" class="mb-2">
-                        <i class="material-icons mr-1" aria-hidden="true">email</i>
-                        <strong><?=__('E-mail Address')?></strong>
+                        <i class="material-icons me-1" aria-hidden="true">email</i>
+                        <strong><?= __('E-mail Address') ?></strong>
                     </label>
-                    <input type="email" id="username" name="username" class="form-control" placeholder="<?=__(
+                    <input type="email" id="username" name="username" class="form-control" placeholder="<?= __(
                         'name@example.com'
-                    )?>" aria-label="<?=__('E-mail Address')?>" required autofocus>
+                    ) ?>" aria-label="<?= __('E-mail Address') ?>" required autofocus>
                 </div>
                 <div class="form-group mt-2">
                     <label for="password" class="mb-2">
-                        <i class="material-icons mr-1" aria-hidden="true">vpn_key</i>
-                        <strong><?=__('Password')?></strong>
+                        <i class="material-icons me-1" aria-hidden="true">vpn_key</i>
+                        <strong><?= __('Password') ?></strong>
                     </label>
-                    <input type="password" id="password" name="password" class="form-control" placeholder="<?=__(
+                    <input type="password" id="password" name="password" class="form-control" placeholder="<?= __(
                         'Enter your password'
-                    )?>" aria-label="<?=__('Password')?>" required>
+                    ) ?>" aria-label="<?= __('Password') ?>" required>
                 </div>
                 <div class="form-group mt-2">
                     <div class="custom-control custom-checkbox">
-                        <input type="checkbox" name="remember" id="frm_remember_me" value="1" class="toggle-switch custom-control-input">
+                        <input type="checkbox" name="remember" id="frm_remember_me" value="1"
+                               class="toggle-switch custom-control-input">
                         <label for="frm_remember_me" class="custom-control-label">
-                            <?=__('Remember me')?>
+                            <?= __('Remember me') ?>
                         </label>
                     </div>
                 </div>
-                <button type="submit" role="button" title="<?=__(
-                    'Sign in'
-                )?>" class="btn btn-login btn-primary btn-block mt-2 mb-3">
-                    <?=__('Sign in')?>
-                </button>
+                <div class="block-buttons mt-2 mb-3">
+                    <button type="submit" role="button" title="<?= __(
+                        'Sign in'
+                    ) ?>" class="btn btn-login btn-primary">
+                        <?= __('Sign in') ?>
+                    </button>
+                </div>
             </form>
 
-            <p class="text-center"><?=__('Please log in to continue.')?> <?=sprintf(
+            <p class="text-center m-0"><?= __('Please log in to continue.') ?> <?= sprintf(
                     '<a href="%s">%s</a>',
                     $router->named('account:forgot'),
                     __('Forgot your password?')
-                )?></p>
+                ) ?></p>
         </div>
     </div>
 </div>

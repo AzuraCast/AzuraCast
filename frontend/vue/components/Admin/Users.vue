@@ -29,7 +29,7 @@
                 <a :href="'mailto:'+row.item.email">{{ row.item.email }}</a>
                 <span
                     v-if="row.item.is_me"
-                    class="badge badge-primary"
+                    class="badge text-bg-primary ms-1"
                 >
                     {{ $gettext('You') }}
                 </span>

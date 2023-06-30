@@ -34,25 +34,48 @@
                         </div>
                     </div>
                 </div>
-                <b-tabs
-                    card
-                >
-                    <b-tab
-                        key="live"
-                        active
-                        :title="$gettext('Live Listeners')"
-                        no-body
-                        @click="setIsLive(true)"
-                    />
-                    <b-tab
-                        key="not-live"
-                        :title="$gettext('Listener History')"
-                        no-body
-                        @click="setIsLive(false)"
-                    />
-                </b-tabs>
+
+                <div class="card-body pb-0">
+                    <nav
+                        class="nav nav-tabs"
+                        role="tablist"
+                    >
+                        <div
+                            class="nav-item"
+                            role="presentation"
+                        >
+                            <button
+                                class="nav-link"
+                                :class="(isLive) ? 'active' : ''"
+                                type="button"
+                                role="tab"
+                                @click="setIsLive(true)"
+                            >
+                                {{ $gettext('Live Listeners') }}
+                            </button>
+                        </div>
+                        <div
+                            class="nav-item"
+                            role="presentation"
+                        >
+                            <button
+                                class="nav-link"
+                                :class="(!isLive) ? 'active' : ''"
+                                type="button"
+                                role="tab"
+                                @click="setIsLive(false)"
+                            >
+                                {{ $gettext('Listener History') }}
+                            </button>
+                        </div>
+                    </nav>
+                </div>
+
                 <div id="map">
-                    <StationReportsListenersMap :listeners="listeners" />
+                    <StationReportsListenersMap
+                        :listeners="listeners"
+                        :attribution="attribution"
+                    />
                 </div>
                 <div>
                     <div class="card-body row">

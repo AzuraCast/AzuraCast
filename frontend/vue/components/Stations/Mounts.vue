@@ -31,7 +31,7 @@
                     <a :href="row.item.links.listen">{{ row.item.display_name }}</a>
                 </h5>
                 <div v-if="row.item.is_default">
-                    <span class="badge badge-success">
+                    <span class="badge text-bg-success">
                         {{ $gettext('Default Mount') }}
                     </span>
                 </div>

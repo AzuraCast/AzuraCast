@@ -57,7 +57,7 @@
                                 <div>
                                     <span
                                         v-if="!row.item.is_active"
-                                        class="badge badge-danger"
+                                        class="badge text-bg-danger"
                                     >
                                         {{ $gettext('Disabled') }}
                                     </span>

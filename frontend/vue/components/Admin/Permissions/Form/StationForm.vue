@@ -1,5 +1,5 @@
 <template>
-    <b-tab :title="$gettext('Station Permissions')">
+    <o-tab-item :label="$gettext('Station Permissions')">
         <permissions-form-station-row
             v-for="(row, index) in form.permissions.$model.station"
             :key="index"
@@ -31,7 +31,7 @@
                 </div>
             </b-dropdown>
         </div>
-    </b-tab>
+    </o-tab-item>
 </template>
 
 <script setup>

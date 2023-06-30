@@ -3,51 +3,46 @@
         variant="card"
         :show="loading"
     >
-        <div
-            v-if="loading"
-            class="card-body py-5"
-        >
+        <template v-if="loading">
             &nbsp;
-        </div>
-        <div v-else>
-            <div class="card-body">
-                <b-row>
-                    <b-col
-                        md="6"
-                        class="mb-4"
-                    >
-                        <fieldset>
-                            <legend>
-                                <slot name="by_listeners_legend" />
-                            </legend>
+        </template>
+        <template v-else>
+            <b-row>
+                <b-col
+                    md="6"
+                    class="mb-4"
+                >
+                    <fieldset>
+                        <legend>
+                            <slot name="by_listeners_legend" />
+                        </legend>
 
-                            <pie-chart
-                                style="width: 100%;"
-                                :data="stats.top_listeners.datasets"
-                                :labels="stats.top_listeners.labels"
-                                :alt="stats.top_listeners.alt"
-                            />
-                        </fieldset>
-                    </b-col>
-                    <b-col
-                        md="6"
-                        class="mb-4"
-                    >
-                        <fieldset>
-                            <legend>
-                                <slot name="by_connected_time_legend" />
-                            </legend>
+                        <pie-chart
+                            style="width: 100%;"
+                            :data="stats.top_listeners.datasets"
+                            :labels="stats.top_listeners.labels"
+                            :alt="stats.top_listeners.alt"
+                        />
+                    </fieldset>
+                </b-col>
+                <b-col
+                    md="6"
+                    class="mb-4"
+                >
+                    <fieldset>
+                        <legend>
+                            <slot name="by_connected_time_legend" />
+                        </legend>
 
-                            <pie-chart
-                                style="width: 100%;"
-                                :data="stats.top_connected_time.datasets"
-                                :labels="stats.top_connected_time.labels"
-                                :alt="stats.top_connected_time.alt"
-                            />
-                        </fieldset>
-                    </b-col>
-                </b-row>
-            </div>
+                        <pie-chart
+                            style="width: 100%;"
+                            :data="stats.top_connected_time.datasets"
+                            :labels="stats.top_connected_time.labels"
+                            :alt="stats.top_connected_time.alt"
+                        />
+                    </fieldset>
+                </b-col>
+            </b-row>
 
             <data-table
                 :id="fieldKey+'_table'"
@@ -62,7 +57,7 @@
                     {{ formatTime(row.item.connected_seconds) }}
                 </template>
             </data-table>
-        </div>
+        </template>
     </b-overlay>
 </template>
 

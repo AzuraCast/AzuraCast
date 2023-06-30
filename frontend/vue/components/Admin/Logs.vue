@@ -35,22 +35,23 @@
                 </h2>
             </div>
 
-            <b-tabs
-                lazy
-                nav-class="card-header-pills"
-                nav-wrapper-class="card-header"
-            >
-                <b-tab
-                    v-for="row in stationLogs"
-                    :key="row.id"
-                    :title="row.name"
+            <div class="card-body">
+                <o-tabs
+                    nav-tabs-class="nav-tabs"
+                    content-class="mt-3"
                 >
-                    <log-list
-                        :url="row.url"
-                        @view="viewLog"
-                    />
-                </b-tab>
-            </b-tabs>
+                    <o-tab-item
+                        v-for="row in stationLogs"
+                        :key="row.id"
+                        :label="row.name"
+                    >
+                        <log-list
+                            :url="row.url"
+                            @view="viewLog"
+                        />
+                    </o-tab-item>
+                </o-tabs>
+            </div>
         </section>
     </div>
 

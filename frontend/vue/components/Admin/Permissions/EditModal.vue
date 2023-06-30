@@ -8,7 +8,8 @@
         @submit="doSubmit"
         @hidden="clearContents"
     >
-        <b-tabs
+        <o-tabs
+            nav-tabs-class="nav-tabs"
             content-class="mt-3"
         >
             <admin-permissions-global-form
@@ -21,7 +22,7 @@
                 :stations="stations"
                 :station-permissions="stationPermissions"
             />
-        </b-tabs>
+        </o-tabs>
     </modal-form>
 </template>
 

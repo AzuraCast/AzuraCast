@@ -356,41 +356,43 @@
                         </h2>
                     </div>
 
-                    <b-tabs
-                        content-class="mt-3"
-                        card
-                    >
-                        <b-tab
-                            v-for="netInterface in stats.network"
-                            :key="netInterface.interface_name"
-                            :title="netInterface.interface_name"
+                    <div class="card-body">
+                        <o-tabs
+                            nav-tabs-class="nav-tabs"
+                            content-class="mt-3"
                         >
-                            <div class="row mb-3">
-                                <div class="col mb-3">
-                                    <h5 class="mb-1 text-center">
-                                        {{ $gettext('Received') }}
-                                    </h5>
-                                    <b-table
-                                        striped
-                                        responsive
-                                        :items="getNetworkInterfaceTableItems(netInterface.received)"
-                                        :fields="getNetworkInterfaceTableFields(netInterface.received)"
-                                    />
+                            <o-tab-item
+                                v-for="netInterface in stats.network"
+                                :key="netInterface.interface_name"
+                                :label="netInterface.interface_name"
+                            >
+                                <div class="row mb-3">
+                                    <div class="col mb-3">
+                                        <h5 class="mb-1 text-center">
+                                            {{ $gettext('Received') }}
+                                        </h5>
+                                        <b-table
+                                            striped
+                                            responsive
+                                            :items="getNetworkInterfaceTableItems(netInterface.received)"
+                                            :fields="getNetworkInterfaceTableFields(netInterface.received)"
+                                        />
+                                    </div>
+                                    <div class="col">
+                                        <h5 class="mb-1 text-center">
+                                            {{ $gettext('Transmitted') }}
+                                        </h5>
+                                        <b-table
+                                            striped
+                                            responsive
+                                            :items="getNetworkInterfaceTableItems(netInterface.transmitted)"
+                                            :fields="getNetworkInterfaceTableFields(netInterface.transmitted)"
+                                        />
+                                    </div>
                                 </div>
-                                <div class="col">
-                                    <h5 class="mb-1 text-center">
-                                        {{ $gettext('Transmitted') }}
-                                    </h5>
-                                    <b-table
-                                        striped
-                                        responsive
-                                        :items="getNetworkInterfaceTableItems(netInterface.transmitted)"
-                                        :fields="getNetworkInterfaceTableFields(netInterface.transmitted)"
-                                    />
-                                </div>
-                            </div>
-                        </b-tab>
-                    </b-tabs>
+                            </o-tab-item>
+                        </o-tabs>
+                    </div>
                 </section>
             </div>
         </div>

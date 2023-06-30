@@ -59,7 +59,7 @@ $sections->end();
                         <?php
                         foreach ($category['items'] as $item_id => $item): ?>
                             <li class="nav-item">
-                                <a class="nav-link pl-4 py-2 <?= ($item['class'] ?? '') ?>"
+                                <a class="nav-link ps-4 py-2 <?= ($item['class'] ?? '') ?>"
                                    href="<?= $item['url'] ?>"
                                    <?php
                                    if ($item['external'] ?? false): ?>target="_blank"<?php

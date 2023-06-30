@@ -1,5 +1,5 @@
 <template>
-    <b-tab :title="$gettext('Schedule')">
+    <o-tab-item :labe="$gettext('Schedule')">
         <b-form-group v-if="scheduleItems.length === 0">
             <label>
                 {{ $gettext('Not Scheduled') }}
@@ -29,7 +29,7 @@
                 </span>
             </button>
         </div>
-    </b-tab>
+    </o-tab-item>
 </template>
 
 <script setup>

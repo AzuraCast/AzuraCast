@@ -158,53 +158,56 @@
                 {{ $gettext('Station-Specific Debugging') }}
             </h2>
         </div>
-        <b-tabs
-            card
-        >
-            <b-tab
-                v-for="station in stations"
-                :key="station.id"
-                :title="station.name"
+        <div class="card-body">
+            <o-tabs
+                nav-tabs-class="nav-tabs"
+                content-class="mt-3"
             >
-                <h3>{{ station.name }}</h3>
+                <o-tab-item
+                    v-for="station in stations"
+                    :key="station.id"
+                    :label="station.name"
+                >
+                    <h3>{{ station.name }}</h3>
 
-                <div class="row">
-                    <div class="col-md-4">
-                        <h5>{{ $gettext('AutoDJ Queue') }}</h5>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <h5>{{ $gettext('AutoDJ Queue') }}</h5>
 
-                        <div class="buttons">
-                            <a
-                                class="btn btn-sm btn-primary"
-                                role="button"
-                                :href="station.clearQueueUrl"
-                            >
-                                {{ $gettext('Clear Queue') }}
-                            </a>
-                            <a
-                                class="btn btn-sm btn-primary"
-                                role="button"
-                                :href="station.getNextSongUrl"
-                            >
-                                {{ $gettext('Get Next Song') }}
-                            </a>
+                            <div class="buttons">
+                                <a
+                                    class="btn btn-sm btn-primary"
+                                    role="button"
+                                    :href="station.clearQueueUrl"
+                                >
+                                    {{ $gettext('Clear Queue') }}
+                                </a>
+                                <a
+                                    class="btn btn-sm btn-primary"
+                                    role="button"
+                                    :href="station.getNextSongUrl"
+                                >
+                                    {{ $gettext('Get Next Song') }}
+                                </a>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <h5>{{ $gettext('Get Now Playing') }}</h5>
+
+                            <div class="buttons">
+                                <a
+                                    class="btn btn-sm btn-primary"
+                                    role="button"
+                                    :href="station.getNowPlayingUrl"
+                                >
+                                    {{ $gettext('Run Task') }}
+                                </a>
+                            </div>
                         </div>
                     </div>
-                    <div class="col-md-4">
-                        <h5>{{ $gettext('Get Now Playing') }}</h5>
-
-                        <div class="buttons">
-                            <a
-                                class="btn btn-sm btn-primary"
-                                role="button"
-                                :href="station.getNowPlayingUrl"
-                            >
-                                {{ $gettext('Run Task') }}
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </b-tab>
-        </b-tabs>
+                </o-tab-item>
+            </o-tabs>
+        </div>
     </section>
 </template>
 

@@ -80,7 +80,7 @@
             <template #cell(explicit)="row">
                 <span
                     v-if="row.item.explicit"
-                    class="badge badge-danger"
+                    class="badge text-bg-danger"
                 >{{ $gettext('Explicit') }}</span>
             </template>
             <template #cell(actions)="row">

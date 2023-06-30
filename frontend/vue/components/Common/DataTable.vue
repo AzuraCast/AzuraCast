@@ -142,7 +142,10 @@
                 </o-table-column>
             </o-table>
         </div>
-        <div class="datatable-toolbar-bottom card-body">
+        <div
+            v-if="showToolbar"
+            class="datatable-toolbar-bottom card-body"
+        >
             <o-pagination
                 v-if="showPagination"
                 v-model:current="currentPage"

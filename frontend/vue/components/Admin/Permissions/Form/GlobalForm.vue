@@ -1,6 +1,6 @@
 <template>
-    <b-tab
-        :title="$gettext('Global Permissions')"
+    <o-tab-item
+        :label="$gettext('Global Permissions')"
         active
     >
         <b-form-group>
@@ -39,7 +39,7 @@
                 </b-wrapped-form-group>
             </div>
         </b-form-group>
-    </b-tab>
+    </o-tab-item>
 </template>
 
 <script setup>

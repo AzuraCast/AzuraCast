@@ -1,4 +1,6 @@
 <script>
+import {h} from 'vue'
+
 export default {
     name: 'BFormFieldset',
     methods: {
@@ -7,7 +9,7 @@ export default {
             return typeof slot === 'function' ? slot(scope) : slot
         }
     },
-    render(h) {
+    render() {
         const legendSlot = this.getSlot('label');
         const descriptionSlot = this.getSlot('description');
 

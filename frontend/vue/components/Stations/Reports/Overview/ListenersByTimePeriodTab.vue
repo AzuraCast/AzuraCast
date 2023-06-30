@@ -3,16 +3,12 @@
         variant="card"
         :show="loading"
     >
-        <div
+        <template
             v-if="loading"
-            class="card-body py-5"
         >
             &nbsp;
-        </div>
-        <div
-            v-else
-            class="card-body"
-        >
+        </template>
+        <template v-else>
             <b-row>
                 <b-col
                     md="12"
@@ -65,7 +61,7 @@
                     </fieldset>
                 </b-col>
             </b-row>
-        </div>
+        </template>
     </b-overlay>
 </template>
 

@@ -1,6 +1,6 @@
 <template>
-    <b-tab
-        :title="$gettext('Basic Info')"
+    <o-tab-item
+        :label="$gettext('Basic Info')"
         active
     >
         <b-form-group>
@@ -426,7 +426,7 @@
                 </b-form-group>
             </b-card-body>
         </b-card>
-    </b-tab>
+    </o-tab-item>
 </template>
 
 <script setup>

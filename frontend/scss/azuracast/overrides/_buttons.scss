@@ -38,3 +38,12 @@
     margin-right: 0;
   }
 }
+
+.block-buttons {
+  display: grid;
+  gap: 0.5rem;
+
+  .btn {
+    display: block;
+  }
+}

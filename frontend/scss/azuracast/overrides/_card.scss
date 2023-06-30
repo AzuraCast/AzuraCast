@@ -45,6 +45,13 @@
       border-bottom-right-radius: var(--bs-card-border-radius);
     }
   }
+
+  .card-body nav.nav-tabs {
+    background: var(--bs-tertiary-bg);
+
+    margin: (0-$card-cap-padding-y) (0-$card-cap-padding-x) 0 (0-$card-cap-padding-x);
+    padding: $card-cap-padding-y $card-cap-padding-x 0 $card-cap-padding-x;
+  }
 }
 
 .row-of-cards {

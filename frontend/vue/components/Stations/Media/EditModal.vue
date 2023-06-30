@@ -8,68 +8,49 @@
         @submit="doEdit"
         @hidden="resetForm"
     >
-        <b-tabs
+        <o-tabs
+            nav-tabs-class="nav-tabs"
             content-class="mt-3"
+            destroy-on-hide
         >
-            <b-tab active>
-                <template #title>
-                    {{ $gettext('Basic Information') }}
-                </template>
-
+            <o-tab-item
+                :label="$gettext('Basic Information')"
+                active
+            >
                 <media-form-basic-info :form="v$" />
-            </b-tab>
-            <b-tab>
-                <template #title>
-                    {{ $gettext('Playlists') }}
-                </template>
-
+            </o-tab-item>
+            <o-tab-item :label="$gettext('Playlists')">
                 <media-form-playlists
                     :form="v$"
                     :playlists="playlists"
                 />
-            </b-tab>
-            <b-tab lazy>
-                <template #title>
-                    {{ $gettext('Album Art') }}
-                </template>
-
+            </o-tab-item>
+            <o-tab-item :label="$gettext('Album Art')">
                 <media-form-album-art :album-art-url="albumArtUrl" />
-            </b-tab>
-
-            <b-tab v-if="customFields.length > 0">
-                <template #title>
-                    {{ $gettext('Custom Fields') }}
-                </template>
-
+            </o-tab-item>
+            <o-tab-item
+                v-if="customFields.length > 0"
+                :label="$gettext('Custom Fields')"
+            >
                 <media-form-custom-fields
                     :form="v$"
                     :custom-fields="customFields"
                 />
-            </b-tab>
-
-            <b-tab lazy>
-                <template #title>
-                    {{ $gettext('Visual Cue Editor') }}
-                </template>
-
+            </o-tab-item>
+            <o-tab-item :label="$gettext('Visual Cue Editor')">
                 <media-form-waveform-editor
                     :form="form"
                     :audio-url="audioUrl"
                     :waveform-url="waveformUrl"
                 />
-            </b-tab>
-
-            <b-tab>
-                <template #title>
-                    {{ $gettext('Advanced') }}
-                </template>
-
+            </o-tab-item>
+            <o-tab-item :label="$gettext('Advanced')">
                 <media-form-advanced-settings
                     :form="v$"
                     :song-length="songLength"
                 />
-            </b-tab>
-        </b-tabs>
+            </o-tab-item>
+        </o-tabs>
     </modal-form>
 </template>
 

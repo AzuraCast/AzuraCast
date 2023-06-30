@@ -62,7 +62,7 @@
                                     <span
                                         v-for="role in user.roles"
                                         :key="role.id"
-                                        class="badge badge-secondary me-2"
+                                        class="badge text-bg-secondary me-2"
                                     >{{ role.name }}</span>
                                 </div>
                             </div>

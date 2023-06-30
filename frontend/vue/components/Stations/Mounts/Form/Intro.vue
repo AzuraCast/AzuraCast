@@ -1,5 +1,5 @@
 <template>
-    <b-tab :title="$gettext('Intro')">
+    <o-tab-item :label="$gettext('Intro')">
         <b-form-group>
             <div class="row g-3">
                 <b-form-group
@@ -51,7 +51,7 @@
                 </b-form-group>
             </div>
         </b-form-group>
-    </b-tab>
+    </o-tab-item>
 </template>
 
 <script setup>

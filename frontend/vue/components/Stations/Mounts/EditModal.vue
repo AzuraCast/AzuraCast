@@ -8,7 +8,8 @@
         @submit="doSubmit"
         @hidden="clearContents"
     >
-        <b-tabs
+        <o-tabs
+            nav-tabs-class="nav-tabs"
             content-class="mt-3"
         >
             <mount-form-basic-info
@@ -30,7 +31,7 @@
                 :form="v$"
                 :station-frontend-type="stationFrontendType"
             />
-        </b-tabs>
+        </o-tabs>
     </modal-form>
 </template>
 

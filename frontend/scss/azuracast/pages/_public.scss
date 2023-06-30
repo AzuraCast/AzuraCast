@@ -1,7 +1,7 @@
 @use "sass:math";
 
 body.page-minimal {
-  background: var(--bs-body-bg) url(var(--public-page-bg));
+  background: var(--bs-body-bg) var(--public-page-bg);
   background-size: cover;
   background-attachment: fixed;
 

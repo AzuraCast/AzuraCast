@@ -1,5 +1,5 @@
 <template>
-    <b-wrapped-form-group
+    <form-group-field
         id="form_config_rate_limit"
         class="col-md-12"
         :field="form.config.rate_limit"
@@ -14,11 +14,11 @@
                 :options="rateLimitOptions"
             />
         </template>
-    </b-wrapped-form-group>
+    </form-group-field>
 </template>
 
 <script setup>
-import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
+import FormGroupField from "~/components/Form/FormGroupField";
 import {useTranslate} from "~/vendor/gettext";
 
 const props = defineProps({

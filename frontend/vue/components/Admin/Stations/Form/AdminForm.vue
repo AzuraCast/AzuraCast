@@ -1,8 +1,8 @@
 <template>
     <b-form-group>
-        <b-form-fieldset>
+        <form-fieldset>
             <div class="row g-3">
-                <b-wrapped-form-checkbox
+                <form-group-checkbox
                     id="edit_form_is_enabled"
                     class="col-md-6"
                     :field="form.is_enabled"
@@ -13,9 +13,9 @@
                     <template #description>
                         {{ $gettext('If disabled, the station will not broadcast or shuffle its AutoDJ.') }}
                     </template>
-                </b-wrapped-form-checkbox>
+                </form-group-checkbox>
 
-                <b-wrapped-form-group
+                <form-group-field
                     v-if="showAdvanced"
                     id="edit_form_radio_base_dir"
                     class="col-md-6"
@@ -30,17 +30,17 @@
                             $gettext('The parent directory where station playlist and configuration files are stored. Leave blank to use default directory.')
                         }}
                     </template>
-                </b-wrapped-form-group>
+                </form-group-field>
             </div>
-        </b-form-fieldset>
+        </form-fieldset>
 
-        <b-form-fieldset>
+        <form-fieldset>
             <b-overlay
                 variant="card"
                 :show="storageLocationsLoading"
             >
                 <div class="row g-3">
-                    <b-wrapped-form-group
+                    <form-group-field
                         id="edit_form_media_storage_location"
                         class="col-md-12"
                         :field="form.media_storage_location"
@@ -55,9 +55,9 @@
                                 :options="storageLocationOptions.media_storage_location"
                             />
                         </template>
-                    </b-wrapped-form-group>
+                    </form-group-field>
 
-                    <b-wrapped-form-group
+                    <form-group-field
                         id="edit_form_recordings_storage_location"
                         class="col-md-12"
                         :field="form.recordings_storage_location"
@@ -72,9 +72,9 @@
                                 :options="storageLocationOptions.recordings_storage_location"
                             />
                         </template>
-                    </b-wrapped-form-group>
+                    </form-group-field>
 
-                    <b-wrapped-form-group
+                    <form-group-field
                         id="edit_form_podcasts_storage_location"
                         class="col-md-12"
                         :field="form.podcasts_storage_location"
@@ -89,18 +89,18 @@
                                 :options="storageLocationOptions.podcasts_storage_location"
                             />
                         </template>
-                    </b-wrapped-form-group>
+                    </form-group-field>
                 </div>
             </b-overlay>
-        </b-form-fieldset>
+        </form-fieldset>
     </b-form-group>
 </template>
 
 <script setup>
-import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup.vue";
+import FormGroupField from "~/components/Form/FormGroupField.vue";
 import objectToFormOptions from "~/functions/objectToFormOptions";
-import BWrappedFormCheckbox from "~/components/Form/BWrappedFormCheckbox.vue";
-import BFormFieldset from "~/components/Form/BFormFieldset.vue";
+import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
+import FormFieldset from "~/components/Form/FormFieldset";
 import {onMounted, reactive, ref} from "vue";
 import {useAxios} from "~/vendor/axios";
 

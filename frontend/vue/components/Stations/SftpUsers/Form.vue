@@ -1,7 +1,7 @@
 <template>
     <b-form-group>
         <div class="row g-3">
-            <b-wrapped-form-group
+            <form-group-field
                 id="edit_form_username"
                 class="col-md-6"
                 :field="form.username"
@@ -9,9 +9,9 @@
                 <template #label>
                     {{ $gettext('Username') }}
                 </template>
-            </b-wrapped-form-group>
+            </form-group-field>
 
-            <b-wrapped-form-group
+            <form-group-field
                 id="edit_form_password"
                 class="col-md-6"
                 :field="form.password"
@@ -36,9 +36,9 @@
                 >
                     {{ $gettext('Leave blank to use the current password.') }}
                 </template>
-            </b-wrapped-form-group>
+            </form-group-field>
 
-            <b-wrapped-form-group
+            <form-group-field
                 id="edit_form_publicKeys"
                 class="col-md-12"
                 :field="form.publicKeys"
@@ -52,13 +52,13 @@
                         $gettext('Optionally supply SSH public keys this user can use to connect instead of a password. Enter one key per line.')
                     }}
                 </template>
-            </b-wrapped-form-group>
+            </form-group-field>
         </div>
     </b-form-group>
 </template>
 
 <script setup>
-import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
+import FormGroupField from "~/components/Form/FormGroupField";
 
 const props = defineProps({
     form: {

@@ -24,7 +24,7 @@
         <b-card-body>
             <b-form-group>
                 <div class="row g-3">
-                    <b-wrapped-form-group
+                    <form-group-field
                         :id="'edit_form_start_time_'+index"
                         class="col-md-4"
                         :field="v$.start_time"
@@ -39,9 +39,9 @@
                                 :state="slotProps.state"
                             />
                         </template>
-                    </b-wrapped-form-group>
+                    </form-group-field>
 
-                    <b-wrapped-form-group
+                    <form-group-field
                         :id="'edit_form_end_time_'+index"
                         class="col-md-4"
                         :field="v$.end_time"
@@ -61,7 +61,7 @@
                                 :state="slotProps.state"
                             />
                         </template>
-                    </b-wrapped-form-group>
+                    </form-group-field>
 
                     <b-col
                         md="4"
@@ -75,7 +75,7 @@
                         </div>
                     </b-col>
 
-                    <b-wrapped-form-group
+                    <form-group-field
                         :id="'edit_form_start_date_'+index"
                         class="col-md-4"
                         :field="v$.start_date"
@@ -89,9 +89,9 @@
                                 $gettext('To set this schedule to run only within a certain date range, specify a start and end date.')
                             }}
                         </template>
-                    </b-wrapped-form-group>
+                    </form-group-field>
 
-                    <b-wrapped-form-group
+                    <form-group-field
                         :id="'edit_form_end_date_'+index"
                         class="col-md-4"
                         :field="v$.end_date"
@@ -100,9 +100,9 @@
                         <template #label>
                             {{ $gettext('End Date') }}
                         </template>
-                    </b-wrapped-form-group>
+                    </form-group-field>
 
-                    <b-wrapped-form-group
+                    <form-group-field
                         :id="'edit_form_days_'+index"
                         class="col-md-4"
                         :field="v$.days"
@@ -121,7 +121,7 @@
                                 :options="dayOptions"
                             />
                         </template>
-                    </b-wrapped-form-group>
+                    </form-group-field>
                 </div>
             </b-form-group>
         </b-card-body>
@@ -131,7 +131,7 @@
 <script setup>
 import PlaylistTime from '~/components/Common/TimeCode';
 import Icon from "~/components/Common/Icon.vue";
-import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup.vue";
+import FormGroupField from "~/components/Form/FormGroupField.vue";
 import {required} from "@vuelidate/validators";
 import useVuelidate from "@vuelidate/core";
 import {toRef} from "vue";

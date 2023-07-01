@@ -1,7 +1,7 @@
 <template>
-    <b-form-fieldset>
+    <form-fieldset>
         <div class="row g-3">
-            <b-wrapped-form-group
+            <form-group-field
                 id="edit_form_name"
                 class="col-md-12"
                 :field="form.name"
@@ -9,9 +9,9 @@
                 <template #label>
                     {{ $gettext('Name') }}
                 </template>
-            </b-wrapped-form-group>
+            </form-group-field>
 
-            <b-wrapped-form-group
+            <form-group-field
                 id="edit_form_description"
                 class="col-md-12"
                 :field="form.description"
@@ -20,9 +20,9 @@
                 <template #label>
                     {{ $gettext('Description') }}
                 </template>
-            </b-wrapped-form-group>
+            </form-group-field>
 
-            <b-wrapped-form-group
+            <form-group-field
                 id="edit_form_genre"
                 class="col-md-6"
                 :field="form.genre"
@@ -30,9 +30,9 @@
                 <template #label>
                     {{ $gettext('Genre') }}
                 </template>
-            </b-wrapped-form-group>
+            </form-group-field>
 
-            <b-wrapped-form-group
+            <form-group-field
                 id="edit_form_url"
                 class="col-md-6"
                 :field="form.url"
@@ -46,9 +46,9 @@
                         $gettext('Note: This should be the public-facing homepage of the radio station, not the AzuraCast URL. It will be included in broadcast details.')
                     }}
                 </template>
-            </b-wrapped-form-group>
+            </form-group-field>
 
-            <b-wrapped-form-group
+            <form-group-field
                 id="edit_form_timezone"
                 class="col-md-12"
                 :field="form.timezone"
@@ -68,9 +68,9 @@
                         :options="timezoneOptions"
                     />
                 </template>
-            </b-wrapped-form-group>
+            </form-group-field>
 
-            <b-wrapped-form-group
+            <form-group-field
                 v-if="showAdvanced"
                 id="edit_form_short_name"
                 class="col-md-6"
@@ -85,9 +85,9 @@
                         $gettext('Optionally specify a short URL-friendly name, such as "my_station_name", that will be used in this station\'s URLs. Leave this field blank to automatically create one based on the station name.')
                     }}
                 </template>
-            </b-wrapped-form-group>
+            </form-group-field>
 
-            <b-wrapped-form-group
+            <form-group-field
                 v-if="showAdvanced"
                 id="edit_form_api_history_items"
                 class="col-md-6"
@@ -109,17 +109,17 @@
                         :options="historyItemsOptions"
                     />
                 </template>
-            </b-wrapped-form-group>
+            </form-group-field>
         </div>
-    </b-form-fieldset>
+    </form-fieldset>
 
-    <b-form-fieldset>
+    <form-fieldset>
         <template #label>
             {{ $gettext('Public Pages') }}
         </template>
 
         <div class="row g-3">
-            <b-wrapped-form-checkbox
+            <form-group-checkbox
                 id="edit_form_enable_public_page"
                 class="col-md-12"
                 :field="form.enable_public_page"
@@ -130,17 +130,17 @@
                 <template #description>
                     {{ $gettext('Show the station in public pages and general API results.') }}
                 </template>
-            </b-wrapped-form-checkbox>
+            </form-group-checkbox>
         </div>
-    </b-form-fieldset>
+    </form-fieldset>
 
-    <b-form-fieldset>
+    <form-fieldset>
         <template #label>
             {{ $gettext('On-Demand Streaming') }}
         </template>
 
         <div class="row g-3">
-            <b-wrapped-form-checkbox
+            <form-group-checkbox
                 id="edit_form_enable_on_demand"
                 class="col-md-12"
                 :field="form.enable_on_demand"
@@ -153,9 +153,9 @@
                         $gettext('If enabled, music from playlists with on-demand streaming enabled will be available to stream via a specialized public page.')
                     }}
                 </template>
-            </b-wrapped-form-checkbox>
+            </form-group-checkbox>
 
-            <b-wrapped-form-checkbox
+            <form-group-checkbox
                 v-if="form.enable_on_demand.$model"
                 id="edit_form_enable_on_demand_download"
                 class="col-md-12"
@@ -169,16 +169,16 @@
                         $gettext('If enabled, a download button will also be present on the public "On-Demand" page.')
                     }}
                 </template>
-            </b-wrapped-form-checkbox>
+            </form-group-checkbox>
         </div>
-    </b-form-fieldset>
+    </form-fieldset>
 </template>
 
 <script setup>
-import BFormFieldset from "~/components/Form/BFormFieldset.vue";
-import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup.vue";
+import FormFieldset from "~/components/Form/FormFieldset";
+import FormGroupField from "~/components/Form/FormGroupField.vue";
 import objectToFormOptions from "~/functions/objectToFormOptions";
-import BWrappedFormCheckbox from "~/components/Form/BWrappedFormCheckbox.vue";
+import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
 import {computed} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 

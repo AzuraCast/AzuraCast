@@ -1,7 +1,7 @@
 <template>
     <b-form-group>
         <b-row>
-            <b-wrapped-form-group
+            <form-group-field
                 id="edit_form_playlists"
                 class="col-md-12"
                 :field="form.playlists"
@@ -17,13 +17,13 @@
                         stacked
                     />
                 </template>
-            </b-wrapped-form-group>
+            </form-group-field>
         </b-row>
     </b-form-group>
 </template>
 
 <script setup>
-import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
+import FormGroupField from "~/components/Form/FormGroupField";
 import {map} from "lodash";
 import {computed} from "vue";
 

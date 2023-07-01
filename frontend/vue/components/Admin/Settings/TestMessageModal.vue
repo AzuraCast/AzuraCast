@@ -6,7 +6,7 @@
         :title="$gettext('Send Test Message')"
     >
         <b-form @submit.prevent="doSendTest">
-            <b-wrapped-form-group
+            <form-group-field
                 id="email_address"
                 :field="v$.emailAddress"
                 autofocus
@@ -14,7 +14,7 @@
                 <template #label>
                     {{ $gettext('E-mail Address') }}
                 </template>
-            </b-wrapped-form-group>
+            </form-group-field>
         </b-form>
         <template #modal-footer>
             <button
@@ -36,7 +36,7 @@
 
 <script setup>
 import {email, required} from '@vuelidate/validators';
-import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup.vue";
+import FormGroupField from "~/components/Form/FormGroupField.vue";
 import {ref} from "vue";
 import {useNotify} from "~/functions/useNotify";
 import {useTranslate} from "~/vendor/gettext";

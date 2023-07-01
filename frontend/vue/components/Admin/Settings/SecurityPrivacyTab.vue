@@ -1,11 +1,11 @@
 <template>
-    <b-form-fieldset>
+    <form-fieldset>
         <template #label>
             {{ $gettext('Privacy') }}
         </template>
 
         <div class="row g-3">
-            <b-wrapped-form-group
+            <form-group-field
                 id="edit_form_analytics"
                 class="col-md-12"
                 :field="form.analytics"
@@ -44,17 +44,17 @@
                         </b-form-radio>
                     </b-form-radio-group>
                 </template>
-            </b-wrapped-form-group>
+            </form-group-field>
         </div>
-    </b-form-fieldset>
+    </form-fieldset>
 
-    <b-form-fieldset>
+    <form-fieldset>
         <template #label>
             {{ $gettext('Security') }}
         </template>
 
         <div class="row g-3">
-            <b-wrapped-form-checkbox
+            <form-group-checkbox
                 id="edit_form_always_use_ssl"
                 class="col-md-12"
                 :field="form.always_use_ssl"
@@ -67,9 +67,9 @@
                         $gettext('Set to "Yes" to always use "https://" secure URLs, and to automatically redirect to the secure URL when an insecure URL is visited.')
                     }}
                 </template>
-            </b-wrapped-form-checkbox>
+            </form-group-checkbox>
 
-            <b-wrapped-form-group
+            <form-group-field
                 id="edit_form_ip_source"
                 class="col-md-6"
                 :field="form.ip_source"
@@ -90,9 +90,9 @@
                         :options="ipSourceOptions"
                     />
                 </template>
-            </b-wrapped-form-group>
+            </form-group-field>
 
-            <b-wrapped-form-group
+            <form-group-field
                 id="edit_form_api_access_control"
                 class="col-md-6"
                 :field="form.api_access_control"
@@ -112,15 +112,15 @@
                         {{ $gettext('Learn more about this header.') }}
                     </a>
                 </template>
-            </b-wrapped-form-group>
+            </form-group-field>
         </div>
-    </b-form-fieldset>
+    </form-fieldset>
 </template>
 
 <script setup>
-import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup.vue";
-import BFormFieldset from "~/components/Form/BFormFieldset.vue";
-import BWrappedFormCheckbox from "~/components/Form/BWrappedFormCheckbox.vue";
+import FormGroupField from "~/components/Form/FormGroupField.vue";
+import FormFieldset from "~/components/Form/FormFieldset";
+import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
 import {useTranslate} from "~/vendor/gettext";
 import {computed} from "vue";
 

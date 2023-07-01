@@ -1,7 +1,7 @@
 <template>
     <b-form-group>
         <div class="row g-3">
-            <b-wrapped-form-group
+            <form-group-field
                 id="edit_form_email"
                 class="col-md-6"
                 :field="form.email"
@@ -10,9 +10,9 @@
                 <template #label>
                     {{ $gettext('E-mail Address') }}
                 </template>
-            </b-wrapped-form-group>
+            </form-group-field>
 
-            <b-wrapped-form-group
+            <form-group-field
                 id="edit_form_new_password"
                 class="col-md-6"
                 :field="form.new_password"
@@ -27,9 +27,9 @@
                 >
                     {{ $gettext('Leave blank to use the current password.') }}
                 </template>
-            </b-wrapped-form-group>
+            </form-group-field>
 
-            <b-wrapped-form-group
+            <form-group-field
                 id="edit_form_name"
                 class="col-md-12"
                 :field="form.name"
@@ -37,9 +37,9 @@
                 <template #label>
                     {{ $gettext('Display Name') }}
                 </template>
-            </b-wrapped-form-group>
+            </form-group-field>
 
-            <b-wrapped-form-group
+            <form-group-field
                 id="edit_form_roles"
                 class="col-md-12"
                 :field="form.roles"
@@ -54,13 +54,13 @@
                         :options="roleOptions"
                     />
                 </template>
-            </b-wrapped-form-group>
+            </form-group-field>
         </div>
     </b-form-group>
 </template>
 
 <script setup>
-import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup.vue";
+import FormGroupField from "~/components/Form/FormGroupField.vue";
 import objectToFormOptions from "~/functions/objectToFormOptions";
 import {computed} from "vue";
 

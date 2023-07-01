@@ -1,7 +1,7 @@
 <template>
     <b-form-group>
         <div class="row g-3">
-            <b-wrapped-form-group
+            <form-group-field
                 id="form_edit_adapter"
                 class="col-md-12"
                 :field="form.adapter"
@@ -29,9 +29,9 @@
                         </b-form-radio>
                     </b-form-radio-group>
                 </template>
-            </b-wrapped-form-group>
+            </form-group-field>
 
-            <b-wrapped-form-group
+            <form-group-field
                 id="form_edit_path"
                 class="col-md-12"
                 :field="form.path"
@@ -44,9 +44,9 @@
                         $gettext('For local filesystems, this is the base path of the directory. For remote filesystems, this is the folder prefix.')
                     }}
                 </template>
-            </b-wrapped-form-group>
+            </form-group-field>
 
-            <b-wrapped-form-group
+            <form-group-field
                 id="form_edit_storageQuota"
                 class="col-md-12"
                 :field="form.storageQuota"
@@ -59,7 +59,7 @@
                         $gettext('Set a maximum disk space that this storage location can use. Specify the size with unit, i.e. "8 GB". Units are measured in 1024 bytes. Leave blank to default to the available space on the disk.')
                     }}
                 </template>
-            </b-wrapped-form-group>
+            </form-group-field>
         </div>
     </b-form-group>
 
@@ -80,7 +80,7 @@
 </template>
 
 <script setup>
-import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup.vue";
+import FormGroupField from "~/components/Form/FormGroupField.vue";
 import Dropbox from "./Form/Dropbox.vue";
 import S3 from "./Form/S3.vue";
 import Sftp from "./Form/Sftp.vue";

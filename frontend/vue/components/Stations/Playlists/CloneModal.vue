@@ -8,7 +8,7 @@
         @hidden="clearContents"
     >
         <div class="row g-3">
-            <b-wrapped-form-group
+            <form-group-field
                 id="form_edit_name"
                 class="col-md-12"
                 :field="v$.name"
@@ -16,9 +16,9 @@
                 <template #label>
                     {{ $gettext('New Playlist Name') }}
                 </template>
-            </b-wrapped-form-group>
+            </form-group-field>
 
-            <b-wrapped-form-group
+            <form-group-field
                 id="form_edit_clone"
                 class="col-md-12"
                 :field="v$.clone"
@@ -40,14 +40,14 @@
                         </b-form-checkbox>
                     </b-form-checkbox-group>
                 </template>
-            </b-wrapped-form-group>
+            </form-group-field>
         </div>
     </modal-form>
 </template>
 
 <script setup>
 import {required} from '@vuelidate/validators';
-import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
+import FormGroupField from "~/components/Form/FormGroupField";
 import ModalForm from "~/components/Common/ModalForm";
 import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
 import {ref} from "vue";

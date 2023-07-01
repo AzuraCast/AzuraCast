@@ -16,7 +16,7 @@
                 />
             </b-form-group>
 
-            <b-wrapped-form-group
+            <form-group-field
                 id="edit_form_amplify"
                 class="col-md-6"
                 :field="form.amplify"
@@ -31,9 +31,9 @@
                         $gettext('The volume in decibels to amplify the track with. Leave blank to use the system default.')
                     }}
                 </template>
-            </b-wrapped-form-group>
+            </form-group-field>
 
-            <b-wrapped-form-group
+            <form-group-field
                 id="edit_form_fade_overlap"
                 class="col-md-6"
                 :field="form.fade_overlap"
@@ -48,9 +48,9 @@
                         $gettext('The time that this song should overlap its surrounding songs when fading. Leave blank to use the system default.')
                     }}
                 </template>
-            </b-wrapped-form-group>
+            </form-group-field>
 
-            <b-wrapped-form-group
+            <form-group-field
                 id="edit_form_fade_in"
                 class="col-md-6"
                 :field="form.fade_in"
@@ -65,9 +65,9 @@
                         $gettext('The time period that the song should fade in. Leave blank to use the system default.')
                     }}
                 </template>
-            </b-wrapped-form-group>
+            </form-group-field>
 
-            <b-wrapped-form-group
+            <form-group-field
                 id="edit_form_fade_out"
                 class="col-md-6"
                 :field="form.fade_out"
@@ -82,9 +82,9 @@
                         $gettext('The time period that the song should fade out. Leave blank to use the system default.')
                     }}
                 </template>
-            </b-wrapped-form-group>
+            </form-group-field>
 
-            <b-wrapped-form-group
+            <form-group-field
                 id="edit_form_cue_in"
                 class="col-md-6"
                 :field="form.cue_in"
@@ -97,9 +97,9 @@
                 <template #description>
                     {{ $gettext('Seconds from the start of the song that the AutoDJ should start playing.') }}
                 </template>
-            </b-wrapped-form-group>
+            </form-group-field>
 
-            <b-wrapped-form-group
+            <form-group-field
                 id="edit_form_cue_out"
                 class="col-md-6"
                 :field="form.cue_out"
@@ -112,13 +112,13 @@
                 <template #description>
                     {{ $gettext('Seconds from the start of the song that the AutoDJ should stop playing.') }}
                 </template>
-            </b-wrapped-form-group>
+            </form-group-field>
         </div>
     </b-form-group>
 </template>
 
 <script setup>
-import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
+import FormGroupField from "~/components/Form/FormGroupField";
 
 const props = defineProps({
     form: {

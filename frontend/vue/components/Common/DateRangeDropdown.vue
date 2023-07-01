@@ -143,10 +143,6 @@ const onSelect = (range) => {
 <script>
 export default {
     inheritAttrs: false,
-    model: {
-        prop: 'modelValue',
-        event: 'update:modelValue'
-    },
 }
 </script>
 

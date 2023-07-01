@@ -2,7 +2,7 @@
     <o-tab-item :label="$gettext('Advanced')">
         <b-form-group>
             <div class="row g-3 mb-3">
-                <b-wrapped-form-group
+                <form-group-field
                     id="edit_form_custom_listen_url"
                     class="col-md-12"
                     :field="form.custom_listen_url"
@@ -16,13 +16,13 @@
                             $gettext('You can set a custom URL for this stream that AzuraCast will use when referring to it. Leave empty to use the default value.')
                         }}
                     </template>
-                </b-wrapped-form-group>
+                </form-group-field>
             </div>
             <div
                 v-if="isIcecast"
                 class="row g-3"
             >
-                <b-wrapped-form-group
+                <form-group-field
                     id="edit_form_frontend_config"
                     class="col-md-12"
                     :field="form.frontend_config"
@@ -38,7 +38,7 @@
                             $gettext('You can include any special mount point settings here, in either JSON { key: \'value\' } format or XML &lt;key&gt;value&lt;/key&gt;')
                         }}
                     </template>
-                </b-wrapped-form-group>
+                </form-group-field>
             </div>
         </b-form-group>
     </o-tab-item>
@@ -46,7 +46,7 @@
 
 <script setup>
 import {FRONTEND_ICECAST} from '~/components/Entity/RadioAdapters';
-import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
+import FormGroupField from "~/components/Form/FormGroupField";
 import {computed} from "vue";
 
 const props = defineProps({

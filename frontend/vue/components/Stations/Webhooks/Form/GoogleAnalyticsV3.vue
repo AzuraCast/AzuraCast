@@ -1,7 +1,7 @@
 <template>
     <b-form-group>
         <div class="row g-3">
-            <b-wrapped-form-group
+            <form-group-field
                 id="form_config_tracking_id"
                 class="col-md-12"
                 :field="form.config.tracking_id"
@@ -12,13 +12,13 @@
                 <template #description>
                     {{ $gettext('The property ID used to track live listeners.') }}
                 </template>
-            </b-wrapped-form-group>
+            </form-group-field>
         </div>
     </b-form-group>
 </template>
 
 <script setup>
-import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
+import FormGroupField from "~/components/Form/FormGroupField";
 
 const props = defineProps({
     form: {

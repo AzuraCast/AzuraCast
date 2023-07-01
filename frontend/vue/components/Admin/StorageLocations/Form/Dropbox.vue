@@ -32,7 +32,7 @@
                         </ul>
                     </div>
 
-                    <b-wrapped-form-group
+                    <form-group-field
                         id="form_edit_dropboxAppKey"
                         class="col-md-6"
                         :field="form.dropboxAppKey"
@@ -40,9 +40,9 @@
                         <template #label>
                             {{ $gettext('App Key') }}
                         </template>
-                    </b-wrapped-form-group>
+                    </form-group-field>
 
-                    <b-wrapped-form-group
+                    <form-group-field
                         id="form_edit_dropboxAppSecret"
                         class="col-md-6"
                         :field="form.dropboxAppSecret"
@@ -50,7 +50,7 @@
                         <template #label>
                             {{ $gettext('App Secret') }}
                         </template>
-                    </b-wrapped-form-group>
+                    </form-group-field>
 
                     <div class="col-md-12">
                         <ul>
@@ -69,7 +69,7 @@
                         </ul>
                     </div>
 
-                    <b-wrapped-form-group
+                    <form-group-field
                         id="form_edit_dropboxAuthToken"
                         class="col-md-12"
                         :field="form.dropboxAuthToken"
@@ -77,7 +77,7 @@
                         <template #label>
                             {{ $gettext('Access Code') }}
                         </template>
-                    </b-wrapped-form-group>
+                    </form-group-field>
                 </div>
             </b-form-group>
         </div>
@@ -85,7 +85,7 @@
 </template>
 
 <script setup>
-import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup.vue";
+import FormGroupField from "~/components/Form/FormGroupField.vue";
 import {computed} from "vue";
 
 const props = defineProps({

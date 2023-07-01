@@ -1,7 +1,7 @@
 <template>
-    <b-form-fieldset>
+    <form-fieldset>
         <div class="row g-3">
-            <b-wrapped-form-group
+            <form-group-field
                 id="edit_form_backend_type"
                 class="col-md-12"
                 :field="form.backend_type"
@@ -22,14 +22,14 @@
                         :options="backendTypeOptions"
                     />
                 </template>
-            </b-wrapped-form-group>
+            </form-group-field>
         </div>
-    </b-form-fieldset>
+    </form-fieldset>
 
-    <b-form-fieldset v-if="isBackendEnabled">
-        <b-form-fieldset>
+    <form-fieldset v-if="isBackendEnabled">
+        <form-fieldset>
             <div class="row g-3">
-                <b-wrapped-form-group
+                <form-group-field
                     id="edit_form_backend_crossfade_type"
                     class="col-md-7"
                     :field="form.backend_config.crossfade_type"
@@ -50,9 +50,9 @@
                             :options="crossfadeOptions"
                         />
                     </template>
-                </b-wrapped-form-group>
+                </form-group-field>
 
-                <b-wrapped-form-group
+                <form-group-field
                     id="edit_form_backend_crossfade"
                     class="col-md-5"
                     :field="form.backend_config.crossfade"
@@ -65,12 +65,12 @@
                     <template #description>
                         {{ $gettext('Number of seconds to overlap songs.') }}
                     </template>
-                </b-wrapped-form-group>
+                </form-group-field>
             </div>
-        </b-form-fieldset>
+        </form-fieldset>
 
-        <b-form-fieldset v-if="isBackendEnabled">
-            <b-form-fieldset>
+        <form-fieldset v-if="isBackendEnabled">
+            <form-fieldset>
                 <template #label>
                     {{ $gettext('Audio Post-processing') }}
                 </template>
@@ -80,9 +80,9 @@
                     }}
                 </template>
 
-                <b-form-fieldset>
+                <form-fieldset>
                     <div class="row g-3">
-                        <b-wrapped-form-group
+                        <form-group-field
                             id="edit_form_backend_config_audio_processing_method"
                             class="col-md-6"
                             :field="form.backend_config.audio_processing_method"
@@ -103,10 +103,10 @@
                                     :options="audioProcessingOptions"
                                 />
                             </template>
-                        </b-wrapped-form-group>
+                        </form-group-field>
 
                         <template v-if="isPostProcessingEnabled">
-                            <b-wrapped-form-checkbox
+                            <form-group-checkbox
                                 id="edit_form_backend_config_post_processing_include_live"
                                 class="col-md-6"
                                 :field="form.backend_config.post_processing_include_live"
@@ -119,13 +119,13 @@
                                         $gettext('Check this box to apply post-processing to all audio, including live streams. Uncheck this box to only apply post-processing to the AutoDJ.')
                                     }}
                                 </template>
-                            </b-wrapped-form-checkbox>
+                            </form-group-checkbox>
                         </template>
                     </div>
-                </b-form-fieldset>
+                </form-fieldset>
 
-                <b-form-fieldset v-if="isMasterMeEnabled">
-                    <b-form-markup id="master_me_info">
+                <form-fieldset v-if="isMasterMeEnabled">
+                    <form-markup id="master_me_info">
                         <template #label>
                             {{ $gettext('About Master_me') }}
                         </template>
@@ -143,11 +143,11 @@
                                 {{ $gettext('Master_me Project Homepage') }}
                             </a>
                         </p>
-                    </b-form-markup>
+                    </form-markup>
 
-                    <b-form-fieldset>
+                    <form-fieldset>
                         <div class="row g-3">
-                            <b-wrapped-form-group
+                            <form-group-field
                                 id="edit_form_backend_master_me_preset"
                                 class="col-md-6"
                                 :field="form.backend_config.master_me_preset"
@@ -163,9 +163,9 @@
                                         :options="masterMePresetOptions"
                                     />
                                 </template>
-                            </b-wrapped-form-group>
+                            </form-group-field>
 
-                            <b-wrapped-form-group
+                            <form-group-field
                                 id="edit_form_backend_master_me_loudness_target"
                                 class="col-md-6"
                                 :field="form.backend_config.master_me_loudness_target"
@@ -180,13 +180,13 @@
                                         $gettext('The average target loudness (measured in LUFS) for the broadcasted stream. Values between -14 and -18 LUFS are common for Internet radio stations.')
                                     }}
                                 </template>
-                            </b-wrapped-form-group>
+                            </form-group-field>
                         </div>
-                    </b-form-fieldset>
-                </b-form-fieldset>
+                    </form-fieldset>
+                </form-fieldset>
 
-                <b-form-fieldset v-if="isStereoToolEnabled && isStereoToolInstalled">
-                    <b-form-markup id="stereo_tool_info">
+                <form-fieldset v-if="isStereoToolEnabled && isStereoToolInstalled">
+                    <form-markup id="stereo_tool_info">
                         <template #label>
                             {{ $gettext('Stereo Tool') }}
                         </template>
@@ -202,11 +202,11 @@
                                 {{ $gettext('Stereo Tool documentation.') }}
                             </a>
                         </p>
-                    </b-form-markup>
+                    </form-markup>
 
-                    <b-form-fieldset>
+                    <form-fieldset>
                         <div class="row g-3">
-                            <b-wrapped-form-group
+                            <form-group-field
                                 id="edit_form_backend_stereo_tool_license_key"
                                 class="col-md-7"
                                 :field="form.backend_config.stereo_tool_license_key"
@@ -220,9 +220,9 @@
                                         $gettext('Provide a valid license key from Thimeo. Functionality is limited without a license key.')
                                     }}
                                 </template>
-                            </b-wrapped-form-group>
+                            </form-group-field>
 
-                            <b-form-markup
+                            <form-markup
                                 id="edit_form_backend_stereo_tool_config"
                                 class="col-md-5"
                             >
@@ -235,20 +235,20 @@
                                         $gettext('Upload a Stereo Tool configuration file from the "Broadcasting" submenu in the station profile.')
                                     }}
                                 </p>
-                            </b-form-markup>
+                            </form-markup>
                         </div>
-                    </b-form-fieldset>
-                </b-form-fieldset>
-            </b-form-fieldset>
-        </b-form-fieldset>
+                    </form-fieldset>
+                </form-fieldset>
+            </form-fieldset>
+        </form-fieldset>
 
-        <b-form-fieldset v-if="showAdvanced">
+        <form-fieldset v-if="showAdvanced">
             <template #label>
                 {{ $gettext('Advanced Configuration') }}
             </template>
 
             <div class="row g-3">
-                <b-wrapped-form-checkbox
+                <form-group-checkbox
                     id="edit_form_backend_use_manual_autodj"
                     class="col-md-6"
                     :field="form.backend_config.use_manual_autodj"
@@ -262,9 +262,9 @@
                             $gettext('This mode disables AzuraCast\'s AutoDJ management, using Liquidsoap itself to manage song playback. "Next Song" and some other features will not be available.')
                         }}
                     </template>
-                </b-wrapped-form-checkbox>
+                </form-group-checkbox>
 
-                <b-wrapped-form-checkbox
+                <form-group-checkbox
                     id="edit_form_backend_enable_replaygain_metadata"
                     class="col-md-6"
                     :field="form.backend_config.enable_replaygain_metadata"
@@ -278,9 +278,9 @@
                             $gettext('Instruct Liquidsoap to use any replaygain metadata associated with a song to control its volume level. This may increase CPU consumption.')
                         }}
                     </template>
-                </b-wrapped-form-checkbox>
+                </form-group-checkbox>
 
-                <b-wrapped-form-group
+                <form-group-field
                     id="edit_form_backend_telnet_port"
                     class="col-md-6"
                     :field="form.backend_config.telnet_port"
@@ -296,9 +296,9 @@
                             $gettext('This port is not used by any external process. Only modify this port if the assigned port is in use. Leave blank to automatically assign a port.')
                         }}
                     </template>
-                </b-wrapped-form-group>
+                </form-group-field>
 
-                <b-wrapped-form-group
+                <form-group-field
                     id="edit_form_backend_autodj_queue_length"
                     class="col-md-6"
                     :field="form.backend_config.autodj_queue_length"
@@ -314,9 +314,9 @@
                             $gettext('This determines how many songs in advance the AutoDJ will automatically fill the queue.')
                         }}
                     </template>
-                </b-wrapped-form-group>
+                </form-group-field>
 
-                <b-wrapped-form-group
+                <form-group-field
                     id="edit_form_backend_charset"
                     class="col-md-6"
                     :field="form.backend_config.charset"
@@ -338,9 +338,9 @@
                             :options="charsetOptions"
                         />
                     </template>
-                </b-wrapped-form-group>
+                </form-group-field>
 
-                <b-wrapped-form-group
+                <form-group-field
                     id="edit_form_backend_performance_mode"
                     class="col-md-6"
                     :field="form.backend_config.performance_mode"
@@ -362,9 +362,9 @@
                             :options="performanceModeOptions"
                         />
                     </template>
-                </b-wrapped-form-group>
+                </form-group-field>
 
-                <b-wrapped-form-group
+                <form-group-field
                     id="edit_form_backend_duplicate_prevention_time_range"
                     class="col-md-6"
                     :field="form.backend_config.duplicate_prevention_time_range"
@@ -380,15 +380,15 @@
                             $gettext('This specifies the time range (in minutes) of the song history that the duplicate song prevention algorithm should take into account.')
                         }}
                     </template>
-                </b-wrapped-form-group>
+                </form-group-field>
             </div>
-        </b-form-fieldset>
-    </b-form-fieldset>
+        </form-fieldset>
+    </form-fieldset>
 </template>
 
 <script setup>
-import BFormFieldset from "~/components/Form/BFormFieldset.vue";
-import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup.vue";
+import FormFieldset from "~/components/Form/FormFieldset";
+import FormGroupField from "~/components/Form/FormGroupField.vue";
 import {
     AUDIO_PROCESSING_LIQUIDSOAP,
     AUDIO_PROCESSING_MASTER_ME,
@@ -401,8 +401,8 @@ import {
     MASTER_ME_PRESET_SPEECH_GENERAL,
     MASTER_ME_PRESET_YOUTUBE
 } from "~/components/Entity/RadioAdapters";
-import BWrappedFormCheckbox from "~/components/Form/BWrappedFormCheckbox.vue";
-import BFormMarkup from "~/components/Form/BFormMarkup.vue";
+import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
+import FormMarkup from "~/components/Form/FormMarkup.vue";
 import {computed} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 

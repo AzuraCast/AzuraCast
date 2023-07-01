@@ -41,14 +41,3 @@ const lang = computed(() => {
 
 const {isDark} = useGetTheme();
 </script>
-
-<script>
-import {defineComponent} from "vue";
-
-export default defineComponent({
-    model: {
-        prop: 'modelValue',
-        event: 'update:modelValue'
-    },
-});
-</script>

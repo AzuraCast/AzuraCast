@@ -27,7 +27,7 @@
                 <div class="card-body">
                     <b-form-group>
                         <div class="row g-3">
-                            <b-wrapped-form-group
+                            <form-group-field
                                 id="edit_form_public_theme"
                                 class="col-md-6"
                                 :field="v$.public_theme"
@@ -48,10 +48,10 @@
                                         :options="publicThemeOptions"
                                     />
                                 </template>
-                            </b-wrapped-form-group>
+                            </form-group-field>
 
                             <div class="col-md-6">
-                                <b-wrapped-form-checkbox
+                                <form-group-checkbox
                                     id="form_edit_hide_album_art"
                                     class="mb-2"
                                     :field="v$.hide_album_art"
@@ -64,9 +64,9 @@
                                             $gettext('If selected, album art will not display on public-facing radio pages.')
                                         }}
                                     </template>
-                                </b-wrapped-form-checkbox>
+                                </form-group-checkbox>
 
-                                <b-wrapped-form-checkbox
+                                <form-group-checkbox
                                     id="form_edit_hide_product_name"
                                     :field="v$.hide_product_name"
                                 >
@@ -78,10 +78,10 @@
                                             $gettext('If selected, this will remove the AzuraCast branding from public-facing pages.')
                                         }}
                                     </template>
-                                </b-wrapped-form-checkbox>
+                                </form-group-checkbox>
                             </div>
 
-                            <b-wrapped-form-group
+                            <form-group-field
                                 id="form_edit_homepage_redirect_url"
                                 class="col-md-6"
                                 :field="v$.homepage_redirect_url"
@@ -94,9 +94,9 @@
                                         $gettext('If a visitor is not signed in and visits the AzuraCast homepage, you can automatically redirect them to the URL specified here. Leave blank to redirect them to the login screen by default.')
                                     }}
                                 </template>
-                            </b-wrapped-form-group>
+                            </form-group-field>
 
-                            <b-wrapped-form-group
+                            <form-group-field
                                 id="form_edit_default_album_art_url"
                                 class="col-md-6"
                                 :field="v$.default_album_art_url"
@@ -109,9 +109,9 @@
                                         $gettext('If a song has no album art, this URL will be listed instead. Leave blank to use the standard placeholder art.')
                                     }}
                                 </template>
-                            </b-wrapped-form-group>
+                            </form-group-field>
 
-                            <b-wrapped-form-group
+                            <form-group-field
                                 id="edit_form_public_custom_css"
                                 class="col-md-12"
                                 :field="v$.public_custom_css"
@@ -131,9 +131,9 @@
                                         mode="css"
                                     />
                                 </template>
-                            </b-wrapped-form-group>
+                            </form-group-field>
 
-                            <b-wrapped-form-group
+                            <form-group-field
                                 id="edit_form_public_custom_js"
                                 class="col-md-12"
                                 :field="v$.public_custom_js"
@@ -153,9 +153,9 @@
                                         mode="javascript"
                                     />
                                 </template>
-                            </b-wrapped-form-group>
+                            </form-group-field>
 
-                            <b-wrapped-form-group
+                            <form-group-field
                                 id="edit_form_internal_custom_css"
                                 class="col-md-12"
                                 :field="v$.internal_custom_css"
@@ -175,7 +175,7 @@
                                         mode="css"
                                     />
                                 </template>
-                            </b-wrapped-form-group>
+                            </form-group-field>
                         </div>
 
                         <button
@@ -193,8 +193,8 @@
 
 <script setup>
 import CodemirrorTextarea from "~/components/Common/CodemirrorTextarea.vue";
-import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup.vue";
-import BWrappedFormCheckbox from "~/components/Form/BWrappedFormCheckbox.vue";
+import FormGroupField from "~/components/Form/FormGroupField.vue";
+import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
 import {computed, onMounted, ref} from "vue";
 import {useAxios} from "~/vendor/axios";
 import mergeExisting from "~/functions/mergeExisting";

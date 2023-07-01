@@ -8,7 +8,7 @@
         <div class="card-body">
             <b-form-group>
                 <div class="row g-3">
-                    <b-wrapped-form-group
+                    <form-group-field
                         id="form_edit_sftpHost"
                         class="col-md-12 col-lg-6"
                         :field="form.sftpHost"
@@ -16,9 +16,9 @@
                         <template #label>
                             {{ $gettext('SFTP Host') }}
                         </template>
-                    </b-wrapped-form-group>
+                    </form-group-field>
 
-                    <b-wrapped-form-group
+                    <form-group-field
                         id="form_edit_sftpPort"
                         class="col-md-12 col-lg-6"
                         input-type="number"
@@ -29,9 +29,9 @@
                         <template #label>
                             {{ $gettext('SFTP Port') }}
                         </template>
-                    </b-wrapped-form-group>
+                    </form-group-field>
 
-                    <b-wrapped-form-group
+                    <form-group-field
                         id="form_edit_sftpUsername"
                         class="col-md-12 col-lg-6"
                         :field="form.sftpUsername"
@@ -39,9 +39,9 @@
                         <template #label>
                             {{ $gettext('SFTP Username') }}
                         </template>
-                    </b-wrapped-form-group>
+                    </form-group-field>
 
-                    <b-wrapped-form-group
+                    <form-group-field
                         id="form_edit_sftpPassword"
                         class="col-md-12 col-lg-6"
                         :field="form.sftpPassword"
@@ -49,9 +49,9 @@
                         <template #label>
                             {{ $gettext('SFTP Password') }}
                         </template>
-                    </b-wrapped-form-group>
+                    </form-group-field>
 
-                    <b-wrapped-form-group
+                    <form-group-field
                         id="form_edit_sftpPrivateKeyPassPhrase"
                         class="col-md-12"
                         :field="form.sftpPrivateKeyPassPhrase"
@@ -59,9 +59,9 @@
                         <template #label>
                             {{ $gettext('SFTP Private Key Pass Phrase') }}
                         </template>
-                    </b-wrapped-form-group>
+                    </form-group-field>
 
-                    <b-wrapped-form-group
+                    <form-group-field
                         id="form_edit_sftpPrivateKey"
                         class="col-md-12"
                         input-type="textarea"
@@ -70,7 +70,7 @@
                         <template #label>
                             {{ $gettext('SFTP Private Key') }}
                         </template>
-                    </b-wrapped-form-group>
+                    </form-group-field>
                 </div>
             </b-form-group>
         </div>
@@ -78,7 +78,7 @@
 </template>
 
 <script setup>
-import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup.vue";
+import FormGroupField from "~/components/Form/FormGroupField.vue";
 
 const props = defineProps({
     form: {

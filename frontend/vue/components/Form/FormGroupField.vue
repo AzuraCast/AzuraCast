@@ -1,15 +1,28 @@
 <template>
-    <b-form-group
+    <form-group
         v-bind="$attrs"
-        :label-for="id"
-        :state="fieldState"
+        :id="id"
     >
+        <template #label="slotProps">
+            <form-label
+                :is-required="isRequired"
+                :advanced="advanced"
+            >
+                <slot
+                    name="label"
+                    v-bind="slotProps"
+                >
+                    {{ label }}
+                </slot>
+            </form-label>
+        </template>
+
         <template #default>
             <slot
                 name="default"
-                v-bind="{ id, field, state: fieldState }"
+                v-bind="{ id, field, class: fieldClass }"
             >
-                <b-form-textarea
+                <textarea
                     v-if="inputType === 'textarea'"
                     v-bind="inputAttrs"
                     :id="id"
@@ -17,12 +30,11 @@
                     v-model="modelValue"
                     :name="name"
                     :required="isRequired"
-                    :number="isNumeric"
-                    :trim="inputTrim"
                     :autofocus="autofocus"
-                    :state="fieldState"
+                    class="form-control"
+                    :class="fieldClass"
                 />
-                <b-form-input
+                <input
                     v-else
                     v-bind="inputAttrs"
                     :id="id"
@@ -31,57 +43,33 @@
                     :type="inputType"
                     :name="name"
                     :required="isRequired"
-                    :number="isNumeric"
-                    :trim="inputTrim"
                     :autofocus="autofocus"
-                    :state="fieldState"
-                />
+                    class="form-control"
+                    :class="fieldClass"
+                >
             </slot>
 
-            <b-form-invalid-feedback :state="fieldState">
-                <vuelidate-error :field="field" />
-            </b-form-invalid-feedback>
+            <vuelidate-error :field="field" />
         </template>
 
-        <template #label="slotProps">
-            <slot
-                v-bind="slotProps"
-                name="label"
-            />
-            <span
-                v-if="isRequired"
-                class="text-danger"
-            >
-                <span aria-hidden="true">*</span>
-                <span class="visually-hidden">Required</span>
-            </span>
-            <advanced-tag v-if="advanced" />
-        </template>
         <template #description="slotProps">
             <slot
                 v-bind="slotProps"
                 name="description"
-            />
+            >
+                {{ description }}
+            </slot>
         </template>
-
-        <template
-            v-for="(_, slot) of filteredSlots"
-            #[slot]="scope"
-        >
-            <slot
-                :name="slot"
-                v-bind="scope"
-            />
-        </template>
-    </b-form-group>
+    </form-group>
 </template>
 
 <script setup>
 import VuelidateError from "./VuelidateError";
 import {computed, ref} from "vue";
-import useSlotsExcept from "~/functions/useSlotsExcept";
 import {has} from "lodash";
-import AdvancedTag from "./AdvancedTag";
+import FormGroup from "~/components/Form/FormGroup.vue";
+import FormLabel from "~/components/Form/FormLabel.vue";
+import useFormFieldState from "~/functions/useFormFieldState";
 
 const props = defineProps({
     id: {
@@ -95,6 +83,14 @@ const props = defineProps({
     field: {
         type: Object,
         required: true
+    },
+    label: {
+        type: String,
+        default: null
+    },
+    description: {
+        type: String,
+        default: null
     },
     inputType: {
         type: String,
@@ -141,15 +137,19 @@ const modelValue = computed({
             newValue = null;
         }
 
+        if (props.inputTrim && null !== newValue) {
+            newValue = newValue.replace(/^\s+|\s+$/gm, '');
+        }
+
+        if (isNumeric.value) {
+            newValue = parseInt(newValue);
+        }
+
         props.field.$model = newValue;
     }
 });
 
-const filteredSlots = useSlotsExcept(['default', 'label', 'description']);
-
-const fieldState = computed(() => {
-    return props.field.$dirty ? !props.field.$error : null;
-});
+const fieldClass = useFormFieldState(props.field);
 
 const isRequired = computed(() => {
     return has(props.field, 'required');

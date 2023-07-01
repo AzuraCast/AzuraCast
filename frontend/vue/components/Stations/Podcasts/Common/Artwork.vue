@@ -111,12 +111,3 @@ const deleteArt = () => {
     }
 }
 </script>
-
-<script>
-export default {
-    model: {
-        prop: 'modelValue',
-        event: 'update:modelValue'
-    }
-};
-</script>

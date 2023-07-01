@@ -1,7 +1,7 @@
 <template>
     <b-form-group>
         <div class="row g-3">
-            <b-wrapped-form-group
+            <form-group-field
                 id="form_config_bot_token"
                 class="col-md-6"
                 :field="form.config.bot_token"
@@ -17,9 +17,9 @@
                         {{ $gettext('See the Telegram Documentation for more details.') }}
                     </a>
                 </template>
-            </b-wrapped-form-group>
+            </form-group-field>
 
-            <b-wrapped-form-group
+            <form-group-field
                 id="form_config_chat_id"
                 class="col-md-6"
                 :field="form.config.chat_id"
@@ -32,9 +32,9 @@
                         $gettext('Unique identifier for the target chat or username of the target channel (in the format @channelusername).')
                     }}
                 </template>
-            </b-wrapped-form-group>
+            </form-group-field>
 
-            <b-wrapped-form-group
+            <form-group-field
                 id="form_config_api"
                 class="col-md-6"
                 :field="form.config.api"
@@ -45,7 +45,7 @@
                 <template #description>
                     {{ $gettext('Leave blank to use the default Telegram API URL (recommended).') }}
                 </template>
-            </b-wrapped-form-group>
+            </form-group-field>
         </div>
     </b-form-group>
 
@@ -53,7 +53,7 @@
 
     <b-form-group>
         <div class="row g-3">
-            <b-wrapped-form-group
+            <form-group-field
                 id="form_config_text"
                 class="col-md-12"
                 :field="form.config.text"
@@ -62,9 +62,9 @@
                 <template #label>
                     {{ $gettext('Main Message Content') }}
                 </template>
-            </b-wrapped-form-group>
+            </form-group-field>
 
-            <b-wrapped-form-group
+            <form-group-field
                 id="form_config_parse_mode"
                 class="col-md-12"
                 :field="form.config.parse_mode"
@@ -88,13 +88,13 @@
                         :options="parseModeOptions"
                     />
                 </template>
-            </b-wrapped-form-group>
+            </form-group-field>
         </div>
     </b-form-group>
 </template>
 
 <script setup>
-import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
+import FormGroupField from "~/components/Form/FormGroupField";
 import CommonFormattingInfo from "./Common/FormattingInfo";
 import {computed} from "vue";
 import {useTranslate} from "~/vendor/gettext";

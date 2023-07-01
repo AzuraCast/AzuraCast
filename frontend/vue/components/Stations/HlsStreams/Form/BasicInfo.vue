@@ -5,7 +5,7 @@
     >
         <b-form-group>
             <div class="row g-3 mb-3">
-                <b-wrapped-form-group
+                <form-group-field
                     id="edit_form_name"
                     class="col-md-12"
                     :field="form.name"
@@ -18,9 +18,9 @@
                             $gettext('A name for this stream that will be used internally in code. Should only contain letters, numbers, and underscores (i.e. "stream_lofi").')
                         }}
                     </template>
-                </b-wrapped-form-group>
+                </form-group-field>
 
-                <b-wrapped-form-group
+                <form-group-field
                     id="edit_form_format"
                     class="col-md-6"
                     :field="form.format"
@@ -37,8 +37,8 @@
                             :options="formatOptions"
                         />
                     </template>
-                </b-wrapped-form-group>
-                <b-wrapped-form-group
+                </form-group-field>
+                <form-group-field
                     id="edit_form_bitrate"
                     class="col-md-6"
                     :field="form.bitrate"
@@ -55,14 +55,14 @@
                             :options="bitrateOptions"
                         />
                     </template>
-                </b-wrapped-form-group>
+                </form-group-field>
             </div>
         </b-form-group>
     </o-tab-item>
 </template>
 
 <script setup>
-import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
+import FormGroupField from "~/components/Form/FormGroupField";
 import {map} from "lodash";
 
 const props = defineProps({

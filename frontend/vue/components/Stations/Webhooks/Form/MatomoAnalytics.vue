@@ -1,7 +1,7 @@
 <template>
     <b-form-group>
         <div class="row g-3">
-            <b-wrapped-form-group
+            <form-group-field
                 id="form_config_matomo_url"
                 class="col-md-12"
                 :field="form.config.matomo_url"
@@ -13,9 +13,9 @@
                 <template #description>
                     {{ $gettext('The full base URL of your Matomo installation.') }}
                 </template>
-            </b-wrapped-form-group>
+            </form-group-field>
 
-            <b-wrapped-form-group
+            <form-group-field
                 id="form_config_site_id"
                 class="col-md-6"
                 :field="form.config.site_id"
@@ -26,9 +26,9 @@
                 <template #description>
                     {{ $gettext('The numeric site ID for this site.') }}
                 </template>
-            </b-wrapped-form-group>
+            </form-group-field>
 
-            <b-wrapped-form-group
+            <form-group-field
                 id="form_config_token"
                 class="col-md-6"
                 :field="form.config.token"
@@ -39,13 +39,13 @@
                 <template #description>
                     {{ $gettext('Optionally supply an API token to allow IP address overriding.') }}
                 </template>
-            </b-wrapped-form-group>
+            </form-group-field>
         </div>
     </b-form-group>
 </template>
 
 <script setup>
-import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
+import FormGroupField from "~/components/Form/FormGroupField";
 
 const props = defineProps({
     form: {

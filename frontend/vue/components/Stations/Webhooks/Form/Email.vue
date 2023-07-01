@@ -1,7 +1,7 @@
 <template>
     <b-form-group>
         <div class="row g-3">
-            <b-wrapped-form-group
+            <form-group-field
                 id="form_config_to"
                 class="col-md-12"
                 :field="form.config.to"
@@ -12,7 +12,7 @@
                 <template #description>
                     {{ $gettext('E-mail addresses can be separated by commas.') }}
                 </template>
-            </b-wrapped-form-group>
+            </form-group-field>
         </div>
     </b-form-group>
 
@@ -20,7 +20,7 @@
 
     <b-form-group>
         <div class="row g-3">
-            <b-wrapped-form-group
+            <form-group-field
                 id="form_config_subject"
                 class="col-md-12"
                 :field="form.config.subject"
@@ -28,9 +28,9 @@
                 <template #label>
                     {{ $gettext('Message Subject') }}
                 </template>
-            </b-wrapped-form-group>
+            </form-group-field>
 
-            <b-wrapped-form-group
+            <form-group-field
                 id="form_config_message"
                 class="col-md-12"
                 :field="form.config.message"
@@ -38,13 +38,13 @@
                 <template #label>
                     {{ $gettext('Message Body') }}
                 </template>
-            </b-wrapped-form-group>
+            </form-group-field>
         </div>
     </b-form-group>
 </template>
 
 <script setup>
-import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
+import FormGroupField from "~/components/Form/FormGroupField";
 import CommonFormattingInfo from "./Common/FormattingInfo";
 
 const props = defineProps({

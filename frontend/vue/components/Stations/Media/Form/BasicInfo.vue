@@ -1,7 +1,7 @@
 <template>
     <b-form-group>
         <div class="row g-3">
-            <b-wrapped-form-group
+            <form-group-field
                 id="edit_form_path"
                 class="col-md-6"
                 :field="form.path"
@@ -12,9 +12,9 @@
                 <template #description>
                     {{ $gettext('The relative path of the file in the station\'s media directory.') }}
                 </template>
-            </b-wrapped-form-group>
+            </form-group-field>
 
-            <b-wrapped-form-group
+            <form-group-field
                 id="edit_form_title"
                 class="col-md-6"
                 :field="form.title"
@@ -22,9 +22,9 @@
                 <template #label>
                     {{ $gettext('Song Title') }}
                 </template>
-            </b-wrapped-form-group>
+            </form-group-field>
 
-            <b-wrapped-form-group
+            <form-group-field
                 id="edit_form_artist"
                 class="col-md-6"
                 :field="form.artist"
@@ -32,9 +32,9 @@
                 <template #label>
                     {{ $gettext('Song Artist') }}
                 </template>
-            </b-wrapped-form-group>
+            </form-group-field>
 
-            <b-wrapped-form-group
+            <form-group-field
                 id="edit_form_genre"
                 class="col-md-6"
                 :field="form.genre"
@@ -42,9 +42,9 @@
                 <template #label>
                     {{ $gettext('Song Genre') }}
                 </template>
-            </b-wrapped-form-group>
+            </form-group-field>
 
-            <b-wrapped-form-group
+            <form-group-field
                 id="edit_form_album"
                 class="col-md-6"
                 :field="form.album"
@@ -52,9 +52,9 @@
                 <template #label>
                     {{ $gettext('Song Album') }}
                 </template>
-            </b-wrapped-form-group>
+            </form-group-field>
 
-            <b-wrapped-form-group
+            <form-group-field
                 id="edit_form_lyrics"
                 class="col-md-6"
                 :field="form.lyrics"
@@ -63,9 +63,9 @@
                 <template #label>
                     {{ $gettext('Song Lyrics') }}
                 </template>
-            </b-wrapped-form-group>
+            </form-group-field>
 
-            <b-wrapped-form-group
+            <form-group-field
                 id="edit_form_isrc"
                 class="col-md-6"
                 :field="form.isrc"
@@ -76,13 +76,13 @@
                 <template #description>
                     {{ $gettext('International Standard Recording Code, used for licensing reports.') }}
                 </template>
-            </b-wrapped-form-group>
+            </form-group-field>
         </div>
     </b-form-group>
 </template>
 
 <script setup>
-import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
+import FormGroupField from "~/components/Form/FormGroupField";
 
 const props = defineProps({
     form: {

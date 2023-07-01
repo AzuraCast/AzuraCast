@@ -27,7 +27,7 @@
                 <div class="card-body">
                     <b-form-group>
                         <div class="row g-3">
-                            <b-wrapped-form-group
+                            <form-group-field
                                 id="form_edit_default_album_art_url"
                                 class="col-md-6"
                                 :field="v$.default_album_art_url"
@@ -40,9 +40,9 @@
                                         $gettext('If a song has no album art, this URL will be listed instead. Leave blank to use the standard placeholder art.')
                                     }}
                                 </template>
-                            </b-wrapped-form-group>
+                            </form-group-field>
 
-                            <b-wrapped-form-group
+                            <form-group-field
                                 id="edit_form_public_custom_css"
                                 class="col-md-12"
                                 :field="v$.public_custom_css"
@@ -62,9 +62,9 @@
                                         mode="css"
                                     />
                                 </template>
-                            </b-wrapped-form-group>
+                            </form-group-field>
 
-                            <b-wrapped-form-group
+                            <form-group-field
                                 id="edit_form_public_custom_js"
                                 class="col-md-12"
                                 :field="v$.public_custom_js"
@@ -84,7 +84,7 @@
                                         mode="javascript"
                                     />
                                 </template>
-                            </b-wrapped-form-group>
+                            </form-group-field>
                         </div>
 
                         <button
@@ -102,7 +102,7 @@
 
 <script setup>
 import CodemirrorTextarea from "~/components/Common/CodemirrorTextarea.vue";
-import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup.vue";
+import FormGroupField from "~/components/Form/FormGroupField.vue";
 import {onMounted, ref} from "vue";
 import {useAxios} from "~/vendor/axios";
 import mergeExisting from "~/functions/mergeExisting";

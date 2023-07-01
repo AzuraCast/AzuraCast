@@ -1,7 +1,7 @@
 <template>
-    <b-form-fieldset>
+    <form-fieldset>
         <div class="row g-3">
-            <b-wrapped-form-group
+            <form-group-field
                 id="edit_form_frontend_type"
                 class="col-md-12"
                 :field="form.frontend_type"
@@ -20,14 +20,14 @@
                         :options="frontendTypeOptions"
                     />
                 </template>
-            </b-wrapped-form-group>
+            </form-group-field>
         </div>
-    </b-form-fieldset>
+    </form-fieldset>
 
-    <b-form-fieldset v-if="isLocalFrontend">
-        <b-form-fieldset v-if="isShoutcastFrontend">
+    <form-fieldset v-if="isLocalFrontend">
+        <form-fieldset v-if="isShoutcastFrontend">
             <div class="row g-3">
-                <b-wrapped-form-group
+                <form-group-field
                     id="edit_form_frontend_sc_license_id"
                     class="col-md-6"
                     :field="form.frontend_config.sc_license_id"
@@ -35,9 +35,9 @@
                     <template #label>
                         {{ $gettext('Shoutcast License ID') }}
                     </template>
-                </b-wrapped-form-group>
+                </form-group-field>
 
-                <b-wrapped-form-group
+                <form-group-field
                     id="edit_form_frontend_sc_user_id"
                     class="col-md-6"
                     :field="form.frontend_config.sc_user_id"
@@ -45,13 +45,13 @@
                     <template #label>
                         {{ $gettext('Shoutcast User ID') }}
                     </template>
-                </b-wrapped-form-group>
+                </form-group-field>
             </div>
-        </b-form-fieldset>
+        </form-fieldset>
 
-        <b-form-fieldset>
+        <form-fieldset>
             <div class="row g-3">
-                <b-wrapped-form-group
+                <form-group-field
                     id="edit_form_frontend_source_pw"
                     class="col-md-6"
                     :field="form.frontend_config.source_pw"
@@ -62,9 +62,9 @@
                     <template #description>
                         {{ $gettext('Leave blank to automatically generate a new password.') }}
                     </template>
-                </b-wrapped-form-group>
+                </form-group-field>
 
-                <b-wrapped-form-group
+                <form-group-field
                     id="edit_form_frontend_admin_pw"
                     class="col-md-6"
                     :field="form.frontend_config.admin_pw"
@@ -75,9 +75,9 @@
                     <template #description>
                         {{ $gettext('Leave blank to automatically generate a new password.') }}
                     </template>
-                </b-wrapped-form-group>
+                </form-group-field>
 
-                <b-wrapped-form-group
+                <form-group-field
                     v-if="showAdvanced"
                     id="edit_form_frontend_port"
                     class="col-md-6"
@@ -94,9 +94,9 @@
                             $gettext('No other program can be using this port. Leave blank to automatically assign a port.')
                         }}
                     </template>
-                </b-wrapped-form-group>
+                </form-group-field>
 
-                <b-wrapped-form-group
+                <form-group-field
                     v-if="showAdvanced"
                     id="edit_form_max_listeners"
                     class="col-md-6"
@@ -111,14 +111,14 @@
                             $gettext('Maximum number of total listeners across all streams. Leave blank to use the default.')
                         }}
                     </template>
-                </b-wrapped-form-group>
+                </form-group-field>
             </div>
-        </b-form-fieldset>
+        </form-fieldset>
 
-        <b-form-fieldset v-if="showAdvanced">
+        <form-fieldset v-if="showAdvanced">
             <div class="row g-3">
                 <div class="col-md-5">
-                    <b-wrapped-form-group
+                    <form-group-field
                         id="edit_form_frontend_banned_ips"
                         :field="form.frontend_config.banned_ips"
                         input-type="textarea"
@@ -131,9 +131,9 @@
                         <template #description>
                             {{ $gettext('List one IP address or group (in CIDR format) per line.') }}
                         </template>
-                    </b-wrapped-form-group>
+                    </form-group-field>
 
-                    <b-wrapped-form-group
+                    <form-group-field
                         id="edit_form_frontend_allowed_ips"
                         :field="form.frontend_config.allowed_ips"
                         input-type="textarea"
@@ -146,9 +146,9 @@
                         <template #description>
                             {{ $gettext('List one IP address or group (in CIDR format) per line.') }}
                         </template>
-                    </b-wrapped-form-group>
+                    </form-group-field>
 
-                    <b-wrapped-form-group
+                    <form-group-field
                         id="edit_form_frontend_banned_user_agents"
                         :field="form.frontend_config.banned_user_agents"
                         input-type="textarea"
@@ -161,10 +161,10 @@
                         <template #description>
                             {{ $gettext('List one user agent per line. Wildcards (*) are allowed.') }}
                         </template>
-                    </b-wrapped-form-group>
+                    </form-group-field>
                 </div>
 
-                <b-wrapped-form-group
+                <form-group-field
                     id="edit_form_frontend_banned_countries"
                     class="col-md-7"
                     :field="form.frontend_config.banned_countries"
@@ -192,11 +192,11 @@
                             {{ $gettext('Clear List') }}
                         </button>
                     </template>
-                </b-wrapped-form-group>
+                </form-group-field>
             </div>
-        </b-form-fieldset>
+        </form-fieldset>
 
-        <b-form-fieldset v-if="showAdvanced">
+        <form-fieldset v-if="showAdvanced">
             <template #label>
                 {{ $gettext('Custom Configuration') }}
             </template>
@@ -209,7 +209,7 @@
             </template>
 
             <div class="row g-3">
-                <b-wrapped-form-group
+                <form-group-field
                     id="edit_form_frontend_custom_config"
                     class="col-md-12"
                     :field="form.frontend_config.custom_config"
@@ -220,15 +220,15 @@
                     <template #label>
                         {{ $gettext('Custom Configuration') }}
                     </template>
-                </b-wrapped-form-group>
+                </form-group-field>
             </div>
-        </b-form-fieldset>
-    </b-form-fieldset>
+        </form-fieldset>
+    </form-fieldset>
 </template>
 
 <script setup>
-import BFormFieldset from "~/components/Form/BFormFieldset.vue";
-import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup.vue";
+import FormFieldset from "~/components/Form/FormFieldset";
+import FormGroupField from "~/components/Form/FormGroupField.vue";
 import {FRONTEND_ICECAST, FRONTEND_REMOTE, FRONTEND_SHOUTCAST} from "~/components/Entity/RadioAdapters";
 import objectToFormOptions from "~/functions/objectToFormOptions";
 import {computed} from "vue";

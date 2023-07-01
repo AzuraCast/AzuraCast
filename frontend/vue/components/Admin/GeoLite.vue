@@ -82,14 +82,14 @@
 
                         <form @submit.prevent="doUpdate">
                             <fieldset>
-                                <b-wrapped-form-group
+                                <form-group-field
                                     id="edit_form_key"
                                     :field="v$.key"
                                 >
                                     <template #label>
                                         {{ $gettext('MaxMind License Key') }}
                                     </template>
-                                </b-wrapped-form-group>
+                                </form-group-field>
                             </fieldset>
 
                             <div class="buttons">
@@ -115,7 +115,7 @@
 </template>
 
 <script setup>
-import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup.vue";
+import FormGroupField from "~/components/Form/FormGroupField.vue";
 import InfoCard from "~/components/Common/InfoCard.vue";
 import {computed, onMounted, ref} from "vue";
 import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";

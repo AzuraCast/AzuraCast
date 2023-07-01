@@ -5,7 +5,7 @@
     >
         <b-form-group>
             <div class="row g-3">
-                <b-wrapped-form-group
+                <form-group-field
                     id="form_edit_title"
                     class="col-md-6"
                     :field="form.title"
@@ -13,9 +13,9 @@
                     <template #label>
                         {{ $gettext('Podcast Title') }}
                     </template>
-                </b-wrapped-form-group>
+                </form-group-field>
 
-                <b-wrapped-form-group
+                <form-group-field
                     id="form_edit_link"
                     class="col-md-6"
                     :field="form.link"
@@ -26,9 +26,9 @@
                     <template #description>
                         {{ $gettext('Typically the home page of a podcast.') }}
                     </template>
-                </b-wrapped-form-group>
+                </form-group-field>
 
-                <b-wrapped-form-group
+                <form-group-field
                     id="form_edit_description"
                     class="col-md-12"
                     :field="form.description"
@@ -42,9 +42,9 @@
                             $gettext('The description of your podcast. The typical maximum amount of text allowed for this is 4000 characters.')
                         }}
                     </template>
-                </b-wrapped-form-group>
+                </form-group-field>
 
-                <b-wrapped-form-group
+                <form-group-field
                     id="form_edit_language"
                     class="col-md-12"
                     :field="form.language"
@@ -63,9 +63,9 @@
                             :state="slotProps.state"
                         />
                     </template>
-                </b-wrapped-form-group>
+                </form-group-field>
 
-                <b-wrapped-form-group
+                <form-group-field
                     id="form_edit_author"
                     class="col-md-6"
                     :field="form.author"
@@ -78,9 +78,9 @@
                             $gettext('The contact person of the podcast. May be required in order to list the podcast on services like Apple Podcasts, Spotify, Google Podcasts, etc.')
                         }}
                     </template>
-                </b-wrapped-form-group>
+                </form-group-field>
 
-                <b-wrapped-form-group
+                <form-group-field
                     id="form_edit_email"
                     class="col-md-6"
                     :field="form.email"
@@ -94,9 +94,9 @@
                             $gettext('The email of the podcast contact. May be required in order to list the podcast on services like Apple Podcasts, Spotify, Google Podcasts, etc.')
                         }}
                     </template>
-                </b-wrapped-form-group>
+                </form-group-field>
 
-                <b-wrapped-form-group
+                <form-group-field
                     id="form_edit_categories"
                     class="col-md-12"
                     :field="form.categories"
@@ -116,14 +116,14 @@
                             multiple
                         />
                     </template>
-                </b-wrapped-form-group>
+                </form-group-field>
             </div>
         </b-form-group>
     </o-tab-item>
 </template>
 
 <script setup>
-import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
+import FormGroupField from "~/components/Form/FormGroupField";
 
 const props = defineProps({
     form: {

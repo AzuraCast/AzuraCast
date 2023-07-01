@@ -33,7 +33,7 @@
 
     <b-form-group>
         <div class="row g-3">
-            <b-wrapped-form-group
+            <form-group-field
                 id="form_config_webhook_url"
                 class="col-md-12"
                 :field="form.config.webhook_url"
@@ -45,9 +45,9 @@
                 <template #description>
                     {{ $gettext('The URL that will receive the POST messages any time an event is triggered.') }}
                 </template>
-            </b-wrapped-form-group>
+            </form-group-field>
 
-            <b-wrapped-form-group
+            <form-group-field
                 id="form_config_basic_auth_username"
                 class="col-md-6"
                 :field="form.config.basic_auth_username"
@@ -58,9 +58,9 @@
                 <template #description>
                     {{ $gettext('If your web hook requires HTTP basic authentication, provide the username here.') }}
                 </template>
-            </b-wrapped-form-group>
+            </form-group-field>
 
-            <b-wrapped-form-group
+            <form-group-field
                 id="form_config_basic_auth_password"
                 class="col-md-6"
                 :field="form.config.basic_auth_password"
@@ -71,9 +71,9 @@
                 <template #description>
                     {{ $gettext('If your web hook requires HTTP basic authentication, provide the password here.') }}
                 </template>
-            </b-wrapped-form-group>
+            </form-group-field>
 
-            <b-wrapped-form-group
+            <form-group-field
                 id="form_config_timeout"
                 class="col-md-6"
                 :field="form.config.timeout"
@@ -88,13 +88,13 @@
                         $gettext('The number of seconds to wait for a response from the remote server before cancelling the request.')
                     }}
                 </template>
-            </b-wrapped-form-group>
+            </form-group-field>
         </div>
     </b-form-group>
 </template>
 
 <script setup>
-import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
+import FormGroupField from "~/components/Form/FormGroupField";
 
 const props = defineProps({
     form: {

@@ -40,25 +40,25 @@
                 :show="loading"
             >
                 <div class="card-body">
-                    <b-form-fieldset
+                    <form-fieldset
                         v-for="(row, index) in config"
                         :key="index"
                         class="mb-0"
                     >
-                        <b-wrapped-form-group
+                        <form-group-field
                             v-if="row.is_field"
                             :id="'form_edit_'+row.field_name"
                             :field="v$[row.field_name]"
                             input-type="textarea"
                             :input-attrs="{class: 'text-preformatted mb-3', spellcheck: 'false', 'max-rows': 20, rows: 5}"
                         />
-                        <b-form-markup
+                        <form-markup
                             v-else
                             :id="'form_section_'+index"
                         >
                             <pre class="typography-body-1">{{ row.markup }}</pre>
-                        </b-form-markup>
-                    </b-form-fieldset>
+                        </form-markup>
+                    </form-fieldset>
 
                     <button
                         type="submit"
@@ -74,9 +74,9 @@
 </template>
 
 <script setup>
-import BFormFieldset from "~/components/Form/BFormFieldset";
-import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
-import BFormMarkup from "~/components/Form/BFormMarkup";
+import FormFieldset from "~/components/Form/FormFieldset";
+import FormGroupField from "~/components/Form/FormGroupField";
+import FormMarkup from "~/components/Form/FormMarkup";
 import {forEach} from "lodash";
 import mergeExisting from "~/functions/mergeExisting";
 import InfoCard from "~/components/Common/InfoCard";

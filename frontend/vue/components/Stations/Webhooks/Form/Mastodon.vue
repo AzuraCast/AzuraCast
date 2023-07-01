@@ -32,7 +32,7 @@
 
     <b-form-group>
         <div class="row g-3">
-            <b-wrapped-form-group
+            <form-group-field
                 id="form_config_instance_url"
                 class="col-md-6"
                 :field="form.config.instance_url"
@@ -43,9 +43,9 @@
                 <template #description>
                     {{ $gettext('If your Mastodon username is "@test@example.com", enter "example.com".') }}
                 </template>
-            </b-wrapped-form-group>
+            </form-group-field>
 
-            <b-wrapped-form-group
+            <form-group-field
                 id="form_config_access_token"
                 class="col-md-6"
                 :field="form.config.access_token"
@@ -53,7 +53,7 @@
                 <template #label>
                     {{ $gettext('Access Token') }}
                 </template>
-            </b-wrapped-form-group>
+            </form-group-field>
 
             <common-rate-limit-fields :form="form" />
         </div>
@@ -61,7 +61,7 @@
 
     <b-form-group>
         <div class="row g-3">
-            <b-wrapped-form-group
+            <form-group-field
                 id="form_config_visibility"
                 class="col-md-12"
                 :field="form.config.visibility"
@@ -77,7 +77,7 @@
                         :options="visibilityOptions"
                     />
                 </template>
-            </b-wrapped-form-group>
+            </form-group-field>
         </div>
     </b-form-group>
 
@@ -88,7 +88,7 @@
 </template>
 
 <script setup>
-import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
+import FormGroupField from "~/components/Form/FormGroupField";
 import CommonRateLimitFields from "./Common/RateLimitFields";
 import CommonSocialPostFields from "./Common/SocialPostFields";
 import {computed} from "vue";

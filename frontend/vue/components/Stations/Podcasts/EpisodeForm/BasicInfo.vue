@@ -5,7 +5,7 @@
     >
         <b-form-group>
             <div class="row g-3">
-                <b-wrapped-form-group
+                <form-group-field
                     id="form_edit_title"
                     class="col-md-6"
                     :field="form.title"
@@ -13,9 +13,9 @@
                     <template #label>
                         {{ $gettext('Episode') }}
                     </template>
-                </b-wrapped-form-group>
+                </form-group-field>
 
-                <b-wrapped-form-group
+                <form-group-field
                     id="form_edit_link"
                     class="col-md-6"
                     :field="form.link"
@@ -26,9 +26,9 @@
                     <template #description>
                         {{ $gettext('Typically a website with content about the episode.') }}
                     </template>
-                </b-wrapped-form-group>
+                </form-group-field>
 
-                <b-wrapped-form-group
+                <form-group-field
                     id="form_edit_description"
                     class="col-md-12"
                     :field="form.description"
@@ -42,9 +42,9 @@
                             $gettext('The description of the episode. The typical maximum amount of text allowed for this is 4000 characters.')
                         }}
                     </template>
-                </b-wrapped-form-group>
+                </form-group-field>
 
-                <b-wrapped-form-group
+                <form-group-field
                     id="form_edit_publish_date"
                     class="col-md-6"
                     :field="form.publish_date"
@@ -63,9 +63,9 @@
                             :locale="locale"
                         />
                     </template>
-                </b-wrapped-form-group>
+                </form-group-field>
 
-                <b-wrapped-form-group
+                <form-group-field
                     id="form_edit_publish_time"
                     class="col-md-6"
                     :field="form.publish_time"
@@ -86,9 +86,9 @@
                             :locale="locale"
                         />
                     </template>
-                </b-wrapped-form-group>
+                </form-group-field>
 
-                <b-wrapped-form-checkbox
+                <form-group-checkbox
                     id="form_edit_explicit"
                     class="col-md-12"
                     :field="form.explicit"
@@ -101,15 +101,15 @@
                             $gettext('Indicates the presence of explicit content (explicit language or adult content). Apple Podcasts displays an Explicit parental advisory graphic for your episode if turned on. Episodes containing explicit material aren’t available in some Apple Podcasts territories.')
                         }}
                     </template>
-                </b-wrapped-form-checkbox>
+                </form-group-checkbox>
             </div>
         </b-form-group>
     </o-tab-item>
 </template>
 
 <script setup>
-import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
-import BWrappedFormCheckbox from "~/components/Form/BWrappedFormCheckbox";
+import FormGroupField from "~/components/Form/FormGroupField";
+import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox";
 
 const props = defineProps({
     form: {

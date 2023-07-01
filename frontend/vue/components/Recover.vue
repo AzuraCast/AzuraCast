@@ -39,7 +39,7 @@
                         :value="csrf"
                     >
 
-                    <b-wrapped-form-group
+                    <form-group-field
                         id="password"
                         name="password"
                         label-class="mb-2"
@@ -53,7 +53,7 @@
                             />
                             {{ $gettext('Password') }}
                         </template>
-                    </b-wrapped-form-group>
+                    </form-group-field>
 
                     <button
                         type="submit"
@@ -69,7 +69,7 @@
 </template>
 
 <script setup>
-import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
+import FormGroupField from "~/components/Form/FormGroupField";
 import Icon from "~/components/Common/Icon";
 import validatePassword from '~/functions/validatePassword.js';
 import {required} from '@vuelidate/validators';

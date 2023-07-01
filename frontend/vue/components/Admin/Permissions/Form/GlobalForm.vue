@@ -5,7 +5,7 @@
     >
         <b-form-group>
             <div class="row g-3">
-                <b-wrapped-form-group
+                <form-group-field
                     id="edit_form_name"
                     class="col-md-12"
                     :field="form.name"
@@ -13,9 +13,9 @@
                     <template #label>
                         {{ $gettext('Role Name') }}
                     </template>
-                </b-wrapped-form-group>
+                </form-group-field>
 
-                <b-wrapped-form-group
+                <form-group-field
                     id="edit_form_global_permissions"
                     class="col-md-12"
                     :field="form.permissions.global"
@@ -36,14 +36,14 @@
                             stacked
                         />
                     </template>
-                </b-wrapped-form-group>
+                </form-group-field>
             </div>
         </b-form-group>
     </o-tab-item>
 </template>
 
 <script setup>
-import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup.vue";
+import FormGroupField from "~/components/Form/FormGroupField.vue";
 import {map} from 'lodash';
 import {computed} from "vue";
 

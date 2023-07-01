@@ -8,8 +8,8 @@
         @submit="onSubmit"
         @hidden="clearContents"
     >
-        <b-form-fieldset>
-            <b-wrapped-form-group
+        <form-fieldset>
+            <form-group-field
                 id="form_current_password"
                 :field="v$.current_password"
                 input-type="password"
@@ -18,9 +18,9 @@
                 <template #label>
                     {{ $gettext('Current Password') }}
                 </template>
-            </b-wrapped-form-group>
+            </form-group-field>
 
-            <b-wrapped-form-group
+            <form-group-field
                 id="form_new_password"
                 :field="v$.new_password"
                 input-type="password"
@@ -28,9 +28,9 @@
                 <template #label>
                     {{ $gettext('New Password') }}
                 </template>
-            </b-wrapped-form-group>
+            </form-group-field>
 
-            <b-wrapped-form-group
+            <form-group-field
                 id="form_current_password"
                 :field="v$.new_password2"
                 input-type="password"
@@ -38,8 +38,8 @@
                 <template #label>
                     {{ $gettext('Confirm New Password') }}
                 </template>
-            </b-wrapped-form-group>
-        </b-form-fieldset>
+            </form-group-field>
+        </form-fieldset>
 
         <template #save-button-name>
             {{ $gettext('Change Password') }}
@@ -48,9 +48,9 @@
 </template>
 
 <script setup>
-import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
+import FormGroupField from "~/components/Form/FormGroupField";
 import ModalForm from "~/components/Common/ModalForm";
-import BFormFieldset from "~/components/Form/BFormFieldset";
+import FormFieldset from "~/components/Form/FormFieldset";
 import {helpers, required} from "@vuelidate/validators";
 import validatePassword from "~/functions/validatePassword";
 import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";

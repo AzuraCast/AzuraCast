@@ -14,27 +14,27 @@
         >
             <div class="row g-3">
                 <div class="col-md-4">
-                    <b-form-fieldset>
-                        <b-form-markup id="apply_to_playlist_name">
+                    <form-fieldset>
+                        <form-markup id="apply_to_playlist_name">
                             <template #label>
                                 {{ $gettext('Playlist:') }}
                             </template>
 
                             {{ applyToResults.playlist.name }}
-                        </b-form-markup>
-                    </b-form-fieldset>
+                        </form-markup>
+                    </form-fieldset>
                 </div>
                 <div class="col-md-8">
-                    <b-form-fieldset>
-                        <b-wrapped-form-checkbox
+                    <form-fieldset>
+                        <form-group-checkbox
                             id="form_applyto_copy_playlist"
                             :field="v$.copyPlaylist"
                         >
                             <template #label>
                                 {{ $gettext('Create New Playlist for Each Folder') }}
                             </template>
-                        </b-wrapped-form-checkbox>
-                    </b-form-fieldset>
+                        </form-group-checkbox>
+                    </form-fieldset>
                 </div>
             </div>
 
@@ -72,12 +72,12 @@ import {ref} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
-import BFormFieldset from "~/components/Form/BFormFieldset.vue";
-import BFormMarkup from "~/components/Form/BFormMarkup.vue";
+import FormFieldset from "~/components/Form/FormFieldset";
+import FormMarkup from "~/components/Form/FormMarkup.vue";
 import {useVuelidateOnForm} from '~/functions/useVuelidateOnForm';
 import {map} from "lodash";
 import {useResettableRef} from "~/functions/useResettableRef";
-import BWrappedFormCheckbox from "~/components/Form/BWrappedFormCheckbox.vue";
+import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
 
 const emit = defineEmits(['relist']);
 

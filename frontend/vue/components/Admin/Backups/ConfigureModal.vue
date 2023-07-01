@@ -8,9 +8,9 @@
         @submit="submit"
         @hidden="resetForm"
     >
-        <b-form-fieldset>
+        <form-fieldset>
             <div class="row g-3 mb-3">
-                <b-wrapped-form-checkbox
+                <form-group-checkbox
                     id="form_edit_backup_enabled"
                     class="col-md-12"
                     :field="v$.backup_enabled"
@@ -23,14 +23,14 @@
                             $gettext('Enable to have AzuraCast automatically run nightly backups at the time specified.')
                         }}
                     </template>
-                </b-wrapped-form-checkbox>
+                </form-group-checkbox>
             </div>
 
             <div
                 v-if="v$.backup_enabled.$model"
                 class="row g-3"
             >
-                <b-wrapped-form-group
+                <form-group-field
                     id="form_backup_time_code"
                     class="col-md-6"
                     :field="v$.backup_time_code"
@@ -48,9 +48,9 @@
                             :state="slotProps.state"
                         />
                     </template>
-                </b-wrapped-form-group>
+                </form-group-field>
 
-                <b-wrapped-form-checkbox
+                <form-group-checkbox
                     id="form_edit_exclude_media"
                     class="col-md-6"
                     :field="v$.backup_exclude_media"
@@ -63,9 +63,9 @@
                             $gettext('Excluding media from automated backups will save space, but you should make sure to back up your media elsewhere. Note that only locally stored media will be backed up.')
                         }}
                     </template>
-                </b-wrapped-form-checkbox>
+                </form-group-checkbox>
 
-                <b-wrapped-form-group
+                <form-group-field
                     id="form_backup_keep_copies"
                     class="col-md-6"
                     :field="v$.backup_keep_copies"
@@ -80,9 +80,9 @@
                             $gettext('Copies older than the specified number of days will automatically be deleted. Set to zero to disable automatic deletion.')
                         }}
                     </template>
-                </b-wrapped-form-group>
+                </form-group-field>
 
-                <b-wrapped-form-group
+                <form-group-field
                     id="edit_form_backup_storage_location"
                     class="col-md-6"
                     :field="v$.backup_storage_location"
@@ -97,9 +97,9 @@
                             :options="storageLocationOptions"
                         />
                     </template>
-                </b-wrapped-form-group>
+                </form-group-field>
 
-                <b-wrapped-form-group
+                <form-group-field
                     id="edit_form_backup_format"
                     class="col-md-6"
                     :field="v$.backup_format"
@@ -115,18 +115,18 @@
                             :options="formatOptions"
                         />
                     </template>
-                </b-wrapped-form-group>
+                </form-group-field>
             </div>
-        </b-form-fieldset>
+        </form-fieldset>
     </modal-form>
 </template>
 
 <script setup>
-import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup.vue";
+import FormGroupField from "~/components/Form/FormGroupField.vue";
 import ModalForm from "~/components/Common/ModalForm.vue";
-import BFormFieldset from "~/components/Form/BFormFieldset.vue";
+import FormFieldset from "~/components/Form/FormFieldset";
 import mergeExisting from "~/functions/mergeExisting.js";
-import BWrappedFormCheckbox from "~/components/Form/BWrappedFormCheckbox.vue";
+import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
 import TimeCode from "~/components/Common/TimeCode.vue";
 import objectToFormOptions from "~/functions/objectToFormOptions.js";
 import {computed, ref} from "vue";

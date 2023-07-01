@@ -2,7 +2,7 @@
     <o-tab-item :label="$gettext('Advanced')">
         <b-form-group>
             <div class="row g-3">
-                <b-wrapped-form-group
+                <form-group-field
                     id="edit_form_backend_options"
                     class="col-md-6"
                     :field="form.backend_options"
@@ -30,14 +30,14 @@
                             </b-form-checkbox>
                         </b-form-checkbox-group>
                     </template>
-                </b-wrapped-form-group>
+                </form-group-field>
             </div>
         </b-form-group>
     </o-tab-item>
 </template>
 
 <script setup>
-import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
+import FormGroupField from "~/components/Form/FormGroupField";
 
 const props = defineProps({
     form: {

@@ -36,7 +36,7 @@
 
     <b-form-group>
         <div class="row g-3">
-            <b-wrapped-form-group
+            <form-group-field
                 id="form_config_consumer_key"
                 class="col-md-6"
                 :field="form.config.consumer_key"
@@ -44,9 +44,9 @@
                 <template #label>
                     {{ $gettext('Consumer Key (API Key)') }}
                 </template>
-            </b-wrapped-form-group>
+            </form-group-field>
 
-            <b-wrapped-form-group
+            <form-group-field
                 id="form_config_consumer_secret"
                 class="col-md-6"
                 :field="form.config.consumer_secret"
@@ -54,9 +54,9 @@
                 <template #label>
                     {{ $gettext('Consumer Secret (API Secret)') }}
                 </template>
-            </b-wrapped-form-group>
+            </form-group-field>
 
-            <b-wrapped-form-group
+            <form-group-field
                 id="form_config_token"
                 class="col-md-6"
                 :field="form.config.token"
@@ -64,9 +64,9 @@
                 <template #label>
                     {{ $gettext('Access Token') }}
                 </template>
-            </b-wrapped-form-group>
+            </form-group-field>
 
-            <b-wrapped-form-group
+            <form-group-field
                 id="form_config_token_secret"
                 class="col-md-6"
                 :field="form.config.token_secret"
@@ -74,7 +74,7 @@
                 <template #label>
                     {{ $gettext('Access Token Secret') }}
                 </template>
-            </b-wrapped-form-group>
+            </form-group-field>
 
             <common-rate-limit-fields :form="form" />
         </div>
@@ -87,7 +87,7 @@
 </template>
 
 <script setup>
-import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
+import FormGroupField from "~/components/Form/FormGroupField";
 import CommonRateLimitFields from "./Common/RateLimitFields";
 import CommonSocialPostFields from "./Common/SocialPostFields";
 

@@ -31,8 +31,8 @@
                     }}
                 </p>
 
-                <b-form-fieldset>
-                    <b-wrapped-form-group
+                <form-fieldset>
+                    <form-group-field
                         id="form_otp"
                         :field="v$.otp"
                         autofocus
@@ -45,8 +45,8 @@
                                 $gettext('Enter the current code provided by your authenticator app to verify that it\'s working correctly.')
                             }}
                         </template>
-                    </b-wrapped-form-group>
-                </b-form-fieldset>
+                    </form-group-field>
+                </form-fieldset>
             </div>
             <div class="col-md-5">
                 <b-img :src="totp.qr_code" />
@@ -76,8 +76,8 @@
 <script setup>
 import ModalForm from "~/components/Common/ModalForm";
 import CopyToClipboardButton from "~/components/Common/CopyToClipboardButton";
-import BFormFieldset from "~/components/Form/BFormFieldset";
-import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
+import FormFieldset from "~/components/Form/FormFieldset";
+import FormGroupField from "~/components/Form/FormGroupField";
 import {minLength, required} from "@vuelidate/validators";
 import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
 import {ref} from "vue";

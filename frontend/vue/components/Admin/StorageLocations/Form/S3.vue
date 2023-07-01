@@ -8,7 +8,7 @@
         <div class="card-body">
             <b-form-group>
                 <div class="row g-3">
-                    <b-wrapped-form-group
+                    <form-group-field
                         id="form_edit_s3CredentialKey"
                         class="col-md-6"
                         :field="form.s3CredentialKey"
@@ -16,9 +16,9 @@
                         <template #label>
                             {{ $gettext('Access Key ID') }}
                         </template>
-                    </b-wrapped-form-group>
+                    </form-group-field>
 
-                    <b-wrapped-form-group
+                    <form-group-field
                         id="form_edit_s3CredentialSecret"
                         class="col-md-6"
                         :field="form.s3CredentialSecret"
@@ -26,9 +26,9 @@
                         <template #label>
                             {{ $gettext('Secret Key') }}
                         </template>
-                    </b-wrapped-form-group>
+                    </form-group-field>
 
-                    <b-wrapped-form-group
+                    <form-group-field
                         id="form_edit_s3Endpoint"
                         class="col-md-6"
                         :field="form.s3Endpoint"
@@ -36,9 +36,9 @@
                         <template #label>
                             {{ $gettext('Endpoint') }}
                         </template>
-                    </b-wrapped-form-group>
+                    </form-group-field>
 
-                    <b-wrapped-form-group
+                    <form-group-field
                         id="form_edit_s3Bucket"
                         class="col-md-6"
                         :field="form.s3Bucket"
@@ -46,9 +46,9 @@
                         <template #label>
                             {{ $gettext('Bucket Name') }}
                         </template>
-                    </b-wrapped-form-group>
+                    </form-group-field>
 
-                    <b-wrapped-form-group
+                    <form-group-field
                         id="form_edit_s3Region"
                         class="col-md-6"
                         :field="form.s3Region"
@@ -56,9 +56,9 @@
                         <template #label>
                             {{ $gettext('Region') }}
                         </template>
-                    </b-wrapped-form-group>
+                    </form-group-field>
 
-                    <b-wrapped-form-group
+                    <form-group-field
                         id="form_edit_s3Version"
                         class="col-md-6"
                         :field="form.s3Version"
@@ -66,7 +66,7 @@
                         <template #label>
                             {{ $gettext('API Version') }}
                         </template>
-                    </b-wrapped-form-group>
+                    </form-group-field>
                 </div>
             </b-form-group>
         </div>
@@ -74,7 +74,7 @@
 </template>
 
 <script setup>
-import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup.vue";
+import FormGroupField from "~/components/Form/FormGroupField.vue";
 
 const props = defineProps({
     form: {

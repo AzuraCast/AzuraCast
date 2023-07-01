@@ -1,6 +1,6 @@
 <template>
-    <b-form-fieldset v-if="isBackendEnabled">
-        <b-form-fieldset>
+    <form-fieldset v-if="isBackendEnabled">
+        <form-fieldset>
             <template #label>
                 {{ $gettext('HTTP Live Streaming (HLS)') }}
             </template>
@@ -10,9 +10,9 @@
                 }}
             </template>
 
-            <b-form-fieldset>
+            <form-fieldset>
                 <div class="row g-3">
-                    <b-wrapped-form-checkbox
+                    <form-group-checkbox
                         id="edit_form_enable_hls"
                         class="col-md-12"
                         :field="form.enable_hls"
@@ -20,13 +20,13 @@
                         <template #label>
                             {{ $gettext('Enable HTTP Live Streaming (HLS)') }}
                         </template>
-                    </b-wrapped-form-checkbox>
+                    </form-group-checkbox>
                 </div>
-            </b-form-fieldset>
+            </form-fieldset>
 
-            <b-form-fieldset v-if="form.enable_hls.$model">
+            <form-fieldset v-if="form.enable_hls.$model">
                 <div class="row g-3">
-                    <b-wrapped-form-checkbox
+                    <form-group-checkbox
                         id="edit_form_backend_hls_enable_on_public_player"
                         class="col-md-12"
                         :field="form.backend_config.hls_enable_on_public_player"
@@ -34,9 +34,9 @@
                         <template #label>
                             {{ $gettext('Show HLS Stream on Public Player') }}
                         </template>
-                    </b-wrapped-form-checkbox>
+                    </form-group-checkbox>
 
-                    <b-wrapped-form-checkbox
+                    <form-group-checkbox
                         id="edit_form_backend_hls_is_default"
                         class="col-md-12"
                         :field="form.backend_config.hls_is_default"
@@ -44,13 +44,13 @@
                         <template #label>
                             {{ $gettext('Make HLS Stream Default in Public Player') }}
                         </template>
-                    </b-wrapped-form-checkbox>
+                    </form-group-checkbox>
                 </div>
-            </b-form-fieldset>
+            </form-fieldset>
 
-            <b-form-fieldset v-if="showAdvanced && form.enable_hls.$model">
+            <form-fieldset v-if="showAdvanced && form.enable_hls.$model">
                 <div class="row g-3">
-                    <b-wrapped-form-group
+                    <form-group-field
                         id="edit_form_backend_hls_segment_length"
                         class="col-md-4"
                         :field="form.backend_config.hls_segment_length"
@@ -61,9 +61,9 @@
                         <template #label>
                             {{ $gettext('Segment Length (Seconds)') }}
                         </template>
-                    </b-wrapped-form-group>
+                    </form-group-field>
 
-                    <b-wrapped-form-group
+                    <form-group-field
                         id="edit_form_backend_hls_segments_in_playlist"
                         class="col-md-4"
                         :field="form.backend_config.hls_segments_in_playlist"
@@ -74,9 +74,9 @@
                         <template #label>
                             {{ $gettext('Segments in Playlist') }}
                         </template>
-                    </b-wrapped-form-group>
+                    </form-group-field>
 
-                    <b-wrapped-form-group
+                    <form-group-field
                         id="edit_form_backend_hls_segments_overhead"
                         class="col-md-4"
                         :field="form.backend_config.hls_segments_overhead"
@@ -87,19 +87,19 @@
                         <template #label>
                             {{ $gettext('Segments Overhead') }}
                         </template>
-                    </b-wrapped-form-group>
+                    </form-group-field>
                 </div>
-            </b-form-fieldset>
-        </b-form-fieldset>
-    </b-form-fieldset>
+            </form-fieldset>
+        </form-fieldset>
+    </form-fieldset>
     <backend-disabled v-else />
 </template>
 
 <script setup>
-import BFormFieldset from "~/components/Form/BFormFieldset.vue";
-import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup.vue";
+import FormFieldset from "~/components/Form/FormFieldset";
+import FormGroupField from "~/components/Form/FormGroupField.vue";
 import {BACKEND_NONE} from "~/components/Entity/RadioAdapters";
-import BWrappedFormCheckbox from "~/components/Form/BWrappedFormCheckbox.vue";
+import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
 import BackendDisabled from "./Common/BackendDisabled.vue";
 import {computed} from "vue";
 

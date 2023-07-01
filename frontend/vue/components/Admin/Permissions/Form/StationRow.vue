@@ -24,7 +24,7 @@
         <b-card-body>
             <b-form-group>
                 <div class="row g-3">
-                    <b-wrapped-form-group
+                    <form-group-field
                         :id="'edit_form_station_permissions_'+row.station_id"
                         class="col-md-12"
                         :field="v$.permissions"
@@ -43,7 +43,7 @@
                                 stacked
                             />
                         </template>
-                    </b-wrapped-form-group>
+                    </form-group-field>
                 </div>
             </b-form-group>
         </b-card-body>
@@ -54,7 +54,7 @@
 import useVuelidate from "@vuelidate/core";
 import {get, map} from "lodash";
 import Icon from "~/components/Common/Icon.vue";
-import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup.vue";
+import FormGroupField from "~/components/Form/FormGroupField.vue";
 import {useVModel} from "@vueuse/core";
 import {computed} from "vue";
 

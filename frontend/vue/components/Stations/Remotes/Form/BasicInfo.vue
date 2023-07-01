@@ -5,7 +5,7 @@
     >
         <b-form-group>
             <div class="row g-3">
-                <b-wrapped-form-group
+                <form-group-field
                     id="edit_form_type"
                     class="col-md-12"
                     :field="form.type"
@@ -22,9 +22,9 @@
                             :options="typeOptions"
                         />
                     </template>
-                </b-wrapped-form-group>
+                </form-group-field>
 
-                <b-wrapped-form-group
+                <form-group-field
                     id="edit_form_display_name"
                     class="col-md-6"
                     :field="form.display_name"
@@ -37,9 +37,9 @@
                             $gettext('The display name assigned to this relay when viewing it on administrative or public pages. Leave blank to automatically generate one.')
                         }}
                     </template>
-                </b-wrapped-form-group>
+                </form-group-field>
 
-                <b-wrapped-form-group
+                <form-group-field
                     id="edit_form_url"
                     class="col-md-6"
                     :field="form.url"
@@ -52,9 +52,9 @@
                             $gettext('Example: if the remote radio URL is http://station.example.com:8000/radio.mp3, enter "http://station.example.com:8000".')
                         }}
                     </template>
-                </b-wrapped-form-group>
+                </form-group-field>
 
-                <b-wrapped-form-group
+                <form-group-field
                     id="edit_form_mount"
                     class="col-md-6"
                     :field="form.mount"
@@ -67,9 +67,9 @@
                             $gettext('Specify a mountpoint (i.e. "/radio.mp3") or a Shoutcast SID (i.e. "2") to specify a specific stream to use for statistics or broadcasting.')
                         }}
                     </template>
-                </b-wrapped-form-group>
+                </form-group-field>
 
-                <b-wrapped-form-group
+                <form-group-field
                     id="edit_form_admin_password"
                     class="col-md-6"
                     :field="form.admin_password"
@@ -82,9 +82,9 @@
                             $gettext('To retrieve detailed unique listeners and client details, an administrator password is often required.')
                         }}
                     </template>
-                </b-wrapped-form-group>
+                </form-group-field>
 
-                <b-wrapped-form-checkbox
+                <form-group-checkbox
                     id="edit_form_is_visible_on_public_pages"
                     class="col-md-6"
                     :field="form.is_visible_on_public_pages"
@@ -97,7 +97,7 @@
                             $gettext('Enable to allow listeners to select this relay on this station\'s public pages.')
                         }}
                     </template>
-                </b-wrapped-form-checkbox>
+                </form-group-checkbox>
             </div>
         </b-form-group>
     </o-tab-item>
@@ -105,18 +105,18 @@
 
 <script setup>
 import {REMOTE_ICECAST, REMOTE_SHOUTCAST1, REMOTE_SHOUTCAST2} from '~/components/Entity/RadioAdapters';
-import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
-import BWrappedFormCheckbox from "~/components/Form/BWrappedFormCheckbox";
+import FormGroupField from "~/components/Form/FormGroupField";
+import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox";
 
 const props = defineProps({
-    form: {
-        type: Object,
-        required: true
-    }
+  form: {
+    type: Object,
+    required: true
+  }
 });
 
 const typeOptions = [
-    {
+  {
         value: REMOTE_ICECAST,
         text: 'Icecast v2.4+',
     },

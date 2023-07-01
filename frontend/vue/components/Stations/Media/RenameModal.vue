@@ -6,7 +6,7 @@
         :title="$gettext('Rename File/Directory')"
     >
         <b-form @submit.prevent="doRename">
-            <b-wrapped-form-group
+            <form-group-field
                 id="new_directory_name"
                 :field="v$.newPath"
                 autofocus
@@ -14,7 +14,7 @@
                 <template #label>
                     {{ $gettext('New File Name') }}
                 </template>
-            </b-wrapped-form-group>
+            </form-group-field>
         </b-form>
         <template #modal-footer>
             <button
@@ -36,7 +36,7 @@
 
 <script setup>
 import {required} from '@vuelidate/validators';
-import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
+import FormGroupField from "~/components/Form/FormGroupField";
 import {ref} from "vue";
 import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
 import {useNotify} from "~/functions/useNotify";

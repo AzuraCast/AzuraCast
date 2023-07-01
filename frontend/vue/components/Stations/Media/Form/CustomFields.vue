@@ -1,7 +1,7 @@
 <template>
     <b-form-group>
         <b-row>
-            <b-wrapped-form-group
+            <form-group-field
                 v-for="field in customFields"
                 :id="'edit_form_custom_'+field.short_name"
                 :key="field.short_name"
@@ -11,13 +11,13 @@
                 <template #label>
                     {{ field.name }}
                 </template>
-            </b-wrapped-form-group>
+            </form-group-field>
         </b-row>
     </b-form-group>
 </template>
 
 <script setup>
-import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
+import FormGroupField from "~/components/Form/FormGroupField";
 
 const props = defineProps({
     form: {

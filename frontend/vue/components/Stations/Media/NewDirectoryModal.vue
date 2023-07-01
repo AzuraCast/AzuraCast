@@ -6,7 +6,7 @@
         :title="$gettext('New Directory')"
     >
         <b-form @submit.prevent="doMkdir">
-            <b-wrapped-form-group
+            <form-group-field
                 id="new_directory_name"
                 :field="v$.newDirectory"
                 autofocus
@@ -14,7 +14,7 @@
                 <template #label>
                     {{ $gettext('Directory Name') }}
                 </template>
-            </b-wrapped-form-group>
+            </form-group-field>
         </b-form>
         <template #modal-footer>
             <button
@@ -36,7 +36,7 @@
 
 <script setup>
 import {required} from '@vuelidate/validators';
-import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
+import FormGroupField from "~/components/Form/FormGroupField";
 import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
 import {ref} from "vue";
 import {useNotify} from "~/functions/useNotify";

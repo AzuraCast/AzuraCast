@@ -20,9 +20,9 @@
                 class="form vue-form"
                 @submit.prevent="submit"
             >
-                <b-form-fieldset>
+                <form-fieldset>
                     <div class="row g-3">
-                        <b-wrapped-form-group
+                        <form-group-field
                             id="edit_form_storage_location"
                             class="col-md-12"
                             :field="v$.storage_location"
@@ -37,9 +37,9 @@
                                     :options="storageLocationOptions"
                                 />
                             </template>
-                        </b-wrapped-form-group>
+                        </form-group-field>
 
-                        <b-wrapped-form-group
+                        <form-group-field
                             id="edit_form_path"
                             class="col-md-12"
                             :field="v$.path"
@@ -66,9 +66,9 @@
                                     </li>
                                 </ul>
                             </template>
-                        </b-wrapped-form-group>
+                        </form-group-field>
 
-                        <b-wrapped-form-checkbox
+                        <form-group-checkbox
                             id="edit_form_exclude_media"
                             class="col-md-12"
                             :field="v$.exclude_media"
@@ -81,9 +81,9 @@
                                     $gettext('This will produce a significantly smaller backup, but you should make sure to back up your media elsewhere. Note that only locally stored media will be backed up.')
                                 }}
                             </template>
-                        </b-wrapped-form-checkbox>
+                        </form-group-checkbox>
                     </div>
-                </b-form-fieldset>
+                </form-fieldset>
 
                 <invisible-submit-button />
             </b-form>
@@ -119,10 +119,10 @@
 </template>
 
 <script setup>
-import BFormFieldset from "~/components/Form/BFormFieldset.vue";
-import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup.vue";
+import FormFieldset from "~/components/Form/FormFieldset";
+import FormGroupField from "~/components/Form/FormGroupField.vue";
 import InvisibleSubmitButton from "~/components/Common/InvisibleSubmitButton.vue";
-import BWrappedFormCheckbox from "~/components/Form/BWrappedFormCheckbox.vue";
+import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
 import objectToFormOptions from "~/functions/objectToFormOptions";
 import StreamingLogView from "~/components/Common/StreamingLogView.vue";
 import {computed, ref} from "vue";

@@ -1,7 +1,7 @@
 <template>
-    <b-form-fieldset>
+    <form-fieldset>
         <div class="row g-3">
-            <b-wrapped-form-group
+            <form-group-field
                 id="form_name"
                 class="col-md-6"
                 :field="form.name"
@@ -9,9 +9,9 @@
                 <template #label>
                     {{ $gettext('Name') }}
                 </template>
-            </b-wrapped-form-group>
+            </form-group-field>
 
-            <b-wrapped-form-group
+            <form-group-field
                 id="form_email"
                 class="col-md-6"
                 :field="form.email"
@@ -19,18 +19,18 @@
                 <template #label>
                     {{ $gettext('E-mail Address') }}
                 </template>
-            </b-wrapped-form-group>
+            </form-group-field>
         </div>
-    </b-form-fieldset>
+    </form-fieldset>
 
-    <b-form-fieldset>
+    <form-fieldset>
         <template #label>
             {{ $gettext('Customization') }}
         </template>
 
         <div class="row g-3">
             <div class="col-md-6">
-                <b-wrapped-form-group
+                <form-group-field
                     id="edit_form_locale"
                     :field="form.locale"
                 >
@@ -45,10 +45,10 @@
                             :options="localeOptions"
                         />
                     </template>
-                </b-wrapped-form-group>
+                </form-group-field>
             </div>
             <div class="col-md-6">
-                <b-wrapped-form-group
+                <form-group-field
                     id="edit_form_show_24_hour_time"
                     :field="form.show_24_hour_time"
                 >
@@ -63,15 +63,15 @@
                             :options="show24hourOptions"
                         />
                     </template>
-                </b-wrapped-form-group>
+                </form-group-field>
             </div>
         </div>
-    </b-form-fieldset>
+    </form-fieldset>
 </template>
 
 <script setup>
-import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
-import BFormFieldset from "~/components/Form/BFormFieldset";
+import FormGroupField from "~/components/Form/FormGroupField";
+import FormFieldset from "~/components/Form/FormFieldset";
 import objectToFormOptions from "~/functions/objectToFormOptions";
 import {computed} from "vue";
 import {useTranslate} from "~/vendor/gettext";

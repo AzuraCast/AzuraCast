@@ -1,11 +1,11 @@
 <template>
-    <b-form-fieldset>
+    <form-fieldset>
         <template #label>
             {{ $gettext('AzuraCast Update Checks') }}
         </template>
 
         <div class="row g-3">
-            <b-form-markup
+            <form-markup
                 id="form_release_channel"
                 class="col-md-6"
             >
@@ -24,9 +24,9 @@
                 <p class="card-text font-weight-bold">
                     {{ langReleaseChannel }}
                 </p>
-            </b-form-markup>
+            </form-markup>
 
-            <b-wrapped-form-checkbox
+            <form-group-checkbox
                 id="edit_form_check_for_updates"
                 class="col-md-6"
                 :field="form.check_for_updates"
@@ -37,11 +37,11 @@
                 <template #description>
                     {{ $gettext('Show new releases within your update channel on the AzuraCast homepage.') }}
                 </template>
-            </b-wrapped-form-checkbox>
+            </form-group-checkbox>
         </div>
-    </b-form-fieldset>
+    </form-fieldset>
 
-    <b-form-fieldset>
+    <form-fieldset>
         <template #label>
             {{ $gettext('LetsEncrypt') }}
         </template>
@@ -52,7 +52,7 @@
         </template>
 
         <div class="row g-3">
-            <b-wrapped-form-group
+            <form-group-field
                 id="edit_form_acme_domains"
                 class="col-md-6"
                 :field="form.acme_domains"
@@ -65,9 +65,9 @@
                         $gettext('All listed domain names should point to this AzuraCast installation. Separate multiple domain names with commas.')
                     }}
                 </template>
-            </b-wrapped-form-group>
+            </form-group-field>
 
-            <b-wrapped-form-group
+            <form-group-field
                 id="edit_form_acme_email"
                 class="col-md-6"
                 :field="form.acme_email"
@@ -79,7 +79,7 @@
                 <template #description>
                     {{ $gettext('Enter your e-mail address to receive updates about your certificate.') }}
                 </template>
-            </b-wrapped-form-group>
+            </form-group-field>
 
             <div class="form-group col">
                 <button
@@ -97,9 +97,9 @@
                 </button>
             </div>
         </div>
-    </b-form-fieldset>
+    </form-fieldset>
 
-    <b-form-fieldset>
+    <form-fieldset>
         <template #label>
             {{ $gettext('E-mail Delivery Service') }}
         </template>
@@ -108,7 +108,7 @@
         </template>
 
         <div class="row g-3">
-            <b-wrapped-form-checkbox
+            <form-group-checkbox
                 id="edit_form_mail_enabled"
                 class="col-md-12"
                 :field="form.mail_enabled"
@@ -116,14 +116,14 @@
                 <template #label>
                     {{ $gettext('Enable Mail Delivery') }}
                 </template>
-            </b-wrapped-form-checkbox>
+            </form-group-checkbox>
         </div>
 
         <div
             v-if="form.mail_enabled.$model"
             class="row g-3 mt-2"
         >
-            <b-wrapped-form-group
+            <form-group-field
                 id="edit_form_mail_sender_name"
                 class="col-md-6"
                 :field="form.mail_sender_name"
@@ -131,9 +131,9 @@
                 <template #label>
                     {{ $gettext('Sender Name') }}
                 </template>
-            </b-wrapped-form-group>
+            </form-group-field>
 
-            <b-wrapped-form-group
+            <form-group-field
                 id="edit_form_mail_sender_email"
                 class="col-md-6"
                 :field="form.mail_sender_email"
@@ -142,9 +142,9 @@
                 <template #label>
                     {{ $gettext('Sender E-mail Address') }}
                 </template>
-            </b-wrapped-form-group>
+            </form-group-field>
 
-            <b-wrapped-form-group
+            <form-group-field
                 id="edit_form_mail_smtp_host"
                 class="col-md-4"
                 :field="form.mail_smtp_host"
@@ -152,9 +152,9 @@
                 <template #label>
                     {{ $gettext('SMTP Host') }}
                 </template>
-            </b-wrapped-form-group>
+            </form-group-field>
 
-            <b-wrapped-form-group
+            <form-group-field
                 id="edit_form_mail_smtp_port"
                 class="col-md-3"
                 :field="form.mail_smtp_port"
@@ -163,9 +163,9 @@
                 <template #label>
                     {{ $gettext('SMTP Port') }}
                 </template>
-            </b-wrapped-form-group>
+            </form-group-field>
 
-            <b-wrapped-form-checkbox
+            <form-group-checkbox
                 id="edit_form_mail_smtp_secure"
                 class="col-md-5"
                 :field="form.mail_smtp_secure"
@@ -176,9 +176,9 @@
                 <template #description>
                     {{ $gettext('Usually enabled for port 465, disabled for ports 587 or 25.') }}
                 </template>
-            </b-wrapped-form-checkbox>
+            </form-group-checkbox>
 
-            <b-wrapped-form-group
+            <form-group-field
                 id="edit_form_mail_smtp_username"
                 class="col-md-6"
                 :field="form.mail_smtp_username"
@@ -186,9 +186,9 @@
                 <template #label>
                     {{ $gettext('SMTP Username') }}
                 </template>
-            </b-wrapped-form-group>
+            </form-group-field>
 
-            <b-wrapped-form-group
+            <form-group-field
                 id="edit_form_mail_smtp_password"
                 class="col-md-6"
                 :field="form.mail_smtp_password"
@@ -197,7 +197,7 @@
                 <template #label>
                     {{ $gettext('SMTP Password') }}
                 </template>
-            </b-wrapped-form-group>
+            </form-group-field>
 
             <div class="form-group col">
                 <button
@@ -215,15 +215,15 @@
                 </button>
             </div>
         </div>
-    </b-form-fieldset>
+    </form-fieldset>
 
-    <b-form-fieldset>
+    <form-fieldset>
         <template #label>
             {{ $gettext('Avatar Service') }}
         </template>
 
         <div class="row g-3">
-            <b-wrapped-form-group
+            <form-group-field
                 id="edit_form_avatar_service"
                 class="col-md-6"
                 :field="form.avatar_service"
@@ -239,9 +239,9 @@
                         :options="avatarServiceOptions"
                     />
                 </template>
-            </b-wrapped-form-group>
+            </form-group-field>
 
-            <b-wrapped-form-group
+            <form-group-field
                 id="edit_form_avatar_default_url"
                 class="col-md-6"
                 :field="form.avatar_default_url"
@@ -249,17 +249,17 @@
                 <template #label>
                     {{ $gettext('Default Avatar URL') }}
                 </template>
-            </b-wrapped-form-group>
+            </form-group-field>
         </div>
-    </b-form-fieldset>
+    </form-fieldset>
 
-    <b-form-fieldset>
+    <form-fieldset>
         <template #label>
             {{ $gettext('Album Art') }}
         </template>
 
         <div class="row g-3">
-            <b-wrapped-form-checkbox
+            <form-group-checkbox
                 id="use_external_album_art_in_apis"
                 class="col-md-6"
                 :field="form.use_external_album_art_in_apis"
@@ -267,9 +267,9 @@
                 <template #label>
                     {{ $gettext('Check Web Services for Album Art for "Now Playing" Tracks') }}
                 </template>
-            </b-wrapped-form-checkbox>
+            </form-group-checkbox>
 
-            <b-wrapped-form-checkbox
+            <form-group-checkbox
                 id="use_external_album_art_when_processing_media"
                 class="col-md-6"
                 :field="form.use_external_album_art_when_processing_media"
@@ -277,9 +277,9 @@
                 <template #label>
                     {{ $gettext('Check Web Services for Album Art When Uploading Media') }}
                 </template>
-            </b-wrapped-form-checkbox>
+            </form-group-checkbox>
 
-            <b-wrapped-form-group
+            <form-group-field
                 id="edit_form_last_fm_api_key"
                 class="col-md-12"
                 :field="form.last_fm_api_key"
@@ -297,9 +297,9 @@
                         {{ $gettext('Apply for an API key at Last.fm') }}
                     </a>
                 </template>
-            </b-wrapped-form-group>
+            </form-group-field>
         </div>
-    </b-form-fieldset>
+    </form-fieldset>
 
     <streaming-log-modal ref="$acmeModal" />
 
@@ -310,10 +310,10 @@
 </template>
 
 <script setup>
-import BFormMarkup from "~/components/Form/BFormMarkup.vue";
-import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup.vue";
-import BFormFieldset from "~/components/Form/BFormFieldset.vue";
-import BWrappedFormCheckbox from "~/components/Form/BWrappedFormCheckbox.vue";
+import FormMarkup from "~/components/Form/FormMarkup.vue";
+import FormGroupField from "~/components/Form/FormGroupField.vue";
+import FormFieldset from "~/components/Form/FormFieldset";
+import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
 import AdminSettingsTestMessageModal from "~/components/Admin/Settings/TestMessageModal.vue";
 import Icon from "~/components/Common/Icon.vue";
 import StreamingLogModal from "~/components/Common/StreamingLogModal.vue";

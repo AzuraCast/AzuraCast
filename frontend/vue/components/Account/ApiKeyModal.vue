@@ -21,8 +21,8 @@
                 class="form vue-form"
                 @submit.prevent="doSubmit"
             >
-                <b-form-fieldset>
-                    <b-wrapped-form-group
+                <form-fieldset>
+                    <form-group-field
                         id="form_comments"
                         :field="v$.comment"
                         autofocus
@@ -30,8 +30,8 @@
                         <template #label>
                             {{ $gettext('API Key Description/Comments') }}
                         </template>
-                    </b-wrapped-form-group>
-                </b-form-fieldset>
+                    </form-group-field>
+                </form-fieldset>
 
                 <invisible-submit-button />
             </b-form>
@@ -66,10 +66,10 @@
 </template>
 
 <script setup>
-import BFormFieldset from "~/components/Form/BFormFieldset";
+import FormFieldset from "~/components/Form/FormFieldset";
 import InvisibleSubmitButton from "~/components/Common/InvisibleSubmitButton";
 import AccountApiKeyNewKey from "./ApiKeyNewKey";
-import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
+import FormGroupField from "~/components/Form/FormGroupField";
 import {required} from '@vuelidate/validators';
 import {ref} from "vue";
 import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";

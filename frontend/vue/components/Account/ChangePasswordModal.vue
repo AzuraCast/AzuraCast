@@ -8,38 +8,27 @@
         @submit="onSubmit"
         @hidden="clearContents"
     >
-        <form-fieldset>
-            <form-group-field
-                id="form_current_password"
-                :field="v$.current_password"
-                input-type="password"
-                autofocus
-            >
-                <template #label>
-                    {{ $gettext('Current Password') }}
-                </template>
-            </form-group-field>
+        <form-group-field
+            id="form_current_password"
+            :field="v$.current_password"
+            input-type="password"
+            autofocus
+            :label="$gettext('Current Password')"
+        />
 
-            <form-group-field
-                id="form_new_password"
-                :field="v$.new_password"
-                input-type="password"
-            >
-                <template #label>
-                    {{ $gettext('New Password') }}
-                </template>
-            </form-group-field>
+        <form-group-field
+            id="form_new_password"
+            :field="v$.new_password"
+            input-type="password"
+            :label="$gettext('New Password')"
+        />
 
-            <form-group-field
-                id="form_current_password"
-                :field="v$.new_password2"
-                input-type="password"
-            >
-                <template #label>
-                    {{ $gettext('Confirm New Password') }}
-                </template>
-            </form-group-field>
-        </form-fieldset>
+        <form-group-field
+            id="form_current_password"
+            :field="v$.new_password2"
+            input-type="password"
+            :label="$gettext('Confirm New Password')"
+        />
 
         <template #save-button-name>
             {{ $gettext('Change Password') }}
@@ -50,7 +39,6 @@
 <script setup>
 import FormGroupField from "~/components/Form/FormGroupField";
 import ModalForm from "~/components/Common/ModalForm";
-import FormFieldset from "~/components/Form/FormFieldset";
 import {helpers, required} from "@vuelidate/validators";
 import validatePassword from "~/functions/validatePassword";
 import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";

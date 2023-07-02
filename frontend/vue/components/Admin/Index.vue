@@ -88,22 +88,13 @@
 
                         <div class="row">
                             <div class="col">
-                                <b-badge
-                                    pill
-                                    variant="primary"
-                                >
-                                    &nbsp;&nbsp;
-                                </b-badge>&nbsp;
+                                <span class="badge text-bg-primary me-1">&nbsp;&nbsp;</span>
                                 {{ $gettext('Used') }}
                                 : {{ stats.memory.readable.used }}
                             </div>
                             <div class="col">
-                                <b-badge
-                                    pill
-                                    variant="warning"
-                                >
-                                    &nbsp;&nbsp;
-                                </b-badge>&nbsp;
+                                <span class="badge text-bg-warning me-1">&nbsp;&nbsp;</span>&nbsp;
+
                                 {{ $gettext('Cached') }}
                                 : {{ stats.memory.readable.cached }}
                             </div>
@@ -140,12 +131,8 @@
 
                         <div class="row">
                             <div class="col">
-                                <b-badge
-                                    pill
-                                    variant="primary"
-                                >
-                                    &nbsp;&nbsp;
-                                </b-badge>&nbsp;
+                                <span class="badge text-bg-primary me-1">&nbsp;&nbsp;</span>
+
                                 {{ $gettext('Used') }}
                                 :
                                 {{ stats.disk.readable.used }}
@@ -202,32 +189,17 @@
 
                         <div class="row">
                             <div class="col">
-                                <b-badge
-                                    pill
-                                    variant="danger"
-                                >
-                                    &nbsp;&nbsp;
-                                </b-badge>&nbsp;
+                                <span class="badge text-bg-danger me-1">&nbsp;&nbsp;</span>
                                 {{ $gettext('Steal') }}
                                 : {{ stats.cpu.total.steal }}%
                             </div>
                             <div class="col">
-                                <b-badge
-                                    pill
-                                    variant="warning"
-                                >
-                                    &nbsp;&nbsp;
-                                </b-badge>&nbsp;
+                                <span class="badge text-bg-warning me-1">&nbsp;&nbsp;</span>
                                 {{ $gettext('Wait') }}
                                 : {{ stats.cpu.total.io_wait }}%
                             </div>
                             <div class="col">
-                                <b-badge
-                                    pill
-                                    variant="primary"
-                                >
-                                    &nbsp;&nbsp;
-                                </b-badge>&nbsp;
+                                <span class="badge text-bg-primary me-1">&nbsp;&nbsp;</span>
                                 {{ $gettext('Use') }}
                                 : {{ stats.cpu.total.usage }}%
                             </div>
@@ -264,7 +236,7 @@
                                     />
                                 </b-progress>
 
-                                <div class="b-row mb-2 mt-1">
+                                <div class="row mb-2 mt-1">
                                     <div class="col">
                                         St: {{ core.steal }}%
                                     </div>
@@ -284,15 +256,15 @@
                             {{ $gettext('Load Average') }}
                         </h6>
                         <div class="row text-center">
-                            <div class="row">
+                            <div class="col">
                                 <h6>1-Min</h6>
                                 {{ stats.cpu.load[0].toFixed(2) }}
                             </div>
-                            <div class="row">
+                            <div class="col">
                                 <h6>5-Min</h6>
                                 {{ stats.cpu.load[1].toFixed(2) }}
                             </div>
-                            <div class="row">
+                            <div class="col">
                                 <h6>15-Min</h6>
                                 {{ stats.cpu.load[2].toFixed(2) }}
                             </div>

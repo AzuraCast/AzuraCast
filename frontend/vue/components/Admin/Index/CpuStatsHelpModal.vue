@@ -1,5 +1,5 @@
 <template>
-    <b-modal
+    <modal
         id="cpu_stats_help_modal"
         ref="$modal"
         size="lg"
@@ -8,12 +8,8 @@
     >
         <div class="mb-2">
             <h6>
-                <b-badge
-                    pill
-                    variant="danger"
-                >
-&nbsp;&nbsp;
-                </b-badge>&nbsp;
+                <span class="badge text-bg-danger me-1">&nbsp;&nbsp;</span>
+
                 {{ $gettext('Steal (St)') }}:
                 {{ $gettext('Time stolen by other virtual machines on the same physical server.') }}
             </h6>
@@ -37,12 +33,8 @@
         </div>
         <div class="mb-2">
             <h6>
-                <b-badge
-                    pill
-                    variant="warning"
-                >
-&nbsp;&nbsp;
-                </b-badge>&nbsp;
+                <span class="badge text-bg-warning me-1">&nbsp;&nbsp;</span>
+
                 {{ $gettext('Wait (Wa)') }}:
                 {{ $gettext('Time spent waiting for disk I/O to be completed.') }}
             </h6>
@@ -87,11 +79,12 @@
                 </button>
             </slot>
         </template>
-    </b-modal>
+    </modal>
 </template>
 
 <script setup>
 import {ref} from "vue";
+import Modal from "~/components/Common/Modal.vue";
 
 const $modal = ref(); // BModal
 

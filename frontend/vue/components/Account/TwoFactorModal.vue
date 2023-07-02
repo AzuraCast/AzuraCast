@@ -36,16 +36,9 @@
                         id="form_otp"
                         :field="v$.otp"
                         autofocus
-                    >
-                        <template #label>
-                            {{ $gettext('Code from Authenticator App') }}
-                        </template>
-                        <template #description>
-                            {{
-                                $gettext('Enter the current code provided by your authenticator app to verify that it\'s working correctly.')
-                            }}
-                        </template>
-                    </form-group-field>
+                        :label="$gettext('Code from Authenticator App')"
+                        :description="$gettext('Enter the current code provided by your authenticator app to verify that it\'s working correctly.')"
+                    />
                 </form-fieldset>
             </div>
             <div class="col-md-5">

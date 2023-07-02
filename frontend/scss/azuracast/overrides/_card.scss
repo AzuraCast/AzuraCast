@@ -1,15 +1,11 @@
 .outside-card-header {
-  &:first-child {
-    padding-top: 0;
-  }
-
   h1, h2, h3, h4 {
     @include font-size($h2-font-size);
     margin: 0;
   }
 
   padding: $card-spacer-y $card-spacer-x;
-  margin-bottom: $card-spacer-y;
+  margin: 0;
 }
 
 .card {

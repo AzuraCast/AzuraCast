@@ -26,9 +26,9 @@
                 />
             </div>
             <div class="modal-body">
-                <b-overlay :show="busy">
+                <loading :loading="busy">
                     <slot name="default" />
-                </b-overlay>
+                </loading>
             </div>
             <div
                 v-if="slots['modal-footer']"
@@ -43,6 +43,7 @@
 <script setup>
 import {ref, useSlots, watch} from 'vue';
 import {syncRef, useVModel} from "@vueuse/core";
+import Loading from "~/components/Common/Loading.vue";
 
 const slots = useSlots();
 

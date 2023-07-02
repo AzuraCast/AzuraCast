@@ -8,10 +8,8 @@
             <form-markup
                 id="form_release_channel"
                 class="col-md-6"
+                :label="$gettext('Release Channel')"
             >
-                <template #label>
-                    {{ $gettext('Release Channel') }}
-                </template>
                 <template #description>
                     <a
                         href="https://docs.azuracast.com/en/getting-started/updates/release-channels"
@@ -30,14 +28,9 @@
                 id="edit_form_check_for_updates"
                 class="col-md-6"
                 :field="form.check_for_updates"
-            >
-                <template #label>
-                    {{ $gettext('Show Update Announcements') }}
-                </template>
-                <template #description>
-                    {{ $gettext('Show new releases within your update channel on the AzuraCast homepage.') }}
-                </template>
-            </form-group-checkbox>
+                :label="$gettext('Show Update Announcements')"
+                :description="$gettext('Show new releases within your update channel on the AzuraCast homepage.')"
+            />
         </div>
     </form-fieldset>
 
@@ -56,30 +49,18 @@
                 id="edit_form_acme_domains"
                 class="col-md-6"
                 :field="form.acme_domains"
-            >
-                <template #label>
-                    {{ $gettext('Domain Name(s)') }}
-                </template>
-                <template #description>
-                    {{
-                        $gettext('All listed domain names should point to this AzuraCast installation. Separate multiple domain names with commas.')
-                    }}
-                </template>
-            </form-group-field>
+                :label="$gettext('Domain Name(s)')"
+                :description="$gettext('All listed domain names should point to this AzuraCast installation. Separate multiple domain names with commas.')"
+            />
 
             <form-group-field
                 id="edit_form_acme_email"
                 class="col-md-6"
                 :field="form.acme_email"
                 input-type="email"
-            >
-                <template #label>
-                    {{ $gettext('E-mail Address (Optional)') }}
-                </template>
-                <template #description>
-                    {{ $gettext('Enter your e-mail address to receive updates about your certificate.') }}
-                </template>
-            </form-group-field>
+                :label="$gettext('E-mail Address (Optional)')"
+                :description="$gettext('Enter your e-mail address to receive updates about your certificate.')"
+            />
 
             <div class="form-group col">
                 <button
@@ -112,11 +93,8 @@
                 id="edit_form_mail_enabled"
                 class="col-md-12"
                 :field="form.mail_enabled"
-            >
-                <template #label>
-                    {{ $gettext('Enable Mail Delivery') }}
-                </template>
-            </form-group-checkbox>
+                :label="$gettext('Enable Mail Delivery')"
+            />
         </div>
 
         <div
@@ -127,77 +105,54 @@
                 id="edit_form_mail_sender_name"
                 class="col-md-6"
                 :field="form.mail_sender_name"
-            >
-                <template #label>
-                    {{ $gettext('Sender Name') }}
-                </template>
-            </form-group-field>
+                :label="$gettext('Sender Name')"
+            />
 
             <form-group-field
                 id="edit_form_mail_sender_email"
                 class="col-md-6"
                 :field="form.mail_sender_email"
                 input-type="email"
-            >
-                <template #label>
-                    {{ $gettext('Sender E-mail Address') }}
-                </template>
-            </form-group-field>
+                :label="$gettext('Sender E-mail Address')"
+            />
 
             <form-group-field
                 id="edit_form_mail_smtp_host"
                 class="col-md-4"
                 :field="form.mail_smtp_host"
-            >
-                <template #label>
-                    {{ $gettext('SMTP Host') }}
-                </template>
-            </form-group-field>
+                :label="$gettext('SMTP Host')"
+            />
 
             <form-group-field
                 id="edit_form_mail_smtp_port"
                 class="col-md-3"
                 :field="form.mail_smtp_port"
                 input-type="number"
-            >
-                <template #label>
-                    {{ $gettext('SMTP Port') }}
-                </template>
-            </form-group-field>
+                :label="$gettext('SMTP Port')"
+            />
 
             <form-group-checkbox
                 id="edit_form_mail_smtp_secure"
                 class="col-md-5"
                 :field="form.mail_smtp_secure"
-            >
-                <template #label>
-                    {{ $gettext('Use Secure (TLS) SMTP Connection') }}
-                </template>
-                <template #description>
-                    {{ $gettext('Usually enabled for port 465, disabled for ports 587 or 25.') }}
-                </template>
-            </form-group-checkbox>
+                :label="$gettext('Use Secure (TLS) SMTP Connection')"
+                :description="$gettext('Usually enabled for port 465, disabled for ports 587 or 25.')"
+            />
 
             <form-group-field
                 id="edit_form_mail_smtp_username"
                 class="col-md-6"
                 :field="form.mail_smtp_username"
-            >
-                <template #label>
-                    {{ $gettext('SMTP Username') }}
-                </template>
-            </form-group-field>
+                :label="$gettext('SMTP Username')"
+            />
 
             <form-group-field
                 id="edit_form_mail_smtp_password"
                 class="col-md-6"
                 :field="form.mail_smtp_password"
                 input-type="password"
-            >
-                <template #label>
-                    {{ $gettext('SMTP Password') }}
-                </template>
-            </form-group-field>
+                :label="$gettext('SMTP Password')"
+            />
 
             <div class="form-group col">
                 <button
@@ -223,33 +178,22 @@
         </template>
 
         <div class="row g-3">
-            <form-group-field
+            <form-group-multi-check
                 id="edit_form_avatar_service"
                 class="col-md-6"
                 :field="form.avatar_service"
-            >
-                <template #label>
-                    {{ $gettext('Avatar Service') }}
-                </template>
-                <template #default="slotProps">
-                    <b-form-radio-group
-                        :id="slotProps.id"
-                        v-model="slotProps.field.$model"
-                        stacked
-                        :options="avatarServiceOptions"
-                    />
-                </template>
-            </form-group-field>
+                :options="avatarServiceOptions"
+                stacked
+                radio
+                :label="$gettext('Avatar Service')"
+            />
 
             <form-group-field
                 id="edit_form_avatar_default_url"
                 class="col-md-6"
                 :field="form.avatar_default_url"
-            >
-                <template #label>
-                    {{ $gettext('Default Avatar URL') }}
-                </template>
-            </form-group-field>
+                :label="$gettext('Default Avatar URL')"
+            />
         </div>
     </form-fieldset>
 
@@ -273,20 +217,15 @@
                 id="use_external_album_art_when_processing_media"
                 class="col-md-6"
                 :field="form.use_external_album_art_when_processing_media"
-            >
-                <template #label>
-                    {{ $gettext('Check Web Services for Album Art When Uploading Media') }}
-                </template>
-            </form-group-checkbox>
+                :label="$gettext('Check Web Services for Album Art When Uploading Media')"
+            />
 
             <form-group-field
                 id="edit_form_last_fm_api_key"
                 class="col-md-12"
                 :field="form.last_fm_api_key"
+                :label="$gettext('Last.fm API Key')"
             >
-                <template #label>
-                    {{ $gettext('Last.fm API Key') }}
-                </template>
                 <template #description>
                     {{ $gettext('This service can provide album art for tracks where none is available locally.') }}
                     <br>
@@ -321,6 +260,7 @@ import {computed, ref} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
+import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
 
 const props = defineProps({
     form: {

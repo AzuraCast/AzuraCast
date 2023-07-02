@@ -1,21 +1,18 @@
 <template>
-    <b-modal
+    <modal
         id="send_test_message"
         ref="$modal"
         centered
         :title="$gettext('Send Test Message')"
     >
-        <b-form @submit.prevent="doSendTest">
+        <form @submit.prevent="doSendTest">
             <form-group-field
                 id="email_address"
                 :field="v$.emailAddress"
                 autofocus
-            >
-                <template #label>
-                    {{ $gettext('E-mail Address') }}
-                </template>
-            </form-group-field>
-        </b-form>
+                :label="$gettext('E-mail Address')"
+            />
+        </form>
         <template #modal-footer>
             <button
                 class="btn btn-secondary"
@@ -31,7 +28,7 @@
                 {{ $gettext('Send Test Message') }}
             </button>
         </template>
-    </b-modal>
+    </modal>
 </template>
 
 <script setup>
@@ -42,6 +39,7 @@ import {useNotify} from "~/functions/useNotify";
 import {useTranslate} from "~/vendor/gettext";
 import {useAxios} from "~/vendor/axios";
 import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
+import Modal from "~/components/Common/Modal.vue";
 
 const props = defineProps({
     testMessageUrl: {

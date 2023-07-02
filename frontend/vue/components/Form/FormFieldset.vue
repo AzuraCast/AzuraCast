@@ -1,46 +1,32 @@
-<script>
-import {h} from 'vue'
+<template>
+    <fieldset class="form-group">
+        <legend v-if="slots.label || label">
+            <slot name="label">
+                {{ label }}
+            </slot>
+        </legend>
 
-export default {
-    name: 'FormFieldset',
-    methods: {
-        getSlot(name, scope = {}) {
-            let slot = this.$slots[name] ?? null
-            return typeof slot === 'function' ? slot(scope) : slot
-        }
+        <p v-if="slots.description || description">
+            <slot name="description">
+                {{ description }}
+            </slot>
+        </p>
+
+        <slot name="default" />
+    </fieldset>
+</template>
+
+<script setup>
+const props = defineProps({
+    label: {
+        type: String,
+        default: null
     },
-    render() {
-        const legendSlot = this.getSlot('label');
-        const descriptionSlot = this.getSlot('description');
-
-        const slotChildren = [];
-
-        if (legendSlot) {
-            const headerChildren = [];
-            if (descriptionSlot) {
-                headerChildren.push(h('p', {}, [descriptionSlot]));
-            }
-
-            headerChildren.push(h('legend', {}, [legendSlot]));
-
-            slotChildren.push(h(
-                'div',
-                {
-                    class: 'fieldset-legend'
-                },
-                headerChildren
-            ));
-        }
-
-        slotChildren.push(this.getSlot('default'));
-
-        return h(
-            'fieldset',
-            {
-                class: 'form-group'
-            },
-            slotChildren
-        );
+    description: {
+        type: String,
+        default: null
     }
-}
+});
+
+const slots = defineSlots();
 </script>

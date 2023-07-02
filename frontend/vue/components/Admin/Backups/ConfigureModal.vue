@@ -14,16 +14,9 @@
                     id="form_edit_backup_enabled"
                     class="col-md-12"
                     :field="v$.backup_enabled"
-                >
-                    <template #label>
-                        {{ $gettext('Run Automatic Nightly Backups') }}
-                    </template>
-                    <template #description>
-                        {{
-                            $gettext('Enable to have AzuraCast automatically run nightly backups at the time specified.')
-                        }}
-                    </template>
-                </form-group-checkbox>
+                    :label="$gettext('Run Automatic Nightly Backups')"
+                    :description="$gettext('Enable to have AzuraCast automatically run nightly backups at the time specified.')"
+                />
             </div>
 
             <div
@@ -34,18 +27,14 @@
                     id="form_backup_time_code"
                     class="col-md-6"
                     :field="v$.backup_time_code"
+                    :label="$gettext('Scheduled Backup Time')"
+                    :description="$gettext('If the end time is before the start time, the playlist will play overnight.')"
                 >
-                    <template #label>
-                        {{ $gettext('Scheduled Backup Time') }}
-                    </template>
-                    <template #description>
-                        {{ $gettext('If the end time is before the start time, the playlist will play overnight.') }}
-                    </template>
                     <template #default="slotProps">
                         <time-code
                             :id="slotProps.id"
                             v-model="slotProps.field.$model"
-                            :state="slotProps.state"
+                            :class="slotProps.class"
                         />
                     </template>
                 </form-group-field>
@@ -54,16 +43,9 @@
                     id="form_edit_exclude_media"
                     class="col-md-6"
                     :field="v$.backup_exclude_media"
-                >
-                    <template #label>
-                        {{ $gettext('Exclude Media from Backup') }}
-                    </template>
-                    <template #description>
-                        {{
-                            $gettext('Excluding media from automated backups will save space, but you should make sure to back up your media elsewhere. Note that only locally stored media will be backed up.')
-                        }}
-                    </template>
-                </form-group-checkbox>
+                    :label="$gettext('Exclude Media from Backup')"
+                    :description="$gettext('Excluding media from automated backups will save space, but you should make sure to back up your media elsewhere. Note that only locally stored media will be backed up.')"
+                />
 
                 <form-group-field
                     id="form_backup_keep_copies"
@@ -71,51 +53,27 @@
                     :field="v$.backup_keep_copies"
                     input-type="number"
                     :input-attrs="{min: '0', max: '365'}"
-                >
-                    <template #label>
-                        {{ $gettext('Number of Backup Copies to Keep') }}
-                    </template>
-                    <template #description>
-                        {{
-                            $gettext('Copies older than the specified number of days will automatically be deleted. Set to zero to disable automatic deletion.')
-                        }}
-                    </template>
-                </form-group-field>
+                    :label="$gettext('Number of Backup Copies to Keep')"
+                    :description="$gettext('Copies older than the specified number of days will automatically be deleted. Set to zero to disable automatic deletion.')"
+                />
 
-                <form-group-field
+                <form-group-select
                     id="edit_form_backup_storage_location"
                     class="col-md-6"
                     :field="v$.backup_storage_location"
-                >
-                    <template #label>
-                        {{ $gettext('Storage Location') }}
-                    </template>
-                    <template #default="slotProps">
-                        <b-form-select
-                            :id="slotProps.id"
-                            v-model="slotProps.field.$model"
-                            :options="storageLocationOptions"
-                        />
-                    </template>
-                </form-group-field>
+                    :label="$gettext('Storage Location')"
+                    :options="storageLocationOptions"
+                />
 
-                <form-group-field
+                <form-group-multi-check
                     id="edit_form_backup_format"
                     class="col-md-6"
                     :field="v$.backup_format"
-                >
-                    <template #label>
-                        {{ $gettext('Backup Format') }}
-                    </template>
-                    <template #default="slotProps">
-                        <b-form-radio-group
-                            :id="slotProps.id"
-                            v-model="slotProps.field.$model"
-                            stacked
-                            :options="formatOptions"
-                        />
-                    </template>
-                </form-group-field>
+                    stacked
+                    radio
+                    :options="formatOptions"
+                    :label="$gettext('Backup Format')"
+                />
             </div>
         </form-fieldset>
     </modal-form>
@@ -133,6 +91,8 @@ import {computed, ref} from "vue";
 import {useAxios} from "~/vendor/axios";
 import {useNotify} from "~/functions/useNotify";
 import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
+import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
+import FormGroupSelect from "~/components/Form/FormGroupSelect.vue";
 
 const props = defineProps({
     settingsUrl: {

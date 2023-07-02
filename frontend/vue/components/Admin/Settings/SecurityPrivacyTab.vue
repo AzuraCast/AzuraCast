@@ -5,46 +5,35 @@
         </template>
 
         <div class="row g-3">
-            <form-group-field
+            <form-group-multi-check
                 id="edit_form_analytics"
                 class="col-md-12"
                 :field="form.analytics"
+                :options="analyticsOptions"
+                radio
+                stacked
+                :label="$gettext('Listener Analytics Collection')"
+                :description="$gettext('Aggregate listener statistics are used to show station reports across the system. IP-based listener statistics are used to view live listener tracking and may be required for royalty reports.')"
             >
-                <template #label>
-                    {{ $gettext('Listener Analytics Collection') }}
+                <template #label(all)>
+                    <b>
+                        {{ $gettext('Full:') }}
+                    </b>
+                    {{ $gettext('Collect aggregate listener statistics and IP-based listener statistics') }}
                 </template>
-                <template #description>
-                    {{
-                        $gettext('Aggregate listener statistics are used to show station reports across the system. IP-based listener statistics are used to view live listener tracking and may be required for royalty reports.')
-                    }}
+                <template #label(no_ip)>
+                    <b>
+                        {{ $gettext('Limited:') }}
+                    </b>
+                    {{ $gettext('Only collect aggregate listener statistics') }}
                 </template>
-                <template #default="slotProps">
-                    <b-form-radio-group
-                        :id="slotProps.id"
-                        v-model="slotProps.field.$model"
-                        stacked
-                    >
-                        <b-form-radio value="all">
-                            <b>
-                                {{ $gettext('Full:') }}
-                            </b>
-                            {{ $gettext('Collect aggregate listener statistics and IP-based listener statistics') }}
-                        </b-form-radio>
-                        <b-form-radio value="no_ip">
-                            <b>
-                                {{ $gettext('Limited:') }}
-                            </b>
-                            {{ $gettext('Only collect aggregate listener statistics') }}
-                        </b-form-radio>
-                        <b-form-radio value="none">
-                            <b>
-                                {{ $gettext('None:') }}
-                            </b>
-                            {{ $gettext('Do not collect any listener analytics') }}
-                        </b-form-radio>
-                    </b-form-radio-group>
+                <template #label(none)>
+                    <b>
+                        {{ $gettext('None:') }}
+                    </b>
+                    {{ $gettext('Do not collect any listener analytics') }}
                 </template>
-            </form-group-field>
+            </form-group-multi-check>
         </div>
     </form-fieldset>
 
@@ -58,10 +47,8 @@
                 id="edit_form_always_use_ssl"
                 class="col-md-12"
                 :field="form.always_use_ssl"
+                :label="$gettext('Always Use HTTPS')"
             >
-                <template #label>
-                    {{ $gettext('Always Use HTTPS') }}
-                </template>
                 <template #description>
                     {{
                         $gettext('Set to "Yes" to always use "https://" secure URLs, and to automatically redirect to the secure URL when an insecure URL is visited.')
@@ -123,6 +110,7 @@ import FormFieldset from "~/components/Form/FormFieldset";
 import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
 import {useTranslate} from "~/vendor/gettext";
 import {computed} from "vue";
+import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
 
 const props = defineProps({
     form: {
@@ -132,6 +120,23 @@ const props = defineProps({
 });
 
 const {$gettext} = useTranslate();
+
+const analyticsOptions = computed(() => {
+    return [
+        {
+            value: 'all',
+            text: 'Full',
+        },
+        {
+            value: 'no_ip',
+            text: 'Limited',
+        },
+        {
+            value: 'none',
+            text: 'None'
+        }
+    ]
+});
 
 const ipSourceOptions = computed(() => {
     return [

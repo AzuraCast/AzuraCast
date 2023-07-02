@@ -5,21 +5,15 @@
                 id="form_name"
                 class="col-md-6"
                 :field="form.name"
-            >
-                <template #label>
-                    {{ $gettext('Name') }}
-                </template>
-            </form-group-field>
+                :label="$gettext('Name')"
+            />
 
             <form-group-field
                 id="form_email"
                 class="col-md-6"
                 :field="form.email"
-            >
-                <template #label>
-                    {{ $gettext('E-mail Address') }}
-                </template>
-            </form-group-field>
+                :label="$gettext('E-mail Address')"
+            />
         </div>
     </form-fieldset>
 
@@ -29,42 +23,25 @@
         </template>
 
         <div class="row g-3">
-            <div class="col-md-6">
-                <form-group-field
-                    id="edit_form_locale"
-                    :field="form.locale"
-                >
-                    <template #label>
-                        {{ $gettext('Language') }}
-                    </template>
-                    <template #default="slotProps">
-                        <b-form-radio-group
-                            :id="slotProps.id"
-                            v-model="slotProps.field.$model"
-                            stacked
-                            :options="localeOptions"
-                        />
-                    </template>
-                </form-group-field>
-            </div>
-            <div class="col-md-6">
-                <form-group-field
-                    id="edit_form_show_24_hour_time"
-                    :field="form.show_24_hour_time"
-                >
-                    <template #label>
-                        {{ $gettext('Time Display') }}
-                    </template>
-                    <template #default="slotProps">
-                        <b-form-radio-group
-                            :id="slotProps.id"
-                            v-model="slotProps.field.$model"
-                            stacked
-                            :options="show24hourOptions"
-                        />
-                    </template>
-                </form-group-field>
-            </div>
+            <form-group-multi-check
+                id="edit_form_locale"
+                class="col-md-6"
+                :field="form.locale"
+                :options="localeOptions"
+                stacked
+                radio
+                :label="$gettext('Language')"
+            />
+
+            <form-group-multi-check
+                id="edit_form_show_24_hour_time"
+                class="col-md-6"
+                :field="form.show_24_hour_time"
+                :options="show24hourOptions"
+                stacked
+                radio
+                :label="$gettext('Time Display')"
+            />
         </div>
     </form-fieldset>
 </template>
@@ -75,6 +52,7 @@ import FormFieldset from "~/components/Form/FormFieldset";
 import objectToFormOptions from "~/functions/objectToFormOptions";
 import {computed} from "vue";
 import {useTranslate} from "~/vendor/gettext";
+import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
 
 const props = defineProps({
     form: {

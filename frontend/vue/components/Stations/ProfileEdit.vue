@@ -36,15 +36,19 @@
                 </span>
             </a>
         </error-card>
-        <admin-stations-form
+        <div
             v-else
-            v-bind="pickProps(props, stationFormProps)"
-            ref="$form"
-            is-edit-mode
-            :edit-url="editUrl"
-            @submitted="onSubmitted"
-            @error="onError"
-        />
+            class="card-body"
+        >
+            <admin-stations-form
+                v-bind="pickProps(props, stationFormProps)"
+                ref="$form"
+                is-edit-mode
+                :edit-url="editUrl"
+                @submitted="onSubmitted"
+                @error="onError"
+            />
+        </div>
     </section>
 </template>
 

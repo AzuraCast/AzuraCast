@@ -6,80 +6,69 @@
             </h2>
         </div>
         <div class="card-body">
-            <b-form-group>
-                <div class="row g-3">
-                    <div class="col-md-12">
-                        <h3>{{ $gettext('Dropbox Setup Instructions') }}</h3>
+            <div class="row g-3">
+                <div class="col-md-12">
+                    <h3>{{ $gettext('Dropbox Setup Instructions') }}</h3>
 
-                        <ul>
-                            <li>
-                                {{ $gettext('Visit the Dropbox App Console:') }}<br>
-                                <a
-                                    href="https://www.dropbox.com/developers/apps"
-                                    target="_blank"
-                                >
-                                    {{ $gettext('Dropbox App Console') }}
-                                </a>
-                            </li>
-                            <li>
-                                {{
-                                    $gettext('Create a new application. Choose "Scoped Access", select your preferred level of access, then name your app. Do not name it "AzuraCast", but rather use a name specific to your installation.')
-                                }}
-                            </li>
-                            <li>
-                                {{ $gettext('Enter your app secret and app key below.') }}
-                            </li>
-                        </ul>
-                    </div>
-
-                    <form-group-field
-                        id="form_edit_dropboxAppKey"
-                        class="col-md-6"
-                        :field="form.dropboxAppKey"
-                    >
-                        <template #label>
-                            {{ $gettext('App Key') }}
-                        </template>
-                    </form-group-field>
-
-                    <form-group-field
-                        id="form_edit_dropboxAppSecret"
-                        class="col-md-6"
-                        :field="form.dropboxAppSecret"
-                    >
-                        <template #label>
-                            {{ $gettext('App Secret') }}
-                        </template>
-                    </form-group-field>
-
-                    <div class="col-md-12">
-                        <ul>
-                            <li>
-                                {{ $gettext('Visit the link below to sign in and generate an access code:') }}<br>
-                                <a
-                                    :href="authUrl"
-                                    target="_blank"
-                                >
-                                    {{ $gettext('Generate Access Code') }}
-                                </a>
-                            </li>
-                            <li>
-                                {{ $gettext('Enter the access code you receive below.') }}
-                            </li>
-                        </ul>
-                    </div>
-
-                    <form-group-field
-                        id="form_edit_dropboxAuthToken"
-                        class="col-md-12"
-                        :field="form.dropboxAuthToken"
-                    >
-                        <template #label>
-                            {{ $gettext('Access Code') }}
-                        </template>
-                    </form-group-field>
+                    <ul>
+                        <li>
+                            {{ $gettext('Visit the Dropbox App Console:') }}<br>
+                            <a
+                                href="https://www.dropbox.com/developers/apps"
+                                target="_blank"
+                            >
+                                {{ $gettext('Dropbox App Console') }}
+                            </a>
+                        </li>
+                        <li>
+                            {{
+                                $gettext('Create a new application. Choose "Scoped Access", select your preferred level of access, then name your app. Do not name it "AzuraCast", but rather use a name specific to your installation.')
+                            }}
+                        </li>
+                        <li>
+                            {{ $gettext('Enter your app secret and app key below.') }}
+                        </li>
+                    </ul>
                 </div>
-            </b-form-group>
+
+                <form-group-field
+                    id="form_edit_dropboxAppKey"
+                    class="col-md-6"
+                    :field="form.dropboxAppKey"
+                    :label="$gettext('App Key')"
+                />
+
+                <form-group-field
+                    id="form_edit_dropboxAppSecret"
+                    class="col-md-6"
+                    :field="form.dropboxAppSecret"
+                    :label="$gettext('App Secret')"
+                />
+
+                <div class="col-md-12">
+                    <ul>
+                        <li>
+                            {{ $gettext('Visit the link below to sign in and generate an access code:') }}<br>
+                            <a
+                                :href="authUrl"
+                                target="_blank"
+                            >
+                                {{ $gettext('Generate Access Code') }}
+                            </a>
+                        </li>
+                        <li>
+                            {{ $gettext('Enter the access code you receive below.') }}
+                        </li>
+                    </ul>
+                </div>
+
+                <form-group-field
+                    id="form_edit_dropboxAuthToken"
+                    class="col-md-12"
+                    :field="form.dropboxAuthToken"
+                    :label="$gettext('Access Code')"
+                />
+            </div>
         </div>
     </section>
 </template>

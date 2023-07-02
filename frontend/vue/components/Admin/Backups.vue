@@ -19,10 +19,7 @@
                 </h2>
             </div>
 
-            <b-overlay
-                variant="card"
-                :show="settingsLoading"
-            >
+            <loading :loading="settingsLoading">
                 <div
                     v-if="settings.backupEnabled"
                     class="card-body"
@@ -41,7 +38,7 @@
                         {{ $gettext('Never run') }}
                     </p>
                 </div>
-            </b-overlay>
+            </loading>
 
             <div class="card-body buttons">
                 <button
@@ -184,6 +181,7 @@ import {useTranslate} from "~/vendor/gettext";
 import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
 import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
+import Loading from "~/components/Common/Loading.vue";
 
 const props = defineProps({
     listUrl: {

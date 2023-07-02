@@ -1,5 +1,5 @@
 <template>
-    <b-modal
+    <modal
         id="run_backup_modal"
         ref="$modal"
         size="md"
@@ -8,28 +8,27 @@
         @hidden="clearContents"
     >
         <template #default>
-            <b-alert
-                variant="danger"
-                :show="error != null"
+            <div
+                v-show="error != null"
+                class="alert alert-danger"
             >
                 {{ error }}
-            </b-alert>
+            </div>
 
-            <b-form
+            <form
                 v-if="logUrl === null"
                 class="form vue-form"
                 @submit.prevent="submit"
             >
                 <form-fieldset>
                     <div class="row g-3">
+                        <!-- TODO -->
                         <form-group-field
                             id="edit_form_storage_location"
                             class="col-md-12"
                             :field="v$.storage_location"
+                            :label="$gettext('Storage Location')"
                         >
-                            <template #label>
-                                {{ $gettext('Storage Location') }}
-                            </template>
                             <template #default="slotProps">
                                 <b-form-select
                                     :id="slotProps.id"
@@ -43,10 +42,8 @@
                             id="edit_form_path"
                             class="col-md-12"
                             :field="v$.path"
+                            :label="$gettext('File Name')"
                         >
-                            <template #label>
-                                {{ $gettext('File Name') }}
-                            </template>
                             <template #description>
                                 {{
                                     $gettext('This will be the file name for your backup, include the extension for file type you wish to use.')
@@ -72,21 +69,14 @@
                             id="edit_form_exclude_media"
                             class="col-md-12"
                             :field="v$.exclude_media"
-                        >
-                            <template #label>
-                                {{ $gettext('Exclude Media from Backup') }}
-                            </template>
-                            <template #description>
-                                {{
-                                    $gettext('This will produce a significantly smaller backup, but you should make sure to back up your media elsewhere. Note that only locally stored media will be backed up.')
-                                }}
-                            </template>
-                        </form-group-checkbox>
+                            :label="$gettext('Exclude Media from Backup')"
+                            :description="$gettext('This will produce a significantly smaller backup, but you should make sure to back up your media elsewhere. Note that only locally stored media will be backed up.')"
+                        />
                     </div>
                 </form-fieldset>
 
                 <invisible-submit-button />
-            </b-form>
+            </form>
 
             <div v-else>
                 <streaming-log-view :log-url="logUrl" />
@@ -115,7 +105,7 @@
                 </button>
             </slot>
         </template>
-    </b-modal>
+    </modal>
 </template>
 
 <script setup>
@@ -129,6 +119,7 @@ import {computed, ref} from "vue";
 import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
 import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
+import Modal from "~/components/Common/Modal.vue";
 
 const props = defineProps({
     runBackupUrl: {

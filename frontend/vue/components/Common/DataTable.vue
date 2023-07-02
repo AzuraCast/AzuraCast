@@ -32,17 +32,15 @@
                 >
                     <div class="flex-fill">
                         <div class="input-group">
-                            <div class="input-group">
-                                <span class="input-group-text">
-                                    <icon icon="search" />
-                                </span>
-                                <input
-                                    v-model="searchPhrase"
-                                    class="form-control"
-                                    type="search"
-                                    :placeholder="$gettext('Search')"
-                                >
-                            </div>
+                            <span class="input-group-text">
+                                <icon icon="search" />
+                            </span>
+                            <input
+                                v-model="searchPhrase"
+                                class="form-control"
+                                type="search"
+                                :placeholder="$gettext('Search')"
+                            >
                         </div>
                     </div>
                     <div class="flex-shrink-1 ps-3">

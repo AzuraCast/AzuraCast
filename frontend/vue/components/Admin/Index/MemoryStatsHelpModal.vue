@@ -8,12 +8,8 @@
     >
         <div class="mb-2">
             <h6>
-                <b-badge
-                    pill
-                    variant="warning"
-                >
-&nbsp;&nbsp;
-                </b-badge>&nbsp;
+                <span class="badge text-bg-warning me-1">&nbsp;&nbsp;</span>
+
                 {{ $gettext('Cached') }}:
                 {{ $gettext('The amount of memory Linux is using for disk caching.') }}
             </h6>
@@ -33,12 +29,8 @@
 
         <div class="mb-2">
             <h6>
-                <b-badge
-                    pill
-                    variant="primary"
-                >
-&nbsp;&nbsp;
-                </b-badge>&nbsp;
+                <span class="badge text-bg-primary me-1">&nbsp;&nbsp;</span>
+                
                 {{ $gettext('Used') }}:
                 {{ $gettext('The current Memory usage excluding cached memory.') }}
             </h6>

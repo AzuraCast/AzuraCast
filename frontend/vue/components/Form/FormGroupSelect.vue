@@ -22,28 +22,15 @@
                 name="default"
                 v-bind="{ id, field, class: fieldClass }"
             >
-                <div
-                    v-for="option in options"
-                    :key="option.value"
-                    class="form-check"
-                    :class="!stacked ? 'form-check-inline' : ''"
+                <select
+                    :id="id"
+                    v-model="field.$model"
+                    class="form-control"
+                    :class="fieldClass"
+                    :multiple="multiple"
                 >
-                    <input
-                        :id="id+'_'+option.value"
-                        v-model="field.$model"
-                        :value="option.value"
-                        class="form-check-input"
-                        :class="fieldClass"
-                        :type="radio ? 'radio' : 'checkbox'"
-                        :name="name"
-                    >
-                    <label
-                        class="form-check-label"
-                        :for="id+'_'+option.value"
-                    >
-                        <slot :name="'label('+option.value+')'">{{ option.text }}</slot>
-                    </label>
-                </div>
+                    <form-group-select-option :options="options" />
+                </select>
             </slot>
 
             <vuelidate-error :field="field" />
@@ -67,6 +54,7 @@ import {computed} from "vue";
 import FormLabel from "~/components/Form/FormLabel.vue";
 import FormGroup from "~/components/Form/FormGroup.vue";
 import useFormFieldState from "~/functions/useFormFieldState";
+import FormGroupSelectOption from "~/components/Form/FormGroupSelectOption.vue";
 
 const props = defineProps({
     id: {
@@ -93,11 +81,7 @@ const props = defineProps({
         type: Array,
         required: true
     },
-    radio: {
-        type: Boolean,
-        default: false
-    },
-    stacked: {
+    multiple: {
         type: Boolean,
         default: false
     },

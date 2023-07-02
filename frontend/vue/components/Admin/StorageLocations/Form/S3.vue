@@ -6,69 +6,49 @@
             </h2>
         </div>
         <div class="card-body">
-            <b-form-group>
-                <div class="row g-3">
-                    <form-group-field
-                        id="form_edit_s3CredentialKey"
-                        class="col-md-6"
-                        :field="form.s3CredentialKey"
-                    >
-                        <template #label>
-                            {{ $gettext('Access Key ID') }}
-                        </template>
-                    </form-group-field>
+            <div class="row g-3">
+                <form-group-field
+                    id="form_edit_s3CredentialKey"
+                    class="col-md-6"
+                    :field="form.s3CredentialKey"
+                    :label="$gettext('Access Key ID')"
+                />
 
-                    <form-group-field
-                        id="form_edit_s3CredentialSecret"
-                        class="col-md-6"
-                        :field="form.s3CredentialSecret"
-                    >
-                        <template #label>
-                            {{ $gettext('Secret Key') }}
-                        </template>
-                    </form-group-field>
+                <form-group-field
+                    id="form_edit_s3CredentialSecret"
+                    class="col-md-6"
+                    :field="form.s3CredentialSecret"
+                    :label="$gettext('Secret Key')"
+                />
 
-                    <form-group-field
-                        id="form_edit_s3Endpoint"
-                        class="col-md-6"
-                        :field="form.s3Endpoint"
-                    >
-                        <template #label>
-                            {{ $gettext('Endpoint') }}
-                        </template>
-                    </form-group-field>
+                <form-group-field
+                    id="form_edit_s3Endpoint"
+                    class="col-md-6"
+                    :field="form.s3Endpoint"
+                    :label="$gettext('Endpoint')"
+                />
 
-                    <form-group-field
-                        id="form_edit_s3Bucket"
-                        class="col-md-6"
-                        :field="form.s3Bucket"
-                    >
-                        <template #label>
-                            {{ $gettext('Bucket Name') }}
-                        </template>
-                    </form-group-field>
+                <form-group-field
+                    id="form_edit_s3Bucket"
+                    class="col-md-6"
+                    :field="form.s3Bucket"
+                    :label="$gettext('Bucket Name')"
+                />
 
-                    <form-group-field
-                        id="form_edit_s3Region"
-                        class="col-md-6"
-                        :field="form.s3Region"
-                    >
-                        <template #label>
-                            {{ $gettext('Region') }}
-                        </template>
-                    </form-group-field>
+                <form-group-field
+                    id="form_edit_s3Region"
+                    class="col-md-6"
+                    :field="form.s3Region"
+                    :label="$gettext('Region')"
+                />
 
-                    <form-group-field
-                        id="form_edit_s3Version"
-                        class="col-md-6"
-                        :field="form.s3Version"
-                    >
-                        <template #label>
-                            {{ $gettext('API Version') }}
-                        </template>
-                    </form-group-field>
-                </div>
-            </b-form-group>
+                <form-group-field
+                    id="form_edit_s3Version"
+                    class="col-md-6"
+                    :field="form.s3Version"
+                    :label="$gettext('API Version')"
+                />
+            </div>
         </div>
     </section>
 </template>

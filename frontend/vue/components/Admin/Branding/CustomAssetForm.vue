@@ -1,6 +1,6 @@
 <template>
-    <b-media tag="li">
-        <template #aside>
+    <div class="d-flex">
+        <div class="flex-shrink-0">
             <a
                 :href="url"
                 data-fancybox
@@ -12,31 +12,33 @@
                     :alt="caption"
                 />
             </a>
-        </template>
-        <b-overlay
-            variant="card"
-            :show="loading"
-        >
-            <b-form-group :label-for="id">
-                <template #label>
-                    {{ caption }}
-                </template>
-                <b-form-file
-                    :id="id"
-                    v-model="file"
-                    accept="image/*"
-                />
-            </b-form-group>
-            
-            <button
-                v-if="isUploaded"
-                class="btn btn-danger"
-                @click.prevent="clear()"
+        </div>
+        <div class="flex-grow-1 ms-3">
+            <b-overlay
+                variant="card"
+                :show="loading"
             >
-                {{ $gettext('Clear Image') }}
-            </button>
-        </b-overlay>
-    </b-media>
+                <b-form-group :label-for="id">
+                    <template #label>
+                        {{ caption }}
+                    </template>
+                    <b-form-file
+                        :id="id"
+                        v-model="file"
+                        accept="image/*"
+                    />
+                </b-form-group>
+
+                <button
+                    v-if="isUploaded"
+                    class="btn btn-danger"
+                    @click.prevent="clear()"
+                >
+                    {{ $gettext('Clear Image') }}
+                </button>
+            </b-overlay>
+        </div>
+    </div>
 </template>
 
 <script setup>

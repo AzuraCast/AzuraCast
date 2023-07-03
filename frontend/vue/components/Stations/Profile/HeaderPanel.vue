@@ -1,5 +1,5 @@
 <template>
-    <div class="outside-card-header d-flex align-items-center mb-3">
+    <div class="outside-card-header d-flex align-items-center">
         <div
             v-if="station.listen_url && hasStarted"
             class="flex-shrink-0 me-3"

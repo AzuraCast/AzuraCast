@@ -1,5 +1,5 @@
 <template>
-    <b-modal
+    <modal
         id="import_modal"
         ref="$modal"
         :title="$gettext('Import from PLS/M3U')"
@@ -10,26 +10,24 @@
                 {{ results.message }}
             </p>
 
-            <b-table-simple
-                striped
-                responsive
+            <table
+                class="table table-striped table-responsive"
                 style="max-height: 300px; overflow-y: scroll;"
             >
-                <b-thead>
-                    <b-tr>
-                        <b-th class="p-2">
-                            {{ $gettext('Original Path') }}
-                            <br>
+                <thead>
+                    <tr>
+                        <th class="p-2">
+                            {{ $gettext('Original Path') }}<br>
                             {{ $gettext('Matched') }}
-                        </b-th>
-                    </b-tr>
-                </b-thead>
-                <b-tbody>
-                    <b-tr
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr
                         v-for="row in results.import_results"
                         :key="row.path"
                     >
-                        <b-td
+                        <td
                             class="p-2 text-monospace"
                             style="overflow-x: auto;"
                         >
@@ -44,17 +42,17 @@
                             >
                                 {{ $gettext('No Match') }}
                             </pre>
-                        </b-td>
-                    </b-tr>
-                </b-tbody>
-            </b-table-simple>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
-        <b-form
+        <form
             v-else
             class="form"
             @submit.prevent="doSubmit"
         >
-            <b-form-group label-for="import_modal_playlist_file">
+            <form-group id="import_modal_playlist_file">
                 <template #label>
                     {{ $gettext('Select PLS/M3U File to Import') }}
                 </template>
@@ -63,14 +61,15 @@
                         $gettext('AzuraCast will scan the uploaded file for matches in this station\'s music library. Media should already be uploaded before running this step. You can re-run this tool as many times as needed.')
                     }}
                 </template>
+
                 <b-form-file
                     id="import_modal_playlist_file"
                     v-model="playlistFile"
                 />
-            </b-form-group>
+            </form-group>
 
             <invisible-submit-button />
-        </b-form>
+        </form>
         <template #modal-footer>
             <button
                 class="btn btn-secondary"
@@ -87,7 +86,7 @@
                 {{ $gettext('Import from PLS/M3U') }}
             </button>
         </template>
-    </b-modal>
+    </modal>
 </template>
 
 <script setup>
@@ -95,6 +94,7 @@ import InvisibleSubmitButton from '~/components/Common/InvisibleSubmitButton';
 import {ref} from "vue";
 import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
+import FormGroup from "~/components/Form/FormGroup.vue";
 
 const emit = defineEmits(['relist']);
 

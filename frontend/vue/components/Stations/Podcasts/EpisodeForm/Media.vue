@@ -1,56 +1,54 @@
 <template>
     <o-tab-item :label="$gettext('Media')">
-        <b-form-group>
-            <div class="row g-3">
-                <b-form-group
-                    class="col-md-6"
-                    label-for="media_file"
-                >
-                    <template #label>
-                        {{ $gettext('Select Media File') }}
-                    </template>
-                    <template #description>
-                        {{
-                            $gettext('Podcast media should be in the MP3 or M4A (AAC) format for the greatest compatibility.')
-                        }}
-                    </template>
+        <div class="row g-3">
+            <b-form-group
+                class="col-md-6"
+                label-for="media_file"
+            >
+                <template #label>
+                    {{ $gettext('Select Media File') }}
+                </template>
+                <template #description>
+                    {{
+                        $gettext('Podcast media should be in the MP3 or M4A (AAC) format for the greatest compatibility.')
+                    }}
+                </template>
 
-                    <flow-upload
-                        :target-url="targetUrl"
-                        :valid-mime-types="['audio/x-m4a', 'audio/mpeg']"
-                        @success="onFileSuccess"
-                    />
-                </b-form-group>
+                <flow-upload
+                    :target-url="targetUrl"
+                    :valid-mime-types="['audio/x-m4a', 'audio/mpeg']"
+                    @success="onFileSuccess"
+                />
+            </b-form-group>
 
-                <b-form-group class="col-md-6">
-                    <template #label>
-                        {{ $gettext('Current Podcast Media') }}
-                    </template>
+            <b-form-group class="col-md-6">
+                <template #label>
+                    {{ $gettext('Current Podcast Media') }}
+                </template>
 
-                    <div v-if="hasMedia">
-                        <div class="buttons pt-3">
-                            <a
-                                v-if="downloadUrl"
-                                class="btn btn-block btn-dark"
-                                :href="downloadUrl"
-                                target="_blank"
-                            >
-                                {{ $gettext('Download') }}
-                            </a>
-                            <button
-                                class="btn btn-block btn-danger"
-                                @click="deleteMedia"
-                            >
-                                {{ $gettext('Clear Media') }}
-                            </button>
-                        </div>
+                <template v-if="hasMedia">
+                    <div class="block-buttons pt-3">
+                        <a
+                            v-if="downloadUrl"
+                            class="btn btn-block btn-dark"
+                            :href="downloadUrl"
+                            target="_blank"
+                        >
+                            {{ $gettext('Download') }}
+                        </a>
+                        <button
+                            class="btn btn-block btn-danger"
+                            @click="deleteMedia"
+                        >
+                            {{ $gettext('Clear Media') }}
+                        </button>
                     </div>
-                    <div v-else>
-                        {{ $gettext('There is no existing media associated with this episode.') }}
-                    </div>
-                </b-form-group>
-            </div>
-        </b-form-group>
+                </template>
+                <div v-else>
+                    {{ $gettext('There is no existing media associated with this episode.') }}
+                </div>
+            </b-form-group>
+        </div>
     </o-tab-item>
 </template>
 

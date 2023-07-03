@@ -1,8 +1,5 @@
 <template>
-    <b-card
-        class="mb-3"
-        no-body
-    >
+    <div class="card mb-3">
         <div class="card-header text-bg-primary d-flex align-items-center">
             <div class="flex-fill">
                 <h2 class="card-title">
@@ -21,111 +18,87 @@
                 </button>
             </div>
         </div>
-        <b-card-body>
-            <b-form-group>
-                <div class="row g-3">
-                    <form-group-field
-                        :id="'edit_form_start_time_'+index"
-                        class="col-md-4"
-                        :field="v$.start_time"
-                    >
-                        <template #label>
-                            {{ $gettext('Start Time') }}
-                        </template>
-                        <template #default="slotProps">
-                            <playlist-time
-                                :id="slotProps.id"
-                                v-model="slotProps.field.$model"
-                                :state="slotProps.state"
-                            />
-                        </template>
-                    </form-group-field>
+        <div class="card-body">
+            <div class="row g-3">
+                <form-group-field
+                    :id="'edit_form_start_time_'+index"
+                    class="col-md-4"
+                    :field="v$.start_time"
+                >
+                    <template #label>
+                        {{ $gettext('Start Time') }}
+                    </template>
+                    <template #default="slotProps">
+                        <playlist-time
+                            :id="slotProps.id"
+                            v-model="slotProps.field.$model"
+                            :state="slotProps.state"
+                        />
+                    </template>
+                </form-group-field>
 
-                    <form-group-field
-                        :id="'edit_form_end_time_'+index"
-                        class="col-md-4"
-                        :field="v$.end_time"
-                    >
-                        <template #label>
-                            {{ $gettext('End Time') }}
-                        </template>
-                        <template #description>
-                            {{
-                                $gettext('If the end time is before the start time, the schedule entry will continue overnight.')
-                            }}
-                        </template>
-                        <template #default="slotProps">
-                            <playlist-time
-                                :id="slotProps.id"
-                                v-model="slotProps.field.$model"
-                                :state="slotProps.state"
-                            />
-                        </template>
-                    </form-group-field>
+                <form-group-field
+                    :id="'edit_form_end_time_'+index"
+                    class="col-md-4"
+                    :field="v$.end_time"
+                >
+                    <template #label>
+                        {{ $gettext('End Time') }}
+                    </template>
+                    <template #description>
+                        {{
+                            $gettext('If the end time is before the start time, the schedule entry will continue overnight.')
+                        }}
+                    </template>
+                    <template #default="slotProps">
+                        <playlist-time
+                            :id="slotProps.id"
+                            v-model="slotProps.field.$model"
+                            :state="slotProps.state"
+                        />
+                    </template>
+                </form-group-field>
 
-                    <b-col
-                        md="4"
-                        class="form-group"
-                    >
-                        <label>
-                            {{ $gettext('Station Time Zone') }}
-                        </label>
-                        <div>
-                            {{ $gettext('This station\'s time zone is currently %{tz}.', {tz: stationTimeZone}) }}
-                        </div>
-                    </b-col>
+                <form-markup
+                    id="station_time_zone"
+                    class="col-md-4"
+                >
+                    <template #label>
+                        {{ $gettext('Station Time Zone') }}
+                    </template>
 
-                    <form-group-field
-                        :id="'edit_form_start_date_'+index"
-                        class="col-md-4"
-                        :field="v$.start_date"
-                        input-type="date"
-                    >
-                        <template #label>
-                            {{ $gettext('Start Date') }}
-                        </template>
-                        <template #description>
-                            {{
-                                $gettext('To set this schedule to run only within a certain date range, specify a start and end date.')
-                            }}
-                        </template>
-                    </form-group-field>
+                    {{ $gettext('This station\'s time zone is currently %{tz}.', {tz: stationTimeZone}) }}
+                </form-markup>
 
-                    <form-group-field
-                        :id="'edit_form_end_date_'+index"
-                        class="col-md-4"
-                        :field="v$.end_date"
-                        input-type="date"
-                    >
-                        <template #label>
-                            {{ $gettext('End Date') }}
-                        </template>
-                    </form-group-field>
+                <form-group-field
+                    :id="'edit_form_start_date_'+index"
+                    class="col-md-4"
+                    :field="v$.start_date"
+                    input-type="date"
+                    :label="$gettext('Start Date')"
+                    :description="$gettext('To set this schedule to run only within a certain date range, specify a start and end date.')"
+                />
 
-                    <form-group-field
-                        :id="'edit_form_days_'+index"
-                        class="col-md-4"
-                        :field="v$.days"
-                    >
-                        <template #label>
-                            {{ $gettext('Scheduled Play Days of Week') }}
-                        </template>
-                        <template #description>
-                            {{ $gettext('Leave blank to play on every day of the week.') }}
-                        </template>
-                        <template #default="slotProps">
-                            <b-checkbox-group
-                                :id="slotProps.id"
-                                v-model="slotProps.field.$model"
-                                stacked
-                                :options="dayOptions"
-                            />
-                        </template>
-                    </form-group-field>
-                </div>
-            </b-form-group>
-        </b-card-body>
-    </b-card>
+                <form-group-field
+                    :id="'edit_form_end_date_'+index"
+                    class="col-md-4"
+                    :field="v$.end_date"
+                    input-type="date"
+                    :label="$gettext('End Date')"
+                />
+
+                <form-group-multi-check
+                    :id="'edit_form_days_'+index"
+                    class="col-md-4"
+                    :field="v$.days"
+                    :options="dayOptions"
+                    stacked
+                    :label="$gettext('Scheduled Play Days of Week')"
+                    :description="$gettext('Leave blank to play on every day of the week.')"
+                />
+            </div>
+        </div>
+    </div>
 </template>
 
 <script setup>
@@ -136,6 +109,8 @@ import {required} from "@vuelidate/validators";
 import useVuelidate from "@vuelidate/core";
 import {toRef} from "vue";
 import {useTranslate} from "~/vendor/gettext";
+import FormMarkup from "~/components/Form/FormMarkup.vue";
+import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
 
 const props = defineProps({
     index: {

@@ -27,7 +27,7 @@
                         }}
                     </p>
 
-                    <div class="buttons">
+                    <div class="block-buttons">
                         <a
                             class="btn btn-lg btn-block btn-primary"
                             :href="apiUrl"
@@ -70,12 +70,14 @@
                             />
                         </b-form-group>
 
-                        <button
-                            type="submit"
-                            class="btn btn-lg btn-block btn-primary mt-2"
-                        >
-                            {{ $gettext('Import Changes from CSV') }}
-                        </button>
+                        <div class="block-buttons mt-2">
+                            <button
+                                type="submit"
+                                class="btn btn-lg btn-block btn-primary "
+                            >
+                                {{ $gettext('Import Changes from CSV') }}
+                            </button>
+                        </div>
                     </b-form>
                 </div>
             </section>

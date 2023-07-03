@@ -35,12 +35,12 @@
                     </div>
                 </div>
 
-                <b-alert
-                    variant="danger"
-                    :show="error != null"
+                <div
+                    v-show="error != null"
+                    class="alert alert-danger"
                 >
                     {{ error }}
-                </b-alert>
+                </div>
 
                 <form
                     id="login-form"
@@ -86,13 +86,15 @@
                         </template>
                     </form-group-field>
 
-                    <button
-                        type="submit"
-                        class="btn btn-lg btn-block btn-primary mt-2"
-                        :disabled="v$.$invalid"
-                    >
-                        {{ $gettext('Create Account') }}
-                    </button>
+                    <div class="block-buttons mt-2">
+                        <button
+                            type="submit"
+                            class="btn btn-lg btn-block btn-primary"
+                            :disabled="v$.$invalid"
+                        >
+                            {{ $gettext('Create Account') }}
+                        </button>
+                    </div>
                 </form>
             </div>
         </section>

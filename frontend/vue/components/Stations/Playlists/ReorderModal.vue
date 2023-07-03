@@ -1,5 +1,5 @@
 <template>
-    <b-modal
+    <modal
         id="reorder_modal"
         ref="$modal"
         size="lg"
@@ -7,85 +7,78 @@
         :busy="loading"
         hide-footer
     >
-        <b-overlay
-            variant="card"
-            :show="loading"
+        <div
+            style="min-height: 40px;"
+            class="flex-fill text-start bg-primary rounded mb-2"
         >
-            <div
-                style="min-height: 40px;"
-                class="flex-fill text-start bg-primary rounded mb-2"
+            <inline-player ref="player" />
+        </div>
+
+        <table class="table table-striped sortable mb-0">
+            <thead>
+                <tr>
+                    <th style="width: 5%">
+                    &nbsp;
+                    </th>
+                    <th style="width: 25%;">
+                        {{ $gettext('Title') }}
+                    </th>
+                    <th style="width: 25%;">
+                        {{ $gettext('Artist') }}
+                    </th>
+                    <th style="width: 25%;">
+                        {{ $gettext('Album') }}
+                    </th>
+                    <th style="width: 20%;">
+                        {{ $gettext('Actions') }}
+                    </th>
+                </tr>
+            </thead>
+            <draggable
+                v-model="media"
+                tag="tbody"
+                @change="save"
             >
-                <inline-player ref="player" />
-            </div>
-            <b-table-simple
-                striped
-                class="sortable mb-0"
-            >
-                <b-thead>
-                    <tr>
-                        <th style="width: 5%">
-&nbsp;
-                        </th>
-                        <th style="width: 25%;">
-                            {{ $gettext('Title') }}
-                        </th>
-                        <th style="width: 25%;">
-                            {{ $gettext('Artist') }}
-                        </th>
-                        <th style="width: 25%;">
-                            {{ $gettext('Album') }}
-                        </th>
-                        <th style="width: 20%;">
-                            {{ $gettext('Actions') }}
-                        </th>
-                    </tr>
-                </b-thead>
-                <draggable
-                    v-model="media"
-                    tag="tbody"
-                    @change="save"
+                <tr
+                    v-for="(row,index) in media"
+                    :key="row.media.id"
+                    class="align-middle"
                 >
-                    <tr
-                        v-for="(row,index) in media"
-                        :key="row.media.id"
-                        class="align-middle"
-                    >
-                        <td class="pe-2">
-                            <play-button
-                                :url="row.media.links.play"
-                                icon-class="lg outlined"
-                            />
-                        </td>
-                        <td class="ps-2">
-                            <span class="typography-subheading">{{ row.media.title }}</span>
-                        </td>
-                        <td>{{ row.media.artist }}</td>
-                        <td>{{ row.media.album }}</td>
-                        <td>
-                            <div class="btn-group btn-group-sm">
-                                <button
-                                    v-if="index+1 < media.length"
-                                    class="btn btn-primary"
-                                    :title="$gettext('Down')"
-                                    @click.prevent="moveDown(index)"
-                                >
-                                    <icon icon="arrow_downward" />
-                                </button>
-                                <button
-                                    v-if="index > 0"
-                                    class="btn btn-primary"
-                                    :title="$gettext('Up')"
-                                    @click.prevent="moveUp(index)"
-                                >
-                                    <icon icon="arrow_upward" />
-                                </button>
-                            </div>
-                        </td>
-                    </tr>
-                </draggable>
-            </b-table-simple>
-        </b-overlay>
-    </b-modal>
+                    <td class="pe-2">
+                        <play-button
+                            :url="row.media.links.play"
+                            icon-class="lg outlined"
+                        />
+                    </td>
+                    <td class="ps-2">
+                        <span class="typography-subheading">{{ row.media.title }}</span>
+                    </td>
+                    <td>{{ row.media.artist }}</td>
+                    <td>{{ row.media.album }}</td>
+                    <td>
+                        <div class="btn-group btn-group-sm">
+                            <button
+                                v-if="index+1 < media.length"
+                                class="btn btn-primary"
+                                :title="$gettext('Down')"
+                                @click.prevent="moveDown(index)"
+                            >
+                                <icon icon="arrow_downward" />
+                            </button>
+                            <button
+                                v-if="index > 0"
+                                class="btn btn-primary"
+                                :title="$gettext('Up')"
+                                @click.prevent="moveUp(index)"
+                            >
+                                <icon icon="arrow_upward" />
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </draggable>
+        </table>
+    </modal>
 </template>
 
 <script setup>
@@ -97,6 +90,7 @@ import {ref} from "vue";
 import {useAxios} from "~/vendor/axios";
 import {useNotify} from "~/functions/useNotify";
 import {useTranslate} from "~/vendor/gettext";
+import Modal from "~/components/Common/Modal.vue";
 
 const loading = ref(true);
 const reorderUrl = ref(null);

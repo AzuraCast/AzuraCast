@@ -1,53 +1,54 @@
 <template>
     <o-tab-item :label="$gettext('Artwork')">
-        <b-form-group>
-            <b-row>
-                <b-col md="8">
-                    <b-form-group label-for="edit_form_art">
-                        <template #label>
-                            {{ $gettext('Select PNG/JPG artwork file') }}
-                        </template>
-                        <template #description>
-                            {{
-                                $gettext('Artwork must be a minimum size of 1400 x 1400 pixels and a maximum size of 3000 x 3000 pixels for Apple Podcasts.')
-                            }}
-                        </template>
-                        <b-form-file
-                            id="edit_form_art"
-                            v-model="uploadedFile"
-                            accept="image/jpeg, image/png"
-                        />
-                    </b-form-group>
-                </b-col>
-                <b-col
-                    v-if="src && src !== ''"
-                    md="4"
-                >
-                    <b-img
-                        :src="src"
-                        :alt="$gettext('Artwork')"
-                        rounded
-                        fluid
-                    />
+        <div class="row g-3">
+            <div class="col-md-8">
+                <form-group :id="edit_form_art">
+                    <template #label>
+                        {{ $gettext('Select PNG/JPG artwork file') }}
+                    </template>
+                    <template #description>
+                        {{
+                            $gettext('Artwork must be a minimum size of 1400 x 1400 pixels and a maximum size of 3000 x 3000 pixels for Apple Podcasts.')
+                        }}
+                    </template>
 
-                    <div class="buttons pt-3">
-                        <button
-                            class="btn btn-block btn-danger"
-                            @click="deleteArt"
-                        >
-                            {{ $gettext('Clear Artwork') }}
-                        </button>
-                    </div>
-                </b-col>
-            </b-row>
-        </b-form-group>
+                    <!-- TODO -->
+                    <b-form-file
+                        id="edit_form_art"
+                        v-model="uploadedFile"
+                        accept="image/jpeg, image/png"
+                    />
+                </form-group>
+            </div>
+            <div
+                v-if="src && src !== ''"
+                class="col-md-4"
+            >
+                <!-- TODO -->
+                <b-img
+                    :src="src"
+                    :alt="$gettext('Artwork')"
+                    rounded
+                    fluid
+                />
+
+                <div class="block-buttons pt-3">
+                    <button
+                        class="btn btn-block btn-danger"
+                        @click="deleteArt"
+                    >
+                        {{ $gettext('Clear Artwork') }}
+                    </button>
+                </div>
+            </div>
+        </div>
     </o-tab-item>
 </template>
 
 <script setup>
-
 import {computed, ref, toRef, watch} from "vue";
 import {useAxios} from "~/vendor/axios";
+import FormGroup from "~/components/Form/FormGroup.vue";
 
 const props = defineProps({
     modelValue: {

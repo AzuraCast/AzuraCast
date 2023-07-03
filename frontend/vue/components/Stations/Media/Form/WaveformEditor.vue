@@ -5,70 +5,67 @@
         }}
     </p>
 
-    <b-form-group>
-        <waveform-component
-            ref="$waveform"
-            :audio-url="audioUrl"
-            :waveform-url="waveformUrl"
-            @ready="updateRegions"
-        />
-    </b-form-group>
-    <b-form-group>
-        <div class="buttons">
-            <div class="btn-group btn-group-sm">
-                <button
-                    class="btn btn-light"
-                    :title="$gettext('Play')"
-                    @click="playAudio"
-                >
-                    <icon icon="play_arrow" />
-                </button>
-                <button
-                    class="btn btn-dark"
-                    :title="$gettext('Stop')"
-                    @click="stopAudio"
-                >
-                    <icon icon="stop" />
-                </button>
-            </div>
-            <div class="btn-group btn-group-sm">
-                <button
-                    class="btn btn-primary"
-                    @click="setCueIn"
-                >
-                    {{ $gettext('Set Cue In') }}
-                </button>
-                <button
-                    class="btn btn-primary"
-                    @click="setCueOut"
-                >
-                    {{ $gettext('Set Cue Out') }}
-                </button>
-            </div>
-            <div class="btn-group btn-group-sm">
-                <button
-                    class="btn btn-warning"
-                    @click="setFadeOverlap"
-                >
-                    {{ $gettext('Set Overlap') }}
-                </button>
-            </div>
-            <div class="btn-group btn-group-sm">
-                <button
-                    class="btn btn-danger"
-                    @click="setFadeIn"
-                >
-                    {{ $gettext('Set Fade In') }}
-                </button>
-                <button
-                    class="btn btn-danger"
-                    @click="setFadeOut"
-                >
-                    {{ $gettext('Set Fade Out') }}
-                </button>
-            </div>
+    <waveform-component
+        ref="$waveform"
+        :audio-url="audioUrl"
+        :waveform-url="waveformUrl"
+        @ready="updateRegions"
+    />
+
+    <div class="buttons mt-3">
+        <div class="btn-group btn-group-sm">
+            <button
+                class="btn btn-light"
+                :title="$gettext('Play')"
+                @click="playAudio"
+            >
+                <icon icon="play_arrow" />
+            </button>
+            <button
+                class="btn btn-dark"
+                :title="$gettext('Stop')"
+                @click="stopAudio"
+            >
+                <icon icon="stop" />
+            </button>
         </div>
-    </b-form-group>
+        <div class="btn-group btn-group-sm">
+            <button
+                class="btn btn-primary"
+                @click="setCueIn"
+            >
+                {{ $gettext('Set Cue In') }}
+            </button>
+            <button
+                class="btn btn-primary"
+                @click="setCueOut"
+            >
+                {{ $gettext('Set Cue Out') }}
+            </button>
+        </div>
+        <div class="btn-group btn-group-sm">
+            <button
+                class="btn btn-warning"
+                @click="setFadeOverlap"
+            >
+                {{ $gettext('Set Overlap') }}
+            </button>
+        </div>
+        <div class="btn-group btn-group-sm">
+            <button
+                class="btn btn-danger"
+                @click="setFadeIn"
+            >
+                {{ $gettext('Set Fade In') }}
+            </button>
+            <button
+                class="btn btn-danger"
+                @click="setFadeOut"
+            >
+                {{ $gettext('Set Fade Out') }}
+            </button>
+        </div>
+    </div>
 </template>
 
 <script setup>

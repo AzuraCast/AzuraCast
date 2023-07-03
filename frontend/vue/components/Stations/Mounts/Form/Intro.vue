@@ -28,7 +28,7 @@
                     </template>
 
                     <div v-if="hasIntro">
-                        <div class="buttons pt-3">
+                        <div class="block-buttons pt-3">
                             <a
                                 v-if="editIntroUrl"
                                 class="btn btn-block btn-dark"

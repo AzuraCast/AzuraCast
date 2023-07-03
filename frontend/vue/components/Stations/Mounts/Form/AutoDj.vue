@@ -6,67 +6,45 @@
                     id="edit_form_enable_autodj"
                     class="col-md-12"
                     :field="form.enable_autodj"
-                >
-                    <template #label>
-                        {{ $gettext('Enable AutoDJ') }}
-                    </template>
-                    <template #description>
-                        {{ $gettext('If enabled, the AutoDJ will automatically play music to this mount point.') }}
-                    </template>
-                </form-group-checkbox>
+                    :label="$gettext('Enable AutoDJ')"
+                    :description="$gettext('If enabled, the AutoDJ will automatically play music to this mount point.')"
+                />
             </div>
 
             <div
                 v-if="form.enable_autodj.$model"
                 class="row g-3"
             >
-                <form-group-field
+                <form-group-multi-check
                     id="edit_form_autodj_format"
                     class="col-md-6"
                     :field="form.autodj_format"
-                >
-                    <template #label>
-                        {{ $gettext('AutoDJ Format') }}
-                    </template>
-                    <template #default="slotProps">
-                        <b-form-radio-group
-                            :id="slotProps.id"
-                            v-model="slotProps.field.$model"
-                            stacked
-                            :state="slotProps.state"
-                            :options="formatOptions"
-                        />
-                    </template>
-                </form-group-field>
-                <form-group-field
+                    :options="formatOptions"
+                    stacked
+                    radio
+                    :label="$gettext('AutoDJ Format')"
+                />
+
+                <form-group-multi-check
                     v-if="formatSupportsBitrateOptions"
                     id="edit_form_autodj_bitrate"
                     class="col-md-6"
                     :field="form.autodj_bitrate"
-                >
-                    <template #label>
-                        {{ $gettext('AutoDJ Bitrate (kbps)') }}
-                    </template>
-                    <template #default="slotProps">
-                        <b-form-radio-group
-                            :id="slotProps.id"
-                            v-model="slotProps.field.$model"
-                            stacked
-                            :state="slotProps.state"
-                            :options="bitrateOptions"
-                        />
-                    </template>
-                </form-group-field>
+                    :options="bitrateOptions"
+                    stacked
+                    radio
+                    :label="$gettext('AutoDJ Bitrate (kbps)')"
+                />
             </div>
         </b-form-group>
     </o-tab-item>
 </template>
 
 <script setup>
-import FormGroupField from "~/components/Form/FormGroupField";
 import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox";
 import {map} from "lodash";
 import {computed} from "vue";
+import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
 
 const props = defineProps({
     form: {

@@ -21,17 +21,19 @@
             }}
         </info-card>
 
-        <admin-stations-form
-            v-bind="$props"
-            ref="$adminForm"
-            :is-edit-mode="false"
-            :create-url="createUrl"
-            @submitted="onSubmitted"
-        >
-            <template #submitButtonText>
-                {{ $gettext('Create and Continue') }}
-            </template>
-        </admin-stations-form>
+        <div class="card-body">
+            <admin-stations-form
+                v-bind="$props"
+                ref="$adminForm"
+                :is-edit-mode="false"
+                :create-url="createUrl"
+                @submitted="onSubmitted"
+            >
+                <template #submitButtonText>
+                    {{ $gettext('Create and Continue') }}
+                </template>
+            </admin-stations-form>
+        </div>
     </section>
 </template>
 

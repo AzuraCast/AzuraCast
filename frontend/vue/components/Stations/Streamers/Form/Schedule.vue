@@ -1,13 +1,16 @@
 <template>
     <o-tab-item :labe="$gettext('Schedule')">
-        <b-form-group v-if="scheduleItems.length === 0">
-            <label>
+        <form-markup
+            v-if="scheduleItems.length === 0"
+            id="no_scheduled_entries"
+        >
+            <template #label>
                 {{ $gettext('Not Scheduled') }}
-            </label>
+            </template>
             <p>
                 {{ $gettext('This streamer is not scheduled to play at any times.') }}
             </p>
-        </b-form-group>
+        </form-markup>
 
         <streamers-form-schedule-row
             v-for="(row, index) in scheduleItems"
@@ -18,7 +21,7 @@
             @remove="remove(index)"
         />
 
-        <div class="buttons">
+        <div class="buttons mt-3">
             <button
                 class="btn btn-sm btn-primary"
                 @click.prevent="add"
@@ -36,6 +39,7 @@
 import Icon from '~/components/Common/Icon';
 import StreamersFormScheduleRow from "~/components/Stations/Streamers/Form/ScheduleRow.vue";
 import {useVModel} from "@vueuse/core";
+import FormMarkup from "~/components/Form/FormMarkup.vue";
 
 const props = defineProps({
     form: {

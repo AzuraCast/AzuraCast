@@ -12,35 +12,17 @@
                 id="form_edit_name"
                 class="col-md-12"
                 :field="v$.name"
-            >
-                <template #label>
-                    {{ $gettext('New Playlist Name') }}
-                </template>
-            </form-group-field>
+                :label="$gettext('New Playlist Name')"
+            />
 
-            <form-group-field
+            <form-group-multi-check
                 id="form_edit_clone"
                 class="col-md-12"
                 :field="v$.clone"
-            >
-                <template #label>
-                    {{ $gettext('Customize Copy') }}
-                </template>
-                <template #default="slotProps">
-                    <b-form-checkbox-group
-                        :id="slotProps.id"
-                        v-model="slotProps.field.$model"
-                        stacked
-                    >
-                        <b-form-checkbox value="media">
-                            {{ $gettext('Copy associated media and folders.') }}
-                        </b-form-checkbox>
-                        <b-form-checkbox value="schedule">
-                            {{ $gettext('Copy scheduled playback times.') }}
-                        </b-form-checkbox>
-                    </b-form-checkbox-group>
-                </template>
-            </form-group-field>
+                :options="copyOptions"
+                stacked
+                :label="$gettext('Customize Copy')"
+            />
         </div>
     </modal-form>
 </template>
@@ -54,6 +36,7 @@ import {ref} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
+import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
 
 const emit = defineEmits(['relist', 'needs-restart']);
 
@@ -76,6 +59,17 @@ const clearContents = () => {
 };
 
 const {$gettext} = useTranslate();
+
+const copyOptions = [
+    {
+        value: 'media',
+        text: $gettext('Copy associated media and folders.')
+    },
+    {
+        value: 'schedule',
+        text: $gettext('Copy scheduled playback times.')
+    }
+];
 
 const $modal = ref(); // Template Ref
 

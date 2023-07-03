@@ -1,5 +1,5 @@
 <template>
-    <b-modal
+    <modal
         id="apply_playlist_to_modal"
         ref="$modal"
         size="xl"
@@ -8,46 +8,37 @@
         :title="$gettext('Apply Playlist to Folders')"
         @hidden="clearContents"
     >
-        <b-overlay
-            variant="card"
-            :show="loading"
-        >
-            <div class="row g-3">
-                <div class="col-md-4">
-                    <form-fieldset>
-                        <form-markup id="apply_to_playlist_name">
-                            <template #label>
-                                {{ $gettext('Playlist:') }}
-                            </template>
+        <div class="row g-3">
+            <div class="col-md-4">
+                <form-markup id="apply_to_playlist_name">
+                    <template #label>
+                        {{ $gettext('Playlist:') }}
+                    </template>
 
-                            {{ applyToResults.playlist.name }}
-                        </form-markup>
-                    </form-fieldset>
-                </div>
-                <div class="col-md-8">
-                    <form-fieldset>
-                        <form-group-checkbox
-                            id="form_applyto_copy_playlist"
-                            :field="v$.copyPlaylist"
-                        >
-                            <template #label>
-                                {{ $gettext('Create New Playlist for Each Folder') }}
-                            </template>
-                        </form-group-checkbox>
-                    </form-fieldset>
-                </div>
+                    {{ applyToResults.playlist.name }}
+                </form-markup>
             </div>
+            <div class="col-md-8">
+                <form-group-checkbox
+                    id="form_applyto_copy_playlist"
+                    :field="v$.copyPlaylist"
+                >
+                    <template #label>
+                        {{ $gettext('Create New Playlist for Each Folder') }}
+                    </template>
+                </form-group-checkbox>
+            </div>
+        </div>
 
-            <div style="max-height: 300px; overflow-y: scroll">
-                <data-table
-                    :fields="fields"
-                    :items="applyToResults.directories"
-                    :show-toolbar="false"
-                    selectable
-                    @row-selected="onRowSelected"
-                />
-            </div>
-        </b-overlay>
+        <div style="max-height: 300px; overflow-y: scroll">
+            <data-table
+                :fields="fields"
+                :items="applyToResults.directories"
+                :show-toolbar="false"
+                selectable
+                @row-selected="onRowSelected"
+            />
+        </div>
 
         <template #modal-footer>
             <button
@@ -63,7 +54,7 @@
                 {{ $gettext('Apply to Folders') }}
             </button>
         </template>
-    </b-modal>
+    </modal>
 </template>
 
 <script setup>
@@ -72,12 +63,12 @@ import {ref} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
-import FormFieldset from "~/components/Form/FormFieldset";
 import FormMarkup from "~/components/Form/FormMarkup.vue";
 import {useVuelidateOnForm} from '~/functions/useVuelidateOnForm';
 import {map} from "lodash";
 import {useResettableRef} from "~/functions/useResettableRef";
 import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
+import Modal from "~/components/Common/Modal.vue";
 
 const emit = defineEmits(['relist']);
 

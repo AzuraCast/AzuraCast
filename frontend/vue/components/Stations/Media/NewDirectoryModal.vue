@@ -1,21 +1,18 @@
 <template>
-    <b-modal
+    <modal
         id="create_directory"
         ref="$modal"
         centered
         :title="$gettext('New Directory')"
     >
-        <b-form @submit.prevent="doMkdir">
+        <form @submit.prevent="doMkdir">
             <form-group-field
                 id="new_directory_name"
                 :field="v$.newDirectory"
                 autofocus
-            >
-                <template #label>
-                    {{ $gettext('Directory Name') }}
-                </template>
-            </form-group-field>
-        </b-form>
+                :label="$gettext('Directory Name')"
+            />
+        </form>
         <template #modal-footer>
             <button
                 class="btn btn-secondary"
@@ -31,7 +28,7 @@
                 {{ $gettext('Create Directory') }}
             </button>
         </template>
-    </b-modal>
+    </modal>
 </template>
 
 <script setup>
@@ -42,6 +39,7 @@ import {ref} from "vue";
 import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
 import {useTranslate} from "~/vendor/gettext";
+import Modal from "~/components/Common/Modal.vue";
 
 const props = defineProps({
     currentDirectory: {

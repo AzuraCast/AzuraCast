@@ -53,7 +53,7 @@
                             {{ $gettext('Current Configuration File') }}
                         </template>
                         <div v-if="hasStereoToolConfiguration">
-                            <div class="buttons pt-3">
+                            <div class="block-buttons pt-3">
                                 <a
                                     class="btn btn-block btn-dark"
                                     :href="apiUrl"

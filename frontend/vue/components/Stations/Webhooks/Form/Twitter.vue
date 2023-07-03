@@ -1,5 +1,5 @@
 <template>
-    <b-form-group>
+    <form-markup id="twitter_account_details">
         <template #label>
             {{ $gettext('Twitter Account Details') }}
         </template>
@@ -32,53 +32,39 @@
                 $gettext('Once these steps are completed, enter the information from the "Keys and Access Tokens" page into the fields below.')
             }}
         </p>
-    </b-form-group>
+    </form-markup>
 
-    <b-form-group>
-        <div class="row g-3">
-            <form-group-field
-                id="form_config_consumer_key"
-                class="col-md-6"
-                :field="form.config.consumer_key"
-            >
-                <template #label>
-                    {{ $gettext('Consumer Key (API Key)') }}
-                </template>
-            </form-group-field>
+    <div class="row g-3 mb-3">
+        <form-group-field
+            id="form_config_consumer_key"
+            class="col-md-6"
+            :field="form.config.consumer_key"
+            :label="$gettext('Consumer Key (API Key)')"
+        />
 
-            <form-group-field
-                id="form_config_consumer_secret"
-                class="col-md-6"
-                :field="form.config.consumer_secret"
-            >
-                <template #label>
-                    {{ $gettext('Consumer Secret (API Secret)') }}
-                </template>
-            </form-group-field>
+        <form-group-field
+            id="form_config_consumer_secret"
+            class="col-md-6"
+            :field="form.config.consumer_secret"
+            :label="$gettext('Consumer Secret (API Secret)')"
+        />
 
-            <form-group-field
-                id="form_config_token"
-                class="col-md-6"
-                :field="form.config.token"
-            >
-                <template #label>
-                    {{ $gettext('Access Token') }}
-                </template>
-            </form-group-field>
+        <form-group-field
+            id="form_config_token"
+            class="col-md-6"
+            :field="form.config.token"
+            :label="$gettext('Access Token')"
+        />
 
-            <form-group-field
-                id="form_config_token_secret"
-                class="col-md-6"
-                :field="form.config.token_secret"
-            >
-                <template #label>
-                    {{ $gettext('Access Token Secret') }}
-                </template>
-            </form-group-field>
+        <form-group-field
+            id="form_config_token_secret"
+            class="col-md-6"
+            :field="form.config.token_secret"
+            :label="$gettext('Access Token Secret')"
+        />
 
-            <common-rate-limit-fields :form="form" />
-        </div>
-    </b-form-group>
+        <common-rate-limit-fields :form="form" />
+    </div>
 
     <common-social-post-fields
         :form="form"
@@ -90,6 +76,7 @@
 import FormGroupField from "~/components/Form/FormGroupField";
 import CommonRateLimitFields from "./Common/RateLimitFields";
 import CommonSocialPostFields from "./Common/SocialPostFields";
+import FormMarkup from "~/components/Form/FormMarkup.vue";
 
 const props = defineProps({
     form: {

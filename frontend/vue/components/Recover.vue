@@ -55,13 +55,15 @@
                         </template>
                     </form-group-field>
 
-                    <button
-                        type="submit"
-                        class="btn btn-lg btn-primary btn-block mt-2"
-                        :disabled="v$.$invalid"
-                    >
-                        {{ $gettext('Recover Account') }}
-                    </button>
+                    <div class="block-buttons mt-2">
+                        <button
+                            type="submit"
+                            class="btn btn-lg btn-primary btn-block"
+                            :disabled="v$.$invalid"
+                        >
+                            {{ $gettext('Recover Account') }}
+                        </button>
+                    </div>
                 </form>
             </div>
         </section>

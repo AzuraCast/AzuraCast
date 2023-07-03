@@ -1,5 +1,5 @@
 <template>
-    <b-modal
+    <modal
         id="queue_modal"
         ref="$modal"
         size="lg"
@@ -11,38 +11,32 @@
                 $gettext('This queue contains the remaining tracks in the order they will be queued by the AzuraCast AutoDJ (if the tracks are eligible to be played).')
             }}
         </p>
-        <b-overlay
-            variant="card"
-            :show="loading"
-        >
-            <b-table-simple
-                striped
-                class="sortable mb-0"
-            >
-                <b-thead>
-                    <tr>
-                        <th style="width: 50%;">
-                            {{ $gettext('Title') }}
-                        </th>
-                        <th style="width: 50%;">
-                            {{ $gettext('Artist') }}
-                        </th>
-                    </tr>
-                </b-thead>
-                <b-tbody>
-                    <tr
-                        v-for="row in media"
-                        :key="row.id"
-                        class="align-middle"
-                    >
-                        <td>
-                            <span class="typography-subheading">{{ row.title }}</span>
-                        </td>
-                        <td>{{ row.artist }}</td>
-                    </tr>
-                </b-tbody>
-            </b-table-simple>
-        </b-overlay>
+
+        <table class="table table-striped sortable mb-0">
+            <thead>
+                <tr>
+                    <th style="width: 50%;">
+                        {{ $gettext('Title') }}
+                    </th>
+                    <th style="width: 50%;">
+                        {{ $gettext('Artist') }}
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr
+                    v-for="row in media"
+                    :key="row.id"
+                    class="align-middle"
+                >
+                    <td>
+                        <span class="typography-subheading">{{ row.title }}</span>
+                    </td>
+                    <td>{{ row.artist }}</td>
+                </tr>
+            </tbody>
+        </table>
+
         <template #modal-footer>
             <button
                 class="btn btn-secondary"
@@ -59,7 +53,7 @@
                 {{ $gettext('Clear Queue') }}
             </button>
         </template>
-    </b-modal>
+    </modal>
 </template>
 
 <script setup>
@@ -67,6 +61,7 @@ import {ref} from "vue";
 import {useAxios} from "~/vendor/axios";
 import {useNotify} from "~/functions/useNotify";
 import {useTranslate} from "~/vendor/gettext";
+import Modal from "~/components/Common/Modal.vue";
 
 const loading = ref(true);
 const queueUrl = ref(null);

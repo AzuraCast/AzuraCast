@@ -18,86 +18,84 @@
                 </button>
             </div>
         </div>
-        <b-card-body>
-            <b-form-group>
-                <div class="row g-3">
-                    <form-group-field
-                        :id="'edit_form_start_time_'+index"
-                        class="col-md-4"
-                        :field="v$.start_time"
-                        :label="$gettext('Start Time')"
-                        :description="$gettext('To play once per day, set the start and end times to the same value.')"
-                    >
-                        <template #default="slotProps">
-                            <playlist-time
-                                :id="slotProps.id"
-                                v-model="slotProps.field.$model"
-                                :class="slotProps.class"
-                            />
-                        </template>
-                    </form-group-field>
+        <div class="card-body">
+            <div class="row g-3">
+                <form-group-field
+                    :id="'edit_form_start_time_'+index"
+                    class="col-md-4"
+                    :field="v$.start_time"
+                    :label="$gettext('Start Time')"
+                    :description="$gettext('To play once per day, set the start and end times to the same value.')"
+                >
+                    <template #default="slotProps">
+                        <playlist-time
+                            :id="slotProps.id"
+                            v-model="slotProps.field.$model"
+                            :class="slotProps.class"
+                        />
+                    </template>
+                </form-group-field>
 
-                    <form-group-field
-                        :id="'edit_form_end_time_'+index"
-                        class="col-md-4"
-                        :field="v$.end_time"
-                        :label="$gettext('End Time')"
-                        :description="$gettext('If the end time is before the start time, the playlist will play overnight.')"
-                    >
-                        <template #default="slotProps">
-                            <playlist-time
-                                :id="slotProps.id"
-                                v-model="slotProps.field.$model"
-                                :class="slotProps.class"
-                            />
-                        </template>
-                    </form-group-field>
+                <form-group-field
+                    :id="'edit_form_end_time_'+index"
+                    class="col-md-4"
+                    :field="v$.end_time"
+                    :label="$gettext('End Time')"
+                    :description="$gettext('If the end time is before the start time, the playlist will play overnight.')"
+                >
+                    <template #default="slotProps">
+                        <playlist-time
+                            :id="slotProps.id"
+                            v-model="slotProps.field.$model"
+                            :class="slotProps.class"
+                        />
+                    </template>
+                </form-group-field>
 
-                    <form-markup
-                        id="station_time_zone"
-                        class="col-md-4"
-                        :label="$gettext('Station Time Zone')"
-                    >
-                        {{ $gettext('This station\'s time zone is currently %{tz}.', {tz: stationTimeZone}) }}
-                    </form-markup>
+                <form-markup
+                    id="station_time_zone"
+                    class="col-md-4"
+                    :label="$gettext('Station Time Zone')"
+                >
+                    {{ $gettext('This station\'s time zone is currently %{tz}.', {tz: stationTimeZone}) }}
+                </form-markup>
 
-                    <form-group-field
-                        :id="'edit_form_start_date_'+index"
-                        class="col-md-4"
-                        :field="v$.start_date"
-                        input-type="date"
-                        :label="$gettext('Start Date')"
-                        :description="$gettext('To set this schedule to run only within a certain date range, specify a start and end date.')"
-                    />
+                <form-group-field
+                    :id="'edit_form_start_date_'+index"
+                    class="col-md-4"
+                    :field="v$.start_date"
+                    input-type="date"
+                    :label="$gettext('Start Date')"
+                    :description="$gettext('To set this schedule to run only within a certain date range, specify a start and end date.')"
+                />
 
-                    <form-group-field
-                        :id="'edit_form_end_date_'+index"
-                        class="col-md-4"
-                        :field="v$.end_date"
-                        input-type="date"
-                        :label="$gettext('End Date')"
-                    />
+                <form-group-field
+                    :id="'edit_form_end_date_'+index"
+                    class="col-md-4"
+                    :field="v$.end_date"
+                    input-type="date"
+                    :label="$gettext('End Date')"
+                />
 
-                    <form-group-checkbox
-                        :id="'edit_form_loop_once_'+index"
-                        class="col-md-4"
-                        :field="v$.loop_once"
-                        :label="$gettext('Loop Once')"
-                        :description="$gettext('Only loop through playlist once.')"
-                    />
+                <form-group-checkbox
+                    :id="'edit_form_loop_once_'+index"
+                    class="col-md-4"
+                    :field="v$.loop_once"
+                    :label="$gettext('Loop Once')"
+                    :description="$gettext('Only loop through playlist once.')"
+                />
 
-                    <form-group-multi-check
-                        :id="'edit_form_days_'+index"
-                        class="col-md-4"
-                        :field="v$.days"
-                        :label="$gettext('Scheduled Play Days of Week')"
-                        :description="$gettext('Leave blank to play on every day of the week.')"
-                        :options="dayOptions"
-                        stacked
-                    />
-                </div>
-            </b-form-group>
-        </b-card-body>
+                <form-group-multi-check
+                    :id="'edit_form_days_'+index"
+                    class="col-md-4"
+                    :field="v$.days"
+                    :label="$gettext('Scheduled Play Days of Week')"
+                    :description="$gettext('Leave blank to play on every day of the week.')"
+                    :options="dayOptions"
+                    stacked
+                />
+            </div>
+        </div>
     </section>
 </template>
 

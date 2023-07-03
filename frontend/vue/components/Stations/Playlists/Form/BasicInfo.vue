@@ -8,56 +8,39 @@
                 id="form_edit_name"
                 class="col-md-6"
                 :field="form.name"
-            >
-                <template #label>
-                    {{ $gettext('Playlist Name') }}
-                </template>
-            </form-group-field>
+                :label="$gettext('Playlist Name')"
+            />
 
             <form-group-checkbox
                 id="form_edit_is_enabled"
                 class="col-md-6"
                 :field="form.is_enabled"
-            >
-                <template #label>
-                    {{ $gettext('Enable') }}
-                </template>
-                <template #description>
-                    {{
-                        $gettext('If disabled, the playlist will not be included in radio playback, but can still be managed.')
-                    }}
-                </template>
-            </form-group-checkbox>
+                :label="$gettext('Enable')"
+                :description="$gettext('If disabled, the playlist will not be included in radio playback, but can still be managed.')"
+            />
 
-            <form-group-field
+            <form-group-multi-check
                 id="edit_form_source"
                 class="col-md-12"
                 :field="form.source"
+                :options="sourceOptions"
+                stacked
+                radio
+                :label="$gettext('Source')"
             >
-                <template #label>
-                    {{ $gettext('Source') }}
+                <template #label(songs)>
+                    {{ $gettext('Song-Based') }}
+                    <span class="form-text mt-0">
+                        {{ $gettext('A playlist containing media files hosted on this server.') }}
+                    </span>
                 </template>
-                <template #default="slotProps">
-                    <b-form-radio-group
-                        :id="slotProps.id"
-                        v-model="slotProps.field.$model"
-                        stacked
-                    >
-                        <b-form-radio value="songs">
-                            {{ $gettext('Song-Based') }}
-                            <span class="form-text mt-0">
-                                {{ $gettext('A playlist containing media files hosted on this server.') }}
-                            </span>
-                        </b-form-radio>
-                        <b-form-radio value="remote_url">
-                            {{ $gettext('Remote URL') }}
-                            <span class="form-text mt-0">
-                                {{ $gettext('A playlist that instructs the station to play from a remote URL.') }}
-                            </span>
-                        </b-form-radio>
-                    </b-form-radio-group>
+                <template #label(remote_url)>
+                    {{ $gettext('Remote URL') }}
+                    <span class="form-text mt-0">
+                        {{ $gettext('A playlist that instructs the station to play from a remote URL.') }}
+                    </span>
                 </template>
-            </form-group-field>
+            </form-group-multi-check>
         </div>
 
         <section
@@ -76,171 +59,122 @@
                         id="form_edit_avoid_duplicates"
                         class="col-md-6"
                         :field="form.avoid_duplicates"
-                    >
-                        <template #label>
-                            {{ $gettext('Avoid Duplicate Artists/Titles') }}
-                        </template>
-                        <template #description>
-                            {{
-                                $gettext('Whether the AutoDJ should attempt to avoid duplicate artists and track titles when playing media from this playlist.')
-                            }}
-                        </template>
-                    </form-group-checkbox>
+                        :label="$gettext('Avoid Duplicate Artists/Titles')"
+                        :description="$gettext('Whether the AutoDJ should attempt to avoid duplicate artists and track titles when playing media from this playlist.')"
+                    />
 
                     <form-group-checkbox
                         id="form_edit_include_in_on_demand"
                         class="col-md-6"
                         :field="form.include_in_on_demand"
-                    >
-                        <template #label>
-                            {{ $gettext('Include in On-Demand Player') }}
-                        </template>
-                        <template #description>
-                            {{
-                                $gettext('If this station has on-demand streaming and downloading enabled, only songs that are in playlists with this setting enabled will be visible.')
-                            }}
-                        </template>
-                    </form-group-checkbox>
+                        :label="$gettext('Include in On-Demand Player')"
+                        :description="$gettext('If this station has on-demand streaming and downloading enabled, only songs that are in playlists with this setting enabled will be visible.')"
+                    />
 
-                    <form-group-field
+                    <form-group-checkbox
                         id="form_edit_include_in_requests"
                         class="col-md-6"
                         :field="form.include_in_requests"
-                    >
-                        <template #description>
-                            {{
-                                $gettext('If requests are enabled for your station, users will be able to request media that is on this playlist.')
-                            }}
-                        </template>
-                        <template #default="slotProps">
-                            <b-form-checkbox
-                                :id="slotProps.id"
-                                v-model="slotProps.field.$model"
-                            >
-                                {{ $gettext('Allow Requests from This Playlist') }}
-                            </b-form-checkbox>
-                        </template>
-                    </form-group-field>
+                        :label="$gettext('Allow Requests from This Playlist')"
+                        :description="$gettext('If requests are enabled for your station, users will be able to request media that is on this playlist.')"
+                    />
 
-                    <form-group-field
+                    <form-group-checkbox
                         id="form_edit_is_jingle"
                         class="col-md-6"
                         :field="form.is_jingle"
+                        :description="$gettext('Enable this setting to prevent metadata from being sent to the AutoDJ for files in this playlist. This is useful if the playlist contains jingles or bumpers.')"
                     >
-                        <template #description>
-                            {{
-                                $gettext('Enable this setting to prevent metadata from being sent to the AutoDJ for files in this playlist. This is useful if the playlist contains jingles or bumpers.')
-                            }}
+                        <template #label>
+                            {{ $gettext('Hide Metadata from Listeners ("Jingle Mode")') }}
                         </template>
-                        <template #default="slotProps">
-                            <b-form-checkbox
-                                :id="slotProps.id"
-                                v-model="slotProps.field.$model"
-                            >
-                                {{ $gettext('Hide Metadata from Listeners ("Jingle Mode")') }}
-                            </b-form-checkbox>
-                        </template>
-                    </form-group-field>
+                    </form-group-checkbox>
 
-                    <form-group-field
+                    <form-group-multi-check
                         id="edit_form_type"
                         class="col-md-6"
                         :field="form.type"
+                        :options="typeOptions"
+                        stacked
+                        radio
+                        :label="$gettext('Playlist Type')"
                     >
-                        <template #label>
-                            {{ $gettext('Playlist Type') }}
+                        <template #label(default)>
+                            {{ $gettext('General Rotation') }}
+                            <span class="form-text mt-0">
+                                {{
+                                    $gettext('Standard playlist, shuffles with other standard playlists based on weight.')
+                                }}
+                            </span>
                         </template>
-                        <template #default="slotProps">
-                            <b-form-radio-group
-                                :id="slotProps.id"
-                                v-model="slotProps.field.$model"
-                                stacked
-                            >
-                                <b-form-radio value="default">
-                                    {{ $gettext('General Rotation') }}
-                                    <span class="form-text mt-0">
-                                        {{
-                                            $gettext('Standard playlist, shuffles with other standard playlists based on weight.')
-                                        }}
-                                    </span>
-                                </b-form-radio>
-                                <b-form-radio value="once_per_x_songs">
-                                    {{ $gettext('Once per x Songs') }}
-                                    <span class="form-text mt-0">
-                                        {{ $gettext('Play exactly once every $x songs.') }}
-                                    </span>
-                                </b-form-radio>
-                                <b-form-radio value="once_per_x_minutes">
-                                    {{ $gettext('Once per x Minutes') }}
-                                    <span class="form-text mt-0">
-                                        {{ $gettext('Play exactly once every $x minutes.') }}
-                                    </span>
-                                </b-form-radio>
-                                <b-form-radio value="once_per_hour">
-                                    {{ $gettext('Once per Hour') }}
-                                    <span class="form-text mt-0">
-                                        {{ $gettext('Play once per hour at the specified minute.') }}
-                                    </span>
-                                </b-form-radio>
-                                <b-form-radio value="custom">
-                                    {{ $gettext('Advanced') }}
-                                    <span class="form-text mt-0">
-                                        {{
-                                            $gettext('Manually define how this playlist is used in Liquidsoap configuration.')
-                                        }}
-                                        <a
-                                            href="https://docs.azuracast.com/en/user-guide/playlists/advanced-playlists"
-                                            target="_blank"
-                                        >
-                                            {{ $gettext('Learn about Advanced Playlists') }}
-                                        </a>
-                                    </span>
-                                </b-form-radio>
-                            </b-form-radio-group>
+                        <template #label(once_per_x_songs)>
+                            {{ $gettext('Once per x Songs') }}
+                            <span class="form-text mt-0">
+                                {{ $gettext('Play exactly once every $x songs.') }}
+                            </span>
                         </template>
-                    </form-group-field>
+                        <template #label(once_per_x_minutes)>
+                            {{ $gettext('Once per x Minutes') }}
+                            <span class="form-text mt-0">
+                                {{ $gettext('Play exactly once every $x minutes.') }}
+                            </span>
+                        </template>
+                        <template #label(once_per_hour)>
+                            {{ $gettext('Once per Hour') }}
+                            <span class="form-text mt-0">
+                                {{ $gettext('Play once per hour at the specified minute.') }}
+                            </span>
+                        </template>
+                        <template #label(custom)>
+                            {{ $gettext('Advanced') }}
+                            <span class="form-text mt-0">
+                                {{
+                                    $gettext('Manually define how this playlist is used in Liquidsoap configuration.')
+                                }}
+                                <a
+                                    href="https://docs.azuracast.com/en/user-guide/playlists/advanced-playlists"
+                                    target="_blank"
+                                >
+                                    {{ $gettext('Learn about Advanced Playlists') }}
+                                </a>
+                            </span>
+                        </template>
+                    </form-group-multi-check>
 
-                    <form-group-field
+                    <form-group-multi-check
                         id="edit_form_order"
                         class="col-md-6"
                         :field="form.order"
+                        :options="orderOptions"
+                        stacked
+                        radio
+                        :label="$gettext('Song Playback Order')"
                     >
-                        <template #label>
-                            {{ $gettext('Song Playback Order') }}
+                        <template #label(shuffle)>
+                            {{ $gettext('Shuffled') }}
+                            <span class="form-text mt-0">
+                                {{
+                                    $gettext('The full playlist is shuffled and then played through in the shuffled order.')
+                                }}
+                            </span>
                         </template>
-                        <template #default="slotProps">
-                            <b-form-radio-group
-                                :id="slotProps.id"
-                                v-model="slotProps.field.$model"
-                                stacked
-                            >
-                                <b-form-radio value="shuffle">
-                                    {{ $gettext('Shuffled') }}
-                                    <span class="form-text mt-0">
-                                        {{
-                                            $gettext('The full playlist is shuffled and then played through in the shuffled order.')
-                                        }}
-                                    </span>
-                                </b-form-radio>
-                                <b-form-radio value="random">
-                                    {{ $gettext('Random') }}
-                                    <span class="form-text mt-0">
-                                        {{
-                                            $gettext('A completely random track is picked for playback every time the queue is populated.')
-                                        }}
-                                    </span>
-                                </b-form-radio>
-                                <b-form-radio value="sequential">
-                                    {{ $gettext('Sequential') }}
-                                    <span class="form-text mt-0">
-                                        {{
-                                            $gettext('The order of the playlist is manually specified and followed by the AutoDJ.')
-                                        }}
-                                    </span>
-                                </b-form-radio>
-                            </b-form-radio-group>
+                        <template #label(random)>
+                            {{ $gettext('Random') }}
+                            <span class="form-text mt-0">
+                                {{
+                                    $gettext('A completely random track is picked for playback every time the queue is populated.')
+                                }}
+                            </span>
                         </template>
-                    </form-group-field>
+                        <template #label(sequential)>
+                            {{ $gettext('Sequential') }}
+                            <span class="form-text mt-0">
+                                {{
+                                    $gettext('The order of the playlist is manually specified and followed by the AutoDJ.')
+                                }}
+                            </span>
+                        </template>
+                    </form-group-multi-check>
                 </div>
 
                 <form-fieldset v-show="form.type.$model === 'default'">
@@ -249,28 +183,14 @@
                     </template>
 
                     <div class="row g-3">
-                        <form-group-field
+                        <form-group-select
                             id="form_edit_weight"
                             class="col-md-12"
                             :field="form.weight"
-                        >
-                            <template #label>
-                                {{ $gettext('Playlist Weight') }}
-                            </template>
-                            <template #description>
-                                {{
-                                    $gettext('Higher weight playlists are played more frequently compared to other lower-weight playlists.')
-                                }}
-                            </template>
-                            <template #default="slotProps">
-                                <b-form-select
-                                    :id="slotProps.id"
-                                    v-model="slotProps.field.$model"
-                                    :options="weightOptions"
-                                    :state="slotProps.state"
-                                />
-                            </template>
-                        </form-group-field>
+                            :options="weightOptions"
+                            :label="$gettext('Playlist Weight')"
+                            :description="$gettext('Higher weight playlists are played more frequently compared to other lower-weight playlists.')"
+                        />
                     </div>
                 </form-fieldset>
 
@@ -286,16 +206,9 @@
                             :field="form.play_per_songs"
                             input-type="number"
                             :input-attrs="{min: '0', max: '150'}"
-                        >
-                            <template #label>
-                                {{ $gettext('Number of Songs Between Plays') }}
-                            </template>
-                            <template #description>
-                                {{
-                                    $gettext('This playlist will play every $x songs, where $x is specified here.')
-                                }}
-                            </template>
-                        </form-group-field>
+                            :label="$gettext('Number of Songs Between Plays')"
+                            :description="$gettext('This playlist will play every $x songs, where $x is specified here.')"
+                        />
                     </div>
                 </form-fieldset>
 
@@ -311,16 +224,9 @@
                             :field="form.play_per_minutes"
                             input-type="number"
                             :input-attrs="{min: '0', max: '360'}"
-                        >
-                            <template #label>
-                                {{ $gettext('Number of Minutes Between Plays') }}
-                            </template>
-                            <template #description>
-                                {{
-                                    $gettext('This playlist will play every $x minutes, where $x is specified here.')
-                                }}
-                            </template>
-                        </form-group-field>
+                            :label="$gettext('Number of Minutes Between Plays')"
+                            :description="$gettext('This playlist will play every $x minutes, where $x is specified here.')"
+                        />
                     </div>
                 </form-fieldset>
 
@@ -336,14 +242,9 @@
                             :field="form.play_per_hour_minute"
                             input-type="number"
                             :input-attrs="{min: '0', max: '59'}"
-                        >
-                            <template #label>
-                                {{ $gettext('Minute of Hour to Play') }}
-                            </template>
-                            <template #description>
-                                {{ $gettext('Specify the minute of every hour that this playlist should play.') }}
-                            </template>
-                        </form-group-field>
+                            :label="$gettext('Minute of Hour to Play')"
+                            :description="$gettext('Specify the minute of every hour that this playlist should play.')"
+                        />
                     </div>
                 </form-fieldset>
             </div>
@@ -366,60 +267,28 @@
                         id="form_edit_remote_url"
                         class="col-md-6"
                         :field="form.remote_url"
-                    >
-                        <template #label>
-                            {{ $gettext('Remote URL') }}
-                        </template>
-                    </form-group-field>
+                        :label="$gettext('Remote URL')"
+                    />
 
-                    <form-group-field
+                    <form-group-multi-check
                         id="edit_form_remote_type"
                         class="col-md-6"
                         :field="form.remote_type"
-                    >
-                        <template #label>
-                            {{ $gettext('Remote URL Type') }}
-                        </template>
-                        <template #default="slotProps">
-                            <b-form-radio-group
-                                :id="slotProps.id"
-                                v-model="slotProps.field.$model"
-                                stacked
-                            >
-                                <b-form-radio value="stream">
-                                    {{ $gettext('Direct Stream URL') }}
-                                </b-form-radio>
-                                <b-form-radio value="playlist">
-                                    {{ $gettext('Playlist (M3U/PLS) URL') }}
-                                </b-form-radio>
-                            </b-form-radio-group>
-                        </template>
-                    </form-group-field>
+                        :options="remoteTypeOptions"
+                        stacked
+                        radio
+                        :label="$gettext('Remote URL Type')"
+                    />
 
                     <form-group-field
                         id="form_edit_remote_buffer"
                         class="col-md-6"
                         :field="form.remote_buffer"
-                    >
-                        <template #label>
-                            {{ $gettext('Remote Playback Buffer (Seconds)') }}
-                        </template>
-                        <template #description>
-                            {{
-                                $gettext('The length of playback time that Liquidsoap should buffer when playing this remote playlist. Shorter times may lead to intermittent playback on unstable connections.')
-                            }}
-                        </template>
-                        <template #default>
-                            <b-form-input
-                                id="form_edit_remote_buffer"
-                                v-model="form.remote_buffer.$model"
-                                type="number"
-                                min="0"
-                                max="120"
-                                :state="form.remote_buffer.$dirty ? !form.remote_buffer.$error : null"
-                            />
-                        </template>
-                    </form-group-field>
+                        input-type="number"
+                        :input-attrs="{ min: 0, max: 120 }"
+                        :label="$gettext('Remote Playback Buffer (Seconds)')"
+                        :description="$gettext('The length of playback time that Liquidsoap should buffer when playing this remote playlist. Shorter times may lead to intermittent playback on unstable connections.')"
+                    />
                 </div>
             </div>
         </section>
@@ -431,6 +300,9 @@ import FormGroupField from "~/components/Form/FormGroupField";
 import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox";
 import FormFieldset from "~/components/Form/FormFieldset";
 import {map, range} from "lodash";
+import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
+import FormGroupSelect from "~/components/Form/FormGroupSelect.vue";
+import {useTranslate} from "~/vendor/gettext";
 
 const props = defineProps({
     form: {
@@ -438,6 +310,69 @@ const props = defineProps({
         required: true
     }
 });
+
+// These don't need to be translated as they're overridden by slots above.
+const sourceOptions = [
+    {
+        value: 'songs',
+        text: 'Song-Based'
+    },
+    {
+        value: 'remote_url',
+        text: 'Remote URL'
+    }
+];
+
+const typeOptions = [
+    {
+        value: 'default',
+        text: 'General Rotation'
+    },
+    {
+        value: 'once_per_x_songs',
+        text: 'Once per X Songs'
+    },
+    {
+        value: 'once_per_x_minutes',
+        text: 'Once per X Minutes'
+    },
+    {
+        value: 'once_per_hour',
+        text: 'Once per Hour'
+    },
+    {
+        value: 'custom',
+        text: 'Advanced'
+    }
+];
+
+const orderOptions = [
+    {
+        value: 'shuffle',
+        text: 'Shuffled'
+    },
+    {
+        value: 'random',
+        text: 'Random'
+    },
+    {
+        value: 'sequential',
+        text: 'Sequential'
+    }
+];
+
+const {$gettext} = useTranslate();
+
+const remoteTypeOptions = [
+    {
+        value: 'stream',
+        text: $gettext('Direct Stream URL')
+    },
+    {
+        value: 'playlist',
+        text: $gettext('Playlist (M3U/PLS) URL')
+    }
+];
 
 const weightOptions = map(
     range(1, 26),

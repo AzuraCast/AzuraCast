@@ -13,89 +13,65 @@
                 </h2>
             </div>
 
-            <b-alert
-                variant="danger"
-                :show="error != null"
+            <div
+                v-show="error != null"
+                class="alert alert-danger"
             >
                 {{ error }}
-            </b-alert>
+            </div>
 
-            <b-overlay
-                variant="card"
-                :show="loading"
-            >
+            <loading :loading="isLoading">
                 <div class="card-body">
-                    <b-form-group>
-                        <div class="row g-3">
-                            <form-group-field
-                                id="form_edit_default_album_art_url"
-                                class="col-md-6"
-                                :field="v$.default_album_art_url"
-                            >
-                                <template #label>
-                                    {{ $gettext('Default Album Art URL') }}
-                                </template>
-                                <template #description>
-                                    {{
-                                        $gettext('If a song has no album art, this URL will be listed instead. Leave blank to use the standard placeholder art.')
-                                    }}
-                                </template>
-                            </form-group-field>
+                    <div class="row g-3">
+                        <form-group-field
+                            id="form_edit_default_album_art_url"
+                            class="col-md-6"
+                            :field="v$.default_album_art_url"
+                            :label="$gettext('Default Album Art URL')"
+                            :description="$gettext('If a song has no album art, this URL will be listed instead. Leave blank to use the standard placeholder art.')"
+                        />
 
-                            <form-group-field
-                                id="edit_form_public_custom_css"
-                                class="col-md-12"
-                                :field="v$.public_custom_css"
-                            >
-                                <template #label>
-                                    {{ $gettext('Custom CSS for Public Pages') }}
-                                </template>
-                                <template #description>
-                                    {{
-                                        $gettext('This CSS will be applied to the station public pages.')
-                                    }}
-                                </template>
-                                <template #default="slotProps">
-                                    <codemirror-textarea
-                                        :id="slotProps.id"
-                                        v-model="slotProps.field.$model"
-                                        mode="css"
-                                    />
-                                </template>
-                            </form-group-field>
-
-                            <form-group-field
-                                id="edit_form_public_custom_js"
-                                class="col-md-12"
-                                :field="v$.public_custom_js"
-                            >
-                                <template #label>
-                                    {{ $gettext('Custom JS for Public Pages') }}
-                                </template>
-                                <template #description>
-                                    {{
-                                        $gettext('This javascript code will be applied to the station public pages.')
-                                    }}
-                                </template>
-                                <template #default="slotProps">
-                                    <codemirror-textarea
-                                        :id="slotProps.id"
-                                        v-model="slotProps.field.$model"
-                                        mode="javascript"
-                                    />
-                                </template>
-                            </form-group-field>
-                        </div>
-
-                        <button
-                            class="btn btn-lg btn-primary mt-3"
-                            type="submit"
+                        <form-group-field
+                            id="edit_form_public_custom_css"
+                            class="col-md-12"
+                            :field="v$.public_custom_css"
+                            :label="$gettext('Custom CSS for Public Pages')"
+                            :description="$gettext('This CSS will be applied to the station public pages.')"
                         >
-                            {{ $gettext('Save Changes') }}
-                        </button>
-                    </b-form-group>
+                            <template #default="slotProps">
+                                <codemirror-textarea
+                                    :id="slotProps.id"
+                                    v-model="slotProps.field.$model"
+                                    mode="css"
+                                />
+                            </template>
+                        </form-group-field>
+
+                        <form-group-field
+                            id="edit_form_public_custom_js"
+                            class="col-md-12"
+                            :field="v$.public_custom_js"
+                            :label="$gettext('Custom JS for Public Pages')"
+                            :description="$gettext('This javascript code will be applied to the station public pages.')"
+                        >
+                            <template #default="slotProps">
+                                <codemirror-textarea
+                                    :id="slotProps.id"
+                                    v-model="slotProps.field.$model"
+                                    mode="javascript"
+                                />
+                            </template>
+                        </form-group-field>
+                    </div>
+
+                    <button
+                        class="btn btn-lg btn-primary mt-3"
+                        type="submit"
+                    >
+                        {{ $gettext('Save Changes') }}
+                    </button>
                 </div>
-            </b-overlay>
+            </loading>
         </section>
     </form>
 </template>
@@ -109,6 +85,7 @@ import mergeExisting from "~/functions/mergeExisting";
 import {useNotify} from "~/functions/useNotify";
 import {useTranslate} from "~/vendor/gettext";
 import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
+import Loading from "~/components/Common/Loading.vue";
 
 const props = defineProps({
     profileEditUrl: {
@@ -117,7 +94,7 @@ const props = defineProps({
     },
 });
 
-const loading = ref(true);
+const isLoading = ref(true);
 const error = ref(null);
 
 const {form, resetForm, v$, ifValid} = useVuelidateOnForm(
@@ -143,11 +120,11 @@ const populateForm = (data) => {
 const relist = () => {
     resetForm();
 
-    loading.value = true;
+    isLoading.value = true;
 
     axios.get(props.profileEditUrl).then((resp) => {
         populateForm(resp.data.branding_config);
-        loading.value = false;
+        isLoading.value = false;
     });
 }
 

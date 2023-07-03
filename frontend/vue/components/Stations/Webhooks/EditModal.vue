@@ -437,9 +437,13 @@ const {
 );
 
 const langTitle = computed(() => {
-    return isEditMode.value
-        ? $gettext('Edit Web Hook')
-        : $gettext('Add Web Hook');
+    if (isEditMode.value) {
+        return $gettext('Edit Web Hook');
+    }
+
+    return type.value
+        ? $gettext('Add Web Hook')
+        : $gettext('Select Web Hook Type');
 });
 
 const clearContents = () => {

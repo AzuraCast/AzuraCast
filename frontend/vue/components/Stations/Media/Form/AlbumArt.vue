@@ -1,40 +1,43 @@
 <template>
-    <b-form-group>
-        <b-row>
-            <b-col md="4">
-                <b-img
-                    :src="albumArtSrc"
-                    rounded
-                    fluid
-                />
-                <br>
+    <div class="row g-3">
+        <div class="col-md-4">
+            <!-- TODO -->
+            <b-img
+                :src="albumArtSrc"
+                rounded
+                fluid
+            />
+
+            <div class="block-buttons mt-2">
                 <button
-                    class="btn btn-link btn-block text-danger mt-2"
+                    class="btn btn-link btn-block btn-danger"
                     @click="deleteArt"
                 >
                     {{ $gettext('Delete Album Art') }}
                 </button>
-            </b-col>
-            <b-col md="8">
-                <b-form-group label-for="edit_form_art">
-                    <template #label>
-                        {{ $gettext('Replace Album Cover Art') }}
-                    </template>
-                    <b-form-file
-                        id="edit_form_art"
-                        v-model="artFile"
-                        accept="image/*"
-                    />
-                </b-form-group>
-            </b-col>
-        </b-row>
-    </b-form-group>
+            </div>
+        </div>
+        <div class="col-md-8">
+            <form-group id="edit_form_art">
+                <template #label>
+                    {{ $gettext('Replace Album Cover Art') }}
+                </template>
+                <!-- TODO -->
+                <b-form-file
+                    id="edit_form_art"
+                    v-model="artFile"
+                    accept="image/*"
+                />
+            </form-group>
+        </div>
+    </div>
 </template>
 
 <script setup>
 import {ref, toRef, watch} from "vue";
 import {syncRef} from "@vueuse/core";
 import {useAxios} from "~/vendor/axios";
+import FormGroup from "~/components/Form/FormGroup.vue";
 
 const props = defineProps({
     albumArtUrl: {

@@ -1,5 +1,5 @@
 <template>
-    <b-modal
+    <modal
         id="logs_modal"
         ref="$modal"
         :title="$gettext('Log Viewer')"
@@ -27,12 +27,13 @@
                 {{ $gettext('Copy to Clipboard') }}
             </button>
         </template>
-    </b-modal>
+    </modal>
 </template>
 
 <script setup>
 import {ref} from "vue";
 import {useClipboard} from "@vueuse/core";
+import Modal from "~/components/Common/Modal.vue";
 
 const logs = ref('Loading...');
 const $modal = ref(); // Template Ref

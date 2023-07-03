@@ -5,116 +5,67 @@
                 id="edit_form_enable_autodj"
                 class="col-md-12"
                 :field="form.enable_autodj"
-            >
-                <template #label>
-                    {{ $gettext('Broadcast AutoDJ to Remote Station') }}
-                </template>
-                <template #description>
-                    {{
-                        $gettext('If enabled, the AutoDJ on this installation will automatically play music to this mount point.')
-                    }}
-                </template>
-            </form-group-checkbox>
+                :label="$gettext('Broadcast AutoDJ to Remote Station')"
+                :description="$gettext('If enabled, the AutoDJ on this installation will automatically play music to this mount point.')"
+            />
         </div>
 
         <div
             v-if="form.enable_autodj.$model"
             class="row g-3"
         >
-            <form-group-field
+            <form-group-multi-check
                 id="edit_form_autodj_format"
                 class="col-md-6"
                 :field="form.autodj_format"
-            >
-                <template #label>
-                    {{ $gettext('AutoDJ Format') }}
-                </template>
-                <template #default="slotProps">
-                    <b-form-radio-group
-                        :id="slotProps.id"
-                        v-model="slotProps.field.$model"
-                        stacked
-                        :options="formatOptions"
-                    />
-                </template>
-            </form-group-field>
+                :options="formatOptions"
+                stacked
+                radio
+                :label="$gettext('AutoDJ Format')"
+            />
 
-            <form-group-field
+            <form-group-multi-check
                 v-if="formatSupportsBitrateOptions"
                 id="edit_form_autodj_bitrate"
                 class="col-md-6"
                 :field="form.autodj_bitrate"
-            >
-                <template #label>
-                    {{ $gettext('AutoDJ Bitrate (kbps)') }}
-                </template>
-                <template #default="slotProps">
-                    <b-form-radio-group
-                        :id="slotProps.id"
-                        v-model="slotProps.field.$model"
-                        stacked
-                        :options="bitrateOptions"
-                    />
-                </template>
-            </form-group-field>
+                :options="bitrateOptions"
+                stacked
+                radio
+                :label="$gettext('AutoDJ Bitrate (kbps)')"
+            />
 
             <form-group-field
                 id="edit_form_source_port"
                 class="col-md-6"
                 :field="form.source_port"
-            >
-                <template #label>
-                    {{ $gettext('Remote Station Source Port') }}
-                </template>
-                <template #description>
-                    {{
-                        $gettext('If the port you broadcast to is different from the stream URL, specify the source port here.')
-                    }}
-                </template>
-            </form-group-field>
+                :label="$gettext('Remote Station Source Port')"
+                :description="$gettext('If the port you broadcast to is different from the stream URL, specify the source port here.')"
+            />
 
             <form-group-field
                 id="edit_form_source_mount"
                 class="col-md-6"
                 :field="form.source_mount"
-            >
-                <template #label>
-                    {{ $gettext('Remote Station Source Mountpoint/SID') }}
-                </template>
-                <template #description>
-                    {{
-                        $gettext('If the mountpoint (i.e. /radio.mp3) or Shoutcast SID (i.e. 2) you broadcast to is different from the stream URL, specify the source mount point here.')
-                    }}
-                </template>
-            </form-group-field>
+                :label="$gettext('Remote Station Source Mountpoint/SID')"
+                :description="$gettext('If the mountpoint (i.e. /radio.mp3) or Shoutcast SID (i.e. 2) you broadcast to is different from the stream URL, specify the source mount point here.')"
+            />
 
             <form-group-field
                 id="edit_form_source_username"
                 class="col-md-6"
                 :field="form.source_username"
-            >
-                <template #label>
-                    {{ $gettext('Remote Station Source Username') }}
-                </template>
-                <template #description>
-                    {{
-                        $gettext('If you are broadcasting using AutoDJ, enter the source username here. This may be blank.')
-                    }}
-                </template>
-            </form-group-field>
+                :label="$gettext('Remote Station Source Username')"
+                :description="$gettext('If you are broadcasting using AutoDJ, enter the source username here. This may be blank.')"
+            />
 
             <form-group-field
                 id="edit_form_source_password"
                 class="col-md-6"
                 :field="form.source_password"
-            >
-                <template #label>
-                    {{ $gettext('Remote Station Source Password') }}
-                </template>
-                <template #description>
-                    {{ $gettext('If you are broadcasting using AutoDJ, enter the source password here.') }}
-                </template>
-            </form-group-field>
+                :label="$gettext('Remote Station Source Password')"
+                :description="$gettext('If you are broadcasting using AutoDJ, enter the source password here.')"
+            />
 
             <form-group-checkbox
                 id="edit_form_is_public"
@@ -137,6 +88,7 @@ import FormGroupField from "~/components/Form/FormGroupField";
 import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox";
 import {map} from "lodash";
 import {computed} from "vue";
+import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
 
 const props = defineProps({
     form: {

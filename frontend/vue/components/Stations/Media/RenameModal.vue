@@ -1,21 +1,18 @@
 <template>
-    <b-modal
+    <modal
         id="rename_file"
         ref="$modal"
         centered
         :title="$gettext('Rename File/Directory')"
     >
-        <b-form @submit.prevent="doRename">
+        <form @submit.prevent="doRename">
             <form-group-field
                 id="new_directory_name"
                 :field="v$.newPath"
                 autofocus
-            >
-                <template #label>
-                    {{ $gettext('New File Name') }}
-                </template>
-            </form-group-field>
-        </b-form>
+                :label="$gettext('New File Name')"
+            />
+        </form>
         <template #modal-footer>
             <button
                 class="btn btn-secondary"
@@ -31,7 +28,7 @@
                 {{ $gettext('Rename') }}
             </button>
         </template>
-    </b-modal>
+    </modal>
 </template>
 
 <script setup>
@@ -41,6 +38,7 @@ import {ref} from "vue";
 import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
 import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
+import Modal from "~/components/Common/Modal.vue";
 
 const props = defineProps({
     renameUrl: {

@@ -25,7 +25,7 @@
                 <select
                     :id="id"
                     v-model="field.$model"
-                    class="form-control"
+                    class="form-select"
                     :class="fieldClass"
                     :multiple="multiple"
                 >

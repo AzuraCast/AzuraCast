@@ -1,25 +1,16 @@
 <template>
-    <form-group-field
+    <form-group-select
         id="form_config_rate_limit"
         class="col-md-12"
         :field="form.config.rate_limit"
-    >
-        <template #label>
-            {{ $gettext('Only Post Once Every...') }}
-        </template>
-        <template #default="slotProps">
-            <b-form-select
-                :id="slotProps.id"
-                v-model="slotProps.field.$model"
-                :options="rateLimitOptions"
-            />
-        </template>
-    </form-group-field>
+        :options="rateLimitOptions"
+        :label="$gettext('Only Post Once Every...')"
+    />
 </template>
 
 <script setup>
-import FormGroupField from "~/components/Form/FormGroupField";
 import {useTranslate} from "~/vendor/gettext";
+import FormGroupSelect from "~/components/Form/FormGroupSelect.vue";
 
 const props = defineProps({
     form: {

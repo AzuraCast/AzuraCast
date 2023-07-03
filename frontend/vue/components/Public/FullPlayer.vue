@@ -1,11 +1,12 @@
 <template>
     <div class="public-page">
         <div class="card">
-            <div class="card-body">
+            <div class="card-header">
                 <h2 class="card-title">
                     {{ stationName }}
                 </h2>
-
+            </div>
+            <div class="card-body">
                 <div class="stations nowplaying">
                     <radio-player
                         v-bind="pickProps(props, playerProps)"
@@ -13,11 +14,10 @@
                     />
                 </div>
             </div>
-
-            <div class="card-body">
+            <div class="card-body buttons">
                 <a
-                    v-b-modal.song_history_modal
                     class="btn btn-sm btn-outline-secondary"
+                    @click.prevent="openSongHistoryModal"
                 >
                     <icon icon="history" />
                     <span>
@@ -26,8 +26,8 @@
                 </a>
                 <a
                     v-if="enableRequests"
-                    v-b-modal.request_modal
                     class="btn btn-sm btn-outline-secondary"
+                    @click.prevent="openRequestModal"
                 >
                     <icon icon="help_outline" />
                     <span>
@@ -48,10 +48,12 @@
     </div>
 
     <song-history-modal
+        ref="$songHistoryModal"
         :show-album-art="showAlbumArt"
         :history="history"
     />
     <request-modal
+        ref="$requestModal"
         :show-album-art="showAlbumArt"
         :request-list-uri="requestListUri"
         :custom-fields="customFields"
@@ -96,5 +98,17 @@ const history = ref({});
 
 const onNowPlayingUpdate = (newNowPlaying) => {
     history.value = newNowPlaying?.song_history;
+}
+
+const $songHistoryModal = ref(); // SongHistoryModal
+
+const openSongHistoryModal = () => {
+    $songHistoryModal.value.open();
+}
+
+const $requestModal = ref(); // RequestModal
+
+const openRequestModal = () => {
+    $requestModal.value.open();
 }
 </script>

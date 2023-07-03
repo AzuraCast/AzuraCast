@@ -3,95 +3,59 @@
         :label="$gettext('Basic Info')"
         active
     >
-        <b-form-group>
-            <div class="row g-3">
-                <form-group-field
-                    id="edit_form_streamer_username"
-                    class="col-md-6"
-                    :field="form.streamer_username"
-                >
-                    <template #label>
-                        {{ $gettext('Streamer Username') }}
-                    </template>
-                    <template #description>
-                        {{ $gettext('The streamer will use this username to connect to the radio server.') }}
-                    </template>
-                </form-group-field>
+        <div class="row g-3">
+            <form-group-field
+                id="edit_form_streamer_username"
+                class="col-md-6"
+                :field="form.streamer_username"
+                :label="$gettext('Streamer Username')"
+                :description="$gettext('The streamer will use this username to connect to the radio server.')"
+            />
 
-                <form-group-field
-                    id="edit_form_streamer_password"
-                    class="col-md-6"
-                    :field="form.streamer_password"
-                    input-type="password"
-                >
-                    <template #label>
-                        {{ $gettext('Streamer password') }}
-                    </template>
-                    <template #description>
-                        {{ $gettext('The streamer will use this password to connect to the radio server.') }}
-                    </template>
-                </form-group-field>
-            </div>
-            <div class="row g-3">
-                <form-group-field
-                    id="edit_form_display_name"
-                    class="col-md-6"
-                    :field="form.display_name"
-                >
-                    <template #label>
-                        {{ $gettext('Streamer Display Name') }}
-                    </template>
-                    <template #description>
-                        {{
-                            $gettext('This is the informal display name that will be shown in API responses if the streamer/DJ is live.')
-                        }}
-                    </template>
-                </form-group-field>
+            <form-group-field
+                id="edit_form_streamer_password"
+                class="col-md-6"
+                :field="form.streamer_password"
+                input-type="password"
+                :label="$gettext('Streamer password')"
+                :description="$gettext('The streamer will use this password to connect to the radio server.')"
+            />
+        </div>
+        <div class="row g-3">
+            <form-group-field
+                id="edit_form_display_name"
+                class="col-md-6"
+                :field="form.display_name"
+                :label="$gettext('Streamer Display Name')"
+                :description="$gettext('This is the informal display name that will be shown in API responses if the streamer/DJ is live.')"
+            />
 
-                <form-group-field
-                    id="edit_form_comments"
-                    class="col-md-6"
-                    :field="form.comments"
-                    input-type="textarea"
-                >
-                    <template #label>
-                        {{ $gettext('Comments') }}
-                    </template>
-                    <template #description>
-                        {{ $gettext('Internal notes or comments about the user, visible only on this control panel.') }}
-                    </template>
-                </form-group-field>
-            </div>
-            <div class="row g-3 mt-3">
-                <form-group-checkbox
-                    id="form_edit_is_active"
-                    class="col-md-6"
-                    :field="form.is_active"
-                >
-                    <template #label>
-                        {{ $gettext('Account is Active') }}
-                    </template>
-                    <template #description>
-                        {{ $gettext('Enable to allow this account to log in and stream.') }}
-                    </template>
-                </form-group-checkbox>
+            <form-group-field
+                id="edit_form_comments"
+                class="col-md-6"
+                :field="form.comments"
+                input-type="textarea"
+                :label="$gettext('Comments')"
+                :description="$gettext('Internal notes or comments about the user, visible only on this control panel.')"
+            />
+        </div>
+        <div class="row g-3 mt-3">
+            <form-group-checkbox
+                id="form_edit_is_active"
+                class="col-md-6"
+                :field="form.is_active"
+                :label="$gettext('Account is Active')"
+                :description="$gettext('Enable to allow this account to log in and stream.')"
+            />
 
-                <form-group-checkbox
-                    id="form_edit_enforce_schedule"
-                    class="col-md-6"
-                    :field="form.enforce_schedule"
-                >
-                    <template #label>
-                        {{ $gettext('Enforce Schedule Times') }}
-                    </template>
-                    <template #description>
-                        {{
-                            $gettext('If enabled, this streamer will only be able to connect during their scheduled broadcast times.')
-                        }}
-                    </template>
-                </form-group-checkbox>
-            </div>
-        </b-form-group>
+            <form-group-checkbox
+                id="form_edit_enforce_schedule"
+                class="col-md-6"
+                :field="form.enforce_schedule"
+                :label="$gettext('Enforce Schedule Times')"
+                :description="$gettext('If enabled, this streamer will only be able to connect during their scheduled broadcast times.')"
+            />
+        </div>
     </o-tab-item>
 </template>
 

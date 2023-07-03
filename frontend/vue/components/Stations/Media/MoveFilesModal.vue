@@ -1,13 +1,13 @@
 <template>
-    <b-modal
+    <modal
         id="move_file"
         ref="$modal"
         size="xl"
         centered
         :title="langHeader"
     >
-        <b-row class="mb-3 align-items-center">
-            <b-col md="6">
+        <div class="row mb-3 align-items-center">
+            <div class="col-md-6">
                 <button
                     class="btn btn-sm btn-primary"
                     :disabled="dirHistory.length === 0"
@@ -18,18 +18,15 @@
                         {{ $gettext('Back') }}
                     </span>
                 </button>
-            </b-col>
-            <b-col
-                md="6"
-                class="text-end"
-            >
+            </div>
+            <div class="col-md-6 text-end">
                 <h6 class="m-0">
                     {{ destinationDirectory }}
                 </h6>
-            </b-col>
-        </b-row>
-        <b-row>
-            <b-col md="12">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
                 <data-table
                     id="station_media"
                     ref="$datatable"
@@ -54,8 +51,8 @@
                         </div>
                     </template>
                 </data-table>
-            </b-col>
-        </b-row>
+            </div>
+        </div>
         <template #modal-footer>
             <button
                 class="btn btn-secondary"
@@ -70,7 +67,7 @@
                 {{ $gettext('Move to Directory') }}
             </button>
         </template>
-    </b-modal>
+    </modal>
 </template>
 
 <script setup>
@@ -81,6 +78,7 @@ import {computed, h, ref} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
+import Modal from "~/components/Common/Modal.vue";
 
 const props = defineProps({
     selectedItems: {

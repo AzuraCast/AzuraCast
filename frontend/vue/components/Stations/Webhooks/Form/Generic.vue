@@ -1,5 +1,5 @@
 <template>
-    <b-form-group>
+    <form-markup id="webhook_details">
         <template #label>
             {{ $gettext('Web Hook Details') }}
         </template>
@@ -29,72 +29,49 @@
                 $gettext('In order to process quickly, web hooks have a short timeout, so the responding service should be optimized to handle the request in under 2 seconds.')
             }}
         </p>
-    </b-form-group>
+    </form-markup>
 
-    <b-form-group>
-        <div class="row g-3">
-            <form-group-field
-                id="form_config_webhook_url"
-                class="col-md-12"
-                :field="form.config.webhook_url"
-                input-type="url"
-            >
-                <template #label>
-                    {{ $gettext('Web Hook URL') }}
-                </template>
-                <template #description>
-                    {{ $gettext('The URL that will receive the POST messages any time an event is triggered.') }}
-                </template>
-            </form-group-field>
+    <div class="row g-3">
+        <form-group-field
+            id="form_config_webhook_url"
+            class="col-md-12"
+            :field="form.config.webhook_url"
+            input-type="url"
+            :label="$gettext('Web Hook URL')"
+            :description="$gettext('The URL that will receive the POST messages any time an event is triggered.')"
+        />
 
-            <form-group-field
-                id="form_config_basic_auth_username"
-                class="col-md-6"
-                :field="form.config.basic_auth_username"
-            >
-                <template #label>
-                    {{ $gettext('Optional: HTTP Basic Authentication Username') }}
-                </template>
-                <template #description>
-                    {{ $gettext('If your web hook requires HTTP basic authentication, provide the username here.') }}
-                </template>
-            </form-group-field>
+        <form-group-field
+            id="form_config_basic_auth_username"
+            class="col-md-6"
+            :field="form.config.basic_auth_username"
+            :label="$gettext('Optional: HTTP Basic Authentication Username')"
+            :description="$gettext('If your web hook requires HTTP basic authentication, provide the username here.')"
+        />
 
-            <form-group-field
-                id="form_config_basic_auth_password"
-                class="col-md-6"
-                :field="form.config.basic_auth_password"
-            >
-                <template #label>
-                    {{ $gettext('Optional: HTTP Basic Authentication Password') }}
-                </template>
-                <template #description>
-                    {{ $gettext('If your web hook requires HTTP basic authentication, provide the password here.') }}
-                </template>
-            </form-group-field>
+        <form-group-field
+            id="form_config_basic_auth_password"
+            class="col-md-6"
+            :field="form.config.basic_auth_password"
+            :label="$gettext('Optional: HTTP Basic Authentication Password')"
+            :description="$gettext('If your web hook requires HTTP basic authentication, provide the password here.')"
+        />
 
-            <form-group-field
-                id="form_config_timeout"
-                class="col-md-6"
-                :field="form.config.timeout"
-                input-type="number"
-                :input-attrs="{ min: '0.0', max: '600.0', step: '0.1' }"
-            >
-                <template #label>
-                    {{ $gettext('Optional: Request Timeout (Seconds)') }}
-                </template>
-                <template #description>
-                    {{
-                        $gettext('The number of seconds to wait for a response from the remote server before cancelling the request.')
-                    }}
-                </template>
-            </form-group-field>
-        </div>
-    </b-form-group>
+        <form-group-field
+            id="form_config_timeout"
+            class="col-md-6"
+            :field="form.config.timeout"
+            input-type="number"
+            :input-attrs="{ min: '0.0', max: '600.0', step: '0.1' }"
+            :label="$gettext('Optional: Request Timeout (Seconds)')"
+            :description="$gettext('The number of seconds to wait for a response from the remote server before cancelling the request.')"
+        />
+    </div>
 </template>
 
 <script setup>
 import FormGroupField from "~/components/Form/FormGroupField";
+import FormMarkup from "~/components/Form/FormMarkup.vue";
 
 const props = defineProps({
     form: {

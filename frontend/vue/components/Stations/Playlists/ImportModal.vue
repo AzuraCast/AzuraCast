@@ -95,6 +95,7 @@ import {ref} from "vue";
 import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
 import FormGroup from "~/components/Form/FormGroup.vue";
+import Modal from "~/components/Common/Modal.vue";
 
 const emit = defineEmits(['relist']);
 

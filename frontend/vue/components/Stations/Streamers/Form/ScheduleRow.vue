@@ -8,7 +8,7 @@
             </div>
             <div class="flex-shrink-0">
                 <button
-                    class="btn btn-sm btn-light py-2 pe-0"
+                    class="btn btn-sm btn-dark"
                     @click.prevent="doRemove()"
                 >
                     <icon icon="remove" />

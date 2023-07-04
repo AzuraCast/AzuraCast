@@ -46,3 +46,20 @@
   }
 }
 
+.datepicker {
+  .datepicker-table {
+    .datepicker-body {
+      .datepicker-row {
+        .datepicker-cell {
+          color: var(--bs-body-color);
+        }
+      }
+    }
+  }
+}
+
+.timepicker {
+  .dropdown-item:hover {
+    background-color: var(--bs-dropdown-link-hover-bg);
+  }
+}

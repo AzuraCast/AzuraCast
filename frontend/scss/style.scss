@@ -21,11 +21,10 @@
 @import "bootstrap-vue";
 
 // Overrides for specific third-party products
+@import 'vendors/vue_datepicker';
 @import 'vendors/fullcalendar';
-// @import 'vendors/daterangepicker-colors';
-// @import 'vendors/fullcalendar-colors';
-@import 'vendors/waveform-colors';
-// @import 'vendors/sweetalert2-colors';
+@import 'vendors/waveform';
+@import 'vendors/sweetalert2';
 
 // Material design components
 @import 'material/variables';

@@ -26,15 +26,14 @@
                     </div>
 
                     <div class="list-group list-group-flush">
-                        <b-list-group-item
+                        <a
                             v-for="(item, itemKey) in panel.items"
                             :key="itemKey"
                             :href="item.url"
+                            class="list-group-item list-group-item-action"
                         >
-                            {{
-                                item.label
-                            }}
-                        </b-list-group-item>
+                            {{ item.label }}
+                        </a>
                     </div>
                 </section>
             </div>

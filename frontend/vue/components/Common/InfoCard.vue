@@ -1,6 +1,6 @@
 <template>
     <div
-        class="card-body text-bg-info d-flex align-items-center"
+        class="card-body bg-info-subtle text-info-emphasis d-flex align-items-center"
         role="alert"
         aria-live="off"
     >
@@ -10,8 +10,17 @@
         <div class="flex-fill">
             <slot />
         </div>
+        <div
+            v-if="slots.action"
+            class="flex-shrink-0 ms-2"
+        >
+            <slot name="action" />
+        </div>
     </div>
 </template>
 
 <script setup>
-import Icon from './Icon';</script>
+import Icon from './Icon';
+
+const slots = defineSlots();
+</script>

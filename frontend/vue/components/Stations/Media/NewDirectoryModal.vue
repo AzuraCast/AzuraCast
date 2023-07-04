@@ -71,6 +71,10 @@ const close = () => {
     $modal.value.hide();
 };
 
+const open = () => {
+    $modal.value.show();
+};
+
 const {wrapWithLoading, notifySuccess} = useNotify();
 const {axios} = useAxios();
 const {$gettext} = useTranslate();
@@ -90,4 +94,8 @@ const doMkdir = () => {
         });
     });
 };
+
+defineExpose({
+    open
+});
 </script>

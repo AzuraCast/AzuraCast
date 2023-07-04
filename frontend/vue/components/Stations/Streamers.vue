@@ -23,82 +23,83 @@
                     </div>
                 </template>
 
-                <b-tabs
-                    card
-                    lazy
-                >
-                    <b-tab
-                        :title="$gettext('Account List')"
-                        no-body
+                <div class="card-body">
+                    <o-tabs
+                        nav-tabs-class="nav-tabs"
+                        content-class="mt-3"
+                        destroy-on-hide
                     >
-                        <div class="card-body buttons">
-                            <button
-                                class="btn btn-primary"
-                                @click.prevent="doCreate"
-                            >
-                                <icon icon="add" />
-                                <span>
-                                    {{ $gettext('Add Streamer') }}
-                                </span>
-                            </button>
-                        </div>
-
-                        <data-table
-                            id="station_streamers"
-                            ref="$datatable"
-                            :fields="fields"
-                            :api-url="listUrl"
-                        >
-                            <template #cell(art)="row">
-                                <album-art :src="row.item.art" />
-                            </template>
-                            <template #cell(streamer_username)="row">
-                                <code>{{ row.item.streamer_username }}</code>
-                                <div>
-                                    <span
-                                        v-if="!row.item.is_active"
-                                        class="badge text-bg-danger"
-                                    >
-                                        {{ $gettext('Disabled') }}
-                                    </span>
-                                </div>
-                            </template>
-                            <template #cell(actions)="row">
-                                <div class="btn-group btn-group-sm">
+                        <o-tab-item :label="$gettext('Account List')">
+                            <div class="card-body-flush">
+                                <div class="card-body buttons">
                                     <button
                                         class="btn btn-primary"
-                                        @click.prevent="doEdit(row.item.links.self)"
+                                        @click.prevent="doCreate"
                                     >
-                                        {{ $gettext('Edit') }}
-                                    </button>
-                                    <button
-                                        class="btn btn-secondary"
-                                        @click.prevent="doShowBroadcasts(row.item.links.broadcasts)"
-                                    >
-                                        {{ $gettext('Broadcasts') }}
-                                    </button>
-                                    <button
-                                        class="btn btn-danger"
-                                        @click.prevent="doDelete(row.item.links.self)"
-                                    >
-                                        {{ $gettext('Delete') }}
+                                        <icon icon="add" />
+                                        <span>
+                                            {{ $gettext('Add Streamer') }}
+                                        </span>
                                     </button>
                                 </div>
-                            </template>
-                        </data-table>
-                    </b-tab>
-                    <b-tab
-                        :title="$gettext('Schedule View')"
-                        no-body
-                    >
-                        <schedule
-                            ref="$schedule"
-                            :schedule-url="scheduleUrl"
-                            :station-time-zone="stationTimeZone"
-                            @click="doCalendarClick"
-                        />
-                    </b-tab>
-                </b-tabs>
+
+                                <data-table
+                                    id="station_streamers"
+                                    ref="$datatable"
+                                    :fields="fields"
+                                    :api-url="listUrl"
+                                >
+                                    <template #cell(art)="row">
+                                        <album-art :src="row.item.art" />
+                                    </template>
+                                    <template #cell(streamer_username)="row">
+                                        <code>{{ row.item.streamer_username }}</code>
+                                        <div>
+                                            <span
+                                                v-if="!row.item.is_active"
+                                                class="badge text-bg-danger"
+                                            >
+                                                {{ $gettext('Disabled') }}
+                                            </span>
+                                        </div>
+                                    </template>
+                                    <template #cell(actions)="row">
+                                        <div class="btn-group btn-group-sm">
+                                            <button
+                                                class="btn btn-primary"
+                                                @click.prevent="doEdit(row.item.links.self)"
+                                            >
+                                                {{ $gettext('Edit') }}
+                                            </button>
+                                            <button
+                                                class="btn btn-secondary"
+                                                @click.prevent="doShowBroadcasts(row.item.links.broadcasts)"
+                                            >
+                                                {{ $gettext('Broadcasts') }}
+                                            </button>
+                                            <button
+                                                class="btn btn-danger"
+                                                @click.prevent="doDelete(row.item.links.self)"
+                                            >
+                                                {{ $gettext('Delete') }}
+                                            </button>
+                                        </div>
+                                    </template>
+                                </data-table>
+                            </div>
+                        </o-tab-item>
+                        <o-tab-item :label="$gettext('Schedule View')">
+                            <div class="card-body-flush">
+                                <schedule
+                                    ref="$schedule"
+                                    :schedule-url="scheduleUrl"
+                                    :station-time-zone="stationTimeZone"
+                                    @click="doCalendarClick"
+                                />
+                            </div>
+                        </o-tab-item>
+                    </o-tabs>
+                </div>
             </card-page>
         </div>
         <div class="col-md-4">

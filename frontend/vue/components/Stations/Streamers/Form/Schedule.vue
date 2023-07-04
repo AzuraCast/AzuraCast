@@ -1,5 +1,5 @@
 <template>
-    <o-tab-item :labe="$gettext('Schedule')">
+    <o-tab-item :label="$gettext('Schedule')">
         <form-markup
             v-if="scheduleItems.length === 0"
             id="no_scheduled_entries"

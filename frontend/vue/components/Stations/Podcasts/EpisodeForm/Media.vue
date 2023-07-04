@@ -1,9 +1,9 @@
 <template>
     <o-tab-item :label="$gettext('Media')">
         <div class="row g-3">
-            <b-form-group
+            <form-group
+                id="media_file"
                 class="col-md-6"
-                label-for="media_file"
             >
                 <template #label>
                     {{ $gettext('Select Media File') }}
@@ -19,9 +19,12 @@
                     :valid-mime-types="['audio/x-m4a', 'audio/mpeg']"
                     @success="onFileSuccess"
                 />
-            </b-form-group>
+            </form-group>
 
-            <b-form-group class="col-md-6">
+            <form-markup
+                id="current_podcast_media"
+                class="col-md-6"
+            >
                 <template #label>
                     {{ $gettext('Current Podcast Media') }}
                 </template>
@@ -47,7 +50,7 @@
                 <div v-else>
                     {{ $gettext('There is no existing media associated with this episode.') }}
                 </div>
-            </b-form-group>
+            </form-markup>
         </div>
     </o-tab-item>
 </template>
@@ -57,6 +60,8 @@ import FlowUpload from '~/components/Common/FlowUpload';
 import {computed, ref, toRef} from "vue";
 import {useAxios} from "~/vendor/axios";
 import {syncRef} from "@vueuse/core";
+import FormGroup from "~/components/Form/FormGroup.vue";
+import FormMarkup from "~/components/Form/FormMarkup.vue";
 
 const props = defineProps({
     modelValue: {

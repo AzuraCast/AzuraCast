@@ -126,6 +126,10 @@ const close = () => {
     $modal.value.hide();
 };
 
+const open = () => {
+    $modal.value.show();
+};
+
 const {wrapWithLoading, notifySuccess} = useNotify();
 const {axios} = useAxios();
 
@@ -179,4 +183,8 @@ const requestConfig = (config) => {
     config.params.currentDirectory = destinationDirectory.value;
     return config;
 };
+
+defineExpose({
+    open
+});
 </script>

@@ -35,13 +35,14 @@
                 :label="$gettext('Publish Date')"
                 :description="$gettext('The date when the episode should be published.')"
             >
-                <!-- TODO -->
-                <b-form-datepicker
-                    :id="slotProps.id"
-                    v-model="slotProps.field.$model"
-                    :state="slotProps.state"
-                    :locale="locale"
-                />
+                <template #default="slotProps">
+                    <o-datepicker
+                        :id="slotProps.id"
+                        v-model="slotProps.field.$model"
+                        :class="slotProps.state"
+                        :locale="locale"
+                    />
+                </template>
             </form-group-field>
 
             <form-group-field
@@ -51,13 +52,14 @@
                 :label="$gettext('Publish Time')"
                 :description="$gettext('The time when the episode should be published (according to the stations timezone).')"
             >
-                <!-- TODO -->
-                <b-form-timepicker
-                    :id="slotProps.id"
-                    v-model="slotProps.field.$model"
-                    :state="slotProps.state"
-                    :locale="locale"
-                />
+                <template #default="slotProps">
+                    <o-timepicker
+                        :id="slotProps.id"
+                        v-model="slotProps.field.$model"
+                        :class="slotProps.state"
+                        :locale="locale"
+                    />
+                </template>
             </form-group-field>
 
             <form-group-checkbox

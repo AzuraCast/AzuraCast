@@ -13,6 +13,7 @@
         "@codemirror/lang-javascript": "^6.1.2",
         "@fancyapps/fancybox": "^3.5.7",
         "@flowjs/flow.js": "^2.14.1",
+        "@fullcalendar/bootstrap5": "^6.1.8",
         "@fullcalendar/core": "^6",
         "@fullcalendar/daygrid": "^6",
         "@fullcalendar/luxon3": "^6",
@@ -23,6 +24,7 @@
         "@popperjs/core": "^2.11.8",
         "@vuelidate/core": "^2.0.0",
         "@vuelidate/validators": "^2.0.0",
+        "@vuepic/vue-datepicker": "^5.4.0",
         "@vueuse/core": "^10",
         "axios": "^1",
         "bootstrap": "^5.3.0",
@@ -75,7 +77,6 @@
         "vue-codemirror6": "1.1.1",
         "vue-loader": "^17",
         "vue-style-loader": "^4.1.3",
-        "vue3-daterange-picker": "^1",
         "vue3-gettext": "^2.3.4",
         "vuedraggable": "^2.24.1",
         "wavesurfer.js": "^6",
@@ -1892,6 +1893,14 @@
       "resolved": "https://registry.npmjs.org/@flowjs/flow.js/-/flow.js-2.14.1.tgz",
       "integrity": "sha512-99DWlPnksOOS8uHfo+bhSjvs8d2MfLTB/22JBDC2ONwz/OCdP+gL/iiM4puMSTE2wH4A2/+J0eMc7pKwusXunw=="
     },
+    "node_modules/@fullcalendar/bootstrap5": {
+      "version": "6.1.8",
+      "resolved": "https://registry.npmjs.org/@fullcalendar/bootstrap5/-/bootstrap5-6.1.8.tgz",
+      "integrity": "sha512-/u8VlfZ8gXld29OrKtwbz8DrpzidGdHmXVlO8ZxlsHFC/PNGOnYd2YQZ6QtTuQFAI2bJUOw+9OVcydSoJixsGA==",
+      "peerDependencies": {
+        "@fullcalendar/core": "~6.1.8"
+      }
+    },
     "node_modules/@fullcalendar/core": {
       "version": "6.1.8",
       "resolved": "https://registry.npmjs.org/@fullcalendar/core/-/core-6.1.8.tgz",
@@ -2649,6 +2658,21 @@
         "@vue/composition-api": {
           "optional": true
         }
+      }
+    },
+    "node_modules/@vuepic/vue-datepicker": {
+      "version": "5.4.0",
+      "resolved": "https://registry.npmjs.org/@vuepic/vue-datepicker/-/vue-datepicker-5.4.0.tgz",
+      "integrity": "sha512-9f1ZqRDfak/UmBbD81BdqMDpUku2YphTwQXG8DF6hsrjIXsq5sX7BWJB6LhyVgvX9QFrSyFIp4fsHE3UFofZ7A==",
+      "dependencies": {
+        "date-fns": "^2.30.0",
+        "date-fns-tz": "^1.3.7"
+      },
+      "engines": {
+        "node": ">=14"
+      },
+      "peerDependencies": {
+        "vue": ">=3.2.0"
       }
     },
     "node_modules/@vueuse/core": {
@@ -4550,6 +4574,29 @@
       "dependencies": {
         "es5-ext": "^0.10.50",
         "type": "^1.0.1"
+      }
+    },
+    "node_modules/date-fns": {
+      "version": "2.30.0",
+      "resolved": "https://registry.npmjs.org/date-fns/-/date-fns-2.30.0.tgz",
+      "integrity": "sha512-fnULvOpxnC5/Vg3NCiWelDsLiUc9bRwAPs/+LfTLNvetFCtCTN+yQz15C/fs4AwX1R9K5GLtLfn8QW+dWisaAw==",
+      "dependencies": {
+        "@babel/runtime": "^7.21.0"
+      },
+      "engines": {
+        "node": ">=0.11"
+      },
+      "funding": {
+        "type": "opencollective",
+        "url": "https://opencollective.com/date-fns"
+      }
+    },
+    "node_modules/date-fns-tz": {
+      "version": "1.3.8",
+      "resolved": "https://registry.npmjs.org/date-fns-tz/-/date-fns-tz-1.3.8.tgz",
+      "integrity": "sha512-qwNXUFtMHTTU6CFSFjoJ80W8Fzzp24LntbjFFBgL/faqds4e5mo9mftoRLgr3Vi1trISsg4awSpYVsOQCRnapQ==",
+      "peerDependencies": {
+        "date-fns": ">=2.0.0"
       }
     },
     "node_modules/debug": {
@@ -11872,11 +11919,6 @@
       "version": "1.0.2",
       "resolved": "https://registry.npmjs.org/hash-sum/-/hash-sum-1.0.2.tgz",
       "integrity": "sha512-fUs4B4L+mlt8/XAtSOGMUO1TXmAelItBPtJG7CyHJfYTdDjwisntGO2JQz7oUsatOY9o68+57eziUVNw/mRHmA=="
-    },
-    "node_modules/vue3-daterange-picker": {
-      "version": "1.0.1",
-      "resolved": "https://registry.npmjs.org/vue3-daterange-picker/-/vue3-daterange-picker-1.0.1.tgz",
-      "integrity": "sha512-CnLfhgubeehqF3QqrnTJVCt7mx8XxTSKbY7yVMQT0kyZ2D90qrIqJ7MNf6uGAC7utE3DbBCKq6PHTk6371cDHQ=="
     },
     "node_modules/vue3-gettext": {
       "version": "2.4.0",

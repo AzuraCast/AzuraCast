@@ -23,23 +23,12 @@
             </div>
         </div>
 
-        <div
-            v-if="showSftp"
-            class="card-body alert alert-info d-flex align-items-center"
-            role="alert"
-        >
-            <div class="flex-shrink-0 me-2">
-                <i
-                    class="material-icons"
-                    aria-hidden="true"
-                >info</i>
-            </div>
-            <div class="flex-fill">
-                <p class="mb-0">
-                    {{ $gettext('You can also upload files in bulk via SFTP.') }}
-                </p>
-            </div>
-            <div class="flex-shrink-0 ms-2">
+        <info-card v-if="showSftp">
+            <p class="mb-0">
+                {{ $gettext('You can also upload files in bulk via SFTP.') }}
+            </p>
+
+            <template #action>
                 <a
                     class="btn btn-sm btn-info"
                     target="_blank"
@@ -47,8 +36,8 @@
                 >
                     {{ $gettext('Manage SFTP Accounts') }}
                 </a>
-            </div>
-        </div>
+            </template>
+        </info-card>
 
         <div class="card-body">
             <breadcrumb
@@ -72,6 +61,8 @@
                 :playlists="playlists"
                 @add-playlist="onAddPlaylist"
                 @relist="onTriggerRelist"
+                @create-directory="createDirectory"
+                @move-files="moveFiles"
             />
         </div>
 
@@ -179,17 +170,22 @@
                 </template>
             </template>
             <template #cell(playlists)="row">
-                <template
-                    v-for="(playlist, index) in row.item.playlists"
-                    :key="playlist.id"
-                >
-                    <a
-                        class="btn-search"
-                        href="#"
-                        :title="$gettext('View tracks in playlist')"
-                        @click.prevent="filter('playlist:'+playlist.short_name)"
-                    >{{ playlist.name }}</a>
-                    <span v-if="index+1 < row.item.playlists.length">, </span>
+                <template v-if="row.item.playlists.length > 0">
+                    <template
+                        v-for="(playlist, index) in row.item.playlists"
+                        :key="playlist.id"
+                    >
+                        <a
+                            class="btn-search"
+                            href="#"
+                            :title="$gettext('View tracks in playlist')"
+                            @click.prevent="filter('playlist:'+playlist.short_name)"
+                        >{{ playlist.name }}</a>
+                        <span v-if="index+1 < row.item.playlists.length">, </span>
+                    </template>
+                </template>
+                <template v-else>
+                    &nbsp;
                 </template>
             </template>
             <template #cell(commands)="row">
@@ -214,12 +210,14 @@
     </section>
 
     <new-directory-modal
+        ref="$newDirectoryModal"
         :current-directory="currentDirectory"
         :mkdir-url="mkdirUrl"
         @relist="onTriggerRelist"
     />
 
     <move-files-modal
+        ref="$moveFilesModal"
         :selected-items="selectedItems"
         :current-directory="currentDirectory"
         :batch-url="batchUrl"
@@ -261,6 +259,7 @@ import {useAzuraCast} from "~/vendor/azuracast";
 import {DateTime} from "luxon";
 import {useEventListener} from "@vueuse/core";
 import formatFileSize from "../../functions/formatFileSize";
+import InfoCard from "~/components/Common/InfoCard.vue";
 
 const props = defineProps({
     listUrl: {
@@ -459,6 +458,18 @@ const $editModal = ref(); // Template Ref
 const edit = (recordUrl, albumArtUrl, audioUrl, waveformUrl) => {
     $editModal.value?.open(recordUrl, albumArtUrl, audioUrl, waveformUrl);
 };
+
+const $newDirectoryModal = ref(); // Template Ref
+
+const createDirectory = () => {
+    $newDirectoryModal.value.open();
+}
+
+const $moveFilesModal = ref(); // Template Ref
+
+const moveFiles = () => {
+    $moveFilesModal.value.open();
+}
 
 const requestConfig = (config) => {
     config.params.currentDirectory = currentDirectory.value;

@@ -1,4 +1,4 @@
-import Swal from 'sweetalert2';
+import Swal from 'sweetalert2/dist/sweetalert2';
 import {useTranslate} from "~/vendor/gettext";
 
 const {$gettext} = useTranslate();

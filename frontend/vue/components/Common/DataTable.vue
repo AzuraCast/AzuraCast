@@ -53,111 +53,145 @@
                             >
                                 <icon icon="refresh" />
                             </button>
-                            <b-dropdown
-                                v-if="paginated"
-                                v-b-tooltip.hover
-                                variant="secondary"
-                                :text="perPageLabel"
-                                :title="$gettext('Rows per page')"
+
+                            <div
+                                class="dropdown btn-group"
+                                role="group"
                             >
-                                <b-dropdown-item
-                                    v-for="pageOption in pageOptions"
-                                    :key="pageOption"
-                                    :active="(pageOption === perPage)"
-                                    @click="settings.perPage = pageOption"
+                                <button
+                                    class="btn btn-secondary dropdown-toggle"
+                                    type="button"
+                                    data-bs-toggle="dropdown"
+                                    aria-expanded="false"
                                 >
-                                    {{ getPerPageLabel(pageOption) }}
-                                </b-dropdown-item>
-                            </b-dropdown>
-                            <b-dropdown
+                                    <span>
+                                        {{ perPageLabel }}
+                                    </span>
+                                    <span class="caret" />
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li
+                                        v-for="pageOption in pageOptions"
+                                        :key="pageOption"
+                                    >
+                                        <button
+                                            class="dropdown-item"
+                                            :class="(pageOption === perPage) ? 'active' : ''"
+                                            @click="settings.perPage = pageOption"
+                                        >
+                                            {{ getPerPageLabel(pageOption) }}
+                                        </button>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <div
                                 v-if="selectFields"
-                                v-b-tooltip.hover
-                                variant="default"
-                                :title="$gettext('Select displayed fields')"
+                                class="dropdown btn-group"
+                                role="group"
                             >
-                                <template #button-content>
+                                <button
+                                    class="btn btn-secondary dropdown-toggle"
+                                    type="button"
+                                    data-bs-toggle="dropdown"
+                                    aria-expanded="false"
+                                >
                                     <icon icon="filter_list" />
                                     <span class="caret" />
-                                </template>
-                                <b-dropdown-form class="pt-3">
-                                    <b-form-checkbox-group
-                                        v-model="settings.visibleFieldKeys"
-                                        :options="selectableFields"
-                                        value-field="key"
-                                        text-field="label"
-                                        stacked
-                                    />
-                                </b-dropdown-form>
-                            </b-dropdown>
+                                </button>
+                                <div class="dropdown-menu">
+                                    <div class="px-4 py-3">
+                                        <div
+                                            v-for="field in selectableFields"
+                                            :key="field.key"
+                                            class="form-check"
+                                        >
+                                            <input
+                                                :id="id+'_'+field.key"
+                                                v-model="settings.visibleFieldKeys"
+                                                :value="field.key"
+                                                class="form-check-input"
+                                                type="checkbox"
+                                            >
+                                            <label
+                                                class="form-check-label"
+                                                :for="id+'_'+field.key"
+                                            >
+                                                {{ field.label }}
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="datatable-main">
-            <o-table
-                ref="$table"
-                v-model:checked-rows="selectedRows"
-                striped
-                :mobile-cards="false"
+            <div class="datatable-main">
+                <o-table
+                    ref="$table"
+                    v-model:checked-rows="selectedRows"
+                    striped
+                    :mobile-cards="false"
 
-                hoverable
-                :data="visibleItems"
+                    hoverable
+                    :data="visibleItems"
 
-                :loading="loading"
-                :checkable="selectable"
-                checkbox-position="left"
+                    :loading="loading"
+                    :checkable="selectable"
+                    checkbox-position="left"
 
-                :paginated="false"
+                    :paginated="false"
 
-                :backend-sorting="!handleClientSide"
+                    :backend-sorting="!handleClientSide"
 
-                th-class="align-middle"
-                td-class="align-middle"
+                    th-class="align-middle"
+                    td-class="align-middle"
 
-                @page-change="onPageChange"
-                @sort="onSort"
-            >
-                <o-table-column
-                    v-for="field in visibleFields"
-                    :key="field.key"
-                    v-slot="{ row }"
-                    :field="field.key"
-                    :label="field.label"
-                    :sortable="field.sortable"
+                    @page-change="onPageChange"
+                    @sort="onSort"
                 >
-                    <slot
-                        :name="'cell('+field.key+')'"
-                        v-bind="{item: row}"
+                    <o-table-column
+                        v-for="field in visibleFields"
+                        :key="field.key"
+                        v-slot="{ row }"
+                        :field="field.key"
+                        :label="field.label"
+                        :sortable="field.sortable"
                     >
-                        <template v-if="field.formatter">
-                            {{ field.formatter(row[field.key] ?? null, field.key, row) }}
-                        </template>
-                        <template v-else>
-                            {{ row[field.key] }}
-                        </template>
-                    </slot>
-                </o-table-column>
-            </o-table>
-        </div>
-        <div
-            v-if="showToolbar"
-            class="datatable-toolbar-bottom card-body"
-        >
-            <o-pagination
-                v-if="showPagination"
-                v-model:current="currentPage"
-                :total="totalRows"
-                :per-page="perPage"
-                class="mb-0"
-                @change="onPageChange"
-            />
+                        <slot
+                            :name="'cell('+field.key+')'"
+                            v-bind="{item: row}"
+                        >
+                            <template v-if="field.formatter">
+                                {{ field.formatter(get(row, field.key, null), field.key, row) }}
+                            </template>
+                            <template v-else>
+                                {{ get(row, field.key, null) }}
+                            </template>
+                        </slot>
+                    </o-table-column>
+                </o-table>
+            </div>
+            <div
+                v-if="showToolbar"
+                class="datatable-toolbar-bottom card-body"
+            >
+                <o-pagination
+                    v-if="showPagination"
+                    v-model:current="currentPage"
+                    :total="totalRows"
+                    :per-page="perPage"
+                    class="mb-0"
+                    @change="onPageChange"
+                />
+            </div>
         </div>
     </div>
 </template>
 
 <script setup>
-import {slice, filter, map, includes, isEmpty} from 'lodash';
+import {slice, filter, map, includes, isEmpty, get} from 'lodash';
 import Icon from './Icon.vue';
 import {computed, onMounted, ref, toRef, watch} from "vue";
 import {useLocalStorage, watchDebounced} from "@vueuse/core";

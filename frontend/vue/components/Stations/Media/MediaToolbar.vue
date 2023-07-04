@@ -5,130 +5,152 @@
     >
         <div class="col-md-8 buttons">
             <div class="btn-group dropdown allow-focus">
-                <b-dropdown
-                    ref="$setPlaylistsDropdown"
-                    v-b-tooltip.hover
-                    size="sm"
-                    variant="primary"
-                    :title="$gettext('Set or clear playlists from the selected media')"
-                >
-                    <template #button-content>
-                        <icon icon="clear_all" />
-                        {{ $gettext('Playlists') }}
-                        <span class="caret" />
-                    </template>
-                    <b-dropdown-form
-                        class="pt-2"
-                        @submit.prevent="setPlaylists"
+                <div class="dropdown">
+                    <button
+                        class="btn btn-sm btn-primary dropdown-toggle"
+                        type="button"
+                        data-bs-toggle="dropdown"
+                        aria-expanded="false"
                     >
-                        <div
-                            v-for="playlist in playlists"
-                            :key="playlist.id"
-                            class="form-group"
+                        <icon icon="clear_all" />
+                        <span>
+                            {{ $gettext('Playlists') }}
+                        </span>
+                        <span class="caret" />
+                    </button>
+                    <div class="dropdown-menu">
+                        <form
+                            class="px-4 py-3"
+                            @submit.prevent="setPlaylists"
                         >
-                            <div class="custom-control custom-checkbox">
-                                <input
-                                    :id="'chk_playlist_' + playlist.id"
-                                    v-model="checkedPlaylists"
-                                    type="checkbox"
-                                    class="custom-control-input"
-                                    name="playlists[]"
-                                    :value="playlist.id"
-                                >
-                                <label
-                                    class="custom-control-label"
-                                    :for="'chk_playlist_'+playlist.id"
-                                >
-                                    {{ playlist.name }}
-                                </label>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="custom-control custom-checkbox">
-                                <input
-                                    id="chk_playlist_new"
-                                    v-model="checkedPlaylists"
-                                    type="checkbox"
-                                    class="custom-control-input"
-                                    value="new"
-                                >
-                                <label
-                                    class="custom-control-label"
-                                    for="chk_playlist_new"
-                                >
+                            <div
+                                v-for="playlist in playlists"
+                                :key="playlist.id"
+                                class="form-group"
+                            >
+                                <div class="custom-control custom-checkbox">
                                     <input
-                                        id="new_playlist_name"
-                                        v-model="newPlaylist"
-                                        type="text"
-                                        class="form-control p-2"
-                                        name="new_playlist_name"
-                                        style="min-width: 150px;"
-                                        :placeholder="$gettext('New Playlist')"
+                                        :id="'chk_playlist_' + playlist.id"
+                                        v-model="checkedPlaylists"
+                                        type="checkbox"
+                                        class="custom-control-input"
+                                        name="playlists[]"
+                                        :value="playlist.id"
                                     >
-                                </label>
+                                    <label
+                                        class="custom-control-label"
+                                        :for="'chk_playlist_'+playlist.id"
+                                    >
+                                        {{ playlist.name }}
+                                    </label>
+                                </div>
                             </div>
-                        </div>
 
-                        <div class="buttons">
-                            <button
-                                class="btn btn-sm btn-primary"
-                                type="submit"
-                            >
-                                {{ $gettext('Save') }}
-                            </button>
-                            <button
-                                class="btn btn-sm btn-warning"
-                                type="button"
-                                @click="clearPlaylists()"
-                            >
-                                {{ $gettext('Clear') }}
-                            </button>
-                        </div>
-                    </b-dropdown-form>
-                </b-dropdown>
+                            <div class="form-group">
+                                <div class="custom-control custom-checkbox">
+                                    <input
+                                        id="chk_playlist_new"
+                                        v-model="checkedPlaylists"
+                                        type="checkbox"
+                                        class="custom-control-input"
+                                        value="new"
+                                    >
+                                    <label
+                                        class="custom-control-label"
+                                        for="chk_playlist_new"
+                                    >
+                                        <input
+                                            id="new_playlist_name"
+                                            v-model="newPlaylist"
+                                            type="text"
+                                            class="form-control p-2"
+                                            name="new_playlist_name"
+                                            style="min-width: 150px;"
+                                            :placeholder="$gettext('New Playlist')"
+                                        >
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="buttons">
+                                <button
+                                    class="btn btn-sm btn-primary"
+                                    type="submit"
+                                >
+                                    {{ $gettext('Save') }}
+                                </button>
+                                <button
+                                    class="btn btn-sm btn-warning"
+                                    type="button"
+                                    @click="clearPlaylists()"
+                                >
+                                    {{ $gettext('Clear') }}
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
             </div>
+
             <button
-                v-b-modal.move_file
                 class="btn btn-sm btn-primary"
+                @click.prevent="moveFiles"
             >
                 <icon icon="open_with" />
                 <span>
                     {{ $gettext('Move') }}
                 </span>
             </button>
-            <b-dropdown
-                size="sm"
-                variant="default"
-            >
-                <template #button-content>
-                    <icon icon="more_horiz" />
-                    <span>
-                        {{ $gettext('More') }}
-                    </span>
-                </template>
-                <b-dropdown-item
-                    v-b-tooltip.hover
-                    :title="$gettext('Queue the selected media to play next')"
-                    @click="doQueue"
-                >
-                    {{ $gettext('Queue') }}
-                </b-dropdown-item>
-                <b-dropdown-item
-                    v-if="supportsImmediateQueue"
-                    v-b-tooltip.hover
-                    :title="$gettext('Make the selected media play immediately, interrupting existing media')"
-                    @click="doImmediateQueue"
-                >
-                    {{ $gettext('Play Now') }}
-                </b-dropdown-item>
-                <b-dropdown-item
-                    v-b-tooltip.hover
-                    :title="$gettext('Analyze and reprocess the selected media')"
-                    @click="doReprocess"
-                >
-                    {{ $gettext('Reprocess') }}
-                </b-dropdown-item>
-            </b-dropdown>
+
+            <div class="btn-group dropdown allow-focus">
+                <div class="dropdown">
+                    <button
+                        class="btn btn-sm btn-secondary dropdown-toggle"
+                        type="button"
+                        data-bs-toggle="dropdown"
+                        aria-expanded="false"
+                    >
+                        <icon icon="more_horiz" />
+                        <span>
+                            {{ $gettext('More') }}
+                        </span>
+                        <span class="caret" />
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <button
+                                v-b-tooltip.hover
+                                class="dropdown-item"
+                                :title="$gettext('Queue the selected media to play next')"
+                                @click.prevent="doQueue"
+                            >
+                                {{ $gettext('Queue') }}
+                            </button>
+                        </li>
+                        <li>
+                            <button
+                                v-if="supportsImmediateQueue"
+                                v-b-tooltip.hover
+                                class="dropdown-item"
+                                :title="$gettext('Make the selected media play immediately, interrupting existing media')"
+                                @click="doImmediateQueue"
+                            >
+                                {{ $gettext('Play Now') }}
+                            </button>
+                        </li>
+                        <li>
+                            <button
+                                v-b-tooltip.hover
+                                class="dropdown-item"
+                                :title="$gettext('Analyze and reprocess the selected media')"
+                                @click="doReprocess"
+                            >
+                                {{ $gettext('Reprocess') }}
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+            </div>
 
             <button
                 class="btn btn-sm btn-danger"
@@ -142,8 +164,8 @@
         </div>
         <div class="col-md-4 text-end">
             <button
-                v-b-modal.create_directory
                 class="btn btn-sm btn-primary"
+                @click.prevent="createDirectory"
             >
                 <icon icon="folder" />
                 <span>
@@ -189,7 +211,7 @@ const props = defineProps({
     }
 });
 
-const emit = defineEmits(['relist', 'add-playlist']);
+const emit = defineEmits(['relist', 'add-playlist', 'move-files', 'create-directory']);
 
 const checkedPlaylists = ref([]);
 const newPlaylist = ref('');
@@ -289,11 +311,7 @@ const doDelete = () => {
     });
 };
 
-const $setPlaylistsDropdown = ref(); // Template Ref
-
 const setPlaylists = () => {
-    $setPlaylistsDropdown.value.hide();
-
     if (props.selectedItems.all.length) {
         wrapWithLoading(
             axios.put(props.batchUrl, {
@@ -349,4 +367,12 @@ const clearPlaylists = () => {
 
     setPlaylists();
 };
+
+const moveFiles = () => {
+    emit('move-files');
+}
+
+const createDirectory = () => {
+    emit('create-directory');
+}
 </script>

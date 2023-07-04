@@ -82,6 +82,7 @@
                     v-if="row.item.explicit"
                     class="badge text-bg-danger"
                 >{{ $gettext('Explicit') }}</span>
+                <span v-else>&nbsp;</span>
             </template>
             <template #cell(actions)="row">
                 <div class="btn-group btn-group-sm">

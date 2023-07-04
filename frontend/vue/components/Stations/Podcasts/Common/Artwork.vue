@@ -2,7 +2,7 @@
     <o-tab-item :label="$gettext('Artwork')">
         <div class="row g-3">
             <div class="col-md-8">
-                <form-group :id="edit_form_art">
+                <form-group id="edit_form_art">
                     <template #label>
                         {{ $gettext('Select PNG/JPG artwork file') }}
                     </template>

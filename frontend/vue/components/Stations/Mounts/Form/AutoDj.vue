@@ -1,42 +1,40 @@
 <template>
     <o-tab-item :label="$gettext('AutoDJ')">
-        <b-form-group>
-            <div class="row g-3 mb-3">
-                <form-group-checkbox
-                    id="edit_form_enable_autodj"
-                    class="col-md-12"
-                    :field="form.enable_autodj"
-                    :label="$gettext('Enable AutoDJ')"
-                    :description="$gettext('If enabled, the AutoDJ will automatically play music to this mount point.')"
-                />
-            </div>
+        <div class="row g-3 mb-3">
+            <form-group-checkbox
+                id="edit_form_enable_autodj"
+                class="col-md-12"
+                :field="form.enable_autodj"
+                :label="$gettext('Enable AutoDJ')"
+                :description="$gettext('If enabled, the AutoDJ will automatically play music to this mount point.')"
+            />
+        </div>
 
-            <div
-                v-if="form.enable_autodj.$model"
-                class="row g-3"
-            >
-                <form-group-multi-check
-                    id="edit_form_autodj_format"
-                    class="col-md-6"
-                    :field="form.autodj_format"
-                    :options="formatOptions"
-                    stacked
-                    radio
-                    :label="$gettext('AutoDJ Format')"
-                />
+        <div
+            v-if="form.enable_autodj.$model"
+            class="row g-3"
+        >
+            <form-group-multi-check
+                id="edit_form_autodj_format"
+                class="col-md-6"
+                :field="form.autodj_format"
+                :options="formatOptions"
+                stacked
+                radio
+                :label="$gettext('AutoDJ Format')"
+            />
 
-                <form-group-multi-check
-                    v-if="formatSupportsBitrateOptions"
-                    id="edit_form_autodj_bitrate"
-                    class="col-md-6"
-                    :field="form.autodj_bitrate"
-                    :options="bitrateOptions"
-                    stacked
-                    radio
-                    :label="$gettext('AutoDJ Bitrate (kbps)')"
-                />
-            </div>
-        </b-form-group>
+            <form-group-multi-check
+                v-if="formatSupportsBitrateOptions"
+                id="edit_form_autodj_bitrate"
+                class="col-md-6"
+                :field="form.autodj_bitrate"
+                :options="bitrateOptions"
+                stacked
+                radio
+                :label="$gettext('AutoDJ Bitrate (kbps)')"
+            />
+        </div>
     </o-tab-item>
 </template>
 

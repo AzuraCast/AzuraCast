@@ -22,21 +22,13 @@
             >
                 <form-fieldset>
                     <div class="row g-3">
-                        <!-- TODO -->
-                        <form-group-field
+                        <form-group-select
                             id="edit_form_storage_location"
                             class="col-md-12"
                             :field="v$.storage_location"
+                            :options="storageLocationOptions"
                             :label="$gettext('Storage Location')"
-                        >
-                            <template #default="slotProps">
-                                <b-form-select
-                                    :id="slotProps.id"
-                                    v-model="slotProps.field.$model"
-                                    :options="storageLocationOptions"
-                                />
-                            </template>
-                        </form-group-field>
+                        />
 
                         <form-group-field
                             id="edit_form_path"
@@ -120,6 +112,7 @@ import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
 import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
 import Modal from "~/components/Common/Modal.vue";
+import FormGroupSelect from "~/components/Form/FormGroupSelect.vue";
 
 const props = defineProps({
     runBackupUrl: {

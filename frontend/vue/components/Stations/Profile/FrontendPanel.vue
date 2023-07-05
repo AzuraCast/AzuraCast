@@ -19,14 +19,11 @@
         </div>
 
         <template v-if="userCanManageBroadcasting">
-            <b-collapse
-                id="frontendCredentials"
-                v-model="credentialsVisible"
+            <div
+                class="collapse"
+                :class="(credentialsVisible) ? 'show' : ''"
             >
-                <b-table-simple
-                    striped
-                    responsive
-                >
+                <table class="table table-striped table-responsive">
                     <tbody>
                         <tr class="align-middle">
                             <td>
@@ -97,8 +94,8 @@
                             </td>
                         </tr>
                     </tbody>
-                </b-table-simple>
-            </b-collapse>
+                </table>
+            </div>
 
             <div class="card-body buttons">
                 <a

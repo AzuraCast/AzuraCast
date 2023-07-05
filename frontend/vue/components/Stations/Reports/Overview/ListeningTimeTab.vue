@@ -1,41 +1,31 @@
 <template>
-    <b-overlay
-        variant="card"
-        :show="loading"
-    >
-        <template
-            v-if="loading"
-        >
-            &nbsp;
-        </template>
-        <template v-else>
-            <div class="card-body">
-                <fieldset>
-                    <legend>
-                        {{ $gettext('Listeners by Listening Time') }}
-                    </legend>
+    <loading :loading="isLoading">
+        <div class="card-body">
+            <fieldset>
+                <legend>
+                    {{ $gettext('Listeners by Listening Time') }}
+                </legend>
 
-                    <pie-chart
-                        style="width: 100%;"
-                        :data="stats.chart.datasets"
-                        :labels="stats.chart.labels"
-                        :alt="stats.chart.alt"
-                        :aspect-ratio="4"
-                    />
-                </fieldset>
-            </div>
+                <pie-chart
+                    style="width: 100%;"
+                    :data="stats.chart.datasets"
+                    :labels="stats.chart.labels"
+                    :alt="stats.chart.alt"
+                    :aspect-ratio="4"
+                />
+            </fieldset>
+        </div>
 
-            <data-table
-                id="listening_time_table"
-                ref="datatable"
-                paginated
-                handle-client-side
-                :fields="fields"
-                :responsive="false"
-                :items="stats.all"
-            />
-        </template>
-    </b-overlay>
+        <data-table
+            id="listening_time_table"
+            ref="datatable"
+            paginated
+            handle-client-side
+            :fields="fields"
+            :responsive="false"
+            :items="stats.all"
+        />
+    </loading>
 </template>
 
 <script setup>
@@ -46,6 +36,7 @@ import {useTranslate} from "~/vendor/gettext";
 import {DateTime} from "luxon";
 import {useMounted} from "@vueuse/core";
 import {useAxios} from "~/vendor/axios";
+import Loading from "~/components/Common/Loading.vue";
 
 const props = defineProps({
     dateRange: {
@@ -58,7 +49,7 @@ const props = defineProps({
     }
 });
 
-const loading = ref(true);
+const isLoading = ref(true);
 const stats = shallowRef({
     all: [],
     chart: {
@@ -79,7 +70,7 @@ const dateRange = toRef(props, 'dateRange');
 const {axios} = useAxios();
 
 const relist = () => {
-    loading.value = true;
+    isLoading.value = true;
 
     axios.get(props.apiUrl, {
         params: {
@@ -91,7 +82,7 @@ const relist = () => {
             all: response.data.all,
             chart: response.data.chart
         };
-        loading.value = false;
+        isLoading.value = false;
     });
 }
 

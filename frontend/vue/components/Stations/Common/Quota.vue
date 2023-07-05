@@ -4,13 +4,22 @@
         style="line-height: 1;"
     >
         <template v-if="quota.available">
-            <b-progress
-                :value="quota.used_percent"
-                :variant="progressVariant"
-                show-progress
-                height="15px"
-                class="mb-1"
-            />
+            <div
+                class="progress h-15 mb-1"
+                role="progressbar"
+                :aria-label="quota.used_percent+'%'"
+                :aria-valuenow="quota.used_percent"
+                aria-valuemin="0"
+                aria-valuemax="100"
+            >
+                <div
+                    class="progress-bar"
+                    :class="progressVariant"
+                    :style="{ width: quota.used_percent+'%' }"
+                >
+                    {{ quota.used_percent }}%
+                </div>
+            </div>
 
             {{ langSpaceUsed }}
         </template>
@@ -50,11 +59,11 @@ const quota = shallowRef({
 
 const progressVariant = computed(() => {
     if (quota.value.used_percent > 85) {
-        return 'danger';
+        return 'text-bg-danger';
     } else if (quota.value.used_percent > 65) {
-        return 'warning';
+        return 'text-bg-warning';
     } else {
-        return 'default';
+        return 'text-bg-default';
     }
 });
 

@@ -30,12 +30,13 @@
                     {{ row.item.name }}
                 </div>
                 {{ getWebhookName(row.item.type) }}
-                <b-badge
+
+                <div
                     v-if="!row.item.is_enabled"
-                    variant="danger"
+                    class="badge badge-danger"
                 >
                     {{ $gettext('Disabled') }}
-                </b-badge>
+                </div>
             </template>
             <template #cell(triggers)="row">
                 <div

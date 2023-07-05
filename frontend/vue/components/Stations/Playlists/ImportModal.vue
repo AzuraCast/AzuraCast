@@ -62,10 +62,14 @@
                     }}
                 </template>
 
-                <b-form-file
-                    id="import_modal_playlist_file"
-                    v-model="playlistFile"
-                />
+                <template #default="{id}">
+                    <input
+                        :id="id"
+                        type="file"
+                        class="form-control"
+                        @change="uploaded"
+                    >
+                </template>
             </form-group>
 
             <invisible-submit-button />
@@ -102,6 +106,10 @@ const emit = defineEmits(['relist']);
 const importPlaylistUrl = ref(null);
 const playlistFile = ref(null);
 const results = ref(null);
+
+const uploaded = (file) => {
+    playlistFile.value = file;
+}
 
 const $modal = ref(); // Template Ref
 

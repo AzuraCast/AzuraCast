@@ -20,12 +20,12 @@
                     </h3>
                 </div>
 
-                <b-alert
-                    variant="danger"
-                    :show="error != null"
+                <div
+                    v-show="error != null"
+                    class="alert alert-danger"
                 >
                     {{ error }}
-                </b-alert>
+                </div>
 
                 <form
                     id="recover-form"

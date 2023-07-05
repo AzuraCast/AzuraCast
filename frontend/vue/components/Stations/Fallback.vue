@@ -20,51 +20,52 @@
         </info-card>
 
         <div class="card-body">
-            <b-form-group>
-                <div class="row g-3">
-                    <b-form-group
-                        class="col-md-6"
-                        label-for="intro_file"
-                    >
-                        <template #label>
-                            {{ $gettext('Select Custom Fallback File') }}
-                        </template>
+            <div class="row g-3">
+                <form-group
+                    id="intro_file"
+                    class="col-md-6"
+                >
+                    <template #label>
+                        {{ $gettext('Select Custom Fallback File') }}
+                    </template>
 
-                        <flow-upload
-                            :target-url="apiUrl"
-                            :valid-mime-types="['audio/*']"
-                            @success="onFileSuccess"
-                        />
-                    </b-form-group>
+                    <flow-upload
+                        :target-url="apiUrl"
+                        :valid-mime-types="['audio/*']"
+                        @success="onFileSuccess"
+                    />
+                </form-group>
 
-                    <b-form-group class="col-md-6">
-                        <template #label>
-                            {{ $gettext('Current Custom Fallback File') }}
-                        </template>
+                <form-markup
+                    id="current_custom_fallback_file"
+                    class="col-md-6"
+                >
+                    <template #label>
+                        {{ $gettext('Current Custom Fallback File') }}
+                    </template>
 
-                        <div v-if="hasFallback">
-                            <div class="block-buttons pt-3">
-                                <a
-                                    class="btn btn-block btn-dark"
-                                    :href="apiUrl"
-                                    target="_blank"
-                                >
-                                    {{ $gettext('Download') }}
-                                </a>
-                                <button
-                                    class="btn btn-block btn-danger"
-                                    @click="deleteFallback"
-                                >
-                                    {{ $gettext('Clear File') }}
-                                </button>
-                            </div>
+                    <div v-if="hasFallback">
+                        <div class="block-buttons pt-3">
+                            <a
+                                class="btn btn-block btn-dark"
+                                :href="apiUrl"
+                                target="_blank"
+                            >
+                                {{ $gettext('Download') }}
+                            </a>
+                            <button
+                                class="btn btn-block btn-danger"
+                                @click="deleteFallback"
+                            >
+                                {{ $gettext('Clear File') }}
+                            </button>
                         </div>
-                        <div v-else>
-                            {{ $gettext('There is no existing custom fallback file associated with this station.') }}
-                        </div>
-                    </b-form-group>
-                </div>
-            </b-form-group>
+                    </div>
+                    <div v-else>
+                        {{ $gettext('There is no existing custom fallback file associated with this station.') }}
+                    </div>
+                </form-markup>
+            </div>
         </div>
     </section>
 </template>
@@ -74,6 +75,8 @@ import FlowUpload from '~/components/Common/FlowUpload';
 import InfoCard from "~/components/Common/InfoCard";
 import {ref} from "vue";
 import {useAxios} from "~/vendor/axios";
+import FormMarkup from "~/components/Form/FormMarkup.vue";
+import FormGroup from "~/components/Form/FormGroup.vue";
 
 const props = defineProps({
     apiUrl: {

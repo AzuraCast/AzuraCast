@@ -20,10 +20,7 @@
         </info-card>
 
         <div class="card-body">
-            <b-overlay
-                variant="card"
-                :show="loading"
-            >
+            <loading :loading="isLoading">
                 <div class="row g-3">
                     <div class="col-md-7">
                         <fieldset>
@@ -109,7 +106,7 @@
                         </form>
                     </div>
                 </div>
-            </b-overlay>
+            </loading>
         </div>
     </section>
 </template>
@@ -123,6 +120,7 @@ import {useSweetAlert} from "~/vendor/sweetalert";
 import {useAxios} from "~/vendor/axios";
 import {useTranslate} from "~/vendor/gettext";
 import {useNotify} from "~/functions/useNotify";
+import Loading from "~/components/Common/Loading.vue";
 
 const props = defineProps({
     apiUrl: {
@@ -131,7 +129,7 @@ const props = defineProps({
     }
 });
 
-const loading = ref(true);
+const isLoading = ref(true);
 const version = ref(null);
 
 const {form, v$} = useVuelidateOnForm(
@@ -157,12 +155,12 @@ const langInstalledVersion = computed(() => {
 const {axios} = useAxios();
 
 const doFetch = () => {
-    loading.value = true;
+    isLoading.value = true;
 
     axios.get(props.apiUrl).then((resp) => {
         form.value.key = resp.data.key;
         version.value = resp.data.version;
-        loading.value = false;
+        isLoading.value = false;
     });
 };
 
@@ -171,7 +169,7 @@ onMounted(doFetch);
 const {wrapWithLoading} = useNotify();
 
 const doUpdate = () => {
-    loading.value = true;
+    isLoading.value = true;
     wrapWithLoading(
         axios.post(props.apiUrl, {
             geolite_license_key: form.value.key
@@ -179,7 +177,7 @@ const doUpdate = () => {
     ).then((resp) => {
         version.value = resp.data.version;
     }).finally(() => {
-        loading.value = false;
+        isLoading.value = false;
     });
 };
 

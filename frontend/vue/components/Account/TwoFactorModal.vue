@@ -42,7 +42,10 @@
                 </form-fieldset>
             </div>
             <div class="col-md-5">
-                <b-img :src="totp.qr_code" />
+                <img
+                    :src="totp.qr_code"
+                    :alt="$gettext('QR Code')"
+                >
 
                 <div
                     v-if="totp.totp_uri"

@@ -46,8 +46,9 @@
                     <div class="flex-shrink-1 ps-3">
                         <div class="btn-group actions">
                             <button
-                                v-b-tooltip.hover
+                                v-tooltip
                                 class="btn btn-secondary"
+                                data-bs-placement="left"
                                 :title="$gettext('Refresh rows')"
                                 @click="onClickRefresh"
                             >
@@ -55,14 +56,18 @@
                             </button>
 
                             <div
+                                v-if="paginated"
                                 class="dropdown btn-group"
                                 role="group"
                             >
                                 <button
+                                    v-tooltip
                                     class="btn btn-secondary dropdown-toggle"
                                     type="button"
                                     data-bs-toggle="dropdown"
                                     aria-expanded="false"
+                                    data-bs-placement="left"
+                                    :title="$gettext('Items per page')"
                                 >
                                     <span>
                                         {{ perPageLabel }}
@@ -95,31 +100,20 @@
                                     type="button"
                                     data-bs-toggle="dropdown"
                                     aria-expanded="false"
+                                    data-bs-placement="left"
+                                    :title="$gettext('Display fields')"
                                 >
                                     <icon icon="filter_list" />
                                     <span class="caret" />
                                 </button>
                                 <div class="dropdown-menu">
-                                    <div class="px-4 py-3">
-                                        <div
-                                            v-for="field in selectableFields"
-                                            :key="field.key"
-                                            class="form-check"
-                                        >
-                                            <input
-                                                :id="id+'_'+field.key"
-                                                v-model="settings.visibleFieldKeys"
-                                                :value="field.key"
-                                                class="form-check-input"
-                                                type="checkbox"
-                                            >
-                                            <label
-                                                class="form-check-label"
-                                                :for="id+'_'+field.key"
-                                            >
-                                                {{ field.label }}
-                                            </label>
-                                        </div>
+                                    <div class="px-3 py-1">
+                                        <form-multi-check
+                                            id="field_select"
+                                            v-model="settings.visibleFieldKeys"
+                                            :options="selectableFieldOptions"
+                                            stacked
+                                        />
                                     </div>
                                 </div>
                             </div>
@@ -127,65 +121,67 @@
                     </div>
                 </div>
             </div>
-            <div class="datatable-main">
-                <o-table
-                    ref="$table"
-                    v-model:checked-rows="selectedRows"
-                    striped
-                    :mobile-cards="false"
+        </div>
+        <div class="datatable-main">
+            <o-table
+                ref="$table"
+                v-model:checked-rows="selectedRows"
+                striped
+                :mobile-cards="false"
+                :class="(responsive) ? 'table-responsive' : ''"
 
-                    hoverable
-                    :data="visibleItems"
+                hoverable
+                :data="visibleItems"
 
-                    :loading="loading"
-                    :checkable="selectable"
-                    checkbox-position="left"
+                :loading="loading"
+                :checkable="selectable"
+                checkbox-position="left"
 
-                    :paginated="false"
+                :paginated="false"
 
-                    :backend-sorting="!handleClientSide"
+                :backend-sorting="!handleClientSide"
 
-                    th-class="align-middle"
-                    td-class="align-middle"
+                th-class="align-middle"
+                td-class="align-middle"
 
-                    @page-change="onPageChange"
-                    @sort="onSort"
-                >
-                    <o-table-column
-                        v-for="field in visibleFields"
-                        :key="field.key"
-                        v-slot="{ row }"
-                        :field="field.key"
-                        :label="field.label"
-                        :sortable="field.sortable"
-                    >
-                        <slot
-                            :name="'cell('+field.key+')'"
-                            v-bind="{item: row}"
-                        >
-                            <template v-if="field.formatter">
-                                {{ field.formatter(get(row, field.key, null), field.key, row) }}
-                            </template>
-                            <template v-else>
-                                {{ get(row, field.key, null) }}
-                            </template>
-                        </slot>
-                    </o-table-column>
-                </o-table>
-            </div>
-            <div
-                v-if="showToolbar"
-                class="datatable-toolbar-bottom card-body"
+                @page-change="onPageChange"
+                @sort="onSort"
             >
-                <o-pagination
-                    v-if="showPagination"
-                    v-model:current="currentPage"
-                    :total="totalRows"
-                    :per-page="perPage"
-                    class="mb-0"
-                    @change="onPageChange"
-                />
-            </div>
+                <o-table-column
+                    v-for="field in visibleFields"
+                    :key="field.key"
+                    v-slot="{ row }"
+                    :field="field.key"
+                    :label="field.label"
+                    :sortable="field.sortable"
+                    :class="field.class"
+                >
+                    <slot
+                        :name="'cell('+field.key+')'"
+                        v-bind="{item: row}"
+                    >
+                        <template v-if="field.formatter">
+                            {{ field.formatter(get(row, field.key, null), field.key, row) }}
+                        </template>
+                        <template v-else>
+                            {{ get(row, field.key, null) }}
+                        </template>
+                    </slot>
+                </o-table-column>
+            </o-table>
+        </div>
+        <div
+            v-if="showToolbar"
+            class="datatable-toolbar-bottom card-body"
+        >
+            <o-pagination
+                v-if="showPagination"
+                v-model:current="currentPage"
+                :total="totalRows"
+                :per-page="perPage"
+                class="mb-0"
+                @change="onPageChange"
+            />
         </div>
     </div>
 </template>
@@ -196,6 +192,7 @@ import Icon from './Icon.vue';
 import {computed, onMounted, ref, toRef, watch} from "vue";
 import {useLocalStorage, watchDebounced} from "@vueuse/core";
 import {useAxios} from "~/vendor/axios";
+import FormMultiCheck from "~/components/Form/FormMultiCheck.vue";
 
 const props = defineProps({
     id: {
@@ -295,6 +292,7 @@ const allFields = computed(() => {
             selectable: false,
             visible: true,
             formatter: null,
+            class: null,
             ...field
         };
     });
@@ -305,6 +303,13 @@ const selectableFields = computed(() => {
         return field.selectable;
     });
 });
+
+const selectableFieldOptions = computed(() => map(selectableFields.value, (field) => {
+    return {
+        value: field.key,
+        text: field.label
+    };
+}));
 
 const defaultSelectableFields = computed(() => {
     return filter({...selectableFields.value}, (field) => {

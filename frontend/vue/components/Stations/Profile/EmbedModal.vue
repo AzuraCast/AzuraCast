@@ -1,5 +1,5 @@
 <template>
-    <b-modal
+    <modal
         id="embed_modal"
         ref="$modal"
         size="lg"
@@ -7,56 +7,67 @@
         hide-footer
         no-enforce-focus
     >
-        <b-row>
-            <b-col md="7">
-                <b-card
-                    class="mb-3"
-                    no-body
+        <div class="row">
+            <div class="col-md-7">
+                <section
+                    class="card mb-3"
+                    role="region"
                 >
                     <div class="card-header text-bg-primary">
                         <h2 class="card-title">
                             {{ $gettext('Customize') }}
                         </h2>
                     </div>
-                    <b-card-body>
-                        <b-row>
-                            <b-col md="6">
-                                <b-form-group :label="$gettext('Widget Type')">
-                                    <b-form-radio-group
-                                        id="embed_type"
-                                        v-model="selectedType"
-                                        :options="types"
-                                        name="embed_type"
-                                        stacked
-                                    />
-                                </b-form-group>
-                            </b-col>
-                            <b-col md="6">
-                                <b-form-group :label="$gettext('Theme')">
-                                    <b-form-radio-group
-                                        id="embed_theme"
-                                        v-model="selectedTheme"
-                                        :options="themes"
-                                        name="embed_theme"
-                                        stacked
-                                    />
-                                </b-form-group>
-                            </b-col>
-                        </b-row>
-                    </b-card-body>
-                </b-card>
-            </b-col>
-            <b-col md="5">
-                <b-card
-                    class="mb-3"
-                    no-body
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <form-group
+                                    id="embed_type"
+                                    :label="$gettext('Widget Type')"
+                                >
+                                    <template #default="{id}">
+                                        <form-multi-check
+                                            :id="id"
+                                            v-model="selectedType"
+                                            :options="types"
+                                            stacked
+                                            radio
+                                        />
+                                    </template>
+                                </form-group>
+                            </div>
+                            <div class="col-md-6">
+                                <form-group
+                                    id="embed_theme"
+                                    :label="$gettext('Theme')"
+                                >
+                                    <template #default="{id}">
+                                        <form-multi-check
+                                            :id="id"
+                                            v-model="selectedTheme"
+                                            name="embed_theme"
+                                            :options="themes"
+                                            stacked
+                                            radio
+                                        />
+                                    </template>
+                                </form-group>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+            <div class="col-md-5">
+                <section
+                    class="card mb-3"
+                    role="region"
                 >
                     <div class="card-header text-bg-primary">
                         <h2 class="card-title">
                             {{ $gettext('Embed Code') }}
                         </h2>
                     </div>
-                    <b-card-body>
+                    <div class="card-body">
                         <textarea
                             class="full-width form-control text-preformatted"
                             spellcheck="false"
@@ -65,21 +76,24 @@
                             :value="embedCode"
                         />
                         <copy-to-clipboard-button :text="embedCode" />
-                    </b-card-body>
-                </b-card>
-            </b-col>
-        </b-row>
+                    </div>
+                </section>
+            </div>
+        </div>
 
-        <b-card
-            class="mb-3"
-            no-body
+        <section
+            class="card mb-3"
+            role="region"
         >
             <div class="card-header text-bg-primary">
                 <h2 class="card-title">
                     {{ $gettext('Preview') }}
                 </h2>
             </div>
-            <b-card-body :body-bg-variant="selectedTheme">
+            <div
+                class="card-body"
+                :data-bs-theme="selectedTheme"
+            >
                 <iframe
                     width="100%"
                     :src="embedUrl"
@@ -87,9 +101,9 @@
                     style="width: 100%; border: 0;"
                     :style="{ 'min-height': embedHeight }"
                 />
-            </b-card-body>
-        </b-card>
-    </b-modal>
+            </div>
+        </section>
+    </modal>
 </template>
 
 <script setup>
@@ -97,6 +111,9 @@ import CopyToClipboardButton from '~/components/Common/CopyToClipboardButton';
 import {computed, ref} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import embedModalProps from "./embedModalProps";
+import Modal from "~/components/Common/Modal.vue";
+import FormGroup from "~/components/Form/FormGroup.vue";
+import FormMultiCheck from "~/components/Form/FormMultiCheck.vue";
 
 const props = defineProps({
     ...embedModalProps

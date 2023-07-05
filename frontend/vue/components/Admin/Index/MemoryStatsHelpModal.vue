@@ -1,5 +1,5 @@
 <template>
-    <b-modal
+    <modal
         id="cpu_stats_help_modal"
         ref="$modal"
         size="lg"
@@ -46,11 +46,12 @@
                 </button>
             </slot>
         </template>
-    </b-modal>
+    </modal>
 </template>
 
 <script setup>
 import {ref} from "vue";
+import Modal from "~/components/Common/Modal.vue";
 
 const $modal = ref(); // BModal
 

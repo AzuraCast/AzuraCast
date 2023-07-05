@@ -6,28 +6,28 @@
                 data-fancybox
                 target="_blank"
             >
-                <b-img
+                <img
                     :src="url"
                     width="125"
                     :alt="caption"
-                />
+                >
             </a>
         </div>
         <div class="flex-grow-1 ms-3">
-            <b-overlay
-                variant="card"
-                :show="loading"
-            >
-                <b-form-group :label-for="id">
+            <loading :loading="isLoading">
+                <form-group :id="id">
                     <template #label>
                         {{ caption }}
                     </template>
-                    <b-form-file
+
+                    <input
                         :id="id"
-                        v-model="file"
+                        type="file"
+                        class="form-control"
                         accept="image/*"
-                    />
-                </b-form-group>
+                        @change="uploaded"
+                    >
+                </form-group>
 
                 <button
                     v-if="isUploaded"
@@ -36,15 +36,17 @@
                 >
                     {{ $gettext('Clear Image') }}
                 </button>
-            </b-overlay>
+            </loading>
         </div>
     </div>
 </template>
 
 <script setup>
-import {onMounted, ref, watch} from "vue";
+import {onMounted, ref} from "vue";
 import {useAxios} from "~/vendor/axios";
 import {useNotify} from "~/functions/useNotify";
+import Loading from "~/components/Common/Loading.vue";
+import FormGroup from "~/components/Form/FormGroup.vue";
 
 const props = defineProps({
     id: {
@@ -61,22 +63,20 @@ const props = defineProps({
     }
 });
 
-const loading = ref(true);
+const isLoading = ref(true);
 const isUploaded = ref(false);
 const url = ref(null);
-const file = ref(null);
 
 const {axios} = useAxios();
 
 const relist = () => {
-    file.value = null;
-    loading.value = true;
+    isLoading.value = true;
 
     axios.get(props.apiUrl).then((resp) => {
         isUploaded.value = resp.data.is_uploaded;
         url.value = resp.data.url;
 
-        loading.value = false;
+        isLoading.value = false;
     });
 };
 
@@ -84,7 +84,7 @@ onMounted(relist);
 
 const {wrapWithLoading} = useNotify();
 
-watch(file, (newFile) => {
+const uploaded = (newFile) => {
     if (null === newFile) {
         return;
     }
@@ -97,7 +97,7 @@ watch(file, (newFile) => {
     ).finally(() => {
         relist();
     });
-});
+};
 
 const clear = () => {
     wrapWithLoading(

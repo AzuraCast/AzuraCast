@@ -1,64 +1,50 @@
 <template>
-    <b-overlay
-        variant="card"
-        :show="loading"
-    >
-        <template v-if="loading">
-            &nbsp;
-        </template>
-        <template v-else>
-            <b-row>
-                <b-col
-                    md="6"
-                    class="mb-4"
-                >
-                    <fieldset>
-                        <legend>
-                            <slot name="by_listeners_legend" />
-                        </legend>
+    <loading :loading="isLoading">
+        <div class="row">
+            <div class="col-md-6 mb-4">
+                <fieldset>
+                    <legend>
+                        <slot name="by_listeners_legend" />
+                    </legend>
 
-                        <pie-chart
-                            style="width: 100%;"
-                            :data="stats.top_listeners.datasets"
-                            :labels="stats.top_listeners.labels"
-                            :alt="stats.top_listeners.alt"
-                        />
-                    </fieldset>
-                </b-col>
-                <b-col
-                    md="6"
-                    class="mb-4"
-                >
-                    <fieldset>
-                        <legend>
-                            <slot name="by_connected_time_legend" />
-                        </legend>
+                    <pie-chart
+                        style="width: 100%;"
+                        :data="stats.top_listeners.datasets"
+                        :labels="stats.top_listeners.labels"
+                        :alt="stats.top_listeners.alt"
+                    />
+                </fieldset>
+            </div>
+            <div class="col-md-6 mb-4">
+                <fieldset>
+                    <legend>
+                        <slot name="by_connected_time_legend" />
+                    </legend>
 
-                        <pie-chart
-                            style="width: 100%;"
-                            :data="stats.top_connected_time.datasets"
-                            :labels="stats.top_connected_time.labels"
-                            :alt="stats.top_connected_time.alt"
-                        />
-                    </fieldset>
-                </b-col>
-            </b-row>
+                    <pie-chart
+                        style="width: 100%;"
+                        :data="stats.top_connected_time.datasets"
+                        :labels="stats.top_connected_time.labels"
+                        :alt="stats.top_connected_time.alt"
+                    />
+                </fieldset>
+            </div>
+        </div>
 
-            <data-table
-                :id="fieldKey+'_table'"
-                ref="datatable"
-                paginated
-                handle-client-side
-                :fields="fields"
-                :responsive="false"
-                :items="stats.all"
-            >
-                <template #cell(connected_seconds_calc)="row">
-                    {{ formatTime(row.item.connected_seconds) }}
-                </template>
-            </data-table>
-        </template>
-    </b-overlay>
+        <data-table
+            :id="fieldKey+'_table'"
+            ref="datatable"
+            paginated
+            handle-client-side
+            :fields="fields"
+            :responsive="false"
+            :items="stats.all"
+        >
+            <template #cell(connected_seconds_calc)="row">
+                {{ formatTime(row.item.connected_seconds) }}
+            </template>
+        </data-table>
+    </loading>
 </template>
 
 <script setup>
@@ -70,6 +56,7 @@ import {useTranslate} from "~/vendor/gettext";
 import {DateTime} from "luxon";
 import {useMounted} from "@vueuse/core";
 import {useAxios} from "~/vendor/axios";
+import Loading from "~/components/Common/Loading.vue";
 
 const props = defineProps({
     dateRange: {
@@ -90,7 +77,7 @@ const props = defineProps({
     },
 });
 
-const loading = ref(true);
+const isLoading = ref(true);
 const stats = shallowRef({
     all: [],
     top_listeners: {
@@ -118,7 +105,7 @@ const dateRange = toRef(props, 'dateRange');
 const {axios} = useAxios();
 
 const relist = () => {
-    loading.value = true;
+    isLoading.value = true;
 
     axios.get(props.apiUrl, {
         params: {
@@ -132,7 +119,7 @@ const relist = () => {
             top_connected_time: response.data.top_connected_time
         };
 
-        loading.value = false;
+        isLoading.value = false;
     });
 };
 

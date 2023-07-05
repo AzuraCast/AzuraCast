@@ -160,7 +160,7 @@ forEach(props.customFields.slice(), (field) => {
         overflow-y: auto;
     }
 
-    table.b-table {
+    table.table {
         thead tr th:nth-child(1),
         tbody tr td:nth-child(1) {
             padding-right: 0.75rem;

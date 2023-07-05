@@ -26,55 +26,56 @@
         </info-card>
 
         <div class="card-body">
-            <b-form-group>
-                <div class="row g-3">
-                    <b-form-group
-                        class="col-md-6"
-                        label-for="stereo_tool_configuration_file"
-                    >
-                        <template #label>
-                            {{ $gettext('Select Configuration File') }}
-                        </template>
-                        <template #description>
-                            {{
-                                $gettext('This configuration file should be a valid .sts file exported from Stereo Tool.')
-                            }}
-                        </template>
+            <div class="row g-3">
+                <form-group
+                    id="stereo_tool_configuration_file"
+                    class="col-md-6"
+                >
+                    <template #label>
+                        {{ $gettext('Select Configuration File') }}
+                    </template>
+                    <template #description>
+                        {{
+                            $gettext('This configuration file should be a valid .sts file exported from Stereo Tool.')
+                        }}
+                    </template>
 
-                        <flow-upload
-                            :target-url="apiUrl"
-                            :valid-mime-types="['text/plain']"
-                            @success="onFileSuccess"
-                        />
-                    </b-form-group>
+                    <flow-upload
+                        :target-url="apiUrl"
+                        :valid-mime-types="['text/plain']"
+                        @success="onFileSuccess"
+                    />
+                </form-group>
 
-                    <b-form-group class="col-md-6">
-                        <template #label>
-                            {{ $gettext('Current Configuration File') }}
-                        </template>
-                        <div v-if="hasStereoToolConfiguration">
-                            <div class="block-buttons pt-3">
-                                <a
-                                    class="btn btn-block btn-dark"
-                                    :href="apiUrl"
-                                    target="_blank"
-                                >
-                                    {{ $gettext('Download') }}
-                                </a>
-                                <button
-                                    class="btn btn-block btn-danger"
-                                    @click="deleteConfigurationFile"
-                                >
-                                    {{ $gettext('Clear File') }}
-                                </button>
-                            </div>
+                <form-markup
+                    id="current_configuration_file"
+                    class="col-md-6"
+                >
+                    <template #label>
+                        {{ $gettext('Current Configuration File') }}
+                    </template>
+                    <div v-if="hasStereoToolConfiguration">
+                        <div class="block-buttons pt-3">
+                            <a
+                                class="btn btn-block btn-dark"
+                                :href="apiUrl"
+                                target="_blank"
+                            >
+                                {{ $gettext('Download') }}
+                            </a>
+                            <button
+                                class="btn btn-block btn-danger"
+                                @click="deleteConfigurationFile"
+                            >
+                                {{ $gettext('Clear File') }}
+                            </button>
                         </div>
-                        <div v-else>
-                            {{ $gettext('There is no Stereo Tool configuration file present.') }}
-                        </div>
-                    </b-form-group>
-                </div>
-            </b-form-group>
+                    </div>
+                    <div v-else>
+                        {{ $gettext('There is no Stereo Tool configuration file present.') }}
+                    </div>
+                </form-markup>
+            </div>
         </div>
     </section>
 </template>
@@ -86,6 +87,8 @@ import {ref} from "vue";
 import {mayNeedRestartProps, useMayNeedRestart} from "~/functions/useMayNeedRestart";
 import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
+import FormGroup from "~/components/Form/FormGroup.vue";
+import FormMarkup from "~/components/Form/FormMarkup.vue";
 
 const props = defineProps({
     ...mayNeedRestartProps,

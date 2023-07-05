@@ -11,26 +11,26 @@
                             $gettext('Artwork must be a minimum size of 1400 x 1400 pixels and a maximum size of 3000 x 3000 pixels for Apple Podcasts.')
                         }}
                     </template>
-
-                    <!-- TODO -->
-                    <b-form-file
-                        id="edit_form_art"
-                        v-model="uploadedFile"
-                        accept="image/jpeg, image/png"
-                    />
+                    <template #default="{id}">
+                        <input
+                            :id="id"
+                            type="file"
+                            class="form-control"
+                            accept="image/jpeg, image/png"
+                            @change="uploaded"
+                        >
+                    </template>
                 </form-group>
             </div>
             <div
                 v-if="src && src !== ''"
                 class="col-md-4"
             >
-                <!-- TODO -->
-                <b-img
+                <img
                     :src="src"
                     :alt="$gettext('Artwork')"
-                    rounded
-                    fluid
-                />
+                    class="rounded img-fluid"
+                >
 
                 <div class="block-buttons pt-3">
                     <button
@@ -46,7 +46,7 @@
 </template>
 
 <script setup>
-import {computed, ref, toRef, watch} from "vue";
+import {computed, ref, toRef} from "vue";
 import {useAxios} from "~/vendor/axios";
 import FormGroup from "~/components/Form/FormGroup.vue";
 
@@ -80,9 +80,7 @@ const src = computed(() => {
 
 const {axios} = useAxios();
 
-const uploadedFile = ref(null);
-
-watch(uploadedFile, (file) => {
+const uploaded = (file) => {
     if (null === file) {
         return;
     }
@@ -100,7 +98,7 @@ watch(uploadedFile, (file) => {
     axios.post(url, formData).then((resp) => {
         emit('update:modelValue', resp.data);
     });
-});
+};
 
 const deleteArt = () => {
     if (props.editArtUrl) {

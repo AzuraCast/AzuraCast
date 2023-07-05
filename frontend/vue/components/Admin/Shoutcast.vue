@@ -14,10 +14,7 @@
         </div>
 
         <div class="card-body">
-            <b-overlay
-                variant="card"
-                :show="loading"
-            >
+            <loading :loading="isLoading">
                 <div class="row g-3">
                     <div class="col-md-7">
                         <fieldset>
@@ -85,7 +82,7 @@
                         />
                     </div>
                 </div>
-            </b-overlay>
+            </loading>
         </div>
     </section>
 </template>
@@ -95,6 +92,7 @@ import FlowUpload from "~/components/Common/FlowUpload";
 import {computed, onMounted, ref} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import {useAxios} from "~/vendor/axios";
+import Loading from "~/components/Common/Loading.vue";
 
 const props = defineProps({
     apiUrl: {
@@ -103,7 +101,7 @@ const props = defineProps({
     }
 });
 
-const loading = ref(true);
+const isLoading = ref(true);
 const version = ref(null);
 
 const {$gettext} = useTranslate();
@@ -120,10 +118,10 @@ const langInstalledVersion = computed(() => {
 const {axios} = useAxios();
 
 const relist = () => {
-    loading.value = true;
+    isLoading.value = true;
     axios.get(props.apiUrl).then((resp) => {
         version.value = resp.data.version;
-        loading.value = false;
+        isLoading.value = false;
     });
 };
 

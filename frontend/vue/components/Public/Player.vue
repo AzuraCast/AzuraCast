@@ -96,26 +96,30 @@
                         id="btn-select-stream"
                         class="btn btn-sm btn-outline-primary dropdown-toggle"
                         type="button"
-                        data-toggle="dropdown"
+                        data-bs-toggle="dropdown"
                         aria-haspopup="true"
                         aria-expanded="false"
                     >
                         {{ currentStream.name }}
+                        <span class="caret" />
                     </button>
-                    <div
+                    <ul
                         class="dropdown-menu"
                         aria-labelledby="btn-select-stream"
                     >
-                        <a
+                        <li
                             v-for="stream in streams"
                             :key="stream.url"
-                            class="dropdown-item"
-                            href="javascript:"
-                            @click.prevent="switchStream(stream)"
                         >
-                            {{ stream.name }}
-                        </a>
-                    </div>
+                            <button
+                                type="button"
+                                class="dropdown-item"
+                                @click="switchStream(stream)"
+                            >
+                                {{ stream.name }}
+                            </button>
+                        </li>
+                    </ul>
                 </div>
             </div>
 

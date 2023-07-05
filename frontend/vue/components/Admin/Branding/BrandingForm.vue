@@ -20,11 +20,8 @@
                 {{ error }}
             </div>
 
-            <b-overlay
-                variant="card"
-                :show="loading"
-            >
-                <div class="card-body">
+            <div class="card-body">
+                <loading :loading="isLoading">
                     <div class="row g-3">
                         <form-group-multi-check
                             id="edit_form_public_theme"
@@ -125,8 +122,8 @@
                     >
                         {{ $gettext('Save Changes') }}
                     </button>
-                </div>
-            </b-overlay>
+                </loading>
+            </div>
         </section>
     </form>
 </template>
@@ -142,6 +139,7 @@ import {useNotify} from "~/functions/useNotify";
 import {useTranslate} from "~/vendor/gettext";
 import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
 import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
+import Loading from "~/components/Common/Loading.vue";
 
 const props = defineProps({
     apiUrl: {
@@ -150,7 +148,7 @@ const props = defineProps({
     },
 });
 
-const loading = ref(true);
+const isLoading = ref(true);
 const error = ref(null);
 
 const {form, resetForm, v$, ifValid} = useVuelidateOnForm(
@@ -204,11 +202,11 @@ const populateForm = (data) => {
 const relist = () => {
     resetForm();
 
-    loading.value = true;
+    isLoading.value = true;
 
     axios.get(props.apiUrl).then((resp) => {
         populateForm(resp.data);
-        loading.value = false;
+        isLoading.value = false;
     });
 }
 

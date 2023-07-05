@@ -58,12 +58,7 @@
         </div>
         <div class="mb-1">
             <h6>
-                <b-badge
-                    pill
-                    variant="primary"
-                >
-&nbsp;&nbsp;
-                </b-badge>&nbsp;
+                <span class="badge text-bg-primary me-1">&nbsp;</span>
                 {{ $gettext('Use (Us)') }}:
                 {{ $gettext('The current CPU usage including I/O Wait and Steal.') }}
             </h6>

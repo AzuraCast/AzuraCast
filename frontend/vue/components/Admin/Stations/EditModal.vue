@@ -1,5 +1,5 @@
 <template>
-    <b-modal
+    <modal
         id="station_edit_modal"
         ref="$modal"
         size="lg"
@@ -42,7 +42,7 @@
                 {{ $gettext('Save Changes') }}
             </button>
         </template>
-    </b-modal>
+    </modal>
 </template>
 
 <script setup>
@@ -52,6 +52,7 @@ import {computed, ref} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import stationFormProps from "~/components/Admin/Stations/stationFormProps";
 import {pickProps} from "~/functions/pickProps";
+import Modal from "~/components/Common/Modal.vue";
 
 const props = defineProps({
     ...stationFormProps,

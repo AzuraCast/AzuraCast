@@ -56,19 +56,24 @@
                         }}
                     </p>
 
-                    <b-form
+                    <form
                         class="form"
                         @submit.prevent="doSubmit"
                     >
-                        <b-form-group label-for="import_file">
+                        <form-group id="import_file">
                             <template #label>
                                 {{ $gettext('Select CSV File') }}
                             </template>
-                            <b-form-file
-                                id="import_modal_playlist_file"
-                                v-model="importFile"
-                            />
-                        </b-form-group>
+
+                            <template #default="{id}">
+                                <input
+                                    :id="id"
+                                    type="file"
+                                    class="form-control"
+                                    @change="uploaded"
+                                >
+                            </template>
+                        </form-group>
 
                         <div class="block-buttons mt-2">
                             <button
@@ -78,12 +83,12 @@
                                 {{ $gettext('Import Changes from CSV') }}
                             </button>
                         </div>
-                    </b-form>
+                    </form>
                 </div>
             </section>
         </div>
 
-        <b-modal
+        <modal
             id="import_modal"
             ref="$modal"
             :title="$gettext('Import Results')"
@@ -93,34 +98,33 @@
                     {{ importResults.message }}
                 </p>
 
-                <b-table-simple
-                    striped
-                    responsive
+                <table
+                    class="table table-striped table-responsive"
                     style="max-height: 300px; overflow-y: scroll;"
                 >
-                    <b-thead>
-                        <b-tr>
-                            <b-th class="p-2">
+                    <thead>
+                        <tr>
+                            <th class="p-2">
                                 {{ $gettext('Media File') }}
-                            </b-th>
-                            <b-th class="p-2">
+                            </th>
+                            <th class="p-2">
                                 {{ $gettext('Import Results') }}
-                            </b-th>
-                        </b-tr>
-                    </b-thead>
-                    <b-tbody>
-                        <b-tr
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr
                             v-for="row in importResults.import_results"
                             :key="row.id"
                         >
-                            <b-td
+                            <td
                                 class="p-2"
                                 style="overflow-x: auto;"
                             >
                                 <b>{{ row.title }}</b><br>
                                 {{ row.artist }}
-                            </b-td>
-                            <b-td
+                            </td>
+                            <td
                                 class="p-2"
                                 style="overflow-x: auto;"
                             >
@@ -137,10 +141,10 @@
                                         {{ row.error }}
                                     </div>
                                 </template>
-                            </b-td>
-                        </b-tr>
-                    </b-tbody>
-                </b-table-simple>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
             <template #modal-footer>
                 <button
@@ -151,7 +155,7 @@
                     {{ $gettext('Close') }}
                 </button>
             </template>
-        </b-modal>
+        </modal>
     </div>
 </template>
 
@@ -159,6 +163,8 @@
 import {ref} from "vue";
 import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
+import Modal from "~/components/Common/Modal.vue";
+import FormGroup from "~/components/Form/FormGroup.vue";
 
 const props = defineProps({
     apiUrl: {
@@ -177,6 +183,10 @@ const $modal = ref(); // Template Ref
 
 const close = () => {
     $modal.value.hide();
+};
+
+const uploaded = (file) => {
+    importFile.value = file;
 };
 
 const doSubmit = () => {

@@ -22,10 +22,7 @@
                         </button>
                     </template>
 
-                    <b-overlay
-                        variant="card"
-                        :show="userLoading"
-                    >
+                    <loading :loading="userLoading">
                         <div class="card-body">
                             <div class="d-flex align-items-center">
                                 <div
@@ -67,7 +64,7 @@
                                 </div>
                             </div>
                         </div>
-                    </b-overlay>
+                    </loading>
                 </card-page>
 
                 <card-page
@@ -106,10 +103,7 @@
                         </button>
                     </template>
 
-                    <b-overlay
-                        variant="card"
-                        :show="securityLoading"
-                    >
+                    <loading :loading="securityLoading">
                         <div class="card-body">
                             <h5>
                                 {{ $gettext('Two-Factor Authentication') }}
@@ -122,7 +116,7 @@
                                 }}
                             </p>
                         </div>
-                    </b-overlay>
+                    </loading>
                 </card-page>
             </div>
             <div class="col-sm-12 col-md-6 col-lg-7">
@@ -218,6 +212,7 @@ import {useAxios} from "~/vendor/axios";
 import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
 import useRefreshableAsyncState from "~/functions/useRefreshableAsyncState";
 import CardPage from "~/components/Common/CardPage.vue";
+import Loading from "~/components/Common/Loading.vue";
 
 const props = defineProps({
     userUrl: {

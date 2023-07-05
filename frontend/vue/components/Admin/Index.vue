@@ -70,20 +70,22 @@
                             {{ stats.memory.readable.total }}
                         </h6>
 
-                        <b-progress
-                            :max="stats.memory.bytes.total"
-                            :label="stats.memory.readable.used"
-                            class="h-20 mb-3 mt-2"
+                        <div
+                            class="progress h-20 mb-3 mt-2"
+                            role="progressbar"
+                            :aria-label="stats.memory.readable.used"
+                            aria-valuemin="0"
+                            :aria-valuemax="stats.memory.bytes.total"
                         >
-                            <b-progress-bar
-                                variant="primary"
-                                :value="stats.memory.bytes.used"
+                            <div
+                                class="progress-bar text-bg-primary"
+                                :style="{ width: getPercent(stats.memory.bytes.used, stats.memory.bytes.total) }"
                             />
-                            <b-progress-bar
-                                variant="warning"
-                                :value="stats.memory.bytes.cached"
+                            <div
+                                class="progress-bar text-bg-warning"
+                                :style="{ width: getPercent(stats.memory.bytes.cached, stats.memory.bytes.total) }"
                             />
-                        </b-progress>
+                        </div>
 
                         <div class="row">
                             <div class="col">
@@ -117,16 +119,18 @@
                             {{ stats.disk.readable.total }}
                         </h6>
 
-                        <b-progress
-                            :max="stats.disk.bytes.total"
-                            :label="stats.disk.readable.used"
-                            class="h-20 mb-3 mt-2"
+                        <div
+                            class="progress h-20 mb-3 mt-2"
+                            role="progressbar"
+                            :aria-label="stats.disk.readable.used"
+                            aria-valuemin="0"
+                            :aria-valuemax="stats.disk.bytes.total"
                         >
-                            <b-progress-bar
-                                variant="primary"
-                                :value="stats.disk.bytes.used"
+                            <div
+                                class="progress-bar text-bg-primary"
+                                :style="{ width: getPercent(stats.disk.bytes.used, stats.disk.bytes.total) }"
                             />
-                        </b-progress>
+                        </div>
 
                         <div class="row">
                             <div class="col">
@@ -167,24 +171,26 @@
                             {{ formatCpuName(stats.cpu.total.name) }}
                         </h5>
 
-                        <b-progress
-                            max="100"
-                            :label="formatPercentageString(stats.cpu.total.usage)"
-                            class="h-20 mb-3 mt-2"
+                        <div
+                            class="progress h-20 mb-3 mt-2"
+                            role="progressbar"
+                            :aria-label="formatPercentageString(stats.cpu.total.usage)"
+                            aria-valuemin="0"
+                            aria-valuemax="100"
                         >
-                            <b-progress-bar
-                                variant="danger"
-                                :value="stats.cpu.total.steal"
+                            <div
+                                class="progress-bar text-bg-danger"
+                                :style="{ width: stats.cpu.total.steal+'%' }"
                             />
-                            <b-progress-bar
-                                variant="warning"
-                                :value="stats.cpu.total.io_wait"
+                            <div
+                                class="progress-bar text-bg-warning"
+                                :style="{ width: stats.cpu.total.io_wait+'%' }"
                             />
-                            <b-progress-bar
-                                variant="primary"
-                                :value="stats.cpu.total.usage"
+                            <div
+                                class="progress-bar text-bg-primary"
+                                :style="{ width: stats.cpu.total.usage+'%' }"
                             />
-                        </b-progress>
+                        </div>
 
                         <div class="row">
                             <div class="col">
@@ -216,24 +222,26 @@
                                     {{ formatCpuName(core.name) }}
                                 </h6>
 
-                                <b-progress
-                                    max="100"
-                                    :label="formatPercentageString(core.usage)"
-                                    class="h-20"
+                                <div
+                                    class="progress h-20 mb-3 mt-2"
+                                    role="progressbar"
+                                    :aria-label="formatPercentageString(core.usage)"
+                                    aria-valuemin="0"
+                                    aria-valuemax="100"
                                 >
-                                    <b-progress-bar
-                                        variant="danger"
-                                        :value="core.steal"
+                                    <div
+                                        class="progress-bar text-bg-danger"
+                                        :style="{ width: core.steal+'%' }"
                                     />
-                                    <b-progress-bar
-                                        variant="warning"
-                                        :value="core.io_wait"
+                                    <div
+                                        class="progress-bar text-bg-warning"
+                                        :style="{ width: core.io_wait+'%' }"
                                     />
-                                    <b-progress-bar
-                                        variant="primary"
-                                        :value="core.usage"
+                                    <div
+                                        class="progress-bar text-bg-primary"
+                                        :style="{ width: core.usage+'%' }"
                                     />
-                                </b-progress>
+                                </div>
 
                                 <div class="row mb-2 mt-1">
                                     <div class="col">
@@ -342,23 +350,45 @@
                                         <h5 class="mb-1 text-center">
                                             {{ $gettext('Received') }}
                                         </h5>
-                                        <b-table
+
+                                        <o-table
                                             striped
-                                            responsive
-                                            :items="getNetworkInterfaceTableItems(netInterface.received)"
-                                            :fields="getNetworkInterfaceTableFields(netInterface.received)"
-                                        />
+                                            class="table-responsive"
+                                            :data="getNetworkInterfaceTableItems(netInterface.received)"
+                                            :paginated="false"
+                                        >
+                                            <o-table-column
+                                                v-for="key in getNetworkInterfaceTableFields(netInterface.received)"
+                                                :key="key"
+                                                v-slot="{ row }"
+                                                :label="key"
+                                                :sortable="false"
+                                            >
+                                                {{ get(row, key, null) }}
+                                            </o-table-column>
+                                        </o-table>
                                     </div>
                                     <div class="col">
                                         <h5 class="mb-1 text-center">
                                             {{ $gettext('Transmitted') }}
                                         </h5>
-                                        <b-table
+
+                                        <o-table
                                             striped
-                                            responsive
-                                            :items="getNetworkInterfaceTableItems(netInterface.transmitted)"
-                                            :fields="getNetworkInterfaceTableFields(netInterface.transmitted)"
-                                        />
+                                            class="table-responsive"
+                                            :data="getNetworkInterfaceTableItems(netInterface.transmitted)"
+                                            :paginated="false"
+                                        >
+                                            <o-table-column
+                                                v-for="key in getNetworkInterfaceTableFields(netInterface.transmitted)"
+                                                :key="key"
+                                                v-slot="{ row }"
+                                                :label="key"
+                                                :sortable="false"
+                                            >
+                                                {{ get(row, key, null) }}
+                                            </o-table-column>
+                                        </o-table>
                                     </div>
                                 </div>
                             </o-tab-item>
@@ -377,7 +407,7 @@
 import Icon from '~/components/Common/Icon';
 import CpuStatsHelpModal from "./Index/CpuStatsHelpModal";
 import MemoryStatsHelpModal from "./Index/MemoryStatsHelpModal";
-import {isObject, upperFirst} from 'lodash';
+import {get, isObject, upperFirst} from 'lodash';
 import RunningBadge from "~/components/Common/Badges/RunningBadge.vue";
 import {onMounted, ref, shallowRef} from "vue";
 import {useAxios} from "~/vendor/axios";
@@ -444,18 +474,7 @@ const formatCpuName = (cpuName) => upperFirst(cpuName);
 
 const formatPercentageString = (value) => value + '%';
 
-const getNetworkInterfaceTableFields = (interfaceData) => {
-    let fields = [];
-
-    Object.keys(interfaceData).forEach((key) => {
-        fields.push({
-            key: key,
-            sortable: false
-        });
-    });
-
-    return fields;
-};
+const getNetworkInterfaceTableFields = (interfaceData) => Object.keys(interfaceData);
 
 const getNetworkInterfaceTableItems = (interfaceData) => {
     let item = {};
@@ -523,4 +542,8 @@ const $memoryStatsHelpModal = ref(); // Template Ref
 const showMemoryStatsHelpModal = () => {
     $memoryStatsHelpModal.value.create();
 };
+
+const getPercent = (amount, total) => {
+    return ((amount / total) * 100) + '%';
+}
 </script>

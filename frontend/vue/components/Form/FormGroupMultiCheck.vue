@@ -22,28 +22,25 @@
                 name="default"
                 v-bind="{ id, field, class: fieldClass }"
             >
-                <div
-                    v-for="option in options"
-                    :key="option.value"
-                    class="form-check"
-                    :class="!stacked ? 'form-check-inline' : ''"
+                <form-multi-check
+                    :id="id"
+                    v-model="field.$model"
+                    :name="name"
+                    :field-class="fieldClass"
+                    :options="options"
+                    :radio="radio"
+                    :stacked="stacked"
                 >
-                    <input
-                        :id="id+'_'+option.value"
-                        v-model="field.$model"
-                        :value="option.value"
-                        class="form-check-input"
-                        :class="fieldClass"
-                        :type="radio ? 'radio' : 'checkbox'"
-                        :name="name"
+                    <template
+                        v-for="(_, slot) of useSlotsExcept($slots, ['default', 'label', 'description'])"
+                        #[slot]="scope"
                     >
-                    <label
-                        class="form-check-label"
-                        :for="id+'_'+option.value"
-                    >
-                        <slot :name="'label('+option.value+')'">{{ option.text }}</slot>
-                    </label>
-                </div>
+                        <slot
+                            :name="slot"
+                            v-bind="scope"
+                        />
+                    </template>
+                </form-multi-check>
             </slot>
 
             <vuelidate-error :field="field" />
@@ -67,6 +64,8 @@ import {computed} from "vue";
 import FormLabel from "~/components/Form/FormLabel.vue";
 import FormGroup from "~/components/Form/FormGroup.vue";
 import useFormFieldState from "~/functions/useFormFieldState";
+import FormMultiCheck from "~/components/Form/FormMultiCheck.vue";
+import useSlotsExcept from "~/functions/useSlotsExcept";
 
 const props = defineProps({
     id: {

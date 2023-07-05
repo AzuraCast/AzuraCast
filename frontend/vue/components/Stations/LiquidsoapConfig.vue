@@ -35,10 +35,7 @@
                 </p>
             </info-card>
 
-            <b-overlay
-                variant="card"
-                :show="loading"
-            >
+            <loading :loading="isLoading">
                 <div class="card-body">
                     <form-fieldset
                         v-for="(row, index) in config"
@@ -68,7 +65,7 @@
                         {{ $gettext('Save Changes') }}
                     </button>
                 </div>
-            </b-overlay>
+            </loading>
         </section>
     </form>
 </template>
@@ -85,6 +82,7 @@ import {onMounted, ref} from "vue";
 import {mayNeedRestartProps, useMayNeedRestart} from "~/functions/useMayNeedRestart";
 import {useAxios} from "~/vendor/axios";
 import {useNotify} from "~/functions/useNotify";
+import Loading from "~/components/Common/Loading.vue";
 
 const props = defineProps({
     ...mayNeedRestartProps,
@@ -117,7 +115,7 @@ const buildForm = () => {
 const {validations, blankForm} = buildForm();
 const {form, resetForm, v$, ifValid} = useVuelidateOnForm(validations, blankForm);
 
-const loading = ref(true);
+const isLoading = ref(true);
 
 const {mayNeedRestart} = useMayNeedRestart(props);
 
@@ -126,10 +124,10 @@ const {axios} = useAxios();
 const relist = () => {
     resetForm();
 
-    loading.value = true;
+    isLoading.value = true;
     axios.get(props.settingsUrl).then((resp) => {
         form.value = mergeExisting(form.value, resp.data);
-        loading.value = false;
+        isLoading.value = false;
     });
 };
 

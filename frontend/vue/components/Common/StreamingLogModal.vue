@@ -1,5 +1,5 @@
 <template>
-    <b-modal
+    <modal
         id="logs_modal"
         ref="$modal"
         size="lg"
@@ -28,13 +28,14 @@
                 {{ $gettext('Copy to Clipboard') }}
             </button>
         </template>
-    </b-modal>
+    </modal>
 </template>
 
 <script setup>
 import StreamingLogView from "~/components/Common/StreamingLogView";
 import {ref} from "vue";
 import {useClipboard} from "@vueuse/core";
+import Modal from "~/components/Common/Modal.vue";
 
 const logUrl = ref('');
 const $modal = ref(); // Template ref

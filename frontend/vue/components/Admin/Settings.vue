@@ -23,18 +23,15 @@
 
             <slot name="cardUpper" />
 
-            <b-alert
-                variant="danger"
-                :show="error != null"
+            <div
+                v-show="error != null"
+                class="alert alert-danger"
             >
                 {{ error }}
-            </b-alert>
+            </div>
 
-            <b-overlay
-                variant="card"
-                :show="loading"
-            >
-                <div class="card-body">
+            <div class="card-body">
+                <loading :loading="isLoading">
                     <o-tabs
                         nav-tabs-class="nav-tabs"
                         content-class="mt-3"
@@ -63,8 +60,8 @@
                             />
                         </o-tab-item>
                     </o-tabs>
-                </div>
-            </b-overlay>
+                </loading>
+            </div>
 
             <div class="card-body">
                 <button
@@ -92,6 +89,7 @@ import mergeExisting from "~/functions/mergeExisting";
 import {useNotify} from "~/functions/useNotify";
 import {useTranslate} from "~/vendor/gettext";
 import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
+import Loading from "~/components/Common/Loading.vue";
 
 const props = defineProps({
     apiUrl: {
@@ -198,11 +196,11 @@ const {form, v$, ifValid} = useVuelidateOnForm(
     }
 );
 
-const loading = ref(true);
+const isLoading = ref(true);
 const error = ref(null);
 
 const getTabClass = (validationGroup) => {
-    if (!loading.value && validationGroup.$invalid) {
+    if (!isLoading.value && validationGroup.$invalid) {
         return 'text-danger';
     }
     return null;
@@ -216,11 +214,11 @@ const populateForm = (data) => {
 
 const relist = () => {
     v$.value.$reset();
-    loading.value = true;
+    isLoading.value = true;
 
     axios.get(props.apiUrl).then((resp) => {
         populateForm(resp.data);
-        loading.value = false;
+        isLoading.value = false;
     });
 };
 

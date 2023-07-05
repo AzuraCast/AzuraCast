@@ -123,58 +123,50 @@
                     </button>
                 </div>
             </div>
-            <b-collapse
+            <div
                 id="charts"
-                v-model="chartsVisible"
+                class="card-body collapse collapse-vertical"
+                :class="(chartsVisible) ? 'show' : ''"
             >
                 <dashboard-charts
                     v-if="chartsVisible"
                     :charts-url="chartsUrl"
                 />
-            </b-collapse>
+            </div>
         </section>
 
-        <b-overlay
-            variant="card"
-            :show="stationsLoading"
+        <section
+            class="card"
+            role="region"
+            aria-labelledby="hdr_stations"
         >
-            <section
-                class="card"
-                role="region"
-                aria-labelledby="hdr_stations"
-            >
-                <div class="card-header text-bg-primary d-flex flex-wrap align-items-center">
-                    <div class="flex-fill">
-                        <h2
-                            id="hdr_stations"
-                            class="card-title"
-                        >
-                            {{ $gettext('Station Overview') }}
-                        </h2>
-                    </div>
-                    <div
-                        v-if="showAdmin"
-                        class="flex-shrink-0"
+            <div class="card-header text-bg-primary d-flex flex-wrap align-items-center">
+                <div class="flex-fill">
+                    <h2
+                        id="hdr_stations"
+                        class="card-title"
                     >
-                        <a
-                            class="btn btn-dark py-2"
-                            :href="manageStationsUrl"
-                        >
-                            <icon icon="settings" />
-                            <span>
-                                {{ $gettext('Manage Stations') }}
-                            </span>
-                        </a>
-                    </div>
+                        {{ $gettext('Station Overview') }}
+                    </h2>
                 </div>
                 <div
-                    v-if="stationsLoading"
-                    class="card-body py-3"
+                    v-if="showAdmin"
+                    class="flex-shrink-0"
                 >
-                    &nbsp;
+                    <a
+                        class="btn btn-dark py-2"
+                        :href="manageStationsUrl"
+                    >
+                        <icon icon="settings" />
+                        <span>
+                            {{ $gettext('Manage Stations') }}
+                        </span>
+                    </a>
                 </div>
+            </div>
+
+            <loading :loading="stationsLoading">
                 <table
-                    v-else
                     id="station_dashboard"
                     class="table table-striped table-responsive mb-0"
                 >
@@ -291,8 +283,8 @@
                         </tr>
                     </tbody>
                 </table>
-            </section>
-        </b-overlay>
+            </loading>
+        </section>
     </div>
 </template>
 
@@ -307,6 +299,7 @@ import {computed} from "vue";
 import useRefreshableAsyncState from "~/functions/useRefreshableAsyncState";
 import DashboardCharts from "~/components/DashboardCharts.vue";
 import {useTranslate} from "~/vendor/gettext";
+import Loading from "~/components/Common/Loading.vue";
 
 const props = defineProps({
     userUrl: {

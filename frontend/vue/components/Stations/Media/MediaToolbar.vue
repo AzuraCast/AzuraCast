@@ -119,9 +119,8 @@
                     <ul class="dropdown-menu">
                         <li>
                             <button
-                                v-b-tooltip.hover
-                                class="dropdown-item"
                                 :title="$gettext('Queue the selected media to play next')"
+                                class="dropdown-item"
                                 @click.prevent="doQueue"
                             >
                                 {{ $gettext('Queue') }}
@@ -130,7 +129,6 @@
                         <li>
                             <button
                                 v-if="supportsImmediateQueue"
-                                v-b-tooltip.hover
                                 class="dropdown-item"
                                 :title="$gettext('Make the selected media play immediately, interrupting existing media')"
                                 @click="doImmediateQueue"
@@ -140,7 +138,6 @@
                         </li>
                         <li>
                             <button
-                                v-b-tooltip.hover
                                 class="dropdown-item"
                                 :title="$gettext('Analyze and reprocess the selected media')"
                                 @click="doReprocess"

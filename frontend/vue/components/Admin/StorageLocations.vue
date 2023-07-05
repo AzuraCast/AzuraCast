@@ -13,7 +13,7 @@
             </h2>
         </div>
 
-        <div class="card-body">
+        <div class="card-body pb-0">
             <nav
                 class="nav nav-tabs"
                 role="tablist"
@@ -57,48 +57,54 @@
             :responsive="false"
             :api-url="listUrlForType"
         >
-            <template #cell(actions)="row">
+            <template #cell(actions)="{item}">
                 <div class="btn-group btn-group-sm">
                     <button
                         class="btn btn-primary"
-                        @click.prevent="doEdit(row.item.links.self)"
+                        @click.prevent="doEdit(item.links.self)"
                     >
                         {{ $gettext('Edit') }}
                     </button>
                     <button
                         class="btn btn-danger"
-                        @click.prevent="doDelete(row.item.links.self)"
+                        @click.prevent="doDelete(item.links.self)"
                     >
                         {{ $gettext('Delete') }}
                     </button>
                 </div>
             </template>
-            <template #cell(adapter)="row">
+            <template #cell(adapter)="{item}">
                 <h5 class="m-0">
-                    {{ getAdapterName(row.item.adapter) }}
+                    {{ getAdapterName(item.adapter) }}
                 </h5>
                 <p class="card-text">
-                    {{ row.item.uri }}
+                    {{ item.uri }}
                 </p>
             </template>
-            <template #cell(space)="row">
-                <template v-if="row.item.storageAvailable">
-                    <b-progress
-                        :value="row.item.storageUsedPercent"
-                        show-progress
-                        height="15px"
-                        class="mb-1"
-                        :variant="getProgressVariant(row.item.storageUsedPercent)"
-                    />
-
-                    {{ getSpaceUsed(row.item) }}
-                </template>
-                <template v-else>
-                    {{ getSpaceUsed(row.item) }}
-                </template>
+            <template #cell(stations)="{item}">
+                {{ item.stations.join(', ') }}
             </template>
-            <template #cell(stations)="row">
-                {{ row.item.stations.join(', ') }}
+            <template #cell(space)="{item}">
+                <template v-if="item.storageAvailable">
+                    <div
+                        class="progress h-15 mb-1"
+                        role="progressbar"
+                        :aria-label="item.storageUsedPercent+'%'"
+                        :aria-valuenow="item.storageUsedPercent"
+                        aria-valuemin="0"
+                        aria-valuemax="100"
+                    >
+                        <div
+                            class="progress-bar"
+                            :class="getProgressVariant(item.storageUsedPercent)"
+                            :style="{ width: item.storageUsedPercent+'%' }"
+                        >
+                            {{ item.storageUsedPercent }}%
+                        </div>
+                    </div>
+                </template>
+
+                {{ getSpaceUsed(item) }}
             </template>
         </data-table>
     </section>
@@ -115,7 +121,7 @@
 import DataTable from '~/components/Common/DataTable';
 import EditModal from './StorageLocations/EditModal';
 import Icon from '~/components/Common/Icon';
-import {computed, ref} from "vue";
+import {computed, nextTick, ref} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import useHasDatatable from "~/functions/useHasDatatable";
 import useHasEditModal from "~/functions/useHasEditModal";
@@ -170,7 +176,7 @@ const {doCreate, doEdit} = useHasEditModal($editModal);
 
 const setType = (type) => {
     activeType.value = type;
-    relist();
+    nextTick(relist);
 };
 
 const getAdapterName = (adapter) => {
@@ -197,11 +203,11 @@ const getSpaceUsed = (item) => {
 
 const getProgressVariant = (percent) => {
     if (percent > 85) {
-        return 'danger';
+        return 'text-bg-danger';
     } else if (percent > 65) {
-        return 'warning';
+        return 'text-bg-warning';
     } else {
-        return 'default';
+        return 'text-bg-primary';
     }
 };
 

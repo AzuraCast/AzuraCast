@@ -68,65 +68,92 @@
                                         {{ $gettext('Delete') }}
                                     </button>
 
-                                    <b-dropdown
-                                        size="sm"
-                                        variant="dark"
-                                        boundary="window"
-                                        :text="$gettext('More')"
-                                    >
-                                        <b-dropdown-item @click.prevent="doModify(row.item.links.toggle)">
-                                            {{ langToggleButton(row.item) }}
-                                        </b-dropdown-item>
-                                        <b-dropdown-item
-                                            v-if="row.item.links.reshuffle"
-                                            @click.prevent="doModify(row.item.links.reshuffle)"
+                                    <div class="dropdown btn-group">
+                                        <button
+                                            class="btn btn-sm btn-dark dropdown-toggle"
+                                            type="button"
+                                            data-bs-toggle="dropdown"
+                                            aria-expanded="false"
                                         >
-                                            {{ $gettext('Reshuffle') }}
-                                        </b-dropdown-item>
-                                        <b-dropdown-item
-                                            v-if="row.item.links.import"
-                                            @click.prevent="doImport(row.item.links.import)"
-                                        >
-                                            {{ $gettext('Import from PLS/M3U') }}
-                                        </b-dropdown-item>
-                                        <b-dropdown-item
-                                            v-if="row.item.links.order"
-                                            @click.prevent="doReorder(row.item.links.order)"
-                                        >
-                                            {{ $gettext('Reorder') }}
-                                        </b-dropdown-item>
-                                        <b-dropdown-item
-                                            v-if="row.item.links.queue"
-                                            @click.prevent="doQueue(row.item.links.queue)"
-                                        >
-                                            {{ $gettext('Playback Queue') }}
-                                        </b-dropdown-item>
-                                        <b-dropdown-item
-                                            v-if="row.item.links.applyto"
-                                            @click.prevent="doApplyTo(row.item.links.applyto)"
-                                        >
-                                            {{ $gettext('Apply to Folders') }}
-                                        </b-dropdown-item>
-                                        <b-dropdown-item @click.prevent="doClone(row.item.name, row.item.links.clone)">
-                                            {{ $gettext('Duplicate') }}
-                                        </b-dropdown-item>
-                                        <template
-                                            v-for="format in ['pls', 'm3u']"
-                                            :key="format"
-                                        >
-                                            <b-dropdown-item
-                                                :href="row.item.links.export[format]"
-                                                target="_blank"
+                                            {{ $gettext('More') }}
+                                            <span class="caret" />
+                                        </button>
+                                        <ul class="dropdown-menu">
+                                            <li>
+                                                <button
+                                                    class="dropdown-item"
+                                                    @click="doModify(row.item.links.toggle)"
+                                                >
+                                                    {{ langToggleButton(row.item) }}
+                                                </button>
+                                            </li>
+                                            <li v-if="row.item.links.reshuffle">
+                                                <button
+                                                    class="dropdown-item"
+                                                    @click="doModify(row.item.links.reshuffle)"
+                                                >
+                                                    {{ $gettext('Reshuffle') }}
+                                                </button>
+                                            </li>
+                                            <li v-if="row.item.links.import">
+                                                <button
+                                                    class="dropdown-item"
+                                                    @click="doImport(row.item.links.import)"
+                                                >
+                                                    {{ $gettext('Import from PLS/M3U') }}
+                                                </button>
+                                            </li>
+                                            <li v-if="row.item.links.order">
+                                                <button
+                                                    class="dropdown-item"
+                                                    @click="doReorder(row.item.links.order)"
+                                                >
+                                                    {{ $gettext('Reorder') }}
+                                                </button>
+                                            </li>
+                                            <li v-if="row.item.links.queue">
+                                                <button
+                                                    class="dropdown-item"
+                                                    @click="doQueue(row.item.links.queue)"
+                                                >
+                                                    {{ $gettext('Playback Queue') }}
+                                                </button>
+                                            </li>
+                                            <li v-if="row.item.links.applyto">
+                                                <button
+                                                    class="dropdown-item"
+                                                    @click="doApplyTo(row.item.links.applyto)"
+                                                >
+                                                    {{ $gettext('Apply to Folders') }}
+                                                </button>
+                                            </li>
+                                            <li>
+                                                <button
+                                                    class="dropdown-item"
+                                                    @click="doClone(row.item.name, row.item.links.clone)"
+                                                >
+                                                    {{ $gettext('Duplicate') }}
+                                                </button>
+                                            </li>
+                                            <li
+                                                v-for="format in ['pls', 'm3u']"
+                                                :key="format"
                                             >
-                                                {{
-                                                    $gettext(
-                                                        'Export %{format}',
-                                                        {format: format.toUpperCase()}
-                                                    )
-                                                }}
-                                            </b-dropdown-item>
-                                        </template>
-                                    </b-dropdown>
+                                                <a
+                                                    class="dropdown-item"
+                                                    :href="row.item.links.export[format]"
+                                                    target="_blank"
+                                                >
+                                                    {{
+                                                        $gettext(
+                                                            'Export %{format}',
+                                                            {format: format.toUpperCase()}
+                                                        )
+                                                    }}
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
                                 </div>
                             </template>
                             <template #cell(name)="row">

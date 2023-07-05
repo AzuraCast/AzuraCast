@@ -41,11 +41,8 @@
                 </a>
             </div>
         </div>
-        <b-overlay
-            variant="card"
-            :show="np.loading"
-        >
-            <div class="card-body">
+        <div class="card-body">
+            <loading :loading="np.loading">
                 <div class="row">
                     <div class="col-md-6">
                         <div class="clearfix">
@@ -182,8 +179,8 @@
                         </div>
                     </div>
                 </div>
-            </div>
-        </b-overlay>
+            </loading>
+        </div>
 
         <div
             v-if="isLiquidsoap && userCanManageBroadcasting"
@@ -224,6 +221,7 @@ import {computed} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import nowPlayingPanelProps from "~/components/Stations/Profile/nowPlayingPanelProps";
 import useNowPlaying from "~/functions/useNowPlaying";
+import Loading from "~/components/Common/Loading.vue";
 
 const props = defineProps({
     ...nowPlayingPanelProps,

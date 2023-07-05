@@ -1,12 +1,11 @@
 <template>
     <div class="row g-3">
         <div class="col-md-4">
-            <!-- TODO -->
-            <b-img
+            <img
                 :src="albumArtSrc"
-                rounded
-                fluid
-            />
+                class="rounded img-fluid"
+                alt="Album Art"
+            >
 
             <div class="block-buttons mt-2">
                 <button
@@ -22,12 +21,14 @@
                 <template #label>
                     {{ $gettext('Replace Album Cover Art') }}
                 </template>
-                <!-- TODO -->
-                <b-form-file
+
+                <input
                     id="edit_form_art"
-                    v-model="artFile"
+                    type="file"
+                    class="form-control"
                     accept="image/*"
-                />
+                    @change="uploaded"
+                >
             </form-group>
         </div>
     </div>
@@ -49,17 +50,14 @@ const props = defineProps({
 const albumArtSrc = ref(null);
 syncRef(toRef(props, 'albumArtUrl'), albumArtSrc, {direction: 'ltr'});
 
-const artFile = ref(null);
-
 const reloadArt = () => {
-    artFile.value = null;
     albumArtSrc.value = props.albumArtUrl + '?' + Math.floor(Date.now() / 1000);
 }
 watch(toRef(props, 'albumArtUrl'), reloadArt);
 
 const {axios} = useAxios();
 
-watch(artFile, (file) => {
+const uploaded = (file) => {
     if (null === file) {
         return;
     }
@@ -70,7 +68,7 @@ watch(artFile, (file) => {
     axios.post(props.albumArtUrl, formData).finally(() => {
         reloadArt();
     });
-});
+};
 
 const deleteArt = () => {
     axios.delete(props.albumArtUrl).finally(() => {

@@ -1,15 +1,15 @@
 <template>
-    <b-form-group class="waveform-controls">
-        <b-row>
-            <b-form-group class="col-md-12">
+    <div class="waveform-controls">
+        <div class="row">
+            <div class="col-md-12">
                 <div class="waveform__container">
                     <div id="waveform-timeline" />
                     <div id="waveform" />
                 </div>
-            </b-form-group>
-        </b-row>
-        <b-row class="mt-3 align-items-center">
-            <b-col md="7">
+            </div>
+        </div>
+        <div class="row mt-3 align-items-center">
+            <div class="col-md-7">
                 <div class="d-flex">
                     <div class="flex-shrink-0">
                         <label for="waveform-zoom">
@@ -17,28 +17,27 @@
                         </label>
                     </div>
                     <div class="flex-fill mx-3">
-                        <b-form-input
+                        <input
                             id="waveform-zoom"
                             v-model.number="zoom"
                             type="range"
                             min="0"
                             max="256"
                             class="w-100"
-                        />
+                        >
                     </div>
                 </div>
-            </b-col>
-            <b-col md="5">
+            </div>
+            <div class="col-md-5">
                 <div class="inline-volume-controls d-flex align-items-center">
                     <div class="flex-shrink-0">
-                        <a
+                        <button
                             class="btn btn-sm btn-outline-inverse"
-                            href="#"
                             :title="$gettext('Mute')"
-                            @click.prevent="volume = 0"
+                            @click="volume = 0"
                         >
                             <icon icon="volume_mute" />
-                        </a>
+                        </button>
                     </div>
                     <div class="flex-fill mx-1">
                         <input
@@ -52,19 +51,18 @@
                         >
                     </div>
                     <div class="flex-shrink-0">
-                        <a
+                        <button
                             class="btn btn-sm btn-outline-inverse"
-                            href="#"
                             :title="$gettext('Full Volume')"
-                            @click.prevent="volume = 100"
+                            @click="volume = 100"
                         >
                             <icon icon="volume_up" />
-                        </a>
+                        </button>
                     </div>
                 </div>
-            </b-col>
-        </b-row>
-    </b-form-group>
+            </div>
+        </div>
+    </div>
 </template>
 
 <script setup>

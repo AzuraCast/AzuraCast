@@ -56,28 +56,16 @@
                 </template>
             </form-group-checkbox>
 
-            <form-group-field
+            <form-group-multi-check
                 id="edit_form_ip_source"
                 class="col-md-6"
                 :field="form.ip_source"
-            >
-                <template #label>
-                    {{ $gettext('IP Address Source') }}
-                </template>
-                <template #description>
-                    {{
-                        $gettext('Customize this setting to ensure you get the correct IP address for remote users. Only change this setting if you use a reverse proxy, either within Docker or a third-party service like CloudFlare.')
-                    }}
-                </template>
-                <template #default="slotProps">
-                    <b-form-radio-group
-                        :id="slotProps.id"
-                        v-model="slotProps.field.$model"
-                        stacked
-                        :options="ipSourceOptions"
-                    />
-                </template>
-            </form-group-field>
+                :options="ipSourceOptions"
+                stacked
+                radio
+                :label="$gettext('IP Address Source')"
+                :description="$gettext('Customize this setting to ensure you get the correct IP address for remote users. Only change this setting if you use a reverse proxy, either within Docker or a third-party service like CloudFlare.')"
+            />
 
             <form-group-field
                 id="edit_form_api_access_control"

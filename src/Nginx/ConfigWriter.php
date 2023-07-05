@@ -46,13 +46,13 @@ final class ConfigWriter implements EventSubscriberInterface
 
             location ~ ^({$listenBaseUrl}|/radio/{$port})/(.*)\$ {
                 include proxy_params;
-                
+
                 proxy_intercept_errors    on;
                 proxy_next_upstream       error timeout invalid_header;
                 proxy_redirect            off;
                 proxy_connect_timeout     60;
-                
-                proxy_set_header Host localhost:{$port};
+
+                proxy_set_header Host \$host/{$listenBaseUrl};
                 proxy_pass http://127.0.0.1:{$port}/\$2?\$args;
             }
             NGINX
@@ -104,14 +104,14 @@ final class ConfigWriter implements EventSubscriberInterface
                     application/vnd.apple.mpegurl m3u8;
                     video/mp2t ts;
                 }
-                
+
                 location ~ \.m3u8$ {
                     access_log {$hlsLogPath} hls_json;
                 }
-                
+
                 add_header 'Access-Control-Allow-Origin' '*';
                 add_header 'Cache-Control' 'no-cache';
-                
+
                 alias {$hlsFolder};
                 try_files \$uri =404;
             }

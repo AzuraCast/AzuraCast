@@ -121,6 +121,10 @@ return static function (RouteCollectorProxy $app) {
                 }
             )->add(new Middleware\Permissions(StationPermissions::Reports, true));
 
+            $group->get('/restart', Controller\Stations\RestartAction::class)
+                ->setName('stations:restart:index')
+                ->add(new Middleware\Permissions(StationPermissions::Broadcasting, true));
+
             $group->get('/sftp_users', Controller\Stations\SftpUsersAction::class)
                 ->setName('stations:sftp_users:index')
                 ->add(new Middleware\StationSupportsFeature(StationFeatures::Sftp))

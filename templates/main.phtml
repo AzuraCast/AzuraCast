@@ -28,8 +28,6 @@ $header ??= null;
 
     <?= $this->fetch('partials/head') ?>
 
-    <script src="<?= $this->assetUrl('dist/lib/sweetalert2/sweetalert2.min.js') ?>" defer></script>
-
     <?= $sections->get('head') ?>
 
     <style>
@@ -64,8 +62,7 @@ endif; ?>">
     if ($sections->has('sidebar')): ?>
         <button aria-controls="sidebar" aria-expanded="false" aria-label="<?= __(
             'Toggle Sidebar'
-        ) ?>" class="navbar-toggler d-inline-flex d-lg-none me-3" data-breakpoint="lg" data-target="#sidebar"
-                data-toggle="navdrawer" data-type="permanent">
+        ) ?>" id="navbar-toggle" class="navbar-toggler d-inline-flex d-lg-none me-3">
             <span class="navbar-toggler-icon"></span>
         </button>
     <?php
@@ -150,7 +147,7 @@ endif; ?>">
 
 <?php
 if ($sections->has('sidebar')): ?>
-    <div class="navdrawer navdrawer-permanent-lg navdrawer-permanent-clipped" id="sidebar" tabindex="-1">
+    <div class="navdrawer" id="sidebar" tabindex="-1">
         <nav class="navdrawer-content" aria-label="<?= __('Sidebar') ?>">
             <?= $sections->get('sidebar') ?>
         </nav>
@@ -205,5 +202,7 @@ endif; ?> role="contentinfo" aria-label="<?= __('Footer') ?>">
 </footer>
 
 <div id="radio-player"></div>
+
+<?= $this->fetch('partials/toasts') ?>
 </body>
 </html>

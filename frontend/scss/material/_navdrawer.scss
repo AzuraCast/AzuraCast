@@ -6,52 +6,33 @@
   left: 0;
   top: $header-nav-height;
   right: auto;
-  width: var(--navdrawer-width);
+  width: $navdrawer-width;
   z-index: 100;
+
+  background: var(--bs-tertiary-bg);
 
   display: none;
 
   &.show {
     display: block;
   }
-
-  @include media-breakpoint-up(lg) {
-    & {
-      display: block;
-    }
-  }
 }
 
-// Backdrop
-.navdrawer-backdrop {
-  opacity: 0;
-  z-index: 50;
-  position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
+@include media-breakpoint-up(lg) {
+  body.has-sidebar #main {
+    margin-left: $navdrawer-width;
+  }
 
-  background-color: var(--bs-body-bg);
-
-  &.show {
-    opacity: 0.5;
+  .navdrawer {
+    display: block;
   }
 }
 
 // Content
 .navdrawer-content {
-  max-width: calc(100% - var(--navdrawer-gutter-width));
+  width: 100%;
   overflow-x: hidden;
   overflow-y: auto;
-  position: fixed;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  transform: translate3d(-100%, 0, 0);
-  width: var(--navdrawer-width);
-
-  background: var(--bs-tertiary-bg);
 
   @include media-breakpoint-up(lg) {
     & {
@@ -69,15 +50,15 @@
 
 // Misc
 .navdrawer-body {
-  margin-bottom: var(--navdrawer-inner-spacer-y);
-  padding-right: var(--navdrawer-inner-spacer-x);
-  padding-left: var(--navdrawer-inner-spacer-x);
+  margin-bottom: $navdrawer-inner-spacer-y;
+  padding-right: $navdrawer-inner-spacer-x;
+  padding-left: $navdrawer-inner-spacer-x;
 }
 
 .navdrawer-header {
   display: block;
-  margin-bottom: var(--navdrawer-inner-spacer-y);
-  padding: var(--navdrawer-inner-spacer-y) var(--navdrawer-inner-spacer-x);
+  margin-bottom: $navdrawer-inner-spacer-y;
+  padding: $navdrawer-inner-spacer-y $navdrawer-inner-spacer-x;
 
   background-color: var(--bs-secondary-bg);
 
@@ -90,16 +71,16 @@
   @include text-truncate;
 
   display: block;
-  height: var(--navdrawer-subheader-height);
+  height: $navdrawer-subheader-height;
   line-height: 1;
   margin-top: 0;
   margin-bottom: 0;
-  padding: calc(var(--navdrawer-subheader-height) * 0.5) var(--navdrawer-inner-spacer-x);
+  padding: ($navdrawer-subheader-height * 0.5) $navdrawer-inner-spacer-x;
 
   color: var(--bs-secondary-color);
 
   .navdrawer-divider + & {
-    margin-top: calc(var(--navdrawer-inner-spacer-y) * -1);
+    margin-top: ($navdrawer-inner-spacer-y * -1);
   }
 }
 
@@ -108,8 +89,8 @@
   display: flex;
   flex-direction: column;
   list-style: none;
-  margin-top: var(--navdrawer-inner-spacer-y);
-  margin-bottom: var(--navdrawer-inner-spacer-y);
+  margin-top: $navdrawer-inner-spacer-y;
+  margin-bottom: $navdrawer-inner-spacer-y;
   padding-left: 0;
 
   .navdrawer-header + &,

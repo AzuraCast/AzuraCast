@@ -54,9 +54,9 @@
                                 <div class="flex-shrink-0">
                                     <a
                                         v-if="np.now_playing.song.art"
+                                        data-fancybox
                                         class="me-2"
                                         :href="np.now_playing.song.art"
-                                        data-fancybox
                                         target="_blank"
                                     >
                                         <img
@@ -121,9 +121,9 @@
                                 <div class="flex-shrink-0">
                                     <a
                                         v-if="np.playing_next.song.art"
+                                        data-fancybox
                                         class="me-2"
                                         :href="np.playing_next.song.art"
-                                        data-fancybox
                                         target="_blank"
                                     >
                                         <img
@@ -186,30 +186,28 @@
             v-if="isLiquidsoap && userCanManageBroadcasting"
             class="card-body flex-shrink"
         >
-            <a
+            <button
                 v-if="!np.live.is_live"
                 id="btn_skip_song"
-                class="btn btn-primary api-call no-reload"
-                role="button"
-                :href="backendSkipSongUri"
+                class="btn btn-primary"
+                @click="makeApiCall(backendSkipSongUri)"
             >
                 <icon icon="skip_next" />
                 <span>
                     {{ $gettext('Skip Song') }}
                 </span>
-            </a>
-            <a
+            </button>
+            <button
                 v-if="np.live.is_live"
                 id="btn_disconnect_streamer"
-                class="btn btn-primary api-call no-reload"
-                role="button"
-                :href="backendDisconnectStreamerUri"
+                class="btn btn-primary"
+                @click="makeApiCall(backendDisconnectStreamerUri)"
             >
                 <icon icon="volume_off" />
                 <span>
                     {{ $gettext('Disconnect Streamer') }}
                 </span>
-            </a>
+            </button>
         </div>
     </section>
 </template>
@@ -226,6 +224,8 @@ import Loading from "~/components/Common/Loading.vue";
 const props = defineProps({
     ...nowPlayingPanelProps,
 });
+
+const emit = defineEmits(['api-call']);
 
 const {
     np,
@@ -247,4 +247,8 @@ const langListeners = computed(() => {
 const isLiquidsoap = computed(() => {
     return props.backendType === BACKEND_LIQUIDSOAP;
 });
+
+const makeApiCall = (uri) => {
+    emit('api-call', uri);
+};
 </script>

@@ -7,20 +7,6 @@
  */
 
 $active ??= null;
-
-$sections->appendStart('bodyjs');
-?>
-<script>
-    $(function () {
-        $('.navdrawer-nav a[title]').tooltip({
-            'html': true,
-            'placement': 'right',
-            'boundary': 'viewport'
-        });
-    });
-</script>
-<?php
-$sections->end();
 ?>
 <ul class="navdrawer-nav">
     <?php
@@ -35,9 +21,6 @@ $sections->end();
             endif; ?>
                <?php
                if ($category['external'] ?? false): ?>target="_blank"<?php
-            endif; ?>
-               <?php
-               if (isset($category['confirm'])): ?>data-confirm-title="<?= $this->e($category['confirm']) ?>"<?php
             endif; ?>
                <?php
                if (isset($category['title'])): ?>title="<?= $this->e($category['title']) ?>"<?php
@@ -63,11 +46,6 @@ $sections->end();
                                    href="<?= $item['url'] ?>"
                                    <?php
                                    if ($item['external'] ?? false): ?>target="_blank"<?php
-                                endif; ?>
-                                   <?php
-                                   if (isset($item['confirm'])): ?>data-confirm-title="<?= $this->e(
-                                       $item['confirm']
-                                   ) ?>"<?php
                                 endif; ?>
                                    <?php
                                    if (isset($item['title'])): ?>title="<?= $this->e($item['title']) ?>"<?php

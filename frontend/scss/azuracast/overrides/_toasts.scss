@@ -5,4 +5,8 @@ body.page-full {
   .b-toaster.b-toaster-top-full {
     top: 72px;
   }
+
+  div.toast-notification.top-0 {
+    top: 72px !important;
+  }
 }

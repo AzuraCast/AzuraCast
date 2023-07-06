@@ -301,8 +301,6 @@ import QueueModal from './Playlists/QueueModal';
 import Icon from '~/components/Common/Icon';
 import CloneModal from './Playlists/CloneModal';
 import ApplyToModal from "./Playlists/ApplyToModal.vue";
-import humanizeDuration from 'humanize-duration';
-import {useAzuraCast} from "~/vendor/azuracast";
 import {useTranslate} from "~/vendor/gettext";
 import {ref} from "vue";
 import useHasEditModal from "~/functions/useHasEditModal";
@@ -310,6 +308,7 @@ import {mayNeedRestartProps, useMayNeedRestart} from "~/functions/useMayNeedRest
 import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
 import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
+import {Duration} from "luxon";
 
 const props = defineProps({
     ...mayNeedRestartProps,
@@ -354,16 +353,14 @@ const langToggleButton = (record) => {
         : $gettext('Enable');
 };
 
-const {localeShort} = useAzuraCast();
-
-const formatLength = (length) => humanizeDuration(
-    length * 1000,
-    {
-        round: true,
-        language: localeShort,
-        fallbacks: ['en']
+const formatLength = (length) => {
+    if (0 === length) {
+        return $gettext('None');
     }
-);
+
+    const duration = Duration.fromMillis(length * 1000);
+    return duration.rescale().toHuman();
+};
 
 const $datatable = ref(); // Template Ref
 const $schedule = ref(); // Template Ref

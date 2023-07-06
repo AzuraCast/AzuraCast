@@ -108,35 +108,35 @@
                     </span>
                 </a>
                 <template v-if="hasStarted">
-                    <a
-                        class="api-call no-reload btn btn-secondary"
-                        :href="frontendRestartUri"
+                    <button
+                        class="btn btn-secondary"
+                        @click="makeApiCall(frontendRestartUri)"
                     >
                         <icon icon="update" />
                         <span>
                             {{ $gettext('Restart') }}
                         </span>
-                    </a>
-                    <a
-                        v-show="!frontendRunning"
-                        class="api-call no-reload btn btn-success"
-                        :href="frontendStartUri"
+                    </button>
+                    <button
+                        v-if="!frontendRunning"
+                        class="btn btn-success"
+                        @click="makeApiCall(frontendStartUri)"
                     >
                         <icon icon="play_arrow" />
                         <span>
                             {{ $gettext('Start') }}
                         </span>
-                    </a>
-                    <a
-                        v-show="frontendRunning"
-                        class="api-call no-reload btn btn-danger"
-                        :href="frontendStopUri"
+                    </button>
+                    <button
+                        v-if="frontendRunning"
+                        class="btn btn-danger"
+                        @click="makeApiCall(frontendStopUri)"
                     >
                         <icon icon="stop" />
                         <span>
                             {{ $gettext('Stop') }}
                         </span>
-                    </a>
+                    </button>
                 </template>
             </div>
         </template>
@@ -161,6 +161,8 @@ const props = defineProps({
     }
 });
 
+const emit = defineEmits(['api-call']);
+
 const credentialsVisible = useLocalStorage('station_show_frontend_credentials', false);
 
 const {$gettext} = useTranslate();
@@ -179,4 +181,8 @@ const frontendName = computed(() => {
     }
     return '';
 });
+
+const makeApiCall = (uri) => {
+    emit('api-call', uri);
+};
 </script>

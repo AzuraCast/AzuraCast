@@ -14,7 +14,7 @@
   src: url('lib/material-icons/material-icons-outlined.woff2') format('woff2');
 }
 
-@mixin reset-material-icons($size: var(--material-icon-size)) {
+@mixin reset-material-icons($size: $material-icon-size) {
   font-size: $size;
   line-height: 1;
 }
@@ -46,7 +46,7 @@
   font-feature-settings: 'liga';
 }
 
-@mixin setup-material-icons-bg($size: var(--material-icon-size)) {
+@mixin setup-material-icons-bg($size: $material-icon-size) {
   content: "";
   background-position: center center;
   background-repeat: no-repeat;
@@ -83,15 +83,15 @@
   @include reset-material-icons;
 
   &.lg {
-    @include reset-material-icons(var(--material-icon-size-lg));
+    @include reset-material-icons($material-icon-size-lg);
   }
 
   &.xl {
-    @include reset-material-icons(var(--material-icon-size-xl));
+    @include reset-material-icons($material-icon-size-xl);
   }
 
   &.sm {
-    @include reset-material-icons(var(--material-icon-size-sm));
+    @include reset-material-icons($material-icon-size-sm);
   }
 
   &.inline {

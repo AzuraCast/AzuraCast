@@ -39,35 +39,35 @@
             v-if="userCanManageBroadcasting && hasStarted"
             class="card-body buttons"
         >
-            <a
-                class="api-call no-reload btn btn-secondary"
-                :href="backendRestartUri"
+            <button
+                class="btn btn-secondary"
+                @click="makeApiCall(backendRestartUri)"
             >
                 <icon icon="update" />
                 <span>
                     {{ $gettext('Restart') }}
                 </span>
-            </a>
-            <a
-                v-show="!backendRunning"
-                class="api-call no-reload btn btn-success"
-                :href="backendStartUri"
+            </button>
+            <button
+                v-if="!backendRunning"
+                class="btn btn-success"
+                @click="makeApiCall(backendStartUri)"
             >
                 <icon icon="play_arrow" />
                 <span>
                     {{ $gettext('Start') }}
                 </span>
-            </a>
-            <a
-                v-show="backendRunning"
-                class="api-call no-reload btn btn-danger"
-                :href="backendStopUri"
+            </button>
+            <button
+                v-if="backendRunning"
+                class="btn btn-danger"
+                @click="makeApiCall(backendStopUri)"
             >
                 <icon icon="stop" />
                 <span>
                     {{ $gettext('Stop') }}
                 </span>
-            </a>
+            </button>
         </div>
     </section>
 </template>
@@ -87,6 +87,8 @@ const props = defineProps({
         required: true
     }
 });
+
+const emit = defineEmits(['api-call']);
 
 const {$gettext, $ngettext} = useTranslate();
 
@@ -121,4 +123,7 @@ const backendName = computed(() => {
     return '';
 });
 
+const makeApiCall = (uri) => {
+    emit('api-call', uri);
+};
 </script>

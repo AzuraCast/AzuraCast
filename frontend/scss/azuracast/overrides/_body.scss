@@ -3,7 +3,7 @@ body {
 
   #main {
     padding-bottom: 4rem;
-    padding-top: calc($header-nav-height + .5rem);
+    padding-top: ($header-nav-height + ($container-padding-x * .5));
 
     min-height: 100vh;
   }

@@ -69,8 +69,6 @@
         "gulp-run-command": "0.0.10",
         "gulp-sourcemaps": "^3",
         "gulp-uglify": "^3.0.2",
-        "imports-loader": "^4",
-        "prettier": "^2",
         "sass": "^1.39.2",
         "sass-loader": "^13",
         "vue-loader": "^17",
@@ -7361,26 +7359,6 @@
         "url": "https://github.com/sponsors/sindresorhus"
       }
     },
-    "node_modules/imports-loader": {
-      "version": "4.0.1",
-      "resolved": "https://registry.npmjs.org/imports-loader/-/imports-loader-4.0.1.tgz",
-      "integrity": "sha512-ZiY+1xH5fqAJ1Qu1CFv+zw54rvPCC92DdYRDe0IIUboOhbJPLfOPbF/paA2iipelvMwjQUKWydcFOJ7f1+ZFcA==",
-      "dev": true,
-      "dependencies": {
-        "source-map": "^0.6.1",
-        "strip-comments": "^2.0.1"
-      },
-      "engines": {
-        "node": ">= 14.15.0"
-      },
-      "funding": {
-        "type": "opencollective",
-        "url": "https://opencollective.com/webpack"
-      },
-      "peerDependencies": {
-        "webpack": "^5.0.0"
-      }
-    },
     "node_modules/imurmurhash": {
       "version": "0.1.4",
       "resolved": "https://registry.npmjs.org/imurmurhash/-/imurmurhash-0.1.4.tgz",
@@ -9738,21 +9716,6 @@
         "node": ">= 0.8.0"
       }
     },
-    "node_modules/prettier": {
-      "version": "2.8.8",
-      "resolved": "https://registry.npmjs.org/prettier/-/prettier-2.8.8.tgz",
-      "integrity": "sha512-tdN8qQGvNjw4CHbY+XXk0JgCXn9QiF21a55rBe5LJAU+kDyC4WQn4+awm2Xfk2lQMk5fKup9XgzTZtGkjBdP9Q==",
-      "dev": true,
-      "bin": {
-        "prettier": "bin-prettier.js"
-      },
-      "engines": {
-        "node": ">=10.13.0"
-      },
-      "funding": {
-        "url": "https://github.com/prettier/prettier?sponsor=1"
-      }
-    },
     "node_modules/pretty-hrtime": {
       "version": "1.0.3",
       "resolved": "https://registry.npmjs.org/pretty-hrtime/-/pretty-hrtime-1.0.3.tgz",
@@ -11553,15 +11516,6 @@
       "dev": true,
       "engines": {
         "node": ">=0.10.0"
-      }
-    },
-    "node_modules/strip-comments": {
-      "version": "2.0.1",
-      "resolved": "https://registry.npmjs.org/strip-comments/-/strip-comments-2.0.1.tgz",
-      "integrity": "sha512-ZprKx+bBLXv067WTCALv8SSz5l2+XhpYCsVtSqlMnkAXMWDq+/ekVbl1ghqP9rUHTzv6sm/DwCOiYutU/yp1fw==",
-      "dev": true,
-      "engines": {
-        "node": ">=10"
       }
     },
     "node_modules/strip-json-comments": {

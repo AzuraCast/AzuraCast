@@ -70,8 +70,6 @@
     "gulp-run-command": "0.0.10",
     "gulp-sourcemaps": "^3",
     "gulp-uglify": "^3.0.2",
-    "imports-loader": "^4",
-    "prettier": "^2",
     "sass": "^1.39.2",
     "sass-loader": "^13",
     "vue-loader": "^17",

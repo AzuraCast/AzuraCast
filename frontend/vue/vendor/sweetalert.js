@@ -31,6 +31,29 @@ export function useSweetAlert() {
     };
 }
 
+export function vConfirmAction(el, binding) {
+    const {confirmDelete} = useSweetAlert();
+
+    el.addEventListener('click', (e) => {
+        e.preventDefault();
+
+        let options = {};
+        if (el.hasAttribute('data-confirm-title')) {
+            options.title = el.getAttribute('data-confirm-title');
+        } else if (binding.value) {
+            options.title = binding.value;
+        }
+
+        confirmDelete(options).then((resp) => {
+            if (!resp.value) {
+                return;
+            }
+
+            window.location.href = el.href;
+        });
+    })
+}
+
 export default function installSweetAlert(vueApp) {
     vueApp.config.globalProperties.$swal = (options = {}) => {
         return swalCustom.fire(options);
@@ -38,4 +61,8 @@ export default function installSweetAlert(vueApp) {
     vueApp.config.globalProperties.$confirmDelete = (options = {}) => {
         return swalConfirmDelete.fire(options);
     };
+
+    vueApp.directive('confirm-link', {
+        mounted: vConfirmAction
+    });
 }

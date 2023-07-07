@@ -88,8 +88,8 @@
                         </span>
                     </a>
                     <a
+                        v-confirm-link="$gettext('Disable public pages?')"
                         class="btn btn-danger"
-                        :data-confirm-title="$gettext('Disable public pages?')"
                         :href="togglePublicPageUri"
                     >
                         <icon icon="close" />
@@ -116,8 +116,8 @@
                 class="card-body"
             >
                 <a
+                    v-confirm-link="$gettext('Enable public pages?')"
                     class="btn btn-success"
-                    :data-confirm-title="$gettext('Enable public pages?')"
                     :href="togglePublicPageUri"
                 >
                     <icon icon="check" />

@@ -30,8 +30,8 @@
                 </a>
                 <a
                     v-if="userCanManageProfile"
+                    v-confirm-link="$gettext('Disable streamers?')"
                     class="btn btn-danger"
-                    :data-confirm-title="$gettext('Disable streamers?')"
                     :href="streamersToggleUri"
                 >
                     <icon icon="close" />
@@ -53,8 +53,8 @@
                 class="card-body buttons"
             >
                 <a
+                    v-confirm-link="$gettext('Enable streamers?')"
                     class="btn btn-success"
-                    :data-confirm-title="$gettext('Enable streamers?')"
                     :href="streamersToggleUri"
                 >
                     <icon icon="check" />

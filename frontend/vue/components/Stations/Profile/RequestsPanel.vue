@@ -30,8 +30,8 @@
                 </a>
                 <a
                     v-if="userCanManageProfile"
+                    v-confirm-link="$gettext('Disable song requests?')"
                     class="btn btn-danger"
-                    :data-confirm-title="$gettext('Disable song requests?')"
                     :href="requestsToggleUri"
                 >
                     <icon icon="close" />
@@ -53,8 +53,8 @@
                 class="card-body buttons"
             >
                 <a
+                    v-confirm-link="$gettext('Enable song requests?')"
                     class="btn btn-success"
-                    :data-confirm-title="$gettext('Enable song requests?')"
                     :href="requestsToggleUri"
                 >
                     <icon icon="check" />

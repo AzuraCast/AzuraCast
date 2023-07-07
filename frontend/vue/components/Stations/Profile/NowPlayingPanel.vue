@@ -46,66 +46,69 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class="clearfix">
-                            <div class="row row-cols-2 align-items-center gy-0 gx-1">
-                                <div class="col-3 text-end">
-                                    <icon icon="music_note" />
+                            <div class="d-table">
+                                <div class="d-table-row">
+                                    <div class="d-table-cell align-middle text-end pe-2">
+                                        <icon icon="music_note" />
+                                    </div>
+                                    <div class="d-table-cell align-middle w-100">
+                                        <h6 class="p-0">
+                                            {{ $gettext('Now Playing') }}
+                                        </h6>
+                                    </div>
                                 </div>
-                                <div class="col-8">
-                                    <h6 class="p-0">
-                                        {{ $gettext('Now Playing') }}
-                                    </h6>
-                                </div>
-                                <div class="col-3 text-end">
-                                    <a
-                                        v-if="np.now_playing.song.art"
-                                        data-fancybox
-                                        class="me-2"
-                                        :href="np.now_playing.song.art"
-                                        target="_blank"
-                                    >
-                                        <img
-                                            class="rounded"
-                                            :src="np.now_playing.song.art"
-                                            alt="Album Art"
-                                            style="width: 50px;"
+                                <div class="d-table-row">
+                                    <div class="d-table-cell align-middle text-end pe-2">
+                                        <a
+                                            v-if="np.now_playing.song.art"
+                                            data-fancybox
+                                            :href="np.now_playing.song.art"
+                                            target="_blank"
                                         >
-                                    </a>
-                                </div>
-                                <div class="col-8">
-                                    <div v-if="!np.is_online">
-                                        <h5 class="media-heading m-0 text-muted">
-                                            {{ $gettext('Station Offline') }}
-                                        </h5>
+                                            <img
+                                                class="rounded"
+                                                :src="np.now_playing.song.art"
+                                                alt="Album Art"
+                                                style="width: 50px;"
+                                            >
+                                        </a>
                                     </div>
-                                    <div v-else-if="np.now_playing.song.title !== ''">
-                                        <h5
-                                            class="media-heading m-0"
-                                            style="line-height: 1;"
+                                    <div class="d-table-cell align-middle w-100">
+                                        <div v-if="!np.is_online">
+                                            <h5 class="media-heading m-0 text-muted">
+                                                {{ $gettext('Station Offline') }}
+                                            </h5>
+                                        </div>
+                                        <div v-else-if="np.now_playing.song.title !== ''">
+                                            <h5
+                                                class="media-heading m-0"
+                                                style="line-height: 1;"
+                                            >
+                                                {{ np.now_playing.song.title }}<br>
+                                                <small>{{ np.now_playing.song.artist }}</small>
+                                            </h5>
+                                        </div>
+                                        <div v-else>
+                                            <h5
+                                                class="media-heading m-0"
+                                                style="line-height: 1;"
+                                            >
+                                                {{ np.now_playing.song.text }}
+                                            </h5>
+                                        </div>
+                                        <div v-if="np.now_playing.playlist">
+                                            <small class="text-muted">
+                                                {{ $gettext('Playlist') }}
+                                                : {{ np.now_playing.playlist }}</small>
+                                        </div>
+                                        <div
+                                            v-if="currentTrackElapsedDisplay"
+                                            class="nowplaying-progress"
                                         >
-                                            {{ np.now_playing.song.title }}<br>
-                                            <small>{{ np.now_playing.song.artist }}</small>
-                                        </h5>
-                                    </div>
-                                    <div v-else>
-                                        <h5
-                                            class="media-heading m-0"
-                                            style="line-height: 1;"
-                                        >
-                                            {{ np.now_playing.song.text }}
-                                        </h5>
-                                    </div>
-                                    <div v-if="np.now_playing.playlist">
-                                        <small class="text-muted">
-                                            {{ $gettext('Playlist') }}
-                                            : {{ np.now_playing.playlist }}</small>
-                                    </div>
-                                    <div
-                                        v-if="currentTrackElapsedDisplay"
-                                        class="nowplaying-progress"
-                                    >
-                                        <small>
-                                            {{ currentTrackElapsedDisplay }} / {{ currentTrackDurationDisplay }}
-                                        </small>
+                                            <small>
+                                                {{ currentTrackElapsedDisplay }} / {{ currentTrackDurationDisplay }}
+                                            </small>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -116,54 +119,57 @@
                             v-if="!np.live.is_live && np.playing_next"
                             class="clearfix"
                         >
-                            <div class="row row-cols-2 align-items-center gy-0 gx-1">
-                                <div class="col-2 text-end">
-                                    <icon icon="skip_next" />
-                                </div>
-                                <div class="col-10">
-                                    <h6 class="p-0">
-                                        {{ $gettext('Playing Next') }}
-                                    </h6>
-                                </div>
-                                <div class="col-2 text-end">
-                                    <a
-                                        v-if="np.playing_next.song.art"
-                                        data-fancybox
-                                        class="me-2"
-                                        :href="np.playing_next.song.art"
-                                        target="_blank"
-                                    >
-                                        <img
-                                            :src="np.playing_next.song.art"
-                                            class="rounded"
-                                            alt="Album Art"
-                                            style="width: 40px;"
-                                        >
-                                    </a>
-                                </div>
-                                <div class="col-10">
-                                    <div v-if="np.playing_next.song.title !== ''">
-                                        <h5
-                                            class="media-heading m-0"
-                                            style="line-height: 1;"
-                                        >
-                                            {{ np.playing_next.song.title }}<br>
-                                            <small>{{ np.playing_next.song.artist }}</small>
-                                        </h5>
+                            <div class="d-table">
+                                <div class="d-table-row">
+                                    <div class="d-table-cell align-middle pe-2 text-end">
+                                        <icon icon="skip_next" />
                                     </div>
-                                    <div v-else>
-                                        <h5
-                                            class="media-heading m-0"
-                                            style="line-height: 1;"
-                                        >
-                                            {{ np.playing_next.song.text }}
-                                        </h5>
+                                    <div class="d-table-cell align-middle w-100">
+                                        <h6 class="p-0">
+                                            {{ $gettext('Playing Next') }}
+                                        </h6>
                                     </div>
+                                </div>
+                                <div class="d-table-row">
+                                    <div class="d-table-cell align-middle text-end pe-2">
+                                        <a
+                                            v-if="np.playing_next.song.art"
+                                            data-fancybox
+                                            :href="np.playing_next.song.art"
+                                            target="_blank"
+                                        >
+                                            <img
+                                                :src="np.playing_next.song.art"
+                                                class="rounded"
+                                                alt="Album Art"
+                                                style="width: 40px;"
+                                            >
+                                        </a>
+                                    </div>
+                                    <div class="d-table-cell align-middle w-100">
+                                        <div v-if="np.playing_next.song.title !== ''">
+                                            <h5
+                                                class="media-heading m-0"
+                                                style="line-height: 1;"
+                                            >
+                                                {{ np.playing_next.song.title }}<br>
+                                                <small>{{ np.playing_next.song.artist }}</small>
+                                            </h5>
+                                        </div>
+                                        <div v-else>
+                                            <h5
+                                                class="media-heading m-0"
+                                                style="line-height: 1;"
+                                            >
+                                                {{ np.playing_next.song.text }}
+                                            </h5>
+                                        </div>
 
-                                    <div v-if="np.playing_next.playlist">
-                                        <small class="text-muted">
-                                            {{ $gettext('Playlist') }}
-                                            : {{ np.playing_next.playlist }}</small>
+                                        <div v-if="np.playing_next.playlist">
+                                            <small class="text-muted">
+                                                {{ $gettext('Playlist') }}
+                                                : {{ np.playing_next.playlist }}</small>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

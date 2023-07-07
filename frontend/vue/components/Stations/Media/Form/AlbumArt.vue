@@ -22,13 +22,13 @@
                     {{ $gettext('Replace Album Cover Art') }}
                 </template>
 
-                <input
-                    id="edit_form_art"
-                    type="file"
-                    class="form-control"
-                    accept="image/*"
-                    @change="uploaded"
-                >
+                <template #default="{id}">
+                    <form-file
+                        :id="id"
+                        accept="image/*"
+                        @uploaded="uploaded"
+                    />
+                </template>
             </form-group>
         </div>
     </div>
@@ -39,6 +39,7 @@ import {ref, toRef, watch} from "vue";
 import {syncRef} from "@vueuse/core";
 import {useAxios} from "~/vendor/axios";
 import FormGroup from "~/components/Form/FormGroup.vue";
+import FormFile from "~/components/Form/FormFile.vue";
 
 const props = defineProps({
     albumArtUrl: {

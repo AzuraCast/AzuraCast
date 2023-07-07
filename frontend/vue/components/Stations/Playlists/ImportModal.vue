@@ -63,12 +63,10 @@
                 </template>
 
                 <template #default="{id}">
-                    <input
+                    <form-file
                         :id="id"
-                        type="file"
-                        class="form-control"
-                        @change="uploaded"
-                    >
+                        @uploaded="uploaded"
+                    />
                 </template>
             </form-group>
 
@@ -100,6 +98,7 @@ import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
 import FormGroup from "~/components/Form/FormGroup.vue";
 import Modal from "~/components/Common/Modal.vue";
+import FormFile from "~/components/Form/FormFile.vue";
 
 const emit = defineEmits(['relist']);
 

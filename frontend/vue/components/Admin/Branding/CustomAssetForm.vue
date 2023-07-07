@@ -20,13 +20,10 @@
                         {{ caption }}
                     </template>
 
-                    <input
+                    <form-file
                         :id="id"
-                        type="file"
-                        class="form-control"
-                        accept="image/*"
-                        @change="uploaded"
-                    >
+                        @uploaded="uploaded"
+                    />
                 </form-group>
 
                 <button
@@ -47,6 +44,7 @@ import {useAxios} from "~/vendor/axios";
 import {useNotify} from "~/functions/useNotify";
 import Loading from "~/components/Common/Loading.vue";
 import FormGroup from "~/components/Form/FormGroup.vue";
+import FormFile from "~/components/Form/FormFile.vue";
 
 const props = defineProps({
     id: {

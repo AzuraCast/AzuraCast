@@ -1,8 +1,8 @@
 <template>
     <input
+        v-bind="$attrs"
         type="file"
         class="form-control"
-        v-bind="$attrs"
         @change="uploaded"
     >
 </template>

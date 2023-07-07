@@ -46,12 +46,16 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class="clearfix">
-                            <h6 style="margin-left: 32px;">
-                                <icon icon="music_note" />
-                                {{ $gettext('Now Playing') }}
-                            </h6>
-                            <div class="d-flex align-items-center">
-                                <div class="flex-shrink-0">
+                            <div class="row row-cols-2 align-items-center gy-0 gx-1">
+                                <div class="col-3 text-end">
+                                    <icon icon="music_note" />
+                                </div>
+                                <div class="col-8">
+                                    <h6 class="p-0">
+                                        {{ $gettext('Now Playing') }}
+                                    </h6>
+                                </div>
+                                <div class="col-3 text-end">
                                     <a
                                         v-if="np.now_playing.song.art"
                                         data-fancybox
@@ -67,7 +71,7 @@
                                         >
                                     </a>
                                 </div>
-                                <div class="flex-grow-1 ms-3">
+                                <div class="col-8">
                                     <div v-if="!np.is_online">
                                         <h5 class="media-heading m-0 text-muted">
                                             {{ $gettext('Station Offline') }}
@@ -112,13 +116,16 @@
                             v-if="!np.live.is_live && np.playing_next"
                             class="clearfix"
                         >
-                            <h6 style="margin-left: 22px;">
-                                <icon icon="skip_next" />
-                                {{ $gettext('Playing Next') }}
-                            </h6>
-
-                            <div class="d-flex align-items-center">
-                                <div class="flex-shrink-0">
+                            <div class="row row-cols-2 align-items-center gy-0 gx-1">
+                                <div class="col-2 text-end">
+                                    <icon icon="skip_next" />
+                                </div>
+                                <div class="col-10">
+                                    <h6 class="p-0">
+                                        {{ $gettext('Playing Next') }}
+                                    </h6>
+                                </div>
+                                <div class="col-2 text-end">
                                     <a
                                         v-if="np.playing_next.song.art"
                                         data-fancybox
@@ -134,7 +141,7 @@
                                         >
                                     </a>
                                 </div>
-                                <div class="flex-grow-1 ms-3">
+                                <div class="col-10">
                                     <div v-if="np.playing_next.song.title !== ''">
                                         <h5
                                             class="media-heading m-0"

@@ -46,7 +46,7 @@
                     <div class="flex-shrink-1 ps-3">
                         <div class="btn-group actions">
                             <button
-                                v-tooltip
+                                data-bs-tooltip
                                 class="btn btn-secondary"
                                 data-bs-placement="left"
                                 :title="$gettext('Refresh rows')"
@@ -61,7 +61,7 @@
                                 role="group"
                             >
                                 <button
-                                    v-tooltip
+                                    data-bs-tooltip
                                     class="btn btn-secondary dropdown-toggle"
                                     type="button"
                                     data-bs-toggle="dropdown"
@@ -128,7 +128,11 @@
                 v-model:checked-rows="selectedRows"
                 striped
                 :mobile-cards="false"
-                :class="(responsive) ? 'table-responsive' : ''"
+                :table-class="[
+                    'align-middle',
+                    (responsive) ? 'table-responsive' : '',
+                    (selectable) ? 'table-selectable' : ''
+                ]"
 
                 hoverable
                 :data="visibleItems"
@@ -141,9 +145,6 @@
 
                 :backend-sorting="!handleClientSide"
 
-                th-class="align-middle"
-                td-class="align-middle"
-
                 @page-change="onPageChange"
                 @sort="onSort"
             >
@@ -154,7 +155,8 @@
                     :field="field.key"
                     :label="field.label"
                     :sortable="field.sortable"
-                    :class="field.class"
+                    :th-attrs="() => ({class: field.class})"
+                    :td-attrs="() => ({class: field.class})"
                 >
                     <slot
                         :name="'cell('+field.key+')'"

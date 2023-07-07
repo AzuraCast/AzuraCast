@@ -487,6 +487,7 @@ onMounted(() => {
             });
         } else {
             currentDirectory.value = urlHash;
+            onTriggerNavigate();
         }
     }
 

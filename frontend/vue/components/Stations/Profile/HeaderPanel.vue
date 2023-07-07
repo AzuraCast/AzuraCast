@@ -11,15 +11,15 @@
             />
         </div>
         <div class="flex-fill">
-            <h2 class="m-0">
-                {{ stationName }}
+            <h2 class="display-6 m-0">
+                {{ stationName }}<br>
+                <small
+                    v-if="stationDescription"
+                    class="text-muted"
+                >
+                    {{ stationDescription }}
+                </small>
             </h2>
-            <h3
-                v-if="stationDescription"
-                class="m-0"
-            >
-                {{ stationDescription }}
-            </h3>
         </div>
         <div
             v-if="userCanManageProfile"

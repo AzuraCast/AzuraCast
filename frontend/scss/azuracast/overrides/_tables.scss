@@ -33,3 +33,7 @@ div.datatable-main {
     }
   }
 }
+
+.table > :not(caption) > * > * {
+  padding: 1rem 1rem;
+}

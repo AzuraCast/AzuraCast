@@ -1,67 +1,69 @@
 <template>
-    <profile-header
-        v-bind="pickProps(props, headerPanelProps)"
-        :station="profileInfo.station"
-    />
+    <div>
+        <profile-header
+            v-bind="pickProps(props, headerPanelProps)"
+            :station="profileInfo.station"
+        />
 
-    <div
-        id="profile"
-        class="row row-of-cards"
-    >
-        <div class="col-lg-7">
-            <template v-if="hasStarted">
-                <profile-now-playing
-                    v-bind="pickProps(props, nowPlayingPanelProps)"
-                    @api-call="makeApiCall"
+        <div
+            id="profile"
+            class="row row-of-cards"
+        >
+            <div class="col-lg-7">
+                <template v-if="hasStarted">
+                    <profile-now-playing
+                        v-bind="pickProps(props, nowPlayingPanelProps)"
+                        @api-call="makeApiCall"
+                    />
+
+                    <profile-schedule
+                        :station-time-zone="stationTimeZone"
+                        :schedule-items="profileInfo.schedule"
+                    />
+
+                    <profile-streams
+                        :station="profileInfo.station"
+                    />
+                </template>
+                <template v-else>
+                    <now-playing-not-started-panel />
+                </template>
+
+                <profile-public-pages
+                    v-bind="pickProps(props, {...publicPagesPanelProps,...embedModalProps})"
+                />
+            </div>
+
+            <div class="col-lg-5">
+                <profile-requests
+                    v-if="stationSupportsRequests"
+                    v-bind="pickProps(props, requestsPanelProps)"
                 />
 
-                <profile-schedule
-                    :station-time-zone="stationTimeZone"
-                    :schedule-items="profileInfo.schedule"
+                <profile-streamers
+                    v-if="stationSupportsStreamers"
+                    v-bind="pickProps(props, streamersPanelProps)"
                 />
 
-                <profile-streams
-                    :station="profileInfo.station"
-                />
-            </template>
-            <template v-else>
-                <now-playing-not-started-panel />
-            </template>
+                <template v-if="hasActiveFrontend">
+                    <profile-frontend
+                        v-bind="pickProps(props, frontendPanelProps)"
+                        :frontend-running="profileInfo.services.frontend_running"
+                        @api-call="makeApiCall"
+                    />
+                </template>
 
-            <profile-public-pages
-                v-bind="pickProps(props, {...publicPagesPanelProps,...embedModalProps})"
-            />
-        </div>
-
-        <div class="col-lg-5">
-            <profile-requests
-                v-if="stationSupportsRequests"
-                v-bind="pickProps(props, requestsPanelProps)"
-            />
-
-            <profile-streamers
-                v-if="stationSupportsStreamers"
-                v-bind="pickProps(props, streamersPanelProps)"
-            />
-
-            <template v-if="hasActiveFrontend">
-                <profile-frontend
-                    v-bind="pickProps(props, frontendPanelProps)"
-                    :frontend-running="profileInfo.services.frontend_running"
-                    @api-call="makeApiCall"
-                />
-            </template>
-
-            <template v-if="hasActiveBackend">
-                <profile-backend
-                    v-bind="pickProps(props, backendPanelProps)"
-                    :backend-running="profileInfo.services.backend_running"
-                    @api-call="makeApiCall"
-                />
-            </template>
-            <template v-else>
-                <profile-backend-none />
-            </template>
+                <template v-if="hasActiveBackend">
+                    <profile-backend
+                        v-bind="pickProps(props, backendPanelProps)"
+                        :backend-running="profileInfo.services.backend_running"
+                        @api-call="makeApiCall"
+                    />
+                </template>
+                <template v-else>
+                    <profile-backend-none />
+                </template>
+            </div>
         </div>
     </div>
 </template>

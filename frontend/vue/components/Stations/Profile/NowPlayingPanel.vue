@@ -18,7 +18,7 @@
                     style="line-height: 1;"
                 >
                     <icon
-                        class="sm align-middle"
+                        class="align-middle"
                         icon="headset"
                     />
                     <span class="ps-1">
@@ -58,7 +58,7 @@
                                     </div>
                                 </div>
                                 <div class="d-table-row">
-                                    <div class="d-table-cell align-middle text-end pe-2">
+                                    <div class="d-table-cell align-top text-end pe-2">
                                         <a
                                             v-if="np.now_playing.song.art"
                                             data-fancybox
@@ -80,21 +80,21 @@
                                             </h5>
                                         </div>
                                         <div v-else-if="np.now_playing.song.title !== ''">
-                                            <h5
+                                            <h6
                                                 class="media-heading m-0"
-                                                style="line-height: 1;"
+                                                style="line-height: 1.2;"
                                             >
                                                 {{ np.now_playing.song.title }}<br>
-                                                <small>{{ np.now_playing.song.artist }}</small>
-                                            </h5>
+                                                <small class="text-muted">{{ np.now_playing.song.artist }}</small>
+                                            </h6>
                                         </div>
                                         <div v-else>
-                                            <h5
+                                            <h6
                                                 class="media-heading m-0"
-                                                style="line-height: 1;"
+                                                style="line-height: 1.2;"
                                             >
                                                 {{ np.now_playing.song.text }}
-                                            </h5>
+                                            </h6>
                                         </div>
                                         <div v-if="np.now_playing.playlist">
                                             <small class="text-muted">
@@ -131,7 +131,7 @@
                                     </div>
                                 </div>
                                 <div class="d-table-row">
-                                    <div class="d-table-cell align-middle text-end pe-2">
+                                    <div class="d-table-cell align-top text-end pe-2">
                                         <a
                                             v-if="np.playing_next.song.art"
                                             data-fancybox
@@ -148,21 +148,21 @@
                                     </div>
                                     <div class="d-table-cell align-middle w-100">
                                         <div v-if="np.playing_next.song.title !== ''">
-                                            <h5
+                                            <h6
                                                 class="media-heading m-0"
                                                 style="line-height: 1;"
                                             >
                                                 {{ np.playing_next.song.title }}<br>
                                                 <small>{{ np.playing_next.song.artist }}</small>
-                                            </h5>
+                                            </h6>
                                         </div>
                                         <div v-else>
-                                            <h5
+                                            <h6
                                                 class="media-heading m-0"
                                                 style="line-height: 1;"
                                             >
                                                 {{ np.playing_next.song.text }}
-                                            </h5>
+                                            </h6>
                                         </div>
 
                                         <div v-if="np.playing_next.playlist">

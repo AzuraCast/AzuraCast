@@ -37,13 +37,13 @@
                     >
                         <td class="pe-1">
                             <play-button
-                                icon-class="outlined"
+                                icon-class="lg outlined"
                                 :url="mount.url"
                                 is-stream
                             />
                         </td>
                         <td class="ps-1">
-                            <h6 class="mb-0">
+                            <h6 class="mb-1">
                                 {{ mount.name }}
                             </h6>
                             <a
@@ -85,13 +85,13 @@
                     >
                         <td class="pe-1">
                             <play-button
-                                icon-class="outlined"
+                                icon-class="lg outlined"
                                 :url="remote.url"
                                 is-stream
                             />
                         </td>
                         <td class="ps-1">
-                            <h6 class="mb-0">
+                            <h6 class="mb-1">
                                 {{ remote.name }}
                             </h6>
                             <a
@@ -129,7 +129,7 @@
                     <tr class="align-middle">
                         <td class="pe-1">
                             <play-button
-                                icon-class="outlined"
+                                icon-class="lg outlined"
                                 :url="station.hls_url"
                                 is-stream
                                 is-hls

@@ -207,7 +207,7 @@
                                 />
                             </td>
                             <td class="ps-2">
-                                <div class="typography-subheading">
+                                <div class="h5 m-0">
                                     {{ item.station.name }}
                                 </div>
                                 <div v-if="item.station.is_public">

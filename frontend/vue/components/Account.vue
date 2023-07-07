@@ -26,41 +26,42 @@
                         <div class="card-body">
                             <div class="d-flex align-items-center">
                                 <div
-                                    v-if="user.avatar.url"
-                                    class="flex-shrink-0"
+                                    v-if="user.avatar.url_128"
+                                    class="flex-shrink-0 pe-2"
                                 >
                                     <avatar
-                                        :url="user.avatar.url"
+                                        :url="user.avatar.url_128"
                                         :service="user.avatar.service"
                                         :service-url="user.avatar.serviceUrl"
                                     />
                                 </div>
+                                <div class="flex-fill">
+                                    <h2
+                                        v-if="user.name"
+                                        class="card-title"
+                                    >
+                                        {{ user.name }}
+                                    </h2>
+                                    <h2
+                                        v-else
+                                        class="card-title"
+                                    >
+                                        {{ $gettext('AzuraCast User') }}
+                                    </h2>
+                                    <h3 class="card-subtitle">
+                                        {{ user.email }}
+                                    </h3>
 
-                                <h2
-                                    v-if="user.name"
-                                    class="card-title"
-                                >
-                                    {{ user.name }}
-                                </h2>
-                                <h2
-                                    v-else
-                                    class="card-title"
-                                >
-                                    {{ $gettext('AzuraCast User') }}
-                                </h2>
-                                <h3 class="card-subtitle">
-                                    {{ user.email }}
-                                </h3>
-
-                                <div
-                                    v-if="user.roles.length > 0"
-                                    class="mt-2"
-                                >
-                                    <span
-                                        v-for="role in user.roles"
-                                        :key="role.id"
-                                        class="badge text-bg-secondary me-2"
-                                    >{{ role.name }}</span>
+                                    <div
+                                        v-if="user.roles.length > 0"
+                                        class="mt-2"
+                                    >
+                                        <span
+                                            v-for="role in user.roles"
+                                            :key="role.id"
+                                            class="badge text-bg-secondary me-2"
+                                        >{{ role.name }}</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -247,7 +248,7 @@ const {state: user, isLoading: userLoading, execute: reloadUser} = useRefreshabl
         name: null,
         email: null,
         avatar: {
-            url: null,
+            url_128: null,
             service: null,
             serviceUrl: null
         },

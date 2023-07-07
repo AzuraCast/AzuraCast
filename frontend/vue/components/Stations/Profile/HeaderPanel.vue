@@ -2,10 +2,10 @@
     <div class="outside-card-header d-flex align-items-center">
         <div
             v-if="station.listen_url && hasStarted"
-            class="flex-shrink-0 me-3"
+            class="flex-shrink-0 me-2"
         >
             <play-button
-                icon-class="outlined xl"
+                class="btn-lg"
                 :url="station.listen_url"
                 is-stream
             />

@@ -37,7 +37,6 @@
                     >
                         <td class="pe-1">
                             <play-button
-                                icon-class="outlined"
                                 :url="mount.url"
                                 is-stream
                             />
@@ -85,7 +84,6 @@
                     >
                         <td class="pe-1">
                             <play-button
-                                icon-class="outlined"
                                 :url="remote.url"
                                 is-stream
                             />
@@ -129,7 +127,6 @@
                     <tr class="align-middle">
                         <td class="pe-1">
                             <play-button
-                                icon-class="outlined"
                                 :url="station.hls_url"
                                 is-stream
                                 is-hls

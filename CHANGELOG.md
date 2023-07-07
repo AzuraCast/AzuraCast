@@ -15,6 +15,17 @@ release channel, you can take advantage of these new features and fixes.
 
 ## Code Quality/Technical Changes
 
+- **Frontend Overhaul**: We have updated the code that powers the browser-facing frontend of our application. In
+  particular, we've upgraded from Bootstrap 4 to 5. Most users of the application won't need to change anything as a
+  result of this, but if you use custom CSS or JavaScript, the following changes will be necessary:
+    - jQuery has been removed. If you used jQuery, you can likely replace any jQuery code with vanilla javascript. See
+      migration guides like this one for help: https://tobiasahlin.com/blog/move-from-jquery-to-vanilla-javascript/
+    - The theme selectors have changed from `[data-theme="dark/light"]` to `[data-bs-theme="dark/light"]`.
+    - Several colors and parameters can be customized just by changing CSS variables. For more information on the
+      specific CSS variables exposed by Bootstrap 5, visit this
+      page: https://getbootstrap.com/docs/5.3/customize/css-variables/
+    - Several class names and identifiers have been renamed. Use the Inspect Element tool to identify the new names.
+
 ## Bug Fixes
 
 - When adding media to playlists, the system will no longer remove the media from all playlists and then re-add it; it

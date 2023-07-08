@@ -37,9 +37,10 @@
             <draggable
                 v-model="media"
                 tag="tbody"
+                item-key="id"
                 @change="save"
             >
-                <template #item="{element}">
+                <template #item="{element, index}">
                     <tr class="align-middle">
                         <td class="pe-2">
                             <play-button
@@ -59,7 +60,7 @@
                                     :title="$gettext('Down')"
                                     @click.prevent="moveDown(index)"
                                 >
-                                    <icon icon="arrow_downward"/>
+                                    <icon icon="arrow_downward" />
                                 </button>
                                 <button
                                     v-if="index > 0"
@@ -67,7 +68,7 @@
                                     :title="$gettext('Up')"
                                     @click.prevent="moveUp(index)"
                                 >
-                                    <icon icon="arrow_upward"/>
+                                    <icon icon="arrow_upward" />
                                 </button>
                             </div>
                         </td>

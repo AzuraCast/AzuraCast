@@ -4,7 +4,7 @@ header.navbar {
   background-repeat: no-repeat;
   background-size: 500px 100px, cover;
 
-  min-height: var($header-nav-height);
+  min-height: $header-nav-height;
   padding: 1rem;
 
   color: $white !important;

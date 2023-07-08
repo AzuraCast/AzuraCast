@@ -18,7 +18,7 @@
                     style="line-height: 1;"
                 >
                     <icon
-                        class="align-middle"
+                        class="align-middle sm"
                         icon="headset"
                     />
                     <span class="ps-1">

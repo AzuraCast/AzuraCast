@@ -32,6 +32,15 @@ export default function (component) {
         tabs: {
             ...bootstrapConfig.tabs,
             animated: false
+        },
+        notification: {
+            ...bootstrapConfig.notification,
+            rootClass: (_, {props}) => {
+                const classes = ['alert', 'notification'];
+                if (props.variant)
+                    classes.push(`text-bg-${props.variant}`);
+                return classes.join(' ');
+            },
         }
     });
 

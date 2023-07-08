@@ -76,44 +76,16 @@
                 <template v-if="row.item.changes.length > 0">
                     <button
                         class="btn btn-sm btn-primary"
-                        @click="row.toggleDetails"
+                        @click="showDetails(row.item.changes)"
                     >
                         {{ $gettext('Changes') }}
                     </button>
                 </template>
             </template>
-            <template #row-details="row">
-                <table class="table table-bordered">
-                    <colgroup>
-                        <col width="30%">
-                        <col width="35%">
-                        <col width="35%">
-                    </colgroup>
-                    <thead>
-                        <tr>
-                            <th>{{ $gettext('Field Name') }}</th>
-                            <th>{{ $gettext('Previous') }}</th>
-                            <th>{{ $gettext('Updated') }}</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr
-                            v-for="change in row.item.changes"
-                            :key="change.field"
-                        >
-                            <td>{{ change.field }}</td>
-                            <td>
-                                <pre class="changes">{{ change.from }}</pre>
-                            </td>
-                            <td>
-                                <pre class="changes">{{ change.to }}</pre>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </template>
         </data-table>
     </section>
+
+    <details-modal ref="$detailsModal" />
 </template>
 
 <script setup>
@@ -125,6 +97,7 @@ import DataTable from "~/components/Common/DataTable.vue";
 import DateRangeDropdown from "~/components/Common/DateRangeDropdown.vue";
 import Icon from "~/components/Common/Icon.vue";
 import useHasDatatable from "~/functions/useHasDatatable";
+import DetailsModal from "./AuditLog/DetailsModal.vue";
 
 const props = defineProps({
     baseApiUrl: {
@@ -173,11 +146,9 @@ const apiUrl = computed(() => {
 
 const $datatable = ref(); // DataTable Template Ref
 const {relist} = useHasDatatable($datatable);
-</script>
 
-<style lang="scss">
-pre.changes {
-    max-width: 250px;
-    margin-bottom: 0;
+const $detailsModal = ref(); // DetailsModal
+const showDetails = (changes) => {
+    $detailsModal.value.open(changes);
 }
-</style>
+</script>

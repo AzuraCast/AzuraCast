@@ -41,7 +41,7 @@
 </template>
 
 <script setup>
-import {ref, useSlots, watch} from 'vue';
+import {nextTick, ref, useSlots, watch} from 'vue';
 import {syncRef, useVModel} from "@vueuse/core";
 import Loading from "~/components/Common/Loading.vue";
 
@@ -86,7 +86,9 @@ syncRef(isActiveProp, isActiveLocal);
 
 watch(isActiveLocal, (value) => {
     if (value) {
-        emit('shown');
+        nextTick(() => {
+            emit('shown');
+        });
     } else {
         emit('hidden');
     }

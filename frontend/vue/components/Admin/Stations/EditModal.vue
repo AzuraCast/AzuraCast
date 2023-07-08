@@ -4,7 +4,7 @@
         ref="$modal"
         size="lg"
         :title="langTitle"
-        :busy="loading"
+        :busy="false"
         @shown="resetForm"
         @hidden="clearContents"
     >
@@ -18,7 +18,6 @@
             @error="close"
             @submitted="onSubmit"
             @valid-update="onValidUpdate"
-            @loading-update="onLoadingUpdate"
         >
             <template #submitButton>
                 <invisible-submit-button />
@@ -65,7 +64,6 @@ const props = defineProps({
 const emit = defineEmits(['relist']);
 
 const editUrl = ref(null);
-const loading = ref(true);
 const disableSaveButton = ref(true);
 
 const isEditMode = computed(() => {
@@ -84,10 +82,6 @@ const $modal = ref(); // BModal
 
 const onValidUpdate = (newValue) => {
     disableSaveButton.value = !newValue;
-};
-
-const onLoadingUpdate = (newValue) => {
-    loading.value = newValue;
 };
 
 const create = () => {

@@ -9,9 +9,6 @@
 }
 
 .card {
-  --bs-card-cap-padding-y: 1.1rem;
-  --bs-card-cap-padding-x: 1.1rem;
-
   box-shadow: 0 0 4px 0 rgba(0, 0, 0, .14), 0 3px 4px 0 rgba(0, 0, 0, .12), 0 1px 5px 0 rgba(0, 0, 0, .2);
 
   .card-title {
@@ -42,17 +39,6 @@
     &:last-child {
       border-bottom-left-radius: var(--bs-card-border-radius);
       border-bottom-right-radius: var(--bs-card-border-radius);
-    }
-  }
-
-  .card-header {
-    .badge {
-      --bs-badge-padding-x: 0.75rem;
-      --bs-badge-padding-y: 0.45rem;
-      --bs-badge-font-size: 0.9rem;
-      --bs-badge-font-weight: normal;
-
-      letter-spacing: 1px;
     }
   }
 

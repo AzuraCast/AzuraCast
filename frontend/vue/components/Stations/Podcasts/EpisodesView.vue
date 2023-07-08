@@ -14,13 +14,13 @@
                             <h2 class="card-title">
                                 {{ podcast.title }}
                             </h2>
-                            <h4 class="card-subtitle text-muted">
+                            <h4 class="card-subtitle">
                                 {{ $gettext('Episodes') }}
                             </h4>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-5 text-end text-muted">
+                <div class="col-md-5 text-end">
                     <stations-common-quota
                         ref="$quota"
                         :quota-url="quotaUrl"

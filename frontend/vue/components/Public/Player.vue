@@ -80,7 +80,7 @@
 
         <div class="radio-controls">
             <play-button
-                class="radio-control-play-button btn-lg"
+                class="radio-control-play-button btn-xl"
                 :url="currentStream.url"
                 :is-hls="currentStream.hls"
                 is-stream
@@ -93,7 +93,7 @@
                 >
                     <button
                         id="btn-select-stream"
-                        class="btn btn-sm btn-outline-primary dropdown-toggle"
+                        class="btn btn-sm btn-outline-secondary dropdown-toggle"
                         type="button"
                         data-bs-toggle="dropdown"
                         aria-haspopup="true"

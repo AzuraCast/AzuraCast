@@ -1,19 +1,11 @@
 <template>
     <loading :loading="isLoading">
-        <form-group id="modal_scroll_to_bottom">
-            <input
-                id="modal_scroll_to_bottom"
-                v-model="scrollToBottom"
-                class="form-check-input"
-                type="checkbox"
-            >
-            <label
-                class="form-check-label"
-                for="modal_scroll_to_bottom"
-            >
-                {{ $gettext('Automatically Scroll to Bottom') }}
-            </label>
-        </form-group>
+        <form-group-checkbox
+            id="modal_scroll_to_bottom"
+            class="mb-3"
+            :field="scrollToBottom"
+            :label="$gettext('Automatically Scroll to Bottom')"
+        />
 
         <textarea
             id="log-view-contents"
@@ -31,7 +23,7 @@ import {nextTick, ref, toRef, watch} from "vue";
 import {useAxios} from "~/vendor/axios";
 import {tryOnScopeDispose} from "@vueuse/core";
 import Loading from "~/components/Common/Loading.vue";
-import FormGroup from "~/components/Form/FormGroup.vue";
+import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
 
 const props = defineProps({
     logUrl: {

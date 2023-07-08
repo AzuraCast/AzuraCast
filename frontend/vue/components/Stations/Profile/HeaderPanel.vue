@@ -5,7 +5,7 @@
             class="flex-shrink-0 me-2"
         >
             <play-button
-                class="btn-lg"
+                class="btn-xl"
                 :url="station.listen_url"
                 is-stream
             />
@@ -26,7 +26,7 @@
             class="flex-shrink-0 ms-3"
         >
             <a
-                class="btn btn-primary btn-lg"
+                class="btn btn-primary"
                 role="button"
                 :href="manageProfileUri"
             >

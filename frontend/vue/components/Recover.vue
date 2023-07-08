@@ -58,7 +58,7 @@
                     <div class="block-buttons mt-2">
                         <button
                             type="submit"
-                            class="btn btn-lg btn-primary btn-block"
+                            class="btn btn-primary btn-block"
                             :disabled="v$.$invalid"
                         >
                             {{ $gettext('Recover Account') }}

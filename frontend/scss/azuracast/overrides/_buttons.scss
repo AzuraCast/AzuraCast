@@ -6,7 +6,7 @@
 
   font-weight: 500;
   letter-spacing: 1px;
-  word-spacing: 3px;
+  word-spacing: 1px;
   text-transform: uppercase;
 
   & > .material-icons {
@@ -16,6 +16,11 @@
     + span {
       padding-right: 0.15rem;
     }
+  }
+
+  &.btn-xl > .material-icons {
+    font-size: 2.75rem;
+    margin-right: calc($btn-padding-x-lg / 2);
   }
 
   &.btn-lg > .material-icons {

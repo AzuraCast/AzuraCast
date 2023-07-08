@@ -4,19 +4,26 @@ input, textarea {
   }
 }
 
-.form-check {
+.form-check,
+.custom-checkbox {
   margin-bottom: 0.35rem;
 
-  .form-check-input {
+  .form-check-input,
+  .custom-control-input {
     width: 1.5rem;
     height: 1.5rem;
     cursor: pointer;
     margin-top: 0;
   }
 
-  .form-check-label {
+  .form-check-label,
+  .custom-control-label {
     margin-left: 0.5rem;
     cursor: pointer;
+  }
+
+  .custom-control-label {
+    vertical-align: top;
   }
 }
 
@@ -56,7 +63,7 @@ input, textarea {
     }
   }
 
-  .form-control,
+  .form-control:not([type="file"]),
   .form-select {
     padding: .75rem;
   }

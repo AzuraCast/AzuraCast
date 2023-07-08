@@ -47,7 +47,7 @@
                     <td class="pe-2">
                         <play-button
                             :url="row.media.links.play"
-                            icon-class="lg outlined"
+                            class="btn-xl"
                         />
                     </td>
                     <td class="ps-2">

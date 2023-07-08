@@ -1,12 +1,11 @@
 <template>
     <div class="public-page">
         <div class="card">
-            <div class="card-header">
-                <h2 class="card-title">
+            <div class="card-body">
+                <h2 class="card-title mb-3">
                     {{ stationName }}
                 </h2>
-            </div>
-            <div class="card-body">
+
                 <div class="stations nowplaying">
                     <radio-player
                         v-bind="pickProps(props, playerProps)"

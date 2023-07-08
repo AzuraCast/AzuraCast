@@ -84,7 +84,7 @@
                         <template v-if="row.item.media.is_playable">
                             <play-button
                                 :url="row.item.media.links.play"
-                                icon-class="lg"
+                                class="btn-xl"
                             />
                         </template>
                         <template v-else>

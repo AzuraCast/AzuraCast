@@ -33,16 +33,16 @@
         </div>
 
         <button
-            class="btn btn-sm btn-outline-light px-2 ms-1"
+            class="btn btn-sm btn-outline-light p-2 ms-2"
             :aria-label="$gettext('Stop')"
             @click="stop()"
         >
             <icon icon="stop" />
         </button>
-        <div class="inline-volume-controls d-inline-flex align-items-center ms-1">
+        <div class="inline-volume-controls d-inline-flex align-items-center ms-2">
             <div class="flex-shrink-0">
                 <mute-button
-                    class="btn btn-sm btn-outline-light px-2"
+                    class="btn btn-sm btn-outline-light p-2"
                     :volume="volume"
                     :is-muted="isMuted"
                     @toggle-mute="toggleMute"

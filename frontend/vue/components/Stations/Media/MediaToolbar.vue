@@ -18,7 +18,10 @@
                         </span>
                         <span class="caret" />
                     </button>
-                    <div class="dropdown-menu">
+                    <div
+                        class="dropdown-menu"
+                        style="min-width: 300px;"
+                    >
                         <form
                             class="px-4 py-3"
                             @submit.prevent="setPlaylists"
@@ -46,29 +49,33 @@
                                 </div>
                             </div>
 
-                            <div class="form-group">
-                                <div class="custom-control custom-checkbox">
-                                    <input
-                                        id="chk_playlist_new"
-                                        v-model="checkedPlaylists"
-                                        type="checkbox"
-                                        class="custom-control-input"
-                                        value="new"
-                                    >
-                                    <label
-                                        class="custom-control-label"
-                                        for="chk_playlist_new"
-                                    >
+                            <hr class="dropdown-divider">
+
+                            <div class="form-group mt-3 mb-4">
+                                <div class="input-group custom-control custom-checkbox">
+                                    <div class="input-group-text">
                                         <input
-                                            id="new_playlist_name"
-                                            v-model="newPlaylist"
-                                            type="text"
-                                            class="form-control p-2"
-                                            name="new_playlist_name"
-                                            style="min-width: 150px;"
-                                            :placeholder="$gettext('New Playlist')"
+                                            id="chk_playlist_new"
+                                            v-model="checkedPlaylists"
+                                            type="checkbox"
+                                            class="custom-control-input"
+                                            value="new"
                                         >
-                                    </label>
+                                        <label
+                                            class="custom-control-label"
+                                            for="chk_playlist_new"
+                                        />
+                                    </div>
+
+                                    <input
+                                        id="new_playlist_name"
+                                        v-model="newPlaylist"
+                                        type="text"
+                                        class="form-control p-2"
+                                        name="new_playlist_name"
+                                        style="min-width: 150px;"
+                                        :placeholder="$gettext('New Playlist')"
+                                    >
                                 </div>
                             </div>
 

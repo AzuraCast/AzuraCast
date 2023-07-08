@@ -102,7 +102,7 @@
                 <div class="buttons mt-3">
                     <button
                         type="submit"
-                        class="btn btn-lg"
+                        class="btn"
                         :class="(!isValid) ? 'btn-danger' : 'btn-primary'"
                     >
                         <slot name="submitButtonText">
@@ -488,5 +488,3 @@ defineExpose({
     submit
 });
 </script>
-
-

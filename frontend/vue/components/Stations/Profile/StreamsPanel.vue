@@ -41,7 +41,7 @@
                     >
                         <td class="pe-1">
                             <play-button
-                                class="lg"
+                                class="btn-xl"
                                 :url="mount.url"
                                 is-stream
                             />
@@ -85,7 +85,7 @@
                     >
                         <td class="pe-1">
                             <play-button
-                                class="lg"
+                                class="btn-xl"
                                 :url="remote.url"
                                 is-stream
                             />
@@ -129,7 +129,7 @@
                     <tr class="align-middle">
                         <td class="pe-1">
                             <play-button
-                                class="lg"
+                                class="btn-xl"
                                 :url="station.hls_url"
                                 is-stream
                                 is-hls

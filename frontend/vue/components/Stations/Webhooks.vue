@@ -33,7 +33,7 @@
 
                 <div
                     v-if="!row.item.is_enabled"
-                    class="badge badge-danger"
+                    class="badge bg-danger"
                 >
                     {{ $gettext('Disabled') }}
                 </div>

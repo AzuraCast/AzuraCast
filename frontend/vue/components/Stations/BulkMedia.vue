@@ -29,7 +29,7 @@
 
                     <div class="block-buttons">
                         <a
-                            class="btn btn-lg btn-block btn-primary"
+                            class="btn btn-block btn-primary"
                             :href="apiUrl"
                         >
                             {{ $gettext('Export Media to CSV') }}
@@ -73,10 +73,10 @@
                             </template>
                         </form-group>
 
-                        <div class="block-buttons mt-2">
+                        <div class="block-buttons mt-3">
                             <button
                                 type="submit"
-                                class="btn btn-lg btn-block btn-primary "
+                                class="btn btn-block btn-primary "
                             >
                                 {{ $gettext('Import Changes from CSV') }}
                             </button>

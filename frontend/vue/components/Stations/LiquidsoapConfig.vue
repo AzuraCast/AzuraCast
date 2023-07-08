@@ -59,7 +59,7 @@
 
                     <button
                         type="submit"
-                        class="btn btn-lg"
+                        class="btn"
                         :class="(v$.$invalid) ? 'btn-danger' : 'btn-primary'"
                     >
                         {{ $gettext('Save Changes') }}

@@ -374,6 +374,13 @@ watch(np, onNowPlayingUpdated, {immediate: true});
 
         .radio-control-select-stream {
             flex: 1 1 auto;
+            max-width: 60%;
+
+            #btn-select-stream {
+                text-overflow: clip;
+                white-space: normal;
+                word-break: break-all;
+            }
         }
 
         .radio-control-mute-button,

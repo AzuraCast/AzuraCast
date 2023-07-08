@@ -445,8 +445,6 @@ const doLoad = () => {
         axios.get(props.editUrl)
     ).then((resp) => {
         populateForm(resp.data);
-
-        console.log(form.value);
     }).catch((err) => {
         emit('error', err);
     }).finally(() => {

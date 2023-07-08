@@ -34,6 +34,17 @@ div.datatable-main {
   }
 }
 
-.table > :not(caption) > * > * {
-  padding: 1rem 1rem;
+.table {
+  thead th {
+    font-size: 1.2rem;
+    font-weight: normal;
+  }
+
+  tbody td {
+    font-size: 1.1rem;
+  }
+
+  > :not(caption) > * > * {
+    padding: 1rem 1rem;
+  }
 }

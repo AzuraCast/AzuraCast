@@ -2,8 +2,8 @@
   display: inline-flex;
   align-items: center;
 
-  font-weight: normal;
-  font-size: .875rem;
+  font-weight: 500;
+  font-size: .9rem;
   letter-spacing: 1px;
   word-spacing: 3px;
   text-transform: uppercase;
@@ -11,6 +11,10 @@
   & > .material-icons {
     font-size: 1.5rem;
     margin-right: calc($btn-padding-x / 2);
+
+    + span {
+      padding-right: 0.15rem;
+    }
   }
 
   &.btn-lg > .material-icons {
@@ -29,6 +33,10 @@
     .material-icons:only-child {
       margin-right: 0;
     }
+  }
+
+  &.btn-link {
+    text-decoration: none;
   }
 }
 

@@ -16,7 +16,7 @@
 
   .card-title {
     @include font-size($h4-font-size);
-    font-weight: 300;
+    font-weight: normal;
     margin-bottom: 0;
   }
 
@@ -47,7 +47,12 @@
 
   .card-header {
     .badge {
-      font-weight: 300;
+      --bs-badge-padding-x: 0.75rem;
+      --bs-badge-padding-y: 0.45rem;
+      --bs-badge-font-size: 0.9rem;
+      --bs-badge-font-weight: normal;
+
+      letter-spacing: 1px;
     }
   }
 

@@ -25,6 +25,10 @@
                             {{ $gettext('Local Streams') }}
                         </th>
                         <th class="text-end">
+                            <icon
+                                class="align-middle"
+                                icon="headset"
+                            />
                             {{ $gettext('Listeners') }}
                         </th>
                     </tr>
@@ -52,11 +56,7 @@
                             >{{ mount.url }}</a>
                         </td>
                         <td class="ps-1 text-end">
-                            <icon
-                                class="sm align-middle"
-                                icon="headset"
-                            />
-                            <span class="listeners-total ps-1">{{ mount.listeners.total }}</span><br>
+                            <span class="listeners-total ps-1">{{ mount.listeners.total }}</span> {{ $gettext('Total') }}<br>
                             <small>
                                 <span class="listeners-unique pe-1">{{ mount.listeners.unique }}</span>
                                 {{ $gettext('Unique') }}

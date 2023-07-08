@@ -10,9 +10,3 @@
   padding-top: 20px;
   padding-bottom: 15px;
 }
-
-@include media-breakpoint-up(lg) {
-  body.has-sidebar #footer {
-    left: var(--navdrawer-width);
-  }
-}

@@ -14,7 +14,7 @@
                         {{ $gettext('Music Files') }}
                     </h2>
                 </div>
-                <div class="col-md-5 text-end text-muted">
+                <div class="col-md-5 text-end">
                     <stations-common-quota
                         ref="$quota"
                         :quota-url="quotaUrl"
@@ -84,7 +84,7 @@
                         <template v-if="row.item.media.is_playable">
                             <play-button
                                 :url="row.item.media.links.play"
-                                icon-class="outlined"
+                                icon-class="lg"
                             />
                         </template>
                         <template v-else>

@@ -7,7 +7,7 @@
             <div class="btn-group dropdown allow-focus">
                 <div class="dropdown">
                     <button
-                        class="btn btn-sm btn-primary dropdown-toggle"
+                        class="btn btn-primary dropdown-toggle"
                         type="button"
                         data-bs-toggle="dropdown"
                         aria-expanded="false"
@@ -74,13 +74,13 @@
 
                             <div class="buttons">
                                 <button
-                                    class="btn btn-sm btn-primary"
+                                    class="btn btn-primary"
                                     type="submit"
                                 >
                                     {{ $gettext('Save') }}
                                 </button>
                                 <button
-                                    class="btn btn-sm btn-warning"
+                                    class="btn btn-warning"
                                     type="button"
                                     @click="clearPlaylists()"
                                 >
@@ -93,7 +93,7 @@
             </div>
 
             <button
-                class="btn btn-sm btn-primary"
+                class="btn btn-primary"
                 @click.prevent="moveFiles"
             >
                 <icon icon="open_with" />
@@ -105,7 +105,7 @@
             <div class="btn-group dropdown allow-focus">
                 <div class="dropdown">
                     <button
-                        class="btn btn-sm btn-secondary dropdown-toggle"
+                        class="btn btn-secondary dropdown-toggle"
                         type="button"
                         data-bs-toggle="dropdown"
                         aria-expanded="false"
@@ -150,7 +150,7 @@
             </div>
 
             <button
-                class="btn btn-sm btn-danger"
+                class="btn btn-danger"
                 @click="doDelete"
             >
                 <icon icon="delete" />
@@ -161,7 +161,7 @@
         </div>
         <div class="col-md-4 text-end">
             <button
-                class="btn btn-sm btn-primary"
+                class="btn btn-primary"
                 @click.prevent="createDirectory"
             >
                 <icon icon="folder" />

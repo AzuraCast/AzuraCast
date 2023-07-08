@@ -16,10 +16,10 @@
                     </h6>
                     <div
                         v-if="!file.isCompleted"
-                        class="progress h-15 my-1"
+                        class="progress h-20 my-1"
                     >
                         <div
-                            class="progress-bar h-15"
+                            class="progress-bar h-20"
                             role="progressbar"
                             :style="{width: file.progressPercent+'%'}"
                             :aria-valuenow="file.progressPercent"

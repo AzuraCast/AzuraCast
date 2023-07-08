@@ -15,6 +15,7 @@ module.exports = {
             "alignAttributesVertically": true
         }],
         "vue/no-v-html": "off",
-        "vue/no-mutating-props": "off"
+        "vue/no-mutating-props": "off",
+        'vue/no-multiple-template-root': "off"
     }
 }

@@ -232,13 +232,13 @@ final class ConfigWriter implements EventSubscriberInterface
             # Track live transition for crossfades.
             to_live = ref(false)
             ignore(to_live)
-            
+
             # Reimplement LS's now-deprecated drop_metadata function.
             def drop_metadata(~id=null(), s)
                 let {metadata=_, ...tracks} = source.tracks(s)
                 source(id=id, tracks)
             end
-            
+
             # Transport for HTTPS outputs.
             https_transport = http.transport.ssl()
             ignore(https_transport)
@@ -1362,7 +1362,7 @@ final class ConfigWriter implements EventSubscriberInterface
                 return '%ogg(%flac(samplerate=48000, channels=2, compression=4, bits_per_sample=24))';
 
             case StreamFormats::Mp3:
-                return '%mp3(samplerate=44100, stereo=true, bitrate=' . $bitrate . ', id3v2=true)';
+                return '%mp3(samplerate=44100, stereo=true, bitrate=' . $bitrate . ')';
         }
 
         throw new RuntimeException(sprintf('Unsupported stream format: %s', $format->value));

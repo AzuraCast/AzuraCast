@@ -198,10 +198,9 @@
                             :key="item.station.id"
                             class="align-middle"
                         >
-                            <td class="text-center pe-3">
+                            <td class="text-center pe-1">
                                 <play-button
-                                    class="file-icon"
-                                    icon-class="lg outlined align-middle"
+                                    class="file-icon btn-lg"
                                     :url="item.station.listen_url"
                                     is-stream
                                 />

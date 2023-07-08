@@ -28,6 +28,10 @@ export default function (component) {
         pagination: {
             ...bootstrapConfig.pagination,
             orderClass: '',
+        },
+        tabs: {
+            ...bootstrapConfig.tabs,
+            animated: false
         }
     });
 

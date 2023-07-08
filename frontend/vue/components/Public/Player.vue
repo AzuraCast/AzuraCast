@@ -80,8 +80,7 @@
 
         <div class="radio-controls">
             <play-button
-                class="radio-control-play-button"
-                icon-class="outlined lg"
+                class="radio-control-play-button btn-lg"
                 :url="currentStream.url"
                 :is-hls="currentStream.hls"
                 is-stream
@@ -125,7 +124,7 @@
 
             <div class="radio-control-mute-button">
                 <mute-button
-                    class="text-secondary"
+                    class="p-0 text-secondary"
                     :volume="volume"
                     :is-muted="isMuted"
                     @toggle-mute="toggleMute"

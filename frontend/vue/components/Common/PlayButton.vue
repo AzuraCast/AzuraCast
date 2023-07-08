@@ -1,15 +1,16 @@
 <template>
-    <a
-        href="#"
+    <button
         :title="langTitle"
         :aria-label="langTitle"
-        @click.prevent="toggle"
+        class="btn p-0"
+        @click="toggle"
     >
         <icon
+            class="outlined"
             :class="iconClass"
             :icon="iconText"
         />
-    </a>
+    </button>
 </template>
 
 <script setup>

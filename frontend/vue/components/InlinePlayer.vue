@@ -32,14 +32,13 @@
             </div>
         </div>
 
-        <a
+        <button
             class="btn btn-sm btn-outline-light px-2 ms-1"
-            href="#"
             :aria-label="$gettext('Stop')"
-            @click.prevent="stop()"
+            @click="stop()"
         >
             <icon icon="stop" />
-        </a>
+        </button>
         <div class="inline-volume-controls d-inline-flex align-items-center ms-1">
             <div class="flex-shrink-0">
                 <mute-button

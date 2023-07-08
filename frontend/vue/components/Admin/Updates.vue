@@ -37,14 +37,13 @@
                     </div>
                 </div>
                 <div class="card-body">
-                    <a
+                    <button
                         class="btn btn-info"
-                        href="#"
-                        @click.prevent="checkForUpdates()"
+                        @click="checkForUpdates()"
                     >
                         <icon icon="sync" />
                         {{ $gettext('Check for Updates') }}
-                    </a>
+                    </button>
                 </div>
             </section>
         </div>
@@ -120,14 +119,13 @@
                             <icon icon="backup" />
                             {{ $gettext('Backup') }}
                         </a>
-                        <a
+                        <button
                             class="btn btn-success"
-                            href="#"
-                            @click.prevent="doUpdate()"
+                            @click="doUpdate()"
                         >
                             <icon icon="update" />
                             {{ $gettext('Update via Web') }}
-                        </a>
+                        </button>
                     </div>
                 </template>
                 <template v-else>

@@ -5,6 +5,7 @@
         :aria-label="title"
         :content-class="'modal-'+size"
         :width="null"
+        destroy-on-hide
     >
         <div class="modal-content">
             <div

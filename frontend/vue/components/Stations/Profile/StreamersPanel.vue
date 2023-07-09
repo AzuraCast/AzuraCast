@@ -20,7 +20,7 @@
             >
                 <a
                     v-if="userCanManageStreamers"
-                    class="btn btn-primary"
+                    class="btn btn-link text-primary"
                     :href="streamersViewUri"
                 >
                     <icon icon="settings" />
@@ -31,7 +31,7 @@
                 <a
                     v-if="userCanManageProfile"
                     v-confirm-link="$gettext('Disable streamers?')"
-                    class="btn btn-danger"
+                    class="btn btn-link text-danger"
                     :href="streamersToggleUri"
                 >
                     <icon icon="close" />
@@ -54,7 +54,7 @@
             >
                 <a
                     v-confirm-link="$gettext('Enable streamers?')"
-                    class="btn btn-success"
+                    class="btn btn-link text-success"
                     :href="streamersToggleUri"
                 >
                     <icon icon="check" />

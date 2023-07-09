@@ -99,7 +99,7 @@
 
             <div class="card-body buttons">
                 <a
-                    class="btn btn-primary"
+                    class="btn btn-link text-primary"
                     @click.prevent="credentialsVisible = !credentialsVisible"
                 >
                     <icon icon="unfold_more" />
@@ -109,7 +109,7 @@
                 </a>
                 <template v-if="hasStarted">
                     <button
-                        class="btn btn-secondary"
+                        class="btn btn-link text-secondary"
                         @click="makeApiCall(frontendRestartUri)"
                     >
                         <icon icon="update" />
@@ -119,7 +119,7 @@
                     </button>
                     <button
                         v-if="!frontendRunning"
-                        class="btn btn-success"
+                        class="btn btn-link text-success"
                         @click="makeApiCall(frontendStartUri)"
                     >
                         <icon icon="play_arrow" />
@@ -129,7 +129,7 @@
                     </button>
                     <button
                         v-if="frontendRunning"
-                        class="btn btn-danger"
+                        class="btn btn-link text-danger"
                         @click="makeApiCall(frontendStopUri)"
                     >
                         <icon icon="stop" />

@@ -69,7 +69,7 @@
             </table>
             <div class="card-body buttons">
                 <a
-                    class="btn btn-secondary"
+                    class="btn btn-link text-secondary"
                     @click.prevent="doOpenEmbed"
                 >
                     <icon icon="code" />
@@ -79,7 +79,7 @@
                 </a>
                 <template v-if="userCanManageProfile">
                     <a
-                        class="btn btn-secondary"
+                        class="btn btn-link text-secondary"
                         :href="brandingUri"
                     >
                         <icon icon="design_services" />
@@ -89,7 +89,7 @@
                     </a>
                     <a
                         v-confirm-link="$gettext('Disable public pages?')"
-                        class="btn btn-danger"
+                        class="btn btn-link text-danger"
                         :href="togglePublicPageUri"
                     >
                         <icon icon="close" />
@@ -117,7 +117,7 @@
             >
                 <a
                     v-confirm-link="$gettext('Enable public pages?')"
-                    class="btn btn-success"
+                    class="btn btn-link text-success"
                     :href="togglePublicPageUri"
                 >
                     <icon icon="check" />

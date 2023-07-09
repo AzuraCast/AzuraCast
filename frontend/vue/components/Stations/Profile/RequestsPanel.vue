@@ -20,7 +20,7 @@
             >
                 <a
                     v-if="userCanManageReports"
-                    class="btn btn-primary"
+                    class="btn btn-link text-primary"
                     :href="requestsViewUri"
                 >
                     <icon icon="assignment" />
@@ -31,7 +31,7 @@
                 <a
                     v-if="userCanManageProfile"
                     v-confirm-link="$gettext('Disable song requests?')"
-                    class="btn btn-danger"
+                    class="btn btn-link text-danger"
                     :href="requestsToggleUri"
                 >
                     <icon icon="close" />
@@ -54,7 +54,7 @@
             >
                 <a
                     v-confirm-link="$gettext('Enable song requests?')"
-                    class="btn btn-success"
+                    class="btn btn-link text-success"
                     :href="requestsToggleUri"
                 >
                     <icon icon="check" />

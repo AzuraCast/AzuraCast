@@ -91,7 +91,7 @@ final class Customization
             $backgroundUrl = $background->getUrl();
 
             $publicCss .= <<<CSS
-            [data-theme] body.page-minimal {
+            [data-bs-theme] body.page-minimal {
                 background-image: url('{$backgroundUrl}');
             }
             CSS;
@@ -110,7 +110,7 @@ final class Customization
             $backgroundUrl = $background->getUrl();
 
             $publicCss .= <<<CSS
-            [data-theme] body.page-minimal {
+            [data-bs-theme] body.page-minimal {
                 background-image: url('{$backgroundUrl}');
             }
             CSS;

@@ -102,3 +102,8 @@ input, textarea {
     margin-bottom: 0;
   }
 }
+
+.form-control,
+.form-select {
+  background-color: var(--bs-input-bg);
+}

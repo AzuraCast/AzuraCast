@@ -5,10 +5,38 @@
 }
 
 [data-bs-theme="light"] {
-  --bs-body-bg: rgb(252, 252, 252);
+  --bs-body-bg: #edecec;
+  --bs-input-bg: #fff;
+
+  .card {
+    --bs-card-bg: #fff;
+  }
+
+  .table-striped {
+    --bs-table-striped-bg: #fff;
+  }
+
+  .dropdown-menu {
+    --bs-dropdown-bg: #fff;
+  }
+
+  .form-check-input {
+    --bs-form-check-bg: #fff;
+  }
+
+  .list-group {
+    --bs-list-group-bg: #fff;
+  }
 }
 
 @include color-mode(dark, true) {
   --public-page-bg: url('../img/hexbg_dark.webp');
   --scrollbar-color: #{$gray-800};
+  --bs-secondary-rgb: 238, 238, 238;
+  --bs-info-bg-subtle: #bbdefb;
+  --bs-info-text-emphasis: #181d20;
+
+  .table-striped {
+    --bs-table-striped-bg: #2b2e37;
+  }
 }

@@ -43,15 +43,17 @@ div.datatable-main {
 
 .table {
   thead th {
-    font-size: 1.2rem;
-    font-weight: normal;
-  }
-
-  tbody td {
     font-size: 1.1rem;
+    font-weight: normal;
   }
 
   > :not(caption) > * > * {
     padding: 1rem 1rem;
+  }
+
+  &.table-striped {
+    thead th {
+      border-bottom: 1px solid rgba(0,0,0, 0.1);
+    }
   }
 }

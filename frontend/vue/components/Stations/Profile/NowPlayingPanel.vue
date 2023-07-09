@@ -202,7 +202,7 @@
             <button
                 v-if="!np.live.is_live"
                 id="btn_skip_song"
-                class="btn btn-primary"
+                class="btn btn-link text-primary"
                 @click="makeApiCall(backendSkipSongUri)"
             >
                 <icon icon="skip_next" />
@@ -213,7 +213,7 @@
             <button
                 v-if="np.live.is_live"
                 id="btn_disconnect_streamer"
-                class="btn btn-primary"
+                class="btn btn-link text-primary"
                 @click="makeApiCall(backendDisconnectStreamerUri)"
             >
                 <icon icon="volume_off" />

@@ -28,7 +28,7 @@
 
                 <button
                     v-if="isUploaded"
-                    class="btn btn-danger"
+                    class="btn btn-danger mt-3"
                     @click.prevent="clear()"
                 >
                     {{ $gettext('Clear Image') }}

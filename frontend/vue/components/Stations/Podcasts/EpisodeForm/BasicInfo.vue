@@ -31,36 +31,20 @@
             <form-group-field
                 id="form_edit_publish_date"
                 class="col-md-6"
+                input-type="date"
                 :field="form.publish_date"
                 :label="$gettext('Publish Date')"
                 :description="$gettext('The date when the episode should be published.')"
-            >
-                <template #default="slotProps">
-                    <o-datepicker
-                        :id="slotProps.id"
-                        v-model="slotProps.field.$model"
-                        :class="slotProps.state"
-                        :locale="locale"
-                    />
-                </template>
-            </form-group-field>
+            />
 
             <form-group-field
                 id="form_edit_publish_time"
                 class="col-md-6"
+                input-type="time"
                 :field="form.publish_time"
                 :label="$gettext('Publish Time')"
                 :description="$gettext('The time when the episode should be published (according to the stations timezone).')"
-            >
-                <template #default="slotProps">
-                    <o-timepicker
-                        :id="slotProps.id"
-                        v-model="slotProps.field.$model"
-                        :class="slotProps.state"
-                        :locale="locale"
-                    />
-                </template>
-            </form-group-field>
+            />
 
             <form-group-checkbox
                 id="form_edit_explicit"

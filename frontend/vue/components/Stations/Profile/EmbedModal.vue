@@ -84,16 +84,14 @@
         <section
             class="card mb-3"
             role="region"
+            :data-bs-theme="selectedTheme"
         >
             <div class="card-header text-bg-primary">
                 <h2 class="card-title">
                     {{ $gettext('Preview') }}
                 </h2>
             </div>
-            <div
-                class="card-body"
-                :data-bs-theme="selectedTheme"
-            >
+            <div class="card-body">
                 <iframe
                     width="100%"
                     :src="embedUrl"

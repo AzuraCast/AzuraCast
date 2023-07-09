@@ -83,7 +83,8 @@ const {record, reset} = useResettableRef({
     media: null,
     links: {
         art: null,
-        media: null
+        media: null,
+        download: null,
     }
 });
 

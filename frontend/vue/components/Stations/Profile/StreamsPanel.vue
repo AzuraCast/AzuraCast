@@ -41,7 +41,7 @@
                     >
                         <td class="pe-1">
                             <play-button
-                                class="btn-xl"
+                                class="btn-lg"
                                 :url="mount.url"
                                 is-stream
                             />
@@ -85,7 +85,7 @@
                     >
                         <td class="pe-1">
                             <play-button
-                                class="btn-xl"
+                                class="btn-lg"
                                 :url="remote.url"
                                 is-stream
                             />
@@ -129,7 +129,7 @@
                     <tr class="align-middle">
                         <td class="pe-1">
                             <play-button
-                                class="btn-xl"
+                                class="btn-lg"
                                 :url="station.hls_url"
                                 is-stream
                                 is-hls
@@ -154,7 +154,7 @@
         </table>
         <div class="card-body buttons">
             <a
-                class="btn btn-primary"
+                class="btn btn-link text-primary"
                 :href="station.playlist_pls_url"
             >
                 <icon icon="file_download" />
@@ -163,7 +163,7 @@
                 </span>
             </a>
             <a
-                class="btn btn-primary"
+                class="btn btn-link text-primary"
                 :href="station.playlist_m3u_url"
             >
                 <icon icon="file_download" />

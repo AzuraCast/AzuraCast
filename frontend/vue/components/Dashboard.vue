@@ -200,7 +200,7 @@
                         >
                             <td class="text-center pe-1">
                                 <play-button
-                                    class="file-icon btn-xl"
+                                    class="file-icon btn-lg"
                                     :url="item.station.listen_url"
                                     is-stream
                                 />

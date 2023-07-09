@@ -26,11 +26,11 @@
                 class="buttons"
             >
                 <a
-                    class="btn btn-link"
+                    class="btn btn-primary"
                     :href="manageMediaUri"
                 >{{ $gettext('Music Files') }}</a>
                 <a
-                    class="btn btn-link"
+                    class="btn btn-primary"
                     :href="managePlaylistsUri"
                 >{{ $gettext('Playlists') }}</a>
             </div>
@@ -40,7 +40,7 @@
             class="card-body buttons"
         >
             <button
-                class="btn btn-secondary"
+                class="btn btn-link text-secondary"
                 @click="makeApiCall(backendRestartUri)"
             >
                 <icon icon="update" />
@@ -50,7 +50,7 @@
             </button>
             <button
                 v-if="!backendRunning"
-                class="btn btn-success"
+                class="btn btn-link text-success"
                 @click="makeApiCall(backendStartUri)"
             >
                 <icon icon="play_arrow" />
@@ -60,7 +60,7 @@
             </button>
             <button
                 v-if="backendRunning"
-                class="btn btn-danger"
+                class="btn btn-link text-danger"
                 @click="makeApiCall(backendStopUri)"
             >
                 <icon icon="stop" />

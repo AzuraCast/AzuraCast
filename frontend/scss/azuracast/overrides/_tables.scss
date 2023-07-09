@@ -54,4 +54,10 @@ div.datatable-main {
   > :not(caption) > * > * {
     padding: 1rem 1rem;
   }
+
+  &.table-striped {
+    thead th {
+      border-bottom: 1px solid rgba(0,0,0, 0.1);
+    }
+  }
 }

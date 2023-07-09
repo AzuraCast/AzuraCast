@@ -35,12 +35,14 @@ final class SettingsFixture extends AbstractFixture
 
             $settings->setPublicCustomJs(
                 <<<'JS'
-                $(function() {
-                  if ($('body').hasClass('login-content')) {
-                    $('input[name="username"]').val('demo@azuracast.com');
-                    $('input[name="password"]').val('demo');
-                  }
-                });
+                (() => {
+                    window.addEventListener('DOMContentLoaded', () => {
+                        if (document.body.classList.contains('login-content')) {
+                            document.querySelector('input[name="username"]').value = 'demo@azuracast.com';
+                            document.querySelector('input[name="password"]').value = 'demo';
+                        }
+                    });
+                })();
             JS
             );
         }

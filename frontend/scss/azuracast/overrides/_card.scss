@@ -42,16 +42,26 @@
     }
   }
 
+  & > .table:last-child tbody tr:last-child {
+    td:first-child {
+      border-bottom-left-radius: var(--bs-card-border-radius);
+    }
+
+    td:last-child {
+      border-bottom-right-radius: var(--bs-card-border-radius);
+    }
+  }
+
   .card-body {
     .card-body-flush {
-      margin: (0-$card-cap-padding-y) (0-$card-cap-padding-x);
+      margin: (0-$card-spacer-y) (0-$card-spacer-x);
     }
 
     nav.nav-tabs {
       background: var(--bs-tertiary-bg);
 
-      margin: (0-$card-cap-padding-y) (0-$card-cap-padding-x) 0 (0-$card-cap-padding-x);
-      padding: $card-cap-padding-y $card-cap-padding-x 0 $card-cap-padding-x;
+      margin: (0-$card-spacer-y) (0-$card-spacer-x) 0 (0-$card-spacer-x);
+      padding: $card-spacer-y $card-spacer-x 0 $card-spacer-x;
     }
   }
 }

@@ -4,31 +4,6 @@
   --scrollbar-color: #{$gray-400};
 }
 
-[data-bs-theme="light"] {
-  --bs-body-bg: #edecec;
-  --bs-input-bg: #fff;
-
-  .card {
-    --bs-card-bg: #fff;
-  }
-
-  .table-striped {
-    --bs-table-striped-bg: #fff;
-  }
-
-  .dropdown-menu {
-    --bs-dropdown-bg: #fff;
-  }
-
-  .form-check-input {
-    --bs-form-check-bg: #fff;
-  }
-
-  .list-group {
-    --bs-list-group-bg: #fff;
-  }
-}
-
 @include color-mode(dark, true) {
   --public-page-bg: url('../img/hexbg_dark.webp');
   --scrollbar-color: #{$gray-800};

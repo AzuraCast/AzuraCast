@@ -1,10 +1,10 @@
 $primary: #1e88e5;
 $red: #dc3545;
 
+$body-bg: #FFF;
+
 $body-bg-dark: #22252f;
 $body-color: #595959;
-
-$card-cap-padding-y: 1rem;
 
 $font-family-sans-serif: "Roboto", system-ui, -apple-system, "Segoe UI", "Helvetica Neue", "Noto Sans", "Liberation Sans", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 $font-size-root: 14px;
@@ -37,6 +37,8 @@ $btn-padding-x: .75rem;
 $card-border-width: 0;
 $card-cap-padding-y: 1.1rem;
 $card-cap-padding-x: 1.1rem;
+$card-spacer-x: 1.0rem;
+$card-spacer-y: 1.0rem;
 
 $badge-padding-x: 0.75rem;
 $badge-padding-y: 0.45rem;

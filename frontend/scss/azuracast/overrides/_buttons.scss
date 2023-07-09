@@ -2,12 +2,21 @@
   display: inline-flex;
   align-items: center;
 
-  font-weight: bold;
+  font-weight: 500;
   text-transform: uppercase;
 
   & > .material-icons {
     font-size: 1.5rem;
     margin-right: calc($btn-padding-x / 2);
+
+    + span {
+      padding-right: 0.15rem;
+    }
+  }
+
+  &.btn-xl > .material-icons {
+    font-size: 2.75rem;
+    margin-right: calc($btn-padding-x-lg / 2);
   }
 
   &.btn-lg > .material-icons {
@@ -26,6 +35,14 @@
     .material-icons:only-child {
       margin-right: 0;
     }
+  }
+
+  &.btn-sm {
+    font-size: $btn-sm-font-size;
+  }
+
+  &.btn-link {
+    text-decoration: none;
   }
 }
 

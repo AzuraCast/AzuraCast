@@ -41,8 +41,7 @@
                 >
                     <template #cell(download_url)="row">
                         <play-button
-                            class="file-icon"
-                            icon-class="outlined"
+                            class="file-icon btn-xl"
                             :url="row.item.download_url"
                             :is-stream="false"
                         />

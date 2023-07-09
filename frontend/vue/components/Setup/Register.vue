@@ -89,7 +89,7 @@
                     <div class="block-buttons mt-2">
                         <button
                             type="submit"
-                            class="btn btn-lg btn-block btn-primary"
+                            class="btn btn-block btn-primary"
                             :disabled="v$.$invalid"
                         >
                             {{ $gettext('Create Account') }}

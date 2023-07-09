@@ -5,7 +5,7 @@
     >
         <template v-if="quota.available">
             <div
-                class="progress h-15 mb-1"
+                class="progress h-20 mb-3"
                 role="progressbar"
                 :aria-label="quota.used_percent+'%'"
                 :aria-valuenow="quota.used_percent"
@@ -17,7 +17,7 @@
                     :class="progressVariant"
                     :style="{ width: quota.used_percent+'%' }"
                 >
-                    {{ quota.used_percent }}%
+                    {{ quota.used_percent }} %
                 </div>
             </div>
 

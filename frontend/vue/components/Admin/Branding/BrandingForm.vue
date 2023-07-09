@@ -117,7 +117,7 @@
                     </div>
 
                     <button
-                        class="btn btn-lg btn-primary mt-3"
+                        class="btn btn-primary mt-3"
                         type="submit"
                     >
                         {{ $gettext('Save Changes') }}

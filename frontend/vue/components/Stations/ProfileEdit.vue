@@ -27,7 +27,7 @@
             </p>
 
             <a
-                class="btn btn-lg btn-light"
+                class="btn btn-light"
                 @click="retry"
             >
                 <icon icon="refresh" />

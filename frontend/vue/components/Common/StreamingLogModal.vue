@@ -2,7 +2,7 @@
     <modal
         id="logs_modal"
         ref="$modal"
-        size="lg"
+        size="xl"
         :title="$gettext('Log Viewer')"
         no-enforce-focus
         @hidden="clearContents"

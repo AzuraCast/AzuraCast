@@ -313,7 +313,7 @@
                                     <button
                                         v-if="service.links.restart"
                                         class="btn btn-sm"
-                                        :class="service.running ? 'btn-dark' : 'btn-danger'"
+                                        :class="service.running ? 'btn-primary' : 'btn-danger'"
                                         @click.prevent="doRestart(service.links.restart)"
                                     >
                                         {{ $gettext('Restart') }}

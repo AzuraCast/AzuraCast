@@ -14,7 +14,7 @@
                         {{ $gettext('Playlists') }}
                     </h2>
                 </div>
-                <div class="col-md-6 text-end text-muted">
+                <div class="col-md-6 text-end">
                     {{
                         $gettext(
                             'This station\'s time zone is currently %{tz}.',
@@ -70,7 +70,7 @@
 
                                     <div class="dropdown btn-group">
                                         <button
-                                            class="btn btn-sm btn-dark dropdown-toggle"
+                                            class="btn btn-sm btn-secondary dropdown-toggle"
                                             type="button"
                                             data-bs-toggle="dropdown"
                                             aria-expanded="false"
@@ -161,7 +161,7 @@
                                     {{ row.item.name }}
                                 </h5>
                                 <div>
-                                    <span class="badge text-bg-dark">
+                                    <span class="badge text-bg-secondary me-1">
                                         <template v-if="row.item.source === 'songs'">
                                             {{ $gettext('Song-based') }}
                                         </template>
@@ -171,31 +171,31 @@
                                     </span>
                                     <span
                                         v-if="row.item.is_jingle"
-                                        class="badge text-bg-primary"
+                                        class="badge text-bg-primary me-1"
                                     >
                                         {{ $gettext('Jingle Mode') }}
                                     </span>
                                     <span
                                         v-if="row.item.source === 'songs' && row.item.order === 'sequential'"
-                                        class="badge text-bg-info"
+                                        class="badge text-bg-info me-1"
                                     >
                                         {{ $gettext('Sequential') }}
                                     </span>
                                     <span
                                         v-if="row.item.include_in_on_demand"
-                                        class="badge text-bg-info"
+                                        class="badge text-bg-info me-1"
                                     >
                                         {{ $gettext('On-Demand') }}
                                     </span>
                                     <span
                                         v-if="row.item.include_in_automation"
-                                        class="badge text-bg-success"
+                                        class="badge text-bg-success me-1"
                                     >
                                         {{ $gettext('Auto-Assigned') }}
                                     </span>
                                     <span
                                         v-if="!row.item.is_enabled"
-                                        class="badge text-bg-danger"
+                                        class="badge text-bg-danger me-1"
                                     >
                                         {{ $gettext('Disabled') }}
                                     </span>

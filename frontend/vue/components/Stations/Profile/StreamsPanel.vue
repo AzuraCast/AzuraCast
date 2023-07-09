@@ -25,6 +25,10 @@
                             {{ $gettext('Local Streams') }}
                         </th>
                         <th class="text-end">
+                            <icon
+                                class="align-middle"
+                                icon="headset"
+                            />
                             {{ $gettext('Listeners') }}
                         </th>
                     </tr>
@@ -37,12 +41,13 @@
                     >
                         <td class="pe-1">
                             <play-button
+                                class="btn-xl"
                                 :url="mount.url"
                                 is-stream
                             />
                         </td>
                         <td class="ps-1">
-                            <h6 class="mb-0">
+                            <h6 class="mb-1">
                                 {{ mount.name }}
                             </h6>
                             <a
@@ -51,11 +56,7 @@
                             >{{ mount.url }}</a>
                         </td>
                         <td class="ps-1 text-end">
-                            <icon
-                                class="sm align-middle"
-                                icon="headset"
-                            />
-                            <span class="listeners-total ps-1">{{ mount.listeners.total }}</span><br>
+                            <span class="listeners-total ps-1">{{ mount.listeners.total }}</span> {{ $gettext('Total') }}<br>
                             <small>
                                 <span class="listeners-unique pe-1">{{ mount.listeners.unique }}</span>
                                 {{ $gettext('Unique') }}
@@ -84,12 +85,13 @@
                     >
                         <td class="pe-1">
                             <play-button
+                                class="btn-xl"
                                 :url="remote.url"
                                 is-stream
                             />
                         </td>
                         <td class="ps-1">
-                            <h6 class="mb-0">
+                            <h6 class="mb-1">
                                 {{ remote.name }}
                             </h6>
                             <a
@@ -127,6 +129,7 @@
                     <tr class="align-middle">
                         <td class="pe-1">
                             <play-button
+                                class="btn-xl"
                                 :url="station.hls_url"
                                 is-stream
                                 is-hls

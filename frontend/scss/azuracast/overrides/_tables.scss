@@ -20,9 +20,9 @@ div.datatable-main {
     &.table-selectable {
       tr > th:first-child,
       tr > td:first-child {
-        width: 0.1%;
+        width: .1%;
         white-space: nowrap;
-        padding-right: 0;
+        padding-right: 0.1rem;
       }
     }
 
@@ -31,5 +31,27 @@ div.datatable-main {
       width: 0.1%;
       white-space: nowrap;
     }
+
+    .form-check,
+    .form-check input,
+    .form-check label {
+      margin: 0;
+      padding: 0;
+    }
+  }
+}
+
+.table {
+  thead th {
+    font-size: 1.2rem;
+    font-weight: normal;
+  }
+
+  tbody td {
+    font-size: 1.1rem;
+  }
+
+  > :not(caption) > * > * {
+    padding: 1rem 1rem;
   }
 }

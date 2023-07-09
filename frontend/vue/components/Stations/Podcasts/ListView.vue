@@ -10,7 +10,7 @@
                         {{ $gettext('Podcasts') }}
                     </h2>
                 </div>
-                <div class="col-md-5 text-end text-muted">
+                <div class="col-md-5 text-end">
                     <stations-common-quota
                         ref="$quota"
                         :quota-url="quotaUrl"
@@ -70,7 +70,7 @@
                         {{ $gettext('Delete') }}
                     </button>
                     <button
-                        class="btn btn-dark"
+                        class="btn btn-secondary"
                         @click.prevent="doSelectPodcast(row.item)"
                     >
                         {{ $gettext('Episodes') }}

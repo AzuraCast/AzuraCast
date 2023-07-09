@@ -87,7 +87,7 @@
             <template #cell(space)="{item}">
                 <template v-if="item.storageAvailable">
                     <div
-                        class="progress h-15 mb-1"
+                        class="progress h-20 mb-3"
                         role="progressbar"
                         :aria-label="item.storageUsedPercent+'%'"
                         :aria-valuenow="item.storageUsedPercent"

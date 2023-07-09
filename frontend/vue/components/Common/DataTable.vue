@@ -17,6 +17,12 @@
                         v-model:current="currentPage"
                         :total="totalRows"
                         :per-page="perPage"
+                        icon-prev="chevron-left"
+                        icon-next="chevron-right"
+                        :aria-next-label="$gettext('Next page')"
+                        :aria-previous-label="$gettext('Previous page')"
+                        :aria-page-label="$gettext('Page')"
+                        :aria-current-label="$gettext('Current page')"
                         class="mb-0"
                         @change="onPageChange"
                     />

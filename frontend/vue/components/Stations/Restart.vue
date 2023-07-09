@@ -40,7 +40,7 @@
 
                         <div class="buttons">
                             <button
-                                class="btn btn-warning btn-lg"
+                                class="btn btn-warning"
                                 :disabled="isLoading"
                                 @click="makeApiCall(reloadUrl)"
                             >
@@ -87,7 +87,7 @@
 
                     <div class="buttons">
                         <button
-                            class="btn btn-warning btn-lg"
+                            class="btn btn-warning"
                             :disabled="isLoading"
                             @click="makeApiCall(reloadUrl)"
                         >

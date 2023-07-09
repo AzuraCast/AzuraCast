@@ -1,6 +1,6 @@
 <template>
     <loading :loading="isLoading">
-        <form-group id="modal_scroll_to_bottom">
+        <div class="form-check mb-3">
             <input
                 id="modal_scroll_to_bottom"
                 v-model="scrollToBottom"
@@ -13,7 +13,7 @@
             >
                 {{ $gettext('Automatically Scroll to Bottom') }}
             </label>
-        </form-group>
+        </div>
 
         <textarea
             id="log-view-contents"
@@ -31,7 +31,6 @@ import {nextTick, ref, toRef, watch} from "vue";
 import {useAxios} from "~/vendor/axios";
 import {tryOnScopeDispose} from "@vueuse/core";
 import Loading from "~/components/Common/Loading.vue";
-import FormGroup from "~/components/Form/FormGroup.vue";
 
 const props = defineProps({
     logUrl: {

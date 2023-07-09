@@ -57,7 +57,7 @@ $sections->end();
         <?php
         if ($acl->isAllowed(App\Enums\StationPermissions::Profile, $station)): ?>
             <a class="navbar-brand ms-0 flex-shrink-0" href="<?= $router->fromHere('stations:profile:edit') ?>">
-                <i class="material-icons lg">edit</i>
+                <i class="material-icons">edit</i>
                 <span class="visually-hidden"><?= __('Edit Profile') ?>
             </a>
         <?php

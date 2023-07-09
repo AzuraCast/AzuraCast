@@ -10,7 +10,7 @@ if (null !== $flashObj && $flashObj->hasMessages()):
     foreach ($flashObj->getMessages() as $message):
         ?>
         <div
-            class="toast align-items-center toast-notification text-<?= $message['color'] ?>-emphasis bg-<?= $message['color'] ?>-subtle position-absolute end-0 top-0 m-3"
+            class="toast align-items-center toast-notification text-bg-<?= $message['color'] ?> position-absolute end-0 top-0 m-3"
             role="alert" aria-live="assertive" aria-atomic="true">
             <div class="d-flex">
                 <div class="toast-body">

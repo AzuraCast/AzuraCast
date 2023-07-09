@@ -37,14 +37,13 @@
         "luxon": "^3",
         "material-icons": "^1",
         "pinia": "^2.0.28",
-        "popper.js": "^1.16.1",
         "roboto-fontface": "^0.10.0",
         "sweetalert2": "11.4.8",
         "vue": "^3.2",
         "vue-axios": "^3.5",
         "vue-codemirror6": "1.1.1",
         "vue3-gettext": "^2.3.4",
-        "vuedraggable": "^2.24.1",
+        "vuedraggable": "^4.1.0",
         "wavesurfer.js": "^6",
         "zxcvbn": "^4.4.2"
       },
@@ -9574,16 +9573,6 @@
       "resolved": "https://registry.npmjs.org/pofile/-/pofile-1.1.4.tgz",
       "integrity": "sha512-r6Q21sKsY1AjTVVjOuU02VYKVNQGJNQHjTIvs4dEbeuuYfxgYk/DGD2mqqq4RDaVkwdSq0VEtmQUOPe/wH8X3g=="
     },
-    "node_modules/popper.js": {
-      "version": "1.16.1",
-      "resolved": "https://registry.npmjs.org/popper.js/-/popper.js-1.16.1.tgz",
-      "integrity": "sha512-Wb4p1J4zyFTbM+u6WuO4XstYx4Ky9Cewe4DWrel7B0w6VVICvPwdOpotjzcf6eD8TsckVnIMNONQyPIUFOUbCQ==",
-      "deprecated": "You can find the new Popper v2 at @popperjs/core, this package is dedicated to the legacy v1",
-      "funding": {
-        "type": "opencollective",
-        "url": "https://opencollective.com/popperjs"
-      }
-    },
     "node_modules/posix-character-classes": {
       "version": "0.1.1",
       "resolved": "https://registry.npmjs.org/posix-character-classes/-/posix-character-classes-0.1.1.tgz",
@@ -11172,9 +11161,9 @@
       }
     },
     "node_modules/sortablejs": {
-      "version": "1.10.2",
-      "resolved": "https://registry.npmjs.org/sortablejs/-/sortablejs-1.10.2.tgz",
-      "integrity": "sha512-YkPGufevysvfwn5rfdlGyrGjt7/CRHwvRPogD/lC+TnvcN29jDpCifKP+rBqf+LRldfXSTh+0CGLcSg0VIxq3A=="
+      "version": "1.14.0",
+      "resolved": "https://registry.npmjs.org/sortablejs/-/sortablejs-1.14.0.tgz",
+      "integrity": "sha512-pBXvQCs5/33fdN1/39pPL0NZF20LeRbLQ5jtnheIPN9JQAaufGjKdWduZn4U7wCtVuzKhmRkI0DFYHYRbB2H1w=="
     },
     "node_modules/source-map": {
       "version": "0.6.1",
@@ -12798,11 +12787,14 @@
       }
     },
     "node_modules/vuedraggable": {
-      "version": "2.24.3",
-      "resolved": "https://registry.npmjs.org/vuedraggable/-/vuedraggable-2.24.3.tgz",
-      "integrity": "sha512-6/HDXi92GzB+Hcs9fC6PAAozK1RLt1ewPTLjK0anTYguXLAeySDmcnqE8IC0xa7shvSzRjQXq3/+dsZ7ETGF3g==",
+      "version": "4.1.0",
+      "resolved": "https://registry.npmjs.org/vuedraggable/-/vuedraggable-4.1.0.tgz",
+      "integrity": "sha512-FU5HCWBmsf20GpP3eudURW3WdWTKIbEIQxh9/8GE806hydR9qZqRRxRE3RjqX7PkuLuMQG/A7n3cfj9rCEchww==",
       "dependencies": {
-        "sortablejs": "1.10.2"
+        "sortablejs": "1.14.0"
+      },
+      "peerDependencies": {
+        "vue": "^3.0.1"
       }
     },
     "node_modules/w3c-keyname": {

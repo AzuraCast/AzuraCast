@@ -28,7 +28,7 @@
 
                 <div class="flex-md-shrink-0 mt-3 mt-md-0 buttons">
                     <a
-                        class="btn btn-dark btn-lg"
+                        class="btn btn-dark"
                         role="button"
                         :href="profileUrl"
                     >
@@ -37,7 +37,7 @@
                     </a>
                     <a
                         v-if="showAdmin"
-                        class="btn btn-dark btn-lg"
+                        class="btn btn-dark"
                         role="button"
                         :href="adminUrl"
                     >
@@ -200,7 +200,7 @@
                         >
                             <td class="text-center pe-1">
                                 <play-button
-                                    class="file-icon btn-lg"
+                                    class="file-icon btn-xl"
                                     :url="item.station.listen_url"
                                     is-stream
                                 />

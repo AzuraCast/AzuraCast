@@ -101,7 +101,7 @@
 
                 <button
                     type="submit"
-                    class="btn btn-lg mt-2"
+                    class="btn mt-2"
                     :class="(v$.$invalid) ? 'btn-danger' : 'btn-primary'"
                 >
                     {{ $gettext('Generate Report') }}

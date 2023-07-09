@@ -102,7 +102,7 @@
                 <div class="buttons mt-3">
                     <button
                         type="submit"
-                        class="btn btn-lg"
+                        class="btn"
                         :class="(!isValid) ? 'btn-danger' : 'btn-primary'"
                     >
                         <slot name="submitButtonText">
@@ -445,8 +445,6 @@ const doLoad = () => {
         axios.get(props.editUrl)
     ).then((resp) => {
         populateForm(resp.data);
-
-        console.log(form.value);
     }).catch((err) => {
         emit('error', err);
     }).finally(() => {
@@ -488,5 +486,3 @@ defineExpose({
     submit
 });
 </script>
-
-

@@ -7,7 +7,9 @@ $card-cap-padding-y: 1rem;
 $font-family-sans-serif: "Roboto", system-ui, -apple-system, "Segoe UI", "Helvetica Neue", "Noto Sans", "Liberation Sans", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 $font-size-root: 14px;
 
-$header-nav-height: 5rem;
+$link-decoration: none;
+
+$header-nav-height: 5.15rem;
 
 $navbar-light-brand-color: #FFF;
 $navbar-dark-brand-color: #FFF;
@@ -18,15 +20,31 @@ $navbar-dark-color: #FFF;
 $navbar-light-brand-hover-color: $navbar-light-color;
 $navbar-dark-brand-hover-color: $navbar-dark-color;
 
-$list-group-item-padding-y: 0.75rem;
+$list-group-item-padding-y: 1rem;
 
 $dropdown-item-padding-y: .75rem;
 
 $input-btn-padding-y: .75rem;
 $input-btn-padding-x: .5rem;
-$input-btn-font-size: 1rem;
+
+$btn-font-size: 1rem;
+$btn-sm-font-size: .9rem;
+
+$btn-padding-x: .75rem;
 
 $card-border-width: 0;
+$card-cap-padding-y: 1.1rem;
+$card-cap-padding-x: 1.1rem;
+
+$badge-padding-x: 0.75rem;
+$badge-padding-y: 0.45rem;
+$badge-font-size: 0.9rem;
+$badge-font-weight: normal;
+
 $table-border-width: 0;
+
+$modal-border-width: 0;
+
+$progress-bar-bg: #3f51b5;
 
 $enable-grid-classes: true;

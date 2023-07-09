@@ -45,10 +45,12 @@
                         :key="row.id"
                         :label="row.name"
                     >
-                        <log-list
-                            :url="row.url"
-                            @view="viewLog"
-                        />
+                        <div class="card-body-flush">
+                            <log-list
+                                :url="row.url"
+                                @view="viewLog"
+                            />
+                        </div>
                     </o-tab-item>
                 </o-tabs>
             </div>

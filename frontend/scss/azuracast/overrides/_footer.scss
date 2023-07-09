@@ -5,14 +5,7 @@
   right: 0;
   bottom: 0;
   text-align: center;
-  height: 75px;
+  height: 50px;
 
-  padding-top: 20px;
-  padding-bottom: 15px;
-}
-
-@include media-breakpoint-up(lg) {
-  body.has-sidebar #footer {
-    left: var(--navdrawer-width);
-  }
+  padding-top: 1rem;
 }

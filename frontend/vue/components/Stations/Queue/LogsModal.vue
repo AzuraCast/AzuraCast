@@ -2,6 +2,7 @@
     <modal
         id="logs_modal"
         ref="$modal"
+        size="xl"
         :title="$gettext('Log Viewer')"
     >
         <textarea

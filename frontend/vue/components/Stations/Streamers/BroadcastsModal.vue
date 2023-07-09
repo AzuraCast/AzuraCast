@@ -24,8 +24,7 @@
                 <template #cell(download)="row">
                     <template v-if="row.item.recording?.links?.download">
                         <play-button
-                            class="file-icon"
-                            icon-class="outlined"
+                            class="file-icon btn-xl"
                             :url="row.item.recording?.links?.download"
                         />
                       &nbsp;

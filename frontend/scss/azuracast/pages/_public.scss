@@ -10,16 +10,9 @@ body.page-minimal {
   }
 
   .public-page {
-    height: 100vh;
-
-    display: -ms-flexbox;
-    display: -webkit-flex;
+    height: 100dvh;
+    
     display: flex;
-
-    -ms-flex-align: center;
-    -webkit-align-items: center;
-    -webkit-box-align: center;
-
     align-items: center;
     justify-content: center;
 
@@ -30,7 +23,7 @@ body.page-minimal {
         position: relative;
 
         .card-title {
-          font-weight: bold;
+          font-weight: normal;
         }
       }
 

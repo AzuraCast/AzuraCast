@@ -37,45 +37,43 @@
             <draggable
                 v-model="media"
                 tag="tbody"
+                item-key="id"
                 @change="save"
             >
-                <tr
-                    v-for="(row,index) in media"
-                    :key="row.media.id"
-                    class="align-middle"
-                >
-                    <td class="pe-2">
-                        <play-button
-                            :url="row.media.links.play"
-                            icon-class="lg outlined"
-                        />
-                    </td>
-                    <td class="ps-2">
-                        <span class="typography-subheading">{{ row.media.title }}</span>
-                    </td>
-                    <td>{{ row.media.artist }}</td>
-                    <td>{{ row.media.album }}</td>
-                    <td>
-                        <div class="btn-group btn-group-sm">
-                            <button
-                                v-if="index+1 < media.length"
-                                class="btn btn-primary"
-                                :title="$gettext('Down')"
-                                @click.prevent="moveDown(index)"
-                            >
-                                <icon icon="arrow_downward" />
-                            </button>
-                            <button
-                                v-if="index > 0"
-                                class="btn btn-primary"
-                                :title="$gettext('Up')"
-                                @click.prevent="moveUp(index)"
-                            >
-                                <icon icon="arrow_upward" />
-                            </button>
-                        </div>
-                    </td>
-                </tr>
+                <template #item="{element, index}">
+                    <tr class="align-middle">
+                        <td class="pe-2">
+                            <play-button
+                                :url="element.media.links.play"
+                            />
+                        </td>
+                        <td class="ps-2">
+                            <span class="typography-subheading">{{ element.media.title }}</span>
+                        </td>
+                        <td>{{ element.media.artist }}</td>
+                        <td>{{ element.media.album }}</td>
+                        <td>
+                            <div class="btn-group btn-group-sm">
+                                <button
+                                    v-if="index+1 < media.length"
+                                    class="btn btn-primary"
+                                    :title="$gettext('Down')"
+                                    @click.prevent="moveDown(index)"
+                                >
+                                    <icon icon="arrow_downward" />
+                                </button>
+                                <button
+                                    v-if="index > 0"
+                                    class="btn btn-primary"
+                                    :title="$gettext('Up')"
+                                    @click.prevent="moveUp(index)"
+                                >
+                                    <icon icon="arrow_upward" />
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                </template>
             </draggable>
         </table>
     </modal>

@@ -122,24 +122,26 @@
                 </div>
             </div>
 
-            <div class="radio-control-mute-button">
-                <mute-button
-                    class="p-0 text-secondary"
-                    :volume="volume"
-                    :is-muted="isMuted"
-                    @toggle-mute="toggleMute"
-                />
-            </div>
-            <div class="radio-control-volume-slider">
-                <input
-                    v-model.number="volume"
-                    type="range"
-                    :title="$gettext('Volume')"
-                    class="custom-range"
-                    min="0"
-                    max="100"
-                    step="1"
-                >
+            <div class="radio-control-volume">
+                <div class="radio-control-mute-button">
+                    <mute-button
+                        class="p-0 text-secondary"
+                        :volume="volume"
+                        :is-muted="isMuted"
+                        @toggle-mute="toggleMute"
+                    />
+                </div>
+                <div class="radio-control-volume-slider">
+                    <input
+                        v-model.number="volume"
+                        type="range"
+                        :title="$gettext('Volume')"
+                        class="custom-range"
+                        min="0"
+                        max="100"
+                        step="1"
+                    >
+                </div>
             </div>
         </div>
     </div>
@@ -367,6 +369,7 @@ watch(np, onNowPlayingUpdated, {immediate: true});
         display: flex;
         flex-direction: row;
         align-items: center;
+        flex-wrap: wrap;
 
         .radio-control-play-button {
             margin-right: .25rem;
@@ -383,17 +386,20 @@ watch(np, onNowPlayingUpdated, {immediate: true});
             }
         }
 
-        .radio-control-mute-button,
-        .radio-control-max-volume-button {
-            flex-shrink: 0;
-        }
+        .radio-control-volume {
+            display: flex;
 
-        .radio-control-volume-slider {
-            flex: 1 1 auto;
-            max-width: 30%;
+            .radio-control-mute-button {
+                flex-shrink: 0;
+            }
 
-            input {
-                height: 10px;
+            .radio-control-volume-slider {
+                flex: 1 1 auto;
+                max-width: 30%;
+
+                input {
+                    height: 10px;
+                }
             }
         }
     }

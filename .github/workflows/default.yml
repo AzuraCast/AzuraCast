@@ -103,7 +103,7 @@ jobs:
       - name: Generate new translations from existing code.
         run: |
           cd frontend
-          npm ci
+          npm ci --include=dev
           npm run generate-locales
           
           cd ..

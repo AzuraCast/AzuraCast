@@ -7,204 +7,200 @@
             v-if="showToolbar"
             class="datatable-toolbar-top card-body"
         >
-            <b-row class="align-items-center mb-2">
-                <b-col
+            <div class="row align-items-center">
+                <div
                     v-if="showPagination"
-                    xl="6"
-                    lg="5"
-                    md="12"
-                    sm="12"
+                    class="col-xl-6 col-lg-5 col-md-12 col-sm-12"
                 >
-                    <b-pagination
+                    <o-pagination
                         v-if="showPagination"
-                        v-model="currentPage"
-                        :total-rows="totalRows"
+                        v-model:current="currentPage"
+                        :total="totalRows"
                         :per-page="perPage"
+                        icon-prev="chevron-left"
+                        icon-next="chevron-right"
+                        :aria-next-label="$gettext('Next page')"
+                        :aria-previous-label="$gettext('Previous page')"
+                        :aria-page-label="$gettext('Page')"
+                        :aria-current-label="$gettext('Current page')"
                         class="mb-0"
+                        @change="onPageChange"
                     />
-                </b-col>
-                <b-col
+                </div>
+                <div
                     v-else
-                    xl="6"
-                    lg="5"
-                    md="12"
-                    sm="12"
+                    class="col-xl-6 col-lg-5 col-md-12 col-sm-12"
                 >
                     &nbsp;
-                </b-col>
-                <b-col
-                    xl="6"
-                    lg="7"
-                    md="12"
-                    sm="12"
-                    class="d-flex my-2"
+                </div>
+                <div
+                    class="col-xl-6 col-lg-7 col-md-12 col-sm-12 d-flex my-2"
                 >
                     <div class="flex-fill">
                         <div class="input-group">
-                            <div class="input-group-prepend text-muted">
+                            <span class="input-group-text">
                                 <icon icon="search" />
-                            </div>
-                            <b-form-input
+                            </span>
+                            <input
                                 v-model="searchPhrase"
-                                debounce="500"
+                                class="form-control"
                                 type="search"
-                                class="search-field form-control"
                                 :placeholder="$gettext('Search')"
-                            />
+                            >
                         </div>
                     </div>
-                    <div class="flex-shrink-1 pl-3 pr-3">
-                        <b-btn-group class="actions">
-                            <b-button
-                                v-b-tooltip.hover
-                                variant="default"
+                    <div class="flex-shrink-1 ps-3">
+                        <div class="btn-group actions">
+                            <button
+                                data-bs-tooltip
+                                class="btn btn-secondary"
+                                data-bs-placement="left"
                                 :title="$gettext('Refresh rows')"
                                 @click="onClickRefresh"
                             >
                                 <icon icon="refresh" />
-                            </b-button>
-                            <b-dropdown
+                            </button>
+
+                            <div
                                 v-if="paginated"
-                                v-b-tooltip.hover
-                                variant="default"
-                                :text="perPageLabel"
-                                :title="$gettext('Rows per page')"
+                                class="dropdown btn-group"
+                                role="group"
                             >
-                                <b-dropdown-item
-                                    v-for="pageOption in pageOptions"
-                                    :key="pageOption"
-                                    :active="(pageOption === perPage)"
-                                    @click="settings.perPage = pageOption"
+                                <button
+                                    data-bs-tooltip
+                                    class="btn btn-secondary dropdown-toggle"
+                                    type="button"
+                                    data-bs-toggle="dropdown"
+                                    aria-expanded="false"
+                                    data-bs-placement="left"
+                                    :title="$gettext('Items per page')"
                                 >
-                                    {{ getPerPageLabel(pageOption) }}
-                                </b-dropdown-item>
-                            </b-dropdown>
-                            <b-dropdown
+                                    <span>
+                                        {{ perPageLabel }}
+                                    </span>
+                                    <span class="caret" />
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li
+                                        v-for="pageOption in pageOptions"
+                                        :key="pageOption"
+                                    >
+                                        <button
+                                            class="dropdown-item"
+                                            :class="(pageOption === perPage) ? 'active' : ''"
+                                            @click="settings.perPage = pageOption"
+                                        >
+                                            {{ getPerPageLabel(pageOption) }}
+                                        </button>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <div
                                 v-if="selectFields"
-                                v-b-tooltip.hover
-                                variant="default"
-                                :title="$gettext('Select displayed fields')"
+                                class="dropdown btn-group"
+                                role="group"
                             >
-                                <template #button-content>
+                                <button
+                                    class="btn btn-secondary dropdown-toggle"
+                                    type="button"
+                                    data-bs-toggle="dropdown"
+                                    aria-expanded="false"
+                                    data-bs-placement="left"
+                                    :title="$gettext('Display fields')"
+                                >
                                     <icon icon="filter_list" />
                                     <span class="caret" />
-                                </template>
-                                <b-dropdown-form class="pt-3">
-                                    <b-form-checkbox-group
-                                        v-model="settings.visibleFieldKeys"
-                                        :options="selectableFields"
-                                        value-field="key"
-                                        text-field="label"
-                                        stacked
-                                    />
-                                </b-dropdown-form>
-                            </b-dropdown>
-                        </b-btn-group>
-                    </div>
-                </b-col>
-            </b-row>
-        </div>
-        <div class="datatable-main">
-            <b-table
-                ref="$table"
-                v-model:current-page="currentPage"
-                v-model:sort-by="settings.sortBy"
-                v-model:sort-desc="settings.sortDesc"
-                show-empty
-                striped
-                hover
-                :selectable="selectable"
-                :api-url="apiUrl"
-                :per-page="perPage"
-                :items="itemProvider"
-                :fields="visibleFields"
-                :empty-text="$gettext('No records to display.')"
-                :empty-filtered-text="$gettext('No records to display.')"
-                :responsive="responsive"
-                :no-provider-paging="handleClientSide"
-                :no-provider-sorting="handleClientSide"
-                :no-provider-filtering="handleClientSide"
-                tbody-tr-class="align-middle"
-                thead-tr-class="align-middle"
-                selected-variant=""
-                :filter="searchPhrase"
-                @row-selected="onRowSelected"
-                @filtered="onFiltered"
-                @refreshed="onRefreshed"
-            >
-                <template #head(selected)>
-                    <b-form-checkbox
-                        :aria-label="$gettext('Select all visible rows')"
-                        :checked="allSelected"
-                        @change="toggleSelected"
-                    />
-                </template>
-                <template #cell(selected)="{ rowSelected }">
-                    <div class="text-muted">
-                        <template v-if="rowSelected">
-                            <span class="sr-only">{{ $gettext('Deselect') }}</span>
-                            <icon icon="check_box" />
-                        </template>
-                        <template v-else>
-                            <span class="sr-only">{{ $gettext('Select') }}</span>
-                            <icon icon="check_box_outline_blank" />
-                        </template>
-                    </div>
-                </template>
-                <template #table-busy>
-                    <div
-                        role="alert"
-                        aria-live="polite"
-                    >
-                        <div class="text-center my-2">
-                            <div class="progress-circular progress-circular-primary mx-auto mb-3">
-                                <div class="progress-circular-wrapper">
-                                    <div class="progress-circular-inner">
-                                        <div class="progress-circular-left">
-                                            <div class="progress-circular-spinner" />
-                                        </div>
-                                        <div class="progress-circular-gap" />
-                                        <div class="progress-circular-right">
-                                            <div class="progress-circular-spinner" />
-                                        </div>
+                                </button>
+                                <div class="dropdown-menu">
+                                    <div class="px-3 py-1">
+                                        <form-multi-check
+                                            id="field_select"
+                                            v-model="settings.visibleFieldKeys"
+                                            :options="selectableFieldOptions"
+                                            stacked
+                                        />
                                     </div>
                                 </div>
                             </div>
-
-                            {{ $gettext('Loading...') }}
                         </div>
                     </div>
-                </template>
+                </div>
+            </div>
+        </div>
+        <div class="datatable-main">
+            <o-table
+                ref="$table"
+                v-model:checked-rows="selectedRows"
+                striped
+                :mobile-cards="false"
+                :table-class="[
+                    'align-middle',
+                    (responsive) ? 'table-responsive' : '',
+                    (selectable) ? 'table-selectable' : ''
+                ]"
 
-                <template
-                    v-for="(_, slot) of $slots"
-                    #[slot]="scope"
+                hoverable
+                :data="visibleItems"
+
+                :loading="loading"
+                :checkable="selectable"
+                checkbox-position="left"
+
+                :paginated="false"
+
+                :backend-sorting="!handleClientSide"
+
+                @page-change="onPageChange"
+                @sort="onSort"
+            >
+                <o-table-column
+                    v-for="field in visibleFields"
+                    :key="field.key"
+                    v-slot="{ row }"
+                    :field="field.key"
+                    :label="field.label"
+                    :sortable="field.sortable"
+                    :th-attrs="() => ({class: field.class})"
+                    :td-attrs="() => ({class: field.class})"
                 >
                     <slot
-                        :name="slot"
-                        v-bind="scope"
-                    />
-                </template>
-            </b-table>
+                        :name="'cell('+field.key+')'"
+                        v-bind="{item: row}"
+                    >
+                        <template v-if="field.formatter">
+                            {{ field.formatter(get(row, field.key, null), field.key, row) }}
+                        </template>
+                        <template v-else>
+                            {{ get(row, field.key, null) }}
+                        </template>
+                    </slot>
+                </o-table-column>
+            </o-table>
         </div>
-        <div class="datatable-toolbar-bottom card-body">
-            <b-pagination
+        <div
+            v-if="showToolbar"
+            class="datatable-toolbar-bottom card-body"
+        >
+            <o-pagination
                 v-if="showPagination"
-                v-model="currentPage"
-                :total-rows="totalRows"
+                v-model:current="currentPage"
+                :total="totalRows"
                 :per-page="perPage"
-                class="mb-0 mt-2"
+                class="mb-0"
+                @change="onPageChange"
             />
         </div>
     </div>
 </template>
 
 <script setup>
-import {filter, map, includes, isEmpty} from 'lodash';
+import {slice, filter, map, includes, isEmpty, get} from 'lodash';
 import Icon from './Icon.vue';
-import {computed, ref, toRef, watch} from "vue";
-import {useLocalStorage} from "@vueuse/core";
+import {computed, onMounted, ref, toRef, watch} from "vue";
+import {useLocalStorage, watchDebounced} from "@vueuse/core";
 import {useAxios} from "~/vendor/axios";
+import FormMultiCheck from "~/components/Form/FormMultiCheck.vue";
 
 const props = defineProps({
     id: {
@@ -272,17 +268,25 @@ const emit = defineEmits([
 ]);
 
 const selectedRows = ref([]);
+
+watch(selectedRows, (rows) => {
+    emit('row-selected', rows);
+});
+
 const searchPhrase = ref('');
 const currentPage = ref(1);
-const totalRows = ref(0);
 const flushCache = ref(false);
 
-watch(searchPhrase, () => {
-    currentPage.value = 1;
-});
+const sortField = ref(null);
+const sortOrder = ref(null);
+
+const loading = ref(false);
+const items = ref(props.items ?? []);
+const totalRows = ref(items.value.length);
 
 watch(toRef(props, 'items'), (newVal) => {
     if (newVal !== null) {
+        items.value = newVal;
         totalRows.value = newVal.length;
     }
 });
@@ -296,6 +300,7 @@ const allFields = computed(() => {
             selectable: false,
             visible: true,
             formatter: null,
+            class: null,
             ...field
         };
     });
@@ -306,6 +311,13 @@ const selectableFields = computed(() => {
         return field.selectable;
     });
 });
+
+const selectableFieldOptions = computed(() => map(selectableFields.value, (field) => {
+    return {
+        value: field.key,
+        text: field.label
+    };
+}));
 
 const defaultSelectableFields = computed(() => {
     return filter({...selectableFields.value}, (field) => {
@@ -345,17 +357,6 @@ const perPage = computed(() => {
 const visibleFields = computed(() => {
     let fields = allFields.value.slice();
 
-    if (props.selectable) {
-        fields.unshift({
-            key: 'selected',
-            label: '',
-            isRowHeader: false,
-            sortable: false,
-            selectable: false,
-            visible: true
-        });
-    }
-
     if (!props.selectFields) {
         return fields;
     }
@@ -383,14 +384,50 @@ const showPagination = computed(() => {
     return props.paginated && perPage.value !== 0;
 });
 
-const allSelected = computed(() => {
-    return ((selectedRows.value.length === totalRows.value)
-        || (showPagination.value && selectedRows.value.length === perPage.value));
+const visibleItems = computed(() => {
+    if (props.items !== null || !props.handleClientSide) {
+        return items.value;
+    }
+
+    // Handle pagination client-side.
+    let itemsOnPage;
+
+    if (props.paginated) {
+        itemsOnPage = slice(
+            items.value,
+            (currentPage.value - 1) * perPage.value,
+            currentPage.value * perPage.value
+        );
+    } else {
+        itemsOnPage = items.value;
+    }
+
+    // Handle filtration client-side.
+    return filter(itemsOnPage, (item) =>
+        Object.entries(item).filter((item) => {
+            const [key, val] = item;
+            if (!val || key[0] === '_') {
+                return false;
+            }
+
+            const itemValue = typeof val === 'object'
+                ? JSON.stringify(Object.values(val))
+                : typeof val === 'string'
+                    ? val : val.toString();
+
+            return itemValue.toLowerCase().includes(searchPhrase.value.toLowerCase())
+        }).length > 0
+    );
 });
 
 const {axios} = useAxios();
 
-const loadItems = (ctx) => {
+const refresh = () => {
+    if (props.items !== null) {
+        emit('refreshed');
+        return;
+    }
+
     let queryParams = {
         internal: true
     };
@@ -399,8 +436,8 @@ const loadItems = (ctx) => {
         queryParams.rowCount = 0;
     } else {
         if (props.paginated) {
-            queryParams.rowCount = ctx.perPage;
-            queryParams.current = (ctx.perPage !== 0) ? ctx.currentPage : 1;
+            queryParams.rowCount = perPage.value;
+            queryParams.current = (perPage.value !== 0) ? currentPage.value : 1;
         } else {
             queryParams.rowCount = 0;
         }
@@ -409,13 +446,13 @@ const loadItems = (ctx) => {
             queryParams.flushCache = true;
         }
 
-        if (typeof ctx.filter === 'string') {
-            queryParams.searchPhrase = ctx.filter;
+        if (searchPhrase.value !== '') {
+            queryParams.searchPhrase = searchPhrase.value;
         }
 
-        if ('' !== ctx.sortBy) {
-            queryParams.sort = ctx.sortBy;
-            queryParams.sortOrder = (ctx.sortDesc) ? 'DESC' : 'ASC';
+        if ('' !== sortField.value) {
+            queryParams.sort = sortField.value;
+            queryParams.sortOrder = (sortOrder.value === 'desc') ? 'DESC' : 'ASC';
         }
     }
 
@@ -424,7 +461,9 @@ const loadItems = (ctx) => {
         requestConfig = props.requestConfig(requestConfig);
     }
 
-    return axios.get(ctx.apiUrl, requestConfig).then((resp) => {
+    loading.value = true;
+
+    return axios.get(props.apiUrl, requestConfig).then((resp) => {
         totalRows.value = resp.data.total;
 
         let rows = resp.data.rows;
@@ -432,40 +471,30 @@ const loadItems = (ctx) => {
             rows = props.requestProcess(rows);
         }
 
-        return rows;
+        items.value = rows;
     }).catch((err) => {
         totalRows.value = 0;
 
         console.error(err.response.data.message);
-        return [];
     }).finally(() => {
+        loading.value = false;
         flushCache.value = false;
+        emit('refreshed');
     });
 };
 
-const itemProvider = computed(() => {
-    if (props.items !== null) {
-        return props.items;
-    }
-
-    return (ctx, callback) => {
-        return loadItems(ctx, callback);
-    }
-});
-
 const $table = ref(); // Template Ref
 
-const refresh = () => {
-    $table.value?.refresh();
+const onSort = (field, order) => {
+    sortField.value = field;
+    sortOrder.value = order;
+    refresh();
 };
 
-const toggleSelected = () => {
-    if (allSelected.value) {
-        $table.value?.clearSelected();
-    } else {
-        $table.value?.selectAllRows();
-    }
-};
+const onPageChange = (p) => {
+    currentPage.value = p;
+    refresh();
+}
 
 const relist = () => {
     flushCache.value = true;
@@ -480,10 +509,6 @@ const onClickRefresh = (e) => {
     }
 };
 
-const onRefreshed = () => {
-    emit('refreshed');
-};
-
 const navigate = () => {
     searchPhrase.value = null;
     currentPage.value = 1;
@@ -494,14 +519,22 @@ const setFilter = (newTerm) => {
     searchPhrase.value = newTerm;
 };
 
-const onRowSelected = (items) => {
-    selectedRows.value = items;
-    emit('row-selected', items);
-};
+watch(perPage, () => {
+    currentPage.value = 1;
+    relist();
+});
 
-const onFiltered = (filter) => {
-    emit('filtered', filter);
-};
+watchDebounced(searchPhrase, (newSearchPhrase) => {
+    currentPage.value = 1;
+    relist();
+
+    emit('filtered', newSearchPhrase);
+}, {
+    debounce: 500,
+    maxWait: 1000
+});
+
+onMounted(refresh);
 
 defineExpose({
     refresh,
@@ -510,37 +543,3 @@ defineExpose({
     setFilter
 });
 </script>
-
-<style lang="scss">
-div.datatable-main {
-    flex: 1;
-}
-
-div.datatable-toolbar-top,
-div.datatable-toolbar-bottom {
-    flex: 0;
-    padding: 0;
-}
-
-table.b-table {
-    td.shrink {
-        width: 0.1%;
-        white-space: nowrap;
-    }
-}
-
-table.b-table-selectable {
-    thead tr th:nth-child(1),
-    tbody tr td:nth-child(1),
-    tbody tr th:nth-child(1) {
-        padding-right: 0.75rem;
-        width: 3rem;
-    }
-
-    thead tr th:nth-child(2),
-    tbody tr td:nth-child(2),
-    tbody tr th:nth-child(2) {
-        padding-left: 0.5rem;
-    }
-}
-</style>

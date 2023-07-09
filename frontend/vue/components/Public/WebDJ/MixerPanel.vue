@@ -1,13 +1,13 @@
 <template>
     <div class="mixer card">
-        <div class="card-header bg-primary-dark">
+        <div class="card-header text-bg-primary">
             <div class="d-flex align-items-center">
                 <div class="flex-fill">
                     <h5 class="card-title">
                         {{ $gettext('Mixer') }}
                     </h5>
                 </div>
-                <div class="flex-shrink-0 pl-3">
+                <div class="flex-shrink-0 ps-3">
                     <div class="d-flex flex-row align-items-center">
                         <div class="flex-shrink-0">
                             {{ $gettext('Playlist 1') }}

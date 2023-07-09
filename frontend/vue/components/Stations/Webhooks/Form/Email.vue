@@ -1,50 +1,35 @@
 <template>
-    <b-form-group>
-        <div class="form-row">
-            <b-wrapped-form-group
-                id="form_config_to"
-                class="col-md-12"
-                :field="form.config.to"
-            >
-                <template #label>
-                    {{ $gettext('Message Recipient(s)') }}
-                </template>
-                <template #description>
-                    {{ $gettext('E-mail addresses can be separated by commas.') }}
-                </template>
-            </b-wrapped-form-group>
-        </div>
-    </b-form-group>
+    <div class="row g-3 mb-3">
+        <form-group-field
+            id="form_config_to"
+            class="col-md-12"
+            :field="form.config.to"
+            :label="$gettext('Message Recipient(s)')"
+            :description="$gettext('E-mail addresses can be separated by commas.')"
+        />
+    </div>
 
     <common-formatting-info :now-playing-url="nowPlayingUrl" />
 
-    <b-form-group>
-        <div class="form-row">
-            <b-wrapped-form-group
-                id="form_config_subject"
-                class="col-md-12"
-                :field="form.config.subject"
-            >
-                <template #label>
-                    {{ $gettext('Message Subject') }}
-                </template>
-            </b-wrapped-form-group>
+    <div class="row g-3">
+        <form-group-field
+            id="form_config_subject"
+            class="col-md-12"
+            :field="form.config.subject"
+            :label="$gettext('Message Subject')"
+        />
 
-            <b-wrapped-form-group
-                id="form_config_message"
-                class="col-md-12"
-                :field="form.config.message"
-            >
-                <template #label>
-                    {{ $gettext('Message Body') }}
-                </template>
-            </b-wrapped-form-group>
-        </div>
-    </b-form-group>
+        <form-group-field
+            id="form_config_message"
+            class="col-md-12"
+            :field="form.config.message"
+            :label="$gettext('Message Body')"
+        />
+    </div>
 </template>
 
 <script setup>
-import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
+import FormGroupField from "~/components/Form/FormGroupField";
 import CommonFormattingInfo from "./Common/FormattingInfo";
 
 const props = defineProps({

@@ -1,13 +1,13 @@
 <template>
     <div class="card">
-        <div class="card-header bg-primary-dark">
+        <div class="card-header text-bg-primary">
             <div class="d-flex align-items-center">
                 <div class="flex-fill text-nowrap">
                     <h5 class="card-title">
                         {{ langHeader }}
                     </h5>
                 </div>
-                <div class="flex-shrink-0 pl-3">
+                <div class="flex-shrink-0 ps-3">
                     <volume-slider v-model.number="localGain" />
                 </div>
             </div>
@@ -62,7 +62,7 @@
                 class="mt-3"
             >
                 <div class="d-flex flex-row mb-2">
-                    <div class="flex-shrink-0 pt-1 pr-2">
+                    <div class="flex-shrink-0 pt-1 pe-2">
                         {{ formatTime(position) }}
                     </div>
                     <div class="flex-fill">
@@ -77,7 +77,7 @@
                             @mouseup="isSeeking = false"
                         >
                     </div>
-                    <div class="flex-shrink-0 pt-1 pl-2">
+                    <div class="flex-shrink-0 pt-1 ps-2">
                         {{ formatTime(duration) }}
                     </div>
                 </div>

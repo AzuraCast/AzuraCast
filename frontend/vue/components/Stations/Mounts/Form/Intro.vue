@@ -1,59 +1,58 @@
 <template>
-    <b-tab :title="$gettext('Intro')">
-        <b-form-group>
-            <div class="form-row">
-                <b-form-group
-                    class="col-md-6"
-                    label-for="intro_file"
-                >
-                    <template #label>
-                        {{ $gettext('Select Intro File') }}
-                    </template>
-                    <template #description>
-                        {{
-                            $gettext('This introduction file should exactly match the bitrate and format of the mount point itself.')
-                        }}
-                    </template>
+    <o-tab-item :label="$gettext('Intro')">
+        <div class="row g-3">
+            <form-group
+                id="intro_file"
+                class="col-md-6"
+            >
+                <template #label>
+                    {{ $gettext('Select Intro File') }}
+                </template>
+                <template #description>
+                    {{
+                        $gettext('This introduction file should exactly match the bitrate and format of the mount point itself.')
+                    }}
+                </template>
 
-                    <flow-upload
-                        :target-url="targetUrl"
-                        :valid-mime-types="['audio/*']"
-                        @success="onFileSuccess"
-                    />
-                </b-form-group>
+                <flow-upload
+                    :target-url="targetUrl"
+                    :valid-mime-types="['audio/*']"
+                    @success="onFileSuccess"
+                />
+            </form-group>
 
-                <b-form-group class="col-md-6">
-                    <template #label>
-                        {{ $gettext('Current Intro File') }}
-                    </template>
+            <form-markup
+                id="current_intro_file"
+                class="col-md-6"
+            >
+                <template #label>
+                    {{ $gettext('Current Intro File') }}
+                </template>
 
-                    <div v-if="hasIntro">
-                        <div class="buttons pt-3">
-                            <b-button
-                                v-if="editIntroUrl"
-                                block
-                                variant="bg"
-                                :href="editIntroUrl"
-                                target="_blank"
-                            >
-                                {{ $gettext('Download') }}
-                            </b-button>
-                            <b-button
-                                block
-                                variant="danger"
-                                @click="deleteIntro"
-                            >
-                                {{ $gettext('Clear File') }}
-                            </b-button>
-                        </div>
+                <div v-if="hasIntro">
+                    <div class="block-buttons pt-3">
+                        <a
+                            v-if="editIntroUrl"
+                            class="btn btn-block btn-dark"
+                            :href="editIntroUrl"
+                            target="_blank"
+                        >
+                            {{ $gettext('Download') }}
+                        </a>
+                        <button
+                            class="btn btn-block btn-danger"
+                            @click="deleteIntro"
+                        >
+                            {{ $gettext('Clear File') }}
+                        </button>
                     </div>
-                    <div v-else>
-                        {{ $gettext('There is no existing intro file associated with this mount point.') }}
-                    </div>
-                </b-form-group>
-            </div>
-        </b-form-group>
-    </b-tab>
+                </div>
+                <div v-else>
+                    {{ $gettext('There is no existing intro file associated with this mount point.') }}
+                </div>
+            </form-markup>
+        </div>
+    </o-tab-item>
 </template>
 
 <script setup>
@@ -61,6 +60,8 @@ import FlowUpload from '~/components/Common/FlowUpload';
 
 import {computed, toRef} from "vue";
 import {useAxios} from "~/vendor/axios";
+import FormGroup from "~/components/Form/FormGroup.vue";
+import FormMarkup from "~/components/Form/FormMarkup.vue";
 
 const props = defineProps({
     modelValue: {
@@ -112,13 +113,4 @@ const deleteIntro = () => {
         emit('update:modelValue', null);
     }
 };
-</script>
-
-<script>
-export default {
-    model: {
-        prop: 'modelValue',
-        event: 'update:modelValue'
-    }
-}
 </script>

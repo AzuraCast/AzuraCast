@@ -1,6 +1,6 @@
 import {computed, ref, toRef} from "vue";
 import mergeExisting from "~/functions/mergeExisting";
-import {useNotify} from "~/vendor/bootstrapVue";
+import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
 import {useResettableRef} from "~/functions/useResettableRef";
 import useVuelidate from "@vuelidate/core";

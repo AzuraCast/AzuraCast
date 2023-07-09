@@ -1,11 +1,8 @@
-.fc {
-  &.fc-theme-standard {
-    .fc-scrollgrid {
-      border: 0;
-    }
+:root {
+  --fc-border-color: var(--bs-secondary-bg);
+  --fc-page-bg-color: var(--bs-body-bg);
+}
 
-    .fc-scrollgrid-section-sticky > * {
-      background: none;
-    }
-  }
+.fc th {
+  background: var(--bs-secondary-bg);
 }

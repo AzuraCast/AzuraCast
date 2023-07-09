@@ -7,202 +7,139 @@
             class="card mb-3"
             role="region"
         >
-            <div class="card-header bg-primary-dark">
+            <div class="card-header text-bg-primary">
                 <h2 class="card-title">
                     {{ $gettext('Branding Settings') }}
                 </h2>
             </div>
 
-            <b-alert
-                variant="danger"
-                :show="error != null"
+            <div
+                v-show="error != null"
+                class="alert alert-danger"
             >
                 {{ error }}
-            </b-alert>
+            </div>
 
-            <b-overlay
-                variant="card"
-                :show="loading"
-            >
-                <div class="card-body">
-                    <b-form-group>
-                        <div class="form-row">
-                            <b-wrapped-form-group
-                                id="edit_form_public_theme"
-                                class="col-md-6"
-                                :field="v$.public_theme"
-                            >
-                                <template #label>
-                                    {{ $gettext('Base Theme for Public Pages') }}
-                                </template>
-                                <template #description>
-                                    {{
-                                        $gettext('Select a theme to use as a base for station public pages and the login page.')
-                                    }}
-                                </template>
-                                <template #default="slotProps">
-                                    <b-form-radio-group
-                                        :id="slotProps.id"
-                                        v-model="slotProps.field.$model"
-                                        stacked
-                                        :options="publicThemeOptions"
-                                    />
-                                </template>
-                            </b-wrapped-form-group>
+            <div class="card-body">
+                <loading :loading="isLoading">
+                    <div class="row g-3">
+                        <form-group-multi-check
+                            id="edit_form_public_theme"
+                            class="col-md-6"
+                            :field="v$.public_theme"
+                            :options="publicThemeOptions"
+                            stacked
+                            radio
+                            :label="$gettext('Base Theme for Public Pages')"
+                            :description="$gettext('Select a theme to use as a base for station public pages and the login page.')"
+                        />
 
-                            <b-col md="6">
-                                <b-wrapped-form-checkbox
-                                    id="form_edit_hide_album_art"
-                                    class="mb-2"
-                                    :field="v$.hide_album_art"
-                                >
-                                    <template #label>
-                                        {{ $gettext('Hide Album Art on Public Pages') }}
-                                    </template>
-                                    <template #description>
-                                        {{
-                                            $gettext('If selected, album art will not display on public-facing radio pages.')
-                                        }}
-                                    </template>
-                                </b-wrapped-form-checkbox>
+                        <div class="col-md-6">
+                            <form-group-checkbox
+                                id="form_edit_hide_album_art"
+                                class="mb-2"
+                                :field="v$.hide_album_art"
+                                :label="$gettext('Hide Album Art on Public Pages')"
+                                :description="$gettext('If selected, album art will not display on public-facing radio pages.')"
+                            />
 
-                                <b-wrapped-form-checkbox
-                                    id="form_edit_hide_product_name"
-                                    :field="v$.hide_product_name"
-                                >
-                                    <template #label>
-                                        {{ $gettext('Hide AzuraCast Branding on Public Pages') }}
-                                    </template>
-                                    <template #description>
-                                        {{
-                                            $gettext('If selected, this will remove the AzuraCast branding from public-facing pages.')
-                                        }}
-                                    </template>
-                                </b-wrapped-form-checkbox>
-                            </b-col>
-
-                            <b-wrapped-form-group
-                                id="form_edit_homepage_redirect_url"
-                                class="col-md-6"
-                                :field="v$.homepage_redirect_url"
-                            >
-                                <template #label>
-                                    {{ $gettext('Homepage Redirect URL') }}
-                                </template>
-                                <template #description>
-                                    {{
-                                        $gettext('If a visitor is not signed in and visits the AzuraCast homepage, you can automatically redirect them to the URL specified here. Leave blank to redirect them to the login screen by default.')
-                                    }}
-                                </template>
-                            </b-wrapped-form-group>
-
-                            <b-wrapped-form-group
-                                id="form_edit_default_album_art_url"
-                                class="col-md-6"
-                                :field="v$.default_album_art_url"
-                            >
-                                <template #label>
-                                    {{ $gettext('Default Album Art URL') }}
-                                </template>
-                                <template #description>
-                                    {{
-                                        $gettext('If a song has no album art, this URL will be listed instead. Leave blank to use the standard placeholder art.')
-                                    }}
-                                </template>
-                            </b-wrapped-form-group>
-
-                            <b-wrapped-form-group
-                                id="edit_form_public_custom_css"
-                                class="col-md-12"
-                                :field="v$.public_custom_css"
-                            >
-                                <template #label>
-                                    {{ $gettext('Custom CSS for Public Pages') }}
-                                </template>
-                                <template #description>
-                                    {{
-                                        $gettext('This CSS will be applied to the station public pages and login page.')
-                                    }}
-                                </template>
-                                <template #default="slotProps">
-                                    <codemirror-textarea
-                                        :id="slotProps.id"
-                                        v-model="slotProps.field.$model"
-                                        mode="css"
-                                    />
-                                </template>
-                            </b-wrapped-form-group>
-
-                            <b-wrapped-form-group
-                                id="edit_form_public_custom_js"
-                                class="col-md-12"
-                                :field="v$.public_custom_js"
-                            >
-                                <template #label>
-                                    {{ $gettext('Custom JS for Public Pages') }}
-                                </template>
-                                <template #description>
-                                    {{
-                                        $gettext('This javascript code will be applied to the station public pages and login page.')
-                                    }}
-                                </template>
-                                <template #default="slotProps">
-                                    <codemirror-textarea
-                                        :id="slotProps.id"
-                                        v-model="slotProps.field.$model"
-                                        mode="javascript"
-                                    />
-                                </template>
-                            </b-wrapped-form-group>
-
-                            <b-wrapped-form-group
-                                id="edit_form_internal_custom_css"
-                                class="col-md-12"
-                                :field="v$.internal_custom_css"
-                            >
-                                <template #label>
-                                    {{ $gettext('Custom CSS for Internal Pages') }}
-                                </template>
-                                <template #description>
-                                    {{
-                                        $gettext('This CSS will be applied to the main management pages, like this one.')
-                                    }}
-                                </template>
-                                <template #default="slotProps">
-                                    <codemirror-textarea
-                                        :id="slotProps.id"
-                                        v-model="slotProps.field.$model"
-                                        mode="css"
-                                    />
-                                </template>
-                            </b-wrapped-form-group>
+                            <form-group-checkbox
+                                id="form_edit_hide_product_name"
+                                :field="v$.hide_product_name"
+                                :label="$gettext('Hide AzuraCast Branding on Public Pages')"
+                                :description="$gettext('If selected, this will remove the AzuraCast branding from public-facing pages.')"
+                            />
                         </div>
 
-                        <b-button
-                            size="lg"
-                            type="submit"
-                            class="mt-3"
-                            variant="primary"
+                        <form-group-field
+                            id="form_edit_homepage_redirect_url"
+                            class="col-md-6"
+                            :field="v$.homepage_redirect_url"
+                            :label="$gettext('Homepage Redirect URL')"
+                            :description="$gettext('If a visitor is not signed in and visits the AzuraCast homepage, you can automatically redirect them to the URL specified here. Leave blank to redirect them to the login screen by default.')"
+                        />
+
+                        <form-group-field
+                            id="form_edit_default_album_art_url"
+                            class="col-md-6"
+                            :field="v$.default_album_art_url"
+                            :label="$gettext('Default Album Art URL')"
+                            :description="$gettext('If a song has no album art, this URL will be listed instead. Leave blank to use the standard placeholder art.')"
+                        />
+
+                        <form-group-field
+                            id="edit_form_public_custom_css"
+                            class="col-md-12"
+                            :field="v$.public_custom_css"
+                            :label="$gettext('Custom CSS for Public Pages')"
+                            :description="$gettext('This CSS will be applied to the station public pages and login page.')"
                         >
-                            {{ $gettext('Save Changes') }}
-                        </b-button>
-                    </b-form-group>
-                </div>
-            </b-overlay>
+                            <template #default="slotProps">
+                                <codemirror-textarea
+                                    :id="slotProps.id"
+                                    v-model="slotProps.field.$model"
+                                    mode="css"
+                                />
+                            </template>
+                        </form-group-field>
+
+                        <form-group-field
+                            id="edit_form_public_custom_js"
+                            class="col-md-12"
+                            :field="v$.public_custom_js"
+                            :label="$gettext('Custom JS for Public Pages')"
+                            :description="$gettext('This javascript code will be applied to the station public pages and login page.')"
+                        >
+                            <template #default="slotProps">
+                                <codemirror-textarea
+                                    :id="slotProps.id"
+                                    v-model="slotProps.field.$model"
+                                    mode="javascript"
+                                />
+                            </template>
+                        </form-group-field>
+
+                        <form-group-field
+                            id="edit_form_internal_custom_css"
+                            class="col-md-12"
+                            :field="v$.internal_custom_css"
+                            :label="$gettext('Custom CSS for Internal Pages')"
+                            :description="$gettext('This CSS will be applied to the main management pages, like this one.')"
+                        >
+                            <template #default="slotProps">
+                                <codemirror-textarea
+                                    :id="slotProps.id"
+                                    v-model="slotProps.field.$model"
+                                    mode="css"
+                                />
+                            </template>
+                        </form-group-field>
+                    </div>
+
+                    <button
+                        class="btn btn-primary mt-3"
+                        type="submit"
+                    >
+                        {{ $gettext('Save Changes') }}
+                    </button>
+                </loading>
+            </div>
         </section>
     </form>
 </template>
 
 <script setup>
 import CodemirrorTextarea from "~/components/Common/CodemirrorTextarea.vue";
-import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup.vue";
-import BWrappedFormCheckbox from "~/components/Form/BWrappedFormCheckbox.vue";
+import FormGroupField from "~/components/Form/FormGroupField.vue";
+import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
 import {computed, onMounted, ref} from "vue";
 import {useAxios} from "~/vendor/axios";
 import mergeExisting from "~/functions/mergeExisting";
-import {useNotify} from "~/vendor/bootstrapVue";
+import {useNotify} from "~/functions/useNotify";
 import {useTranslate} from "~/vendor/gettext";
 import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
+import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
+import Loading from "~/components/Common/Loading.vue";
 
 const props = defineProps({
     apiUrl: {
@@ -211,7 +148,7 @@ const props = defineProps({
     },
 });
 
-const loading = ref(true);
+const isLoading = ref(true);
 const error = ref(null);
 
 const {form, resetForm, v$, ifValid} = useVuelidateOnForm(
@@ -265,11 +202,11 @@ const populateForm = (data) => {
 const relist = () => {
     resetForm();
 
-    loading.value = true;
+    isLoading.value = true;
 
     axios.get(props.apiUrl).then((resp) => {
         populateForm(resp.data);
-        loading.value = false;
+        isLoading.value = false;
     });
 }
 

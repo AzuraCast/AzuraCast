@@ -1,59 +1,58 @@
 <template>
-    <b-tab :title="$gettext('Media')">
-        <b-form-group>
-            <div class="form-row">
-                <b-form-group
-                    class="col-md-6"
-                    label-for="media_file"
-                >
-                    <template #label>
-                        {{ $gettext('Select Media File') }}
-                    </template>
-                    <template #description>
-                        {{
-                            $gettext('Podcast media should be in the MP3 or M4A (AAC) format for the greatest compatibility.')
-                        }}
-                    </template>
+    <o-tab-item :label="$gettext('Media')">
+        <div class="row g-3">
+            <form-group
+                id="media_file"
+                class="col-md-6"
+            >
+                <template #label>
+                    {{ $gettext('Select Media File') }}
+                </template>
+                <template #description>
+                    {{
+                        $gettext('Podcast media should be in the MP3 or M4A (AAC) format for the greatest compatibility.')
+                    }}
+                </template>
 
-                    <flow-upload
-                        :target-url="targetUrl"
-                        :valid-mime-types="['audio/x-m4a', 'audio/mpeg']"
-                        @success="onFileSuccess"
-                    />
-                </b-form-group>
+                <flow-upload
+                    :target-url="targetUrl"
+                    :valid-mime-types="['audio/x-m4a', 'audio/mpeg']"
+                    @success="onFileSuccess"
+                />
+            </form-group>
 
-                <b-form-group class="col-md-6">
-                    <template #label>
-                        {{ $gettext('Current Podcast Media') }}
-                    </template>
+            <form-markup
+                id="current_podcast_media"
+                class="col-md-6"
+            >
+                <template #label>
+                    {{ $gettext('Current Podcast Media') }}
+                </template>
 
-                    <div v-if="hasMedia">
-                        <div class="buttons pt-3">
-                            <b-button
-                                v-if="downloadUrl"
-                                block
-                                variant="bg"
-                                :href="downloadUrl"
-                                target="_blank"
-                            >
-                                {{ $gettext('Download') }}
-                            </b-button>
-                            <b-button
-                                block
-                                variant="danger"
-                                @click="deleteMedia"
-                            >
-                                {{ $gettext('Clear Media') }}
-                            </b-button>
-                        </div>
+                <template v-if="hasMedia">
+                    <div class="block-buttons pt-3">
+                        <a
+                            v-if="downloadUrl"
+                            class="btn btn-block btn-dark"
+                            :href="downloadUrl"
+                            target="_blank"
+                        >
+                            {{ $gettext('Download') }}
+                        </a>
+                        <button
+                            class="btn btn-block btn-danger"
+                            @click="deleteMedia"
+                        >
+                            {{ $gettext('Clear Media') }}
+                        </button>
                     </div>
-                    <div v-else>
-                        {{ $gettext('There is no existing media associated with this episode.') }}
-                    </div>
-                </b-form-group>
-            </div>
-        </b-form-group>
-    </b-tab>
+                </template>
+                <div v-else>
+                    {{ $gettext('There is no existing media associated with this episode.') }}
+                </div>
+            </form-markup>
+        </div>
+    </o-tab-item>
 </template>
 
 <script setup>
@@ -61,6 +60,8 @@ import FlowUpload from '~/components/Common/FlowUpload';
 import {computed, ref, toRef} from "vue";
 import {useAxios} from "~/vendor/axios";
 import {syncRef} from "@vueuse/core";
+import FormGroup from "~/components/Form/FormGroup.vue";
+import FormMarkup from "~/components/Form/FormMarkup.vue";
 
 const props = defineProps({
     modelValue: {
@@ -117,13 +118,4 @@ const deleteMedia = () => {
         emit('update:modelValue', null);
     }
 }
-</script>
-
-<script>
-export default {
-    model: {
-        prop: 'modelValue',
-        event: 'update:modelValue'
-    }
-};
 </script>

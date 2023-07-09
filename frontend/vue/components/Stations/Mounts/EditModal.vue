@@ -8,9 +8,9 @@
         @submit="doSubmit"
         @hidden="clearContents"
     >
-        <b-tabs
+        <o-tabs
+            nav-tabs-class="nav-tabs"
             content-class="mt-3"
-            pills
         >
             <mount-form-basic-info
                 :form="v$"
@@ -31,7 +31,7 @@
                 :form="v$"
                 :station-frontend-type="stationFrontendType"
             />
-        </b-tabs>
+        </o-tabs>
     </modal-form>
 </template>
 
@@ -45,7 +45,7 @@ import MountFormIntro from "./Form/Intro";
 import mergeExisting from "~/functions/mergeExisting";
 import {baseEditModalProps, useBaseEditModal} from "~/functions/useBaseEditModal";
 import {computed, ref} from "vue";
-import {useNotify} from "~/vendor/bootstrapVue";
+import {useNotify} from "~/functions/useNotify";
 import {useTranslate} from "~/vendor/gettext";
 import {useResettableRef} from "~/functions/useResettableRef";
 import ModalForm from "~/components/Common/ModalForm.vue";

@@ -1,114 +1,106 @@
 <template>
     <div class="row row-of-cards">
         <div class="col-md-8">
-            <section
-                class="card"
-                role="region"
-                aria-labelledby="hdr_streamer_accounts"
-            >
-                <b-card-header header-bg-variant="primary-dark">
-                    <b-row class="align-items-center">
-                        <b-col md="6">
+            <card-page header-id="hdr_streamer_accounts">
+                <template #header="{id}">
+                    <div class="row align-items-center">
+                        <div class="col-md-6">
                             <h2
-                                id="hdr_streamer_accounts"
+                                :id="id"
                                 class="card-title"
                             >
                                 {{ $gettext('Streamer/DJ Accounts') }}
                             </h2>
-                        </b-col>
-                        <b-col
-                            md="6"
-                            class="text-right text-muted"
-                        >
+                        </div>
+                        <div class="col-md-6 text-end text-muted">
                             {{
                                 $gettext(
                                     'This station\'s time zone is currently %{tz}.',
                                     {tz: stationTimeZone}
                                 )
                             }}
-                        </b-col>
-                    </b-row>
-                </b-card-header>
+                        </div>
+                    </div>
+                </template>
 
-                <b-tabs
-                    pills
-                    card
-                    lazy
-                >
-                    <b-tab
-                        :title="$gettext('Account List')"
-                        no-body
+                <div class="card-body">
+                    <o-tabs
+                        nav-tabs-class="nav-tabs"
+                        content-class="mt-3"
+                        destroy-on-hide
                     >
-                        <b-card-body body-class="card-padding-sm">
-                            <b-button
-                                variant="outline-primary"
-                                @click.prevent="doCreate"
-                            >
-                                <icon icon="add" />
-                                {{ $gettext('Add Streamer') }}
-                            </b-button>
-                        </b-card-body>
-
-                        <data-table
-                            id="station_streamers"
-                            ref="$datatable"
-                            :fields="fields"
-                            :api-url="listUrl"
-                        >
-                            <template #cell(art)="row">
-                                <album-art :src="row.item.art" />
-                            </template>
-                            <template #cell(streamer_username)="row">
-                                <code>{{ row.item.streamer_username }}</code>
-                                <div>
-                                    <span
-                                        v-if="!row.item.is_active"
-                                        class="badge badge-danger"
+                        <o-tab-item :label="$gettext('Account List')">
+                            <div class="card-body-flush">
+                                <div class="card-body buttons">
+                                    <button
+                                        class="btn btn-primary"
+                                        @click.prevent="doCreate"
                                     >
-                                        {{ $gettext('Disabled') }}
-                                    </span>
+                                        <icon icon="add" />
+                                        <span>
+                                            {{ $gettext('Add Streamer') }}
+                                        </span>
+                                    </button>
                                 </div>
-                            </template>
-                            <template #cell(actions)="row">
-                                <b-button-group size="sm">
-                                    <b-button
-                                        size="sm"
-                                        variant="primary"
-                                        @click.prevent="doEdit(row.item.links.self)"
-                                    >
-                                        {{ $gettext('Edit') }}
-                                    </b-button>
-                                    <b-button
-                                        size="sm"
-                                        variant="default"
-                                        @click.prevent="doShowBroadcasts(row.item.links.broadcasts)"
-                                    >
-                                        {{ $gettext('Broadcasts') }}
-                                    </b-button>
-                                    <b-button
-                                        size="sm"
-                                        variant="danger"
-                                        @click.prevent="doDelete(row.item.links.self)"
-                                    >
-                                        {{ $gettext('Delete') }}
-                                    </b-button>
-                                </b-button-group>
-                            </template>
-                        </data-table>
-                    </b-tab>
-                    <b-tab
-                        :title="$gettext('Schedule View')"
-                        no-body
-                    >
-                        <schedule
-                            ref="$schedule"
-                            :schedule-url="scheduleUrl"
-                            :station-time-zone="stationTimeZone"
-                            @click="doCalendarClick"
-                        />
-                    </b-tab>
-                </b-tabs>
-            </section>
+
+                                <data-table
+                                    id="station_streamers"
+                                    ref="$datatable"
+                                    :fields="fields"
+                                    :api-url="listUrl"
+                                >
+                                    <template #cell(art)="row">
+                                        <album-art :src="row.item.art" />
+                                    </template>
+                                    <template #cell(streamer_username)="row">
+                                        <code>{{ row.item.streamer_username }}</code>
+                                        <div>
+                                            <span
+                                                v-if="!row.item.is_active"
+                                                class="badge text-bg-danger"
+                                            >
+                                                {{ $gettext('Disabled') }}
+                                            </span>
+                                        </div>
+                                    </template>
+                                    <template #cell(actions)="row">
+                                        <div class="btn-group btn-group-sm">
+                                            <button
+                                                class="btn btn-primary"
+                                                @click.prevent="doEdit(row.item.links.self)"
+                                            >
+                                                {{ $gettext('Edit') }}
+                                            </button>
+                                            <button
+                                                class="btn btn-secondary"
+                                                @click.prevent="doShowBroadcasts(row.item.links.broadcasts)"
+                                            >
+                                                {{ $gettext('Broadcasts') }}
+                                            </button>
+                                            <button
+                                                class="btn btn-danger"
+                                                @click.prevent="doDelete(row.item.links.self)"
+                                            >
+                                                {{ $gettext('Delete') }}
+                                            </button>
+                                        </div>
+                                    </template>
+                                </data-table>
+                            </div>
+                        </o-tab-item>
+                        <o-tab-item :label="$gettext('Schedule View')">
+                            <div class="card-body-flush">
+                                <schedule
+                                    ref="$schedule"
+                                    :schedule-url="scheduleUrl"
+                                    :station-time-zone="stationTimeZone"
+                                    @click="doCalendarClick"
+                                />
+                            </div>
+                        </o-tab-item>
+                    </o-tabs>
+                </div>
+            </card-page>
         </div>
         <div class="col-md-4">
             <connection-info :connection-info="connectionInfo" />
@@ -138,6 +130,7 @@ import {ref} from "vue";
 import useHasDatatable from "~/functions/useHasDatatable";
 import useHasEditModal from "~/functions/useHasEditModal";
 import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
+import CardPage from "~/components/Common/CardPage.vue";
 
 const props = defineProps({
     listUrl: {
@@ -165,7 +158,7 @@ const props = defineProps({
 const {$gettext} = useTranslate();
 
 const fields = [
-    {key: 'art', label: $gettext('Art'), sortable: false, class: 'shrink pr-0'},
+    {key: 'art', label: $gettext('Art'), sortable: false, class: 'shrink pe-0'},
     {key: 'display_name', label: $gettext('Display Name'), sortable: true},
     {key: 'streamer_username', isRowHeader: true, label: $gettext('Username'), sortable: true},
     {key: 'comments', label: $gettext('Notes'), sortable: false},

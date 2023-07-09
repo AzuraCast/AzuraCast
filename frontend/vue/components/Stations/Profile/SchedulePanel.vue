@@ -5,7 +5,7 @@
         role="region"
         aria-labelledby="hdr_scheduled"
     >
-        <div class="card-header bg-primary-dark">
+        <div class="card-header text-bg-primary">
             <h3
                 id="hdr_scheduled"
                 class="card-title"
@@ -32,7 +32,7 @@
                                 </small><br>
                                 {{ row.name }}
                             </h5>
-                            <p class="text-right m-0">
+                            <p class="text-end m-0">
                                 <small>{{ row.start_formatted }} - {{ row.end_formatted }}</small>
                                 <br>
                                 <strong>

@@ -10,11 +10,8 @@
                 :key="key"
                 class="col-sm-12 col-lg-4"
             >
-                <b-card no-body>
-                    <b-card-header
-                        header-bg-variant="primary-dark"
-                        class="d-flex align-items-center"
-                    >
+                <section class="card">
+                    <div class="card-header text-bg-primary d-flex align-items-center">
                         <div class="flex-fill">
                             <h2 class="card-title">
                                 {{ panel.label }}
@@ -26,20 +23,19 @@
                                 :icon="panel.icon"
                             />
                         </div>
-                    </b-card-header>
+                    </div>
 
-                    <b-list-group>
-                        <b-list-group-item
+                    <div class="list-group list-group-flush">
+                        <a
                             v-for="(item, itemKey) in panel.items"
                             :key="itemKey"
                             :href="item.url"
+                            class="list-group-item list-group-item-action"
                         >
-                            {{
-                                item.label
-                            }}
-                        </b-list-group-item>
-                    </b-list-group>
-                </b-card>
+                            {{ item.label }}
+                        </a>
+                    </div>
+                </section>
             </div>
         </div>
 
@@ -49,11 +45,8 @@
 
         <div class="row row-of-cards">
             <div class="col-sm-12 col-lg-6 col-xl-6">
-                <b-card no-body>
-                    <b-card-header
-                        header-bg-variant="primary-dark"
-                        class="d-flex align-items-center"
-                    >
+                <section class="card">
+                    <div class="card-header text-bg-primary d-flex align-items-center">
                         <div class="flex-fill">
                             <h2 class="card-title">
                                 {{ $gettext('Memory') }}
@@ -61,116 +54,102 @@
                         </div>
 
                         <div class="flex-shrink-0">
-                            <b-button
-                                variant="outline-light"
-                                size="sm"
-                                class="py-2"
+                            <button
+                                class="btn btn-dark btn-sm py-2"
                                 @click.prevent="showMemoryStatsHelpModal"
                             >
                                 <icon icon="help_outline" />
-                            </b-button>
+                            </button>
                         </div>
-                    </b-card-header>
+                    </div>
 
-                    <b-card-body>
+                    <div class="card-body">
                         <h6 class="mb-1 text-center">
                             {{ $gettext('Total RAM') }}
                             :
                             {{ stats.memory.readable.total }}
                         </h6>
 
-                        <b-progress
-                            :max="stats.memory.bytes.total"
-                            :label="stats.memory.readable.used"
-                            class="h-20 mb-3 mt-2"
+                        <div
+                            class="progress h-20 mb-3 mt-2"
+                            role="progressbar"
+                            :aria-label="stats.memory.readable.used"
+                            aria-valuemin="0"
+                            :aria-valuemax="stats.memory.bytes.total"
                         >
-                            <b-progress-bar
-                                variant="primary"
-                                :value="stats.memory.bytes.used"
+                            <div
+                                class="progress-bar text-bg-primary"
+                                :style="{ width: getPercent(stats.memory.bytes.used, stats.memory.bytes.total) }"
                             />
-                            <b-progress-bar
-                                variant="warning"
-                                :value="stats.memory.bytes.cached"
+                            <div
+                                class="progress-bar text-bg-warning"
+                                :style="{ width: getPercent(stats.memory.bytes.cached, stats.memory.bytes.total) }"
                             />
-                        </b-progress>
+                        </div>
 
-                        <b-row>
-                            <b-col>
-                                <b-badge
-                                    pill
-                                    variant="primary"
-                                >
-&nbsp;&nbsp;
-                                </b-badge>&nbsp;
+                        <div class="row">
+                            <div class="col">
+                                <span class="badge text-bg-primary me-1">&nbsp;&nbsp;</span>
                                 {{ $gettext('Used') }}
                                 : {{ stats.memory.readable.used }}
-                            </b-col>
-                            <b-col>
-                                <b-badge
-                                    pill
-                                    variant="warning"
-                                >
-                                    &nbsp;&nbsp;
-                                </b-badge>&nbsp;
+                            </div>
+                            <div class="col">
+                                <span class="badge text-bg-warning me-1">&nbsp;&nbsp;</span>&nbsp;
+
                                 {{ $gettext('Cached') }}
                                 : {{ stats.memory.readable.cached }}
-                            </b-col>
-                        </b-row>
-                    </b-card-body>
-                </b-card>
+                            </div>
+                        </div>
+                    </div>
+                </section>
             </div>
 
             <div class="col-sm-12 col-lg-6 col-xl-6">
-                <b-card no-body>
-                    <b-card-header header-bg-variant="primary-dark">
+                <section class="card">
+                    <div class="card-header text-bg-primary">
                         <h2 class="card-title">
                             {{ $gettext('Disk Space') }}
                         </h2>
-                    </b-card-header>
+                    </div>
 
-                    <b-card-body>
+                    <div class="card-body">
                         <h6 class="mb-1 text-center">
                             {{ $gettext('Total Disk Space') }}
                             :
                             {{ stats.disk.readable.total }}
                         </h6>
 
-                        <b-progress
-                            :max="stats.disk.bytes.total"
-                            :label="stats.disk.readable.used"
-                            class="h-20 mb-3 mt-2"
+                        <div
+                            class="progress h-20 mb-3 mt-2"
+                            role="progressbar"
+                            :aria-label="stats.disk.readable.used"
+                            aria-valuemin="0"
+                            :aria-valuemax="stats.disk.bytes.total"
                         >
-                            <b-progress-bar
-                                variant="primary"
-                                :value="stats.disk.bytes.used"
+                            <div
+                                class="progress-bar text-bg-primary"
+                                :style="{ width: getPercent(stats.disk.bytes.used, stats.disk.bytes.total) }"
                             />
-                        </b-progress>
+                        </div>
 
-                        <b-row>
-                            <b-col>
-                                <b-badge
-                                    pill
-                                    variant="primary"
-                                >
-                                    &nbsp;&nbsp;
-                                </b-badge>&nbsp;
+                        <div class="row">
+                            <div class="col">
+                                <span class="badge text-bg-primary me-1">&nbsp;&nbsp;</span>
+
                                 {{ $gettext('Used') }}
                                 :
                                 {{ stats.disk.readable.used }}
-                            </b-col>
-                        </b-row>
-                    </b-card-body>
-                </b-card>
+                            </div>
+                        </div>
+                    </div>
+                </section>
             </div>
         </div>
 
         <div class="row row-of-cards">
             <div class="col-sm-12 col-lg-8 col-xl-6">
-                <b-card no-body>
-                    <b-card-header
-                        header-bg-variant="primary-dark"
-                        class="d-flex align-items-center"
-                    >
+                <section class="card">
+                    <div class="card-header text-bg-primary d-flex align-items-center">
                         <div class="flex-fill">
                             <h2 class="card-title">
                                 {{ $gettext('CPU Load') }}
@@ -178,162 +157,138 @@
                         </div>
 
                         <div class="flex-shrink-0">
-                            <b-button
-                                variant="outline-light"
-                                size="sm"
-                                class="py-2"
+                            <button
+                                class="btn btn-dark btn-sm py-2"
                                 @click.prevent="showCpuStatsHelpModal"
                             >
                                 <icon icon="help_outline" />
-                            </b-button>
+                            </button>
                         </div>
-                    </b-card-header>
+                    </div>
 
-                    <b-card-body>
+                    <div class="card-body">
                         <h5 class="mb-1 text-center">
                             {{ formatCpuName(stats.cpu.total.name) }}
                         </h5>
 
-                        <b-progress
-                            max="100"
-                            :label="formatPercentageString(stats.cpu.total.usage)"
-                            class="h-20 mb-3 mt-2"
+                        <div
+                            class="progress h-20 mb-3 mt-2"
+                            role="progressbar"
+                            :aria-label="formatPercentageString(stats.cpu.total.usage)"
+                            aria-valuemin="0"
+                            aria-valuemax="100"
                         >
-                            <b-progress-bar
-                                variant="danger"
-                                :value="stats.cpu.total.steal"
+                            <div
+                                class="progress-bar text-bg-danger"
+                                :style="{ width: stats.cpu.total.steal+'%' }"
                             />
-                            <b-progress-bar
-                                variant="warning"
-                                :value="stats.cpu.total.io_wait"
+                            <div
+                                class="progress-bar text-bg-warning"
+                                :style="{ width: stats.cpu.total.io_wait+'%' }"
                             />
-                            <b-progress-bar
-                                variant="primary"
-                                :value="stats.cpu.total.usage"
+                            <div
+                                class="progress-bar text-bg-primary"
+                                :style="{ width: stats.cpu.total.usage+'%' }"
                             />
-                        </b-progress>
+                        </div>
 
-                        <b-row>
-                            <b-col>
-                                <b-badge
-                                    pill
-                                    variant="danger"
-                                >
-&nbsp;&nbsp;
-                                </b-badge>&nbsp;
+                        <div class="row">
+                            <div class="col">
+                                <span class="badge text-bg-danger me-1">&nbsp;&nbsp;</span>
                                 {{ $gettext('Steal') }}
                                 : {{ stats.cpu.total.steal }}%
-                            </b-col>
-                            <b-col>
-                                <b-badge
-                                    pill
-                                    variant="warning"
-                                >
-&nbsp;&nbsp;
-                                </b-badge>&nbsp;
+                            </div>
+                            <div class="col">
+                                <span class="badge text-bg-warning me-1">&nbsp;&nbsp;</span>
                                 {{ $gettext('Wait') }}
                                 : {{ stats.cpu.total.io_wait }}%
-                            </b-col>
-                            <b-col>
-                                <b-badge
-                                    pill
-                                    variant="primary"
-                                >
-&nbsp;&nbsp;
-                                </b-badge>&nbsp;
+                            </div>
+                            <div class="col">
+                                <span class="badge text-bg-primary me-1">&nbsp;&nbsp;</span>
                                 {{ $gettext('Use') }}
                                 : {{ stats.cpu.total.usage }}%
-                            </b-col>
-                        </b-row>
+                            </div>
+                        </div>
 
                         <hr>
 
-                        <b-row>
-                            <b-col
+                        <div class="row">
+                            <div
                                 v-for="core in stats.cpu.cores"
                                 :key="core.name"
-                                lg="6"
+                                class="col-lg-6"
                             >
                                 <h6 class="mb-1 text-center">
                                     {{ formatCpuName(core.name) }}
                                 </h6>
 
-                                <b-progress
-                                    max="100"
-                                    :label="formatPercentageString(core.usage)"
-                                    class="h-20"
+                                <div
+                                    class="progress h-20 mb-3 mt-2"
+                                    role="progressbar"
+                                    :aria-label="formatPercentageString(core.usage)"
+                                    aria-valuemin="0"
+                                    aria-valuemax="100"
                                 >
-                                    <b-progress-bar
-                                        variant="danger"
-                                        :value="core.steal"
+                                    <div
+                                        class="progress-bar text-bg-danger"
+                                        :style="{ width: core.steal+'%' }"
                                     />
-                                    <b-progress-bar
-                                        variant="warning"
-                                        :value="core.io_wait"
+                                    <div
+                                        class="progress-bar text-bg-warning"
+                                        :style="{ width: core.io_wait+'%' }"
                                     />
-                                    <b-progress-bar
-                                        variant="primary"
-                                        :value="core.usage"
+                                    <div
+                                        class="progress-bar text-bg-primary"
+                                        :style="{ width: core.usage+'%' }"
                                     />
-                                </b-progress>
+                                </div>
 
-                                <b-row
-                                    no-gutters
-                                    class="mb-2 mt-1"
-                                >
-                                    <b-col>
+                                <div class="row mb-2 mt-1">
+                                    <div class="col">
                                         St: {{ core.steal }}%
-                                    </b-col>
-                                    <b-col>
+                                    </div>
+                                    <div class="col">
                                         Wa: {{ core.io_wait }}%
-                                    </b-col>
-                                    <b-col>
+                                    </div>
+                                    <div class="col">
                                         Us: {{ core.usage }}%
-                                    </b-col>
-                                </b-row>
-                            </b-col>
-                        </b-row>
-                    </b-card-body>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-                    <b-card-footer>
+                    <div class="card-footer">
                         <h6 class="mb-1 text-center">
                             {{ $gettext('Load Average') }}
                         </h6>
-                        <b-row
-                            class="text-center"
-                            no-gutters
-                        >
-                            <b-col>
+                        <div class="row text-center">
+                            <div class="col">
                                 <h6>1-Min</h6>
                                 {{ stats.cpu.load[0].toFixed(2) }}
-                            </b-col>
-                            <b-col>
+                            </div>
+                            <div class="col">
                                 <h6>5-Min</h6>
                                 {{ stats.cpu.load[1].toFixed(2) }}
-                            </b-col>
-                            <b-col>
+                            </div>
+                            <div class="col">
                                 <h6>15-Min</h6>
                                 {{ stats.cpu.load[2].toFixed(2) }}
-                            </b-col>
-                        </b-row>
-                    </b-card-footer>
-                </b-card>
+                            </div>
+                        </div>
+                    </div>
+                </section>
             </div>
 
             <div class="col-sm-12 col-lg-4 col-xl-6">
-                <b-card no-body>
-                    <b-card-header
-                        header-bg-variant="primary-dark"
-                        class="d-flex align-items-center"
-                    >
-                        <div class="flex-fill">
-                            <h2 class="card-title">
-                                {{ $gettext('Services') }}
-                            </h2>
-                        </div>
-                    </b-card-header>
+                <section class="card">
+                    <div class="card-header text-bg-primary">
+                        <h2 class="card-title mb-0">
+                            {{ $gettext('Services') }}
+                        </h2>
+                    </div>
 
-                    <table class="table table-sm table-striped table-responsive mb-0">
+                    <table class="table table-striped table-responsive mb-0">
                         <colgroup>
                             <col style="width: 5%;">
                             <col style="width: 75%;">
@@ -345,82 +300,101 @@
                                 :key="service.name"
                                 class="align-middle"
                             >
-                                <td class="text-center pr-2">
+                                <td class="text-center pe-2">
                                     <running-badge :running="service.running" />
                                 </td>
-                                <td class="pl-2">
+                                <td class="ps-2">
                                     <h6 class="mb-0">
                                         {{ service.name }}<br>
                                         <small>{{ service.description }}</small>
                                     </h6>
                                 </td>
                                 <td>
-                                    <b-button-group
+                                    <button
                                         v-if="service.links.restart"
-                                        size="sm"
+                                        class="btn btn-sm"
+                                        :class="service.running ? 'btn-primary' : 'btn-danger'"
+                                        @click.prevent="doRestart(service.links.restart)"
                                     >
-                                        <b-button
-                                            size="sm"
-                                            :variant="service.running ? 'bg' : 'danger'"
-                                            @click.prevent="doRestart(service.links.restart)"
-                                        >
-                                            {{ $gettext('Restart') }}
-                                        </b-button>
-                                    </b-button-group>
+                                        {{ $gettext('Restart') }}
+                                    </button>
                                 </td>
                             </tr>
                         </tbody>
                     </table>
-                </b-card>
+                </section>
             </div>
         </div>
 
         <div class="row row-of-cards">
             <div class="col">
-                <b-card no-body>
-                    <b-card-header header-bg-variant="primary-dark">
-                        <h2 class="card-title">
+                <section class="card">
+                    <div class="card-header text-bg-primary">
+                        <h2 class="card-title mb-0">
                             {{ $gettext('Network Interfaces') }}
                         </h2>
-                    </b-card-header>
+                    </div>
 
-                    <b-tabs
-                        content-class="mt-3"
-                        pills
-                        card
-                    >
-                        <b-tab
-                            v-for="netInterface in stats.network"
-                            :key="netInterface.interface_name"
-                            :title="netInterface.interface_name"
+                    <div class="card-body">
+                        <o-tabs
+                            nav-tabs-class="nav-tabs"
+                            content-class="mt-3"
                         >
-                            <b-row class="mb-3">
-                                <b-col class="mb-3">
-                                    <h5 class="mb-1 text-center">
-                                        {{ $gettext('Received') }}
-                                    </h5>
-                                    <b-table
-                                        striped
-                                        responsive
-                                        :items="getNetworkInterfaceTableItems(netInterface.received)"
-                                        :fields="getNetworkInterfaceTableFields(netInterface.received)"
-                                    />
-                                </b-col>
-                                <b-col>
-                                    <h5 class="mb-1 text-center">
-                                        {{ $gettext('Transmitted') }}
-                                    </h5>
-                                    <b-table
-                                        striped
-                                        responsive
-                                        :items="getNetworkInterfaceTableItems(netInterface.transmitted)"
-                                        :fields="getNetworkInterfaceTableFields(netInterface.transmitted)"
-                                    />
-                                </b-col>
-                            </b-row>
-                        </b-tab>
-                    </b-tabs>
-                </b-card>
+                            <o-tab-item
+                                v-for="netInterface in stats.network"
+                                :key="netInterface.interface_name"
+                                :label="netInterface.interface_name"
+                            >
+                                <div class="row mb-3">
+                                    <div class="col mb-3">
+                                        <h5 class="mb-1 text-center">
+                                            {{ $gettext('Received') }}
+                                        </h5>
+
+                                        <o-table
+                                            striped
+                                            class="table-responsive"
+                                            :data="getNetworkInterfaceTableItems(netInterface.received)"
+                                            :paginated="false"
+                                        >
+                                            <o-table-column
+                                                v-for="key in getNetworkInterfaceTableFields(netInterface.received)"
+                                                :key="key"
+                                                v-slot="{ row }"
+                                                :label="key"
+                                                :sortable="false"
+                                            >
+                                                {{ get(row, key, null) }}
+                                            </o-table-column>
+                                        </o-table>
+                                    </div>
+                                    <div class="col">
+                                        <h5 class="mb-1 text-center">
+                                            {{ $gettext('Transmitted') }}
+                                        </h5>
+
+                                        <o-table
+                                            striped
+                                            class="table-responsive"
+                                            :data="getNetworkInterfaceTableItems(netInterface.transmitted)"
+                                            :paginated="false"
+                                        >
+                                            <o-table-column
+                                                v-for="key in getNetworkInterfaceTableFields(netInterface.transmitted)"
+                                                :key="key"
+                                                v-slot="{ row }"
+                                                :label="key"
+                                                :sortable="false"
+                                            >
+                                                {{ get(row, key, null) }}
+                                            </o-table-column>
+                                        </o-table>
+                                    </div>
+                                </div>
+                            </o-tab-item>
+                        </o-tabs>
+                    </div>
+                </section>
             </div>
         </div>
 
@@ -433,11 +407,11 @@
 import Icon from '~/components/Common/Icon';
 import CpuStatsHelpModal from "./Index/CpuStatsHelpModal";
 import MemoryStatsHelpModal from "./Index/MemoryStatsHelpModal";
-import {isObject, upperFirst} from 'lodash';
+import {get, isObject, upperFirst} from 'lodash';
 import RunningBadge from "~/components/Common/Badges/RunningBadge.vue";
 import {onMounted, ref, shallowRef} from "vue";
 import {useAxios} from "~/vendor/axios";
-import {useNotify} from "~/vendor/bootstrapVue";
+import {useNotify} from "~/functions/useNotify";
 
 const props = defineProps({
     adminPanels: {
@@ -500,18 +474,7 @@ const formatCpuName = (cpuName) => upperFirst(cpuName);
 
 const formatPercentageString = (value) => value + '%';
 
-const getNetworkInterfaceTableFields = (interfaceData) => {
-    let fields = [];
-
-    Object.keys(interfaceData).forEach((key) => {
-        fields.push({
-            key: key,
-            sortable: false
-        });
-    });
-
-    return fields;
-};
+const getNetworkInterfaceTableFields = (interfaceData) => Object.keys(interfaceData);
 
 const getNetworkInterfaceTableItems = (interfaceData) => {
     let item = {};
@@ -579,4 +542,8 @@ const $memoryStatsHelpModal = ref(); // Template Ref
 const showMemoryStatsHelpModal = () => {
     $memoryStatsHelpModal.value.create();
 };
+
+const getPercent = (amount, total) => {
+    return ((amount / total) * 100) + '%';
+}
 </script>

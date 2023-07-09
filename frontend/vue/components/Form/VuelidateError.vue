@@ -1,11 +1,10 @@
 <template>
-    <div style="display: contents">
-        <div
-            v-for="message in errorMessages"
-            :key="message"
-        >
-            {{ message }}
-        </div>
+    <div
+        v-for="message in errorMessages"
+        :key="message"
+        class="invalid-feedback"
+    >
+        {{ message }}
     </div>
 </template>
 

@@ -5,7 +5,7 @@
         aria-labelledby="hdr_public_pages"
     >
         <template v-if="enablePublicPage">
-            <div class="card-header bg-primary-dark">
+            <div class="card-header text-bg-primary">
                 <h3
                     id="hdr_public_pages"
                     class="card-title"
@@ -67,29 +67,35 @@
                     </tr>
                 </tbody>
             </table>
-            <div class="card-actions">
+            <div class="card-body buttons">
                 <a
-                    class="btn btn-outline-default"
+                    class="btn btn-secondary"
                     @click.prevent="doOpenEmbed"
                 >
                     <icon icon="code" />
-                    {{ $gettext('Embed Widgets') }}
+                    <span>
+                        {{ $gettext('Embed Widgets') }}
+                    </span>
                 </a>
                 <template v-if="userCanManageProfile">
                     <a
-                        class="btn btn-outline-default"
+                        class="btn btn-secondary"
                         :href="brandingUri"
                     >
                         <icon icon="design_services" />
-                        {{ $gettext('Edit Branding') }}
+                        <span>
+                            {{ $gettext('Edit Branding') }}
+                        </span>
                     </a>
                     <a
-                        class="btn btn-outline-danger"
-                        :data-confirm-title="$gettext('Disable public pages?')"
+                        v-confirm-link="$gettext('Disable public pages?')"
+                        class="btn btn-danger"
                         :href="togglePublicPageUri"
                     >
                         <icon icon="close" />
-                        {{ $gettext('Disable') }}
+                        <span>
+                            {{ $gettext('Disable') }}
+                        </span>
                     </a>
                 </template>
             </div>
@@ -99,7 +105,7 @@
             />
         </template>
         <template v-else>
-            <div class="card-header bg-primary-dark">
+            <div class="card-header text-bg-primary">
                 <h3 class="card-title">
                     {{ $gettext('Public Pages') }}
                     <enabled-badge :enabled="false" />
@@ -107,15 +113,17 @@
             </div>
             <div
                 v-if="userCanManageProfile"
-                class="card-actions"
+                class="card-body"
             >
                 <a
-                    class="btn btn-outline-success"
-                    :data-confirm-title="$gettext('Enable public pages?')"
+                    v-confirm-link="$gettext('Enable public pages?')"
+                    class="btn btn-success"
                     :href="togglePublicPageUri"
                 >
                     <icon icon="check" />
-                    {{ $gettext('Enable') }}
+                    <span>
+                        {{ $gettext('Enable') }}
+                    </span>
                 </a>
             </div>
         </template>

@@ -1,5 +1,5 @@
 <template>
-    <b-modal
+    <modal
         id="api_keys_modal"
         ref="$modal"
         size="md"
@@ -9,32 +9,27 @@
         @hidden="clearContents"
     >
         <template #default>
-            <b-alert
-                variant="danger"
-                :show="error != null"
+            <div
+                v-show="error != null"
+                class="alert alert-danger"
             >
                 {{ error }}
-            </b-alert>
+            </div>
 
-            <b-form
+            <form
                 v-if="newKey === null"
                 class="form vue-form"
                 @submit.prevent="doSubmit"
             >
-                <b-form-fieldset>
-                    <b-wrapped-form-group
-                        id="form_comments"
-                        :field="v$.comment"
-                        autofocus
-                    >
-                        <template #label>
-                            {{ $gettext('API Key Description/Comments') }}
-                        </template>
-                    </b-wrapped-form-group>
-                </b-form-fieldset>
+                <form-group-field
+                    id="form_comments"
+                    :field="v$.comment"
+                    autofocus
+                    :label="$gettext('API Key Description/Comments')"
+                />
 
                 <invisible-submit-button />
-            </b-form>
+            </form>
 
             <div v-else>
                 <account-api-key-new-key :new-key="newKey" />
@@ -46,36 +41,35 @@
                 name="modal-footer"
                 v-bind="slotProps"
             >
-                <b-button
-                    variant="default"
-                    type="button"
+                <button
+                    class="btn btn-secondary"
                     @click="close"
                 >
                     {{ $gettext('Close') }}
-                </b-button>
-                <b-button
-                    v-if="newKey === null"
-                    :variant="(v$.$invalid) ? 'danger' : 'primary'"
+                </button>
+                <button
+                    class="btn"
+                    :class="(v$.$invalid) ? 'btn-danger' : 'btn-primary'"
                     type="submit"
                     @click="doSubmit"
                 >
                     {{ $gettext('Create New Key') }}
-                </b-button>
+                </button>
             </slot>
         </template>
-    </b-modal>
+    </modal>
 </template>
 
 <script setup>
-import BFormFieldset from "~/components/Form/BFormFieldset";
 import InvisibleSubmitButton from "~/components/Common/InvisibleSubmitButton";
 import AccountApiKeyNewKey from "./ApiKeyNewKey";
-import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
+import FormGroupField from "~/components/Form/FormGroupField";
 import {required} from '@vuelidate/validators';
 import {ref} from "vue";
 import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
-import {useNotify} from "~/vendor/bootstrapVue";
+import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
+import Modal from "~/components/Common/Modal.vue";
 
 const props = defineProps({
     createUrl: {

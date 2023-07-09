@@ -26,21 +26,6 @@ const props = defineProps({
 
 const emit = defineEmits(['click']);
 
-const onEventDidMount = (info) => {
-    let desc = info?.event?.extendedProps?.description || null;
-    if (desc !== null) {
-        /* eslint-disable no-undef */
-        $(info.el).tooltip({
-            title: desc,
-            placement: 'top',
-            trigger: 'hover',
-            container: 'body',
-            offset: 0
-        });
-        /* eslint-enable */
-    }
-};
-
 const onEventClick = (arg) => {
     emit('click', arg.event);
 };
@@ -53,7 +38,6 @@ const calendarOptions = shallowRef({
     plugins: [luxon3Plugin, timeGridPlugin],
     initialView: 'timeGridWeek',
     timeZone: props.stationTimeZone,
-    themeSystem: 'bootstrap',
     nowIndicator: true,
     defaultTimedEventDuration: '00:20',
     headerToolbar: false,
@@ -61,7 +45,6 @@ const calendarOptions = shallowRef({
     height: 'auto',
     events: props.scheduleUrl,
     eventClick: onEventClick,
-    eventDidMount: onEventDidMount,
     views: {
         timeGridWeek: {
             slotLabelFormat: {

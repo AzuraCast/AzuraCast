@@ -28,8 +28,6 @@ $header ??= null;
 
     <?= $this->fetch('partials/head') ?>
 
-    <script src="<?= $this->assetUrl('dist/lib/sweetalert2/sweetalert2.min.js') ?>" defer></script>
-
     <?= $sections->get('head') ?>
 
     <style>
@@ -57,21 +55,20 @@ endif; ?>">
 
 <?= $sections->get('bodyjs') ?>
 
-<a class="sr-only sr-only-focusable" href="#content"><?= __('Skip to main content') ?></a>
+<a class="visually-hidden-focusable" href="#content"><?= __('Skip to main content') ?></a>
 
 <header class="navbar bg-primary-dark shadow-sm fixed-top">
     <?php
     if ($sections->has('sidebar')): ?>
         <button aria-controls="sidebar" aria-expanded="false" aria-label="<?= __(
             'Toggle Sidebar'
-        ) ?>" class="navbar-toggler d-inline-flex d-lg-none mr-3" data-breakpoint="lg" data-target="#sidebar"
-                data-toggle="navdrawer" data-type="permanent">
+        ) ?>" id="navbar-toggle" class="navbar-toggler d-inline-flex d-lg-none me-3">
             <span class="navbar-toggler-icon"></span>
         </button>
     <?php
     endif; ?>
 
-    <a class="navbar-brand ml-0 mr-auto" href="<?= $router->named('dashboard') ?>">
+    <a class="navbar-brand ms-0 me-auto" href="<?= $router->named('dashboard') ?>">
         azura<strong>cast</strong> <?php
         if (!empty($customization->getInstanceName())): ?>
             <small><?= $this->e($customization->getInstanceName()) ?></small><?php
@@ -80,17 +77,17 @@ endif; ?>">
 
     <div id="radio-player-controls"></div>
 
-    <div class="dropdown ml-3 d-inline-flex align-items-center">
-        <div class="mr-2">
+    <div class="dropdown ms-3 d-inline-flex align-items-center">
+        <div class="me-2">
             <?= $this->e($user->getDisplayName()) ?>
         </div>
 
         <button aria-expanded="false" aria-haspopup="true" class="navbar-toggler" aria-label="<?= __(
             'Toggle Menu'
-        ) ?>" data-toggle="dropdown" type="button">
-            <i class="material-icons" aria-hidden="true">menu_open</i>
+        ) ?>" data-bs-toggle="dropdown" type="button">
+            <i class="material-icons lg" aria-hidden="true">menu_open</i>
         </button>
-        <ul class="dropdown-menu dropdown-menu-right">
+        <ul class="dropdown-menu dropdown-menu-end">
             <li>
                 <a class="dropdown-item" href="<?= $router->named('dashboard') ?>">
                     <i class="material-icons" aria-hidden="true">home</i>
@@ -150,7 +147,7 @@ endif; ?>">
 
 <?php
 if ($sections->has('sidebar')): ?>
-    <div class="navdrawer navdrawer-permanent-lg navdrawer-permanent-clipped" id="sidebar" tabindex="-1">
+    <div class="navdrawer" id="sidebar" tabindex="-1">
         <nav class="navdrawer-content" aria-label="<?= __('Sidebar') ?>">
             <?= $sections->get('sidebar') ?>
         </nav>
@@ -205,5 +202,7 @@ endif; ?> role="contentinfo" aria-label="<?= __('Footer') ?>">
 </footer>
 
 <div id="radio-player"></div>
+
+<?= $this->fetch('partials/toasts') ?>
 </body>
 </html>

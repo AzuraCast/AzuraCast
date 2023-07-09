@@ -10,7 +10,7 @@
             role="region"
             aria-labelledby="hdr_system_settings"
         >
-            <div class="card-header bg-primary-dark">
+            <div class="card-header text-bg-primary">
                 <h2
                     id="hdr_system_settings"
                     class="card-title"
@@ -23,64 +23,57 @@
 
             <slot name="cardUpper" />
 
-            <b-alert
-                variant="danger"
-                :show="error != null"
+            <div
+                v-show="error != null"
+                class="alert alert-danger"
             >
                 {{ error }}
-            </b-alert>
+            </div>
 
-            <b-overlay
-                variant="card"
-                :show="loading"
-            >
-                <b-tabs
-                    pills
-                    card
-                    lazy
-                >
-                    <b-tab :title-link-class="getTabClass(v$.$validationGroups.generalTab)">
-                        <template #title>
-                            {{ $gettext('Settings') }}
-                        </template>
+            <div class="card-body">
+                <loading :loading="isLoading">
+                    <o-tabs
+                        nav-tabs-class="nav-tabs"
+                        content-class="mt-3"
+                    >
+                        <o-tab-item
+                            :label="$gettext('Settings')"
+                            :item-header-class="getTabClass(v$.$validationGroups.generalTab)"
+                        >
+                            <settings-general-tab :form="v$" />
+                        </o-tab-item>
+                        <o-tab-item
+                            :label="$gettext('Security & Privacy')"
+                            :item-header-class="getTabClass(v$.$validationGroups.securityPrivacyTab)"
+                        >
+                            <settings-security-privacy-tab :form="v$" />
+                        </o-tab-item>
+                        <o-tab-item
+                            :label="$gettext('Services')"
+                            :item-header-class="getTabClass(v$.$validationGroups.servicesTab)"
+                        >
+                            <settings-services-tab
+                                :form="v$"
+                                :release-channel="releaseChannel"
+                                :test-message-url="testMessageUrl"
+                                :acme-url="acmeUrl"
+                            />
+                        </o-tab-item>
+                    </o-tabs>
+                </loading>
+            </div>
 
-                        <settings-general-tab :form="v$" />
-                    </b-tab>
-
-                    <b-tab :title-link-class="getTabClass(v$.$validationGroups.securityPrivacyTab)">
-                        <template #title>
-                            {{ $gettext('Security & Privacy') }}
-                        </template>
-
-                        <settings-security-privacy-tab :form="v$" />
-                    </b-tab>
-
-                    <b-tab :title-link-class="getTabClass(v$.$validationGroups.servicesTab)">
-                        <template #title>
-                            {{ $gettext('Services') }}
-                        </template>
-
-                        <settings-services-tab
-                            :form="v$"
-                            :release-channel="releaseChannel"
-                            :test-message-url="testMessageUrl"
-                            :acme-url="acmeUrl"
-                        />
-                    </b-tab>
-                </b-tabs>
-            </b-overlay>
-
-            <b-card-body body-class="card-padding-sm">
-                <b-button
-                    size="lg"
+            <div class="card-body">
+                <button
                     type="submit"
-                    :variant="(v$.$invalid) ? 'danger' : 'primary'"
+                    class="btn"
+                    :class="(v$.$invalid) ? 'btn-danger' : 'btn-primary'"
                 >
                     <slot name="submitButtonName">
                         {{ $gettext('Save Changes') }}
                     </slot>
-                </b-button>
-            </b-card-body>
+                </button>
+            </div>
         </section>
     </form>
 </template>
@@ -93,9 +86,10 @@ import SettingsSecurityPrivacyTab from "~/components/Admin/Settings/SecurityPriv
 import {onMounted, ref} from "vue";
 import {useAxios} from "~/vendor/axios";
 import mergeExisting from "~/functions/mergeExisting";
-import {useNotify} from "~/vendor/bootstrapVue";
+import {useNotify} from "~/functions/useNotify";
 import {useTranslate} from "~/vendor/gettext";
 import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
+import Loading from "~/components/Common/Loading.vue";
 
 const props = defineProps({
     apiUrl: {
@@ -202,11 +196,11 @@ const {form, v$, ifValid} = useVuelidateOnForm(
     }
 );
 
-const loading = ref(true);
+const isLoading = ref(true);
 const error = ref(null);
 
 const getTabClass = (validationGroup) => {
-    if (!loading.value && validationGroup.$invalid) {
+    if (!isLoading.value && validationGroup.$invalid) {
         return 'text-danger';
     }
     return null;
@@ -220,11 +214,11 @@ const populateForm = (data) => {
 
 const relist = () => {
     v$.value.$reset();
-    loading.value = true;
+    isLoading.value = true;
 
     axios.get(props.apiUrl).then((resp) => {
         populateForm(resp.data);
-        loading.value = false;
+        isLoading.value = false;
     });
 };
 

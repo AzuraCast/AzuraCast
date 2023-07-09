@@ -6,7 +6,7 @@
         role="region"
         aria-labelledby="hdr_new_station"
     >
-        <div class="card-header bg-primary-dark">
+        <div class="card-header text-bg-primary">
             <h3
                 id="hdr_new_station"
                 class="card-title"
@@ -21,17 +21,19 @@
             }}
         </info-card>
 
-        <admin-stations-form
-            v-bind="$props"
-            ref="$adminForm"
-            :is-edit-mode="false"
-            :create-url="createUrl"
-            @submitted="onSubmitted"
-        >
-            <template #submitButtonText>
-                {{ $gettext('Create and Continue') }}
-            </template>
-        </admin-stations-form>
+        <div class="card-body">
+            <admin-stations-form
+                v-bind="$props"
+                ref="$adminForm"
+                :is-edit-mode="false"
+                :create-url="createUrl"
+                @submitted="onSubmitted"
+            >
+                <template #submitButtonText>
+                    {{ $gettext('Create and Continue') }}
+                </template>
+            </admin-stations-form>
+        </div>
     </section>
 </template>
 

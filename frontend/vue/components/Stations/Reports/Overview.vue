@@ -3,7 +3,7 @@
         class="card mb-4"
         role="region"
     >
-        <div class="card-header bg-primary-dark">
+        <div class="card-header text-bg-primary">
             <div class="d-flex align-items-center">
                 <h2 class="card-title flex-fill my-0">
                     {{ $gettext('Station Statistics') }}
@@ -18,89 +18,71 @@
             </div>
         </div>
 
-        <b-tabs
-            pills
-            lazy
-            nav-class="card-header-pills"
-            nav-wrapper-class="card-header"
-        >
-            <b-tab>
-                <template #title>
-                    {{ $gettext('Best & Worst') }}
-                </template>
+        <div class="card-body">
+            <o-tabs
+                nav-tabs-class="nav-tabs"
+                content-class="mt-3"
+                destroy-on-hide
+            >
+                <o-tab-item :label="$gettext('Best & Worst')">
+                    <best-and-worst-tab
+                        :api-url="bestAndWorstUrl"
+                        :date-range="dateRange"
+                    />
+                </o-tab-item>
 
-                <best-and-worst-tab
-                    :api-url="bestAndWorstUrl"
-                    :date-range="dateRange"
-                />
-            </b-tab>
+                <o-tab-item :label="$gettext('Listeners By Time Period')">
+                    <listeners-by-time-period-tab
+                        :api-url="listenersByTimePeriodUrl"
+                        :date-range="dateRange"
+                    />
+                </o-tab-item>
 
-            <b-tab>
-                <template #title>
-                    {{ $gettext('Listeners By Time Period') }}
-                </template>
+                <o-tab-item :label="$gettext('Listening Time')">
+                    <listening-time-tab
+                        :api-url="listeningTimeUrl"
+                        :date-range="dateRange"
+                    />
+                </o-tab-item>
 
-                <listeners-by-time-period-tab
-                    :api-url="listenersByTimePeriodUrl"
-                    :date-range="dateRange"
-                />
-            </b-tab>
+                <o-tab-item :label="$gettext('Streams')">
+                    <streams-tab
+                        :api-url="byStreamUrl"
+                        :date-range="dateRange"
+                    />
+                </o-tab-item>
 
-            <b-tab>
-                <template #title>
-                    {{ $gettext('Listening Time') }}
-                </template>
+                <o-tab-item
+                    v-if="showFullAnalytics"
+                    :label="$gettext('Clients')"
+                >
+                    <clients-tab
+                        :api-url="byClientUrl"
+                        :date-range="dateRange"
+                    />
+                </o-tab-item>
 
-                <listening-time-tab
-                    :api-url="listeningTimeUrl"
-                    :date-range="dateRange"
-                />
-            </b-tab>
+                <o-tab-item
+                    v-if="showFullAnalytics"
+                    :label="$gettext('Browsers')"
+                >
+                    <browsers-tab
+                        :api-url="byBrowserUrl"
+                        :date-range="dateRange"
+                    />
+                </o-tab-item>
 
-            <b-tab>
-                <template #title>
-                    {{ $gettext('Streams') }}
-                </template>
-
-                <streams-tab
-                    :api-url="byStreamUrl"
-                    :date-range="dateRange"
-                />
-            </b-tab>
-
-            <b-tab v-if="showFullAnalytics">
-                <template #title>
-                    {{ $gettext('Clients') }}
-                </template>
-
-                <clients-tab
-                    :api-url="byClientUrl"
-                    :date-range="dateRange"
-                />
-            </b-tab>
-
-            <b-tab v-if="showFullAnalytics">
-                <template #title>
-                    {{ $gettext('Browsers') }}
-                </template>
-
-                <browsers-tab
-                    :api-url="byBrowserUrl"
-                    :date-range="dateRange"
-                />
-            </b-tab>
-
-            <b-tab v-if="showFullAnalytics">
-                <template #title>
-                    {{ $gettext('Countries') }}
-                </template>
-
-                <countries-tab
-                    :api-url="byCountryUrl"
-                    :date-range="dateRange"
-                />
-            </b-tab>
-        </b-tabs>
+                <o-tab-item
+                    v-if="showFullAnalytics"
+                    :label="$gettext('Countries')"
+                >
+                    <countries-tab
+                        :api-url="byCountryUrl"
+                        :date-range="dateRange"
+                    />
+                </o-tab-item>
+            </o-tabs>
+        </div>
     </section>
 </template>
 

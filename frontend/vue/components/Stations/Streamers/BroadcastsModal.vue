@@ -1,5 +1,5 @@
 <template>
-    <b-modal
+    <modal
         id="streamer_broadcasts"
         ref="$modal"
         size="lg"
@@ -9,7 +9,7 @@
         <template v-if="listUrl">
             <div
                 style="min-height: 40px;"
-                class="flex-fill text-left bg-primary rounded mb-2"
+                class="flex-fill text-start bg-primary rounded mb-2"
             >
                 <inline-player ref="$player" />
             </div>
@@ -24,11 +24,10 @@
                 <template #cell(download)="row">
                     <template v-if="row.item.recording?.links?.download">
                         <play-button
-                            class="file-icon"
-                            icon-class="outlined"
+                            class="file-icon btn-xl"
                             :url="row.item.recording?.links?.download"
                         />
-                        &nbsp;
+                      &nbsp;
                         <a
                             class="name"
                             :href="row.item.recording?.links?.download"
@@ -39,31 +38,28 @@
                         </a>
                     </template>
                     <template v-else>
-&nbsp;
+                    &nbsp;
                     </template>
                 </template>
                 <template #cell(actions)="row">
-                    <b-button-group size="sm">
-                        <b-button
-                            size="sm"
-                            variant="danger"
-                            @click.prevent="doDelete(row.item.links.delete)"
-                        >
-                            {{ $gettext('Delete') }}
-                        </b-button>
-                    </b-button-group>
+                    <button
+                        class="btn btn-sm btn-danger"
+                        @click.prevent="doDelete(row.item.links.delete)"
+                    >
+                        {{ $gettext('Delete') }}
+                    </button>
                 </template>
             </data-table>
         </template>
         <template #modal-footer>
-            <b-button
-                variant="default"
+            <button
+                class="btn btn-secondary"
                 @click="close"
             >
                 {{ $gettext('Close') }}
-            </b-button>
+            </button>
         </template>
-    </b-modal>
+    </modal>
 </template>
 
 <script setup>
@@ -78,8 +74,9 @@ import {useAzuraCast} from "~/vendor/azuracast";
 import {ref} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import {useSweetAlert} from "~/vendor/sweetalert";
-import {useNotify} from "~/vendor/bootstrapVue";
+import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
+import Modal from "~/components/Common/Modal.vue";
 
 const listUrl = ref(null);
 
@@ -91,7 +88,7 @@ const fields = [
         key: 'download',
         label: ' ',
         sortable: false,
-        class: 'shrink pr-3'
+      class: 'shrink pe-3'
     },
     {
         key: 'timestampStart',
@@ -102,7 +99,7 @@ const fields = [
                 {...DateTime.DATETIME_MED, ...timeConfig}
             );
         },
-        class: 'pl-3'
+      class: 'ps-3'
     },
     {
         key: 'timestampEnd',

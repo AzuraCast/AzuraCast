@@ -1,108 +1,61 @@
 <template>
-    <b-form-group>
-        <b-form-fieldset>
-            <div class="form-row">
-                <b-wrapped-form-checkbox
-                    id="edit_form_is_enabled"
-                    class="col-md-6"
-                    :field="form.is_enabled"
-                >
-                    <template #label>
-                        {{ $gettext('Enable Broadcasting') }}
-                    </template>
-                    <template #description>
-                        {{ $gettext('If disabled, the station will not broadcast or shuffle its AutoDJ.') }}
-                    </template>
-                </b-wrapped-form-checkbox>
+    <div class="row g-3 mb-3">
+        <form-group-checkbox
+            id="edit_form_is_enabled"
+            class="col-md-6"
+            :field="form.is_enabled"
+            :label="$gettext('Enable Broadcasting')"
+            :description="$gettext('If disabled, the station will not broadcast or shuffle its AutoDJ.')"
+        />
 
-                <b-wrapped-form-group
-                    v-if="showAdvanced"
-                    id="edit_form_radio_base_dir"
-                    class="col-md-6"
-                    :field="form.radio_base_dir"
-                    advanced
-                >
-                    <template #label>
-                        {{ $gettext('Base Station Directory') }}
-                    </template>
-                    <template #description>
-                        {{
-                            $gettext('The parent directory where station playlist and configuration files are stored. Leave blank to use default directory.')
-                        }}
-                    </template>
-                </b-wrapped-form-group>
-            </div>
-        </b-form-fieldset>
+        <form-group-field
+            v-if="showAdvanced"
+            id="edit_form_radio_base_dir"
+            class="col-md-6"
+            :field="form.radio_base_dir"
+            advanced
+            :label="$gettext('Base Station Directory')"
+            :description="$gettext('The parent directory where station playlist and configuration files are stored. Leave blank to use default directory.')"
+        />
+    </div>
 
-        <b-form-fieldset>
-            <b-overlay
-                variant="card"
-                :show="storageLocationsLoading"
-            >
-                <div class="form-row">
-                    <b-wrapped-form-group
-                        id="edit_form_media_storage_location"
-                        class="col-md-12"
-                        :field="form.media_storage_location"
-                    >
-                        <template #label>
-                            {{ $gettext('Media Storage Location') }}
-                        </template>
-                        <template #default="slotProps">
-                            <b-form-select
-                                :id="slotProps.id"
-                                v-model="slotProps.field.$model"
-                                :options="storageLocationOptions.media_storage_location"
-                            />
-                        </template>
-                    </b-wrapped-form-group>
+    <loading :loading="storageLocationsLoading">
+        <div class="row g-3">
+            <form-group-select
+                id="edit_form_media_storage_location"
+                class="col-md-12"
+                :field="form.media_storage_location"
+                :options="storageLocationOptions.media_storage_location"
+                :label="$gettext('Media Storage Location')"
+            />
 
-                    <b-wrapped-form-group
-                        id="edit_form_recordings_storage_location"
-                        class="col-md-12"
-                        :field="form.recordings_storage_location"
-                    >
-                        <template #label>
-                            {{ $gettext('Live Recordings Storage Location') }}
-                        </template>
-                        <template #default="slotProps">
-                            <b-form-select
-                                :id="slotProps.id"
-                                v-model="slotProps.field.$model"
-                                :options="storageLocationOptions.recordings_storage_location"
-                            />
-                        </template>
-                    </b-wrapped-form-group>
+            <form-group-select
+                id="edit_form_recordings_storage_location"
+                class="col-md-12"
+                :field="form.recordings_storage_location"
+                :options="storageLocationOptions.recordings_storage_location"
+                :label="$gettext('Live Recordings Storage Location')"
+            />
 
-                    <b-wrapped-form-group
-                        id="edit_form_podcasts_storage_location"
-                        class="col-md-12"
-                        :field="form.podcasts_storage_location"
-                    >
-                        <template #label>
-                            {{ $gettext('Podcasts Storage Location') }}
-                        </template>
-                        <template #default="slotProps">
-                            <b-form-select
-                                :id="slotProps.id"
-                                v-model="slotProps.field.$model"
-                                :options="storageLocationOptions.podcasts_storage_location"
-                            />
-                        </template>
-                    </b-wrapped-form-group>
-                </div>
-            </b-overlay>
-        </b-form-fieldset>
-    </b-form-group>
+            <form-group-select
+                id="edit_form_podcasts_storage_location"
+                class="col-md-12"
+                :field="form.podcasts_storage_location"
+                :options="storageLocationOptions.podcasts_storage_location"
+                :label="$gettext('Podcasts Storage Location')"
+            />
+        </div>
+    </loading>
 </template>
 
 <script setup>
-import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup.vue";
+import FormGroupField from "~/components/Form/FormGroupField.vue";
 import objectToFormOptions from "~/functions/objectToFormOptions";
-import BWrappedFormCheckbox from "~/components/Form/BWrappedFormCheckbox.vue";
-import BFormFieldset from "~/components/Form/BFormFieldset.vue";
+import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
 import {onMounted, reactive, ref} from "vue";
 import {useAxios} from "~/vendor/axios";
+import Loading from "~/components/Common/Loading.vue";
+import FormGroupSelect from "~/components/Form/FormGroupSelect.vue";
 
 const props = defineProps({
     form: {

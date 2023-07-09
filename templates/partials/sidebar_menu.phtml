@@ -7,20 +7,6 @@
  */
 
 $active ??= null;
-
-$sections->appendStart('bodyjs');
-?>
-<script>
-    $(function () {
-        $('.navdrawer-nav a[title]').tooltip({
-            'html': true,
-            'placement': 'right',
-            'boundary': 'viewport'
-        });
-    });
-</script>
-<?php
-$sections->end();
 ?>
 <ul class="navdrawer-nav">
     <?php
@@ -31,41 +17,35 @@ $sections->end();
             endif; ?>"
                <?php
                if (empty($category['items'])): ?>href="<?= $category['url'] ?>" <?php
-               else: ?>data-toggle="collapse" href="#sidebar-submenu-<?= $category_id ?>"<?php
+               else: ?>data-bs-toggle="collapse" href="#sidebar-submenu-<?= $category_id ?>"<?php
             endif; ?>
                <?php
                if ($category['external'] ?? false): ?>target="_blank"<?php
             endif; ?>
                <?php
-               if (isset($category['confirm'])): ?>data-confirm-title="<?= $this->e($category['confirm']) ?>"<?php
-            endif; ?>
-               <?php
                if (isset($category['title'])): ?>title="<?= $this->e($category['title']) ?>"<?php
             endif; ?>>
-                <i class="navdrawer-nav-icon material-icons" aria-hidden="true"><?=$category['icon']?></i>
-                <?=$category['label']?>
+                <i class="navdrawer-nav-icon material-icons" aria-hidden="true"><?= $category['icon'] ?></i>
+                <span>
+                    <?= $category['label'] ?>
+                </span>
                 <?php
                 if ($category['external'] ?? false): ?>
-                    <i class="material-icons sm" aria-label="<?= $this->e(__('External')) ?>">open_in_new</i>
+                    <i class="material-icons sm ms-2" aria-label="<?= $this->e(__('External')) ?>">open_in_new</i>
                 <?php
                 endif; ?>
             </a>
             <?php
             if (!empty($category['items'])): ?>
-                <div class="collapse pb-2" id="sidebar-submenu-<?=$category_id?>">
+                <div class="collapse pb-2" id="sidebar-submenu-<?= $category_id ?>">
                     <ul class="navdrawer-nav">
                         <?php
                         foreach ($category['items'] as $item_id => $item): ?>
                             <li class="nav-item">
-                                <a class="nav-link pl-4 py-2 <?= ($item['class'] ?? '') ?>"
+                                <a class="nav-link ps-4 py-2 <?= ($item['class'] ?? '') ?>"
                                    href="<?= $item['url'] ?>"
                                    <?php
                                    if ($item['external'] ?? false): ?>target="_blank"<?php
-                                endif; ?>
-                                   <?php
-                                   if (isset($item['confirm'])): ?>data-confirm-title="<?= $this->e(
-                                       $item['confirm']
-                                   ) ?>"<?php
                                 endif; ?>
                                    <?php
                                    if (isset($item['title'])): ?>title="<?= $this->e($item['title']) ?>"<?php
@@ -73,7 +53,7 @@ $sections->end();
                                     <?= $item['label'] ?>
                                     <?php
                                     if ($item['external'] ?? false): ?>
-                                        <i class="material-icons sm">open_in_new</i>
+                                        <i class="material-icons sm ms-2">open_in_new</i>
                                     <?php
                                     endif; ?>
                                 </a>

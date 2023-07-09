@@ -1,5 +1,5 @@
 <template>
-    <b-modal
+    <modal
         id="cpu_stats_help_modal"
         ref="$modal"
         size="lg"
@@ -8,16 +8,12 @@
     >
         <div class="mb-2">
             <h6>
-                <b-badge
-                    pill
-                    variant="warning"
-                >
-&nbsp;&nbsp;
-                </b-badge>&nbsp;
+                <span class="badge text-bg-warning me-1">&nbsp;&nbsp;</span>
+
                 {{ $gettext('Cached') }}:
                 {{ $gettext('The amount of memory Linux is using for disk caching.') }}
             </h6>
-            <div class="ml-4">
+            <div class="ms-4">
                 <p>
                     {{
                         $gettext('This can make it look like your memory is low while it actually is not. Some monitoring solutions/panels include cached memory in their used memory statistics without indicating this.')
@@ -33,12 +29,8 @@
 
         <div class="mb-2">
             <h6>
-                <b-badge
-                    pill
-                    variant="primary"
-                >
-&nbsp;&nbsp;
-                </b-badge>&nbsp;
+                <span class="badge text-bg-primary me-1">&nbsp;&nbsp;</span>
+                
                 {{ $gettext('Used') }}:
                 {{ $gettext('The current Memory usage excluding cached memory.') }}
             </h6>
@@ -46,21 +38,20 @@
 
         <template #modal-footer>
             <slot name="modal-footer">
-                <b-button
-                    variant="default"
-                    type="button"
+                <button
+                    class="btn btn-secondary"
                     @click="close"
                 >
                     {{ $gettext('Close') }}
-                </b-button>
+                </button>
             </slot>
         </template>
-    </b-modal>
+    </modal>
 </template>
 
 <script setup>
 import {ref} from "vue";
-import {BModal} from "bootstrap-vue";
+import Modal from "~/components/Common/Modal.vue";
 
 const $modal = ref(); // BModal
 

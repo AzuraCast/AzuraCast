@@ -1,27 +1,57 @@
+div.datatable-toolbar-top,
+div.datatable-toolbar-bottom {
+  &:empty {
+    display: none;
+  }
+}
 
-$aligns: top, text-top, middle, baseline, text-bottom, bottom;
+div.datatable-main {
+  table {
+    tr > th:first-child,
+    tr > td:first-child {
+      padding-left: 1rem;
+    }
 
-table {
+    tr > th:last-child,
+    tr > td:last-child {
+      padding-right: 1rem;
+    }
 
-  @each $align in $aligns {
-    &.align-#{$align} tr,
-    tr.align-#{$align} {
-      td, th {
-        vertical-align: $align;
+    &.table-selectable {
+      tr > th:first-child,
+      tr > td:first-child {
+        width: .1%;
+        white-space: nowrap;
+        padding-right: 0.1rem;
       }
     }
-  }
 
-  tr.text-center {
-    td, th {
-      text-align: center;
+    th.shrink,
+    td.shrink {
+      width: 0.1%;
+      white-space: nowrap;
+    }
+
+    .form-check,
+    .form-check input,
+    .form-check label {
+      margin: 0;
+      padding: 0;
     }
   }
+}
 
-  td, th {
-    &.text-center {
-      text-align: center;
-    }
+.table {
+  thead th {
+    font-size: 1.2rem;
+    font-weight: normal;
   }
 
+  tbody td {
+    font-size: 1.1rem;
+  }
+
+  > :not(caption) > * > * {
+    padding: 1rem 1rem;
+  }
 }

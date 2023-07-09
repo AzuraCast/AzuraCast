@@ -17,7 +17,7 @@ $hide_footer ??= false;
 ?>
 <!DOCTYPE html>
 <html lang="<?= $customization->getLocale()->getHtmlLang() ?>"
-      data-theme="<?= $customization->getPublicTheme()?->value ?>">
+      data-bs-theme="<?= $customization->getPublicTheme()?->value ?>">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -63,5 +63,7 @@ if (!$customization->hideProductName() && !$hide_footer): ?>
     </footer>
 <?php
 endif; ?>
+
+<?= $this->fetch('partials/toasts') ?>
 </body>
 </html>

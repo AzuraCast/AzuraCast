@@ -4,54 +4,40 @@
         role="region"
         aria-labelledby="hdr_music_files"
     >
-        <b-card-header header-bg-variant="primary-dark">
-            <b-row class="align-items-center">
-                <b-col md="7">
+        <div class="card-header text-bg-primary">
+            <div class="row align-items-center">
+                <div class="col-md-7">
                     <h2
                         id="hdr_music_files"
                         class="card-title"
                     >
                         {{ $gettext('Music Files') }}
                     </h2>
-                </b-col>
-                <b-col
-                    md="5"
-                    class="text-right text-white-50"
-                >
+                </div>
+                <div class="col-md-5 text-end">
                     <stations-common-quota
                         ref="$quota"
                         :quota-url="quotaUrl"
                     />
-                </b-col>
-            </b-row>
-        </b-card-header>
+                </div>
+            </div>
+        </div>
 
-        <div
-            v-if="showSftp"
-            class="card-body alert-info d-flex align-items-center"
-            role="alert"
-        >
-            <div class="flex-shrink-0 mr-2">
-                <i
-                    class="material-icons"
-                    aria-hidden="true"
-                >info</i>
-            </div>
-            <div class="flex-fill">
-                <p class="mb-0">
-                    {{ $gettext('You can also upload files in bulk via SFTP.') }}
-                </p>
-            </div>
-            <div class="flex-shrink-0 ml-2">
+        <info-card v-if="showSftp">
+            <p class="mb-0">
+                {{ $gettext('You can also upload files in bulk via SFTP.') }}
+            </p>
+
+            <template #action>
                 <a
-                    class="btn btn-sm btn-light"
+                    class="btn btn-sm btn-info"
                     target="_blank"
                     :href="sftpUrl"
                 >
                     {{ $gettext('Manage SFTP Accounts') }}
                 </a>
-            </div>
-        </div>
+            </template>
+        </info-card>
 
         <div class="card-body">
             <breadcrumb
@@ -75,6 +61,8 @@
                 :playlists="playlists"
                 @add-playlist="onAddPlaylist"
                 @relist="onTriggerRelist"
+                @create-directory="createDirectory"
+                @move-files="moveFiles"
             />
         </div>
 
@@ -92,11 +80,11 @@
         >
             <template #cell(path)="row">
                 <div class="d-flex align-items-center">
-                    <div class="flex-shrink-0 pr-2">
+                    <div class="flex-shrink-0 pe-2">
                         <template v-if="row.item.media.is_playable">
                             <play-button
                                 :url="row.item.media.links.play"
-                                icon-class="outlined"
+                                class="btn-xl"
                             />
                         </template>
                         <template v-else>
@@ -160,12 +148,12 @@
                     <album-art
                         v-if="row.item.media.art"
                         :src="row.item.media.art"
-                        class="flex-shrink-1 pl-2"
+                        class="flex-shrink-1 ps-2"
                     />
                     <album-art
                         v-else-if="row.item.is_cover_art"
                         :src="row.item.links.download"
-                        class="flex-shrink-1 pl-2"
+                        class="flex-shrink-1 ps-2"
                     />
                 </div>
             </template>
@@ -182,49 +170,54 @@
                 </template>
             </template>
             <template #cell(playlists)="row">
-                <template
-                    v-for="(playlist, index) in row.item.playlists"
-                    :key="playlist.id"
-                >
-                    <a
-                        class="btn-search"
-                        href="#"
-                        :title="$gettext('View tracks in playlist')"
-                        @click.prevent="filter('playlist:'+playlist.short_name)"
-                    >{{ playlist.name }}</a>
-                    <span v-if="index+1 < row.item.playlists.length">, </span>
+                <template v-if="row.item.playlists.length > 0">
+                    <template
+                        v-for="(playlist, index) in row.item.playlists"
+                        :key="playlist.id"
+                    >
+                        <a
+                            class="btn-search"
+                            href="#"
+                            :title="$gettext('View tracks in playlist')"
+                            @click.prevent="filter('playlist:'+playlist.short_name)"
+                        >{{ playlist.name }}</a>
+                        <span v-if="index+1 < row.item.playlists.length">, </span>
+                    </template>
+                </template>
+                <template v-else>
+                    &nbsp;
                 </template>
             </template>
             <template #cell(commands)="row">
                 <template v-if="row.item.media.links.edit">
-                    <b-button
-                        size="sm"
-                        variant="primary"
+                    <button
+                        class="btn btn-sm btn-primary"
                         @click.prevent="edit(row.item.media.links.edit, row.item.media.links.art, row.item.media.links.play, row.item.media.links.waveform)"
                     >
                         {{ $gettext('Edit') }}
-                    </b-button>
+                    </button>
                 </template>
                 <template v-else>
-                    <b-button
-                        size="sm"
-                        variant="primary"
+                    <button
+                        class="btn btn-sm btn-primary"
                         @click.prevent="rename(row.item.path)"
                     >
                         {{ $gettext('Rename') }}
-                    </b-button>
+                    </button>
                 </template>
             </template>
         </data-table>
     </section>
 
     <new-directory-modal
+        ref="$newDirectoryModal"
         :current-directory="currentDirectory"
         :mkdir-url="mkdirUrl"
         @relist="onTriggerRelist"
     />
 
     <move-files-modal
+        ref="$moveFilesModal"
         :selected-items="selectedItems"
         :current-directory="currentDirectory"
         :batch-url="batchUrl"
@@ -266,6 +259,7 @@ import {useAzuraCast} from "~/vendor/azuracast";
 import {DateTime} from "luxon";
 import {useEventListener} from "@vueuse/core";
 import formatFileSize from "../../functions/formatFileSize";
+import InfoCard from "~/components/Common/InfoCard.vue";
 
 const props = defineProps({
     listUrl: {
@@ -465,6 +459,18 @@ const edit = (recordUrl, albumArtUrl, audioUrl, waveformUrl) => {
     $editModal.value?.open(recordUrl, albumArtUrl, audioUrl, waveformUrl);
 };
 
+const $newDirectoryModal = ref(); // Template Ref
+
+const createDirectory = () => {
+    $newDirectoryModal.value.open();
+}
+
+const $moveFilesModal = ref(); // Template Ref
+
+const moveFiles = () => {
+    $moveFilesModal.value.open();
+}
+
 const requestConfig = (config) => {
     config.params.currentDirectory = currentDirectory.value;
     return config;
@@ -481,6 +487,7 @@ onMounted(() => {
             });
         } else {
             currentDirectory.value = urlHash;
+            onTriggerNavigate();
         }
     }
 

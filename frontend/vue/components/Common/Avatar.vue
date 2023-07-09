@@ -1,7 +1,6 @@
 <template>
     <a
         v-if="'' !== serviceUrl"
-        v-b-tooltip.hover.right
         :href="serviceUrl"
         class="avatar"
         target="_blank"

@@ -1,35 +1,23 @@
 <template>
-    <section
-        class="card"
-        role="region"
-        aria-labelledby="hdr_mount_points"
-    >
-        <b-card-header header-bg-variant="primary-dark">
-            <h2
-                id="hdr_mount_points"
-                class="card-title"
-            >
-                {{ $gettext('Mount Points') }}
-            </h2>
-        </b-card-header>
-
-        <info-card>
+    <card-page :title="$gettext('Mount Points')">
+        <template #info>
             <p class="card-text">
                 {{
                     $gettext('Mount points are how listeners connect and listen to your station. Each mount point can be a different audio format or quality. Using mount points, you can set up a high-quality stream for broadband listeners and a mobile stream for phone users.')
                 }}
             </p>
-        </info-card>
-
-        <b-card-body body-class="card-padding-sm">
-            <b-button
-                variant="outline-primary"
+        </template>
+        <template #actions>
+            <button
+                class="btn btn-primary"
                 @click.prevent="doCreate"
             >
                 <icon icon="add" />
-                {{ $gettext('Add Mount Point') }}
-            </b-button>
-        </b-card-body>
+                <span>
+                    {{ $gettext('Add Mount Point') }}
+                </span>
+            </button>
+        </template>
 
         <data-table
             id="station_mounts"
@@ -43,7 +31,7 @@
                     <a :href="row.item.links.listen">{{ row.item.display_name }}</a>
                 </h5>
                 <div v-if="row.item.is_default">
-                    <span class="badge badge-success">
+                    <span class="badge text-bg-success">
                         {{ $gettext('Default Mount') }}
                     </span>
                 </div>
@@ -58,25 +46,23 @@
                 </template>
             </template>
             <template #cell(actions)="row">
-                <b-button-group size="sm">
-                    <b-button
-                        size="sm"
-                        variant="primary"
+                <div class="btn-group btn-group-sm">
+                    <button
+                        class="btn btn-primary"
                         @click.prevent="doEdit(row.item.links.self)"
                     >
                         {{ $gettext('Edit') }}
-                    </b-button>
-                    <b-button
-                        size="sm"
-                        variant="danger"
+                    </button>
+                    <button
+                        class="btn btn-danger"
                         @click.prevent="doDelete(row.item.links.self)"
                     >
                         {{ $gettext('Delete') }}
-                    </b-button>
-                </b-button-group>
+                    </button>
+                </div>
             </template>
         </data-table>
-    </section>
+    </card-page>
 
     <edit-modal
         ref="$editModal"
@@ -93,7 +79,6 @@
 import DataTable from '~/components/Common/DataTable';
 import EditModal from './Mounts/EditModal';
 import Icon from '~/components/Common/Icon';
-import InfoCard from '~/components/Common/InfoCard';
 import {mayNeedRestartProps, useMayNeedRestart} from "~/functions/useMayNeedRestart";
 import {useTranslate} from "~/vendor/gettext";
 import {ref} from "vue";
@@ -101,6 +86,7 @@ import showFormatAndBitrate from "~/functions/showFormatAndBitrate";
 import useHasDatatable from "~/functions/useHasDatatable";
 import useHasEditModal from "~/functions/useHasEditModal";
 import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
+import CardPage from "~/components/Common/CardPage.vue";
 
 const props = defineProps({
     ...mayNeedRestartProps,

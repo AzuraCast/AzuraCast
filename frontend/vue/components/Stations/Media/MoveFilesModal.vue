@@ -1,34 +1,32 @@
 <template>
-    <b-modal
+    <modal
         id="move_file"
         ref="$modal"
         size="xl"
         centered
         :title="langHeader"
     >
-        <b-row class="mb-3 align-items-center">
-            <b-col md="6">
-                <b-button
-                    size="sm"
-                    variant="primary"
+        <div class="row mb-3 align-items-center">
+            <div class="col-md-6">
+                <button
+                    class="btn btn-sm btn-primary"
                     :disabled="dirHistory.length === 0"
                     @click.prevent="pageBack"
                 >
                     <icon icon="chevron_left" />
-                    {{ $gettext('Back') }}
-                </b-button>
-            </b-col>
-            <b-col
-                md="6"
-                class="text-right"
-            >
+                    <span>
+                        {{ $gettext('Back') }}
+                    </span>
+                </button>
+            </div>
+            <div class="col-md-6 text-end">
                 <h6 class="m-0">
                     {{ destinationDirectory }}
                 </h6>
-            </b-col>
-        </b-row>
-        <b-row>
-            <b-col md="12">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
                 <data-table
                     id="station_media"
                     ref="$datatable"
@@ -53,23 +51,23 @@
                         </div>
                     </template>
                 </data-table>
-            </b-col>
-        </b-row>
+            </div>
+        </div>
         <template #modal-footer>
-            <b-button
-                variant="default"
+            <button
+                class="btn btn-secondary"
                 @click="close"
             >
                 {{ $gettext('Close') }}
-            </b-button>
-            <b-button
-                variant="primary"
+            </button>
+            <button
+                class="btn btn-primary"
                 @click="doMove"
             >
                 {{ $gettext('Move to Directory') }}
-            </b-button>
+            </button>
         </template>
-    </b-modal>
+    </modal>
 </template>
 
 <script setup>
@@ -78,8 +76,9 @@ import {forEach} from 'lodash';
 import Icon from '~/components/Common/Icon';
 import {computed, h, ref} from "vue";
 import {useTranslate} from "~/vendor/gettext";
-import {useNotify} from "~/vendor/bootstrapVue";
+import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
+import Modal from "~/components/Common/Modal.vue";
 
 const props = defineProps({
     selectedItems: {
@@ -125,6 +124,10 @@ const close = () => {
     destinationDirectory.value = '';
 
     $modal.value.hide();
+};
+
+const open = () => {
+    $modal.value.show();
 };
 
 const {wrapWithLoading, notifySuccess} = useNotify();
@@ -180,4 +183,8 @@ const requestConfig = (config) => {
     config.params.currentDirectory = destinationDirectory.value;
     return config;
 };
+
+defineExpose({
+    open
+});
 </script>

@@ -1,5 +1,5 @@
 <template>
-    <b-modal
+    <modal
         id="apply_playlist_to_modal"
         ref="$modal"
         size="xl"
@@ -8,76 +8,67 @@
         :title="$gettext('Apply Playlist to Folders')"
         @hidden="clearContents"
     >
-        <b-overlay
-            variant="card"
-            :show="loading"
-        >
-            <div class="form-row">
-                <div class="col-md-4">
-                    <b-form-fieldset>
-                        <b-form-markup id="apply_to_playlist_name">
-                            <template #label>
-                                {{ $gettext('Playlist:') }}
-                            </template>
+        <div class="row g-3">
+            <div class="col-md-4">
+                <form-markup id="apply_to_playlist_name">
+                    <template #label>
+                        {{ $gettext('Playlist:') }}
+                    </template>
 
-                            {{ applyToResults.playlist.name }}
-                        </b-form-markup>
-                    </b-form-fieldset>
-                </div>
-                <div class="col-md-8">
-                    <b-form-fieldset>
-                        <b-wrapped-form-checkbox
-                            id="form_applyto_copy_playlist"
-                            :field="v$.copyPlaylist"
-                        >
-                            <template #label>
-                                {{ $gettext('Create New Playlist for Each Folder') }}
-                            </template>
-                        </b-wrapped-form-checkbox>
-                    </b-form-fieldset>
-                </div>
+                    {{ applyToResults.playlist.name }}
+                </form-markup>
             </div>
+            <div class="col-md-8">
+                <form-group-checkbox
+                    id="form_applyto_copy_playlist"
+                    :field="v$.copyPlaylist"
+                >
+                    <template #label>
+                        {{ $gettext('Create New Playlist for Each Folder') }}
+                    </template>
+                </form-group-checkbox>
+            </div>
+        </div>
 
-            <div style="max-height: 300px; overflow-y: scroll">
-                <data-table
-                    :fields="fields"
-                    :items="applyToResults.directories"
-                    :show-toolbar="false"
-                    selectable
-                    @row-selected="onRowSelected"
-                />
-            </div>
-        </b-overlay>
+        <div style="max-height: 300px; overflow-y: scroll">
+            <data-table
+                :fields="fields"
+                :items="applyToResults.directories"
+                :show-toolbar="false"
+                selectable
+                @row-selected="onRowSelected"
+            />
+        </div>
 
         <template #modal-footer>
-            <b-button
-                variant="default"
+            <button
+                class="btn btn-secondary"
                 @click="close"
             >
                 {{ $gettext('Close') }}
-            </b-button>
-            <b-button
-                variant="primary"
+            </button>
+            <button
+                class="btn btn-primary"
                 @click="save"
             >
                 {{ $gettext('Apply to Folders') }}
-            </b-button>
+            </button>
         </template>
-    </b-modal>
+    </modal>
 </template>
 
 <script setup>
 import DataTable from '~/components/Common/DataTable.vue';
 import {ref} from "vue";
 import {useTranslate} from "~/vendor/gettext";
-import {useNotify} from "~/vendor/bootstrapVue";
+import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
-import BFormFieldset from "~/components/Form/BFormFieldset.vue";
-import BFormMarkup from "~/components/Form/BFormMarkup.vue";
+import FormMarkup from "~/components/Form/FormMarkup.vue";
 import {useVuelidateOnForm} from '~/functions/useVuelidateOnForm';
 import {map} from "lodash";
 import {useResettableRef} from "~/functions/useResettableRef";
-import BWrappedFormCheckbox from "~/components/Form/BWrappedFormCheckbox.vue";
+import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
+import Modal from "~/components/Common/Modal.vue";
 
 const emit = defineEmits(['relist']);
 

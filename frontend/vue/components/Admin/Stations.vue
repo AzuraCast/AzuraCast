@@ -1,27 +1,16 @@
 <template>
-    <section
-        class="card"
-        role="region"
-        aria-labelledby="hdr_stations"
-    >
-        <b-card-header header-bg-variant="primary-dark">
-            <h2
-                id="hdr_stations"
-                class="card-title"
-            >
-                {{ $gettext('Stations') }}
-            </h2>
-        </b-card-header>
-
-        <b-card-body body-class="card-padding-sm">
-            <b-button
-                variant="outline-primary"
+    <card-page :title="$gettext('Stations')">
+        <template #actions>
+            <button
+                class="btn btn-primary"
                 @click.prevent="doCreate"
             >
                 <icon icon="add" />
-                {{ $gettext('Add Station') }}
-            </b-button>
-        </b-card-body>
+                <span>
+                    {{ $gettext('Add Station') }}
+                </span>
+            </button>
+        </template>
 
         <data-table
             id="stations"
@@ -37,40 +26,36 @@
                 <code>{{ row.item.short_name }}</code>
             </template>
             <template #cell(actions)="row">
-                <b-button-group size="sm">
-                    <b-button
-                        size="sm"
-                        variant="secondary"
+                <div class="btn-group btn-group-sm">
+                    <a
+                        class="btn btn-secondary"
                         :href="row.item.links.manage"
                         target="_blank"
                     >
                         {{ $gettext('Manage') }}
-                    </b-button>
-                    <b-button
-                        size="sm"
-                        variant="secondary"
+                    </a>
+                    <button
+                        class="btn btn-secondary"
                         @click.prevent="doClone(row.item.name, row.item.links.clone)"
                     >
                         {{ $gettext('Clone') }}
-                    </b-button>
-                    <b-button
-                        size="sm"
-                        variant="primary"
+                    </button>
+                    <button
+                        class="btn btn-primary"
                         @click.prevent="doEdit(row.item.links.self)"
                     >
                         {{ $gettext('Edit') }}
-                    </b-button>
-                    <b-button
-                        size="sm"
-                        variant="danger"
+                    </button>
+                    <button
+                        class="btn btn-danger"
                         @click.prevent="doDelete(row.item.links.self)"
                     >
                         {{ $gettext('Delete') }}
-                    </b-button>
-                </b-button-group>
+                    </button>
+                </div>
             </template>
         </data-table>
-    </section>
+    </card-page>
 
     <admin-stations-edit-modal
         v-bind="pickProps(props, stationFormProps)"
@@ -98,6 +83,7 @@ import {ref} from "vue";
 import useHasDatatable from "~/functions/useHasDatatable";
 import useHasEditModal from "~/functions/useHasEditModal";
 import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
+import CardPage from "~/components/Common/CardPage.vue";
 
 const props = defineProps({
     ...stationFormProps,

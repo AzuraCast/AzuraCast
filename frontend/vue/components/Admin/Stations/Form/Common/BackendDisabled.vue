@@ -1,5 +1,5 @@
 <template>
-    <b-form-fieldset>
+    <form-fieldset>
         <template #label>
             {{ $gettext('No AutoDJ Enabled') }}
         </template>
@@ -7,8 +7,8 @@
         <p class="card-text">
             {{ $gettext('This feature requires the AutoDJ feature to be enabled.') }}
         </p>
-    </b-form-fieldset>
+    </form-fieldset>
 </template>
 
 <script setup>
-import BFormFieldset from "~/components/Form/BFormFieldset.vue";</script>
+import FormFieldset from "~/components/Form/FormFieldset";</script>

@@ -1,6 +1,6 @@
 <template>
     <div class="card">
-        <div class="card-header bg-primary-dark">
+        <div class="card-header text-bg-primary">
             <div class="d-flex align-items-center">
                 <h2 class="card-title flex-fill my-0">
                     {{ $gettext('Song Playback Timeline') }}
@@ -8,12 +8,14 @@
                 <div class="flex-shrink buttons">
                     <a
                         id="btn-export"
-                        class="btn btn-bg"
+                        class="btn btn-dark"
                         :href="exportUrl"
                         target="_blank"
                     >
                         <icon icon="file_download" />
-                        {{ $gettext('Download CSV') }}
+                        <span>
+                            {{ $gettext('Download CSV') }}
+                        </span>
                     </a>
 
                     <date-range-dropdown

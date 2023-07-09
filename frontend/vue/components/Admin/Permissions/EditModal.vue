@@ -8,9 +8,9 @@
         @submit="doSubmit"
         @hidden="clearContents"
     >
-        <b-tabs
+        <o-tabs
+            nav-tabs-class="nav-tabs"
             content-class="mt-3"
-            pills
         >
             <admin-permissions-global-form
                 :form="v$"
@@ -22,7 +22,7 @@
                 :stations="stations"
                 :station-permissions="stationPermissions"
             />
-        </b-tabs>
+        </o-tabs>
     </modal-form>
 </template>
 

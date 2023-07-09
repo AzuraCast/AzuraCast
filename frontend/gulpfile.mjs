@@ -20,28 +20,10 @@ const mode = gulpmode();
 const run = run_command.default;
 
 const jsFiles = {
-    'jquery': {
-        base: 'node_modules/jquery/dist',
-        files: [
-            'node_modules/jquery/dist/jquery.min.js'
-        ]
-    },
     'bootstrap': {
         base: null,
         files: [
             'node_modules/bootstrap/dist/js/bootstrap.bundle.min.js'
-        ]
-    },
-    'bootstrap-notify': {
-        base: 'node_modules/bootstrap-notify',
-        files: [
-            'node_modules/bootstrap-notify/bootstrap-notify.min.js'
-        ]
-    },
-    'sweetalert2': {
-        base: 'node_modules/sweetalert2/dist',
-        files: [
-            'node_modules/sweetalert2/dist/sweetalert2.min.js'
         ]
     },
     'material-icons': {
@@ -54,11 +36,6 @@ const jsFiles = {
         files: [
             'node_modules/roboto-fontface/css/roboto/roboto-fontface.css',
             'node_modules/roboto-fontface/fonts/roboto/*'
-        ]
-    },
-    'luxon': {
-        files: [
-            'node_modules/luxon/build/global/luxon.min.js'
         ]
     },
     'webcaster': {
@@ -108,18 +85,12 @@ task('concat-js', function () {
 
 task('build-vue', run('webpack -c webpack.config.mjs'));
 
-task('build-js', function () {
-    return src(['./js/*.js'])
-        .pipe(init())
-        .pipe(uglify())
-        .pipe(write())
-        .pipe(dest('../web/static/dist'));
-});
-
 task('build-css', function () {
     return src(['./scss/style.scss'])
-        .pipe(mode.development(init()))
-        .pipe(sass())
+            .pipe(mode.development(init()))
+            .pipe(sass({
+                includePaths: ['node_modules']
+            }))
         .pipe(clean_css())
         .pipe(mode.development(write()))
         .pipe(dest('../web/static/dist'));
@@ -133,13 +104,13 @@ task('watch', function () {
     ], buildAll);
 });
 
-const buildAll = series('clean', parallel('concat-js', 'build-vue', 'build-js', 'build-css', 'bundle-deps'), function () {
+const buildAll = series('clean', parallel('concat-js', 'build-vue', 'build-css', 'bundle-deps'), function () {
     return src(['../web/static/dist/**/*.{js,css}'], {base: '../web/static/'})
-        .pipe(rev())
-        .pipe(revdel())
-        .pipe(dest('../web/static/'))
-        .pipe(manifest('assets.json'))
-        .pipe(dest('../web/static/'));
+            .pipe(rev())
+            .pipe(revdel())
+            .pipe(dest('../web/static/'))
+            .pipe(manifest('assets.json'))
+            .pipe(dest('../web/static/'));
 });
 
 export { buildAll as default };

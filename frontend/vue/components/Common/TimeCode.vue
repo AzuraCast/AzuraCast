@@ -1,11 +1,12 @@
 <template>
-    <b-input
+    <input
         v-bind="$attrs"
         v-model="timeCode"
+        class="form-control"
         type="time"
         pattern="[0-9]{2}:[0-9]{2}"
         placeholder="13:45"
-    />
+    >
 </template>
 
 <script setup>
@@ -16,7 +17,7 @@ import {isEmpty, padStart} from 'lodash';
 const props = defineProps({
     modelValue: {
         type: String,
-        required: true
+        default: null
     }
 });
 
@@ -48,13 +49,4 @@ const timeCode = computed({
         emit('update:modelValue', convertToTimeCode(newValue));
     }
 });
-</script>
-
-<script>
-export default {
-    model: {
-        prop: 'modelValue',
-        event: 'update:modelValue'
-    },
-};
 </script>

@@ -1,35 +1,51 @@
 <template>
-    <b-card no-body>
-        <b-card-header header-bg-variant="primary-dark">
+    <section
+        class="card"
+        role="region"
+    >
+        <div class="card-header text-bg-primary">
             <h2 class="card-title">
                 {{ $gettext('Song Requests') }}
             </h2>
-        </b-card-header>
-        <b-tabs
-            pills
-            card
-        >
-            <b-tab
-                v-for="tab in tabs"
-                :key="tab.type"
-                :active="activeType === tab.type"
-                :title="tab.title"
-                no-body
-                @click="setType(tab.type)"
-            />
-        </b-tabs>
+        </div>
+
+        <div class="card-body">
+            <nav
+                class="nav nav-tabs"
+                role="tablist"
+            >
+                <div
+                    v-for="tab in tabs"
+                    :key="tab.type"
+                    class="nav-item"
+                    role="presentation"
+                >
+                    <button
+                        class="nav-link"
+                        :class="(activeType === tab.type) ? 'active' : ''"
+                        type="button"
+                        role="tab"
+                        @click="setType(tab.type)"
+                    >
+                        {{ tab.title }}
+                    </button>
+                </div>
+            </nav>
+        </div>
 
         <div
             v-if="activeType === 'pending'"
-            class="card-actions"
+            class="card-body"
         >
-            <b-button
-                variant="outline-danger"
+            <button
+                class="btn btn-danger"
                 @click="doClear()"
             >
                 <icon icon="remove" />
-                {{ $gettext('Clear Pending Requests') }}
-            </b-button>
+                <span>
+                    {{ $gettext('Clear Pending Requests') }}
+                </span>
+            </button>
         </div>
 
         <data-table
@@ -62,19 +78,16 @@
                 {{ row.item.ip }}
             </template>
             <template #cell(actions)="row">
-                <b-button-group>
-                    <b-button
-                        v-if="row.item.played_at === 0"
-                        size="sm"
-                        variant="danger"
-                        @click.prevent="doDelete(row.item.links.delete)"
-                    >
-                        {{ $gettext('Delete') }}
-                    </b-button>
-                </b-button-group>
+                <button
+                    v-if="row.item.played_at === 0"
+                    class="btn btn-sm btn-danger"
+                    @click.prevent="doDelete(row.item.links.delete)"
+                >
+                    {{ $gettext('Delete') }}
+                </button>
             </template>
         </data-table>
-    </b-card>
+    </section>
 </template>
 
 <script setup>
@@ -85,7 +98,7 @@ import {useAzuraCast} from "~/vendor/azuracast";
 import {computed, ref} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import {useSweetAlert} from "~/vendor/sweetalert";
-import {useNotify} from "~/vendor/bootstrapVue";
+import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
 
 const props = defineProps({

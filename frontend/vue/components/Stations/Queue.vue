@@ -1,26 +1,17 @@
 <template>
-    <section
-        class="card"
-        role="region"
-        aria-labelledby="hdr_song_queue"
-    >
-        <b-card-header header-bg-variant="primary-dark">
-            <h2
-                id="hdr_song_queue"
-                class="card-title"
-            >
-                {{ $gettext('Upcoming Song Queue') }}
-            </h2>
-        </b-card-header>
-        <div class="card-actions">
-            <b-button
-                variant="outline-danger"
+    <card-page :title="$gettext('Upcoming Song Queue')">
+        <template #actions>
+            <button
+                class="btn btn-danger"
                 @click="doClear()"
             >
                 <icon icon="remove" />
-                {{ $gettext('Clear Upcoming Song Queue') }}
-            </b-button>
-        </div>
+                <span>
+                    {{ $gettext('Clear Upcoming Song Queue') }}
+                </span>
+            </button>
+        </template>
+
         <data-table
             id="station_queue"
             ref="$datatable"
@@ -28,24 +19,22 @@
             :api-url="listUrl"
         >
             <template #cell(actions)="row">
-                <b-button-group>
-                    <b-button
+                <div class="btn-group btn-group-sm">
+                    <button
                         v-if="row.item.log"
-                        size="sm"
-                        variant="primary"
+                        class="btn btn-primary"
                         @click.prevent="doShowLogs(row.item.log)"
                     >
                         {{ $gettext('Logs') }}
-                    </b-button>
-                    <b-button
+                    </button>
+                    <button
                         v-if="!row.item.sent_to_autodj"
-                        size="sm"
-                        variant="danger"
+                        class="btn btn-danger"
                         @click.prevent="doDelete(row.item.links.self)"
                     >
                         {{ $gettext('Delete') }}
-                    </b-button>
-                </b-button-group>
+                    </button>
+                </div>
             </template>
             <template #cell(song_title)="row">
                 <div v-if="row.item.autodj_custom_uri">
@@ -72,7 +61,7 @@
                 </div>
             </template>
         </data-table>
-    </section>
+    </card-page>
 
     <queue-logs-modal ref="$logsModal" />
 </template>
@@ -87,9 +76,10 @@ import {useTranslate} from "~/vendor/gettext";
 import {ref} from "vue";
 import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
 import useHasDatatable from "~/functions/useHasDatatable";
-import {useNotify} from "~/vendor/bootstrapVue";
+import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
 import {useSweetAlert} from "~/vendor/sweetalert";
+import CardPage from "~/components/Common/CardPage.vue";
 
 const props = defineProps({
     listUrl: {

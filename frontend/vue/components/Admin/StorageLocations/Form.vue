@@ -1,67 +1,38 @@
 <template>
-    <b-form-group>
-        <div class="form-row">
-            <b-wrapped-form-group
-                id="form_edit_adapter"
-                class="col-md-12"
-                :field="form.adapter"
-            >
-                <template #label>
-                    {{ $gettext('Storage Adapter') }}
-                </template>
-                <template #default="slotProps">
-                    <b-form-radio-group
-                        :id="slotProps.id"
-                        v-model="slotProps.field.$model"
-                        stacked
-                    >
-                        <b-form-radio value="local">
-                            {{ $gettext('Local Filesystem') }}
-                        </b-form-radio>
-                        <b-form-radio value="s3">
-                            {{ $gettext('Remote: S3 Compatible') }}
-                        </b-form-radio>
-                        <b-form-radio value="dropbox">
-                            {{ $gettext('Remote: Dropbox') }}
-                        </b-form-radio>
-                        <b-form-radio value="sftp">
-                            {{ $gettext('Remote: SFTP') }}
-                        </b-form-radio>
-                    </b-form-radio-group>
-                </template>
-            </b-wrapped-form-group>
+    <div class="row g-3 mb-3">
+        <form-group-multi-check
+            id="form_edit_adapter"
+            class="col-md-12"
+            :field="form.adapter"
+            :options="adapterOptions"
+            stacked
+            radio
+            :label="$gettext('Storage Adapter')"
+        />
 
-            <b-wrapped-form-group
-                id="form_edit_path"
-                class="col-md-12"
-                :field="form.path"
-            >
-                <template #label>
-                    {{ $gettext('Path/Suffix') }}
-                </template>
-                <template #description>
-                    {{
-                        $gettext('For local filesystems, this is the base path of the directory. For remote filesystems, this is the folder prefix.')
-                    }}
-                </template>
-            </b-wrapped-form-group>
+        <form-group-field
+            id="form_edit_path"
+            class="col-md-12"
+            :field="form.path"
+            :label="$gettext('Path/Suffix')"
+            :description="$gettext('For local filesystems, this is the base path of the directory. For remote filesystems, this is the folder prefix.')"
+        />
 
-            <b-wrapped-form-group
-                id="form_edit_storageQuota"
-                class="col-md-12"
-                :field="form.storageQuota"
-            >
-                <template #label>
-                    {{ $gettext('Storage Quota') }}
-                </template>
-                <template #description>
-                    {{
-                        $gettext('Set a maximum disk space that this storage location can use. Specify the size with unit, i.e. "8 GB". Units are measured in 1024 bytes. Leave blank to default to the available space on the disk.')
-                    }}
-                </template>
-            </b-wrapped-form-group>
-        </div>
-    </b-form-group>
+        <form-group-field
+            id="form_edit_storageQuota"
+            class="col-md-12"
+            :field="form.storageQuota"
+        >
+            <template #label>
+                {{ $gettext('Storage Quota') }}
+            </template>
+            <template #description>
+                {{
+                    $gettext('Set a maximum disk space that this storage location can use. Specify the size with unit, i.e. "8 GB". Units are measured in 1024 bytes. Leave blank to default to the available space on the disk.')
+                }}
+            </template>
+        </form-group-field>
+    </div>
 
     <s3
         v-if="form.adapter.$model === 's3'"
@@ -80,10 +51,13 @@
 </template>
 
 <script setup>
-import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup.vue";
+import FormGroupField from "~/components/Form/FormGroupField.vue";
 import Dropbox from "./Form/Dropbox.vue";
 import S3 from "./Form/S3.vue";
 import Sftp from "./Form/Sftp.vue";
+import {computed} from "vue";
+import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
+import {useTranslate} from "~/vendor/gettext";
 
 const props = defineProps({
     form: {
@@ -91,4 +65,28 @@ const props = defineProps({
         required: true
     }
 });
+
+const {$gettext} = useTranslate();
+
+const adapterOptions = computed(() => {
+    return [
+        {
+            value: 'local',
+            text: $gettext('Local Filesystem')
+        },
+        {
+            value: 's3',
+            text: $gettext('Remote: S3 Compatible')
+        },
+        {
+            value: 'dropbox',
+            text: $gettext('Remote: Dropbox')
+        },
+        {
+            value: 'sftp',
+            text: $gettext('Remote: SFTP')
+        }
+    ];
+});
+
 </script>

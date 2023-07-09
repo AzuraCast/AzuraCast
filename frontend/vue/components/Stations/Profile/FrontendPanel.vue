@@ -5,7 +5,7 @@
         role="region"
         aria-labelledby="hdr_frontend"
     >
-        <div class="card-header bg-primary-dark">
+        <div class="card-header text-bg-primary">
             <h3
                 id="hdr_frontend"
                 class="card-title"
@@ -19,14 +19,11 @@
         </div>
 
         <template v-if="userCanManageBroadcasting">
-            <b-collapse
-                id="frontendCredentials"
-                v-model="credentialsVisible"
+            <div
+                class="collapse"
+                :class="(credentialsVisible) ? 'show' : ''"
             >
-                <b-table-simple
-                    striped
-                    responsive
-                >
+                <table class="table table-striped table-responsive">
                     <tbody>
                         <tr class="align-middle">
                             <td>
@@ -97,41 +94,49 @@
                             </td>
                         </tr>
                     </tbody>
-                </b-table-simple>
-            </b-collapse>
+                </table>
+            </div>
 
-            <div class="card-actions">
+            <div class="card-body buttons">
                 <a
-                    class="btn btn-outline-primary"
+                    class="btn btn-primary"
                     @click.prevent="credentialsVisible = !credentialsVisible"
                 >
                     <icon icon="unfold_more" />
-                    {{ langShowHideCredentials }}
+                    <span>
+                        {{ langShowHideCredentials }}
+                    </span>
                 </a>
                 <template v-if="hasStarted">
-                    <a
-                        class="api-call no-reload btn btn-outline-secondary"
-                        :href="frontendRestartUri"
+                    <button
+                        class="btn btn-secondary"
+                        @click="makeApiCall(frontendRestartUri)"
                     >
                         <icon icon="update" />
-                        {{ $gettext('Restart') }}
-                    </a>
-                    <a
-                        v-show="!frontendRunning"
-                        class="api-call no-reload btn btn-outline-success"
-                        :href="frontendStartUri"
+                        <span>
+                            {{ $gettext('Restart') }}
+                        </span>
+                    </button>
+                    <button
+                        v-if="!frontendRunning"
+                        class="btn btn-success"
+                        @click="makeApiCall(frontendStartUri)"
                     >
                         <icon icon="play_arrow" />
-                        {{ $gettext('Start') }}
-                    </a>
-                    <a
-                        v-show="frontendRunning"
-                        class="api-call no-reload btn btn-outline-danger"
-                        :href="frontendStopUri"
+                        <span>
+                            {{ $gettext('Start') }}
+                        </span>
+                    </button>
+                    <button
+                        v-if="frontendRunning"
+                        class="btn btn-danger"
+                        @click="makeApiCall(frontendStopUri)"
                     >
                         <icon icon="stop" />
-                        {{ $gettext('Stop') }}
-                    </a>
+                        <span>
+                            {{ $gettext('Stop') }}
+                        </span>
+                    </button>
                 </template>
             </div>
         </template>
@@ -156,6 +161,8 @@ const props = defineProps({
     }
 });
 
+const emit = defineEmits(['api-call']);
+
 const credentialsVisible = useLocalStorage('station_show_frontend_credentials', false);
 
 const {$gettext} = useTranslate();
@@ -174,4 +181,8 @@ const frontendName = computed(() => {
     }
     return '';
 });
+
+const makeApiCall = (uri) => {
+    emit('api-call', uri);
+};
 </script>

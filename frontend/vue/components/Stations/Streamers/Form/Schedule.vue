@@ -1,13 +1,16 @@
 <template>
-    <b-tab :title="$gettext('Schedule')">
-        <b-form-group v-if="scheduleItems.length === 0">
-            <label>
+    <o-tab-item :label="$gettext('Schedule')">
+        <form-markup
+            v-if="scheduleItems.length === 0"
+            id="no_scheduled_entries"
+        >
+            <template #label>
                 {{ $gettext('Not Scheduled') }}
-            </label>
+            </template>
             <p>
                 {{ $gettext('This streamer is not scheduled to play at any times.') }}
             </p>
-        </b-form-group>
+        </form-markup>
 
         <streamers-form-schedule-row
             v-for="(row, index) in scheduleItems"
@@ -18,23 +21,25 @@
             @remove="remove(index)"
         />
 
-        <b-button-group>
-            <b-button
-                size="sm"
-                variant="outline-primary"
+        <div class="buttons mt-3">
+            <button
+                class="btn btn-sm btn-primary"
                 @click.prevent="add"
             >
                 <icon icon="add" />
-                {{ $gettext('Add Schedule Item') }}
-            </b-button>
-        </b-button-group>
-    </b-tab>
+                <span>
+                    {{ $gettext('Add Schedule Item') }}
+                </span>
+            </button>
+        </div>
+    </o-tab-item>
 </template>
 
 <script setup>
 import Icon from '~/components/Common/Icon';
 import StreamersFormScheduleRow from "~/components/Stations/Streamers/Form/ScheduleRow.vue";
 import {useVModel} from "@vueuse/core";
+import FormMarkup from "~/components/Form/FormMarkup.vue";
 
 const props = defineProps({
     form: {

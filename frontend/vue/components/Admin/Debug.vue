@@ -9,7 +9,7 @@
                 class="card mb-3"
                 aria-labelledby="hdr_clear_cache"
             >
-                <div class="card-header bg-primary-dark">
+                <div class="card-header text-bg-primary">
                     <h2
                         id="hdr_clear_cache"
                         class="card-title"
@@ -39,7 +39,7 @@
                 class="card mb-3"
                 aria-labelledby="hdr_clear_queues"
             >
-                <div class="card-header bg-primary-dark">
+                <div class="card-header text-bg-primary">
                     <h2
                         id="hdr_clear_queues"
                         class="card-title"
@@ -69,7 +69,7 @@
         class="card mb-3"
         aria-labelledby="hdr_sync_tasks"
     >
-        <div class="card-header bg-primary-dark">
+        <div class="card-header text-bg-primary">
             <h2
                 id="hdr_sync_tasks"
                 class="card-title"
@@ -104,7 +104,7 @@
         class="card mb-3"
         aria-labelledby="hdr_message_queues"
     >
-        <div class="card-header bg-primary-dark">
+        <div class="card-header text-bg-primary">
             <h2
                 id="hdr_message_queues"
                 class="card-title"
@@ -150,7 +150,7 @@
         class="card"
         aria-labelledby="hdr_station_debugging"
     >
-        <div class="card-header bg-primary-dark">
+        <div class="card-header text-bg-primary">
             <h2
                 id="hdr_station_debugging"
                 class="card-title"
@@ -158,54 +158,56 @@
                 {{ $gettext('Station-Specific Debugging') }}
             </h2>
         </div>
-        <b-tabs
-            pills
-            card
-        >
-            <b-tab
-                v-for="station in stations"
-                :key="station.id"
-                :title="station.name"
+        <div class="card-body">
+            <o-tabs
+                nav-tabs-class="nav-tabs"
+                content-class="mt-3"
             >
-                <h3>{{ station.name }}</h3>
+                <o-tab-item
+                    v-for="station in stations"
+                    :key="station.id"
+                    :label="station.name"
+                >
+                    <h3>{{ station.name }}</h3>
 
-                <div class="row">
-                    <div class="col-md-4">
-                        <h5>{{ $gettext('AutoDJ Queue') }}</h5>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <h5>{{ $gettext('AutoDJ Queue') }}</h5>
 
-                        <div class="buttons">
-                            <a
-                                class="btn btn-sm btn-primary"
-                                role="button"
-                                :href="station.clearQueueUrl"
-                            >
-                                {{ $gettext('Clear Queue') }}
-                            </a>
-                            <a
-                                class="btn btn-sm btn-primary"
-                                role="button"
-                                :href="station.getNextSongUrl"
-                            >
-                                {{ $gettext('Get Next Song') }}
-                            </a>
+                            <div class="buttons">
+                                <a
+                                    class="btn btn-sm btn-primary"
+                                    role="button"
+                                    :href="station.clearQueueUrl"
+                                >
+                                    {{ $gettext('Clear Queue') }}
+                                </a>
+                                <a
+                                    class="btn btn-sm btn-primary"
+                                    role="button"
+                                    :href="station.getNextSongUrl"
+                                >
+                                    {{ $gettext('Get Next Song') }}
+                                </a>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <h5>{{ $gettext('Get Now Playing') }}</h5>
+
+                            <div class="buttons">
+                                <a
+                                    class="btn btn-sm btn-primary"
+                                    role="button"
+                                    :href="station.getNowPlayingUrl"
+                                >
+                                    {{ $gettext('Run Task') }}
+                                </a>
+                            </div>
                         </div>
                     </div>
-                    <div class="col-md-4">
-                        <h5>{{ $gettext('Get Now Playing') }}</h5>
-
-                        <div class="buttons">
-                            <a
-                                class="btn btn-sm btn-primary"
-                                role="button"
-                                :href="station.getNowPlayingUrl"
-                            >
-                                {{ $gettext('Run Task') }}
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </b-tab>
-        </b-tabs>
+                </o-tab-item>
+            </o-tabs>
+        </div>
     </section>
 </template>
 

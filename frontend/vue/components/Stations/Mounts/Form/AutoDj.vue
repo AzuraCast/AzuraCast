@@ -1,72 +1,48 @@
 <template>
-    <b-tab :title="$gettext('AutoDJ')">
-        <b-form-group>
-            <div class="form-row mb-3">
-                <b-wrapped-form-checkbox
-                    id="edit_form_enable_autodj"
-                    class="col-md-12"
-                    :field="form.enable_autodj"
-                >
-                    <template #label>
-                        {{ $gettext('Enable AutoDJ') }}
-                    </template>
-                    <template #description>
-                        {{ $gettext('If enabled, the AutoDJ will automatically play music to this mount point.') }}
-                    </template>
-                </b-wrapped-form-checkbox>
-            </div>
+    <o-tab-item :label="$gettext('AutoDJ')">
+        <div class="row g-3 mb-3">
+            <form-group-checkbox
+                id="edit_form_enable_autodj"
+                class="col-md-12"
+                :field="form.enable_autodj"
+                :label="$gettext('Enable AutoDJ')"
+                :description="$gettext('If enabled, the AutoDJ will automatically play music to this mount point.')"
+            />
+        </div>
 
-            <div
-                v-if="form.enable_autodj.$model"
-                class="form-row"
-            >
-                <b-wrapped-form-group
-                    id="edit_form_autodj_format"
-                    class="col-md-6"
-                    :field="form.autodj_format"
-                >
-                    <template #label>
-                        {{ $gettext('AutoDJ Format') }}
-                    </template>
-                    <template #default="slotProps">
-                        <b-form-radio-group
-                            :id="slotProps.id"
-                            v-model="slotProps.field.$model"
-                            stacked
-                            :state="slotProps.state"
-                            :options="formatOptions"
-                        />
-                    </template>
-                </b-wrapped-form-group>
-                <b-wrapped-form-group
-                    v-if="formatSupportsBitrateOptions"
-                    id="edit_form_autodj_bitrate"
-                    class="col-md-6"
-                    :field="form.autodj_bitrate"
-                >
-                    <template #label>
-                        {{ $gettext('AutoDJ Bitrate (kbps)') }}
-                    </template>
-                    <template #default="slotProps">
-                        <b-form-radio-group
-                            :id="slotProps.id"
-                            v-model="slotProps.field.$model"
-                            stacked
-                            :state="slotProps.state"
-                            :options="bitrateOptions"
-                        />
-                    </template>
-                </b-wrapped-form-group>
-            </div>
-        </b-form-group>
-    </b-tab>
+        <div
+            v-if="form.enable_autodj.$model"
+            class="row g-3"
+        >
+            <form-group-multi-check
+                id="edit_form_autodj_format"
+                class="col-md-6"
+                :field="form.autodj_format"
+                :options="formatOptions"
+                stacked
+                radio
+                :label="$gettext('AutoDJ Format')"
+            />
+
+            <form-group-multi-check
+                v-if="formatSupportsBitrateOptions"
+                id="edit_form_autodj_bitrate"
+                class="col-md-6"
+                :field="form.autodj_bitrate"
+                :options="bitrateOptions"
+                stacked
+                radio
+                :label="$gettext('AutoDJ Bitrate (kbps)')"
+            />
+        </div>
+    </o-tab-item>
 </template>
 
 <script setup>
-import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
-import BWrappedFormCheckbox from "~/components/Form/BWrappedFormCheckbox";
+import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox";
 import {map} from "lodash";
 import {computed} from "vue";
+import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
 
 const props = defineProps({
     form: {

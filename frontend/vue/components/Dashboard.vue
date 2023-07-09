@@ -8,10 +8,10 @@
             role="region"
             :aria-label="$gettext('Account Details')"
         >
-            <div class="card-header bg-primary-dark d-flex flex-wrap align-items-center">
+            <div class="card-header text-bg-primary d-flex flex-wrap align-items-center">
                 <avatar
                     v-if="user.avatar.url"
-                    class="flex-shrink-0 mr-3"
+                    class="flex-shrink-0 me-3"
                     :url="user.avatar.url"
                     :service="user.avatar.service"
                     :service-url="user.avatar.serviceUrl"
@@ -28,21 +28,21 @@
 
                 <div class="flex-md-shrink-0 mt-3 mt-md-0 buttons">
                     <a
-                        class="btn btn-bg"
+                        class="btn btn-dark"
                         role="button"
                         :href="profileUrl"
                     >
                         <icon icon="account_circle" />
-                        {{ $gettext('My Account') }}
+                        <span>{{ $gettext('My Account') }}</span>
                     </a>
                     <a
                         v-if="showAdmin"
-                        class="btn btn-bg"
+                        class="btn btn-dark"
                         role="button"
                         :href="adminUrl"
                     >
                         <icon icon="settings" />
-                        {{ $gettext('Administration') }}
+                        <span>{{ $gettext('Administration') }}</span>
                     </a>
                 </div>
             </div>
@@ -51,14 +51,14 @@
                 <div
                     v-for="notification in notifications"
                     :key="notification.title"
-                    class="card-body d-flex align-items-center"
+                    class="card-body d-flex align-items-center alert"
                     :class="'alert-'+notification.type"
                     role="alert"
                     aria-live="polite"
                 >
                     <div
                         v-if="'info' === notification.type"
-                        class="flex-shrink-0 mr-3"
+                        class="flex-shrink-0 me-3"
                     >
                         <icon
                             class="lg"
@@ -67,7 +67,7 @@
                     </div>
                     <div
                         v-else
-                        class="flex-shrink-0 mr-3"
+                        class="flex-shrink-0 me-3"
                     >
                         <icon
                             class="lg"
@@ -82,16 +82,16 @@
                     </div>
                     <div
                         v-if="notification.actionLabel && notification.actionUrl"
-                        class="flex-shrink-0 ml-3"
+                        class="flex-shrink-0 ms-3"
                     >
-                        <b-button
+                        <a
+                            class="btn btn-sm"
+                            :class="'btn-'+notification.type"
                             :href="notification.actionUrl"
                             target="_blank"
-                            size="sm"
-                            variant="light"
                         >
                             {{ notification.actionLabel }}
-                        </b-button>
+                        </a>
                     </div>
                 </div>
             </template>
@@ -103,7 +103,7 @@
             role="region"
             aria-labelledby="hdr_listeners_per_station"
         >
-            <div class="card-header bg-primary-dark d-flex align-items-center">
+            <div class="card-header text-bg-primary d-flex align-items-center">
                 <div class="flex-fill">
                     <h3
                         id="hdr_listeners_per_station"
@@ -113,27 +113,26 @@
                     </h3>
                 </div>
                 <div class="flex-shrink-0">
-                    <b-button
-                        variant="outline-light"
-                        size="sm"
-                        class="py-2"
+                    <button
+                        class="btn btn-sm btn-dark py-2"
                         @click="chartsVisible = !chartsVisible"
                     >
                         {{
                             langShowHideCharts
                         }}
-                    </b-button>
+                    </button>
                 </div>
             </div>
-            <b-collapse
+            <div
                 id="charts"
-                v-model="chartsVisible"
+                class="card-body collapse collapse-vertical"
+                :class="(chartsVisible) ? 'show' : ''"
             >
                 <dashboard-charts
                     v-if="chartsVisible"
                     :charts-url="chartsUrl"
                 />
-            </b-collapse>
+            </div>
         </section>
 
         <section
@@ -141,7 +140,7 @@
             role="region"
             aria-labelledby="hdr_stations"
         >
-            <div class="card-header bg-primary-dark d-flex flex-wrap align-items-center">
+            <div class="card-header text-bg-primary d-flex flex-wrap align-items-center">
                 <div class="flex-fill">
                     <h2
                         id="hdr_stations"
@@ -154,30 +153,20 @@
                     v-if="showAdmin"
                     class="flex-shrink-0"
                 >
-                    <b-button
-                        variant="outline-light"
-                        size="sm"
-                        class="py-2"
+                    <a
+                        class="btn btn-dark py-2"
                         :href="manageStationsUrl"
                     >
                         <icon icon="settings" />
-                        {{ $gettext('Manage Stations') }}
-                    </b-button>
+                        <span>
+                            {{ $gettext('Manage Stations') }}
+                        </span>
+                    </a>
                 </div>
             </div>
 
-            <b-overlay
-                variant="card"
-                :show="stationsLoading"
-            >
-                <div
-                    v-if="stationsLoading"
-                    class="card-body py-3"
-                >
-                    &nbsp;
-                </div>
+            <loading :loading="stationsLoading">
                 <table
-                    v-else
                     id="station_dashboard"
                     class="table table-striped table-responsive mb-0"
                 >
@@ -190,17 +179,17 @@
                     </colgroup>
                     <thead>
                         <tr>
-                            <th class="pr-3">
-&nbsp;
+                            <th class="pe-3">
+                            &nbsp;
                             </th>
-                            <th class="pl-2">
+                            <th class="ps-2">
                                 {{ $gettext('Station Name') }}
                             </th>
                             <th class="text-center">
                                 {{ $gettext('Listeners') }}
                             </th>
                             <th>{{ $gettext('Now Playing') }}</th>
-                            <th class="text-right" />
+                            <th class="text-end" />
                         </tr>
                     </thead>
                     <tbody>
@@ -209,16 +198,15 @@
                             :key="item.station.id"
                             class="align-middle"
                         >
-                            <td class="text-center pr-3">
+                            <td class="text-center pe-1">
                                 <play-button
-                                    class="file-icon"
-                                    icon-class="lg outlined align-middle"
+                                    class="file-icon btn-xl"
                                     :url="item.station.listen_url"
                                     is-stream
                                 />
                             </td>
-                            <td class="pl-2">
-                                <div class="typography-subheading">
+                            <td class="ps-2">
+                                <div class="h5 m-0">
                                     {{ item.station.name }}
                                 </div>
                                 <div v-if="item.station.is_public">
@@ -231,7 +219,7 @@
                                 </div>
                             </td>
                             <td class="text-center">
-                                <span class="pr-1">
+                                <span class="pe-1">
                                     <icon
                                         class="sm align-middle"
                                         icon="headset"
@@ -254,7 +242,7 @@
                                     <album-art
                                         v-if="showAlbumArt"
                                         :src="item.now_playing.song.art"
-                                        class="flex-shrink-0 pr-3"
+                                        class="flex-shrink-0 pe-3"
                                     />
 
                                     <div
@@ -282,7 +270,7 @@
                                     </div>
                                 </div>
                             </td>
-                            <td class="text-right">
+                            <td class="text-end">
                                 <a
                                     class="btn btn-primary"
                                     :href="item.links.manage"
@@ -294,7 +282,7 @@
                         </tr>
                     </tbody>
                 </table>
-            </b-overlay>
+            </loading>
         </section>
     </div>
 </template>
@@ -310,6 +298,7 @@ import {computed} from "vue";
 import useRefreshableAsyncState from "~/functions/useRefreshableAsyncState";
 import DashboardCharts from "~/components/DashboardCharts.vue";
 import {useTranslate} from "~/vendor/gettext";
+import Loading from "~/components/Common/Loading.vue";
 
 const props = defineProps({
     userUrl: {

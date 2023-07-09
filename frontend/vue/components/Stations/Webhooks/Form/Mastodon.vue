@@ -1,5 +1,5 @@
 <template>
-    <b-form-group>
+    <form-markup id="mastodon_details">
         <template #label>
             {{ $gettext('Mastodon Account Details') }}
         </template>
@@ -28,58 +28,38 @@
                 $gettext('Once these steps are completed, enter the "Access Token" from the application\'s page into the field below.')
             }}
         </p>
-    </b-form-group>
+    </form-markup>
 
-    <b-form-group>
-        <div class="form-row">
-            <b-wrapped-form-group
-                id="form_config_instance_url"
-                class="col-md-6"
-                :field="form.config.instance_url"
-            >
-                <template #label>
-                    {{ $gettext('Mastodon Instance URL') }}
-                </template>
-                <template #description>
-                    {{ $gettext('If your Mastodon username is "@test@example.com", enter "example.com".') }}
-                </template>
-            </b-wrapped-form-group>
+    <div class="row g-3 mb-3">
+        <form-group-field
+            id="form_config_instance_url"
+            class="col-md-6"
+            :field="form.config.instance_url"
+            :label="$gettext('Mastodon Instance URL')"
+            :description="$gettext('If your Mastodon username is &quot;@test@example.com&quot;, enter &quot;example.com&quot;.')"
+        />
 
-            <b-wrapped-form-group
-                id="form_config_access_token"
-                class="col-md-6"
-                :field="form.config.access_token"
-            >
-                <template #label>
-                    {{ $gettext('Access Token') }}
-                </template>
-            </b-wrapped-form-group>
+        <form-group-field
+            id="form_config_access_token"
+            class="col-md-6"
+            :field="form.config.access_token"
+            :label="$gettext('Access Token')"
+        />
 
-            <common-rate-limit-fields :form="form" />
-        </div>
-    </b-form-group>
+        <common-rate-limit-fields :form="form" />
+    </div>
 
-    <b-form-group>
-        <div class="form-row">
-            <b-wrapped-form-group
-                id="form_config_visibility"
-                class="col-md-12"
-                :field="form.config.visibility"
-            >
-                <template #label>
-                    {{ $gettext('Message Visibility') }}
-                </template>
-                <template #default="slotProps">
-                    <b-form-radio-group
-                        :id="slotProps.id"
-                        v-model="slotProps.field.$model"
-                        stacked
-                        :options="visibilityOptions"
-                    />
-                </template>
-            </b-wrapped-form-group>
-        </div>
-    </b-form-group>
+    <div class="row g-3 mb-3">
+        <form-group-multi-check
+            id="form_config_visibility"
+            class="col-md-12"
+            :field="form.config.visibility"
+            :options="visibilityOptions"
+            stacked
+            radio
+            :label="$gettext('Message Visibility')"
+        />
+    </div>
 
     <common-social-post-fields
         :form="form"
@@ -88,11 +68,13 @@
 </template>
 
 <script setup>
-import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
+import FormGroupField from "~/components/Form/FormGroupField";
 import CommonRateLimitFields from "./Common/RateLimitFields";
 import CommonSocialPostFields from "./Common/SocialPostFields";
 import {computed} from "vue";
 import {useTranslate} from "~/vendor/gettext";
+import FormMarkup from "~/components/Form/FormMarkup.vue";
+import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
 
 const props = defineProps({
     form: {

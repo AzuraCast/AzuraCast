@@ -4,7 +4,7 @@
         role="region"
         aria-labelledby="hdr_install_stereo_tool"
     >
-        <div class="card-header bg-primary-dark">
+        <div class="card-header text-bg-primary">
             <h2
                 id="hdr_install_stereo_tool"
                 class="card-title"
@@ -14,11 +14,8 @@
         </div>
 
         <div class="card-body">
-            <b-overlay
-                variant="card"
-                :show="loading"
-            >
-                <div class="form-row">
+            <loading :loading="isLoading">
+                <div class="row g-3">
                     <div class="col-md-7">
                         <fieldset>
                             <legend>
@@ -94,7 +91,7 @@
                         />
                     </div>
                 </div>
-            </b-overlay>
+            </loading>
         </div>
     </section>
 </template>
@@ -103,8 +100,9 @@
 import FlowUpload from "~/components/Common/FlowUpload";
 import {computed, onMounted, ref} from "vue";
 import {useTranslate} from "~/vendor/gettext";
-import {useNotify} from "~/vendor/bootstrapVue";
+import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
+import Loading from "~/components/Common/Loading.vue";
 
 const props = defineProps({
     apiUrl: {
@@ -113,7 +111,7 @@ const props = defineProps({
     }
 });
 
-const loading = ref(true);
+const isLoading = ref(true);
 const version = ref(null);
 
 const {$gettext} = useTranslate();
@@ -136,10 +134,10 @@ const onError = (file, message) => {
 const {axios} = useAxios();
 
 const relist = () => {
-    loading.value = true;
+    isLoading.value = true;
     axios.get(props.apiUrl).then((resp) => {
         version.value = resp.data.version;
-        loading.value = false;
+        isLoading.value = false;
     });
 };
 

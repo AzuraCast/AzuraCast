@@ -5,7 +5,7 @@
         aria-labelledby="hdr_streamers"
     >
         <template v-if="enableStreamers">
-            <div class="card-header bg-primary-dark">
+            <div class="card-header text-bg-primary">
                 <h3
                     id="hdr_streamers"
                     class="card-title"
@@ -16,29 +16,33 @@
             </div>
             <div
                 v-if="userCanManageStreamers || userCanManageProfile"
-                class="card-actions"
+                class="card-body buttons"
             >
                 <a
                     v-if="userCanManageStreamers"
-                    class="btn btn-outline-primary"
+                    class="btn btn-primary"
                     :href="streamersViewUri"
                 >
                     <icon icon="settings" />
-                    {{ $gettext('Manage') }}
+                    <span>
+                        {{ $gettext('Manage') }}
+                    </span>
                 </a>
                 <a
                     v-if="userCanManageProfile"
-                    class="btn btn-outline-danger"
-                    :data-confirm-title="$gettext('Disable streamers?')"
+                    v-confirm-link="$gettext('Disable streamers?')"
+                    class="btn btn-danger"
                     :href="streamersToggleUri"
                 >
                     <icon icon="close" />
-                    {{ $gettext('Disable') }}
+                    <span>
+                        {{ $gettext('Disable') }}
+                    </span>
                 </a>
             </div>
         </template>
         <template v-else>
-            <div class="card-header bg-primary-dark">
+            <div class="card-header text-bg-primary">
                 <h3 class="card-title">
                     {{ $gettext('Streamers/DJs') }}
                     <enabled-badge :enabled="false" />
@@ -46,15 +50,17 @@
             </div>
             <div
                 v-if="userCanManageProfile"
-                class="card-actions"
+                class="card-body buttons"
             >
                 <a
-                    class="btn btn-outline-success"
-                    :data-confirm-title="$gettext('Enable streamers?')"
+                    v-confirm-link="$gettext('Enable streamers?')"
+                    class="btn btn-success"
                     :href="streamersToggleUri"
                 >
                     <icon icon="check" />
-                    {{ $gettext('Enable') }}
+                    <span>
+                        {{ $gettext('Enable') }}
+                    </span>
                 </a>
             </div>
         </template>

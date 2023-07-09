@@ -1,45 +1,44 @@
 <template>
-    <b-modal
+    <modal
         id="rename_file"
         ref="$modal"
         centered
         :title="$gettext('Rename File/Directory')"
     >
-        <b-form @submit.prevent="doRename">
-            <b-wrapped-form-group
+        <form @submit.prevent="doRename">
+            <form-group-field
                 id="new_directory_name"
                 :field="v$.newPath"
                 autofocus
-            >
-                <template #label>
-                    {{ $gettext('New File Name') }}
-                </template>
-            </b-wrapped-form-group>
-        </b-form>
+                :label="$gettext('New File Name')"
+            />
+        </form>
         <template #modal-footer>
-            <b-button
-                variant="default"
+            <button
+                class="btn btn-secondary"
                 @click="close"
             >
                 {{ $gettext('Close') }}
-            </b-button>
-            <b-button
-                :variant="(v$.$invalid) ? 'danger' : 'primary'"
+            </button>
+            <button
+                class="btn"
+                :class="(v$.$invalid) ? 'btn-danger' : 'btn-primary'"
                 @click="doRename"
             >
                 {{ $gettext('Rename') }}
-            </b-button>
+            </button>
         </template>
-    </b-modal>
+    </modal>
 </template>
 
 <script setup>
 import {required} from '@vuelidate/validators';
-import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
+import FormGroupField from "~/components/Form/FormGroupField";
 import {ref} from "vue";
 import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
-import {useNotify} from "~/vendor/bootstrapVue";
+import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
+import Modal from "~/components/Common/Modal.vue";
 
 const props = defineProps({
     renameUrl: {

@@ -1,186 +1,132 @@
 <template>
-    <b-form-fieldset>
-        <div class="form-row">
-            <b-wrapped-form-group
-                id="edit_form_name"
-                class="col-md-12"
-                :field="form.name"
-            >
-                <template #label>
-                    {{ $gettext('Name') }}
-                </template>
-            </b-wrapped-form-group>
+    <div class="row g-3 mb-3">
+        <form-group-field
+            id="edit_form_name"
+            class="col-md-12"
+            :field="form.name"
+            :label="$gettext('Name')"
+        />
 
-            <b-wrapped-form-group
-                id="edit_form_description"
-                class="col-md-12"
-                :field="form.description"
-                input-type="textarea"
-            >
-                <template #label>
-                    {{ $gettext('Description') }}
-                </template>
-            </b-wrapped-form-group>
+        <form-group-field
+            id="edit_form_description"
+            class="col-md-12"
+            :field="form.description"
+            input-type="textarea"
+            :label="$gettext('Description')"
+        />
 
-            <b-wrapped-form-group
-                id="edit_form_genre"
-                class="col-md-6"
-                :field="form.genre"
-            >
-                <template #label>
-                    {{ $gettext('Genre') }}
-                </template>
-            </b-wrapped-form-group>
+        <form-group-field
+            id="edit_form_genre"
+            class="col-md-6"
+            :field="form.genre"
+            :label="$gettext('Genre')"
+        />
 
-            <b-wrapped-form-group
-                id="edit_form_url"
-                class="col-md-6"
-                :field="form.url"
-                input-type="url"
-            >
-                <template #label>
-                    {{ $gettext('Web Site URL') }}
-                </template>
-                <template #description>
-                    {{
-                        $gettext('Note: This should be the public-facing homepage of the radio station, not the AzuraCast URL. It will be included in broadcast details.')
-                    }}
-                </template>
-            </b-wrapped-form-group>
+        <form-group-field
+            id="edit_form_url"
+            class="col-md-6"
+            :field="form.url"
+            input-type="url"
+            :label="$gettext('Web Site URL')"
+            :description="$gettext('Note: This should be the public-facing homepage of the radio station, not the AzuraCast URL. It will be included in broadcast details.')"
+        />
 
-            <b-wrapped-form-group
-                id="edit_form_timezone"
-                class="col-md-12"
-                :field="form.timezone"
-            >
-                <template #label>
-                    {{ $gettext('Time Zone') }}
-                </template>
-                <template #description>
-                    {{
-                        $gettext('Scheduled playlists and other timed items will be controlled by this time zone.')
-                    }}
-                </template>
-                <template #default="slotProps">
-                    <b-form-select
-                        :id="slotProps.id"
-                        v-model="slotProps.field.$model"
-                        :options="timezoneOptions"
-                    />
-                </template>
-            </b-wrapped-form-group>
+        <form-group-select
+            id="edit_form_timezone"
+            class="col-md-12"
+            :field="form.timezone"
+            :options="timezoneOptions"
+            :label="$gettext('Time Zone')"
+            :description="$gettext('Scheduled playlists and other timed items will be controlled by this time zone.')"
+        />
 
-            <b-wrapped-form-group
-                v-if="showAdvanced"
-                id="edit_form_short_name"
-                class="col-md-6"
-                :field="form.short_name"
-                advanced
-            >
-                <template #label>
-                    {{ $gettext('URL Stub') }}
-                </template>
-                <template #description>
-                    {{
-                        $gettext('Optionally specify a short URL-friendly name, such as "my_station_name", that will be used in this station\'s URLs. Leave this field blank to automatically create one based on the station name.')
-                    }}
-                </template>
-            </b-wrapped-form-group>
+        <form-group-field
+            v-if="showAdvanced"
+            id="edit_form_short_name"
+            class="col-md-6"
+            :field="form.short_name"
+            advanced
+            :label="$gettext('URL Stub')"
+        >
+            <template #description>
+                {{
+                    $gettext('Optionally specify a short URL-friendly name, such as "my_station_name", that will be used in this station\'s URLs. Leave this field blank to automatically create one based on the station name.')
+                }}
+            </template>
+        </form-group-field>
 
-            <b-wrapped-form-group
-                v-if="showAdvanced"
-                id="edit_form_api_history_items"
-                class="col-md-6"
-                :field="form.api_history_items"
-                advanced
-            >
-                <template #label>
-                    {{ $gettext('Number of Visible Recent Songs') }}
-                </template>
-                <template #description>
-                    {{
-                        $gettext('Customize the number of songs that will appear in the "Song History" section for this station and in all public APIs.')
-                    }}
-                </template>
-                <template #default="slotProps">
-                    <b-form-select
-                        :id="slotProps.id"
-                        v-model="slotProps.field.$model"
-                        :options="historyItemsOptions"
-                    />
-                </template>
-            </b-wrapped-form-group>
-        </div>
-    </b-form-fieldset>
+        <form-group-select
+            v-if="showAdvanced"
+            id="edit_form_api_history_items"
+            class="col-md-6"
+            :field="form.api_history_items"
+            advanced
+            :options="historyItemsOptions"
+            :label="$gettext('Number of Visible Recent Songs')"
+        >
+            <template #description>
+                {{
+                    $gettext('Customize the number of songs that will appear in the "Song History" section for this station and in all public APIs.')
+                }}
+            </template>
+        </form-group-select>
+    </div>
 
-    <b-form-fieldset>
+    <form-fieldset>
         <template #label>
             {{ $gettext('Public Pages') }}
         </template>
 
-        <div class="form-row">
-            <b-wrapped-form-checkbox
+        <div class="row g-3">
+            <form-group-checkbox
                 id="edit_form_enable_public_page"
                 class="col-md-12"
                 :field="form.enable_public_page"
-            >
-                <template #label>
-                    {{ $gettext('Enable Public Pages') }}
-                </template>
-                <template #description>
-                    {{ $gettext('Show the station in public pages and general API results.') }}
-                </template>
-            </b-wrapped-form-checkbox>
+                :label="$gettext('Enable Public Pages')"
+                :description="$gettext('Show the station in public pages and general API results.')"
+            />
         </div>
-    </b-form-fieldset>
+    </form-fieldset>
 
-    <b-form-fieldset>
+    <form-fieldset>
         <template #label>
             {{ $gettext('On-Demand Streaming') }}
         </template>
 
-        <div class="form-row">
-            <b-wrapped-form-checkbox
+        <div class="row g-3">
+            <form-group-checkbox
                 id="edit_form_enable_on_demand"
                 class="col-md-12"
                 :field="form.enable_on_demand"
-            >
-                <template #label>
-                    {{ $gettext('Enable On-Demand Streaming') }}
-                </template>
-                <template #description>
-                    {{
-                        $gettext('If enabled, music from playlists with on-demand streaming enabled will be available to stream via a specialized public page.')
-                    }}
-                </template>
-            </b-wrapped-form-checkbox>
+                :label="$gettext('Enable On-Demand Streaming')"
+                :description="$gettext('If enabled, music from playlists with on-demand streaming enabled will be available to stream via a specialized public page.')"
+            />
 
-            <b-wrapped-form-checkbox
+            <form-group-checkbox
                 v-if="form.enable_on_demand.$model"
                 id="edit_form_enable_on_demand_download"
                 class="col-md-12"
                 :field="form.enable_on_demand_download"
+                :label="$gettext('Enable Downloads on On-Demand Page')"
             >
-                <template #label>
-                    {{ $gettext('Enable Downloads on On-Demand Page') }}
-                </template>
                 <template #description>
                     {{
                         $gettext('If enabled, a download button will also be present on the public "On-Demand" page.')
                     }}
                 </template>
-            </b-wrapped-form-checkbox>
+            </form-group-checkbox>
         </div>
-    </b-form-fieldset>
+    </form-fieldset>
 </template>
 
 <script setup>
-import BFormFieldset from "~/components/Form/BFormFieldset.vue";
-import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup.vue";
+import FormFieldset from "~/components/Form/FormFieldset";
+import FormGroupField from "~/components/Form/FormGroupField.vue";
 import objectToFormOptions from "~/functions/objectToFormOptions";
-import BWrappedFormCheckbox from "~/components/Form/BWrappedFormCheckbox.vue";
+import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
 import {computed} from "vue";
 import {useTranslate} from "~/vendor/gettext";
+import FormGroupSelect from "~/components/Form/FormGroupSelect.vue";
 
 const props = defineProps({
     form: {

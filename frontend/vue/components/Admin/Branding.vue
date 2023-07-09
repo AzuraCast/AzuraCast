@@ -8,7 +8,7 @@
         role="region"
         aria-labelledby="hdr_upload_custom_assets"
     >
-        <div class="card-header bg-primary-dark">
+        <div class="card-header text-bg-primary">
             <h2
                 id="hdr_upload_custom_assets"
                 class="card-title"

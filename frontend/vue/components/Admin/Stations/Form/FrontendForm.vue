@@ -1,203 +1,136 @@
 <template>
-    <b-form-fieldset>
-        <div class="form-row">
-            <b-wrapped-form-group
-                id="edit_form_frontend_type"
-                class="col-md-12"
-                :field="form.frontend_type"
-            >
-                <template #label>
-                    {{ $gettext('Broadcasting Service') }}
-                </template>
-                <template #description>
-                    {{ $gettext('This software delivers your broadcast to the listening audience.') }}
-                </template>
-                <template #default="slotProps">
-                    <b-form-radio-group
-                        :id="slotProps.id"
-                        v-model="slotProps.field.$model"
-                        stacked
-                        :options="frontendTypeOptions"
-                    />
-                </template>
-            </b-wrapped-form-group>
+    <div class="row g-3 mb-3">
+        <form-group-multi-check
+            id="edit_form_frontend_type"
+            class="col-md-12"
+            :field="form.frontend_type"
+            :options="frontendTypeOptions"
+            stacked
+            radio
+            :label="$gettext('Broadcasting Service')"
+            :description="$gettext('This software delivers your broadcast to the listening audience.')"
+        />
+    </div>
+
+    <template v-if="isLocalFrontend">
+        <div
+            v-if="isShoutcastFrontend"
+            class="row g-3 mb-3"
+        >
+            <form-group-field
+                id="edit_form_frontend_sc_license_id"
+                class="col-md-6"
+                :field="form.frontend_config.sc_license_id"
+                :label="$gettext('Shoutcast License ID')"
+            />
+
+            <form-group-field
+                id="edit_form_frontend_sc_user_id"
+                class="col-md-6"
+                :field="form.frontend_config.sc_user_id"
+                :label="$gettext('Shoutcast User ID')"
+            />
         </div>
-    </b-form-fieldset>
 
-    <b-form-fieldset v-if="isLocalFrontend">
-        <b-form-fieldset v-if="isShoutcastFrontend">
-            <div class="form-row">
-                <b-wrapped-form-group
-                    id="edit_form_frontend_sc_license_id"
-                    class="col-md-6"
-                    :field="form.frontend_config.sc_license_id"
-                >
-                    <template #label>
-                        {{ $gettext('Shoutcast License ID') }}
-                    </template>
-                </b-wrapped-form-group>
+        <div class="row g-3 mb-3">
+            <form-group-field
+                id="edit_form_frontend_source_pw"
+                class="col-md-6"
+                :field="form.frontend_config.source_pw"
+                :label="$gettext('Customize Source Password')"
+                :description="$gettext('Leave blank to automatically generate a new password.')"
+            />
 
-                <b-wrapped-form-group
-                    id="edit_form_frontend_sc_user_id"
-                    class="col-md-6"
-                    :field="form.frontend_config.sc_user_id"
-                >
-                    <template #label>
-                        {{ $gettext('Shoutcast User ID') }}
-                    </template>
-                </b-wrapped-form-group>
-            </div>
-        </b-form-fieldset>
+            <form-group-field
+                id="edit_form_frontend_admin_pw"
+                class="col-md-6"
+                :field="form.frontend_config.admin_pw"
+                :label="$gettext('Customize Administrator Password')"
+                :description="$gettext('Leave blank to automatically generate a new password.')"
+            />
 
-        <b-form-fieldset>
-            <div class="form-row">
-                <b-wrapped-form-group
-                    id="edit_form_frontend_source_pw"
-                    class="col-md-6"
-                    :field="form.frontend_config.source_pw"
-                >
-                    <template #label>
-                        {{ $gettext('Customize Source Password') }}
-                    </template>
-                    <template #description>
-                        {{ $gettext('Leave blank to automatically generate a new password.') }}
-                    </template>
-                </b-wrapped-form-group>
+            <form-group-field
+                v-if="showAdvanced"
+                id="edit_form_frontend_port"
+                class="col-md-6"
+                :field="form.frontend_config.port"
+                input-type="number"
+                :input-attrs="{min: '0'}"
+                advanced
+                :label="$gettext('Customize Broadcasting Port')"
+                :description="$gettext('No other program can be using this port. Leave blank to automatically assign a port.')"
+            />
 
-                <b-wrapped-form-group
-                    id="edit_form_frontend_admin_pw"
-                    class="col-md-6"
-                    :field="form.frontend_config.admin_pw"
-                >
-                    <template #label>
-                        {{ $gettext('Customize Administrator Password') }}
-                    </template>
-                    <template #description>
-                        {{ $gettext('Leave blank to automatically generate a new password.') }}
-                    </template>
-                </b-wrapped-form-group>
+            <form-group-field
+                v-if="showAdvanced"
+                id="edit_form_max_listeners"
+                class="col-md-6"
+                :field="form.frontend_config.max_listeners"
+                advanced
+                :label="$gettext('Maximum Listeners')"
+                :description="$gettext('Maximum number of total listeners across all streams. Leave blank to use the default.')"
+            />
+        </div>
 
-                <b-wrapped-form-group
-                    v-if="showAdvanced"
-                    id="edit_form_frontend_port"
-                    class="col-md-6"
-                    :field="form.frontend_config.port"
-                    input-type="number"
-                    :input-attrs="{min: '0'}"
+        <div
+            v-if="showAdvanced"
+            class="row g-3 mb-3"
+        >
+            <div class="col-md-5">
+                <form-group-field
+                    id="edit_form_frontend_banned_ips"
+                    :field="form.frontend_config.banned_ips"
+                    input-type="textarea"
+                    :input-attrs="{class: 'text-preformatted'}"
                     advanced
-                >
-                    <template #label>
-                        {{ $gettext('Customize Broadcasting Port') }}
-                    </template>
-                    <template #description>
-                        {{
-                            $gettext('No other program can be using this port. Leave blank to automatically assign a port.')
-                        }}
-                    </template>
-                </b-wrapped-form-group>
+                    :label="$gettext('Banned IP Addresses')"
+                    :description="$gettext('List one IP address or group (in CIDR format) per line.')"
+                />
 
-                <b-wrapped-form-group
-                    v-if="showAdvanced"
-                    id="edit_form_max_listeners"
-                    class="col-md-6"
-                    :field="form.frontend_config.max_listeners"
+                <form-group-field
+                    id="edit_form_frontend_allowed_ips"
+                    :field="form.frontend_config.allowed_ips"
+                    input-type="textarea"
+                    :input-attrs="{class: 'text-preformatted'}"
                     advanced
-                >
-                    <template #label>
-                        {{ $gettext('Maximum Listeners') }}
-                    </template>
-                    <template #description>
-                        {{
-                            $gettext('Maximum number of total listeners across all streams. Leave blank to use the default.')
-                        }}
-                    </template>
-                </b-wrapped-form-group>
+                    :label="$gettext('Allowed IP Addresses')"
+                    :description="$gettext('List one IP address or group (in CIDR format) per line.')"
+                />
+
+                <form-group-field
+                    id="edit_form_frontend_banned_user_agents"
+                    :field="form.frontend_config.banned_user_agents"
+                    input-type="textarea"
+                    :input-attrs="{class: 'text-preformatted'}"
+                    advanced
+                    :label="$gettext('Banned User Agents')"
+                    :description="$gettext('List one user agent per line. Wildcards (*) are allowed.')"
+                />
             </div>
-        </b-form-fieldset>
 
-        <b-form-fieldset v-if="showAdvanced">
-            <div class="form-row">
-                <b-col md="5">
-                    <b-wrapped-form-group
-                        id="edit_form_frontend_banned_ips"
-                        :field="form.frontend_config.banned_ips"
-                        input-type="textarea"
-                        :input-attrs="{class: 'text-preformatted'}"
-                        advanced
-                    >
-                        <template #label>
-                            {{ $gettext('Banned IP Addresses') }}
-                        </template>
-                        <template #description>
-                            {{ $gettext('List one IP address or group (in CIDR format) per line.') }}
-                        </template>
-                    </b-wrapped-form-group>
-
-                    <b-wrapped-form-group
-                        id="edit_form_frontend_allowed_ips"
-                        :field="form.frontend_config.allowed_ips"
-                        input-type="textarea"
-                        :input-attrs="{class: 'text-preformatted'}"
-                        advanced
-                    >
-                        <template #label>
-                            {{ $gettext('Allowed IP Addresses') }}
-                        </template>
-                        <template #description>
-                            {{ $gettext('List one IP address or group (in CIDR format) per line.') }}
-                        </template>
-                    </b-wrapped-form-group>
-
-                    <b-wrapped-form-group
-                        id="edit_form_frontend_banned_user_agents"
-                        :field="form.frontend_config.banned_user_agents"
-                        input-type="textarea"
-                        :input-attrs="{class: 'text-preformatted'}"
-                        advanced
-                    >
-                        <template #label>
-                            {{ $gettext('Banned User Agents') }}
-                        </template>
-                        <template #description>
-                            {{ $gettext('List one user agent per line. Wildcards (*) are allowed.') }}
-                        </template>
-                    </b-wrapped-form-group>
-                </b-col>
-
-                <b-wrapped-form-group
+            <div class="col-md-7">
+                <form-group-select
                     id="edit_form_frontend_banned_countries"
-                    class="col-md-7"
                     :field="form.frontend_config.banned_countries"
+                    :options="countryOptions"
                     advanced
-                >
-                    <template #label>
-                        {{ $gettext('Banned Countries') }}
-                    </template>
-                    <template #description>
-                        {{ $gettext('Select the countries that are not allowed to connect to the streams.') }}
-                    </template>
-                    <template #default="slotProps">
-                        <b-form-select
-                            :id="slotProps.id"
-                            v-model="slotProps.field.$model"
-                            :options="countryOptions"
-                            style="min-height: 300px;"
-                            multiple
-                        />
+                    multiple
+                    :label="$gettext('Banned Countries')"
+                    :description="$gettext('Select the countries that are not allowed to connect to the streams.')"
+                />
 
-                        <b-button
-                            block
-                            variant="outline-primary"
-                            @click.prevent="clearCountries"
-                        >
-                            {{ $gettext('Clear List') }}
-                        </b-button>
-                    </template>
-                </b-wrapped-form-group>
+                <div class="block-buttons">
+                    <button
+                        class="btn btn-block btn-primary"
+                        @click.prevent="clearCountries"
+                    >
+                        {{ $gettext('Clear List') }}
+                    </button>
+                </div>
             </div>
-        </b-form-fieldset>
+        </div>
 
-        <b-form-fieldset v-if="showAdvanced">
+        <form-fieldset v-if="showAdvanced">
             <template #label>
                 {{ $gettext('Custom Configuration') }}
             </template>
@@ -209,31 +142,30 @@
                 </ul>
             </template>
 
-            <div class="form-row">
-                <b-wrapped-form-group
+            <div class="row g-3">
+                <form-group-field
                     id="edit_form_frontend_custom_config"
                     class="col-md-12"
                     :field="form.frontend_config.custom_config"
                     input-type="textarea"
                     :input-attrs="{class: 'text-preformatted', spellcheck: 'false', 'max-rows': 25, rows: 5}"
                     advanced
-                >
-                    <template #label>
-                        {{ $gettext('Custom Configuration') }}
-                    </template>
-                </b-wrapped-form-group>
+                    :label="$gettext('Custom Configuration')"
+                />
             </div>
-        </b-form-fieldset>
-    </b-form-fieldset>
+        </form-fieldset>
+    </template>
 </template>
 
 <script setup>
-import BFormFieldset from "~/components/Form/BFormFieldset.vue";
-import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup.vue";
+import FormFieldset from "~/components/Form/FormFieldset";
+import FormGroupField from "~/components/Form/FormGroupField.vue";
 import {FRONTEND_ICECAST, FRONTEND_REMOTE, FRONTEND_SHOUTCAST} from "~/components/Entity/RadioAdapters";
 import objectToFormOptions from "~/functions/objectToFormOptions";
 import {computed} from "vue";
 import {useTranslate} from "~/vendor/gettext";
+import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
+import FormGroupSelect from "~/components/Form/FormGroupSelect.vue";
 
 const props = defineProps({
     form: {

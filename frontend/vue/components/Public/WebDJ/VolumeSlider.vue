@@ -45,12 +45,3 @@ const reset = () => {
     volume.value = initial.value;
 }
 </script>
-
-<script>
-export default {
-    model: {
-        prop: 'modelValue',
-        event: 'update:modelValue'
-    }
-}
-</script>

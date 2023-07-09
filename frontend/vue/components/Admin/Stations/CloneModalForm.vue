@@ -1,50 +1,36 @@
 <template>
-    <div class="form-row">
-        <b-wrapped-form-group
+    <div class="row g-3">
+        <form-group-field
             id="edit_form_name"
             class="col-md-12"
             :field="form.name"
-        >
-            <template #label>
-                {{ $gettext('New Station Name') }}
-            </template>
-        </b-wrapped-form-group>
+            :label="$gettext('New Station Name')"
+        />
 
-        <b-wrapped-form-group
+        <form-group-field
             id="edit_form_description"
             class="col-md-12"
             :field="form.description"
             input-type="textarea"
-        >
-            <template #label>
-                {{ $gettext('New Station Description') }}
-            </template>
-        </b-wrapped-form-group>
+            :label="$gettext('New Station Description')"
+        />
 
-        <b-wrapped-form-group
+        <form-group-multi-check
             id="edit_form_clone"
             class="col-md-12"
             :field="form.clone"
-        >
-            <template #label>
-                {{ $gettext('Copy to New Station') }}
-            </template>
-            <template #default="slotProps">
-                <b-form-checkbox-group
-                    :id="slotProps.id"
-                    v-model="slotProps.field.$model"
-                    :options="cloneOptions"
-                    stacked
-                />
-            </template>
-        </b-wrapped-form-group>
+            :options="cloneOptions"
+            stacked
+            :label="$gettext('Copy to New Station')"
+        />
     </div>
 </template>
 
 <script setup>
-import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup.vue";
+import FormGroupField from "~/components/Form/FormGroupField.vue";
 import {computed} from "vue";
 import {useTranslate} from "~/vendor/gettext";
+import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
 
 const props = defineProps({
     form: {

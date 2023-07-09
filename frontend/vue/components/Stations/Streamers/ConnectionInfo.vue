@@ -4,7 +4,7 @@
         role="region"
         aria-labelledby="hdr_connection_info"
     >
-        <div class="card-header bg-primary-dark">
+        <div class="card-header text-bg-primary">
             <h2
                 id="hdr_connection_info"
                 class="card-title"

@@ -14,31 +14,30 @@
             @select="setType"
         />
 
-        <b-tabs
+        <o-tabs
             v-else
-            lazy
+            nav-tabs-class="nav-tabs"
             content-class="mt-3"
-            pills
+            destroy-on-hide
         >
-            <b-tab active>
-                <template #title>
-                    {{ $gettext('Basic Info') }}
-                </template>
-
+            <o-tab-item
+                active
+                :label="$gettext('Basic Info')"
+            >
                 <basic-info
                     :trigger-details="triggerDetails"
                     :triggers="triggers"
                     :form="v$"
                 />
-            </b-tab>
-            <b-tab :title="typeTitle">
+            </o-tab-item>
+            <o-tab-item :label="typeTitle">
                 <component
                     :is="formComponent"
                     :now-playing-url="nowPlayingUrl"
                     :form="v$"
                 />
-            </b-tab>
-        </b-tabs>
+            </o-tab-item>
+        </o-tabs>
     </modal-form>
 </template>
 
@@ -438,9 +437,13 @@ const {
 );
 
 const langTitle = computed(() => {
-    return isEditMode.value
-        ? $gettext('Edit Web Hook')
-        : $gettext('Add Web Hook');
+    if (isEditMode.value) {
+        return $gettext('Edit Web Hook');
+    }
+
+    return type.value
+        ? $gettext('Add Web Hook')
+        : $gettext('Select Web Hook Type');
 });
 
 const clearContents = () => {

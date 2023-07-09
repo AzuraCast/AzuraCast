@@ -5,7 +5,7 @@
         role="region"
         aria-labelledby="hdr_backend_disabled"
     >
-        <div class="card-header bg-primary-dark">
+        <div class="card-header text-bg-primary">
             <h3
                 id="hdr_backend_disabled"
                 class="card-title"

@@ -6,7 +6,7 @@
                 role="region"
                 aria-labelledby="hdr_available_logs"
             >
-                <div class="card-header bg-primary-dark">
+                <div class="card-header text-bg-primary">
                     <h2
                         id="hdr_available_logs"
                         class="card-title"
@@ -29,7 +29,7 @@
                 role="region"
                 aria-labelledby="hdr_need_help"
             >
-                <div class="card-header bg-primary-dark">
+                <div class="card-header text-bg-primary">
                     <h2
                         id="hdr_need_help"
                         class="card-title"
@@ -55,15 +55,17 @@
                         }}
                     </p>
                 </div>
-                <div class="card-actions">
+                <div class="card-body">
                     <a
-                        class="btn btn-outline-primary"
+                        class="btn btn-primary"
                         role="button"
                         href="https://github.com/AzuraCast/AzuraCast/issues/new/choose"
                         target="_blank"
                     >
                         <icon icon="contact_support" />
-                        {{ $gettext('Add New GitHub Issue') }}
+                        <span>
+                            {{ $gettext('Add New GitHub Issue') }}
+                        </span>
                     </a>
                 </div>
             </section>

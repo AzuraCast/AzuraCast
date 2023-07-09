@@ -1,42 +1,45 @@
 <template>
-    <b-form-group>
-        <b-row>
-            <b-col md="4">
-                <b-img
-                    :src="albumArtSrc"
-                    rounded
-                    fluid
-                />
-                <br>
-                <b-button
-                    block
-                    variant="link"
-                    class="text-danger mt-2"
+    <div class="row g-3">
+        <div class="col-md-4">
+            <img
+                :src="albumArtSrc"
+                class="rounded img-fluid"
+                alt="Album Art"
+            >
+
+            <div class="block-buttons mt-2">
+                <button
+                    class="btn btn-link btn-block btn-danger"
                     @click="deleteArt"
                 >
                     {{ $gettext('Delete Album Art') }}
-                </b-button>
-            </b-col>
-            <b-col md="8">
-                <b-form-group label-for="edit_form_art">
-                    <template #label>
-                        {{ $gettext('Replace Album Cover Art') }}
-                    </template>
-                    <b-form-file
-                        id="edit_form_art"
-                        v-model="artFile"
+                </button>
+            </div>
+        </div>
+        <div class="col-md-8">
+            <form-group id="edit_form_art">
+                <template #label>
+                    {{ $gettext('Replace Album Cover Art') }}
+                </template>
+
+                <template #default="{id}">
+                    <form-file
+                        :id="id"
                         accept="image/*"
+                        @uploaded="uploaded"
                     />
-                </b-form-group>
-            </b-col>
-        </b-row>
-    </b-form-group>
+                </template>
+            </form-group>
+        </div>
+    </div>
 </template>
 
 <script setup>
 import {ref, toRef, watch} from "vue";
 import {syncRef} from "@vueuse/core";
 import {useAxios} from "~/vendor/axios";
+import FormGroup from "~/components/Form/FormGroup.vue";
+import FormFile from "~/components/Form/FormFile.vue";
 
 const props = defineProps({
     albumArtUrl: {
@@ -48,17 +51,14 @@ const props = defineProps({
 const albumArtSrc = ref(null);
 syncRef(toRef(props, 'albumArtUrl'), albumArtSrc, {direction: 'ltr'});
 
-const artFile = ref(null);
-
 const reloadArt = () => {
-    artFile.value = null;
     albumArtSrc.value = props.albumArtUrl + '?' + Math.floor(Date.now() / 1000);
 }
 watch(toRef(props, 'albumArtUrl'), reloadArt);
 
 const {axios} = useAxios();
 
-watch(artFile, (file) => {
+const uploaded = (file) => {
     if (null === file) {
         return;
     }
@@ -69,7 +69,7 @@ watch(artFile, (file) => {
     axios.post(props.albumArtUrl, formData).finally(() => {
         reloadArt();
     });
-});
+};
 
 const deleteArt = () => {
     axios.delete(props.albumArtUrl).finally(() => {

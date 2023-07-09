@@ -4,7 +4,7 @@
         role="region"
         aria-labelledby="hdr_install_geolite"
     >
-        <div class="card-header bg-primary-dark">
+        <div class="card-header text-bg-primary">
             <h2
                 id="hdr_install_geolite"
                 class="card-title"
@@ -20,11 +20,8 @@
         </info-card>
 
         <div class="card-body">
-            <b-overlay
-                variant="card"
-                :show="loading"
-            >
-                <div class="form-row">
+            <loading :loading="isLoading">
+                <div class="row g-3">
                     <div class="col-md-7">
                         <fieldset>
                             <legend>{{ $gettext('Instructions') }}</legend>
@@ -82,48 +79,48 @@
 
                         <form @submit.prevent="doUpdate">
                             <fieldset>
-                                <b-wrapped-form-group
+                                <form-group-field
                                     id="edit_form_key"
                                     :field="v$.key"
                                 >
                                     <template #label>
                                         {{ $gettext('MaxMind License Key') }}
                                     </template>
-                                </b-wrapped-form-group>
+                                </form-group-field>
                             </fieldset>
 
                             <div class="buttons">
-                                <b-button
-                                    variant="primary"
+                                <button
                                     type="submit"
+                                    class="btn btn-primary"
                                 >
                                     {{ $gettext('Save Changes') }}
-                                </b-button>
-                                <b-button
-                                    variant="danger"
-                                    type="button"
+                                </button>
+                                <button
+                                    class="btn btn-danger"
                                     @click.prevent="doDelete"
                                 >
                                     {{ $gettext('Remove Key') }}
-                                </b-button>
+                                </button>
                             </div>
                         </form>
                     </div>
                 </div>
-            </b-overlay>
+            </loading>
         </div>
     </section>
 </template>
 
 <script setup>
-import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup.vue";
+import FormGroupField from "~/components/Form/FormGroupField.vue";
 import InfoCard from "~/components/Common/InfoCard.vue";
 import {computed, onMounted, ref} from "vue";
 import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
 import {useSweetAlert} from "~/vendor/sweetalert";
 import {useAxios} from "~/vendor/axios";
 import {useTranslate} from "~/vendor/gettext";
-import {useNotify} from "~/vendor/bootstrapVue";
+import {useNotify} from "~/functions/useNotify";
+import Loading from "~/components/Common/Loading.vue";
 
 const props = defineProps({
     apiUrl: {
@@ -132,7 +129,7 @@ const props = defineProps({
     }
 });
 
-const loading = ref(true);
+const isLoading = ref(true);
 const version = ref(null);
 
 const {form, v$} = useVuelidateOnForm(
@@ -158,12 +155,12 @@ const langInstalledVersion = computed(() => {
 const {axios} = useAxios();
 
 const doFetch = () => {
-    loading.value = true;
+    isLoading.value = true;
 
     axios.get(props.apiUrl).then((resp) => {
         form.value.key = resp.data.key;
         version.value = resp.data.version;
-        loading.value = false;
+        isLoading.value = false;
     });
 };
 
@@ -172,7 +169,7 @@ onMounted(doFetch);
 const {wrapWithLoading} = useNotify();
 
 const doUpdate = () => {
-    loading.value = true;
+    isLoading.value = true;
     wrapWithLoading(
         axios.post(props.apiUrl, {
             geolite_license_key: form.value.key
@@ -180,7 +177,7 @@ const doUpdate = () => {
     ).then((resp) => {
         version.value = resp.data.version;
     }).finally(() => {
-        loading.value = false;
+        isLoading.value = false;
     });
 };
 

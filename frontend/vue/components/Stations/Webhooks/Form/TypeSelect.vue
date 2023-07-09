@@ -1,113 +1,57 @@
 <template>
-    <b-form-group>
-        <template #label>
-            {{ $gettext('Select Web Hook Type') }}
-        </template>
+    <div class="row g-3">
+        <div class="col-md-6">
+            <type-select-section
+                :title="$gettext('Generic Web Hooks')"
+                :types="buildTypeInfo([
+                    WEBHOOK_TYPE_GENERIC,
+                    WEBHOOK_TYPE_EMAIL
+                ])"
+                @select="selectType"
+            />
 
-        <div class="form-row">
-            <div class="col-md-6">
-                <section class="card mb-3">
-                    <div class="card-header bg-primary-dark">
-                        <h2 class="card-title">
-                            {{ $gettext('Generic Web Hooks') }}
-                        </h2>
-                    </div>
-                    <b-list-group>
-                        <type-select-row
-                            :type="WEBHOOK_TYPE_GENERIC"
-                            :types="typeDetails"
-                            @select="selectType"
-                        />
-                        <type-select-row
-                            :type="WEBHOOK_TYPE_EMAIL"
-                            :types="typeDetails"
-                            @select="selectType"
-                        />
-                    </b-list-group>
-                </section>
-                <section class="card mb-3">
-                    <div class="card-header bg-primary-dark">
-                        <h2 class="card-title">
-                            {{ $gettext('Social Media') }}
-                        </h2>
-                    </div>
-                    <b-list-group>
-                        <type-select-row
-                            :type="WEBHOOK_TYPE_DISCORD"
-                            :types="typeDetails"
-                            @select="selectType"
-                        />
-                        <type-select-row
-                            :type="WEBHOOK_TYPE_TELEGRAM"
-                            :types="typeDetails"
-                            @select="selectType"
-                        />
-                        <type-select-row
-                            :type="WEBHOOK_TYPE_MASTODON"
-                            :types="typeDetails"
-                            @select="selectType"
-                        />
-                        <type-select-row
-                            :type="WEBHOOK_TYPE_TWITTER"
-                            :types="typeDetails"
-                            @select="selectType"
-                        />
-                    </b-list-group>
-                </section>
-            </div>
-            <div class="col-md-6">
-                <section class="card mb-3">
-                    <div class="card-header bg-primary-dark">
-                        <h2 class="card-title">
-                            {{ $gettext('Station Directories') }}
-                        </h2>
-                    </div>
-                    <b-list-group>
-                        <type-select-row
-                            :type="WEBHOOK_TYPE_TUNEIN"
-                            :types="typeDetails"
-                            @select="selectType"
-                        />
-                    </b-list-group>
-                </section>
-
-                <section class="card mb-3">
-                    <div class="card-header bg-primary-dark">
-                        <h2 class="card-title">
-                            {{ $gettext('Analytics') }}
-                        </h2>
-                    </div>
-                    <b-list-group>
-                        <type-select-row
-                            :type="WEBHOOK_TYPE_GOOGLE_ANALYTICS_V3"
-                            :types="typeDetails"
-                            @select="selectType"
-                        />
-                        <type-select-row
-                            :type="WEBHOOK_TYPE_GOOGLE_ANALYTICS_V4"
-                            :types="typeDetails"
-                            @select="selectType"
-                        />
-                        <type-select-row
-                            :type="WEBHOOK_TYPE_MATOMO_ANALYTICS"
-                            :types="typeDetails"
-                            @select="selectType"
-                        />
-                    </b-list-group>
-                </section>
-            </div>
+            <type-select-section
+                :title="$gettext('Social Media')"
+                :types="buildTypeInfo([
+                    WEBHOOK_TYPE_DISCORD,
+                    WEBHOOK_TYPE_TELEGRAM,
+                    WEBHOOK_TYPE_MASTODON,
+                    WEBHOOK_TYPE_TWITTER
+                ])"
+                @select="selectType"
+            />
         </div>
-    </b-form-group>
+        <div class="col-md-6">
+            <type-select-section
+                :title="$gettext('Station Directories')"
+                :types="buildTypeInfo([
+                    WEBHOOK_TYPE_TUNEIN
+                ])"
+                @select="selectType"
+            />
+
+            <type-select-section
+                :title="$gettext('Analytics')"
+                :types="buildTypeInfo([
+                    WEBHOOK_TYPE_GOOGLE_ANALYTICS_V3,
+                    WEBHOOK_TYPE_GOOGLE_ANALYTICS_V4,
+                    WEBHOOK_TYPE_MATOMO_ANALYTICS
+                ])"
+                @select="selectType"
+            />
+        </div>
+    </div>
 </template>
 
 <script setup>
-import TypeSelectRow from "~/components/Stations/Webhooks/Form/TypeSelectRow.vue";
 import {
     WEBHOOK_TYPE_DISCORD, WEBHOOK_TYPE_EMAIL, WEBHOOK_TYPE_GENERIC,
     WEBHOOK_TYPE_GOOGLE_ANALYTICS_V3,
     WEBHOOK_TYPE_GOOGLE_ANALYTICS_V4, WEBHOOK_TYPE_MASTODON,
     WEBHOOK_TYPE_MATOMO_ANALYTICS, WEBHOOK_TYPE_TELEGRAM, WEBHOOK_TYPE_TUNEIN, WEBHOOK_TYPE_TWITTER
 } from "~/components/Entity/Webhooks";
+import TypeSelectSection from "~/components/Stations/Webhooks/Form/TypeSelectSection.vue";
+import {get, map} from "lodash";
 
 const props = defineProps({
     typeDetails: {
@@ -115,6 +59,16 @@ const props = defineProps({
         required: true
     }
 });
+
+const buildTypeInfo = (types) => map(
+    types,
+    (type) => {
+        return {
+            ...get(props.typeDetails, type),
+            key: type
+        };
+    }
+);
 
 const emit = defineEmits(['select']);
 const selectType = (type) => {

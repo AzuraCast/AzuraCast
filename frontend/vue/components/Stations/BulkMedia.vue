@@ -6,7 +6,7 @@
                 role="region"
                 aria-labelledby="hdr_export_media"
             >
-                <div class="card-header bg-primary-dark">
+                <div class="card-header text-bg-primary">
                     <h2
                         id="hdr_export_media"
                         class="card-title"
@@ -27,15 +27,13 @@
                         }}
                     </p>
 
-                    <div class="buttons">
-                        <b-button
-                            variant="primary"
-                            size="lg"
-                            block
+                    <div class="block-buttons">
+                        <a
+                            class="btn btn-block btn-primary"
                             :href="apiUrl"
                         >
                             {{ $gettext('Export Media to CSV') }}
-                        </b-button>
+                        </a>
                     </div>
                 </div>
             </section>
@@ -45,7 +43,7 @@
                 class="card"
                 role="region"
             >
-                <div class="card-header bg-primary-dark">
+                <div class="card-header text-bg-primary">
                     <h2 class="card-title">
                         {{ $gettext('Import Changes from CSV') }}
                     </h2>
@@ -58,35 +56,37 @@
                         }}
                     </p>
 
-                    <b-form
+                    <form
                         class="form"
                         @submit.prevent="doSubmit"
                     >
-                        <b-form-group label-for="import_file">
+                        <form-group id="import_file">
                             <template #label>
                                 {{ $gettext('Select CSV File') }}
                             </template>
-                            <b-form-file
-                                id="import_modal_playlist_file"
-                                v-model="importFile"
-                            />
-                        </b-form-group>
 
-                        <b-button
-                            type="submit"
-                            size="lg"
-                            block
-                            variant="primary"
-                            class="mt-2"
-                        >
-                            {{ $gettext('Import Changes from CSV') }}
-                        </b-button>
-                    </b-form>
+                            <template #default="{id}">
+                                <form-file
+                                    :id="id"
+                                    @uploaded="uploaded"
+                                />
+                            </template>
+                        </form-group>
+
+                        <div class="block-buttons mt-3">
+                            <button
+                                type="submit"
+                                class="btn btn-block btn-primary "
+                            >
+                                {{ $gettext('Import Changes from CSV') }}
+                            </button>
+                        </div>
+                    </form>
                 </div>
             </section>
         </div>
 
-        <b-modal
+        <modal
             id="import_modal"
             ref="$modal"
             :title="$gettext('Import Results')"
@@ -96,34 +96,33 @@
                     {{ importResults.message }}
                 </p>
 
-                <b-table-simple
-                    striped
-                    responsive
+                <table
+                    class="table table-striped table-responsive"
                     style="max-height: 300px; overflow-y: scroll;"
                 >
-                    <b-thead>
-                        <b-tr>
-                            <b-th class="p-2">
+                    <thead>
+                        <tr>
+                            <th class="p-2">
                                 {{ $gettext('Media File') }}
-                            </b-th>
-                            <b-th class="p-2">
+                            </th>
+                            <th class="p-2">
                                 {{ $gettext('Import Results') }}
-                            </b-th>
-                        </b-tr>
-                    </b-thead>
-                    <b-tbody>
-                        <b-tr
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr
                             v-for="row in importResults.import_results"
                             :key="row.id"
                         >
-                            <b-td
+                            <td
                                 class="p-2"
                                 style="overflow-x: auto;"
                             >
                                 <b>{{ row.title }}</b><br>
                                 {{ row.artist }}
-                            </b-td>
-                            <b-td
+                            </td>
+                            <td
                                 class="p-2"
                                 style="overflow-x: auto;"
                             >
@@ -140,28 +139,31 @@
                                         {{ row.error }}
                                     </div>
                                 </template>
-                            </b-td>
-                        </b-tr>
-                    </b-tbody>
-                </b-table-simple>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
             <template #modal-footer>
-                <b-button
-                    variant="default"
+                <button
+                    class="btn btn-secondary"
                     type="button"
-                    @click="closeModal"
+                    @click="close"
                 >
                     {{ $gettext('Close') }}
-                </b-button>
+                </button>
             </template>
-        </b-modal>
+        </modal>
     </div>
 </template>
 
 <script setup>
 import {ref} from "vue";
-import {useNotify} from "~/vendor/bootstrapVue";
+import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
+import Modal from "~/components/Common/Modal.vue";
+import FormGroup from "~/components/Form/FormGroup.vue";
+import FormFile from "~/components/Form/FormFile.vue";
 
 const props = defineProps({
     apiUrl: {
@@ -180,6 +182,10 @@ const $modal = ref(); // Template Ref
 
 const close = () => {
     $modal.value.hide();
+};
+
+const uploaded = (file) => {
+    importFile.value = file;
 };
 
 const doSubmit = () => {

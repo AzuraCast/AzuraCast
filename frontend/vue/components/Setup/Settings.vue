@@ -1,4 +1,5 @@
 <template>
+    <!-- TODO Fix property injection here to match other settings forms -->
     <admin-settings
         :api-url="apiUrl"
         :release-channel="releaseChannel"

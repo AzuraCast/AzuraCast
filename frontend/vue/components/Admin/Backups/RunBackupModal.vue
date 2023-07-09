@@ -1,5 +1,5 @@
 <template>
-    <b-modal
+    <modal
         id="run_backup_modal"
         ref="$modal"
         size="md"
@@ -8,45 +8,34 @@
         @hidden="clearContents"
     >
         <template #default>
-            <b-alert
-                variant="danger"
-                :show="error != null"
+            <div
+                v-show="error != null"
+                class="alert alert-danger"
             >
                 {{ error }}
-            </b-alert>
+            </div>
 
-            <b-form
+            <form
                 v-if="logUrl === null"
                 class="form vue-form"
                 @submit.prevent="submit"
             >
-                <b-form-fieldset>
-                    <div class="form-row">
-                        <b-wrapped-form-group
+                <form-fieldset>
+                    <div class="row g-3">
+                        <form-group-select
                             id="edit_form_storage_location"
                             class="col-md-12"
                             :field="v$.storage_location"
-                        >
-                            <template #label>
-                                {{ $gettext('Storage Location') }}
-                            </template>
-                            <template #default="slotProps">
-                                <b-form-select
-                                    :id="slotProps.id"
-                                    v-model="slotProps.field.$model"
-                                    :options="storageLocationOptions"
-                                />
-                            </template>
-                        </b-wrapped-form-group>
+                            :options="storageLocationOptions"
+                            :label="$gettext('Storage Location')"
+                        />
 
-                        <b-wrapped-form-group
+                        <form-group-field
                             id="edit_form_path"
                             class="col-md-12"
                             :field="v$.path"
+                            :label="$gettext('File Name')"
                         >
-                            <template #label>
-                                {{ $gettext('File Name') }}
-                            </template>
                             <template #description>
                                 {{
                                     $gettext('This will be the file name for your backup, include the extension for file type you wish to use.')
@@ -66,27 +55,20 @@
                                     </li>
                                 </ul>
                             </template>
-                        </b-wrapped-form-group>
+                        </form-group-field>
 
-                        <b-wrapped-form-checkbox
+                        <form-group-checkbox
                             id="edit_form_exclude_media"
                             class="col-md-12"
                             :field="v$.exclude_media"
-                        >
-                            <template #label>
-                                {{ $gettext('Exclude Media from Backup') }}
-                            </template>
-                            <template #description>
-                                {{
-                                    $gettext('This will produce a significantly smaller backup, but you should make sure to back up your media elsewhere. Note that only locally stored media will be backed up.')
-                                }}
-                            </template>
-                        </b-wrapped-form-checkbox>
+                            :label="$gettext('Exclude Media from Backup')"
+                            :description="$gettext('This will produce a significantly smaller backup, but you should make sure to back up your media elsewhere. Note that only locally stored media will be backed up.')"
+                        />
                     </div>
-                </b-form-fieldset>
+                </form-fieldset>
 
                 <invisible-submit-button />
-            </b-form>
+            </form>
 
             <div v-else>
                 <streaming-log-view :log-url="logUrl" />
@@ -98,38 +80,39 @@
                 name="modal-footer"
                 v-bind="slotProps"
             >
-                <b-button
-                    variant="default"
-                    type="button"
+                <button
+                    class="btn btn-secondary"
                     @click="close"
                 >
                     {{ $gettext('Close') }}
-                </b-button>
-                <b-button
+                </button>
+                <button
                     v-if="logUrl === null"
-                    :variant="(v$.$invalid) ? 'danger' : 'primary'"
+                    class="btn"
+                    :class="(v$.$invalid) ? 'btn-danger' : 'btn-primary'"
                     type="submit"
                     @click="submit"
                 >
                     {{ $gettext('Run Manual Backup') }}
-                </b-button>
+                </button>
             </slot>
         </template>
-    </b-modal>
+    </modal>
 </template>
 
 <script setup>
-import BFormFieldset from "~/components/Form/BFormFieldset.vue";
-import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup.vue";
+import FormFieldset from "~/components/Form/FormFieldset";
+import FormGroupField from "~/components/Form/FormGroupField.vue";
 import InvisibleSubmitButton from "~/components/Common/InvisibleSubmitButton.vue";
-import BWrappedFormCheckbox from "~/components/Form/BWrappedFormCheckbox.vue";
+import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
 import objectToFormOptions from "~/functions/objectToFormOptions";
 import StreamingLogView from "~/components/Common/StreamingLogView.vue";
 import {computed, ref} from "vue";
-import {useNotify} from "~/vendor/bootstrapVue";
+import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
 import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
-import {BModal} from "bootstrap-vue";
+import Modal from "~/components/Common/Modal.vue";
+import FormGroupSelect from "~/components/Form/FormGroupSelect.vue";
 
 const props = defineProps({
     runBackupUrl: {

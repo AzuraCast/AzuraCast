@@ -8,12 +8,12 @@
         @submit="doSubmit"
         @hidden="clearContents"
     >
-        <b-tabs
+        <o-tabs
+            nav-tabs-class="nav-tabs"
             content-class="mt-3"
-            pills
         >
             <form-basic-info :form="v$" />
-        </b-tabs>
+        </o-tabs>
     </modal-form>
 </template>
 
@@ -22,7 +22,7 @@ import {required} from '@vuelidate/validators';
 import FormBasicInfo from './Form/BasicInfo';
 import {baseEditModalProps, useBaseEditModal} from "~/functions/useBaseEditModal";
 import {computed, ref} from "vue";
-import {useNotify} from "~/vendor/bootstrapVue";
+import {useNotify} from "~/functions/useNotify";
 import {useTranslate} from "~/vendor/gettext";
 import ModalForm from "~/components/Common/ModalForm.vue";
 

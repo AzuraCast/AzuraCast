@@ -5,7 +5,7 @@
         role="region"
         aria-labelledby="hdr_backend"
     >
-        <div class="card-header bg-primary-dark">
+        <div class="card-header text-bg-primary">
             <h3
                 id="hdr_backend"
                 class="card-title"
@@ -26,42 +26,48 @@
                 class="buttons"
             >
                 <a
-                    class="btn btn-primary"
+                    class="btn btn-link"
                     :href="manageMediaUri"
                 >{{ $gettext('Music Files') }}</a>
                 <a
-                    class="btn btn-primary"
+                    class="btn btn-link"
                     :href="managePlaylistsUri"
                 >{{ $gettext('Playlists') }}</a>
             </div>
         </div>
         <div
             v-if="userCanManageBroadcasting && hasStarted"
-            class="card-actions"
+            class="card-body buttons"
         >
-            <a
-                class="api-call no-reload btn btn-outline-secondary"
-                :href="backendRestartUri"
+            <button
+                class="btn btn-secondary"
+                @click="makeApiCall(backendRestartUri)"
             >
                 <icon icon="update" />
-                {{ $gettext('Restart') }}
-            </a>
-            <a
-                v-show="!backendRunning"
-                class="api-call no-reload btn btn-outline-success"
-                :href="backendStartUri"
+                <span>
+                    {{ $gettext('Restart') }}
+                </span>
+            </button>
+            <button
+                v-if="!backendRunning"
+                class="btn btn-success"
+                @click="makeApiCall(backendStartUri)"
             >
                 <icon icon="play_arrow" />
-                {{ $gettext('Start') }}
-            </a>
-            <a
-                v-show="backendRunning"
-                class="api-call no-reload btn btn-outline-danger"
-                :href="backendStopUri"
+                <span>
+                    {{ $gettext('Start') }}
+                </span>
+            </button>
+            <button
+                v-if="backendRunning"
+                class="btn btn-danger"
+                @click="makeApiCall(backendStopUri)"
             >
                 <icon icon="stop" />
-                {{ $gettext('Stop') }}
-            </a>
+                <span>
+                    {{ $gettext('Stop') }}
+                </span>
+            </button>
         </div>
     </section>
 </template>
@@ -81,6 +87,8 @@ const props = defineProps({
         required: true
     }
 });
+
+const emit = defineEmits(['api-call']);
 
 const {$gettext, $ngettext} = useTranslate();
 
@@ -115,4 +123,7 @@ const backendName = computed(() => {
     return '';
 });
 
+const makeApiCall = (uri) => {
+    emit('api-call', uri);
+};
 </script>

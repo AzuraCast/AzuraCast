@@ -1,62 +1,49 @@
 <template>
-    <b-card
-        class="mb-3"
-        no-body
+    <section
+        class="card mb-3"
+        role="region"
     >
-        <div class="card-header bg-primary-dark d-flex align-items-center">
+        <div class="card-header text-bg-primary d-flex align-items-center">
             <div class="flex-fill">
                 <h2 class="card-title">
                     {{ getStationName(row.station_id) }}
                 </h2>
             </div>
             <div class="flex-shrink-0">
-                <b-button
-                    size="sm"
-                    variant="outline-light"
-                    class="py-2 pr-0"
+                <button
+                    class="btn btn-sm btn-light py-2"
                     @click.prevent="$emit('remove')"
                 >
                     <icon icon="remove" />
-                    {{ $gettext('Remove') }}
-                </b-button>
+                    <span>
+                        {{ $gettext('Remove') }}
+                    </span>
+                </button>
             </div>
         </div>
-        <b-card-body>
-            <b-form-group>
-                <div class="form-row">
-                    <b-wrapped-form-group
-                        :id="'edit_form_station_permissions_'+row.station_id"
-                        class="col-md-12"
-                        :field="v$.permissions"
-                    >
-                        <template #label>
-                            {{ $gettext('Station Permissions') }}
-                        </template>
-                        <template #description>
-                            {{ $gettext('Users with this role will have these permissions for this single station.') }}
-                        </template>
-                        <template #default="slotProps">
-                            <b-form-checkbox-group
-                                :id="slotProps.id"
-                                v-model="slotProps.field.$model"
-                                :options="stationPermissionOptions"
-                                stacked
-                            />
-                        </template>
-                    </b-wrapped-form-group>
-                </div>
-            </b-form-group>
-        </b-card-body>
-    </b-card>
+        <div class="card-body">
+            <div class="row g-3">
+                <form-group-multi-check
+                    :id="'edit_form_station_permissions_'+row.station_id"
+                    class="col-md-12"
+                    :field="v$.permissions"
+                    :options="stationPermissionOptions"
+                    stacked
+                    :label="$gettext('Station Permissions')"
+                    :description="$gettext('Users with this role will have these permissions for this single station.')"
+                />
+            </div>
+        </div>
+    </section>
 </template>
 
 <script setup>
 import useVuelidate from "@vuelidate/core";
 import {get, map} from "lodash";
 import Icon from "~/components/Common/Icon.vue";
-import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup.vue";
 import {useVModel} from "@vueuse/core";
 import {computed} from "vue";
+import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
 
 const props = defineProps({
     row: {

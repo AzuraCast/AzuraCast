@@ -13,7 +13,7 @@
                 class="card"
                 style="height: 100%;"
             >
-                <div class="card-header bg-primary-dark">
+                <div class="card-header text-bg-primary">
                     <div class="d-flex align-items-center">
                         <div class="flex-shrink">
                             <h2 class="card-title py-2">
@@ -25,7 +25,7 @@
                                 </template>
                             </h2>
                         </div>
-                        <div class="flex-fill text-right">
+                        <div class="flex-fill text-end">
                             <inline-player ref="player" />
                         </div>
                     </div>
@@ -41,8 +41,7 @@
                 >
                     <template #cell(download_url)="row">
                         <play-button
-                            class="file-icon"
-                            icon-class="outlined"
+                            class="file-icon btn-xl"
                             :url="row.item.download_url"
                             :is-stream="false"
                         />
@@ -160,7 +159,7 @@ forEach(props.customFields.slice(), (field) => {
         overflow-y: auto;
     }
 
-    table.b-table {
+    table.table {
         thead tr th:nth-child(1),
         tbody tr td:nth-child(1) {
             padding-right: 0.75rem;

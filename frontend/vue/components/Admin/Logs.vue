@@ -5,7 +5,7 @@
             role="region"
             aria-labelledby="hdr_system_logs"
         >
-            <div class="card-header bg-primary-dark">
+            <div class="card-header text-bg-primary">
                 <h2
                     id="hdr_system_logs"
                     class="card-title"
@@ -26,7 +26,7 @@
             role="region"
             aria-labelledby="hdr_logs_by_station"
         >
-            <div class="card-header bg-primary-dark">
+            <div class="card-header text-bg-primary">
                 <h2
                     id="hdr_logs_by_station"
                     class="card-title"
@@ -35,23 +35,25 @@
                 </h2>
             </div>
 
-            <b-tabs
-                pills
-                lazy
-                nav-class="card-header-pills"
-                nav-wrapper-class="card-header"
-            >
-                <b-tab
-                    v-for="row in stationLogs"
-                    :key="row.id"
-                    :title="row.name"
+            <div class="card-body">
+                <o-tabs
+                    nav-tabs-class="nav-tabs"
+                    content-class="mt-3"
                 >
-                    <log-list
-                        :url="row.url"
-                        @view="viewLog"
-                    />
-                </b-tab>
-            </b-tabs>
+                    <o-tab-item
+                        v-for="row in stationLogs"
+                        :key="row.id"
+                        :label="row.name"
+                    >
+                        <div class="card-body-flush">
+                            <log-list
+                                :url="row.url"
+                                @view="viewLog"
+                            />
+                        </div>
+                    </o-tab-item>
+                </o-tabs>
+            </div>
         </section>
     </div>
 

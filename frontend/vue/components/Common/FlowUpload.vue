@@ -16,10 +16,10 @@
                     </h6>
                     <div
                         v-if="!file.isCompleted"
-                        class="progress h-15 my-1"
+                        class="progress h-20 my-1"
                     >
                         <div
-                            class="progress-bar h-15"
+                            class="progress-bar h-20"
                             role="progressbar"
                             :style="{width: file.progressPercent+'%'}"
                             :aria-valuenow="file.progressPercent"
@@ -47,11 +47,13 @@
             {{ $gettext('Drag file(s) here to upload or') }}
             <button
                 ref="$fileBrowseTarget"
-                class="file-upload btn btn-primary text-center ml-1"
+                class="file-upload btn btn-primary text-center ms-1"
                 type="button"
             >
                 <icon icon="cloud_upload" />
-                {{ $gettext('Select File') }}
+                <span>
+                    {{ $gettext('Select File') }}
+                </span>
             </button>
             <small class="file-name" />
             <input

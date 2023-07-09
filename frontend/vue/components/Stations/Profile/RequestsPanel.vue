@@ -5,7 +5,7 @@
         aria-labelledby="hdr_song_requests"
     >
         <template v-if="enableRequests">
-            <div class="card-header bg-primary-dark">
+            <div class="card-header text-bg-primary">
                 <h3
                     id="hdr_song_requests"
                     class="card-title"
@@ -16,29 +16,33 @@
             </div>
             <div
                 v-if="userCanManageReports || userCanManageProfile"
-                class="card-actions"
+                class="card-body buttons"
             >
                 <a
                     v-if="userCanManageReports"
-                    class="btn btn-outline-primary"
+                    class="btn btn-primary"
                     :href="requestsViewUri"
                 >
                     <icon icon="assignment" />
-                    {{ $gettext('View') }}
+                    <span>
+                        {{ $gettext('View') }}
+                    </span>
                 </a>
                 <a
                     v-if="userCanManageProfile"
-                    class="btn btn-outline-danger"
-                    :data-confirm-title="$gettext('Disable song requests?')"
+                    v-confirm-link="$gettext('Disable song requests?')"
+                    class="btn btn-danger"
                     :href="requestsToggleUri"
                 >
                     <icon icon="close" />
-                    {{ $gettext('Disable') }}
+                    <span>
+                        {{ $gettext('Disable') }}
+                    </span>
                 </a>
             </div>
         </template>
         <template v-else>
-            <div class="card-header bg-primary-dark">
+            <div class="card-header text-bg-primary">
                 <h3 class="card-title">
                     {{ $gettext('Song Requests') }}
                     <enabled-badge :enabled="false" />
@@ -46,15 +50,17 @@
             </div>
             <div
                 v-if="userCanManageProfile"
-                class="card-actions"
+                class="card-body buttons"
             >
                 <a
-                    class="btn btn-outline-success"
-                    :data-confirm-title="$gettext('Enable song requests?')"
+                    v-confirm-link="$gettext('Enable song requests?')"
+                    class="btn btn-success"
                     :href="requestsToggleUri"
                 >
                     <icon icon="check" />
-                    {{ $gettext('Enable') }}
+                    <span>
+                        {{ $gettext('Enable') }}
+                    </span>
                 </a>
             </div>
         </template>

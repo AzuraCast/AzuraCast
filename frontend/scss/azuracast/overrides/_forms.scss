@@ -1,12 +1,92 @@
 input, textarea {
   &.text-preformatted {
-    font-family: Menlo,Monaco,Consolas,"Courier New",monospace;
+    font-family: $font-family-monospace;
   }
 }
 
+.form-check,
+.custom-checkbox {
+  margin-bottom: 0.35rem;
+
+  .form-check-input,
+  .custom-control-input {
+    width: 1.5rem;
+    height: 1.5rem;
+    cursor: pointer;
+    margin-top: 0;
+  }
+
+  .form-check-label,
+  .custom-control-label {
+    margin-left: 0.5rem;
+    cursor: pointer;
+  }
+
+  .custom-control-label {
+    vertical-align: top;
+  }
+}
+
+.input-group-text {
+  padding: .75rem;
+}
+
 .form {
+  .row {
+    margin-bottom: 1rem;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  .form-group {
+    & > label {
+      margin-bottom: .5rem !important;
+      font-size: 1.1rem;
+    }
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+
+    .form-text {
+      margin-top: .5rem;
+      margin-bottom: .5rem;
+    }
+  }
+
+  label.required {
+    &:after {
+      content: " *";
+      color: $red-700;
+    }
+  }
+
+  .form-control:not([type="file"]),
+  .form-select {
+    padding: .75rem;
+  }
+
+  .form-select {
+    option {
+      border-radius: var(--bs-border-radius);
+      padding: .5rem;
+      cursor: pointer;
+
+      &:hover {
+        background-color: var(--bs-secondary-bg);
+      }
+    }
+  }
+
   fieldset {
     margin-bottom: 1rem;
+
+    legend {
+      border-bottom: 2px dotted;
+      padding-bottom: 0.5rem;
+    }
 
     div.fieldset-legend,
     legend.col-form-label {
@@ -14,33 +94,7 @@ input, textarea {
         margin-bottom: 0.5rem;
       }
 
-      border-bottom: 2px dotted;
       margin-bottom: 0.75rem;
-    }
-
-    .row {
-      margin-bottom: 1rem;
-
-      &:last-child {
-        margin-bottom: 0;
-      }
-    }
-
-    .form-group {
-      & > label {
-        margin-bottom: .5rem !important;
-      }
-
-      &:last-child {
-        margin-bottom: 0;
-      }
-    }
-
-    label.required {
-      &:after {
-        content: " *";
-        color: $material-color-red-700;
-      }
     }
   }
 

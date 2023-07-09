@@ -1,27 +1,16 @@
 <template>
-    <section
-        class="card"
-        role="region"
-        aria-labelledby="hdr_users"
-    >
-        <b-card-header header-bg-variant="primary-dark">
-            <h2
-                id="hdr_users"
-                class="card-title"
-            >
-                {{ $gettext('Users') }}
-            </h2>
-        </b-card-header>
-
-        <b-card-body body-class="card-padding-sm">
-            <b-button
-                variant="outline-primary"
+    <card-page :title="$gettext('Users')">
+        <template #actions>
+            <button
+                class="btn btn-primary"
                 @click.prevent="doCreate"
             >
                 <icon icon="add" />
-                {{ $gettext('Add User') }}
-            </b-button>
-        </b-card-body>
+                <span>
+                    {{ $gettext('Add User') }}
+                </span>
+            </button>
+        </template>
 
         <data-table
             id="users"
@@ -40,7 +29,7 @@
                 <a :href="'mailto:'+row.item.email">{{ row.item.email }}</a>
                 <span
                     v-if="row.item.is_me"
-                    class="badge badge-primary"
+                    class="badge text-bg-primary ms-1"
                 >
                     {{ $gettext('You') }}
                 </span>
@@ -54,36 +43,33 @@
                 </div>
             </template>
             <template #cell(actions)="row">
-                <b-button-group
+                <div
                     v-if="!row.item.is_me"
-                    size="sm"
+                    class="btn-group btn-group-sm"
                 >
-                    <b-button
-                        size="sm"
-                        variant="secondary"
+                    <a
+                        class="btn btn-secondary"
                         :href="row.item.links.masquerade"
                         target="_blank"
                     >
                         {{ $gettext('Log In') }}
-                    </b-button>
-                    <b-button
-                        size="sm"
-                        variant="primary"
+                    </a>
+                    <button
+                        class="btn btn-primary"
                         @click.prevent="doEdit(row.item.links.self)"
                     >
                         {{ $gettext('Edit') }}
-                    </b-button>
-                    <b-button
-                        size="sm"
-                        variant="danger"
+                    </button>
+                    <button
+                        class="btn btn-danger"
                         @click.prevent="doDelete(row.item.links.self)"
                     >
                         {{ $gettext('Delete') }}
-                    </b-button>
-                </b-button-group>
+                    </button>
+                </div>
             </template>
         </data-table>
-    </section>
+    </card-page>
 
     <edit-modal
         ref="$editModal"
@@ -102,6 +88,7 @@ import {ref} from "vue";
 import useHasDatatable from "~/functions/useHasDatatable";
 import useHasEditModal from "~/functions/useHasEditModal";
 import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
+import CardPage from "~/components/Common/CardPage.vue";
 
 const props = defineProps({
     listUrl: {

@@ -8,9 +8,9 @@
         @submit="doSubmit"
         @hidden="clearContents"
     >
-        <b-tabs
+        <o-tabs
+            nav-tabs-class="nav-tabs"
             content-class="mt-3"
-            pills
         >
             <form-basic-info :form="v$" />
             <form-schedule
@@ -22,7 +22,7 @@
                 v-if="enableAdvancedFeatures"
                 :form="v$"
             />
-        </b-tabs>
+        </o-tabs>
     </modal-form>
 </template>
 
@@ -34,7 +34,7 @@ import FormAdvanced from './Form/Advanced';
 import {baseEditModalProps, useBaseEditModal} from "~/functions/useBaseEditModal";
 import {computed, ref} from "vue";
 import {useTranslate} from "~/vendor/gettext";
-import {useNotify} from "~/vendor/bootstrapVue";
+import {useNotify} from "~/functions/useNotify";
 import ModalForm from "~/components/Common/ModalForm.vue";
 
 const props = defineProps({

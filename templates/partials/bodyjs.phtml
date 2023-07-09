@@ -1,18 +1,5 @@
 <?php
 /** @var Psr\Http\Message\RequestInterface $request */
-
-/** @var App\Session\Flash|null $flashObj */
-$flashObj = $request->getAttribute(App\Http\ServerRequest::ATTR_SESSION_FLASH);
-
-$notifies = [];
-
-if (null !== $flashObj && $flashObj->hasMessages()) {
-    foreach ($flashObj->getMessages() as $message) {
-        $notifyMessage = str_replace(['"', "\n"], ['\'', '<br>'], $message['text']);
-        $notifies[] = 'notify("' . $notifyMessage . '", "' . $message['color'] . '");';
-    }
-}
-
 $localeObj = $request->getAttribute(App\Http\ServerRequest::ATTR_LOCALE);
 
 $locale = ($localeObj instanceof App\Enums\SupportedLocales)
@@ -48,11 +35,5 @@ $app = [
 ?>
 
 <script type="text/javascript">
-    <?php if (!empty($notifies)): ?>
-    $(function () {
-        <?=implode('', $notifies) ?>;
-    });
-    <?php endif; ?>
-
     var App = <?=json_encode($app, JSON_THROW_ON_ERROR) ?>;
 </script>

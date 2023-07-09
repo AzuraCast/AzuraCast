@@ -1,133 +1,118 @@
 <template>
-    <b-overlay
-        variant="card"
-        :show="loading"
-    >
-        <b-alert
-            variant="danger"
-            :show="error != null"
+    <loading :loading="isLoading">
+        <div
+            v-show="error != null"
+            class="alert alert-danger"
         >
             {{ error }}
-        </b-alert>
+        </div>
 
-        <b-form
+        <form
             class="form vue-form"
             @submit.prevent="submit"
         >
-            <b-tabs
-                :card="!isModal"
-                pills
-                :content-class="tabContentClass"
+            <o-tabs
+                nav-tabs-class="nav-tabs"
+                content-class="mt-3"
             >
-                <b-tab
-                    :title-link-class="getTabClass(v$.$validationGroups.profileTab)"
+                <o-tab-item
+                    :label="$gettext('Profile')"
+                    :item-header-class="getTabClass(v$.$validationGroups.profileTab)"
                     active
                 >
-                    <template #title>
-                        {{ $gettext('Profile') }}
-                    </template>
-
                     <admin-stations-profile-form
                         :form="v$"
                         :timezones="timezones"
                         :show-advanced="showAdvanced"
                     />
-                </b-tab>
+                </o-tab-item>
 
-                <b-tab :title-link-class="getTabClass(v$.$validationGroups.frontendTab)">
-                    <template #title>
-                        {{ $gettext('Broadcasting') }}
-                    </template>
-
+                <o-tab-item
+                    :label="$gettext('Broadcasting')"
+                    :item-header-class="getTabClass(v$.$validationGroups.frontendTab)"
+                >
                     <admin-stations-frontend-form
                         :form="v$"
                         :is-shoutcast-installed="isShoutcastInstalled"
                         :countries="countries"
                         :show-advanced="showAdvanced"
                     />
-                </b-tab>
+                </o-tab-item>
 
-                <b-tab :title-link-class="getTabClass(v$.$validationGroups.backendTab)">
-                    <template #title>
-                        {{ $gettext('AutoDJ') }}
-                    </template>
-
+                <o-tab-item
+                    :label="$gettext('AutoDJ')"
+                    :item-header-class="getTabClass(v$.$validationGroups.backendTab)"
+                >
                     <admin-stations-backend-form
                         :form="v$"
                         :station="station"
                         :is-stereo-tool-installed="isStereoToolInstalled"
                         :show-advanced="showAdvanced"
                     />
-                </b-tab>
+                </o-tab-item>
 
-                <b-tab :title-link-class="getTabClass(v$.$validationGroups.hlsTab)">
-                    <template #title>
-                        {{ $gettext('HLS') }}
-                    </template>
-
+                <o-tab-item
+                    :label="$gettext('HLS')"
+                    :item-header-class="getTabClass(v$.$validationGroups.hlsTab)"
+                >
                     <admin-stations-hls-form
                         :form="v$"
                         :station="station"
                         :show-advanced="showAdvanced"
                     />
-                </b-tab>
+                </o-tab-item>
 
-                <b-tab :title-link-class="getTabClass(v$.$validationGroups.requestsTab)">
-                    <template #title>
-                        {{ $gettext('Song Requests') }}
-                    </template>
-
+                <o-tab-item
+                    :label="$gettext('Song Requests')"
+                    :item-header-class="getTabClass(v$.$validationGroups.requestsTab)"
+                >
                     <admin-stations-requests-form
                         :form="v$"
                         :station="station"
                         :show-advanced="showAdvanced"
                     />
-                </b-tab>
+                </o-tab-item>
 
-                <b-tab :title-link-class="getTabClass(v$.$validationGroups.streamersTab)">
-                    <template #title>
-                        {{ $gettext('Streamers/DJs') }}
-                    </template>
-
+                <o-tab-item
+                    :label="$gettext('Streamers/DJs')"
+                    :item-header-class="getTabClass(v$.$validationGroups.streamersTab)"
+                >
                     <admin-stations-streamers-form
                         :form="v$"
                         :station="station"
                         :show-advanced="showAdvanced"
                     />
-                </b-tab>
+                </o-tab-item>
 
-                <b-tab
+                <o-tab-item
                     v-if="showAdminTab"
-                    :title-link-class="getTabClass(v$.$validationGroups.adminTab)"
+                    :label="$gettext('Administration')"
+                    :item-header-class="getTabClass(v$.$validationGroups.adminTab)"
                 >
-                    <template #title>
-                        {{ $gettext('Administration') }}
-                    </template>
-
                     <admin-stations-admin-form
                         :form="v$"
                         :is-edit-mode="isEditMode"
                         :storage-location-api-url="storageLocationApiUrl"
                         :show-advanced="showAdvanced"
                     />
-                </b-tab>
-            </b-tabs>
+                </o-tab-item>
+            </o-tabs>
 
             <slot name="submitButton">
-                <b-card-body body-class="card-padding-sm">
-                    <b-button
-                        size="lg"
+                <div class="buttons mt-3">
+                    <button
                         type="submit"
-                        :variant="(!isValid) ? 'danger' : 'primary'"
+                        class="btn"
+                        :class="(!isValid) ? 'btn-danger' : 'btn-primary'"
                     >
                         <slot name="submitButtonText">
                             {{ $gettext('Save Changes') }}
                         </slot>
-                    </b-button>
-                </b-card-body>
+                    </button>
+                </div>
             </slot>
-        </b-form>
-    </b-overlay>
+        </form>
+    </loading>
 </template>
 
 <script setup>
@@ -146,19 +131,20 @@ import {
     MASTER_ME_PRESET_MUSIC_GENERAL
 } from "~/components/Entity/RadioAdapters";
 import {computed, ref, watch} from "vue";
-import {useNotify} from "~/vendor/bootstrapVue";
+import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
 import mergeExisting from "~/functions/mergeExisting";
 import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
 import {isArray, merge, mergeWith} from "lodash";
 import stationFormProps from "~/components/Admin/Stations/stationFormProps";
 import {useResettableRef} from "~/functions/useResettableRef";
+import Loading from '~/components/Common/Loading';
 
 const props = defineProps({
     ...stationFormProps,
     createUrl: {
         type: String,
-        required: true
+        default: null
     },
     editUrl: {
         type: String,
@@ -413,9 +399,9 @@ watch(isValid, (newValue) => {
     emit('validUpdate', newValue);
 });
 
-const loading = ref(true);
+const isLoading = ref(true);
 
-watch(loading, (newValue) => {
+watch(isLoading, (newValue) => {
     emit('loadingUpdate', newValue);
 });
 
@@ -430,14 +416,8 @@ const blankStation = {
 
 const {record: station, reset: resetStation} = useResettableRef(blankStation);
 
-const tabContentClass = computed(() => {
-    return (props.isModal)
-        ? 'mt-3'
-        : '';
-});
-
 const getTabClass = (validationGroup) => {
-    if (!loading.value && validationGroup.$invalid) {
+    if (!isLoading.value && validationGroup.$invalid) {
         return 'text-danger';
     }
     return null;
@@ -447,7 +427,7 @@ const clear = () => {
     resetForm();
     resetStation();
 
-    loading.value = false;
+    isLoading.value = false;
     error.value = null;
 };
 
@@ -459,18 +439,16 @@ const {wrapWithLoading, notifySuccess} = useNotify();
 const {axios} = useAxios();
 
 const doLoad = () => {
-    loading.value = true;
+    isLoading.value = true;
 
     wrapWithLoading(
         axios.get(props.editUrl)
     ).then((resp) => {
         populateForm(resp.data);
-
-        console.log(form.value);
     }).catch((err) => {
         emit('error', err);
     }).finally(() => {
-        loading.value = false;
+        isLoading.value = false;
     });
 };
 
@@ -508,5 +486,3 @@ defineExpose({
     submit
 });
 </script>
-
-

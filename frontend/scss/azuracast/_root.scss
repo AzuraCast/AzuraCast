@@ -1,0 +1,14 @@
+:root,
+[data-bs-theme="light"] {
+  --public-page-bg: url('../img/hexbg.webp');
+  --scrollbar-color: #{$gray-400};
+}
+
+[data-bs-theme="light"] {
+  --bs-body-bg: rgb(252, 252, 252);
+}
+
+@include color-mode(dark, true) {
+  --public-page-bg: url('../img/hexbg_dark.webp');
+  --scrollbar-color: #{$gray-800};
+}

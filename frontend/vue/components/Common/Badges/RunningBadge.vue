@@ -1,6 +1,6 @@
 <template>
     <small
-        class="badge badge-pill ml-2"
+        class="badge rounded-pill ms-2"
         :class="badgeClass"
     >{{ badgeText }}</small>
 </template>
@@ -18,8 +18,8 @@ const props = defineProps({
 
 const badgeClass = computed(() => {
     return (props.running)
-        ? 'badge-success'
-        : 'badge-danger';
+        ? 'text-bg-success'
+        : 'text-bg-danger';
 });
 
 const {$gettext} = useGettext();

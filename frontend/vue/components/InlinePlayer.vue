@@ -7,13 +7,13 @@
 
     <div
         v-if="isPlaying"
-        class="ml-3 player-inline"
+        class="ms-3 player-inline"
     >
         <div
             v-if="!current.isStream && duration !== 0"
-            class="inline-seek d-inline-flex align-items-center ml-1"
+            class="inline-seek d-inline-flex align-items-center ms-1"
         >
-            <div class="flex-shrink-0 mx-1 text-white-50 time-display">
+            <div class="flex-shrink-0 mx-1 text-muted time-display">
                 {{ currentTimeText }}
             </div>
             <div class="flex-fill mx-2">
@@ -27,23 +27,22 @@
                     step="1"
                 >
             </div>
-            <div class="flex-shrink-0 mx-1 text-white-50 time-display">
+            <div class="flex-shrink-0 mx-1 text-muted time-display">
                 {{ durationText }}
             </div>
         </div>
 
-        <a
-            class="btn btn-sm btn-outline-light px-2 ml-1"
-            href="#"
+        <button
+            class="btn btn-sm btn-outline-light p-2 ms-2"
             :aria-label="$gettext('Stop')"
-            @click.prevent="stop()"
+            @click="stop()"
         >
             <icon icon="stop" />
-        </a>
-        <div class="inline-volume-controls d-inline-flex align-items-center ml-1">
+        </button>
+        <div class="inline-volume-controls d-inline-flex align-items-center ms-2">
             <div class="flex-shrink-0">
                 <mute-button
-                    class="btn btn-sm btn-outline-light px-2"
+                    class="btn btn-sm btn-outline-light p-2"
                     :volume="volume"
                     :is-muted="isMuted"
                     @toggle-mute="toggleMute"

@@ -7,110 +7,85 @@
             class="card mb-3"
             role="region"
         >
-            <div class="card-header bg-primary-dark">
+            <div class="card-header text-bg-primary">
                 <h2 class="card-title">
                     {{ $gettext('Branding Settings') }}
                 </h2>
             </div>
 
-            <b-alert
-                variant="danger"
-                :show="error != null"
+            <div
+                v-show="error != null"
+                class="alert alert-danger"
             >
                 {{ error }}
-            </b-alert>
+            </div>
 
-            <b-overlay
-                variant="card"
-                :show="loading"
-            >
+            <loading :loading="isLoading">
                 <div class="card-body">
-                    <b-form-group>
-                        <div class="form-row">
-                            <b-wrapped-form-group
-                                id="form_edit_default_album_art_url"
-                                class="col-md-6"
-                                :field="v$.default_album_art_url"
-                            >
-                                <template #label>
-                                    {{ $gettext('Default Album Art URL') }}
-                                </template>
-                                <template #description>
-                                    {{
-                                        $gettext('If a song has no album art, this URL will be listed instead. Leave blank to use the standard placeholder art.')
-                                    }}
-                                </template>
-                            </b-wrapped-form-group>
+                    <div class="row g-3">
+                        <form-group-field
+                            id="form_edit_default_album_art_url"
+                            class="col-md-6"
+                            :field="v$.default_album_art_url"
+                            :label="$gettext('Default Album Art URL')"
+                            :description="$gettext('If a song has no album art, this URL will be listed instead. Leave blank to use the standard placeholder art.')"
+                        />
 
-                            <b-wrapped-form-group
-                                id="edit_form_public_custom_css"
-                                class="col-md-12"
-                                :field="v$.public_custom_css"
-                            >
-                                <template #label>
-                                    {{ $gettext('Custom CSS for Public Pages') }}
-                                </template>
-                                <template #description>
-                                    {{
-                                        $gettext('This CSS will be applied to the station public pages.')
-                                    }}
-                                </template>
-                                <template #default="slotProps">
-                                    <codemirror-textarea
-                                        :id="slotProps.id"
-                                        v-model="slotProps.field.$model"
-                                        mode="css"
-                                    />
-                                </template>
-                            </b-wrapped-form-group>
-
-                            <b-wrapped-form-group
-                                id="edit_form_public_custom_js"
-                                class="col-md-12"
-                                :field="v$.public_custom_js"
-                            >
-                                <template #label>
-                                    {{ $gettext('Custom JS for Public Pages') }}
-                                </template>
-                                <template #description>
-                                    {{
-                                        $gettext('This javascript code will be applied to the station public pages.')
-                                    }}
-                                </template>
-                                <template #default="slotProps">
-                                    <codemirror-textarea
-                                        :id="slotProps.id"
-                                        v-model="slotProps.field.$model"
-                                        mode="javascript"
-                                    />
-                                </template>
-                            </b-wrapped-form-group>
-                        </div>
-
-                        <b-button
-                            size="lg"
-                            type="submit"
-                            class="mt-3"
-                            variant="primary"
+                        <form-group-field
+                            id="edit_form_public_custom_css"
+                            class="col-md-12"
+                            :field="v$.public_custom_css"
+                            :label="$gettext('Custom CSS for Public Pages')"
+                            :description="$gettext('This CSS will be applied to the station public pages.')"
                         >
-                            {{ $gettext('Save Changes') }}
-                        </b-button>
-                    </b-form-group>
+                            <template #default="slotProps">
+                                <codemirror-textarea
+                                    :id="slotProps.id"
+                                    v-model="slotProps.field.$model"
+                                    mode="css"
+                                />
+                            </template>
+                        </form-group-field>
+
+                        <form-group-field
+                            id="edit_form_public_custom_js"
+                            class="col-md-12"
+                            :field="v$.public_custom_js"
+                            :label="$gettext('Custom JS for Public Pages')"
+                            :description="$gettext('This javascript code will be applied to the station public pages.')"
+                        >
+                            <template #default="slotProps">
+                                <codemirror-textarea
+                                    :id="slotProps.id"
+                                    v-model="slotProps.field.$model"
+                                    mode="javascript"
+                                />
+                            </template>
+                        </form-group-field>
+                    </div>
+
+                    <button
+                        class="btn btn-primary mt-3"
+                        type="submit"
+                    >
+                        {{ $gettext('Save Changes') }}
+                    </button>
                 </div>
-            </b-overlay>
+            </loading>
         </section>
     </form>
 </template>
 
 <script setup>
 import CodemirrorTextarea from "~/components/Common/CodemirrorTextarea.vue";
-import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup.vue";
+import FormGroupField from "~/components/Form/FormGroupField.vue";
 import {onMounted, ref} from "vue";
 import {useAxios} from "~/vendor/axios";
 import mergeExisting from "~/functions/mergeExisting";
-import {useNotify} from "~/vendor/bootstrapVue";
+import {useNotify} from "~/functions/useNotify";
 import {useTranslate} from "~/vendor/gettext";
 import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
+import Loading from "~/components/Common/Loading.vue";
 
 const props = defineProps({
     profileEditUrl: {
@@ -119,7 +94,7 @@ const props = defineProps({
     },
 });
 
-const loading = ref(true);
+const isLoading = ref(true);
 const error = ref(null);
 
 const {form, resetForm, v$, ifValid} = useVuelidateOnForm(
@@ -145,11 +120,11 @@ const populateForm = (data) => {
 const relist = () => {
     resetForm();
 
-    loading.value = true;
+    isLoading.value = true;
 
     axios.get(props.profileEditUrl).then((resp) => {
         populateForm(resp.data.branding_config);
-        loading.value = false;
+        isLoading.value = false;
     });
 }
 

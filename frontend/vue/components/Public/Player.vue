@@ -28,7 +28,7 @@
                     v-if="np.live.is_live"
                     class="now-playing-live"
                 >
-                    <span class="badge badge-primary mr-2">
+                    <span class="badge text-bg-primary me-2">
                         {{ $gettext('Live') }}
                     </span>
                     {{ np.live.streamer_name }}
@@ -80,8 +80,7 @@
 
         <div class="radio-controls">
             <play-button
-                class="radio-control-play-button"
-                icon-class="outlined lg"
+                class="radio-control-play-button btn-xl"
                 :url="currentStream.url"
                 :is-hls="currentStream.hls"
                 is-stream
@@ -94,49 +93,55 @@
                 >
                     <button
                         id="btn-select-stream"
-                        class="btn btn-sm btn-outline-primary dropdown-toggle"
+                        class="btn btn-sm btn-outline-secondary dropdown-toggle"
                         type="button"
-                        data-toggle="dropdown"
+                        data-bs-toggle="dropdown"
                         aria-haspopup="true"
                         aria-expanded="false"
                     >
                         {{ currentStream.name }}
+                        <span class="caret" />
                     </button>
-                    <div
+                    <ul
                         class="dropdown-menu"
                         aria-labelledby="btn-select-stream"
                     >
-                        <a
+                        <li
                             v-for="stream in streams"
                             :key="stream.url"
-                            class="dropdown-item"
-                            href="javascript:"
-                            @click.prevent="switchStream(stream)"
                         >
-                            {{ stream.name }}
-                        </a>
-                    </div>
+                            <button
+                                type="button"
+                                class="dropdown-item"
+                                @click="switchStream(stream)"
+                            >
+                                {{ stream.name }}
+                            </button>
+                        </li>
+                    </ul>
                 </div>
             </div>
 
-            <div class="radio-control-mute-button">
-                <mute-button
-                    class="text-secondary"
-                    :volume="volume"
-                    :is-muted="isMuted"
-                    @toggle-mute="toggleMute"
-                />
-            </div>
-            <div class="radio-control-volume-slider">
-                <input
-                    v-model.number="volume"
-                    type="range"
-                    :title="$gettext('Volume')"
-                    class="custom-range"
-                    min="0"
-                    max="100"
-                    step="1"
-                >
+            <div class="radio-control-volume">
+                <div class="radio-control-mute-button">
+                    <mute-button
+                        class="p-0 text-secondary"
+                        :volume="volume"
+                        :is-muted="isMuted"
+                        @toggle-mute="toggleMute"
+                    />
+                </div>
+                <div class="radio-control-volume-slider">
+                    <input
+                        v-model.number="volume"
+                        type="range"
+                        :title="$gettext('Volume')"
+                        class="custom-range"
+                        min="0"
+                        max="100"
+                        step="1"
+                    >
+                </div>
             </div>
         </div>
     </div>
@@ -364,6 +369,7 @@ watch(np, onNowPlayingUpdated, {immediate: true});
         display: flex;
         flex-direction: row;
         align-items: center;
+        flex-wrap: wrap;
 
         .radio-control-play-button {
             margin-right: .25rem;
@@ -371,19 +377,29 @@ watch(np, onNowPlayingUpdated, {immediate: true});
 
         .radio-control-select-stream {
             flex: 1 1 auto;
+            max-width: 60%;
+
+            #btn-select-stream {
+                text-overflow: clip;
+                white-space: normal;
+                word-break: break-all;
+            }
         }
 
-        .radio-control-mute-button,
-        .radio-control-max-volume-button {
-            flex-shrink: 0;
-        }
+        .radio-control-volume {
+            display: flex;
 
-        .radio-control-volume-slider {
-            flex: 1 1 auto;
-            max-width: 30%;
+            .radio-control-mute-button {
+                flex-shrink: 0;
+            }
 
-            input {
-                height: 10px;
+            .radio-control-volume-slider {
+                flex: 1 1 auto;
+                max-width: 30%;
+
+                input {
+                    height: 10px;
+                }
             }
         }
     }

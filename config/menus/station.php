@@ -17,13 +17,6 @@ return static function (App\Event\BuildStationMenu $e) {
     $backendConfig = $station->getBackendConfig();
 
     $router = $request->getRouter();
-    $frontendEnum = $station->getFrontendType();
-
-    $willDisconnectMessage = __('Restart broadcasting? This will disconnect any current listeners.');
-    $willNotDisconnectMessage = __('Reload broadcasting? Current listeners will not be disconnected.');
-
-    $reloadSupported = $frontendEnum->supportsReload();
-    $reloadMessage = $reloadSupported ? $willNotDisconnectMessage : $willDisconnectMessage;
 
     $settings = $e->getSettings();
 
@@ -35,20 +28,17 @@ return static function (App\Event\BuildStationMenu $e) {
                 'label' => __('Start Station'),
                 'title' => __('Ready to start broadcasting? Click to start your station.'),
                 'icon' => 'refresh',
-                'url' => $router->fromHere('api:stations:reload'),
-                'class' => 'api-call text-success',
-                'confirm' => $reloadMessage,
+                'url' => $router->fromHere('stations:restart:index'),
+                'class' => 'text-success',
                 'visible' => $hasLocalServices && !$station->getHasStarted(),
                 'permission' => StationPermissions::Broadcasting,
             ],
             'restart_station' => [
                 'label' => __('Reload to Apply Changes'),
-                'title' => __('Click to restart your station and apply configuration changes.'),
                 'icon' => 'refresh',
-                'url' => $router->fromHere('api:stations:reload'),
-                'class' => 'api-call text-warning btn-restart-station '
+                'url' => $router->fromHere('stations:restart:index'),
+                'class' => 'text-warning btn-restart-station '
                     . (!$station->getNeedsRestart() ? 'd-none' : ''),
-                'confirm' => $reloadMessage,
                 'visible' => $hasLocalServices && $station->getHasStarted(),
                 'permission' => StationPermissions::Broadcasting,
             ],
@@ -258,19 +248,10 @@ return static function (App\Event\BuildStationMenu $e) {
                         'permission' => StationPermissions::Broadcasting,
                         'visible' => $station->supportsAutoDjQueue(),
                     ],
-                    'reload' => [
-                        'label' => __('Reload Configuration'),
-                        'class' => 'api-call',
-                        'url' => $router->fromHere('api:stations:reload'),
-                        'confirm' => $willNotDisconnectMessage,
-                        'permission' => StationPermissions::Broadcasting,
-                        'visible' => $hasLocalServices && $reloadSupported,
-                    ],
                     'restart' => [
                         'label' => __('Restart Broadcasting'),
                         'class' => 'api-call',
-                        'url' => $router->fromHere('api:stations:restart'),
-                        'confirm' => $willDisconnectMessage,
+                        'url' => $router->fromHere('stations:restart:index'),
                         'permission' => StationPermissions::Broadcasting,
                         'visible' => $hasLocalServices,
                     ],

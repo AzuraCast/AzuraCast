@@ -4,7 +4,7 @@
         role="region"
         aria-labelledby="hdr_edit_profile"
     >
-        <div class="card-header bg-primary-dark">
+        <div class="card-header text-bg-primary">
             <h3
                 id="hdr_edit_profile"
                 class="card-title"
@@ -27,22 +27,28 @@
             </p>
 
             <a
-                class="btn btn-lg btn-light"
+                class="btn btn-light"
                 @click="retry"
             >
                 <icon icon="refresh" />
-                {{ $gettext('Reload') }}
+                <span>
+                    {{ $gettext('Reload') }}
+                </span>
             </a>
         </error-card>
-        <admin-stations-form
+        <div
             v-else
-            v-bind="pickProps(props, stationFormProps)"
-            ref="$form"
-            is-edit-mode
-            :edit-url="editUrl"
-            @submitted="onSubmitted"
-            @error="onError"
-        />
+            class="card-body"
+        >
+            <admin-stations-form
+                v-bind="pickProps(props, stationFormProps)"
+                ref="$form"
+                is-edit-mode
+                :edit-url="editUrl"
+                @submitted="onSubmitted"
+                @error="onError"
+            />
+        </div>
     </section>
 </template>
 

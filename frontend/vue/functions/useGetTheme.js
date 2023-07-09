@@ -6,7 +6,7 @@ export default function useGetTheme() {
     const theme = ref(null);
 
     onMounted(() => {
-        theme.value = htmlElement.getAttribute('data-theme');
+        theme.value = htmlElement.getAttribute('data-bs-theme');
     });
 
     useEventListener(htmlElement, 'theme-change', (evt) => {

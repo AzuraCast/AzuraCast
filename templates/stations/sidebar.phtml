@@ -15,32 +15,30 @@ $sections->appendStart('bodyjs');
         'timezone' => $station->getTimezone(),
     ]); ?>;
 
-    (() => {
-        window.addEventListener('DOMContentLoaded', () => {
-            // Show the "Restart to Apply Changes" link
-            document.addEventListener('station-needs-restart', () => {
-                document.querySelectorAll('.btn-restart-station').forEach((el) => {
-                    el.classList.remove('d-none');
-                });
+    ready(() => {
+        // Show the "Restart to Apply Changes" link
+        document.addEventListener('station-needs-restart', () => {
+            document.querySelectorAll('.btn-restart-station').forEach((el) => {
+                el.classList.remove('d-none');
             });
-
-            // Update the clock in the header
-            const updateClock = () => {
-                let d = new Date();
-                document.querySelector("#station-time").textContent = d.toLocaleString(
-                    App.locale_with_dashes,
-                    {
-                        ...App.time_config,
-                        timeZone: App.station.timezone,
-                        timeStyle: 'long'
-                    }
-                );
-            }
-
-            setInterval(updateClock, 1000);
-            updateClock();
         });
-    })();
+
+        // Update the clock in the header
+        const updateClock = () => {
+            let d = new Date();
+            document.querySelector("#station-time").textContent = d.toLocaleString(
+                App.locale_with_dashes,
+                {
+                    ...App.time_config,
+                    timeZone: App.station.timezone,
+                    timeStyle: 'long'
+                }
+            );
+        }
+
+        setInterval(updateClock, 1000);
+        updateClock();
+    });
 </script>
 <?php
 $sections->end();

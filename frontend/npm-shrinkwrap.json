@@ -60,7 +60,6 @@
         "gulp": "^4.0.2",
         "gulp-babel": "^8.0.0",
         "gulp-clean-css": "^4",
-        "gulp-concat": "^2.6.1",
         "gulp-dart-sass": "^1.0.2",
         "gulp-mode": "^1.1.0",
         "gulp-rev": "^10",
@@ -4556,15 +4555,6 @@
         "typedarray": "^0.0.6"
       }
     },
-    "node_modules/concat-with-sourcemaps": {
-      "version": "1.1.0",
-      "resolved": "https://registry.npmjs.org/concat-with-sourcemaps/-/concat-with-sourcemaps-1.1.0.tgz",
-      "integrity": "sha512-4gEjHJFT9e+2W/77h/DS5SGUgwDaOwprX8L/gl5+3ixnzkVJJsZWDSelmN3Oilw3LNDZjZV0yqH1hLG3k6nghg==",
-      "dev": true,
-      "dependencies": {
-        "source-map": "^0.6.1"
-      }
-    },
     "node_modules/constantinople": {
       "version": "4.0.1",
       "resolved": "https://registry.npmjs.org/constantinople/-/constantinople-4.0.1.tgz",
@@ -6733,20 +6723,6 @@
       },
       "bin": {
         "gulp": "bin/gulp.js"
-      },
-      "engines": {
-        "node": ">= 0.10"
-      }
-    },
-    "node_modules/gulp-concat": {
-      "version": "2.6.1",
-      "resolved": "https://registry.npmjs.org/gulp-concat/-/gulp-concat-2.6.1.tgz",
-      "integrity": "sha512-a2scActrQrDBpBbR3WUZGyGS1JEPLg5PZJdIa7/Bi3GuKAmPYDK6SFhy/NZq5R8KsKKFvtfR0fakbUCcKGCCjg==",
-      "dev": true,
-      "dependencies": {
-        "concat-with-sourcemaps": "^1.0.0",
-        "through2": "^2.0.0",
-        "vinyl": "^2.0.0"
       },
       "engines": {
         "node": ">= 0.10"

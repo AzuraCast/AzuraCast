@@ -48,7 +48,7 @@ $sections->end();
 $sections->appendStart('bodyjs');
 ?>
     <script>
-        $(function () {
+        ready(() => {
             if ('serviceWorker' in navigator) {
                 window.addEventListener('load', function () {
                     navigator.serviceWorker.register('<?=$swJsRoute ?>');

@@ -61,7 +61,6 @@
     "gulp": "^4.0.2",
     "gulp-babel": "^8.0.0",
     "gulp-clean-css": "^4",
-    "gulp-concat": "^2.6.1",
     "gulp-dart-sass": "^1.0.2",
     "gulp-mode": "^1.1.0",
     "gulp-rev": "^10",

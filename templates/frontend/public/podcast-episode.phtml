@@ -37,16 +37,6 @@ $sections->append(
     <link rel="alternate" type="application/rss+xml" title="{$this->e($podcast->getTitle())}" href="{$feedLink}">
     HTML
 );
-
-$sections->appendStart('bodyjs');
-?>
-<script>
-    $(function () {
-        $('[data-toggle="tooltip"]').tooltip();
-    });
-</script>
-<?php
-$sections->end();
 ?>
 
 <section id="content" role="main" class="d-flex align-items-stretch" style="height: 100vh;">

@@ -4,7 +4,6 @@ import gulp from 'gulp';
 import babel from 'gulp-babel';
 import {deleteAsync as del} from 'del';
 import rev from 'gulp-rev';
-import concat from 'gulp-concat';
 import uglify from 'gulp-uglify';
 import gulp_sourcemaps from 'gulp-sourcemaps';
 import sass from 'gulp-dart-sass';
@@ -72,15 +71,14 @@ task('clean', function () {
 });
 
 task('concat-js', function () {
-    return src('./js/inc/*.js')
-        .pipe(init())
-        .pipe(babel({
-            presets: ['@babel/env']
-        }))
-        .pipe(concat('app.js'))
-        .pipe(uglify())
-        .pipe(write())
-        .pipe(dest('../web/static/dist'));
+    return src('./js/app.js')
+            .pipe(init())
+            .pipe(babel({
+                presets: ['@babel/env']
+            }))
+            .pipe(uglify())
+            .pipe(write())
+            .pipe(dest('../web/static/dist'));
 });
 
 task('build-vue', run('webpack -c webpack.config.mjs'));

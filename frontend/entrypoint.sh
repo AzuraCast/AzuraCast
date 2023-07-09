@@ -3,6 +3,6 @@
 fixuid
 
 cd /data/frontend
-npm ci
+npm ci --include=dev
 
 exec "$@"

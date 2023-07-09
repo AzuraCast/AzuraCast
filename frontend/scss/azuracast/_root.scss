@@ -23,6 +23,10 @@
   .form-check-input {
     --bs-form-check-bg: #fff;
   }
+
+  .list-group {
+    --bs-list-group-bg: #fff;
+  }
 }
 
 @include color-mode(dark, true) {

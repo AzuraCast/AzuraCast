@@ -12,7 +12,10 @@ final class MemoryData
     public function __construct(
         public readonly BigInteger $memTotal,
         public readonly BigInteger $memFree,
+        public readonly BigInteger $buffers,
         public readonly BigInteger $cached,
+        public readonly BigInteger $sReclaimable,
+        public readonly BigInteger $shmem,
         public readonly BigInteger $swapTotal,
         public readonly BigInteger $swapFree,
     ) {
@@ -22,14 +25,20 @@ final class MemoryData
     {
         $memTotal = Quota::convertFromReadableSize($meminfo['MemTotal']) ?? BigInteger::zero();
         $memFree = Quota::convertFromReadableSize($meminfo['MemFree']) ?? BigInteger::zero();
+        $buffers = Quota::convertFromReadableSize($meminfo['Buffers']) ?? BigInteger::zero();
         $cached = Quota::convertFromReadableSize($meminfo['Cached']) ?? BigInteger::zero();
+        $sReclaimable = Quota::convertFromReadableSize($meminfo['SReclaimable']) ?? BigInteger::zero();
+        $shmem = Quota::convertFromReadableSize($meminfo['Shmem']) ?? BigInteger::zero();
         $swapTotal = Quota::convertFromReadableSize($meminfo['SwapTotal']) ?? BigInteger::zero();
         $swapFree = Quota::convertFromReadableSize($meminfo['SwapFree']) ?? BigInteger::zero();
 
         return new self(
             $memTotal,
             $memFree,
+            $buffers,
             $cached,
+            $sReclaimable,
+            $shmem,
             $swapTotal,
             $swapFree
         );
@@ -37,9 +46,20 @@ final class MemoryData
 
     public function getUsedMemory(): BigInteger
     {
-        return $this->memTotal
-            ->minus($this->memFree)
-            ->minus($this->cached);
+        $usedDiff = $this->memFree
+            ->plus($this->cached)
+            ->plus($this->sReclaimable)
+            ->minus($this->shmem)
+            ->plus($this->buffers);
+
+        return $this->memTotal->isGreaterThanOrEqualTo($usedDiff)
+            ? $this->memTotal->minus($usedDiff)
+            : $this->memTotal->minus($this->memFree);
+    }
+
+    public function getCachedMemory(): BigInteger
+    {
+        return $this->cached->plus($this->buffers);
     }
 
     public function getUsedSwap(): BigInteger

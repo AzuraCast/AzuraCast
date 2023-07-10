@@ -31,7 +31,7 @@ final class Quota
         $factor = (int)floor((strlen($bytesStr) - 1) / 3);
 
         if (isset($size[$factor])) {
-            $byteDivisor = Math\BigInteger::of(1000)->power($factor);
+            $byteDivisor = Math\BigInteger::of(1024)->power($factor);
             $sizeString = $bytes->toBigDecimal()
                 ->dividedBy($byteDivisor, $decimals, Math\RoundingMode::HALF_DOWN);
 
@@ -66,7 +66,7 @@ final class Quota
                 haystack: 'bkmgtpezy',
                 needle: $unit[0]
             ) ?: 0;
-            $byteMultiplier = Math\BigInteger::of(1000)->power($bytePower);
+            $byteMultiplier = Math\BigInteger::of(1024)->power($bytePower);
 
             return Math\BigDecimal::of($size)
                 ->multipliedBy($byteMultiplier)

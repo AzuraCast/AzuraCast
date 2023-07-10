@@ -1,13 +1,14 @@
 <template>
     <o-tab-item
         :label="$gettext('Basic Info')"
+        :item-header-class="tabClass"
         active
     >
         <div class="row g-3 mb-3">
             <form-group-field
                 id="edit_form_name"
                 class="col-md-6"
-                :field="form.name"
+                :field="v$.name"
                 :label="$gettext('Mount Point URL')"
                 :description="$gettext('This name should always begin with a slash (/), and must be a valid URL, such as /autodj.mp3')"
             />
@@ -15,7 +16,7 @@
             <form-group-field
                 id="edit_form_display_name"
                 class="col-md-6"
-                :field="form.display_name"
+                :field="v$.display_name"
                 :label="$gettext('Display Name')"
                 :description="$gettext('The display name assigned to this mount point when viewing it on administrative or public pages. Leave blank to automatically generate one.')"
             />
@@ -23,7 +24,7 @@
             <form-group-checkbox
                 id="edit_form_is_visible_on_public_pages"
                 class="col-md-6"
-                :field="form.is_visible_on_public_pages"
+                :field="v$.is_visible_on_public_pages"
                 :label="$gettext('Show on Public Pages')"
                 :description="$gettext('Enable to allow listeners to select this mount point on this station\'s public pages.')"
             />
@@ -31,7 +32,7 @@
             <form-group-checkbox
                 id="edit_form_is_default"
                 class="col-md-6"
-                :field="form.is_default"
+                :field="v$.is_default"
                 :label="$gettext('Set as Default Mount Point')"
                 :description="$gettext('If this mount is the default, it will be played on the radio preview and the public radio page in this system.')"
             />
@@ -39,7 +40,7 @@
             <form-group-field
                 id="edit_form_relay_url"
                 class="col-md-6"
-                :field="form.relay_url"
+                :field="v$.relay_url"
                 :label="$gettext('Relay Stream URL')"
                 :description="$gettext('Enter the full URL of another stream to relay its broadcast through this mount point.')"
             />
@@ -47,7 +48,7 @@
             <form-group-checkbox
                 id="edit_form_is_public"
                 class="col-md-6"
-                :field="form.is_public"
+                :field="v$.is_public"
             >
                 <template #label>
                     {{ $gettext('Publish to "Yellow Pages" Directories') }}
@@ -62,7 +63,7 @@
             <form-group-field
                 id="edit_form_max_listener_duration"
                 class="col-md-6"
-                :field="form.max_listener_duration"
+                :field="v$.max_listener_duration"
                 input-type="number"
                 :input-attrs="{min: '0', max: '2147483647'}"
                 :label="$gettext('Max Listener Duration')"
@@ -73,7 +74,7 @@
                 <form-group-field
                     id="edit_form_authhash"
                     class="col-md-6"
-                    :field="form.authhash"
+                    :field="v$.authhash"
                     :label="$gettext('YP Directory Authorization Hash')"
                 >
                     <template #description>
@@ -94,7 +95,7 @@
                 <form-group-field
                     id="edit_form_fallback_mount"
                     class="col-md-6"
-                    :field="form.fallback_mount"
+                    :field="v$.fallback_mount"
                     :label="$gettext('Fallback Mount')"
                     :description="$gettext('If this mount point is not playing audio, listeners will automatically be redirected to this mount point. The default is /error.mp3, a repeating error message.')"
                 />
@@ -108,6 +109,9 @@ import {FRONTEND_ICECAST, FRONTEND_SHOUTCAST} from '~/components/Entity/RadioAda
 import FormGroupField from "~/components/Form/FormGroupField";
 import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox";
 import {computed} from "vue";
+import {useVModel} from "@vueuse/core";
+import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
+import {required} from "@vuelidate/validators";
 
 const props = defineProps({
     form: {
@@ -119,6 +123,34 @@ const props = defineProps({
         required: true
     }
 });
+
+const emit = defineEmits(['update:form']);
+const form = useVModel(props, 'form', emit);
+
+const {v$, tabClass} = useVuelidateOnFormTab(
+    computed(() => {
+        let validations = {
+            name: {required},
+            display_name: {},
+            is_visible_on_public_pages: {},
+            is_default: {},
+            relay_url: {},
+            is_public: {},
+            max_listener_duration: {required},
+        };
+
+        if (FRONTEND_SHOUTCAST === props.stationFrontendType) {
+            validations.authhash = {};
+        }
+
+        if (FRONTEND_ICECAST === props.stationFrontendType) {
+            validations.fallback_mount = {};
+        }
+
+        return validations;
+    }),
+    form
+);
 
 const isIcecast = computed(() => {
     return FRONTEND_ICECAST === props.stationFrontendType;

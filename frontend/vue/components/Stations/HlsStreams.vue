@@ -1,5 +1,5 @@
 <template>
-    <card-page :id="$gettext('HLS Streams')">
+    <card-page :title="$gettext('HLS Streams')">
         <template #info>
             <p class="card-text">
                 {{

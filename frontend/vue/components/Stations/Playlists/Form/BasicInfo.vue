@@ -1,20 +1,21 @@
 <template>
     <o-tab-item
         :label="$gettext('Basic Info')"
+        :item-header-class="tabClass"
         active
     >
         <div class="row g-3 mb-3">
             <form-group-field
                 id="form_edit_name"
                 class="col-md-6"
-                :field="form.name"
+                :field="v$.name"
                 :label="$gettext('Playlist Name')"
             />
 
             <form-group-checkbox
                 id="form_edit_is_enabled"
                 class="col-md-6"
-                :field="form.is_enabled"
+                :field="v$.is_enabled"
                 :label="$gettext('Enable')"
                 :description="$gettext('If disabled, the playlist will not be included in radio playback, but can still be managed.')"
             />
@@ -22,7 +23,7 @@
             <form-group-multi-check
                 id="edit_form_source"
                 class="col-md-12"
-                :field="form.source"
+                :field="v$.source"
                 :options="sourceOptions"
                 stacked
                 radio
@@ -44,7 +45,7 @@
         </div>
 
         <section
-            v-show="form.source.$model === 'songs'"
+            v-show="form.source === 'songs'"
             class="card mb-3"
             role="region"
         >
@@ -58,7 +59,7 @@
                     <form-group-checkbox
                         id="form_edit_avoid_duplicates"
                         class="col-md-6"
-                        :field="form.avoid_duplicates"
+                        :field="v$.avoid_duplicates"
                         :label="$gettext('Avoid Duplicate Artists/Titles')"
                         :description="$gettext('Whether the AutoDJ should attempt to avoid duplicate artists and track titles when playing media from this playlist.')"
                     />
@@ -66,7 +67,7 @@
                     <form-group-checkbox
                         id="form_edit_include_in_on_demand"
                         class="col-md-6"
-                        :field="form.include_in_on_demand"
+                        :field="v$.include_in_on_demand"
                         :label="$gettext('Include in On-Demand Player')"
                         :description="$gettext('If this station has on-demand streaming and downloading enabled, only songs that are in playlists with this setting enabled will be visible.')"
                     />
@@ -74,7 +75,7 @@
                     <form-group-checkbox
                         id="form_edit_include_in_requests"
                         class="col-md-6"
-                        :field="form.include_in_requests"
+                        :field="v$.include_in_requests"
                         :label="$gettext('Allow Requests from This Playlist')"
                         :description="$gettext('If requests are enabled for your station, users will be able to request media that is on this playlist.')"
                     />
@@ -82,7 +83,7 @@
                     <form-group-checkbox
                         id="form_edit_is_jingle"
                         class="col-md-6"
-                        :field="form.is_jingle"
+                        :field="v$.is_jingle"
                         :description="$gettext('Enable this setting to prevent metadata from being sent to the AutoDJ for files in this playlist. This is useful if the playlist contains jingles or bumpers.')"
                     >
                         <template #label>
@@ -93,7 +94,7 @@
                     <form-group-multi-check
                         id="edit_form_type"
                         class="col-md-6"
-                        :field="form.type"
+                        :field="v$.type"
                         :options="typeOptions"
                         stacked
                         radio
@@ -144,7 +145,7 @@
                     <form-group-multi-check
                         id="edit_form_order"
                         class="col-md-6"
-                        :field="form.order"
+                        :field="v$.order"
                         :options="orderOptions"
                         stacked
                         radio
@@ -177,7 +178,7 @@
                     </form-group-multi-check>
                 </div>
 
-                <form-fieldset v-show="form.type.$model === 'default'">
+                <form-fieldset v-show="form.type === 'default'">
                     <template #label>
                         {{ $gettext('General Rotation') }}
                     </template>
@@ -186,7 +187,7 @@
                         <form-group-select
                             id="form_edit_weight"
                             class="col-md-12"
-                            :field="form.weight"
+                            :field="v$.weight"
                             :options="weightOptions"
                             :label="$gettext('Playlist Weight')"
                             :description="$gettext('Higher weight playlists are played more frequently compared to other lower-weight playlists.')"
@@ -194,7 +195,7 @@
                     </div>
                 </form-fieldset>
 
-                <form-fieldset v-show="form.type.$model === 'once_per_x_songs'">
+                <form-fieldset v-show="form.type === 'once_per_x_songs'">
                     <template #label>
                         {{ $gettext('Once per x Songs') }}
                     </template>
@@ -203,7 +204,7 @@
                         <form-group-field
                             id="form_edit_play_per_songs"
                             class="col-md-12"
-                            :field="form.play_per_songs"
+                            :field="v$.play_per_songs"
                             input-type="number"
                             :input-attrs="{min: '0', max: '150'}"
                             :label="$gettext('Number of Songs Between Plays')"
@@ -212,7 +213,7 @@
                     </div>
                 </form-fieldset>
 
-                <form-fieldset v-show="form.type.$model === 'once_per_x_minutes'">
+                <form-fieldset v-show="form.type === 'once_per_x_minutes'">
                     <template #label>
                         {{ $gettext('Once per x Minutes') }}
                     </template>
@@ -221,7 +222,7 @@
                         <form-group-field
                             id="form_edit_play_per_minutes"
                             class="col-md-12"
-                            :field="form.play_per_minutes"
+                            :field="v$.play_per_minutes"
                             input-type="number"
                             :input-attrs="{min: '0', max: '360'}"
                             :label="$gettext('Number of Minutes Between Plays')"
@@ -230,7 +231,7 @@
                     </div>
                 </form-fieldset>
 
-                <form-fieldset v-show="form.type.$model === 'once_per_hour'">
+                <form-fieldset v-show="form.type === 'once_per_hour'">
                     <template #label>
                         {{ $gettext('Once per Hour') }}
                     </template>
@@ -239,7 +240,7 @@
                         <form-group-field
                             id="form_edit_play_per_hour_minute"
                             class="col-md-12"
-                            :field="form.play_per_hour_minute"
+                            :field="v$.play_per_hour_minute"
                             input-type="number"
                             :input-attrs="{min: '0', max: '59'}"
                             :label="$gettext('Minute of Hour to Play')"
@@ -251,7 +252,7 @@
         </section>
 
         <section
-            v-show="form.source.$model === 'remote_url'"
+            v-show="form.source === 'remote_url'"
             class="card mb-3"
             role="region"
         >
@@ -266,14 +267,14 @@
                     <form-group-field
                         id="form_edit_remote_url"
                         class="col-md-6"
-                        :field="form.remote_url"
+                        :field="v$.remote_url"
                         :label="$gettext('Remote URL')"
                     />
 
                     <form-group-multi-check
                         id="edit_form_remote_type"
                         class="col-md-6"
-                        :field="form.remote_type"
+                        :field="v$.remote_type"
                         :options="remoteTypeOptions"
                         stacked
                         radio
@@ -283,7 +284,7 @@
                     <form-group-field
                         id="form_edit_remote_buffer"
                         class="col-md-6"
-                        :field="form.remote_buffer"
+                        :field="v$.remote_buffer"
                         input-type="number"
                         :input-attrs="{ min: 0, max: 120 }"
                         :label="$gettext('Remote Playback Buffer (Seconds)')"
@@ -303,6 +304,9 @@ import {map, range} from "lodash";
 import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
 import FormGroupSelect from "~/components/Form/FormGroupSelect.vue";
 import {useTranslate} from "~/vendor/gettext";
+import {useVModel} from "@vueuse/core";
+import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
+import {required} from "@vuelidate/validators";
 
 const props = defineProps({
     form: {
@@ -310,6 +314,31 @@ const props = defineProps({
         required: true
     }
 });
+
+const emit = defineEmits(['update:form']);
+const form = useVModel(props, 'form', emit);
+
+const {v$, tabClass} = useVuelidateOnFormTab(
+    {
+        name: {required},
+        is_enabled: {},
+        include_in_on_demand: {},
+        weight: {},
+        type: {},
+        source: {},
+        order: {},
+        remote_url: {},
+        remote_type: {},
+        remote_buffer: {},
+        is_jingle: {},
+        play_per_songs: {},
+        play_per_minutes: {},
+        play_per_hour_minute: {},
+        include_in_requests: {},
+        avoid_duplicates: {}
+    },
+    form
+);
 
 // These don't need to be translated as they're overridden by slots above.
 const sourceOptions = [

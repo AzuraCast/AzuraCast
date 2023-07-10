@@ -12,15 +12,14 @@
             nav-tabs-class="nav-tabs"
             content-class="mt-3"
         >
-            <remote-form-basic-info :form="v$" />
+            <remote-form-basic-info v-model:form="form" />
 
-            <remote-form-auto-dj :form="v$" />
+            <remote-form-auto-dj v-model:form="form" />
         </o-tabs>
     </modal-form>
 </template>
 
 <script setup>
-import {required} from '@vuelidate/validators';
 import RemoteFormBasicInfo from "./Form/BasicInfo";
 import RemoteFormAutoDj from "./Form/AutoDj";
 import {REMOTE_ICECAST} from "~/components/Entity/RadioAdapters";
@@ -44,6 +43,7 @@ const {
     loading,
     error,
     isEditMode,
+    form,
     v$,
     clearContents,
     create,
@@ -54,23 +54,7 @@ const {
     props,
     emit,
     $modal,
-    {
-        display_name: {},
-        is_visible_on_public_pages: {},
-        type: {required},
-        enable_autodj: {},
-        autodj_format: {},
-        autodj_bitrate: {},
-        custom_listen_url: {},
-        url: {required},
-        mount: {},
-        admin_password: {},
-        source_port: {},
-        source_mount: {},
-        source_username: {},
-        source_password: {},
-        is_public: {},
-    },
+    {},
     {
         display_name: null,
         is_visible_on_public_pages: true,

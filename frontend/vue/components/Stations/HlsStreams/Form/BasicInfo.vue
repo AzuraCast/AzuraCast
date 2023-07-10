@@ -1,13 +1,14 @@
 <template>
     <o-tab-item
         :label="$gettext('Basic Info')"
+        :item-header-class="tabClass"
         active
     >
         <div class="row g-3 mb-3">
             <form-group-field
                 id="edit_form_name"
                 class="col-md-12"
-                :field="form.name"
+                :field="v$.name"
                 :label="$gettext('Programmatic Name')"
             >
                 <template #description>
@@ -20,7 +21,7 @@
             <form-group-multi-check
                 id="edit_form_format"
                 class="col-md-6"
-                :field="form.format"
+                :field="v$.format"
                 :options="formatOptions"
                 stacked
                 radio
@@ -30,7 +31,7 @@
             <form-group-multi-check
                 id="edit_form_bitrate"
                 class="col-md-6"
-                :field="form.bitrate"
+                :field="v$.bitrate"
                 :options="bitrateOptions"
                 stacked
                 radio
@@ -44,6 +45,9 @@
 import FormGroupField from "~/components/Form/FormGroupField";
 import {map} from "lodash";
 import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
+import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
+import {required} from "@vuelidate/validators";
+import {useVModel} from "@vueuse/core";
 
 const props = defineProps({
     form: {
@@ -51,6 +55,18 @@ const props = defineProps({
         required: true
     }
 });
+
+const emit = defineEmits(['update:form']);
+const form = useVModel(props, 'form', emit);
+
+const {v$, tabClass} = useVuelidateOnFormTab(
+    {
+        name: {required},
+        format: {required},
+        bitrate: {required}
+    },
+    form
+);
 
 const formatOptions = [
     {

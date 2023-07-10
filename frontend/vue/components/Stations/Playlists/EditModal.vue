@@ -12,22 +12,20 @@
             nav-tabs-class="nav-tabs"
             content-class="mt-3"
         >
-            <form-basic-info :form="v$" />
+            <form-basic-info v-model:form="form" />
             <form-schedule
                 v-model:schedule-items="form.schedule_items"
-                :form="v$"
                 :station-time-zone="stationTimeZone"
             />
             <form-advanced
                 v-if="enableAdvancedFeatures"
-                :form="v$"
+                v-model:form="v$"
             />
         </o-tabs>
     </modal-form>
 </template>
 
 <script setup>
-import {required} from '@vuelidate/validators';
 import FormBasicInfo from './Form/BasicInfo';
 import FormSchedule from './Form/Schedule';
 import FormAdvanced from './Form/Advanced';
@@ -70,26 +68,7 @@ const {
     props,
     emit,
     $modal,
-    {
-        'name': {required},
-        'is_enabled': {},
-        'include_in_on_demand': {},
-        'weight': {},
-        'type': {},
-        'source': {},
-        'order': {},
-        'remote_url': {},
-        'remote_type': {},
-        'remote_buffer': {},
-        'is_jingle': {},
-        'play_per_songs': {},
-        'play_per_minutes': {},
-        'play_per_hour_minute': {},
-        'include_in_requests': {},
-        'avoid_duplicates': {},
-        'backend_options': {},
-        'schedule_items': {}
-    },
+    {},
     {
         'name': '',
         'is_enabled': true,

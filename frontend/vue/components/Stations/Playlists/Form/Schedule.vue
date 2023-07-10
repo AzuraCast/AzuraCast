@@ -44,10 +44,6 @@ import {useVModel} from "@vueuse/core";
 import FormMarkup from "~/components/Form/FormMarkup.vue";
 
 const props = defineProps({
-    form: {
-        type: Object,
-        required: true
-    },
     stationTimeZone: {
         type: String,
         required: true

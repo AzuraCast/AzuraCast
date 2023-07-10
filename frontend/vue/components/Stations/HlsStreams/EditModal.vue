@@ -12,13 +12,12 @@
             nav-tabs-class="nav-tabs"
             content-class="mt-3"
         >
-            <form-basic-info :form="v$" />
+            <form-basic-info v-model:form="form" />
         </o-tabs>
     </modal-form>
 </template>
 
 <script setup>
-import {required} from '@vuelidate/validators';
 import FormBasicInfo from './Form/BasicInfo';
 import {baseEditModalProps, useBaseEditModal} from "~/functions/useBaseEditModal";
 import {computed, ref} from "vue";
@@ -40,6 +39,7 @@ const {
     loading,
     error,
     isEditMode,
+    form,
     v$,
     clearContents,
     create,
@@ -50,11 +50,7 @@ const {
     props,
     emit,
     $modal,
-    {
-        name: {required},
-        format: {required},
-        bitrate: {required}
-    },
+    {},
     {
         name: null,
         format: 'aac',

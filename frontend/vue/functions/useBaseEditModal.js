@@ -33,7 +33,7 @@ export function useBaseEditModal(
 
     const createUrl = toRef(props, 'createUrl');
 
-    const loading = ref(true);
+    const loading = ref(false);
     const error = ref(null);
     const editUrl = ref(null);
 
@@ -45,7 +45,7 @@ export function useBaseEditModal(
         ? originalBlankForm(isEditMode)
         : originalBlankForm;
 
-    const {record: form, reset: originalResetForm} = useResettableRef(blankForm);
+    const {record: form, reset: resetFormRef} = useResettableRef(blankForm);
 
     const validations = (typeof originalValidations === 'function')
         ? originalValidations(form, isEditMode)
@@ -53,12 +53,16 @@ export function useBaseEditModal(
 
     const v$ = useVuelidate(validations, form);
 
+    const originalResetForm = () => {
+        resetFormRef();
+        v$.value.$reset();
+    }
+
     const resetForm = () => {
         if (typeof options.resetForm === 'function') {
             return options.resetForm(originalResetForm);
         }
 
-        v$.value.$reset();
         originalResetForm();
     };
 
@@ -92,13 +96,14 @@ export function useBaseEditModal(
     const {axios} = useAxios();
 
     const doLoad = () => {
-        wrapWithLoading(
-            axios.get(editUrl.value)
-        ).then((resp) => {
+        loading.value = true;
+
+        axios.get(editUrl.value).then((resp) => {
             populateForm(resp.data);
-            loading.value = false;
         }).catch(() => {
             close();
+        }).finally(() => {
+            loading.value = false;
         });
     };
 

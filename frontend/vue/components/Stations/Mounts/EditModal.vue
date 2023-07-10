@@ -13,22 +13,22 @@
             content-class="mt-3"
         >
             <mount-form-basic-info
-                :form="v$"
+                v-model:form="form"
                 :station-frontend-type="stationFrontendType"
             />
             <mount-form-auto-dj
-                :form="v$"
+                v-model:form="form"
                 :station-frontend-type="stationFrontendType"
             />
             <mount-form-intro
-                v-model="v$.intro_file.$model"
+                v-model="form.intro_file"
                 :record-has-intro="record.intro_path !== null"
                 :new-intro-url="newIntroUrl"
                 :edit-intro-url="record.links.intro"
             />
             <mount-form-advanced
                 v-if="showAdvanced"
-                :form="v$"
+                v-model:form="form"
                 :station-frontend-type="stationFrontendType"
             />
         </o-tabs>
@@ -36,8 +36,6 @@
 </template>
 
 <script setup>
-import {required} from '@vuelidate/validators';
-import {FRONTEND_ICECAST, FRONTEND_SHOUTCAST} from '~/components/Entity/RadioAdapters';
 import MountFormBasicInfo from './Form/BasicInfo';
 import MountFormAutoDj from './Form/AutoDj';
 import MountFormAdvanced from './Form/Advanced';
@@ -83,6 +81,7 @@ const {
     loading,
     error,
     isEditMode,
+    form,
     v$,
     clearContents,
     create,
@@ -93,39 +92,7 @@ const {
     props,
     emit,
     $modal,
-    () => computed(() => {
-        let validations = {
-            name: {required},
-            display_name: {},
-            is_visible_on_public_pages: {},
-            is_default: {},
-            relay_url: {},
-            is_public: {},
-            enable_autodj: {},
-            autodj_format: {},
-            autodj_bitrate: {},
-            max_listener_duration: {required},
-            intro_file: {}
-        };
-
-        if (props.showAdvanced) {
-            validations.custom_listen_url = {};
-        }
-
-        if (FRONTEND_SHOUTCAST === props.stationFrontendType) {
-            validations.authhash = {};
-        }
-
-        if (FRONTEND_ICECAST === props.stationFrontendType) {
-            validations.fallback_mount = {};
-
-            if (props.showAdvanced) {
-                validations.frontend_config = {};
-            }
-        }
-
-        return validations;
-    }),
+    {},
     {
         name: null,
         display_name: null,

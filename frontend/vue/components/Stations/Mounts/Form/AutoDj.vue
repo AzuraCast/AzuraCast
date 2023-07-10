@@ -1,23 +1,26 @@
 <template>
-    <o-tab-item :label="$gettext('AutoDJ')">
+    <o-tab-item
+        :label="$gettext('AutoDJ')"
+        :item-header-class="tabClass"
+    >
         <div class="row g-3 mb-3">
             <form-group-checkbox
                 id="edit_form_enable_autodj"
                 class="col-md-12"
-                :field="form.enable_autodj"
+                :field="v$.enable_autodj"
                 :label="$gettext('Enable AutoDJ')"
                 :description="$gettext('If enabled, the AutoDJ will automatically play music to this mount point.')"
             />
         </div>
 
         <div
-            v-if="form.enable_autodj.$model"
+            v-if="form.enable_autodj"
             class="row g-3"
         >
             <form-group-multi-check
                 id="edit_form_autodj_format"
                 class="col-md-6"
-                :field="form.autodj_format"
+                :field="v$.autodj_format"
                 :options="formatOptions"
                 stacked
                 radio
@@ -28,7 +31,7 @@
                 v-if="formatSupportsBitrateOptions"
                 id="edit_form_autodj_bitrate"
                 class="col-md-6"
-                :field="form.autodj_bitrate"
+                :field="v$.autodj_bitrate"
                 :options="bitrateOptions"
                 stacked
                 radio
@@ -43,6 +46,8 @@ import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox";
 import {map} from "lodash";
 import {computed} from "vue";
 import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
+import {useVModel} from "@vueuse/core";
+import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
 
 const props = defineProps({
     form: {
@@ -54,6 +59,18 @@ const props = defineProps({
         required: true
     }
 });
+
+const emit = defineEmits(['update:form']);
+const form = useVModel(props, 'form', emit);
+
+const {v$, tabClass} = useVuelidateOnFormTab(
+    {
+        enable_autodj: {},
+        autodj_format: {},
+        autodj_bitrate: {},
+    },
+    form
+);
 
 const formatOptions = [
     {

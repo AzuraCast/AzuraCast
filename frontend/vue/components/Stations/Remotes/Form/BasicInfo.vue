@@ -1,13 +1,14 @@
 <template>
     <o-tab-item
         :label="$gettext('Basic Info')"
+        :item-header-class="tabClass"
         active
     >
         <div class="row g-3">
             <form-group-multi-check
                 id="edit_form_type"
                 class="col-md-12"
-                :field="form.type"
+                :field="v$.type"
                 :options="typeOptions"
                 stacked
                 radio
@@ -17,7 +18,7 @@
             <form-group-field
                 id="edit_form_display_name"
                 class="col-md-6"
-                :field="form.display_name"
+                :field="v$.display_name"
                 :label="$gettext('Display Name')"
                 :description="$gettext('The display name assigned to this relay when viewing it on administrative or public pages. Leave blank to automatically generate one.')"
             />
@@ -25,7 +26,7 @@
             <form-group-field
                 id="edit_form_url"
                 class="col-md-6"
-                :field="form.url"
+                :field="v$.url"
                 :label="$gettext('Remote Station Listening URL')"
             >
                 <template #description>
@@ -38,7 +39,7 @@
             <form-group-field
                 id="edit_form_mount"
                 class="col-md-6"
-                :field="form.mount"
+                :field="v$.mount"
                 :label="$gettext('Remote Station Listening Mountpoint/SID')"
             >
                 <template #description>
@@ -51,7 +52,7 @@
             <form-group-field
                 id="edit_form_admin_password"
                 class="col-md-6"
-                :field="form.admin_password"
+                :field="v$.admin_password"
                 :label="$gettext('Remote Station Administrator Password')"
                 :description="$gettext('To retrieve detailed unique listeners and client details, an administrator password is often required.')"
             />
@@ -59,7 +60,7 @@
             <form-group-checkbox
                 id="edit_form_is_visible_on_public_pages"
                 class="col-md-6"
-                :field="form.is_visible_on_public_pages"
+                :field="v$.is_visible_on_public_pages"
                 :label="$gettext('Show on Public Pages')"
                 :description="$gettext('Enable to allow listeners to select this relay on this station\'s public pages.')"
             />
@@ -72,16 +73,34 @@ import {REMOTE_ICECAST, REMOTE_SHOUTCAST1, REMOTE_SHOUTCAST2} from '~/components
 import FormGroupField from "~/components/Form/FormGroupField";
 import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox";
 import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
+import {useVModel} from "@vueuse/core";
+import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
+import {required} from "@vuelidate/validators";
 
 const props = defineProps({
-  form: {
-    type: Object,
-    required: true
-  }
+    form: {
+        type: Object,
+        required: true
+    }
 });
 
+const emit = defineEmits(['update:form']);
+const form = useVModel(props, 'form', emit);
+
+const {v$, tabClass} = useVuelidateOnFormTab(
+    {
+        display_name: {},
+        type: {required},
+        url: {required},
+        mount: {},
+        admin_password: {},
+        is_visible_on_public_pages: {},
+    },
+    form
+);
+
 const typeOptions = [
-  {
+    {
         value: REMOTE_ICECAST,
         text: 'Icecast v2.4+',
     },

@@ -66,7 +66,7 @@ import FormMarkup from "~/components/Form/FormMarkup.vue";
 const props = defineProps({
     modelValue: {
         type: Object,
-        required: true
+        default: null
     },
     recordHasIntro: {
         type: Boolean,
@@ -74,7 +74,7 @@ const props = defineProps({
     },
     editIntroUrl: {
         type: String,
-        required: true
+        default: null
     },
     newIntroUrl: {
         type: String,

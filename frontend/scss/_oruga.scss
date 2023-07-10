@@ -5,7 +5,7 @@
 // @import '@oruga-ui/theme-bootstrap/dist/scss/components/_button.scss';
 // @import '@oruga-ui/theme-bootstrap/dist/scss/components/_checkbox.scss';
 // @import '@oruga-ui/theme-bootstrap/dist/scss/components/_collapse.scss';
-@import '@oruga-ui/theme-bootstrap/dist/scss/components/_datepicker.scss';
+// @import '@oruga-ui/theme-bootstrap/dist/scss/components/_datepicker.scss';
 // @import '@oruga-ui/theme-bootstrap/dist/scss/components/_dropdown.scss';
 // @import '@oruga-ui/theme-bootstrap/dist/scss/components/_form.scss';
 // @import '@oruga-ui/theme-bootstrap/dist/scss/components/_field.scss';
@@ -24,9 +24,9 @@
 // @import '@oruga-ui/theme-bootstrap/dist/scss/components/_tab.scss';
 @import '@oruga-ui/theme-bootstrap/dist/scss/components/_table.scss';
 // @import '@oruga-ui/theme-bootstrap/dist/scss/components/_taginput.scss';
-@import '@oruga-ui/theme-bootstrap/dist/scss/components/_timepicker.scss';
+// @import '@oruga-ui/theme-bootstrap/dist/scss/components/_timepicker.scss';
 // @import '@oruga-ui/theme-bootstrap/dist/scss/components/_tooltip.scss';
-@import '@oruga-ui/theme-bootstrap/dist/scss/components/_upload.scss';
+// @import '@oruga-ui/theme-bootstrap/dist/scss/components/_upload.scss';
 
 .table-component {
   .table-wrapper {
@@ -37,29 +37,5 @@
         }
       }
     }
-  }
-}
-
-.loading {
-  &__overlay {
-    background-color: rgba(var(--bs-body-bg-rgb), .5)
-  }
-}
-
-.datepicker {
-  .datepicker-table {
-    .datepicker-body {
-      .datepicker-row {
-        .datepicker-cell {
-          color: var(--bs-body-color);
-        }
-      }
-    }
-  }
-}
-
-.timepicker {
-  .dropdown-item:hover {
-    background-color: var(--bs-dropdown-link-hover-bg);
   }
 }

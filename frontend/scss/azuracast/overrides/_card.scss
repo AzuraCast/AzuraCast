@@ -52,6 +52,11 @@
     }
   }
 
+  & > .list-group-flush > .list-group-item:last-child {
+    border-bottom-left-radius: var(--bs-card-border-radius);
+    border-bottom-right-radius: var(--bs-card-border-radius);
+  }
+
   .card-body {
     .card-body-flush {
       margin: (0-$card-spacer-y) (0-$card-spacer-x);

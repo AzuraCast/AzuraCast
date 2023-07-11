@@ -12,14 +12,17 @@
             nav-tabs-class="nav-tabs"
             content-class="mt-3"
         >
-            <form-basic-info :form="v$" />
+            <form-basic-info
+                v-model:form="form"
+                :is-edit-mode="isEditMode"
+            />
             <form-schedule
                 v-model:schedule-items="form.schedule_items"
                 :form="v$"
                 :station-time-zone="stationTimeZone"
             />
             <form-artwork
-                v-model="v$.artwork_file.$model"
+                v-model="form.artwork_file"
                 :artwork-src="record.links.art"
                 :new-art-url="newArtUrl"
                 :edit-art-url="record.links.art"
@@ -29,7 +32,6 @@
 </template>
 
 <script setup>
-import {required} from '@vuelidate/validators';
 import FormBasicInfo from './Form/BasicInfo';
 import FormSchedule from './Form/Schedule';
 import FormArtwork from './Form/Artwork';
@@ -76,18 +78,7 @@ const {
     props,
     emit,
     $modal,
-    (formRef, formIsEditMode) => computed(() => {
-        return {
-            'streamer_username': {required},
-            'streamer_password': (formIsEditMode.value) ? {} : {required},
-            'display_name': {},
-            'comments': {},
-            'is_active': {},
-            'enforce_schedule': {},
-            'artwork_file': {},
-            'schedule_items': {}
-        };
-    }),
+    {},
     {
         'streamer_username': null,
         'streamer_password': null,

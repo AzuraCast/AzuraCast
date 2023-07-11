@@ -18,7 +18,16 @@
             class="form-check-label"
             :for="id+'_'+option.value"
         >
-            <slot :name="'label('+option.value+')'">{{ option.text }}</slot>
+            <slot :name="`label(${option.value})`">
+                <template v-if="option.description">
+                    <strong>{{ option.text }}</strong>
+                    <br>
+                    <small>{{ option.description }}</small>
+                </template>
+                <template v-else>
+                    {{ option.text }}
+                </template>
+            </slot>
         </label>
     </div>
 </template>

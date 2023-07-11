@@ -14,26 +14,7 @@
                 stacked
                 :label="$gettext('Listener Analytics Collection')"
                 :description="$gettext('Aggregate listener statistics are used to show station reports across the system. IP-based listener statistics are used to view live listener tracking and may be required for royalty reports.')"
-            >
-                <template #label(all)>
-                    <b>
-                        {{ $gettext('Full:') }}
-                    </b>
-                    {{ $gettext('Collect aggregate listener statistics and IP-based listener statistics') }}
-                </template>
-                <template #label(no_ip)>
-                    <b>
-                        {{ $gettext('Limited:') }}
-                    </b>
-                    {{ $gettext('Only collect aggregate listener statistics') }}
-                </template>
-                <template #label(none)>
-                    <b>
-                        {{ $gettext('None:') }}
-                    </b>
-                    {{ $gettext('Do not collect any listener analytics') }}
-                </template>
-            </form-group-multi-check>
+            />
         </div>
     </form-fieldset>
 
@@ -113,15 +94,18 @@ const analyticsOptions = computed(() => {
     return [
         {
             value: 'all',
-            text: 'Full',
+            text: $gettext('Full'),
+            description: $gettext('Collect aggregate listener statistics and IP-based listener statistics')
         },
         {
             value: 'no_ip',
-            text: 'Limited',
+            text: $gettext('Limited'),
+            description: $gettext('Only collect aggregate listener statistics')
         },
         {
             value: 'none',
-            text: 'None'
+            text: $gettext('None'),
+            description: $gettext('Do not collect any listener analytics')
         }
     ]
 });

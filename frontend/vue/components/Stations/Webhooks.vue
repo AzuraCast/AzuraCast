@@ -39,13 +39,18 @@
                 </div>
             </template>
             <template #cell(triggers)="row">
-                <div
-                    v-for="(name, index) in getTriggerNames(row.item.triggers)"
-                    :key="row.item.id+'_'+index"
-                    class="small"
-                >
-                    {{ name }}
-                </div>
+                <template v-if="row.item.triggers.length > 0">
+                    <div
+                        v-for="(name, index) in getTriggerNames(row.item.triggers)"
+                        :key="row.item.id+'_'+index"
+                        class="small"
+                    >
+                        {{ name }}
+                    </div>
+                </template>
+                <template v-else>
+&nbsp;
+                </template>
             </template>
             <template #cell(actions)="row">
                 <div class="btn-group btn-group-sm">

@@ -13,12 +13,11 @@
             content-class="mt-3"
         >
             <episode-form-basic-info
-                :form="v$"
-                :locale="locale"
+                v-model:form="form"
             />
 
             <episode-form-media
-                v-model="v$.media_file.$model"
+                v-model="form.media_file"
                 :record-has-media="record.has_media"
                 :new-media-url="newMediaUrl"
                 :edit-media-url="record.links.media"
@@ -26,7 +25,7 @@
             />
 
             <podcast-common-artwork
-                v-model="v$.artwork_file.$model"
+                v-model="form.artwork_file"
                 :artwork-src="record.art"
                 :new-art-url="newArtUrl"
                 :edit-art-url="record.links.art"
@@ -36,7 +35,6 @@
 </template>
 
 <script setup>
-import {required} from '@vuelidate/validators';
 import EpisodeFormBasicInfo from './EpisodeForm/BasicInfo';
 import PodcastCommonArtwork from './Common/Artwork';
 import EpisodeFormMedia from './EpisodeForm/Media';
@@ -92,6 +90,7 @@ const {
     loading,
     error,
     isEditMode,
+    form,
     v$,
     clearContents,
     create,
@@ -102,16 +101,7 @@ const {
     props,
     emit,
     $modal,
-    {
-        'title': {required},
-        'link': {},
-        'description': {required},
-        'publish_date': {},
-        'publish_time': {},
-        'explicit': {},
-        'artwork_file': {},
-        'media_file': {}
-    },
+    {},
     {
         'title': '',
         'link': '',

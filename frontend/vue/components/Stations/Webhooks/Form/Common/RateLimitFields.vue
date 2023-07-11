@@ -2,7 +2,7 @@
     <form-group-select
         id="form_config_rate_limit"
         class="col-md-12"
-        :field="form.config.rate_limit"
+        :field="v$.config.rate_limit"
         :options="rateLimitOptions"
         :label="$gettext('Only Post Once Every...')"
     />
@@ -11,6 +11,8 @@
 <script setup>
 import {useTranslate} from "~/vendor/gettext";
 import FormGroupSelect from "~/components/Form/FormGroupSelect.vue";
+import {useVModel} from "@vueuse/core";
+import useVuelidate from "@vuelidate/core";
 
 const props = defineProps({
     form: {
@@ -18,6 +20,18 @@ const props = defineProps({
         required: true
     }
 });
+
+const emit = defineEmits(['update:form']);
+const form = useVModel(props, 'form', emit);
+
+const v$ = useVuelidate(
+    {
+        config: {
+            rate_limit: {},
+        }
+    },
+    form
+);
 
 const {$gettext, interpolate} = useTranslate();
 

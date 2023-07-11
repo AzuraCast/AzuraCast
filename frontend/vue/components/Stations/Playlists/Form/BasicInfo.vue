@@ -28,20 +28,7 @@
                 stacked
                 radio
                 :label="$gettext('Source')"
-            >
-                <template #label(songs)>
-                    {{ $gettext('Song-Based') }}
-                    <span class="form-text mt-0">
-                        {{ $gettext('A playlist containing media files hosted on this server.') }}
-                    </span>
-                </template>
-                <template #label(remote_url)>
-                    {{ $gettext('Remote URL') }}
-                    <span class="form-text mt-0">
-                        {{ $gettext('A playlist that instructs the station to play from a remote URL.') }}
-                    </span>
-                </template>
-            </form-group-multi-check>
+            />
         </div>
 
         <section
@@ -100,45 +87,13 @@
                         radio
                         :label="$gettext('Playlist Type')"
                     >
-                        <template #label(default)>
-                            {{ $gettext('General Rotation') }}
-                            <span class="form-text mt-0">
-                                {{
-                                    $gettext('Standard playlist, shuffles with other standard playlists based on weight.')
-                                }}
-                            </span>
-                        </template>
-                        <template #label(once_per_x_songs)>
-                            {{ $gettext('Once per x Songs') }}
-                            <span class="form-text mt-0">
-                                {{ $gettext('Play exactly once every $x songs.') }}
-                            </span>
-                        </template>
-                        <template #label(once_per_x_minutes)>
-                            {{ $gettext('Once per x Minutes') }}
-                            <span class="form-text mt-0">
-                                {{ $gettext('Play exactly once every $x minutes.') }}
-                            </span>
-                        </template>
-                        <template #label(once_per_hour)>
-                            {{ $gettext('Once per Hour') }}
-                            <span class="form-text mt-0">
-                                {{ $gettext('Play once per hour at the specified minute.') }}
-                            </span>
-                        </template>
-                        <template #label(custom)>
-                            {{ $gettext('Advanced') }}
-                            <span class="form-text mt-0">
-                                {{
-                                    $gettext('Manually define how this playlist is used in Liquidsoap configuration.')
-                                }}
-                                <a
-                                    href="https://docs.azuracast.com/en/user-guide/playlists/advanced-playlists"
-                                    target="_blank"
-                                >
-                                    {{ $gettext('Learn about Advanced Playlists') }}
-                                </a>
-                            </span>
+                        <template #description>
+                            <a
+                                href="https://docs.azuracast.com/en/user-guide/playlists/advanced-playlists"
+                                target="_blank"
+                            >
+                                {{ $gettext('Learn about Advanced Playlists') }}
+                            </a>
                         </template>
                     </form-group-multi-check>
 
@@ -150,32 +105,7 @@
                         stacked
                         radio
                         :label="$gettext('Song Playback Order')"
-                    >
-                        <template #label(shuffle)>
-                            {{ $gettext('Shuffled') }}
-                            <span class="form-text mt-0">
-                                {{
-                                    $gettext('The full playlist is shuffled and then played through in the shuffled order.')
-                                }}
-                            </span>
-                        </template>
-                        <template #label(random)>
-                            {{ $gettext('Random') }}
-                            <span class="form-text mt-0">
-                                {{
-                                    $gettext('A completely random track is picked for playback every time the queue is populated.')
-                                }}
-                            </span>
-                        </template>
-                        <template #label(sequential)>
-                            {{ $gettext('Sequential') }}
-                            <span class="form-text mt-0">
-                                {{
-                                    $gettext('The order of the playlist is manually specified and followed by the AutoDJ.')
-                                }}
-                            </span>
-                        </template>
-                    </form-group-multi-check>
+                    />
                 </div>
 
                 <form-fieldset v-show="form.type === 'default'">
@@ -340,57 +270,66 @@ const {v$, tabClass} = useVuelidateOnFormTab(
     form
 );
 
-// These don't need to be translated as they're overridden by slots above.
+const {$gettext} = useTranslate();
+
 const sourceOptions = [
     {
         value: 'songs',
-        text: 'Song-Based'
+        text: $gettext('Song-Based'),
+        description: $gettext('A playlist containing media files hosted on this server.')
     },
     {
         value: 'remote_url',
-        text: 'Remote URL'
+        text: $gettext('Remote URL'),
+        description: $gettext('A playlist that instructs the station to play from a remote URL.')
     }
 ];
 
 const typeOptions = [
     {
         value: 'default',
-        text: 'General Rotation'
+        text: $gettext('General Rotation'),
+        description: $gettext('Standard playlist, shuffles with other standard playlists based on weight.')
     },
     {
         value: 'once_per_x_songs',
-        text: 'Once per X Songs'
+        text: $gettext('Once per x Songs'),
+        description: $gettext('Play once every $x songs.')
     },
     {
         value: 'once_per_x_minutes',
-        text: 'Once per X Minutes'
+        text: $gettext('Once per x Minutes'),
+        description: $gettext('Play once every $x minutes.')
     },
     {
         value: 'once_per_hour',
-        text: 'Once per Hour'
+        text: $gettext('Once per Hour'),
+        description: $gettext('Play once per hour at the specified minute.')
     },
     {
         value: 'custom',
-        text: 'Advanced'
+        text: $gettext('Advanced'),
+        description: $gettext('Manually define how this playlist is used in Liquidsoap configuration.')
     }
 ];
 
 const orderOptions = [
     {
         value: 'shuffle',
-        text: 'Shuffled'
+        text: $gettext('Shuffled'),
+        description: $gettext('The full playlist is shuffled and then played through in the shuffled order.')
     },
     {
         value: 'random',
-        text: 'Random'
+        text: $gettext('Random'),
+        description: $gettext('A completely random track is picked for playback every time the queue is populated.')
     },
     {
         value: 'sequential',
-        text: 'Sequential'
+        text: $gettext('Sequential'),
+        description: $gettext('The order of the playlist is manually specified and followed by the AutoDJ.')
     }
 ];
-
-const {$gettext} = useTranslate();
 
 const remoteTypeOptions = [
     {

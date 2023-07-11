@@ -20,29 +20,22 @@
             content-class="mt-3"
             destroy-on-hide
         >
-            <o-tab-item
-                active
-                :label="$gettext('Basic Info')"
-            >
-                <basic-info
-                    :trigger-details="triggerDetails"
-                    :triggers="triggers"
-                    :form="v$"
-                />
-            </o-tab-item>
-            <o-tab-item :label="typeTitle">
-                <component
-                    :is="formComponent"
-                    :now-playing-url="nowPlayingUrl"
-                    :form="v$"
-                />
-            </o-tab-item>
+            <basic-info
+                v-model:form="form"
+                :trigger-details="triggerDetails"
+                :triggers="triggers"
+            />
+
+            <component
+                :is="formComponent"
+                v-model:form="form"
+                :label="typeTitle"
+            />
         </o-tabs>
     </modal-form>
 </template>
 
 <script setup>
-import {required} from '@vuelidate/validators';
 import TypeSelect from "./Form/TypeSelect";
 import BasicInfo from "./Form/BasicInfo";
 import {get, map} from "lodash";
@@ -57,7 +50,7 @@ import GoogleAnalyticsV4 from "./Form/GoogleAnalyticsV4";
 import MatomoAnalytics from "./Form/MatomoAnalytics";
 import Mastodon from "./Form/Mastodon";
 import {baseEditModalProps, useBaseEditModal} from "~/functions/useBaseEditModal";
-import {computed, ref} from "vue";
+import {computed, provide, ref} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import ModalForm from "~/components/Common/ModalForm.vue";
 import {
@@ -88,6 +81,8 @@ const props = defineProps({
         required: true
     }
 });
+
+provide('nowPlayingUrl', props.nowPlayingUrl);
 
 const emit = defineEmits(['relist']);
 
@@ -165,15 +160,18 @@ const langTwitterStationOnlineMessage = $gettext(
     }
 );
 
+const defaultMessages = {
+    message: langTwitterDefaultMessage,
+    message_song_changed_live: langTwitterSongChangedLiveMessage,
+    message_live_connect: langTwitterDjOnMessage,
+    message_live_disconnect: langTwitterDjOffMessage,
+    message_station_offline: langTwitterStationOfflineMessage,
+    message_station_online: langTwitterStationOnlineMessage
+};
+
 const webhookConfig = {
     [WEBHOOK_TYPE_GENERIC]: {
         component: Generic,
-        validations: {
-            webhook_url: {required},
-            basic_auth_username: {},
-            basic_auth_password: {},
-            timeout: {},
-        },
         defaultConfig: {
             webhook_url: '',
             basic_auth_username: '',
@@ -183,11 +181,6 @@ const webhookConfig = {
     },
     [WEBHOOK_TYPE_EMAIL]: {
         component: Email,
-        validations: {
-            to: {required},
-            subject: {required},
-            message: {required}
-        },
         defaultConfig: {
             to: '',
             subject: '',
@@ -196,11 +189,6 @@ const webhookConfig = {
     },
     [WEBHOOK_TYPE_TUNEIN]: {
         component: Tunein,
-        validations: {
-            station_id: {required},
-            partner_id: {required},
-            partner_key: {required},
-        },
         defaultConfig: {
             station_id: '',
             partner_id: '',
@@ -209,16 +197,6 @@ const webhookConfig = {
     },
     [WEBHOOK_TYPE_DISCORD]: {
         component: Discord,
-        validations: {
-            webhook_url: {required},
-            content: {},
-            title: {},
-            description: {},
-            url: {},
-            author: {},
-            thumbnail: {},
-            footer: {},
-        },
         defaultConfig: {
             webhook_url: '',
             content: langDiscordDefaultContent,
@@ -232,13 +210,6 @@ const webhookConfig = {
     },
     [WEBHOOK_TYPE_TELEGRAM]: {
         component: Telegram,
-        validations: {
-            bot_token: {required},
-            chat_id: {required},
-            api: {},
-            text: {required},
-            parse_mode: {required}
-        },
         defaultConfig: {
             bot_token: '',
             chat_id: '',
@@ -249,75 +220,33 @@ const webhookConfig = {
     },
     [WEBHOOK_TYPE_TWITTER]: {
         component: Twitter,
-        validations: {
-            consumer_key: {required},
-            consumer_secret: {required},
-            token: {required},
-            token_secret: {required},
-            rate_limit: {},
-            message: {},
-            message_song_changed_live: {},
-            message_live_connect: {},
-            message_live_disconnect: {},
-            message_station_offline: {},
-            message_station_online: {}
-        },
         defaultConfig: {
             consumer_key: '',
             consumer_secret: '',
             token: '',
             token_secret: '',
             rate_limit: 0,
-            message: langTwitterDefaultMessage,
-            message_song_changed_live: langTwitterSongChangedLiveMessage,
-            message_live_connect: langTwitterDjOnMessage,
-            message_live_disconnect: langTwitterDjOffMessage,
-            message_station_offline: langTwitterStationOfflineMessage,
-            message_station_online: langTwitterStationOnlineMessage
+            ...defaultMessages
         }
     },
     [WEBHOOK_TYPE_MASTODON]: {
         component: Mastodon,
-        validations: {
-            instance_url: {required},
-            access_token: {required},
-            rate_limit: {},
-            visibility: {required},
-            message: {},
-            message_song_changed_live: {},
-            message_live_connect: {},
-            message_live_disconnect: {},
-            message_station_offline: {},
-            message_station_online: {}
-        },
         defaultConfig: {
             instance_url: '',
             access_token: '',
             rate_limit: 0,
             visibility: 'public',
-            message: langTwitterDefaultMessage,
-            message_song_changed_live: langTwitterSongChangedLiveMessage,
-            message_live_connect: langTwitterDjOnMessage,
-            message_live_disconnect: langTwitterDjOffMessage,
-            message_station_offline: langTwitterStationOfflineMessage,
-            message_station_online: langTwitterStationOnlineMessage
+            ...defaultMessages
         }
     },
     [WEBHOOK_TYPE_GOOGLE_ANALYTICS_V3]: {
         component: GoogleAnalyticsV3,
-        validations: {
-            tracking_id: {required}
-        },
         defaultConfig: {
             tracking_id: ''
         }
     },
     [WEBHOOK_TYPE_GOOGLE_ANALYTICS_V4]: {
         component: GoogleAnalyticsV4,
-        validations: {
-            api_secret: {required},
-            measurement_id: {required}
-        },
         defaultConfig: {
             api_secret: '',
             measurement_id: ''
@@ -325,11 +254,6 @@ const webhookConfig = {
     },
     [WEBHOOK_TYPE_MATOMO_ANALYTICS]: {
         component: MatomoAnalytics,
-        validations: {
-            matomo_url: {required},
-            site_id: {required},
-            token: {},
-        },
         defaultConfig: {
             matomo_url: '',
             site_id: '',
@@ -367,6 +291,7 @@ const {
     loading,
     error,
     isEditMode,
+    form,
     v$,
     resetForm,
     clearContents: originalClearContents,
@@ -378,28 +303,7 @@ const {
     props,
     emit,
     $modal,
-    () => computed(() => {
-        let validations = {
-            name: {required},
-            triggers: {},
-            config: {}
-        };
-
-        const triggersValue = triggers.value;
-        if (triggersValue.length > 0) {
-            validations.triggers = {required};
-        }
-
-        if (type.value !== null) {
-            validations.config = get(
-                webhookConfig,
-                [type.value, 'validations'],
-                {}
-            );
-        }
-
-        return validations;
-    }),
+    {},
     () => computed(() => {
         let newForm = {
             name: null,

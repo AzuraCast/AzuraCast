@@ -13,13 +13,13 @@
             content-class="mt-3"
         >
             <podcast-form-basic-info
-                :form="v$"
+                :form="form"
                 :categories-options="categoriesOptions"
                 :language-options="languageOptions"
             />
 
             <podcast-common-artwork
-                v-model="v$.artwork_file.$model"
+                v-model="form.artwork_file"
                 :artwork-src="record.art"
                 :new-art-url="newArtUrl"
                 :edit-art-url="record.links.art"
@@ -29,7 +29,6 @@
 </template>
 
 <script setup>
-import {required} from '@vuelidate/validators';
 import PodcastFormBasicInfo from './PodcastForm/BasicInfo';
 import PodcastCommonArtwork from './Common/Artwork';
 import mergeExisting from "~/functions/mergeExisting";
@@ -73,6 +72,7 @@ const {
     loading,
     error,
     isEditMode,
+    form,
     v$,
     clearContents,
     create,
@@ -83,16 +83,7 @@ const {
     props,
     emit,
     $modal,
-    {
-        'title': {required},
-        'link': {},
-        'description': {required},
-        'language': {required},
-        'author': {},
-        'email': {},
-        'categories': {required},
-        'artwork_file': {}
-    },
+    {},
     {
         'title': '',
         'link': '',

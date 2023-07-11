@@ -1,12 +1,12 @@
 <template>
-    <common-formatting-info :now-playing-url="nowPlayingUrl" />
+    <common-formatting-info />
 
     <div class="row g-3">
         <form-group-field
             v-if="hasTrigger('song_changed')"
             id="form_config_message"
             class="col-md-12"
-            :field="form.config.message"
+            :field="v$.config.message"
             input-type="textarea"
             :label="$gettext('Message Body on Song Change')"
         />
@@ -15,7 +15,7 @@
             v-if="hasTrigger('song_changed_live')"
             id="form_config_message_song_changed_live"
             class="col-md-12"
-            :field="form.config.message_song_changed_live"
+            :field="v$.config.message_song_changed_live"
             input-type="textarea"
             :label="$gettext('Message Body on Song Change with Streamer/DJ Connected')"
         />
@@ -24,7 +24,7 @@
             v-if="hasTrigger('live_connect')"
             id="form_config_message_live_connect"
             class="col-md-12"
-            :field="form.config.message_live_connect"
+            :field="v$.config.message_live_connect"
             input-type="textarea"
             :label="$gettext('Message Body on Streamer/DJ Connect')"
         />
@@ -33,7 +33,7 @@
             v-if="hasTrigger('live_disconnect')"
             id="form_config_message_live_disconnect"
             class="col-md-12"
-            :field="form.config.message_live_disconnect"
+            :field="v$.config.message_live_disconnect"
             input-type="textarea"
             :label="$gettext('Message Body on Streamer/DJ Disconnect')"
         />
@@ -42,7 +42,7 @@
             v-if="hasTrigger('station_offline')"
             id="form_config_message_station_offline"
             class="col-md-12"
-            :field="form.config.message_station_offline"
+            :field="v$.config.message_station_offline"
             input-type="textarea"
             :label="$gettext('Message Body on Station Offline')"
         />
@@ -51,7 +51,7 @@
             v-if="hasTrigger('station_online')"
             id="form_config_message_station_online"
             class="col-md-12"
-            :field="form.config.message_station_online"
+            :field="v$.config.message_station_online"
             input-type="textarea"
             :label="$gettext('Message Body on Station Online')"
         />
@@ -62,19 +62,34 @@
 import FormGroupField from "~/components/Form/FormGroupField";
 import CommonFormattingInfo from "./FormattingInfo";
 import {includes} from 'lodash';
+import {useVModel} from "@vueuse/core";
+import useVuelidate from "@vuelidate/core";
 
 const props = defineProps({
     form: {
         type: Object,
         required: true
-    },
-    nowPlayingUrl: {
-        type: String,
-        required: true
     }
 });
 
+const emit = defineEmits(['update:form']);
+const form = useVModel(props, 'form', emit);
+
+const v$ = useVuelidate(
+    {
+        config: {
+            message: {},
+            message_song_changed_live: {},
+            message_live_connect: {},
+            message_live_disconnect: {},
+            message_station_offline: {},
+            message_station_online: {}
+        }
+    },
+    form
+);
+
 const hasTrigger = (trigger) => {
-    return includes(props.form.triggers.$model, trigger);
+    return includes(props.form.triggers, trigger);
 };
 </script>

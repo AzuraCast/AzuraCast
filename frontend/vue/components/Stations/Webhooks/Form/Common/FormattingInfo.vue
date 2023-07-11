@@ -26,11 +26,7 @@
 
 <script setup>
 import FormMarkup from "~/components/Form/FormMarkup.vue";
+import {inject} from "vue";
 
-const props = defineProps({
-    nowPlayingUrl: {
-        type: String,
-        required: true
-    }
-});
+const nowPlayingUrl = inject('nowPlayingUrl');
 </script>

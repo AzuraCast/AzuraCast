@@ -36,29 +36,14 @@
                         nav-tabs-class="nav-tabs"
                         content-class="mt-3"
                     >
-                        <o-tab-item
-                            :label="$gettext('Settings')"
-                            :item-header-class="getTabClass(v$.$validationGroups.generalTab)"
-                        >
-                            <settings-general-tab :form="v$" />
-                        </o-tab-item>
-                        <o-tab-item
-                            :label="$gettext('Security & Privacy')"
-                            :item-header-class="getTabClass(v$.$validationGroups.securityPrivacyTab)"
-                        >
-                            <settings-security-privacy-tab :form="v$" />
-                        </o-tab-item>
-                        <o-tab-item
-                            :label="$gettext('Services')"
-                            :item-header-class="getTabClass(v$.$validationGroups.servicesTab)"
-                        >
-                            <settings-services-tab
-                                :form="v$"
-                                :release-channel="releaseChannel"
-                                :test-message-url="testMessageUrl"
-                                :acme-url="acmeUrl"
-                            />
-                        </o-tab-item>
+                        <settings-general-tab v-model:form="form" />
+                        <settings-security-privacy-tab v-model:form="form" />
+                        <settings-services-tab
+                            v-model:form="form"
+                            :release-channel="releaseChannel"
+                            :test-message-url="testMessageUrl"
+                            :acme-url="acmeUrl"
+                        />
                     </o-tabs>
                 </loading>
             </div>
@@ -79,7 +64,6 @@
 </template>
 
 <script setup>
-import {required} from '@vuelidate/validators';
 import SettingsGeneralTab from "./Settings/GeneralTab.vue";
 import SettingsServicesTab from "./Settings/ServicesTab.vue";
 import SettingsSecurityPrivacyTab from "~/components/Admin/Settings/SecurityPrivacyTab.vue";
@@ -114,57 +98,7 @@ const props = defineProps({
 const emit = defineEmits(['saved']);
 
 const {form, v$, ifValid} = useVuelidateOnForm(
-    {
-        base_url: {required},
-        instance_name: {},
-        prefer_browser_url: {},
-        use_radio_proxy: {},
-        history_keep_days: {required},
-        enable_static_nowplaying: {},
-        enable_advanced_features: {},
-
-        analytics: {required},
-
-        always_use_ssl: {},
-        api_access_control: {},
-        ip_source: {},
-
-        check_for_updates: {},
-        acme_email: {},
-        acme_domains: {},
-        mail_enabled: {},
-        mail_sender_name: {},
-        mail_sender_email: {},
-        mail_smtp_host: {},
-        mail_smtp_port: {},
-        mail_smtp_secure: {},
-        mail_smtp_username: {},
-        mail_smtp_password: {},
-        avatar_service: {},
-        avatar_default_url: {},
-        use_external_album_art_in_apis: {},
-        use_external_album_art_when_processing_media: {},
-        last_fm_api_key: {},
-
-        $validationGroups: {
-            generalTab: [
-                'base_url', 'instance_name', 'prefer_browser_url', 'use_radio_proxy',
-                'history_keep_days', 'enable_static_nowplaying', 'enable_advanced_features'
-            ],
-            securityPrivacyTab: [
-                'analytics', 'always_use_ssl', 'ip_source', 'api_access_control'
-            ],
-            servicesTab: [
-                'check_for_updates',
-                'acme_email', 'acme_domains',
-                'mail_enabled', 'mail_sender_name', 'mail_sender_email',
-                'mail_smtp_host', 'mail_smtp_port', 'mail_smtp_secure', 'mail_smtp_username',
-                'mail_smtp_password', 'avatar_service', 'avatar_default_url',
-                'use_external_album_art_in_apis', 'use_external_album_art_when_processing_media',
-                'last_fm_api_key',
-            ]
-        }
-    },
+    {},
     {
         base_url: '',
         instance_name: '',
@@ -198,13 +132,6 @@ const {form, v$, ifValid} = useVuelidateOnForm(
 
 const isLoading = ref(true);
 const error = ref(null);
-
-const getTabClass = (validationGroup) => {
-    if (!isLoading.value && validationGroup.$invalid) {
-        return 'text-danger';
-    }
-    return null;
-};
 
 const {axios} = useAxios();
 

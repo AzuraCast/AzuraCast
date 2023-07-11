@@ -15,94 +15,58 @@
                 nav-tabs-class="nav-tabs"
                 content-class="mt-3"
             >
-                <o-tab-item
-                    :label="$gettext('Profile')"
-                    :item-header-class="getTabClass(v$.$validationGroups.profileTab)"
-                    active
-                >
-                    <admin-stations-profile-form
-                        :form="v$"
-                        :timezones="timezones"
-                        :show-advanced="showAdvanced"
-                    />
-                </o-tab-item>
+                <admin-stations-profile-form
+                    v-model:form="form"
+                    :timezones="timezones"
+                    :show-advanced="showAdvanced"
+                />
 
-                <o-tab-item
-                    :label="$gettext('Broadcasting')"
-                    :item-header-class="getTabClass(v$.$validationGroups.frontendTab)"
-                >
-                    <admin-stations-frontend-form
-                        :form="v$"
-                        :is-shoutcast-installed="isShoutcastInstalled"
-                        :countries="countries"
-                        :show-advanced="showAdvanced"
-                    />
-                </o-tab-item>
+                <admin-stations-frontend-form
+                    v-model:form="form"
+                    :is-shoutcast-installed="isShoutcastInstalled"
+                    :countries="countries"
+                    :show-advanced="showAdvanced"
+                />
 
-                <o-tab-item
-                    :label="$gettext('AutoDJ')"
-                    :item-header-class="getTabClass(v$.$validationGroups.backendTab)"
-                >
-                    <admin-stations-backend-form
-                        :form="v$"
-                        :station="station"
-                        :is-stereo-tool-installed="isStereoToolInstalled"
-                        :show-advanced="showAdvanced"
-                    />
-                </o-tab-item>
+                <admin-stations-backend-form
+                    v-model:form="form"
+                    :station="station"
+                    :is-stereo-tool-installed="isStereoToolInstalled"
+                    :show-advanced="showAdvanced"
+                />
 
-                <o-tab-item
-                    :label="$gettext('HLS')"
-                    :item-header-class="getTabClass(v$.$validationGroups.hlsTab)"
-                >
-                    <admin-stations-hls-form
-                        :form="v$"
-                        :station="station"
-                        :show-advanced="showAdvanced"
-                    />
-                </o-tab-item>
+                <admin-stations-hls-form
+                    v-model:form="form"
+                    :station="station"
+                    :show-advanced="showAdvanced"
+                />
 
-                <o-tab-item
-                    :label="$gettext('Song Requests')"
-                    :item-header-class="getTabClass(v$.$validationGroups.requestsTab)"
-                >
-                    <admin-stations-requests-form
-                        :form="v$"
-                        :station="station"
-                        :show-advanced="showAdvanced"
-                    />
-                </o-tab-item>
+                <admin-stations-requests-form
+                    v-model:form="form"
+                    :station="station"
+                    :show-advanced="showAdvanced"
+                />
 
-                <o-tab-item
-                    :label="$gettext('Streamers/DJs')"
-                    :item-header-class="getTabClass(v$.$validationGroups.streamersTab)"
-                >
-                    <admin-stations-streamers-form
-                        :form="v$"
-                        :station="station"
-                        :show-advanced="showAdvanced"
-                    />
-                </o-tab-item>
+                <admin-stations-streamers-form
+                    v-model:form="form"
+                    :station="station"
+                    :show-advanced="showAdvanced"
+                />
 
-                <o-tab-item
+                <admin-stations-admin-form
                     v-if="showAdminTab"
-                    :label="$gettext('Administration')"
-                    :item-header-class="getTabClass(v$.$validationGroups.adminTab)"
-                >
-                    <admin-stations-admin-form
-                        :form="v$"
-                        :is-edit-mode="isEditMode"
-                        :storage-location-api-url="storageLocationApiUrl"
-                        :show-advanced="showAdvanced"
-                    />
-                </o-tab-item>
+                    v-model:form="form"
+                    :is-edit-mode="isEditMode"
+                    :storage-location-api-url="storageLocationApiUrl"
+                    :show-advanced="showAdvanced"
+                />
             </o-tabs>
 
             <slot name="submitButton">
                 <div class="buttons mt-3">
                     <button
                         type="submit"
-                        class="btn"
+                        class="btn btn-lg"
                         :class="(!isValid) ? 'btn-danger' : 'btn-primary'"
                     >
                         <slot name="submitButtonText">
@@ -123,19 +87,16 @@ import AdminStationsAdminForm from "./Form/AdminForm.vue";
 import AdminStationsHlsForm from "./Form/HlsForm.vue";
 import AdminStationsRequestsForm from "./Form/RequestsForm.vue";
 import AdminStationsStreamersForm from "./Form/StreamersForm.vue";
-import {decimal, numeric, required, url} from '@vuelidate/validators';
 import {
     AUDIO_PROCESSING_NONE,
     BACKEND_LIQUIDSOAP,
-    FRONTEND_ICECAST,
-    MASTER_ME_PRESET_MUSIC_GENERAL
+    FRONTEND_ICECAST, MASTER_ME_PRESET_MUSIC_GENERAL,
 } from "~/components/Entity/RadioAdapters";
 import {computed, ref, watch} from "vue";
 import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
 import mergeExisting from "~/functions/mergeExisting";
 import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
-import {isArray, merge, mergeWith} from "lodash";
 import stationFormProps from "~/components/Admin/Stations/stationFormProps";
 import {useResettableRef} from "~/functions/useResettableRef";
 import Loading from '~/components/Common/Loading';
@@ -163,70 +124,6 @@ const props = defineProps({
 const emit = defineEmits(['error', 'submitted', 'loadingUpdate', 'validUpdate']);
 
 const buildForm = () => {
-    let validations = {
-        name: {required},
-        description: {},
-        genre: {},
-        url: {url},
-        timezone: {},
-        enable_public_page: {},
-        enable_on_demand: {},
-        enable_hls: {},
-        enable_on_demand_download: {},
-        frontend_type: {required},
-        frontend_config: {
-            sc_license_id: {},
-            sc_user_id: {},
-            source_pw: {},
-            admin_pw: {},
-        },
-        backend_type: {required},
-        backend_config: {
-            hls_enable_on_public_player: {},
-            hls_is_default: {},
-            crossfade_type: {},
-            crossfade: {decimal},
-            audio_processing_method: {},
-            post_processing_include_live: {},
-            master_me_preset: {},
-            master_me_loudness_target: {},
-            stereo_tool_license_key: {},
-            record_streams: {},
-            record_streams_format: {},
-            record_streams_bitrate: {},
-            dj_buffer: {numeric},
-        },
-        enable_requests: {},
-        request_delay: {numeric},
-        request_threshold: {numeric},
-        enable_streamers: {},
-        disconnect_deactivate_streamer: {},
-        $validationGroups: {
-            profileTab: [
-                'name', 'description', 'genre', 'url', 'timezone', 'enable_public_page',
-                'enable_on_demand', 'enable_on_demand_download'
-            ],
-            frontendTab: [
-                'frontend_type', 'frontend_config'
-            ],
-            backendTab: [
-                'backend_type', 'backend_config',
-            ],
-            hlsTab: [
-                'enable_hls',
-            ],
-            requestsTab: [
-                'enable_requests',
-                'request_delay',
-                'request_threshold'
-            ],
-            streamersTab: [
-                'enable_streamers',
-                'disconnect_deactivate_streamer'
-            ]
-        }
-    };
-
     let blankForm = {
         name: '',
         description: '',
@@ -267,52 +164,13 @@ const buildForm = () => {
         disconnect_deactivate_streamer: 0,
     };
 
-    function mergeCustom(objValue, srcValue) {
-        if (isArray(objValue)) {
-            return objValue.concat(srcValue);
-        }
-    }
-
     if (props.showAdvanced) {
-        const advancedValidations = {
-            short_name: {},
-            api_history_items: {},
-            frontend_config: {
-                port: {numeric},
-                max_listeners: {},
-                custom_config: {},
-                banned_ips: {},
-                banned_countries: {},
-                allowed_ips: {},
-                banned_user_agents: {}
-            },
-            backend_config: {
-                hls_segment_length: {numeric},
-                hls_segments_in_playlist: {numeric},
-                hls_segments_overhead: {numeric},
-                dj_port: {numeric},
-                telnet_port: {numeric},
-                dj_mount_point: {},
-                enable_replaygain_metadata: {},
-                autodj_queue_length: {},
-                use_manual_autodj: {},
-                charset: {},
-                performance_mode: {},
-                duplicate_prevention_time_range: {},
-            },
-            $validationGroups: {
-                profileTab: [
-                    'short_name', 'api_history_items'
-                ],
-            }
-        };
-
-        mergeWith(validations, advancedValidations, mergeCustom);
-
-        const advancedForm = {
+        blankForm = {
+            ...blankForm,
             short_name: '',
             api_history_items: 5,
             frontend_config: {
+                ...blankForm.frontend_config,
                 port: '',
                 max_listeners: '',
                 custom_config: '',
@@ -322,6 +180,7 @@ const buildForm = () => {
                 banned_user_agents: '',
             },
             backend_config: {
+                ...blankForm.backend_config,
                 hls_segment_length: 4,
                 hls_segments_in_playlist: 5,
                 hls_segments_overhead: 2,
@@ -336,60 +195,29 @@ const buildForm = () => {
                 duplicate_prevention_time_range: 120,
             },
         };
-
-        merge(blankForm, advancedForm);
     }
 
     if (props.showAdminTab) {
-        const adminValidations = {
-            media_storage_location: {},
-            recordings_storage_location: {},
-            podcasts_storage_location: {},
-            is_enabled: {},
-            $validationGroups: {
-                adminTab: [
-                    'media_storage_location', 'recordings_storage_location',
-                    'podcasts_storage_location', 'is_enabled'
-                ]
-            }
-        };
-
-        mergeWith(validations, adminValidations, mergeCustom);
-
-        const adminForm = {
+        blankForm = {
+            ...blankForm,
             media_storage_location: '',
             recordings_storage_location: '',
             podcasts_storage_location: '',
             is_enabled: true,
         };
 
-        merge(blankForm, adminForm);
-
         if (props.showAdvanced) {
-            const advancedAdminValidations = {
-                radio_base_dir: {},
-                $validationGroups: {
-                    adminTab: [
-                        'radio_base_dir'
-                    ]
-                }
-            }
-
-            mergeWith(validations, advancedAdminValidations, mergeCustom);
-
-            const adminAdvancedForm = {
+            blankForm = {
+                ...blankForm,
                 radio_base_dir: '',
             };
-
-            merge(blankForm, adminAdvancedForm);
         }
     }
 
-    return {blankForm, validations};
+    return blankForm;
 };
 
-const {blankForm, validations} = buildForm();
-const {form, resetForm, v$, ifValid} = useVuelidateOnForm(validations, blankForm);
+const {form, resetForm, v$, ifValid} = useVuelidateOnForm({}, buildForm());
 
 const isValid = computed(() => {
     return !v$.value?.$invalid ?? true;
@@ -415,13 +243,6 @@ const blankStation = {
 };
 
 const {record: station, reset: resetStation} = useResettableRef(blankStation);
-
-const getTabClass = (validationGroup) => {
-    if (!isLoading.value && validationGroup.$invalid) {
-        return 'text-danger';
-    }
-    return null;
-}
 
 const clear = () => {
     resetForm();

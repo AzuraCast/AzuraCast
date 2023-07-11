@@ -1,7 +1,7 @@
 <template>
     <o-tab-item
         :label="$gettext('Streamers/DJs')"
-        :item-header-class="tabClass"
+        :item-header-class="tabClassWithBackend"
     >
         <form-fieldset v-if="isBackendEnabled">
             <template #label>
@@ -155,10 +155,10 @@ const {v$, tabClass} = useVuelidateOnFormTab(
             enable_streamers: {},
             disconnect_deactivate_streamer: {},
             backend_config: {
-                record_streams: false,
-                record_streams_format: 'mp3',
-                record_streams_bitrate: 128,
-                dj_buffer: 5,
+                record_streams: {},
+                record_streams_format: {},
+                record_streams_bitrate: {},
+                dj_buffer: {numeric},
             }
         };
 
@@ -180,6 +180,14 @@ const {v$, tabClass} = useVuelidateOnFormTab(
 
 const isBackendEnabled = computed(() => {
     return form.value.backend_type !== BACKEND_NONE;
+});
+
+const tabClassWithBackend = computed(() => {
+    if (tabClass.value) {
+        return tabClass.value;
+    }
+
+    return (isBackendEnabled.value) ? null : 'text-muted';
 });
 
 const recordStreamsOptions = computed(() => {

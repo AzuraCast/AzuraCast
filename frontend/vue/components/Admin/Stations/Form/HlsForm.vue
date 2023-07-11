@@ -1,7 +1,7 @@
 <template>
     <o-tab-item
         :label="$gettext('HLS')"
-        :item-header-class="tabClass"
+        :item-header-class="tabClassWithBackend"
     >
         <form-fieldset v-if="isBackendEnabled">
             <template #label>
@@ -116,8 +116,8 @@ const {v$, tabClass} = useVuelidateOnFormTab(
         let validations = {
             enable_hls: {},
             backend_config: {
-                hls_enable_on_public_player: false,
-                hls_is_default: false,
+                hls_enable_on_public_player: {},
+                hls_is_default: {},
             },
         };
 
@@ -140,5 +140,13 @@ const {v$, tabClass} = useVuelidateOnFormTab(
 
 const isBackendEnabled = computed(() => {
     return form.value.backend_type !== BACKEND_NONE;
+});
+
+const tabClassWithBackend = computed(() => {
+    if (tabClass.value) {
+        return tabClass.value;
+    }
+
+    return (isBackendEnabled.value) ? null : 'text-muted';
 });
 </script>

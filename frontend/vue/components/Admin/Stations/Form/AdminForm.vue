@@ -90,10 +90,10 @@ const form = useVModel(props, 'form', emit);
 const {v$, tabClass} = useVuelidateOnFormTab(
     computed(() => {
         let validations = {
+            is_enabled: {},
             media_storage_location: {},
             recordings_storage_location: {},
             podcasts_storage_location: {},
-            is_enabled: {},
         };
 
         if (props.showAdvanced) {

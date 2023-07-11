@@ -277,7 +277,7 @@ import {useTranslate} from "~/vendor/gettext";
 import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
 import {useVModel} from "@vueuse/core";
 import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
-import {numeric} from "@vuelidate/validators";
+import {decimal, numeric, required} from "@vuelidate/validators";
 
 const props = defineProps({
     form: {
@@ -304,15 +304,15 @@ const form = useVModel(props, 'form', emit);
 const {v$, tabClass} = useVuelidateOnFormTab(
     computed(() => {
         let validations = {
-            backend_type: BACKEND_LIQUIDSOAP,
+            backend_type: {required},
             backend_config: {
-                crossfade_type: 'normal',
-                crossfade: 2,
-                audio_processing_method: AUDIO_PROCESSING_NONE,
-                post_processing_include_live: true,
-                master_me_preset: MASTER_ME_PRESET_MUSIC_GENERAL,
-                master_me_loudness_target: -16,
-                stereo_tool_license_key: '',
+                crossfade_type: {},
+                crossfade: {decimal},
+                audio_processing_method: {},
+                post_processing_include_live: {},
+                master_me_preset: {},
+                master_me_loudness_target: {},
+                stereo_tool_license_key: {},
             },
         };
 

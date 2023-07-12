@@ -14,8 +14,8 @@
             >
                 <a
                     :href="np.now_playing.song.art"
-                    data-fancybox
                     target="_blank"
+                    @click="showImage(np.now_playing.song.art, $event)"
                 >
                     <img
                         :src="np.now_playing.song.art"
@@ -158,10 +158,14 @@ import playerProps from "~/components/Public/playerProps";
 import MuteButton from "~/components/Common/MuteButton.vue";
 
 const props = defineProps({
-    ...playerProps
+    ...playerProps,
+    onShowImage: {
+        type: Function,
+        default: null
+    }
 });
 
-const emit = defineEmits(['np_updated']);
+const emit = defineEmits(['np_updated', 'showImage']);
 
 const {
     np,
@@ -270,6 +274,13 @@ const onNowPlayingUpdated = (np_new) => {
 };
 
 watch(np, onNowPlayingUpdated, {immediate: true});
+
+const showImage = (url, e) => {
+    if (props.onShowImage) {
+        e.preventDefault();
+        emit('showImage', url);
+    }
+}
 </script>
 
 <style lang="scss">

@@ -243,6 +243,7 @@
                                         v-if="showAlbumArt"
                                         :src="item.now_playing.song.art"
                                         class="flex-shrink-0 pe-3"
+                                        @click.prevent="showImage(item.now_playing.song.art)"
                                     />
 
                                     <div
@@ -285,6 +286,8 @@
             </loading>
         </section>
     </div>
+
+    <lightbox ref="$lightbox" />
 </template>
 
 <script setup>
@@ -294,11 +297,12 @@ import PlayButton from "~/components/Common/PlayButton";
 import AlbumArt from "~/components/Common/AlbumArt";
 import {useAxios} from "~/vendor/axios";
 import {useAsyncState, useIntervalFn, useLocalStorage} from "@vueuse/core";
-import {computed} from "vue";
+import {computed, ref} from "vue";
 import useRefreshableAsyncState from "~/functions/useRefreshableAsyncState";
 import DashboardCharts from "~/components/DashboardCharts.vue";
 import {useTranslate} from "~/vendor/gettext";
 import Loading from "~/components/Common/Loading.vue";
+import Lightbox from "~/components/Common/Lightbox.vue";
 
 const props = defineProps({
     userUrl: {
@@ -397,4 +401,10 @@ useIntervalFn(
     reloadStations,
     stationsReloadTimeout
 );
+
+const $lightbox = ref(); // Template Ref
+
+const showImage = (url) => {
+    $lightbox.value.show(url);
+};
 </script>

@@ -61,9 +61,9 @@
                                     <div class="d-table-cell align-top text-end pe-2">
                                         <a
                                             v-if="np.now_playing.song.art"
-                                            data-fancybox
                                             :href="np.now_playing.song.art"
                                             target="_blank"
+                                            @click.prevent="showImage(np.now_playing.song.art)"
                                         >
                                             <img
                                                 class="rounded"
@@ -134,9 +134,9 @@
                                     <div class="d-table-cell align-top text-end pe-2">
                                         <a
                                             v-if="np.playing_next.song.art"
-                                            data-fancybox
                                             :href="np.playing_next.song.art"
                                             target="_blank"
+                                            @click.prevent="showImage(np.playing_next.song.art)"
                                         >
                                             <img
                                                 :src="np.playing_next.song.art"
@@ -223,16 +223,19 @@
             </button>
         </div>
     </section>
+
+    <lightbox ref="$lightbox" />
 </template>
 
 <script setup>
 import {BACKEND_LIQUIDSOAP} from '~/components/Entity/RadioAdapters';
 import Icon from '~/components/Common/Icon';
-import {computed} from "vue";
+import {computed, ref} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import nowPlayingPanelProps from "~/components/Stations/Profile/nowPlayingPanelProps";
 import useNowPlaying from "~/functions/useNowPlaying";
 import Loading from "~/components/Common/Loading.vue";
+import Lightbox from "~/components/Common/Lightbox.vue";
 
 const props = defineProps({
     ...nowPlayingPanelProps,
@@ -260,6 +263,12 @@ const langListeners = computed(() => {
 const isLiquidsoap = computed(() => {
     return props.backendType === BACKEND_LIQUIDSOAP;
 });
+
+const $lightbox = ref(); // Template Ref
+
+const showImage = (url) => {
+    $lightbox.value.show(url);
+};
 
 const makeApiCall = (uri) => {
     emit('api-call', uri);

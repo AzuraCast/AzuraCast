@@ -149,11 +149,13 @@
                         v-if="row.item.media.art"
                         :src="row.item.media.art"
                         class="flex-shrink-1 ps-2"
+                        @click.prevent="showImage(row.item.media.art)"
                     />
                     <album-art
                         v-else-if="row.item.is_cover_art"
                         :src="row.item.links.download"
                         class="flex-shrink-1 ps-2"
+                        @click.prevent="showImage(row.item.links.download)"
                     />
                 </div>
             </template>
@@ -237,6 +239,8 @@
         :playlists="playlists"
         @relist="onTriggerRelist"
     />
+
+    <lightbox ref="$lightbox" />
 </template>
 
 <script setup>
@@ -260,6 +264,7 @@ import {DateTime} from "luxon";
 import {useEventListener} from "@vueuse/core";
 import formatFileSize from "../../functions/formatFileSize";
 import InfoCard from "~/components/Common/InfoCard.vue";
+import Lightbox from "~/components/Common/Lightbox.vue";
 
 const props = defineProps({
     listUrl: {
@@ -470,6 +475,12 @@ const $moveFilesModal = ref(); // Template Ref
 const moveFiles = () => {
     $moveFilesModal.value.open();
 }
+
+const $lightbox = ref(); // Template Ref
+
+const showImage = (url) => {
+    $lightbox.value.show(url);
+};
 
 const requestConfig = (config) => {
     config.params.currentDirectory = currentDirectory.value;

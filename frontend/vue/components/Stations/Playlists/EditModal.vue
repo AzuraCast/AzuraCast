@@ -19,7 +19,7 @@
             />
             <form-advanced
                 v-if="enableAdvancedFeatures"
-                v-model:form="v$"
+                v-model:form="form"
             />
         </o-tabs>
     </modal-form>

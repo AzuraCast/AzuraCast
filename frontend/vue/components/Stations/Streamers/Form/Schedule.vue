@@ -23,8 +23,9 @@
 
         <div class="buttons mt-3">
             <button
+                type="button"
                 class="btn btn-sm btn-primary"
-                @click.prevent="add"
+                @click="add"
             >
                 <icon icon="add" />
                 <span>

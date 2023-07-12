@@ -75,6 +75,7 @@
             <template #cell(actions)="row">
                 <template v-if="row.item.changes.length > 0">
                     <button
+                        type="button"
                         class="btn btn-sm btn-primary"
                         @click="showDetails(row.item.changes)"
                     >

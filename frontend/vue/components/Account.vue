@@ -12,8 +12,9 @@
                 >
                     <template #actions>
                         <button
+                            type="button"
                             class="btn btn-primary"
-                            @click.prevent="doEditProfile"
+                            @click="doEditProfile"
                         >
                             <icon icon="edit" />
                             <span>
@@ -74,8 +75,9 @@
                 >
                     <template #actions>
                         <button
+                            type="button"
                             class="btn btn-primary"
-                            @click.prevent="doChangePassword"
+                            @click="doChangePassword"
                         >
                             <icon icon="vpn_key" />
                             <span>
@@ -84,8 +86,9 @@
                         </button>
                         <button
                             v-if="security.twoFactorEnabled"
+                            type="button"
                             class="btn btn-danger"
-                            @click.prevent="disableTwoFactor"
+                            @click="disableTwoFactor"
                         >
                             <icon icon="lock_open" />
                             <span>
@@ -94,8 +97,9 @@
                         </button>
                         <button
                             v-else
+                            type="button"
                             class="btn btn-success"
-                            @click.prevent="enableTwoFactor"
+                            @click="enableTwoFactor"
                         >
                             <icon icon="lock" />
                             <span>
@@ -139,8 +143,9 @@
                     </template>
                     <template #actions>
                         <button
+                            type="button"
                             class="btn btn-primary"
-                            @click.prevent="createApiKey"
+                            @click="createApiKey"
                         >
                             <icon icon="add" />
                             <span>
@@ -159,8 +164,9 @@
                         <template #cell(actions)="row">
                             <div class="btn-group btn-group-sm">
                                 <button
+                                    type="button"
                                     class="btn btn-danger"
-                                    @click.prevent="deleteApiKey(row.item.links.self)"
+                                    @click="deleteApiKey(row.item.links.self)"
                                 >
                                     {{ $gettext('Delete') }}
                                 </button>

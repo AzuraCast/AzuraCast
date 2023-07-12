@@ -64,6 +64,7 @@
                                 {{ $gettext('Download') }}
                             </a>
                             <button
+                                type="button"
                                 class="btn btn-block btn-danger"
                                 @click="deleteConfigurationFile"
                             >

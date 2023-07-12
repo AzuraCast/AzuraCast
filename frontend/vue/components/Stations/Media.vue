@@ -193,16 +193,18 @@
             <template #cell(commands)="row">
                 <template v-if="row.item.media.links.edit">
                     <button
+                        type="button"
                         class="btn btn-sm btn-primary"
-                        @click.prevent="edit(row.item.media.links.edit, row.item.media.links.art, row.item.media.links.play, row.item.media.links.waveform)"
+                        @click="edit(row.item.media.links.edit, row.item.media.links.art, row.item.media.links.play, row.item.media.links.waveform)"
                     >
                         {{ $gettext('Edit') }}
                     </button>
                 </template>
                 <template v-else>
                     <button
+                        type="button"
                         class="btn btn-sm btn-primary"
-                        @click.prevent="rename(row.item.path)"
+                        @click="rename(row.item.path)"
                     >
                         {{ $gettext('Rename') }}
                     </button>

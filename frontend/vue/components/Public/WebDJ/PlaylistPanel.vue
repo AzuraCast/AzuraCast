@@ -17,6 +17,7 @@
                 <div class="btn-group btn-group-sm">
                     <button
                         v-if="!isPlaying || isPaused"
+                        type="button"
                         class="btn btn-sm btn-success"
                         @click="play"
                     >
@@ -24,30 +25,35 @@
                     </button>
                     <button
                         v-if="isPlaying && !isPaused"
+                        type="button"
                         class="btn btn-sm btn-warning"
                         @click="togglePause()"
                     >
                         <icon icon="pause" />
                     </button>
                     <button
+                        type="button"
                         class="btn btn-sm"
                         @click="previous()"
                     >
                         <icon icon="fast_rewind" />
                     </button>
                     <button
+                        type="button"
                         class="btn btn-sm"
                         @click="next()"
                     >
                         <icon icon="fast_forward" />
                     </button>
                     <button
+                        type="button"
                         class="btn btn-sm btn-danger"
                         @click="stop()"
                     >
                         <icon icon="stop" />
                     </button>
                     <button
+                        type="button"
                         class="btn btn-sm"
                         :class="{ 'btn-primary': trackPassThrough }"
                         @click="trackPassThrough = !trackPassThrough"

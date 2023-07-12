@@ -38,6 +38,7 @@
             class="card-body"
         >
             <button
+                type="button"
                 class="btn btn-danger"
                 @click="doClear()"
             >
@@ -80,8 +81,9 @@
             <template #cell(actions)="row">
                 <button
                     v-if="row.item.played_at === 0"
+                    type="button"
                     class="btn btn-sm btn-danger"
-                    @click.prevent="doDelete(row.item.links.delete)"
+                    @click="doDelete(row.item.links.delete)"
                 >
                     {{ $gettext('Delete') }}
                 </button>

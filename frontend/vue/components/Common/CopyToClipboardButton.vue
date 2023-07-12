@@ -1,6 +1,7 @@
 <template>
     <button
         ref="btn"
+        type="button"
         class="btn btn-copy btn-link btn-xs"
         :aria-label="$gettext('Copy to Clipboard')"
         @click.prevent="doCopy"

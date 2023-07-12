@@ -109,6 +109,7 @@
                 </a>
                 <template v-if="hasStarted">
                     <button
+                        type="button"
                         class="btn btn-link text-secondary"
                         @click="makeApiCall(frontendRestartUri)"
                     >
@@ -119,6 +120,7 @@
                     </button>
                     <button
                         v-if="!frontendRunning"
+                        type="button"
                         class="btn btn-link text-success"
                         @click="makeApiCall(frontendStartUri)"
                     >
@@ -129,6 +131,7 @@
                     </button>
                     <button
                         v-if="frontendRunning"
+                        type="button"
                         class="btn btn-link text-danger"
                         @click="makeApiCall(frontendStopUri)"
                     >

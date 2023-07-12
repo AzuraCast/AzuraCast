@@ -56,6 +56,7 @@
                             <div class="btn-group btn-group-sm">
                                 <button
                                     v-if="index+1 < media.length"
+                                    type="button"
                                     class="btn btn-primary"
                                     :title="$gettext('Down')"
                                     @click.prevent="moveDown(index)"
@@ -64,6 +65,7 @@
                                 </button>
                                 <button
                                     v-if="index > 0"
+                                    type="button"
                                     class="btn btn-primary"
                                     :title="$gettext('Up')"
                                     @click.prevent="moveUp(index)"

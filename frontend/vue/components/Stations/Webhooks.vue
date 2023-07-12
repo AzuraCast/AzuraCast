@@ -9,8 +9,9 @@
         </template>
         <template #actions>
             <button
+                type="button"
                 class="btn btn-primary"
-                @click.prevent="doCreate"
+                @click="doCreate"
             >
                 <icon icon="add" />
                 <span>
@@ -55,27 +56,31 @@
             <template #cell(actions)="row">
                 <div class="btn-group btn-group-sm">
                     <button
+                        type="button"
                         class="btn btn-primary"
-                        @click.prevent="doEdit(row.item.links.self)"
+                        @click="doEdit(row.item.links.self)"
                     >
                         {{ $gettext('Edit') }}
                     </button>
                     <button
+                        type="button"
                         class="btn"
                         :class="getToggleVariant(row.item)"
-                        @click.prevent="doToggle(row.item.links.toggle)"
+                        @click="doToggle(row.item.links.toggle)"
                     >
                         {{ langToggleButton(row.item) }}
                     </button>
                     <button
+                        type="button"
                         class="btn btn-secondary"
-                        @click.prevent="doTest(row.item.links.test)"
+                        @click="doTest(row.item.links.test)"
                     >
                         {{ $gettext('Test') }}
                     </button>
                     <button
+                        type="button"
                         class="btn btn-danger"
-                        @click.prevent="doDelete(row.item.links.self)"
+                        @click="doDelete(row.item.links.self)"
                     >
                         {{ $gettext('Delete') }}
                     </button>

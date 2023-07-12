@@ -40,6 +40,7 @@
             class="card-body buttons"
         >
             <button
+                type="button"
                 class="btn btn-link text-secondary"
                 @click="makeApiCall(backendRestartUri)"
             >
@@ -50,6 +51,7 @@
             </button>
             <button
                 v-if="!backendRunning"
+                type="button"
                 class="btn btn-link text-success"
                 @click="makeApiCall(backendStartUri)"
             >
@@ -60,6 +62,7 @@
             </button>
             <button
                 v-if="backendRunning"
+                type="button"
                 class="btn btn-link text-danger"
                 @click="makeApiCall(backendStopUri)"
             >

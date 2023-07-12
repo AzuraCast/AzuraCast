@@ -39,6 +39,7 @@
         <template #modal-footer>
             <slot name="modal-footer">
                 <button
+                    type="button"
                     class="btn btn-secondary"
                     @click="close"
                 >

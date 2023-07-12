@@ -32,6 +32,7 @@
                 <div class="inline-volume-controls d-flex align-items-center">
                     <div class="flex-shrink-0">
                         <button
+                            type="button"
                             class="btn btn-sm btn-outline-inverse"
                             :title="$gettext('Mute')"
                             @click="volume = 0"
@@ -52,6 +53,7 @@
                     </div>
                     <div class="flex-shrink-0">
                         <button
+                            type="button"
                             class="btn btn-sm btn-outline-inverse"
                             :title="$gettext('Full Volume')"
                             @click="volume = 100"

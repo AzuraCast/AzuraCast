@@ -42,12 +42,14 @@
 
         <template #modal-footer>
             <button
+                type="button"
                 class="btn btn-secondary"
                 @click="close"
             >
                 {{ $gettext('Close') }}
             </button>
             <button
+                type="button"
                 class="btn btn-primary"
                 @click="save"
             >

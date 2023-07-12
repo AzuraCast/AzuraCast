@@ -15,6 +15,7 @@
     <div class="buttons mt-3">
         <div class="btn-group btn-group-sm">
             <button
+                type="button"
                 class="btn btn-light"
                 :title="$gettext('Play')"
                 @click="playAudio"
@@ -22,6 +23,7 @@
                 <icon icon="play_arrow" />
             </button>
             <button
+                type="button"
                 class="btn btn-dark"
                 :title="$gettext('Stop')"
                 @click="stopAudio"
@@ -31,12 +33,14 @@
         </div>
         <div class="btn-group btn-group-sm">
             <button
+                type="button"
                 class="btn btn-primary"
                 @click="setCueIn"
             >
                 {{ $gettext('Set Cue In') }}
             </button>
             <button
+                type="button"
                 class="btn btn-primary"
                 @click="setCueOut"
             >
@@ -45,6 +49,7 @@
         </div>
         <div class="btn-group btn-group-sm">
             <button
+                type="button"
                 class="btn btn-warning"
                 @click="setFadeOverlap"
             >
@@ -53,12 +58,14 @@
         </div>
         <div class="btn-group btn-group-sm">
             <button
+                type="button"
                 class="btn btn-danger"
                 @click="setFadeIn"
             >
                 {{ $gettext('Set Fade In') }}
             </button>
             <button
+                type="button"
                 class="btn btn-danger"
                 @click="setFadeOut"
             >

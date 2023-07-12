@@ -74,6 +74,7 @@
         </form>
         <template #modal-footer>
             <button
+                type="button"
                 class="btn btn-secondary"
                 @click="close"
             >

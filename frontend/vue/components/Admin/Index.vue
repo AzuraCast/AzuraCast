@@ -55,8 +55,9 @@
 
                         <div class="flex-shrink-0">
                             <button
+                                type="button"
                                 class="btn btn-dark btn-sm py-2"
-                                @click.prevent="showMemoryStatsHelpModal"
+                                @click="showMemoryStatsHelpModal"
                             >
                                 <icon icon="help_outline" />
                             </button>
@@ -158,8 +159,9 @@
 
                         <div class="flex-shrink-0">
                             <button
+                                type="button"
                                 class="btn btn-dark btn-sm py-2"
-                                @click.prevent="showCpuStatsHelpModal"
+                                @click="showCpuStatsHelpModal"
                             >
                                 <icon icon="help_outline" />
                             </button>
@@ -312,9 +314,10 @@
                                 <td>
                                     <button
                                         v-if="service.links.restart"
+                                        type="button"
                                         class="btn btn-sm"
                                         :class="service.running ? 'btn-primary' : 'btn-danger'"
-                                        @click.prevent="doRestart(service.links.restart)"
+                                        @click="doRestart(service.links.restart)"
                                     >
                                         {{ $gettext('Restart') }}
                                     </button>

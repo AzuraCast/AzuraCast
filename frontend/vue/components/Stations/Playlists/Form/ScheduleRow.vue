@@ -8,8 +8,9 @@
             </div>
             <div class="flex-shrink-0">
                 <button
+                    type="button"
                     class="btn btn-sm btn-dark"
-                    @click.prevent="doRemove()"
+                    @click="doRemove()"
                 >
                     <icon icon="remove" />
                     <span>

@@ -81,6 +81,7 @@
                 v-bind="slotProps"
             >
                 <button
+                    type="button"
                     class="btn btn-secondary"
                     @click="close"
                 >

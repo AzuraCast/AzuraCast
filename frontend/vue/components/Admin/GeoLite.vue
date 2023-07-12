@@ -97,8 +97,9 @@
                                     {{ $gettext('Save Changes') }}
                                 </button>
                                 <button
+                                    type="button"
                                     class="btn btn-danger"
-                                    @click.prevent="doDelete"
+                                    @click="doDelete"
                                 >
                                     {{ $gettext('Remove Key') }}
                                 </button>

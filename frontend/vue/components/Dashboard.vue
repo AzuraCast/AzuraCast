@@ -114,6 +114,7 @@
                 </div>
                 <div class="flex-shrink-0">
                     <button
+                        type="button"
                         class="btn btn-sm btn-dark py-2"
                         @click="chartsVisible = !chartsVisible"
                     >

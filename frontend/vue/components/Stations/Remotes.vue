@@ -9,8 +9,9 @@
         </template>
         <template #actions>
             <button
+                type="button"
                 class="btn btn-primary"
-                @click.prevent="doCreate"
+                @click="doCreate"
             >
                 <icon icon="add" />
                 <span>
@@ -49,14 +50,16 @@
                     class="btn-group btn-group-sm"
                 >
                     <button
+                        type="button"
                         class="btn btn-primary"
-                        @click.prevent="doEdit(row.item.links.self)"
+                        @click="doEdit(row.item.links.self)"
                     >
                         {{ $gettext('Edit') }}
                     </button>
                     <button
+                        type="button"
                         class="btn btn-danger"
-                        @click.prevent="doDelete(row.item.links.self)"
+                        @click="doDelete(row.item.links.self)"
                     >
                         {{ $gettext('Delete') }}
                     </button>

@@ -2,6 +2,7 @@
     <card-page :title="$gettext('Upcoming Song Queue')">
         <template #actions>
             <button
+                type="button"
                 class="btn btn-danger"
                 @click="doClear()"
             >
@@ -22,6 +23,7 @@
                 <div class="btn-group btn-group-sm">
                     <button
                         v-if="row.item.log"
+                        type="button"
                         class="btn btn-primary"
                         @click.prevent="doShowLogs(row.item.log)"
                     >
@@ -29,6 +31,7 @@
                     </button>
                     <button
                         v-if="!row.item.sent_to_autodj"
+                        type="button"
                         class="btn btn-danger"
                         @click.prevent="doDelete(row.item.links.self)"
                     >

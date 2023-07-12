@@ -14,7 +14,10 @@
         :timezone="tz"
     >
         <template #dp-input="{ value }">
-            <button class="btn btn-dark dropdown-toggle">
+            <button
+                type="button"
+                class="btn btn-dark dropdown-toggle"
+            >
                 <icon icon="date_range" />
                 <span>
                     {{ value }}

@@ -39,8 +39,9 @@
 
         <div class="card-body buttons">
             <button
+                type="button"
                 class="btn btn-primary"
-                @click.prevent="doCreate"
+                @click="doCreate"
             >
                 <icon icon="add" />
                 <span>
@@ -60,14 +61,16 @@
             <template #cell(actions)="{item}">
                 <div class="btn-group btn-group-sm">
                     <button
+                        type="button"
                         class="btn btn-primary"
-                        @click.prevent="doEdit(item.links.self)"
+                        @click="doEdit(item.links.self)"
                     >
                         {{ $gettext('Edit') }}
                     </button>
                     <button
+                        type="button"
                         class="btn btn-danger"
-                        @click.prevent="doDelete(item.links.self)"
+                        @click="doDelete(item.links.self)"
                     >
                         {{ $gettext('Delete') }}
                     </button>

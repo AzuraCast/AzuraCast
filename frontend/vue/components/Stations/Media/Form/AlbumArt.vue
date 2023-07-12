@@ -9,6 +9,7 @@
 
             <div class="block-buttons mt-2">
                 <button
+                    type="button"
                     class="btn btn-link btn-block btn-danger"
                     @click="deleteArt"
                 >

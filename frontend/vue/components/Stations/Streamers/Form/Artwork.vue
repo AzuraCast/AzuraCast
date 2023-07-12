@@ -32,6 +32,7 @@
 
                 <div class="block-buttons pt-3">
                     <button
+                        type="button"
                         class="btn btn-block btn-danger"
                         @click="deleteArt"
                     >

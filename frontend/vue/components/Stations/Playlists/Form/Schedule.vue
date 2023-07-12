@@ -25,8 +25,9 @@
 
         <div class="buttons">
             <button
+                type="button"
                 class="btn btn-sm btn-primary"
-                @click.prevent="add"
+                @click="add"
             >
                 <icon icon="add" />
                 <span>

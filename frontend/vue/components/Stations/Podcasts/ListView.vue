@@ -21,8 +21,9 @@
 
         <div class="card-body buttons">
             <button
+                type="button"
                 class="btn btn-primary"
-                @click.prevent="doCreate"
+                @click="doCreate"
             >
                 <icon icon="add" />
                 <span>
@@ -58,20 +59,23 @@
             <template #cell(actions)="row">
                 <div class="btn-group btn-group-sm">
                     <button
+                        type="button"
                         class="btn btn-primary"
-                        @click.prevent="doEdit(row.item.links.self)"
+                        @click="doEdit(row.item.links.self)"
                     >
                         {{ $gettext('Edit') }}
                     </button>
                     <button
+                        type="button"
                         class="btn btn-danger"
-                        @click.prevent="doDelete(row.item.links.self)"
+                        @click="doDelete(row.item.links.self)"
                     >
                         {{ $gettext('Delete') }}
                     </button>
                     <button
+                        type="button"
                         class="btn btn-secondary"
-                        @click.prevent="doSelectPodcast(row.item)"
+                        @click="doSelectPodcast(row.item)"
                     >
                         {{ $gettext('Episodes') }}
                     </button>

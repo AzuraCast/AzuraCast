@@ -202,6 +202,7 @@
             <button
                 v-if="!np.live.is_live"
                 id="btn_skip_song"
+                type="button"
                 class="btn btn-link text-primary"
                 @click="makeApiCall(backendSkipSongUri)"
             >
@@ -213,6 +214,7 @@
             <button
                 v-if="np.live.is_live"
                 id="btn_disconnect_streamer"
+                type="button"
                 class="btn btn-link text-primary"
                 @click="makeApiCall(backendDisconnectStreamerUri)"
             >

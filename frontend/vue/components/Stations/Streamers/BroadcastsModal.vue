@@ -43,8 +43,9 @@
                 </template>
                 <template #cell(actions)="row">
                     <button
+                        type="button"
                         class="btn btn-sm btn-danger"
-                        @click.prevent="doDelete(row.item.links.delete)"
+                        @click="doDelete(row.item.links.delete)"
                     >
                         {{ $gettext('Delete') }}
                     </button>
@@ -53,6 +54,7 @@
         </template>
         <template #modal-footer>
             <button
+                type="button"
                 class="btn btn-secondary"
                 @click="close"
             >

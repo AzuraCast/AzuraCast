@@ -11,8 +11,9 @@
             </div>
             <div class="flex-shrink-0">
                 <button
+                    type="button"
                     class="btn btn-sm btn-light py-2"
-                    @click.prevent="$emit('remove')"
+                    @click="$emit('remove')"
                 >
                     <icon icon="remove" />
                     <span>

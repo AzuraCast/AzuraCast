@@ -52,6 +52,7 @@
                     <div class="flex-shrink-1 ps-3">
                         <div class="btn-group actions">
                             <button
+                                type="button"
                                 data-bs-tooltip
                                 class="btn btn-secondary"
                                 data-bs-placement="left"
@@ -67,9 +68,9 @@
                                 role="group"
                             >
                                 <button
+                                    type="button"
                                     data-bs-tooltip
                                     class="btn btn-secondary dropdown-toggle"
-                                    type="button"
                                     data-bs-toggle="dropdown"
                                     aria-expanded="false"
                                     data-bs-placement="left"
@@ -86,6 +87,7 @@
                                         :key="pageOption"
                                     >
                                         <button
+                                            type="button"
                                             class="dropdown-item"
                                             :class="(pageOption === perPage) ? 'active' : ''"
                                             @click="settings.perPage = pageOption"
@@ -102,8 +104,8 @@
                                 role="group"
                             >
                                 <button
-                                    class="btn btn-secondary dropdown-toggle"
                                     type="button"
+                                    class="btn btn-secondary dropdown-toggle"
                                     data-bs-toggle="dropdown"
                                     aria-expanded="false"
                                     data-bs-placement="left"

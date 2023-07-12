@@ -19,6 +19,7 @@
                     <div class="control-group">
                         <div class="btn-group btn-group-sm">
                             <button
+                                type="button"
                                 class="btn btn-danger"
                                 :class="{ active: isPlaying }"
                                 @click="togglePlaying"
@@ -26,6 +27,7 @@
                                 <icon icon="mic" />
                             </button>
                             <button
+                                type="button"
                                 class="btn"
                                 :class="{ 'btn-primary': trackPassThrough }"
                                 @click="trackPassThrough = !trackPassThrough"

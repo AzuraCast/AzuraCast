@@ -35,8 +35,9 @@
                     <div class="card-body-flush">
                         <div class="card-body buttons">
                             <button
+                                type="button"
                                 class="btn btn-primary"
-                                @click.prevent="doCreate"
+                                @click="doCreate"
                             >
                                 <icon icon="add" />
                                 <span>
@@ -56,14 +57,16 @@
                             <template #cell(actions)="row">
                                 <div class="btn-group btn-group-sm">
                                     <button
+                                        type="button"
                                         class="btn btn-primary"
-                                        @click.prevent="doEdit(row.item.links.self)"
+                                        @click="doEdit(row.item.links.self)"
                                     >
                                         {{ $gettext('Edit') }}
                                     </button>
                                     <button
+                                        type="button"
                                         class="btn btn-danger"
-                                        @click.prevent="doDelete(row.item.links.self)"
+                                        @click="doDelete(row.item.links.self)"
                                     >
                                         {{ $gettext('Delete') }}
                                     </button>
@@ -81,6 +84,7 @@
                                         <ul class="dropdown-menu">
                                             <li>
                                                 <button
+                                                    type="button"
                                                     class="dropdown-item"
                                                     @click="doModify(row.item.links.toggle)"
                                                 >
@@ -89,6 +93,7 @@
                                             </li>
                                             <li v-if="row.item.links.reshuffle">
                                                 <button
+                                                    type="button"
                                                     class="dropdown-item"
                                                     @click="doModify(row.item.links.reshuffle)"
                                                 >
@@ -97,6 +102,7 @@
                                             </li>
                                             <li v-if="row.item.links.import">
                                                 <button
+                                                    type="button"
                                                     class="dropdown-item"
                                                     @click="doImport(row.item.links.import)"
                                                 >
@@ -105,6 +111,7 @@
                                             </li>
                                             <li v-if="row.item.links.order">
                                                 <button
+                                                    type="button"
                                                     class="dropdown-item"
                                                     @click="doReorder(row.item.links.order)"
                                                 >
@@ -113,6 +120,7 @@
                                             </li>
                                             <li v-if="row.item.links.queue">
                                                 <button
+                                                    type="button"
                                                     class="dropdown-item"
                                                     @click="doQueue(row.item.links.queue)"
                                                 >
@@ -121,6 +129,7 @@
                                             </li>
                                             <li v-if="row.item.links.applyto">
                                                 <button
+                                                    type="button"
                                                     class="dropdown-item"
                                                     @click="doApplyTo(row.item.links.applyto)"
                                                 >
@@ -129,6 +138,7 @@
                                             </li>
                                             <li>
                                                 <button
+                                                    type="button"
                                                     class="dropdown-item"
                                                     @click="doClone(row.item.name, row.item.links.clone)"
                                                 >

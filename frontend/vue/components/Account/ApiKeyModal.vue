@@ -42,15 +42,16 @@
                 v-bind="slotProps"
             >
                 <button
+                    type="button"
                     class="btn btn-secondary"
                     @click="close"
                 >
                     {{ $gettext('Close') }}
                 </button>
                 <button
+                    type="submit"
                     class="btn"
                     :class="(v$.$invalid) ? 'btn-danger' : 'btn-primary'"
-                    type="submit"
                     @click="doSubmit"
                 >
                     {{ $gettext('Create New Key') }}

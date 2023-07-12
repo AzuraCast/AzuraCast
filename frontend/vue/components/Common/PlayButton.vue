@@ -1,5 +1,6 @@
 <template>
     <button
+        type="button"
         :title="langTitle"
         :aria-label="langTitle"
         class="btn p-0"

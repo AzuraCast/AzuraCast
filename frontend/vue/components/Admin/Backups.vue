@@ -43,8 +43,9 @@
 
                 <div class="card-body buttons">
                     <button
+                        type="button"
                         class="btn btn-primary"
-                        @click.prevent="doConfigure"
+                        @click="doConfigure"
                     >
                         <icon icon="settings" />
                         <span>
@@ -53,8 +54,9 @@
                     </button>
                     <button
                         v-if="settings.backupEnabled && settings.backupLastOutput !== ''"
+                        type="button"
                         class="btn btn-secondary"
-                        @click.prevent="showLastOutput"
+                        @click="showLastOutput"
                     >
                         <icon icon="assignment" />
                         <span>
@@ -113,8 +115,9 @@
 
         <div class="card-body">
             <button
+                type="button"
                 class="btn btn-primary"
-                @click.prevent="doRunBackup"
+                @click="doRunBackup"
             >
                 <icon icon="send" />
                 <span>
@@ -139,8 +142,9 @@
                         {{ $gettext('Download') }}
                     </a>
                     <button
+                        type="button"
                         class="btn btn-danger"
-                        @click.prevent="doDelete(row.item.links.delete)"
+                        @click="doDelete(row.item.links.delete)"
                     >
                         {{ $gettext('Delete') }}
                     </button>

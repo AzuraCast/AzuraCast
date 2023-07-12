@@ -68,6 +68,7 @@
 
                 <div class="form-group col">
                     <button
+                        type="button"
                         class="btn btn-primary btn-sm"
                         :disabled="v$.$anyDirty"
                         @click="generateAcmeCert"
@@ -160,9 +161,10 @@
 
                 <div class="form-group col">
                     <button
+                        type="button"
                         class="btn btn-sm btn-primary"
                         :disabled="v$.$anyDirty"
-                        @click.prevent="openTestMessage"
+                        @click="openTestMessage"
                     >
                         <icon icon="send" />
                         <span>

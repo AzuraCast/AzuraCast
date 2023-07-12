@@ -26,8 +26,9 @@
             </template>
             <template #cell(actions)="row">
                 <button
+                    type="button"
                     class="btn btn-sm btn-primary"
-                    @click.prevent="doSubmitRequest(row.item.request_url)"
+                    @click="doSubmitRequest(row.item.request_url)"
                 >
                     {{ $gettext('Request') }}
                 </button>

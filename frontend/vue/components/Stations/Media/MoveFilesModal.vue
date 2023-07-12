@@ -9,9 +9,10 @@
         <div class="row mb-3 align-items-center">
             <div class="col-md-6">
                 <button
+                    type="button"
                     class="btn btn-sm btn-primary"
                     :disabled="dirHistory.length === 0"
-                    @click.prevent="pageBack"
+                    @click="pageBack"
                 >
                     <icon icon="chevron_left" />
                     <span>
@@ -55,12 +56,14 @@
         </div>
         <template #modal-footer>
             <button
+                type="button"
                 class="btn btn-secondary"
                 @click="close"
             >
                 {{ $gettext('Close') }}
             </button>
             <button
+                type="button"
                 class="btn btn-primary"
                 @click="doMove"
             >

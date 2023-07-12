@@ -38,6 +38,7 @@
                 </div>
                 <div class="card-body">
                     <button
+                        type="button"
                         class="btn btn-info"
                         @click="checkForUpdates()"
                     >
@@ -120,6 +121,7 @@
                             {{ $gettext('Backup') }}
                         </a>
                         <button
+                            type="button"
                             class="btn btn-success"
                             @click="doUpdate()"
                         >

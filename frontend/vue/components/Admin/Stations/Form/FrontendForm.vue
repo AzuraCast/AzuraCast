@@ -125,8 +125,9 @@
 
                     <div class="block-buttons">
                         <button
+                            type="button"
                             class="btn btn-block btn-primary"
-                            @click.prevent="clearCountries"
+                            @click="clearCountries"
                         >
                             {{ $gettext('Clear List') }}
                         </button>

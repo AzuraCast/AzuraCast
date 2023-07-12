@@ -1,5 +1,6 @@
 <template>
     <button
+        type="button"
         class="btn"
         :aria-label="muteLang"
         @click="toggleMute"

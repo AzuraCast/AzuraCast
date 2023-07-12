@@ -33,6 +33,7 @@
         </div>
 
         <button
+            type="button"
             class="btn btn-sm btn-outline-light p-2 ms-2"
             :aria-label="$gettext('Stop')"
             @click="stop()"

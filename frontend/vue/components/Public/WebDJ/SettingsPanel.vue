@@ -43,6 +43,7 @@
                 </div>
                 <div class="form-group">
                     <button
+                        type="button"
                         class="btn btn-primary"
                         @click="updateMetadata"
                     >
@@ -227,6 +228,7 @@
         <div class="card-body">
             <button
                 v-if="!isConnected"
+                type="button"
                 class="btn btn-success"
                 @click="startStream(djUsername, djPassword)"
             >
@@ -234,12 +236,14 @@
             </button>
             <button
                 v-if="isConnected"
+                type="button"
                 class="btn btn-danger"
                 @click="stopStream"
             >
                 {{ langStreamButton }}
             </button>
             <button
+                type="button"
                 class="btn"
                 :class="{ 'btn-primary': doPassThrough }"
                 @click="doPassThrough = !doPassThrough"

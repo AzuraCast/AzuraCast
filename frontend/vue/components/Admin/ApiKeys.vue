@@ -29,8 +29,9 @@
             <template #cell(actions)="row">
                 <div class="btn-group btn-group-sm">
                     <button
+                        type="button"
                         class="btn btn-sm btn-danger"
-                        @click.prevent="doDelete(row.item.links.self)"
+                        @click="doDelete(row.item.links.self)"
                     >
                         {{ $gettext('Delete') }}
                     </button>

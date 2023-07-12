@@ -15,12 +15,14 @@
         </form>
         <template #modal-footer>
             <button
+                type="button"
                 class="btn btn-secondary"
                 @click="close"
             >
                 {{ $gettext('Close') }}
             </button>
             <button
+                type="button"
                 class="btn"
                 :class="(v$.$invalid) ? 'btn-danger' : 'btn-primary'"
                 @click="doSendTest"

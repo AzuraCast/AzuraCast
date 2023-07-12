@@ -29,6 +29,7 @@
                         :key="stationId"
                     >
                         <button
+                            type="button"
                             class="dropdown-item"
                             @click="add(stationId)"
                         >

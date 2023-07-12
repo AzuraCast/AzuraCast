@@ -2,8 +2,9 @@
     <card-page :title="$gettext('Stations')">
         <template #actions>
             <button
+                type="button"
                 class="btn btn-primary"
-                @click.prevent="doCreate"
+                @click="doCreate"
             >
                 <icon icon="add" />
                 <span>
@@ -35,20 +36,23 @@
                         {{ $gettext('Manage') }}
                     </a>
                     <button
+                        type="button"
                         class="btn btn-secondary"
-                        @click.prevent="doClone(row.item.name, row.item.links.clone)"
+                        @click="doClone(row.item.name, row.item.links.clone)"
                     >
                         {{ $gettext('Clone') }}
                     </button>
                     <button
+                        type="button"
                         class="btn btn-primary"
-                        @click.prevent="doEdit(row.item.links.self)"
+                        @click="doEdit(row.item.links.self)"
                     >
                         {{ $gettext('Edit') }}
                     </button>
                     <button
+                        type="button"
                         class="btn btn-danger"
-                        @click.prevent="doDelete(row.item.links.self)"
+                        @click="doDelete(row.item.links.self)"
                     >
                         {{ $gettext('Delete') }}
                     </button>

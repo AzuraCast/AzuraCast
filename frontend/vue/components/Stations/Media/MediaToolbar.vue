@@ -100,8 +100,9 @@
             </div>
 
             <button
+                type="button"
                 class="btn btn-primary"
-                @click.prevent="moveFiles"
+                @click="moveFiles"
             >
                 <icon icon="open_with" />
                 <span>
@@ -126,9 +127,10 @@
                     <ul class="dropdown-menu">
                         <li>
                             <button
+                                type="button"
                                 :title="$gettext('Queue the selected media to play next')"
                                 class="dropdown-item"
-                                @click.prevent="doQueue"
+                                @click="doQueue"
                             >
                                 {{ $gettext('Queue') }}
                             </button>
@@ -136,6 +138,7 @@
                         <li>
                             <button
                                 v-if="supportsImmediateQueue"
+                                type="button"
                                 class="dropdown-item"
                                 :title="$gettext('Make the selected media play immediately, interrupting existing media')"
                                 @click="doImmediateQueue"
@@ -145,6 +148,7 @@
                         </li>
                         <li>
                             <button
+                                type="button"
                                 class="dropdown-item"
                                 :title="$gettext('Analyze and reprocess the selected media')"
                                 @click="doReprocess"
@@ -157,6 +161,7 @@
             </div>
 
             <button
+                type="button"
                 class="btn btn-danger"
                 @click="doDelete"
             >
@@ -168,8 +173,9 @@
         </div>
         <div class="col-md-4 text-end">
             <button
+                type="button"
                 class="btn btn-primary"
-                @click.prevent="createDirectory"
+                @click="createDirectory"
             >
                 <icon icon="folder" />
                 <span>

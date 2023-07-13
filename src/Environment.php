@@ -273,7 +273,8 @@ final class Environment
     public function getNowPlayingMaxConcurrentProcesses(): int
     {
         return (int)(
-            $this->data[self::NOW_PLAYING_MAX_CONCURRENT_PROCESSES] ?? $this->defaults[self::NOW_PLAYING_MAX_CONCURRENT_PROCESSES]
+            $this->data[self::NOW_PLAYING_MAX_CONCURRENT_PROCESSES]
+            ?? $this->defaults[self::NOW_PLAYING_MAX_CONCURRENT_PROCESSES]
         );
     }
 

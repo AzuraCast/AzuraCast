@@ -218,6 +218,12 @@ final class AzuraCastEnvFile extends AbstractEnvFile
                         'The delay between Now Playing checks for every station. Decrease for more frequent checks at the expense of performance; increase for less frequent checks but better performance (for large installations).'
                     ),
                 ],
+                Environment::NOW_PLAYING_MAX_CONCURRENT_PROCESSES => [
+                    'name' => __('Now Playing Max Concurrent Processes'),
+                    'description' => __(
+                        'The maximum number of concurrent processes for now playing updates. Increasing this can help reduce the latency between updates now playing updates on large installations.'
+                    ),
+                ],
                 'PHP_FPM_MAX_CHILDREN' => [
                     'name' => __('Maximum PHP-FPM Worker Processes'),
                     'default' => 5,

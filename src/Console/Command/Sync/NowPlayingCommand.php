@@ -25,8 +25,6 @@ final class NowPlayingCommand extends AbstractSyncCommand
     use EntityManagerAwareTrait;
     use SettingsAwareTrait;
 
-    public final const MAX_CONCURRENT_PROCESSES = 5;
-
     public function __construct(
         private readonly NowPlayingCache $nowPlayingCache,
         LockFactory $lockFactory,
@@ -72,7 +70,7 @@ final class NowPlayingCommand extends AbstractSyncCommand
             $numProcesses = count($this->processes);
 
             if (
-                $numProcesses < self::MAX_CONCURRENT_PROCESSES
+                $numProcesses < $this->environment->getNowPlayingMaxConcurrentProcesses()
                 && time() < $threshold - 5
             ) {
                 // Ensure a process is running for every active station.
@@ -80,7 +78,7 @@ final class NowPlayingCommand extends AbstractSyncCommand
                 $npThreshold = time() - $npDelay - random_int(0, 5);
 
                 foreach ($this->getStationsToRun($npThreshold) as $shortName) {
-                    if (count($this->processes) >= self::MAX_CONCURRENT_PROCESSES) {
+                    if (count($this->processes) >= $this->environment->getNowPlayingMaxConcurrentProcesses()) {
                         break;
                     }
                     if (isset($this->processes[$shortName])) {

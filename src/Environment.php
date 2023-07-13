@@ -44,6 +44,7 @@ final class Environment
     public const SYNC_SHORT_EXECUTION_TIME = 'SYNC_SHORT_EXECUTION_TIME';
     public const SYNC_LONG_EXECUTION_TIME = 'SYNC_LONG_EXECUTION_TIME';
     public const NOW_PLAYING_DELAY_TIME = 'NOW_PLAYING_DELAY_TIME';
+    public const NOW_PLAYING_MAX_CONCURRENT_PROCESSES = 'NOW_PLAYING_MAX_CONCURRENT_PROCESSES';
 
     public const LOG_LEVEL = 'LOG_LEVEL';
     public const SHOW_DETAILED_ERRORS = 'SHOW_DETAILED_ERRORS';
@@ -84,6 +85,7 @@ final class Environment
         self::SYNC_SHORT_EXECUTION_TIME => 600,
         self::SYNC_LONG_EXECUTION_TIME => 1800,
         self::NOW_PLAYING_DELAY_TIME => 0,
+        self::NOW_PLAYING_MAX_CONCURRENT_PROCESSES => 5,
 
         self::PROFILING_EXTENSION_ENABLED => 0,
         self::PROFILING_EXTENSION_ALWAYS_ON => 0,
@@ -265,6 +267,13 @@ final class Environment
     {
         return (int)(
             $this->data[self::NOW_PLAYING_DELAY_TIME] ?? $this->defaults[self::NOW_PLAYING_DELAY_TIME]
+        );
+    }
+
+    public function getNowPlayingMaxConcurrentProcesses(): int
+    {
+        return (int)(
+            $this->data[self::NOW_PLAYING_MAX_CONCURRENT_PROCESSES] ?? $this->defaults[self::NOW_PLAYING_MAX_CONCURRENT_PROCESSES]
         );
     }
 

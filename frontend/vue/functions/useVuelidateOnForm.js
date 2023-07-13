@@ -4,7 +4,7 @@ import {computed, unref} from "vue";
 import {useEventBus} from "@vueuse/core";
 import {cloneDeep, merge} from "lodash";
 
-export function useVuelidateOnForm(validations, blankForm, options = {}) {
+export function useVuelidateOnForm(validations = {}, blankForm = {}, options = {}) {
     const formEventBus = useEventBus('form_tabs');
 
     // Build the blank form from any children elements to the one using this function.

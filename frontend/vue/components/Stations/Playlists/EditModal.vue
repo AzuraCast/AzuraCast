@@ -70,24 +70,7 @@ const {
     $modal,
     {},
     {
-        'name': '',
-        'is_enabled': true,
-        'include_in_on_demand': false,
-        'weight': 3,
-        'type': 'default',
-        'source': 'songs',
-        'order': 'shuffle',
-        'remote_url': null,
-        'remote_type': 'stream',
-        'remote_buffer': 0,
-        'is_jingle': false,
-        'play_per_songs': 0,
-        'play_per_minutes': 0,
-        'play_per_hour_minute': 0,
-        'include_in_requests': true,
-        'avoid_duplicates': true,
-        'backend_options': [],
-        'schedule_items': []
+        schedule_items: []
     },
     {
         onSubmitSuccess: () => {

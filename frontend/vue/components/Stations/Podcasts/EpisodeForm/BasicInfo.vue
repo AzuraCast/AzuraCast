@@ -84,6 +84,14 @@ const {v$, tabClass} = useVuelidateOnFormTab(
         publish_time: {},
         explicit: {},
     },
-    form
+    form,
+    {
+        title: '',
+        link: '',
+        description: '',
+        publish_date: '',
+        publish_time: '',
+        explicit: false
+    }
 );
 </script>

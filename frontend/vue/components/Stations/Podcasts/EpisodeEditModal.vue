@@ -103,14 +103,8 @@ const {
     $modal,
     {},
     {
-        'title': '',
-        'link': '',
-        'description': '',
-        'publish_date': '',
-        'publish_time': '',
-        'explicit': false,
-        'artwork_file': null,
-        'media_file': null
+        artwork_file: null,
+        media_file: null
     },
     {
         resetForm: (originalResetForm) => {

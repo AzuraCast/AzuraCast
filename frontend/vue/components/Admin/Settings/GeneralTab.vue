@@ -105,7 +105,16 @@ const {v$, tabClass} = useVuelidateOnFormTab(
         enable_static_nowplaying: {},
         enable_advanced_features: {},
     },
-    form
+    form,
+    {
+        base_url: '',
+        instance_name: '',
+        prefer_browser_url: true,
+        use_radio_proxy: true,
+        history_keep_days: 7,
+        enable_static_nowplaying: true,
+        enable_advanced_features: true,
+    }
 );
 
 const {$gettext} = useTranslate();

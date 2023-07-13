@@ -37,7 +37,10 @@ const {v$, tabClass} = useVuelidateOnFormTab(
     {
         backend_options: {},
     },
-    form
+    form,
+    {
+        backend_options: []
+    }
 );
 
 const {$gettext} = useTranslate();

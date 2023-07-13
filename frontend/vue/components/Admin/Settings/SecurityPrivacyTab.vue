@@ -106,7 +106,13 @@ const {v$, tabClass} = useVuelidateOnFormTab(
         ip_source: {},
         api_access_control: {},
     },
-    form
+    form,
+    {
+        analytics: null,
+        always_use_ssl: false,
+        ip_source: 'local',
+        api_access_control: '*',
+    }
 );
 
 const {$gettext} = useTranslate();

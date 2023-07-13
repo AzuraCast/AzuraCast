@@ -22,7 +22,6 @@
 <script setup>
 import RemoteFormBasicInfo from "./Form/BasicInfo";
 import RemoteFormAutoDj from "./Form/AutoDj";
-import {REMOTE_ICECAST} from "~/components/Entity/RadioAdapters";
 import {baseEditModalProps, useBaseEditModal} from "~/functions/useBaseEditModal";
 import {computed, ref} from "vue";
 import {useNotify} from "~/functions/useNotify";
@@ -55,23 +54,7 @@ const {
     emit,
     $modal,
     {},
-    {
-        display_name: null,
-        is_visible_on_public_pages: true,
-        type: REMOTE_ICECAST,
-        enable_autodj: false,
-        autodj_format: null,
-        autodj_bitrate: null,
-        custom_listen_url: null,
-        url: null,
-        mount: null,
-        admin_password: null,
-        source_port: null,
-        source_mount: null,
-        source_username: null,
-        source_password: null,
-        is_public: false
-    },
+    {},
     {
         onSubmitSuccess: () => {
             notifySuccess();

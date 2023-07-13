@@ -51,11 +51,7 @@ const {
     emit,
     $modal,
     {},
-    {
-        name: null,
-        format: 'aac',
-        bitrate: 128
-    },
+    {},
     {
         onSubmitSuccess: () => {
             notifySuccess();

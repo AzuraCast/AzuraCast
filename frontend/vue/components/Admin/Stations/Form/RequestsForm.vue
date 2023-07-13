@@ -89,7 +89,12 @@ const {v$, tabClass} = useVuelidateOnFormTab(
         request_delay: {numeric},
         request_threshold: {numeric},
     },
-    form
+    form,
+    {
+        enable_requests: false,
+        request_delay: 5,
+        request_threshold: 15,
+    }
 );
 
 const isBackendEnabled = computed(() => {

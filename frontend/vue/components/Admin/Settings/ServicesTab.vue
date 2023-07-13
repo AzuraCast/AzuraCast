@@ -312,7 +312,25 @@ const {v$, tabClass} = useVuelidateOnFormTab(
         use_external_album_art_when_processing_media: {},
         last_fm_api_key: {},
     },
-    form
+    form,
+    {
+        check_for_updates: 1,
+        acme_email: '',
+        acme_domains: '',
+        mail_enabled: false,
+        mail_sender_name: '',
+        mail_sender_email: '',
+        mail_smtp_host: '',
+        mail_smtp_port: '',
+        mail_smtp_secure: '',
+        mail_smtp_username: '',
+        mail_smtp_password: '',
+        avatar_service: 'gravatar',
+        avatar_default_url: '',
+        use_external_album_art_in_apis: false,
+        use_external_album_art_when_processing_media: false,
+        last_fm_api_key: ''
+    }
 );
 
 const {$gettext} = useTranslate();

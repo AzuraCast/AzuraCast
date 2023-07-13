@@ -80,14 +80,8 @@ const {
     $modal,
     {},
     {
-        'streamer_username': null,
-        'streamer_password': null,
-        'display_name': null,
-        'comments': null,
-        'is_active': true,
-        'enforce_schedule': false,
-        'schedule_items': [],
-        'artwork_file': null
+        schedule_items: [],
+        artwork_file: null
     },
     {
         resetForm: (originalResetForm) => {

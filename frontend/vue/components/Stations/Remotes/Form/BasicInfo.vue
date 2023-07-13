@@ -96,7 +96,16 @@ const {v$, tabClass} = useVuelidateOnFormTab(
         admin_password: {},
         is_visible_on_public_pages: {},
     },
-    form
+    form,
+    {
+        display_name: null,
+        type: REMOTE_ICECAST,
+        custom_listen_url: null,
+        url: null,
+        mount: null,
+        admin_password: null,
+        is_visible_on_public_pages: true,
+    }
 );
 
 const typeOptions = [

@@ -103,6 +103,15 @@ const {v$, tabClass} = useVuelidateOnFormTab(
         email: {},
         categories: {required},
     },
-    form
+    form,
+    {
+        title: '',
+        link: '',
+        description: '',
+        language: 'en',
+        author: '',
+        email: '',
+        categories: [],
+    }
 );
 </script>

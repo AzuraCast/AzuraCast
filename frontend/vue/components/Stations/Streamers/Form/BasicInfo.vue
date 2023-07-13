@@ -93,6 +93,14 @@ const {v$, tabClass} = useVuelidateOnFormTab(
             enforce_schedule: {}
         };
     }),
-    form
+    form,
+    {
+        streamer_username: null,
+        streamer_password: null,
+        display_name: null,
+        comments: null,
+        is_active: true,
+        enforce_schedule: false,
+    }
 );
 </script>

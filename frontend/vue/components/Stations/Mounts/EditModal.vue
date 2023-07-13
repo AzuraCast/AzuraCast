@@ -94,20 +94,6 @@ const {
     $modal,
     {},
     {
-        name: null,
-        display_name: null,
-        is_visible_on_public_pages: true,
-        is_default: false,
-        relay_url: null,
-        is_public: true,
-        enable_autodj: true,
-        autodj_format: 'mp3',
-        autodj_bitrate: 128,
-        custom_listen_url: null,
-        authhash: null,
-        fallback_mount: '/error.mp3',
-        max_listener_duration: 0,
-        frontend_config: null,
         intro_file: null
     },
     {

@@ -178,7 +178,29 @@ const {v$, tabClass} = useVuelidateOnFormTab(
 
         return validations;
     }),
-    form
+    form,
+    () => {
+        let blankForm = {
+            name: '',
+            description: '',
+            genre: '',
+            url: '',
+            timezone: 'UTC',
+            enable_public_page: true,
+            enable_on_demand: false,
+            enable_on_demand_download: true,
+        };
+
+        if (props.showAdvanced) {
+            blankForm = {
+                ...blankForm,
+                short_name: '',
+                api_history_items: 5,
+            }
+        }
+
+        return blankForm;
+    }
 );
 
 const timezoneOptions = computed(() => {

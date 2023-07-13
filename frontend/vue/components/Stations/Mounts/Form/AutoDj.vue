@@ -69,7 +69,12 @@ const {v$, tabClass} = useVuelidateOnFormTab(
         autodj_format: {},
         autodj_bitrate: {},
     },
-    form
+    form,
+    {
+        enable_autodj: true,
+        autodj_format: 'mp3',
+        autodj_bitrate: 128,
+    }
 );
 
 const formatOptions = [

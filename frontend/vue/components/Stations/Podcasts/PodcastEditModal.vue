@@ -85,14 +85,7 @@ const {
     $modal,
     {},
     {
-        'title': '',
-        'link': '',
-        'description': '',
-        'language': 'en',
-        'author': '',
-        'email': '',
-        'categories': [],
-        'artwork_file': null
+        artwork_file: null
     },
     {
         resetForm: (originalResetForm) => {

@@ -116,7 +116,17 @@ const {v$, tabClass} = useVuelidateOnFormTab(
         source_password: {},
         is_public: {},
     },
-    form
+    form,
+    {
+        enable_autodj: false,
+        autodj_format: null,
+        autodj_bitrate: null,
+        source_port: null,
+        source_mount: null,
+        source_username: null,
+        source_password: null,
+        is_public: false
+    }
 );
 
 const formatOptions = [

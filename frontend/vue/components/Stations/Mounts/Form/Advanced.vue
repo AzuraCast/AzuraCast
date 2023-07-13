@@ -68,6 +68,17 @@ const {v$, tabClass} = useVuelidateOnFormTab(
 
         return validations;
     }),
-    form
+    form,
+    () => {
+        let blankForm = {
+            custom_listen_url: null,
+        };
+
+        if (isIcecast.value) {
+            blankForm.frontend_config = null;
+        }
+
+        return blankForm;
+    }
 );
 </script>

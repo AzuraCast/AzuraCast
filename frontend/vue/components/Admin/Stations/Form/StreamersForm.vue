@@ -175,7 +175,32 @@ const {v$, tabClass} = useVuelidateOnFormTab(
 
         return validations;
     }),
-    form
+    form,
+    () => {
+        let blankForm = {
+            enable_streamers: false,
+            disconnect_deactivate_streamer: 0,
+            backend_config: {
+                record_streams: false,
+                record_streams_format: 'mp3',
+                record_streams_bitrate: 128,
+                dj_buffer: 5,
+            }
+        };
+
+        if (props.showAdvanced) {
+            blankForm = {
+                ...blankForm,
+                backend_config: {
+                    ...blankForm.backend_config,
+                    dj_port: '',
+                    dj_mount_point: '/',
+                }
+            }
+        }
+
+        return blankForm;
+    }
 );
 
 const isBackendEnabled = computed(() => {

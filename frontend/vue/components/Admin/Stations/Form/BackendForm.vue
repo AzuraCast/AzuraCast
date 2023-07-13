@@ -334,7 +334,39 @@ const {v$, tabClass} = useVuelidateOnFormTab(
 
         return validations;
     }),
-    form
+    form,
+    () => {
+        let blankForm = {
+            backend_type: BACKEND_LIQUIDSOAP,
+            backend_config: {
+                crossfade_type: 'normal',
+                crossfade: 2,
+                audio_processing_method: AUDIO_PROCESSING_NONE,
+                post_processing_include_live: true,
+                master_me_preset: MASTER_ME_PRESET_MUSIC_GENERAL,
+                master_me_loudness_target: -16,
+                stereo_tool_license_key: '',
+            },
+        };
+
+        if (props.showAdvanced) {
+            blankForm = {
+                ...blankForm,
+                backend_config: {
+                    ...blankForm.backend_config,
+                    telnet_port: '',
+                    enable_replaygain_metadata: false,
+                    autodj_queue_length: 3,
+                    use_manual_autodj: false,
+                    charset: 'UTF-8',
+                    performance_mode: 'disabled',
+                    duplicate_prevention_time_range: 120,
+                }
+            };
+        }
+
+        return blankForm;
+    }
 );
 
 const isBackendEnabled = computed(() => {

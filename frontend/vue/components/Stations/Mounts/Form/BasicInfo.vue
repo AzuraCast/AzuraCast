@@ -149,7 +149,28 @@ const {v$, tabClass} = useVuelidateOnFormTab(
 
         return validations;
     }),
-    form
+    form,
+    () => {
+        let blankForm = {
+            name: null,
+            display_name: null,
+            is_visible_on_public_pages: true,
+            is_default: false,
+            relay_url: null,
+            is_public: true,
+            max_listener_duration: 0,
+        };
+
+        if (FRONTEND_SHOUTCAST === props.stationFrontendType) {
+            blankForm.authhash = null;
+        }
+
+        if (FRONTEND_ICECAST === props.stationFrontendType) {
+            blankForm.fallback_mount = '/error.mp3';
+        }
+
+        return blankForm;
+    }
 );
 
 const isIcecast = computed(() => {

@@ -135,7 +135,30 @@ const {v$, tabClass} = useVuelidateOnFormTab(
 
         return validations;
     }),
-    form
+    form,
+    () => {
+        let blankForm = {
+            enable_hls: false,
+            backend_config: {
+                hls_enable_on_public_player: false,
+                hls_is_default: false,
+            }
+        };
+
+        if (props.showAdvanced) {
+            blankForm = {
+                ...blankForm,
+                backend_config: {
+                    ...blankForm.backend_config,
+                    hls_segment_length: 4,
+                    hls_segments_in_playlist: 5,
+                    hls_segments_overhead: 2,
+                }
+            };
+        }
+
+        return blankForm;
+    },
 );
 
 const isBackendEnabled = computed(() => {

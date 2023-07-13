@@ -65,7 +65,12 @@ const {v$, tabClass} = useVuelidateOnFormTab(
         format: {required},
         bitrate: {required}
     },
-    form
+    form,
+    {
+        name: null,
+        format: 'aac',
+        bitrate: 128
+    }
 );
 
 const formatOptions = [

@@ -105,7 +105,24 @@ const {v$, tabClass} = useVuelidateOnFormTab(
 
         return validations;
     }),
-    form
+    form,
+    () => {
+        let blankForm = {
+            media_storage_location: '',
+            recordings_storage_location: '',
+            podcasts_storage_location: '',
+            is_enabled: true,
+        };
+
+        if (props.showAdvanced) {
+            blankForm = {
+                ...blankForm,
+                radio_base_dir: '',
+            };
+        }
+
+        return blankForm;
+    }
 );
 
 const storageLocationsLoading = ref(true);

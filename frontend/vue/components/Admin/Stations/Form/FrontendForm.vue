@@ -228,7 +228,36 @@ const {v$, tabClass} = useVuelidateOnFormTab(
 
         return validations;
     }),
-    form
+    form,
+    () => {
+        let blankForm = {
+            frontend_type: FRONTEND_ICECAST,
+            frontend_config: {
+                sc_license_id: '',
+                sc_user_id: '',
+                source_pw: '',
+                admin_pw: '',
+            },
+        };
+
+        if (props.showAdvanced) {
+            blankForm = {
+                ...blankForm,
+                frontend_config: {
+                    ...blankForm.frontend_config,
+                    port: '',
+                    max_listeners: '',
+                    custom_config: '',
+                    banned_ips: '',
+                    banned_countries: [],
+                    allowed_ips: '',
+                    banned_user_agents: '',
+                },
+            };
+        }
+
+        return blankForm;
+    }
 );
 
 const {$gettext} = useTranslate();

@@ -104,6 +104,14 @@ const {v$, tabClass} = useVuelidateOnFormTab(
             timeout: {},
         }
     },
-    form
+    form,
+    {
+        config: {
+            webhook_url: '',
+            basic_auth_username: '',
+            basic_auth_password: '',
+            timeout: '5',
+        }
+    }
 );
 </script>

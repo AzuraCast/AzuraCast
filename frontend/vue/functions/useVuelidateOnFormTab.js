@@ -1,8 +1,9 @@
 import useVuelidate from "@vuelidate/core";
 import {computed} from "vue";
+import {useEventBus} from "@vueuse/core";
 
-export function useVuelidateOnFormTab(validations, form, options = {}) {
-    const v$ = useVuelidate(validations, form, options);
+export function useVuelidateOnFormTab(validations, form, blankForm = {}, vuelidateOptions = {}) {
+    const v$ = useVuelidate(validations, form, vuelidateOptions);
 
     const isValid = computed(() => {
         return !v$.value.$invalid ?? true;
@@ -14,6 +15,11 @@ export function useVuelidateOnFormTab(validations, form, options = {}) {
         }
         return null;
     });
+
+    // Register event listener for blankForm building.
+    const formEventBus = useEventBus('form_tabs');
+
+    formEventBus.on((addToForm) => addToForm(blankForm));
 
     return {
         v$,

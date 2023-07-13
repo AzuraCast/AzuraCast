@@ -106,7 +106,14 @@ const {v$, tabClass} = useVuelidateOnFormTab(
             visibility: {required}
         }
     },
-    form
+    form,
+    {
+        config: {
+            instance_url: '',
+            access_token: '',
+            visibility: 'public',
+        }
+    }
 );
 
 const {$gettext} = useTranslate();

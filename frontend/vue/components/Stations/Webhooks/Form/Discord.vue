@@ -79,6 +79,7 @@ import CommonFormattingInfo from "./Common/FormattingInfo";
 import {useVModel} from "@vueuse/core";
 import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
 import {required} from "@vuelidate/validators";
+import {useTranslate} from "~/vendor/gettext";
 
 const props = defineProps({
     title: {
@@ -94,6 +95,8 @@ const props = defineProps({
 const emit = defineEmits(['update:form']);
 const form = useVModel(props, 'form', emit);
 
+const {$gettext} = useTranslate();
+
 const {v$, tabClass} = useVuelidateOnFormTab(
     {
         config: {
@@ -107,6 +110,23 @@ const {v$, tabClass} = useVuelidateOnFormTab(
             footer: {},
         }
     },
-    form
+    form,
+    () => {
+        return {
+            config: {
+                webhook_url: '',
+                content: $gettext(
+                    'Now playing on %{ station }:',
+                    {'station': '{{ station.name }}'}
+                ),
+                title: '{{ now_playing.song.title }}',
+                description: '{{ now_playing.song.artist }}',
+                url: '{{ station.listen_url }}',
+                author: '{{ live.streamer_name }}',
+                thumbnail: '{{ now_playing.song.art }}',
+                footer: $gettext('Powered by AzuraCast'),
+            }
+        }
+    }
 );
 </script>

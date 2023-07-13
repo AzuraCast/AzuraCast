@@ -1,9 +1,8 @@
-import {computed, ref, toRef} from "vue";
+import {computed, nextTick, ref, toRef} from "vue";
 import mergeExisting from "~/functions/mergeExisting";
 import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
-import {useResettableRef} from "~/functions/useResettableRef";
-import useVuelidate from "@vuelidate/core";
+import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
 
 export const baseEditModalProps = {
     createUrl: {
@@ -16,21 +15,10 @@ export function useBaseEditModal(
     props,
     emit,
     $modal,
-    originalValidations,
-    originalBlankForm,
+    validations,
+    blankForm,
     userOptions = {}
 ) {
-    const options = {
-        resetForm: null,
-        clearContents: null,
-        populateForm: null,
-        getSubmittableFormData: null,
-        buildSubmitRequest: null,
-        onSubmitSuccess: null,
-        onSubmitError: null,
-        ...userOptions
-    };
-
     const createUrl = toRef(props, 'createUrl');
 
     const loading = ref(false);
@@ -41,22 +29,31 @@ export function useBaseEditModal(
         return editUrl.value !== null;
     });
 
-    const blankForm = (typeof originalBlankForm === 'function')
-        ? originalBlankForm(isEditMode)
-        : originalBlankForm;
+    const options = {
+        resetForm: null,
+        clearContents: null,
+        populateForm: null,
+        getSubmittableFormData: null,
+        buildSubmitRequest: null,
+        onSubmitSuccess: null,
+        onSubmitError: null,
+        createUrl: createUrl,
+        editUrl: editUrl,
+        loading: loading,
+        error: error,
+        isEditMode: isEditMode,
+        ...userOptions
+    };
 
-    const {record: form, reset: resetFormRef} = useResettableRef(blankForm);
-
-    const validations = (typeof originalValidations === 'function')
-        ? originalValidations(form, isEditMode)
-        : originalValidations;
-
-    const v$ = useVuelidate(validations, form);
-
-    const originalResetForm = () => {
-        resetFormRef();
-        v$.value.$reset();
-    }
+    const {
+        form,
+        v$,
+        resetForm: originalResetForm
+    } = useVuelidateOnForm(
+        validations,
+        blankForm,
+        options
+    );
 
     const resetForm = () => {
         if (typeof options.resetForm === 'function') {
@@ -82,6 +79,10 @@ export function useBaseEditModal(
         clearContents();
 
         $modal.value.show();
+
+        nextTick(() => {
+            resetForm();
+        });
     };
 
     const populateForm = (data) => {
@@ -113,7 +114,10 @@ export function useBaseEditModal(
         editUrl.value = recordUrl;
         $modal.value.show();
 
-        doLoad();
+        nextTick(() => {
+            resetForm();
+            doLoad();
+        })
     };
 
     const getSubmittableFormData = () => {

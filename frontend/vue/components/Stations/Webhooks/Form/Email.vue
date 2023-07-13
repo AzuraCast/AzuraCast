@@ -62,6 +62,13 @@ const {v$, tabClass} = useVuelidateOnFormTab(
             message: {required}
         }
     },
-    form
+    form,
+    {
+        config: {
+            to: '',
+            subject: '',
+            message: ''
+        }
+    }
 );
 </script>

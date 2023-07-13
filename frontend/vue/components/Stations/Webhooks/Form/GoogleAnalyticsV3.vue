@@ -41,6 +41,11 @@ const {v$, tabClass} = useVuelidateOnFormTab(
             tracking_id: {required}
         }
     },
-    form
+    form,
+    {
+        config: {
+            tracking_id: ''
+        }
+    }
 );
 </script>

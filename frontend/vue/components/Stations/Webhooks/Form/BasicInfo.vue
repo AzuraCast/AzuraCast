@@ -54,7 +54,12 @@ const {v$, tabClass} = useVuelidateOnFormTab(
         name: {required},
         triggers: {}
     },
-    form
+    form,
+    {
+        name: null,
+        triggers: [],
+        config: {}
+    }
 );
 
 const triggerOptions = map(

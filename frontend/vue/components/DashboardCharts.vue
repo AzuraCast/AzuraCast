@@ -3,8 +3,6 @@
         <o-tabs
             nav-tabs-class="nav-tabs"
             content-class="mt-3"
-            card
-            lazy
         >
             <o-tab-item
                 :label="$gettext('Average Listeners')"

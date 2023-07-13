@@ -94,6 +94,8 @@ const props = defineProps({
 const emit = defineEmits(['update:form']);
 const form = useVModel(props, 'form', emit);
 
+const {$gettext} = useTranslate();
+
 const {v$, tabClass} = useVuelidateOnFormTab(
     {
         config: {
@@ -104,10 +106,26 @@ const {v$, tabClass} = useVuelidateOnFormTab(
             parse_mode: {required}
         }
     },
-    form
+    form,
+    () => {
+        return {
+            config: {
+                bot_token: '',
+                chat_id: '',
+                api: '',
+                text: $gettext(
+                    'Now playing on %{ station }: %{ title } by %{ artist }! Tune in now.',
+                    {
+                        station: '{{ station.name }}',
+                        title: '{{ now_playing.song.title }}',
+                        artist: '{{ now_playing.song.artist }}'
+                    }
+                ),
+                parse_mode: 'Markdown'
+            }
+        };
+    }
 );
-
-const {$gettext} = useTranslate();
 
 const parseModeOptions = computed(() => {
     return [

@@ -106,6 +106,14 @@ const {v$, tabClass} = useVuelidateOnFormTab(
             token_secret: {required},
         }
     },
-    form
+    form,
+    {
+        config: {
+            consumer_key: '',
+            consumer_secret: '',
+            token: '',
+            token_secret: '',
+        }
+    }
 );
 </script>

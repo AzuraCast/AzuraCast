@@ -12,7 +12,7 @@
 import {useTranslate} from "~/vendor/gettext";
 import FormGroupSelect from "~/components/Form/FormGroupSelect.vue";
 import {useVModel} from "@vueuse/core";
-import useVuelidate from "@vuelidate/core";
+import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
 
 const props = defineProps({
     form: {
@@ -24,13 +24,18 @@ const props = defineProps({
 const emit = defineEmits(['update:form']);
 const form = useVModel(props, 'form', emit);
 
-const v$ = useVuelidate(
+const {v$} = useVuelidateOnFormTab(
     {
         config: {
             rate_limit: {},
         }
     },
-    form
+    form,
+    {
+        config: {
+            rate_limit: 0
+        }
+    }
 );
 
 const {$gettext, interpolate} = useTranslate();

@@ -25,6 +25,11 @@ export default function (component) {
     /* Oruga */
     vueApp.use(Oruga, {
         ...bootstrapConfig,
+        iconPack: 'mdi',
+        modal: {
+            ...bootstrapConfig.modal,
+            contentClass: "modal-dialog",
+        },
         pagination: {
             ...bootstrapConfig.pagination,
             orderClass: '',

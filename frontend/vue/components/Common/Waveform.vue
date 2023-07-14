@@ -2,7 +2,7 @@
     <div class="waveform-controls">
         <div class="row">
             <div class="col-md-12">
-                <div class="waveform__container">
+                <div id="waveform_container">
                     <div id="waveform-timeline" />
                     <div id="waveform" />
                 </div>
@@ -69,8 +69,8 @@
 
 <script setup>
 import WS from 'wavesurfer.js';
-import timeline from 'wavesurfer.js/dist/plugin/wavesurfer.timeline.js';
-import regions from 'wavesurfer.js/dist/plugin/wavesurfer.regions.js';
+import timeline from 'wavesurfer.js/dist/plugins/timeline.js';
+import regions from 'wavesurfer.js/dist/plugins/regions.js';
 import getLogarithmicVolume from '~/functions/getLogarithmicVolume.js';
 import Icon from './Icon';
 import {useStorage} from "@vueuse/core";
@@ -91,6 +91,7 @@ const props = defineProps({
 const emit = defineEmits(['ready']);
 
 let wavesurfer = null;
+let wsRegions = null;
 
 const volume = useStorage('player_volume', 55);
 const zoom = ref(0);
@@ -107,23 +108,21 @@ const {axios} = useAxios();
 
 onMounted(() => {
     wavesurfer = WS.create({
-        backend: 'MediaElement',
-        container: '#waveform',
+        container: '#waveform_container',
         waveColor: '#2196f3',
         progressColor: '#4081CF',
-        plugins: [
-            timeline.create({
-                container: '#waveform-timeline',
-                primaryColor: '#222',
-                secondaryColor: '#888',
-                primaryFontColor: '#222',
-                secondaryFontColor: '#888'
-            }),
-            regions.create({
-                regions: []
-            })
-        ]
     });
+
+    wavesurfer.registerPlugin(timeline.create({
+        primaryColor: '#222',
+        secondaryColor: '#888',
+        primaryFontColor: '#222',
+        secondaryFontColor: '#888'
+    }));
+
+    wsRegions = wavesurfer.registerPlugin(regions.create({
+        regions: []
+    }));
 
     wavesurfer.on('ready', () => {
         wavesurfer.setVolume(getLogarithmicVolume(volume.value));
@@ -165,7 +164,7 @@ const getDuration = () => {
 }
 
 const addRegion = (start, end, color) => {
-    wavesurfer?.addRegion(
+    wsRegions?.addRegion(
         {
             start: start,
             end: end,
@@ -177,7 +176,7 @@ const addRegion = (start, end, color) => {
 };
 
 const clearRegions = () => {
-    wavesurfer?.clearRegions();
+    wsRegions?.clearRegions();
 }
 
 defineExpose({
@@ -189,3 +188,10 @@ defineExpose({
     clearRegions
 })
 </script>
+
+<style lang="scss">
+#waveform_container {
+    border: 1px solid var(--bs-tertiary-bg);
+    border-radius: 4px;
+}
+</style>

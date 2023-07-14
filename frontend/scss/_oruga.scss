@@ -1,5 +1,9 @@
 // Load Oruga UI
-@import '@oruga-ui/theme-bootstrap/dist/scss/components/utils/_all.scss';
+@import '@oruga-ui/theme-bootstrap/dist/scss/utils/_variables.scss';
+@import '@oruga-ui/theme-bootstrap/dist/scss/utils/_animations.scss';
+@import '@oruga-ui/theme-bootstrap/dist/scss/utils/_functions.scss';
+@import '@oruga-ui/theme-bootstrap/dist/scss/utils/_helpers.scss';
+@import '@oruga-ui/theme-bootstrap/dist/scss/utils/_root.scss';
 
 // @import '@oruga-ui/theme-bootstrap/dist/scss/components/_autocomplete.scss';
 // @import '@oruga-ui/theme-bootstrap/dist/scss/components/_button.scss';

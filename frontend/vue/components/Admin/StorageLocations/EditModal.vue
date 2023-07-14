@@ -8,17 +8,39 @@
         @submit="doSubmit"
         @hidden="clearContents"
     >
-        <storage-location-form :form="v$" />
+        <o-tabs
+            nav-tabs-class="nav-tabs"
+            content-class="mt-3"
+        >
+            <storage-location-form v-model:form="form" />
+
+            <s3
+                v-if="form.adapter === 's3'"
+                v-model:form="form"
+            />
+
+            <dropbox
+                v-if="form.adapter === 'dropbox'"
+                v-model:form="form"
+            />
+
+            <sftp
+                v-if="form.adapter === 'sftp'"
+                v-model:form="form"
+            />
+        </o-tabs>
     </modal-form>
 </template>
 
 <script setup>
 import {baseEditModalProps, useBaseEditModal} from "~/functions/useBaseEditModal";
 import {computed, ref} from "vue";
-import {required} from "@vuelidate/validators";
 import {useTranslate} from "~/vendor/gettext";
 import ModalForm from "~/components/Common/ModalForm.vue";
 import StorageLocationForm from "./Form.vue";
+import Sftp from "~/components/Admin/StorageLocations/Form/Sftp.vue";
+import S3 from "~/components/Admin/StorageLocations/Form/S3.vue";
+import Dropbox from "~/components/Admin/StorageLocations/Form/Dropbox.vue";
 
 const props = defineProps({
     ...baseEditModalProps,
@@ -36,6 +58,7 @@ const {
     loading,
     error,
     isEditMode,
+    form,
     v$,
     clearContents,
     create,
@@ -46,74 +69,24 @@ const {
     props,
     emit,
     $modal,
-    (formRef) => computed(() => {
-        let validationRules = {
-            'adapter': {required},
-            'storageQuota': {},
-            'path': {},
-            's3CredentialKey': {},
-            's3CredentialSecret': {},
-            's3Region': {},
-            's3Version': {},
-            's3Bucket': {},
-            's3Endpoint': {},
-            'dropboxAppKey': {},
-            'dropboxAppSecret': {},
-            'dropboxAuthToken': {},
-            'sftpHost': {},
-            'sftpPort': {},
-            'sftpUsername': {},
-            'sftpPassword': {},
-            'sftpPrivateKey': {},
-            'sftpPrivateKeyPassPhrase': {}
-        };
-
-        switch (formRef.value.adapter) {
-            case 'local':
-                validationRules.path = {required};
-                break;
-
-            case 'dropbox':
-                validationRules.dropboxAuthToken = {required};
-                break;
-
-            case 's3':
-                validationRules.s3CredentialKey = {required};
-                validationRules.s3CredentialSecret = {required};
-                validationRules.s3Region = {required};
-                validationRules.s3Version = {required};
-                validationRules.s3Bucket = {required};
-                validationRules.s3Endpoint = {required};
-                break;
-
-            case 'sftp':
-                validationRules.sftpHost = {required};
-                validationRules.sftpPort = {required};
-                validationRules.sftpUsername = {required};
-                break;
-        }
-
-        return validationRules;
-    }),
+    {},
     {
-        'adapter': 'local',
-        'path': '',
-        's3CredentialKey': null,
-        's3CredentialSecret': null,
-        's3Region': null,
-        's3Version': 'latest',
-        's3Bucket': null,
-        's3Endpoint': null,
-        'dropboxAppKey': null,
-        'dropboxAppSecret': null,
-        'dropboxAuthToken': null,
-        'sftpHost': null,
-        'sftpPort': '22',
-        'sftpUsername': null,
-        'sftpPassword': null,
-        'sftpPrivateKey': null,
-        'sftpPrivateKeyPassPhrase': null,
-        'storageQuota': ''
+        // These have to be defined here because the sub-items conditionally render.
+        dropboxAppKey: null,
+        dropboxAppSecret: null,
+        dropboxAuthToken: null,
+        s3CredentialKey: null,
+        s3CredentialSecret: null,
+        s3Region: null,
+        s3Version: 'latest',
+        s3Bucket: null,
+        s3Endpoint: null,
+        sftpHost: null,
+        sftpPort: '22',
+        sftpUsername: null,
+        sftpPassword: null,
+        sftpPrivateKey: null,
+        sftpPrivateKeyPassPhrase: null,
     },
     {
         getSubmittableFormData: (formRef, isEditModeRef) => {

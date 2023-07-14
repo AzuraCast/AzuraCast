@@ -20,11 +20,9 @@ foreach ($componentDeps['assets']['js'] ?? [] as $componentDep) {
 
 $scriptLines[] = <<<HTML
 <script>
-(() => {
-    window.addEventListener('DOMContentLoaded', () => {
-        {$component} = {$nameWithoutPrefix}.default('#{$id}', {$propsJson});
-    });
-})();
+ready(() => {
+    {$component} = {$nameWithoutPrefix}.default('#{$id}', {$propsJson});
+});
 </script>
 HTML;
 

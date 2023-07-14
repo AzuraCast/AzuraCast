@@ -7,21 +7,21 @@ $this->layout('main', ['title' => $title, 'manual' => true]);
         <div class="card-header" id="log-row-<?=$id?>">
             <h4 class="mb-0">
                 <?php if ($row['level'] === \Monolog\Logger::DEBUG): ?>
-                    <span class="badge badge-info">Debug</span>
+                    <span class="badge text-bg-info">Debug</span>
                 <?php elseif ($row['level'] === \Monolog\Logger::INFO): ?>
-                    <span class="badge badge-info">Info</span>
+                    <span class="badge text-bg-info">Info</span>
                 <?php elseif ($row['level'] === \Monolog\Logger::NOTICE): ?>
-                    <span class="badge badge-info">Notice</span>
+                    <span class="badge text-bg-info">Notice</span>
                 <?php elseif ($row['level'] === \Monolog\Logger::WARNING): ?>
-                    <span class="badge badge-warning">Warning</span>
+                    <span class="badge text-bg-warning">Warning</span>
                 <?php elseif ($row['level'] === \Monolog\Logger::ERROR): ?>
-                    <span class="badge badge-danger">Error</span>
+                    <span class="badge text-bg-danger">Error</span>
                 <?php elseif ($row['level'] === \Monolog\Logger::CRITICAL): ?>
-                    <span class="badge badge-danger">Critical</span>
+                    <span class="badge text-bg-danger">Critical</span>
                 <?php elseif ($row['level'] === \Monolog\Logger::ALERT): ?>
-                    <span class="badge badge-danger">Alert</span>
+                    <span class="badge text-bg-danger">Alert</span>
                 <?php elseif ($row['level'] === \Monolog\Logger::EMERGENCY): ?>
-                    <span class="badge badge-danger">Emergency</span>
+                    <span class="badge text-bg-danger">Emergency</span>
                 <?php endif; ?>
 
                 <?=$this->e($row['message'])?>
@@ -29,8 +29,9 @@ $this->layout('main', ['title' => $title, 'manual' => true]);
 
             <?php if (!empty($row['context']) || !empty($row['extra'])): ?>
                 <div class="buttons mt-3">
-                    <button class="btn btn-sm btn-bg" type="button" data-toggle="collapse" data-target="#detail-row-<?=$id?>" aria-controls="detail-row-<?=$id?>">
-                        <?=__('Details')?>
+                    <button class="btn btn-sm btn-bg" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#detail-row-<?= $id ?>" aria-controls="detail-row-<?= $id ?>">
+                        <?= __('Details') ?>
                     </button>
                 </div>
             <?php endif; ?>

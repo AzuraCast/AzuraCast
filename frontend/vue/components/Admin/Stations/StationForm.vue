@@ -87,7 +87,7 @@ import AdminStationsAdminForm from "./Form/AdminForm.vue";
 import AdminStationsHlsForm from "./Form/HlsForm.vue";
 import AdminStationsRequestsForm from "./Form/RequestsForm.vue";
 import AdminStationsStreamersForm from "./Form/StreamersForm.vue";
-import {computed, ref, watch} from "vue";
+import {computed, nextTick, ref, watch} from "vue";
 import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
 import mergeExisting from "~/functions/mergeExisting";
@@ -175,10 +175,12 @@ const doLoad = () => {
 };
 
 const reset = () => {
-    clear();
-    if (props.isEditMode) {
-        doLoad();
-    }
+    nextTick(() => {
+        clear();
+        if (props.isEditMode) {
+            doLoad();
+        }
+    });
 };
 
 const submit = () => {

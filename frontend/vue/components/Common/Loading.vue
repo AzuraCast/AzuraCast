@@ -1,8 +1,8 @@
 <template>
     <div
-        v-if="loading"
         v-bind="$attrs"
-        class="d-flex align-items-center justify-content-center p-4"
+        class="align-items-center justify-content-center p-4"
+        :class="(loading) ? 'd-flex' : 'd-none'"
     >
         <div
             class="spinner-border me-3"
@@ -11,9 +11,12 @@
         />
         <strong>Loading...</strong>
     </div>
-    <template v-else>
+    <div
+        v-show="!loading"
+        style="display: contents"
+    >
         <slot name="default" />
-    </template>
+    </div>
 </template>
 
 <script setup>

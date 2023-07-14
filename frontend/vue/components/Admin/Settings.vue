@@ -97,7 +97,7 @@ const props = defineProps({
 
 const emit = defineEmits(['saved']);
 
-const {form, v$, ifValid} = useVuelidateOnForm();
+const {form, resetForm, v$, ifValid} = useVuelidateOnForm();
 
 const isLoading = ref(true);
 const error = ref(null);
@@ -109,7 +109,7 @@ const populateForm = (data) => {
 };
 
 const relist = () => {
-    v$.value.$reset();
+    resetForm();
     isLoading.value = true;
 
     axios.get(props.apiUrl).then((resp) => {

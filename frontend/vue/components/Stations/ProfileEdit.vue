@@ -26,7 +26,8 @@
                 {{ $gettext('Click the button below to retry loading the page.') }}
             </p>
 
-            <a
+            <button
+                type="button"
                 class="btn btn-light"
                 @click="retry"
             >
@@ -34,7 +35,7 @@
                 <span>
                     {{ $gettext('Reload') }}
                 </span>
-            </a>
+            </button>
         </error-card>
         <div
             v-else

@@ -370,19 +370,19 @@ const {v$, tabClass} = useVuelidateOnFormTab(
 );
 
 const isBackendEnabled = computed(() => {
-    return form.value.backend_type !== BACKEND_NONE;
+    return form.value?.backend_type !== BACKEND_NONE;
 });
 
 const isStereoToolEnabled = computed(() => {
-    return form.value.backend_config.audio_processing_method === AUDIO_PROCESSING_STEREO_TOOL;
+    return form.value?.backend_config?.audio_processing_method === AUDIO_PROCESSING_STEREO_TOOL;
 });
 
 const isMasterMeEnabled = computed(() => {
-    return form.value.backend_config.audio_processing_method === AUDIO_PROCESSING_MASTER_ME;
+    return form.value?.backend_config?.audio_processing_method === AUDIO_PROCESSING_MASTER_ME;
 });
 
 const isPostProcessingEnabled = computed(() => {
-    return form.value.backend_config.audio_processing_method !== AUDIO_PROCESSING_NONE;
+    return form.value?.backend_config?.audio_processing_method !== AUDIO_PROCESSING_NONE;
 });
 
 const {$gettext} = useTranslate();

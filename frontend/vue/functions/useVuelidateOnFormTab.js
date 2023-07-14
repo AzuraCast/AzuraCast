@@ -19,7 +19,10 @@ export function useVuelidateOnFormTab(validations, form, blankForm = {}, vuelida
     // Register event listener for blankForm building.
     const formEventBus = useEventBus('form_tabs');
 
-    formEventBus.on((addToForm) => addToForm(blankForm));
+    formEventBus.on((addToForm) => {
+        console.log('event');
+        addToForm(blankForm);
+    });
 
     return {
         v$,

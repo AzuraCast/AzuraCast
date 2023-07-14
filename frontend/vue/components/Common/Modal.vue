@@ -1,7 +1,7 @@
 <template>
     <o-modal
         ref="$modal"
-        v-model:active="isActiveLocal"
+        v-model:active="isActive"
         :aria-label="title"
         :content-class="'modal-'+size"
         :width="null"
@@ -43,7 +43,6 @@
 
 <script setup>
 import {nextTick, ref, useSlots, watch} from 'vue';
-import {syncRef, useVModel} from "@vueuse/core";
 import Loading from "~/components/Common/Loading.vue";
 
 const slots = useSlots();
@@ -73,20 +72,11 @@ const emit = defineEmits([
     'update:active'
 ]);
 
-const isActiveProp = useVModel(props, 'active', emit);
-const isActiveLocal = ref(isActiveProp.value);
+const isActive = ref(props.active);
+watch(isActive, (newActive) => {
+    emit('update:active', newActive);
 
-const show = () => {
-    isActiveLocal.value = true;
-};
-const hide = () => {
-    isActiveLocal.value = false;
-};
-
-syncRef(isActiveProp, isActiveLocal);
-
-watch(isActiveLocal, (value) => {
-    if (value) {
+    if (newActive) {
         nextTick(() => {
             emit('shown');
         });
@@ -94,6 +84,14 @@ watch(isActiveLocal, (value) => {
         emit('hidden');
     }
 });
+
+const show = () => {
+    isActive.value = true;
+};
+
+const hide = () => {
+    isActive.value = false;
+};
 
 defineExpose({
     show,

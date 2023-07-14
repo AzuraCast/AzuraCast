@@ -119,8 +119,8 @@ const {v$, tabClass} = useVuelidateOnFormTab(
     form,
     {
         enable_autodj: false,
-        autodj_format: null,
-        autodj_bitrate: null,
+        autodj_format: 'mp3',
+        autodj_bitrate: 128,
         source_port: null,
         source_mount: null,
         source_username: null,
@@ -163,6 +163,6 @@ const bitrateOptions = map(
 );
 
 const formatSupportsBitrateOptions = computed(() => {
-    return props.form.autodj_format.$model !== 'flac';
+    return form.value?.autodj_format !== 'flac';
 });
 </script>

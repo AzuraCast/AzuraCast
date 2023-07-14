@@ -1,6 +1,5 @@
 <template>
     <o-tab-item
-        v-if="showAdminTab"
         :label="$gettext('Administration')"
         :item-header-class="tabClass"
     >

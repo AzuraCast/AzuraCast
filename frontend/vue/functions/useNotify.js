@@ -1,28 +1,36 @@
 import {useTranslate} from "~/vendor/gettext";
-import {useProgrammatic} from "@oruga-ui/oruga-next";
+import {h, render} from "vue";
+import {default as BSToast} from 'bootstrap/js/src/toast';
+
+import Toast from '~/components/Common/Toast.vue';
+
+export function createToast(props) {
+    const vNode = h(Toast, props);
+
+    const newDiv = document.createElement('div');
+    newDiv.style.display = "contents";
+    
+    document.querySelector('.toast-container').appendChild(newDiv);
+
+    render(vNode, newDiv);
+
+    return new BSToast(vNode.el);
+}
 
 /* Composition API BootstrapVue utilities */
 export function useNotify() {
     const {$gettext} = useTranslate();
-    const {oruga} = useProgrammatic();
 
     const notify = (message = null, options = {}) => {
         if (document.hidden) {
             return;
         }
 
-        const defaults = {
-            rootClass: 'toast-notification',
-            duration: 3000,
-            position: 'top-right',
-            closable: true
-        };
-
-        oruga.notification.open({
-            ...defaults,
+        const toast = createToast({
             ...options,
-            message: message
+            message
         });
+        toast.show();
     };
 
     const notifyError = (message = null, options = {}) => {
@@ -53,18 +61,14 @@ export function useNotify() {
         return message;
     };
 
-    let $loadingComponent;
+    // let $loadingComponent;
 
     const showLoading = () => {
-        $loadingComponent = oruga.loading.open({
-            fullPage: true,
-            container: null
-        });
-        setTimeout(() => $loadingComponent.close(), 3 * 1000);
+        // TODO Replace Oruga
     };
 
     const hideLoading = () => {
-        $loadingComponent.close();
+        // TODO Replace Oruga
     };
 
     let $isAxiosLoading = false;

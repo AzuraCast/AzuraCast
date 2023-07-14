@@ -23,7 +23,7 @@
                         >
                             {{ title }}
                         </h1>
-                        <slot name="modal-header"/>
+                        <slot name="modal-header" />
                         <button
                             type="button"
                             class="btn-close"
@@ -33,14 +33,14 @@
                     </div>
                     <div class="modal-body">
                         <loading :loading="busy">
-                            <slot name="default"/>
+                            <slot name="default" />
                         </loading>
                     </div>
                     <div
                         v-if="slots['modal-footer']"
                         class="modal-footer"
                     >
-                        <slot name="modal-footer"/>
+                        <slot name="modal-footer" />
                     </div>
                 </div>
             </div>

@@ -1,9 +1,5 @@
 body.page-full {
-  .notifictations.is-top {
-    padding-top: $header-nav-height + 2rem;
-  }
-
-  div.toast-notification.top-0 {
-    top: 72px !important;
+  div.toast-container.top-0 {
+    top: $header-nav-height !important;
   }
 }

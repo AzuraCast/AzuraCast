@@ -6,7 +6,7 @@
         <div class="row g-3">
             <form-group-multi-check
                 id="edit_form_backend_options"
-                class="col-md-6"
+                class="col-md-12"
                 :field="v$.backend_options"
                 :options="backendOptions"
                 stacked

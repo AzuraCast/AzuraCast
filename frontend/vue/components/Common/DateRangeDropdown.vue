@@ -36,6 +36,10 @@ import {DateTime} from "luxon";
 import {computed} from "vue";
 import {useAzuraCast} from "~/vendor/azuracast";
 
+defineOptions({
+    inheritAttrs: false
+});
+
 const props = defineProps({
     tz: {
         type: String,
@@ -161,10 +165,4 @@ const ranges = computed(() => {
         }
     ];
 });
-</script>
-
-<script>
-export default {
-    inheritAttrs: false,
-}
 </script>

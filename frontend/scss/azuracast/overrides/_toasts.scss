@@ -1,9 +1,6 @@
 body.page-full {
-  .b-toaster.b-toaster-top-right,
-  .b-toaster.b-toaster-top-left,
-  .b-toaster.b-toaster-top-center,
-  .b-toaster.b-toaster-top-full {
-    top: 72px;
+  .notifictations.is-top {
+    padding-top: $header-nav-height + 2rem;
   }
 
   div.toast-notification.top-0 {

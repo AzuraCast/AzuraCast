@@ -100,7 +100,7 @@
                 </template>
             </div>
             <embed-modal
-                v-bind="$props"
+                v-bind="pickProps($props, embedModalProps)"
                 ref="$embedModal"
             />
         </template>
@@ -137,6 +137,7 @@ import {ref} from "vue";
 import EmbedModal from "~/components/Stations/Profile/EmbedModal.vue";
 import publicPagesPanelProps from "~/components/Stations/Profile/publicPagesPanelProps";
 import embedModalProps from "~/components/Stations/Profile/embedModalProps";
+import {pickProps} from "~/functions/pickProps";
 
 const props = defineProps({
     ...publicPagesPanelProps,

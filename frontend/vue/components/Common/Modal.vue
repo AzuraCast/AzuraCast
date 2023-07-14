@@ -1,49 +1,58 @@
 <template>
-    <o-modal
-        ref="$modal"
-        v-model:active="isActive"
-        :aria-label="title"
-        :content-class="'modal-'+size"
-        :width="null"
-        destroy-on-hide
-    >
-        <div class="modal-content">
-            <div
-                v-if="slots['modal-header'] || title"
-                class="modal-header"
-            >
-                <h1
-                    v-if="title"
-                    class="modal-title fs-5"
+    <Teleport to="body">
+        <div
+            ref="$modal"
+            class="modal fade"
+            tabindex="-1"
+            :aria-label="title"
+            :class="'modal-'+size"
+            aria-hidden="true"
+        >
+            <div class="modal-dialog">
+                <div
+                    v-if="isActive"
+                    class="modal-content"
                 >
-                    {{ title }}
-                </h1>
-                <slot name="modal-header" />
-                <button
-                    type="button"
-                    class="btn-close"
-                    :aria-label="$gettext('Close')"
-                    @click.prevent="hide"
-                />
-            </div>
-            <div class="modal-body">
-                <loading :loading="busy">
-                    <slot name="default" />
-                </loading>
-            </div>
-            <div
-                v-if="slots['modal-footer']"
-                class="modal-footer"
-            >
-                <slot name="modal-footer" />
+                    <div
+                        v-if="slots['modal-header'] || title"
+                        class="modal-header"
+                    >
+                        <h1
+                            v-if="title"
+                            class="modal-title fs-5"
+                        >
+                            {{ title }}
+                        </h1>
+                        <slot name="modal-header"/>
+                        <button
+                            type="button"
+                            class="btn-close"
+                            :aria-label="$gettext('Close')"
+                            @click.prevent="hide"
+                        />
+                    </div>
+                    <div class="modal-body">
+                        <loading :loading="busy">
+                            <slot name="default"/>
+                        </loading>
+                    </div>
+                    <div
+                        v-if="slots['modal-footer']"
+                        class="modal-footer"
+                    >
+                        <slot name="modal-footer"/>
+                    </div>
+                </div>
             </div>
         </div>
-    </o-modal>
+    </Teleport>
 </template>
 
 <script setup>
-import {nextTick, ref, useSlots, watch} from 'vue';
+import Modal from 'bootstrap/js/src/modal';
+import {onMounted, ref, useSlots, watch} from 'vue';
 import Loading from "~/components/Common/Loading.vue";
+import {useEventListener} from "@vueuse/core";
 
 const slots = useSlots();
 
@@ -75,22 +84,53 @@ const emit = defineEmits([
 const isActive = ref(props.active);
 watch(isActive, (newActive) => {
     emit('update:active', newActive);
-
-    if (newActive) {
-        nextTick(() => {
-            emit('shown');
-        });
-    } else {
-        emit('hidden');
-    }
 });
 
+let bsModal = null;
+let $modal = ref(); // div class="modal"
+
+onMounted(() => {
+    bsModal = new Modal($modal.value);
+});
+
+useEventListener(
+    $modal,
+    'hide.bs.modal',
+    () => {
+        isActive.value = false;
+    }
+);
+
+useEventListener(
+    $modal,
+    'show.bs.modal',
+    () => {
+        isActive.value = true;
+    }
+);
+
+useEventListener(
+    $modal,
+    'hidden.bs.modal',
+    () => {
+        emit('hidden');
+    }
+);
+
+useEventListener(
+    $modal,
+    'shown.bs.modal',
+    () => {
+        emit('shown');
+    }
+);
+
 const show = () => {
-    isActive.value = true;
+    bsModal?.show();
 };
 
 const hide = () => {
-    isActive.value = false;
+    bsModal?.hide();
 };
 
 defineExpose({

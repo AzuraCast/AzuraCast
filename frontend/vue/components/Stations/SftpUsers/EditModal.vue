@@ -9,7 +9,7 @@
         @hidden="clearContents"
     >
         <sftp-users-form
-            :form="v$"
+            v-model:form="form"
             :is-edit-mode="isEditMode"
         />
     </modal-form>
@@ -19,7 +19,6 @@
 import SftpUsersForm from "./Form";
 import {baseEditModalProps, useBaseEditModal} from "~/functions/useBaseEditModal";
 import {computed, ref} from "vue";
-import {required} from "@vuelidate/validators";
 import {useTranslate} from "~/vendor/gettext";
 import ModalForm from "~/components/Common/ModalForm.vue";
 
@@ -35,6 +34,7 @@ const {
     loading,
     error,
     isEditMode,
+    form,
     v$,
     clearContents,
     create,
@@ -45,18 +45,8 @@ const {
     props,
     emit,
     $modal,
-    (formRef, formIsEditMode) => computed(() => {
-        return {
-            username: {required},
-            password: formIsEditMode.value ? {} : {required},
-            publicKeys: {}
-        }
-    }),
-    {
-        username: '',
-        password: null,
-        publicKeys: null
-    },
+    {},
+    {}
 );
 
 const {$gettext} = useTranslate();

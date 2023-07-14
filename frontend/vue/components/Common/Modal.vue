@@ -1,6 +1,7 @@
 <template>
     <Teleport to="body">
         <div
+            v-bind="$attrs"
             ref="$modal"
             class="modal fade"
             tabindex="-1"

@@ -3,7 +3,7 @@
         <form-group-field
             id="edit_form_username"
             class="col-md-6"
-            :field="form.username"
+            :field="v$.username"
         >
             <template #label>
                 {{ $gettext('Username') }}
@@ -13,7 +13,7 @@
         <form-group-field
             id="edit_form_password"
             class="col-md-6"
-            :field="form.password"
+            :field="v$.password"
             input-type="password"
         >
             <template
@@ -40,7 +40,7 @@
         <form-group-field
             id="edit_form_publicKeys"
             class="col-md-12"
-            :field="form.publicKeys"
+            :field="v$.publicKeys"
             input-type="textarea"
         >
             <template #label>
@@ -57,6 +57,10 @@
 
 <script setup>
 import FormGroupField from "~/components/Form/FormGroupField";
+import {useVModel} from "@vueuse/core";
+import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
+import {computed} from "vue";
+import {required} from "@vuelidate/validators";
 
 const props = defineProps({
     form: {
@@ -68,4 +72,23 @@ const props = defineProps({
         required: true
     }
 });
+
+const emit = defineEmits(['update:form']);
+const form = useVModel(props, 'form', emit);
+
+const {v$} = useVuelidateOnFormTab(
+    computed(() => {
+        return {
+            username: {required},
+            password: props.isEditMode ? {} : {required},
+            publicKeys: {}
+        }
+    }),
+    form,
+    {
+        username: '',
+        password: null,
+        publicKeys: null
+    }
+);
 </script>

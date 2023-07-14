@@ -15,8 +15,8 @@ export function useBaseEditModal(
     props,
     emit,
     $modal,
-    validations,
-    blankForm,
+    validations = {},
+    blankForm = {},
     userOptions = {}
 ) {
     const createUrl = toRef(props, 'createUrl');
@@ -37,11 +37,6 @@ export function useBaseEditModal(
         buildSubmitRequest: null,
         onSubmitSuccess: null,
         onSubmitError: null,
-        createUrl: createUrl,
-        editUrl: editUrl,
-        loading: loading,
-        error: error,
-        isEditMode: isEditMode,
         ...userOptions
     };
 

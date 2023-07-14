@@ -9,7 +9,7 @@
         @hidden="clearContents"
     >
         <admin-users-form
-            :form="v$"
+            v-model:form="form"
             :roles="roles"
             :is-edit-mode="isEditMode"
         />
@@ -17,10 +17,8 @@
 </template>
 
 <script setup>
-import {email, required} from '@vuelidate/validators';
 import AdminUsersForm from './Form.vue';
 import {map} from 'lodash';
-import validatePassword from "~/functions/validatePassword";
 import {computed, ref} from "vue";
 import {baseEditModalProps, useBaseEditModal} from "~/functions/useBaseEditModal";
 import {useTranslate} from "~/vendor/gettext";
@@ -42,6 +40,7 @@ const {
     loading,
     error,
     isEditMode,
+    form,
     v$,
     clearContents,
     create,
@@ -52,22 +51,8 @@ const {
     props,
     emit,
     $modal,
-    (formRef, formIsEditMode) => computed(() => {
-        return {
-            name: {},
-            new_password: (formIsEditMode.value)
-                ? {validatePassword}
-                : {required, validatePassword},
-            email: {required, email},
-            roles: {}
-        }
-    }),
-    {
-        name: '',
-        email: '',
-        new_password: '',
-        roles: [],
-    },
+    {},
+    {},
     {
         populateForm: (data, formRef) => {
             formRef.value = {

@@ -25,8 +25,6 @@ export function useVuelidateOnForm(validations = {}, blankForm = {}, options = {
             merge(parsedBlankForm, newForm);
         });
 
-        console.log(parsedBlankForm);
-
         return parsedBlankForm;
     }
 

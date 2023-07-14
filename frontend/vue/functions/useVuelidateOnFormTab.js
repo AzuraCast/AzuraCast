@@ -20,7 +20,6 @@ export function useVuelidateOnFormTab(validations, form, blankForm = {}, vuelida
     const formEventBus = useEventBus('form_tabs');
 
     formEventBus.on((addToForm) => {
-        console.log('event');
         addToForm(blankForm);
     });
 

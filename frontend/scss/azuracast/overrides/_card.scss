@@ -23,8 +23,15 @@
     margin-bottom: 0;
   }
 
-  .alert {
-    border: 0;
+  & > .alert {
+    border-left: 0;
+    border-right: 0;
+    border-top: 0;
+
+    &:last-of-type {
+      border-bottom: 0;
+    }
+
     border-radius: 0;
     margin-bottom: 0;
   }

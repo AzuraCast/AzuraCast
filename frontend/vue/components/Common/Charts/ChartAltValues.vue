@@ -1,5 +1,5 @@
 <template>
-    <span
+    <template
         v-for="(row, index) in alt"
         :key="'chart_alt_'+index"
     >
@@ -22,7 +22,7 @@
                 </dd>
             </template>
         </dl>
-    </span>
+    </template>
 </template>
 
 <script setup>

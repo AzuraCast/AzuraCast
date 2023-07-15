@@ -20,8 +20,14 @@
 }
 
 @include media-breakpoint-up(lg) {
-  body.has-sidebar #main {
-    margin-left: $navdrawer-width;
+  body.has-sidebar {
+    #main {
+      margin-left: $navdrawer-width;
+    }
+
+    #footer {
+      left: $navdrawer-width;
+    }
   }
 
   .navdrawer {

@@ -1,5 +1,7 @@
 <template>
-    <loading :loading="chartsLoading">
+    <loading
+        :loading="chartsLoading"
+    >
         <o-tabs
             nav-tabs-class="nav-tabs"
             content-class="mt-3"

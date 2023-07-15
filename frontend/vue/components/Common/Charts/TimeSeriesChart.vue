@@ -15,7 +15,7 @@ import {Tableau20} from "~/vendor/chartjs-colorschemes/colorschemes.tableau";
 import {DateTime} from "luxon";
 import {defaultsDeep} from "lodash";
 import {Chart} from "chart.js";
-import {onMounted, onUnmounted, ref} from "vue";
+import {onMounted, onUnmounted, ref, toRef, watch} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import ChartAltValues from "~/components/Common/Charts/ChartAltValues.vue";
 
@@ -45,7 +45,7 @@ let $chart = null;
 
 const {$gettext} = useTranslate();
 
-onMounted(() => {
+const buildChart = () => {
     const defaultOptions = {
         type: 'line',
         data: {
@@ -109,17 +109,24 @@ onMounted(() => {
         }
     };
 
-    if ($chart) {
-        $chart.destroy();
-    }
+    $chart?.destroy();
 
     let chartOptions = defaultsDeep({}, props.options, defaultOptions);
     $chart = new Chart(get($canvas).getContext('2d'), chartOptions);
+};
+
+onMounted(buildChart);
+
+watch(toRef(props, 'options'), buildChart);
+
+watch(toRef(props, 'data'), () => {
+    if ($chart) {
+        $chart.data.datasets = props.data;
+        $chart.update();
+    }
 });
 
 onUnmounted(() => {
-    if ($chart) {
-        $chart.destroy();
-    }
+    $chart?.destroy();
 });
 </script>

@@ -12,6 +12,7 @@
         <strong>Loading...</strong>
     </div>
     <div
+        v-if="!lazy || !loading"
         v-show="!loading"
         style="display: contents"
     >
@@ -24,6 +25,10 @@ const props = defineProps({
     loading: {
         type: Boolean,
         default: false
+    },
+    lazy: {
+        type: Boolean,
+        default: true
     }
 });
 </script>

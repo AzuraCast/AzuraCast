@@ -11,28 +11,12 @@
 
 <script setup>
 import {Tableau20} from "~/vendor/chartjs-colorschemes/colorschemes.tableau";
-import {Chart} from "chart.js";
-import {onMounted, onUnmounted, ref} from "vue";
-import {defaultsDeep} from "lodash";
+import {ref} from "vue";
 import ChartAltValues from "~/components/Common/Charts/ChartAltValues.vue";
+import useChart, {chartProps} from "~/functions/useChart";
 
 const props = defineProps({
-    options: {
-        type: Object,
-        required: true
-    },
-    data: {
-        type: Array,
-        default: () => {
-            return [];
-        }
-    },
-    alt: {
-        type: Array,
-        default: () => {
-            return [];
-        }
-    },
+    ...chartProps,
     labels: {
         type: Array,
         default: () => {
@@ -46,10 +30,11 @@ const props = defineProps({
 });
 
 const $canvas = ref(); // Template ref
-let $chart = null;
 
-onMounted(() => {
-    const defaultOptions = {
+useChart(
+    props,
+    $canvas,
+    {
         type: 'pie',
         data: {
             labels: props.labels,
@@ -63,20 +48,6 @@ onMounted(() => {
                 }
             }
         }
-    };
-
-    if ($chart) {
-        $chart.destroy();
     }
-
-    let chartOptions = defaultsDeep({}, props.options, defaultOptions);
-    $chart = new Chart($canvas.value.getContext('2d'), chartOptions);
-});
-
-onUnmounted(() => {
-    if ($chart) {
-        $chart.destroy();
-    }
-});
-
+);
 </script>

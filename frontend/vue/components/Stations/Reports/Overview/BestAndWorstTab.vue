@@ -1,5 +1,8 @@
 <template>
-    <loading :loading="isLoading">
+    <loading
+        :loading="isLoading"
+        lazy
+    >
         <div class="row">
             <div class="col-md-6 mb-4">
                 <fieldset>

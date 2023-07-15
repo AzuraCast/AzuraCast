@@ -1,20 +1,18 @@
 <template>
     <loading :loading="isLoading">
-        <div class="card-body">
-            <fieldset>
-                <legend>
-                    {{ $gettext('Listeners by Listening Time') }}
-                </legend>
+        <fieldset>
+            <legend>
+                {{ $gettext('Listeners by Listening Time') }}
+            </legend>
 
-                <pie-chart
-                    style="width: 100%;"
-                    :data="stats.chart.datasets"
-                    :labels="stats.chart.labels"
-                    :alt="stats.chart.alt"
-                    :aspect-ratio="4"
-                />
-            </fieldset>
-        </div>
+            <pie-chart
+                style="width: 100%;"
+                :data="stats.chart.datasets"
+                :labels="stats.chart.labels"
+                :alt="stats.chart.alt"
+                :aspect-ratio="4"
+            />
+        </fieldset>
 
         <data-table
             id="listening_time_table"

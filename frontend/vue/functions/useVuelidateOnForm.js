@@ -37,8 +37,8 @@ export function useVuelidateOnForm(validations = {}, blankForm = {}, options = {
     const v$ = useVuelidate(parsedValidations, form, options);
 
     const resetForm = () => {
-        v$.value.$reset();
         reset();
+        v$.value.$reset();
     }
 
     const isValid = computed(() => {

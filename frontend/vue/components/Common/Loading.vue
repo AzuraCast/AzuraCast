@@ -28,7 +28,7 @@ const props = defineProps({
     },
     lazy: {
         type: Boolean,
-        default: true
+        default: false
     }
 });
 </script>

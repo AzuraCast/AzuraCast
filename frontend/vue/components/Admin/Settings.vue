@@ -51,7 +51,7 @@
             <div class="card-body">
                 <button
                     type="submit"
-                    class="btn"
+                    class="btn btn-lg"
                     :class="(v$.$invalid) ? 'btn-danger' : 'btn-primary'"
                 >
                     <slot name="submitButtonName">
@@ -74,25 +74,10 @@ import {useNotify} from "~/functions/useNotify";
 import {useTranslate} from "~/vendor/gettext";
 import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
 import Loading from "~/components/Common/Loading.vue";
+import settingsProps from "~/components/Admin/settingsProps";
 
 const props = defineProps({
-    apiUrl: {
-        type: String,
-        required: true,
-    },
-    testMessageUrl: {
-        type: String,
-        required: true
-    },
-    acmeUrl: {
-        type: String,
-        required: true
-    },
-    releaseChannel: {
-        type: String,
-        default: 'rolling',
-        required: false
-    }
+    ...settingsProps
 });
 
 const emit = defineEmits(['saved']);
@@ -105,6 +90,7 @@ const error = ref(null);
 const {axios} = useAxios();
 
 const populateForm = (data) => {
+    resetForm();
     form.value = mergeExisting(form.value, data);
 };
 

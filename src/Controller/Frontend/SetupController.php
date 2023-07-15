@@ -8,13 +8,12 @@ use App\Container\EntityManagerAwareTrait;
 use App\Container\EnvironmentAwareTrait;
 use App\Container\SettingsAwareTrait;
 use App\Entity\Repository\RolePermissionRepository;
-use App\Entity\Settings;
 use App\Entity\User;
 use App\Exception\NotLoggedInException;
 use App\Exception\ValidationException;
 use App\Http\Response;
 use App\Http\ServerRequest;
-use App\Version;
+use App\VueComponent\SettingsComponent;
 use App\VueComponent\StationFormComponent;
 use InvalidArgumentException;
 use Psr\Http\Message\ResponseInterface;
@@ -31,7 +30,7 @@ final class SetupController
         private readonly RolePermissionRepository $permissionRepo,
         private readonly ValidatorInterface $validator,
         private readonly StationFormComponent $stationFormComponent,
-        private readonly Version $version
+        private readonly SettingsComponent $settingsComponent
     ) {
     }
 
@@ -171,13 +170,7 @@ final class SetupController
             component: 'Vue_SetupSettings',
             id: 'setup-settings',
             title: __('System Settings'),
-            props: [
-                'apiUrl' => $router->named('api:admin:settings', [
-                    'group' => Settings::GROUP_GENERAL,
-                ]),
-                'releaseChannel' => $this->version->getReleaseChannelEnum()->value,
-                'continueUrl' => $router->named('dashboard'),
-            ],
+            props: $this->settingsComponent->getProps($request),
         );
     }
 

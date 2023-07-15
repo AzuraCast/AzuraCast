@@ -1,8 +1,6 @@
 <template>
-    <!-- TODO Fix property injection here to match other settings forms -->
     <admin-settings
-        :api-url="apiUrl"
-        :release-channel="releaseChannel"
+        v-bind="props"
         @saved="onSaved"
     >
         <template #preCard>
@@ -28,21 +26,10 @@
 import AdminSettings from "~/components/Admin/Settings";
 import SetupStep from "./SetupStep";
 import InfoCard from "~/components/Common/InfoCard";
+import settingsProps from "~/components/Admin/settingsProps";
 
 const props = defineProps({
-    apiUrl: {
-        type: String,
-        required: true
-    },
-    releaseChannel: {
-        type: String,
-        default: 'rolling',
-        required: false
-    },
-    continueUrl: {
-        type: String,
-        required: true
-    }
+    ...settingsProps
 });
 
 const onSaved = () => {

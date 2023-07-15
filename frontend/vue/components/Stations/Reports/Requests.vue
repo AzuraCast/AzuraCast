@@ -51,7 +51,7 @@
 
         <data-table
             id="station_queue"
-            ref="datatable"
+            ref="$datatable"
             :fields="fields"
             :api-url="listUrlForType"
         >

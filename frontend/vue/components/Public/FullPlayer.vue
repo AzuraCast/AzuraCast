@@ -51,6 +51,7 @@
         ref="$songHistoryModal"
         :show-album-art="showAlbumArt"
         :history="history"
+        @show-image="showImage"
     />
 
     <request-modal
@@ -58,6 +59,7 @@
         :show-album-art="showAlbumArt"
         :request-list-uri="requestListUri"
         :custom-fields="customFields"
+        @show-image="showImage"
     />
 
     <lightbox ref="$lightbox" />

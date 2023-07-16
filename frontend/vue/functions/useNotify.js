@@ -3,13 +3,24 @@ import {h, render} from "vue";
 import {default as BSToast} from 'bootstrap/js/src/toast';
 
 import Toast from '~/components/Common/Toast.vue';
+import {currentVueInstance} from "~/vendor/vueInstance";
 
 export function createToast(props) {
-    const vNode = h(Toast, props);
+    let slot;
+    if (Array.isArray(props.message)) {
+        slot = props.message
+        delete props.message
+    }
+
+    const defaultSlot = () => {
+        return slot
+    };
+
+    const vNode = h(Toast, props, defaultSlot);
+    vNode.appContext = currentVueInstance._context;
 
     const newDiv = document.createElement('div');
     newDiv.style.display = "contents";
-    
     document.querySelector('.toast-container').appendChild(newDiv);
 
     render(vNode, newDiv);

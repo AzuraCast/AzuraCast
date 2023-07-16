@@ -5,6 +5,7 @@ import {installPinia} from '~/vendor/pinia';
 import {installTranslate} from "~/vendor/gettext";
 import Oruga from "@oruga-ui/oruga-next";
 import {bootstrapConfig} from "@oruga-ui/theme-bootstrap";
+import {installCurrentVueInstance} from "~/vendor/vueInstance";
 
 export default function (component) {
     const vueApp = createApp({
@@ -12,6 +13,9 @@ export default function (component) {
             return h(component, this.$appProps)
         },
     });
+
+    /* Track current instance (for programmatic use). */
+    installCurrentVueInstance(vueApp);
 
     /* Gettext */
     installTranslate(vueApp);

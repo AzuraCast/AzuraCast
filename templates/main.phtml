@@ -60,7 +60,8 @@ endif; ?>">
 <header class="navbar bg-primary-dark shadow-sm fixed-top">
     <?php
     if ($sections->has('sidebar')): ?>
-        <button aria-controls="sidebar" aria-expanded="false" aria-label="<?= __(
+        <button data-bs-toggle="offcanvas" data-bs-target="#sidebar"
+                aria-controls="sidebar" aria-expanded="false" aria-label="<?= __(
             'Toggle Sidebar'
         ) ?>" id="navbar-toggle" class="navbar-toggler d-inline-flex d-lg-none me-3">
             <span class="navbar-toggler-icon"></span>
@@ -147,11 +148,9 @@ endif; ?>">
 
 <?php
 if ($sections->has('sidebar')): ?>
-    <div class="navdrawer" id="sidebar" tabindex="-1">
-        <nav class="navdrawer-content" aria-label="<?= __('Sidebar') ?>">
-            <?= $sections->get('sidebar') ?>
-        </nav>
-    </div>
+    <nav class="navdrawer offcanvas offcanvas-start" id="sidebar" tabindex="-1" aria-label="<?= __('Sidebar') ?>">
+        <?= $sections->get('sidebar') ?>
+    </nav>
 <?php
 endif; ?>
 

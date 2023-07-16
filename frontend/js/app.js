@@ -40,16 +40,6 @@ window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () 
 });
 
 ready(() => {
-    // Navdrawer
-    const navbarToggle = document.getElementById('navbar-toggle');
-
-    if (null !== navbarToggle) {
-        navbarToggle.addEventListener('click', (e) => {
-            e.preventDefault();
-            document.getElementById('sidebar').classList.toggle('show');
-        });
-    }
-
     // Theme switcher
     document.querySelectorAll('.theme-switcher').forEach(
         toggle => {

@@ -1,22 +1,6 @@
-.navdrawer {
-  outline: 0;
-  overflow: hidden auto;
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  top: $header-nav-height;
-  right: auto;
+.offcanvas.navdrawer {
   width: $navdrawer-width;
-  z-index: 100;
   box-shadow: 0 0 4px 0 rgba(0, 0, 0, .14), 0 3px 4px 0 rgba(0, 0, 0, .12), 0 1px 5px 0 rgba(0, 0, 0, .2);
-
-  background: var(--bs-tertiary-bg);
-
-  display: none;
-
-  &.show {
-    display: block;
-  }
 }
 
 @include media-breakpoint-up(lg) {
@@ -30,8 +14,11 @@
     }
   }
 
-  .navdrawer {
-    display: block;
+  .offcanvas.navdrawer {
+    transform: none;
+    visibility: visible;
+    top: $header-nav-height;
+    z-index: auto;
   }
 }
 

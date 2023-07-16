@@ -425,6 +425,8 @@ const visibleItems = computed(() => {
 const {axios} = useAxios();
 
 const refresh = () => {
+    selectedRows.value = [];
+    
     if (props.items !== null) {
         emit('refreshed');
         return;

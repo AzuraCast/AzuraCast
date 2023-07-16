@@ -35,16 +35,17 @@ final class ConfigWriter implements EventSubscriberInterface
             return;
         }
 
-        $listenBaseUrl = preg_quote(CustomUrls::getListenUrl($station), null);
+        $listenBaseUrl = CustomUrls::getListenUrl($station);
+        $listenBaseUrlForRegex = preg_quote($listenBaseUrl, null);
         $port = $station->getFrontendConfig()->getPort();
 
         $event->appendBlock(
             <<<NGINX
-            location ~ ^({$listenBaseUrl}|/radio/{$port})\$ {
+            location ~ ^({$listenBaseUrlForRegex}|/radio/{$port})\$ {
                 return 302 \$uri/;
             }
 
-            location ~ ^({$listenBaseUrl}|/radio/{$port})/(.*)\$ {
+            location ~ ^({$listenBaseUrlForRegex}|/radio/{$port})/(.*)\$ {
                 include proxy_params;
 
                 proxy_intercept_errors    on;

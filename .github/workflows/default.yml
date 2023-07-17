@@ -194,7 +194,6 @@ jobs:
         uses: docker/metadata-action@v4
         with:
           images: |
-            giva9712/boostcast
             ghcr.io/boostmn/boostcast
           tags: |
             type=raw,value=latest,enable=${{ endsWith(github.ref, github.event.repository.default_branch) }}

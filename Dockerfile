@@ -1,7 +1,7 @@
 #
 # Golang dependencies build step
 #
-FROM golang:1.19-bullseye AS go-dependencies
+FROM golang:1.20-bullseye AS go-dependencies
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends openssl git
@@ -10,7 +10,7 @@ RUN go install github.com/jwilder/dockerize@v0.6.1
 
 RUN go install github.com/aptible/supercronic@v0.2.25
 
-RUN go install github.com/centrifugal/centrifugo/v4@v4.1.5
+RUN go install github.com/centrifugal/centrifugo/v5@v5.0.1
 
 #
 # MariaDB dependencies build step

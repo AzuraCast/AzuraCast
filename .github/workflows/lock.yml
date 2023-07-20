@@ -16,9 +16,9 @@ jobs:
   action:
     runs-on: ubuntu-latest
     steps:
-      - uses: dessant/lock-threads@v3
+      - uses: dessant/lock-threads@v4
         with:
-          issue-inactive-days: '365'
+          issue-inactive-days: 365
           exclude-any-issue-labels: 'in progress'
           issue-comment: 'This issue has not been updated in over a year, so it is being closed for further discussion. If you are experiencing a similar issue, please create a new issue. Thank you!'
           issue-lock-reason: 'resolved'

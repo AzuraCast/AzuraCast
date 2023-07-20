@@ -18,7 +18,7 @@ jobs:
     steps:
       - uses: dessant/lock-threads@v4
         with:
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
           issue-inactive-days: 365
           exclude-any-issue-labels: 'in progress'
           issue-comment: 'This issue has not been updated in over a year, so it is being closed for further discussion. If you are experiencing a similar issue, please create a new issue. Thank you!'

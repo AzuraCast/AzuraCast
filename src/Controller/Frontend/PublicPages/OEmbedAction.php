@@ -49,9 +49,9 @@ final class OEmbedAction implements SingleActionInterface
             'provider_url' => 'https://azuracast.com/',
             'type' => 'rich',
             'width' => 400,
-            'height' => 150,
+            'height' => 200,
             'html' => <<<HTML
-                <iframe width="100%" height="150" sandbox="allow-same-origin allow-scripts allow-popups" 
+                <iframe width="100%" height="200" sandbox="allow-same-origin allow-scripts allow-popups" 
                     src="$embedUrl" frameborder="0" allowfullscreen/>
             HTML,
         ];

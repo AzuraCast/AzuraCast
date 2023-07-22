@@ -31,6 +31,9 @@ return static function (RouteCollectorProxy $app) {
             $group->get('[/{embed:embed|social}]', Controller\Frontend\PublicPages\PlayerAction::class)
                 ->setName('public:index');
 
+            $group->get('/oembed/{format:json|xml}', Controller\Frontend\PublicPages\OEmbedAction::class)
+                ->setName('public:oembed');
+
             $group->get('/app.webmanifest', Controller\Frontend\PWA\AppManifestAction::class)
                 ->setName('public:manifest');
 

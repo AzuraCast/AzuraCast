@@ -41,7 +41,22 @@ $sections->appendStart('head');
         true
     ) ?>">
     <meta property="twitter:player:width" content="400">
-    <meta property="twitter:player:height" content="125">
+    <meta property="twitter:player:height" content="150">
+
+    <link rel="alternate" type="application/json+oembed"
+          href="<?= $router->named(
+              'public:oembed',
+              ['station_id' => $station->getShortName(), 'format' => 'json'],
+              [],
+              true
+          ) ?>"/>
+    <link rel="alternate" type="text/xml+oembed"
+          href="<?= $router->named(
+              'public:oembed',
+              ['station_id' => $station->getShortName(), 'format' => 'xml'],
+              [],
+              true
+          ) ?>"/>
 <?php
 $sections->end();
 

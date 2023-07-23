@@ -1,12 +1,11 @@
 <?php
 /** @var Psr\Http\Message\RequestInterface $request */
 $localeObj = $request->getAttribute(App\Http\ServerRequest::ATTR_LOCALE);
+if (!($localeObj instanceof App\Enums\SupportedLocales)) {
+    $localeObj = App\Enums\SupportedLocales::default();
+}
 
-$locale = ($localeObj instanceof App\Enums\SupportedLocales)
-    ? $localeObj->value
-    : App\Enums\SupportedLocales::default()->value;
-
-$locale = explode('.', $locale, 2)[0];
+$locale = $localeObj->getLocaleWithoutEncoding();
 $localeShort = substr($locale, 0, 2);
 $localeWithDashes = str_replace('_', '-', $locale);
 
@@ -21,14 +20,22 @@ if (null !== $show24Hours) {
     $timeConfig->hour12 = !$show24Hours;
 }
 
+$localePaths = [];
+foreach (App\Enums\SupportedLocales::cases() as $supportedLocale) {
+    if ($supportedLocale === App\Enums\SupportedLocales::default()) {
+        continue;
+    }
+
+    $localePaths[$supportedLocale->getLocaleWithoutEncoding()] = $this->assetUrl(
+        'dist/lib/translations/' . $supportedLocale->value . '/translations.json'
+    );
+}
+
 $app = [
-    'lang' => [
-        'confirm' => __('Are you sure?'),
-        'advanced' => __('Advanced'),
-    ],
     'locale' => $locale,
     'locale_short' => $localeShort,
     'locale_with_dashes' => $localeWithDashes,
+    'locale_paths' => $localePaths,
     'time_config' => $timeConfig,
     'api_csrf' => null,
 ];

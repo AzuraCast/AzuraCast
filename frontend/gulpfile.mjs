@@ -42,6 +42,12 @@ const jsFiles = {
         files: [
             'js/webcaster/*.js'
         ]
+    },
+    'translations': {
+        base: '../translations',
+        files: [
+            '../translations/*/translations.json',
+        ]
     }
 };
 
@@ -103,7 +109,7 @@ task('watch', function () {
 });
 
 const buildAll = series('clean', parallel('concat-js', 'build-vue', 'build-css', 'bundle-deps'), function () {
-    return src(['../web/static/dist/**/*.{js,css}'], {base: '../web/static/'})
+    return src(['../web/static/dist/**/*.{js,json,css}'], {base: '../web/static/'})
             .pipe(rev())
             .pipe(revdel())
             .pipe(dest('../web/static/'))

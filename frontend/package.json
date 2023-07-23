@@ -4,8 +4,7 @@
   "scripts": {
     "build": "gulp",
     "watch": "gulp watch",
-    "generate-locales": "gettext-extract --attribute v-translate --keywords '$gettext' --output ../translations/frontend.pot $(find ./vue -type f -name '*.vue')",
-    "import-locales": "gettext-compile --output ../translations/translations.json $(find ../translations/*.UTF-8/LC_MESSAGES -type f -name 'default.po')"
+    "generate-locales": "vue-gettext-extract"
   },
   "dependencies": {
     "@codemirror/lang-css": "^6.0.1",
@@ -54,7 +53,6 @@
     "@babel/preset-env": "^7.15.6",
     "css-loader": "^6.5.0",
     "del": "^7",
-    "easygettext": "^2.17.0",
     "eslint": "^8.30.0",
     "eslint-plugin-vue": "^9.8.0",
     "eslint-webpack-plugin": "^4",

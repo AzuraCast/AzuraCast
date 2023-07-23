@@ -128,7 +128,6 @@ jobs:
           bin/console locale:import
           
           cd frontend
-          npm run import-locales
           npm run build
 
       - name: Build OpenAPI Docs

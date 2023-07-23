@@ -1,18 +1,8 @@
 <template>
-    <section
-        class="card"
-        role="region"
-        aria-labelledby="hdr_install_stereo_tool"
+    <card-page
+        header-id="hdr_install_stereo_tool"
+        :title="$gettext('Install Stereo Tool')"
     >
-        <div class="card-header text-bg-primary">
-            <h2
-                id="hdr_install_stereo_tool"
-                class="card-title"
-            >
-                {{ $gettext('Install Stereo Tool') }}
-            </h2>
-        </div>
-
         <div class="card-body">
             <loading :loading="isLoading">
                 <div class="row g-3">
@@ -93,7 +83,7 @@
                 </div>
             </loading>
         </div>
-    </section>
+    </card-page>
 </template>
 
 <script setup>
@@ -103,6 +93,7 @@ import {useTranslate} from "~/vendor/gettext";
 import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
 import Loading from "~/components/Common/Loading.vue";
+import CardPage from "~/components/Common/CardPage.vue";
 
 const props = defineProps({
     apiUrl: {

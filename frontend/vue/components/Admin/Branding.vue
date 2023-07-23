@@ -3,19 +3,11 @@
         {{ $gettext('Custom Branding') }}
     </h2>
 
-    <section
-        class="card mb-3"
-        role="region"
-        aria-labelledby="hdr_upload_custom_assets"
+    <card-page
+        class="mb-3"
+        header-id="hdr_upload_custom_assets"
+        :title="$gettext('Upload Custom Assets')"
     >
-        <div class="card-header text-bg-primary">
-            <h2
-                id="hdr_upload_custom_assets"
-                class="card-title"
-            >
-                {{ $gettext('Upload Custom Assets') }}
-            </h2>
-        </div>
         <div class="card-body">
             <ul class="list-unstyled">
                 <custom-asset-form
@@ -37,7 +29,7 @@
                 />
             </ul>
         </div>
-    </section>
+    </card-page>
 
     <branding-form :api-url="settingsApiUrl" />
 </template>
@@ -45,6 +37,7 @@
 <script setup>
 import CustomAssetForm from "./Branding/CustomAssetForm.vue";
 import BrandingForm from "./Branding/BrandingForm.vue";
+import CardPage from "~/components/Common/CardPage.vue";
 
 defineProps({
     settingsApiUrl: {

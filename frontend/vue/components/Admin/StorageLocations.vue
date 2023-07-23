@@ -1,18 +1,8 @@
 <template>
-    <section
-        class="card"
-        role="region"
-        aria-labelledby="hdr_storage_locations"
+    <card-page
+        header-id="hdr_storage_locations"
+        :title="$gettext('Storage Locations')"
     >
-        <div class="card-header text-bg-primary">
-            <h2
-                id="hdr_storage_locations"
-                class="card-title"
-            >
-                {{ $gettext('Storage Locations') }}
-            </h2>
-        </div>
-
         <div class="card-body pb-0">
             <nav
                 class="nav nav-tabs"
@@ -110,7 +100,7 @@
                 {{ getSpaceUsed(item) }}
             </template>
         </data-table>
-    </section>
+    </card-page>
 
     <edit-modal
         ref="$editModal"
@@ -129,6 +119,7 @@ import {useTranslate} from "~/vendor/gettext";
 import useHasDatatable from "~/functions/useHasDatatable";
 import useHasEditModal from "~/functions/useHasEditModal";
 import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
+import CardPage from "~/components/Common/CardPage.vue";
 
 const props = defineProps({
     listUrl: {

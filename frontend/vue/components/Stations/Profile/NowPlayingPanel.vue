@@ -1,14 +1,13 @@
 <template>
-    <section
+    <card-page
         id="profile-nowplaying"
-        class="card nowplaying"
-        role="region"
-        aria-labelledby="hdr_now_playing"
+        class="nowplaying"
+        header-id="hdr_now_playing"
     >
-        <div class="card-header text-bg-primary">
+        <template #header="{id}">
             <div class="d-flex align-items-center">
                 <h3
-                    id="hdr_now_playing"
+                    :id="id"
                     class="flex-shrink card-title my-0"
                 >
                     {{ $gettext('On the Air') }}
@@ -33,14 +32,15 @@
                 </h6>
                 <a
                     v-if="userCanManageReports"
-                    class="flex-shrink btn btn-outline-default ms-2 px-1 py-2"
+                    class="flex-shrink btn btn-link text-secondary ms-2 px-1 py-2"
                     :href="listenerReportUri"
                     :title="$gettext('Listener Report')"
                 >
                     <icon icon="assignment" />
                 </a>
             </div>
-        </div>
+        </template>
+
         <div class="card-body">
             <loading :loading="np.loading">
                 <div class="row">
@@ -195,9 +195,9 @@
             </loading>
         </div>
 
-        <div
+        <template
             v-if="isLiquidsoap && userCanManageBroadcasting"
-            class="card-body flex-shrink"
+            #footer_actions
         >
             <button
                 v-if="!np.live.is_live"
@@ -223,8 +223,8 @@
                     {{ $gettext('Disconnect Streamer') }}
                 </span>
             </button>
-        </div>
-    </section>
+        </template>
+    </card-page>
 
     <lightbox ref="$lightbox" />
 </template>
@@ -238,6 +238,7 @@ import nowPlayingPanelProps from "~/components/Stations/Profile/nowPlayingPanelP
 import useNowPlaying from "~/functions/useNowPlaying";
 import Loading from "~/components/Common/Loading.vue";
 import Lightbox from "~/components/Common/Lightbox.vue";
+import CardPage from "~/components/Common/CardPage.vue";
 
 const props = defineProps({
     ...nowPlayingPanelProps,

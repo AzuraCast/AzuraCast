@@ -1,23 +1,13 @@
 <template>
-    <section
-        class="card"
-        role="region"
-        aria-labelledby="hdr_install_geolite"
+    <card-page
+        header-id="hdr_install_geolite"
+        :title="$gettext('Install GeoLite IP Database')"
     >
-        <div class="card-header text-bg-primary">
-            <h2
-                id="hdr_install_geolite"
-                class="card-title"
-            >
-                {{ $gettext('Install GeoLite IP Database') }}
-            </h2>
-        </div>
-
-        <info-card>
+        <template #info>
             {{
                 $gettext('IP Geolocation is used to guess the approximate location of your listeners based on the IP address they connect with. Use the free built-in IP Geolocation library or enter a license key on this page to use MaxMind GeoLite.')
             }}
-        </info-card>
+        </template>
 
         <div class="card-body">
             <loading :loading="isLoading">
@@ -109,12 +99,11 @@
                 </div>
             </loading>
         </div>
-    </section>
+    </card-page>
 </template>
 
 <script setup>
 import FormGroupField from "~/components/Form/FormGroupField.vue";
-import InfoCard from "~/components/Common/InfoCard.vue";
 import {computed, onMounted, ref} from "vue";
 import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
 import {useSweetAlert} from "~/vendor/sweetalert";
@@ -122,6 +111,7 @@ import {useAxios} from "~/vendor/axios";
 import {useTranslate} from "~/vendor/gettext";
 import {useNotify} from "~/functions/useNotify";
 import Loading from "~/components/Common/Loading.vue";
+import CardPage from "~/components/Common/CardPage.vue";
 
 const props = defineProps({
     apiUrl: {

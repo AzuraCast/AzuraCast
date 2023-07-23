@@ -1,13 +1,11 @@
 <template>
-    <section
+    <card-page
         id="profile-backend"
-        class="card"
-        role="region"
-        aria-labelledby="hdr_backend"
+        header-id="hdr_backend"
     >
-        <div class="card-header text-bg-primary">
+        <template #header="{id}">
             <h3
-                id="hdr_backend"
+                :id="id"
                 class="card-title"
             >
                 {{ $gettext('AutoDJ Service') }}
@@ -15,7 +13,8 @@
                 <br>
                 <small>{{ backendName }}</small>
             </h3>
-        </div>
+        </template>
+
         <div class="card-body">
             <p class="card-text">
                 {{ langTotalTracks }}
@@ -35,9 +34,10 @@
                 >{{ $gettext('Playlists') }}</a>
             </div>
         </div>
-        <div
+
+        <template
             v-if="userCanManageBroadcasting && hasStarted"
-            class="card-body buttons"
+            #footer_actions
         >
             <button
                 type="button"
@@ -71,8 +71,8 @@
                     {{ $gettext('Stop') }}
                 </span>
             </button>
-        </div>
-    </section>
+        </template>
+    </card-page>
 </template>
 
 <script setup>
@@ -82,6 +82,7 @@ import RunningBadge from "~/components/Common/Badges/RunningBadge.vue";
 import {useTranslate} from "~/vendor/gettext";
 import {computed} from "vue";
 import backendPanelProps from "~/components/Stations/Profile/backendPanelProps";
+import CardPage from "~/components/Common/CardPage.vue";
 
 const props = defineProps({
     ...backendPanelProps,

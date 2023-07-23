@@ -28,6 +28,13 @@
         </div>
 
         <slot />
+
+        <div
+            v-if="slots.footer_actions"
+            class="card-body buttons"
+        >
+            <slot name="footer_actions" />
+        </div>
     </section>
 </template>
 

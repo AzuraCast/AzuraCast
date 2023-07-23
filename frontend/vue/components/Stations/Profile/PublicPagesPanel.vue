@@ -1,19 +1,16 @@
 <template>
-    <section
-        class="card"
-        role="region"
-        aria-labelledby="hdr_public_pages"
-    >
+    <card-page header-id="hdr_public_pages">
+        <template #header="{id}">
+            <h3
+                :id="id"
+                class="card-title"
+            >
+                {{ $gettext('Public Pages') }}
+                <enabled-badge :enabled="enablePublicPage" />
+            </h3>
+        </template>
+
         <template v-if="enablePublicPage">
-            <div class="card-header text-bg-primary">
-                <h3
-                    id="hdr_public_pages"
-                    class="card-title"
-                >
-                    {{ $gettext('Public Pages') }}
-                    <enabled-badge :enabled="true" />
-                </h3>
-            </div>
             <table class="table table-striped table-responsive-md mb-0">
                 <colgroup>
                     <col style="width: 30%;">
@@ -67,7 +64,10 @@
                     </tr>
                 </tbody>
             </table>
-            <div class="card-body buttons">
+        </template>
+
+        <template #footer_actions>
+            <template v-if="enablePublicPage">
                 <a
                     class="btn btn-link text-secondary"
                     @click.prevent="doOpenEmbed"
@@ -77,45 +77,31 @@
                         {{ $gettext('Embed Widgets') }}
                     </span>
                 </a>
-                <template v-if="userCanManageProfile">
-                    <a
-                        class="btn btn-link text-secondary"
-                        :href="brandingUri"
-                    >
-                        <icon icon="design_services" />
-                        <span>
-                            {{ $gettext('Edit Branding') }}
-                        </span>
-                    </a>
-                    <a
-                        v-confirm-link="$gettext('Disable public pages?')"
-                        class="btn btn-link text-danger"
-                        :href="togglePublicPageUri"
-                    >
-                        <icon icon="close" />
-                        <span>
-                            {{ $gettext('Disable') }}
-                        </span>
-                    </a>
-                </template>
-            </div>
-            <embed-modal
-                v-bind="pickProps($props, embedModalProps)"
-                ref="$embedModal"
-            />
-        </template>
-        <template v-else>
-            <div class="card-header text-bg-primary">
-                <h3 class="card-title">
-                    {{ $gettext('Public Pages') }}
-                    <enabled-badge :enabled="false" />
-                </h3>
-            </div>
-            <div
-                v-if="userCanManageProfile"
-                class="card-body"
-            >
                 <a
+                    v-if="userCanManageProfile"
+                    class="btn btn-link text-secondary"
+                    :href="brandingUri"
+                >
+                    <icon icon="design_services" />
+                    <span>
+                        {{ $gettext('Edit Branding') }}
+                    </span>
+                </a>
+                <a
+                    v-if="userCanManageProfile"
+                    v-confirm-link="$gettext('Disable public pages?')"
+                    class="btn btn-link text-danger"
+                    :href="togglePublicPageUri"
+                >
+                    <icon icon="close" />
+                    <span>
+                        {{ $gettext('Disable') }}
+                    </span>
+                </a>
+            </template>
+            <template v-else>
+                <a
+                    v-if="userCanManageProfile"
                     v-confirm-link="$gettext('Enable public pages?')"
                     class="btn btn-link text-success"
                     :href="togglePublicPageUri"
@@ -125,9 +111,14 @@
                         {{ $gettext('Enable') }}
                     </span>
                 </a>
-            </div>
+            </template>
         </template>
-    </section>
+    </card-page>
+
+    <embed-modal
+        v-bind="pickProps($props, embedModalProps)"
+        ref="$embedModal"
+    />
 </template>
 
 <script setup>
@@ -138,6 +129,7 @@ import EmbedModal from "~/components/Stations/Profile/EmbedModal.vue";
 import publicPagesPanelProps from "~/components/Stations/Profile/publicPagesPanelProps";
 import embedModalProps from "~/components/Stations/Profile/embedModalProps";
 import {pickProps} from "~/functions/pickProps";
+import CardPage from "~/components/Common/CardPage.vue";
 
 const props = defineProps({
     ...publicPagesPanelProps,

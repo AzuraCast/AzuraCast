@@ -10,19 +10,6 @@
                     header-id="hdr_profile"
                     :title="$gettext('Profile')"
                 >
-                    <template #actions>
-                        <button
-                            type="button"
-                            class="btn btn-primary"
-                            @click="doEditProfile"
-                        >
-                            <icon icon="edit" />
-                            <span>
-                                {{ $gettext('Edit Profile') }}
-                            </span>
-                        </button>
-                    </template>
-
                     <loading :loading="userLoading">
                         <div class="card-body">
                             <div class="d-flex align-items-center">
@@ -67,13 +54,41 @@
                             </div>
                         </div>
                     </loading>
+
+                    <template #footer_actions>
+                        <button
+                            type="button"
+                            class="btn btn-primary"
+                            @click="doEditProfile"
+                        >
+                            <icon icon="edit" />
+                            <span>
+                                {{ $gettext('Edit Profile') }}
+                            </span>
+                        </button>
+                    </template>
                 </card-page>
 
                 <card-page
                     header-id="hdr_security"
                     :title="$gettext('Security')"
                 >
-                    <template #actions>
+                    <loading :loading="securityLoading">
+                        <div class="card-body">
+                            <h5>
+                                {{ $gettext('Two-Factor Authentication') }}
+                                <enabled-badge :enabled="security.twoFactorEnabled" />
+                            </h5>
+
+                            <p class="card-text mt-2">
+                                {{
+                                    $gettext('Two-factor authentication improves the security of your account by requiring a second one-time access code in addition to your password when you log in.')
+                                }}
+                            </p>
+                        </div>
+                    </loading>
+
+                    <template #footer_actions>
                         <button
                             type="button"
                             class="btn btn-primary"
@@ -107,21 +122,6 @@
                             </span>
                         </button>
                     </template>
-
-                    <loading :loading="securityLoading">
-                        <div class="card-body">
-                            <h5>
-                                {{ $gettext('Two-Factor Authentication') }}
-                                <enabled-badge :enabled="security.twoFactorEnabled" />
-                            </h5>
-
-                            <p class="card-text mt-2">
-                                {{
-                                    $gettext('Two-factor authentication improves the security of your account by requiring a second one-time access code in addition to your password when you log in.')
-                                }}
-                            </p>
-                        </div>
-                    </loading>
                 </card-page>
             </div>
             <div class="col-sm-12 col-md-6 col-lg-7">

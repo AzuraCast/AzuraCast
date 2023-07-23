@@ -1,18 +1,9 @@
 <template>
-    <section
+    <card-page
         id="profile-backend"
-        class="card"
-        role="region"
-        aria-labelledby="hdr_backend_disabled"
+        header-id="hdr_backend_disabled"
+        :title="$gettext('AutoDJ Disabled')"
     >
-        <div class="card-header text-bg-primary">
-            <h3
-                id="hdr_backend_disabled"
-                class="card-title"
-            >
-                {{ $gettext('AutoDJ Disabled') }}
-            </h3>
-        </div>
         <div class="card-body">
             <p class="card-text">
                 {{
@@ -20,5 +11,9 @@
                 }}
             </p>
         </div>
-    </section>
+    </card-page>
 </template>
+
+<script setup>
+import CardPage from "~/components/Common/CardPage.vue";
+</script>

@@ -1,13 +1,9 @@
 <template>
-    <section
-        class="card"
-        role="region"
-        aria-labelledby="hdr_audit_log"
-    >
-        <div class="card-header text-bg-primary">
+    <card-page header-id="hdr_audit_log">
+        <template #header="{id}">
             <div class="d-flex align-items-center">
                 <h2
-                    id="hdr_audit_log"
+                    :id="id"
                     class="card-title flex-fill my-0"
                 >
                     {{ $gettext('Audit Log') }}
@@ -19,7 +15,8 @@
                     />
                 </div>
             </div>
-        </div>
+        </template>
+
         <data-table
             ref="$datatable"
             responsive
@@ -84,7 +81,7 @@
                 </template>
             </template>
         </data-table>
-    </section>
+    </card-page>
 
     <details-modal ref="$detailsModal" />
 </template>
@@ -99,6 +96,7 @@ import DateRangeDropdown from "~/components/Common/DateRangeDropdown.vue";
 import Icon from "~/components/Common/Icon.vue";
 import useHasDatatable from "~/functions/useHasDatatable";
 import DetailsModal from "./AuditLog/DetailsModal.vue";
+import CardPage from "~/components/Common/CardPage.vue";
 
 const props = defineProps({
     baseApiUrl: {

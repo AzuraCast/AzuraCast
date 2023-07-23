@@ -3,21 +3,12 @@
         {{ $gettext('Update AzuraCast') }}
     </h2>
 
-    <div class="row">
+    <div class="row row-of-cards">
         <div class="col col-md-8">
-            <section
-                class="card mb-4"
-                role="region"
-                aria-labelledby="hdr_update_details"
+            <card-page
+                header-id="hdr_update_details"
+                :title="$gettext('Update Details')"
             >
-                <div class="card-header text-bg-primary">
-                    <h3
-                        id="hdr_update_details"
-                        class="card-title"
-                    >
-                        {{ $gettext('Update Details') }}
-                    </h3>
-                </div>
                 <div class="card-body">
                     <div
                         v-if="needsUpdates"
@@ -36,7 +27,8 @@
                         }}
                     </div>
                 </div>
-                <div class="card-body">
+
+                <template #footer_actions>
                     <button
                         type="button"
                         class="btn btn-info"
@@ -45,23 +37,14 @@
                         <icon icon="sync" />
                         {{ $gettext('Check for Updates') }}
                     </button>
-                </div>
-            </section>
+                </template>
+            </card-page>
         </div>
         <div class="col col-md-4">
-            <section
-                class="card mb-4"
-                role="region"
-                aria-labelledby="hdr_release_channel"
+            <card-page
+                header-id="hdr_release_channel"
+                :title="$gettext('Release Channel')"
             >
-                <div class="card-header text-bg-primary">
-                    <h3
-                        id="hdr_release_channel"
-                        class="card-title"
-                    >
-                        {{ $gettext('Release Channel') }}
-                    </h3>
-                </div>
                 <div class="card-body">
                     <p class="card-text">
                         {{ $gettext('Your installation is currently on this release channel:') }}
@@ -70,7 +53,8 @@
                         {{ langReleaseChannel }}
                     </p>
                 </div>
-                <div class="card-body">
+
+                <template #footer_actions>
                     <a
                         class="btn btn-info"
                         href="https://docs.azuracast.com/en/getting-started/updates/release-channels"
@@ -79,25 +63,16 @@
                         <icon icon="info" />
                         {{ $gettext('About Release Channels') }}
                     </a>
-                </div>
-            </section>
+                </template>
+            </card-page>
         </div>
     </div>
     <div class="row">
         <div class="col col-md-6">
-            <section
-                class="card mb-4"
-                role="region"
-                aria-labelledby="hdr_update_via_web"
+            <card-page
+                header-id="hdr_update_via_web"
+                :title="$gettext('Update AzuraCast via Web')"
             >
-                <div class="card-header text-bg-primary">
-                    <h3
-                        id="hdr_update_via_web"
-                        class="card-title"
-                    >
-                        {{ $gettext('Update AzuraCast via Web') }}
-                    </h3>
-                </div>
                 <template v-if="enableWebUpdates">
                     <div class="card-body">
                         <p class="card-text">
@@ -111,24 +86,6 @@
                             }}
                         </p>
                     </div>
-                    <div class="card-body">
-                        <a
-                            class="btn btn-dark"
-                            :href="backupUrl"
-                            target="_blank"
-                        >
-                            <icon icon="backup" />
-                            {{ $gettext('Backup') }}
-                        </a>
-                        <button
-                            type="button"
-                            class="btn btn-success"
-                            @click="doUpdate()"
-                        >
-                            <icon icon="update" />
-                            {{ $gettext('Update via Web') }}
-                        </button>
-                    </div>
                 </template>
                 <template v-else>
                     <div class="card-body">
@@ -139,22 +96,39 @@
                         </p>
                     </div>
                 </template>
-            </section>
+
+                <template
+                    v-if="enableWebUpdates"
+                    #footer_actions
+                >
+                    <a
+                        class="btn btn-dark"
+                        :href="backupUrl"
+                        target="_blank"
+                    >
+                        <icon icon="backup" />
+                        <span>
+                            {{ $gettext('Backup') }}
+                        </span>
+                    </a>
+                    <button
+                        type="button"
+                        class="btn btn-success"
+                        @click="doUpdate()"
+                    >
+                        <icon icon="update" />
+                        <span>
+                            {{ $gettext('Update via Web') }}
+                        </span>
+                    </button>
+                </template>
+            </card-page>
         </div>
         <div class="col col-md-6">
-            <section
-                class="card mb-4"
-                role="region"
-                aria-labelledby="hdr_manual_updates"
+            <card-page
+                header-id="hdr_manual_updates"
+                :title="$gettext('Manual Updates')"
             >
-                <div class="card-header text-bg-primary">
-                    <h3
-                        id="hdr_manual_updates"
-                        class="card-title"
-                    >
-                        {{ $gettext('Manual Updates') }}
-                    </h3>
-                </div>
                 <div class="card-body">
                     <p class="card-text">
                         {{
@@ -168,10 +142,12 @@
                         target="_blank"
                     >
                         <icon icon="info" />
-                        {{ $gettext('Update Instructions') }}
+                        <span>
+                            {{ $gettext('Update Instructions') }}
+                        </span>
                     </a>
                 </div>
-            </section>
+            </card-page>
         </div>
     </div>
 </template>
@@ -183,6 +159,7 @@ import {useTranslate} from "~/vendor/gettext";
 import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
 import {useSweetAlert} from "~/vendor/sweetalert";
+import CardPage from "~/components/Common/CardPage.vue";
 
 const props = defineProps({
     releaseChannel: {

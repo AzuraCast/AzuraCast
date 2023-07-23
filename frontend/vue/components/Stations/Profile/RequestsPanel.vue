@@ -1,23 +1,20 @@
 <template>
-    <section
-        class="card"
-        role="region"
-        aria-labelledby="hdr_song_requests"
-    >
-        <template v-if="enableRequests">
-            <div class="card-header text-bg-primary">
-                <h3
-                    id="hdr_song_requests"
-                    class="card-title"
-                >
-                    {{ $gettext('Song Requests') }}
-                    <enabled-badge :enabled="true" />
-                </h3>
-            </div>
-            <div
-                v-if="userCanManageReports || userCanManageProfile"
-                class="card-body buttons"
+    <card-page header-id="hdr_song_requests">
+        <template #header="{id}">
+            <h3
+                :id="id"
+                class="card-title"
             >
+                {{ $gettext('Song Requests') }}
+                <enabled-badge :enabled="enableRequests" />
+            </h3>
+        </template>
+
+        <template
+            v-if="userCanManageReports || userCanManageProfile"
+            #footer_actions
+        >
+            <template v-if="enableRequests">
                 <a
                     v-if="userCanManageReports"
                     class="btn btn-link text-primary"
@@ -39,20 +36,10 @@
                         {{ $gettext('Disable') }}
                     </span>
                 </a>
-            </div>
-        </template>
-        <template v-else>
-            <div class="card-header text-bg-primary">
-                <h3 class="card-title">
-                    {{ $gettext('Song Requests') }}
-                    <enabled-badge :enabled="false" />
-                </h3>
-            </div>
-            <div
-                v-if="userCanManageProfile"
-                class="card-body buttons"
-            >
+            </template>
+            <template v-else>
                 <a
+                    v-if="userCanManageProfile"
                     v-confirm-link="$gettext('Enable song requests?')"
                     class="btn btn-link text-success"
                     :href="requestsToggleUri"
@@ -62,15 +49,16 @@
                         {{ $gettext('Enable') }}
                     </span>
                 </a>
-            </div>
+            </template>
         </template>
-    </section>
+    </card-page>
 </template>
 
 <script setup>
 import Icon from '~/components/Common/Icon';
 import requestsPanelProps from "~/components/Stations/Profile/requestsPanelProps";
 import EnabledBadge from "~/components/Common/Badges/EnabledBadge.vue";
+import CardPage from "~/components/Common/CardPage.vue";
 
 const props = defineProps({
     ...requestsPanelProps

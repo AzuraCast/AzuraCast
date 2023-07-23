@@ -97,33 +97,34 @@
             </template>
         </section>
 
-        <section
+        <card-page
             v-if="showCharts"
-            class="card"
-            role="region"
-            aria-labelledby="hdr_listeners_per_station"
+            header-id="hdr_listeners_per_station"
         >
-            <div class="card-header text-bg-primary d-flex align-items-center">
-                <div class="flex-fill">
-                    <h3
-                        id="hdr_listeners_per_station"
-                        class="card-title"
-                    >
-                        {{ $gettext('Listeners Per Station') }}
-                    </h3>
+            <template #header="{id}">
+                <div class="d-flex align-items-center">
+                    <div class="flex-fill">
+                        <h3
+                            :id="id"
+                            class="card-title"
+                        >
+                            {{ $gettext('Listeners Per Station') }}
+                        </h3>
+                    </div>
+                    <div class="flex-shrink-0">
+                        <button
+                            type="button"
+                            class="btn btn-sm btn-dark py-2"
+                            @click="chartsVisible = !chartsVisible"
+                        >
+                            {{
+                                langShowHideCharts
+                            }}
+                        </button>
+                    </div>
                 </div>
-                <div class="flex-shrink-0">
-                    <button
-                        type="button"
-                        class="btn btn-sm btn-dark py-2"
-                        @click="chartsVisible = !chartsVisible"
-                    >
-                        {{
-                            langShowHideCharts
-                        }}
-                    </button>
-                </div>
-            </div>
+            </template>
+
             <div
                 id="charts"
                 class="card-body collapse collapse-vertical"
@@ -134,37 +135,35 @@
                     :charts-url="chartsUrl"
                 />
             </div>
-        </section>
+        </card-page>
 
-        <section
-            class="card"
-            role="region"
-            aria-labelledby="hdr_stations"
-        >
-            <div class="card-header text-bg-primary d-flex flex-wrap align-items-center">
-                <div class="flex-fill">
-                    <h2
-                        id="hdr_stations"
-                        class="card-title"
+        <card-page header-id="hdr_stations">
+            <template #header="{id}">
+                <div class="d-flex flex-wrap align-items-center">
+                    <div class="flex-fill">
+                        <h2
+                            :id="id"
+                            class="card-title"
+                        >
+                            {{ $gettext('Station Overview') }}
+                        </h2>
+                    </div>
+                    <div
+                        v-if="showAdmin"
+                        class="flex-shrink-0"
                     >
-                        {{ $gettext('Station Overview') }}
-                    </h2>
+                        <a
+                            class="btn btn-dark py-2"
+                            :href="manageStationsUrl"
+                        >
+                            <icon icon="settings" />
+                            <span>
+                                {{ $gettext('Manage Stations') }}
+                            </span>
+                        </a>
+                    </div>
                 </div>
-                <div
-                    v-if="showAdmin"
-                    class="flex-shrink-0"
-                >
-                    <a
-                        class="btn btn-dark py-2"
-                        :href="manageStationsUrl"
-                    >
-                        <icon icon="settings" />
-                        <span>
-                            {{ $gettext('Manage Stations') }}
-                        </span>
-                    </a>
-                </div>
-            </div>
+            </template>
 
             <loading :loading="stationsLoading">
                 <table
@@ -285,7 +284,7 @@
                     </tbody>
                 </table>
             </loading>
-        </section>
+        </card-page>
     </div>
 
     <lightbox ref="$lightbox" />
@@ -304,6 +303,7 @@ import DashboardCharts from "~/components/DashboardCharts.vue";
 import {useTranslate} from "~/vendor/gettext";
 import Loading from "~/components/Common/Loading.vue";
 import Lightbox from "~/components/Common/Lightbox.vue";
+import CardPage from "~/components/Common/CardPage.vue";
 
 const props = defineProps({
     userUrl: {

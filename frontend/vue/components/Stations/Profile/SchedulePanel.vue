@@ -1,18 +1,10 @@
 <template>
-    <section
+    <card-page
         v-if="processedScheduleItems.length > 0"
-        class="card scheduled"
-        role="region"
-        aria-labelledby="hdr_scheduled"
+        class="scheduled"
+        header-id="hdr_scheduled"
+        :title="$gettext('Scheduled')"
     >
-        <div class="card-header text-bg-primary">
-            <h3
-                id="hdr_scheduled"
-                class="card-title"
-            >
-                {{ $gettext('Scheduled') }}
-            </h3>
-        </div>
         <table class="table table-striped mb-0">
             <tbody>
                 <tr
@@ -47,7 +39,7 @@
                 </tr>
             </tbody>
         </table>
-    </section>
+    </card-page>
 </template>
 
 <script setup>
@@ -55,6 +47,7 @@ import {DateTime} from "luxon";
 import {map} from "lodash";
 import {computed} from "vue";
 import {useAzuraCast} from "~/vendor/azuracast";
+import CardPage from "~/components/Common/CardPage.vue";
 
 const props = defineProps({
     scheduleItems: {

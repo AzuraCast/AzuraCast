@@ -3,81 +3,58 @@
         {{ $gettext('System Debugger') }}
     </h2>
 
-    <div class="row">
+    <div class="row row-of-cards">
         <div class="col-md-6">
-            <section
-                class="card mb-3"
-                aria-labelledby="hdr_clear_cache"
+            <card-page
+                header-id="hdr_clear_cache"
+                :title="$gettext('Clear Cache')"
             >
-                <div class="card-header text-bg-primary">
-                    <h2
-                        id="hdr_clear_cache"
-                        class="card-title"
-                    >
-                        {{ $gettext('Clear Cache') }}
-                    </h2>
-                </div>
                 <div class="card-body">
-                    <p>
+                    <p class="card-text">
                         {{ $gettext('Clearing the application cache may log you out of your session.') }}
                     </p>
-
-                    <div class="buttons">
-                        <a
-                            class="btn btn-sm btn-primary"
-                            role="button"
-                            :href="clearCacheUrl"
-                        >
-                            {{ $gettext('Clear Cache') }}
-                        </a>
-                    </div>
                 </div>
-            </section>
+
+                <template #footer_actions>
+                    <a
+                        class="btn btn-sm btn-primary"
+                        role="button"
+                        :href="clearCacheUrl"
+                    >
+                        {{ $gettext('Clear Cache') }}
+                    </a>
+                </template>
+            </card-page>
         </div>
         <div class="col-md-6">
-            <section
-                class="card mb-3"
-                aria-labelledby="hdr_clear_queues"
+            <card-page
+                header-id="hdr_clear_queues"
+                :title="$gettext('Clear All Message Queues')"
             >
-                <div class="card-header text-bg-primary">
-                    <h2
-                        id="hdr_clear_queues"
-                        class="card-title"
-                    >
-                        {{ $gettext('Clear All Message Queues') }}
-                    </h2>
-                </div>
                 <div class="card-body">
-                    <p>
+                    <p class="card-text">
                         {{ $gettext('This will clear any pending unprocessed messages in all message queues.') }}
                     </p>
-                    <div class="buttons">
-                        <a
-                            class="btn btn-sm btn-primary"
-                            role="button"
-                            :href="clearQueuesUrl"
-                        >
-                            {{ $gettext('Clear All Message Queues') }}
-                        </a>
-                    </div>
                 </div>
-            </section>
+
+                <template #footer_actions>
+                    <a
+                        class="btn btn-sm btn-primary"
+                        role="button"
+                        :href="clearQueuesUrl"
+                    >
+                        {{ $gettext('Clear All Message Queues') }}
+                    </a>
+                </template>
+            </card-page>
         </div>
     </div>
 
-    <section
-        class="card mb-3"
-        aria-labelledby="hdr_sync_tasks"
+    <card-page
+        class="mb-3"
+        header-id="hdr_sync_tasks"
+        :title="$gettext('Synchronization Tasks')"
     >
-        <div class="card-header text-bg-primary">
-            <h2
-                id="hdr_sync_tasks"
-                class="card-title"
-            >
-                {{ $gettext('Synchronization Tasks') }}
-            </h2>
-        </div>
-
         <data-table
             ref="$datatable"
             :fields="syncTaskFields"
@@ -98,20 +75,13 @@
                 </a>
             </template>
         </data-table>
-    </section>
+    </card-page>
 
-    <section
-        class="card mb-3"
-        aria-labelledby="hdr_message_queues"
+    <card-page
+        class="mb-3"
+        header-id="hdr_message_queues"
+        :title="$gettext('Message Queues')"
     >
-        <div class="card-header text-bg-primary">
-            <h2
-                id="hdr_message_queues"
-                class="card-title"
-            >
-                {{ $gettext('Message Queues') }}
-            </h2>
-        </div>
         <div class="card-body">
             <div class="row">
                 <div
@@ -144,20 +114,12 @@
                 </div>
             </div>
         </div>
-    </section>
+    </card-page>
 
-    <section
-        class="card"
-        aria-labelledby="hdr_station_debugging"
+    <card-page
+        header-id="hdr_station_debugging"
+        :title="$gettext('Station-Specific Debugging')"
     >
-        <div class="card-header text-bg-primary">
-            <h2
-                id="hdr_station_debugging"
-                class="card-title"
-            >
-                {{ $gettext('Station-Specific Debugging') }}
-            </h2>
-        </div>
         <div class="card-body">
             <o-tabs
                 nav-tabs-class="nav-tabs"
@@ -208,7 +170,7 @@
                 </o-tab-item>
             </o-tabs>
         </div>
-    </section>
+    </card-page>
 </template>
 
 <script setup>
@@ -218,6 +180,7 @@ import DataTable from "~/components/Common/DataTable.vue";
 import {DateTime} from "luxon";
 import {useAzuraCast} from "~/vendor/azuracast";
 import {useTranslate} from "~/vendor/gettext";
+import CardPage from "~/components/Common/CardPage.vue";
 
 const props = defineProps({
     clearCacheUrl: {

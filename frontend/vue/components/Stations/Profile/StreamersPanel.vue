@@ -1,23 +1,19 @@
 <template>
-    <section
-        class="card"
-        role="region"
-        aria-labelledby="hdr_streamers"
-    >
-        <template v-if="enableStreamers">
-            <div class="card-header text-bg-primary">
-                <h3
-                    id="hdr_streamers"
-                    class="card-title"
-                >
-                    {{ $gettext('Streamers/DJs') }}
-                    <enabled-badge :enabled="true" />
-                </h3>
-            </div>
-            <div
-                v-if="userCanManageStreamers || userCanManageProfile"
-                class="card-body buttons"
+    <card-page header-id="hdr_streamers">
+        <template #header="{id}">
+            <h3
+                :id="id"
+                class="card-title"
             >
+                {{ $gettext('Streamers/DJs') }}
+                <enabled-badge :enabled="enableStreamers" />
+            </h3>
+        </template>
+        <template
+            v-if="userCanManageStreamers || userCanManageProfile"
+            #footer_actions
+        >
+            <template v-if="enableStreamers">
                 <a
                     v-if="userCanManageStreamers"
                     class="btn btn-link text-primary"
@@ -39,20 +35,10 @@
                         {{ $gettext('Disable') }}
                     </span>
                 </a>
-            </div>
-        </template>
-        <template v-else>
-            <div class="card-header text-bg-primary">
-                <h3 class="card-title">
-                    {{ $gettext('Streamers/DJs') }}
-                    <enabled-badge :enabled="false" />
-                </h3>
-            </div>
-            <div
-                v-if="userCanManageProfile"
-                class="card-body buttons"
-            >
+            </template>
+            <template v-else>
                 <a
+                    v-if="userCanManageProfile"
                     v-confirm-link="$gettext('Enable streamers?')"
                     class="btn btn-link text-success"
                     :href="streamersToggleUri"
@@ -62,15 +48,16 @@
                         {{ $gettext('Enable') }}
                     </span>
                 </a>
-            </div>
+            </template>
         </template>
-    </section>
+    </card-page>
 </template>
 
 <script setup>
 import Icon from "~/components/Common/Icon.vue";
 import EnabledBadge from "~/components/Common/Badges/EnabledBadge.vue";
 import streamersPanelProps from "~/components/Stations/Profile/streamersPanelProps";
+import CardPage from "~/components/Common/CardPage.vue";
 
 const props = defineProps({
     ...streamersPanelProps

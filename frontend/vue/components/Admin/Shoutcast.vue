@@ -1,18 +1,8 @@
 <template>
-    <section
-        class="card"
-        role="region"
-        aria-labelledby="hdr_install_shoutcast"
+    <card-page
+        header-id="hdr_install_shoutcast"
+        :title="$gettext('Install Shoutcast 2 DNAS')"
     >
-        <div class="card-header text-bg-primary">
-            <h2
-                id="hdr_install_shoutcast"
-                class="card-title"
-            >
-                {{ $gettext('Install Shoutcast 2 DNAS') }}
-            </h2>
-        </div>
-
         <div class="card-body">
             <loading :loading="isLoading">
                 <div class="row g-3">
@@ -84,7 +74,7 @@
                 </div>
             </loading>
         </div>
-    </section>
+    </card-page>
 </template>
 
 <script setup>
@@ -93,6 +83,7 @@ import {computed, onMounted, ref} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import {useAxios} from "~/vendor/axios";
 import Loading from "~/components/Common/Loading.vue";
+import CardPage from "~/components/Common/CardPage.vue";
 
 const props = defineProps({
     apiUrl: {

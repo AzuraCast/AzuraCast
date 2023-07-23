@@ -1,40 +1,20 @@
 <template>
     <div class="row-of-cards">
-        <section
-            class="card"
-            role="region"
-            aria-labelledby="hdr_system_logs"
+        <card-page
+            header-id="hdr_system_logs"
+            :title="$gettext('System Logs')"
         >
-            <div class="card-header text-bg-primary">
-                <h2
-                    id="hdr_system_logs"
-                    class="card-title"
-                >
-                    {{ $gettext('System Logs') }}
-                </h2>
-            </div>
-
             <log-list
                 :url="systemLogsUrl"
                 @view="viewLog"
             />
-        </section>
+        </card-page>
 
-        <section
+        <card-page
             v-if="stationLogs.length > 0"
-            class="card"
-            role="region"
-            aria-labelledby="hdr_logs_by_station"
+            header-id="hdr_logs_by_station"
+            :title="$gettext('Logs by Station')"
         >
-            <div class="card-header text-bg-primary">
-                <h2
-                    id="hdr_logs_by_station"
-                    class="card-title"
-                >
-                    {{ $gettext('Logs by Station') }}
-                </h2>
-            </div>
-
             <div class="card-body">
                 <o-tabs
                     nav-tabs-class="nav-tabs"
@@ -54,7 +34,7 @@
                     </o-tab-item>
                 </o-tabs>
             </div>
-        </section>
+        </card-page>
     </div>
 
     <streaming-log-modal ref="$modal" />
@@ -64,6 +44,7 @@
 import LogList from "~/components/Common/LogList";
 import StreamingLogModal from "~/components/Common/StreamingLogModal";
 import {ref} from "vue";
+import CardPage from "~/components/Common/CardPage.vue";
 
 defineProps({
     systemLogsUrl: {

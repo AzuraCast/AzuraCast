@@ -3,22 +3,18 @@
         {{ $gettext('Backups') }}
     </h2>
 
-    <div class="row">
+    <div class="row row-of-cards">
         <div class="col-md-6">
-            <section
-                class="card mb-3"
-                role="region"
-                aria-labelledby="hdr_automatic_backups"
-            >
-                <div class="card-header text-bg-primary">
+            <card-page header-id="hdr_automatic_backups">
+                <template #header="{id}">
                     <h2
-                        id="hdr_automatic_backups"
+                        :id="id"
                         class="card-title"
                     >
                         {{ $gettext('Automatic Backups') }}
                         <enabled-badge :enabled="settings.backupEnabled" />
                     </h2>
-                </div>
+                </template>
 
                 <loading :loading="settingsLoading">
                     <div
@@ -41,7 +37,7 @@
                     </div>
                 </loading>
 
-                <div class="card-body buttons">
+                <template #footer_actions>
                     <button
                         type="button"
                         class="btn btn-primary"
@@ -63,24 +59,14 @@
                             {{ $gettext('Most Recent Backup Log') }}
                         </span>
                     </button>
-                </div>
-            </section>
+                </template>
+            </card-page>
         </div>
         <div class="col-md-6">
-            <section
-                class="card mb-3"
-                role="region"
-                aria-labelledby="hdr_restoring_backups"
+            <card-page
+                header-id="hdr_restoring_backups"
+                :title="$gettext('Restoring Backups')"
             >
-                <div class="card-header text-bg-primary">
-                    <h2
-                        id="hdr_restoring_backups"
-                        class="card-title"
-                    >
-                        {{ $gettext('Restoring Backups') }}
-                    </h2>
-                </div>
-
                 <div class="card-body">
                     <p class="card-text">
                         {{ $gettext('To restore a backup from your host computer, run:') }}
@@ -95,25 +81,15 @@
                         }}
                     </p>
                 </div>
-            </section>
+            </card-page>
         </div>
     </div>
 
-    <section
-        class="card mb-3"
-        role="region"
-        aria-labelledby="hdr_backups"
+    <card-page
+        header-id="hdr_backups"
+        :title="$gettext('Backups')"
     >
-        <div class="card-header text-bg-primary">
-            <h2
-                id="hdr_backups"
-                class="card-title"
-            >
-                {{ $gettext('Backups') }}
-            </h2>
-        </div>
-
-        <div class="card-body">
+        <template #actions>
             <button
                 type="button"
                 class="btn btn-primary"
@@ -124,7 +100,7 @@
                     {{ $gettext('Run Manual Backup') }}
                 </span>
             </button>
-        </div>
+        </template>
 
         <data-table
             id="api_keys"
@@ -151,7 +127,7 @@
                 </div>
             </template>
         </data-table>
-    </section>
+    </card-page>
 
     <admin-backups-configure-modal
         ref="$configureModal"
@@ -189,6 +165,7 @@ import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
 import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
 import Loading from "~/components/Common/Loading.vue";
+import CardPage from "~/components/Common/CardPage.vue";
 
 const props = defineProps({
     listUrl: {

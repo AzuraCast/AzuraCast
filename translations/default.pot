@@ -282,7 +282,6 @@ msgstr ""
 #: vue/components/Stations/Mounts/Form/Advanced.vue:3
 #: vue/components/Stations/Playlists/Form/Advanced.vue:3
 #: vue/components/Stations/Playlists/Form/BasicInfo.vue:329
-#: /var/azuracast/www/templates/partials/bodyjs.phtml:27
 msgid "Advanced"
 msgstr ""
 
@@ -453,7 +452,6 @@ msgstr ""
 
 #: vue/components/Stations/Profile.vue:168
 #: vue/components/Stations/Restart.vue:140
-#: /var/azuracast/www/templates/partials/bodyjs.phtml:26
 msgid "Are you sure?"
 msgstr ""
 
@@ -7264,7 +7262,7 @@ msgstr ""
 msgid "Account not found."
 msgstr ""
 
-#: /var/azuracast/www/src/Console/Command/Locale/ImportCommand.php:54
+#: /var/azuracast/www/src/Console/Command/Locale/ImportCommand.php:57
 #, php-format
 msgid "Imported locale: %s"
 msgstr ""

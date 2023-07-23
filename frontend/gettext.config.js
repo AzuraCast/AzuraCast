@@ -7,6 +7,7 @@ module.exports = {
         path: '../translations',
         potPath: './frontend.pot',
         jsonPath: './translations.json',
+        locales: [],
         flat: false,
         linguas: false
     }

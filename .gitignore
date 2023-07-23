@@ -40,6 +40,7 @@ tmp/cache/*---*
 !/web/static/webpack_dist/.gitkeep
 /web/static/assets.json
 /web/static/webpack.json
+/translations/frontend.pot
 
 # Ansible deployment files
 /ansible/

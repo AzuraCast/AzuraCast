@@ -14,7 +14,6 @@
                         :id="id"
                         v-model="field.$model"
                         class="form-check-input"
-                        :class="fieldClass"
                         type="checkbox"
                         :name="name"
                     >

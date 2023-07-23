@@ -26,7 +26,6 @@
                     :id="id"
                     v-model="field.$model"
                     :name="name"
-                    :field-class="fieldClass"
                     :options="options"
                     :radio="radio"
                     :stacked="stacked"

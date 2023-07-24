@@ -20,7 +20,7 @@ final class StereoToolAction implements SingleActionInterface
 
         return $request->getView()->renderVuePage(
             response: $response,
-            component: 'Vue_AdminStereoTool',
+            component: 'Admin/StereoTool',
             id: 'admin-stereo-tool',
             title: __('Install Stereo Tool'),
             props: [

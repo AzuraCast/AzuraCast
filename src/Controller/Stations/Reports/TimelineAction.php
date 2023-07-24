@@ -21,7 +21,7 @@ final class TimelineAction implements SingleActionInterface
 
         return $request->getView()->renderVuePage(
             response: $response,
-            component: 'Vue_StationsReportsTimeline',
+            component: 'Stations/Reports/Timeline',
             id: 'station-report-timeline',
             title: __('Song Playback Timeline'),
             props: [

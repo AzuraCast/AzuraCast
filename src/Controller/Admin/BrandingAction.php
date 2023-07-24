@@ -22,7 +22,7 @@ final class BrandingAction implements SingleActionInterface
 
         return $request->getView()->renderVuePage(
             response: $response,
-            component: 'Vue_AdminBranding',
+            component: 'Admin/Branding',
             id: 'admin-branding',
             title: __('Custom Branding'),
             props: [

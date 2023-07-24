@@ -20,7 +20,7 @@ final class GeoLiteAction implements SingleActionInterface
 
         return $request->getView()->renderVuePage(
             response: $response,
-            component: 'Vue_AdminGeoLite',
+            component: 'Admin/GeoLite',
             id: 'admin-geolite',
             title: __('Install GeoLite IP Database'),
             props: [

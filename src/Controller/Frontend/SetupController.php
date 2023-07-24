@@ -107,7 +107,7 @@ final class SetupController
 
         return $request->getView()->renderVuePage(
             response: $response,
-            component: 'Vue_SetupRegister',
+            component: 'Setup/Register',
             id: 'setup-register',
             layout: 'minimal',
             title: __('Set Up AzuraCast'),
@@ -136,7 +136,7 @@ final class SetupController
 
         return $request->getView()->renderVuePage(
             response: $response,
-            component: 'Vue_SetupStation',
+            component: 'Setup/Station',
             id: 'setup-station',
             title: __('Create a New Radio Station'),
             props: array_merge(
@@ -167,7 +167,7 @@ final class SetupController
 
         return $request->getView()->renderVuePage(
             response: $response,
-            component: 'Vue_SetupSettings',
+            component: 'Setup/Settings',
             id: 'setup-settings',
             title: __('System Settings'),
             props: $this->settingsComponent->getProps($request),

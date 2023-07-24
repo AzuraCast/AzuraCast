@@ -27,7 +27,7 @@ final class IndexAction implements SingleActionInterface
 
         return $view->renderVuePage(
             response: $response,
-            component: 'Vue_AdminIndex',
+            component: 'Admin/Index',
             id: 'admin-index',
             title: __('Administration'),
             props: [

@@ -57,7 +57,7 @@ final class EditLiquidsoapConfigAction implements SingleActionInterface
         $router = $request->getRouter();
         return $request->getView()->renderVuePage(
             response: $response,
-            component: 'Vue_StationsLiquidsoapConfig',
+            component: 'Stations/LiquidsoapConfig',
             id: 'station-liquidsoap-config',
             title: __('Edit Liquidsoap Configuration'),
             props: [

@@ -48,7 +48,7 @@ final class FilesAction implements SingleActionInterface
 
         return $request->getView()->renderVuePage(
             response: $response,
-            component: 'Vue_StationsMedia',
+            component: 'Stations/Media',
             id: 'media-manager',
             title: __('Music Files'),
             props: [

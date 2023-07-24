@@ -31,7 +31,7 @@ final class BackupsAction implements SingleActionInterface
 
         return $request->getView()->renderVuePage(
             response: $response,
-            component: 'Vue_AdminBackups',
+            component: 'Admin/Backups',
             id: 'admin-backups',
             title: __('Backups'),
             props: [

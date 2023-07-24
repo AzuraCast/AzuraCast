@@ -71,7 +71,7 @@ final class ProfileController
 
         return $request->getView()->renderVuePage(
             response: $response,
-            component: 'Vue_StationsProfile',
+            component: 'Stations/Profile',
             id: 'profile',
             title: __('Profile'),
             props: [
@@ -213,7 +213,7 @@ final class ProfileController
 
         return $request->getView()->renderVuePage(
             response: $response,
-            component: 'Vue_StationsProfileEdit',
+            component: 'Stations/ProfileEdit',
             id: 'edit-profile',
             title: __('Edit Profile'),
             props: array_merge(

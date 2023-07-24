@@ -20,7 +20,7 @@ final class AuditLogAction implements SingleActionInterface
 
         return $request->getView()->renderVuePage(
             response: $response,
-            component: 'Vue_AdminAuditLog',
+            component: 'Admin/AuditLog',
             id: 'admin-audit-log',
             title: __('Audit Log'),
             props: [

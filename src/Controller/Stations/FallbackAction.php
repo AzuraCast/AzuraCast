@@ -22,7 +22,7 @@ final class FallbackAction implements SingleActionInterface
 
         return $request->getView()->renderVuePage(
             response: $response,
-            component: 'Vue_StationsFallback',
+            component: 'Stations/Fallback',
             id: 'station-fallback',
             title: __('Custom Fallback File'),
             props: [

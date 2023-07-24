@@ -28,7 +28,7 @@ final class StationsAction implements SingleActionInterface
 
         return $request->getView()->renderVuePage(
             response: $response,
-            component: 'Vue_AdminStations',
+            component: 'Admin/Stations',
             id: 'admin-stations',
             title: __('Stations'),
             props: array_merge(

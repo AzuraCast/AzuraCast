@@ -26,7 +26,7 @@ final class MountsAction implements SingleActionInterface
 
         return $request->getView()->renderVuePage(
             response: $response,
-            component: 'Vue_StationsMounts',
+            component: 'Stations/Mounts',
             id: 'station-mounts',
             title: __('Mount Points'),
             props: [

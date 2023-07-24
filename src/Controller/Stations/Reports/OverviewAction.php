@@ -33,7 +33,7 @@ final class OverviewAction implements SingleActionInterface
 
         return $request->getView()->renderVuePage(
             response: $response,
-            component: 'Vue_StationsReportsOverview',
+            component: 'Stations/Reports/Overview',
             id: 'vue-reports-overview',
             title: __('Station Statistics'),
             props: [

@@ -23,7 +23,7 @@ final class RestartAction implements SingleActionInterface
 
         return $request->getView()->renderVuePage(
             response: $response,
-            component: 'Vue_StationsRestart',
+            component: 'Stations/Restart',
             id: 'stations-restart',
             title: __('Update Station Configuration'),
             props: [

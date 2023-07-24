@@ -26,7 +26,7 @@ final class IndexAction implements SingleActionInterface
 
         return $request->getView()->renderVuePage(
             response: $response,
-            component: 'Vue_Account',
+            component: 'Account',
             id: 'account',
             title: __('My Account'),
             props: [

@@ -93,7 +93,7 @@ final class IndexAction implements SingleActionInterface
 
         return $request->getView()->renderVuePage(
             response: $response,
-            component: 'Vue_AdminDebug',
+            component: 'Admin/Debug',
             id: 'admin-debug',
             title: __('System Debugger'),
             props: [

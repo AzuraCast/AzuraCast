@@ -59,7 +59,7 @@ final class PlayerAction implements SingleActionInterface
 
             return $view->renderVuePage(
                 response: $response,
-                component: 'Vue_PublicPlayer',
+                component: 'Public/Player',
                 id: 'station-nowplaying',
                 layout: 'minimal',
                 title: $station->getName(),

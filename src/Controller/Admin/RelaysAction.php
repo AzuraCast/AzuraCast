@@ -20,7 +20,7 @@ final class RelaysAction implements SingleActionInterface
 
         return $request->getView()->renderVuePage(
             response: $response,
-            component: 'Vue_AdminRelays',
+            component: 'Admin/Relays',
             id: 'admin-relays',
             title: __('Connected AzuraRelays'),
             props: [

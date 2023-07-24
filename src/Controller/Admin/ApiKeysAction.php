@@ -20,7 +20,7 @@ final class ApiKeysAction implements SingleActionInterface
 
         return $request->getView()->renderVuePage(
             response: $response,
-            component: 'Vue_AdminApiKeys',
+            component: 'Admin/ApiKeys',
             id: 'admin-api-keys',
             title: __('API Keys'),
             props: [

@@ -33,7 +33,7 @@ final class UpdatesAction implements SingleActionInterface
 
         return $request->getView()->renderVuePage(
             response: $response,
-            component: 'Vue_AdminUpdates',
+            component: 'Admin/Updates',
             id: 'admin-updates',
             title: __('Update AzuraCast'),
             props: [

@@ -26,7 +26,7 @@ final class UsersAction implements SingleActionInterface
 
         return $request->getView()->renderVuePage(
             response: $response,
-            component: 'Vue_AdminUsers',
+            component: 'Admin/Users',
             id: 'admin-users',
             title: __('Users'),
             props: [

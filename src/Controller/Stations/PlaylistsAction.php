@@ -26,7 +26,7 @@ final class PlaylistsAction implements SingleActionInterface
 
         return $request->getView()->renderVuePage(
             response: $response,
-            component: 'Vue_StationsPlaylists',
+            component: 'Stations/Playlists',
             id: 'station-playlist',
             title: __('Playlists'),
             props: [

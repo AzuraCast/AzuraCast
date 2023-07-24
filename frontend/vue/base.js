@@ -56,8 +56,11 @@ export default function (component) {
     /* SweetAlert */
     installSweetAlert(vueApp);
 
-    return function (el, props) {
+    const vueComponent = (el, props) => {
         vueApp.config.globalProperties.$appProps = props;
         vueApp.mount(el);
-    };
+    }
+
+    window.vueComponent = vueComponent;
+    return vueComponent;
 }

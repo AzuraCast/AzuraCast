@@ -20,7 +20,7 @@ final class BulkMediaAction implements SingleActionInterface
 
         return $request->getView()->renderVuePage(
             response: $response,
-            component: 'Vue_StationsBulkMedia',
+            component: 'Stations/BulkMedia',
             id: 'station-bulk-media',
             title: __('Bulk Media Import/Export'),
             props: [

@@ -21,7 +21,7 @@ final class RequestsAction implements SingleActionInterface
 
         return $request->getView()->renderVuePage(
             response: $response,
-            component: 'Vue_StationsReportsRequests',
+            component: 'Stations/Reports/Requests',
             id: 'station-report-requests',
             title: __('Song Requests'),
             props: [

@@ -21,7 +21,7 @@ final class CustomFieldsAction implements SingleActionInterface
 
         return $request->getView()->renderVuePage(
             response: $response,
-            component: 'Vue_AdminCustomFields',
+            component: 'Admin/CustomFields',
             id: 'admin-custom-fields',
             title: __('Custom Fields'),
             props: [

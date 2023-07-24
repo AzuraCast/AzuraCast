@@ -35,7 +35,7 @@ final class RequestsAction implements SingleActionInterface
         return $request->getView()->renderVuePage(
             response: $response
                 ->withHeader('X-Frame-Options', '*'),
-            component: 'Vue_PublicRequests',
+            component: 'Public/Requests',
             id: 'song-requests',
             layout: 'minimal',
             title: __('Requests') . ' - ' . $station->getName(),

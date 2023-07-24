@@ -24,7 +24,7 @@ final class SettingsAction implements SingleActionInterface
     ): ResponseInterface {
         return $request->getView()->renderVuePage(
             response: $response,
-            component: 'Vue_AdminSettings',
+            component: 'Admin/Settings',
             id: 'admin-settings',
             title: __('System Settings'),
             props: $this->settingsComponent->getProps($request),

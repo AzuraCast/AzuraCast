@@ -20,7 +20,7 @@ final class LogsAction implements SingleActionInterface
 
         return $request->getView()->renderVuePage(
             response: $response,
-            component: 'Vue_StationsHelp',
+            component: 'Stations/Help',
             id: 'stations-help',
             title: __('Help'),
             props: [

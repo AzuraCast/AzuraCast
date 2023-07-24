@@ -41,7 +41,7 @@ final class LogsAction implements SingleActionInterface
 
         return $request->getView()->renderVuePage(
             response: $response,
-            component: 'Vue_AdminLogs',
+            component: 'Admin/Logs',
             id: 'admin-logs',
             title: __('System Logs'),
             props: [

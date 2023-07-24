@@ -19,7 +19,7 @@ final class HlsStreamsAction implements SingleActionInterface
         $router = $request->getRouter();
         return $request->getView()->renderVuePage(
             response: $response,
-            component: 'Vue_StationsHlsStreams',
+            component: 'Stations/HlsStreams',
             id: 'station-hls-streams',
             title: __('HLS Streams'),
             props: [

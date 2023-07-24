@@ -20,7 +20,7 @@ final class StorageLocationsAction implements SingleActionInterface
 
         return $request->getView()->renderVuePage(
             response: $response,
-            component: 'Vue_AdminStorageLocations',
+            component: 'Admin/StorageLocations',
             id: 'admin-storage-locations',
             title: __('Storage Locations'),
             props: [

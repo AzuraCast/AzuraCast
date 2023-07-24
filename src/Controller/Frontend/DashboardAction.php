@@ -30,7 +30,7 @@ final class DashboardAction implements SingleActionInterface
 
         return $request->getView()->renderVuePage(
             response: $response,
-            component: 'Vue_Dashboard',
+            component: 'Dashboard',
             id: 'dashboard',
             title: __('Dashboard'),
             props: [

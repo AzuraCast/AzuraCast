@@ -21,7 +21,7 @@ final class UploadStereoToolConfigAction implements SingleActionInterface
 
         return $request->getView()->renderVuePage(
             response: $response,
-            component: 'Vue_StationsStereoToolConfig',
+            component: 'Stations/StereoToolConfig',
             id: 'stations-stereo-tool-config',
             title: __('Upload Stereo Tool Configuration'),
             props: [

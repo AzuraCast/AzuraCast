@@ -44,7 +44,7 @@ final class ScheduleAction implements SingleActionInterface
         return $view->renderVuePage(
             response: $response
                 ->withHeader('X-Frame-Options', '*'),
-            component: 'Vue_PublicSchedule',
+            component: 'Public/Schedule',
             id: 'station-schedule',
             layout: 'minimal',
             title: __('Schedule') . ' - ' . $station->getName(),

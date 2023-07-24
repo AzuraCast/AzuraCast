@@ -21,7 +21,7 @@ final class QueueAction implements SingleActionInterface
 
         return $request->getView()->renderVuePage(
             response: $response,
-            component: 'Vue_StationsQueue',
+            component: 'Stations/Queue',
             id: 'station-queue',
             title: __('Upcoming Song Queue'),
             props: [

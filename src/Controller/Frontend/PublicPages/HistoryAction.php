@@ -39,7 +39,7 @@ final class HistoryAction implements SingleActionInterface
 
         return $view->renderVuePage(
             response: $response->withHeader('X-Frame-Options', '*'),
-            component: 'Vue_PublicHistory',
+            component: 'Public/History',
             id: 'song-history',
             layout: 'minimal',
             title: __('History') . ' - ' . $station->getName(),

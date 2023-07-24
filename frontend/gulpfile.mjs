@@ -70,9 +70,9 @@ task('bundle-deps', parallel(
 task('clean', function () {
     return del([
         '../web/static/dist/**/*',
-        '../web/static/webpack_dist/**/*',
+        '../web/static/vite_dist/assets/**/*',
+        '../web/static/vite_dist/manifest.json',
         '../web/static/assets.json',
-        '../web/static/webpack.json'
     ], {force: true});
 });
 
@@ -87,7 +87,7 @@ task('concat-js', function () {
             .pipe(dest('../web/static/dist'));
 });
 
-task('build-vue', run('webpack -c webpack.config.mjs'));
+task('build-vue', run('vite build'));
 
 task('build-css', function () {
     return src(['./scss/style.scss'])

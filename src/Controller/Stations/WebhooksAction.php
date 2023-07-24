@@ -25,7 +25,7 @@ final class WebhooksAction implements SingleActionInterface
 
         return $request->getView()->renderVuePage(
             response: $response,
-            component: 'Vue_StationsWebhooks',
+            component: 'Stations/Webhooks',
             id: 'station-webhooks',
             title: __('Web Hooks'),
             props: [

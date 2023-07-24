@@ -30,7 +30,7 @@ final class PodcastsAction implements SingleActionInterface
 
         return $request->getView()->renderVuePage(
             response: $response,
-            component: 'Vue_StationsPodcasts',
+            component: 'Stations/Podcasts',
             id: 'station-podcasts',
             title: __('Podcasts'),
             props: [

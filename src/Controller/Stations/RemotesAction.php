@@ -20,7 +20,7 @@ final class RemotesAction implements SingleActionInterface
 
         return $request->getView()->renderVuePage(
             response: $response,
-            component: 'Vue_StationsRemotes',
+            component: 'Stations/Remotes',
             id: 'station-remotes',
             title: __('Remote Relays'),
             props: [

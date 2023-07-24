@@ -28,7 +28,7 @@ final class PermissionsAction implements SingleActionInterface
 
         return $request->getView()->renderVuePage(
             response: $response,
-            component: 'Vue_AdminPermissions',
+            component: 'Admin/Permissions',
             id: 'admin-permissions',
             title: __('Roles & Permissions'),
             props: [

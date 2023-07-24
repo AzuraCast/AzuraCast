@@ -84,7 +84,7 @@ final class RecoverAction implements SingleActionInterface
 
         return $request->getView()->renderVuePage(
             response: $response,
-            component: 'Vue_Recover',
+            component: 'Recover',
             id: 'account-recover',
             layout: 'minimal',
             title: __('Recover Account'),

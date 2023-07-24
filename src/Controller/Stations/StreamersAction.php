@@ -34,7 +34,7 @@ final class StreamersAction implements SingleActionInterface
 
         return $request->getView()->renderVuePage(
             response: $response,
-            component: 'Vue_StationsStreamers',
+            component: 'Stations/Streamers',
             id: 'station-streamers',
             title: __('Streamer/DJ Accounts'),
             props: [

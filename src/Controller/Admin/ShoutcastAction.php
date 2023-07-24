@@ -25,7 +25,7 @@ final class ShoutcastAction implements SingleActionInterface
 
         return $request->getView()->renderVuePage(
             response: $response,
-            component: 'Vue_AdminShoutcast',
+            component: 'Admin/Shoutcast',
             id: 'admin-shoutcast',
             title: __('Install Shoutcast 2 DNAS'),
             props: [

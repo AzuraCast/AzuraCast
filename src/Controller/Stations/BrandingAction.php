@@ -21,7 +21,7 @@ final class BrandingAction implements SingleActionInterface
 
         return $request->getView()->renderVuePage(
             response: $response,
-            component: 'Vue_StationsBranding',
+            component: 'Stations/Branding',
             id: 'stations-branding',
             title: __('Custom Branding'),
             props: [

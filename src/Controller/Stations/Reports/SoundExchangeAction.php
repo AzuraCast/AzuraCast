@@ -29,7 +29,7 @@ final class SoundExchangeAction implements SingleActionInterface
 
         return $request->getView()->renderVuePage(
             response: $response,
-            component: 'Vue_StationsReportsSoundExchange',
+            component: 'Stations/Reports/SoundExchange',
             id: 'station-report-soundexchange',
             title: __('SoundExchange Report'),
             props: [

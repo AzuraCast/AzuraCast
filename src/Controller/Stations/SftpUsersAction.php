@@ -35,7 +35,7 @@ final class SftpUsersAction implements SingleActionInterface
 
         return $request->getView()->renderVuePage(
             response: $response,
-            component: 'Vue_StationsSftpUsers',
+            component: 'Stations/SftpUsers',
             id: 'station-sftp-users',
             title: __('SFTP Users'),
             props: [

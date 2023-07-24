@@ -67,10 +67,62 @@ final class View extends Engine
             }
         );
 
-        $vueComponents = Json::loadFromFile($environment->getBaseDirectory() . '/web/static/webpack.json');
+        $vueComponents = Json::loadFromFile($environment->getBaseDirectory() . '/web/static/vite_dist/manifest.json');
         $this->registerFunction(
             'getVueComponentInfo',
-            fn(string $component) => $vueComponents['entrypoints'][$component] ?? null
+            function (string $component) use ($vueComponents) {
+                $componentPath = 'vue/pages/' . $component . '.js';
+
+                if (!isset($vueComponents[$componentPath])) {
+                    return null;
+                }
+
+                $assetRoot = '/static/vite_dist';
+                $includes = [
+                    'js' => $assetRoot . '/' . $vueComponents[$componentPath]['file'],
+                    'css' => [],
+                    'prefetch' => [],
+                ];
+
+                $visitedNodes = [];
+                $fetchCss = function ($component) use (
+                    $vueComponents,
+                    $assetRoot,
+                    &$includes,
+                    &$fetchCss,
+                    &$visitedNodes
+                ): void {
+                    if (!isset($vueComponents[$component]) || isset($visitedNodes[$component])) {
+                        return;
+                    }
+
+                    $visitedNodes[$component] = true;
+
+                    $componentInfo = $vueComponents[$component];
+                    if (isset($componentInfo['css'])) {
+                        foreach ($componentInfo['css'] as $css) {
+                            $includes['css'][] = $assetRoot . '/' . $css;
+                        }
+                    }
+
+                    if (isset($componentInfo['file'])) {
+                        $fileUrl = $assetRoot . '/' . $componentInfo['file'];
+                        if ($fileUrl !== $includes['js']) {
+                            $includes['prefetch'][] = $fileUrl;
+                        }
+                    }
+
+                    if (isset($componentInfo['imports'])) {
+                        foreach ($componentInfo['imports'] as $import) {
+                            $fetchCss($import);
+                        }
+                    }
+                };
+
+                $fetchCss($componentPath);
+
+                return $includes;
+            }
         );
 
         $versionedFiles = Json::loadFromFile($environment->getBaseDirectory() . '/web/static/assets.json');

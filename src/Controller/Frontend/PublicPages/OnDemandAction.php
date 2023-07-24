@@ -68,7 +68,7 @@ final class OnDemandAction implements SingleActionInterface
 
         return $view->renderVuePage(
             response: $response->withHeader('X-Frame-Options', '*'),
-            component: 'Vue_PublicOnDemand',
+            component: 'Public/OnDemand',
             id: 'station-on-demand',
             layout: 'minimal',
             title: __('On-Demand Media') . ' - ' . $station->getName(),

@@ -43,7 +43,12 @@
                                 </li>
                                 <li>
                                     {{
-                                        $gettext('For most installations, you should choose the "Command line version 64 bit". For Raspberry Pi devices, select "Raspberry Pi 3/4 64 bit command line".')
+                                        $gettext('For x86/64 installations, choose "x86/64 Linux Thimeo-ST plugin".')
+                                    }}
+                                </li>
+                                <li>
+                                    {{
+                                        $gettext('For ARM (Raspberry Pi, etc.) installations, choose "Raspberry Pi Thimeo-ST plugin".')
                                     }}
                                 </li>
                                 <li>
@@ -79,6 +84,19 @@
                             @complete="relist"
                             @error="onError"
                         />
+
+                        <div
+                            v-if="version"
+                            class="buttons block-buttons mt-3"
+                        >
+                            <button
+                                type="button"
+                                class="btn btn-danger"
+                                @click="doDelete"
+                            >
+                                {{ $gettext('Uninstall') }}
+                            </button>
+                        </div>
                     </div>
                 </div>
             </loading>
@@ -94,6 +112,7 @@ import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
 import Loading from "~/components/Common/Loading.vue";
 import CardPage from "~/components/Common/CardPage.vue";
+import {useSweetAlert} from "~/vendor/sweetalert";
 
 const props = defineProps({
     apiUrl: {
@@ -131,6 +150,16 @@ const relist = () => {
         isLoading.value = false;
     });
 };
+
+const {confirmDelete} = useSweetAlert();
+
+const doDelete = () => {
+    confirmDelete().then((result) => {
+        if (result.value) {
+            axios.delete(props.apiUrl).then(relist);
+        }
+    });
+}
 
 onMounted(relist);
 </script>

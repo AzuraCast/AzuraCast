@@ -13,6 +13,12 @@ release channel, you can take advantage of these new features and fixes.
     - `!var` becomes `var()`
     - `var := value` optionally becomes `var.set(value)`
 
+- **Support for Direct StereoTool/Liquidsoap Integration**: In Liquidsoap 2.2.x, StereoTool is now directly supported
+  within the software, resulting in better performance and significantly less delay in processing. We now support
+  uploading the plugin version of StereoTool from the vendor's web site. We will use either the CLI version or the
+  plugin version if it is uploaded. You can now also remove StereoTool from your installation entirely from the "Install
+  StereoTool" page.
+
 ## Code Quality/Technical Changes
 
 - **Frontend Overhaul**: We have updated the code that powers the browser-facing frontend of our application. In

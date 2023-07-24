@@ -148,23 +148,45 @@ final class ConfigWriter implements EventSubscriberInterface
                     return;
                 }
 
-                $stereoToolBinary = StereoTool::getBinaryPath();
+                $stereoToolLibraryPath = StereoTool::getLibraryPath();
+                $stereoToolBinary = $stereoToolLibraryPath . '/stereo_tool';
 
                 $stereoToolConfiguration = $station->getRadioConfigDir()
                     . DIRECTORY_SEPARATOR . $settings->getStereoToolConfigurationPath();
-                $stereoToolProcess = $stereoToolBinary . ' --silent - - -s ' . $stereoToolConfiguration;
 
                 $stereoToolLicenseKey = $settings->getStereoToolLicenseKey();
-                if (!empty($stereoToolLicenseKey)) {
-                    $stereoToolProcess .= ' -k "' . $stereoToolLicenseKey . '"';
-                }
 
-                $event->appendBlock(
-                    <<<LIQ
-                    # Stereo Tool Pipe
-                    radio = pipe(replay_delay=1.0, process='{$stereoToolProcess}', radio)
-                    LIQ
-                );
+                if (is_file($stereoToolBinary)) {
+                    $stereoToolProcess = $stereoToolBinary . ' --silent - - -s ' . $stereoToolConfiguration;
+
+                    if (!empty($stereoToolLicenseKey)) {
+                        $stereoToolProcess .= ' -k "' . $stereoToolLicenseKey . '"';
+                    }
+
+                    $event->appendBlock(
+                        <<<LIQ
+                        # Stereo Tool Pipe
+                        radio = pipe(replay_delay=1.0, process='{$stereoToolProcess}', radio)
+                        LIQ
+                    );
+                } else {
+                    $stereoToolLibrary = match (php_uname('m')) {
+                        'x86_64', 'arm64' => $stereoToolLibraryPath . '/libStereoTool_64.so',
+                        default => $stereoToolLibraryPath . '/libStereoTool.so'
+                    };
+
+                    $event->appendBlock(
+                        <<<LIQ
+                        # Stereo Tool Pipe
+                        radio = stereotool(
+                            library_file="{$stereoToolLibrary}",
+                            license_key="{$stereoToolLicenseKey}",
+                            preset="{$stereoToolConfiguration}",
+                            radio
+                        )
+                        LIQ
+                    );
+                }
                 break;
 
             case AudioProcessingMethods::None:

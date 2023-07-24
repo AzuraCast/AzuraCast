@@ -85,11 +85,17 @@ final class UploadedFile implements UploadedFileInterface, JsonSerializable
         $this->validateActive();
 
         $contents = file_get_contents($this->file);
-        @unlink($this->file);
-
-        $this->moved = true;
+        $this->delete();
 
         return $contents ?: '';
+    }
+
+    public function delete(): void
+    {
+        $this->validateActive();
+
+        @unlink($this->file);
+        $this->moved = true;
     }
 
     public function getClientMediaType(): ?string

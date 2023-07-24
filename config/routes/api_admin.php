@@ -160,6 +160,11 @@ return static function (RouteCollectorProxy $group) {
                         '/stereo_tool',
                         Controller\Api\Admin\StereoTool\PostAction::class
                     );
+
+                    $group->delete(
+                        '/stereo_tool',
+                        Controller\Api\Admin\StereoTool\DeleteAction::class
+                    );
                 }
             )->add(new Middleware\Permissions(GlobalPermissions::Settings));
 

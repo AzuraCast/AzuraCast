@@ -11,15 +11,19 @@ use Symfony\Component\Process\Process;
 
 final class StereoTool
 {
+    public const VERSION_FILE = '.currentversion';
+
     public static function isInstalled(): bool
     {
-        return file_exists(self::getBinaryPath());
+        $libraryPath = self::getLibraryPath();
+
+        return file_exists($libraryPath . '/stereo_tool')
+            || file_exists($libraryPath . '/libStereoTool.so');
     }
 
-    public static function getBinaryPath(): string
+    public static function getLibraryPath(): string
     {
-        $environment = Environment::getInstance();
-        return $environment->getParentDirectory() . '/servers/stereo_tool/stereo_tool';
+        return Environment::getInstance()->getParentDirectory() . '/servers/stereo_tool';
     }
 
     public static function isReady(Station $station): bool
@@ -38,7 +42,17 @@ final class StereoTool
             return null;
         }
 
-        $binaryPath = self::getBinaryPath();
+        $libraryPath = self::getLibraryPath();
+
+        if (file_exists($libraryPath . '/' . self::VERSION_FILE)) {
+            return file_get_contents($libraryPath . '/' . self::VERSION_FILE) . ' (Plugin)';
+        }
+
+        $binaryPath = $libraryPath . '/stereo_tool';
+
+        if (!file_exists($binaryPath)) {
+            return null;
+        }
 
         $process = new Process([$binaryPath, '--help']);
         $process->setWorkingDirectory(dirname($binaryPath));
@@ -55,6 +69,10 @@ final class StereoTool
         }
 
         preg_match('/STEREO TOOL ([.\d]+) CONSOLE APPLICATION/i', $process->getErrorOutput(), $matches);
-        return $matches[1] ?? null;
+        if (!isset($matches[1])) {
+            return null;
+        }
+
+        return $matches[1] . ' (CLI)';
     }
 }

@@ -3,6 +3,14 @@
         header-id="hdr_install_stereo_tool"
         :title="$gettext('Install Stereo Tool')"
     >
+        <template #info>
+            <p class="card-text">
+                {{
+                    $gettext('Stereo Tool is a popular, proprietary tool for software audio processing. Using Stereo Tool, you can customize the sound of your stations using preset configuration files.')
+                }}
+            </p>
+        </template>
+
         <div class="card-body">
             <loading :loading="isLoading">
                 <div class="row g-3">

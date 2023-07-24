@@ -1,7 +1,6 @@
 <template>
     <inner-map
         v-if="visibleListeners.length < 3000"
-        :attribution="attribution"
     >
         <map-point
             v-for="l in visibleListeners"
@@ -31,10 +30,6 @@ import {computed} from "vue";
 import {filter} from "lodash";
 
 const props = defineProps({
-    attribution: {
-        type: String,
-        required: true
-    },
     listeners: {
         type: Array,
         default: () => {

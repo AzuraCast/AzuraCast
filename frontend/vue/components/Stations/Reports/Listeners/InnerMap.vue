@@ -12,15 +12,8 @@
 
 <script setup>
 import {onMounted, provide, ref, shallowRef, watch} from "vue";
-import L from "~/vendor/leaflet";
+import L from 'leaflet';
 import useGetTheme from "~/functions/useGetTheme";
-
-const props = defineProps({
-    attribution: {
-        type: String,
-        required: true
-    }
-});
 
 const $container = ref(); // Template Ref
 const $map = shallowRef();
@@ -51,13 +44,6 @@ onMounted(() => {
             attribution: tileAttribution,
         }).addTo(map);
     });
-
-    /*
-    // Add fullscreen control
-    const fullscreenControl = new L.Control.Fullscreen();
-    map.addControl(fullscreenControl)
-     */
-
 });
 </script>
 

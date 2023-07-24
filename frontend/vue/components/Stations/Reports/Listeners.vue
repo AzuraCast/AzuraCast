@@ -74,7 +74,6 @@
                 <div id="map">
                     <StationReportsListenersMap
                         :listeners="listeners"
-                        :attribution="attribution"
                     />
                 </div>
                 <div>
@@ -161,9 +160,10 @@
                         </template>
                     </data-table>
                 </div>
-                <div class="card-body card-padding-sm text-muted">
-                    {{ attribution }}
-                </div>
+                <div
+                    class="card-body card-padding-sm text-muted"
+                    v-html="attribution"
+                />
             </div>
         </div>
     </div>

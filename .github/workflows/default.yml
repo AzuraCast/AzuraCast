@@ -138,7 +138,7 @@ jobs:
           chmod 777 .gitinfo
 
       - name: Upload built static assets and translations
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: assets
           if-no-files-found: error
@@ -163,7 +163,7 @@ jobs:
       - uses: actions/checkout@master
 
       - name: Download built static assets from previous step
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: assets
 

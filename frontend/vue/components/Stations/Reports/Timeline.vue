@@ -1,11 +1,11 @@
 <template>
     <div class="card">
         <div class="card-header text-bg-primary">
-            <div class="d-flex align-items-center">
+            <div class="d-lg-flex align-items-center">
                 <h2 class="card-title flex-fill my-0">
                     {{ $gettext('Song Playback Timeline') }}
                 </h2>
-                <div class="flex-shrink buttons">
+                <div class="flex-shrink buttons mt-2 mt-lg-0">
                     <a
                         id="btn-export"
                         class="btn btn-dark"
@@ -17,7 +17,8 @@
                             {{ $gettext('Download CSV') }}
                         </span>
                     </a>
-
+                </div>
+                <div class="flex-shrink buttons ms-lg-2 mt-2 mt-lg-0">
                     <date-range-dropdown
                         v-model="dateRange"
                         time-picker

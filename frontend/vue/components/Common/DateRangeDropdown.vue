@@ -12,6 +12,7 @@
         :cancel-text="$gettext('Cancel')"
         :now-button-label="$gettext('Now')"
         :timezone="tz"
+        :clearable="false"
     >
         <template #dp-input="{ value }">
             <button

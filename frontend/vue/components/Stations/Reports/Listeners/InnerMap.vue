@@ -23,6 +23,8 @@ provide('map', $map);
 const {theme} = useGetTheme();
 
 onMounted(() => {
+    L.Icon.Default.imagePath = '/static/img/leaflet/';
+
     // Init map
     const map = L.map($container.value);
     map.setView([40, 0], 1);

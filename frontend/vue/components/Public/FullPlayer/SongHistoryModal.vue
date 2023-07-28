@@ -21,9 +21,9 @@ import {ref} from "vue";
 
 const props = defineProps({
     history: {
-        type: Array,
+        type: Object,
         default: () => {
-            return [];
+            return {};
         }
     },
     showAlbumArt: {

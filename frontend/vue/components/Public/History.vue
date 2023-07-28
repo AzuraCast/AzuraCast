@@ -23,6 +23,6 @@ const props = defineProps({
 const {np} = useNowPlaying(props);
 
 const history = computed(() => {
-    return np.value.song_history ?? [];
+    return np.value.song_history ?? {};
 });
 </script>

@@ -36,9 +36,9 @@ import AlbumArt from "~/components/Common/AlbumArt.vue";
 
 const props = defineProps({
     history: {
-        type: Array,
+        type: Object,
         default: () => {
-            return [];
+            return {};
         }
     },
     showAlbumArt: {

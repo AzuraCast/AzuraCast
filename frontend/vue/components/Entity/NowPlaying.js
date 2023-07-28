@@ -62,5 +62,5 @@ export default {
       'custom_fields': {}
     }
   },
-  'song_history': []
+  'song_history': {}
 };

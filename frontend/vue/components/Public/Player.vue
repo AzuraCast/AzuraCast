@@ -222,9 +222,13 @@ const $player = ref(); // Template ref
 const volume = useLocalStorage('player_volume', 55, {
     listenToStorageChanges: false
 });
-const isMuted = useLocalStorage('player_is_muted', false, {
-    listenToStorageChanges: false
-});
+
+const urlParamVolume = (new URL(document.location)).searchParams.get('volume');
+if (null !== urlParamVolume) {
+    volume.value = urlParamVolume;
+}
+
+const isMuted = ref(false);
 
 const toggleMute = () => {
     isMuted.value = !isMuted.value;

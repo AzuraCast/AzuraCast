@@ -32,7 +32,6 @@ final class ListenersAction implements SingleActionInterface
             title: __('Listeners'),
             props: [
                 'apiUrl' => $router->fromHere('api:listeners:index'),
-                'stationTz' => $station->getTimezone(),
                 'attribution' => $this->ipGeolocation->getAttribution(),
             ]
         );

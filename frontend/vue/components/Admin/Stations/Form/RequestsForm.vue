@@ -73,11 +73,7 @@ const props = defineProps({
     station: {
         type: Object,
         required: true
-    },
-    showAdvanced: {
-        type: Boolean,
-        default: true
-    },
+    }
 });
 
 const emit = defineEmits(['update:form']);

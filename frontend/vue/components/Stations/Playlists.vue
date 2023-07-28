@@ -18,7 +18,7 @@
                     {{
                         $gettext(
                             'This station\'s time zone is currently %{tz}.',
-                            {tz: stationTimeZone}
+                            {tz: timezone}
                         )
                     }}
                 </div>
@@ -265,8 +265,8 @@
                     <div class="card-body-flush">
                         <schedule
                             ref="$schedule"
+                            :timezone="timezone"
                             :schedule-url="scheduleUrl"
-                            :station-time-zone="stationTimeZone"
                             @click="doCalendarClick"
                         />
                     </div>
@@ -278,8 +278,6 @@
     <edit-modal
         ref="$editModal"
         :create-url="listUrl"
-        :station-time-zone="stationTimeZone"
-        :enable-advanced-features="enableAdvancedFeatures"
         @relist="relist"
         @needs-restart="mayNeedRestart"
     />
@@ -319,6 +317,7 @@ import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
 import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
 import {Duration} from "luxon";
+import {useAzuraCastStation} from "~/vendor/azuracast";
 
 const props = defineProps({
     ...mayNeedRestartProps,
@@ -334,19 +333,13 @@ const props = defineProps({
         type: String,
         required: true
     },
-    stationTimeZone: {
-        type: String,
-        required: true
-    },
     useManualAutoDj: {
         type: Boolean,
         required: true
     },
-    enableAdvancedFeatures: {
-        type: Boolean,
-        required: true
-    }
 });
+
+const {timezone} = useAzuraCastStation();
 
 const {$gettext} = useTranslate();
 

@@ -164,7 +164,7 @@
                 </template>
             </form-fieldset>
 
-            <form-fieldset v-if="showAdvanced">
+            <form-fieldset v-if="enableAdvancedFeatures">
                 <template #label>
                     {{ $gettext('Advanced Configuration') }}
                 </template>
@@ -278,6 +278,7 @@ import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
 import {useVModel} from "@vueuse/core";
 import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
 import {decimal, numeric, required} from "@vuelidate/validators";
+import {useAzuraCast} from "~/vendor/azuracast";
 
 const props = defineProps({
     form: {
@@ -291,12 +292,10 @@ const props = defineProps({
     isStereoToolInstalled: {
         type: Boolean,
         default: true
-    },
-    showAdvanced: {
-        type: Boolean,
-        default: true
-    },
+    }
 });
+
+const {enableAdvancedFeatures} = useAzuraCast();
 
 const emit = defineEmits(['update:form']);
 const form = useVModel(props, 'form', emit);
@@ -316,7 +315,7 @@ const {v$, tabClass} = useVuelidateOnFormTab(
             },
         };
 
-        if (props.showAdvanced) {
+        if (enableAdvancedFeatures) {
             validations = {
                 ...validations,
                 backend_config: {
@@ -349,7 +348,7 @@ const {v$, tabClass} = useVuelidateOnFormTab(
             },
         };
 
-        if (props.showAdvanced) {
+        if (enableAdvancedFeatures) {
             blankForm = {
                 ...blankForm,
                 backend_config: {

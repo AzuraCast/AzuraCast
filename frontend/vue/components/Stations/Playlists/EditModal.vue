@@ -13,10 +13,7 @@
             content-class="mt-3"
         >
             <form-basic-info v-model:form="form" />
-            <form-schedule
-                v-model:schedule-items="form.schedule_items"
-                :station-time-zone="stationTimeZone"
-            />
+            <form-schedule v-model:schedule-items="form.schedule_items" />
             <form-advanced
                 v-if="enableAdvancedFeatures"
                 v-model:form="form"
@@ -34,18 +31,13 @@ import {computed, ref} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import {useNotify} from "~/functions/useNotify";
 import ModalForm from "~/components/Common/ModalForm.vue";
+import {useAzuraCast} from "~/vendor/azuracast";
 
 const props = defineProps({
-    ...baseEditModalProps,
-    stationTimeZone: {
-        type: String,
-        required: true
-    },
-    enableAdvancedFeatures: {
-        type: Boolean,
-        required: true
-    }
+    ...baseEditModalProps
 });
+
+const {enableAdvancedFeatures} = useAzuraCast();
 
 const emit = defineEmits(['relist', 'needs-restart']);
 

@@ -19,7 +19,6 @@
             <form-schedule
                 v-model:schedule-items="form.schedule_items"
                 :form="v$"
-                :station-time-zone="stationTimeZone"
             />
             <form-artwork
                 v-model="form.artwork_file"
@@ -44,10 +43,6 @@ import ModalForm from "~/components/Common/ModalForm.vue";
 
 const props = defineProps({
     ...baseEditModalProps,
-    stationTimeZone: {
-        type: String,
-        required: true
-    },
     newArtUrl: {
         type: String,
         required: true

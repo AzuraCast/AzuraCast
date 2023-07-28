@@ -13,7 +13,7 @@
             />
 
             <form-group-field
-                v-if="showAdvanced"
+                v-if="enableAdvancedFeatures"
                 id="edit_form_radio_base_dir"
                 class="col-md-6"
                 :field="v$.radio_base_dir"
@@ -63,6 +63,7 @@ import Loading from "~/components/Common/Loading.vue";
 import FormGroupSelect from "~/components/Form/FormGroupSelect.vue";
 import {useVModel} from "@vueuse/core";
 import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
+import {useAzuraCast} from "~/vendor/azuracast";
 
 const props = defineProps({
     form: {
@@ -77,11 +78,9 @@ const props = defineProps({
         type: String,
         required: true
     },
-    showAdvanced: {
-        type: Boolean,
-        default: true
-    },
 });
+
+const {enableAdvancedFeatures} = useAzuraCast();
 
 const emit = defineEmits(['update:form']);
 const form = useVModel(props, 'form', emit);
@@ -95,7 +94,7 @@ const {v$, tabClass} = useVuelidateOnFormTab(
             podcasts_storage_location: {},
         };
 
-        if (props.showAdvanced) {
+        if (enableAdvancedFeatures) {
             validations = {
                 ...validations,
                 radio_base_dir: {},
@@ -113,7 +112,7 @@ const {v$, tabClass} = useVuelidateOnFormTab(
             is_enabled: true,
         };
 
-        if (props.showAdvanced) {
+        if (enableAdvancedFeatures) {
             blankForm = {
                 ...blankForm,
                 radio_base_dir: '',

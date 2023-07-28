@@ -17,7 +17,6 @@ final class TimelineAction implements SingleActionInterface
         array $params
     ): ResponseInterface {
         $router = $request->getRouter();
-        $station = $request->getStation();
 
         return $request->getView()->renderVuePage(
             response: $response,
@@ -26,7 +25,6 @@ final class TimelineAction implements SingleActionInterface
             title: __('Song Playback Timeline'),
             props: [
                 'baseApiUrl' => $router->fromHere('api:stations:history'),
-                'stationTimeZone' => $station->getTimezone(),
             ]
         );
     }

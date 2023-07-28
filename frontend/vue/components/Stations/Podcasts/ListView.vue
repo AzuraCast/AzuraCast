@@ -87,7 +87,6 @@
     <edit-modal
         ref="$editPodcastModal"
         :create-url="listUrl"
-        :station-time-zone="stationTimeZone"
         :new-art-url="newArtUrl"
         :language-options="languageOptions"
         :categories-options="categoriesOptions"
@@ -106,7 +105,7 @@ import {ref} from "vue";
 import {useSweetAlert} from "~/vendor/sweetalert";
 import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
-import Icon from "~/components/InlinePlayer.vue";
+import Icon from "~/components/Common/Icon.vue";
 
 const props = defineProps({
     ...listViewProps

@@ -16,7 +16,6 @@
                 />
 
                 <profile-schedule
-                    :station-time-zone="stationTimeZone"
                     :schedule-items="profileInfo.schedule"
                 />
 
@@ -107,10 +106,6 @@ const props = defineProps({
     ...requestsPanelProps,
     ...streamersPanelProps,
     profileApiUri: {
-        type: String,
-        required: true
-    },
-    stationTimeZone: {
         type: String,
         required: true
     },

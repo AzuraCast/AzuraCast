@@ -46,28 +46,25 @@
 import {DateTime} from "luxon";
 import {map} from "lodash";
 import {computed} from "vue";
-import {useAzuraCast} from "~/vendor/azuracast";
+import {useAzuraCast, useAzuraCastStation} from "~/vendor/azuracast";
 import CardPage from "~/components/Common/CardPage.vue";
 
 const props = defineProps({
     scheduleItems: {
         type: Array,
         required: true
-    },
-    stationTimeZone: {
-        type: String,
-        required: true
     }
 });
 
 const {timeConfig} = useAzuraCast();
+const {timezone} = useAzuraCastStation();
 
 const processedScheduleItems = computed(() => {
-    const now = DateTime.now().setZone(props.stationTimeZone);
+    const now = DateTime.now().setZone(timezone);
 
     return map(props.scheduleItems, (row) => {
-        const start_moment = DateTime.fromSeconds(row.start_timestamp).setZone(props.stationTimeZone);
-        const end_moment = DateTime.fromSeconds(row.end_timestamp).setZone(props.stationTimeZone);
+        const start_moment = DateTime.fromSeconds(row.start_timestamp).setZone(timezone);
+        const end_moment = DateTime.fromSeconds(row.end_timestamp).setZone(timezone);
 
         row.time_until = start_moment.toRelative();
 

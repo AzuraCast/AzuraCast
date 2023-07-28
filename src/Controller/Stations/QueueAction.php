@@ -17,7 +17,6 @@ final class QueueAction implements SingleActionInterface
         array $params
     ): ResponseInterface {
         $router = $request->getRouter();
-        $station = $request->getStation();
 
         return $request->getView()->renderVuePage(
             response: $response,
@@ -27,7 +26,6 @@ final class QueueAction implements SingleActionInterface
             props: [
                 'listUrl' => $router->fromHere('api:stations:queue'),
                 'clearUrl' => $router->fromHere('api:stations:queue:clear'),
-                'stationTimeZone' => $station->getTimezone(),
             ],
         );
     }

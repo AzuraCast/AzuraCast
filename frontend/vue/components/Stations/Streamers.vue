@@ -16,7 +16,7 @@
                             {{
                                 $gettext(
                                     'This station\'s time zone is currently %{tz}.',
-                                    {tz: stationTimeZone}
+                                    {tz: timezone}
                                 )
                             }}
                         </div>
@@ -96,8 +96,8 @@
                             <div class="card-body-flush">
                                 <schedule
                                     ref="$schedule"
+                                    :timezone="timezone"
                                     :schedule-url="scheduleUrl"
-                                    :station-time-zone="stationTimeZone"
                                     @click="doCalendarClick"
                                 />
                             </div>
@@ -113,7 +113,7 @@
         <edit-modal
             ref="$editModal"
             :create-url="listUrl"
-            :station-time-zone="stationTimeZone"
+            :station-time-zone="timezone"
             :new-art-url="newArtUrl"
             @relist="relist"
         />
@@ -135,6 +135,7 @@ import useHasDatatable from "~/functions/useHasDatatable";
 import useHasEditModal from "~/functions/useHasEditModal";
 import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
 import CardPage from "~/components/Common/CardPage.vue";
+import {useAzuraCastStation} from "~/vendor/azuracast";
 
 const props = defineProps({
     listUrl: {
@@ -149,15 +150,13 @@ const props = defineProps({
         type: String,
         required: true
     },
-    stationTimeZone: {
-        type: String,
-        required: true
-    },
     connectionInfo: {
         type: Object,
         required: true
     }
 });
+
+const {timezone} = useAzuraCastStation();
 
 const {$gettext} = useTranslate();
 

@@ -261,7 +261,7 @@ import PlayButton from "~/components/Common/PlayButton";
 import {useTranslate} from "~/vendor/gettext";
 import {computed, nextTick, onMounted, ref} from "vue";
 import {forEach, map, partition} from "lodash";
-import {useAzuraCast} from "~/vendor/azuracast";
+import {useAzuraCast, useAzuraCastStation} from "~/vendor/azuracast";
 import {DateTime} from "luxon";
 import {useEventListener} from "@vueuse/core";
 import formatFileSize from "../../functions/formatFileSize";
@@ -312,10 +312,6 @@ const props = defineProps({
         required: false,
         default: () => []
     },
-    stationTimeZone: {
-        type: String,
-        required: true
-    },
     showSftp: {
         type: Boolean,
         default: true
@@ -332,6 +328,7 @@ const props = defineProps({
 
 const {$gettext} = useTranslate();
 const {timeConfig} = useAzuraCast();
+const {timezone} = useAzuraCastStation();
 
 const fields = computed(() => {
     let fields = [
@@ -371,7 +368,7 @@ const fields = computed(() => {
                     return '';
                 }
 
-                return DateTime.fromSeconds(value).setZone(props.stationTimeZone).toLocaleString(
+                return DateTime.fromSeconds(value).setZone(timezone).toLocaleString(
                     {...DateTime.DATETIME_MED, ...timeConfig}
                 );
             },
@@ -398,7 +395,7 @@ const selectedItems = ref({
     directories: []
 });
 const currentDirectory = ref('');
-const searchPhrase = ref(null);
+const searchPhrase = ref('');
 
 const onRowSelected = (items) => {
     let splitItems = partition(items, 'is_dir');

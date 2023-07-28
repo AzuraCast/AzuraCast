@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Controller\Stations;
 
-use App\Container\SettingsAwareTrait;
 use App\Controller\SingleActionInterface;
 use App\Http\Response;
 use App\Http\ServerRequest;
@@ -12,8 +11,6 @@ use Psr\Http\Message\ResponseInterface;
 
 final class PlaylistsAction implements SingleActionInterface
 {
-    use SettingsAwareTrait;
-
     public function __invoke(
         ServerRequest $request,
         Response $response,
@@ -21,7 +18,6 @@ final class PlaylistsAction implements SingleActionInterface
     ): ResponseInterface {
         $station = $request->getStation();
 
-        $settings = $this->readSettings();
         $router = $request->getRouter();
 
         return $request->getView()->renderVuePage(
@@ -34,9 +30,7 @@ final class PlaylistsAction implements SingleActionInterface
                 'scheduleUrl' => $router->fromHere('api:stations:playlists:schedule'),
                 'filesUrl' => $router->fromHere('stations:files:index'),
                 'restartStatusUrl' => $router->fromHere('api:stations:restart-status'),
-                'stationTimeZone' => $station->getTimezone(),
                 'useManualAutoDj' => $station->useManualAutoDJ(),
-                'enableAdvancedFeatures' => $settings->getEnableAdvancedFeatures(),
             ],
         );
     }

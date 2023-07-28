@@ -14,11 +14,11 @@ import {shallowRef} from "vue";
 import {useAzuraCast} from "~/vendor/azuracast";
 
 const props = defineProps({
-    scheduleUrl: {
+    timezone: {
         type: String,
         required: true
     },
-    stationTimeZone: {
+    scheduleUrl: {
         type: String,
         required: true
     }
@@ -37,7 +37,7 @@ const calendarOptions = shallowRef({
     locales: allLocales,
     plugins: [luxon3Plugin, timeGridPlugin],
     initialView: 'timeGridWeek',
-    timeZone: props.stationTimeZone,
+    timeZone: props.timezone,
     nowIndicator: true,
     defaultTimedEventDuration: '00:20',
     headerToolbar: false,

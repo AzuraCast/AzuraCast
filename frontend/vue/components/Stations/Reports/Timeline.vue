@@ -22,7 +22,7 @@
                     <date-range-dropdown
                         v-model="dateRange"
                         time-picker
-                        :tz="stationTimeZone"
+                        :tz="timezone"
                         @update="relist"
                     />
                 </div>
@@ -91,7 +91,7 @@ import Icon from "~/components/Common/Icon";
 import DataTable from "~/components/Common/DataTable";
 import DateRangeDropdown from "~/components/Common/DateRangeDropdown";
 import {DateTime} from 'luxon';
-import {useAzuraCast} from "~/vendor/azuracast";
+import {useAzuraCast, useAzuraCastStation} from "~/vendor/azuracast";
 import {computed, ref} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 
@@ -99,14 +99,11 @@ const props = defineProps({
     baseApiUrl: {
         type: String,
         required: true
-    },
-    stationTimeZone: {
-        type: String,
-        required: true
     }
 });
 
-const nowTz = DateTime.now().setZone(props.stationTimeZone);
+const {timezone} = useAzuraCastStation();
+const nowTz = DateTime.now().setZone(timezone);
 
 const dateRange = ref(
     {
@@ -142,7 +139,7 @@ const fields = [
         formatter: (value, key, item) => {
             return DateTime.fromSeconds(
                 item.played_at,
-                {zone: props.stationTimeZone}
+                {zone: timezone}
             ).toLocaleString(
                 {...DateTime.DATETIME_SHORT, ...timeConfig}
             );

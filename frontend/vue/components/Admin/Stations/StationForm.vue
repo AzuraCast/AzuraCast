@@ -18,39 +18,33 @@
                 <admin-stations-profile-form
                     v-model:form="form"
                     :timezones="timezones"
-                    :show-advanced="showAdvanced"
                 />
 
                 <admin-stations-frontend-form
                     v-model:form="form"
                     :is-shoutcast-installed="isShoutcastInstalled"
                     :countries="countries"
-                    :show-advanced="showAdvanced"
                 />
 
                 <admin-stations-backend-form
                     v-model:form="form"
                     :station="station"
                     :is-stereo-tool-installed="isStereoToolInstalled"
-                    :show-advanced="showAdvanced"
                 />
 
                 <admin-stations-hls-form
                     v-model:form="form"
                     :station="station"
-                    :show-advanced="showAdvanced"
                 />
 
                 <admin-stations-requests-form
                     v-model:form="form"
                     :station="station"
-                    :show-advanced="showAdvanced"
                 />
 
                 <admin-stations-streamers-form
                     v-model:form="form"
                     :station="station"
-                    :show-advanced="showAdvanced"
                 />
 
                 <admin-stations-admin-form
@@ -58,7 +52,6 @@
                     v-model:form="form"
                     :is-edit-mode="isEditMode"
                     :storage-location-api-url="storageLocationApiUrl"
-                    :show-advanced="showAdvanced"
                 />
             </o-tabs>
 

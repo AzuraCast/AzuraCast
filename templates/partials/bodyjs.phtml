@@ -1,4 +1,6 @@
 <?php
+/** @var App\Customization $customization */
+
 /** @var Psr\Http\Message\RequestInterface $request */
 $localeObj = $request->getAttribute(App\Http\ServerRequest::ATTR_LOCALE);
 if (!($localeObj instanceof App\Enums\SupportedLocales)) {
@@ -31,13 +33,24 @@ foreach (App\Enums\SupportedLocales::cases() as $supportedLocale) {
     );
 }
 
+// CSRF token
+$csrf = null;
+
+if (($include_csrf ?? false) === true) {
+    $csrf = $request->getAttribute(App\Http\ServerRequest::ATTR_SESSION_CSRF);
+    if ($csrf instanceof App\Session\Csrf) {
+        $csrf = $csrf->generate(App\Middleware\Auth\ApiAuth::API_CSRF_NAMESPACE);
+    }
+}
+
 $app = [
     'locale' => $locale,
     'locale_short' => $localeShort,
     'locale_with_dashes' => $localeWithDashes,
     'locale_paths' => $localePaths,
     'time_config' => $timeConfig,
-    'api_csrf' => null,
+    'api_csrf' => $csrf,
+    'enable_advanced_features' => $customization->enableAdvancedFeatures(),
 ];
 ?>
 

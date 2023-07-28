@@ -19,8 +19,8 @@
                                 >
                                     <avatar
                                         :url="user.avatar.url_128"
-                                        :service="user.avatar.service"
-                                        :service-url="user.avatar.serviceUrl"
+                                        :service="user.avatar.service_name"
+                                        :service-url="user.avatar.service_url"
                                     />
                                 </div>
                                 <div class="flex-fill">
@@ -255,8 +255,8 @@ const {state: user, isLoading: userLoading, execute: reloadUser} = useRefreshabl
         email: null,
         avatar: {
             url_128: null,
-            service: null,
-            serviceUrl: null
+            service_name: null,
+            service_url: null
         },
         roles: [],
     },

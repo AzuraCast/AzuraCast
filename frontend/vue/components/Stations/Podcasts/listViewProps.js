@@ -11,14 +11,6 @@ export default {
         type: String,
         required: true
     },
-    locale: {
-        type: String,
-        required: true
-    },
-    stationTimeZone: {
-        type: String,
-        required: true
-    },
     languageOptions: {
         type: Object,
         required: true

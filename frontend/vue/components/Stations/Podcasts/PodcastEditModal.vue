@@ -40,10 +40,6 @@ import ModalForm from "~/components/Common/ModalForm.vue";
 
 const props = defineProps({
     ...baseEditModalProps,
-    stationTimeZone: {
-        type: String,
-        required: true
-    },
     languageOptions: {
         type: Object,
         required: true

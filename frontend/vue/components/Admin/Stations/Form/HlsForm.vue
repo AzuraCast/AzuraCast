@@ -92,6 +92,7 @@ import {computed} from "vue";
 import {useVModel} from "@vueuse/core";
 import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
 import {numeric} from "@vuelidate/validators";
+import {useAzuraCast} from "~/vendor/azuracast";
 
 const props = defineProps({
     form: {
@@ -101,12 +102,10 @@ const props = defineProps({
     station: {
         type: Object,
         required: true
-    },
-    showAdvanced: {
-        type: Boolean,
-        default: true
-    },
+    }
 });
+
+const {enableAdvancedFeatures} = useAzuraCast();
 
 const emit = defineEmits(['update:form']);
 const form = useVModel(props, 'form', emit);
@@ -121,7 +120,7 @@ const {v$, tabClass} = useVuelidateOnFormTab(
             },
         };
 
-        if (props.showAdvanced) {
+        if (enableAdvancedFeatures) {
             validations = {
                 ...validations,
                 backend_config: {
@@ -145,7 +144,7 @@ const {v$, tabClass} = useVuelidateOnFormTab(
             }
         };
 
-        if (props.showAdvanced) {
+        if (enableAdvancedFeatures) {
             blankForm = {
                 ...blankForm,
                 backend_config: {

@@ -64,7 +64,6 @@ final class FilesAction implements SingleActionInterface
                 'initialPlaylists' => $playlists,
                 'customFields' => $this->customFieldRepo->fetchArray(),
                 'validMimeTypes' => MimeType::getProcessableTypes(),
-                'stationTimeZone' => $station->getTimezone(),
                 'showSftp' => StationFeatures::Sftp->supportedForStation($station),
                 'sftpUrl' => $router->fromHere('stations:sftp_users:index'),
                 'supportsImmediateQueue' => $backendEnum->isEnabled(),

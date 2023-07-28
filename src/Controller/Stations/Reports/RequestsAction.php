@@ -17,7 +17,6 @@ final class RequestsAction implements SingleActionInterface
         array $params
     ): ResponseInterface {
         $router = $request->getRouter();
-        $station = $request->getStation();
 
         return $request->getView()->renderVuePage(
             response: $response,
@@ -27,7 +26,6 @@ final class RequestsAction implements SingleActionInterface
             props: [
                 'listUrl' => $router->fromHere('api:stations:reports:requests'),
                 'clearUrl' => $router->fromHere('api:stations:reports:requests:clear'),
-                'stationTimeZone' => $station->getTimezone(),
             ]
         );
     }

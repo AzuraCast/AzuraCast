@@ -26,16 +26,32 @@ final class NowPlayingComponent implements VueComponentInterface
         $np->resolveUrls($baseUrl);
 
         $customization = $request->getCustomization();
-        $router = $request->getRouter();
 
         $backendConfig = $station->getBackendConfig();
 
-        $props = [
-            'initialNowPlaying' => $np,
+        return [
+            ...$this->getDataProps($request),
             'showAlbumArt' => !$customization->hideAlbumArt(),
             'autoplay' => !empty($request->getQueryParam('autoplay')),
             'showHls' => $backendConfig->getHlsEnableOnPublicPlayer(),
             'hlsIsDefault' => $backendConfig->getHlsIsDefault(),
+        ];
+    }
+
+    public function getDataProps(ServerRequest $request): array
+    {
+        $station = $request->getStation();
+
+        $baseUrl = $request->getRouter()->getBaseUrl();
+
+        $np = $this->npApiGenerator->currentOrEmpty($station);
+        $np->resolveUrls($baseUrl);
+
+        $customization = $request->getCustomization();
+        $router = $request->getRouter();
+
+        $props = [
+            'initialNowPlaying' => $np,
             'nowPlayingUri' => $customization->useStaticNowPlaying()
                 ? '/api/nowplaying_static/' . urlencode($station->getShortName()) . '.json'
                 : $router->named('api:nowplaying:index', ['station_id' => $station->getShortName()]),

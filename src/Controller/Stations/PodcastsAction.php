@@ -20,7 +20,6 @@ final class PodcastsAction implements SingleActionInterface
         array $params
     ): ResponseInterface {
         $router = $request->getRouter();
-        $station = $request->getStation();
 
         $locale = $request->getCustomization()->getLocale();
         $userLocale = $locale->value;
@@ -36,12 +35,9 @@ final class PodcastsAction implements SingleActionInterface
             props: [
                 'listUrl' => $router->fromHere('api:stations:podcasts'),
                 'newArtUrl' => $router->fromHere('api:stations:podcasts:new-art'),
-                'stationUrl' => $router->fromHere('stations:index:index'),
                 'quotaUrl' => $router->fromHere('api:stations:quota', [
                     'type' => StorageLocationTypes::StationPodcasts->value,
                 ]),
-                'locale' => substr($locale->value, 0, 2),
-                'stationTimeZone' => $station->getTimezone(),
                 'languageOptions' => $languageOptions,
                 'categoriesOptions' => $categoriesOptions,
             ],

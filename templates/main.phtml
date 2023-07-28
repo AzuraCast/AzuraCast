@@ -38,20 +38,9 @@ $header ??= null;
 if ($sections->has('sidebar')): ?>has-sidebar<?php
 endif; ?>">
 
-<?= $this->fetch('partials/bodyjs') ?>
-
-<script>
-    <?php
-    $csrfJson = 'null';
-    $csrf = $request->getAttribute(App\Http\ServerRequest::ATTR_SESSION_CSRF);
-    if ($csrf instanceof App\Session\Csrf) {
-        $csrfToken = $csrf->generate(App\Middleware\Auth\ApiAuth::API_CSRF_NAMESPACE);
-        $csrfJson = json_encode($csrfToken, JSON_THROW_ON_ERROR);
-    }
-    ?>
-
-    App.api_csrf = <?=$csrfJson ?>;
-</script>
+<?= $this->fetch('partials/bodyjs', [
+    'include_csrf' => true,
+]) ?>
 
 <?= $sections->get('bodyjs') ?>
 

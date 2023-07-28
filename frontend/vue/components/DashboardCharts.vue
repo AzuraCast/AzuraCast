@@ -47,11 +47,11 @@ const {state: chartsData, isLoading: chartsLoading} = useAsyncState(
     {
         average: {
             metrics: [],
-            alt: ''
+            alt: []
         },
         unique: {
             metrics: [],
-            alt: ''
+            alt: []
         }
     }
 );

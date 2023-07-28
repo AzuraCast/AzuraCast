@@ -37,7 +37,6 @@ final class OverviewAction implements SingleActionInterface
             id: 'vue-reports-overview',
             title: __('Station Statistics'),
             props: [
-                'stationTimeZone' => $request->getStation()->getTimezone(),
                 'showFullAnalytics' => AnalyticsLevel::All === $analyticsLevel,
                 'listenersByTimePeriodUrl' => $router->fromHere('api:stations:reports:overview-charts'),
                 'bestAndWorstUrl' => $router->fromHere('api:stations:reports:best-and-worst'),

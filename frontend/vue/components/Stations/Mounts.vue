@@ -71,7 +71,6 @@
         ref="$editModal"
         :create-url="listUrl"
         :new-intro-url="newIntroUrl"
-        :show-advanced="showAdvanced"
         :station-frontend-type="stationFrontendType"
         @relist="relist"
         @needs-restart="mayNeedRestart"
@@ -104,11 +103,7 @@ const props = defineProps({
     stationFrontendType: {
         type: String,
         required: true
-    },
-    showAdvanced: {
-        type: Boolean,
-        default: true
-    },
+    }
 });
 
 const {$gettext} = useTranslate();

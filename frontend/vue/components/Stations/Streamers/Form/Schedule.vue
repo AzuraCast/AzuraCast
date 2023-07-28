@@ -16,7 +16,6 @@
             v-for="(row, index) in scheduleItems"
             :key="index"
             v-model:row="scheduleItems[index]"
-            :station-time-zone="stationTimeZone"
             :index="index"
             @remove="remove(index)"
         />
@@ -43,10 +42,6 @@ import {useVModel} from "@vueuse/core";
 import FormMarkup from "~/components/Form/FormMarkup.vue";
 
 const props = defineProps({
-    stationTimeZone: {
-        type: String,
-        required: true
-    },
     scheduleItems: {
         type: Array,
         default: () => {

@@ -31,7 +31,7 @@
                                 time-picker
                                 :min-date="minDate"
                                 :max-date="maxDate"
-                                :tz="stationTimeZone"
+                                :tz="timezone"
                                 @update="updateListeners"
                             />
                         </div>
@@ -183,33 +183,32 @@ import {computed, onMounted, ref, shallowRef} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
+import {useAzuraCastStation} from "~/vendor/azuracast";
 
 const props = defineProps({
   apiUrl: {
     type: String,
     required: true
   },
-  attribution: {
-    type: String,
-    required: true
-  },
-  stationTimeZone: {
-    type: String,
-    required: true
-  },
+    attribution: {
+        type: String,
+        required: true
+    }
 });
 
 const isLive = ref(true);
 const listeners = shallowRef([]);
 
-const nowTz = DateTime.now().setZone(props.stationTimeZone);
+const {timezone} = useAzuraCastStation();
+
+const nowTz = DateTime.now().setZone(timezone);
 
 const minDate = nowTz.minus({years: 5}).toJSDate();
 const maxDate = nowTz.plus({days: 5}).toJSDate();
 
 const dateRange = ref({
-  startDate: nowTz.minus({days: 1}).toJSDate(),
-  endDate: nowTz.toJSDate()
+    startDate: nowTz.minus({days: 1}).toJSDate(),
+    endDate: nowTz.toJSDate()
 });
 
 const {$gettext} = useTranslate();

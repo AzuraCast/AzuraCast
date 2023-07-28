@@ -31,6 +31,7 @@
                 <div id="station-schedule-calendar">
                     <schedule
                         ref="schedule"
+                        :timezone="stationTimeZone"
                         :schedule-url="scheduleUrl"
                         :station-time-zone="stationTimeZone"
                     />

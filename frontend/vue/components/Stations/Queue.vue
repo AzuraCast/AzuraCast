@@ -74,7 +74,7 @@ import DataTable from '../Common/DataTable';
 import QueueLogsModal from './Queue/LogsModal';
 import Icon from "~/components/Common/Icon";
 import {DateTime} from 'luxon';
-import {useAzuraCast} from "~/vendor/azuracast";
+import {useAzuraCast, useAzuraCastStation} from "~/vendor/azuracast";
 import {useTranslate} from "~/vendor/gettext";
 import {ref} from "vue";
 import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
@@ -92,10 +92,6 @@ const props = defineProps({
     clearUrl: {
         type: String,
         required: true
-    },
-    stationTimeZone: {
-        type: String,
-        required: true
     }
 });
 
@@ -108,8 +104,10 @@ const fields = [
     {key: 'source', label: $gettext('Source'), sortable: false}
 ];
 
+const {timezone} = useAzuraCastStation();
+
 const getDateTime = (timestamp) =>
-    DateTime.fromSeconds(timestamp).setZone(props.stationTimeZone);
+    DateTime.fromSeconds(timestamp).setZone(timezone);
 
 const {timeConfig} = useAzuraCast();
 

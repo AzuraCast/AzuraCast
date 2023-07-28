@@ -12,7 +12,7 @@
                     <date-range-dropdown
                         v-model="dateRange"
                         time-picker
-                        :tz="stationTimeZone"
+                        :tz="timezone"
                     />
                 </div>
             </div>
@@ -97,12 +97,9 @@ import StreamsTab from "./Overview/StreamsTab";
 import ClientsTab from "./Overview/ClientsTab";
 import ListeningTimeTab from "~/components/Stations/Reports/Overview/ListeningTimeTab";
 import {ref} from "vue";
+import {useAzuraCastStation} from "~/vendor/azuracast";
 
 const props = defineProps({
-    stationTimeZone: {
-        type: String,
-        required: true
-    },
     showFullAnalytics: {
         type: Boolean,
         required: true
@@ -137,7 +134,8 @@ const props = defineProps({
     }
 });
 
-let nowTz = DateTime.now().setZone(props.stationTimeZone);
+const {timezone} = useAzuraCastStation();
+let nowTz = DateTime.now().setZone(timezone);
 
 const dateRange = ref({
     startDate: nowTz.minus({days: 13}).toJSDate(),

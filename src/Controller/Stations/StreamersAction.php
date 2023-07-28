@@ -41,7 +41,6 @@ final class StreamersAction implements SingleActionInterface
                 'listUrl' => $router->fromHere('api:stations:streamers'),
                 'newArtUrl' => $router->fromHere('api:stations:streamers:new-art'),
                 'scheduleUrl' => $router->fromHere('api:stations:streamers:schedule'),
-                'stationTimeZone' => $station->getTimezone(),
                 'connectionInfo' => [
                     'serverUrl' => $settings->getBaseUrl(),
                     'streamPort' => $backendConfig->getDjPort(),

@@ -75,12 +75,11 @@ final class ProfileController
             id: 'profile',
             title: __('Profile'),
             props: [
-                ...$this->nowPlayingComponent->getProps($request),
+                ...$this->nowPlayingComponent->getDataProps($request),
 
                 // Common
                 'backendType' => $station->getBackendType()->value,
                 'frontendType' => $station->getFrontendType()->value,
-                'stationTimeZone' => $station->getTimezone(),
                 'stationSupportsRequests' => $backendEnum->isEnabled(),
                 'stationSupportsStreamers' => $backendEnum->isEnabled(),
                 'enableRequests' => $station->getEnableRequests(),

@@ -46,7 +46,7 @@
             />
 
             <form-group-field
-                v-if="showAdvanced"
+                v-if="enableAdvancedFeatures"
                 id="edit_form_short_name"
                 class="col-md-6"
                 :field="v$.short_name"
@@ -61,7 +61,7 @@
             </form-group-field>
 
             <form-group-select
-                v-if="showAdvanced"
+                v-if="enableAdvancedFeatures"
                 id="edit_form_api_history_items"
                 class="col-md-6"
                 :field="v$.api_history_items"
@@ -136,6 +136,7 @@ import FormGroupSelect from "~/components/Form/FormGroupSelect.vue";
 import {useVModel} from "@vueuse/core";
 import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
 import {required, url} from "@vuelidate/validators";
+import {useAzuraCast} from "~/vendor/azuracast";
 
 const props = defineProps({
     form: {
@@ -146,11 +147,9 @@ const props = defineProps({
         type: Object,
         required: true
     },
-    showAdvanced: {
-        type: Boolean,
-        default: true
-    },
 });
+
+const {enableAdvancedFeatures} = useAzuraCast();
 
 const emit = defineEmits(['update:form']);
 const form = useVModel(props, 'form', emit);

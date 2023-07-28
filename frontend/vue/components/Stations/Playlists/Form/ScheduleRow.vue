@@ -58,7 +58,7 @@
                     class="col-md-4"
                     :label="$gettext('Station Time Zone')"
                 >
-                    {{ $gettext('This station\'s time zone is currently %{tz}.', {tz: stationTimeZone}) }}
+                    {{ $gettext('This station\'s time zone is currently %{tz}.', {tz: timezone}) }}
                 </form-markup>
 
                 <form-group-field
@@ -111,6 +111,7 @@ import {useTranslate} from "~/vendor/gettext";
 import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
 import FormMarkup from "~/components/Form/FormMarkup.vue";
 import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
+import {useAzuraCastStation} from "~/vendor/azuracast";
 
 const props = defineProps({
     index: {
@@ -120,12 +121,10 @@ const props = defineProps({
     row: {
         type: Object,
         required: true
-    },
-    stationTimeZone: {
-        type: String,
-        required: true
-    },
+    }
 });
+
+const {timezone} = useAzuraCastStation();
 
 const emit = defineEmits(['remove']);
 

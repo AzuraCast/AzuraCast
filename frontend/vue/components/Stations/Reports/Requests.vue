@@ -96,7 +96,7 @@
 import DataTable from '~/components/Common/DataTable';
 import Icon from "~/components/Common/Icon";
 import {DateTime} from 'luxon';
-import {useAzuraCast} from "~/vendor/azuracast";
+import {useAzuraCast, useAzuraCastStation} from "~/vendor/azuracast";
 import {computed, ref} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import {useSweetAlert} from "~/vendor/sweetalert";
@@ -109,10 +109,6 @@ const props = defineProps({
         required: true
     },
     clearUrl: {
-        type: String,
-        required: true
-    },
-    stationTimeZone: {
         type: String,
         required: true
     }
@@ -156,10 +152,11 @@ const setType = (type) => {
     relist();
 };
 
-const formatTime = (time) => {
-    const {timeConfig} = useAzuraCast();
+const {timeConfig} = useAzuraCast();
+const {timezone} = useAzuraCastStation();
 
-    return DateTime.fromSeconds(time).setZone(props.stationTimeZone).toLocaleString(
+const formatTime = (time) => {
+    return DateTime.fromSeconds(time).setZone(timezone).toLocaleString(
         {...DateTime.DATETIME_MED, ...timeConfig}
     );
 };

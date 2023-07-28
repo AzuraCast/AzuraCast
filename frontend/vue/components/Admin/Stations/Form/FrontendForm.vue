@@ -54,7 +54,7 @@
                 />
 
                 <form-group-field
-                    v-if="showAdvanced"
+                    v-if="enableAdvancedFeatures"
                     id="edit_form_frontend_port"
                     class="col-md-6"
                     :field="v$.frontend_config.port"
@@ -66,7 +66,7 @@
                 />
 
                 <form-group-field
-                    v-if="showAdvanced"
+                    v-if="enableAdvancedFeatures"
                     id="edit_form_max_listeners"
                     class="col-md-6"
                     :field="v$.frontend_config.max_listeners"
@@ -77,7 +77,7 @@
             </div>
 
             <div
-                v-if="showAdvanced"
+                v-if="enableAdvancedFeatures"
                 class="row g-3 mb-3"
             >
                 <div class="col-md-5">
@@ -135,7 +135,7 @@
                 </div>
             </div>
 
-            <form-fieldset v-if="showAdvanced">
+            <form-fieldset v-if="enableAdvancedFeatures">
                 <template #label>
                     {{ $gettext('Custom Configuration') }}
                 </template>
@@ -175,6 +175,7 @@ import FormGroupSelect from "~/components/Form/FormGroupSelect.vue";
 import {useVModel} from "@vueuse/core";
 import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
 import {numeric, required} from "@vuelidate/validators";
+import {useAzuraCast} from "~/vendor/azuracast";
 
 const props = defineProps({
     form: {
@@ -188,12 +189,10 @@ const props = defineProps({
     countries: {
         type: Object,
         required: true
-    },
-    showAdvanced: {
-        type: Boolean,
-        default: true
-    },
+    }
 });
+
+const {enableAdvancedFeatures} = useAzuraCast();
 
 const emit = defineEmits(['update:form']);
 const form = useVModel(props, 'form', emit);
@@ -210,7 +209,7 @@ const {v$, tabClass} = useVuelidateOnFormTab(
             },
         };
 
-        if (props.showAdvanced) {
+        if (enableAdvancedFeatures) {
             validations = {
                 ...validations,
                 frontend_config: {
@@ -240,7 +239,7 @@ const {v$, tabClass} = useVuelidateOnFormTab(
             },
         };
 
-        if (props.showAdvanced) {
+        if (enableAdvancedFeatures) {
             blankForm = {
                 ...blankForm,
                 frontend_config: {

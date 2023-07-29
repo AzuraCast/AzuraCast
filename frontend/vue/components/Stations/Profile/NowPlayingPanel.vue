@@ -32,7 +32,7 @@
                 </h6>
                 <a
                     v-if="userCanManageReports"
-                    class="flex-shrink btn btn-link text-secondary ms-2 px-1 py-2"
+                    class="flex-shrink btn btn-link text-white ms-2 px-1 py-2"
                     :href="listenerReportUri"
                     :title="$gettext('Listener Report')"
                 >

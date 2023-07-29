@@ -42,7 +42,7 @@
             </div>
 
             <div
-                v-if="showAdvanced && form.enable_hls"
+                v-if="enableAdvancedFeatures && form.enable_hls"
                 class="row g-3 mb-3"
             >
                 <form-group-field

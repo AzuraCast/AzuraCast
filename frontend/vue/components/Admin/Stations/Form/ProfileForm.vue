@@ -167,7 +167,7 @@ const {v$, tabClass} = useVuelidateOnFormTab(
             enable_on_demand_download: {},
         };
 
-        if (props.showAdvanced) {
+        if (enableAdvancedFeatures) {
             validations = {
                 ...validations,
                 short_name: {},
@@ -190,7 +190,7 @@ const {v$, tabClass} = useVuelidateOnFormTab(
             enable_on_demand_download: true,
         };
 
-        if (props.showAdvanced) {
+        if (enableAdvancedFeatures) {
             blankForm = {
                 ...blankForm,
                 short_name: '',

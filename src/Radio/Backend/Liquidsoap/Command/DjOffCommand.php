@@ -21,6 +21,10 @@ final class DjOffCommand extends AbstractCommand
     ): bool {
         $this->logger->notice('Received "DJ disconnected" ping from Liquidsoap.');
 
+        if (!$asAutoDj) {
+            return false;
+        }
+
         return $this->streamerRepo->onDisconnect($station);
     }
 }

@@ -12,6 +12,7 @@ use App\Doctrine\Messenger\ClearEntityManagerSubscriber;
 use App\MessageQueue\LogWorkerExceptionSubscriber;
 use App\MessageQueue\QueueManagerInterface;
 use App\MessageQueue\ResetArrayCacheSubscriber;
+use App\Service\HighAvailability;
 use Psr\Log\LogLevel;
 use Psr\Log\NullLogger;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -39,6 +40,7 @@ final class ProcessCommand extends CommandAbstract
         private readonly MessageBus $messageBus,
         private readonly CallableEventDispatcherInterface $eventDispatcher,
         private readonly QueueManagerInterface $queueManager,
+        private readonly HighAvailability $highAvailability
     ) {
         parent::__construct();
     }
@@ -53,6 +55,11 @@ final class ProcessCommand extends CommandAbstract
     {
         $runtime = (int)$input->getArgument('runtime');
         $workerName = $input->getOption('worker-name');
+
+        if (!$this->highAvailability->isActiveServer()) {
+            $this->logger->error('This instance is not the current active instance.');
+            return 1;
+        }
 
         $this->logger->notice(
             'Starting new Message Queue worker process.',

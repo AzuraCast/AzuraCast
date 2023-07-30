@@ -28,6 +28,10 @@ final class DjOnCommand extends AbstractCommand
             ]
         );
 
+        if (!$asAutoDj) {
+            return false;
+        }
+
         return $this->streamerRepo->onConnect($station, $user);
     }
 }

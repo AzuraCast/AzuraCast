@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace App\Console\Command\Sync;
 
+use App\Cache\DatabaseCache;
 use App\Console\Command\CommandAbstract;
 use App\Container\ContainerAwareTrait;
 use App\Container\LoggerAwareTrait;
 use App\Sync\Task\AbstractTask;
 use InvalidArgumentException;
 use Monolog\LogRecord;
-use Psr\SimpleCache\CacheInterface;
 use ReflectionClass;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputArgument;
@@ -28,7 +28,7 @@ final class SingleTaskCommand extends CommandAbstract
     use LoggerAwareTrait;
 
     public function __construct(
-        private readonly CacheInterface $cache
+        private readonly DatabaseCache $cache
     ) {
         parent::__construct();
     }
@@ -90,7 +90,10 @@ final class SingleTaskCommand extends CommandAbstract
         ]);
         $this->logger->popProcessor();
 
-        $this->cache->set($cacheKey, time(), 86400);
+        $cacheItem = $this->cache->getItem($cacheKey)
+            ->set(time())
+            ->expiresAfter(86400);
+        $this->cache->save($cacheItem);
     }
 
     /**

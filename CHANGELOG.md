@@ -19,6 +19,11 @@ release channel, you can take advantage of these new features and fixes.
   plugin version if it is uploaded. You can now also remove StereoTool from your installation entirely from the "Install
   StereoTool" page.
 
+- **Initial Multi-Server Support**: AzuraCast now includes initial support for connecting multiple AzuraCast servers to
+  a shared database instance. The system will automatically choose a "primary" instance that runs routine synchronized
+  tasks, with a secondary instance that will automatically take over these functions if the main installation is
+  nonresponsive.
+
 ## Code Quality/Technical Changes
 
 - **Frontend Overhaul**: We have updated the code that powers the browser-facing frontend of our application. In

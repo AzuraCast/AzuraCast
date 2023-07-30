@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Console\Command;
 
+use App\Cache\DatabaseCache;
 use App\Container\SettingsAwareTrait;
 use Symfony\Component\Cache\Adapter\AdapterInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -21,7 +22,8 @@ final class ClearCacheCommand extends CommandAbstract
     use SettingsAwareTrait;
 
     public function __construct(
-        private readonly AdapterInterface $cache
+        private readonly AdapterInterface $cache,
+        private readonly DatabaseCache $dbCache
     ) {
         parent::__construct();
     }
@@ -32,6 +34,7 @@ final class ClearCacheCommand extends CommandAbstract
 
         // Flush all Redis entries.
         $this->cache->clear();
+        $this->dbCache->clear();
 
         // Clear cached system settings.
         $settings = $this->readSettings();

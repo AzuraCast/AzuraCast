@@ -30,6 +30,10 @@ final class FeedbackCommand extends AbstractCommand
         bool $asAutoDj = false,
         array $payload = []
     ): bool {
+        if (!$asAutoDj) {
+            return false;
+        }
+
         // Process extra metadata sent by Liquidsoap (if it exists).
         try {
             $historyRow = $this->getSongHistory($station, $payload);

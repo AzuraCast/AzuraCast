@@ -91,15 +91,12 @@
             ref="$modal"
             :title="$gettext('Import Results')"
         >
-            <div>
-                <p class="card-text">
-                    {{ importResults.message }}
-                </p>
+            <p class="card-text">
+                {{ importResults.message }}
+            </p>
 
-                <table
-                    class="table table-striped table-responsive"
-                    style="max-height: 300px; overflow-y: scroll;"
-                >
+            <div style="max-height: 300px; overflow-y: scroll;">
+                <table class="table table-striped table-responsive">
                     <thead>
                         <tr>
                             <th class="p-2">

@@ -31,7 +31,6 @@ final class StationPlaylistMediaRepository extends Repository
     ) {
     }
 
-
     /**
      * @param StationMedia $media
      * @param array<int, int> $playlists Playlists with weight as value (id => weight)

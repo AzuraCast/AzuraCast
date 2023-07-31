@@ -122,7 +122,7 @@ final class UploadAction implements SingleActionInterface
             }
 
             $record = $this->em->find(StationMedia::class, $mediaId);
-            if (!$record instanceof StationMedia) {
+            if (!($record instanceof StationMedia)) {
                 continue;
             }
 
@@ -182,10 +182,12 @@ final class UploadAction implements SingleActionInterface
         array $playlistsByName
     ): bool {
         $mediaRow = [];
-        $hasPlaylists = false;
-        $playlists = [];
+
         $hasCustomFields = false;
         $customFields = [];
+
+        $hasPlaylists = false;
+        $playlists = [];
 
         foreach ($row as $key => $value) {
             if ('' === $value) {
@@ -206,9 +208,9 @@ final class UploadAction implements SingleActionInterface
                     foreach (explode(',', $value) as $playlistName) {
                         $playlistShortName = StationPlaylist::generateShortName($playlistName);
                         if (isset($playlistsByName[$playlistShortName])) {
-                            /** @var StationPlaylist $playlist */
-                            $playlist = $playlistsByName[$playlistShortName];
-                            $playlists[$playlist->getIdRequired()] = 0;
+                            /** @var int $playlistId */
+                            $playlistId = $playlistsByName[$playlistShortName];
+                            $playlists[$playlistId] = 0;
                         }
                     }
                 }

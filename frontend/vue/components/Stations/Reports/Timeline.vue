@@ -23,7 +23,6 @@
                         v-model="dateRange"
                         time-picker
                         :tz="timezone"
-                        @update="relist"
                     />
                 </div>
             </div>
@@ -92,7 +91,7 @@ import DataTable from "~/components/Common/DataTable";
 import DateRangeDropdown from "~/components/Common/DateRangeDropdown";
 import {DateTime} from 'luxon';
 import {useAzuraCast, useAzuraCastStation} from "~/vendor/azuracast";
-import {computed, ref} from "vue";
+import {computed, ref, watch} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 
 const props = defineProps({
@@ -200,4 +199,6 @@ const $datatable = ref(); // Template Ref
 const relist = () => {
     $datatable.value.relist();
 };
+
+watch(dateRange, relist);
 </script>

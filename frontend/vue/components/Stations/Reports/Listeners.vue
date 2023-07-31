@@ -32,7 +32,6 @@
                                 :min-date="minDate"
                                 :max-date="maxDate"
                                 :tz="timezone"
-                                @update="updateListeners"
                             />
                         </div>
                     </div>
@@ -179,7 +178,7 @@ import formatTime from "~/functions/formatTime";
 import DataTable from "~/components/Common/DataTable";
 import DateRangeDropdown from "~/components/Common/DateRangeDropdown";
 import {DateTime} from 'luxon';
-import {computed, onMounted, ref, shallowRef} from "vue";
+import {computed, nextTick, onMounted, ref, shallowRef, watch} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
@@ -249,31 +248,33 @@ const {wrapWithLoading} = useNotify();
 const {axios} = useAxios();
 
 const updateListeners = () => {
-  let params = {};
-  if (!isLive.value) {
-    params.start = DateTime.fromJSDate(dateRange.value.startDate).toISO();
-    params.end = DateTime.fromJSDate(dateRange.value.endDate).toISO();
-  }
-
-  wrapWithLoading(
-      axios.get(props.apiUrl, {params: params})
-  ).then((resp) => {
-    listeners.value = resp.data;
-
-    if (isLive.value) {
-      setTimeout(updateListeners, (!document.hidden) ? 15000 : 30000);
+    let params = {};
+    if (!isLive.value) {
+        params.start = DateTime.fromJSDate(dateRange.value.startDate).toISO();
+        params.end = DateTime.fromJSDate(dateRange.value.endDate).toISO();
     }
-  }).catch((error) => {
-    if (isLive.value && (!error.response || error.response.data.code !== 403)) {
-      setTimeout(updateListeners, (!document.hidden) ? 30000 : 120000);
-    }
-  });
+
+    wrapWithLoading(
+        axios.get(props.apiUrl, {params: params})
+    ).then((resp) => {
+        listeners.value = resp.data;
+
+        if (isLive.value) {
+            setTimeout(updateListeners, (!document.hidden) ? 15000 : 30000);
+        }
+    }).catch((error) => {
+        if (isLive.value && (!error.response || error.response.data.code !== 403)) {
+            setTimeout(updateListeners, (!document.hidden) ? 30000 : 120000);
+        }
+    });
 };
+
+watch(dateRange, updateListeners);
 
 onMounted(updateListeners);
 
 const setIsLive = (newValue) => {
-  isLive.value = newValue;
-  updateListeners();
+    isLive.value = newValue;
+    nextTick(updateListeners);
 };
 </script>

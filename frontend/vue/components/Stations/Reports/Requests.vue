@@ -97,7 +97,7 @@ import DataTable from '~/components/Common/DataTable';
 import Icon from "~/components/Common/Icon";
 import {DateTime} from 'luxon';
 import {useAzuraCast, useAzuraCastStation} from "~/vendor/azuracast";
-import {computed, ref} from "vue";
+import {computed, nextTick, ref} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import {useSweetAlert} from "~/vendor/sweetalert";
 import {useNotify} from "~/functions/useNotify";
@@ -149,7 +149,7 @@ const relist = () => {
 
 const setType = (type) => {
     activeType.value = type;
-    relist();
+    nextTick(relist);
 };
 
 const {timeConfig} = useAzuraCast();

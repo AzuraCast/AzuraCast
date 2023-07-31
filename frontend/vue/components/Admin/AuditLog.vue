@@ -9,10 +9,7 @@
                     {{ $gettext('Audit Log') }}
                 </h2>
                 <div class="flex-shrink">
-                    <date-range-dropdown
-                        v-model="dateRange"
-                        @update="relist"
-                    />
+                    <date-range-dropdown v-model="dateRange" />
                 </div>
             </div>
         </template>
@@ -88,7 +85,7 @@
 
 <script setup>
 import {DateTime} from "luxon";
-import {computed, ref} from "vue";
+import {computed, ref, watch} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import {useAzuraCast} from "~/vendor/azuracast";
 import DataTable from "~/components/Common/DataTable.vue";
@@ -145,6 +142,8 @@ const apiUrl = computed(() => {
 
 const $datatable = ref(); // DataTable Template Ref
 const {relist} = useHasDatatable($datatable);
+
+watch(dateRange, relist);
 
 const $detailsModal = ref(); // DetailsModal
 const showDetails = (changes) => {

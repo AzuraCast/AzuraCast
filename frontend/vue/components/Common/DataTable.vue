@@ -387,14 +387,14 @@ const showPagination = computed(() => {
 });
 
 const visibleItems = computed(() => {
-    if (props.items !== null || !props.handleClientSide) {
+    if (!props.handleClientSide) {
         return items.value;
     }
 
     // Handle pagination client-side.
     let itemsOnPage;
 
-    if (props.paginated) {
+    if (props.paginated && perPage.value > 0) {
         itemsOnPage = slice(
             items.value,
             (currentPage.value - 1) * perPage.value,

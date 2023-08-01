@@ -36,10 +36,6 @@ useChart(
     $canvas,
     {
         type: 'pie',
-        data: {
-            labels: props.labels,
-            datasets: props.data
-        },
         options: {
             aspectRatio: props.aspectRatio,
             plugins: {

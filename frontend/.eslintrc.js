@@ -16,6 +16,7 @@ module.exports = {
         }],
         "vue/no-v-html": "off",
         "vue/no-mutating-props": "off",
-        'vue/no-multiple-template-root': "off"
+        'vue/no-multiple-template-root': "off",
+        'vue/no-setup-props-destructure': "off"
     }
 }

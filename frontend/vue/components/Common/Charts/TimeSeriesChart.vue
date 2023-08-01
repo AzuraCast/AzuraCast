@@ -30,11 +30,14 @@ useChart(
     $canvas,
     {
         type: 'line',
-        data: {
-            datasets: props.data
-        },
         options: {
             aspectRatio: 3,
+            datasets: {
+                line: {
+                    spanGaps: true,
+                    showLine: true
+                }
+            },
             plugins: {
                 zoom: {
                     // Container for pan options

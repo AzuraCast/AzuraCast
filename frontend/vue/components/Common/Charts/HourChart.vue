@@ -34,10 +34,6 @@ useChart(
     $canvas,
     {
         type: 'bar',
-        data: {
-            labels: props.labels,
-            datasets: props.data
-        },
         options: {
             aspectRatio: 2,
             plugins: {

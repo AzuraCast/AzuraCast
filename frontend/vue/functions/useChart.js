@@ -1,6 +1,6 @@
 import {Chart} from "chart.js";
 import {defaultsDeep} from "lodash";
-import {onMounted, onUnmounted, toRef, watch} from "vue";
+import {computed, onMounted, onUnmounted, toRef, watch} from "vue";
 
 export const chartProps = {
     options: {
@@ -30,12 +30,25 @@ export default function useChart(
 ) {
     let $chart = null;
 
+    const chartConfig = computed(() => {
+        let config = defaultsDeep({
+            data: {}
+        }, props.options, defaultOptions);
+
+        config.data.datasets = props.data;
+        if (props.labels) {
+            config.data.labels = props.labels;
+        }
+
+        return config;
+    });
+
     const rebuildChart = () => {
         $chart?.destroy();
 
         $chart = new Chart(
             $canvas.value.getContext('2d'),
-            defaultsDeep({}, props.options, defaultOptions)
+            chartConfig.value
         );
     }
 

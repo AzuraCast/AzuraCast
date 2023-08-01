@@ -388,7 +388,7 @@ const fields = computed(() => {
     return fields;
 });
 
-const playlists = ref(props.initialPlaylists);
+const playlists = ref(() => props.initialPlaylists);
 const selectedItems = ref({
     all: [],
     files: [],

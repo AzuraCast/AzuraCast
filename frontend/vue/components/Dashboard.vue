@@ -130,7 +130,7 @@
                 id="charts"
                 class="card-body"
             >
-                <dashboard-charts :charts-url="chartsUrl"/>
+                <dashboard-charts :charts-url="chartsUrl" />
             </div>
         </card-page>
 

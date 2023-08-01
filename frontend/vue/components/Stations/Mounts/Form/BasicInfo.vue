@@ -127,6 +127,14 @@ const props = defineProps({
 const emit = defineEmits(['update:form']);
 const form = useVModel(props, 'form', emit);
 
+const isIcecast = computed(() => {
+    return FRONTEND_ICECAST === props.stationFrontendType;
+});
+
+const isShoutcast = computed(() => {
+    return FRONTEND_SHOUTCAST === props.stationFrontendType;
+});
+
 const {v$, tabClass} = useVuelidateOnFormTab(
     computed(() => {
         let validations = {
@@ -139,11 +147,11 @@ const {v$, tabClass} = useVuelidateOnFormTab(
             max_listener_duration: {required},
         };
 
-        if (FRONTEND_SHOUTCAST === props.stationFrontendType) {
+        if (isShoutcast.value) {
             validations.authhash = {};
         }
 
-        if (FRONTEND_ICECAST === props.stationFrontendType) {
+        if (isIcecast.value) {
             validations.fallback_mount = {};
         }
 
@@ -161,23 +169,15 @@ const {v$, tabClass} = useVuelidateOnFormTab(
             max_listener_duration: 0,
         };
 
-        if (FRONTEND_SHOUTCAST === props.stationFrontendType) {
+        if (isShoutcast.value) {
             blankForm.authhash = null;
         }
 
-        if (FRONTEND_ICECAST === props.stationFrontendType) {
+        if (isIcecast.value) {
             blankForm.fallback_mount = '/error.mp3';
         }
 
         return blankForm;
     }
 );
-
-const isIcecast = computed(() => {
-    return FRONTEND_ICECAST === props.stationFrontendType;
-});
-
-const isShoutcast = computed(() => {
-    return FRONTEND_SHOUTCAST === props.stationFrontendType;
-});
 </script>

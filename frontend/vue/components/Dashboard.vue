@@ -126,14 +126,11 @@
             </template>
 
             <div
+                v-if="chartsVisible"
                 id="charts"
-                class="card-body collapse collapse-vertical"
-                :class="(chartsVisible) ? 'show' : ''"
+                class="card-body"
             >
-                <dashboard-charts
-                    v-if="chartsVisible"
-                    :charts-url="chartsUrl"
-                />
+                <dashboard-charts :charts-url="chartsUrl"/>
             </div>
         </card-page>
 
@@ -168,7 +165,7 @@
             <loading :loading="stationsLoading">
                 <table
                     id="station_dashboard"
-                    class="table table-striped table-responsive mb-0"
+                    class="table table-striped table-responsive"
                 >
                     <colgroup>
                         <col width="5%">

@@ -8,4 +8,5 @@ enum PlaylistRemoteTypes: string
 {
     case Stream = 'stream';
     case Playlist = 'playlist';
+    case Other = 'other';
 }

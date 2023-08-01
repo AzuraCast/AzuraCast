@@ -453,9 +453,10 @@ final class ConfigWriter implements EventSubscriberInterface
                 $buffer = $playlist->getRemoteBuffer();
                 $buffer = ($buffer < 1) ? StationPlaylist::DEFAULT_REMOTE_BUFFER : $buffer;
 
-                $inputFunc = (str_ends_with($remoteUrl, 'm3u8'))
-                    ? 'input.hls'
-                    : 'input.http';
+                $inputFunc = match ($playlist->getRemoteType()) {
+                    PlaylistRemoteTypes::Stream => 'input.http',
+                    default => 'input.external.ffmpeg'
+                };
 
                 $remoteUrlFunc = 'mksafe(buffer(buffer=' . $buffer . '., '
                     . $inputFunc . '("' . self::cleanUpString($remoteUrl) . '")))';

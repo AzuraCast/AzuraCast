@@ -352,11 +352,15 @@ const orderOptions = [
 const remoteTypeOptions = [
     {
         value: 'stream',
-        text: $gettext('Direct Stream URL')
+        text: $gettext('Icecast/Shoutcast Stream URL')
     },
     {
         value: 'playlist',
         text: $gettext('Playlist (M3U/PLS) URL')
+    },
+    {
+        value: 'other',
+        text: $gettext('Other Remote URL (File, HLS, etc.)')
     }
 ];
 

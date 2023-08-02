@@ -222,8 +222,8 @@ const fields = [
 ];
 
 const exportUrl = computed(() => {
-  let exportUrl = new URL(props.apiUrl, document.location);
-  let exportUrlParams = exportUrl.searchParams;
+  const exportUrl = new URL(props.apiUrl, document.location);
+  const exportUrlParams = exportUrl.searchParams;
   exportUrlParams.set('format', 'csv');
 
   if (!isLive.value) {
@@ -240,7 +240,7 @@ const totalListenerHours = computed(() => {
     tlh_seconds += listener.connected_time;
   });
 
-  let tlh_hours = tlh_seconds / 3600;
+  const tlh_hours = tlh_seconds / 3600;
   return Math.round((tlh_hours + 0.00001) * 100) / 100;
 });
 
@@ -248,7 +248,7 @@ const {wrapWithLoading} = useNotify();
 const {axios} = useAxios();
 
 const updateListeners = () => {
-    let params = {};
+    const params = {};
     if (!isLive.value) {
         params.start = DateTime.fromJSDate(dateRange.value.startDate).toISO();
         params.end = DateTime.fromJSDate(dateRange.value.endDate).toISO();

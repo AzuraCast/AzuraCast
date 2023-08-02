@@ -131,9 +131,9 @@ const fields = [
 ];
 
 const apiUrl = computed(() => {
-    let apiUrl = new URL(props.baseApiUrl, document.location);
+    const apiUrl = new URL(props.baseApiUrl, document.location);
 
-    let apiUrlParams = apiUrl.searchParams;
+    const apiUrlParams = apiUrl.searchParams;
     apiUrlParams.set('start', DateTime.fromJSDate(dateRange.value.startDate).toISO());
     apiUrlParams.set('end', DateTime.fromJSDate(dateRange.value.endDate).toISO());
 

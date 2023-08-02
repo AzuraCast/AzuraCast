@@ -135,7 +135,7 @@ const props = defineProps({
 });
 
 const {timezone} = useAzuraCastStation();
-let nowTz = DateTime.now().setZone(timezone);
+const nowTz = DateTime.now().setZone(timezone);
 
 const dateRange = ref({
     startDate: nowTz.minus({days: 13}).toJSDate(),

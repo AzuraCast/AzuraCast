@@ -85,14 +85,14 @@ const uploaded = (file) => {
         return;
     }
 
-    let fileReader = new FileReader();
+    const fileReader = new FileReader();
     fileReader.addEventListener('load', () => {
         localSrc.value = fileReader.result;
     }, false);
     fileReader.readAsDataURL(file);
 
-    let url = (props.editArtUrl) ? props.editArtUrl : props.newArtUrl;
-    let formData = new FormData();
+    const url = (props.editArtUrl) ? props.editArtUrl : props.newArtUrl;
+    const formData = new FormData();
     formData.append('art', file);
 
     axios.post(url, formData).then((resp) => {

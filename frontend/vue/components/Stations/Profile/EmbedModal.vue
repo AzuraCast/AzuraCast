@@ -123,7 +123,7 @@ const selectedTheme = ref('light');
 const {$gettext} = useTranslate();
 
 const types = computed(() => {
-    let types = [
+    const types = [
         {
             value: 'player',
             text: $gettext('Radio Player')

@@ -97,14 +97,14 @@ const emit = defineEmits(['api-call']);
 const {$gettext, $ngettext} = useTranslate();
 
 const langTotalTracks = computed(() => {
-    let numSongs = $ngettext(
+    const numSongs = $ngettext(
         '%{numSongs} uploaded song',
         '%{numSongs} uploaded songs',
         props.numSongs,
         {numSongs: props.numSongs}
     );
 
-    let numPlaylists = $ngettext(
+    const numPlaylists = $ngettext(
         '%{numPlaylists} playlist',
         '%{numPlaylists} playlists',
         props.numPlaylists,

@@ -131,7 +131,7 @@ onMounted(() => {
     });
 
     axios.get(props.waveformUrl).then((resp) => {
-        let waveformJson = resp?.data?.data ?? null;
+        const waveformJson = resp?.data?.data ?? null;
         if (waveformJson) {
             wavesurfer.load(props.audioUrl, waveformJson);
         } else {

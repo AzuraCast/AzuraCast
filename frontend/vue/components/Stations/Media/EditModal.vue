@@ -91,7 +91,7 @@ const audioUrl = ref('');
 const songLength = ref(0);
 
 const buildForm = () => {
-    let blankForm = {
+    const blankForm = {
         path: null,
         title: null,
         artist: null,
@@ -109,7 +109,7 @@ const buildForm = () => {
         custom_fields: {}
     };
 
-    let validations = {
+    const validations = {
         path: {required},
         title: {},
         artist: {},
@@ -171,11 +171,11 @@ const open = (newRecordUrl, newAlbumArtUrl, newAudioUrl, newWaveformUrl) => {
     $modal.value?.show();
 
     axios.get(newRecordUrl).then((resp) => {
-        let d = resp.data;
+        const d = resp.data;
 
         songLength.value = d.length_text;
 
-        let newForm = {
+        const newForm = {
             path: d.path,
             title: d.title,
             artist: d.artist,

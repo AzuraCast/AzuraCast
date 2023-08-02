@@ -186,7 +186,7 @@ const uploaded = (file) => {
 };
 
 const doSubmit = () => {
-    let formData = new FormData();
+    const formData = new FormData();
     formData.append('import_file', importFile.value);
 
     wrapWithLoading(

@@ -56,7 +56,7 @@ const props = defineProps({
 const {$gettext} = useTranslate();
 
 const localeOptions = computed(() => {
-    let localeOptions = objectToFormOptions(props.supportedLocales);
+    const localeOptions = objectToFormOptions(props.supportedLocales);
     localeOptions.unshift({
         text: $gettext('Use Browser Default'),
         value: 'default'

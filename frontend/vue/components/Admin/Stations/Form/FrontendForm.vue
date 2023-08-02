@@ -262,7 +262,7 @@ const {v$, tabClass} = useVuelidateOnFormTab(
 const {$gettext} = useTranslate();
 
 const frontendTypeOptions = computed(() => {
-    let frontendOptions = [
+    const frontendOptions = [
         {
             text: $gettext('Use Icecast 2.4 on this server.'),
             value: FRONTEND_ICECAST

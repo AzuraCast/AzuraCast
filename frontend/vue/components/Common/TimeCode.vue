@@ -37,7 +37,7 @@ const convertToTimeCode = (time) => {
         return null;
     }
 
-    let timeParts = time.split(':');
+    const timeParts = time.split(':');
     return (100 * parseInt(timeParts[0], 10)) + parseInt(timeParts[1], 10);
 }
 

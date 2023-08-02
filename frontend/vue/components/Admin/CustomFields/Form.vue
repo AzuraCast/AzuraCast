@@ -53,7 +53,7 @@ const props = defineProps({
 const {$gettext} = useTranslate();
 
 const autoAssignOptions = computed(() => {
-    let autoAssignOptions = [
+    const autoAssignOptions = [
         {
             text: $gettext('Disable'),
             value: '',

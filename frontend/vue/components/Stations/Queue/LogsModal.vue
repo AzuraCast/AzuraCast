@@ -40,7 +40,7 @@ const logs = ref('Loading...');
 const $modal = ref(); // Template Ref
 
 const show = (newLogs) => {
-    let logDisplay = [];
+    const logDisplay = [];
     newLogs.forEach((log) => {
         logDisplay.push(log);
     });

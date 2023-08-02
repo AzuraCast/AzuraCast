@@ -334,7 +334,7 @@ const {timeConfig} = useAzuraCast();
 const {timezone} = useAzuraCastStation();
 
 const fields = computed(() => {
-    let fields = [
+    const fields = [
         {key: 'path', isRowHeader: true, label: $gettext('Name'), sortable: true},
         {key: 'media.title', label: $gettext('Title'), sortable: true, selectable: true, visible: false},
         {
@@ -401,7 +401,7 @@ const currentDirectory = ref('');
 const searchPhrase = ref('');
 
 const onRowSelected = (items) => {
-    let splitItems = partition(items, 'is_dir');
+    const splitItems = partition(items, 'is_dir');
 
     selectedItems.value = {
         all: items,
@@ -436,7 +436,7 @@ const isFilterString = (str) =>
 
 const onHashChange = () => {
     // Handle links from the sidebar for special functions.
-    let urlHash = decodeURIComponent(window.location.hash.substring(1).replace(/\+/g, '%20'));
+    const urlHash = decodeURIComponent(window.location.hash.substring(1).replace(/\+/g, '%20'));
 
     if ('' !== urlHash && isFilterString(urlHash)) {
         window.location.hash = '';
@@ -491,7 +491,7 @@ const requestConfig = (config) => {
 
 onMounted(() => {
     // Load directory from URL hash, if applicable.
-    let urlHash = decodeURIComponent(window.location.hash.substring(1).replace(/\+/g, '%20'));
+    const urlHash = decodeURIComponent(window.location.hash.substring(1).replace(/\+/g, '%20'));
 
     if ('' !== urlHash) {
         if (isFilterString(urlHash)) {

@@ -88,7 +88,7 @@ const uploaded = (newFile) => {
         return;
     }
 
-    let formData = new FormData();
+    const formData = new FormData();
     formData.append('file', newFile);
 
     wrapWithLoading(

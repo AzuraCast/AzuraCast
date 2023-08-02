@@ -101,8 +101,8 @@ const props = defineProps({
 });
 
 const buildForm = () => {
-    let validations = {};
-    let blankForm = {};
+    const validations = {};
+    const blankForm = {};
 
     forEach(props.sections, (section) => {
         validations[section] = {};

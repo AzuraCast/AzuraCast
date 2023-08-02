@@ -14,13 +14,13 @@ export function useWebDjTrack() {
     const position = ref(null);
     const volume = ref(0);
 
-    let source = ref(null);
+    const source = ref(null);
 
     const createControlsNode = () => {
         const bufferLog = Math.log(parseFloat(bufferSize.value));
         const log10 = 2.0 * Math.log(10);
 
-        let newSource = context.value.createScriptProcessor(
+        const newSource = context.value.createScriptProcessor(
             bufferSize.value,
             channelCount.value,
             channelCount.value
@@ -32,7 +32,7 @@ export function useWebDjTrack() {
             }
 
             for (let channel = 0; channel < buf.inputBuffer.numberOfChannels; channel++) {
-                let channelData = buf.inputBuffer.getChannelData(channel);
+                const channelData = buf.inputBuffer.getChannelData(channel);
 
                 let rms = 0.0;
                 for (let i = 0; i < channelData.length; i++) {
@@ -49,7 +49,7 @@ export function useWebDjTrack() {
     };
 
     const createPassThrough = () => {
-        let newSource = context.value.createScriptProcessor(
+        const newSource = context.value.createScriptProcessor(
             bufferSize.value,
             channelCount.value,
             channelCount.value
@@ -57,7 +57,7 @@ export function useWebDjTrack() {
 
         newSource.onaudioprocess = (buf) => {
             for (let channel = 0; channel < buf.inputBuffer.numberOfChannels; channel++) {
-                let channelData = buf.inputBuffer.getChannelData(channel);
+                const channelData = buf.inputBuffer.getChannelData(channel);
 
                 if (trackPassThrough.value) {
                     buf.outputBuffer.getChannelData(channel).set(channelData);

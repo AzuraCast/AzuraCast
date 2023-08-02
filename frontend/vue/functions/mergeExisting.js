@@ -9,7 +9,7 @@ export default function mergeExisting(destRaw, sourceRaw) {
     const dest = toRaw(destRaw);
     const source = toRaw(sourceRaw);
 
-    let ret = {};
+    const ret = {};
     for (const destKey in dest) {
         if (destKey in source) {
             const destVal = dest[destKey];

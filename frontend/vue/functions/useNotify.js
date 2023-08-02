@@ -86,7 +86,7 @@ export function useNotify() {
     let $axiosLoadCount = 0;
 
     const setLoading = (isLoading) => {
-        let prevIsLoading = $isAxiosLoading;
+        const prevIsLoading = $isAxiosLoading;
         if (isLoading) {
             $axiosLoadCount++;
             $isAxiosLoading = true;

@@ -14,7 +14,7 @@ export const usePlayerStore = defineStore(
         },
         actions: {
             toggle(payload) {
-                let url = payload.url;
+                const url = payload.url;
 
                 if (this.current.url === url) {
                     this.current = {

@@ -108,7 +108,7 @@ const {
             let publishTime = '';
 
             if (data.publish_at !== null) {
-                let publishDateTime = DateTime.fromSeconds(data.publish_at);
+                const publishDateTime = DateTime.fromSeconds(data.publish_at);
                 publishDate = publishDateTime.toISODate();
                 publishTime = publishDateTime.toISOTime({
                     suppressMilliseconds: true,
@@ -124,11 +124,11 @@ const {
             });
         },
         getSubmittableFormData: (formRef) => {
-            let modifiedForm = formRef.value;
+            const modifiedForm = formRef.value;
 
             if (modifiedForm.publish_date.length > 0 && modifiedForm.publish_time.length > 0) {
-                let publishDateTimeString = modifiedForm.publish_date + 'T' + modifiedForm.publish_time;
-                let publishDateTime = DateTime.fromISO(publishDateTimeString);
+                const publishDateTimeString = modifiedForm.publish_date + 'T' + modifiedForm.publish_time;
+                const publishDateTime = DateTime.fromISO(publishDateTimeString);
 
                 modifiedForm.publish_at = publishDateTime.toSeconds();
             }

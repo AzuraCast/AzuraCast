@@ -146,8 +146,8 @@ const doMove = () => {
             'dirs': props.selectedItems.directories
         })
     ).then(() => {
-        let notifyMessage = $gettext('Files moved:');
-        let itemNameNodes = [];
+        const notifyMessage = $gettext('Files moved:');
+        const itemNameNodes = [];
         forEach(props.selectedItems.all, (item) => {
             itemNameNodes.push(h('div', {}, item.path_short));
         });

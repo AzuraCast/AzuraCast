@@ -78,7 +78,7 @@ const $modal = ref(); // Template Ref
 
 const {$gettext} = useTranslate();
 
-let fields = [
+const fields = [
     {
         key: 'name',
         isRowHeader: true,

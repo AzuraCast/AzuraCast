@@ -44,7 +44,7 @@ export function useWebcaster(props) {
     const connect = (mediaRecorder, username = null, password = null) => {
         socket = new WebSocket(baseUri, "webcast");
 
-        let hello = {
+        const hello = {
             mime: mediaRecorder.mimeType,
         };
 

@@ -30,7 +30,7 @@ export function useVuelidateOnForm(validations = {}, blankForm = {}, options = {
 
     const {record: form, reset} = useResettableRef(buildBlankForm);
 
-    let parsedValidations = (typeof validations === 'function')
+    const parsedValidations = (typeof validations === 'function')
         ? validations(options)
         : validations;
 

@@ -72,7 +72,7 @@ const emit = defineEmits(['submitted', 'showImage']);
 const {$gettext} = useTranslate();
 
 const fields = computed(() => {
-    let fields = [
+    const fields = [
         {
             key: 'name',
             isRowHeader: true,

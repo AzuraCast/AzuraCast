@@ -40,14 +40,14 @@ const props = defineProps({
 const emit = defineEmits(['change-directory']);
 
 const directoryParts = computed(() => {
-    let dirParts = [];
+    const dirParts = [];
 
     if (props.currentDirectory === '') {
         return dirParts;
     }
 
     let builtDir = '';
-    let dirSegments = props.currentDirectory.split('/');
+    const dirSegments = props.currentDirectory.split('/');
 
     dirSegments.forEach((part) => {
         if (builtDir === '') {

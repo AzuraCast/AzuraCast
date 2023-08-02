@@ -102,7 +102,7 @@ const {
         getSubmittableFormData(formRef) {
             const formValue = formRef.value;
 
-            let formReturn = {
+            const formReturn = {
                 name: formValue.name,
                 permissions: {
                     global: formValue.permissions.global,

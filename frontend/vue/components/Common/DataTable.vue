@@ -357,7 +357,7 @@ const perPage = computed(() => {
 });
 
 const visibleFields = computed(() => {
-    let fields = allFields.value.slice();
+    const fields = allFields.value.slice();
 
     if (!props.selectFields) {
         return fields;
@@ -432,7 +432,7 @@ const refresh = () => {
         return;
     }
 
-    let queryParams = {
+    const queryParams = {
         internal: true
     };
 

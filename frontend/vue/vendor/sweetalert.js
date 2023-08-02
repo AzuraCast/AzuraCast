@@ -37,7 +37,7 @@ export function vConfirmAction(el, binding) {
     el.addEventListener('click', (e) => {
         e.preventDefault();
 
-        let options = {};
+        const options = {};
         if (el.hasAttribute('data-confirm-title')) {
             options.title = el.getAttribute('data-confirm-title');
         } else if (binding.value) {

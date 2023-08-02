@@ -118,7 +118,7 @@ export default function useNowPlaying(props) {
     onMounted(() => {
         useIntervalFn(
             () => {
-                let currentTrackPlayedAt = np.value?.now_playing?.played_at ?? 0;
+                const currentTrackPlayedAt = np.value?.now_playing?.played_at ?? 0;
                 let elapsed = currentTime.value - currentTrackPlayedAt;
 
                 if (elapsed < 0) {
@@ -135,8 +135,8 @@ export default function useNowPlaying(props) {
     });
 
     const currentTrackPercent = computed(() => {
-        let $currentTrackElapsed = currentTrackElapsed.value;
-        let $currentTrackDuration = currentTrackDuration.value;
+        const $currentTrackElapsed = currentTrackElapsed.value;
+        const $currentTrackDuration = currentTrackDuration.value;
 
         if (!$currentTrackDuration) {
             return 0;
@@ -149,13 +149,13 @@ export default function useNowPlaying(props) {
     });
 
     const currentTrackDurationDisplay = computed(() => {
-        let $currentTrackDuration = currentTrackDuration.value;
+        const $currentTrackDuration = currentTrackDuration.value;
         return ($currentTrackDuration) ? formatTime($currentTrackDuration) : null;
     });
 
     const currentTrackElapsedDisplay = computed(() => {
         let $currentTrackElapsed = currentTrackElapsed.value;
-        let $currentTrackDuration = currentTrackDuration.value;
+        const $currentTrackDuration = currentTrackDuration.value;
 
         if (!$currentTrackDuration) {
             return null;

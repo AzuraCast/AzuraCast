@@ -1,7 +1,7 @@
 export default function (seconds) {
     seconds = parseInt(seconds);
 
-    let d = Math.floor(seconds / 86400),
+    const d = Math.floor(seconds / 86400),
         h = Math.floor(seconds / 3600) % 24,
         m = Math.floor(seconds / 60) % 60,
         s = seconds % 60;

@@ -231,7 +231,7 @@ const langErrors = $gettext('The request could not be processed.');
 
 watch(toRef(props, 'selectedItems'), (items) => {
     // Get all playlists that are active on ALL selected items.
-    let playlistsForItems = map(items.all, (item) => {
+    const playlistsForItems = map(items.all, (item) => {
         return map(item.playlists, 'id');
     });
 
@@ -265,7 +265,7 @@ const doBatch = (action, notifyMessage) => {
             })
         ).then((resp) => {
             if (resp.data.success) {
-                let allItemNodes = [];
+                const allItemNodes = [];
                 forEach(props.selectedItems.all, (item) => {
                     allItemNodes.push(h('div', {}, item.path_short));
                 });
@@ -274,7 +274,7 @@ const doBatch = (action, notifyMessage) => {
                     title: notifyMessage
                 });
             } else {
-                let errorNodes = [];
+                const errorNodes = [];
                 forEach(resp.data.errors, (error) => {
                     errorNodes.push(h('div', {}, error));
                 });
@@ -306,8 +306,8 @@ const doReprocess = () => {
 const {confirmDelete} = useSweetAlert();
 
 const doDelete = () => {
-    let numFiles = props.selectedItems.all.length;
-    let buttonConfirmText = $gettext(
+    const numFiles = props.selectedItems.all.length;
+    const buttonConfirmText = $gettext(
         'Delete %{ num } media files?',
         {num: numFiles}
     );
@@ -338,11 +338,11 @@ const setPlaylists = () => {
                     emit('add-playlist', resp.data.record);
                 }
 
-                let notifyMessage = (checkedPlaylists.value.length > 0)
+                const notifyMessage = (checkedPlaylists.value.length > 0)
                     ? $gettext('Playlists updated for selected files:')
                     : $gettext('Playlists cleared for selected files:');
 
-                let allItemNodes = [];
+                const allItemNodes = [];
                 forEach(props.selectedItems.all, (item) => {
                     allItemNodes.push(h('div', {}, item.path_short));
                 });
@@ -354,7 +354,7 @@ const setPlaylists = () => {
                 checkedPlaylists.value = [];
                 newPlaylist.value = '';
             } else {
-                let errorNodes = [];
+                const errorNodes = [];
                 forEach(resp.data.errors, (error) => {
                     errorNodes.push(h('div', {}, error));
                 });

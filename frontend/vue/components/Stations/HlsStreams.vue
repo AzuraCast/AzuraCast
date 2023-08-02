@@ -97,7 +97,7 @@ const fields = [
 ];
 
 const upper = (data) => {
-    let upper = [];
+    const upper = [];
     data.split(' ').forEach((word) => {
         upper.push(word.toUpperCase());
     });

@@ -107,7 +107,7 @@ const props = defineProps({
 
 const {$gettext} = useTranslate();
 
-let fields = [
+const fields = [
     {key: 'download_url', label: ' '},
     {key: 'art', label: $gettext('Art')},
     {

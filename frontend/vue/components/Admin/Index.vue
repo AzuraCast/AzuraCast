@@ -480,10 +480,10 @@ const formatPercentageString = (value) => value + '%';
 const getNetworkInterfaceTableFields = (interfaceData) => Object.keys(interfaceData);
 
 const getNetworkInterfaceTableItems = (interfaceData) => {
-    let item = {};
+    const item = {};
 
     Object.entries(interfaceData).forEach((data) => {
-        let key = data[0];
+        const key = data[0];
         let value = data[1];
 
         if (isObject(value)) {

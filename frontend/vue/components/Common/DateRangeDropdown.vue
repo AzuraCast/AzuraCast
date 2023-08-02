@@ -104,8 +104,8 @@ const ranges = computed(() => {
         return props.customRanges;
     }
 
-    let nowTz = DateTime.now().setZone(props.tz);
-    let nowAtMidnightDate = nowTz.endOf('day').toJSDate();
+    const nowTz = DateTime.now().setZone(props.tz);
+    const nowAtMidnightDate = nowTz.endOf('day').toJSDate();
 
     return [
         {

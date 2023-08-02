@@ -124,7 +124,7 @@ const {wrapWithLoading, notifySuccess, notifyError} = useNotify();
 const {axios} = useAxios();
 
 const doSubmit = () => {
-    let formData = new FormData();
+    const formData = new FormData();
     formData.append('playlist_file', playlistFile.value);
 
     wrapWithLoading(

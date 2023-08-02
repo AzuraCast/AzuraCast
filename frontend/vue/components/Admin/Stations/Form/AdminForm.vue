@@ -135,7 +135,7 @@ const filterLocations = (group) => {
         return group;
     }
 
-    let newGroup = {};
+    const newGroup = {};
     for (const oldKey in group) {
         if (oldKey !== "") {
             newGroup[oldKey] = group[oldKey];

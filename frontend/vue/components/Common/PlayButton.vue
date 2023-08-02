@@ -51,8 +51,8 @@ const isThisPlaying = computed(() => {
         return false;
     }
 
-    let playingUrl = getUrlWithoutQuery(get(current).url);
-    let thisUrl = getUrlWithoutQuery(props.url);
+    const playingUrl = getUrlWithoutQuery(get(current).url);
+    const thisUrl = getUrlWithoutQuery(props.url);
     return playingUrl === thisUrl;
 });
 

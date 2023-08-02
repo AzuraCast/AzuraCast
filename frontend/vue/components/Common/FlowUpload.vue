@@ -140,7 +140,7 @@ const {apiCsrf} = useAzuraCast();
 const {$gettext} = useTranslate();
 
 onMounted(() => {
-    let defaultConfig = {
+    const defaultConfig = {
         target: () => {
             return props.targetUrl
         },
@@ -158,7 +158,7 @@ onMounted(() => {
         maxChunkRetries: 3,
         testChunks: false
     };
-    let config = defaultsDeep({}, props.flowConfiguration, defaultConfig);
+    const config = defaultsDeep({}, props.flowConfiguration, defaultConfig);
 
     flow = new Flow(config);
 
@@ -181,7 +181,7 @@ onMounted(() => {
     flow.on('fileSuccess', (file, message) => {
         files.get(file).isCompleted = true;
 
-        let messageJson = JSON.parse(message);
+        const messageJson = JSON.parse(message);
         emit('success', file, messageJson);
     });
 
@@ -191,7 +191,7 @@ onMounted(() => {
         let messageText = $gettext('Could not upload file.');
         try {
             if (typeof message !== 'undefined') {
-                let messageJson = JSON.parse(message);
+                const messageJson = JSON.parse(message);
                 if (typeof messageJson.message !== 'undefined') {
                     messageText = messageJson.message;
                     if (messageText.indexOf(': ') > -1) {

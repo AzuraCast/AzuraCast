@@ -115,7 +115,7 @@ const {notifySuccess} = useNotify();
 const {$gettext} = useTranslate();
 
 const save = () => {
-    let newOrder = {};
+    const newOrder = {};
     let i = 0;
 
     media.value.forEach((row) => {

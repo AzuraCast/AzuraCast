@@ -314,7 +314,7 @@ const selectFile = (options = {}) => {
 };
 
 const play = (options = {}) => {
-    let file = selectFile(options);
+    const file = selectFile(options);
 
     if (!file) {
         return;
@@ -327,7 +327,7 @@ const play = (options = {}) => {
 
     stop();
 
-    let destination = prepare();
+    const destination = prepare();
 
     createAudioSource(file, (newSource) => {
         source.value = newSource;

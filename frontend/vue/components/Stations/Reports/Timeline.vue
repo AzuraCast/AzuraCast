@@ -172,9 +172,9 @@ const fields = [
 ];
 
 const apiUrl = computed(() => {
-    let apiUrl = new URL(props.baseApiUrl, document.location);
+    const apiUrl = new URL(props.baseApiUrl, document.location);
 
-    let apiUrlParams = apiUrl.searchParams;
+    const apiUrlParams = apiUrl.searchParams;
     apiUrlParams.set('start', DateTime.fromJSDate(dateRange.value.startDate).toISO());
     apiUrlParams.set('end', DateTime.fromJSDate(dateRange.value.endDate).toISO());
 
@@ -182,8 +182,8 @@ const apiUrl = computed(() => {
 });
 
 const exportUrl = computed(() => {
-    let exportUrl = new URL(apiUrl.value, document.location);
-    let exportUrlParams = exportUrl.searchParams;
+    const exportUrl = new URL(apiUrl.value, document.location);
+    const exportUrlParams = exportUrl.searchParams;
 
     exportUrlParams.set('format', 'csv');
 

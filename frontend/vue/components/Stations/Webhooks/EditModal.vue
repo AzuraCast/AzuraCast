@@ -155,7 +155,7 @@ const {
             };
         },
         getSubmittableFormData(formRef, isEditModeRef) {
-            let formData = formRef.value;
+            const formData = formRef.value;
             if (!isEditModeRef.value) {
                 formData.type = type.value;
             }

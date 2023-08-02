@@ -31,7 +31,7 @@ export default function useChart(
     let $chart = null;
 
     const chartConfig = computed(() => {
-        let config = defaultsDeep({
+        const config = defaultsDeep({
             data: {}
         }, props.options, defaultOptions);
 

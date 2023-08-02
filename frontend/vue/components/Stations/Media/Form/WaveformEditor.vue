@@ -106,13 +106,13 @@ const stopAudio = () => {
 };
 
 const updateRegions = () => {
-    let duration = $waveform.value?.getDuration();
+    const duration = $waveform.value?.getDuration();
 
-    let cue_in = props.form.cue_in ?? 0;
-    let cue_out = props.form.cue_out ?? duration;
-    let fade_overlap = props.form.fade_overlap ?? 0;
-    let fade_in = props.form.fade_in ?? 0;
-    let fade_out = props.form.fade_out ?? 0;
+    const cue_in = props.form.cue_in ?? 0;
+    const cue_out = props.form.cue_out ?? duration;
+    const fade_overlap = props.form.fade_overlap ?? 0;
+    const fade_in = props.form.fade_in ?? 0;
+    const fade_out = props.form.fade_out ?? 0;
 
     $waveform.value?.clearRegions();
 
@@ -134,40 +134,40 @@ const updateRegions = () => {
 };
 
 const setCueIn = () => {
-    let currentTime = $waveform.value?.getCurrentTime();
+    const currentTime = $waveform.value?.getCurrentTime();
 
     props.form.cue_in = Math.round((currentTime) * 10) / 10;
     updateRegions();
 };
 
 const setCueOut = () => {
-    let currentTime = $waveform.value?.getCurrentTime();
+    const currentTime = $waveform.value?.getCurrentTime();
 
     props.form.cue_out = Math.round((currentTime) * 10) / 10;
     updateRegions();
 };
 
 const setFadeOverlap = () => {
-    let duration = $waveform.value?.getDuration();
-    let currentTime = $waveform.value?.getCurrentTime();
-    let cue_out = props.form.cue_out ?? duration;
+    const duration = $waveform.value?.getDuration();
+    const currentTime = $waveform.value?.getCurrentTime();
+    const cue_out = props.form.cue_out ?? duration;
 
     props.form.fade_overlap = Math.round((cue_out - currentTime) * 10) / 10;
     updateRegions();
 };
 
 const setFadeIn = () => {
-    let currentTime = $waveform.value?.getCurrentTime();
-    let cue_in = props.form.cue_in ?? 0;
+    const currentTime = $waveform.value?.getCurrentTime();
+    const cue_in = props.form.cue_in ?? 0;
 
     props.form.fade_in = Math.round((currentTime - cue_in) * 10) / 10;
     updateRegions();
 }
 
 const setFadeOut = () => {
-    let currentTime = $waveform.value?.getCurrentTime();
-    let duration = $waveform.value?.getDuration();
-    let cue_out = props.form.cue_out ?? duration;
+    const currentTime = $waveform.value?.getCurrentTime();
+    const duration = $waveform.value?.getDuration();
+    const cue_out = props.form.cue_out ?? duration;
 
     props.form.fade_out = Math.round((cue_out - currentTime) * 10) / 10;
     updateRegions();

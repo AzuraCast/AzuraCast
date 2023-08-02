@@ -50,7 +50,10 @@
   "devDependencies": {
     "@babel/core": "^7.15.5",
     "@babel/preset-env": "^7.15.6",
+    "@typescript-eslint/eslint-plugin": "^6.2.1",
+    "@typescript-eslint/parser": "^6.2.1",
     "@vitejs/plugin-vue": "^4.2.3",
+    "@vue/eslint-config-typescript": "^11.0.3",
     "del": "^7",
     "eslint": "^8.45.0",
     "eslint-plugin-vue": "^9.8.0",
@@ -66,7 +69,9 @@
     "gulp-sourcemaps": "^3",
     "gulp-uglify": "^3.0.2",
     "sass": "^1.39.2",
+    "typescript": "^5.1.6",
     "vite": "^4.4.6",
-    "vite-plugin-eslint": "^1.8.1"
+    "vite-plugin-eslint": "^1.8.1",
+    "vue-eslint-parser": "^9.3.1"
   }
 }

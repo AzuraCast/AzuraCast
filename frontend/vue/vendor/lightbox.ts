@@ -13,13 +13,8 @@ export function useLightbox() {
     const vLightbox: Directive<HTMLElement, string> = (el) => {
         el.addEventListener('click', (e) => {
             if (typeof lightbox !== 'undefined') {
-                const anchor = e.target.closest("a");
-                if (!anchor) {
-                    return;
-                }
-
                 e.preventDefault();
-                lightbox.value.show(anchor.getAttribute('href'));
+                lightbox.value.show(el.getAttribute('href'));
             }
         });
     };

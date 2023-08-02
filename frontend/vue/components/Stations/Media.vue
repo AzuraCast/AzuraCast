@@ -262,13 +262,13 @@ import {useTranslate} from "~/vendor/gettext";
 import {computed, nextTick, onMounted, ref} from "vue";
 import {forEach, map, partition} from "lodash";
 import {useAzuraCast, useAzuraCastStation} from "~/vendor/azuracast";
-import {DateTime} from "luxon";
 import {useEventListener} from "@vueuse/core";
 import formatFileSize from "../../functions/formatFileSize";
 import InfoCard from "~/components/Common/InfoCard.vue";
 import Lightbox from "~/components/Common/Lightbox.vue";
 import HeaderInlinePlayer from "~/components/HeaderInlinePlayer.vue";
 import {useProvideLightbox} from "~/vendor/lightbox";
+import {useLuxon} from "~/vendor/luxon";
 
 const props = defineProps({
     listUrl: {
@@ -331,6 +331,7 @@ const props = defineProps({
 const {$gettext} = useTranslate();
 const {timeConfig} = useAzuraCast();
 const {timezone} = useAzuraCastStation();
+const {DateTime} = useLuxon();
 
 const fields = computed(() => {
     const fields = [

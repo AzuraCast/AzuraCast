@@ -87,7 +87,6 @@
 </template>
 
 <script setup>
-import {DateTime} from "luxon";
 import DateRangeDropdown from "~/components/Common/DateRangeDropdown";
 import ListenersByTimePeriodTab from "./Overview/ListenersByTimePeriodTab";
 import BestAndWorstTab from "./Overview/BestAndWorstTab";
@@ -98,6 +97,7 @@ import ClientsTab from "./Overview/ClientsTab";
 import ListeningTimeTab from "~/components/Stations/Reports/Overview/ListeningTimeTab";
 import {ref} from "vue";
 import {useAzuraCastStation} from "~/vendor/azuracast";
+import {useLuxon} from "~/vendor/luxon";
 
 const props = defineProps({
     showFullAnalytics: {
@@ -135,6 +135,8 @@ const props = defineProps({
 });
 
 const {timezone} = useAzuraCastStation();
+const {DateTime} = useLuxon();
+
 const nowTz = DateTime.now().setZone(timezone);
 
 const dateRange = ref({

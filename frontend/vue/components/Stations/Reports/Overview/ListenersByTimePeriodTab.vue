@@ -52,12 +52,12 @@
 <script setup>
 import TimeSeriesChart from "~/components/Common/Charts/TimeSeriesChart.vue";
 import HourChart from "~/components/Common/Charts/HourChart.vue";
-import {DateTime} from "luxon";
 import PieChart from "~/components/Common/Charts/PieChart.vue";
 import {onMounted, ref, shallowRef, toRef, watch} from "vue";
 import {useMounted} from "@vueuse/core";
 import {useAxios} from "~/vendor/axios";
 import Loading from "~/components/Common/Loading.vue";
+import {useLuxon} from "~/vendor/luxon";
 
 const props = defineProps({
     dateRange: {
@@ -92,6 +92,8 @@ const chartData = shallowRef({
 
 const dateRange = toRef(props, 'dateRange');
 const {axios} = useAxios();
+
+const {DateTime} = useLuxon();
 
 const relist = () => {
     isLoading.value = true;

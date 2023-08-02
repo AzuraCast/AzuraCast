@@ -95,13 +95,13 @@
 <script setup>
 import DataTable from '~/components/Common/DataTable';
 import Icon from "~/components/Common/Icon";
-import {DateTime} from 'luxon';
 import {useAzuraCast, useAzuraCastStation} from "~/vendor/azuracast";
 import {computed, nextTick, ref} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import {useSweetAlert} from "~/vendor/sweetalert";
 import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
+import {useLuxon} from "~/vendor/luxon";
 
 const props = defineProps({
     listUrl: {
@@ -154,6 +154,8 @@ const setType = (type) => {
 
 const {timeConfig} = useAzuraCast();
 const {timezone} = useAzuraCastStation();
+
+const {DateTime} = useLuxon();
 
 const formatTime = (time) => {
     return DateTime.fromSeconds(time).setZone(timezone).toLocaleString(

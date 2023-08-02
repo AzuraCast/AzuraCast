@@ -56,7 +56,6 @@ import DataTable from "~/components/Common/DataTable";
 import formatTime from "~/functions/formatTime";
 import {onMounted, ref, shallowRef, toRef, watch} from "vue";
 import {useTranslate} from "~/vendor/gettext";
-import {DateTime} from "luxon";
 import {useMounted} from "@vueuse/core";
 import {useAxios} from "~/vendor/axios";
 import Loading from "~/components/Common/Loading.vue";

@@ -51,9 +51,9 @@ import DataTable from '~/components/Common/DataTable';
 import {useTranslate} from "~/vendor/gettext";
 import {ref} from "vue";
 import useHasDatatable from "~/functions/useHasDatatable";
-import {DateTime} from "luxon";
 import {useAzuraCast} from "~/vendor/azuracast";
 import CardPage from "~/components/Common/CardPage.vue";
+import {useLuxon} from "~/vendor/luxon";
 
 const props = defineProps({
     listUrl: {
@@ -65,6 +65,8 @@ const props = defineProps({
 const {$gettext} = useTranslate();
 
 const {timeConfig} = useAzuraCast();
+
+const {DateTime} = useLuxon();
 
 const dateTimeFormatter = (value) => {
     return DateTime.fromSeconds(value).toLocaleString(

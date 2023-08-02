@@ -73,7 +73,6 @@
 import DataTable from '../Common/DataTable';
 import QueueLogsModal from './Queue/LogsModal';
 import Icon from "~/components/Common/Icon";
-import {DateTime} from 'luxon';
 import {useAzuraCast, useAzuraCastStation} from "~/vendor/azuracast";
 import {useTranslate} from "~/vendor/gettext";
 import {ref} from "vue";
@@ -83,6 +82,7 @@ import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
 import {useSweetAlert} from "~/vendor/sweetalert";
 import CardPage from "~/components/Common/CardPage.vue";
+import {useLuxon} from "~/vendor/luxon";
 
 const props = defineProps({
     listUrl: {
@@ -105,6 +105,8 @@ const fields = [
 ];
 
 const {timezone} = useAzuraCastStation();
+
+const {DateTime} = useLuxon();
 
 const getDateTime = (timestamp) =>
     DateTime.fromSeconds(timestamp).setZone(timezone);

@@ -64,7 +64,6 @@ import formatFileSize from '~/functions/formatFileSize.js';
 import InlinePlayer from '~/components/InlinePlayer';
 import Icon from '~/components/Common/Icon';
 import PlayButton from "~/components/Common/PlayButton";
-import {DateTime} from 'luxon';
 import '~/vendor/sweetalert';
 import {useAzuraCast} from "~/vendor/azuracast";
 import {ref} from "vue";
@@ -73,11 +72,13 @@ import {useSweetAlert} from "~/vendor/sweetalert";
 import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
 import Modal from "~/components/Common/Modal.vue";
+import {useLuxon} from "~/vendor/luxon";
 
 const listUrl = ref(null);
 
 const {$gettext} = useTranslate();
 const {timeConfig} = useAzuraCast();
+const {DateTime} = useLuxon();
 
 const fields = [
     {

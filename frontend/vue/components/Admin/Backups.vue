@@ -153,7 +153,6 @@
 import Icon from "~/components/Common/Icon.vue";
 import DataTable from "~/components/Common/DataTable.vue";
 import AdminBackupsLastOutputModal from "./Backups/LastOutputModal.vue";
-import {DateTime} from 'luxon';
 import formatFileSize from "~/functions/formatFileSize";
 import AdminBackupsConfigureModal from "~/components/Admin/Backups/ConfigureModal.vue";
 import AdminBackupsRunBackupModal from "~/components/Admin/Backups/RunBackupModal.vue";
@@ -166,6 +165,7 @@ import {useAxios} from "~/vendor/axios";
 import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
 import Loading from "~/components/Common/Loading.vue";
 import CardPage from "~/components/Common/CardPage.vue";
+import {useLuxon} from "~/vendor/luxon";
 
 const props = defineProps({
     listUrl: {
@@ -256,6 +256,8 @@ const relist = () => {
 };
 
 onMounted(relist);
+
+const {DateTime} = useLuxon();
 
 const toRelativeTime = (timestamp) => {
     return DateTime.fromSeconds(timestamp).toRelative();

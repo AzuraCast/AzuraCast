@@ -43,11 +43,11 @@
 </template>
 
 <script setup>
-import {DateTime} from "luxon";
 import {map} from "lodash";
 import {computed} from "vue";
 import {useAzuraCast, useAzuraCastStation} from "~/vendor/azuracast";
 import CardPage from "~/components/Common/CardPage.vue";
+import {useLuxon} from "~/vendor/luxon";
 
 const props = defineProps({
     scheduleItems: {
@@ -58,6 +58,8 @@ const props = defineProps({
 
 const {timeConfig} = useAzuraCast();
 const {timezone} = useAzuraCastStation();
+
+const {DateTime} = useLuxon();
 
 const processedScheduleItems = computed(() => {
     const now = DateTime.now().setZone(timezone);

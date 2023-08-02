@@ -11,7 +11,6 @@
 
 <script setup>
 import {Tableau20} from "~/vendor/chartjs-colorschemes/colorschemes.tableau";
-import {DateTime} from "luxon";
 import {ref} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import ChartAltValues from "~/components/Common/Charts/ChartAltValues.vue";

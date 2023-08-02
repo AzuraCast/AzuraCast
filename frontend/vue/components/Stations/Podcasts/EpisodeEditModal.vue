@@ -38,13 +38,13 @@
 import EpisodeFormBasicInfo from './EpisodeForm/BasicInfo';
 import PodcastCommonArtwork from './Common/Artwork';
 import EpisodeFormMedia from './EpisodeForm/Media';
-import {DateTime} from 'luxon';
 import {baseEditModalProps, useBaseEditModal} from "~/functions/useBaseEditModal";
 import {computed, ref} from "vue";
 import {useResettableRef} from "~/functions/useResettableRef";
 import mergeExisting from "~/functions/mergeExisting";
 import {useTranslate} from "~/vendor/gettext";
 import ModalForm from "~/components/Common/ModalForm.vue";
+import {useLuxon} from "~/vendor/luxon";
 
 const props = defineProps({
     ...baseEditModalProps,
@@ -77,6 +77,8 @@ const {record, reset} = useResettableRef({
         download: null,
     }
 });
+
+const {DateTime} = useLuxon();
 
 const {
     loading,

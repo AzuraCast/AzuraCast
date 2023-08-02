@@ -30,8 +30,8 @@
 </template>
 
 <script setup>
-import {DateTime} from "luxon";
 import AlbumArt from "~/components/Common/AlbumArt.vue";
+import {useLuxon} from "~/vendor/luxon";
 
 const props = defineProps({
     history: {
@@ -45,6 +45,8 @@ const props = defineProps({
         default: true
     }
 });
+
+const {DateTime} = useLuxon();
 
 const unixTimestampToDate = (timestamp) => {
     if (!timestamp) {

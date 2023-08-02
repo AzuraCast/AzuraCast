@@ -33,9 +33,9 @@ import VueDatePicker from '@vuepic/vue-datepicker';
 import Icon from "./Icon";
 import useGetTheme from "~/functions/useGetTheme";
 import {useTranslate} from "~/vendor/gettext";
-import {DateTime} from "luxon";
 import {computed} from "vue";
 import {useAzuraCast} from "~/vendor/azuracast";
+import {useLuxon} from "~/vendor/luxon";
 
 defineOptions({
     inheritAttrs: false
@@ -77,6 +77,7 @@ const emit = defineEmits(['update:modelValue']);
 const {isDark} = useGetTheme();
 
 const {localeWithDashes} = useAzuraCast();
+const {DateTime} = useLuxon();
 
 const dateRange = computed({
     get() {
@@ -90,8 +91,6 @@ const dateRange = computed({
             startDate: newValue[0],
             endDate: newValue[1]
         };
-
-        console.log(newValue, newRange);
 
         emit('update:modelValue', newRange);
     }

@@ -177,10 +177,10 @@
 import {ref} from "vue";
 import useHasDatatable from "~/functions/useHasDatatable";
 import DataTable from "~/components/Common/DataTable.vue";
-import {DateTime} from "luxon";
 import {useAzuraCast} from "~/vendor/azuracast";
 import {useTranslate} from "~/vendor/gettext";
 import CardPage from "~/components/Common/CardPage.vue";
+import {useLuxon} from "~/vendor/luxon";
 
 const props = defineProps({
     clearCacheUrl: {
@@ -207,6 +207,7 @@ const props = defineProps({
 
 const {$gettext} = useTranslate();
 const {timeConfig} = useAzuraCast();
+const {DateTime} = useLuxon();
 
 const syncTaskFields = [
     {key: 'name', isRowHeader: true, label: $gettext('Task Name'), sortable: true},

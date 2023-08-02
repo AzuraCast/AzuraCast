@@ -177,12 +177,12 @@ import Icon from "~/components/Common/Icon";
 import formatTime from "~/functions/formatTime";
 import DataTable from "~/components/Common/DataTable";
 import DateRangeDropdown from "~/components/Common/DateRangeDropdown";
-import {DateTime} from 'luxon';
 import {computed, nextTick, onMounted, ref, shallowRef, watch} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
 import {useAzuraCastStation} from "~/vendor/azuracast";
+import {useLuxon} from "~/vendor/luxon";
 
 const props = defineProps({
   apiUrl: {
@@ -200,6 +200,7 @@ const listeners = shallowRef([]);
 
 const {timezone} = useAzuraCastStation();
 
+const {DateTime} = useLuxon();
 const nowTz = DateTime.now().setZone(timezone);
 
 const minDate = nowTz.minus({years: 5}).toJSDate();

@@ -31,10 +31,10 @@ import PieChart from "~/components/Common/Charts/PieChart.vue";
 import DataTable from "~/components/Common/DataTable";
 import {onMounted, ref, shallowRef, toRef, watch} from "vue";
 import {useTranslate} from "~/vendor/gettext";
-import {DateTime} from "luxon";
 import {useMounted} from "@vueuse/core";
 import {useAxios} from "~/vendor/axios";
 import Loading from "~/components/Common/Loading.vue";
+import {useLuxon} from "~/vendor/luxon";
 
 const props = defineProps({
     dateRange: {
@@ -66,6 +66,7 @@ const fields = shallowRef([
 
 const dateRange = toRef(props, 'dateRange');
 const {axios} = useAxios();
+const {DateTime} = useLuxon();
 
 const relist = () => {
     isLoading.value = true;

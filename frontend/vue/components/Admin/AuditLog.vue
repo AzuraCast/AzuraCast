@@ -84,7 +84,6 @@
 </template>
 
 <script setup>
-import {DateTime} from "luxon";
 import {computed, ref, watch} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import {useAzuraCast} from "~/vendor/azuracast";
@@ -94,6 +93,7 @@ import Icon from "~/components/Common/Icon.vue";
 import useHasDatatable from "~/functions/useHasDatatable";
 import DetailsModal from "./AuditLog/DetailsModal.vue";
 import CardPage from "~/components/Common/CardPage.vue";
+import {useLuxon} from "~/vendor/luxon";
 
 const props = defineProps({
     baseApiUrl: {
@@ -101,6 +101,8 @@ const props = defineProps({
         required: true,
     }
 });
+
+const {DateTime} = useLuxon();
 
 const dateRange = ref({
     startDate: DateTime.now().minus({days: 13}).toJSDate(),

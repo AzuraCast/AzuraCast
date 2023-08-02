@@ -72,6 +72,8 @@
             </div>
         </div>
     </section>
+
+    <lightbox ref="$lightbox" />
 </template>
 
 <script setup>
@@ -83,6 +85,9 @@ import PlayButton from "~/components/Common/PlayButton";
 import {useTranslate} from "~/vendor/gettext";
 import formatFileSize from "../../functions/formatFileSize";
 import AlbumArt from "~/components/Common/AlbumArt.vue";
+import Lightbox from "~/components/Common/Lightbox.vue";
+import {ref} from "vue";
+import {useProvideLightbox} from "~/vendor/lightbox";
 
 const props = defineProps({
     listUrl: {
@@ -144,6 +149,9 @@ forEach(props.customFields.slice(), (field) => {
         formatter: (value, key, item) => item.media.custom_fields[field.key]
     });
 });
+
+const $lightbox = ref(); // Template Ref
+useProvideLightbox($lightbox);
 </script>
 
 <style lang="scss">

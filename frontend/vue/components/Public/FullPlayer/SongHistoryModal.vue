@@ -9,7 +9,6 @@
         <song-history
             :show-album-art="showAlbumArt"
             :history="history"
-            @show-image="showImage"
         />
     </modal>
 </template>
@@ -32,16 +31,10 @@ const props = defineProps({
     },
 });
 
-const emit = defineEmits(['showImage']);
-
 const $modal = ref(); // Modal
 
 const open = () => {
     $modal.value.show();
-}
-
-const showImage = (url) => {
-    emit('showImage', url);
 }
 
 defineExpose({

@@ -240,7 +240,6 @@
                                         v-if="showAlbumArt"
                                         :src="item.now_playing.song.art"
                                         class="flex-shrink-0 pe-3"
-                                        @click.prevent="showImage(item.now_playing.song.art)"
                                     />
 
                                     <div
@@ -304,6 +303,7 @@ import Loading from "~/components/Common/Loading.vue";
 import Lightbox from "~/components/Common/Lightbox.vue";
 import CardPage from "~/components/Common/CardPage.vue";
 import HeaderInlinePlayer from "~/components/HeaderInlinePlayer.vue";
+import {useProvideLightbox} from "~/vendor/lightbox";
 
 const props = defineProps({
     userUrl: {
@@ -404,8 +404,5 @@ useIntervalFn(
 );
 
 const $lightbox = ref(); // Template Ref
-
-const showImage = (url) => {
-    $lightbox.value.show(url);
-};
+useProvideLightbox($lightbox);
 </script>

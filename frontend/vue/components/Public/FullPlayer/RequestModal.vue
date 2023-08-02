@@ -11,7 +11,6 @@
             :request-list-uri="requestListUri"
             :custom-fields="customFields"
             @submitted="doClose"
-            @show-image="showImage"
         />
     </modal>
 </template>
@@ -37,8 +36,6 @@ const props = defineProps({
     }
 });
 
-const emit = defineEmits(['showImage']);
-
 const $modal = ref(); // Modal
 
 const doClose = () => {
@@ -47,10 +44,6 @@ const doClose = () => {
 
 const open = () => {
     $modal.value.show();
-}
-
-const showImage = (url) => {
-    emit('showImage', url);
 }
 
 defineExpose({

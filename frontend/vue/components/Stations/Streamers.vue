@@ -118,6 +118,8 @@
             @relist="relist"
         />
         <broadcasts-modal ref="$broadcastsModal" />
+
+        <lightbox ref="$lightbox" />
     </div>
 </template>
 
@@ -136,6 +138,8 @@ import useHasEditModal from "~/functions/useHasEditModal";
 import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
 import CardPage from "~/components/Common/CardPage.vue";
 import {useAzuraCastStation} from "~/vendor/azuracast";
+import Lightbox from "~/components/Common/Lightbox.vue";
+import {useProvideLightbox} from "~/vendor/lightbox";
 
 const props = defineProps({
     listUrl: {
@@ -188,4 +192,7 @@ const {doDelete} = useConfirmAndDelete(
     $gettext('Delete Streamer?'),
     relist
 );
+
+const $lightbox = ref(); // Template Ref
+useProvideLightbox($lightbox);
 </script>

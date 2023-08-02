@@ -14,7 +14,6 @@
                 v-if="showAlbumArt"
                 class="me-3"
                 :src="row.song.art"
-                @click="showImage(row.song.art, $event)"
             />
 
             <div class="name">
@@ -44,14 +43,8 @@ const props = defineProps({
     showAlbumArt: {
         type: Boolean,
         default: true
-    },
-    onShowImage: {
-        type: Function,
-        default: null
     }
 });
-
-const emit = defineEmits(['showImage']);
 
 const unixTimestampToDate = (timestamp) => {
     if (!timestamp) {
@@ -64,13 +57,6 @@ const unixTimestampToDate = (timestamp) => {
 const albumAndArtist = (song) => {
     return [song.artist, song.album].filter(str => !!str).join(' - ');
 };
-
-const showImage = (url, e) => {
-    if (props.onShowImage) {
-        e.preventDefault();
-        emit('showImage', url);
-    }
-}
 </script>
 
 <style lang="scss">

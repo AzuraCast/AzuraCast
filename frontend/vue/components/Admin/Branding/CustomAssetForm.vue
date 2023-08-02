@@ -2,8 +2,8 @@
     <div class="d-flex">
         <div class="flex-shrink-0">
             <a
+                v-lightbox
                 :href="url"
-                data-fancybox
                 target="_blank"
             >
                 <img
@@ -46,6 +46,7 @@ import {useNotify} from "~/functions/useNotify";
 import Loading from "~/components/Common/Loading.vue";
 import FormGroup from "~/components/Form/FormGroup.vue";
 import FormFile from "~/components/Form/FormFile.vue";
+import {useLightbox} from "~/vendor/lightbox";
 
 const props = defineProps({
     id: {
@@ -105,4 +106,6 @@ const clear = () => {
         relist();
     });
 };
+
+const {vLightbox} = useLightbox();
 </script>

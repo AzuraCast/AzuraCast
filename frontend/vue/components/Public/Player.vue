@@ -12,16 +12,7 @@
                 v-if="showAlbumArt && np.now_playing.song.art"
                 class="now-playing-art"
             >
-                <a
-                    :href="np.now_playing.song.art"
-                    target="_blank"
-                    @click="showImage(np.now_playing.song.art, $event)"
-                >
-                    <img
-                        :src="np.now_playing.song.art"
-                        :alt="$gettext('Album Art')"
-                    >
-                </a>
+                <album-art :src="np.now_playing.song.art" />
             </div>
             <div class="now-playing-main">
                 <h6
@@ -156,16 +147,13 @@ import {useTranslate} from "~/vendor/gettext";
 import useNowPlaying from "~/functions/useNowPlaying";
 import playerProps from "~/components/Public/playerProps";
 import MuteButton from "~/components/Common/MuteButton.vue";
+import AlbumArt from "~/components/Common/AlbumArt.vue";
 
 const props = defineProps({
-    ...playerProps,
-    onShowImage: {
-        type: Function,
-        default: null
-    }
+    ...playerProps
 });
 
-const emit = defineEmits(['np_updated', 'showImage']);
+const emit = defineEmits(['np_updated']);
 
 const {
     np,
@@ -278,13 +266,6 @@ const onNowPlayingUpdated = (np_new) => {
 };
 
 watch(np, onNowPlayingUpdated, {immediate: true});
-
-const showImage = (url, e) => {
-    if (props.onShowImage) {
-        e.preventDefault();
-        emit('showImage', url);
-    }
-}
 </script>
 
 <style lang="scss">

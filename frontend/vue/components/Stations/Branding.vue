@@ -33,11 +33,16 @@
 
         <branding-form :profile-edit-url="profileEditUrl" />
     </div>
+
+    <lightbox ref="$lightbox" />
 </template>
 
 <script setup>
 import BrandingForm from "~/components/Stations/Branding/BrandingForm.vue";
 import CustomAssetForm from "~/components/Admin/Branding/CustomAssetForm.vue";
+import Lightbox from "~/components/Common/Lightbox.vue";
+import {ref} from "vue";
+import {useProvideLightbox} from "~/vendor/lightbox";
 
 defineProps({
     profileEditUrl: {
@@ -53,5 +58,8 @@ defineProps({
         required: true
     }
 });
+
+const $lightbox = ref(); // Template Ref
+useProvideLightbox($lightbox);
 </script>
 

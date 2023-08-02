@@ -17,7 +17,6 @@
                         :src="row.item.song.art"
                         :width="40"
                         class="flex-shrink-1 pe-3"
-                        @click="showImage(row.item.song.art, $event)"
                     />
                     <div class="flex-fill">
                         {{ row.item.song.title }}<br>
@@ -60,14 +59,10 @@ const props = defineProps({
         type: Array,
         required: false,
         default: () => []
-    },
-    onShowImage: {
-        type: Function,
-        default: null
     }
 });
 
-const emit = defineEmits(['submitted', 'showImage']);
+const emit = defineEmits(['submitted']);
 
 const {$gettext} = useTranslate();
 
@@ -146,19 +141,4 @@ const doSubmitRequest = (url) => {
         emit('submitted');
     });
 };
-
-const showImage = (url, e) => {
-    if (props.onShowImage) {
-        e.preventDefault();
-        emit('showImage', url);
-    }
-}
 </script>
-
-<style lang="scss">
-img.album_art {
-    width: 40px;
-    height: auto;
-    border-radius: 5px;
-}
-</style>

@@ -32,12 +32,17 @@
     </card-page>
 
     <branding-form :api-url="settingsApiUrl" />
+
+    <lightbox ref="$lightbox" />
 </template>
 
 <script setup>
 import CustomAssetForm from "./Branding/CustomAssetForm.vue";
 import BrandingForm from "./Branding/BrandingForm.vue";
 import CardPage from "~/components/Common/CardPage.vue";
+import Lightbox from "~/components/Common/Lightbox.vue";
+import {ref} from "vue";
+import {useProvideLightbox} from "~/vendor/lightbox";
 
 defineProps({
     settingsApiUrl: {
@@ -57,5 +62,8 @@ defineProps({
         required: true
     }
 });
+
+const $lightbox = ref(); // Template Ref
+useProvideLightbox($lightbox);
 </script>
 

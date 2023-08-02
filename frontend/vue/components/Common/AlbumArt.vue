@@ -1,6 +1,7 @@
 <template>
     <a
         v-if="src"
+        v-lightbox
         :href="src"
         class="album-art"
         target="_blank"
@@ -19,6 +20,7 @@
 
 <script setup>
 import {computed} from "vue";
+import {useLightbox} from "~/vendor/lightbox";
 
 const props = defineProps({
     src: {
@@ -34,6 +36,9 @@ const props = defineProps({
 const widthPx = computed(() => {
     return props.width + 'px';
 });
+
+// Use lightbox if available; if not, just ignore.
+const {vLightbox} = useLightbox();
 </script>
 
 <style scoped>

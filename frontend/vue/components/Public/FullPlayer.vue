@@ -10,7 +10,6 @@
                     <radio-player
                         v-bind="pickProps(props, playerProps)"
                         @np_updated="onNowPlayingUpdate"
-                        @show-image="showImage"
                     />
                 </div>
             </div>
@@ -51,7 +50,6 @@
         ref="$songHistoryModal"
         :show-album-art="showAlbumArt"
         :history="history"
-        @show-image="showImage"
     />
 
     <request-modal
@@ -59,7 +57,6 @@
         :show-album-art="showAlbumArt"
         :request-list-uri="requestListUri"
         :custom-fields="customFields"
-        @show-image="showImage"
     />
 
     <lightbox ref="$lightbox" />
@@ -74,6 +71,7 @@ import {ref} from "vue";
 import playerProps from "~/components/Public/playerProps";
 import {pickProps} from "~/functions/pickProps";
 import Lightbox from "~/components/Common/Lightbox.vue";
+import {useProvideLightbox} from "~/vendor/lightbox";
 
 const props = defineProps({
     ...playerProps,
@@ -119,8 +117,5 @@ const openRequestModal = () => {
 }
 
 const $lightbox = ref(); // Template Ref
-
-const showImage = (url) => {
-    $lightbox.value.show(url);
-};
+useProvideLightbox($lightbox);
 </script>

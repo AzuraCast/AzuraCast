@@ -7,12 +7,10 @@
         :title="$gettext('Streamer Broadcasts')"
     >
         <template v-if="listUrl">
-            <div
-                style="min-height: 40px;"
-                class="flex-fill text-start bg-primary rounded mb-2"
-            >
-                <inline-player ref="$player" />
-            </div>
+            <inline-player
+                ref="$player"
+                class="bg-primary rounded mb-2 p-3"
+            />
 
             <data-table
                 id="station_streamer_broadcasts"
@@ -23,13 +21,9 @@
             >
                 <template #cell(download)="row">
                     <template v-if="row.item.recording?.links?.download">
-                        <play-button
-                            class="file-icon btn-xl"
-                            :url="row.item.recording?.links?.download"
-                        />
-                      &nbsp;
+                        <play-button :url="row.item.recording?.links?.download"/>
                         <a
-                            class="name"
+                            class="name btn p-0 ms-2"
                             :href="row.item.recording?.links?.download"
                             target="_blank"
                             :title="$gettext('Download')"

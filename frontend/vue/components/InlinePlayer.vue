@@ -7,7 +7,8 @@
 
     <div
         v-if="isPlaying"
-        class="ms-3 player-inline"
+        v-bind="$attrs"
+        class="player-inline"
     >
         <div
             v-if="!current.isStream && duration !== 0"
@@ -121,6 +122,10 @@ const stop = () => {
 const toggleMute = () => {
     isMuted.value = !isMuted.value;
 };
+
+defineExpose({
+    stop
+});
 </script>
 
 <style lang="scss">

@@ -15,6 +15,7 @@ import {ref} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import ChartAltValues from "~/components/Common/Charts/ChartAltValues.vue";
 import useChart, {chartProps} from "~/functions/useChart";
+import {useLuxon} from "~/vendor/luxon";
 
 const props = defineProps({
     ...chartProps,
@@ -23,6 +24,7 @@ const props = defineProps({
 const $canvas = ref(); // Template ref
 
 const {$gettext} = useTranslate();
+const {DateTime} = useLuxon();
 
 useChart(
     props,

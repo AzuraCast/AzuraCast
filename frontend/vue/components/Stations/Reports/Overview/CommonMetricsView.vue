@@ -59,6 +59,7 @@ import {useTranslate} from "~/vendor/gettext";
 import {useMounted} from "@vueuse/core";
 import {useAxios} from "~/vendor/axios";
 import Loading from "~/components/Common/Loading.vue";
+import {useLuxon} from "~/vendor/luxon";
 
 const props = defineProps({
     dateRange: {
@@ -105,6 +106,7 @@ const fields = shallowRef([
 
 const dateRange = toRef(props, 'dateRange');
 const {axios} = useAxios();
+const {DateTime} = useLuxon();
 
 const relist = () => {
     isLoading.value = true;

@@ -130,6 +130,7 @@ import publicPagesPanelProps from "~/components/Stations/Profile/publicPagesPane
 import embedModalProps from "~/components/Stations/Profile/embedModalProps";
 import {pickProps} from "~/functions/pickProps";
 import CardPage from "~/components/Common/CardPage.vue";
+import {useSweetAlert} from "~/vendor/sweetalert";
 
 const props = defineProps({
     ...publicPagesPanelProps,
@@ -141,4 +142,6 @@ const $embedModal = ref(); // Template Ref
 const doOpenEmbed = () => {
     $embedModal.value.open();
 };
+
+const {vConfirmLink} = useSweetAlert();
 </script>

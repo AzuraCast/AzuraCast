@@ -59,8 +59,11 @@ import Icon from '~/components/Common/Icon';
 import requestsPanelProps from "~/components/Stations/Profile/requestsPanelProps";
 import EnabledBadge from "~/components/Common/Badges/EnabledBadge.vue";
 import CardPage from "~/components/Common/CardPage.vue";
+import {useSweetAlert} from "~/vendor/sweetalert";
 
 const props = defineProps({
     ...requestsPanelProps
 });
+
+const {vConfirmLink} = useSweetAlert();
 </script>

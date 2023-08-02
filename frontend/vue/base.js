@@ -1,5 +1,4 @@
 import {createApp, h} from "vue";
-import installSweetAlert from "./vendor/sweetalert";
 import installAxios from "~/vendor/axios";
 import {installPinia} from '~/vendor/pinia';
 import {installTranslate} from "~/vendor/gettext";
@@ -52,9 +51,6 @@ export default function (component) {
             },
         }
     });
-
-    /* SweetAlert */
-    installSweetAlert(vueApp);
 
     const vueComponent = (el, props) => {
         vueApp.config.globalProperties.$appProps = props;

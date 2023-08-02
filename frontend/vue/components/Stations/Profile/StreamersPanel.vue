@@ -58,8 +58,11 @@ import Icon from "~/components/Common/Icon.vue";
 import EnabledBadge from "~/components/Common/Badges/EnabledBadge.vue";
 import streamersPanelProps from "~/components/Stations/Profile/streamersPanelProps";
 import CardPage from "~/components/Common/CardPage.vue";
+import {useSweetAlert} from "~/vendor/sweetalert";
 
 const props = defineProps({
     ...streamersPanelProps
 });
+
+const {vConfirmLink} = useSweetAlert();
 </script>

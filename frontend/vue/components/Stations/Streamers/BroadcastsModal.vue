@@ -21,7 +21,7 @@
             >
                 <template #cell(download)="row">
                     <template v-if="row.item.recording?.links?.download">
-                        <play-button :url="row.item.recording?.links?.download"/>
+                        <play-button :url="row.item.recording?.links?.download" />
                         <a
                             class="name btn p-0 ms-2"
                             :href="row.item.recording?.links?.download"

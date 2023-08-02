@@ -730,6 +730,7 @@ final class ConfigWriter implements EventSubscriberInterface
 
         $event->appendBlock(
             <<<LIQ
+            # Skip command (used by web UI)
             def add_skip_command(s) =
                 def skip(_) =
                     source.skip(s)
@@ -740,8 +741,24 @@ final class ConfigWriter implements EventSubscriberInterface
             end
 
             add_skip_command(radio)
+            
+            # Apply amplification metadata (if supplied)
+            radio = amplify(override="liq_amplify", 1., radio)
             LIQ
         );
+
+        // Replaygain metadata
+        $settings = $station->getBackendConfig();
+
+        if ($settings->useReplayGain()) {
+            $event->appendBlock(
+                <<<LIQ
+                # Replaygain Metadata
+                enable_replaygain_metadata()
+                radio = replaygain(radio)
+                LIQ
+            );
+        }
     }
 
     /**
@@ -991,7 +1008,7 @@ final class ConfigWriter implements EventSubscriberInterface
 
         $event->appendBlock(
             <<<LIQ
-            # A Pre-DJ source of radio that can be broadcast if needed',
+            # A Pre-DJ source of radio that can be broadcast if needed
             radio_without_live = radio
             ignore(radio_without_live)
 
@@ -1075,22 +1092,8 @@ final class ConfigWriter implements EventSubscriberInterface
             <<<LIQ
             # Allow for Telnet-driven insertion of custom metadata.
             radio = server.insert_metadata(id="custom_metadata", radio)
-
-            # Apply amplification metadata (if supplied)
-            radio = amplify(override="liq_amplify", 1., radio)
             LIQ
         );
-
-        // Replaygain metadata
-        if ($settings->useReplayGain()) {
-            $event->appendBlock(
-                <<<LIQ
-                # Replaygain Metadata
-                enable_replaygain_metadata()
-                radio = replaygain(radio)
-                LIQ
-            );
-        }
 
         if ($settings->isAudioProcessingEnabled() && $settings->getPostProcessingIncludeLive()) {
             $this->writePostProcessingSection($event);

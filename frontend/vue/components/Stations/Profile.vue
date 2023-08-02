@@ -63,6 +63,8 @@
             </template>
         </div>
     </div>
+
+    <header-inline-player />
 </template>
 
 <script setup>
@@ -95,6 +97,7 @@ import {useIntervalFn} from "@vueuse/core";
 import {useSweetAlert} from "~/vendor/sweetalert";
 import {useNotify} from "~/functions/useNotify";
 import {useTranslate} from "~/vendor/gettext";
+import HeaderInlinePlayer from "~/components/HeaderInlinePlayer.vue";
 
 const props = defineProps({
     ...backendPanelProps,

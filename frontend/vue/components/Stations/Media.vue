@@ -242,6 +242,8 @@
         @relist="onTriggerRelist"
     />
 
+    <header-inline-player />
+
     <lightbox ref="$lightbox" />
 </template>
 
@@ -267,6 +269,7 @@ import {useEventListener} from "@vueuse/core";
 import formatFileSize from "../../functions/formatFileSize";
 import InfoCard from "~/components/Common/InfoCard.vue";
 import Lightbox from "~/components/Common/Lightbox.vue";
+import HeaderInlinePlayer from "~/components/HeaderInlinePlayer.vue";
 
 const props = defineProps({
     listUrl: {

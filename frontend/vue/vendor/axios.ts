@@ -4,8 +4,9 @@ import {inject} from "vue";
 import {useAzuraCast} from "~/vendor/azuracast";
 import {useTranslate} from "~/vendor/gettext";
 import {useNotify} from "~/functions/useNotify";
+import {InjectionKey} from "vue/dist/vue";
 
-const injectKey = 'axios';
+const injectKey= Symbol() as InjectionKey<axios>;
 
 /* Composition API Axios utilities */
 export function useAxios() {

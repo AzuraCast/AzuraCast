@@ -488,17 +488,15 @@ final class ConfigWriter implements EventSubscriberInterface
 
             $event->appendLines($playlistConfigLines);
 
-            if ($playlist->backendPlaySingleTrack()) {
-                $playlistVarName = 'once(' . $playlistVarName . ')';
-            }
-
             switch ($playlist->getType()) {
                 case PlaylistTypes::Standard:
                     if ($scheduleItems->count() > 0) {
                         foreach ($scheduleItems as $scheduleItem) {
                             $playTime = $this->getScheduledPlaylistPlayTime($event, $scheduleItem);
 
-                            $scheduleTiming = '({ ' . $playTime . ' }, ' . $playlistVarName . ')';
+                            $scheduleTiming = $playlist->backendPlaySingleTrack()
+                                ? '(predicate.at_most(1, {' . $playTime . '}), ' . $playlistVarName . ')'
+                                : '({ ' . $playTime . ' }, ' . $playlistVarName . ')';
 
                             if ($playlist->backendInterruptOtherSongs()) {
                                 $scheduleSwitchesInterrupting[] = $scheduleTiming;
@@ -528,7 +526,9 @@ final class ConfigWriter implements EventSubscriberInterface
                         foreach ($scheduleItems as $scheduleItem) {
                             $playTime = $this->getScheduledPlaylistPlayTime($event, $scheduleItem);
 
-                            $scheduleTiming = '({ ' . $playTime . ' }, ' . $playlistScheduleVar . ')';
+                            $scheduleTiming = $playlist->backendPlaySingleTrack()
+                                ? '(predicate.at_most(1, {' . $playTime . '}), ' . $playlistScheduleVar . ')'
+                                : '({ ' . $playTime . ' }, ' . $playlistScheduleVar . ')';
 
                             if ($playlist->backendInterruptOtherSongs()) {
                                 $scheduleSwitchesInterrupting[] = $scheduleTiming;
@@ -549,7 +549,9 @@ final class ConfigWriter implements EventSubscriberInterface
                             $playTime = '(' . $minutePlayTime . ') and ('
                                 . $this->getScheduledPlaylistPlayTime($event, $scheduleItem) . ')';
 
-                            $scheduleTiming = '({ ' . $playTime . ' }, ' . $playlistVarName . ')';
+                            $scheduleTiming = $playlist->backendPlaySingleTrack()
+                                ? '(predicate.at_most(1, {' . $playTime . '}), ' . $playlistVarName . ')'
+                                : '({ ' . $playTime . ' }, ' . $playlistVarName . ')';
 
                             if ($playlist->backendInterruptOtherSongs()) {
                                 $scheduleSwitchesInterrupting[] = $scheduleTiming;
@@ -558,7 +560,9 @@ final class ConfigWriter implements EventSubscriberInterface
                             }
                         }
                     } else {
-                        $scheduleTiming = '({ ' . $minutePlayTime . ' }, ' . $playlistVarName . ')';
+                        $scheduleTiming = $playlist->backendPlaySingleTrack()
+                            ? '(predicate.at_most(1, {' . $minutePlayTime . '}), ' . $playlistVarName . ')'
+                            : '({ ' . $minutePlayTime . ' }, ' . $playlistVarName . ')';
 
                         if ($playlist->backendInterruptOtherSongs()) {
                             $scheduleSwitchesInterrupting[] = $scheduleTiming;

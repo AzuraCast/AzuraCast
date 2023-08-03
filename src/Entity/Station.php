@@ -137,7 +137,7 @@ class Station implements Stringable, IdentifiableEntityInterface
 
     #[
         OA\Property(example: "Various"),
-        ORM\Column(length: 150, nullable: true),
+        ORM\Column(length: 255, nullable: true),
         Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])
     ]
     protected ?string $genre = null;
@@ -590,7 +590,7 @@ class Station implements Stringable, IdentifiableEntityInterface
 
     public function setGenre(?string $genre): void
     {
-        $this->genre = $this->truncateNullableString($genre, 150);
+        $this->genre = $this->truncateNullableString($genre);
     }
 
     public function getRadioBaseDir(): string

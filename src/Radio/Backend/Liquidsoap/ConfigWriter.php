@@ -1256,6 +1256,7 @@ final class ConfigWriter implements EventSubscriberInterface
 
         $configDir = $station->getRadioConfigDir();
         $hlsBaseDir = $station->getRadioHlsDir();
+        $tempDir = $station->getRadioTempDir();
 
         $backendConfig = $station->getBackendConfig();
         $hlsSegmentLength = $backendConfig->getHlsSegmentLength();
@@ -1276,6 +1277,7 @@ final class ConfigWriter implements EventSubscriberInterface
                 segments_overhead={$hlsSegmentsOverhead},
                 segment_name=hls_segment_name,
                 persist_at="{$configDir}/hls.config",
+                temp_dir="{$tempDir}",
                 "{$hlsBaseDir}",
                 hls_streams,
                 radio

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin\Debug;
 
+use App\Cache\DatabaseCache;
 use App\Console\Command\Sync\SingleTaskCommand;
 use App\Controller\SingleActionInterface;
 use App\Entity\Repository\StationRepository;
@@ -17,7 +18,6 @@ use Cron\CronExpression;
 use DateTimeZone;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ResponseInterface;
-use Psr\SimpleCache\CacheInterface;
 
 final class IndexAction implements SingleActionInterface
 {
@@ -25,7 +25,7 @@ final class IndexAction implements SingleActionInterface
         private readonly StationRepository $stationRepo,
         private readonly QueueManagerInterface $queueManager,
         private readonly EventDispatcherInterface $dispatcher,
-        private readonly CacheInterface $cache
+        private readonly DatabaseCache $cache
     ) {
     }
 
@@ -62,7 +62,7 @@ final class IndexAction implements SingleActionInterface
             $syncTasks[] = [
                 'task' => $task,
                 'pattern' => $pattern,
-                'time' => $this->cache->get($cacheKey, 0),
+                'time' => $this->cache->getItem($cacheKey)->get() ?? 0,
                 'nextRun' => $cronExpression->getNextRunDate($now)->getTimestamp(),
                 'url' => $router->named(
                     'admin:debug:sync',

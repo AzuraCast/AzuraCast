@@ -1,21 +1,23 @@
 import axios from "axios";
 import VueAxios from "vue-axios";
-import {inject} from "vue";
+import {App, inject} from "vue";
 import {useAzuraCast} from "~/vendor/azuracast";
 import {useTranslate} from "~/vendor/gettext";
 import {useNotify} from "~/functions/useNotify";
 import {InjectionKey} from "vue/dist/vue";
 
-const injectKey= Symbol() as InjectionKey<axios>;
+const injectKey: InjectionKey<axios> = Symbol() as InjectionKey<axios>;
 
 /* Composition API Axios utilities */
-export function useAxios() {
-    return {
-        axios: inject(injectKey)
-    };
+interface UseAxios {
+    axios: axios
 }
 
-export default function installAxios(vueApp) {
+export const useAxios = (): UseAxios => ({
+    axios: inject(injectKey)
+});
+
+export default function installAxios(vueApp: App) {
     // Configure auto-CSRF on requests
     const {apiCsrf} = useAzuraCast();
 

@@ -1,6 +1,7 @@
-import {createGettext} from "vue3-gettext";
+import {createGettext, Language} from "vue3-gettext";
 import {useAzuraCast} from "~/vendor/azuracast";
 import axios from "axios";
+import {App} from "vue";
 
 const {locale, localePaths} = useAzuraCast();
 
@@ -20,11 +21,11 @@ if (localePaths[locale] !== undefined) {
     });
 }
 
-export function useTranslate() {
+export function useTranslate(): Language {
     return gettext;
 }
 
-export function installTranslate(vueApp) {
+export function installTranslate(vueApp: App): void {
     if (typeof locale !== 'undefined') {
         vueApp.config.language = locale;
     }

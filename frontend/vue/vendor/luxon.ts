@@ -3,12 +3,12 @@ import {useAzuraCast} from "~/vendor/azuracast";
 
 const {localeWithDashes, timeConfig} = useAzuraCast();
 
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', (): void => {
     Settings.defaultLocale = localeWithDashes;
 });
 
 export function useLuxon() {
-    const timestampToRelative = (timestamp: number|null|undefined) => {
+    const timestampToRelative = (timestamp: number | null | undefined): string => {
         if (typeof timestamp !== 'number') {
             return '';
         }

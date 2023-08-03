@@ -1,6 +1,16 @@
 /* eslint-disable no-undef */
 
-export function useAzuraCast() {
+interface AzuraCastConstants {
+    locale: string,
+    localeShort: string,
+    localeWithDashes: string,
+    localePaths: object,
+    timeConfig: object,
+    apiCsrf: string | null,
+    enableAdvancedFeatures: boolean
+}
+
+export function useAzuraCast(): AzuraCastConstants {
     return {
         locale: App.locale ?? 'en_US',
         localeShort: App.locale_short ?? 'en',
@@ -12,7 +22,14 @@ export function useAzuraCast() {
     }
 }
 
-export function useAzuraCastStation() {
+interface AzuraCastStationConstants {
+    id: number | null,
+    name: string | null,
+    shortName: string | null,
+    timezone: string
+}
+
+export function useAzuraCastStation(): AzuraCastStationConstants {
     return {
         id: App.station?.id ?? null,
         name: App.station?.name ?? null,

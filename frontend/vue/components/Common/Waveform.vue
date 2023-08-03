@@ -45,7 +45,7 @@
                             v-model.number="volume"
                             type="range"
                             :title="$gettext('Volume')"
-                            class="player-volume-range custom-range w-100"
+                            class="player-volume-range form-range w-100"
                             min="0"
                             max="100"
                             step="1"

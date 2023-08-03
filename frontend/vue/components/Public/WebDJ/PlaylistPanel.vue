@@ -78,7 +78,7 @@
                             min="0"
                             max="100"
                             step="0.1"
-                            class="custom-range slider"
+                            class="form-range slider"
                             @mousedown="isSeeking = true"
                             @mouseup="isSeeking = false"
                         >

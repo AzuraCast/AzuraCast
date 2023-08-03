@@ -19,7 +19,7 @@
                                 min="0"
                                 max="2"
                                 step="0.05"
-                                class="custom-range slider"
+                                class="form-range slider"
                                 style="width: 200px; height: 10px;"
                                 @click.right.prevent="mixer = 1.0"
                             >

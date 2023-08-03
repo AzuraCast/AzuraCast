@@ -52,7 +52,7 @@
                         {{ currentTrackElapsedDisplay }}
                     </div>
                     <div class="time-display-progress">
-                        <div class="progress">
+                        <div class="progress h-5">
                             <div
                                 class="progress-bar bg-secondary"
                                 role="progressbar"
@@ -67,7 +67,7 @@
             </div>
         </div>
 
-        <hr>
+        <hr class="my-2">
 
         <div class="radio-controls">
             <play-button
@@ -84,7 +84,7 @@
                 >
                     <button
                         id="btn-select-stream"
-                        class="btn btn-sm btn-outline-secondary dropdown-toggle"
+                        class="btn btn-sm btn-secondary dropdown-toggle"
                         type="button"
                         data-bs-toggle="dropdown"
                         aria-haspopup="true"
@@ -113,8 +113,8 @@
                 </div>
             </div>
 
-            <div class="radio-control-volume">
-                <div class="radio-control-mute-button">
+            <div class="radio-control-volume d-flex align-items-center">
+                <div class="flex-shrink-0 mx-2">
                     <mute-button
                         class="p-0 text-secondary"
                         :volume="volume"
@@ -122,12 +122,12 @@
                         @toggle-mute="toggleMute"
                     />
                 </div>
-                <div class="radio-control-volume-slider">
+                <div class="flex-fill radio-control-volume-slider">
                     <input
                         v-model.number="volume"
                         type="range"
                         :title="$gettext('Volume')"
-                        class="custom-range"
+                        class="form-range"
                         min="0"
                         max="100"
                         step="1"
@@ -352,15 +352,6 @@ watch(np, onNowPlayingUpdated, {immediate: true});
         }
     }
 
-    hr {
-        margin-top: .5rem;
-        margin-bottom: .5rem;
-    }
-
-    i.material-icons {
-        line-height: 1;
-    }
-
     .radio-controls {
         display: flex;
         flex-direction: row;
@@ -383,19 +374,8 @@ watch(np, onNowPlayingUpdated, {immediate: true});
         }
 
         .radio-control-volume {
-            display: flex;
-
-            .radio-control-mute-button {
-                flex-shrink: 0;
-            }
-
             .radio-control-volume-slider {
-                flex: 1 1 auto;
                 max-width: 30%;
-
-                input {
-                    height: 10px;
-                }
             }
         }
     }

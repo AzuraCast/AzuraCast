@@ -13,9 +13,9 @@
                     />
                 </div>
             </div>
-            <div class="card-body buttons">
+            <div class="card-body buttons pt-0">
                 <a
-                    class="btn btn-sm btn-outline-secondary"
+                    class="btn btn-link text-secondary"
                     @click.prevent="openSongHistoryModal"
                 >
                     <icon icon="history" />
@@ -25,7 +25,7 @@
                 </a>
                 <a
                     v-if="enableRequests"
-                    class="btn btn-sm btn-outline-secondary"
+                    class="btn btn-link text-secondary"
                     @click.prevent="openRequestModal"
                 >
                     <icon icon="help_outline" />
@@ -34,7 +34,7 @@
                     </span>
                 </a>
                 <a
-                    class="btn btn-sm btn-outline-secondary"
+                    class="btn btn-link text-secondary"
                     :href="downloadPlaylistUri"
                 >
                     <icon icon="file_download" />

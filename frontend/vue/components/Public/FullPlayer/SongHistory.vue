@@ -46,15 +46,11 @@ const props = defineProps({
     }
 });
 
-const {DateTime} = useLuxon();
+const {timestampToRelative} = useLuxon();
 
-const unixTimestampToDate = (timestamp) => {
-    if (!timestamp) {
-        return '';
-    }
-
-    return DateTime.fromSeconds(timestamp).toRelative();
-};
+const unixTimestampToDate = (timestamp) => (!timestamp)
+    ? ''
+    : timestampToRelative(timestamp);
 
 const albumAndArtist = (song) => {
     return [song.artist, song.album].filter(str => !!str).join(' - ');

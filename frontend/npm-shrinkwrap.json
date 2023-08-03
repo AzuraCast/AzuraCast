@@ -49,6 +49,7 @@
       "devDependencies": {
         "@babel/core": "^7.15.5",
         "@babel/preset-env": "^7.15.6",
+        "@types/luxon": "^3.3.1",
         "@typescript-eslint/eslint-plugin": "^6.2.1",
         "@typescript-eslint/parser": "^6.2.1",
         "@vitejs/plugin-vue": "^4.2.3",
@@ -2710,6 +2711,12 @@
       "version": "7.0.12",
       "resolved": "https://registry.npmjs.org/@types/json-schema/-/json-schema-7.0.12.tgz",
       "integrity": "sha512-Hr5Jfhc9eYOQNPYO5WLDq/n4jqijdHNlDXjuAQkkt+mWdQR+XJToOHrsD4cPaMXpn6KO7y2+wM8AZEs8VpBLVA==",
+      "dev": true
+    },
+    "node_modules/@types/luxon": {
+      "version": "3.3.1",
+      "resolved": "https://registry.npmjs.org/@types/luxon/-/luxon-3.3.1.tgz",
+      "integrity": "sha512-XOS5nBcgEeP2PpcqJHjCWhUCAzGfXIU8ILOSLpx2FhxqMW9KdxgCGXNOEKGVBfveKtIpztHzKK5vSRVLyW/NqA==",
       "dev": true
     },
     "node_modules/@types/minimatch": {

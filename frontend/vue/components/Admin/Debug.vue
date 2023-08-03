@@ -177,7 +177,6 @@
 import {ref} from "vue";
 import useHasDatatable from "~/functions/useHasDatatable";
 import DataTable from "~/components/Common/DataTable.vue";
-import {useAzuraCast} from "~/vendor/azuracast";
 import {useTranslate} from "~/vendor/gettext";
 import CardPage from "~/components/Common/CardPage.vue";
 import {useLuxon} from "~/vendor/luxon";
@@ -206,33 +205,22 @@ const props = defineProps({
 });
 
 const {$gettext} = useTranslate();
-const {timeConfig} = useAzuraCast();
-const {DateTime} = useLuxon();
+const {timestampToRelative} = useLuxon();
 
 const syncTaskFields = [
     {key: 'name', isRowHeader: true, label: $gettext('Task Name'), sortable: true},
     {
         key: 'time',
         label: $gettext('Last Run'),
-        formatter: (value) => {
-            if (value === 0) {
-                return $gettext('Not Run');
-            }
-
-            return DateTime.fromSeconds(value).toRelative({
-                ...timeConfig
-            });
-        },
+        formatter: (value) => (value === 0)
+            ? $gettext('Not Run')
+            : timestampToRelative(value),
         sortable: true
     },
     {
         key: 'nextRun',
         label: $gettext('Next Run'),
-        formatter: (value) => {
-            return DateTime.fromSeconds(value).toRelative({
-                ...timeConfig
-            });
-        },
+        formatter: (value) => timestampToRelative(value),
         sortable: true
     },
     {key: 'actions', label: $gettext('Actions')}

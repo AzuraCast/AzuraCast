@@ -26,7 +26,7 @@
                             class="card-text"
                         >
                             {{ $gettext('Last run:') }}
-                            {{ toRelativeTime(settings.backupLastRun) }}
+                            {{ timestampToRelative(settings.backupLastRun) }}
                         </p>
                         <p
                             v-else
@@ -257,11 +257,7 @@ const relist = () => {
 
 onMounted(relist);
 
-const {DateTime} = useLuxon();
-
-const toRelativeTime = (timestamp) => {
-    return DateTime.fromSeconds(timestamp).toRelative();
-};
+const {timestampToRelative} = useLuxon();
 
 const $lastOutputModal = ref(); // AdminBackupsLastOutputModal
 const showLastOutput = () => {

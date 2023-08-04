@@ -24,7 +24,7 @@ use function usleep;
     name: 'azuracast:sync:run',
     description: 'Task to run the minute\'s synchronized tasks.'
 )]
-final class RunnerCommand extends AbstractSyncCommand
+final class RunnerCommand extends AbstractSyncRunnerCommand
 {
     use SettingsAwareTrait;
 
@@ -38,6 +38,8 @@ final class RunnerCommand extends AbstractSyncCommand
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        $this->logToExtraFile('app_sync.log');
+
         $io = new SymfonyStyle($input, $output);
 
         if (!$this->highAvailability->isActiveServer()) {

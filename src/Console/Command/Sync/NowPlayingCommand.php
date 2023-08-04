@@ -21,7 +21,7 @@ use function random_int;
     name: 'azuracast:sync:nowplaying',
     description: 'Task to run the Now Playing worker task.'
 )]
-final class NowPlayingCommand extends AbstractSyncCommand
+final class NowPlayingCommand extends AbstractSyncRunnerCommand
 {
     use EntityManagerAwareTrait;
     use SettingsAwareTrait;
@@ -47,6 +47,8 @@ final class NowPlayingCommand extends AbstractSyncCommand
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        $this->logToExtraFile('app_nowplaying.log');
+
         $io = new SymfonyStyle($input, $output);
 
         if (!$this->highAvailability->isActiveServer()) {

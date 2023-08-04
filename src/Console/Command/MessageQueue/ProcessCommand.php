@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Console\Command\MessageQueue;
 
 use App\CallableEventDispatcherInterface;
-use App\Console\Command\CommandAbstract;
+use App\Console\Command\Sync\AbstractSyncCommand;
 use App\Container\EnvironmentAwareTrait;
 use App\Container\LoggerAwareTrait;
 use App\Doctrine\Messenger\ClearEntityManagerSubscriber;
@@ -31,7 +31,7 @@ use Throwable;
     description: 'Process the message queue.',
     aliases: ['queue:process']
 )]
-final class ProcessCommand extends CommandAbstract
+final class ProcessCommand extends AbstractSyncCommand
 {
     use LoggerAwareTrait;
     use EnvironmentAwareTrait;
@@ -53,6 +53,8 @@ final class ProcessCommand extends CommandAbstract
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        $this->logToExtraFile('app_worker.log');
+
         $runtime = (int)$input->getArgument('runtime');
         $workerName = $input->getOption('worker-name');
 

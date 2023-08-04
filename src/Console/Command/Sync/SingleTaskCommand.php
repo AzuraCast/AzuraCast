@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Console\Command\Sync;
 
 use App\Cache\DatabaseCache;
-use App\Console\Command\CommandAbstract;
 use App\Container\ContainerAwareTrait;
 use App\Container\LoggerAwareTrait;
 use App\Sync\Task\AbstractTask;
@@ -22,7 +21,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
     name: 'azuracast:sync:task',
     description: 'Task to run a specific scheduled task.',
 )]
-final class SingleTaskCommand extends CommandAbstract
+final class SingleTaskCommand extends AbstractSyncCommand
 {
     use ContainerAwareTrait;
     use LoggerAwareTrait;
@@ -40,6 +39,8 @@ final class SingleTaskCommand extends CommandAbstract
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        $this->logToExtraFile('app_sync.log');
+
         $io = new SymfonyStyle($input, $output);
         $task = $input->getArgument('task');
 

@@ -1,7 +1,8 @@
 {
   "compilerOptions": {
+    "baseUrl": ".",
     "paths": {
-      "~/*": ["./vue/*"]
+      "~/*": ["vue/*"]
     }
   }
 }

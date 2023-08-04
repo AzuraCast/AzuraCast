@@ -1,6 +1,6 @@
 import Swal from 'sweetalert2/dist/sweetalert2';
 import {useTranslate} from "~/vendor/gettext";
-import {Directive} from "vue/dist/vue";
+import {Directive} from "vue";
 
 const {$gettext} = useTranslate();
 

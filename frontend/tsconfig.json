@@ -29,14 +29,10 @@
     "noFallthroughCasesInSwitch": true
   },
   "include": [
-    "src/**/*.ts",
-    "src/**/*.d.ts",
-    "src/**/*.tsx",
-    "src/**/*.vue"
+    "vue/**/*.ts",
+    "vue/**/*.d.ts",
+    "vue/**/*.tsx",
+    "vue/**/*.vue",
+    "vue/**/*.js"
   ],
-  "references": [
-    {
-      "path": "./tsconfig.node.json"
-    }
-  ]
 }

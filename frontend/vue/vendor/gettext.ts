@@ -26,9 +26,5 @@ export function useTranslate(): Language {
 }
 
 export function installTranslate(vueApp: App): void {
-    if (typeof locale !== 'undefined') {
-        vueApp.config.language = locale;
-    }
-
     vueApp.use(gettext);
 }

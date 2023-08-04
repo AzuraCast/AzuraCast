@@ -12,8 +12,8 @@ interface TimestampToRelative {
 }
 
 interface UseLuxon {
-    DateTime: DateTime,
-    Duration: Duration,
+    DateTime: typeof DateTime,
+    Duration: typeof Duration,
     timestampToRelative: TimestampToRelative
 }
 

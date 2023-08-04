@@ -51,7 +51,6 @@
                             ref="$datatable"
                             paginated
                             :fields="fields"
-                            :responsive="false"
                             :api-url="listUrl"
                         >
                             <template #cell(actions)="row">
@@ -317,6 +316,7 @@ import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
 import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
 import {useAzuraCastStation} from "~/vendor/azuracast";
+import {useLuxon} from "~/vendor/luxon";
 
 const props = defineProps({
     ...mayNeedRestartProps,
@@ -354,6 +354,8 @@ const langToggleButton = (record) => {
         ? $gettext('Disable')
         : $gettext('Enable');
 };
+
+const {Duration} = useLuxon();
 
 const formatLength = (length) => {
     if (0 === length) {

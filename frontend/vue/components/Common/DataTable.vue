@@ -130,7 +130,12 @@
                 </div>
             </div>
         </div>
-        <div class="datatable-main">
+        <div
+            class="datatable-main"
+            :class="[
+                (responsive) ? 'table-responsive' : ''
+            ]"
+        >
             <o-table
                 ref="$table"
                 v-model:checked-rows="selectedRows"
@@ -138,7 +143,6 @@
                 :mobile-cards="false"
                 :table-class="[
                     'align-middle',
-                    (responsive) ? 'table-responsive' : '',
                     (selectable) ? 'table-selectable' : ''
                 ]"
 

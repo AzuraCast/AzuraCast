@@ -40,7 +40,7 @@ final class StationRepository extends Repository
 
     public function getActiveCount(): int
     {
-        return $this->em->createQuery(
+        return (int)$this->em->createQuery(
             <<<'DQL'
             SELECT COUNT(s.id) FROM App\Entity\Station s WHERE s.is_enabled = 1
             DQL

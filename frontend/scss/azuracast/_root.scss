@@ -7,7 +7,6 @@
 @include color-mode(dark, true) {
   --public-page-bg: url('../img/hexbg_dark.webp');
   --scrollbar-color: #{$gray-800};
-  --bs-secondary-rgb: 238, 238, 238;
   --bs-info-bg-subtle: #bbdefb;
   --bs-info-text-emphasis: #181d20;
 

@@ -1,3 +1,7 @@
+import '../scss/style.scss';
+
+import * as bootstrap from 'bootstrap';
+
 const ready = (callback) => {
     if (document.readyState !== "loading") callback();
     else document.addEventListener("DOMContentLoaded", callback);
@@ -63,3 +67,5 @@ ready(() => {
         toast.show();
     });
 });
+
+export default bootstrap;

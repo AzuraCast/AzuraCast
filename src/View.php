@@ -70,9 +70,7 @@ final class View extends Engine
         $vueComponents = Json::loadFromFile($environment->getBaseDirectory() . '/web/static/vite_dist/manifest.json');
         $this->registerFunction(
             'getVueComponentInfo',
-            function (string $component) use ($vueComponents) {
-                $componentPath = 'vue/pages/' . $component . '.js';
-
+            function (string $componentPath) use ($vueComponents) {
                 if (!isset($vueComponents[$componentPath])) {
                     return null;
                 }
@@ -122,26 +120,6 @@ final class View extends Engine
                 $fetchCss($componentPath);
 
                 return $includes;
-            }
-        );
-
-        $versionedFiles = Json::loadFromFile($environment->getBaseDirectory() . '/web/static/assets.json');
-        $this->registerFunction(
-            'assetUrl',
-            function (string $url) use ($environment, $versionedFiles): string {
-                if (isset($versionedFiles[$url])) {
-                    $url = $versionedFiles[$url];
-                }
-
-                if (str_starts_with($url, 'http')) {
-                    return $url;
-                }
-
-                if (str_starts_with($url, '/')) {
-                    return $url;
-                }
-
-                return $environment->getAssetUrl() . '/' . $url;
             }
         );
 

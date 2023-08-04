@@ -32,12 +32,8 @@ tmp/cache/*---*
 !/vendor/.gitkeep
 
 # NPM built content
-/web/static/dist/*
-/web/static/dist/**/*
-!/web/static/dist/.gitkeep
 /web/static/vite_dist/**/*
 !/web/static/vite_dist/.gitkeep
-/web/static/assets.json
 /translations/frontend.pot
 
 # Ansible deployment files

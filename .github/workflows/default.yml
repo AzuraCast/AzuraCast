@@ -89,9 +89,7 @@ jobs:
 
       - name: Set console permissions and clear static assets.
         run: |
-          rm -rf web/static/dist
           rm -rf web/static/vite_dist
-          rm -rf web/static/assets.json
           rm -rf translations/*.UTF-8
           chmod a+x bin/console
 
@@ -145,9 +143,7 @@ jobs:
           path: |
             .gitinfo
             translations
-            web/static/dist
             web/static/vite_dist
-            web/static/assets.json
             web/static/api/openapi.yml
   
   build:

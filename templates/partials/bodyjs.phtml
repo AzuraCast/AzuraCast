@@ -22,17 +22,6 @@ if (null !== $show24Hours) {
     $timeConfig->hour12 = !$show24Hours;
 }
 
-$localePaths = [];
-foreach (App\Enums\SupportedLocales::cases() as $supportedLocale) {
-    if ($supportedLocale === App\Enums\SupportedLocales::default()) {
-        continue;
-    }
-
-    $localePaths[$supportedLocale->getLocaleWithoutEncoding()] = $this->assetUrl(
-        'dist/lib/translations/' . $supportedLocale->value . '/translations.json'
-    );
-}
-
 // CSRF token
 $csrf = null;
 
@@ -47,7 +36,6 @@ $app = [
     'locale' => $locale,
     'locale_short' => $localeShort,
     'locale_with_dashes' => $localeWithDashes,
-    'locale_paths' => $localePaths,
     'time_config' => $timeConfig,
     'api_csrf' => $csrf,
     'enable_advanced_features' => $customization->enableAdvancedFeatures(),

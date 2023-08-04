@@ -1,9 +1,8 @@
 import {createGettext, Language} from "vue3-gettext";
 import {useAzuraCast} from "~/vendor/azuracast";
-import axios from "axios";
 import {App} from "vue";
 
-const {locale, localePaths} = useAzuraCast();
+const {locale} = useAzuraCast();
 
 const gettext = createGettext({
     defaultLanguage: locale,
@@ -11,13 +10,12 @@ const gettext = createGettext({
     silent: true
 });
 
-if (localePaths[locale] !== undefined) {
-    axios.get(
-        localePaths[locale]
-    ).then(r => {
-        gettext.translations = r.data;
-    }).catch((e) => {
-        console.error(e);
+const translations = import.meta.glob('../../../translations/**/translations.json', {as: 'json'});
+const localePath = '../../../translations/' + locale + '.UTF-8/translations.json';
+
+if (localePath in translations) {
+    translations[localePath]().then((data) => {
+        gettext.translations = data;
     });
 }
 

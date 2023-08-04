@@ -2,10 +2,8 @@
   "name": "azuracast",
   "license": "Apache-2.0",
   "scripts": {
-    "build": "gulp",
-    "watch": "gulp watch",
-    "generate-locales": "vue-gettext-extract",
-    "vite-build": "vite build"
+    "build": "vite build",
+    "generate-locales": "vue-gettext-extract"
   },
   "dependencies": {
     "@codemirror/lang-css": "^6.0.1",
@@ -48,8 +46,6 @@
     "zxcvbn": "^4.4.2"
   },
   "devDependencies": {
-    "@babel/core": "^7.15.5",
-    "@babel/preset-env": "^7.15.6",
     "@types/luxon": "^3.3.1",
     "@typescript-eslint/eslint-plugin": "^6.2.1",
     "@typescript-eslint/parser": "^6.2.1",
@@ -59,16 +55,6 @@
     "eslint": "^8.45.0",
     "eslint-plugin-vue": "^9.8.0",
     "glob": "^10.2.7",
-    "gulp": "^4.0.2",
-    "gulp-babel": "^8.0.0",
-    "gulp-clean-css": "^4",
-    "gulp-dart-sass": "^1.0.2",
-    "gulp-mode": "^1.1.0",
-    "gulp-rev": "^10",
-    "gulp-rev-delete-original": "^0.2.3",
-    "gulp-run-command": "0.0.10",
-    "gulp-sourcemaps": "^3",
-    "gulp-uglify": "^3.0.2",
     "sass": "^1.39.2",
     "typescript": "^5.1.6",
     "vite": "^4.4.6",

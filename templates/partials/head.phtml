@@ -3,13 +3,30 @@
  * @var App\Customization $customization
  */
 
+$componentDeps = $this->getVueComponentInfo('js/layout.js');
+
+echo <<<HTML
+    <script type="module" src="{$componentDeps['js']}"></script>
+    <script>
+    function ready(callback) {
+        if (document.readyState !== "loading") callback();
+        else document.addEventListener("DOMContentLoaded", callback);
+    }
+    </script>
+HTML;
+
+foreach ($componentDeps['prefetch'] as $prefetchDep) {
+    echo <<<HTML
+        <link rel="modulepreload" href="{$prefetchDep}" />
+    HTML;
+}
+
+foreach ($componentDeps['css'] as $cssDep) {
+    echo <<<HTML
+        <link rel="stylesheet" href="{$cssDep}" />
+    HTML;
+}
 ?>
-
-<script src="<?= $this->assetUrl('dist/lib/bootstrap/bootstrap.bundle.min.js') ?>"></script>
-<script src="<?= $this->assetUrl('dist/app.js') ?>"></script>
-
-<link rel="stylesheet" href="<?= $this->assetUrl('dist/lib/roboto-fontface/css/roboto/roboto-fontface.css') ?>">
-<link rel="stylesheet" href="<?= $this->assetUrl('dist/style.css') ?>">
 
 <link rel="apple-touch-icon" sizes="57x57" href="<?= $customization->getBrowserIconUrl(57) ?>">
 <link rel="apple-touch-icon" sizes="60x60" href="<?= $customization->getBrowserIconUrl(60) ?>">

@@ -6,7 +6,7 @@
  * @var App\View\GlobalSections $sections
  */
 
-$componentDeps = $this->getVueComponentInfo($component);
+$componentDeps = $this->getVueComponentInfo('vue/pages/' . $component . '.js');
 
 $propsJson = json_encode($props, JSON_THROW_ON_ERROR);
 

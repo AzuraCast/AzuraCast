@@ -4,20 +4,26 @@ import {glob} from "glob";
 import {resolve} from "path";
 import eslint from "vite-plugin-eslint";
 
+const inputs = glob.sync('./vue/pages/**/*.js').reduce((acc, path) => {
+    // vue/pages/Admin/Index becomes AdminIndex
+    const entry = path.replace(/\.js$/g, '')
+        .replace(/^vue\/pages\//g, '')
+        .replace(/\//g, '');
+
+    acc[entry] = resolve(__dirname, path)
+    return acc
+}, {});
+
+inputs['Layout'] = resolve(__dirname, './js/layout.js');
+
+console.log(inputs);
+
 // https://vitejs.dev/config/
 export default defineConfig({
     base: '/static/vite_dist',
     build: {
         rollupOptions: {
-            input: glob.sync('./vue/pages/**/*.js').reduce((acc, path) => {
-                // vue/pages/Admin/Index becomes AdminIndex
-                const entry = path.replace(/\.js$/g, '')
-                    .replace(/^vue\/pages\//g, '')
-                    .replace(/\//g, '');
-
-                acc[entry] = resolve(__dirname, path)
-                return acc
-            }, {}),
+            input: inputs,
             output: {
                 manualChunks: {
                     vue: ['vue'],
@@ -28,11 +34,12 @@ export default defineConfig({
             }
         },
         manifest: true,
-        emptyOutDir: false,
+        emptyOutDir: true,
         outDir: resolve(__dirname, '../web/static/vite_dist')
     },
     resolve: {
         alias: {
+            '!': resolve(__dirname),
             '~': resolve(__dirname, './vue')
         },
         extensions: ['.mjs', '.js', '.mts', '.ts', '.jsx', '.tsx', '.json', '.vue']

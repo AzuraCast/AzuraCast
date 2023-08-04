@@ -110,9 +110,6 @@ server {
         try_files $uri =404;
     }
 
-    location /static/dist {
-        expires 365d;
-    }
     location /static/vite_dist {
         expires 365d;
     }

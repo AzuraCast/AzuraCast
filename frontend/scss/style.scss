@@ -1,3 +1,19 @@
+@font-face {
+  font-family: 'Material Icons';
+  font-style: normal;
+  font-weight: 400;
+  src: url('../font/material-icons.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Material Icons Outlined';
+  font-style: normal;
+  font-weight: 400;
+  src: url('../font/material-icons-outlined.woff2') format('woff2');
+}
+
+@import "roboto-fontface/css/roboto/roboto-fontface.css";
+
 // Include functions first (so you can manipulate colors, SVGs, calc, etc)
 @import "bootstrap/scss/functions";
 

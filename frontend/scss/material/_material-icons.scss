@@ -1,19 +1,5 @@
 @use "sass:math";
 
-@font-face {
-  font-family: 'Material Icons';
-  font-style: normal;
-  font-weight: 400;
-  src: url('lib/material-icons/material-icons.woff2') format('woff2');
-}
-
-@font-face {
-  font-family: 'Material Icons Outlined';
-  font-style: normal;
-  font-weight: 400;
-  src: url('lib/material-icons/material-icons-outlined.woff2') format('woff2');
-}
-
 @mixin reset-material-icons($size: $material-icon-size) {
   font-size: $size;
   line-height: 1;

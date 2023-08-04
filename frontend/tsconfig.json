@@ -2,6 +2,9 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
+      "!/*": [
+        "*"
+      ],
       "~/*": [
         "vue/*"
       ]
@@ -32,7 +35,6 @@
     "vue/**/*.ts",
     "vue/**/*.d.ts",
     "vue/**/*.tsx",
-    "vue/**/*.vue",
-    "vue/**/*.js"
-  ],
+    "vue/**/*.vue"
+  ]
 }

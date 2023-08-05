@@ -147,20 +147,7 @@ RUN composer install \
 
 COPY --chown=azuracast:azuracast . .
 
-RUN composer dump-autoload --optimize --classmap-authoritative \
-    && touch /var/azuracast/.docker
-
-WORKDIR /var/azuracast/www/frontend
-
-RUN npm ci --include=dev \
-    && npm run build
-
-WORKDIR /var/azuracast/www
-
-RUN php bin/console locale:import \
-    && php bin/console azuracast:api:docs \
-    && rm -rf ./translations \
-    && rm -rf ./frontend
+RUN composer dump-autoload --optimize --classmap-authoritative
 
 USER root
 

@@ -143,6 +143,8 @@ jobs:
           path: |
             .gitinfo
             translations
+            web/static/vite_dist
+            web/static/api/openapi.yml
   
   build:
     name: Build & Publish

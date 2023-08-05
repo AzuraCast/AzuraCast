@@ -10,9 +10,11 @@ upstream centrifugo {
     server 127.0.0.1:6020;
 }
 
+{{if eq .Env.APPLICATION_ENV "development"}}
 upstream vite {
     server 127.0.0.1:5173;
 }
+{{end}}
 
 # Internal connection handler for PubSub and internal API calls
 server {

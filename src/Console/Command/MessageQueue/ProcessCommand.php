@@ -60,7 +60,8 @@ final class ProcessCommand extends AbstractSyncCommand
 
         if (!$this->highAvailability->isActiveServer()) {
             $this->logger->error('This instance is not the current active instance.');
-            return 1;
+            sleep(30);
+            return 0;
         }
 
         $this->logger->notice(

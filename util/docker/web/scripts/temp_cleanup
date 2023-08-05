@@ -4,6 +4,7 @@ exec tmpreaper 12h --verbose \
     --protect '.tmpreaper' \
     --protect 'proxies' \
     --protect 'service_*.log' \
+    --protect 'active_server' \
     /tmp/app_nginx_client \
     /tmp/app_fastcgi_temp \
     /var/azuracast/stations/*/temp \

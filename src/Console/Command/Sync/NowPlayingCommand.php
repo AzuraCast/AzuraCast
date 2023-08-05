@@ -53,7 +53,8 @@ final class NowPlayingCommand extends AbstractSyncRunnerCommand
 
         if (!$this->highAvailability->isActiveServer()) {
             $this->logger->error('This instance is not the current active instance.');
-            return 1;
+            sleep(30);
+            return 0;
         }
 
         $settings = $this->readSettings();

@@ -37,6 +37,12 @@ export default defineConfig({
         emptyOutDir: true,
         outDir: resolve(__dirname, '../web/static/vite_dist')
     },
+    server: {
+        strictPort: true,
+        fs: {
+            allow: ['..']
+        }
+    },
     resolve: {
         alias: {
             '!': resolve(__dirname),

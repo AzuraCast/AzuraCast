@@ -35,7 +35,6 @@ update: # Update everything (i.e. after a branch update)
 	$(MAKE) down
 	docker-compose run --rm web gosu azuracast composer install
 	docker-compose run --rm web azuracast_cli azuracast:setup --update
-	$(MAKE) frontend-build
 	$(MAKE) up
 
 test:
@@ -46,14 +45,6 @@ bash:
 
 bash-root:
 	docker-compose exec web bash
-
-frontend-bash:
-	docker-compose -p azuracast_frontend -f docker-compose.frontend.yml build
-	docker-compose -p azuracast_frontend -f docker-compose.frontend.yml run -e NODE_ENV=development --rm frontend
-
-frontend-build:
-	docker-compose -p azuracast_frontend -f docker-compose.frontend.yml build
-	docker-compose -p azuracast_frontend -f docker-compose.frontend.yml run -e NODE_ENV=development --rm frontend npm run build
 
 generate-locales:
 	docker-compose -p azuracast_frontend -f docker-compose.frontend.yml build

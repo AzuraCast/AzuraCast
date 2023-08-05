@@ -86,6 +86,7 @@ final class ServiceControl
             'redis' => __('Cache'),
             'sftpgo' => __('SFTP service'),
             'centrifugo' => __('Live Now Playing updates'),
+            'vite' => __('Frontend Assets'),
         ];
 
         if (!$this->centrifugo->isSupported()) {
@@ -98,6 +99,10 @@ final class ServiceControl
 
         if (!$this->environment->useLocalRedis()) {
             unset($services['redis']);
+        }
+
+        if (!$this->environment->isDevelopment()) {
+            unset($services['vite']);
         }
 
         return $services;

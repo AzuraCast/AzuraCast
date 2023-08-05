@@ -58,7 +58,74 @@ RUN bash /bd_build/redis/setup.sh
 RUN bash /bd_build/cleanup.sh \
     && rm -rf /bd_build
 
+USER azuracast
+
+RUN touch /var/azuracast/.docker
+
+USER root
+
 VOLUME ["/var/azuracast/stations", "/var/azuracast/uploads", "/var/azuracast/backups", "/var/azuracast/sftpgo/persist", "/var/azuracast/servers/shoutcast2", "/var/azuracast/meilisearch/persist"]
+
+#
+# Development Build
+#
+FROM pre-final AS development
+
+# Dev build step
+COPY ./util/docker/common /bd_build/
+COPY ./util/docker/dev /bd_build/dev
+
+RUN bash /bd_build/dev/setup.sh \
+    && bash /bd_build/cleanup.sh \
+    && rm -rf /bd_build
+
+USER azuracast
+
+WORKDIR /var/azuracast/www
+
+COPY --chown=azuracast:azuracast . .
+
+RUN composer install --no-ansi --no-interaction
+
+WORKDIR /var/azuracast/www/frontend
+
+RUN npm ci --include=dev
+
+WORKDIR /var/azuracast/www
+
+USER root
+
+EXPOSE 80 443 2022
+EXPOSE 8000-8999
+
+# Sensible default environment variables.
+ENV TZ="UTC" \
+    LANG="en_US.UTF-8" \
+    PATH="${PATH}:/var/azuracast/servers/shoutcast2" \
+    DOCKER_IS_STANDALONE="true" \
+    APPLICATION_ENV="development" \
+    MYSQL_HOST="localhost" \
+    MYSQL_PORT=3306 \
+    MYSQL_USER="azuracast" \
+    MYSQL_PASSWORD="azur4c457" \
+    MYSQL_DATABASE="azuracast" \
+    ENABLE_REDIS="true" \
+    REDIS_HOST="localhost" \
+    REDIS_PORT=6379 \
+    REDIS_DB=1 \
+    NGINX_RADIO_PORTS="default" \
+    NGINX_WEBDJ_PORTS="default" \
+    COMPOSER_PLUGIN_MODE="false" \
+    ADDITIONAL_MEDIA_SYNC_WORKER_COUNT=0 \
+    PROFILING_EXTENSION_ENABLED=1 \
+    PROFILING_EXTENSION_ALWAYS_ON=0 \
+    PROFILING_EXTENSION_HTTP_KEY=dev \
+    PROFILING_EXTENSION_HTTP_IP_WHITELIST=* \
+    ENABLE_WEB_UPDATER="false"
+
+# Entrypoint and default command
+ENTRYPOINT ["tini", "--", "/usr/local/bin/my_init"]
+CMD ["--no-main-command"]
 
 #
 # Final build (Just environment vars and squishing the FS)
@@ -83,9 +150,21 @@ COPY --chown=azuracast:azuracast . .
 RUN composer dump-autoload --optimize --classmap-authoritative \
     && touch /var/azuracast/.docker
 
+WORKDIR /var/azuracast/www/frontend
+
+RUN npm ci --include=dev \
+    && npm run build
+
+WORKDIR /var/azuracast/www
+
+RUN php bin/console locale:import \
+    && php bin/console azuracast:api:docs \
+    && rm -rf ./translations \
+    && rm -rf ./frontend
+
 USER root
 
-EXPOSE 80 2022
+EXPOSE 80 443 2022
 EXPOSE 8000-8999
 
 # Sensible default environment variables.
@@ -105,16 +184,9 @@ ENV TZ="UTC" \
     REDIS_DB=1 \
     NGINX_RADIO_PORTS="default" \
     NGINX_WEBDJ_PORTS="default" \
-    PREFER_RELEASE_BUILDS="false" \
     COMPOSER_PLUGIN_MODE="false" \
     ADDITIONAL_MEDIA_SYNC_WORKER_COUNT=0 \
-    PROFILING_EXTENSION_ENABLED=0 \
-    PROFILING_EXTENSION_ALWAYS_ON=0 \
-    PROFILING_EXTENSION_HTTP_KEY=dev \
-    PROFILING_EXTENSION_HTTP_IP_WHITELIST=* \
-    ENABLE_WEB_UPDATER="true" \
-    ENABLE_MEILISEARCH="true" \
-    MEILISEARCH_MASTER_KEY="zejNISMlGe_6IUGBsdjfG6c6Qi8g2RngTxOmWsTbwvw"
+    ENABLE_WEB_UPDATER="true"
 
 # Entrypoint and default command
 ENTRYPOINT ["tini", "--", "/usr/local/bin/my_init"]

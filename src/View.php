@@ -67,13 +67,32 @@ final class View extends Engine
             }
         );
 
-        $vueComponents = Json::loadFromFile($environment->getBaseDirectory() . '/web/static/vite_dist/manifest.json');
+        $vueComponents = (!$environment->isDevelopment())
+            ? Json::loadFromFile($environment->getBaseDirectory() . '/web/static/vite_dist/manifest.json')
+            : [];
+
         $this->registerFunction(
             'getVueComponentInfo',
-            function (string $componentPath) use ($vueComponents) {
+            function (string $componentPath) use ($vueComponents, $environment) {
+                $assetRoot = '/static/vite_dist';
+
+                if ($environment->isDevelopment()) {
+                    return [
+                        'js' => $assetRoot . '/' . $componentPath,
+                        'css' => [],
+                        'prefetch' => [],
+                    ];
+                }
+
                 if (!isset($vueComponents[$componentPath])) {
                     return null;
                 }
+
+                $includes = [
+                    'js' => $assetRoot . '/' . $vueComponents[$componentPath]['file'],
+                    'css' => [],
+                    'prefetch' => [],
+                ];
 
                 $assetRoot = '/static/vite_dist';
                 $includes = [

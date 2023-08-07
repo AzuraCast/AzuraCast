@@ -16,17 +16,11 @@ final class QueueAction implements SingleActionInterface
         Response $response,
         array $params
     ): ResponseInterface {
-        $router = $request->getRouter();
-
         return $request->getView()->renderVuePage(
             response: $response,
             component: 'Stations/Queue',
             id: 'station-queue',
             title: __('Upcoming Song Queue'),
-            props: [
-                'listUrl' => $router->fromHere('api:stations:queue'),
-                'clearUrl' => $router->fromHere('api:stations:queue:clear'),
-            ],
         );
     }
 }

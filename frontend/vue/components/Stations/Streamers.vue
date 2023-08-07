@@ -140,25 +140,18 @@ import CardPage from "~/components/Common/CardPage.vue";
 import {useAzuraCastStation} from "~/vendor/azuracast";
 import Lightbox from "~/components/Common/Lightbox.vue";
 import {useProvideLightbox} from "~/vendor/lightbox";
+import {getStationApiUrl} from "~/router";
 
 const props = defineProps({
-    listUrl: {
-        type: String,
-        required: true
-    },
-    newArtUrl: {
-        type: String,
-        required: true
-    },
-    scheduleUrl: {
-        type: String,
-        required: true
-    },
     connectionInfo: {
         type: Object,
         required: true
     }
 });
+
+const listUrl = getStationApiUrl('/streamers');
+const newArtUrl = getStationApiUrl('/streamers/art');
+const scheduleUrl = getStationApiUrl('/streamers/schedule');
 
 const {timezone} = useAzuraCastStation();
 

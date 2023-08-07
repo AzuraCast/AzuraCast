@@ -81,7 +81,7 @@
 import DataTable from '~/components/Common/DataTable';
 import EditModal from './Mounts/EditModal';
 import Icon from '~/components/Common/Icon';
-import {mayNeedRestartProps, useMayNeedRestart} from "~/functions/useMayNeedRestart";
+import {useMayNeedRestart} from "~/functions/useMayNeedRestart";
 import {useTranslate} from "~/vendor/gettext";
 import {ref} from "vue";
 import showFormatAndBitrate from "~/functions/showFormatAndBitrate";
@@ -89,22 +89,17 @@ import useHasDatatable from "~/functions/useHasDatatable";
 import useHasEditModal from "~/functions/useHasEditModal";
 import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
 import CardPage from "~/components/Common/CardPage.vue";
+import {getStationApiUrl} from "~/router";
 
 const props = defineProps({
-    ...mayNeedRestartProps,
-    listUrl: {
-        type: String,
-        required: true
-    },
-    newIntroUrl: {
-        type: String,
-        required: true
-    },
     stationFrontendType: {
         type: String,
         required: true
     }
 });
+
+const listUrl = getStationApiUrl('/mounts');
+const newIntroUrl = getStationApiUrl('/mounts/intro');
 
 const {$gettext} = useTranslate();
 

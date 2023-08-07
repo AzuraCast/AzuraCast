@@ -16,16 +16,11 @@ final class LogsAction implements SingleActionInterface
         Response $response,
         array $params
     ): ResponseInterface {
-        $router = $request->getRouter();
-
         return $request->getView()->renderVuePage(
             response: $response,
             component: 'Stations/Help',
             id: 'stations-help',
             title: __('Help'),
-            props: [
-                'logsUrl' => $router->fromHere('api:stations:logs'),
-            ],
         );
     }
 }

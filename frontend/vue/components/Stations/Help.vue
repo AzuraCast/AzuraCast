@@ -73,20 +73,17 @@
     </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import Icon from "~/components/Common/Icon";
 import StreamingLogModal from "~/components/Common/StreamingLogModal";
 import LogList from "~/components/Common/LogList";
-import {ref} from "vue";
+import {Ref, ref} from "vue";
+import {getStationApiUrl} from "~/router";
+import Modal from "~/components/Common/Modal.vue";
 
-const props = defineProps({
-    logsUrl: {
-        type: String,
-        required: true
-    },
-});
+const logsUrl = getStationApiUrl('/logs');
 
-const $modal = ref(); // BModal
+const $modal: Ref<Modal> = ref();
 
 const viewLog = (url) => {
     $modal.value?.show(url);

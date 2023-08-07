@@ -106,10 +106,18 @@ import {useSweetAlert} from "~/vendor/sweetalert";
 import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
 import Icon from "~/components/Common/Icon.vue";
+import {getStationApiUrl} from "~/router";
 
 const props = defineProps({
-    ...listViewProps
+    ...listViewProps,
+    quotaUrl: {
+        type: String,
+        required: true
+    }
 });
+
+const listUrl = getStationApiUrl('/podcasts');
+const newArtUrl = getStationApiUrl('/podcasts/art');
 
 const emit = defineEmits(['select-podcast']);
 

@@ -30,17 +30,12 @@ final class StreamersAction implements SingleActionInterface
         $settings = $this->readSettings();
         $backendConfig = $station->getBackendConfig();
 
-        $router = $request->getRouter();
-
         return $request->getView()->renderVuePage(
             response: $response,
             component: 'Stations/Streamers',
             id: 'station-streamers',
             title: __('Streamer/DJ Accounts'),
             props: [
-                'listUrl' => $router->fromHere('api:stations:streamers'),
-                'newArtUrl' => $router->fromHere('api:stations:streamers:new-art'),
-                'scheduleUrl' => $router->fromHere('api:stations:streamers:schedule'),
                 'connectionInfo' => [
                     'serverUrl' => $settings->getBaseUrl(),
                     'streamPort' => $backendConfig->getDjPort(),

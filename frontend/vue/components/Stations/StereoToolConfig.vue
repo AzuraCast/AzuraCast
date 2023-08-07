@@ -85,27 +85,25 @@
 import FlowUpload from '~/components/Common/FlowUpload';
 import InfoCard from "~/components/Common/InfoCard";
 import {ref} from "vue";
-import {mayNeedRestartProps, useMayNeedRestart} from "~/functions/useMayNeedRestart";
+import {useMayNeedRestart} from "~/functions/useMayNeedRestart";
 import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
 import FormGroup from "~/components/Form/FormGroup.vue";
 import FormMarkup from "~/components/Form/FormMarkup.vue";
+import {getStationApiUrl} from "~/router";
 
 const props = defineProps({
-    ...mayNeedRestartProps,
     recordHasStereoToolConfiguration: {
         type: Boolean,
-        required: true
-    },
-    apiUrl: {
-        type: String,
         required: true
     }
 });
 
+const apiUrl = getStationApiUrl('/stereo_tool_config');
+
 const hasStereoToolConfiguration = ref(props.recordHasStereoToolConfiguration);
 
-const {mayNeedRestart} = useMayNeedRestart(props);
+const {mayNeedRestart} = useMayNeedRestart();
 
 const onFileSuccess = () => {
     mayNeedRestart();
@@ -119,7 +117,7 @@ const deleteConfigurationFile = () => {
     wrapWithLoading(
         axios({
             method: 'DELETE',
-            url: props.apiUrl
+            url: apiUrl.value
         })
     ).then(() => {
         mayNeedRestart();

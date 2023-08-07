@@ -91,7 +91,7 @@
                             type="button"
                             class="btn btn-warning"
                             :disabled="isLoading"
-                            @click="makeApiCall(reloadUrl)"
+                            @click="makeApiCall(restartUrl)"
                         >
                             {{ $gettext('Restart Broadcasting') }}
                         </button>
@@ -108,25 +108,21 @@ import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
 import {useSweetAlert} from "~/vendor/sweetalert";
 import {ref} from "vue";
+import {getStationApiUrl} from "~/router";
 
 const props = defineProps({
     canReload: {
         type: Boolean,
         required: true,
     },
-    reloadUrl: {
-        type: String,
-        required: true
-    },
-    restartUrl: {
-        type: String,
-        required: true
-    },
     redirectUrl: {
         type: String,
         required: true
     }
 });
+
+const reloadUrl = getStationApiUrl('/reload');
+const restartUrl = getStationApiUrl('/restart');
 
 const isLoading = ref(false);
 

@@ -90,17 +90,16 @@ import useHasDatatable from "~/functions/useHasDatatable";
 import useHasEditModal from "~/functions/useHasEditModal";
 import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
 import CardPage from "~/components/Common/CardPage.vue";
+import {getStationApiUrl} from "~/router";
 
 const props = defineProps({
-    listUrl: {
-        type: String,
-        required: true
-    },
     connectionInfo: {
         type: Object,
         required: true
     }
 });
+
+const listUrl = getStationApiUrl('/sftp-users');
 
 const {$gettext} = useTranslate();
 

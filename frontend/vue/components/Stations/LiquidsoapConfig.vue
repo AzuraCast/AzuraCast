@@ -79,13 +79,12 @@ import mergeExisting from "~/functions/mergeExisting";
 import InfoCard from "~/components/Common/InfoCard";
 import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
 import {onMounted, ref} from "vue";
-import {mayNeedRestartProps, useMayNeedRestart} from "~/functions/useMayNeedRestart";
+import {useMayNeedRestart} from "~/functions/useMayNeedRestart";
 import {useAxios} from "~/vendor/axios";
 import {useNotify} from "~/functions/useNotify";
 import Loading from "~/components/Common/Loading.vue";
 
 const props = defineProps({
-    ...mayNeedRestartProps,
     settingsUrl: {
         type: String,
         required: true
@@ -117,7 +116,7 @@ const {form, resetForm, v$, ifValid} = useVuelidateOnForm(validations, blankForm
 
 const isLoading = ref(true);
 
-const {mayNeedRestart} = useMayNeedRestart(props);
+const {mayNeedRestart} = useMayNeedRestart();
 
 const {axios} = useAxios();
 

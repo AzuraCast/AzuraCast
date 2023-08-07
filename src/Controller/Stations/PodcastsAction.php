@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Controller\Stations;
 
 use App\Controller\SingleActionInterface;
-use App\Entity\Enums\StorageLocationTypes;
 use App\Entity\PodcastCategory;
 use App\Http\Response;
 use App\Http\ServerRequest;
@@ -19,8 +18,6 @@ final class PodcastsAction implements SingleActionInterface
         Response $response,
         array $params
     ): ResponseInterface {
-        $router = $request->getRouter();
-
         $locale = $request->getCustomization()->getLocale();
         $userLocale = $locale->value;
 
@@ -33,11 +30,6 @@ final class PodcastsAction implements SingleActionInterface
             id: 'station-podcasts',
             title: __('Podcasts'),
             props: [
-                'listUrl' => $router->fromHere('api:stations:podcasts'),
-                'newArtUrl' => $router->fromHere('api:stations:podcasts:new-art'),
-                'quotaUrl' => $router->fromHere('api:stations:quota', [
-                    'type' => StorageLocationTypes::StationPodcasts->value,
-                ]),
                 'languageOptions' => $languageOptions,
                 'categoriesOptions' => $categoriesOptions,
             ],

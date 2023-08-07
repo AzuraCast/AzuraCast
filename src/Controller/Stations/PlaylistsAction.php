@@ -18,18 +18,12 @@ final class PlaylistsAction implements SingleActionInterface
     ): ResponseInterface {
         $station = $request->getStation();
 
-        $router = $request->getRouter();
-
         return $request->getView()->renderVuePage(
             response: $response,
             component: 'Stations/Playlists',
             id: 'station-playlist',
             title: __('Playlists'),
             props: [
-                'listUrl' => $router->fromHere('api:stations:playlists'),
-                'scheduleUrl' => $router->fromHere('api:stations:playlists:schedule'),
-                'filesUrl' => $router->fromHere('stations:files:index'),
-                'restartStatusUrl' => $router->fromHere('api:stations:restart-status'),
                 'useManualAutoDj' => $station->useManualAutoDJ(),
             ],
         );

@@ -161,13 +161,9 @@ import {useAxios} from "~/vendor/axios";
 import Modal from "~/components/Common/Modal.vue";
 import FormGroup from "~/components/Form/FormGroup.vue";
 import FormFile from "~/components/Form/FormFile.vue";
+import {getStationApiUrl} from "~/router";
 
-const props = defineProps({
-    apiUrl: {
-        type: String,
-        required: true
-    }
-});
+const apiUrl = getStationApiUrl('/files/bulk');
 
 const importFile = ref(null);
 const importResults = ref(null);
@@ -190,7 +186,7 @@ const doSubmit = () => {
     formData.append('import_file', importFile.value);
 
     wrapWithLoading(
-        axios.post(props.apiUrl, formData)
+        axios.post(apiUrl.value, formData)
     ).then((resp) => {
         importFile.value = null;
 

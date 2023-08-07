@@ -16,8 +16,6 @@ final class FallbackAction implements SingleActionInterface
         Response $response,
         array $params
     ): ResponseInterface {
-        $router = $request->getRouter();
-
         $station = $request->getStation();
 
         return $request->getView()->renderVuePage(
@@ -26,7 +24,6 @@ final class FallbackAction implements SingleActionInterface
             id: 'station-fallback',
             title: __('Custom Fallback File'),
             props: [
-                'apiUrl' => $router->fromHere('api:stations:fallback'),
                 'recordHasFallback' => !empty($station->getFallbackPath()),
             ],
         );

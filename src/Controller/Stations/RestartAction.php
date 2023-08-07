@@ -28,8 +28,6 @@ final class RestartAction implements SingleActionInterface
             title: __('Update Station Configuration'),
             props: [
                 'canReload' => $frontendEnum->supportsReload(),
-                'reloadUrl' => $router->fromHere('api:stations:reload'),
-                'restartUrl' => $router->fromHere('api:stations:restart'),
                 'redirectUrl' => $router->fromHere('stations:profile:index'),
             ]
         );

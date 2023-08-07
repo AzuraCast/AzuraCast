@@ -17,7 +17,6 @@ final class UploadStereoToolConfigAction implements SingleActionInterface
         array $params
     ): ResponseInterface {
         $backendConfig = $request->getStation()->getBackendConfig();
-        $router = $request->getRouter();
 
         return $request->getView()->renderVuePage(
             response: $response,
@@ -25,9 +24,7 @@ final class UploadStereoToolConfigAction implements SingleActionInterface
             id: 'stations-stereo-tool-config',
             title: __('Upload Stereo Tool Configuration'),
             props: [
-                'restartStatusUrl' => $router->fromHere('api:stations:restart-status'),
                 'recordHasStereoToolConfiguration' => !empty($backendConfig->getStereoToolConfigurationPath()),
-                'apiUrl' => $router->fromHere('api:stations:stereo_tool_config'),
             ],
         );
     }

@@ -1,12 +1,5 @@
 import {useAxios} from "~/vendor/axios";
-import {toRef} from "vue";
-
-export const mayNeedRestartProps = {
-    restartStatusUrl: {
-        type: String,
-        required: true
-    }
-};
+import {getStationApiUrl} from "~/router";
 
 export function useNeedsRestart() {
     const needsRestart = () => {
@@ -18,8 +11,8 @@ export function useNeedsRestart() {
     };
 }
 
-export function useMayNeedRestart(props) {
-    const restartStatusUrl = toRef(props, 'restartStatusUrl');
+export function useMayNeedRestart() {
+    const restartStatusUrl = getStationApiUrl('/restart-status');
 
     const {needsRestart} = useNeedsRestart();
     const {axios} = useAxios();

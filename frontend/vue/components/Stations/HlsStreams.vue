@@ -73,19 +73,14 @@ import EditModal from './HlsStreams/EditModal';
 import Icon from '~/components/Common/Icon';
 import {useTranslate} from "~/vendor/gettext";
 import {ref} from "vue";
-import {mayNeedRestartProps, useMayNeedRestart} from "~/functions/useMayNeedRestart";
+import {useMayNeedRestart} from "~/functions/useMayNeedRestart";
 import useHasDatatable from "~/functions/useHasDatatable";
 import useHasEditModal from "~/functions/useHasEditModal";
 import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
 import CardPage from "~/components/Common/CardPage.vue";
+import {getStationApiUrl} from "~/router";
 
-const props = defineProps({
-    ...mayNeedRestartProps,
-    listUrl: {
-        type: String,
-        required: true
-    }
-});
+const listUrl = getStationApiUrl('/hls_streams');
 
 const {$gettext} = useTranslate();
 
@@ -110,7 +105,7 @@ const {relist} = useHasDatatable($dataTable);
 const $editModal = ref(); // EditModal
 const {doCreate, doEdit} = useHasEditModal($editModal);
 
-const {mayNeedRestart, needsRestart} = useMayNeedRestart(props);
+const {mayNeedRestart, needsRestart} = useMayNeedRestart();
 
 const {doDelete} = useConfirmAndDelete(
     $gettext('Delete HLS Stream?'),

@@ -16,16 +16,11 @@ final class BulkMediaAction implements SingleActionInterface
         Response $response,
         array $params
     ): ResponseInterface {
-        $router = $request->getRouter();
-
         return $request->getView()->renderVuePage(
             response: $response,
             component: 'Stations/BulkMedia',
             id: 'station-bulk-media',
             title: __('Bulk Media Import/Export'),
-            props: [
-                'apiUrl' => $router->fromHere('api:stations:files:bulk'),
-            ],
         );
     }
 }

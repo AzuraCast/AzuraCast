@@ -16,16 +16,11 @@ final class HlsStreamsAction implements SingleActionInterface
         Response $response,
         array $params
     ): ResponseInterface {
-        $router = $request->getRouter();
         return $request->getView()->renderVuePage(
             response: $response,
             component: 'Stations/HlsStreams',
             id: 'station-hls-streams',
-            title: __('HLS Streams'),
-            props: [
-                'listUrl' => $router->fromHere('api:stations:hls_streams'),
-                'restartStatusUrl' => $router->fromHere('api:stations:restart-status'),
-            ],
+            title: __('HLS Streams')
         );
     }
 }

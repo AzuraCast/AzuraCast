@@ -311,32 +311,24 @@ import ApplyToModal from "./Playlists/ApplyToModal.vue";
 import {useTranslate} from "~/vendor/gettext";
 import {ref} from "vue";
 import useHasEditModal from "~/functions/useHasEditModal";
-import {mayNeedRestartProps, useMayNeedRestart} from "~/functions/useMayNeedRestart";
+import {useMayNeedRestart} from "~/functions/useMayNeedRestart";
 import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
 import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
 import {useAzuraCastStation} from "~/vendor/azuracast";
 import {useLuxon} from "~/vendor/luxon";
+import {getStationApiUrl} from "~/router";
 
 const props = defineProps({
-    ...mayNeedRestartProps,
-    listUrl: {
-        type: String,
-        required: true
-    },
-    scheduleUrl: {
-        type: String,
-        required: true
-    },
-    filesUrl: {
-        type: String,
-        required: true
-    },
     useManualAutoDj: {
         type: Boolean,
         required: true
     },
 });
+
+const listUrl = getStationApiUrl('/playlists');
+const scheduleUrl = getStationApiUrl('/playlists/schedule');
+const filesUrl = getStationApiUrl('/files');
 
 const {timezone} = useAzuraCastStation();
 
@@ -414,7 +406,7 @@ const doApplyTo = (url) => {
 const {
     mayNeedRestart: originalMayNeedRestart,
     needsRestart: originalNeedsRestart
-} = useMayNeedRestart(props);
+} = useMayNeedRestart();
 
 const mayNeedRestart = () => {
     if (!props.useManualAutoDj) {

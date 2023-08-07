@@ -31,15 +31,12 @@ final class SftpUsersAction implements SingleActionInterface
 
         $port = $this->environment->getSftpPort();
 
-        $router = $request->getRouter();
-
         return $request->getView()->renderVuePage(
             response: $response,
             component: 'Stations/SftpUsers',
             id: 'station-sftp-users',
             title: __('SFTP Users'),
             props: [
-                'listUrl' => $router->fromHere('api:stations:sftp-users'),
                 'connectionInfo' => [
                     'url' => (string)$baseUrl,
                     'ip' => $this->acCentral->getIp(),

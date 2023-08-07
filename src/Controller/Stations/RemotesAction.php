@@ -16,17 +16,11 @@ final class RemotesAction implements SingleActionInterface
         Response $response,
         array $params
     ): ResponseInterface {
-        $router = $request->getRouter();
-
         return $request->getView()->renderVuePage(
             response: $response,
             component: 'Stations/Remotes',
             id: 'station-remotes',
             title: __('Remote Relays'),
-            props: [
-                'listUrl' => $router->fromHere('api:stations:remotes'),
-                'restartStatusUrl' => $router->fromHere('api:stations:restart-status'),
-            ],
         );
     }
 }

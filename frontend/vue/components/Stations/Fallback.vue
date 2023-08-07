@@ -78,17 +78,16 @@ import {ref} from "vue";
 import {useAxios} from "~/vendor/axios";
 import FormMarkup from "~/components/Form/FormMarkup.vue";
 import FormGroup from "~/components/Form/FormGroup.vue";
+import {getStationApiUrl} from "~/router";
 
 const props = defineProps({
-    apiUrl: {
-        type: String,
-        required: true
-    },
     recordHasFallback: {
         type: Boolean,
         required: true
     }
 });
+
+const apiUrl = getStationApiUrl('/fallback');
 
 const hasFallback = ref(props.recordHasFallback);
 
@@ -99,7 +98,7 @@ const onFileSuccess = () => {
 const {axios} = useAxios();
 
 const deleteFallback = () => {
-    axios.delete(props.apiUrl).then(() => {
+    axios.delete(apiUrl.value).then(() => {
         hasFallback.value = false;
     });
 }

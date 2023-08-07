@@ -83,17 +83,10 @@ import {useAxios} from "~/vendor/axios";
 import {useSweetAlert} from "~/vendor/sweetalert";
 import CardPage from "~/components/Common/CardPage.vue";
 import {useLuxon} from "~/vendor/luxon";
+import {getStationApiUrl} from "~/router";
 
-const props = defineProps({
-    listUrl: {
-        type: String,
-        required: true
-    },
-    clearUrl: {
-        type: String,
-        required: true
-    }
-});
+const listUrl = getStationApiUrl('/queue');
+const clearUrl = getStationApiUrl('/queue/clear');
 
 const {$gettext} = useTranslate();
 
@@ -143,7 +136,7 @@ const doClear = () => {
     }).then((result) => {
         if (result.value) {
             wrapWithLoading(
-                axios.post(props.clearUrl)
+                axios.post(clearUrl.value)
             ).then((resp) => {
                 notifySuccess(resp.data.message);
                 relist();

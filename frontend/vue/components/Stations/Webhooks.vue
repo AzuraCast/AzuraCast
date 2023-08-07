@@ -115,17 +115,13 @@ import {useAxios} from "~/vendor/axios";
 import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
 import {useTriggerDetails, useTypeDetails} from "~/components/Entity/Webhooks";
 import CardPage from "~/components/Common/CardPage.vue";
+import {useAzuraCastStation} from "~/vendor/azuracast";
+import {getApiUrl, getStationApiUrl} from "~/router";
 
-const props = defineProps({
-    listUrl: {
-        type: String,
-        required: true
-    },
-    nowPlayingUrl: {
-        type: String,
-        required: true
-    }
-});
+const listUrl = getStationApiUrl('/webhooks');
+
+const {id} = useAzuraCastStation();
+const nowPlayingUrl = getApiUrl(`/nowplaying/${id}`);
 
 const {$gettext} = useTranslate();
 

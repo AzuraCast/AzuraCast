@@ -123,7 +123,6 @@ import EditModal from './EpisodeEditModal';
 import Icon from '~/components/Common/Icon';
 import AlbumArt from '~/components/Common/AlbumArt';
 import StationsCommonQuota from "~/components/Stations/Common/Quota";
-import episodesViewProps from "~/components/Stations/Podcasts/episodesViewProps";
 import {useTranslate} from "~/vendor/gettext";
 import {ref} from "vue";
 import {useSweetAlert} from "~/vendor/sweetalert";
@@ -131,7 +130,10 @@ import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
 
 const props = defineProps({
-    ...episodesViewProps,
+    quotaUrl: {
+        type: String,
+        required: true
+    },
     podcast: {
         type: Object,
         required: true
@@ -143,11 +145,11 @@ const emit = defineEmits(['clear-podcast']);
 const {$gettext} = useTranslate();
 
 const fields = [
-  {key: 'art', label: $gettext('Art'), sortable: false, class: 'shrink pe-0'},
-  {key: 'title', label: $gettext('Episode'), sortable: false},
-  {key: 'podcast_media', label: $gettext('File Name'), sortable: false},
-  {key: 'explicit', label: $gettext('Explicit'), sortable: false},
-  {key: 'actions', label: $gettext('Actions'), sortable: false, class: 'shrink'}
+    {key: 'art', label: $gettext('Art'), sortable: false, class: 'shrink pe-0'},
+    {key: 'title', label: $gettext('Episode'), sortable: false},
+    {key: 'podcast_media', label: $gettext('File Name'), sortable: false},
+    {key: 'explicit', label: $gettext('Explicit'), sortable: false},
+    {key: 'actions', label: $gettext('Actions'), sortable: false, class: 'shrink'}
 ];
 
 const $quota = ref(); // Template Ref

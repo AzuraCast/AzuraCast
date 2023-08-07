@@ -16,7 +16,6 @@ final class MountsAction implements SingleActionInterface
         Response $response,
         array $params
     ): ResponseInterface {
-        $router = $request->getRouter();
         $station = $request->getStation();
 
         return $request->getView()->renderVuePage(
@@ -25,9 +24,6 @@ final class MountsAction implements SingleActionInterface
             id: 'station-mounts',
             title: __('Mount Points'),
             props: [
-                'listUrl' => $router->fromHere('api:stations:mounts'),
-                'newIntroUrl' => $router->fromHere('api:stations:mounts:new-intro'),
-                'restartStatusUrl' => $router->fromHere('api:stations:restart-status'),
                 'stationFrontendType' => $station->getFrontendType()->value,
             ],
         );

@@ -11,6 +11,6 @@ export function getStationApiUrl(suffix: string): ComputedRef<string> {
     const {id} = useAzuraCastStation();
 
     return computed((): string => {
-        return getApiUrl('/stations/' + id + suffix);
+        return getApiUrl('/station/' + id + suffix).value;
     });
 }

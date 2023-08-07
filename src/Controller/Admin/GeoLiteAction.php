@@ -16,16 +16,11 @@ final class GeoLiteAction implements SingleActionInterface
         Response $response,
         array $params
     ): ResponseInterface {
-        $router = $request->getRouter();
-
         return $request->getView()->renderVuePage(
             response: $response,
             component: 'Admin/GeoLite',
             id: 'admin-geolite',
             title: __('Install GeoLite IP Database'),
-            props: [
-                'apiUrl' => $router->named('api:admin:geolite'),
-            ],
         );
     }
 }

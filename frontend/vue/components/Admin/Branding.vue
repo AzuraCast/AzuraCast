@@ -43,25 +43,12 @@ import CardPage from "~/components/Common/CardPage.vue";
 import Lightbox from "~/components/Common/Lightbox.vue";
 import {ref} from "vue";
 import {useProvideLightbox} from "~/vendor/lightbox";
+import {getApiUrl} from "~/router";
 
-defineProps({
-    settingsApiUrl: {
-        type: String,
-        required: true,
-    },
-    browserIconApiUrl: {
-        type: String,
-        required: true
-    },
-    backgroundApiUrl: {
-        type: String,
-        required: true
-    },
-    albumArtApiUrl: {
-        type: String,
-        required: true
-    }
-});
+const settingsApiUrl = getApiUrl('/admin/settings/branding');
+const browserIconApiUrl = getApiUrl('/admin/custom_assets/browser_icon');
+const backgroundApiUrl = getApiUrl('/admin/custom_assets/background');
+const albumArtApiUrl = getApiUrl('/admin/custom_assets/album_art');
 
 const $lightbox = ref(); // Template Ref
 useProvideLightbox($lightbox);

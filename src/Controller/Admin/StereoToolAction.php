@@ -16,16 +16,11 @@ final class StereoToolAction implements SingleActionInterface
         Response $response,
         array $params
     ): ResponseInterface {
-        $router = $request->getRouter();
-
         return $request->getView()->renderVuePage(
             response: $response,
             component: 'Admin/StereoTool',
             id: 'admin-stereo-tool',
             title: __('Install Stereo Tool'),
-            props: [
-                'apiUrl' => $router->named('api:admin:stereo_tool'),
-            ],
         );
     }
 }

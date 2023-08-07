@@ -166,20 +166,9 @@ import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
 import Loading from "~/components/Common/Loading.vue";
 import CardPage from "~/components/Common/CardPage.vue";
 import {useLuxon} from "~/vendor/luxon";
+import {getApiUrl} from "~/router";
 
 const props = defineProps({
-    listUrl: {
-        type: String,
-        required: true
-    },
-    settingsUrl: {
-        type: String,
-        required: true
-    },
-    runBackupUrl: {
-        type: String,
-        required: true
-    },
     storageLocations: {
         type: Object,
         required: true
@@ -189,6 +178,10 @@ const props = defineProps({
         default: true
     },
 });
+
+const listUrl = getApiUrl('/admin/backups');
+const runBackupUrl = getApiUrl('/admin/backups/run');
+const settingsUrl = getApiUrl('/admin/settings/backup');
 
 const settingsLoading = ref(false);
 
@@ -242,7 +235,7 @@ const {axios} = useAxios();
 const relist = () => {
     settingsLoading.value = true;
     wrapWithLoading(
-        axios.get(props.settingsUrl)
+        axios.get(settingsUrl.value)
     ).then((resp) => {
         settings.value = {
             backupEnabled: resp.data.backup_enabled,

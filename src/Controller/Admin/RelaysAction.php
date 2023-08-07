@@ -16,16 +16,11 @@ final class RelaysAction implements SingleActionInterface
         Response $response,
         array $params
     ): ResponseInterface {
-        $router = $request->getRouter();
-
         return $request->getView()->renderVuePage(
             response: $response,
             component: 'Admin/Relays',
             id: 'admin-relays',
-            title: __('Connected AzuraRelays'),
-            props: [
-                'listUrl' => $router->fromHere('api:admin:relays'),
-            ]
+            title: __('Connected AzuraRelays')
         );
     }
 }

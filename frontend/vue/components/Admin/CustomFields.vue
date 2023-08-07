@@ -70,17 +70,16 @@ import useHasDatatable from "~/functions/useHasDatatable";
 import useHasEditModal from "~/functions/useHasEditModal";
 import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
 import CardPage from "~/components/Common/CardPage.vue";
+import {getApiUrl} from "~/router";
 
 const props = defineProps({
-    listUrl: {
-        type: String,
-        required: true
-    },
     autoAssignTypes: {
         type: Object,
         required: true
     }
 });
+
+const listUrl = getApiUrl('/admin/custom_fields');
 
 const {$gettext} = useTranslate();
 

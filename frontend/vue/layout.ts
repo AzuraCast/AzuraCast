@@ -1,14 +1,18 @@
-import {createApp} from "vue";
+import {App, createApp} from "vue";
 import installAxios from "~/vendor/axios";
 import {installPinia} from '~/vendor/pinia';
 import {installTranslate} from "~/vendor/gettext";
 import Oruga from "@oruga-ui/oruga-next";
 import {bootstrapConfig} from "@oruga-ui/theme-bootstrap";
 import {installCurrentVueInstance} from "~/vendor/vueInstance";
-import {installGlobalProps} from "~/vendor/azuracast";
+import {AzuraCastConstants, installGlobalProps} from "~/vendor/azuracast";
 
-export default function initApp(appConfig = {}) {
-    const vueApp = createApp(appConfig);
+interface InitApp {
+    vueApp: App<Element>
+}
+
+export default function initApp(appConfig = {}): InitApp {
+    const vueApp: App<Element> = createApp(appConfig);
 
     /* Track current instance (for programmatic use). */
     installCurrentVueInstance(vueApp);
@@ -43,7 +47,7 @@ export default function initApp(appConfig = {}) {
         }
     });
 
-    window.vueComponent = (el, globalProps) => {
+    window.vueComponent = (el: string, globalProps: AzuraCastConstants): void => {
         installGlobalProps(vueApp, globalProps);
 
         /* Gettext */

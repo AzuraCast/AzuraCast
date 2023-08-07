@@ -3,21 +3,9 @@
         <template #info>
             <p class="card-text">
                 {{
-                    $gettext('This page lists all API keys assigned to all users across the system.')
+                    $gettext('This page lists all API keys assigned to all users across the system. To manage your own API keys, visit your account profile.')
                 }}
             </p>
-        </template>
-        <template #actions>
-            <a
-                class="btn btn-primary"
-                :href="myApiKeysUrl"
-                target="_blank"
-            >
-                <icon icon="vpn_key" />
-                <span>
-                    {{ $gettext('Manage My API Keys') }}
-                </span>
-            </a>
         </template>
 
         <data-table
@@ -45,21 +33,12 @@
 import DataTable from "~/components/Common/DataTable.vue";
 import {ref} from "vue";
 import {useTranslate} from "~/vendor/gettext";
-import Icon from "~/components/Common/Icon.vue";
 import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
 import useHasDatatable from "~/functions/useHasDatatable";
 import CardPage from "~/components/Common/CardPage.vue";
+import {getApiUrl} from "~/router";
 
-defineProps({
-    apiUrl: {
-        type: String,
-        required: true
-    },
-    myApiKeysUrl: {
-        type: String,
-        required: true
-    }
-});
+const apiUrl = getApiUrl('/admin/api-keys');
 
 const {$gettext} = useTranslate();
 

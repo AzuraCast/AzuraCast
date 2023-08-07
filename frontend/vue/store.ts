@@ -1,6 +1,6 @@
-import {defineStore} from "pinia";
+import {defineStore, StoreDefinition} from "pinia";
 
-export const usePlayerStore = defineStore(
+export const usePlayerStore: StoreDefinition = defineStore(
     'player',
     {
         state: () => {
@@ -13,7 +13,7 @@ export const usePlayerStore = defineStore(
             };
         },
         actions: {
-            toggle(payload) {
+            toggle(payload): void {
                 const url = payload.url;
 
                 if (this.current.url === url) {
@@ -25,10 +25,10 @@ export const usePlayerStore = defineStore(
                     this.current = payload;
                 }
             },
-            startPlaying() {
+            startPlaying(): void {
                 this.isPlaying = true;
             },
-            stopPlaying() {
+            stopPlaying(): void {
                 this.isPlaying = false;
             }
         }

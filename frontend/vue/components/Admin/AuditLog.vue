@@ -94,13 +94,9 @@ import useHasDatatable from "~/functions/useHasDatatable";
 import DetailsModal from "./AuditLog/DetailsModal.vue";
 import CardPage from "~/components/Common/CardPage.vue";
 import {useLuxon} from "~/vendor/luxon";
+import {getApiUrl} from "~/router";
 
-const props = defineProps({
-    baseApiUrl: {
-        type: String,
-        required: true,
-    }
-});
+const baseApiUrl = getApiUrl('/admin/auditlog');
 
 const {DateTime} = useLuxon();
 
@@ -133,7 +129,7 @@ const fields = [
 ];
 
 const apiUrl = computed(() => {
-    const apiUrl = new URL(props.baseApiUrl, document.location);
+    const apiUrl = new URL(baseApiUrl.value, document.location);
 
     const apiUrlParams = apiUrl.searchParams;
     apiUrlParams.set('start', DateTime.fromJSDate(dateRange.value.startDate).toISO());

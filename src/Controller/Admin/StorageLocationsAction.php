@@ -16,16 +16,11 @@ final class StorageLocationsAction implements SingleActionInterface
         Response $response,
         array $params
     ): ResponseInterface {
-        $router = $request->getRouter();
-
         return $request->getView()->renderVuePage(
             response: $response,
             component: 'Admin/StorageLocations',
             id: 'admin-storage-locations',
             title: __('Storage Locations'),
-            props: [
-                'listUrl' => $router->fromHere('api:admin:storage_locations'),
-            ],
         );
     }
 }

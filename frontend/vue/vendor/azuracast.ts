@@ -8,14 +8,14 @@ export function installGlobalProps(vueApp: App, globalProps: AzuraCastConstants)
     vueApp.provide(globalPropsKey, globalProps);
 }
 
-interface AzuraCastStationConstants {
+export interface AzuraCastStationConstants {
     id: number | null,
     name: string | null,
     shortName: string | null,
     timezone: string
 }
 
-interface AzuraCastConstants {
+export interface AzuraCastConstants {
     locale: string,
     localeShort: string,
     localeWithDashes: string,

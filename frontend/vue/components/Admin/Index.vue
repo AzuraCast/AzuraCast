@@ -416,17 +416,10 @@ import {onMounted, ref, shallowRef} from "vue";
 import {useAxios} from "~/vendor/axios";
 import {useNotify} from "~/functions/useNotify";
 import {useAzuraCast} from "~/vendor/azuracast";
+import {getApiUrl} from "~/router";
 
-const props = defineProps({
-    statsUrl: {
-        type: String,
-        required: true
-    },
-    servicesUrl: {
-        type: String,
-        required: true
-    }
-});
+const statsUrl = getApiUrl('/admin/server/stats');
+const servicesUrl = getApiUrl('/admin/services');
 
 const {sidebarProps} = useAzuraCast();
 const adminPanels = sidebarProps.menu;
@@ -499,7 +492,7 @@ const getNetworkInterfaceTableItems = (interfaceData) => {
 const {axios} = useAxios();
 
 const updateStats = () => {
-    axios.get(props.statsUrl).then((response) => {
+    axios.get(statsUrl.value).then((response) => {
         stats.value = response.data;
 
         setTimeout(updateStats, (!document.hidden) ? 1000 : 5000);
@@ -513,7 +506,7 @@ const updateStats = () => {
 onMounted(updateStats);
 
 const updateServices = () => {
-    axios.get(props.servicesUrl).then((response) => {
+    axios.get(servicesUrl.value).then((response) => {
         services.value = response.data;
 
         setTimeout(updateServices, (!document.hidden) ? 5000 : 15000);

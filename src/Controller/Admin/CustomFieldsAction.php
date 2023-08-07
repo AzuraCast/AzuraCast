@@ -17,15 +17,12 @@ final class CustomFieldsAction implements SingleActionInterface
         Response $response,
         array $params
     ): ResponseInterface {
-        $router = $request->getRouter();
-
         return $request->getView()->renderVuePage(
             response: $response,
             component: 'Admin/CustomFields',
             id: 'admin-custom-fields',
             title: __('Custom Fields'),
             props: [
-                'listUrl' => $router->fromHere('api:admin:custom_fields'),
                 'autoAssignTypes' => MetadataTags::getNames(),
             ]
         );

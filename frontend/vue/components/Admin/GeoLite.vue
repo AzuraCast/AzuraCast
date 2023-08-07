@@ -112,13 +112,9 @@ import {useTranslate} from "~/vendor/gettext";
 import {useNotify} from "~/functions/useNotify";
 import Loading from "~/components/Common/Loading.vue";
 import CardPage from "~/components/Common/CardPage.vue";
+import {getApiUrl} from "~/router";
 
-const props = defineProps({
-    apiUrl: {
-        type: String,
-        required: true
-    }
-});
+const apiUrl = getApiUrl('/admin/geolite');
 
 const isLoading = ref(true);
 const version = ref(null);
@@ -148,7 +144,7 @@ const {axios} = useAxios();
 const doFetch = () => {
     isLoading.value = true;
 
-    axios.get(props.apiUrl).then((resp) => {
+    axios.get(apiUrl.value).then((resp) => {
         form.value.key = resp.data.key;
         version.value = resp.data.version;
         isLoading.value = false;
@@ -162,7 +158,7 @@ const {wrapWithLoading} = useNotify();
 const doUpdate = () => {
     isLoading.value = true;
     wrapWithLoading(
-        axios.post(props.apiUrl, {
+        axios.post(apiUrl.value, {
             geolite_license_key: form.value.key
         })
     ).then((resp) => {

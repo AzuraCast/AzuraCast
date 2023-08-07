@@ -69,7 +69,7 @@
 import AudioPlayer from '~/components/Common/AudioPlayer.vue';
 import formatTime from '~/functions/formatTime.js';
 import Icon from '~/components/Common/Icon.vue';
-import {usePlayerStore} from "~/store.js";
+import {usePlayerStore} from "~/store";
 import {useLocalStorage} from "@vueuse/core";
 import {computed, ref, toRef} from "vue";
 import MuteButton from "~/components/Common/MuteButton.vue";

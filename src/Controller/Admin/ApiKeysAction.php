@@ -16,17 +16,11 @@ final class ApiKeysAction implements SingleActionInterface
         Response $response,
         array $params
     ): ResponseInterface {
-        $router = $request->getRouter();
-
         return $request->getView()->renderVuePage(
             response: $response,
             component: 'Admin/ApiKeys',
             id: 'admin-api-keys',
             title: __('API Keys'),
-            props: [
-                'apiUrl' => $router->named('api:admin:api-keys'),
-                'myApiKeysUrl' => $router->named('profile:index'),
-            ],
         );
     }
 }

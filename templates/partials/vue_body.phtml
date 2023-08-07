@@ -5,12 +5,17 @@
  * @var array $props
  * @var App\View\GlobalSections $sections
  * @var Doctrine\Common\Collections\ArrayCollection $globalProps
+ * @var App\Environment $environment
  */
 
 $componentDeps = $this->getVueComponentInfo('vue/pages/' . $component . '.js');
 
+$jsonFlags = $environment->isProduction()
+    ? JSON_THROW_ON_ERROR
+    : JSON_THROW_ON_ERROR | JSON_PRETTY_PRINT;
+
 $globalProps->set('componentProps', $props);
-$propsJson = json_encode($globalProps->toArray(), JSON_THROW_ON_ERROR);
+$propsJson = json_encode($globalProps->toArray(), $jsonFlags);
 
 $headScripts = [];
 

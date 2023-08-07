@@ -54,13 +54,9 @@ import useHasDatatable from "~/functions/useHasDatatable";
 import {useAzuraCast} from "~/vendor/azuracast";
 import CardPage from "~/components/Common/CardPage.vue";
 import {useLuxon} from "~/vendor/luxon";
+import {getApiUrl} from "~/router";
 
-const props = defineProps({
-    listUrl: {
-        type: String,
-        required: true
-    }
-});
+const listUrl = getApiUrl('/admin/relays/list');
 
 const {$gettext} = useTranslate();
 

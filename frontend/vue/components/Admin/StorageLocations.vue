@@ -120,18 +120,13 @@ import useHasDatatable from "~/functions/useHasDatatable";
 import useHasEditModal from "~/functions/useHasEditModal";
 import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
 import CardPage from "~/components/Common/CardPage.vue";
-
-const props = defineProps({
-    listUrl: {
-        type: String,
-        required: true
-    }
-});
+import {getApiUrl} from "~/router";
 
 const activeType = ref('station_media');
 
+const listUrl = getApiUrl('/admin/storage_locations');
 const listUrlForType = computed(() => {
-    return props.listUrl + '?type=' + activeType.value;
+    return listUrl.value + '?type=' + activeType.value;
 });
 
 const {$gettext} = useTranslate();

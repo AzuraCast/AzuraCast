@@ -16,16 +16,11 @@ final class AuditLogAction implements SingleActionInterface
         Response $response,
         array $params
     ): ResponseInterface {
-        $router = $request->getRouter();
-
         return $request->getView()->renderVuePage(
             response: $response,
             component: 'Admin/AuditLog',
             id: 'admin-audit-log',
             title: __('Audit Log'),
-            props: [
-                'baseApiUrl' => $router->fromHere('api:admin:auditlog'),
-            ]
         );
     }
 }

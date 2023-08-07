@@ -21,16 +21,11 @@ final class ShoutcastAction implements SingleActionInterface
             throw new RuntimeException('Shoutcast cannot be installed on non-X86_64 systems.');
         }
 
-        $router = $request->getRouter();
-
         return $request->getView()->renderVuePage(
             response: $response,
             component: 'Admin/Shoutcast',
             id: 'admin-shoutcast',
             title: __('Install Shoutcast 2 DNAS'),
-            props: [
-                'apiUrl' => $router->named('api:admin:shoutcast'),
-            ],
         );
     }
 }

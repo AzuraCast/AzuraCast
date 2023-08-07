@@ -1,7 +1,7 @@
-import initBase from '~/base.js';
-
 import '~/store';
 
 import Playlists from '~/components/Stations/Playlists.vue';
+import initApp from "~/layout";
+import useStationPanelLayout from "~/layouts/StationPanelLayout";
 
-export default initBase(Playlists);
+initApp(useStationPanelLayout(Playlists));

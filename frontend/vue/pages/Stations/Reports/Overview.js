@@ -1,5 +1,5 @@
-import initBase from '~/base.js';
-
 import Overview from '~/components/Stations/Reports/Overview.vue';
+import initApp from "~/layout";
+import useStationPanelLayout from "~/layouts/StationPanelLayout";
 
-export default initBase(Overview);
+initApp(useStationPanelLayout(Overview));

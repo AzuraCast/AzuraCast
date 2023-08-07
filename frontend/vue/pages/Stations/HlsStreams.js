@@ -1,5 +1,5 @@
-import initBase from '~/base.js';
-
 import HlsStreams from '~/components/Stations/HlsStreams.vue';
+import initApp from "~/layout";
+import useStationPanelLayout from "~/layouts/StationPanelLayout";
 
-export default initBase(HlsStreams);
+initApp(useStationPanelLayout(HlsStreams));

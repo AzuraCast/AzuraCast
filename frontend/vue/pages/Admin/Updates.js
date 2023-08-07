@@ -1,5 +1,5 @@
-import initBase from '~/base.js';
-
 import AdminUpdates from '~/components/Admin/Updates.vue';
+import initApp from "~/layout";
+import useAdminPanelLayout from "~/layouts/AdminPanelLayout";
 
-export default initBase(AdminUpdates);
+initApp(useAdminPanelLayout(AdminUpdates));

@@ -1,5 +1,5 @@
-import initBase from '~/base.js';
-
 import Player from '~/components/Public/Player.vue';
+import initApp from "~/layout";
+import useMinimalLayout from "~/layouts/MinimalLayout";
 
-export default initBase(Player);
+initApp(useMinimalLayout(Player));

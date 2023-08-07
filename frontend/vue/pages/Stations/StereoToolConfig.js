@@ -1,5 +1,5 @@
-import initBase from '~/base.js';
-
 import StereoToolConfig from '~/components/Stations/StereoToolConfig.vue';
+import initApp from "~/layout";
+import useStationPanelLayout from "~/layouts/StationPanelLayout";
 
-export default initBase(StereoToolConfig);
+initApp(useStationPanelLayout(StereoToolConfig));

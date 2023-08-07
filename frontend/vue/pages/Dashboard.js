@@ -1,5 +1,5 @@
-import initBase from '~/base.js';
+import initApp from "~/layout";
+import usePanelLayout from "~/layouts/PanelLayout";
+import Dashboard from "~/components/Dashboard.vue";
 
-import Dashboard from '~/components/Dashboard';
-
-export default initBase(Dashboard);
+initApp(usePanelLayout(Dashboard));

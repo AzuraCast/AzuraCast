@@ -4,16 +4,20 @@ declare(strict_types=1);
 
 namespace App;
 
+use App\Entity\User;
+use App\Enums\SupportedLocales;
 use App\Http\RouterInterface;
 use App\Http\ServerRequest;
 use App\Traits\RequestAwareTrait;
 use App\Utilities\Json;
 use App\View\GlobalSections;
+use Doctrine\Common\Collections\ArrayCollection;
 use League\Plates\Engine;
 use League\Plates\Template\Data;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use stdClass;
 use Symfony\Component\VarDumper\Cloner\VarCloner;
 use Symfony\Component\VarDumper\Dumper\CliDumper;
 
@@ -21,7 +25,10 @@ final class View extends Engine
 {
     use RequestAwareTrait;
 
-    private readonly GlobalSections $sections;
+    private GlobalSections $sections;
+
+    /** @var ArrayCollection<string, array|object|string|int> */
+    private ArrayCollection $globalProps;
 
     public function __construct(
         Customization $customization,
@@ -33,11 +40,13 @@ final class View extends Engine
         parent::__construct($environment->getViewsDirectory(), 'phtml');
 
         $this->sections = new GlobalSections();
+        $this->globalProps = new ArrayCollection();
 
         // Add non-request-dependent content.
         $this->addData(
             [
                 'sections' => $this->sections,
+                'globalProps' => $this->globalProps,
                 'customization' => $customization,
                 'environment' => $environment,
                 'version' => $version,
@@ -88,13 +97,6 @@ final class View extends Engine
                     return null;
                 }
 
-                $includes = [
-                    'js' => $assetRoot . '/' . $vueComponents[$componentPath]['file'],
-                    'css' => [],
-                    'prefetch' => [],
-                ];
-
-                $assetRoot = '/static/vite_dist';
                 $includes = [
                     'js' => $assetRoot . '/' . $vueComponents[$componentPath]['file'],
                     'css' => [],
@@ -166,9 +168,40 @@ final class View extends Engine
             $customization = $request->getAttribute(ServerRequest::ATTR_CUSTOMIZATION);
             if (null !== $customization) {
                 $requestData['customization'] = $customization;
+
+                $this->globalProps->set(
+                    'enableAdvancedFeatures',
+                    $customization->enableAdvancedFeatures()
+                );
             }
 
             $this->addData($requestData);
+
+            $localeObj = $request->getAttribute(ServerRequest::ATTR_LOCALE);
+            if (!($localeObj instanceof SupportedLocales)) {
+                $localeObj = SupportedLocales::default();
+            }
+
+            $locale = $localeObj->getLocaleWithoutEncoding();
+            $localeShort = substr($locale, 0, 2);
+            $localeWithDashes = str_replace('_', '-', $locale);
+
+            $this->globalProps->set('locale', $locale);
+            $this->globalProps->set('localeShort', $localeShort);
+            $this->globalProps->set('localeWithDashes', $localeWithDashes);
+
+            // User profile-specific 24-hour display setting.
+            $userObj = $request->getAttribute(ServerRequest::ATTR_USER);
+            $show24Hours = ($userObj instanceof User)
+                ? $userObj->getShow24HourTime()
+                : null;
+
+            $timeConfig = new stdClass();
+            if (null !== $show24Hours) {
+                $timeConfig->hour12 = !$show24Hours;
+            }
+
+            $this->globalProps->set('timeConfig', $timeConfig);
         }
     }
 
@@ -177,8 +210,16 @@ final class View extends Engine
         return $this->sections;
     }
 
+    /** @return ArrayCollection<string, array|object|string|int> */
+    public function getGlobalProps(): ArrayCollection
+    {
+        return $this->globalProps;
+    }
+
     public function reset(): void
     {
+        $this->sections = new GlobalSections();
+        $this->globalProps = new ArrayCollection();
         $this->data = new Data();
     }
 
@@ -213,7 +254,7 @@ final class View extends Engine
         ResponseInterface $response,
         string $component,
         ?string $id = null,
-        string $layout = 'main',
+        string $layout = 'panel',
         ?string $title = null,
         array $layoutParams = [],
         array $props = [],

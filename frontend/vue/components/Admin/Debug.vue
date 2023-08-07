@@ -16,13 +16,13 @@
                 </div>
 
                 <template #footer_actions>
-                    <a
+                    <button
+                        type="button"
                         class="btn btn-sm btn-primary"
-                        role="button"
-                        :href="clearCacheUrl"
+                        @click="makeDebugCall(clearCacheUrl)"
                     >
                         {{ $gettext('Clear Cache') }}
-                    </a>
+                    </button>
                 </template>
             </card-page>
         </div>
@@ -38,13 +38,13 @@
                 </div>
 
                 <template #footer_actions>
-                    <a
+                    <button
+                        type="button"
                         class="btn btn-sm btn-primary"
-                        role="button"
-                        :href="clearQueuesUrl"
+                        @click="makeDebugCall(clearQueuesUrl)"
                     >
                         {{ $gettext('Clear All Message Queues') }}
-                    </a>
+                    </button>
                 </template>
             </card-page>
         </div>
@@ -66,13 +66,13 @@
                 {{ row.item.pattern }}
             </template>
             <template #cell(actions)="row">
-                <a
+                <button
+                    type="button"
                     class="btn btn-sm btn-primary"
-                    role="button"
-                    :href="row.item.url"
+                    @click="makeDebugCall(row.item.url)"
                 >
                     {{ $gettext('Run Task') }}
-                </a>
+                </button>
             </template>
         </data-table>
     </card-page>
@@ -103,13 +103,13 @@
                     </p>
 
                     <div class="buttons">
-                        <a
+                        <button
+                            type="button"
                             class="btn btn-sm btn-primary"
-                            role="button"
-                            :href="row.url"
+                            @click="makeDebugCall(row.url)"
                         >
                             {{ $gettext('Clear Queue') }}
-                        </a>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -137,33 +137,33 @@
                             <h5>{{ $gettext('AutoDJ Queue') }}</h5>
 
                             <div class="buttons">
-                                <a
+                                <button
+                                    type="button"
                                     class="btn btn-sm btn-primary"
-                                    role="button"
-                                    :href="station.clearQueueUrl"
+                                    @click="makeDebugCall(station.clearQueueUrl)"
                                 >
                                     {{ $gettext('Clear Queue') }}
-                                </a>
-                                <a
+                                </button>
+                                <button
+                                    type="button"
                                     class="btn btn-sm btn-primary"
-                                    role="button"
-                                    :href="station.getNextSongUrl"
+                                    @click="makeDebugCall(station.getNextSongUrl)"
                                 >
                                     {{ $gettext('Get Next Song') }}
-                                </a>
+                                </button>
                             </div>
                         </div>
                         <div class="col-md-4">
                             <h5>{{ $gettext('Get Now Playing') }}</h5>
 
                             <div class="buttons">
-                                <a
+                                <button
+                                    type="button"
                                     class="btn btn-sm btn-primary"
-                                    role="button"
-                                    :href="station.getNowPlayingUrl"
+                                    @click="makeDebugCall(station.getNowPlayingUrl)"
                                 >
                                     {{ $gettext('Run Task') }}
-                                </a>
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -171,6 +171,8 @@
             </o-tabs>
         </div>
     </card-page>
+
+    <task-output-modal ref="$modal" />
 </template>
 
 <script setup>
@@ -180,6 +182,9 @@ import DataTable from "~/components/Common/DataTable.vue";
 import {useTranslate} from "~/vendor/gettext";
 import CardPage from "~/components/Common/CardPage.vue";
 import {useLuxon} from "~/vendor/luxon";
+import TaskOutputModal from "~/components/Admin/Debug/TaskOutputModal.vue";
+import {useAxios} from "~/vendor/axios";
+import {useNotify} from "~/functions/useNotify";
 
 const props = defineProps({
     clearCacheUrl: {
@@ -229,4 +234,18 @@ const syncTaskFields = [
 const $datatable = ref(); // Template Ref
 useHasDatatable($datatable);
 
+const $modal = ref();
+
+const {axios} = useAxios();
+const {notifySuccess} = useNotify();
+
+const makeDebugCall = (url) => {
+    axios.put(url).then((resp) => {
+        if (resp.data.logs) {
+            $modal.value.open(resp.data.logs);
+        } else {
+            notifySuccess(resp.data.message);
+        }
+    });
+}
 </script>

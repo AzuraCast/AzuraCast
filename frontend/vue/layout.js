@@ -1,26 +1,17 @@
-import {createApp, h} from "vue";
+import {createApp} from "vue";
 import installAxios from "~/vendor/axios";
 import {installPinia} from '~/vendor/pinia';
 import {installTranslate} from "~/vendor/gettext";
 import Oruga from "@oruga-ui/oruga-next";
 import {bootstrapConfig} from "@oruga-ui/theme-bootstrap";
 import {installCurrentVueInstance} from "~/vendor/vueInstance";
+import {installGlobalProps} from "~/vendor/azuracast";
 
-export default function (component) {
-    const vueApp = createApp({
-        render() {
-            return h(component, this.$appProps)
-        },
-    });
+export default function initApp(appConfig = {}) {
+    const vueApp = createApp(appConfig);
 
     /* Track current instance (for programmatic use). */
     installCurrentVueInstance(vueApp);
-
-    /* Gettext */
-    installTranslate(vueApp);
-
-    /* Axios */
-    installAxios(vueApp);
 
     /* Pinia */
     installPinia(vueApp);
@@ -52,11 +43,19 @@ export default function (component) {
         }
     });
 
-    const vueComponent = (el, props) => {
-        vueApp.config.globalProperties.$appProps = props;
-        vueApp.mount(el);
-    }
+    window.vueComponent = (el, globalProps) => {
+        installGlobalProps(vueApp, globalProps);
 
-    window.vueComponent = vueComponent;
-    return vueComponent;
+        /* Gettext */
+        installTranslate(vueApp, globalProps.locale ?? 'en_US');
+
+        /* Axios */
+        installAxios(vueApp, globalProps.apiCsrf ?? null);
+
+        vueApp.mount(el);
+    };
+
+    return {
+        vueApp
+    };
 }

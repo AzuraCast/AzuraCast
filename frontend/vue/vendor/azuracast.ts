@@ -1,23 +1,11 @@
 /* eslint-disable no-undef */
 
-interface AzuraCastConstants {
-    locale: string,
-    localeShort: string,
-    localeWithDashes: string,
-    timeConfig: object,
-    apiCsrf: string | null,
-    enableAdvancedFeatures: boolean
-}
+import {App, inject, InjectionKey} from "vue";
 
-export function useAzuraCast(): AzuraCastConstants {
-    return {
-        locale: App.locale ?? 'en_US',
-        localeShort: App.locale_short ?? 'en',
-        localeWithDashes: App.locale_with_dashes ?? 'en-US',
-        timeConfig: App.time_config ?? {},
-        apiCsrf: App.api_csrf ?? null,
-        enableAdvancedFeatures: App.enable_advanced_features ?? true
-    }
+const globalPropsKey: InjectionKey<AzuraCastConstants> = Symbol() as InjectionKey<AzuraCastConstants>;
+
+export function installGlobalProps(vueApp: App, globalProps: AzuraCastConstants): void {
+    vueApp.provide(globalPropsKey, globalProps);
 }
 
 interface AzuraCastStationConstants {
@@ -27,11 +15,24 @@ interface AzuraCastStationConstants {
     timezone: string
 }
 
+interface AzuraCastConstants {
+    locale: string,
+    localeShort: string,
+    localeWithDashes: string,
+    timeConfig: object,
+    apiCsrf: string | null,
+    enableAdvancedFeatures: boolean,
+    panelProps: object | null,
+    sidebarProps: object | null,
+    componentProps: object | null,
+    station: AzuraCastStationConstants | null,
+}
+
+export function useAzuraCast(): AzuraCastConstants {
+    return inject(globalPropsKey);
+}
+
 export function useAzuraCastStation(): AzuraCastStationConstants {
-    return {
-        id: App.station?.id ?? null,
-        name: App.station?.name ?? null,
-        shortName: App.station?.shortName ?? null,
-        timezone: App.station?.timezone ?? 'UTC'
-    }
+    const {station} = useAzuraCast();
+    return station;
 }

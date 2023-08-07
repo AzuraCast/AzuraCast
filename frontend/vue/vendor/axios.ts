@@ -1,10 +1,8 @@
-import axios, { AxiosStatic } from "axios";
+import axios, {AxiosStatic} from "axios";
 import VueAxios from "vue-axios";
-import {App, inject} from "vue";
-import {useAzuraCast} from "~/vendor/azuracast";
+import {App, inject, InjectionKey} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import {useNotify} from "~/functions/useNotify";
-import {InjectionKey} from "vue";
 
 const injectKey: InjectionKey<AxiosStatic> = Symbol() as InjectionKey<AxiosStatic>;
 
@@ -17,11 +15,9 @@ export const useAxios = (): UseAxios => ({
     axios: inject<AxiosStatic>(injectKey)
 });
 
-export default function installAxios(vueApp: App) {
+export default function installAxios(vueApp: App, apiCsrf: string | null) {
     // Configure auto-CSRF on requests
-    const {apiCsrf} = useAzuraCast();
-
-    if (typeof apiCsrf !== 'undefined') {
+    if (apiCsrf) {
         axios.defaults.headers.common['X-API-CSRF'] = apiCsrf;
     }
 

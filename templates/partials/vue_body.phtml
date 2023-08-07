@@ -4,11 +4,13 @@
  * @var ?string $id
  * @var array $props
  * @var App\View\GlobalSections $sections
+ * @var Doctrine\Common\Collections\ArrayCollection $globalProps
  */
 
 $componentDeps = $this->getVueComponentInfo('vue/pages/' . $component . '.js');
 
-$propsJson = json_encode($props, JSON_THROW_ON_ERROR);
+$globalProps->set('componentProps', $props);
+$propsJson = json_encode($globalProps->toArray(), JSON_THROW_ON_ERROR);
 
 $headScripts = [];
 

@@ -1,5 +1,5 @@
-import initBase from '~/base.js';
-
 import SoundExchange from '~/components/Stations/Reports/SoundExchange.vue';
+import initApp from "~/layout";
+import useStationPanelLayout from "~/layouts/StationPanelLayout";
 
-export default initBase(SoundExchange);
+initApp(useStationPanelLayout(SoundExchange));

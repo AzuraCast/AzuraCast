@@ -1,5 +1,5 @@
-import initBase from '~/base.js';
-
 import Timeline from '~/components/Stations/Reports/Timeline.vue';
+import initApp from "~/layout";
+import useStationPanelLayout from "~/layouts/StationPanelLayout";
 
-export default initBase(Timeline);
+initApp(useStationPanelLayout(Timeline));

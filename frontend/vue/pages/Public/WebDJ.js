@@ -1,5 +1,5 @@
-import initBase from '~/base.js';
-
 import WebDJ from '~/components/Public/WebDJ.vue';
+import initApp from "~/layout";
+import useMinimalLayout from "~/layouts/MinimalLayout";
 
-export default initBase(WebDJ);
+initApp(useMinimalLayout(WebDJ));

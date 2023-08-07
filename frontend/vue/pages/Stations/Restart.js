@@ -1,5 +1,5 @@
-import initBase from '~/base.js';
-
 import Restart from '~/components/Stations/Restart.vue';
+import initApp from "~/layout";
+import useStationPanelLayout from "~/layouts/StationPanelLayout";
 
-export default initBase(Restart);
+initApp(useStationPanelLayout(Restart));

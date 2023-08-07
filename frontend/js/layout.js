@@ -43,21 +43,24 @@ window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () 
     }
 });
 
+export function switchTheme() {
+    const currentTheme = getPreferredTheme();
+    if (currentTheme === 'light') {
+        setStoredTheme('dark');
+        setTheme('dark');
+    } else {
+        setStoredTheme('light');
+        setTheme('light');
+    }
+}
+
 ready(() => {
     // Theme switcher
     document.querySelectorAll('.theme-switcher').forEach(
         toggle => {
             toggle.addEventListener('click', (e) => {
                 e.stopPropagation();
-
-                const currentTheme = getPreferredTheme();
-                if (currentTheme === 'light') {
-                    setStoredTheme('dark');
-                    setTheme('dark');
-                } else {
-                    setStoredTheme('light');
-                    setTheme('light');
-                }
+                switchTheme();
             });
         });
 

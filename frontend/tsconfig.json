@@ -35,6 +35,7 @@
     "vue/**/*.ts",
     "vue/**/*.d.ts",
     "vue/**/*.tsx",
-    "vue/**/*.vue"
+    "vue/**/*.vue",
+    "vue/**/*.js"
   ]
 }

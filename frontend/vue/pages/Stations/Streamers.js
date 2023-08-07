@@ -1,5 +1,5 @@
-import initBase from '~/base.js';
-
 import Streamers from '~/components/Stations/Streamers.vue';
+import initApp from "~/layout";
+import useStationPanelLayout from "~/layouts/StationPanelLayout";
 
-export default initBase(Streamers);
+initApp(useStationPanelLayout(Streamers));

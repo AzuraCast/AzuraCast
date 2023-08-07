@@ -1,5 +1,5 @@
-import initBase from '~/base.js';
-
 import AdminRelays from '~/components/Admin/Relays.vue';
+import initApp from "~/layout";
+import useAdminPanelLayout from "~/layouts/AdminPanelLayout";
 
-export default initBase(AdminRelays);
+initApp(useAdminPanelLayout(AdminRelays));

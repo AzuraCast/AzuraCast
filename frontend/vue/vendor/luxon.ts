@@ -1,8 +1,6 @@
 import {DateTime, Duration, Settings} from 'luxon';
 import {useAzuraCast} from "~/vendor/azuracast";
 
-const {localeWithDashes, timeConfig} = useAzuraCast();
-
 interface TimestampToRelative {
     (timestamp: number | null | undefined): string;
 }
@@ -14,6 +12,7 @@ interface UseLuxon {
 }
 
 export function useLuxon(): UseLuxon {
+    const {localeWithDashes, timeConfig} = useAzuraCast();
     Settings.defaultLocale = localeWithDashes;
 
     const timestampToRelative: TimestampToRelative = (timestamp: number | null | undefined): string => {

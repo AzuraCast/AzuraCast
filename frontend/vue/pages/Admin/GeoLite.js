@@ -1,5 +1,5 @@
-import initBase from '~/base.js';
-
 import AdminGeoLite from '~/components/Admin/GeoLite.vue';
+import initApp from "~/layout";
+import useAdminPanelLayout from "~/layouts/AdminPanelLayout";
 
-export default initBase(AdminGeoLite);
+initApp(useAdminPanelLayout(AdminGeoLite));

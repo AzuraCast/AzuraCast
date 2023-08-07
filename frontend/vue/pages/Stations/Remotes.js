@@ -1,5 +1,5 @@
-import initBase from '~/base.js';
-
 import Remotes from '~/components/Stations/Remotes.vue';
+import initApp from "~/layout";
+import useStationPanelLayout from "~/layouts/StationPanelLayout";
 
-export default initBase(Remotes);
+initApp(useStationPanelLayout(Remotes));

@@ -1,5 +1,5 @@
-import initBase from '~/base.js';
-
 import SftpUsers from "~/components/Stations/SftpUsers";
+import initApp from "~/layout";
+import useStationPanelLayout from "~/layouts/StationPanelLayout";
 
-export default initBase(SftpUsers);
+initApp(useStationPanelLayout(SftpUsers));

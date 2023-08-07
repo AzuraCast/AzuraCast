@@ -1,5 +1,5 @@
-import initBase from '~/base.js';
-
 import AuditLog from '~/components/Admin/AuditLog.vue';
+import initApp from "~/layout";
+import useAdminPanelLayout from "~/layouts/AdminPanelLayout";
 
-export default initBase(AuditLog);
+initApp(useAdminPanelLayout(AuditLog));

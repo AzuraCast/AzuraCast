@@ -1,5 +1,5 @@
-import initBase from '~/base.js';
-
 import History from '~/components/Public/History.vue';
+import initApp from "~/layout";
+import useMinimalLayout from "~/layouts/MinimalLayout";
 
-export default initBase(History);
+initApp(useMinimalLayout(History));

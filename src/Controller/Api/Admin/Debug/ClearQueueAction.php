@@ -2,9 +2,10 @@
 
 declare(strict_types=1);
 
-namespace App\Controller\Admin\Debug;
+namespace App\Controller\Api\Admin\Debug;
 
 use App\Controller\SingleActionInterface;
+use App\Entity\Api\Status;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\MessageQueue\QueueManagerInterface;
@@ -34,9 +35,6 @@ final class ClearQueueAction implements SingleActionInterface
             $this->queueManager->clearAllQueues();
         }
 
-        // Flash an update to ensure the session is recreated.
-        $request->getFlash()->success(__('Message queue cleared.'));
-
-        return $response->withRedirect($request->getRouter()->fromHere('admin:debug:index'));
+        return $response->withJson(Status::updated());
     }
 }

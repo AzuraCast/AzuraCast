@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Controller\Admin\Debug;
+namespace App\Controller\Admin;
 
 use App\Cache\DatabaseCache;
 use App\Console\Command\Sync\SingleTaskCommand;
@@ -19,7 +19,7 @@ use DateTimeZone;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ResponseInterface;
 
-final class IndexAction implements SingleActionInterface
+final class DebugAction implements SingleActionInterface
 {
     public function __construct(
         private readonly StationRepository $stationRepo,
@@ -42,7 +42,7 @@ final class IndexAction implements SingleActionInterface
                 'name' => $queue->value,
                 'count' => $this->queueManager->getQueueCount($queue),
                 'url' => $router->named(
-                    'admin:debug:clear-queue',
+                    'api:admin:debug:clear-queue',
                     ['queue' => $queue->value]
                 ),
             ];
@@ -65,7 +65,7 @@ final class IndexAction implements SingleActionInterface
                 'time' => $this->cache->getItem($cacheKey)->get() ?? 0,
                 'nextRun' => $cronExpression->getNextRunDate($now)->getTimestamp(),
                 'url' => $router->named(
-                    'admin:debug:sync',
+                    'api:admin:debug:sync',
                     ['task' => rawurlencode($task)]
                 ),
             ];
@@ -77,15 +77,15 @@ final class IndexAction implements SingleActionInterface
                 'id' => $station['id'],
                 'name' => $station['name'],
                 'clearQueueUrl' => $router->named(
-                    'admin:debug:clear-station-queue',
+                    'api:admin:debug:clear-station-queue',
                     ['station_id' => $station['id']]
                 ),
                 'getNextSongUrl' => $router->named(
-                    'admin:debug:nextsong',
+                    'api:admin:debug:nextsong',
                     ['station_id' => $station['id']]
                 ),
                 'getNowPlayingUrl' => $router->named(
-                    'admin:debug:nowplaying',
+                    'api:admin:debug:nowplaying',
                     ['station_id' => $station['id']]
                 ),
             ];
@@ -97,8 +97,8 @@ final class IndexAction implements SingleActionInterface
             id: 'admin-debug',
             title: __('System Debugger'),
             props: [
-                'clearCacheUrl' => $router->named('admin:debug:clear-cache'),
-                'clearQueuesUrl' => $router->named('admin:debug:clear-queue'),
+                'clearCacheUrl' => $router->named('api:admin:debug:clear-cache'),
+                'clearQueuesUrl' => $router->named('api:admin:debug:clear-queue'),
                 'syncTasks' => $syncTasks,
                 'queueTotals' => $queueTotals,
                 'stations' => $stations,

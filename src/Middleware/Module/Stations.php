@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Middleware\Module;
 
 use App\Container\SettingsAwareTrait;
+use App\Enums\StationPermissions;
 use App\Event;
 use App\Http\ServerRequest;
 use Psr\EventDispatcher\EventDispatcherInterface;
@@ -48,16 +49,25 @@ final class Stations
             $activeTab = $routeParts[1];
         }
 
-        $view->getSections()->set(
-            'sidebar',
-            $view->render(
-                'stations/sidebar',
-                [
-                    'menu' => $event->getFilteredMenu(),
-                    'active' => $activeTab,
-                ]
-            ),
-        );
+        $globalProps = $view->getGlobalProps();
+
+        $globalProps->set('station', [
+            'id' => $station->getIdRequired(),
+            'name' => $station->getName(),
+            'shortName' => $station->getShortName(),
+            'timezone' => $station->getTimezone(),
+        ]);
+
+        $router = $request->getRouter();
+        $acl = $request->getAcl();
+
+        $globalProps->set('sidebarProps', [
+            'profileUrl' => $router->fromHere('stations:profile:index'),
+            'editProfileUrl' => $router->fromHere('stations:profile:edit'),
+            'showEditProfile' => $acl->isAllowed(StationPermissions::Profile, $station),
+            'menu' => $event->getFilteredMenu(),
+            'active' => $activeTab,
+        ]);
 
         return $handler->handle($request);
     }

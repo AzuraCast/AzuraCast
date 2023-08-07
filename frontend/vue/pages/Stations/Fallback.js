@@ -1,5 +1,5 @@
-import initBase from '~/base.js';
-
 import Fallback from '~/components/Stations/Fallback.vue';
+import initApp from "~/layout";
+import useStationPanelLayout from "~/layouts/StationPanelLayout";
 
-export default initBase(Fallback);
+initApp(useStationPanelLayout(Fallback));

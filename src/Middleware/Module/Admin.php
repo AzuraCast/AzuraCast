@@ -42,22 +42,15 @@ final class Admin
             $activeTab = $routeParts[1];
         }
 
-        $view->addData(
-            [
-                'admin_panels' => $event->getFilteredMenu(),
-            ]
-        );
+        $globalProps = $view->getGlobalProps();
 
-        // These two intentionally separated (the sidebar needs admin_panels).
-        $view->getSections()->set(
-            'sidebar',
-            $view->render(
-                'admin/sidebar',
-                [
-                    'active_tab' => $activeTab,
-                ]
-            )
-        );
+        $router = $request->getRouter();
+
+        $globalProps->set('sidebarProps', [
+            'homeUrl' => $router->named('admin:index:index'),
+            'menu' => $event->getFilteredMenu(),
+            'active' => $activeTab,
+        ]);
 
         return $handler->handle($request);
     }

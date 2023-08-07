@@ -1,5 +1,5 @@
-import initBase from '~/base.js';
-
 import AdminIndex from '~/components/Admin/Index.vue';
+import initApp from "~/layout";
+import usePanelLayout from "~/layouts/PanelLayout";
 
-export default initBase(AdminIndex);
+initApp(usePanelLayout(AdminIndex));

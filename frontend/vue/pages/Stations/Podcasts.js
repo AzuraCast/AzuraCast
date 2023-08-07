@@ -1,5 +1,5 @@
-import initBase from '~/base.js';
-
 import Podcasts from '~/components/Stations/Podcasts.vue';
+import initApp from "~/layout";
+import useStationPanelLayout from "~/layouts/StationPanelLayout";
 
-export default initBase(Podcasts);
+initApp(useStationPanelLayout(Podcasts));

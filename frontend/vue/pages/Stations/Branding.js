@@ -1,5 +1,5 @@
-import initBase from '~/base.js';
-
 import StationsBranding from '~/components/Stations/Branding.vue';
+import initApp from "~/layout";
+import useStationPanelLayout from "~/layouts/StationPanelLayout";
 
-export default initBase(StationsBranding);
+initApp(useStationPanelLayout(StationsBranding));

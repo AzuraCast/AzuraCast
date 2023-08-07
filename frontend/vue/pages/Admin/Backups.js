@@ -1,5 +1,5 @@
-import initBase from '~/base.js';
-
 import AdminBackups from '~/components/Admin/Backups.vue';
+import initApp from "~/layout";
+import useAdminPanelLayout from "~/layouts/AdminPanelLayout";
 
-export default initBase(AdminBackups);
+initApp(useAdminPanelLayout(AdminBackups));

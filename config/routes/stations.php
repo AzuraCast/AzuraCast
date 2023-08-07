@@ -142,6 +142,7 @@ return static function (RouteCollectorProxy $app) {
         }
     )
         ->add(Middleware\Module\Stations::class)
+        ->add(Middleware\Module\PanelLayout::class)
         ->add(new Middleware\Permissions(StationPermissions::View, true))
         ->add(Middleware\RequireStation::class)
         ->add(Middleware\GetStation::class)

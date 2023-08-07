@@ -415,12 +415,9 @@ import RunningBadge from "~/components/Common/Badges/RunningBadge.vue";
 import {onMounted, ref, shallowRef} from "vue";
 import {useAxios} from "~/vendor/axios";
 import {useNotify} from "~/functions/useNotify";
+import {useAzuraCast} from "~/vendor/azuracast";
 
 const props = defineProps({
-    adminPanels: {
-        type: Object,
-        required: true
-    },
     statsUrl: {
         type: String,
         required: true
@@ -430,6 +427,9 @@ const props = defineProps({
         required: true
     }
 });
+
+const {sidebarProps} = useAzuraCast();
+const adminPanels = sidebarProps.menu;
 
 const stats = shallowRef({
     cpu: {

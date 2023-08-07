@@ -1,5 +1,5 @@
-import initBase from '~/base.js';
-
 import Queue from '~/components/Stations/Queue.vue';
+import initApp from "~/layout";
+import useStationPanelLayout from "~/layouts/StationPanelLayout";
 
-export default initBase(Queue);
+initApp(useStationPanelLayout(Queue));

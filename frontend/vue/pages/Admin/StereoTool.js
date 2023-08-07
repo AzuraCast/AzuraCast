@@ -1,5 +1,5 @@
-import initBase from '~/base.js';
-
 import AdminStereoTool from '~/components/Admin/StereoTool.vue';
+import initApp from "~/layout";
+import useAdminPanelLayout from "~/layouts/AdminPanelLayout";
 
-export default initBase(AdminStereoTool);
+initApp(useAdminPanelLayout(AdminStereoTool));

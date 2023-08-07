@@ -6,7 +6,7 @@ namespace Functional;
 
 use FunctionalTester;
 
-class Admin_DebugCest extends CestAbstract
+class Api_Admin_DebugCest extends CestAbstract
 {
     /**
      * @before setupComplete
@@ -15,7 +15,8 @@ class Admin_DebugCest extends CestAbstract
     public function syncTasks(FunctionalTester $I)
     {
         $I->wantTo('Test All Synchronized Tasks');
-        $I->amOnPage('/admin/debug/sync/all');
-        $I->seeResponseCodeIsSuccessful();
+
+        $I->sendPUT('/api/admin/debug/sync/all');
+        $I->seeResponseCodeIs(200);
     }
 }

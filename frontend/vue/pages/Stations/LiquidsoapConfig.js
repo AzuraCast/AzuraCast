@@ -1,5 +1,5 @@
-import initBase from '~/base.js';
-
 import LiquidsoapConfig from '~/components/Stations/LiquidsoapConfig.vue';
+import initApp from "~/layout";
+import useStationPanelLayout from "~/layouts/StationPanelLayout";
 
-export default initBase(LiquidsoapConfig);
+initApp(useStationPanelLayout(LiquidsoapConfig));

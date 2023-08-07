@@ -57,6 +57,45 @@ return static function (RouteCollectorProxy $group) {
                 }
             )->add(new Middleware\Permissions(GlobalPermissions::Backups));
 
+            $group->group(
+                '/debug',
+                function (RouteCollectorProxy $group) {
+                    $group->put('/clear-cache', Controller\Api\Admin\Debug\ClearCacheAction::class)
+                        ->setName('api:admin:debug:clear-cache');
+
+                    $group->put(
+                        '/clear-queue[/{queue}]',
+                        Controller\Api\Admin\Debug\ClearQueueAction::class
+                    )->setName('api:admin:debug:clear-queue');
+
+                    $group->put('/sync/{task}', Controller\Api\Admin\Debug\SyncAction::class)
+                        ->setName('api:admin:debug:sync');
+
+                    $group->group(
+                        '/station/{station_id}',
+                        function (RouteCollectorProxy $group) {
+                            $group->put(
+                                '/nowplaying',
+                                Controller\Api\Admin\Debug\NowPlayingAction::class
+                            )->setName('api:admin:debug:nowplaying');
+
+                            $group->put(
+                                '/nextsong',
+                                Controller\Api\Admin\Debug\NextSongAction::class
+                            )->setName('api:admin:debug:nextsong');
+
+                            $group->put(
+                                '/clearqueue',
+                                Controller\Api\Admin\Debug\ClearStationQueueAction::class
+                            )->setName('api:admin:debug:clear-station-queue');
+
+                            $group->put('/telnet', Controller\Api\Admin\Debug\TelnetAction::class)
+                                ->setName('api:admin:debug:telnet');
+                        }
+                    )->add(Middleware\GetStation::class);
+                }
+            )->add(new Middleware\Permissions(GlobalPermissions::All));
+
             $group->get('/server/stats', Controller\Api\Admin\ServerStatsAction::class)
                 ->setName('api:admin:server:stats')
                 ->add(new Middleware\Permissions(GlobalPermissions::View));

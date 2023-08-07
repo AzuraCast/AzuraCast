@@ -1,4 +1,5 @@
-import initBase from '~/base.js';
 import AdminApiKeys from '~/components/Admin/ApiKeys.vue';
+import initApp from "~/layout";
+import useAdminPanelLayout from "~/layouts/AdminPanelLayout";
 
-export default initBase(AdminApiKeys);
+initApp(useAdminPanelLayout(AdminApiKeys));

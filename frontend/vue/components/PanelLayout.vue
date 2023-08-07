@@ -1,0 +1,224 @@
+<template>
+    <a
+        class="visually-hidden-focusable"
+        href="#content"
+    >
+        {{ $gettext('Skip to main content') }}
+    </a>
+
+    <header class="navbar bg-primary-dark shadow-sm fixed-top">
+        <template v-if="slots.sidebar">
+            <button
+                id="navbar-toggle"
+                data-bs-toggle="offcanvas"
+                data-bs-target="#sidebar"
+                aria-controls="sidebar"
+                aria-expanded="false"
+                :aria-label="$gettext('Toggle Sidebar')"
+                class="navbar-toggler d-inline-flex d-lg-none me-3"
+            >
+                <icon
+                    icon="menu"
+                    class="lg"
+                />
+            </button>
+        </template>
+
+        <a
+            class="navbar-brand ms-0 me-auto"
+            :href="homeUrl"
+        >
+            azura<strong>cast</strong>
+            <small v-if="instanceName">{{ instanceName }}</small>
+        </a>
+
+        <div id="radio-player-controls" />
+
+        <div class="dropdown ms-3 d-inline-flex align-items-center">
+            <div class="me-2">
+                {{ userDisplayName }}
+            </div>
+
+            <button
+                aria-expanded="false"
+                aria-haspopup="true"
+                class="navbar-toggler"
+                :aria-label="$gettext('Toggle Menu')"
+                data-bs-toggle="dropdown"
+                type="button"
+            >
+                <icon
+                    icon="menu_open"
+                    class="lg"
+                />
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end">
+                <li>
+                    <a
+                        class="dropdown-item"
+                        :href="homeUrl"
+                    >
+                        <icon icon="home" />
+                        {{ $gettext('Dashboard') }}
+                    </a>
+                </li>
+                <li class="dropdown-divider">
+&nbsp;
+                </li>
+                <li v-if="showAdmin">
+                    <a
+                        class="dropdown-item"
+                        :href="adminUrl"
+                    >
+                        <icon icon="settings" />
+                        {{ $gettext('System Administration') }}
+                    </a>
+                </li>
+                <li>
+                    <a
+                        class="dropdown-item"
+                        :href="profileUrl"
+                    >
+                        <icon icon="account_circle" />
+                        {{ $gettext('My Account') }}
+                    </a>
+                </li>
+                <li>
+                    <a
+                        class="dropdown-item theme-switcher"
+                        href="#"
+                        @click.prevent="switchTheme"
+                    >
+                        <icon icon="invert_colors" />
+                        {{ $gettext('Switch Theme') }}
+                    </a>
+                </li>
+                <li>
+                    <a
+                        class="dropdown-item"
+                        href="https://docs.azuracast.com/en/user-guide/troubleshooting"
+                        target="_blank"
+                    >
+                        <i
+                            class="material-icons"
+                            aria-hidden="true"
+                        >help</i>
+                        {{ $gettext('Help') }}
+                    </a>
+                </li>
+                <li class="dropdown-divider">
+&nbsp;
+                </li>
+                <li>
+                    <a
+                        class="dropdown-item"
+                        :href="logoutUrl"
+                    >
+                        <icon icon="exit_to_app" />
+                        {{ $gettext('Sign Out') }}
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </header>
+
+    <nav
+        v-if="slots.sidebar"
+        id="sidebar"
+        class="navdrawer offcanvas offcanvas-start"
+        tabindex="-1"
+        :aria-label="$gettext('Sidebar')"
+    >
+        <slot name="sidebar" />
+    </nav>
+
+    <section id="main">
+        <main
+            id="content"
+            :class="[(slots.sidebar) ? 'content-alt' : '']"
+        >
+            <div class="container">
+                <slot />
+            </div>
+        </main>
+    </section>
+
+    <footer
+        id="footer"
+        :class="[(slots.sidebar) ? 'footer-alt' : '']"
+    >
+        {{ $gettext('Powered by') }}
+        <a
+            href="https://www.azuracast.com/"
+            target="_blank"
+        >AzuraCast</a>
+        &bull;
+        <span v-html="version" />
+        &bull;
+        <span v-html="platform" /><br>
+        {{ $gettext('Like our software?') }}
+        <a
+            href="https://docs.azuracast.com/en/contribute/donate"
+            target="_blank"
+        >
+            {{ $gettext('Donate to support AzuraCast!') }}
+        </a>
+    </footer>
+</template>
+
+<script setup>
+import {onMounted, onUnmounted, useSlots} from "vue";
+import Icon from "~/components/Common/Icon.vue";
+import {switchTheme} from "!/js/layout";
+
+const props = defineProps({
+  instanceName: {
+    type: String,
+    required: true
+  },
+  userDisplayName: {
+    type: String,
+    required: true
+  },
+  homeUrl: {
+    type: String,
+    required: true,
+  },
+  profileUrl: {
+    type: String,
+    required: true,
+  },
+  adminUrl: {
+    type: String,
+    required: true
+  },
+  logoutUrl: {
+    type: String,
+    required: true
+  },
+  showAdmin: {
+    type: Boolean,
+    default: false
+  },
+  version: {
+    type: String,
+    required: true
+  },
+  platform: {
+    type: String,
+    required: true
+  }
+});
+
+const slots = useSlots();
+
+onMounted(() => {
+    if (slots.sidebar) {
+        document.body.classList.add('has-sidebar');
+    }
+});
+
+onUnmounted(() => {
+    document.body.classList.remove('has-sidebar');
+});
+</script>

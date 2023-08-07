@@ -1,5 +1,5 @@
-import initBase from '~/base.js';
-
 import SetupStation from '~/components/Setup/Station.vue';
+import initApp from "~/layout";
+import usePanelLayout from "~/layouts/PanelLayout";
 
-export default initBase(SetupStation);
+initApp(usePanelLayout(SetupStation));

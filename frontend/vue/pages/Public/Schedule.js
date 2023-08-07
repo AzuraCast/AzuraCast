@@ -1,5 +1,5 @@
-import initBase from '~/base.js';
-
 import Schedule from '~/components/Public/Schedule.vue';
+import initApp from "~/layout";
+import useMinimalLayout from "~/layouts/MinimalLayout";
 
-export default initBase(Schedule);
+initApp(useMinimalLayout(Schedule));

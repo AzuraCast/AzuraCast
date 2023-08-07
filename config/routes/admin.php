@@ -14,50 +14,8 @@ return static function (RouteCollectorProxy $app) {
             $group->get('', Controller\Admin\IndexAction::class)
                 ->setName('admin:index:index');
 
-            $group->group(
-                '/debug',
-                function (RouteCollectorProxy $group) {
-                    $group->get('', Controller\Admin\Debug\IndexAction::class)
-                        ->setName('admin:debug:index');
-
-                    $group->get('/clear-cache', Controller\Admin\Debug\ClearCacheAction::class)
-                        ->setName('admin:debug:clear-cache');
-
-                    $group->get(
-                        '/clear-queue[/{queue}]',
-                        Controller\Admin\Debug\ClearQueueAction::class
-                    )->setName('admin:debug:clear-queue');
-
-                    $group->get('/sync/{task}', Controller\Admin\Debug\SyncAction::class)
-                        ->setName('admin:debug:sync');
-
-                    $group->group(
-                        '/station/{station_id}',
-                        function (RouteCollectorProxy $group) {
-                            $group->map(
-                                ['GET', 'POST'],
-                                '/nowplaying',
-                                Controller\Admin\Debug\NowPlayingAction::class
-                            )->setName('admin:debug:nowplaying');
-
-                            $group->map(
-                                ['GET', 'POST'],
-                                '/nextsong',
-                                Controller\Admin\Debug\NextSongAction::class
-                            )->setName('admin:debug:nextsong');
-
-                            $group->map(
-                                ['GET', 'POST'],
-                                '/clearqueue',
-                                Controller\Admin\Debug\ClearStationQueueAction::class
-                            )->setName('admin:debug:clear-station-queue');
-
-                            $group->post('/telnet', Controller\Admin\Debug\TelnetAction::class)
-                                ->setName('admin:debug:telnet');
-                        }
-                    )->add(Middleware\GetStation::class);
-                }
-            )->add(new Middleware\Permissions(GlobalPermissions::All));
+            $group->get('/debug', Controller\Admin\DebugAction::class)
+                ->setName('admin:debug:index');
 
             $group->group(
                 '/install',
@@ -127,6 +85,7 @@ return static function (RouteCollectorProxy $app) {
         }
     )
         ->add(Middleware\Module\Admin::class)
+        ->add(Middleware\Module\PanelLayout::class)
         ->add(Middleware\EnableView::class)
         ->add(new Middleware\Permissions(GlobalPermissions::View))
         ->add(Middleware\RequireLogin::class);

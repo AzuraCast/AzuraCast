@@ -1,0 +1,43 @@
+<?php
+/**
+ * @var League\Plates\Template\Template $this
+ * @var App\Auth $auth
+ * @var App\Acl $acl
+ * @var App\Http\Router $router
+ * @var App\Session\Flash $flash
+ * @var App\Customization $customization
+ * @var App\Version $version
+ * @var App\Http\ServerRequest $request
+ * @var App\Environment $environment
+ * @var App\Entity\User $user
+ * @var App\View\GlobalSections $sections
+ */
+
+$manual ??= false;
+$title ??= null;
+$header ??= null;
+?>
+<!DOCTYPE html>
+<html lang="<?= $customization->getLocale()->getHtmlLang() ?>">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title><?= $this->e($customization->getPageTitle($title)) ?></title>
+
+    <?= $this->fetch('partials/head') ?>
+
+    <?= $sections->get('head') ?>
+
+    <style>
+        <?=$customization->getCustomInternalCss() ?>
+    </style>
+</head>
+<body class="page-full">
+<?= $sections->get('bodyjs') ?>
+
+<?= $this->section('content') ?>
+<?= $this->fetch('partials/toasts') ?>
+</body>
+</html>

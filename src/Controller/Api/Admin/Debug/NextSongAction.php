@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Controller\Admin\Debug;
+namespace App\Controller\Api\Admin\Debug;
 
 use App\Container\LoggerAwareTrait;
 use App\Controller\SingleActionInterface;
@@ -39,14 +39,8 @@ final class NextSongAction implements SingleActionInterface
         ]);
         $this->logger->popHandler();
 
-        return $request->getView()->renderToResponse(
-            $response,
-            'system/log_view',
-            [
-                'sidebar' => null,
-                'title' => __('Debug Output'),
-                'log_records' => $testHandler->getRecords(),
-            ]
-        );
+        return $response->withJson([
+            'logs' => $testHandler->getRecords(),
+        ]);
     }
 }

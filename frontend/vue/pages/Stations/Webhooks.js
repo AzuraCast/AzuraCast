@@ -1,5 +1,5 @@
-import initBase from '~/base.js';
-
 import Webhooks from '~/components/Stations/Webhooks';
+import initApp from "~/layout";
+import useStationPanelLayout from "~/layouts/StationPanelLayout";
 
-export default initBase(Webhooks);
+initApp(useStationPanelLayout(Webhooks));

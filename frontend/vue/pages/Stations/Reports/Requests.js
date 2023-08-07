@@ -1,5 +1,5 @@
-import initBase from '~/base.js';
-
 import Requests from '~/components/Stations/Reports/Requests.vue';
+import initApp from "~/layout";
+import useStationPanelLayout from "~/layouts/StationPanelLayout";
 
-export default initBase(Requests);
+initApp(useStationPanelLayout(Requests));

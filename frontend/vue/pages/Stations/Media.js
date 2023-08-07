@@ -1,5 +1,5 @@
-import initBase from '~/base.js';
-
 import Media from '~/components/Stations/Media.vue';
+import initApp from "~/layout";
+import useStationPanelLayout from "~/layouts/StationPanelLayout";
 
-export default initBase(Media);
+initApp(useStationPanelLayout(Media));

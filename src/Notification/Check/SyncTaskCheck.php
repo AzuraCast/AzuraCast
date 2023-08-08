@@ -57,7 +57,7 @@ final class SyncTaskCheck
             $router = $request->getRouter();
 
             $notification->actionLabel = __('System Debugger');
-            $notification->actionUrl = $router->named('admin:debug:index');
+            $notification->actionUrl = $router->named('admin:index:index') . '#/debug';
             // phpcs:enable
 
             $event->addNotification($notification);

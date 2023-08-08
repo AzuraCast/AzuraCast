@@ -50,7 +50,7 @@ final class RecentBackupCheck
 
             $router = $request->getRouter();
             $notification->actionLabel = __('Backups');
-            $notification->actionUrl = $router->named('admin:backups:index');
+            $notification->actionUrl = $router->named('admin:index:index') . '#/backups';
 
             $event->addNotification($notification);
         }

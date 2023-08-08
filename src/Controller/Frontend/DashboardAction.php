@@ -41,7 +41,7 @@ final class DashboardAction implements SingleActionInterface
                 'notificationsUrl' => $router->named('api:frontend:dashboard:notifications'),
                 'showCharts' => $showCharts,
                 'chartsUrl' => $router->named('api:frontend:dashboard:charts'),
-                'manageStationsUrl' => $router->named('admin:stations:index'),
+                'manageStationsUrl' => $router->named('admin:index:index') . '#/stations',
                 'stationsUrl' => $router->named('api:frontend:dashboard:stations'),
                 'showAlbumArt' => !$settings->getHideAlbumArt(),
             ]

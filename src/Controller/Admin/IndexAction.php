@@ -18,7 +18,7 @@ final class IndexAction implements SingleActionInterface
     ): ResponseInterface {
         return $request->getView()->renderVuePage(
             response: $response,
-            component: 'Admin/Index',
+            component: 'Admin',
             id: 'admin-index',
             title: __('Administration'),
         );

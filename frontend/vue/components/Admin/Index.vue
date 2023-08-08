@@ -6,8 +6,8 @@
 
         <div class="row row-of-cards">
             <div
-                v-for="(panel, key) in adminPanels"
-                :key="key"
+                v-for="panel in menuItems"
+                :key="panel.key"
                 class="col-sm-12 col-lg-4"
             >
                 <section class="card">
@@ -26,14 +26,14 @@
                     </div>
 
                     <div class="list-group list-group-flush">
-                        <a
-                            v-for="(item, itemKey) in panel.items"
-                            :key="itemKey"
-                            :href="item.url"
+                        <router-link
+                            v-for="item in panel.items"
+                            :key="item.key"
+                            :to="item.url"
                             class="list-group-item list-group-item-action"
                         >
                             {{ item.label }}
-                        </a>
+                        </router-link>
                     </div>
                 </section>
             </div>
@@ -415,14 +415,13 @@ import RunningBadge from "~/components/Common/Badges/RunningBadge.vue";
 import {onMounted, ref, shallowRef} from "vue";
 import {useAxios} from "~/vendor/axios";
 import {useNotify} from "~/functions/useNotify";
-import {useAzuraCast} from "~/vendor/azuracast";
 import {getApiUrl} from "~/router";
+import {useAdminMenu} from "~/components/Admin/menu";
 
 const statsUrl = getApiUrl('/admin/server/stats');
 const servicesUrl = getApiUrl('/admin/services');
 
-const {sidebarProps} = useAzuraCast();
-const adminPanels = sidebarProps.menu;
+const menuItems = useAdminMenu();
 
 const stats = shallowRef({
     cpu: {

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Controller\Admin;
+namespace App\Controller\Api\VueProps\Admin;
 
 use App\Container\EnvironmentAwareTrait;
 use App\Controller\SingleActionInterface;
@@ -26,17 +26,11 @@ final class BackupsAction implements SingleActionInterface
         Response $response,
         array $params
     ): ResponseInterface {
-        return $request->getView()->renderVuePage(
-            response: $response,
-            component: 'Admin/Backups',
-            id: 'admin-backups',
-            title: __('Backups'),
-            props: [
-                'isDocker' => $this->environment->isDocker(),
-                'storageLocations' => $this->storageLocationRepo->fetchSelectByType(
-                    StorageLocationTypes::Backup
-                ),
-            ],
-        );
+        return $response->withJson([
+            'isDocker' => $this->environment->isDocker(),
+            'storageLocations' => $this->storageLocationRepo->fetchSelectByType(
+                StorageLocationTypes::Backup
+            ),
+        ]);
     }
 }

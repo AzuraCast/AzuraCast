@@ -41,12 +41,14 @@
         "vue-axios": "^3.5",
         "vue-codemirror6": "^1.0",
         "vue-easy-lightbox": "^1.16",
+        "vue-router": "^4.2.4",
         "vue3-gettext": "^2.3.4",
         "vuedraggable": "^4.1.0",
         "wavesurfer.js": "^7",
         "zxcvbn": "^4.4.2"
       },
       "devDependencies": {
+        "@types/lodash": "^4.14.196",
         "@types/luxon": "^3.3.1",
         "@typescript-eslint/eslint-plugin": "^6.2.1",
         "@typescript-eslint/parser": "^6.2.1",
@@ -947,6 +949,12 @@
       "version": "7.0.12",
       "resolved": "https://registry.npmjs.org/@types/json-schema/-/json-schema-7.0.12.tgz",
       "integrity": "sha512-Hr5Jfhc9eYOQNPYO5WLDq/n4jqijdHNlDXjuAQkkt+mWdQR+XJToOHrsD4cPaMXpn6KO7y2+wM8AZEs8VpBLVA==",
+      "dev": true
+    },
+    "node_modules/@types/lodash": {
+      "version": "4.14.196",
+      "resolved": "https://registry.npmjs.org/@types/lodash/-/lodash-4.14.196.tgz",
+      "integrity": "sha512-22y3o88f4a94mKljsZcanlNWPzO0uBsBdzLAngf2tp533LzZcQzb6+eZPJ+vCTt+bqF2XnvT9gejTLsAcJAJyQ==",
       "dev": true
     },
     "node_modules/@types/luxon": {
@@ -4518,6 +4526,20 @@
       "resolved": "https://registry.npmjs.org/yallist/-/yallist-4.0.0.tgz",
       "integrity": "sha512-3wdGidZyq5PB084XLES5TpOSRA3wjXAlIWMhum2kRcv/41Sn2emQ0dycQW4uZXLejwKvg6EsvbdlVL+FYEct7A==",
       "dev": true
+    },
+    "node_modules/vue-router": {
+      "version": "4.2.4",
+      "resolved": "https://registry.npmjs.org/vue-router/-/vue-router-4.2.4.tgz",
+      "integrity": "sha512-9PISkmaCO02OzPVOMq2w82ilty6+xJmQrarYZDkjZBfl4RvYAlt4PKnEX21oW4KTtWfa9OuO/b3qk1Od3AEdCQ==",
+      "dependencies": {
+        "@vue/devtools-api": "^6.5.0"
+      },
+      "funding": {
+        "url": "https://github.com/sponsors/posva"
+      },
+      "peerDependencies": {
+        "vue": "^3.2.0"
+      }
     },
     "node_modules/vue3-gettext": {
       "version": "2.4.0",

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Controller\Admin;
+namespace App\Controller\Api\VueProps\Admin;
 
 use App\Controller\SingleActionInterface;
 use App\Http\Response;
@@ -26,12 +26,8 @@ final class StationsAction implements SingleActionInterface
     ): ResponseInterface {
         $router = $request->getRouter();
 
-        return $request->getView()->renderVuePage(
-            response: $response,
-            component: 'Admin/Stations',
-            id: 'admin-stations',
-            title: __('Stations'),
-            props: array_merge(
+        return $response->withJson(
+            array_merge(
                 $this->stationFormComponent->getProps($request),
                 [
                     'listUrl' => $router->fromHere('api:admin:stations'),

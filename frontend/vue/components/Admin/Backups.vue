@@ -195,6 +195,7 @@ const settings = ref({...blankSettings});
 
 const {$gettext} = useTranslate();
 const {timeConfig} = useAzuraCast();
+const {DateTime} = useLuxon();
 
 const fields = [
     {

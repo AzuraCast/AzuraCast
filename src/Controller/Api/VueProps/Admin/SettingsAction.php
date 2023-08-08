@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Controller\Admin;
+namespace App\Controller\Api\VueProps\Admin;
 
 use App\Controller\SingleActionInterface;
 use App\Http\Response;
@@ -22,12 +22,6 @@ final class SettingsAction implements SingleActionInterface
         Response $response,
         array $params
     ): ResponseInterface {
-        return $request->getView()->renderVuePage(
-            response: $response,
-            component: 'Admin/Settings',
-            id: 'admin-settings',
-            title: __('System Settings'),
-            props: $this->settingsComponent->getProps($request),
-        );
+        return $response->withJson($this->settingsComponent->getProps($request));
     }
 }

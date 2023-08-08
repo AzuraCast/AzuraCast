@@ -101,16 +101,15 @@
                     v-if="enableWebUpdates"
                     #footer_actions
                 >
-                    <a
+                    <router-link
+                        :to="{ name: 'admin:backups:index' }"
                         class="btn btn-dark"
-                        :href="backupUrl"
-                        target="_blank"
                     >
                         <icon icon="backup" />
                         <span>
                             {{ $gettext('Backup') }}
                         </span>
-                    </a>
+                    </router-link>
                     <button
                         type="button"
                         class="btn btn-success"
@@ -171,10 +170,6 @@ const props = defineProps({
         default: () => {
             return {};
         }
-    },
-    backupUrl: {
-        type: String,
-        required: true
     },
     updatesApiUrl: {
         type: String,

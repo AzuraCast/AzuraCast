@@ -41,12 +41,14 @@
     "vue-axios": "^3.5",
     "vue-codemirror6": "^1.0",
     "vue-easy-lightbox": "^1.16",
+    "vue-router": "^4.2.4",
     "vue3-gettext": "^2.3.4",
     "vuedraggable": "^4.1.0",
     "wavesurfer.js": "^7",
     "zxcvbn": "^4.4.2"
   },
   "devDependencies": {
+    "@types/lodash": "^4.14.196",
     "@types/luxon": "^3.3.1",
     "@typescript-eslint/eslint-plugin": "^6.2.1",
     "@typescript-eslint/parser": "^6.2.1",

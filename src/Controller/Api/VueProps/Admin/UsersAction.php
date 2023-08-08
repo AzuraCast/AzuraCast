@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Controller\Admin;
+namespace App\Controller\Api\VueProps\Admin;
 
 use App\Controller\SingleActionInterface;
 use App\Entity\Repository\RoleRepository;
@@ -24,15 +24,9 @@ final class UsersAction implements SingleActionInterface
     ): ResponseInterface {
         $router = $request->getRouter();
 
-        return $request->getView()->renderVuePage(
-            response: $response,
-            component: 'Admin/Users',
-            id: 'admin-users',
-            title: __('Users'),
-            props: [
-                'listUrl' => $router->fromHere('api:admin:users'),
-                'roles' => $this->roleRepo->fetchSelect(),
-            ]
-        );
+        return $response->withJson([
+            'listUrl' => $router->fromHere('api:admin:users'),
+            'roles' => $this->roleRepo->fetchSelect(),
+        ]);
     }
 }

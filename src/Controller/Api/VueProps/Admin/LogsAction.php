@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Controller\Admin;
+namespace App\Controller\Api\VueProps\Admin;
 
 use App\Controller\SingleActionInterface;
 use App\Entity\Repository\StationRepository;
@@ -39,15 +39,9 @@ final class LogsAction implements SingleActionInterface
             }
         }
 
-        return $request->getView()->renderVuePage(
-            response: $response,
-            component: 'Admin/Logs',
-            id: 'admin-logs',
-            title: __('System Logs'),
-            props: [
-                'systemLogsUrl' => $router->fromHere('api:admin:logs'),
-                'stationLogs' => $stationLogs,
-            ],
-        );
+        return $response->withJson([
+            'systemLogsUrl' => $router->fromHere('api:admin:logs'),
+            'stationLogs' => $stationLogs,
+        ]);
     }
 }

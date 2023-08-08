@@ -85,7 +85,7 @@ final class View extends Engine
             function (string $componentPath) use ($vueComponents, $environment) {
                 $assetRoot = '/static/vite_dist';
 
-                if ($environment->isDevelopment()) {
+                if ($environment->isDevelopment() || $environment->isTesting()) {
                     return [
                         'js' => $assetRoot . '/' . $componentPath,
                         'css' => [],
@@ -157,7 +157,6 @@ final class View extends Engine
                 'auth' => $request->getAttribute(ServerRequest::ATTR_AUTH),
                 'acl' => $request->getAttribute(ServerRequest::ATTR_ACL),
                 'flash' => $request->getAttribute(ServerRequest::ATTR_SESSION_FLASH),
-                'user' => $request->getAttribute(ServerRequest::ATTR_USER),
             ];
 
             $router = $request->getAttribute(ServerRequest::ATTR_ROUTER);
@@ -192,13 +191,33 @@ final class View extends Engine
 
             // User profile-specific 24-hour display setting.
             $userObj = $request->getAttribute(ServerRequest::ATTR_USER);
-            $show24Hours = ($userObj instanceof User)
-                ? $userObj->getShow24HourTime()
-                : null;
+            $requestData['user'] = $userObj;
 
             $timeConfig = new stdClass();
-            if (null !== $show24Hours) {
-                $timeConfig->hour12 = !$show24Hours;
+
+            if ($userObj instanceof User) {
+                $timeConfig->hour12 = !$userObj->getShow24HourTime();
+
+                $globalPermissions = [];
+                $stationPermissions = [];
+
+                foreach ($userObj->getRoles() as $role) {
+                    foreach ($role->getPermissions() as $permission) {
+                        $station = $permission->getStation();
+                        if (null !== $station) {
+                            $stationPermissions[$station->getIdRequired()][] = $permission->getActionName();
+                        } else {
+                            $globalPermissions[] = $permission->getActionName();
+                        }
+                    }
+                }
+
+                $this->globalProps->set('user', [
+                    'id' => $userObj->getIdRequired(),
+                    'displayName' => $userObj->getDisplayName(),
+                    'globalPermissions' => $globalPermissions,
+                    'stationPermissions' => $stationPermissions,
+                ]);
             }
 
             $this->globalProps->set('timeConfig', $timeConfig);

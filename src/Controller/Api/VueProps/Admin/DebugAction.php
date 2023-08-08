@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Controller\Admin;
+namespace App\Controller\Api\VueProps\Admin;
 
 use App\Cache\DatabaseCache;
 use App\Console\Command\Sync\SingleTaskCommand;
@@ -91,18 +91,12 @@ final class DebugAction implements SingleActionInterface
             ];
         }
 
-        return $request->getView()->renderVuePage(
-            response: $response,
-            component: 'Admin/Debug',
-            id: 'admin-debug',
-            title: __('System Debugger'),
-            props: [
-                'clearCacheUrl' => $router->named('api:admin:debug:clear-cache'),
-                'clearQueuesUrl' => $router->named('api:admin:debug:clear-queue'),
-                'syncTasks' => $syncTasks,
-                'queueTotals' => $queueTotals,
-                'stations' => $stations,
-            ]
-        );
+        return $response->withJson([
+            'clearCacheUrl' => $router->named('api:admin:debug:clear-cache'),
+            'clearQueuesUrl' => $router->named('api:admin:debug:clear-queue'),
+            'syncTasks' => $syncTasks,
+            'queueTotals' => $queueTotals,
+            'stations' => $stations,
+        ]);
     }
 }

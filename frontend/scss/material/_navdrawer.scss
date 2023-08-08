@@ -4,14 +4,15 @@
 }
 
 @include media-breakpoint-up(lg) {
-  body.has-sidebar {
-    #main {
-      margin-left: $navdrawer-width;
-    }
+  #main.has-sidebar {
+    margin-left: $navdrawer-width;
+  }
+  footer.has-sidebar {
+    left: $navdrawer-width;
+  }
 
-    #footer {
-      left: $navdrawer-width;
-    }
+  .offcanvas-backdrop {
+    display: none;
   }
 
   .offcanvas.navdrawer {

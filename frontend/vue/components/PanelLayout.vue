@@ -132,11 +132,11 @@
         <slot name="sidebar" />
     </nav>
 
-    <section id="main">
-        <main
-            id="content"
-            :class="[(slots.sidebar) ? 'content-alt' : '']"
-        >
+    <section
+        id="main"
+        :class="[(slots.sidebar) ? 'has-sidebar' : '']"
+    >
+        <main id="content">
             <div class="container">
                 <slot />
             </div>
@@ -145,7 +145,7 @@
 
     <footer
         id="footer"
-        :class="[(slots.sidebar) ? 'footer-alt' : '']"
+        :class="[(slots.sidebar) ? 'has-sidebar' : '']"
     >
         {{ $gettext('Powered by') }}
         <a
@@ -167,7 +167,7 @@
 </template>
 
 <script setup>
-import {onMounted, onUnmounted, useSlots} from "vue";
+import {useSlots, watch} from "vue";
 import Icon from "~/components/Common/Icon.vue";
 import {switchTheme} from "!/js/layout";
 
@@ -205,20 +205,26 @@ const props = defineProps({
     required: true
   },
   platform: {
-    type: String,
-    required: true
+      type: String,
+      required: true
   }
 });
 
 const slots = useSlots();
 
-onMounted(() => {
+const handleSidebar = () => {
     if (slots.sidebar) {
         document.body.classList.add('has-sidebar');
+    } else {
+        document.body.classList.remove('has-sidebar');
     }
-});
+}
 
-onUnmounted(() => {
-    document.body.classList.remove('has-sidebar');
-});
+watch(
+    () => slots.sidebar,
+    handleSidebar,
+    {
+        immediate: true
+    }
+);
 </script>

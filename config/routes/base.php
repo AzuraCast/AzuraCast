@@ -24,7 +24,6 @@ return static function (RouteCollectorProxy $app) {
         ->setName('account:endmasquerade')
         ->add(Middleware\RequireLogin::class);
 
-
     $app->group(
         '',
         function (RouteCollectorProxy $group) {
@@ -75,4 +74,11 @@ return static function (RouteCollectorProxy $app) {
                 ->add(Middleware\Module\PanelLayout::class);
         }
     )->add(Middleware\EnableView::class);
+
+    $app->get('/admin', Controller\Admin\IndexAction::class)
+        ->setName('admin:index:index')
+        ->add(Middleware\Module\PanelLayout::class)
+        ->add(Middleware\EnableView::class)
+        ->add(new Middleware\Permissions(GlobalPermissions::View))
+        ->add(Middleware\RequireLogin::class);
 };

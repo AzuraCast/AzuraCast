@@ -95,6 +95,7 @@ return static function (RouteCollectorProxy $app) {
             call_user_func(include(__DIR__ . '/api_admin.php'), $group);
             call_user_func(include(__DIR__ . '/api_frontend.php'), $group);
             call_user_func(include(__DIR__ . '/api_station.php'), $group);
+            call_user_func(include(__DIR__ . '/api_vue.php'), $group);
         }
     )->add(Middleware\Module\Api::class);
 };

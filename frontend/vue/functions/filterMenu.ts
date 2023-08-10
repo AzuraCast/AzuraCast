@@ -1,9 +1,9 @@
-import {cloneDeep, filter, forEach, get} from "lodash";
+import {filter, forEach, get} from "lodash";
 
 export default function filterMenu(menuItems) {
     const newMenu = [];
 
-    forEach(cloneDeep(menuItems), (menuRow) => {
+    forEach(menuItems, (menuRow) => {
         const itemIsVisible: boolean = get(menuRow, 'visible', true);
         if (!itemIsVisible) {
             return;

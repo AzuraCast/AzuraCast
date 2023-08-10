@@ -39,10 +39,10 @@ export function userAllowed(permission: GlobalPermission): bool {
     return includes(globalPermissions, permission);
 }
 
-export function userAllowedForStation(permission: StationPermission, id: int | null): bool {
+export function userAllowedForStation(permission: StationPermission, id: int | null = null): bool {
     if (id === null) {
         const station = useAzuraCastStation();
-        if (station.id) {
+        if ('id' in station) {
             id = station.id;
         } else {
             console.error('No station detected or provided.');

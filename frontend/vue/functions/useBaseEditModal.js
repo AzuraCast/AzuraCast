@@ -153,12 +153,12 @@ export function useBaseEditModal(
         close();
     };
 
-    const onSubmitError = (error) => {
+    const onSubmitError = (err) => {
         if (typeof options.onSubmitError === 'function') {
-            return options.onSubmitError(error);
+            return options.onSubmitError(err);
         }
 
-        error.value = error.response.data.message;
+        error.value = err.response.data.message;
     };
 
     const doSubmit = () => {
@@ -174,8 +174,8 @@ export function useBaseEditModal(
                 axios(buildSubmitRequest())
             ).then((resp) => {
                 onSubmitSuccess(resp);
-            }).catch((error) => {
-                onSubmitError(error);
+            }).catch((err) => {
+                onSubmitError(err);
             });
         });
     };

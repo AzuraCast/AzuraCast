@@ -11,44 +11,44 @@
         </template>
 
         <template
-            v-if="userCanManageReports || userCanManageProfile"
+            v-if="userAllowedForStation(StationPermission.Reports) || userAllowedForStation(StationPermission.Profile)"
             #footer_actions
         >
             <template v-if="enableRequests">
-                <a
-                    v-if="userCanManageReports"
+                <router-link
+                    v-if="userAllowedForStation(StationPermission.Reports)"
                     class="btn btn-link text-primary"
-                    :href="requestsViewUri"
+                    :to="{name: 'stations:reports:requests'}"
                 >
                     <icon icon="assignment" />
                     <span>
                         {{ $gettext('View') }}
                     </span>
-                </a>
-                <a
-                    v-if="userCanManageProfile"
-                    v-confirm-link="$gettext('Disable song requests?')"
+                </router-link>
+                <button
+                    v-if="userAllowedForStation(StationPermission.Profile)"
+                    type="button"
                     class="btn btn-link text-danger"
-                    :href="requestsToggleUri"
+                    @click="toggleRequests"
                 >
                     <icon icon="close" />
                     <span>
                         {{ $gettext('Disable') }}
                     </span>
-                </a>
+                </button>
             </template>
             <template v-else>
-                <a
-                    v-if="userCanManageProfile"
-                    v-confirm-link="$gettext('Enable song requests?')"
+                <button
+                    v-if="userAllowedForStation(StationPermission.Profile)"
+                    type="button"
                     class="btn btn-link text-success"
-                    :href="requestsToggleUri"
+                    @click="toggleRequests"
                 >
                     <icon icon="check" />
                     <span>
                         {{ $gettext('Enable') }}
                     </span>
-                </a>
+                </button>
             </template>
         </template>
     </card-page>
@@ -59,11 +59,12 @@ import Icon from '~/components/Common/Icon';
 import requestsPanelProps from "~/components/Stations/Profile/requestsPanelProps";
 import EnabledBadge from "~/components/Common/Badges/EnabledBadge.vue";
 import CardPage from "~/components/Common/CardPage.vue";
-import {useSweetAlert} from "~/vendor/sweetalert";
+import {StationPermission, userAllowedForStation} from "~/acl";
+import useToggleFeature from "~/components/Stations/Profile/useToggleFeature";
 
 const props = defineProps({
     ...requestsPanelProps
 });
 
-const {vConfirmLink} = useSweetAlert();
+const toggleRequests = useToggleFeature('enable_requests', !props.enableRequests);
 </script>

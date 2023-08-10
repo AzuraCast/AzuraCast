@@ -23,10 +23,6 @@ export default {
         type: Boolean,
         required: true
     },
-    userCanManageProfile: {
-        type: Boolean,
-        required: true
-    },
     publicPageUri: {
         type: String,
         required: true
@@ -44,14 +40,6 @@ export default {
         required: true
     },
     publicScheduleUri: {
-        type: String,
-        required: true
-    },
-    togglePublicPageUri: {
-        type: String,
-        required: true
-    },
-    brandingUri: {
         type: String,
         required: true
     },

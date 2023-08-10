@@ -36,6 +36,8 @@ release channel, you can take advantage of these new features and fixes.
       specific CSS variables exposed by Bootstrap 5, visit this
       page: https://getbootstrap.com/docs/5.3/customize/css-variables/
     - Several class names and identifiers have been renamed. Use the Inspect Element tool to identify the new names.
+    - The administration page and all per-station management panels are now "Single-Page Applications". Along with a
+      smoother user experience on those sections, you'll also enjoy continued audio playback across pages!
 
 ## Bug Fixes
 

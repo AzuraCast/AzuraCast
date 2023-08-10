@@ -30,14 +30,14 @@
                         {{ $gettext('Unique') }}
                     </small>
                 </h6>
-                <a
-                    v-if="userCanManageReports"
+                <router-link
+                    v-if="userAllowedForStation(StationPermission.Reports)"
                     class="flex-shrink btn btn-link text-white ms-2 px-1 py-2"
-                    :href="listenerReportUri"
+                    :to="{name: 'stations:reports:listeners'}"
                     :title="$gettext('Listener Report')"
                 >
                     <icon icon="assignment" />
-                </a>
+                </router-link>
             </div>
         </template>
 
@@ -196,7 +196,7 @@
         </div>
 
         <template
-            v-if="isLiquidsoap && userCanManageBroadcasting"
+            v-if="isLiquidsoap && userAllowedForStation(StationPermission.Broadcasting)"
             #footer_actions
         >
             <button
@@ -237,6 +237,7 @@ import useNowPlaying from "~/functions/useNowPlaying";
 import Loading from "~/components/Common/Loading.vue";
 import CardPage from "~/components/Common/CardPage.vue";
 import {useLightbox} from "~/vendor/lightbox";
+import {StationPermission, userAllowedForStation} from "~/acl";
 
 const props = defineProps({
     ...nowPlayingPanelProps,

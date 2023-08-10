@@ -272,6 +272,8 @@ return static function (RouteCollectorProxy $group) {
                     $group->put('', Controller\Api\Admin\Updates\PutUpdatesAction::class);
                 }
             )->add(new Middleware\Permissions(GlobalPermissions::All));
+
+            call_user_func(include(__DIR__ . '/api_admin_vue.php'), $group);
         }
     );
 };

@@ -12,7 +12,6 @@ return static function (App $app) {
         function (RouteCollectorProxy $group) {
             call_user_func(include(__DIR__ . '/routes/base.php'), $group);
             call_user_func(include(__DIR__ . '/routes/public.php'), $group);
-            call_user_func(include(__DIR__ . '/routes/stations.php'), $group);
         }
     )->add(Middleware\Auth\StandardAuth::class);
 

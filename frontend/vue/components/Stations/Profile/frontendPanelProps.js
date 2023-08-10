@@ -34,9 +34,5 @@ export default {
     hasStarted: {
         type: Boolean,
         required: true
-    },
-    userCanManageBroadcasting: {
-        type: Boolean,
-        required: true
     }
 }

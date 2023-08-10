@@ -102,19 +102,16 @@ import {useSweetAlert} from "~/vendor/sweetalert";
 import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
 import {useLuxon} from "~/vendor/luxon";
+import {getStationApiUrl} from "~/router";
 
-const props = defineProps({
-    listUrl: {
-        type: String,
-        required: true
-    },
-    clearUrl: {
-        type: String,
-        required: true
-    }
-});
+const listUrl = getStationApiUrl('/reports/requests');
+const clearUrl = getStationApiUrl('/reports/requests/clear');
 
 const activeType = ref('pending');
+
+const listUrlForType = computed(() => {
+    return listUrl.value + '?type=' + activeType.value;
+});
 
 const {$gettext} = useTranslate();
 
@@ -136,10 +133,6 @@ const tabs = [
         title: $gettext('Request History')
     }
 ];
-
-const listUrlForType = computed(() => {
-    return props.listUrl + '?type=' + activeType.value;
-});
 
 const $datatable = ref(); // Template Ref
 
@@ -189,7 +182,7 @@ const doClear = () => {
     }).then((result) => {
         if (result.value) {
             wrapWithLoading(
-                axios.post(props.clearUrl)
+                axios.post(clearUrl.value)
             ).then((resp) => {
                 notifySuccess(resp.data.message);
                 relist();

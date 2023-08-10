@@ -1,5 +1,6 @@
 import {createGettext, Language} from "vue3-gettext";
 import {App} from "vue";
+import {useAzuraCast} from "~/vendor/azuracast.ts";
 
 let gettext;
 
@@ -7,7 +8,9 @@ export function useTranslate(): Language {
     return gettext;
 }
 
-export function installTranslate(vueApp: App, locale: string): void {
+export function installTranslate(vueApp: App): void {
+    const {locale} = useAzuraCast();
+
     gettext = createGettext({
         defaultLanguage: locale,
         translations: {},

@@ -83,12 +83,9 @@ import {useMayNeedRestart} from "~/functions/useMayNeedRestart";
 import {useAxios} from "~/vendor/axios";
 import {useNotify} from "~/functions/useNotify";
 import Loading from "~/components/Common/Loading.vue";
+import {getStationApiUrl} from "~/router";
 
 const props = defineProps({
-    settingsUrl: {
-        type: String,
-        required: true
-    },
     config: {
         type: Array,
         required: true
@@ -98,6 +95,8 @@ const props = defineProps({
         required: true
     },
 });
+
+const settingsUrl = getStationApiUrl('/liquidsoap-config');
 
 const buildForm = () => {
     const validations = {};
@@ -124,7 +123,7 @@ const relist = () => {
     resetForm();
 
     isLoading.value = true;
-    axios.get(props.settingsUrl).then((resp) => {
+    axios.get(settingsUrl.value).then((resp) => {
         form.value = mergeExisting(form.value, resp.data);
         isLoading.value = false;
     });
@@ -139,7 +138,7 @@ const submit = () => {
         wrapWithLoading(
             axios({
                 method: 'PUT',
-                url: props.settingsUrl,
+                url: settingsUrl.value,
                 data: form.value,
             })
         ).then(() => {

@@ -21,22 +21,26 @@
             </p>
 
             <div
-                v-if="userCanManageMedia"
+                v-if="userAllowedForStation(StationPermission.Media)"
                 class="buttons"
             >
-                <a
+                <router-link
                     class="btn btn-primary"
-                    :href="manageMediaUri"
-                >{{ $gettext('Music Files') }}</a>
-                <a
+                    :to="{name: 'stations:files:index'}"
+                >
+                    {{ $gettext('Music Files') }}
+                </router-link>
+                <router-link
                     class="btn btn-primary"
-                    :href="managePlaylistsUri"
-                >{{ $gettext('Playlists') }}</a>
+                    :to="{name: 'stations:playlists:index'}"
+                >
+                    {{ $gettext('Playlists') }}
+                </router-link>
             </div>
         </div>
 
         <template
-            v-if="userCanManageBroadcasting && hasStarted"
+            v-if="userAllowedForStation(StationPermission.Broadcasting) && hasStarted"
             #footer_actions
         >
             <button
@@ -83,6 +87,7 @@ import {useTranslate} from "~/vendor/gettext";
 import {computed} from "vue";
 import backendPanelProps from "~/components/Stations/Profile/backendPanelProps";
 import CardPage from "~/components/Common/CardPage.vue";
+import {StationPermission, userAllowedForStation} from "~/acl";
 
 const props = defineProps({
     ...backendPanelProps,

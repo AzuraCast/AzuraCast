@@ -117,21 +117,16 @@ import FormGroupField from "~/components/Form/FormGroupField";
 import FormFieldset from "~/components/Form/FormFieldset";
 import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox";
 import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
+import {getStationApiUrl} from "~/router";
+import {useLuxon} from "~/vendor/luxon";
+import {useAzuraCastStation} from "~/vendor/azuracast";
 
-const props = defineProps({
-    apiUrl: {
-        type: String,
-        required: true
-    },
-    startDate: {
-        type: String,
-        required: true
-    },
-    endDate: {
-        type: String,
-        required: true
-    }
-});
+const apiUrl = getStationApiUrl('/reports/soundexchange');
+
+const {DateTime} = useLuxon();
+const {timezone} = useAzuraCastStation();
+
+const lastMonth = DateTime.now().setZone(timezone).minus({months: 1});
 
 const {v$} = useVuelidateOnForm(
     {
@@ -140,8 +135,8 @@ const {v$} = useVuelidateOnForm(
         fetch_isrc: {}
     },
     {
-        start_date: props.startDate,
-        end_date: props.endDate,
+        start_date: lastMonth.startOf('month').toISODate(),
+        end_date: lastMonth.endOf('month').toISODate(),
         fetch_isrc: false
     }
 );

@@ -74,6 +74,10 @@ import {useLocalStorage} from "@vueuse/core";
 import {computed, ref, toRef} from "vue";
 import MuteButton from "~/components/Common/MuteButton.vue";
 
+defineOptions({
+    inheritAttrs: false
+});
+
 const store = usePlayerStore();
 const isPlaying = toRef(store, 'isPlaying');
 const current = toRef(store, 'current');

@@ -15,22 +15,6 @@ export default {
         type: Boolean,
         required: true
     },
-    userCanManageBroadcasting: {
-        type: Boolean,
-        required: true
-    },
-    userCanManageMedia: {
-        type: Boolean,
-        required: true
-    },
-    manageMediaUri: {
-        type: String,
-        required: true
-    },
-    managePlaylistsUri: {
-        type: String,
-        required: true
-    },
     backendRestartUri: {
         type: String,
         required: true

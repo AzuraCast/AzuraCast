@@ -183,17 +183,16 @@ import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
 import {useAzuraCastStation} from "~/vendor/azuracast";
 import {useLuxon} from "~/vendor/luxon";
+import {getStationApiUrl} from "~/router";
 
 const props = defineProps({
-  apiUrl: {
-    type: String,
-    required: true
-  },
     attribution: {
         type: String,
         required: true
     }
 });
+
+const apiUrl = getStationApiUrl('/listeners');
 
 const isLive = ref(true);
 const listeners = shallowRef([]);
@@ -223,8 +222,8 @@ const fields = [
 ];
 
 const exportUrl = computed(() => {
-  const exportUrl = new URL(props.apiUrl, document.location);
-  const exportUrlParams = exportUrl.searchParams;
+    const exportUrl = new URL(apiUrl.value, document.location);
+    const exportUrlParams = exportUrl.searchParams;
   exportUrlParams.set('format', 'csv');
 
   if (!isLive.value) {
@@ -256,7 +255,7 @@ const updateListeners = () => {
     }
 
     wrapWithLoading(
-        axios.get(props.apiUrl, {params: params})
+        axios.get(apiUrl.value, {params: params})
     ).then((resp) => {
         listeners.value = resp.data;
 

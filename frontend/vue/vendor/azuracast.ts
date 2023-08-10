@@ -1,19 +1,18 @@
 /* eslint-disable no-undef */
 
-import {App, inject, InjectionKey} from "vue";
 import {GlobalPermission, StationPermission} from "~/acl.ts";
 
-const globalPropsKey: InjectionKey<AzuraCastConstants> = Symbol() as InjectionKey<AzuraCastConstants>;
+let globalProps: AzuraCastConstants;
 
-export function installGlobalProps(vueApp: App, globalProps: AzuraCastConstants): void {
-    vueApp.provide(globalPropsKey, globalProps);
+export function setGlobalProps(newGlobalProps: AzuraCastConstants): void {
+    globalProps = newGlobalProps;
 }
 
 export interface AzuraCastStationConstants {
     id: number | null,
     name: string | null,
     shortName: string | null,
-    timezone: string | null
+    timezone: string | null,
 }
 
 export interface AzuraCastUserConstants {
@@ -40,7 +39,7 @@ export interface AzuraCastConstants {
 }
 
 export function useAzuraCast(): AzuraCastConstants {
-    return inject(globalPropsKey);
+    return globalProps;
 }
 
 export function useAzuraCastUser(): AzuraCastUserConstants {

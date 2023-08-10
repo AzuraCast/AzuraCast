@@ -10,44 +10,44 @@
             </h3>
         </template>
         <template
-            v-if="userCanManageStreamers || userCanManageProfile"
+            v-if="userAllowedForStation(StationPermission.Streamers) || userAllowedForStation(StationPermission.Profile)"
             #footer_actions
         >
             <template v-if="enableStreamers">
-                <a
-                    v-if="userCanManageStreamers"
+                <router-link
+                    v-if="userAllowedForStation(StationPermission.Streamers)"
                     class="btn btn-link text-primary"
-                    :href="streamersViewUri"
+                    :to="{name: 'stations:streamers:index'}"
                 >
                     <icon icon="settings" />
                     <span>
                         {{ $gettext('Manage') }}
                     </span>
-                </a>
-                <a
-                    v-if="userCanManageProfile"
-                    v-confirm-link="$gettext('Disable streamers?')"
+                </router-link>
+                <button
+                    v-if="userAllowedForStation(StationPermission.Profile)"
+                    type="button"
                     class="btn btn-link text-danger"
-                    :href="streamersToggleUri"
+                    @click="toggleStreamers"
                 >
                     <icon icon="close" />
                     <span>
                         {{ $gettext('Disable') }}
                     </span>
-                </a>
+                </button>
             </template>
             <template v-else>
-                <a
-                    v-if="userCanManageProfile"
-                    v-confirm-link="$gettext('Enable streamers?')"
+                <button
+                    v-if="userAllowedForStation(StationPermission.Profile)"
+                    type="button"
                     class="btn btn-link text-success"
-                    :href="streamersToggleUri"
+                    @click="toggleStreamers"
                 >
                     <icon icon="check" />
                     <span>
                         {{ $gettext('Enable') }}
                     </span>
-                </a>
+                </button>
             </template>
         </template>
     </card-page>
@@ -58,11 +58,12 @@ import Icon from "~/components/Common/Icon.vue";
 import EnabledBadge from "~/components/Common/Badges/EnabledBadge.vue";
 import streamersPanelProps from "~/components/Stations/Profile/streamersPanelProps";
 import CardPage from "~/components/Common/CardPage.vue";
-import {useSweetAlert} from "~/vendor/sweetalert";
+import {StationPermission, userAllowedForStation} from "~/acl";
+import useToggleFeature from "~/components/Stations/Profile/useToggleFeature";
 
 const props = defineProps({
     ...streamersPanelProps
 });
 
-const {vConfirmLink} = useSweetAlert();
+const toggleStreamers = useToggleFeature('enable_streamers', !props.enableStreamers);
 </script>

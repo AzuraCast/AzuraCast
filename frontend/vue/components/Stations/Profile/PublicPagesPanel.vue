@@ -77,40 +77,40 @@
                         {{ $gettext('Embed Widgets') }}
                     </span>
                 </a>
-                <a
-                    v-if="userCanManageProfile"
+                <router-link
+                    v-if="userAllowedForStation(StationPermission.Profile)"
                     class="btn btn-link text-secondary"
-                    :href="brandingUri"
+                    :to="{name: 'stations:branding'}"
                 >
                     <icon icon="design_services" />
                     <span>
                         {{ $gettext('Edit Branding') }}
                     </span>
-                </a>
-                <a
-                    v-if="userCanManageProfile"
-                    v-confirm-link="$gettext('Disable public pages?')"
+                </router-link>
+                <button
+                    v-if="userAllowedForStation(StationPermission.Profile)"
+                    type="button"
                     class="btn btn-link text-danger"
-                    :href="togglePublicPageUri"
+                    @click="togglePublicPages"
                 >
                     <icon icon="close" />
                     <span>
                         {{ $gettext('Disable') }}
                     </span>
-                </a>
+                </button>
             </template>
             <template v-else>
-                <a
-                    v-if="userCanManageProfile"
-                    v-confirm-link="$gettext('Enable public pages?')"
+                <button
+                    v-if="userAllowedForStation(StationPermission.Profile)"
+                    type="button"
                     class="btn btn-link text-success"
-                    :href="togglePublicPageUri"
+                    @click="togglePublicPages"
                 >
                     <icon icon="check" />
                     <span>
                         {{ $gettext('Enable') }}
                     </span>
-                </a>
+                </button>
             </template>
         </template>
     </card-page>
@@ -130,7 +130,8 @@ import publicPagesPanelProps from "~/components/Stations/Profile/publicPagesPane
 import embedModalProps from "~/components/Stations/Profile/embedModalProps";
 import {pickProps} from "~/functions/pickProps";
 import CardPage from "~/components/Common/CardPage.vue";
-import {useSweetAlert} from "~/vendor/sweetalert";
+import {StationPermission, userAllowedForStation} from "~/acl";
+import useToggleFeature from "~/components/Stations/Profile/useToggleFeature";
 
 const props = defineProps({
     ...publicPagesPanelProps,
@@ -143,5 +144,5 @@ const doOpenEmbed = () => {
     $embedModal.value.open();
 };
 
-const {vConfirmLink} = useSweetAlert();
+const togglePublicPages = useToggleFeature('enable_public_page', !props.enablePublicPage);
 </script>

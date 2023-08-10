@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use App\Controller;
 use App\Enums\GlobalPermissions;
+use App\Enums\StationPermissions;
 use App\Middleware;
 use Slim\Routing\RouteCollectorProxy;
 
@@ -80,5 +81,16 @@ return static function (RouteCollectorProxy $app) {
         ->add(Middleware\Module\PanelLayout::class)
         ->add(Middleware\EnableView::class)
         ->add(new Middleware\Permissions(GlobalPermissions::View))
+        ->add(Middleware\RequireLogin::class);
+
+    $app->get(
+        '/station/{station_id}',
+        Controller\Stations\IndexAction::class
+    )->setName('stations:index:index')
+        ->add(Middleware\Module\PanelLayout::class)
+        ->add(new Middleware\Permissions(StationPermissions::View, true))
+        ->add(Middleware\EnableView::class)
+        ->add(Middleware\RequireStation::class)
+        ->add(Middleware\GetStation::class)
         ->add(Middleware\RequireLogin::class);
 };

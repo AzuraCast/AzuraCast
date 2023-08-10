@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App;
 
+use App\Entity\Station;
 use App\Entity\User;
 use App\Enums\SupportedLocales;
 use App\Http\RouterInterface;
@@ -174,8 +175,6 @@ final class View extends Engine
                 );
             }
 
-            $this->addData($requestData);
-
             $localeObj = $request->getAttribute(ServerRequest::ATTR_LOCALE);
             if (!($localeObj instanceof SupportedLocales)) {
                 $localeObj = SupportedLocales::default();
@@ -221,6 +220,19 @@ final class View extends Engine
             }
 
             $this->globalProps->set('timeConfig', $timeConfig);
+
+            // Station-specific properties
+            $station = $request->getAttribute(ServerRequest::ATTR_STATION);
+            if ($station instanceof Station) {
+                $this->globalProps->set('station', [
+                    'id' => $station->getIdRequired(),
+                    'name' => $station->getName(),
+                    'shortName' => $station->getShortName(),
+                    'timezone' => $station->getTimezone(),
+                ]);
+            }
+
+            $this->addData($requestData);
         }
     }
 

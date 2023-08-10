@@ -1,6 +1,7 @@
 import {useTranslate} from "~/vendor/gettext";
 import {h, render} from "vue";
 import {default as BSToast} from 'bootstrap/js/src/toast';
+import NProgress from 'nprogress';
 
 import Toast from '~/components/Common/Toast.vue';
 import {currentVueInstance} from "~/vendor/vueInstance";
@@ -72,14 +73,12 @@ export function useNotify() {
         return message;
     };
 
-    // let $loadingComponent;
-
     const showLoading = () => {
-        // TODO Replace Oruga
+        NProgress.start();
     };
 
     const hideLoading = () => {
-        // TODO Replace Oruga
+        NProgress.done();
     };
 
     let $isAxiosLoading = false;

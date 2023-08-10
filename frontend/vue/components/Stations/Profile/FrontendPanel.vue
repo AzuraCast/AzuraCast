@@ -17,7 +17,7 @@
             </h3>
         </template>
 
-        <template v-if="userCanManageBroadcasting">
+        <template v-if="userAllowedForStation(StationPermission.Broadcasting)">
             <div
                 class="collapse"
                 :class="(credentialsVisible) ? 'show' : ''"
@@ -98,7 +98,7 @@
         </template>
 
         <template
-            v-if="userCanManageBroadcasting"
+            v-if="userAllowedForStation(StationPermission.Broadcasting)"
             #footer_actions
         >
             <a
@@ -158,6 +158,7 @@ import frontendPanelProps from "~/components/Stations/Profile/frontendPanelProps
 import {useLocalStorage} from "@vueuse/core";
 import {useTranslate} from "~/vendor/gettext";
 import CardPage from "~/components/Common/CardPage.vue";
+import {StationPermission, userAllowedForStation} from "~/acl";
 
 const props = defineProps({
     ...frontendPanelProps,

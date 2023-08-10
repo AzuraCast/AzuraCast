@@ -15,12 +15,7 @@
                     </h2>
                 </div>
                 <div class="col-md-6 text-end">
-                    {{
-                        $gettext(
-                            'This station\'s time zone is currently %{tz}.',
-                            {tz: timezone}
-                        )
-                    }}
+                    <time-zone />
                 </div>
             </div>
         </div>
@@ -248,9 +243,17 @@
                             </template>
                             <template #cell(num_songs)="row">
                                 <template v-if="row.item.source === 'songs'">
-                                    <a :href="filesUrl+'#playlist:'+encodeURIComponent(row.item.short_name)">
+                                    <router-link
+                                        :to="{
+                                            name: 'stations:files:index',
+                                            params: {
+                                                path: 'playlist:'+row.item.short_name
+                                            }
+                                        }"
+                                    >
                                         {{ row.item.num_songs }}
-                                    </a>
+                                    </router-link>
+
                                     ({{ formatLength(row.item.total_length) }})
                                 </template>
                                 <template v-else>
@@ -318,6 +321,7 @@ import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
 import {useAzuraCastStation} from "~/vendor/azuracast";
 import {useLuxon} from "~/vendor/luxon";
 import {getStationApiUrl} from "~/router";
+import TimeZone from "~/components/Stations/Common/TimeZone.vue";
 
 const props = defineProps({
     useManualAutoDj: {
@@ -328,7 +332,6 @@ const props = defineProps({
 
 const listUrl = getStationApiUrl('/playlists');
 const scheduleUrl = getStationApiUrl('/playlists/schedule');
-const filesUrl = getStationApiUrl('/files');
 
 const {timezone} = useAzuraCastStation();
 

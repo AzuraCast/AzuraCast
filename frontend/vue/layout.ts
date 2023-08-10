@@ -5,13 +5,13 @@ import {installTranslate} from "~/vendor/gettext";
 import Oruga from "@oruga-ui/oruga-next";
 import {bootstrapConfig} from "@oruga-ui/theme-bootstrap";
 import {installCurrentVueInstance} from "~/vendor/vueInstance";
-import {AzuraCastConstants, installGlobalProps} from "~/vendor/azuracast";
+import {AzuraCastConstants, setGlobalProps} from "~/vendor/azuracast";
 
 interface InitApp {
     vueApp: App<Element>
 }
 
-export default function initApp(appConfig = {}): InitApp {
+export default function initApp(appConfig = {}, appCallback = null): InitApp {
     const vueApp: App<Element> = createApp(appConfig);
 
     /* Track current instance (for programmatic use). */
@@ -48,13 +48,17 @@ export default function initApp(appConfig = {}): InitApp {
     });
 
     window.vueComponent = (el: string, globalProps: AzuraCastConstants): void => {
-        installGlobalProps(vueApp, globalProps);
+        setGlobalProps(globalProps);
 
         /* Gettext */
-        installTranslate(vueApp, globalProps.locale ?? 'en_US');
+        installTranslate(vueApp);
 
         /* Axios */
-        installAxios(vueApp, globalProps.apiCsrf ?? null);
+        installAxios(vueApp);
+
+        if (typeof appCallback === 'function') {
+            appCallback(vueApp);
+        }
 
         vueApp.mount(el);
     };

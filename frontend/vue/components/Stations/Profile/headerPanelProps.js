@@ -7,14 +7,6 @@ export default {
         type: String,
         required: true
     },
-    userCanManageProfile: {
-        type: Boolean,
-        required: true
-    },
-    manageProfileUri: {
-        type: String,
-        required: true
-    },
     hasStarted: {
         type: Boolean,
         required: true

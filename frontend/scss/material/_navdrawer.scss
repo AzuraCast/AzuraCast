@@ -7,7 +7,7 @@
   #main.has-sidebar {
     margin-left: $navdrawer-width;
   }
-  footer.has-sidebar {
+  #footer.has-sidebar {
     left: $navdrawer-width;
   }
 
@@ -38,7 +38,6 @@
 .navdrawer-header {
   display: block;
   border-bottom: 1px solid rgba(0, 0, 0, .2);
-  margin-bottom: $navdrawer-inner-spacer-y;
   padding: $navdrawer-inner-spacer-y $navdrawer-inner-spacer-x;
 
   background-color: var(--bs-secondary-bg);
@@ -62,6 +61,18 @@
 
   .navdrawer-divider + & {
     margin-top: ($navdrawer-inner-spacer-y * -1);
+  }
+}
+
+.navdrawer-alert {
+  display: block;
+  line-height: 1;
+  margin: 0;
+
+  a {
+    display: block;
+    color: inherit;
+    padding: $navdrawer-inner-spacer-x;
   }
 }
 

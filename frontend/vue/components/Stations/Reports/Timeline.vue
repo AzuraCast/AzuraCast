@@ -93,13 +93,9 @@ import {useAzuraCast, useAzuraCastStation} from "~/vendor/azuracast";
 import {computed, ref, watch} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import {useLuxon} from "~/vendor/luxon";
+import {getStationApiUrl} from "~/router";
 
-const props = defineProps({
-    baseApiUrl: {
-        type: String,
-        required: true
-    }
-});
+const baseApiUrl = getStationApiUrl('/history');
 
 const {timezone} = useAzuraCastStation();
 const {DateTime} = useLuxon();
@@ -174,7 +170,7 @@ const fields = [
 ];
 
 const apiUrl = computed(() => {
-    const apiUrl = new URL(props.baseApiUrl, document.location);
+    const apiUrl = new URL(baseApiUrl.value, document.location);
 
     const apiUrlParams = apiUrl.searchParams;
     apiUrlParams.set('start', DateTime.fromJSDate(dateRange.value.startDate).toISO());

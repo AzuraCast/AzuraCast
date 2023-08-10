@@ -1,0 +1,10 @@
+@import "nprogress/nprogress.css";
+
+#nprogress .bar {
+  background: #FFF;
+}
+
+/* Fancy blur effect */
+#nprogress .peg {
+  box-shadow: 0 0 10px #FFF, 0 0 5px #FFF;
+}

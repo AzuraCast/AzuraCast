@@ -22,19 +22,19 @@
             </h2>
         </div>
         <div
-            v-if="userCanManageProfile"
+            v-if="userAllowedForStation(StationPermission.Profile)"
             class="flex-shrink-0 ms-3"
         >
-            <a
+            <router-link
                 class="btn btn-primary"
                 role="button"
-                :href="manageProfileUri"
+                :to="{name: 'stations:profile:edit'}"
             >
                 <icon icon="edit" />
                 <span>
                     {{ $gettext('Edit Profile') }}
                 </span>
-            </a>
+            </router-link>
         </div>
     </div>
 </template>
@@ -43,6 +43,7 @@
 import Icon from '~/components/Common/Icon';
 import PlayButton from "~/components/Common/PlayButton.vue";
 import headerPanelProps from "~/components/Stations/Profile/headerPanelProps";
+import {StationPermission, userAllowedForStation} from "~/acl";
 
 const props = defineProps({
     ...headerPanelProps,

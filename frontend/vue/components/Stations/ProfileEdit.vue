@@ -60,18 +60,12 @@ import stationFormProps from "~/components/Admin/Stations/stationFormProps";
 import {pickProps} from "~/functions/pickProps";
 import Icon from "~/components/InlinePlayer.vue";
 import ErrorCard from "~/components/Common/ErrorCard.vue";
+import {getStationApiUrl} from "~/router";
+import {useRouter} from "vue-router";
 
-const props = defineProps({
-    ...stationFormProps,
-    editUrl: {
-        type: String,
-        required: true
-    },
-    continueUrl: {
-        type: String,
-        required: true
-    }
-});
+const props = defineProps(stationFormProps);
+
+const editUrl = getStationApiUrl('/profile/edit');
 
 const $form = ref(); // AdminStationsForm
 
@@ -93,7 +87,13 @@ const onError = (err) => {
     error.value = err;
 }
 
-const onSubmitted = () => {
-    window.location.href = props.continueUrl;
+const router = useRouter();
+
+const onSubmitted = async () => {
+    await router.push({
+        name: 'stations:index'
+    });
+    
+    window.location.reload();
 }
 </script>

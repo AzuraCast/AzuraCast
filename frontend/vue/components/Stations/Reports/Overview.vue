@@ -98,41 +98,22 @@ import ListeningTimeTab from "~/components/Stations/Reports/Overview/ListeningTi
 import {ref} from "vue";
 import {useAzuraCastStation} from "~/vendor/azuracast";
 import {useLuxon} from "~/vendor/luxon";
+import {getStationApiUrl} from "~/router";
 
 const props = defineProps({
     showFullAnalytics: {
         type: Boolean,
         required: true
-    },
-    listenersByTimePeriodUrl: {
-        type: String,
-        required: true
-    },
-    bestAndWorstUrl: {
-        type: String,
-        required: true
-    },
-    byStreamUrl: {
-        type: String,
-        required: true
-    },
-    byClientUrl: {
-        type: String,
-        required: true
-    },
-    byBrowserUrl: {
-        type: String,
-        required: true
-    },
-    byCountryUrl: {
-        type: String,
-        required: true
-    },
-    listeningTimeUrl: {
-        type: String,
-        required: true
     }
 });
+
+const listenersByTimePeriodUrl = getStationApiUrl('/reports/overview/charts');
+const bestAndWorstUrl = getStationApiUrl('/reports/overview/best-and-worst');
+const byStreamUrl = getStationApiUrl('/reports/overview/by-stream');
+const byBrowserUrl = getStationApiUrl('/reports/overview/by-browser');
+const byCountryUrl = getStationApiUrl('/reports/overview/by-country');
+const byClientUrl = getStationApiUrl('/reports/overview/by-client');
+const listeningTimeUrl = getStationApiUrl('/reports/overview/by-listening-time');
 
 const {timezone} = useAzuraCastStation();
 const {DateTime} = useLuxon();

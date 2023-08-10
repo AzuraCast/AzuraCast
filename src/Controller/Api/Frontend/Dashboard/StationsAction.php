@@ -61,9 +61,9 @@ final class StationsAction implements SingleActionInterface
 
             if ($listenersEnabled && $acl->isAllowed(StationPermissions::Reports, $station->getId())) {
                 $row->links['listeners'] = $router->named(
-                    'stations:reports:listeners',
+                    'stations:index:index',
                     ['station_id' => $station->getId()]
-                );
+                ) . '#/reports/listeners';
             }
 
             $viewStations[] = $row;

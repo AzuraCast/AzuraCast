@@ -8,11 +8,13 @@
         </router-link>
     </div>
 
-    <sidebar-menu :menu="menuItems" />
+    <div class="offcanvas-body">
+        <sidebar-menu :menu="menuItems" />
+    </div>
 </template>
 
-<script setup>
-import SidebarMenu from "~/components/Common/SidebarMenuNew.vue";
+<script setup lang="ts">
+import SidebarMenu from "~/components/Common/SidebarMenu.vue";
 import {useAdminMenu} from "~/components/Admin/menu";
 
 const menuItems = useAdminMenu();

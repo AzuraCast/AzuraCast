@@ -12,8 +12,6 @@
         :quota-url="quotaUrl"
         @select-podcast="onSelectPodcast"
     />
-
-    <lightbox ref="$lightbox" />
 </template>
 
 <script setup>
@@ -22,8 +20,6 @@ import ListView from './Podcasts/ListView';
 import {ref} from "vue";
 import listViewProps from "./Podcasts/listViewProps";
 import {pickProps} from "~/functions/pickProps";
-import Lightbox from "~/components/Common/Lightbox.vue";
-import {useProvideLightbox} from "~/vendor/lightbox";
 import {getStationApiUrl} from "~/router";
 
 const props = defineProps({
@@ -41,7 +37,4 @@ const onSelectPodcast = (podcast) => {
 const onClearPodcast = () => {
     activePodcast.value = null;
 }
-
-const $lightbox = ref(); // Template Ref
-useProvideLightbox($lightbox);
 </script>

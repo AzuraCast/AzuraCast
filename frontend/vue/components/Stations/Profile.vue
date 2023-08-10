@@ -63,10 +63,6 @@
             </template>
         </div>
     </div>
-
-    <header-inline-player />
-
-    <lightbox ref="$lightbox" />
 </template>
 
 <script setup>
@@ -83,7 +79,7 @@ import ProfileBackend from './Profile/BackendPanel';
 import NowPlayingNotStartedPanel from "./Profile/NowPlayingNotStartedPanel.vue";
 import {BACKEND_NONE, FRONTEND_REMOTE} from '~/components/Entity/RadioAdapters';
 import NowPlaying from '~/components/Entity/NowPlaying';
-import {computed, ref} from "vue";
+import {computed} from "vue";
 import {useAxios} from "~/vendor/axios";
 import backendPanelProps from "./Profile/backendPanelProps";
 import embedModalProps from "./Profile/embedModalProps";
@@ -99,9 +95,6 @@ import {useIntervalFn} from "@vueuse/core";
 import {useSweetAlert} from "~/vendor/sweetalert";
 import {useNotify} from "~/functions/useNotify";
 import {useTranslate} from "~/vendor/gettext";
-import HeaderInlinePlayer from "~/components/HeaderInlinePlayer.vue";
-import Lightbox from "~/components/Common/Lightbox.vue";
-import {useProvideLightbox} from "~/vendor/lightbox";
 
 const props = defineProps({
     ...backendPanelProps,
@@ -182,7 +175,4 @@ const makeApiCall = (uri) => {
         });
     });
 };
-
-const $lightbox = ref(); // Template Ref
-useProvideLightbox($lightbox);
 </script>

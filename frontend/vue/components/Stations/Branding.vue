@@ -33,23 +33,15 @@
 
         <branding-form :profile-edit-url="profileEditUrl" />
     </div>
-
-    <lightbox ref="$lightbox" />
 </template>
 
 <script setup>
 import BrandingForm from "~/components/Stations/Branding/BrandingForm.vue";
 import CustomAssetForm from "~/components/Admin/Branding/CustomAssetForm.vue";
-import Lightbox from "~/components/Common/Lightbox.vue";
-import {ref} from "vue";
-import {useProvideLightbox} from "~/vendor/lightbox";
 import {getStationApiUrl} from "~/router";
 
 const profileEditUrl = getStationApiUrl('/profile/edit');
 const backgroundApiUrl = getStationApiUrl('/custom_assets/background');
 const albumArtApiUrl = getStationApiUrl('/custom_assets/album_art');
-
-const $lightbox = ref(); // Template Ref
-useProvideLightbox($lightbox);
 </script>
 

@@ -29,13 +29,12 @@
             </p>
 
             <template #action>
-                <a
+                <router-link
                     class="btn btn-sm btn-info"
-                    target="_blank"
-                    :href="sftpUrl"
+                    :to="{name: 'stations:sftp_users:index'}"
                 >
                     {{ $gettext('Manage SFTP Accounts') }}
-                </a>
+                </router-link>
             </template>
         </info-card>
 
@@ -239,10 +238,6 @@
         :playlists="playlists"
         @relist="onTriggerRelist"
     />
-
-    <header-inline-player />
-
-    <lightbox ref="$lightbox" />
 </template>
 
 <script setup>
@@ -259,46 +254,16 @@ import Icon from '~/components/Common/Icon';
 import AlbumArt from '~/components/Common/AlbumArt';
 import PlayButton from "~/components/Common/PlayButton";
 import {useTranslate} from "~/vendor/gettext";
-import {computed, nextTick, onMounted, ref} from "vue";
+import {computed, ref, watch} from "vue";
 import {forEach, map, partition} from "lodash";
 import {useAzuraCast, useAzuraCastStation} from "~/vendor/azuracast";
-import {useEventListener} from "@vueuse/core";
 import formatFileSize from "../../functions/formatFileSize";
 import InfoCard from "~/components/Common/InfoCard.vue";
-import Lightbox from "~/components/Common/Lightbox.vue";
-import HeaderInlinePlayer from "~/components/HeaderInlinePlayer.vue";
-import {useProvideLightbox} from "~/vendor/lightbox";
 import {useLuxon} from "~/vendor/luxon";
+import {getStationApiUrl} from "~/router";
+import {useRoute, useRouter} from "vue-router";
 
 const props = defineProps({
-    listUrl: {
-        type: String,
-        required: true
-    },
-    batchUrl: {
-        type: String,
-        required: true
-    },
-    uploadUrl: {
-        type: String,
-        required: true
-    },
-    listDirectoriesUrl: {
-        type: String,
-        required: true
-    },
-    mkdirUrl: {
-        type: String,
-        required: true
-    },
-    renameUrl: {
-        type: String,
-        required: true
-    },
-    quotaUrl: {
-        type: String,
-        required: true
-    },
     initialPlaylists: {
         type: Array,
         required: false,
@@ -318,15 +283,19 @@ const props = defineProps({
         type: Boolean,
         default: true
     },
-    sftpUrl: {
-        type: String,
-        required: true
-    },
     supportsImmediateQueue: {
         type: Boolean,
         required: true
     }
 });
+
+const listUrl = getStationApiUrl('/files/list');
+const batchUrl = getStationApiUrl('/files/batch');
+const uploadUrl = getStationApiUrl('/files/upload');
+const listDirectoriesUrl = getStationApiUrl('/files/directories');
+const mkdirUrl = getStationApiUrl('/files/mkdir');
+const renameUrl = getStationApiUrl('/files/rename');
+const quotaUrl = getStationApiUrl('/quota/station_media');
 
 const {$gettext} = useTranslate();
 const {timeConfig} = useAzuraCast();
@@ -431,25 +400,6 @@ const onAddPlaylist = (row) => {
     playlists.value.push(row);
 };
 
-const isFilterString = (str) =>
-    (str.substring(0, 9) === 'playlist:' || str.substring(0, 8) === 'special:');
-
-const onHashChange = () => {
-    // Handle links from the sidebar for special functions.
-    const urlHash = decodeURIComponent(window.location.hash.substring(1).replace(/\+/g, '%20'));
-
-    if ('' !== urlHash && isFilterString(urlHash)) {
-        window.location.hash = '';
-        filter(urlHash);
-    }
-};
-
-const changeDirectory = (newDir) => {
-    window.location.hash = newDir;
-    currentDirectory.value = newDir;
-    onTriggerNavigate();
-};
-
 const onFiltered = (newFilter) => {
     searchPhrase.value = newFilter;
 };
@@ -478,29 +428,43 @@ const moveFiles = () => {
     $moveFilesModal.value.open();
 }
 
-const $lightbox = ref(); // Template Ref
-useProvideLightbox($lightbox);
-
 const requestConfig = (config) => {
     config.params.currentDirectory = currentDirectory.value;
     return config;
 };
 
-onMounted(() => {
-    // Load directory from URL hash, if applicable.
-    const urlHash = decodeURIComponent(window.location.hash.substring(1).replace(/\+/g, '%20'));
+const isFilterString = (str) =>
+    (str.substring(0, 9) === 'playlist:' || str.substring(0, 8) === 'special:');
 
-    if ('' !== urlHash) {
-        if (isFilterString(urlHash)) {
-            nextTick(() => {
-                onHashChange();
+const router = useRouter();
+const route = useRoute();
+
+const changeDirectory = (newDir) => {
+    router.push({
+        name: 'stations:files:index',
+        params: {
+            path: newDir
+        }
+    });
+};
+
+watch(
+    () => route.params,
+    async (newParams) => {
+        const path = newParams.path ?? '';
+
+        if (isFilterString(path)) {
+            await router.push({
+                name: 'stations:files:index',
             });
+            filter(path);
         } else {
-            currentDirectory.value = urlHash;
+            currentDirectory.value = path;
             onTriggerNavigate();
         }
+    },
+    {
+        immediate: true
     }
-
-    useEventListener(window, 'hashchange', onHashChange);
-});
+);
 </script>

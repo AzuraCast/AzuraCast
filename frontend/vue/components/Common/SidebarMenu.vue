@@ -1,13 +1,27 @@
 <template>
-    <ul class="offcanvas-body navdrawer-nav">
+    <ul class="navdrawer-nav">
         <li
-            v-for="(category, category_id) in menu"
-            :key="category_id"
+            v-for="category in menu"
+            :key="category.key"
             class="nav-item"
         >
-            <a
-                v-bind="getCategoryLink(category, category_id)"
+            <router-link
+                v-if="isRouteLink(category)"
+                :class="getLinkClass(category)"
+                :to="category.url"
                 class="nav-link"
+            >
+                <icon
+                    class="navdrawer-nav-icon"
+                    :icon="category.icon"
+                />
+                {{ category.label }}
+            </router-link>
+            <a
+                v-else
+                v-bind="getCategoryLink(category)"
+                class="nav-link"
+                :class="getLinkClass(category)"
             >
                 <icon
                     class="navdrawer-nav-icon"
@@ -24,16 +38,26 @@
 
             <div
                 v-if="category.items"
-                :id="'sidebar-submenu-'+category_id"
+                :id="'sidebar-submenu-'+category.key"
                 class="collapse pb-2"
+                :class="(isActiveItem(category)) ? 'show' : ''"
             >
                 <ul class="navdrawer-nav">
                     <li
-                        v-for="(item, item_id) in category.items"
-                        :key="item_id"
+                        v-for="item in category.items"
+                        :key="item.key"
                         class="nav-item"
                     >
+                        <router-link
+                            v-if="isRouteLink(item)"
+                            :to="item.url"
+                            class="nav-link ps-4 py-2"
+                            :class="getLinkClass(item)"
+                        >
+                            {{ item.label }}
+                        </router-link>
                         <a
+                            v-else
                             class="nav-link ps-4 py-2"
                             :class="item.class"
                             :href="item.url"
@@ -55,39 +79,54 @@
     </ul>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import Icon from "~/components/Common/Icon.vue";
+import {useRoute} from "vue-router";
+import {some} from "lodash";
 
 const props = defineProps({
     menu: {
         type: Object,
         required: true
     },
-    active: {
-        type: String,
-        default: null
-    }
 });
 
-const getCategoryLink = (category, category_id) => {
-    const linkAttrs = {
-        class: [
-            category.class,
-            (props.active === category_id) ? 'active' : ''
-        ]
-    };
+const currentRoute = useRoute();
 
-    if (category.items) {
-        linkAttrs['data-bs-toggle'] = 'collapse';
-        linkAttrs.href = '#sidebar-submenu-' + category_id;
-    } else {
-        linkAttrs.href = category.url;
+const isRouteLink = (item) => {
+    return (typeof (item.url) !== 'undefined')
+        && (typeof (item.url) !== 'string');
+};
+
+const isActiveItem = (item) => {
+    if (item.items && some(item.items, isActiveItem)) {
+        return true;
     }
 
-    if (category.external) {
+    return isRouteLink(item) && !('params' in item.url) && item.url.name === currentRoute.name;
+};
+
+const getLinkClass = (item) => {
+    return [
+        item.class ?? null,
+        isActiveItem(item) ? 'active' : ''
+    ];
+}
+
+const getCategoryLink = (item) => {
+    const linkAttrs = {};
+
+    if (item.items) {
+        linkAttrs['data-bs-toggle'] = 'collapse';
+        linkAttrs.href = '#sidebar-submenu-' + item.key;
+    } else {
+        linkAttrs.href = item.url;
+    }
+
+    if (item.external) {
         linkAttrs.target = '_blank';
     }
-    if (category.title) {
+    if (item.title) {
         linkAttrs.title = category.title;
     }
 

@@ -109,15 +109,12 @@ import {useAxios} from "~/vendor/axios";
 import {useSweetAlert} from "~/vendor/sweetalert";
 import {ref} from "vue";
 import {getStationApiUrl} from "~/router";
+import {useRouter} from "vue-router";
 
 const props = defineProps({
     canReload: {
         type: Boolean,
         required: true,
-    },
-    redirectUrl: {
-        type: String,
-        required: true
     }
 });
 
@@ -130,6 +127,8 @@ const {axios} = useAxios();
 const {showAlert} = useSweetAlert();
 const {wrapWithLoading, notify} = useNotify();
 const {$gettext} = useTranslate();
+
+const router = useRouter();
 
 const makeApiCall = (uri) => {
     showAlert({
@@ -149,8 +148,11 @@ const makeApiCall = (uri) => {
             });
 
             setTimeout(
-                () => {
-                    window.location.href = props.redirectUrl;
+                async () => {
+                    await router.push({
+                        name: 'stations:index'
+                    });
+                    await router.go(0);
                 },
                 2000
             );

@@ -6,10 +6,6 @@ export default {
         type: String,
         required: true
     },
-    userCanManageBroadcasting: {
-        type: Boolean,
-        required: true
-    },
     backendSkipSongUri: {
         type: String,
         required: true
@@ -18,12 +14,4 @@ export default {
         type: String,
         required: true
     },
-    userCanManageReports: {
-        type: Boolean,
-        required: true,
-    },
-    listenerReportUri: {
-        type: String,
-        required: true
-    }
 }

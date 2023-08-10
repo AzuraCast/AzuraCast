@@ -75,7 +75,7 @@
                                             {{ $gettext('More') }}
                                             <span class="caret" />
                                         </button>
-                                        <ul class="dropdown-menu">
+                                        <ul class="dropdown-menu position-fixed">
                                             <li>
                                                 <button
                                                     type="button"

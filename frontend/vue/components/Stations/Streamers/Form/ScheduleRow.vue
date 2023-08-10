@@ -68,7 +68,7 @@
                         {{ $gettext('Station Time Zone') }}
                     </template>
 
-                    <time-zone/>
+                    <time-zone />
                 </form-markup>
 
                 <form-group-field

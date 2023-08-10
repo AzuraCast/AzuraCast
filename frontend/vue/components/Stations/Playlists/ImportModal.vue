@@ -3,6 +3,7 @@
         id="import_modal"
         ref="$modal"
         :title="$gettext('Import from PLS/M3U')"
+        size="lg"
         @hidden="onHidden"
     >
         <div v-if="results">
@@ -10,42 +11,47 @@
                 {{ results.message }}
             </p>
 
-            <table
-                class="table table-striped table-responsive"
-                style="max-height: 300px; overflow-y: scroll;"
+            <div
+                class="table-responsive"
+                style="max-height: 350px; overflow-y: scroll;"
             >
-                <thead>
-                    <tr>
-                        <th class="p-2">
-                            {{ $gettext('Original Path') }}<br>
-                            {{ $gettext('Matched') }}
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr
-                        v-for="row in results.import_results"
-                        :key="row.path"
-                    >
-                        <td
-                            class="p-2 text-monospace"
-                            style="overflow-x: auto;"
+                <table
+                    class="table table-striped"
+                    style="max-height: 300px; overflow-y: scroll;"
+                >
+                    <thead>
+                        <tr>
+                            <th class="p-2">
+                                {{ $gettext('Original Path') }}<br>
+                                {{ $gettext('Matched') }}
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr
+                            v-for="row in results.import_results"
+                            :key="row.path"
                         >
-                            <pre class="mb-0">{{ row.path }}</pre>
-                            <pre
-                                v-if="row.match"
-                                class="mb-0 text-success"
-                            >{{ row.match }}</pre>
-                            <pre
-                                v-else
-                                class="mb-0 text-danger"
+                            <td
+                                class="p-2 text-monospace"
+                                style="overflow-x: auto;"
                             >
+                                <pre class="mb-0">{{ row.path }}</pre>
+                                <pre
+                                    v-if="row.match"
+                                    class="mb-0 text-success"
+                                >{{ row.match }}</pre>
+                                <pre
+                                    v-else
+                                    class="mb-0 text-danger"
+                                >
                                 {{ $gettext('No Match') }}
                             </pre>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
         <form
             v-else

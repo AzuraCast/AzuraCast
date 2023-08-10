@@ -163,24 +163,35 @@
                 <o-table-column
                     v-for="field in visibleFields"
                     :key="field.key"
-                    v-slot="{ row }"
                     :field="field.key"
                     :label="field.label"
                     :sortable="field.sortable"
-                    :th-attrs="() => ({class: field.class})"
+                    :th-attrs="() => ({class: [field.class]})"
                     :td-attrs="() => ({class: field.class})"
                 >
-                    <slot
-                        :name="'cell('+field.key+')'"
-                        v-bind="{item: row}"
-                    >
-                        <template v-if="field.formatter">
-                            {{ field.formatter(get(row, field.key, null), field.key, row) }}
-                        </template>
-                        <template v-else>
-                            {{ get(row, field.key, null) }}
-                        </template>
-                    </slot>
+                    <template #default="{ row }">
+                        <slot
+                            :name="'cell('+field.key+')'"
+                            v-bind="{item: row}"
+                        >
+                            <template v-if="field.formatter">
+                                {{ field.formatter(get(row, field.key, null), field.key, row) }}
+                            </template>
+                            <template v-else>
+                                {{ get(row, field.key, null) }}
+                            </template>
+                        </slot>
+                    </template>
+
+                    <template #header="{column}">
+                        <div class="d-flex align-items-center">
+                            {{ column.label }}
+
+                            <template v-if="column.sortable && sortField === column.field">
+                                <icon :icon="(sortOrder === 'asc') ? 'arrow_drop_down' : 'arrow_drop_up'" />
+                            </template>
+                        </div>
+                    </template>
                 </o-table-column>
             </o-table>
         </div>

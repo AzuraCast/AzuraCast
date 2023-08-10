@@ -202,7 +202,7 @@ final class Acl
             if (
                 in_array(
                     GlobalPermissions::All->value,
-                    (array)$roleActions['global'],
+                    (array)($roleActions['global'] ?? []),
                     true
                 )
             ) {
@@ -213,7 +213,7 @@ final class Acl
                 if (
                     in_array(
                         GlobalPermissions::Stations->value,
-                        (array)$roleActions['global'],
+                        (array)($roleActions['global'] ?? []),
                         true
                     )
                 ) {
@@ -234,7 +234,11 @@ final class Acl
                     return in_array($action, (array)$roleActions['stations'][$stationId], true);
                 }
             } else {
-                return in_array($action, (array)$roleActions['global'], true);
+                return in_array(
+                    $action,
+                    (array)($roleActions['global'] ?? []),
+                    true
+                );
             }
         }
 

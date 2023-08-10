@@ -11,12 +11,12 @@
         </template>
 
         <template
-            v-if="userAllowedForStation(StationPermission.Reports) || userAllowedForStation(StationPermission.Profile)"
+            v-if="userAllowedForStation(StationPermission.Broadcasting) || userAllowedForStation(StationPermission.Profile)"
             #footer_actions
         >
             <template v-if="enableRequests">
                 <router-link
-                    v-if="userAllowedForStation(StationPermission.Reports)"
+                    v-if="userAllowedForStation(StationPermission.Broadcasting)"
                     class="btn btn-link text-primary"
                     :to="{name: 'stations:reports:requests'}"
                 >

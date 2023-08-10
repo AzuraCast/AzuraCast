@@ -199,7 +199,7 @@ export function useStationsMenu(): array {
                     url: {
                         name: 'stations:reports:requests'
                     },
-                    visible: stationProps.enableRequests
+                    visible: userAllowedForStation(StationPermission.Broadcasting) && stationProps.enableRequests
                 },
                 {
                     key: 'reports_timeline',

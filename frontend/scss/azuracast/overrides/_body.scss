@@ -7,6 +7,12 @@ body {
 
     min-height: 100vh;
   }
+
+  @include media-breakpoint-down(sm) {
+    #main {
+      padding-top: ($container-padding-x * .5);
+    }
+  }
 }
 
 ::-webkit-scrollbar {

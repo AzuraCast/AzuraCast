@@ -108,7 +108,6 @@
                         paginated
                         handle-client-side
                         :fields="fields"
-                        :responsive="false"
                         :items="listeners"
                     >
                         <template #cell(time)="row">

@@ -7,7 +7,6 @@
             select-fields
             :page-options="pageOptions"
             :fields="fields"
-            :responsive="false"
             :api-url="requestListUri"
         >
             <template #cell(name)="row">

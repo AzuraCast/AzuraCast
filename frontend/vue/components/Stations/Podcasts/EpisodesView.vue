@@ -57,7 +57,6 @@
             ref="$datatable"
             paginated
             :fields="fields"
-            :responsive="false"
             :api-url="podcast.links.episodes"
         >
             <template #cell(art)="row">

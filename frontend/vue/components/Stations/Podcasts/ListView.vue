@@ -37,7 +37,6 @@
             ref="$datatable"
             paginated
             :fields="fields"
-            :responsive="false"
             :api-url="listUrl"
         >
             <template #cell(art)="row">

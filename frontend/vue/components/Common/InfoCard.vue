@@ -1,6 +1,6 @@
 <template>
     <div
-        class="card-body bg-info-subtle text-info-emphasis d-flex align-items-center"
+        class="card-body bg-info-subtle text-info-emphasis d-flex flex-md-row flex-column align-items-center"
         role="alert"
         aria-live="off"
     >
@@ -12,7 +12,7 @@
         </div>
         <div
             v-if="slots.action"
-            class="flex-shrink-0 ms-2"
+            class="flex-shrink-0 ms-md-3 mt-3 mt-md-0"
         >
             <slot name="action" />
         </div>

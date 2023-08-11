@@ -51,7 +51,7 @@
                 <div
                     v-for="notification in notifications"
                     :key="notification.title"
-                    class="card-body d-flex align-items-center alert"
+                    class="card-body d-flex align-items-center alert flex-md-row flex-column"
                     :class="'alert-'+notification.type"
                     role="alert"
                     aria-live="polite"
@@ -82,7 +82,7 @@
                     </div>
                     <div
                         v-if="notification.actionLabel && notification.actionUrl"
-                        class="flex-shrink-0 ms-3"
+                        class="flex-shrink-0 ms-md-3 mt-3 mt-md-0"
                     >
                         <a
                             class="btn btn-sm"
@@ -163,122 +163,124 @@
             </template>
 
             <loading :loading="stationsLoading">
-                <table
-                    id="station_dashboard"
-                    class="table table-striped table-responsive"
-                >
-                    <colgroup>
-                        <col width="5%">
-                        <col width="30%">
-                        <col width="10%">
-                        <col width="40%">
-                        <col width="15%">
-                    </colgroup>
-                    <thead>
-                        <tr>
-                            <th class="pe-3">
-                            &nbsp;
-                            </th>
-                            <th class="ps-2">
-                                {{ $gettext('Station Name') }}
-                            </th>
-                            <th class="text-center">
-                                {{ $gettext('Listeners') }}
-                            </th>
-                            <th>{{ $gettext('Now Playing') }}</th>
-                            <th class="text-end" />
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr
-                            v-for="item in stations"
-                            :key="item.station.id"
-                            class="align-middle"
-                        >
-                            <td class="text-center pe-1">
-                                <play-button
-                                    class="file-icon btn-lg"
-                                    :url="item.station.listen_url"
-                                    is-stream
-                                />
-                            </td>
-                            <td class="ps-2">
-                                <div class="h5 m-0">
-                                    {{ item.station.name }}
-                                </div>
-                                <div v-if="item.station.is_public">
-                                    <a
-                                        :href="item.links.public"
-                                        target="_blank"
-                                    >
-                                        {{ $gettext('Public Page') }}
-                                    </a>
-                                </div>
-                            </td>
-                            <td class="text-center">
-                                <span class="pe-1">
-                                    <icon
-                                        class="sm align-middle"
-                                        icon="headset"
+                <div class="table-responsive">
+                    <table
+                        id="station_dashboard"
+                        class="table table-striped"
+                    >
+                        <colgroup>
+                            <col width="5%">
+                            <col width="30%">
+                            <col width="10%">
+                            <col width="40%">
+                            <col width="15%">
+                        </colgroup>
+                        <thead>
+                            <tr>
+                                <th class="pe-3">
+                                &nbsp;
+                                </th>
+                                <th class="ps-2">
+                                    {{ $gettext('Station Name') }}
+                                </th>
+                                <th class="text-center">
+                                    {{ $gettext('Listeners') }}
+                                </th>
+                                <th>{{ $gettext('Now Playing') }}</th>
+                                <th class="text-end" />
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr
+                                v-for="item in stations"
+                                :key="item.station.id"
+                                class="align-middle"
+                            >
+                                <td class="text-center pe-1">
+                                    <play-button
+                                        class="file-icon btn-lg"
+                                        :url="item.station.listen_url"
+                                        is-stream
                                     />
-                                </span>
-                                <template v-if="item.links.listeners">
-                                    <a
-                                        :href="item.links.listeners"
-                                        :aria-label="$gettext('View Listener Report')"
-                                    >
+                                </td>
+                                <td class="ps-2">
+                                    <div class="h5 m-0">
+                                        {{ item.station.name }}
+                                    </div>
+                                    <div v-if="item.station.is_public">
+                                        <a
+                                            :href="item.links.public"
+                                            target="_blank"
+                                        >
+                                            {{ $gettext('Public Page') }}
+                                        </a>
+                                    </div>
+                                </td>
+                                <td class="text-center">
+                                    <span class="pe-1">
+                                        <icon
+                                            class="sm align-middle"
+                                            icon="headset"
+                                        />
+                                    </span>
+                                    <template v-if="item.links.listeners">
+                                        <a
+                                            :href="item.links.listeners"
+                                            :aria-label="$gettext('View Listener Report')"
+                                        >
+                                            {{ item.listeners.total }}
+                                        </a>
+                                    </template>
+                                    <template v-else>
                                         {{ item.listeners.total }}
-                                    </a>
-                                </template>
-                                <template v-else>
-                                    {{ item.listeners.total }}
-                                </template>
-                            </td>
-                            <td>
-                                <div class="d-flex align-items-center">
-                                    <album-art
-                                        v-if="showAlbumArt"
-                                        :src="item.now_playing.song.art"
-                                        class="flex-shrink-0 pe-3"
-                                    />
+                                    </template>
+                                </td>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <album-art
+                                            v-if="showAlbumArt"
+                                            :src="item.now_playing.song.art"
+                                            class="flex-shrink-0 pe-3"
+                                        />
 
-                                    <div
-                                        v-if="!item.is_online"
-                                        class="flex-fill text-muted"
-                                    >
-                                        {{ $gettext('Station Offline') }}
+                                        <div
+                                            v-if="!item.is_online"
+                                            class="flex-fill text-muted"
+                                        >
+                                            {{ $gettext('Station Offline') }}
+                                        </div>
+                                        <div
+                                            v-else-if="item.now_playing.song.title !== ''"
+                                            class="flex-fill"
+                                        >
+                                            <strong><span class="nowplaying-title">
+                                                {{ item.now_playing.song.title }}
+                                            </span></strong><br>
+                                            <span class="nowplaying-artist">{{ item.now_playing.song.artist }}</span>
+                                        </div>
+                                        <div
+                                            v-else
+                                            class="flex-fill"
+                                        >
+                                            <strong><span class="nowplaying-title">
+                                                {{ item.now_playing.song.text }}
+                                            </span></strong>
+                                        </div>
                                     </div>
-                                    <div
-                                        v-else-if="item.now_playing.song.title !== ''"
-                                        class="flex-fill"
+                                </td>
+                                <td class="text-end">
+                                    <a
+                                        class="btn btn-primary"
+                                        :href="item.links.manage"
+                                        role="button"
                                     >
-                                        <strong><span class="nowplaying-title">
-                                            {{ item.now_playing.song.title }}
-                                        </span></strong><br>
-                                        <span class="nowplaying-artist">{{ item.now_playing.song.artist }}</span>
-                                    </div>
-                                    <div
-                                        v-else
-                                        class="flex-fill"
-                                    >
-                                        <strong><span class="nowplaying-title">
-                                            {{ item.now_playing.song.text }}
-                                        </span></strong>
-                                    </div>
-                                </div>
-                            </td>
-                            <td class="text-end">
-                                <a
-                                    class="btn btn-primary"
-                                    :href="item.links.manage"
-                                    role="button"
-                                >
-                                    {{ $gettext('Manage') }}
-                                </a>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+                                        {{ $gettext('Manage') }}
+                                    </a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </loading>
         </card-page>
     </div>

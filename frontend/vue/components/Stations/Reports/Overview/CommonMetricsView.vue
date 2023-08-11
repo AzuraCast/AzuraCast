@@ -40,7 +40,6 @@
             paginated
             handle-client-side
             :fields="fields"
-            :responsive="false"
             :items="stats.all"
         >
             <template #cell(connected_seconds_calc)="row">

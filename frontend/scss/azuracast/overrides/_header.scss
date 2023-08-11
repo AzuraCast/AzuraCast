@@ -29,6 +29,20 @@ header.navbar {
     }
   }
 
+  @include media-breakpoint-down(sm) {
+    & {
+      position: relative;
+    }
+
+    .navbar-brand {
+      font-size: 2rem;
+
+      small {
+        font-size: 1rem;
+      }
+    }
+  }
+
   .navbar-toggler {
     border: 0;
     line-height: 1rem;

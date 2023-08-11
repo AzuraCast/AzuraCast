@@ -20,7 +20,6 @@
             paginated
             handle-client-side
             :fields="fields"
-            :responsive="false"
             :items="stats.all"
         />
     </loading>

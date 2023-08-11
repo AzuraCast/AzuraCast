@@ -45,7 +45,6 @@
             ref="$datatable"
             :show-toolbar="false"
             :fields="fields"
-            :responsive="false"
             :api-url="listUrlForType"
         >
             <template #cell(actions)="{item}">

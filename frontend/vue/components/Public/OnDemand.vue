@@ -41,14 +41,12 @@
                 >
                     <template #cell(download_url)="row">
                         <play-button
-                            class="file-icon btn-xl"
+                            class="btn-lg"
                             :url="row.item.download_url"
-                            :is-stream="false"
                         />
                         <template v-if="showDownloadButton">
-                            &nbsp;
                             <a
-                                class="name"
+                                class="name btn btn-lg p-0 ms-2"
                                 :href="row.item.download_url"
                                 target="_blank"
                                 :title="$gettext('Download')"

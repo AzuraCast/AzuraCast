@@ -1010,6 +1010,10 @@ final class ConfigWriter implements EventSubscriberInterface
 
         $harborParams = implode(', ', $harborParams);
 
+        $liveBroadcastText = self::cleanUpString(
+            $settings->getLiveBroadcastText()
+        );
+
         $event->appendBlock(
             <<<LIQ
             # A Pre-DJ source of radio that can be broadcast if needed
@@ -1021,7 +1025,7 @@ final class ConfigWriter implements EventSubscriberInterface
 
             def insert_missing(m) =
                 if m == [] then
-                    [("title", "Live Broadcast"), ("is_live", "true")]
+                    [("title", "{$liveBroadcastText}"), ("is_live", "true")]
                 else
                     [("is_live", "true")]
                 end

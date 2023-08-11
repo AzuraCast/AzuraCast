@@ -53,4 +53,20 @@ class StationBrandingConfiguration extends AbstractStationConfiguration
     {
         $this->set(self::PUBLIC_CUSTOM_JS, $js);
     }
+
+    public const OFFLINE_TEXT = 'offline_text';
+
+    public function getOfflineText(): ?string
+    {
+        $message = $this->get(self::OFFLINE_TEXT);
+
+        return (!empty($message))
+            ? $message
+            : null;
+    }
+
+    public function setOfflineText(?string $message): void
+    {
+        $this->set(self::OFFLINE_TEXT, $message);
+    }
 }

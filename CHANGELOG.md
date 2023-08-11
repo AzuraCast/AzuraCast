@@ -24,6 +24,11 @@ release channel, you can take advantage of these new features and fixes.
   tasks, with a secondary instance that will automatically take over these functions if the main installation is
   nonresponsive.
 
+- **Custom "Station Offline" and "Live Broadcast" Messages**: You can now specify, on a per-station level, the default
+  message that shows when the station is offline or when a DJ has connected but has not yet sent any metadata. The
+  former is located on the Branding Configuration page, and the latter is under the "Streamers/DJs" tab on the station
+  profile.
+
 ## Code Quality/Technical Changes
 
 - **Frontend Overhaul**: We have updated the code that powers the browser-facing frontend of our application. In

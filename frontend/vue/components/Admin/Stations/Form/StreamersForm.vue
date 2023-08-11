@@ -112,6 +112,14 @@
                         :label="$gettext('Customize DJ/Streamer Mount Point')"
                         :description="$gettext('If your streaming software requires a specific mount point path, specify it here. Otherwise, use the default.')"
                     />
+
+                    <form-group-field
+                        id="edit_form_backend_live_broadcast_text"
+                        class="col-md-6"
+                        :field="v$.backend_config.live_broadcast_text"
+                        :label="$gettext('Default Live Broadcast Message')"
+                        :description="$gettext('If a live DJ connects but has not yet sent metadata, this is the message that will display on player pages.')"
+                    />
                 </div>
             </template>
         </form-fieldset>
@@ -148,6 +156,7 @@ const {enableAdvancedFeatures} = useAzuraCast();
 const emit = defineEmits(['update:form']);
 const form = useVModel(props, 'form', emit);
 
+
 const {v$, tabClass} = useVuelidateOnFormTab(
     computed(() => {
         let validations = {
@@ -158,6 +167,7 @@ const {v$, tabClass} = useVuelidateOnFormTab(
                 record_streams_format: {},
                 record_streams_bitrate: {},
                 dj_buffer: {numeric},
+                live_broadcast_text: {}
             }
         };
 
@@ -184,6 +194,7 @@ const {v$, tabClass} = useVuelidateOnFormTab(
                 record_streams_format: 'mp3',
                 record_streams_bitrate: 128,
                 dj_buffer: 5,
+                live_broadcast_text: 'Live Broadcast'
             }
         };
 

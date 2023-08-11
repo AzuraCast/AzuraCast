@@ -229,6 +229,7 @@ final class View extends Engine
                     'name' => $station->getName(),
                     'shortName' => $station->getShortName(),
                     'timezone' => $station->getTimezone(),
+                    'offlineText' => $station->getBrandingConfig()->getOfflineText(),
                 ]);
             }
 

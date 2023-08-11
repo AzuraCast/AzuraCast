@@ -74,6 +74,6 @@ return static function (RouteCollectorProxy $app) {
                 ->setName('public:podcast:feed');
         }
     )
-        ->add(Middleware\GetStation::class)
-        ->add(Middleware\EnableView::class);
+        ->add(Middleware\EnableView::class)
+        ->add(Middleware\GetStation::class);
 };

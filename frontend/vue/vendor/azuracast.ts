@@ -13,6 +13,7 @@ export interface AzuraCastStationConstants {
     name: string | null,
     shortName: string | null,
     timezone: string | null,
+    offlineText: string | null,
 }
 
 export interface AzuraCastUserConstants {
@@ -60,6 +61,7 @@ export function useAzuraCastStation(): AzuraCastStationConstants {
         id: null,
         name: null,
         shortName: null,
-        timezone: null
+        timezone: null,
+        offlineText: null
     };
 }

@@ -24,6 +24,14 @@
                 <div class="card-body">
                     <div class="row g-3">
                         <form-group-field
+                            id="form_edit_offline_text"
+                            class="col-md-6"
+                            :field="v$.offline_text"
+                            :label="$gettext('Station Offline Display Text')"
+                            :description="$gettext('This will be shown on public player pages if the station is offline. Leave blank to default to a localized version of &quot;%{message}&quot;.', {message: $gettext('Station Offline')})"
+                        />
+
+                        <form-group-field
                             id="form_edit_default_album_art_url"
                             class="col-md-6"
                             :field="v$.default_album_art_url"
@@ -99,14 +107,16 @@ const error = ref(null);
 
 const {form, resetForm, v$, ifValid} = useVuelidateOnForm(
     {
-        'default_album_art_url': {},
-        'public_custom_css': {},
-        'public_custom_js': {},
+        default_album_art_url: {},
+        public_custom_css: {},
+        public_custom_js: {},
+        offline_text: {}
     },
     {
-        'default_album_art_url': '',
-        'public_custom_css': '',
-        'public_custom_js': ''
+        default_album_art_url: '',
+        public_custom_css: '',
+        public_custom_js: '',
+        offline_text: ''
     }
 );
 

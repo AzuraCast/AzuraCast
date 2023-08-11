@@ -101,7 +101,7 @@ final class SoundExchangeAction implements SingleActionInterface
         $historyRowsById = array_column($historyRows, null, 'media_id');
 
         // Remove any reference to the "Stream Offline" song.
-        $offlineSongHash = Song::createOffline()->getSongId();
+        $offlineSongHash = Song::OFFLINE_SONG_ID;
         unset($historyRowsById[$offlineSongHash]);
 
         // Assemble report items

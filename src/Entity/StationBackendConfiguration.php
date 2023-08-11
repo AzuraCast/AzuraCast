@@ -421,6 +421,22 @@ class StationBackendConfiguration extends AbstractStationConfiguration
         $this->set(self::HLS_IS_DEFAULT, $value);
     }
 
+    public const LIVE_BROADCAST_TEXT = 'live_broadcast_text';
+
+    public function getLiveBroadcastText(): string
+    {
+        $text = $this->get(self::LIVE_BROADCAST_TEXT);
+
+        return (!empty($text))
+            ? $text
+            : 'Live Broadcast';
+    }
+
+    public function setLiveBroadcastText(?string $text): void
+    {
+        $this->set(self::LIVE_BROADCAST_TEXT, $text);
+    }
+
     public const CUSTOM_TOP = 'custom_config_top';
     public const CUSTOM_PRE_PLAYLISTS = 'custom_config_pre_playlists';
     public const CUSTOM_PRE_LIVE = 'custom_config_pre_live';

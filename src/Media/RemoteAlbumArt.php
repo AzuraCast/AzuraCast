@@ -67,8 +67,7 @@ final class RemoteAlbumArt
     public function getUrlForSong(SongInterface $song): ?string
     {
         // Avoid tracks that shouldn't ever hit remote APIs.
-        $offlineSong = Song::createOffline();
-        if ($song->getSongId() === $offlineSong->getSongId()) {
+        if ($song->getSongId() === Song::OFFLINE_SONG_ID) {
             return null;
         }
 

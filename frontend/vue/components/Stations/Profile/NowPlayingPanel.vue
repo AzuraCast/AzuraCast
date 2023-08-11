@@ -76,7 +76,7 @@
                                     <div class="d-table-cell align-middle w-100">
                                         <div v-if="!np.is_online">
                                             <h5 class="media-heading m-0 text-muted">
-                                                {{ $gettext('Station Offline') }}
+                                                {{ offlineText ?? $gettext('Station Offline') }}
                                             </h5>
                                         </div>
                                         <div v-else-if="np.now_playing.song.title !== ''">
@@ -238,12 +238,15 @@ import Loading from "~/components/Common/Loading.vue";
 import CardPage from "~/components/Common/CardPage.vue";
 import {useLightbox} from "~/vendor/lightbox";
 import {StationPermission, userAllowedForStation} from "~/acl";
+import {useAzuraCastStation} from "~/vendor/azuracast";
 
 const props = defineProps({
     ...nowPlayingPanelProps,
 });
 
 const emit = defineEmits(['api-call']);
+
+const {offlineText} = useAzuraCastStation();
 
 const {
     np,

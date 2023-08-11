@@ -27,7 +27,7 @@
 
                 <div v-if="!np.is_online">
                     <h4 class="now-playing-title text-muted">
-                        {{ $gettext('Station Offline') }}
+                        {{ offlineText ?? $gettext('Station Offline') }}
                     </h4>
                 </div>
                 <div v-else-if="np.now_playing.song.title !== ''">
@@ -148,12 +148,15 @@ import useNowPlaying from "~/functions/useNowPlaying";
 import playerProps from "~/components/Public/playerProps";
 import MuteButton from "~/components/Common/MuteButton.vue";
 import AlbumArt from "~/components/Common/AlbumArt.vue";
+import {useAzuraCastStation} from "~/vendor/azuracast";
 
 const props = defineProps({
     ...playerProps
 });
 
 const emit = defineEmits(['np_updated']);
+
+const {offlineText} = useAzuraCastStation();
 
 const {
     np,

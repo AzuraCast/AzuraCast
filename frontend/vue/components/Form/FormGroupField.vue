@@ -142,7 +142,7 @@ const modelValue = computed({
         }
 
         if (isNumeric.value) {
-            newValue = parseInt(newValue);
+            newValue = Number(newValue);
         }
 
         props.field.$model = newValue;

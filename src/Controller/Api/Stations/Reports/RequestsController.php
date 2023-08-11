@@ -34,13 +34,35 @@ final class RequestsController
             ->from(StationRequest::class, 'sr')
             ->join('sr.track', 'sm')
             ->where('sr.station = :station')
-            ->setParameter('station', $station)
-            ->orderBy('sr.timestamp', 'DESC');
+            ->setParameter('station', $station);
 
         $qb = match ($request->getParam('type', 'recent')) {
             'history' => $qb->andWhere('sr.played_at != 0'),
             default => $qb->andWhere('sr.played_at = 0'),
         };
+
+        $queryParams = $request->getQueryParams();
+        $searchPhrase = trim($queryParams['searchPhrase'] ?? '');
+
+        $sortField = (string)($queryParams['sort'] ?? '');
+        $sortDirection = strtolower($queryParams['sortOrder'] ?? 'asc');
+
+        if (!empty($sortField)) {
+            match ($sortField) {
+                'name', 'title' => $qb->addOrderBy('sm.title', $sortDirection),
+                'artist' => $qb->addOrderBy('sm.artist', $sortDirection),
+                'album' => $qb->addOrderBy('sm.album', $sortDirection),
+                'genre' => $qb->addOrderBy('sm.genre', $sortDirection),
+                default => null,
+            };
+        } else {
+            $qb->addOrderBy('sr.timestamp', 'DESC');
+        }
+
+        if (!empty($searchPhrase)) {
+            $qb->andWhere('(sm.title LIKE :query OR sm.artist LIKE :query OR sm.album LIKE :query)')
+                ->setParameter('query', '%' . $searchPhrase . '%');
+        }
 
         $query = $qb->getQuery()
             ->setHydrationMode(AbstractQuery::HYDRATE_ARRAY);

@@ -13,9 +13,27 @@
     },
     "defender": {
       "enabled": true,
-      "driver": "memory"
+      "driver": "memory",
+      "ban_time": 5,
+      "ban_time_increment": 50,
+      "threshold": 15,
+      "observation_time": 15
     }
   },
+  "rate_limiters": [
+    {
+      "average": 10,
+      "period": 1000,
+      "burst": 1,
+      "type": 2,
+      "protocols": [
+        "SSH"
+      ],
+      "generate_defender_events": false,
+      "entries_soft_limit": 100,
+      "entries_hard_limit": 150
+    }
+  ],
   "sftpd": {
     "bindings": [
       {

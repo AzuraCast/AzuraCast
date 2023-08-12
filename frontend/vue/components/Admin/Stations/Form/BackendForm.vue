@@ -167,6 +167,9 @@
             <form-fieldset v-if="enableAdvancedFeatures">
                 <template #label>
                     {{ $gettext('Advanced Configuration') }}
+                    <span class="badge small text-bg-primary ms-2">
+                        {{ $gettext('Advanced') }}
+                    </span>
                 </template>
 
                 <div class="row g-3">
@@ -174,7 +177,6 @@
                         id="edit_form_backend_use_manual_autodj"
                         class="col-md-6"
                         :field="v$.backend_config.use_manual_autodj"
-                        advanced
                         :label="$gettext('Manual AutoDJ Mode')"
                     >
                         <template #description>
@@ -188,7 +190,6 @@
                         id="edit_form_backend_enable_replaygain_metadata"
                         class="col-md-6"
                         :field="v$.backend_config.enable_replaygain_metadata"
-                        advanced
                         :label="$gettext('Use Replaygain Metadata')"
                         :description="$gettext('Instruct Liquidsoap to use any replaygain metadata associated with a song to control its volume level. This may increase CPU consumption.')"
                     />
@@ -199,7 +200,6 @@
                         :field="v$.backend_config.telnet_port"
                         input-type="number"
                         :input-attrs="{ min: '0' }"
-                        advanced
                         :label="$gettext('Customize Internal Request Processing Port')"
                         :description="$gettext('This port is not used by any external process. Only modify this port if the assigned port is in use. Leave blank to automatically assign a port.')"
                     />
@@ -210,7 +210,6 @@
                         :field="v$.backend_config.autodj_queue_length"
                         input-type="number"
                         :input-attrs="{ min: '2', max: '25' }"
-                        advanced
                         :label="$gettext('AutoDJ Queue Length')"
                         :description="$gettext('This determines how many songs in advance the AutoDJ will automatically fill the queue.')"
                     />
@@ -219,7 +218,6 @@
                         id="edit_form_backend_charset"
                         class="col-md-6"
                         :field="v$.backend_config.charset"
-                        advanced
                         :options="charsetOptions"
                         stacked
                         radio
@@ -231,7 +229,6 @@
                         id="edit_form_backend_performance_mode"
                         class="col-md-6"
                         :field="v$.backend_config.performance_mode"
-                        advanced
                         :options="performanceModeOptions"
                         stacked
                         radio
@@ -245,7 +242,6 @@
                         :field="v$.backend_config.duplicate_prevention_time_range"
                         input-type="number"
                         :input-attrs="{ min: '0', max: '1440' }"
-                        advanced
                         :label="$gettext('Duplicate Prevention Time Range (Minutes)')"
                         :description="$gettext('This specifies the time range (in minutes) of the song history that the duplicate song prevention algorithm should take into account.')"
                     />

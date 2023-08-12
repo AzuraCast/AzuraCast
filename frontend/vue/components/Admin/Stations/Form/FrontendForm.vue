@@ -52,92 +52,95 @@
                     :label="$gettext('Customize Administrator Password')"
                     :description="$gettext('Leave blank to automatically generate a new password.')"
                 />
-
-                <form-group-field
-                    v-if="enableAdvancedFeatures"
-                    id="edit_form_frontend_port"
-                    class="col-md-6"
-                    :field="v$.frontend_config.port"
-                    input-type="number"
-                    :input-attrs="{min: '0'}"
-                    advanced
-                    :label="$gettext('Customize Broadcasting Port')"
-                    :description="$gettext('No other program can be using this port. Leave blank to automatically assign a port.')"
-                />
-
-                <form-group-field
-                    v-if="enableAdvancedFeatures"
-                    id="edit_form_max_listeners"
-                    class="col-md-6"
-                    :field="v$.frontend_config.max_listeners"
-                    advanced
-                    :label="$gettext('Maximum Listeners')"
-                    :description="$gettext('Maximum number of total listeners across all streams. Leave blank to use the default.')"
-                />
-            </div>
-
-            <div
-                v-if="enableAdvancedFeatures"
-                class="row g-3 mb-3"
-            >
-                <div class="col-md-5">
-                    <form-group-field
-                        id="edit_form_frontend_banned_ips"
-                        :field="v$.frontend_config.banned_ips"
-                        input-type="textarea"
-                        :input-attrs="{class: 'text-preformatted'}"
-                        advanced
-                        :label="$gettext('Banned IP Addresses')"
-                        :description="$gettext('List one IP address or group (in CIDR format) per line.')"
-                    />
-
-                    <form-group-field
-                        id="edit_form_frontend_allowed_ips"
-                        :field="v$.frontend_config.allowed_ips"
-                        input-type="textarea"
-                        :input-attrs="{class: 'text-preformatted'}"
-                        advanced
-                        :label="$gettext('Allowed IP Addresses')"
-                        :description="$gettext('List one IP address or group (in CIDR format) per line.')"
-                    />
-
-                    <form-group-field
-                        id="edit_form_frontend_banned_user_agents"
-                        :field="v$.frontend_config.banned_user_agents"
-                        input-type="textarea"
-                        :input-attrs="{class: 'text-preformatted'}"
-                        advanced
-                        :label="$gettext('Banned User Agents')"
-                        :description="$gettext('List one user agent per line. Wildcards (*) are allowed.')"
-                    />
-                </div>
-
-                <div class="col-md-7">
-                    <form-group-select
-                        id="edit_form_frontend_banned_countries"
-                        :field="v$.frontend_config.banned_countries"
-                        :options="countryOptions"
-                        advanced
-                        multiple
-                        :label="$gettext('Banned Countries')"
-                        :description="$gettext('Select the countries that are not allowed to connect to the streams.')"
-                    />
-
-                    <div class="block-buttons">
-                        <button
-                            type="button"
-                            class="btn btn-block btn-primary"
-                            @click="clearCountries"
-                        >
-                            {{ $gettext('Clear List') }}
-                        </button>
-                    </div>
-                </div>
             </div>
 
             <form-fieldset v-if="enableAdvancedFeatures">
                 <template #label>
+                    {{ $gettext('Advanced Configuration') }}
+                    <span class="badge small text-bg-primary ms-2">
+                        {{ $gettext('Advanced') }}
+                    </span>
+                </template>
+
+                <div class="row g-3 mb-3">
+                    <form-group-field
+                        id="edit_form_frontend_port"
+                        class="col-md-6"
+                        :field="v$.frontend_config.port"
+                        input-type="number"
+                        :input-attrs="{min: '0'}"
+                        :label="$gettext('Customize Broadcasting Port')"
+                        :description="$gettext('No other program can be using this port. Leave blank to automatically assign a port.')"
+                    />
+
+                    <form-group-field
+                        id="edit_form_max_listeners"
+                        class="col-md-6"
+                        :field="v$.frontend_config.max_listeners"
+                        :label="$gettext('Maximum Listeners')"
+                        :description="$gettext('Maximum number of total listeners across all streams. Leave blank to use the default.')"
+                    />
+                </div>
+
+                <div class="row g-3 mb-3">
+                    <div class="col-md-5">
+                        <form-group-field
+                            id="edit_form_frontend_banned_ips"
+                            :field="v$.frontend_config.banned_ips"
+                            input-type="textarea"
+                            :input-attrs="{class: 'text-preformatted'}"
+                            :label="$gettext('Banned IP Addresses')"
+                            :description="$gettext('List one IP address or group (in CIDR format) per line.')"
+                        />
+
+                        <form-group-field
+                            id="edit_form_frontend_allowed_ips"
+                            :field="v$.frontend_config.allowed_ips"
+                            input-type="textarea"
+                            :input-attrs="{class: 'text-preformatted'}"
+                            :label="$gettext('Allowed IP Addresses')"
+                            :description="$gettext('List one IP address or group (in CIDR format) per line.')"
+                        />
+
+                        <form-group-field
+                            id="edit_form_frontend_banned_user_agents"
+                            :field="v$.frontend_config.banned_user_agents"
+                            input-type="textarea"
+                            :input-attrs="{class: 'text-preformatted'}"
+                            :label="$gettext('Banned User Agents')"
+                            :description="$gettext('List one user agent per line. Wildcards (*) are allowed.')"
+                        />
+                    </div>
+
+                    <div class="col-md-7">
+                        <form-group-select
+                            id="edit_form_frontend_banned_countries"
+                            :field="v$.frontend_config.banned_countries"
+                            :options="countryOptions"
+                            multiple
+                            :label="$gettext('Banned Countries')"
+                            :description="$gettext('Select the countries that are not allowed to connect to the streams.')"
+                        />
+
+                        <div class="block-buttons">
+                            <button
+                                type="button"
+                                class="btn btn-block btn-primary"
+                                @click="clearCountries"
+                            >
+                                {{ $gettext('Clear List') }}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </form-fieldset>
+
+            <form-fieldset v-if="enableAdvancedFeatures">
+                <template #label>
                     {{ $gettext('Custom Configuration') }}
+                    <span class="badge small text-bg-primary ms-2">
+                        {{ $gettext('Advanced') }}
+                    </span>
                 </template>
                 <template #description>
                     {{ $gettext('This code will be included in the frontend configuration. Allowed formats are:') }}
@@ -154,7 +157,6 @@
                         :field="v$.frontend_config.custom_config"
                         input-type="textarea"
                         :input-attrs="{class: 'text-preformatted', spellcheck: 'false', 'max-rows': 25, rows: 5}"
-                        advanced
                         :label="$gettext('Custom Configuration')"
                     />
                 </div>

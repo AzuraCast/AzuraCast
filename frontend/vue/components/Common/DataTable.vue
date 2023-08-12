@@ -157,9 +157,20 @@
 
                 :backend-sorting="!handleClientSide"
 
+                :detailed="detailed"
+                :show-detail-icon="false"
+
                 @page-change="onPageChange"
                 @sort="onSort"
             >
+                <template #detail="detailProps">
+                    <slot
+                        name="detail"
+                        v-bind="detailProps"
+                        :item="detailProps.row"
+                    />
+                </template>
+
                 <o-table-column
                     v-for="field in visibleFields"
                     :key="field.key"
@@ -169,10 +180,11 @@
                     :th-attrs="() => ({class: [field.class]})"
                     :td-attrs="() => ({class: field.class})"
                 >
-                    <template #default="{ row }">
+                    <template #default="props">
                         <slot
                             :name="'cell('+field.key+')'"
-                            v-bind="{item: row}"
+                            v-bind="props"
+                            :item="props.row"
                         >
                             <template v-if="field.formatter">
                                 {{ field.formatter(get(row, field.key, null), field.key, row) }}
@@ -183,7 +195,7 @@
                         </slot>
                     </template>
 
-                    <template #header="{column}">
+                    <template #header="{ column }">
                         <div class="d-flex align-items-center">
                             {{ column.label }}
 
@@ -257,6 +269,10 @@ const props = defineProps({
         required: true
     },
     selectable: {
+        type: Boolean,
+        default: false
+    },
+    detailed: {
         type: Boolean,
         default: false
     },
@@ -538,6 +554,10 @@ const setFilter = (newTerm) => {
     searchPhrase.value = newTerm;
 };
 
+const toggleDetails = (row) => {
+    $table.value?.toggleDetails(row);
+};
+
 watch(perPage, () => {
     currentPage.value = 1;
     relist();
@@ -559,6 +579,7 @@ defineExpose({
     refresh,
     relist,
     navigate,
-    setFilter
+    setFilter,
+    toggleDetails
 });
 </script>

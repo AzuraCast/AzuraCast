@@ -16,6 +16,13 @@ input, textarea {
     margin-top: 0;
   }
 
+  &.form-switch {
+    .form-check-input,
+    .custom-control-input {
+      width: 2.5rem;
+    }
+  }
+
   .form-check-label,
   .custom-control-label {
     margin-left: 0.5rem;

@@ -8,13 +8,14 @@
                 name="default"
                 v-bind="{ id, field, class: fieldClass }"
             >
-                <div class="form-check">
+                <div class="form-check form-switch">
                     <input
                         v-bind="inputAttrs"
                         :id="id"
                         v-model="field.$model"
                         class="form-check-input"
                         type="checkbox"
+                        role="switch"
                         :name="name"
                     >
                     <label

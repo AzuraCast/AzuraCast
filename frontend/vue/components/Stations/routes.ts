@@ -66,6 +66,13 @@ export default function useStationsRoutes() {
             ...populateComponentRemotely(getStationApiUrl('/vue/podcasts'))
         },
         {
+            path: '/profile',
+            name: 'stations:profile:index',
+            redirect: {
+                name: 'stations:index'
+            }
+        },
+        {
             path: '/mounts',
             component: () => import('~/components/Stations/Mounts.vue'),
             name: 'stations:mounts:index'

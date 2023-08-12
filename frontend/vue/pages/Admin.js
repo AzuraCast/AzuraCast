@@ -1,9 +1,10 @@
 import initApp from "~/layout";
 import {h} from "vue";
-import {createRouter, createWebHashHistory} from "vue-router";
+import {createRouter, createWebHistory} from "vue-router";
 import AdminLayout from "~/components/Admin/AdminLayout.vue";
 import useAdminRoutes from "~/components/Admin/routes";
 import installRouterLoading from "~/functions/installRouterLoading";
+import {useAzuraCast} from "~/vendor/azuracast";
 
 initApp({
     render() {
@@ -12,8 +13,10 @@ initApp({
 }, async (vueApp) => {
     const routes = useAdminRoutes();
 
+    const {componentProps} = useAzuraCast();
+
     const router = createRouter({
-        history: createWebHashHistory(),
+        history: createWebHistory(componentProps.baseUrl),
         routes
     });
 

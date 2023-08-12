@@ -21,6 +21,9 @@ final class IndexAction implements SingleActionInterface
             component: 'Admin',
             id: 'admin-index',
             title: __('Administration'),
+            props: [
+                'baseUrl' => $request->getRouter()->named('admin:index:index'),
+            ]
         );
     }
 }

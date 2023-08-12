@@ -67,6 +67,11 @@ final class IndexAction implements SingleActionInterface
             component: 'Stations',
             id: 'stations-index',
             title: $station->getName(),
+            props: [
+                'baseUrl' => $router->named('stations:index:index', [
+                    'station_id' => $station->getIdRequired(),
+                ]),
+            ]
         );
     }
 }

@@ -42,7 +42,7 @@ final class UpdateCheck
         $router = $event->getRequest()->getRouter();
 
         $actionLabel = __('Update AzuraCast');
-        $actionUrl = $router->named('admin:index:index') . '#/updates';
+        $actionUrl = $router->named('admin:updates:index');
 
         $releaseChannel = $this->version->getReleaseChannelEnum();
 

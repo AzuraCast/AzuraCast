@@ -21,6 +21,6 @@ final class EndMasqueradeAction implements SingleActionInterface
 
         $router = $request->getRouter();
 
-        return $response->withRedirect($router->named('admin:index:index') . '#/users');
+        return $response->withRedirect($router->named('admin:users:index'));
     }
 }

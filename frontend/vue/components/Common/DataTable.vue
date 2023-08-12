@@ -187,10 +187,10 @@
                             :item="props.row"
                         >
                             <template v-if="field.formatter">
-                                {{ field.formatter(get(row, field.key, null), field.key, row) }}
+                                {{ field.formatter(get(props.row, field.key, null), field.key, props.row) }}
                             </template>
                             <template v-else>
-                                {{ get(row, field.key, null) }}
+                                {{ get(props.row, field.key, null) }}
                             </template>
                         </slot>
                     </template>

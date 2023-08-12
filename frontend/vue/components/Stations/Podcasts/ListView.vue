@@ -130,7 +130,7 @@ const fields = [
         label: $gettext('# Episodes'),
         sortable: false,
         formatter: (val) => {
-            return val.length;
+            return val?.length ?? 0;
         }
     },
     {key: 'actions', label: $gettext('Actions'), sortable: false, class: 'shrink'}

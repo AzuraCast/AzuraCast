@@ -216,6 +216,20 @@ final class StationPlaylistMediaRepository extends Repository
         return $affectedPlaylists;
     }
 
+    public function emptyPlaylist(
+        StationPlaylist $playlist
+    ): void {
+        $this->em->createQuery(
+            <<<'DQL'
+                DELETE FROM App\Entity\StationPlaylistMedia spm
+                WHERE spm.playlist = :playlist
+            DQL
+        )->setParameter('playlist', $playlist)
+            ->execute();
+
+        $this->queueRepo->clearForPlaylist($playlist);
+    }
+
     /**
      * Set the order of the media, specified as
      * [

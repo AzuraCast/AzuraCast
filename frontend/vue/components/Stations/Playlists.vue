@@ -189,6 +189,14 @@
                                         {{ langToggleButton(item) }}
                                     </button>
                                     <button
+                                        v-if="item.links.empty"
+                                        type="button"
+                                        class="btn btn-sm btn-danger"
+                                        @click="doEmpty(item.links.empty)"
+                                    >
+                                        {{ $gettext('Empty') }}
+                                    </button>
+                                    <button
                                         v-if="item.links.reshuffle"
                                         type="button"
                                         class="btn btn-sm btn-secondary"
@@ -444,6 +452,14 @@ const doModify = (url) => {
 
 const {doDelete} = useConfirmAndDelete(
     $gettext('Delete Playlist?'),
+    () => {
+        relist();
+        needsRestart();
+    },
+);
+
+const {doDelete: doEmpty} = useConfirmAndDelete(
+    $gettext('Clear all media from playlist?'),
     () => {
         relist();
         needsRestart();

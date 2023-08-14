@@ -314,6 +314,12 @@ final class PlaylistsController extends AbstractScheduledEntityController
                 routeParams: ['id' => $record->getId()],
                 absolute: !$isInternal
             );
+
+            $return['links']['empty'] = $router->fromHere(
+                routeName: 'api:stations:playlist:empty',
+                routeParams: ['id' => $record->getId()],
+                absolute: !$isInternal
+            );
         }
 
         foreach (['pls', 'm3u'] as $format) {

@@ -588,6 +588,11 @@ return static function (RouteCollectorProxy $group) {
                                         '/apply-to',
                                         Controller\Api\Stations\Playlists\PutApplyToAction::class
                                     );
+
+                                    $group->delete(
+                                        '/empty',
+                                        Controller\Api\Stations\Playlists\EmptyAction::class
+                                    )->setName('api:stations:playlist:empty');
                                 }
                             );
                         }

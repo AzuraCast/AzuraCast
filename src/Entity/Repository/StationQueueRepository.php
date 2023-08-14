@@ -37,6 +37,19 @@ final class StationQueueRepository extends AbstractStationBasedRepository
             ->execute();
     }
 
+    public function clearForPlaylist(
+        StationPlaylist $playlist
+    ): void {
+        $this->em->createQuery(
+            <<<'DQL'
+                DELETE FROM App\Entity\StationQueue sq
+                WHERE sq.playlist = :playlist
+                AND sq.is_played = 0
+            DQL
+        )->setParameter('playlist', $playlist)
+            ->execute();
+    }
+
     public function getNextVisible(Station $station): ?StationQueue
     {
         return $this->getUnplayedBaseQuery($station)

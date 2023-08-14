@@ -106,7 +106,6 @@ import {useAxios} from "~/vendor/axios";
 import FormGroup from "~/components/Form/FormGroup.vue";
 import Modal from "~/components/Common/Modal.vue";
 import FormFile from "~/components/Form/FormFile.vue";
-import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
 
 const emit = defineEmits(['relist']);
 

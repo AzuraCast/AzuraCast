@@ -76,33 +76,6 @@
                 </template>
             </form-group>
 
-            <form-group id="import_modal_overwrite_playlist">
-                <template #label>
-                    {{ $gettext('Replace Playlist Contents with Imported Files') }}
-                </template>
-                <template #description>
-                    {{
-                        $gettext('AzuraCast will scan the uploaded file for matches in this station\'s music library. Media should already be uploaded before running this step. You can re-run this tool as many times as needed.')
-                    }}
-                </template>
-
-                <template #default="{id}">
-                    <form-file
-                        :id="id"
-                        @uploaded="uploaded"
-                    />
-                </template>
-            </form-group>
-
-            <form-group-checkbox
-                id=""
-                :field="v$.copyPlaylist"
-            >
-                <template #label>
-                    {{ $gettext('') }}
-                </template>
-            </form-group-checkbox>
-
             <invisible-submit-button />
         </form>
         <template #modal-footer>

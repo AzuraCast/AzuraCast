@@ -180,17 +180,17 @@
                     :th-attrs="() => ({class: [field.class]})"
                     :td-attrs="() => ({class: field.class})"
                 >
-                    <template #default="props">
+                    <template #default="colProps">
                         <slot
                             :name="'cell('+field.key+')'"
-                            v-bind="props"
-                            :item="props.row"
+                            v-bind="colProps"
+                            :item="colProps.row"
                         >
                             <template v-if="field.formatter">
-                                {{ field.formatter(get(props.row, field.key, null), field.key, props.row) }}
+                                {{ field.formatter(get(colProps.row, field.key, null), field.key, colProps.row) }}
                             </template>
                             <template v-else>
-                                {{ get(props.row, field.key, null) }}
+                                {{ get(colProps.row, field.key, null) }}
                             </template>
                         </slot>
                     </template>

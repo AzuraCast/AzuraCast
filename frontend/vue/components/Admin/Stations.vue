@@ -20,11 +20,16 @@
             :fields="fields"
             :api-url="listUrl"
         >
-            <template #cell(name)="row">
+            <template #cell(name)="{item}">
                 <div class="typography-subheading">
-                    {{ row.item.name }}
+                    {{ item.name }}
+
+                    <span
+                        v-if="!item.is_enabled"
+                        class="badge text-bg-secondary"
+                    >{{ $gettext('Disabled') }}</span>
                 </div>
-                <code>{{ row.item.short_name }}</code>
+                <code>{{ item.short_name }}</code>
             </template>
             <template #cell(actions)="row">
                 <div class="btn-group btn-group-sm">

@@ -52,6 +52,17 @@
                         </tr>
                         <tr class="align-middle">
                             <td>
+                                {{ $gettext('Port') }}
+                            </td>
+                            <td
+                                class="px-0"
+                                colspan="2"
+                            >
+                                {{ frontendPort }}
+                            </td>
+                        </tr>
+                        <tr class="align-middle">
+                            <td>
                                 {{ $gettext('Source') }}
                             </td>
                             <td class="px-0">

@@ -19,6 +19,10 @@ export default {
         type: String,
         required: true
     },
+    frontendPort: {
+        type: Number,
+        required: true
+    },
     frontendRestartUri: {
         type: String,
         required: true

@@ -31,6 +31,7 @@
         "codemirror": "^6",
         "hls.js": "^1.1.5",
         "leaflet": "^1.7.1",
+        "leaflet-fullscreen": "^1.0.2",
         "lodash": "^4.17.21",
         "luxon": "^3",
         "material-icons": "^1",
@@ -3176,6 +3177,11 @@
       "version": "1.9.4",
       "resolved": "https://registry.npmjs.org/leaflet/-/leaflet-1.9.4.tgz",
       "integrity": "sha512-nxS1ynzJOmOlHp+iL3FyWqK89GtNL8U8rvlMOsQdTTssxZwCXh8N2NB3GDQOL+YR3XnWyZAxwQixURb+FA74PA=="
+    },
+    "node_modules/leaflet-fullscreen": {
+      "version": "1.0.2",
+      "resolved": "https://registry.npmjs.org/leaflet-fullscreen/-/leaflet-fullscreen-1.0.2.tgz",
+      "integrity": "sha512-1Yxm8RZg6KlKX25+hbP2H/wnOAphH7hFcvuADJFb4QZTN7uOSN9Hsci5EZpow8vtNej9OGzu59Jxmn+0qKOO9Q=="
     },
     "node_modules/levn": {
       "version": "0.4.1",

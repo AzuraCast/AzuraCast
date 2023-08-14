@@ -14,6 +14,8 @@
 import {onMounted, provide, ref, shallowRef, watch} from "vue";
 import L from 'leaflet';
 import useGetTheme from "~/functions/useGetTheme";
+import 'leaflet-fullscreen';
+import {useTranslate} from "~/vendor/gettext";
 
 const $container = ref(); // Template Ref
 const $map = shallowRef();
@@ -21,13 +23,23 @@ const $map = shallowRef();
 provide('map', $map);
 
 const {theme} = useGetTheme();
+const {$gettext} = useTranslate();
 
 onMounted(() => {
     L.Icon.Default.imagePath = '/static/img/leaflet/';
 
     // Init map
-    const map = L.map($container.value);
+    const map = L.map(
+        $container.value
+    );
     map.setView([40, 0], 1);
+
+    map.addControl(new L.Control.Fullscreen({
+        title: {
+            'false': $gettext('View Fullscreen'),
+            'true': $gettext('Exit Fullscreen')
+        }
+    }));
 
     $map.value = map;
 
@@ -51,6 +63,7 @@ onMounted(() => {
 
 <style lang="scss">
 @import 'leaflet/dist/leaflet.css';
+@import 'leaflet-fullscreen/dist/leaflet.fullscreen.css';
 
 .leaflet-container {
     height: 300px;

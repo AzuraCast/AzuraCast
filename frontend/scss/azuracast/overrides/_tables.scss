@@ -26,6 +26,10 @@ div.datatable-main {
       }
     }
 
+    th.sortable {
+      cursor: pointer;
+    }
+
     th.shrink,
     td.shrink {
       width: 0.1%;

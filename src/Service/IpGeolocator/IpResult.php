@@ -38,8 +38,8 @@ final class IpResult
         $record->description = implode(
             ', ',
             array_filter([
-                $record->region,
                 $record->city,
+                $record->region,
                 $record->country,
             ])
         );

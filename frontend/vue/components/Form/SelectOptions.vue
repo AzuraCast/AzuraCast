@@ -7,7 +7,7 @@
             v-if="Array.isArray(option.options)"
             :label="option.label"
         >
-            <form-group-select-option :options="option.options" />
+            <select-options :options="option.options" />
         </optgroup>
         <option
             v-else

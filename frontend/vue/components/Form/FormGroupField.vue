@@ -27,7 +27,7 @@
                     v-bind="inputAttrs"
                     :id="id"
                     ref="$input"
-                    v-model="modelValue"
+                    v-model="filteredModel"
                     :name="name"
                     :required="isRequired"
                     :autofocus="autofocus"
@@ -39,7 +39,7 @@
                     v-bind="inputAttrs"
                     :id="id"
                     ref="$input"
-                    v-model="modelValue"
+                    v-model="filteredModel"
                     :type="inputType"
                     :name="name"
                     :required="isRequired"
@@ -49,7 +49,10 @@
                 >
             </slot>
 
-            <vuelidate-error :field="field" />
+            <vuelidate-error
+                v-if="isVuelidateField"
+                :field="field"
+            />
         </template>
 
         <template #description="slotProps">
@@ -66,12 +69,12 @@
 <script setup>
 import VuelidateError from "./VuelidateError";
 import {computed, ref} from "vue";
-import {has} from "lodash";
 import FormGroup from "~/components/Form/FormGroup.vue";
 import FormLabel from "~/components/Form/FormLabel.vue";
-import useFormFieldState from "~/functions/useFormFieldState";
+import {formFieldProps, useFormField} from "~/components/Form/useFormField";
 
 const props = defineProps({
+    ...formFieldProps,
     id: {
         type: String,
         required: true
@@ -79,10 +82,6 @@ const props = defineProps({
     name: {
         type: String,
         default: null
-    },
-    field: {
-        type: Object,
-        required: true
     },
     label: {
         type: String,
@@ -124,13 +123,17 @@ const props = defineProps({
     }
 });
 
+const emit = defineEmits(['update:modelValue']);
+
+const {model, isVuelidateField, fieldClass, isRequired} = useFormField(props, emit);
+
 const isNumeric = computed(() => {
     return props.inputNumber || props.inputType === "number" || props.inputType === "range";
 });
 
-const modelValue = computed({
+const filteredModel = computed({
     get() {
-        return props.field.$model;
+        return model.value;
     },
     set(newValue) {
         if ((isNumeric.value || props.inputEmptyIsNull) && '' === newValue) {
@@ -145,14 +148,8 @@ const modelValue = computed({
             newValue = Number(newValue);
         }
 
-        props.field.$model = newValue;
+        model.value = newValue;
     }
-});
-
-const fieldClass = useFormFieldState(props.field);
-
-const isRequired = computed(() => {
-    return has(props.field, 'required');
 });
 
 const $input = ref(); // Input

@@ -6,13 +6,13 @@
         <template #default>
             <slot
                 name="default"
-                v-bind="{ id, field, class: fieldClass }"
+                v-bind="{ id, field, model }"
             >
                 <div class="form-check form-switch">
                     <input
                         v-bind="inputAttrs"
                         :id="id"
-                        v-model="field.$model"
+                        v-model="model"
                         class="form-check-input"
                         type="checkbox"
                         role="switch"
@@ -32,7 +32,10 @@
                 </div>
             </slot>
 
-            <vuelidate-error :field="field" />
+            <vuelidate-error
+                v-if="isVuelidateField"
+                :field="field"
+            />
         </template>
 
         <template #description="slotProps">
@@ -47,14 +50,13 @@
 </template>
 
 <script setup>
-import {has} from "lodash";
 import VuelidateError from "./VuelidateError";
-import {computed} from "vue";
 import FormLabel from "~/components/Form/FormLabel.vue";
 import FormGroup from "~/components/Form/FormGroup.vue";
-import useFormFieldState from "~/functions/useFormFieldState";
+import {formFieldProps, useFormField} from "~/components/Form/useFormField";
 
 const props = defineProps({
+    ...formFieldProps,
     id: {
         type: String,
         required: true
@@ -62,10 +64,6 @@ const props = defineProps({
     name: {
         type: String,
         default: null
-    },
-    field: {
-        type: Object,
-        required: true
     },
     label: {
         type: String,
@@ -87,9 +85,7 @@ const props = defineProps({
     }
 });
 
-const fieldClass = useFormFieldState(props.field);
+const emit = defineEmits(['update:modelValue']);
 
-const isRequired = computed(() => {
-    return has(props.field, 'required');
-});
+const {model, isVuelidateField, isRequired} = useFormField(props, emit);
 </script>

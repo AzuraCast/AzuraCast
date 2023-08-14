@@ -21,37 +21,25 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-6">
-                                <form-group
+                                <form-group-multi-check
                                     id="embed_type"
+                                    v-model="selectedType"
                                     :label="$gettext('Widget Type')"
-                                >
-                                    <template #default="{id}">
-                                        <form-multi-check
-                                            :id="id"
-                                            v-model="selectedType"
-                                            :options="types"
-                                            stacked
-                                            radio
-                                        />
-                                    </template>
-                                </form-group>
+                                    :options="types"
+                                    stacked
+                                    radio
+                                />
                             </div>
                             <div class="col-md-6">
-                                <form-group
+                                <form-group-multi-check
                                     id="embed_theme"
+                                    v-model="selectedTheme"
                                     :label="$gettext('Theme')"
-                                >
-                                    <template #default="{id}">
-                                        <form-multi-check
-                                            :id="id"
-                                            v-model="selectedTheme"
-                                            name="embed_theme"
-                                            :options="themes"
-                                            stacked
-                                            radio
-                                        />
-                                    </template>
-                                </form-group>
+                                    name="embed_theme"
+                                    :options="themes"
+                                    stacked
+                                    radio
+                                />
                             </div>
                         </div>
                     </div>
@@ -110,8 +98,7 @@ import {computed, ref} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import embedModalProps from "./embedModalProps";
 import Modal from "~/components/Common/Modal.vue";
-import FormGroup from "~/components/Form/FormGroup.vue";
-import FormMultiCheck from "~/components/Form/FormMultiCheck.vue";
+import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
 
 const props = defineProps({
     ...embedModalProps

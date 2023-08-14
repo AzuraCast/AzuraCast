@@ -76,6 +76,33 @@
                 </template>
             </form-group>
 
+            <form-group id="import_modal_overwrite_playlist">
+                <template #label>
+                    {{ $gettext('Replace Playlist Contents with Imported Files') }}
+                </template>
+                <template #description>
+                    {{
+                        $gettext('AzuraCast will scan the uploaded file for matches in this station\'s music library. Media should already be uploaded before running this step. You can re-run this tool as many times as needed.')
+                    }}
+                </template>
+
+                <template #default="{id}">
+                    <form-file
+                        :id="id"
+                        @uploaded="uploaded"
+                    />
+                </template>
+            </form-group>
+
+            <form-group-checkbox
+                id=""
+                :field="v$.copyPlaylist"
+            >
+                <template #label>
+                    {{ $gettext('') }}
+                </template>
+            </form-group-checkbox>
+
             <invisible-submit-button />
         </form>
         <template #modal-footer>
@@ -106,11 +133,14 @@ import {useAxios} from "~/vendor/axios";
 import FormGroup from "~/components/Form/FormGroup.vue";
 import Modal from "~/components/Common/Modal.vue";
 import FormFile from "~/components/Form/FormFile.vue";
+import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
 
 const emit = defineEmits(['relist']);
 
 const importPlaylistUrl = ref(null);
 const playlistFile = ref(null);
+const overwritePlaylist = ref(false);
+
 const results = ref(null);
 
 const uploaded = (file) => {
@@ -121,6 +151,8 @@ const $modal = ref(); // Template Ref
 
 const open = (newImportPlaylistUrl) => {
     playlistFile.value = null;
+    overwritePlaylist.value = false;
+
     importPlaylistUrl.value = newImportPlaylistUrl;
 
     $modal.value.show();
@@ -132,6 +164,7 @@ const {axios} = useAxios();
 const doSubmit = () => {
     const formData = new FormData();
     formData.append('playlist_file', playlistFile.value);
+
 
     wrapWithLoading(
         axios.post(importPlaylistUrl.value, formData)

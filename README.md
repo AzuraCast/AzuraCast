@@ -56,6 +56,8 @@ your radio station can be managed via AzuraCast's web interface.
 create a root directory of the boostcast
 ```
 sudo mkdir /var/azuracast
+```
+```
 cd /var/azuracast
 ```
 

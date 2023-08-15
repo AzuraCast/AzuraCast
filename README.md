@@ -52,16 +52,16 @@ Docker installation now supports ARM64 devices as well, so you can follow these 
 To install AzuraCast, you should have a basic understanding of the Linux shell terminal. Once installed, every aspect of
 your radio station can be managed via AzuraCast's web interface.
 
-### BoostCast docker image
+### Use the docker image of BoostCast
 create a root directory of the boostcast
 ```
- mkdir /var/azuracast
- cd /var/azuracast
+sudo mkdir /var/azuracast
+cd /var/azuracast
 ```
 
-download the boostcast image
+Download the BoostCast docker image
 ```
- curl -fsSL https://raw.githubusercontent.com/boostmn/boostcast/main/docker.sh > docker.sh
+curl -fsSL https://raw.githubusercontent.com/boostmn/boostcast/main/docker.sh > docker.sh
 ```
 
 Follow our **[installation guide](https://docs.azuracast.com/en/getting-started/installation)** for instructions on how

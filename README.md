@@ -55,13 +55,13 @@ your radio station can be managed via AzuraCast's web interface.
 ### BoostCast docker image
 create a root directory of the boostcast
 ```
-mkdir /var/azuracast
-cd /var/azuracast
+ mkdir /var/azuracast
+ cd /var/azuracast
 ```
 
 download the boostcast image
 ```
-curl -fsSL https://raw.githubusercontent.com/boostmn/boostcast/main/docker.sh > docker.sh
+ curl -fsSL https://raw.githubusercontent.com/boostmn/boostcast/main/docker.sh > docker.sh
 ```
 
 Follow our **[installation guide](https://docs.azuracast.com/en/getting-started/installation)** for instructions on how

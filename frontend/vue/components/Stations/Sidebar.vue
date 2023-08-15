@@ -70,6 +70,7 @@ import {useStationsMenu} from "~/components/Stations/menu";
 import {StationPermission, userAllowedForStation} from "~/acl";
 import {useAxios} from "~/vendor/axios.ts";
 import {getStationApiUrl} from "~/router.ts";
+import {useLuxon} from "~/vendor/luxon.ts";
 
 const props = defineProps({
     station: {
@@ -80,21 +81,17 @@ const props = defineProps({
 
 const menuItems = useStationsMenu();
 
-const {timeConfig, localeWithDashes} = useAzuraCast();
+const {timeConfig} = useAzuraCast();
 const {name, timezone} = useAzuraCastStation();
+const {DateTime} = useLuxon();
 
 const clock = ref('');
 
 useIntervalFn(() => {
-    const d = new Date();
-    clock.value = d.toLocaleString(
-        localeWithDashes,
-        {
-            timeConfig,
-            timeZone: timezone,
-            timeStyle: 'long'
-        }
-    );
+    clock.value = DateTime.now().setZone(timezone).toLocaleString({
+        ...DateTime.TIME_WITH_SHORT_OFFSET,
+        ...timeConfig
+    })
 }, 1000, {
     immediate: true,
     immediateCallback: true

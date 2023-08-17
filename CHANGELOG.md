@@ -5,6 +5,16 @@ release channel, you can take advantage of these new features and fixes.
 
 ## New Features/Changes
 
+## Code Quality/Technical Changes
+
+## Bug Fixes
+
+---
+
+# AzuraCast 0.19.0 (Aug 17, 2023)
+
+## New Features/Changes
+
 - **Update to Liquidsoap 2.2.x**: We're updating to the latest version of Liquidsoap, which includes many bug fixes,
   performance improvements and other changes. We have adopted our syntax to match Liquidsoap's new supported syntax, but
   if you use custom Liquidsoap code, you will need to update your code accordingly. You can see the most important

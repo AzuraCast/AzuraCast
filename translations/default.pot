@@ -3,11 +3,11 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "X-Domain: default\n"
 
-#: vue/components/Stations/Podcasts/ListView.vue:124
+#: vue/components/Stations/Podcasts/ListView.vue:130
 msgid "# Episodes"
 msgstr ""
 
-#: vue/components/Stations/Playlists.vue:356
+#: vue/components/Stations/Playlists.vue:342
 msgid "# Songs"
 msgstr ""
 
@@ -37,13 +37,13 @@ msgid_plural "%{filesCount} Files"
 msgstr[0] ""
 msgstr[1] ""
 
-#: vue/components/Stations/Profile/NowPlayingPanel.vue:257
+#: vue/components/Stations/Profile/NowPlayingPanel.vue:260
 msgid "%{listeners} Listener"
 msgid_plural "%{listeners} Listeners"
 msgstr[0] ""
 msgstr[1] ""
 
-#: vue/components/Admin/Debug.vue:128
+#: vue/components/Admin/Debug.vue:98
 msgid "%{messages} queued messages"
 msgstr ""
 
@@ -51,13 +51,13 @@ msgstr ""
 msgid "%{name} - Copy"
 msgstr ""
 
-#: vue/components/Stations/Profile/BackendPanel.vue:106
+#: vue/components/Stations/Profile/BackendPanel.vue:112
 msgid "%{numPlaylists} playlist"
 msgid_plural "%{numPlaylists} playlists"
 msgstr[0] ""
 msgstr[1] ""
 
-#: vue/components/Stations/Profile/BackendPanel.vue:99
+#: vue/components/Stations/Profile/BackendPanel.vue:105
 msgid "%{numSongs} uploaded song"
 msgid_plural "%{numSongs} uploaded songs"
 msgstr[0] ""
@@ -75,11 +75,11 @@ msgstr ""
 msgid "%{station} - Copy"
 msgstr ""
 
-#: vue/components/Account/EditForm.vue:86
+#: vue/components/Account/EditForm.vue:74
 msgid "12 Hour"
 msgstr ""
 
-#: vue/components/Account/EditForm.vue:90
+#: vue/components/Account/EditForm.vue:78
 msgid "24 Hour"
 msgstr ""
 
@@ -111,7 +111,7 @@ msgstr ""
 msgid "About Master_me"
 msgstr ""
 
-#: vue/components/Admin/Updates.vue:80
+#: vue/components/Admin/Updates.vue:64
 #: /var/azuracast/www/src/Notification/Check/UpdateCheck.php:100
 msgid "About Release Channels"
 msgstr ""
@@ -146,34 +146,34 @@ msgid "Account List"
 msgstr ""
 
 #: vue/components/Account.vue:287
-#: vue/components/Admin/ApiKeys.vue:80
-#: vue/components/Admin/AuditLog.vue:135
-#: vue/components/Admin/Backups.vue:254
-#: vue/components/Admin/CustomFields.vue:104
-#: vue/components/Admin/Debug.vue:274
+#: vue/components/Admin/ApiKeys.vue:59
+#: vue/components/Admin/AuditLog.vue:128
+#: vue/components/Admin/Backups.vue:225
+#: vue/components/Admin/CustomFields.vue:103
+#: vue/components/Admin/Debug.vue:231
 #: vue/components/Admin/Permissions.vue:115
-#: vue/components/Admin/Stations.vue:135
-#: vue/components/Admin/StorageLocations.vue:152
+#: vue/components/Admin/Stations.vue:140
+#: vue/components/Admin/StorageLocations.vue:137
 #: vue/components/Admin/Users.vue:112
-#: vue/components/Public/Requests.vue:129
-#: vue/components/Stations/HlsStreams.vue:96
-#: vue/components/Stations/Media.vue:388
-#: vue/components/Stations/Mounts.vue:119
-#: vue/components/Stations/Playlists.vue:357
+#: vue/components/Public/Requests.vue:123
+#: vue/components/Stations/HlsStreams.vue:91
+#: vue/components/Stations/Media.vue:357
+#: vue/components/Stations/Mounts.vue:109
+#: vue/components/Stations/Playlists.vue:343
 #: vue/components/Stations/Playlists/ReorderModal.vue:33
-#: vue/components/Stations/Podcasts/EpisodesView.vue:152
-#: vue/components/Stations/Podcasts/ListView.vue:130
-#: vue/components/Stations/Queue.vue:105
-#: vue/components/Stations/Remotes.vue:106
-#: vue/components/Stations/Reports/Requests.vue:130
-#: vue/components/Stations/SftpUsers.vue:109
-#: vue/components/Stations/Streamers.vue:169
-#: vue/components/Stations/Streamers/BroadcastsModal.vue:134
-#: vue/components/Stations/Webhooks.vue:135
+#: vue/components/Stations/Podcasts/EpisodesView.vue:151
+#: vue/components/Stations/Podcasts/ListView.vue:136
+#: vue/components/Stations/Queue.vue:94
+#: vue/components/Stations/Remotes.vue:101
+#: vue/components/Stations/Reports/Requests.vue:123
+#: vue/components/Stations/SftpUsers.vue:108
+#: vue/components/Stations/Streamers.vue:161
+#: vue/components/Stations/Streamers/BroadcastsModal.vue:129
+#: vue/components/Stations/Webhooks.vue:131
 msgid "Actions"
 msgstr ""
 
-#: vue/components/Admin/StorageLocations.vue:149
+#: vue/components/Admin/StorageLocations.vue:134
 msgid "Adapter"
 msgstr ""
 
@@ -187,7 +187,7 @@ msgstr ""
 msgid "Add Custom Field"
 msgstr ""
 
-#: vue/components/Stations/Podcasts/EpisodeEditModal.vue:154
+#: vue/components/Stations/Podcasts/EpisodeEditModal.vue:148
 #: vue/components/Stations/Podcasts/EpisodesView.vue:50
 msgid "Add Episode"
 msgstr ""
@@ -203,7 +203,7 @@ msgid "Add HLS Stream"
 msgstr ""
 
 #: vue/components/Stations/Mounts.vue:18
-#: vue/components/Stations/Mounts/EditModal.vue:122
+#: vue/components/Stations/Mounts/EditModal.vue:121
 msgid "Add Mount Point"
 msgstr ""
 
@@ -211,13 +211,13 @@ msgstr ""
 msgid "Add New GitHub Issue"
 msgstr ""
 
-#: vue/components/Stations/Playlists.vue:44
-#: vue/components/Stations/Playlists/EditModal.vue:90
+#: vue/components/Stations/Playlists.vue:39
+#: vue/components/Stations/Playlists/EditModal.vue:82
 msgid "Add Playlist"
 msgstr ""
 
 #: vue/components/Stations/Podcasts/ListView.vue:30
-#: vue/components/Stations/Podcasts/PodcastEditModal.vue:107
+#: vue/components/Stations/Podcasts/PodcastEditModal.vue:103
 msgid "Add Podcast"
 msgstr ""
 
@@ -231,8 +231,8 @@ msgstr ""
 msgid "Add Role"
 msgstr ""
 
-#: vue/components/Stations/Playlists/Form/Schedule.vue:34
-#: vue/components/Stations/Streamers/Form/Schedule.vue:32
+#: vue/components/Stations/Playlists/Form/Schedule.vue:33
+#: vue/components/Stations/Streamers/Form/Schedule.vue:31
 msgid "Add Schedule Item"
 msgstr ""
 
@@ -247,13 +247,13 @@ msgstr ""
 msgid "Add Station"
 msgstr ""
 
-#: vue/components/Admin/StorageLocations.vue:48
+#: vue/components/Admin/StorageLocations.vue:38
 #: vue/components/Admin/StorageLocations/EditModal.vue:110
 msgid "Add Storage Location"
 msgstr ""
 
 #: vue/components/Stations/Streamers.vue:42
-#: vue/components/Stations/Streamers/EditModal.vue:103
+#: vue/components/Stations/Streamers/EditModal.vue:98
 msgid "Add Streamer"
 msgstr ""
 
@@ -268,15 +268,18 @@ msgid "Add Web Hook"
 msgstr ""
 
 #: vue/components/Admin/Index.vue:4
+#: vue/components/Admin/Sidebar.vue:4
 #: vue/components/Admin/Stations/Form/AdminForm.vue:3
 #: vue/components/Dashboard.vue:45
-#: vue/components/Stations/Profile/FrontendPanel.vue:31
-#: /var/azuracast/www/src/Controller/Admin/IndexAction.php:32
+#: vue/components/Stations/Profile/FrontendPanel.vue:30
+#: /var/azuracast/www/src/Controller/Admin/IndexAction.php:23
 #: /var/azuracast/www/src/Notification/Check/ServiceCheck.php:42
-#: /var/azuracast/www/templates/admin/sidebar.phtml:11
 msgid "Administration"
 msgstr ""
 
+#: vue/components/Admin/Stations/Form/BackendForm.vue:171
+#: vue/components/Admin/Stations/Form/FrontendForm.vue:142
+#: vue/components/Admin/Stations/Form/FrontendForm.vue:61
 #: vue/components/Form/FormLabel.vue:13
 #: vue/components/Stations/Media/EditModal.vue:47
 #: vue/components/Stations/Mounts/Form/Advanced.vue:3
@@ -286,6 +289,7 @@ msgid "Advanced"
 msgstr ""
 
 #: vue/components/Admin/Stations/Form/BackendForm.vue:169
+#: vue/components/Admin/Stations/Form/FrontendForm.vue:59
 msgid "Advanced Configuration"
 msgstr ""
 
@@ -297,25 +301,28 @@ msgstr ""
 msgid "Aggregate listener statistics are used to show station reports across the system. IP-based listener statistics are used to view live listener tracking and may be required for royalty reports."
 msgstr ""
 
-#: vue/components/Public/OnDemand.vue:129
-#: vue/components/Public/Requests.vue:101
-#: vue/components/Stations/Media.vue:347
+#: vue/components/Public/OnDemand.vue:132
+#: vue/components/Public/Requests.vue:95
+#: vue/components/Stations/Media.vue:316
 #: vue/components/Stations/Playlists/ReorderModal.vue:30
 #: /var/azuracast/www/src/Media/Enums/MetadataTags.php:80
 msgid "Album"
 msgstr ""
 
 #: vue/components/Admin/Settings/ServicesTab.vue:208
-#: vue/components/Public/Player.vue:22
 #: vue/components/Stations/Media/EditModal.vue:28
 msgid "Album Art"
+msgstr ""
+
+#: vue/components/Admin/Debug/TaskOutput.vue:99
+msgid "Alert"
 msgstr ""
 
 #: vue/components/Admin/Settings/ServicesTab.vue:57
 msgid "All listed domain names should point to this AzuraCast installation. Separate multiple domain names with commas."
 msgstr ""
 
-#: vue/components/Stations/Playlists.vue:34
+#: vue/components/Stations/Playlists.vue:29
 msgid "All Playlists"
 msgstr ""
 
@@ -339,7 +346,7 @@ msgstr ""
 msgid "Allow Streamers / DJs"
 msgstr ""
 
-#: vue/components/Admin/Stations/Form/FrontendForm.vue:100
+#: vue/components/Admin/Stations/Form/FrontendForm.vue:101
 msgid "Allowed IP Addresses"
 msgstr ""
 
@@ -351,8 +358,8 @@ msgstr ""
 msgid "Amplify: Amplification (dB)"
 msgstr ""
 
-#: vue/functions/useNotify.js:49
-#: vue/vendor/axios.js:29
+#: vue/functions/useNotify.js:50
+#: vue/vendor/axios.ts:30
 msgid "An error occurred and your request could not be completed."
 msgstr ""
 
@@ -403,14 +410,13 @@ msgstr ""
 
 #: vue/components/Account.vue:282
 #: vue/components/Account/ApiKeyModal.vue:28
-#: vue/components/Admin/ApiKeys.vue:70
+#: vue/components/Admin/ApiKeys.vue:49
 msgid "API Key Description/Comments"
 msgstr ""
 
 #: vue/components/Account.vue:130
 #: vue/components/Admin/ApiKeys.vue:2
-#: /var/azuracast/www/src/Controller/Admin/ApiKeysAction.php:25
-#: /var/azuracast/www/config/menus/admin.php:78
+#: vue/components/Admin/menu.ts:103
 msgid "API Keys"
 msgstr ""
 
@@ -426,7 +432,7 @@ msgstr ""
 msgid "App Secret"
 msgstr ""
 
-#: vue/components/Admin/Stations/Form/BackendForm.vue:470
+#: vue/components/Admin/Stations/Form/BackendForm.vue:465
 msgid "Apple Podcasts"
 msgstr ""
 
@@ -442,7 +448,13 @@ msgstr ""
 msgid "Apply Post-processing to Live Streams"
 msgstr ""
 
-#: vue/components/Stations/Playlists.vue:132
+#: vue/components/Stations/Playlists.vue:147
+#: vue/components/Stations/Playlists.vue:148
+#: vue/components/Stations/Playlists.vue:155
+#: vue/components/Stations/Playlists.vue:159
+#: vue/components/Stations/Playlists.vue:163
+#: vue/components/Stations/Playlists.vue:199
+#: vue/components/Stations/Playlists.vue:232
 #: vue/components/Stations/Playlists/ApplyToModal.vue:30
 #: vue/components/Stations/Playlists/ApplyToModal.vue:31
 #: vue/components/Stations/Playlists/ApplyToModal.vue:48
@@ -450,22 +462,22 @@ msgstr ""
 msgid "Apply to Folders"
 msgstr ""
 
-#: vue/components/Stations/Profile.vue:168
-#: vue/components/Stations/Restart.vue:140
+#: vue/components/Stations/Profile.vue:163
+#: vue/components/Stations/Restart.vue:135
 msgid "Are you sure?"
 msgstr ""
 
-#: vue/components/Public/OnDemand.vue:112
-#: vue/components/Stations/Podcasts/EpisodesView.vue:148
-#: vue/components/Stations/Podcasts/ListView.vue:120
-#: vue/components/Stations/Streamers.vue:165
+#: vue/components/Public/OnDemand.vue:115
+#: vue/components/Stations/Podcasts/EpisodesView.vue:147
+#: vue/components/Stations/Podcasts/ListView.vue:126
+#: vue/components/Stations/Streamers.vue:157
 msgid "Art"
 msgstr ""
 
-#: vue/components/Public/OnDemand.vue:122
-#: vue/components/Public/Requests.vue:93
+#: vue/components/Public/OnDemand.vue:125
+#: vue/components/Public/Requests.vue:87
 #: vue/components/Public/WebDJ/SettingsPanel.vue:30
-#: vue/components/Stations/Media.vue:342
+#: vue/components/Stations/Media.vue:311
 #: vue/components/Stations/Playlists/QueueModal.vue:22
 #: vue/components/Stations/Playlists/ReorderModal.vue:27
 #: /var/azuracast/www/src/Media/Enums/MetadataTags.php:84
@@ -511,9 +523,8 @@ msgstr ""
 msgid "Audio transcoding applications like Liquidsoap use a consistent amount of CPU over time, which gradually drains this available credit. If you regularly see stolen CPU time, you should consider migrating to a VM that has CPU resources dedicated to your instance."
 msgstr ""
 
-#: vue/components/Admin/AuditLog.vue:10
-#: /var/azuracast/www/src/Controller/Admin/AuditLogAction.php:25
-#: /var/azuracast/www/config/menus/admin.php:73
+#: vue/components/Admin/AuditLog.vue:6
+#: vue/components/Admin/menu.ts:95
 msgid "Audit Log"
 msgstr ""
 
@@ -522,19 +533,19 @@ msgstr ""
 msgid "Author"
 msgstr ""
 
-#: vue/components/Admin/CustomFields.vue:96
+#: vue/components/Admin/CustomFields.vue:95
 msgid "Auto-Assign Value"
 msgstr ""
 
-#: vue/components/Stations/Playlists.vue:201
+#: vue/components/Stations/Playlists.vue:110
 msgid "Auto-Assigned"
 msgstr ""
 
-#: vue/components/Admin/Stations.vue:127
+#: vue/components/Admin/Stations.vue:132
 #: vue/components/Admin/Stations/Form/BackendForm.vue:3
-#: vue/components/Stations/Mounts.vue:118
+#: vue/components/Stations/Mounts.vue:108
 #: vue/components/Stations/Mounts/Form/AutoDj.vue:3
-#: vue/components/Stations/Remotes.vue:105
+#: vue/components/Stations/Remotes.vue:100
 #: vue/components/Stations/Remotes/Form/AutoDj.vue:3
 msgid "AutoDJ"
 msgstr ""
@@ -544,7 +555,7 @@ msgstr ""
 msgid "AutoDJ Bitrate (kbps)"
 msgstr ""
 
-#: vue/components/Stations/Profile/BackendNonePanel.vue:10
+#: vue/components/Stations/Profile/BackendNonePanel.vue:5
 msgid "AutoDJ Disabled"
 msgstr ""
 
@@ -553,24 +564,24 @@ msgstr ""
 msgid "AutoDJ Format"
 msgstr ""
 
-#: vue/components/Stations/Profile/BackendNonePanel.vue:19
+#: vue/components/Stations/Profile/BackendNonePanel.vue:10
 msgid "AutoDJ has been disabled for this station. No music will automatically be played when a source is not live."
 msgstr ""
 
-#: vue/components/Admin/Debug.vue:175
+#: vue/components/Admin/Debug.vue:137
 msgid "AutoDJ Queue"
 msgstr ""
 
-#: vue/components/Admin/Stations/Form/BackendForm.vue:214
+#: vue/components/Admin/Stations/Form/BackendForm.vue:213
 msgid "AutoDJ Queue Length"
 msgstr ""
 
 #: vue/components/Admin/Stations/Form/BackendForm.vue:14
-#: vue/components/Stations/Profile/BackendPanel.vue:10
+#: vue/components/Stations/Profile/BackendPanel.vue:8
 msgid "AutoDJ Service"
 msgstr ""
 
-#: vue/components/Admin/Backups.vue:15
+#: vue/components/Admin/Backups.vue:11
 msgid "Automatic Backups"
 msgstr ""
 
@@ -608,7 +619,7 @@ msgid "Avatar Service"
 msgstr ""
 
 #: vue/components/Common/Avatar.vue:44
-msgid "Avatars are retrieved based on your e-mail address from the %{service} service. Click to manage your %{service} settings."
+msgid "Avatars are retrieved based on your e-mail address from the %{ service } service. Click to manage your %{ service } settings."
 msgstr ""
 
 #: vue/components/DashboardCharts.vue:10
@@ -627,7 +638,7 @@ msgstr ""
 msgid "AzuraCast Instance Name"
 msgstr ""
 
-#: vue/components/Admin/GeoLite.vue:31
+#: vue/components/Admin/GeoLite.vue:21
 msgid "AzuraCast ships with a built-in free IP geolocation database. You may prefer to use the MaxMind GeoLite service instead to achieve more accurate results. Using MaxMind GeoLite requires a license key, but once the key is provided, we will automatically keep the database updated."
 msgstr ""
 
@@ -635,8 +646,8 @@ msgstr ""
 msgid "AzuraCast Update Checks"
 msgstr ""
 
-#: vue/components/Account.vue:47
-#: vue/components/Dashboard.vue:377
+#: vue/components/Account.vue:34
+#: vue/components/Dashboard.vue:379
 msgid "AzuraCast User"
 msgstr ""
 
@@ -648,7 +659,7 @@ msgstr ""
 msgid "AzuraCast Wiki"
 msgstr ""
 
-#: vue/components/Stations/Playlists/ImportModal.vue:61
+#: vue/components/Stations/Playlists/ImportModal.vue:67
 msgid "AzuraCast will scan the uploaded file for matches in this station's music library. Media should already be uploaded before running this step. You can re-run this tool as many times as needed."
 msgstr ""
 
@@ -662,11 +673,11 @@ msgstr ""
 msgid "Back"
 msgstr ""
 
-#: vue/components/Admin/Updates.vue:110
+#: vue/components/Admin/Updates.vue:85
 msgid "Backing up your installation is strongly recommended before any update."
 msgstr ""
 
-#: vue/components/Admin/Updates.vue:121
+#: vue/components/Admin/Updates.vue:110
 msgid "Backup"
 msgstr ""
 
@@ -674,24 +685,23 @@ msgstr ""
 msgid "Backup Format"
 msgstr ""
 
-#: vue/components/Admin/Backups.vue:109
 #: vue/components/Admin/Backups.vue:3
-#: vue/components/Admin/StorageLocations.vue:170
-#: /var/azuracast/www/src/Controller/Admin/BackupsAction.php:36
+#: vue/components/Admin/Backups.vue:90
+#: vue/components/Admin/menu.ts:48
+#: vue/components/Admin/StorageLocations.vue:155
 #: /var/azuracast/www/src/Notification/Check/RecentBackupCheck.php:52
-#: /var/azuracast/www/config/menus/admin.php:42
 msgid "Backups"
 msgstr ""
 
-#: vue/components/Admin/Stations/Form/BackendForm.vue:487
+#: vue/components/Admin/Stations/Form/BackendForm.vue:482
 msgid "Balanced"
 msgstr ""
 
-#: vue/components/Admin/Stations/Form/FrontendForm.vue:122
+#: vue/components/Admin/Stations/Form/FrontendForm.vue:121
 msgid "Banned Countries"
 msgstr ""
 
-#: vue/components/Admin/Stations/Form/FrontendForm.vue:90
+#: vue/components/Admin/Stations/Form/FrontendForm.vue:92
 msgid "Banned IP Addresses"
 msgstr ""
 
@@ -723,7 +733,7 @@ msgstr ""
 msgid "Basic Information"
 msgstr ""
 
-#: vue/components/Admin/Stations/Form/BackendForm.vue:427
+#: vue/components/Admin/Stations/Form/BackendForm.vue:422
 msgid "Basic Normalization and Compression"
 msgstr ""
 
@@ -739,12 +749,16 @@ msgstr ""
 msgid "Bit Rate"
 msgstr ""
 
-#: vue/components/Stations/HlsStreams.vue:95
+#: vue/components/Stations/HlsStreams.vue:90
 msgid "Bitrate"
 msgstr ""
 
 #: vue/components/Stations/Webhooks/Form/Telegram.vue:11
 msgid "Bot Token"
+msgstr ""
+
+#: vue/components/Stations/menu.ts:38
+msgid "Branding"
 msgstr ""
 
 #: vue/components/Admin/Branding/BrandingForm.vue:12
@@ -756,14 +770,14 @@ msgstr ""
 msgid "Broadcast AutoDJ to Remote Station"
 msgstr ""
 
-#: vue/components/Admin/Stations.vue:119
+#: vue/components/Admin/Stations.vue:124
 #: vue/components/Admin/Stations/Form/FrontendForm.vue:3
-#: /var/azuracast/www/config/menus/station.php:202
+#: vue/components/Stations/menu.ts:222
 msgid "Broadcasting"
 msgstr ""
 
 #: vue/components/Admin/Stations/Form/FrontendForm.vue:14
-#: vue/components/Stations/Profile/FrontendPanel.vue:10
+#: vue/components/Stations/Profile/FrontendPanel.vue:9
 msgid "Broadcasting Service"
 msgstr ""
 
@@ -780,11 +794,11 @@ msgstr ""
 msgid "Browser"
 msgstr ""
 
-#: vue/components/Stations/Profile/EmbedModal.vue:162
+#: vue/components/Stations/Profile/EmbedModal.vue:149
 msgid "Browser Default"
 msgstr ""
 
-#: vue/components/Admin/Branding.vue:36
+#: vue/components/Admin/Branding.vue:28
 msgid "Browser Icon"
 msgstr ""
 
@@ -794,6 +808,10 @@ msgstr ""
 
 #: vue/components/Admin/StorageLocations/Form/S3.vue:32
 msgid "Bucket Name"
+msgstr ""
+
+#: vue/components/Stations/menu.ts:118
+msgid "Bulk Media Import/Export"
 msgstr ""
 
 #: vue/components/Admin/Settings/GeneralTab.vue:43
@@ -806,7 +824,7 @@ msgid "Cached"
 msgstr ""
 
 #: vue/components/Common/DateRangeDropdown.vue:12
-#: vue/vendor/sweetalert.js:8
+#: vue/vendor/sweetalert.ts:10
 msgid "Cancel"
 msgstr ""
 
@@ -817,28 +835,28 @@ msgstr ""
 
 #: vue/components/Stations/Reports/Overview/BestAndWorstTab.vue:21
 #: vue/components/Stations/Reports/Overview/BestAndWorstTab.vue:61
-#: vue/components/Stations/Reports/Timeline.vue:158
+#: vue/components/Stations/Reports/Timeline.vue:153
 msgid "Change"
 msgstr ""
 
-#: vue/components/Account.vue:84
+#: vue/components/Account.vue:99
 #: vue/components/Account/ChangePasswordModal.vue:34
 #: vue/components/Account/ChangePasswordModal.vue:6
 msgid "Change Password"
 msgstr ""
 
-#: vue/components/Admin/AuditLog.vue:78
+#: vue/components/Admin/AuditLog.vue:72
 #: vue/components/Admin/AuditLog/DetailsModal.vue:5
 msgid "Changes"
 msgstr ""
 
 #: vue/components/Admin/Branding/BrandingForm.vue:226
 #: vue/components/Admin/Settings.vue:123
-#: vue/functions/useNotify.js:63
+#: vue/functions/useNotify.js:64
 msgid "Changes saved."
 msgstr ""
 
-#: vue/components/Admin/Stations/Form/BackendForm.vue:226
+#: vue/components/Admin/Stations/Form/BackendForm.vue:224
 msgid "Character Set Encoding"
 msgstr ""
 
@@ -846,7 +864,7 @@ msgstr ""
 msgid "Chat ID"
 msgstr ""
 
-#: vue/components/Admin/Updates.vue:46
+#: vue/components/Admin/Updates.vue:38
 msgid "Check for Updates"
 msgstr ""
 
@@ -876,17 +894,21 @@ msgstr ""
 
 #: vue/components/Stations/Media/MediaToolbar.vue:87
 #: vue/components/Stations/Media/MediaToolbar.vue:90
-#: vue/components/Stations/Queue.vue:142
-#: vue/components/Stations/Reports/Requests.vue:189
+#: vue/components/Stations/Queue.vue:135
+#: vue/components/Stations/Reports/Requests.vue:181
 msgid "Clear"
 msgstr ""
 
-#: vue/components/Admin/Debug.vue:44
-#: vue/components/Admin/Debug.vue:56
+#: vue/components/Stations/Playlists.vue:462
+msgid "Clear all media from playlist?"
+msgstr ""
+
+#: vue/components/Admin/Debug.vue:32
+#: vue/components/Admin/Debug.vue:42
 msgid "Clear All Message Queues"
 msgstr ""
 
-#: vue/components/Stations/Reports/Requests.vue:188
+#: vue/components/Stations/Reports/Requests.vue:180
 msgid "Clear All Pending Requests?"
 msgstr ""
 
@@ -895,8 +917,8 @@ msgstr ""
 msgid "Clear Artwork"
 msgstr ""
 
-#: vue/components/Admin/Debug.vue:14
-#: vue/components/Admin/Debug.vue:27
+#: vue/components/Admin/Debug.vue:10
+#: vue/components/Admin/Debug.vue:20
 msgid "Clear Cache"
 msgstr ""
 
@@ -916,7 +938,7 @@ msgstr ""
 msgid "Clear Image"
 msgstr ""
 
-#: vue/components/Admin/Stations/Form/FrontendForm.vue:128
+#: vue/components/Admin/Stations/Form/FrontendForm.vue:127
 msgid "Clear List"
 msgstr ""
 
@@ -929,8 +951,8 @@ msgstr ""
 msgid "Clear Pending Requests"
 msgstr ""
 
-#: vue/components/Admin/Debug.vue:137
-#: vue/components/Admin/Debug.vue:179
+#: vue/components/Admin/Debug.vue:107
+#: vue/components/Admin/Debug.vue:141
 #: vue/components/Stations/Playlists/QueueModal.vue:34
 #: vue/components/Stations/Playlists/QueueModal.vue:35
 #: vue/components/Stations/Playlists/QueueModal.vue:45
@@ -942,15 +964,15 @@ msgstr ""
 msgid "Clear Upcoming Song Queue"
 msgstr ""
 
-#: vue/components/Stations/Queue.vue:141
+#: vue/components/Stations/Queue.vue:134
 msgid "Clear Upcoming Song Queue?"
 msgstr ""
 
-#: vue/components/Admin/Debug.vue:22
+#: vue/components/Admin/Debug.vue:14
 msgid "Clearing the application cache may log you out of your session."
 msgstr ""
 
-#: vue/components/Admin/GeoLite.vue:52
+#: vue/components/Admin/GeoLite.vue:42
 msgid "Click \"Generate new license key\"."
 msgstr ""
 
@@ -986,11 +1008,11 @@ msgstr ""
 msgid "Clients by Listeners"
 msgstr ""
 
-#: vue/components/Admin/Stations.vue:24
-#: vue/components/Admin/Stations.vue:25
-#: vue/components/Admin/Stations.vue:29
-#: vue/components/Admin/Stations.vue:35
-#: vue/components/Admin/Stations.vue:39
+#: vue/components/Admin/Stations.vue:26
+#: vue/components/Admin/Stations.vue:27
+#: vue/components/Admin/Stations.vue:31
+#: vue/components/Admin/Stations.vue:40
+#: vue/components/Admin/Stations.vue:44
 msgid "Clone"
 msgstr ""
 
@@ -1012,14 +1034,14 @@ msgstr ""
 #: vue/components/Common/StreamingLogModal.vue:17
 #: vue/components/Common/Toast.vue:21
 #: vue/components/Common/Toast.vue:41
-#: vue/components/Stations/BulkMedia.vue:149
+#: vue/components/Stations/BulkMedia.vue:146
 #: vue/components/Stations/Media/MoveFilesModal.vue:59
 #: vue/components/Stations/Media/NewDirectoryModal.vue:18
 #: vue/components/Stations/Media/RenameModal.vue:18
 #: vue/components/Stations/Playlists/ApplyToModal.vue:45
-#: vue/components/Stations/Playlists/ImportModal.vue:77
+#: vue/components/Stations/Playlists/ImportModal.vue:83
 #: vue/components/Stations/Playlists/QueueModal.vue:42
-#: vue/components/Stations/Streamers/BroadcastsModal.vue:57
+#: vue/components/Stations/Streamers/BroadcastsModal.vue:51
 msgid "Close"
 msgstr ""
 
@@ -1043,7 +1065,7 @@ msgstr ""
 msgid "Complete the setup process by providing some information about your broadcast environment. These settings can be changed later from the administration panel."
 msgstr ""
 
-#: vue/components/Admin/Backups.vue:52
+#: vue/components/Admin/Backups.vue:48
 msgid "Configure"
 msgstr ""
 
@@ -1051,7 +1073,7 @@ msgstr ""
 msgid "Configure Backups"
 msgstr ""
 
-#: vue/vendor/sweetalert.js:7
+#: vue/vendor/sweetalert.ts:9
 msgid "Confirm"
 msgstr ""
 
@@ -1059,9 +1081,8 @@ msgstr ""
 msgid "Confirm New Password"
 msgstr ""
 
+#: vue/components/Admin/menu.ts:134
 #: vue/components/Admin/Relays.vue:2
-#: /var/azuracast/www/src/Controller/Admin/RelaysAction.php:25
-#: /var/azuracast/www/config/menus/admin.php:99
 msgid "Connected AzuraRelays"
 msgstr ""
 
@@ -1162,7 +1183,7 @@ msgstr ""
 msgid "Create Account"
 msgstr ""
 
-#: vue/components/Admin/GeoLite.vue:39
+#: vue/components/Admin/GeoLite.vue:29
 msgid "Create an account on the MaxMind developer site."
 msgstr ""
 
@@ -1187,6 +1208,10 @@ msgstr ""
 
 #: vue/components/Stations/Playlists/ApplyToModal.vue:27
 msgid "Create New Playlist for Each Folder"
+msgstr ""
+
+#: vue/components/Admin/Debug/TaskOutput.vue:98
+msgid "Critical"
 msgstr ""
 
 #: vue/components/Admin/Stations/Form/BackendForm.vue:38
@@ -1217,9 +1242,9 @@ msgstr ""
 msgid "Current Custom Fallback File"
 msgstr ""
 
-#: vue/components/Admin/GeoLite.vue:63
-#: vue/components/Admin/Shoutcast.vue:62
-#: vue/components/Admin/StereoTool.vue:70
+#: vue/components/Admin/GeoLite.vue:53
+#: vue/components/Admin/Shoutcast.vue:52
+#: vue/components/Admin/StereoTool.vue:73
 msgid "Current Installed Version"
 msgstr ""
 
@@ -1239,7 +1264,7 @@ msgstr ""
 msgid "Current Podcast Media"
 msgstr ""
 
-#: vue/components/Stations/Playlists.vue:247
+#: vue/components/Stations/Playlists.vue:156
 msgid "Custom"
 msgstr ""
 
@@ -1248,14 +1273,12 @@ msgid "Custom API Base URL"
 msgstr ""
 
 #: vue/components/Admin/Branding.vue:3
-#: /var/azuracast/www/src/Controller/Stations/BrandingAction.php:26
-#: /var/azuracast/www/src/Controller/Admin/BrandingAction.php:27
-#: /var/azuracast/www/config/menus/admin.php:27
+#: vue/components/Admin/menu.ts:24
 msgid "Custom Branding"
 msgstr ""
 
 #: vue/components/Admin/Stations/Form/FrontendForm.vue:140
-#: vue/components/Admin/Stations/Form/FrontendForm.vue:158
+#: vue/components/Admin/Stations/Form/FrontendForm.vue:160
 msgid "Custom Configuration"
 msgstr ""
 
@@ -1264,7 +1287,7 @@ msgid "Custom CSS for Internal Pages"
 msgstr ""
 
 #: vue/components/Admin/Branding/BrandingForm.vue:74
-#: vue/components/Stations/Branding/BrandingForm.vue:38
+#: vue/components/Stations/Branding/BrandingForm.vue:46
 msgid "Custom CSS for Public Pages"
 msgstr ""
 
@@ -1289,15 +1312,13 @@ msgid "Custom Fading: Overlap Time (seconds)"
 msgstr ""
 
 #: vue/components/Stations/Fallback.vue:9
-#: /var/azuracast/www/src/Controller/Stations/FallbackAction.php:27
-#: /var/azuracast/www/config/menus/station.php:226
+#: vue/components/Stations/menu.ts:251
 msgid "Custom Fallback File"
 msgstr ""
 
 #: vue/components/Admin/CustomFields.vue:2
+#: vue/components/Admin/menu.ts:126
 #: vue/components/Stations/Media/EditModal.vue:33
-#: /var/azuracast/www/src/Controller/Admin/CustomFieldsAction.php:26
-#: /var/azuracast/www/config/menus/admin.php:94
 msgid "Custom Fields"
 msgstr ""
 
@@ -1306,12 +1327,8 @@ msgid "Custom Frontend Configuration"
 msgstr ""
 
 #: vue/components/Admin/Branding/BrandingForm.vue:90
-#: vue/components/Stations/Branding/BrandingForm.vue:54
+#: vue/components/Stations/Branding/BrandingForm.vue:62
 msgid "Custom JS for Public Pages"
-msgstr ""
-
-#: vue/components/Account/EditForm.vue:22
-msgid "Customization"
 msgstr ""
 
 #: vue/components/Stations/Profile/EmbedModal.vue:18
@@ -1326,7 +1343,7 @@ msgstr ""
 msgid "Customize AzuraCast Settings"
 msgstr ""
 
-#: vue/components/Admin/Stations/Form/FrontendForm.vue:64
+#: vue/components/Admin/Stations/Form/FrontendForm.vue:72
 msgid "Customize Broadcasting Port"
 msgstr ""
 
@@ -1359,27 +1376,34 @@ msgid "Customize this setting to ensure you get the correct IP address for remot
 msgstr ""
 
 #: vue/components/Admin/Branding/BrandingForm.vue:190
-#: vue/components/Stations/Profile/EmbedModal.vue:170
+#: vue/components/Stations/Profile/EmbedModal.vue:157
 msgid "Dark"
 msgstr ""
 
-#: vue/components/Stations/Reports/Requests.vue:127
+#: vue/components/PanelLayout.vue:62
+#: /var/azuracast/www/src/Controller/Frontend/DashboardAction.php:35
+#: /var/azuracast/www/templates/system/error_http.phtml:19
+#: /var/azuracast/www/templates/system/error_general.phtml:27
+msgid "Dashboard"
+msgstr ""
+
+#: vue/components/Stations/Reports/Requests.vue:120
 msgid "Date Played"
 msgstr ""
 
-#: vue/components/Stations/Reports/Requests.vue:126
+#: vue/components/Stations/Reports/Requests.vue:119
 msgid "Date Requested"
 msgstr ""
 
-#: vue/components/Admin/AuditLog.vue:121
+#: vue/components/Admin/AuditLog.vue:114
 msgid "Date/Time"
 msgstr ""
 
-#: vue/components/Stations/Reports/Timeline.vue:123
+#: vue/components/Stations/Reports/Timeline.vue:118
 msgid "Date/Time (Browser)"
 msgstr ""
 
-#: vue/components/Stations/Reports/Timeline.vue:137
+#: vue/components/Stations/Reports/Timeline.vue:132
 msgid "Date/Time (Station)"
 msgstr ""
 
@@ -1391,13 +1415,17 @@ msgstr ""
 msgid "Deactivate Streamer on Disconnect (Seconds)"
 msgstr ""
 
-#: vue/components/Admin/Branding.vue:31
+#: vue/components/Admin/Debug/TaskOutput.vue:93
+msgid "Debug"
+msgstr ""
+
+#: vue/components/Admin/Branding.vue:23
 #: vue/components/Stations/Branding.vue:28
 msgid "Default Album Art"
 msgstr ""
 
 #: vue/components/Admin/Branding/BrandingForm.vue:66
-#: vue/components/Stations/Branding/BrandingForm.vue:30
+#: vue/components/Stations/Branding/BrandingForm.vue:38
 msgid "Default Album Art URL"
 msgstr ""
 
@@ -1405,16 +1433,20 @@ msgstr ""
 msgid "Default Avatar URL"
 msgstr ""
 
+#: vue/components/Admin/Stations/Form/StreamersForm.vue:120
+msgid "Default Live Broadcast Message"
+msgstr ""
+
 #: vue/components/Stations/Mounts.vue:36
 msgid "Default Mount"
 msgstr ""
 
 #: vue/components/Account.vue:167
-#: vue/components/Admin/ApiKeys.vue:32
-#: vue/components/Admin/AuditLog.vue:44
-#: vue/components/Admin/Backups.vue:136
-#: vue/components/Admin/Backups.vue:141
-#: vue/components/Admin/Backups.vue:145
+#: vue/components/Admin/ApiKeys.vue:20
+#: vue/components/Admin/AuditLog.vue:38
+#: vue/components/Admin/Backups.vue:112
+#: vue/components/Admin/Backups.vue:117
+#: vue/components/Admin/Backups.vue:121
 #: vue/components/Admin/CustomFields.vue:28
 #: vue/components/Admin/CustomFields.vue:29
 #: vue/components/Admin/CustomFields.vue:33
@@ -1425,14 +1457,14 @@ msgstr ""
 #: vue/components/Admin/Permissions.vue:41
 #: vue/components/Admin/Permissions.vue:50
 #: vue/components/Admin/Permissions.vue:57
-#: vue/components/Admin/Stations.vue:30
-#: vue/components/Admin/Stations.vue:31
-#: vue/components/Admin/Stations.vue:35
-#: vue/components/Admin/Stations.vue:41
-#: vue/components/Admin/Stations.vue:53
+#: vue/components/Admin/Stations.vue:32
+#: vue/components/Admin/Stations.vue:33
+#: vue/components/Admin/Stations.vue:37
+#: vue/components/Admin/Stations.vue:46
+#: vue/components/Admin/Stations.vue:58
+#: vue/components/Admin/StorageLocations.vue:50
+#: vue/components/Admin/StorageLocations.vue:56
 #: vue/components/Admin/StorageLocations.vue:60
-#: vue/components/Admin/StorageLocations.vue:67
-#: vue/components/Admin/StorageLocations.vue:71
 #: vue/components/Admin/Users.vue:35
 #: vue/components/Admin/Users.vue:36
 #: vue/components/Admin/Users.vue:40
@@ -1449,19 +1481,19 @@ msgstr ""
 #: vue/components/Stations/Mounts.vue:49
 #: vue/components/Stations/Mounts.vue:55
 #: vue/components/Stations/Mounts.vue:59
-#: vue/components/Stations/Playlists.vue:56
-#: vue/components/Stations/Playlists.vue:63
-#: vue/components/Stations/Playlists.vue:67
+#: vue/components/Stations/Playlists.vue:51
+#: vue/components/Stations/Playlists.vue:58
+#: vue/components/Stations/Playlists.vue:62
 #: vue/components/Stations/Podcasts/EpisodesView.vue:67
 #: vue/components/Stations/Podcasts/EpisodesView.vue:68
 #: vue/components/Stations/Podcasts/EpisodesView.vue:82
-#: vue/components/Stations/Podcasts/EpisodesView.vue:95
-#: vue/components/Stations/Podcasts/EpisodesView.vue:99
+#: vue/components/Stations/Podcasts/EpisodesView.vue:94
+#: vue/components/Stations/Podcasts/EpisodesView.vue:98
 #: vue/components/Stations/Podcasts/ListView.vue:41
 #: vue/components/Stations/Podcasts/ListView.vue:42
 #: vue/components/Stations/Podcasts/ListView.vue:52
-#: vue/components/Stations/Podcasts/ListView.vue:65
-#: vue/components/Stations/Podcasts/ListView.vue:69
+#: vue/components/Stations/Podcasts/ListView.vue:64
+#: vue/components/Stations/Podcasts/ListView.vue:68
 #: vue/components/Stations/Queue.vue:23
 #: vue/components/Stations/Queue.vue:28
 #: vue/components/Stations/Queue.vue:33
@@ -1484,17 +1516,17 @@ msgstr ""
 #: vue/components/Stations/Streamers.vue:68
 #: vue/components/Stations/Streamers.vue:76
 #: vue/components/Stations/Streamers.vue:84
-#: vue/components/Stations/Streamers/BroadcastsModal.vue:22
-#: vue/components/Stations/Streamers/BroadcastsModal.vue:23
+#: vue/components/Stations/Streamers/BroadcastsModal.vue:19
+#: vue/components/Stations/Streamers/BroadcastsModal.vue:20
+#: vue/components/Stations/Streamers/BroadcastsModal.vue:26
 #: vue/components/Stations/Streamers/BroadcastsModal.vue:29
-#: vue/components/Stations/Streamers/BroadcastsModal.vue:32
-#: vue/components/Stations/Streamers/BroadcastsModal.vue:46
+#: vue/components/Stations/Streamers/BroadcastsModal.vue:40
 #: vue/components/Stations/Webhooks.vue:51
 #: vue/components/Stations/Webhooks.vue:52
 #: vue/components/Stations/Webhooks.vue:56
 #: vue/components/Stations/Webhooks.vue:68
 #: vue/components/Stations/Webhooks.vue:81
-#: vue/vendor/sweetalert.js:14
+#: vue/vendor/sweetalert.ts:16
 msgid "Delete"
 msgstr ""
 
@@ -1507,55 +1539,55 @@ msgid "Delete Album Art"
 msgstr ""
 
 #: vue/components/Account.vue:336
-#: vue/components/Admin/ApiKeys.vue:90
+#: vue/components/Admin/ApiKeys.vue:69
 msgid "Delete API Key?"
 msgstr ""
 
-#: vue/components/Admin/Backups.vue:303
+#: vue/components/Admin/Backups.vue:272
 msgid "Delete Backup?"
 msgstr ""
 
-#: vue/components/Stations/Streamers/BroadcastsModal.vue:148
+#: vue/components/Stations/Streamers/BroadcastsModal.vue:143
 msgid "Delete Broadcast?"
 msgstr ""
 
-#: vue/components/Admin/CustomFields.vue:117
+#: vue/components/Admin/CustomFields.vue:116
 msgid "Delete Custom Field?"
 msgstr ""
 
-#: vue/components/Stations/Podcasts/EpisodesView.vue:183
+#: vue/components/Stations/Podcasts/EpisodesView.vue:182
 msgid "Delete Episode?"
 msgstr ""
 
-#: vue/components/Stations/HlsStreams.vue:116
+#: vue/components/Stations/HlsStreams.vue:111
 msgid "Delete HLS Stream?"
 msgstr ""
 
-#: vue/components/Stations/Mounts.vue:131
+#: vue/components/Stations/Mounts.vue:121
 msgid "Delete Mount Point?"
 msgstr ""
 
-#: vue/components/Stations/Playlists.vue:456
+#: vue/components/Stations/Playlists.vue:454
 msgid "Delete Playlist?"
 msgstr ""
 
-#: vue/components/Stations/Podcasts/ListView.vue:161
+#: vue/components/Stations/Podcasts/ListView.vue:167
 msgid "Delete Podcast?"
 msgstr ""
 
-#: vue/components/Stations/Queue.vue:131
+#: vue/components/Stations/Queue.vue:124
 msgid "Delete Queue Item?"
 msgstr ""
 
-#: vue/vendor/sweetalert.js:13
+#: vue/vendor/sweetalert.ts:15
 msgid "Delete Record?"
 msgstr ""
 
-#: vue/components/Stations/Remotes.vue:118
+#: vue/components/Stations/Remotes.vue:113
 msgid "Delete Remote Relay?"
 msgstr ""
 
-#: vue/components/Stations/Reports/Requests.vue:173
+#: vue/components/Stations/Reports/Requests.vue:165
 msgid "Delete Request?"
 msgstr ""
 
@@ -1563,19 +1595,19 @@ msgstr ""
 msgid "Delete Role?"
 msgstr ""
 
-#: vue/components/Stations/SftpUsers.vue:119
+#: vue/components/Stations/SftpUsers.vue:118
 msgid "Delete SFTP User?"
 msgstr ""
 
-#: vue/components/Admin/Stations.vue:154
+#: vue/components/Admin/Stations.vue:159
 msgid "Delete Station?"
 msgstr ""
 
-#: vue/components/Admin/StorageLocations.vue:218
+#: vue/components/Admin/StorageLocations.vue:203
 msgid "Delete Storage Location?"
 msgstr ""
 
-#: vue/components/Stations/Streamers.vue:189
+#: vue/components/Stations/Streamers.vue:181
 msgid "Delete Streamer?"
 msgstr ""
 
@@ -1583,7 +1615,7 @@ msgstr ""
 msgid "Delete User?"
 msgstr ""
 
-#: vue/components/Stations/Webhooks.vue:192
+#: vue/components/Stations/Webhooks.vue:188
 msgid "Delete Web Hook?"
 msgstr ""
 
@@ -1598,8 +1630,8 @@ msgstr ""
 msgid "Desktop Device"
 msgstr ""
 
-#: vue/components/Stations/Playlists/Form/BasicInfo.vue:355
-msgid "Direct Stream URL"
+#: vue/components/Admin/Debug/TaskOutput.vue:25
+msgid "Details"
 msgstr ""
 
 #: vue/components/Stations/Media/MoveFilesModal.vue:113
@@ -1613,35 +1645,23 @@ msgid "Directory Name"
 msgstr ""
 
 #: vue/components/Admin/CustomFields/Form.vue:58
-#: vue/components/Stations/Playlists.vue:362
-#: vue/components/Stations/Profile/PublicPagesPanel.vue:97
-#: vue/components/Stations/Profile/RequestsPanel.vue:39
-#: vue/components/Stations/Profile/StreamersPanel.vue:39
-#: vue/components/Stations/Webhooks.vue:143
+#: vue/components/Stations/Playlists.vue:354
+#: vue/components/Stations/Profile/PublicPagesPanel.vue:98
+#: vue/components/Stations/Profile/RequestsPanel.vue:36
+#: vue/components/Stations/Profile/StreamersPanel.vue:35
+#: vue/components/Stations/Webhooks.vue:139
 msgid "Disable"
 msgstr ""
 
-#: vue/components/Admin/Stations/Form/BackendForm.vue:414
+#: vue/components/Admin/Stations/Form/BackendForm.vue:409
 msgid "Disable Crossfading"
 msgstr ""
 
-#: vue/components/Admin/Stations/Form/BackendForm.vue:495
+#: vue/components/Admin/Stations/Form/BackendForm.vue:490
 msgid "Disable Optimizations"
 msgstr ""
 
-#: vue/components/Stations/Profile/PublicPagesPanel.vue:91
-msgid "Disable public pages?"
-msgstr ""
-
-#: vue/components/Stations/Profile/RequestsPanel.vue:33
-msgid "Disable song requests?"
-msgstr ""
-
-#: vue/components/Stations/Profile/StreamersPanel.vue:33
-msgid "Disable streamers?"
-msgstr ""
-
-#: vue/components/Account.vue:95
+#: vue/components/Account.vue:110
 msgid "Disable Two-Factor"
 msgstr ""
 
@@ -1649,12 +1669,17 @@ msgstr ""
 msgid "Disable two-factor authentication?"
 msgstr ""
 
+#: vue/components/Stations/Profile/useToggleFeature.js:21
+msgid "Disable?"
+msgstr ""
+
 #: vue/components/Admin/Settings/ServicesTab.vue:356
-#: vue/components/Admin/Stations/Form/ProfileForm.vue:215
+#: vue/components/Admin/Stations.vue:27
+#: vue/components/Admin/Stations/Form/ProfileForm.vue:214
 #: vue/components/Common/Badges/EnabledBadge.vue:30
 #: vue/components/Stations/Mounts.vue:46
-#: vue/components/Stations/Playlists.vue:207
-#: vue/components/Stations/Playlists.vue:216
+#: vue/components/Stations/Playlists.vue:116
+#: vue/components/Stations/Playlists.vue:125
 #: vue/components/Stations/Remotes.vue:44
 #: vue/components/Stations/Streamers.vue:60
 #: vue/components/Stations/Webhooks.vue:36
@@ -1688,7 +1713,7 @@ msgstr ""
 #: vue/components/Admin/Users/Form.vue:30
 #: vue/components/Stations/Mounts/Form/BasicInfo.vue:20
 #: vue/components/Stations/Remotes/Form/BasicInfo.vue:22
-#: vue/components/Stations/Streamers.vue:166
+#: vue/components/Stations/Streamers.vue:158
 msgid "Display Name"
 msgstr ""
 
@@ -1700,7 +1725,7 @@ msgstr ""
 msgid "Do not collect any listener analytics"
 msgstr ""
 
-#: vue/components/Admin/Stations/Form/BackendForm.vue:397
+#: vue/components/Admin/Stations/Form/BackendForm.vue:392
 msgid "Do not use an AutoDJ service."
 msgstr ""
 
@@ -1708,17 +1733,21 @@ msgstr ""
 msgid "Domain Name(s)"
 msgstr ""
 
+#: vue/components/PanelLayout.vue:161
+msgid "Donate to support AzuraCast!"
+msgstr ""
+
 #: vue/components/Stations/Playlists/ReorderModal.vue:61
 msgid "Down"
 msgstr ""
 
-#: vue/components/Admin/Backups.vue:138
-#: vue/components/Public/OnDemand.vue:54
+#: vue/components/Admin/Backups.vue:114
+#: vue/components/Public/OnDemand.vue:52
 #: vue/components/Stations/Fallback.vue:50
 #: vue/components/Stations/Mounts/Form/Intro.vue:35
 #: vue/components/Stations/Podcasts/EpisodeForm/Media.vue:35
 #: vue/components/Stations/StereoToolConfig.vue:60
-#: vue/components/Stations/Streamers/BroadcastsModal.vue:35
+#: vue/components/Stations/Streamers/BroadcastsModal.vue:29
 msgid "Download"
 msgstr ""
 
@@ -1727,19 +1756,19 @@ msgstr ""
 msgid "Download CSV"
 msgstr ""
 
-#: vue/components/Stations/Profile/StreamsPanel.vue:171
+#: vue/components/Stations/Profile/StreamsPanel.vue:166
 msgid "Download M3U"
 msgstr ""
 
-#: vue/components/Stations/Profile/StreamsPanel.vue:162
+#: vue/components/Stations/Profile/StreamsPanel.vue:157
 msgid "Download PLS"
 msgstr ""
 
-#: vue/components/Admin/StereoTool.vue:44
+#: vue/components/Admin/StereoTool.vue:42
 msgid "Download the appropriate binary from the Stereo Tool downloads page:"
 msgstr ""
 
-#: vue/components/Admin/Shoutcast.vue:37
+#: vue/components/Admin/Shoutcast.vue:27
 msgid "Download the Linux x64 binary from the Shoutcast Radio Manager:"
 msgstr ""
 
@@ -1755,7 +1784,13 @@ msgstr ""
 msgid "Dropbox Setup Instructions"
 msgstr ""
 
-#: vue/components/Stations/Playlists.vue:141
+#: vue/components/Stations/Playlists.vue:150
+#: vue/components/Stations/Playlists.vue:151
+#: vue/components/Stations/Playlists.vue:158
+#: vue/components/Stations/Playlists.vue:162
+#: vue/components/Stations/Playlists.vue:166
+#: vue/components/Stations/Playlists.vue:202
+#: vue/components/Stations/Playlists.vue:240
 msgid "Duplicate"
 msgstr ""
 
@@ -1763,15 +1798,19 @@ msgstr ""
 msgid "Duplicate Playlist"
 msgstr ""
 
-#: vue/components/Admin/Stations/Form/BackendForm.vue:249
+#: vue/components/Admin/Stations/Form/BackendForm.vue:245
 msgid "Duplicate Prevention Time Range (Minutes)"
+msgstr ""
+
+#: vue/components/Stations/menu.ts:70
+msgid "Duplicate Songs"
 msgstr ""
 
 #: vue/components/Stations/Podcasts/PodcastForm/BasicInfo.vue:54
 msgid "E-Mail"
 msgstr ""
 
-#: vue/components/Account/EditForm.vue:15
+#: vue/components/Account/EditForm.vue:13
 #: vue/components/Admin/Settings/TestMessageModal.vue:13
 #: vue/components/Admin/Users/Form.vue:8
 #: vue/components/Setup/Register.vue:66
@@ -1794,30 +1833,30 @@ msgstr ""
 msgid "E-mail Delivery Service"
 msgstr ""
 
-#: vue/components/Admin/Stations/Form/BackendForm.vue:466
+#: vue/components/Admin/Stations/Form/BackendForm.vue:461
 msgid "EBU R128"
 msgstr ""
 
 #: vue/components/Admin/CustomFields.vue:36
 #: vue/components/Admin/Permissions.vue:47
 #: vue/components/Admin/Permissions.vue:50
-#: vue/components/Admin/Stations.vue:27
-#: vue/components/Admin/Stations.vue:28
-#: vue/components/Admin/Stations.vue:32
-#: vue/components/Admin/Stations.vue:38
-#: vue/components/Admin/Stations.vue:46
-#: vue/components/Admin/StorageLocations.vue:64
+#: vue/components/Admin/Stations.vue:29
+#: vue/components/Admin/Stations.vue:30
+#: vue/components/Admin/Stations.vue:34
+#: vue/components/Admin/Stations.vue:43
+#: vue/components/Admin/Stations.vue:51
+#: vue/components/Admin/StorageLocations.vue:53
 #: vue/components/Admin/Users.vue:32
 #: vue/components/Admin/Users.vue:33
 #: vue/components/Admin/Users.vue:37
 #: vue/components/Admin/Users.vue:52
 #: vue/components/Admin/Users.vue:59
 #: vue/components/Stations/HlsStreams.vue:44
-#: vue/components/Stations/Media.vue:196
+#: vue/components/Stations/Media.vue:193
 #: vue/components/Stations/Mounts.vue:52
-#: vue/components/Stations/Playlists.vue:60
-#: vue/components/Stations/Podcasts/EpisodesView.vue:92
-#: vue/components/Stations/Podcasts/ListView.vue:62
+#: vue/components/Stations/Playlists.vue:55
+#: vue/components/Stations/Podcasts/EpisodesView.vue:91
+#: vue/components/Stations/Podcasts/ListView.vue:61
 #: vue/components/Stations/Remotes.vue:50
 #: vue/components/Stations/Remotes.vue:53
 #: vue/components/Stations/SftpUsers.vue:31
@@ -1834,7 +1873,7 @@ msgstr ""
 msgid "Edit Custom Field"
 msgstr ""
 
-#: vue/components/Stations/Podcasts/EpisodeEditModal.vue:153
+#: vue/components/Stations/Podcasts/EpisodeEditModal.vue:147
 msgid "Edit Episode"
 msgstr ""
 
@@ -1843,8 +1882,7 @@ msgid "Edit HLS Stream"
 msgstr ""
 
 #: vue/components/Stations/LiquidsoapConfig.vue:13
-#: /var/azuracast/www/src/Controller/Stations/EditLiquidsoapConfigAction.php:62
-#: /var/azuracast/www/config/menus/station.php:232
+#: vue/components/Stations/menu.ts:259
 msgid "Edit Liquidsoap Configuration"
 msgstr ""
 
@@ -1852,24 +1890,23 @@ msgstr ""
 msgid "Edit Media"
 msgstr ""
 
-#: vue/components/Stations/Mounts/EditModal.vue:121
+#: vue/components/Stations/Mounts/EditModal.vue:120
 msgid "Edit Mount Point"
 msgstr ""
 
-#: vue/components/Stations/Playlists/EditModal.vue:89
+#: vue/components/Stations/Playlists/EditModal.vue:81
 msgid "Edit Playlist"
 msgstr ""
 
-#: vue/components/Stations/Podcasts/PodcastEditModal.vue:106
+#: vue/components/Stations/Podcasts/PodcastEditModal.vue:102
 msgid "Edit Podcast"
 msgstr ""
 
-#: vue/components/Account.vue:21
+#: vue/components/Account.vue:66
 #: vue/components/Account/EditModal.vue:5
+#: vue/components/Stations/menu.ts:30
 #: vue/components/Stations/Profile/HeaderPanel.vue:35
-#: /var/azuracast/www/src/Controller/Stations/ProfileController.php:218
-#: /var/azuracast/www/config/menus/station.php:54
-#: /var/azuracast/www/templates/stations/sidebar.phtml:59
+#: vue/components/Stations/Sidebar.vue:24
 msgid "Edit Profile"
 msgstr ""
 
@@ -1897,7 +1934,7 @@ msgstr ""
 msgid "Edit Storage Location"
 msgstr ""
 
-#: vue/components/Stations/Streamers/EditModal.vue:102
+#: vue/components/Stations/Streamers/EditModal.vue:97
 msgid "Edit Streamer"
 msgstr ""
 
@@ -1909,7 +1946,7 @@ msgstr ""
 msgid "Edit Web Hook"
 msgstr ""
 
-#: vue/components/Stations/Profile/EmbedModal.vue:67
+#: vue/components/Stations/Profile/EmbedModal.vue:55
 msgid "Embed Code"
 msgstr ""
 
@@ -1918,12 +1955,21 @@ msgstr ""
 msgid "Embed Widgets"
 msgstr ""
 
-#: vue/components/Stations/Playlists.vue:363
+#: vue/components/Admin/Debug/TaskOutput.vue:100
+msgid "Emergency"
+msgstr ""
+
+#: vue/components/Stations/Playlists.vue:184
+#: vue/components/Stations/Playlists.vue:192
+msgid "Empty"
+msgstr ""
+
+#: vue/components/Stations/Playlists.vue:355
 #: vue/components/Stations/Playlists/Form/BasicInfo.vue:19
-#: vue/components/Stations/Profile/PublicPagesPanel.vue:125
-#: vue/components/Stations/Profile/RequestsPanel.vue:62
-#: vue/components/Stations/Profile/StreamersPanel.vue:62
-#: vue/components/Stations/Webhooks.vue:144
+#: vue/components/Stations/Profile/PublicPagesPanel.vue:111
+#: vue/components/Stations/Profile/RequestsPanel.vue:49
+#: vue/components/Stations/Profile/StreamersPanel.vue:48
+#: vue/components/Stations/Webhooks.vue:140
 msgid "Enable"
 msgstr ""
 
@@ -1967,18 +2013,6 @@ msgstr ""
 msgid "Enable Public Pages"
 msgstr ""
 
-#: vue/components/Stations/Profile/PublicPagesPanel.vue:119
-msgid "Enable public pages?"
-msgstr ""
-
-#: vue/components/Stations/Profile/RequestsPanel.vue:56
-msgid "Enable song requests?"
-msgstr ""
-
-#: vue/components/Stations/Profile/StreamersPanel.vue:56
-msgid "Enable streamers?"
-msgstr ""
-
 #: vue/components/Stations/Playlists/Form/BasicInfo.vue:74
 msgid "Enable this setting to prevent metadata from being sent to the AutoDJ for files in this playlist. This is useful if the playlist contains jingles or bumpers."
 msgstr ""
@@ -2007,12 +2041,16 @@ msgstr ""
 msgid "Enable to have AzuraCast automatically run nightly backups at the time specified."
 msgstr ""
 
-#: vue/components/Account.vue:106
+#: vue/components/Account.vue:121
 msgid "Enable Two-Factor"
 msgstr ""
 
 #: vue/components/Account/TwoFactorModal.vue:5
 msgid "Enable Two-Factor Authentication"
+msgstr ""
+
+#: vue/components/Stations/Profile/useToggleFeature.js:20
+msgid "Enable?"
 msgstr ""
 
 #: vue/components/Common/Badges/EnabledBadge.vue:29
@@ -2028,7 +2066,7 @@ msgid "End Date"
 msgstr ""
 
 #: vue/components/Stations/Playlists/Form/ScheduleRow.vue:44
-#: vue/components/Stations/Streamers/BroadcastsModal.vue:108
+#: vue/components/Stations/Streamers/BroadcastsModal.vue:103
 #: vue/components/Stations/Streamers/Form/ScheduleRow.vue:47
 msgid "End Time"
 msgstr ""
@@ -2041,7 +2079,7 @@ msgstr ""
 msgid "Enforce Schedule Times"
 msgstr ""
 
-#: vue/components/Common/AlbumArt.vue:8
+#: vue/components/Common/AlbumArt.vue:10
 #: vue/components/Common/AlbumArt.vue:9
 msgid "Enlarge Album Art"
 msgstr ""
@@ -2071,7 +2109,7 @@ msgid "Enter your e-mail address to receive updates about your certificate."
 msgstr ""
 
 #: vue/components/Stations/Podcasts/EpisodeForm/BasicInfo.vue:12
-#: vue/components/Stations/Podcasts/EpisodesView.vue:149
+#: vue/components/Stations/Podcasts/EpisodesView.vue:148
 msgid "Episode"
 msgstr ""
 
@@ -2079,12 +2117,16 @@ msgstr ""
 #: vue/components/Stations/Podcasts/ListView.vue:44
 #: vue/components/Stations/Podcasts/ListView.vue:45
 #: vue/components/Stations/Podcasts/ListView.vue:55
-#: vue/components/Stations/Podcasts/ListView.vue:68
-#: vue/components/Stations/Podcasts/ListView.vue:76
+#: vue/components/Stations/Podcasts/ListView.vue:67
+#: vue/components/Stations/Podcasts/ListView.vue:75
 #: /var/azuracast/www/templates/frontend/public/podcast-episodes.phtml:35
 #: /var/azuracast/www/templates/frontend/public/podcasts.phtml:37
 #: /var/azuracast/www/templates/frontend/public/podcasts.phtml:72
 msgid "Episodes"
+msgstr ""
+
+#: vue/components/Admin/Debug/TaskOutput.vue:97
+msgid "Error"
 msgstr ""
 
 #: vue/components/Stations/Remotes/Form/BasicInfo.vue:34
@@ -2100,17 +2142,21 @@ msgstr ""
 msgid "Excluding media from automated backups will save space, but you should make sure to back up your media elsewhere. Note that only locally stored media will be backed up."
 msgstr ""
 
-#: vue/components/Stations/Queue.vue:107
+#: vue/components/Stations/Reports/Listeners/InnerMap.vue:40
+msgid "Exit Fullscreen"
+msgstr ""
+
+#: vue/components/Stations/Queue.vue:96
 msgid "Expected to Play at"
 msgstr ""
 
-#: vue/components/Stations/Podcasts/EpisodesView.vue:151
-#: vue/components/Stations/Podcasts/EpisodesView.vue:83
+#: vue/components/Stations/Podcasts/EpisodesView.vue:150
+#: vue/components/Stations/Podcasts/EpisodesView.vue:82
 #: /var/azuracast/www/templates/frontend/public/podcast-episode.phtml:60
 msgid "Explicit"
 msgstr ""
 
-#: vue/components/Stations/Playlists.vue:154
+#: vue/components/Stations/Playlists.vue:248
 msgid "Export %{format}"
 msgstr ""
 
@@ -2119,20 +2165,25 @@ msgstr ""
 msgid "Export Media to CSV"
 msgstr ""
 
+#: vue/components/Common/SidebarMenu.vue:35
+#: vue/components/Common/SidebarMenu.vue:72
+msgid "External"
+msgstr ""
+
 #: vue/components/Stations/Mounts/Form/BasicInfo.vue:99
 msgid "Fallback Mount"
 msgstr ""
 
 #: vue/components/Admin/AuditLog/DetailsModal.vue:16
-#: vue/components/Admin/CustomFields.vue:91
+#: vue/components/Admin/CustomFields.vue:90
 #: vue/components/Admin/CustomFields/Form.vue:7
 msgid "Field Name"
 msgstr ""
 
-#: vue/components/Admin/Backups.vue:233
+#: vue/components/Admin/Backups.vue:204
 #: vue/components/Admin/Backups/RunBackupModal.vue:37
 #: vue/components/Stations/Media/Form/BasicInfo.vue:7
-#: vue/components/Stations/Podcasts/EpisodesView.vue:150
+#: vue/components/Stations/Podcasts/EpisodesView.vue:149
 msgid "File Name"
 msgstr ""
 
@@ -2156,7 +2207,7 @@ msgstr ""
 msgid "Files removed:"
 msgstr ""
 
-#: vue/components/Admin/Relays.vue:80
+#: vue/components/Admin/Relays.vue:78
 msgid "First Connected"
 msgstr ""
 
@@ -2164,24 +2215,24 @@ msgstr ""
 msgid "Footer Text"
 msgstr ""
 
+#: vue/components/Admin/StereoTool.vue:59
+msgid "For ARM (Raspberry Pi, etc.) installations, choose \"Raspberry Pi Thimeo-ST plugin\"."
+msgstr ""
+
 #: vue/components/Admin/StorageLocations/Form.vue:23
 msgid "For local filesystems, this is the base path of the directory. For remote filesystems, this is the folder prefix."
 msgstr ""
 
-#: vue/components/Admin/Stations/Form/BackendForm.vue:227
+#: vue/components/Admin/Stations/Form/BackendForm.vue:225
 msgid "For most cases, use the default UTF-8 encoding. The older ISO-8859-1 encoding can be used if accepting connections from Shoutcast 1 DJs or using other legacy software."
 msgstr ""
 
-#: vue/components/Admin/StereoTool.vue:56
-msgid "For most installations, you should choose the \"Command line version 64 bit\". For Raspberry Pi devices, select \"Raspberry Pi 3/4 64 bit command line\"."
-msgstr ""
-
-#: vue/components/Stations/Reports/Listeners.vue:87
-#: vue/components/Stations/Reports/Listeners.vue:97
+#: vue/components/Stations/Reports/Listeners.vue:88
+#: vue/components/Stations/Reports/Listeners.vue:98
 msgid "for selected period"
 msgstr ""
 
-#: vue/components/Admin/Updates.vue:105
+#: vue/components/Admin/Updates.vue:80
 msgid "For simple updates where you want to keep your current configuration, you can update directly via your web browser. You will be disconnected from the web interface and listeners will be disconnected from all stations."
 msgstr ""
 
@@ -2189,12 +2240,16 @@ msgstr ""
 msgid "For some clients, use port:"
 msgstr ""
 
-#: vue/components/Stations/HlsStreams.vue:94
+#: vue/components/Admin/StereoTool.vue:54
+msgid "For x86/64 installations, choose \"x86/64 Linux Thimeo-ST plugin\"."
+msgstr ""
+
+#: vue/components/Stations/HlsStreams.vue:89
 msgid "Format"
 msgstr ""
 
-#: vue/components/Stations/Playlists/Form/ScheduleRow.vue:151
-#: vue/components/Stations/Streamers/Form/ScheduleRow.vue:151
+#: vue/components/Stations/Playlists/Form/ScheduleRow.vue:148
+#: vue/components/Stations/Streamers/Form/ScheduleRow.vue:148
 #: /var/azuracast/www/src/Controller/Api/Stations/Reports/Overview/ChartsAction.php:108
 msgid "Friday"
 msgstr ""
@@ -2215,7 +2270,7 @@ msgstr ""
 msgid "GA Property Tracking ID"
 msgstr ""
 
-#: vue/components/Stations/Playlists.vue:219
+#: vue/components/Stations/Playlists.vue:128
 #: vue/components/Stations/Playlists/Form/BasicInfo.vue:113
 #: vue/components/Stations/Playlists/Form/BasicInfo.vue:309
 msgid "General Rotation"
@@ -2242,25 +2297,26 @@ msgid "Generic Web Hooks"
 msgstr ""
 
 #: vue/components/Admin/Stations/Form/ProfileForm.vue:27
-#: vue/components/Public/Requests.vue:109
-#: vue/components/Stations/Media.vue:348
+#: vue/components/Public/Requests.vue:103
+#: vue/components/Stations/Media.vue:317
 #: /var/azuracast/www/src/Media/Enums/MetadataTags.php:100
 msgid "Genre"
 msgstr ""
 
-#: vue/components/Admin/GeoLite.vue:73
+#: vue/components/Admin/GeoLite.vue:63
 msgid "GeoLite is not currently installed on this installation."
 msgstr ""
 
-#: vue/components/Admin/GeoLite.vue:148
+#: vue/components/Admin/GeoLite.vue:134
 msgid "GeoLite version \"%{ version }\" is currently installed."
 msgstr ""
 
-#: vue/components/Admin/Debug.vue:186
+#: vue/components/Admin/Debug.vue:144
+#: vue/components/Admin/Debug.vue:148
 msgid "Get Next Song"
 msgstr ""
 
-#: vue/components/Admin/Debug.vue:195
+#: vue/components/Admin/Debug.vue:157
 msgid "Get Now Playing"
 msgstr ""
 
@@ -2281,6 +2337,10 @@ msgstr ""
 msgid "Google Analytics V4 Integration"
 msgstr ""
 
+#: vue/components/PanelLayout.vue:99
+msgid "Help"
+msgstr ""
+
 #: vue/components/Admin/Branding/BrandingForm.vue:42
 msgid "Hide Album Art on Public Pages"
 msgstr ""
@@ -2289,11 +2349,11 @@ msgstr ""
 msgid "Hide AzuraCast Branding on Public Pages"
 msgstr ""
 
-#: vue/components/Dashboard.vue:357
+#: vue/components/Dashboard.vue:359
 msgid "Hide Charts"
 msgstr ""
 
-#: vue/components/Stations/Profile/FrontendPanel.vue:175
+#: vue/components/Stations/Profile/FrontendPanel.vue:190
 msgid "Hide Credentials"
 msgstr ""
 
@@ -2309,19 +2369,18 @@ msgstr ""
 msgid "Higher weight playlists are played more frequently compared to other lower-weight playlists."
 msgstr ""
 
-#: vue/components/Stations/Profile/EmbedModal.vue:133
+#: vue/components/Stations/Profile/EmbedModal.vue:120
 #: /var/azuracast/www/src/Controller/Frontend/PublicPages/HistoryAction.php:45
 msgid "History"
 msgstr ""
 
 #: vue/components/Admin/Stations/Form/HlsForm.vue:3
-#: vue/components/Public/Player.vue:196
+#: vue/components/Public/Player.vue:187
 msgid "HLS"
 msgstr ""
 
 #: vue/components/Stations/HlsStreams.vue:2
-#: /var/azuracast/www/src/Controller/Stations/HlsStreamsAction.php:24
-#: /var/azuracast/www/config/menus/station.php:213
+#: vue/components/Stations/menu.ts:235
 msgid "HLS Streams"
 msgstr ""
 
@@ -2333,7 +2392,7 @@ msgstr ""
 msgid "Homepage Redirect URL"
 msgstr ""
 
-#: vue/components/Common/Charts/HourChart.vue:52
+#: vue/components/Common/Charts/HourChart.vue:48
 msgid "Hour"
 msgstr ""
 
@@ -2342,7 +2401,7 @@ msgid "HTML"
 msgstr ""
 
 #: vue/components/Admin/Stations/Form/HlsForm.vue:8
-#: vue/components/Stations/Profile/StreamsPanel.vue:121
+#: vue/components/Stations/Profile/StreamsPanel.vue:112
 msgid "HTTP Live Streaming (HLS)"
 msgstr ""
 
@@ -2358,12 +2417,20 @@ msgstr ""
 msgid "Icecast Clients"
 msgstr ""
 
-#: vue/components/Admin/AuditLog.vue:133
+#: vue/components/Stations/Playlists/Form/BasicInfo.vue:355
+msgid "Icecast/Shoutcast Stream URL"
+msgstr ""
+
+#: vue/components/Admin/AuditLog.vue:126
 msgid "Identifier"
 msgstr ""
 
+#: vue/components/Admin/Stations/Form/StreamersForm.vue:121
+msgid "If a live DJ connects but has not yet sent metadata, this is the message that will display on player pages."
+msgstr ""
+
 #: vue/components/Admin/Branding/BrandingForm.vue:67
-#: vue/components/Stations/Branding/BrandingForm.vue:31
+#: vue/components/Stations/Branding/BrandingForm.vue:39
 msgid "If a song has no album art, this URL will be listed instead. Leave blank to use the standard placeholder art."
 msgstr ""
 
@@ -2472,7 +2539,7 @@ msgstr ""
 msgid "If you're experiencing a bug or error, you can submit a GitHub issue using the link below."
 msgstr ""
 
-#: vue/components/Admin/Stations/Form/BackendForm.vue:239
+#: vue/components/Admin/Stations/Form/BackendForm.vue:236
 msgid "If your installation is constrained by CPU or memory, you can change this setting to tune the resources used by Liquidsoap."
 msgstr ""
 
@@ -2501,14 +2568,20 @@ msgstr ""
 msgid "Import Changes from CSV"
 msgstr ""
 
-#: vue/components/Stations/Playlists.vue:105
+#: vue/components/Stations/Playlists.vue:138
+#: vue/components/Stations/Playlists.vue:139
+#: vue/components/Stations/Playlists.vue:146
+#: vue/components/Stations/Playlists.vue:150
+#: vue/components/Stations/Playlists.vue:154
+#: vue/components/Stations/Playlists.vue:190
+#: vue/components/Stations/Playlists.vue:208
 #: vue/components/Stations/Playlists/ImportModal.vue:5
-#: vue/components/Stations/Playlists/ImportModal.vue:80
-#: vue/components/Stations/Playlists/ImportModal.vue:84
+#: vue/components/Stations/Playlists/ImportModal.vue:86
+#: vue/components/Stations/Playlists/ImportModal.vue:90
 msgid "Import from PLS/M3U"
 msgstr ""
 
-#: vue/components/Stations/BulkMedia.vue:109
+#: vue/components/Stations/BulkMedia.vue:106
 #: vue/components/Stations/BulkMedia.vue:92
 msgid "Import Results"
 msgstr ""
@@ -2517,11 +2590,11 @@ msgstr ""
 msgid "Important: copy the key below before continuing!"
 msgstr ""
 
-#: vue/components/Admin/Shoutcast.vue:32
+#: vue/components/Admin/Shoutcast.vue:22
 msgid "In order to install Shoutcast:"
 msgstr ""
 
-#: vue/components/Admin/StereoTool.vue:38
+#: vue/components/Admin/StereoTool.vue:36
 msgid "In order to install Stereo Tool:"
 msgstr ""
 
@@ -2545,38 +2618,43 @@ msgstr ""
 msgid "Indicates the presence of explicit content (explicit language or adult content). Apple Podcasts displays an Explicit parental advisory graphic for your episode if turned on. Episodes containing explicit material aren't available in some Apple Podcasts territories."
 msgstr ""
 
-#: vue/components/Stations/Profile/NowPlayingNotStartedPanel.vue:19
+#: vue/components/Admin/Debug/TaskOutput.vue:94
+msgid "Info"
+msgstr ""
+
+#: vue/components/Stations/Profile/NowPlayingNotStartedPanel.vue:10
 msgid "Information about the current playing track will appear here once your station has started."
 msgstr ""
 
-#: vue/components/Admin/AuditLog.vue:34
+#: vue/components/Admin/AuditLog.vue:28
 msgid "Insert"
 msgstr ""
 
-#: vue/components/Admin/GeoLite.vue:9
-#: /var/azuracast/www/src/Controller/Admin/GeoLiteAction.php:25
-#: /var/azuracast/www/config/menus/admin.php:114
+#: vue/components/Admin/GeoLite.vue:4
+#: vue/components/Admin/menu.ts:158
 msgid "Install GeoLite IP Database"
 msgstr ""
 
-#: vue/components/Admin/Shoutcast.vue:9
-#: /var/azuracast/www/src/Controller/Admin/ShoutcastAction.php:30
+#: vue/components/Admin/menu.ts:142
+msgid "Install Shoutcast"
+msgstr ""
+
+#: vue/components/Admin/Shoutcast.vue:4
 msgid "Install Shoutcast 2 DNAS"
 msgstr ""
 
-#: vue/components/Admin/StereoTool.vue:9
-#: /var/azuracast/www/src/Controller/Admin/StereoToolAction.php:25
-#: /var/azuracast/www/config/menus/admin.php:109
+#: vue/components/Admin/menu.ts:150
+#: vue/components/Admin/StereoTool.vue:4
 msgid "Install Stereo Tool"
 msgstr ""
 
-#: vue/components/Admin/Stations/Form/BackendForm.vue:193
+#: vue/components/Admin/Stations/Form/BackendForm.vue:194
 msgid "Instruct Liquidsoap to use any replaygain metadata associated with a song to control its volume level. This may increase CPU consumption."
 msgstr ""
 
-#: vue/components/Admin/GeoLite.vue:27
-#: vue/components/Admin/Shoutcast.vue:22
-#: vue/components/Admin/StereoTool.vue:22
+#: vue/components/Admin/GeoLite.vue:17
+#: vue/components/Admin/Shoutcast.vue:12
+#: vue/components/Admin/StereoTool.vue:20
 msgid "Instructions"
 msgstr ""
 
@@ -2597,7 +2675,7 @@ msgid "Intro"
 msgstr ""
 
 #: vue/components/Stations/Reports/Listeners.vue:215
-#: vue/components/Stations/Reports/Listeners/Map.vue:7
+#: vue/components/Stations/Reports/Listeners/Map.vue:6
 msgid "IP"
 msgstr ""
 
@@ -2605,15 +2683,15 @@ msgstr ""
 msgid "IP Address Source"
 msgstr ""
 
-#: vue/components/Admin/GeoLite.vue:18
+#: vue/components/Admin/GeoLite.vue:8
 msgid "IP Geolocation is used to guess the approximate location of your listeners based on the IP address they connect with. Use the free built-in IP Geolocation library or enter a license key on this page to use MaxMind GeoLite."
 msgstr ""
 
-#: vue/components/Admin/Relays.vue:79
+#: vue/components/Admin/Relays.vue:77
 msgid "Is Public"
 msgstr ""
 
-#: vue/components/Stations/Media.vue:349
+#: vue/components/Stations/Media.vue:318
 #: vue/components/Stations/Media/Form/BasicInfo.vue:51
 #: /var/azuracast/www/src/Media/Enums/MetadataTags.php:105
 msgid "ISRC"
@@ -2623,11 +2701,11 @@ msgstr ""
 msgid "Items per page"
 msgstr ""
 
-#: vue/components/Stations/Playlists.vue:183
+#: vue/components/Stations/Playlists.vue:92
 msgid "Jingle Mode"
 msgstr ""
 
-#: vue/components/Account/EditForm.vue:33
+#: vue/components/Account/EditForm.vue:32
 #: vue/components/Stations/Podcasts/PodcastForm/BasicInfo.vue:37
 #: /var/azuracast/www/src/Media/Enums/MetadataTags.php:106
 #: /var/azuracast/www/templates/frontend/public/podcasts.phtml:52
@@ -2660,7 +2738,7 @@ msgstr ""
 msgid "Last 7 Days"
 msgstr ""
 
-#: vue/components/Admin/Backups.vue:238
+#: vue/components/Admin/Backups.vue:209
 msgid "Last Modified"
 msgstr ""
 
@@ -2668,11 +2746,11 @@ msgstr ""
 msgid "Last Month"
 msgstr ""
 
-#: vue/components/Admin/Debug.vue:252
+#: vue/components/Admin/Debug.vue:219
 msgid "Last Run"
 msgstr ""
 
-#: vue/components/Admin/Backups.vue:29
+#: vue/components/Admin/Backups.vue:25
 msgid "Last run:"
 msgstr ""
 
@@ -2684,7 +2762,7 @@ msgstr ""
 msgid "Last.fm API Key"
 msgstr ""
 
-#: vue/components/Admin/Relays.vue:81
+#: vue/components/Admin/Relays.vue:79
 msgid "Latest Update"
 msgstr ""
 
@@ -2719,7 +2797,7 @@ msgstr ""
 msgid "Leave blank to use the default Telegram API URL (recommended)."
 msgstr ""
 
-#: vue/components/Stations/Media.vue:350
+#: vue/components/Stations/Media.vue:319
 #: /var/azuracast/www/src/Media/Enums/MetadataTags.php:107
 msgid "Length"
 msgstr ""
@@ -2737,7 +2815,7 @@ msgid "LetsEncrypt provides simple, free SSL certificates allowing you to secure
 msgstr ""
 
 #: vue/components/Admin/Branding/BrandingForm.vue:186
-#: vue/components/Stations/Profile/EmbedModal.vue:166
+#: vue/components/Stations/Profile/EmbedModal.vue:153
 msgid "Light"
 msgstr ""
 
@@ -2745,16 +2823,16 @@ msgstr ""
 msgid "Limited"
 msgstr ""
 
-#: vue/components/Stations/Profile/BackendPanel.vue:113
+#: vue/components/Stations/Profile/BackendPanel.vue:119
 msgid "LiquidSoap is currently shuffling from %{songs} and %{playlists}."
 msgstr ""
 
-#: vue/components/Admin/Stations/Form/BackendForm.vue:238
+#: vue/components/Admin/Stations/Form/BackendForm.vue:235
 msgid "Liquidsoap Performance Tuning"
 msgstr ""
 
-#: vue/components/Admin/Stations/Form/FrontendForm.vue:101
-#: vue/components/Admin/Stations/Form/FrontendForm.vue:91
+#: vue/components/Admin/Stations/Form/FrontendForm.vue:102
+#: vue/components/Admin/Stations/Form/FrontendForm.vue:93
 msgid "List one IP address or group (in CIDR format) per line."
 msgstr ""
 
@@ -2770,8 +2848,8 @@ msgstr ""
 msgid "Listener Gained"
 msgstr ""
 
-#: vue/components/Stations/Reports/Listeners.vue:59
-#: vue/components/Stations/Reports/Listeners.vue:62
+#: vue/components/Stations/Reports/Listeners.vue:61
+#: vue/components/Stations/Reports/Listeners.vue:64
 msgid "Listener History"
 msgstr ""
 
@@ -2779,7 +2857,7 @@ msgstr ""
 msgid "Listener Lost"
 msgstr ""
 
-#: vue/components/Stations/Profile/NowPlayingPanel.vue:38
+#: vue/components/Stations/Profile/NowPlayingPanel.vue:37
 msgid "Listener Report"
 msgstr ""
 
@@ -2788,17 +2866,17 @@ msgstr ""
 msgid "Listener Request"
 msgstr ""
 
-#: vue/components/Common/Charts/HourChart.vue:58
-#: vue/components/Common/Charts/TimeSeriesChart.vue:70
-#: vue/components/Dashboard.vue:190
-#: vue/components/Stations/Profile/StreamsPanel.vue:124
-#: vue/components/Stations/Profile/StreamsPanel.vue:29
-#: vue/components/Stations/Profile/StreamsPanel.vue:76
+#: vue/components/Common/Charts/HourChart.vue:54
+#: vue/components/Common/Charts/TimeSeriesChart.vue:74
+#: vue/components/Dashboard.vue:187
+#: vue/components/Stations/menu.ts:191
+#: vue/components/Stations/Profile/StreamsPanel.vue:115
+#: vue/components/Stations/Profile/StreamsPanel.vue:19
+#: vue/components/Stations/Profile/StreamsPanel.vue:67
 #: vue/components/Stations/Reports/Listeners.vue:9
-#: vue/components/Stations/Reports/Overview/CommonMetricsView.vue:102
-#: vue/components/Stations/Reports/Overview/ListeningTimeTab.vue:64
-#: vue/components/Stations/Reports/Timeline.vue:152
-#: /var/azuracast/www/src/Controller/Stations/Reports/ListenersAction.php:26
+#: vue/components/Stations/Reports/Overview/CommonMetricsView.vue:101
+#: vue/components/Stations/Reports/Overview/ListeningTimeTab.vue:63
+#: vue/components/Stations/Reports/Timeline.vue:147
 #: /var/azuracast/www/src/Controller/Api/Stations/Reports/Overview/ByStream.php:98
 #: /var/azuracast/www/src/Controller/Api/Stations/Reports/Overview/ByCountry.php:74
 #: /var/azuracast/www/src/Controller/Api/Stations/Reports/Overview/ChartsAction.php:77
@@ -2808,7 +2886,6 @@ msgstr ""
 #: /var/azuracast/www/src/Controller/Api/Stations/Reports/Overview/ByClient.php:81
 #: /var/azuracast/www/src/Controller/Api/Stations/Reports/Overview/ByBrowser.php:61
 #: /var/azuracast/www/src/Controller/Api/Frontend/Dashboard/ChartsAction.php:184
-#: /var/azuracast/www/config/menus/station.php:182
 msgid "Listeners"
 msgstr ""
 
@@ -2835,18 +2912,18 @@ msgstr ""
 msgid "Listeners By Time Period"
 msgstr ""
 
-#: vue/components/Dashboard.vue:109
+#: vue/components/Dashboard.vue:108
 msgid "Listeners Per Station"
 msgstr ""
 
 #: vue/components/Stations/Reports/Overview.vue:41
-#: vue/components/Stations/Reports/Overview/ListeningTimeTab.vue:63
+#: vue/components/Stations/Reports/Overview/ListeningTimeTab.vue:62
 msgid "Listening Time"
 msgstr ""
 
-#: vue/components/Public/Player.vue:32
+#: vue/components/Public/Player.vue:23
 #: vue/components/Stations/Profile/NowPlayingPanel.vue:183
-#: vue/components/Stations/Streamers/BroadcastsModal.vue:112
+#: vue/components/Stations/Streamers/BroadcastsModal.vue:107
 msgid "Live"
 msgstr ""
 
@@ -2858,8 +2935,8 @@ msgstr ""
 msgid "Live Broadcast Recording Format"
 msgstr ""
 
-#: vue/components/Stations/Reports/Listeners.vue:45
-#: vue/components/Stations/Reports/Listeners.vue:48
+#: vue/components/Stations/Reports/Listeners.vue:47
+#: vue/components/Stations/Reports/Listeners.vue:50
 msgid "Live Listeners"
 msgstr ""
 
@@ -2880,11 +2957,15 @@ msgstr ""
 msgid "Live Streamer/DJ Disconnected"
 msgstr ""
 
+#: vue/components/Stations/menu.ts:146
+msgid "Live Streaming"
+msgstr ""
+
 #: vue/components/Admin/Index.vue:265
 msgid "Load Average"
 msgstr ""
 
-#: vue/components/Admin/StorageLocations.vue:188
+#: vue/components/Admin/StorageLocations.vue:173
 #: vue/components/Stations/Reports/Listeners.vue:147
 msgid "Local"
 msgstr ""
@@ -2897,7 +2978,7 @@ msgstr ""
 msgid "Local IP (Default)"
 msgstr ""
 
-#: vue/components/Stations/Profile/StreamsPanel.vue:25
+#: vue/components/Stations/Profile/StreamsPanel.vue:16
 msgid "Local Streams"
 msgstr ""
 
@@ -2911,18 +2992,22 @@ msgstr ""
 msgid "Log In"
 msgstr ""
 
+#: vue/components/Admin/Debug/TaskOutputModal.vue:4
+msgid "Log Output"
+msgstr ""
+
 #: vue/components/Admin/Backups/LastOutputModal.vue:6
 #: vue/components/Common/StreamingLogModal.vue:6
 #: vue/components/Stations/Queue/LogsModal.vue:6
 msgid "Log Viewer"
 msgstr ""
 
+#: vue/components/Stations/menu.ts:295
 #: vue/components/Stations/Queue.vue:25
-#: /var/azuracast/www/config/menus/station.php:262
 msgid "Logs"
 msgstr ""
 
-#: vue/components/Admin/Logs.vue:31
+#: vue/components/Admin/Logs.vue:16
 msgid "Logs by Station"
 msgstr ""
 
@@ -2943,9 +3028,9 @@ msgstr ""
 msgid "Make the selected media play immediately, interrupting existing media"
 msgstr ""
 
-#: vue/components/Admin/Stations.vue:32
-#: vue/components/Dashboard.vue:277
-#: vue/components/Stations/Profile/StreamersPanel.vue:28
+#: vue/components/Admin/Stations.vue:37
+#: vue/components/Dashboard.vue:273
+#: vue/components/Stations/Profile/StreamersPanel.vue:24
 msgid "Manage"
 msgstr ""
 
@@ -2953,23 +3038,19 @@ msgstr ""
 msgid "Manage Avatar"
 msgstr ""
 
-#: vue/components/Admin/ApiKeys.vue:18
-msgid "Manage My API Keys"
-msgstr ""
-
 #: vue/components/Stations/Media.vue:33
 msgid "Manage SFTP Accounts"
 msgstr ""
 
-#: vue/components/Dashboard.vue:163
+#: vue/components/Dashboard.vue:158
 msgid "Manage Stations"
 msgstr ""
 
-#: vue/components/Admin/Stations/Form/BackendForm.vue:178
+#: vue/components/Admin/Stations/Form/BackendForm.vue:180
 msgid "Manual AutoDJ Mode"
 msgstr ""
 
-#: vue/components/Admin/Updates.vue:152
+#: vue/components/Admin/Updates.vue:129
 msgid "Manual Updates"
 msgstr ""
 
@@ -2989,7 +3070,7 @@ msgstr ""
 msgid "Master_me Loudness Target (LUFS)"
 msgstr ""
 
-#: vue/components/Admin/Stations/Form/BackendForm.vue:431
+#: vue/components/Admin/Stations/Form/BackendForm.vue:426
 msgid "Master_me Post-processing"
 msgstr ""
 
@@ -3033,19 +3114,19 @@ msgstr ""
 msgid "Max Listener Duration"
 msgstr ""
 
-#: vue/components/Admin/Stations/Form/FrontendForm.vue:74
+#: vue/components/Admin/Stations/Form/FrontendForm.vue:80
 msgid "Maximum Listeners"
 msgstr ""
 
-#: vue/components/Admin/Stations/Form/FrontendForm.vue:75
+#: vue/components/Admin/Stations/Form/FrontendForm.vue:81
 msgid "Maximum number of total listeners across all streams. Leave blank to use the default."
 msgstr ""
 
-#: vue/components/Admin/GeoLite.vue:42
+#: vue/components/Admin/GeoLite.vue:32
 msgid "MaxMind Developer Site"
 msgstr ""
 
-#: vue/components/Admin/GeoLite.vue:87
+#: vue/components/Admin/GeoLite.vue:77
 msgid "MaxMind License Key"
 msgstr ""
 
@@ -3057,12 +3138,12 @@ msgstr ""
 msgid "Measurement Protocol API Secret"
 msgstr ""
 
+#: vue/components/Stations/menu.ts:56
 #: vue/components/Stations/Podcasts/EpisodeForm/Media.vue:2
-#: /var/azuracast/www/config/menus/station.php:73
 msgid "Media"
 msgstr ""
 
-#: vue/components/Stations/BulkMedia.vue:106
+#: vue/components/Stations/BulkMedia.vue:103
 msgid "Media File"
 msgstr ""
 
@@ -3118,7 +3199,7 @@ msgstr ""
 msgid "Message parsing mode"
 msgstr ""
 
-#: vue/components/Admin/Debug.vue:109
+#: vue/components/Admin/Debug.vue:83
 msgid "Message Queues"
 msgstr ""
 
@@ -3155,18 +3236,22 @@ msgstr ""
 msgid "Mobile Device"
 msgstr ""
 
-#: vue/components/Stations/Media.vue:367
+#: vue/components/Stations/Media.vue:336
 msgid "Modified"
 msgstr ""
 
-#: vue/components/Stations/Playlists/Form/ScheduleRow.vue:147
-#: vue/components/Stations/Streamers/Form/ScheduleRow.vue:147
+#: vue/components/Stations/Playlists/Form/ScheduleRow.vue:144
+#: vue/components/Stations/Streamers/Form/ScheduleRow.vue:144
 #: /var/azuracast/www/src/Controller/Api/Stations/Reports/Overview/ChartsAction.php:104
 msgid "Monday"
 msgstr ""
 
 #: vue/components/Stations/Media/MediaToolbar.vue:123
-#: vue/components/Stations/Playlists.vue:76
+#: vue/components/Stations/Playlists.vue:47
+#: vue/components/Stations/Playlists.vue:51
+#: vue/components/Stations/Playlists.vue:55
+#: vue/components/Stations/Playlists.vue:62
+#: vue/components/Stations/Playlists.vue:70
 msgid "More"
 msgstr ""
 
@@ -3178,7 +3263,7 @@ msgstr ""
 msgid "Most Played Songs"
 msgstr ""
 
-#: vue/components/Admin/Backups.vue:63
+#: vue/components/Admin/Backups.vue:59
 msgid "Most Recent Backup Log"
 msgstr ""
 
@@ -3192,9 +3277,8 @@ msgid "Mount Point URL"
 msgstr ""
 
 #: vue/components/Admin/Stations/CloneModalForm.vue:63
+#: vue/components/Stations/menu.ts:227
 #: vue/components/Stations/Mounts.vue:2
-#: /var/azuracast/www/src/Controller/Stations/MountsAction.php:31
-#: /var/azuracast/www/config/menus/station.php:206
 msgid "Mount Points"
 msgstr ""
 
@@ -3218,13 +3302,12 @@ msgid "Move to Directory"
 msgstr ""
 
 #: vue/components/Stations/Media.vue:11
+#: vue/components/Stations/menu.ts:62
 #: vue/components/Stations/Profile/BackendPanel.vue:28
-#: /var/azuracast/www/src/Controller/Stations/FilesAction.php:53
-#: /var/azuracast/www/config/menus/station.php:78
 msgid "Music Files"
 msgstr ""
 
-#: vue/components/Admin/Stations/Form/BackendForm.vue:458
+#: vue/components/Admin/Stations/Form/BackendForm.vue:453
 msgid "Music General"
 msgstr ""
 
@@ -3239,27 +3322,27 @@ msgstr ""
 
 #: vue/components/Account.vue:4
 #: vue/components/Dashboard.vue:36
+#: vue/components/PanelLayout.vue:83
 #: /var/azuracast/www/src/Controller/Frontend/Profile/IndexAction.php:31
-#: /var/azuracast/www/templates/main.phtml:112
 msgid "My Account"
 msgstr ""
 
-#: vue/components/Admin/AuditLog.vue:72
+#: vue/components/Admin/AuditLog.vue:66
 msgid "N/A"
 msgstr ""
 
-#: vue/components/Account/EditForm.vue:8
-#: vue/components/Admin/Stations.vue:114
+#: vue/components/Account/EditForm.vue:7
+#: vue/components/Admin/Stations.vue:119
 #: vue/components/Admin/Stations/Form/ProfileForm.vue:12
-#: vue/components/Public/Requests.vue:79
-#: vue/components/Stations/HlsStreams.vue:93
-#: vue/components/Stations/Media.vue:338
-#: vue/components/Stations/Mounts.vue:117
-#: vue/components/Stations/Remotes.vue:104
+#: vue/components/Public/Requests.vue:73
+#: vue/components/Stations/HlsStreams.vue:88
+#: vue/components/Stations/Media.vue:307
+#: vue/components/Stations/Mounts.vue:107
+#: vue/components/Stations/Remotes.vue:99
 msgid "Name"
 msgstr ""
 
-#: vue/components/Stations/Webhooks.vue:133
+#: vue/components/Stations/Webhooks.vue:129
 msgid "Name/Type"
 msgstr ""
 
@@ -3271,7 +3354,7 @@ msgstr ""
 msgid "Network Interfaces"
 msgstr ""
 
-#: vue/components/Admin/Backups.vue:36
+#: vue/components/Admin/Backups.vue:32
 msgid "Never run"
 msgstr ""
 
@@ -3320,7 +3403,7 @@ msgstr ""
 msgid "Next page"
 msgstr ""
 
-#: vue/components/Admin/Debug.vue:266
+#: vue/components/Admin/Debug.vue:227
 msgid "Next Run"
 msgstr ""
 
@@ -3340,16 +3423,16 @@ msgstr ""
 msgid "No Limit"
 msgstr ""
 
-#: vue/components/Stations/Playlists/ImportModal.vue:39
+#: vue/components/Stations/Playlists/ImportModal.vue:44
 msgid "No Match"
 msgstr ""
 
-#: vue/components/Admin/Stations/Form/FrontendForm.vue:65
+#: vue/components/Admin/Stations/Form/FrontendForm.vue:73
 #: vue/components/Admin/Stations/Form/StreamersForm.vue:87
 msgid "No other program can be using this port. Leave blank to automatically assign a port."
 msgstr ""
 
-#: vue/components/Admin/Stations/Form/BackendForm.vue:423
+#: vue/components/Admin/Stations/Form/BackendForm.vue:418
 msgid "No Post-processing"
 msgstr ""
 
@@ -3357,14 +3440,14 @@ msgstr ""
 msgid "No records to display."
 msgstr ""
 
-#: vue/components/Admin/CustomFields.vue:99
+#: vue/components/Admin/CustomFields.vue:98
 #: vue/components/Admin/Settings/SecurityPrivacyTab.vue:134
-#: vue/components/Stations/Playlists.vue:368
+#: vue/components/Stations/Playlists.vue:362
 #: /var/azuracast/www/src/Entity/Repository/StorageLocationRepository.php:74
 msgid "None"
 msgstr ""
 
-#: vue/components/Admin/Stations/Form/BackendForm.vue:410
+#: vue/components/Admin/Stations/Form/BackendForm.vue:405
 msgid "Normal Mode"
 msgstr ""
 
@@ -3372,7 +3455,7 @@ msgstr ""
 msgid "Not Played"
 msgstr ""
 
-#: vue/components/Admin/Debug.vue:255
+#: vue/components/Admin/Debug.vue:221
 msgid "Not Run"
 msgstr ""
 
@@ -3385,7 +3468,7 @@ msgstr ""
 msgid "Not Scheduled"
 msgstr ""
 
-#: vue/components/Admin/Backups.vue:94
+#: vue/components/Admin/Backups.vue:80
 msgid "Note that restoring a backup will clear your existing database. Never restore backup files from untrusted users."
 msgstr ""
 
@@ -3397,16 +3480,20 @@ msgstr ""
 msgid "Note: This should be the public-facing homepage of the radio station, not the AzuraCast URL. It will be included in broadcast details."
 msgstr ""
 
-#: vue/components/Stations/Streamers.vue:168
+#: vue/components/Stations/Streamers.vue:160
 msgid "Notes"
 msgstr ""
 
+#: vue/components/Admin/Debug/TaskOutput.vue:95
+msgid "Notice"
+msgstr ""
+
 #: vue/components/Common/DateRangeDropdown.vue:13
-#: vue/components/Stations/Profile/SchedulePanel.vue:40
+#: vue/components/Stations/Profile/SchedulePanel.vue:32
 msgid "Now"
 msgstr ""
 
-#: vue/components/Dashboard.vue:192
+#: vue/components/Dashboard.vue:189
 #: vue/components/Stations/Profile/NowPlayingPanel.vue:56
 msgid "Now Playing"
 msgstr ""
@@ -3452,20 +3539,20 @@ msgstr ""
 msgid "Number of Visible Recent Songs"
 msgstr ""
 
-#: vue/components/Stations/Profile/NowPlayingNotStartedPanel.vue:10
-#: vue/components/Stations/Profile/NowPlayingPanel.vue:11
+#: vue/components/Stations/Profile/NowPlayingNotStartedPanel.vue:5
+#: vue/components/Stations/Profile/NowPlayingPanel.vue:10
 msgid "On the Air"
 msgstr ""
 
-#: vue/components/Stations/Playlists.vue:195
+#: vue/components/Stations/Playlists.vue:104
 msgid "On-Demand"
 msgstr ""
 
 #: vue/components/Public/OnDemand.vue:24
-#: vue/components/Stations/Profile/EmbedModal.vue:151
-#: vue/components/Stations/Profile/PublicPagesPanel.vue:42
+#: vue/components/Stations/menu.ts:103
+#: vue/components/Stations/Profile/EmbedModal.vue:138
+#: vue/components/Stations/Profile/PublicPagesPanel.vue:39
 #: /var/azuracast/www/src/Controller/Frontend/PublicPages/OnDemandAction.php:74
-#: /var/azuracast/www/config/menus/station.php:99
 msgid "On-Demand Media"
 msgstr ""
 
@@ -3473,11 +3560,11 @@ msgstr ""
 msgid "On-Demand Streaming"
 msgstr ""
 
-#: vue/components/Stations/Playlists.vue:232
+#: vue/components/Stations/Playlists.vue:141
 msgid "Once per %{minutes} Minutes"
 msgstr ""
 
-#: vue/components/Stations/Playlists.vue:224
+#: vue/components/Stations/Playlists.vue:133
 msgid "Once per %{songs} Songs"
 msgstr ""
 
@@ -3486,7 +3573,7 @@ msgstr ""
 msgid "Once per Hour"
 msgstr ""
 
-#: vue/components/Stations/Playlists.vue:240
+#: vue/components/Stations/Playlists.vue:149
 msgid "Once per Hour (at %{minute})"
 msgstr ""
 
@@ -3516,7 +3603,7 @@ msgstr ""
 msgid "Only collect aggregate listener statistics"
 msgstr ""
 
-#: vue/components/Admin/Stations/Form/FrontendForm.vue:281
+#: vue/components/Admin/Stations/Form/FrontendForm.vue:282
 msgid "Only connect to a remote server."
 msgstr ""
 
@@ -3532,7 +3619,7 @@ msgstr ""
 msgid "Only Post Once Every..."
 msgstr ""
 
-#: vue/components/Admin/AuditLog.vue:132
+#: vue/components/Admin/AuditLog.vue:125
 msgid "Operation"
 msgstr ""
 
@@ -3572,11 +3659,15 @@ msgstr ""
 msgid "or"
 msgstr ""
 
-#: vue/components/Stations/Playlists/ImportModal.vue:20
+#: vue/components/Stations/Playlists/ImportModal.vue:25
 msgid "Original Path"
 msgstr ""
 
-#: vue/components/Admin/ApiKeys.vue:75
+#: vue/components/Stations/Playlists/Form/BasicInfo.vue:363
+msgid "Other Remote URL (File, HLS, etc.)"
+msgstr ""
+
+#: vue/components/Admin/ApiKeys.vue:54
 msgid "Owner"
 msgstr ""
 
@@ -3594,14 +3685,14 @@ msgstr ""
 msgid "Password"
 msgstr ""
 
-#: vue/components/Stations/Profile/FrontendPanel.vue:43
-#: vue/components/Stations/Profile/FrontendPanel.vue:64
-#: vue/components/Stations/Profile/FrontendPanel.vue:85
+#: vue/components/Stations/Profile/FrontendPanel.vue:42
+#: vue/components/Stations/Profile/FrontendPanel.vue:74
+#: vue/components/Stations/Profile/FrontendPanel.vue:95
 #: vue/components/Stations/Streamers/ConnectionInfo.vue:68
 msgid "Password:"
 msgstr ""
 
-#: vue/components/Admin/GeoLite.vue:55
+#: vue/components/Admin/GeoLite.vue:45
 msgid "Paste the generated license key into the field on this page."
 msgstr ""
 
@@ -3609,7 +3700,7 @@ msgstr ""
 msgid "Path/Suffix"
 msgstr ""
 
-#: vue/components/Stations/Reports/Requests.vue:136
+#: vue/components/Stations/Reports/Requests.vue:129
 msgid "Pending Requests"
 msgstr ""
 
@@ -3638,7 +3729,13 @@ msgstr ""
 msgid "Play once per hour at the specified minute."
 msgstr ""
 
-#: vue/components/Stations/Playlists.vue:123
+#: vue/components/Stations/Playlists.vue:144
+#: vue/components/Stations/Playlists.vue:145
+#: vue/components/Stations/Playlists.vue:152
+#: vue/components/Stations/Playlists.vue:156
+#: vue/components/Stations/Playlists.vue:160
+#: vue/components/Stations/Playlists.vue:196
+#: vue/components/Stations/Playlists.vue:224
 #: vue/components/Stations/Playlists/QueueModal.vue:6
 msgid "Playback Queue"
 msgstr ""
@@ -3647,11 +3744,11 @@ msgstr ""
 msgid "Playing Next"
 msgstr ""
 
-#: vue/components/Public/FullPlayer.vue:43
-#: vue/components/Stations/Playlists.vue:354
+#: vue/components/Public/FullPlayer.vue:42
+#: vue/components/Stations/Playlists.vue:340
 #: vue/components/Stations/Profile/NowPlayingPanel.vue:101
 #: vue/components/Stations/Profile/NowPlayingPanel.vue:170
-#: vue/components/Stations/Profile/SchedulePanel.vue:27
+#: vue/components/Stations/Profile/SchedulePanel.vue:19
 #: vue/components/Stations/Queue.vue:63
 msgid "Playlist"
 msgstr ""
@@ -3701,14 +3798,13 @@ msgid "Playlist:"
 msgstr ""
 
 #: vue/components/Admin/Stations/CloneModalForm.vue:59
-#: vue/components/Stations/Media.vue:383
+#: vue/components/Stations/Media.vue:352
 #: vue/components/Stations/Media/EditModal.vue:22
 #: vue/components/Stations/Media/Form/Playlists.vue:9
 #: vue/components/Stations/Media/MediaToolbar.vue:17
+#: vue/components/Stations/menu.ts:128
 #: vue/components/Stations/Playlists.vue:11
-#: vue/components/Stations/Profile/BackendPanel.vue:32
-#: /var/azuracast/www/src/Controller/Stations/PlaylistsAction.php:31
-#: /var/azuracast/www/config/menus/station.php:120
+#: vue/components/Stations/Profile/BackendPanel.vue:34
 msgid "Playlists"
 msgstr ""
 
@@ -3724,7 +3820,7 @@ msgstr ""
 msgid "Plays"
 msgstr ""
 
-#: vue/components/Stations/Podcasts/ListView.vue:121
+#: vue/components/Stations/Podcasts/ListView.vue:127
 msgid "Podcast"
 msgstr ""
 
@@ -3736,15 +3832,18 @@ msgstr ""
 msgid "Podcast Title"
 msgstr ""
 
+#: vue/components/Stations/menu.ts:137
 #: vue/components/Stations/Podcasts/ListView.vue:10
-#: vue/components/Stations/Profile/PublicPagesPanel.vue:51
-#: /var/azuracast/www/src/Controller/Stations/PodcastsAction.php:35
-#: /var/azuracast/www/config/menus/station.php:128
+#: vue/components/Stations/Profile/PublicPagesPanel.vue:48
 msgid "Podcasts"
 msgstr ""
 
 #: vue/components/Admin/Stations/Form/AdminForm.vue:49
 msgid "Podcasts Storage Location"
+msgstr ""
+
+#: vue/components/Stations/Profile/FrontendPanel.vue:55
+msgid "Port"
 msgstr ""
 
 #: vue/components/Stations/SftpUsers.vue:67
@@ -3757,6 +3856,10 @@ msgstr ""
 msgid "Post-processing allows you to apply audio processors (like compressors, limiters, or equalizers) to your stream to create a more uniform sound or enhance the listening experience. Post-processing requires extra CPU resources, so it may slow down your server."
 msgstr ""
 
+#: vue/components/PanelLayout.vue:147
+msgid "Powered by"
+msgstr ""
+
 #: vue/components/Stations/Webhooks/Form/Discord.vue:127
 msgid "Powered by AzuraCast"
 msgstr ""
@@ -3765,7 +3868,7 @@ msgstr ""
 msgid "Prefer Browser URL (If Available)"
 msgstr ""
 
-#: vue/components/Account/EditForm.vue:82
+#: vue/components/Account/EditForm.vue:70
 #: vue/components/Admin/Branding/BrandingForm.vue:182
 msgid "Prefer System Default"
 msgstr ""
@@ -3788,8 +3891,7 @@ msgstr ""
 
 #: vue/components/Account.vue:11
 #: vue/components/Admin/Stations/Form/ProfileForm.vue:3
-#: /var/azuracast/www/src/Controller/Stations/ProfileController.php:76
-#: /var/azuracast/www/config/menus/station.php:46
+#: vue/components/Stations/menu.ts:18
 msgid "Profile"
 msgstr ""
 
@@ -3806,28 +3908,27 @@ msgstr ""
 msgid "Public"
 msgstr ""
 
-#: vue/components/Dashboard.vue:215
+#: vue/components/Dashboard.vue:212
+#: vue/components/Stations/menu.ts:48
 #: vue/components/Stations/Podcasts/EpisodesView.vue:48
 #: vue/components/Stations/Podcasts/EpisodesView.vue:49
 #: vue/components/Stations/Podcasts/EpisodesView.vue:63
-#: vue/components/Stations/Podcasts/EpisodesView.vue:70
+#: vue/components/Stations/Podcasts/EpisodesView.vue:69
 #: vue/components/Stations/Podcasts/ListView.vue:32
 #: vue/components/Stations/Podcasts/ListView.vue:33
 #: vue/components/Stations/Podcasts/ListView.vue:43
-#: vue/components/Stations/Podcasts/ListView.vue:50
-#: vue/components/Stations/Profile/PublicPagesPanel.vue:24
-#: /var/azuracast/www/config/menus/station.php:66
+#: vue/components/Stations/Podcasts/ListView.vue:49
+#: vue/components/Stations/Profile/PublicPagesPanel.vue:21
 msgid "Public Page"
 msgstr ""
 
-#: vue/components/Admin/Branding.vue:25
+#: vue/components/Admin/Branding.vue:17
 #: vue/components/Stations/Branding.vue:22
 msgid "Public Page Background"
 msgstr ""
 
 #: vue/components/Admin/Stations/Form/ProfileForm.vue:82
-#: vue/components/Stations/Profile/PublicPagesPanel.vue:10
-#: vue/components/Stations/Profile/PublicPagesPanel.vue:110
+#: vue/components/Stations/Profile/PublicPagesPanel.vue:5
 msgid "Public Pages"
 msgstr ""
 
@@ -3856,12 +3957,16 @@ msgstr ""
 msgid "Queue the selected media to play next"
 msgstr ""
 
-#: vue/components/Stations/Profile/EmbedModal.vue:129
+#: vue/components/Stations/Profile/EmbedModal.vue:116
 msgid "Radio Player"
 msgstr ""
 
 #: vue/components/Stations/Playlists/Form/BasicInfo.vue:342
 msgid "Random"
+msgstr ""
+
+#: vue/components/Stations/Sidebar.vue:39
+msgid "Ready to start broadcasting? Click to start your station."
 msgstr ""
 
 #: vue/components/Admin/Index.vue:354
@@ -3886,8 +3991,8 @@ msgstr ""
 msgid "Region"
 msgstr ""
 
-#: vue/components/Admin/Relays.vue:78
-#: vue/components/Stations/Profile/FrontendPanel.vue:77
+#: vue/components/Admin/Relays.vue:76
+#: vue/components/Stations/Profile/FrontendPanel.vue:87
 msgid "Relay"
 msgstr ""
 
@@ -3896,7 +4001,7 @@ msgid "Relay Stream URL"
 msgstr ""
 
 #: vue/components/Admin/Settings/ServicesTab.vue:15
-#: vue/components/Admin/Updates.vue:59
+#: vue/components/Admin/Updates.vue:46
 #: /var/azuracast/www/src/Installer/EnvFiles/EnvFile.php:36
 msgid "Release Channel"
 msgstr ""
@@ -3908,6 +4013,10 @@ msgstr ""
 #: vue/components/Stations/Restart.vue:15
 #: vue/components/Stations/Restart.vue:43
 msgid "Reload Configuration"
+msgstr ""
+
+#: vue/components/Stations/Sidebar.vue:50
+msgid "Reload to Apply Changes"
 msgstr ""
 
 #: vue/components/Stations/Restart.vue:30
@@ -3923,10 +4032,9 @@ msgid "Remote Playback Buffer (Seconds)"
 msgstr ""
 
 #: vue/components/Admin/Stations/CloneModalForm.vue:67
-#: vue/components/Stations/Profile/StreamsPanel.vue:73
+#: vue/components/Stations/menu.ts:243
+#: vue/components/Stations/Profile/StreamsPanel.vue:64
 #: vue/components/Stations/Remotes.vue:2
-#: /var/azuracast/www/src/Controller/Stations/RemotesAction.php:25
-#: /var/azuracast/www/config/menus/station.php:219
 msgid "Remote Relays"
 msgstr ""
 
@@ -3966,7 +4074,7 @@ msgstr ""
 msgid "Remote Station Type"
 msgstr ""
 
-#: vue/components/Stations/Playlists.vue:179
+#: vue/components/Stations/Playlists.vue:88
 #: vue/components/Stations/Playlists/Form/BasicInfo.vue:201
 #: vue/components/Stations/Playlists/Form/BasicInfo.vue:301
 msgid "Remote URL"
@@ -3980,19 +4088,19 @@ msgstr ""
 msgid "Remote URL Type"
 msgstr ""
 
-#: vue/components/Admin/StorageLocations.vue:194
+#: vue/components/Admin/StorageLocations.vue:179
 #: vue/components/Admin/StorageLocations/Form.vue:91
 #: vue/components/Admin/StorageLocations/Form/Dropbox.vue:3
 msgid "Remote: Dropbox"
 msgstr ""
 
-#: vue/components/Admin/StorageLocations.vue:191
+#: vue/components/Admin/StorageLocations.vue:176
 #: vue/components/Admin/StorageLocations/Form.vue:87
 #: vue/components/Admin/StorageLocations/Form/S3.vue:3
 msgid "Remote: S3 Compatible"
 msgstr ""
 
-#: vue/components/Admin/StorageLocations.vue:197
+#: vue/components/Admin/StorageLocations.vue:182
 #: vue/components/Admin/StorageLocations/Form.vue:95
 #: vue/components/Admin/StorageLocations/Form/Sftp.vue:3
 msgid "Remote: SFTP"
@@ -4004,12 +4112,12 @@ msgstr ""
 msgid "Remove"
 msgstr ""
 
-#: vue/components/Admin/GeoLite.vue:100
-#: vue/components/Admin/GeoLite.vue:97
+#: vue/components/Admin/GeoLite.vue:87
+#: vue/components/Admin/GeoLite.vue:90
 msgid "Remove Key"
 msgstr ""
 
-#: vue/components/Stations/Media.vue:205
+#: vue/components/Stations/Media.vue:202
 #: vue/components/Stations/Media/RenameModal.vue:16
 #: vue/components/Stations/Media/RenameModal.vue:21
 #: vue/components/Stations/Media/RenameModal.vue:25
@@ -4020,7 +4128,13 @@ msgstr ""
 msgid "Rename File/Directory"
 msgstr ""
 
-#: vue/components/Stations/Playlists.vue:114
+#: vue/components/Stations/Playlists.vue:141
+#: vue/components/Stations/Playlists.vue:142
+#: vue/components/Stations/Playlists.vue:149
+#: vue/components/Stations/Playlists.vue:153
+#: vue/components/Stations/Playlists.vue:157
+#: vue/components/Stations/Playlists.vue:193
+#: vue/components/Stations/Playlists.vue:216
 msgid "Reorder"
 msgstr ""
 
@@ -4037,13 +4151,17 @@ msgstr ""
 msgid "Replace Album Cover Art"
 msgstr ""
 
+#: vue/components/Stations/menu.ts:178
+msgid "Reports"
+msgstr ""
+
 #: vue/components/Stations/Media/MediaToolbar.vue:151
 msgid "Reprocess"
 msgstr ""
 
 #: vue/components/Public/Requests.vue:14
 #: vue/components/Public/Requests.vue:15
-#: vue/components/Public/Requests.vue:30
+#: vue/components/Public/Requests.vue:28
 msgid "Request"
 msgstr ""
 
@@ -4051,7 +4169,7 @@ msgstr ""
 msgid "Request a Song"
 msgstr ""
 
-#: vue/components/Stations/Reports/Requests.vue:140
+#: vue/components/Stations/Reports/Requests.vue:133
 msgid "Request History"
 msgstr ""
 
@@ -4063,15 +4181,15 @@ msgstr ""
 msgid "Request Minimum Delay (Minutes)"
 msgstr ""
 
-#: vue/components/Public/FullPlayer.vue:34
+#: vue/components/Public/FullPlayer.vue:33
 msgid "Request Song"
 msgstr ""
 
-#: vue/components/Stations/Reports/Requests.vue:129
+#: vue/components/Stations/Reports/Requests.vue:122
 msgid "Requester IP"
 msgstr ""
 
-#: vue/components/Stations/Profile/EmbedModal.vue:144
+#: vue/components/Stations/Profile/EmbedModal.vue:131
 #: /var/azuracast/www/src/Controller/Frontend/PublicPages/RequestsAction.php:41
 msgid "Requests"
 msgstr ""
@@ -4080,19 +4198,25 @@ msgstr ""
 msgid "Required"
 msgstr ""
 
-#: vue/components/Stations/Playlists.vue:96
+#: vue/components/Stations/Playlists.vue:135
+#: vue/components/Stations/Playlists.vue:136
+#: vue/components/Stations/Playlists.vue:143
+#: vue/components/Stations/Playlists.vue:147
+#: vue/components/Stations/Playlists.vue:151
+#: vue/components/Stations/Playlists.vue:187
+#: vue/components/Stations/Playlists.vue:200
 msgid "Reshuffle"
 msgstr ""
 
 #: vue/components/Admin/Index.vue:316
-#: vue/components/Stations/Profile/BackendPanel.vue:49
-#: vue/components/Stations/Profile/FrontendPanel.vue:118
+#: vue/components/Stations/Profile/BackendPanel.vue:53
+#: vue/components/Stations/Profile/FrontendPanel.vue:132
 msgid "Restart"
 msgstr ""
 
+#: vue/components/Stations/menu.ts:285
 #: vue/components/Stations/Restart.vue:70
 #: vue/components/Stations/Restart.vue:91
-#: /var/azuracast/www/config/menus/station.php:252
 msgid "Restart Broadcasting"
 msgstr ""
 
@@ -4104,7 +4228,7 @@ msgstr ""
 msgid "Restarting broadcasting will rewrite all configuration files and restart all services."
 msgstr ""
 
-#: vue/components/Admin/Backups.vue:77
+#: vue/components/Admin/Backups.vue:68
 msgid "Restoring Backups"
 msgstr ""
 
@@ -4122,22 +4246,21 @@ msgstr ""
 msgid "Roles"
 msgstr ""
 
+#: vue/components/Admin/menu.ts:87
 #: vue/components/Admin/Permissions.vue:2
-#: /var/azuracast/www/src/Controller/Admin/PermissionsAction.php:33
-#: /var/azuracast/www/config/menus/admin.php:68
 msgid "Roles & Permissions"
 msgstr ""
 
 #: vue/components/Admin/Settings/ServicesTab.vue:341
-#: vue/components/Admin/Updates.vue:219
+#: vue/components/Admin/Updates.vue:191
 msgid "Rolling Release"
 msgstr ""
 
 #: vue/components/Stations/Podcasts/ListView.vue:33
 #: vue/components/Stations/Podcasts/ListView.vue:34
 #: vue/components/Stations/Podcasts/ListView.vue:44
-#: vue/components/Stations/Podcasts/ListView.vue:51
-#: vue/components/Stations/Podcasts/ListView.vue:54
+#: vue/components/Stations/Podcasts/ListView.vue:50
+#: vue/components/Stations/Podcasts/ListView.vue:53
 #: /var/azuracast/www/templates/frontend/public/podcast-episodes.phtml:45
 #: /var/azuracast/www/templates/frontend/public/podcast-episode.phtml:91
 #: /var/azuracast/www/templates/frontend/public/podcasts.phtml:78
@@ -4148,15 +4271,18 @@ msgstr ""
 msgid "Run Automatic Nightly Backups"
 msgstr ""
 
-#: vue/components/Admin/Backups.vue:124
+#: vue/components/Admin/Backups.vue:100
 #: vue/components/Admin/Backups/RunBackupModal.vue:7
 #: vue/components/Admin/Backups/RunBackupModal.vue:84
 #: vue/components/Admin/Backups/RunBackupModal.vue:91
 msgid "Run Manual Backup"
 msgstr ""
 
-#: vue/components/Admin/Debug.vue:199
-#: vue/components/Admin/Debug.vue:93
+#: vue/components/Admin/Debug.vue:161
+#: vue/components/Admin/Debug.vue:46
+#: vue/components/Admin/Debug.vue:61
+#: vue/components/Admin/Debug.vue:65
+#: vue/components/Admin/Debug.vue:70
 msgid "Run Task"
 msgstr ""
 
@@ -4168,8 +4294,8 @@ msgstr ""
 msgid "Sample Rate"
 msgstr ""
 
-#: vue/components/Stations/Playlists/Form/ScheduleRow.vue:152
-#: vue/components/Stations/Streamers/Form/ScheduleRow.vue:152
+#: vue/components/Stations/Playlists/Form/ScheduleRow.vue:149
+#: vue/components/Stations/Streamers/Form/ScheduleRow.vue:149
 #: /var/azuracast/www/src/Controller/Api/Stations/Reports/Overview/ChartsAction.php:109
 msgid "Saturday"
 msgstr ""
@@ -4183,15 +4309,15 @@ msgid "Save and Continue"
 msgstr ""
 
 #: vue/components/Admin/Branding/BrandingForm.vue:120
-#: vue/components/Admin/GeoLite.vue:94
+#: vue/components/Admin/GeoLite.vue:84
 #: vue/components/Admin/Settings.vue:58
 #: vue/components/Admin/Stations/EditModal.vue:13
 #: vue/components/Admin/Stations/EditModal.vue:14
 #: vue/components/Admin/Stations/EditModal.vue:32
 #: vue/components/Admin/Stations/EditModal.vue:36
-#: vue/components/Admin/Stations/StationForm.vue:73
+#: vue/components/Admin/Stations/StationForm.vue:66
 #: vue/components/Common/ModalForm.vue:50
-#: vue/components/Stations/Branding/BrandingForm.vue:68
+#: vue/components/Stations/Branding/BrandingForm.vue:76
 #: vue/components/Stations/LiquidsoapConfig.vue:61
 msgid "Save Changes"
 msgstr ""
@@ -4203,19 +4329,19 @@ msgstr ""
 
 #: vue/components/Public/Schedule.vue:24
 #: vue/components/Stations/Playlists/Form/Schedule.vue:2
-#: vue/components/Stations/Profile/EmbedModal.vue:137
-#: vue/components/Stations/Profile/PublicPagesPanel.vue:60
+#: vue/components/Stations/Profile/EmbedModal.vue:124
+#: vue/components/Stations/Profile/PublicPagesPanel.vue:57
 #: vue/components/Stations/Streamers/Form/Schedule.vue:2
 #: /var/azuracast/www/src/Controller/Frontend/PublicPages/ScheduleAction.php:50
 msgid "Schedule"
 msgstr ""
 
-#: vue/components/Stations/Playlists.vue:264
+#: vue/components/Stations/Playlists.vue:265
 #: vue/components/Stations/Streamers.vue:95
 msgid "Schedule View"
 msgstr ""
 
-#: vue/components/Stations/Profile/SchedulePanel.vue:10
+#: vue/components/Stations/Profile/SchedulePanel.vue:6
 msgid "Scheduled"
 msgstr ""
 
@@ -4237,7 +4363,7 @@ msgstr ""
 msgid "Scheduled Time #%{num}"
 msgstr ""
 
-#: vue/components/Stations/Playlists.vue:355
+#: vue/components/Stations/Playlists.vue:341
 msgid "Scheduling"
 msgstr ""
 
@@ -4274,7 +4400,7 @@ msgstr ""
 msgid "See the Telegram Documentation for more details."
 msgstr ""
 
-#: vue/components/InlinePlayer.vue:23
+#: vue/components/InlinePlayer.vue:24
 msgid "Seek"
 msgstr ""
 
@@ -4326,7 +4452,7 @@ msgstr ""
 msgid "Select Media File"
 msgstr ""
 
-#: vue/components/Stations/Playlists/ImportModal.vue:57
+#: vue/components/Stations/Playlists/ImportModal.vue:63
 msgid "Select PLS/M3U File to Import"
 msgstr ""
 
@@ -4339,7 +4465,7 @@ msgstr ""
 msgid "Select the category/categories that best reflects the content of your podcast."
 msgstr ""
 
-#: vue/components/Admin/Stations/Form/FrontendForm.vue:123
+#: vue/components/Admin/Stations/Form/FrontendForm.vue:122
 msgid "Select the countries that are not allowed to connect to the streams."
 msgstr ""
 
@@ -4384,7 +4510,7 @@ msgstr ""
 msgid "Sender Name"
 msgstr ""
 
-#: vue/components/Stations/Playlists.vue:189
+#: vue/components/Stations/Playlists.vue:98
 #: vue/components/Stations/Playlists/Form/BasicInfo.vue:347
 msgid "Sequential"
 msgstr ""
@@ -4493,9 +4619,8 @@ msgstr ""
 msgid "SFTP Username"
 msgstr ""
 
+#: vue/components/Stations/menu.ts:110
 #: vue/components/Stations/SftpUsers.vue:6
-#: /var/azuracast/www/src/Controller/Stations/SftpUsersAction.php:40
-#: /var/azuracast/www/config/menus/station.php:106
 msgid "SFTP Users"
 msgstr ""
 
@@ -4511,11 +4636,11 @@ msgstr ""
 msgid "Share Recordings Storage Location"
 msgstr ""
 
-#: vue/components/Admin/Shoutcast.vue:72
+#: vue/components/Admin/Shoutcast.vue:62
 msgid "Shoutcast 2 DNAS is not currently installed on this installation."
 msgstr ""
 
-#: vue/components/Admin/Shoutcast.vue:27
+#: vue/components/Admin/Shoutcast.vue:17
 msgid "Shoutcast 2 DNAS is not free software, and its restrictive license does not allow AzuraCast to distribute the Shoutcast binary."
 msgstr ""
 
@@ -4527,7 +4652,7 @@ msgstr ""
 msgid "Shoutcast License ID"
 msgstr ""
 
-#: vue/components/Admin/Shoutcast.vue:40
+#: vue/components/Admin/Shoutcast.vue:30
 #: vue/components/Stations/Mounts/Form/BasicInfo.vue:86
 msgid "Shoutcast Radio Manager"
 msgstr ""
@@ -4536,15 +4661,15 @@ msgstr ""
 msgid "Shoutcast User ID"
 msgstr ""
 
-#: vue/components/Admin/Shoutcast.vue:110
+#: vue/components/Admin/Shoutcast.vue:97
 msgid "Shoutcast version \"%{ version }\" is currently installed."
 msgstr ""
 
-#: vue/components/Dashboard.vue:358
+#: vue/components/Dashboard.vue:360
 msgid "Show Charts"
 msgstr ""
 
-#: vue/components/Stations/Profile/FrontendPanel.vue:176
+#: vue/components/Stations/Profile/FrontendPanel.vue:191
 msgid "Show Credentials"
 msgstr ""
 
@@ -4573,13 +4698,21 @@ msgstr ""
 msgid "Shuffled"
 msgstr ""
 
+#: vue/components/PanelLayout.vue:130
+msgid "Sidebar"
+msgstr ""
+
+#: vue/components/PanelLayout.vue:118
+msgid "Sign Out"
+msgstr ""
+
 #: vue/components/Admin/Settings/GeneralTab.vue:13
 msgid "Site Base URL"
 msgstr ""
 
-#: vue/components/Admin/Backups.vue:248
-#: vue/components/Stations/Media.vue:364
-#: vue/components/Stations/Streamers/BroadcastsModal.vue:122
+#: vue/components/Admin/Backups.vue:219
+#: vue/components/Stations/Media.vue:333
+#: vue/components/Stations/Streamers/BroadcastsModal.vue:117
 msgid "Size"
 msgstr ""
 
@@ -4587,7 +4720,11 @@ msgstr ""
 msgid "Skip Song"
 msgstr ""
 
-#: vue/components/Admin/Stations/Form/BackendForm.vue:406
+#: vue/components/PanelLayout.vue:3
+msgid "Skip to main content"
+msgstr ""
+
+#: vue/components/Admin/Stations/Form/BackendForm.vue:401
 msgid "Smart Mode"
 msgstr ""
 
@@ -4641,7 +4778,7 @@ msgstr ""
 msgid "Song Genre"
 msgstr ""
 
-#: vue/components/Public/FullPlayer.vue:24
+#: vue/components/Public/FullPlayer.vue:23
 #: vue/components/Public/FullPlayer/SongHistoryModal.vue:6
 msgid "Song History"
 msgstr ""
@@ -4658,30 +4795,27 @@ msgstr ""
 msgid "Song Playback Order"
 msgstr ""
 
+#: vue/components/Stations/menu.ts:206
 #: vue/components/Stations/Reports/Timeline.vue:6
-#: /var/azuracast/www/src/Controller/Stations/Reports/TimelineAction.php:26
-#: /var/azuracast/www/config/menus/station.php:191
 msgid "Song Playback Timeline"
 msgstr ""
 
 #: vue/components/Admin/Stations/Form/RequestsForm.vue:3
 #: vue/components/Admin/Stations/Form/RequestsForm.vue:8
-#: vue/components/Stations/Profile/RequestsPanel.vue:10
-#: vue/components/Stations/Profile/RequestsPanel.vue:47
+#: vue/components/Stations/menu.ts:198
+#: vue/components/Stations/Profile/RequestsPanel.vue:5
 #: vue/components/Stations/Reports/Requests.vue:8
-#: /var/azuracast/www/src/Controller/Stations/Reports/RequestsAction.php:26
-#: /var/azuracast/www/config/menus/station.php:186
 msgid "Song Requests"
 msgstr ""
 
 #: vue/components/Stations/Media/Form/BasicInfo.vue:15
-#: vue/components/Stations/Queue.vue:106
-#: vue/components/Stations/Reports/Requests.vue:128
-#: vue/components/Stations/Reports/Timeline.vue:165
+#: vue/components/Stations/Queue.vue:95
+#: vue/components/Stations/Reports/Requests.vue:121
+#: vue/components/Stations/Reports/Timeline.vue:160
 msgid "Song Title"
 msgstr ""
 
-#: vue/components/Stations/Playlists.vue:176
+#: vue/components/Stations/Playlists.vue:85
 msgid "Song-based"
 msgstr ""
 
@@ -4694,18 +4828,21 @@ msgid "Song-Based Playlist"
 msgstr ""
 
 #: vue/components/Stations/Reports/SoundExchange.vue:8
-#: /var/azuracast/www/src/Controller/Stations/Reports/SoundExchangeAction.php:34
 msgid "SoundExchange Report"
 msgstr ""
 
+#: vue/components/Stations/menu.ts:213
+msgid "SoundExchange Royalties"
+msgstr ""
+
 #: vue/components/Stations/Playlists/Form/BasicInfo.vue:30
-#: vue/components/Stations/Profile/FrontendPanel.vue:56
-#: vue/components/Stations/Queue.vue:108
-#: vue/components/Stations/Reports/Timeline.vue:171
+#: vue/components/Stations/Profile/FrontendPanel.vue:66
+#: vue/components/Stations/Queue.vue:97
+#: vue/components/Stations/Reports/Timeline.vue:166
 msgid "Source"
 msgstr ""
 
-#: vue/components/Admin/StorageLocations.vue:150
+#: vue/components/Admin/StorageLocations.vue:135
 msgid "Space Used"
 msgstr ""
 
@@ -4717,7 +4854,7 @@ msgstr ""
 msgid "Specify the minute of every hour that this playlist should play."
 msgstr ""
 
-#: vue/components/Admin/Stations/Form/BackendForm.vue:462
+#: vue/components/Admin/Stations/Form/BackendForm.vue:457
 msgid "Speech General"
 msgstr ""
 
@@ -4726,7 +4863,7 @@ msgid "SSH Public Keys"
 msgstr ""
 
 #: vue/components/Admin/Settings/ServicesTab.vue:340
-#: vue/components/Admin/Updates.vue:218
+#: vue/components/Admin/Updates.vue:190
 msgid "Stable"
 msgstr ""
 
@@ -4734,8 +4871,8 @@ msgstr ""
 msgid "Standard playlist, shuffles with other standard playlists based on weight."
 msgstr ""
 
-#: vue/components/Stations/Profile/BackendPanel.vue:60
-#: vue/components/Stations/Profile/FrontendPanel.vue:129
+#: vue/components/Stations/Profile/BackendPanel.vue:64
+#: vue/components/Stations/Profile/FrontendPanel.vue:143
 msgid "Start"
 msgstr ""
 
@@ -4745,12 +4882,16 @@ msgstr ""
 msgid "Start Date"
 msgstr ""
 
+#: vue/components/Stations/Sidebar.vue:37
+msgid "Start Station"
+msgstr ""
+
 #: vue/components/Public/WebDJ/SettingsPanel.vue:295
 msgid "Start Streaming"
 msgstr ""
 
 #: vue/components/Stations/Playlists/Form/ScheduleRow.vue:28
-#: vue/components/Stations/Streamers/BroadcastsModal.vue:97
+#: vue/components/Stations/Streamers/BroadcastsModal.vue:92
 #: vue/components/Stations/Streamers/Form/ScheduleRow.vue:30
 msgid "Start Time"
 msgstr ""
@@ -4767,21 +4908,33 @@ msgstr ""
 msgid "Station Goes Online"
 msgstr ""
 
-#: vue/components/Admin/StorageLocations.vue:158
+#: vue/components/Admin/StorageLocations.vue:143
 msgid "Station Media"
 msgstr ""
 
-#: vue/components/Dashboard.vue:187
+#: vue/components/Dashboard.vue:184
 msgid "Station Name"
 msgstr ""
 
-#: vue/components/Dashboard.vue:251
-#: vue/components/Public/Player.vue:39
+#: vue/components/Dashboard.vue:247
+#: vue/components/Public/Player.vue:18
+#: vue/components/Public/Player.vue:19
+#: vue/components/Public/Player.vue:24
+#: vue/components/Public/Player.vue:27
+#: vue/components/Public/Player.vue:30
+#: vue/components/Stations/Branding/BrandingForm.vue:31
+#: vue/components/Stations/Profile/NowPlayingPanel.vue:50
+#: vue/components/Stations/Profile/NowPlayingPanel.vue:51
+#: vue/components/Stations/Profile/NowPlayingPanel.vue:69
 #: vue/components/Stations/Profile/NowPlayingPanel.vue:79
 msgid "Station Offline"
 msgstr ""
 
-#: vue/components/Dashboard.vue:147
+#: vue/components/Stations/Branding/BrandingForm.vue:30
+msgid "Station Offline Display Text"
+msgstr ""
+
+#: vue/components/Dashboard.vue:142
 msgid "Station Overview"
 msgstr ""
 
@@ -4790,18 +4943,21 @@ msgstr ""
 msgid "Station Permissions"
 msgstr ""
 
-#: vue/components/Admin/StorageLocations.vue:166
+#: vue/components/Admin/StorageLocations.vue:151
 msgid "Station Podcasts"
 msgstr ""
 
-#: vue/components/Admin/StorageLocations.vue:162
+#: vue/components/Admin/StorageLocations.vue:147
 msgid "Station Recordings"
 msgstr ""
 
+#: vue/components/Stations/menu.ts:184
 #: vue/components/Stations/Reports/Overview.vue:9
-#: /var/azuracast/www/src/Controller/Stations/Reports/OverviewAction.php:38
-#: /var/azuracast/www/config/menus/station.php:178
 msgid "Station Statistics"
+msgstr ""
+
+#: vue/components/Stations/Sidebar.vue:12
+msgid "Station Time"
 msgstr ""
 
 #: vue/components/Stations/Playlists/Form/ScheduleRow.vue:59
@@ -4809,18 +4965,17 @@ msgstr ""
 msgid "Station Time Zone"
 msgstr ""
 
-#: vue/components/Admin/Debug.vue:155
+#: vue/components/Admin/Debug.vue:121
 msgid "Station-Specific Debugging"
 msgstr ""
 
-#: vue/components/Admin/StorageLocations.vue:151
+#: vue/components/Admin/StorageLocations.vue:136
 msgid "Station(s)"
 msgstr ""
 
+#: vue/components/Admin/menu.ts:113
+#: vue/components/Admin/menu.ts:118
 #: vue/components/Admin/Stations.vue:2
-#: /var/azuracast/www/src/Controller/Admin/StationsAction.php:33
-#: /var/azuracast/www/config/menus/admin.php:85
-#: /var/azuracast/www/config/menus/admin.php:89
 msgid "Stations"
 msgstr ""
 
@@ -4859,11 +5014,11 @@ msgid "Steps for configuring a Twitter application:"
 msgstr ""
 
 #: vue/components/Admin/Stations/Form/BackendForm.vue:123
-#: vue/components/Admin/Stations/Form/BackendForm.vue:439
+#: vue/components/Admin/Stations/Form/BackendForm.vue:434
 msgid "Stereo Tool"
 msgstr ""
 
-#: vue/components/Admin/StereoTool.vue:27
+#: vue/components/Admin/StereoTool.vue:25
 msgid "Stereo Tool can be resource-intensive for both CPU and Memory. Please ensure you have sufficient resources before proceeding."
 msgstr ""
 
@@ -4872,8 +5027,12 @@ msgstr ""
 msgid "Stereo Tool documentation."
 msgstr ""
 
-#: vue/components/Admin/StereoTool.vue:48
+#: vue/components/Admin/StereoTool.vue:46
 msgid "Stereo Tool Downloads"
+msgstr ""
+
+#: vue/components/Admin/StereoTool.vue:9
+msgid "Stereo Tool is a popular, proprietary tool for software audio processing. Using Stereo Tool, you can customize the sound of your stations using preset configuration files."
 msgstr ""
 
 #: vue/components/Admin/Stations/Form/BackendForm.vue:128
@@ -4881,11 +5040,11 @@ msgstr ""
 msgid "Stereo Tool is an industry standard for software audio processing. For more information on how to configure it, please refer to the"
 msgstr ""
 
-#: vue/components/Admin/StereoTool.vue:80
+#: vue/components/Admin/StereoTool.vue:83
 msgid "Stereo Tool is not currently installed on this installation."
 msgstr ""
 
-#: vue/components/Admin/StereoTool.vue:33
+#: vue/components/Admin/StereoTool.vue:31
 msgid "Stereo Tool is not free software, and its restrictive license does not allow AzuraCast to distribute the Stereo Tool binary."
 msgstr ""
 
@@ -4893,15 +5052,15 @@ msgstr ""
 msgid "Stereo Tool License Key"
 msgstr ""
 
-#: vue/components/Admin/StereoTool.vue:120
+#: vue/components/Admin/StereoTool.vue:134
 msgid "Stereo Tool version %{ version } is currently installed."
 msgstr ""
 
 #: vue/components/Common/PlayButton.vue:63
-#: vue/components/InlinePlayer.vue:38
+#: vue/components/InlinePlayer.vue:39
 #: vue/components/Stations/Media/Form/WaveformEditor.vue:28
-#: vue/components/Stations/Profile/BackendPanel.vue:71
-#: vue/components/Stations/Profile/FrontendPanel.vue:140
+#: vue/components/Stations/Profile/BackendPanel.vue:75
+#: vue/components/Stations/Profile/FrontendPanel.vue:154
 msgid "Stop"
 msgstr ""
 
@@ -4918,9 +5077,8 @@ msgstr ""
 msgid "Storage Location"
 msgstr ""
 
-#: vue/components/Admin/StorageLocations.vue:9
-#: /var/azuracast/www/src/Controller/Admin/StorageLocationsAction.php:25
-#: /var/azuracast/www/config/menus/admin.php:37
+#: vue/components/Admin/menu.ts:40
+#: vue/components/Admin/StorageLocations.vue:4
 msgid "Storage Locations"
 msgstr ""
 
@@ -4949,25 +5107,23 @@ msgstr ""
 msgid "Streamer Username"
 msgstr ""
 
-#: vue/components/Stations/Profile/SchedulePanel.vue:30
+#: vue/components/Stations/Profile/SchedulePanel.vue:22
 msgid "Streamer/DJ"
 msgstr ""
 
+#: vue/components/Stations/menu.ts:152
 #: vue/components/Stations/Streamers.vue:9
-#: /var/azuracast/www/src/Controller/Stations/StreamersAction.php:39
-#: /var/azuracast/www/config/menus/station.php:141
 msgid "Streamer/DJ Accounts"
 msgstr ""
 
 #: vue/components/Admin/Stations/CloneModalForm.vue:71
 #: vue/components/Admin/Stations/Form/StreamersForm.vue:3
 #: vue/components/Admin/Stations/Form/StreamersForm.vue:8
-#: vue/components/Stations/Profile/StreamersPanel.vue:10
-#: vue/components/Stations/Profile/StreamersPanel.vue:47
+#: vue/components/Stations/Profile/StreamersPanel.vue:5
 msgid "Streamers/DJs"
 msgstr ""
 
-#: vue/components/Stations/Profile/StreamsPanel.vue:9
+#: vue/components/Stations/Profile/StreamsPanel.vue:4
 #: vue/components/Stations/Reports/Overview.vue:48
 msgid "Streams"
 msgstr ""
@@ -4976,8 +5132,8 @@ msgstr ""
 msgid "Submit Code"
 msgstr ""
 
-#: vue/components/Stations/Playlists/Form/ScheduleRow.vue:153
-#: vue/components/Stations/Streamers/Form/ScheduleRow.vue:153
+#: vue/components/Stations/Playlists/Form/ScheduleRow.vue:150
+#: vue/components/Stations/Streamers/Form/ScheduleRow.vue:150
 #: /var/azuracast/www/src/Controller/Api/Stations/Reports/Overview/ChartsAction.php:110
 msgid "Sunday"
 msgstr ""
@@ -4990,36 +5146,45 @@ msgstr ""
 msgid "Supported file formats:"
 msgstr ""
 
-#: vue/components/Admin/Debug.vue:74
+#: vue/components/PanelLayout.vue:93
+msgid "Switch Theme"
+msgstr ""
+
+#: vue/components/Admin/Debug.vue:56
 msgid "Synchronization Tasks"
 msgstr ""
 
+#: vue/components/PanelLayout.vue:74
+msgid "System Administration"
+msgstr ""
+
 #: vue/components/Admin/Debug.vue:3
-#: /var/azuracast/www/src/Controller/Admin/Debug/IndexAction.php:98
+#: vue/components/Admin/menu.ts:56
 #: /var/azuracast/www/src/Notification/Check/SyncTaskCheck.php:59
-#: /var/azuracast/www/config/menus/admin.php:47
 msgid "System Debugger"
 msgstr ""
 
-#: vue/components/Admin/Logs.vue:10
-#: /var/azuracast/www/src/Controller/Admin/LogsAction.php:46
-#: /var/azuracast/www/config/menus/admin.php:32
+#: vue/components/Admin/Logs.vue:5
+#: vue/components/Admin/menu.ts:32
 msgid "System Logs"
 msgstr ""
 
+#: vue/components/Admin/menu.ts:11
+msgid "System Maintenance"
+msgstr ""
+
+#: vue/components/Admin/menu.ts:16
 #: vue/components/Admin/Settings.vue:19
 #: /var/azuracast/www/src/Controller/Frontend/SetupController.php:172
-#: /var/azuracast/www/src/Controller/Admin/SettingsAction.php:29
 #: /var/azuracast/www/src/Notification/Check/BaseUrlCheck.php:58
-#: /var/azuracast/www/config/menus/admin.php:22
 msgid "System Settings"
 msgstr ""
 
-#: vue/components/Admin/AuditLog.vue:134
+#: vue/components/Admin/AuditLog.vue:127
 msgid "Target"
 msgstr ""
 
-#: vue/components/Admin/Debug.vue:249
+#: vue/components/Admin/Debug.vue:216
 msgid "Task Name"
 msgstr ""
 
@@ -5099,7 +5264,7 @@ msgstr ""
 msgid "The email of the podcast contact. May be required in order to list the podcast on services like Apple Podcasts, Spotify, Google Podcasts, etc."
 msgstr ""
 
-#: vue/components/Admin/Shoutcast.vue:47
+#: vue/components/Admin/Shoutcast.vue:37
 msgid "The file name should look like:"
 msgstr ""
 
@@ -5199,7 +5364,7 @@ msgstr ""
 msgid "The WebDJ lets you broadcast live to your station using just your web browser."
 msgstr ""
 
-#: vue/components/Stations/Profile/EmbedModal.vue:42
+#: vue/components/Stations/Profile/EmbedModal.vue:37
 msgid "Theme"
 msgstr ""
 
@@ -5231,7 +5396,7 @@ msgstr ""
 msgid "This can make it look like your memory is low while it actually is not. Some monitoring solutions/panels include cached memory in their used memory statistics without indicating this."
 msgstr ""
 
-#: vue/components/Admin/Stations/Form/FrontendForm.vue:143
+#: vue/components/Admin/Stations/Form/FrontendForm.vue:146
 msgid "This code will be included in the frontend configuration. Allowed formats are:"
 msgstr ""
 
@@ -5247,11 +5412,11 @@ msgstr ""
 msgid "This CSS will be applied to the station public pages and login page."
 msgstr ""
 
-#: vue/components/Stations/Branding/BrandingForm.vue:39
+#: vue/components/Stations/Branding/BrandingForm.vue:47
 msgid "This CSS will be applied to the station public pages."
 msgstr ""
 
-#: vue/components/Admin/Stations/Form/BackendForm.vue:215
+#: vue/components/Admin/Stations/Form/BackendForm.vue:214
 msgid "This determines how many songs in advance the AutoDJ will automatically fill the queue."
 msgstr ""
 
@@ -5335,11 +5500,11 @@ msgstr ""
 msgid "This javascript code will be applied to the station public pages and login page."
 msgstr ""
 
-#: vue/components/Stations/Branding/BrandingForm.vue:55
+#: vue/components/Stations/Branding/BrandingForm.vue:63
 msgid "This javascript code will be applied to the station public pages."
 msgstr ""
 
-#: vue/components/Admin/Stations/Form/BackendForm.vue:182
+#: vue/components/Admin/Stations/Form/BackendForm.vue:184
 msgid "This mode disables AzuraCast's AutoDJ management, using Liquidsoap itself to manage song playback. \"next song\" and some other features will not be available."
 msgstr ""
 
@@ -5356,7 +5521,7 @@ msgid "This name will appear as a sub-header next to the AzuraCast logo, to help
 msgstr ""
 
 #: vue/components/Admin/ApiKeys.vue:6
-msgid "This page lists all API keys assigned to all users across the system."
+msgid "This page lists all API keys assigned to all users across the system. To manage your own API keys, visit your account profile."
 msgstr ""
 
 #: vue/components/Form/VuelidateError.vue:72
@@ -5399,14 +5564,12 @@ msgstr ""
 msgid "This specifies the minimum time (in minutes) between a song playing on the radio and being available to request again. Set to 0 for no threshold."
 msgstr ""
 
-#: vue/components/Admin/Stations/Form/BackendForm.vue:250
+#: vue/components/Admin/Stations/Form/BackendForm.vue:246
 msgid "This specifies the time range (in minutes) of the song history that the duplicate song prevention algorithm should take into account."
 msgstr ""
 
-#: vue/components/Stations/Playlists.vue:19
-#: vue/components/Stations/Playlists/Form/ScheduleRow.vue:57
+#: vue/components/Stations/Common/TimeZone.vue:2
 #: vue/components/Stations/Streamers.vue:17
-#: vue/components/Stations/Streamers/Form/ScheduleRow.vue:68
 msgid "This station's time zone is currently %{tz}."
 msgstr ""
 
@@ -5422,6 +5585,10 @@ msgstr ""
 msgid "This web hook will only run when the selected event(s) occur on this specific station."
 msgstr ""
 
+#: vue/components/Stations/Branding/BrandingForm.vue:31
+msgid "This will be shown on public player pages if the station is offline. Leave blank to default to a localized version of \"%{message}\"."
+msgstr ""
+
 #: vue/components/Admin/Backups/RunBackupModal.vue:41
 msgid "This will be the file name for your backup, include the extension for file type you wish to use."
 msgstr ""
@@ -5430,7 +5597,7 @@ msgstr ""
 msgid "This will be used as the label when editing individual songs, and will show in API results."
 msgstr ""
 
-#: vue/components/Admin/Debug.vue:52
+#: vue/components/Admin/Debug.vue:36
 msgid "This will clear any pending unprocessed messages in all message queues."
 msgstr ""
 
@@ -5442,23 +5609,23 @@ msgstr ""
 msgid "Thumbnail Image URL"
 msgstr ""
 
-#: vue/components/Stations/Playlists/Form/ScheduleRow.vue:150
-#: vue/components/Stations/Streamers/Form/ScheduleRow.vue:150
+#: vue/components/Stations/Playlists/Form/ScheduleRow.vue:147
+#: vue/components/Stations/Streamers/Form/ScheduleRow.vue:147
 #: /var/azuracast/www/src/Controller/Api/Stations/Reports/Overview/ChartsAction.php:107
 msgid "Thursday"
 msgstr ""
 
 #: vue/components/Stations/Reports/Listeners.vue:216
-#: vue/components/Stations/Reports/Overview/CommonMetricsView.vue:103
+#: vue/components/Stations/Reports/Overview/CommonMetricsView.vue:102
 msgid "Time"
 msgstr ""
 
 #: vue/components/Stations/Reports/Listeners.vue:217
-#: vue/components/Stations/Reports/Overview/CommonMetricsView.vue:104
+#: vue/components/Stations/Reports/Overview/CommonMetricsView.vue:103
 msgid "Time (sec)"
 msgstr ""
 
-#: vue/components/Account/EditForm.vue:43
+#: vue/components/Account/EditForm.vue:22
 msgid "Time Display"
 msgstr ""
 
@@ -5474,10 +5641,10 @@ msgstr ""
 msgid "Time Zone"
 msgstr ""
 
-#: vue/components/Public/OnDemand.vue:115
-#: vue/components/Public/Requests.vue:85
+#: vue/components/Public/OnDemand.vue:118
+#: vue/components/Public/Requests.vue:79
 #: vue/components/Public/WebDJ/SettingsPanel.vue:14
-#: vue/components/Stations/Media.vue:339
+#: vue/components/Stations/Media.vue:308
 #: vue/components/Stations/Playlists/QueueModal.vue:19
 #: vue/components/Stations/Playlists/ReorderModal.vue:24
 #: vue/components/Stations/Webhooks/Form/Discord.vue:32
@@ -5489,11 +5656,11 @@ msgstr ""
 msgid "To alleviate this potential problem with shared CPU resources, hosts assign \"credits\" to a VPS which are used up according to an algorithm based on the CPU load as well as the time over which the CPU load is generated. If your VM's assigned credit is used up, they will take CPU time from your VM and assign it to other VMs on the machine. This is seen as the \"Steal\" or \"St\" value."
 msgstr ""
 
-#: vue/components/Admin/Updates.vue:161
+#: vue/components/Admin/Updates.vue:134
 msgid "To customize installation settings, or if automatic updates are disabled, you can follow our standard update instructions to update via your SSH console."
 msgstr ""
 
-#: vue/components/Admin/GeoLite.vue:35
+#: vue/components/Admin/GeoLite.vue:25
 msgid "To download the GeoLite database:"
 msgstr ""
 
@@ -5501,7 +5668,7 @@ msgstr ""
 msgid "To play once per day, set the start and end times to the same value."
 msgstr ""
 
-#: vue/components/Admin/Backups.vue:86
+#: vue/components/Admin/Backups.vue:72
 msgid "To restore a backup from your host computer, run:"
 msgstr ""
 
@@ -5524,6 +5691,14 @@ msgstr ""
 
 #: vue/components/Common/DateRangeDropdown.vue:118
 msgid "Today"
+msgstr ""
+
+#: vue/components/PanelLayout.vue:46
+msgid "Toggle Menu"
+msgstr ""
+
+#: vue/components/PanelLayout.vue:17
+msgid "Toggle Sidebar"
 msgstr ""
 
 #: vue/components/Stations/Reports/Overview/BrowsersTab.vue:12
@@ -5550,15 +5725,11 @@ msgstr ""
 msgid "Top Streams by Listeners"
 msgstr ""
 
-#: vue/components/Stations/Profile/StreamsPanel.vue:59
-msgid "Total"
-msgstr ""
-
 #: vue/components/Admin/Index.vue:118
 msgid "Total Disk Space"
 msgstr ""
 
-#: vue/components/Stations/Reports/Listeners.vue:94
+#: vue/components/Stations/Reports/Listeners.vue:95
 msgid "Total Listener Hours"
 msgstr ""
 
@@ -5570,12 +5741,12 @@ msgstr ""
 msgid "Transmitted"
 msgstr ""
 
-#: vue/components/Stations/Webhooks.vue:134
+#: vue/components/Stations/Webhooks.vue:130
 msgid "Triggers"
 msgstr ""
 
-#: vue/components/Stations/Playlists/Form/ScheduleRow.vue:148
-#: vue/components/Stations/Streamers/Form/ScheduleRow.vue:148
+#: vue/components/Stations/Playlists/Form/ScheduleRow.vue:145
+#: vue/components/Stations/Streamers/Form/ScheduleRow.vue:145
 #: /var/azuracast/www/src/Controller/Api/Stations/Reports/Overview/ChartsAction.php:105
 msgid "Tuesday"
 msgstr ""
@@ -5608,11 +5779,11 @@ msgstr ""
 msgid "Twitter Post"
 msgstr ""
 
-#: vue/components/Account.vue:114
+#: vue/components/Account.vue:79
 msgid "Two-Factor Authentication"
 msgstr ""
 
-#: vue/components/Account.vue:120
+#: vue/components/Account.vue:85
 msgid "Two-factor authentication improves the security of your account by requiring a second one-time access code in addition to your password when you log in."
 msgstr ""
 
@@ -5624,13 +5795,23 @@ msgstr ""
 msgid "Typically the home page of a podcast."
 msgstr ""
 
-#: vue/components/Stations/BulkMedia.vue:136
+#: vue/components/Stations/BulkMedia.vue:133
 msgid "Unable to update."
 msgstr ""
 
-#: vue/components/Stations/Profile/NowPlayingPanel.vue:31
-#: vue/components/Stations/Profile/StreamsPanel.vue:110
-#: vue/components/Stations/Profile/StreamsPanel.vue:62
+#: vue/components/Stations/menu.ts:92
+msgid "Unassigned Files"
+msgstr ""
+
+#: vue/components/Admin/StereoTool.vue:101
+#: vue/components/Admin/StereoTool.vue:98
+msgid "Uninstall"
+msgstr ""
+
+#: vue/components/Stations/Profile/NowPlayingPanel.vue:30
+#: vue/components/Stations/Profile/StreamsPanel.vue:101
+#: vue/components/Stations/Profile/StreamsPanel.vue:142
+#: vue/components/Stations/Profile/StreamsPanel.vue:53
 msgid "Unique"
 msgstr ""
 
@@ -5639,7 +5820,7 @@ msgid "Unique identifier for the target chat or username of the target channel (
 msgstr ""
 
 #: vue/components/DashboardCharts.vue:19
-#: vue/components/Stations/Reports/Listeners.vue:84
+#: vue/components/Stations/Reports/Listeners.vue:85
 msgid "Unique Listeners"
 msgstr ""
 
@@ -5672,40 +5853,42 @@ msgstr ""
 msgid "Unmute"
 msgstr ""
 
+#: vue/components/Stations/menu.ts:81
+msgid "Unprocessable Files"
+msgstr ""
+
 #: vue/components/Stations/Playlists/ReorderModal.vue:70
 msgid "Up"
 msgstr ""
 
+#: vue/components/Stations/menu.ts:277
 #: vue/components/Stations/Queue.vue:2
-#: /var/azuracast/www/src/Controller/Stations/QueueAction.php:26
-#: /var/azuracast/www/config/menus/station.php:246
 msgid "Upcoming Song Queue"
 msgstr ""
 
-#: vue/components/Admin/AuditLog.vue:54
+#: vue/components/Admin/AuditLog.vue:48
 msgid "Update"
 msgstr ""
 
+#: vue/components/Admin/menu.ts:64
 #: vue/components/Admin/Updates.vue:3
-#: /var/azuracast/www/src/Controller/Admin/UpdatesAction.php:38
 #: /var/azuracast/www/src/Notification/Check/UpdateCheck.php:44
-#: /var/azuracast/www/config/menus/admin.php:52
 msgid "Update AzuraCast"
 msgstr ""
 
-#: vue/components/Admin/Updates.vue:95
+#: vue/components/Admin/Updates.vue:74
 msgid "Update AzuraCast via Web"
 msgstr ""
 
-#: vue/components/Admin/Updates.vue:245
+#: vue/components/Admin/Updates.vue:217
 msgid "Update AzuraCast? Your installation will restart."
 msgstr ""
 
-#: vue/components/Admin/Updates.vue:15
+#: vue/components/Admin/Updates.vue:10
 msgid "Update Details"
 msgstr ""
 
-#: vue/components/Admin/Updates.vue:171
+#: vue/components/Admin/Updates.vue:145
 msgid "Update Instructions"
 msgstr ""
 
@@ -5713,16 +5896,15 @@ msgstr ""
 msgid "Update Metadata"
 msgstr ""
 
-#: vue/components/Admin/Updates.vue:252
+#: vue/components/Admin/Updates.vue:224
 msgid "Update started. Your installation will restart shortly."
 msgstr ""
 
 #: vue/components/Stations/Restart.vue:3
-#: /var/azuracast/www/src/Controller/Stations/RestartAction.php:28
 msgid "Update Station Configuration"
 msgstr ""
 
-#: vue/components/Admin/Updates.vue:129
+#: vue/components/Admin/Updates.vue:120
 msgid "Update via Web"
 msgstr ""
 
@@ -5730,7 +5912,7 @@ msgstr ""
 msgid "Updated"
 msgstr ""
 
-#: vue/components/Stations/BulkMedia.vue:131
+#: vue/components/Stations/BulkMedia.vue:128
 msgid "Updated successfully."
 msgstr ""
 
@@ -5738,20 +5920,19 @@ msgstr ""
 msgid "Upload a Stereo Tool configuration file from the \"Broadcasting\" submenu in the station profile."
 msgstr ""
 
-#: vue/components/Admin/Branding.vue:13
+#: vue/components/Admin/Branding.vue:9
 #: vue/components/Stations/Branding.vue:10
 msgid "Upload Custom Assets"
 msgstr ""
 
 #: vue/components/Admin/Stations/Form/BackendForm.vue:154
+#: vue/components/Stations/menu.ts:268
 #: vue/components/Stations/StereoToolConfig.vue:9
-#: /var/azuracast/www/src/Controller/Stations/UploadStereoToolConfigAction.php:26
-#: /var/azuracast/www/config/menus/station.php:238
 msgid "Upload Stereo Tool Configuration"
 msgstr ""
 
-#: vue/components/Admin/Shoutcast.vue:53
-#: vue/components/Admin/StereoTool.vue:61
+#: vue/components/Admin/Shoutcast.vue:43
+#: vue/components/Admin/StereoTool.vue:64
 msgid "Upload the file on this page to automatically extract it into the proper directory."
 msgstr ""
 
@@ -5775,7 +5956,7 @@ msgstr ""
 msgid "Use API keys to authenticate with the AzuraCast API using the same permissions as your user account."
 msgstr ""
 
-#: vue/components/Account/EditForm.vue:73
+#: vue/components/Account/EditForm.vue:61
 msgid "Use Browser Default"
 msgstr ""
 
@@ -5783,23 +5964,23 @@ msgstr ""
 msgid "Use High-Performance Now Playing Updates"
 msgstr ""
 
-#: vue/components/Admin/Stations/Form/FrontendForm.vue:268
+#: vue/components/Admin/Stations/Form/FrontendForm.vue:269
 msgid "Use Icecast 2.4 on this server."
 msgstr ""
 
-#: vue/components/Admin/Stations/Form/BackendForm.vue:491
+#: vue/components/Admin/Stations/Form/BackendForm.vue:486
 msgid "Use Less CPU (Uses More Memory)"
 msgstr ""
 
-#: vue/components/Admin/Stations/Form/BackendForm.vue:483
+#: vue/components/Admin/Stations/Form/BackendForm.vue:478
 msgid "Use Less Memory (Uses More CPU)"
 msgstr ""
 
-#: vue/components/Admin/Stations/Form/BackendForm.vue:393
+#: vue/components/Admin/Stations/Form/BackendForm.vue:388
 msgid "Use Liquidsoap on this server."
 msgstr ""
 
-#: vue/components/Admin/Stations/Form/BackendForm.vue:192
+#: vue/components/Admin/Stations/Form/BackendForm.vue:193
 msgid "Use Replaygain Metadata"
 msgstr ""
 
@@ -5807,7 +5988,7 @@ msgstr ""
 msgid "Use Secure (TLS) SMTP Connection"
 msgstr ""
 
-#: vue/components/Admin/Stations/Form/FrontendForm.vue:275
+#: vue/components/Admin/Stations/Form/FrontendForm.vue:276
 msgid "Use Shoutcast DNAS 2 on this server."
 msgstr ""
 
@@ -5829,8 +6010,12 @@ msgstr ""
 msgid "Used for \"Forgot Password\" functionality, web hooks and other functions."
 msgstr ""
 
-#: vue/components/Admin/AuditLog.vue:131
+#: vue/components/Admin/AuditLog.vue:124
 msgid "User"
+msgstr ""
+
+#: vue/components/Admin/menu.ts:79
+msgid "User Accounts"
 msgstr ""
 
 #: vue/components/Stations/Reports/Listeners.vue:218
@@ -5846,21 +6031,20 @@ msgid "User Permissions"
 msgstr ""
 
 #: vue/components/Public/WebDJ/SettingsPanel.vue:72
-#: vue/components/Stations/SftpUsers.vue:108
+#: vue/components/Stations/SftpUsers.vue:107
 #: vue/components/Stations/SftpUsers/Form.vue:9
-#: vue/components/Stations/Streamers.vue:167
+#: vue/components/Stations/Streamers.vue:159
 msgid "Username"
 msgstr ""
 
-#: vue/components/Stations/Profile/FrontendPanel.vue:39
-#: vue/components/Stations/Profile/FrontendPanel.vue:60
-#: vue/components/Stations/Profile/FrontendPanel.vue:81
+#: vue/components/Stations/Profile/FrontendPanel.vue:38
+#: vue/components/Stations/Profile/FrontendPanel.vue:70
+#: vue/components/Stations/Profile/FrontendPanel.vue:91
 msgid "Username:"
 msgstr ""
 
+#: vue/components/Admin/menu.ts:74
 #: vue/components/Admin/Users.vue:2
-#: /var/azuracast/www/src/Controller/Admin/UsersAction.php:31
-#: /var/azuracast/www/config/menus/admin.php:59
 msgid "Users"
 msgstr ""
 
@@ -5888,19 +6072,27 @@ msgstr ""
 msgid "Variables are in the form of: "
 msgstr ""
 
-#: vue/components/Stations/Profile/RequestsPanel.vue:28
+#: vue/components/Stations/Profile/RequestsPanel.vue:25
 msgid "View"
 msgstr ""
 
-#: vue/components/Dashboard.vue:232
+#: vue/components/Stations/Reports/Listeners/InnerMap.vue:39
+msgid "View Fullscreen"
+msgstr ""
+
+#: vue/components/Dashboard.vue:229
 msgid "View Listener Report"
 msgstr ""
 
-#: vue/components/Stations/Media.vue:183
+#: vue/components/Stations/menu.ts:23
+msgid "View Profile"
+msgstr ""
+
+#: vue/components/Stations/Media.vue:180
 msgid "View tracks in playlist"
 msgstr ""
 
-#: vue/components/Admin/GeoLite.vue:49
+#: vue/components/Admin/GeoLite.vue:39
 msgid "Visit the \"My License Key\" page under the \"Services\" section."
 msgstr ""
 
@@ -5921,8 +6113,8 @@ msgid "Visual Cue Editor"
 msgstr ""
 
 #: vue/components/Common/Waveform.vue:47
-#: vue/components/InlinePlayer.vue:56
-#: vue/components/Public/Player.vue:138
+#: vue/components/InlinePlayer.vue:57
+#: vue/components/Public/Player.vue:129
 msgid "Volume"
 msgstr ""
 
@@ -5934,12 +6126,16 @@ msgstr ""
 msgid "Wait (Wa)"
 msgstr ""
 
+#: vue/components/Admin/Debug/TaskOutput.vue:96
+msgid "Warning"
+msgstr ""
+
 #: vue/components/Common/Waveform.vue:16
 msgid "Waveform Zoom"
 msgstr ""
 
-#: vue/components/Stations/Profile/PublicPagesPanel.vue:33
-#: /var/azuracast/www/config/menus/station.php:148
+#: vue/components/Stations/menu.ts:160
+#: vue/components/Stations/Profile/PublicPagesPanel.vue:30
 #: /var/azuracast/www/templates/frontend/public/webdj.phtml:13
 msgid "Web DJ"
 msgstr ""
@@ -5961,9 +6157,8 @@ msgid "Web Hook URL"
 msgstr ""
 
 #: vue/components/Admin/Stations/CloneModalForm.vue:79
+#: vue/components/Stations/menu.ts:169
 #: vue/components/Stations/Webhooks.vue:2
-#: /var/azuracast/www/src/Controller/Stations/WebhooksAction.php:30
-#: /var/azuracast/www/config/menus/station.php:165
 msgid "Web Hooks"
 msgstr ""
 
@@ -5979,7 +6174,7 @@ msgstr ""
 msgid "Web Site URL"
 msgstr ""
 
-#: vue/components/Admin/Updates.vue:137
+#: vue/components/Admin/Updates.vue:94
 msgid "Web updates are not available for your installation. To update your installation, perform the manual update process instead."
 msgstr ""
 
@@ -5996,8 +6191,8 @@ msgstr ""
 msgid "Website"
 msgstr ""
 
-#: vue/components/Stations/Playlists/Form/ScheduleRow.vue:149
-#: vue/components/Stations/Streamers/Form/ScheduleRow.vue:149
+#: vue/components/Stations/Playlists/Form/ScheduleRow.vue:146
+#: vue/components/Stations/Streamers/Form/ScheduleRow.vue:146
 #: /var/azuracast/www/src/Controller/Api/Stations/Reports/Overview/ChartsAction.php:106
 msgid "Wednesday"
 msgstr ""
@@ -6026,7 +6221,7 @@ msgstr ""
 msgid "Whether the AutoDJ should attempt to avoid duplicate artists and track titles when playing media from this playlist."
 msgstr ""
 
-#: vue/components/Stations/Profile/EmbedModal.vue:26
+#: vue/components/Stations/Profile/EmbedModal.vue:27
 msgid "Widget Type"
 msgstr ""
 
@@ -6083,15 +6278,15 @@ msgstr ""
 msgid "Your full API key is below:"
 msgstr ""
 
-#: vue/components/Admin/Updates.vue:67
+#: vue/components/Admin/Updates.vue:50
 msgid "Your installation is currently on this release channel:"
 msgstr ""
 
-#: vue/components/Admin/Updates.vue:32
+#: vue/components/Admin/Updates.vue:23
 msgid "Your installation is up to date! No update is required."
 msgstr ""
 
-#: vue/components/Admin/Updates.vue:24
+#: vue/components/Admin/Updates.vue:15
 msgid "Your installation needs to be updated. Updating is recommended for performance and security improvements."
 msgstr ""
 
@@ -6099,26 +6294,20 @@ msgstr ""
 msgid "Your station does not support reloading configuration. Restart broadcasting instead to apply changes."
 msgstr ""
 
+#: vue/components/Stations/Sidebar.vue:52
+msgid "Your station has changes that require a reload to apply."
+msgstr ""
+
 #: vue/components/Stations/Restart.vue:37
 msgid "Your station supports reloading configuration."
 msgstr ""
 
-#: vue/components/Admin/Stations/Form/BackendForm.vue:474
+#: vue/components/Admin/Stations/Form/BackendForm.vue:469
 msgid "YouTube"
 msgstr ""
 
 #: vue/components/Stations/Mounts/Form/BasicInfo.vue:78
 msgid "YP Directory Authorization Hash"
-msgstr ""
-
-#: /var/azuracast/www/src/Controller/Stations/BulkMediaAction.php:25
-#: /var/azuracast/www/config/menus/station.php:112
-msgid "Bulk Media Import/Export"
-msgstr ""
-
-#: /var/azuracast/www/src/Controller/Stations/LogsAction.php:25
-#: /var/azuracast/www/templates/main.phtml:125
-msgid "Help"
 msgstr ""
 
 #: /var/azuracast/www/src/Controller/Frontend/PublicPages/PodcastEpisodesAction.php:70
@@ -6203,25 +6392,6 @@ msgstr ""
 msgid "Your password has been updated."
 msgstr ""
 
-#: /var/azuracast/www/src/Controller/Frontend/DashboardAction.php:35
-#: /var/azuracast/www/templates/system/error_http.phtml:19
-#: /var/azuracast/www/templates/system/error_general.phtml:27
-#: /var/azuracast/www/templates/main.phtml:95
-msgid "Dashboard"
-msgstr ""
-
-#: /var/azuracast/www/src/Controller/Admin/Debug/NextSongAction.php:47
-#: /var/azuracast/www/src/Controller/Admin/Debug/TelnetAction.php:58
-#: /var/azuracast/www/src/Controller/Admin/Debug/NowPlayingAction.php:45
-#: /var/azuracast/www/src/Controller/Admin/Debug/SyncAction.php:59
-#: /var/azuracast/www/src/Controller/Admin/Debug/ClearStationQueueAction.php:50
-msgid "Debug Output"
-msgstr ""
-
-#: /var/azuracast/www/src/Controller/Admin/Debug/ClearQueueAction.php:38
-msgid "Message queue cleared."
-msgstr ""
-
 #: /var/azuracast/www/src/Controller/Api/Stations/Reports/Overview/ByStream.php:99
 #: /var/azuracast/www/src/Controller/Api/Stations/Reports/Overview/ByCountry.php:75
 #: /var/azuracast/www/src/Controller/Api/Stations/Reports/Overview/ByClient.php:82
@@ -6301,6 +6471,14 @@ msgstr ""
 
 #: /var/azuracast/www/src/Controller/Api/Stations/Playlists/GetApplyToAction.php:44
 msgid "Base Directory"
+msgstr ""
+
+#: /var/azuracast/www/src/Controller/Api/Stations/Playlists/EmptyAction.php:36
+msgid "This playlist is not song-based."
+msgstr ""
+
+#: /var/azuracast/www/src/Controller/Api/Stations/Playlists/EmptyAction.php:44
+msgid "Playlist emptied."
 msgstr ""
 
 #: /var/azuracast/www/src/Controller/Api/Stations/BulkMedia/UploadAction.php:171
@@ -6451,32 +6629,40 @@ msgid "AzuraCast Application Log"
 msgstr ""
 
 #: /var/azuracast/www/src/Controller/Api/Admin/LogsAction.php:86
+msgid "AzuraCast Now Playing Log"
+msgstr ""
+
+#: /var/azuracast/www/src/Controller/Api/Admin/LogsAction.php:92
+msgid "AzuraCast Synchronized Task Log"
+msgstr ""
+
+#: /var/azuracast/www/src/Controller/Api/Admin/LogsAction.php:98
+msgid "AzuraCast Queue Worker Log"
+msgstr ""
+
+#: /var/azuracast/www/src/Controller/Api/Admin/LogsAction.php:104
 #, php-format
 msgid "Service Log: %s (%s)"
 msgstr ""
 
-#: /var/azuracast/www/src/Controller/Api/Admin/LogsAction.php:101
+#: /var/azuracast/www/src/Controller/Api/Admin/LogsAction.php:119
 msgid "Nginx Access Log"
 msgstr ""
 
-#: /var/azuracast/www/src/Controller/Api/Admin/LogsAction.php:106
+#: /var/azuracast/www/src/Controller/Api/Admin/LogsAction.php:124
 msgid "Nginx Error Log"
 msgstr ""
 
-#: /var/azuracast/www/src/Controller/Api/Admin/LogsAction.php:111
+#: /var/azuracast/www/src/Controller/Api/Admin/LogsAction.php:129
 msgid "PHP Application Log"
 msgstr ""
 
-#: /var/azuracast/www/src/Controller/Api/Admin/LogsAction.php:116
+#: /var/azuracast/www/src/Controller/Api/Admin/LogsAction.php:134
 msgid "Supervisord Log"
 msgstr ""
 
 #: /var/azuracast/www/src/Controller/Api/Admin/Stations/StorageLocationsAction.php:21
 msgid "Create a new storage location based on the base directory."
-msgstr ""
-
-#: /var/azuracast/www/src/Controller/Api/Admin/StereoTool/PostAction.php:40
-msgid "Invalid binary uploaded."
 msgstr ""
 
 #: /var/azuracast/www/src/Controller/Api/Admin/SendTestMessageAction.php:50
@@ -6538,6 +6724,10 @@ msgstr ""
 
 #: /var/azuracast/www/src/Service/ServiceControl.php:88
 msgid "Live Now Playing updates"
+msgstr ""
+
+#: /var/azuracast/www/src/Service/ServiceControl.php:89
+msgid "Frontend Assets"
 msgstr ""
 
 #: /var/azuracast/www/src/Exception/SupervisorException.php:24
@@ -6979,6 +7169,14 @@ msgstr ""
 
 #: /var/azuracast/www/src/Notification/Check/ProfilerAdvisorCheck.php:54
 msgid "This can have an adverse impact on system performance. You should disable this when possible."
+msgstr ""
+
+#: /var/azuracast/www/src/Notification/Check/ActiveServerCheck.php:32
+msgid "This server is not the current active instance."
+msgstr ""
+
+#: /var/azuracast/www/src/Notification/Check/ActiveServerCheck.php:33
+msgid "This likely means that multiple AzuraCast instances are connecting to the same database. This instance is not the current active one, so synchronized tasks won't run on this server. If this is intentional, you can disregard this message."
 msgstr ""
 
 #: /var/azuracast/www/src/Notification/Check/BaseUrlCheck.php:42
@@ -7554,10 +7752,6 @@ msgstr ""
 msgid "Year"
 msgstr ""
 
-#: /var/azuracast/www/src/Middleware/Module/StationFiles.php:20
-msgid "This feature is not currently supported on this station."
-msgstr ""
-
 #: /var/azuracast/www/src/Enums/GlobalPermissions.php:22
 #: /var/azuracast/www/src/Enums/StationPermissions.php:26
 msgid "All Permissions"
@@ -7643,69 +7837,11 @@ msgstr ""
 msgid "Manage Station Podcasts"
 msgstr ""
 
-#: /var/azuracast/www/config/menus/station.php:28
-msgid "Start Station"
-msgstr ""
-
-#: /var/azuracast/www/config/menus/station.php:29
-msgid "Ready to start broadcasting? Click to start your station."
-msgstr ""
-
-#: /var/azuracast/www/config/menus/station.php:37
-msgid "Reload to Apply Changes"
-msgstr ""
-
-#: /var/azuracast/www/config/menus/station.php:50
-msgid "View Profile"
-msgstr ""
-
-#: /var/azuracast/www/config/menus/station.php:59
-msgid "Branding"
-msgstr ""
-
-#: /var/azuracast/www/config/menus/station.php:84
-msgid "Duplicate Songs"
-msgstr ""
-
-#: /var/azuracast/www/config/menus/station.php:89
-msgid "Unprocessable Files"
-msgstr ""
-
-#: /var/azuracast/www/config/menus/station.php:94
-msgid "Unassigned Files"
-msgstr ""
-
-#: /var/azuracast/www/config/menus/station.php:136
-msgid "Live Streaming"
-msgstr ""
-
-#: /var/azuracast/www/config/menus/station.php:173
-msgid "Reports"
-msgstr ""
-
-#: /var/azuracast/www/config/menus/station.php:195
-msgid "SoundExchange Royalties"
-msgstr ""
-
-#: /var/azuracast/www/config/menus/admin.php:18
-msgid "System Maintenance"
-msgstr ""
-
-#: /var/azuracast/www/config/menus/admin.php:63
-msgid "User Accounts"
-msgstr ""
-
-#: /var/azuracast/www/config/menus/admin.php:104
-msgid "Install Shoutcast"
-msgstr ""
-
-#: /var/azuracast/www/templates/minimal.phtml:58
-#: /var/azuracast/www/templates/main.phtml:190
+#: /var/azuracast/www/templates/minimal.phtml:56
 msgid "Footer"
 msgstr ""
 
-#: /var/azuracast/www/templates/minimal.phtml:60
-#: /var/azuracast/www/templates/main.phtml:192
+#: /var/azuracast/www/templates/minimal.phtml:58
 #, php-format
 msgid "Powered by %s"
 msgstr ""
@@ -7793,14 +7929,6 @@ msgstr ""
 msgid "Send Recovery E-mail"
 msgstr ""
 
-#: /var/azuracast/www/templates/system/log_view.phtml:34
-msgid "Details"
-msgstr ""
-
-#: /var/azuracast/www/templates/partials/sidebar_menu.phtml:34
-msgid "External"
-msgstr ""
-
 #: /var/azuracast/www/templates/mail/forgot.phtml:10
 #, php-format
 msgid "An account recovery link has been requested for your account on \"%s\"."
@@ -7826,48 +7954,4 @@ msgstr ""
 
 #: /var/azuracast/www/templates/stations/reports_restricted.phtml:8
 msgid "This report is not available for this station, because the system administrator has chosen not to collect detailed IP-based listener information."
-msgstr ""
-
-#: /var/azuracast/www/templates/stations/sidebar.phtml:51
-msgid "Station Time"
-msgstr ""
-
-#: /var/azuracast/www/templates/main.phtml:58
-msgid "Skip to main content"
-msgstr ""
-
-#: /var/azuracast/www/templates/main.phtml:64
-msgid "Toggle Sidebar"
-msgstr ""
-
-#: /var/azuracast/www/templates/main.phtml:86
-msgid "Toggle Menu"
-msgstr ""
-
-#: /var/azuracast/www/templates/main.phtml:104
-msgid "System Administration"
-msgstr ""
-
-#: /var/azuracast/www/templates/main.phtml:118
-msgid "Switch Theme"
-msgstr ""
-
-#: /var/azuracast/www/templates/main.phtml:134
-msgid "End Session"
-msgstr ""
-
-#: /var/azuracast/www/templates/main.phtml:142
-msgid "Sign Out"
-msgstr ""
-
-#: /var/azuracast/www/templates/main.phtml:151
-msgid "Sidebar"
-msgstr ""
-
-#: /var/azuracast/www/templates/main.phtml:198
-msgid "Like our software?"
-msgstr ""
-
-#: /var/azuracast/www/templates/main.phtml:198
-msgid "Donate to support AzuraCast!"
 msgstr ""

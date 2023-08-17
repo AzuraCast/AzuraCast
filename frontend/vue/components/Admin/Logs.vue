@@ -40,10 +40,10 @@
     <streaming-log-modal ref="$modal" />
 </template>
 
-<script setup>
+<script setup lang="ts">
 import LogList from "~/components/Common/LogList";
 import StreamingLogModal from "~/components/Common/StreamingLogModal";
-import {ref} from "vue";
+import {Ref, ref} from "vue";
 import CardPage from "~/components/Common/CardPage.vue";
 
 defineProps({
@@ -59,9 +59,9 @@ defineProps({
     }
 });
 
-const $modal = ref(); // StreamingLogModal
+const $modal: Ref<StreamingLogModal> = ref();
 
-const viewLog = (url) => {
-    $modal.value.show(url);
+const viewLog = (url, isStreaming) => {
+    $modal.value?.show(url, isStreaming);
 };
 </script>

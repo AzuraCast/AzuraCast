@@ -35,7 +35,7 @@
 
         <button
             type="button"
-            class="btn btn-sm btn-outline-light p-2 ms-2"
+            class="btn p-2 ms-2"
             :aria-label="$gettext('Stop')"
             @click="stop()"
         >
@@ -44,7 +44,7 @@
         <div class="inline-volume-controls d-inline-flex align-items-center ms-2">
             <div class="flex-shrink-0">
                 <mute-button
-                    class="btn btn-sm btn-outline-light p-2"
+                    class="btn p-2"
                     :volume="volume"
                     :is-muted="isMuted"
                     @toggle-mute="toggleMute"

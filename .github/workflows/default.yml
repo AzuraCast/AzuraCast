@@ -101,7 +101,6 @@ jobs:
         run: |
           cd frontend
           npm ci --include=dev
-          npm run generate-locales
           
           cd ..
           bin/console locale:generate

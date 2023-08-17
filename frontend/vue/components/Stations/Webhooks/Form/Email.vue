@@ -1,60 +1,74 @@
 <template>
-    <b-form-group>
-        <div class="form-row">
-            <b-wrapped-form-group
+    <o-tab-item
+        :label="title"
+        :item-header-class="tabClass"
+    >
+        <div class="row g-3 mb-3">
+            <form-group-field
                 id="form_config_to"
                 class="col-md-12"
-                :field="form.config.to"
-            >
-                <template #label>
-                    {{ $gettext('Message Recipient(s)') }}
-                </template>
-                <template #description>
-                    {{ $gettext('E-mail addresses can be separated by commas.') }}
-                </template>
-            </b-wrapped-form-group>
+                :field="v$.config.to"
+                :label="$gettext('Message Recipient(s)')"
+                :description="$gettext('E-mail addresses can be separated by commas.')"
+            />
         </div>
-    </b-form-group>
 
-    <common-formatting-info :now-playing-url="nowPlayingUrl" />
+        <common-formatting-info />
 
-    <b-form-group>
-        <div class="form-row">
-            <b-wrapped-form-group
+        <div class="row g-3">
+            <form-group-field
                 id="form_config_subject"
                 class="col-md-12"
-                :field="form.config.subject"
-            >
-                <template #label>
-                    {{ $gettext('Message Subject') }}
-                </template>
-            </b-wrapped-form-group>
+                :field="v$.config.subject"
+                :label="$gettext('Message Subject')"
+            />
 
-            <b-wrapped-form-group
+            <form-group-field
                 id="form_config_message"
                 class="col-md-12"
-                :field="form.config.message"
-            >
-                <template #label>
-                    {{ $gettext('Message Body') }}
-                </template>
-            </b-wrapped-form-group>
+                :field="v$.config.message"
+                :label="$gettext('Message Body')"
+            />
         </div>
-    </b-form-group>
+    </o-tab-item>
 </template>
 
 <script setup>
-import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
+import FormGroupField from "~/components/Form/FormGroupField";
 import CommonFormattingInfo from "./Common/FormattingInfo";
+import {useVModel} from "@vueuse/core";
+import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
+import {required} from "@vuelidate/validators";
 
 const props = defineProps({
+    title: {
+        type: String,
+        required: true
+    },
     form: {
         type: Object,
         required: true
-    },
-    nowPlayingUrl: {
-        type: String,
-        required: true
     }
 });
+
+const emit = defineEmits(['update:form']);
+const form = useVModel(props, 'form', emit);
+
+const {v$, tabClass} = useVuelidateOnFormTab(
+    {
+        config: {
+            to: {required},
+            subject: {required},
+            message: {required}
+        }
+    },
+    form,
+    {
+        config: {
+            to: '',
+            subject: '',
+            message: ''
+        }
+    }
+);
 </script>

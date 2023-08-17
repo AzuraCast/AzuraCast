@@ -4,31 +4,34 @@ declare(strict_types=1);
 
 namespace App\Entity\Repository;
 
-use App\Doctrine\ReloadableEntityManagerInterface;
-use App\Entity;
+use App\Entity\Api\StationPlaylistQueue;
+use App\Entity\Station;
+use App\Entity\StationMedia;
+use App\Entity\StationRequest;
 use App\Exception;
 use App\Radio\AutoDJ;
 use App\Radio\Frontend\Blocklist\BlocklistParser;
 use App\Service\DeviceDetector;
 use Carbon\CarbonImmutable;
 use Carbon\CarbonInterface;
+use Exception as PhpException;
 
 /**
- * @extends AbstractStationBasedRepository<Entity\StationRequest>
+ * @extends AbstractStationBasedRepository<StationRequest>
  */
 final class StationRequestRepository extends AbstractStationBasedRepository
 {
+    protected string $entityClass = StationRequest::class;
+
     public function __construct(
-        ReloadableEntityManagerInterface $em,
         private readonly StationMediaRepository $mediaRepo,
         private readonly DeviceDetector $deviceDetector,
         private readonly BlocklistParser $blocklistParser,
         private readonly AutoDJ\DuplicatePrevention $duplicatePrevention,
     ) {
-        parent::__construct($em);
     }
 
-    public function getPendingRequest(int|string $id, Entity\Station $station): ?Entity\StationRequest
+    public function getPendingRequest(int|string $id, Station $station): ?StationRequest
     {
         return $this->repository->findOneBy(
             [
@@ -39,7 +42,7 @@ final class StationRequestRepository extends AbstractStationBasedRepository
         );
     }
 
-    public function clearPendingRequests(Entity\Station $station): void
+    public function clearPendingRequests(Station $station): void
     {
         $this->em->createQuery(
             <<<'DQL'
@@ -52,7 +55,7 @@ final class StationRequestRepository extends AbstractStationBasedRepository
     }
 
     public function submit(
-        Entity\Station $station,
+        Station $station,
         string $trackId,
         bool $isAuthenticated,
         string $ip,
@@ -76,17 +79,17 @@ final class StationRequestRepository extends AbstractStationBasedRepository
         }
 
         // Verify that Track ID exists with station.
-        $media_item = $this->mediaRepo->requireByUniqueId($trackId, $station);
+        $mediaItem = $this->mediaRepo->requireByUniqueId($trackId, $station);
 
-        if (!$media_item->isRequestable()) {
+        if (!$mediaItem->isRequestable()) {
             throw new Exception(__('The song ID you specified cannot be requested for this station.'));
         }
 
         // Check if the song is already enqueued as a request.
-        $this->checkPendingRequest($media_item, $station);
+        $this->checkPendingRequest($mediaItem, $station);
 
         // Check the most recent song history.
-        $this->checkRecentPlay($media_item, $station);
+        $this->checkRecentPlay($mediaItem, $station);
 
         if (!$isAuthenticated) {
             // Check for any request (on any station) within the last $threshold_seconds.
@@ -116,7 +119,7 @@ final class StationRequestRepository extends AbstractStationBasedRepository
         }
 
         // Save request locally.
-        $record = new Entity\StationRequest($station, $media_item, $ip);
+        $record = new StationRequest($station, $mediaItem, $ip);
         $this->em->persist($record);
         $this->em->flush();
 
@@ -126,17 +129,17 @@ final class StationRequestRepository extends AbstractStationBasedRepository
     /**
      * Check if the song is already enqueued as a request.
      *
-     * @param Entity\StationMedia $media
-     * @param Entity\Station $station
+     * @param StationMedia $media
+     * @param Station $station
      *
      * @throws Exception
      */
-    public function checkPendingRequest(Entity\StationMedia $media, Entity\Station $station): bool
+    public function checkPendingRequest(StationMedia $media, Station $station): bool
     {
-        $pending_request_threshold = time() - (60 * 10);
+        $pendingRequestThreshold = time() - (60 * 10);
 
         try {
-            $pending_request = $this->em->createQuery(
+            $pendingRequest = $this->em->createQuery(
                 <<<'DQL'
                     SELECT sr.timestamp
                     FROM App\Entity\StationRequest sr
@@ -147,14 +150,14 @@ final class StationRequestRepository extends AbstractStationBasedRepository
                 DQL
             )->setParameter('track_id', $media->getId())
                 ->setParameter('station_id', $station->getId())
-                ->setParameter('threshold', $pending_request_threshold)
+                ->setParameter('threshold', $pendingRequestThreshold)
                 ->setMaxResults(1)
                 ->getSingleScalarResult();
-        } catch (\Exception) {
+        } catch (PhpException) {
             return true;
         }
 
-        if ($pending_request > 0) {
+        if ($pendingRequest > 0) {
             throw new Exception(__('Duplicate request: this song was already requested and will play soon.'));
         }
 
@@ -162,9 +165,9 @@ final class StationRequestRepository extends AbstractStationBasedRepository
     }
 
     public function getNextPlayableRequest(
-        Entity\Station $station,
+        Station $station,
         ?CarbonInterface $now = null
-    ): ?Entity\StationRequest {
+    ): ?StationRequest {
         $now ??= CarbonImmutable::now($station->getTimezoneObject());
 
         // Look up all requests that have at least waited as long as the threshold.
@@ -180,11 +183,11 @@ final class StationRequestRepository extends AbstractStationBasedRepository
             ->execute();
 
         foreach ($requests as $request) {
-            /** @var Entity\StationRequest $request */
+            /** @var StationRequest $request */
             if ($request->shouldPlayNow($now)) {
                 try {
                     $this->checkRecentPlay($request->getTrack(), $station);
-                } catch (\Exception) {
+                } catch (PhpException) {
                     continue;
                 }
 
@@ -198,12 +201,12 @@ final class StationRequestRepository extends AbstractStationBasedRepository
     /**
      * Check the most recent song history.
      *
-     * @param Entity\StationMedia $media
-     * @param Entity\Station $station
+     * @param StationMedia $media
+     * @param Station $station
      *
      * @throws Exception
      */
-    public function checkRecentPlay(Entity\StationMedia $media, Entity\Station $station): bool
+    public function checkRecentPlay(StationMedia $media, Station $station): bool
     {
         $lastPlayThresholdMins = ($station->getRequestThreshold() ?? 15);
 
@@ -224,7 +227,7 @@ final class StationRequestRepository extends AbstractStationBasedRepository
             ->setParameter('threshold', $lastPlayThreshold)
             ->getArrayResult();
 
-        $eligibleTrack = new Entity\Api\StationPlaylistQueue();
+        $eligibleTrack = new StationPlaylistQueue();
         $eligibleTrack->media_id = $media->getIdRequired();
         $eligibleTrack->song_id = $media->getSongId();
         $eligibleTrack->title = $media->getTitle() ?? '';

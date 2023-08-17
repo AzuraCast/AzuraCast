@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Controller;
 use App\Enums\GlobalPermissions;
 use App\Http\Response;
@@ -55,8 +57,48 @@ return static function (RouteCollectorProxy $group) {
                 }
             )->add(new Middleware\Permissions(GlobalPermissions::Backups));
 
+            $group->group(
+                '/debug',
+                function (RouteCollectorProxy $group) {
+                    $group->put('/clear-cache', Controller\Api\Admin\Debug\ClearCacheAction::class)
+                        ->setName('api:admin:debug:clear-cache');
+
+                    $group->put(
+                        '/clear-queue[/{queue}]',
+                        Controller\Api\Admin\Debug\ClearQueueAction::class
+                    )->setName('api:admin:debug:clear-queue');
+
+                    $group->put('/sync/{task}', Controller\Api\Admin\Debug\SyncAction::class)
+                        ->setName('api:admin:debug:sync');
+
+                    $group->group(
+                        '/station/{station_id}',
+                        function (RouteCollectorProxy $group) {
+                            $group->put(
+                                '/nowplaying',
+                                Controller\Api\Admin\Debug\NowPlayingAction::class
+                            )->setName('api:admin:debug:nowplaying');
+
+                            $group->put(
+                                '/nextsong',
+                                Controller\Api\Admin\Debug\NextSongAction::class
+                            )->setName('api:admin:debug:nextsong');
+
+                            $group->put(
+                                '/clearqueue',
+                                Controller\Api\Admin\Debug\ClearStationQueueAction::class
+                            )->setName('api:admin:debug:clear-station-queue');
+
+                            $group->put('/telnet', Controller\Api\Admin\Debug\TelnetAction::class)
+                                ->setName('api:admin:debug:telnet');
+                        }
+                    )->add(Middleware\GetStation::class);
+                }
+            )->add(new Middleware\Permissions(GlobalPermissions::All));
+
             $group->get('/server/stats', Controller\Api\Admin\ServerStatsAction::class)
-                ->setName('api:admin:server:stats');
+                ->setName('api:admin:server:stats')
+                ->add(new Middleware\Permissions(GlobalPermissions::View));
 
             $group->get(
                 '/services',
@@ -72,6 +114,10 @@ return static function (RouteCollectorProxy $group) {
 
             $group->get('/permissions', Controller\Api\Admin\PermissionsAction::class)
                 ->add(new Middleware\Permissions(GlobalPermissions::All));
+
+            $group->get('/relays/list', Controller\Api\Admin\RelaysAction::class)
+                ->setName('api:admin:relays')
+                ->add(new Middleware\Permissions(GlobalPermissions::Stations));
 
             $group->map(
                 ['GET', 'POST'],
@@ -154,10 +200,15 @@ return static function (RouteCollectorProxy $group) {
                         '/stereo_tool',
                         Controller\Api\Admin\StereoTool\PostAction::class
                     );
+
+                    $group->delete(
+                        '/stereo_tool',
+                        Controller\Api\Admin\StereoTool\DeleteAction::class
+                    );
                 }
             )->add(new Middleware\Permissions(GlobalPermissions::Settings));
 
-            $admin_api_endpoints = [
+            $adminApiEndpoints = [
                 [
                     'custom_field',
                     'custom_fields',
@@ -175,7 +226,7 @@ return static function (RouteCollectorProxy $group) {
                 ],
             ];
 
-            foreach ($admin_api_endpoints as [$singular, $plural, $class, $permission]) {
+            foreach ($adminApiEndpoints as [$singular, $plural, $class, $permission]) {
                 $group->group(
                     '',
                     function (RouteCollectorProxy $group) use ($singular, $plural, $class) {
@@ -221,6 +272,8 @@ return static function (RouteCollectorProxy $group) {
                     $group->put('', Controller\Api\Admin\Updates\PutUpdatesAction::class);
                 }
             )->add(new Middleware\Permissions(GlobalPermissions::All));
+
+            call_user_func(include(__DIR__ . '/api_admin_vue.php'), $group);
         }
     );
 };

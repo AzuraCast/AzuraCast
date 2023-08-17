@@ -4,22 +4,29 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Admin\Stations;
 
+use App\Container\EnvironmentAwareTrait;
 use App\Controller\Api\Admin\StationsController;
-use App\Doctrine\ReloadableEntityManagerInterface;
-use App\Entity;
-use App\Environment;
+use App\Controller\SingleActionInterface;
+use App\Entity\Api\Status;
+use App\Entity\Interfaces\StationCloneAwareInterface;
+use App\Entity\RolePermission;
+use App\Entity\Station;
+use App\Entity\StationPlaylist;
+use App\Entity\StationPlaylistFolder;
+use App\Entity\StationPlaylistMedia;
+use App\Entity\StationSchedule;
+use App\Entity\StationStreamer;
 use App\Http\Response;
 use App\Http\ServerRequest;
-use App\Radio\Configuration;
 use DeepCopy;
 use Doctrine\Common\Collections\Collection;
 use Psr\Http\Message\ResponseInterface;
-use Symfony\Component\Serializer\Serializer;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Throwable;
 
-final class CloneAction extends StationsController
+final class CloneAction extends StationsController implements SingleActionInterface
 {
+    use EnvironmentAwareTrait;
+
     public const CLONE_MEDIA_STORAGE = 'media_storage';
     public const CLONE_RECORDINGS_STORAGE = 'recordings_storage';
     public const CLONE_PODCASTS_STORAGE = 'podcasts_storage';
@@ -31,33 +38,12 @@ final class CloneAction extends StationsController
     public const CLONE_PERMISSIONS = 'permissions';
     public const CLONE_WEBHOOKS = 'webhooks';
 
-    public function __construct(
-        Entity\Repository\StationRepository $stationRepo,
-        Entity\Repository\StorageLocationRepository $storageLocationRepo,
-        Entity\Repository\StationQueueRepository $queueRepo,
-        Configuration $configuration,
-        ReloadableEntityManagerInterface $reloadableEm,
-        Serializer $serializer,
-        ValidatorInterface $validator,
-        private readonly Environment $environment
-    ) {
-        parent::__construct(
-            $stationRepo,
-            $storageLocationRepo,
-            $queueRepo,
-            $configuration,
-            $reloadableEm,
-            $serializer,
-            $validator
-        );
-    }
-
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        string $id
+        array $params
     ): ResponseInterface {
-        $record = $this->getRecord($id);
+        $record = $this->getRecord($request, $params);
         $data = (array)$request->getParsedBody();
 
         $toClone = $data['clone'];
@@ -78,15 +64,15 @@ final class CloneAction extends StationsController
 
         $copier->addFilter(
             new DeepCopy\Filter\KeepFilter(),
-            new DeepCopy\Matcher\PropertyMatcher(Entity\RolePermission::class, 'role')
+            new DeepCopy\Matcher\PropertyMatcher(RolePermission::class, 'role')
         );
         $copier->addFilter(
             new DeepCopy\Filter\KeepFilter(),
-            new DeepCopy\Matcher\PropertyMatcher(Entity\StationPlaylistMedia::class, 'media')
+            new DeepCopy\Matcher\PropertyMatcher(StationPlaylistMedia::class, 'media')
         );
 
-        /** @var Entity\Station $record */
-        /** @var Entity\Station $newStation */
+        /** @var Station $record */
+        /** @var Station $newStation */
         $newStation = $copier->copy($record);
 
         $newStation->setName($data['name'] ?? ($newStation->getName() . ' - Copy'));
@@ -103,8 +89,8 @@ final class CloneAction extends StationsController
         }
 
         // Set new radio base directory
-        $station_base_dir = $this->environment->getStationDirectory();
-        $newStation->setRadioBaseDir($station_base_dir . '/' . $newStation->getShortName());
+        $stationBaseDir = $this->environment->getStationDirectory();
+        $newStation->setRadioBaseDir($stationBaseDir . '/' . $newStation->getShortName());
 
         $newStation->ensureDirectoriesExist();
 
@@ -118,15 +104,15 @@ final class CloneAction extends StationsController
 
         if (in_array(self::CLONE_PLAYLISTS, $toClone, true)) {
             $afterCloning = function (
-                Entity\StationPlaylist $oldPlaylist,
-                Entity\StationPlaylist $newPlaylist,
-                Entity\Station $newStation
+                StationPlaylist $oldPlaylist,
+                StationPlaylist $newPlaylist,
+                Station $newStation
             ) use (
                 $copier,
                 $toClone
             ): void {
                 foreach ($oldPlaylist->getScheduleItems() as $oldScheduleItem) {
-                    /** @var Entity\StationSchedule $newScheduleItem */
+                    /** @var StationSchedule $newScheduleItem */
                     $newScheduleItem = $copier->copy($oldScheduleItem);
                     $newScheduleItem->setPlaylist($newPlaylist);
 
@@ -135,7 +121,7 @@ final class CloneAction extends StationsController
 
                 if (in_array(self::CLONE_MEDIA_STORAGE, $toClone, true)) {
                     foreach ($oldPlaylist->getFolders() as $oldPlaylistFolder) {
-                        /** @var Entity\StationPlaylistFolder $newPlaylistFolder */
+                        /** @var StationPlaylistFolder $newPlaylistFolder */
                         $newPlaylistFolder = $copier->copy($oldPlaylistFolder);
                         $newPlaylistFolder->setStation($newStation);
                         $newPlaylistFolder->setPlaylist($newPlaylist);
@@ -143,7 +129,7 @@ final class CloneAction extends StationsController
                     }
 
                     foreach ($oldPlaylist->getMediaItems() as $oldMediaItem) {
-                        /** @var Entity\StationPlaylistMedia $newMediaItem */
+                        /** @var StationPlaylistMedia $newMediaItem */
                         $newMediaItem = $copier->copy($oldMediaItem);
 
                         $newMediaItem->setPlaylist($newPlaylist);
@@ -152,35 +138,35 @@ final class CloneAction extends StationsController
                 }
             };
 
-            $record = $this->reloadableEm->refetch($record);
+            $record = $this->em->refetch($record);
             $this->cloneCollection($record->getPlaylists(), $newStation, $copier, $afterCloning);
         }
 
         if (in_array(self::CLONE_MOUNTS, $toClone, true)) {
-            $record = $this->reloadableEm->refetch($record);
+            $record = $this->em->refetch($record);
             $this->cloneCollection($record->getMounts(), $newStation, $copier);
         } else {
-            $newStation = $this->reloadableEm->refetch($newStation);
+            $newStation = $this->em->refetch($newStation);
             $this->stationRepo->resetMounts($newStation);
         }
 
         if (in_array(self::CLONE_REMOTES, $toClone, true)) {
-            $record = $this->reloadableEm->refetch($record);
+            $record = $this->em->refetch($record);
             $this->cloneCollection($record->getRemotes(), $newStation, $copier);
         }
 
         if (in_array(self::CLONE_STREAMERS, $toClone, true)) {
-            $record = $this->reloadableEm->refetch($record);
+            $record = $this->em->refetch($record);
 
             $afterCloning = function (
-                Entity\StationStreamer $oldStreamer,
-                Entity\StationStreamer $newStreamer,
-                Entity\Station $station
+                StationStreamer $oldStreamer,
+                StationStreamer $newStreamer,
+                Station $station
             ) use (
                 $copier
             ): void {
                 foreach ($oldStreamer->getScheduleItems() as $oldScheduleItem) {
-                    /** @var Entity\StationSchedule $newScheduleItem */
+                    /** @var StationSchedule $newScheduleItem */
                     $newScheduleItem = $copier->copy($oldScheduleItem);
                     $newScheduleItem->setStreamer($newStreamer);
 
@@ -192,17 +178,17 @@ final class CloneAction extends StationsController
         }
 
         if (in_array(self::CLONE_PERMISSIONS, $toClone, true)) {
-            $record = $this->reloadableEm->refetch($record);
+            $record = $this->em->refetch($record);
             $this->cloneCollection($record->getPermissions(), $newStation, $copier);
         }
 
         if (in_array(self::CLONE_WEBHOOKS, $toClone, true)) {
-            $record = $this->reloadableEm->refetch($record);
+            $record = $this->em->refetch($record);
             $this->cloneCollection($record->getWebhooks(), $newStation, $copier);
         }
 
         // Clear the EntityManager for later functions.
-        $newStation = $this->reloadableEm->refetch($newStation);
+        $newStation = $this->em->refetch($newStation);
 
         $this->configuration->assignRadioPorts($newStation, true);
 
@@ -213,7 +199,7 @@ final class CloneAction extends StationsController
 
         $this->em->flush();
 
-        return $response->withJson(Entity\Api\Status::created());
+        return $response->withJson(Status::created());
     }
 
     /**
@@ -221,14 +207,14 @@ final class CloneAction extends StationsController
      */
     private function cloneCollection(
         Collection $collection,
-        Entity\Station $newStation,
+        Station $newStation,
         DeepCopy\DeepCopy $copier,
         ?callable $afterCloning = null
     ): void {
-        $newStation = $this->reloadableEm->refetch($newStation);
+        $newStation = $this->em->refetch($newStation);
 
         foreach ($collection as $oldRecord) {
-            /** @var Entity\Interfaces\StationCloneAwareInterface $newRecord */
+            /** @var StationCloneAwareInterface $newRecord */
             $newRecord = $copier->copy($oldRecord);
             $newRecord->setStation($newStation);
 

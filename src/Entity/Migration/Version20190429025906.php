@@ -22,20 +22,20 @@ final class Version20190429025906 extends AbstractMigration
         $playlists = $this->connection->fetchAllAssociative('SELECT sp.* FROM station_playlists AS sp');
 
         foreach ($playlists as $playlist) {
-            $backend_options = [];
+            $backendOptions = [];
 
             if ($playlist['interrupt_other_songs']) {
-                $backend_options[] = 'interrupt';
+                $backendOptions[] = 'interrupt';
             }
             if ($playlist['loop_playlist_once']) {
-                $backend_options[] = 'loop_once';
+                $backendOptions[] = 'loop_once';
             }
             if ($playlist['play_single_track']) {
-                $backend_options[] = 'single_track';
+                $backendOptions[] = 'single_track';
             }
 
             $this->connection->update('station_playlists', [
-                'backend_options' => implode(',', $backend_options),
+                'backend_options' => implode(',', $backendOptions),
             ], [
                 'id' => $playlist['id'],
             ]);

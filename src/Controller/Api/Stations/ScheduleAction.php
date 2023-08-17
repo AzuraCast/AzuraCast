@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace App\Controller\Api\Stations;
 
 use App\Controller\Api\Traits\HasScheduleDisplay;
-use App\Entity;
+use App\Controller\SingleActionInterface;
+use App\Entity\ApiGenerator\ScheduleApiGenerator;
+use App\Entity\Repository\StationScheduleRepository;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\OpenApi;
@@ -50,14 +52,14 @@ use Psr\Http\Message\ResponseInterface;
         new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
     ]
 )]
-final class ScheduleAction
+final class ScheduleAction implements SingleActionInterface
 {
     use HasScheduleDisplay;
 
     public function __construct(
         private readonly Scheduler $scheduler,
-        private readonly Entity\ApiGenerator\ScheduleApiGenerator $scheduleApiGenerator,
-        private readonly Entity\Repository\StationScheduleRepository $scheduleRepo,
+        private readonly ScheduleApiGenerator $scheduleApiGenerator,
+        private readonly StationScheduleRepository $scheduleRepo,
         private readonly CacheItemPoolInterface $psr6Cache
     ) {
     }
@@ -65,7 +67,7 @@ final class ScheduleAction
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        string $station_id
+        array $params
     ): ResponseInterface {
         $station = $request->getStation();
         $tz = $station->getTimezoneObject();

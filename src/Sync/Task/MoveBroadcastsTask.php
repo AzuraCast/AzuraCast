@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace App\Sync\Task;
 
-use App\Doctrine\ReloadableEntityManagerInterface;
-use App\Entity;
-use Psr\Log\LoggerInterface;
+use App\Entity\Enums\StorageLocationTypes;
+use App\Entity\Repository\StationStreamerBroadcastRepository;
+use App\Entity\Repository\StorageLocationRepository;
+use App\Entity\StationStreamerBroadcast;
+use App\Entity\StorageLocation;
 use Symfony\Component\Finder\Finder;
 use Throwable;
 
@@ -18,23 +20,20 @@ final class MoveBroadcastsTask extends AbstractTask
     }
 
     public function __construct(
-        ReloadableEntityManagerInterface $em,
-        LoggerInterface $logger,
-        private readonly Entity\Repository\StationStreamerBroadcastRepository $broadcastRepo,
-        private readonly Entity\Repository\StorageLocationRepository $storageLocationRepo,
+        private readonly StationStreamerBroadcastRepository $broadcastRepo,
+        private readonly StorageLocationRepository $storageLocationRepo
     ) {
-        parent::__construct($em, $logger);
     }
 
     public function run(bool $force = false): void
     {
         foreach (
             $this->iterateStorageLocations(
-                Entity\Enums\StorageLocationTypes::StationRecordings
+                StorageLocationTypes::StationRecordings
             ) as $storageLocation
         ) {
             try {
-                /** @var Entity\StorageLocation $storageLocation */
+                /** @var StorageLocation $storageLocation */
                 $this->processForStorageLocation($storageLocation);
             } catch (Throwable $e) {
                 $this->logger->error($e->getMessage(), [
@@ -44,7 +43,7 @@ final class MoveBroadcastsTask extends AbstractTask
         }
     }
 
-    private function processForStorageLocation(Entity\StorageLocation $storageLocation): void
+    private function processForStorageLocation(StorageLocation $storageLocation): void
     {
         if ($storageLocation->isStorageFull()) {
             $this->logger->error('Storage location is full; skipping broadcasts.', [
@@ -60,7 +59,7 @@ final class MoveBroadcastsTask extends AbstractTask
             $finder = (new Finder())
                 ->files()
                 ->in($station->getRadioTempDir())
-                ->name(Entity\StationStreamerBroadcast::PATH_PREFIX . '_*')
+                ->name(StationStreamerBroadcast::PATH_PREFIX . '_*')
                 ->notName('*.tmp')
                 ->depth(1);
 

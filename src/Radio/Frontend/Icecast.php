@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace App\Radio\Frontend;
 
-use App\Entity;
+use App\Entity\Station;
+use App\Entity\StationMount;
 use App\Radio\Enums\StreamFormats;
 use App\Service\Acme;
 use App\Utilities;
@@ -23,24 +24,24 @@ final class Icecast extends AbstractFrontend
     public const LOGLEVEL_WARN = 2;
     public const LOGLEVEL_ERROR = 1;
 
-    public function reload(Entity\Station $station): void
+    public function reload(Station $station): void
     {
         if ($this->hasCommand($station)) {
-            $program_name = $this->getSupervisorFullName($station);
+            $programName = $this->getSupervisorFullName($station);
 
             try {
-                $this->supervisor->signalProcess($program_name, 'HUP');
+                $this->supervisor->signalProcess($programName, 'HUP');
                 $this->logger->info(
                     'Adapter "' . self::class . '" reloaded.',
                     ['station_id' => $station->getId(), 'station_name' => $station->getName()]
                 );
             } catch (SupervisorLibException $e) {
-                $this->handleSupervisorException($e, $program_name, $station);
+                $this->handleSupervisorException($e, $programName, $station);
             }
         }
     }
 
-    public function getNowPlaying(Entity\Station $station, bool $includeClients = true): Result
+    public function getNowPlaying(Station $station, bool $includeClients = true): Result
     {
         $feConfig = $station->getFrontendConfig();
         $radioPort = $feConfig->getPort();
@@ -101,12 +102,12 @@ final class Icecast extends AbstractFrontend
         return $defaultResult;
     }
 
-    public function getConfigurationPath(Entity\Station $station): ?string
+    public function getConfigurationPath(Station $station): ?string
     {
         return $station->getRadioConfigDir() . '/icecast.xml';
     }
 
-    public function getCurrentConfiguration(Entity\Station $station): ?string
+    public function getCurrentConfiguration(Station $station): ?string
     {
         $frontendConfig = $station->getFrontendConfig();
         $configDir = $station->getRadioConfigDir();
@@ -178,14 +179,14 @@ final class Icecast extends AbstractFrontend
         $allowedIps = $this->getIpsAsArray($station->getFrontendConfig()->getAllowedIps());
         $useListenerAuth = !empty($bannedCountries) || !empty($allowedIps);
 
-        foreach ($station->getMounts() as $mount_row) {
-            /** @var Entity\StationMount $mount_row */
-
+        /** @var StationMount $mountRow */
+        foreach ($station->getMounts() as $mountRow) {
             $mount = [
                 '@type' => 'normal',
-                'mount-name' => $mount_row->getName(),
+                'mount-name' => $mountRow->getName(),
                 'charset' => 'UTF8',
                 'stream-name' => $station->getName(),
+                'listenurl' => $this->getUrlForMount($station, $mountRow),
             ];
 
             if (!empty($station->getDescription())) {
@@ -200,12 +201,12 @@ final class Icecast extends AbstractFrontend
                 $mount['genre'] = $station->getGenre();
             }
 
-            if (!$mount_row->getIsVisibleOnPublicPages()) {
+            if (!$mountRow->getIsVisibleOnPublicPages()) {
                 $mount['hidden'] = 1;
             }
 
-            if (!empty($mount_row->getIntroPath())) {
-                $introPath = $mount_row->getIntroPath();
+            if (!empty($mountRow->getIntroPath())) {
+                $introPath = $mountRow->getIntroPath();
                 // The intro path is appended to webroot, so the path should be relative to it.
                 $mount['intro'] = Path::makeRelative(
                     $station->getRadioConfigDir() . '/' . $introPath,
@@ -213,36 +214,36 @@ final class Icecast extends AbstractFrontend
                 );
             }
 
-            if (!empty($mount_row->getFallbackMount())) {
-                $mount['fallback-mount'] = $mount_row->getFallbackMount();
+            if (!empty($mountRow->getFallbackMount())) {
+                $mount['fallback-mount'] = $mountRow->getFallbackMount();
                 $mount['fallback-override'] = 1;
-            } elseif ($mount_row->getEnableAutodj()) {
-                $autoDjFormat = $mount_row->getAutodjFormat() ?? StreamFormats::default();
-                $autoDjBitrate = $mount_row->getAutodjBitrate();
+            } elseif ($mountRow->getEnableAutodj()) {
+                $autoDjFormat = $mountRow->getAutodjFormat() ?? StreamFormats::default();
+                $autoDjBitrate = $mountRow->getAutodjBitrate();
 
                 $mount['fallback-mount'] = '/fallback-[' . $autoDjBitrate . '].' . $autoDjFormat->getExtension();
                 $mount['fallback-override'] = 1;
             }
 
-            if ($mount_row->getMaxListenerDuration()) {
-                $mount['max-listener-duration'] = $mount_row->getMaxListenerDuration();
+            if ($mountRow->getMaxListenerDuration()) {
+                $mount['max-listener-duration'] = $mountRow->getMaxListenerDuration();
             }
 
-            $mountFrontendConfig = trim($mount_row->getFrontendConfig() ?? '');
+            $mountFrontendConfig = trim($mountRow->getFrontendConfig() ?? '');
             if (!empty($mountFrontendConfig)) {
-                $mount_conf = $this->processCustomConfig($mountFrontendConfig);
-                if (false !== $mount_conf) {
-                    $mount = Utilities\Arrays::arrayMergeRecursiveDistinct($mount, $mount_conf);
+                $mountConf = $this->processCustomConfig($mountFrontendConfig);
+                if (false !== $mountConf) {
+                    $mount = Utilities\Arrays::arrayMergeRecursiveDistinct($mount, $mountConf);
                 }
             }
 
-            $mountRelayUri = $mount_row->getRelayUrlAsUri();
+            $mountRelayUri = $mountRow->getRelayUrlAsUri();
             if (null !== $mountRelayUri) {
                 $config['relay'][] = array_filter([
                     'server' => $mountRelayUri->getHost(),
                     'port' => $mountRelayUri->getPort(),
                     'mount' => $mountRelayUri->getPath(),
-                    'local-mount' => $mount_row->getName(),
+                    'local-mount' => $mountRow->getName(),
                 ]);
             }
 
@@ -297,7 +298,7 @@ final class Icecast extends AbstractFrontend
         return substr($configString, strpos($configString, "\n") + 1);
     }
 
-    public function getCommand(Entity\Station $station): ?string
+    public function getCommand(Station $station): ?string
     {
         if ($binary = $this->getBinary()) {
             return $binary . ' -c ' . $this->getConfigurationPath($station);
@@ -310,24 +311,24 @@ final class Icecast extends AbstractFrontend
      */
     public function getBinary(): ?string
     {
-        $new_path = '/usr/local/bin/icecast';
-        $legacy_path = '/usr/bin/icecast2';
+        $newPath = '/usr/local/bin/icecast';
+        $legacyPath = '/usr/bin/icecast2';
 
-        if ($this->environment->isDocker() || file_exists($new_path)) {
-            return $new_path;
+        if ($this->environment->isDocker() || file_exists($newPath)) {
+            return $newPath;
         }
 
-        if (file_exists($legacy_path)) {
-            return $legacy_path;
+        if (file_exists($legacyPath)) {
+            return $legacyPath;
         }
 
         return null;
     }
 
-    public function getAdminUrl(Entity\Station $station, UriInterface $base_url = null): UriInterface
+    public function getAdminUrl(Station $station, UriInterface $baseUrl = null): UriInterface
     {
-        $public_url = $this->getPublicUrl($station, $base_url);
-        return $public_url
-            ->withPath($public_url->getPath() . '/admin.html');
+        $publicUrl = $this->getPublicUrl($station, $baseUrl);
+        return $publicUrl
+            ->withPath($publicUrl->getPath() . '/admin.html');
     }
 }

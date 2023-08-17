@@ -4,21 +4,24 @@ declare(strict_types=1);
 
 namespace App\Radio;
 
+use App\Container\EntityManagerAwareTrait;
+use App\Container\EnvironmentAwareTrait;
 use App\Entity\Enums\PlaylistTypes;
 use App\Entity\Repository\StationPlaylistMediaRepository;
 use App\Entity\Station;
 use App\Entity\StationPlaylist;
-use App\Environment;
 use App\Exception;
 use App\Radio\Enums\BackendAdapters;
 use App\Radio\Enums\FrontendAdapters;
-use Doctrine\ORM\EntityManagerInterface;
 use RuntimeException;
 use Supervisor\Exception\SupervisorException;
 use Supervisor\SupervisorInterface;
 
 final class Configuration
 {
+    use EntityManagerAwareTrait;
+    use EnvironmentAwareTrait;
+
     public const DEFAULT_PORT_MIN = 8000;
     public const DEFAULT_PORT_MAX = 8499;
     public const PROTECTED_PORTS = [
@@ -32,10 +35,8 @@ final class Configuration
     ];
 
     public function __construct(
-        private readonly EntityManagerInterface $em,
         private readonly Adapters $adapters,
         private readonly SupervisorInterface $supervisor,
-        private readonly Environment $environment,
         private readonly StationPlaylistMediaRepository $spmRepo,
     ) {
     }
@@ -173,8 +174,8 @@ final class Configuration
         }
 
         // Write config contents
-        $supervisor_config_data = implode("\n", $supervisorConfig);
-        file_put_contents($supervisorConfigFile, $supervisor_config_data);
+        $supervisorConfigData = implode("\n", $supervisorConfig);
+        file_put_contents($supervisorConfigFile, $supervisorConfigData);
 
         // Write supporting configurations.
         $frontend?->write($station);
@@ -184,10 +185,10 @@ final class Configuration
 
         // Reload Supervisord and process groups
         if ($reloadSupervisor) {
-            $affected_groups = $this->reloadSupervisor();
-            $was_restarted = in_array($stationGroup, $affected_groups, true);
+            $affectedGroups = $this->reloadSupervisor();
+            $wasRestarted = in_array($stationGroup, $affectedGroups, true);
 
-            if (!$was_restarted && $forceRestart) {
+            if (!$wasRestarted && $forceRestart) {
                 try {
                     if ($attemptReload && ($backendEnum->isEnabled() || $frontendEnum->supportsReload())) {
                         $backend?->reload($station);
@@ -232,12 +233,12 @@ final class Configuration
     {
         $this->markAsStarted($station);
 
-        $station_group = 'station_' . $station->getId();
-        $affected_groups = $this->reloadSupervisor();
+        $stationGroup = 'station_' . $station->getId();
+        $affectedGroups = $this->reloadSupervisor();
 
-        if (!in_array($station_group, $affected_groups, true)) {
+        if (!in_array($stationGroup, $affectedGroups, true)) {
             try {
-                $this->supervisor->stopProcessGroup($station_group, false);
+                $this->supervisor->stopProcessGroup($stationGroup, false);
             } catch (SupervisorException) {
             }
         }
@@ -271,27 +272,27 @@ final class Configuration
             $station->getFrontendType()->isEnabled()
             || $station->getBackendType()->isEnabled()
         ) {
-            $frontend_config = $station->getFrontendConfig();
-            $backend_config = $station->getBackendConfig();
+            $frontendConfig = $station->getFrontendConfig();
+            $backendConfig = $station->getBackendConfig();
 
-            $base_port = $frontend_config->getPort();
-            if ($force || null === $base_port) {
-                $base_port = $this->getFirstAvailableRadioPort($station);
+            $basePort = $frontendConfig->getPort();
+            if ($force || null === $basePort) {
+                $basePort = $this->getFirstAvailableRadioPort($station);
 
-                $frontend_config->setPort($base_port);
-                $station->setFrontendConfig($frontend_config);
+                $frontendConfig->setPort($basePort);
+                $station->setFrontendConfig($frontendConfig);
             }
 
-            $djPort = $backend_config->getDjPort();
+            $djPort = $backendConfig->getDjPort();
             if ($force || null === $djPort) {
-                $backend_config->setDjPort($base_port + 5);
-                $station->setBackendConfig($backend_config);
+                $backendConfig->setDjPort($basePort + 5);
+                $station->setBackendConfig($backendConfig);
             }
 
-            $telnetPort = $backend_config->getTelnetPort();
+            $telnetPort = $backendConfig->getTelnetPort();
             if ($force || null === $telnetPort) {
-                $backend_config->setTelnetPort($base_port + 4);
-                $station->setBackendConfig($backend_config);
+                $backendConfig->setTelnetPort($basePort + 4);
+                $station->setBackendConfig($backendConfig);
             }
 
             $this->em->persist($station);
@@ -304,28 +305,28 @@ final class Configuration
      */
     public function getFirstAvailableRadioPort(Station $station = null): int
     {
-        $used_ports = $this->getUsedPorts($station);
+        $usedPorts = $this->getUsedPorts($station);
 
         // Iterate from port 8000 to 9000, in increments of 10
-        $protected_ports = self::PROTECTED_PORTS;
+        $protectedPorts = self::PROTECTED_PORTS;
 
-        $port_min = $this->environment->getAutoAssignPortMin();
-        $port_max = $this->environment->getAutoAssignPortMax();
+        $portMin = $this->environment->getAutoAssignPortMin();
+        $portMax = $this->environment->getAutoAssignPortMax();
 
-        for ($port = $port_min; $port <= $port_max; $port += 10) {
-            if (in_array($port, $protected_ports, true)) {
+        for ($port = $portMin; $port <= $portMax; $port += 10) {
+            if (in_array($port, $protectedPorts, true)) {
                 continue;
             }
 
-            $range_in_use = false;
+            $rangeInUse = false;
             for ($i = $port; $i < $port + 10; $i++) {
-                if (isset($used_ports[$i])) {
-                    $range_in_use = true;
+                if (isset($usedPorts[$i])) {
+                    $rangeInUse = true;
                     break;
                 }
             }
 
-            if (!$range_in_use) {
+            if (!$rangeInUse) {
                 return $port;
             }
         }
@@ -336,60 +337,60 @@ final class Configuration
     /**
      * Get an array of all used ports across the system, except the ones used by the station specified (if specified).
      */
-    public function getUsedPorts(Station $except_station = null): array
+    public function getUsedPorts(Station $exceptStation = null): array
     {
-        static $used_ports;
+        static $usedPorts;
 
-        if (null === $used_ports) {
-            $used_ports = [];
+        if (null === $usedPorts) {
+            $usedPorts = [];
 
             // Get all station used ports.
-            $station_configs = $this->em->createQuery(
+            $stationConfigs = $this->em->createQuery(
                 <<<'DQL'
                     SELECT s.id, s.name, s.frontend_type, s.frontend_config, s.backend_type, s.backend_config
                     FROM App\Entity\Station s
                 DQL
             )->getArrayResult();
 
-            foreach ($station_configs as $row) {
-                $station_reference = ['id' => $row['id'], 'name' => $row['name']];
+            foreach ($stationConfigs as $row) {
+                $stationReference = ['id' => $row['id'], 'name' => $row['name']];
 
                 if ($row['frontend_type'] !== FrontendAdapters::Remote->value) {
-                    $frontend_config = (array)$row['frontend_config'];
+                    $frontendConfig = (array)$row['frontend_config'];
 
-                    if (!empty($frontend_config['port'])) {
-                        $port = (int)$frontend_config['port'];
-                        $used_ports[$port] = $station_reference;
+                    if (!empty($frontendConfig['port'])) {
+                        $port = (int)$frontendConfig['port'];
+                        $usedPorts[$port] = $stationReference;
                     }
                 }
 
                 if ($row['backend_type'] !== BackendAdapters::None->value) {
-                    $backend_config = (array)$row['backend_config'];
+                    $backendConfig = (array)$row['backend_config'];
 
                     // For DJ port, consider both the assigned port and port+1 to be reserved and in-use.
-                    if (!empty($backend_config['dj_port'])) {
-                        $port = (int)$backend_config['dj_port'];
-                        $used_ports[$port] = $station_reference;
-                        $used_ports[$port + 1] = $station_reference;
+                    if (!empty($backendConfig['dj_port'])) {
+                        $port = (int)$backendConfig['dj_port'];
+                        $usedPorts[$port] = $stationReference;
+                        $usedPorts[$port + 1] = $stationReference;
                     }
-                    if (!empty($backend_config['telnet_port'])) {
-                        $port = (int)$backend_config['telnet_port'];
-                        $used_ports[$port] = $station_reference;
+                    if (!empty($backendConfig['telnet_port'])) {
+                        $port = (int)$backendConfig['telnet_port'];
+                        $usedPorts[$port] = $stationReference;
                     }
                 }
             }
         }
 
-        if (null !== $except_station && null !== $except_station->getId()) {
+        if (null !== $exceptStation && null !== $exceptStation->getId()) {
             return array_filter(
-                $used_ports,
-                static function ($station_reference) use ($except_station) {
-                    return ($station_reference['id'] !== $except_station->getId());
+                $usedPorts,
+                static function ($stationReference) use ($exceptStation) {
+                    return ($stationReference['id'] !== $exceptStation->getId());
                 }
             );
         }
 
-        return $used_ports;
+        return $usedPorts;
     }
 
     /**
@@ -399,21 +400,21 @@ final class Configuration
      */
     public function removeConfiguration(Station $station): void
     {
-        if (Environment::getInstance()->isTesting()) {
+        if ($this->environment->isTesting()) {
             return;
         }
 
-        $station_group = 'station_' . $station->getId();
+        $stationGroup = 'station_' . $station->getId();
 
         // Try forcing the group to stop, but don't hard-fail if it doesn't.
         try {
-            $this->supervisor->stopProcessGroup($station_group);
-            $this->supervisor->removeProcessGroup($station_group);
+            $this->supervisor->stopProcessGroup($stationGroup);
+            $this->supervisor->removeProcessGroup($stationGroup);
         } catch (SupervisorException) {
         }
 
-        $supervisor_config_path = $this->getSupervisorConfigFile($station);
-        @unlink($supervisor_config_path);
+        $supervisorConfigPath = $this->getSupervisorConfigFile($station);
+        @unlink($supervisorConfigPath);
 
         $this->reloadSupervisor();
     }

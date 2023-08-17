@@ -1,58 +1,40 @@
 <template>
     <div class="row-of-cards">
-        <section
-            class="card"
-            role="region"
-            aria-labelledby="hdr_system_logs"
+        <card-page
+            header-id="hdr_system_logs"
+            :title="$gettext('System Logs')"
         >
-            <div class="card-header bg-primary-dark">
-                <h2
-                    id="hdr_system_logs"
-                    class="card-title"
-                >
-                    {{ $gettext('System Logs') }}
-                </h2>
-            </div>
-
             <log-list
                 :url="systemLogsUrl"
                 @view="viewLog"
             />
-        </section>
+        </card-page>
 
-        <section
+        <card-page
             v-if="stationLogs.length > 0"
-            class="card"
-            role="region"
-            aria-labelledby="hdr_logs_by_station"
+            header-id="hdr_logs_by_station"
+            :title="$gettext('Logs by Station')"
         >
-            <div class="card-header bg-primary-dark">
-                <h2
-                    id="hdr_logs_by_station"
-                    class="card-title"
+            <div class="card-body">
+                <o-tabs
+                    nav-tabs-class="nav-tabs"
+                    content-class="mt-3"
                 >
-                    {{ $gettext('Logs by Station') }}
-                </h2>
+                    <o-tab-item
+                        v-for="row in stationLogs"
+                        :key="row.id"
+                        :label="row.name"
+                    >
+                        <div class="card-body-flush">
+                            <log-list
+                                :url="row.url"
+                                @view="viewLog"
+                            />
+                        </div>
+                    </o-tab-item>
+                </o-tabs>
             </div>
-
-            <b-tabs
-                pills
-                lazy
-                nav-class="card-header-pills"
-                nav-wrapper-class="card-header"
-            >
-                <b-tab
-                    v-for="row in stationLogs"
-                    :key="row.id"
-                    :title="row.name"
-                >
-                    <log-list
-                        :url="row.url"
-                        @view="viewLog"
-                    />
-                </b-tab>
-            </b-tabs>
-        </section>
+        </card-page>
     </div>
 
     <streaming-log-modal ref="$modal" />
@@ -62,6 +44,7 @@
 import LogList from "~/components/Common/LogList";
 import StreamingLogModal from "~/components/Common/StreamingLogModal";
 import {ref} from "vue";
+import CardPage from "~/components/Common/CardPage.vue";
 
 defineProps({
     systemLogsUrl: {

@@ -12,10 +12,10 @@
             <template v-if="hasStarted">
                 <profile-now-playing
                     v-bind="pickProps(props, nowPlayingPanelProps)"
+                    @api-call="makeApiCall"
                 />
 
                 <profile-schedule
-                    :station-time-zone="stationTimeZone"
                     :schedule-items="profileInfo.schedule"
                 />
 
@@ -47,6 +47,7 @@
                 <profile-frontend
                     v-bind="pickProps(props, frontendPanelProps)"
                     :frontend-running="profileInfo.services.frontend_running"
+                    @api-call="makeApiCall"
                 />
             </template>
 
@@ -54,6 +55,7 @@
                 <profile-backend
                     v-bind="pickProps(props, backendPanelProps)"
                     :backend-running="profileInfo.services.backend_running"
+                    @api-call="makeApiCall"
                 />
             </template>
             <template v-else>
@@ -90,6 +92,9 @@ import streamersPanelProps from "./Profile/streamersPanelProps";
 import {pickProps} from "~/functions/pickProps";
 import useRefreshableAsyncState from "~/functions/useRefreshableAsyncState";
 import {useIntervalFn} from "@vueuse/core";
+import {useSweetAlert} from "~/vendor/sweetalert";
+import {useNotify} from "~/functions/useNotify";
+import {useTranslate} from "~/vendor/gettext";
 
 const props = defineProps({
     ...backendPanelProps,
@@ -101,10 +106,6 @@ const props = defineProps({
     ...requestsPanelProps,
     ...streamersPanelProps,
     profileApiUri: {
-        type: String,
-        required: true
-    },
-    stationTimeZone: {
         type: String,
         required: true
     },
@@ -152,4 +153,26 @@ useIntervalFn(
     reloadProfile,
     profileReloadTimeout
 );
+
+const {showAlert} = useSweetAlert();
+const {wrapWithLoading, notify} = useNotify();
+const {$gettext} = useTranslate();
+
+const makeApiCall = (uri) => {
+    showAlert({
+        title: $gettext('Are you sure?')
+    }).then((result) => {
+        if (!result.value) {
+            return;
+        }
+
+        wrapWithLoading(
+            axios.post(uri)
+        ).then((resp) => {
+            notify(resp.data.formatted_message, {
+                variant: (resp.data.success) ? 'success' : 'warning'
+            });
+        });
+    });
+};
 </script>

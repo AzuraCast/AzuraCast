@@ -1,31 +1,20 @@
 <template>
-    <b-form-group>
-        <b-row>
-            <b-wrapped-form-group
-                id="edit_form_playlists"
-                class="col-md-12"
-                :field="form.playlists"
-            >
-                <template #label>
-                    {{ $gettext('Playlists') }}
-                </template>
-                <template #default="slotProps">
-                    <b-form-checkbox-group
-                        :id="slotProps.id"
-                        v-model="slotProps.field.$model"
-                        :options="options"
-                        stacked
-                    />
-                </template>
-            </b-wrapped-form-group>
-        </b-row>
-    </b-form-group>
+    <div class="row">
+        <form-group-multi-check
+            id="edit_form_playlists"
+            class="col-md-12"
+            :field="form.playlists"
+            :options="options"
+            stacked
+            :label="$gettext('Playlists')"
+        />
+    </div>
 </template>
 
 <script setup>
-import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
 import {map} from "lodash";
 import {computed} from "vue";
+import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
 
 const props = defineProps({
     form: {

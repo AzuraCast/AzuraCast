@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Validator\Constraints;
 
+use App\Container\EntityManagerAwareTrait;
 use App\Entity\Repository\StorageLocationRepository;
 use App\Entity\StorageLocation;
 use App\Validator\Constraints\StorageLocation as StorageLocationConstraint;
-use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -15,8 +15,9 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 final class StorageLocationValidator extends ConstraintValidator
 {
+    use EntityManagerAwareTrait;
+
     public function __construct(
-        private readonly EntityManagerInterface $em,
         private readonly StorageLocationRepository $storageLocationRepo
     ) {
     }

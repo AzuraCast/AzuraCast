@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace App\Entity\Api\Admin;
 
-use App\Entity;
+use App\Entity\Api\NowPlaying\StationMount;
+use App\Entity\Api\ResolvableUrlInterface;
 use OpenApi\Attributes as OA;
 use Psr\Http\Message\UriInterface;
 
@@ -12,7 +13,7 @@ use Psr\Http\Message\UriInterface;
     schema: 'Api_Admin_Relay',
     type: 'object'
 )]
-final class Relay implements Entity\Api\ResolvableUrlInterface
+final class Relay implements ResolvableUrlInterface
 {
     #[OA\Property(
         description: 'Station ID',
@@ -74,7 +75,7 @@ final class Relay implements Entity\Api\ResolvableUrlInterface
     )]
     public string $admin_pw;
 
-    /** @var Entity\Api\NowPlaying\StationMount[] */
+    /** @var StationMount[] */
     #[OA\Property]
     public array $mounts = [];
 
@@ -86,7 +87,7 @@ final class Relay implements Entity\Api\ResolvableUrlInterface
     public function resolveUrls(UriInterface $base): void
     {
         foreach ($this->mounts as $mount) {
-            if ($mount instanceof Entity\Api\ResolvableUrlInterface) {
+            if ($mount instanceof ResolvableUrlInterface) {
                 $mount->resolveUrls($base);
             }
         }

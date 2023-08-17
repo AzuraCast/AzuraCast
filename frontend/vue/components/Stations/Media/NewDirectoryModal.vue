@@ -1,46 +1,47 @@
 <template>
-    <b-modal
+    <modal
         id="create_directory"
         ref="$modal"
         centered
         :title="$gettext('New Directory')"
     >
-        <b-form @submit.prevent="doMkdir">
-            <b-wrapped-form-group
+        <form @submit.prevent="doMkdir">
+            <form-group-field
                 id="new_directory_name"
                 :field="v$.newDirectory"
                 autofocus
-            >
-                <template #label>
-                    {{ $gettext('Directory Name') }}
-                </template>
-            </b-wrapped-form-group>
-        </b-form>
+                :label="$gettext('Directory Name')"
+            />
+        </form>
         <template #modal-footer>
-            <b-button
-                variant="default"
+            <button
+                type="button"
+                class="btn btn-secondary"
                 @click="close"
             >
                 {{ $gettext('Close') }}
-            </b-button>
-            <b-button
-                :variant="(v$.$invalid) ? 'danger' : 'primary'"
+            </button>
+            <button
+                type="button"
+                class="btn"
+                :class="(v$.$invalid) ? 'btn-danger' : 'btn-primary'"
                 @click="doMkdir"
             >
                 {{ $gettext('Create Directory') }}
-            </b-button>
+            </button>
         </template>
-    </b-modal>
+    </modal>
 </template>
 
 <script setup>
 import {required} from '@vuelidate/validators';
-import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
+import FormGroupField from "~/components/Form/FormGroupField";
 import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
 import {ref} from "vue";
-import {useNotify} from "~/vendor/bootstrapVue";
+import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
 import {useTranslate} from "~/vendor/gettext";
+import Modal from "~/components/Common/Modal.vue";
 
 const props = defineProps({
     currentDirectory: {
@@ -72,6 +73,10 @@ const close = () => {
     $modal.value.hide();
 };
 
+const open = () => {
+    $modal.value.show();
+};
+
 const {wrapWithLoading, notifySuccess} = useNotify();
 const {axios} = useAxios();
 const {$gettext} = useTranslate();
@@ -91,4 +96,8 @@ const doMkdir = () => {
         });
     });
 };
+
+defineExpose({
+    open
+});
 </script>

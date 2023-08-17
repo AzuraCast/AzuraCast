@@ -2,14 +2,17 @@
 
 namespace App\Normalizer;
 
+use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Normalizer\Attributes\DeepNormalize;
 use App\Normalizer\Exception\NoGetterAvailableException;
+use ArrayObject;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Util\ClassUtils;
 use Doctrine\Inflector\Inflector;
 use Doctrine\Inflector\InflectorFactory;
-use Doctrine\ORM\EntityManagerInterface;
+use InvalidArgumentException;
 use ReflectionClass;
+use ReflectionException;
 use ReflectionProperty;
 use Symfony\Component\Serializer\Mapping\Factory\ClassMetadataFactoryInterface;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
@@ -23,7 +26,7 @@ final class DoctrineEntityNormalizer extends AbstractObjectNormalizer
     private readonly Inflector $inflector;
 
     public function __construct(
-        private readonly EntityManagerInterface $em,
+        private readonly ReloadableEntityManagerInterface $em,
         ClassMetadataFactoryInterface $classMetadataFactory = null,
         array $defaultContext = []
     ) {
@@ -40,12 +43,12 @@ final class DoctrineEntityNormalizer extends AbstractObjectNormalizer
     /**
      * Replicates the "toArray" functionality previously present in Doctrine 1.
      *
-     * @return array|string|int|float|bool|\ArrayObject<int, mixed>|null
+     * @return array|string|int|float|bool|ArrayObject<int, mixed>|null
      */
     public function normalize(mixed $object, ?string $format = null, array $context = []): mixed
     {
         if (!is_object($object)) {
-            throw new \InvalidArgumentException('Cannot normalize non-object.');
+            throw new InvalidArgumentException('Cannot normalize non-object.');
         }
 
         $context = $this->addDoctrineContext($object::class, $context);
@@ -83,22 +86,22 @@ final class DoctrineEntityNormalizer extends AbstractObjectNormalizer
         $context[self::ASSOCIATION_MAPPINGS] = [];
 
         if ($context[self::CLASS_METADATA]->associationMappings) {
-            foreach ($context[self::CLASS_METADATA]->associationMappings as $mapping_name => $mapping_info) {
-                $entity = $mapping_info['targetEntity'];
+            foreach ($context[self::CLASS_METADATA]->associationMappings as $mappingName => $mappingInfo) {
+                $entity = $mappingInfo['targetEntity'];
 
-                if (isset($mapping_info['joinTable'])) {
-                    $context[self::ASSOCIATION_MAPPINGS][$mapping_info['fieldName']] = [
+                if (isset($mappingInfo['joinTable'])) {
+                    $context[self::ASSOCIATION_MAPPINGS][$mappingInfo['fieldName']] = [
                         'type' => 'many',
                         'entity' => $entity,
-                        'is_owning_side' => ($mapping_info['isOwningSide'] == 1),
+                        'is_owning_side' => ($mappingInfo['isOwningSide'] == 1),
                     ];
-                } elseif (isset($mapping_info['joinColumns'])) {
-                    foreach ($mapping_info['joinColumns'] as $col) {
-                        $col_name = $col['name'];
-                        $col_name = $context[self::CLASS_METADATA]->fieldNames[$col_name] ?? $col_name;
+                } elseif (isset($mappingInfo['joinColumns'])) {
+                    foreach ($mappingInfo['joinColumns'] as $col) {
+                        $colName = $col['name'];
+                        $colName = $context[self::CLASS_METADATA]->fieldNames[$colName] ?? $colName;
 
-                        $context[self::ASSOCIATION_MAPPINGS][$mapping_name] = [
-                            'name' => $col_name,
+                        $context[self::ASSOCIATION_MAPPINGS][$mappingName] = [
+                            'name' => $colName,
                             'type' => 'one',
                             'entity' => $entity,
                         ];
@@ -162,7 +165,7 @@ final class DoctrineEntityNormalizer extends AbstractObjectNormalizer
      * @param string|null $format
      * @param array $context
      * @return bool
-     * @throws \ReflectionException
+     * @throws ReflectionException
      */
     protected function isAllowedAttribute(
         object|string $classOrObject,
@@ -174,7 +177,7 @@ final class DoctrineEntityNormalizer extends AbstractObjectNormalizer
             return false;
         }
 
-        $reflectionClass = new \ReflectionClass($classOrObject);
+        $reflectionClass = new ReflectionClass($classOrObject);
         if (!$reflectionClass->hasProperty($attribute)) {
             return false;
         }
@@ -193,7 +196,7 @@ final class DoctrineEntityNormalizer extends AbstractObjectNormalizer
      * @param string $attribute
      * @return bool
      */
-    private function hasGetter(\ReflectionClass $reflectionClass, string $attribute): bool
+    private function hasGetter(ReflectionClass $reflectionClass, string $attribute): bool
     {
         // Default to "getStatus", "getConfig", etc...
         $getterMethod = $this->getMethodName($attribute, 'get');
@@ -212,7 +215,7 @@ final class DoctrineEntityNormalizer extends AbstractObjectNormalizer
         array $context = []
     ): mixed {
         if (isset($context[self::CLASS_METADATA]->associationMappings[$attribute])) {
-            if (!$this->supportsDeepNormalization(new \ReflectionClass($object), $attribute)) {
+            if (!$this->supportsDeepNormalization(new ReflectionClass($object), $attribute)) {
                 throw new NoGetterAvailableException(
                     sprintf(
                         'Deep normalization disabled for property %s.',
@@ -234,9 +237,9 @@ final class DoctrineEntityNormalizer extends AbstractObjectNormalizer
      * @param ReflectionClass<object> $reflectionClass
      * @param string $attribute
      * @return bool
-     * @throws \ReflectionException
+     * @throws ReflectionException
      */
-    private function supportsDeepNormalization(\ReflectionClass $reflectionClass, string $attribute): bool
+    private function supportsDeepNormalization(ReflectionClass $reflectionClass, string $attribute): bool
     {
         $deepNormalizeAttrs = $reflectionClass->getProperty($attribute)->getAttributes(
             DeepNormalize::class
@@ -254,15 +257,15 @@ final class DoctrineEntityNormalizer extends AbstractObjectNormalizer
     private function getProperty(object $entity, string $key): mixed
     {
         // Default to "getStatus", "getConfig", etc...
-        $getter_method = $this->getMethodName($key, 'get');
-        if (method_exists($entity, $getter_method)) {
-            return $entity->{$getter_method}();
+        $getterMethod = $this->getMethodName($key, 'get');
+        if (method_exists($entity, $getterMethod)) {
+            return $entity->{$getterMethod}();
         }
 
         // but also allow "isEnabled" instead of "getIsEnabled"
-        $raw_method = $this->getMethodName($key);
-        if (method_exists($entity, $raw_method)) {
-            return $entity->{$raw_method}();
+        $rawMethod = $this->getMethodName($key);
+        if (method_exists($entity, $rawMethod)) {
+            return $entity->{$rawMethod}();
         }
 
         throw new NoGetterAvailableException(sprintf('No getter is available for property %s.', $key));
@@ -300,8 +303,8 @@ final class DoctrineEntityNormalizer extends AbstractObjectNormalizer
                 } else {
                     /** @var class-string $entity */
                     $entity = $mapping['entity'];
-                    if (($field_item = $this->em->find($entity, $value)) instanceof $entity) {
-                        $this->setProperty($object, $attribute, $field_item);
+                    if (($fieldItem = $this->em->find($entity, $value)) instanceof $entity) {
+                        $this->setProperty($object, $attribute, $fieldItem);
                     }
                 }
             } elseif ($mapping['is_owning_side']) {
@@ -311,13 +314,13 @@ final class DoctrineEntityNormalizer extends AbstractObjectNormalizer
                     $collection->clear();
 
                     if ($value) {
-                        foreach ((array)$value as $field_id) {
+                        foreach ((array)$value as $fieldId) {
                             /** @var class-string $entity */
                             $entity = $mapping['entity'];
 
-                            $field_item = $this->em->find($entity, $field_id);
-                            if ($field_item instanceof $entity) {
-                                $collection->add($field_item);
+                            $fieldItem = $this->em->find($entity, $fieldId);
+                            if ($fieldItem instanceof $entity) {
+                                $collection->add($fieldItem);
                             }
                         }
                     }
@@ -326,7 +329,7 @@ final class DoctrineEntityNormalizer extends AbstractObjectNormalizer
         } else {
             $methodName = $this->getMethodName($attribute, 'set');
 
-            $reflClass = new \ReflectionClass($object);
+            $reflClass = new ReflectionClass($object);
             if (!$reflClass->hasMethod($methodName)) {
                 return;
             }
@@ -376,5 +379,10 @@ final class DoctrineEntityNormalizer extends AbstractObjectNormalizer
         }
 
         return !$this->em->getMetadataFactory()->isTransient($class);
+    }
+
+    public function getSupportedTypes(?string $format): array
+    {
+        return ['object' => true];
     }
 }

@@ -1,42 +1,43 @@
 <template>
-    <div class="stepper-horiz">
-        <div :class="getStepperClass(1)">
-            <div class="stepper-icon">
-                <icon
-                    v-if="step > 1"
-                    icon="check"
-                />
-                <span v-else>1</span>
-            </div>
-            <span class="stepper-text">
-                {{ $gettext('Create Account') }}
-            </span>
+    <div class="d-flex justify-content-center align-items-center text-center mb-3 mt-2 px-5">
+        <div
+            class="rounded border p-2 m-2"
+            :class="getStepperClass(1)"
+        >
+            <small>{{ $gettext('Step %{step}', {step: 1}) }}</small><br>
+            {{ $gettext('Create Account') }}
         </div>
-        <div :class="getStepperClass(2)">
-            <div class="stepper-icon">
-                <icon
-                    v-if="step > 2"
-                    icon="check"
-                />
-                <span v-else>2</span>
-            </div>
-            <span class="stepper-text">
-                {{ $gettext('Create Station') }}
-            </span>
+        <div>
+            <icon
+                icon="arrow_right"
+                class="xl"
+            />
         </div>
-        <div :class="getStepperClass(3)">
-            <div class="stepper-icon">
-                <span>3</span>
-            </div>
-            <span class="stepper-text">
-                {{ $gettext('System Settings') }}
-            </span>
+        <div
+            class="rounded border p-2 m-2"
+            :class="getStepperClass(2)"
+        >
+            <small>{{ $gettext('Step %{step}', {step: 2}) }}</small><br>
+            {{ $gettext('Create Station') }}
+        </div>
+        <div>
+            <icon
+                icon="arrow_right"
+                class="xl"
+            />
+        </div>
+        <div
+            class="rounded border p-2 m-2"
+            :class="getStepperClass(3)"
+        >
+            <small>{{ $gettext('Step %{step}', {step: 3}) }}</small><br>
+            {{ $gettext('System Settings') }}
         </div>
     </div>
 </template>
 
 <script setup>
-import Icon from "~/components/Common/Icon";
+import Icon from "~/components/Common/Icon.vue";
 
 const props = defineProps({
     step: {
@@ -47,11 +48,9 @@ const props = defineProps({
 
 const getStepperClass = (currentStep) => {
     if (props.step === currentStep) {
-        return ['stepper', 'active'];
-    } else if (props.step > currentStep) {
-        return ['stepper', 'done'];
+        return ['text-primary-emphasis', 'bg-primary-subtle', 'border-primary-subtle'];
     } else {
-        return ['stepper'];
+        return ['text-secondary-emphasis', 'bg-secondary-subtle', 'border-secondary-subtle'];
     }
 }
 </script>

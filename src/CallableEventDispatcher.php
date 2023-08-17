@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace App;
 
-use Psr\Container\ContainerInterface;
+use App\Container\ContainerAwareTrait;
+use Closure;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
 use function is_array;
@@ -12,11 +13,7 @@ use function is_string;
 
 final class CallableEventDispatcher extends EventDispatcher implements CallableEventDispatcherInterface
 {
-    public function __construct(
-        private readonly ContainerInterface $di
-    ) {
-        parent::__construct();
-    }
+    use ContainerAwareTrait;
 
     /**
      * @param array|class-string $className
@@ -115,7 +112,7 @@ final class CallableEventDispatcher extends EventDispatcher implements CallableE
     private function getCallable(
         string $className,
         ?string $method = '__invoke'
-    ): \Closure {
+    ): Closure {
         return fn(...$args) => $this->di->get($className)->$method(...$args);
     }
 }

@@ -5,8 +5,11 @@ declare(strict_types=1);
 namespace App\Controller\Api\Stations\Streamers;
 
 use App\Controller\Api\AbstractApiCrudController;
-use App\Doctrine\ReloadableEntityManagerInterface;
-use App\Entity;
+use App\Entity\Api\Error;
+use App\Entity\Api\Status;
+use App\Entity\Station;
+use App\Entity\StationStreamer;
+use App\Entity\StationStreamerBroadcast;
 use App\Flysystem\StationFilesystems;
 use App\Http\Response;
 use App\Http\ServerRequest;
@@ -17,27 +20,28 @@ use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
- * @extends AbstractApiCrudController<Entity\StationStreamerBroadcast>
+ * @extends AbstractApiCrudController<StationStreamerBroadcast>
  */
 final class BroadcastsController extends AbstractApiCrudController
 {
-    protected string $entityClass = Entity\StationStreamerBroadcast::class;
+    protected string $entityClass = StationStreamerBroadcast::class;
 
     public function __construct(
         private readonly StationFilesystems $stationFilesystems,
-        ReloadableEntityManagerInterface $em,
         Serializer $serializer,
         ValidatorInterface $validator
     ) {
-        parent::__construct($em, $serializer, $validator);
+        parent::__construct($serializer, $validator);
     }
 
     public function listAction(
         ServerRequest $request,
         Response $response,
-        string $station_id,
-        ?string $id = null
+        array $params
     ): ResponseInterface {
+        /** @var string|null $id */
+        $id = $params['id'] ?? null;
+
         $station = $request->getStation();
 
         if (null !== $id) {
@@ -45,7 +49,7 @@ final class BroadcastsController extends AbstractApiCrudController
 
             if (null === $streamer) {
                 return $response->withStatus(404)
-                    ->withJson(Entity\Api\Error::notFound());
+                    ->withJson(Error::notFound());
             }
 
             $query = $this->em->createQuery(
@@ -132,23 +136,21 @@ final class BroadcastsController extends AbstractApiCrudController
     public function downloadAction(
         ServerRequest $request,
         Response $response,
-        string $station_id,
-        string $id,
-        string $broadcast_id
+        array $params
     ): ResponseInterface {
         $station = $request->getStation();
-        $broadcast = $this->getRecord($station, $broadcast_id);
+        $broadcast = $this->getRecord($request, $params);
 
         if (null === $broadcast) {
             return $response->withStatus(404)
-                ->withJson(Entity\Api\Error::notFound());
+                ->withJson(Error::notFound());
         }
 
         $recordingPath = $broadcast->getRecordingPath();
 
         if (empty($recordingPath)) {
             return $response->withStatus(400)
-                ->withJson(new Entity\Api\Error(400, __('No recording available.')));
+                ->withJson(new Error(400, __('No recording available.')));
         }
 
         $filename = basename($recordingPath);
@@ -165,16 +167,14 @@ final class BroadcastsController extends AbstractApiCrudController
     public function deleteAction(
         ServerRequest $request,
         Response $response,
-        string $station_id,
-        string $id,
-        string $broadcast_id
+        array $params
     ): ResponseInterface {
         $station = $request->getStation();
-        $broadcast = $this->getRecord($station, $broadcast_id);
+        $broadcast = $this->getRecord($request, $params);
 
         if (null === $broadcast) {
             return $response->withStatus(404)
-                ->withJson(Entity\Api\Error::notFound());
+                ->withJson(Error::notFound());
         }
 
         $recordingPath = $broadcast->getRecordingPath();
@@ -187,25 +187,25 @@ final class BroadcastsController extends AbstractApiCrudController
         $this->em->remove($broadcast);
         $this->em->flush();
 
-        return $response->withJson(Entity\Api\Status::deleted());
+        return $response->withJson(Status::deleted());
     }
 
-    private function getRecord(Entity\Station $station, int|string $id): ?Entity\StationStreamerBroadcast
+    protected function getRecord(ServerRequest $request, array $params): ?object
     {
-        /** @var Entity\StationStreamerBroadcast|null $broadcast */
-        $broadcast = $this->em->getRepository(Entity\StationStreamerBroadcast::class)->findOneBy(
+        /** @var StationStreamerBroadcast|null $broadcast */
+        $broadcast = $this->em->getRepository(StationStreamerBroadcast::class)->findOneBy(
             [
-                'id' => (int)$id,
-                'station' => $station,
+                'id' => (int)$params['broadcast_id'],
+                'station' => $request->getStation(),
             ]
         );
         return $broadcast;
     }
 
-    private function getStreamer(Entity\Station $station, int|string $id): ?Entity\StationStreamer
+    private function getStreamer(Station $station, int|string $id): ?StationStreamer
     {
-        /** @var Entity\StationStreamer|null $streamer */
-        $streamer = $this->em->getRepository(Entity\StationStreamer::class)->findOneBy(
+        /** @var StationStreamer|null $streamer */
+        $streamer = $this->em->getRepository(StationStreamer::class)->findOneBy(
             [
                 'id' => (int)$id,
                 'station' => $station,

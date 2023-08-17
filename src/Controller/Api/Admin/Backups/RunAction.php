@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Admin\Backups;
 
+use App\Controller\SingleActionInterface;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Message\BackupMessage;
@@ -11,7 +12,7 @@ use App\Utilities\File;
 use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\Messenger\MessageBus;
 
-final class RunAction
+final class RunAction implements SingleActionInterface
 {
     public function __construct(
         private readonly MessageBus $messageBus,
@@ -20,7 +21,8 @@ final class RunAction
 
     public function __invoke(
         ServerRequest $request,
-        Response $response
+        Response $response,
+        array $params
     ): ResponseInterface {
         $data = (array)$request->getParsedBody();
 

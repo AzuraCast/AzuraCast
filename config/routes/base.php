@@ -1,16 +1,28 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Controller;
 use App\Enums\GlobalPermissions;
-use App\Http\Response;
-use App\Http\ServerRequest;
 use App\Middleware;
-use Psr\Http\Message\ResponseInterface;
 use Slim\Routing\RouteCollectorProxy;
 
 return static function (RouteCollectorProxy $app) {
     $app->get('/', Controller\Frontend\IndexAction::class)
         ->setName('home');
+
+    $app->get('/logout', Controller\Frontend\Account\LogoutAction::class)
+        ->setName('account:logout')
+        ->add(Middleware\RequireLogin::class);
+
+    $app->get('/login-as/{id}/{csrf}', Controller\Frontend\Account\MasqueradeAction::class)
+        ->setName('account:masquerade')
+        ->add(new Middleware\Permissions(GlobalPermissions::All))
+        ->add(Middleware\RequireLogin::class);
+
+    $app->get('/endsession', Controller\Frontend\Account\EndMasqueradeAction::class)
+        ->setName('account:endmasquerade')
+        ->add(Middleware\RequireLogin::class);
 
     $app->group(
         '',
@@ -18,30 +30,11 @@ return static function (RouteCollectorProxy $app) {
             $group->get('/dashboard', Controller\Frontend\DashboardAction::class)
                 ->setName('dashboard');
 
-            $group->get('/logout', Controller\Frontend\Account\LogoutAction::class)
-                ->setName('account:logout');
-
-            $group->get('/login-as/{id}/{csrf}', Controller\Frontend\Account\MasqueradeAction::class)
-                ->setName('account:masquerade')
-                ->add(new Middleware\Permissions(GlobalPermissions::All));
-
-            $group->get('/endsession', Controller\Frontend\Account\EndMasqueradeAction::class)
-                ->setName('account:endmasquerade');
-
-            $group->get(
-                '/api_keys',
-                function (ServerRequest $request, Response $response): ResponseInterface {
-                    return $response->withRedirect('/profile');
-                }
-            );
-
             $group->get('/profile', Controller\Frontend\Profile\IndexAction::class)
                 ->setName('profile:index');
-
-            $group->get('/profile/theme', Controller\Frontend\Profile\ThemeAction::class)
-                ->setName('profile:theme');
         }
-    )->add(Middleware\EnableView::class)
+    )->add(Middleware\Module\PanelLayout::class)
+        ->add(Middleware\EnableView::class)
         ->add(Middleware\RequireLogin::class);
 
     $app->map(['GET', 'POST'], '/login', Controller\Frontend\Account\LoginAction::class)
@@ -73,10 +66,16 @@ return static function (RouteCollectorProxy $app) {
                 ->setName('setup:register');
 
             $group->map(['GET', 'POST'], '/station', Controller\Frontend\SetupController::class . ':stationAction')
-                ->setName('setup:station');
+                ->setName('setup:station')
+                ->add(Middleware\Module\PanelLayout::class);
 
             $group->map(['GET', 'POST'], '/settings', Controller\Frontend\SetupController::class . ':settingsAction')
-                ->setName('setup:settings');
+                ->setName('setup:settings')
+                ->add(Middleware\Module\PanelLayout::class);
         }
     )->add(Middleware\EnableView::class);
+
+    call_user_func(include(__DIR__ . '/admin.php'), $app);
+
+    call_user_func(include(__DIR__ . '/stations.php'), $app);
 };

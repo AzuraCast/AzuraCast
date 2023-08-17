@@ -4,34 +4,41 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Internal;
 
+use App\Container\ContainerAwareTrait;
+use App\Container\LoggerAwareTrait;
+use App\Controller\SingleActionInterface;
 use App\Enums\StationPermissions;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Radio\Backend\Liquidsoap\Command\AbstractCommand;
 use App\Radio\Enums\LiquidsoapCommands;
+use App\Service\HighAvailability;
 use InvalidArgumentException;
-use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface;
-use Psr\Log\LoggerInterface;
 use RuntimeException;
 use Throwable;
 
-final class LiquidsoapAction
+final class LiquidsoapAction implements SingleActionInterface
 {
+    use LoggerAwareTrait;
+    use ContainerAwareTrait;
+
     public function __construct(
-        private readonly ContainerInterface $di,
-        private readonly LoggerInterface $logger,
+        private readonly HighAvailability $highAvailability
     ) {
     }
 
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        string $station_id,
-        string $action
+        array $params
     ): ResponseInterface {
+        /** @var string $action */
+        $action = $params['action'];
+
         $station = $request->getStation();
-        $asAutoDj = $request->hasHeader('X-Liquidsoap-Api-Key');
+        $asAutoDj = $request->hasHeader('X-Liquidsoap-Api-Key')
+            && $this->highAvailability->isActiveServer();
         $payload = (array)$request->getParsedBody();
 
         try {

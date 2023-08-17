@@ -1,18 +1,10 @@
 <template>
-    <section
+    <card-page
         v-if="processedScheduleItems.length > 0"
-        class="card scheduled"
-        role="region"
-        aria-labelledby="hdr_scheduled"
+        class="scheduled"
+        header-id="hdr_scheduled"
+        :title="$gettext('Scheduled')"
     >
-        <div class="card-header bg-primary-dark">
-            <h3
-                id="hdr_scheduled"
-                class="card-title"
-            >
-                {{ $gettext('Scheduled') }}
-            </h3>
-        </div>
         <table class="table table-striped mb-0">
             <tbody>
                 <tr
@@ -32,7 +24,7 @@
                                 </small><br>
                                 {{ row.name }}
                             </h5>
-                            <p class="text-right m-0">
+                            <p class="text-end m-0">
                                 <small>{{ row.start_formatted }} - {{ row.end_formatted }}</small>
                                 <br>
                                 <strong>
@@ -47,34 +39,34 @@
                 </tr>
             </tbody>
         </table>
-    </section>
+    </card-page>
 </template>
 
 <script setup>
-import {DateTime} from "luxon";
 import {map} from "lodash";
 import {computed} from "vue";
-import {useAzuraCast} from "~/vendor/azuracast";
+import {useAzuraCast, useAzuraCastStation} from "~/vendor/azuracast";
+import CardPage from "~/components/Common/CardPage.vue";
+import {useLuxon} from "~/vendor/luxon";
 
 const props = defineProps({
     scheduleItems: {
         type: Array,
         required: true
-    },
-    stationTimeZone: {
-        type: String,
-        required: true
     }
 });
 
 const {timeConfig} = useAzuraCast();
+const {timezone} = useAzuraCastStation();
+
+const {DateTime} = useLuxon();
 
 const processedScheduleItems = computed(() => {
-    const now = DateTime.now().setZone(props.stationTimeZone);
+    const now = DateTime.now().setZone(timezone);
 
     return map(props.scheduleItems, (row) => {
-        const start_moment = DateTime.fromSeconds(row.start_timestamp).setZone(props.stationTimeZone);
-        const end_moment = DateTime.fromSeconds(row.end_timestamp).setZone(props.stationTimeZone);
+        const start_moment = DateTime.fromSeconds(row.start_timestamp).setZone(timezone);
+        const end_moment = DateTime.fromSeconds(row.end_timestamp).setZone(timezone);
 
         row.time_until = start_moment.toRelative();
 

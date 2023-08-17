@@ -4,22 +4,21 @@ declare(strict_types=1);
 
 namespace App\Media\Metadata\Reader;
 
+use App\Container\LoggerAwareTrait;
 use App\Event\Media\ReadMetadata;
 use App\Media\Metadata;
 use App\Utilities\Arrays;
 use App\Utilities\Strings;
 use App\Utilities\Time;
 use JamesHeinrich\GetID3\GetID3;
-use Psr\Log\LoggerInterface;
+use RuntimeException;
+use Throwable;
 
 use const JSON_THROW_ON_ERROR;
 
 final class PhpReader
 {
-    public function __construct(
-        private readonly LoggerInterface $logger
-    ) {
-    }
+    use LoggerAwareTrait;
 
     public function __invoke(ReadMetadata $event): void
     {
@@ -35,7 +34,7 @@ final class PhpReader
             $getid3->CopyTagsToComments($info);
 
             if (!empty($info['error'])) {
-                throw new \RuntimeException(
+                throw new RuntimeException(
                     json_encode($info['error'], JSON_THROW_ON_ERROR)
                 );
             }
@@ -75,7 +74,7 @@ final class PhpReader
 
             $event->setMetadata($metadata);
             $event->stopPropagation();
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             $this->logger->info(
                 sprintf(
                     'getid3 failed for file %s: %s',

@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace App\Entity\ApiGenerator;
 
-use App\Entity;
+use App\Entity\Api\NowPlaying\Station as NowPlayingStation;
+use App\Entity\Station;
 use App\Http\Router;
 use App\Radio\Adapters;
 use Psr\Http\Message\UriInterface;
@@ -18,14 +19,14 @@ final class StationApiGenerator
     }
 
     public function __invoke(
-        Entity\Station $station,
+        Station $station,
         ?UriInterface $baseUri = null,
         bool $showAllMounts = false
-    ): Entity\Api\NowPlaying\Station {
+    ): NowPlayingStation {
         $frontend = $this->adapters->getFrontendAdapter($station);
         $backend = $this->adapters->getBackendAdapter($station);
 
-        $response = new Entity\Api\NowPlaying\Station();
+        $response = new NowPlayingStation();
         $response->id = (int)$station->getId();
         $response->name = (string)$station->getName();
         $response->shortcode = $station->getShortName();
@@ -67,7 +68,7 @@ final class StationApiGenerator
         foreach ($station->getRemotes() as $remote) {
             if ($showAllMounts || $remote->getIsVisibleOnPublicPages()) {
                 $remotes[] = $remote->api(
-                    $this->adapters->getRemoteAdapter($station, $remote)
+                    $this->adapters->getRemoteAdapter($remote)
                 );
             }
         }

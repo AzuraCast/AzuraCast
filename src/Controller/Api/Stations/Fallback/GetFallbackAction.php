@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Stations\Fallback;
 
-use App\Entity;
+use App\Controller\SingleActionInterface;
+use App\Entity\Api\Error;
 use App\Flysystem\StationFilesystems;
 use App\Http\Response;
 use App\Http\ServerRequest;
@@ -30,12 +31,12 @@ use Psr\Http\Message\ResponseInterface;
         new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
     ]
 )]
-final class GetFallbackAction
+final class GetFallbackAction implements SingleActionInterface
 {
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        string $station_id
+        array $params
     ): ResponseInterface {
         set_time_limit(600);
 
@@ -54,6 +55,6 @@ final class GetFallbackAction
         }
 
         return $response->withStatus(404)
-            ->withJson(Entity\Api\Error::notFound());
+            ->withJson(Error::notFound());
     }
 }

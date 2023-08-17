@@ -1,8 +1,8 @@
 <template>
-    <b-modal
+    <modal
         id="logs_modal"
         ref="$modal"
-        size="lg"
+        size="xl"
         :title="$gettext('Log Viewer')"
         no-enforce-focus
         @hidden="clearContents"
@@ -13,29 +13,29 @@
         />
 
         <template #modal-footer>
-            <b-button
-                variant="default"
+            <button
+                class="btn btn-secondary"
                 type="button"
                 @click="close"
             >
                 {{ $gettext('Close') }}
-            </b-button>
-            <b-button
-                variant="primary"
-                class="btn_copy"
+            </button>
+            <button
+                class="btn btn-primary btn_copy"
                 type="button"
                 @click.prevent="doCopy"
             >
                 {{ $gettext('Copy to Clipboard') }}
-            </b-button>
+            </button>
         </template>
-    </b-modal>
+    </modal>
 </template>
 
 <script setup>
 import StreamingLogView from "~/components/Common/StreamingLogView";
 import {ref} from "vue";
 import {useClipboard} from "@vueuse/core";
+import Modal from "~/components/Common/Modal.vue";
 
 const logUrl = ref('');
 const $modal = ref(); // Template ref

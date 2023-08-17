@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Doctrine;
 
+use Traversable;
+
 /**
  * @template TKey
  * @template TValue
@@ -12,7 +14,7 @@ namespace App\Doctrine;
 final class ReadOnlyBatchIteratorAggregate extends AbstractBatchIteratorAggregate
 {
     /** @inheritDoc */
-    public function getIterator(): \Traversable
+    public function getIterator(): Traversable
     {
         $iteration = 0;
         foreach ($this->resultSet as $key => $value) {

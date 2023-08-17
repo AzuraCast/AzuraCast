@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace App\Middleware\Module;
 
-use App\Entity;
-use App\Environment;
+use App\Container\EnvironmentAwareTrait;
+use App\Container\SettingsAwareTrait;
+use App\Entity\User;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Utilities\Urls;
@@ -21,11 +22,8 @@ use Symfony\Component\VarDumper\VarDumper;
  */
 final class Api
 {
-    public function __construct(
-        private readonly Entity\Repository\SettingsRepository $settingsRepo,
-        private readonly Environment $environment
-    ) {
-    }
+    use EnvironmentAwareTrait;
+    use SettingsAwareTrait;
 
     public function __invoke(ServerRequest $request, RequestHandlerInterface $handler): ResponseInterface
     {
@@ -45,7 +43,7 @@ final class Api
         $apiUser = $request->getAttribute(ServerRequest::ATTR_USER);
 
         // Set default cache control for API pages.
-        $settings = $this->settingsRepo->readSettings();
+        $settings = $this->readSettings();
 
         $preferBrowserUrl = $settings->getPreferBrowserUrl();
 
@@ -92,7 +90,7 @@ final class Api
                     }
                 }
             }
-        } elseif ($apiUser instanceof Entity\User || in_array($request->getMethod(), ['GET', 'OPTIONS'])) {
+        } elseif ($apiUser instanceof User || in_array($request->getMethod(), ['GET', 'OPTIONS'])) {
             // Default behavior:
             // Only set global CORS for GET requests and API-authenticated requests;
             // Session-authenticated, non-GET requests should only be made in a same-host situation.
@@ -100,7 +98,7 @@ final class Api
         }
 
         if ($response instanceof Response && !$response->hasCacheLifetime()) {
-            if ($preferBrowserUrl || $request->getAttribute(ServerRequest::ATTR_USER) instanceof Entity\User) {
+            if ($preferBrowserUrl || $request->getAttribute(ServerRequest::ATTR_USER) instanceof User) {
                 $response = $response->withNoCache();
             } else {
                 $response = $response->withCacheLifetime(15);

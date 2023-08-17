@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Entity\Api\NowPlaying;
 
-use App\Entity;
+use App\Entity\SongHistory as SongHistoryEntity;
 use App\Traits\LoadFromParentObject;
 use OpenApi\Attributes as OA;
 
@@ -33,7 +33,7 @@ final class CurrentSong extends SongHistory
      */
     public function recalculate(): void
     {
-        $this->elapsed = time() + Entity\SongHistory::PLAYBACK_DELAY_SECONDS - $this->played_at;
+        $this->elapsed = time() + SongHistoryEntity::PLAYBACK_DELAY_SECONDS - $this->played_at;
         if ($this->elapsed < 0) {
             $this->elapsed = 0;
         }

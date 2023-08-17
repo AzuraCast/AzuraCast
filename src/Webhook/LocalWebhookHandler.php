@@ -4,28 +4,30 @@ declare(strict_types=1);
 
 namespace App\Webhook;
 
-use App\Entity;
-use App\Environment;
+use App\Container\EnvironmentAwareTrait;
+use App\Container\LoggerAwareTrait;
+use App\Entity\Api\NowPlaying\NowPlaying;
+use App\Entity\Station;
 use App\Service\Centrifugo;
-use Monolog\Logger;
 use Symfony\Component\Filesystem\Filesystem;
 
 use const JSON_PRETTY_PRINT;
 
 final class LocalWebhookHandler
 {
+    use LoggerAwareTrait;
+    use EnvironmentAwareTrait;
+
     public const NAME = 'local';
 
     public function __construct(
-        private readonly Logger $logger,
-        private readonly Environment $environment,
         private readonly Centrifugo $centrifugo
     ) {
     }
 
     public function dispatch(
-        Entity\Station $station,
-        Entity\Api\NowPlaying\NowPlaying $np
+        Station $station,
+        NowPlaying $np
     ): void {
         $fsUtils = new Filesystem();
 

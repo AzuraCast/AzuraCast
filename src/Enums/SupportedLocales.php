@@ -127,15 +127,15 @@ enum SupportedLocales: string
             $possibleLocales[] = $user->getLocale();
         }
 
-        $server_params = $request->getServerParams();
-        $browser_locale = Locale::acceptFromHttp($server_params['HTTP_ACCEPT_LANGUAGE'] ?? '');
+        $serverParams = $request->getServerParams();
+        $browserLocale = Locale::acceptFromHttp($serverParams['HTTP_ACCEPT_LANGUAGE'] ?? '');
 
-        if (!empty($browser_locale)) {
-            if (2 === strlen($browser_locale)) {
-                $browser_locale = strtolower($browser_locale) . '_' . strtoupper($browser_locale);
+        if (!empty($browserLocale)) {
+            if (2 === strlen($browserLocale)) {
+                $browserLocale = strtolower($browserLocale) . '_' . strtoupper($browserLocale);
             }
 
-            $possibleLocales[] = substr($browser_locale, 0, 5) . '.UTF-8';
+            $possibleLocales[] = substr($browserLocale, 0, 5) . '.UTF-8';
         }
 
         // Attempt to load from environment variable.

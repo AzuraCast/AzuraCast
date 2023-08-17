@@ -4,17 +4,14 @@ declare(strict_types=1);
 
 namespace App\Media\AlbumArtHandler;
 
-use App\Entity;
+use App\Entity\Interfaces\SongInterface;
 use App\Service\MusicBrainz;
-use Psr\Log\LoggerInterface;
 
 final class MusicBrainzAlbumArtHandler extends AbstractAlbumArtHandler
 {
     public function __construct(
-        private readonly MusicBrainz $musicBrainz,
-        LoggerInterface $logger
+        private readonly MusicBrainz $musicBrainz
     ) {
-        parent::__construct($logger);
     }
 
     protected function getServiceName(): string
@@ -22,7 +19,7 @@ final class MusicBrainzAlbumArtHandler extends AbstractAlbumArtHandler
         return 'MusicBrainz';
     }
 
-    public function getAlbumArt(Entity\Interfaces\SongInterface $song): ?string
+    public function getAlbumArt(SongInterface $song): ?string
     {
         $releaseGroupIds = [];
         foreach ($this->musicBrainz->findRecordingsForSong($song) as $recording) {

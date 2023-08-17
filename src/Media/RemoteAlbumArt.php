@@ -6,24 +6,27 @@ declare(strict_types=1);
 
 namespace App\Media;
 
-use App\Entity;
+use App\Container\LoggerAwareTrait;
+use App\Container\SettingsAwareTrait;
+use App\Entity\Interfaces\SongInterface;
+use App\Entity\Song;
 use App\Event\Media\GetAlbumArt;
 use App\Version;
 use GuzzleHttp\Client;
 use GuzzleHttp\RequestOptions;
 use Psr\EventDispatcher\EventDispatcherInterface;
-use Psr\Log\LoggerInterface;
 use Psr\SimpleCache\CacheInterface;
 use Throwable;
 
 final class RemoteAlbumArt
 {
+    use LoggerAwareTrait;
+    use SettingsAwareTrait;
+
     public const CACHE_LIFETIME = 86400 * 14; // Two Weeks
 
     public function __construct(
-        private readonly LoggerInterface $logger,
         private readonly CacheInterface $cache,
-        private readonly Entity\Repository\SettingsRepository $settingsRepo,
         private readonly EventDispatcherInterface $eventDispatcher,
         private readonly Client $httpClient
     ) {
@@ -31,15 +34,15 @@ final class RemoteAlbumArt
 
     public function enableForApis(): bool
     {
-        return $this->settingsRepo->readSettings()->getUseExternalAlbumArtInApis();
+        return $this->readSettings()->getUseExternalAlbumArtInApis();
     }
 
     public function enableForMedia(): bool
     {
-        return $this->settingsRepo->readSettings()->getUseExternalAlbumArtWhenProcessingMedia();
+        return $this->readSettings()->getUseExternalAlbumArtWhenProcessingMedia();
     }
 
-    public function getArtwork(Entity\Interfaces\SongInterface $media): ?string
+    public function getArtwork(SongInterface $media): ?string
     {
         $artUri = $this->getUrlForSong($media);
         if (empty($artUri)) {
@@ -61,11 +64,10 @@ final class RemoteAlbumArt
         return (string)$response->getBody();
     }
 
-    public function getUrlForSong(Entity\Interfaces\SongInterface $song): ?string
+    public function getUrlForSong(SongInterface $song): ?string
     {
         // Avoid tracks that shouldn't ever hit remote APIs.
-        $offlineSong = Entity\Song::createOffline();
-        if ($song->getSongId() === $offlineSong->getSongId()) {
+        if ($song->getSongId() === Song::OFFLINE_SONG_ID) {
             return null;
         }
 

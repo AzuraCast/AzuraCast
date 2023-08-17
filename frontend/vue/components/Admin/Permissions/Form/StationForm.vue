@@ -1,5 +1,5 @@
 <template>
-    <b-tab :title="$gettext('Station Permissions')">
+    <o-tab-item :label="$gettext('Station Permissions')">
         <permissions-form-station-row
             v-for="(row, index) in form.permissions.$model.station"
             :key="index"
@@ -9,26 +9,37 @@
             @remove="remove(index)"
         />
 
-        <b-button-group v-if="hasRemainingStations">
-            <b-dropdown
-                size="sm"
-                variant="outline-primary"
-            >
-                <template #button-content>
+        <div
+            v-if="hasRemainingStations"
+            class="btn-group btn-group-sm"
+        >
+            <div class="dropdown btn-group">
+                <button
+                    class="btn btn-sm btn-primary dropdown-toggle"
+                    type="button"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                >
                     {{ $gettext('Add Station') }}
-                </template>
-                <div style="max-height: 300px; overflow-y: auto;">
-                    <b-dropdown-item-button
+                    <span class="caret" />
+                </button>
+                <ul class="dropdown-menu">
+                    <li
                         v-for="(stationName, stationId) in remainingStations"
                         :key="stationId"
-                        @click="add(stationId)"
                     >
-                        {{ stationName }}
-                    </b-dropdown-item-button>
-                </div>
-            </b-dropdown>
-        </b-button-group>
-    </b-tab>
+                        <button
+                            type="button"
+                            class="dropdown-item"
+                            @click="add(stationId)"
+                        >
+                            {{ stationName }}
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </o-tab-item>
 </template>
 
 <script setup>

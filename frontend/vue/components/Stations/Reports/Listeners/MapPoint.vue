@@ -6,7 +6,7 @@
 
 <script setup>
 import {inject, onUnmounted, ref, watch} from 'vue';
-import L from "~/vendor/leaflet";
+import L from 'leaflet';
 
 const props = defineProps({
     position: {

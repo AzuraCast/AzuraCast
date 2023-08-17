@@ -1,10 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Flysystem;
 
 use App\Flysystem\Adapter\ExtendedAdapterInterface;
 use League\Flysystem\PathNormalizer;
 use League\Flysystem\PathPrefixer;
+use RuntimeException;
 
 final class RemoteFilesystem extends AbstractFilesystem
 {
@@ -55,7 +58,7 @@ final class RemoteFilesystem extends AbstractFilesystem
     public function upload(string $localPath, string $to): void
     {
         if (!is_file($localPath)) {
-            throw new \RuntimeException(sprintf('Source upload file not found at path: %s', $localPath));
+            throw new RuntimeException(sprintf('Source upload file not found at path: %s', $localPath));
         }
 
         $stream = fopen($localPath, 'rb');

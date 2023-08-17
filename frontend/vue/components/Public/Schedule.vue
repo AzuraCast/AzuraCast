@@ -13,7 +13,7 @@
                 class="card"
                 style="height: 100%;"
             >
-                <div class="card-header bg-primary-dark">
+                <div class="card-header text-bg-primary">
                     <div class="d-flex align-items-center">
                         <div class="flex-shrink">
                             <h2 class="card-title py-2">
@@ -31,6 +31,7 @@
                 <div id="station-schedule-calendar">
                     <schedule
                         ref="schedule"
+                        :timezone="stationTimeZone"
                         :schedule-url="scheduleUrl"
                         :station-time-zone="stationTimeZone"
                     />

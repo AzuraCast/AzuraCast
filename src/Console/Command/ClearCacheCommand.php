@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace App\Console\Command;
 
-use App\Entity\Repository\SettingsRepository;
+use App\Cache\DatabaseCache;
+use App\Container\SettingsAwareTrait;
 use Symfony\Component\Cache\Adapter\AdapterInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputInterface;
@@ -18,9 +19,11 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 )]
 final class ClearCacheCommand extends CommandAbstract
 {
+    use SettingsAwareTrait;
+
     public function __construct(
         private readonly AdapterInterface $cache,
-        private readonly SettingsRepository $settingsRepo,
+        private readonly DatabaseCache $dbCache
     ) {
         parent::__construct();
     }
@@ -31,9 +34,10 @@ final class ClearCacheCommand extends CommandAbstract
 
         // Flush all Redis entries.
         $this->cache->clear();
+        $this->dbCache->clear();
 
         // Clear cached system settings.
-        $settings = $this->settingsRepo->readSettings();
+        $settings = $this->readSettings();
         $settings->updateUpdateLastRun();
         $settings->setUpdateResults(null);
 
@@ -41,7 +45,7 @@ final class ClearCacheCommand extends CommandAbstract
             $settings->setExternalIp(null);
         }
 
-        $this->settingsRepo->writeSettings($settings);
+        $this->writeSettings($settings);
 
         $io->success('Local cache flushed.');
         return 0;

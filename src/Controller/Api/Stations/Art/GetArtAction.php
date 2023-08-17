@@ -4,7 +4,11 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Stations\Art;
 
-use App\Entity;
+use App\Controller\SingleActionInterface;
+use App\Entity\Repository\StationMediaRepository;
+use App\Entity\Repository\StationRepository;
+use App\Entity\Station;
+use App\Entity\StationMedia;
 use App\Flysystem\ExtendedFilesystemInterface;
 use App\Flysystem\StationFilesystems;
 use App\Http\Response;
@@ -38,11 +42,11 @@ use Psr\Http\Message\ResponseInterface;
         ),
     ]
 )]
-final class GetArtAction
+final class GetArtAction implements SingleActionInterface
 {
     public function __construct(
-        private readonly Entity\Repository\StationRepository $stationRepo,
-        private readonly Entity\Repository\StationMediaRepository $mediaRepo,
+        private readonly StationRepository $stationRepo,
+        private readonly StationMediaRepository $mediaRepo,
         private readonly StationFilesystems $stationFilesystems
     ) {
     }
@@ -50,21 +54,23 @@ final class GetArtAction
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        string $station_id,
-        string $media_id
+        array $params
     ): ResponseInterface {
+        /** @var string $mediaId */
+        $mediaId = $params['media_id'];
+
         $station = $request->getStation();
 
-        if (str_contains($media_id, '-')) {
+        if (str_contains($mediaId, '-')) {
             $response = $response->withCacheLifetime(Response::CACHE_ONE_YEAR);
         }
 
         // If a timestamp delimiter is added, strip it automatically.
-        $media_id = explode('-', $media_id, 2)[0];
+        $mediaId = explode('-', $mediaId, 2)[0];
 
         $fsMedia = $this->stationFilesystems->getMediaFilesystem($station);
 
-        $mediaPath = $this->getMediaPath($station, $fsMedia, $media_id);
+        $mediaPath = $this->getMediaPath($station, $fsMedia, $mediaId);
         if (null !== $mediaPath) {
             return $response->streamFilesystemFile(
                 $fsMedia,
@@ -79,30 +85,30 @@ final class GetArtAction
     }
 
     private function getMediaPath(
-        Entity\Station $station,
+        Station $station,
         ExtendedFilesystemInterface $fsMedia,
-        string $media_id
+        string $mediaId
     ): ?string {
-        if (Entity\StationMedia::UNIQUE_ID_LENGTH === strlen($media_id)) {
-            $mediaPath = Entity\StationMedia::getArtPath($media_id);
+        if (StationMedia::UNIQUE_ID_LENGTH === strlen($mediaId)) {
+            $mediaPath = StationMedia::getArtPath($mediaId);
 
             if ($fsMedia->fileExists($mediaPath)) {
                 return $mediaPath;
             }
         }
 
-        $media = $this->mediaRepo->findForStation($media_id, $station);
-        if (!($media instanceof Entity\StationMedia)) {
+        $media = $this->mediaRepo->findForStation($mediaId, $station);
+        if (!($media instanceof StationMedia)) {
             return null;
         }
 
-        $mediaPath = Entity\StationMedia::getArtPath($media->getUniqueId());
+        $mediaPath = StationMedia::getArtPath($media->getUniqueId());
         if ($fsMedia->fileExists($mediaPath)) {
             return $mediaPath;
         }
 
-        $folderPath = Entity\StationMedia::getFolderArtPath(
-            Entity\StationMedia::getFolderHashForPath($media->getPath())
+        $folderPath = StationMedia::getFolderArtPath(
+            StationMedia::getFolderHashForPath($media->getPath())
         );
         if ($fsMedia->fileExists($folderPath)) {
             return $folderPath;

@@ -40,13 +40,13 @@ class RolePermission implements
     public function __construct(
         Role $role,
         Station $station = null,
-        string|PermissionInterface|null $action_name = null
+        string|PermissionInterface|null $actionName = null
     ) {
         $this->role = $role;
         $this->station = $station;
 
-        if (null !== $action_name) {
-            $this->setActionName($action_name);
+        if (null !== $actionName) {
+            $this->setActionName($actionName);
         }
     }
 
@@ -75,13 +75,13 @@ class RolePermission implements
         return $this->action_name;
     }
 
-    public function setActionName(string|PermissionInterface $action_name): void
+    public function setActionName(string|PermissionInterface $actionName): void
     {
-        if ($action_name instanceof PermissionInterface) {
-            $action_name = $action_name->getValue();
+        if ($actionName instanceof PermissionInterface) {
+            $actionName = $actionName->getValue();
         }
 
-        $this->action_name = $action_name;
+        $this->action_name = $actionName;
     }
 
     /**

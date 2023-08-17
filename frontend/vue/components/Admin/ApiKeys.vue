@@ -1,36 +1,12 @@
 <template>
-    <section
-        class="card"
-        role="region"
-        aria-labelledby="hdr_api_keys"
-    >
-        <b-card-header header-bg-variant="primary-dark">
-            <h2
-                id="hdr_api_keys"
-                class="card-title"
-            >
-                {{ $gettext('API Keys') }}
-            </h2>
-        </b-card-header>
-
-        <info-card>
+    <card-page :title="$gettext('API Keys')">
+        <template #info>
             <p class="card-text">
                 {{
-                    $gettext('This page lists all API keys assigned to all users across the system.')
+                    $gettext('This page lists all API keys assigned to all users across the system. To manage your own API keys, visit your account profile.')
                 }}
             </p>
-        </info-card>
-
-        <b-card-body body-class="card-padding-sm">
-            <b-button
-                variant="outline-primary"
-                :href="myApiKeysUrl"
-                target="_blank"
-            >
-                <icon icon="vpn_key" />
-                {{ $gettext('Manage My API Keys') }}
-            </b-button>
-        </b-card-body>
+        </template>
 
         <data-table
             id="api_keys"
@@ -39,39 +15,30 @@
             :api-url="apiUrl"
         >
             <template #cell(actions)="row">
-                <b-button-group size="sm">
-                    <b-button
-                        size="sm"
-                        variant="danger"
-                        @click.prevent="doDelete(row.item.links.self)"
+                <div class="btn-group btn-group-sm">
+                    <button
+                        type="button"
+                        class="btn btn-sm btn-danger"
+                        @click="doDelete(row.item.links.self)"
                     >
                         {{ $gettext('Delete') }}
-                    </b-button>
-                </b-button-group>
+                    </button>
+                </div>
             </template>
         </data-table>
-    </section>
+    </card-page>
 </template>
 
 <script setup>
 import DataTable from "~/components/Common/DataTable.vue";
 import {ref} from "vue";
 import {useTranslate} from "~/vendor/gettext";
-import InfoCard from "~/components/Common/InfoCard.vue";
-import Icon from "~/components/Common/Icon.vue";
 import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
 import useHasDatatable from "~/functions/useHasDatatable";
+import CardPage from "~/components/Common/CardPage.vue";
+import {getApiUrl} from "~/router";
 
-defineProps({
-    apiUrl: {
-        type: String,
-        required: true
-    },
-    myApiKeysUrl: {
-        type: String,
-        required: true
-    }
-});
+const apiUrl = getApiUrl('/admin/api-keys');
 
 const {$gettext} = useTranslate();
 

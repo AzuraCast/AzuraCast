@@ -4,26 +4,26 @@ declare(strict_types=1);
 
 namespace App\Sync\Task;
 
-use App\Doctrine\ReloadableEntityManagerInterface;
-use App\Entity;
+use App\Container\SettingsAwareTrait;
+use App\Entity\Enums\StorageLocationTypes;
+use App\Entity\Repository\StorageLocationRepository;
+use App\Entity\Station;
+use App\Entity\StorageLocation;
 use App\Nginx\ConfigWriter;
 use App\Nginx\Nginx;
 use League\Flysystem\StorageAttributes;
-use Psr\Log\LoggerInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Throwable;
 
 final class RotateLogsTask extends AbstractTask
 {
+    use SettingsAwareTrait;
+
     public function __construct(
-        ReloadableEntityManagerInterface $em,
-        LoggerInterface $logger,
-        private readonly Entity\Repository\SettingsRepository $settingsRepo,
-        private readonly Entity\Repository\StorageLocationRepository $storageLocationRepo,
+        private readonly StorageLocationRepository $storageLocationRepo,
         private readonly Nginx $nginx,
     ) {
-        parent::__construct($em, $logger);
     }
 
     public static function getSchedulePattern(): string
@@ -60,7 +60,7 @@ final class RotateLogsTask extends AbstractTask
         }
 
         // Rotate the automated backups.
-        $settings = $this->settingsRepo->readSettings();
+        $settings = $this->readSettings();
 
         $copiesToKeep = $settings->getBackupKeepCopies();
         if ($copiesToKeep > 0) {
@@ -68,11 +68,11 @@ final class RotateLogsTask extends AbstractTask
 
             if ($backupStorageId > 0) {
                 $storageLocation = $this->storageLocationRepo->findByType(
-                    Entity\Enums\StorageLocationTypes::Backup,
+                    StorageLocationTypes::Backup,
                     $backupStorageId
                 );
 
-                if ($storageLocation instanceof Entity\StorageLocation) {
+                if ($storageLocation instanceof StorageLocation) {
                     $this->rotateBackupStorage($storageLocation, $copiesToKeep);
                 }
             }
@@ -80,7 +80,7 @@ final class RotateLogsTask extends AbstractTask
     }
 
     private function rotateBackupStorage(
-        Entity\StorageLocation $storageLocation,
+        StorageLocation $storageLocation,
         int $copiesToKeep
     ): void {
         $fs = $this->storageLocationRepo->getAdapter($storageLocation)->getFilesystem();
@@ -109,27 +109,27 @@ final class RotateLogsTask extends AbstractTask
         }
     }
 
-    private function cleanUpIcecastLog(Entity\Station $station): void
+    private function cleanUpIcecastLog(Station $station): void
     {
-        $config_path = $station->getRadioConfigDir();
+        $configPath = $station->getRadioConfigDir();
 
         $finder = new Finder();
 
         $finder
             ->files()
-            ->in($config_path)
+            ->in($configPath)
             ->name('icecast_*.log.*')
             ->date('before 1 month ago');
 
         foreach ($finder as $file) {
-            $file_path = $file->getRealPath();
-            if ($file_path) {
-                @unlink($file_path);
+            $filePath = $file->getRealPath();
+            if ($filePath) {
+                @unlink($filePath);
             }
         }
     }
 
-    private function rotateHlsLog(Entity\Station $station): bool
+    private function rotateHlsLog(Station $station): bool
     {
         $hlsLogFile = ConfigWriter::getHlsLogFile($station);
         $hlsLogBackup = $hlsLogFile . '.1';

@@ -1,13 +1,12 @@
 <template>
-    <section
+    <card-page
         id="profile-frontend"
-        class="card mb-4"
-        role="region"
-        aria-labelledby="hdr_frontend"
+        class="mb-4"
+        header-id="hdr_frontend"
     >
-        <div class="card-header bg-primary-dark">
+        <template #header="{id}">
             <h3
-                id="hdr_frontend"
+                :id="id"
                 class="card-title"
             >
                 {{ $gettext('Broadcasting Service') }}
@@ -16,17 +15,14 @@
                 <br>
                 <small>{{ frontendName }}</small>
             </h3>
-        </div>
+        </template>
 
-        <template v-if="userCanManageBroadcasting">
-            <b-collapse
-                id="frontendCredentials"
-                v-model="credentialsVisible"
+        <template v-if="userAllowedForStation(StationPermission.Broadcasting)">
+            <div
+                class="collapse"
+                :class="(credentialsVisible) ? 'show' : ''"
             >
-                <b-table-simple
-                    striped
-                    responsive
-                >
+                <table class="table table-striped table-responsive">
                     <tbody>
                         <tr class="align-middle">
                             <td>
@@ -52,6 +48,17 @@
                                     :text="frontendAdminPassword"
                                     hide-text
                                 />
+                            </td>
+                        </tr>
+                        <tr class="align-middle">
+                            <td>
+                                {{ $gettext('Port') }}
+                            </td>
+                            <td
+                                class="px-0"
+                                colspan="2"
+                            >
+                                {{ frontendPort }}
                             </td>
                         </tr>
                         <tr class="align-middle">
@@ -97,45 +104,59 @@
                             </td>
                         </tr>
                     </tbody>
-                </b-table-simple>
-            </b-collapse>
-
-            <div class="card-actions">
-                <a
-                    class="btn btn-outline-primary"
-                    @click.prevent="credentialsVisible = !credentialsVisible"
-                >
-                    <icon icon="unfold_more" />
-                    {{ langShowHideCredentials }}
-                </a>
-                <template v-if="hasStarted">
-                    <a
-                        class="api-call no-reload btn btn-outline-secondary"
-                        :href="frontendRestartUri"
-                    >
-                        <icon icon="update" />
-                        {{ $gettext('Restart') }}
-                    </a>
-                    <a
-                        v-show="!frontendRunning"
-                        class="api-call no-reload btn btn-outline-success"
-                        :href="frontendStartUri"
-                    >
-                        <icon icon="play_arrow" />
-                        {{ $gettext('Start') }}
-                    </a>
-                    <a
-                        v-show="frontendRunning"
-                        class="api-call no-reload btn btn-outline-danger"
-                        :href="frontendStopUri"
-                    >
-                        <icon icon="stop" />
-                        {{ $gettext('Stop') }}
-                    </a>
-                </template>
+                </table>
             </div>
         </template>
-    </section>
+
+        <template
+            v-if="userAllowedForStation(StationPermission.Broadcasting)"
+            #footer_actions
+        >
+            <a
+                class="btn btn-link text-primary"
+                @click.prevent="credentialsVisible = !credentialsVisible"
+            >
+                <icon icon="unfold_more" />
+                <span>
+                    {{ langShowHideCredentials }}
+                </span>
+            </a>
+            <template v-if="hasStarted">
+                <button
+                    type="button"
+                    class="btn btn-link text-secondary"
+                    @click="makeApiCall(frontendRestartUri)"
+                >
+                    <icon icon="update" />
+                    <span>
+                        {{ $gettext('Restart') }}
+                    </span>
+                </button>
+                <button
+                    v-if="!frontendRunning"
+                    type="button"
+                    class="btn btn-link text-success"
+                    @click="makeApiCall(frontendStartUri)"
+                >
+                    <icon icon="play_arrow" />
+                    <span>
+                        {{ $gettext('Start') }}
+                    </span>
+                </button>
+                <button
+                    v-if="frontendRunning"
+                    type="button"
+                    class="btn btn-link text-danger"
+                    @click="makeApiCall(frontendStopUri)"
+                >
+                    <icon icon="stop" />
+                    <span>
+                        {{ $gettext('Stop') }}
+                    </span>
+                </button>
+            </template>
+        </template>
+    </card-page>
 </template>
 
 <script setup>
@@ -147,6 +168,8 @@ import {computed} from "vue";
 import frontendPanelProps from "~/components/Stations/Profile/frontendPanelProps";
 import {useLocalStorage} from "@vueuse/core";
 import {useTranslate} from "~/vendor/gettext";
+import CardPage from "~/components/Common/CardPage.vue";
+import {StationPermission, userAllowedForStation} from "~/acl";
 
 const props = defineProps({
     ...frontendPanelProps,
@@ -155,6 +178,8 @@ const props = defineProps({
         required: true
     }
 });
+
+const emit = defineEmits(['api-call']);
 
 const credentialsVisible = useLocalStorage('station_show_frontend_credentials', false);
 
@@ -174,4 +199,8 @@ const frontendName = computed(() => {
     }
     return '';
 });
+
+const makeApiCall = (uri) => {
+    emit('api-call', uri);
+};
 </script>

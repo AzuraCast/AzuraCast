@@ -4,13 +4,15 @@ declare(strict_types=1);
 
 namespace App\Radio\AutoDJ;
 
-use App\Entity;
+use App\Container\EntityManagerAwareTrait;
+use App\Container\LoggerAwareTrait;
+use App\Entity\Repository\StationQueueRepository;
+use App\Entity\Station;
+use App\Entity\StationQueue;
 use App\Event\Radio\BuildQueue;
 use Carbon\CarbonImmutable;
 use Carbon\CarbonInterface;
-use Doctrine\ORM\EntityManagerInterface;
 use Monolog\Handler\TestHandler;
-use Monolog\Logger;
 use Monolog\LogRecord;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Log\LogLevel;
@@ -21,17 +23,18 @@ use Psr\SimpleCache\CacheInterface;
  */
 final class Queue
 {
+    use LoggerAwareTrait;
+    use EntityManagerAwareTrait;
+
     public function __construct(
-        private readonly EntityManagerInterface $em,
-        private readonly Logger $logger,
         private readonly CacheInterface $cache,
         private readonly EventDispatcherInterface $dispatcher,
-        private readonly Entity\Repository\StationQueueRepository $queueRepo,
+        private readonly StationQueueRepository $queueRepo,
         private readonly Scheduler $scheduler,
     ) {
     }
 
-    public function buildQueue(Entity\Station $station): void
+    public function buildQueue(Station $station): void
     {
         // Early-fail if the station is disabled.
         if (!$station->supportsAutoDjQueue()) {
@@ -164,10 +167,10 @@ final class Queue
     }
 
     /**
-     * @param Entity\Station $station
-     * @return Entity\StationQueue[]|null
+     * @param Station $station
+     * @return StationQueue[]|null
      */
-    public function getInterruptingQueue(Entity\Station $station): ?array
+    public function getInterruptingQueue(Station $station): ?array
     {
         // Early-fail if the station is disabled.
         if (!$station->supportsAutoDjQueue()) {
@@ -231,8 +234,11 @@ final class Queue
         return $nextSongs;
     }
 
-    private function addDurationToTime(Entity\Station $station, CarbonInterface $now, ?int $duration): CarbonInterface
-    {
+    private function addDurationToTime(
+        Station $station,
+        CarbonInterface $now,
+        ?int $duration
+    ): CarbonInterface {
         $duration ??= 1;
 
         $startNext = $station->getBackendConfig()->getCrossfadeDuration();
@@ -244,7 +250,7 @@ final class Queue
     }
 
     private function isQueueRowStillValid(
-        Entity\StationQueue $queueRow,
+        StationQueue $queueRow,
         CarbonInterface $expectedPlayTime
     ): bool {
         $playlist = $queueRow->getPlaylist();
@@ -260,14 +266,14 @@ final class Queue
             );
     }
 
-    public function getQueueRowLog(Entity\StationQueue $queueRow): ?array
+    public function getQueueRowLog(StationQueue $queueRow): ?array
     {
         return $this->cache->get(
             $this->getQueueRowLogCacheKey($queueRow)
         );
     }
 
-    public function setQueueRowLog(Entity\StationQueue $queueRow, ?array $log): void
+    public function setQueueRowLog(StationQueue $queueRow, ?array $log): void
     {
         if (null !== $log) {
             $log = array_map(
@@ -279,11 +285,11 @@ final class Queue
         $this->cache->set(
             $this->getQueueRowLogCacheKey($queueRow),
             $log,
-            Entity\StationQueue::QUEUE_LOG_TTL
+            StationQueue::QUEUE_LOG_TTL
         );
     }
 
-    private function getQueueRowLogCacheKey(Entity\StationQueue $queueRow): string
+    private function getQueueRowLogCacheKey(StationQueue $queueRow): string
     {
         return 'queue_log.' . $queueRow->getIdRequired();
     }

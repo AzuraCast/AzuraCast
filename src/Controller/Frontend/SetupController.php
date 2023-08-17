@@ -4,15 +4,17 @@ declare(strict_types=1);
 
 namespace App\Controller\Frontend;
 
-use App\Entity;
-use App\Environment;
+use App\Container\EntityManagerAwareTrait;
+use App\Container\EnvironmentAwareTrait;
+use App\Container\SettingsAwareTrait;
+use App\Entity\Repository\RolePermissionRepository;
+use App\Entity\User;
 use App\Exception\NotLoggedInException;
 use App\Exception\ValidationException;
 use App\Http\Response;
 use App\Http\ServerRequest;
-use App\Version;
+use App\VueComponent\SettingsComponent;
 use App\VueComponent\StationFormComponent;
-use Doctrine\ORM\EntityManagerInterface;
 use InvalidArgumentException;
 use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -20,14 +22,15 @@ use Throwable;
 
 final class SetupController
 {
+    use EntityManagerAwareTrait;
+    use EnvironmentAwareTrait;
+    use SettingsAwareTrait;
+
     public function __construct(
-        private readonly EntityManagerInterface $em,
-        private readonly Entity\Repository\SettingsRepository $settingsRepo,
-        private readonly Environment $environment,
-        private readonly Entity\Repository\RolePermissionRepository $permissionRepo,
+        private readonly RolePermissionRepository $permissionRepo,
         private readonly ValidatorInterface $validator,
         private readonly StationFormComponent $stationFormComponent,
-        private readonly Version $version
+        private readonly SettingsComponent $settingsComponent
     ) {
     }
 
@@ -41,8 +44,8 @@ final class SetupController
         ServerRequest $request,
         Response $response
     ): ResponseInterface {
-        $current_step = $this->getSetupStep($request);
-        return $response->withRedirect($request->getRouter()->named('setup:' . $current_step));
+        $currentStep = $this->getSetupStep($request);
+        return $response->withRedirect($request->getRouter()->named('setup:' . $currentStep));
     }
 
     /**
@@ -54,9 +57,9 @@ final class SetupController
         Response $response
     ): ResponseInterface {
         // Verify current step.
-        $current_step = $this->getSetupStep($request);
-        if ($current_step !== 'register' && $this->environment->isProduction()) {
-            return $response->withRedirect($request->getRouter()->named('setup:' . $current_step));
+        $currentStep = $this->getSetupStep($request);
+        if ($currentStep !== 'register' && $this->environment->isProduction()) {
+            return $response->withRedirect($request->getRouter()->named('setup:' . $currentStep));
         }
 
         $csrf = $request->getCsrf();
@@ -76,7 +79,7 @@ final class SetupController
                 $role = $this->permissionRepo->ensureSuperAdministratorRole();
 
                 // Create user account.
-                $user = new Entity\User();
+                $user = new User();
                 $user->setEmail($data['username']);
                 $user->setNewPassword($data['password']);
                 $user->getRoles()->add($role);
@@ -104,7 +107,7 @@ final class SetupController
 
         return $request->getView()->renderVuePage(
             response: $response,
-            component: 'Vue_SetupRegister',
+            component: 'Setup/Register',
             id: 'setup-register',
             layout: 'minimal',
             title: __('Set Up AzuraCast'),
@@ -124,16 +127,16 @@ final class SetupController
         Response $response
     ): ResponseInterface {
         // Verify current step.
-        $current_step = $this->getSetupStep($request);
-        if ($current_step !== 'station' && $this->environment->isProduction()) {
-            return $response->withRedirect($request->getRouter()->named('setup:' . $current_step));
+        $currentStep = $this->getSetupStep($request);
+        if ($currentStep !== 'station' && $this->environment->isProduction()) {
+            return $response->withRedirect($request->getRouter()->named('setup:' . $currentStep));
         }
 
         $router = $request->getRouter();
 
         return $request->getView()->renderVuePage(
             response: $response,
-            component: 'Vue_SetupStation',
+            component: 'Setup/Station',
             id: 'setup-station',
             title: __('Create a New Radio Station'),
             props: array_merge(
@@ -157,23 +160,17 @@ final class SetupController
         $router = $request->getRouter();
 
         // Verify current step.
-        $current_step = $this->getSetupStep($request);
-        if ($current_step !== 'settings' && $this->environment->isProduction()) {
-            return $response->withRedirect($router->named('setup:' . $current_step));
+        $currentStep = $this->getSetupStep($request);
+        if ($currentStep !== 'settings' && $this->environment->isProduction()) {
+            return $response->withRedirect($router->named('setup:' . $currentStep));
         }
 
         return $request->getView()->renderVuePage(
             response: $response,
-            component: 'Vue_SetupSettings',
+            component: 'Setup/Settings',
             id: 'setup-settings',
             title: __('System Settings'),
-            props: [
-                'apiUrl' => $router->named('api:admin:settings', [
-                    'group' => Entity\Settings::GROUP_GENERAL,
-                ]),
-                'releaseChannel' => $this->version->getReleaseChannelEnum()->value,
-                'continueUrl' => $router->named('dashboard'),
-            ],
+            props: $this->settingsComponent->getProps($request),
         );
     }
 
@@ -199,19 +196,19 @@ final class SetupController
      */
     private function getSetupStep(ServerRequest $request): string
     {
-        $settings = $this->settingsRepo->readSettings();
+        $settings = $this->readSettings();
         if ($settings->isSetupComplete()) {
             return 'complete';
         }
 
         // Step 1: Register
-        $num_users = (int)$this->em->createQuery(
+        $numUsers = (int)$this->em->createQuery(
             <<<'DQL'
                 SELECT COUNT(u.id) FROM App\Entity\User u
             DQL
         )->getSingleScalarResult();
 
-        if (0 === $num_users) {
+        if (0 === $numUsers) {
             return 'register';
         }
 
@@ -222,13 +219,13 @@ final class SetupController
         }
 
         // Step 2: Set up Station
-        $num_stations = (int)$this->em->createQuery(
+        $numStations = (int)$this->em->createQuery(
             <<<'DQL'
                 SELECT COUNT(s.id) FROM App\Entity\Station s
             DQL
         )->getSingleScalarResult();
 
-        if (0 === $num_stations) {
+        if (0 === $numStations) {
             return 'station';
         }
 

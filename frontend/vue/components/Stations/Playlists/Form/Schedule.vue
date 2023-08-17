@@ -1,52 +1,49 @@
 <template>
-    <b-tab :title="$gettext('Schedule')">
-        <b-form-group v-if="scheduleItems.length === 0">
-            <label>
+    <o-tab-item :label="$gettext('Schedule')">
+        <form-markup
+            v-if="scheduleItems.length === 0"
+            id="no_scheduled_entries"
+        >
+            <template #label>
                 {{ $gettext('Not Scheduled') }}
-            </label>
+            </template>
             <p>
                 {{
                     $gettext('This playlist currently has no scheduled times. It will play at all times. To add a new scheduled time, click the button below.')
                 }}
             </p>
-        </b-form-group>
+        </form-markup>
 
         <playlists-form-schedule-row
             v-for="(row, index) in scheduleItems"
             :key="index"
             v-model:row="scheduleItems[index]"
-            :station-time-zone="stationTimeZone"
             :index="index"
             @remove="remove(index)"
         />
 
-        <b-button-group>
-            <b-button
-                size="sm"
-                variant="outline-primary"
-                @click.prevent="add"
+        <div class="buttons">
+            <button
+                type="button"
+                class="btn btn-sm btn-primary"
+                @click="add"
             >
                 <icon icon="add" />
-                {{ $gettext('Add Schedule Item') }}
-            </b-button>
-        </b-button-group>
-    </b-tab>
+                <span>
+                    {{ $gettext('Add Schedule Item') }}
+                </span>
+            </button>
+        </div>
+    </o-tab-item>
 </template>
 
 <script setup>
 import Icon from '~/components/Common/Icon';
 import PlaylistsFormScheduleRow from "~/components/Stations/Playlists/Form/ScheduleRow.vue";
 import {useVModel} from "@vueuse/core";
+import FormMarkup from "~/components/Form/FormMarkup.vue";
 
 const props = defineProps({
-    form: {
-        type: Object,
-        required: true
-    },
-    stationTimeZone: {
-        type: String,
-        required: true
-    },
     scheduleItems: {
         type: Array,
         default: () => {

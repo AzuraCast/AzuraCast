@@ -3,7 +3,7 @@
         v-model="textValue"
         basic
         :lang="lang"
-        :dark="dark"
+        :dark="isDark"
     />
 </template>
 
@@ -13,7 +13,7 @@ import {useVModel} from "@vueuse/core";
 import {computed} from "vue";
 import {css} from "@codemirror/lang-css";
 import {javascript} from "@codemirror/lang-javascript";
-import {useAzuraCast} from "~/vendor/azuracast";
+import useGetTheme from "~/functions/useGetTheme";
 
 const props = defineProps({
     modelValue: {
@@ -39,20 +39,5 @@ const lang = computed(() => {
     return null;
 });
 
-const {theme} = useAzuraCast();
-
-const dark = computed(() => {
-    return theme === 'dark';
-})
-</script>
-
-<script>
-import {defineComponent} from "vue";
-
-export default defineComponent({
-    model: {
-        prop: 'modelValue',
-        event: 'update:modelValue'
-    },
-});
+const {isDark} = useGetTheme();
 </script>

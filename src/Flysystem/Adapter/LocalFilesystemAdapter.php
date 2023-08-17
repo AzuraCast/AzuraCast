@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Flysystem\Adapter;
 
 use App\Flysystem\Attributes\DirectoryAttributes;
@@ -11,6 +13,7 @@ use League\Flysystem\UnableToRetrieveMetadata;
 use League\Flysystem\UnixVisibility\PortableVisibilityConverter;
 use League\Flysystem\UnixVisibility\VisibilityConverter;
 use League\MimeTypeDetection\MimeTypeDetector;
+use SplFileInfo;
 
 final class LocalFilesystemAdapter extends LeagueLocalFilesystemAdapter implements LocalAdapterInterface
 {
@@ -46,7 +49,7 @@ final class LocalFilesystemAdapter extends LeagueLocalFilesystemAdapter implemen
             throw UnableToRetrieveMetadata::create($location, 'metadata', 'File not found');
         }
 
-        $fileInfo = new \SplFileInfo($location);
+        $fileInfo = new SplFileInfo($location);
 
         $lastModified = $fileInfo->getMTime();
         $isDirectory = $fileInfo->isDir();

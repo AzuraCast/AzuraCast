@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace App\Console\Command\Users;
 
 use App\Console\Command\CommandAbstract;
-use App\Entity;
+use App\Container\EntityManagerAwareTrait;
+use App\Entity\User;
 use App\Utilities;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -20,11 +20,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 )]
 final class ResetPasswordCommand extends CommandAbstract
 {
-    public function __construct(
-        private readonly EntityManagerInterface $em
-    ) {
-        parent::__construct();
-    }
+    use EntityManagerAwareTrait;
 
     protected function configure(): void
     {
@@ -39,13 +35,13 @@ final class ResetPasswordCommand extends CommandAbstract
 
         $io->title('Reset Account Password');
 
-        $user = $this->em->getRepository(Entity\User::class)
+        $user = $this->em->getRepository(User::class)
             ->findOneBy(['email' => $email]);
 
-        if ($user instanceof Entity\User) {
-            $temp_pw = Utilities\Strings::generatePassword(15);
+        if ($user instanceof User) {
+            $tempPw = Utilities\Strings::generatePassword(15);
 
-            $user->setNewPassword($temp_pw);
+            $user->setNewPassword($tempPw);
             $user->setTwoFactorSecret();
 
             $this->em->persist($user);
@@ -54,7 +50,7 @@ final class ResetPasswordCommand extends CommandAbstract
             $io->text([
                 'The account password has been reset. The new temporary password is:',
                 '',
-                '    ' . $temp_pw,
+                '    ' . $tempPw,
                 '',
                 'Log in using this temporary password and set a new password using the web interface.',
                 '',

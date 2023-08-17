@@ -4,13 +4,14 @@ declare(strict_types=1);
 
 namespace App\Controller\Frontend\PublicPages;
 
+use App\Controller\SingleActionInterface;
 use App\Exception\StationNotFoundException;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\VueComponent\NowPlayingComponent;
 use Psr\Http\Message\ResponseInterface;
 
-final class HistoryAction
+final class HistoryAction implements SingleActionInterface
 {
     public function __construct(
         private readonly NowPlayingComponent $nowPlayingComponent
@@ -20,7 +21,7 @@ final class HistoryAction
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        string $station_id
+        array $params
     ): ResponseInterface {
         $station = $request->getStation();
 
@@ -38,7 +39,7 @@ final class HistoryAction
 
         return $view->renderVuePage(
             response: $response->withHeader('X-Frame-Options', '*'),
-            component: 'Vue_PublicHistory',
+            component: 'Public/History',
             id: 'song-history',
             layout: 'minimal',
             title: __('History') . ' - ' . $station->getName(),

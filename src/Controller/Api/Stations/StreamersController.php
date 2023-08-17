@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace App\Controller\Api\Stations;
 
 use App\Controller\Api\Traits\CanSortResults;
-use App\Doctrine\ReloadableEntityManagerInterface;
-use App\Entity;
+use App\Entity\Repository\StationScheduleRepository;
+use App\Entity\Repository\StationStreamerRepository;
+use App\Entity\StationSchedule;
+use App\Entity\StationStreamer;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\OpenApi;
@@ -19,7 +21,7 @@ use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-/** @extends AbstractScheduledEntityController<Entity\StationStreamer> */
+/** @extends AbstractScheduledEntityController<StationStreamer> */
 #[
     OA\Get(
         path: '/station/{station_id}/streamers',
@@ -148,30 +150,29 @@ final class StreamersController extends AbstractScheduledEntityController
 {
     use CanSortResults;
 
-    protected string $entityClass = Entity\StationStreamer::class;
+    protected string $entityClass = StationStreamer::class;
     protected string $resourceRouteName = 'api:stations:streamer';
 
     public function __construct(
-        Entity\Repository\StationScheduleRepository $scheduleRepo,
+        private readonly StationStreamerRepository $streamerRepo,
+        StationScheduleRepository $scheduleRepo,
         Scheduler $scheduler,
-        ReloadableEntityManagerInterface $em,
         Serializer $serializer,
-        ValidatorInterface $validator,
-        private readonly Entity\Repository\StationStreamerRepository $streamerRepo,
+        ValidatorInterface $validator
     ) {
-        parent::__construct($scheduleRepo, $scheduler, $em, $serializer, $validator);
+        parent::__construct($scheduleRepo, $scheduler, $serializer, $validator);
     }
 
     public function listAction(
         ServerRequest $request,
         Response $response,
-        string $station_id
+        array $params
     ): ResponseInterface {
         $station = $request->getStation();
 
         $qb = $this->em->createQueryBuilder()
             ->select('e')
-            ->from(Entity\StationStreamer::class, 'e')
+            ->from(StationStreamer::class, 'e')
             ->where('e.station = :station')
             ->setParameter('station', $station);
 
@@ -194,23 +195,18 @@ final class StreamersController extends AbstractScheduledEntityController
         return $this->listPaginatedFromQuery($request, $response, $qb->getQuery());
     }
 
-    public function createAction(
-        ServerRequest $request,
-        Response $response,
-        string $station_id
-    ): ResponseInterface {
+    protected function createRecord(ServerRequest $request, array $data): object
+    {
         $station = $request->getStation();
 
-        $parsedBody = (array)$request->getParsedBody();
-
-        /** @var Entity\StationStreamer $record */
+        /** @var StationStreamer $record */
         $record = $this->editRecord(
-            $parsedBody,
-            new Entity\StationStreamer($station)
+            $data,
+            new StationStreamer($station)
         );
 
-        if (!empty($parsedBody['artwork_file'])) {
-            $artwork = UploadedFile::fromArray($parsedBody['artwork_file'], $station->getRadioTempDir());
+        if (!empty($data['artwork_file'])) {
+            $artwork = UploadedFile::fromArray($data['artwork_file'], $station->getRadioTempDir());
             $this->streamerRepo->writeArtwork(
                 $record,
                 $artwork->readAndDeleteUploadedFile()
@@ -220,13 +216,12 @@ final class StreamersController extends AbstractScheduledEntityController
             $this->em->flush();
         }
 
-        return $response->withJson($this->viewRecord($record, $request));
+        return $record;
     }
 
     public function scheduleAction(
         ServerRequest $request,
-        Response $response,
-        string $station_id
+        Response $response
     ): ResponseInterface {
         $station = $request->getStation();
 
@@ -245,14 +240,14 @@ final class StreamersController extends AbstractScheduledEntityController
             $response,
             $scheduleItems,
             function (
-                Entity\StationSchedule $scheduleItem,
+                StationSchedule $scheduleItem,
                 CarbonInterface $start,
                 CarbonInterface $end
             ) use (
                 $request,
                 $station
             ) {
-                /** @var Entity\StationStreamer $streamer */
+                /** @var StationStreamer $streamer */
                 $streamer = $scheduleItem->getStreamer();
 
                 return [
@@ -270,7 +265,7 @@ final class StreamersController extends AbstractScheduledEntityController
     }
 
     /**
-     * @param Entity\StationStreamer $record
+     * @param StationStreamer $record
      * @param ServerRequest $request
      *
      * @return mixed[]
@@ -305,7 +300,7 @@ final class StreamersController extends AbstractScheduledEntityController
 
     protected function deleteRecord(object $record): void
     {
-        if (!($record instanceof Entity\StationStreamer)) {
+        if (!($record instanceof StationStreamer)) {
             throw new InvalidArgumentException(sprintf('Record must be an instance of %s.', $this->entityClass));
         }
 

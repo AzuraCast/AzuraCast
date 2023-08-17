@@ -4,17 +4,15 @@ declare(strict_types=1);
 
 namespace App\Media\AlbumArtHandler;
 
-use App\Entity;
+use App\Entity\Interfaces\SongInterface;
+use App\Entity\StationMedia;
 use App\Service\LastFm;
-use Psr\Log\LoggerInterface;
 
 final class LastFmAlbumArtHandler extends AbstractAlbumArtHandler
 {
     public function __construct(
         private readonly LastFm $lastFm,
-        LoggerInterface $logger
     ) {
-        parent::__construct($logger);
     }
 
     protected function getServiceName(): string
@@ -22,9 +20,9 @@ final class LastFmAlbumArtHandler extends AbstractAlbumArtHandler
         return 'LastFm';
     }
 
-    protected function getAlbumArt(Entity\Interfaces\SongInterface $song): ?string
+    protected function getAlbumArt(SongInterface $song): ?string
     {
-        if ($song instanceof Entity\StationMedia && !empty($song->getAlbum())) {
+        if ($song instanceof StationMedia && !empty($song->getAlbum())) {
             $response = $this->lastFm->makeRequest(
                 'album.getInfo',
                 [

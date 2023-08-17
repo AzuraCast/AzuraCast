@@ -4,18 +4,17 @@ declare(strict_types=1);
 
 namespace App\Sync\Task;
 
+use App\Container\EntityManagerAwareTrait;
+use App\Container\LoggerAwareTrait;
 use App\Doctrine\ReadWriteBatchIteratorAggregate;
-use App\Doctrine\ReloadableEntityManagerInterface;
-use App\Entity;
-use Psr\Log\LoggerInterface;
+use App\Entity\Enums\StorageLocationTypes;
+use App\Entity\Station;
+use App\Entity\StorageLocation;
 
 abstract class AbstractTask implements ScheduledTaskInterface
 {
-    public function __construct(
-        protected ReloadableEntityManagerInterface $em,
-        protected LoggerInterface $logger
-    ) {
-    }
+    use LoggerAwareTrait;
+    use EntityManagerAwareTrait;
 
     public static function isLongTask(): bool
     {
@@ -25,7 +24,7 @@ abstract class AbstractTask implements ScheduledTaskInterface
     abstract public function run(bool $force = false): void;
 
     /**
-     * @return ReadWriteBatchIteratorAggregate<int, Entity\Station>
+     * @return ReadWriteBatchIteratorAggregate<int, Station>
      */
     protected function iterateStations(): ReadWriteBatchIteratorAggregate
     {
@@ -40,11 +39,11 @@ abstract class AbstractTask implements ScheduledTaskInterface
     }
 
     /**
-     * @param Entity\Enums\StorageLocationTypes $type
+     * @param StorageLocationTypes $type
      *
-     * @return ReadWriteBatchIteratorAggregate<int, Entity\StorageLocation>
+     * @return ReadWriteBatchIteratorAggregate<int, StorageLocation>
      */
-    protected function iterateStorageLocations(Entity\Enums\StorageLocationTypes $type): ReadWriteBatchIteratorAggregate
+    protected function iterateStorageLocations(StorageLocationTypes $type): ReadWriteBatchIteratorAggregate
     {
         return ReadWriteBatchIteratorAggregate::fromQuery(
             $this->em->createQuery(

@@ -4,53 +4,62 @@ declare(strict_types=1);
 
 namespace App\Entity\Repository;
 
+use App\Container\LoggerAwareTrait;
 use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Doctrine\Repository;
-use App\Entity;
+use App\Entity\Listener;
+use App\Entity\Station;
+use App\Entity\Traits\TruncateStrings;
 use App\Service\DeviceDetector;
 use App\Service\IpGeolocation;
 use App\Utilities\File;
 use Carbon\CarbonImmutable;
 use DateTimeInterface;
+use DI\Attribute\Inject;
 use Doctrine\DBAL\Connection;
 use League\Csv\Writer;
 use NowPlaying\Result\Client;
-use Psr\Log\LoggerInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Throwable;
 
 /**
- * @extends Repository<Entity\Listener>
+ * @extends Repository<Listener>
  */
 final class ListenerRepository extends Repository
 {
-    use Entity\Traits\TruncateStrings;
+    use LoggerAwareTrait;
+    use TruncateStrings;
+
+    protected string $entityClass = Listener::class;
 
     private string $tableName;
 
     private Connection $conn;
 
     public function __construct(
-        ReloadableEntityManagerInterface $em,
         private readonly DeviceDetector $deviceDetector,
-        private readonly IpGeolocation $ipGeolocation,
-        private readonly LoggerInterface $logger
+        private readonly IpGeolocation $ipGeolocation
     ) {
-        parent::__construct($em);
+    }
 
-        $this->tableName = $this->em->getClassMetadata(Entity\Listener::class)->getTableName();
+    #[Inject]
+    public function setEntityManager(ReloadableEntityManagerInterface $em): void
+    {
+        parent::setEntityManager($em);
+
+        $this->tableName = $this->em->getClassMetadata(Listener::class)->getTableName();
         $this->conn = $this->em->getConnection();
     }
 
     /**
      * Get the number of unique listeners for a station during a specified time period.
      *
-     * @param Entity\Station $station
+     * @param Station $station
      * @param DateTimeInterface|int $start
      * @param DateTimeInterface|int $end
      */
     public function getUniqueListeners(
-        Entity\Station $station,
+        Station $station,
         DateTimeInterface|int $start,
         DateTimeInterface|int $end
     ): int {
@@ -75,7 +84,7 @@ final class ListenerRepository extends Repository
             ->getSingleScalarResult();
     }
 
-    public function iterateLiveListenersArray(Entity\Station $station): iterable
+    public function iterateLiveListenersArray(Station $station): iterable
     {
         $query = $this->em->createQuery(
             <<<'DQL'
@@ -93,10 +102,10 @@ final class ListenerRepository extends Repository
     /**
      * Update listener data for a station.
      *
-     * @param Entity\Station $station
+     * @param Station $station
      * @param Client[] $clients
      */
-    public function update(Entity\Station $station, array $clients): void
+    public function update(Station $station, array $clients): void
     {
         $this->em->wrapInTransaction(
             function () use ($station, $clients): void {
@@ -138,7 +147,7 @@ final class ListenerRepository extends Repository
     }
 
     private function batchAddClients(
-        Entity\Station $station,
+        Station $station,
         array &$clients,
         array &$existingClients
     ): void {
@@ -162,7 +171,7 @@ final class ListenerRepository extends Repository
         $csvColumns = null;
 
         foreach ($clients as $client) {
-            $identifier = Entity\Listener::calculateListenerHash($client);
+            $identifier = Listener::calculateListenerHash($client);
 
             // Check for an existing record for this client.
             if (isset($existingClients[$identifier])) {
@@ -215,7 +224,7 @@ final class ListenerRepository extends Repository
         $this->ipGeolocation->saveCache();
     }
 
-    private function batchAddRow(Entity\Station $station, Client $client): array
+    private function batchAddRow(Station $station, Client $client): array
     {
         $record = [
             'station_id' => $station->getId(),
@@ -224,7 +233,7 @@ final class ListenerRepository extends Repository
             'listener_uid' => (int)$client->uid,
             'listener_user_agent' => $this->truncateString($client->userAgent ?? ''),
             'listener_ip' => $client->ip,
-            'listener_hash' => Entity\Listener::calculateListenerHash($client),
+            'listener_hash' => Listener::calculateListenerHash($client),
             'mount_id' => null,
             'remote_id' => null,
             'hls_stream_id' => null,

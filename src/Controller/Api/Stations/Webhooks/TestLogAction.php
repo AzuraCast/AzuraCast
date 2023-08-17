@@ -5,14 +5,15 @@ declare(strict_types=1);
 namespace App\Controller\Api\Stations\Webhooks;
 
 use App\Controller\Api\Traits\HasLogViewer;
-use App\Entity;
+use App\Controller\SingleActionInterface;
+use App\Entity\Api\Error;
 use App\Entity\Repository\StationWebhookRepository;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Utilities\File;
 use Psr\Http\Message\ResponseInterface;
 
-final class TestLogAction
+final class TestLogAction implements SingleActionInterface
 {
     use HasLogViewer;
 
@@ -24,17 +25,21 @@ final class TestLogAction
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        string $station_id,
-        string $id,
-        string $path
+        array $params
     ): ResponseInterface {
+        /** @var string $id */
+        $id = $params['id'];
+
+        /** @var string $path */
+        $path = $params['path'];
+
         $this->webhookRepo->requireForStation($id, $request->getStation());
 
         $logPathPortion = 'webhook_test_' . $id;
         if (!str_contains($path, $logPathPortion)) {
             return $response
                 ->withStatus(403)
-                ->withJson(new Entity\Api\Error(403, 'Invalid log path.'));
+                ->withJson(new Error(403, 'Invalid log path.'));
         }
 
         $tempPath = File::validateTempPath($path);

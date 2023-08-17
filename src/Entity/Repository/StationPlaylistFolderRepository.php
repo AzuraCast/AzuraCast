@@ -4,46 +4,102 @@ declare(strict_types=1);
 
 namespace App\Entity\Repository;
 
-use App\Entity;
+use App\Entity\Station;
+use App\Entity\StationPlaylist;
+use App\Entity\StationPlaylistFolder;
 
 /**
- * @extends AbstractStationBasedRepository<Entity\StationPlaylistFolder>
+ * @extends AbstractStationBasedRepository<StationPlaylistFolder>
  */
 final class StationPlaylistFolderRepository extends AbstractStationBasedRepository
 {
+    protected string $entityClass = StationPlaylistFolder::class;
+
     /**
-     * @param Entity\Station $station
-     * @param Entity\StationPlaylist[] $playlists
+     * @param Station $station
      * @param string $path
+     * @param array<int, int> $playlists An array of Playlist IDs (id => weight)
      */
-    public function setPlaylistsForFolder(
-        Entity\Station $station,
-        array $playlists,
-        string $path
+    public function addPlaylistsToFolder(
+        Station $station,
+        string $path,
+        array $playlists
     ): void {
-        if (str_contains($path, '://')) {
-            [, $path] = explode('://', $path, 2);
+        foreach ($this->getPlaylistIdsForFolder($station, $path) as $playlistId) {
+            unset($playlists[$playlistId]);
         }
 
-        $this->em->createQuery(
-            <<<'DQL'
+        foreach ($playlists as $playlistId => $playlistWeight) {
+            /** @var StationPlaylist $playlist */
+            $playlist = $this->em->getReference(StationPlaylist::class, $playlistId);
+
+            $newRecord = new StationPlaylistFolder($station, $playlist, $path);
+            $this->em->persist($newRecord);
+        }
+
+        $this->em->flush();
+    }
+
+    /**
+     * @param Station $station
+     * @param string $path
+     * @param array<int, int> $playlists An array of Playlist IDs (id => weight)
+     */
+    public function setPlaylistsForFolder(
+        Station $station,
+        string $path,
+        array $playlists
+    ): void {
+        $toDelete = [];
+
+        foreach ($this->getPlaylistIdsForFolder($station, $path) as $playlistId) {
+            if (isset($playlists[$playlistId])) {
+                unset($playlists[$playlistId]);
+            } else {
+                $toDelete[] = $playlistId;
+            }
+        }
+
+        if (0 !== count($toDelete)) {
+            $this->em->createQuery(
+                <<<'DQL'
                 DELETE FROM App\Entity\StationPlaylistFolder spf
+                WHERE spf.station = :station 
+                AND spf.path = :path
+                AND spf.playlist_id IN (:playlistIds)
+            DQL
+            )->setParameter('station', $station)
+                ->setParameter('path', $path)
+                ->setParameter('playlistIds', $toDelete)
+                ->execute();
+        }
+
+        foreach ($playlists as $playlistId => $playlistWeight) {
+            /** @var StationPlaylist $playlist */
+            $playlist = $this->em->getReference(StationPlaylist::class, $playlistId);
+
+            $newRecord = new StationPlaylistFolder($station, $playlist, $path);
+            $this->em->persist($newRecord);
+        }
+
+        $this->em->flush();
+    }
+
+    /**
+     * @return int[]
+     */
+    protected function getPlaylistIdsForFolder(
+        Station $station,
+        string $path
+    ): array {
+        return $this->em->createQuery(
+            <<<'DQL'
+                SELECT spf.playlist_id
+                FROM App\Entity\StationPlaylistFolder spf
                 WHERE spf.station = :station AND spf.path = :path
             DQL
         )->setParameter('station', $station)
             ->setParameter('path', $path)
-            ->execute();
-
-        foreach ($playlists as $playlistId => $playlistRecord) {
-            if (Entity\Enums\PlaylistSources::Songs === $playlistRecord->getSource()) {
-                /** @var Entity\StationPlaylist $playlist */
-                $playlist = $this->em->getReference(Entity\StationPlaylist::class, $playlistId);
-
-                $newRecord = new Entity\StationPlaylistFolder($station, $playlist, $path);
-                $this->em->persist($newRecord);
-            }
-        }
-
-        $this->em->flush();
+            ->getSingleColumnResult();
     }
 }

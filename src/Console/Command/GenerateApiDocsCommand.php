@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace App\Console\Command;
 
-use App\Environment;
+use App\Container\EnvironmentAwareTrait;
+use App\Container\LoggerAwareTrait;
 use App\Version;
 use OpenApi\Annotations\OpenApi;
 use OpenApi\Generator;
 use OpenApi\Util;
-use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -21,10 +21,11 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 )]
 final class GenerateApiDocsCommand extends CommandAbstract
 {
+    use LoggerAwareTrait;
+    use EnvironmentAwareTrait;
+
     public function __construct(
-        private readonly Environment $environment,
-        private readonly Version $version,
-        private readonly LoggerInterface $logger
+        private readonly Version $version
     ) {
         parent::__construct();
     }
@@ -34,9 +35,9 @@ final class GenerateApiDocsCommand extends CommandAbstract
         $io = new SymfonyStyle($input, $output);
 
         $yaml = $this->generate()?->toYaml();
-        $yaml_path = $this->environment->getBaseDirectory() . '/web/static/api/openapi.yml';
+        $yamlPath = $this->environment->getBaseDirectory() . '/web/static/api/openapi.yml';
 
-        file_put_contents($yaml_path, $yaml);
+        file_put_contents($yamlPath, $yaml);
 
         $io->writeln('API documentation updated!');
         return 0;

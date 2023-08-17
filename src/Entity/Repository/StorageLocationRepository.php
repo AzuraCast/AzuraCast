@@ -4,26 +4,23 @@ declare(strict_types=1);
 
 namespace App\Entity\Repository;
 
-use App\Doctrine\ReloadableEntityManagerInterface;
+use App\Container\ContainerAwareTrait;
 use App\Doctrine\Repository;
 use App\Entity\Enums\StorageLocationAdapters;
 use App\Entity\Enums\StorageLocationTypes;
 use App\Entity\Station;
 use App\Entity\StorageLocation;
 use App\Entity\StorageLocationAdapter\StorageLocationAdapterInterface;
-use Psr\Container\ContainerInterface;
+use InvalidArgumentException;
 
 /**
  * @extends Repository<StorageLocation>
  */
 final class StorageLocationRepository extends Repository
 {
-    public function __construct(
-        private readonly ContainerInterface $adapters,
-        ReloadableEntityManagerInterface $em
-    ) {
-        parent::__construct($em);
-    }
+    use ContainerAwareTrait;
+
+    protected string $entityClass = StorageLocation::class;
 
     public function findByType(
         string|StorageLocationTypes $type,
@@ -139,12 +136,12 @@ final class StorageLocationRepository extends Repository
     {
         $adapterClass = $storageLocation->getAdapter()->getAdapterClass();
 
-        if (!$this->adapters->has($adapterClass)) {
-            throw new \InvalidArgumentException(sprintf('Class not found: %s', $adapterClass));
+        if (!$this->di->has($adapterClass)) {
+            throw new InvalidArgumentException(sprintf('Class not found: %s', $adapterClass));
         }
 
         /** @var StorageLocationAdapterInterface $adapter */
-        $adapter = $this->adapters->get($adapterClass);
+        $adapter = $this->di->get($adapterClass);
         return $adapter->withStorageLocation($storageLocation);
     }
 }

@@ -1,15 +1,17 @@
 <template>
-    <a
-        href="#"
+    <button
+        type="button"
         :title="langTitle"
         :aria-label="langTitle"
-        @click.prevent="toggle"
+        class="btn p-0"
+        @click="toggle"
     >
         <icon
+            class="outlined"
             :class="iconClass"
             :icon="iconText"
         />
-    </a>
+    </button>
 </template>
 
 <script setup>
@@ -49,8 +51,8 @@ const isThisPlaying = computed(() => {
         return false;
     }
 
-    let playingUrl = getUrlWithoutQuery(get(current).url);
-    let thisUrl = getUrlWithoutQuery(props.url);
+    const playingUrl = getUrlWithoutQuery(get(current).url);
+    const thisUrl = getUrlWithoutQuery(props.url);
     return playingUrl === thisUrl;
 });
 

@@ -1,16 +1,19 @@
 <template>
-    <b-overlay
-        variant="card"
-        :show="loading"
-    >
-        <b-form-group label-for="modal_scroll_to_bottom">
-            <b-form-checkbox
+    <loading :loading="isLoading">
+        <div class="form-check mb-3">
+            <input
                 id="modal_scroll_to_bottom"
                 v-model="scrollToBottom"
+                class="form-check-input"
+                type="checkbox"
+            >
+            <label
+                class="form-check-label"
+                for="modal_scroll_to_bottom"
             >
                 {{ $gettext('Automatically Scroll to Bottom') }}
-            </b-form-checkbox>
-        </b-form-group>
+            </label>
+        </div>
 
         <textarea
             id="log-view-contents"
@@ -20,13 +23,14 @@
             readonly
             :value="logs"
         />
-    </b-overlay>
+    </loading>
 </template>
 
 <script setup>
 import {nextTick, ref, toRef, watch} from "vue";
 import {useAxios} from "~/vendor/axios";
 import {tryOnScopeDispose} from "@vueuse/core";
+import Loading from "~/components/Common/Loading.vue";
 
 const props = defineProps({
     logUrl: {
@@ -35,7 +39,7 @@ const props = defineProps({
     }
 });
 
-const loading = ref(false);
+const isLoading = ref(false);
 const logs = ref('');
 const currentLogPosition = ref(null);
 const scrollToBottom = ref(true);
@@ -77,12 +81,12 @@ const updateLogs = () => {
             stop();
         }
     }).finally(() => {
-        loading.value = false;
+        isLoading.value = false;
     });
 };
 
 watch(toRef(props, 'logUrl'), (newLogUrl) => {
-    loading.value = true;
+    isLoading.value = true;
     logs.value = '';
     currentLogPosition.value = 0;
     stop();

@@ -4,7 +4,11 @@ declare(strict_types=1);
 
 namespace App\Event\Radio;
 
-use App\Entity;
+use App\Entity\Station;
+use App\Entity\StationMedia;
+use App\Entity\StationPlaylist;
+use App\Entity\StationQueue;
+use App\Entity\StationRequest;
 use RuntimeException;
 use Symfony\Contracts\EventDispatcher\Event;
 
@@ -21,36 +25,36 @@ final class AnnotateNextSong extends Event
     private array $annotations = [];
 
     public function __construct(
-        private readonly Entity\Station $station,
-        private readonly ?Entity\StationQueue $queue = null,
-        private readonly ?Entity\StationMedia $media = null,
-        private readonly ?Entity\StationPlaylist $playlist = null,
-        private readonly ?Entity\StationRequest $request = null,
+        private readonly Station $station,
+        private readonly ?StationQueue $queue = null,
+        private readonly ?StationMedia $media = null,
+        private readonly ?StationPlaylist $playlist = null,
+        private readonly ?StationRequest $request = null,
         private readonly bool $asAutoDj = false
     ) {
     }
 
-    public function getQueue(): ?Entity\StationQueue
+    public function getQueue(): ?StationQueue
     {
         return $this->queue;
     }
 
-    public function getStation(): Entity\Station
+    public function getStation(): Station
     {
         return $this->station;
     }
 
-    public function getMedia(): ?Entity\StationMedia
+    public function getMedia(): ?StationMedia
     {
         return $this->media;
     }
 
-    public function getPlaylist(): ?Entity\StationPlaylist
+    public function getPlaylist(): ?StationPlaylist
     {
         return $this->playlist;
     }
 
-    public function getRequest(): ?Entity\StationRequest
+    public function getRequest(): ?StationRequest
     {
         return $this->request;
     }
@@ -87,20 +91,20 @@ final class AnnotateNextSong extends Event
         $this->annotations = array_filter($this->annotations);
 
         if (!empty($this->annotations)) {
-            $annotations_str = [];
-            foreach ($this->annotations as $annotation_key => $annotation_val) {
-                $annotations_str[] = $annotation_key . '="' . $annotation_val . '"';
+            $annotationsStr = [];
+            foreach ($this->annotations as $annotationKey => $annotationVal) {
+                $annotationsStr[] = $annotationKey . '="' . $annotationVal . '"';
             }
 
-            return 'annotate:' . implode(',', $annotations_str) . ':' . $this->songPath;
+            return 'annotate:' . implode(',', $annotationsStr) . ':' . $this->songPath;
         }
 
         return $this->songPath;
     }
 
     public static function fromStationMedia(
-        Entity\Station $station,
-        Entity\StationMedia $media,
+        Station $station,
+        StationMedia $media,
         bool $asAutoDj = false
     ): self {
         return new self(
@@ -111,7 +115,7 @@ final class AnnotateNextSong extends Event
     }
 
     public static function fromStationQueue(
-        Entity\StationQueue $queue,
+        StationQueue $queue,
         bool $asAutoDj = false
     ): self {
         return new self(

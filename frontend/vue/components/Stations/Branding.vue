@@ -5,7 +5,7 @@
             role="region"
             aria-labelledby="hdr_custom_assets"
         >
-            <div class="card-header bg-primary-dark">
+            <div class="card-header text-bg-primary">
                 <h2
                     id="hdr_custom_assets"
                     class="card-title"
@@ -38,20 +38,10 @@
 <script setup>
 import BrandingForm from "~/components/Stations/Branding/BrandingForm.vue";
 import CustomAssetForm from "~/components/Admin/Branding/CustomAssetForm.vue";
+import {getStationApiUrl} from "~/router";
 
-defineProps({
-    profileEditUrl: {
-        type: String,
-        required: true,
-    },
-    backgroundApiUrl: {
-        type: String,
-        required: true
-    },
-    albumArtApiUrl: {
-        type: String,
-        required: true
-    }
-});
+const profileEditUrl = getStationApiUrl('/profile/edit');
+const backgroundApiUrl = getStationApiUrl('/custom_assets/background');
+const albumArtApiUrl = getStationApiUrl('/custom_assets/album_art');
 </script>
 

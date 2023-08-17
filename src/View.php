@@ -4,16 +4,21 @@ declare(strict_types=1);
 
 namespace App;
 
+use App\Entity\Station;
+use App\Entity\User;
+use App\Enums\SupportedLocales;
 use App\Http\RouterInterface;
 use App\Http\ServerRequest;
 use App\Traits\RequestAwareTrait;
 use App\Utilities\Json;
 use App\View\GlobalSections;
+use Doctrine\Common\Collections\ArrayCollection;
 use League\Plates\Engine;
 use League\Plates\Template\Data;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use stdClass;
 use Symfony\Component\VarDumper\Cloner\VarCloner;
 use Symfony\Component\VarDumper\Dumper\CliDumper;
 
@@ -21,7 +26,10 @@ final class View extends Engine
 {
     use RequestAwareTrait;
 
-    private readonly GlobalSections $sections;
+    private GlobalSections $sections;
+
+    /** @var ArrayCollection<string, array|object|string|int> */
+    private ArrayCollection $globalProps;
 
     public function __construct(
         Customization $customization,
@@ -33,11 +41,13 @@ final class View extends Engine
         parent::__construct($environment->getViewsDirectory(), 'phtml');
 
         $this->sections = new GlobalSections();
+        $this->globalProps = new ArrayCollection();
 
         // Add non-request-dependent content.
         $this->addData(
             [
                 'sections' => $this->sections,
+                'globalProps' => $this->globalProps,
                 'customization' => $customization,
                 'environment' => $environment,
                 'version' => $version,
@@ -67,29 +77,71 @@ final class View extends Engine
             }
         );
 
-        $vueComponents = Json::loadFromFile($environment->getBaseDirectory() . '/web/static/webpack.json');
+        $vueComponents = (!$environment->isDevelopment())
+            ? Json::loadFromFile($environment->getBaseDirectory() . '/web/static/vite_dist/manifest.json')
+            : [];
+
         $this->registerFunction(
             'getVueComponentInfo',
-            fn(string $component) => $vueComponents['entrypoints'][$component] ?? null
-        );
+            function (string $componentPath) use ($vueComponents, $environment) {
+                $assetRoot = '/static/vite_dist';
 
-        $versionedFiles = Json::loadFromFile($environment->getBaseDirectory() . '/web/static/assets.json');
-        $this->registerFunction(
-            'assetUrl',
-            function (string $url) use ($environment, $versionedFiles): string {
-                if (isset($versionedFiles[$url])) {
-                    $url = $versionedFiles[$url];
+                if ($environment->isDevelopment() || $environment->isTesting()) {
+                    return [
+                        'js' => $assetRoot . '/' . $componentPath,
+                        'css' => [],
+                        'prefetch' => [],
+                    ];
                 }
 
-                if (str_starts_with($url, 'http')) {
-                    return $url;
+                if (!isset($vueComponents[$componentPath])) {
+                    return null;
                 }
 
-                if (str_starts_with($url, '/')) {
-                    return $url;
-                }
+                $includes = [
+                    'js' => $assetRoot . '/' . $vueComponents[$componentPath]['file'],
+                    'css' => [],
+                    'prefetch' => [],
+                ];
 
-                return $environment->getAssetUrl() . '/' . $url;
+                $visitedNodes = [];
+                $fetchCss = function ($component) use (
+                    $vueComponents,
+                    $assetRoot,
+                    &$includes,
+                    &$fetchCss,
+                    &$visitedNodes
+                ): void {
+                    if (!isset($vueComponents[$component]) || isset($visitedNodes[$component])) {
+                        return;
+                    }
+
+                    $visitedNodes[$component] = true;
+
+                    $componentInfo = $vueComponents[$component];
+                    if (isset($componentInfo['css'])) {
+                        foreach ($componentInfo['css'] as $css) {
+                            $includes['css'][] = $assetRoot . '/' . $css;
+                        }
+                    }
+
+                    if (isset($componentInfo['file'])) {
+                        $fileUrl = $assetRoot . '/' . $componentInfo['file'];
+                        if ($fileUrl !== $includes['js']) {
+                            $includes['prefetch'][] = $fileUrl;
+                        }
+                    }
+
+                    if (isset($componentInfo['imports'])) {
+                        foreach ($componentInfo['imports'] as $import) {
+                            $fetchCss($import);
+                        }
+                    }
+                };
+
+                $fetchCss($componentPath);
+
+                return $includes;
             }
         );
 
@@ -106,7 +158,6 @@ final class View extends Engine
                 'auth' => $request->getAttribute(ServerRequest::ATTR_AUTH),
                 'acl' => $request->getAttribute(ServerRequest::ATTR_ACL),
                 'flash' => $request->getAttribute(ServerRequest::ATTR_SESSION_FLASH),
-                'user' => $request->getAttribute(ServerRequest::ATTR_USER),
             ];
 
             $router = $request->getAttribute(ServerRequest::ATTR_ROUTER);
@@ -117,6 +168,69 @@ final class View extends Engine
             $customization = $request->getAttribute(ServerRequest::ATTR_CUSTOMIZATION);
             if (null !== $customization) {
                 $requestData['customization'] = $customization;
+
+                $this->globalProps->set(
+                    'enableAdvancedFeatures',
+                    $customization->enableAdvancedFeatures()
+                );
+            }
+
+            $localeObj = $request->getAttribute(ServerRequest::ATTR_LOCALE);
+            if (!($localeObj instanceof SupportedLocales)) {
+                $localeObj = SupportedLocales::default();
+            }
+
+            $locale = $localeObj->getLocaleWithoutEncoding();
+            $localeShort = substr($locale, 0, 2);
+            $localeWithDashes = str_replace('_', '-', $locale);
+
+            $this->globalProps->set('locale', $locale);
+            $this->globalProps->set('localeShort', $localeShort);
+            $this->globalProps->set('localeWithDashes', $localeWithDashes);
+
+            // User profile-specific 24-hour display setting.
+            $userObj = $request->getAttribute(ServerRequest::ATTR_USER);
+            $requestData['user'] = $userObj;
+
+            $timeConfig = new stdClass();
+
+            if ($userObj instanceof User) {
+                $timeConfig->hour12 = !$userObj->getShow24HourTime();
+
+                $globalPermissions = [];
+                $stationPermissions = [];
+
+                foreach ($userObj->getRoles() as $role) {
+                    foreach ($role->getPermissions() as $permission) {
+                        $station = $permission->getStation();
+                        if (null !== $station) {
+                            $stationPermissions[$station->getIdRequired()][] = $permission->getActionName();
+                        } else {
+                            $globalPermissions[] = $permission->getActionName();
+                        }
+                    }
+                }
+
+                $this->globalProps->set('user', [
+                    'id' => $userObj->getIdRequired(),
+                    'displayName' => $userObj->getDisplayName(),
+                    'globalPermissions' => $globalPermissions,
+                    'stationPermissions' => $stationPermissions,
+                ]);
+            }
+
+            $this->globalProps->set('timeConfig', $timeConfig);
+
+            // Station-specific properties
+            $station = $request->getAttribute(ServerRequest::ATTR_STATION);
+            if ($station instanceof Station) {
+                $this->globalProps->set('station', [
+                    'id' => $station->getIdRequired(),
+                    'name' => $station->getName(),
+                    'shortName' => $station->getShortName(),
+                    'timezone' => $station->getTimezone(),
+                    'offlineText' => $station->getBrandingConfig()->getOfflineText(),
+                ]);
             }
 
             $this->addData($requestData);
@@ -128,8 +242,16 @@ final class View extends Engine
         return $this->sections;
     }
 
+    /** @return ArrayCollection<string, array|object|string|int> */
+    public function getGlobalProps(): ArrayCollection
+    {
+        return $this->globalProps;
+    }
+
     public function reset(): void
     {
+        $this->sections = new GlobalSections();
+        $this->globalProps = new ArrayCollection();
         $this->data = new Data();
     }
 
@@ -164,7 +286,7 @@ final class View extends Engine
         ResponseInterface $response,
         string $component,
         ?string $id = null,
-        string $layout = 'main',
+        string $layout = 'panel',
         ?string $title = null,
         array $layoutParams = [],
         array $props = [],

@@ -27,9 +27,9 @@ export function useWebDjNode(webcaster) {
     });
 
     const sink = computed(() => {
-        let currentContext = context.value;
+        const currentContext = context.value;
 
-        let sink = currentContext.createScriptProcessor(
+        const sink = currentContext.createScriptProcessor(
             bufferSize.value,
             channelCount.value,
             channelCount.value
@@ -37,7 +37,7 @@ export function useWebDjNode(webcaster) {
 
         sink.onaudioprocess = (buf) => {
             for (let channel = 0; channel < buf.inputBuffer.numberOfChannels; channel++) {
-                let channelData = buf.inputBuffer.getChannelData(channel);
+                const channelData = buf.inputBuffer.getChannelData(channel);
                 buf.outputBuffer.getChannelData(channel).set(channelData);
             }
         };
@@ -46,9 +46,9 @@ export function useWebDjNode(webcaster) {
     });
 
     const passThrough = computed(() => {
-        let currentContext = context.value;
+        const currentContext = context.value;
 
-        let passThrough = currentContext.createScriptProcessor(
+        const passThrough = currentContext.createScriptProcessor(
             bufferSize.value,
             channelCount.value,
             channelCount.value
@@ -56,7 +56,7 @@ export function useWebDjNode(webcaster) {
 
         passThrough.onaudioprocess = (buf) => {
             for (let channel = 0; channel < buf.inputBuffer.numberOfChannels; channel++) {
-                let channelData = buf.inputBuffer.getChannelData(channel);
+                const channelData = buf.inputBuffer.getChannelData(channel);
 
                 if (doPassThrough.value) {
                     buf.outputBuffer.getChannelData(channel).set(channelData);
@@ -73,7 +73,7 @@ export function useWebDjNode(webcaster) {
     });
 
     const streamNode = computed(() => {
-        let currentContext = context.value;
+        const currentContext = context.value;
 
         const streamNode = currentContext.createMediaStreamDestination();
         streamNode.channelCount = channelCount.value;

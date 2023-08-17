@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Flysystem\Adapter;
 
 use App\Flysystem\Attributes\DirectoryAttributes;
@@ -44,7 +46,7 @@ final class AwsS3Adapter extends AwsS3V3Adapter implements ExtendedAdapterInterf
             throw UnableToRetrieveMetadata::create($path, 'metadata', '', $exception);
         }
 
-        if (substr($path, -1) === '/') {
+        if (str_ends_with($path, '/')) {
             return new DirectoryAttributes(rtrim($path, '/'));
         }
 

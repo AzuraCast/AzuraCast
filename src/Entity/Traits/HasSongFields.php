@@ -60,12 +60,17 @@ trait HasSongFields
         return $this->song_id;
     }
 
+    protected function setSongId(string $songId): void
+    {
+        $this->song_id = $songId;
+    }
+
     public function updateSongId(): void
     {
         $text = $this->getText();
-        $this->song_id = (null !== $text)
+        $this->song_id = !empty($text)
             ? Song::getSongHash($text)
-            : Song::createOffline()->getSongId();
+            : Song::OFFLINE_SONG_ID;
     }
 
     public function getText(): ?string

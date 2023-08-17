@@ -1,0 +1,64 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Controller\Api\Stations\Vue;
+
+use App\Controller\SingleActionInterface;
+use App\Entity\StationBackendConfiguration;
+use App\Event\Radio\WriteLiquidsoapConfiguration;
+use App\Http\Response;
+use App\Http\ServerRequest;
+use App\Radio\Backend\Liquidsoap;
+use Psr\EventDispatcher\EventDispatcherInterface;
+use Psr\Http\Message\ResponseInterface;
+
+final class EditLiquidsoapConfigAction implements SingleActionInterface
+{
+    public function __construct(
+        private readonly EventDispatcherInterface $eventDispatcher,
+    ) {
+    }
+
+    public function __invoke(
+        ServerRequest $request,
+        Response $response,
+        array $params
+    ): ResponseInterface {
+        $station = $request->getStation();
+
+        $configSections = StationBackendConfiguration::getCustomConfigurationSections();
+        $tokens = Liquidsoap\ConfigWriter::getDividerString();
+
+        $event = new WriteLiquidsoapConfiguration($station, true, false);
+        $this->eventDispatcher->dispatch($event);
+        $config = $event->buildConfiguration();
+
+        $areas = [];
+
+        $tok = strtok($config, $tokens);
+        while ($tok !== false) {
+            $tok = trim($tok);
+            if (in_array($tok, $configSections, true)) {
+                $areas[] = [
+                    'is_field' => true,
+                    'field_name' => $tok,
+                ];
+            } else {
+                $areas[] = [
+                    'is_field' => false,
+                    'markup' => $tok,
+                ];
+            }
+
+            $tok = strtok($tokens);
+        }
+
+        $router = $request->getRouter();
+
+        return $response->withJson([
+            'config' => $areas,
+            'sections' => $configSections,
+        ]);
+    }
+}

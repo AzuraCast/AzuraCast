@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Console\Command\Settings;
 
 use App\Console\Command\CommandAbstract;
-use App\Entity;
+use App\Container\SettingsAwareTrait;
 use App\Utilities;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputInterface;
@@ -18,11 +18,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 )]
 final class ListCommand extends CommandAbstract
 {
-    public function __construct(
-        private readonly Entity\Repository\SettingsRepository $settingsTableRepo,
-    ) {
-        parent::__construct();
-    }
+    use SettingsAwareTrait;
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
@@ -35,12 +31,12 @@ final class ListCommand extends CommandAbstract
         ];
         $rows = [];
 
-        $settings = $this->settingsTableRepo->readSettings();
-        foreach ($this->settingsTableRepo->toArray($settings) as $setting_key => $setting_value) {
-            $value = print_r($setting_value, true);
+        $settings = $this->readSettings();
+        foreach ($this->settingsRepo->toArray($settings) as $settingKey => $settingValue) {
+            $value = print_r($settingValue, true);
             $value = Utilities\Strings::truncateText($value, 600);
 
-            $rows[] = [$setting_key, $value];
+            $rows[] = [$settingKey, $value];
         }
 
         $io->table($headers, $rows);

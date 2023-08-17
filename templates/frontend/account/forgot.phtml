@@ -17,18 +17,21 @@ $this->layout(
             <form id="login-form" action="" method="post">
                 <div class="form-group">
                     <label for="email" class="mb-2">
-                        <i class="material-icons mr-1" aria-hidden="true">email</i>
-                        <strong><?=__('E-mail Address')?></strong>
+                        <i class="material-icons me-1" aria-hidden="true">email</i>
+                        <strong><?= __('E-mail Address') ?></strong>
                     </label>
-                    <input type="email" id="email" name="email" class="form-control" placeholder="<?=__(
+                    <input type="email" id="email" name="email" class="form-control" placeholder="<?= __(
                         'name@example.com'
-                    )?>" aria-label="<?=__('E-mail Address')?>" required autofocus>
+                    ) ?>" aria-label="<?= __('E-mail Address') ?>" required autofocus>
                 </div>
-                <button type="submit" role="button" title="<?=__(
-                    'Sign in'
-                )?>" class="btn btn-login btn-primary btn-block mt-2 mb-3">
-                    <?=__('Send Recovery E-mail')?>
-                </button>
+
+                <div class="block-buttons mt-2 mb-3">
+                    <button type="submit" role="button" title="<?= __(
+                        'Sign in'
+                    ) ?>" class="btn btn-login btn-primary">
+                        <?= __('Send Recovery E-mail') ?>
+                    </button>
+                </div>
             </form>
         </div>
     </div>

@@ -5,8 +5,9 @@ declare(strict_types=1);
 namespace App\Console\Command\Locale;
 
 use App\Console\Command\CommandAbstract;
+use App\Container\EnvironmentAwareTrait;
 use App\Enums\SupportedLocales;
-use App\Environment;
+use App\Translations\JsonGenerator;
 use Gettext\Generator\MoGenerator;
 use Gettext\Loader\PoLoader;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -21,11 +22,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 )]
 final class ImportCommand extends CommandAbstract
 {
-    public function __construct(
-        private readonly Environment $environment
-    ) {
-        parent::__construct();
-    }
+    use EnvironmentAwareTrait;
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
@@ -45,13 +42,15 @@ final class ImportCommand extends CommandAbstract
                 continue;
             }
 
-            $localeFolder = $localesBase . '/' . $supportedLocale->value . '/LC_MESSAGES';
-            $localeSource = $localeFolder . '/default.po';
-            $localeDest = $localeFolder . '/default.mo';
+            $localeFolder = $localesBase . '/' . $supportedLocale->value;
+            $localeSource = $localeFolder . '/LC_MESSAGES/default.po';
+            $localeDest = $localeFolder . '/LC_MESSAGES/default.mo';
+            $jsonDest = $localeFolder . '/translations.json';
 
             if (is_file($localeSource)) {
                 $translations = $poLoader->loadFile($localeSource);
                 $moGenerator->generateFile($translations, $localeDest);
+                (new JsonGenerator($supportedLocale))->generateFile($translations, $jsonDest);
 
                 $io->writeln(
                     sprintf(

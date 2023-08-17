@@ -4,16 +4,18 @@ declare(strict_types=1);
 
 namespace App\Controller\Frontend\Account;
 
+use App\Controller\SingleActionInterface;
 use App\Entity\User;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
 
-final class TwoFactorAction
+final class TwoFactorAction implements SingleActionInterface
 {
     public function __invoke(
         ServerRequest $request,
-        Response $response
+        Response $response,
+        array $params
     ): ResponseInterface {
         $auth = $request->getAuth();
 

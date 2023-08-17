@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Controller\Api\Stations;
 
 use App\Controller\Api\Traits\CanSortResults;
-use App\Doctrine\ReloadableEntityManagerInterface;
-use App\Entity;
+use App\Entity\Repository\StationMountRepository;
+use App\Entity\StationMount;
 use App\Http\Response;
 use App\Http\Router;
 use App\Http\ServerRequest;
@@ -18,7 +18,7 @@ use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-/** @extends AbstractStationApiCrudController<Entity\StationMount> */
+/** @extends AbstractStationApiCrudController<StationMount> */
 #[
     OA\Get(
         path: '/station/{station_id}/mounts',
@@ -145,29 +145,28 @@ final class MountsController extends AbstractStationApiCrudController
 {
     use CanSortResults;
 
-    protected string $entityClass = Entity\StationMount::class;
+    protected string $entityClass = StationMount::class;
     protected string $resourceRouteName = 'api:stations:mount';
 
     public function __construct(
-        ReloadableEntityManagerInterface $em,
         Serializer $serializer,
         ValidatorInterface $validator,
-        private readonly Entity\Repository\StationMountRepository $mountRepo,
+        private readonly StationMountRepository $mountRepo,
         private readonly Adapters $adapters,
     ) {
-        parent::__construct($em, $serializer, $validator);
+        parent::__construct($serializer, $validator);
     }
 
     public function listAction(
         ServerRequest $request,
         Response $response,
-        string $station_id
+        array $params
     ): ResponseInterface {
         $station = $request->getStation();
 
         $qb = $this->em->createQueryBuilder()
             ->select('e')
-            ->from(Entity\StationMount::class, 'e')
+            ->from(StationMount::class, 'e')
             ->where('e.station = :station')
             ->setParameter('station', $station);
 
@@ -192,7 +191,7 @@ final class MountsController extends AbstractStationApiCrudController
 
     protected function viewRecord(object $record, ServerRequest $request): mixed
     {
-        /** @var Entity\StationMount $record */
+        /** @var StationMount $record */
         $return = parent::viewRecord($record, $request);
 
         $station = $request->getStation();
@@ -217,42 +216,23 @@ final class MountsController extends AbstractStationApiCrudController
         return $return;
     }
 
-    public function createAction(
-        ServerRequest $request,
-        Response $response,
-        string $station_id
-    ): ResponseInterface {
-        $station = $request->getStation();
+    protected function createRecord(ServerRequest $request, array $data): object
+    {
+        $record = parent::createRecord($request, $data);
 
-        $parsedBody = (array)$request->getParsedBody();
-        $record = $this->editRecord(
-            $parsedBody,
-            new Entity\StationMount($station)
-        );
-
-        if (!empty($parsedBody['intro_file'])) {
-            $intro = UploadedFile::fromArray($parsedBody['intro_file'], $station->getRadioTempDir());
+        if (!empty($data['intro_file'])) {
+            $station = $request->getStation();
+            $intro = UploadedFile::fromArray($data['intro_file'], $station->getRadioTempDir());
             $this->mountRepo->setIntro($record, $intro);
         }
 
-        return $response->withJson($this->viewRecord($record, $request));
+        return $record;
     }
 
-    public function deleteAction(
-        ServerRequest $request,
-        Response $response,
-        string $station_id,
-        string $id,
-    ): ResponseInterface {
-        $record = $this->getRecord($this->getStation($request), $id);
-
-        if (null === $record) {
-            return $response->withStatus(404)
-                ->withJson(Entity\Api\Error::notFound());
-        }
+    protected function deleteRecord(object $record): void
+    {
+        parent::deleteRecord($record);
 
         $this->mountRepo->destroy($record);
-
-        return $response->withJson(Entity\Api\Status::deleted());
     }
 }

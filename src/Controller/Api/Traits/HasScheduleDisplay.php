@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Traits;
 
-use App\Entity;
+use App\Entity\StationSchedule;
 use App\Http\ServerRequest;
 use App\Radio\AutoDJ\Scheduler;
 use App\Utilities\DateRange;
@@ -38,7 +38,7 @@ trait HasScheduleDisplay
         $endDate = $dateRange->getEnd();
 
         foreach ($scheduleItems as $scheduleItem) {
-            /** @var Entity\StationSchedule $scheduleItem */
+            /** @var StationSchedule $scheduleItem */
             $i = $startDate;
 
             while ($i <= $endDate) {
@@ -48,8 +48,8 @@ trait HasScheduleDisplay
                     $scheduler->shouldSchedulePlayOnCurrentDate($scheduleItem, $i)
                     && $scheduler->isScheduleScheduledToPlayToday($scheduleItem, $dayOfWeek)
                 ) {
-                    $rowStart = Entity\StationSchedule::getDateTime($scheduleItem->getStartTime(), $i);
-                    $rowEnd = Entity\StationSchedule::getDateTime($scheduleItem->getEndTime(), $i);
+                    $rowStart = StationSchedule::getDateTime($scheduleItem->getStartTime(), $i);
+                    $rowEnd = StationSchedule::getDateTime($scheduleItem->getEndTime(), $i);
 
                     // Handle overnight schedule items
                     if ($rowEnd < $rowStart) {

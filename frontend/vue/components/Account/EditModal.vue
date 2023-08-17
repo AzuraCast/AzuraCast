@@ -22,7 +22,7 @@ import AccountEditForm from "./EditForm.vue";
 import ModalForm from "~/components/Common/ModalForm.vue";
 import {ref} from "vue";
 import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
-import {useNotify} from "~/vendor/bootstrapVue";
+import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
 
 const props = defineProps({
@@ -46,14 +46,12 @@ const {form, resetForm, v$, ifValid} = useVuelidateOnForm(
         name: {},
         email: {required, email},
         locale: {required},
-        theme: {required},
         show_24_hour_time: {}
     },
     {
         name: '',
         email: '',
         locale: 'default',
-        theme: 'browser',
         show_24_hour_time: null,
     }
 );

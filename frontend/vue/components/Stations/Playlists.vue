@@ -4,115 +4,250 @@
         role="region"
         aria-labelledby="hdr_playlists"
     >
-        <b-card-header header-bg-variant="primary-dark">
-            <b-row class="align-items-center">
-                <b-col md="6">
+        <div class="card-header text-bg-primary">
+            <div class="row align-items-center">
+                <div class="col-md-6">
                     <h2
                         id="hdr_playlists"
                         class="card-title"
                     >
                         {{ $gettext('Playlists') }}
                     </h2>
-                </b-col>
-                <b-col
-                    md="6"
-                    class="text-right text-muted"
-                >
-                    {{
-                        $gettext(
-                            'This station\'s time zone is currently %{tz}.',
-                            {tz: stationTimeZone}
-                        )
-                    }}
-                </b-col>
-            </b-row>
-        </b-card-header>
-        <b-tabs
-            pills
-            card
-            lazy
-        >
-            <b-tab
-                :title="$gettext('All Playlists')"
-                no-body
+                </div>
+                <div class="col-md-6 text-end">
+                    <time-zone />
+                </div>
+            </div>
+        </div>
+
+        <div class="card-body">
+            <o-tabs
+                nav-tabs-class="nav-tabs"
+                content-class="mt-3"
+                destroy-on-hide
             >
-                <b-card-body body-class="card-padding-sm">
-                    <b-button
-                        variant="outline-primary"
-                        @click.prevent="doCreate"
-                    >
-                        <icon icon="add" />
-                        {{ $gettext('Add Playlist') }}
-                    </b-button>
-                </b-card-body>
+                <o-tab-item :label="$gettext('All Playlists')">
+                    <div class="card-body-flush">
+                        <div class="card-body buttons">
+                            <button
+                                type="button"
+                                class="btn btn-primary"
+                                @click="doCreate"
+                            >
+                                <icon icon="add" />
+                                <span>
+                                    {{ $gettext('Add Playlist') }}
+                                </span>
+                            </button>
+                        </div>
 
-                <data-table
-                    id="station_playlists"
-                    ref="$datatable"
-                    paginated
-                    :fields="fields"
-                    :responsive="false"
-                    :api-url="listUrl"
-                >
-                    <template #cell(actions)="row">
-                        <b-button-group size="sm">
-                            <b-button
-                                size="sm"
-                                variant="primary"
-                                @click.prevent="doEdit(row.item.links.self)"
-                            >
-                                {{ $gettext('Edit') }}
-                            </b-button>
-                            <b-button
-                                size="sm"
-                                variant="danger"
-                                @click.prevent="doDelete(row.item.links.self)"
-                            >
-                                {{ $gettext('Delete') }}
-                            </b-button>
+                        <data-table
+                            id="station_playlists"
+                            ref="$datatable"
+                            paginated
+                            :fields="fields"
+                            :api-url="listUrl"
+                            detailed
+                        >
+                            <template #cell(actions)="{ item }">
+                                <div class="btn-group btn-group-sm">
+                                    <button
+                                        type="button"
+                                        class="btn btn-primary"
+                                        @click="doEdit(item.links.self)"
+                                    >
+                                        {{ $gettext('Edit') }}
+                                    </button>
+                                    <button
+                                        type="button"
+                                        class="btn btn-danger"
+                                        @click="doDelete(item.links.self)"
+                                    >
+                                        {{ $gettext('Delete') }}
+                                    </button>
 
-                            <b-dropdown
-                                size="sm"
-                                variant="dark"
-                                boundary="window"
-                                :text="$gettext('More')"
-                            >
-                                <b-dropdown-item @click.prevent="doModify(row.item.links.toggle)">
-                                    {{ langToggleButton(row.item) }}
-                                </b-dropdown-item>
-                                <b-dropdown-item
-                                    v-if="row.item.source === 'songs'"
-                                    @click.prevent="doImport(row.item.links.import)"
+                                    <button
+                                        class="btn btn-sm btn-secondary"
+                                        type="button"
+                                        @click="toggleDetails(item)"
+                                    >
+                                        {{ $gettext('More') }}
+                                    </button>
+                                </div>
+                            </template>
+                            <template #cell(name)="row">
+                                <h5 class="m-0">
+                                    {{ row.item.name }}
+                                </h5>
+                                <div>
+                                    <span class="badge text-bg-secondary me-1">
+                                        <template v-if="row.item.source === 'songs'">
+                                            {{ $gettext('Song-based') }}
+                                        </template>
+                                        <template v-else>
+                                            {{ $gettext('Remote URL') }}
+                                        </template>
+                                    </span>
+                                    <span
+                                        v-if="row.item.is_jingle"
+                                        class="badge text-bg-primary me-1"
+                                    >
+                                        {{ $gettext('Jingle Mode') }}
+                                    </span>
+                                    <span
+                                        v-if="row.item.source === 'songs' && row.item.order === 'sequential'"
+                                        class="badge text-bg-info me-1"
+                                    >
+                                        {{ $gettext('Sequential') }}
+                                    </span>
+                                    <span
+                                        v-if="row.item.include_in_on_demand"
+                                        class="badge text-bg-info me-1"
+                                    >
+                                        {{ $gettext('On-Demand') }}
+                                    </span>
+                                    <span
+                                        v-if="row.item.include_in_automation"
+                                        class="badge text-bg-success me-1"
+                                    >
+                                        {{ $gettext('Auto-Assigned') }}
+                                    </span>
+                                    <span
+                                        v-if="!row.item.is_enabled"
+                                        class="badge text-bg-danger me-1"
+                                    >
+                                        {{ $gettext('Disabled') }}
+                                    </span>
+                                </div>
+                            </template>
+                            <template #cell(scheduling)="{ item }">
+                                <template v-if="!item.is_enabled">
+                                    {{ $gettext('Disabled') }}
+                                </template>
+                                <template v-else-if="item.type === 'default'">
+                                    {{ $gettext('General Rotation') }}<br>
+                                    {{ $gettext('Weight') }}: {{ item.weight }}
+                                </template>
+                                <template v-else-if="item.type === 'once_per_x_songs'">
+                                    {{
+                                        $gettext(
+                                            'Once per %{songs} Songs',
+                                            {songs: item.play_per_songs}
+                                        )
+                                    }}
+                                </template>
+                                <template v-else-if="item.type === 'once_per_x_minutes'">
+                                    {{
+                                        $gettext(
+                                            'Once per %{minutes} Minutes',
+                                            {minutes: item.play_per_minutes}
+                                        )
+                                    }}
+                                </template>
+                                <template v-else-if="item.type === 'once_per_hour'">
+                                    {{
+                                        $gettext(
+                                            'Once per Hour (at %{minute})',
+                                            {minute: item.play_per_hour_minute}
+                                        )
+                                    }}
+                                </template>
+                                <template v-else>
+                                    {{ $gettext('Custom') }}
+                                </template>
+                            </template>
+                            <template #cell(num_songs)="row">
+                                <template v-if="row.item.source === 'songs'">
+                                    <router-link
+                                        :to="{
+                                            name: 'stations:files:index',
+                                            params: {
+                                                path: 'playlist:'+row.item.short_name
+                                            }
+                                        }"
+                                    >
+                                        {{ row.item.num_songs }}
+                                    </router-link>
+
+                                    ({{ formatLength(row.item.total_length) }})
+                                </template>
+                                <template v-else>
+                                    &nbsp;
+                                </template>
+                            </template>
+                            <template #detail="{ item }">
+                                <div
+                                    class="buttons"
+                                    style="line-height: 2.5;"
                                 >
-                                    {{ $gettext('Import from PLS/M3U') }}
-                                </b-dropdown-item>
-                                <b-dropdown-item
-                                    v-if="row.item.source === 'songs' && row.item.order === 'sequential'"
-                                    @click.prevent="doReorder(row.item.links.order)"
-                                >
-                                    {{ $gettext('Reorder') }}
-                                </b-dropdown-item>
-                                <b-dropdown-item
-                                    v-if="row.item.source === 'songs' && row.item.order !== 'random'"
-                                    @click.prevent="doQueue(row.item.links.queue)"
-                                >
-                                    {{ $gettext('Playback Queue') }}
-                                </b-dropdown-item>
-                                <b-dropdown-item
-                                    v-if="row.item.order === 'shuffle'"
-                                    @click.prevent="doModify(row.item.links.reshuffle)"
-                                >
-                                    {{ $gettext('Reshuffle') }}
-                                </b-dropdown-item>
-                                <b-dropdown-item @click.prevent="doClone(row.item.name, row.item.links.clone)">
-                                    {{ $gettext('Duplicate') }}
-                                </b-dropdown-item>
-                                <template
-                                    v-for="format in ['pls', 'm3u']"
-                                    :key="format"
-                                >
-                                    <b-dropdown-item
-                                        :href="row.item.links.export[format]"
+                                    <button
+                                        type="button"
+                                        class="btn btn-sm"
+                                        :class="toggleButtonClass(item)"
+                                        @click="doModify(item.links.toggle)"
+                                    >
+                                        {{ langToggleButton(item) }}
+                                    </button>
+                                    <button
+                                        v-if="item.links.empty"
+                                        type="button"
+                                        class="btn btn-sm btn-danger"
+                                        @click="doEmpty(item.links.empty)"
+                                    >
+                                        {{ $gettext('Empty') }}
+                                    </button>
+                                    <button
+                                        v-if="item.links.reshuffle"
+                                        type="button"
+                                        class="btn btn-sm btn-secondary"
+                                        @click="doModify(item.links.reshuffle)"
+                                    >
+                                        {{ $gettext('Reshuffle') }}
+                                    </button>
+                                    <button
+                                        v-if="item.links.import"
+                                        type="button"
+                                        class="btn btn-sm btn-secondary"
+                                        @click="doImport(item.links.import)"
+                                    >
+                                        {{ $gettext('Import from PLS/M3U') }}
+                                    </button>
+                                    <button
+                                        v-if="item.links.order"
+                                        type="button"
+                                        class="btn btn-sm btn-secondary"
+                                        @click="doReorder(item.links.order)"
+                                    >
+                                        {{ $gettext('Reorder') }}
+                                    </button>
+                                    <button
+                                        v-if="item.links.queue"
+                                        type="button"
+                                        class="btn btn-sm btn-secondary"
+                                        @click="doQueue(item.links.queue)"
+                                    >
+                                        {{ $gettext('Playback Queue') }}
+                                    </button>
+                                    <button
+                                        v-if="item.links.applyto"
+                                        type="button"
+                                        class="btn btn-sm btn-secondary"
+                                        @click="doApplyTo(item.links.applyto)"
+                                    >
+                                        {{ $gettext('Apply to Folders') }}
+                                    </button>
+                                    <button
+                                        type="button"
+                                        class="btn btn-sm btn-secondary"
+                                        @click="doClone(item.name, item.links.clone)"
+                                    >
+                                        {{ $gettext('Duplicate') }}
+                                    </button>
+                                    <a
+                                        v-for="format in ['pls', 'm3u']"
+                                        :key="format"
+                                        class="btn btn-sm btn-secondary"
+                                        :href="item.links.export[format]"
                                         target="_blank"
                                     >
                                         {{
@@ -121,124 +256,29 @@
                                                 {format: format.toUpperCase()}
                                             )
                                         }}
-                                    </b-dropdown-item>
-                                </template>
-                            </b-dropdown>
-                        </b-button-group>
-                    </template>
-                    <template #cell(name)="row">
-                        <h5 class="m-0">
-                            {{ row.item.name }}
-                        </h5>
-                        <div>
-                            <span class="badge badge-dark">
-                                <template v-if="row.item.source === 'songs'">
-                                    {{ $gettext('Song-based') }}
-                                </template>
-                                <template v-else>
-                                    {{ $gettext('Remote URL') }}
-                                </template>
-                            </span>
-                            <span
-                                v-if="row.item.is_jingle"
-                                class="badge badge-primary"
-                            >
-                                {{ $gettext('Jingle Mode') }}
-                            </span>
-                            <span
-                                v-if="row.item.source === 'songs' && row.item.order === 'sequential'"
-                                class="badge badge-info"
-                            >
-                                {{ $gettext('Sequential') }}
-                            </span>
-                            <span
-                                v-if="row.item.include_in_on_demand"
-                                class="badge badge-info"
-                            >
-                                {{ $gettext('On-Demand') }}
-                            </span>
-                            <span
-                                v-if="row.item.include_in_automation"
-                                class="badge badge-success"
-                            >
-                                {{ $gettext('Auto-Assigned') }}
-                            </span>
-                            <span
-                                v-if="!row.item.is_enabled"
-                                class="badge badge-danger"
-                            >
-                                {{ $gettext('Disabled') }}
-                            </span>
-                        </div>
-                    </template>
-                    <template #cell(scheduling)="{ item }">
-                        <template v-if="!item.is_enabled">
-                            {{ $gettext('Disabled') }}
-                        </template>
-                        <template v-else-if="item.type === 'default'">
-                            {{ $gettext('General Rotation') }}<br>
-                            {{ $gettext('Weight') }}: {{ item.weight }}
-                        </template>
-                        <template v-else-if="item.type === 'once_per_x_songs'">
-                            {{
-                                $gettext(
-                                    'Once per %{songs} Songs',
-                                    {songs: item.play_per_songs}
-                                )
-                            }}
-                        </template>
-                        <template v-else-if="item.type === 'once_per_x_minutes'">
-                            {{
-                                $gettext(
-                                    'Once per %{minutes} Minutes',
-                                    {minutes: item.play_per_minutes}
-                                )
-                            }}
-                        </template>
-                        <template v-else-if="item.type === 'once_per_hour'">
-                            {{
-                                $gettext(
-                                    'Once per Hour (at %{minute})',
-                                    {minute: item.play_per_hour_minute}
-                                )
-                            }}
-                        </template>
-                        <template v-else>
-                            {{ $gettext('Custom') }}
-                        </template>
-                    </template>
-                    <template #cell(num_songs)="row">
-                        <template v-if="row.item.source === 'songs'">
-                            <a :href="filesUrl+'#playlist:'+encodeURIComponent(row.item.short_name)">
-                                {{ row.item.num_songs }}
-                            </a>
-                            ({{ formatLength(row.item.total_length) }})
-                        </template>
-                        <template v-else>
-                            &nbsp;
-                        </template>
-                    </template>
-                </data-table>
-            </b-tab>
-            <b-tab
-                :title="$gettext('Schedule View')"
-                no-body
-            >
-                <schedule
-                    ref="$schedule"
-                    :schedule-url="scheduleUrl"
-                    :station-time-zone="stationTimeZone"
-                    @click="doCalendarClick"
-                />
-            </b-tab>
-        </b-tabs>
+                                    </a>
+                                </div>
+                            </template>
+                        </data-table>
+                    </div>
+                </o-tab-item>
+                <o-tab-item :label="$gettext('Schedule View')">
+                    <div class="card-body-flush">
+                        <schedule
+                            ref="$schedule"
+                            :timezone="timezone"
+                            :schedule-url="scheduleUrl"
+                            @click="doCalendarClick"
+                        />
+                    </div>
+                </o-tab-item>
+            </o-tabs>
+        </div>
     </section>
 
     <edit-modal
         ref="$editModal"
         :create-url="listUrl"
-        :station-time-zone="stationTimeZone"
-        :enable-advanced-features="enableAdvancedFeatures"
         @relist="relist"
         @needs-restart="mayNeedRestart"
     />
@@ -254,6 +294,10 @@
         @relist="relist"
         @needs-restart="mayNeedRestart"
     />
+    <apply-to-modal
+        ref="$applyToModal"
+        @relist="relist"
+    />
 </template>
 
 <script setup>
@@ -265,43 +309,30 @@ import ImportModal from './Playlists/ImportModal';
 import QueueModal from './Playlists/QueueModal';
 import Icon from '~/components/Common/Icon';
 import CloneModal from './Playlists/CloneModal';
-import humanizeDuration from 'humanize-duration';
-import {useAzuraCast} from "~/vendor/azuracast";
+import ApplyToModal from "./Playlists/ApplyToModal.vue";
 import {useTranslate} from "~/vendor/gettext";
 import {ref} from "vue";
 import useHasEditModal from "~/functions/useHasEditModal";
-import {mayNeedRestartProps, useMayNeedRestart} from "~/functions/useMayNeedRestart";
-import {useNotify} from "~/vendor/bootstrapVue";
+import {useMayNeedRestart} from "~/functions/useMayNeedRestart";
+import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
 import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
+import {useAzuraCastStation} from "~/vendor/azuracast";
+import {useLuxon} from "~/vendor/luxon";
+import {getStationApiUrl} from "~/router";
+import TimeZone from "~/components/Stations/Common/TimeZone.vue";
 
 const props = defineProps({
-    ...mayNeedRestartProps,
-    listUrl: {
-        type: String,
-        required: true
-    },
-    scheduleUrl: {
-        type: String,
-        required: true
-    },
-    filesUrl: {
-        type: String,
-        required: true
-    },
-    stationTimeZone: {
-        type: String,
-        required: true
-    },
     useManualAutoDj: {
         type: Boolean,
         required: true
     },
-    enableAdvancedFeatures: {
-        type: Boolean,
-        required: true
-    }
 });
+
+const listUrl = getStationApiUrl('/playlists');
+const scheduleUrl = getStationApiUrl('/playlists/schedule');
+
+const {timezone} = useAzuraCastStation();
 
 const {$gettext} = useTranslate();
 
@@ -312,22 +343,28 @@ const fields = [
     {key: 'actions', label: $gettext('Actions'), sortable: false, class: 'shrink'}
 ];
 
+const toggleButtonClass = (record) => {
+    return (record.is_enabled)
+        ? 'btn-warning'
+        : 'btn-success';
+}
+
 const langToggleButton = (record) => {
     return (record.is_enabled)
         ? $gettext('Disable')
         : $gettext('Enable');
 };
 
-const {localeShort} = useAzuraCast();
+const {Duration} = useLuxon();
 
-const formatLength = (length) => humanizeDuration(
-    length * 1000,
-    {
-        round: true,
-        language: localeShort,
-        fallbacks: ['en']
+const formatLength = (length) => {
+    if (0 === length) {
+        return $gettext('None');
     }
-);
+
+    const duration = Duration.fromMillis(length * 1000);
+    return duration.rescale().toHuman();
+};
 
 const $datatable = ref(); // Template Ref
 const $schedule = ref(); // Template Ref
@@ -336,6 +373,10 @@ const relist = () => {
     $datatable.value?.refresh();
     $schedule.value?.refresh();
 };
+
+const toggleDetails = (row) => {
+    $datatable.value?.toggleDetails(row);
+}
 
 const $editModal = ref(); // Template Ref
 const {doCreate, doEdit} = useHasEditModal($editModal);
@@ -368,10 +409,16 @@ const doClone = (name, url) => {
     $cloneModal.value?.open(name, url);
 };
 
+const $applyToModal = ref(); // Template Ref
+
+const doApplyTo = (url) => {
+    $applyToModal.value?.open(url);
+}
+
 const {
     mayNeedRestart: originalMayNeedRestart,
     needsRestart: originalNeedsRestart
-} = useMayNeedRestart(props);
+} = useMayNeedRestart();
 
 const mayNeedRestart = () => {
     if (!props.useManualAutoDj) {
@@ -405,6 +452,14 @@ const doModify = (url) => {
 
 const {doDelete} = useConfirmAndDelete(
     $gettext('Delete Playlist?'),
+    () => {
+        relist();
+        needsRestart();
+    },
+);
+
+const {doDelete: doEmpty} = useConfirmAndDelete(
+    $gettext('Clear all media from playlist?'),
     () => {
         relist();
         needsRestart();

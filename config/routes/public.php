@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Controller;
 use App\Http\Response;
 use App\Http\ServerRequest;
@@ -29,6 +31,9 @@ return static function (RouteCollectorProxy $app) {
             $group->get('[/{embed:embed|social}]', Controller\Frontend\PublicPages\PlayerAction::class)
                 ->setName('public:index');
 
+            $group->get('/oembed/{format:json|xml}', Controller\Frontend\PublicPages\OEmbedAction::class)
+                ->setName('public:oembed');
+
             $group->get('/app.webmanifest', Controller\Frontend\PWA\AppManifestAction::class)
                 ->setName('public:manifest');
 
@@ -50,7 +55,7 @@ return static function (RouteCollectorProxy $app) {
             $group->get('/schedule[/{embed:embed}]', Controller\Frontend\PublicPages\ScheduleAction::class)
                 ->setName('public:schedule');
 
-            $group->get('/podcasts', Controller\Frontend\PublicPages\PodcastsController::class)
+            $group->get('/podcasts', Controller\Frontend\PublicPages\PodcastsAction::class)
                 ->setName('public:podcasts');
 
             $group->get(
@@ -69,6 +74,6 @@ return static function (RouteCollectorProxy $app) {
                 ->setName('public:podcast:feed');
         }
     )
-        ->add(Middleware\GetStation::class)
-        ->add(Middleware\EnableView::class);
+        ->add(Middleware\EnableView::class)
+        ->add(Middleware\GetStation::class);
 };

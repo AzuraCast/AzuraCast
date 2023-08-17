@@ -4,7 +4,11 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Stations\Podcasts\Episodes\Media;
 
-use App\Entity;
+use App\Controller\SingleActionInterface;
+use App\Entity\Api\Error;
+use App\Entity\PodcastEpisode;
+use App\Entity\PodcastMedia;
+use App\Entity\Repository\PodcastEpisodeRepository;
 use App\Flysystem\StationFilesystems;
 use App\Http\Response;
 use App\Http\ServerRequest;
@@ -44,10 +48,10 @@ use Psr\Http\Message\ResponseInterface;
         new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
     ]
 )]
-final class GetMediaAction
+final class GetMediaAction implements SingleActionInterface
 {
     public function __construct(
-        private readonly Entity\Repository\PodcastEpisodeRepository $episodeRepo,
+        private readonly PodcastEpisodeRepository $episodeRepo,
         private readonly StationFilesystems $stationFilesystems,
     ) {
     }
@@ -55,19 +59,20 @@ final class GetMediaAction
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        string $station_id,
-        string $podcast_id,
-        string $episode_id
+        array $params
     ): ResponseInterface {
         set_time_limit(600);
 
-        $station = $request->getStation();
-        $episode = $this->episodeRepo->fetchEpisodeForStation($station, $episode_id);
+        /** @var string $episodeId */
+        $episodeId = $params['episode_id'];
 
-        if ($episode instanceof Entity\PodcastEpisode) {
+        $station = $request->getStation();
+        $episode = $this->episodeRepo->fetchEpisodeForStation($station, $episodeId);
+
+        if ($episode instanceof PodcastEpisode) {
             $podcastMedia = $episode->getMedia();
 
-            if ($podcastMedia instanceof Entity\PodcastMedia) {
+            if ($podcastMedia instanceof PodcastMedia) {
                 $fsPodcasts = $this->stationFilesystems->getPodcastsFilesystem($station);
 
                 $path = $podcastMedia->getPath();
@@ -83,6 +88,6 @@ final class GetMediaAction
         }
 
         return $response->withStatus(404)
-            ->withJson(Entity\Api\Error::notFound());
+            ->withJson(Error::notFound());
     }
 }

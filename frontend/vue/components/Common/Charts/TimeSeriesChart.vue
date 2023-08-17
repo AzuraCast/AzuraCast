@@ -10,49 +10,35 @@
 </template>
 
 <script setup>
-import {get} from "@vueuse/core";
 import {Tableau20} from "~/vendor/chartjs-colorschemes/colorschemes.tableau";
-import {DateTime} from "luxon";
-import {defaultsDeep} from "lodash";
-import {Chart} from "chart.js";
-import {onMounted, onUnmounted, ref} from "vue";
+import {ref} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import ChartAltValues from "~/components/Common/Charts/ChartAltValues.vue";
+import useChart, {chartProps} from "~/functions/useChart";
+import {useLuxon} from "~/vendor/luxon";
 
 const props = defineProps({
-    options: {
-        type: Object,
-        default: () => {
-            return {};
-        }
-    },
-    data: {
-        type: Array,
-        default: () => {
-            return [];
-        }
-    },
-    alt: {
-        type: Array,
-        default: () => {
-            return [];
-        }
-    }
+    ...chartProps,
 });
 
 const $canvas = ref(); // Template ref
-let $chart = null;
 
 const {$gettext} = useTranslate();
+const {DateTime} = useLuxon();
 
-onMounted(() => {
-    const defaultOptions = {
+useChart(
+    props,
+    $canvas,
+    {
         type: 'line',
-        data: {
-            datasets: props.data
-        },
         options: {
             aspectRatio: 3,
+            datasets: {
+                line: {
+                    spanGaps: true,
+                    showLine: true
+                }
+            },
             plugins: {
                 zoom: {
                     // Container for pan options
@@ -107,19 +93,6 @@ onMounted(() => {
                 }
             }
         }
-    };
-
-    if ($chart) {
-        $chart.destroy();
     }
-
-    let chartOptions = defaultsDeep({}, props.options, defaultOptions);
-    $chart = new Chart(get($canvas).getContext('2d'), chartOptions);
-});
-
-onUnmounted(() => {
-    if ($chart) {
-        $chart.destroy();
-    }
-});
+);
 </script>

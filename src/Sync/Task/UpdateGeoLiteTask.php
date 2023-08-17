@@ -4,27 +4,23 @@ declare(strict_types=1);
 
 namespace App\Sync\Task;
 
-use App\Doctrine\ReloadableEntityManagerInterface;
-use App\Entity;
+use App\Container\SettingsAwareTrait;
 use App\Service\IpGeolocator\GeoLite;
 use Exception;
 use GuzzleHttp\Client;
 use GuzzleHttp\RequestOptions;
-use Psr\Log\LoggerInterface;
 use RuntimeException;
 use Symfony\Component\Process\Process;
 
 final class UpdateGeoLiteTask extends AbstractTask
 {
+    use SettingsAwareTrait;
+
     private const UPDATE_THRESHOLD = 86000;
 
     public function __construct(
-        private readonly Client $httpClient,
-        private readonly Entity\Repository\SettingsRepository $settingsRepo,
-        ReloadableEntityManagerInterface $em,
-        LoggerInterface $logger,
+        private readonly Client $httpClient
     ) {
-        parent::__construct($em, $logger);
     }
 
     public static function getSchedulePattern(): string
@@ -34,7 +30,7 @@ final class UpdateGeoLiteTask extends AbstractTask
 
     public function run(bool $force = false): void
     {
-        $settings = $this->settingsRepo->readSettings();
+        $settings = $this->readSettings();
 
         if (!$force) {
             $lastRun = $settings->getGeoliteLastRun();
@@ -57,9 +53,9 @@ final class UpdateGeoLiteTask extends AbstractTask
             );
         }
 
-        $settings = $this->settingsRepo->readSettings();
+        $settings = $this->readSettings();
         $settings->updateGeoliteLastRun();
-        $this->settingsRepo->writeSettings($settings);
+        $this->writeSettings($settings);
     }
 
     public function updateDatabase(string $licenseKey): void

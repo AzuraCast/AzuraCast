@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Internal;
 
+use App\Container\EntityManagerAwareTrait;
+use App\Container\LoggerAwareTrait;
+use App\Controller\SingleActionInterface;
 use App\Entity\Repository\StorageLocationRepository;
 use App\Entity\SftpUser;
 use App\Entity\StorageLocation;
@@ -11,20 +14,19 @@ use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Media\BatchUtilities;
 use App\Message\AddNewMediaMessage;
-use Doctrine\ORM\EntityManagerInterface;
 use League\Flysystem\PathPrefixer;
 use LogicException;
 use Psr\Http\Message\ResponseInterface;
-use Psr\Log\LoggerInterface;
 use Symfony\Component\Messenger\MessageBus;
 use Throwable;
 
-final class SftpEventAction
+final class SftpEventAction implements SingleActionInterface
 {
+    use LoggerAwareTrait;
+    use EntityManagerAwareTrait;
+
     public function __construct(
-        private readonly EntityManagerInterface $em,
         private readonly MessageBus $messageBus,
-        private readonly LoggerInterface $logger,
         private readonly BatchUtilities $batchUtilities,
         private readonly StorageLocationRepository $storageLocationRepo
     ) {
@@ -32,7 +34,8 @@ final class SftpEventAction
 
     public function __invoke(
         ServerRequest $request,
-        Response $response
+        Response $response,
+        array $params
     ): ResponseInterface {
         $errorResponse = $response->withStatus(500)->withJson(['success' => false]);
 

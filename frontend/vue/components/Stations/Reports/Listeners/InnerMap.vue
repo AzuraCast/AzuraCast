@@ -11,28 +11,35 @@
 </template>
 
 <script setup>
-import {onMounted, provide, ref, shallowRef} from "vue";
-import L from "~/vendor/leaflet";
-import {useAzuraCast} from "~/vendor/azuracast";
-
-const props = defineProps({
-    attribution: {
-        type: String,
-        required: true
-    }
-});
+import {onMounted, provide, ref, shallowRef, watch} from "vue";
+import L from 'leaflet';
+import useGetTheme from "~/functions/useGetTheme";
+import 'leaflet-fullscreen';
+import {useTranslate} from "~/vendor/gettext";
 
 const $container = ref(); // Template Ref
 const $map = shallowRef();
 
 provide('map', $map);
 
-const {theme} = useAzuraCast();
+const {theme} = useGetTheme();
+const {$gettext} = useTranslate();
 
 onMounted(() => {
+    L.Icon.Default.imagePath = '/static/img/leaflet/';
+
     // Init map
-    const map = L.map($container.value);
+    const map = L.map(
+        $container.value
+    );
     map.setView([40, 0], 1);
+
+    map.addControl(new L.Control.Fullscreen({
+        title: {
+            'false': $gettext('View Fullscreen'),
+            'true': $gettext('Exit Fullscreen')
+        }
+    }));
 
     $map.value = map;
 
@@ -41,21 +48,22 @@ onMounted(() => {
     const tileAttribution = 'Map tiles by Carto, under CC BY 3.0. Data by OpenStreetMap, under ODbL.';
 
     L.tileLayer(tileUrl, {
-        theme: theme,
+        theme: theme.value,
         attribution: tileAttribution,
     }).addTo(map);
 
-    /*
-    // Add fullscreen control
-    const fullscreenControl = new L.Control.Fullscreen();
-    map.addControl(fullscreenControl)
-     */
-
+    watch(theme, (newTheme) => {
+        L.tileLayer(tileUrl, {
+            theme: newTheme,
+            attribution: tileAttribution,
+        }).addTo(map);
+    });
 });
 </script>
 
 <style lang="scss">
 @import 'leaflet/dist/leaflet.css';
+@import 'leaflet-fullscreen/dist/leaflet.fullscreen.css';
 
 .leaflet-container {
     height: 300px;

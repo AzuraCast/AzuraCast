@@ -3,119 +3,104 @@
         {{ $gettext('Backups') }}
     </h2>
 
-    <div class="card-deck">
-        <section
-            class="card mb-3"
-            role="region"
-            aria-labelledby="hdr_automatic_backups"
-        >
-            <b-card-header header-bg-variant="primary-dark">
-                <h2
-                    id="hdr_automatic_backups"
-                    class="card-title"
-                >
-                    {{ $gettext('Automatic Backups') }}
-                    <enabled-badge :enabled="settings.backupEnabled" />
-                </h2>
-            </b-card-header>
+    <div class="row row-of-cards">
+        <div class="col-md-6">
+            <card-page header-id="hdr_automatic_backups">
+                <template #header="{id}">
+                    <h2
+                        :id="id"
+                        class="card-title"
+                    >
+                        {{ $gettext('Automatic Backups') }}
+                        <enabled-badge :enabled="settings.backupEnabled" />
+                    </h2>
+                </template>
 
-            <b-overlay
-                variant="card"
-                :show="settingsLoading"
+                <loading :loading="settingsLoading">
+                    <div
+                        v-if="settings.backupEnabled"
+                        class="card-body"
+                    >
+                        <p
+                            v-if="settings.backupLastRun > 0"
+                            class="card-text"
+                        >
+                            {{ $gettext('Last run:') }}
+                            {{ timestampToRelative(settings.backupLastRun) }}
+                        </p>
+                        <p
+                            v-else
+                            class="card-text"
+                        >
+                            {{ $gettext('Never run') }}
+                        </p>
+                    </div>
+                </loading>
+
+                <template #footer_actions>
+                    <button
+                        type="button"
+                        class="btn btn-primary"
+                        @click="doConfigure"
+                    >
+                        <icon icon="settings" />
+                        <span>
+                            {{ $gettext('Configure') }}
+                        </span>
+                    </button>
+                    <button
+                        v-if="settings.backupEnabled && settings.backupLastOutput !== ''"
+                        type="button"
+                        class="btn btn-secondary"
+                        @click="showLastOutput"
+                    >
+                        <icon icon="assignment" />
+                        <span>
+                            {{ $gettext('Most Recent Backup Log') }}
+                        </span>
+                    </button>
+                </template>
+            </card-page>
+        </div>
+        <div class="col-md-6">
+            <card-page
+                header-id="hdr_restoring_backups"
+                :title="$gettext('Restoring Backups')"
             >
-                <div
-                    v-if="settings.backupEnabled"
-                    class="card-body"
-                >
-                    <p
-                        v-if="settings.backupLastRun > 0"
-                        class="card-text"
-                    >
-                        {{ $gettext('Last run:') }}
-                        {{ toRelativeTime(settings.backupLastRun) }}
+                <div class="card-body">
+                    <p class="card-text">
+                        {{ $gettext('To restore a backup from your host computer, run:') }}
                     </p>
-                    <p
-                        v-else
-                        class="card-text"
-                    >
-                        {{ $gettext('Never run') }}
+
+                    <pre v-if="isDocker"><code>./docker.sh restore path_to_backup.zip</code></pre>
+                    <pre v-else><code>/var/azuracast/www/bin/console azuracast:restore path_to_backup.zip</code></pre>
+
+                    <p class="card-text text-warning">
+                        {{
+                            $gettext('Note that restoring a backup will clear your existing database. Never restore backup files from untrusted users.')
+                        }}
                     </p>
                 </div>
-            </b-overlay>
-
-            <div class="card-actions">
-                <b-button
-                    variant="outline-primary"
-                    @click.prevent="doConfigure"
-                >
-                    <icon icon="settings" />
-                    {{ $gettext('Configure') }}
-                </b-button>
-                <b-button
-                    v-if="settings.backupEnabled && settings.backupLastOutput !== ''"
-                    variant="outline-secondary"
-                    @click.prevent="showLastOutput"
-                >
-                    <icon icon="assignment" />
-                    {{ $gettext('Most Recent Backup Log') }}
-                </b-button>
-            </div>
-        </section>
-
-        <section
-            class="card mb-3"
-            role="region"
-            aria-labelledby="hdr_restoring_backups"
-        >
-            <b-card-header header-bg-variant="primary-dark">
-                <h2
-                    id="hdr_restoring_backups"
-                    class="card-title"
-                >
-                    {{ $gettext('Restoring Backups') }}
-                </h2>
-            </b-card-header>
-
-            <div class="card-body">
-                <p class="card-text">
-                    {{ $gettext('To restore a backup from your host computer, run:') }}
-                </p>
-
-                <pre v-if="isDocker"><code>./docker.sh restore path_to_backup.zip</code></pre>
-                <pre v-else><code>/var/azuracast/www/bin/console azuracast:restore path_to_backup.zip</code></pre>
-
-                <p class="card-text text-warning">
-                    {{
-                        $gettext('Note that restoring a backup will clear your existing database. Never restore backup files from untrusted users.')
-                    }}
-                </p>
-            </div>
-        </section>
+            </card-page>
+        </div>
     </div>
 
-    <section
-        class="card mb-3"
-        role="region"
-        aria-labelledby="hdr_backups"
+    <card-page
+        header-id="hdr_backups"
+        :title="$gettext('Backups')"
     >
-        <b-card-header header-bg-variant="primary-dark">
-            <h2
-                id="hdr_backups"
-                class="card-title"
-            >
-                {{ $gettext('Backups') }}
-            </h2>
-        </b-card-header>
-
-        <b-card-body body-class="card-padding-sm">
-            <b-button
-                variant="outline-primary"
-                @click.prevent="doRunBackup"
+        <template #actions>
+            <button
+                type="button"
+                class="btn btn-primary"
+                @click="doRunBackup"
             >
                 <icon icon="send" />
-                {{ $gettext('Run Manual Backup') }}
-            </b-button>
-        </b-card-body>
+                <span>
+                    {{ $gettext('Run Manual Backup') }}
+                </span>
+            </button>
+        </template>
 
         <data-table
             id="api_keys"
@@ -124,26 +109,25 @@
             :api-url="listUrl"
         >
             <template #cell(actions)="row">
-                <b-button-group size="sm">
-                    <b-button
-                        size="sm"
-                        variant="primary"
+                <div class="btn-group btn-group-sm">
+                    <a
+                        class="btn btn-primary"
                         :href="row.item.links.download"
                         target="_blank"
                     >
                         {{ $gettext('Download') }}
-                    </b-button>
-                    <b-button
-                        size="sm"
-                        variant="danger"
-                        @click.prevent="doDelete(row.item.links.delete)"
+                    </a>
+                    <button
+                        type="button"
+                        class="btn btn-danger"
+                        @click="doDelete(row.item.links.delete)"
                     >
                         {{ $gettext('Delete') }}
-                    </b-button>
-                </b-button-group>
+                    </button>
+                </div>
             </template>
         </data-table>
-    </section>
+    </card-page>
 
     <admin-backups-configure-modal
         ref="$configureModal"
@@ -169,7 +153,6 @@
 import Icon from "~/components/Common/Icon.vue";
 import DataTable from "~/components/Common/DataTable.vue";
 import AdminBackupsLastOutputModal from "./Backups/LastOutputModal.vue";
-import {DateTime} from 'luxon';
 import formatFileSize from "~/functions/formatFileSize";
 import AdminBackupsConfigureModal from "~/components/Admin/Backups/ConfigureModal.vue";
 import AdminBackupsRunBackupModal from "~/components/Admin/Backups/RunBackupModal.vue";
@@ -177,23 +160,15 @@ import EnabledBadge from "~/components/Common/Badges/EnabledBadge.vue";
 import {useAzuraCast} from "~/vendor/azuracast";
 import {onMounted, ref} from "vue";
 import {useTranslate} from "~/vendor/gettext";
-import {useNotify} from "~/vendor/bootstrapVue";
+import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
 import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
+import Loading from "~/components/Common/Loading.vue";
+import CardPage from "~/components/Common/CardPage.vue";
+import {useLuxon} from "~/vendor/luxon";
+import {getApiUrl} from "~/router";
 
 const props = defineProps({
-    listUrl: {
-        type: String,
-        required: true
-    },
-    settingsUrl: {
-        type: String,
-        required: true
-    },
-    runBackupUrl: {
-        type: String,
-        required: true
-    },
     storageLocations: {
         type: Object,
         required: true
@@ -203,6 +178,10 @@ const props = defineProps({
         default: true
     },
 });
+
+const listUrl = getApiUrl('/admin/backups');
+const runBackupUrl = getApiUrl('/admin/backups/run');
+const settingsUrl = getApiUrl('/admin/settings/backup');
 
 const settingsLoading = ref(false);
 
@@ -216,6 +195,7 @@ const settings = ref({...blankSettings});
 
 const {$gettext} = useTranslate();
 const {timeConfig} = useAzuraCast();
+const {DateTime} = useLuxon();
 
 const fields = [
     {
@@ -256,7 +236,7 @@ const {axios} = useAxios();
 const relist = () => {
     settingsLoading.value = true;
     wrapWithLoading(
-        axios.get(props.settingsUrl)
+        axios.get(settingsUrl.value)
     ).then((resp) => {
         settings.value = {
             backupEnabled: resp.data.backup_enabled,
@@ -271,9 +251,7 @@ const relist = () => {
 
 onMounted(relist);
 
-const toRelativeTime = (timestamp) => {
-    return DateTime.fromSeconds(timestamp).toRelative();
-};
+const {timestampToRelative} = useLuxon();
 
 const $lastOutputModal = ref(); // AdminBackupsLastOutputModal
 const showLastOutput = () => {

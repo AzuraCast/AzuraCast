@@ -1,7 +1,8 @@
 <template>
-    <b-modal
+    <modal
         id="logs_modal"
         ref="$modal"
+        size="xl"
         :title="$gettext('Log Viewer')"
     >
         <textarea
@@ -12,34 +13,34 @@
         />
 
         <template #modal-footer>
-            <b-button
-                variant="default"
+            <button
+                class="btn btn-secondary"
                 type="button"
                 @click="close"
             >
                 {{ $gettext('Close') }}
-            </b-button>
-            <b-button
-                variant="primary"
-                class="btn_copy"
+            </button>
+            <button
+                class="btn btn-primary"
                 type="button"
                 @click.prevent="doCopy"
             >
                 {{ $gettext('Copy to Clipboard') }}
-            </b-button>
+            </button>
         </template>
-    </b-modal>
+    </modal>
 </template>
 
 <script setup>
 import {ref} from "vue";
 import {useClipboard} from "@vueuse/core";
+import Modal from "~/components/Common/Modal.vue";
 
 const logs = ref('Loading...');
 const $modal = ref(); // Template Ref
 
 const show = (newLogs) => {
-    let logDisplay = [];
+    const logDisplay = [];
     newLogs.forEach((log) => {
         logDisplay.push(log);
     });

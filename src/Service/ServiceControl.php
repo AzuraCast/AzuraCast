@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace App\Service;
 
-use App\Environment;
+use App\Container\EnvironmentAwareTrait;
 use App\Exception\SupervisorException;
 use App\Service\ServiceControl\ServiceData;
+use InvalidArgumentException;
 use Supervisor\Exception\Fault\BadNameException;
 use Supervisor\Exception\Fault\NotRunningException;
 use Supervisor\Exception\SupervisorException as SupervisorLibException;
@@ -15,9 +16,10 @@ use Supervisor\SupervisorInterface;
 
 final class ServiceControl
 {
+    use EnvironmentAwareTrait;
+
     public function __construct(
         private readonly SupervisorInterface $supervisor,
-        private readonly Environment $environment,
         private readonly Centrifugo $centrifugo
     ) {
     }
@@ -55,7 +57,7 @@ final class ServiceControl
     {
         $serviceNames = $this->getServiceNames();
         if (!isset($serviceNames[$service])) {
-            throw new \InvalidArgumentException(
+            throw new InvalidArgumentException(
                 sprintf('Service "%s" is not managed by AzuraCast.', $service)
             );
         }
@@ -84,6 +86,7 @@ final class ServiceControl
             'redis' => __('Cache'),
             'sftpgo' => __('SFTP service'),
             'centrifugo' => __('Live Now Playing updates'),
+            'vite' => __('Frontend Assets'),
         ];
 
         if (!$this->centrifugo->isSupported()) {
@@ -96,6 +99,10 @@ final class ServiceControl
 
         if (!$this->environment->useLocalRedis()) {
             unset($services['redis']);
+        }
+
+        if (!$this->environment->isDevelopment()) {
+            unset($services['vite']);
         }
 
         return $services;

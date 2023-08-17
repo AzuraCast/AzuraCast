@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace App;
 
+use Exception as PhpException;
 use Psr\Log\LogLevel;
 use Throwable;
 
-class Exception extends \Exception
+class Exception extends PhpException
 {
     /** @var string The logging severity of the exception. */
     protected string $loggerLevel;

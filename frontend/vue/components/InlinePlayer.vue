@@ -7,13 +7,14 @@
 
     <div
         v-if="isPlaying"
-        class="ml-3 player-inline"
+        v-bind="$attrs"
+        class="player-inline"
     >
         <div
             v-if="!current.isStream && duration !== 0"
-            class="inline-seek d-inline-flex align-items-center ml-1"
+            class="inline-seek d-inline-flex align-items-center ms-1"
         >
-            <div class="flex-shrink-0 mx-1 text-white-50 time-display">
+            <div class="flex-shrink-0 mx-1 text-muted time-display">
                 {{ currentTimeText }}
             </div>
             <div class="flex-fill mx-2">
@@ -21,29 +22,29 @@
                     v-model="progress"
                     type="range"
                     :title="$gettext('Seek')"
-                    class="player-seek-range custom-range"
+                    class="player-seek-range form-range"
                     min="0"
                     max="100"
                     step="1"
                 >
             </div>
-            <div class="flex-shrink-0 mx-1 text-white-50 time-display">
+            <div class="flex-shrink-0 mx-1 text-muted time-display">
                 {{ durationText }}
             </div>
         </div>
 
-        <a
-            class="btn btn-sm btn-outline-light px-2 ml-1"
-            href="#"
+        <button
+            type="button"
+            class="btn p-2 ms-2"
             :aria-label="$gettext('Stop')"
-            @click.prevent="stop()"
+            @click="stop()"
         >
             <icon icon="stop" />
-        </a>
-        <div class="inline-volume-controls d-inline-flex align-items-center ml-1">
+        </button>
+        <div class="inline-volume-controls d-inline-flex align-items-center ms-2">
             <div class="flex-shrink-0">
                 <mute-button
-                    class="btn btn-sm btn-outline-light px-2"
+                    class="btn p-2"
                     :volume="volume"
                     :is-muted="isMuted"
                     @toggle-mute="toggleMute"
@@ -54,7 +55,7 @@
                     v-model.number="volume"
                     type="range"
                     :title="$gettext('Volume')"
-                    class="player-volume-range custom-range"
+                    class="player-volume-range form-range"
                     min="0"
                     max="100"
                     step="1"
@@ -68,10 +69,14 @@
 import AudioPlayer from '~/components/Common/AudioPlayer.vue';
 import formatTime from '~/functions/formatTime.js';
 import Icon from '~/components/Common/Icon.vue';
-import {usePlayerStore} from "~/store.js";
+import {usePlayerStore} from "~/store";
 import {useLocalStorage} from "@vueuse/core";
 import {computed, ref, toRef} from "vue";
 import MuteButton from "~/components/Common/MuteButton.vue";
+
+defineOptions({
+    inheritAttrs: false
+});
 
 const store = usePlayerStore();
 const isPlaying = toRef(store, 'isPlaying');
@@ -121,6 +126,10 @@ const stop = () => {
 const toggleMute = () => {
     isMuted.value = !isMuted.value;
 };
+
+defineExpose({
+    stop
+});
 </script>
 
 <style lang="scss">

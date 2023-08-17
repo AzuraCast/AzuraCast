@@ -16,10 +16,10 @@
                     </h6>
                     <div
                         v-if="!file.isCompleted"
-                        class="progress h-15 my-1"
+                        class="progress h-20 my-1"
                     >
                         <div
-                            class="progress-bar h-15"
+                            class="progress-bar h-20"
                             role="progressbar"
                             :style="{width: file.progressPercent+'%'}"
                             :aria-valuenow="file.progressPercent"
@@ -47,11 +47,13 @@
             {{ $gettext('Drag file(s) here to upload or') }}
             <button
                 ref="$fileBrowseTarget"
-                class="file-upload btn btn-primary text-center ml-1"
                 type="button"
+                class="file-upload btn btn-primary text-center ms-1"
             >
                 <icon icon="cloud_upload" />
-                {{ $gettext('Select File') }}
+                <span>
+                    {{ $gettext('Select File') }}
+                </span>
             </button>
             <small class="file-name" />
             <input
@@ -138,7 +140,7 @@ const {apiCsrf} = useAzuraCast();
 const {$gettext} = useTranslate();
 
 onMounted(() => {
-    let defaultConfig = {
+    const defaultConfig = {
         target: () => {
             return props.targetUrl
         },
@@ -156,7 +158,7 @@ onMounted(() => {
         maxChunkRetries: 3,
         testChunks: false
     };
-    let config = defaultsDeep({}, props.flowConfiguration, defaultConfig);
+    const config = defaultsDeep({}, props.flowConfiguration, defaultConfig);
 
     flow = new Flow(config);
 
@@ -179,7 +181,7 @@ onMounted(() => {
     flow.on('fileSuccess', (file, message) => {
         files.get(file).isCompleted = true;
 
-        let messageJson = JSON.parse(message);
+        const messageJson = JSON.parse(message);
         emit('success', file, messageJson);
     });
 
@@ -189,7 +191,7 @@ onMounted(() => {
         let messageText = $gettext('Could not upload file.');
         try {
             if (typeof message !== 'undefined') {
-                let messageJson = JSON.parse(message);
+                const messageJson = JSON.parse(message);
                 if (typeof messageJson.message !== 'undefined') {
                     messageText = messageJson.message;
                     if (messageText.indexOf(': ') > -1) {

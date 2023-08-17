@@ -9,8 +9,8 @@
         @submit="doSubmit"
         @hidden="clearContents"
     >
-        <b-row>
-            <b-col md="7">
+        <div class="row">
+            <div class="col-md-7">
                 <h5 class="mt-2">
                     {{ $gettext('Step 1: Scan QR Code') }}
                 </h5>
@@ -31,25 +31,21 @@
                     }}
                 </p>
 
-                <b-form-fieldset>
-                    <b-wrapped-form-group
+                <form-fieldset>
+                    <form-group-field
                         id="form_otp"
                         :field="v$.otp"
                         autofocus
-                    >
-                        <template #label>
-                            {{ $gettext('Code from Authenticator App') }}
-                        </template>
-                        <template #description>
-                            {{
-                                $gettext('Enter the current code provided by your authenticator app to verify that it\'s working correctly.')
-                            }}
-                        </template>
-                    </b-wrapped-form-group>
-                </b-form-fieldset>
-            </b-col>
-            <b-col md="5">
-                <b-img :src="totp.qr_code" />
+                        :label="$gettext('Code from Authenticator App')"
+                        :description="$gettext('Enter the current code provided by your authenticator app to verify that it\'s working correctly.')"
+                    />
+                </form-fieldset>
+            </div>
+            <div class="col-md-5">
+                <img
+                    :src="totp.qr_code"
+                    :alt="$gettext('QR Code')"
+                >
 
                 <div
                     v-if="totp.totp_uri"
@@ -64,8 +60,8 @@
                     </code>
                     <copy-to-clipboard-button :text="totp.totp_uri" />
                 </div>
-            </b-col>
-        </b-row>
+            </div>
+        </div>
 
         <template #save-button-name>
             {{ $gettext('Submit Code') }}
@@ -76,13 +72,13 @@
 <script setup>
 import ModalForm from "~/components/Common/ModalForm";
 import CopyToClipboardButton from "~/components/Common/CopyToClipboardButton";
-import BFormFieldset from "~/components/Form/BFormFieldset";
-import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
+import FormFieldset from "~/components/Form/FormFieldset";
+import FormGroupField from "~/components/Form/FormGroupField";
 import {minLength, required} from "@vuelidate/validators";
 import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
 import {ref} from "vue";
 import {useResettableRef} from "~/functions/useResettableRef";
-import {useNotify} from "~/vendor/bootstrapVue";
+import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
 
 const props = defineProps({

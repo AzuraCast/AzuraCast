@@ -1,29 +1,22 @@
 <template>
     <div class="row">
         <div class="col-md-8">
-            <section
-                class="card"
-                role="region"
-                aria-labelledby="hdr_sftp_users"
+            <card-page
+                header-id="hdr_sftp_users"
+                :title="$gettext('SFTP Users')"
             >
-                <b-card-header header-bg-variant="primary-dark">
-                    <h2
-                        id="hdr_sftp_users"
-                        class="card-title"
-                    >
-                        {{ $gettext('SFTP Users') }}
-                    </h2>
-                </b-card-header>
-
-                <b-card-body body-class="card-padding-sm">
-                    <b-button
-                        variant="outline-primary"
-                        @click.prevent="doCreate"
+                <template #actions>
+                    <button
+                        type="button"
+                        class="btn btn-primary"
+                        @click="doCreate"
                     >
                         <icon icon="add" />
-                        {{ $gettext('Add SFTP User') }}
-                    </b-button>
-                </b-card-body>
+                        <span>
+                            {{ $gettext('Add SFTP User') }}
+                        </span>
+                    </button>
+                </template>
 
                 <data-table
                     id="station_remotes"
@@ -33,40 +26,31 @@
                     :api-url="listUrl"
                 >
                     <template #cell(actions)="row">
-                        <b-button-group size="sm">
-                            <b-button
-                                size="sm"
-                                variant="primary"
-                                @click.prevent="doEdit(row.item.links.self)"
+                        <div class="btn-group btn-group-sm">
+                            <button
+                                type="button"
+                                class="btn btn-primary"
+                                @click="doEdit(row.item.links.self)"
                             >
                                 {{ $gettext('Edit') }}
-                            </b-button>
-                            <b-button
-                                size="sm"
-                                variant="danger"
-                                @click.prevent="doDelete(row.item.links.self)"
+                            </button>
+                            <button
+                                type="button"
+                                class="btn btn-danger"
+                                @click="doDelete(row.item.links.self)"
                             >
                                 {{ $gettext('Delete') }}
-                            </b-button>
-                        </b-button-group>
+                            </button>
+                        </div>
                     </template>
                 </data-table>
-            </section>
+            </card-page>
         </div>
         <div class="col-md-4">
-            <section
-                class="card"
-                role="region"
-                aria-labelledby="hdr_connection_info"
+            <card-page
+                header-id="hdr_connection_info"
+                :title="$gettext('Connection Information')"
             >
-                <div class="card-header bg-primary-dark">
-                    <h2
-                        id="hdr_connection_info"
-                        class="card-title"
-                    >
-                        {{ $gettext('Connection Information') }}
-                    </h2>
-                </div>
                 <div class="card-body">
                     <dl>
                         <dt class="mb-1">
@@ -85,7 +69,7 @@
                         <dd><code>{{ connectionInfo.port }}</code></dd>
                     </dl>
                 </div>
-            </section>
+            </card-page>
         </div>
 
         <sftp-users-edit-modal
@@ -105,17 +89,17 @@ import {ref} from "vue";
 import useHasDatatable from "~/functions/useHasDatatable";
 import useHasEditModal from "~/functions/useHasEditModal";
 import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
+import CardPage from "~/components/Common/CardPage.vue";
+import {getStationApiUrl} from "~/router";
 
 const props = defineProps({
-    listUrl: {
-        type: String,
-        required: true
-    },
     connectionInfo: {
         type: Object,
         required: true
     }
 });
+
+const listUrl = getStationApiUrl('/sftp-users');
 
 const {$gettext} = useTranslate();
 

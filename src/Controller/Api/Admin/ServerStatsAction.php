@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Admin;
 
-use App\Environment;
+use App\Container\EnvironmentAwareTrait;
+use App\Controller\SingleActionInterface;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\OpenApi;
@@ -35,16 +36,14 @@ use Psr\Http\Message\ResponseInterface;
         ]
     )
 ]
-final class ServerStatsAction
+final class ServerStatsAction implements SingleActionInterface
 {
-    public function __construct(
-        private readonly Environment $environment,
-    ) {
-    }
+    use EnvironmentAwareTrait;
 
     public function __invoke(
         ServerRequest $request,
-        Response $response
+        Response $response,
+        array $params
     ): ResponseInterface {
         $firstCpuMeasurement = CpuStats::getCurrentLoad();
         $firstNetworkMeasurement = NetworkStats::getNetworkUsage();
@@ -151,14 +150,20 @@ final class ServerStatsAction
                 'bytes' => [
                     'total' => $memoryStats->memTotal,
                     'free' => $memoryStats->memFree,
-                    'cached' => $memoryStats->cached,
+                    'buffers' => $memoryStats->buffers,
+                    'cached' => $memoryStats->getCachedMemory(),
+                    'sReclaimable' => $memoryStats->sReclaimable,
+                    'shmem' => $memoryStats->shmem,
                     'used' => $memoryStats->getUsedMemory(),
                 ],
                 'readable' => [
-                    'total' => Quota::getReadableSize($memoryStats->memTotal),
-                    'free' => Quota::getReadableSize($memoryStats->memFree),
-                    'cached' => Quota::getReadableSize($memoryStats->cached),
-                    'used' => Quota::getReadableSize($memoryStats->getUsedMemory()),
+                    'total' => Quota::getReadableSize($memoryStats->memTotal, 2),
+                    'free' => Quota::getReadableSize($memoryStats->memFree, 2),
+                    'buffers' => Quota::getReadableSize($memoryStats->buffers, 2),
+                    'cached' => Quota::getReadableSize($memoryStats->getCachedMemory(), 2),
+                    'sReclaimable' => Quota::getReadableSize($memoryStats->sReclaimable, 2),
+                    'shmem' => Quota::getReadableSize($memoryStats->shmem, 2),
+                    'used' => Quota::getReadableSize($memoryStats->getUsedMemory(), 2),
                 ],
             ],
             'swap' => [
@@ -168,9 +173,9 @@ final class ServerStatsAction
                     'used' => $memoryStats->getUsedSwap(),
                 ],
                 'readable' => [
-                    'total' => Quota::getReadableSize($memoryStats->swapTotal),
-                    'free' => Quota::getReadableSize($memoryStats->swapFree),
-                    'used' => Quota::getReadableSize($memoryStats->getUsedSwap()),
+                    'total' => Quota::getReadableSize($memoryStats->swapTotal, 2),
+                    'free' => Quota::getReadableSize($memoryStats->swapFree, 2),
+                    'used' => Quota::getReadableSize($memoryStats->getUsedSwap(), 2),
                 ],
             ],
             'disk' => [

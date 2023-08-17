@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Flysystem\Adapter;
 
 use League\Flysystem\StorageAttributes;

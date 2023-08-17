@@ -1,64 +1,34 @@
-.navdrawer {
-  display: none;
-  outline: 0;
-  overflow: hidden;
-  position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  z-index: map-get($navdrawer-elevation-shadow, elevation);
+.offcanvas.navdrawer {
+  width: $navdrawer-width;
+  box-shadow: 0 0 4px 0 rgba(0, 0, 0, .14), 0 3px 4px 0 rgba(0, 0, 0, .12), 0 1px 5px 0 rgba(0, 0, 0, .2);
 }
 
-// Backdrop
+@include media-breakpoint-up(lg) {
+  #main.has-sidebar {
+    margin-left: $navdrawer-width;
+  }
+  #footer.has-sidebar {
+    left: $navdrawer-width;
+  }
 
-.navdrawer-backdrop {
-  @include transition-standard-complex(opacity);
+  .offcanvas-backdrop {
+    display: none;
+  }
 
-  opacity: 0;
-  position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  z-index: (map-get($navdrawer-elevation-shadow, elevation) - 1);
-
-  &.show {
-    opacity: 1;
+  .offcanvas.navdrawer {
+    transform: none;
+    visibility: visible;
+    top: $header-nav-height;
+    z-index: auto;
   }
 }
 
 // Content
-
 .navdrawer-content {
-  @include transition-sharp(box-shadow, transform);
-
-  max-width: calc(100% - #{$navdrawer-gutter-width});
-  overflow-x: hidden;
-  overflow-y: auto;
-  position: fixed;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  transform: translate3d(-100%, 0, 0);
-  width: $navdrawer-width;
-
-  .navdrawer-right & {
-    right: 0;
-    left: auto;
-    transform: translate3d(100%, 0, 0);
-  }
-
-  .navdrawer.show & {
-    @include transition-deceleration(box-shadow, transform);
-
-    box-shadow: map-get($navdrawer-elevation-shadow, shadow);
-    transform: translate3d(0, 0, 0);
-  }
+  width: 100%;
 }
 
 // Misc
-
 .navdrawer-body {
   margin-bottom: $navdrawer-inner-spacer-y;
   padding-right: $navdrawer-inner-spacer-x;
@@ -67,28 +37,46 @@
 
 .navdrawer-header {
   display: block;
-  margin-bottom: $navdrawer-inner-spacer-y;
-  padding: $toolbar-padding-y $navdrawer-inner-spacer-x;
+  border-bottom: 1px solid rgba(0, 0, 0, .2);
+  padding: $navdrawer-inner-spacer-y $navdrawer-inner-spacer-x;
+
+  background-color: var(--bs-secondary-bg);
+
+  .navbar-brand {
+    font-size: 1.25rem;
+  }
 }
 
 .navdrawer-subheader {
   @include text-truncate;
 
   display: block;
-  font-weight: $navdrawer-subheader-font-weight;
   height: $navdrawer-subheader-height;
   line-height: 1;
   margin-top: 0;
   margin-bottom: 0;
-  padding: (($navdrawer-subheader-height - $navdrawer-subheader-font-size) * 0.5) $navdrawer-inner-spacer-x;
+  padding: ($navdrawer-subheader-height * 0.5) $navdrawer-inner-spacer-x;
+
+  color: var(--bs-secondary-color);
 
   .navdrawer-divider + & {
     margin-top: ($navdrawer-inner-spacer-y * -1);
   }
 }
 
-// Nav
+.navdrawer-alert {
+  display: block;
+  line-height: 1;
+  margin: 0;
 
+  a {
+    display: block;
+    color: inherit;
+    padding: $navdrawer-inner-spacer-x;
+  }
+}
+
+// Nav
 .navdrawer-nav {
   display: flex;
   flex-direction: column;
@@ -104,132 +92,40 @@
 
   .nav-link {
     @include text-truncate;
-    @include transition-standard(background-color, color);
 
-    font-size: $navdrawer-nav-link-font-size;
-    font-weight: $navdrawer-nav-link-font-weight;
+    display: inline-flex;
+    align-items: center;
+    width: 100%;
+
+    font-size: 1rem;
+    font-weight: 500;
+
     line-height: 1;
-    padding: (($navdrawer-nav-link-height - $navdrawer-nav-link-font-size) * 0.5) $navdrawer-inner-spacer-x;
+    padding: .75rem 1rem;
+
+    color: var(--bs-body-color);
+
+    & > .navdrawer-nav-icon {
+      font-size: 1.5rem;
+      margin-right: .75rem;
+    }
 
     &:focus {
       outline: 0;
     }
-  }
-}
 
-.navdrawer-nav-icon {
-  width: $navdrawer-nav-icon-width;
-}
-
-// Permanent, persistent and temporary variations
-
-@each $breakpoint in map-keys($grid-breakpoints) {
-  $next: breakpoint-next($breakpoint);
-  $infix: breakpoint-infix($next);
-
-  @include media-breakpoint-up($next) {
-    .navdrawer-backdrop-permanent#{$infix} {
-      display: none;
-      transition: none;
+    &.active,
+    &:active {
+      color: var(--bs-primary);
     }
 
-    .navdrawer-backdrop-persistent#{$infix} {
-      display: none;
-      transition: none;
+    &:hover {
+      background-color: var(--bs-secondary-bg);
     }
 
-    .navdrawer-backdrop-temporary#{$infix} {
-      display: none;
-      transition: none;
-    }
-
-    .navdrawer-permanent#{$infix} {
-      display: block !important; // stylelint-disable-line declaration-no-important
-      right: auto;
-      width: $navdrawer-width;
-      z-index: auto;
-
-      &.navdrawer-permanent-clipped,
-      &.navdrawer-permanent-float {
-        top: $toolbar-height;
-      }
-
-      &.navdrawer-permanent-float {
-        border-right: 0;
-
-        &.navdrawer-right {
-          border-left: 0;
-        }
-
-        .navdrawer-content {
-          background-color: transparent;
-        }
-      }
-
-      &.navdrawer-right {
-        border-right: 0;
-        right: 0;
-        left: auto;
-      }
-
-      &.show .navdrawer-content {
-        box-shadow: none;
-      }
-
-      .navdrawer-content {
-        max-width: none;
-        position: absolute;
-        transform: translate3d(0, 0, 0);
-        width: 100%;
-      }
-    }
-
-    .navdrawer-persistent#{$infix} {
-      right: auto;
-      width: $navdrawer-width;
-      z-index: auto;
-
-      &.navdrawer-persistent-clipped {
-        margin-top: ($navdrawer-border-width * -1);
-        top: $toolbar-height;
-        z-index: (map-get($toolbar-elevation-shadow, elevation) - 1);
-      }
-
-      &.navdrawer-right {
-        right: 0;
-        left: auto;
-
-        .navdrawer-content {
-          border-right: 0;
-        }
-      }
-
-      &.show .navdrawer-content {
-        box-shadow: none;
-      }
-
-      .navdrawer-content {
-        max-width: none;
-        position: absolute;
-        width: 100%;
-      }
-    }
-
-    .navdrawer-temporary#{$infix} {
-      overflow: visible;
-      right: auto;
-      width: $navdrawer-width;
-
-      &.navdrawer-right {
-        right: 0;
-        left: auto;
-      }
-
-      .navdrawer-content {
-        max-width: none;
-        position: absolute;
-        width: 100%;
-      }
+    &.disabled {
+      background-color: transparent;
+      color: var(--bs-nav-link-disabled-color);
     }
   }
 }

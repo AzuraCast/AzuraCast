@@ -4,23 +4,24 @@ declare(strict_types=1);
 
 namespace App\Service;
 
-use App\Entity;
-use App\Environment;
+use App\Container\EnvironmentAwareTrait;
+use App\Container\LoggerAwareTrait;
+use App\Container\SettingsAwareTrait;
 use App\Version;
 use Exception;
 use GuzzleHttp\Client;
-use Psr\Log\LoggerInterface;
 
 final class AzuraCastCentral
 {
+    use LoggerAwareTrait;
+    use EnvironmentAwareTrait;
+    use SettingsAwareTrait;
+
     private const BASE_URL = 'https://central.azuracast.com';
 
     public function __construct(
-        private readonly Environment $environment,
         private readonly Version $version,
         private readonly Client $httpClient,
-        private readonly LoggerInterface $logger,
-        private readonly Entity\Repository\SettingsRepository $settingsRepo
     ) {
     }
 
@@ -31,24 +32,24 @@ final class AzuraCastCentral
      */
     public function checkForUpdates(): ?array
     {
-        $request_body = [
+        $requestBody = [
             'id' => $this->getUniqueIdentifier(),
             'is_docker' => $this->environment->isDocker(),
             'environment' => $this->environment->getAppEnvironmentEnum()->value,
             'release_channel' => $this->version->getReleaseChannelEnum()->value,
         ];
 
-        $commit_hash = $this->version->getCommitHash();
-        if ($commit_hash) {
-            $request_body['version'] = $commit_hash;
+        $commitHash = $this->version->getCommitHash();
+        if ($commitHash) {
+            $requestBody['version'] = $commitHash;
         } else {
-            $request_body['release'] = Version::FALLBACK_VERSION;
+            $requestBody['release'] = Version::FALLBACK_VERSION;
         }
 
         $this->logger->debug(
             'Update request body',
             [
-                'body' => $request_body,
+                'body' => $requestBody,
             ]
         );
 
@@ -56,13 +57,13 @@ final class AzuraCastCentral
             $response = $this->httpClient->request(
                 'POST',
                 self::BASE_URL . '/api/update',
-                ['json' => $request_body]
+                ['json' => $requestBody]
             );
 
-            $update_data_raw = $response->getBody()->getContents();
+            $updateDataRaw = $response->getBody()->getContents();
 
-            $update_data = json_decode($update_data_raw, true, 512, JSON_THROW_ON_ERROR);
-            return $update_data['updates'] ?? null;
+            $updateData = json_decode($updateDataRaw, true, 512, JSON_THROW_ON_ERROR);
+            return $updateData['updates'] ?? null;
         } catch (Exception $e) {
             $this->logger->error('Error checking for updates: ' . $e->getMessage());
         }
@@ -72,7 +73,7 @@ final class AzuraCastCentral
 
     public function getUniqueIdentifier(): string
     {
-        return $this->settingsRepo->readSettings()->getAppUniqueIdentifier();
+        return $this->readSettings()->getAppUniqueIdentifier();
     }
 
     /**
@@ -82,7 +83,7 @@ final class AzuraCastCentral
      */
     public function getIp(bool $cached = true): ?string
     {
-        $settings = $this->settingsRepo->readSettings();
+        $settings = $this->readSettings();
         $ip = ($cached)
             ? $settings->getExternalIp()
             : null;
@@ -94,8 +95,8 @@ final class AzuraCastCentral
                     self::BASE_URL . '/ip'
                 );
 
-                $body_raw = $response->getBody()->getContents();
-                $body = json_decode($body_raw, true, 512, JSON_THROW_ON_ERROR);
+                $bodyRaw = $response->getBody()->getContents();
+                $body = json_decode($bodyRaw, true, 512, JSON_THROW_ON_ERROR);
 
                 $ip = $body['ip'] ?? null;
             } catch (Exception $e) {
@@ -105,7 +106,7 @@ final class AzuraCastCentral
 
             if (!empty($ip) && $cached) {
                 $settings->setExternalIp($ip);
-                $this->settingsRepo->writeSettings($settings);
+                $this->writeSettings($settings);
             }
         }
 

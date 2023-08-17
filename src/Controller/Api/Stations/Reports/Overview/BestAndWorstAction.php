@@ -4,32 +4,31 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Stations\Reports\Overview;
 
-use App\Entity;
+use App\Entity\Api\Status;
+use App\Entity\ApiGenerator\SongApiGenerator;
+use App\Entity\Song;
+use App\Entity\SongHistory;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Utilities\DateRange;
-use Doctrine\ORM\EntityManagerInterface;
 use Psr\Http\Message\ResponseInterface;
 
 final class BestAndWorstAction extends AbstractReportAction
 {
     public function __construct(
-        Entity\Repository\SettingsRepository $settingsRepo,
-        EntityManagerInterface $em,
-        private readonly Entity\ApiGenerator\SongApiGenerator $songApiGenerator
+        private readonly SongApiGenerator $songApiGenerator,
     ) {
-        parent::__construct($settingsRepo, $em);
     }
 
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        string $station_id
+        array $params
     ): ResponseInterface {
         // Get current analytics level.
         if (!$this->isAnalyticsEnabled()) {
             return $response->withStatus(400)
-                ->withJson(new Entity\Api\Status(false, 'Reporting is restricted due to system analytics level.'));
+                ->withJson(new Status(false, 'Reporting is restricted due to system analytics level.'));
         }
 
         $dateRange = $this->getDateRange($request, $request->getStation()->getTimezoneObject());
@@ -49,7 +48,7 @@ final class BestAndWorstAction extends AbstractReportAction
         // Get all songs played in timeline.
         $baseQuery = $this->em->createQueryBuilder()
             ->select('sh')
-            ->from(Entity\SongHistory::class, 'sh')
+            ->from(SongHistory::class, 'sh')
             ->where('sh.station = :station')
             ->setParameter('station', $station)
             ->andWhere('sh.timestamp_start <= :end AND sh.timestamp_end >= :start')
@@ -73,7 +72,7 @@ final class BestAndWorstAction extends AbstractReportAction
         foreach ($rawStats as $category => $rawRows) {
             $stats[$category] = array_map(
                 function ($row) use ($station, $baseUrl) {
-                    $song = ($this->songApiGenerator)(Entity\Song::createFromArray($row), $station);
+                    $song = ($this->songApiGenerator)(Song::createFromArray($row), $station);
                     $song->resolveUrls($baseUrl);
 
                     return [
@@ -117,7 +116,7 @@ final class BestAndWorstAction extends AbstractReportAction
 
         return array_map(
             function ($row) use ($station, $baseUrl) {
-                $song = ($this->songApiGenerator)(Entity\Song::createFromArray($row), $station);
+                $song = ($this->songApiGenerator)(Song::createFromArray($row), $station);
                 $song->resolveUrls($baseUrl);
 
                 return [

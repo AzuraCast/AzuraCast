@@ -4,16 +4,17 @@ declare(strict_types=1);
 
 namespace App\Doctrine\Event;
 
-use App\Entity;
 use App\Entity\Attributes\Auditable;
 use App\Entity\Attributes\AuditIgnore;
+use App\Entity\AuditLog as AuditLogEntity;
+use App\Entity\Enums\AuditLogOperations;
+use App\Entity\Interfaces\IdentifiableEntityInterface;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\Common\Util\ClassUtils;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Event\OnFlushEventArgs;
 use Doctrine\ORM\Events;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
-use Doctrine\ORM\PersistentCollection;
 use Doctrine\ORM\UnitOfWork;
 use ReflectionClass;
 use ReflectionObject;
@@ -48,7 +49,7 @@ final class AuditLog implements EventSubscriber
         $newAuditLogs = array_merge($singleAuditLogs, $collectionAuditLogs);
 
         if (!empty($newAuditLogs)) {
-            $auditLogMetadata = $em->getClassMetadata(Entity\AuditLog::class);
+            $auditLogMetadata = $em->getClassMetadata(AuditLogEntity::class);
             foreach ($newAuditLogs as $auditLog) {
                 $uow->persist($auditLog);
                 $uow->computeChangeSet($auditLogMetadata, $auditLog);
@@ -56,7 +57,7 @@ final class AuditLog implements EventSubscriber
         }
     }
 
-    /** @return Entity\AuditLog[] */
+    /** @return AuditLogEntity[] */
     private function handleSingleUpdates(
         EntityManagerInterface $em,
         UnitOfWork $uow
@@ -65,15 +66,15 @@ final class AuditLog implements EventSubscriber
 
         $collections = [
             [
-                Entity\Enums\AuditLogOperations::Insert,
+                AuditLogOperations::Insert,
                 $uow->getScheduledEntityInsertions(),
             ],
             [
-                Entity\Enums\AuditLogOperations::Update,
+                AuditLogOperations::Update,
                 $uow->getScheduledEntityUpdates(),
             ],
             [
-                Entity\Enums\AuditLogOperations::Delete,
+                AuditLogOperations::Delete,
                 $uow->getScheduledEntityDeletions(),
             ],
         ];
@@ -115,14 +116,14 @@ final class AuditLog implements EventSubscriber
                     $changes[$changeField] = [$fieldPrev, $fieldNow];
                 }
 
-                if (Entity\Enums\AuditLogOperations::Update === $changeType && empty($changes)) {
+                if (AuditLogOperations::Update === $changeType && empty($changes)) {
                     continue;
                 }
 
                 // Find the identifier method or property.
                 $identifier = $this->getIdentifier($entity);
 
-                $newRecords[] = new Entity\AuditLog(
+                $newRecords[] = new AuditLogEntity(
                     $changeType,
                     get_class($entity),
                     $identifier,
@@ -136,7 +137,7 @@ final class AuditLog implements EventSubscriber
         return $newRecords;
     }
 
-    /** @return Entity\AuditLog[] */
+    /** @return AuditLogEntity[] */
     private function handleCollectionUpdates(
         UnitOfWork $uow
     ): array {
@@ -216,8 +217,8 @@ final class AuditLog implements EventSubscriber
         }
 
         foreach ($associated as [$owner, $ownerIdentifier, $entity, $entityIdentifier]) {
-            $newRecords[] = new Entity\AuditLog(
-                Entity\Enums\AuditLogOperations::Insert,
+            $newRecords[] = new AuditLogEntity(
+                AuditLogOperations::Insert,
                 get_class($owner),
                 $ownerIdentifier,
                 (string)get_class($entity),
@@ -227,8 +228,8 @@ final class AuditLog implements EventSubscriber
         }
 
         foreach ($disassociated as [$owner, $ownerIdentifier, $entity, $entityIdentifier]) {
-            $newRecords[] = new Entity\AuditLog(
-                Entity\Enums\AuditLogOperations::Delete,
+            $newRecords[] = new AuditLogEntity(
+                AuditLogOperations::Delete,
                 get_class($owner),
                 $ownerIdentifier,
                 (string)get_class($entity),
@@ -283,7 +284,7 @@ final class AuditLog implements EventSubscriber
             return $entity->getName();
         }
 
-        if ($entity instanceof Entity\Interfaces\IdentifiableEntityInterface) {
+        if ($entity instanceof IdentifiableEntityInterface) {
             $entityId = $entity->getId();
             if (null !== $entityId) {
                 return (string)$entityId;

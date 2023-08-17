@@ -6,9 +6,10 @@ namespace App\Middleware;
 
 use App\Acl;
 use App\Auth;
+use App\Container\EnvironmentAwareTrait;
 use App\Customization;
-use App\Entity;
-use App\Environment;
+use App\Entity\AuditLog;
+use App\Entity\Repository\UserRepository;
 use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -20,9 +21,10 @@ use Psr\Http\Server\RequestHandlerInterface;
  */
 final class GetCurrentUser implements MiddlewareInterface
 {
+    use EnvironmentAwareTrait;
+
     public function __construct(
-        private readonly Entity\Repository\UserRepository $userRepo,
-        private readonly Environment $environment,
+        private readonly UserRepository $userRepo,
         private readonly Acl $acl,
         private readonly Customization $customization
     ) {
@@ -34,8 +36,9 @@ final class GetCurrentUser implements MiddlewareInterface
         $auth = new Auth(
             userRepo: $this->userRepo,
             session: $request->getAttribute(ServerRequest::ATTR_SESSION),
-            environment: $this->environment,
         );
+        $auth->setEnvironment($this->environment);
+
         $user = ($auth->isLoggedIn()) ? $auth->getLoggedInUser() : null;
 
         $request = $request
@@ -55,11 +58,11 @@ final class GetCurrentUser implements MiddlewareInterface
             ->withAttribute(ServerRequest::ATTR_ACL, $acl);
 
         // Set the Audit Log user.
-        Entity\AuditLog::setCurrentUser($user);
+        AuditLog::setCurrentUser($user);
 
         $response = $handler->handle($request);
 
-        Entity\AuditLog::setCurrentUser();
+        AuditLog::setCurrentUser();
 
         return $response;
     }

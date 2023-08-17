@@ -5,11 +5,13 @@ declare(strict_types=1);
 namespace App\Entity\Repository;
 
 use App\Doctrine\Repository;
-use App\Entity;
+use App\Entity\ApiKey;
+use App\Entity\User;
+use App\Entity\UserLoginToken;
 use App\Security\SplitToken;
 
 /**
- * @template TEntity of Entity\ApiKey|Entity\UserLoginToken
+ * @template TEntity of ApiKey|UserLoginToken
  * @extends Repository<TEntity>
  */
 abstract class AbstractSplitTokenRepository extends Repository
@@ -19,7 +21,7 @@ abstract class AbstractSplitTokenRepository extends Repository
      *
      * @param string $key
      */
-    public function authenticate(string $key): ?Entity\User
+    public function authenticate(string $key): ?User
     {
         $userSuppliedToken = SplitToken::fromKeyString($key);
 

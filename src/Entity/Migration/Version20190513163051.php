@@ -27,41 +27,41 @@ final class Version20190513163051 extends AbstractMigration
     public function postup(Schema $schema): void
     {
         // Use the system setting for "global timezone" to set the station timezones.
-        $global_tz = $this->connection->fetchOne('SELECT setting_value FROM settings WHERE setting_key="timezone"');
+        $globalTz = $this->connection->fetchOne('SELECT setting_value FROM settings WHERE setting_key="timezone"');
 
-        if (!empty($global_tz)) {
-            $global_tz = json_decode($global_tz, true, 512, JSON_THROW_ON_ERROR);
+        if (!empty($globalTz)) {
+            $globalTz = json_decode($globalTz, true, 512, JSON_THROW_ON_ERROR);
         } else {
-            $global_tz = 'UTC';
+            $globalTz = 'UTC';
         }
 
         // Set all stations' timezones to this value.
         $this->connection->update('station', [
-            'timezone' => $global_tz,
+            'timezone' => $globalTz,
         ], [1 => 1]);
 
         // Calculate the offset of any currently scheduled playlists.
-        if ('UTC' !== $global_tz) {
-            $system_tz = new DateTimeZone('UTC');
-            $system_dt = new DateTime('now', $system_tz);
-            $system_offset = $system_tz->getOffset($system_dt);
+        if ('UTC' !== $globalTz) {
+            $systemTz = new DateTimeZone('UTC');
+            $systemDt = new DateTime('now', $systemTz);
+            $systemOffset = $systemTz->getOffset($systemDt);
 
-            $app_tz = new DateTimeZone($global_tz);
-            $app_dt = new DateTime('now', $app_tz);
-            $app_offset = $app_tz->getOffset($app_dt);
+            $appTz = new DateTimeZone($globalTz);
+            $appDt = new DateTime('now', $appTz);
+            $appOffset = $appTz->getOffset($appDt);
 
-            $offset = $system_offset - $app_offset;
-            $offset_hours = (int)floor($offset / 3600);
+            $offset = $systemOffset - $appOffset;
+            $offsetHours = (int)floor($offset / 3600);
 
-            if (0 !== $offset_hours) {
+            if (0 !== $offsetHours) {
                 $playlists = $this->connection->fetchAllAssociative(
                     'SELECT sp.* FROM station_playlists AS sp WHERE sp.type = "scheduled"'
                 );
 
                 foreach ($playlists as $playlist) {
                     $this->connection->update('station_playlists', [
-                        'schedule_start_time' => $this->applyOffset($playlist['schedule_start_time'], $offset_hours),
-                        'schedule_end_time' => $this->applyOffset($playlist['schedule_end_time'], $offset_hours),
+                        'schedule_start_time' => $this->applyOffset($playlist['schedule_start_time'], $offsetHours),
+                        'schedule_end_time' => $this->applyOffset($playlist['schedule_end_time'], $offsetHours),
                     ], [
                         'id' => $playlist['id'],
                     ]);
@@ -71,18 +71,18 @@ final class Version20190513163051 extends AbstractMigration
     }
 
     /**
-     * @param mixed $time_code
-     * @param int $offset_hours
+     * @param mixed $timeCode
+     * @param int $offsetHours
      *
      * @return int
      * @noinspection SummerTimeUnsafeTimeManipulationInspection
      */
-    private function applyOffset(mixed $time_code, int $offset_hours): int
+    private function applyOffset(mixed $timeCode, int $offsetHours): int
     {
-        $hours = (int)floor($time_code / 100);
-        $mins = $time_code % 100;
+        $hours = (int)floor($timeCode / 100);
+        $mins = $timeCode % 100;
 
-        $hours += $offset_hours;
+        $hours += $offsetHours;
 
         $hours %= 24;
         if ($hours < 0) {

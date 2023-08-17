@@ -4,19 +4,24 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Frontend\Account;
 
-use App\Controller\Api\Admin\UsersController;
-use App\Entity;
+use App\Container\EntityManagerAwareTrait;
+use App\Controller\SingleActionInterface;
+use App\Entity\Api\Error;
+use App\Entity\Api\Status;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use InvalidArgumentException;
 use Psr\Http\Message\ResponseInterface;
 use Throwable;
 
-final class PutPasswordAction extends UsersController
+final class PutPasswordAction implements SingleActionInterface
 {
+    use EntityManagerAwareTrait;
+
     public function __invoke(
         ServerRequest $request,
-        Response $response
+        Response $response,
+        array $params
     ): ResponseInterface {
         $user = $request->getUser();
         $body = (array)$request->getParsedBody();
@@ -41,9 +46,9 @@ final class PutPasswordAction extends UsersController
             $this->em->persist($user);
             $this->em->flush();
 
-            return $response->withJson(Entity\Api\Status::updated());
+            return $response->withJson(Status::updated());
         } catch (Throwable $e) {
-            return $response->withStatus(400)->withJson(Entity\Api\Error::fromException($e));
+            return $response->withStatus(400)->withJson(Error::fromException($e));
         }
     }
 }

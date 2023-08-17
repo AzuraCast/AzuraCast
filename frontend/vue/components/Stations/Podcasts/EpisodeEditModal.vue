@@ -8,17 +8,16 @@
         @submit="doSubmit"
         @hidden="clearContents"
     >
-        <b-tabs
+        <o-tabs
+            nav-tabs-class="nav-tabs"
             content-class="mt-3"
-            pills
         >
             <episode-form-basic-info
-                :form="v$"
-                :locale="locale"
+                v-model:form="form"
             />
 
             <episode-form-media
-                v-model="v$.media_file.$model"
+                v-model="form.media_file"
                 :record-has-media="record.has_media"
                 :new-media-url="newMediaUrl"
                 :edit-media-url="record.links.media"
@@ -26,38 +25,29 @@
             />
 
             <podcast-common-artwork
-                v-model="v$.artwork_file.$model"
+                v-model="form.artwork_file"
                 :artwork-src="record.art"
                 :new-art-url="newArtUrl"
                 :edit-art-url="record.links.art"
             />
-        </b-tabs>
+        </o-tabs>
     </modal-form>
 </template>
 
 <script setup>
-import {required} from '@vuelidate/validators';
 import EpisodeFormBasicInfo from './EpisodeForm/BasicInfo';
 import PodcastCommonArtwork from './Common/Artwork';
 import EpisodeFormMedia from './EpisodeForm/Media';
-import {DateTime} from 'luxon';
 import {baseEditModalProps, useBaseEditModal} from "~/functions/useBaseEditModal";
 import {computed, ref} from "vue";
 import {useResettableRef} from "~/functions/useResettableRef";
 import mergeExisting from "~/functions/mergeExisting";
 import {useTranslate} from "~/vendor/gettext";
 import ModalForm from "~/components/Common/ModalForm.vue";
+import {useLuxon} from "~/vendor/luxon";
 
 const props = defineProps({
     ...baseEditModalProps,
-    stationTimeZone: {
-        type: String,
-        required: true
-    },
-    locale: {
-        type: String,
-        required: true
-    },
     podcastId: {
         type: String,
         required: true
@@ -83,14 +73,18 @@ const {record, reset} = useResettableRef({
     media: null,
     links: {
         art: null,
-        media: null
+        media: null,
+        download: null,
     }
 });
+
+const {DateTime} = useLuxon();
 
 const {
     loading,
     error,
     isEditMode,
+    form,
     v$,
     clearContents,
     create,
@@ -101,25 +95,10 @@ const {
     props,
     emit,
     $modal,
+    {},
     {
-        'title': {required},
-        'link': {},
-        'description': {required},
-        'publish_date': {},
-        'publish_time': {},
-        'explicit': {},
-        'artwork_file': {},
-        'media_file': {}
-    },
-    {
-        'title': '',
-        'link': '',
-        'description': '',
-        'publish_date': '',
-        'publish_time': '',
-        'explicit': false,
-        'artwork_file': null,
-        'media_file': null
+        artwork_file: null,
+        media_file: null
     },
     {
         resetForm: (originalResetForm) => {
@@ -131,7 +110,7 @@ const {
             let publishTime = '';
 
             if (data.publish_at !== null) {
-                let publishDateTime = DateTime.fromSeconds(data.publish_at);
+                const publishDateTime = DateTime.fromSeconds(data.publish_at);
                 publishDate = publishDateTime.toISODate();
                 publishTime = publishDateTime.toISOTime({
                     suppressMilliseconds: true,
@@ -147,11 +126,11 @@ const {
             });
         },
         getSubmittableFormData: (formRef) => {
-            let modifiedForm = formRef.value;
+            const modifiedForm = formRef.value;
 
             if (modifiedForm.publish_date.length > 0 && modifiedForm.publish_time.length > 0) {
-                let publishDateTimeString = modifiedForm.publish_date + 'T' + modifiedForm.publish_time;
-                let publishDateTime = DateTime.fromISO(publishDateTimeString);
+                const publishDateTimeString = modifiedForm.publish_date + 'T' + modifiedForm.publish_time;
+                const publishDateTime = DateTime.fromISO(publishDateTimeString);
 
                 modifiedForm.publish_at = publishDateTime.toSeconds();
             }

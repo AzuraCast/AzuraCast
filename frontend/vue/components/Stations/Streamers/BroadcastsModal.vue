@@ -1,5 +1,5 @@
 <template>
-    <b-modal
+    <modal
         id="streamer_broadcasts"
         ref="$modal"
         size="lg"
@@ -7,12 +7,10 @@
         :title="$gettext('Streamer Broadcasts')"
     >
         <template v-if="listUrl">
-            <div
-                style="min-height: 40px;"
-                class="flex-fill text-left bg-primary rounded mb-2"
-            >
-                <inline-player ref="$player" />
-            </div>
+            <inline-player
+                ref="$player"
+                class="bg-primary rounded mb-2 p-3"
+            />
 
             <data-table
                 id="station_streamer_broadcasts"
@@ -23,14 +21,9 @@
             >
                 <template #cell(download)="row">
                     <template v-if="row.item.recording?.links?.download">
-                        <play-button
-                            class="file-icon"
-                            icon-class="outlined"
-                            :url="row.item.recording?.links?.download"
-                        />
-                        &nbsp;
+                        <play-button :url="row.item.recording?.links?.download" />
                         <a
-                            class="name"
+                            class="name btn p-0 ms-2"
                             :href="row.item.recording?.links?.download"
                             target="_blank"
                             :title="$gettext('Download')"
@@ -39,31 +32,30 @@
                         </a>
                     </template>
                     <template v-else>
-&nbsp;
+                    &nbsp;
                     </template>
                 </template>
                 <template #cell(actions)="row">
-                    <b-button-group size="sm">
-                        <b-button
-                            size="sm"
-                            variant="danger"
-                            @click.prevent="doDelete(row.item.links.delete)"
-                        >
-                            {{ $gettext('Delete') }}
-                        </b-button>
-                    </b-button-group>
+                    <button
+                        type="button"
+                        class="btn btn-sm btn-danger"
+                        @click="doDelete(row.item.links.delete)"
+                    >
+                        {{ $gettext('Delete') }}
+                    </button>
                 </template>
             </data-table>
         </template>
         <template #modal-footer>
-            <b-button
-                variant="default"
+            <button
+                type="button"
+                class="btn btn-secondary"
                 @click="close"
             >
                 {{ $gettext('Close') }}
-            </b-button>
+            </button>
         </template>
-    </b-modal>
+    </modal>
 </template>
 
 <script setup>
@@ -72,26 +64,28 @@ import formatFileSize from '~/functions/formatFileSize.js';
 import InlinePlayer from '~/components/InlinePlayer';
 import Icon from '~/components/Common/Icon';
 import PlayButton from "~/components/Common/PlayButton";
-import {DateTime} from 'luxon';
 import '~/vendor/sweetalert';
 import {useAzuraCast} from "~/vendor/azuracast";
 import {ref} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import {useSweetAlert} from "~/vendor/sweetalert";
-import {useNotify} from "~/vendor/bootstrapVue";
+import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
+import Modal from "~/components/Common/Modal.vue";
+import {useLuxon} from "~/vendor/luxon";
 
 const listUrl = ref(null);
 
 const {$gettext} = useTranslate();
 const {timeConfig} = useAzuraCast();
+const {DateTime} = useLuxon();
 
 const fields = [
     {
         key: 'download',
         label: ' ',
         sortable: false,
-        class: 'shrink pr-3'
+      class: 'shrink pe-3'
     },
     {
         key: 'timestampStart',
@@ -102,7 +96,7 @@ const fields = [
                 {...DateTime.DATETIME_MED, ...timeConfig}
             );
         },
-        class: 'pl-3'
+      class: 'ps-3'
     },
     {
         key: 'timestampEnd',

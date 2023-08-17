@@ -4,16 +4,17 @@ declare(strict_types=1);
 
 namespace App\Assets;
 
+use App\Container\EnvironmentAwareTrait;
 use App\Entity\Station;
-use App\Environment;
 use GuzzleHttp\Psr7\Uri;
 use Psr\Http\Message\UriInterface;
 use Symfony\Component\Filesystem\Filesystem;
 
 abstract class AbstractCustomAsset implements CustomAssetInterface
 {
+    use EnvironmentAwareTrait;
+
     public function __construct(
-        protected readonly Environment $environment,
         protected readonly ?Station $station = null
     ) {
     }

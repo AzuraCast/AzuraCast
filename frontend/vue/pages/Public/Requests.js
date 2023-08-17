@@ -1,7 +1,5 @@
-import initBase from '~/base.js';
-
-import '~/vendor/fancybox';
-
 import Requests from '~/components/Public/Requests.vue';
+import initApp from "~/layout";
+import useMinimalLayout from "~/layouts/MinimalLayout";
 
-export default initBase(Requests);
+initApp(useMinimalLayout(Requests));

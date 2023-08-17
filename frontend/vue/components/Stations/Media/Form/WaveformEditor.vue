@@ -5,78 +5,74 @@
         }}
     </p>
 
-    <b-form-group>
-        <waveform-component
-            ref="$waveform"
-            :audio-url="audioUrl"
-            :waveform-url="waveformUrl"
-            @ready="updateRegions"
-        />
-    </b-form-group>
-    <b-form-group>
-        <div class="buttons">
-            <b-button-group size="sm">
-                <b-button
-                    variant="light"
-                    :title="$gettext('Play')"
-                    size="sm"
-                    @click="playAudio"
-                >
-                    <icon icon="play_arrow" />
-                </b-button>
-                <b-button
-                    variant="dark"
-                    :title="$gettext('Stop')"
-                    size="sm"
-                    @click="stopAudio"
-                >
-                    <icon icon="stop" />
-                </b-button>
-            </b-button-group>
-            <b-button-group size="sm">
-                <b-button
-                    variant="primary"
-                    size="sm"
-                    @click="setCueIn"
-                >
-                    {{ $gettext('Set Cue In') }}
-                </b-button>
-                <b-button
-                    variant="primary"
-                    size="sm"
-                    @click="setCueOut"
-                >
-                    {{ $gettext('Set Cue Out') }}
-                </b-button>
-            </b-button-group>
-            <b-button-group size="sm">
-                <b-button
-                    variant="warning"
-                    size="sm"
-                    @click="setFadeOverlap"
-                >
-                    {{ $gettext('Set Overlap') }}
-                </b-button>
-            </b-button-group>
-            <b-button-group size="sm">
-                <b-button
-                    variant="danger"
-                    size="sm"
-                    @click="setFadeIn"
-                >
-                    {{ $gettext('Set Fade In') }}
-                </b-button>
+    <waveform-component
+        ref="$waveform"
+        :audio-url="audioUrl"
+        :waveform-url="waveformUrl"
+        @ready="updateRegions"
+    />
 
-                <b-button
-                    variant="danger"
-                    size="sm"
-                    @click="setFadeOut"
-                >
-                    {{ $gettext('Set Fade Out') }}
-                </b-button>
-            </b-button-group>
+    <div class="buttons mt-3">
+        <div class="btn-group btn-group-sm">
+            <button
+                type="button"
+                class="btn btn-light"
+                :title="$gettext('Play')"
+                @click="playAudio"
+            >
+                <icon icon="play_arrow" />
+            </button>
+            <button
+                type="button"
+                class="btn btn-dark"
+                :title="$gettext('Stop')"
+                @click="stopAudio"
+            >
+                <icon icon="stop" />
+            </button>
         </div>
-    </b-form-group>
+        <div class="btn-group btn-group-sm">
+            <button
+                type="button"
+                class="btn btn-primary"
+                @click="setCueIn"
+            >
+                {{ $gettext('Set Cue In') }}
+            </button>
+            <button
+                type="button"
+                class="btn btn-primary"
+                @click="setCueOut"
+            >
+                {{ $gettext('Set Cue Out') }}
+            </button>
+        </div>
+        <div class="btn-group btn-group-sm">
+            <button
+                type="button"
+                class="btn btn-warning"
+                @click="setFadeOverlap"
+            >
+                {{ $gettext('Set Overlap') }}
+            </button>
+        </div>
+        <div class="btn-group btn-group-sm">
+            <button
+                type="button"
+                class="btn btn-danger"
+                @click="setFadeIn"
+            >
+                {{ $gettext('Set Fade In') }}
+            </button>
+            <button
+                type="button"
+                class="btn btn-danger"
+                @click="setFadeOut"
+            >
+                {{ $gettext('Set Fade Out') }}
+            </button>
+        </div>
+    </div>
 </template>
 
 <script setup>
@@ -110,13 +106,13 @@ const stopAudio = () => {
 };
 
 const updateRegions = () => {
-    let duration = $waveform.value?.getDuration();
+    const duration = $waveform.value?.getDuration();
 
-    let cue_in = props.form.cue_in ?? 0;
-    let cue_out = props.form.cue_out ?? duration;
-    let fade_overlap = props.form.fade_overlap ?? 0;
-    let fade_in = props.form.fade_in ?? 0;
-    let fade_out = props.form.fade_out ?? 0;
+    const cue_in = props.form.cue_in ?? 0;
+    const cue_out = props.form.cue_out ?? duration;
+    const fade_overlap = props.form.fade_overlap ?? 0;
+    const fade_in = props.form.fade_in ?? 0;
+    const fade_out = props.form.fade_out ?? 0;
 
     $waveform.value?.clearRegions();
 
@@ -138,40 +134,40 @@ const updateRegions = () => {
 };
 
 const setCueIn = () => {
-    let currentTime = $waveform.value?.getCurrentTime();
+    const currentTime = $waveform.value?.getCurrentTime();
 
     props.form.cue_in = Math.round((currentTime) * 10) / 10;
     updateRegions();
 };
 
 const setCueOut = () => {
-    let currentTime = $waveform.value?.getCurrentTime();
+    const currentTime = $waveform.value?.getCurrentTime();
 
     props.form.cue_out = Math.round((currentTime) * 10) / 10;
     updateRegions();
 };
 
 const setFadeOverlap = () => {
-    let duration = $waveform.value?.getDuration();
-    let currentTime = $waveform.value?.getCurrentTime();
-    let cue_out = props.form.cue_out ?? duration;
+    const duration = $waveform.value?.getDuration();
+    const currentTime = $waveform.value?.getCurrentTime();
+    const cue_out = props.form.cue_out ?? duration;
 
     props.form.fade_overlap = Math.round((cue_out - currentTime) * 10) / 10;
     updateRegions();
 };
 
 const setFadeIn = () => {
-    let currentTime = $waveform.value?.getCurrentTime();
-    let cue_in = props.form.cue_in ?? 0;
+    const currentTime = $waveform.value?.getCurrentTime();
+    const cue_in = props.form.cue_in ?? 0;
 
     props.form.fade_in = Math.round((currentTime - cue_in) * 10) / 10;
     updateRegions();
 }
 
 const setFadeOut = () => {
-    let currentTime = $waveform.value?.getCurrentTime();
-    let duration = $waveform.value?.getDuration();
-    let cue_out = props.form.cue_out ?? duration;
+    const currentTime = $waveform.value?.getCurrentTime();
+    const duration = $waveform.value?.getDuration();
+    const cue_out = props.form.cue_out ?? duration;
 
     props.form.fade_out = Math.round((cue_out - currentTime) * 10) / 10;
     updateRegions();

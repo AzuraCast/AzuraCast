@@ -4,18 +4,19 @@ declare(strict_types=1);
 
 namespace App\Media;
 
+use App\Container\LoggerAwareTrait;
 use App\Event\Media\ReadMetadata;
 use App\Event\Media\WriteMetadata;
 use App\Exception\CannotProcessMediaException;
 use Psr\EventDispatcher\EventDispatcherInterface;
-use Psr\Log\LoggerInterface;
 use Throwable;
 
 final class MetadataManager
 {
+    use LoggerAwareTrait;
+
     public function __construct(
-        private readonly EventDispatcherInterface $eventDispatcher,
-        private readonly LoggerInterface $logger,
+        private readonly EventDispatcherInterface $eventDispatcher
     ) {
     }
 

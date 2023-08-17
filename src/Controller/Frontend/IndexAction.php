@@ -4,24 +4,24 @@ declare(strict_types=1);
 
 namespace App\Controller\Frontend;
 
-use App\Entity;
+use App\Container\SettingsAwareTrait;
+use App\Controller\SingleActionInterface;
+use App\Entity\User;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
 
-final class IndexAction
+final class IndexAction implements SingleActionInterface
 {
-    public function __construct(
-        private readonly Entity\Repository\SettingsRepository $settingsRepo
-    ) {
-    }
+    use SettingsAwareTrait;
 
     public function __invoke(
         ServerRequest $request,
-        Response $response
+        Response $response,
+        array $params
     ): ResponseInterface {
         // Redirect to complete setup, if it hasn't been completed yet.
-        $settings = $this->settingsRepo->readSettings();
+        $settings = $this->readSettings();
         if (!$settings->isSetupComplete()) {
             return $response->withRedirect($request->getRouter()->named('setup:index'));
         }
@@ -29,7 +29,7 @@ final class IndexAction
         // Redirect to login screen if the user isn't logged in.
         $user = $request->getAttribute(ServerRequest::ATTR_USER);
 
-        if (!($user instanceof Entity\User)) {
+        if (!($user instanceof User)) {
             // Redirect to a custom homepage URL if specified in settings.
             $homepageRedirect = $settings->getHomepageRedirectUrl();
             if (null !== $homepageRedirect) {

@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Admin;
 
-use App\Entity;
+use App\Controller\Api\AbstractApiCrudController;
+use App\Entity\CustomField;
 use App\OpenApi;
 use OpenApi\Attributes as OA;
 
-/** @extends AbstractAdminApiCrudController<Entity\CustomField> */
+/** @extends AbstractApiCrudController<CustomField> */
 #[
     OA\Get(
         path: '/admin/custom_fields',
@@ -119,8 +120,8 @@ use OpenApi\Attributes as OA;
         ]
     )
 ]
-final class CustomFieldsController extends AbstractAdminApiCrudController
+final class CustomFieldsController extends AbstractApiCrudController
 {
-    protected string $entityClass = Entity\CustomField::class;
+    protected string $entityClass = CustomField::class;
     protected string $resourceRouteName = 'api:admin:custom_field';
 }

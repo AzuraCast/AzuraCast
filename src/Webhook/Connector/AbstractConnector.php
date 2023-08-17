@@ -4,16 +4,20 @@ declare(strict_types=1);
 
 namespace App\Webhook\Connector;
 
-use App\Entity;
+use App\Container\LoggerAwareTrait;
+use App\Entity\Api\NowPlaying\NowPlaying;
+use App\Entity\StationWebhook;
 use App\Utilities;
 use GuzzleHttp\Client;
-use Monolog\Logger;
+use InvalidArgumentException;
 use PhpIP\IP;
+use RuntimeException;
 
 abstract class AbstractConnector implements ConnectorInterface
 {
+    use LoggerAwareTrait;
+
     public function __construct(
-        protected Logger $logger,
         protected Client $httpClient
     ) {
     }
@@ -21,7 +25,7 @@ abstract class AbstractConnector implements ConnectorInterface
     /**
      * @inheritDoc
      */
-    public function shouldDispatch(Entity\StationWebhook $webhook, array $triggers = []): bool
+    public function shouldDispatch(StationWebhook $webhook, array $triggers = []): bool
     {
         if (!$this->webhookShouldTrigger($webhook, $triggers)) {
             $this->logger->debug(
@@ -50,11 +54,11 @@ abstract class AbstractConnector implements ConnectorInterface
     }
 
     /**
-     * @param Entity\StationWebhook $webhook
+     * @param StationWebhook $webhook
      * @param array<string> $triggers
      *
      */
-    protected function webhookShouldTrigger(Entity\StationWebhook $webhook, array $triggers = []): bool
+    protected function webhookShouldTrigger(StationWebhook $webhook, array $triggers = []): bool
     {
         if (!$webhook->hasTriggers()) {
             return true;
@@ -69,7 +73,7 @@ abstract class AbstractConnector implements ConnectorInterface
         return false;
     }
 
-    protected function getRateLimitTime(Entity\StationWebhook $webhook): ?int
+    protected function getRateLimitTime(StationWebhook $webhook): ?int
     {
         return 10;
     }
@@ -77,25 +81,25 @@ abstract class AbstractConnector implements ConnectorInterface
     /**
      * Replace variables in the format {{ blah }} with the flattened contents of the NowPlaying API array.
      *
-     * @param array $raw_vars
-     * @param Entity\Api\NowPlaying\NowPlaying $np
+     * @param array $rawVars
+     * @param NowPlaying $np
      *
      * @return array
      */
-    public function replaceVariables(array $raw_vars, Entity\Api\NowPlaying\NowPlaying $np): array
+    public function replaceVariables(array $rawVars, NowPlaying $np): array
     {
         $values = Utilities\Arrays::flattenArray($np);
         $vars = [];
 
-        foreach ($raw_vars as $var_key => $var_value) {
+        foreach ($rawVars as $varKey => $varValue) {
             // Replaces {{ var.name }} with the flattened $values['var.name']
-            $vars[$var_key] = preg_replace_callback(
+            $vars[$varKey] = preg_replace_callback(
                 "/\{\{(\s*)([a-zA-Z\d\-_.]+)(\s*)}}/",
                 static function ($matches) use ($values) {
-                    $inner_value = strtolower(trim($matches[2]));
-                    return $values[$inner_value] ?? '';
+                    $innerValue = strtolower(trim($matches[2]));
+                    return $values[$innerValue] ?? '';
                 },
-                $var_value
+                $varValue
             );
         }
 
@@ -105,12 +109,12 @@ abstract class AbstractConnector implements ConnectorInterface
     /**
      * Determine if a passed URL is valid and return it if so, or return null otherwise.
      *
-     * @param string|null $url_string
+     * @param string|null $urlString
      */
-    protected function getValidUrl(?string $url_string = null): ?string
+    protected function getValidUrl(?string $urlString = null): ?string
     {
         $uri = Utilities\Urls::tryParseUserUrl(
-            $url_string,
+            $urlString,
             'Webhook'
         );
 
@@ -122,18 +126,18 @@ abstract class AbstractConnector implements ConnectorInterface
         try {
             $ip = IP::create($uri->getHost());
             if ($ip->isReserved()) {
-                throw new \RuntimeException('URL references an IANA reserved block.');
+                throw new RuntimeException('URL references an IANA reserved block.');
             }
-        } catch (\InvalidArgumentException) {
+        } catch (InvalidArgumentException) {
             // Noop, URL is not an IP
         }
 
         return (string)$uri;
     }
 
-    protected function incompleteConfigException(Entity\StationWebhook $webhook): \InvalidArgumentException
+    protected function incompleteConfigException(StationWebhook $webhook): InvalidArgumentException
     {
-        return new \InvalidArgumentException(
+        return new InvalidArgumentException(
             sprintf(
                 'Webhook "%s" (type "%s") is missing necessary configuration. Skipping...',
                 $webhook->getName(),

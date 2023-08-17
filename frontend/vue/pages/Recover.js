@@ -1,5 +1,5 @@
-import initBase from '~/base.js';
-
 import Recover from '~/components/Recover.vue';
+import initApp from "~/layout";
+import useMinimalLayout from "~/layouts/MinimalLayout";
 
-export default initBase(Recover);
+initApp(useMinimalLayout(Recover));

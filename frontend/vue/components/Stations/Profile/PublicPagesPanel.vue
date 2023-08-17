@@ -1,19 +1,16 @@
 <template>
-    <section
-        class="card"
-        role="region"
-        aria-labelledby="hdr_public_pages"
-    >
+    <card-page header-id="hdr_public_pages">
+        <template #header="{id}">
+            <h3
+                :id="id"
+                class="card-title"
+            >
+                {{ $gettext('Public Pages') }}
+                <enabled-badge :enabled="enablePublicPage" />
+            </h3>
+        </template>
+
         <template v-if="enablePublicPage">
-            <div class="card-header bg-primary-dark">
-                <h3
-                    id="hdr_public_pages"
-                    class="card-title"
-                >
-                    {{ $gettext('Public Pages') }}
-                    <enabled-badge :enabled="true" />
-                </h3>
-            </div>
             <table class="table table-striped table-responsive-md mb-0">
                 <colgroup>
                     <col style="width: 30%;">
@@ -67,59 +64,61 @@
                     </tr>
                 </tbody>
             </table>
-            <div class="card-actions">
+        </template>
+
+        <template #footer_actions>
+            <template v-if="enablePublicPage">
                 <a
-                    class="btn btn-outline-default"
+                    class="btn btn-link text-secondary"
                     @click.prevent="doOpenEmbed"
                 >
                     <icon icon="code" />
-                    {{ $gettext('Embed Widgets') }}
+                    <span>
+                        {{ $gettext('Embed Widgets') }}
+                    </span>
                 </a>
-                <template v-if="userCanManageProfile">
-                    <a
-                        class="btn btn-outline-default"
-                        :href="brandingUri"
-                    >
-                        <icon icon="design_services" />
+                <router-link
+                    v-if="userAllowedForStation(StationPermission.Profile)"
+                    class="btn btn-link text-secondary"
+                    :to="{name: 'stations:branding'}"
+                >
+                    <icon icon="design_services" />
+                    <span>
                         {{ $gettext('Edit Branding') }}
-                    </a>
-                    <a
-                        class="btn btn-outline-danger"
-                        :data-confirm-title="$gettext('Disable public pages?')"
-                        :href="togglePublicPageUri"
-                    >
-                        <icon icon="close" />
+                    </span>
+                </router-link>
+                <button
+                    v-if="userAllowedForStation(StationPermission.Profile)"
+                    type="button"
+                    class="btn btn-link text-danger"
+                    @click="togglePublicPages"
+                >
+                    <icon icon="close" />
+                    <span>
                         {{ $gettext('Disable') }}
-                    </a>
-                </template>
-            </div>
-            <embed-modal
-                v-bind="$props"
-                ref="$embedModal"
-            />
-        </template>
-        <template v-else>
-            <div class="card-header bg-primary-dark">
-                <h3 class="card-title">
-                    {{ $gettext('Public Pages') }}
-                    <enabled-badge :enabled="false" />
-                </h3>
-            </div>
-            <div
-                v-if="userCanManageProfile"
-                class="card-actions"
-            >
-                <a
-                    class="btn btn-outline-success"
-                    :data-confirm-title="$gettext('Enable public pages?')"
-                    :href="togglePublicPageUri"
+                    </span>
+                </button>
+            </template>
+            <template v-else>
+                <button
+                    v-if="userAllowedForStation(StationPermission.Profile)"
+                    type="button"
+                    class="btn btn-link text-success"
+                    @click="togglePublicPages"
                 >
                     <icon icon="check" />
-                    {{ $gettext('Enable') }}
-                </a>
-            </div>
+                    <span>
+                        {{ $gettext('Enable') }}
+                    </span>
+                </button>
+            </template>
         </template>
-    </section>
+    </card-page>
+
+    <embed-modal
+        v-bind="pickProps($props, embedModalProps)"
+        ref="$embedModal"
+    />
 </template>
 
 <script setup>
@@ -129,6 +128,10 @@ import {ref} from "vue";
 import EmbedModal from "~/components/Stations/Profile/EmbedModal.vue";
 import publicPagesPanelProps from "~/components/Stations/Profile/publicPagesPanelProps";
 import embedModalProps from "~/components/Stations/Profile/embedModalProps";
+import {pickProps} from "~/functions/pickProps";
+import CardPage from "~/components/Common/CardPage.vue";
+import {StationPermission, userAllowedForStation} from "~/acl";
+import useToggleFeature from "~/components/Stations/Profile/useToggleFeature";
 
 const props = defineProps({
     ...publicPagesPanelProps,
@@ -140,4 +143,6 @@ const $embedModal = ref(); // Template Ref
 const doOpenEmbed = () => {
     $embedModal.value.open();
 };
+
+const togglePublicPages = useToggleFeature('enable_public_page', !props.enablePublicPage);
 </script>

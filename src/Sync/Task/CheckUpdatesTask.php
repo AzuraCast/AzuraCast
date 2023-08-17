@@ -4,24 +4,21 @@ declare(strict_types=1);
 
 namespace App\Sync\Task;
 
-use App\Doctrine\ReloadableEntityManagerInterface;
-use App\Entity;
-use App\Environment;
+use App\Container\EnvironmentAwareTrait;
+use App\Container\SettingsAwareTrait;
 use App\Service\AzuraCastCentral;
 use GuzzleHttp\Exception\TransferException;
-use Psr\Log\LoggerInterface;
 
 final class CheckUpdatesTask extends AbstractTask
 {
+    use EnvironmentAwareTrait;
+    use SettingsAwareTrait;
+
     private const UPDATE_THRESHOLD = 3780;
 
     public function __construct(
-        private readonly Entity\Repository\SettingsRepository $settingsRepo,
-        private readonly AzuraCastCentral $azuracastCentral,
-        ReloadableEntityManagerInterface $em,
-        LoggerInterface $logger
+        private readonly AzuraCastCentral $azuracastCentral
     ) {
-        parent::__construct($em, $logger);
     }
 
     public static function getSchedulePattern(): string
@@ -31,18 +28,18 @@ final class CheckUpdatesTask extends AbstractTask
 
     public function run(bool $force = false): void
     {
-        $settings = $this->settingsRepo->readSettings();
+        $settings = $this->readSettings();
 
         if (!$force) {
-            $update_last_run = $settings->getUpdateLastRun();
+            $updateLastRun = $settings->getUpdateLastRun();
 
-            if ($update_last_run > (time() - self::UPDATE_THRESHOLD)) {
+            if ($updateLastRun > (time() - self::UPDATE_THRESHOLD)) {
                 $this->logger->debug('Not checking for updates; checked too recently.');
                 return;
             }
         }
 
-        if (Environment::getInstance()->isTesting()) {
+        if ($this->environment->isTesting()) {
             $this->logger->info('Update checks are currently disabled for this AzuraCast instance.');
             return;
         }
@@ -63,6 +60,6 @@ final class CheckUpdatesTask extends AbstractTask
         }
 
         $settings->updateUpdateLastRun();
-        $this->settingsRepo->writeSettings($settings);
+        $this->writeSettings($settings);
     }
 }

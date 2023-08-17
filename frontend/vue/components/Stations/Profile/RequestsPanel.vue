@@ -1,72 +1,70 @@
 <template>
-    <section
-        class="card"
-        role="region"
-        aria-labelledby="hdr_song_requests"
-    >
-        <template v-if="enableRequests">
-            <div class="card-header bg-primary-dark">
-                <h3
-                    id="hdr_song_requests"
-                    class="card-title"
-                >
-                    {{ $gettext('Song Requests') }}
-                    <enabled-badge :enabled="true" />
-                </h3>
-            </div>
-            <div
-                v-if="userCanManageReports || userCanManageProfile"
-                class="card-actions"
+    <card-page header-id="hdr_song_requests">
+        <template #header="{id}">
+            <h3
+                :id="id"
+                class="card-title"
             >
-                <a
-                    v-if="userCanManageReports"
-                    class="btn btn-outline-primary"
-                    :href="requestsViewUri"
+                {{ $gettext('Song Requests') }}
+                <enabled-badge :enabled="enableRequests" />
+            </h3>
+        </template>
+
+        <template
+            v-if="userAllowedForStation(StationPermission.Broadcasting) || userAllowedForStation(StationPermission.Profile)"
+            #footer_actions
+        >
+            <template v-if="enableRequests">
+                <router-link
+                    v-if="userAllowedForStation(StationPermission.Broadcasting)"
+                    class="btn btn-link text-primary"
+                    :to="{name: 'stations:reports:requests'}"
                 >
                     <icon icon="assignment" />
-                    {{ $gettext('View') }}
-                </a>
-                <a
-                    v-if="userCanManageProfile"
-                    class="btn btn-outline-danger"
-                    :data-confirm-title="$gettext('Disable song requests?')"
-                    :href="requestsToggleUri"
+                    <span>
+                        {{ $gettext('View') }}
+                    </span>
+                </router-link>
+                <button
+                    v-if="userAllowedForStation(StationPermission.Profile)"
+                    type="button"
+                    class="btn btn-link text-danger"
+                    @click="toggleRequests"
                 >
                     <icon icon="close" />
-                    {{ $gettext('Disable') }}
-                </a>
-            </div>
-        </template>
-        <template v-else>
-            <div class="card-header bg-primary-dark">
-                <h3 class="card-title">
-                    {{ $gettext('Song Requests') }}
-                    <enabled-badge :enabled="false" />
-                </h3>
-            </div>
-            <div
-                v-if="userCanManageProfile"
-                class="card-actions"
-            >
-                <a
-                    class="btn btn-outline-success"
-                    :data-confirm-title="$gettext('Enable song requests?')"
-                    :href="requestsToggleUri"
+                    <span>
+                        {{ $gettext('Disable') }}
+                    </span>
+                </button>
+            </template>
+            <template v-else>
+                <button
+                    v-if="userAllowedForStation(StationPermission.Profile)"
+                    type="button"
+                    class="btn btn-link text-success"
+                    @click="toggleRequests"
                 >
                     <icon icon="check" />
-                    {{ $gettext('Enable') }}
-                </a>
-            </div>
+                    <span>
+                        {{ $gettext('Enable') }}
+                    </span>
+                </button>
+            </template>
         </template>
-    </section>
+    </card-page>
 </template>
 
 <script setup>
 import Icon from '~/components/Common/Icon';
 import requestsPanelProps from "~/components/Stations/Profile/requestsPanelProps";
 import EnabledBadge from "~/components/Common/Badges/EnabledBadge.vue";
+import CardPage from "~/components/Common/CardPage.vue";
+import {StationPermission, userAllowedForStation} from "~/acl";
+import useToggleFeature from "~/components/Stations/Profile/useToggleFeature";
 
 const props = defineProps({
     ...requestsPanelProps
 });
+
+const toggleRequests = useToggleFeature('enable_requests', !props.enableRequests);
 </script>

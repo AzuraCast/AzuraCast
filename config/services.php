@@ -4,6 +4,8 @@
  * PHP-DI Services
  */
 
+declare(strict_types=1);
+
 use App\Environment;
 use App\Event;
 use Psr\Container\ContainerInterface;
@@ -223,7 +225,8 @@ return [
         DI\Container $di,
         App\Plugins $plugins
     ) {
-        $dispatcher = new App\CallableEventDispatcher($di);
+        $dispatcher = new App\CallableEventDispatcher();
+        $dispatcher->setContainer($di);
 
         // Register application default events.
         if (file_exists(__DIR__ . '/events.php')) {
@@ -246,17 +249,17 @@ return [
         $loggingLevel = $environment->getLogLevel();
 
         if ($environment->isCli() || $environment->isDocker()) {
-            $log_stderr = new Monolog\Handler\StreamHandler('php://stderr', $loggingLevel, true);
-            $logger->pushHandler($log_stderr);
+            $logStderr = new Monolog\Handler\StreamHandler('php://stderr', $loggingLevel, true);
+            $logger->pushHandler($logStderr);
         }
 
-        $log_file = new Monolog\Handler\RotatingFileHandler(
+        $logFile = new Monolog\Handler\RotatingFileHandler(
             $environment->getTempDirectory() . '/app.log',
             5,
             $loggingLevel,
             true
         );
-        $logger->pushHandler($log_file);
+        $logger->pushHandler($logFile);
 
         return $logger;
     },
@@ -280,7 +283,7 @@ return [
     // Symfony Serializer
     Symfony\Component\Serializer\Serializer::class => static function (
         Doctrine\Common\Annotations\Reader $reader,
-        Doctrine\ORM\EntityManagerInterface $em
+        App\Doctrine\ReloadableEntityManagerInterface $em,
     ) {
         $classMetaFactory = new Symfony\Component\Serializer\Mapping\Factory\ClassMetadataFactory(
             new Symfony\Component\Serializer\Mapping\Loader\AnnotationLoader($reader)

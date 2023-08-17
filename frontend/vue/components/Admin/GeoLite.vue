@@ -1,30 +1,17 @@
 <template>
-    <section
-        class="card"
-        role="region"
-        aria-labelledby="hdr_install_geolite"
+    <card-page
+        header-id="hdr_install_geolite"
+        :title="$gettext('Install GeoLite IP Database')"
     >
-        <div class="card-header bg-primary-dark">
-            <h2
-                id="hdr_install_geolite"
-                class="card-title"
-            >
-                {{ $gettext('Install GeoLite IP Database') }}
-            </h2>
-        </div>
-
-        <info-card>
+        <template #info>
             {{
                 $gettext('IP Geolocation is used to guess the approximate location of your listeners based on the IP address they connect with. Use the free built-in IP Geolocation library or enter a license key on this page to use MaxMind GeoLite.')
             }}
-        </info-card>
+        </template>
 
         <div class="card-body">
-            <b-overlay
-                variant="card"
-                :show="loading"
-            >
-                <div class="form-row">
+            <loading :loading="isLoading">
+                <div class="row g-3">
                     <div class="col-md-7">
                         <fieldset>
                             <legend>{{ $gettext('Instructions') }}</legend>
@@ -82,57 +69,54 @@
 
                         <form @submit.prevent="doUpdate">
                             <fieldset>
-                                <b-wrapped-form-group
+                                <form-group-field
                                     id="edit_form_key"
                                     :field="v$.key"
                                 >
                                     <template #label>
                                         {{ $gettext('MaxMind License Key') }}
                                     </template>
-                                </b-wrapped-form-group>
+                                </form-group-field>
                             </fieldset>
 
                             <div class="buttons">
-                                <b-button
-                                    variant="primary"
+                                <button
                                     type="submit"
+                                    class="btn btn-primary"
                                 >
                                     {{ $gettext('Save Changes') }}
-                                </b-button>
-                                <b-button
-                                    variant="danger"
+                                </button>
+                                <button
                                     type="button"
-                                    @click.prevent="doDelete"
+                                    class="btn btn-danger"
+                                    @click="doDelete"
                                 >
                                     {{ $gettext('Remove Key') }}
-                                </b-button>
+                                </button>
                             </div>
                         </form>
                     </div>
                 </div>
-            </b-overlay>
+            </loading>
         </div>
-    </section>
+    </card-page>
 </template>
 
 <script setup>
-import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup.vue";
-import InfoCard from "~/components/Common/InfoCard.vue";
+import FormGroupField from "~/components/Form/FormGroupField.vue";
 import {computed, onMounted, ref} from "vue";
 import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
 import {useSweetAlert} from "~/vendor/sweetalert";
 import {useAxios} from "~/vendor/axios";
 import {useTranslate} from "~/vendor/gettext";
-import {useNotify} from "~/vendor/bootstrapVue";
+import {useNotify} from "~/functions/useNotify";
+import Loading from "~/components/Common/Loading.vue";
+import CardPage from "~/components/Common/CardPage.vue";
+import {getApiUrl} from "~/router";
 
-const props = defineProps({
-    apiUrl: {
-        type: String,
-        required: true
-    }
-});
+const apiUrl = getApiUrl('/admin/geolite');
 
-const loading = ref(true);
+const isLoading = ref(true);
 const version = ref(null);
 
 const {form, v$} = useVuelidateOnForm(
@@ -158,12 +142,12 @@ const langInstalledVersion = computed(() => {
 const {axios} = useAxios();
 
 const doFetch = () => {
-    loading.value = true;
+    isLoading.value = true;
 
-    axios.get(props.apiUrl).then((resp) => {
+    axios.get(apiUrl.value).then((resp) => {
         form.value.key = resp.data.key;
         version.value = resp.data.version;
-        loading.value = false;
+        isLoading.value = false;
     });
 };
 
@@ -172,15 +156,15 @@ onMounted(doFetch);
 const {wrapWithLoading} = useNotify();
 
 const doUpdate = () => {
-    loading.value = true;
+    isLoading.value = true;
     wrapWithLoading(
-        axios.post(props.apiUrl, {
+        axios.post(apiUrl.value, {
             geolite_license_key: form.value.key
         })
     ).then((resp) => {
         version.value = resp.data.version;
     }).finally(() => {
-        loading.value = false;
+        isLoading.value = false;
     });
 };
 

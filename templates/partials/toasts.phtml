@@ -1,0 +1,29 @@
+<?php
+/** @var Psr\Http\Message\RequestInterface $request */
+
+/** @var App\Session\Flash|null $flashObj */
+$flashObj = $request->getAttribute(App\Http\ServerRequest::ATTR_SESSION_FLASH);
+
+$notifies = [];
+?>
+<div class="toast-container position-fixed top-0 end-0 p-3">
+    <?php
+    if (null !== $flashObj && $flashObj->hasMessages()):
+        foreach ($flashObj->getMessages() as $message):
+            ?>
+            <div
+                class="toast align-items-center toast-notification text-bg-<?= $message['color'] ?>"
+                role="alert" aria-live="assertive" aria-atomic="true">
+                <div class="d-flex">
+                    <div class="toast-body">
+                        <?= $message['text'] ?>
+                    </div>
+                    <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast"
+                            aria-label="Close"></button>
+                </div>
+            </div>
+        <?php
+        endforeach;
+    endif;
+    ?>
+</div>

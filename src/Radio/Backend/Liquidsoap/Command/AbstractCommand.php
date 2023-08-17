@@ -4,22 +4,19 @@ declare(strict_types=1);
 
 namespace App\Radio\Backend\Liquidsoap\Command;
 
-use App\Entity;
+use App\Container\LoggerAwareTrait;
+use App\Entity\Station;
 use App\Radio\Enums\BackendAdapters;
-use Monolog\Logger;
 use Monolog\LogRecord;
 use ReflectionClass;
 use Throwable;
 
 abstract class AbstractCommand
 {
-    public function __construct(
-        protected Logger $logger
-    ) {
-    }
+    use LoggerAwareTrait;
 
     public function run(
-        Entity\Station $station,
+        Station $station,
         bool $asAutoDj = false,
         ?array $payload = []
     ): string {
@@ -77,7 +74,7 @@ abstract class AbstractCommand
     }
 
     abstract protected function doRun(
-        Entity\Station $station,
+        Station $station,
         bool $asAutoDj = false,
         array $payload = []
     ): mixed;

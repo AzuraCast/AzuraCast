@@ -4,7 +4,7 @@
         role="region"
         aria-labelledby="hdr_edit_profile"
     >
-        <div class="card-header bg-primary-dark">
+        <div class="card-header text-bg-primary">
             <h3
                 id="hdr_edit_profile"
                 class="card-title"
@@ -26,23 +26,30 @@
                 {{ $gettext('Click the button below to retry loading the page.') }}
             </p>
 
-            <a
-                class="btn btn-lg btn-light"
+            <button
+                type="button"
+                class="btn btn-light"
                 @click="retry"
             >
                 <icon icon="refresh" />
-                {{ $gettext('Reload') }}
-            </a>
+                <span>
+                    {{ $gettext('Reload') }}
+                </span>
+            </button>
         </error-card>
-        <admin-stations-form
+        <div
             v-else
-            v-bind="pickProps(props, stationFormProps)"
-            ref="$form"
-            is-edit-mode
-            :edit-url="editUrl"
-            @submitted="onSubmitted"
-            @error="onError"
-        />
+            class="card-body"
+        >
+            <admin-stations-form
+                v-bind="pickProps(props, stationFormProps)"
+                ref="$form"
+                is-edit-mode
+                :edit-url="editUrl"
+                @submitted="onSubmitted"
+                @error="onError"
+            />
+        </div>
     </section>
 </template>
 
@@ -53,18 +60,12 @@ import stationFormProps from "~/components/Admin/Stations/stationFormProps";
 import {pickProps} from "~/functions/pickProps";
 import Icon from "~/components/InlinePlayer.vue";
 import ErrorCard from "~/components/Common/ErrorCard.vue";
+import {getStationApiUrl} from "~/router";
+import {useRouter} from "vue-router";
 
-const props = defineProps({
-    ...stationFormProps,
-    editUrl: {
-        type: String,
-        required: true
-    },
-    continueUrl: {
-        type: String,
-        required: true
-    }
-});
+const props = defineProps(stationFormProps);
+
+const editUrl = getStationApiUrl('/profile/edit');
 
 const $form = ref(); // AdminStationsForm
 
@@ -86,7 +87,13 @@ const onError = (err) => {
     error.value = err;
 }
 
-const onSubmitted = () => {
-    window.location.href = props.continueUrl;
+const router = useRouter();
+
+const onSubmitted = async () => {
+    await router.push({
+        name: 'stations:index'
+    });
+    
+    window.location.reload();
 }
 </script>

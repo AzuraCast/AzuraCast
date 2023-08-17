@@ -5,23 +5,27 @@ declare(strict_types=1);
 namespace App\Entity\Repository;
 
 use App\Doctrine\Repository;
-use App\Entity;
+use App\Entity\Analytics;
+use App\Entity\Enums\AnalyticsIntervals;
+use App\Entity\Station;
 use App\Utilities\DateRange;
 use Carbon\CarbonImmutable;
 use Carbon\CarbonInterface;
 
 /**
- * @extends Repository<Entity\Analytics>
+ * @extends Repository<Analytics>
  */
 final class AnalyticsRepository extends Repository
 {
+    protected string $entityClass = Analytics::class;
+
     /**
      * @return mixed[]
      */
     public function findForStationInRange(
-        Entity\Station $station,
+        Station $station,
         DateRange $dateRange,
-        Entity\Enums\AnalyticsIntervals $type = Entity\Enums\AnalyticsIntervals::Daily
+        AnalyticsIntervals $type = AnalyticsIntervals::Daily
     ): array {
         return $this->em->createQuery(
             <<<'DQL'
@@ -54,15 +58,15 @@ final class AnalyticsRepository extends Repository
                 DELETE FROM App\Entity\Analytics a
                 WHERE a.type = :type AND a.moment <= :threshold
             DQL
-        )->setParameter('type', Entity\Enums\AnalyticsIntervals::Hourly)
+        )->setParameter('type', AnalyticsIntervals::Hourly)
             ->setParameter('threshold', $hourlyRetention)
             ->execute();
     }
 
     public function clearSingleMetric(
-        Entity\Enums\AnalyticsIntervals $type,
+        AnalyticsIntervals $type,
         CarbonInterface $moment,
-        ?Entity\Station $station = null
+        ?Station $station = null
     ): void {
         if (null === $station) {
             $this->em->createQuery(

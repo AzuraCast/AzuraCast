@@ -4,13 +4,12 @@ declare(strict_types=1);
 
 namespace App\Console\Command\Sync;
 
-use App\Console\Command\CommandAbstract;
+use App\Cache\DatabaseCache;
+use App\Container\ContainerAwareTrait;
+use App\Container\LoggerAwareTrait;
 use App\Sync\Task\AbstractTask;
 use InvalidArgumentException;
-use Monolog\Logger;
 use Monolog\LogRecord;
-use Psr\Container\ContainerInterface;
-use Psr\SimpleCache\CacheInterface;
 use ReflectionClass;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputArgument;
@@ -22,12 +21,13 @@ use Symfony\Component\Console\Style\SymfonyStyle;
     name: 'azuracast:sync:task',
     description: 'Task to run a specific scheduled task.',
 )]
-final class SingleTaskCommand extends CommandAbstract
+final class SingleTaskCommand extends AbstractSyncCommand
 {
+    use ContainerAwareTrait;
+    use LoggerAwareTrait;
+
     public function __construct(
-        private readonly ContainerInterface $di,
-        private readonly CacheInterface $cache,
-        private readonly Logger $logger,
+        private readonly DatabaseCache $cache
     ) {
         parent::__construct();
     }
@@ -39,6 +39,8 @@ final class SingleTaskCommand extends CommandAbstract
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        $this->logToExtraFile('app_sync.log');
+
         $io = new SymfonyStyle($input, $output);
         $task = $input->getArgument('task');
 
@@ -89,7 +91,10 @@ final class SingleTaskCommand extends CommandAbstract
         ]);
         $this->logger->popProcessor();
 
-        $this->cache->set($cacheKey, time(), 86400);
+        $cacheItem = $this->cache->getItem($cacheKey)
+            ->set(time())
+            ->expiresAfter(86400);
+        $this->cache->save($cacheItem);
     }
 
     /**

@@ -11,6 +11,57 @@ release channel, you can take advantage of these new features and fixes.
 
 ---
 
+# AzuraCast 0.19.0 (Aug 17, 2023)
+
+## New Features/Changes
+
+- **Update to Liquidsoap 2.2.x**: We're updating to the latest version of Liquidsoap, which includes many bug fixes,
+  performance improvements and other changes. We have adopted our syntax to match Liquidsoap's new supported syntax, but
+  if you use custom Liquidsoap code, you will need to update your code accordingly. You can see the most important
+  changes in this [migration guide](https://www.liquidsoap.info/doc-dev/migrating.html#from-2.1.x-to-2.2.x). The most
+  common changes you will need to make are to mutable (`ref()`) variables:
+    - `!var` becomes `var()`
+    - `var := value` optionally becomes `var.set(value)`
+
+- **Support for Direct StereoTool/Liquidsoap Integration**: In Liquidsoap 2.2.x, StereoTool is now directly supported
+  within the software, resulting in better performance and significantly less delay in processing. We now support
+  uploading the plugin version of StereoTool from the vendor's web site. We will use either the CLI version or the
+  plugin version if it is uploaded. You can now also remove StereoTool from your installation entirely from the "Install
+  StereoTool" page.
+
+- **Initial Multi-Server Support**: AzuraCast now includes initial support for connecting multiple AzuraCast servers to
+  a shared database instance. The system will automatically choose a "primary" instance that runs routine synchronized
+  tasks, with a secondary instance that will automatically take over these functions if the main installation is
+  nonresponsive.
+
+- **Custom "Station Offline" and "Live Broadcast" Messages**: You can now specify, on a per-station level, the default
+  message that shows when the station is offline or when a DJ has connected but has not yet sent any metadata. The
+  former is located on the Branding Configuration page, and the latter is under the "Streamers/DJs" tab on the station
+  profile.
+
+## Code Quality/Technical Changes
+
+- **Frontend Overhaul**: We have updated the code that powers the browser-facing frontend of our application. In
+  particular, we've upgraded from Bootstrap 4 to 5. Most users of the application won't need to change anything as a
+  result of this, but if you use custom CSS or JavaScript, the following changes will be necessary:
+    - jQuery has been removed. If you used jQuery, you can likely replace any jQuery code with vanilla javascript. See
+      migration guides like this one for help: https://tobiasahlin.com/blog/move-from-jquery-to-vanilla-javascript/
+    - The theme selectors have changed from `[data-theme="dark/light"]` to `[data-bs-theme="dark/light"]`.
+    - Several colors and parameters can be customized just by changing CSS variables. For more information on the
+      specific CSS variables exposed by Bootstrap 5, visit this
+      page: https://getbootstrap.com/docs/5.3/customize/css-variables/
+    - Several class names and identifiers have been renamed. Use the Inspect Element tool to identify the new names.
+    - The administration page and all per-station management panels are now "Single-Page Applications". Along with a
+      smoother user experience on those sections, you'll also enjoy continued audio playback across pages!
+
+## Bug Fixes
+
+- When adding media to playlists, the system will no longer remove the media from all playlists and then re-add it; it
+  will instead check the existing playlist associations and only add or remove modified ones. This will prevent issues
+  with losing the playback order of media on sequential playlists and other related issues.
+
+---
+
 # AzuraCast 0.18.5 (Jun 16, 2023)
 
 This release backports a bug fix from the current Rolling Release version so that users can take advantage of it

@@ -5,10 +5,13 @@ declare(strict_types=1);
 namespace App\Controller\Api\Stations;
 
 use App\Controller\Api\AbstractApiCrudController;
-use App\Doctrine\ReloadableEntityManagerInterface;
-use App\Entity;
+use App\Entity\Api\PodcastEpisode as ApiPodcastEpisode;
+use App\Entity\Api\PodcastMedia as ApiPodcastMedia;
+use App\Entity\PodcastEpisode;
+use App\Entity\PodcastMedia;
+use App\Entity\Repository\PodcastEpisodeRepository;
+use App\Entity\Repository\PodcastRepository;
 use App\Enums\StationPermissions;
-use App\Flysystem\StationFilesystems;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\OpenApi;
@@ -20,7 +23,7 @@ use RuntimeException;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-/** @extends AbstractApiCrudController<Entity\PodcastEpisode> */
+/** @extends AbstractApiCrudController<PodcastEpisode> */
 #[
     OA\Get(
         path: '/station/{station_id}/podcast/{podcast_id}/episodes',
@@ -182,33 +185,33 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 ]
 final class PodcastEpisodesController extends AbstractApiCrudController
 {
-    protected string $entityClass = Entity\PodcastEpisode::class;
+    protected string $entityClass = PodcastEpisode::class;
     protected string $resourceRouteName = 'api:stations:podcast:episode';
 
     public function __construct(
-        ReloadableEntityManagerInterface $em,
+        private readonly PodcastRepository $podcastRepository,
+        private readonly PodcastEpisodeRepository $episodeRepository,
         Serializer $serializer,
         ValidatorInterface $validator,
-        private readonly Entity\Repository\PodcastRepository $podcastRepository,
-        private readonly Entity\Repository\PodcastEpisodeRepository $episodeRepository,
-        private readonly StationFilesystems $stationFilesystems
     ) {
-        parent::__construct($em, $serializer, $validator);
+        parent::__construct($serializer, $validator);
     }
 
     public function listAction(
         ServerRequest $request,
         Response $response,
-        string $station_id,
-        string $podcast_id
+        array $params
     ): ResponseInterface {
+        /** @var string $podcastId */
+        $podcastId = $params['podcast_id'];
+
         $station = $request->getStation();
 
-        $podcast = $this->podcastRepository->fetchPodcastForStation($station, $podcast_id);
+        $podcast = $this->podcastRepository->fetchPodcastForStation($station, $podcastId);
 
         $queryBuilder = $this->em->createQueryBuilder()
             ->select('e, p, pm')
-            ->from(Entity\PodcastEpisode::class, 'e')
+            ->from(PodcastEpisode::class, 'e')
             ->join('e.podcast', 'p')
             ->leftJoin('e.media', 'pm')
             ->where('e.podcast = :podcast')
@@ -224,47 +227,42 @@ final class PodcastEpisodesController extends AbstractApiCrudController
         return $this->listPaginatedFromQuery($request, $response, $queryBuilder->getQuery());
     }
 
-    public function getAction(
-        ServerRequest $request,
-        Response $response,
-        string $station_id,
-        string $podcast_id,
-        string $episode_id
-    ): ResponseInterface {
-        $station = $request->getStation();
-        $record = $this->getRecord($station, $episode_id);
+    /**
+     * @return PodcastEpisode|null
+     */
+    protected function getRecord(ServerRequest $request, array $params): ?object
+    {
+        /** @var string $id */
+        $id = $params['episode_id'];
 
-        if (null === $record) {
-            return $response->withStatus(404)
-                ->withJson(Entity\Api\Error::notFound());
-        }
-
-        $return = $this->viewRecord($record, $request);
-        return $response->withJson($return);
+        return $this->episodeRepository->fetchEpisodeForStation(
+            $request->getStation(),
+            $id
+        );
     }
 
-    public function createAction(
-        ServerRequest $request,
-        Response $response,
-        string $station_id,
-        string $podcast_id
-    ): ResponseInterface {
+    protected function createRecord(ServerRequest $request, array $data): object
+    {
         $station = $request->getStation();
 
-        $podcast = $this->podcastRepository->fetchPodcastForStation($station, $podcast_id);
+        $podcastId = $request->getAttribute('podcast_id');
+
+        $podcast = $this->podcastRepository->fetchPodcastForStation(
+            $station,
+            $podcastId
+        );
+
         if (null === $podcast) {
             throw new RuntimeException('Podcast not found.');
         }
 
-        $parsedBody = (array)$request->getParsedBody();
-
         $record = $this->editRecord(
-            $parsedBody,
-            new Entity\PodcastEpisode($podcast)
+            $data,
+            new PodcastEpisode($podcast)
         );
 
-        if (!empty($parsedBody['artwork_file'])) {
-            $artwork = UploadedFile::fromArray($parsedBody['artwork_file'], $station->getRadioTempDir());
+        if (!empty($data['artwork_file'])) {
+            $artwork = UploadedFile::fromArray($data['artwork_file'], $station->getRadioTempDir());
             $this->episodeRepository->writeEpisodeArt(
                 $record,
                 $artwork->readAndDeleteUploadedFile()
@@ -274,8 +272,8 @@ final class PodcastEpisodesController extends AbstractApiCrudController
             $this->em->flush();
         }
 
-        if (!empty($parsedBody['media_file'])) {
-            $media = UploadedFile::fromArray($parsedBody['media_file'], $station->getRadioTempDir());
+        if (!empty($data['media_file'])) {
+            $media = UploadedFile::fromArray($data['media_file'], $station->getRadioTempDir());
 
             $this->episodeRepository->uploadMedia(
                 $record,
@@ -284,75 +282,27 @@ final class PodcastEpisodesController extends AbstractApiCrudController
             );
         }
 
-        return $response->withJson($this->viewRecord($record, $request));
+        return $record;
     }
 
-    public function editAction(
-        ServerRequest $request,
-        Response $response,
-        string $station_id,
-        string $podcast_id,
-        string $episode_id
-    ): ResponseInterface {
-        $podcast = $this->getRecord($request->getStation(), $episode_id);
-
-        if ($podcast === null) {
-            return $response->withStatus(404)
-                ->withJson(Entity\Api\Error::notFound());
-        }
-
-        $this->editRecord((array)$request->getParsedBody(), $podcast);
-
-        return $response->withJson(Entity\Api\Status::updated());
-    }
-
-    public function deleteAction(
-        ServerRequest $request,
-        Response $response,
-        string $station_id,
-        string $podcast_id,
-        string $episode_id
-    ): ResponseInterface {
-        $station = $request->getStation();
-        $record = $this->getRecord($station, $episode_id);
-
-        if (null === $record) {
-            return $response->withStatus(404)
-                ->withJson(Entity\Api\Error::notFound());
-        }
-
-        $this->episodeRepository->delete(
-            $record,
-            $this->stationFilesystems->getPodcastsFilesystem($station)
-        );
-
-        return $response->withJson(Entity\Api\Status::deleted());
-    }
-
-    /**
-     * @param Entity\Station $station
-     * @param string $id
-     *
-     * @return Entity\PodcastEpisode|null
-     */
-    private function getRecord(Entity\Station $station, string $id): ?object
+    protected function deleteRecord(object $record): void
     {
-        return $this->episodeRepository->fetchEpisodeForStation($station, $id);
+        $this->episodeRepository->delete($record);
     }
 
     /**
      * @inheritDoc
      */
-    protected function viewRecord(object $record, ServerRequest $request): Entity\Api\PodcastEpisode
+    protected function viewRecord(object $record, ServerRequest $request): ApiPodcastEpisode
     {
-        if (!($record instanceof Entity\PodcastEpisode)) {
+        if (!($record instanceof PodcastEpisode)) {
             throw new InvalidArgumentException(sprintf('Record must be an instance of %s.', $this->entityClass));
         }
 
         $isInternal = ('true' === $request->getParam('internal', 'false'));
         $router = $request->getRouter();
 
-        $return = new Entity\Api\PodcastEpisode();
+        $return = new ApiPodcastEpisode();
         $return->id = $record->getId();
         $return->title = $record->getTitle();
         $return->description = $record->getDescription();
@@ -360,9 +310,9 @@ final class PodcastEpisodesController extends AbstractApiCrudController
         $return->publish_at = $record->getPublishAt();
 
         $mediaRow = $record->getMedia();
-        $return->has_media = ($mediaRow instanceof Entity\PodcastMedia);
-        if ($mediaRow instanceof Entity\PodcastMedia) {
-            $media = new Entity\Api\PodcastMedia();
+        $return->has_media = ($mediaRow instanceof PodcastMedia);
+        if ($mediaRow instanceof PodcastMedia) {
+            $media = new ApiPodcastMedia();
             $media->id = $mediaRow->getId();
             $media->original_name = $mediaRow->getOriginalName();
             $media->length = $mediaRow->getLength();
@@ -373,7 +323,7 @@ final class PodcastEpisodesController extends AbstractApiCrudController
             $return->media = $media;
         } else {
             $return->has_media = false;
-            $return->media = new Entity\Api\PodcastMedia();
+            $return->media = new ApiPodcastMedia();
         }
 
         $return->art_updated_at = $record->getArtUpdatedAt();

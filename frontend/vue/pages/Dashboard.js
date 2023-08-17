@@ -1,9 +1,5 @@
-import initBase from '~/base.js';
-import '~/vendor/fancybox';
-import '~/vendor/chartjs';
+import initApp from "~/layout";
+import usePanelLayout from "~/layouts/PanelLayout";
+import Dashboard from "~/components/Dashboard.vue";
 
-import '~/pages/InlinePlayer.js';
-
-import Dashboard from '~/components/Dashboard';
-
-export default initBase(Dashboard);
+initApp(usePanelLayout(Dashboard));

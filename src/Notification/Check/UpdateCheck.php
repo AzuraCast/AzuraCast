@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace App\Notification\Check;
 
-use App\Entity;
+use App\Container\SettingsAwareTrait;
+use App\Entity\Api\Notification;
 use App\Enums\GlobalPermissions;
 use App\Enums\ReleaseChannel;
 use App\Event\GetNotifications;
@@ -13,9 +14,10 @@ use App\Version;
 
 final class UpdateCheck
 {
+    use SettingsAwareTrait;
+
     public function __construct(
         private readonly Version $version,
-        private readonly Entity\Repository\SettingsRepository $settingsRepo
     ) {
     }
 
@@ -27,8 +29,7 @@ final class UpdateCheck
             return;
         }
 
-        $settings = $this->settingsRepo->readSettings();
-
+        $settings = $this->readSettings();
         if (!$settings->getCheckForUpdates()) {
             return;
         }
@@ -45,8 +46,11 @@ final class UpdateCheck
 
         $releaseChannel = $this->version->getReleaseChannelEnum();
 
-        if (ReleaseChannel::Stable === $releaseChannel && $updateData['needs_release_update']) {
-            $notification = new Entity\Api\Notification();
+        if (
+            ReleaseChannel::Stable === $releaseChannel
+            && ($updateData['needs_release_update'] ?? false)
+        ) {
+            $notification = new Notification();
             $notification->title = __(
                 'New AzuraCast Stable Release Available',
             );
@@ -65,20 +69,39 @@ final class UpdateCheck
             return;
         }
 
-        if (ReleaseChannel::RollingRelease === $releaseChannel && $updateData['needs_rolling_update']) {
-            $notification = new Entity\Api\Notification();
-            $notification->title = __(
-                'New AzuraCast Rolling Release Available'
-            );
-            $notification->body = sprintf(
-                __('Your installation is currently %d update(s) behind the latest version. Updating is recommended.'),
-                $updateData['rolling_updates_available']
-            );
-            $notification->type = FlashLevels::Info->value;
-            $notification->actionLabel = $actionLabel;
-            $notification->actionUrl = $actionUrl;
+        if (ReleaseChannel::RollingRelease === $releaseChannel) {
+            if ($updateData['needs_rolling_update'] ?? false) {
+                $notification = new Notification();
+                $notification->title = __(
+                    'New AzuraCast Rolling Release Available'
+                );
+                $notification->body = sprintf(
+                    __(
+                        'Your installation is currently %d update(s) behind the latest version. Updating is recommended.'
+                    ),
+                    $updateData['rolling_updates_available']
+                );
+                $notification->type = FlashLevels::Info->value;
+                $notification->actionLabel = $actionLabel;
+                $notification->actionUrl = $actionUrl;
 
-            $event->addNotification($notification);
+                $event->addNotification($notification);
+            }
+
+            if ($updateData['can_switch_to_stable'] ?? false) {
+                $notification = new Notification();
+                $notification->title = __(
+                    'Switch to Stable Channel Available'
+                );
+                $notification->body = __(
+                    'Your Rolling Release installation is currently older than the latest Stable release. This means you can switch releases to the "Stable" release channel if desired.'
+                );
+                $notification->type = FlashLevels::Info->value;
+                $notification->actionLabel = __('About Release Channels');
+                $notification->actionUrl = 'https://docs.azuracast.com/en/getting-started/updates/release-channels';
+
+                $event->addNotification($notification);
+            }
         }
     }
 }

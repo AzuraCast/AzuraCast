@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Service;
 
-use App\Entity;
+use App\Container\SettingsAwareTrait;
 use App\Exception\RateLimitExceededException;
 use App\Lock\LockFactory;
 use App\Version;
@@ -16,21 +16,27 @@ use Symfony\Component\Lock\Exception\LockConflictedException;
 
 final class LastFm
 {
-    public const API_BASE_URL = 'https://ws.audioscrobbler.com/2.0/';
+    use SettingsAwareTrait;
 
-    private ?string $apiKey = null;
+    public const API_BASE_URL = 'https://ws.audioscrobbler.com/2.0/';
 
     public function __construct(
         private readonly Client $httpClient,
-        private readonly LockFactory $lockFactory,
-        Entity\Repository\SettingsRepository $settingsRepo
+        private readonly LockFactory $lockFactory
     ) {
-        $this->apiKey = $settingsRepo->readSettings()->getLastFmApiKey();
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getApiKey(): ?string
+    {
+        return $this->readSettings()->getLastFmApiKey();
     }
 
     public function hasApiKey(): bool
     {
-        return !empty($this->apiKey);
+        return !empty($this->getApiKey());
     }
 
     /**
@@ -43,7 +49,7 @@ final class LastFm
         string $apiMethod,
         array $query = []
     ): array {
-        $apiKey = $this->apiKey;
+        $apiKey = $this->getApiKey();
         if (empty($apiKey)) {
             throw new InvalidArgumentException('No last.fm API key provided.');
         }

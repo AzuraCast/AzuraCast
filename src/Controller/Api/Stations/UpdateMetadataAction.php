@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Stations;
 
-use App\Entity;
+use App\Controller\SingleActionInterface;
+use App\Entity\Api\Status;
 use App\Exception\StationUnsupportedException;
 use App\Http\Response;
 use App\Http\ServerRequest;
@@ -13,7 +14,7 @@ use Psr\Http\Message\ResponseInterface;
 
 use const ARRAY_FILTER_USE_KEY;
 
-final class UpdateMetadataAction
+final class UpdateMetadataAction implements SingleActionInterface
 {
     public function __construct(
         private readonly Adapters $adapters,
@@ -23,7 +24,7 @@ final class UpdateMetadataAction
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        string $station_id
+        array $params
     ): ResponseInterface {
         $station = $request->getStation();
 
@@ -58,7 +59,7 @@ final class UpdateMetadataAction
         $output = $backend->updateMetadata($station, $metadata);
 
         return $response->withJson(
-            new Entity\Api\Status(true, 'Metadata updated successfully: ' . implode(', ', $output))
+            new Status(true, 'Metadata updated successfully: ' . implode(', ', $output))
         );
     }
 }

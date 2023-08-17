@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Admin;
 
+use App\Container\EnvironmentAwareTrait;
 use App\Controller\Api\Traits\HasLogViewer;
-use App\Environment;
 use App\Exception;
 use App\Http\Response;
 use App\Http\ServerRequest;
@@ -15,9 +15,9 @@ use Psr\Http\Message\ResponseInterface;
 final class LogsAction
 {
     use HasLogViewer;
+    use EnvironmentAwareTrait;
 
     public function __construct(
-        private readonly Environment $environment,
         private readonly ServiceControl $serviceControl,
     ) {
     }
@@ -25,8 +25,11 @@ final class LogsAction
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        ?string $log = null
+        array $params
     ): ResponseInterface {
+        /** @var string|null $log */
+        $log = $params['log'] ?? null;
+
         $logPaths = $this->getGlobalLogs();
 
         if (null === $log) {
@@ -76,6 +79,24 @@ final class LogsAction
         $logPaths['azuracast_log'] = [
             'name' => __('AzuraCast Application Log'),
             'path' => $tempDir . '/app-' . gmdate('Y-m-d') . '.log',
+            'tail' => true,
+        ];
+
+        $logPaths['azuracast_nowplaying_log'] = [
+            'name' => __('AzuraCast Now Playing Log'),
+            'path' => $tempDir . '/app_nowplaying-' . gmdate('Y-m-d') . '.log',
+            'tail' => true,
+        ];
+
+        $logPaths['azuracast_sync_log'] = [
+            'name' => __('AzuraCast Synchronized Task Log'),
+            'path' => $tempDir . '/app_sync-' . gmdate('Y-m-d') . '.log',
+            'tail' => true,
+        ];
+
+        $logPaths['azuracast_worker_log'] = [
+            'name' => __('AzuraCast Queue Worker Log'),
+            'path' => $tempDir . '/app_worker-' . gmdate('Y-m-d') . '.log',
             'tail' => true,
         ];
 

@@ -12,7 +12,7 @@
 
             <album-art
                 v-if="showAlbumArt"
-                class="mr-3"
+                class="me-3"
                 :src="row.song.art"
             />
 
@@ -22,7 +22,7 @@
                     {{ albumAndArtist(row.song) }}
                 </span>
             </div>
-            <small class="date-played text-muted ml-3">
+            <small class="date-played text-muted ms-3">
                 {{ unixTimestampToDate(row.played_at) }}
             </small>
         </div>
@@ -30,29 +30,27 @@
 </template>
 
 <script setup>
-import {DateTime} from "luxon";
 import AlbumArt from "~/components/Common/AlbumArt.vue";
+import {useLuxon} from "~/vendor/luxon";
 
 const props = defineProps({
     history: {
-        type: Array,
+        type: Object,
         default: () => {
-            return [];
+            return {};
         }
     },
     showAlbumArt: {
         type: Boolean,
         default: true
-    },
+    }
 });
 
-const unixTimestampToDate = (timestamp) => {
-    if (!timestamp) {
-        return '';
-    }
+const {timestampToRelative} = useLuxon();
 
-    return DateTime.fromSeconds(timestamp).toRelative();
-};
+const unixTimestampToDate = (timestamp) => (!timestamp)
+    ? ''
+    : timestampToRelative(timestamp);
 
 const albumAndArtist = (song) => {
     return [song.artist, song.album].filter(str => !!str).join(' - ');

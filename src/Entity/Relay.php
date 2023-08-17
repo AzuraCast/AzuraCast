@@ -56,9 +56,9 @@ class Relay implements IdentifiableEntityInterface
     #[ORM\OneToMany(mappedBy: 'relay', targetEntity: StationRemote::class)]
     protected Collection $remotes;
 
-    public function __construct(string $base_url)
+    public function __construct(string $baseUrl)
     {
-        $this->base_url = $this->truncateString($base_url);
+        $this->base_url = $this->truncateString($baseUrl);
 
         $this->created_at = time();
         $this->updated_at = time();
@@ -92,9 +92,9 @@ class Relay implements IdentifiableEntityInterface
         return $this->is_visible_on_public_pages;
     }
 
-    public function setIsVisibleOnPublicPages(bool $is_visible_on_public_pages): void
+    public function setIsVisibleOnPublicPages(bool $isVisibleOnPublicPages): void
     {
-        $this->is_visible_on_public_pages = $is_visible_on_public_pages;
+        $this->is_visible_on_public_pages = $isVisibleOnPublicPages;
     }
 
     public function getCreatedAt(): int
@@ -102,9 +102,9 @@ class Relay implements IdentifiableEntityInterface
         return $this->created_at;
     }
 
-    public function setCreatedAt(int $created_at): void
+    public function setCreatedAt(int $createdAt): void
     {
-        $this->created_at = $created_at;
+        $this->created_at = $createdAt;
     }
 
     public function getUpdatedAt(): int
@@ -112,9 +112,9 @@ class Relay implements IdentifiableEntityInterface
         return $this->updated_at;
     }
 
-    public function setUpdatedAt(int $updated_at): void
+    public function setUpdatedAt(int $updatedAt): void
     {
-        $this->updated_at = $updated_at;
+        $this->updated_at = $updatedAt;
     }
 
     /**

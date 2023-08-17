@@ -4,17 +4,20 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Stations;
 
+use App\Container\EntityManagerAwareTrait;
+use App\Controller\SingleActionInterface;
 use App\Entity\ApiGenerator\SongApiGenerator;
 use App\Entity\StationMedia;
 use App\Http\ServerRequest;
 use App\Paginator;
-use Doctrine\ORM\EntityManagerInterface;
 use Psr\Cache\CacheItemPoolInterface;
+use RuntimeException;
 
-abstract class AbstractSearchableListAction
+abstract class AbstractSearchableListAction implements SingleActionInterface
 {
+    use EntityManagerAwareTrait;
+
     public function __construct(
-        protected readonly EntityManagerInterface $em,
         protected readonly SongApiGenerator $songApiGenerator,
         protected readonly CacheItemPoolInterface $psr6Cache,
     ) {
@@ -29,7 +32,7 @@ abstract class AbstractSearchableListAction
         array $playlists
     ): Paginator {
         if (empty($playlists)) {
-            throw new \RuntimeException('This station has no qualifying playlists for this feature.');
+            throw new RuntimeException('This station has no qualifying playlists for this feature.');
         }
 
         $station = $request->getStation();

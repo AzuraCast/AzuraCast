@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\MessageQueue;
 
-use Symfony\Component\Messenger\Transport\InMemoryTransport;
+use Symfony\Component\Messenger\Transport\InMemory\InMemoryTransport;
 use Symfony\Component\Messenger\Transport\TransportInterface;
 
 final class TestQueueManager extends AbstractQueueManager

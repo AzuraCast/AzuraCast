@@ -4,13 +4,14 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Stations\Webhooks;
 
-use App\Entity;
+use App\Controller\SingleActionInterface;
+use App\Entity\Api\Status;
 use App\Entity\Repository\StationWebhookRepository;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
 
-final class ToggleAction
+final class ToggleAction implements SingleActionInterface
 {
     public function __construct(
         private readonly StationWebhookRepository $webhookRepo
@@ -20,9 +21,11 @@ final class ToggleAction
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        string $station_id,
-        string $id
+        array $params
     ): ResponseInterface {
+        /** @var string $id */
+        $id = $params['id'];
+
         $record = $this->webhookRepo->requireForStation($id, $request->getStation());
 
         $newValue = !$record->getIsEnabled();
@@ -32,10 +35,10 @@ final class ToggleAction
         $em->persist($record);
         $em->flush();
 
-        $flash_message = ($newValue)
+        $flashMessage = ($newValue)
             ? __('Web hook enabled.')
             : __('Web hook disabled.');
 
-        return $response->withJson(new Entity\Api\Status(true, $flash_message));
+        return $response->withJson(new Status(true, $flashMessage));
     }
 }

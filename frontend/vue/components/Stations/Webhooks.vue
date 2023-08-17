@@ -1,33 +1,24 @@
 <template>
-    <section
-        class="card"
-        role="region"
-        aria-labelledby="hdr_web_hooks"
-    >
-        <b-card-header header-bg-variant="primary-dark">
-            <h2
-                id="hdr_web_hooks"
-                class="card-title"
-            >
-                {{ $gettext('Web Hooks') }}
-            </h2>
-        </b-card-header>
-
-        <info-card>
-            {{
-                $gettext('Web hooks let you connect to external web services and broadcast changes to your station to them.')
-            }}
-        </info-card>
-
-        <b-card-body body-class="card-padding-sm">
-            <b-button
-                variant="outline-primary"
-                @click.prevent="doCreate"
+    <card-page :title="$gettext('Web Hooks')">
+        <template #info>
+            <p class="card-text">
+                {{
+                    $gettext('Web hooks let you connect to external web services and broadcast changes to your station to them.')
+                }}
+            </p>
+        </template>
+        <template #actions>
+            <button
+                type="button"
+                class="btn btn-primary"
+                @click="doCreate"
             >
                 <icon icon="add" />
-                {{ $gettext('Add Web Hook') }}
-            </b-button>
-        </b-card-body>
+                <span>
+                    {{ $gettext('Add Web Hook') }}
+                </span>
+            </button>
+        </template>
 
         <data-table
             id="station_webhooks"
@@ -40,56 +31,63 @@
                     {{ row.item.name }}
                 </div>
                 {{ getWebhookName(row.item.type) }}
-                <b-badge
+
+                <div
                     v-if="!row.item.is_enabled"
-                    variant="danger"
+                    class="badge bg-danger"
                 >
                     {{ $gettext('Disabled') }}
-                </b-badge>
-            </template>
-            <template #cell(triggers)="row">
-                <div
-                    v-for="(name, index) in getTriggerNames(row.item.triggers)"
-                    :key="row.item.id+'_'+index"
-                    class="small"
-                >
-                    {{ name }}
                 </div>
             </template>
+            <template #cell(triggers)="row">
+                <template v-if="row.item.triggers.length > 0">
+                    <div
+                        v-for="(name, index) in getTriggerNames(row.item.triggers)"
+                        :key="row.item.id+'_'+index"
+                        class="small"
+                    >
+                        {{ name }}
+                    </div>
+                </template>
+                <template v-else>
+&nbsp;
+                </template>
+            </template>
             <template #cell(actions)="row">
-                <b-button-group size="sm">
-                    <b-button
-                        size="sm"
-                        variant="primary"
-                        @click.prevent="doEdit(row.item.links.self)"
+                <div class="btn-group btn-group-sm">
+                    <button
+                        type="button"
+                        class="btn btn-primary"
+                        @click="doEdit(row.item.links.self)"
                     >
                         {{ $gettext('Edit') }}
-                    </b-button>
-                    <b-button
-                        size="sm"
-                        :variant="getToggleVariant(row.item)"
-                        @click.prevent="doToggle(row.item.links.toggle)"
+                    </button>
+                    <button
+                        type="button"
+                        class="btn"
+                        :class="getToggleVariant(row.item)"
+                        @click="doToggle(row.item.links.toggle)"
                     >
                         {{ langToggleButton(row.item) }}
-                    </b-button>
-                    <b-button
-                        size="sm"
-                        variant="default"
-                        @click.prevent="doTest(row.item.links.test)"
+                    </button>
+                    <button
+                        type="button"
+                        class="btn btn-secondary"
+                        @click="doTest(row.item.links.test)"
                     >
                         {{ $gettext('Test') }}
-                    </b-button>
-                    <b-button
-                        size="sm"
-                        variant="danger"
-                        @click.prevent="doDelete(row.item.links.self)"
+                    </button>
+                    <button
+                        type="button"
+                        class="btn btn-danger"
+                        @click="doDelete(row.item.links.self)"
                     >
                         {{ $gettext('Delete') }}
-                    </b-button>
-                </b-button-group>
+                    </button>
+                </div>
             </template>
         </data-table>
-    </section>
+    </card-page>
 
     <streaming-log-modal ref="$logModal" />
     <edit-modal
@@ -106,28 +104,24 @@
 import DataTable from '~/components/Common/DataTable';
 import EditModal from './Webhooks/EditModal';
 import Icon from '~/components/Common/Icon';
-import InfoCard from "~/components/Common/InfoCard";
 import {get, map} from 'lodash';
 import StreamingLogModal from "~/components/Common/StreamingLogModal";
 import {useTranslate} from "~/vendor/gettext";
 import {ref} from "vue";
 import useHasDatatable from "~/functions/useHasDatatable";
 import useHasEditModal from "~/functions/useHasEditModal";
-import {useNotify} from "~/vendor/bootstrapVue";
+import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
 import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
 import {useTriggerDetails, useTypeDetails} from "~/components/Entity/Webhooks";
+import CardPage from "~/components/Common/CardPage.vue";
+import {useAzuraCastStation} from "~/vendor/azuracast";
+import {getApiUrl, getStationApiUrl} from "~/router";
 
-const props = defineProps({
-    listUrl: {
-        type: String,
-        required: true
-    },
-    nowPlayingUrl: {
-        type: String,
-        required: true
-    }
-});
+const listUrl = getStationApiUrl('/webhooks');
+
+const {id} = useAzuraCastStation();
+const nowPlayingUrl = getApiUrl(`/nowplaying/${id}`);
 
 const {$gettext} = useTranslate();
 
@@ -148,8 +142,8 @@ const langToggleButton = (record) => {
 
 const getToggleVariant = (record) => {
     return (record.is_enabled)
-        ? 'warning'
-        : 'success';
+        ? 'btn-warning'
+        : 'btn-success';
 };
 
 const getWebhookName = (key) => {

@@ -11,29 +11,13 @@
 
 <script setup>
 import {Tableau20} from "~/vendor/chartjs-colorschemes/colorschemes.tableau";
-import {Chart} from "chart.js";
 import {useTranslate} from "~/vendor/gettext";
-import {onMounted, onUnmounted, ref} from "vue";
-import {defaultsDeep} from "lodash";
+import {ref} from "vue";
 import ChartAltValues from "~/components/Common/Charts/ChartAltValues.vue";
+import useChart, {chartProps} from "~/functions/useChart";
 
 const props = defineProps({
-    options: {
-        type: Object,
-        required: true
-    },
-    data: {
-        type: Array,
-        default: () => {
-            return [];
-        }
-    },
-    alt: {
-        type: Array,
-        default: () => {
-            return [];
-        }
-    },
+    ...chartProps,
     labels: {
         type: Array,
         default: () => {
@@ -42,17 +26,14 @@ const props = defineProps({
     }
 });
 
-let $chart = null;
 const $canvas = ref(); // Template Ref
 const {$gettext} = useTranslate();
 
-onMounted(() => {
-    const defaultOptions = {
+useChart(
+    props,
+    $canvas,
+    {
         type: 'bar',
-        data: {
-            labels: props.labels,
-            datasets: props.data
-        },
         options: {
             aspectRatio: 2,
             plugins: {
@@ -78,19 +59,6 @@ onMounted(() => {
                 }
             }
         }
-    };
-
-    if ($chart) {
-        $chart.destroy();
     }
-
-    let chartOptions = defaultsDeep({}, props.options, defaultOptions);
-    $chart = new Chart($canvas.value.getContext('2d'), chartOptions);
-});
-
-onUnmounted(() => {
-    if ($chart) {
-        $chart.destroy();
-    }
-});
+);
 </script>

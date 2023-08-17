@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Installer\Command;
 
+use App\Container\EnvironmentAwareTrait;
 use App\Enums\SupportedLocales;
 use App\Environment;
 use App\Installer\EnvFiles\AbstractEnvFile;
@@ -26,13 +27,9 @@ use Symfony\Component\Yaml\Yaml;
 )]
 final class InstallCommand extends Command
 {
-    public const DEFAULT_BASE_DIRECTORY = '/installer';
+    use EnvironmentAwareTrait;
 
-    public function __construct(
-        private readonly Environment $environment
-    ) {
-        parent::__construct();
-    }
+    public const DEFAULT_BASE_DIRECTORY = '/installer';
 
     protected function configure(): void
     {

@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Stations\Playlists;
 
-use App\Doctrine\ReloadableEntityManagerInterface;
+use App\Container\EntityManagerAwareTrait;
+use App\Controller\SingleActionInterface;
 use App\Entity\Api\Error;
 use App\Entity\Api\StationPlaylistImportResult;
 use App\Entity\Repository\StationPlaylistMediaRepository;
@@ -18,21 +19,24 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\UploadedFileInterface;
 use Symfony\Component\Filesystem\Path;
 
-final class ImportAction
+final class ImportAction implements SingleActionInterface
 {
+    use EntityManagerAwareTrait;
+
     public function __construct(
         private readonly StationPlaylistRepository $playlistRepo,
-        private readonly StationPlaylistMediaRepository $spmRepo,
-        private readonly ReloadableEntityManagerInterface $em,
+        private readonly StationPlaylistMediaRepository $spmRepo
     ) {
     }
 
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        string $station_id,
-        string $id
+        array $params
     ): ResponseInterface {
+        /** @var string $id */
+        $id = $params['id'];
+
         $playlist = $this->playlistRepo->requireForStation($id, $request->getStation());
 
         $files = $request->getUploadedFiles();
@@ -66,7 +70,7 @@ final class ImportAction
             $mediaLookup = [];
             $basenameLookup = [];
 
-            $media_info_raw = $this->em->createQuery(
+            $mediaInfoRaw = $this->em->createQuery(
                 <<<'DQL'
                     SELECT sm.id, sm.path
                     FROM App\Entity\StationMedia sm
@@ -75,7 +79,7 @@ final class ImportAction
             )->setParameter('storageLocation', $storageLocation)
                 ->getArrayResult();
 
-            foreach ($media_info_raw as $row) {
+            foreach ($mediaInfoRaw as $row) {
                 $pathParts = explode('/', $row['path']);
 
                 $basename = File::sanitizeFileName(array_pop($pathParts));
@@ -99,12 +103,12 @@ final class ImportAction
             // Run all paths against the lookup list of hashes.
             $matches = [];
 
-            $matchFunction = static function ($path_raw) use ($mediaLookup, $basenameLookup) {
+            $matchFunction = static function ($pathRaw) use ($mediaLookup, $basenameLookup) {
                 // De-Windows paths (if applicable)
-                $path_raw = str_replace('\\', '/', $path_raw);
+                $pathRaw = str_replace('\\', '/', $pathRaw);
 
                 // Work backwards from the basename to try to find matches.
-                $pathParts = explode('/', $path_raw);
+                $pathParts = explode('/', $pathRaw);
 
                 $basename = File::sanitizeFileName(array_pop($pathParts));
                 $basenameWithoutExt = Path::getFilenameWithoutExtension($basename);
@@ -141,11 +145,11 @@ final class ImportAction
                 return [null, null];
             };
 
-            foreach ($paths as $path_raw) {
-                [$matchedPath, $match] = $matchFunction($path_raw);
+            foreach ($paths as $pathRaw) {
+                [$matchedPath, $match] = $matchFunction($pathRaw);
 
                 $importResults[] = [
-                    'path' => $path_raw,
+                    'path' => $pathRaw,
                     'match' => $matchedPath,
                 ];
 

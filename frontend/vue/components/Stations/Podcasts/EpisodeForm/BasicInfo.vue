@@ -1,124 +1,97 @@
 <template>
-    <b-tab
-        :title="$gettext('Basic Information')"
+    <o-tab-item
+        :label="$gettext('Basic Information')"
+        :item-header-class="tabClass"
         active
     >
-        <b-form-group>
-            <div class="form-row">
-                <b-wrapped-form-group
-                    id="form_edit_title"
-                    class="col-md-6"
-                    :field="form.title"
-                >
-                    <template #label>
-                        {{ $gettext('Episode') }}
-                    </template>
-                </b-wrapped-form-group>
+        <div class="row g-3">
+            <form-group-field
+                id="form_edit_title"
+                class="col-md-6"
+                :field="v$.title"
+                :label="$gettext('Episode')"
+            />
 
-                <b-wrapped-form-group
-                    id="form_edit_link"
-                    class="col-md-6"
-                    :field="form.link"
-                >
-                    <template #label>
-                        {{ $gettext('Website') }}
-                    </template>
-                    <template #description>
-                        {{ $gettext('Typically a website with content about the episode.') }}
-                    </template>
-                </b-wrapped-form-group>
+            <form-group-field
+                id="form_edit_link"
+                class="col-md-6"
+                :field="v$.link"
+                :label="$gettext('Website')"
+                :description="$gettext('Typically a website with content about the episode.')"
+            />
 
-                <b-wrapped-form-group
-                    id="form_edit_description"
-                    class="col-md-12"
-                    :field="form.description"
-                    input-type="textarea"
-                >
-                    <template #label>
-                        {{ $gettext('Description') }}
-                    </template>
-                    <template #description>
-                        {{
-                            $gettext('The description of the episode. The typical maximum amount of text allowed for this is 4000 characters.')
-                        }}
-                    </template>
-                </b-wrapped-form-group>
+            <form-group-field
+                id="form_edit_description"
+                class="col-md-12"
+                :field="v$.description"
+                input-type="textarea"
+                :label="$gettext('Description')"
+                :description="$gettext('The description of the episode. The typical maximum amount of text allowed for this is 4000 characters.')"
+            />
 
-                <b-wrapped-form-group
-                    id="form_edit_publish_date"
-                    class="col-md-6"
-                    :field="form.publish_date"
-                >
-                    <template #label>
-                        {{ $gettext('Publish Date') }}
-                    </template>
-                    <template #description>
-                        {{ $gettext('The date when the episode should be published.') }}
-                    </template>
-                    <template #default="slotProps">
-                        <b-form-datepicker
-                            :id="slotProps.id"
-                            v-model="slotProps.field.$model"
-                            :state="slotProps.state"
-                            :locale="locale"
-                        />
-                    </template>
-                </b-wrapped-form-group>
+            <form-group-field
+                id="form_edit_publish_date"
+                class="col-md-6"
+                input-type="date"
+                :field="v$.publish_date"
+                :label="$gettext('Publish Date')"
+                :description="$gettext('The date when the episode should be published.')"
+            />
 
-                <b-wrapped-form-group
-                    id="form_edit_publish_time"
-                    class="col-md-6"
-                    :field="form.publish_time"
-                >
-                    <template #label>
-                        {{ $gettext('Publish Time') }}
-                    </template>
-                    <template #description>
-                        {{
-                            $gettext('The time when the episode should be published (according to the stations timezone).')
-                        }}
-                    </template>
-                    <template #default="slotProps">
-                        <b-form-timepicker
-                            :id="slotProps.id"
-                            v-model="slotProps.field.$model"
-                            :state="slotProps.state"
-                            :locale="locale"
-                        />
-                    </template>
-                </b-wrapped-form-group>
+            <form-group-field
+                id="form_edit_publish_time"
+                class="col-md-6"
+                input-type="time"
+                :field="v$.publish_time"
+                :label="$gettext('Publish Time')"
+                :description="$gettext('The time when the episode should be published (according to the stations timezone).')"
+            />
 
-                <b-wrapped-form-checkbox
-                    id="form_edit_explicit"
-                    class="col-md-12"
-                    :field="form.explicit"
-                >
-                    <template #label>
-                        {{ $gettext('Contains explicit content') }}
-                    </template>
-                    <template #description>
-                        {{
-                            $gettext('Indicates the presence of explicit content (explicit language or adult content). Apple Podcasts displays an Explicit parental advisory graphic for your episode if turned on. Episodes containing explicit material aren’t available in some Apple Podcasts territories.')
-                        }}
-                    </template>
-                </b-wrapped-form-checkbox>
-            </div>
-        </b-form-group>
-    </b-tab>
+            <form-group-checkbox
+                id="form_edit_explicit"
+                class="col-md-12"
+                :field="v$.explicit"
+                :label="$gettext('Contains explicit content')"
+                :description="$gettext('Indicates the presence of explicit content (explicit language or adult content). Apple Podcasts displays an Explicit parental advisory graphic for your episode if turned on. Episodes containing explicit material aren\'t available in some Apple Podcasts territories.')"
+            />
+        </div>
+    </o-tab-item>
 </template>
 
 <script setup>
-import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
-import BWrappedFormCheckbox from "~/components/Form/BWrappedFormCheckbox";
+import FormGroupField from "~/components/Form/FormGroupField";
+import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox";
+import {useVModel} from "@vueuse/core";
+import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
+import {required} from "@vuelidate/validators";
 
 const props = defineProps({
     form: {
         type: Object,
         required: true
-    },
-    locale: {
-        type: String,
-        required: true
     }
 });
+
+const emit = defineEmits(['update:form']);
+const form = useVModel(props, 'form', emit);
+
+const {v$, tabClass} = useVuelidateOnFormTab(
+    {
+        title: {required},
+        link: {},
+        description: {required},
+        publish_date: {},
+        publish_time: {},
+        explicit: {},
+    },
+    form,
+    {
+        title: '',
+        link: '',
+        description: '',
+        publish_date: '',
+        publish_time: '',
+        explicit: false
+    }
+);
 </script>

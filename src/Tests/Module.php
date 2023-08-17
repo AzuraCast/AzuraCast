@@ -1,10 +1,11 @@
 <?php
-declare(strict_types=1);
 
 /**
  * Based on Herloct's Slim 3.0 Connector
  * https://github.com/herloct/codeception-slim-module
  */
+
+declare(strict_types=1);
 
 namespace App\Tests;
 
@@ -22,6 +23,7 @@ use Psr\Container\ContainerInterface;
 use RuntimeException;
 use Slim\App;
 
+// phpcs:disable PSR2.Methods.MethodDeclaration.Underscore
 class Module extends Framework implements DoctrineProvider
 {
     public ContainerInterface $container;
@@ -36,6 +38,7 @@ class Module extends Framework implements DoctrineProvider
 
         $this->requiredFields = ['container'];
     }
+
 
     public function _initialize(): void
     {

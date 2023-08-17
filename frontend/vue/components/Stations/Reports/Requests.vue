@@ -1,40 +1,57 @@
 <template>
-    <b-card no-body>
-        <b-card-header header-bg-variant="primary-dark">
+    <section
+        class="card"
+        role="region"
+    >
+        <div class="card-header text-bg-primary">
             <h2 class="card-title">
                 {{ $gettext('Song Requests') }}
             </h2>
-        </b-card-header>
-        <b-tabs
-            pills
-            card
-        >
-            <b-tab
-                v-for="tab in tabs"
-                :key="tab.type"
-                :active="activeType === tab.type"
-                :title="tab.title"
-                no-body
-                @click="setType(tab.type)"
-            />
-        </b-tabs>
+        </div>
+
+        <div class="card-body">
+            <nav
+                class="nav nav-tabs"
+                role="tablist"
+            >
+                <div
+                    v-for="tab in tabs"
+                    :key="tab.type"
+                    class="nav-item"
+                    role="presentation"
+                >
+                    <button
+                        class="nav-link"
+                        :class="(activeType === tab.type) ? 'active' : ''"
+                        type="button"
+                        role="tab"
+                        @click="setType(tab.type)"
+                    >
+                        {{ tab.title }}
+                    </button>
+                </div>
+            </nav>
+        </div>
 
         <div
             v-if="activeType === 'pending'"
-            class="card-actions"
+            class="card-body"
         >
-            <b-button
-                variant="outline-danger"
+            <button
+                type="button"
+                class="btn btn-danger"
                 @click="doClear()"
             >
                 <icon icon="remove" />
-                {{ $gettext('Clear Pending Requests') }}
-            </b-button>
+                <span>
+                    {{ $gettext('Clear Pending Requests') }}
+                </span>
+            </button>
         </div>
 
         <data-table
             id="station_queue"
-            ref="datatable"
+            ref="$datatable"
             :fields="fields"
             :api-url="listUrlForType"
         >
@@ -62,48 +79,39 @@
                 {{ row.item.ip }}
             </template>
             <template #cell(actions)="row">
-                <b-button-group>
-                    <b-button
-                        v-if="row.item.played_at === 0"
-                        size="sm"
-                        variant="danger"
-                        @click.prevent="doDelete(row.item.links.delete)"
-                    >
-                        {{ $gettext('Delete') }}
-                    </b-button>
-                </b-button-group>
+                <button
+                    v-if="row.item.played_at === 0"
+                    type="button"
+                    class="btn btn-sm btn-danger"
+                    @click="doDelete(row.item.links.delete)"
+                >
+                    {{ $gettext('Delete') }}
+                </button>
             </template>
         </data-table>
-    </b-card>
+    </section>
 </template>
 
 <script setup>
 import DataTable from '~/components/Common/DataTable';
 import Icon from "~/components/Common/Icon";
-import {DateTime} from 'luxon';
-import {useAzuraCast} from "~/vendor/azuracast";
-import {computed, ref} from "vue";
+import {useAzuraCast, useAzuraCastStation} from "~/vendor/azuracast";
+import {computed, nextTick, ref} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import {useSweetAlert} from "~/vendor/sweetalert";
-import {useNotify} from "~/vendor/bootstrapVue";
+import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
+import {useLuxon} from "~/vendor/luxon";
+import {getStationApiUrl} from "~/router";
 
-const props = defineProps({
-    listUrl: {
-        type: String,
-        required: true
-    },
-    clearUrl: {
-        type: String,
-        required: true
-    },
-    stationTimeZone: {
-        type: String,
-        required: true
-    }
-});
+const listUrl = getStationApiUrl('/reports/requests');
+const clearUrl = getStationApiUrl('/reports/requests/clear');
 
 const activeType = ref('pending');
+
+const listUrlForType = computed(() => {
+    return listUrl.value + '?type=' + activeType.value;
+});
 
 const {$gettext} = useTranslate();
 
@@ -126,10 +134,6 @@ const tabs = [
     }
 ];
 
-const listUrlForType = computed(() => {
-    return props.listUrl + '?type=' + activeType.value;
-});
-
 const $datatable = ref(); // Template Ref
 
 const relist = () => {
@@ -138,13 +142,16 @@ const relist = () => {
 
 const setType = (type) => {
     activeType.value = type;
-    relist();
+    nextTick(relist);
 };
 
-const formatTime = (time) => {
-    const {timeConfig} = useAzuraCast();
+const {timeConfig} = useAzuraCast();
+const {timezone} = useAzuraCastStation();
 
-    return DateTime.fromSeconds(time).setZone(props.stationTimeZone).toLocaleString(
+const {DateTime} = useLuxon();
+
+const formatTime = (time) => {
+    return DateTime.fromSeconds(time).setZone(timezone).toLocaleString(
         {...DateTime.DATETIME_MED, ...timeConfig}
     );
 };
@@ -175,7 +182,7 @@ const doClear = () => {
     }).then((result) => {
         if (result.value) {
             wrapWithLoading(
-                axios.post(props.clearUrl)
+                axios.post(clearUrl.value)
             ).then((resp) => {
                 notifySuccess(resp.data.message);
                 relist();

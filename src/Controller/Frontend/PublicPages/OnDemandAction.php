@@ -4,26 +4,26 @@ declare(strict_types=1);
 
 namespace App\Controller\Frontend\PublicPages;
 
+use App\Container\EntityManagerAwareTrait;
+use App\Controller\SingleActionInterface;
 use App\Exception\StationNotFoundException;
 use App\Exception\StationUnsupportedException;
 use App\Http\Response;
 use App\Http\ServerRequest;
-use Doctrine\ORM\EntityManagerInterface;
 use Psr\Http\Message\ResponseInterface;
 
-final class OnDemandAction
+final class OnDemandAction implements SingleActionInterface
 {
-    public function __construct(
-        private readonly EntityManagerInterface $em,
-    ) {
-    }
+    use EntityManagerAwareTrait;
 
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        string $station_id,
-        ?string $embed = null
+        array $params
     ): ResponseInterface {
+        /** @var string|null $embed */
+        $embed = $params['embed'] ?? null;
+
         $station = $request->getStation();
 
         if (!$station->getEnablePublicPage()) {
@@ -68,7 +68,7 @@ final class OnDemandAction
 
         return $view->renderVuePage(
             response: $response->withHeader('X-Frame-Options', '*'),
-            component: 'Vue_PublicOnDemand',
+            component: 'Public/OnDemand',
             id: 'station-on-demand',
             layout: 'minimal',
             title: __('On-Demand Media') . ' - ' . $station->getName(),

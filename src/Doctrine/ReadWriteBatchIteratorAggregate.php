@@ -7,6 +7,7 @@ namespace App\Doctrine;
 use Closure;
 use RuntimeException;
 use Throwable;
+use Traversable;
 
 use function get_class;
 use function is_array;
@@ -26,11 +27,11 @@ final class ReadWriteBatchIteratorAggregate extends AbstractBatchIteratorAggrega
     {
         $this->customFetchFunction = (null === $customFetchFunction)
             ? null
-            : Closure::fromCallable($customFetchFunction);
+            : $customFetchFunction(...);
     }
 
     /** @inheritDoc */
-    public function getIterator(): \Traversable
+    public function getIterator(): Traversable
     {
         $iteration = 0;
         $resultSet = $this->resultSet;

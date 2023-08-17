@@ -4,10 +4,6 @@ export default {
         type: Boolean,
         default: true
     },
-    showAdvanced: {
-        type: Boolean,
-        default: true
-    },
     // Profile
     timezones: Object,
     // Frontend

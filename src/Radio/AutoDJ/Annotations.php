@@ -4,18 +4,23 @@ declare(strict_types=1);
 
 namespace App\Radio\AutoDJ;
 
-use App\Entity;
+use App\Container\EntityManagerAwareTrait;
+use App\Entity\Repository\StationQueueRepository;
+use App\Entity\Station;
+use App\Entity\StationMedia;
+use App\Entity\StationQueue;
+use App\Entity\StationRequest;
 use App\Event\Radio\AnnotateNextSong;
 use App\Radio\Backend\Liquidsoap\ConfigWriter;
-use Doctrine\ORM\EntityManagerInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 final class Annotations implements EventSubscriberInterface
 {
+    use EntityManagerAwareTrait;
+
     public function __construct(
-        private readonly EntityManagerInterface $em,
-        private readonly Entity\Repository\StationQueueRepository $queueRepo,
+        private readonly StationQueueRepository $queueRepo,
         private readonly EventDispatcherInterface $eventDispatcher,
     ) {
     }
@@ -40,7 +45,7 @@ final class Annotations implements EventSubscriberInterface
      * Pulls the next song from the AutoDJ, dispatches the AnnotateNextSong event and returns the built result.
      */
     public function annotateNextSong(
-        Entity\Station $station,
+        Station $station,
         bool $asAutoDj = false,
     ): string|bool {
         $queueRow = $this->queueRepo->getNextToSendToAutoDj($station);
@@ -58,11 +63,11 @@ final class Annotations implements EventSubscriberInterface
     public function annotateSongPath(AnnotateNextSong $event): void
     {
         $media = $event->getMedia();
-        if ($media instanceof Entity\StationMedia) {
+        if ($media instanceof StationMedia) {
             $event->setSongPath('media:' . ltrim($media->getPath(), '/'));
         } else {
             $queue = $event->getQueue();
-            if ($queue instanceof Entity\StationQueue) {
+            if ($queue instanceof StationQueue) {
                 $customUri = $queue->getAutodjCustomUri();
                 if (!empty($customUri)) {
                     $event->setSongPath($customUri);
@@ -83,44 +88,56 @@ final class Annotations implements EventSubscriberInterface
             return;
         }
 
-        $backendConfig = $station->getBackendConfig();
-
         $annotations = [];
-        $annotationsRaw = [
+        $annotationsRaw = array_filter([
             'title' => $media->getTitle(),
             'artist' => $media->getArtist(),
             'duration' => $media->getLength(),
             'song_id' => $media->getSongId(),
             'media_id' => $media->getId(),
-            'liq_amplify' => $media->getAmplify() ?? 0.0,
-            'liq_cross_duration' => $media->getFadeOverlap() ?? $backendConfig->getCrossfadeDuration(),
-            'liq_fade_in' => $media->getFadeIn() ?? $backendConfig->getCrossfade(),
-            'liq_fade_out' => $media->getFadeOut() ?? $backendConfig->getCrossfade(),
+            'liq_amplify' => $media->getAmplify(),
+            'liq_cross_duration' => $media->getFadeOverlap(),
+            'liq_fade_in' => $media->getFadeIn(),
+            'liq_fade_out' => $media->getFadeOut(),
             'liq_cue_in' => $media->getCueIn(),
             'liq_cue_out' => $media->getCueOut(),
-        ];
+        ]);
 
         // Safety checks for cue lengths.
-        if ($annotationsRaw['liq_cue_out'] < 0) {
-            $cue_out = abs($annotationsRaw['liq_cue_out']);
-            if (0.0 === $cue_out || $cue_out > $annotationsRaw['duration']) {
-                $annotationsRaw['liq_cue_out'] = null;
-            } else {
-                $annotationsRaw['liq_cue_out'] = max(0, $annotationsRaw['duration'] - $cue_out);
+        if (
+            isset($annotationsRaw['liq_cue_out'])
+            && $annotationsRaw['liq_cue_out'] < 0
+        ) {
+            $cueOut = abs($annotationsRaw['liq_cue_out']);
+
+            if (0.0 === $cueOut) {
+                unset($annotationsRaw['liq_cue_out']);
+            }
+
+            if (isset($annotationsRaw['duration'])) {
+                if ($cueOut > $annotationsRaw['duration']) {
+                    unset($annotationsRaw['liq_cue_out']);
+                } else {
+                    $annotationsRaw['liq_cue_out'] = max(0, $annotationsRaw['duration'] - $cueOut);
+                }
             }
         }
-        if ($annotationsRaw['liq_cue_out'] > $annotationsRaw['duration']) {
-            $annotationsRaw['liq_cue_out'] = null;
+
+        if (
+            isset($annotationsRaw['liq_cue_out'], $annotationsRaw['duration'])
+            && $annotationsRaw['liq_cue_out'] > $annotationsRaw['duration']
+        ) {
+            unset($annotationsRaw['liq_cue_out']);
         }
-        if ($annotationsRaw['liq_cue_in'] > $annotationsRaw['duration']) {
-            $annotationsRaw['liq_cue_in'] = null;
+
+        if (
+            isset($annotationsRaw['liq_cue_in'], $annotationsRaw['duration'])
+            && $annotationsRaw['liq_cue_in'] > $annotationsRaw['duration']
+        ) {
+            unset($annotationsRaw['liq_cue_in']);
         }
 
         foreach ($annotationsRaw as $name => $prop) {
-            if (null === $prop) {
-                continue;
-            }
-
             $prop = ConfigWriter::annotateString((string)$prop);
 
             // Convert Liquidsoap-specific annotations to floats.
@@ -159,7 +176,7 @@ final class Annotations implements EventSubscriberInterface
     public function annotateRequest(AnnotateNextSong $event): void
     {
         $request = $event->getRequest();
-        if ($request instanceof Entity\StationRequest) {
+        if ($request instanceof StationRequest) {
             $event->addAnnotations([
                 'request_id' => $request->getId(),
             ]);
@@ -173,7 +190,7 @@ final class Annotations implements EventSubscriberInterface
         }
 
         $queueRow = $event->getQueue();
-        if ($queueRow instanceof Entity\StationQueue) {
+        if ($queueRow instanceof StationQueue) {
             $queueRow->setSentToAutodj();
             $queueRow->setTimestampCued(time());
             $this->em->persist($queueRow);

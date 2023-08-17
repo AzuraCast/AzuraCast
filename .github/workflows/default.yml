@@ -89,10 +89,7 @@ jobs:
 
       - name: Set console permissions and clear static assets.
         run: |
-          rm -rf web/static/dist
-          rm -rf web/static/webpack_dist
-          rm -rf web/static/webpack.json
-          rm -rf web/static/assets.json
+          rm -rf web/static/vite_dist
           rm -rf translations/*.UTF-8
           chmod a+x bin/console
 
@@ -103,8 +100,7 @@ jobs:
       - name: Generate new translations from existing code.
         run: |
           cd frontend
-          npm ci
-          npm run generate-locales
+          npm ci --include=dev
           
           cd ..
           bin/console locale:generate
@@ -128,7 +124,6 @@ jobs:
           bin/console locale:import
           
           cd frontend
-          npm run import-locales
           npm run build
 
       - name: Build OpenAPI Docs
@@ -140,19 +135,15 @@ jobs:
           chmod 777 .gitinfo
 
       - name: Upload built static assets and translations
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: assets
           if-no-files-found: error
           path: |
             .gitinfo
             translations
-            web/static/dist
-            web/static/webpack_dist
-            web/static/webpack.json
-            web/static/assets.json
+            web/static/vite_dist
             web/static/api/openapi.yml
-  
   
   build:
     name: Build & Publish
@@ -167,7 +158,7 @@ jobs:
       - uses: actions/checkout@master
 
       - name: Download built static assets from previous step
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: assets
 

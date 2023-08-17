@@ -4,20 +4,18 @@ declare(strict_types=1);
 
 namespace App\Notification\Check;
 
-use App\Entity;
+use App\Container\EnvironmentAwareTrait;
+use App\Container\SettingsAwareTrait;
+use App\Entity\Api\Notification;
 use App\Enums\GlobalPermissions;
-use App\Environment;
 use App\Event\GetNotifications;
 use App\Session\FlashLevels;
 use Carbon\CarbonImmutable;
 
 final class RecentBackupCheck
 {
-    public function __construct(
-        private readonly Environment $environment,
-        private readonly Entity\Repository\SettingsRepository $settingsRepo
-    ) {
-    }
+    use EnvironmentAwareTrait;
+    use SettingsAwareTrait;
 
     public function __invoke(GetNotifications $event): void
     {
@@ -35,7 +33,7 @@ final class RecentBackupCheck
         $threshold = CarbonImmutable::now()->subWeeks(2)->getTimestamp();
 
         // Don't show backup warning for freshly created installations.
-        $settings = $this->settingsRepo->readSettings();
+        $settings = $this->readSettings();
 
         $setupComplete = $settings->getSetupCompleteTime();
         if ($setupComplete >= $threshold) {
@@ -45,7 +43,7 @@ final class RecentBackupCheck
         $backupLastRun = $settings->getBackupLastRun();
 
         if ($backupLastRun < $threshold) {
-            $notification = new Entity\Api\Notification();
+            $notification = new Notification();
             $notification->title = __('Installation Not Recently Backed Up');
             $notification->body = __('This installation has not been backed up in the last two weeks.');
             $notification->type = FlashLevels::Info->value;

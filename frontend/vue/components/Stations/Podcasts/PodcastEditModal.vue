@@ -8,28 +8,27 @@
         @submit="doSubmit"
         @hidden="clearContents"
     >
-        <b-tabs
+        <o-tabs
+            nav-tabs-class="nav-tabs"
             content-class="mt-3"
-            pills
         >
             <podcast-form-basic-info
-                :form="v$"
+                :form="form"
                 :categories-options="categoriesOptions"
                 :language-options="languageOptions"
             />
 
             <podcast-common-artwork
-                v-model="v$.artwork_file.$model"
+                v-model="form.artwork_file"
                 :artwork-src="record.art"
                 :new-art-url="newArtUrl"
                 :edit-art-url="record.links.art"
             />
-        </b-tabs>
+        </o-tabs>
     </modal-form>
 </template>
 
 <script setup>
-import {required} from '@vuelidate/validators';
 import PodcastFormBasicInfo from './PodcastForm/BasicInfo';
 import PodcastCommonArtwork from './Common/Artwork';
 import mergeExisting from "~/functions/mergeExisting";
@@ -41,10 +40,6 @@ import ModalForm from "~/components/Common/ModalForm.vue";
 
 const props = defineProps({
     ...baseEditModalProps,
-    stationTimeZone: {
-        type: String,
-        required: true
-    },
     languageOptions: {
         type: Object,
         required: true
@@ -73,6 +68,7 @@ const {
     loading,
     error,
     isEditMode,
+    form,
     v$,
     clearContents,
     create,
@@ -83,25 +79,9 @@ const {
     props,
     emit,
     $modal,
+    {},
     {
-        'title': {required},
-        'link': {},
-        'description': {required},
-        'language': {required},
-        'author': {},
-        'email': {},
-        'categories': {required},
-        'artwork_file': {}
-    },
-    {
-        'title': '',
-        'link': '',
-        'description': '',
-        'language': 'en',
-        'author': '',
-        'email': '',
-        'categories': [],
-        'artwork_file': null
+        artwork_file: null
     },
     {
         resetForm: (originalResetForm) => {

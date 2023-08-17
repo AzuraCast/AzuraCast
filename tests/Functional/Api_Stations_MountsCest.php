@@ -1,6 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Functional;
+
+use FunctionalTester;
 
 class Api_Stations_MountsCest extends CestAbstract
 {
@@ -8,7 +12,7 @@ class Api_Stations_MountsCest extends CestAbstract
      * @before setupComplete
      * @before login
      */
-    public function manageMounts(\FunctionalTester $I): void
+    public function manageMounts(FunctionalTester $I): void
     {
         $I->wantTo('Manage station mount points via API.');
 

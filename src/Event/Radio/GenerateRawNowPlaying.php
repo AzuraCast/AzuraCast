@@ -20,7 +20,7 @@ final class GenerateRawNowPlaying extends Event
     public function __construct(
         private readonly Adapters $adapters,
         private readonly Station $station,
-        private readonly bool $include_clients = false
+        private readonly bool $includeClients = false
     ) {
     }
 
@@ -44,12 +44,12 @@ final class GenerateRawNowPlaying extends Event
 
     public function getRemoteAdapter(StationRemote $remote): AbstractRemote
     {
-        return $this->adapters->getRemoteAdapter($this->station, $remote);
+        return $this->adapters->getRemoteAdapter($remote);
     }
 
     public function includeClients(): bool
     {
-        return $this->include_clients;
+        return $this->includeClients;
     }
 
     public function getResult(): Result

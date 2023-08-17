@@ -16,7 +16,7 @@ use Monolog\Registry;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Slim\App;
 use Slim\Factory\ServerRequestCreatorFactory;
-use Slim\Handlers\Strategies\RequestResponseNamedArgs;
+use Slim\Handlers\Strategies\RequestResponse;
 
 final class AppFactory
 {
@@ -54,8 +54,7 @@ final class AppFactory
         $container->set(App::class, $app);
 
         $routeCollector = $app->getRouteCollector();
-
-        $routeCollector->setDefaultInvocationStrategy(new RequestResponseNamedArgs());
+        $routeCollector->setDefaultInvocationStrategy(new RequestResponse());
 
         $environment = $container->get(Environment::class);
         if ($environment->isProduction()) {
@@ -87,6 +86,7 @@ final class AppFactory
 
         $containerBuilder = new DI\ContainerBuilder();
         $containerBuilder->useAutowiring(true);
+        $containerBuilder->useAttributes(true);
 
         if ($environment->isProduction()) {
             $containerBuilder->enableCompilation($environment->getTempDirectory());
@@ -95,9 +95,9 @@ final class AppFactory
         $containerBuilder->addDefinitions($diDefinitions);
 
         // Check for services.php file and include it if one exists.
-        $config_dir = $environment->getConfigDirectory();
-        if (file_exists($config_dir . '/services.php')) {
-            $containerBuilder->addDefinitions($config_dir . '/services.php');
+        $configDir = $environment->getConfigDirectory();
+        if (file_exists($configDir . '/services.php')) {
+            $containerBuilder->addDefinitions($configDir . '/services.php');
         }
 
         $di = $containerBuilder->build();

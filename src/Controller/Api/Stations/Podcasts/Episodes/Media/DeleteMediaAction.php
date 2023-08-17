@@ -4,7 +4,12 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Stations\Podcasts\Episodes\Media;
 
-use App\Entity;
+use App\Controller\SingleActionInterface;
+use App\Entity\Api\Error;
+use App\Entity\Api\Status;
+use App\Entity\PodcastEpisode;
+use App\Entity\PodcastMedia;
+use App\Entity\Repository\PodcastEpisodeRepository;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\OpenApi;
@@ -40,34 +45,35 @@ use Psr\Http\Message\ResponseInterface;
         new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
     ]
 )]
-final class DeleteMediaAction
+final class DeleteMediaAction implements SingleActionInterface
 {
     public function __construct(
-        private readonly Entity\Repository\PodcastEpisodeRepository $episodeRepo,
+        private readonly PodcastEpisodeRepository $episodeRepo,
     ) {
     }
 
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        string $station_id,
-        string $podcast_id,
-        string $episode_id
+        array $params
     ): ResponseInterface {
-        $station = $request->getStation();
-        $episode = $this->episodeRepo->fetchEpisodeForStation($station, $episode_id);
+        /** @var string $episodeId */
+        $episodeId = $params['episode_id'];
 
-        if (!($episode instanceof Entity\PodcastEpisode)) {
+        $station = $request->getStation();
+        $episode = $this->episodeRepo->fetchEpisodeForStation($station, $episodeId);
+
+        if (!($episode instanceof PodcastEpisode)) {
             return $response->withStatus(404)
-                ->withJson(Entity\Api\Error::notFound());
+                ->withJson(Error::notFound());
         }
 
         $podcastMedia = $episode->getMedia();
 
-        if ($podcastMedia instanceof Entity\PodcastMedia) {
+        if ($podcastMedia instanceof PodcastMedia) {
             $this->episodeRepo->deleteMedia($podcastMedia);
         }
 
-        return $response->withJson(Entity\Api\Status::deleted());
+        return $response->withJson(Status::deleted());
     }
 }

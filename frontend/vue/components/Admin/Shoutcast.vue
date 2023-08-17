@@ -1,24 +1,11 @@
 <template>
-    <section
-        class="card"
-        role="region"
-        aria-labelledby="hdr_install_shoutcast"
+    <card-page
+        header-id="hdr_install_shoutcast"
+        :title="$gettext('Install Shoutcast 2 DNAS')"
     >
-        <div class="card-header bg-primary-dark">
-            <h2
-                id="hdr_install_shoutcast"
-                class="card-title"
-            >
-                {{ $gettext('Install Shoutcast 2 DNAS') }}
-            </h2>
-        </div>
-
         <div class="card-body">
-            <b-overlay
-                variant="card"
-                :show="loading"
-            >
-                <div class="form-row">
+            <loading :loading="isLoading">
+                <div class="row g-3">
                     <div class="col-md-7">
                         <fieldset>
                             <legend>
@@ -85,9 +72,9 @@
                         />
                     </div>
                 </div>
-            </b-overlay>
+            </loading>
         </div>
-    </section>
+    </card-page>
 </template>
 
 <script setup>
@@ -95,15 +82,13 @@ import FlowUpload from "~/components/Common/FlowUpload";
 import {computed, onMounted, ref} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import {useAxios} from "~/vendor/axios";
+import Loading from "~/components/Common/Loading.vue";
+import CardPage from "~/components/Common/CardPage.vue";
+import {getApiUrl} from "~/router";
 
-const props = defineProps({
-    apiUrl: {
-        type: String,
-        required: true
-    }
-});
+const apiUrl = getApiUrl('/admin/shoutcast');
 
-const loading = ref(true);
+const isLoading = ref(true);
 const version = ref(null);
 
 const {$gettext} = useTranslate();
@@ -120,10 +105,10 @@ const langInstalledVersion = computed(() => {
 const {axios} = useAxios();
 
 const relist = () => {
-    loading.value = true;
-    axios.get(props.apiUrl).then((resp) => {
+    isLoading.value = true;
+    axios.get(apiUrl.value).then((resp) => {
         version.value = resp.data.version;
-        loading.value = false;
+        isLoading.value = false;
     });
 };
 

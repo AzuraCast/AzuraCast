@@ -4,14 +4,17 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Admin\Backups;
 
-use App\Entity;
+use App\Controller\SingleActionInterface;
+use App\Entity\Enums\StorageLocationTypes;
+use App\Entity\Repository\StorageLocationRepository;
+use App\Entity\StorageLocation;
 use App\Exception\NotFoundException;
 use InvalidArgumentException;
 
-abstract class AbstractFileAction
+abstract class AbstractFileAction implements SingleActionInterface
 {
     public function __construct(
-        protected readonly Entity\Repository\StorageLocationRepository $storageLocationRepo
+        protected readonly StorageLocationRepository $storageLocationRepo
     ) {
     }
 
@@ -21,11 +24,11 @@ abstract class AbstractFileAction
         [$storageLocationId, $path] = explode('|', $pathStr);
 
         $storageLocation = $this->storageLocationRepo->findByType(
-            Entity\Enums\StorageLocationTypes::Backup,
+            StorageLocationTypes::Backup,
             (int)$storageLocationId
         );
 
-        if (!($storageLocation instanceof Entity\StorageLocation)) {
+        if (!($storageLocation instanceof StorageLocation)) {
             throw new InvalidArgumentException('Invalid storage location.');
         }
 

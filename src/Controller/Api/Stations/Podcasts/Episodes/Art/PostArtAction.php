@@ -4,12 +4,15 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Stations\Podcasts\Episodes\Art;
 
-use App\Entity;
+use App\Container\EntityManagerAwareTrait;
+use App\Controller\SingleActionInterface;
+use App\Entity\Api\Error;
+use App\Entity\Api\Status;
+use App\Entity\Repository\PodcastEpisodeRepository;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\OpenApi;
 use App\Service\Flow;
-use Doctrine\ORM\EntityManagerInterface;
 use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 
@@ -42,21 +45,23 @@ use Psr\Http\Message\ResponseInterface;
         new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
     ]
 )]
-final class PostArtAction
+final class PostArtAction implements SingleActionInterface
 {
+    use EntityManagerAwareTrait;
+
     public function __construct(
-        private readonly Entity\Repository\PodcastEpisodeRepository $episodeRepo,
-        private readonly EntityManagerInterface $em,
+        private readonly PodcastEpisodeRepository $episodeRepo,
     ) {
     }
 
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        string $station_id,
-        string $podcast_id,
-        ?string $episode_id = null
+        array $params
     ): ResponseInterface {
+        /** @var string|null $episodeId */
+        $episodeId = $params['episode_id'] ?? null;
+
         $station = $request->getStation();
 
         $flowResponse = Flow::process($request, $response, $station->getRadioTempDir());
@@ -64,12 +69,12 @@ final class PostArtAction
             return $flowResponse;
         }
 
-        if (null !== $episode_id) {
-            $episode = $this->episodeRepo->fetchEpisodeForStation($station, $episode_id);
+        if (null !== $episodeId) {
+            $episode = $this->episodeRepo->fetchEpisodeForStation($station, $episodeId);
 
             if (null === $episode) {
                 return $response->withStatus(404)
-                    ->withJson(Entity\Api\Error::notFound());
+                    ->withJson(Error::notFound());
             }
 
             $this->episodeRepo->writeEpisodeArt(
@@ -79,7 +84,7 @@ final class PostArtAction
 
             $this->em->flush();
 
-            return $response->withJson(Entity\Api\Status::updated());
+            return $response->withJson(Status::updated());
         }
 
         return $response->withJson($flowResponse);

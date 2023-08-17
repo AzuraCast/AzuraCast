@@ -7,6 +7,7 @@ namespace App\Entity\StorageLocationAdapter;
 use App\Entity\StorageLocation;
 use App\Flysystem\ExtendedFilesystemInterface;
 use App\Flysystem\RemoteFilesystem;
+use InvalidArgumentException;
 
 abstract class AbstractStorageLocationLocationAdapter implements StorageLocationAdapterInterface
 {
@@ -22,7 +23,7 @@ abstract class AbstractStorageLocationLocationAdapter implements StorageLocation
     protected function setStorageLocation(StorageLocation $storageLocation): void
     {
         if ($this->getType() !== $storageLocation->getAdapter()) {
-            throw new \InvalidArgumentException('This storage location is not using the specified adapter.');
+            throw new InvalidArgumentException('This storage location is not using the specified adapter.');
         }
 
         $this->storageLocation = $storageLocation;

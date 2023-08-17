@@ -1,5 +1,5 @@
-import initBase from '~/base.js';
-
 import SetupRegister from '~/components/Setup/Register.vue';
+import initApp from "~/layout";
+import useMinimalLayout from "~/layouts/MinimalLayout";
 
-export default initBase(SetupRegister);
+initApp(useMinimalLayout(SetupRegister));

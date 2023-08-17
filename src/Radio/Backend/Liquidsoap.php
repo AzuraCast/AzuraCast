@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace App\Radio\Backend;
 
-use App\Entity;
+use App\Entity\Station;
+use App\Entity\StationStreamer;
 use App\Event\Radio\WriteLiquidsoapConfiguration;
 use App\Exception;
 use App\Nginx\CustomUrls;
@@ -21,7 +22,7 @@ final class Liquidsoap extends AbstractLocalAdapter
     /**
      * @inheritDoc
      */
-    public function getConfigurationPath(Entity\Station $station): ?string
+    public function getConfigurationPath(Station $station): ?string
     {
         return $station->getRadioConfigDir() . '/liquidsoap.liq';
     }
@@ -29,7 +30,7 @@ final class Liquidsoap extends AbstractLocalAdapter
     /**
      * @inheritDoc
      */
-    public function getCurrentConfiguration(Entity\Station $station): ?string
+    public function getCurrentConfiguration(Station $station): ?string
     {
         $event = new WriteLiquidsoapConfiguration($station, false, true);
         $this->dispatcher->dispatch($event);
@@ -40,11 +41,11 @@ final class Liquidsoap extends AbstractLocalAdapter
     /**
      * Returns the port used for DJs/Streamers to connect to LiquidSoap for broadcasting.
      *
-     * @param Entity\Station $station
+     * @param Station $station
      *
      * @return int The port number to use for this station.
      */
-    public function getStreamPort(Entity\Station $station): int
+    public function getStreamPort(Station $station): int
     {
         $djPort = $station->getBackendConfig()->getDjPort();
         if (null !== $djPort) {
@@ -52,23 +53,23 @@ final class Liquidsoap extends AbstractLocalAdapter
         }
 
         // Default to frontend port + 5
-        $frontend_config = $station->getFrontendConfig();
-        $frontend_port = $frontend_config->getPort() ?? (8000 + (($station->getId() - 1) * 10));
+        $frontendConfig = $station->getFrontendConfig();
+        $frontendPort = $frontendConfig->getPort() ?? (8000 + (($station->getId() - 1) * 10));
 
-        return $frontend_port + 5;
+        return $frontendPort + 5;
     }
 
     /**
      * Execute the specified remote command on LiquidSoap via the telnet API.
      *
-     * @param Entity\Station $station
-     * @param string $command_str
+     * @param Station $station
+     * @param string $commandStr
      *
      * @return string[]
      *
      * @throws Exception
      */
-    public function command(Entity\Station $station, string $command_str): array
+    public function command(Station $station, string $commandStr): array
     {
         $socketPath = 'unix://' . $station->getRadioConfigDir() . '/liquidsoap.sock';
 
@@ -83,7 +84,7 @@ final class Liquidsoap extends AbstractLocalAdapter
             throw new Exception('Telnet failure: ' . $errstr . ' (' . $errno . ')');
         }
 
-        fwrite($fp, str_replace(["\\'", '&amp;'], ["'", '&'], urldecode($command_str)) . "\nquit\n");
+        fwrite($fp, str_replace(["\\'", '&amp;'], ["'", '&'], urldecode($commandStr)) . "\nquit\n");
 
         $response = [];
         while (!feof($fp)) {
@@ -98,11 +99,11 @@ final class Liquidsoap extends AbstractLocalAdapter
     /**
      * @inheritdoc
      */
-    public function getCommand(Entity\Station $station): ?string
+    public function getCommand(Station $station): ?string
     {
         if ($binary = $this->getBinary()) {
-            $config_path = $station->getRadioConfigDir() . '/liquidsoap.liq';
-            return $binary . ' ' . $config_path;
+            $configPath = $station->getRadioConfigDir() . '/liquidsoap.liq';
+            return $binary . ' ' . $configPath;
         }
 
         return null;
@@ -135,7 +136,7 @@ final class Liquidsoap extends AbstractLocalAdapter
             : null;
     }
 
-    public function getHlsUrl(Entity\Station $station, UriInterface $baseUrl = null): UriInterface
+    public function getHlsUrl(Station $station, UriInterface $baseUrl = null): UriInterface
     {
         $baseUrl ??= $this->router->getBaseUrl();
         return $baseUrl->withPath(
@@ -144,7 +145,7 @@ final class Liquidsoap extends AbstractLocalAdapter
     }
 
     public function isQueueEmpty(
-        Entity\Station $station,
+        Station $station,
         LiquidsoapQueues $queue
     ): bool {
         $queueResult = $this->command(
@@ -158,20 +159,20 @@ final class Liquidsoap extends AbstractLocalAdapter
      * @return string[]
      */
     public function enqueue(
-        Entity\Station $station,
+        Station $station,
         LiquidsoapQueues $queue,
-        string $music_file
+        string $musicFile
     ): array {
         return $this->command(
             $station,
-            sprintf('%s.push %s', $queue->value, $music_file)
+            sprintf('%s.push %s', $queue->value, $musicFile)
         );
     }
 
     /**
      * @return string[]
      */
-    public function skip(Entity\Station $station): array
+    public function skip(Station $station): array
     {
         return $this->command(
             $station,
@@ -182,7 +183,7 @@ final class Liquidsoap extends AbstractLocalAdapter
     /**
      * @return string[]
      */
-    public function updateMetadata(Entity\Station $station, array $newMeta): array
+    public function updateMetadata(Station $station, array $newMeta): array
     {
         $metaStr = [];
         foreach ($newMeta as $metaKey => $metaVal) {
@@ -198,19 +199,19 @@ final class Liquidsoap extends AbstractLocalAdapter
     /**
      * Tell LiquidSoap to disconnect the current live streamer.
      *
-     * @param Entity\Station $station
+     * @param Station $station
      *
      * @return string[]
      */
-    public function disconnectStreamer(Entity\Station $station): array
+    public function disconnectStreamer(Station $station): array
     {
-        $current_streamer = $station->getCurrentStreamer();
-        $disconnect_timeout = $station->getDisconnectDeactivateStreamer();
+        $currentStreamer = $station->getCurrentStreamer();
+        $disconnectTimeout = $station->getDisconnectDeactivateStreamer();
 
-        if ($current_streamer instanceof Entity\StationStreamer && $disconnect_timeout > 0) {
-            $current_streamer->deactivateFor($disconnect_timeout);
+        if ($currentStreamer instanceof StationStreamer && $disconnectTimeout > 0) {
+            $currentStreamer->deactivateFor($disconnectTimeout);
 
-            $this->em->persist($current_streamer);
+            $this->em->persist($currentStreamer);
             $this->em->flush();
         }
 
@@ -220,13 +221,13 @@ final class Liquidsoap extends AbstractLocalAdapter
         );
     }
 
-    public function getWebStreamingUrl(Entity\Station $station, UriInterface $base_url): UriInterface
+    public function getWebStreamingUrl(Station $station, UriInterface $baseUrl): UriInterface
     {
         $djMount = $station->getBackendConfig()->getDjMountPoint();
 
-        return $base_url
+        return $baseUrl
             ->withScheme('wss')
-            ->withPath($base_url->getPath() . CustomUrls::getWebDjUrl($station) . $djMount);
+            ->withPath($baseUrl->getPath() . CustomUrls::getWebDjUrl($station) . $djMount);
     }
 
     public function verifyConfig(string $config): void
@@ -247,7 +248,7 @@ final class Liquidsoap extends AbstractLocalAdapter
         }
     }
 
-    public function getSupervisorProgramName(Entity\Station $station): string
+    public function getSupervisorProgramName(Station $station): string
     {
         return Configuration::getSupervisorProgramName($station, 'backend');
     }

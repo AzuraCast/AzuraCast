@@ -7,15 +7,17 @@ namespace App\Http;
 use App\Acl;
 use App\Auth;
 use App\Customization;
-use App\Entity;
+use App\Entity\Station;
+use App\Entity\User;
 use App\Enums\SupportedLocales;
 use App\Exception;
 use App\RateLimit;
 use App\Session;
 use App\View;
 use Mezzio\Session\SessionInterface;
+use Slim\Http\ServerRequest as SlimServerRequest;
 
-final class ServerRequest extends \Slim\Http\ServerRequest
+final class ServerRequest extends SlimServerRequest
 {
     public const ATTR_VIEW = 'app_view';
     public const ATTR_SESSION = 'app_session';
@@ -80,23 +82,23 @@ final class ServerRequest extends \Slim\Http\ServerRequest
         return $this->getAttributeOfClass(self::ATTR_ACL, Acl::class);
     }
 
-    public function getUser(): Entity\User
+    public function getUser(): User
     {
-        return $this->getAttributeOfClass(self::ATTR_USER, Entity\User::class);
+        return $this->getAttributeOfClass(self::ATTR_USER, User::class);
     }
 
-    public function getStation(): Entity\Station
+    public function getStation(): Station
     {
-        return $this->getAttributeOfClass(self::ATTR_STATION, Entity\Station::class);
+        return $this->getAttributeOfClass(self::ATTR_STATION, Station::class);
     }
 
     /**
      * @param string $attr
-     * @param string $class_name
+     * @param string $className
      *
      * @throws Exception\InvalidRequestAttribute
      */
-    private function getAttributeOfClass(string $attr, string $class_name): mixed
+    private function getAttributeOfClass(string $attr, string $className): mixed
     {
         $object = $this->serverRequest->getAttribute($attr);
 
@@ -109,12 +111,12 @@ final class ServerRequest extends \Slim\Http\ServerRequest
             );
         }
 
-        if (!($object instanceof $class_name)) {
+        if (!($object instanceof $className)) {
             throw new Exception\InvalidRequestAttribute(
                 sprintf(
                     'Attribute "%s" must be of type "%s".',
                     $attr,
-                    $class_name
+                    $className
                 )
             );
         }

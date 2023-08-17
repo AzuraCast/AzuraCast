@@ -11,11 +11,11 @@ final class StationPlaylistImportResult extends Status
     public function __construct(
         bool $success = true,
         string $message = 'Changes saved successfully.',
-        ?string $formatted_message = null,
-        array $import_results = [],
+        ?string $formattedMessage = null,
+        array $importResults = [],
     ) {
-        parent::__construct($success, $message, $formatted_message);
+        parent::__construct($success, $message, $formattedMessage);
 
-        $this->import_results = $import_results;
+        $this->import_results = $importResults;
     }
 }

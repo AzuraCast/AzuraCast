@@ -4,31 +4,38 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Stations\Files;
 
-use App\Entity;
+use App\Container\EntityManagerAwareTrait;
+use App\Container\LoggerAwareTrait;
+use App\Controller\Api\Traits\HasMediaSearch;
+use App\Controller\SingleActionInterface;
+use App\Entity\Api\Error;
+use App\Entity\Api\Status;
+use App\Entity\Repository\StationPlaylistMediaRepository;
+use App\Entity\StationMedia;
 use App\Exception\CannotProcessMediaException;
 use App\Exception\StorageLocationFullException;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Media\MediaProcessor;
 use App\Service\Flow;
-use Doctrine\ORM\EntityManagerInterface;
 use Psr\Http\Message\ResponseInterface;
-use Psr\Log\LoggerInterface;
 
-final class FlowUploadAction
+final class FlowUploadAction implements SingleActionInterface
 {
+    use LoggerAwareTrait;
+    use EntityManagerAwareTrait;
+    use HasMediaSearch;
+
     public function __construct(
-        private readonly EntityManagerInterface $em,
         private readonly MediaProcessor $mediaProcessor,
-        private readonly Entity\Repository\StationPlaylistMediaRepository $spmRepo,
-        private readonly LoggerInterface $logger
+        private readonly StationPlaylistMediaRepository $spmRepo,
     ) {
     }
 
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        string $station_id
+        array $params
     ): ResponseInterface {
         $allParams = $request->getParams();
         $station = $request->getStation();
@@ -70,27 +77,19 @@ final class FlowUploadAction
                 ]
             );
 
-            return $response->withJson(Entity\Api\Error::fromException($e));
+            return $response->withJson(Error::fromException($e));
         }
 
         // If the user is looking at a playlist's contents, add uploaded media to that playlist.
-        if ($stationMedia instanceof Entity\StationMedia && !empty($allParams['searchPhrase'])) {
-            $search_phrase = $allParams['searchPhrase'];
+        if ($stationMedia instanceof StationMedia && !empty($allParams['searchPhrase'])) {
+            [$searchPhrase, $playlist] = $this->parseSearchQuery(
+                $station,
+                $allParams['searchPhrase']
+            );
 
-            if (str_starts_with($search_phrase, 'playlist:')) {
-                $playlist_name = substr($search_phrase, 9);
-
-                $playlist = $this->em->getRepository(Entity\StationPlaylist::class)->findOneBy(
-                    [
-                        'station_id' => $station->getId(),
-                        'name' => $playlist_name,
-                    ]
-                );
-
-                if ($playlist instanceof Entity\StationPlaylist) {
-                    $this->spmRepo->addMediaToPlaylist($stationMedia, $playlist);
-                    $this->em->flush();
-                }
+            if (null !== $playlist) {
+                $this->spmRepo->addMediaToPlaylist($stationMedia, $playlist);
+                $this->em->flush();
             }
         }
 
@@ -98,6 +97,6 @@ final class FlowUploadAction
         $this->em->persist($mediaStorage);
         $this->em->flush();
 
-        return $response->withJson(Entity\Api\Status::created());
+        return $response->withJson(Status::created());
     }
 }

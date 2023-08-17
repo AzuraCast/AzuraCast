@@ -4,43 +4,36 @@ declare(strict_types=1);
 
 namespace App;
 
-use App\Assets\BackgroundCustomAsset;
+use App\Assets\AssetTypes;
 use App\Assets\BrowserIconCustomAsset;
-use App\Entity;
+use App\Container\EnvironmentAwareTrait;
+use App\Entity\Repository\SettingsRepository;
+use App\Entity\Settings;
+use App\Entity\Station;
 use App\Enums\SupportedLocales;
 use App\Enums\SupportedThemes;
-use App\Http\ServerRequest;
 use App\Traits\RequestAwareTrait;
 use Psr\Http\Message\ServerRequestInterface;
 
 final class Customization
 {
     use RequestAwareTrait;
+    use EnvironmentAwareTrait;
 
-    private ?Entity\User $user = null;
-
-    private Entity\Settings $settings;
+    private Settings $settings;
 
     private SupportedLocales $locale;
 
-    private SupportedThemes $theme;
+    private ?SupportedThemes $publicTheme;
 
-    private SupportedThemes $publicTheme;
-
-    private string $instanceName = '';
+    private string $instanceName;
 
     public function __construct(
-        private readonly Environment $environment,
-        Entity\Repository\SettingsRepository $settingsRepo
+        SettingsRepository $settingsRepo
     ) {
         $this->settings = $settingsRepo->readSettings();
-
         $this->instanceName = $this->settings->getInstanceName() ?? '';
-
-        $this->user = null;
-        $this->theme = SupportedThemes::default();
         $this->publicTheme = $this->settings->getPublicTheme();
-
         $this->locale = SupportedLocales::default();
     }
 
@@ -49,53 +42,23 @@ final class Customization
         $this->request = $request;
 
         if (null !== $request) {
-            // Register current user
-            $this->user = $request->getAttribute(ServerRequest::ATTR_USER);
-
             // Register current theme
-            $this->theme = $this->determineTheme($request);
-            $this->publicTheme = $this->determineTheme($request, true);
+            $queryParams = $request->getQueryParams();
+            if (!empty($queryParams['theme'])) {
+                $theme = SupportedThemes::tryFrom($queryParams['theme']);
+                if (null !== $theme && $theme !== SupportedThemes::Browser) {
+                    $this->publicTheme = $theme;
+                }
+            }
 
             // Register locale
             $this->locale = SupportedLocales::createFromRequest($this->environment, $request);
         }
     }
 
-    private function determineTheme(
-        ServerRequestInterface $request,
-        bool $isPublicTheme = false
-    ): SupportedThemes {
-        $queryParams = $request->getQueryParams();
-        if (!empty($queryParams['theme'])) {
-            $theme = SupportedThemes::tryFrom($queryParams['theme']);
-            if (null !== $theme) {
-                return $theme;
-            }
-        }
-
-        if (null !== $this->user) {
-            $userTheme = $this->user->getTheme();
-            if (null !== $userTheme) {
-                return $userTheme;
-            }
-        }
-
-        return ($isPublicTheme)
-            ? $this->settings->getPublicTheme()
-            : SupportedThemes::default();
-    }
-
     public function getLocale(): SupportedLocales
     {
         return $this->locale;
-    }
-
-    /**
-     * Returns the user-customized or system default theme.
-     */
-    public function getTheme(): SupportedThemes
-    {
-        return $this->theme;
     }
 
     /**
@@ -109,9 +72,11 @@ final class Customization
     /**
      * Get the theme name to be used in public (non-logged-in) pages.
      */
-    public function getPublicTheme(): SupportedThemes
+    public function getPublicTheme(): ?SupportedThemes
     {
-        return $this->publicTheme;
+        return (SupportedThemes::Browser !== $this->publicTheme)
+            ? $this->publicTheme
+            : null;
     }
 
     /**
@@ -121,12 +86,12 @@ final class Customization
     {
         $publicCss = $this->settings->getPublicCustomCss() ?? '';
 
-        $background = new BackgroundCustomAsset($this->environment);
+        $background = AssetTypes::Background->createObject($this->environment);
         if ($background->isUploaded()) {
             $backgroundUrl = $background->getUrl();
 
             $publicCss .= <<<CSS
-            [data-theme] body.page-minimal {
+            [data-bs-theme] body.page-minimal {
                 background-image: url('{$backgroundUrl}');
             }
             CSS;
@@ -135,16 +100,17 @@ final class Customization
         return $publicCss;
     }
 
-    public function getStationCustomPublicCss(Entity\Station $station): string
+    public function getStationCustomPublicCss(Station $station): string
     {
         $publicCss = $station->getBrandingConfig()->getPublicCustomCss() ?? '';
 
-        $background = new BackgroundCustomAsset($this->environment, $station);
+        $background = AssetTypes::Background->createObject($this->environment, $station);
+
         if ($background->isUploaded()) {
             $backgroundUrl = $background->getUrl();
 
             $publicCss .= <<<CSS
-            [data-theme] body.page-minimal {
+            [data-bs-theme] body.page-minimal {
                 background-image: url('{$backgroundUrl}');
             }
             CSS;
@@ -161,7 +127,7 @@ final class Customization
         return $this->settings->getPublicCustomJs() ?? '';
     }
 
-    public function getStationCustomPublicJs(Entity\Station $station): string
+    public function getStationCustomPublicJs(Station $station): string
     {
         return $station->getBrandingConfig()->getPublicCustomJs() ?? '';
     }
@@ -176,7 +142,10 @@ final class Customization
 
     public function getBrowserIconUrl(int $size = 256): string
     {
-        return (new BrowserIconCustomAsset($this->environment))->getUrlForSize($size);
+        /** @var BrowserIconCustomAsset $browserIcon */
+        $browserIcon = AssetTypes::BrowserIcon->createObject($this->environment);
+
+        return $browserIcon->getUrlForSize($size);
     }
 
     /**
@@ -215,6 +184,11 @@ final class Customization
     public function hideProductName(): bool
     {
         return $this->settings->getHideProductName();
+    }
+
+    public function enableAdvancedFeatures(): bool
+    {
+        return $this->settings->getEnableAdvancedFeatures();
     }
 
     public function useStaticNowPlaying(): bool

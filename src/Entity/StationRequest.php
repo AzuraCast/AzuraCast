@@ -84,9 +84,9 @@ class StationRequest implements
         return $this->played_at;
     }
 
-    public function setPlayedAt(int $played_at): void
+    public function setPlayedAt(int $playedAt): void
     {
-        $this->played_at = $played_at;
+        $this->played_at = $playedAt;
     }
 
     public function getIp(): string

@@ -4,13 +4,14 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Admin;
 
-use App\Entity;
+use App\Controller\Api\AbstractApiCrudController;
+use App\Entity\ApiKey;
 
 /**
- * @extends AbstractAdminApiCrudController<Entity\ApiKey>
+ * @extends AbstractApiCrudController<ApiKey>
  */
-final class ApiKeysController extends AbstractAdminApiCrudController
+final class ApiKeysController extends AbstractApiCrudController
 {
-    protected string $entityClass = Entity\ApiKey::class;
+    protected string $entityClass = ApiKey::class;
     protected string $resourceRouteName = 'api:admin:api-key';
 }

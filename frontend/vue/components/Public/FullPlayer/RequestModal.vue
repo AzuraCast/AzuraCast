@@ -1,5 +1,5 @@
 <template>
-    <b-modal
+    <modal
         id="request_modal"
         ref="$modal"
         size="lg"
@@ -12,12 +12,13 @@
             :custom-fields="customFields"
             @submitted="doClose"
         />
-    </b-modal>
+    </modal>
 </template>
 
 <script setup>
 import SongRequest from '../Requests';
 import {ref} from "vue";
+import Modal from "~/components/Common/Modal.vue";
 
 const props = defineProps({
     requestListUri: {
@@ -35,9 +36,17 @@ const props = defineProps({
     }
 });
 
-const $modal = ref(); // BModal
+const $modal = ref(); // Modal
 
 const doClose = () => {
     $modal.value?.hide();
 };
+
+const open = () => {
+    $modal.value.show();
+}
+
+defineExpose({
+    open
+});
 </script>

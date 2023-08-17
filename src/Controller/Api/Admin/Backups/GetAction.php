@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Admin\Backups;
 
-use App\Entity;
+use App\Controller\SingleActionInterface;
+use App\Entity\Enums\StorageLocationTypes;
+use App\Entity\Repository\StorageLocationRepository;
 use App\Flysystem\Attributes\FileAttributes;
 use App\Http\Response;
 use App\Http\ServerRequest;
@@ -12,21 +14,22 @@ use App\Paginator;
 use League\Flysystem\StorageAttributes;
 use Psr\Http\Message\ResponseInterface;
 
-final class GetAction
+final class GetAction implements SingleActionInterface
 {
     public function __construct(
-        private readonly Entity\Repository\StorageLocationRepository $storageLocationRepo,
+        private readonly StorageLocationRepository $storageLocationRepo,
     ) {
     }
 
     public function __invoke(
         ServerRequest $request,
-        Response $response
+        Response $response,
+        array $params
     ): ResponseInterface {
         $router = $request->getRouter();
 
         $backups = [];
-        $storageLocations = $this->storageLocationRepo->findAllByType(Entity\Enums\StorageLocationTypes::Backup);
+        $storageLocations = $this->storageLocationRepo->findAllByType(StorageLocationTypes::Backup);
 
         foreach ($storageLocations as $storageLocation) {
             $fs = $this->storageLocationRepo->getAdapter($storageLocation)

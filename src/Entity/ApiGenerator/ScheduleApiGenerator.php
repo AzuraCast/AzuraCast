@@ -4,18 +4,21 @@ declare(strict_types=1);
 
 namespace App\Entity\ApiGenerator;
 
-use App\Entity;
+use App\Entity\Api\StationSchedule as StationScheduleApi;
+use App\Entity\StationPlaylist;
+use App\Entity\StationSchedule;
+use App\Entity\StationStreamer;
 use Carbon\CarbonImmutable;
 use Carbon\CarbonInterface;
 
 final class ScheduleApiGenerator
 {
     public function __invoke(
-        Entity\StationSchedule $scheduleItem,
+        StationSchedule $scheduleItem,
         ?CarbonInterface $start,
         ?CarbonInterface $end,
         ?CarbonInterface $now
-    ): Entity\Api\StationSchedule {
+    ): StationScheduleApi {
         $playlist = $scheduleItem->getPlaylist();
         $streamer = $scheduleItem->getStreamer();
 
@@ -32,8 +35,8 @@ final class ScheduleApiGenerator
         }
 
         if (null === $start || null === $end) {
-            $start = Entity\StationSchedule::getDateTime($scheduleItem->getStartTime(), $now);
-            $end = Entity\StationSchedule::getDateTime($scheduleItem->getEndTime(), $now);
+            $start = StationSchedule::getDateTime($scheduleItem->getStartTime(), $now);
+            $end = StationSchedule::getDateTime($scheduleItem->getEndTime(), $now);
 
             // Handle overnight schedule items
             if ($end < $start) {
@@ -41,7 +44,7 @@ final class ScheduleApiGenerator
             }
         }
 
-        $row = new Entity\Api\StationSchedule();
+        $row = new StationScheduleApi();
         $row->id = $scheduleItem->getIdRequired();
         $row->start_timestamp = $start->getTimestamp();
         $row->start = $start->toIso8601String();
@@ -49,13 +52,13 @@ final class ScheduleApiGenerator
         $row->end = $end->toIso8601String();
         $row->is_now = ($start <= $now && $end >= $now);
 
-        if ($playlist instanceof Entity\StationPlaylist) {
-            $row->type = Entity\Api\StationSchedule::TYPE_PLAYLIST;
+        if ($playlist instanceof StationPlaylist) {
+            $row->type = StationScheduleApi::TYPE_PLAYLIST;
             $row->name = $playlist->getName();
             $row->title = $row->name;
             $row->description = sprintf(__('Playlist: %s'), $row->name);
-        } elseif ($streamer instanceof Entity\StationStreamer) {
-            $row->type = Entity\Api\StationSchedule::TYPE_STREAMER;
+        } elseif ($streamer instanceof StationStreamer) {
+            $row->type = StationScheduleApi::TYPE_STREAMER;
             $row->name = $streamer->getDisplayName();
             $row->title = $row->name;
             $row->description = sprintf(__('Streamer: %s'), $row->name);

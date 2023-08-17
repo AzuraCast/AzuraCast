@@ -4,24 +4,23 @@ declare(strict_types=1);
 
 namespace App\Controller\Frontend;
 
-use App\Entity;
+use App\Container\SettingsAwareTrait;
+use App\Controller\SingleActionInterface;
 use App\Enums\GlobalPermissions;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
 
-final class DashboardAction
+final class DashboardAction implements SingleActionInterface
 {
-    public function __construct(
-        private readonly Entity\Repository\SettingsRepository $settingsRepo
-    ) {
-    }
+    use SettingsAwareTrait;
 
     public function __invoke(
         ServerRequest $request,
-        Response $response
+        Response $response,
+        array $params
     ): ResponseInterface {
-        $settings = $this->settingsRepo->readSettings();
+        $settings = $this->readSettings();
 
         // Detect current analytics level.
         $showCharts = $settings->isAnalyticsEnabled();
@@ -31,7 +30,7 @@ final class DashboardAction
 
         return $request->getView()->renderVuePage(
             response: $response,
-            component: 'Vue_Dashboard',
+            component: 'Dashboard',
             id: 'dashboard',
             title: __('Dashboard'),
             props: [

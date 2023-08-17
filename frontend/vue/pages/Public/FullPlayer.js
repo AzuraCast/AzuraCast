@@ -1,8 +1,5 @@
-import initBase from '~/base.js';
-
-import '~/vendor/fancybox';
-import '~/vendor/luxon';
-
 import FullPlayer from '~/components/Public/FullPlayer.vue';
+import initApp from "~/layout";
+import useMinimalLayout from "~/layouts/MinimalLayout";
 
-export default initBase(FullPlayer);
+initApp(useMinimalLayout(FullPlayer));

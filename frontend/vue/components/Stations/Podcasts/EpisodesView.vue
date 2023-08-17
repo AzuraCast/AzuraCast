@@ -1,63 +1,62 @@
 <template>
-    <b-card no-body>
-        <b-card-header header-bg-variant="primary-dark">
-            <b-row class="row align-items-center">
-                <b-col md="7">
+    <section
+        class="card"
+        role="region"
+    >
+        <div class="card-header text-bg-primary">
+            <div class="row align-items-center">
+                <div class="col-md-7">
                     <div class="d-flex align-items-center">
-                        <div class="flex-shrink-0 pr-3">
+                        <div class="flex-shrink-0 pe-3">
                             <album-art :src="podcast.art" />
                         </div>
                         <div class="flex-fill">
                             <h2 class="card-title">
                                 {{ podcast.title }}
                             </h2>
-                            <h4 class="card-subtitle text-muted">
+                            <h4 class="card-subtitle">
                                 {{ $gettext('Episodes') }}
                             </h4>
                         </div>
                     </div>
-                </b-col>
-                <b-col
-                    md="5"
-                    class="text-right text-white-50"
-                >
+                </div>
+                <div class="col-md-5 text-end">
                     <stations-common-quota
                         ref="$quota"
                         :quota-url="quotaUrl"
                     />
-                </b-col>
-            </b-row>
-        </b-card-header>
-
-        <b-card-body body-class="card-padding-sm">
-            <div class="buttons">
-                <b-button
-                    variant="bg"
-                    @click="doClearPodcast()"
-                >
-                    <icon icon="arrow_back" />
-                    {{ $gettext('All Podcasts') }}
-                </b-button>
-
-                <b-button
-                    variant="outline-primary"
-                    @click.prevent="doCreate"
-                >
-                    <i
-                        class="material-icons"
-                        aria-hidden="true"
-                    >add</i>
-                    {{ $gettext('Add Episode') }}
-                </b-button>
+                </div>
             </div>
-        </b-card-body>
+        </div>
+
+        <div class="card-body buttons">
+            <button
+                type="button"
+                class="btn btn-secondary"
+                @click="doClearPodcast()"
+            >
+                <icon icon="arrow_back" />
+                <span>
+                    {{ $gettext('All Podcasts') }}
+                </span>
+            </button>
+            <button
+                type="button"
+                class="btn btn-primary"
+                @click="doCreate"
+            >
+                <icon icon="add" />
+                <span>
+                    {{ $gettext('Add Episode') }}
+                </span>
+            </button>
+        </div>
 
         <data-table
             id="station_podcast_episodes"
             ref="$datatable"
             paginated
             :fields="fields"
-            :responsive="false"
             :api-url="podcast.links.episodes"
         >
             <template #cell(art)="row">
@@ -82,37 +81,36 @@
             <template #cell(explicit)="row">
                 <span
                     v-if="row.item.explicit"
-                    class="badge badge-danger"
+                    class="badge text-bg-danger"
                 >{{ $gettext('Explicit') }}</span>
+                <span v-else>&nbsp;</span>
             </template>
             <template #cell(actions)="row">
-                <b-button-group size="sm">
-                    <b-button
-                        size="sm"
-                        variant="primary"
-                        @click.prevent="doEdit(row.item.links.self)"
+                <div class="btn-group btn-group-sm">
+                    <button
+                        type="button"
+                        class="btn btn-primary"
+                        @click="doEdit(row.item.links.self)"
                     >
                         {{ $gettext('Edit') }}
-                    </b-button>
-                    <b-button
-                        size="sm"
-                        variant="danger"
-                        @click.prevent="doDelete(row.item.links.self)"
+                    </button>
+                    <button
+                        type="button"
+                        class="btn btn-danger"
+                        @click="doDelete(row.item.links.self)"
                     >
                         {{ $gettext('Delete') }}
-                    </b-button>
-                </b-button-group>
+                    </button>
+                </div>
             </template>
         </data-table>
-    </b-card>
+    </section>
 
     <edit-modal
         ref="$editEpisodeModal"
         :create-url="podcast.links.episodes"
-        :station-time-zone="stationTimeZone"
         :new-art-url="podcast.links.episode_new_art"
         :new-media-url="podcast.links.episode_new_media"
-        :locale="locale"
         :podcast-id="podcast.id"
         @relist="relist"
     />
@@ -124,15 +122,17 @@ import EditModal from './EpisodeEditModal';
 import Icon from '~/components/Common/Icon';
 import AlbumArt from '~/components/Common/AlbumArt';
 import StationsCommonQuota from "~/components/Stations/Common/Quota";
-import episodesViewProps from "~/components/Stations/Podcasts/episodesViewProps";
 import {useTranslate} from "~/vendor/gettext";
 import {ref} from "vue";
 import {useSweetAlert} from "~/vendor/sweetalert";
-import {useNotify} from "~/vendor/bootstrapVue";
+import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
 
 const props = defineProps({
-    ...episodesViewProps,
+    quotaUrl: {
+        type: String,
+        required: true
+    },
     podcast: {
         type: Object,
         required: true
@@ -144,7 +144,7 @@ const emit = defineEmits(['clear-podcast']);
 const {$gettext} = useTranslate();
 
 const fields = [
-    {key: 'art', label: $gettext('Art'), sortable: false, class: 'shrink pr-0'},
+    {key: 'art', label: $gettext('Art'), sortable: false, class: 'shrink pe-0'},
     {key: 'title', label: $gettext('Episode'), sortable: false},
     {key: 'podcast_media', label: $gettext('File Name'), sortable: false},
     {key: 'explicit', label: $gettext('Explicit'), sortable: false},

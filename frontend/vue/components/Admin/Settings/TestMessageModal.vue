@@ -1,47 +1,47 @@
 <template>
-    <b-modal
+    <modal
         id="send_test_message"
         ref="$modal"
         centered
         :title="$gettext('Send Test Message')"
     >
-        <b-form @submit.prevent="doSendTest">
-            <b-wrapped-form-group
+        <form @submit.prevent="doSendTest">
+            <form-group-field
                 id="email_address"
                 :field="v$.emailAddress"
                 autofocus
-            >
-                <template #label>
-                    {{ $gettext('E-mail Address') }}
-                </template>
-            </b-wrapped-form-group>
-        </b-form>
+                :label="$gettext('E-mail Address')"
+            />
+        </form>
         <template #modal-footer>
-            <b-button
-                variant="default"
+            <button
+                type="button"
+                class="btn btn-secondary"
                 @click="close"
             >
                 {{ $gettext('Close') }}
-            </b-button>
-            <b-button
-                :variant="(v$.$invalid) ? 'danger' : 'primary'"
+            </button>
+            <button
+                type="button"
+                class="btn"
+                :class="(v$.$invalid) ? 'btn-danger' : 'btn-primary'"
                 @click="doSendTest"
             >
                 {{ $gettext('Send Test Message') }}
-            </b-button>
+            </button>
         </template>
-    </b-modal>
+    </modal>
 </template>
 
 <script setup>
 import {email, required} from '@vuelidate/validators';
-import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup.vue";
+import FormGroupField from "~/components/Form/FormGroupField.vue";
 import {ref} from "vue";
-import {useNotify} from "~/vendor/bootstrapVue";
+import {useNotify} from "~/functions/useNotify";
 import {useTranslate} from "~/vendor/gettext";
 import {useAxios} from "~/vendor/axios";
 import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
-import {BModal} from "bootstrap-vue";
+import Modal from "~/components/Common/Modal.vue";
 
 const props = defineProps({
     testMessageUrl: {

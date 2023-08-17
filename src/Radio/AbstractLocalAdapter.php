@@ -4,27 +4,28 @@ declare(strict_types=1);
 
 namespace App\Radio;
 
-use App\Entity;
-use App\Environment;
+use App\Container\EntityManagerAwareTrait;
+use App\Container\EnvironmentAwareTrait;
+use App\Container\LoggerAwareTrait;
+use App\Entity\Station;
 use App\Exception\Supervisor\AlreadyRunningException;
 use App\Exception\Supervisor\NotRunningException;
 use App\Exception\SupervisorException;
 use App\Http\Router;
-use Doctrine\ORM\EntityManagerInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
-use Psr\Log\LoggerInterface;
 use Supervisor\Exception\Fault;
 use Supervisor\Exception\SupervisorException as SupervisorLibException;
 use Supervisor\SupervisorInterface;
 
 abstract class AbstractLocalAdapter
 {
+    use LoggerAwareTrait;
+    use EntityManagerAwareTrait;
+    use EnvironmentAwareTrait;
+
     public function __construct(
-        protected Environment $environment,
-        protected EntityManagerInterface $em,
         protected SupervisorInterface $supervisor,
         protected EventDispatcherInterface $dispatcher,
-        protected LoggerInterface $logger,
         protected Router $router,
     ) {
     }
@@ -32,11 +33,11 @@ abstract class AbstractLocalAdapter
     /**
      * Write configuration from Station object to the external service.
      *
-     * @param Entity\Station $station
+     * @param Station $station
      *
      * @return bool Whether the newly written configuration differs from what was already on disk.
      */
-    public function write(Entity\Station $station): bool
+    public function write(Station $station): bool
     {
         $configPath = $this->getConfigurationPath($station);
         if (null === $configPath) {
@@ -57,10 +58,10 @@ abstract class AbstractLocalAdapter
     /**
      * Generate the configuration for this adapter as it would exist with current database settings.
      *
-     * @param Entity\Station $station
+     * @param Station $station
      *
      */
-    public function getCurrentConfiguration(Entity\Station $station): ?string
+    public function getCurrentConfiguration(Station $station): ?string
     {
         return null;
     }
@@ -69,7 +70,7 @@ abstract class AbstractLocalAdapter
      * Returns the main path where configuration data is stored for this adapter.
      *
      */
-    public function getConfigurationPath(Entity\Station $station): ?string
+    public function getConfigurationPath(Station $station): ?string
     {
         return null;
     }
@@ -95,18 +96,18 @@ abstract class AbstractLocalAdapter
     /**
      * Check if the service is running.
      *
-     * @param Entity\Station $station
+     * @param Station $station
      */
-    public function isRunning(Entity\Station $station): bool
+    public function isRunning(Station $station): bool
     {
         if (!$this->hasCommand($station)) {
             return true;
         }
 
-        $program_name = $this->getSupervisorFullName($station);
+        $programName = $this->getSupervisorFullName($station);
 
         try {
-            return $this->supervisor->getProcess($program_name)->isRunning();
+            return $this->supervisor->getProcess($programName)->isRunning();
         } catch (Fault\BadNameException) {
             return false;
         }
@@ -115,9 +116,9 @@ abstract class AbstractLocalAdapter
     /**
      * Return a boolean indicating whether the adapter has an executable command associated with it.
      *
-     * @param Entity\Station $station
+     * @param Station $station
      */
-    public function hasCommand(Entity\Station $station): bool
+    public function hasCommand(Station $station): bool
     {
         if ($this->environment->isTesting() || !$station->getIsEnabled()) {
             return false;
@@ -129,9 +130,9 @@ abstract class AbstractLocalAdapter
     /**
      * Return the shell command required to run the program.
      *
-     * @param Entity\Station $station
+     * @param Station $station
      */
-    public function getCommand(Entity\Station $station): ?string
+    public function getCommand(Station $station): ?string
     {
         return null;
     }
@@ -139,11 +140,11 @@ abstract class AbstractLocalAdapter
     /**
      * Return the program's fully qualified supervisord name.
      *
-     * @param Entity\Station $station
+     * @param Station $station
      */
-    abstract public function getSupervisorProgramName(Entity\Station $station): string;
+    abstract public function getSupervisorProgramName(Station $station): string;
 
-    public function getSupervisorFullName(Entity\Station $station): string
+    public function getSupervisorFullName(Station $station): string
     {
         return sprintf(
             '%s:%s',
@@ -155,9 +156,9 @@ abstract class AbstractLocalAdapter
     /**
      * Restart the executable service.
      *
-     * @param Entity\Station $station
+     * @param Station $station
      */
-    public function restart(Entity\Station $station): void
+    public function restart(Station $station): void
     {
         $this->stop($station);
         $this->start($station);
@@ -166,9 +167,9 @@ abstract class AbstractLocalAdapter
     /**
      * Execute a non-destructive reload if the adapter supports it.
      *
-     * @param Entity\Station $station
+     * @param Station $station
      */
-    public function reload(Entity\Station $station): void
+    public function reload(Station $station): void
     {
         $this->restart($station);
     }
@@ -176,24 +177,24 @@ abstract class AbstractLocalAdapter
     /**
      * Stop the executable service.
      *
-     * @param Entity\Station $station
+     * @param Station $station
      *
      * @throws SupervisorException
      * @throws NotRunningException
      */
-    public function stop(Entity\Station $station): void
+    public function stop(Station $station): void
     {
         if ($this->hasCommand($station)) {
-            $program_name = $this->getSupervisorFullName($station);
+            $programName = $this->getSupervisorFullName($station);
 
             try {
-                $this->supervisor->stopProcess($program_name);
+                $this->supervisor->stopProcess($programName);
                 $this->logger->info(
                     'Adapter "' . static::class . '" stopped.',
                     ['station_id' => $station->getId(), 'station_name' => $station->getName()]
                 );
             } catch (SupervisorLibException $e) {
-                $this->handleSupervisorException($e, $program_name, $station);
+                $this->handleSupervisorException($e, $programName, $station);
             }
         }
     }
@@ -201,24 +202,24 @@ abstract class AbstractLocalAdapter
     /**
      * Start the executable service.
      *
-     * @param Entity\Station $station
+     * @param Station $station
      *
      * @throws SupervisorException
      * @throws AlreadyRunningException
      */
-    public function start(Entity\Station $station): void
+    public function start(Station $station): void
     {
         if ($this->hasCommand($station)) {
-            $program_name = $this->getSupervisorFullName($station);
+            $programName = $this->getSupervisorFullName($station);
 
             try {
-                $this->supervisor->startProcess($program_name);
+                $this->supervisor->startProcess($programName);
                 $this->logger->info(
                     'Adapter "' . static::class . '" started.',
                     ['station_id' => $station->getId(), 'station_name' => $station->getName()]
                 );
             } catch (SupervisorLibException $e) {
-                $this->handleSupervisorException($e, $program_name, $station);
+                $this->handleSupervisorException($e, $programName, $station);
             }
         }
     }
@@ -227,17 +228,17 @@ abstract class AbstractLocalAdapter
      * Internal handling of any Supervisor-related exception, to add richer data to it.
      *
      * @param SupervisorLibException $e
-     * @param string $program_name
-     * @param Entity\Station $station
+     * @param string $programName
+     * @param Station $station
      *
      * @throws SupervisorException
      */
     protected function handleSupervisorException(
         SupervisorLibException $e,
-        string $program_name,
-        Entity\Station $station
+        string $programName,
+        Station $station
     ): void {
-        $eNew = SupervisorException::fromSupervisorLibException($e, $program_name);
+        $eNew = SupervisorException::fromSupervisorLibException($e, $programName);
         $eNew->addLoggingContext('station_id', $station->getId());
         $eNew->addLoggingContext('station_name', $station->getName());
 
@@ -247,15 +248,15 @@ abstract class AbstractLocalAdapter
     /**
      * Return the path where logs are written to.
      *
-     * @param Entity\Station $station
+     * @param Station $station
      */
-    public function getLogPath(Entity\Station $station): string
+    public function getLogPath(Station $station): string
     {
-        $config_dir = $station->getRadioConfigDir();
+        $configDir = $station->getRadioConfigDir();
 
-        $class_parts = explode('\\', static::class);
-        $class_name = array_pop($class_parts);
+        $classParts = explode('\\', static::class);
+        $className = array_pop($classParts);
 
-        return $config_dir . '/' . strtolower($class_name) . '.log';
+        return $configDir . '/' . strtolower($className) . '.log';
     }
 }

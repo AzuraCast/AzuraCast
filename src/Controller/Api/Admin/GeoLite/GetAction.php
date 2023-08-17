@@ -4,25 +4,24 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Admin\GeoLite;
 
-use App\Entity\Repository\SettingsRepository;
+use App\Container\SettingsAwareTrait;
+use App\Controller\SingleActionInterface;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Service\IpGeolocator\GeoLite;
 use Psr\Http\Message\ResponseInterface;
 
-final class GetAction
+final class GetAction implements SingleActionInterface
 {
-    public function __construct(
-        private readonly SettingsRepository $settingsRepo,
-    ) {
-    }
+    use SettingsAwareTrait;
 
     public function __invoke(
         ServerRequest $request,
-        Response $response
+        Response $response,
+        array $params
     ): ResponseInterface {
         $version = GeoLite::getVersion();
-        $settings = $this->settingsRepo->readSettings();
+        $settings = $this->readSettings();
 
         return $response->withJson(
             [

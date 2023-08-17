@@ -8,7 +8,7 @@
             role="region"
             aria-labelledby="hdr_edit_ls_config"
         >
-            <div class="card-header bg-primary-dark">
+            <div class="card-header text-bg-primary">
                 <h2
                     id="hdr_edit_ls_config"
                     class="card-title"
@@ -35,63 +35,57 @@
                 </p>
             </info-card>
 
-            <b-overlay
-                variant="card"
-                :show="loading"
-            >
+            <loading :loading="isLoading">
                 <div class="card-body">
-                    <b-form-fieldset
+                    <form-fieldset
                         v-for="(row, index) in config"
                         :key="index"
                         class="mb-0"
                     >
-                        <b-wrapped-form-group
+                        <form-group-field
                             v-if="row.is_field"
                             :id="'form_edit_'+row.field_name"
                             :field="v$[row.field_name]"
                             input-type="textarea"
                             :input-attrs="{class: 'text-preformatted mb-3', spellcheck: 'false', 'max-rows': 20, rows: 5}"
                         />
-                        <b-form-markup
+                        <form-markup
                             v-else
                             :id="'form_section_'+index"
                         >
                             <pre class="typography-body-1">{{ row.markup }}</pre>
-                        </b-form-markup>
-                    </b-form-fieldset>
+                        </form-markup>
+                    </form-fieldset>
 
-                    <b-button
-                        size="lg"
+                    <button
                         type="submit"
-                        :variant="(v$.$invalid) ? 'danger' : 'primary'"
+                        class="btn"
+                        :class="(v$.$invalid) ? 'btn-danger' : 'btn-primary'"
                     >
                         {{ $gettext('Save Changes') }}
-                    </b-button>
+                    </button>
                 </div>
-            </b-overlay>
+            </loading>
         </section>
     </form>
 </template>
 
 <script setup>
-import BFormFieldset from "~/components/Form/BFormFieldset";
-import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
-import BFormMarkup from "~/components/Form/BFormMarkup";
+import FormFieldset from "~/components/Form/FormFieldset";
+import FormGroupField from "~/components/Form/FormGroupField";
+import FormMarkup from "~/components/Form/FormMarkup";
 import {forEach} from "lodash";
 import mergeExisting from "~/functions/mergeExisting";
 import InfoCard from "~/components/Common/InfoCard";
 import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
 import {onMounted, ref} from "vue";
-import {mayNeedRestartProps, useMayNeedRestart} from "~/functions/useMayNeedRestart";
+import {useMayNeedRestart} from "~/functions/useMayNeedRestart";
 import {useAxios} from "~/vendor/axios";
-import {useNotify} from "~/vendor/bootstrapVue";
+import {useNotify} from "~/functions/useNotify";
+import Loading from "~/components/Common/Loading.vue";
+import {getStationApiUrl} from "~/router";
 
 const props = defineProps({
-    ...mayNeedRestartProps,
-    settingsUrl: {
-        type: String,
-        required: true
-    },
     config: {
         type: Array,
         required: true
@@ -102,9 +96,11 @@ const props = defineProps({
     },
 });
 
+const settingsUrl = getStationApiUrl('/liquidsoap-config');
+
 const buildForm = () => {
-    let validations = {};
-    let blankForm = {};
+    const validations = {};
+    const blankForm = {};
 
     forEach(props.sections, (section) => {
         validations[section] = {};
@@ -117,19 +113,19 @@ const buildForm = () => {
 const {validations, blankForm} = buildForm();
 const {form, resetForm, v$, ifValid} = useVuelidateOnForm(validations, blankForm);
 
-const loading = ref(true);
+const isLoading = ref(true);
 
-const {mayNeedRestart} = useMayNeedRestart(props);
+const {mayNeedRestart} = useMayNeedRestart();
 
 const {axios} = useAxios();
 
 const relist = () => {
     resetForm();
 
-    loading.value = true;
-    axios.get(props.settingsUrl).then((resp) => {
+    isLoading.value = true;
+    axios.get(settingsUrl.value).then((resp) => {
         form.value = mergeExisting(form.value, resp.data);
-        loading.value = false;
+        isLoading.value = false;
     });
 };
 
@@ -142,7 +138,7 @@ const submit = () => {
         wrapWithLoading(
             axios({
                 method: 'PUT',
-                url: props.settingsUrl,
+                url: settingsUrl.value,
                 data: form.value,
             })
         ).then(() => {

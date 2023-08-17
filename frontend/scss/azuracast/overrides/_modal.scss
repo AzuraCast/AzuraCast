@@ -1,8 +1,14 @@
 @use "sass:math";
 
+.modal-content {
+  box-shadow: 0 4px 5px 0 rgba(0,0,0,0.14), 0 1px 10px 0 rgba(0,0,0,0.12), 0 2px 4px -1px rgba(0,0,0,0.3);
+}
+
 .modal-body {
-  ul.nav-tabs {
-    margin: (0 - math.div($dialog-padding-y, 2)) (0-$dialog-padding-y) 0 (0-$dialog-padding-y);
-    padding: 0 $dialog-padding-y;
+  nav.nav-tabs {
+    background: var(--bs-tertiary-bg);
+
+    margin: (0-$modal-inner-padding) (0-$modal-inner-padding) 0 (0-$modal-inner-padding);
+    padding: math.div($modal-inner-padding, 2) $modal-inner-padding 0 $modal-inner-padding;
   }
 }

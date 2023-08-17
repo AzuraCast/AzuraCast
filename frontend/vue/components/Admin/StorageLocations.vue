@@ -1,97 +1,105 @@
 <template>
-    <section
-        class="card"
-        role="region"
-        aria-labelledby="hdr_storage_locations"
+    <card-page
+        header-id="hdr_storage_locations"
+        :title="$gettext('Storage Locations')"
     >
-        <b-card-header header-bg-variant="primary-dark">
-            <h2
-                id="hdr_storage_locations"
-                class="card-title"
+        <div class="card-body pb-0">
+            <nav
+                class="nav nav-tabs"
+                role="tablist"
             >
-                {{ $gettext('Storage Locations') }}
-            </h2>
-        </b-card-header>
-        <b-tabs
-            pills
-            card
-            lazy
-        >
-            <b-tab
-                v-for="tab in tabs"
-                :key="tab.type"
-                :active="activeType === tab.type"
-                :title="tab.title"
-                no-body
-                @click="setType(tab.type)"
-            />
-        </b-tabs>
+                <div
+                    v-for="tab in tabs"
+                    :key="tab.type"
+                    class="nav-item"
+                    role="presentation"
+                >
+                    <button
+                        class="nav-link"
+                        :class="(activeType === tab.type) ? 'active' : ''"
+                        type="button"
+                        role="tab"
+                        @click="setType(tab.type)"
+                    >
+                        {{ tab.title }}
+                    </button>
+                </div>
+            </nav>
+        </div>
 
-        <b-card-body body-class="card-padding-sm">
-            <b-button
-                variant="outline-primary"
-                @click.prevent="doCreate"
+        <div class="card-body buttons">
+            <button
+                type="button"
+                class="btn btn-primary"
+                @click="doCreate"
             >
                 <icon icon="add" />
-                {{ $gettext('Add Storage Location') }}
-            </b-button>
-        </b-card-body>
+                <span>
+                    {{ $gettext('Add Storage Location') }}
+                </span>
+            </button>
+        </div>
 
         <data-table
             id="admin_storage_locations"
             ref="$datatable"
             :show-toolbar="false"
             :fields="fields"
-            :responsive="false"
             :api-url="listUrlForType"
         >
-            <template #cell(actions)="row">
-                <b-button-group size="sm">
-                    <b-button
-                        size="sm"
-                        variant="primary"
-                        @click.prevent="doEdit(row.item.links.self)"
+            <template #cell(actions)="{item}">
+                <div class="btn-group btn-group-sm">
+                    <button
+                        type="button"
+                        class="btn btn-primary"
+                        @click="doEdit(item.links.self)"
                     >
                         {{ $gettext('Edit') }}
-                    </b-button>
-                    <b-button
-                        size="sm"
-                        variant="danger"
-                        @click.prevent="doDelete(row.item.links.self)"
+                    </button>
+                    <button
+                        type="button"
+                        class="btn btn-danger"
+                        @click="doDelete(item.links.self)"
                     >
                         {{ $gettext('Delete') }}
-                    </b-button>
-                </b-button-group>
+                    </button>
+                </div>
             </template>
-            <template #cell(adapter)="row">
+            <template #cell(adapter)="{item}">
                 <h5 class="m-0">
-                    {{ getAdapterName(row.item.adapter) }}
+                    {{ getAdapterName(item.adapter) }}
                 </h5>
                 <p class="card-text">
-                    {{ row.item.uri }}
+                    {{ item.uri }}
                 </p>
             </template>
-            <template #cell(space)="row">
-                <template v-if="row.item.storageAvailable">
-                    <b-progress
-                        :value="row.item.storageUsedPercent"
-                        show-progress
-                        height="15px"
-                        class="mb-1"
-                        :variant="getProgressVariant(row.item.storageUsedPercent)"
-                    />
-
-                    {{ getSpaceUsed(row.item) }}
-                </template>
-                <template v-else>
-                    {{ getSpaceUsed(row.item) }}
-                </template>
+            <template #cell(stations)="{item}">
+                {{ item.stations.join(', ') }}
             </template>
-            <template #cell(stations)="row">
-                {{ row.item.stations.join(', ') }}
+            <template #cell(space)="{item}">
+                <template v-if="item.storageAvailable">
+                    <div
+                        class="progress h-20 mb-3"
+                        role="progressbar"
+                        :aria-label="item.storageUsedPercent+'%'"
+                        :aria-valuenow="item.storageUsedPercent"
+                        aria-valuemin="0"
+                        aria-valuemax="100"
+                    >
+                        <div
+                            class="progress-bar"
+                            :class="getProgressVariant(item.storageUsedPercent)"
+                            :style="{ width: item.storageUsedPercent+'%' }"
+                        >
+                            {{ item.storageUsedPercent }}%
+                        </div>
+                    </div>
+                </template>
+
+                {{ getSpaceUsed(item) }}
             </template>
         </data-table>
-    </section>
+    </card-page>
 
     <edit-modal
         ref="$editModal"
@@ -105,23 +113,19 @@
 import DataTable from '~/components/Common/DataTable';
 import EditModal from './StorageLocations/EditModal';
 import Icon from '~/components/Common/Icon';
-import {computed, ref} from "vue";
+import {computed, nextTick, ref} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import useHasDatatable from "~/functions/useHasDatatable";
 import useHasEditModal from "~/functions/useHasEditModal";
 import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
-
-const props = defineProps({
-    listUrl: {
-        type: String,
-        required: true
-    }
-});
+import CardPage from "~/components/Common/CardPage.vue";
+import {getApiUrl} from "~/router";
 
 const activeType = ref('station_media');
 
+const listUrl = getApiUrl('/admin/storage_locations');
 const listUrlForType = computed(() => {
-    return props.listUrl + '?type=' + activeType.value;
+    return listUrl.value + '?type=' + activeType.value;
 });
 
 const {$gettext} = useTranslate();
@@ -160,7 +164,7 @@ const {doCreate, doEdit} = useHasEditModal($editModal);
 
 const setType = (type) => {
     activeType.value = type;
-    relist();
+    nextTick(relist);
 };
 
 const getAdapterName = (adapter) => {
@@ -187,11 +191,11 @@ const getSpaceUsed = (item) => {
 
 const getProgressVariant = (percent) => {
     if (percent > 85) {
-        return 'danger';
+        return 'text-bg-danger';
     } else if (percent > 65) {
-        return 'warning';
+        return 'text-bg-warning';
     } else {
-        return 'default';
+        return 'text-bg-primary';
     }
 };
 

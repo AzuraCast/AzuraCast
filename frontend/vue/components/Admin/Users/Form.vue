@@ -1,68 +1,54 @@
 <template>
-    <b-form-group>
-        <div class="form-row">
-            <b-wrapped-form-group
-                id="edit_form_email"
-                class="col-md-6"
-                :field="form.email"
-                input-type="email"
-            >
-                <template #label>
-                    {{ $gettext('E-mail Address') }}
-                </template>
-            </b-wrapped-form-group>
+    <div class="row g-3">
+        <form-group-field
+            id="edit_form_email"
+            class="col-md-6"
+            :field="v$.email"
+            input-type="email"
+            :label="$gettext('E-mail Address')"
+        />
 
-            <b-wrapped-form-group
-                id="edit_form_new_password"
-                class="col-md-6"
-                :field="form.new_password"
-                input-type="password"
+        <form-group-field
+            id="edit_form_new_password"
+            class="col-md-6"
+            :field="v$.new_password"
+            input-type="password"
+            :label="$gettext('Password')"
+        >
+            <template
+                v-if="isEditMode"
+                #description
             >
-                <template #label>
-                    {{ $gettext('Password') }}
-                </template>
-                <template
-                    v-if="isEditMode"
-                    #description
-                >
-                    {{ $gettext('Leave blank to use the current password.') }}
-                </template>
-            </b-wrapped-form-group>
+                {{ $gettext('Leave blank to use the current password.') }}
+            </template>
+        </form-group-field>
 
-            <b-wrapped-form-group
-                id="edit_form_name"
-                class="col-md-12"
-                :field="form.name"
-            >
-                <template #label>
-                    {{ $gettext('Display Name') }}
-                </template>
-            </b-wrapped-form-group>
+        <form-group-field
+            id="edit_form_name"
+            class="col-md-12"
+            :field="v$.name"
+            :label="$gettext('Display Name')"
+        />
 
-            <b-wrapped-form-group
-                id="edit_form_roles"
-                class="col-md-12"
-                :field="form.roles"
-            >
-                <template #label>
-                    {{ $gettext('Roles') }}
-                </template>
-                <template #default="slotProps">
-                    <b-form-checkbox-group
-                        :id="slotProps.id"
-                        v-model="slotProps.field.$model"
-                        :options="roleOptions"
-                    />
-                </template>
-            </b-wrapped-form-group>
-        </div>
-    </b-form-group>
+        <form-group-multi-check
+            id="edit_form_roles"
+            class="col-md-12"
+            :field="v$.roles"
+            :options="roleOptions"
+            :label="$gettext('Roles')"
+        />
+    </div>
 </template>
 
 <script setup>
-import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup.vue";
+import FormGroupField from "~/components/Form/FormGroupField.vue";
 import objectToFormOptions from "~/functions/objectToFormOptions";
 import {computed} from "vue";
+import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
+import {useVModel} from "@vueuse/core";
+import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
+import {email, required} from "@vuelidate/validators";
+import validatePassword from "~/functions/validatePassword";
 
 const props = defineProps({
     form: {
@@ -78,6 +64,29 @@ const props = defineProps({
         required: true
     }
 });
+
+const emit = defineEmits(['update:form']);
+const form = useVModel(props, 'form', emit);
+
+const {v$} = useVuelidateOnFormTab(
+    computed(() => {
+        return {
+            email: {required, email},
+            new_password: (props.isEditMode)
+                ? {validatePassword}
+                : {required, validatePassword},
+            name: {},
+            roles: {}
+        }
+    }),
+    form,
+    {
+        email: '',
+        new_password: '',
+        name: '',
+        roles: [],
+    }
+);
 
 const roleOptions = computed(() => {
     return objectToFormOptions(props.roles);

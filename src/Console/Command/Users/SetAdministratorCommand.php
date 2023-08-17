@@ -5,8 +5,9 @@ declare(strict_types=1);
 namespace App\Console\Command\Users;
 
 use App\Console\Command\CommandAbstract;
-use App\Entity;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Container\EntityManagerAwareTrait;
+use App\Entity\Repository\RolePermissionRepository;
+use App\Entity\User;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -19,9 +20,10 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 )]
 final class SetAdministratorCommand extends CommandAbstract
 {
+    use EntityManagerAwareTrait;
+
     public function __construct(
-        private readonly EntityManagerInterface $em,
-        private readonly Entity\Repository\RolePermissionRepository $permsRepo,
+        private readonly RolePermissionRepository $permsRepo,
     ) {
         parent::__construct();
     }
@@ -39,15 +41,15 @@ final class SetAdministratorCommand extends CommandAbstract
 
         $io->title('Set Administrator');
 
-        $user = $this->em->getRepository(Entity\User::class)
+        $user = $this->em->getRepository(User::class)
             ->findOneBy(['email' => $email]);
 
-        if ($user instanceof Entity\User) {
+        if ($user instanceof User) {
             $adminRole = $this->permsRepo->ensureSuperAdministratorRole();
 
-            $user_roles = $user->getRoles();
-            if (!$user_roles->contains($adminRole)) {
-                $user_roles->add($adminRole);
+            $userRoles = $user->getRoles();
+            if (!$userRoles->contains($adminRole)) {
+                $userRoles->add($adminRole);
             }
 
             $this->em->persist($user);

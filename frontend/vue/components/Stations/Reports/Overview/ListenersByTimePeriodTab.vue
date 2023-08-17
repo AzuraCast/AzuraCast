@@ -1,82 +1,63 @@
 <template>
-    <b-overlay
-        variant="card"
-        :show="loading"
+    <loading
+        :loading="isLoading"
+        lazy
     >
-        <div
-            v-if="loading"
-            class="card-body py-5"
-        >
-            &nbsp;
+        <div class="row">
+            <div class="col-md-12 mb-4">
+                <fieldset>
+                    <legend>
+                        {{ $gettext('Listeners by Day') }}
+                    </legend>
+
+                    <time-series-chart
+                        style="width: 100%;"
+                        :data="chartData.daily.metrics"
+                        :alt="chartData.daily.alt"
+                    />
+                </fieldset>
+            </div>
+            <div class="col-md-6 mb-4">
+                <fieldset>
+                    <legend>
+                        {{ $gettext('Listeners by Day of Week') }}
+                    </legend>
+
+                    <pie-chart
+                        style="width: 100%;"
+                        :data="chartData.day_of_week.metrics"
+                        :labels="chartData.day_of_week.labels"
+                        :alt="chartData.day_of_week.alt"
+                    />
+                </fieldset>
+            </div>
+            <div class="col-md-6 mb-4">
+                <fieldset>
+                    <legend>
+                        {{ $gettext('Listeners by Hour') }}
+                    </legend>
+
+                    <hour-chart
+                        style="width: 100%;"
+                        :data="chartData.hourly.metrics"
+                        :labels="chartData.hourly.labels"
+                        :alt="chartData.hourly.alt"
+                    />
+                </fieldset>
+            </div>
         </div>
-        <div
-            v-else
-            class="card-body"
-        >
-            <b-row>
-                <b-col
-                    md="12"
-                    class="mb-4"
-                >
-                    <fieldset>
-                        <legend>
-                            {{ $gettext('Listeners by Day') }}
-                        </legend>
-
-                        <time-series-chart
-                            style="width: 100%;"
-                            :data="chartData.daily.metrics"
-                            :alt="chartData.daily.alt"
-                        />
-                    </fieldset>
-                </b-col>
-                <b-col
-                    md="6"
-                    class="mb-4"
-                >
-                    <fieldset>
-                        <legend>
-                            {{ $gettext('Listeners by Day of Week') }}
-                        </legend>
-
-                        <pie-chart
-                            style="width: 100%;"
-                            :data="chartData.day_of_week.metrics"
-                            :labels="chartData.day_of_week.labels"
-                            :alt="chartData.day_of_week.alt"
-                        />
-                    </fieldset>
-                </b-col>
-                <b-col
-                    md="6"
-                    class="mb-4"
-                >
-                    <fieldset>
-                        <legend>
-                            {{ $gettext('Listeners by Hour') }}
-                        </legend>
-
-                        <hour-chart
-                            style="width: 100%;"
-                            :data="chartData.hourly.metrics"
-                            :labels="chartData.hourly.labels"
-                            :alt="chartData.hourly.alt"
-                        />
-                    </fieldset>
-                </b-col>
-            </b-row>
-        </div>
-    </b-overlay>
+    </loading>
 </template>
 
 <script setup>
 import TimeSeriesChart from "~/components/Common/Charts/TimeSeriesChart.vue";
 import HourChart from "~/components/Common/Charts/HourChart.vue";
-import {DateTime} from "luxon";
 import PieChart from "~/components/Common/Charts/PieChart.vue";
 import {onMounted, ref, shallowRef, toRef, watch} from "vue";
 import {useMounted} from "@vueuse/core";
 import {useAxios} from "~/vendor/axios";
+import Loading from "~/components/Common/Loading.vue";
+import {useLuxon} from "~/vendor/luxon";
 
 const props = defineProps({
     dateRange: {
@@ -89,7 +70,7 @@ const props = defineProps({
     },
 });
 
-const loading = ref(true);
+const isLoading = ref(true);
 
 const chartData = shallowRef({
     daily: {
@@ -112,8 +93,10 @@ const chartData = shallowRef({
 const dateRange = toRef(props, 'dateRange');
 const {axios} = useAxios();
 
+const {DateTime} = useLuxon();
+
 const relist = () => {
-    loading.value = true;
+    isLoading.value = true;
 
     axios.get(props.apiUrl, {
         params: {
@@ -122,7 +105,7 @@ const relist = () => {
         }
     }).then((response) => {
         chartData.value = response.data;
-        loading.value = false;
+        isLoading.value = false;
     });
 }
 

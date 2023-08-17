@@ -4,11 +4,14 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Stations\Podcasts\Art;
 
-use App\Entity;
+use App\Container\EntityManagerAwareTrait;
+use App\Controller\SingleActionInterface;
+use App\Entity\Api\Error;
+use App\Entity\Api\Status;
+use App\Entity\Repository\PodcastRepository;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\OpenApi;
-use Doctrine\ORM\EntityManagerInterface;
 use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 
@@ -34,28 +37,31 @@ use Psr\Http\Message\ResponseInterface;
         new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
     ]
 )]
-final class DeleteArtAction
+final class DeleteArtAction implements SingleActionInterface
 {
+    use EntityManagerAwareTrait;
+
     public function __construct(
-        private readonly Entity\Repository\PodcastRepository $podcastRepo,
-        private readonly EntityManagerInterface $em,
+        private readonly PodcastRepository $podcastRepo,
     ) {
     }
 
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        string $station_id,
-        string $podcast_id
+        array $params
     ): ResponseInterface {
+        /** @var string $podcastId */
+        $podcastId = $params['podcast_id'];
+
         $station = $request->getStation();
 
-        $podcast = $this->podcastRepo->fetchPodcastForStation($station, $podcast_id);
+        $podcast = $this->podcastRepo->fetchPodcastForStation($station, $podcastId);
 
         if ($podcast === null) {
             return $response->withStatus(404)
                 ->withJson(
-                    new Entity\Api\Error(
+                    new Error(
                         404,
                         __('Podcast not found!')
                     )
@@ -66,6 +72,6 @@ final class DeleteArtAction
         $this->em->persist($podcast);
         $this->em->flush();
 
-        return $response->withJson(Entity\Api\Status::deleted());
+        return $response->withJson(Status::deleted());
     }
 }

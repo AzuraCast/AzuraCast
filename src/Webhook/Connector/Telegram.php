@@ -26,10 +26,10 @@ final class Telegram extends AbstractConnector
     ): void {
         $config = $webhook->getConfig();
 
-        $bot_token = trim($config['bot_token'] ?? '');
-        $chat_id = trim($config['chat_id'] ?? '');
+        $botToken = trim($config['bot_token'] ?? '');
+        $chatId = trim($config['chat_id'] ?? '');
 
-        if (empty($bot_token) || empty($chat_id)) {
+        if (empty($botToken) || empty($chatId)) {
             throw $this->incompleteConfigException($webhook);
         }
 
@@ -40,31 +40,31 @@ final class Telegram extends AbstractConnector
             $np
         );
 
-        $api_url = (!empty($config['api'])) ? rtrim($config['api'], '/') : 'https://api.telegram.org';
-        $webhook_url = $api_url . '/bot' . $bot_token . '/sendMessage';
+        $apiUrl = (!empty($config['api'])) ? rtrim($config['api'], '/') : 'https://api.telegram.org';
+        $webhookUrl = $apiUrl . '/bot' . $botToken . '/sendMessage';
 
-        $request_params = [
-            'chat_id' => $chat_id,
+        $requestParams = [
+            'chat_id' => $chatId,
             'text' => $messages['text'],
             'parse_mode' => $config['parse_mode'] ?? 'Markdown', // Markdown or HTML
         ];
 
         $response = $this->httpClient->request(
             'POST',
-            $webhook_url,
+            $webhookUrl,
             [
                 'headers' => [
                     'Content-Type' => 'application/json',
                 ],
-                'json' => $request_params,
+                'json' => $requestParams,
             ]
         );
 
         $this->logger->debug(
             sprintf('Webhook "%s" returned code %d', $webhook->getName(), $response->getStatusCode()),
             [
-                'request_url' => $webhook_url,
-                'request_params' => $request_params,
+                'request_url' => $webhookUrl,
+                'request_params' => $requestParams,
                 'response_body' => $response->getBody()->getContents(),
             ]
         );

@@ -159,9 +159,9 @@ class SongHistory implements
         return $this->timestamp_start;
     }
 
-    public function setTimestampStart(int $timestamp_start): void
+    public function setTimestampStart(int $timestampStart): void
     {
-        $this->timestamp_start = $timestamp_start;
+        $this->timestamp_start = $timestampStart;
     }
 
     public function getDuration(): ?int
@@ -179,9 +179,9 @@ class SongHistory implements
         return $this->listeners_start;
     }
 
-    public function setListenersStart(?int $listeners_start): void
+    public function setListenersStart(?int $listenersStart): void
     {
-        $this->listeners_start = $listeners_start;
+        $this->listeners_start = $listenersStart;
     }
 
     public function getTimestampEnd(): int
@@ -189,12 +189,12 @@ class SongHistory implements
         return $this->timestamp_end;
     }
 
-    public function setTimestampEnd(int $timestamp_end): void
+    public function setTimestampEnd(int $timestampEnd): void
     {
-        $this->timestamp_end = $timestamp_end;
+        $this->timestamp_end = $timestampEnd;
 
         if (!$this->duration) {
-            $this->duration = $timestamp_end - $this->timestamp_start;
+            $this->duration = $timestampEnd - $this->timestamp_start;
         }
     }
 
@@ -208,9 +208,9 @@ class SongHistory implements
         return $this->listeners_end;
     }
 
-    public function setListenersEnd(?int $listeners_end): void
+    public function setListenersEnd(?int $listenersEnd): void
     {
-        $this->listeners_end = $listeners_end;
+        $this->listeners_end = $listenersEnd;
     }
 
     public function getUniqueListeners(): ?int
@@ -218,9 +218,9 @@ class SongHistory implements
         return $this->unique_listeners;
     }
 
-    public function setUniqueListeners(?int $unique_listeners): void
+    public function setUniqueListeners(?int $uniqueListeners): void
     {
-        $this->unique_listeners = $unique_listeners;
+        $this->unique_listeners = $uniqueListeners;
     }
 
     public function getListeners(): int
@@ -233,9 +233,9 @@ class SongHistory implements
         return $this->delta_total;
     }
 
-    public function setDeltaTotal(int $delta_total): void
+    public function setDeltaTotal(int $deltaTotal): void
     {
-        $this->delta_total = $this->truncateSmallInt($delta_total);
+        $this->delta_total = $this->truncateSmallInt($deltaTotal);
     }
 
     public function getDeltaPositive(): int
@@ -243,9 +243,9 @@ class SongHistory implements
         return $this->delta_positive;
     }
 
-    public function setDeltaPositive(int $delta_positive): void
+    public function setDeltaPositive(int $deltaPositive): void
     {
-        $this->delta_positive = $this->truncateSmallInt($delta_positive);
+        $this->delta_positive = $this->truncateSmallInt($deltaPositive);
     }
 
     public function getDeltaNegative(): int
@@ -253,9 +253,9 @@ class SongHistory implements
         return $this->delta_negative;
     }
 
-    public function setDeltaNegative(int $delta_negative): void
+    public function setDeltaNegative(int $deltaNegative): void
     {
-        $this->delta_negative = $this->truncateSmallInt($delta_negative);
+        $this->delta_negative = $this->truncateSmallInt($deltaNegative);
     }
 
     public function getDeltaPoints(): mixed
@@ -263,16 +263,16 @@ class SongHistory implements
         return $this->delta_points;
     }
 
-    public function addDeltaPoint(int $delta_point): void
+    public function addDeltaPoint(int $deltaPoint): void
     {
-        $delta_points = (array)$this->delta_points;
+        $deltaPoints = (array)$this->delta_points;
 
-        if (0 === count($delta_points)) {
-            $this->setListenersStart($delta_point);
+        if (0 === count($deltaPoints)) {
+            $this->setListenersStart($deltaPoint);
         }
 
-        $delta_points[] = $delta_point;
-        $this->delta_points = $delta_points;
+        $deltaPoints[] = $deltaPoint;
+        $this->delta_points = $deltaPoints;
     }
 
     public function setListenersFromLastSong(?SongHistory $lastSong): void
@@ -293,9 +293,9 @@ class SongHistory implements
         return $this->is_visible;
     }
 
-    public function setIsVisible(bool $is_visible): void
+    public function setIsVisible(bool $isVisible): void
     {
-        $this->is_visible = $is_visible;
+        $this->is_visible = $isVisible;
     }
 
     public function updateVisibility(): void

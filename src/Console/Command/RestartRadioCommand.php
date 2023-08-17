@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace App\Console\Command;
 
-use App\Entity;
+use App\Entity\Repository\StationRepository;
+use App\Entity\Station;
 use App\Nginx\Nginx;
 use App\Radio\Configuration;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -22,7 +23,7 @@ use Throwable;
 final class RestartRadioCommand extends CommandAbstract
 {
     public function __construct(
-        private readonly Entity\Repository\StationRepository $stationRepo,
+        private readonly StationRepository $stationRepo,
         private readonly Configuration $configuration,
         private readonly Nginx $nginx,
     ) {
@@ -50,7 +51,7 @@ final class RestartRadioCommand extends CommandAbstract
         if (!empty($stationName)) {
             $station = $this->stationRepo->findByIdentifier($stationName);
 
-            if (!$station instanceof Entity\Station) {
+            if (!$station instanceof Station) {
                 $io->error('Station not found.');
                 return 1;
             }
@@ -59,7 +60,6 @@ final class RestartRadioCommand extends CommandAbstract
         } else {
             $io->section('Restarting all radio stations...');
 
-            /** @var Entity\Station[] $stations */
             $stations = $this->stationRepo->fetchAll();
         }
 

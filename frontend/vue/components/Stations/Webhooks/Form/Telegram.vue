@@ -1,14 +1,15 @@
 <template>
-    <b-form-group>
-        <div class="form-row">
-            <b-wrapped-form-group
+    <o-tab-item
+        :label="title"
+        :item-header-class="tabClass"
+    >
+        <div class="row g-3 mb-3">
+            <form-group-field
                 id="form_config_bot_token"
                 class="col-md-6"
-                :field="form.config.bot_token"
+                :field="v$.config.bot_token"
+                :label="$gettext('Bot Token')"
             >
-                <template #label>
-                    {{ $gettext('Bot Token') }}
-                </template>
                 <template #description>
                     <a
                         href="https://core.telegram.org/bots#botfather"
@@ -17,61 +18,45 @@
                         {{ $gettext('See the Telegram Documentation for more details.') }}
                     </a>
                 </template>
-            </b-wrapped-form-group>
+            </form-group-field>
 
-            <b-wrapped-form-group
+            <form-group-field
                 id="form_config_chat_id"
                 class="col-md-6"
-                :field="form.config.chat_id"
-            >
-                <template #label>
-                    {{ $gettext('Chat ID') }}
-                </template>
-                <template #description>
-                    {{
-                        $gettext('Unique identifier for the target chat or username of the target channel (in the format @channelusername).')
-                    }}
-                </template>
-            </b-wrapped-form-group>
+                :field="v$.config.chat_id"
+                :label="$gettext('Chat ID')"
+                :description="$gettext('Unique identifier for the target chat or username of the target channel (in the format @channelusername).')"
+            />
 
-            <b-wrapped-form-group
+            <form-group-field
                 id="form_config_api"
                 class="col-md-6"
-                :field="form.config.api"
-            >
-                <template #label>
-                    {{ $gettext('Custom API Base URL') }}
-                </template>
-                <template #description>
-                    {{ $gettext('Leave blank to use the default Telegram API URL (recommended).') }}
-                </template>
-            </b-wrapped-form-group>
+                :field="v$.config.api"
+                :label="$gettext('Custom API Base URL')"
+                :description="$gettext('Leave blank to use the default Telegram API URL (recommended).')"
+            />
         </div>
-    </b-form-group>
 
-    <common-formatting-info :now-playing-url="nowPlayingUrl" />
+        <common-formatting-info />
 
-    <b-form-group>
-        <div class="form-row">
-            <b-wrapped-form-group
+        <div class="row g-3">
+            <form-group-field
                 id="form_config_text"
                 class="col-md-12"
-                :field="form.config.text"
+                :field="v$.config.text"
                 input-type="textarea"
-            >
-                <template #label>
-                    {{ $gettext('Main Message Content') }}
-                </template>
-            </b-wrapped-form-group>
+                :label="$gettext('Main Message Content')"
+            />
 
-            <b-wrapped-form-group
+            <form-group-multi-check
                 id="form_config_parse_mode"
                 class="col-md-12"
-                :field="form.config.parse_mode"
+                :field="v$.config.parse_mode"
+                :options="parseModeOptions"
+                stacked
+                radio
+                :label="$gettext('Message parsing mode')"
             >
-                <template #label>
-                    {{ $gettext('Message parsing mode') }}
-                </template>
                 <template #description>
                     <a
                         href="https://core.telegram.org/bots/api#sendmessage"
@@ -80,37 +65,67 @@
                         {{ $gettext('See the Telegram documentation for more details.') }}
                     </a>
                 </template>
-                <template #default="slotProps">
-                    <b-form-radio-group
-                        :id="slotProps.id"
-                        v-model="slotProps.field.$model"
-                        stacked
-                        :options="parseModeOptions"
-                    />
-                </template>
-            </b-wrapped-form-group>
+            </form-group-multi-check>
         </div>
-    </b-form-group>
+    </o-tab-item>
 </template>
 
 <script setup>
-import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
+import FormGroupField from "~/components/Form/FormGroupField";
 import CommonFormattingInfo from "./Common/FormattingInfo";
 import {computed} from "vue";
 import {useTranslate} from "~/vendor/gettext";
+import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
+import {useVModel} from "@vueuse/core";
+import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
+import {required} from "@vuelidate/validators";
 
 const props = defineProps({
-    form: {
-        type: Object,
+    title: {
+        type: String,
         required: true
     },
-    nowPlayingUrl: {
-        type: String,
+    form: {
+        type: Object,
         required: true
     }
 });
 
+const emit = defineEmits(['update:form']);
+const form = useVModel(props, 'form', emit);
+
 const {$gettext} = useTranslate();
+
+const {v$, tabClass} = useVuelidateOnFormTab(
+    {
+        config: {
+            bot_token: {required},
+            chat_id: {required},
+            api: {},
+            text: {required},
+            parse_mode: {required}
+        }
+    },
+    form,
+    () => {
+        return {
+            config: {
+                bot_token: '',
+                chat_id: '',
+                api: '',
+                text: $gettext(
+                    'Now playing on %{ station }: %{ title } by %{ artist }! Tune in now.',
+                    {
+                        station: '{{ station.name }}',
+                        title: '{{ now_playing.song.title }}',
+                        artist: '{{ now_playing.song.artist }}'
+                    }
+                ),
+                parse_mode: 'Markdown'
+            }
+        };
+    }
+);
 
 const parseModeOptions = computed(() => {
     return [

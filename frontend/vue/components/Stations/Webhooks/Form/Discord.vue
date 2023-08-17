@@ -1,115 +1,132 @@
 <template>
-    <b-form-group>
-        <div class="form-row">
-            <b-wrapped-form-group
+    <o-tab-item
+        :label="title"
+        :item-header-class="tabClass"
+    >
+        <div class="row g-3 mb-3">
+            <form-group-field
                 id="form_config_webhook_url"
                 class="col-md-12"
-                :field="form.config.webhook_url"
+                :field="v$.config.webhook_url"
                 input-type="url"
-            >
-                <template #label>
-                    {{ $gettext('Discord Web Hook URL') }}
-                </template>
-                <template #description>
-                    {{ $gettext('This URL is provided within the Discord application.') }}
-                </template>
-            </b-wrapped-form-group>
+                :label="$gettext('Discord Web Hook URL')"
+                :description="$gettext('This URL is provided within the Discord application.')"
+            />
         </div>
-    </b-form-group>
 
-    <common-formatting-info :now-playing-url="nowPlayingUrl" />
+        <common-formatting-info />
 
-    <b-form-group>
-        <div class="form-row">
-            <b-wrapped-form-group
+        <div class="row g-3">
+            <form-group-field
                 id="form_config_content"
                 class="col-md-6"
-                :field="form.config.content"
+                :field="v$.config.content"
                 input-type="textarea"
-            >
-                <template #label>
-                    {{ $gettext('Main Message Content') }}
-                </template>
-            </b-wrapped-form-group>
+                :label="$gettext('Main Message Content')"
+            />
 
-            <b-wrapped-form-group
+            <form-group-field
                 id="form_config_title"
                 class="col-md-6"
-                :field="form.config.title"
-            >
-                <template #label>
-                    {{ $gettext('Title') }}
-                </template>
-            </b-wrapped-form-group>
+                :field="v$.config.title"
+                :label="$gettext('Title')"
+            />
 
-            <b-wrapped-form-group
+            <form-group-field
                 id="form_config_description"
                 class="col-md-6"
-                :field="form.config.description"
+                :field="v$.config.description"
                 input-type="textarea"
-            >
-                <template #label>
-                    {{ $gettext('Description') }}
-                </template>
-            </b-wrapped-form-group>
+                :label="$gettext('Description')"
+            />
 
-            <b-wrapped-form-group
+            <form-group-field
                 id="form_config_url"
                 class="col-md-6"
-                :field="form.config.url"
+                :field="v$.config.url"
                 input-type="url"
-            >
-                <template #label>
-                    {{ $gettext('URL') }}
-                </template>
-            </b-wrapped-form-group>
+                :label="$gettext('URL')"
+            />
 
-            <b-wrapped-form-group
+            <form-group-field
                 id="form_config_author"
                 class="col-md-6"
-                :field="form.config.author"
-            >
-                <template #label>
-                    {{ $gettext('Author') }}
-                </template>
-            </b-wrapped-form-group>
+                :field="v$.config.author"
+                :label="$gettext('Author')"
+            />
 
-            <b-wrapped-form-group
+            <form-group-field
                 id="form_config_thumbnail"
                 class="col-md-6"
-                :field="form.config.thumbnail"
+                :field="v$.config.thumbnail"
                 input-type="url"
-            >
-                <template #label>
-                    {{ $gettext('Thumbnail Image URL') }}
-                </template>
-            </b-wrapped-form-group>
+                :label="$gettext('Thumbnail Image URL')"
+            />
 
-            <b-wrapped-form-group
+            <form-group-field
                 id="form_config_footer"
                 class="col-md-6"
-                :field="form.config.footer"
-            >
-                <template #label>
-                    {{ $gettext('Footer Text') }}
-                </template>
-            </b-wrapped-form-group>
+                :field="v$.config.footer"
+                :label="$gettext('Footer Text')"
+            />
         </div>
-    </b-form-group>
+    </o-tab-item>
 </template>
 
 <script setup>
-import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
+import FormGroupField from "~/components/Form/FormGroupField";
 import CommonFormattingInfo from "./Common/FormattingInfo";
+import {useVModel} from "@vueuse/core";
+import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
+import {required} from "@vuelidate/validators";
+import {useTranslate} from "~/vendor/gettext";
 
 const props = defineProps({
+    title: {
+        type: String,
+        required: true
+    },
     form: {
         type: Object,
         required: true
-    },
-    nowPlayingUrl: {
-        type: String,
-        required: true
     }
 });
+
+const emit = defineEmits(['update:form']);
+const form = useVModel(props, 'form', emit);
+
+const {$gettext} = useTranslate();
+
+const {v$, tabClass} = useVuelidateOnFormTab(
+    {
+        config: {
+            webhook_url: {required},
+            content: {},
+            title: {},
+            description: {},
+            url: {},
+            author: {},
+            thumbnail: {},
+            footer: {},
+        }
+    },
+    form,
+    () => {
+        return {
+            config: {
+                webhook_url: '',
+                content: $gettext(
+                    'Now playing on %{ station }:',
+                    {'station': '{{ station.name }}'}
+                ),
+                title: '{{ now_playing.song.title }}',
+                description: '{{ now_playing.song.artist }}',
+                url: '{{ station.listen_url }}',
+                author: '{{ live.streamer_name }}',
+                thumbnail: '{{ now_playing.song.art }}',
+                footer: $gettext('Powered by AzuraCast'),
+            }
+        }
+    }
+);
 </script>

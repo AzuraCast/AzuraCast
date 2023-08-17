@@ -4,31 +4,32 @@ declare(strict_types=1);
 
 namespace App\Entity\Repository;
 
-use App\Doctrine\ReloadableEntityManagerInterface;
-use App\Entity;
+use App\Entity\Interfaces\SongInterface;
+use App\Entity\SongHistory;
+use App\Entity\Station;
 use Carbon\CarbonImmutable;
 use RuntimeException;
 
 /**
- * @extends AbstractStationBasedRepository<Entity\SongHistory>
+ * @extends AbstractStationBasedRepository<SongHistory>
  */
 final class SongHistoryRepository extends AbstractStationBasedRepository
 {
+    protected string $entityClass = SongHistory::class;
+
     public function __construct(
-        ReloadableEntityManagerInterface $em,
         private readonly ListenerRepository $listenerRepository,
         private readonly StationQueueRepository $stationQueueRepository
     ) {
-        parent::__construct($em);
     }
 
     /**
-     * @param Entity\Station $station
+     * @param Station $station
      *
-     * @return Entity\SongHistory[]
+     * @return SongHistory[]
      */
     public function getVisibleHistory(
-        Entity\Station $station,
+        Station $station,
         ?int $numEntries = null
     ): array {
         $numEntries ??= $station->getApiHistoryItems();
@@ -50,8 +51,8 @@ final class SongHistoryRepository extends AbstractStationBasedRepository
     }
 
     public function updateSongFromNowPlaying(
-        Entity\Station $station,
-        Entity\Interfaces\SongInterface $song
+        Station $station,
+        SongInterface $song
     ): void {
         if (!$this->isDifferentFromCurrentSong($station, $song)) {
             return;
@@ -61,18 +62,18 @@ final class SongHistoryRepository extends AbstractStationBasedRepository
         $upcomingTrack = $this->stationQueueRepository->findRecentlyCuedSong($station, $song);
         if (null !== $upcomingTrack) {
             $this->stationQueueRepository->trackPlayed($station, $upcomingTrack);
-            $newSong = Entity\SongHistory::fromQueue($upcomingTrack);
+            $newSong = SongHistory::fromQueue($upcomingTrack);
         } else {
-            $newSong = new Entity\SongHistory($station, $song);
+            $newSong = new SongHistory($station, $song);
         }
 
         $this->changeCurrentSong($station, $newSong);
     }
 
     public function updateListenersFromNowPlaying(
-        Entity\Station $station,
+        Station $station,
         int $listeners
-    ): Entity\SongHistory {
+    ): SongHistory {
         $currentSong = $station->getCurrentSong();
         if (null === $currentSong) {
             throw new RuntimeException('No track to update.');
@@ -86,17 +87,17 @@ final class SongHistoryRepository extends AbstractStationBasedRepository
     }
 
     public function isDifferentFromCurrentSong(
-        Entity\Station $station,
-        Entity\Interfaces\SongInterface $toCompare
+        Station $station,
+        SongInterface $toCompare
     ): bool {
         $currentSong = $station->getCurrentSong();
         return !(null !== $currentSong) || $currentSong->getSongId() !== $toCompare->getSongId();
     }
 
     public function changeCurrentSong(
-        Entity\Station $station,
-        Entity\SongHistory $newCurrentSong
-    ): Entity\SongHistory {
+        Station $station,
+        SongHistory $newCurrentSong
+    ): SongHistory {
         $previousCurrentSong = $station->getCurrentSong();
 
         if (null !== $previousCurrentSong) {
@@ -132,13 +133,13 @@ final class SongHistoryRepository extends AbstractStationBasedRepository
     }
 
     /**
-     * @param Entity\Station $station
+     * @param Station $station
      * @param int $start
      * @param int $end
      *
      * @return mixed[] [int $minimumListeners, int $maximumListeners, float $averageListeners]
      */
-    public function getStatsByTimeRange(Entity\Station $station, int $start, int $end): array
+    public function getStatsByTimeRange(Station $station, int $start, int $end): array
     {
         $historyTotals = $this->em->createQuery(
             <<<'DQL'

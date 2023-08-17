@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Stations;
 
-use App\Entity;
+use App\Container\EntityManagerAwareTrait;
+use App\Entity\Api\Error;
+use App\Entity\Api\StationServiceStatus;
+use App\Entity\Api\Status;
 use App\Exception\StationUnsupportedException;
 use App\Exception\Supervisor\NotRunningException;
 use App\Http\Response;
@@ -13,7 +16,6 @@ use App\Nginx\Nginx;
 use App\OpenApi;
 use App\Radio\Adapters;
 use App\Radio\Configuration;
-use Doctrine\ORM\EntityManagerInterface;
 use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 use Throwable;
@@ -106,8 +108,9 @@ use Throwable;
 ]
 final class ServicesController
 {
+    use EntityManagerAwareTrait;
+
     public function __construct(
-        private readonly EntityManagerInterface $em,
         private readonly Configuration $configuration,
         private readonly Nginx $nginx,
         private readonly Adapters $adapters,
@@ -116,8 +119,7 @@ final class ServicesController
 
     public function statusAction(
         ServerRequest $request,
-        Response $response,
-        string $station_id
+        Response $response
     ): ResponseInterface {
         $station = $request->getStation();
 
@@ -125,7 +127,7 @@ final class ServicesController
         $frontend = $this->adapters->getFrontendAdapter($station);
 
         return $response->withJson(
-            new Entity\Api\StationServiceStatus(
+            new StationServiceStatus(
                 null !== $backend && $backend->isRunning($station),
                 null !== $frontend && $frontend->isRunning($station),
                 $station->getHasStarted(),
@@ -136,8 +138,7 @@ final class ServicesController
 
     public function reloadAction(
         ServerRequest $request,
-        Response $response,
-        string $station_id
+        Response $response
     ): ResponseInterface {
         // Reloading attempts to update configuration without restarting broadcasting, if possible and supported.
         $station = $request->getStation();
@@ -154,21 +155,15 @@ final class ServicesController
 
             $this->nginx->writeConfiguration($station);
         } catch (Throwable $e) {
-            return $response->withJson(
-                new Entity\Api\Error(
-                    500,
-                    $e->getMessage()
-                )
-            );
+            return $response->withJson(Error::fromException($e));
         }
 
-        return $response->withJson(new Entity\Api\Status(true, __('Station reloaded.')));
+        return $response->withJson(new Status(true, __('Station reloaded.')));
     }
 
     public function restartAction(
         ServerRequest $request,
-        Response $response,
-        string $station_id
+        Response $response
     ): ResponseInterface {
         // Restarting will always shut down and restart any services.
         $station = $request->getStation();
@@ -186,23 +181,20 @@ final class ServicesController
 
             $this->nginx->writeConfiguration($station);
         } catch (Throwable $e) {
-            return $response->withJson(
-                new Entity\Api\Error(
-                    500,
-                    $e->getMessage()
-                )
-            );
+            return $response->withJson(Error::fromException($e));
         }
 
-        return $response->withJson(new Entity\Api\Status(true, __('Station restarted.')));
+        return $response->withJson(new Status(true, __('Station restarted.')));
     }
 
     public function frontendAction(
         ServerRequest $request,
         Response $response,
-        string $station_id,
-        string $do = 'restart'
+        array $params
     ): ResponseInterface {
+        /** @var string $do */
+        $do = $params['do'] ?? 'restart';
+
         $station = $request->getStation();
         $frontend = $this->adapters->getFrontendAdapter($station);
 
@@ -214,18 +206,18 @@ final class ServicesController
             case 'stop':
                 $frontend->stop($station);
 
-                return $response->withJson(new Entity\Api\Status(true, __('Service stopped.')));
+                return $response->withJson(new Status(true, __('Service stopped.')));
 
             case 'start':
                 $frontend->start($station);
 
-                return $response->withJson(new Entity\Api\Status(true, __('Service started.')));
+                return $response->withJson(new Status(true, __('Service started.')));
 
             case 'reload':
                 $frontend->write($station);
                 $frontend->reload($station);
 
-                return $response->withJson(new Entity\Api\Status(true, __('Service reloaded.')));
+                return $response->withJson(new Status(true, __('Service reloaded.')));
 
             case 'restart':
             default:
@@ -237,16 +229,18 @@ final class ServicesController
                 $frontend->write($station);
                 $frontend->start($station);
 
-                return $response->withJson(new Entity\Api\Status(true, __('Service restarted.')));
+                return $response->withJson(new Status(true, __('Service restarted.')));
         }
     }
 
     public function backendAction(
         ServerRequest $request,
         Response $response,
-        string $station_id,
-        string $do = 'restart'
+        array $params
     ): ResponseInterface {
+        /** @var string $do */
+        $do = $params['do'] ?? 'restart';
+
         $station = $request->getStation();
         $backend = $this->adapters->getBackendAdapter($station);
 
@@ -258,28 +252,28 @@ final class ServicesController
             case 'skip':
                 $backend->skip($station);
 
-                return $response->withJson(new Entity\Api\Status(true, __('Song skipped.')));
+                return $response->withJson(new Status(true, __('Song skipped.')));
 
             case 'disconnect':
                 $backend->disconnectStreamer($station);
 
-                return $response->withJson(new Entity\Api\Status(true, __('Streamer disconnected.')));
+                return $response->withJson(new Status(true, __('Streamer disconnected.')));
 
             case 'stop':
                 $backend->stop($station);
 
-                return $response->withJson(new Entity\Api\Status(true, __('Service stopped.')));
+                return $response->withJson(new Status(true, __('Service stopped.')));
 
             case 'start':
                 $backend->start($station);
 
-                return $response->withJson(new Entity\Api\Status(true, __('Service started.')));
+                return $response->withJson(new Status(true, __('Service started.')));
 
             case 'reload':
                 $backend->write($station);
                 $backend->reload($station);
 
-                return $response->withJson(new Entity\Api\Status(true, __('Service reloaded.')));
+                return $response->withJson(new Status(true, __('Service reloaded.')));
 
             case 'restart':
             default:
@@ -291,7 +285,7 @@ final class ServicesController
                 $backend->write($station);
                 $backend->start($station);
 
-                return $response->withJson(new Entity\Api\Status(true, __('Service restarted.')));
+                return $response->withJson(new Status(true, __('Service restarted.')));
         }
     }
 }

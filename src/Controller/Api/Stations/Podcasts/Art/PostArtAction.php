@@ -4,12 +4,15 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Stations\Podcasts\Art;
 
-use App\Entity;
+use App\Container\EntityManagerAwareTrait;
+use App\Controller\SingleActionInterface;
+use App\Entity\Api\Error;
+use App\Entity\Api\Status;
+use App\Entity\Repository\PodcastRepository;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\OpenApi;
 use App\Service\Flow;
-use Doctrine\ORM\EntityManagerInterface;
 use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 
@@ -35,20 +38,23 @@ use Psr\Http\Message\ResponseInterface;
         new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
     ]
 )]
-final class PostArtAction
+final class PostArtAction implements SingleActionInterface
 {
+    use EntityManagerAwareTrait;
+
     public function __construct(
-        private readonly Entity\Repository\PodcastRepository $podcastRepo,
-        private readonly EntityManagerInterface $em,
+        private readonly PodcastRepository $podcastRepo,
     ) {
     }
 
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        string $station_id,
-        ?string $podcast_id = null
+        array $params
     ): ResponseInterface {
+        /** @var string|null $podcastId */
+        $podcastId = $params['podcast_id'] ?? null;
+
         $station = $request->getStation();
 
         $mediaStorage = $station->getPodcastsStorageLocation();
@@ -59,12 +65,12 @@ final class PostArtAction
             return $flowResponse;
         }
 
-        if (null !== $podcast_id) {
-            $podcast = $this->podcastRepo->fetchPodcastForStation($station, $podcast_id);
+        if (null !== $podcastId) {
+            $podcast = $this->podcastRepo->fetchPodcastForStation($station, $podcastId);
 
             if (null === $podcast) {
                 return $response->withStatus(404)
-                    ->withJson(Entity\Api\Error::notFound());
+                    ->withJson(Error::notFound());
             }
 
             $this->podcastRepo->writePodcastArt(
@@ -74,7 +80,7 @@ final class PostArtAction
 
             $this->em->flush();
 
-            return $response->withJson(Entity\Api\Status::updated());
+            return $response->withJson(Status::updated());
         }
 
         return $response->withJson($flowResponse);

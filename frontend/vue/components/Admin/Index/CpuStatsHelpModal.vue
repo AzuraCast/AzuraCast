@@ -1,5 +1,5 @@
 <template>
-    <b-modal
+    <modal
         id="cpu_stats_help_modal"
         ref="$modal"
         size="lg"
@@ -8,16 +8,12 @@
     >
         <div class="mb-2">
             <h6>
-                <b-badge
-                    pill
-                    variant="danger"
-                >
-&nbsp;&nbsp;
-                </b-badge>&nbsp;
+                <span class="badge text-bg-danger me-1">&nbsp;&nbsp;</span>
+
                 {{ $gettext('Steal (St)') }}:
                 {{ $gettext('Time stolen by other virtual machines on the same physical server.') }}
             </h6>
-            <div class="ml-4">
+            <div class="ms-4">
                 <p>
                     {{
                         $gettext('Most hosting providers will put more Virtual Machines (VPSes) on a server than the hardware can handle when each VM is running at full CPU load. This is called over-provisioning, which can lead to other VMs on the server "stealing" CPU time from your VM and vice-versa.')
@@ -37,16 +33,12 @@
         </div>
         <div class="mb-2">
             <h6>
-                <b-badge
-                    pill
-                    variant="warning"
-                >
-&nbsp;&nbsp;
-                </b-badge>&nbsp;
+                <span class="badge text-bg-warning me-1">&nbsp;&nbsp;</span>
+
                 {{ $gettext('Wait (Wa)') }}:
                 {{ $gettext('Time spent waiting for disk I/O to be completed.') }}
             </h6>
-            <div class="ml-4">
+            <div class="ms-4">
                 <p>
                     {{
                         $gettext('The I/O Wait is the percentage of time that the CPU is waiting for disk access before it can continue the work that depends on the result of this.')
@@ -66,12 +58,7 @@
         </div>
         <div class="mb-1">
             <h6>
-                <b-badge
-                    pill
-                    variant="primary"
-                >
-&nbsp;&nbsp;
-                </b-badge>&nbsp;
+                <span class="badge text-bg-primary me-1">&nbsp;</span>
                 {{ $gettext('Use (Us)') }}:
                 {{ $gettext('The current CPU usage including I/O Wait and Steal.') }}
             </h6>
@@ -79,20 +66,21 @@
 
         <template #modal-footer>
             <slot name="modal-footer">
-                <b-button
-                    variant="default"
+                <button
                     type="button"
+                    class="btn btn-secondary"
                     @click="close"
                 >
                     {{ $gettext('Close') }}
-                </b-button>
+                </button>
             </slot>
         </template>
-    </b-modal>
+    </modal>
 </template>
 
 <script setup>
 import {ref} from "vue";
+import Modal from "~/components/Common/Modal.vue";
 
 const $modal = ref(); // BModal
 

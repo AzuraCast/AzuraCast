@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Stations\Podcasts\Art;
 
-use App\Entity;
+use App\Controller\SingleActionInterface;
+use App\Entity\Podcast;
+use App\Entity\Repository\StationRepository;
 use App\Flysystem\StationFilesystems;
 use App\Http\Response;
 use App\Http\ServerRequest;
@@ -37,10 +39,10 @@ use Psr\Http\Message\ResponseInterface;
         new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
     ]
 )]
-final class GetArtAction
+final class GetArtAction implements SingleActionInterface
 {
     public function __construct(
-        private readonly Entity\Repository\StationRepository $stationRepo,
+        private readonly StationRepository $stationRepo,
         private readonly StationFilesystems $stationFilesystems,
     ) {
     }
@@ -48,15 +50,17 @@ final class GetArtAction
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        string $station_id,
-        string $podcast_id
+        array $params
     ): ResponseInterface {
+        /** @var string $podcastId */
+        $podcastId = $params['podcast_id'];
+
         $station = $request->getStation();
 
         // If a timestamp delimiter is added, strip it automatically.
-        $podcast_id = explode('|', $podcast_id, 2)[0];
+        $podcast_id = explode('|', $podcastId, 2)[0];
 
-        $podcastPath = Entity\Podcast::getArtPath($podcast_id);
+        $podcastPath = Podcast::getArtPath($podcast_id);
 
         $fsPodcasts = $this->stationFilesystems->getPodcastsFilesystem($station);
 

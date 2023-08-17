@@ -11,7 +11,6 @@ use App\Radio\Enums\StreamProtocols;
 use App\Radio\Remote\AbstractRemote;
 use App\Utilities;
 use Doctrine\ORM\Mapping as ORM;
-use InvalidArgumentException;
 use Psr\Http\Message\UriInterface;
 use Stringable;
 
@@ -126,9 +125,9 @@ class StationRemote implements
         return $this->is_visible_on_public_pages;
     }
 
-    public function setIsVisibleOnPublicPages(bool $is_visible_on_public_pages): void
+    public function setIsVisibleOnPublicPages(bool $isVisibleOnPublicPages): void
     {
-        $this->is_visible_on_public_pages = $is_visible_on_public_pages;
+        $this->is_visible_on_public_pages = $isVisibleOnPublicPages;
     }
 
     public function getEnableAutodj(): bool
@@ -136,9 +135,9 @@ class StationRemote implements
         return $this->enable_autodj;
     }
 
-    public function setEnableAutodj(bool $enable_autodj): void
+    public function setEnableAutodj(bool $enableAutodj): void
     {
-        $this->enable_autodj = $enable_autodj;
+        $this->enable_autodj = $enableAutodj;
     }
 
     public function getAutodjFormat(): ?StreamFormats
@@ -146,9 +145,9 @@ class StationRemote implements
         return $this->autodj_format;
     }
 
-    public function setAutodjFormat(?StreamFormats $autodj_format = null): void
+    public function setAutodjFormat(?StreamFormats $autodjFormat = null): void
     {
-        $this->autodj_format = $autodj_format;
+        $this->autodj_format = $autodjFormat;
     }
 
     public function getAutodjBitrate(): ?int
@@ -156,9 +155,9 @@ class StationRemote implements
         return $this->autodj_bitrate;
     }
 
-    public function setAutodjBitrate(int $autodj_bitrate = null): void
+    public function setAutodjBitrate(int $autodjBitrate = null): void
     {
-        $this->autodj_bitrate = $autodj_bitrate;
+        $this->autodj_bitrate = $autodjBitrate;
     }
 
     public function getCustomListenUrl(): ?string
@@ -166,9 +165,9 @@ class StationRemote implements
         return $this->custom_listen_url;
     }
 
-    public function setCustomListenUrl(?string $custom_listen_url = null): void
+    public function setCustomListenUrl(?string $customListenUrl = null): void
     {
-        $this->custom_listen_url = $this->truncateNullableString($custom_listen_url);
+        $this->custom_listen_url = $this->truncateNullableString($customListenUrl);
     }
 
     public function getAutodjUsername(): ?string
@@ -181,9 +180,9 @@ class StationRemote implements
         return $this->source_username;
     }
 
-    public function setSourceUsername(?string $source_username): void
+    public function setSourceUsername(?string $sourceUsername): void
     {
-        $this->source_username = $this->truncateNullableString($source_username, 100);
+        $this->source_username = $this->truncateNullableString($sourceUsername, 100);
     }
 
     public function getAutodjPassword(): ?string
@@ -209,9 +208,9 @@ class StationRemote implements
         return $this->source_password;
     }
 
-    public function setSourcePassword(?string $source_password): void
+    public function setSourcePassword(?string $sourcePassword): void
     {
-        $this->source_password = $this->truncateNullableString($source_password, 100);
+        $this->source_password = $this->truncateNullableString($sourcePassword, 100);
     }
 
     public function getType(): RemoteAdapters
@@ -229,9 +228,9 @@ class StationRemote implements
         return $this->source_mount;
     }
 
-    public function setSourceMount(?string $source_mount): void
+    public function setSourceMount(?string $sourceMount): void
     {
-        $this->source_mount = $this->truncateNullableString($source_mount, 150);
+        $this->source_mount = $this->truncateNullableString($sourceMount, 150);
     }
 
     public function getMount(): ?string
@@ -249,9 +248,9 @@ class StationRemote implements
         return $this->admin_password;
     }
 
-    public function setAdminPassword(?string $admin_password): void
+    public function setAdminPassword(?string $adminPassword): void
     {
-        $this->admin_password = $admin_password;
+        $this->admin_password = $adminPassword;
     }
 
     public function getAutodjMount(): ?string
@@ -314,13 +313,13 @@ class StationRemote implements
         return $this->source_port;
     }
 
-    public function setSourcePort(?int $source_port): void
+    public function setSourcePort(?int $sourcePort): void
     {
-        if ((int)$source_port === 0) {
-            $source_port = null;
+        if ((int)$sourcePort === 0) {
+            $sourcePort = null;
         }
 
-        $this->source_port = $source_port;
+        $this->source_port = $sourcePort;
     }
 
     public function getAutodjProtocol(): ?StreamProtocols
@@ -343,9 +342,9 @@ class StationRemote implements
         return $this->is_public;
     }
 
-    public function setIsPublic(bool $is_public): void
+    public function setIsPublic(bool $isPublic): void
     {
-        $this->is_public = $is_public;
+        $this->is_public = $isPublic;
     }
 
     public function getListenersUnique(): int
@@ -353,9 +352,9 @@ class StationRemote implements
         return $this->listeners_unique;
     }
 
-    public function setListenersUnique(int $listeners_unique): void
+    public function setListenersUnique(int $listenersUnique): void
     {
-        $this->listeners_unique = $listeners_unique;
+        $this->listeners_unique = $listenersUnique;
     }
 
     public function getListenersTotal(): int
@@ -363,9 +362,9 @@ class StationRemote implements
         return $this->listeners_total;
     }
 
-    public function setListenersTotal(int $listeners_total): void
+    public function setListenersTotal(int $listenersTotal): void
     {
-        $this->listeners_total = $listeners_total;
+        $this->listeners_total = $listenersTotal;
     }
 
     /**
@@ -374,6 +373,14 @@ class StationRemote implements
     public function isEditable(): bool
     {
         return (RemoteAdapters::AzuraRelay !== $this->getType());
+    }
+
+    public function getIsShoutcast(): bool
+    {
+        return match ($this->getAutodjAdapterType()) {
+            RemoteAdapters::Shoutcast1, RemoteAdapters::Shoutcast2 => true,
+            default => false,
+        };
     }
 
     /**
@@ -420,11 +427,11 @@ class StationRemote implements
     }
 
     /**
-     * @param string|null $display_name
+     * @param string|null $displayName
      */
-    public function setDisplayName(?string $display_name): void
+    public function setDisplayName(?string $displayName): void
     {
-        $this->display_name = $this->truncateNullableString($display_name);
+        $this->display_name = $this->truncateNullableString($displayName);
     }
 
     public function __toString(): string

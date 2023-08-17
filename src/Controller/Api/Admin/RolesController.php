@@ -5,9 +5,12 @@ declare(strict_types=1);
 namespace App\Controller\Api\Admin;
 
 use App\Acl;
+use App\Controller\Api\AbstractApiCrudController;
 use App\Controller\Api\Traits\CanSortResults;
-use App\Doctrine\ReloadableEntityManagerInterface;
-use App\Entity;
+use App\Entity\Repository\RolePermissionRepository;
+use App\Entity\Role;
+use App\Entity\RolePermission;
+use App\Entity\Station;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\OpenApi;
@@ -15,11 +18,10 @@ use InvalidArgumentException;
 use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 use RuntimeException;
-use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-/** @extends AbstractAdminApiCrudController<Entity\Role> */
+/** @extends AbstractApiCrudController<Role> */
 #[
     OA\Get(
         path: '/admin/roles',
@@ -133,34 +135,34 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
         ]
     )
 ]
-final class RolesController extends AbstractAdminApiCrudController
+final class RolesController extends AbstractApiCrudController
 {
     use CanSortResults;
 
-    protected string $entityClass = Entity\Role::class;
+    protected string $entityClass = Role::class;
     protected string $resourceRouteName = 'api:admin:role';
 
-    private readonly Entity\Role $superAdminRole;
+    private readonly Role $superAdminRole;
 
     public function __construct(
-        ReloadableEntityManagerInterface $em,
         Serializer $serializer,
         ValidatorInterface $validator,
-        Entity\Repository\RolePermissionRepository $permissionRepo,
+        RolePermissionRepository $permissionRepo,
         private readonly Acl $acl,
     ) {
-        parent::__construct($em, $serializer, $validator);
+        parent::__construct($serializer, $validator);
 
         $this->superAdminRole = $permissionRepo->ensureSuperAdministratorRole();
     }
 
     public function listAction(
         ServerRequest $request,
-        Response $response
+        Response $response,
+        array $params
     ): ResponseInterface {
         $qb = $this->em->createQueryBuilder()
             ->select('r, rp')
-            ->from(Entity\Role::class, 'r')
+            ->from(Role::class, 'r')
             ->leftJoin('r.permissions', 'rp');
 
         $qb = $this->sortQueryBuilder(
@@ -185,7 +187,7 @@ final class RolesController extends AbstractAdminApiCrudController
     {
         $result = parent::viewRecord($record, $request);
 
-        if ($record instanceof Entity\Role) {
+        if ($record instanceof Role) {
             $result['is_super_admin'] = $record->getIdRequired() === $this->superAdminRole->getIdRequired();
         }
 
@@ -195,7 +197,7 @@ final class RolesController extends AbstractAdminApiCrudController
     protected function editRecord(?array $data, ?object $record = null, array $context = []): object
     {
         if (
-            $record instanceof Entity\Role
+            $record instanceof Role
             && $this->superAdminRole->getIdRequired() === $record->getIdRequired()
         ) {
             throw new RuntimeException('Cannot modify the Super Administrator role.');
@@ -206,7 +208,7 @@ final class RolesController extends AbstractAdminApiCrudController
 
     protected function deleteRecord(object $record): void
     {
-        if (!($record instanceof Entity\Role)) {
+        if (!($record instanceof Role)) {
             throw new InvalidArgumentException(sprintf('Record must be an instance of %s.', $this->entityClass));
         }
 
@@ -234,7 +236,7 @@ final class RolesController extends AbstractAdminApiCrudController
         return $record;
     }
 
-    private function doUpdatePermissions(Entity\Role $role, array $newPermissions): void
+    private function doUpdatePermissions(Role $role, array $newPermissions): void
     {
         $existingPerms = $role->getPermissions();
         if ($existingPerms->count() > 0) {
@@ -246,23 +248,23 @@ final class RolesController extends AbstractAdminApiCrudController
         }
 
         if (isset($newPermissions['global'])) {
-            foreach ($newPermissions['global'] as $perm_name) {
-                if ($this->acl->isValidPermission($perm_name, true)) {
-                    $perm_record = new Entity\RolePermission($role, null, $perm_name);
-                    $this->em->persist($perm_record);
+            foreach ($newPermissions['global'] as $permName) {
+                if ($this->acl->isValidPermission($permName, true)) {
+                    $permRecord = new RolePermission($role, null, $permName);
+                    $this->em->persist($permRecord);
                 }
             }
         }
 
         if (isset($newPermissions['station'])) {
-            foreach ($newPermissions['station'] as $station_id => $station_perms) {
-                $station = $this->em->find(Entity\Station::class, $station_id);
+            foreach ($newPermissions['station'] as $stationId => $stationPerms) {
+                $station = $this->em->find(Station::class, $stationId);
 
-                if ($station instanceof Entity\Station) {
-                    foreach ($station_perms as $perm_name) {
-                        if ($this->acl->isValidPermission($perm_name, false)) {
-                            $perm_record = new Entity\RolePermission($role, $station, $perm_name);
-                            $this->em->persist($perm_record);
+                if ($station instanceof Station) {
+                    foreach ($stationPerms as $permName) {
+                        if ($this->acl->isValidPermission($permName, false)) {
+                            $permRecord = new RolePermission($role, $station, $permName);
+                            $this->em->persist($permRecord);
                         }
                     }
                 }

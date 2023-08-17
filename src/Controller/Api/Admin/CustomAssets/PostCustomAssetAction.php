@@ -5,26 +5,27 @@ declare(strict_types=1);
 namespace App\Controller\Api\Admin\CustomAssets;
 
 use App\Assets\AssetTypes;
-use App\Entity;
-use App\Environment;
+use App\Container\EnvironmentAwareTrait;
+use App\Controller\SingleActionInterface;
+use App\Entity\Api\Status;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Media\AlbumArt;
 use App\Service\Flow;
 use Psr\Http\Message\ResponseInterface;
 
-final class PostCustomAssetAction
+final class PostCustomAssetAction implements SingleActionInterface
 {
-    public function __construct(
-        private readonly Environment $environment
-    ) {
-    }
+    use EnvironmentAwareTrait;
 
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        string $type
+        array $params
     ): ResponseInterface {
+        /** @var string $type */
+        $type = $params['type'];
+
         $customAsset = AssetTypes::from($type)->createObject($this->environment);
 
         $flowResponse = Flow::process($request, $response);
@@ -37,6 +38,6 @@ final class PostCustomAssetAction
             AlbumArt::getImageManager()->make($imageContents)
         );
 
-        return $response->withJson(Entity\Api\Status::success());
+        return $response->withJson(Status::success());
     }
 }

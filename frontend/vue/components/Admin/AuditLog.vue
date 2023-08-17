@@ -1,25 +1,19 @@
 <template>
-    <section
-        class="card"
-        role="region"
-        aria-labelledby="hdr_audit_log"
-    >
-        <div class="card-header bg-primary-dark">
+    <card-page header-id="hdr_audit_log">
+        <template #header="{id}">
             <div class="d-flex align-items-center">
                 <h2
-                    id="hdr_audit_log"
+                    :id="id"
                     class="card-title flex-fill my-0"
                 >
                     {{ $gettext('Audit Log') }}
                 </h2>
                 <div class="flex-shrink">
-                    <date-range-dropdown
-                        v-model="dateRange"
-                        @update="relist"
-                    />
+                    <date-range-dropdown v-model="dateRange" />
                 </div>
             </div>
-        </div>
+        </template>
+
         <data-table
             ref="$datatable"
             responsive
@@ -74,65 +68,37 @@
             </template>
             <template #cell(actions)="row">
                 <template v-if="row.item.changes.length > 0">
-                    <b-button
-                        size="sm"
-                        variant="primary"
-                        @click="row.toggleDetails"
+                    <button
+                        type="button"
+                        class="btn btn-sm btn-primary"
+                        @click="showDetails(row.item.changes)"
                     >
                         {{ $gettext('Changes') }}
-                    </b-button>
+                    </button>
                 </template>
             </template>
-            <template #row-details="row">
-                <table class="table table-bordered">
-                    <colgroup>
-                        <col width="30%">
-                        <col width="35%">
-                        <col width="35%">
-                    </colgroup>
-                    <thead>
-                        <tr>
-                            <th>{{ $gettext('Field Name') }}</th>
-                            <th>{{ $gettext('Previous') }}</th>
-                            <th>{{ $gettext('Updated') }}</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr
-                            v-for="change in row.item.changes"
-                            :key="change.field"
-                        >
-                            <td>{{ change.field }}</td>
-                            <td>
-                                <pre class="changes">{{ change.from }}</pre>
-                            </td>
-                            <td>
-                                <pre class="changes">{{ change.to }}</pre>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </template>
         </data-table>
-    </section>
+    </card-page>
+
+    <details-modal ref="$detailsModal" />
 </template>
 
 <script setup>
-import {DateTime} from "luxon";
-import {computed, ref} from "vue";
+import {computed, ref, watch} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import {useAzuraCast} from "~/vendor/azuracast";
 import DataTable from "~/components/Common/DataTable.vue";
 import DateRangeDropdown from "~/components/Common/DateRangeDropdown.vue";
 import Icon from "~/components/Common/Icon.vue";
 import useHasDatatable from "~/functions/useHasDatatable";
+import DetailsModal from "./AuditLog/DetailsModal.vue";
+import CardPage from "~/components/Common/CardPage.vue";
+import {useLuxon} from "~/vendor/luxon";
+import {getApiUrl} from "~/router";
 
-const props = defineProps({
-    baseApiUrl: {
-        type: String,
-        required: true,
-    }
-});
+const baseApiUrl = getApiUrl('/admin/auditlog');
+
+const {DateTime} = useLuxon();
 
 const dateRange = ref({
     startDate: DateTime.now().minus({days: 13}).toJSDate(),
@@ -163,9 +129,9 @@ const fields = [
 ];
 
 const apiUrl = computed(() => {
-    let apiUrl = new URL(props.baseApiUrl, document.location);
+    const apiUrl = new URL(baseApiUrl.value, document.location);
 
-    let apiUrlParams = apiUrl.searchParams;
+    const apiUrlParams = apiUrl.searchParams;
     apiUrlParams.set('start', DateTime.fromJSDate(dateRange.value.startDate).toISO());
     apiUrlParams.set('end', DateTime.fromJSDate(dateRange.value.endDate).toISO());
 
@@ -174,11 +140,11 @@ const apiUrl = computed(() => {
 
 const $datatable = ref(); // DataTable Template Ref
 const {relist} = useHasDatatable($datatable);
-</script>
 
-<style lang="scss">
-pre.changes {
-    max-width: 250px;
-    margin-bottom: 0;
+watch(dateRange, relist);
+
+const $detailsModal = ref(); // DetailsModal
+const showDetails = (changes) => {
+    $detailsModal.value.open(changes);
 }
-</style>
+</script>

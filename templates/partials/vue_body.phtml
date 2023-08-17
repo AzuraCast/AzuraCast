@@ -4,26 +4,46 @@
  * @var ?string $id
  * @var array $props
  * @var App\View\GlobalSections $sections
+ * @var Doctrine\Common\Collections\ArrayCollection $globalProps
+ * @var App\Environment $environment
  */
 
-$nameWithoutPrefix = str_replace('Vue_', '', $component);
+$componentDeps = $this->getVueComponentInfo('vue/pages/' . $component . '.js');
 
-$componentDeps = $this->getVueComponentInfo($nameWithoutPrefix);
-$propsJson = json_encode($props, JSON_THROW_ON_ERROR);
+$jsonFlags = $environment->isProduction()
+    ? JSON_THROW_ON_ERROR
+    : JSON_THROW_ON_ERROR | JSON_PRETTY_PRINT;
 
-$scriptLines = [];
-foreach ($componentDeps['assets']['js'] ?? [] as $componentDep) {
-    $scriptLines[] = <<<HTML
-    <script src="{$this->assetUrl($componentDep)}"></script>
+$globalProps->set('componentProps', $props);
+$propsJson = json_encode($globalProps->toArray(), $jsonFlags);
+
+$headScripts = [];
+
+foreach ($componentDeps['css'] as $cssDep) {
+    $headScripts[] = <<<HTML
+        <link rel="stylesheet" href="{$cssDep}" />
     HTML;
 }
 
+foreach ($componentDeps['prefetch'] as $prefetchDep) {
+    $headScripts[] = <<<HTML
+        <link rel="modulepreload" href="{$prefetchDep}" />
+    HTML;
+}
+
+$sections->append('head', implode("\n", $headScripts));
+
+$scriptLines = [];
+$componentName = 'Vue_' . str_replace('/', '', $component);
+
 $scriptLines[] = <<<HTML
-<script>
-$(function () {
-    {$component} = {$nameWithoutPrefix}.default('#{$id}', {$propsJson});
-});
-</script>
+    <script type="module" src="{$componentDeps['js']}"></script>
+    <script type="text/javascript">
+        let {$componentName};
+        ready(() => {
+            {$componentName} = window.vueComponent('#{$id}', {$propsJson});
+        });
+    </script>
 HTML;
 
 $sections->append('bodyjs', implode("\n", $scriptLines));

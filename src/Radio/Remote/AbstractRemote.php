@@ -4,28 +4,28 @@ declare(strict_types=1);
 
 namespace App\Radio\Remote;
 
-use App\Entity;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Container\EntityManagerAwareTrait;
+use App\Container\LoggerAwareTrait;
+use App\Entity\StationRemote;
 use GuzzleHttp\Client;
 use GuzzleHttp\Promise\PromiseInterface;
-use Monolog\Logger;
 use NowPlaying\AdapterFactory;
 use NowPlaying\Enums\AdapterTypes;
 use NowPlaying\Result\Result;
 
 abstract class AbstractRemote
 {
+    use LoggerAwareTrait;
+    use EntityManagerAwareTrait;
+
     public function __construct(
-        protected EntityManagerInterface $em,
-        protected Entity\Repository\SettingsRepository $settingsRepo,
-        protected Client $http_client,
-        protected Logger $logger,
+        protected Client $httpClient,
         protected AdapterFactory $adapterFactory
     ) {
     }
 
     public function getNowPlayingAsync(
-        Entity\StationRemote $remote,
+        StationRemote $remote,
         bool $includeClients = false
     ): PromiseInterface {
         $adapterType = $this->getAdapterType();
@@ -61,24 +61,24 @@ abstract class AbstractRemote
     /**
      * Return the likely "public" listen URL for the remote.
      *
-     * @param Entity\StationRemote $remote
+     * @param StationRemote $remote
      */
-    public function getPublicUrl(Entity\StationRemote $remote): string
+    public function getPublicUrl(StationRemote $remote): string
     {
-        $custom_listen_url = $remote->getCustomListenUrl();
+        $customListenUrl = $remote->getCustomListenUrl();
 
-        return (!empty($custom_listen_url))
-            ? $custom_listen_url
+        return (!empty($customListenUrl))
+            ? $customListenUrl
             : $this->getRemoteUrl($remote, $remote->getMount());
     }
 
     /**
      * Format and return a URL for the remote path.
      *
-     * @param Entity\StationRemote $remote
+     * @param StationRemote $remote
      * @param string|null $customPath
      */
-    protected function getRemoteUrl(Entity\StationRemote $remote, ?string $customPath = null): string
+    protected function getRemoteUrl(StationRemote $remote, ?string $customPath = null): string
     {
         $uri = $remote->getUrlAsUri();
 

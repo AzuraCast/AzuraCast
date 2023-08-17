@@ -4,18 +4,13 @@ declare(strict_types=1);
 
 namespace App\Sync\Task;
 
-use App\Doctrine\ReloadableEntityManagerInterface;
-use App\Entity;
-use Psr\Log\LoggerInterface;
+use App\Entity\Repository\UserLoginTokenRepository;
 
 final class CleanupLoginTokensTask extends AbstractTask
 {
     public function __construct(
-        private readonly Entity\Repository\UserLoginTokenRepository $loginTokenRepo,
-        ReloadableEntityManagerInterface $em,
-        LoggerInterface $logger
+        private readonly UserLoginTokenRepository $loginTokenRepo,
     ) {
-        parent::__construct($em, $logger);
     }
 
     public static function getSchedulePattern(): string

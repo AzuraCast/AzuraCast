@@ -1,8 +1,9 @@
 <template>
-    <b-modal
+    <modal
         id="import_modal"
         ref="$modal"
         :title="$gettext('Import from PLS/M3U')"
+        size="lg"
         @hidden="onHidden"
     >
         <div v-if="results">
@@ -10,51 +11,54 @@
                 {{ results.message }}
             </p>
 
-            <b-table-simple
-                striped
-                responsive
-                style="max-height: 300px; overflow-y: scroll;"
+            <div
+                class="table-responsive"
+                style="max-height: 350px; overflow-y: scroll;"
             >
-                <b-thead>
-                    <b-tr>
-                        <b-th class="p-2">
-                            {{ $gettext('Original Path') }}
-                            <br>
-                            {{ $gettext('Matched') }}
-                        </b-th>
-                    </b-tr>
-                </b-thead>
-                <b-tbody>
-                    <b-tr
-                        v-for="row in results.import_results"
-                        :key="row.path"
-                    >
-                        <b-td
-                            class="p-2 text-monospace"
-                            style="overflow-x: auto;"
+                <table
+                    class="table table-striped"
+                    style="max-height: 300px; overflow-y: scroll;"
+                >
+                    <thead>
+                        <tr>
+                            <th class="p-2">
+                                {{ $gettext('Original Path') }}<br>
+                                {{ $gettext('Matched') }}
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr
+                            v-for="row in results.import_results"
+                            :key="row.path"
                         >
-                            <pre class="mb-0">{{ row.path }}</pre>
-                            <pre
-                                v-if="row.match"
-                                class="mb-0 text-success"
-                            >{{ row.match }}</pre>
-                            <pre
-                                v-else
-                                class="mb-0 text-danger"
+                            <td
+                                class="p-2 text-monospace"
+                                style="overflow-x: auto;"
                             >
+                                <pre class="mb-0">{{ row.path }}</pre>
+                                <pre
+                                    v-if="row.match"
+                                    class="mb-0 text-success"
+                                >{{ row.match }}</pre>
+                                <pre
+                                    v-else
+                                    class="mb-0 text-danger"
+                                >
                                 {{ $gettext('No Match') }}
                             </pre>
-                        </b-td>
-                    </b-tr>
-                </b-tbody>
-            </b-table-simple>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
-        <b-form
+        <form
             v-else
             class="form"
             @submit.prevent="doSubmit"
         >
-            <b-form-group label-for="import_modal_playlist_file">
+            <form-group id="import_modal_playlist_file">
                 <template #label>
                     {{ $gettext('Select PLS/M3U File to Import') }}
                 </template>
@@ -63,50 +67,64 @@
                         $gettext('AzuraCast will scan the uploaded file for matches in this station\'s music library. Media should already be uploaded before running this step. You can re-run this tool as many times as needed.')
                     }}
                 </template>
-                <b-form-file
-                    id="import_modal_playlist_file"
-                    v-model="playlistFile"
-                />
-            </b-form-group>
+
+                <template #default="{id}">
+                    <form-file
+                        :id="id"
+                        @uploaded="uploaded"
+                    />
+                </template>
+            </form-group>
 
             <invisible-submit-button />
-        </b-form>
+        </form>
         <template #modal-footer>
-            <b-button
-                variant="default"
+            <button
                 type="button"
+                class="btn btn-secondary"
                 @click="close"
             >
                 {{ $gettext('Close') }}
-            </b-button>
-            <b-button
+            </button>
+            <button
                 v-if="!results"
-                variant="primary"
+                class="btn btn-primary"
                 type="submit"
                 @click="doSubmit"
             >
                 {{ $gettext('Import from PLS/M3U') }}
-            </b-button>
+            </button>
         </template>
-    </b-modal>
+    </modal>
 </template>
 
 <script setup>
 import InvisibleSubmitButton from '~/components/Common/InvisibleSubmitButton';
 import {ref} from "vue";
-import {useNotify} from "~/vendor/bootstrapVue";
+import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
+import FormGroup from "~/components/Form/FormGroup.vue";
+import Modal from "~/components/Common/Modal.vue";
+import FormFile from "~/components/Form/FormFile.vue";
 
 const emit = defineEmits(['relist']);
 
 const importPlaylistUrl = ref(null);
 const playlistFile = ref(null);
+const overwritePlaylist = ref(false);
+
 const results = ref(null);
+
+const uploaded = (file) => {
+    playlistFile.value = file;
+}
 
 const $modal = ref(); // Template Ref
 
 const open = (newImportPlaylistUrl) => {
     playlistFile.value = null;
+    overwritePlaylist.value = false;
+
     importPlaylistUrl.value = newImportPlaylistUrl;
 
     $modal.value.show();
@@ -116,8 +134,9 @@ const {wrapWithLoading, notifySuccess, notifyError} = useNotify();
 const {axios} = useAxios();
 
 const doSubmit = () => {
-    let formData = new FormData();
+    const formData = new FormData();
     formData.append('playlist_file', playlistFile.value);
+
 
     wrapWithLoading(
         axios.post(importPlaylistUrl.value, formData)

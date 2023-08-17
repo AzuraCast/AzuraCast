@@ -1,0 +1,15 @@
+body.page-full {
+  .notices {
+    padding: ($header-nav-height + 1rem) 1rem 1rem 1rem;
+  }
+}
+
+article.alert {
+  button.btn-close {
+    padding: 0.8rem;
+  }
+
+  .alert-wrapper {
+    padding-right: 2rem;
+  }
+}

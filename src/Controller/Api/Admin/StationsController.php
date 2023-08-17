@@ -4,9 +4,13 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Admin;
 
+use App\Controller\Api\AbstractApiCrudController;
 use App\Controller\Api\Traits\CanSortResults;
-use App\Doctrine\ReloadableEntityManagerInterface;
-use App\Entity;
+use App\Entity\Repository\StationQueueRepository;
+use App\Entity\Repository\StationRepository;
+use App\Entity\Repository\StorageLocationRepository;
+use App\Entity\Station;
+use App\Entity\StorageLocation;
 use App\Exception\ValidationException;
 use App\Http\Response;
 use App\Http\ServerRequest;
@@ -21,7 +25,7 @@ use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Throwable;
 
-/** @extends AbstractAdminApiCrudController<Entity\Station> */
+/** @extends AbstractApiCrudController<Station> */
 #[
     OA\Get(
         path: '/admin/stations',
@@ -135,32 +139,32 @@ use Throwable;
         ]
     )
 ]
-class StationsController extends AbstractAdminApiCrudController
+class StationsController extends AbstractApiCrudController
 {
     use CanSortResults;
 
-    protected string $entityClass = Entity\Station::class;
+    protected string $entityClass = Station::class;
     protected string $resourceRouteName = 'api:admin:station';
 
     public function __construct(
-        protected Entity\Repository\StationRepository $stationRepo,
-        protected Entity\Repository\StorageLocationRepository $storageLocationRepo,
-        protected Entity\Repository\StationQueueRepository $queueRepo,
+        protected StationRepository $stationRepo,
+        protected StorageLocationRepository $storageLocationRepo,
+        protected StationQueueRepository $queueRepo,
         protected Configuration $configuration,
-        protected ReloadableEntityManagerInterface $reloadableEm,
         Serializer $serializer,
         ValidatorInterface $validator
     ) {
-        parent::__construct($reloadableEm, $serializer, $validator);
+        parent::__construct($serializer, $validator);
     }
 
     public function listAction(
         ServerRequest $request,
-        Response $response
+        Response $response,
+        array $params
     ): ResponseInterface {
         $qb = $this->em->createQueryBuilder()
             ->select('e')
-            ->from(Entity\Station::class, 'e');
+            ->from(Station::class, 'e');
 
         $qb = $this->sortQueryBuilder(
             $request,
@@ -213,7 +217,7 @@ class StationsController extends AbstractAdminApiCrudController
     }
 
     /**
-     * @param Entity\Station $record
+     * @param Station $record
      * @param array<string, mixed> $context
      *
      * @return array<mixed>
@@ -229,9 +233,9 @@ class StationsController extends AbstractAdminApiCrudController
             'has_started',
         ];
 
-        foreach (Entity\Station::getStorageLocationTypes() as $locationKey => $storageLocationType) {
+        foreach (Station::getStorageLocationTypes() as $locationKey => $storageLocationType) {
             $context[AbstractNormalizer::CALLBACKS][$locationKey] = static fn(
-                Entity\StorageLocation $value
+                StorageLocation $value
             ) => $value->getIdRequired();
         }
 
@@ -240,7 +244,7 @@ class StationsController extends AbstractAdminApiCrudController
 
     protected function fromArray(array $data, ?object $record = null, array $context = []): object
     {
-        foreach (Entity\Station::getStorageLocationTypes() as $locationKey => $storageLocationType) {
+        foreach (Station::getStorageLocationTypes() as $locationKey => $storageLocationType) {
             $idKey = $locationKey . '_id';
             if (!empty($data[$idKey])) {
                 $data[$locationKey] = $data[$idKey];
@@ -253,14 +257,14 @@ class StationsController extends AbstractAdminApiCrudController
 
     /**
      * @param array<mixed>|null $data
-     * @param Entity\Station|null $record
+     * @param Station|null $record
      * @param array<string, mixed> $context
      *
-     * @return Entity\Station
+     * @return Station
      */
     protected function editRecord(?array $data, object $record = null, array $context = []): object
     {
-        $create_mode = (null === $record);
+        $createMode = (null === $record);
 
         if (null === $data) {
             throw new InvalidArgumentException('Could not parse input data.');
@@ -273,22 +277,22 @@ class StationsController extends AbstractAdminApiCrudController
             throw ValidationException::fromValidationErrors($errors);
         }
 
-        return ($create_mode)
+        return ($createMode)
             ? $this->handleCreate($record)
             : $this->handleEdit($record);
     }
 
     /**
-     * @param Entity\Station $record
+     * @param Station $record
      */
     protected function deleteRecord(object $record): void
     {
         $this->handleDelete($record);
     }
 
-    protected function handleEdit(Entity\Station $station): Entity\Station
+    protected function handleEdit(Station $station): Station
     {
-        $original_record = $this->em->getUnitOfWork()->getOriginalEntityData($station);
+        $originalRecord = $this->em->getUnitOfWork()->getOriginalEntityData($station);
 
         $this->em->persist($station);
         $this->em->flush();
@@ -296,8 +300,8 @@ class StationsController extends AbstractAdminApiCrudController
         $this->configuration->initializeConfiguration($station);
 
         // Delete media-related items if the media storage is changed.
-        /** @var Entity\StorageLocation|null $oldMediaStorage */
-        $oldMediaStorage = $original_record['media_storage_location'];
+        /** @var StorageLocation|null $oldMediaStorage */
+        $oldMediaStorage = $originalRecord['media_storage_location'];
         $newMediaStorage = $station->getMediaStorageLocation();
 
         if (null === $oldMediaStorage || $oldMediaStorage->getId() !== $newMediaStorage->getId()) {
@@ -310,25 +314,25 @@ class StationsController extends AbstractAdminApiCrudController
         }
 
         // Get the original values to check for changes.
-        $old_frontend = $original_record['frontend_type'];
-        $old_backend = $original_record['backend_type'];
-        $old_hls = (bool)$original_record['enable_hls'];
+        $oldFrontend = $originalRecord['frontend_type'];
+        $oldBackend = $originalRecord['backend_type'];
+        $oldHls = (bool)$originalRecord['enable_hls'];
 
-        $frontend_changed = ($old_frontend !== $station->getFrontendType());
-        $backend_changed = ($old_backend !== $station->getBackendType());
-        $adapter_changed = $frontend_changed || $backend_changed;
+        $frontendChanged = ($oldFrontend !== $station->getFrontendType());
+        $backendChanged = ($oldBackend !== $station->getBackendType());
+        $adapterChanged = $frontendChanged || $backendChanged;
 
-        $hls_changed = $old_hls !== $station->getEnableHls();
+        $hlsChanged = $oldHls !== $station->getEnableHls();
 
-        if ($frontend_changed) {
+        if ($frontendChanged) {
             $this->stationRepo->resetMounts($station);
         }
 
-        if ($hls_changed || $backend_changed) {
+        if ($hlsChanged || $backendChanged) {
             $this->stationRepo->resetHls($station);
         }
 
-        if ($adapter_changed || !$station->getIsEnabled()) {
+        if ($adapterChanged || !$station->getIsEnabled()) {
             try {
                 $this->configuration->writeConfiguration(
                     station: $station,
@@ -341,7 +345,7 @@ class StationsController extends AbstractAdminApiCrudController
         return $station;
     }
 
-    protected function handleCreate(Entity\Station $station): Entity\Station
+    protected function handleCreate(Station $station): Station
     {
         $station->generateAdapterApiKey();
 
@@ -364,7 +368,7 @@ class StationsController extends AbstractAdminApiCrudController
         return $station;
     }
 
-    protected function handleDelete(Entity\Station $station): void
+    protected function handleDelete(Station $station): void
     {
         $this->configuration->removeConfiguration($station);
 

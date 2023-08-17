@@ -4,22 +4,21 @@ declare(strict_types=1);
 
 namespace App\Sync\Task;
 
-use App\Doctrine\ReloadableEntityManagerInterface;
-use App\Entity;
+use App\Entity\Enums\StorageLocationTypes;
+use App\Entity\Repository\StorageLocationRepository;
+use App\Entity\Station;
+use App\Entity\StorageLocation;
+use App\Flysystem\StationFilesystems;
 use Exception;
 use League\Flysystem\StorageAttributes;
-use Psr\Log\LoggerInterface;
 use Symfony\Component\Finder\Finder;
 use Throwable;
 
 final class CleanupStorageTask extends AbstractTask
 {
     public function __construct(
-        private readonly Entity\Repository\StorageLocationRepository $storageLocationRepo,
-        ReloadableEntityManagerInterface $em,
-        LoggerInterface $logger
+        private readonly StorageLocationRepository $storageLocationRepo,
     ) {
-        parent::__construct($em, $logger);
     }
 
     public static function getSchedulePattern(): string
@@ -31,7 +30,7 @@ final class CleanupStorageTask extends AbstractTask
     {
         foreach ($this->iterateStations() as $station) {
             try {
-                /** @var Entity\Station $station */
+                /** @var Station $station */
                 $this->cleanStationTempFiles($station);
             } catch (Throwable $e) {
                 $this->logger->error($e->getMessage(), [
@@ -40,10 +39,10 @@ final class CleanupStorageTask extends AbstractTask
             }
         }
 
-        $storageLocations = $this->iterateStorageLocations(Entity\Enums\StorageLocationTypes::StationMedia);
+        $storageLocations = $this->iterateStorageLocations(StorageLocationTypes::StationMedia);
         foreach ($storageLocations as $storageLocation) {
             try {
-                /** @var Entity\StorageLocation $storageLocation */
+                /** @var StorageLocation $storageLocation */
                 $this->cleanMediaStorageLocation($storageLocation);
             } catch (Throwable $e) {
                 $this->logger->error($e->getMessage(), [
@@ -53,7 +52,7 @@ final class CleanupStorageTask extends AbstractTask
         }
     }
 
-    private function cleanStationTempFiles(Entity\Station $station): void
+    private function cleanStationTempFiles(Station $station): void
     {
         $tempDir = $station->getRadioTempDir();
         $finder = new Finder();
@@ -64,14 +63,14 @@ final class CleanupStorageTask extends AbstractTask
             ->date('before 2 days ago');
 
         foreach ($finder as $file) {
-            $file_path = $file->getRealPath();
-            if (false !== $file_path) {
-                @unlink($file_path);
+            $filePath = $file->getRealPath();
+            if (false !== $filePath) {
+                @unlink($filePath);
             }
         }
     }
 
-    private function cleanMediaStorageLocation(Entity\StorageLocation $storageLocation): void
+    private function cleanMediaStorageLocation(StorageLocation $storageLocation): void
     {
         $fs = $this->storageLocationRepo->getAdapter($storageLocation)->getFilesystem();
 
@@ -102,8 +101,8 @@ final class CleanupStorageTask extends AbstractTask
         ];
 
         $cleanupDirs = [
-            'albumart' => Entity\StationMedia::DIR_ALBUM_ART,
-            'waveform' => Entity\StationMedia::DIR_WAVEFORMS,
+            'albumart' => StationFilesystems::DIR_ALBUM_ART,
+            'waveform' => StationFilesystems::DIR_WAVEFORMS,
         ];
 
         foreach ($cleanupDirs as $key => $dirBase) {

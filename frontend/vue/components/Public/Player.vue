@@ -12,23 +12,14 @@
                 v-if="showAlbumArt && np.now_playing.song.art"
                 class="now-playing-art"
             >
-                <a
-                    :href="np.now_playing.song.art"
-                    data-fancybox
-                    target="_blank"
-                >
-                    <img
-                        :src="np.now_playing.song.art"
-                        :alt="$gettext('Album Art')"
-                    >
-                </a>
+                <album-art :src="np.now_playing.song.art" />
             </div>
             <div class="now-playing-main">
                 <h6
                     v-if="np.live.is_live"
                     class="now-playing-live"
                 >
-                    <span class="badge badge-primary mr-2">
+                    <span class="badge text-bg-primary me-2">
                         {{ $gettext('Live') }}
                     </span>
                     {{ np.live.streamer_name }}
@@ -36,7 +27,7 @@
 
                 <div v-if="!np.is_online">
                     <h4 class="now-playing-title text-muted">
-                        {{ $gettext('Station Offline') }}
+                        {{ offlineText ?? $gettext('Station Offline') }}
                     </h4>
                 </div>
                 <div v-else-if="np.now_playing.song.title !== ''">
@@ -61,7 +52,7 @@
                         {{ currentTrackElapsedDisplay }}
                     </div>
                     <div class="time-display-progress">
-                        <div class="progress">
+                        <div class="progress h-5">
                             <div
                                 class="progress-bar bg-secondary"
                                 role="progressbar"
@@ -76,12 +67,11 @@
             </div>
         </div>
 
-        <hr>
+        <hr class="my-2">
 
         <div class="radio-controls">
             <play-button
-                class="radio-control-play-button"
-                icon-class="outlined lg"
+                class="radio-control-play-button btn-xl"
                 :url="currentStream.url"
                 :is-hls="currentStream.hls"
                 is-stream
@@ -94,49 +84,55 @@
                 >
                     <button
                         id="btn-select-stream"
-                        class="btn btn-sm btn-outline-primary dropdown-toggle"
+                        class="btn btn-sm btn-secondary dropdown-toggle"
                         type="button"
-                        data-toggle="dropdown"
+                        data-bs-toggle="dropdown"
                         aria-haspopup="true"
                         aria-expanded="false"
                     >
                         {{ currentStream.name }}
+                        <span class="caret" />
                     </button>
-                    <div
+                    <ul
                         class="dropdown-menu"
                         aria-labelledby="btn-select-stream"
                     >
-                        <a
+                        <li
                             v-for="stream in streams"
                             :key="stream.url"
-                            class="dropdown-item"
-                            href="javascript:"
-                            @click.prevent="switchStream(stream)"
                         >
-                            {{ stream.name }}
-                        </a>
-                    </div>
+                            <button
+                                type="button"
+                                class="dropdown-item"
+                                @click="switchStream(stream)"
+                            >
+                                {{ stream.name }}
+                            </button>
+                        </li>
+                    </ul>
                 </div>
             </div>
 
-            <div class="radio-control-mute-button">
-                <mute-button
-                    class="text-secondary"
-                    :volume="volume"
-                    :is-muted="isMuted"
-                    @toggle-mute="toggleMute"
-                />
-            </div>
-            <div class="radio-control-volume-slider">
-                <input
-                    v-model.number="volume"
-                    type="range"
-                    :title="$gettext('Volume')"
-                    class="custom-range"
-                    min="0"
-                    max="100"
-                    step="1"
-                >
+            <div class="radio-control-volume d-flex align-items-center">
+                <div class="flex-shrink-0 mx-2">
+                    <mute-button
+                        class="p-0 text-secondary"
+                        :volume="volume"
+                        :is-muted="isMuted"
+                        @toggle-mute="toggleMute"
+                    />
+                </div>
+                <div class="flex-fill radio-control-volume-slider">
+                    <input
+                        v-model.number="volume"
+                        type="range"
+                        :title="$gettext('Volume')"
+                        class="form-range"
+                        min="0"
+                        max="100"
+                        step="1"
+                    >
+                </div>
             </div>
         </div>
     </div>
@@ -151,12 +147,16 @@ import {useTranslate} from "~/vendor/gettext";
 import useNowPlaying from "~/functions/useNowPlaying";
 import playerProps from "~/components/Public/playerProps";
 import MuteButton from "~/components/Common/MuteButton.vue";
+import AlbumArt from "~/components/Common/AlbumArt.vue";
+import {useAzuraCastStation} from "~/vendor/azuracast";
 
 const props = defineProps({
     ...playerProps
 });
 
 const emit = defineEmits(['np_updated']);
+
+const {offlineText} = useAzuraCastStation();
 
 const {
     np,
@@ -172,15 +172,15 @@ const currentStream = shallowRef({
 });
 
 const enable_hls = computed(() => {
-    let $np = np.value;
+    const $np = np.value;
     return props.showHls && $np.station.hls_enabled;
 });
 
 const {$gettext} = useTranslate();
 
 const streams = computed(() => {
-    let allStreams = [];
-    let $np = np.value;
+    const allStreams = [];
+    const $np = np.value;
 
     if (enable_hls.value) {
         allStreams.push({
@@ -213,9 +213,13 @@ const $player = ref(); // Template ref
 const volume = useLocalStorage('player_volume', 55, {
     listenToStorageChanges: false
 });
-const isMuted = useLocalStorage('player_is_muted', false, {
-    listenToStorageChanges: false
-});
+
+const urlParamVolume = (new URL(document.location)).searchParams.get('volume');
+if (null !== urlParamVolume) {
+    volume.value = urlParamVolume;
+}
+
+const isMuted = ref(false);
 
 const toggleMute = () => {
     isMuted.value = !isMuted.value;
@@ -238,7 +242,7 @@ const onNowPlayingUpdated = (np_new) => {
     emit('np_updated', np_new);
 
     // Set a "default" current stream if none exists.
-    let $streams = streams.value;
+    const $streams = streams.value;
     let $currentStream = currentStream.value;
 
     if ($currentStream.url === '' && $streams.length > 0) {
@@ -351,19 +355,11 @@ watch(np, onNowPlayingUpdated, {immediate: true});
         }
     }
 
-    hr {
-        margin-top: .5rem;
-        margin-bottom: .5rem;
-    }
-
-    i.material-icons {
-        line-height: 1;
-    }
-
     .radio-controls {
         display: flex;
         flex-direction: row;
         align-items: center;
+        flex-wrap: wrap;
 
         .radio-control-play-button {
             margin-right: .25rem;
@@ -371,19 +367,18 @@ watch(np, onNowPlayingUpdated, {immediate: true});
 
         .radio-control-select-stream {
             flex: 1 1 auto;
+            max-width: 60%;
+
+            #btn-select-stream {
+                text-overflow: clip;
+                white-space: normal;
+                word-break: break-all;
+            }
         }
 
-        .radio-control-mute-button,
-        .radio-control-max-volume-button {
-            flex-shrink: 0;
-        }
-
-        .radio-control-volume-slider {
-            flex: 1 1 auto;
-            max-width: 30%;
-
-            input {
-                height: 10px;
+        .radio-control-volume {
+            .radio-control-volume-slider {
+                max-width: 30%;
             }
         }
     }

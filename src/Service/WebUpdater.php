@@ -1,16 +1,20 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Service;
 
-use App\Environment;
+use App\Container\EnvironmentAwareTrait;
+use RuntimeException;
 
 final class WebUpdater
 {
+    use EnvironmentAwareTrait;
+
     // Don't worry that this is insecure; it's only ever used for internal communications.
     public const WATCHTOWER_TOKEN = 'azur4c457';
 
     public function __construct(
-        private readonly Environment $environment,
         private readonly GuzzleFactory $guzzleFactory
     ) {
     }
@@ -23,7 +27,7 @@ final class WebUpdater
     public function triggerUpdate(): void
     {
         if (!$this->isSupported()) {
-            throw new \RuntimeException('Web updates are not supported on this installation.');
+            throw new RuntimeException('Web updates are not supported on this installation.');
         }
 
         $client = $this->guzzleFactory->buildClient();

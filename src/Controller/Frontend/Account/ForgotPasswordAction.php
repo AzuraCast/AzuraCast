@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace App\Controller\Frontend\Account;
 
-use App\Entity;
+use App\Controller\SingleActionInterface;
+use App\Entity\Repository\UserLoginTokenRepository;
+use App\Entity\Repository\UserRepository;
+use App\Entity\User;
 use App\Exception\RateLimitExceededException;
 use App\Http\Response;
 use App\Http\ServerRequest;
@@ -12,11 +15,11 @@ use App\RateLimit;
 use App\Service\Mail;
 use Psr\Http\Message\ResponseInterface;
 
-final class ForgotPasswordAction
+final class ForgotPasswordAction implements SingleActionInterface
 {
     public function __construct(
-        private readonly Entity\Repository\UserRepository $userRepo,
-        private readonly Entity\Repository\UserLoginTokenRepository $loginTokenRepo,
+        private readonly UserRepository $userRepo,
+        private readonly UserLoginTokenRepository $loginTokenRepo,
         private readonly RateLimit $rateLimit,
         private readonly Mail $mail
     ) {
@@ -24,7 +27,8 @@ final class ForgotPasswordAction
 
     public function __invoke(
         ServerRequest $request,
-        Response $response
+        Response $response,
+        array $params
     ): ResponseInterface {
         $flash = $request->getFlash();
         $view = $request->getView();
@@ -54,7 +58,7 @@ final class ForgotPasswordAction
             $email = $request->getParsedBodyParam('email', '');
             $user = $this->userRepo->findByEmail($email);
 
-            if ($user instanceof Entity\User) {
+            if ($user instanceof User) {
                 $email = $this->mail->createMessage();
                 $email->to($user->getEmail());
 

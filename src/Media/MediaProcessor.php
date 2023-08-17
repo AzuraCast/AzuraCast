@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Media;
 
-use App\Doctrine\ReloadableEntityManagerInterface;
+use App\Container\EntityManagerAwareTrait;
 use App\Entity\Repository\StationMediaRepository;
 use App\Entity\Repository\StorageLocationRepository;
 use App\Entity\Repository\UnprocessableMediaRepository;
@@ -18,8 +18,9 @@ use Symfony\Component\Filesystem\Filesystem;
 
 final class MediaProcessor
 {
+    use EntityManagerAwareTrait;
+
     public function __construct(
-        private readonly ReloadableEntityManagerInterface $em,
         private readonly StationMediaRepository $mediaRepo,
         private readonly UnprocessableMediaRepository $unprocessableMediaRepo,
         private readonly StorageLocationRepository $storageLocationRepo

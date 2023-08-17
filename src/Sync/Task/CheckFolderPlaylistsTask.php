@@ -4,22 +4,21 @@ declare(strict_types=1);
 
 namespace App\Sync\Task;
 
-use App\Doctrine\ReloadableEntityManagerInterface;
-use App\Entity;
+use App\Entity\Enums\PlaylistSources;
+use App\Entity\Repository\StationPlaylistMediaRepository;
+use App\Entity\Station;
+use App\Entity\StationMedia;
+use App\Entity\StationPlaylist;
 use App\Flysystem\ExtendedFilesystemInterface;
 use App\Flysystem\StationFilesystems;
 use Doctrine\ORM\Query;
-use Psr\Log\LoggerInterface;
 
 final class CheckFolderPlaylistsTask extends AbstractTask
 {
     public function __construct(
-        private readonly Entity\Repository\StationPlaylistMediaRepository $spmRepo,
-        private readonly StationFilesystems $stationFilesystems,
-        ReloadableEntityManagerInterface $em,
-        LoggerInterface $logger,
+        private readonly StationPlaylistMediaRepository $spmRepo,
+        private readonly StationFilesystems $stationFilesystems
     ) {
-        parent::__construct($em, $logger);
     }
 
     public static function getSchedulePattern(): string
@@ -34,7 +33,7 @@ final class CheckFolderPlaylistsTask extends AbstractTask
         }
     }
 
-    public function syncPlaylistFolders(Entity\Station $station): void
+    public function syncPlaylistFolders(Station $station): void
     {
         $this->logger->info(
             'Processing auto-assigning folders for station...',
@@ -63,27 +62,23 @@ final class CheckFolderPlaylistsTask extends AbstractTask
         )->setParameter('storageLocation', $station->getMediaStorageLocation());
 
         foreach ($station->getPlaylists() as $playlist) {
-            if (Entity\Enums\PlaylistSources::Songs !== $playlist->getSource()) {
+            if (PlaylistSources::Songs !== $playlist->getSource()) {
                 continue;
             }
 
             $this->em->wrapInTransaction(
-                function () use ($station, $playlist, $fsMedia, $mediaInPlaylistQuery, $mediaInFolderQuery): void {
-                    $this->processPlaylist(
-                        $station,
-                        $playlist,
-                        $fsMedia,
-                        $mediaInPlaylistQuery,
-                        $mediaInFolderQuery
-                    );
-                }
+                fn() => $this->processPlaylist(
+                    $playlist,
+                    $fsMedia,
+                    $mediaInPlaylistQuery,
+                    $mediaInFolderQuery
+                )
             );
         }
     }
 
     private function processPlaylist(
-        Entity\Station $station,
-        Entity\StationPlaylist $playlist,
+        StationPlaylist $playlist,
         ExtendedFilesystemInterface $fsMedia,
         Query $mediaInPlaylistQuery,
         Query $mediaInFolderQuery
@@ -116,9 +111,9 @@ final class CheckFolderPlaylistsTask extends AbstractTask
                 $mediaId = $row['id'];
 
                 if (!isset($mediaInPlaylist[$mediaId])) {
-                    $media = $this->em->find(Entity\StationMedia::class, $mediaId);
+                    $media = $this->em->find(StationMedia::class, $mediaId);
 
-                    if ($media instanceof Entity\StationMedia) {
+                    if ($media instanceof StationMedia) {
                         $this->spmRepo->addMediaToPlaylist($media, $playlist);
 
                         $mediaInPlaylist[$mediaId] = $mediaId;

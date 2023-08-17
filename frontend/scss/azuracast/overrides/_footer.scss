@@ -1,18 +1,10 @@
 #footer {
-  opacity: .5;
+  opacity: .6;
   position: absolute;
   left: 0;
   right: 0;
-  bottom: 0;
+  bottom: 1rem;
   text-align: center;
-  height: 75px;
 
-  padding-top: 20px;
-  padding-bottom: 15px;
-}
-
-@include media-breakpoint-up(lg) {
-  body.has-sidebar #footer {
-    left: $navdrawer-width;
-  }
+  padding-top: 1.5rem;
 }

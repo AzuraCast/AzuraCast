@@ -18,8 +18,9 @@ final class StandardAuth extends AbstractAuth
         $auth = new Auth(
             userRepo: $this->userRepo,
             session: $request->getAttribute(ServerRequest::ATTR_SESSION),
-            environment: $this->environment,
         );
+        $auth->setEnvironment($this->environment);
+
         $user = ($auth->isLoggedIn()) ? $auth->getLoggedInUser() : null;
 
         $request = $request

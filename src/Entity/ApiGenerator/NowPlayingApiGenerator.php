@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Entity\ApiGenerator;
 
 use App\Cache\NowPlayingCache;
+use App\Container\LoggerAwareTrait;
 use App\Entity\Api\NowPlaying\CurrentSong;
 use App\Entity\Api\NowPlaying\Listeners;
 use App\Entity\Api\NowPlaying\Live;
@@ -16,7 +17,6 @@ use App\Entity\Song;
 use App\Entity\Station;
 use App\Entity\StationQueue;
 use App\Http\Router;
-use App\Utilities\Logger;
 use Exception;
 use GuzzleHttp\Psr7\Uri;
 use NowPlaying\Result\Result;
@@ -25,6 +25,8 @@ use RuntimeException;
 
 final class NowPlayingApiGenerator
 {
+    use LoggerAwareTrait;
+
     public function __construct(
         private readonly SongApiGenerator $songApiGenerator,
         private readonly SongHistoryApiGenerator $songHistoryApiGenerator,
@@ -83,7 +85,7 @@ final class NowPlayingApiGenerator
                 throw new RuntimeException('No current song.');
             }
         } catch (Exception $e) {
-            Logger::getInstance()->error($e->getMessage(), ['exception' => $e]);
+            $this->logger->error($e->getMessage(), ['exception' => $e]);
 
             return $this->offlineApi($station, $baseUri);
         }
@@ -162,7 +164,7 @@ final class NowPlayingApiGenerator
         $np->station = $this->stationApiGenerator->__invoke($station, $baseUri);
         $np->listeners = new Listeners();
 
-        $songObj = Song::createOffline();
+        $songObj = Song::createOffline($station->getBrandingConfig()->getOfflineText());
 
         $offlineApiNowPlaying = new CurrentSong();
         $offlineApiNowPlaying->sh_id = 0;

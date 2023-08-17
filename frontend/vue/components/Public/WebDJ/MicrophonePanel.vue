@@ -1,13 +1,13 @@
 <template>
     <div class="card">
-        <div class="card-header bg-primary-dark">
+        <div class="card-header text-bg-primary">
             <div class="d-flex align-items-center">
                 <div class="flex-fill">
                     <h5 class="card-title">
                         {{ $gettext('Microphone') }}
                     </h5>
                 </div>
-                <div class="flex-shrink-0 pl-3">
+                <div class="flex-shrink-0 ps-3">
                     <volume-slider v-model.number="trackGain" />
                 </div>
             </div>
@@ -19,6 +19,7 @@
                     <div class="control-group">
                         <div class="btn-group btn-group-sm">
                             <button
+                                type="button"
                                 class="btn btn-danger"
                                 :class="{ active: isPlaying }"
                                 @click="togglePlaying"
@@ -26,6 +27,7 @@
                                 <icon icon="mic" />
                             </button>
                             <button
+                                type="button"
                                 class="btn"
                                 :class="{ 'btn-primary': trackPassThrough }"
                                 @click="trackPassThrough = !trackPassThrough"
@@ -35,7 +37,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="flex-fill pl-3">
+                <div class="flex-fill ps-3">
                     <div class="form-group microphone-entry mb-0">
                         <label
                             for="select_microphone_source"

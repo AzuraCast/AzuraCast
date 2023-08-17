@@ -9,7 +9,7 @@
                 type="range"
                 min="0"
                 max="100"
-                class="custom-range slider"
+                class="form-range slider"
                 style="height: 10px; width: 100px;"
                 @click.right.prevent="reset"
             >
@@ -43,14 +43,5 @@ const volume = useVModel(props, 'modelValue', emit);
 
 const reset = () => {
     volume.value = initial.value;
-}
-</script>
-
-<script>
-export default {
-    model: {
-        prop: 'modelValue',
-        event: 'update:modelValue'
-    }
 }
 </script>

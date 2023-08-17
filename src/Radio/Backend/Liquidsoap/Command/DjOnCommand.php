@@ -4,20 +4,18 @@ declare(strict_types=1);
 
 namespace App\Radio\Backend\Liquidsoap\Command;
 
-use App\Entity;
-use Monolog\Logger;
+use App\Entity\Repository\StationStreamerRepository;
+use App\Entity\Station;
 
 final class DjOnCommand extends AbstractCommand
 {
     public function __construct(
-        Logger $logger,
-        private readonly Entity\Repository\StationStreamerRepository $streamerRepo,
+        private readonly StationStreamerRepository $streamerRepo,
     ) {
-        parent::__construct($logger);
     }
 
     protected function doRun(
-        Entity\Station $station,
+        Station $station,
         bool $asAutoDj = false,
         array $payload = []
     ): bool|string {
@@ -29,6 +27,10 @@ final class DjOnCommand extends AbstractCommand
                 'dj' => $user,
             ]
         );
+
+        if (!$asAutoDj) {
+            return false;
+        }
 
         return $this->streamerRepo->onConnect($station, $user);
     }

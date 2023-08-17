@@ -1,26 +1,28 @@
 <template>
     <div class="card">
-        <div class="card-header bg-primary-dark">
-            <div class="d-flex align-items-center">
+        <div class="card-header text-bg-primary">
+            <div class="d-lg-flex align-items-center">
                 <h2 class="card-title flex-fill my-0">
                     {{ $gettext('Song Playback Timeline') }}
                 </h2>
-                <div class="flex-shrink buttons">
+                <div class="flex-shrink buttons mt-2 mt-lg-0">
                     <a
                         id="btn-export"
-                        class="btn btn-bg"
+                        class="btn btn-dark"
                         :href="exportUrl"
                         target="_blank"
                     >
                         <icon icon="file_download" />
-                        {{ $gettext('Download CSV') }}
+                        <span>
+                            {{ $gettext('Download CSV') }}
+                        </span>
                     </a>
-
+                </div>
+                <div class="flex-shrink buttons ms-lg-2 mt-2 mt-lg-0">
                     <date-range-dropdown
                         v-model="dateRange"
                         time-picker
-                        :tz="stationTimeZone"
-                        @update="relist"
+                        :tz="timezone"
                     />
                 </div>
             </div>
@@ -87,23 +89,18 @@
 import Icon from "~/components/Common/Icon";
 import DataTable from "~/components/Common/DataTable";
 import DateRangeDropdown from "~/components/Common/DateRangeDropdown";
-import {DateTime} from 'luxon';
-import {useAzuraCast} from "~/vendor/azuracast";
-import {computed, ref} from "vue";
+import {useAzuraCast, useAzuraCastStation} from "~/vendor/azuracast";
+import {computed, ref, watch} from "vue";
 import {useTranslate} from "~/vendor/gettext";
+import {useLuxon} from "~/vendor/luxon";
+import {getStationApiUrl} from "~/router";
 
-const props = defineProps({
-    baseApiUrl: {
-        type: String,
-        required: true
-    },
-    stationTimeZone: {
-        type: String,
-        required: true
-    }
-});
+const baseApiUrl = getStationApiUrl('/history');
 
-const nowTz = DateTime.now().setZone(props.stationTimeZone);
+const {timezone} = useAzuraCastStation();
+const {DateTime} = useLuxon();
+
+const nowTz = DateTime.now().setZone(timezone);
 
 const dateRange = ref(
     {
@@ -139,7 +136,7 @@ const fields = [
         formatter: (value, key, item) => {
             return DateTime.fromSeconds(
                 item.played_at,
-                {zone: props.stationTimeZone}
+                {zone: timezone}
             ).toLocaleString(
                 {...DateTime.DATETIME_SHORT, ...timeConfig}
             );
@@ -173,9 +170,9 @@ const fields = [
 ];
 
 const apiUrl = computed(() => {
-    let apiUrl = new URL(props.baseApiUrl, document.location);
+    const apiUrl = new URL(baseApiUrl.value, document.location);
 
-    let apiUrlParams = apiUrl.searchParams;
+    const apiUrlParams = apiUrl.searchParams;
     apiUrlParams.set('start', DateTime.fromJSDate(dateRange.value.startDate).toISO());
     apiUrlParams.set('end', DateTime.fromJSDate(dateRange.value.endDate).toISO());
 
@@ -183,8 +180,8 @@ const apiUrl = computed(() => {
 });
 
 const exportUrl = computed(() => {
-    let exportUrl = new URL(apiUrl.value, document.location);
-    let exportUrlParams = exportUrl.searchParams;
+    const exportUrl = new URL(apiUrl.value, document.location);
+    const exportUrlParams = exportUrl.searchParams;
 
     exportUrlParams.set('format', 'csv');
 
@@ -200,4 +197,6 @@ const $datatable = ref(); // Template Ref
 const relist = () => {
     $datatable.value.relist();
 };
+
+watch(dateRange, relist);
 </script>

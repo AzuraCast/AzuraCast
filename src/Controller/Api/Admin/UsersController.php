@@ -4,9 +4,12 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Admin;
 
+use App\Controller\Api\AbstractApiCrudController;
 use App\Controller\Api\Traits\CanSortResults;
 use App\Controller\Frontend\Account\MasqueradeAction;
-use App\Entity;
+use App\Entity\Api\Error;
+use App\Entity\Api\Status;
+use App\Entity\User;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\OpenApi;
@@ -14,7 +17,7 @@ use InvalidArgumentException;
 use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 
-/** @extends AbstractAdminApiCrudController<Entity\User> */
+/** @extends AbstractApiCrudController<User> */
 #[
     OA\Get(
         path: '/admin/users',
@@ -128,20 +131,21 @@ use Psr\Http\Message\ResponseInterface;
         ]
     )
 ]
-class UsersController extends AbstractAdminApiCrudController
+class UsersController extends AbstractApiCrudController
 {
     use CanSortResults;
 
-    protected string $entityClass = Entity\User::class;
+    protected string $entityClass = User::class;
     protected string $resourceRouteName = 'api:admin:user';
 
     public function listAction(
         ServerRequest $request,
-        Response $response
+        Response $response,
+        array $params
     ): ResponseInterface {
         $qb = $this->em->createQueryBuilder()
             ->select('e')
-            ->from(Entity\User::class, 'e');
+            ->from(User::class, 'e');
 
         $qb = $this->sortQueryBuilder(
             $request,
@@ -163,7 +167,7 @@ class UsersController extends AbstractAdminApiCrudController
 
     protected function viewRecord(object $record, ServerRequest $request): mixed
     {
-        if (!($record instanceof Entity\User)) {
+        if (!($record instanceof User)) {
             throw new InvalidArgumentException(sprintf('Record must be an instance of %s.', $this->entityClass));
         }
 
@@ -198,29 +202,29 @@ class UsersController extends AbstractAdminApiCrudController
     public function editAction(
         ServerRequest $request,
         Response $response,
-        string $id
+        array $params
     ): ResponseInterface {
-        $record = $this->getRecord($id);
+        $record = $this->getRecord($request, $params);
 
         if (null === $record) {
             return $response->withStatus(404)
-                ->withJson(Entity\Api\Error::notFound());
+                ->withJson(Error::notFound());
         }
 
         $currentUser = $request->getUser();
         if ($record->getId() === $currentUser->getId()) {
             return $response->withStatus(403)
-                ->withJson(new Entity\Api\Error(403, __('You cannot modify yourself.')));
+                ->withJson(new Error(403, __('You cannot modify yourself.')));
         }
 
         $this->editRecord((array)$request->getParsedBody(), $record);
 
-        return $response->withJson(Entity\Api\Status::updated());
+        return $response->withJson(Status::updated());
     }
 
     protected function fromArray(array $data, ?object $record = null, array $context = []): object
     {
-        /** @var Entity\User $record */
+        /** @var User $record */
         $record = parent::fromArray($data, $record, $context);
 
         if (!empty($data['new_password'])) {
@@ -233,23 +237,23 @@ class UsersController extends AbstractAdminApiCrudController
     public function deleteAction(
         ServerRequest $request,
         Response $response,
-        string $id
+        array $params
     ): ResponseInterface {
-        $record = $this->getRecord($id);
+        $record = $this->getRecord($request, $params);
 
         if (null === $record) {
             return $response->withStatus(404)
-                ->withJson(Entity\Api\Error::notFound());
+                ->withJson(Error::notFound());
         }
 
         $currentUser = $request->getUser();
         if ($record->getId() === $currentUser->getId()) {
             return $response->withStatus(403)
-                ->withJson(new Entity\Api\Error(403, __('You cannot remove yourself.')));
+                ->withJson(new Error(403, __('You cannot remove yourself.')));
         }
 
         $this->deleteRecord($record);
 
-        return $response->withJson(Entity\Api\Status::deleted());
+        return $response->withJson(Status::deleted());
     }
 }

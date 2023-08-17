@@ -5,17 +5,22 @@ declare(strict_types=1);
 namespace App\Entity\Repository;
 
 use App\Doctrine\Repository;
-use App\Entity;
+use App\Entity\StorageLocation;
+use App\Entity\UnprocessableMedia;
 use Generator;
 
 /**
- * @extends Repository<Entity\UnprocessableMedia>
+ * @extends Repository<UnprocessableMedia>
  */
 final class UnprocessableMediaRepository extends Repository
 {
-    public function findByPath(string $path, Entity\StorageLocation $storageLocation): ?Entity\UnprocessableMedia
-    {
-        /** @var Entity\UnprocessableMedia|null $record */
+    protected string $entityClass = UnprocessableMedia::class;
+
+    public function findByPath(
+        string $path,
+        StorageLocation $storageLocation
+    ): ?UnprocessableMedia {
+        /** @var UnprocessableMedia|null $record */
         $record = $this->repository->findOneBy(
             [
                 'storage_location' => $storageLocation,
@@ -26,18 +31,18 @@ final class UnprocessableMediaRepository extends Repository
         return $record;
     }
 
-    public function iteratePaths(array $paths, Entity\StorageLocation $storageLocation): Generator
+    public function iteratePaths(array $paths, StorageLocation $storageLocation): Generator
     {
         foreach ($paths as $path) {
             $record = $this->findByPath($path, $storageLocation);
-            if ($record instanceof Entity\UnprocessableMedia) {
+            if ($record instanceof UnprocessableMedia) {
                 yield $path => $record;
             }
         }
     }
 
     public function clearForPath(
-        Entity\StorageLocation $storageLocation,
+        StorageLocation $storageLocation,
         string $path
     ): void {
         $this->em->createQuery(
@@ -52,7 +57,7 @@ final class UnprocessableMediaRepository extends Repository
     }
 
     public function setForPath(
-        Entity\StorageLocation $storageLocation,
+        StorageLocation $storageLocation,
         string $path,
         ?string $error = null
     ): void {
@@ -63,8 +68,8 @@ final class UnprocessableMediaRepository extends Repository
             ]
         );
 
-        if (!$record instanceof Entity\UnprocessableMedia) {
-            $record = new Entity\UnprocessableMedia($storageLocation, $path);
+        if (!$record instanceof UnprocessableMedia) {
+            $record = new UnprocessableMedia($storageLocation, $path);
             $record->setError($error);
         }
 

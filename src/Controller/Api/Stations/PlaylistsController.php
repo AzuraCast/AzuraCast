@@ -5,7 +5,10 @@ declare(strict_types=1);
 namespace App\Controller\Api\Stations;
 
 use App\Controller\Api\Traits\CanSortResults;
-use App\Entity;
+use App\Entity\Enums\PlaylistOrders;
+use App\Entity\Enums\PlaylistSources;
+use App\Entity\StationPlaylist;
+use App\Entity\StationSchedule;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\OpenApi;
@@ -15,7 +18,7 @@ use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 
-/** @extends AbstractScheduledEntityController<Entity\StationPlaylist> */
+/** @extends AbstractScheduledEntityController<StationPlaylist> */
 #[
     OA\Get(
         path: '/station/{station_id}/playlists',
@@ -142,19 +145,19 @@ final class PlaylistsController extends AbstractScheduledEntityController
 {
     use CanSortResults;
 
-    protected string $entityClass = Entity\StationPlaylist::class;
+    protected string $entityClass = StationPlaylist::class;
     protected string $resourceRouteName = 'api:stations:playlist';
 
     public function listAction(
         ServerRequest $request,
         Response $response,
-        string $station_id
+        array $params
     ): ResponseInterface {
         $station = $request->getStation();
 
         $qb = $this->em->createQueryBuilder()
             ->select('sp, spc')
-            ->from(Entity\StationPlaylist::class, 'sp')
+            ->from(StationPlaylist::class, 'sp')
             ->leftJoin('sp.schedule_items', 'spc')
             ->where('sp.station = :station')
             ->setParameter('station', $station);
@@ -185,8 +188,7 @@ final class PlaylistsController extends AbstractScheduledEntityController
      */
     public function scheduleAction(
         ServerRequest $request,
-        Response $response,
-        string $station_id
+        Response $response
     ): ResponseInterface {
         $station = $request->getStation();
 
@@ -205,14 +207,14 @@ final class PlaylistsController extends AbstractScheduledEntityController
             $response,
             $scheduleItems,
             function (
-                Entity\StationSchedule $scheduleItem,
+                StationSchedule $scheduleItem,
                 CarbonInterface $start,
                 CarbonInterface $end
             ) use (
                 $request,
                 $station
             ) {
-                /** @var Entity\StationPlaylist $playlist */
+                /** @var StationPlaylist $playlist */
                 $playlist = $scheduleItem->getPlaylist();
 
                 return [
@@ -238,9 +240,11 @@ final class PlaylistsController extends AbstractScheduledEntityController
             throw new InvalidArgumentException(sprintf('Record must be an instance of %s.', $this->entityClass));
         }
 
+        /** @var StationPlaylist $record */
+
         $return = $this->toArray($record);
 
-        $song_totals = $this->em->createQuery(
+        $songTotals = $this->em->createQuery(
             <<<'DQL'
                 SELECT count(sm.id) AS num_songs, sum(sm.length) AS total_length
                 FROM App\Entity\StationMedia sm
@@ -250,39 +254,22 @@ final class PlaylistsController extends AbstractScheduledEntityController
         )->setParameter('playlist', $record)
             ->getArrayResult();
 
-        $return['short_name'] = Entity\StationPlaylist::generateShortName($return['name']);
+        $return['short_name'] = StationPlaylist::generateShortName($return['name']);
 
-        $return['num_songs'] = (int)$song_totals[0]['num_songs'];
-        $return['total_length'] = (int)$song_totals[0]['total_length'];
+        $return['num_songs'] = (int)$songTotals[0]['num_songs'];
+        $return['total_length'] = (int)$songTotals[0]['total_length'];
 
         $isInternal = ('true' === $request->getParam('internal', 'false'));
         $router = $request->getRouter();
 
         $return['links'] = [
+            'self' => $router->fromHere(
+                routeName: $this->resourceRouteName,
+                routeParams: ['id' => $record->getId()],
+                absolute: !$isInternal
+            ),
             'toggle' => $router->fromHere(
-                'api:stations:playlist:toggle',
-                ['id' => $record->getId()],
-                [],
-                !$isInternal
-            ),
-            'order' => $router->fromHere(
-                'api:stations:playlist:order',
-                ['id' => $record->getId()],
-                [],
-                !$isInternal
-            ),
-            'reshuffle' => $router->fromHere(
-                routeName: 'api:stations:playlist:reshuffle',
-                routeParams: ['id' => $record->getId()],
-                absolute: !$isInternal
-            ),
-            'queue' => $router->fromHere(
-                routeName: 'api:stations:playlist:queue',
-                routeParams: ['id' => $record->getId()],
-                absolute: !$isInternal
-            ),
-            'import' => $router->fromHere(
-                routeName: 'api:stations:playlist:import',
+                routeName: 'api:stations:playlist:toggle',
                 routeParams: ['id' => $record->getId()],
                 absolute: !$isInternal
             ),
@@ -291,13 +278,49 @@ final class PlaylistsController extends AbstractScheduledEntityController
                 routeParams: ['id' => $record->getId()],
                 absolute: !$isInternal
             ),
-            'self' => $router->fromHere(
-                $this->resourceRouteName,
-                ['id' => $record->getId()],
-                [],
-                !$isInternal
-            ),
         ];
+
+        if (PlaylistSources::Songs === $record->getSource()) {
+            if (PlaylistOrders::Sequential === $record->getOrder()) {
+                $return['links']['order'] = $router->fromHere(
+                    routeName: 'api:stations:playlist:order',
+                    routeParams: ['id' => $record->getId()],
+                    absolute: !$isInternal
+                );
+            }
+
+            if (PlaylistOrders::Random !== $record->getOrder()) {
+                $return['links']['queue'] = $router->fromHere(
+                    routeName: 'api:stations:playlist:queue',
+                    routeParams: ['id' => $record->getId()],
+                    absolute: !$isInternal
+                );
+            }
+
+            $return['links']['import'] = $router->fromHere(
+                routeName: 'api:stations:playlist:import',
+                routeParams: ['id' => $record->getId()],
+                absolute: !$isInternal
+            );
+
+            $return['links']['reshuffle'] = $router->fromHere(
+                routeName: 'api:stations:playlist:reshuffle',
+                routeParams: ['id' => $record->getId()],
+                absolute: !$isInternal
+            );
+
+            $return['links']['applyto'] = $router->fromHere(
+                routeName: 'api:stations:playlist:applyto',
+                routeParams: ['id' => $record->getId()],
+                absolute: !$isInternal
+            );
+
+            $return['links']['empty'] = $router->fromHere(
+                routeName: 'api:stations:playlist:empty',
+                routeParams: ['id' => $record->getId()],
+                absolute: !$isInternal
+            );
+        }
 
         foreach (['pls', 'm3u'] as $format) {
             $return['links']['export'][$format] = $router->fromHere(

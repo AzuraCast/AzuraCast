@@ -4,14 +4,15 @@ declare(strict_types=1);
 
 namespace App\Radio\Frontend;
 
-use App\Entity;
-use App\Environment;
+use App\Container\SettingsAwareTrait;
+use App\Entity\Repository\StationMountRepository;
+use App\Entity\Station;
+use App\Entity\StationMount;
 use App\Http\Router;
 use App\Nginx\CustomUrls;
 use App\Radio\AbstractLocalAdapter;
 use App\Radio\Configuration;
 use App\Xml\Reader;
-use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use GuzzleHttp\Client;
 use InvalidArgumentException;
@@ -21,52 +22,49 @@ use PhpIP\IP;
 use PhpIP\IPBlock;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\UriInterface;
-use Psr\Log\LoggerInterface;
 use Supervisor\SupervisorInterface;
 
 abstract class AbstractFrontend extends AbstractLocalAdapter
 {
+    use SettingsAwareTrait;
+
     public function __construct(
-        Environment $environment,
-        EntityManagerInterface $em,
+        protected AdapterFactory $adapterFactory,
+        protected Client $httpClient,
+        protected StationMountRepository $stationMountRepo,
         SupervisorInterface $supervisor,
         EventDispatcherInterface $dispatcher,
-        LoggerInterface $logger,
-        Router $router,
-        protected AdapterFactory $adapterFactory,
-        protected Client $http_client,
-        protected Entity\Repository\SettingsRepository $settingsRepo,
-        protected Entity\Repository\StationMountRepository $stationMountRepo,
+        Router $router
     ) {
-        parent::__construct($environment, $em, $supervisor, $dispatcher, $logger, $router);
+        parent::__construct($supervisor, $dispatcher, $router);
     }
 
     /**
      * @inheritdoc
      */
-    public function getSupervisorProgramName(Entity\Station $station): string
+    public function getSupervisorProgramName(Station $station): string
     {
         return Configuration::getSupervisorProgramName($station, 'frontend');
     }
 
     /**
-     * @param Entity\Station $station
-     * @param UriInterface|null $base_url
+     * @param Station $station
+     * @param UriInterface|null $baseUrl
      */
-    public function getStreamUrl(Entity\Station $station, UriInterface $base_url = null): UriInterface
+    public function getStreamUrl(Station $station, UriInterface $baseUrl = null): UriInterface
     {
-        $default_mount = $this->stationMountRepo->getDefaultMount($station);
+        $defaultMount = $this->stationMountRepo->getDefaultMount($station);
 
-        return $this->getUrlForMount($station, $default_mount, $base_url);
+        return $this->getUrlForMount($station, $defaultMount, $baseUrl);
     }
 
     public function getUrlForMount(
-        Entity\Station $station,
-        ?Entity\StationMount $mount = null,
-        ?UriInterface $base_url = null
+        Station $station,
+        ?StationMount $mount = null,
+        ?UriInterface $baseUrl = null
     ): UriInterface {
         if ($mount === null) {
-            return $this->getPublicUrl($station, $base_url);
+            return $this->getPublicUrl($station, $baseUrl);
         }
 
         $customListenUri = $mount->getCustomListenUrlAsUri();
@@ -74,70 +72,70 @@ abstract class AbstractFrontend extends AbstractLocalAdapter
             return $customListenUri;
         }
 
-        $public_url = $this->getPublicUrl($station, $base_url);
-        return $public_url->withPath($public_url->getPath() . $mount->getName());
+        $publicUrl = $this->getPublicUrl($station, $baseUrl);
+        return $publicUrl->withPath($publicUrl->getPath() . $mount->getName());
     }
 
-    public function getPublicUrl(Entity\Station $station, ?UriInterface $base_url = null): UriInterface
+    public function getPublicUrl(Station $station, ?UriInterface $baseUrl = null): UriInterface
     {
-        $radio_port = $station->getFrontendConfig()->getPort();
-        $base_url ??= $this->router->getBaseUrl();
+        $radioPort = $station->getFrontendConfig()->getPort();
+        $baseUrl ??= $this->router->getBaseUrl();
 
-        $use_radio_proxy = $this->settingsRepo->readSettings()->getUseRadioProxy();
+        $useRadioProxy = $this->readSettings()->getUseRadioProxy();
 
         if (
-            $use_radio_proxy
-            || 'https' === $base_url->getScheme()
+            $useRadioProxy
+            || 'https' === $baseUrl->getScheme()
             || (!$this->environment->isProduction() && !$this->environment->isDocker())
         ) {
             // Web proxy support.
-            return $base_url
-                ->withPath($base_url->getPath() . CustomUrls::getListenUrl($station));
+            return $baseUrl
+                ->withPath($baseUrl->getPath() . CustomUrls::getListenUrl($station));
         }
 
         // Remove port number and other decorations.
-        return $base_url
-            ->withPort($radio_port)
+        return $baseUrl
+            ->withPort($radioPort)
             ->withPath('');
     }
 
     /**
-     * @param Entity\Station $station
-     * @param UriInterface|null $base_url
+     * @param Station $station
+     * @param UriInterface|null $baseUrl
      *
      * @return UriInterface[]
      */
-    public function getStreamUrls(Entity\Station $station, UriInterface $base_url = null): array
+    public function getStreamUrls(Station $station, UriInterface $baseUrl = null): array
     {
         $urls = [];
         foreach ($station->getMounts() as $mount) {
-            $urls[] = $this->getUrlForMount($station, $mount, $base_url);
+            $urls[] = $this->getUrlForMount($station, $mount, $baseUrl);
         }
 
         return $urls;
     }
 
-    abstract public function getAdminUrl(Entity\Station $station, UriInterface $base_url = null): UriInterface;
+    abstract public function getAdminUrl(Station $station, UriInterface $baseUrl = null): UriInterface;
 
-    public function getNowPlaying(Entity\Station $station, bool $includeClients = true): Result
+    public function getNowPlaying(Station $station, bool $includeClients = true): Result
     {
         return Result::blank();
     }
 
     /**
-     * @param string $custom_config_raw
+     * @param string $customConfigRaw
      *
      * @return mixed[]|false
      */
-    protected function processCustomConfig(string $custom_config_raw): array|false
+    protected function processCustomConfig(string $customConfigRaw): array|false
     {
         try {
-            if (str_starts_with($custom_config_raw, '{')) {
-                return json_decode($custom_config_raw, true, 512, JSON_THROW_ON_ERROR);
+            if (str_starts_with($customConfigRaw, '{')) {
+                return json_decode($customConfigRaw, true, 512, JSON_THROW_ON_ERROR);
             }
 
-            if (str_starts_with($custom_config_raw, '<')) {
-                $xmlConfig = Reader::fromString('<custom_config>' . $custom_config_raw . '</custom_config>');
+            if (str_starts_with($customConfigRaw, '<')) {
+                $xmlConfig = Reader::fromString('<custom_config>' . $customConfigRaw . '</custom_config>');
                 return (false !== $xmlConfig)
                     ? (array)$xmlConfig
                     : false;
@@ -146,7 +144,7 @@ abstract class AbstractFrontend extends AbstractLocalAdapter
             $this->logger->error(
                 'Could not parse custom configuration.',
                 [
-                    'config' => $custom_config_raw,
+                    'config' => $customConfigRaw,
                     'exception' => $e,
                 ]
             );
@@ -156,7 +154,7 @@ abstract class AbstractFrontend extends AbstractLocalAdapter
     }
 
     protected function writeUserAgentBansFile(
-        Entity\Station $station,
+        Station $station,
         string $fileName = 'user_agent_bans.txt',
     ): string {
         $bannedUserAgents = array_filter(
@@ -175,7 +173,7 @@ abstract class AbstractFrontend extends AbstractLocalAdapter
     }
 
     protected function writeIpBansFile(
-        Entity\Station $station,
+        Station $station,
         string $fileName = 'ip_bans.txt',
         string $ipsSeparator = "\n"
     ): string {
@@ -189,7 +187,7 @@ abstract class AbstractFrontend extends AbstractLocalAdapter
         return $bansFile;
     }
 
-    protected function getBannedIps(Entity\Station $station): array
+    protected function getBannedIps(Station $station): array
     {
         return $this->getIpsAsArray($station->getFrontendConfig()->getBannedIps());
     }

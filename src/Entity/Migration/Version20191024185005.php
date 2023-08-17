@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Entity\Migration;
 
-use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\ArrayParameterType;
 use Doctrine\DBAL\ParameterType;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
@@ -50,7 +50,7 @@ final class Version20191024185005 extends AbstractMigration
             $this->connection->executeStatement(
                 'UPDATE station_media SET art_updated_at=UNIX_TIMESTAMP() WHERE unique_id IN (?)',
                 [$mediaRowsToUpdate],
-                [Connection::PARAM_STR_ARRAY]
+                [ArrayParameterType::STRING]
             );
         }
     }

@@ -1,18 +1,9 @@
 <template>
-    <section
+    <card-page
         id="profile-now-playing"
-        class="card"
-        role="region"
-        aria-labelledby="hdr_now_playing"
+        header-id="hdr_now_playing"
+        :title="$gettext('On the Air')"
     >
-        <div class="card-header bg-primary-dark">
-            <h3
-                id="hdr_now_playing"
-                class="card-title"
-            >
-                {{ $gettext('On the Air') }}
-            </h3>
-        </div>
         <div class="card-body">
             <p class="card-text">
                 {{
@@ -20,5 +11,9 @@
                 }}
             </p>
         </div>
-    </section>
+    </card-page>
 </template>
+
+<script setup>
+import CardPage from "~/components/Common/CardPage.vue";
+</script>

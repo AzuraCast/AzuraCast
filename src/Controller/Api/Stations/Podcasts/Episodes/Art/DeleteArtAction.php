@@ -4,11 +4,14 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Stations\Podcasts\Episodes\Art;
 
-use App\Entity;
+use App\Container\EntityManagerAwareTrait;
+use App\Controller\SingleActionInterface;
+use App\Entity\Api\Error;
+use App\Entity\Api\Status;
+use App\Entity\Repository\PodcastEpisodeRepository;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\OpenApi;
-use Doctrine\ORM\EntityManagerInterface;
 use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 
@@ -52,33 +55,35 @@ use Psr\Http\Message\ResponseInterface;
         ),
     ]
 )]
-final class DeleteArtAction
+final class DeleteArtAction implements SingleActionInterface
 {
+    use EntityManagerAwareTrait;
+
     public function __construct(
-        private readonly Entity\Repository\PodcastEpisodeRepository $episodeRepo,
-        private readonly EntityManagerInterface $em,
+        private readonly PodcastEpisodeRepository $episodeRepo,
     ) {
     }
 
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        string $station_id,
-        string $podcast_id,
-        string $episode_id
+        array $params
     ): ResponseInterface {
+        /** @var string $episodeId */
+        $episodeId = $params['episode_id'];
+
         $station = $request->getStation();
 
-        $episode = $this->episodeRepo->fetchEpisodeForStation($station, $episode_id);
+        $episode = $this->episodeRepo->fetchEpisodeForStation($station, $episodeId);
         if ($episode === null) {
             return $response->withStatus(404)
-                ->withJson(Entity\Api\Error::notFound());
+                ->withJson(Error::notFound());
         }
 
         $this->episodeRepo->removeEpisodeArt($episode);
         $this->em->persist($episode);
         $this->em->flush();
 
-        return $response->withJson(Entity\Api\Status::deleted());
+        return $response->withJson(Status::deleted());
     }
 }

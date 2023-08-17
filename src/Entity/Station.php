@@ -137,7 +137,7 @@ class Station implements Stringable, IdentifiableEntityInterface
 
     #[
         OA\Property(example: "Various"),
-        ORM\Column(length: 150, nullable: true),
+        ORM\Column(length: 255, nullable: true),
         Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])
     ]
     protected ?string $genre = null;
@@ -448,9 +448,9 @@ class Station implements Stringable, IdentifiableEntityInterface
         $this->short_name = $shortName;
     }
 
-    public function setIsEnabled(bool $is_enabled): void
+    public function setIsEnabled(bool $isEnabled): void
     {
-        $this->is_enabled = $is_enabled;
+        $this->is_enabled = $isEnabled;
     }
 
     public function getFrontendType(): FrontendAdapters
@@ -458,9 +458,9 @@ class Station implements Stringable, IdentifiableEntityInterface
         return $this->frontend_type;
     }
 
-    public function setFrontendType(FrontendAdapters $frontend_type): void
+    public function setFrontendType(FrontendAdapters $frontendType): void
     {
-        $this->frontend_type = $frontend_type;
+        $this->frontend_type = $frontendType;
     }
 
     public function getFrontendConfig(): StationFrontendConfiguration
@@ -469,16 +469,16 @@ class Station implements Stringable, IdentifiableEntityInterface
     }
 
     public function setFrontendConfig(
-        StationFrontendConfiguration|array $frontend_config,
-        bool $force_overwrite = false
+        StationFrontendConfiguration|array $frontendConfig,
+        bool $forceOverwrite = false
     ): void {
-        if (is_array($frontend_config)) {
-            $frontend_config = new StationFrontendConfiguration(
-                $force_overwrite ? $frontend_config : array_merge((array)$this->frontend_config, $frontend_config)
+        if (is_array($frontendConfig)) {
+            $frontendConfig = new StationFrontendConfiguration(
+                $forceOverwrite ? $frontendConfig : array_merge((array)$this->frontend_config, $frontendConfig)
             );
         }
 
-        $config = $frontend_config->toArray();
+        $config = $frontendConfig->toArray();
         if ($this->frontend_config !== $config) {
             $this->setNeedsRestart(true);
         }
@@ -490,9 +490,9 @@ class Station implements Stringable, IdentifiableEntityInterface
         return $this->backend_type;
     }
 
-    public function setBackendType(BackendAdapters $backend_type): void
+    public function setBackendType(BackendAdapters $backendType): void
     {
-        $this->backend_type = $backend_type;
+        $this->backend_type = $backendType;
     }
 
     /**
@@ -522,16 +522,16 @@ class Station implements Stringable, IdentifiableEntityInterface
     }
 
     public function setBackendConfig(
-        StationBackendConfiguration|array $backend_config,
-        bool $force_overwrite = false
+        StationBackendConfiguration|array $backendConfig,
+        bool $forceOverwrite = false
     ): void {
-        if (is_array($backend_config)) {
-            $backend_config = new StationBackendConfiguration(
-                $force_overwrite ? $backend_config : array_merge((array)$this->backend_config, $backend_config)
+        if (is_array($backendConfig)) {
+            $backendConfig = new StationBackendConfiguration(
+                $forceOverwrite ? $backendConfig : array_merge((array)$this->backend_config, $backendConfig)
             );
         }
 
-        $config = $backend_config->toArray();
+        $config = $backendConfig->toArray();
 
         if ($this->backend_config !== $config) {
             $this->setNeedsRestart(true);
@@ -556,11 +556,11 @@ class Station implements Stringable, IdentifiableEntityInterface
     /**
      * Authenticate the supplied adapter API key.
      *
-     * @param string $api_key
+     * @param string $apiKey
      */
-    public function validateAdapterApiKey(string $api_key): bool
+    public function validateAdapterApiKey(string $apiKey): bool
     {
-        return hash_equals($api_key, $this->adapter_api_key ?? '');
+        return hash_equals($apiKey, $this->adapter_api_key ?? '');
     }
 
     public function getDescription(): ?string
@@ -590,7 +590,7 @@ class Station implements Stringable, IdentifiableEntityInterface
 
     public function setGenre(?string $genre): void
     {
-        $this->genre = $this->truncateNullableString($genre, 150);
+        $this->genre = $this->truncateNullableString($genre);
     }
 
     public function getRadioBaseDir(): string
@@ -707,9 +707,9 @@ class Station implements Stringable, IdentifiableEntityInterface
         return $this->enable_requests;
     }
 
-    public function setEnableRequests(bool $enable_requests): void
+    public function setEnableRequests(bool $enableRequests): void
     {
-        $this->enable_requests = $enable_requests;
+        $this->enable_requests = $enableRequests;
     }
 
     public function getRequestDelay(): ?int
@@ -717,9 +717,9 @@ class Station implements Stringable, IdentifiableEntityInterface
         return $this->request_delay;
     }
 
-    public function setRequestDelay(int $request_delay = null): void
+    public function setRequestDelay(int $requestDelay = null): void
     {
-        $this->request_delay = $request_delay;
+        $this->request_delay = $requestDelay;
     }
 
     public function getRequestThreshold(): ?int
@@ -727,9 +727,9 @@ class Station implements Stringable, IdentifiableEntityInterface
         return $this->request_threshold;
     }
 
-    public function setRequestThreshold(int $request_threshold = null): void
+    public function setRequestThreshold(int $requestThreshold = null): void
     {
-        $this->request_threshold = $request_threshold;
+        $this->request_threshold = $requestThreshold;
     }
 
     public function getDisconnectDeactivateStreamer(): ?int
@@ -737,9 +737,9 @@ class Station implements Stringable, IdentifiableEntityInterface
         return $this->disconnect_deactivate_streamer;
     }
 
-    public function setDisconnectDeactivateStreamer(?int $disconnect_deactivate_streamer): void
+    public function setDisconnectDeactivateStreamer(?int $disconnectDeactivateStreamer): void
     {
-        $this->disconnect_deactivate_streamer = $disconnect_deactivate_streamer;
+        $this->disconnect_deactivate_streamer = $disconnectDeactivateStreamer;
     }
 
     public function getEnableStreamers(): bool
@@ -747,13 +747,13 @@ class Station implements Stringable, IdentifiableEntityInterface
         return $this->enable_streamers;
     }
 
-    public function setEnableStreamers(bool $enable_streamers): void
+    public function setEnableStreamers(bool $enableStreamers): void
     {
-        if ($this->enable_streamers !== $enable_streamers) {
+        if ($this->enable_streamers !== $enableStreamers) {
             $this->setNeedsRestart(true);
         }
 
-        $this->enable_streamers = $enable_streamers;
+        $this->enable_streamers = $enableStreamers;
     }
 
     public function getIsStreamerLive(): bool
@@ -761,9 +761,9 @@ class Station implements Stringable, IdentifiableEntityInterface
         return $this->is_streamer_live;
     }
 
-    public function setIsStreamerLive(bool $is_streamer_live): void
+    public function setIsStreamerLive(bool $isStreamerLive): void
     {
-        $this->is_streamer_live = $is_streamer_live;
+        $this->is_streamer_live = $isStreamerLive;
     }
 
     public function getEnablePublicPage(): bool
@@ -771,9 +771,9 @@ class Station implements Stringable, IdentifiableEntityInterface
         return $this->enable_public_page && $this->getIsEnabled();
     }
 
-    public function setEnablePublicPage(bool $enable_public_page): void
+    public function setEnablePublicPage(bool $enablePublicPage): void
     {
-        $this->enable_public_page = $enable_public_page;
+        $this->enable_public_page = $enablePublicPage;
     }
 
     public function getEnableOnDemand(): bool
@@ -781,9 +781,9 @@ class Station implements Stringable, IdentifiableEntityInterface
         return $this->enable_on_demand;
     }
 
-    public function setEnableOnDemand(bool $enable_on_demand): void
+    public function setEnableOnDemand(bool $enableOnDemand): void
     {
-        $this->enable_on_demand = $enable_on_demand;
+        $this->enable_on_demand = $enableOnDemand;
     }
 
     public function getEnableOnDemandDownload(): bool
@@ -791,9 +791,9 @@ class Station implements Stringable, IdentifiableEntityInterface
         return $this->enable_on_demand_download;
     }
 
-    public function setEnableOnDemandDownload(bool $enable_on_demand_download): void
+    public function setEnableOnDemandDownload(bool $enableOnDemandDownload): void
     {
-        $this->enable_on_demand_download = $enable_on_demand_download;
+        $this->enable_on_demand_download = $enableOnDemandDownload;
     }
 
     public function getEnableHls(): bool
@@ -801,9 +801,9 @@ class Station implements Stringable, IdentifiableEntityInterface
         return $this->enable_hls;
     }
 
-    public function setEnableHls(bool $enable_hls): void
+    public function setEnableHls(bool $enableHls): void
     {
-        $this->enable_hls = $enable_hls;
+        $this->enable_hls = $enableHls;
     }
 
     public function getIsEnabled(): bool
@@ -816,9 +816,9 @@ class Station implements Stringable, IdentifiableEntityInterface
         return $this->needs_restart;
     }
 
-    public function setNeedsRestart(bool $needs_restart): void
+    public function setNeedsRestart(bool $needsRestart): void
     {
-        $this->needs_restart = $needs_restart;
+        $this->needs_restart = $needsRestart;
     }
 
     public function getHasStarted(): bool
@@ -826,9 +826,9 @@ class Station implements Stringable, IdentifiableEntityInterface
         return $this->has_started;
     }
 
-    public function setHasStarted(bool $has_started): void
+    public function setHasStarted(bool $hasStarted): void
     {
-        $this->has_started = $has_started;
+        $this->has_started = $hasStarted;
     }
 
     public function getApiHistoryItems(): int
@@ -836,9 +836,9 @@ class Station implements Stringable, IdentifiableEntityInterface
         return $this->api_history_items ?? 5;
     }
 
-    public function setApiHistoryItems(int $api_history_items): void
+    public function setApiHistoryItems(int $apiHistoryItems): void
     {
-        $this->api_history_items = $api_history_items;
+        $this->api_history_items = $apiHistoryItems;
     }
 
     public function getTimezone(): string
@@ -899,10 +899,10 @@ class Station implements Stringable, IdentifiableEntityInterface
         return $this->current_streamer;
     }
 
-    public function setCurrentStreamer(?StationStreamer $current_streamer): void
+    public function setCurrentStreamer(?StationStreamer $currentStreamer): void
     {
-        if (null !== $this->current_streamer || null !== $current_streamer) {
-            $this->current_streamer = $current_streamer;
+        if (null !== $this->current_streamer || null !== $currentStreamer) {
+            $this->current_streamer = $currentStreamer;
         }
     }
 
@@ -994,12 +994,12 @@ class Station implements Stringable, IdentifiableEntityInterface
         return $this->fallback_path;
     }
 
-    public function setFallbackPath(?string $fallback_path): void
+    public function setFallbackPath(?string $fallbackPath): void
     {
-        if ($this->fallback_path !== $fallback_path) {
+        if ($this->fallback_path !== $fallbackPath) {
             $this->setNeedsRestart(true);
         }
-        $this->fallback_path = $fallback_path;
+        $this->fallback_path = $fallbackPath;
     }
 
     /**
@@ -1071,9 +1071,9 @@ class Station implements Stringable, IdentifiableEntityInterface
         return $this->current_song;
     }
 
-    public function setCurrentSong(?SongHistory $current_song): void
+    public function setCurrentSong(?SongHistory $currentSong): void
     {
-        $this->current_song = $current_song;
+        $this->current_song = $currentSong;
     }
 
     public function __toString(): string
@@ -1105,14 +1105,14 @@ class Station implements Stringable, IdentifiableEntityInterface
         $this->podcasts_storage_location = null;
 
         // Clear ports
-        $fe_config = $this->getFrontendConfig();
-        $fe_config->setPort(null);
-        $this->setFrontendConfig($fe_config);
+        $feConfig = $this->getFrontendConfig();
+        $feConfig->setPort(null);
+        $this->setFrontendConfig($feConfig);
 
-        $be_config = $this->getBackendConfig();
-        $be_config->setDjPort(null);
-        $be_config->setTelnetPort(null);
-        $this->setBackendConfig($be_config);
+        $beConfig = $this->getBackendConfig();
+        $beConfig->setDjPort(null);
+        $beConfig->setTelnetPort(null);
+        $this->setBackendConfig($beConfig);
     }
 
     public static function generateShortName(string $str): string

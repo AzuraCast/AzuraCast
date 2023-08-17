@@ -1,72 +1,69 @@
 <template>
-    <section
-        class="card"
-        role="region"
-        aria-labelledby="hdr_streamers"
-    >
-        <template v-if="enableStreamers">
-            <div class="card-header bg-primary-dark">
-                <h3
-                    id="hdr_streamers"
-                    class="card-title"
-                >
-                    {{ $gettext('Streamers/DJs') }}
-                    <enabled-badge :enabled="true" />
-                </h3>
-            </div>
-            <div
-                v-if="userCanManageStreamers || userCanManageProfile"
-                class="card-actions"
+    <card-page header-id="hdr_streamers">
+        <template #header="{id}">
+            <h3
+                :id="id"
+                class="card-title"
             >
-                <a
-                    v-if="userCanManageStreamers"
-                    class="btn btn-outline-primary"
-                    :href="streamersViewUri"
+                {{ $gettext('Streamers/DJs') }}
+                <enabled-badge :enabled="enableStreamers" />
+            </h3>
+        </template>
+        <template
+            v-if="userAllowedForStation(StationPermission.Streamers) || userAllowedForStation(StationPermission.Profile)"
+            #footer_actions
+        >
+            <template v-if="enableStreamers">
+                <router-link
+                    v-if="userAllowedForStation(StationPermission.Streamers)"
+                    class="btn btn-link text-primary"
+                    :to="{name: 'stations:streamers:index'}"
                 >
                     <icon icon="settings" />
-                    {{ $gettext('Manage') }}
-                </a>
-                <a
-                    v-if="userCanManageProfile"
-                    class="btn btn-outline-danger"
-                    :data-confirm-title="$gettext('Disable streamers?')"
-                    :href="streamersToggleUri"
+                    <span>
+                        {{ $gettext('Manage') }}
+                    </span>
+                </router-link>
+                <button
+                    v-if="userAllowedForStation(StationPermission.Profile)"
+                    type="button"
+                    class="btn btn-link text-danger"
+                    @click="toggleStreamers"
                 >
                     <icon icon="close" />
-                    {{ $gettext('Disable') }}
-                </a>
-            </div>
-        </template>
-        <template v-else>
-            <div class="card-header bg-primary-dark">
-                <h3 class="card-title">
-                    {{ $gettext('Streamers/DJs') }}
-                    <enabled-badge :enabled="false" />
-                </h3>
-            </div>
-            <div
-                v-if="userCanManageProfile"
-                class="card-actions"
-            >
-                <a
-                    class="btn btn-outline-success"
-                    :data-confirm-title="$gettext('Enable streamers?')"
-                    :href="streamersToggleUri"
+                    <span>
+                        {{ $gettext('Disable') }}
+                    </span>
+                </button>
+            </template>
+            <template v-else>
+                <button
+                    v-if="userAllowedForStation(StationPermission.Profile)"
+                    type="button"
+                    class="btn btn-link text-success"
+                    @click="toggleStreamers"
                 >
                     <icon icon="check" />
-                    {{ $gettext('Enable') }}
-                </a>
-            </div>
+                    <span>
+                        {{ $gettext('Enable') }}
+                    </span>
+                </button>
+            </template>
         </template>
-    </section>
+    </card-page>
 </template>
 
 <script setup>
 import Icon from "~/components/Common/Icon.vue";
 import EnabledBadge from "~/components/Common/Badges/EnabledBadge.vue";
 import streamersPanelProps from "~/components/Stations/Profile/streamersPanelProps";
+import CardPage from "~/components/Common/CardPage.vue";
+import {StationPermission, userAllowedForStation} from "~/acl";
+import useToggleFeature from "~/components/Stations/Profile/useToggleFeature";
 
 const props = defineProps({
     ...streamersPanelProps
 });
+
+const toggleStreamers = useToggleFeature('enable_streamers', !props.enableStreamers);
 </script>

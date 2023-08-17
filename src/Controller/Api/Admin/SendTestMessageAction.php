@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Admin;
 
-use App\Entity;
+use App\Controller\SingleActionInterface;
+use App\Entity\Api\Error;
+use App\Entity\Api\Status;
 use App\Exception\ValidationException;
 use App\Http\Response;
 use App\Http\ServerRequest;
@@ -15,7 +17,7 @@ use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Constraints\Required;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-final class SendTestMessageAction
+final class SendTestMessageAction implements SingleActionInterface
 {
     public function __construct(
         private readonly ValidatorInterface $validator,
@@ -25,7 +27,8 @@ final class SendTestMessageAction
 
     public function __invoke(
         ServerRequest $request,
-        Response $response
+        Response $response,
+        array $params
     ): ResponseInterface {
         $emailAddress = $request->getParam('email', '');
 
@@ -55,11 +58,11 @@ final class SendTestMessageAction
 
             $this->mail->send($email);
         } catch (TransportException $e) {
-            return $response->withStatus(400)->withJson(Entity\Api\Error::fromException($e));
+            return $response->withStatus(400)->withJson(Error::fromException($e));
         }
 
         return $response->withJson(
-            new Entity\Api\Status(
+            new Status(
                 true,
                 __('Test message sent successfully.')
             )

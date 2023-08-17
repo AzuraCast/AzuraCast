@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Admin;
 
+use App\Container\EntityManagerAwareTrait;
 use App\Controller\Api\Traits\AcceptsDateRange;
-use App\Entity;
+use App\Entity\AuditLog;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Paginator;
-use Doctrine\ORM\EntityManagerInterface;
 use Psr\Http\Message\ResponseInterface;
 
 use const JSON_PRETTY_PRINT;
@@ -17,11 +17,7 @@ use const JSON_PRETTY_PRINT;
 final class AuditLogAction
 {
     use AcceptsDateRange;
-
-    public function __construct(
-        protected EntityManagerInterface $em
-    ) {
-    }
+    use EntityManagerAwareTrait;
 
     public function __invoke(
         ServerRequest $request,
@@ -34,15 +30,15 @@ final class AuditLogAction
         $qb = $this->em->createQueryBuilder();
 
         $qb->select('a')
-            ->from(Entity\AuditLog::class, 'a')
+            ->from(AuditLog::class, 'a')
             ->andWhere('a.timestamp >= :start AND a.timestamp <= :end')
             ->setParameter('start', $start->getTimestamp())
             ->setParameter('end', $end->getTimestamp());
 
-        $search_phrase = trim($request->getQueryParam('searchPhrase', ''));
-        if (!empty($search_phrase)) {
+        $searchPhrase = trim($request->getQueryParam('searchPhrase', ''));
+        if (!empty($searchPhrase)) {
             $qb->andWhere('(a.user LIKE :query OR a.identifier LIKE :query OR a.target LIKE :query)')
-                ->setParameter('query', '%' . $search_phrase . '%');
+                ->setParameter('query', '%' . $searchPhrase . '%');
         }
 
         $qb->orderBy('a.timestamp', 'DESC');
@@ -50,7 +46,7 @@ final class AuditLogAction
         $paginator = Paginator::fromQueryBuilder($qb, $request);
 
         $paginator->setPostprocessor(
-            function (Entity\AuditLog $row) {
+            function (AuditLog $row) {
                 $changesRaw = $row->getChanges();
                 $changes = [];
 

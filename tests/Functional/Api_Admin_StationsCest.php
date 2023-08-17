@@ -1,8 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Functional;
 
 use App\Radio\Enums\FrontendAdapters;
+use FunctionalTester;
 
 class Api_Admin_StationsCest extends CestAbstract
 {
@@ -10,7 +13,7 @@ class Api_Admin_StationsCest extends CestAbstract
      * @before setupComplete
      * @before login
      */
-    public function manageStations(\FunctionalTester $I): void
+    public function manageStations(FunctionalTester $I): void
     {
         $I->wantTo('Manage stations via API.');
 

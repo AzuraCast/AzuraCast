@@ -5,22 +5,27 @@ declare(strict_types=1);
 namespace App\Entity\Repository;
 
 use App\Doctrine\Repository;
-use App\Entity;
+use App\Entity\CustomField;
+use App\Entity\Station;
+use App\Entity\StationMedia;
+use App\Entity\StationMediaCustomField;
 
 /**
- * @extends Repository<Entity\CustomField>
+ * @extends Repository<CustomField>
  */
 final class CustomFieldRepository extends Repository
 {
+    protected string $entityClass = CustomField::class;
+
     /**
-     * @return Entity\CustomField[]
+     * @return CustomField[]
      */
     public function getAutoAssignableFields(): array
     {
         $fields = [];
 
         foreach ($this->repository->findAll() as $field) {
-            /** @var Entity\CustomField $field */
+            /** @var CustomField $field */
             if (!$field->hasAutoAssign()) {
                 continue;
             }
@@ -49,7 +54,7 @@ final class CustomFieldRepository extends Repository
             )->getArrayResult();
 
             foreach ($fieldsRaw as $row) {
-                $fields[$row['id']] = $row['short_name'] ?? Entity\Station::generateShortName($row['name']);
+                $fields[$row['id']] = $row['short_name'] ?? Station::generateShortName($row['name']);
             }
         }
 
@@ -59,13 +64,13 @@ final class CustomFieldRepository extends Repository
     /**
      * Retrieve a key-value representation of all custom metadata for the specified media.
      *
-     * @param Entity\StationMedia $media
+     * @param StationMedia $media
      *
      * @return mixed[]
      */
-    public function getCustomFields(Entity\StationMedia $media): array
+    public function getCustomFields(StationMedia $media): array
     {
-        $metadata_raw = $this->em->createQuery(
+        $metadataRaw = $this->em->createQuery(
             <<<'DQL'
                 SELECT cf.short_name, e.value
                 FROM App\Entity\StationMediaCustomField e JOIN e.field cf
@@ -75,7 +80,7 @@ final class CustomFieldRepository extends Repository
             ->getArrayResult();
 
         $result = [];
-        foreach ($metadata_raw as $row) {
+        foreach ($metadataRaw as $row) {
             $result[$row['short_name']] = $row['value'];
         }
 
@@ -85,10 +90,10 @@ final class CustomFieldRepository extends Repository
     /**
      * Set the custom metadata for a specified station based on a provided key-value array.
      *
-     * @param Entity\StationMedia $media
-     * @param array $custom_fields
+     * @param StationMedia $media
+     * @param array $customFields
      */
-    public function setCustomFields(Entity\StationMedia $media, array $custom_fields): void
+    public function setCustomFields(StationMedia $media, array $customFields): void
     {
         $this->em->createQuery(
             <<<'DQL'
@@ -97,14 +102,14 @@ final class CustomFieldRepository extends Repository
         )->setParameter('media_id', $media->getId())
             ->execute();
 
-        foreach ($custom_fields as $field_id => $field_value) {
-            $field = is_numeric($field_id)
-                ? $this->em->find(Entity\CustomField::class, $field_id)
-                : $this->em->getRepository(Entity\CustomField::class)->findOneBy(['short_name' => $field_id]);
+        foreach ($customFields as $fieldId => $fieldValue) {
+            $field = is_numeric($fieldId)
+                ? $this->em->find(CustomField::class, $fieldId)
+                : $this->em->getRepository(CustomField::class)->findOneBy(['short_name' => $fieldId]);
 
-            if ($field instanceof Entity\CustomField) {
-                $record = new Entity\StationMediaCustomField($media, $field);
-                $record->setValue($field_value);
+            if ($field instanceof CustomField) {
+                $record = new StationMediaCustomField($media, $field);
+                $record->setValue($fieldValue);
                 $this->em->persist($record);
             }
         }

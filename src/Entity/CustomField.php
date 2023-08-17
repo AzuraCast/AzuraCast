@@ -66,11 +66,11 @@ class CustomField implements Stringable, IdentifiableEntityInterface
             : self::generateShortName($this->name);
     }
 
-    public function setShortName(string $short_name): void
+    public function setShortName(string $shortName): void
     {
-        $short_name = trim($short_name);
-        if (!empty($short_name)) {
-            $this->short_name = $this->truncateString($short_name, 100);
+        $shortName = trim($shortName);
+        if (!empty($shortName)) {
+            $this->short_name = $this->truncateString($shortName, 100);
         }
     }
 
@@ -84,9 +84,9 @@ class CustomField implements Stringable, IdentifiableEntityInterface
         return !empty($this->auto_assign);
     }
 
-    public function setAutoAssign(?string $auto_assign): void
+    public function setAutoAssign(?string $autoAssign): void
     {
-        $this->auto_assign = $auto_assign;
+        $this->auto_assign = $autoAssign;
     }
 
     public function __toString(): string

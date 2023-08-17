@@ -1,7 +1,6 @@
 <template>
     <a
         v-if="'' !== serviceUrl"
-        v-b-tooltip.hover.right
         :href="serviceUrl"
         class="avatar"
         target="_blank"
@@ -27,11 +26,11 @@ const props = defineProps({
     },
     service: {
         type: String,
-        required: true
+        default: null
     },
     serviceUrl: {
         type: String,
-        required: true
+        default: null
     },
     width: {
         type: Number,
@@ -43,9 +42,9 @@ const {$gettext} = useTranslate();
 
 const langAvatar = computed(() => {
     return $gettext(
-        'Avatars are retrieved based on your e-mail address from the %{service} service. Click to manage your %{service} settings.',
+        'Avatars are retrieved based on your e-mail address from the %{ service } service. Click to manage your %{ service } settings.',
         {
-            service: props.service
+            service: props.service ?? ''
         }
     );
 });

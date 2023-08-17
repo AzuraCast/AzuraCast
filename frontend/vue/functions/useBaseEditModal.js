@@ -1,9 +1,8 @@
-import {computed, ref, toRef} from "vue";
+import {computed, nextTick, ref, toRef} from "vue";
 import mergeExisting from "~/functions/mergeExisting";
-import {useNotify} from "~/vendor/bootstrapVue";
+import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
-import {useResettableRef} from "~/functions/useResettableRef";
-import useVuelidate from "@vuelidate/core";
+import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
 
 export const baseEditModalProps = {
     createUrl: {
@@ -16,10 +15,20 @@ export function useBaseEditModal(
     props,
     emit,
     $modal,
-    originalValidations,
-    originalBlankForm,
+    validations = {},
+    blankForm = {},
     userOptions = {}
 ) {
+    const createUrl = toRef(props, 'createUrl');
+
+    const loading = ref(false);
+    const error = ref(null);
+    const editUrl = ref(null);
+
+    const isEditMode = computed(() => {
+        return editUrl.value !== null;
+    });
+
     const options = {
         resetForm: null,
         clearContents: null,
@@ -31,34 +40,21 @@ export function useBaseEditModal(
         ...userOptions
     };
 
-    const createUrl = toRef(props, 'createUrl');
-
-    const loading = ref(true);
-    const error = ref(null);
-    const editUrl = ref(null);
-
-    const isEditMode = computed(() => {
-        return editUrl.value !== null;
-    });
-
-    const blankForm = (typeof originalBlankForm === 'function')
-        ? originalBlankForm(isEditMode)
-        : originalBlankForm;
-
-    const {record: form, reset: originalResetForm} = useResettableRef(blankForm);
-
-    const validations = (typeof originalValidations === 'function')
-        ? originalValidations(form, isEditMode)
-        : originalValidations;
-
-    const v$ = useVuelidate(validations, form);
+    const {
+        form,
+        v$,
+        resetForm: originalResetForm
+    } = useVuelidateOnForm(
+        validations,
+        blankForm,
+        options
+    );
 
     const resetForm = () => {
         if (typeof options.resetForm === 'function') {
             return options.resetForm(originalResetForm);
         }
 
-        v$.value.$reset();
         originalResetForm();
     };
 
@@ -78,6 +74,10 @@ export function useBaseEditModal(
         clearContents();
 
         $modal.value.show();
+
+        nextTick(() => {
+            resetForm();
+        });
     };
 
     const populateForm = (data) => {
@@ -92,13 +92,14 @@ export function useBaseEditModal(
     const {axios} = useAxios();
 
     const doLoad = () => {
-        wrapWithLoading(
-            axios.get(editUrl.value)
-        ).then((resp) => {
+        loading.value = true;
+
+        axios.get(editUrl.value).then((resp) => {
             populateForm(resp.data);
-            loading.value = false;
         }).catch(() => {
             close();
+        }).finally(() => {
+            loading.value = false;
         });
     };
 
@@ -108,7 +109,10 @@ export function useBaseEditModal(
         editUrl.value = recordUrl;
         $modal.value.show();
 
-        doLoad();
+        nextTick(() => {
+            resetForm();
+            doLoad();
+        })
     };
 
     const getSubmittableFormData = () => {
@@ -149,12 +153,12 @@ export function useBaseEditModal(
         close();
     };
 
-    const onSubmitError = (error) => {
+    const onSubmitError = (err) => {
         if (typeof options.onSubmitError === 'function') {
-            return options.onSubmitError(error);
+            return options.onSubmitError(err);
         }
 
-        error.value = error.response.data.message;
+        error.value = err.response.data.message;
     };
 
     const doSubmit = () => {
@@ -170,8 +174,8 @@ export function useBaseEditModal(
                 axios(buildSubmitRequest())
             ).then((resp) => {
                 onSubmitSuccess(resp);
-            }).catch((error) => {
-                onSubmitError(error);
+            }).catch((err) => {
+                onSubmitError(err);
             });
         });
     };

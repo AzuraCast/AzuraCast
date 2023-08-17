@@ -1,5 +1,5 @@
 <template>
-    <b-form-group>
+    <form-markup id="customization_tips">
         <template #label>
             {{ $gettext('Message Customization Tips') }}
         </template>
@@ -10,7 +10,9 @@
         </p>
 
         <p class="card-text">
-            {{ $gettext('All values in the NowPlaying API response are available for use. Any empty fields are ignored.') }}
+            {{
+                $gettext('All values in the NowPlaying API response are available for use. Any empty fields are ignored.')
+            }}
             <br>
             <a
                 :href="nowPlayingUrl"
@@ -19,14 +21,12 @@
                 {{ $gettext('NowPlaying API Response') }}
             </a>
         </p>
-    </b-form-group>
+    </form-markup>
 </template>
 
 <script setup>
-const props = defineProps({
-    nowPlayingUrl: {
-        type: String,
-        required: true
-    }
-});
+import FormMarkup from "~/components/Form/FormMarkup.vue";
+import {inject} from "vue";
+
+const nowPlayingUrl = inject('nowPlayingUrl');
 </script>

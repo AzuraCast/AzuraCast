@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Flysystem\Attributes;
 
 use League\Flysystem\ProxyArrayAccessToProperties;
@@ -38,11 +40,9 @@ abstract class AbstractAttributes implements StorageAttributes
 
     public function visibility(): ?string
     {
-        $visibility = (is_callable($this->visibility))
+        return (is_callable($this->visibility))
             ? ($this->visibility)($this->path)
             : $this->visibility;
-
-        return $visibility;
     }
 
     public function lastModified(): ?int

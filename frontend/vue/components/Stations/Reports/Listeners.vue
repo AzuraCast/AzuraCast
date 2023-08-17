@@ -2,56 +2,81 @@
     <div class="row">
         <div class="col-sm-12">
             <div class="card">
-                <div class="card-header bg-primary-dark">
-                    <div class="d-flex align-items-center">
+                <div class="card-header text-bg-primary">
+                    <div class="d-lg-flex align-items-center">
                         <div class="flex-fill my-0">
                             <h2 class="card-title">
                                 {{ $gettext('Listeners') }}
                             </h2>
                         </div>
-                        <div class="flex-shrink buttons">
+                        <div class="flex-shrink buttons mt-2 mt-lg-0">
                             <a
                                 id="btn-export"
-                                class="btn btn-bg"
+                                class="btn btn-dark"
                                 :href="exportUrl"
                                 target="_blank"
                             >
                                 <icon icon="file_download" />
-                                {{ $gettext('Download CSV') }}
+                                <span>
+                                    {{ $gettext('Download CSV') }}
+                                </span>
                             </a>
-
+                        </div>
+                        <div
+                            v-if="!isLive"
+                            class="flex-shrink buttons ms-lg-2 mt-2 mt-lg-0"
+                        >
                             <date-range-dropdown
-                                v-if="!isLive"
                                 v-model="dateRange"
                                 time-picker
                                 :min-date="minDate"
                                 :max-date="maxDate"
-                                :tz="stationTimeZone"
-                                @update="updateListeners"
+                                :tz="timezone"
                             />
                         </div>
                     </div>
                 </div>
-                <b-tabs
-                    pills
-                    card
-                >
-                    <b-tab
-                        key="live"
-                        active
-                        :title="$gettext('Live Listeners')"
-                        no-body
-                        @click="setIsLive(true)"
-                    />
-                    <b-tab
-                        key="not-live"
-                        :title="$gettext('Listener History')"
-                        no-body
-                        @click="setIsLive(false)"
-                    />
-                </b-tabs>
+
+                <div class="card-body pb-0">
+                    <nav
+                        class="nav nav-tabs"
+                        role="tablist"
+                    >
+                        <div
+                            class="nav-item"
+                            role="presentation"
+                        >
+                            <button
+                                class="nav-link"
+                                :class="(isLive) ? 'active' : ''"
+                                type="button"
+                                role="tab"
+                                @click="setIsLive(true)"
+                            >
+                                {{ $gettext('Live Listeners') }}
+                            </button>
+                        </div>
+                        <div
+                            class="nav-item"
+                            role="presentation"
+                        >
+                            <button
+                                class="nav-link"
+                                :class="(!isLive) ? 'active' : ''"
+                                type="button"
+                                role="tab"
+                                @click="setIsLive(false)"
+                            >
+                                {{ $gettext('Listener History') }}
+                            </button>
+                        </div>
+                    </nav>
+                </div>
+
                 <div id="map">
-                    <StationReportsListenersMap :listeners="listeners" />
+                    <StationReportsListenersMap
+                        :listeners="listeners"
+                    />
                 </div>
                 <div>
                     <div class="card-body row">
@@ -83,7 +108,6 @@
                         paginated
                         handle-client-side
                         :fields="fields"
-                        :responsive="false"
                         :items="listeners"
                     >
                         <template #cell(time)="row">
@@ -96,13 +120,13 @@
                             <div>
                                 <span v-if="row.item.is_mobile">
                                     <icon icon="smartphone" />
-                                    <span class="sr-only">
+                                    <span class="visually-hidden">
                                         {{ $gettext('Mobile Device') }}
                                     </span>
                                 </span>
                                 <span v-else>
                                     <icon icon="desktop_windows" />
-                                    <span class="sr-only">
+                                    <span class="visually-hidden">
                                         {{ $gettext('Desktop Device') }}
                                     </span>
                                 </span>
@@ -137,9 +161,10 @@
                         </template>
                     </data-table>
                 </div>
-                <div class="card-body card-padding-sm text-muted">
-                    {{ attribution }}
-                </div>
+                <div
+                    class="card-body card-padding-sm text-muted"
+                    v-html="attribution"
+                />
             </div>
         </div>
     </div>
@@ -151,38 +176,37 @@ import Icon from "~/components/Common/Icon";
 import formatTime from "~/functions/formatTime";
 import DataTable from "~/components/Common/DataTable";
 import DateRangeDropdown from "~/components/Common/DateRangeDropdown";
-import {DateTime} from 'luxon';
-import {computed, onMounted, ref, shallowRef} from "vue";
+import {computed, nextTick, onMounted, ref, shallowRef, watch} from "vue";
 import {useTranslate} from "~/vendor/gettext";
-import {useNotify} from "~/vendor/bootstrapVue";
+import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
+import {useAzuraCastStation} from "~/vendor/azuracast";
+import {useLuxon} from "~/vendor/luxon";
+import {getStationApiUrl} from "~/router";
 
 const props = defineProps({
-  apiUrl: {
-    type: String,
-    required: true
-  },
-  attribution: {
-    type: String,
-    required: true
-  },
-  stationTimeZone: {
-    type: String,
-    required: true
-  },
+    attribution: {
+        type: String,
+        required: true
+    }
 });
+
+const apiUrl = getStationApiUrl('/listeners');
 
 const isLive = ref(true);
 const listeners = shallowRef([]);
 
-const nowTz = DateTime.now().setZone(props.stationTimeZone);
+const {timezone} = useAzuraCastStation();
+
+const {DateTime} = useLuxon();
+const nowTz = DateTime.now().setZone(timezone);
 
 const minDate = nowTz.minus({years: 5}).toJSDate();
 const maxDate = nowTz.plus({days: 5}).toJSDate();
 
 const dateRange = ref({
-  startDate: nowTz.minus({days: 1}).toJSDate(),
-  endDate: nowTz.toJSDate()
+    startDate: nowTz.minus({days: 1}).toJSDate(),
+    endDate: nowTz.toJSDate()
 });
 
 const {$gettext} = useTranslate();
@@ -197,8 +221,8 @@ const fields = [
 ];
 
 const exportUrl = computed(() => {
-  let exportUrl = new URL(props.apiUrl, document.location);
-  let exportUrlParams = exportUrl.searchParams;
+    const exportUrl = new URL(apiUrl.value, document.location);
+    const exportUrlParams = exportUrl.searchParams;
   exportUrlParams.set('format', 'csv');
 
   if (!isLive.value) {
@@ -215,7 +239,7 @@ const totalListenerHours = computed(() => {
     tlh_seconds += listener.connected_time;
   });
 
-  let tlh_hours = tlh_seconds / 3600;
+  const tlh_hours = tlh_seconds / 3600;
   return Math.round((tlh_hours + 0.00001) * 100) / 100;
 });
 
@@ -223,31 +247,33 @@ const {wrapWithLoading} = useNotify();
 const {axios} = useAxios();
 
 const updateListeners = () => {
-  let params = {};
-  if (!isLive.value) {
-    params.start = DateTime.fromJSDate(dateRange.value.startDate).toISO();
-    params.end = DateTime.fromJSDate(dateRange.value.endDate).toISO();
-  }
-
-  wrapWithLoading(
-      axios.get(props.apiUrl, {params: params})
-  ).then((resp) => {
-    listeners.value = resp.data;
-
-    if (isLive.value) {
-      setTimeout(updateListeners, (!document.hidden) ? 15000 : 30000);
+    const params = {};
+    if (!isLive.value) {
+        params.start = DateTime.fromJSDate(dateRange.value.startDate).toISO();
+        params.end = DateTime.fromJSDate(dateRange.value.endDate).toISO();
     }
-  }).catch((error) => {
-    if (isLive.value && (!error.response || error.response.data.code !== 403)) {
-      setTimeout(updateListeners, (!document.hidden) ? 30000 : 120000);
-    }
-  });
+
+    wrapWithLoading(
+        axios.get(apiUrl.value, {params: params})
+    ).then((resp) => {
+        listeners.value = resp.data;
+
+        if (isLive.value) {
+            setTimeout(updateListeners, (!document.hidden) ? 15000 : 30000);
+        }
+    }).catch((error) => {
+        if (isLive.value && (!error.response || error.response.data.code !== 403)) {
+            setTimeout(updateListeners, (!document.hidden) ? 30000 : 120000);
+        }
+    });
 };
+
+watch(dateRange, updateListeners);
 
 onMounted(updateListeners);
 
 const setIsLive = (newValue) => {
-  isLive.value = newValue;
-  updateListeners();
+    isLive.value = newValue;
+    nextTick(updateListeners);
 };
 </script>

@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\Controller\Api;
 
-use App\Doctrine\ReloadableEntityManagerInterface;
+use App\Container\EntityManagerAwareTrait;
+use App\Entity\Api\Error;
+use App\Entity\Api\Status;
 use App\Entity\Interfaces\IdentifiableEntityInterface;
 use App\Exception\ValidationException;
 use App\Http\Response;
@@ -24,6 +26,8 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 abstract class AbstractApiCrudController
 {
+    use EntityManagerAwareTrait;
+
     /** @var class-string<TEntity> The fully-qualified (::class) class name of the entity being managed. */
     protected string $entityClass;
 
@@ -31,10 +35,19 @@ abstract class AbstractApiCrudController
     protected string $resourceRouteName;
 
     public function __construct(
-        protected ReloadableEntityManagerInterface $em,
         protected Serializer $serializer,
         protected ValidatorInterface $validator
     ) {
+    }
+
+    public function listAction(
+        ServerRequest $request,
+        Response $response,
+        array $params
+    ): ResponseInterface {
+        $query = $this->em->createQuery('SELECT e FROM ' . $this->entityClass . ' e');
+
+        return $this->listPaginatedFromQuery($request, $response, $query);
     }
 
     protected function listPaginatedFromQuery(
@@ -49,6 +62,53 @@ abstract class AbstractApiCrudController
         $paginator->setPostprocessor($postProcessor);
 
         return $paginator->write($response);
+    }
+
+    public function createAction(
+        ServerRequest $request,
+        Response $response,
+        array $params
+    ): ResponseInterface {
+        $row = $this->createRecord($request, (array)$request->getParsedBody());
+
+        $return = $this->viewRecord($row, $request);
+        return $response->withJson($return);
+    }
+
+    /**
+     * @param array $data
+     * @return TEntity
+     */
+    protected function createRecord(ServerRequest $request, array $data): object
+    {
+        return $this->editRecord($data);
+    }
+
+    public function getAction(
+        ServerRequest $request,
+        Response $response,
+        array $params
+    ): ResponseInterface {
+        $record = $this->getRecord($request, $params);
+
+        if (null === $record) {
+            return $response->withStatus(404)
+                ->withJson(Error::notFound());
+        }
+
+        $return = $this->viewRecord($record, $request);
+        return $response->withJson($return);
+    }
+
+    /**
+     * @return TEntity|null
+     */
+    protected function getRecord(ServerRequest $request, array $params): ?object
+    {
+        /** @var string $id */
+        $id = $params['id'];
+
+        return $this->em->find($this->entityClass, $id);
     }
 
     /**
@@ -94,23 +154,13 @@ abstract class AbstractApiCrudController
             array_merge(
                 $context,
                 [
-                    AbstractObjectNormalizer::ENABLE_MAX_DEPTH   => true,
-                    AbstractObjectNormalizer::MAX_DEPTH_HANDLER    => function (
-                        $innerObject,
-                        $outerObject,
-                        string $attributeName,
-                        string $format = null,
-                        array $context = []
-                    ) {
-                        return $this->displayShortenedObject($innerObject);
-                    },
-                    AbstractNormalizer::CIRCULAR_REFERENCE_HANDLER => function (
-                        $object,
-                        string $format = null,
-                        array $context = []
-                    ) {
-                        return $this->displayShortenedObject($object);
-                    },
+                    AbstractObjectNormalizer::ENABLE_MAX_DEPTH => true,
+                    AbstractObjectNormalizer::MAX_DEPTH_HANDLER => fn($innerObject) => $this->displayShortenedObject(
+                        $innerObject
+                    ),
+                    AbstractNormalizer::CIRCULAR_REFERENCE_HANDLER => fn($object) => $this->displayShortenedObject(
+                        $object
+                    ),
                 ]
             )
         );
@@ -135,6 +185,23 @@ abstract class AbstractApiCrudController
         }
 
         return get_class($object) . ': ' . spl_object_hash($object);
+    }
+
+    public function editAction(
+        ServerRequest $request,
+        Response $response,
+        array $params
+    ): ResponseInterface {
+        $record = $this->getRecord($request, $params);
+
+        if (null === $record) {
+            return $response->withStatus(404)
+                ->withJson(Error::notFound());
+        }
+
+        $this->editRecord((array)$request->getParsedBody(), $record);
+
+        return $response->withJson(Status::updated());
     }
 
     /**
@@ -177,6 +244,23 @@ abstract class AbstractApiCrudController
         }
 
         return $this->serializer->denormalize($data, $this->entityClass, null, $context);
+    }
+
+    public function deleteAction(
+        ServerRequest $request,
+        Response $response,
+        array $params
+    ): ResponseInterface {
+        $record = $this->getRecord($request, $params);
+
+        if (null === $record) {
+            return $response->withStatus(404)
+                ->withJson(Error::notFound());
+        }
+
+        $this->deleteRecord($record);
+
+        return $response->withJson(Status::deleted());
     }
 
     /**

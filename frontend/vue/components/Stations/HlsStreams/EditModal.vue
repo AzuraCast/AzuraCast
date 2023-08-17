@@ -8,21 +8,20 @@
         @submit="doSubmit"
         @hidden="clearContents"
     >
-        <b-tabs
+        <o-tabs
+            nav-tabs-class="nav-tabs"
             content-class="mt-3"
-            pills
         >
-            <form-basic-info :form="v$" />
-        </b-tabs>
+            <form-basic-info v-model:form="form" />
+        </o-tabs>
     </modal-form>
 </template>
 
 <script setup>
-import {required} from '@vuelidate/validators';
 import FormBasicInfo from './Form/BasicInfo';
 import {baseEditModalProps, useBaseEditModal} from "~/functions/useBaseEditModal";
 import {computed, ref} from "vue";
-import {useNotify} from "~/vendor/bootstrapVue";
+import {useNotify} from "~/functions/useNotify";
 import {useTranslate} from "~/vendor/gettext";
 import ModalForm from "~/components/Common/ModalForm.vue";
 
@@ -40,6 +39,7 @@ const {
     loading,
     error,
     isEditMode,
+    form,
     v$,
     clearContents,
     create,
@@ -50,16 +50,8 @@ const {
     props,
     emit,
     $modal,
-    {
-        name: {required},
-        format: {required},
-        bitrate: {required}
-    },
-    {
-        name: null,
-        format: 'aac',
-        bitrate: 128
-    },
+    {},
+    {},
     {
         onSubmitSuccess: () => {
             notifySuccess();

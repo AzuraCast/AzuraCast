@@ -1,12 +1,11 @@
-import {ref} from "vue";
+import {ref, toValue} from "vue";
 import {cloneDeep} from "lodash";
-import {resolveUnref} from "@vueuse/core";
 
 export function useResettableRef(original) {
-    const record = ref(cloneDeep(resolveUnref(original)));
+    const record = ref(cloneDeep(toValue(original)));
 
     const reset = () => {
-        record.value = cloneDeep(resolveUnref(original));
+        record.value = cloneDeep(toValue(original));
     }
 
     return {record, reset};

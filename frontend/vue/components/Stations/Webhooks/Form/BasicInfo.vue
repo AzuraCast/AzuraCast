@@ -1,62 +1,39 @@
 <template>
-    <b-form-group>
-        <div class="form-row">
-            <b-wrapped-form-group
+    <o-tab-item
+        :label="$gettext('Basic Info')"
+        :item-header-class="tabClass"
+        active
+    >
+        <div class="row g-3">
+            <form-group-field
                 id="form_edit_name"
                 class="col-md-12"
-                :field="form.name"
-            >
-                <template #label>
-                    {{ $gettext('Web Hook Name') }}
-                </template>
-                <template #description>
-                    {{
-                        $gettext('Choose a name for this webhook that will help you distinguish it from others. This will only be shown on the administration page.')
-                    }}
-                </template>
-            </b-wrapped-form-group>
+                :field="v$.name"
+                :label="$gettext('Web Hook Name')"
+                :description="$gettext('Choose a name for this webhook that will help you distinguish it from others. This will only be shown on the administration page.')"
+            />
 
-            <b-wrapped-form-group
+            <form-group-multi-check
                 v-if="triggers.length > 0"
                 id="edit_form_triggers"
                 class="col-md-12"
-                :field="form.triggers"
-            >
-                <template #label>
-                    {{ $gettext('Web Hook Triggers') }}
-                </template>
-                <template #description>
-                    {{
-                        $gettext('This web hook will only run when the selected event(s) occur on this specific station.')
-                    }}
-                </template>
-                <template #default="slotProps">
-                    <b-form-checkbox-group
-                        :id="slotProps.id"
-                        v-model="slotProps.field.$model"
-                        stacked
-                    >
-                        <b-form-checkbox
-                            v-for="(trigger) in triggers"
-                            :key="trigger.key"
-                            :value="trigger.key"
-                        >
-                            <h6 class="font-weight-bold mb-0">
-                                {{ trigger.title }}
-                            </h6>
-                            <p class="card-text small">
-                                {{ trigger.description }}
-                            </p>
-                        </b-form-checkbox>
-                    </b-form-checkbox-group>
-                </template>
-            </b-wrapped-form-group>
+                :field="v$.triggers"
+                :options="triggerOptions"
+                stacked
+                :label="$gettext('Web Hook Triggers')"
+                :description="$gettext('This web hook will only run when the selected event(s) occur on this specific station.')"
+            />
         </div>
-    </b-form-group>
+    </o-tab-item>
 </template>
 
 <script setup>
-import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
+import FormGroupField from "~/components/Form/FormGroupField";
+import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
+import {map} from "lodash";
+import {useVModel} from "@vueuse/core";
+import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
+import {required} from "@vuelidate/validators";
 
 const props = defineProps({
     form: {
@@ -68,4 +45,31 @@ const props = defineProps({
         required: true
     }
 });
+
+const emit = defineEmits(['update:form']);
+const form = useVModel(props, 'form', emit);
+
+const {v$, tabClass} = useVuelidateOnFormTab(
+    {
+        name: {required},
+        triggers: {}
+    },
+    form,
+    {
+        name: null,
+        triggers: [],
+        config: {}
+    }
+);
+
+const triggerOptions = map(
+    props.triggers,
+    (trigger) => {
+        return {
+            value: trigger.key,
+            text: trigger.title,
+            description: trigger.description
+        };
+    }
+);
 </script>

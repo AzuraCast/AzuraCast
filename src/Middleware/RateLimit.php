@@ -14,16 +14,16 @@ use Psr\Http\Server\RequestHandlerInterface;
 final class RateLimit
 {
     public function __construct(
-        private readonly string $rl_group = 'default',
-        private readonly int $rl_interval = 5,
-        private readonly int $rl_limit = 2
+        private readonly string $rlGroup = 'default',
+        private readonly int $rlInterval = 5,
+        private readonly int $rlLimit = 2
     ) {
     }
 
     public function __invoke(ServerRequest $request, RequestHandlerInterface $handler): ResponseInterface
     {
         $rateLimit = $request->getRateLimit();
-        $rateLimit->checkRequestRateLimit($request, $this->rl_group, $this->rl_interval, $this->rl_limit);
+        $rateLimit->checkRequestRateLimit($request, $this->rlGroup, $this->rlInterval, $this->rlLimit);
 
         return $handler->handle($request);
     }

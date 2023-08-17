@@ -25,9 +25,9 @@ class StationBrandingConfiguration extends AbstractStationConfiguration
         );
     }
 
-    public function setDefaultAlbumArtUrl(?string $default_album_art_url): void
+    public function setDefaultAlbumArtUrl(?string $defaultAlbumArtUrl): void
     {
-        $this->set(self::DEFAULT_ALBUM_ART_URL, $default_album_art_url);
+        $this->set(self::DEFAULT_ALBUM_ART_URL, $defaultAlbumArtUrl);
     }
 
     public const PUBLIC_CUSTOM_CSS = 'public_custom_css';
@@ -52,5 +52,21 @@ class StationBrandingConfiguration extends AbstractStationConfiguration
     public function setPublicCustomJs(?string $js): void
     {
         $this->set(self::PUBLIC_CUSTOM_JS, $js);
+    }
+
+    public const OFFLINE_TEXT = 'offline_text';
+
+    public function getOfflineText(): ?string
+    {
+        $message = $this->get(self::OFFLINE_TEXT);
+
+        return (!empty($message))
+            ? $message
+            : null;
+    }
+
+    public function setOfflineText(?string $message): void
+    {
+        $this->set(self::OFFLINE_TEXT, $message);
     }
 }

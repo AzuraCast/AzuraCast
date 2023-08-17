@@ -4,8 +4,11 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Stations\LiquidsoapConfig;
 
-use App\Doctrine\ReloadableEntityManagerInterface;
-use App\Entity;
+use App\Container\EntityManagerAwareTrait;
+use App\Controller\SingleActionInterface;
+use App\Entity\Api\Error;
+use App\Entity\Api\Status;
+use App\Entity\StationBackendConfiguration;
 use App\Event\Radio\WriteLiquidsoapConfiguration;
 use App\Http\Response;
 use App\Http\ServerRequest;
@@ -14,10 +17,11 @@ use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ResponseInterface;
 use Throwable;
 
-final class PutAction
+final class PutAction implements SingleActionInterface
 {
+    use EntityManagerAwareTrait;
+
     public function __construct(
-        private readonly ReloadableEntityManagerInterface $em,
         private readonly EventDispatcherInterface $eventDispatcher,
         private readonly Liquidsoap $liquidsoap,
     ) {
@@ -26,14 +30,14 @@ final class PutAction
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        string $station_id
+        array $params
     ): ResponseInterface {
         $body = (array)$request->getParsedBody();
 
         $station = $this->em->refetch($request->getStation());
 
         $backendConfig = $station->getBackendConfig();
-        foreach (Entity\StationBackendConfiguration::getCustomConfigurationSections() as $field) {
+        foreach (StationBackendConfiguration::getCustomConfigurationSections() as $field) {
             if (isset($body[$field])) {
                 $backendConfig->setCustomConfigurationSection($field, $body[$field]);
             }
@@ -51,9 +55,9 @@ final class PutAction
             $config = $event->buildConfiguration();
             $this->liquidsoap->verifyConfig($config);
         } catch (Throwable $e) {
-            return $response->withStatus(500)->withJson(Entity\Api\Error::fromException($e));
+            return $response->withStatus(500)->withJson(Error::fromException($e));
         }
 
-        return $response->withJson(Entity\Api\Status::updated());
+        return $response->withJson(Status::updated());
     }
 }

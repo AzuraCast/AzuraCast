@@ -26,6 +26,9 @@ class StationPlaylistFolder implements
     #[ORM\JoinColumn(name: 'playlist_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     protected StationPlaylist $playlist;
 
+    #[ORM\Column(nullable: false, insertable: false, updatable: false)]
+    protected int $playlist_id;
+
     #[ORM\Column(length: 500)]
     protected string $path;
 

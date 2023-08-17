@@ -1,21 +1,24 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Unit;
 
 use App\Entity\Api\StationPlaylistQueue;
 use App\Radio\AutoDJ\DuplicatePrevention;
 use App\Tests\Module;
 use Codeception\Test\Unit;
+use UnitTester;
 
 class DuplicatePreventionTest extends Unit
 {
-    protected \UnitTester $tester;
+    protected UnitTester $tester;
 
     protected DuplicatePrevention $duplicatePrevention;
 
-    protected function _inject(Module $tests_module): void
+    protected function _inject(Module $testsModule): void
     {
-        $di = $tests_module->container;
+        $di = $testsModule->container;
         $this->duplicatePrevention = $di->get(DuplicatePrevention::class);
     }
 

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Service\IpGeolocator;
 
 final class IpResult
@@ -36,8 +38,8 @@ final class IpResult
         $record->description = implode(
             ', ',
             array_filter([
-                $record->region,
                 $record->city,
+                $record->region,
                 $record->country,
             ])
         );

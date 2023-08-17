@@ -13,7 +13,6 @@ use App\Utilities\File;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use InvalidArgumentException;
 use OpenApi\Attributes as OA;
 use Stringable;
 use Symfony\Component\Serializer\Annotation as Serializer;
@@ -274,9 +273,9 @@ class StationPlaylist implements
         return $this->remote_url;
     }
 
-    public function setRemoteUrl(?string $remote_url): void
+    public function setRemoteUrl(?string $remoteUrl): void
     {
-        $this->remote_url = $remote_url;
+        $this->remote_url = $remoteUrl;
     }
 
     public function getRemoteType(): ?PlaylistRemoteTypes
@@ -284,9 +283,9 @@ class StationPlaylist implements
         return $this->remote_type;
     }
 
-    public function setRemoteType(?PlaylistRemoteTypes $remote_type): void
+    public function setRemoteType(?PlaylistRemoteTypes $remoteType): void
     {
-        $this->remote_type = $remote_type;
+        $this->remote_type = $remoteType;
     }
 
     public function getRemoteBuffer(): int
@@ -294,9 +293,9 @@ class StationPlaylist implements
         return $this->remote_buffer;
     }
 
-    public function setRemoteBuffer(int $remote_buffer): void
+    public function setRemoteBuffer(int $remoteBuffer): void
     {
-        $this->remote_buffer = $remote_buffer;
+        $this->remote_buffer = $remoteBuffer;
     }
 
     public function getIsEnabled(): bool
@@ -304,9 +303,9 @@ class StationPlaylist implements
         return $this->is_enabled;
     }
 
-    public function setIsEnabled(bool $is_enabled): void
+    public function setIsEnabled(bool $isEnabled): void
     {
-        $this->is_enabled = $is_enabled;
+        $this->is_enabled = $isEnabled;
     }
 
     public function getIsJingle(): bool
@@ -314,9 +313,9 @@ class StationPlaylist implements
         return $this->is_jingle;
     }
 
-    public function setIsJingle(bool $is_jingle): void
+    public function setIsJingle(bool $isJingle): void
     {
-        $this->is_jingle = $is_jingle;
+        $this->is_jingle = $isJingle;
     }
 
     public function getWeight(): int
@@ -338,9 +337,9 @@ class StationPlaylist implements
         return $this->include_in_requests;
     }
 
-    public function setIncludeInRequests(bool $include_in_requests): void
+    public function setIncludeInRequests(bool $includeInRequests): void
     {
-        $this->include_in_requests = $include_in_requests;
+        $this->include_in_requests = $includeInRequests;
     }
 
     public function getIncludeInOnDemand(): bool
@@ -348,9 +347,9 @@ class StationPlaylist implements
         return $this->include_in_on_demand;
     }
 
-    public function setIncludeInOnDemand(bool $include_in_on_demand): void
+    public function setIncludeInOnDemand(bool $includeInOnDemand): void
     {
-        $this->include_in_on_demand = $include_in_on_demand;
+        $this->include_in_on_demand = $includeInOnDemand;
     }
 
     /**
@@ -366,9 +365,9 @@ class StationPlaylist implements
         return $this->avoid_duplicates;
     }
 
-    public function setAvoidDuplicates(bool $avoid_duplicates): void
+    public function setAvoidDuplicates(bool $avoidDuplicates): void
     {
-        $this->avoid_duplicates = $avoid_duplicates;
+        $this->avoid_duplicates = $avoidDuplicates;
     }
 
     public function getPlayedAt(): int
@@ -376,9 +375,9 @@ class StationPlaylist implements
         return $this->played_at;
     }
 
-    public function setPlayedAt(int $played_at): void
+    public function setPlayedAt(int $playedAt): void
     {
-        $this->played_at = $played_at;
+        $this->played_at = $playedAt;
     }
 
     public function getQueueResetAt(): int
@@ -386,9 +385,9 @@ class StationPlaylist implements
         return $this->queue_reset_at;
     }
 
-    public function setQueueResetAt(int $queue_reset_at): void
+    public function setQueueResetAt(int $queueResetAt): void
     {
-        $this->queue_reset_at = $queue_reset_at;
+        $this->queue_reset_at = $queueResetAt;
     }
 
     /**
@@ -447,29 +446,29 @@ class StationPlaylist implements
     }
 
     /**
-     * @param array $backend_options
+     * @param array $backendOptions
      */
-    public function setBackendOptions(array $backend_options): void
+    public function setBackendOptions(array $backendOptions): void
     {
-        $this->backend_options = implode(',', $backend_options);
+        $this->backend_options = implode(',', $backendOptions);
     }
 
     public function backendInterruptOtherSongs(): bool
     {
-        $backend_options = $this->getBackendOptions();
-        return in_array(self::OPTION_INTERRUPT_OTHER_SONGS, $backend_options, true);
+        $backendOptions = $this->getBackendOptions();
+        return in_array(self::OPTION_INTERRUPT_OTHER_SONGS, $backendOptions, true);
     }
 
     public function backendMerge(): bool
     {
-        $backend_options = $this->getBackendOptions();
-        return in_array(self::OPTION_MERGE, $backend_options, true);
+        $backendOptions = $this->getBackendOptions();
+        return in_array(self::OPTION_MERGE, $backendOptions, true);
     }
 
     public function backendPlaySingleTrack(): bool
     {
-        $backend_options = $this->getBackendOptions();
-        return in_array(self::OPTION_PLAY_SINGLE_TRACK, $backend_options, true);
+        $backendOptions = $this->getBackendOptions();
+        return in_array(self::OPTION_PLAY_SINGLE_TRACK, $backendOptions, true);
     }
 
     public function getPlayPerHourMinute(): int
@@ -477,13 +476,13 @@ class StationPlaylist implements
         return $this->play_per_hour_minute;
     }
 
-    public function setPlayPerHourMinute(int $play_per_hour_minute): void
+    public function setPlayPerHourMinute(int $playPerHourMinute): void
     {
-        if ($play_per_hour_minute > 59 || $play_per_hour_minute < 0) {
-            $play_per_hour_minute = 0;
+        if ($playPerHourMinute > 59 || $playPerHourMinute < 0) {
+            $playPerHourMinute = 0;
         }
 
-        $this->play_per_hour_minute = $play_per_hour_minute;
+        $this->play_per_hour_minute = $playPerHourMinute;
     }
 
     public function getPlayPerSongs(): int
@@ -491,9 +490,9 @@ class StationPlaylist implements
         return $this->play_per_songs;
     }
 
-    public function setPlayPerSongs(int $play_per_songs): void
+    public function setPlayPerSongs(int $playPerSongs): void
     {
-        $this->play_per_songs = $play_per_songs;
+        $this->play_per_songs = $playPerSongs;
     }
 
     public function getPlayPerMinutes(): int
@@ -502,9 +501,9 @@ class StationPlaylist implements
     }
 
     public function setPlayPerMinutes(
-        int $play_per_minutes
+        int $playPerMinutes
     ): void {
-        $this->play_per_minutes = $play_per_minutes;
+        $this->play_per_minutes = $playPerMinutes;
     }
 
     public function __clone()

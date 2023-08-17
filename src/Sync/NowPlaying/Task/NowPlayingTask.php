@@ -5,11 +5,12 @@ declare(strict_types=1);
 namespace App\Sync\NowPlaying\Task;
 
 use App\Cache\NowPlayingCache;
-use App\Doctrine\ReloadableEntityManagerInterface;
+use App\Container\EntityManagerAwareTrait;
+use App\Container\LoggerAwareTrait;
+use App\Container\SettingsAwareTrait;
 use App\Entity\Api\NowPlaying\NowPlaying;
 use App\Entity\ApiGenerator\NowPlayingApiGenerator;
 use App\Entity\Repository\ListenerRepository;
-use App\Entity\Repository\SettingsRepository;
 use App\Entity\Station;
 use App\Environment;
 use App\Event\Radio\GenerateRawNowPlaying;
@@ -23,12 +24,15 @@ use Exception;
 use GuzzleHttp\Promise\Utils;
 use NowPlaying\Result\Result;
 use Psr\EventDispatcher\EventDispatcherInterface;
-use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Messenger\MessageBus;
 
 final class NowPlayingTask implements NowPlayingTaskInterface, EventSubscriberInterface
 {
+    use LoggerAwareTrait;
+    use EntityManagerAwareTrait;
+    use SettingsAwareTrait;
+
     public function __construct(
         private readonly Adapters $adapters,
         private readonly NowPlayingCache $nowPlayingCache,
@@ -36,10 +40,7 @@ final class NowPlayingTask implements NowPlayingTaskInterface, EventSubscriberIn
         private readonly MessageBus $messageBus,
         private readonly RouterInterface $router,
         private readonly ListenerRepository $listenerRepo,
-        private readonly SettingsRepository $settingsRepo,
         private readonly NowPlayingApiGenerator $nowPlayingApiGenerator,
-        private readonly ReloadableEntityManagerInterface $em,
-        private readonly LoggerInterface $logger,
         private readonly HlsListeners $hlsListeners,
     ) {
     }
@@ -68,14 +69,14 @@ final class NowPlayingTask implements NowPlayingTaskInterface, EventSubscriberIn
             return;
         }
 
-        $include_clients = $this->settingsRepo->readSettings()->isAnalyticsEnabled();
+        $includeClients = $this->settingsRepo->readSettings()->isAnalyticsEnabled();
 
         // Build the new "raw" NowPlaying data.
         try {
             $event = new GenerateRawNowPlaying(
                 $this->adapters,
                 $station,
-                $include_clients
+                $includeClients
             );
             $this->eventDispatcher->dispatch($event);
 
@@ -103,7 +104,7 @@ final class NowPlayingTask implements NowPlayingTaskInterface, EventSubscriberIn
         );
 
         // Update detailed listener statistics, if they exist for the station
-        if ($include_clients && null !== $npResult->clients) {
+        if ($includeClients && null !== $npResult->clients) {
             $this->listenerRepo->update($station, $npResult->clients);
         }
 

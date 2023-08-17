@@ -3,19 +3,11 @@
         {{ $gettext('Custom Branding') }}
     </h2>
 
-    <section
-        class="card mb-3"
-        role="region"
-        aria-labelledby="hdr_upload_custom_assets"
+    <card-page
+        class="mb-3"
+        header-id="hdr_upload_custom_assets"
+        :title="$gettext('Upload Custom Assets')"
     >
-        <div class="card-header bg-primary-dark">
-            <h2
-                id="hdr_upload_custom_assets"
-                class="card-title"
-            >
-                {{ $gettext('Upload Custom Assets') }}
-            </h2>
-        </div>
         <div class="card-body">
             <ul class="list-unstyled">
                 <custom-asset-form
@@ -37,32 +29,28 @@
                 />
             </ul>
         </div>
-    </section>
+    </card-page>
 
     <branding-form :api-url="settingsApiUrl" />
+
+    <lightbox ref="$lightbox" />
 </template>
 
 <script setup>
 import CustomAssetForm from "./Branding/CustomAssetForm.vue";
 import BrandingForm from "./Branding/BrandingForm.vue";
+import CardPage from "~/components/Common/CardPage.vue";
+import Lightbox from "~/components/Common/Lightbox.vue";
+import {ref} from "vue";
+import {useProvideLightbox} from "~/vendor/lightbox";
+import {getApiUrl} from "~/router";
 
-defineProps({
-    settingsApiUrl: {
-        type: String,
-        required: true,
-    },
-    browserIconApiUrl: {
-        type: String,
-        required: true
-    },
-    backgroundApiUrl: {
-        type: String,
-        required: true
-    },
-    albumArtApiUrl: {
-        type: String,
-        required: true
-    }
-});
+const settingsApiUrl = getApiUrl('/admin/settings/branding');
+const browserIconApiUrl = getApiUrl('/admin/custom_assets/browser_icon');
+const backgroundApiUrl = getApiUrl('/admin/custom_assets/background');
+const albumArtApiUrl = getApiUrl('/admin/custom_assets/album_art');
+
+const $lightbox = ref(); // Template Ref
+useProvideLightbox($lightbox);
 </script>
 

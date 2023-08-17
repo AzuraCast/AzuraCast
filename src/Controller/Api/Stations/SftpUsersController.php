@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Stations;
 
-use App\Entity;
+use App\Entity\SftpUser;
 use App\OpenApi;
 use OpenApi\Attributes as OA;
 
-/** @extends AbstractStationApiCrudController<Entity\SftpUser> */
+/** @extends AbstractStationApiCrudController<SftpUser> */
 #[
     OA\Get(
         path: '/station/{station_id}/sftp-users',
@@ -135,6 +135,6 @@ use OpenApi\Attributes as OA;
 ]
 final class SftpUsersController extends AbstractStationApiCrudController
 {
-    protected string $entityClass = Entity\SftpUser::class;
+    protected string $entityClass = SftpUser::class;
     protected string $resourceRouteName = 'api:stations:sftp-user';
 }

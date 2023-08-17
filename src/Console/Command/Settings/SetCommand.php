@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Console\Command\Settings;
 
 use App\Console\Command\CommandAbstract;
-use App\Entity;
+use App\Container\SettingsAwareTrait;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -18,11 +18,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 )]
 final class SetCommand extends CommandAbstract
 {
-    public function __construct(
-        private readonly Entity\Repository\SettingsRepository $settingsTableRepo,
-    ) {
-        parent::__construct();
-    }
+    use SettingsAwareTrait;
 
     protected function configure(): void
     {
@@ -40,7 +36,7 @@ final class SetCommand extends CommandAbstract
         $io->title('AzuraCast Settings');
 
         if (strtolower($settingValue) === 'null') {
-            $this->settingsTableRepo->writeSettings([$settingKey => null]);
+            $this->writeSettings([$settingKey => null]);
 
             $io->success(sprintf('Setting "%s" removed.', $settingKey));
             return 0;
@@ -50,7 +46,7 @@ final class SetCommand extends CommandAbstract
             $settingValue = json_decode($settingValue, true, 512, JSON_THROW_ON_ERROR);
         }
 
-        $this->settingsTableRepo->writeSettings([$settingKey => $settingValue]);
+        $this->writeSettings([$settingKey => $settingValue]);
 
         $io->success(sprintf('Setting "%s" updated.', $settingKey));
 

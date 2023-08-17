@@ -4,42 +4,46 @@ declare(strict_types=1);
 
 namespace App\Controller\Frontend\Account;
 
-use App\Entity;
+use App\Container\EntityManagerAwareTrait;
+use App\Container\SettingsAwareTrait;
+use App\Controller\SingleActionInterface;
+use App\Entity\User;
 use App\Exception\RateLimitExceededException;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\RateLimit;
-use Doctrine\ORM\EntityManagerInterface;
 use Mezzio\Session\SessionCookiePersistenceInterface;
 use Psr\Http\Message\ResponseInterface;
 
-final class LoginAction
+final class LoginAction implements SingleActionInterface
 {
+    use EntityManagerAwareTrait;
+    use SettingsAwareTrait;
+
     public function __construct(
-        private readonly EntityManagerInterface $em,
-        private readonly RateLimit $rateLimit,
-        private readonly Entity\Repository\SettingsRepository $settingsRepo
+        private readonly RateLimit $rateLimit
     ) {
     }
 
     public function __invoke(
         ServerRequest $request,
-        Response $response
+        Response $response,
+        array $params
     ): ResponseInterface {
         $auth = $request->getAuth();
         $acl = $request->getAcl();
 
         // Check installation completion progress.
-        $settings = $this->settingsRepo->readSettings();
+        $settings = $this->readSettings();
 
         if (!$settings->isSetupComplete()) {
-            $num_users = (int)$this->em->createQuery(
+            $numUsers = (int)$this->em->createQuery(
                 <<<'DQL'
                     SELECT COUNT(u.id) FROM App\Entity\User u
                 DQL
             )->getSingleScalarResult();
 
-            if (0 === $num_users) {
+            if (0 === $numUsers) {
                 return $response->withRedirect($request->getRouter()->named('setup:index'));
             }
         }
@@ -67,7 +71,7 @@ final class LoginAction
 
             $user = $auth->authenticate($request->getParam('username'), $request->getParam('password'));
 
-            if ($user instanceof Entity\User) {
+            if ($user instanceof User) {
                 $session = $request->getSession();
 
                 // If user selects "remember me", extend the cookie/session lifetime.

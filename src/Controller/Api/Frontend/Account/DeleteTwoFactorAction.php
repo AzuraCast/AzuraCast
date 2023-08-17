@@ -4,22 +4,21 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Frontend\Account;
 
-use App\Doctrine\ReloadableEntityManagerInterface;
-use App\Entity;
+use App\Container\EntityManagerAwareTrait;
+use App\Controller\SingleActionInterface;
+use App\Entity\Api\Status;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
 
-final class DeleteTwoFactorAction
+final class DeleteTwoFactorAction implements SingleActionInterface
 {
-    public function __construct(
-        private readonly ReloadableEntityManagerInterface $em,
-    ) {
-    }
+    use EntityManagerAwareTrait;
 
     public function __invoke(
         ServerRequest $request,
-        Response $response
+        Response $response,
+        array $params
     ): ResponseInterface {
         $user = $request->getUser();
         $user = $this->em->refetch($user);
@@ -28,6 +27,6 @@ final class DeleteTwoFactorAction
         $this->em->persist($user);
         $this->em->flush();
 
-        return $response->withJson(Entity\Api\Status::updated());
+        return $response->withJson(Status::updated());
     }
 }

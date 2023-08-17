@@ -20,12 +20,12 @@
                     </h3>
                 </div>
 
-                <b-alert
-                    variant="danger"
-                    :show="error != null"
+                <div
+                    v-show="error != null"
+                    class="alert alert-danger"
                 >
                     {{ error }}
-                </b-alert>
+                </div>
 
                 <form
                     id="recover-form"
@@ -39,7 +39,7 @@
                         :value="csrf"
                     >
 
-                    <b-wrapped-form-group
+                    <form-group-field
                         id="password"
                         name="password"
                         label-class="mb-2"
@@ -49,22 +49,21 @@
                         <template #label>
                             <icon
                                 icon="vpn_key"
-                                class="mr-1"
+                                class="me-1"
                             />
                             {{ $gettext('Password') }}
                         </template>
-                    </b-wrapped-form-group>
+                    </form-group-field>
 
-                    <b-button
-                        type="submit"
-                        size="lg"
-                        block
-                        variant="primary"
-                        :disabled="v$.$invalid"
-                        class="mt-2"
-                    >
-                        {{ $gettext('Recover Account') }}
-                    </b-button>
+                    <div class="block-buttons mt-2">
+                        <button
+                            type="submit"
+                            class="btn btn-primary btn-block"
+                            :disabled="v$.$invalid"
+                        >
+                            {{ $gettext('Recover Account') }}
+                        </button>
+                    </div>
                 </form>
             </div>
         </section>
@@ -72,7 +71,7 @@
 </template>
 
 <script setup>
-import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
+import FormGroupField from "~/components/Form/FormGroupField";
 import Icon from "~/components/Common/Icon";
 import validatePassword from '~/functions/validatePassword.js';
 import {required} from '@vuelidate/validators';

@@ -21,11 +21,11 @@ class Status
     public function __construct(
         bool $success = true,
         string $message = 'Changes saved successfully.',
-        ?string $formatted_message = null
+        ?string $formattedMessage = null
     ) {
         $this->success = $success;
         $this->message = $message;
-        $this->formatted_message = $formatted_message ?? $message;
+        $this->formatted_message = $formattedMessage ?? $message;
     }
 
     public static function success(): self

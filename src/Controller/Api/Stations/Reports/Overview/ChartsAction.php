@@ -4,33 +4,31 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Stations\Reports\Overview;
 
-use App\Entity;
+use App\Entity\Api\Status;
+use App\Entity\Enums\AnalyticsIntervals;
+use App\Entity\Repository\AnalyticsRepository;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use Carbon\CarbonImmutable;
-use Doctrine\ORM\EntityManagerInterface;
 use Psr\Http\Message\ResponseInterface;
 use stdClass;
 
 final class ChartsAction extends AbstractReportAction
 {
     public function __construct(
-        Entity\Repository\SettingsRepository $settingsRepo,
-        EntityManagerInterface $em,
-        private readonly Entity\Repository\AnalyticsRepository $analyticsRepo,
+        private readonly AnalyticsRepository $analyticsRepo
     ) {
-        parent::__construct($settingsRepo, $em);
     }
 
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        string $station_id
+        array $params
     ): ResponseInterface {
         // Get current analytics level.
         if (!$this->isAnalyticsEnabled()) {
             return $response->withStatus(400)
-                ->withJson(new Entity\Api\Status(false, 'Reporting is restricted due to system analytics level.'));
+                ->withJson(new Status(false, 'Reporting is restricted due to system analytics level.'));
         }
 
         $station = $request->getStation();
@@ -46,63 +44,63 @@ final class ChartsAction extends AbstractReportAction
             $dateRange
         );
 
-        $daily_chart = new stdClass();
-        $daily_chart->label = __('Listeners by Day');
-        $daily_chart->type = 'line';
-        $daily_chart->fill = false;
+        $dailyChart = new stdClass();
+        $dailyChart->label = __('Listeners by Day');
+        $dailyChart->type = 'line';
+        $dailyChart->fill = false;
 
         $dailyAlt = [
-            'label' => $daily_chart->label,
+            'label' => $dailyChart->label,
             'values' => [],
         ];
 
-        $daily_averages = [];
+        $dailyAverages = [];
 
-        $days_of_week = [];
+        $daysOfWeek = [];
 
         foreach ($dailyStats as $stat) {
             /** @var CarbonImmutable $statTime */
             $statTime = $stat['moment'];
             $statTime = $statTime->shiftTimezone($stationTz);
 
-            $avg_row = new stdClass();
-            $avg_row->x = $statTime->getTimestampMs();
-            $avg_row->y = round((float)$stat['number_avg'], 2);
-            $daily_averages[] = $avg_row;
+            $avgRow = new stdClass();
+            $avgRow->x = $statTime->getTimestampMs();
+            $avgRow->y = round((float)$stat['number_avg'], 2);
+            $dailyAverages[] = $avgRow;
 
-            $row_date = $statTime->format('Y-m-d');
+            $rowDate = $statTime->format('Y-m-d');
 
             $dailyAlt['values'][] = [
-                'label' => $row_date,
+                'label' => $rowDate,
                 'type' => 'time',
-                'original' => $avg_row->x,
-                'value' => $avg_row->y . ' ' . __('Listeners'),
+                'original' => $avgRow->x,
+                'value' => $avgRow->y . ' ' . __('Listeners'),
             ];
 
-            $day_of_week = (int)$statTime->format('N') - 1;
-            $days_of_week[$day_of_week][] = $stat['number_avg'];
+            $dayOfWeek = (int)$statTime->format('N') - 1;
+            $daysOfWeek[$dayOfWeek][] = $stat['number_avg'];
         }
 
-        $daily_chart->data = $daily_averages;
+        $dailyChart->data = $dailyAverages;
 
         $stats['daily'] = [
             'metrics' => [
-                $daily_chart,
+                $dailyChart,
             ],
             'alt' => [
                 $dailyAlt,
             ],
         ];
 
-        $day_of_week_chart = new stdClass();
-        $day_of_week_chart->label = __('Listeners by Day of Week');
+        $dayOfWeekChart = new stdClass();
+        $dayOfWeekChart->label = __('Listeners by Day of Week');
 
         $dayOfWeekAlt = [
-            'label' => $day_of_week_chart->label,
+            'label' => $dayOfWeekChart->label,
             'values' => [],
         ];
 
-        $days_of_week_names = [
+        $daysOfWeekNames = [
             __('Monday'),
             __('Tuesday'),
             __('Wednesday'),
@@ -112,27 +110,27 @@ final class ChartsAction extends AbstractReportAction
             __('Sunday'),
         ];
 
-        $day_of_week_stats = [];
+        $dayOfWeekStats = [];
 
-        foreach ($days_of_week_names as $day_index => $day_name) {
-            $day_totals = $days_of_week[$day_index] ?? [0];
+        foreach ($daysOfWeekNames as $dayIndex => $dayName) {
+            $dayTotals = $daysOfWeek[$dayIndex] ?? [0];
 
-            $stat_value = round(array_sum($day_totals) / count($day_totals), 2);
-            $day_of_week_stats[] = $stat_value;
+            $statValue = round(array_sum($dayTotals) / count($dayTotals), 2);
+            $dayOfWeekStats[] = $statValue;
 
             $dayOfWeekAlt['values'][] = [
-                'label' => $day_name,
+                'label' => $dayName,
                 'type' => 'string',
-                'value' => $stat_value . ' ' . __('Listeners'),
+                'value' => $statValue . ' ' . __('Listeners'),
             ];
         }
 
-        $day_of_week_chart->data = $day_of_week_stats;
+        $dayOfWeekChart->data = $dayOfWeekStats;
 
         $stats['day_of_week'] = [
-            'labels' => $days_of_week_names,
+            'labels' => $daysOfWeekNames,
             'metrics' => [
-                $day_of_week_chart,
+                $dayOfWeekChart,
             ],
             'alt' => [
                 $dayOfWeekAlt,
@@ -143,10 +141,10 @@ final class ChartsAction extends AbstractReportAction
         $hourlyStats = $this->analyticsRepo->findForStationInRange(
             $station,
             $dateRange,
-            Entity\Enums\AnalyticsIntervals::Hourly
+            AnalyticsIntervals::Hourly
         );
 
-        $totals_by_hour = [];
+        $totalsByHour = [];
 
         foreach ($hourlyStats as $stat) {
             /** @var CarbonImmutable $statTime */
@@ -154,40 +152,40 @@ final class ChartsAction extends AbstractReportAction
             $statTime = $statTime->shiftTimezone($stationTz);
 
             $hour = $statTime->hour;
-            $totals_by_hour[$hour][] = $stat['number_avg'];
+            $totalsByHour[$hour][] = $stat['number_avg'];
         }
 
-        $hourly_labels = [];
-        $hourly_chart = new stdClass();
-        $hourly_chart->label = __('Listeners by Hour');
+        $hourlyLabels = [];
+        $hourlyChart = new stdClass();
+        $hourlyChart->label = __('Listeners by Hour');
 
-        $hourly_rows = [];
+        $hourlyRows = [];
 
         $hourlyAlt = [
-            'label' => $hourly_chart->label,
+            'label' => $hourlyChart->label,
             'values' => [],
         ];
 
         for ($i = 0; $i < 24; $i++) {
-            $hourly_labels[] = $i . ':00';
-            $totals = $totals_by_hour[$i] ?? [0];
+            $hourlyLabels[] = $i . ':00';
+            $totals = $totalsByHour[$i] ?? [0];
 
-            $stat_value = round(array_sum($totals) / count($totals), 2);
-            $hourly_rows[] = $stat_value;
+            $statValue = round(array_sum($totals) / count($totals), 2);
+            $hourlyRows[] = $statValue;
 
             $hourlyAlt['values'][] = [
                 'label' => $i . ':00',
                 'type' => 'string',
-                'value' => $stat_value . ' ' . __('Listeners'),
+                'value' => $statValue . ' ' . __('Listeners'),
             ];
         }
 
-        $hourly_chart->data = $hourly_rows;
+        $hourlyChart->data = $hourlyRows;
 
         $stats['hourly'] = [
-            'labels' => $hourly_labels,
+            'labels' => $hourlyLabels,
             'metrics' => [
-                $hourly_chart,
+                $hourlyChart,
             ],
             'alt' => [
                 $hourlyAlt,

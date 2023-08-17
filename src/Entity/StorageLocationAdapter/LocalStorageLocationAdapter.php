@@ -4,20 +4,18 @@ declare(strict_types=1);
 
 namespace App\Entity\StorageLocationAdapter;
 
+use App\Container\EnvironmentAwareTrait;
 use App\Entity\Enums\StorageLocationAdapters;
-use App\Environment;
 use App\Flysystem\Adapter\LocalAdapterInterface;
 use App\Flysystem\Adapter\LocalFilesystemAdapter;
 use App\Flysystem\ExtendedFilesystemInterface;
 use App\Flysystem\LocalFilesystem;
+use InvalidArgumentException;
 use Symfony\Component\Filesystem\Path;
 
 final class LocalStorageLocationAdapter extends AbstractStorageLocationLocationAdapter
 {
-    public function __construct(
-        private readonly Environment $environment
-    ) {
-    }
+    use EnvironmentAwareTrait;
 
     public function getType(): StorageLocationAdapters
     {
@@ -43,11 +41,11 @@ final class LocalStorageLocationAdapter extends AbstractStorageLocationLocationA
         $baseDir = $this->environment->getBaseDirectory();
 
         if (Path::isBasePath($baseDir, $path)) {
-            throw new \InvalidArgumentException('Directory is within the web root.');
+            throw new InvalidArgumentException('Directory is within the web root.');
         }
 
         if (Path::isBasePath($path, $baseDir)) {
-            throw new \InvalidArgumentException('Directory is a parent directory of the web root.');
+            throw new InvalidArgumentException('Directory is a parent directory of the web root.');
         }
 
         parent::validate();

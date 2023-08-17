@@ -4,48 +4,54 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Frontend\Dashboard;
 
-use App\Entity;
+use App\Container\EntityManagerAwareTrait;
+use App\Container\SettingsAwareTrait;
+use App\Controller\SingleActionInterface;
+use App\Entity\Api\Dashboard;
+use App\Entity\ApiGenerator\NowPlayingApiGenerator;
+use App\Entity\Station;
 use App\Enums\StationPermissions;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Paginator;
-use Doctrine\ORM\EntityManagerInterface;
 use Psr\Http\Message\ResponseInterface;
 
-final class StationsAction
+final class StationsAction implements SingleActionInterface
 {
+    use EntityManagerAwareTrait;
+    use SettingsAwareTrait;
+
     public function __construct(
-        private readonly EntityManagerInterface $em,
-        private readonly Entity\Repository\SettingsRepository $settingsRepo,
-        private readonly Entity\ApiGenerator\NowPlayingApiGenerator $npApiGenerator
+        private readonly NowPlayingApiGenerator $npApiGenerator
     ) {
     }
 
     public function __invoke(
         ServerRequest $request,
-        Response $response
+        Response $response,
+        array $params
     ): ResponseInterface {
         $router = $request->getRouter();
         $acl = $request->getAcl();
 
-        /** @var Entity\Station[] $stations */
+        /** @var Station[] $stations */
         $stations = array_filter(
-            $this->em->getRepository(Entity\Station::class)->findAll(),
+            $this->em->getRepository(Station::class)->findAll(),
             static function ($station) use ($acl) {
-                /** @var Entity\Station $station */
+                /** @var Station $station */
                 return $station->getIsEnabled() &&
                     $acl->isAllowed(StationPermissions::View, $station->getId());
             }
         );
 
-        $listenersEnabled = $this->settingsRepo->readSettings()->isAnalyticsEnabled();
+        $listenersEnabled = $this->readSettings()->isAnalyticsEnabled();
 
         $viewStations = [];
         foreach ($stations as $station) {
             $np = $this->npApiGenerator->currentOrEmpty($station);
             $np->resolveUrls($request->getRouter()->getBaseUrl());
 
-            $row = new Entity\Api\Dashboard();
+            $row = new Dashboard();
             $row->fromParentObject($np);
 
             $row->links = [
@@ -67,7 +73,7 @@ final class StationsAction
         if (!empty($searchPhrase)) {
             $viewStations = array_filter(
                 $viewStations,
-                static function (Entity\Api\Dashboard $row) use ($searchPhrase) {
+                static function (Dashboard $row) use ($searchPhrase) {
                     return false !== mb_stripos($row->station->name, $searchPhrase);
                 }
             );
@@ -76,7 +82,7 @@ final class StationsAction
         $sort = $request->getParam('sort');
         usort(
             $viewStations,
-            static function (Entity\Api\Dashboard $a, Entity\Api\Dashboard $b) use ($sort) {
+            static function (Dashboard $a, Dashboard $b) use ($sort) {
                 if ('listeners' === $sort) {
                     return $a->listeners->current <=> $b->listeners->current;
                 }

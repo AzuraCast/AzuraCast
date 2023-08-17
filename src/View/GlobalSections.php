@@ -4,15 +4,16 @@ declare(strict_types=1);
 
 namespace App\View;
 
+use ArrayAccess;
 use League\Plates\Template\Template;
 use LogicException;
 
 /**
  * A global section container for templates.
  *
- * @implements \ArrayAccess<string, string>
+ * @implements ArrayAccess<string, string>
  */
-final class GlobalSections implements \ArrayAccess
+final class GlobalSections implements ArrayAccess
 {
     private int $sectionMode = Template::SECTION_MODE_REWRITE;
     private array $sections = [];

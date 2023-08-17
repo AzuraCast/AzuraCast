@@ -4,54 +4,39 @@
         role="region"
         aria-labelledby="hdr_music_files"
     >
-        <b-card-header header-bg-variant="primary-dark">
-            <b-row class="align-items-center">
-                <b-col md="7">
+        <div class="card-header text-bg-primary">
+            <div class="row align-items-center">
+                <div class="col-md-7">
                     <h2
                         id="hdr_music_files"
                         class="card-title"
                     >
                         {{ $gettext('Music Files') }}
                     </h2>
-                </b-col>
-                <b-col
-                    md="5"
-                    class="text-right text-white-50"
-                >
+                </div>
+                <div class="col-md-5 text-end">
                     <stations-common-quota
                         ref="$quota"
                         :quota-url="quotaUrl"
                     />
-                </b-col>
-            </b-row>
-        </b-card-header>
-
-        <div
-            v-if="showSftp"
-            class="card-body alert-info d-flex align-items-center"
-            role="alert"
-        >
-            <div class="flex-shrink-0 mr-2">
-                <i
-                    class="material-icons"
-                    aria-hidden="true"
-                >info</i>
-            </div>
-            <div class="flex-fill">
-                <p class="mb-0">
-                    {{ $gettext('You can also upload files in bulk via SFTP.') }}
-                </p>
-            </div>
-            <div class="flex-shrink-0 ml-2">
-                <a
-                    class="btn btn-sm btn-light"
-                    target="_blank"
-                    :href="sftpUrl"
-                >
-                    {{ $gettext('Manage SFTP Accounts') }}
-                </a>
+                </div>
             </div>
         </div>
+
+        <info-card v-if="showSftp">
+            <p class="mb-0">
+                {{ $gettext('You can also upload files in bulk via SFTP.') }}
+            </p>
+
+            <template #action>
+                <router-link
+                    class="btn btn-sm btn-info"
+                    :to="{name: 'stations:sftp_users:index'}"
+                >
+                    {{ $gettext('Manage SFTP Accounts') }}
+                </router-link>
+            </template>
+        </info-card>
 
         <div class="card-body">
             <breadcrumb
@@ -75,6 +60,8 @@
                 :playlists="playlists"
                 @add-playlist="onAddPlaylist"
                 @relist="onTriggerRelist"
+                @create-directory="createDirectory"
+                @move-files="moveFiles"
             />
         </div>
 
@@ -92,11 +79,11 @@
         >
             <template #cell(path)="row">
                 <div class="d-flex align-items-center">
-                    <div class="flex-shrink-0 pr-2">
+                    <div class="flex-shrink-0 pe-2">
                         <template v-if="row.item.media.is_playable">
                             <play-button
                                 :url="row.item.media.links.play"
-                                icon-class="outlined"
+                                class="btn-lg"
                             />
                         </template>
                         <template v-else>
@@ -160,12 +147,12 @@
                     <album-art
                         v-if="row.item.media.art"
                         :src="row.item.media.art"
-                        class="flex-shrink-1 pl-2"
+                        class="flex-shrink-1 ps-2"
                     />
                     <album-art
                         v-else-if="row.item.is_cover_art"
                         :src="row.item.links.download"
-                        class="flex-shrink-1 pl-2"
+                        class="flex-shrink-1 ps-2"
                     />
                 </div>
             </template>
@@ -182,49 +169,56 @@
                 </template>
             </template>
             <template #cell(playlists)="row">
-                <template
-                    v-for="(playlist, index) in row.item.playlists"
-                    :key="playlist.id"
-                >
-                    <a
-                        class="btn-search"
-                        href="#"
-                        :title="$gettext('View tracks in playlist')"
-                        @click.prevent="filter('playlist:'+playlist.short_name)"
-                    >{{ playlist.name }}</a>
-                    <span v-if="index+1 < row.item.playlists.length">, </span>
+                <template v-if="row.item.playlists.length > 0">
+                    <template
+                        v-for="(playlist, index) in row.item.playlists"
+                        :key="playlist.id"
+                    >
+                        <a
+                            class="btn-search"
+                            href="#"
+                            :title="$gettext('View tracks in playlist')"
+                            @click.prevent="filter('playlist:'+playlist.short_name)"
+                        >{{ playlist.name }}</a>
+                        <span v-if="index+1 < row.item.playlists.length">, </span>
+                    </template>
+                </template>
+                <template v-else>
+                    &nbsp;
                 </template>
             </template>
             <template #cell(commands)="row">
                 <template v-if="row.item.media.links.edit">
-                    <b-button
-                        size="sm"
-                        variant="primary"
-                        @click.prevent="edit(row.item.media.links.edit, row.item.media.links.art, row.item.media.links.play, row.item.media.links.waveform)"
+                    <button
+                        type="button"
+                        class="btn btn-sm btn-primary"
+                        @click="edit(row.item.media.links.edit, row.item.media.links.art, row.item.media.links.play, row.item.media.links.waveform)"
                     >
                         {{ $gettext('Edit') }}
-                    </b-button>
+                    </button>
                 </template>
                 <template v-else>
-                    <b-button
-                        size="sm"
-                        variant="primary"
-                        @click.prevent="rename(row.item.path)"
+                    <button
+                        type="button"
+                        class="btn btn-sm btn-primary"
+                        @click="rename(row.item.path)"
                     >
                         {{ $gettext('Rename') }}
-                    </b-button>
+                    </button>
                 </template>
             </template>
         </data-table>
     </section>
 
     <new-directory-modal
+        ref="$newDirectoryModal"
         :current-directory="currentDirectory"
         :mkdir-url="mkdirUrl"
         @relist="onTriggerRelist"
     />
 
     <move-files-modal
+        ref="$moveFilesModal"
         :selected-items="selectedItems"
         :current-directory="currentDirectory"
         :batch-url="batchUrl"
@@ -260,42 +254,16 @@ import Icon from '~/components/Common/Icon';
 import AlbumArt from '~/components/Common/AlbumArt';
 import PlayButton from "~/components/Common/PlayButton";
 import {useTranslate} from "~/vendor/gettext";
-import {computed, nextTick, onMounted, ref} from "vue";
+import {computed, ref, watch} from "vue";
 import {forEach, map, partition} from "lodash";
-import {useAzuraCast} from "~/vendor/azuracast";
-import {DateTime} from "luxon";
-import {useEventListener} from "@vueuse/core";
+import {useAzuraCast, useAzuraCastStation} from "~/vendor/azuracast";
 import formatFileSize from "../../functions/formatFileSize";
+import InfoCard from "~/components/Common/InfoCard.vue";
+import {useLuxon} from "~/vendor/luxon";
+import {getStationApiUrl} from "~/router";
+import {useRoute, useRouter} from "vue-router";
 
 const props = defineProps({
-    listUrl: {
-        type: String,
-        required: true
-    },
-    batchUrl: {
-        type: String,
-        required: true
-    },
-    uploadUrl: {
-        type: String,
-        required: true
-    },
-    listDirectoriesUrl: {
-        type: String,
-        required: true
-    },
-    mkdirUrl: {
-        type: String,
-        required: true
-    },
-    renameUrl: {
-        type: String,
-        required: true
-    },
-    quotaUrl: {
-        type: String,
-        required: true
-    },
     initialPlaylists: {
         type: Array,
         required: false,
@@ -311,17 +279,9 @@ const props = defineProps({
         required: false,
         default: () => []
     },
-    stationTimeZone: {
-        type: String,
-        required: true
-    },
     showSftp: {
         type: Boolean,
         default: true
-    },
-    sftpUrl: {
-        type: String,
-        required: true
     },
     supportsImmediateQueue: {
         type: Boolean,
@@ -329,11 +289,21 @@ const props = defineProps({
     }
 });
 
+const listUrl = getStationApiUrl('/files/list');
+const batchUrl = getStationApiUrl('/files/batch');
+const uploadUrl = getStationApiUrl('/files/upload');
+const listDirectoriesUrl = getStationApiUrl('/files/directories');
+const mkdirUrl = getStationApiUrl('/files/mkdir');
+const renameUrl = getStationApiUrl('/files/rename');
+const quotaUrl = getStationApiUrl('/quota/station_media');
+
 const {$gettext} = useTranslate();
 const {timeConfig} = useAzuraCast();
+const {timezone} = useAzuraCastStation();
+const {DateTime} = useLuxon();
 
 const fields = computed(() => {
-    let fields = [
+    const fields = [
         {key: 'path', isRowHeader: true, label: $gettext('Name'), sortable: true},
         {key: 'media.title', label: $gettext('Title'), sortable: true, selectable: true, visible: false},
         {
@@ -370,7 +340,7 @@ const fields = computed(() => {
                     return '';
                 }
 
-                return DateTime.fromSeconds(value).setZone(props.stationTimeZone).toLocaleString(
+                return DateTime.fromSeconds(value).setZone(timezone).toLocaleString(
                     {...DateTime.DATETIME_MED, ...timeConfig}
                 );
             },
@@ -397,10 +367,10 @@ const selectedItems = ref({
     directories: []
 });
 const currentDirectory = ref('');
-const searchPhrase = ref(null);
+const searchPhrase = ref('');
 
 const onRowSelected = (items) => {
-    let splitItems = partition(items, 'is_dir');
+    const splitItems = partition(items, 'is_dir');
 
     selectedItems.value = {
         all: items,
@@ -430,25 +400,6 @@ const onAddPlaylist = (row) => {
     playlists.value.push(row);
 };
 
-const isFilterString = (str) =>
-    (str.substring(0, 9) === 'playlist:' || str.substring(0, 8) === 'special:');
-
-const onHashChange = () => {
-    // Handle links from the sidebar for special functions.
-    let urlHash = decodeURIComponent(window.location.hash.substring(1).replace(/\+/g, '%20'));
-
-    if ('' !== urlHash && isFilterString(urlHash)) {
-        window.location.hash = '';
-        filter(urlHash);
-    }
-};
-
-const changeDirectory = (newDir) => {
-    window.location.hash = newDir;
-    currentDirectory.value = newDir;
-    onTriggerNavigate();
-};
-
 const onFiltered = (newFilter) => {
     searchPhrase.value = newFilter;
 };
@@ -465,25 +416,55 @@ const edit = (recordUrl, albumArtUrl, audioUrl, waveformUrl) => {
     $editModal.value?.open(recordUrl, albumArtUrl, audioUrl, waveformUrl);
 };
 
+const $newDirectoryModal = ref(); // Template Ref
+
+const createDirectory = () => {
+    $newDirectoryModal.value.open();
+}
+
+const $moveFilesModal = ref(); // Template Ref
+
+const moveFiles = () => {
+    $moveFilesModal.value.open();
+}
+
 const requestConfig = (config) => {
     config.params.currentDirectory = currentDirectory.value;
     return config;
 };
 
-onMounted(() => {
-    // Load directory from URL hash, if applicable.
-    let urlHash = decodeURIComponent(window.location.hash.substring(1).replace(/\+/g, '%20'));
+const isFilterString = (str) =>
+    (str.substring(0, 9) === 'playlist:' || str.substring(0, 8) === 'special:');
 
-    if ('' !== urlHash) {
-        if (isFilterString(urlHash)) {
-            nextTick(() => {
-                onHashChange();
-            });
-        } else {
-            currentDirectory.value = urlHash;
+const router = useRouter();
+const route = useRoute();
+
+const changeDirectory = (newDir) => {
+    router.push({
+        name: 'stations:files:index',
+        params: {
+            path: newDir
         }
-    }
+    });
+};
 
-    useEventListener(window, 'hashchange', onHashChange);
-});
+watch(
+    () => route.params,
+    async (newParams) => {
+        const path = newParams.path ?? '';
+
+        if (isFilterString(path)) {
+            await router.push({
+                name: 'stations:files:index',
+            });
+            filter(path);
+        } else {
+            currentDirectory.value = path;
+            onTriggerNavigate();
+        }
+    },
+    {
+        immediate: true
+    }
+);
 </script>

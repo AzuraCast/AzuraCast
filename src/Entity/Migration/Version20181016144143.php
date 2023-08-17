@@ -20,15 +20,15 @@ final class Version20181016144143 extends AbstractMigration
 
     public function postup(Schema $schema): void
     {
-        $shuffled_playlists = $this->connection->fetchAllAssociative(
+        $shuffledPlaylists = $this->connection->fetchAllAssociative(
             'SELECT sp.* FROM station_playlists AS sp WHERE sp.playback_order = :order',
             [
                 'order' => 'shuffle',
             ]
         );
 
-        foreach ($shuffled_playlists as $playlist) {
-            $all_media = $this->connection->fetchAllAssociative(
+        foreach ($shuffledPlaylists as $playlist) {
+            $allMedia = $this->connection->fetchAllAssociative(
                 'SELECT spm.* FROM station_playlist_media AS spm WHERE spm.playlist_id = :playlist_id ORDER BY RAND()',
                 [
                     'playlist_id' => $playlist['id'],
@@ -36,7 +36,7 @@ final class Version20181016144143 extends AbstractMigration
             );
 
             $weight = 1;
-            foreach ($all_media as $row) {
+            foreach ($allMedia as $row) {
                 $this->connection->update('station_playlist_media', [
                     'weight' => $weight,
                 ], [

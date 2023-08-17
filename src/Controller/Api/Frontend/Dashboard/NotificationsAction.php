@@ -5,12 +5,13 @@ declare(strict_types=1);
 namespace App\Controller\Api\Frontend\Dashboard;
 
 use App\CallableEventDispatcherInterface;
+use App\Controller\SingleActionInterface;
 use App\Event;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
 
-final class NotificationsAction
+final class NotificationsAction implements SingleActionInterface
 {
     public function __construct(
         private readonly CallableEventDispatcherInterface $eventDispatcher,
@@ -19,7 +20,8 @@ final class NotificationsAction
 
     public function __invoke(
         ServerRequest $request,
-        Response $response
+        Response $response,
+        array $params
     ): ResponseInterface {
         $event = new Event\GetNotifications($request);
         $this->eventDispatcher->dispatch($event);

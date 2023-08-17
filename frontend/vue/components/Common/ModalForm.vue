@@ -1,39 +1,31 @@
 <template>
-    <b-modal
+    <modal
         :id="id"
         ref="$modal"
         :size="size"
-        :centered="centered"
         :title="title"
         :busy="loading"
-        :no-enforce-focus="noEnforceFocus"
         @shown="onShown"
         @hidden="onHidden"
     >
         <template #default="slotProps">
-            <b-overlay
-                variant="card"
-                :show="loading"
+            <div
+                v-if="error != null"
+                class="alert alert-danger"
             >
-                <b-alert
-                    variant="danger"
-                    :show="error != null"
-                >
-                    {{ error }}
-                </b-alert>
+                {{ error }}
+            </div>
 
-                <b-form
-                    class="form vue-form"
-                    @submit.prevent="doSubmit"
-                >
-                    <slot
-                        name="default"
-                        v-bind="slotProps"
-                    />
-
-                    <invisible-submit-button />
-                </b-form>
-            </b-overlay>
+            <form
+                class="form vue-form"
+                @submit.prevent="doSubmit"
+            >
+                <slot
+                    name="default"
+                    v-bind="slotProps"
+                />
+                <invisible-submit-button />
+            </form>
         </template>
 
         <template #modal-footer="slotProps">
@@ -41,22 +33,23 @@
                 name="modal-footer"
                 v-bind="slotProps"
             >
-                <b-button
-                    variant="default"
+                <button
+                    class="btn btn-secondary"
                     type="button"
                     @click="hide"
                 >
                     {{ $gettext('Close') }}
-                </b-button>
-                <b-button
-                    :variant="(disableSaveButton) ? 'danger' : 'primary'"
+                </button>
+                <button
+                    class="btn"
+                    :class="(disableSaveButton) ? 'btn-danger' : 'btn-primary'"
                     type="submit"
                     @click="doSubmit"
                 >
                     <slot name="save-button-name">
                         {{ $gettext('Save Changes') }}
                     </slot>
-                </b-button>
+                </button>
             </slot>
         </template>
 
@@ -69,13 +62,14 @@
                 v-bind="scope"
             />
         </template>
-    </b-modal>
+    </modal>
 </template>
 
 <script setup>
 import InvisibleSubmitButton from "~/components/Common/InvisibleSubmitButton.vue";
 import {ref} from "vue";
 import useSlotsExcept from "~/functions/useSlotsExcept";
+import Modal from "~/components/Common/Modal.vue";
 
 const props = defineProps({
     title: {

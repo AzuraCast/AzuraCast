@@ -2,20 +2,22 @@ body {
   position: relative;
 
   #main {
-    padding-bottom: 75px;
-    padding-top: 100px;
+    padding-bottom: 4rem;
+    padding-top: ($header-nav-height + ($container-padding-x * .5));
+
     min-height: 100vh;
   }
 
-  @include media-breakpoint-up(lg) {
-    &.has-sidebar #main {
-      margin-left: $navdrawer-width;
+  @include media-breakpoint-down(sm) {
+    #main {
+      padding-top: ($container-padding-x * .5);
     }
   }
 }
 
 ::-webkit-scrollbar {
   width: 12px;
+  background: var(--bs-body-bg);
 }
 
 ::-webkit-scrollbar-track {
@@ -26,8 +28,10 @@ body {
 ::-webkit-scrollbar-thumb {
   margin: 2px 0;
   border-radius: 10px;
+  background: var(--scrollbar-color);
 }
 
 ::-webkit-scrollbar-corner {
   border: 0;
+  background: var(--bs-body-bg);
 }

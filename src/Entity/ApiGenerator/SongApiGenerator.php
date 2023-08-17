@@ -4,39 +4,45 @@ declare(strict_types=1);
 
 namespace App\Entity\ApiGenerator;
 
-use App\Entity;
+use App\Container\EntityManagerAwareTrait;
+use App\Entity\Api\Song;
+use App\Entity\Interfaces\SongInterface;
+use App\Entity\Repository\CustomFieldRepository;
+use App\Entity\Repository\StationRepository;
+use App\Entity\Station;
+use App\Entity\StationMedia;
 use App\Http\Router;
 use App\Media\RemoteAlbumArt;
-use Doctrine\ORM\EntityManagerInterface;
 use GuzzleHttp\Psr7\UriResolver;
 use GuzzleHttp\Psr7\Utils;
 use Psr\Http\Message\UriInterface;
 
 final class SongApiGenerator
 {
+    use EntityManagerAwareTrait;
+
     public function __construct(
-        private readonly EntityManagerInterface $em,
         private readonly Router $router,
-        private readonly Entity\Repository\StationRepository $stationRepo,
-        private readonly Entity\Repository\CustomFieldRepository $customFieldRepo,
+        private readonly StationRepository $stationRepo,
+        private readonly CustomFieldRepository $customFieldRepo,
         private readonly RemoteAlbumArt $remoteAlbumArt
     ) {
     }
 
     public function __invoke(
-        Entity\Interfaces\SongInterface $song,
-        ?Entity\Station $station = null,
+        SongInterface $song,
+        ?Station $station = null,
         ?UriInterface $baseUri = null,
         bool $allowRemoteArt = false,
         bool $isNowPlaying = false,
-    ): Entity\Api\Song {
-        $response = new Entity\Api\Song();
+    ): Song {
+        $response = new Song();
         $response->id = $song->getSongId();
         $response->text = $song->getText() ?? '';
         $response->artist = $song->getArtist() ?? '';
         $response->title = $song->getTitle() ?? '';
 
-        if ($song instanceof Entity\StationMedia) {
+        if ($song instanceof StationMedia) {
             $response->album = $song->getAlbum() ?? '';
             $response->genre = $song->getGenre() ?? '';
             $response->isrc = $song->getIsrc() ?? '';
@@ -56,12 +62,12 @@ final class SongApiGenerator
     }
 
     private function getAlbumArtUrl(
-        Entity\Interfaces\SongInterface $song,
-        ?Entity\Station $station = null,
+        SongInterface $song,
+        ?Station $station = null,
         bool $allowRemoteArt = false,
         bool $isNowPlaying = false,
     ): UriInterface {
-        if (null !== $station && $song instanceof Entity\StationMedia) {
+        if (null !== $station && $song instanceof StationMedia) {
             $mediaUpdatedTimestamp = $song->getArtUpdatedAt();
             $mediaId = $song->getUniqueId();
             if (0 !== $mediaUpdatedTimestamp) {
@@ -103,23 +109,23 @@ final class SongApiGenerator
     /**
      * Return all custom fields, either with a null value or with the custom value assigned to the given Media ID.
      *
-     * @param int|null $media_id
+     * @param int|null $mediaId
      *
      * @return mixed[]
      */
-    private function getCustomFields(?int $media_id = null): array
+    private function getCustomFields(?int $mediaId = null): array
     {
         $fields = $this->customFieldRepo->getFieldIds();
 
         $mediaFields = [];
-        if ($media_id !== null) {
+        if ($mediaId !== null) {
             $mediaFieldsRaw = $this->em->createQuery(
                 <<<'DQL'
                     SELECT smcf.field_id, smcf.value
                     FROM App\Entity\StationMediaCustomField smcf
                     WHERE smcf.media_id = :media_id
                 DQL
-            )->setParameter('media_id', $media_id)
+            )->setParameter('media_id', $mediaId)
                 ->getArrayResult();
 
             foreach ($mediaFieldsRaw as $row) {

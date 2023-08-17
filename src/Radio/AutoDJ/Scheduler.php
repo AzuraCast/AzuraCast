@@ -4,29 +4,33 @@ declare(strict_types=1);
 
 namespace App\Radio\AutoDJ;
 
-use App\Doctrine\ReloadableEntityManagerInterface;
-use App\Entity;
+use App\Container\EntityManagerAwareTrait;
+use App\Container\LoggerAwareTrait;
+use App\Entity\Enums\PlaylistTypes;
 use App\Entity\Repository\StationPlaylistMediaRepository;
 use App\Entity\Repository\StationQueueRepository;
+use App\Entity\StationPlaylist;
+use App\Entity\StationSchedule;
+use App\Entity\StationStreamer;
 use App\Utilities\DateRange;
 use Carbon\CarbonImmutable;
 use Carbon\CarbonInterface;
 use Doctrine\Common\Collections\Collection;
-use Monolog\Logger;
 use Monolog\LogRecord;
 
 final class Scheduler
 {
+    use LoggerAwareTrait;
+    use EntityManagerAwareTrait;
+
     public function __construct(
-        private readonly Logger $logger,
         private readonly StationPlaylistMediaRepository $spmRepo,
-        private readonly StationQueueRepository $queueRepo,
-        private readonly ReloadableEntityManagerInterface $em,
+        private readonly StationQueueRepository $queueRepo
     ) {
     }
 
     public function shouldPlaylistPlayNow(
-        Entity\StationPlaylist $playlist,
+        StationPlaylist $playlist,
         CarbonInterface $now = null
     ): bool {
         $this->logger->pushProcessor(
@@ -52,7 +56,7 @@ final class Scheduler
         $shouldPlay = true;
 
         switch ($playlist->getType()) {
-            case Entity\Enums\PlaylistTypes::OncePerHour:
+            case PlaylistTypes::OncePerHour:
                 $shouldPlay = $this->shouldPlaylistPlayNowPerHour($playlist, $now);
 
                 $this->logger->debug(
@@ -63,7 +67,7 @@ final class Scheduler
                 );
                 break;
 
-            case Entity\Enums\PlaylistTypes::OncePerXSongs:
+            case PlaylistTypes::OncePerXSongs:
                 $playPerSongs = $playlist->getPlayPerSongs();
                 $shouldPlay = !$this->queueRepo->isPlaylistRecentlyPlayed($playlist, $playPerSongs);
 
@@ -76,7 +80,7 @@ final class Scheduler
                 );
                 break;
 
-            case Entity\Enums\PlaylistTypes::OncePerXMinutes:
+            case PlaylistTypes::OncePerXMinutes:
                 $playPerMinutes = $playlist->getPlayPerMinutes();
                 $shouldPlay = !$this->wasPlaylistPlayedInLastXMinutes($playlist, $now, $playPerMinutes);
 
@@ -89,12 +93,12 @@ final class Scheduler
                 );
                 break;
 
-            case Entity\Enums\PlaylistTypes::Advanced:
+            case PlaylistTypes::Advanced:
                 $this->logger->debug('Playlist is "Advanced" type and is not managed by the AutoDJ.');
                 $shouldPlay = false;
                 break;
 
-            case Entity\Enums\PlaylistTypes::Standard:
+            case PlaylistTypes::Standard:
                 break;
         }
 
@@ -103,7 +107,7 @@ final class Scheduler
     }
 
     public function isPlaylistScheduledToPlayNow(
-        Entity\StationPlaylist $playlist,
+        StationPlaylist $playlist,
         CarbonInterface $now,
         bool $excludeSpecialRules = false
     ): bool {
@@ -119,21 +123,21 @@ final class Scheduler
     }
 
     private function shouldPlaylistPlayNowPerHour(
-        Entity\StationPlaylist $playlist,
+        StationPlaylist $playlist,
         CarbonInterface $now
     ): bool {
-        $current_minute = $now->minute;
-        $target_minute = $playlist->getPlayPerHourMinute();
+        $currentMinute = $now->minute;
+        $targetMinute = $playlist->getPlayPerHourMinute();
 
-        if ($current_minute < $target_minute) {
-            $target_time = $now->subHour()->minute($target_minute);
+        if ($currentMinute < $targetMinute) {
+            $targetTime = $now->subHour()->minute($targetMinute);
         } else {
-            $target_time = $now->minute($target_minute);
+            $targetTime = $now->minute($targetMinute);
         }
 
-        $playlist_diff = $target_time->diffInMinutes($now, false);
+        $playlistDiff = $targetTime->diffInMinutes($now, false);
 
-        if ($playlist_diff < 0 || $playlist_diff > 15) {
+        if ($playlistDiff < 0 || $playlistDiff > 15) {
             return false;
         }
 
@@ -141,7 +145,7 @@ final class Scheduler
     }
 
     private function wasPlaylistPlayedInLastXMinutes(
-        Entity\StationPlaylist $playlist,
+        StationPlaylist $playlist,
         CarbonInterface $now,
         int $minutes
     ): bool {
@@ -157,9 +161,9 @@ final class Scheduler
     /**
      * Get the duration of scheduled play time in seconds (used for remote URLs of indeterminate length).
      *
-     * @param Entity\StationPlaylist $playlist
+     * @param StationPlaylist $playlist
      */
-    public function getPlaylistScheduleDuration(Entity\StationPlaylist $playlist): int
+    public function getPlaylistScheduleDuration(StationPlaylist $playlist): int
     {
         $now = CarbonImmutable::now($playlist->getStation()->getTimezoneObject());
 
@@ -168,14 +172,14 @@ final class Scheduler
             $now
         );
 
-        if ($scheduleItem instanceof Entity\StationSchedule) {
+        if ($scheduleItem instanceof StationSchedule) {
             return $scheduleItem->getDuration();
         }
         return 0;
     }
 
     public function canStreamerStreamNow(
-        Entity\StationStreamer $streamer,
+        StationStreamer $streamer,
         CarbonInterface $now = null
     ): bool {
         if (!$streamer->enforceSchedule()) {
@@ -194,15 +198,15 @@ final class Scheduler
     }
 
     /**
-     * @param Collection<int, Entity\StationSchedule> $scheduleItems
+     * @param Collection<int, StationSchedule> $scheduleItems
      * @param CarbonInterface $now
-     * @return Entity\StationSchedule|null
+     * @return StationSchedule|null
      */
     private function getActiveScheduleFromCollection(
         Collection $scheduleItems,
         CarbonInterface $now,
         bool $excludeSpecialRules = false
-    ): ?Entity\StationSchedule {
+    ): ?StationSchedule {
         if ($scheduleItems->count() > 0) {
             foreach ($scheduleItems as $scheduleItem) {
                 $scheduleName = (string)$scheduleItem;
@@ -229,12 +233,12 @@ final class Scheduler
     }
 
     public function shouldSchedulePlayNow(
-        Entity\StationSchedule $schedule,
+        StationSchedule $schedule,
         CarbonInterface $now,
         bool $excludeSpecialRules = false
     ): bool {
-        $startTime = Entity\StationSchedule::getDateTime($schedule->getStartTime(), $now);
-        $endTime = Entity\StationSchedule::getDateTime($schedule->getEndTime(), $now);
+        $startTime = StationSchedule::getDateTime($schedule->getStartTime(), $now);
+        $endTime = StationSchedule::getDateTime($schedule->getEndTime(), $now);
         $this->logger->debug('Checking to see whether schedule should play now.', [
             'startTime' => $startTime,
             'endTime' => $endTime,
@@ -289,7 +293,7 @@ final class Scheduler
     }
 
     private function shouldPlayInSchedulePeriod(
-        Entity\StationSchedule $schedule,
+        StationSchedule $schedule,
         DateRange $dateRange,
         CarbonInterface $now,
         bool $excludeSpecialRules = false
@@ -335,7 +339,7 @@ final class Scheduler
     }
 
     private function shouldPlaylistLoopNow(
-        Entity\StationSchedule $schedule,
+        StationSchedule $schedule,
         DateRange $dateRange,
         CarbonInterface $now,
     ): bool {
@@ -393,7 +397,7 @@ final class Scheduler
     }
 
     public function shouldSchedulePlayOnCurrentDate(
-        Entity\StationSchedule $schedule,
+        StationSchedule $schedule,
         CarbonInterface $now
     ): bool {
         $startDate = $schedule->getStartDate();
@@ -427,11 +431,11 @@ final class Scheduler
     /**
      * Given an ISO-8601 date, return if the playlist can be played on that day.
      *
-     * @param Entity\StationSchedule $schedule
+     * @param StationSchedule $schedule
      * @param int $dayToCheck ISO-8601 date (1 for Monday, 7 for Sunday)
      */
     public function isScheduleScheduledToPlayToday(
-        Entity\StationSchedule $schedule,
+        StationSchedule $schedule,
         int $dayToCheck
     ): bool {
         $playOnceDays = $schedule->getDays();

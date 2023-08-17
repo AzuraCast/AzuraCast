@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Admin\Shoutcast;
 
-use App\Entity;
-use App\Environment;
+use App\Container\EnvironmentAwareTrait;
+use App\Controller\SingleActionInterface;
+use App\Entity\Api\Status;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Service\Flow;
@@ -13,16 +14,14 @@ use Psr\Http\Message\ResponseInterface;
 use RuntimeException;
 use Symfony\Component\Process\Process;
 
-final class PostAction
+final class PostAction implements SingleActionInterface
 {
-    public function __construct(
-        private readonly Environment $environment,
-    ) {
-    }
+    use EnvironmentAwareTrait;
 
     public function __invoke(
         ServerRequest $request,
-        Response $response
+        Response $response,
+        array $params
     ): ResponseInterface {
         if ('x86_64' !== php_uname('m')) {
             throw new RuntimeException('Shoutcast cannot be installed on non-X86_64 systems.');
@@ -54,6 +53,6 @@ final class PostAction
 
         unlink($scTgzPath);
 
-        return $response->withJson(Entity\Api\Status::success());
+        return $response->withJson(Status::success());
     }
 }

@@ -7,6 +7,8 @@ namespace App\Installer\EnvFiles;
 use App\Environment;
 use App\Utilities\Strings;
 use ArrayAccess;
+use DateTimeImmutable;
+use DateTimeZone;
 use Dotenv\Dotenv;
 use Dotenv\Exception\ExceptionInterface;
 use InvalidArgumentException;
@@ -39,7 +41,7 @@ abstract class AbstractEnvFile implements ArrayAccess
         $defaults = [];
         foreach (static::getConfiguration($environment) as $key => $keyInfo) {
             if (isset($keyInfo['default'])) {
-                $defaults[$key] = $keyInfo['default'] ?? null;
+                $defaults[$key] = $keyInfo['default'];
             }
         }
 
@@ -153,7 +155,7 @@ abstract class AbstractEnvFile implements ArrayAccess
         if (is_file($this->path)) {
             $existingFile = file_get_contents($this->path) ?: '';
             if ($envFileStr !== $existingFile) {
-                $currentTimeUtc = new \DateTimeImmutable('now', new \DateTimeZone('UTC'));
+                $currentTimeUtc = new DateTimeImmutable('now', new DateTimeZone('UTC'));
                 $backupPath = $this->path . '_backup_' . $currentTimeUtc->format('Ymd-his') . '.bak';
 
                 copy($this->path, $backupPath);

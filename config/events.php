@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use App\CallableEventDispatcherInterface;
 use App\Environment;
 use App\Event;
@@ -109,20 +111,6 @@ return static function (CallableEventDispatcherInterface $dispatcher) {
 
     // Build default menus
     $dispatcher->addListener(
-        App\Event\BuildAdminMenu::class,
-        function (App\Event\BuildAdminMenu $e) {
-            call_user_func(include(__DIR__ . '/menus/admin.php'), $e);
-        }
-    );
-
-    $dispatcher->addListener(
-        App\Event\BuildStationMenu::class,
-        function (App\Event\BuildStationMenu $e) {
-            call_user_func(include(__DIR__ . '/menus/station.php'), $e);
-        }
-    );
-
-    $dispatcher->addListener(
         App\Event\GetSyncTasks::class,
         function (App\Event\GetSyncTasks $e) {
             $e->addTasks([
@@ -173,6 +161,10 @@ return static function (CallableEventDispatcherInterface $dispatcher) {
     $dispatcher->addCallableListener(
         Event\GetNotifications::class,
         App\Notification\Check\ServiceCheck::class
+    );
+    $dispatcher->addCallableListener(
+        Event\GetNotifications::class,
+        App\Notification\Check\ActiveServerCheck::class
     );
 
     $dispatcher->addCallableListener(

@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Stations\Playlists;
 
-use App\Doctrine\ReloadableEntityManagerInterface;
+use App\Container\EntityManagerAwareTrait;
+use App\Controller\SingleActionInterface;
 use App\Entity\Enums\PlaylistOrders;
 use App\Entity\Enums\PlaylistSources;
 use App\Entity\Repository\StationPlaylistRepository;
@@ -13,20 +14,23 @@ use App\Http\Response;
 use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
 
-final class GetOrderAction
+final class GetOrderAction implements SingleActionInterface
 {
+    use EntityManagerAwareTrait;
+
     public function __construct(
         private readonly StationPlaylistRepository $playlistRepo,
-        private readonly ReloadableEntityManagerInterface $em,
     ) {
     }
 
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        string $station_id,
-        string $id
+        array $params
     ): ResponseInterface {
+        /** @var string $id */
+        $id = $params['id'];
+
         $station = $request->getStation();
         $record = $this->playlistRepo->requireForStation($id, $station);
 
@@ -37,7 +41,7 @@ final class GetOrderAction
             throw new Exception(__('This playlist is not a sequential playlist.'));
         }
 
-        $media_items = $this->em->createQuery(
+        $mediaItems = $this->em->createQuery(
             <<<'DQL'
                 SELECT spm, sm
                 FROM App\Entity\StationPlaylistMedia spm
@@ -63,7 +67,7 @@ final class GetOrderAction
                     ];
                     return $row;
                 },
-                $media_items
+                $mediaItems
             )
         );
     }

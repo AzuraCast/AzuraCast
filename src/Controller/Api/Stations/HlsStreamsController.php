@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Stations;
 
-use App\Entity;
+use App\Entity\StationHlsStream;
 use App\OpenApi;
 use OpenApi\Attributes as OA;
 
-/** @extends AbstractStationApiCrudController<Entity\StationHlsStream> */
+/** @extends AbstractStationApiCrudController<StationHlsStream> */
 #[
     OA\Get(
         path: '/station/{station_id}/hls_streams',
@@ -133,6 +133,6 @@ use OpenApi\Attributes as OA;
 ]
 final class HlsStreamsController extends AbstractStationApiCrudController
 {
-    protected string $entityClass = Entity\StationHlsStream::class;
+    protected string $entityClass = StationHlsStream::class;
     protected string $resourceRouteName = 'api:stations:hls_stream';
 }

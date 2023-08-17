@@ -4,31 +4,29 @@ declare(strict_types=1);
 
 namespace App\Radio;
 
-use App\Entity;
+use App\Container\ContainerAwareTrait;
+use App\Entity\Station;
+use App\Entity\StationRemote;
 use App\Exception\NotFoundException;
 use App\Radio\Backend\Liquidsoap;
 use App\Radio\Enums\AdapterTypeInterface;
 use App\Radio\Enums\BackendAdapters;
 use App\Radio\Enums\FrontendAdapters;
 use App\Radio\Enums\RemoteAdapters;
-use Psr\Container\ContainerInterface;
 
 /**
  * Manager class for radio adapters.
  */
 final class Adapters
 {
-    public function __construct(
-        private readonly ContainerInterface $adapters
-    ) {
-    }
+    use ContainerAwareTrait;
 
-    public function getFrontendAdapter(Entity\Station $station): ?Frontend\AbstractFrontend
+    public function getFrontendAdapter(Station $station): ?Frontend\AbstractFrontend
     {
         $className = $station->getFrontendType()->getClass();
 
-        return (null !== $className && $this->adapters->has($className))
-            ? $this->adapters->get($className)
+        return (null !== $className && $this->di->has($className))
+            ? $this->di->get($className)
             : null;
     }
 
@@ -41,12 +39,12 @@ final class Adapters
         return $this->listAdaptersFromEnum(FrontendAdapters::cases(), $checkInstalled);
     }
 
-    public function getBackendAdapter(Entity\Station $station): ?Liquidsoap
+    public function getBackendAdapter(Station $station): ?Liquidsoap
     {
         $className = $station->getBackendType()->getClass();
 
-        return (null !== $className && $this->adapters->has($className))
-            ? $this->adapters->get($className)
+        return (null !== $className && $this->di->has($className))
+            ? $this->di->get($className)
             : null;
     }
 
@@ -59,14 +57,14 @@ final class Adapters
         return $this->listAdaptersFromEnum(BackendAdapters::cases(), $checkInstalled);
     }
 
-    public function getRemoteAdapter(Entity\Station $station, Entity\StationRemote $remote): Remote\AbstractRemote
+    public function getRemoteAdapter(StationRemote $remote): Remote\AbstractRemote
     {
-        $class_name = $remote->getType()->getClass();
-        if ($this->adapters->has($class_name)) {
-            return $this->adapters->get($class_name);
+        $className = $remote->getType()->getClass();
+        if ($this->di->has($className)) {
+            return $this->di->get($className);
         }
 
-        throw new NotFoundException('Adapter not found: ' . $class_name);
+        throw new NotFoundException('Adapter not found: ' . $className);
     }
 
     /**
@@ -96,13 +94,13 @@ final class Adapters
         if ($checkInstalled) {
             return array_filter(
                 $adapters,
-                function ($adapter_info) {
-                    if (null === $adapter_info['class']) {
+                function ($adapterInfo) {
+                    if (null === $adapterInfo['class']) {
                         return true;
                     }
 
                     /** @var AbstractLocalAdapter $adapter */
-                    $adapter = $this->adapters->get($adapter_info['class']);
+                    $adapter = $this->di->get($adapterInfo['class']);
                     return $adapter->isInstalled();
                 }
             );

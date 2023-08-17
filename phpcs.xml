@@ -2,13 +2,11 @@
 <ruleset name="AzuraCast">
     <description>The AzuraCast PHP coding standard.</description>
 
-    <file>bin</file>
     <file>config</file>
     <file>src</file>
-    <file>templates</file>
     <file>web</file>
-
-    <exclude-pattern>src/Tests/*$</exclude-pattern>
+    <file>tests/Functional</file>
+    <file>tests/Unit</file>
 
     <arg name="basepath" value="."/>
     <arg name="extensions" value="php"/>
@@ -30,8 +28,18 @@
             It's not very practical to check for the line length here since the "solutions" to the
             warnings would make the code partly less readable
         -->
+        <exclude-pattern>src/Notification/Check/UpdateCheck.php</exclude-pattern>
         <exclude-pattern>src/Radio/Backend/Liquidsoap/ConfigWriter.php</exclude-pattern>
         <exclude-pattern>src/Installer/EnvFiles/*.php</exclude-pattern>
+    </rule>
+
+    <rule ref="Squiz.Classes.ValidClassName.NotCamelCaps">
+        <exclude-pattern>tests/*$</exclude-pattern>
+    </rule>
+
+    <rule ref="PSR2.Methods.MethodDeclaration.Underscore">
+        <exclude-pattern>src/Tests/Module.php</exclude-pattern>
+        <exclude-pattern>tests/*$</exclude-pattern>
     </rule>
 
     <rule ref="SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingTraversableTypeHintSpecification">
@@ -39,8 +47,29 @@
     </rule>
 
     <rule ref="SlevomatCodingStandard.Arrays.TrailingArrayComma"/>
+    <rule ref="SlevomatCodingStandard.Namespaces.AlphabeticallySortedUses"/>
+    <rule ref="SlevomatCodingStandard.Namespaces.UseDoesNotStartWithBackslash"/>
+
+    <rule ref="SlevomatCodingStandard.TypeHints.DeclareStrictTypes">
+        <properties>
+            <property name="declareOnFirstLine" value="false"/>
+            <property name="linesCountBeforeDeclare" value="1"/>
+            <property name="linesCountAfterDeclare" value="1"/>
+            <property name="spacesCountAroundEqualsSign" value="0"/>
+        </properties>
+
+        <exclude-pattern>src/Normalizer/DoctrineEntityNormalizer.php</exclude-pattern>
+    </rule>
 
     <rule ref="SlevomatCodingStandard.TypeHints.ReturnTypeHint">
         <exclude-pattern>src/Entity/Migration/*$</exclude-pattern>
+    </rule>
+
+    <rule ref="SlevomatCodingStandard.Namespaces.ReferenceUsedNamesOnly">
+        <properties>
+            <property name="searchAnnotations" value="true"/>
+        </properties>
+
+        <exclude-pattern>config/*$</exclude-pattern>
     </rule>
 </ruleset>

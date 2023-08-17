@@ -4,17 +4,18 @@ declare(strict_types=1);
 
 namespace App\Controller\Frontend\PublicPages;
 
-use App\Entity;
+use App\Controller\SingleActionInterface;
+use App\Entity\Repository\CustomFieldRepository;
 use App\Exception\StationNotFoundException;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\VueComponent\NowPlayingComponent;
 use Psr\Http\Message\ResponseInterface;
 
-final class PlayerAction
+final class PlayerAction implements SingleActionInterface
 {
     public function __construct(
-        private readonly Entity\Repository\CustomFieldRepository $customFieldRepo,
+        private readonly CustomFieldRepository $customFieldRepo,
         private readonly NowPlayingComponent $nowPlayingComponent
     ) {
     }
@@ -22,9 +23,11 @@ final class PlayerAction
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        string $station_id,
-        ?string $embed = null,
+        array $params
     ): ResponseInterface {
+        /** @var string|null $embed */
+        $embed = $params['embed'] ?? null;
+
         $response = $response
             ->withHeader('X-Frame-Options', '*')
             ->withHeader('X-Robots-Tag', 'index, nofollow');
@@ -56,7 +59,7 @@ final class PlayerAction
 
             return $view->renderVuePage(
                 response: $response,
-                component: 'Vue_PublicPlayer',
+                component: 'Public/Player',
                 id: 'station-nowplaying',
                 layout: 'minimal',
                 title: $station->getName(),

@@ -1,109 +1,120 @@
 <template>
-    <b-form-group>
-        <template #label>
-            {{ $gettext('Mastodon Account Details') }}
-        </template>
+    <o-tab-item
+        :label="title"
+        :item-header-class="tabClass"
+    >
+        <form-markup id="mastodon_details">
+            <template #label>
+                {{ $gettext('Mastodon Account Details') }}
+            </template>
 
-        <p class="card-text">
-            {{ $gettext('Steps for configuring a Mastodon application:') }}
-        </p>
-        <ul>
-            <li>
-                {{ $gettext('Visit your Mastodon instance.') }}
-            </li>
-            <li>
-                {{ $gettext('Click the "Preferences" link, then "Development" on the left side menu.') }}
-            </li>
-            <li>
-                {{ $gettext('Click "New Application"') }}
-            </li>
-            <li>
+            <p class="card-text">
+                {{ $gettext('Steps for configuring a Mastodon application:') }}
+            </p>
+            <ul>
+                <li>
+                    {{ $gettext('Visit your Mastodon instance.') }}
+                </li>
+                <li>
+                    {{ $gettext('Click the "Preferences" link, then "Development" on the left side menu.') }}
+                </li>
+                <li>
+                    {{ $gettext('Click "New Application"') }}
+                </li>
+                <li>
+                    {{
+                        $gettext('Enter "AzuraCast" as the application name. You can leave the URL fields unchanged. For "Scopes", only "write:media" and "write:statuses" are required.')
+                    }}
+                </li>
+            </ul>
+            <p class="card-text">
                 {{
-                    $gettext('Enter "AzuraCast" as the application name. You can leave the URL fields unchanged. For "Scopes", only "write:media" and "write:statuses" are required.')
+                    $gettext('Once these steps are completed, enter the "Access Token" from the application\'s page into the field below.')
                 }}
-            </li>
-        </ul>
-        <p class="card-text">
-            {{
-                $gettext('Once these steps are completed, enter the "Access Token" from the application\'s page into the field below.')
-            }}
-        </p>
-    </b-form-group>
+            </p>
+        </form-markup>
 
-    <b-form-group>
-        <div class="form-row">
-            <b-wrapped-form-group
+        <div class="row g-3 mb-3">
+            <form-group-field
                 id="form_config_instance_url"
                 class="col-md-6"
-                :field="form.config.instance_url"
-            >
-                <template #label>
-                    {{ $gettext('Mastodon Instance URL') }}
-                </template>
-                <template #description>
-                    {{ $gettext('If your Mastodon username is "@test@example.com", enter "example.com".') }}
-                </template>
-            </b-wrapped-form-group>
+                :field="v$.config.instance_url"
+                :label="$gettext('Mastodon Instance URL')"
+                :description="$gettext('If your Mastodon username is &quot;@test@example.com&quot;, enter &quot;example.com&quot;.')"
+            />
 
-            <b-wrapped-form-group
+            <form-group-field
                 id="form_config_access_token"
                 class="col-md-6"
-                :field="form.config.access_token"
-            >
-                <template #label>
-                    {{ $gettext('Access Token') }}
-                </template>
-            </b-wrapped-form-group>
+                :field="v$.config.access_token"
+                :label="$gettext('Access Token')"
+            />
 
-            <common-rate-limit-fields :form="form" />
+            <common-rate-limit-fields v-model:form="form" />
         </div>
-    </b-form-group>
 
-    <b-form-group>
-        <div class="form-row">
-            <b-wrapped-form-group
+        <div class="row g-3 mb-3">
+            <form-group-multi-check
                 id="form_config_visibility"
                 class="col-md-12"
-                :field="form.config.visibility"
-            >
-                <template #label>
-                    {{ $gettext('Message Visibility') }}
-                </template>
-                <template #default="slotProps">
-                    <b-form-radio-group
-                        :id="slotProps.id"
-                        v-model="slotProps.field.$model"
-                        stacked
-                        :options="visibilityOptions"
-                    />
-                </template>
-            </b-wrapped-form-group>
+                :field="v$.config.visibility"
+                :options="visibilityOptions"
+                stacked
+                radio
+                :label="$gettext('Message Visibility')"
+            />
         </div>
-    </b-form-group>
 
-    <common-social-post-fields
-        :form="form"
-        :now-playing-url="nowPlayingUrl"
-    />
+        <common-social-post-fields
+            v-model:form="form"
+            :now-playing-url="nowPlayingUrl"
+        />
+    </o-tab-item>
 </template>
 
 <script setup>
-import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
+import FormGroupField from "~/components/Form/FormGroupField";
 import CommonRateLimitFields from "./Common/RateLimitFields";
 import CommonSocialPostFields from "./Common/SocialPostFields";
 import {computed} from "vue";
 import {useTranslate} from "~/vendor/gettext";
+import FormMarkup from "~/components/Form/FormMarkup.vue";
+import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
+import {useVModel} from "@vueuse/core";
+import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
+import {required} from "@vuelidate/validators";
 
 const props = defineProps({
+    title: {
+        type: String,
+        required: true
+    },
     form: {
         type: Object,
         required: true
-    },
-    nowPlayingUrl: {
-        type: String,
-        required: true
     }
 });
+
+const emit = defineEmits(['update:form']);
+const form = useVModel(props, 'form', emit);
+
+const {v$, tabClass} = useVuelidateOnFormTab(
+    {
+        config: {
+            instance_url: {required},
+            access_token: {required},
+            visibility: {required}
+        }
+    },
+    form,
+    {
+        config: {
+            instance_url: '',
+            access_token: '',
+            visibility: 'public',
+        }
+    }
+);
 
 const {$gettext} = useTranslate();
 

@@ -1,15 +1,15 @@
 <template>
-    <b-form-group class="waveform-controls">
-        <b-row>
-            <b-form-group class="col-md-12">
-                <div class="waveform__container">
+    <div class="waveform-controls">
+        <div class="row">
+            <div class="col-md-12">
+                <div id="waveform_container">
                     <div id="waveform-timeline" />
                     <div id="waveform" />
                 </div>
-            </b-form-group>
-        </b-row>
-        <b-row class="mt-3 align-items-center">
-            <b-col md="7">
+            </div>
+        </div>
+        <div class="row mt-3 align-items-center">
+            <div class="col-md-7">
                 <div class="d-flex">
                     <div class="flex-shrink-0">
                         <label for="waveform-zoom">
@@ -17,60 +17,60 @@
                         </label>
                     </div>
                     <div class="flex-fill mx-3">
-                        <b-form-input
+                        <input
                             id="waveform-zoom"
                             v-model.number="zoom"
                             type="range"
                             min="0"
                             max="256"
                             class="w-100"
-                        />
+                        >
                     </div>
                 </div>
-            </b-col>
-            <b-col md="5">
+            </div>
+            <div class="col-md-5">
                 <div class="inline-volume-controls d-flex align-items-center">
                     <div class="flex-shrink-0">
-                        <a
+                        <button
+                            type="button"
                             class="btn btn-sm btn-outline-inverse"
-                            href="#"
                             :title="$gettext('Mute')"
-                            @click.prevent="volume = 0"
+                            @click="volume = 0"
                         >
                             <icon icon="volume_mute" />
-                        </a>
+                        </button>
                     </div>
                     <div class="flex-fill mx-1">
                         <input
                             v-model.number="volume"
                             type="range"
                             :title="$gettext('Volume')"
-                            class="player-volume-range custom-range w-100"
+                            class="player-volume-range form-range w-100"
                             min="0"
                             max="100"
                             step="1"
                         >
                     </div>
                     <div class="flex-shrink-0">
-                        <a
+                        <button
+                            type="button"
                             class="btn btn-sm btn-outline-inverse"
-                            href="#"
                             :title="$gettext('Full Volume')"
-                            @click.prevent="volume = 100"
+                            @click="volume = 100"
                         >
                             <icon icon="volume_up" />
-                        </a>
+                        </button>
                     </div>
                 </div>
-            </b-col>
-        </b-row>
-    </b-form-group>
+            </div>
+        </div>
+    </div>
 </template>
 
 <script setup>
 import WS from 'wavesurfer.js';
-import timeline from 'wavesurfer.js/dist/plugin/wavesurfer.timeline.js';
-import regions from 'wavesurfer.js/dist/plugin/wavesurfer.regions.js';
+import timeline from 'wavesurfer.js/dist/plugins/timeline.js';
+import regions from 'wavesurfer.js/dist/plugins/regions.js';
 import getLogarithmicVolume from '~/functions/getLogarithmicVolume.js';
 import Icon from './Icon';
 import {useStorage} from "@vueuse/core";
@@ -91,6 +91,7 @@ const props = defineProps({
 const emit = defineEmits(['ready']);
 
 let wavesurfer = null;
+let wsRegions = null;
 
 const volume = useStorage('player_volume', 55);
 const zoom = ref(0);
@@ -107,23 +108,21 @@ const {axios} = useAxios();
 
 onMounted(() => {
     wavesurfer = WS.create({
-        backend: 'MediaElement',
-        container: '#waveform',
+        container: '#waveform_container',
         waveColor: '#2196f3',
         progressColor: '#4081CF',
-        plugins: [
-            timeline.create({
-                container: '#waveform-timeline',
-                primaryColor: '#222',
-                secondaryColor: '#888',
-                primaryFontColor: '#222',
-                secondaryFontColor: '#888'
-            }),
-            regions.create({
-                regions: []
-            })
-        ]
     });
+
+    wavesurfer.registerPlugin(timeline.create({
+        primaryColor: '#222',
+        secondaryColor: '#888',
+        primaryFontColor: '#222',
+        secondaryFontColor: '#888'
+    }));
+
+    wsRegions = wavesurfer.registerPlugin(regions.create({
+        regions: []
+    }));
 
     wavesurfer.on('ready', () => {
         wavesurfer.setVolume(getLogarithmicVolume(volume.value));
@@ -132,7 +131,7 @@ onMounted(() => {
     });
 
     axios.get(props.waveformUrl).then((resp) => {
-        let waveformJson = resp?.data?.data ?? null;
+        const waveformJson = resp?.data?.data ?? null;
         if (waveformJson) {
             wavesurfer.load(props.audioUrl, waveformJson);
         } else {
@@ -165,7 +164,7 @@ const getDuration = () => {
 }
 
 const addRegion = (start, end, color) => {
-    wavesurfer?.addRegion(
+    wsRegions?.addRegion(
         {
             start: start,
             end: end,
@@ -177,7 +176,7 @@ const addRegion = (start, end, color) => {
 };
 
 const clearRegions = () => {
-    wavesurfer?.clearRegions();
+    wsRegions?.clearRegions();
 }
 
 defineExpose({
@@ -189,3 +188,10 @@ defineExpose({
     clearRegions
 })
 </script>
+
+<style lang="scss">
+#waveform_container {
+    border: 1px solid var(--bs-tertiary-bg);
+    border-radius: 4px;
+}
+</style>

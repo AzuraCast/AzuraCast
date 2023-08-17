@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App;
 
+use App\Container\EnvironmentAwareTrait;
 use App\Entity\Repository\UserRepository;
 use App\Entity\User;
 use App\Exception\NotLoggedInException;
@@ -11,6 +12,8 @@ use Mezzio\Session\SessionInterface;
 
 final class Auth
 {
+    use EnvironmentAwareTrait;
+
     public const SESSION_IS_LOGIN_COMPLETE_KEY = 'is_login_complete';
     public const SESSION_USER_ID_KEY = 'user_id';
     public const SESSION_MASQUERADE_USER_ID_KEY = 'masquerade_user_id';
@@ -24,8 +27,7 @@ final class Auth
 
     public function __construct(
         private readonly UserRepository $userRepo,
-        private readonly SessionInterface $session,
-        private readonly Environment $environment
+        private readonly SessionInterface $session
     ) {
     }
 
@@ -37,11 +39,11 @@ final class Auth
      */
     public function authenticate(string $username, string $password): ?User
     {
-        $user_auth = $this->userRepo->authenticate($username, $password);
+        $userAuth = $this->userRepo->authenticate($username, $password);
 
-        if ($user_auth instanceof User) {
-            $this->setUser($user_auth);
-            return $user_auth;
+        if ($userAuth instanceof User) {
+            $this->setUser($userAuth);
+            return $userAuth;
         }
 
         return null;
@@ -50,13 +52,13 @@ final class Auth
     /**
      * Get the currently logged in user.
      *
-     * @param bool $real_user_only
+     * @param bool $realUserOnly
      *
      * @throws Exception
      */
-    public function getLoggedInUser(bool $real_user_only = false): ?User
+    public function getLoggedInUser(bool $realUserOnly = false): ?User
     {
-        if (!$real_user_only && $this->isMasqueraded()) {
+        if (!$realUserOnly && $this->isMasqueraded()) {
             return $this->getMasquerade();
         }
 
@@ -81,9 +83,9 @@ final class Auth
             if (!$this->session->has(self::SESSION_MASQUERADE_USER_ID_KEY)) {
                 $this->masqueraded_user = false;
             } else {
-                $mask_user_id = (int)$this->session->get(self::SESSION_MASQUERADE_USER_ID_KEY);
-                if (0 !== $mask_user_id) {
-                    $user = $this->userRepo->getRepository()->find($mask_user_id);
+                $maskUserId = (int)$this->session->get(self::SESSION_MASQUERADE_USER_ID_KEY);
+                if (0 !== $maskUserId) {
+                    $user = $this->userRepo->getRepository()->find($maskUserId);
                 } else {
                     $user = null;
                 }
@@ -134,14 +136,14 @@ final class Auth
     public function getUser(): ?User
     {
         if (null === $this->user) {
-            $user_id = (int)$this->session->get(self::SESSION_USER_ID_KEY);
+            $userId = (int)$this->session->get(self::SESSION_USER_ID_KEY);
 
-            if (0 === $user_id) {
+            if (0 === $userId) {
                 $this->user = false;
                 return null;
             }
 
-            $user = $this->userRepo->getRepository()->find($user_id);
+            $user = $this->userRepo->getRepository()->find($userId);
             if ($user instanceof User) {
                 $this->user = $user;
             } else {

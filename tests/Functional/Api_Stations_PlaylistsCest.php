@@ -1,9 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Functional;
 
 use App\Entity\Enums\PlaylistSources;
 use App\Entity\Enums\PlaylistTypes;
+use FunctionalTester;
 
 class Api_Stations_PlaylistsCest extends CestAbstract
 {
@@ -11,7 +14,7 @@ class Api_Stations_PlaylistsCest extends CestAbstract
      * @before setupComplete
      * @before login
      */
-    public function managePlaylists(\FunctionalTester $I): void
+    public function managePlaylists(FunctionalTester $I): void
     {
         $I->wantTo('Manage station playlists via API.');
 

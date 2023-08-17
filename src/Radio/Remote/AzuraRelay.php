@@ -5,38 +5,38 @@ declare(strict_types=1);
 namespace App\Radio\Remote;
 
 use App\Cache\AzuraRelayCache;
-use App\Entity;
-use App\Environment;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Container\EnvironmentAwareTrait;
+use App\Container\SettingsAwareTrait;
+use App\Entity\Relay;
+use App\Entity\StationRemote;
 use GuzzleHttp\Client;
 use GuzzleHttp\Promise\Create;
 use GuzzleHttp\Promise\PromiseInterface;
 use GuzzleHttp\Psr7\Uri;
 use InvalidArgumentException;
-use Monolog\Logger;
 use NowPlaying\AdapterFactory;
 use NowPlaying\Enums\AdapterTypes;
 use NowPlaying\Result\Result;
 
 final class AzuraRelay extends AbstractRemote
 {
+    use EnvironmentAwareTrait;
+    use SettingsAwareTrait;
+
     public function __construct(
-        EntityManagerInterface $em,
-        Entity\Repository\SettingsRepository $settingsRepo,
-        Client $http_client,
-        Logger $logger,
+        private readonly AzuraRelayCache $azuraRelayCache,
+        Client $httpClient,
         AdapterFactory $adapterFactory,
-        private readonly AzuraRelayCache $azuraRelayCache
     ) {
-        parent::__construct($em, $settingsRepo, $http_client, $logger, $adapterFactory);
+        parent::__construct($httpClient, $adapterFactory);
     }
 
-    public function getNowPlayingAsync(Entity\StationRemote $remote, bool $includeClients = false): PromiseInterface
+    public function getNowPlayingAsync(StationRemote $remote, bool $includeClients = false): PromiseInterface
     {
         $station = $remote->getStation();
         $relay = $remote->getRelay();
 
-        if (!$relay instanceof Entity\Relay) {
+        if (!$relay instanceof Relay) {
             throw new InvalidArgumentException('AzuraRelay remote must have a corresponding relay.');
         }
 
@@ -77,34 +77,34 @@ final class AzuraRelay extends AbstractRemote
     /**
      * @inheritDoc
      */
-    public function getPublicUrl(Entity\StationRemote $remote): string
+    public function getPublicUrl(StationRemote $remote): string
     {
         $station = $remote->getStation();
         $relay = $remote->getRelay();
 
-        if (!$relay instanceof Entity\Relay) {
+        if (!$relay instanceof Relay) {
             throw new InvalidArgumentException('AzuraRelay remote must have a corresponding relay.');
         }
 
-        $base_url = new Uri(rtrim($relay->getBaseUrl(), '/'));
+        $baseUrl = new Uri(rtrim($relay->getBaseUrl(), '/'));
 
-        $radio_port = $station->getFrontendConfig()->getPort();
+        $radioPort = $station->getFrontendConfig()->getPort();
 
-        $use_radio_proxy = $this->settingsRepo->readSettings()->getUseRadioProxy();
+        $useRadioProxy = $this->readSettings()->getUseRadioProxy();
 
         if (
-            $use_radio_proxy
-            || 'https' === $base_url->getScheme()
-            || (!Environment::getInstance()->isProduction() && !Environment::getInstance()->isDocker())
+            $useRadioProxy
+            || 'https' === $baseUrl->getScheme()
+            || (!$this->environment->isProduction() && !$this->environment->isDocker())
         ) {
             // Web proxy support.
-            return (string)$base_url
-                ->withPath($base_url->getPath() . '/radio/' . $radio_port . $remote->getMount());
+            return (string)$baseUrl
+                ->withPath($baseUrl->getPath() . '/radio/' . $radioPort . $remote->getMount());
         }
 
         // Remove port number and other decorations.
-        return (string)$base_url
-            ->withPort($radio_port)
+        return (string)$baseUrl
+            ->withPort($radioPort)
             ->withPath($remote->getMount() ?? '');
     }
 }

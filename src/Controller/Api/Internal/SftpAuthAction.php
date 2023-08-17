@@ -4,24 +4,23 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Internal;
 
+use App\Container\EntityManagerAwareTrait;
+use App\Container\LoggerAwareTrait;
+use App\Controller\SingleActionInterface;
 use App\Entity\SftpUser;
 use App\Http\Response;
 use App\Http\ServerRequest;
-use Doctrine\ORM\EntityManagerInterface;
 use Psr\Http\Message\ResponseInterface;
-use Psr\Log\LoggerInterface;
 
-final class SftpAuthAction
+final class SftpAuthAction implements SingleActionInterface
 {
-    public function __construct(
-        private readonly EntityManagerInterface $em,
-        private readonly LoggerInterface $logger,
-    ) {
-    }
+    use LoggerAwareTrait;
+    use EntityManagerAwareTrait;
 
     public function __invoke(
         ServerRequest $request,
-        Response $response
+        Response $response,
+        array $params
     ): ResponseInterface {
         $errorResponse = $response
             ->withStatus(500)

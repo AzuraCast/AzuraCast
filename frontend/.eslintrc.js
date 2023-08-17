@@ -1,10 +1,16 @@
 module.exports = {
     extends: [
         'eslint:recommended',
-        'plugin:vue/vue3-recommended'
+        'plugin:vue/vue3-recommended',
+        "@vue/typescript/recommended",
     ],
+    "parser": "vue-eslint-parser",
+    "parserOptions": {
+        "parser": "@typescript-eslint/parser",
+    },
+    plugins: ['@typescript-eslint'],
     rules: {
-        "no-unused-vars": ["error", {
+        "@typescript-eslint/no-unused-vars": ["error", {
             "varsIgnorePattern": "^_|props",
         }],
         "vue/multi-word-component-names": "off",
@@ -15,6 +21,8 @@ module.exports = {
             "alignAttributesVertically": true
         }],
         "vue/no-v-html": "off",
-        "vue/no-mutating-props": "off"
+        "vue/no-mutating-props": "off",
+        'vue/no-multiple-template-root': "off",
+        'vue/no-setup-props-destructure': "off"
     }
 }

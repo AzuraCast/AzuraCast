@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace App\Console\Command;
 
-use App\Environment;
+use App\Container\ContainerAwareTrait;
+use App\Container\EntityManagerAwareTrait;
+use App\Container\EnvironmentAwareTrait;
 use Doctrine\Common\DataFixtures\Executor\ORMExecutor;
 use Doctrine\Common\DataFixtures\Loader;
 use Doctrine\Common\DataFixtures\Purger\ORMPurger;
-use Doctrine\ORM\EntityManagerInterface;
-use Psr\Container\ContainerInterface;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -23,13 +23,9 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 )]
 final class SetupFixturesCommand extends CommandAbstract
 {
-    public function __construct(
-        private readonly EntityManagerInterface $em,
-        private readonly ContainerInterface $di,
-        private readonly Environment $environment,
-    ) {
-        parent::__construct();
-    }
+    use ContainerAwareTrait;
+    use EntityManagerAwareTrait;
+    use EnvironmentAwareTrait;
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {

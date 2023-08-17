@@ -5,11 +5,10 @@ declare(strict_types=1);
 namespace App\Console\Command\Sync;
 
 use App\Cache\NowPlayingCache;
-use App\Entity\Repository\SettingsRepository;
-use App\Environment;
+use App\Container\EntityManagerAwareTrait;
+use App\Container\SettingsAwareTrait;
 use App\Lock\LockFactory;
-use Doctrine\ORM\EntityManagerInterface;
-use Psr\Log\LoggerInterface;
+use App\Service\HighAvailability;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -22,19 +21,17 @@ use function random_int;
     name: 'azuracast:sync:nowplaying',
     description: 'Task to run the Now Playing worker task.'
 )]
-final class NowPlayingCommand extends AbstractSyncCommand
+final class NowPlayingCommand extends AbstractSyncRunnerCommand
 {
-    public final const MAX_CONCURRENT_PROCESSES = 5;
+    use EntityManagerAwareTrait;
+    use SettingsAwareTrait;
 
     public function __construct(
-        LoggerInterface $logger,
+        private readonly NowPlayingCache $nowPlayingCache,
+        private readonly HighAvailability $highAvailability,
         LockFactory $lockFactory,
-        Environment $environment,
-        private readonly EntityManagerInterface $em,
-        private readonly SettingsRepository $settingsRepo,
-        private readonly NowPlayingCache $nowPlayingCache
     ) {
-        parent::__construct($logger, $lockFactory, $environment);
+        parent::__construct($lockFactory);
     }
 
     protected function configure(): void
@@ -50,9 +47,17 @@ final class NowPlayingCommand extends AbstractSyncCommand
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        $this->logToExtraFile('app_nowplaying.log');
+
         $io = new SymfonyStyle($input, $output);
 
-        $settings = $this->settingsRepo->readSettings();
+        if (!$this->highAvailability->isActiveServer()) {
+            $this->logger->error('This instance is not the current active instance.');
+            sleep(30);
+            return 0;
+        }
+
+        $settings = $this->readSettings();
         if ($settings->getSyncDisabled()) {
             $this->logger->error('Automated synchronization is temporarily disabled.');
             return 1;
@@ -75,7 +80,7 @@ final class NowPlayingCommand extends AbstractSyncCommand
             $numProcesses = count($this->processes);
 
             if (
-                $numProcesses < self::MAX_CONCURRENT_PROCESSES
+                $numProcesses < $this->environment->getNowPlayingMaxConcurrentProcesses()
                 && time() < $threshold - 5
             ) {
                 // Ensure a process is running for every active station.
@@ -83,7 +88,7 @@ final class NowPlayingCommand extends AbstractSyncCommand
                 $npThreshold = time() - $npDelay - random_int(0, 5);
 
                 foreach ($this->getStationsToRun($npThreshold) as $shortName) {
-                    if (count($this->processes) >= self::MAX_CONCURRENT_PROCESSES) {
+                    if (count($this->processes) >= $this->environment->getNowPlayingMaxConcurrentProcesses()) {
                         break;
                     }
                     if (isset($this->processes[$shortName])) {

@@ -14,36 +14,27 @@
             @select="setType"
         />
 
-        <b-tabs
+        <o-tabs
             v-else
-            lazy
+            nav-tabs-class="nav-tabs"
             content-class="mt-3"
-            pills
         >
-            <b-tab active>
-                <template #title>
-                    {{ $gettext('Basic Info') }}
-                </template>
+            <basic-info
+                v-model:form="form"
+                :trigger-details="triggerDetails"
+                :triggers="triggers"
+            />
 
-                <basic-info
-                    :trigger-details="triggerDetails"
-                    :triggers="triggers"
-                    :form="v$"
-                />
-            </b-tab>
-            <b-tab :title="typeTitle">
-                <component
-                    :is="formComponent"
-                    :now-playing-url="nowPlayingUrl"
-                    :form="v$"
-                />
-            </b-tab>
-        </b-tabs>
+            <component
+                :is="formComponent"
+                v-model:form="form"
+                :label="typeTitle"
+            />
+        </o-tabs>
     </modal-form>
 </template>
 
 <script setup>
-import {required} from '@vuelidate/validators';
 import TypeSelect from "./Form/TypeSelect";
 import BasicInfo from "./Form/BasicInfo";
 import {get, map} from "lodash";
@@ -58,7 +49,7 @@ import GoogleAnalyticsV4 from "./Form/GoogleAnalyticsV4";
 import MatomoAnalytics from "./Form/MatomoAnalytics";
 import Mastodon from "./Form/Mastodon";
 import {baseEditModalProps, useBaseEditModal} from "~/functions/useBaseEditModal";
-import {computed, ref} from "vue";
+import {computed, nextTick, provide, ref} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import ModalForm from "~/components/Common/ModalForm.vue";
 import {
@@ -90,253 +81,25 @@ const props = defineProps({
     }
 });
 
+provide('nowPlayingUrl', props.nowPlayingUrl);
+
 const emit = defineEmits(['relist']);
 
 const type = ref(null);
 
 const $modal = ref(); // Template Ref
 
-const {$gettext} = useTranslate();
-
-const langPoweredByAzuraCast = $gettext('Powered by AzuraCast');
-
-const langDiscordDefaultContent = $gettext(
-    'Now playing on %{ station }:',
-    {'station': '{{ station.name }}'}
-);
-
-const langTelegramDefaultContent = $gettext(
-    'Now playing on %{ station }: %{ title } by %{ artist }! Tune in now.',
-    {
-        station: '{{ station.name }}',
-        title: '{{ now_playing.song.title }}',
-        artist: '{{ now_playing.song.artist }}'
-    }
-);
-
-const langTwitterDefaultMessage = $gettext(
-    'Now playing on %{ station }: %{ title } by %{ artist }! Tune in now: %{ url }',
-    {
-        station: '{{ station.name }}',
-        title: '{{ now_playing.song.title }}',
-        artist: '{{ now_playing.song.artist }}',
-        url: '{{ station.public_player_url }}'
-    }
-);
-
-const langTwitterSongChangedLiveMessage = $gettext(
-    'Now playing on %{ station }: %{ title } by %{ artist } with your host, %{ dj }! Tune in now: %{ url }',
-    {
-        station: '{{ station.name }}',
-        title: '{{ now_playing.song.title }}',
-        artist: '{{ now_playing.song.artist }}',
-        dj: '{{ live.streamer_name }}',
-        url: '{{ station.public_player_url }}'
-    }
-);
-
-const langTwitterDjOnMessage = $gettext(
-    '%{ dj } is now live on %{ station }! Tune in now: %{ url }',
-    {
-        dj: '{{ live.streamer_name }}',
-        station: '{{ station.name }}',
-        url: '{{ station.public_player_url }}'
-    }
-);
-
-const langTwitterDjOffMessage = $gettext(
-    'Thanks for listening to %{ station }!',
-    {
-        station: '{{ station.name }}',
-    }
-);
-
-const langTwitterStationOfflineMessage = $gettext(
-    '%{ station } is going offline for now.',
-    {
-        station: '{{ station.name }}'
-    }
-);
-
-const langTwitterStationOnlineMessage = $gettext(
-    '%{ station } is back online! Tune in now: %{ url }',
-    {
-        station: '{{ station.name }}',
-        url: '{{ station.public_player_url }}'
-    }
-);
-
-const webhookConfig = {
-    [WEBHOOK_TYPE_GENERIC]: {
-        component: Generic,
-        validations: {
-            webhook_url: {required},
-            basic_auth_username: {},
-            basic_auth_password: {},
-            timeout: {},
-        },
-        defaultConfig: {
-            webhook_url: '',
-            basic_auth_username: '',
-            basic_auth_password: '',
-            timeout: '5',
-        }
-    },
-    [WEBHOOK_TYPE_EMAIL]: {
-        component: Email,
-        validations: {
-            to: {required},
-            subject: {required},
-            message: {required}
-        },
-        defaultConfig: {
-            to: '',
-            subject: '',
-            message: ''
-        }
-    },
-    [WEBHOOK_TYPE_TUNEIN]: {
-        component: Tunein,
-        validations: {
-            station_id: {required},
-            partner_id: {required},
-            partner_key: {required},
-        },
-        defaultConfig: {
-            station_id: '',
-            partner_id: '',
-            partner_key: ''
-        }
-    },
-    [WEBHOOK_TYPE_DISCORD]: {
-        component: Discord,
-        validations: {
-            webhook_url: {required},
-            content: {},
-            title: {},
-            description: {},
-            url: {},
-            author: {},
-            thumbnail: {},
-            footer: {},
-        },
-        defaultConfig: {
-            webhook_url: '',
-            content: langDiscordDefaultContent,
-            title: '{{ now_playing.song.title }}',
-            description: '{{ now_playing.song.artist }}',
-            url: '{{ station.listen_url }}',
-            author: '{{ live.streamer_name }}',
-            thumbnail: '{{ now_playing.song.art }}',
-            footer: langPoweredByAzuraCast,
-        }
-    },
-    [WEBHOOK_TYPE_TELEGRAM]: {
-        component: Telegram,
-        validations: {
-            bot_token: {required},
-            chat_id: {required},
-            api: {},
-            text: {required},
-            parse_mode: {required}
-        },
-        defaultConfig: {
-            bot_token: '',
-            chat_id: '',
-            api: '',
-            text: langTelegramDefaultContent,
-            parse_mode: 'Markdown'
-        }
-    },
-    [WEBHOOK_TYPE_TWITTER]: {
-        component: Twitter,
-        validations: {
-            consumer_key: {required},
-            consumer_secret: {required},
-            token: {required},
-            token_secret: {required},
-            rate_limit: {},
-            message: {},
-            message_song_changed_live: {},
-            message_live_connect: {},
-            message_live_disconnect: {},
-            message_station_offline: {},
-            message_station_online: {}
-        },
-        defaultConfig: {
-            consumer_key: '',
-            consumer_secret: '',
-            token: '',
-            token_secret: '',
-            rate_limit: 0,
-            message: langTwitterDefaultMessage,
-            message_song_changed_live: langTwitterSongChangedLiveMessage,
-            message_live_connect: langTwitterDjOnMessage,
-            message_live_disconnect: langTwitterDjOffMessage,
-            message_station_offline: langTwitterStationOfflineMessage,
-            message_station_online: langTwitterStationOnlineMessage
-        }
-    },
-    [WEBHOOK_TYPE_MASTODON]: {
-        component: Mastodon,
-        validations: {
-            instance_url: {required},
-            access_token: {required},
-            rate_limit: {},
-            visibility: {required},
-            message: {},
-            message_song_changed_live: {},
-            message_live_connect: {},
-            message_live_disconnect: {},
-            message_station_offline: {},
-            message_station_online: {}
-        },
-        defaultConfig: {
-            instance_url: '',
-            access_token: '',
-            rate_limit: 0,
-            visibility: 'public',
-            message: langTwitterDefaultMessage,
-            message_song_changed_live: langTwitterSongChangedLiveMessage,
-            message_live_connect: langTwitterDjOnMessage,
-            message_live_disconnect: langTwitterDjOffMessage,
-            message_station_offline: langTwitterStationOfflineMessage,
-            message_station_online: langTwitterStationOnlineMessage
-        }
-    },
-    [WEBHOOK_TYPE_GOOGLE_ANALYTICS_V3]: {
-        component: GoogleAnalyticsV3,
-        validations: {
-            tracking_id: {required}
-        },
-        defaultConfig: {
-            tracking_id: ''
-        }
-    },
-    [WEBHOOK_TYPE_GOOGLE_ANALYTICS_V4]: {
-        component: GoogleAnalyticsV4,
-        validations: {
-            api_secret: {required},
-            measurement_id: {required}
-        },
-        defaultConfig: {
-            api_secret: '',
-            measurement_id: ''
-        }
-    },
-    [WEBHOOK_TYPE_MATOMO_ANALYTICS]: {
-        component: MatomoAnalytics,
-        validations: {
-            matomo_url: {required},
-            site_id: {required},
-            token: {},
-        },
-        defaultConfig: {
-            matomo_url: '',
-            site_id: '',
-            token: ''
-        }
-    }
+const webhookComponents = {
+    [WEBHOOK_TYPE_GENERIC]: Generic,
+    [WEBHOOK_TYPE_EMAIL]: Email,
+    [WEBHOOK_TYPE_TUNEIN]: Tunein,
+    [WEBHOOK_TYPE_DISCORD]: Discord,
+    [WEBHOOK_TYPE_TELEGRAM]: Telegram,
+    [WEBHOOK_TYPE_TWITTER]: Twitter,
+    [WEBHOOK_TYPE_MASTODON]: Mastodon,
+    [WEBHOOK_TYPE_GOOGLE_ANALYTICS_V3]: GoogleAnalyticsV3,
+    [WEBHOOK_TYPE_GOOGLE_ANALYTICS_V4]: GoogleAnalyticsV4,
+    [WEBHOOK_TYPE_MATOMO_ANALYTICS]: MatomoAnalytics,
 };
 
 const triggers = computed(() => {
@@ -361,13 +124,14 @@ const typeTitle = computed(() => {
 });
 
 const formComponent = computed(() => {
-    return get(webhookConfig, [type.value, 'component'], Generic);
+    return get(webhookComponents, type.value, Generic);
 });
 
 const {
     loading,
     error,
     isEditMode,
+    form,
     v$,
     resetForm,
     clearContents: originalClearContents,
@@ -379,45 +143,8 @@ const {
     props,
     emit,
     $modal,
-    () => computed(() => {
-        let validations = {
-            name: {required},
-            triggers: {},
-            config: {}
-        };
-
-        const triggersValue = triggers.value;
-        if (triggersValue.length > 0) {
-            validations.triggers = {required};
-        }
-
-        if (type.value !== null) {
-            validations.config = get(
-                webhookConfig,
-                [type.value, 'validations'],
-                {}
-            );
-        }
-
-        return validations;
-    }),
-    () => computed(() => {
-        let newForm = {
-            name: null,
-            triggers: [],
-            config: {}
-        };
-
-        if (type.value !== null) {
-            newForm.config = get(
-                webhookConfig,
-                [type.value, 'defaultConfig'],
-                {}
-            );
-        }
-
-        return newForm;
-    }),
+    {},
+    {},
     {
         populateForm: (data, formRef) => {
             type.value = data.type;
@@ -428,7 +155,7 @@ const {
             };
         },
         getSubmittableFormData(formRef, isEditModeRef) {
-            let formData = formRef.value;
+            const formData = formRef.value;
             if (!isEditModeRef.value) {
                 formData.type = type.value;
             }
@@ -437,10 +164,16 @@ const {
     }
 );
 
+const {$gettext} = useTranslate();
+
 const langTitle = computed(() => {
-    return isEditMode.value
-        ? $gettext('Edit Web Hook')
-        : $gettext('Add Web Hook');
+    if (isEditMode.value) {
+        return $gettext('Edit Web Hook');
+    }
+
+    return type.value
+        ? $gettext('Add Web Hook')
+        : $gettext('Select Web Hook Type');
 });
 
 const clearContents = () => {
@@ -450,7 +183,7 @@ const clearContents = () => {
 
 const setType = (newType) => {
     type.value = newType;
-    resetForm();
+    nextTick(resetForm);
 };
 
 defineExpose({

@@ -4,31 +4,35 @@ declare(strict_types=1);
 
 namespace App\Entity\Repository;
 
-use App\Entity;
+use App\Entity\Enums\PlaylistSources;
+use App\Entity\Station;
+use App\Entity\StationPlaylist;
 
 /**
- * @extends AbstractStationBasedRepository<Entity\StationPlaylist>
+ * @extends AbstractStationBasedRepository<StationPlaylist>
  */
 final class StationPlaylistRepository extends AbstractStationBasedRepository
 {
+    protected string $entityClass = StationPlaylist::class;
+
     /**
-     * @return Entity\StationPlaylist[]
+     * @return StationPlaylist[]
      */
-    public function getAllForStation(Entity\Station $station): array
+    public function getAllForStation(Station $station): array
     {
         return $this->repository->findBy([
             'station' => $station,
         ]);
     }
 
-    public function stationHasActivePlaylists(Entity\Station $station): bool
+    public function stationHasActivePlaylists(Station $station): bool
     {
         foreach ($station->getPlaylists() as $playlist) {
             if (!$playlist->getIsEnabled()) {
                 continue;
             }
 
-            if (Entity\Enums\PlaylistSources::RemoteUrl === $playlist->getSource()) {
+            if (PlaylistSources::RemoteUrl === $playlist->getSource()) {
                 return true;
             }
 

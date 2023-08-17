@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Unit;
 
 use App\Utilities\Strings;
@@ -12,17 +14,17 @@ class UtilitiesTest extends Unit
 
     public function testUtilities(): void
     {
-        $test_result = Strings::generatePassword(10);
-        self::assertEquals(10, strlen($test_result));
+        $testResult = Strings::generatePassword(10);
+        self::assertEquals(10, strlen($testResult));
 
-        $test_string = 'Lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet';
-        $test_result = Strings::truncateText($test_string, 15);
-        $expected_result = 'Lorem ipsum...';
-        self::assertEquals($test_result, $expected_result);
+        $testString = 'Lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet';
+        $testResult = Strings::truncateText($testString, 15);
+        $expectedResult = 'Lorem ipsum...';
+        self::assertEquals($testResult, $expectedResult);
 
-        $test_url = 'https://www.twitter.com/';
-        $test_result = Strings::truncateUrl($test_url);
-        $expected_result = 'twitter.com';
-        self::assertEquals($test_result, $expected_result);
+        $testUrl = 'https://www.twitter.com/';
+        $testResult = Strings::truncateUrl($testUrl);
+        $expectedResult = 'twitter.com';
+        self::assertEquals($testResult, $expectedResult);
     }
 }

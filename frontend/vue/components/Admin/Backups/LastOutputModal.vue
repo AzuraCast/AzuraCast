@@ -1,5 +1,5 @@
 <template>
-    <b-modal
+    <modal
         id="log_view_modal"
         ref="$modal"
         size="md"
@@ -10,11 +10,12 @@
             class="form-control log-viewer"
             style="height: 300px; overflow-y: auto;"
         >{{ lastOutput }}</pre>
-    </b-modal>
+    </modal>
 </template>
 
 <script setup>
 import {ref} from "vue";
+import Modal from "~/components/Common/Modal.vue";
 
 const props = defineProps({
     lastOutput: {

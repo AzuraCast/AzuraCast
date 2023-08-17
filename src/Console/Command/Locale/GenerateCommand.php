@@ -5,8 +5,9 @@ declare(strict_types=1);
 namespace App\Console\Command\Locale;
 
 use App\Console\Command\CommandAbstract;
+use App\Console\Command\Traits\PassThruProcess;
+use App\Container\EnvironmentAwareTrait;
 use App\Enums\SupportedLocales;
-use App\Environment;
 use Gettext\Generator\PoGenerator;
 use Gettext\Loader\PoLoader;
 use Gettext\Scanner\PhpScanner;
@@ -26,11 +27,8 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 )]
 final class GenerateCommand extends CommandAbstract
 {
-    public function __construct(
-        private readonly Environment $environment
-    ) {
-        parent::__construct();
-    }
+    use EnvironmentAwareTrait;
+    use PassThruProcess;
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
@@ -41,6 +39,13 @@ final class GenerateCommand extends CommandAbstract
 
         $translations = Translations::create('default');
         $destFile = $exportDir . '/default.pot';
+
+        // Run the JS generator
+        $this->passThruProcess(
+            $io,
+            ['npm', 'run', 'generate-locales'],
+            $this->environment->getBaseDirectory() . '/frontend'
+        );
 
         // Import the JS-generated files if they exist
         $frontendJsFile = $exportDir . '/frontend.pot';
@@ -65,8 +70,8 @@ final class GenerateCommand extends CommandAbstract
             $iterator = new RecursiveIteratorIterator($directory);
             $regex = new RegexIterator($iterator, '/^.+\.(phtml|php)$/i', RegexIterator::GET_MATCH);
 
-            foreach ($regex as $path_match) {
-                $path = $path_match[0];
+            foreach ($regex as $pathMatch) {
+                $path = $pathMatch[0];
                 $phpScanner->scanFile($path);
             }
         }

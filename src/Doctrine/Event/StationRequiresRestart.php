@@ -4,8 +4,13 @@ declare(strict_types=1);
 
 namespace App\Doctrine\Event;
 
-use App\Entity;
 use App\Entity\Attributes\AuditIgnore;
+use App\Entity\Enums\AuditLogOperations;
+use App\Entity\Station;
+use App\Entity\StationHlsStream;
+use App\Entity\StationMount;
+use App\Entity\StationPlaylist;
+use App\Entity\StationRemote;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Event\OnFlushEventArgs;
 use Doctrine\ORM\Events;
@@ -32,42 +37,42 @@ final class StationRequiresRestart implements EventSubscriber
         $em = $args->getObjectManager();
         $uow = $em->getUnitOfWork();
 
-        $collections_to_check = [
+        $collectionsToCheck = [
             [
-                Entity\Enums\AuditLogOperations::Insert,
+                AuditLogOperations::Insert,
                 $uow->getScheduledEntityInsertions(),
             ],
             [
-                Entity\Enums\AuditLogOperations::Update,
+                AuditLogOperations::Update,
                 $uow->getScheduledEntityUpdates(),
             ],
             [
-                Entity\Enums\AuditLogOperations::Delete,
+                AuditLogOperations::Delete,
                 $uow->getScheduledEntityDeletions(),
             ],
         ];
 
-        $stations_to_restart = [];
+        $stationsToRestart = [];
 
-        foreach ($collections_to_check as [$change_type, $collection]) {
+        foreach ($collectionsToCheck as [$changeType, $collection]) {
             foreach ($collection as $entity) {
                 if (
-                    ($entity instanceof Entity\StationMount)
-                    || ($entity instanceof Entity\StationHlsStream)
-                    || ($entity instanceof Entity\StationRemote && $entity->isEditable())
-                    || ($entity instanceof Entity\StationPlaylist && $entity->getStation()->useManualAutoDJ())
+                    ($entity instanceof StationMount)
+                    || ($entity instanceof StationHlsStream)
+                    || ($entity instanceof StationRemote && $entity->isEditable())
+                    || ($entity instanceof StationPlaylist && $entity->getStation()->useManualAutoDJ())
                 ) {
-                    if (Entity\Enums\AuditLogOperations::Update === $change_type) {
+                    if (AuditLogOperations::Update === $changeType) {
                         $changes = $uow->getEntityChangeSet($entity);
 
                         // Look for the @AuditIgnore annotation on a property.
-                        $class_reflection = new ReflectionObject($entity);
-                        foreach ($changes as $change_field => $changeset) {
-                            $ignoreAttr = $class_reflection->getProperty($change_field)->getAttributes(
+                        $classReflection = new ReflectionObject($entity);
+                        foreach ($changes as $changeField => $changeset) {
+                            $ignoreAttr = $classReflection->getProperty($changeField)->getAttributes(
                                 AuditIgnore::class
                             );
                             if (!empty($ignoreAttr)) {
-                                unset($changes[$change_field]);
+                                unset($changes[$changeField]);
                             }
                         }
 
@@ -77,18 +82,18 @@ final class StationRequiresRestart implements EventSubscriber
                     }
 
                     $station = $entity->getStation();
-                    $stations_to_restart[$station->getId()] = $station;
+                    $stationsToRestart[$station->getId()] = $station;
                 }
             }
         }
 
-        if (count($stations_to_restart) > 0) {
-            foreach ($stations_to_restart as $station) {
+        if (count($stationsToRestart) > 0) {
+            foreach ($stationsToRestart as $station) {
                 $station->setNeedsRestart(true);
                 $em->persist($station);
 
-                $station_meta = $em->getClassMetadata(Entity\Station::class);
-                $uow->recomputeSingleEntityChangeSet($station_meta, $station);
+                $stationMeta = $em->getClassMetadata(Station::class);
+                $uow->recomputeSingleEntityChangeSet($stationMeta, $station);
             }
         }
     }

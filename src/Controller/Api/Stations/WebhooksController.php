@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Api\Stations;
 
 use App\Controller\Api\Traits\CanSortResults;
-use App\Entity;
+use App\Entity\StationWebhook;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\OpenApi;
@@ -13,7 +13,7 @@ use InvalidArgumentException;
 use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 
-/** @extends AbstractStationApiCrudController<Entity\StationWebhook> */
+/** @extends AbstractStationApiCrudController<StationWebhook> */
 #[
     OA\Get(
         path: '/station/{station_id}/webhooks',
@@ -142,7 +142,7 @@ final class WebhooksController extends AbstractStationApiCrudController
 {
     use CanSortResults;
 
-    protected string $entityClass = Entity\StationWebhook::class;
+    protected string $entityClass = StationWebhook::class;
     protected string $resourceRouteName = 'api:stations:webhook';
 
     /**
@@ -152,13 +152,13 @@ final class WebhooksController extends AbstractStationApiCrudController
     public function listAction(
         ServerRequest $request,
         Response $response,
-        string $station_id
+        array $params
     ): ResponseInterface {
         $station = $request->getStation();
 
         $qb = $this->em->createQueryBuilder()
             ->select('e')
-            ->from(Entity\StationWebhook::class, 'e')
+            ->from(StationWebhook::class, 'e')
             ->where('e.station = :station')
             ->setParameter('station', $station);
 
@@ -182,7 +182,7 @@ final class WebhooksController extends AbstractStationApiCrudController
 
     protected function viewRecord(object $record, ServerRequest $request): mixed
     {
-        if (!($record instanceof Entity\StationWebhook)) {
+        if (!($record instanceof StationWebhook)) {
             throw new InvalidArgumentException(sprintf('Record must be an instance of %s.', $this->entityClass));
         }
 

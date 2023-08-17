@@ -1,18 +1,9 @@
 <template>
-    <section
-        class="card"
-        role="region"
-        aria-labelledby="hdr_streams"
+    <card-page
+        header-id="hdr_streams"
+        :title="$gettext('Streams')"
     >
-        <div class="card-header bg-primary-dark">
-            <h3
-                id="hdr_streams"
-                class="card-title"
-            >
-                {{ $gettext('Streams') }}
-            </h3>
-        </div>
-        <table class="table table-sm table-striped table-responsive mb-0">
+        <table class="table table-striped table-responsive mb-0">
             <colgroup>
                 <col style="width: 2%;">
                 <col style="width: 78%;">
@@ -24,7 +15,7 @@
                         <th colspan="2">
                             {{ $gettext('Local Streams') }}
                         </th>
-                        <th class="text-right">
+                        <th class="text-end">
                             {{ $gettext('Listeners') }}
                         </th>
                     </tr>
@@ -35,15 +26,15 @@
                         :key="mount.id"
                         class="align-middle"
                     >
-                        <td class="pr-1">
+                        <td class="pe-1">
                             <play-button
-                                icon-class="outlined"
+                                class="btn-lg"
                                 :url="mount.url"
                                 is-stream
                             />
                         </td>
-                        <td class="pl-1">
-                            <h6 class="mb-0">
+                        <td class="ps-1">
+                            <h6 class="mb-1">
                                 {{ mount.name }}
                             </h6>
                             <a
@@ -51,14 +42,14 @@
                                 target="_blank"
                             >{{ mount.url }}</a>
                         </td>
-                        <td class="pl-1 text-right">
+                        <td class="ps-1 text-end">
                             <icon
                                 class="sm align-middle"
                                 icon="headset"
                             />
-                            <span class="listeners-total pl-1">{{ mount.listeners.total }}</span><br>
+                            <span class="listeners-total ps-1">{{ mount.listeners.total }}</span><br>
                             <small>
-                                <span class="listeners-unique pr-1">{{ mount.listeners.unique }}</span>
+                                <span class="listeners-unique pe-1">{{ mount.listeners.unique }}</span>
                                 {{ $gettext('Unique') }}
                             </small>
                         </td>
@@ -72,7 +63,7 @@
                         <th colspan="2">
                             {{ $gettext('Remote Relays') }}
                         </th>
-                        <th class="text-right">
+                        <th class="text-end">
                             {{ $gettext('Listeners') }}
                         </th>
                     </tr>
@@ -83,15 +74,15 @@
                         :key="remote.id"
                         class="align-middle"
                     >
-                        <td class="pr-1">
+                        <td class="pe-1">
                             <play-button
-                                icon-class="outlined"
+                                class="btn-lg"
                                 :url="remote.url"
                                 is-stream
                             />
                         </td>
-                        <td class="pl-1">
-                            <h6 class="mb-0">
+                        <td class="ps-1">
+                            <h6 class="mb-1">
                                 {{ remote.name }}
                             </h6>
                             <a
@@ -99,14 +90,14 @@
                                 target="_blank"
                             >{{ remote.url }}</a>
                         </td>
-                        <td class="pl-1 text-right">
+                        <td class="ps-1 text-end">
                             <icon
                                 class="sm align-middle"
                                 icon="headset"
                             />
-                            <span class="listeners-total pl-1">{{ remote.listeners.total }}</span><br>
+                            <span class="listeners-total ps-1">{{ remote.listeners.total }}</span><br>
                             <small>
-                                <span class="listeners-unique pr-1">{{ remote.listeners.unique }}</span>
+                                <span class="listeners-unique pe-1">{{ remote.listeners.unique }}</span>
                                 {{ $gettext('Unique') }}
                             </small>
                         </td>
@@ -120,60 +111,69 @@
                         <th colspan="2">
                             {{ $gettext('HTTP Live Streaming (HLS)') }}
                         </th>
-                        <th class="text-right">
+                        <th class="text-end">
                             {{ $gettext('Listeners') }}
                         </th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr class="align-middle">
-                        <td class="pr-1">
+                        <td class="pe-1">
                             <play-button
-                                icon-class="outlined"
+                                class="btn-lg"
                                 :url="station.hls_url"
                                 is-stream
                                 is-hls
                             />
                         </td>
-                        <td class="pl-1">
+                        <td class="ps-1">
                             <a
                                 :href="station.hls_url"
                                 target="_blank"
                             >{{ station.hls_url }}</a>
                         </td>
-                        <td class="pl-1 text-right">
+                        <td class="ps-1 text-end">
                             <icon
                                 class="sm align-middle"
                                 icon="headset"
                             />
-                            <span class="listeners-total pl-1">{{ station.hls_listeners }}</span>
+                            <span class="listeners-total ps-1">
+                                {{ station.hls_listeners }}
+                                {{ $gettext('Unique') }}
+                            </span>
                         </td>
                     </tr>
                 </tbody>
             </template>
         </table>
-        <div class="card-actions">
+
+        <template #footer_actions>
             <a
-                class="btn btn-outline-primary"
+                class="btn btn-link text-primary"
                 :href="station.playlist_pls_url"
             >
                 <icon icon="file_download" />
-                {{ $gettext('Download PLS') }}
+                <span>
+                    {{ $gettext('Download PLS') }}
+                </span>
             </a>
             <a
-                class="btn btn-outline-primary"
+                class="btn btn-link text-primary"
                 :href="station.playlist_m3u_url"
             >
                 <icon icon="file_download" />
-                {{ $gettext('Download M3U') }}
+                <span>
+                    {{ $gettext('Download M3U') }}
+                </span>
             </a>
-        </div>
-    </section>
+        </template>
+    </card-page>
 </template>
 
 <script setup>
 import Icon from '~/components/Common/Icon';
 import PlayButton from "~/components/Common/PlayButton";
+import CardPage from "~/components/Common/CardPage.vue";
 
 const props = defineProps({
     station: {

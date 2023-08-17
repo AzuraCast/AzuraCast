@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Stations\Webhooks;
 
+use App\Controller\SingleActionInterface;
 use App\Entity\Repository\StationWebhookRepository;
 use App\Http\Response;
 use App\Http\ServerRequest;
@@ -12,7 +13,7 @@ use App\Utilities\File;
 use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\Messenger\MessageBus;
 
-final class TestAction
+final class TestAction implements SingleActionInterface
 {
     public function __construct(
         private readonly StationWebhookRepository $webhookRepo,
@@ -23,9 +24,11 @@ final class TestAction
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        string $station_id,
-        string $id
+        array $params
     ): ResponseInterface {
+        /** @var string $id */
+        $id = $params['id'];
+
         $webhook = $this->webhookRepo->requireForStation($id, $request->getStation());
 
         $tempFile = File::generateTempPath('webhook_test_' . $id . '.log');

@@ -17,62 +17,62 @@ trait HasLogViewer
     protected function streamLogToResponse(
         ServerRequest $request,
         Response $response,
-        string $log_path,
-        bool $tail_file = true,
+        string $logPath,
+        bool $tailFile = true,
         array $filteredTerms = []
     ): ResponseInterface {
         clearstatcache();
 
-        if (!is_file($log_path)) {
+        if (!is_file($logPath)) {
             throw new NotFoundException('Log file not found!');
         }
 
-        if (!$tail_file) {
-            $log = file_get_contents($log_path) ?: '';
-            $log_contents = $this->processLog(
+        if (!$tailFile) {
+            $log = file_get_contents($logPath) ?: '';
+            $logContents = $this->processLog(
                 rawLog: $log,
                 filteredTerms: $filteredTerms
             );
 
             return $response->withJson(
                 [
-                    'contents' => $log_contents,
+                    'contents' => $logContents,
                     'eof' => true,
                 ]
             );
         }
 
         $params = $request->getQueryParams();
-        $last_viewed_size = (int)($params['position'] ?? 0);
+        $lastViewedSize = (int)($params['position'] ?? 0);
 
-        $log_size = filesize($log_path);
-        if ($last_viewed_size > $log_size) {
-            $last_viewed_size = $log_size;
+        $logSize = filesize($logPath);
+        if ($lastViewedSize > $logSize) {
+            $lastViewedSize = $logSize;
         }
 
-        $log_visible_size = ($log_size - $last_viewed_size);
-        $cut_first_line = false;
+        $logVisibleSize = ($logSize - $lastViewedSize);
+        $cutFirstLine = false;
 
-        if ($log_visible_size > self::$maximum_log_size) {
-            $log_visible_size = self::$maximum_log_size;
-            $cut_first_line = true;
+        if ($logVisibleSize > self::$maximum_log_size) {
+            $logVisibleSize = self::$maximum_log_size;
+            $cutFirstLine = true;
         }
 
-        $log_contents = '';
+        $logContents = '';
 
-        if ($log_visible_size > 0) {
-            $fp = fopen($log_path, 'rb');
+        if ($logVisibleSize > 0) {
+            $fp = fopen($logPath, 'rb');
             if (false === $fp) {
-                throw new RuntimeException(sprintf('Could not open file at path "%s".', $log_path));
+                throw new RuntimeException(sprintf('Could not open file at path "%s".', $logPath));
             }
 
-            fseek($fp, -$log_visible_size, SEEK_END);
-            $log_contents_raw = fread($fp, $log_visible_size) ?: '';
+            fseek($fp, -$logVisibleSize, SEEK_END);
+            $logContentsRaw = fread($fp, $logVisibleSize) ?: '';
             fclose($fp);
 
-            $log_contents = $this->processLog(
-                rawLog: $log_contents_raw,
-                cutFirstLine: $cut_first_line,
+            $logContents = $this->processLog(
+                rawLog: $logContentsRaw,
+                cutFirstLine: $cutFirstLine,
                 cutEmptyLastLine: true,
                 filteredTerms: $filteredTerms
             );
@@ -80,8 +80,8 @@ trait HasLogViewer
 
         return $response->withJson(
             [
-                'contents' => $log_contents,
-                'position' => $log_size,
+                'contents' => $logContents,
+                'position' => $logSize,
                 'eof' => false,
             ]
         );

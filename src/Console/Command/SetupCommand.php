@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace App\Console\Command;
 
-use App\Entity;
-use App\Environment;
+use App\Container\EnvironmentAwareTrait;
+use App\Container\SettingsAwareTrait;
+use App\Entity\Repository\StorageLocationRepository;
 use App\Service\AzuraCastCentral;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputInterface;
@@ -19,11 +20,12 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 )]
 final class SetupCommand extends CommandAbstract
 {
+    use EnvironmentAwareTrait;
+    use SettingsAwareTrait;
+
     public function __construct(
-        private readonly Environment $environment,
-        private readonly Entity\Repository\SettingsRepository $settingsRepo,
         private readonly AzuraCastCentral $acCentral,
-        private readonly Entity\Repository\StorageLocationRepository $storageLocationRepo
+        private readonly StorageLocationRepository $storageLocationRepo
     ) {
         parent::__construct();
     }
@@ -113,9 +115,9 @@ final class SetupCommand extends CommandAbstract
         }
 
         // Update system setting logging when updates were last run.
-        $settings = $this->settingsRepo->readSettings();
+        $settings = $this->readSettings();
         $settings->updateUpdateLastRun();
-        $this->settingsRepo->writeSettings($settings);
+        $this->writeSettings($settings);
 
         if ($update) {
             $io->success(
@@ -124,7 +126,7 @@ final class SetupCommand extends CommandAbstract
                 ]
             );
         } else {
-            $public_ip = $this->acCentral->getIp(false);
+            $publicIp = $this->acCentral->getIp(false);
 
             /** @noinspection HttpUrlsUsage */
             $io->success(
@@ -132,7 +134,7 @@ final class SetupCommand extends CommandAbstract
                     __('AzuraCast installation complete!'),
                     sprintf(
                         __('Visit %s to complete setup.'),
-                        'http://' . $public_ip
+                        'http://' . $publicIp
                     ),
                 ]
             );

@@ -4,12 +4,19 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Stations\BulkMedia;
 
-use App\Entity;
+use App\Container\EntityManagerAwareTrait;
+use App\Controller\SingleActionInterface;
+use App\Entity\Api\StationPlaylistImportResult;
+use App\Entity\Repository\CustomFieldRepository;
+use App\Entity\Repository\StationPlaylistMediaRepository;
+use App\Entity\Repository\StationPlaylistRepository;
+use App\Entity\Station;
+use App\Entity\StationMedia;
+use App\Entity\StationPlaylist;
 use App\Exception\ValidationException;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Service\Flow;
-use Doctrine\ORM\EntityManagerInterface;
 use League\Csv\Reader;
 use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
@@ -20,8 +27,10 @@ use Throwable;
 use function count;
 use function str_starts_with;
 
-final class UploadAction
+final class UploadAction implements SingleActionInterface
 {
+    use EntityManagerAwareTrait;
+
     private const ALLOWED_MEDIA_FIELDS = [
         'title',
         'artist',
@@ -38,10 +47,9 @@ final class UploadAction
     ];
 
     public function __construct(
-        private readonly EntityManagerInterface $em,
-        private readonly Entity\Repository\CustomFieldRepository $customFieldRepo,
-        private readonly Entity\Repository\StationPlaylistRepository $playlistRepo,
-        private readonly Entity\Repository\StationPlaylistMediaRepository $spmRepo,
+        private readonly CustomFieldRepository $customFieldRepo,
+        private readonly StationPlaylistRepository $playlistRepo,
+        private readonly StationPlaylistMediaRepository $spmRepo,
         private readonly Serializer $serializer,
         private readonly ValidatorInterface $validator,
     ) {
@@ -50,7 +58,7 @@ final class UploadAction
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        string $station_id
+        array $params
     ): ResponseInterface {
         $station = $request->getStation();
 
@@ -87,7 +95,7 @@ final class UploadAction
 
         $playlistsByName = [];
         foreach ($this->playlistRepo->getAllForStation($station) as $playlist) {
-            $shortName = Entity\StationPlaylist::generateShortName($playlist->getName());
+            $shortName = StationPlaylist::generateShortName($playlist->getName());
             $playlistsByName[$shortName] = $playlist->getIdRequired();
         }
 
@@ -113,8 +121,8 @@ final class UploadAction
                 continue;
             }
 
-            $record = $this->em->find(Entity\StationMedia::class, $mediaId);
-            if (!$record instanceof Entity\StationMedia) {
+            $record = $this->em->find(StationMedia::class, $mediaId);
+            if (!($record instanceof StationMedia)) {
                 continue;
             }
 
@@ -131,6 +139,7 @@ final class UploadAction
             try {
                 $rowResult = $this->processRow(
                     $record,
+                    $station,
                     $row,
                     $customFieldShortNames,
                     $playlistsByName
@@ -158,24 +167,27 @@ final class UploadAction
         @unlink($csvPath);
 
         return $response->withJson(
-            new Entity\Api\StationPlaylistImportResult(
+            new StationPlaylistImportResult(
                 message: sprintf(__('%d files processed.'), $processed),
-                import_results: $importResults
+                importResults: $importResults
             )
         );
     }
 
     private function processRow(
-        Entity\StationMedia $record,
+        StationMedia $record,
+        Station $station,
         array $row,
         array $customFieldShortNames,
         array $playlistsByName
     ): bool {
         $mediaRow = [];
-        $hasPlaylists = false;
-        $playlists = [];
+
         $hasCustomFields = false;
         $customFields = [];
+
+        $hasPlaylists = false;
+        $playlists = [];
 
         foreach ($row as $key => $value) {
             if ('' === $value) {
@@ -194,9 +206,11 @@ final class UploadAction
                 $hasPlaylists = true;
                 if (null !== $value) {
                     foreach (explode(',', $value) as $playlistName) {
-                        $playlistShortName = Entity\StationPlaylist::generateShortName($playlistName);
+                        $playlistShortName = StationPlaylist::generateShortName($playlistName);
                         if (isset($playlistsByName[$playlistShortName])) {
-                            $playlists[] = $playlistsByName[$playlistShortName];
+                            /** @var int $playlistId */
+                            $playlistId = $playlistsByName[$playlistShortName];
+                            $playlists[$playlistId] = 0;
                         }
                     }
                 }
@@ -210,7 +224,7 @@ final class UploadAction
         if (!empty($mediaRow)) {
             $this->serializer->denormalize(
                 $mediaRow,
-                Entity\StationMedia::class,
+                StationMedia::class,
                 context: [
                     AbstractNormalizer::OBJECT_TO_POPULATE => $record,
                 ]
@@ -226,13 +240,11 @@ final class UploadAction
         }
 
         if ($hasPlaylists) {
-            $this->spmRepo->clearPlaylistsFromMedia($record);
-            foreach ($playlists as $playlistId) {
-                $playlist = $this->em->find(Entity\StationPlaylist::class, $playlistId);
-                if ($playlist instanceof Entity\StationPlaylist) {
-                    $this->spmRepo->addMediaToPlaylist($record, $playlist);
-                }
-            }
+            $this->spmRepo->setPlaylistsForMedia(
+                $record,
+                $station,
+                $playlists
+            );
         }
 
         if ($hasCustomFields) {

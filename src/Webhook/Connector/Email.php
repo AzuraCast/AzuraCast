@@ -9,16 +9,15 @@ use App\Entity\Station;
 use App\Entity\StationWebhook;
 use App\Service\Mail;
 use GuzzleHttp\Client;
-use Monolog\Logger;
+use RuntimeException;
 
 final class Email extends AbstractConnector
 {
     public function __construct(
-        Logger $logger,
         Client $httpClient,
         private readonly Mail $mail
     ) {
-        parent::__construct($logger, $httpClient);
+        parent::__construct($httpClient);
     }
 
     /**
@@ -31,7 +30,7 @@ final class Email extends AbstractConnector
         array $triggers
     ): void {
         if (!$this->mail->isEnabled()) {
-            throw new \RuntimeException('E-mail delivery is not currently enabled. Skipping webhook delivery...');
+            throw new RuntimeException('E-mail delivery is not currently enabled. Skipping webhook delivery...');
         }
 
         $config = $webhook->getConfig();

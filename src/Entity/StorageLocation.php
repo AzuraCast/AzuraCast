@@ -297,10 +297,10 @@ class StorageLocation implements Stringable, IdentifiableEntityInterface
 
     public function getStorageQuota(): ?string
     {
-        $raw_quota = $this->getStorageQuotaBytes();
+        $rawQuota = $this->getStorageQuotaBytes();
 
-        return ($raw_quota instanceof BigInteger)
-            ? Quota::getReadableSize($raw_quota)
+        return ($rawQuota instanceof BigInteger)
+            ? Quota::getReadableSize($rawQuota)
             : '';
     }
 
@@ -324,8 +324,8 @@ class StorageLocation implements Stringable, IdentifiableEntityInterface
 
     public function getStorageUsed(): ?string
     {
-        $raw_size = $this->getStorageUsedBytes();
-        return Quota::getReadableSize($raw_size);
+        $rawSize = $this->getStorageUsedBytes();
+        return Quota::getReadableSize($rawSize);
     }
 
     /**
@@ -382,10 +382,10 @@ class StorageLocation implements Stringable, IdentifiableEntityInterface
 
     public function getStorageAvailable(): string
     {
-        $raw_size = $this->getStorageAvailableBytes();
+        $rawSize = $this->getStorageAvailableBytes();
 
-        return ($raw_size instanceof BigInteger)
-            ? Quota::getReadableSize($raw_size)
+        return ($rawSize instanceof BigInteger)
+            ? Quota::getReadableSize($rawSize)
             : '';
     }
 

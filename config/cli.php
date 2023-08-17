@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Console\Command;
 
 return function (App\Event\BuildConsoleCommands $event) {

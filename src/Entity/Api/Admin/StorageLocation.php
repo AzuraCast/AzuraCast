@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Entity\Api\Admin;
 
-use App\Entity;
+use App\Entity\Api\Traits\HasLinks;
 use App\Traits\LoadFromParentObject;
 use OpenApi\Attributes as OA;
 
@@ -14,7 +14,7 @@ use OpenApi\Attributes as OA;
 )]
 final class StorageLocation
 {
-    use Entity\Api\Traits\HasLinks;
+    use HasLinks;
     use LoadFromParentObject;
 
     #[OA\Property(example: 1)]

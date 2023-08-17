@@ -1,97 +1,46 @@
 <template>
-    <b-form-fieldset>
-        <div class="form-row">
-            <b-wrapped-form-group
+    <div class="row g-3">
+        <div class="col-md-6">
+            <form-group-field
                 id="form_name"
-                class="col-md-6"
                 :field="form.name"
-            >
-                <template #label>
-                    {{ $gettext('Name') }}
-                </template>
-            </b-wrapped-form-group>
+                :label="$gettext('Name')"
+            />
 
-            <b-wrapped-form-group
+            <form-group-field
                 id="form_email"
-                class="col-md-6"
                 :field="form.email"
-            >
-                <template #label>
-                    {{ $gettext('E-mail Address') }}
-                </template>
-            </b-wrapped-form-group>
+                :label="$gettext('E-mail Address')"
+            />
+
+            <form-group-multi-check
+                id="edit_form_show_24_hour_time"
+                :field="form.show_24_hour_time"
+                :options="show24hourOptions"
+                stacked
+                radio
+                :label="$gettext('Time Display')"
+            />
         </div>
-    </b-form-fieldset>
-
-    <b-form-fieldset>
-        <template #label>
-            {{ $gettext('Customization') }}
-        </template>
-
-        <div class="form-row">
-            <b-col md="6">
-                <b-wrapped-form-group
-                    id="edit_form_locale"
-                    :field="form.locale"
-                >
-                    <template #label>
-                        {{ $gettext('Language') }}
-                    </template>
-                    <template #default="slotProps">
-                        <b-form-radio-group
-                            :id="slotProps.id"
-                            v-model="slotProps.field.$model"
-                            stacked
-                            :options="localeOptions"
-                        />
-                    </template>
-                </b-wrapped-form-group>
-            </b-col>
-            <b-col md="6">
-                <b-wrapped-form-group
-                    id="edit_form_theme"
-                    :field="form.theme"
-                >
-                    <template #label>
-                        {{ $gettext('Site Theme') }}
-                    </template>
-                    <template #default="slotProps">
-                        <b-form-radio-group
-                            :id="slotProps.id"
-                            v-model="slotProps.field.$model"
-                            stacked
-                            :options="themeOptions"
-                        />
-                    </template>
-                </b-wrapped-form-group>
-
-                <b-wrapped-form-group
-                    id="edit_form_show_24_hour_time"
-                    :field="form.show_24_hour_time"
-                >
-                    <template #label>
-                        {{ $gettext('Time Display') }}
-                    </template>
-                    <template #default="slotProps">
-                        <b-form-radio-group
-                            :id="slotProps.id"
-                            v-model="slotProps.field.$model"
-                            stacked
-                            :options="show24hourOptions"
-                        />
-                    </template>
-                </b-wrapped-form-group>
-            </b-col>
+        <div class="col-md-6">
+            <form-group-multi-check
+                id="edit_form_locale"
+                :field="form.locale"
+                :options="localeOptions"
+                stacked
+                radio
+                :label="$gettext('Language')"
+            />
         </div>
-    </b-form-fieldset>
+    </div>
 </template>
 
 <script setup>
-import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
-import BFormFieldset from "~/components/Form/BFormFieldset";
+import FormGroupField from "~/components/Form/FormGroupField";
 import objectToFormOptions from "~/functions/objectToFormOptions";
 import {computed} from "vue";
 import {useTranslate} from "~/vendor/gettext";
+import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
 
 const props = defineProps({
     form: {
@@ -107,29 +56,12 @@ const props = defineProps({
 const {$gettext} = useTranslate();
 
 const localeOptions = computed(() => {
-    let localeOptions = objectToFormOptions(props.supportedLocales);
+    const localeOptions = objectToFormOptions(props.supportedLocales);
     localeOptions.unshift({
         text: $gettext('Use Browser Default'),
         value: 'default'
     });
     return localeOptions;
-});
-
-const themeOptions = computed(() => {
-    return [
-        {
-            text: $gettext('Prefer System Default'),
-            value: 'browser'
-        },
-        {
-            text: $gettext('Light'),
-            value: 'light'
-        },
-        {
-            text: $gettext('Dark'),
-            value: 'dark'
-        }
-    ];
 });
 
 const show24hourOptions = computed(() => {

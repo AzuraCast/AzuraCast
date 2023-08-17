@@ -6,100 +6,75 @@
 
         <div class="row row-of-cards">
             <div class="col-sm-12 col-md-6 col-lg-5">
-                <section
-                    class="card"
-                    role="region"
-                    aria-labelledby="hdr_profile"
+                <card-page
+                    header-id="hdr_profile"
+                    :title="$gettext('Profile')"
                 >
-                    <b-card-header header-bg-variant="primary-dark">
-                        <h2
-                            id="hdr_profile"
-                            class="card-title"
-                        >
-                            {{ $gettext('Profile') }}
-                        </h2>
-                    </b-card-header>
-
-                    <b-overlay
-                        variant="card"
-                        :show="userLoading"
-                    >
-                        <b-card-body body-class="card-padding-sm">
-                            <b-media
-                                right-align
-                                vertical-align="center"
-                            >
-                                <template
-                                    v-if="user.avatar.url"
-                                    #aside
+                    <loading :loading="userLoading">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center">
+                                <div
+                                    v-if="user.avatar.url_128"
+                                    class="flex-shrink-0 pe-2"
                                 >
                                     <avatar
-                                        :url="user.avatar.url"
-                                        :service="user.avatar.service"
-                                        :service-url="user.avatar.serviceUrl"
+                                        :url="user.avatar.url_128"
+                                        :service="user.avatar.service_name"
+                                        :service-url="user.avatar.service_url"
                                     />
-                                </template>
-
-                                <h2
-                                    v-if="user.name"
-                                    class="card-title"
-                                >
-                                    {{ user.name }}
-                                </h2>
-                                <h2
-                                    v-else
-                                    class="card-title"
-                                >
-                                    {{ $gettext('AzuraCast User') }}
-                                </h2>
-                                <h3 class="card-subtitle">
-                                    {{ user.email }}
-                                </h3>
-
-                                <div
-                                    v-if="user.roles.length > 0"
-                                    class="mt-2"
-                                >
-                                    <span
-                                        v-for="role in user.roles"
-                                        :key="role.id"
-                                        class="badge badge-secondary mr-2"
-                                    >{{ role.name }}</span>
                                 </div>
-                            </b-media>
-                        </b-card-body>
-                    </b-overlay>
+                                <div class="flex-fill">
+                                    <h2
+                                        v-if="user.name"
+                                        class="card-title"
+                                    >
+                                        {{ user.name }}
+                                    </h2>
+                                    <h2
+                                        v-else
+                                        class="card-title"
+                                    >
+                                        {{ $gettext('AzuraCast User') }}
+                                    </h2>
+                                    <h3 class="card-subtitle">
+                                        {{ user.email }}
+                                    </h3>
 
-                    <div class="card-actions">
-                        <b-button
-                            variant="outline-primary"
-                            @click.prevent="doEditProfile"
+                                    <div
+                                        v-if="user.roles.length > 0"
+                                        class="mt-2"
+                                    >
+                                        <span
+                                            v-for="role in user.roles"
+                                            :key="role.id"
+                                            class="badge text-bg-secondary me-2"
+                                        >{{ role.name }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </loading>
+
+                    <template #footer_actions>
+                        <button
+                            type="button"
+                            class="btn btn-primary"
+                            @click="doEditProfile"
                         >
                             <icon icon="edit" />
-                            {{ $gettext('Edit Profile') }}
-                        </b-button>
-                    </div>
-                </section>
+                            <span>
+                                {{ $gettext('Edit Profile') }}
+                            </span>
+                        </button>
+                    </template>
+                </card-page>
 
-                <section
-                    class="card"
-                    role="region"
-                    aria-labelledby="hdr_security"
+                <card-page
+                    header-id="hdr_security"
+                    :title="$gettext('Security')"
                 >
-                    <b-card-header header-bg-variant="primary-dark">
-                        <h2
-                            id="hdr_security"
-                            class="card-title"
-                        >
-                            {{ $gettext('Security') }}
-                        </h2>
-                    </b-card-header>
-
-                    <b-overlay
-                        variant="card"
-                        :show="securityLoading"
-                    >
-                        <b-card-body>
+                    <loading :loading="securityLoading">
+                        <div class="card-body">
                             <h5>
                                 {{ $gettext('Two-Factor Authentication') }}
                                 <enabled-badge :enabled="security.twoFactorEnabled" />
@@ -110,72 +85,74 @@
                                     $gettext('Two-factor authentication improves the security of your account by requiring a second one-time access code in addition to your password when you log in.')
                                 }}
                             </p>
-                        </b-card-body>
-                    </b-overlay>
+                        </div>
+                    </loading>
 
-                    <div class="card-actions">
-                        <b-button
-                            variant="outline-primary"
-                            @click.prevent="doChangePassword"
+                    <template #footer_actions>
+                        <button
+                            type="button"
+                            class="btn btn-primary"
+                            @click="doChangePassword"
                         >
                             <icon icon="vpn_key" />
-                            {{ $gettext('Change Password') }}
-                        </b-button>
-                        <b-button
+                            <span>
+                                {{ $gettext('Change Password') }}
+                            </span>
+                        </button>
+                        <button
                             v-if="security.twoFactorEnabled"
-                            variant="outline-danger"
-                            @click.prevent="disableTwoFactor"
+                            type="button"
+                            class="btn btn-danger"
+                            @click="disableTwoFactor"
                         >
                             <icon icon="lock_open" />
-                            {{ $gettext('Disable Two-Factor') }}
-                        </b-button>
-                        <b-button
+                            <span>
+                                {{ $gettext('Disable Two-Factor') }}
+                            </span>
+                        </button>
+                        <button
                             v-else
-                            variant="outline-success"
-                            @click.prevent="enableTwoFactor"
+                            type="button"
+                            class="btn btn-success"
+                            @click="enableTwoFactor"
                         >
                             <icon icon="lock" />
-                            {{ $gettext('Enable Two-Factor') }}
-                        </b-button>
-                    </div>
-                </section>
+                            <span>
+                                {{ $gettext('Enable Two-Factor') }}
+                            </span>
+                        </button>
+                    </template>
+                </card-page>
             </div>
             <div class="col-sm-12 col-md-6 col-lg-7">
-                <section
-                    class="card"
-                    role="region"
-                    aria-labelledby="hdr_api_keys"
+                <card-page
+                    header-id="hdr_api_keys"
+                    :title="$gettext('API Keys')"
                 >
-                    <b-card-header header-bg-variant="primary-dark">
-                        <h2
-                            id="hdr_api_keys"
-                            class="card-title"
-                        >
-                            {{ $gettext('API Keys') }}
-                        </h2>
-                    </b-card-header>
-
-                    <info-card>
+                    <template #info>
                         {{
                             $gettext('Use API keys to authenticate with the AzuraCast API using the same permissions as your user account.')
                         }}
+
                         <a
                             href="/api"
                             target="_blank"
                         >
                             {{ $gettext('API Documentation') }}
                         </a>
-                    </info-card>
-
-                    <b-card-body body-class="card-padding-sm">
-                        <b-button
-                            variant="outline-primary"
-                            @click.prevent="createApiKey"
+                    </template>
+                    <template #actions>
+                        <button
+                            type="button"
+                            class="btn btn-primary"
+                            @click="createApiKey"
                         >
                             <icon icon="add" />
-                            {{ $gettext('Add API Key') }}
-                        </b-button>
-                    </b-card-body>
+                            <span>
+                                {{ $gettext('Add API Key') }}
+                            </span>
+                        </button>
+                    </template>
 
                     <data-table
                         id="account_api_keys"
@@ -185,18 +162,18 @@
                         :api-url="apiKeysApiUrl"
                     >
                         <template #cell(actions)="row">
-                            <b-button-group size="sm">
-                                <b-button
-                                    size="sm"
-                                    variant="danger"
-                                    @click.prevent="deleteApiKey(row.item.links.self)"
+                            <div class="btn-group btn-group-sm">
+                                <button
+                                    type="button"
+                                    class="btn btn-danger"
+                                    @click="deleteApiKey(row.item.links.self)"
                                 >
                                     {{ $gettext('Delete') }}
-                                </b-button>
-                            </b-button-group>
+                                </button>
+                            </div>
                         </template>
                     </data-table>
-                </section>
+                </card-page>
             </div>
         </div>
 
@@ -235,13 +212,14 @@ import AccountApiKeyModal from "./Account/ApiKeyModal";
 import AccountTwoFactorModal from "./Account/TwoFactorModal";
 import AccountEditModal from "./Account/EditModal";
 import Avatar from "~/components/Common/Avatar";
-import InfoCard from "~/components/Common/InfoCard";
 import EnabledBadge from "~/components/Common/Badges/EnabledBadge.vue";
 import {ref} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import {useAxios} from "~/vendor/axios";
 import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
 import useRefreshableAsyncState from "~/functions/useRefreshableAsyncState";
+import CardPage from "~/components/Common/CardPage.vue";
+import Loading from "~/components/Common/Loading.vue";
 
 const props = defineProps({
     userUrl: {
@@ -276,9 +254,9 @@ const {state: user, isLoading: userLoading, execute: reloadUser} = useRefreshabl
         name: null,
         email: null,
         avatar: {
-            url: null,
-            service: null,
-            serviceUrl: null
+            url_128: null,
+            service_name: null,
+            service_url: null
         },
         roles: [],
     },

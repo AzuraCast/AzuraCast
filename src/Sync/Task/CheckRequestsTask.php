@@ -4,25 +4,23 @@ declare(strict_types=1);
 
 namespace App\Sync\Task;
 
-use App\Doctrine\ReloadableEntityManagerInterface;
-use App\Entity;
+use App\Entity\Repository\StationRequestRepository;
+use App\Entity\Station;
+use App\Entity\StationQueue;
+use App\Entity\StationRequest;
 use App\Event\Radio\AnnotateNextSong;
 use App\Radio\Adapters;
 use App\Radio\Backend\Liquidsoap;
 use App\Radio\Enums\LiquidsoapQueues;
 use Psr\EventDispatcher\EventDispatcherInterface;
-use Psr\Log\LoggerInterface;
 
 final class CheckRequestsTask extends AbstractTask
 {
     public function __construct(
-        private readonly Entity\Repository\StationRequestRepository $requestRepo,
+        private readonly StationRequestRepository $requestRepo,
         private readonly Adapters $adapters,
-        private readonly EventDispatcherInterface $dispatcher,
-        ReloadableEntityManagerInterface $em,
-        LoggerInterface $logger
+        private readonly EventDispatcherInterface $dispatcher
     ) {
-        parent::__construct($em, $logger);
     }
 
     public static function getSchedulePattern(): string
@@ -51,26 +49,26 @@ final class CheckRequestsTask extends AbstractTask
         }
     }
 
-    private function submitRequest(Entity\Station $station, Entity\StationRequest $request): bool
+    private function submitRequest(Station $station, StationRequest $request): void
     {
         // Send request to the station to play the request.
         $backend = $this->adapters->getBackendAdapter($station);
 
         if (!($backend instanceof Liquidsoap)) {
-            return false;
+            return;
         }
 
         // Check for an existing SongHistory record and skip if one exists.
-        $sq = $this->em->getRepository(Entity\StationQueue::class)->findOneBy(
+        $sq = $this->em->getRepository(StationQueue::class)->findOneBy(
             [
                 'station' => $station,
                 'request' => $request,
             ]
         );
 
-        if (!$sq instanceof Entity\StationQueue) {
+        if (!$sq instanceof StationQueue) {
             // Log the item in SongHistory.
-            $sq = Entity\StationQueue::fromRequest($request);
+            $sq = StationQueue::fromRequest($request);
             $sq->setSentToAutodj();
             $sq->setTimestampCued(time());
 
@@ -89,7 +87,7 @@ final class CheckRequestsTask extends AbstractTask
 
         if (!$backend->isQueueEmpty($station, $queue)) {
             $this->logger->error('Skipping submitting request to Liquidsoap; current queue is occupied.');
-            return false;
+            return;
         }
 
         $this->logger->debug('Submitting request to AutoDJ.', ['track' => $track]);
@@ -102,7 +100,5 @@ final class CheckRequestsTask extends AbstractTask
 
         $this->em->persist($request);
         $this->em->flush();
-
-        return true;
     }
 }

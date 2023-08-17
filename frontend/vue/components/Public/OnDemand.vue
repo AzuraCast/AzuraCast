@@ -13,7 +13,7 @@
                 class="card"
                 style="height: 100%;"
             >
-                <div class="card-header bg-primary-dark">
+                <div class="card-header text-bg-primary">
                     <div class="d-flex align-items-center">
                         <div class="flex-shrink">
                             <h2 class="card-title py-2">
@@ -25,7 +25,7 @@
                                 </template>
                             </h2>
                         </div>
-                        <div class="flex-fill text-right">
+                        <div class="flex-fill text-end">
                             <inline-player ref="player" />
                         </div>
                     </div>
@@ -41,15 +41,12 @@
                 >
                     <template #cell(download_url)="row">
                         <play-button
-                            class="file-icon"
-                            icon-class="outlined"
+                            class="btn-lg"
                             :url="row.item.download_url"
-                            :is-stream="false"
                         />
                         <template v-if="showDownloadButton">
-                            &nbsp;
                             <a
-                                class="name"
+                                class="name btn btn-lg p-0 ms-2"
                                 :href="row.item.download_url"
                                 target="_blank"
                                 :title="$gettext('Download')"
@@ -73,6 +70,8 @@
             </div>
         </div>
     </section>
+
+    <lightbox ref="$lightbox" />
 </template>
 
 <script setup>
@@ -84,6 +83,9 @@ import PlayButton from "~/components/Common/PlayButton";
 import {useTranslate} from "~/vendor/gettext";
 import formatFileSize from "../../functions/formatFileSize";
 import AlbumArt from "~/components/Common/AlbumArt.vue";
+import Lightbox from "~/components/Common/Lightbox.vue";
+import {ref} from "vue";
+import {useProvideLightbox} from "~/vendor/lightbox";
 
 const props = defineProps({
     listUrl: {
@@ -108,7 +110,7 @@ const props = defineProps({
 
 const {$gettext} = useTranslate();
 
-let fields = [
+const fields = [
     {key: 'download_url', label: ' '},
     {key: 'art', label: $gettext('Art')},
     {
@@ -145,6 +147,9 @@ forEach(props.customFields.slice(), (field) => {
         formatter: (value, key, item) => item.media.custom_fields[field.key]
     });
 });
+
+const $lightbox = ref(); // Template Ref
+useProvideLightbox($lightbox);
 </script>
 
 <style lang="scss">
@@ -160,7 +165,7 @@ forEach(props.customFields.slice(), (field) => {
         overflow-y: auto;
     }
 
-    table.b-table {
+    table.table {
         thead tr th:nth-child(1),
         tbody tr td:nth-child(1) {
             padding-right: 0.75rem;

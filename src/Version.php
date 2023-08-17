@@ -10,6 +10,7 @@ use DateTimeZone;
 use Dotenv\Dotenv;
 use Psr\SimpleCache\CacheInterface;
 use Symfony\Component\Process\Process;
+use Throwable;
 
 /**
  * App Core Framework Version
@@ -17,10 +18,7 @@ use Symfony\Component\Process\Process;
 final class Version
 {
     /** @var string Version that is displayed if no Git repository information is present. */
-    public const FALLBACK_VERSION = '0.18.5';
-
-    public const UPDATE_URL = 'https://docs.azuracast.com/en/getting-started/updates';
-    public const CHANGELOG_URL = 'https://github.com/AzuraCast/AzuraCast/blob/main/CHANGELOG.md';
+    public const FALLBACK_VERSION = '0.19.0';
 
     private string $repoDir;
 
@@ -70,11 +68,11 @@ final class Version
                 $details['commit_short'] = substr($details['commit'] ?? '', 0, 7);
 
                 if (!empty($details['commit_date_raw'])) {
-                    $commit_date = new DateTime($details['commit_date_raw']);
-                    $commit_date->setTimezone(new DateTimeZone('UTC'));
+                    $commitDate = new DateTime($details['commit_date_raw']);
+                    $commitDate->setTimezone(new DateTimeZone('UTC'));
 
-                    $details['commit_timestamp'] = $commit_date->getTimestamp();
-                    $details['commit_date'] = $commit_date->format('Y-m-d G:i');
+                    $details['commit_timestamp'] = $commitDate->getTimestamp();
+                    $details['commit_date'] = $commitDate->format('Y-m-d G:i');
                 } else {
                     $details['commit_timestamp'] = 0;
                     $details['commit_date'] = 'N/A';
@@ -108,7 +106,7 @@ final class Version
                         'commit_date_raw' => $gitInfo['COMMIT_DATE'] ?? null,
                         'branch' => $gitInfo['BRANCH'] ?? null,
                     ];
-                } catch (\Throwable) {
+                } catch (Throwable) {
                     // Noop
                 }
             }

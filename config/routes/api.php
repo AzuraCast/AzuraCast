@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Controller;
 use App\Http\Response;
 use App\Http\ServerRequest;
@@ -67,11 +69,11 @@ return static function (RouteCollectorProxy $app) {
                     $group->post('/sftp-event', Controller\Api\Internal\SftpEventAction::class)
                         ->setName('api:internal:sftp-event');
 
-                    $group->get('/relays', Controller\Api\Admin\RelaysController::class)
+                    $group->get('/relays', Controller\Api\Internal\RelaysController::class)
                         ->setName('api:internal:relays')
                         ->add(Middleware\RequireLogin::class);
 
-                    $group->post('/relays', Controller\Api\Admin\RelaysController::class . ':updateAction')
+                    $group->post('/relays', Controller\Api\Internal\RelaysController::class . ':updateAction')
                         ->add(Middleware\RequireLogin::class);
                 }
             );

@@ -4,14 +4,21 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Stations;
 
+use App\Container\EntityManagerAwareTrait;
 use App\Controller\Api\Traits\AcceptsDateRange;
-use App\Entity;
+use App\Controller\SingleActionInterface;
+use App\Entity\Api\Listener as ApiListener;
+use App\Entity\Listener;
+use App\Entity\Repository\ListenerRepository;
+use App\Entity\Repository\StationHlsStreamRepository;
+use App\Entity\Repository\StationMountRepository;
+use App\Entity\Repository\StationRemoteRepository;
+use App\Entity\Station;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\OpenApi;
 use Carbon\CarbonImmutable;
 use Doctrine\ORM\AbstractQuery;
-use Doctrine\ORM\EntityManagerInterface;
 use League\Csv\Writer;
 use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
@@ -42,23 +49,23 @@ use RuntimeException;
         ]
     )
 ]
-final class ListenersAction
+final class ListenersAction implements SingleActionInterface
 {
     use AcceptsDateRange;
+    use EntityManagerAwareTrait;
 
     public function __construct(
-        private readonly EntityManagerInterface $em,
-        private readonly Entity\Repository\ListenerRepository $listenerRepo,
-        private readonly Entity\Repository\StationMountRepository $mountRepo,
-        private readonly Entity\Repository\StationRemoteRepository $remoteRepo,
-        private readonly Entity\Repository\StationHlsStreamRepository $hlsStreamRepo,
+        private readonly ListenerRepository $listenerRepo,
+        private readonly StationMountRepository $mountRepo,
+        private readonly StationRemoteRepository $remoteRepo,
+        private readonly StationHlsStreamRepository $hlsStreamRepo,
     ) {
     }
 
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        string $station_id
+        array $params
     ): ResponseInterface {
         $station = $request->getStation();
         $stationTz = $station->getTimezoneObject();
@@ -104,7 +111,7 @@ final class ListenersAction
         $remoteNames = $this->remoteRepo->getDisplayNames($station);
         $hlsStreamNames = $this->hlsStreamRepo->getDisplayNames($station);
 
-        /** @var Entity\Api\Listener[] $listeners */
+        /** @var ApiListener[] $listeners */
         $listeners = [];
         $listenersByHash = [];
 
@@ -136,7 +143,7 @@ final class ListenersAction
                 continue;
             }
 
-            $api = Entity\Api\Listener::fromArray($listener);
+            $api = ApiListener::fromArray($listener);
 
             if (null !== $listener['mount_id']) {
                 $api->mount_is_local = true;
@@ -178,11 +185,11 @@ final class ListenersAction
                     $endTime = max($interval['end'], $endTime);
                 }
 
-                /** @var Entity\Api\Listener $api */
+                /** @var ApiListener $api */
                 $api = $listenerInfo['api'];
                 $api->connected_on = $startTime;
                 $api->connected_until = $endTime;
-                $api->connected_time = Entity\Listener::getListenerSeconds($intervals);
+                $api->connected_time = Listener::getListenerSeconds($intervals);
 
                 $listeners[] = $api;
             }
@@ -204,13 +211,13 @@ final class ListenersAction
 
     /**
      * @param Response $response
-     * @param Entity\Station $station
-     * @param Entity\Api\Listener[] $listeners
+     * @param Station $station
+     * @param ApiListener[] $listeners
      * @param string $filename
      */
     private function exportReportAsCsv(
         Response $response,
-        Entity\Station $station,
+        Station $station,
         array $listeners,
         string $filename
     ): ResponseInterface {

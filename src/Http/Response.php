@@ -4,14 +4,15 @@ declare(strict_types=1);
 
 namespace App\Http;
 
-use App\Nginx\CustomUrls;
 use App\Flysystem\Adapter\LocalAdapterInterface;
 use App\Flysystem\ExtendedFilesystemInterface;
+use App\Nginx\CustomUrls;
 use InvalidArgumentException;
 use League\Flysystem\FileAttributes;
 use Psr\Http\Message\ResponseInterface;
+use Slim\Http\Response as SlimResponse;
 
-final class Response extends \Slim\Http\Response
+final class Response extends SlimResponse
 {
     public const CACHE_ONE_MINUTE = 60;
     public const CACHE_ONE_HOUR = 3600;
@@ -83,25 +84,25 @@ final class Response extends \Slim\Http\Response
     /**
      * Write a string of file data to the response as if it is a file for download.
      *
-     * @param string $file_data
-     * @param string $content_type
-     * @param string|null $file_name
+     * @param string $fileData
+     * @param string $contentType
+     * @param string|null $fileName
      *
      * @return static
      */
-    public function renderStringAsFile(string $file_data, string $content_type, ?string $file_name = null): Response
+    public function renderStringAsFile(string $fileData, string $contentType, ?string $fileName = null): Response
     {
         $response = $this->response
             ->withHeader('Pragma', 'public')
             ->withHeader('Expires', '0')
             ->withHeader('Cache-Control', 'must-revalidate, post-check=0, pre-check=0')
-            ->withHeader('Content-Type', $content_type);
+            ->withHeader('Content-Type', $contentType);
 
-        if ($file_name !== null) {
-            $response = $response->withHeader('Content-Disposition', 'attachment; filename=' . $file_name);
+        if ($fileName !== null) {
+            $response = $response->withHeader('Content-Disposition', 'attachment; filename=' . $fileName);
         }
 
-        $response->getBody()->write($file_data);
+        $response->getBody()->write($fileData);
 
         return new Response($response, $this->streamFactory);
     }

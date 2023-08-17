@@ -34,7 +34,7 @@ export function useWebDjSource() {
             };
             source.pause = () => el.pause;
             source.seek = (percent) => {
-                let time = percent * parseFloat(audio.length);
+                const time = percent * parseFloat(audio.length);
                 el.currentTime = time;
                 return time;
             };
@@ -50,9 +50,9 @@ export function useWebDjSource() {
                 deviceId: audioDeviceId
             }
         }).then((stream) => {
-            let source = context.value.createMediaStreamSource(stream);
+            const source = context.value.createMediaStreamSource(stream);
             source.stop = () => {
-                let ref = stream.getAudioTracks();
+                const ref = stream.getAudioTracks();
                 return (ref !== null)
                     ? ref[0].stop()
                     : 0;

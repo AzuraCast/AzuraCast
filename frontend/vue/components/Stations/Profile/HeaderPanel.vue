@@ -1,38 +1,40 @@
 <template>
-    <div class="outside-card-header d-flex align-items-center mb-3">
+    <div class="outside-card-header d-flex align-items-center">
         <div
             v-if="station.listen_url && hasStarted"
-            class="flex-shrink-0 mr-3"
+            class="flex-shrink-0 me-2"
         >
             <play-button
-                icon-class="outlined xl"
+                class="btn-xl"
                 :url="station.listen_url"
                 is-stream
             />
         </div>
         <div class="flex-fill">
-            <h2 class="m-0">
-                {{ stationName }}
+            <h2 class="display-6 m-0">
+                {{ stationName }}<br>
+                <small
+                    v-if="stationDescription"
+                    class="text-muted"
+                >
+                    {{ stationDescription }}
+                </small>
             </h2>
-            <h3
-                v-if="stationDescription"
-                class="m-0"
-            >
-                {{ stationDescription }}
-            </h3>
         </div>
         <div
-            v-if="userCanManageProfile"
-            class="flex-shrink-0 ml-3"
+            v-if="userAllowedForStation(StationPermission.Profile)"
+            class="flex-shrink-0 ms-3"
         >
-            <a
-                class="btn btn-primary btn-lg"
+            <router-link
+                class="btn btn-primary"
                 role="button"
-                :href="manageProfileUri"
+                :to="{name: 'stations:profile:edit'}"
             >
                 <icon icon="edit" />
-                {{ $gettext('Edit Profile') }}
-            </a>
+                <span>
+                    {{ $gettext('Edit Profile') }}
+                </span>
+            </router-link>
         </div>
     </div>
 </template>
@@ -41,6 +43,7 @@
 import Icon from '~/components/Common/Icon';
 import PlayButton from "~/components/Common/PlayButton.vue";
 import headerPanelProps from "~/components/Stations/Profile/headerPanelProps";
+import {StationPermission, userAllowedForStation} from "~/acl";
 
 const props = defineProps({
     ...headerPanelProps,

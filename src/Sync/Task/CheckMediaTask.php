@@ -4,10 +4,16 @@ declare(strict_types=1);
 
 namespace App\Sync\Task;
 
-use App\Doctrine\ReloadableEntityManagerInterface;
-use App\Entity;
+use App\Entity\Enums\StorageLocationTypes;
+use App\Entity\Repository\StationMediaRepository;
+use App\Entity\Repository\StorageLocationRepository;
+use App\Entity\Repository\UnprocessableMediaRepository;
+use App\Entity\StationMedia;
+use App\Entity\StorageLocation;
+use App\Entity\UnprocessableMedia;
 use App\Flysystem\Attributes\FileAttributes;
 use App\Flysystem\ExtendedFilesystemInterface;
+use App\Flysystem\StationFilesystems;
 use App\Media\MimeType;
 use App\Message\AddNewMediaMessage;
 use App\Message\ProcessCoverArtMessage;
@@ -20,22 +26,18 @@ use Doctrine\ORM\AbstractQuery;
 use League\Flysystem\FilesystemException;
 use League\Flysystem\StorageAttributes;
 use League\Flysystem\UnableToRetrieveMetadata;
-use Psr\Log\LoggerInterface;
 use Symfony\Component\Filesystem\Path;
 use Symfony\Component\Messenger\MessageBus;
 
 final class CheckMediaTask extends AbstractTask
 {
     public function __construct(
-        private readonly Entity\Repository\StationMediaRepository $mediaRepo,
-        private readonly Entity\Repository\UnprocessableMediaRepository $unprocessableMediaRepo,
-        private readonly Entity\Repository\StorageLocationRepository $storageLocationRepo,
+        private readonly StationMediaRepository $mediaRepo,
+        private readonly UnprocessableMediaRepository $unprocessableMediaRepo,
+        private readonly StorageLocationRepository $storageLocationRepo,
         private readonly MessageBus $messageBus,
-        private readonly QueueManagerInterface $queueManager,
-        ReloadableEntityManagerInterface $em,
-        LoggerInterface $logger
+        private readonly QueueManagerInterface $queueManager
     ) {
-        parent::__construct($em, $logger);
     }
 
     public static function getSchedulePattern(): string
@@ -54,7 +56,7 @@ final class CheckMediaTask extends AbstractTask
         $this->queueManager->clearQueue(QueueNames::Media);
 
         // Process for each storage location.
-        $storageLocations = $this->iterateStorageLocations(Entity\Enums\StorageLocationTypes::StationMedia);
+        $storageLocations = $this->iterateStorageLocations(StorageLocationTypes::StationMedia);
 
         foreach ($storageLocations as $storageLocation) {
             $this->logger->info(
@@ -71,7 +73,7 @@ final class CheckMediaTask extends AbstractTask
     }
 
     public function importMusic(
-        Entity\StorageLocation $storageLocation
+        StorageLocation $storageLocation
     ): void {
         $fs = $this->storageLocationRepo->getAdapter($storageLocation)->getFilesystem();
 
@@ -86,16 +88,11 @@ final class CheckMediaTask extends AbstractTask
             'not_processable' => 0,
         ];
 
-        $total_size = BigInteger::zero();
+        $totalSize = BigInteger::zero();
 
         try {
             $fsIterator = $fs->listContents('/', true)->filter(
-                function (StorageAttributes $attrs) {
-                    return ($attrs->isFile()
-                        && !str_starts_with($attrs->path(), Entity\StationMedia::DIR_ALBUM_ART)
-                        && !str_starts_with($attrs->path(), Entity\StationMedia::DIR_WAVEFORMS)
-                        && !str_starts_with($attrs->path(), Entity\StationMedia::DIR_FOLDER_COVERS));
-                }
+                fn(StorageAttributes $attrs) => $attrs->isFile() && !StationFilesystems::isProtectedDir($attrs->path())
             );
         } catch (FilesystemException $e) {
             $this->logger->error(
@@ -115,7 +112,7 @@ final class CheckMediaTask extends AbstractTask
             try {
                 $size = $file->fileSize();
                 if (null !== $size) {
-                    $total_size = $total_size->plus($size);
+                    $totalSize = $totalSize->plus($size);
                 }
             } catch (UnableToRetrieveMetadata) {
                 continue;
@@ -130,7 +127,7 @@ final class CheckMediaTask extends AbstractTask
             } elseif (MimeType::isPathImage($file->path())) {
                 $stats['cover_art']++;
 
-                $dirHash = Entity\StationMedia::getFolderHashForPath($file->path());
+                $dirHash = StationMedia::getFolderHashForPath($file->path());
                 $coverFiles[$dirHash] = [
                     StorageAttributes::ATTRIBUTE_PATH => $file->path(),
                     StorageAttributes::ATTRIBUTE_LAST_MODIFIED => $file->lastModified(),
@@ -140,11 +137,11 @@ final class CheckMediaTask extends AbstractTask
             }
         }
 
-        $storageLocation->setStorageUsed($total_size);
+        $storageLocation->setStorageUsed($totalSize);
         $this->em->persist($storageLocation);
         $this->em->flush();
 
-        $stats['total_size'] = $total_size . ' (' . Quota::getReadableSize($total_size) . ')';
+        $stats['total_size'] = $totalSize . ' (' . Quota::getReadableSize($totalSize) . ')';
         $stats['total_files'] = count($musicFiles);
 
         // Process cover art.
@@ -166,11 +163,11 @@ final class CheckMediaTask extends AbstractTask
     }
 
     private function processCoverArt(
-        Entity\StorageLocation $storageLocation,
+        StorageLocation $storageLocation,
         ExtendedFilesystemInterface $fs,
         array $coverFiles
     ): void {
-        $fsIterator = $fs->listContents(Entity\StationMedia::DIR_FOLDER_COVERS, true)->filter(
+        $fsIterator = $fs->listContents(StationFilesystems::DIR_FOLDER_COVERS, true)->filter(
             fn(StorageAttributes $attrs) => $attrs->isFile()
         );
 
@@ -196,7 +193,7 @@ final class CheckMediaTask extends AbstractTask
     }
 
     private function processExistingMediaRows(
-        Entity\StorageLocation $storageLocation,
+        StorageLocation $storageLocation,
         array &$musicFiles,
         array &$stats
     ): void {
@@ -219,7 +216,7 @@ final class CheckMediaTask extends AbstractTask
 
                 if (
                     empty($mediaRow['unique_id'])
-                    || Entity\StationMedia::needsReprocessing($mtime, $mediaRow['mtime'] ?? 0)
+                    || StationMedia::needsReprocessing($mtime, $mediaRow['mtime'] ?? 0)
                 ) {
                     $message = new ReprocessMediaMessage();
                     $message->storage_location_id = $storageLocation->getIdRequired();
@@ -234,8 +231,8 @@ final class CheckMediaTask extends AbstractTask
 
                 unset($musicFiles[$pathHash]);
             } else {
-                $media = $this->em->find(Entity\StationMedia::class, $mediaRow['id']);
-                if ($media instanceof Entity\StationMedia) {
+                $media = $this->em->find(StationMedia::class, $mediaRow['id']);
+                if ($media instanceof StationMedia) {
                     $this->mediaRepo->remove($media);
                 }
 
@@ -247,7 +244,7 @@ final class CheckMediaTask extends AbstractTask
     }
 
     private function processUnprocessableMediaRows(
-        Entity\StorageLocation $storageLocation,
+        StorageLocation $storageLocation,
         array &$musicFiles,
         array &$stats
     ): void {
@@ -268,7 +265,7 @@ final class CheckMediaTask extends AbstractTask
                 $fileInfo = $musicFiles[$pathHash];
                 $mtime = $fileInfo[StorageAttributes::ATTRIBUTE_LAST_MODIFIED] ?? 0;
 
-                if (Entity\UnprocessableMedia::needsReprocessing($mtime, $unprocessableRow['mtime'] ?? 0)) {
+                if (UnprocessableMedia::needsReprocessing($mtime, $unprocessableRow['mtime'] ?? 0)) {
                     $message = new AddNewMediaMessage();
                     $message->storage_location_id = $storageLocation->getIdRequired();
                     $message->path = $unprocessableRow['path'];
@@ -290,11 +287,11 @@ final class CheckMediaTask extends AbstractTask
     }
 
     private function processNewFiles(
-        Entity\StorageLocation $storageLocation,
+        StorageLocation $storageLocation,
         array $musicFiles,
         array &$stats
     ): void {
-        foreach ($musicFiles as $pathHash => $newMusicFile) {
+        foreach ($musicFiles as $newMusicFile) {
             $path = $newMusicFile[StorageAttributes::ATTRIBUTE_PATH];
 
             $message = new AddNewMediaMessage();

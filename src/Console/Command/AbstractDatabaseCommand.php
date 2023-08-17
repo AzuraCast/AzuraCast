@@ -5,20 +5,16 @@ declare(strict_types=1);
 namespace App\Console\Command;
 
 use App\Console\Command\Traits\PassThruProcess;
-use App\Environment;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Container\EntityManagerAwareTrait;
+use App\Container\EnvironmentAwareTrait;
+use RuntimeException;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
 abstract class AbstractDatabaseCommand extends CommandAbstract
 {
     use PassThruProcess;
-
-    public function __construct(
-        protected Environment $environment,
-        protected EntityManagerInterface $em
-    ) {
-        parent::__construct();
-    }
+    use EntityManagerAwareTrait;
+    use EnvironmentAwareTrait;
 
     protected function getDatabaseSettingsAsCliFlags(): array
     {
@@ -72,7 +68,7 @@ abstract class AbstractDatabaseCommand extends CommandAbstract
         string $path
     ): void {
         if (!file_exists($path)) {
-            throw new \RuntimeException('Database backup file not found!');
+            throw new RuntimeException('Database backup file not found!');
         }
 
         $conn = $this->em->getConnection();

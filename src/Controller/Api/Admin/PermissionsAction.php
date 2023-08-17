@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Api\Admin;
 
 use App\Acl;
+use App\Controller\SingleActionInterface;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\OpenApi;
@@ -29,7 +30,7 @@ use Psr\Http\Message\ResponseInterface;
         ]
     )
 ]
-final class PermissionsAction
+final class PermissionsAction implements SingleActionInterface
 {
     public function __construct(
         private readonly Acl $acl,
@@ -38,14 +39,15 @@ final class PermissionsAction
 
     public function __invoke(
         ServerRequest $request,
-        Response $response
+        Response $response,
+        array $params
     ): ResponseInterface {
         $permissions = [];
         foreach ($this->acl->listPermissions() as $group => $actions) {
-            foreach ($actions as $action_id => $action_name) {
+            foreach ($actions as $actionId => $actionName) {
                 $permissions[$group][] = [
-                    'id' => $action_id,
-                    'name' => $action_name,
+                    'id' => $actionId,
+                    'name' => $actionName,
                 ];
             }
         }

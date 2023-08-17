@@ -12,6 +12,8 @@ class Song implements SongInterface
 {
     use Traits\HasSongFields;
 
+    public final const OFFLINE_SONG_ID = '5a6a865199cf5df73b1417326d2ff24f';
+
     public function __construct(?SongInterface $song = null)
     {
         if (null !== $song) {
@@ -47,7 +49,7 @@ class Song implements SongInterface
             );
         }
 
-        $song_text = mb_substr($songText, 0, 150, 'UTF-8');
+        $songText = mb_substr($songText, 0, 150, 'UTF-8');
 
         // Strip out characters that are likely to not be properly translated or relayed through the radio.
         $removeChars = [
@@ -60,10 +62,14 @@ class Song implements SongInterface
             "\r",
         ];
 
-        $song_text = str_replace($removeChars, '', $song_text);
+        $songText = str_replace($removeChars, '', $songText);
 
-        $hash_base = mb_strtolower($song_text, 'UTF-8');
-        return md5($hash_base);
+        if (empty($songText)) {
+            return self::OFFLINE_SONG_ID;
+        }
+
+        $hashBase = mb_strtolower($songText, 'UTF-8');
+        return md5($hashBase);
     }
 
     public static function createFromApiSong(Api\Song $apiSong): self
@@ -104,8 +110,10 @@ class Song implements SongInterface
         return self::createFromNowPlayingSong($currentSong);
     }
 
-    public static function createOffline(): self
+    public static function createOffline(?string $text = null): self
     {
-        return self::createFromText('Station Offline');
+        $song = self::createFromText($text ?? 'Station Offline');
+        $song->setSongId(self::OFFLINE_SONG_ID);
+        return $song;
     }
 }

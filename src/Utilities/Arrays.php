@@ -39,11 +39,11 @@ final class Arrays
         $return = [];
 
         foreach ($array as $key => $value) {
-            $return_key = (string)($prefix ? $prefix . $separator . $key : $key);
+            $returnKey = (string)($prefix ? $prefix . $separator . $key : $key);
             if (is_array($value)) {
-                $return = array_merge($return, self::flattenArray($value, $separator, $return_key));
+                $return = array_merge($return, self::flattenArray($value, $separator, $returnKey));
             } else {
-                $return[$return_key] = $value;
+                $return[$returnKey] = $value;
             }
         }
 
@@ -105,5 +105,22 @@ final class Arrays
         }
 
         return $merged;
+    }
+
+    /**
+     * @template T of object
+     *
+     * @param array<array-key, T> $objects
+     * @param callable $keyFunction
+     * @return array<array-key, T>
+     */
+    public static function keyByCallable(array $objects, callable $keyFunction): array
+    {
+        $newArray = [];
+        foreach ($objects as $object) {
+            $newArray[$keyFunction($object)] = $object;
+        }
+
+        return $newArray;
     }
 }

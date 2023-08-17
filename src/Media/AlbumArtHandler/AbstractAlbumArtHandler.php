@@ -4,19 +4,16 @@ declare(strict_types=1);
 
 namespace App\Media\AlbumArtHandler;
 
-use App\Entity;
+use App\Container\LoggerAwareTrait;
+use App\Entity\Interfaces\SongInterface;
 use App\Event\Media\GetAlbumArt;
 use App\Exception\RateLimitExceededException;
-use Psr\Log\LoggerInterface;
 use RuntimeException;
 use Throwable;
 
 abstract class AbstractAlbumArtHandler
 {
-    public function __construct(
-        protected LoggerInterface $logger
-    ) {
-    }
+    use LoggerAwareTrait;
 
     public function __invoke(GetAlbumArt $event): void
     {
@@ -71,5 +68,5 @@ abstract class AbstractAlbumArtHandler
 
     abstract protected function getServiceName(): string;
 
-    abstract protected function getAlbumArt(Entity\Interfaces\SongInterface $song): ?string;
+    abstract protected function getAlbumArt(SongInterface $song): ?string;
 }

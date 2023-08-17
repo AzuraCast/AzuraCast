@@ -5,24 +5,24 @@ declare(strict_types=1);
 namespace App\Controller\Api\Stations\CustomAssets;
 
 use App\Assets\AssetTypes;
-use App\Environment;
+use App\Container\EnvironmentAwareTrait;
+use App\Controller\SingleActionInterface;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
 
-final class GetCustomAssetAction
+final class GetCustomAssetAction implements SingleActionInterface
 {
-    public function __construct(
-        private readonly Environment $environment
-    ) {
-    }
+    use EnvironmentAwareTrait;
 
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        string $station_id,
-        string $type
+        array $params
     ): ResponseInterface {
+        /** @var string $type */
+        $type = $params['type'];
+
         $customAsset = AssetTypes::from($type)->createObject(
             $this->environment,
             $request->getStation()

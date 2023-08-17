@@ -1,7 +1,5 @@
-import initBase from '~/base.js';
-
-import '~/vendor/fancybox';
-
 import OnDemand from '~/components/Public/OnDemand.vue';
+import initApp from "~/layout";
+import useMinimalLayout from "~/layouts/MinimalLayout";
 
-export default initBase(OnDemand);
+initApp(useMinimalLayout(OnDemand));

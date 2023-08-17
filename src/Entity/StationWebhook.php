@@ -128,9 +128,9 @@ class StationWebhook implements
         return $this->is_enabled;
     }
 
-    public function setIsEnabled(bool $is_enabled): void
+    public function setIsEnabled(bool $isEnabled): void
     {
-        $this->is_enabled = $is_enabled;
+        $this->is_enabled = $isEnabled;
     }
 
     /**

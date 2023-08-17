@@ -4,16 +4,15 @@ declare(strict_types=1);
 
 namespace App\Console\Command\Sync;
 
-use App\Entity\Repository\SettingsRepository;
-use App\Environment;
+use App\Container\SettingsAwareTrait;
 use App\Event\GetSyncTasks;
 use App\Lock\LockFactory;
+use App\Service\HighAvailability;
 use App\Sync\Task\AbstractTask;
 use Carbon\CarbonImmutable;
 use Cron\CronExpression;
 use DateTimeZone;
 use Psr\EventDispatcher\EventDispatcherInterface;
-use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -25,23 +24,31 @@ use function usleep;
     name: 'azuracast:sync:run',
     description: 'Task to run the minute\'s synchronized tasks.'
 )]
-final class RunnerCommand extends AbstractSyncCommand
+final class RunnerCommand extends AbstractSyncRunnerCommand
 {
+    use SettingsAwareTrait;
+
     public function __construct(
-        LoggerInterface $logger,
-        LockFactory $lockFactory,
-        Environment $environment,
         private readonly EventDispatcherInterface $dispatcher,
-        private readonly SettingsRepository $settingsRepo,
+        private readonly HighAvailability $highAvailability,
+        LockFactory $lockFactory
     ) {
-        parent::__construct($logger, $lockFactory, $environment);
+        parent::__construct($lockFactory);
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        $this->logToExtraFile('app_sync.log');
+
         $io = new SymfonyStyle($input, $output);
 
-        $settings = $this->settingsRepo->readSettings();
+        if (!$this->highAvailability->isActiveServer()) {
+            $this->logger->error('This instance is not the current active instance.');
+            sleep(30);
+            return 0;
+        }
+
+        $settings = $this->readSettings();
         if ($settings->getSyncDisabled()) {
             $io->error('Automated synchronization is temporarily disabled.');
             return 1;
@@ -61,15 +68,15 @@ final class RunnerCommand extends AbstractSyncCommand
             }
         }
 
-        $this->manageStartedEvents($io);
+        $this->manageStartedEvents();
 
         $settings->updateSyncLastRun();
-        $this->settingsRepo->writeSettings($settings);
+        $this->writeSettings($settings);
 
         return 0;
     }
 
-    private function manageStartedEvents(SymfonyStyle $io): void
+    private function manageStartedEvents(): void
     {
         while ($this->processes) {
             $this->checkRunningProcesses();

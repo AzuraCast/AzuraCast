@@ -9,6 +9,7 @@ use App\Entity\StorageLocation;
 use App\Flysystem\Adapter\AwsS3Adapter;
 use App\Flysystem\Adapter\ExtendedAdapterInterface;
 use Aws\S3\S3Client;
+use RuntimeException;
 
 final class S3StorageLocationAdapter extends AbstractStorageLocationLocationAdapter
 {
@@ -28,7 +29,7 @@ final class S3StorageLocationAdapter extends AbstractStorageLocationLocationAdap
 
         $bucket = $this->storageLocation->getS3Bucket();
         if (null === $bucket) {
-            throw new \RuntimeException('Amazon S3 bucket is empty.');
+            throw new RuntimeException('Amazon S3 bucket is empty.');
         }
 
         return new AwsS3Adapter($this->getClient(), $bucket, $filteredPath);

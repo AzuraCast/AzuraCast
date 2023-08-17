@@ -19,6 +19,8 @@ $console = new Symfony\Component\Console\Application(
         App\Version::FALLBACK_VERSION
 );
 
-$console->add(new App\Installer\Command\InstallCommand($environment));
+$installCommand = new App\Installer\Command\InstallCommand();
+$installCommand->setEnvironment($environment);
+$console->add($installCommand);
 
 $console->run();

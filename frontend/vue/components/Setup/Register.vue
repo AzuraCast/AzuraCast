@@ -35,12 +35,12 @@
                     </div>
                 </div>
 
-                <b-alert
-                    variant="danger"
-                    :show="error != null"
+                <div
+                    v-show="error != null"
+                    class="alert alert-danger"
                 >
                     {{ error }}
-                </b-alert>
+                </div>
 
                 <form
                     id="login-form"
@@ -54,7 +54,7 @@
                         :value="csrf"
                     >
 
-                    <b-wrapped-form-group
+                    <form-group-field
                         id="username"
                         name="username"
                         label-class="mb-2"
@@ -64,13 +64,13 @@
                         <template #label>
                             <icon
                                 icon="email"
-                                class="mr-1"
+                                class="me-1"
                             />
                             {{ $gettext('E-mail Address') }}
                         </template>
-                    </b-wrapped-form-group>
+                    </form-group-field>
 
-                    <b-wrapped-form-group
+                    <form-group-field
                         id="password"
                         name="password"
                         label-class="mb-2"
@@ -80,22 +80,21 @@
                         <template #label>
                             <icon
                                 icon="vpn_key"
-                                class="mr-1"
+                                class="me-1"
                             />
                             {{ $gettext('Password') }}
                         </template>
-                    </b-wrapped-form-group>
+                    </form-group-field>
 
-                    <b-button
-                        type="submit"
-                        size="lg"
-                        block
-                        variant="primary"
-                        :disabled="v$.$invalid"
-                        class="mt-2"
-                    >
-                        {{ $gettext('Create Account') }}
-                    </b-button>
+                    <div class="block-buttons mt-2">
+                        <button
+                            type="submit"
+                            class="btn btn-block btn-primary"
+                            :disabled="v$.$invalid"
+                        >
+                            {{ $gettext('Create Account') }}
+                        </button>
+                    </div>
                 </form>
             </div>
         </section>
@@ -103,7 +102,7 @@
 </template>
 
 <script setup>
-import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
+import FormGroupField from "~/components/Form/FormGroupField";
 import Icon from "~/components/Common/Icon";
 import {reactive} from "vue";
 import {email, required} from "@vuelidate/validators";

@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Admin;
 
-use App\Doctrine\ReloadableEntityManagerInterface;
-use App\Entity;
+use App\Controller\Api\AbstractApiCrudController;
+use App\Entity\Api\Admin\StorageLocation as ApiStorageLocation;
+use App\Entity\Repository\StorageLocationRepository;
+use App\Entity\StorageLocation;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\OpenApi;
@@ -16,7 +18,7 @@ use RuntimeException;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-/** @extends AbstractAdminApiCrudController<Entity\StorageLocation> */
+/** @extends AbstractApiCrudController<StorageLocation> */
 #[
     OA\Get(
         path: '/admin/storage_locations',
@@ -130,28 +132,28 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
         ]
     )
 ]
-final class StorageLocationsController extends AbstractAdminApiCrudController
+final class StorageLocationsController extends AbstractApiCrudController
 {
-    protected string $entityClass = Entity\StorageLocation::class;
+    protected string $entityClass = StorageLocation::class;
     protected string $resourceRouteName = 'api:admin:storage_location';
 
     public function __construct(
-        private readonly Entity\Repository\StorageLocationRepository $storageLocationRepo,
-        ReloadableEntityManagerInterface $em,
+        private readonly StorageLocationRepository $storageLocationRepo,
         Serializer $serializer,
         ValidatorInterface $validator
     ) {
-        parent::__construct($em, $serializer, $validator);
+        parent::__construct($serializer, $validator);
     }
 
     public function listAction(
         ServerRequest $request,
-        Response $response
+        Response $response,
+        array $params
     ): ResponseInterface {
         $qb = $this->em->createQueryBuilder();
 
         $qb->select('sl')
-            ->from(Entity\StorageLocation::class, 'sl');
+            ->from(StorageLocation::class, 'sl');
 
         $type = $request->getQueryParam('type');
         if (!empty($type)) {
@@ -167,10 +169,10 @@ final class StorageLocationsController extends AbstractAdminApiCrudController
     /** @inheritDoc */
     protected function viewRecord(object $record, ServerRequest $request): object
     {
-        /** @var Entity\StorageLocation $record */
+        /** @var StorageLocation $record */
         $original = parent::viewRecord($record, $request);
 
-        $return = new Entity\Api\Admin\StorageLocation();
+        $return = new ApiStorageLocation();
         $return->fromParentObject($original);
 
         $return->storageQuotaBytes = (string)($record->getStorageQuotaBytes() ?? '');
@@ -194,7 +196,7 @@ final class StorageLocationsController extends AbstractAdminApiCrudController
 
     protected function deleteRecord(object $record): void
     {
-        if (!($record instanceof Entity\StorageLocation)) {
+        if (!($record instanceof StorageLocation)) {
             throw new InvalidArgumentException(sprintf('Record must be an instance of %s.', $this->entityClass));
         }
 

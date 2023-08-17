@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Http;
 
-use App\Entity;
+use App\Container\EnvironmentAwareTrait;
+use App\Entity\Api\Error;
 use App\Enums\SupportedLocales;
-use App\Environment;
 use App\Exception;
 use App\Exception\NotLoggedInException;
 use App\Exception\PermissionDeniedException;
@@ -20,12 +20,15 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\LogLevel;
 use Slim\App;
 use Slim\Exception\HttpException;
+use Slim\Handlers\ErrorHandler as SlimErrorHandler;
 use Throwable;
 use Whoops\Handler\PrettyPageHandler;
 use Whoops\Run;
 
-final class ErrorHandler extends \Slim\Handlers\ErrorHandler
+final class ErrorHandler extends SlimErrorHandler
 {
+    use EnvironmentAwareTrait;
+
     private bool $returnJson = false;
 
     private bool $showDetailed = false;
@@ -36,7 +39,6 @@ final class ErrorHandler extends \Slim\Handlers\ErrorHandler
         private readonly View $view,
         private readonly Router $router,
         private readonly InjectSession $injectSession,
-        private readonly Environment $environment,
         App $app,
         Logger $logger,
     ) {
@@ -137,7 +139,7 @@ final class ErrorHandler extends \Slim\Handlers\ErrorHandler
             $response = $this->responseFactory->createResponse($this->exception->getCode());
 
             if ($this->returnJson) {
-                $apiResponse = Entity\Api\Error::fromException($this->exception, $this->showDetailed);
+                $apiResponse = Error::fromException($this->exception, $this->showDetailed);
                 return $response->withJson($apiResponse);
             }
 
@@ -161,7 +163,7 @@ final class ErrorHandler extends \Slim\Handlers\ErrorHandler
             $response = $this->responseFactory->createResponse(403);
 
             if ($this->returnJson) {
-                $error = Entity\Api\Error::fromException($this->exception);
+                $error = Error::fromException($this->exception);
                 $error->code = 403;
                 $error->message = __('You must be logged in to access this page.');
 
@@ -191,7 +193,7 @@ final class ErrorHandler extends \Slim\Handlers\ErrorHandler
             $response = $this->responseFactory->createResponse(403);
 
             if ($this->returnJson) {
-                $error = Entity\Api\Error::fromException($this->exception);
+                $error = Error::fromException($this->exception);
                 $error->code = 403;
                 $error->message = __('You do not have permission to access this portion of the site.');
 
@@ -219,7 +221,7 @@ final class ErrorHandler extends \Slim\Handlers\ErrorHandler
         $response = $this->responseFactory->createResponse(500);
 
         if ($this->returnJson) {
-            $apiResponse = Entity\Api\Error::fromException($this->exception, $this->showDetailed);
+            $apiResponse = Error::fromException($this->exception, $this->showDetailed);
             return $response->withJson($apiResponse);
         }
 

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http;
 
-use App\Entity;
+use App\Container\SettingsAwareTrait;
 use App\Traits\RequestAwareTrait;
 use GuzzleHttp\Psr7\Uri;
 use GuzzleHttp\Psr7\UriResolver;
@@ -18,13 +18,13 @@ use Slim\Routing\RouteContext;
 final class Router implements RouterInterface
 {
     use RequestAwareTrait;
+    use SettingsAwareTrait;
 
     private ?UriInterface $baseUrl = null;
 
     private ?RouteInterface $currentRoute = null;
 
     public function __construct(
-        private readonly Entity\Repository\SettingsRepository $settingsRepo,
         private readonly RouteParserInterface $routeParser,
     ) {
     }
@@ -50,7 +50,7 @@ final class Router implements RouterInterface
 
     public function buildBaseUrl(?bool $useRequest = null): UriInterface
     {
-        $settings = $this->settingsRepo->readSettings();
+        $settings = $this->readSettings();
 
         $useRequest ??= $settings->getPreferBrowserUrl();
 

@@ -19,14 +19,14 @@ $this->fetch('frontend/public/partials/station-custom', ['station' => $station])
 
 $sections->appendStart('bodyjs');
 ?>
-    <script src="<?= $this->assetUrl('dist/lib/webcaster/taglib.js') ?>"></script>
+    <script src="/static/js/taglib.js"></script>
 <?php
 $sections->end();
 
 echo $this->fetch(
     'partials/vue_body',
     [
-        'component' => 'Vue_PublicWebDJ',
+        'component' => 'Public/WebDJ',
         'id' => 'web_dj',
         'props' => [
             'stationName' => $station->getName(),

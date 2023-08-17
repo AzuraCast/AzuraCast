@@ -4,30 +4,32 @@ declare(strict_types=1);
 
 namespace App\Webhook;
 
+use App\Container\ContainerAwareTrait;
+use App\Container\EntityManagerAwareTrait;
+use App\Container\EnvironmentAwareTrait;
+use App\Container\LoggerAwareTrait;
 use App\Entity\ApiGenerator\NowPlayingApiGenerator;
-use App\Webhook\Connector\AbstractConnector;
-use App\Webhook\Enums\WebhookTriggers;
 use App\Entity\Station;
 use App\Entity\StationWebhook;
-use App\Environment;
 use App\Http\RouterInterface;
 use App\Message;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Webhook\Connector\AbstractConnector;
+use App\Webhook\Enums\WebhookTriggers;
 use Monolog\Handler\StreamHandler;
 use Monolog\Level;
-use Monolog\Logger;
-use Psr\Container\ContainerInterface;
+use Throwable;
 
 final class Dispatcher
 {
+    use LoggerAwareTrait;
+    use ContainerAwareTrait;
+    use EntityManagerAwareTrait;
+    use EnvironmentAwareTrait;
+
     public function __construct(
-        private readonly Environment $environment,
-        private readonly Logger $logger,
-        private readonly EntityManagerInterface $em,
         private readonly RouterInterface $router,
         private readonly LocalWebhookHandler $localHandler,
-        private readonly NowPlayingApiGenerator $nowPlayingApiGen,
-        private readonly ContainerInterface $di
+        private readonly NowPlayingApiGenerator $nowPlayingApiGen
     ) {
     }
 
@@ -58,7 +60,7 @@ final class Dispatcher
         // Always dispatch the special "local" updater task.
         try {
             $this->localHandler->dispatch($station, $np);
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             $this->logger->error(
                 sprintf('%s L%d: %s', $e->getFile(), $e->getLine(), $e->getMessage()),
                 [
@@ -104,7 +106,7 @@ final class Dispatcher
                     $connectorObj->dispatch($station, $webhook, $np, $triggers);
                     $webhook->updateLastSentTimestamp();
                     $this->em->persist($webhook);
-                } catch (\Throwable $e) {
+                } catch (Throwable $e) {
                     $this->logger->error(
                         sprintf('%s L%d: %s', $e->getFile(), $e->getLine(), $e->getMessage()),
                         [
@@ -149,7 +151,7 @@ final class Dispatcher
             $webhookObj->dispatch($station, $webhook, $np, [
                 WebhookTriggers::SongChanged->value,
             ]);
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             $this->logger->error(
                 sprintf(
                     '%s L%d: %s',

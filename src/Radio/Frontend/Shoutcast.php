@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace App\Radio\Frontend;
 
-use App\Entity;
+use App\Entity\Station;
+use App\Entity\StationMount;
 use App\Service\Acme;
 use GuzzleHttp\Promise\Utils;
 use NowPlaying\Result\Result;
@@ -18,9 +19,9 @@ final class Shoutcast extends AbstractFrontend
      */
     public function getBinary(): ?string
     {
-        $new_path = '/var/azuracast/servers/shoutcast2/sc_serv';
-        return file_exists($new_path)
-            ? $new_path
+        $newPath = '/var/azuracast/servers/shoutcast2/sc_serv';
+        return file_exists($newPath)
+            ? $newPath
             : null;
     }
 
@@ -44,7 +45,7 @@ final class Shoutcast extends AbstractFrontend
             : null;
     }
 
-    public function getNowPlaying(Entity\Station $station, bool $includeClients = true): Result
+    public function getNowPlaying(Station $station, bool $includeClients = true): Result
     {
         $feConfig = $station->getFrontendConfig();
         $radioPort = $feConfig->getPort();
@@ -107,12 +108,12 @@ final class Shoutcast extends AbstractFrontend
         return $defaultResult;
     }
 
-    public function getConfigurationPath(Entity\Station $station): ?string
+    public function getConfigurationPath(Station $station): ?string
     {
         return $station->getRadioConfigDir() . '/sc_serv.conf';
     }
 
-    public function getCurrentConfiguration(Entity\Station $station): ?string
+    public function getCurrentConfiguration(Station $station): ?string
     {
         $configPath = $station->getRadioConfigDir();
         $frontendConfig = $station->getFrontendConfig();
@@ -146,47 +147,48 @@ final class Shoutcast extends AbstractFrontend
 
         $customConfig = trim($frontendConfig->getCustomConfiguration() ?? '');
         if (!empty($customConfig)) {
-            $custom_conf = $this->processCustomConfig($customConfig);
+            $customConf = $this->processCustomConfig($customConfig);
 
-            if (false !== $custom_conf) {
-                $config = array_merge($config, $custom_conf);
+            if (false !== $customConf) {
+                $config = array_merge($config, $customConf);
             }
         }
 
         $i = 0;
-        foreach ($station->getMounts() as $mount_row) {
-            /** @var Entity\StationMount $mount_row */
+
+        /** @var StationMount $mountRow */
+        foreach ($station->getMounts() as $mountRow) {
             $i++;
             $config['streamid_' . $i] = $i;
-            $config['streampath_' . $i] = $mount_row->getName();
+            $config['streampath_' . $i] = $mountRow->getName();
 
-            if (!empty($mount_row->getIntroPath())) {
-                $introPath = $mount_row->getIntroPath();
+            if (!empty($mountRow->getIntroPath())) {
+                $introPath = $mountRow->getIntroPath();
                 $config['streamintrofile_' . $i] = $station->getRadioConfigDir() . '/' . $introPath;
             }
 
-            if ($mount_row->getRelayUrl()) {
-                $config['streamrelayurl_' . $i] = $mount_row->getRelayUrl();
+            if ($mountRow->getRelayUrl()) {
+                $config['streamrelayurl_' . $i] = $mountRow->getRelayUrl();
             }
 
-            if ($mount_row->getAuthhash()) {
-                $config['streamauthhash_' . $i] = $mount_row->getAuthhash();
+            if ($mountRow->getAuthhash()) {
+                $config['streamauthhash_' . $i] = $mountRow->getAuthhash();
             }
 
-            if ($mount_row->getMaxListenerDuration()) {
-                $config['streamlistenertime_' . $i] = $mount_row->getMaxListenerDuration();
+            if ($mountRow->getMaxListenerDuration()) {
+                $config['streamlistenertime_' . $i] = $mountRow->getMaxListenerDuration();
             }
         }
 
         $configFileOutput = '';
-        foreach ($config as $config_key => $config_value) {
-            $configFileOutput .= $config_key . '=' . str_replace("\n", '', (string)$config_value) . "\n";
+        foreach ($config as $configKey => $configValue) {
+            $configFileOutput .= $configKey . '=' . str_replace("\n", '', (string)$configValue) . "\n";
         }
 
         return $configFileOutput;
     }
 
-    public function getCommand(Entity\Station $station): ?string
+    public function getCommand(Station $station): ?string
     {
         if ($binary = $this->getBinary()) {
             return $binary . ' ' . $this->getConfigurationPath($station);
@@ -194,15 +196,15 @@ final class Shoutcast extends AbstractFrontend
         return null;
     }
 
-    public function getAdminUrl(Entity\Station $station, UriInterface $base_url = null): UriInterface
+    public function getAdminUrl(Station $station, UriInterface $baseUrl = null): UriInterface
     {
-        $public_url = $this->getPublicUrl($station, $base_url);
-        return $public_url
-            ->withPath($public_url->getPath() . '/admin.cgi');
+        $publicUrl = $this->getPublicUrl($station, $baseUrl);
+        return $publicUrl
+            ->withPath($publicUrl->getPath() . '/admin.cgi');
     }
 
     protected function writeIpBansFile(
-        Entity\Station $station,
+        Station $station,
         string $fileName = 'sc_serv.ban',
         string $ipsSeparator = ";255;\n"
     ): string {

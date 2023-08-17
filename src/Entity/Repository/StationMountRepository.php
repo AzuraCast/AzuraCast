@@ -15,6 +15,8 @@ use App\Service\Flow\UploadedFile;
  */
 final class StationMountRepository extends AbstractStationBasedRepository
 {
+    protected string $entityClass = StationMount::class;
+
     public function setIntro(
         StationMount $mount,
         UploadedFile $file,

@@ -4,8 +4,14 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Stations;
 
-use App\Doctrine\ReloadableEntityManagerInterface;
-use App\Entity;
+use App\Entity\Api\Error;
+use App\Entity\Api\Status;
+use App\Entity\Api\UploadFile;
+use App\Entity\Repository\CustomFieldRepository;
+use App\Entity\Repository\StationMediaRepository;
+use App\Entity\Repository\StationPlaylistMediaRepository;
+use App\Entity\StationMedia;
+use App\Entity\StationPlaylist;
 use App\Exception\ValidationException;
 use App\Flysystem\StationFilesystems;
 use App\Http\Response;
@@ -23,7 +29,7 @@ use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-/** @extends AbstractStationApiCrudController<Entity\StationMedia> */
+/** @extends AbstractStationApiCrudController<StationMedia> */
 #[
     OA\Get(
         path: '/station/{station_id}/files',
@@ -148,28 +154,27 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 ]
 final class FilesController extends AbstractStationApiCrudController
 {
-    protected string $entityClass = Entity\StationMedia::class;
+    protected string $entityClass = StationMedia::class;
     protected string $resourceRouteName = 'api:stations:file';
 
     public function __construct(
         private readonly Adapters $adapters,
         private readonly MessageBus $messageBus,
-        private readonly Entity\Repository\CustomFieldRepository $customFieldsRepo,
-        private readonly Entity\Repository\StationMediaRepository $mediaRepo,
-        private readonly Entity\Repository\StationPlaylistMediaRepository $playlistMediaRepo,
+        private readonly CustomFieldRepository $customFieldsRepo,
+        private readonly StationMediaRepository $mediaRepo,
+        private readonly StationPlaylistMediaRepository $playlistMediaRepo,
         private readonly MediaProcessor $mediaProcessor,
         private readonly StationFilesystems $stationFilesystems,
-        ReloadableEntityManagerInterface $em,
         Serializer $serializer,
         ValidatorInterface $validator
     ) {
-        parent::__construct($em, $serializer, $validator);
+        parent::__construct($serializer, $validator);
     }
 
     public function listAction(
         ServerRequest $request,
         Response $response,
-        string $station_id
+        array $params
     ): ResponseInterface {
         $storageLocation = $this->getStation($request)->getMediaStorageLocation();
 
@@ -186,42 +191,42 @@ final class FilesController extends AbstractStationApiCrudController
     public function createAction(
         ServerRequest $request,
         Response $response,
-        string $station_id
+        array $params
     ): ResponseInterface {
         $station = $this->getStation($request);
 
         $mediaStorage = $station->getMediaStorageLocation();
         if ($mediaStorage->isStorageFull()) {
             return $response->withStatus(500)
-                ->withJson(new Entity\Api\Error(500, __('This station is out of available storage space.')));
+                ->withJson(new Error(500, __('This station is out of available storage space.')));
         }
 
         $request->getParsedBody();
 
         // Convert the body into an UploadFile API entity first.
-        /** @var Entity\Api\UploadFile $api_record */
-        $api_record = $this->serializer->denormalize($request->getParsedBody(), Entity\Api\UploadFile::class, null, []);
+        /** @var UploadFile $apiRecord */
+        $apiRecord = $this->serializer->denormalize($request->getParsedBody(), UploadFile::class, null, []);
 
         // Validate the UploadFile API record.
-        $errors = $this->validator->validate($api_record);
+        $errors = $this->validator->validate($apiRecord);
         if (count($errors) > 0) {
             throw ValidationException::fromValidationErrors($errors);
         }
 
         // Write file to temp path.
-        $tempPath = $station->getRadioTempDir() . '/' . $api_record->getSanitizedFilename();
-        file_put_contents($tempPath, $api_record->getFileContents());
+        $tempPath = $station->getRadioTempDir() . '/' . $apiRecord->getSanitizedFilename();
+        file_put_contents($tempPath, $apiRecord->getFileContents());
 
         // Process temp path as regular media record.
         $record = $this->mediaProcessor->processAndUpload(
             $mediaStorage,
-            $api_record->getSanitizedPath(),
+            $apiRecord->getSanitizedPath(),
             $tempPath
         );
 
         $return = (null !== $record)
             ? $this->viewRecord($record, $request)
-            : Entity\Api\Status::success();
+            : Status::success();
 
         return $response->withJson($return);
     }
@@ -229,15 +234,14 @@ final class FilesController extends AbstractStationApiCrudController
     public function editAction(
         ServerRequest $request,
         Response $response,
-        string $station_id,
-        string $id
+        array $params
     ): ResponseInterface {
         $station = $this->getStation($request);
-        $record = $this->getRecord($station, $id);
+        $record = $this->getRecord($request, $params);
 
         if (null === $record) {
             return $response->withStatus(404)
-                ->withJson(Entity\Api\Error::notFound());
+                ->withJson(Error::notFound());
         }
 
         $data = $request->getParsedBody();
@@ -245,7 +249,7 @@ final class FilesController extends AbstractStationApiCrudController
             throw new InvalidArgumentException('Could not parse input data.');
         }
 
-        $custom_fields = $data['custom_fields'] ?? null;
+        $customFields = $data['custom_fields'] ?? null;
         $playlists = $data['playlists'] ?? null;
         unset($data['custom_fields'], $data['playlists']);
 
@@ -265,61 +269,38 @@ final class FilesController extends AbstractStationApiCrudController
             throw ValidationException::fromValidationErrors($errors);
         }
 
-        if ($record instanceof Entity\StationMedia) {
+        if ($record instanceof StationMedia) {
             $this->mediaRepo->writeToFile($record);
             $this->em->persist($record);
             $this->em->flush();
 
-            if (null !== $custom_fields) {
-                $this->customFieldsRepo->setCustomFields($record, $custom_fields);
+            if (null !== $customFields) {
+                $this->customFieldsRepo->setCustomFields($record, $customFields);
             }
 
             if (null !== $playlists) {
-                /** @var Entity\StationPlaylist[] $affected_playlists */
-                $affected_playlists = [];
-
-                // Remove existing playlists.
-                $media_playlists = $this->playlistMediaRepo->clearPlaylistsFromMedia($record, $station);
-                $this->em->flush();
-
-                foreach ($media_playlists as $playlist_id => $playlist) {
-                    if (!isset($affected_playlists[$playlist_id])) {
-                        $affected_playlists[$playlist_id] = $playlist;
-                    }
-                }
-
-                // Set new playlists.
-                foreach ($playlists as $new_playlist) {
-                    if (is_array($new_playlist)) {
-                        $playlist_id = $new_playlist['id'];
-                        $playlist_weight = $new_playlist['weight'] ?? 0;
+                $playlistsToAssign = [];
+                foreach ($playlists as $newPlaylist) {
+                    if (is_array($newPlaylist)) {
+                        $playlistsToAssign[(int)$newPlaylist['id']] = $newPlaylist['weight'] ?? 0;
                     } else {
-                        $playlist_id = (int)$new_playlist;
-                        $playlist_weight = 0;
-                    }
-
-                    $playlist = $this->em->getRepository(Entity\StationPlaylist::class)->findOneBy(
-                        [
-                            'station' => $station,
-                            'id' => $playlist_id,
-                        ]
-                    );
-
-                    if ($playlist instanceof Entity\StationPlaylist) {
-                        $affected_playlists[$playlist->getId()] = $playlist;
-                        $this->playlistMediaRepo->addMediaToPlaylist($record, $playlist, $playlist_weight);
+                        $playlistsToAssign[(int)$newPlaylist] = 0;
                     }
                 }
 
-                $this->em->flush();
+                $affectedPlaylistIds = $this->playlistMediaRepo->setPlaylistsForMedia(
+                    $record,
+                    $station,
+                    $playlistsToAssign
+                );
 
                 // Handle playlist changes.
                 $backend = $this->adapters->getBackendAdapter($station);
                 if ($backend instanceof Liquidsoap) {
-                    foreach ($affected_playlists as $playlist_id => $playlist_row) {
+                    foreach ($affectedPlaylistIds as $playlistId => $playlistRow) {
                         // Instruct the message queue to start a new "write playlist to file" task.
                         $message = new WritePlaylistFileMessage();
-                        $message->playlist_id = $playlist_id;
+                        $message->playlist_id = $playlistId;
 
                         $this->messageBus->dispatch($message);
                     }
@@ -327,11 +308,12 @@ final class FilesController extends AbstractStationApiCrudController
             }
         }
 
-        return $response->withJson(Entity\Api\Status::updated());
+        return $response->withJson(Status::updated());
     }
 
-    protected function createRecord(array $data, Entity\Station $station): object
+    protected function createRecord(ServerRequest $request, array $data): object
     {
+        $station = $request->getStation();
         $mediaStorage = $station->getMediaStorageLocation();
 
         return $this->editRecord(
@@ -348,8 +330,13 @@ final class FilesController extends AbstractStationApiCrudController
         );
     }
 
-    protected function getRecord(Entity\Station $station, int|string $id): ?object
+    protected function getRecord(ServerRequest $request, array $params): ?object
     {
+        /** @var string $id */
+        $id = $params['id'];
+
+        $station = $request->getStation();
+
         $mediaStorage = $station->getMediaStorageLocation();
         $repo = $this->em->getRepository($this->entityClass);
 
@@ -374,7 +361,7 @@ final class FilesController extends AbstractStationApiCrudController
     {
         $row = parent::toArray($record, $context);
 
-        if ($record instanceof Entity\StationMedia) {
+        if ($record instanceof StationMedia) {
             $row['custom_fields'] = $this->customFieldsRepo->getCustomFields($record);
         }
         return $row;
@@ -385,18 +372,23 @@ final class FilesController extends AbstractStationApiCrudController
      */
     protected function deleteRecord(object $record): void
     {
-        if (!($record instanceof Entity\StationMedia)) {
+        if (!($record instanceof StationMedia)) {
             throw new InvalidArgumentException(sprintf('Record must be an instance of %s.', $this->entityClass));
         }
 
         // Delete the media file off the filesystem.
         // Write new PLS playlist configuration.
-        foreach ($this->mediaRepo->remove($record, true) as $playlist_id => $playlist) {
+        foreach ($this->mediaRepo->remove($record, true) as $playlistId => $playlistRecord) {
+            $playlist = $this->em->find(StationPlaylist::class, $playlistId);
+            if (!($playlist instanceof StationPlaylist)) {
+                continue;
+            }
+
             $backend = $this->adapters->getBackendAdapter($playlist->getStation());
             if ($backend instanceof Liquidsoap) {
                 // Instruct the message queue to start a new "write playlist to file" task.
                 $message = new WritePlaylistFileMessage();
-                $message->playlist_id = $playlist_id;
+                $message->playlist_id = $playlistId;
 
                 $this->messageBus->dispatch($message);
             }

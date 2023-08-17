@@ -22,7 +22,7 @@ final class Version20170829030442 extends AbstractMigration
 
     private function changeCharset(string $charset, string $collate): void
     {
-        $db_name = $this->connection->getDatabase() ?? 'azuracast';
+        $dbName = $this->connection->getDatabase() ?? 'azuracast';
 
         $sqlLines = [
             'ALTER TABLE listener CHANGE listener_user_agent listener_user_agent VARCHAR(255) NOT NULL',
@@ -31,7 +31,7 @@ final class Version20170829030442 extends AbstractMigration
             'ALTER TABLE station_mounts CHANGE relay_url relay_url VARCHAR(255) DEFAULT NULL, CHANGE authhash authhash VARCHAR(255) DEFAULT NULL',
             'ALTER TABLE users CHANGE auth_password auth_password VARCHAR(255) DEFAULT NULL',
             'ALTER TABLE app_migrations CHANGE version version VARCHAR(191) NOT NULL',
-            'ALTER DATABASE ' . $this->connection->quoteIdentifier($db_name) . ' CHARACTER SET = ' . $charset . ' COLLATE = ' . $collate,
+            'ALTER DATABASE ' . $this->connection->quoteIdentifier($dbName) . ' CHARACTER SET = ' . $charset . ' COLLATE = ' . $collate,
             'ALTER TABLE `song_history` DROP FOREIGN KEY FK_2AD16164A0BDB2F3',
             'ALTER TABLE `station_media` DROP FOREIGN KEY FK_32AADE3AA0BDB2F3',
             'ALTER TABLE `analytics` CONVERT TO CHARACTER SET ' . $charset . ' COLLATE ' . $collate,

@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Stations;
 
-use App\Entity;
+use App\Container\EntityManagerAwareTrait;
+use App\Entity\ApiGenerator\StationApiGenerator;
+use App\Entity\Station;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\OpenApi;
-use Doctrine\ORM\EntityManagerInterface;
 use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 
@@ -50,16 +51,16 @@ use Psr\Http\Message\ResponseInterface;
 ]
 final class IndexController
 {
+    use EntityManagerAwareTrait;
+
     public function __construct(
-        private readonly EntityManagerInterface $em,
-        private readonly Entity\ApiGenerator\StationApiGenerator $stationApiGenerator
+        private readonly StationApiGenerator $stationApiGenerator
     ) {
     }
 
     public function indexAction(
         ServerRequest $request,
-        Response $response,
-        string $station_id
+        Response $response
     ): ResponseInterface {
         $station = $request->getStation();
 
@@ -73,17 +74,17 @@ final class IndexController
         ServerRequest $request,
         Response $response
     ): ResponseInterface {
-        $stations_raw = $this->em->getRepository(Entity\Station::class)
+        $stationsRaw = $this->em->getRepository(Station::class)
             ->findBy(['is_enabled' => 1]);
 
         $stations = [];
-        foreach ($stations_raw as $row) {
-            /** @var Entity\Station $row */
-            $api_row = ($this->stationApiGenerator)($row);
-            $api_row->resolveUrls($request->getRouter()->getBaseUrl());
+        foreach ($stationsRaw as $row) {
+            /** @var Station $row */
+            $apiRow = ($this->stationApiGenerator)($row);
+            $apiRow->resolveUrls($request->getRouter()->getBaseUrl());
 
-            if ($api_row->is_public) {
-                $stations[] = $api_row;
+            if ($apiRow->is_public) {
+                $stations[] = $apiRow;
             }
         }
 

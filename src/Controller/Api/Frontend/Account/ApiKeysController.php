@@ -5,7 +5,8 @@ declare(strict_types=1);
 namespace App\Controller\Api\Frontend\Account;
 
 use App\Controller\Api\AbstractApiCrudController;
-use App\Entity;
+use App\Entity\ApiKey;
+use App\Entity\Interfaces\EntityGroupsInterface;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Security\SplitToken;
@@ -13,17 +14,18 @@ use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 
 /**
- * @template TEntity as Entity\ApiKey
+ * @template TEntity as ApiKey
  * @extends AbstractApiCrudController<TEntity>
  */
 final class ApiKeysController extends AbstractApiCrudController
 {
-    protected string $entityClass = Entity\ApiKey::class;
+    protected string $entityClass = ApiKey::class;
     protected string $resourceRouteName = 'api:frontend:api-key';
 
     public function listAction(
         ServerRequest $request,
-        Response $response
+        Response $response,
+        array $params
     ): ResponseInterface {
         $query = $this->em->createQuery(
             <<<'DQL'
@@ -36,11 +38,12 @@ final class ApiKeysController extends AbstractApiCrudController
 
     public function createAction(
         ServerRequest $request,
-        Response $response
+        Response $response,
+        array $params
     ): ResponseInterface {
         $newKey = SplitToken::generate();
 
-        $record = new Entity\ApiKey(
+        $record = new ApiKey(
             $request->getUser(),
             $newKey
         );
@@ -54,50 +57,18 @@ final class ApiKeysController extends AbstractApiCrudController
         return $response->withJson($return);
     }
 
-    public function getAction(
-        ServerRequest $request,
-        Response $response,
-        string $id
-    ): ResponseInterface {
-        $record = $this->getRecord($request->getUser(), $id);
-
-        if (null === $record) {
-            return $response->withStatus(404)
-                ->withJson(Entity\Api\Error::notFound());
-        }
-
-        $return = $this->viewRecord($record, $request);
-        return $response->withJson($return);
-    }
-
-    public function deleteAction(
-        ServerRequest $request,
-        Response $response,
-        string $id
-    ): ResponseInterface {
-        $record = $this->getRecord($request->getUser(), $id);
-
-        if (null === $record) {
-            return $response->withStatus(404)
-                ->withJson(Entity\Api\Error::notFound());
-        }
-
-        $this->deleteRecord($record);
-
-        return $response->withJson(Entity\Api\Status::deleted());
-    }
-
     /**
-     * @param string $id
-     *
      * @return TEntity|null
      */
-    private function getRecord(Entity\User $user, string $id): ?object
+    protected function getRecord(ServerRequest $request, array $params): ?object
     {
+        /** @var string $id */
+        $id = $params['id'];
+
         /** @var TEntity|null $record */
-        $record = $this->em->getRepository(Entity\ApiKey::class)->findOneBy([
+        $record = $this->em->getRepository(ApiKey::class)->findOneBy([
             'id' => $id,
-            'user' => $user,
+            'user' => $request->getUser(),
         ]);
         return $record;
     }
@@ -108,7 +79,7 @@ final class ApiKeysController extends AbstractApiCrudController
     protected function editRecord(?array $data, ?object $record = null, array $context = []): object
     {
         $context[AbstractNormalizer::GROUPS] = [
-            Entity\Interfaces\EntityGroupsInterface::GROUP_GENERAL,
+            EntityGroupsInterface::GROUP_GENERAL,
         ];
 
         return parent::editRecord($data, $record, $context);
@@ -123,8 +94,8 @@ final class ApiKeysController extends AbstractApiCrudController
     protected function toArray(object $record, array $context = []): array
     {
         $context[AbstractNormalizer::GROUPS] = [
-            Entity\Interfaces\EntityGroupsInterface::GROUP_ID,
-            Entity\Interfaces\EntityGroupsInterface::GROUP_GENERAL,
+            EntityGroupsInterface::GROUP_ID,
+            EntityGroupsInterface::GROUP_GENERAL,
         ];
 
         return parent::toArray($record, $context);

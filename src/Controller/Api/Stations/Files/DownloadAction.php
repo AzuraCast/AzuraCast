@@ -4,13 +4,14 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Stations\Files;
 
-use App\Entity;
+use App\Controller\SingleActionInterface;
+use App\Entity\Api\Error;
 use App\Flysystem\StationFilesystems;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
 
-final class DownloadAction
+final class DownloadAction implements SingleActionInterface
 {
     public function __construct(
         private readonly StationFilesystems $stationFilesystems
@@ -20,7 +21,7 @@ final class DownloadAction
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        string $station_id
+        array $params
     ): ResponseInterface {
         set_time_limit(600);
 
@@ -32,7 +33,7 @@ final class DownloadAction
 
         if (!$fsMedia->fileExists($path)) {
             return $response->withStatus(404)
-                ->withJson(Entity\Api\Error::notFound());
+                ->withJson(Error::notFound());
         }
 
         return $response->streamFilesystemFile($fsMedia, $path);

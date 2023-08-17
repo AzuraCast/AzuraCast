@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Middleware;
 
-use App\Entity;
 use App\Entity\Repository\StationRepository;
+use App\Entity\Station;
 use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -19,20 +19,20 @@ use Slim\Routing\RouteContext;
 final class GetStation implements MiddlewareInterface
 {
     public function __construct(
-        private readonly StationRepository $station_repo
+        private readonly StationRepository $stationRepo
     ) {
     }
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        $route_args = RouteContext::fromRequest($request)->getRoute()?->getArguments();
+        $routeArgs = RouteContext::fromRequest($request)->getRoute()?->getArguments();
 
-        $id = $route_args['station_id'] ?? null;
+        $id = $routeArgs['station_id'] ?? null;
 
         if (!empty($id)) {
-            $record = $this->station_repo->findByIdentifier($id);
+            $record = $this->stationRepo->findByIdentifier($id);
 
-            if ($record instanceof Entity\Station) {
+            if ($record instanceof Station) {
                 $request = $request->withAttribute(ServerRequest::ATTR_STATION, $record);
             }
         }

@@ -1,80 +1,59 @@
 <template>
-    <section class="card mt-3">
-        <div class="card-header bg-primary-dark">
-            <h2 class="card-title">
-                {{ $gettext('Remote: S3 Compatible') }}
-            </h2>
+    <o-tab-item
+        :label="$gettext('Remote: S3 Compatible')"
+        :item-header-class="tabClass"
+    >
+        <div class="row g-3">
+            <form-group-field
+                id="form_edit_s3CredentialKey"
+                class="col-md-6"
+                :field="v$.s3CredentialKey"
+                :label="$gettext('Access Key ID')"
+            />
+
+            <form-group-field
+                id="form_edit_s3CredentialSecret"
+                class="col-md-6"
+                :field="v$.s3CredentialSecret"
+                :label="$gettext('Secret Key')"
+            />
+
+            <form-group-field
+                id="form_edit_s3Endpoint"
+                class="col-md-6"
+                :field="v$.s3Endpoint"
+                :label="$gettext('Endpoint')"
+            />
+
+            <form-group-field
+                id="form_edit_s3Bucket"
+                class="col-md-6"
+                :field="v$.s3Bucket"
+                :label="$gettext('Bucket Name')"
+            />
+
+            <form-group-field
+                id="form_edit_s3Region"
+                class="col-md-6"
+                :field="v$.s3Region"
+                :label="$gettext('Region')"
+            />
+
+            <form-group-field
+                id="form_edit_s3Version"
+                class="col-md-6"
+                :field="v$.s3Version"
+                :label="$gettext('API Version')"
+            />
         </div>
-        <b-card-body>
-            <b-form-group>
-                <div class="form-row">
-                    <b-wrapped-form-group
-                        id="form_edit_s3CredentialKey"
-                        class="col-md-6"
-                        :field="form.s3CredentialKey"
-                    >
-                        <template #label>
-                            {{ $gettext('Access Key ID') }}
-                        </template>
-                    </b-wrapped-form-group>
-
-                    <b-wrapped-form-group
-                        id="form_edit_s3CredentialSecret"
-                        class="col-md-6"
-                        :field="form.s3CredentialSecret"
-                    >
-                        <template #label>
-                            {{ $gettext('Secret Key') }}
-                        </template>
-                    </b-wrapped-form-group>
-
-                    <b-wrapped-form-group
-                        id="form_edit_s3Endpoint"
-                        class="col-md-6"
-                        :field="form.s3Endpoint"
-                    >
-                        <template #label>
-                            {{ $gettext('Endpoint') }}
-                        </template>
-                    </b-wrapped-form-group>
-
-                    <b-wrapped-form-group
-                        id="form_edit_s3Bucket"
-                        class="col-md-6"
-                        :field="form.s3Bucket"
-                    >
-                        <template #label>
-                            {{ $gettext('Bucket Name') }}
-                        </template>
-                    </b-wrapped-form-group>
-
-                    <b-wrapped-form-group
-                        id="form_edit_s3Region"
-                        class="col-md-6"
-                        :field="form.s3Region"
-                    >
-                        <template #label>
-                            {{ $gettext('Region') }}
-                        </template>
-                    </b-wrapped-form-group>
-
-                    <b-wrapped-form-group
-                        id="form_edit_s3Version"
-                        class="col-md-6"
-                        :field="form.s3Version"
-                    >
-                        <template #label>
-                            {{ $gettext('API Version') }}
-                        </template>
-                    </b-wrapped-form-group>
-                </div>
-            </b-form-group>
-        </b-card-body>
-    </section>
+    </o-tab-item>
 </template>
 
 <script setup>
-import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup.vue";
+import FormGroupField from "~/components/Form/FormGroupField.vue";
+import {useVModel} from "@vueuse/core";
+import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
+import {required} from "@vuelidate/validators";
 
 const props = defineProps({
     form: {
@@ -82,4 +61,19 @@ const props = defineProps({
         required: true
     }
 });
+
+const emit = defineEmits(['update:form']);
+const form = useVModel(props, 'form', emit);
+
+const {v$, tabClass} = useVuelidateOnFormTab(
+    {
+        s3CredentialKey: {required},
+        s3CredentialSecret: {required},
+        s3Region: {required},
+        s3Version: {required},
+        s3Bucket: {required},
+        s3Endpoint: {required}
+    },
+    form
+);
 </script>

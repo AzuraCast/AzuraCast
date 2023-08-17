@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Frontend\PublicPages;
 
+use App\Controller\SingleActionInterface;
 use App\Exception\StationNotFoundException;
 use App\Exception\StationUnsupportedException;
 use App\Http\Response;
@@ -11,7 +12,7 @@ use App\Http\ServerRequest;
 use App\Radio\Adapters;
 use Psr\Http\Message\ResponseInterface;
 
-final class WebDjAction
+final class WebDjAction implements SingleActionInterface
 {
     public function __construct(
         private readonly Adapters $adapters,
@@ -21,7 +22,7 @@ final class WebDjAction
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        string $station_id
+        array $params
     ): ResponseInterface {
         $station = $request->getStation();
 
@@ -38,14 +39,14 @@ final class WebDjAction
             throw new StationUnsupportedException();
         }
 
-        $wss_url = (string)$backend->getWebStreamingUrl($station, $request->getRouter()->getBaseUrl());
+        $wssUrl = (string)$backend->getWebStreamingUrl($station, $request->getRouter()->getBaseUrl());
 
         return $request->getView()->renderToResponse(
             response: $response->withHeader('X-Frame-Options', '*'),
             templateName: 'frontend/public/webdj',
             templateArgs: [
                 'station' => $station,
-                'wss_url' => $wss_url,
+                'wss_url' => $wssUrl,
             ]
         );
     }

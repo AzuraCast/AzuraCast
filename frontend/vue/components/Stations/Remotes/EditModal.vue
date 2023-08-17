@@ -8,25 +8,23 @@
         @submit="doSubmit"
         @hidden="clearContents"
     >
-        <b-tabs
+        <o-tabs
+            nav-tabs-class="nav-tabs"
             content-class="mt-3"
-            pills
         >
-            <remote-form-basic-info :form="v$" />
+            <remote-form-basic-info v-model:form="form" />
 
-            <remote-form-auto-dj :form="v$" />
-        </b-tabs>
+            <remote-form-auto-dj v-model:form="form" />
+        </o-tabs>
     </modal-form>
 </template>
 
 <script setup>
-import {required} from '@vuelidate/validators';
 import RemoteFormBasicInfo from "./Form/BasicInfo";
 import RemoteFormAutoDj from "./Form/AutoDj";
-import {REMOTE_ICECAST} from "~/components/Entity/RadioAdapters";
 import {baseEditModalProps, useBaseEditModal} from "~/functions/useBaseEditModal";
 import {computed, ref} from "vue";
-import {useNotify} from "~/vendor/bootstrapVue";
+import {useNotify} from "~/functions/useNotify";
 import {useTranslate} from "~/vendor/gettext";
 import ModalForm from "~/components/Common/ModalForm.vue";
 
@@ -44,6 +42,7 @@ const {
     loading,
     error,
     isEditMode,
+    form,
     v$,
     clearContents,
     create,
@@ -54,40 +53,8 @@ const {
     props,
     emit,
     $modal,
-    {
-        display_name: {},
-        is_visible_on_public_pages: {},
-        type: {required},
-        enable_autodj: {},
-        autodj_format: {},
-        autodj_bitrate: {},
-        custom_listen_url: {},
-        url: {required},
-        mount: {},
-        admin_password: {},
-        source_port: {},
-        source_mount: {},
-        source_username: {},
-        source_password: {},
-        is_public: {},
-    },
-    {
-        display_name: null,
-        is_visible_on_public_pages: true,
-        type: REMOTE_ICECAST,
-        enable_autodj: false,
-        autodj_format: null,
-        autodj_bitrate: null,
-        custom_listen_url: null,
-        url: null,
-        mount: null,
-        admin_password: null,
-        source_port: null,
-        source_mount: null,
-        source_username: null,
-        source_password: null,
-        is_public: false
-    },
+    {},
+    {},
     {
         onSubmitSuccess: () => {
             notifySuccess();

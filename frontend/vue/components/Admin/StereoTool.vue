@@ -1,24 +1,19 @@
 <template>
-    <section
-        class="card"
-        role="region"
-        aria-labelledby="hdr_install_stereo_tool"
+    <card-page
+        header-id="hdr_install_stereo_tool"
+        :title="$gettext('Install Stereo Tool')"
     >
-        <div class="card-header bg-primary-dark">
-            <h2
-                id="hdr_install_stereo_tool"
-                class="card-title"
-            >
-                {{ $gettext('Install Stereo Tool') }}
-            </h2>
-        </div>
+        <template #info>
+            <p class="card-text">
+                {{
+                    $gettext('Stereo Tool is a popular, proprietary tool for software audio processing. Using Stereo Tool, you can customize the sound of your stations using preset configuration files.')
+                }}
+            </p>
+        </template>
 
         <div class="card-body">
-            <b-overlay
-                variant="card"
-                :show="loading"
-            >
-                <div class="form-row">
+            <loading :loading="isLoading">
+                <div class="row g-3">
                     <div class="col-md-7">
                         <fieldset>
                             <legend>
@@ -56,7 +51,12 @@
                                 </li>
                                 <li>
                                     {{
-                                        $gettext('For most installations, you should choose the "Command line version 64 bit". For Raspberry Pi devices, select "Raspberry Pi 3/4 64 bit command line".')
+                                        $gettext('For x86/64 installations, choose "x86/64 Linux Thimeo-ST plugin".')
+                                    }}
+                                </li>
+                                <li>
+                                    {{
+                                        $gettext('For ARM (Raspberry Pi, etc.) installations, choose "Raspberry Pi Thimeo-ST plugin".')
                                     }}
                                 </li>
                                 <li>
@@ -92,28 +92,40 @@
                             @complete="relist"
                             @error="onError"
                         />
+
+                        <div
+                            v-if="version"
+                            class="buttons block-buttons mt-3"
+                        >
+                            <button
+                                type="button"
+                                class="btn btn-danger"
+                                @click="doDelete"
+                            >
+                                {{ $gettext('Uninstall') }}
+                            </button>
+                        </div>
                     </div>
                 </div>
-            </b-overlay>
+            </loading>
         </div>
-    </section>
+    </card-page>
 </template>
 
 <script setup>
 import FlowUpload from "~/components/Common/FlowUpload";
 import {computed, onMounted, ref} from "vue";
 import {useTranslate} from "~/vendor/gettext";
-import {useNotify} from "~/vendor/bootstrapVue";
+import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
+import Loading from "~/components/Common/Loading.vue";
+import CardPage from "~/components/Common/CardPage.vue";
+import {useSweetAlert} from "~/vendor/sweetalert";
+import {getApiUrl} from "~/router";
 
-const props = defineProps({
-    apiUrl: {
-        type: String,
-        required: true
-    }
-});
+const apiUrl = getApiUrl('/admin/stereo_tool');
 
-const loading = ref(true);
+const isLoading = ref(true);
 const version = ref(null);
 
 const {$gettext} = useTranslate();
@@ -136,12 +148,22 @@ const onError = (file, message) => {
 const {axios} = useAxios();
 
 const relist = () => {
-    loading.value = true;
-    axios.get(props.apiUrl).then((resp) => {
+    isLoading.value = true;
+    axios.get(apiUrl.value).then((resp) => {
         version.value = resp.data.version;
-        loading.value = false;
+        isLoading.value = false;
     });
 };
+
+const {confirmDelete} = useSweetAlert();
+
+const doDelete = () => {
+    confirmDelete().then((result) => {
+        if (result.value) {
+            axios.delete(apiUrl.value).then(relist);
+        }
+    });
+}
 
 onMounted(relist);
 </script>

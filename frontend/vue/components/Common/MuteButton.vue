@@ -1,11 +1,12 @@
 <template>
-    <a
-        href="#"
+    <button
+        type="button"
+        class="btn"
         :aria-label="muteLang"
-        @click.prevent="toggleMute"
+        @click="toggleMute"
     >
         <icon :icon="muteIcon" />
-    </a>
+    </button>
 </template>
 
 <script setup>

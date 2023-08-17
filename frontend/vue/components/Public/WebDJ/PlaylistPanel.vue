@@ -1,13 +1,13 @@
 <template>
     <div class="card">
-        <div class="card-header bg-primary-dark">
+        <div class="card-header text-bg-primary">
             <div class="d-flex align-items-center">
                 <div class="flex-fill text-nowrap">
                     <h5 class="card-title">
                         {{ langHeader }}
                     </h5>
                 </div>
-                <div class="flex-shrink-0 pl-3">
+                <div class="flex-shrink-0 ps-3">
                     <volume-slider v-model.number="localGain" />
                 </div>
             </div>
@@ -17,6 +17,7 @@
                 <div class="btn-group btn-group-sm">
                     <button
                         v-if="!isPlaying || isPaused"
+                        type="button"
                         class="btn btn-sm btn-success"
                         @click="play"
                     >
@@ -24,30 +25,35 @@
                     </button>
                     <button
                         v-if="isPlaying && !isPaused"
+                        type="button"
                         class="btn btn-sm btn-warning"
                         @click="togglePause()"
                     >
                         <icon icon="pause" />
                     </button>
                     <button
+                        type="button"
                         class="btn btn-sm"
                         @click="previous()"
                     >
                         <icon icon="fast_rewind" />
                     </button>
                     <button
+                        type="button"
                         class="btn btn-sm"
                         @click="next()"
                     >
                         <icon icon="fast_forward" />
                     </button>
                     <button
+                        type="button"
                         class="btn btn-sm btn-danger"
                         @click="stop()"
                     >
                         <icon icon="stop" />
                     </button>
                     <button
+                        type="button"
                         class="btn btn-sm"
                         :class="{ 'btn-primary': trackPassThrough }"
                         @click="trackPassThrough = !trackPassThrough"
@@ -62,7 +68,7 @@
                 class="mt-3"
             >
                 <div class="d-flex flex-row mb-2">
-                    <div class="flex-shrink-0 pt-1 pr-2">
+                    <div class="flex-shrink-0 pt-1 pe-2">
                         {{ formatTime(position) }}
                     </div>
                     <div class="flex-fill">
@@ -72,12 +78,12 @@
                             min="0"
                             max="100"
                             step="0.1"
-                            class="custom-range slider"
+                            class="form-range slider"
                             @mousedown="isSeeking = true"
                             @mouseup="isSeeking = false"
                         >
                     </div>
-                    <div class="flex-shrink-0 pt-1 pl-2">
+                    <div class="flex-shrink-0 pt-1 ps-2">
                         {{ formatTime(duration) }}
                     </div>
                 </div>
@@ -308,7 +314,7 @@ const selectFile = (options = {}) => {
 };
 
 const play = (options = {}) => {
-    let file = selectFile(options);
+    const file = selectFile(options);
 
     if (!file) {
         return;
@@ -321,7 +327,7 @@ const play = (options = {}) => {
 
     stop();
 
-    let destination = prepare();
+    const destination = prepare();
 
     createAudioSource(file, (newSource) => {
         source.value = newSource;

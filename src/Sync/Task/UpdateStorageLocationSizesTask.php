@@ -5,23 +5,19 @@ declare(strict_types=1);
 namespace App\Sync\Task;
 
 use App\Doctrine\ReadWriteBatchIteratorAggregate;
-use App\Doctrine\ReloadableEntityManagerInterface;
-use App\Entity;
+use App\Entity\Repository\StorageLocationRepository;
+use App\Entity\StorageLocation;
 use App\Radio\Quota;
 use Brick\Math\BigInteger;
 use Exception;
 use League\Flysystem\FileAttributes;
 use League\Flysystem\StorageAttributes;
-use Psr\Log\LoggerInterface;
 
 final class UpdateStorageLocationSizesTask extends AbstractTask
 {
     public function __construct(
-        private readonly Entity\Repository\StorageLocationRepository $storageLocationRepo,
-        ReloadableEntityManagerInterface $em,
-        LoggerInterface $logger
+        private readonly StorageLocationRepository $storageLocationRepo
     ) {
-        parent::__construct($em, $logger);
     }
 
     public static function getSchedulePattern(): string
@@ -47,12 +43,12 @@ final class UpdateStorageLocationSizesTask extends AbstractTask
         );
 
         foreach ($iterator as $storageLocation) {
-            /** @var Entity\StorageLocation $storageLocation */
+            /** @var StorageLocation $storageLocation */
             $this->updateStorageLocationSize($storageLocation);
         }
     }
 
-    private function updateStorageLocationSize(Entity\StorageLocation $storageLocation): void
+    private function updateStorageLocationSize(StorageLocation $storageLocation): void
     {
         $fs = $this->storageLocationRepo->getAdapter($storageLocation)->getFilesystem();
 

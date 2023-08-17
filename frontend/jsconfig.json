@@ -1,5 +1,13 @@
 {
-  "vueCompilerOptions": {
-    "target": 3
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "!/*": [
+        "*"
+      ],
+      "~/*": [
+        "vue/*"
+      ]
+    }
   }
 }

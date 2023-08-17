@@ -4,29 +4,26 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Stations\Reports\Overview;
 
+use App\Container\EntityManagerAwareTrait;
+use App\Container\SettingsAwareTrait;
 use App\Controller\Api\Traits\AcceptsDateRange;
+use App\Controller\SingleActionInterface;
 use App\Entity\Enums\AnalyticsLevel;
-use App\Entity\Repository\SettingsRepository;
-use Doctrine\ORM\EntityManagerInterface;
 
-abstract class AbstractReportAction
+abstract class AbstractReportAction implements SingleActionInterface
 {
     use AcceptsDateRange;
-
-    public function __construct(
-        protected readonly SettingsRepository $settingsRepo,
-        protected readonly EntityManagerInterface $em,
-    ) {
-    }
+    use EntityManagerAwareTrait;
+    use SettingsAwareTrait;
 
     protected function isAllAnalyticsEnabled(): bool
     {
-        return AnalyticsLevel::All === $this->settingsRepo->readSettings()->getAnalytics();
+        return AnalyticsLevel::All === $this->readSettings()->getAnalytics();
     }
 
     protected function isAnalyticsEnabled(): bool
     {
-        return $this->settingsRepo->readSettings()->isAnalyticsEnabled();
+        return $this->readSettings()->isAnalyticsEnabled();
     }
 
     protected function buildChart(

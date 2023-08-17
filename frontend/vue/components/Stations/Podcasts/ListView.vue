@@ -1,45 +1,42 @@
 <template>
-    <b-card no-body>
-        <b-card-header header-bg-variant="primary-dark">
-            <b-row class="align-items-center">
-                <b-col md="7">
+    <section
+        class="card"
+        role="region"
+    >
+        <div class="card-header text-bg-primary">
+            <div class="row align-items-center">
+                <div class="col-md-7">
                     <h2 class="card-title">
                         {{ $gettext('Podcasts') }}
                     </h2>
-                </b-col>
-                <b-col
-                    md="5"
-                    class="text-right text-white-50"
-                >
+                </div>
+                <div class="col-md-5 text-end">
                     <stations-common-quota
                         ref="$quota"
                         :quota-url="quotaUrl"
                     />
-                </b-col>
-            </b-row>
-        </b-card-header>
-
-        <b-card-body body-class="card-padding-sm">
-            <div class="buttons">
-                <b-button
-                    variant="outline-primary"
-                    @click.prevent="doCreate"
-                >
-                    <i
-                        class="material-icons"
-                        aria-hidden="true"
-                    >add</i>
-                    {{ $gettext('Add Podcast') }}
-                </b-button>
+                </div>
             </div>
-        </b-card-body>
+        </div>
+
+        <div class="card-body buttons">
+            <button
+                type="button"
+                class="btn btn-primary"
+                @click="doCreate"
+            >
+                <icon icon="add" />
+                <span>
+                    {{ $gettext('Add Podcast') }}
+                </span>
+            </button>
+        </div>
 
         <data-table
             id="station_podcasts"
             ref="$datatable"
             paginated
             :fields="fields"
-            :responsive="false"
             :api-url="listUrl"
         >
             <template #cell(art)="row">
@@ -59,37 +56,36 @@
                 >{{ $gettext('RSS Feed') }}</a>
             </template>
             <template #cell(actions)="row">
-                <b-button-group size="sm">
-                    <b-button
-                        size="sm"
-                        variant="primary"
-                        @click.prevent="doEdit(row.item.links.self)"
+                <div class="btn-group btn-group-sm">
+                    <button
+                        type="button"
+                        class="btn btn-primary"
+                        @click="doEdit(row.item.links.self)"
                     >
                         {{ $gettext('Edit') }}
-                    </b-button>
-                    <b-button
-                        size="sm"
-                        variant="danger"
-                        @click.prevent="doDelete(row.item.links.self)"
+                    </button>
+                    <button
+                        type="button"
+                        class="btn btn-danger"
+                        @click="doDelete(row.item.links.self)"
                     >
                         {{ $gettext('Delete') }}
-                    </b-button>
-                    <b-button
-                        size="sm"
-                        variant="dark"
-                        @click.prevent="doSelectPodcast(row.item)"
+                    </button>
+                    <button
+                        type="button"
+                        class="btn btn-secondary"
+                        @click="doSelectPodcast(row.item)"
                     >
                         {{ $gettext('Episodes') }}
-                    </b-button>
-                </b-button-group>
+                    </button>
+                </div>
             </template>
         </data-table>
-    </b-card>
+    </section>
 
     <edit-modal
         ref="$editPodcastModal"
         :create-url="listUrl"
-        :station-time-zone="stationTimeZone"
         :new-art-url="newArtUrl"
         :language-options="languageOptions"
         :categories-options="categoriesOptions"
@@ -106,26 +102,35 @@ import listViewProps from "./listViewProps";
 import {useTranslate} from "~/vendor/gettext";
 import {ref} from "vue";
 import {useSweetAlert} from "~/vendor/sweetalert";
-import {useNotify} from "~/vendor/bootstrapVue";
+import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
+import Icon from "~/components/Common/Icon.vue";
+import {getStationApiUrl} from "~/router";
 
 const props = defineProps({
-    ...listViewProps
+    ...listViewProps,
+    quotaUrl: {
+        type: String,
+        required: true
+    }
 });
+
+const listUrl = getStationApiUrl('/podcasts');
+const newArtUrl = getStationApiUrl('/podcasts/art');
 
 const emit = defineEmits(['select-podcast']);
 
 const {$gettext} = useTranslate();
 
 const fields = [
-    {key: 'art', label: $gettext('Art'), sortable: false, class: 'shrink pr-0'},
+    {key: 'art', label: $gettext('Art'), sortable: false, class: 'shrink pe-0'},
     {key: 'title', label: $gettext('Podcast'), sortable: false},
     {
         key: 'episodes',
         label: $gettext('# Episodes'),
         sortable: false,
         formatter: (val) => {
-            return val.length;
+            return val?.length ?? 0;
         }
     },
     {key: 'actions', label: $gettext('Actions'), sortable: false, class: 'shrink'}

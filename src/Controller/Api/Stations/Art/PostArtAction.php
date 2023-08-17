@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Stations\Art;
 
-use App\Entity;
+use App\Container\EntityManagerAwareTrait;
+use App\Controller\SingleActionInterface;
+use App\Entity\Api\Status;
+use App\Entity\Repository\StationMediaRepository;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\OpenApi;
 use App\Service\Flow;
-use Doctrine\ORM\EntityManagerInterface;
 use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 
@@ -40,23 +42,26 @@ use Psr\Http\Message\ResponseInterface;
         new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
     ]
 )]
-final class PostArtAction
+final class PostArtAction implements SingleActionInterface
 {
+    use EntityManagerAwareTrait;
+
     public function __construct(
-        private readonly Entity\Repository\StationMediaRepository $mediaRepo,
-        private readonly EntityManagerInterface $em,
+        private readonly StationMediaRepository $mediaRepo
     ) {
     }
 
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        string $station_id,
-        string $media_id
+        array $params
     ): ResponseInterface {
+        /** @var string $mediaId */
+        $mediaId = $params['media_id'];
+
         $station = $request->getStation();
 
-        $media = $this->mediaRepo->requireForStation($media_id, $station);
+        $media = $this->mediaRepo->requireForStation($mediaId, $station);
 
         $flowResponse = Flow::process($request, $response, $station->getRadioTempDir());
         if ($flowResponse instanceof ResponseInterface) {
@@ -69,6 +74,6 @@ final class PostArtAction
         );
         $this->em->flush();
 
-        return $response->withJson(Entity\Api\Status::updated());
+        return $response->withJson(Status::updated());
     }
 }

@@ -4,13 +4,14 @@ declare(strict_types=1);
 
 namespace App\Controller\Frontend\PublicPages;
 
-use App\Entity;
+use App\Controller\SingleActionInterface;
+use App\Entity\StationMount;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Radio\Adapters;
 use Psr\Http\Message\ResponseInterface;
 
-final class PlaylistAction
+final class PlaylistAction implements SingleActionInterface
 {
     public function __construct(
         private readonly Adapters $adapters,
@@ -20,28 +21,30 @@ final class PlaylistAction
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        string $station_id,
-        string $format = 'pls'
+        array $params
     ): ResponseInterface {
+        /** @var string $format */
+        $format = $params['format'] ?? 'pls';
+
         $station = $request->getStation();
 
         $streams = [];
-        $stream_urls = [];
+        $streamUrls = [];
 
         $fa = $this->adapters->getFrontendAdapter($station);
         if (null !== $fa) {
             foreach ($station->getMounts() as $mount) {
-                /** @var Entity\StationMount $mount */
+                /** @var StationMount $mount */
                 if (!$mount->getIsVisibleOnPublicPages()) {
                     continue;
                 }
 
-                $stream_url = $fa->getUrlForMount($station, $mount);
+                $streamUrl = $fa->getUrlForMount($station, $mount);
 
-                $stream_urls[] = $stream_url;
+                $streamUrls[] = $streamUrl;
                 $streams[] = [
                     'name' => $station->getName() . ' - ' . $mount->getDisplayName(),
-                    'url' => $stream_url,
+                    'url' => $streamUrl,
                 ];
             }
         }
@@ -51,13 +54,13 @@ final class PlaylistAction
                 continue;
             }
 
-            $stream_url = $this->adapters->getRemoteAdapter($station, $remote)
+            $streamUrl = $this->adapters->getRemoteAdapter($remote)
                 ->getPublicUrl($remote);
 
-            $stream_urls[] = $stream_url;
+            $streamUrls[] = $streamUrl;
             $streams[] = [
                 'name' => $station->getName() . ' - ' . $remote->getDisplayName(),
-                'url' => $stream_url,
+                'url' => $streamUrl,
             ];
         }
 
@@ -73,10 +76,10 @@ final class PlaylistAction
                 ];
 
                 if ($backendConfig->getHlsIsDefault()) {
-                    array_unshift($stream_urls, $streamUrl);
+                    array_unshift($streamUrls, $streamUrl);
                     array_unshift($streams, $streamRow);
                 } else {
-                    $stream_urls[] = $streamUrl;
+                    $streamUrls[] = $streamUrl;
                     $streams[] = $streamRow;
                 }
             }
@@ -86,9 +89,9 @@ final class PlaylistAction
         switch ($format) {
             // M3U Playlist Format
             case 'm3u':
-                $m3u_file = implode("\n", $stream_urls);
+                $m3uFile = implode("\n", $streamUrls);
 
-                $response->getBody()->write($m3u_file);
+                $response->getBody()->write($m3uFile);
                 return $response
                     ->withHeader('Content-Type', 'audio/x-mpegurl')
                     ->withHeader('Content-Disposition', 'attachment; filename=' . $station->getShortName() . '.m3u');

@@ -4,14 +4,12 @@ declare(strict_types=1);
 
 namespace App\Sync\Task;
 
-use App\Doctrine\ReloadableEntityManagerInterface;
-use App\Entity;
+use App\Entity\Station;
 use App\Event\Radio\AnnotateNextSong;
 use App\Radio\Adapters;
 use App\Radio\AutoDJ\Queue;
 use App\Radio\Backend\Liquidsoap;
 use App\Radio\Enums\LiquidsoapQueues;
-use Monolog\Logger;
 use Monolog\LogRecord;
 use Psr\EventDispatcher\EventDispatcherInterface;
 
@@ -20,11 +18,8 @@ final class QueueInterruptingTracks extends AbstractTask
     public function __construct(
         private readonly Queue $queue,
         private readonly Adapters $adapters,
-        private readonly EventDispatcherInterface $eventDispatcher,
-        private readonly Logger $monolog,
-        ReloadableEntityManagerInterface $em,
+        private readonly EventDispatcherInterface $eventDispatcher
     ) {
-        parent::__construct($em, $monolog);
     }
 
     public static function getSchedulePattern(): string
@@ -40,7 +35,7 @@ final class QueueInterruptingTracks extends AbstractTask
     public function run(bool $force = false): void
     {
         foreach ($this->iterateStations() as $station) {
-            $this->monolog->pushProcessor(
+            $this->logger->pushProcessor(
                 function (LogRecord $record) use ($station) {
                     $record->extra['station'] = [
                         'id' => $station->getId(),
@@ -53,12 +48,12 @@ final class QueueInterruptingTracks extends AbstractTask
             try {
                 $this->queueForStation($station);
             } finally {
-                $this->monolog->popProcessor();
+                $this->logger->popProcessor();
             }
         }
     }
 
-    private function queueForStation(Entity\Station $station): void
+    private function queueForStation(Station $station): void
     {
         if (!$station->supportsAutoDjQueue()) {
             return;

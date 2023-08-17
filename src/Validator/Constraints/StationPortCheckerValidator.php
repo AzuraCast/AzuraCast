@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Validator\Constraints;
 
-use App\Entity;
+use App\Entity\Station;
 use App\Radio\Configuration;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -22,39 +22,39 @@ final class StationPortCheckerValidator extends ConstraintValidator
         if (!$constraint instanceof StationPortChecker) {
             throw new UnexpectedTypeException($constraint, StationPortChecker::class);
         }
-        if (!$value instanceof Entity\Station) {
-            throw new UnexpectedTypeException($value, Entity\Station::class);
+        if (!$value instanceof Station) {
+            throw new UnexpectedTypeException($value, Station::class);
         }
 
-        $frontend_config = $value->getFrontendConfig();
-        $backend_config = $value->getBackendConfig();
+        $frontendConfig = $value->getFrontendConfig();
+        $backendConfig = $value->getBackendConfig();
 
-        $ports_to_check = [
-            'frontend_config_port' => $frontend_config->getPort(),
-            'backend_config_dj_port' => $backend_config->getDjPort(),
-            'backend_config_telnet_port' => $backend_config->getTelnetPort(),
+        $portsToCheck = [
+            'frontend_config_port' => $frontendConfig->getPort(),
+            'backend_config_dj_port' => $backendConfig->getDjPort(),
+            'backend_config_telnet_port' => $backendConfig->getTelnetPort(),
         ];
 
-        $used_ports = $this->configuration->getUsedPorts($value);
+        $usedPorts = $this->configuration->getUsedPorts($value);
 
         $message = sprintf(
             __('The port %s is in use by another station.'),
             '{{ port }}'
         );
 
-        foreach ($ports_to_check as $port_path => $port) {
+        foreach ($portsToCheck as $portPath => $port) {
             if (null === $port) {
                 continue;
             }
 
             $port = (int)$port;
-            if (isset($used_ports[$port])) {
+            if (isset($usedPorts[$port])) {
                 $this->context->buildViolation($message)
                     ->setParameter('{{ port }}', (string)$port)
                     ->addViolation();
             }
 
-            if ($port_path === 'backend_config_dj_port' && isset($used_ports[$port + 1])) {
+            if ($portPath === 'backend_config_dj_port' && isset($usedPorts[$port + 1])) {
                 $this->context->buildViolation($message)
                     ->setParameter('{{ port }}', sprintf('%s (%s + 1)', $port + 1, $port))
                     ->addViolation();

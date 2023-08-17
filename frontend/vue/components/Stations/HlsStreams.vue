@@ -1,35 +1,24 @@
 <template>
-    <section
-        class="card"
-        role="region"
-        aria-labelledby="hdr_hls_streams"
-    >
-        <b-card-header header-bg-variant="primary-dark">
-            <h2
-                id="hdr_hls_streams"
-                class="card-title"
-            >
-                {{ $gettext('HLS Streams') }}
-            </h2>
-        </b-card-header>
-
-        <info-card>
+    <card-page :title="$gettext('HLS Streams')">
+        <template #info>
             <p class="card-text">
                 {{
                     $gettext('HTTP Live Streaming (HLS) is a new adaptive-bitrate streaming technology. From this page, you can configure the individual bitrates and formats that are included in the combined HLS stream.')
                 }}
             </p>
-        </info-card>
-
-        <b-card-body body-class="card-padding-sm">
-            <b-button
-                variant="outline-primary"
+        </template>
+        <template #actions>
+            <button
+                type="button"
+                class="btn btn-primary"
                 @click.prevent="doCreate"
             >
                 <icon icon="add" />
-                {{ $gettext('Add HLS Stream') }}
-            </b-button>
-        </b-card-body>
+                <span>
+                    {{ $gettext('Add HLS Stream') }}
+                </span>
+            </button>
+        </template>
 
         <data-table
             id="station_hls_streams"
@@ -50,25 +39,25 @@
                 {{ row.item.bitrate }}kbps
             </template>
             <template #cell(actions)="row">
-                <b-button-group size="sm">
-                    <b-button
-                        size="sm"
-                        variant="primary"
-                        @click.prevent="doEdit(row.item.links.self)"
+                <div class="btn-group btn-group-sm">
+                    <button
+                        type="button"
+                        class="btn btn-primary"
+                        @click="doEdit(row.item.links.self)"
                     >
                         {{ $gettext('Edit') }}
-                    </b-button>
-                    <b-button
-                        size="sm"
-                        variant="danger"
-                        @click.prevent="doDelete(row.item.links.self)"
+                    </button>
+                    <button
+                        type="button"
+                        class="btn btn-danger"
+                        @click="doDelete(row.item.links.self)"
                     >
                         {{ $gettext('Delete') }}
-                    </b-button>
-                </b-button-group>
+                    </button>
+                </div>
             </template>
         </data-table>
-    </section>
+    </card-page>
 
     <edit-modal
         ref="$editModal"
@@ -82,21 +71,16 @@
 import DataTable from '~/components/Common/DataTable';
 import EditModal from './HlsStreams/EditModal';
 import Icon from '~/components/Common/Icon';
-import InfoCard from '~/components/Common/InfoCard';
 import {useTranslate} from "~/vendor/gettext";
 import {ref} from "vue";
-import {mayNeedRestartProps, useMayNeedRestart} from "~/functions/useMayNeedRestart";
+import {useMayNeedRestart} from "~/functions/useMayNeedRestart";
 import useHasDatatable from "~/functions/useHasDatatable";
 import useHasEditModal from "~/functions/useHasEditModal";
 import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
+import CardPage from "~/components/Common/CardPage.vue";
+import {getStationApiUrl} from "~/router";
 
-const props = defineProps({
-    ...mayNeedRestartProps,
-    listUrl: {
-        type: String,
-        required: true
-    }
-});
+const listUrl = getStationApiUrl('/hls_streams');
 
 const {$gettext} = useTranslate();
 
@@ -108,7 +92,7 @@ const fields = [
 ];
 
 const upper = (data) => {
-    let upper = [];
+    const upper = [];
     data.split(' ').forEach((word) => {
         upper.push(word.toUpperCase());
     });
@@ -121,7 +105,7 @@ const {relist} = useHasDatatable($dataTable);
 const $editModal = ref(); // EditModal
 const {doCreate, doEdit} = useHasEditModal($editModal);
 
-const {mayNeedRestart, needsRestart} = useMayNeedRestart(props);
+const {mayNeedRestart, needsRestart} = useMayNeedRestart();
 
 const {doDelete} = useConfirmAndDelete(
     $gettext('Delete HLS Stream?'),

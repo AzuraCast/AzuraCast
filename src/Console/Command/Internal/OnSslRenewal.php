@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace App\Console\Command\Internal;
 
 use App\Console\Command\CommandAbstract;
-use App\Entity;
+use App\Container\EntityManagerAwareTrait;
+use App\Entity\Station;
 use App\Radio\Adapters;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -18,8 +18,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 )]
 final class OnSslRenewal extends CommandAbstract
 {
+    use EntityManagerAwareTrait;
+
     public function __construct(
-        private readonly EntityManagerInterface $em,
         private readonly Adapters $adapters,
     ) {
         parent::__construct();
@@ -33,8 +34,8 @@ final class OnSslRenewal extends CommandAbstract
                 DQL
         )->toIterable();
 
+        /** @var Station $station */
         foreach ($stations as $station) {
-            /** @var Entity\Station $station */
             if ($station->getFrontendType()->supportsReload()) {
                 $frontend = $this->adapters->getFrontendAdapter($station);
                 if (null !== $frontend) {

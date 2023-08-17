@@ -8,28 +8,29 @@
         @submit="doSubmit"
         @hidden="clearContents"
     >
-        <b-tabs
+        <o-tabs
+            nav-tabs-class="nav-tabs"
             content-class="mt-3"
-            pills
         >
-            <form-basic-info :form="v$" />
+            <form-basic-info
+                v-model:form="form"
+                :is-edit-mode="isEditMode"
+            />
             <form-schedule
                 v-model:schedule-items="form.schedule_items"
                 :form="v$"
-                :station-time-zone="stationTimeZone"
             />
             <form-artwork
-                v-model="v$.artwork_file.$model"
+                v-model="form.artwork_file"
                 :artwork-src="record.links.art"
                 :new-art-url="newArtUrl"
                 :edit-art-url="record.links.art"
             />
-        </b-tabs>
+        </o-tabs>
     </modal-form>
 </template>
 
 <script setup>
-import {required} from '@vuelidate/validators';
 import FormBasicInfo from './Form/BasicInfo';
 import FormSchedule from './Form/Schedule';
 import FormArtwork from './Form/Artwork';
@@ -42,10 +43,6 @@ import ModalForm from "~/components/Common/ModalForm.vue";
 
 const props = defineProps({
     ...baseEditModalProps,
-    stationTimeZone: {
-        type: String,
-        required: true
-    },
     newArtUrl: {
         type: String,
         required: true
@@ -76,27 +73,10 @@ const {
     props,
     emit,
     $modal,
-    (formRef, formIsEditMode) => computed(() => {
-        return {
-            'streamer_username': {required},
-            'streamer_password': (formIsEditMode.value) ? {} : {required},
-            'display_name': {},
-            'comments': {},
-            'is_active': {},
-            'enforce_schedule': {},
-            'artwork_file': {},
-            'schedule_items': {}
-        };
-    }),
+    {},
     {
-        'streamer_username': null,
-        'streamer_password': null,
-        'display_name': null,
-        'comments': null,
-        'is_active': true,
-        'enforce_schedule': false,
-        'schedule_items': [],
-        'artwork_file': null
+        schedule_items: [],
+        artwork_file: null
     },
     {
         resetForm: (originalResetForm) => {

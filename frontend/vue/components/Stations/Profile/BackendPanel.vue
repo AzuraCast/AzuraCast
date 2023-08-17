@@ -1,13 +1,11 @@
 <template>
-    <section
+    <card-page
         id="profile-backend"
-        class="card"
-        role="region"
-        aria-labelledby="hdr_backend"
+        header-id="hdr_backend"
     >
-        <div class="card-header bg-primary-dark">
+        <template #header="{id}">
             <h3
-                id="hdr_backend"
+                :id="id"
                 class="card-title"
             >
                 {{ $gettext('AutoDJ Service') }}
@@ -15,55 +13,70 @@
                 <br>
                 <small>{{ backendName }}</small>
             </h3>
-        </div>
+        </template>
+
         <div class="card-body">
             <p class="card-text">
                 {{ langTotalTracks }}
             </p>
 
             <div
-                v-if="userCanManageMedia"
+                v-if="userAllowedForStation(StationPermission.Media)"
                 class="buttons"
             >
-                <a
+                <router-link
                     class="btn btn-primary"
-                    :href="manageMediaUri"
-                >{{ $gettext('Music Files') }}</a>
-                <a
+                    :to="{name: 'stations:files:index'}"
+                >
+                    {{ $gettext('Music Files') }}
+                </router-link>
+                <router-link
                     class="btn btn-primary"
-                    :href="managePlaylistsUri"
-                >{{ $gettext('Playlists') }}</a>
+                    :to="{name: 'stations:playlists:index'}"
+                >
+                    {{ $gettext('Playlists') }}
+                </router-link>
             </div>
         </div>
-        <div
-            v-if="userCanManageBroadcasting && hasStarted"
-            class="card-actions"
+
+        <template
+            v-if="userAllowedForStation(StationPermission.Broadcasting) && hasStarted"
+            #footer_actions
         >
-            <a
-                class="api-call no-reload btn btn-outline-secondary"
-                :href="backendRestartUri"
+            <button
+                type="button"
+                class="btn btn-link text-secondary"
+                @click="makeApiCall(backendRestartUri)"
             >
                 <icon icon="update" />
-                {{ $gettext('Restart') }}
-            </a>
-            <a
-                v-show="!backendRunning"
-                class="api-call no-reload btn btn-outline-success"
-                :href="backendStartUri"
+                <span>
+                    {{ $gettext('Restart') }}
+                </span>
+            </button>
+            <button
+                v-if="!backendRunning"
+                type="button"
+                class="btn btn-link text-success"
+                @click="makeApiCall(backendStartUri)"
             >
                 <icon icon="play_arrow" />
-                {{ $gettext('Start') }}
-            </a>
-            <a
-                v-show="backendRunning"
-                class="api-call no-reload btn btn-outline-danger"
-                :href="backendStopUri"
+                <span>
+                    {{ $gettext('Start') }}
+                </span>
+            </button>
+            <button
+                v-if="backendRunning"
+                type="button"
+                class="btn btn-link text-danger"
+                @click="makeApiCall(backendStopUri)"
             >
                 <icon icon="stop" />
-                {{ $gettext('Stop') }}
-            </a>
-        </div>
-    </section>
+                <span>
+                    {{ $gettext('Stop') }}
+                </span>
+            </button>
+        </template>
+    </card-page>
 </template>
 
 <script setup>
@@ -73,6 +86,8 @@ import RunningBadge from "~/components/Common/Badges/RunningBadge.vue";
 import {useTranslate} from "~/vendor/gettext";
 import {computed} from "vue";
 import backendPanelProps from "~/components/Stations/Profile/backendPanelProps";
+import CardPage from "~/components/Common/CardPage.vue";
+import {StationPermission, userAllowedForStation} from "~/acl";
 
 const props = defineProps({
     ...backendPanelProps,
@@ -82,17 +97,19 @@ const props = defineProps({
     }
 });
 
+const emit = defineEmits(['api-call']);
+
 const {$gettext, $ngettext} = useTranslate();
 
 const langTotalTracks = computed(() => {
-    let numSongs = $ngettext(
+    const numSongs = $ngettext(
         '%{numSongs} uploaded song',
         '%{numSongs} uploaded songs',
         props.numSongs,
         {numSongs: props.numSongs}
     );
 
-    let numPlaylists = $ngettext(
+    const numPlaylists = $ngettext(
         '%{numPlaylists} playlist',
         '%{numPlaylists} playlists',
         props.numPlaylists,
@@ -115,4 +132,7 @@ const backendName = computed(() => {
     return '';
 });
 
+const makeApiCall = (uri) => {
+    emit('api-call', uri);
+};
 </script>

@@ -7,53 +7,36 @@
         @submit="doSubmit"
         @hidden="clearContents"
     >
-        <div class="form-row">
-            <b-wrapped-form-group
+        <div class="row g-3">
+            <form-group-field
                 id="form_edit_name"
                 class="col-md-12"
                 :field="v$.name"
-            >
-                <template #label>
-                    {{ $gettext('New Playlist Name') }}
-                </template>
-            </b-wrapped-form-group>
+                :label="$gettext('New Playlist Name')"
+            />
 
-            <b-wrapped-form-group
+            <form-group-multi-check
                 id="form_edit_clone"
                 class="col-md-12"
                 :field="v$.clone"
-            >
-                <template #label>
-                    {{ $gettext('Customize Copy') }}
-                </template>
-                <template #default="slotProps">
-                    <b-form-checkbox-group
-                        :id="slotProps.id"
-                        v-model="slotProps.field.$model"
-                        stacked
-                    >
-                        <b-form-checkbox value="media">
-                            {{ $gettext('Copy associated media and folders.') }}
-                        </b-form-checkbox>
-                        <b-form-checkbox value="schedule">
-                            {{ $gettext('Copy scheduled playback times.') }}
-                        </b-form-checkbox>
-                    </b-form-checkbox-group>
-                </template>
-            </b-wrapped-form-group>
+                :options="copyOptions"
+                stacked
+                :label="$gettext('Customize Copy')"
+            />
         </div>
     </modal-form>
 </template>
 
 <script setup>
 import {required} from '@vuelidate/validators';
-import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
+import FormGroupField from "~/components/Form/FormGroupField";
 import ModalForm from "~/components/Common/ModalForm";
 import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
 import {ref} from "vue";
 import {useTranslate} from "~/vendor/gettext";
-import {useNotify} from "~/vendor/bootstrapVue";
+import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
+import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
 
 const emit = defineEmits(['relist', 'needs-restart']);
 
@@ -76,6 +59,17 @@ const clearContents = () => {
 };
 
 const {$gettext} = useTranslate();
+
+const copyOptions = [
+    {
+        value: 'media',
+        text: $gettext('Copy associated media and folders.')
+    },
+    {
+        value: 'schedule',
+        text: $gettext('Copy scheduled playback times.')
+    }
+];
 
 const $modal = ref(); // Template Ref
 

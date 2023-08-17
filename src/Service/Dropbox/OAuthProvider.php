@@ -8,6 +8,7 @@ use League\OAuth2\Client\Provider\AbstractProvider;
 use League\OAuth2\Client\Provider\Exception\IdentityProviderException;
 use League\OAuth2\Client\Token\AccessToken;
 use League\OAuth2\Client\Tool\BearerAuthorizationTrait;
+use LogicException;
 use Psr\Http\Message\ResponseInterface;
 
 final class OAuthProvider extends AbstractProvider
@@ -61,6 +62,6 @@ final class OAuthProvider extends AbstractProvider
 
     protected function createResourceOwner(array $response, AccessToken $token)
     {
-        throw new \LogicException('Not implemented.');
+        throw new LogicException('Not implemented.');
     }
 }

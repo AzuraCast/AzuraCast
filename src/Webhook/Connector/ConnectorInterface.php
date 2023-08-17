@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\Webhook\Connector;
 
-use App\Entity;
+use App\Entity\Api\NowPlaying\NowPlaying;
+use App\Entity\Station;
+use App\Entity\StationWebhook;
 
 interface ConnectorInterface
 {
@@ -12,28 +14,28 @@ interface ConnectorInterface
      * Return a boolean indicating whether this connector should dispatch, given the current events
      * that are set to be triggered, and the configured triggers for this connector.
      *
-     * @param Entity\StationWebhook $webhook
+     * @param StationWebhook $webhook
      * @param array<string> $triggers
      *
      * @return bool Whether the given webhook should dispatch with these triggers.
      */
     public function shouldDispatch(
-        Entity\StationWebhook $webhook,
+        StationWebhook $webhook,
         array $triggers = []
     ): bool;
 
     /**
      * Trigger the webhook for the specified station, now playing entry, and specified configuration.
      *
-     * @param Entity\Station $station
-     * @param Entity\StationWebhook $webhook
-     * @param Entity\Api\NowPlaying\NowPlaying $np
+     * @param Station $station
+     * @param StationWebhook $webhook
+     * @param NowPlaying $np
      * @param array<string> $triggers
      */
     public function dispatch(
-        Entity\Station $station,
-        Entity\StationWebhook $webhook,
-        Entity\Api\NowPlaying\NowPlaying $np,
+        Station $station,
+        StationWebhook $webhook,
+        NowPlaying $np,
         array $triggers
     ): void;
 }

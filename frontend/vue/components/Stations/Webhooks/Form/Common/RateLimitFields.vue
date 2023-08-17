@@ -1,25 +1,18 @@
 <template>
-    <b-wrapped-form-group
+    <form-group-select
         id="form_config_rate_limit"
         class="col-md-12"
-        :field="form.config.rate_limit"
-    >
-        <template #label>
-            {{ $gettext('Only Post Once Every...') }}
-        </template>
-        <template #default="slotProps">
-            <b-form-select
-                :id="slotProps.id"
-                v-model="slotProps.field.$model"
-                :options="rateLimitOptions"
-            />
-        </template>
-    </b-wrapped-form-group>
+        :field="v$.config.rate_limit"
+        :options="rateLimitOptions"
+        :label="$gettext('Only Post Once Every...')"
+    />
 </template>
 
 <script setup>
-import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
 import {useTranslate} from "~/vendor/gettext";
+import FormGroupSelect from "~/components/Form/FormGroupSelect.vue";
+import {useVModel} from "@vueuse/core";
+import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
 
 const props = defineProps({
     form: {
@@ -27,6 +20,23 @@ const props = defineProps({
         required: true
     }
 });
+
+const emit = defineEmits(['update:form']);
+const form = useVModel(props, 'form', emit);
+
+const {v$} = useVuelidateOnFormTab(
+    {
+        config: {
+            rate_limit: {},
+        }
+    },
+    form,
+    {
+        config: {
+            rate_limit: 0
+        }
+    }
+);
 
 const {$gettext, interpolate} = useTranslate();
 

@@ -3,7 +3,7 @@
         class="card mb-4"
         role="region"
     >
-        <div class="card-header bg-primary-dark">
+        <div class="card-header text-bg-primary">
             <div class="d-flex align-items-center">
                 <h2 class="card-title flex-fill my-0">
                     {{ $gettext('Station Statistics') }}
@@ -12,100 +12,81 @@
                     <date-range-dropdown
                         v-model="dateRange"
                         time-picker
-                        :tz="stationTimeZone"
+                        :tz="timezone"
                     />
                 </div>
             </div>
         </div>
 
-        <b-tabs
-            pills
-            lazy
-            nav-class="card-header-pills"
-            nav-wrapper-class="card-header"
-        >
-            <b-tab>
-                <template #title>
-                    {{ $gettext('Best & Worst') }}
-                </template>
+        <div class="card-body">
+            <o-tabs
+                nav-tabs-class="nav-tabs"
+                content-class="mt-3"
+                destroy-on-hide
+            >
+                <o-tab-item :label="$gettext('Best & Worst')">
+                    <best-and-worst-tab
+                        :api-url="bestAndWorstUrl"
+                        :date-range="dateRange"
+                    />
+                </o-tab-item>
 
-                <best-and-worst-tab
-                    :api-url="bestAndWorstUrl"
-                    :date-range="dateRange"
-                />
-            </b-tab>
+                <o-tab-item :label="$gettext('Listeners By Time Period')">
+                    <listeners-by-time-period-tab
+                        :api-url="listenersByTimePeriodUrl"
+                        :date-range="dateRange"
+                    />
+                </o-tab-item>
 
-            <b-tab>
-                <template #title>
-                    {{ $gettext('Listeners By Time Period') }}
-                </template>
+                <o-tab-item :label="$gettext('Listening Time')">
+                    <listening-time-tab
+                        :api-url="listeningTimeUrl"
+                        :date-range="dateRange"
+                    />
+                </o-tab-item>
 
-                <listeners-by-time-period-tab
-                    :api-url="listenersByTimePeriodUrl"
-                    :date-range="dateRange"
-                />
-            </b-tab>
+                <o-tab-item :label="$gettext('Streams')">
+                    <streams-tab
+                        :api-url="byStreamUrl"
+                        :date-range="dateRange"
+                    />
+                </o-tab-item>
 
-            <b-tab>
-                <template #title>
-                    {{ $gettext('Listening Time') }}
-                </template>
+                <o-tab-item
+                    v-if="showFullAnalytics"
+                    :label="$gettext('Clients')"
+                >
+                    <clients-tab
+                        :api-url="byClientUrl"
+                        :date-range="dateRange"
+                    />
+                </o-tab-item>
 
-                <listening-time-tab
-                    :api-url="listeningTimeUrl"
-                    :date-range="dateRange"
-                />
-            </b-tab>
+                <o-tab-item
+                    v-if="showFullAnalytics"
+                    :label="$gettext('Browsers')"
+                >
+                    <browsers-tab
+                        :api-url="byBrowserUrl"
+                        :date-range="dateRange"
+                    />
+                </o-tab-item>
 
-            <b-tab>
-                <template #title>
-                    {{ $gettext('Streams') }}
-                </template>
-
-                <streams-tab
-                    :api-url="byStreamUrl"
-                    :date-range="dateRange"
-                />
-            </b-tab>
-
-            <b-tab v-if="showFullAnalytics">
-                <template #title>
-                    {{ $gettext('Clients') }}
-                </template>
-
-                <clients-tab
-                    :api-url="byClientUrl"
-                    :date-range="dateRange"
-                />
-            </b-tab>
-
-            <b-tab v-if="showFullAnalytics">
-                <template #title>
-                    {{ $gettext('Browsers') }}
-                </template>
-
-                <browsers-tab
-                    :api-url="byBrowserUrl"
-                    :date-range="dateRange"
-                />
-            </b-tab>
-
-            <b-tab v-if="showFullAnalytics">
-                <template #title>
-                    {{ $gettext('Countries') }}
-                </template>
-
-                <countries-tab
-                    :api-url="byCountryUrl"
-                    :date-range="dateRange"
-                />
-            </b-tab>
-        </b-tabs>
+                <o-tab-item
+                    v-if="showFullAnalytics"
+                    :label="$gettext('Countries')"
+                >
+                    <countries-tab
+                        :api-url="byCountryUrl"
+                        :date-range="dateRange"
+                    />
+                </o-tab-item>
+            </o-tabs>
+        </div>
     </section>
 </template>
 
 <script setup>
-import {DateTime} from "luxon";
 import DateRangeDropdown from "~/components/Common/DateRangeDropdown";
 import ListenersByTimePeriodTab from "./Overview/ListenersByTimePeriodTab";
 import BestAndWorstTab from "./Overview/BestAndWorstTab";
@@ -115,47 +96,29 @@ import StreamsTab from "./Overview/StreamsTab";
 import ClientsTab from "./Overview/ClientsTab";
 import ListeningTimeTab from "~/components/Stations/Reports/Overview/ListeningTimeTab";
 import {ref} from "vue";
+import {useAzuraCastStation} from "~/vendor/azuracast";
+import {useLuxon} from "~/vendor/luxon";
+import {getStationApiUrl} from "~/router";
 
 const props = defineProps({
-    stationTimeZone: {
-        type: String,
-        required: true
-    },
     showFullAnalytics: {
         type: Boolean,
-        required: true
-    },
-    listenersByTimePeriodUrl: {
-        type: String,
-        required: true
-    },
-    bestAndWorstUrl: {
-        type: String,
-        required: true
-    },
-    byStreamUrl: {
-        type: String,
-        required: true
-    },
-    byClientUrl: {
-        type: String,
-        required: true
-    },
-    byBrowserUrl: {
-        type: String,
-        required: true
-    },
-    byCountryUrl: {
-        type: String,
-        required: true
-    },
-    listeningTimeUrl: {
-        type: String,
         required: true
     }
 });
 
-let nowTz = DateTime.now().setZone(props.stationTimeZone);
+const listenersByTimePeriodUrl = getStationApiUrl('/reports/overview/charts');
+const bestAndWorstUrl = getStationApiUrl('/reports/overview/best-and-worst');
+const byStreamUrl = getStationApiUrl('/reports/overview/by-stream');
+const byBrowserUrl = getStationApiUrl('/reports/overview/by-browser');
+const byCountryUrl = getStationApiUrl('/reports/overview/by-country');
+const byClientUrl = getStationApiUrl('/reports/overview/by-client');
+const listeningTimeUrl = getStationApiUrl('/reports/overview/by-listening-time');
+
+const {timezone} = useAzuraCastStation();
+const {DateTime} = useLuxon();
+
+const nowTz = DateTime.now().setZone(timezone);
 
 const dateRange = ref({
     startDate: nowTz.minus({days: 13}).toJSDate(),

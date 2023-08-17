@@ -1,0 +1,11 @@
+div.flow-upload {
+  div.file-drop-target {
+    border: 4px dashed var(--bs-secondary-bg);
+    color: #5e5e5e;
+
+    &.drag_over {
+      border: 4px dashed var(--bs-tertiary-color);
+      color: $text-muted;
+    }
+  }
+}

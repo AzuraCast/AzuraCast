@@ -4,17 +4,14 @@ declare(strict_types=1);
 
 namespace App\Doctrine\Messenger;
 
-use App\Doctrine\ReloadableEntityManagerInterface;
+use App\Container\EntityManagerAwareTrait;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Messenger\Event\WorkerMessageFailedEvent;
 use Symfony\Component\Messenger\Event\WorkerMessageHandledEvent;
 
 final class ClearEntityManagerSubscriber implements EventSubscriberInterface
 {
-    public function __construct(
-        private readonly ReloadableEntityManagerInterface $em
-    ) {
-    }
+    use EntityManagerAwareTrait;
 
     /**
      * @return mixed[]

@@ -3,7 +3,7 @@
         class="card"
         role="region"
     >
-        <div class="card-header bg-primary-dark">
+        <div class="card-header text-bg-primary">
             <h3 class="card-title">
                 {{ $gettext('SoundExchange Report') }}
             </h3>
@@ -17,7 +17,7 @@
             target="_blank"
         >
             <div class="card-body">
-                <b-form-fieldset>
+                <form-fieldset>
                     <p>
                         This report is intended for licensing in the United States only, for webcasters paying royalties
                         via SoundExchange. Learn more about the requirements for reporting and classification on the
@@ -58,10 +58,10 @@
                                 ISRC search tool</a>.
                         </li>
                     </ul>
-                </b-form-fieldset>
+                </form-fieldset>
 
-                <b-form-fieldset>
-                    <b-wrapped-form-group
+                <form-fieldset>
+                    <form-group-field
                         id="form_start_date"
                         name="start_date"
                         :field="v$.start_date"
@@ -70,9 +70,9 @@
                         <template #label>
                             {{ $gettext('Start Date') }}
                         </template>
-                    </b-wrapped-form-group>
+                    </form-group-field>
 
-                    <b-wrapped-form-group
+                    <form-group-field
                         id="form_end_date"
                         name="end_date"
                         :field="v$.end_date"
@@ -81,9 +81,9 @@
                         <template #label>
                             {{ $gettext('End Date') }}
                         </template>
-                    </b-wrapped-form-group>
+                    </form-group-field>
 
-                    <b-wrapped-form-checkbox
+                    <form-group-checkbox
                         id="form_edit_fetch_isrc"
                         name="fetch_isrc"
                         :field="v$.fetch_isrc"
@@ -96,17 +96,16 @@
                                 $gettext('If enabled, AzuraCast will connect to the MusicBrainz database to attempt to find an ISRC for any files where one is missing. Disabling this may improve performance.')
                             }}
                         </template>
-                    </b-wrapped-form-checkbox>
-                </b-form-fieldset>
+                    </form-group-checkbox>
+                </form-fieldset>
 
-                <b-button
+                <button
                     type="submit"
-                    size="lg"
-                    :variant="(v$.$invalid) ? 'danger' : 'primary'"
-                    class="mt-2"
+                    class="btn mt-2"
+                    :class="(v$.$invalid) ? 'btn-danger' : 'btn-primary'"
                 >
                     {{ $gettext('Generate Report') }}
-                </b-button>
+                </button>
             </div>
         </form>
     </section>
@@ -114,25 +113,20 @@
 
 <script setup>
 import {required} from '@vuelidate/validators';
-import BWrappedFormGroup from "~/components/Form/BWrappedFormGroup";
-import BFormFieldset from "~/components/Form/BFormFieldset";
-import BWrappedFormCheckbox from "~/components/Form/BWrappedFormCheckbox";
+import FormGroupField from "~/components/Form/FormGroupField";
+import FormFieldset from "~/components/Form/FormFieldset";
+import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox";
 import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
+import {getStationApiUrl} from "~/router";
+import {useLuxon} from "~/vendor/luxon";
+import {useAzuraCastStation} from "~/vendor/azuracast";
 
-const props = defineProps({
-    apiUrl: {
-        type: String,
-        required: true
-    },
-    startDate: {
-        type: String,
-        required: true
-    },
-    endDate: {
-        type: String,
-        required: true
-    }
-});
+const apiUrl = getStationApiUrl('/reports/soundexchange');
+
+const {DateTime} = useLuxon();
+const {timezone} = useAzuraCastStation();
+
+const lastMonth = DateTime.now().setZone(timezone).minus({months: 1});
 
 const {v$} = useVuelidateOnForm(
     {
@@ -141,8 +135,8 @@ const {v$} = useVuelidateOnForm(
         fetch_isrc: {}
     },
     {
-        start_date: props.startDate,
-        end_date: props.endDate,
+        start_date: lastMonth.startOf('month').toISODate(),
+        end_date: lastMonth.endOf('month').toISODate(),
         fetch_isrc: false
     }
 );

@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace App\Service;
 
-use App\Entity;
+use App\Entity\Interfaces\SongInterface;
+use App\Entity\StationMedia;
 use App\Exception\RateLimitExceededException;
 use App\Lock\LockFactory;
 use App\Version;
@@ -79,7 +80,7 @@ final class MusicBrainz
      * @return mixed[]
      */
     public function findRecordingsForSong(
-        Entity\Interfaces\SongInterface $song,
+        SongInterface $song,
         string $include = 'releases'
     ): array {
         $query = [];
@@ -92,7 +93,7 @@ final class MusicBrainz
             $query[] = 'artist:' . $this->quoteQuery($song->getArtist());
         }
 
-        if ($song instanceof Entity\StationMedia) {
+        if ($song instanceof StationMedia) {
             $advancedQuery = $query;
 
             if (!empty($song->getAlbum())) {

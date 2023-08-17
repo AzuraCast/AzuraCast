@@ -5,24 +5,21 @@ declare(strict_types=1);
 namespace App\Sync\Task;
 
 use App\Console\Application;
-use App\Doctrine\ReloadableEntityManagerInterface;
-use App\Entity;
+use App\Container\SettingsAwareTrait;
+use App\Entity\StationSchedule;
 use App\Message;
 use Carbon\CarbonImmutable;
 use Carbon\CarbonInterface;
-use Psr\Log\LoggerInterface;
 use Symfony\Component\Messenger\MessageBus;
 
 final class RunBackupTask extends AbstractTask
 {
+    use SettingsAwareTrait;
+
     public function __construct(
         private readonly MessageBus $messageBus,
         private readonly Application $console,
-        private readonly Entity\Repository\SettingsRepository $settingsRepo,
-        ReloadableEntityManagerInterface $em,
-        LoggerInterface $logger
     ) {
-        parent::__construct($em, $logger);
     }
 
     public static function getSchedulePattern(): string
@@ -38,23 +35,23 @@ final class RunBackupTask extends AbstractTask
     public function __invoke(Message\AbstractMessage $message): void
     {
         if ($message instanceof Message\BackupMessage) {
-            $settings = $this->settingsRepo->readSettings();
+            $settings = $this->readSettings();
             $settings->updateBackupLastRun();
 
-            $this->settingsRepo->writeSettings($settings);
+            $this->writeSettings($settings);
 
-            [$result_code, $result_output] = $this->runBackup(
+            [$resultCode, $resultOutput] = $this->runBackup(
                 $message->path,
                 $message->excludeMedia,
                 $message->outputPath,
                 $message->storageLocationId
             );
 
-            $result_output = 'Exited with code ' . $result_code . ":\n" . $result_output;
+            $resultOutput = 'Exited with code ' . $resultCode . ":\n" . $resultOutput;
 
-            $settings = $this->settingsRepo->readSettings();
-            $settings->setBackupLastOutput($result_output);
-            $this->settingsRepo->writeSettings($settings);
+            $settings = $this->readSettings();
+            $settings->setBackupLastOutput($resultOutput);
+            $this->writeSettings($settings);
         }
     }
 
@@ -72,28 +69,27 @@ final class RunBackupTask extends AbstractTask
         ?string $outputPath = null,
         ?int $storageLocationId = null
     ): array {
-        $input_params = [];
+        $inputParams = [];
         if (null !== $path) {
-            $input_params['path'] = $path;
+            $inputParams['path'] = $path;
         }
         if (null !== $storageLocationId) {
-            $input_params['--storage-location-id'] = $storageLocationId;
+            $inputParams['--storage-location-id'] = $storageLocationId;
         }
         if ($excludeMedia) {
-            $input_params['--exclude-media'] = true;
+            $inputParams['--exclude-media'] = true;
         }
 
         return $this->console->runCommandWithArgs(
             'azuracast:backup',
-            $input_params,
+            $inputParams,
             $outputPath ?? 'php://temp'
         );
     }
 
     public function run(bool $force = false): void
     {
-        $settings = $this->settingsRepo->readSettings();
-
+        $settings = $this->readSettings();
         if (!$settings->getBackupEnabled()) {
             $this->logger->debug('Automated backups disabled; skipping...');
             return;
@@ -102,15 +98,15 @@ final class RunBackupTask extends AbstractTask
         $nowUtc = CarbonImmutable::now('UTC');
 
         $threshold = $nowUtc->subDay()->getTimestamp();
-        $last_run = $settings->getBackupLastRun();
+        $lastRun = $settings->getBackupLastRun();
 
-        if ($last_run <= $threshold) {
+        if ($lastRun <= $threshold) {
             // Check if the backup time matches (if it's set).
             $backupTimecode = $settings->getBackupTimeCode();
 
             if (null !== $backupTimecode && '' !== $backupTimecode) {
                 $isWithinTimecode = false;
-                $backupDt = Entity\StationSchedule::getDateTime($backupTimecode, $nowUtc);
+                $backupDt = StationSchedule::getDateTime($backupTimecode, $nowUtc);
 
                 /** @var CarbonInterface[] $backupTimesToCheck */
                 $backupTimesToCheck = [

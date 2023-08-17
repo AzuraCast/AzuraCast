@@ -4,26 +4,29 @@ declare(strict_types=1);
 
 namespace App\Entity\Repository;
 
-use App\Entity;
+use App\Entity\User;
+use App\Entity\UserLoginToken;
 use App\Security\SplitToken;
 
 /**
- * @extends AbstractSplitTokenRepository<Entity\UserLoginToken>
+ * @extends AbstractSplitTokenRepository<UserLoginToken>
  */
 final class UserLoginTokenRepository extends AbstractSplitTokenRepository
 {
-    public function createToken(Entity\User $user): SplitToken
+    protected string $entityClass = UserLoginToken::class;
+
+    public function createToken(User $user): SplitToken
     {
         $token = SplitToken::generate();
 
-        $loginToken = new Entity\UserLoginToken($user, $token);
+        $loginToken = new UserLoginToken($user, $token);
         $this->em->persist($loginToken);
         $this->em->flush();
 
         return $token;
     }
 
-    public function revokeForUser(Entity\User $user): void
+    public function revokeForUser(User $user): void
     {
         $this->em->createQuery(
             <<<'DQL'

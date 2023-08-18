@@ -297,7 +297,8 @@ const props = defineProps({
 const emit = defineEmits([
     'refreshed',
     'row-selected',
-    'filtered'
+    'filtered',
+    'data-loaded'
 ]);
 
 const selectedRows = ref([]);
@@ -506,6 +507,7 @@ const refresh = () => {
             rows = props.requestProcess(rows);
         }
 
+        emit('data-loaded', rows);
         items.value = rows;
     }).catch((err) => {
         totalRows.value = 0;

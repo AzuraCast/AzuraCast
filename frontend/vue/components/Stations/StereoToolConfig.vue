@@ -54,11 +54,11 @@
                     <template #label>
                         {{ $gettext('Current Configuration File') }}
                     </template>
-                    <div v-if="hasStereoToolConfiguration">
+                    <div v-if="downloadUrl">
                         <div class="block-buttons pt-3">
                             <a
                                 class="btn btn-block btn-dark"
-                                :href="apiUrl"
+                                :href="downloadUrl"
                                 target="_blank"
                             >
                                 {{ $gettext('Download') }}
@@ -84,7 +84,7 @@
 <script setup>
 import FlowUpload from '~/components/Common/FlowUpload';
 import InfoCard from "~/components/Common/InfoCard";
-import {ref} from "vue";
+import {onMounted, ref} from "vue";
 import {useMayNeedRestart} from "~/functions/useMayNeedRestart";
 import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
@@ -92,37 +92,36 @@ import FormGroup from "~/components/Form/FormGroup.vue";
 import FormMarkup from "~/components/Form/FormMarkup.vue";
 import {getStationApiUrl} from "~/router";
 
-const props = defineProps({
-    recordHasStereoToolConfiguration: {
-        type: Boolean,
-        required: true
-    }
-});
-
 const apiUrl = getStationApiUrl('/stereo_tool_config');
 
-const hasStereoToolConfiguration = ref(props.recordHasStereoToolConfiguration);
+const downloadUrl = ref(null);
+
+const {axios} = useAxios();
+
+const relist = () => {
+    axios.get(apiUrl.value).then((resp) => {
+        downloadUrl.value = resp.data.links.download;
+    });
+};
+
+onMounted(relist);
 
 const {mayNeedRestart} = useMayNeedRestart();
 
 const onFileSuccess = () => {
     mayNeedRestart();
-    hasStereoToolConfiguration.value = true;
+    relist();
 };
 
 const {wrapWithLoading, notifySuccess} = useNotify();
-const {axios} = useAxios();
 
 const deleteConfigurationFile = () => {
     wrapWithLoading(
-        axios({
-            method: 'DELETE',
-            url: apiUrl.value
+        axios.delete(apiUrl.value).then(() => {
+            mayNeedRestart();
+            notifySuccess();
+            relist();
         })
-    ).then(() => {
-        mayNeedRestart();
-        hasStereoToolConfiguration.value = false;
-        notifySuccess();
-    });
+    );
 };
 </script>

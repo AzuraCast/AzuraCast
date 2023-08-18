@@ -38,24 +38,45 @@ final class GetStereoToolConfigurationAction implements SingleActionInterface
         Response $response,
         array $params
     ): ResponseInterface {
-        set_time_limit(600);
-
+        $router = $request->getRouter();
         $station = $request->getStation();
+
+        $download = ($params['do'] ?? null) === 'download';
 
         $stereoToolConfigurationPath = $station->getBackendConfig()->getStereoToolConfigurationPath();
 
         if (!empty($stereoToolConfigurationPath)) {
             $fsConfig = StationFilesystems::buildConfigFilesystem($station);
             if ($fsConfig->fileExists($stereoToolConfigurationPath)) {
-                return $response->streamFilesystemFile(
-                    $fsConfig,
-                    $stereoToolConfigurationPath,
-                    basename($stereoToolConfigurationPath)
-                );
+                if ($download) {
+                    set_time_limit(600);
+
+                    return $response->streamFilesystemFile(
+                        $fsConfig,
+                        $stereoToolConfigurationPath,
+                        basename($stereoToolConfigurationPath)
+                    );
+                }
+
+                return $response->withJson([
+                    'hasRecord' => true,
+                    'links' => [
+                        'download' => $router->fromHere(routeParams: ['do' => 'download']),
+                    ],
+                ]);
             }
         }
 
-        return $response->withStatus(404)
-            ->withJson(Error::notFound());
+        if ($download) {
+            return $response->withStatus(404)
+                ->withJson(Error::notFound());
+        }
+
+        return $response->withJson([
+            'hasRecord' => false,
+            'links' => [
+                'download' => null,
+            ],
+        ]);
     }
 }

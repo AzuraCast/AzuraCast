@@ -22,8 +22,7 @@ export default function useStationsRoutes() {
         {
             path: '/fallback',
             component: () => import('~/components/Stations/Fallback.vue'),
-            name: 'stations:fallback',
-            ...populateComponentRemotely(getStationApiUrl('/vue/fallback'))
+            name: 'stations:fallback'
         },
         {
             path: '/files/:path?',
@@ -45,7 +44,6 @@ export default function useStationsRoutes() {
             path: '/stereo_tool_config',
             component: () => import('~/components/Stations/StereoToolConfig.vue'),
             name: 'stations:stereo_tool_config',
-            ...populateComponentRemotely(getStationApiUrl('/vue/stereo_tool_config'))
         },
         {
             path: '/logs',

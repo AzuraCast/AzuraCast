@@ -32,7 +32,7 @@
                     <flow-upload
                         :target-url="apiUrl"
                         :valid-mime-types="['audio/*']"
-                        @success="onFileSuccess"
+                        @success="relist"
                     />
                 </form-group>
 
@@ -44,11 +44,11 @@
                         {{ $gettext('Current Custom Fallback File') }}
                     </template>
 
-                    <div v-if="hasFallback">
+                    <div v-if="downloadUrl">
                         <div class="block-buttons pt-3">
                             <a
                                 class="btn btn-block btn-dark"
-                                :href="apiUrl"
+                                :href="downloadUrl"
                                 target="_blank"
                             >
                                 {{ $gettext('Download') }}
@@ -74,32 +74,35 @@
 <script setup>
 import FlowUpload from '~/components/Common/FlowUpload';
 import InfoCard from "~/components/Common/InfoCard";
-import {ref} from "vue";
+import {onMounted, ref} from "vue";
 import {useAxios} from "~/vendor/axios";
 import FormMarkup from "~/components/Form/FormMarkup.vue";
 import FormGroup from "~/components/Form/FormGroup.vue";
 import {getStationApiUrl} from "~/router";
-
-const props = defineProps({
-    recordHasFallback: {
-        type: Boolean,
-        required: true
-    }
-});
+import {useNotify} from "~/functions/useNotify";
 
 const apiUrl = getStationApiUrl('/fallback');
 
-const hasFallback = ref(props.recordHasFallback);
-
-const onFileSuccess = () => {
-    hasFallback.value = true;
-};
+const downloadUrl = ref(null);
 
 const {axios} = useAxios();
 
-const deleteFallback = () => {
-    axios.delete(apiUrl.value).then(() => {
-        hasFallback.value = false;
+const relist = () => {
+    axios.get(apiUrl.value).then((resp) => {
+        downloadUrl.value = resp.data.links.download;
     });
-}
+};
+
+onMounted(relist);
+
+const {wrapWithLoading, notifySuccess} = useNotify();
+
+const deleteFallback = () => {
+    wrapWithLoading(
+        axios.delete(apiUrl.value).then(() => {
+            notifySuccess();
+            relist();
+        })
+    );
+};
 </script>

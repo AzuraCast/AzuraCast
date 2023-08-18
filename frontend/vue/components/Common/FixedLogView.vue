@@ -17,7 +17,7 @@ import {ref, toRef, watch} from "vue";
 import {useAxios} from "~/vendor/axios";
 import Loading from "~/components/Common/Loading.vue";
 import CodeMirror from "vue-codemirror6";
-import useGetTheme from "~/functions/useGetTheme";
+import useTheme from "~/functions/theme";
 
 const props = defineProps({
     logUrl: {
@@ -29,7 +29,7 @@ const props = defineProps({
 const isLoading = ref(false);
 const logs = ref('');
 
-const {isDark} = useGetTheme();
+const {isDark} = useTheme();
 
 const {axios} = useAxios();
 

@@ -87,7 +87,7 @@
                     <a
                         class="dropdown-item theme-switcher"
                         href="#"
-                        @click.prevent="switchTheme"
+                        @click.prevent="toggleTheme"
                     >
                         <icon icon="invert_colors" />
                         {{ $gettext('Switch Theme') }}
@@ -169,7 +169,7 @@
 <script setup>
 import {useSlots, watch} from "vue";
 import Icon from "~/components/Common/Icon.vue";
-import {switchTheme} from "!/js/layout";
+import useTheme from "~/functions/theme";
 
 const props = defineProps({
   instanceName: {
@@ -219,6 +219,8 @@ const handleSidebar = () => {
         document.body.classList.remove('has-sidebar');
     }
 }
+
+const {toggleTheme} = useTheme();
 
 watch(
     () => slots.sidebar,

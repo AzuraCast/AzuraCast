@@ -13,7 +13,7 @@
 <script setup>
 import {onMounted, provide, ref, shallowRef, watch} from "vue";
 import L from 'leaflet';
-import useGetTheme from "~/functions/useGetTheme";
+import useTheme from "~/functions/theme";
 import 'leaflet-fullscreen';
 import {useTranslate} from "~/vendor/gettext";
 
@@ -22,7 +22,7 @@ const $map = shallowRef();
 
 provide('map', $map);
 
-const {theme} = useGetTheme();
+const {theme} = useTheme();
 const {$gettext} = useTranslate();
 
 onMounted(() => {

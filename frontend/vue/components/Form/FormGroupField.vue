@@ -3,7 +3,10 @@
         v-bind="$attrs"
         :id="id"
     >
-        <template #label="slotProps">
+        <template
+            v-if="label || slots.label"
+            #label="slotProps"
+        >
             <form-label
                 :is-required="isRequired"
                 :advanced="advanced"
@@ -55,7 +58,10 @@
             />
         </template>
 
-        <template #description="slotProps">
+        <template
+            v-if="description || slots.description"
+            #description="slotProps"
+        >
             <slot
                 v-bind="slotProps"
                 name="description"
@@ -68,7 +74,7 @@
 
 <script setup>
 import VuelidateError from "./VuelidateError";
-import {computed, ref} from "vue";
+import {computed, ref, useSlots} from "vue";
 import FormGroup from "~/components/Form/FormGroup.vue";
 import FormLabel from "~/components/Form/FormLabel.vue";
 import {formFieldProps, useFormField} from "~/components/Form/useFormField";
@@ -122,6 +128,8 @@ const props = defineProps({
         default: false
     }
 });
+
+const slots = useSlots();
 
 const emit = defineEmits(['update:modelValue']);
 

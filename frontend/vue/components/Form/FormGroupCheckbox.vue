@@ -38,7 +38,10 @@
             />
         </template>
 
-        <template #description="slotProps">
+        <template
+            v-if="description || slots.description"
+            #description="slotProps"
+        >
             <slot
                 name="description"
                 v-bind="slotProps"
@@ -54,6 +57,7 @@ import VuelidateError from "./VuelidateError";
 import FormLabel from "~/components/Form/FormLabel.vue";
 import FormGroup from "~/components/Form/FormGroup.vue";
 import {formFieldProps, useFormField} from "~/components/Form/useFormField";
+import {useSlots} from "vue";
 
 const props = defineProps({
     ...formFieldProps,
@@ -84,6 +88,8 @@ const props = defineProps({
         default: false
     }
 });
+
+const slots = useSlots();
 
 const emit = defineEmits(['update:modelValue']);
 

@@ -3,7 +3,10 @@
         v-bind="$attrs"
         :id="id"
     >
-        <template #label="slotProps">
+        <template
+            v-if="label || slots.label"
+            #label="slotProps"
+        >
             <form-label
                 :is-required="isRequired"
                 :advanced="advanced"
@@ -48,7 +51,10 @@
             />
         </template>
 
-        <template #description="slotProps">
+        <template
+            v-if="description || slots.description"
+            #description="slotProps"
+        >
             <slot
                 v-bind="slotProps"
                 name="description"
@@ -66,6 +72,7 @@ import FormGroup from "~/components/Form/FormGroup.vue";
 import FormMultiCheck from "~/components/Form/FormMultiCheck.vue";
 import useSlotsExcept from "~/functions/useSlotsExcept";
 import {formFieldProps, useFormField} from "~/components/Form/useFormField";
+import {useSlots} from "vue";
 
 const props = defineProps({
     ...formFieldProps,
@@ -102,6 +109,8 @@ const props = defineProps({
         default: false
     }
 });
+
+const slots = useSlots();
 
 const emit = defineEmits(['update:modelValue']);
 

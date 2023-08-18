@@ -1,6 +1,9 @@
 <template>
     <form-group :id="id">
-        <template #label="slotProps">
+        <template
+            v-if="label || slots.label"
+            #label="slotProps"
+        >
             <slot
                 name="label"
                 v-bind="slotProps"
@@ -19,7 +22,10 @@
             </div>
         </template>
 
-        <template #description="slotProps">
+        <template
+            v-if="description || slots.description"
+            #description="slotProps"
+        >
             <slot
                 v-bind="slotProps"
                 name="description"
@@ -32,6 +38,7 @@
 
 <script setup>
 import FormGroup from "~/components/Form/FormGroup.vue";
+import {useSlots} from "vue";
 
 const props = defineProps({
     id: {
@@ -47,4 +54,6 @@ const props = defineProps({
         default: null
     },
 });
+
+const slots = useSlots();
 </script>

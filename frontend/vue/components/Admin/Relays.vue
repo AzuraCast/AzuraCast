@@ -22,7 +22,6 @@
             paginated
             :fields="fields"
             :api-url="listUrl"
-            handle-client-side
         >
             <template #cell(name)="row">
                 <h5>

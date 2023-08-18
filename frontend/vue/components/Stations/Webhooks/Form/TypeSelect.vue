@@ -4,8 +4,8 @@
             <type-select-section
                 :title="$gettext('Generic Web Hooks')"
                 :types="buildTypeInfo([
-                    WEBHOOK_TYPE_GENERIC,
-                    WEBHOOK_TYPE_EMAIL
+                    WebhookType.Generic,
+                    WebhookType.Email
                 ])"
                 @select="selectType"
             />
@@ -13,10 +13,10 @@
             <type-select-section
                 :title="$gettext('Social Media')"
                 :types="buildTypeInfo([
-                    WEBHOOK_TYPE_DISCORD,
-                    WEBHOOK_TYPE_TELEGRAM,
-                    WEBHOOK_TYPE_MASTODON,
-                    WEBHOOK_TYPE_TWITTER
+                    WebhookType.Discord,
+                    WebhookType.Telegram,
+                    WebhookType.Mastodon,
+                    WebhookType.Twitter
                 ])"
                 @select="selectType"
             />
@@ -25,7 +25,7 @@
             <type-select-section
                 :title="$gettext('Station Directories')"
                 :types="buildTypeInfo([
-                    WEBHOOK_TYPE_TUNEIN
+                    WebhookType.TuneIn
                 ])"
                 @select="selectType"
             />
@@ -33,9 +33,9 @@
             <type-select-section
                 :title="$gettext('Analytics')"
                 :types="buildTypeInfo([
-                    WEBHOOK_TYPE_GOOGLE_ANALYTICS_V3,
-                    WEBHOOK_TYPE_GOOGLE_ANALYTICS_V4,
-                    WEBHOOK_TYPE_MATOMO_ANALYTICS
+                    WebhookType.GoogleAnalyticsV3,
+                    WebhookType.GoogleAnalyticsV4,
+                    WebhookType.MatomoAnalytics
                 ])"
                 @select="selectType"
             />
@@ -44,12 +44,7 @@
 </template>
 
 <script setup>
-import {
-    WEBHOOK_TYPE_DISCORD, WEBHOOK_TYPE_EMAIL, WEBHOOK_TYPE_GENERIC,
-    WEBHOOK_TYPE_GOOGLE_ANALYTICS_V3,
-    WEBHOOK_TYPE_GOOGLE_ANALYTICS_V4, WEBHOOK_TYPE_MASTODON,
-    WEBHOOK_TYPE_MATOMO_ANALYTICS, WEBHOOK_TYPE_TELEGRAM, WEBHOOK_TYPE_TUNEIN, WEBHOOK_TYPE_TWITTER
-} from "~/components/Entity/Webhooks";
+import {WebhookType} from "~/components/Entity/Webhooks";
 import TypeSelectSection from "~/components/Stations/Webhooks/Form/TypeSelectSection.vue";
 import {get, map} from "lodash";
 

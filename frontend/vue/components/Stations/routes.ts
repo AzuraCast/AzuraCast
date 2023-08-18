@@ -50,7 +50,7 @@ export default function useStationsRoutes() {
         },
         {
             path: '/logs',
-            component: () => import('~/components/Stations/Help.vue'),
+            component: () => import('~/components/Stations/Logs.vue'),
             name: 'stations:logs'
         },
         {

@@ -1,12 +1,12 @@
-import _ from 'lodash';
+import {map} from 'lodash';
 
 export default function objectToFormOptions(array) {
-    return _.map(array, (outerValue, outerKey) => {
+    return map(array, (outerValue, outerKey) => {
         // Support "outgroup" nested arrays
         if (typeof outerValue === 'object') {
             return {
                 label: outerKey,
-                options: _.map(outerValue, (innerValue, innerKey) => {
+                options: map(outerValue, (innerValue, innerKey) => {
                     return {
                         text: innerValue,
                         value: innerKey

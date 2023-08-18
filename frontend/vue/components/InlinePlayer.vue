@@ -67,7 +67,7 @@
 
 <script setup>
 import AudioPlayer from '~/components/Common/AudioPlayer.vue';
-import formatTime from '~/functions/formatTime.js';
+import formatTime from '~/functions/formatTime';
 import Icon from '~/components/Common/Icon.vue';
 import {usePlayerStore} from "~/store";
 import {useLocalStorage} from "@vueuse/core";

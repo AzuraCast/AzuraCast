@@ -73,7 +73,7 @@
 <script setup>
 import FormGroupField from "~/components/Form/FormGroupField";
 import Icon from "~/components/Common/Icon";
-import validatePassword from '~/functions/validatePassword.js';
+import validatePassword from '~/functions/validatePassword';
 import {required} from '@vuelidate/validators';
 import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
 

@@ -7,7 +7,7 @@
 </template>
 
 <script setup>
-import getLogarithmicVolume from '~/functions/getLogarithmicVolume.js';
+import getLogarithmicVolume from '~/functions/getLogarithmicVolume';
 import Hls from 'hls.js';
 import {usePlayerStore} from "~/store";
 import {nextTick, onMounted, ref, toRef, watch} from "vue";

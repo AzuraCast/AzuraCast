@@ -83,10 +83,10 @@
 import FormGroupField from "~/components/Form/FormGroupField.vue";
 import ModalForm from "~/components/Common/ModalForm.vue";
 import FormFieldset from "~/components/Form/FormFieldset";
-import mergeExisting from "~/functions/mergeExisting.js";
+import mergeExisting from "~/functions/mergeExisting";
 import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
 import TimeCode from "~/components/Common/TimeCode.vue";
-import objectToFormOptions from "~/functions/objectToFormOptions.js";
+import objectToFormOptions from "~/functions/objectToFormOptions";
 import {computed, ref} from "vue";
 import {useAxios} from "~/vendor/axios";
 import {useNotify} from "~/functions/useNotify";

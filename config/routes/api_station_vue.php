@@ -19,11 +19,6 @@ return static function (RouteCollectorProxy $app) {
             ->add(new Middleware\StationSupportsFeature(StationFeatures::Media))
             ->add(new Middleware\Permissions(StationPermissions::Media, true));
 
-        $group->get('/ls_config', Controller\Api\Stations\Vue\EditLiquidsoapConfigAction::class)
-            ->setName('api:vue:stations:util:ls_config')
-            ->add(new Middleware\StationSupportsFeature(StationFeatures::CustomLiquidsoapConfig))
-            ->add(new Middleware\Permissions(StationPermissions::Broadcasting, true));
-
         $group->get(
             '/stereo_tool_config',
             Controller\Api\Stations\Vue\UploadStereoToolConfigAction::class

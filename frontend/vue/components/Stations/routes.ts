@@ -39,8 +39,7 @@ export default function useStationsRoutes() {
         {
             path: '/ls_config',
             component: () => import('~/components/Stations/LiquidsoapConfig.vue'),
-            name: 'stations:util:ls_config',
-            ...populateComponentRemotely(getStationApiUrl('/vue/ls_config'))
+            name: 'stations:util:ls_config'
         },
         {
             path: '/stereo_tool_config',

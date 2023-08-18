@@ -78,40 +78,34 @@ import {forEach} from "lodash";
 import mergeExisting from "~/functions/mergeExisting";
 import InfoCard from "~/components/Common/InfoCard";
 import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
-import {onMounted, ref} from "vue";
+import {computed, onMounted, ref} from "vue";
 import {useMayNeedRestart} from "~/functions/useMayNeedRestart";
 import {useAxios} from "~/vendor/axios";
 import {useNotify} from "~/functions/useNotify";
 import Loading from "~/components/Common/Loading.vue";
 import {getStationApiUrl} from "~/router";
 
-const props = defineProps({
-    config: {
-        type: Array,
-        required: true
-    },
-    sections: {
-        type: Array,
-        required: true
-    },
-});
-
 const settingsUrl = getStationApiUrl('/liquidsoap-config');
 
-const buildForm = () => {
-    const validations = {};
-    const blankForm = {};
+const config = ref([]);
+const sections = ref([]);
 
-    forEach(props.sections, (section) => {
-        validations[section] = {};
-        blankForm[section] = null;
-    });
-
-    return {validations, blankForm};
-}
-
-const {validations, blankForm} = buildForm();
-const {form, resetForm, v$, ifValid} = useVuelidateOnForm(validations, blankForm);
+const {form, resetForm, v$, ifValid} = useVuelidateOnForm(
+    computed(() => {
+        const validations = {};
+        forEach(sections.value, (section) => {
+            validations[section] = {};
+        });
+        return validations;
+    }),
+    () => {
+        const blankForm = {};
+        forEach(sections.value, (section) => {
+            blankForm[section] = null;
+        });
+        return blankForm;
+    }
+);
 
 const isLoading = ref(true);
 
@@ -120,11 +114,14 @@ const {mayNeedRestart} = useMayNeedRestart();
 const {axios} = useAxios();
 
 const relist = () => {
-    resetForm();
-
     isLoading.value = true;
     axios.get(settingsUrl.value).then((resp) => {
-        form.value = mergeExisting(form.value, resp.data);
+        config.value = resp.data.config;
+        sections.value = resp.data.sections;
+
+        resetForm();
+        form.value = mergeExisting(form.value, resp.data.contents);
+    }).finally(() => {
         isLoading.value = false;
     });
 };

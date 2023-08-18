@@ -49,7 +49,7 @@
                             :api-url="listUrl"
                             detailed
                         >
-                            <template #cell(actions)="{ item }">
+                            <template #cell(actions)="{ item, toggleDetails }">
                                 <div class="btn-group btn-group-sm">
                                     <button
                                         type="button"
@@ -69,7 +69,7 @@
                                     <button
                                         class="btn btn-sm btn-secondary"
                                         type="button"
-                                        @click="toggleDetails(item)"
+                                        @click="toggleDetails()"
                                     >
                                         {{ $gettext('More') }}
                                     </button>
@@ -373,10 +373,6 @@ const relist = () => {
     $datatable.value?.refresh();
     $schedule.value?.refresh();
 };
-
-const toggleDetails = (row) => {
-    $datatable.value?.toggleDetails(row);
-}
 
 const $editModal = ref(); // Template Ref
 const {doCreate, doEdit} = useHasEditModal($editModal);

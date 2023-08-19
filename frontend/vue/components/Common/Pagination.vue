@@ -1,82 +1,71 @@
 <template>
-    <nav>
+    <nav class="d-flex">
         <ul class="pagination mb-0">
-            <li
+            <pagination-item
                 v-if="hasFirst"
-                class="page-item"
-                :class="[
-                    (page === 1) ? 'active' : ''
-                ]"
-            >
-                <a
-                    class="page-link"
-                    href="#"
-                    @click.prevent="page = 1"
-                >1</a>
-            </li>
+                :page="1"
+                :active="page === 1"
+                @click="setPage"
+            />
 
-            <li
+            <pagination-item
                 v-if="hasFirstEllipsis"
-                class="page-item disabled"
-            >
-                <a
-                    class="page-link"
-                    href="#"
-                    tabindex="-1"
-                    @click.prevent=""
-                >
-                    ...
-                </a>
-            </li>
+                label="..."
+                disabled
+            />
 
-            <li
+            <pagination-item
                 v-for="pageNum in pagesInRange"
                 :key="pageNum"
-                class="page-item"
-                :class="[
-                    (page === pageNum) ? 'active' : ''
-                ]"
-            >
-                <a
-                    class="page-link"
-                    href="#"
-                    @click.prevent="page = pageNum"
-                >{{ pageNum }}</a>
-            </li>
+                :page="pageNum"
+                :active="page === pageNum"
+                @click="setPage"
+            />
 
-            <li
+            <pagination-item
                 v-if="hasLastEllipsis"
-                class="page-item disabled"
-            >
-                <a
-                    class="page-link"
-                    href="#"
-                    tabindex="-1"
-                    @click.prevent=""
-                >
-                    ...
-                </a>
-            </li>
+                label="..."
+                disabled
+            />
 
-            <li
+            <pagination-item
                 v-if="hasLast"
-                class="page-item"
-                :class="[
-                    (page === pageCount) ? 'active' : ''
-                ]"
-            >
-                <a
-                    class="page-link"
-                    href="#"
-                    @click.prevent="page = pageCount"
-                >{{ pageCount }}</a>
-            </li>
+                :page="pageCount"
+                :active="page === pageCount"
+                @click="setPage"
+            />
         </ul>
+
+        <div
+            v-if="showInput"
+            class="input-group input-group-sm ms-2"
+        >
+            <input
+                v-model="inputPage"
+                type="number"
+                :min="1"
+                :max="pageCount"
+                step="1"
+                class="form-control rounded-start-2"
+                :aria-label="$gettext('Page')"
+                style="max-width: 60px;"
+                @keydown.enter.prevent="goToPage"
+            >
+            <button
+                class="btn btn-outline-secondary rounded-end-2"
+                type="button"
+                @click="goToPage"
+            >
+                {{ $gettext('Go') }}
+            </button>
+        </div>
     </nav>
 </template>
 
 <script setup lang="ts">
-import {computed} from "vue";
+import {computed, ref} from "vue";
+import PaginationItem from "~/components/Common/PaginationItem.vue";
+import {clamp} from "lodash";
 
 const props = defineProps({
     total: {
@@ -103,6 +92,15 @@ const pageCount = computed(() => Math.max(
     1,
     Math.ceil(props.total / props.perPage),
 ));
+
+const inputPage = ref(1);
+
+const setPage = (newPage: number) => {
+    newPage = clamp(newPage, 1, pageCount.value);
+
+    page.value = newPage;
+    inputPage.value = newPage;
+};
 
 const page = computed({
     get() {
@@ -144,4 +142,12 @@ const pagesInRange = computed(() => {
     }
     return pages
 });
+
+const showInput = computed(() => {
+    return pageCount.value > 10;
+});
+
+const goToPage = () => {
+    setPage(inputPage.value);
+};
 </script>

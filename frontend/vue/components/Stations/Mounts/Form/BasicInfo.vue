@@ -1,8 +1,7 @@
 <template>
-    <o-tab-item
+    <tab
         :label="$gettext('Basic Info')"
         :item-header-class="tabClass"
-        active
     >
         <div class="row g-3 mb-3">
             <form-group-field
@@ -101,7 +100,7 @@
                 />
             </template>
         </div>
-    </o-tab-item>
+    </tab>
 </template>
 
 <script setup>
@@ -112,6 +111,7 @@ import {computed} from "vue";
 import {useVModel} from "@vueuse/core";
 import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
 import {required} from "@vuelidate/validators";
+import Tab from "~/components/Common/Tab.vue";
 
 const props = defineProps({
     form: {

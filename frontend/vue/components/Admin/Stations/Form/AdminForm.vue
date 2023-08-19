@@ -1,5 +1,5 @@
 <template>
-    <o-tab-item
+    <tab
         :label="$gettext('Administration')"
         :item-header-class="tabClass"
     >
@@ -50,7 +50,7 @@
                 />
             </div>
         </loading>
-    </o-tab-item>
+    </tab>
 </template>
 
 <script setup>
@@ -64,6 +64,7 @@ import FormGroupSelect from "~/components/Form/FormGroupSelect.vue";
 import {useVModel} from "@vueuse/core";
 import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
 import {useAzuraCast} from "~/vendor/azuracast";
+import Tab from "~/components/Common/Tab.vue";
 
 const props = defineProps({
     form: {

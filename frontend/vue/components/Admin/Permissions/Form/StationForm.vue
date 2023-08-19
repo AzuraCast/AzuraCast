@@ -1,5 +1,5 @@
 <template>
-    <o-tab-item :label="$gettext('Station Permissions')">
+    <tab :label="$gettext('Station Permissions')">
         <permissions-form-station-row
             v-for="(row, index) in form.permissions.$model.station"
             :key="index"
@@ -39,13 +39,14 @@
                 </ul>
             </div>
         </div>
-    </o-tab-item>
+    </tab>
 </template>
 
 <script setup>
 import {find, isEmpty, pickBy} from 'lodash';
 import PermissionsFormStationRow from "~/components/Admin/Permissions/Form/StationRow.vue";
 import {computed} from "vue";
+import Tab from "~/components/Common/Tab.vue";
 
 const props = defineProps({
     form: {

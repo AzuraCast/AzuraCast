@@ -21,12 +21,14 @@
         </div>
 
         <div class="card-body">
-            <o-tabs
-                nav-tabs-class="nav-tabs"
+            <tabs
                 content-class="mt-3"
                 destroy-on-hide
             >
-                <o-tab-item :label="$gettext('All Playlists')">
+                <tab
+                    id="all_playlists"
+                    :label="$gettext('All Playlists')"
+                >
                     <div class="card-body-flush">
                         <div class="card-body buttons">
                             <button
@@ -261,8 +263,11 @@
                             </template>
                         </data-table>
                     </div>
-                </o-tab-item>
-                <o-tab-item :label="$gettext('Schedule View')">
+                </tab>
+                <tab
+                    id="schedule_view"
+                    :label="$gettext('Schedule View')"
+                >
                     <div class="card-body-flush">
                         <schedule
                             ref="$schedule"
@@ -271,8 +276,8 @@
                             @click="doCalendarClick"
                         />
                     </div>
-                </o-tab-item>
-            </o-tabs>
+                </tab>
+            </tabs>
         </div>
     </section>
 
@@ -321,6 +326,8 @@ import {useAzuraCastStation} from "~/vendor/azuracast";
 import {useLuxon} from "~/vendor/luxon";
 import {getStationApiUrl} from "~/router";
 import TimeZone from "~/components/Stations/Common/TimeZone.vue";
+import Tabs from "~/components/Common/Tabs.vue";
+import Tab from "~/components/Common/Tab.vue";
 
 const props = defineProps({
     useManualAutoDj: {

@@ -24,12 +24,12 @@
                 </template>
 
                 <div class="card-body">
-                    <o-tabs
+                    <tabs
                         nav-tabs-class="nav-tabs"
                         content-class="mt-3"
                         destroy-on-hide
                     >
-                        <o-tab-item :label="$gettext('Account List')">
+                        <tab :label="$gettext('Account List')">
                             <div class="card-body-flush">
                                 <div class="card-body buttons">
                                     <button
@@ -91,8 +91,8 @@
                                     </template>
                                 </data-table>
                             </div>
-                        </o-tab-item>
-                        <o-tab-item :label="$gettext('Schedule View')">
+                        </tab>
+                        <tab :label="$gettext('Schedule View')">
                             <div class="card-body-flush">
                                 <schedule
                                     ref="$schedule"
@@ -101,8 +101,8 @@
                                     @click="doCalendarClick"
                                 />
                             </div>
-                        </o-tab-item>
-                    </o-tabs>
+                        </tab>
+                    </tabs>
                 </div>
             </card-page>
         </div>
@@ -137,6 +137,8 @@ import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
 import CardPage from "~/components/Common/CardPage.vue";
 import {useAzuraCastStation} from "~/vendor/azuracast";
 import {getStationApiUrl} from "~/router";
+import Tabs from "~/components/Common/Tabs.vue";
+import Tab from "~/components/Common/Tab.vue";
 
 const props = defineProps({
     connectionInfo: {

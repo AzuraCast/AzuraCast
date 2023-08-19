@@ -1,5 +1,5 @@
 <template>
-    <o-tab-item
+    <tab
         :label="title"
         :item-header-class="tabClass"
     >
@@ -67,7 +67,7 @@
                 </template>
             </form-group-multi-check>
         </div>
-    </o-tab-item>
+    </tab>
 </template>
 
 <script setup>
@@ -79,6 +79,7 @@ import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
 import {useVModel} from "@vueuse/core";
 import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
 import {required} from "@vuelidate/validators";
+import Tab from "~/components/Common/Tab.vue";
 
 const props = defineProps({
     title: {

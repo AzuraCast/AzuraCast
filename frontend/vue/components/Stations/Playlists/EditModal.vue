@@ -8,17 +8,14 @@
         @submit="doSubmit"
         @hidden="clearContents"
     >
-        <o-tabs
-            nav-tabs-class="nav-tabs"
-            content-class="mt-3"
-        >
+        <tabs>
             <form-basic-info v-model:form="form" />
             <form-schedule v-model:schedule-items="form.schedule_items" />
             <form-advanced
                 v-if="enableAdvancedFeatures"
                 v-model:form="form"
             />
-        </o-tabs>
+        </tabs>
     </modal-form>
 </template>
 
@@ -32,6 +29,7 @@ import {useTranslate} from "~/vendor/gettext";
 import {useNotify} from "~/functions/useNotify";
 import ModalForm from "~/components/Common/ModalForm.vue";
 import {useAzuraCast} from "~/vendor/azuracast";
+import Tabs from "~/components/Common/Tabs.vue";
 
 const props = defineProps({
     ...baseEditModalProps

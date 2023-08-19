@@ -1,5 +1,5 @@
 <template>
-    <o-tab-item
+    <tab
         :label="$gettext('Remote: S3 Compatible')"
         :item-header-class="tabClass"
     >
@@ -46,7 +46,7 @@
                 :label="$gettext('API Version')"
             />
         </div>
-    </o-tab-item>
+    </tab>
 </template>
 
 <script setup>
@@ -54,6 +54,7 @@ import FormGroupField from "~/components/Form/FormGroupField.vue";
 import {useVModel} from "@vueuse/core";
 import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
 import {required} from "@vuelidate/validators";
+import Tab from "~/components/Common/Tab.vue";
 
 const props = defineProps({
     form: {

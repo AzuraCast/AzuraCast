@@ -19,40 +19,36 @@
         </div>
 
         <div class="card-body">
-            <o-tabs
-                nav-tabs-class="nav-tabs"
-                content-class="mt-3"
-                destroy-on-hide
-            >
-                <o-tab-item :label="$gettext('Best & Worst')">
+            <tabs destroy-on-hide>
+                <tab :label="$gettext('Best & Worst')">
                     <best-and-worst-tab
                         :api-url="bestAndWorstUrl"
                         :date-range="dateRange"
                     />
-                </o-tab-item>
+                </tab>
 
-                <o-tab-item :label="$gettext('Listeners By Time Period')">
+                <tab :label="$gettext('Listeners By Time Period')">
                     <listeners-by-time-period-tab
                         :api-url="listenersByTimePeriodUrl"
                         :date-range="dateRange"
                     />
-                </o-tab-item>
+                </tab>
 
-                <o-tab-item :label="$gettext('Listening Time')">
+                <tab :label="$gettext('Listening Time')">
                     <listening-time-tab
                         :api-url="listeningTimeUrl"
                         :date-range="dateRange"
                     />
-                </o-tab-item>
+                </tab>
 
-                <o-tab-item :label="$gettext('Streams')">
+                <tab :label="$gettext('Streams')">
                     <streams-tab
                         :api-url="byStreamUrl"
                         :date-range="dateRange"
                     />
-                </o-tab-item>
+                </tab>
 
-                <o-tab-item
+                <tab
                     v-if="showFullAnalytics"
                     :label="$gettext('Clients')"
                 >
@@ -60,9 +56,9 @@
                         :api-url="byClientUrl"
                         :date-range="dateRange"
                     />
-                </o-tab-item>
+                </tab>
 
-                <o-tab-item
+                <tab
                     v-if="showFullAnalytics"
                     :label="$gettext('Browsers')"
                 >
@@ -70,9 +66,9 @@
                         :api-url="byBrowserUrl"
                         :date-range="dateRange"
                     />
-                </o-tab-item>
+                </tab>
 
-                <o-tab-item
+                <tab
                     v-if="showFullAnalytics"
                     :label="$gettext('Countries')"
                 >
@@ -80,8 +76,8 @@
                         :api-url="byCountryUrl"
                         :date-range="dateRange"
                     />
-                </o-tab-item>
-            </o-tabs>
+                </tab>
+            </tabs>
         </div>
     </section>
 </template>
@@ -99,6 +95,8 @@ import {ref} from "vue";
 import {useAzuraCastStation} from "~/vendor/azuracast";
 import {useLuxon} from "~/vendor/luxon";
 import {getStationApiUrl} from "~/router";
+import Tabs from "~/components/Common/Tabs.vue";
+import Tab from "~/components/Common/Tab.vue";
 
 const props = defineProps({
     showFullAnalytics: {

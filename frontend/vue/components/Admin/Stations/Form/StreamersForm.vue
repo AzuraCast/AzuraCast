@@ -1,5 +1,5 @@
 <template>
-    <o-tab-item
+    <tab
         :label="$gettext('Streamers/DJs')"
         :item-header-class="tabClassWithBackend"
     >
@@ -124,7 +124,7 @@
             </template>
         </form-fieldset>
         <backend-disabled v-else />
-    </o-tab-item>
+    </tab>
 </template>
 
 <script setup>
@@ -139,6 +139,7 @@ import {useVModel} from "@vueuse/core";
 import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
 import {numeric} from "@vuelidate/validators";
 import {useAzuraCast} from "~/vendor/azuracast";
+import Tab from "~/components/Common/Tab.vue";
 
 const props = defineProps({
     form: {

@@ -8,10 +8,7 @@
         @submit="doSubmit"
         @hidden="clearContents"
     >
-        <o-tabs
-            nav-tabs-class="nav-tabs"
-            content-class="mt-3"
-        >
+        <tabs content-class="mt-3">
             <admin-permissions-global-form
                 :form="v$"
                 :global-permissions="globalPermissions"
@@ -22,7 +19,7 @@
                 :stations="stations"
                 :station-permissions="stationPermissions"
             />
-        </o-tabs>
+        </tabs>
     </modal-form>
 </template>
 
@@ -35,6 +32,7 @@ import {required} from '@vuelidate/validators';
 import AdminPermissionsGlobalForm from "./Form/GlobalForm";
 import AdminPermissionsStationForm from "./Form/StationForm";
 import {forEach, map} from 'lodash';
+import Tabs from "~/components/Common/Tabs.vue";
 
 const props = defineProps({
     ...baseEditModalProps,

@@ -8,27 +8,20 @@
         @submit="doEdit"
         @hidden="resetForm"
     >
-        <o-tabs
-            nav-tabs-class="nav-tabs"
-            content-class="mt-3"
-            destroy-on-hide
-        >
-            <o-tab-item
-                :label="$gettext('Basic Information')"
-                active
-            >
+        <tabs destroy-on-hide>
+            <tab :label="$gettext('Basic Information')">
                 <media-form-basic-info :form="v$" />
-            </o-tab-item>
-            <o-tab-item :label="$gettext('Playlists')">
+            </tab>
+            <tab :label="$gettext('Playlists')">
                 <media-form-playlists
                     :form="v$"
                     :playlists="playlists"
                 />
-            </o-tab-item>
-            <o-tab-item :label="$gettext('Album Art')">
+            </tab>
+            <tab :label="$gettext('Album Art')">
                 <media-form-album-art :album-art-url="albumArtUrl" />
-            </o-tab-item>
-            <o-tab-item
+            </tab>
+            <tab
                 v-if="customFields.length > 0"
                 :label="$gettext('Custom Fields')"
             >
@@ -36,21 +29,21 @@
                     :form="v$"
                     :custom-fields="customFields"
                 />
-            </o-tab-item>
-            <o-tab-item :label="$gettext('Visual Cue Editor')">
+            </tab>
+            <tab :label="$gettext('Visual Cue Editor')">
                 <media-form-waveform-editor
                     :form="form"
                     :audio-url="audioUrl"
                     :waveform-url="waveformUrl"
                 />
-            </o-tab-item>
-            <o-tab-item :label="$gettext('Advanced')">
+            </tab>
+            <tab :label="$gettext('Advanced')">
                 <media-form-advanced-settings
                     :form="v$"
                     :song-length="songLength"
                 />
-            </o-tab-item>
-        </o-tabs>
+            </tab>
+        </tabs>
     </modal-form>
 </template>
 
@@ -68,6 +61,8 @@ import {ref} from "vue";
 import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
 import {useAxios} from "~/vendor/axios";
 import {useNotify} from "~/functions/useNotify";
+import Tabs from "~/components/Common/Tabs.vue";
+import Tab from "~/components/Common/Tab.vue";
 
 const props = defineProps({
     customFields: {

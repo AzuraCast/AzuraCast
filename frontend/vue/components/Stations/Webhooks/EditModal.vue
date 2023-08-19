@@ -14,11 +14,7 @@
             @select="setType"
         />
 
-        <o-tabs
-            v-else
-            nav-tabs-class="nav-tabs"
-            content-class="mt-3"
-        >
+        <tabs v-else>
             <basic-info
                 v-model:form="form"
                 :trigger-details="triggerDetails"
@@ -30,7 +26,7 @@
                 v-model:form="form"
                 :label="typeTitle"
             />
-        </o-tabs>
+        </tabs>
     </modal-form>
 </template>
 
@@ -53,6 +49,7 @@ import {computed, nextTick, provide, ref} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import ModalForm from "~/components/Common/ModalForm.vue";
 import {getTriggers, WebhookType} from "~/components/Entity/Webhooks";
+import Tabs from "~/components/Common/Tabs.vue";
 
 const props = defineProps({
     ...baseEditModalProps,

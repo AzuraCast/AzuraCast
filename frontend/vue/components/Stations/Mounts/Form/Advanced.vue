@@ -1,5 +1,5 @@
 <template>
-    <o-tab-item
+    <tab
         :label="$gettext('Advanced')"
         :item-header-class="tabClass"
     >
@@ -28,7 +28,7 @@
                 :description="$gettext('You can include any special mount point settings here, in either JSON { key: \'value\' } format or XML &lt;key&gt;value&lt;/key&gt;')"
             />
         </div>
-    </o-tab-item>
+    </tab>
 </template>
 
 <script setup>
@@ -37,6 +37,7 @@ import FormGroupField from "~/components/Form/FormGroupField";
 import {computed} from "vue";
 import {useVModel} from "@vueuse/core";
 import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
+import Tab from "~/components/Common/Tab.vue";
 
 const props = defineProps({
     form: {

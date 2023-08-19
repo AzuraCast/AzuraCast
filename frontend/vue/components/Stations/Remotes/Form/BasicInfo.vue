@@ -1,8 +1,7 @@
 <template>
-    <o-tab-item
+    <tab
         :label="$gettext('Basic Info')"
         :item-header-class="tabClass"
-        active
     >
         <div class="row g-3">
             <form-group-multi-check
@@ -65,7 +64,7 @@
                 :description="$gettext('Enable to allow listeners to select this relay on this station\'s public pages.')"
             />
         </div>
-    </o-tab-item>
+    </tab>
 </template>
 
 <script setup>
@@ -76,6 +75,7 @@ import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
 import {useVModel} from "@vueuse/core";
 import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
 import {required} from "@vuelidate/validators";
+import Tab from "~/components/Common/Tab.vue";
 
 const props = defineProps({
     form: {

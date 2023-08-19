@@ -1,5 +1,5 @@
 <template>
-    <o-tab-item
+    <tab
         :label="title"
         :item-header-class="tabClass"
     >
@@ -20,7 +20,7 @@
                 :description="$gettext('A unique identifier (i.e. &quot;G-A1B2C3D4&quot;) for this measurement stream.')"
             />
         </div>
-    </o-tab-item>
+    </tab>
 </template>
 
 <script setup>
@@ -28,6 +28,7 @@ import FormGroupField from "~/components/Form/FormGroupField";
 import {useVModel} from "@vueuse/core";
 import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
 import {required} from "@vuelidate/validators";
+import Tab from "~/components/Common/Tab.vue";
 
 const props = defineProps({
     title: {

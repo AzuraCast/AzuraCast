@@ -8,12 +8,9 @@
         @submit="doSubmit"
         @hidden="clearContents"
     >
-        <o-tabs
-            nav-tabs-class="nav-tabs"
-            content-class="mt-3"
-        >
+        <tabs content-class="mt-3">
             <form-basic-info v-model:form="form" />
-        </o-tabs>
+        </tabs>
     </modal-form>
 </template>
 
@@ -24,6 +21,7 @@ import {computed, ref} from "vue";
 import {useNotify} from "~/functions/useNotify";
 import {useTranslate} from "~/vendor/gettext";
 import ModalForm from "~/components/Common/ModalForm.vue";
+import Tabs from "~/components/Common/Tabs.vue";
 
 const props = defineProps({
     ...baseEditModalProps,

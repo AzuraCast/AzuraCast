@@ -1,5 +1,5 @@
 <template>
-    <o-tab-item
+    <tab
         :label="title"
         :item-header-class="tabClass"
     >
@@ -12,7 +12,7 @@
                 :description="$gettext('The property ID used to track live listeners.')"
             />
         </div>
-    </o-tab-item>
+    </tab>
 </template>
 
 <script setup>
@@ -20,6 +20,7 @@ import FormGroupField from "~/components/Form/FormGroupField";
 import {useVModel} from "@vueuse/core";
 import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
 import {required} from "@vuelidate/validators";
+import Tab from "~/components/Common/Tab.vue";
 
 const props = defineProps({
     title: {

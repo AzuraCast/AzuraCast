@@ -1,5 +1,5 @@
 <template>
-    <o-tab-item
+    <tab
         :label="$gettext('Advanced')"
         :item-header-class="tabClass"
     >
@@ -14,7 +14,7 @@
                 :description="$gettext('Control how this playlist is handled by the AutoDJ software.')"
             />
         </div>
-    </o-tab-item>
+    </tab>
 </template>
 
 <script setup>
@@ -22,6 +22,7 @@ import {useTranslate} from "~/vendor/gettext";
 import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
 import {useVModel} from "@vueuse/core";
 import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
+import Tab from "~/components/Common/Tab.vue";
 
 const props = defineProps({
     form: {

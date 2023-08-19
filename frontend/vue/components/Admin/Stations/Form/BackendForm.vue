@@ -1,5 +1,5 @@
 <template>
-    <o-tab-item
+    <tab
         :label="$gettext('AutoDJ')"
         :item-header-class="tabClass"
     >
@@ -248,7 +248,7 @@
                 </div>
             </form-fieldset>
         </template>
-    </o-tab-item>
+    </tab>
 </template>
 
 <script setup>
@@ -275,6 +275,7 @@ import {useVModel} from "@vueuse/core";
 import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
 import {decimal, numeric, required} from "@vuelidate/validators";
 import {useAzuraCast} from "~/vendor/azuracast";
+import Tab from "~/components/Common/Tab.vue";
 
 const props = defineProps({
     form: {

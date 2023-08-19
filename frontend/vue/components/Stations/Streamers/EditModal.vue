@@ -8,10 +8,7 @@
         @submit="doSubmit"
         @hidden="clearContents"
     >
-        <o-tabs
-            nav-tabs-class="nav-tabs"
-            content-class="mt-3"
-        >
+        <tabs>
             <form-basic-info
                 v-model:form="form"
                 :is-edit-mode="isEditMode"
@@ -26,7 +23,7 @@
                 :new-art-url="newArtUrl"
                 :edit-art-url="record.links.art"
             />
-        </o-tabs>
+        </tabs>
     </modal-form>
 </template>
 
@@ -40,6 +37,7 @@ import {computed, ref} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import {useResettableRef} from "~/functions/useResettableRef";
 import ModalForm from "~/components/Common/ModalForm.vue";
+import Tabs from "~/components/Common/Tabs.vue";
 
 const props = defineProps({
     ...baseEditModalProps,

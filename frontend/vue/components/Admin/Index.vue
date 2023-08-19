@@ -59,7 +59,7 @@
                                 class="btn btn-dark btn-sm py-2"
                                 @click="showMemoryStatsHelpModal"
                             >
-                                <icon icon="help_outline" />
+                                <icon icon="help_outline"/>
                             </button>
                         </div>
                     </div>
@@ -163,7 +163,7 @@
                                 class="btn btn-dark btn-sm py-2"
                                 @click="showCpuStatsHelpModal"
                             >
-                                <icon icon="help_outline" />
+                                <icon icon="help_outline"/>
                             </button>
                         </div>
                     </div>
@@ -297,32 +297,32 @@
                             <col style="width: 20%;">
                         </colgroup>
                         <tbody>
-                            <tr
-                                v-for="service in services"
-                                :key="service.name"
-                                class="align-middle"
-                            >
-                                <td class="text-center pe-2">
-                                    <running-badge :running="service.running" />
-                                </td>
-                                <td class="ps-2">
-                                    <h6 class="mb-0">
-                                        {{ service.name }}<br>
-                                        <small>{{ service.description }}</small>
-                                    </h6>
-                                </td>
-                                <td>
-                                    <button
-                                        v-if="service.links.restart"
-                                        type="button"
-                                        class="btn btn-sm"
-                                        :class="service.running ? 'btn-primary' : 'btn-danger'"
-                                        @click="doRestart(service.links.restart)"
-                                    >
-                                        {{ $gettext('Restart') }}
-                                    </button>
-                                </td>
-                            </tr>
+                        <tr
+                            v-for="service in services"
+                            :key="service.name"
+                            class="align-middle"
+                        >
+                            <td class="text-center pe-2">
+                                <running-badge :running="service.running"/>
+                            </td>
+                            <td class="ps-2">
+                                <h6 class="mb-0">
+                                    {{ service.name }}<br>
+                                    <small>{{ service.description }}</small>
+                                </h6>
+                            </td>
+                            <td>
+                                <button
+                                    v-if="service.links.restart"
+                                    type="button"
+                                    class="btn btn-sm"
+                                    :class="service.running ? 'btn-primary' : 'btn-danger'"
+                                    @click="doRestart(service.links.restart)"
+                                >
+                                    {{ $gettext('Restart') }}
+                                </button>
+                            </td>
+                        </tr>
                         </tbody>
                     </table>
                 </section>
@@ -339,11 +339,8 @@
                     </div>
 
                     <div class="card-body">
-                        <o-tabs
-                            nav-tabs-class="nav-tabs"
-                            content-class="mt-3"
-                        >
-                            <o-tab-item
+                        <tabs>
+                            <tab
                                 v-for="netInterface in stats.network"
                                 :key="netInterface.interface_name"
                                 :label="netInterface.interface_name"
@@ -394,15 +391,15 @@
                                         </o-table>
                                     </div>
                                 </div>
-                            </o-tab-item>
-                        </o-tabs>
+                            </tab>
+                        </tabs>
                     </div>
                 </section>
             </div>
         </div>
 
-        <cpu-stats-help-modal ref="$cpuStatsHelpModal" />
-        <memory-stats-help-modal ref="$memoryStatsHelpModal" />
+        <cpu-stats-help-modal ref="$cpuStatsHelpModal"/>
+        <memory-stats-help-modal ref="$memoryStatsHelpModal"/>
     </div>
 </template>
 
@@ -417,6 +414,8 @@ import {useAxios} from "~/vendor/axios";
 import {useNotify} from "~/functions/useNotify";
 import {getApiUrl} from "~/router";
 import {useAdminMenu} from "~/components/Admin/menu";
+import Tabs from "~/components/Common/Tabs.vue";
+import Tab from "~/components/Common/Tab.vue";
 
 const statsUrl = getApiUrl('/admin/server/stats');
 const servicesUrl = getApiUrl('/admin/services');

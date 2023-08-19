@@ -121,8 +121,8 @@
         :title="$gettext('Station-Specific Debugging')"
     >
         <div class="card-body">
-          <tabs>
-            <tab
+            <tabs>
+                <tab
                     v-for="station in stations"
                     :key="station.id"
                     :label="station.name"
@@ -164,8 +164,8 @@
                             </div>
                         </div>
                     </div>
-            </tab>
-          </tabs>
+                </tab>
+            </tabs>
         </div>
     </card-page>
 

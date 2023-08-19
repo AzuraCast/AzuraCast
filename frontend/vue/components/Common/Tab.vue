@@ -1,10 +1,10 @@
 <template>
     <div
-            v-if="isActive || !isLazy"
-            v-show="isActive"
-            :id="`${computedId}-content`"
+        v-if="isActive || !isLazy"
+        v-show="isActive"
+        :id="`${computedId}-content`"
     >
-        <slot/>
+        <slot />
     </div>
 </template>
 

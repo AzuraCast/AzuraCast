@@ -4,7 +4,6 @@ import {installPinia} from '~/vendor/pinia';
 import {installTranslate} from "~/vendor/gettext";
 import {installCurrentVueInstance} from "~/vendor/vueInstance";
 import {AzuraCastConstants, setGlobalProps} from "~/vendor/azuracast";
-import installOruga from "~/vendor/oruga.ts";
 
 interface InitApp {
     vueApp: App<Element>
@@ -18,9 +17,6 @@ export default function initApp(appConfig = {}, appCallback = null): InitApp {
 
     /* Pinia */
     installPinia(vueApp);
-
-    /* Oruga */
-    installOruga(vueApp);
 
     window.vueComponent = (el: string, globalProps: AzuraCastConstants): void => {
         setGlobalProps(globalProps);

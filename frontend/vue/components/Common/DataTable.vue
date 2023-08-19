@@ -12,18 +12,10 @@
                     v-if="showPagination"
                     class="col-xl-6 col-lg-5 col-md-12 col-sm-12"
                 >
-                    <o-pagination
-                        v-if="showPagination"
-                        v-model:current="currentPage"
+                    <pagination
+                        v-model:current-page="currentPage"
                         :total="totalRows"
                         :per-page="perPage"
-                        icon-prev="chevron-left"
-                        icon-next="chevron-right"
-                        :aria-next-label="$gettext('Next page')"
-                        :aria-previous-label="$gettext('Previous page')"
-                        :aria-page-label="$gettext('Page')"
-                        :aria-current-label="$gettext('Current page')"
-                        class="mb-0"
                         @change="onPageChange"
                     />
                 </div>
@@ -291,12 +283,11 @@
             v-if="showToolbar"
             class="datatable-toolbar-bottom card-body"
         >
-            <o-pagination
+            <pagination
                 v-if="showPagination"
-                v-model:current="currentPage"
+                v-model:current-page="currentPage"
                 :total="totalRows"
                 :per-page="perPage"
-                class="mb-0"
                 @change="onPageChange"
             />
         </div>
@@ -311,6 +302,7 @@ import {useLocalStorage, watchDebounced} from "@vueuse/core";
 import {useAxios} from "~/vendor/axios";
 import FormMultiCheck from "~/components/Form/FormMultiCheck.vue";
 import FormCheckbox from "~/components/Form/FormCheckbox.vue";
+import Pagination from "~/components/Common/Pagination.vue";
 
 const props = defineProps({
     id: {

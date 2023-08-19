@@ -72,7 +72,8 @@ export default function useStationsRoutes() {
         {
             path: '/mounts',
             component: () => import('~/components/Stations/Mounts.vue'),
-            name: 'stations:mounts:index'
+            name: 'stations:mounts:index',
+            ...populateComponentRemotely(getStationApiUrl('/vue/mounts'))
         },
         {
             path: '/profile/edit',

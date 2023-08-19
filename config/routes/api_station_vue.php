@@ -15,6 +15,10 @@ return static function (RouteCollectorProxy $app) {
             ->add(new Middleware\StationSupportsFeature(StationFeatures::Media))
             ->add(new Middleware\Permissions(StationPermissions::Media, true));
 
+        $group->get('/mounts', Controller\Api\Stations\Vue\MountsAction::class)
+            ->setName('api:vue:stations:mounts:index')
+            ->add(new Middleware\Permissions(StationPermissions::MountPoints, true));
+
         $group->get('/playlists', Controller\Api\Stations\Vue\PlaylistsAction::class)
             ->setName('api:vue:stations:playlists:index')
             ->add(new Middleware\StationSupportsFeature(StationFeatures::Media))

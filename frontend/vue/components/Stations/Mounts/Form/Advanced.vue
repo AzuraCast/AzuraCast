@@ -32,7 +32,7 @@
 </template>
 
 <script setup>
-import {FRONTEND_ICECAST} from '~/components/Entity/RadioAdapters';
+import {FrontendAdapter} from '~/components/Entity/RadioAdapters';
 import FormGroupField from "~/components/Form/FormGroupField";
 import {computed} from "vue";
 import {useVModel} from "@vueuse/core";
@@ -54,7 +54,7 @@ const emit = defineEmits(['update:form']);
 const form = useVModel(props, 'form', emit);
 
 const isIcecast = computed(() => {
-    return FRONTEND_ICECAST === props.stationFrontendType;
+    return FrontendAdapter.Icecast === props.stationFrontendType;
 });
 
 const {v$, tabClass} = useVuelidateOnFormTab(

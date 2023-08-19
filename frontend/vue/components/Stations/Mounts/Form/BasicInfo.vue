@@ -104,7 +104,7 @@
 </template>
 
 <script setup>
-import {FRONTEND_ICECAST, FRONTEND_SHOUTCAST} from '~/components/Entity/RadioAdapters';
+import {FrontendAdapter} from '~/components/Entity/RadioAdapters';
 import FormGroupField from "~/components/Form/FormGroupField";
 import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox";
 import {computed} from "vue";
@@ -128,11 +128,11 @@ const emit = defineEmits(['update:form']);
 const form = useVModel(props, 'form', emit);
 
 const isIcecast = computed(() => {
-    return FRONTEND_ICECAST === props.stationFrontendType;
+    return FrontendAdapter.Icecast === props.stationFrontendType;
 });
 
 const isShoutcast = computed(() => {
-    return FRONTEND_SHOUTCAST === props.stationFrontendType;
+    return FrontendAdapter.Shoutcast === props.stationFrontendType;
 });
 
 const {v$, tabClass} = useVuelidateOnFormTab(

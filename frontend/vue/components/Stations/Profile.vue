@@ -77,7 +77,7 @@ import ProfileFrontend from './Profile/FrontendPanel';
 import ProfileBackendNone from './Profile/BackendNonePanel';
 import ProfileBackend from './Profile/BackendPanel';
 import NowPlayingNotStartedPanel from "./Profile/NowPlayingNotStartedPanel.vue";
-import {BACKEND_NONE, FRONTEND_REMOTE} from '~/components/Entity/RadioAdapters';
+import {BackendAdapter, FrontendAdapter} from '~/components/Entity/RadioAdapters';
 import NowPlaying from '~/components/Entity/NowPlaying';
 import {computed} from "vue";
 import {useAxios} from "~/vendor/axios";
@@ -120,11 +120,11 @@ const props = defineProps({
 });
 
 const hasActiveFrontend = computed(() => {
-    return props.frontendType !== FRONTEND_REMOTE;
+    return props.frontendType !== FrontendAdapter.Remote;
 });
 
 const hasActiveBackend = computed(() => {
-    return props.backendType !== BACKEND_NONE;
+    return props.backendType !== BackendAdapter.None;
 });
 
 const {axios} = useAxios();

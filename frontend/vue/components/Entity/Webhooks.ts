@@ -83,17 +83,6 @@ export enum WebhookType {
     MatomoAnalytics = 'matomo_analytics'
 }
 
-export const WEBHOOK_TYPE_GENERIC = 'generic';
-export const WEBHOOK_TYPE_EMAIL = 'email';
-export const WEBHOOK_TYPE_TUNEIN = 'tunein';
-export const WEBHOOK_TYPE_DISCORD = 'discord';
-export const WEBHOOK_TYPE_TELEGRAM = 'telegram';
-export const WEBHOOK_TYPE_TWITTER = 'twitter';
-export const WEBHOOK_TYPE_MASTODON = 'mastodon';
-export const WEBHOOK_TYPE_GOOGLE_ANALYTICS_V3 = 'google_analytics';
-export const WEBHOOK_TYPE_GOOGLE_ANALYTICS_V4 = 'google_analytics_v4';
-export const WEBHOOK_TYPE_MATOMO_ANALYTICS = 'matomo_analytics';
-
 export function useTypeDetails() {
     const {$gettext} = useTranslate();
 

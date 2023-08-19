@@ -130,7 +130,7 @@
 <script setup>
 import FormFieldset from "~/components/Form/FormFieldset";
 import FormGroupField from "~/components/Form/FormGroupField.vue";
-import {BACKEND_NONE} from "~/components/Entity/RadioAdapters";
+import {BackendAdapter} from "~/components/Entity/RadioAdapters";
 import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
 import BackendDisabled from "./Common/BackendDisabled.vue";
 import {computed} from "vue";
@@ -215,7 +215,7 @@ const {v$, tabClass} = useVuelidateOnFormTab(
 );
 
 const isBackendEnabled = computed(() => {
-    return form.value.backend_type !== BACKEND_NONE;
+    return form.value.backend_type !== BackendAdapter.None;
 });
 
 const tabClassWithBackend = computed(() => {

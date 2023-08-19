@@ -254,18 +254,7 @@
 <script setup>
 import FormFieldset from "~/components/Form/FormFieldset";
 import FormGroupField from "~/components/Form/FormGroupField.vue";
-import {
-    AUDIO_PROCESSING_LIQUIDSOAP,
-    AUDIO_PROCESSING_MASTER_ME,
-    AUDIO_PROCESSING_NONE,
-    AUDIO_PROCESSING_STEREO_TOOL,
-    BACKEND_LIQUIDSOAP,
-    BACKEND_NONE,
-    MASTER_ME_PRESET_APPLE_PODCASTS,
-    MASTER_ME_PRESET_EBU_R128, MASTER_ME_PRESET_MUSIC_GENERAL,
-    MASTER_ME_PRESET_SPEECH_GENERAL,
-    MASTER_ME_PRESET_YOUTUBE
-} from "~/components/Entity/RadioAdapters";
+import {AudioProcessingMethod, BackendAdapter, MasterMePreset} from "~/components/Entity/RadioAdapters";
 import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
 import FormMarkup from "~/components/Form/FormMarkup.vue";
 import {computed} from "vue";
@@ -333,13 +322,13 @@ const {v$, tabClass} = useVuelidateOnFormTab(
     form,
     () => {
         let blankForm = {
-            backend_type: BACKEND_LIQUIDSOAP,
+            backend_type: BackendAdapter.Liquidsoap,
             backend_config: {
                 crossfade_type: 'normal',
                 crossfade: 2,
-                audio_processing_method: AUDIO_PROCESSING_NONE,
+                audio_processing_method: AudioProcessingMethod.None,
                 post_processing_include_live: true,
-                master_me_preset: MASTER_ME_PRESET_MUSIC_GENERAL,
+                master_me_preset: MasterMePreset.MusicGeneral,
                 master_me_loudness_target: -16,
                 stereo_tool_license_key: '',
             },
@@ -366,19 +355,19 @@ const {v$, tabClass} = useVuelidateOnFormTab(
 );
 
 const isBackendEnabled = computed(() => {
-    return form.value?.backend_type !== BACKEND_NONE;
+    return form.value?.backend_type !== BackendAdapter.None;
 });
 
 const isStereoToolEnabled = computed(() => {
-    return form.value?.backend_config?.audio_processing_method === AUDIO_PROCESSING_STEREO_TOOL;
+    return form.value?.backend_config?.audio_processing_method === AudioProcessingMethod.StereoTool;
 });
 
 const isMasterMeEnabled = computed(() => {
-    return form.value?.backend_config?.audio_processing_method === AUDIO_PROCESSING_MASTER_ME;
+    return form.value?.backend_config?.audio_processing_method === AudioProcessingMethod.MasterMe;
 });
 
 const isPostProcessingEnabled = computed(() => {
-    return form.value?.backend_config?.audio_processing_method !== AUDIO_PROCESSING_NONE;
+    return form.value?.backend_config?.audio_processing_method !== AudioProcessingMethod.None;
 });
 
 const {$gettext} = useTranslate();
@@ -387,11 +376,11 @@ const backendTypeOptions = computed(() => {
     return [
         {
             text: $gettext('Use Liquidsoap on this server.'),
-            value: BACKEND_LIQUIDSOAP
+            value: BackendAdapter.Liquidsoap
         },
         {
             text: $gettext('Do not use an AutoDJ service.'),
-            value: BACKEND_NONE
+            value: BackendAdapter.None
         }
     ];
 });
@@ -417,15 +406,15 @@ const audioProcessingOptions = computed(() => {
     const audioProcessingOptions = [
         {
             text: $gettext('No Post-processing'),
-            value: AUDIO_PROCESSING_NONE,
+            value: AudioProcessingMethod.None
         },
         {
             text: $gettext('Basic Normalization and Compression'),
-            value: AUDIO_PROCESSING_LIQUIDSOAP,
+            value: AudioProcessingMethod.Liquidsoap
         },
         {
             text: $gettext('Master_me Post-processing'),
-            value: AUDIO_PROCESSING_MASTER_ME,
+            value: AudioProcessingMethod.MasterMe
         },
     ];
 
@@ -433,7 +422,7 @@ const audioProcessingOptions = computed(() => {
         audioProcessingOptions.push(
             {
                 text: $gettext('Stereo Tool'),
-                value: AUDIO_PROCESSING_STEREO_TOOL,
+                value: AudioProcessingMethod.StereoTool
             }
         )
     }
@@ -452,23 +441,23 @@ const masterMePresetOptions = computed(() => {
     return [
         {
             text: $gettext('Music General'),
-            value: MASTER_ME_PRESET_MUSIC_GENERAL
+            value: MasterMePreset.MusicGeneral
         },
         {
             text: $gettext('Speech General'),
-            value: MASTER_ME_PRESET_SPEECH_GENERAL
+            value: MasterMePreset.SpeechGeneral
         },
         {
             text: $gettext('EBU R128'),
-            value: MASTER_ME_PRESET_EBU_R128
+            value: MasterMePreset.EbuR128
         },
         {
             text: $gettext('Apple Podcasts'),
-            value: MASTER_ME_PRESET_APPLE_PODCASTS
+            value: MasterMePreset.ApplePodcasts
         },
         {
             text: $gettext('YouTube'),
-            value: MASTER_ME_PRESET_YOUTUBE
+            value: MasterMePreset.YouTube
         }
     ]
 });

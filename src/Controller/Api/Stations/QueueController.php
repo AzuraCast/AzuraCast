@@ -116,12 +116,18 @@ final class QueueController extends AbstractStationApiCrudController
         array $params
     ): ResponseInterface {
         $station = $request->getStation();
-        $query = $this->queueRepo->getUnplayedQuery($station);
+        $qb = $this->queueRepo->getUnplayedBaseQuery($station);
+
+        $searchPhrase = trim($request->getQueryParam('searchPhrase') ?? '');
+        if (!empty($searchPhrase)) {
+            $qb->andWhere('(sm.title LIKE :query OR sm.artist LIKE :query OR sm.text LIKE :query)')
+                ->setParameter('query', '%' . $searchPhrase . '%');
+        }
 
         return $this->listPaginatedFromQuery(
             $request,
             $response,
-            $query
+            $qb->getQuery()
         );
     }
 

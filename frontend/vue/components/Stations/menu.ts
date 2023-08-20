@@ -2,6 +2,7 @@ import {useTranslate} from "~/vendor/gettext.ts";
 import filterMenu from "~/functions/filterMenu.ts";
 import {StationPermission, userAllowedForStation} from "~/acl.ts";
 import {useAzuraCast} from "~/vendor/azuracast.ts";
+import {computed, reactive} from "vue";
 
 export function useStationsMenu(): array {
     const {$gettext} = useTranslate();
@@ -12,22 +13,22 @@ export function useStationsMenu(): array {
     // Reuse this variable to avoid multiple calls.
     const userCanManageMedia = userAllowedForStation(StationPermission.Media);
 
-    const menu = [
+    const menu = reactive([
         {
             key: 'profile',
-            label: $gettext('Profile'),
+            label: computed(() => $gettext('Profile')),
             icon: 'image',
             items: [
                 {
                     key: 'view_profile',
-                    label: $gettext('View Profile'),
+                    label: computed(() => $gettext('View Profile')),
                     url: {
                         name: 'stations:index'
                     }
                 },
                 {
                     key: 'edit_profile',
-                    label: $gettext('Edit Profile'),
+                    label: computed(() => $gettext('Edit Profile')),
                     url: {
                         name: 'stations:profile:edit'
                     },
@@ -35,7 +36,7 @@ export function useStationsMenu(): array {
                 },
                 {
                     key: 'branding',
-                    label: $gettext('Branding'),
+                    label: computed(() => $gettext('Branding')),
                     url: {
                         name: 'stations:branding'
                     },
@@ -45,7 +46,7 @@ export function useStationsMenu(): array {
         },
         {
             key: 'public_page',
-            label: $gettext('Public Page'),
+            label: computed(() => $gettext('Public Page')),
             icon: 'public',
             url: stationProps.publicPageUrl,
             external: true,
@@ -53,13 +54,13 @@ export function useStationsMenu(): array {
         },
         {
             key: 'media',
-            label: $gettext('Media'),
+            label: computed(() => $gettext('Media')),
             icon: 'library_music',
             visible: stationProps.features.media,
             items: [
                 {
                     key: 'music_files',
-                    label: $gettext('Music Files'),
+                    label: computed(() => $gettext('Music Files')),
                     url: {
                         name: 'stations:files:index'
                     },
@@ -67,7 +68,7 @@ export function useStationsMenu(): array {
                 },
                 {
                     key: 'duplicate_songs',
-                    label: $gettext('Duplicate Songs'),
+                    label: computed(() => $gettext('Duplicate Songs')),
                     url: {
                         name: 'stations:files:index',
                         params: {
@@ -78,7 +79,7 @@ export function useStationsMenu(): array {
                 },
                 {
                     key: 'unprocessable',
-                    label: $gettext('Unprocessable Files'),
+                    label: computed(() => $gettext('Unprocessable Files')),
                     url: {
                         name: 'stations:files:index',
                         params: {
@@ -89,7 +90,7 @@ export function useStationsMenu(): array {
                 },
                 {
                     key: 'unassigned',
-                    label: $gettext('Unassigned Files'),
+                    label: computed(() => $gettext('Unassigned Files')),
                     url: {
                         name: 'stations:files:index',
                         params: {
@@ -100,14 +101,14 @@ export function useStationsMenu(): array {
                 },
                 {
                     key: 'ondemand',
-                    label: $gettext('On-Demand Media'),
+                    label: computed(() => $gettext('On-Demand Media')),
                     url: stationProps.onDemandUrl,
                     external: true,
                     visible: stationProps.enableOnDemand,
                 },
                 {
                     key: 'sftp_users',
-                    label: $gettext('SFTP Users'),
+                    label: computed(() => $gettext('SFTP Users')),
                     url: {
                         name: 'stations:sftp_users:index'
                     },
@@ -115,7 +116,7 @@ export function useStationsMenu(): array {
                 },
                 {
                     key: 'bulk_media',
-                    label: $gettext('Bulk Media Import/Export'),
+                    label: computed(() => $gettext('Bulk Media Import/Export')),
                     url: {
                         name: 'stations:bulk-media'
                     },
@@ -125,7 +126,7 @@ export function useStationsMenu(): array {
         },
         {
             key: 'playlists',
-            label: $gettext('Playlists'),
+            label: computed(() => $gettext('Playlists')),
             icon: 'queue_music',
             url: {
                 name: 'stations:playlists:index'
@@ -134,7 +135,7 @@ export function useStationsMenu(): array {
         },
         {
             key: 'podcasts',
-            label: $gettext('Podcasts'),
+            label: computed(() => $gettext('Podcasts')),
             icon: 'cast',
             url: {
                 name: 'stations:podcasts:index'
@@ -143,13 +144,13 @@ export function useStationsMenu(): array {
         },
         {
             key: 'streaming',
-            label: $gettext('Live Streaming'),
+            label: computed(() => $gettext('Live Streaming')),
             icon: 'mic',
             visible: userAllowedForStation(StationPermission.Streamers) && stationProps.features.streamers,
             items: [
                 {
                     key: 'streamers',
-                    label: $gettext('Streamer/DJ Accounts'),
+                    label: computed(() => $gettext('Streamer/DJ Accounts')),
                     url: {
                         name: 'stations:streamers:index',
                     },
@@ -157,7 +158,7 @@ export function useStationsMenu(): array {
                 },
                 {
                     key: 'webdj',
-                    label: $gettext('Web DJ'),
+                    label: computed(() => $gettext('Web DJ')),
                     url: stationProps.webDjUrl,
                     external: true,
                     visible: stationProps.enablePublicPages
@@ -166,7 +167,7 @@ export function useStationsMenu(): array {
         },
         {
             key: 'webhooks',
-            label: $gettext('Web Hooks'),
+            label: computed(() => $gettext('Web Hooks')),
             icon: 'code',
             url: {
                 name: 'stations:webhooks:index'
@@ -175,27 +176,27 @@ export function useStationsMenu(): array {
         },
         {
             key: 'reports',
-            label: $gettext('Reports'),
+            label: computed(() => $gettext('Reports')),
             icon: 'assignment',
             visible: userAllowedForStation(StationPermission.Reports),
             items: [
                 {
                     key: 'reports_overview',
-                    label: $gettext('Station Statistics'),
+                    label: computed(() => $gettext('Station Statistics')),
                     url: {
                         name: 'stations:reports:overview',
                     }
                 },
                 {
                     key: 'reports_listeners',
-                    label: $gettext('Listeners'),
+                    label: computed(() => $gettext('Listeners')),
                     url: {
                         name: 'stations:reports:listeners'
                     }
                 },
                 {
                     key: 'reports_requests',
-                    label: $gettext('Song Requests'),
+                    label: computed(() => $gettext('Song Requests')),
                     url: {
                         name: 'stations:reports:requests'
                     },
@@ -203,14 +204,14 @@ export function useStationsMenu(): array {
                 },
                 {
                     key: 'reports_timeline',
-                    label: $gettext('Song Playback Timeline'),
+                    label: computed(() => $gettext('Song Playback Timeline')),
                     url: {
                         name: 'stations:reports:timeline'
                     }
                 },
                 {
                     key: 'reports_soundexchange',
-                    label: $gettext('SoundExchange Royalties'),
+                    label: computed(() => $gettext('SoundExchange Royalties')),
                     url: {
                         name: 'stations:reports:soundexchange'
                     }
@@ -219,12 +220,12 @@ export function useStationsMenu(): array {
         },
         {
             key: 'broadcasting',
-            label: $gettext('Broadcasting'),
+            label: computed(() => $gettext('Broadcasting')),
             icon: 'wifi_tethering',
             items: [
                 {
                     key: 'mounts',
-                    label: $gettext('Mount Points'),
+                    label: computed(() => $gettext('Mount Points')),
                     url: {
                         name: 'stations:mounts:index',
                     },
@@ -232,7 +233,7 @@ export function useStationsMenu(): array {
                 },
                 {
                     key: 'hls_streams',
-                    label: $gettext('HLS Streams'),
+                    label: computed(() => $gettext('HLS Streams')),
                     url: {
                         name: 'stations:hls_streams:index',
                     },
@@ -240,7 +241,7 @@ export function useStationsMenu(): array {
                 },
                 {
                     key: 'remotes',
-                    label: $gettext('Remote Relays'),
+                    label: computed(() => $gettext('Remote Relays')),
                     url: {
                         name: 'stations:remotes:index',
                     },
@@ -248,7 +249,7 @@ export function useStationsMenu(): array {
                 },
                 {
                     key: 'fallback',
-                    label: $gettext('Custom Fallback File'),
+                    label: computed(() => $gettext('Custom Fallback File')),
                     url: {
                         name: 'stations:fallback'
                     },
@@ -256,7 +257,7 @@ export function useStationsMenu(): array {
                 },
                 {
                     key: 'ls_config',
-                    label: $gettext('Edit Liquidsoap Configuration'),
+                    label: computed(() => $gettext('Edit Liquidsoap Configuration')),
                     url: {
                         name: 'stations:util:ls_config'
                     },
@@ -265,7 +266,7 @@ export function useStationsMenu(): array {
                 },
                 {
                     key: 'stereo_tool',
-                    label: $gettext('Upload Stereo Tool Configuration'),
+                    label: computed(() => $gettext('Upload Stereo Tool Configuration')),
                     url: {
                         name: 'stations:stereo_tool_config'
                     },
@@ -274,7 +275,7 @@ export function useStationsMenu(): array {
                 },
                 {
                     key: 'queue',
-                    label: $gettext('Upcoming Song Queue'),
+                    label: computed(() => $gettext('Upcoming Song Queue')),
                     url: {
                         name: 'stations:queue:index',
                     },
@@ -282,7 +283,7 @@ export function useStationsMenu(): array {
                 },
                 {
                     key: 'restart',
-                    label: $gettext('Restart Broadcasting'),
+                    label: computed(() => $gettext('Restart Broadcasting')),
                     url: {
                         name: 'stations:restart:index',
                     },
@@ -292,14 +293,14 @@ export function useStationsMenu(): array {
         },
         {
             key: 'logs',
-            label: $gettext('Logs'),
+            label: computed(() => $gettext('Logs')),
             icon: 'web_stories',
             url: {
                 name: 'stations:logs'
             },
             visible: userAllowedForStation(StationPermission.Logs)
         }
-    ];
+    ]);
 
     return filterMenu(menu);
 }

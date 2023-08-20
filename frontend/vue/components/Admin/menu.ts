@@ -1,19 +1,20 @@
 import {useTranslate} from "~/vendor/gettext.ts";
 import {GlobalPermission, userAllowed} from "~/acl.ts";
 import filterMenu from "~/functions/filterMenu.ts";
+import {computed, reactive} from "vue";
 
 export function useAdminMenu(): array {
     const {$gettext} = useTranslate();
 
-    const menu = [
+    const menu = reactive([
         {
             key: 'maintenance',
-            label: $gettext('System Maintenance'),
+            label: computed(() => $gettext('System Maintenance')),
             icon: 'router',
             items: [
                 {
                     key: 'settings',
-                    label: $gettext('System Settings'),
+                    label: computed(() => $gettext('System Settings')),
                     url: {
                         name: 'admin:settings:index'
                     },
@@ -21,7 +22,7 @@ export function useAdminMenu(): array {
                 },
                 {
                     key: 'branding',
-                    label: $gettext('Custom Branding'),
+                    label: computed(() => $gettext('Custom Branding')),
                     url: {
                         name: 'admin:branding:index'
                     },
@@ -29,7 +30,7 @@ export function useAdminMenu(): array {
                 },
                 {
                     key: 'logs',
-                    label: $gettext('System Logs'),
+                    label: computed(() => $gettext('System Logs')),
                     url: {
                         name: 'admin:logs:index'
                     },
@@ -37,7 +38,7 @@ export function useAdminMenu(): array {
                 },
                 {
                     key: 'storage_locations',
-                    label: $gettext('Storage Locations'),
+                    label: computed(() => $gettext('Storage Locations')),
                     url: {
                         name: 'admin:storage_locations:index'
                     },
@@ -45,7 +46,7 @@ export function useAdminMenu(): array {
                 },
                 {
                     key: 'backups',
-                    label: $gettext('Backups'),
+                    label: computed(() => $gettext('Backups')),
                     url: {
                         name: 'admin:backups:index'
                     },
@@ -53,7 +54,7 @@ export function useAdminMenu(): array {
                 },
                 {
                     key: 'debug',
-                    label: $gettext('System Debugger'),
+                    label: computed(() => $gettext('System Debugger')),
                     url: {
                         name: 'admin:debug:index'
                     },
@@ -61,7 +62,7 @@ export function useAdminMenu(): array {
                 },
                 {
                     key: 'updates',
-                    label: $gettext('Update AzuraCast'),
+                    label: computed(() => $gettext('Update AzuraCast')),
                     url: {
                         name: 'admin:updates:index'
                     },
@@ -71,12 +72,12 @@ export function useAdminMenu(): array {
         },
         {
             key: 'users',
-            label: $gettext('Users'),
+            label: computed(() => $gettext('Users')),
             icon: 'group',
             items: [
                 {
                     key: 'manage_users',
-                    label: $gettext('User Accounts'),
+                    label: computed(() => $gettext('User Accounts')),
                     url: {
                         name: 'admin:users:index'
                     },
@@ -84,7 +85,7 @@ export function useAdminMenu(): array {
                 },
                 {
                     key: 'permissions',
-                    label: $gettext('Roles & Permissions'),
+                    label: computed(() => $gettext('Roles & Permissions')),
                     url: {
                         name: 'admin:permissions:index'
                     },
@@ -92,7 +93,7 @@ export function useAdminMenu(): array {
                 },
                 {
                     key: 'auditlog',
-                    label: $gettext('Audit Log'),
+                    label: computed(() => $gettext('Audit Log')),
                     url: {
                         name: 'admin:auditlog:index'
                     },
@@ -100,7 +101,7 @@ export function useAdminMenu(): array {
                 },
                 {
                     key: 'api_keys',
-                    label: $gettext('API Keys'),
+                    label: computed(() => $gettext('API Keys')),
                     url: {
                         name: 'admin:api:index'
                     },
@@ -110,12 +111,12 @@ export function useAdminMenu(): array {
         },
         {
             key: 'stations',
-            label: $gettext('Stations'),
+            label: computed(() => $gettext('Stations')),
             icon: 'volume_up',
             items: [
                 {
                     key: 'manage_stations',
-                    label: $gettext('Stations'),
+                    label: computed(() => $gettext('Stations')),
                     url: {
                         name: 'admin:stations:index'
                     },
@@ -123,7 +124,7 @@ export function useAdminMenu(): array {
                 },
                 {
                     key: 'custom_fields',
-                    label: $gettext('Custom Fields'),
+                    label: computed(() => $gettext('Custom Fields')),
                     url: {
                         name: 'admin:custom_fields:index'
                     },
@@ -131,7 +132,7 @@ export function useAdminMenu(): array {
                 },
                 {
                     key: 'relays',
-                    label: $gettext('Connected AzuraRelays'),
+                    label: computed(() => $gettext('Connected AzuraRelays')),
                     url: {
                         name: 'admin:relays:index',
                     },
@@ -139,7 +140,7 @@ export function useAdminMenu(): array {
                 },
                 {
                     key: 'shoutcast',
-                    label: $gettext('Install Shoutcast'),
+                    label: computed(() => $gettext('Install Shoutcast')),
                     url: {
                         name: 'admin:install_shoutcast:index'
                     },
@@ -147,7 +148,7 @@ export function useAdminMenu(): array {
                 },
                 {
                     key: 'stereo_tool',
-                    label: $gettext('Install Stereo Tool'),
+                    label: computed(() => $gettext('Install Stereo Tool')),
                     url: {
                         name: 'admin:stereo_tool:index'
                     },
@@ -155,7 +156,7 @@ export function useAdminMenu(): array {
                 },
                 {
                     key: 'geolite',
-                    label: $gettext('Install GeoLite IP Database'),
+                    label: computed(() => $gettext('Install GeoLite IP Database')),
                     url: {
                         name: 'admin:install_geolite:index'
                     },
@@ -163,7 +164,7 @@ export function useAdminMenu(): array {
                 }
             ]
         }
-    ];
+    ]);
 
     return filterMenu(menu);
 }

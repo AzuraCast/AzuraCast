@@ -1,32 +1,25 @@
-import {filter, forEach, get} from "lodash";
+import {filter, get, map} from "lodash";
 
 export default function filterMenu(menuItems) {
-    const newMenu = [];
-
-    forEach(menuItems, (menuRow) => {
-        const itemIsVisible: boolean = get(menuRow, 'visible', true);
-        if (!itemIsVisible) {
-            return;
-        }
-
-        const newMenuRow = {
-            ...menuRow
-        };
-
-        if ('items' in menuRow) {
-            const newMenuRowItems = filter(menuRow.items, (item) => {
-                return get(item, 'visible', true);
-            });
-
-            if (newMenuRowItems.length === 0) {
-                return;
+    return filter(map(
+        menuItems,
+        (menuRow) => {
+            const itemIsVisible: boolean = get(menuRow, 'visible', true);
+            if (!itemIsVisible) {
+                return false;
             }
 
-            newMenuRow.items = newMenuRowItems;
+            if ('items' in menuRow) {
+                menuRow.items = filter(menuRow.items, (item) => {
+                    return get(item, 'visible', true);
+                });
+
+                if (menuRow.items.length === 0) {
+                    return false;
+                }
+            }
+
+            return menuRow;
         }
-
-        newMenu.push(newMenuRow);
-    });
-
-    return newMenu;
+    ));
 }

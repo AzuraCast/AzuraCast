@@ -29,7 +29,7 @@ export enum GlobalPermission {
     StorageLocations = 'administer storage locations'
 }
 
-export function userAllowed(permission: GlobalPermission): bool {
+export function userAllowed(permission: GlobalPermission): boolean {
     const {globalPermissions} = useAzuraCastUser();
 
     if (includes(globalPermissions, GlobalPermission.All)) {
@@ -39,7 +39,7 @@ export function userAllowed(permission: GlobalPermission): bool {
     return includes(globalPermissions, permission);
 }
 
-export function userAllowedForStation(permission: StationPermission, id: int | null = null): bool {
+export function userAllowedForStation(permission: StationPermission, id: int | null = null): boolean {
     if (id === null) {
         const station = useAzuraCastStation();
         if ('id' in station) {

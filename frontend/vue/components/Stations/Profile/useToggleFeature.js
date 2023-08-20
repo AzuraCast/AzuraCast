@@ -8,7 +8,7 @@ import {useNotify} from "~/functions/useNotify";
 
 export default function useToggleFeature(feature, newValue) {
     const {axios} = useAxios();
-    const {confirmDelete} = useSweetAlert();
+    const {showAlert} = useSweetAlert();
     const {wrapWithLoading, notifySuccess} = useNotify();
     const {$gettext} = useTranslate();
     const router = useRouter();
@@ -16,7 +16,7 @@ export default function useToggleFeature(feature, newValue) {
     const profileEditUrl = getStationApiUrl('/profile/edit');
 
     return () => {
-        confirmDelete({
+        showAlert({
             title: (newValue) ? $gettext('Enable?')
                 : $gettext('Disable?')
         }).then((result) => {

@@ -205,7 +205,7 @@ final class ListAction implements SingleActionInterface
                 $files = $fs->listContents($currentDir, false)->filter(
                     fn(StorageAttributes $attributes) => !(
                         $currentDir === ''
-                        && StationFilesystems::isProtectedDir($attributes->path())
+                        && StationFilesystems::isDotFile($attributes->path())
                     )
                 );
             }

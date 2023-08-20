@@ -98,10 +98,11 @@ final class StationFilesystems
         return new LocalFilesystem(new LocalFilesystemAdapter($path));
     }
 
-    public static function isProtectedDir(string $path): bool
+    public static function isDotFile(string $path): bool
     {
-        foreach (self::PROTECTED_DIRS as $protectedDir) {
-            if (str_starts_with($path, $protectedDir)) {
+        $pathParts = explode('/', $path);
+        foreach ($pathParts as $part) {
+            if (str_starts_with($part, '.')) {
                 return true;
             }
         }

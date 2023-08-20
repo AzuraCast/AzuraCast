@@ -31,7 +31,7 @@ final class ListDirectoriesAction implements SingleActionInterface
 
         $directoriesRaw = $fsMedia->listContents($currentDir, false)->filter(
             fn(StorageAttributes $attrs) => $attrs->isDir()
-                && !StationFilesystems::isProtectedDir($attrs->path())
+                && !StationFilesystems::isDotFile($attrs->path())
         )->sortByPath();
 
         $directories = [];

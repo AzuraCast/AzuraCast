@@ -14,7 +14,7 @@
             v-if="!current.isStream && duration !== 0"
             class="inline-seek d-inline-flex align-items-center ms-1"
         >
-            <div class="flex-shrink-0 mx-1 text-muted time-display">
+            <div class="flex-shrink-0 mx-1 text-white-50 time-display">
                 {{ currentTimeText }}
             </div>
             <div class="flex-fill mx-2">
@@ -28,14 +28,14 @@
                     step="1"
                 >
             </div>
-            <div class="flex-shrink-0 mx-1 text-muted time-display">
+            <div class="flex-shrink-0 mx-1 text-white-50 time-display">
                 {{ durationText }}
             </div>
         </div>
 
         <button
             type="button"
-            class="btn p-2 ms-2"
+            class="btn p-2 ms-2 text-reset"
             :aria-label="$gettext('Stop')"
             @click="stop()"
         >
@@ -44,7 +44,7 @@
         <div class="inline-volume-controls d-inline-flex align-items-center ms-2">
             <div class="flex-shrink-0">
                 <mute-button
-                    class="btn p-2"
+                    class="btn p-2 text-reset"
                     :volume="volume"
                     :is-muted="isMuted"
                     @toggle-mute="toggleMute"

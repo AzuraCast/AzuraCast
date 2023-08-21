@@ -48,9 +48,14 @@ final class PhpReader
             }
 
             $toProcess = [
-                $info['comments'] ?? null,
-                $info['tags'] ?? null,
+                $info['comments'] ?? [],
             ];
+
+            if (is_array($info['tags'])) {
+                foreach ($info['tags'] as $tagSet) {
+                    $toProcess[] = $tagSet;
+                }
+            }
 
             $metaTags = $this->aggregateMetaTags($toProcess);
 
@@ -98,22 +103,25 @@ final class PhpReader
             }
 
             foreach ($tagSet as $tagName => $tagContents) {
-                if (!empty($tagContents[0]) && !isset($metaTags[$tagName])) {
-                    $tagValue = $tagContents[0];
-                    if (is_array($tagValue)) {
-                        // Skip pictures
-                        if (isset($tagValue['data'])) {
-                            continue;
-                        }
-                        $flatValue = Arrays::flattenArray($tagValue);
-                        $tagValue = implode(', ', $flatValue);
-                    }
+                // Skip pictures
+                if (isset($tagContents[0]['data'])) {
+                    continue;
+                }
 
-                    $metaTags[(string)$tagName] = Strings::stringToUtf8((string)$tagValue);
+                $tagValues = $metaTags[$tagName] ?? [];
+
+                $newTagValues = Arrays::flattenArray((array)$tagContents);
+                foreach ($newTagValues as $newTagValue) {
+                    if (0 === count($tagValues) || !in_array($newTagValue, $tagValues, true)) {
+                        $metaTags[$tagName][] = $newTagValue;
+                    }
                 }
             }
         }
 
-        return $metaTags;
+        return array_map(
+            fn(array $tagValues): string => Strings::stringToUtf8(implode('; ', $tagValues)),
+            $metaTags
+        );
     }
 }

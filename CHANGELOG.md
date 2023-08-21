@@ -23,6 +23,9 @@ release channel, you can take advantage of these new features and fixes.
 
 ## Bug Fixes
 
+- If multiple values are provided for a given ID3 tag (i.e. a Genre tag separated by semicolons), we will include all of
+  the genres in the processed file.
+
 - Fixed an issue preventing the "Send Test E-mail" modal from appearing on the System Settings page.
 
 - Fixed an issue preventing embeddable players from working in private (Incognito, Firefox/Safari Private) windows.

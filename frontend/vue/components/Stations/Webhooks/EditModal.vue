@@ -50,6 +50,7 @@ import {useTranslate} from "~/vendor/gettext";
 import ModalForm from "~/components/Common/ModalForm.vue";
 import {getTriggers, WebhookType} from "~/components/Entity/Webhooks";
 import Tabs from "~/components/Common/Tabs.vue";
+import RadioDe from "~/components/Stations/Webhooks/Form/RadioDe.vue";
 
 const props = defineProps({
     ...baseEditModalProps,
@@ -79,6 +80,7 @@ const webhookComponents = {
     [WebhookType.Generic]: Generic,
     [WebhookType.Email]: Email,
     [WebhookType.TuneIn]: Tunein,
+    [WebhookType.RadioDe]: RadioDe,
     [WebhookType.Discord]: Discord,
     [WebhookType.Telegram]: Telegram,
     [WebhookType.Twitter]: Twitter,

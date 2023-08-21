@@ -25,7 +25,8 @@
             <type-select-section
                 :title="$gettext('Station Directories')"
                 :types="buildTypeInfo([
-                    WebhookType.TuneIn
+                    WebhookType.TuneIn,
+                    WebhookType.RadioDe
                 ])"
                 @select="selectType"
             />

@@ -74,6 +74,7 @@ export enum WebhookType {
     Generic = 'generic',
     Email = 'email',
     TuneIn = 'tunein',
+    RadioDe = 'radiode',
     Discord = 'discord',
     Telegram = 'telegram',
     Twitter = 'twitter',
@@ -98,6 +99,10 @@ export function useTypeDetails() {
         [WebhookType.TuneIn]: {
             title: $gettext('TuneIn AIR'),
             description: $gettext('Send song metadata changes to TuneIn.')
+        },
+        [WebhookType.RadioDe]: {
+            title: $gettext('Radio.de'),
+            description: $gettext('Send song metadata changes to Radio.de.')
         },
         [WebhookType.Discord]: {
             title: $gettext('Discord Webhook'),
@@ -133,6 +138,7 @@ export function useTypeDetails() {
 export function getTriggers(type: WebhookType) {
     switch(type) {
         case WebhookType.TuneIn:
+        case WebhookType.RadioDe:
         case WebhookType.GoogleAnalyticsV3:
         case WebhookType.GoogleAnalyticsV4:
         case WebhookType.MatomoAnalytics:

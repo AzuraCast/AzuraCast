@@ -32,5 +32,7 @@ jobs:
 
       - name: 'Qodana Scan'
         uses: JetBrains/qodana-action@v2023.2
+        with:
+          args: --baseline,util/qodana.sarif.json
         env:
           QODANA_TOKEN: ${{ secrets.QODANA_TOKEN }}

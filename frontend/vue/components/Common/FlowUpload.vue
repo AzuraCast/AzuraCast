@@ -208,7 +208,9 @@ onMounted(() => {
     });
 
     flow.on('complete', () => {
-        files.hideAll();
+        setTimeout(() => {
+            files.hideAll();
+        }, 2000);
 
         emit('complete');
     });

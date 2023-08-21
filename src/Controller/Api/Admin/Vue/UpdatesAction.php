@@ -31,8 +31,6 @@ final class UpdatesAction implements SingleActionInterface
     ): ResponseInterface {
         $settings = $this->readSettings();
 
-        $router = $request->getRouter();
-
         $enableWebUpdates = $this->environment->enableWebUpdater();
         if ($enableWebUpdates && !$this->webUpdater->ping()) {
             $enableWebUpdates = false;
@@ -41,7 +39,6 @@ final class UpdatesAction implements SingleActionInterface
         return $response->withJson([
             'releaseChannel' => $this->version->getReleaseChannelEnum()->value,
             'initialUpdateInfo' => $settings->getUpdateResults(),
-            'updatesApiUrl' => $router->named('api:admin:updates'),
             'enableWebUpdates' => $enableWebUpdates,
         ]);
     }

@@ -166,10 +166,10 @@ import Icon from '~/components/Common/Icon';
 import RunningBadge from "~/components/Common/Badges/RunningBadge.vue";
 import {computed} from "vue";
 import frontendPanelProps from "~/components/Stations/Profile/frontendPanelProps";
-import {useLocalStorage} from "@vueuse/core";
 import {useTranslate} from "~/vendor/gettext";
 import CardPage from "~/components/Common/CardPage.vue";
 import {StationPermission, userAllowedForStation} from "~/acl";
+import useOptionalStorage from "~/functions/useOptionalStorage";
 
 const props = defineProps({
     ...frontendPanelProps,
@@ -181,7 +181,7 @@ const props = defineProps({
 
 const emit = defineEmits(['api-call']);
 
-const credentialsVisible = useLocalStorage('station_show_frontend_credentials', false);
+const credentialsVisible = useOptionalStorage('station_show_frontend_credentials', false);
 
 const {$gettext} = useTranslate();
 

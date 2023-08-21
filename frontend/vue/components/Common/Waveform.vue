@@ -73,9 +73,9 @@ import timeline from 'wavesurfer.js/dist/plugins/timeline.js';
 import regions from 'wavesurfer.js/dist/plugins/regions.js';
 import getLogarithmicVolume from '~/functions/getLogarithmicVolume';
 import Icon from './Icon';
-import {useStorage} from "@vueuse/core";
 import {onMounted, onUnmounted, ref, watch} from "vue";
 import {useAxios} from "~/vendor/axios";
+import usePlayerVolume from "~/functions/usePlayerVolume";
 
 const props = defineProps({
     audioUrl: {
@@ -93,7 +93,7 @@ const emit = defineEmits(['ready']);
 let wavesurfer = null;
 let wsRegions = null;
 
-const volume = useStorage('player_volume', 55);
+const volume = usePlayerVolume();
 const zoom = ref(0);
 
 watch(zoom, (val) => {

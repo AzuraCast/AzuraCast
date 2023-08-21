@@ -142,13 +142,13 @@
 import AudioPlayer from '~/components/Common/AudioPlayer';
 import PlayButton from "~/components/Common/PlayButton";
 import {computed, onMounted, ref, shallowRef, watch} from "vue";
-import {useLocalStorage} from "@vueuse/core";
 import {useTranslate} from "~/vendor/gettext";
 import useNowPlaying from "~/functions/useNowPlaying";
 import playerProps from "~/components/Public/playerProps";
 import MuteButton from "~/components/Common/MuteButton.vue";
 import AlbumArt from "~/components/Common/AlbumArt.vue";
 import {useAzuraCastStation} from "~/vendor/azuracast";
+import usePlayerVolume from "~/functions/usePlayerVolume";
 
 const props = defineProps({
     ...playerProps
@@ -210,9 +210,7 @@ const streams = computed(() => {
 
 const $player = ref(); // Template ref
 
-const volume = useLocalStorage('player_volume', 55, {
-    listenToStorageChanges: false
-});
+const volume = usePlayerVolume();
 
 const urlParamVolume = (new URL(document.location)).searchParams.get('volume');
 if (null !== urlParamVolume) {

@@ -298,11 +298,12 @@
 import {slice, filter, map, includes, isEmpty, get, some, indexOf, forEach} from 'lodash';
 import Icon from './Icon.vue';
 import {computed, onMounted, ref, shallowRef, toRaw, toRef, useSlots, watch} from "vue";
-import {useLocalStorage, watchDebounced} from "@vueuse/core";
+import {watchDebounced} from "@vueuse/core";
 import {useAxios} from "~/vendor/axios";
 import FormMultiCheck from "~/components/Form/FormMultiCheck.vue";
 import FormCheckbox from "~/components/Form/FormCheckbox.vue";
 import Pagination from "~/components/Common/Pagination.vue";
+import useOptionalStorage from "~/functions/useOptionalStorage";
 
 const props = defineProps({
     id: {
@@ -434,7 +435,7 @@ const defaultSelectableFields = computed(() => {
     });
 });
 
-const settings = useLocalStorage(
+const settings = useOptionalStorage(
     'datatable_' + props.id + '_settings',
     {
         sortBy: null,

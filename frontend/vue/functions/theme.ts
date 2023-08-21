@@ -1,5 +1,5 @@
 import {computed, ComputedRef, onMounted, ref} from "vue";
-import {useLocalStorage} from "@vueuse/core";
+import useOptionalStorage from "~/functions/useOptionalStorage.ts";
 
 export enum Theme {
     Light = 'light',
@@ -14,7 +14,7 @@ export default function useTheme() {
         currentTheme.value = page.getAttribute('data-bs-theme');
     });
 
-    const storedTheme = useLocalStorage('theme', null);
+    const storedTheme = useOptionalStorage('theme', null);
 
     const getPreferredTheme = (): Theme => {
         return (storedTheme.value)

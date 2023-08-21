@@ -33,23 +33,26 @@ final class TuneIn extends AbstractConnector
 
         $this->logger->debug('Dispatching TuneIn AIR API call...');
 
+        $messageQuery = [
+            'partnerId' => $config['partner_id'],
+            'partnerKey' => $config['partner_key'],
+            'id' => $config['station_id'],
+            'title' => $np->now_playing?->song?->title,
+            'artist' => $np->now_playing?->song?->artist,
+            'album' => $np->now_playing?->song?->album,
+        ];
+
         $response = $this->httpClient->get(
             'https://air.radiotime.com/Playing.ashx',
             [
-                'query' => [
-                    'partnerId' => $config['partner_id'],
-                    'partnerKey' => $config['partner_key'],
-                    'id' => $config['station_id'],
-                    'title' => $np->now_playing?->song?->title,
-                    'artist' => $np->now_playing?->song?->artist,
-                    'album' => $np->now_playing?->song?->album,
-                ],
+                'query' => $messageQuery,
             ]
         );
 
-        $this->logger->debug(
-            sprintf('TuneIn returned code %d', $response->getStatusCode()),
-            ['response_body' => $response->getBody()->getContents()]
+        $this->logHttpResponse(
+            $webhook,
+            $response,
+            $messageQuery
         );
     }
 }

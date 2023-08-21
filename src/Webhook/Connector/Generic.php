@@ -44,9 +44,9 @@ final class Generic extends AbstractConnector
 
         $response = $this->httpClient->request('POST', $webhookUrl, $requestOptions);
 
-        $this->logger->debug(
-            sprintf('Generic webhook returned code %d', $response->getStatusCode()),
-            ['response_body' => $response->getBody()->getContents()]
+        $this->logHttpResponse(
+            $webhook,
+            $response
         );
     }
 }

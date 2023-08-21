@@ -10,8 +10,7 @@ use App\Entity\StationWebhook;
 use App\Utilities;
 use GuzzleHttp\Client;
 use InvalidArgumentException;
-use PhpIP\IP;
-use RuntimeException;
+use Psr\Http\Message\ResponseInterface;
 
 abstract class AbstractConnector implements ConnectorInterface
 {
@@ -122,16 +121,6 @@ abstract class AbstractConnector implements ConnectorInterface
             return null;
         }
 
-        // Check for IP addresses that shouldn't be used in user-provided URLs.
-        try {
-            $ip = IP::create($uri->getHost());
-            if ($ip->isReserved()) {
-                throw new RuntimeException('URL references an IANA reserved block.');
-            }
-        } catch (InvalidArgumentException) {
-            // Noop, URL is not an IP
-        }
-
         return (string)$uri;
     }
 
@@ -143,6 +132,37 @@ abstract class AbstractConnector implements ConnectorInterface
                 $webhook->getName(),
                 $webhook->getType()->value
             ),
+        );
+    }
+
+    protected function logHttpResponse(
+        StationWebhook $webhook,
+        ResponseInterface $response,
+        mixed $requestBody = null
+    ): void {
+        if (204 !== $response->getStatusCode()) {
+            $this->logger->error(
+                sprintf(
+                    'Webhook "%s" returned unsuccessful response code %d.',
+                    $webhook->getName(),
+                    $response->getStatusCode()
+                )
+            );
+        }
+
+        $debugLogInfo = [];
+        if ($requestBody) {
+            $debugLogInfo['message_sent'] = $requestBody;
+        }
+        $debugLogInfo['response_body'] = $response->getBody()->getContents();
+
+        $this->logger->debug(
+            sprintf(
+                'Webhook "%s" returned response code %d',
+                $webhook->getName(),
+                $response->getStatusCode()
+            ),
+            $debugLogInfo
         );
     }
 }

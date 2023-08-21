@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\VueComponent;
 
-use App\Enums\GlobalPermissions;
 use App\Http\ServerRequest;
 use App\Radio\Adapters;
 use App\Radio\Enums\FrontendAdapters;
@@ -25,14 +24,10 @@ final class StationFormComponent implements VueComponentInterface
         $installedFrontends = $this->adapters->listFrontendAdapters(true);
 
         return [
-            'showAdminTab' => $request->getAcl()->isAllowed(GlobalPermissions::Stations),
             'timezones' => $this->getTimezones(),
             'isShoutcastInstalled' => isset($installedFrontends[FrontendAdapters::Shoutcast->value]),
             'isStereoToolInstalled' => StereoTool::isInstalled(),
             'countries' => Countries::getNames(),
-            'storageLocationApiUrl' => $request->getRouter()->named(
-                'api:admin:stations:storage-locations'
-            ),
         ];
     }
 

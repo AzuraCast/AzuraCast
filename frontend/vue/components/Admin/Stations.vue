@@ -93,13 +93,10 @@ import useHasDatatable from "~/functions/useHasDatatable";
 import useHasEditModal from "~/functions/useHasEditModal";
 import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
 import CardPage from "~/components/Common/CardPage.vue";
+import {getApiUrl} from "~/router";
 
 const props = defineProps({
     ...stationFormProps,
-    listUrl: {
-        type: String,
-        required: true
-    },
     frontendTypes: {
         type: Object,
         required: true
@@ -109,6 +106,8 @@ const props = defineProps({
         required: true
     }
 });
+
+const listUrl = getApiUrl('/admin/stations');
 
 const {$gettext} = useTranslate();
 

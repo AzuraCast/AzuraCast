@@ -22,10 +22,7 @@ final class UsersAction implements SingleActionInterface
         Response $response,
         array $params
     ): ResponseInterface {
-        $router = $request->getRouter();
-
         return $response->withJson([
-            'listUrl' => $router->fromHere('api:admin:users'),
             'roles' => $this->roleRepo->fetchSelect(),
         ]);
     }

@@ -65,6 +65,7 @@ import {useVModel} from "@vueuse/core";
 import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
 import {useAzuraCast} from "~/vendor/azuracast";
 import Tab from "~/components/Common/Tab.vue";
+import {getApiUrl} from "~/router";
 
 const props = defineProps({
     form: {
@@ -74,12 +75,10 @@ const props = defineProps({
     isEditMode: {
         type: Boolean,
         required: true
-    },
-    storageLocationApiUrl: {
-        type: String,
-        required: true
-    },
+    }
 });
+
+const storageLocationApiUrl = getApiUrl('/admin/stations/storage-locations');
 
 const {enableAdvancedFeatures} = useAzuraCast();
 
@@ -148,7 +147,7 @@ const filterLocations = (group) => {
 const {axios} = useAxios();
 
 const loadLocations = () => {
-    axios.get(props.storageLocationApiUrl).then((resp) => {
+    axios.get(storageLocationApiUrl.value).then((resp) => {
         storageLocationOptions.media_storage_location = objectToFormOptions(
             filterLocations(resp.data.media_storage_location)
         );

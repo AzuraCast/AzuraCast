@@ -1,9 +1,4 @@
 export default {
-    // Global
-    showAdminTab: {
-        type: Boolean,
-        default: true
-    },
     // Profile
     timezones: Object,
     // Frontend
@@ -16,6 +11,4 @@ export default {
         default: false
     },
     countries: Object,
-    // Admin
-    storageLocationApiUrl: String
 }

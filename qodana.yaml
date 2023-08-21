@@ -2,6 +2,7 @@
 #               Qodana analysis is configured by qodana.yaml file               #
 #             https://www.jetbrains.com/help/qodana/qodana-yaml.html            #
 #-------------------------------------------------------------------------------#
+
 version: "1.0"
 
 #Specify inspection profile for code analysis
@@ -11,7 +12,6 @@ profile:
 #Enable inspections
 #include:
 #  - name: <SomeEnabledInspectionId>
-
 #Disable inspections
 #exclude:
 #  - name: <SomeDisabledInspectionId>
@@ -30,3 +30,5 @@ php:
 
 #Specify Qodana linter for analysis (Applied in CI/CD pipeline)
 linter: jetbrains/qodana-php:latest
+include:
+  - name: CheckDependencyLicenses

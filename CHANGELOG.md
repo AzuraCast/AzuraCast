@@ -23,6 +23,8 @@ release channel, you can take advantage of these new features and fixes.
 
 ## Bug Fixes
 
+- Fixed an issue preventing the "Send Test E-mail" modal from appearing on the System Settings page.
+
 - Fixed an issue preventing embeddable players from working in private (Incognito, Firefox/Safari Private) windows.
 
 - Fixed an issue preventing advanced configuration, authhash and other settings from appearing on the Mount Points edit

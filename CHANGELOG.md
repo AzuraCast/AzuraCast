@@ -5,6 +5,16 @@ release channel, you can take advantage of these new features and fixes.
 
 ## New Features/Changes
 
+## Code Quality/Technical Changes
+
+## Bug Fixes
+
+---
+
+# AzuraCast 0.19.1 (Aug 21, 2023)
+
+## New Features/Changes
+
 - **Radio.de Webhook**: We have added a webhook allowing you to submit metadata changes to the popular German radio
   aggregator service [radio.de](https://radio.de).
 

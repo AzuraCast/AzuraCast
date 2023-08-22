@@ -1,5 +1,5 @@
 <template>
-    <o-tab-item
+    <tab
         :label="$gettext('HLS')"
         :item-header-class="tabClassWithBackend"
     >
@@ -77,15 +77,13 @@
             </div>
         </form-fieldset>
         <backend-disabled v-else />
-    </o-tab-item>
+    </tab>
 </template>
 
 <script setup>
 import FormFieldset from "~/components/Form/FormFieldset";
 import FormGroupField from "~/components/Form/FormGroupField.vue";
-import {
-    BACKEND_NONE,
-} from "~/components/Entity/RadioAdapters";
+import {BackendAdapter} from "~/components/Entity/RadioAdapters";
 import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
 import BackendDisabled from "./Common/BackendDisabled.vue";
 import {computed} from "vue";
@@ -93,6 +91,7 @@ import {useVModel} from "@vueuse/core";
 import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
 import {numeric} from "@vuelidate/validators";
 import {useAzuraCast} from "~/vendor/azuracast";
+import Tab from "~/components/Common/Tab.vue";
 
 const props = defineProps({
     form: {
@@ -161,7 +160,7 @@ const {v$, tabClass} = useVuelidateOnFormTab(
 );
 
 const isBackendEnabled = computed(() => {
-    return form.value.backend_type !== BACKEND_NONE;
+    return form.value.backend_type !== BackendAdapter.None;
 });
 
 const tabClassWithBackend = computed(() => {

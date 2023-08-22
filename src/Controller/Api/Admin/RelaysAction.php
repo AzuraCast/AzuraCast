@@ -9,6 +9,7 @@ use App\Controller\SingleActionInterface;
 use App\Entity\Relay;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use App\Paginator;
 use Psr\Http\Message\ResponseInterface;
 
 final class RelaysAction implements SingleActionInterface
@@ -20,11 +21,12 @@ final class RelaysAction implements SingleActionInterface
         Response $response,
         array $params
     ): ResponseInterface {
-        $relays = $this->em->createQueryBuilder()
+        $query = $this->em->createQueryBuilder()
             ->select('e')
             ->from(Relay::class, 'e')
-            ->getQuery()->getArrayResult();
+            ->getQuery();
 
-        return $response->withJson($relays);
+        $paginator = Paginator::fromQuery($query, $request);
+        return $paginator->write($response);
     }
 }

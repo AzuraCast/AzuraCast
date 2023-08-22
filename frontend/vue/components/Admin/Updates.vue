@@ -159,6 +159,7 @@ import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
 import {useSweetAlert} from "~/vendor/sweetalert";
 import CardPage from "~/components/Common/CardPage.vue";
+import {getApiUrl} from "~/router";
 
 const props = defineProps({
     releaseChannel: {
@@ -171,15 +172,13 @@ const props = defineProps({
             return {};
         }
     },
-    updatesApiUrl: {
-        type: String,
-        required: true
-    },
     enableWebUpdates: {
         type: Boolean,
         required: true
     }
 });
+
+const updatesApiUrl = getApiUrl('/admin/updates');
 
 const updateInfo = ref(props.initialUpdateInfo);
 
@@ -204,7 +203,7 @@ const {axios} = useAxios();
 
 const checkForUpdates = () => {
     wrapWithLoading(
-        axios.get(props.updatesApiUrl)
+        axios.get(updatesApiUrl.value)
     ).then((resp) => {
         updateInfo.value = resp.data;
     });

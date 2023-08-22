@@ -9,6 +9,7 @@ use App\Container\SettingsAwareTrait;
 use App\Controller\SingleActionInterface;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use App\Service\WebUpdater;
 use App\Version;
 use Psr\Http\Message\ResponseInterface;
 
@@ -18,7 +19,8 @@ final class UpdatesAction implements SingleActionInterface
     use SettingsAwareTrait;
 
     public function __construct(
-        private readonly Version $version
+        private readonly Version $version,
+        private readonly WebUpdater $webUpdater,
     ) {
     }
 
@@ -29,13 +31,15 @@ final class UpdatesAction implements SingleActionInterface
     ): ResponseInterface {
         $settings = $this->readSettings();
 
-        $router = $request->getRouter();
+        $enableWebUpdates = $this->environment->enableWebUpdater();
+        if ($enableWebUpdates && !$this->webUpdater->ping()) {
+            $enableWebUpdates = false;
+        }
 
         return $response->withJson([
             'releaseChannel' => $this->version->getReleaseChannelEnum()->value,
             'initialUpdateInfo' => $settings->getUpdateResults(),
-            'updatesApiUrl' => $router->named('api:admin:updates'),
-            'enableWebUpdates' => $this->environment->enableWebUpdater(),
+            'enableWebUpdates' => $enableWebUpdates,
         ]);
     }
 }

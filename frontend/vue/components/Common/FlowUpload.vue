@@ -67,7 +67,7 @@
 </template>
 
 <script setup>
-import formatFileSize from '~/functions/formatFileSize.js';
+import formatFileSize from '~/functions/formatFileSize';
 import Icon from './Icon.vue';
 import {defaultsDeep, forEach, toInteger} from 'lodash';
 import {computed, onMounted, onUnmounted, reactive, ref} from "vue";
@@ -208,7 +208,9 @@ onMounted(() => {
     });
 
     flow.on('complete', () => {
-        files.hideAll();
+        setTimeout(() => {
+            files.hideAll();
+        }, 2000);
 
         emit('complete');
     });

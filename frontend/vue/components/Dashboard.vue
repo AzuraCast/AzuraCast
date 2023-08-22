@@ -296,7 +296,7 @@ import Avatar from '~/components/Common/Avatar';
 import PlayButton from "~/components/Common/PlayButton";
 import AlbumArt from "~/components/Common/AlbumArt";
 import {useAxios} from "~/vendor/axios";
-import {useAsyncState, useIntervalFn, useLocalStorage} from "@vueuse/core";
+import {useAsyncState, useIntervalFn} from "@vueuse/core";
 import {computed, ref} from "vue";
 import useRefreshableAsyncState from "~/functions/useRefreshableAsyncState";
 import DashboardCharts from "~/components/DashboardCharts.vue";
@@ -306,6 +306,7 @@ import Lightbox from "~/components/Common/Lightbox.vue";
 import CardPage from "~/components/Common/CardPage.vue";
 import HeaderInlinePlayer from "~/components/HeaderInlinePlayer.vue";
 import {useProvideLightbox} from "~/vendor/lightbox";
+import useOptionalStorage from "~/functions/useOptionalStorage";
 
 const props = defineProps({
     userUrl: {
@@ -350,7 +351,7 @@ const props = defineProps({
     }
 });
 
-const chartsVisible = useLocalStorage('dashboard_show_chart', true);
+const chartsVisible = useOptionalStorage('dashboard_show_chart', true);
 
 const {$gettext} = useTranslate();
 

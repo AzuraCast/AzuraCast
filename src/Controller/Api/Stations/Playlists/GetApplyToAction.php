@@ -35,7 +35,7 @@ final class GetApplyToAction implements SingleActionInterface
 
         // Iterate all directories to show them as selectable.
         $fsIterator = $fsMedia->listContents('/', true)->filter(
-            fn(StorageAttributes $attrs) => $attrs->isDir() && !StationFilesystems::isProtectedDir($attrs->path())
+            fn(StorageAttributes $attrs) => $attrs->isDir() && !StationFilesystems::isDotFile($attrs->path())
         )->sortByPath();
 
         $directories = [

@@ -160,16 +160,16 @@
 </template>
 
 <script setup>
-import {FRONTEND_ICECAST, FRONTEND_SHOUTCAST} from '~/components/Entity/RadioAdapters';
+import {FrontendAdapter} from '~/components/Entity/RadioAdapters';
 import CopyToClipboardButton from '~/components/Common/CopyToClipboardButton';
 import Icon from '~/components/Common/Icon';
 import RunningBadge from "~/components/Common/Badges/RunningBadge.vue";
 import {computed} from "vue";
 import frontendPanelProps from "~/components/Stations/Profile/frontendPanelProps";
-import {useLocalStorage} from "@vueuse/core";
 import {useTranslate} from "~/vendor/gettext";
 import CardPage from "~/components/Common/CardPage.vue";
 import {StationPermission, userAllowedForStation} from "~/acl";
+import useOptionalStorage from "~/functions/useOptionalStorage";
 
 const props = defineProps({
     ...frontendPanelProps,
@@ -181,7 +181,7 @@ const props = defineProps({
 
 const emit = defineEmits(['api-call']);
 
-const credentialsVisible = useLocalStorage('station_show_frontend_credentials', false);
+const credentialsVisible = useOptionalStorage('station_show_frontend_credentials', false);
 
 const {$gettext} = useTranslate();
 
@@ -192,9 +192,9 @@ const langShowHideCredentials = computed(() => {
 });
 
 const frontendName = computed(() => {
-    if (props.frontendType === FRONTEND_ICECAST) {
+    if (props.frontendType === FrontendAdapter.Icecast) {
         return 'Icecast';
-    } else if (props.frontendType === FRONTEND_SHOUTCAST) {
+    } else if (props.frontendType === FrontendAdapter.Shoutcast) {
         return 'Shoutcast';
     }
     return '';

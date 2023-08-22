@@ -1,5 +1,5 @@
 <template>
-    <o-tab-item :label="$gettext('Artwork')">
+    <tab :label="$gettext('Artwork')">
         <div class="row">
             <div class="col-md-8">
                 <form-group id="edit_form_art">
@@ -41,7 +41,7 @@
                 </div>
             </div>
         </div>
-    </o-tab-item>
+    </tab>
 </template>
 
 <script setup>
@@ -49,6 +49,7 @@ import {computed, ref, toRef} from "vue";
 import {useAxios} from "~/vendor/axios";
 import FormGroup from "~/components/Form/FormGroup.vue";
 import FormFile from "~/components/Form/FormFile.vue";
+import Tab from "~/components/Common/Tab.vue";
 
 const props = defineProps({
     modelValue: {

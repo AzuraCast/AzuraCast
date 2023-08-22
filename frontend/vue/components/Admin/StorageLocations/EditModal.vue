@@ -8,10 +8,7 @@
         @submit="doSubmit"
         @hidden="clearContents"
     >
-        <o-tabs
-            nav-tabs-class="nav-tabs"
-            content-class="mt-3"
-        >
+        <tabs content-class="mt-3">
             <storage-location-form v-model:form="form" />
 
             <s3
@@ -28,7 +25,7 @@
                 v-if="form.adapter === 'sftp'"
                 v-model:form="form"
             />
-        </o-tabs>
+        </tabs>
     </modal-form>
 </template>
 
@@ -41,6 +38,7 @@ import StorageLocationForm from "./Form.vue";
 import Sftp from "~/components/Admin/StorageLocations/Form/Sftp.vue";
 import S3 from "~/components/Admin/StorageLocations/Form/S3.vue";
 import Dropbox from "~/components/Admin/StorageLocations/Form/Dropbox.vue";
+import Tabs from "~/components/Common/Tabs.vue";
 
 const props = defineProps({
     ...baseEditModalProps,

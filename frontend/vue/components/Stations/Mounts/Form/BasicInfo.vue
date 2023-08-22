@@ -1,8 +1,7 @@
 <template>
-    <o-tab-item
+    <tab
         :label="$gettext('Basic Info')"
         :item-header-class="tabClass"
-        active
     >
         <div class="row g-3 mb-3">
             <form-group-field
@@ -101,17 +100,18 @@
                 />
             </template>
         </div>
-    </o-tab-item>
+    </tab>
 </template>
 
 <script setup>
-import {FRONTEND_ICECAST, FRONTEND_SHOUTCAST} from '~/components/Entity/RadioAdapters';
+import {FrontendAdapter} from '~/components/Entity/RadioAdapters';
 import FormGroupField from "~/components/Form/FormGroupField";
 import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox";
 import {computed} from "vue";
 import {useVModel} from "@vueuse/core";
 import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
 import {required} from "@vuelidate/validators";
+import Tab from "~/components/Common/Tab.vue";
 
 const props = defineProps({
     form: {
@@ -128,11 +128,11 @@ const emit = defineEmits(['update:form']);
 const form = useVModel(props, 'form', emit);
 
 const isIcecast = computed(() => {
-    return FRONTEND_ICECAST === props.stationFrontendType;
+    return FrontendAdapter.Icecast === props.stationFrontendType;
 });
 
 const isShoutcast = computed(() => {
-    return FRONTEND_SHOUTCAST === props.stationFrontendType;
+    return FrontendAdapter.Shoutcast === props.stationFrontendType;
 });
 
 const {v$, tabClass} = useVuelidateOnFormTab(

@@ -5,7 +5,7 @@
             :key="log.key"
             class="list-group-item list-group-item-action log-item"
             href="#"
-            @click.prevent="viewLog(log.links.self)"
+            @click.prevent="viewLog(log.links.self, log.tail)"
         >
             <span class="log-name">{{ log.name }}</span><br>
             <small class="text-secondary">{{ log.path }}</small>
@@ -33,7 +33,7 @@ const {state: logs} = useAsyncState(
     []
 );
 
-const viewLog = (url) => {
-    emit('view', url);
+const viewLog = (url, isStreaming) => {
+    emit('view', url, isStreaming);
 };
 </script>

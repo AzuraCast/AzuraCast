@@ -11,10 +11,7 @@
             class="form vue-form"
             @submit.prevent="submit"
         >
-            <o-tabs
-                nav-tabs-class="nav-tabs"
-                content-class="mt-3"
-            >
+            <tabs content-class="mt-3">
                 <admin-stations-profile-form
                     v-model:form="form"
                     :timezones="timezones"
@@ -51,9 +48,8 @@
                     v-if="showAdminTab"
                     v-model:form="form"
                     :is-edit-mode="isEditMode"
-                    :storage-location-api-url="storageLocationApiUrl"
                 />
-            </o-tabs>
+            </tabs>
 
             <slot name="submitButton">
                 <div class="buttons mt-3">
@@ -88,6 +84,8 @@ import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
 import stationFormProps from "~/components/Admin/Stations/stationFormProps";
 import {useResettableRef} from "~/functions/useResettableRef";
 import Loading from '~/components/Common/Loading';
+import Tabs from "~/components/Common/Tabs.vue";
+import {GlobalPermission, userAllowed} from "~/acl";
 
 const props = defineProps({
     ...stationFormProps,
@@ -110,6 +108,8 @@ const props = defineProps({
 });
 
 const emit = defineEmits(['error', 'submitted', 'loadingUpdate', 'validUpdate']);
+
+const showAdminTab = userAllowed(GlobalPermission.Stations);
 
 const {form, resetForm, v$, ifValid} = useVuelidateOnForm();
 

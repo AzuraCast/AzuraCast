@@ -85,7 +85,7 @@ const logsUrl = getStationApiUrl('/logs');
 
 const $modal: Ref<Modal> = ref();
 
-const viewLog = (url) => {
-    $modal.value?.show(url);
+const viewLog = (url, isStreaming) => {
+    $modal.value?.show(url, isStreaming);
 };
 </script>

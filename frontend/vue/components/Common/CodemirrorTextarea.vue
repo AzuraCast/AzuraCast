@@ -13,7 +13,7 @@ import {useVModel} from "@vueuse/core";
 import {computed} from "vue";
 import {css} from "@codemirror/lang-css";
 import {javascript} from "@codemirror/lang-javascript";
-import useGetTheme from "~/functions/useGetTheme";
+import useTheme from "~/functions/theme";
 
 const props = defineProps({
     modelValue: {
@@ -39,5 +39,5 @@ const lang = computed(() => {
     return null;
 });
 
-const {isDark} = useGetTheme();
+const {isDark} = useTheme();
 </script>

@@ -1,5 +1,5 @@
 <template>
-    <o-tab-item
+    <tab
         :label="title"
         :item-header-class="tabClass"
     >
@@ -70,7 +70,7 @@
                 :label="$gettext('Footer Text')"
             />
         </div>
-    </o-tab-item>
+    </tab>
 </template>
 
 <script setup>
@@ -80,6 +80,7 @@ import {useVModel} from "@vueuse/core";
 import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
 import {required} from "@vuelidate/validators";
 import {useTranslate} from "~/vendor/gettext";
+import Tab from "~/components/Common/Tab.vue";
 
 const props = defineProps({
     title: {

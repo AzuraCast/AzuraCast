@@ -1,5 +1,5 @@
 <template>
-    <o-tab-item
+    <tab
         :label="title"
         :item-header-class="tabClass"
     >
@@ -69,7 +69,7 @@
             v-model:form="form"
             :now-playing-url="nowPlayingUrl"
         />
-    </o-tab-item>
+    </tab>
 </template>
 
 <script setup>
@@ -83,6 +83,7 @@ import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
 import {useVModel} from "@vueuse/core";
 import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
 import {required} from "@vuelidate/validators";
+import Tab from "~/components/Common/Tab.vue";
 
 const props = defineProps({
     title: {

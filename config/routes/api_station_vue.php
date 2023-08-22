@@ -10,25 +10,14 @@ use Slim\Routing\RouteCollectorProxy;
 
 return static function (RouteCollectorProxy $app) {
     $app->group('/vue', function (RouteCollectorProxy $group) {
-        $group->get('/fallback', Controller\Api\Stations\Vue\FallbackAction::class)
-            ->setName('api:vue:stations:fallback')
-            ->add(new Middleware\Permissions(StationPermissions::Broadcasting, true));
-
         $group->get('/files', Controller\Api\Stations\Vue\FilesAction::class)
             ->setName('api:vue:stations:files:index')
             ->add(new Middleware\StationSupportsFeature(StationFeatures::Media))
             ->add(new Middleware\Permissions(StationPermissions::Media, true));
 
-        $group->get('/ls_config', Controller\Api\Stations\Vue\EditLiquidsoapConfigAction::class)
-            ->setName('api:vue:stations:util:ls_config')
-            ->add(new Middleware\StationSupportsFeature(StationFeatures::CustomLiquidsoapConfig))
-            ->add(new Middleware\Permissions(StationPermissions::Broadcasting, true));
-
-        $group->get(
-            '/stereo_tool_config',
-            Controller\Api\Stations\Vue\UploadStereoToolConfigAction::class
-        )->setName('api:vue:stations:stereo_tool_config')
-            ->add(new Middleware\Permissions(StationPermissions::Broadcasting, true));
+        $group->get('/mounts', Controller\Api\Stations\Vue\MountsAction::class)
+            ->setName('api:vue:stations:mounts:index')
+            ->add(new Middleware\Permissions(StationPermissions::MountPoints, true));
 
         $group->get('/playlists', Controller\Api\Stations\Vue\PlaylistsAction::class)
             ->setName('api:vue:stations:playlists:index')
@@ -39,7 +28,6 @@ return static function (RouteCollectorProxy $app) {
             ->setName('api:vue:stations:podcasts:index')
             ->add(new Middleware\StationSupportsFeature(StationFeatures::Podcasts))
             ->add(new Middleware\Permissions(StationPermissions::Podcasts, true));
-
 
         $group->get('/profile', Controller\Api\Stations\Vue\ProfileAction::class)
             ->setName('api:vue:stations:profile:index');

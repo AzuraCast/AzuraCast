@@ -121,11 +121,8 @@
         :title="$gettext('Station-Specific Debugging')"
     >
         <div class="card-body">
-            <o-tabs
-                nav-tabs-class="nav-tabs"
-                content-class="mt-3"
-            >
-                <o-tab-item
+            <tabs>
+                <tab
                     v-for="station in stations"
                     :key="station.id"
                     :label="station.name"
@@ -167,8 +164,8 @@
                             </div>
                         </div>
                     </div>
-                </o-tab-item>
-            </o-tabs>
+                </tab>
+            </tabs>
         </div>
     </card-page>
 
@@ -185,6 +182,8 @@ import {useLuxon} from "~/vendor/luxon";
 import TaskOutputModal from "~/components/Admin/Debug/TaskOutputModal.vue";
 import {useAxios} from "~/vendor/axios";
 import {useNotify} from "~/functions/useNotify";
+import Tabs from "~/components/Common/Tabs.vue";
+import Tab from "~/components/Common/Tab.vue";
 
 const props = defineProps({
     clearCacheUrl: {

@@ -1,5 +1,5 @@
 <template>
-    <o-tab-item
+    <tab
         :label="$gettext('AutoDJ')"
         :item-header-class="tabClass"
     >
@@ -38,7 +38,7 @@
                 :label="$gettext('AutoDJ Bitrate (kbps)')"
             />
         </div>
-    </o-tab-item>
+    </tab>
 </template>
 
 <script setup>
@@ -48,6 +48,7 @@ import {computed} from "vue";
 import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
 import {useVModel} from "@vueuse/core";
 import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
+import Tab from "~/components/Common/Tab.vue";
 
 const props = defineProps({
     form: {

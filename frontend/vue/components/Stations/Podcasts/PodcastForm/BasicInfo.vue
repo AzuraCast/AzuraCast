@@ -1,8 +1,7 @@
 <template>
-    <o-tab-item
+    <tab
         :label="$gettext('Basic Information')"
         :item-header-class="tabClass"
-        active
     >
         <div class="row g-3">
             <form-group-field
@@ -65,7 +64,7 @@
                 :description="$gettext('Select the category/categories that best reflects the content of your podcast.')"
             />
         </div>
-    </o-tab-item>
+    </tab>
 </template>
 
 <script setup>
@@ -74,6 +73,7 @@ import FormGroupSelect from "~/components/Form/FormGroupSelect.vue";
 import {useVModel} from "@vueuse/core";
 import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
 import {required} from "@vuelidate/validators";
+import Tab from "~/components/Common/Tab.vue";
 
 const props = defineProps({
     form: {

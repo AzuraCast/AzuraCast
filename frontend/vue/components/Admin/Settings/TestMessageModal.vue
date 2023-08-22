@@ -50,7 +50,7 @@ const props = defineProps({
     }
 });
 
-const {form, v$, ifValid} = useVuelidateOnForm(
+const {form, v$, resetForm, ifValid} = useVuelidateOnForm(
     {
         emailAddress: {required, email}
     },
@@ -64,8 +64,12 @@ const {form, v$, ifValid} = useVuelidateOnForm(
 
 const $modal = ref(); // BModal
 
+const open = () => {
+    $modal.value.show();
+};
+
 const close = () => {
-    v$.value.reset();
+    resetForm();
     $modal.value.hide();
 }
 
@@ -86,4 +90,8 @@ const doSendTest = () => {
         });
     });
 };
+
+defineExpose({
+    open
+});
 </script>

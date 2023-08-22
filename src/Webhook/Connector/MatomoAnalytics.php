@@ -121,17 +121,21 @@ final class MatomoAnalytics extends AbstractConnector
             $i++;
 
             if (100 === $i) {
-                $this->sendBatch($apiUrl, $apiToken, $entries);
+                $this->sendBatch($webhook, $apiUrl, $apiToken, $entries);
                 $entries = [];
                 $i = 0;
             }
         }
 
-        $this->sendBatch($apiUrl, $apiToken, $entries);
+        $this->sendBatch($webhook, $apiUrl, $apiToken, $entries);
     }
 
-    private function sendBatch(UriInterface $apiUrl, ?string $apiToken, array $entries): void
-    {
+    private function sendBatch(
+        StationWebhook $webhook,
+        UriInterface $apiUrl,
+        ?string $apiToken,
+        array $entries
+    ): void {
         if (empty($entries)) {
             return;
         }
@@ -146,15 +150,14 @@ final class MatomoAnalytics extends AbstractConnector
             $jsonBody['token_auth'] = $apiToken;
         }
 
-        $this->logger->debug('Message body for Matomo API Query', ['body' => $jsonBody]);
-
         $response = $this->httpClient->post($apiUrl, [
             'json' => $jsonBody,
         ]);
 
-        $this->logger->debug(
-            sprintf('Matomo returned code %d', $response->getStatusCode()),
-            ['response_body' => $response->getBody()->getContents()]
+        $this->logHttpResponse(
+            $webhook,
+            $response,
+            $jsonBody
         );
     }
 }

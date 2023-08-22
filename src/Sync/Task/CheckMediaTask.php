@@ -92,7 +92,7 @@ final class CheckMediaTask extends AbstractTask
 
         try {
             $fsIterator = $fs->listContents('/', true)->filter(
-                fn(StorageAttributes $attrs) => $attrs->isFile() && !StationFilesystems::isProtectedDir($attrs->path())
+                fn(StorageAttributes $attrs) => $attrs->isFile() && !StationFilesystems::isDotFile($attrs->path())
             );
         } catch (FilesystemException $e) {
             $this->logger->error(

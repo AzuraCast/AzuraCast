@@ -22,12 +22,9 @@ final class PermissionsAction implements SingleActionInterface
         Response $response,
         array $params
     ): ResponseInterface {
-        $router = $request->getRouter();
-
         $actions = $request->getAcl()->listPermissions();
 
         return $response->withJson([
-            'listUrl' => $router->fromHere('api:admin:roles'),
             'stations' => $this->stationRepo->fetchSelect(),
             'globalPermissions' => $actions['global'],
             'stationPermissions' => $actions['station'],

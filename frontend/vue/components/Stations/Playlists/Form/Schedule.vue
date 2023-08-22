@@ -1,5 +1,5 @@
 <template>
-    <o-tab-item :label="$gettext('Schedule')">
+    <tab :label="$gettext('Schedule')">
         <form-markup
             v-if="scheduleItems.length === 0"
             id="no_scheduled_entries"
@@ -34,7 +34,7 @@
                 </span>
             </button>
         </div>
-    </o-tab-item>
+    </tab>
 </template>
 
 <script setup>
@@ -42,6 +42,7 @@ import Icon from '~/components/Common/Icon';
 import PlaylistsFormScheduleRow from "~/components/Stations/Playlists/Form/ScheduleRow.vue";
 import {useVModel} from "@vueuse/core";
 import FormMarkup from "~/components/Form/FormMarkup.vue";
+import Tab from "~/components/Common/Tab.vue";
 
 const props = defineProps({
     scheduleItems: {

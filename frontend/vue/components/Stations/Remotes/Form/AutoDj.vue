@@ -1,5 +1,5 @@
 <template>
-    <o-tab-item
+    <tabs
         :label="$gettext('AutoDJ')"
         :item-header-class="tabClass"
     >
@@ -83,7 +83,7 @@
                 </template>
             </form-group-checkbox>
         </div>
-    </o-tab-item>
+    </tabs>
 </template>
 
 <script setup>
@@ -94,6 +94,7 @@ import {computed} from "vue";
 import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
 import {useVModel} from "@vueuse/core";
 import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
+import Tabs from "~/components/Common/Tabs.vue";
 
 const props = defineProps({
     form: {

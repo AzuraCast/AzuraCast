@@ -60,13 +60,10 @@ final class Telegram extends AbstractConnector
             ]
         );
 
-        $this->logger->debug(
-            sprintf('Webhook "%s" returned code %d', $webhook->getName(), $response->getStatusCode()),
-            [
-                'request_url' => $webhookUrl,
-                'request_params' => $requestParams,
-                'response_body' => $response->getBody()->getContents(),
-            ]
+        $this->logHttpResponse(
+            $webhook,
+            $response,
+            $requestParams
         );
     }
 }

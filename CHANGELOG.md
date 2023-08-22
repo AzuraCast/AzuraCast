@@ -11,6 +11,46 @@ release channel, you can take advantage of these new features and fixes.
 
 ---
 
+# AzuraCast 0.19.1 (Aug 21, 2023)
+
+## New Features/Changes
+
+- **Radio.de Webhook**: We have added a webhook allowing you to submit metadata changes to the popular German radio
+  aggregator service [radio.de](https://radio.de).
+
+## Code Quality/Technical Changes
+
+- We replaced the "IANA Reserved Address" check for webhook URLs with a different method of restricting webhook debug
+  log access to station operators. You can once again use "internal" IP addresses, like 192.168.x.x, as needed.
+
+- All files and folders that begin with "." will be hidden from the station Media Manager panel.
+
+- On data tables with more than 10 pages of data, you will now see a form input to enter any page number, and a "Go"
+  button to go directly to that page. You can also hit the Enter key on your keyboard to jump to the entered page.
+
+- Line numbers will appear next to certain log files when viewed (i.e. the Liquidsoap configuration), assisting in
+  identifying which line of code is causing any reported errors.
+
+## Bug Fixes
+
+- If multiple values are provided for a given ID3 tag (i.e. a Genre tag separated by semicolons), we will include all of
+  the genres in the processed file.
+
+- Fixed an issue preventing the "Send Test E-mail" modal from appearing on the System Settings page.
+
+- Fixed an issue preventing embeddable players from working in private (Incognito, Firefox/Safari Private) windows.
+
+- Fixed an issue preventing advanced configuration, authhash and other settings from appearing on the Mount Points edit
+  modal dialog.
+
+- Fixed a minor UI bug affecting buttons and playback times in the header inline player.
+
+- Fixed an issue causing the site background to not be transparent on dark theme embeds.
+
+- Enabled searching on the Upcoming Song Queue page.
+
+---
+
 # AzuraCast 0.19.0 (Aug 17, 2023)
 
 ## New Features/Changes

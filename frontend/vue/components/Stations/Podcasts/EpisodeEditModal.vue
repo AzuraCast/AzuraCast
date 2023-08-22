@@ -8,10 +8,7 @@
         @submit="doSubmit"
         @hidden="clearContents"
     >
-        <o-tabs
-            nav-tabs-class="nav-tabs"
-            content-class="mt-3"
-        >
+        <tabs>
             <episode-form-basic-info
                 v-model:form="form"
             />
@@ -30,7 +27,7 @@
                 :new-art-url="newArtUrl"
                 :edit-art-url="record.links.art"
             />
-        </o-tabs>
+        </tabs>
     </modal-form>
 </template>
 
@@ -45,6 +42,7 @@ import mergeExisting from "~/functions/mergeExisting";
 import {useTranslate} from "~/vendor/gettext";
 import ModalForm from "~/components/Common/ModalForm.vue";
 import {useLuxon} from "~/vendor/luxon";
+import Tabs from "~/components/Common/Tabs.vue";
 
 const props = defineProps({
     ...baseEditModalProps,

@@ -1,8 +1,7 @@
 <template>
-    <o-tab-item
+    <tab
         :label="$gettext('Basic Information')"
         :item-header-class="tabClass"
-        active
     >
         <div class="row g-3">
             <form-group-field
@@ -55,7 +54,7 @@
                 :description="$gettext('Indicates the presence of explicit content (explicit language or adult content). Apple Podcasts displays an Explicit parental advisory graphic for your episode if turned on. Episodes containing explicit material aren\'t available in some Apple Podcasts territories.')"
             />
         </div>
-    </o-tab-item>
+    </tab>
 </template>
 
 <script setup>
@@ -64,6 +63,7 @@ import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox";
 import {useVModel} from "@vueuse/core";
 import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
 import {required} from "@vuelidate/validators";
+import Tab from "~/components/Common/Tab.vue";
 
 const props = defineProps({
     form: {

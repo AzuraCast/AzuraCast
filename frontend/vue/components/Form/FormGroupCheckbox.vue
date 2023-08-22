@@ -9,15 +9,13 @@
                 v-bind="{ id, field, model }"
             >
                 <div class="form-check form-switch">
-                    <input
+                    <form-checkbox
                         v-bind="inputAttrs"
                         :id="id"
                         v-model="model"
-                        class="form-check-input"
-                        type="checkbox"
                         role="switch"
                         :name="name"
-                    >
+                    />
                     <label
                         class="form-check-label"
                         :for="id"
@@ -38,7 +36,10 @@
             />
         </template>
 
-        <template #description="slotProps">
+        <template
+            v-if="description || slots.description"
+            #description="slotProps"
+        >
             <slot
                 name="description"
                 v-bind="slotProps"
@@ -54,6 +55,8 @@ import VuelidateError from "./VuelidateError";
 import FormLabel from "~/components/Form/FormLabel.vue";
 import FormGroup from "~/components/Form/FormGroup.vue";
 import {formFieldProps, useFormField} from "~/components/Form/useFormField";
+import {useSlots} from "vue";
+import FormCheckbox from "~/components/Form/FormCheckbox.vue";
 
 const props = defineProps({
     ...formFieldProps,
@@ -84,6 +87,8 @@ const props = defineProps({
         default: false
     }
 });
+
+const slots = useSlots();
 
 const emit = defineEmits(['update:modelValue']);
 

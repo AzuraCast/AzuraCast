@@ -1,5 +1,5 @@
 <template>
-    <o-tab-item
+    <tab
         :label="title"
         :item-header-class="tabClass"
     >
@@ -71,7 +71,7 @@
         </div>
 
         <common-social-post-fields v-model:form="form" />
-    </o-tab-item>
+    </tab>
 </template>
 
 <script setup>
@@ -82,6 +82,7 @@ import FormMarkup from "~/components/Form/FormMarkup.vue";
 import {useVModel} from "@vueuse/core";
 import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
 import {required} from "@vuelidate/validators";
+import Tab from "~/components/Common/Tab.vue";
 
 const props = defineProps({
     title: {

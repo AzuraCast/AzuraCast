@@ -11,7 +11,6 @@ use App\Entity\StationPlaylist;
 use App\Entity\StationQueue;
 use Carbon\CarbonImmutable;
 use Carbon\CarbonInterface;
-use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
 
 /**
@@ -142,12 +141,7 @@ final class StationQueueRepository extends AbstractStationBasedRepository
      */
     public function getUnplayedQueue(Station $station): array
     {
-        return $this->getUnplayedQuery($station)->execute();
-    }
-
-    public function getUnplayedQuery(Station $station): Query
-    {
-        return $this->getUnplayedBaseQuery($station)->getQuery();
+        return $this->getUnplayedBaseQuery($station)->getQuery()->execute();
     }
 
     public function clearUpcomingQueue(Station $station): void
@@ -199,7 +193,7 @@ final class StationQueueRepository extends AbstractStationBasedRepository
         return $cuedPlaylistContentCount > 0;
     }
 
-    private function getUnplayedBaseQuery(Station $station): QueryBuilder
+    public function getUnplayedBaseQuery(Station $station): QueryBuilder
     {
         return $this->getBaseQuery($station)
             ->andWhere('sq.is_played = 0')

@@ -48,6 +48,11 @@ final class Mastodon extends AbstractSocialConnector
         );
 
         foreach ($this->getMessages($webhook, $np, $triggers) as $message) {
+            $messageBody = [
+                'status' => $message,
+                'visibility' => $visibility,
+            ];
+
             $response = $this->httpClient->request(
                 'POST',
                 $instanceUri->withPath('/api/v1/statuses'),
@@ -56,19 +61,14 @@ final class Mastodon extends AbstractSocialConnector
                         'Authorization' => 'Bearer ' . $accessToken,
                         'Content-Type' => 'application/json',
                     ],
-                    'json' => [
-                        'status' => $message,
-                        'visibility' => $visibility,
-                    ],
+                    'json' => $messageBody,
                 ]
             );
 
-            $this->logger->debug(
-                sprintf('Webhook "%s" returned code %d', $webhook->getName(), $response->getStatusCode()),
-                [
-                    'instanceUri' => (string)$instanceUri,
-                    'response' => $response->getBody()->getContents(),
-                ]
+            $this->logHttpResponse(
+                $webhook,
+                $response,
+                $messageBody
             );
         }
     }

@@ -38,23 +38,46 @@ final class GetFallbackAction implements SingleActionInterface
         Response $response,
         array $params
     ): ResponseInterface {
-        set_time_limit(600);
-
         $station = $request->getStation();
+        $router = $request->getRouter();
+
+        $download = ($params['do'] ?? null) === 'download';
 
         $fallbackPath = $station->getFallbackPath();
         if (!empty($fallbackPath)) {
             $fsConfig = StationFilesystems::buildConfigFilesystem($station);
             if ($fsConfig->fileExists($fallbackPath)) {
-                return $response->streamFilesystemFile(
-                    $fsConfig,
-                    $fallbackPath,
-                    basename($fallbackPath)
-                );
+                if ($download) {
+                    set_time_limit(600);
+
+                    return $response->streamFilesystemFile(
+                        $fsConfig,
+                        $fallbackPath,
+                        basename($fallbackPath)
+                    );
+                }
+
+                return $response->withJson([
+                    'hasRecord' => true,
+                    'links' => [
+                        'download' => $router->fromHere(
+                            routeParams: ['do' => 'download']
+                        ),
+                    ],
+                ]);
             }
         }
 
-        return $response->withStatus(404)
-            ->withJson(Error::notFound());
+        if ($download) {
+            return $response->withStatus(404)
+                ->withJson(Error::notFound());
+        }
+
+        return $response->withJson([
+            'hasRecord' => false,
+            'links' => [
+                'download' => null,
+            ],
+        ]);
     }
 }

@@ -787,7 +787,7 @@ return static function (RouteCollectorProxy $group) {
                         '/fallback',
                         function (RouteCollectorProxy $group) {
                             $group->get(
-                                '',
+                                '[/{do}]',
                                 Controller\Api\Stations\Fallback\GetFallbackAction::class
                             )->setName('api:stations:fallback');
 
@@ -876,7 +876,7 @@ return static function (RouteCollectorProxy $group) {
                         '/stereo_tool_config',
                         function (RouteCollectorProxy $group) {
                             $group->get(
-                                '',
+                                '[/{do}]',
                                 Controller\Api\Stations\StereoTool\GetStereoToolConfigurationAction::class
                             )->setName('api:stations:stereo_tool_config');
 

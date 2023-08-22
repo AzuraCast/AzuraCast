@@ -32,10 +32,7 @@
 
             <div class="card-body">
                 <loading :loading="isLoading">
-                    <o-tabs
-                        nav-tabs-class="nav-tabs"
-                        content-class="mt-3"
-                    >
+                    <tabs content-class="mt-3">
                         <settings-general-tab v-model:form="form" />
                         <settings-security-privacy-tab v-model:form="form" />
                         <settings-services-tab
@@ -44,7 +41,7 @@
                             :test-message-url="testMessageUrl"
                             :acme-url="acmeUrl"
                         />
-                    </o-tabs>
+                    </tabs>
                 </loading>
             </div>
 
@@ -75,6 +72,7 @@ import {useTranslate} from "~/vendor/gettext";
 import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
 import Loading from "~/components/Common/Loading.vue";
 import settingsProps from "~/components/Admin/settingsProps";
+import Tabs from "~/components/Common/Tabs.vue";
 
 const props = defineProps({
     ...settingsProps

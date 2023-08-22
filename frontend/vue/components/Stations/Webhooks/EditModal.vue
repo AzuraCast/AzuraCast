@@ -14,11 +14,7 @@
             @select="setType"
         />
 
-        <o-tabs
-            v-else
-            nav-tabs-class="nav-tabs"
-            content-class="mt-3"
-        >
+        <tabs v-else>
             <basic-info
                 v-model:form="form"
                 :trigger-details="triggerDetails"
@@ -30,7 +26,7 @@
                 v-model:form="form"
                 :label="typeTitle"
             />
-        </o-tabs>
+        </tabs>
     </modal-form>
 </template>
 
@@ -52,18 +48,9 @@ import {baseEditModalProps, useBaseEditModal} from "~/functions/useBaseEditModal
 import {computed, nextTick, provide, ref} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import ModalForm from "~/components/Common/ModalForm.vue";
-import {
-    getTriggers,
-    WEBHOOK_TYPE_DISCORD,
-    WEBHOOK_TYPE_EMAIL,
-    WEBHOOK_TYPE_GENERIC,
-    WEBHOOK_TYPE_GOOGLE_ANALYTICS_V3,
-    WEBHOOK_TYPE_GOOGLE_ANALYTICS_V4,
-    WEBHOOK_TYPE_MASTODON, WEBHOOK_TYPE_MATOMO_ANALYTICS,
-    WEBHOOK_TYPE_TELEGRAM,
-    WEBHOOK_TYPE_TUNEIN,
-    WEBHOOK_TYPE_TWITTER
-} from "~/components/Entity/Webhooks";
+import {getTriggers, WebhookType} from "~/components/Entity/Webhooks";
+import Tabs from "~/components/Common/Tabs.vue";
+import RadioDe from "~/components/Stations/Webhooks/Form/RadioDe.vue";
 
 const props = defineProps({
     ...baseEditModalProps,
@@ -90,16 +77,17 @@ const type = ref(null);
 const $modal = ref(); // Template Ref
 
 const webhookComponents = {
-    [WEBHOOK_TYPE_GENERIC]: Generic,
-    [WEBHOOK_TYPE_EMAIL]: Email,
-    [WEBHOOK_TYPE_TUNEIN]: Tunein,
-    [WEBHOOK_TYPE_DISCORD]: Discord,
-    [WEBHOOK_TYPE_TELEGRAM]: Telegram,
-    [WEBHOOK_TYPE_TWITTER]: Twitter,
-    [WEBHOOK_TYPE_MASTODON]: Mastodon,
-    [WEBHOOK_TYPE_GOOGLE_ANALYTICS_V3]: GoogleAnalyticsV3,
-    [WEBHOOK_TYPE_GOOGLE_ANALYTICS_V4]: GoogleAnalyticsV4,
-    [WEBHOOK_TYPE_MATOMO_ANALYTICS]: MatomoAnalytics,
+    [WebhookType.Generic]: Generic,
+    [WebhookType.Email]: Email,
+    [WebhookType.TuneIn]: Tunein,
+    [WebhookType.RadioDe]: RadioDe,
+    [WebhookType.Discord]: Discord,
+    [WebhookType.Telegram]: Telegram,
+    [WebhookType.Twitter]: Twitter,
+    [WebhookType.Mastodon]: Mastodon,
+    [WebhookType.GoogleAnalyticsV3]: GoogleAnalyticsV3,
+    [WebhookType.GoogleAnalyticsV4]: GoogleAnalyticsV4,
+    [WebhookType.MatomoAnalytics]: MatomoAnalytics,
 };
 
 const triggers = computed(() => {

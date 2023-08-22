@@ -1,8 +1,7 @@
 <template>
-    <o-tab-item
+    <tab
         :label="$gettext('Profile')"
         :item-header-class="tabClass"
-        active
     >
         <div class="row g-3 mb-3">
             <form-group-field
@@ -122,7 +121,7 @@
                 </form-group-checkbox>
             </div>
         </form-fieldset>
-    </o-tab-item>
+    </tab>
 </template>
 
 <script setup>
@@ -137,6 +136,7 @@ import {useVModel} from "@vueuse/core";
 import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
 import {required, url} from "@vuelidate/validators";
 import {useAzuraCast} from "~/vendor/azuracast";
+import Tab from "~/components/Common/Tab.vue";
 
 const props = defineProps({
     form: {

@@ -2,28 +2,22 @@
     <loading
         :loading="chartsLoading"
     >
-        <o-tabs
-            nav-tabs-class="nav-tabs"
-            content-class="mt-3"
-        >
-            <o-tab-item
-                :label="$gettext('Average Listeners')"
-                active
-            >
+        <tabs>
+            <tab :label="$gettext('Average Listeners')">
                 <time-series-chart
                     style="width: 100%;"
                     :data="chartsData.average.metrics"
                     :alt="chartsData.average.alt"
                 />
-            </o-tab-item>
-            <o-tab-item :label="$gettext('Unique Listeners')">
+            </tab>
+            <tab :label="$gettext('Unique Listeners')">
                 <time-series-chart
                     style="width: 100%;"
                     :data="chartsData.unique.metrics"
                     :alt="chartsData.unique.alt"
                 />
-            </o-tab-item>
-        </o-tabs>
+            </tab>
+        </tabs>
     </loading>
 </template>
 
@@ -32,6 +26,8 @@ import TimeSeriesChart from '~/components/Common/Charts/TimeSeriesChart.vue';
 import {useAsyncState} from "@vueuse/core";
 import {useAxios} from "~/vendor/axios";
 import Loading from "~/components/Common/Loading.vue";
+import Tabs from "~/components/Common/Tabs.vue";
+import Tab from "~/components/Common/Tab.vue";
 
 const props = defineProps({
     chartsUrl: {

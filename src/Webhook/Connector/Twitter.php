@@ -65,21 +65,24 @@ final class Twitter extends AbstractSocialConnector
         $this->logger->debug('Posting to Twitter...');
 
         foreach ($this->getMessages($webhook, $np, $triggers) as $message) {
+            $messageBody = [
+                'status' => $message,
+            ];
+
             $response = $this->httpClient->request(
                 'POST',
                 'https://api.twitter.com/1.1/statuses/update.json',
                 [
                     'auth' => 'oauth',
                     'handler' => $stack,
-                    'form_params' => [
-                        'status' => $message,
-                    ],
+                    'form_params' => $messageBody,
                 ]
             );
 
-            $this->logger->debug(
-                sprintf('Twitter returned code %d', $response->getStatusCode()),
-                ['response_body' => $response->getBody()->getContents()]
+            $this->logHttpResponse(
+                $webhook,
+                $response,
+                $messageBody
             );
         }
     }

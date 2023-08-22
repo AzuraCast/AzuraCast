@@ -80,7 +80,7 @@
 </template>
 
 <script setup>
-import {BACKEND_LIQUIDSOAP} from '~/components/Entity/RadioAdapters';
+import {BackendAdapter} from '~/components/Entity/RadioAdapters';
 import Icon from '~/components/Common/Icon';
 import RunningBadge from "~/components/Common/Badges/RunningBadge.vue";
 import {useTranslate} from "~/vendor/gettext";
@@ -126,7 +126,7 @@ const langTotalTracks = computed(() => {
 });
 
 const backendName = computed(() => {
-    if (props.backendType === BACKEND_LIQUIDSOAP) {
+    if (props.backendType === BackendAdapter.Liquidsoap) {
         return 'Liquidsoap';
     }
     return '';

@@ -1,5 +1,5 @@
 <template>
-    <o-tab-item
+    <tab
         :label="$gettext('Advanced')"
         :item-header-class="tabClass"
     >
@@ -28,15 +28,16 @@
                 :description="$gettext('You can include any special mount point settings here, in either JSON { key: \'value\' } format or XML &lt;key&gt;value&lt;/key&gt;')"
             />
         </div>
-    </o-tab-item>
+    </tab>
 </template>
 
 <script setup>
-import {FRONTEND_ICECAST} from '~/components/Entity/RadioAdapters';
+import {FrontendAdapter} from '~/components/Entity/RadioAdapters';
 import FormGroupField from "~/components/Form/FormGroupField";
 import {computed} from "vue";
 import {useVModel} from "@vueuse/core";
 import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
+import Tab from "~/components/Common/Tab.vue";
 
 const props = defineProps({
     form: {
@@ -53,7 +54,7 @@ const emit = defineEmits(['update:form']);
 const form = useVModel(props, 'form', emit);
 
 const isIcecast = computed(() => {
-    return FRONTEND_ICECAST === props.stationFrontendType;
+    return FrontendAdapter.Icecast === props.stationFrontendType;
 });
 
 const {v$, tabClass} = useVuelidateOnFormTab(

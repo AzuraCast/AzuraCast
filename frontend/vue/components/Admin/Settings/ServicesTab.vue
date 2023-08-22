@@ -1,5 +1,5 @@
 <template>
-    <o-tab-item
+    <tab
         :label="$gettext('Services')"
         :item-header-class="tabClass"
     >
@@ -245,7 +245,7 @@
                 </form-group-field>
             </div>
         </form-fieldset>
-    </o-tab-item>
+    </tab>
 
     <streaming-log-modal ref="$acmeModal" />
 
@@ -270,6 +270,7 @@ import {useAxios} from "~/vendor/axios";
 import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
 import {useVModel} from "@vueuse/core";
 import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
+import Tab from "~/components/Common/Tab.vue";
 
 const props = defineProps({
     form: {

@@ -1,8 +1,7 @@
 <template>
-    <o-tab-item
+    <tab
         :label="$gettext('Basic Info')"
         :item-header-class="tabClass"
-        active
     >
         <div class="row g-3 mb-3">
             <form-group-field
@@ -38,7 +37,7 @@
                 :label="$gettext('Audio Bitrate (kbps)')"
             />
         </div>
-    </o-tab-item>
+    </tab>
 </template>
 
 <script setup>
@@ -48,6 +47,7 @@ import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
 import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
 import {required} from "@vuelidate/validators";
 import {useVModel} from "@vueuse/core";
+import Tab from "~/components/Common/Tab.vue";
 
 const props = defineProps({
     form: {

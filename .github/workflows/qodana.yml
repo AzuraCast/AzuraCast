@@ -1,0 +1,38 @@
+name: Qodana
+on:
+  workflow_dispatch:
+  pull_request:
+  push:
+    branches:
+      - main
+
+jobs:
+  qodana:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: intl, xdebug
+          tools: composer:v2, cs2pr
+
+      - name: Run Composer install
+        run: |
+          composer install --no-interaction --ignore-platform-reqs
+
+      - name: Run NPM install
+        run: |
+          cd frontend
+          npm ci --include=dev
+
+      - name: 'Qodana Scan'
+        uses: JetBrains/qodana-action@v2023.2
+        with:
+          args: --baseline,util/qodana.sarif.json
+        env:
+          QODANA_TOKEN: ${{ secrets.QODANA_TOKEN }}

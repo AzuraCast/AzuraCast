@@ -228,7 +228,7 @@
 </template>
 
 <script setup>
-import {BACKEND_LIQUIDSOAP} from '~/components/Entity/RadioAdapters';
+import {BackendAdapter} from '~/components/Entity/RadioAdapters';
 import Icon from '~/components/Common/Icon';
 import {computed} from "vue";
 import {useTranslate} from "~/vendor/gettext";
@@ -266,7 +266,7 @@ const langListeners = computed(() => {
 });
 
 const isLiquidsoap = computed(() => {
-    return props.backendType === BACKEND_LIQUIDSOAP;
+    return props.backendType === BackendAdapter.Liquidsoap;
 });
 
 const {vLightbox} = useLightbox();

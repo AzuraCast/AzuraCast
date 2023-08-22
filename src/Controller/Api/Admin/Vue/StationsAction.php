@@ -24,13 +24,10 @@ final class StationsAction implements SingleActionInterface
         Response $response,
         array $params
     ): ResponseInterface {
-        $router = $request->getRouter();
-
         return $response->withJson(
             array_merge(
                 $this->stationFormComponent->getProps($request),
                 [
-                    'listUrl' => $router->fromHere('api:admin:stations'),
                     'frontendTypes' => $this->adapters->listFrontendAdapters(),
                     'backendTypes' => $this->adapters->listBackendAdapters(),
                 ]

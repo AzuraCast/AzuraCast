@@ -1,8 +1,7 @@
 <template>
-    <o-tab-item
+    <tab
         :label="$gettext('Basic Info')"
         :item-header-class="tabClass"
-        active
     >
         <div class="row g-3">
             <form-group-multi-check
@@ -65,17 +64,18 @@
                 :description="$gettext('Enable to allow listeners to select this relay on this station\'s public pages.')"
             />
         </div>
-    </o-tab-item>
+    </tab>
 </template>
 
 <script setup>
-import {REMOTE_ICECAST, REMOTE_SHOUTCAST1, REMOTE_SHOUTCAST2} from '~/components/Entity/RadioAdapters';
+import {RemoteAdapter} from '~/components/Entity/RadioAdapters';
 import FormGroupField from "~/components/Form/FormGroupField";
 import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox";
 import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
 import {useVModel} from "@vueuse/core";
 import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
 import {required} from "@vuelidate/validators";
+import Tab from "~/components/Common/Tab.vue";
 
 const props = defineProps({
     form: {
@@ -99,7 +99,7 @@ const {v$, tabClass} = useVuelidateOnFormTab(
     form,
     {
         display_name: null,
-        type: REMOTE_ICECAST,
+        type: RemoteAdapter.Icecast,
         custom_listen_url: null,
         url: null,
         mount: null,
@@ -110,15 +110,15 @@ const {v$, tabClass} = useVuelidateOnFormTab(
 
 const typeOptions = [
     {
-        value: REMOTE_ICECAST,
+        value: RemoteAdapter.Icecast,
         text: 'Icecast v2.4+',
     },
     {
-        value: REMOTE_SHOUTCAST1,
+        value: RemoteAdapter.Shoutcast1,
         text: 'Shoutcast v1',
     },
     {
-        value: REMOTE_SHOUTCAST2,
+        value: RemoteAdapter.Shoutcast2,
         text: 'Shoutcast v2',
     }
 ];

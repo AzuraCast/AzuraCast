@@ -126,15 +126,24 @@ final class Dispatcher
         $outputPath = $message->outputPath;
 
         if (null !== $outputPath) {
-            $logHandler = new StreamHandler($outputPath, Level::Debug, true);
+            $logHandler = new StreamHandler(
+                $outputPath,
+                Level::fromValue($message->logLevel),
+                true
+            );
             $this->logger->pushHandler($logHandler);
         }
 
         try {
             $webhook = $this->em->find(StationWebhook::class, $message->webhookId);
             if (!($webhook instanceof StationWebhook)) {
+                $this->logger->error(
+                    sprintf('Webhook ID %d not found.', $message->webhookId),
+                );
                 return;
             }
+
+            $this->logger->info(sprintf('Dispatching test web hook "%s"...', $webhook->getName()));
 
             $station = $webhook->getStation();
             $np = $this->nowPlayingApiGen->currentOrEmpty($station);
@@ -151,6 +160,8 @@ final class Dispatcher
             $webhookObj->dispatch($station, $webhook, $np, [
                 WebhookTriggers::SongChanged->value,
             ]);
+
+            $this->logger->info(sprintf('Web hook "%s" completed.', $webhook->getName()));
         } catch (Throwable $e) {
             $this->logger->error(
                 sprintf(

@@ -1,8 +1,5 @@
 <template>
-    <o-tab-item
-        :label="$gettext('Global Permissions')"
-        active
-    >
+    <tab :label="$gettext('Global Permissions')">
         <div class="row g-3">
             <form-group-field
                 id="edit_form_name"
@@ -21,7 +18,7 @@
                 :description="$gettext('Users with this role will have these permissions across the entire installation.')"
             />
         </div>
-    </o-tab-item>
+    </tab>
 </template>
 
 <script setup>
@@ -29,6 +26,7 @@ import FormGroupField from "~/components/Form/FormGroupField.vue";
 import {map} from 'lodash';
 import {computed} from "vue";
 import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
+import Tab from "~/components/Common/Tab.vue";
 
 const props = defineProps({
     form: {

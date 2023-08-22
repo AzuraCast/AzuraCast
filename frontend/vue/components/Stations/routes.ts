@@ -22,8 +22,7 @@ export default function useStationsRoutes() {
         {
             path: '/fallback',
             component: () => import('~/components/Stations/Fallback.vue'),
-            name: 'stations:fallback',
-            ...populateComponentRemotely(getStationApiUrl('/vue/fallback'))
+            name: 'stations:fallback'
         },
         {
             path: '/files/:path?',
@@ -39,18 +38,16 @@ export default function useStationsRoutes() {
         {
             path: '/ls_config',
             component: () => import('~/components/Stations/LiquidsoapConfig.vue'),
-            name: 'stations:util:ls_config',
-            ...populateComponentRemotely(getStationApiUrl('/vue/ls_config'))
+            name: 'stations:util:ls_config'
         },
         {
             path: '/stereo_tool_config',
             component: () => import('~/components/Stations/StereoToolConfig.vue'),
             name: 'stations:stereo_tool_config',
-            ...populateComponentRemotely(getStationApiUrl('/vue/stereo_tool_config'))
         },
         {
             path: '/logs',
-            component: () => import('~/components/Stations/Help.vue'),
+            component: () => import('~/components/Stations/Logs.vue'),
             name: 'stations:logs'
         },
         {
@@ -75,7 +72,8 @@ export default function useStationsRoutes() {
         {
             path: '/mounts',
             component: () => import('~/components/Stations/Mounts.vue'),
-            name: 'stations:mounts:index'
+            name: 'stations:mounts:index',
+            ...populateComponentRemotely(getStationApiUrl('/vue/mounts'))
         },
         {
             path: '/profile/edit',

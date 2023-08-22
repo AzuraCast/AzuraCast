@@ -1,5 +1,5 @@
 <template>
-    <o-tab-item
+    <tab
         :label="$gettext('Broadcasting')"
         :item-header-class="tabClass"
     >
@@ -162,13 +162,13 @@
                 </div>
             </form-fieldset>
         </template>
-    </o-tab-item>
+    </tab>
 </template>
 
 <script setup>
 import FormFieldset from "~/components/Form/FormFieldset";
 import FormGroupField from "~/components/Form/FormGroupField.vue";
-import {FRONTEND_ICECAST, FRONTEND_REMOTE, FRONTEND_SHOUTCAST} from "~/components/Entity/RadioAdapters";
+import {FrontendAdapter} from "~/components/Entity/RadioAdapters";
 import objectToFormOptions from "~/functions/objectToFormOptions";
 import {computed} from "vue";
 import {useTranslate} from "~/vendor/gettext";
@@ -178,6 +178,7 @@ import {useVModel} from "@vueuse/core";
 import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
 import {numeric, required} from "@vuelidate/validators";
 import {useAzuraCast} from "~/vendor/azuracast";
+import Tab from "~/components/Common/Tab.vue";
 
 const props = defineProps({
     form: {
@@ -232,7 +233,7 @@ const {v$, tabClass} = useVuelidateOnFormTab(
     form,
     () => {
         let blankForm = {
-            frontend_type: FRONTEND_ICECAST,
+            frontend_type: FrontendAdapter.Icecast,
             frontend_config: {
                 sc_license_id: '',
                 sc_user_id: '',
@@ -267,20 +268,20 @@ const frontendTypeOptions = computed(() => {
     const frontendOptions = [
         {
             text: $gettext('Use Icecast 2.4 on this server.'),
-            value: FRONTEND_ICECAST
+            value: FrontendAdapter.Icecast
         },
     ];
 
     if (props.isShoutcastInstalled) {
         frontendOptions.push({
             text: $gettext('Use Shoutcast DNAS 2 on this server.'),
-            value: FRONTEND_SHOUTCAST
+            value: FrontendAdapter.Shoutcast
         });
     }
 
     frontendOptions.push({
         text: $gettext('Only connect to a remote server.'),
-        value: FRONTEND_REMOTE
+        value: FrontendAdapter.Remote
     });
 
     return frontendOptions;
@@ -291,11 +292,11 @@ const countryOptions = computed(() => {
 });
 
 const isLocalFrontend = computed(() => {
-    return form.value.frontend_type !== FRONTEND_REMOTE;
+    return form.value.frontend_type !== FrontendAdapter.Remote;
 });
 
 const isShoutcastFrontend = computed(() => {
-    return form.value.frontend_type === FRONTEND_SHOUTCAST;
+    return form.value.frontend_type === FrontendAdapter.Shoutcast;
 });
 
 const clearCountries = () => {

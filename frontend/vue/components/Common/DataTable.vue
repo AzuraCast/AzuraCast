@@ -12,18 +12,10 @@
                     v-if="showPagination"
                     class="col-xl-6 col-lg-5 col-md-12 col-sm-12"
                 >
-                    <o-pagination
-                        v-if="showPagination"
-                        v-model:current="currentPage"
+                    <pagination
+                        v-model:current-page="currentPage"
                         :total="totalRows"
                         :per-page="perPage"
-                        icon-prev="chevron-left"
-                        icon-next="chevron-right"
-                        :aria-next-label="$gettext('Next page')"
-                        :aria-previous-label="$gettext('Previous page')"
-                        :aria-page-label="$gettext('Page')"
-                        :aria-current-label="$gettext('Current page')"
-                        class="mb-0"
                         @change="onPageChange"
                     />
                 </div>
@@ -136,87 +128,166 @@
                 (responsive) ? 'table-responsive' : ''
             ]"
         >
-            <o-table
-                ref="$table"
-                v-model:checked-rows="selectedRows"
-                striped
-                :mobile-cards="false"
-                :table-class="[
-                    'align-middle',
+            <table
+                class="table align-middle table-striped table-hover"
+                :class="[
                     (selectable) ? 'table-selectable' : ''
                 ]"
-
-                hoverable
-                :data="visibleItems"
-
-                :loading="loading"
-                :checkable="selectable"
-                checkbox-position="left"
-
-                :paginated="false"
-
-                :backend-sorting="!handleClientSide"
-
-                :detailed="detailed"
-                :show-detail-icon="false"
-
-                @page-change="onPageChange"
-                @sort="onSort"
             >
-                <template #detail="detailProps">
-                    <slot
-                        name="detail"
-                        v-bind="detailProps"
-                        :item="detailProps.row"
-                    />
-                </template>
-
-                <o-table-column
-                    v-for="field in visibleFields"
-                    :key="field.key"
-                    :field="field.key"
-                    :label="field.label"
-                    :sortable="field.sortable"
-                    :th-attrs="() => ({class: [field.class]})"
-                    :td-attrs="() => ({class: field.class})"
-                >
-                    <template #default="colProps">
-                        <slot
-                            :name="'cell('+field.key+')'"
-                            v-bind="colProps"
-                            :item="colProps.row"
+                <caption v-if="slots.caption">
+                    <slot name="caption" />
+                </caption>
+                <thead>
+                    <tr>
+                        <th
+                            v-if="selectable"
+                            class="checkbox"
                         >
-                            <template v-if="field.formatter">
-                                {{ field.formatter(get(colProps.row, field.key, null), field.key, colProps.row) }}
-                            </template>
-                            <template v-else>
-                                {{ get(colProps.row, field.key, null) }}
-                            </template>
-                        </slot>
+                            <label class="form-check">
+                                <form-checkbox
+                                    autocomplete="off"
+                                    :model-value="isAllChecked"
+                                    @update:model-value="checkAll"
+                                />
+                                <span class="visually-hidden">
+                                    <template v-if="isAllChecked">
+                                        {{ $gettext('Unselect All Rows') }}
+                                    </template>
+                                    <template v-else>
+                                        {{ $gettext('Select All Rows') }}
+                                    </template>
+                                </span>
+                            </label>
+                        </th>
+                        <th
+                            v-for="(column) in visibleFields"
+                            :key="column.key+'header'"
+                            :class="[
+                                column.class,
+                                (column.sortable) ? 'sortable' : ''
+                            ]"
+                            @click.stop="sort(column, null, $event)"
+                        >
+                            <slot
+                                :name="'header('+column.key+')'"
+                                v-bind="column"
+                            >
+                                <div class="d-flex align-items-center">
+                                    {{ column.label }}
+
+                                    <template v-if="column.sortable && sortField === column.key">
+                                        <icon :icon="(sortOrder === 'asc') ? 'arrow_drop_down' : 'arrow_drop_up'" />
+                                    </template>
+                                </div>
+                            </slot>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <template v-if="loading">
+                        <tr>
+                            <td
+                                :colspan="columnCount"
+                                class="text-center p-5"
+                            >
+                                <div
+                                    class="spinner-border"
+                                    role="status"
+                                >
+                                    <span class="visually-hidden">{{ $gettext('Loading') }}</span>
+                                </div>
+                            </td>
+                        </tr>
+                    </template>
+                    <template v-else-if="visibleItems.length === 0">
+                        <tr>
+                            <td :colspan="columnCount">
+                                {{ $gettext('No records.') }}
+                            </td>
+                        </tr>
+                    </template>
+                    <template
+                        v-for="(row, index) in visibleItems"
+                        v-else
+                        :key="index"
+                    >
+                        <tr
+                            :class="[
+                                isActiveDetailRow(row) ? 'table-active' : ''
+                            ]"
+                        >
+                            <td
+                                v-if="selectable"
+                                class="checkbox"
+                            >
+                                <label class="form-check">
+                                    <form-checkbox
+                                        autocomplete="off"
+                                        :model-value="isRowChecked(row)"
+                                        @update:model-value="checkRow(row)"
+                                    />
+                                    <span class="visually-hidden">
+                                        <template v-if="isRowChecked(row)">
+                                            {{ $gettext('Unselect Row') }}
+                                        </template>
+                                        <template v-else>
+                                            {{ $gettext('Select Row') }}
+                                        </template>
+                                    </span>
+                                </label>
+                            </td>
+                            <td
+                                v-for="column in visibleFields"
+                                :key="column.key+':'+index"
+                                :class="column.class"
+                            >
+                                <slot
+                                    :name="'cell('+column.key+')'"
+                                    :column="column"
+                                    :item="row"
+                                    :toggle-details="() => toggleDetails(row)"
+                                >
+                                    <template v-if="column.formatter">
+                                        {{ column.formatter(get(row, column.key, null), column.key, row) }}
+                                    </template>
+                                    <template v-else>
+                                        {{ get(row, column.key, null) }}
+                                    </template>
+                                </slot>
+                            </td>
+                        </tr>
+                        <tr
+                            v-if="isActiveDetailRow(row)"
+                            :key="index+':detail'"
+                            class="table-active"
+                        >
+                            <td :colspan="columnCount">
+                                <slot
+                                    name="detail"
+                                    :item="row"
+                                    :index="index"
+                                />
+                            </td>
+                        </tr>
                     </template>
 
-                    <template #header="{ column }">
-                        <div class="d-flex align-items-center">
-                            {{ column.label }}
-
-                            <template v-if="column.sortable && sortField === column.field">
-                                <icon :icon="(sortOrder === 'asc') ? 'arrow_drop_down' : 'arrow_drop_up'" />
-                            </template>
-                        </div>
-                    </template>
-                </o-table-column>
-            </o-table>
+                    <tr v-if="!visibleItems.length">
+                        <td :colspan="columnCount">
+                            <slot name="empty" />
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
         <div
             v-if="showToolbar"
             class="datatable-toolbar-bottom card-body"
         >
-            <o-pagination
+            <pagination
                 v-if="showPagination"
-                v-model:current="currentPage"
+                v-model:current-page="currentPage"
                 :total="totalRows"
                 :per-page="perPage"
-                class="mb-0"
                 @change="onPageChange"
             />
         </div>
@@ -224,12 +295,15 @@
 </template>
 
 <script setup>
-import {slice, filter, map, includes, isEmpty, get} from 'lodash';
+import {slice, filter, map, includes, isEmpty, get, some, indexOf, forEach} from 'lodash';
 import Icon from './Icon.vue';
-import {computed, onMounted, ref, toRef, watch} from "vue";
-import {useLocalStorage, watchDebounced} from "@vueuse/core";
+import {computed, onMounted, ref, shallowRef, toRaw, toRef, useSlots, watch} from "vue";
+import {watchDebounced} from "@vueuse/core";
 import {useAxios} from "~/vendor/axios";
 import FormMultiCheck from "~/components/Form/FormMultiCheck.vue";
+import FormCheckbox from "~/components/Form/FormCheckbox.vue";
+import Pagination from "~/components/Common/Pagination.vue";
+import useOptionalStorage from "~/functions/useOptionalStorage";
 
 const props = defineProps({
     id: {
@@ -294,17 +368,16 @@ const props = defineProps({
     }
 });
 
+const slots = useSlots();
+
 const emit = defineEmits([
     'refreshed',
     'row-selected',
-    'filtered'
+    'filtered',
+    'data-loaded'
 ]);
 
-const selectedRows = ref([]);
-
-watch(selectedRows, (rows) => {
-    emit('row-selected', rows);
-});
+const selectedRows = shallowRef([]);
 
 const searchPhrase = ref('');
 const currentPage = ref(1);
@@ -314,14 +387,18 @@ const sortField = ref(null);
 const sortOrder = ref(null);
 
 const loading = ref(false);
-const items = ref(props.items ?? []);
-const totalRows = ref(items.value.length);
+const allItems = shallowRef([]);
+const totalRows = ref(0);
+
+const activeDetailsRow = shallowRef(null);
 
 watch(toRef(props, 'items'), (newVal) => {
     if (newVal !== null) {
-        items.value = newVal;
-        totalRows.value = newVal.length;
+        allItems.value = toRaw(newVal);
+        totalRows.value = allItems.value.length;
     }
+}, {
+    immediate: true
 });
 
 const allFields = computed(() => {
@@ -358,7 +435,7 @@ const defaultSelectableFields = computed(() => {
     });
 });
 
-const settings = useLocalStorage(
+const settings = useOptionalStorage(
     'datatable_' + props.id + '_settings',
     {
         sortBy: null,
@@ -419,7 +496,7 @@ const showPagination = computed(() => {
 
 const visibleItems = computed(() => {
     if (!props.handleClientSide) {
-        return items.value;
+        return allItems.value;
     }
 
     // Handle pagination client-side.
@@ -427,12 +504,12 @@ const visibleItems = computed(() => {
 
     if (props.paginated && perPage.value > 0) {
         itemsOnPage = slice(
-            items.value,
+            allItems.value,
             (currentPage.value - 1) * perPage.value,
             currentPage.value * perPage.value
         );
     } else {
-        itemsOnPage = items.value;
+        itemsOnPage = allItems.value;
     }
 
     // Handle filtration client-side.
@@ -457,6 +534,7 @@ const {axios} = useAxios();
 
 const refresh = () => {
     selectedRows.value = [];
+    activeDetailsRow.value = null;
     
     if (props.items !== null) {
         emit('refreshed');
@@ -506,7 +584,8 @@ const refresh = () => {
             rows = props.requestProcess(rows);
         }
 
-        items.value = rows;
+        emit('data-loaded', rows);
+        allItems.value = rows;
     }).catch((err) => {
         totalRows.value = 0;
 
@@ -516,14 +595,6 @@ const refresh = () => {
         flushCache.value = false;
         emit('refreshed');
     });
-};
-
-const $table = ref(); // Template Ref
-
-const onSort = (field, order) => {
-    sortField.value = field;
-    sortOrder.value = order;
-    refresh();
 };
 
 const onPageChange = (p) => {
@@ -554,10 +625,6 @@ const setFilter = (newTerm) => {
     searchPhrase.value = newTerm;
 };
 
-const toggleDetails = (row) => {
-    $table.value?.toggleDetails(row);
-};
-
 watch(perPage, () => {
     currentPage.value = 1;
     relist();
@@ -574,6 +641,82 @@ watchDebounced(searchPhrase, (newSearchPhrase) => {
 });
 
 onMounted(refresh);
+
+const isAllChecked = computed(() => {
+    if (visibleItems.value.length === 0) {
+        return false;
+    }
+
+    return !some(visibleItems.value, (currentVisibleRow) => {
+        return indexOf(selectedRows.value, currentVisibleRow) < 0;
+    });
+});
+
+const isRowChecked = (row) => {
+    return indexOf(selectedRows.value, row) >= 0;
+}
+
+const columnCount = computed(() => {
+    let count = visibleFields.value.length;
+    count += props.selectable ? 1 : 0;
+    return count
+});
+
+const sort = (column) => {
+    if (!column.sortable) {
+        return;
+    }
+
+    if (sortField.value === column.key) {
+        sortOrder.value = (sortOrder.value === 'asc')
+            ? 'desc'
+            : 'asc';
+    } else {
+        sortOrder.value = 'asc';
+    }
+
+    sortField.value = column.key;
+    refresh();
+};
+
+const checkRow = (row) => {
+    const newSelectedRows = selectedRows.value;
+
+    if (isRowChecked(row)) {
+        const index = indexOf(newSelectedRows, row);
+        if (index >= 0) {
+            newSelectedRows.splice(index, 1);
+        }
+    } else {
+        newSelectedRows.push(row);
+    }
+
+    emit('row-selected', newSelectedRows);
+    selectedRows.value = newSelectedRows;
+}
+
+const checkAll = () => {
+    const newSelectedRows = [];
+
+    if (!isAllChecked.value) {
+        forEach(visibleItems.value, (currentRow) => {
+            newSelectedRows.push(currentRow);
+        });
+    }
+
+    emit('row-selected', newSelectedRows);
+    selectedRows.value = newSelectedRows;
+};
+
+const isActiveDetailRow = (row) => {
+    return activeDetailsRow.value === row;
+};
+
+const toggleDetails = (row) => {
+    activeDetailsRow.value = isActiveDetailRow(row)
+        ? null
+        : row;
+};
 
 defineExpose({
     refresh,

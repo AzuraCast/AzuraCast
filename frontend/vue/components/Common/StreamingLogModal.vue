@@ -7,10 +7,18 @@
         no-enforce-focus
         @hidden="clearContents"
     >
-        <streaming-log-view
-            ref="$logView"
-            :log-url="logUrl"
-        />
+        <template v-if="logUrl">
+            <streaming-log-view
+                v-if="isStreaming"
+                ref="$logView"
+                :log-url="logUrl"
+            />
+            <fixed-log-view
+                v-else
+                ref="$logView"
+                :log-url="logUrl"
+            />
+        </template>
 
         <template #modal-footer>
             <button
@@ -36,13 +44,18 @@ import StreamingLogView from "~/components/Common/StreamingLogView";
 import {ref} from "vue";
 import {useClipboard} from "@vueuse/core";
 import Modal from "~/components/Common/Modal.vue";
+import FixedLogView from "~/components/Common/FixedLogView.vue";
 
 const logUrl = ref('');
+const isStreaming = ref(true);
+
 const $modal = ref(); // Template ref
 const $logView = ref(); // Template ref
 
-const show = (newLogUrl) => {
+const show = (newLogUrl, newIsStreaming = true) => {
     logUrl.value = newLogUrl;
+    isStreaming.value = newIsStreaming;
+
     $modal.value.show();
 };
 

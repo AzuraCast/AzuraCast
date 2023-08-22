@@ -7,7 +7,6 @@ namespace App\Webhook\Connector;
 use App\Entity\Api\NowPlaying\NowPlaying;
 use App\Entity\Station;
 use App\Entity\StationWebhook;
-use Monolog\Level;
 
 /*
  * https://discordapp.com/developers/docs/resources/webhook#execute-webhook
@@ -140,14 +139,10 @@ final class Discord extends AbstractConnector
             ]
         );
 
-        $this->logger->addRecord(
-            ($response->getStatusCode() !== 204 ? Level::Error : Level::Debug),
-            sprintf(
-                'Webhook "%s" returned code %d',
-                $webhook->getName(),
-                $response->getStatusCode()
-            ),
-            ['message_sent' => $webhookBody, 'response_body' => $response->getBody()->getContents()]
+        $this->logHttpResponse(
+            $webhook,
+            $response,
+            $webhookBody
         );
     }
 

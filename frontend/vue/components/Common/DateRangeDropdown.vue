@@ -31,7 +31,7 @@
 <script setup>
 import VueDatePicker from '@vuepic/vue-datepicker';
 import Icon from "./Icon";
-import useGetTheme from "~/functions/useGetTheme";
+import useTheme from "~/functions/theme";
 import {useTranslate} from "~/vendor/gettext";
 import {computed} from "vue";
 import {useAzuraCast} from "~/vendor/azuracast";
@@ -74,7 +74,7 @@ const props = defineProps({
 
 const emit = defineEmits(['update:modelValue']);
 
-const {isDark} = useGetTheme();
+const {isDark} = useTheme();
 
 const {localeWithDashes} = useAzuraCast();
 const {DateTime} = useLuxon();

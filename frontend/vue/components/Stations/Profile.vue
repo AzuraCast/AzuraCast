@@ -65,7 +65,7 @@
     </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import ProfileStreams from './Profile/StreamsPanel';
 import ProfileHeader from './Profile/HeaderPanel';
 import ProfileNowPlaying from './Profile/NowPlayingPanel';

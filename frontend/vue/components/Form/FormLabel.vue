@@ -16,7 +16,7 @@
         {{ $gettext('Advanced') }}
     </span>
 </template>
-<script setup>
+<script setup lang="ts">
 const props = defineProps({
     isRequired: {
         type: Boolean,

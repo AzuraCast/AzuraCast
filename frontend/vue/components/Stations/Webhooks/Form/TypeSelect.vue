@@ -44,7 +44,7 @@
     </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import {WebhookType} from "~/components/Entity/Webhooks";
 import TypeSelectSection from "~/components/Stations/Webhooks/Form/TypeSelectSection.vue";
 import {get, map} from "lodash";

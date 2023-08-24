@@ -35,7 +35,7 @@
     </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import FormGroupField from "~/components/Form/FormGroupField";
 import objectToFormOptions from "~/functions/objectToFormOptions";
 import {computed} from "vue";

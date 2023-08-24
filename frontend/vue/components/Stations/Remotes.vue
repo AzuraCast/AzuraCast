@@ -70,7 +70,7 @@
     />
 </template>
 
-<script setup>
+<script setup lang="ts">
 import DataTable from '~/components/Common/DataTable';
 import RemoteEditModal from "./Remotes/EditModal";
 import '~/vendor/sweetalert';

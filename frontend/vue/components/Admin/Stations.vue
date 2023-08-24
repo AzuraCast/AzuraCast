@@ -2,7 +2,7 @@
     <card-page :title="$gettext('Stations')">
         <template #actions>
             <add-button
-                text="$gettext('Add Station')"
+                :text="$gettext('Add Station')"
                 @click="doCreate"
             />
         </template>
@@ -73,7 +73,7 @@
     />
 </template>
 
-<script setup>
+<script setup lang="ts">
 import DataTable from '~/components/Common/DataTable';
 import AdminStationsEditModal from "./Stations/EditModal";
 import {get} from "lodash";

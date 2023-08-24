@@ -58,7 +58,7 @@
     </modal>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import DataTable from '~/components/Common/DataTable.vue';
 import formatFileSize from '~/functions/formatFileSize';
 import InlinePlayer from '~/components/InlinePlayer';

@@ -121,7 +121,7 @@
     />
 </template>
 
-<script setup>
+<script setup lang="ts">
 import Icon from '~/components/Common/Icon';
 import EnabledBadge from "~/components/Common/Badges/EnabledBadge.vue";
 import {ref} from "vue";

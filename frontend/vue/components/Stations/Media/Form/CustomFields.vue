@@ -11,7 +11,7 @@
     </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import FormGroupField from "~/components/Form/FormGroupField";
 
 const props = defineProps({

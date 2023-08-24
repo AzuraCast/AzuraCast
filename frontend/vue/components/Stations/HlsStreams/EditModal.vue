@@ -14,7 +14,7 @@
     </modal-form>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import FormBasicInfo from './Form/BasicInfo';
 import {baseEditModalProps, useBaseEditModal} from "~/functions/useBaseEditModal";
 import {computed, ref} from "vue";

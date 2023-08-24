@@ -68,7 +68,7 @@
     </loading>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import AdminStationsProfileForm from "./Form/ProfileForm.vue";
 import AdminStationsFrontendForm from "./Form/FrontendForm.vue";
 import AdminStationsBackendForm from "./Form/BackendForm.vue";

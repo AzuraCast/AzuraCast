@@ -87,7 +87,7 @@
     />
 </template>
 
-<script setup>
+<script setup lang="ts">
 import DataTable from '~/components/Common/DataTable';
 import EditModal from './PodcastEditModal';
 import AlbumArt from '~/components/Common/AlbumArt';

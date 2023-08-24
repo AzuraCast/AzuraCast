@@ -36,7 +36,7 @@
     </section>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import MixerPanel from './WebDJ/MixerPanel.vue';
 import MicrophonePanel from './WebDJ/MicrophonePanel.vue';
 import PlaylistPanel from './WebDJ/PlaylistPanel.vue';

@@ -8,7 +8,7 @@
     </span>
 </template>
 
-<script setup>
+<script setup lang="ts">
 const props = defineProps({
     song: {
         type: Object,

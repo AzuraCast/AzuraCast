@@ -29,7 +29,7 @@
 
         <div class="card-body buttons">
             <add-button
-                text="$gettext('Add Storage Location')"
+                :text="$gettext('Add Storage Location')"
                 @click="doCreate"
             />
         </div>
@@ -103,7 +103,7 @@
     />
 </template>
 
-<script setup>
+<script setup lang="ts">
 import DataTable from '~/components/Common/DataTable';
 import EditModal from './StorageLocations/EditModal';
 import {computed, nextTick, ref} from "vue";

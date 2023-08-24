@@ -77,7 +77,7 @@
     </card-page>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import FlowUpload from "~/components/Common/FlowUpload";
 import {computed, onMounted, ref} from "vue";
 import {useTranslate} from "~/vendor/gettext";

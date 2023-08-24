@@ -22,7 +22,7 @@
     </admin-settings>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import AdminSettings from "~/components/Admin/Settings";
 import SetupStep from "./SetupStep";
 import InfoCard from "~/components/Common/InfoCard";

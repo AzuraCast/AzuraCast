@@ -57,7 +57,7 @@
     </tab>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import FormGroupField from "~/components/Form/FormGroupField";
 import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox";
 import {useVModel} from "@vueuse/core";

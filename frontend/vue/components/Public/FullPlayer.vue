@@ -62,7 +62,7 @@
     <lightbox ref="$lightbox" />
 </template>
 
-<script setup>
+<script setup lang="ts">
 import SongHistoryModal from './FullPlayer/SongHistoryModal';
 import RequestModal from './FullPlayer/RequestModal';
 import Icon from '~/components/Common/Icon';

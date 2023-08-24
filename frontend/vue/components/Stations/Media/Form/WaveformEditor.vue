@@ -75,7 +75,7 @@
     </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import WaveformComponent from '~/components/Common/Waveform';
 import Icon from '~/components/Common/Icon';
 import {ref} from "vue";

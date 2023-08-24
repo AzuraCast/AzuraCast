@@ -23,7 +23,7 @@
     </modal-form>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import ModalForm from "~/components/Common/ModalForm.vue";
 import {computed, ref} from "vue";
 import {baseEditModalProps, useBaseEditModal} from "~/functions/useBaseEditModal";

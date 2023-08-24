@@ -82,7 +82,7 @@
     </section>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import DateRangeDropdown from "~/components/Common/DateRangeDropdown";
 import ListenersByTimePeriodTab from "./Overview/ListenersByTimePeriodTab";
 import BestAndWorstTab from "./Overview/BestAndWorstTab";

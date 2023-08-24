@@ -55,7 +55,7 @@
     </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import FormGroupField from "~/components/Form/FormGroupField";
 import {useVModel} from "@vueuse/core";
 import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";

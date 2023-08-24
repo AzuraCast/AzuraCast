@@ -65,7 +65,7 @@
     </form-group>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import VuelidateError from "./VuelidateError";
 import FormLabel from "~/components/Form/FormLabel.vue";
 import FormGroup from "~/components/Form/FormGroup.vue";

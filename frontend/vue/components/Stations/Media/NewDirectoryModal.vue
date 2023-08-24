@@ -33,7 +33,7 @@
     </modal>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import {required} from '@vuelidate/validators';
 import FormGroupField from "~/components/Form/FormGroupField";
 import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";

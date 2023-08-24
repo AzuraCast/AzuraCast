@@ -26,7 +26,7 @@
     </tab>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import FormGroupField from "~/components/Form/FormGroupField";
 import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
 import {map} from "lodash";

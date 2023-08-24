@@ -29,7 +29,7 @@
     </modal-form>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import {baseEditModalProps, useBaseEditModal} from "~/functions/useBaseEditModal";
 import {computed, ref} from "vue";
 import {useTranslate} from "~/vendor/gettext";

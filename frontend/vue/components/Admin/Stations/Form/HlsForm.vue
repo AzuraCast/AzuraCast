@@ -80,7 +80,7 @@
     </tab>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import FormFieldset from "~/components/Form/FormFieldset";
 import FormGroupField from "~/components/Form/FormGroupField.vue";
 import {BackendAdapter} from "~/components/Entity/RadioAdapters";

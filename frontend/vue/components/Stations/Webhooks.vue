@@ -94,7 +94,7 @@
     />
 </template>
 
-<script setup>
+<script setup lang="ts">
 import DataTable from '~/components/Common/DataTable';
 import EditModal from './Webhooks/EditModal';
 import {get, map} from 'lodash';

@@ -49,7 +49,7 @@
     </loading>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import PieChart from "~/components/Common/Charts/PieChart.vue";
 import DataTable from "~/components/Common/DataTable";
 import formatTime from "~/functions/formatTime";

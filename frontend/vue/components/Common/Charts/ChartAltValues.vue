@@ -25,7 +25,7 @@
     </template>
 </template>
 
-<script setup>
+<script setup lang="ts">
 const props = defineProps({
     alt: {
         type: Array,

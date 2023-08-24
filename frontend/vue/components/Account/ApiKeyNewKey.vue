@@ -29,7 +29,7 @@
     </p>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import CopyToClipboardButton from "~/components/Common/CopyToClipboardButton.vue";
 
 defineProps({

@@ -37,7 +37,7 @@
     </section>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import AdminStationsForm from "~/components/Admin/Stations/StationForm";
 import SetupStep from "./SetupStep";
 import InfoCard from "~/components/Common/InfoCard";

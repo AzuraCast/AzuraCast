@@ -128,7 +128,7 @@
     </form>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import CodemirrorTextarea from "~/components/Common/CodemirrorTextarea.vue";
 import FormGroupField from "~/components/Form/FormGroupField.vue";
 import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";

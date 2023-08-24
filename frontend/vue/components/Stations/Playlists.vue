@@ -299,7 +299,7 @@
     />
 </template>
 
-<script setup>
+<script setup lang="ts">
 import DataTable from '~/components/Common/DataTable';
 import Schedule from '~/components/Common/ScheduleView';
 import EditModal from './Playlists/EditModal';

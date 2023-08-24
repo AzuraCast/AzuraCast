@@ -61,7 +61,7 @@
     </modal>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import InvisibleSubmitButton from "~/components/Common/InvisibleSubmitButton";
 import AccountApiKeyNewKey from "./ApiKeyNewKey";
 import FormGroupField from "~/components/Form/FormGroupField";

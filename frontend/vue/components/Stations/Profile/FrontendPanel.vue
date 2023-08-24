@@ -159,7 +159,7 @@
     </card-page>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import {FrontendAdapter} from '~/components/Entity/RadioAdapters';
 import CopyToClipboardButton from '~/components/Common/CopyToClipboardButton';
 import Icon from '~/components/Common/Icon';

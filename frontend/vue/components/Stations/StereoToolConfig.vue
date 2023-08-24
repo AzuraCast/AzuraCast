@@ -81,7 +81,7 @@
     </section>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import FlowUpload from '~/components/Common/FlowUpload';
 import InfoCard from "~/components/Common/InfoCard";
 import {onMounted, ref} from "vue";

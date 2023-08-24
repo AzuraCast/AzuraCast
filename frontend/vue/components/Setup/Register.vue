@@ -101,7 +101,7 @@
     </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import FormGroupField from "~/components/Form/FormGroupField";
 import Icon from "~/components/Common/Icon";
 import {reactive} from "vue";

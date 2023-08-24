@@ -29,7 +29,7 @@
     </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import AlbumArt from "~/components/Common/AlbumArt.vue";
 import {useLuxon} from "~/vendor/luxon";
 

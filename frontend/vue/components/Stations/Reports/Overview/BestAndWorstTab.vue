@@ -125,7 +125,7 @@
     </loading>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import Icon from "~/components/Common/Icon";
 import {useMounted} from "@vueuse/core";
 import {onMounted, ref, shallowRef, toRef, watch} from "vue";

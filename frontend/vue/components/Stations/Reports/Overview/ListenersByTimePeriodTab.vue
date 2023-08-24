@@ -49,7 +49,7 @@
     </loading>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import TimeSeriesChart from "~/components/Common/Charts/TimeSeriesChart.vue";
 import HourChart from "~/components/Common/Charts/HourChart.vue";
 import PieChart from "~/components/Common/Charts/PieChart.vue";

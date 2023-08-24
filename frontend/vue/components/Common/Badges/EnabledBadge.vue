@@ -5,7 +5,7 @@
     >{{ badgeText }}</small>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import {computed} from "vue";
 import {useGettext} from "vue3-gettext";
 

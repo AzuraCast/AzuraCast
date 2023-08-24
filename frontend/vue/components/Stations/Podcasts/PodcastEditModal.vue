@@ -25,7 +25,7 @@
     </modal-form>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import PodcastFormBasicInfo from './PodcastForm/BasicInfo';
 import PodcastCommonArtwork from './Common/Artwork';
 import mergeExisting from "~/functions/mergeExisting";

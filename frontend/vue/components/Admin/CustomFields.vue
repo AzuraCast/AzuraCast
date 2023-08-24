@@ -9,7 +9,7 @@
         </template>
         <template #actions>
             <add-button
-                text="$gettext('Add Custom Field')"
+                :text="$gettext('Add Custom Field')"
                 @click="doCreate"
             />
         </template>
@@ -53,7 +53,7 @@
     />
 </template>
 
-<script setup>
+<script setup lang="ts">
 import DataTable from '~/components/Common/DataTable.vue';
 import EditModal from './CustomFields/EditModal.vue';
 import {get} from 'lodash';

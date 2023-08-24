@@ -170,7 +170,7 @@
     </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import StationReportsListenersMap from "./Listeners/Map";
 import Icon from "~/components/Common/Icon";
 import formatTime from "~/functions/formatTime";

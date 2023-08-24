@@ -16,7 +16,7 @@
     </modal-form>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import AdminUsersForm from './Form.vue';
 import {map} from 'lodash';
 import {computed, ref} from "vue";

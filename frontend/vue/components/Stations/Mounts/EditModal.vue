@@ -32,7 +32,7 @@
     </modal-form>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import MountFormBasicInfo from './Form/BasicInfo';
 import MountFormAutoDj from './Form/AutoDj';
 import MountFormAdvanced from './Form/Advanced';

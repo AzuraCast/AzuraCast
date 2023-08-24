@@ -5,7 +5,7 @@
     />
 </template>
 
-<script setup>
+<script setup lang="ts">
 import FullCalendar from '@fullcalendar/vue3';
 import allLocales from '@fullcalendar/core/locales-all';
 import luxon3Plugin from '@fullcalendar/luxon3';

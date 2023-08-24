@@ -45,7 +45,7 @@
     </card-page>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import DataTable from '~/components/Common/DataTable';
 import {useTranslate} from "~/vendor/gettext";
 import {ref} from "vue";

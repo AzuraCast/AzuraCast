@@ -149,7 +149,7 @@
     />
 </template>
 
-<script setup>
+<script setup lang="ts">
 import Icon from "~/components/Common/Icon.vue";
 import DataTable from "~/components/Common/DataTable.vue";
 import AdminBackupsLastOutputModal from "./Backups/LastOutputModal.vue";

@@ -227,7 +227,7 @@
     </card-page>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import {BackendAdapter} from '~/components/Entity/RadioAdapters';
 import Icon from '~/components/Common/Icon';
 import {computed} from "vue";

@@ -294,7 +294,7 @@
     </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import {slice, filter, map, includes, isEmpty, get, some, indexOf, forEach} from 'lodash';
 import Icon from './Icon.vue';
 import {computed, onMounted, ref, shallowRef, toRaw, toRef, useSlots, watch} from "vue";

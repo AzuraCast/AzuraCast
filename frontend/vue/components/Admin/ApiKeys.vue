@@ -29,7 +29,7 @@
     </card-page>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import DataTable from "~/components/Common/DataTable.vue";
 import {ref} from "vue";
 import {useTranslate} from "~/vendor/gettext";

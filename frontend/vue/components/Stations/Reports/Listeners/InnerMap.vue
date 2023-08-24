@@ -10,7 +10,7 @@
     </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import {onMounted, provide, ref, shallowRef, watch} from "vue";
 import L from 'leaflet';
 import useTheme from "~/functions/theme";

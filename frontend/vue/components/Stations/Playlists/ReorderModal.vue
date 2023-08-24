@@ -81,7 +81,7 @@
     </modal>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import Draggable from 'vuedraggable';
 import Icon from '~/components/Common/Icon';
 import PlayButton from "~/components/Common/PlayButton";
@@ -142,16 +142,6 @@ const moveUp = (index) => {
 defineExpose({
     open
 });
-</script>
-
-<script>
-
-export default {
-    data() {
-        return {};
-    },
-    methods: {}
-};
 </script>
 
 <style lang="scss">

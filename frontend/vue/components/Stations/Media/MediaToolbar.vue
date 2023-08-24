@@ -186,7 +186,7 @@
     </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import {forEach, intersection, map} from 'lodash';
 import Icon from '~/components/Common/Icon';
 import '~/vendor/sweetalert';

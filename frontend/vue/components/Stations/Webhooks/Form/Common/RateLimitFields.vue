@@ -8,7 +8,7 @@
     />
 </template>
 
-<script setup>
+<script setup lang="ts">
 import {useTranslate} from "~/vendor/gettext";
 import FormGroupSelect from "~/components/Form/FormGroupSelect.vue";
 import {useVModel} from "@vueuse/core";

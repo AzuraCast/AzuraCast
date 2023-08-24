@@ -170,7 +170,7 @@
     </card-page>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import Icon from '~/components/Common/Icon';
 import PlayButton from "~/components/Common/PlayButton";
 import CardPage from "~/components/Common/CardPage.vue";

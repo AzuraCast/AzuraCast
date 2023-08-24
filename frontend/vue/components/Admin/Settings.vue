@@ -60,7 +60,7 @@
     </form>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import SettingsGeneralTab from "./Settings/GeneralTab.vue";
 import SettingsServicesTab from "./Settings/ServicesTab.vue";
 import SettingsSecurityPrivacyTab from "~/components/Admin/Settings/SecurityPrivacyTab.vue";

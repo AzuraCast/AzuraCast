@@ -79,7 +79,7 @@
     </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import Icon from '~/components/Common/Icon';
 import VolumeSlider from "~/components/Public/WebDJ/VolumeSlider";
 import {useDevicesList} from "@vueuse/core";

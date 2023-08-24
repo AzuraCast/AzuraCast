@@ -58,7 +58,7 @@
     </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import FormGroupField from "~/components/Form/FormGroupField";
 import CommonFormattingInfo from "./FormattingInfo";
 import {includes} from 'lodash';

@@ -69,7 +69,7 @@
     </tab>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import FormGroupField from "~/components/Form/FormGroupField.vue";
 import {computed} from "vue";
 import {useVModel} from "@vueuse/core";

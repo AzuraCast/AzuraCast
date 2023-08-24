@@ -31,7 +31,7 @@
     </modal-form>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import EpisodeFormBasicInfo from './EpisodeForm/BasicInfo';
 import PodcastCommonArtwork from './Common/Artwork';
 import EpisodeFormMedia from './EpisodeForm/Media';

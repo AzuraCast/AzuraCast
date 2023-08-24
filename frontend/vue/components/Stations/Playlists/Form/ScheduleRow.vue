@@ -100,7 +100,7 @@
     </section>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import PlaylistTime from '~/components/Common/TimeCode';
 import Icon from "~/components/Common/Icon.vue";
 import FormGroupField from "~/components/Form/FormGroupField.vue";

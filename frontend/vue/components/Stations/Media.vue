@@ -240,7 +240,7 @@
     />
 </template>
 
-<script setup>
+<script setup lang="ts">
 import DataTable from '~/components/Common/DataTable';
 import MediaToolbar from './Media/MediaToolbar';
 import Breadcrumb from './Media/Breadcrumb';

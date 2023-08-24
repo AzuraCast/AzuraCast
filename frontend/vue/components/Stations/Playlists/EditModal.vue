@@ -19,7 +19,7 @@
     </modal-form>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import FormBasicInfo from './Form/BasicInfo';
 import FormSchedule from './Form/Schedule';
 import FormAdvanced from './Form/Advanced';

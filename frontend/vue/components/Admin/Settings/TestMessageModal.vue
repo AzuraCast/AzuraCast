@@ -33,7 +33,7 @@
     </modal>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import {email, required} from '@vuelidate/validators';
 import FormGroupField from "~/components/Form/FormGroupField.vue";
 import {ref} from "vue";

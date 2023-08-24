@@ -21,7 +21,7 @@
     </loading>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import TimeSeriesChart from '~/components/Common/Charts/TimeSeriesChart.vue';
 import {useAsyncState} from "@vueuse/core";
 import {useAxios} from "~/vendor/axios";

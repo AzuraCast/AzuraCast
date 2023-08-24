@@ -15,7 +15,7 @@
     </modal-form>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import mergeExisting from "~/functions/mergeExisting";
 import {email, required} from '@vuelidate/validators';
 import AccountEditForm from "./EditForm.vue";

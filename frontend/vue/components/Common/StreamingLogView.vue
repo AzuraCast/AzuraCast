@@ -17,7 +17,7 @@
     </loading>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import {nextTick, ref, toRef, watch} from "vue";
 import {useAxios} from "~/vendor/axios";
 import {tryOnScopeDispose} from "@vueuse/core";

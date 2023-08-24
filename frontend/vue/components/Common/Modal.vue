@@ -49,7 +49,7 @@
     </Teleport>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import Modal from 'bootstrap/js/src/modal';
 import {onMounted, ref, useSlots, watch} from 'vue';
 import Loading from "~/components/Common/Loading.vue";

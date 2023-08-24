@@ -6,7 +6,7 @@
     />
 </template>
 
-<script setup>
+<script setup lang="ts">
 import getLogarithmicVolume from '~/functions/getLogarithmicVolume';
 import Hls from 'hls.js';
 import {usePlayerStore} from "~/store";

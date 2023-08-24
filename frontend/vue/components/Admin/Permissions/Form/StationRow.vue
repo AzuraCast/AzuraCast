@@ -38,7 +38,7 @@
     </section>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import useVuelidate from "@vuelidate/core";
 import {get, map} from "lodash";
 import Icon from "~/components/Common/Icon.vue";

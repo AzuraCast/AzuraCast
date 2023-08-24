@@ -103,7 +103,7 @@
     </tab>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import {FrontendAdapter} from '~/components/Entity/RadioAdapters';
 import FormGroupField from "~/components/Form/FormGroupField";
 import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox";

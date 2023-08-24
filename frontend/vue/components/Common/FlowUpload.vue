@@ -66,7 +66,7 @@
     </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import formatFileSize from '~/functions/formatFileSize';
 import Icon from './Icon.vue';
 import {defaultsDeep, forEach, toInteger} from 'lodash';

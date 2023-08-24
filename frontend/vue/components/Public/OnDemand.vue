@@ -74,7 +74,7 @@
     <lightbox ref="$lightbox" />
 </template>
 
-<script setup>
+<script setup lang="ts">
 import InlinePlayer from '../InlinePlayer';
 import DataTable from '~/components/Common/DataTable';
 import {forEach} from 'lodash';

@@ -7,7 +7,7 @@
     </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import useNowPlaying, {nowPlayingProps} from '~/functions/useNowPlaying';
 import {computed} from "vue";
 import SongHistory from "~/components/Public/FullPlayer/SongHistory.vue";

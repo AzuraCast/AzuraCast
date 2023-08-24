@@ -16,7 +16,7 @@
     </modal-form>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import RemoteFormBasicInfo from "./Form/BasicInfo";
 import RemoteFormAutoDj from "./Form/AutoDj";
 import {baseEditModalProps, useBaseEditModal} from "~/functions/useBaseEditModal";

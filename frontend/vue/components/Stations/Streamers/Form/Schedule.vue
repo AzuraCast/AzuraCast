@@ -35,7 +35,7 @@
     </tab>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import Icon from '~/components/Common/Icon';
 import StreamersFormScheduleRow from "~/components/Stations/Streamers/Form/ScheduleRow.vue";
 import {useVModel} from "@vueuse/core";

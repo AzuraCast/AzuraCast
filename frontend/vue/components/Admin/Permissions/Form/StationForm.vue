@@ -42,7 +42,7 @@
     </tab>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import {find, isEmpty, pickBy} from 'lodash';
 import PermissionsFormStationRow from "~/components/Admin/Permissions/Form/StationRow.vue";
 import {computed} from "vue";

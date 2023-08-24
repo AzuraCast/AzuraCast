@@ -44,7 +44,7 @@
     </modal>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import AdminStationsForm from "~/components/Admin/Stations/StationForm.vue";
 import InvisibleSubmitButton from "~/components/Common/InvisibleSubmitButton.vue";
 import {computed, ref} from "vue";

@@ -12,7 +12,7 @@
     </loading>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import {ref, toRef, watch} from "vue";
 import {useAxios} from "~/vendor/axios";
 import Loading from "~/components/Common/Loading.vue";

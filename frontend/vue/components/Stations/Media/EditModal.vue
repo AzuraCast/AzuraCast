@@ -47,7 +47,7 @@
     </modal-form>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import {required} from '@vuelidate/validators';
 import {defaultTo, forEach, map} from 'lodash';
 import MediaFormBasicInfo from './Form/BasicInfo';

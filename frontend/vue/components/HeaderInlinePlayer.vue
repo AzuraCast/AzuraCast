@@ -4,6 +4,6 @@
     </teleport>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import InlinePlayer from "~/components/InlinePlayer.vue";
 </script>

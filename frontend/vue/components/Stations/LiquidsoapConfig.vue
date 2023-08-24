@@ -70,7 +70,7 @@
     </form>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import FormFieldset from "~/components/Form/FormFieldset";
 import FormGroupField from "~/components/Form/FormGroupField";
 import FormMarkup from "~/components/Form/FormMarkup";

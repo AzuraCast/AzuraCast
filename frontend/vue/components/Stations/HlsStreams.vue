@@ -61,7 +61,7 @@
     />
 </template>
 
-<script setup>
+<script setup lang="ts">
 import DataTable from '~/components/Common/DataTable';
 import EditModal from './HlsStreams/EditModal';
 import {useTranslate} from "~/vendor/gettext";

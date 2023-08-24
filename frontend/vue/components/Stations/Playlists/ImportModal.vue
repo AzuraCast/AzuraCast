@@ -98,7 +98,7 @@
     </modal>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import InvisibleSubmitButton from '~/components/Common/InvisibleSubmitButton';
 import {ref} from "vue";
 import {useNotify} from "~/functions/useNotify";

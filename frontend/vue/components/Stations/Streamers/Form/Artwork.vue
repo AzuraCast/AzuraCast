@@ -44,7 +44,7 @@
     </tab>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import {computed, ref, toRef} from "vue";
 import {useAxios} from "~/vendor/axios";
 import FormGroup from "~/components/Form/FormGroup.vue";

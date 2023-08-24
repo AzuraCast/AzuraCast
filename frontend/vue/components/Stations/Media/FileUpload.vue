@@ -9,7 +9,7 @@
     />
 </template>
 
-<script setup>
+<script setup lang="ts">
 import FlowUpload from '~/components/Common/FlowUpload';
 
 const props = defineProps({

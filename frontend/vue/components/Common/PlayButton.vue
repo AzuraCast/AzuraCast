@@ -13,7 +13,7 @@
     </button>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import Icon from "./Icon";
 import {usePlayerStore} from "~/store";
 import {computed, toRef} from "vue";

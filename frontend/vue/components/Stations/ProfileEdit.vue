@@ -53,7 +53,7 @@
     </section>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import AdminStationsForm from "~/components/Admin/Stations/StationForm";
 import {nextTick, onMounted, ref} from "vue";
 import stationFormProps from "~/components/Admin/Stations/stationFormProps";

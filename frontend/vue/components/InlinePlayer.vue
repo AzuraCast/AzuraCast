@@ -65,7 +65,7 @@
     </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import AudioPlayer from '~/components/Common/AudioPlayer.vue';
 import formatTime from '~/functions/formatTime';
 import Icon from '~/components/Common/Icon.vue';

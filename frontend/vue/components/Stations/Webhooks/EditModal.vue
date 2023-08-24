@@ -30,7 +30,7 @@
     </modal-form>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import TypeSelect from "./Form/TypeSelect";
 import BasicInfo from "./Form/BasicInfo";
 import {get, map} from "lodash";

@@ -101,7 +101,7 @@
     </modal>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import FormFieldset from "~/components/Form/FormFieldset";
 import FormGroupField from "~/components/Form/FormGroupField.vue";
 import InvisibleSubmitButton from "~/components/Common/InvisibleSubmitButton.vue";

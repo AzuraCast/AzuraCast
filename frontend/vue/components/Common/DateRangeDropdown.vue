@@ -28,7 +28,7 @@
     </vue-date-picker>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import VueDatePicker from '@vuepic/vue-datepicker';
 import Icon from "./Icon";
 import useTheme from "~/functions/theme";

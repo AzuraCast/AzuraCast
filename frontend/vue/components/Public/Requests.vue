@@ -36,7 +36,7 @@
     </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import DataTable from '~/components/Common/DataTable';
 import {forEach} from 'lodash';
 import AlbumArt from '~/components/Common/AlbumArt';

@@ -39,7 +39,7 @@
     </modal>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import StreamingLogView from "~/components/Common/StreamingLogView";
 import {ref} from "vue";
 import {useClipboard} from "@vueuse/core";

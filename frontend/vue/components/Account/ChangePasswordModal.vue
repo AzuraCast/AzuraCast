@@ -36,7 +36,7 @@
     </modal-form>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import FormGroupField from "~/components/Form/FormGroupField";
 import ModalForm from "~/components/Common/ModalForm";
 import {helpers, required} from "@vuelidate/validators";

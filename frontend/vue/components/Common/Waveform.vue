@@ -67,7 +67,7 @@
     </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import WS from 'wavesurfer.js';
 import timeline from 'wavesurfer.js/dist/plugins/timeline.js';
 import regions from 'wavesurfer.js/dist/plugins/regions.js';

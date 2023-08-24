@@ -111,7 +111,7 @@
     </section>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import {required} from '@vuelidate/validators';
 import FormGroupField from "~/components/Form/FormGroupField";
 import FormFieldset from "~/components/Form/FormFieldset";

@@ -41,7 +41,7 @@
     </section>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import Schedule from '~/components/Common/ScheduleView';
 
 const props = defineProps({

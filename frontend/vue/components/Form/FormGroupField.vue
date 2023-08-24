@@ -72,7 +72,7 @@
     </form-group>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import VuelidateError from "./VuelidateError";
 import {computed, ref, useSlots} from "vue";
 import FormGroup from "~/components/Form/FormGroup.vue";

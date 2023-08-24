@@ -36,7 +36,7 @@
     <lightbox ref="$lightbox" />
 </template>
 
-<script setup>
+<script setup lang="ts">
 import CustomAssetForm from "./Branding/CustomAssetForm.vue";
 import BrandingForm from "./Branding/BrandingForm.vue";
 import CardPage from "~/components/Common/CardPage.vue";

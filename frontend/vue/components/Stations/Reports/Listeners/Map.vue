@@ -23,7 +23,7 @@
     </inner-map>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import InnerMap from "./InnerMap.vue";
 import MapPoint from "./MapPoint.vue";
 import {computed} from "vue";

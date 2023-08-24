@@ -1,6 +1,7 @@
 {
   "name": "azuracast",
-  "license": "Apache-2.0",
+  "license": "AGPL-3.0",
+  "type": "module",
   "scripts": {
     "build": "vite build",
     "serve": "vite",
@@ -63,6 +64,7 @@
     "typescript": "^5.1.6",
     "vite": "^4.4.6",
     "vite-plugin-eslint": "^1.8.1",
-    "vue-eslint-parser": "^9.3.1"
+    "vue-eslint-parser": "^9.3.1",
+    "vue-tsc": "^1.8.8"
   }
 }

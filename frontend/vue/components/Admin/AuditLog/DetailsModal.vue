@@ -36,7 +36,7 @@
     </modal>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import Modal from "~/components/Common/Modal.vue";
 import {ref} from "vue";
 

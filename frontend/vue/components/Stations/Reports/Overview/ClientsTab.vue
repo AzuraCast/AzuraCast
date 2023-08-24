@@ -14,7 +14,7 @@
     </common-metrics-view>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import CommonMetricsView from "./CommonMetricsView";
 
 const props = defineProps({

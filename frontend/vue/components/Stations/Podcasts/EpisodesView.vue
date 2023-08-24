@@ -110,7 +110,7 @@
     />
 </template>
 
-<script setup>
+<script setup lang="ts">
 import DataTable from '~/components/Common/DataTable';
 import EditModal from './EpisodeEditModal';
 import Icon from '~/components/Common/Icon';

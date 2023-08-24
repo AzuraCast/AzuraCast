@@ -163,17 +163,19 @@
     </footer>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import {useSlots, watch} from "vue";
 import Icon from "~/components/Common/Icon.vue";
 import useTheme from "~/functions/theme";
 import {
-    IconAccountCircle, IconExitToApp,
+    IconAccountCircle,
+    IconExitToApp,
     IconHome,
     IconInvertColors,
     IconMenu,
     IconMenuOpen,
-    IconSettings, IconSupport
+    IconSettings,
+    IconSupport
 } from "~/components/Common/icons";
 
 const props = defineProps({

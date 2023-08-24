@@ -15,7 +15,7 @@
     </modal-form>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import {required} from '@vuelidate/validators';
 import ModalForm from "~/components/Common/ModalForm.vue";
 import AdminCustomFieldsForm from "~/components/Admin/CustomFields/Form.vue";

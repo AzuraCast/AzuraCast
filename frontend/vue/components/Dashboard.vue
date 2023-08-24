@@ -290,7 +290,7 @@
     <lightbox ref="$lightbox" />
 </template>
 
-<script setup>
+<script setup lang="ts">
 import Icon from '~/components/Common/Icon';
 import Avatar from '~/components/Common/Avatar';
 import PlayButton from "~/components/Common/PlayButton";

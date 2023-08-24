@@ -9,7 +9,7 @@
         </template>
         <template #actions>
             <add-button
-                text="$gettext('Add Role')"
+                :text="$gettext('Add Role')"
                 @click="doCreate"
             />
         </template>
@@ -70,7 +70,7 @@
     />
 </template>
 
-<script setup>
+<script setup lang="ts">
 import DataTable from '~/components/Common/DataTable';
 import EditModal from './Permissions/EditModal';
 import {filter, get, map} from 'lodash';

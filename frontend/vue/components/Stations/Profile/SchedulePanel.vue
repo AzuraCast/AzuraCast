@@ -42,7 +42,7 @@
     </card-page>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import {map} from "lodash";
 import {computed} from "vue";
 import {useAzuraCast, useAzuraCastStation} from "~/vendor/azuracast";

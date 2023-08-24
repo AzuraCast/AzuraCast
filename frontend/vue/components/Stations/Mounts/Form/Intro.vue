@@ -56,7 +56,7 @@
     </tab>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import FlowUpload from '~/components/Common/FlowUpload';
 
 import {computed, toRef} from "vue";

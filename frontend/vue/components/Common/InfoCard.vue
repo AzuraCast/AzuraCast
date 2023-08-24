@@ -19,7 +19,7 @@
     </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import Icon from './Icon';
 import {IconInfo} from "~/components/Common/icons";
 

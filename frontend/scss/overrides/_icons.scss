@@ -1,22 +1,20 @@
 .icon {
-  width: 1.5rem;
-  height: 1.5rem;
+  width: 1em;
+  height: 1em;
   display: inline-block;
   vertical-align: -.125em;
   fill: currentcolor;
+  font-size: $icon-size;
 
   &.sm, .btn-sm & {
-    width: $icon-size-sm;
-    height: $icon-size-sm;
+    font-size: $icon-size-sm;
   }
 
   &.lg, .btn-lg & {
-    width: $icon-size-lg;
-    height: $icon-size-lg;
+    font-size: $icon-size-lg;
   }
 
   &.xl, .btn-xl & {
-    width: $icon-size-xl;
-    height: $icon-size-xl;
+    font-size: $icon-size-xl;
   }
 }

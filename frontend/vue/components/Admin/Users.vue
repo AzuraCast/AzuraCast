@@ -2,7 +2,7 @@
     <card-page :title="$gettext('Users')">
         <template #actions>
             <add-button
-                text="$gettext('Add User')"
+                :text="$gettext('Add User')"
                 @click="doCreate"
             />
         </template>
@@ -76,7 +76,7 @@
     />
 </template>
 
-<script setup>
+<script setup lang="ts">
 import DataTable from '~/components/Common/DataTable';
 import EditModal from './Users/EditModal';
 import {useTranslate} from "~/vendor/gettext";

@@ -69,7 +69,7 @@
     <queue-logs-modal ref="$logsModal" />
 </template>
 
-<script setup>
+<script setup lang="ts">
 import DataTable from '../Common/DataTable';
 import QueueLogsModal from './Queue/LogsModal';
 import Icon from "~/components/Common/Icon";

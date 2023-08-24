@@ -74,7 +74,7 @@
     </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import DataTable from "~/components/Common/DataTable";
 import SftpUsersEditModal from "./SftpUsers/EditModal";
 import {useTranslate} from "~/vendor/gettext";

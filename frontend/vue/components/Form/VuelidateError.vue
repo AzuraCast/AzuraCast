@@ -8,7 +8,7 @@
     </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import {useTranslate} from "~/vendor/gettext";
 import {get, map} from "lodash";
 import {computed} from "vue";

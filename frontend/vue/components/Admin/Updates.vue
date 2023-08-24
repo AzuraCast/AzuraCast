@@ -151,7 +151,7 @@
     </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import {computed, ref} from "vue";
 import Icon from "~/components/Common/Icon.vue";
 import {useTranslate} from "~/vendor/gettext";

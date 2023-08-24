@@ -4,7 +4,7 @@
     </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import {inject, onUnmounted, ref, watch} from 'vue';
 import L from 'leaflet';
 

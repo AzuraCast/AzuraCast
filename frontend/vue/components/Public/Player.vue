@@ -138,7 +138,7 @@
     </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import AudioPlayer from '~/components/Common/AudioPlayer';
 import PlayButton from "~/components/Common/PlayButton";
 import {computed, onMounted, ref, shallowRef, watch} from "vue";

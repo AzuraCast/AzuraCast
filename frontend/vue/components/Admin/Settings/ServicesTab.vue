@@ -255,7 +255,7 @@
     />
 </template>
 
-<script setup>
+<script setup lang="ts">
 import FormMarkup from "~/components/Form/FormMarkup.vue";
 import FormGroupField from "~/components/Form/FormGroupField.vue";
 import FormFieldset from "~/components/Form/FormFieldset";

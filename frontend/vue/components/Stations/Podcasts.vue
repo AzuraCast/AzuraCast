@@ -14,7 +14,7 @@
     />
 </template>
 
-<script setup>
+<script setup lang="ts">
 import EpisodesView from './Podcasts/EpisodesView';
 import ListView from './Podcasts/ListView';
 import {ref} from "vue";

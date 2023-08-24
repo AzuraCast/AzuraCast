@@ -65,7 +65,7 @@
     </modal>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import InvisibleSubmitButton from "~/components/Common/InvisibleSubmitButton.vue";
 import {ref} from "vue";
 import useSlotsExcept from "~/functions/useSlotsExcept";

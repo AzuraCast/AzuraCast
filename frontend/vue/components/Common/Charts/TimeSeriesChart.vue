@@ -9,7 +9,7 @@
     </canvas>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import {Tableau20} from "~/vendor/chartjs-colorschemes/colorschemes.tableau";
 import {ref} from "vue";
 import {useTranslate} from "~/vendor/gettext";

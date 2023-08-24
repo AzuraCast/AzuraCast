@@ -8,7 +8,10 @@
             </p>
         </template>
         <template #actions>
-            <add-button :text="$gettext('Add Mount Point')" @click="doCreate"/>
+            <add-button
+                :text="$gettext('Add Mount Point')"
+                @click="doCreate"
+            />
         </template>
 
         <data-table

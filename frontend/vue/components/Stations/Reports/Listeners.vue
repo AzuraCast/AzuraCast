@@ -16,7 +16,7 @@
                                 :href="exportUrl"
                                 target="_blank"
                             >
-                                <icon :icon="IconDownload"/>
+                                <icon :icon="IconDownload" />
                                 <span>
                                     {{ $gettext('Download CSV') }}
                                 </span>
@@ -119,13 +119,13 @@
                         <template #cell(user_agent)="row">
                             <div>
                                 <span v-if="row.item.is_mobile">
-                                    <icon :icon="IconSmartphone"/>
+                                    <icon :icon="IconSmartphone" />
                                     <span class="visually-hidden">
                                         {{ $gettext('Mobile Device') }}
                                     </span>
                                 </span>
                                 <span v-else>
-                                    <icon :icon="IconDesktopWindows"/>
+                                    <icon :icon="IconDesktopWindows" />
                                     <span class="visually-hidden">
                                         {{ $gettext('Desktop Device') }}
                                     </span>

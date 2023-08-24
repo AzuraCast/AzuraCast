@@ -8,7 +8,10 @@
             </p>
         </template>
         <template #actions>
-            <add-button :text="$gettext('Add Web Hook')" @click="doCreate"/>
+            <add-button
+                :text="$gettext('Add Web Hook')"
+                @click="doCreate"
+            />
         </template>
 
         <data-table

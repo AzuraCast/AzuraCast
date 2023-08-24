@@ -62,7 +62,7 @@
                         href="https://github.com/AzuraCast/AzuraCast/issues/new/choose"
                         target="_blank"
                     >
-                        <icon :icon="IconSupport"/>
+                        <icon :icon="IconSupport" />
                         <span>
                             {{ $gettext('Add New GitHub Issue') }}
                         </span>

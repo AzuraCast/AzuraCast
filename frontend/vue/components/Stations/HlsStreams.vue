@@ -8,16 +8,7 @@
             </p>
         </template>
         <template #actions>
-            <button
-                type="button"
-                class="btn btn-primary"
-                @click.prevent="doCreate"
-            >
-                <icon icon="add" />
-                <span>
-                    {{ $gettext('Add HLS Stream') }}
-                </span>
-            </button>
+            <add-button :text="$gettext('Add HLS Stream')" @click="doCreate"/>
         </template>
 
         <data-table
@@ -70,7 +61,6 @@
 <script setup>
 import DataTable from '~/components/Common/DataTable';
 import EditModal from './HlsStreams/EditModal';
-import Icon from '~/components/Common/Icon';
 import {useTranslate} from "~/vendor/gettext";
 import {ref} from "vue";
 import {useMayNeedRestart} from "~/functions/useMayNeedRestart";
@@ -79,6 +69,7 @@ import useHasEditModal from "~/functions/useHasEditModal";
 import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
 import CardPage from "~/components/Common/CardPage.vue";
 import {getStationApiUrl} from "~/router";
+import AddButton from "~/components/Common/AddButton.vue";
 
 const listUrl = getStationApiUrl('/hls_streams');
 

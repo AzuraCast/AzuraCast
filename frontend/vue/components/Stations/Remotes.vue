@@ -8,7 +8,10 @@
             </p>
         </template>
         <template #actions>
-            <add-button :text="$gettext('Add Remote Relay')" @click="doCreate"/>
+            <add-button
+                :text="$gettext('Add Remote Relay')"
+                @click="doCreate"
+            />
         </template>
 
         <data-table

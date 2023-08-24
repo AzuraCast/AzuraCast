@@ -31,7 +31,7 @@
                 class="btn btn-light"
                 @click="retry"
             >
-                <icon :icon="IconRefresh"/>
+                <icon :icon="IconRefresh" />
                 <span>
                     {{ $gettext('Reload') }}
                 </span>

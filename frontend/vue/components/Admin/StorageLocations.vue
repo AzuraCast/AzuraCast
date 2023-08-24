@@ -28,7 +28,10 @@
         </div>
 
         <div class="card-body buttons">
-            <add-button text="$gettext('Add Storage Location')" @click="doCreate"/>
+            <add-button
+                text="$gettext('Add Storage Location')"
+                @click="doCreate"
+            />
         </div>
 
         <data-table

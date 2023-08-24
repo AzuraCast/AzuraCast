@@ -91,19 +91,19 @@
                                 v-if="row.item.is_dir"
                                 class="file-icon"
                             >
-                                <icon icon="folder" />
+                                <icon :icon="IconFolder"/>
                             </span>
                             <span
                                 v-else-if="row.item.is_cover_art"
                                 class="file-icon"
                             >
-                                <icon icon="photo" />
+                                <icon :icon="IconImage"/>
                             </span>
                             <span
                                 v-else
                                 class="file-icon"
                             >
-                                <icon icon="note" />
+                                <icon :icon="IconFile"/>
                             </span>
                         </template>
                     </div>
@@ -262,6 +262,7 @@ import InfoCard from "~/components/Common/InfoCard.vue";
 import {useLuxon} from "~/vendor/luxon";
 import {getStationApiUrl} from "~/router";
 import {useRoute, useRouter} from "vue-router";
+import {IconFile, IconFolder, IconImage} from "~/components/Common/icons";
 
 const props = defineProps({
     initialPlaylists: {

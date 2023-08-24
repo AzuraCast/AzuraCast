@@ -6,7 +6,10 @@
                 :title="$gettext('SFTP Users')"
             >
                 <template #actions>
-                    <add-button :text="$gettext('Add SFTP User')" @click="doCreate"/>
+                    <add-button
+                        :text="$gettext('Add SFTP User')"
+                        @click="doCreate"
+                    />
                 </template>
 
                 <data-table

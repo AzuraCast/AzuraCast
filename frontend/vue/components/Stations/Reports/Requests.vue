@@ -42,7 +42,7 @@
                 class="btn btn-danger"
                 @click="doClear()"
             >
-                <icon :icon="IconRemove"/>
+                <icon :icon="IconRemove" />
                 <span>
                     {{ $gettext('Clear Pending Requests') }}
                 </span>

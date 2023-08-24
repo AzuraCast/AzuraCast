@@ -32,7 +32,10 @@
                         <tab :label="$gettext('Account List')">
                             <div class="card-body-flush">
                                 <div class="card-body buttons">
-                                    <add-button :text="$gettext('Add Streamer')" @click="doCreate"/>
+                                    <add-button
+                                        :text="$gettext('Add Streamer')"
+                                        @click="doCreate"
+                                    />
                                 </div>
 
                                 <data-table

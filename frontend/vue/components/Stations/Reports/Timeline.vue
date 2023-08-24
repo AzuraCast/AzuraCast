@@ -12,7 +12,7 @@
                         :href="exportUrl"
                         target="_blank"
                     >
-                        <icon :icon="IconDownload"/>
+                        <icon :icon="IconDownload" />
                         <span>
                             {{ $gettext('Download CSV') }}
                         </span>
@@ -39,13 +39,13 @@
                 <span class="typography-subheading">
                     <template v-if="row.item.delta_total > 0">
                         <span class="text-success">
-                            <icon :icon="IconTrendingUp"/>
+                            <icon :icon="IconTrendingUp" />
                             {{ abs(row.item.delta_total) }}
                         </span>
                     </template>
                     <template v-else-if="row.item.delta_total < 0">
                         <span class="text-danger">
-                            <icon :icon="IconTrendingDown"/>
+                            <icon :icon="IconTrendingDown" />
                             {{ abs(row.item.delta_total) }}
                         </span>
                     </template>

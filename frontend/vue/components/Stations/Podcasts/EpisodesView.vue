@@ -35,12 +35,15 @@
                 class="btn btn-secondary"
                 @click="doClearPodcast()"
             >
-                <icon :icon="IconChevronLeft"/>
+                <icon :icon="IconChevronLeft" />
                 <span>
                     {{ $gettext('All Podcasts') }}
                 </span>
             </button>
-            <add-button :text="$gettext('Add Episode')" @click="doCreate"/>
+            <add-button
+                :text="$gettext('Add Episode')"
+                @click="doCreate"
+            />
         </div>
 
         <data-table

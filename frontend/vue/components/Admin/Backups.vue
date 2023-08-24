@@ -43,7 +43,7 @@
                         class="btn btn-primary"
                         @click="doConfigure"
                     >
-                        <icon :icon="IconSettings"/>
+                        <icon :icon="IconSettings" />
                         <span>
                             {{ $gettext('Configure') }}
                         </span>
@@ -54,7 +54,7 @@
                         class="btn btn-secondary"
                         @click="showLastOutput"
                     >
-                        <icon :icon="IconLogs"/>
+                        <icon :icon="IconLogs" />
                         <span>
                             {{ $gettext('Most Recent Backup Log') }}
                         </span>
@@ -95,7 +95,7 @@
                 class="btn btn-primary"
                 @click="doRunBackup"
             >
-                <icon :icon="IconSend"/>
+                <icon :icon="IconSend" />
                 <span>
                     {{ $gettext('Run Manual Backup') }}
                 </span>

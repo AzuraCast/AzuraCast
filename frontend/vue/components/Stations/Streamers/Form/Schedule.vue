@@ -26,7 +26,7 @@
                 class="btn btn-sm btn-primary"
                 @click="add"
             >
-                <icon :icon="IconAdd"/>
+                <icon :icon="IconAdd" />
                 <span>
                     {{ $gettext('Add Schedule Item') }}
                 </span>

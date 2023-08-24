@@ -8,7 +8,10 @@
             </p>
         </template>
         <template #actions>
-            <add-button text="$gettext('Add Custom Field')" @click="doCreate"/>
+            <add-button
+                text="$gettext('Add Custom Field')"
+                @click="doCreate"
+            />
         </template>
 
         <data-table

@@ -4,7 +4,7 @@
         class="btn btn-primary"
         @click="emit('click')"
     >
-        <icon :icon="IconAdd"/>
+        <icon :icon="IconAdd" />
         <span>{{ text }}</span>
     </button>
 </template>

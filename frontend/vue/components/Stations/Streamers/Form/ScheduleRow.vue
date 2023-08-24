@@ -12,7 +12,7 @@
                     class="btn btn-sm btn-dark"
                     @click="doRemove()"
                 >
-                    <icon :icon="IconRemove"/>
+                    <icon :icon="IconRemove" />
                     <span>
                         {{ $gettext('Remove') }}
                     </span>

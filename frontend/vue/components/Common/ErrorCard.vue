@@ -4,7 +4,7 @@
         role="alert"
     >
         <div class="flex-shrink-0 me-2">
-            <icon :icon="IconError"/>
+            <icon :icon="IconError" />
         </div>
         <div class="flex-fill">
             <slot />

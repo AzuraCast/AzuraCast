@@ -97,7 +97,6 @@
 <script setup>
 import DataTable from '~/components/Common/DataTable';
 import EditModal from './Webhooks/EditModal';
-import Icon from '~/components/Common/Icon';
 import {get, map} from 'lodash';
 import StreamingLogModal from "~/components/Common/StreamingLogModal";
 import {useTranslate} from "~/vendor/gettext";

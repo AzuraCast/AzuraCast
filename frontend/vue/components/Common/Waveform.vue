@@ -37,7 +37,7 @@
                             :title="$gettext('Mute')"
                             @click="volume = 0"
                         >
-                            <icon :icon="IconVolumeOff"/>
+                            <icon :icon="IconVolumeOff" />
                         </button>
                     </div>
                     <div class="flex-fill mx-1">
@@ -58,7 +58,7 @@
                             :title="$gettext('Full Volume')"
                             @click="volume = 100"
                         >
-                            <icon :icon="IconVolumeUp"/>
+                            <icon :icon="IconVolumeUp" />
                         </button>
                     </div>
                 </div>

@@ -19,7 +19,7 @@
                 type="button"
                 class="btn btn-dark dropdown-toggle"
             >
-                <icon :icon="IconDateRange"/>
+                <icon :icon="IconDateRange" />
                 <span>
                     {{ value }}
                 </span>

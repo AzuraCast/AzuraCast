@@ -15,7 +15,7 @@
                     class="btn btn-sm btn-light py-2"
                     @click="$emit('remove')"
                 >
-                    <icon :icon="IconRemove"/>
+                    <icon :icon="IconRemove" />
                     <span>
                         {{ $gettext('Remove') }}
                     </span>

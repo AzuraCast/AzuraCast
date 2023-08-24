@@ -1,7 +1,10 @@
 <template>
     <card-page :title="$gettext('Stations')">
         <template #actions>
-            <add-button text="$gettext('Add Station')" @click="doCreate"/>
+            <add-button
+                text="$gettext('Add Station')"
+                @click="doCreate"
+            />
         </template>
 
         <data-table

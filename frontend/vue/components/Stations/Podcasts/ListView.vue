@@ -20,7 +20,10 @@
         </div>
 
         <div class="card-body buttons">
-            <add-button :text="$gettext('Add Podcast')" @click="doCreate"/>
+            <add-button
+                :text="$gettext('Add Podcast')"
+                @click="doCreate"
+            />
         </div>
 
         <data-table

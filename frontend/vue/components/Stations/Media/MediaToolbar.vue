@@ -12,7 +12,7 @@
                         data-bs-toggle="dropdown"
                         aria-expanded="false"
                     >
-                        <icon :icon="IconClearAll"/>
+                        <icon :icon="IconClearAll" />
                         <span>
                             {{ $gettext('Playlists') }}
                         </span>
@@ -104,7 +104,7 @@
                 class="btn btn-primary"
                 @click="moveFiles"
             >
-                <icon :icon="IconMove"/>
+                <icon :icon="IconMove" />
                 <span>
                     {{ $gettext('Move') }}
                 </span>
@@ -118,7 +118,7 @@
                         data-bs-toggle="dropdown"
                         aria-expanded="false"
                     >
-                        <icon :icon="IconMoreHoriz"/>
+                        <icon :icon="IconMoreHoriz" />
                         <span>
                             {{ $gettext('More') }}
                         </span>
@@ -165,7 +165,7 @@
                 class="btn btn-danger"
                 @click="doDelete"
             >
-                <icon :icon="IconDelete"/>
+                <icon :icon="IconDelete" />
                 <span>
                     {{ $gettext('Delete') }}
                 </span>
@@ -177,7 +177,7 @@
                 class="btn btn-primary"
                 @click="createDirectory"
             >
-                <icon :icon="IconFolder"/>
+                <icon :icon="IconFolder" />
                 <span>
                     {{ $gettext('New Folder') }}
                 </span>

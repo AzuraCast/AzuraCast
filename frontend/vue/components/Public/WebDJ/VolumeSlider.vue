@@ -1,7 +1,7 @@
 <template>
     <div class="d-flex flex-row align-items-center">
         <div class="flex-shrink-0">
-            <icon :icon="IconVolumeOff"/>
+            <icon :icon="IconVolumeOff" />
         </div>
         <div class="flex-fill px-2">
             <input
@@ -15,7 +15,7 @@
             >
         </div>
         <div class="flex-shrink-0">
-            <icon :icon="IconVolumeUp"/>
+            <icon :icon="IconVolumeUp" />
         </div>
     </div>
 </template>

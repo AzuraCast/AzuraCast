@@ -120,7 +120,6 @@ import DataTable from '~/components/Common/DataTable';
 import EditModal from './Streamers/EditModal';
 import BroadcastsModal from './Streamers/BroadcastsModal';
 import Schedule from '~/components/Common/ScheduleView';
-import Icon from '~/components/Common/Icon';
 import ConnectionInfo from "./Streamers/ConnectionInfo";
 import AlbumArt from "~/components/Common/AlbumArt";
 import {useTranslate} from "~/vendor/gettext";

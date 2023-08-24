@@ -13,8 +13,8 @@ $this->layout('minimal', [
 
             <form id="login-form" class="pe-5" action="" method="post">
                 <div class="form-group">
-                    <label for="otp" class="mb-2">
-                        <i class="material-icons me-1" aria-hidden="true">vpn_key</i>
+                    <label for="otp" class="mb-2 d-flex align-items-center gap-2">
+                        <?= $this->fetch('icons/password') ?>
                         <strong><?=__('Security Code') ?></strong>
                     </label>
                     <input type="number" name="otp" class="form-control form-control-lg" placeholder="" aria-label="<?=__('Security Code') ?>" required autofocus>

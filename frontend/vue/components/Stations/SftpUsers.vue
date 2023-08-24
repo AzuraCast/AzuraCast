@@ -77,7 +77,6 @@
 <script setup>
 import DataTable from "~/components/Common/DataTable";
 import SftpUsersEditModal from "./SftpUsers/EditModal";
-import Icon from "~/components/Common/Icon";
 import {useTranslate} from "~/vendor/gettext";
 import {ref} from "vue";
 import useHasDatatable from "~/functions/useHasDatatable";

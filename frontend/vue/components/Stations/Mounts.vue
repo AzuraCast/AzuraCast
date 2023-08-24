@@ -74,7 +74,6 @@
 <script setup>
 import DataTable from '~/components/Common/DataTable';
 import EditModal from './Mounts/EditModal';
-import Icon from '~/components/Common/Icon';
 import {useMayNeedRestart} from "~/functions/useMayNeedRestart";
 import {useTranslate} from "~/vendor/gettext";
 import {ref} from "vue";

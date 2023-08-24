@@ -72,7 +72,6 @@
 
 <script setup>
 import DataTable from '~/components/Common/DataTable';
-import Icon from '~/components/Common/Icon';
 import RemoteEditModal from "./Remotes/EditModal";
 import '~/vendor/sweetalert';
 import {useMayNeedRestart} from "~/functions/useMayNeedRestart";

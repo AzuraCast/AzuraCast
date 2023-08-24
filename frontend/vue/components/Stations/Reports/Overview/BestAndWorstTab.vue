@@ -31,7 +31,7 @@
                                 :key="row.song.id"
                             >
                                 <td class=" text-center text-success">
-                                    <icon :icon="IconChevronUp"/>
+                                    <icon :icon="IconChevronUp" />
                                     {{ row.stat_delta }}
                                     <br>
                                     <small>{{ row.stat_start }} to {{ row.stat_end }}</small>
@@ -71,7 +71,7 @@
                                 :key="row.song.id"
                             >
                                 <td class="text-center text-danger">
-                                    <icon :icon="IconChevronDown"/>
+                                    <icon :icon="IconChevronDown" />
                                     {{ row.stat_delta }}
                                     <br>
                                     <small>{{ row.stat_start }} to {{ row.stat_end }}</small>

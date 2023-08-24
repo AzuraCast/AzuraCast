@@ -14,7 +14,7 @@
                     :disabled="dirHistory.length === 0"
                     @click="pageBack"
                 >
-                    <icon :icon="IconChevronLeft"/>
+                    <icon :icon="IconChevronLeft" />
                     <span>
                         {{ $gettext('Back') }}
                     </span>
@@ -40,7 +40,7 @@
                     <template #cell(directory)="row">
                         <div class="is_dir">
                             <span class="file-icon">
-                                <icon :icon="IconFolder"/>
+                                <icon :icon="IconFolder" />
                             </span>
 
                             <a

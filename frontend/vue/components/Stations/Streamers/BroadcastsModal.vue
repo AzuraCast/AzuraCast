@@ -28,7 +28,7 @@
                             target="_blank"
                             :title="$gettext('Download')"
                         >
-                            <icon :icon="IconDownload"/>
+                            <icon :icon="IconDownload" />
                         </a>
                     </template>
                     <template v-else>

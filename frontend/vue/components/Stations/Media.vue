@@ -91,19 +91,19 @@
                                 v-if="row.item.is_dir"
                                 class="file-icon"
                             >
-                                <icon :icon="IconFolder"/>
+                                <icon :icon="IconFolder" />
                             </span>
                             <span
                                 v-else-if="row.item.is_cover_art"
                                 class="file-icon"
                             >
-                                <icon :icon="IconImage"/>
+                                <icon :icon="IconImage" />
                             </span>
                             <span
                                 v-else
                                 class="file-icon"
                             >
-                                <icon :icon="IconFile"/>
+                                <icon :icon="IconFile" />
                             </span>
                         </template>
                     </div>

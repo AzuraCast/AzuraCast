@@ -8,7 +8,10 @@
             </p>
         </template>
         <template #actions>
-            <add-button :text="$gettext('Add HLS Stream')" @click="doCreate"/>
+            <add-button
+                :text="$gettext('Add HLS Stream')"
+                @click="doCreate"
+            />
         </template>
 
         <data-table

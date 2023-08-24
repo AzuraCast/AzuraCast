@@ -20,7 +20,7 @@
                 :title="$gettext('Play')"
                 @click="playAudio"
             >
-                <icon :icon="IconPlayCircle"/>
+                <icon :icon="IconPlayCircle" />
             </button>
             <button
                 type="button"
@@ -28,7 +28,7 @@
                 :title="$gettext('Stop')"
                 @click="stopAudio"
             >
-                <icon :icon="IconStop"/>
+                <icon :icon="IconStop" />
             </button>
         </div>
         <div class="btn-group btn-group-sm">

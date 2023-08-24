@@ -50,7 +50,7 @@
                 type="button"
                 class="file-upload btn btn-primary text-center ms-1"
             >
-                <icon :icon="IconUpload"/>
+                <icon :icon="IconUpload" />
                 <span>
                     {{ $gettext('Select File') }}
                 </span>

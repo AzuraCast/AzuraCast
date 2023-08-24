@@ -83,11 +83,10 @@ $sections->append(
 
             <div class="buttons">
                 <a href="<?= $podcastEpisodesLink ?>" class="btn btn-sm btn-primary">
-                    <i class="material-icons">chevron_left</i>
                     <span><?= __('Back') ?></span>
                 </a>
                 <a href="<?= $feedLink ?>" class="btn btn-sm btn-warning" target="_blank">
-                    <i class="material-icons">rss_feed</i>
+                    <?= $this->fetch('icons/rss') ?>
                     <span><?= __('RSS Feed') ?></span>
                 </a>
             </div>

@@ -4,6 +4,7 @@ import {StationPermission, userAllowedForStation} from "~/acl.ts";
 import {useAzuraCast} from "~/vendor/azuracast.ts";
 import {computed, reactive} from "vue";
 import {
+    IconBroadcast,
     IconCode,
     IconImage,
     IconLibraryMusic,
@@ -12,8 +13,7 @@ import {
     IconPlaylist,
     IconPodcasts,
     IconPublic,
-    IconReport,
-    IconWifiTethering
+    IconReport
 } from "~/components/Common/icons.ts";
 
 export function useStationsMenu(): array {
@@ -233,7 +233,7 @@ export function useStationsMenu(): array {
         {
             key: 'broadcasting',
             label: computed(() => $gettext('Broadcasting')),
-            icon: IconWifiTethering,
+            icon: IconBroadcast,
             items: [
                 {
                     key: 'mounts',

@@ -1,6 +1,9 @@
 .icon {
   width: 1.5rem;
   height: 1.5rem;
+  display: inline-block;
+  vertical-align: -.125em;
+  fill: currentcolor;
 
   &.sm, .btn-sm & {
     width: $icon-size-sm;

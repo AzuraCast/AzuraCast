@@ -48,13 +48,13 @@
                         <div class="clearfix">
                             <div class="d-table">
                                 <div class="d-table-row">
-                                    <div class="d-table-cell align-middle text-end pe-2">
+                                    <div class="d-table-cell align-middle text-end pe-2 pb-2">
                                         <icon :icon="IconMusicNote" />
                                     </div>
-                                    <div class="d-table-cell align-middle w-100">
-                                        <h6 class="p-0">
+                                    <div class="d-table-cell align-middle w-100 pb-2">
+                                        <h5 class="m-0">
                                             {{ $gettext('Now Playing') }}
-                                        </h6>
+                                        </h5>
                                     </div>
                                 </div>
                                 <div class="d-table-row">
@@ -121,13 +121,13 @@
                         >
                             <div class="d-table">
                                 <div class="d-table-row">
-                                    <div class="d-table-cell align-middle pe-2 text-end">
+                                    <div class="d-table-cell align-middle pe-2 text-end pb-2">
                                         <icon :icon="IconSkipNext" />
                                     </div>
-                                    <div class="d-table-cell align-middle w-100">
-                                        <h6 class="p-0">
+                                    <div class="d-table-cell align-middle w-100 pb-2">
+                                        <h5 class="m-0">
                                             {{ $gettext('Playing Next') }}
-                                        </h6>
+                                        </h5>
                                     </div>
                                 </div>
                                 <div class="d-table-row">

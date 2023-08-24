@@ -387,19 +387,10 @@ const sortField = ref(null);
 const sortOrder = ref(null);
 
 const loading = ref(false);
-const allItems = shallowRef([]);
+const visibleItems = shallowRef([]);
 const totalRows = ref(0);
 
 const activeDetailsRow = shallowRef(null);
-
-watch(toRef(props, 'items'), (newVal) => {
-    if (newVal !== null) {
-        allItems.value = toRaw(newVal);
-        totalRows.value = allItems.value.length;
-    }
-}, {
-    immediate: true
-});
 
 const allFields = computed(() => {
     return map(props.fields, (field) => {
@@ -494,26 +485,9 @@ const showPagination = computed(() => {
     return props.paginated && perPage.value !== 0;
 });
 
-const visibleItems = computed(() => {
-    if (!props.handleClientSide) {
-        return allItems.value;
-    }
-
-    // Handle pagination client-side.
-    let itemsOnPage;
-
-    if (props.paginated && perPage.value > 0) {
-        itemsOnPage = slice(
-            allItems.value,
-            (currentPage.value - 1) * perPage.value,
-            currentPage.value * perPage.value
-        );
-    } else {
-        itemsOnPage = allItems.value;
-    }
-
+const refreshClientSide = () => {
     // Handle filtration client-side.
-    return filter(itemsOnPage, (item) =>
+    let itemsOnPage = filter(toRaw(props.items), (item) =>
         Object.entries(item).filter((item) => {
             const [key, val] = item;
             if (!val || key[0] === '_') {
@@ -528,19 +502,33 @@ const visibleItems = computed(() => {
             return itemValue.toLowerCase().includes(searchPhrase.value.toLowerCase())
         }).length > 0
     );
+
+    totalRows.value = itemsOnPage.length;
+
+    // Handle pagination client-side.
+    if (props.paginated && perPage.value > 0) {
+        itemsOnPage = slice(
+            itemsOnPage,
+            (currentPage.value - 1) * perPage.value,
+            currentPage.value * perPage.value
+        );
+    }
+
+    visibleItems.value = itemsOnPage;
+    emit('refreshed');
+};
+
+watch(toRef(props, 'items'), () => {
+    if (props.handleClientSide) {
+        refreshClientSide();
+    }
+}, {
+    immediate: true
 });
 
 const {axios} = useAxios();
 
-const refresh = () => {
-    selectedRows.value = [];
-    activeDetailsRow.value = null;
-    
-    if (props.items !== null) {
-        emit('refreshed');
-        return;
-    }
-
+const refreshServerSide = () => {
     const queryParams = {
         internal: true
     };
@@ -585,16 +573,26 @@ const refresh = () => {
         }
 
         emit('data-loaded', rows);
-        allItems.value = rows;
+        visibleItems.value = rows;
     }).catch((err) => {
         totalRows.value = 0;
-
         console.error(err.response.data.message);
     }).finally(() => {
         loading.value = false;
         flushCache.value = false;
         emit('refreshed');
     });
+}
+
+const refresh = () => {
+    selectedRows.value = [];
+    activeDetailsRow.value = null;
+
+    if (props.handleClientSide) {
+        refreshClientSide();
+    } else {
+        refreshServerSide();
+    }
 };
 
 const onPageChange = (p) => {

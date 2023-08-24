@@ -32,7 +32,6 @@
     "noFallthroughCasesInSwitch": true
   },
   "include": [
-    "vue-shim.d.ts",
     "vue/**/*.ts",
     "vue/**/*.d.ts",
     "vue/**/*.tsx",

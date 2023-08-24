@@ -29,7 +29,7 @@
                 >
                     <icon
                         class="lg inline"
-                        icon="add_circle"
+                        :icon="IconAddCircle"
                     />
                 </span>
                 <span
@@ -39,7 +39,7 @@
                 >
                     <icon
                         class="lg inline"
-                        icon="remove_circle"
+                        :icon="IconRemoveCircle"
                     />
                 </span>
                 <span
@@ -49,7 +49,7 @@
                 >
                     <icon
                         class="lg inline"
-                        icon="swap_horizontal_circle"
+                        :icon="IconSwapHorizontalCircle"
                     />
                 </span>
             </template>
@@ -95,6 +95,7 @@ import DetailsModal from "./AuditLog/DetailsModal.vue";
 import CardPage from "~/components/Common/CardPage.vue";
 import {useLuxon} from "~/vendor/luxon";
 import {getApiUrl} from "~/router";
+import {IconAddCircle, IconRemoveCircle, IconSwapHorizontalCircle} from "~/components/Common/icons";
 
 const baseApiUrl = getApiUrl('/admin/auditlog');
 

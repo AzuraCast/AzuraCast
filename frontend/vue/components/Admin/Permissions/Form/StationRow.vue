@@ -15,7 +15,7 @@
                     class="btn btn-sm btn-light py-2"
                     @click="$emit('remove')"
                 >
-                    <icon icon="remove" />
+                    <icon :icon="IconRemove"/>
                     <span>
                         {{ $gettext('Remove') }}
                     </span>
@@ -45,6 +45,7 @@ import Icon from "~/components/Common/Icon.vue";
 import {useVModel} from "@vueuse/core";
 import {computed} from "vue";
 import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
+import {IconRemove} from "~/components/Common/icons";
 
 const props = defineProps({
     row: {

@@ -20,16 +20,7 @@
         </div>
 
         <div class="card-body buttons">
-            <button
-                type="button"
-                class="btn btn-primary"
-                @click="doCreate"
-            >
-                <icon icon="add" />
-                <span>
-                    {{ $gettext('Add Podcast') }}
-                </span>
-            </button>
+            <add-button :text="$gettext('Add Podcast')" @click="doCreate"/>
         </div>
 
         <data-table
@@ -104,8 +95,8 @@ import {ref} from "vue";
 import {useSweetAlert} from "~/vendor/sweetalert";
 import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
-import Icon from "~/components/Common/Icon.vue";
 import {getStationApiUrl} from "~/router";
+import AddButton from "~/components/Common/AddButton.vue";
 
 const props = defineProps({
     ...listViewProps,

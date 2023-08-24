@@ -14,7 +14,7 @@
                     :disabled="dirHistory.length === 0"
                     @click="pageBack"
                 >
-                    <icon icon="chevron_left" />
+                    <icon :icon="IconChevronLeft"/>
                     <span>
                         {{ $gettext('Back') }}
                     </span>
@@ -40,7 +40,7 @@
                     <template #cell(directory)="row">
                         <div class="is_dir">
                             <span class="file-icon">
-                                <icon icon="folder" />
+                                <icon :icon="IconFolder"/>
                             </span>
 
                             <a
@@ -82,6 +82,7 @@ import {useTranslate} from "~/vendor/gettext";
 import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
 import Modal from "~/components/Common/Modal.vue";
+import {IconChevronLeft, IconFolder} from "~/components/Common/icons";
 
 const props = defineProps({
     selectedItems: {

@@ -61,7 +61,7 @@
                                     :title="$gettext('Down')"
                                     @click.prevent="moveDown(index)"
                                 >
-                                    <icon icon="arrow_downward" />
+                                    <icon :icon="IconChevronDown"/>
                                 </button>
                                 <button
                                     v-if="index > 0"
@@ -70,7 +70,7 @@
                                     :title="$gettext('Up')"
                                     @click.prevent="moveUp(index)"
                                 >
-                                    <icon icon="arrow_upward" />
+                                    <icon :icon="IconChevronUp"/>
                                 </button>
                             </div>
                         </td>
@@ -91,6 +91,7 @@ import {useAxios} from "~/vendor/axios";
 import {useNotify} from "~/functions/useNotify";
 import {useTranslate} from "~/vendor/gettext";
 import Modal from "~/components/Common/Modal.vue";
+import {IconArrowDropUp, IconChevronDown, IconChevronUp} from "~/components/Common/icons";
 
 const loading = ref(true);
 const reorderUrl = ref(null);

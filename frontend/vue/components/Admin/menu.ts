@@ -2,6 +2,7 @@ import {useTranslate} from "~/vendor/gettext.ts";
 import {GlobalPermission, userAllowed} from "~/acl.ts";
 import filterMenu from "~/functions/filterMenu.ts";
 import {computed, reactive} from "vue";
+import {IconGroups, IconRadio, IconRouter} from "~/components/Common/icons.ts";
 
 export function useAdminMenu(): array {
     const {$gettext} = useTranslate();
@@ -10,7 +11,7 @@ export function useAdminMenu(): array {
         {
             key: 'maintenance',
             label: computed(() => $gettext('System Maintenance')),
-            icon: 'router',
+            icon: IconRouter,
             items: [
                 {
                     key: 'settings',
@@ -73,7 +74,7 @@ export function useAdminMenu(): array {
         {
             key: 'users',
             label: computed(() => $gettext('Users')),
-            icon: 'group',
+            icon: IconGroups,
             items: [
                 {
                     key: 'manage_users',
@@ -112,7 +113,7 @@ export function useAdminMenu(): array {
         {
             key: 'stations',
             label: computed(() => $gettext('Stations')),
-            icon: 'volume_up',
+            icon: IconRadio,
             items: [
                 {
                     key: 'manage_stations',

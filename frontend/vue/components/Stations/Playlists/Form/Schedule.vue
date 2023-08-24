@@ -28,7 +28,7 @@
                 class="btn btn-sm btn-primary"
                 @click="add"
             >
-                <icon icon="add" />
+                <icon :icon="IconAdd"/>
                 <span>
                     {{ $gettext('Add Schedule Item') }}
                 </span>
@@ -43,6 +43,7 @@ import PlaylistsFormScheduleRow from "~/components/Stations/Playlists/Form/Sched
 import {useVModel} from "@vueuse/core";
 import FormMarkup from "~/components/Form/FormMarkup.vue";
 import Tab from "~/components/Common/Tab.vue";
+import {IconAdd} from "~/components/Common/icons";
 
 const props = defineProps({
     scheduleItems: {

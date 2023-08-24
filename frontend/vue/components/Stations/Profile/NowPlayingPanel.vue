@@ -18,7 +18,7 @@
                 >
                     <icon
                         class="align-middle"
-                        icon="headset"
+                        :icon="IconHeadphones"
                     />
                     <span class="ps-1">
                         {{ langListeners }}
@@ -36,7 +36,7 @@
                     :to="{name: 'stations:reports:listeners'}"
                     :title="$gettext('Listener Report')"
                 >
-                    <icon icon="assignment" />
+                    <icon :icon="IconLogs" />
                 </router-link>
             </div>
         </template>
@@ -49,7 +49,7 @@
                             <div class="d-table">
                                 <div class="d-table-row">
                                     <div class="d-table-cell align-middle text-end pe-2">
-                                        <icon icon="music_note" />
+                                        <icon :icon="IconMusicNote" />
                                     </div>
                                     <div class="d-table-cell align-middle w-100">
                                         <h6 class="p-0">
@@ -122,7 +122,7 @@
                             <div class="d-table">
                                 <div class="d-table-row">
                                     <div class="d-table-cell align-middle pe-2 text-end">
-                                        <icon icon="skip_next" />
+                                        <icon :icon="IconSkipNext" />
                                     </div>
                                     <div class="d-table-cell align-middle w-100">
                                         <h6 class="p-0">
@@ -179,7 +179,7 @@
                             class="clearfix"
                         >
                             <h6 style="margin-left: 22px;">
-                                <icon icon="mic" />
+                                <icon :icon="IconMic" />
                                 {{ $gettext('Live') }}
                             </h6>
 
@@ -206,7 +206,7 @@
                 class="btn btn-link text-primary"
                 @click="makeApiCall(backendSkipSongUri)"
             >
-                <icon icon="skip_next" />
+                <icon :icon="IconSkipNext" />
                 <span>
                     {{ $gettext('Skip Song') }}
                 </span>
@@ -218,7 +218,7 @@
                 class="btn btn-link text-primary"
                 @click="makeApiCall(backendDisconnectStreamerUri)"
             >
-                <icon icon="volume_off" />
+                <icon :icon="IconVolumeOff" />
                 <span>
                     {{ $gettext('Disconnect Streamer') }}
                 </span>
@@ -239,6 +239,7 @@ import CardPage from "~/components/Common/CardPage.vue";
 import {useLightbox} from "~/vendor/lightbox";
 import {StationPermission, userAllowedForStation} from "~/acl";
 import {useAzuraCastStation} from "~/vendor/azuracast";
+import {IconHeadphones, IconLogs, IconMic, IconMusicNote, IconSkipNext, IconVolumeOff} from "~/components/Common/icons";
 
 const props = defineProps({
     ...nowPlayingPanelProps,

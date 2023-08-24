@@ -32,7 +32,7 @@
                         role="button"
                         :href="profileUrl"
                     >
-                        <icon icon="account_circle" />
+                        <icon :icon="IconAccountCircle" />
                         <span>{{ $gettext('My Account') }}</span>
                     </a>
                     <a
@@ -41,7 +41,7 @@
                         role="button"
                         :href="adminUrl"
                     >
-                        <icon icon="settings" />
+                        <icon :icon="IconSettings" />
                         <span>{{ $gettext('Administration') }}</span>
                     </a>
                 </div>
@@ -61,8 +61,8 @@
                         class="flex-shrink-0 me-3"
                     >
                         <icon
+                            :icon="IconInfo"
                             class="lg"
-                            icon="info"
                         />
                     </div>
                     <div
@@ -70,8 +70,8 @@
                         class="flex-shrink-0 me-3"
                     >
                         <icon
+                            :icon="IconWarning"
                             class="lg"
-                            icon="warning"
                         />
                     </div>
                     <div class="flex-fill">
@@ -153,7 +153,7 @@
                             class="btn btn-dark py-2"
                             :href="manageStationsUrl"
                         >
-                            <icon icon="settings" />
+                            <icon :icon="IconSettings" />
                             <span>
                                 {{ $gettext('Manage Stations') }}
                             </span>
@@ -220,7 +220,7 @@
                                     <span class="pe-1">
                                         <icon
                                             class="sm align-middle"
-                                            icon="headset"
+                                            :icon="IconHeadphones"
                                         />
                                     </span>
                                     <template v-if="item.links.listeners">
@@ -307,6 +307,7 @@ import CardPage from "~/components/Common/CardPage.vue";
 import HeaderInlinePlayer from "~/components/HeaderInlinePlayer.vue";
 import {useProvideLightbox} from "~/vendor/lightbox";
 import useOptionalStorage from "~/functions/useOptionalStorage";
+import {IconAccountCircle, IconHeadphones, IconInfo, IconSettings, IconWarning} from "~/components/Common/icons";
 
 const props = defineProps({
     userUrl: {

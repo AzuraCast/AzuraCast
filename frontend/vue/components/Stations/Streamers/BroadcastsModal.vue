@@ -28,7 +28,7 @@
                             target="_blank"
                             :title="$gettext('Download')"
                         >
-                            <icon icon="cloud_download" />
+                            <icon :icon="IconDownload"/>
                         </a>
                     </template>
                     <template v-else>
@@ -73,6 +73,7 @@ import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
 import Modal from "~/components/Common/Modal.vue";
 import {useLuxon} from "~/vendor/luxon";
+import {IconDownload} from "~/components/Common/icons";
 
 const listUrl = ref(null);
 

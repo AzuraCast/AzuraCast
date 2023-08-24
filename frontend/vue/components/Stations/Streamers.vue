@@ -32,16 +32,7 @@
                         <tab :label="$gettext('Account List')">
                             <div class="card-body-flush">
                                 <div class="card-body buttons">
-                                    <button
-                                        type="button"
-                                        class="btn btn-primary"
-                                        @click="doCreate"
-                                    >
-                                        <icon icon="add" />
-                                        <span>
-                                            {{ $gettext('Add Streamer') }}
-                                        </span>
-                                    </button>
+                                    <add-button :text="$gettext('Add Streamer')" @click="doCreate"/>
                                 </div>
 
                                 <data-table
@@ -139,6 +130,7 @@ import {useAzuraCastStation} from "~/vendor/azuracast";
 import {getStationApiUrl} from "~/router";
 import Tabs from "~/components/Common/Tabs.vue";
 import Tab from "~/components/Common/Tab.vue";
+import AddButton from "~/components/Common/AddButton.vue";
 
 const props = defineProps({
     connectionInfo: {

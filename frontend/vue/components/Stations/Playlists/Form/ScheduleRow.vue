@@ -12,7 +12,7 @@
                     class="btn btn-sm btn-dark"
                     @click="doRemove()"
                 >
-                    <icon icon="remove" />
+                    <icon :icon="IconRemove"/>
                     <span>
                         {{ $gettext('Remove') }}
                     </span>
@@ -112,6 +112,7 @@ import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
 import FormMarkup from "~/components/Form/FormMarkup.vue";
 import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
 import TimeZone from "~/components/Stations/Common/TimeZone.vue";
+import {IconRemove} from "~/components/Common/icons";
 
 const props = defineProps({
     index: {

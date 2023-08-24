@@ -6,7 +6,7 @@
                 class="btn btn-danger"
                 @click="doClear()"
             >
-                <icon icon="remove" />
+                <icon :icon="IconRemove"/>
                 <span>
                     {{ $gettext('Clear Upcoming Song Queue') }}
                 </span>
@@ -84,6 +84,7 @@ import {useSweetAlert} from "~/vendor/sweetalert";
 import CardPage from "~/components/Common/CardPage.vue";
 import {useLuxon} from "~/vendor/luxon";
 import {getStationApiUrl} from "~/router";
+import {IconRemove} from "~/components/Common/icons";
 
 const listUrl = getStationApiUrl('/queue');
 const clearUrl = getStationApiUrl('/queue/clear');

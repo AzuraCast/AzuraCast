@@ -7,7 +7,6 @@
         @click="toggle"
     >
         <icon
-            class="outlined"
             :class="iconClass"
             :icon="iconText"
         />
@@ -21,6 +20,7 @@ import {computed, toRef} from "vue";
 import {get} from "@vueuse/core";
 import {useTranslate} from "~/vendor/gettext";
 import getUrlWithoutQuery from "~/functions/getUrlWithoutQuery";
+import {IconPlayCircle, IconStopCircle} from "~/components/Common/icons";
 
 const props = defineProps({
     url: {
@@ -66,8 +66,8 @@ const langTitle = computed(() => {
 
 const iconText = computed(() => {
     return get(isThisPlaying)
-        ? 'stop_circle'
-        : 'play_circle';
+        ? IconStopCircle
+        : IconPlayCircle;
 });
 
 const toggle = () => {

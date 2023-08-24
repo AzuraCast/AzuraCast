@@ -31,7 +31,7 @@
                                 :key="row.song.id"
                             >
                                 <td class=" text-center text-success">
-                                    <icon icon="keyboard_arrow_up" />
+                                    <icon :icon="IconChevronUp"/>
                                     {{ row.stat_delta }}
                                     <br>
                                     <small>{{ row.stat_start }} to {{ row.stat_end }}</small>
@@ -71,7 +71,7 @@
                                 :key="row.song.id"
                             >
                                 <td class="text-center text-danger">
-                                    <icon icon="keyboard_arrow_down" />
+                                    <icon :icon="IconChevronDown"/>
                                     {{ row.stat_delta }}
                                     <br>
                                     <small>{{ row.stat_start }} to {{ row.stat_end }}</small>
@@ -133,6 +133,7 @@ import {useAxios} from "~/vendor/axios";
 import SongText from "~/components/Stations/Reports/Overview/SongText.vue";
 import Loading from "~/components/Common/Loading.vue";
 import {useLuxon} from "~/vendor/luxon";
+import {IconChevronDown, IconChevronUp} from "~/components/Common/icons";
 
 const props = defineProps({
     dateRange: {

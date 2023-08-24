@@ -73,7 +73,7 @@
                         :disabled="v$.$anyDirty"
                         @click="generateAcmeCert"
                     >
-                        <icon icon="badge" />
+                        <icon :icon="IconBadge" />
                         <span>
                             {{ $gettext('Generate/Renew Certificate') }}
                             <span v-if="v$.$anyDirty">
@@ -166,7 +166,7 @@
                         :disabled="v$.$anyDirty"
                         @click="openTestMessage"
                     >
-                        <icon icon="send" />
+                        <icon :icon="IconSend" />
                         <span>
                             {{ $gettext('Send Test Message') }}
                             <span v-if="v$.$anyDirty">
@@ -271,6 +271,7 @@ import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
 import {useVModel} from "@vueuse/core";
 import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
 import Tab from "~/components/Common/Tab.vue";
+import {IconBadge, IconSend} from "~/components/Common/icons";
 
 const props = defineProps({
     form: {

@@ -13,6 +13,7 @@
 import Icon from "~/components/Common/Icon.vue";
 import {computed, toRef, watch} from "vue";
 import {useTranslate} from "~/vendor/gettext";
+import {IconVolumeDown, IconVolumeOff, IconVolumeUp} from "~/components/Common/icons";
 
 const props = defineProps({
     volume: {
@@ -49,13 +50,13 @@ const muteLang = computed(() => {
 
 const muteIcon = computed(() => {
     if (props.isMuted) {
-        return 'volume_off';
+        return IconVolumeOff;
     }
 
     if (props.volume < 60) {
-        return 'volume_down';
+        return IconVolumeDown;
     }
 
-    return 'volume_up';
+    return IconVolumeUp;
 });
 </script>

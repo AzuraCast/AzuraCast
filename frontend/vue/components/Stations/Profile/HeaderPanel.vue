@@ -30,7 +30,7 @@
                 role="button"
                 :to="{name: 'stations:profile:edit'}"
             >
-                <icon icon="edit" />
+                <icon :icon="IconEdit" />
                 <span>
                     {{ $gettext('Edit Profile') }}
                 </span>
@@ -44,6 +44,7 @@ import Icon from '~/components/Common/Icon';
 import PlayButton from "~/components/Common/PlayButton.vue";
 import headerPanelProps from "~/components/Stations/Profile/headerPanelProps";
 import {StationPermission, userAllowedForStation} from "~/acl";
+import {IconEdit} from "~/components/Common/icons";
 
 const props = defineProps({
     ...headerPanelProps,

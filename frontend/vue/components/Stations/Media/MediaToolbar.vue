@@ -12,7 +12,7 @@
                         data-bs-toggle="dropdown"
                         aria-expanded="false"
                     >
-                        <icon icon="clear_all" />
+                        <icon :icon="IconClearAll"/>
                         <span>
                             {{ $gettext('Playlists') }}
                         </span>
@@ -104,7 +104,7 @@
                 class="btn btn-primary"
                 @click="moveFiles"
             >
-                <icon icon="open_with" />
+                <icon :icon="IconMove"/>
                 <span>
                     {{ $gettext('Move') }}
                 </span>
@@ -118,7 +118,7 @@
                         data-bs-toggle="dropdown"
                         aria-expanded="false"
                     >
-                        <icon icon="more_horiz" />
+                        <icon :icon="IconMoreHoriz"/>
                         <span>
                             {{ $gettext('More') }}
                         </span>
@@ -165,7 +165,7 @@
                 class="btn btn-danger"
                 @click="doDelete"
             >
-                <icon icon="delete" />
+                <icon :icon="IconDelete"/>
                 <span>
                     {{ $gettext('Delete') }}
                 </span>
@@ -177,7 +177,7 @@
                 class="btn btn-primary"
                 @click="createDirectory"
             >
-                <icon icon="folder" />
+                <icon :icon="IconFolder"/>
                 <span>
                     {{ $gettext('New Folder') }}
                 </span>
@@ -195,6 +195,7 @@ import {useTranslate} from "~/vendor/gettext";
 import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
 import {useSweetAlert} from "~/vendor/sweetalert";
+import {IconClearAll, IconDelete, IconFolder, IconMoreHoriz, IconMove} from "~/components/Common/icons";
 
 const props = defineProps({
     currentDirectory: {

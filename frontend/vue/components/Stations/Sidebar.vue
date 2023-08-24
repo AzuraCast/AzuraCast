@@ -20,7 +20,7 @@
                 :to="{ name: 'stations:profile:edit' }"
                 class="navbar-brand ms-0 flex-shrink-0"
             >
-                <icon icon="edit" />
+                <icon :icon="IconEdit" />
                 <span class="visually-hidden">{{ $gettext('Edit Profile') }}</span>
             </router-link>
         </div>
@@ -71,6 +71,7 @@ import {StationPermission, userAllowedForStation} from "~/acl";
 import {useAxios} from "~/vendor/axios.ts";
 import {getStationApiUrl} from "~/router.ts";
 import {useLuxon} from "~/vendor/luxon.ts";
+import {IconEdit} from "~/components/Common/icons.ts";
 
 const props = defineProps({
     station: {

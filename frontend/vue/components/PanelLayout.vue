@@ -18,7 +18,7 @@
                 class="navbar-toggler d-inline-flex d-lg-none me-3"
             >
                 <icon
-                    icon="menu"
+                    :icon="IconMenu"
                     class="lg"
                 />
             </button>
@@ -48,7 +48,7 @@
                 type="button"
             >
                 <icon
-                    icon="menu_open"
+                    :icon="IconMenuOpen"
                     class="lg"
                 />
             </button>
@@ -58,7 +58,7 @@
                         class="dropdown-item"
                         :href="homeUrl"
                     >
-                        <icon icon="home" />
+                        <icon :icon="IconHome" />
                         {{ $gettext('Dashboard') }}
                     </a>
                 </li>
@@ -70,7 +70,7 @@
                         class="dropdown-item"
                         :href="adminUrl"
                     >
-                        <icon icon="settings" />
+                        <icon :icon="IconSettings" />
                         {{ $gettext('System Administration') }}
                     </a>
                 </li>
@@ -79,7 +79,7 @@
                         class="dropdown-item"
                         :href="profileUrl"
                     >
-                        <icon icon="account_circle" />
+                        <icon :icon="IconAccountCircle" />
                         {{ $gettext('My Account') }}
                     </a>
                 </li>
@@ -89,7 +89,7 @@
                         href="#"
                         @click.prevent="toggleTheme"
                     >
-                        <icon icon="invert_colors" />
+                        <icon :icon="IconInvertColors" />
                         {{ $gettext('Switch Theme') }}
                     </a>
                 </li>
@@ -99,10 +99,7 @@
                         href="https://docs.azuracast.com/en/user-guide/troubleshooting"
                         target="_blank"
                     >
-                        <i
-                            class="material-icons"
-                            aria-hidden="true"
-                        >help</i>
+                        <icon :icon="IconSupport" />
                         {{ $gettext('Help') }}
                     </a>
                 </li>
@@ -114,7 +111,7 @@
                         class="dropdown-item"
                         :href="logoutUrl"
                     >
-                        <icon icon="exit_to_app" />
+                        <icon :icon="IconExitToApp" />
                         {{ $gettext('Sign Out') }}
                     </a>
                 </li>
@@ -170,6 +167,14 @@
 import {useSlots, watch} from "vue";
 import Icon from "~/components/Common/Icon.vue";
 import useTheme from "~/functions/theme";
+import {
+    IconAccountCircle, IconExitToApp,
+    IconHome,
+    IconInvertColors,
+    IconMenu,
+    IconMenuOpen,
+    IconSettings, IconSupport
+} from "~/components/Common/icons";
 
 const props = defineProps({
   instanceName: {

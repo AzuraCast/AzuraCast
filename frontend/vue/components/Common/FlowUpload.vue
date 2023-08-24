@@ -50,7 +50,7 @@
                 type="button"
                 class="file-upload btn btn-primary text-center ms-1"
             >
-                <icon icon="cloud_upload" />
+                <icon :icon="IconUpload"/>
                 <span>
                     {{ $gettext('Select File') }}
                 </span>
@@ -74,6 +74,7 @@ import {computed, onMounted, onUnmounted, reactive, ref} from "vue";
 import Flow from "@flowjs/flow.js";
 import {useAzuraCast} from "~/vendor/azuracast";
 import {useTranslate} from "~/vendor/gettext";
+import {IconUpload} from "~/components/Common/icons";
 
 const props = defineProps({
     targetUrl: {

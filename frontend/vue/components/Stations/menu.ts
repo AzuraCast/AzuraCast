@@ -3,6 +3,18 @@ import filterMenu from "~/functions/filterMenu.ts";
 import {StationPermission, userAllowedForStation} from "~/acl.ts";
 import {useAzuraCast} from "~/vendor/azuracast.ts";
 import {computed, reactive} from "vue";
+import {
+    IconCode,
+    IconImage,
+    IconLibraryMusic,
+    IconLogs,
+    IconMic,
+    IconPlaylist,
+    IconPodcasts,
+    IconPublic,
+    IconReport,
+    IconWifiTethering
+} from "~/components/Common/icons.ts";
 
 export function useStationsMenu(): array {
     const {$gettext} = useTranslate();
@@ -17,7 +29,7 @@ export function useStationsMenu(): array {
         {
             key: 'profile',
             label: computed(() => $gettext('Profile')),
-            icon: 'image',
+            icon: IconImage,
             items: [
                 {
                     key: 'view_profile',
@@ -47,7 +59,7 @@ export function useStationsMenu(): array {
         {
             key: 'public_page',
             label: computed(() => $gettext('Public Page')),
-            icon: 'public',
+            icon: IconPublic,
             url: stationProps.publicPageUrl,
             external: true,
             visible: stationProps.enablePublicPages,
@@ -55,7 +67,7 @@ export function useStationsMenu(): array {
         {
             key: 'media',
             label: computed(() => $gettext('Media')),
-            icon: 'library_music',
+            icon: IconLibraryMusic,
             visible: stationProps.features.media,
             items: [
                 {
@@ -127,7 +139,7 @@ export function useStationsMenu(): array {
         {
             key: 'playlists',
             label: computed(() => $gettext('Playlists')),
-            icon: 'queue_music',
+            icon: IconPlaylist,
             url: {
                 name: 'stations:playlists:index'
             },
@@ -136,7 +148,7 @@ export function useStationsMenu(): array {
         {
             key: 'podcasts',
             label: computed(() => $gettext('Podcasts')),
-            icon: 'cast',
+            icon: IconPodcasts,
             url: {
                 name: 'stations:podcasts:index'
             },
@@ -145,7 +157,7 @@ export function useStationsMenu(): array {
         {
             key: 'streaming',
             label: computed(() => $gettext('Live Streaming')),
-            icon: 'mic',
+            icon: IconMic,
             visible: userAllowedForStation(StationPermission.Streamers) && stationProps.features.streamers,
             items: [
                 {
@@ -168,7 +180,7 @@ export function useStationsMenu(): array {
         {
             key: 'webhooks',
             label: computed(() => $gettext('Web Hooks')),
-            icon: 'code',
+            icon: IconCode,
             url: {
                 name: 'stations:webhooks:index'
             },
@@ -177,7 +189,7 @@ export function useStationsMenu(): array {
         {
             key: 'reports',
             label: computed(() => $gettext('Reports')),
-            icon: 'assignment',
+            icon: IconReport,
             visible: userAllowedForStation(StationPermission.Reports),
             items: [
                 {
@@ -221,7 +233,7 @@ export function useStationsMenu(): array {
         {
             key: 'broadcasting',
             label: computed(() => $gettext('Broadcasting')),
-            icon: 'wifi_tethering',
+            icon: IconWifiTethering,
             items: [
                 {
                     key: 'mounts',
@@ -294,7 +306,7 @@ export function useStationsMenu(): array {
         {
             key: 'logs',
             label: computed(() => $gettext('Logs')),
-            icon: 'web_stories',
+            icon: IconLogs,
             url: {
                 name: 'stations:logs'
             },

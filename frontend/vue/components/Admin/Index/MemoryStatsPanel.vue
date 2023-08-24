@@ -13,7 +13,7 @@
                     class="btn btn-dark btn-sm py-2"
                     @click="showMemoryStatsHelpModal"
                 >
-                    <icon icon="help_outline" />
+                    <icon :icon="IconInfo" />
                 </button>
             </div>
         </div>
@@ -65,6 +65,7 @@
 import Icon from "~/components/Common/Icon.vue";
 import {ref} from "vue";
 import MemoryStatsHelpModal from "~/components/Admin/Index/MemoryStatsHelpModal.vue";
+import {IconInfo} from "~/components/Common/icons.ts";
 
 const props = defineProps({
     stats: {

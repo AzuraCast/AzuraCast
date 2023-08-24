@@ -4,7 +4,7 @@
         role="alert"
     >
         <div class="flex-shrink-0 me-2">
-            <icon icon="error" />
+            <icon :icon="IconError"/>
         </div>
         <div class="flex-fill">
             <slot />
@@ -13,4 +13,5 @@
 </template>
 
 <script setup>
-import Icon from './Icon';</script>
+import Icon from './Icon';
+import {IconError} from "~/components/Common/icons";</script>

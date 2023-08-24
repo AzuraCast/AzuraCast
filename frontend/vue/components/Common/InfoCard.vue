@@ -5,7 +5,7 @@
         aria-live="off"
     >
         <div class="flex-shrink-0 me-2">
-            <icon icon="info" />
+            <icon :icon="IconInfo" />
         </div>
         <div class="flex-fill">
             <slot />
@@ -21,6 +21,7 @@
 
 <script setup>
 import Icon from './Icon';
+import {IconInfo} from "~/components/Common/icons";
 
 const slots = defineSlots();
 </script>

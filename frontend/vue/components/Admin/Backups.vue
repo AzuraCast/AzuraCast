@@ -43,7 +43,7 @@
                         class="btn btn-primary"
                         @click="doConfigure"
                     >
-                        <icon icon="settings" />
+                        <icon :icon="IconSettings"/>
                         <span>
                             {{ $gettext('Configure') }}
                         </span>
@@ -54,7 +54,7 @@
                         class="btn btn-secondary"
                         @click="showLastOutput"
                     >
-                        <icon icon="assignment" />
+                        <icon :icon="IconLogs"/>
                         <span>
                             {{ $gettext('Most Recent Backup Log') }}
                         </span>
@@ -95,7 +95,7 @@
                 class="btn btn-primary"
                 @click="doRunBackup"
             >
-                <icon icon="send" />
+                <icon :icon="IconSend"/>
                 <span>
                     {{ $gettext('Run Manual Backup') }}
                 </span>
@@ -167,6 +167,7 @@ import Loading from "~/components/Common/Loading.vue";
 import CardPage from "~/components/Common/CardPage.vue";
 import {useLuxon} from "~/vendor/luxon";
 import {getApiUrl} from "~/router";
+import {IconLogs, IconSend, IconSettings} from "~/components/Common/icons";
 
 const props = defineProps({
     storageLocations: {

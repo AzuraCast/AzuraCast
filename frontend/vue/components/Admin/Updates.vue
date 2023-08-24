@@ -34,7 +34,7 @@
                         class="btn btn-info"
                         @click="checkForUpdates()"
                     >
-                        <icon icon="sync" />
+                        <icon :icon="IconSync"/>
                         {{ $gettext('Check for Updates') }}
                     </button>
                 </template>
@@ -60,7 +60,7 @@
                         href="https://docs.azuracast.com/en/getting-started/updates/release-channels"
                         target="_blank"
                     >
-                        <icon icon="info" />
+                        <icon :icon="IconInfo"/>
                         {{ $gettext('About Release Channels') }}
                     </a>
                 </template>
@@ -105,7 +105,7 @@
                         :to="{ name: 'admin:backups:index' }"
                         class="btn btn-dark"
                     >
-                        <icon icon="backup" />
+                        <icon :icon="IconUpload"/>
                         <span>
                             {{ $gettext('Backup') }}
                         </span>
@@ -115,7 +115,7 @@
                         class="btn btn-success"
                         @click="doUpdate()"
                     >
-                        <icon icon="update" />
+                        <icon :icon="IconUpdate"/>
                         <span>
                             {{ $gettext('Update via Web') }}
                         </span>
@@ -140,7 +140,7 @@
                         href="https://docs.azuracast.com/en/getting-started/updates"
                         target="_blank"
                     >
-                        <icon icon="info" />
+                        <icon :icon="IconInfo"/>
                         <span>
                             {{ $gettext('Update Instructions') }}
                         </span>
@@ -160,6 +160,7 @@ import {useAxios} from "~/vendor/axios";
 import {useSweetAlert} from "~/vendor/sweetalert";
 import CardPage from "~/components/Common/CardPage.vue";
 import {getApiUrl} from "~/router";
+import {IconInfo, IconSync, IconUpdate, IconUpload} from "~/components/Common/icons";
 
 const props = defineProps({
     releaseChannel: {

@@ -1,16 +1,7 @@
 <template>
     <card-page :title="$gettext('Users')">
         <template #actions>
-            <button
-                type="button"
-                class="btn btn-primary"
-                @click="doCreate"
-            >
-                <icon icon="add" />
-                <span>
-                    {{ $gettext('Add User') }}
-                </span>
-            </button>
+            <add-button text="$gettext('Add User')" @click="doCreate"/>
         </template>
 
         <data-table
@@ -85,7 +76,6 @@
 <script setup>
 import DataTable from '~/components/Common/DataTable';
 import EditModal from './Users/EditModal';
-import Icon from '~/components/Common/Icon';
 import {useTranslate} from "~/vendor/gettext";
 import {ref} from "vue";
 import useHasDatatable from "~/functions/useHasDatatable";
@@ -93,6 +83,7 @@ import useHasEditModal from "~/functions/useHasEditModal";
 import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
 import CardPage from "~/components/Common/CardPage.vue";
 import {getApiUrl} from "~/router";
+import AddButton from "~/components/Common/AddButton.vue";
 
 const props = defineProps({
     roles: {

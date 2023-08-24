@@ -45,7 +45,7 @@
                         <td class="ps-1 text-end">
                             <icon
                                 class="sm align-middle"
-                                icon="headset"
+                                :icon="IconHeadphones"
                             />
                             <span class="listeners-total ps-1">{{ mount.listeners.total }}</span><br>
                             <small>
@@ -93,7 +93,7 @@
                         <td class="ps-1 text-end">
                             <icon
                                 class="sm align-middle"
-                                icon="headset"
+                                :icon="IconHeadphones"
                             />
                             <span class="listeners-total ps-1">{{ remote.listeners.total }}</span><br>
                             <small>
@@ -135,7 +135,7 @@
                         <td class="ps-1 text-end">
                             <icon
                                 class="sm align-middle"
-                                icon="headset"
+                                :icon="IconHeadphones"
                             />
                             <span class="listeners-total ps-1">
                                 {{ station.hls_listeners }}
@@ -152,7 +152,7 @@
                 class="btn btn-link text-primary"
                 :href="station.playlist_pls_url"
             >
-                <icon icon="file_download" />
+                <icon :icon="IconDownload" />
                 <span>
                     {{ $gettext('Download PLS') }}
                 </span>
@@ -161,7 +161,7 @@
                 class="btn btn-link text-primary"
                 :href="station.playlist_m3u_url"
             >
-                <icon icon="file_download" />
+                <icon :icon="IconDownload" />
                 <span>
                     {{ $gettext('Download M3U') }}
                 </span>
@@ -174,6 +174,7 @@
 import Icon from '~/components/Common/Icon';
 import PlayButton from "~/components/Common/PlayButton";
 import CardPage from "~/components/Common/CardPage.vue";
+import {IconDownload, IconHeadphones} from "~/components/Common/icons";
 
 const props = defineProps({
     station: {

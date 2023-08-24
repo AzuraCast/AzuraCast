@@ -18,7 +18,7 @@
                     class="btn btn-link text-secondary"
                     @click.prevent="openSongHistoryModal"
                 >
-                    <icon icon="history" />
+                    <icon :icon="IconHistory" />
                     <span>
                         {{ $gettext('Song History') }}
                     </span>
@@ -28,7 +28,7 @@
                     class="btn btn-link text-secondary"
                     @click.prevent="openRequestModal"
                 >
-                    <icon icon="help_outline" />
+                    <icon :icon="IconHelp" />
                     <span>
                         {{ $gettext('Request Song') }}
                     </span>
@@ -37,7 +37,7 @@
                     class="btn btn-link text-secondary"
                     :href="downloadPlaylistUri"
                 >
-                    <icon icon="file_download" />
+                    <icon :icon="IconDownload" />
                     <span>
                         {{ $gettext('Playlist') }}
                     </span>
@@ -72,6 +72,7 @@ import playerProps from "~/components/Public/playerProps";
 import {pickProps} from "~/functions/pickProps";
 import Lightbox from "~/components/Common/Lightbox.vue";
 import {useProvideLightbox} from "~/vendor/lightbox";
+import {IconDownload, IconHelp, IconHistory} from "~/components/Common/icons";
 
 const props = defineProps({
     ...playerProps,

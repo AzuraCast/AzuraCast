@@ -48,7 +48,7 @@
                 class="btn btn-link text-secondary"
                 @click="makeApiCall(backendRestartUri)"
             >
-                <icon icon="update" />
+                <icon :icon="IconUpdate" />
                 <span>
                     {{ $gettext('Restart') }}
                 </span>
@@ -59,7 +59,7 @@
                 class="btn btn-link text-success"
                 @click="makeApiCall(backendStartUri)"
             >
-                <icon icon="play_arrow" />
+                <icon :icon="IconPlay" />
                 <span>
                     {{ $gettext('Start') }}
                 </span>
@@ -70,7 +70,7 @@
                 class="btn btn-link text-danger"
                 @click="makeApiCall(backendStopUri)"
             >
-                <icon icon="stop" />
+                <icon :icon="IconStop" />
                 <span>
                     {{ $gettext('Stop') }}
                 </span>
@@ -88,6 +88,7 @@ import {computed} from "vue";
 import backendPanelProps from "~/components/Stations/Profile/backendPanelProps";
 import CardPage from "~/components/Common/CardPage.vue";
 import {StationPermission, userAllowedForStation} from "~/acl";
+import {IconPlay, IconStop, IconUpdate} from "~/components/Common/icons";
 
 const props = defineProps({
     ...backendPanelProps,

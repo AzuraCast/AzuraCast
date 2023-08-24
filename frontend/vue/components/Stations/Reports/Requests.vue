@@ -42,7 +42,7 @@
                 class="btn btn-danger"
                 @click="doClear()"
             >
-                <icon icon="remove" />
+                <icon :icon="IconRemove"/>
                 <span>
                     {{ $gettext('Clear Pending Requests') }}
                 </span>
@@ -103,6 +103,7 @@ import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
 import {useLuxon} from "~/vendor/luxon";
 import {getStationApiUrl} from "~/router";
+import {IconRemove} from "~/components/Common/icons";
 
 const listUrl = getStationApiUrl('/reports/requests');
 const clearUrl = getStationApiUrl('/reports/requests/clear');

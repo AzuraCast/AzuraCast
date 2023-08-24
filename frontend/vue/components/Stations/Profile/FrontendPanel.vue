@@ -116,7 +116,7 @@
                 class="btn btn-link text-primary"
                 @click.prevent="credentialsVisible = !credentialsVisible"
             >
-                <icon icon="unfold_more" />
+                <icon :icon="IconMoreHoriz" />
                 <span>
                     {{ langShowHideCredentials }}
                 </span>
@@ -127,7 +127,7 @@
                     class="btn btn-link text-secondary"
                     @click="makeApiCall(frontendRestartUri)"
                 >
-                    <icon icon="update" />
+                    <icon :icon="IconUpdate" />
                     <span>
                         {{ $gettext('Restart') }}
                     </span>
@@ -138,7 +138,7 @@
                     class="btn btn-link text-success"
                     @click="makeApiCall(frontendStartUri)"
                 >
-                    <icon icon="play_arrow" />
+                    <icon :icon="IconPlay" />
                     <span>
                         {{ $gettext('Start') }}
                     </span>
@@ -149,7 +149,7 @@
                     class="btn btn-link text-danger"
                     @click="makeApiCall(frontendStopUri)"
                 >
-                    <icon icon="stop" />
+                    <icon :icon="IconStop" />
                     <span>
                         {{ $gettext('Stop') }}
                     </span>
@@ -170,6 +170,7 @@ import {useTranslate} from "~/vendor/gettext";
 import CardPage from "~/components/Common/CardPage.vue";
 import {StationPermission, userAllowedForStation} from "~/acl";
 import useOptionalStorage from "~/functions/useOptionalStorage";
+import {IconMoreHoriz, IconPlay, IconStop, IconUpdate} from "~/components/Common/icons";
 
 const props = defineProps({
     ...frontendPanelProps,

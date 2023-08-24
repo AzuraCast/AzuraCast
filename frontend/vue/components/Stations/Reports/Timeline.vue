@@ -12,7 +12,7 @@
                         :href="exportUrl"
                         target="_blank"
                     >
-                        <icon icon="file_download" />
+                        <icon :icon="IconDownload"/>
                         <span>
                             {{ $gettext('Download CSV') }}
                         </span>
@@ -39,13 +39,13 @@
                 <span class="typography-subheading">
                     <template v-if="row.item.delta_total > 0">
                         <span class="text-success">
-                            <icon icon="trending_up" />
+                            <icon :icon="IconTrendingUp"/>
                             {{ abs(row.item.delta_total) }}
                         </span>
                     </template>
                     <template v-else-if="row.item.delta_total < 0">
                         <span class="text-danger">
-                            <icon icon="trending_down" />
+                            <icon :icon="IconTrendingDown"/>
                             {{ abs(row.item.delta_total) }}
                         </span>
                     </template>
@@ -94,6 +94,7 @@ import {computed, ref, watch} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import {useLuxon} from "~/vendor/luxon";
 import {getStationApiUrl} from "~/router";
+import {IconDownload, IconTrendingDown, IconTrendingUp} from "~/components/Common/icons";
 
 const baseApiUrl = getStationApiUrl('/history');
 

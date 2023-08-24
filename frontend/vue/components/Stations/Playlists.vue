@@ -31,16 +31,10 @@
                 >
                     <div class="card-body-flush">
                         <div class="card-body buttons">
-                            <button
-                                type="button"
-                                class="btn btn-primary"
+                            <add-button
+                                :text="$gettext('Add Playlist')"
                                 @click="doCreate"
-                            >
-                                <icon icon="add" />
-                                <span>
-                                    {{ $gettext('Add Playlist') }}
-                                </span>
-                            </button>
+                            />
                         </div>
 
                         <data-table
@@ -312,7 +306,6 @@ import EditModal from './Playlists/EditModal';
 import ReorderModal from './Playlists/ReorderModal';
 import ImportModal from './Playlists/ImportModal';
 import QueueModal from './Playlists/QueueModal';
-import Icon from '~/components/Common/Icon';
 import CloneModal from './Playlists/CloneModal';
 import ApplyToModal from "./Playlists/ApplyToModal.vue";
 import {useTranslate} from "~/vendor/gettext";
@@ -328,6 +321,7 @@ import {getStationApiUrl} from "~/router";
 import TimeZone from "~/components/Stations/Common/TimeZone.vue";
 import Tabs from "~/components/Common/Tabs.vue";
 import Tab from "~/components/Common/Tab.vue";
+import AddButton from "~/components/Common/AddButton.vue";
 
 const props = defineProps({
     useManualAutoDj: {

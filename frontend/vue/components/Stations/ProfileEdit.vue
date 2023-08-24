@@ -31,7 +31,7 @@
                 class="btn btn-light"
                 @click="retry"
             >
-                <icon icon="refresh" />
+                <icon :icon="IconRefresh"/>
                 <span>
                     {{ $gettext('Reload') }}
                 </span>
@@ -62,6 +62,7 @@ import Icon from "~/components/InlinePlayer.vue";
 import ErrorCard from "~/components/Common/ErrorCard.vue";
 import {getStationApiUrl} from "~/router";
 import {useRouter} from "vue-router";
+import {IconRefresh} from "~/components/Common/icons";
 
 const props = defineProps(stationFormProps);
 

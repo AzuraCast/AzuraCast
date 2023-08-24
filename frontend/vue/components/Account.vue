@@ -61,7 +61,7 @@
                             class="btn btn-primary"
                             @click="doEditProfile"
                         >
-                            <icon icon="edit" />
+                            <icon :icon="IconEdit" />
                             <span>
                                 {{ $gettext('Edit Profile') }}
                             </span>
@@ -94,7 +94,7 @@
                             class="btn btn-primary"
                             @click="doChangePassword"
                         >
-                            <icon icon="vpn_key" />
+                            <icon :icon="IconVpnKey" />
                             <span>
                                 {{ $gettext('Change Password') }}
                             </span>
@@ -105,7 +105,7 @@
                             class="btn btn-danger"
                             @click="disableTwoFactor"
                         >
-                            <icon icon="lock_open" />
+                            <icon :icon="IconLockOpen" />
                             <span>
                                 {{ $gettext('Disable Two-Factor') }}
                             </span>
@@ -116,7 +116,7 @@
                             class="btn btn-success"
                             @click="enableTwoFactor"
                         >
-                            <icon icon="lock" />
+                            <icon :icon="IconLock" />
                             <span>
                                 {{ $gettext('Enable Two-Factor') }}
                             </span>
@@ -147,7 +147,7 @@
                             class="btn btn-primary"
                             @click="createApiKey"
                         >
-                            <icon icon="add" />
+                            <icon :icon="IconAdd" />
                             <span>
                                 {{ $gettext('Add API Key') }}
                             </span>
@@ -220,6 +220,7 @@ import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
 import useRefreshableAsyncState from "~/functions/useRefreshableAsyncState";
 import CardPage from "~/components/Common/CardPage.vue";
 import Loading from "~/components/Common/Loading.vue";
+import {IconAdd, IconEdit, IconLock, IconLockOpen, IconVpnKey} from "~/components/Common/icons";
 
 const props = defineProps({
     userUrl: {

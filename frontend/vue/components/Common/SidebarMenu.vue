@@ -31,7 +31,7 @@
                 <icon
                     v-if="category.external"
                     class="sm ms-2"
-                    icon="open_in_new"
+                    :icon="IconOpenInNew"
                     :aria-label="$gettext('External')"
                 />
             </a>
@@ -68,7 +68,7 @@
                             <icon
                                 v-if="item.external"
                                 class="sm ms-2"
-                                icon="open_in_new"
+                                :icon="IconOpenInNew"
                                 :aria-label="$gettext('External')"
                             />
                         </a>
@@ -83,6 +83,7 @@
 import Icon from "~/components/Common/Icon.vue";
 import {useRoute} from "vue-router";
 import {some} from "lodash";
+import {IconOpenInNew} from "~/components/Common/icons.ts";
 
 const props = defineProps({
     menu: {

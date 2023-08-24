@@ -39,7 +39,7 @@
             :aria-label="$gettext('Stop')"
             @click="stop()"
         >
-            <icon icon="stop" />
+            <icon :icon="IconStop" />
         </button>
         <div class="inline-volume-controls d-inline-flex align-items-center ms-2">
             <div class="flex-shrink-0">
@@ -73,6 +73,7 @@ import {usePlayerStore} from "~/store";
 import {computed, ref, toRef} from "vue";
 import MuteButton from "~/components/Common/MuteButton.vue";
 import usePlayerVolume from "~/functions/usePlayerVolume";
+import {IconStop} from "~/components/Common/icons";
 
 defineOptions({
     inheritAttrs: false

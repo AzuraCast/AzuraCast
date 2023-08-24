@@ -19,7 +19,7 @@
                     class="btn btn-link text-primary"
                     :to="{name: 'stations:streamers:index'}"
                 >
-                    <icon icon="settings" />
+                    <icon :icon="IconSettings" />
                     <span>
                         {{ $gettext('Manage') }}
                     </span>
@@ -30,7 +30,7 @@
                     class="btn btn-link text-danger"
                     @click="toggleStreamers"
                 >
-                    <icon icon="close" />
+                    <icon :icon="IconClose" />
                     <span>
                         {{ $gettext('Disable') }}
                     </span>
@@ -43,7 +43,7 @@
                     class="btn btn-link text-success"
                     @click="toggleStreamers"
                 >
-                    <icon icon="check" />
+                    <icon :icon="IconCheck" />
                     <span>
                         {{ $gettext('Enable') }}
                     </span>
@@ -60,6 +60,7 @@ import streamersPanelProps from "~/components/Stations/Profile/streamersPanelPro
 import CardPage from "~/components/Common/CardPage.vue";
 import {StationPermission, userAllowedForStation} from "~/acl";
 import useToggleFeature from "~/components/Stations/Profile/useToggleFeature";
+import {IconCheck, IconClose, IconSettings} from "~/components/Common/icons";
 
 const props = defineProps({
     ...streamersPanelProps

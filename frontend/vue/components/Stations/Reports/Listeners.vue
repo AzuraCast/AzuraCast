@@ -16,7 +16,7 @@
                                 :href="exportUrl"
                                 target="_blank"
                             >
-                                <icon icon="file_download" />
+                                <icon :icon="IconDownload"/>
                                 <span>
                                     {{ $gettext('Download CSV') }}
                                 </span>
@@ -119,13 +119,13 @@
                         <template #cell(user_agent)="row">
                             <div>
                                 <span v-if="row.item.is_mobile">
-                                    <icon icon="smartphone" />
+                                    <icon :icon="IconSmartphone"/>
                                     <span class="visually-hidden">
                                         {{ $gettext('Mobile Device') }}
                                     </span>
                                 </span>
                                 <span v-else>
-                                    <icon icon="desktop_windows" />
+                                    <icon :icon="IconDesktopWindows"/>
                                     <span class="visually-hidden">
                                         {{ $gettext('Desktop Device') }}
                                     </span>
@@ -183,6 +183,7 @@ import {useAxios} from "~/vendor/axios";
 import {useAzuraCastStation} from "~/vendor/azuracast";
 import {useLuxon} from "~/vendor/luxon";
 import {getStationApiUrl} from "~/router";
+import {IconDesktopWindows, IconDownload, IconSmartphone} from "~/components/Common/icons";
 
 const props = defineProps({
     attribution: {

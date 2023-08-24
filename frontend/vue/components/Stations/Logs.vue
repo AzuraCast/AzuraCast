@@ -62,7 +62,7 @@
                         href="https://github.com/AzuraCast/AzuraCast/issues/new/choose"
                         target="_blank"
                     >
-                        <icon icon="contact_support" />
+                        <icon :icon="IconSupport"/>
                         <span>
                             {{ $gettext('Add New GitHub Issue') }}
                         </span>
@@ -80,6 +80,7 @@ import LogList from "~/components/Common/LogList";
 import {Ref, ref} from "vue";
 import {getStationApiUrl} from "~/router";
 import Modal from "~/components/Common/Modal.vue";
+import {IconSupport} from "~/components/Common/icons.ts";
 
 const logsUrl = getStationApiUrl('/logs');
 

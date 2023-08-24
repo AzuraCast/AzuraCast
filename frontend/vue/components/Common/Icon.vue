@@ -1,28 +1,20 @@
 <template>
-    <i
-        :class="iconClass"
+    <svg
+        class="icon"
+        xmlns="http://www.w3.org/2000/svg"
+        :viewBox="icon.viewBox"
+        fill="currentColor"
+        focusable="false"
         aria-hidden="true"
-    >{{ icon }}</i>
+        v-html="icon.contents"
+    />
 </template>
 
-<script setup>
-import {computed} from "vue";
-
+<script setup lang="ts">
 const props = defineProps({
-    type: {
-        type: String,
-        default: 'md'
-    },
     icon: {
-        type: String,
-        required: true
+        type: Object,
+        default: null
     }
-});
-
-const iconClass = computed(() => {
-    if (props.type === 'md') {
-        return ['material-icons'];
-    }
-    return null;
 });
 </script>

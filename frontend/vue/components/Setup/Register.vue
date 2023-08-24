@@ -63,7 +63,7 @@
                     >
                         <template #label>
                             <icon
-                                icon="email"
+                                :icon="IconMail"
                                 class="me-1"
                             />
                             {{ $gettext('E-mail Address') }}
@@ -79,7 +79,7 @@
                     >
                         <template #label>
                             <icon
-                                icon="vpn_key"
+                                :icon="IconVpnKey"
                                 class="me-1"
                             />
                             {{ $gettext('Password') }}
@@ -108,6 +108,7 @@ import {reactive} from "vue";
 import {email, required} from "@vuelidate/validators";
 import validatePassword from "~/functions/validatePassword";
 import useVuelidate from "@vuelidate/core";
+import {IconMail, IconVpnKey} from "~/components/Common/icons";
 
 const props = defineProps({
     csrf: {

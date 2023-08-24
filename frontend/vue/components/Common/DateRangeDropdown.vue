@@ -19,7 +19,7 @@
                 type="button"
                 class="btn btn-dark dropdown-toggle"
             >
-                <icon icon="date_range" />
+                <icon :icon="IconDateRange"/>
                 <span>
                     {{ value }}
                 </span>
@@ -36,6 +36,7 @@ import {useTranslate} from "~/vendor/gettext";
 import {computed} from "vue";
 import {useAzuraCast} from "~/vendor/azuracast";
 import {useLuxon} from "~/vendor/luxon";
+import {IconDateRange} from "~/components/Common/icons";
 
 defineOptions({
     inheritAttrs: false

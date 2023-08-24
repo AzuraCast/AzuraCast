@@ -1,16 +1,7 @@
 <template>
     <card-page :title="$gettext('Stations')">
         <template #actions>
-            <button
-                type="button"
-                class="btn btn-primary"
-                @click="doCreate"
-            >
-                <icon icon="add" />
-                <span>
-                    {{ $gettext('Add Station') }}
-                </span>
-            </button>
+            <add-button text="$gettext('Add Station')" @click="doCreate"/>
         </template>
 
         <data-table
@@ -81,7 +72,6 @@
 
 <script setup>
 import DataTable from '~/components/Common/DataTable';
-import Icon from '~/components/Common/Icon';
 import AdminStationsEditModal from "./Stations/EditModal";
 import {get} from "lodash";
 import AdminStationsCloneModal from "./Stations/CloneModal";
@@ -94,6 +84,7 @@ import useHasEditModal from "~/functions/useHasEditModal";
 import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
 import CardPage from "~/components/Common/CardPage.vue";
 import {getApiUrl} from "~/router";
+import AddButton from "~/components/Common/AddButton.vue";
 
 const props = defineProps({
     ...stationFormProps,

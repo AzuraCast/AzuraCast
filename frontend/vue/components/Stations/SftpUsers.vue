@@ -6,16 +6,7 @@
                 :title="$gettext('SFTP Users')"
             >
                 <template #actions>
-                    <button
-                        type="button"
-                        class="btn btn-primary"
-                        @click="doCreate"
-                    >
-                        <icon icon="add" />
-                        <span>
-                            {{ $gettext('Add SFTP User') }}
-                        </span>
-                    </button>
+                    <add-button :text="$gettext('Add SFTP User')" @click="doCreate"/>
                 </template>
 
                 <data-table
@@ -91,6 +82,7 @@ import useHasEditModal from "~/functions/useHasEditModal";
 import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
 import CardPage from "~/components/Common/CardPage.vue";
 import {getStationApiUrl} from "~/router";
+import AddButton from "~/components/Common/AddButton.vue";
 
 const props = defineProps({
     connectionInfo: {

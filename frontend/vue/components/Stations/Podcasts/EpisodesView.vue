@@ -35,21 +35,12 @@
                 class="btn btn-secondary"
                 @click="doClearPodcast()"
             >
-                <icon icon="arrow_back" />
+                <icon :icon="IconChevronLeft"/>
                 <span>
                     {{ $gettext('All Podcasts') }}
                 </span>
             </button>
-            <button
-                type="button"
-                class="btn btn-primary"
-                @click="doCreate"
-            >
-                <icon icon="add" />
-                <span>
-                    {{ $gettext('Add Episode') }}
-                </span>
-            </button>
+            <add-button :text="$gettext('Add Episode')" @click="doCreate"/>
         </div>
 
         <data-table
@@ -127,6 +118,8 @@ import {ref} from "vue";
 import {useSweetAlert} from "~/vendor/sweetalert";
 import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
+import AddButton from "~/components/Common/AddButton.vue";
+import {IconChevronLeft} from "~/components/Common/icons";
 
 const props = defineProps({
     quotaUrl: {

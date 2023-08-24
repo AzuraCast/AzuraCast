@@ -48,7 +48,7 @@
                     >
                         <template #label>
                             <icon
-                                icon="vpn_key"
+                                :icon="IconVpnKey"
                                 class="me-1"
                             />
                             {{ $gettext('Password') }}
@@ -76,6 +76,7 @@ import Icon from "~/components/Common/Icon";
 import validatePassword from '~/functions/validatePassword';
 import {required} from '@vuelidate/validators';
 import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
+import {IconVpnKey} from "~/components/Common/icons";
 
 const props = defineProps({
     csrf: {

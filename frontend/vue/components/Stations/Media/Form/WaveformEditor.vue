@@ -20,7 +20,7 @@
                 :title="$gettext('Play')"
                 @click="playAudio"
             >
-                <icon icon="play_arrow" />
+                <icon :icon="IconPlayCircle"/>
             </button>
             <button
                 type="button"
@@ -28,7 +28,7 @@
                 :title="$gettext('Stop')"
                 @click="stopAudio"
             >
-                <icon icon="stop" />
+                <icon :icon="IconStop"/>
             </button>
         </div>
         <div class="btn-group btn-group-sm">
@@ -79,6 +79,7 @@
 import WaveformComponent from '~/components/Common/Waveform';
 import Icon from '~/components/Common/Icon';
 import {ref} from "vue";
+import {IconPlayCircle, IconStop} from "~/components/Common/icons";
 
 const props = defineProps({
     form: {

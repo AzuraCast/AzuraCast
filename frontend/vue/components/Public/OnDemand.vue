@@ -51,7 +51,7 @@
                                 target="_blank"
                                 :title="$gettext('Download')"
                             >
-                                <icon icon="cloud_download" />
+                                <icon :icon="IconDownload" />
                             </a>
                         </template>
                     </template>
@@ -86,6 +86,7 @@ import AlbumArt from "~/components/Common/AlbumArt.vue";
 import Lightbox from "~/components/Common/Lightbox.vue";
 import {ref} from "vue";
 import {useProvideLightbox} from "~/vendor/lightbox";
+import {IconDownload} from "~/components/Common/icons";
 
 const props = defineProps({
     listUrl: {

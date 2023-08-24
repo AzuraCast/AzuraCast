@@ -8,16 +8,7 @@
             </p>
         </template>
         <template #actions>
-            <button
-                type="button"
-                class="btn btn-primary"
-                @click="doCreate"
-            >
-                <icon icon="add" />
-                <span>
-                    {{ $gettext('Add Remote Relay') }}
-                </span>
-            </button>
+            <add-button :text="$gettext('Add Remote Relay')" @click="doCreate"/>
         </template>
 
         <data-table
@@ -90,6 +81,7 @@ import useHasEditModal from "~/functions/useHasEditModal";
 import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
 import CardPage from "~/components/Common/CardPage.vue";
 import {getStationApiUrl} from "~/router";
+import AddButton from "~/components/Common/AddButton.vue";
 
 const listUrl = getStationApiUrl('/remotes');
 

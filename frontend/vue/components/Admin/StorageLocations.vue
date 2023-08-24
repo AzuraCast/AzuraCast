@@ -28,16 +28,7 @@
         </div>
 
         <div class="card-body buttons">
-            <button
-                type="button"
-                class="btn btn-primary"
-                @click="doCreate"
-            >
-                <icon icon="add" />
-                <span>
-                    {{ $gettext('Add Storage Location') }}
-                </span>
-            </button>
+            <add-button text="$gettext('Add Storage Location')" @click="doCreate"/>
         </div>
 
         <data-table
@@ -112,7 +103,6 @@
 <script setup>
 import DataTable from '~/components/Common/DataTable';
 import EditModal from './StorageLocations/EditModal';
-import Icon from '~/components/Common/Icon';
 import {computed, nextTick, ref} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import useHasDatatable from "~/functions/useHasDatatable";
@@ -120,6 +110,7 @@ import useHasEditModal from "~/functions/useHasEditModal";
 import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
 import CardPage from "~/components/Common/CardPage.vue";
 import {getApiUrl} from "~/router";
+import AddButton from "~/components/Common/AddButton.vue";
 
 const activeType = ref('station_media');
 

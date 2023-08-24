@@ -1,0 +1,78 @@
+$primary: #1e88e5;
+$red: #dc3545;
+
+$body-bg: #FFF;
+
+$body-bg-dark: #22252f;
+$body-color: #595959;
+
+$font-family-sans-serif: "Roboto", system-ui, -apple-system, "Segoe UI", "Helvetica Neue", "Noto Sans", "Liberation Sans", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+$font-size-root: 14px;
+
+$link-decoration: none;
+
+$header-nav-height: 5.15rem;
+
+$navbar-light-brand-color: #FFF;
+$navbar-dark-brand-color: #FFF;
+
+$navbar-light-color: #FFF;
+$navbar-dark-color: #FFF;
+
+$navbar-light-brand-hover-color: $navbar-light-color;
+$navbar-dark-brand-hover-color: $navbar-dark-color;
+
+$list-group-item-padding-y: 1rem;
+
+$dropdown-item-padding-y: .75rem;
+
+$input-btn-padding-y: .75rem;
+$input-btn-padding-x: .5rem;
+
+$form-range-track-bg: var(--bs-secondary-bg);
+$form-range-thumb-bg: var(--bs-body-color);
+
+$btn-font-size: 1rem;
+$btn-sm-font-size: .9rem;
+
+$btn-padding-x: .75rem;
+
+$card-border-width: 0;
+$card-cap-padding-y: 1.1rem;
+$card-cap-padding-x: 1.1rem;
+$card-spacer-x: 1.0rem;
+$card-spacer-y: 1.0rem;
+
+$badge-padding-x: 0.75rem;
+$badge-padding-y: 0.45rem;
+$badge-font-size: 0.9rem;
+$badge-font-weight: normal;
+
+$table-border-width: 0;
+$table-striped-bg-factor: .05;
+
+$modal-border-width: 0;
+
+$progress-bar-bg: #3f51b5;
+
+$toast-font-size: 1rem;
+
+$offcanvas-border-width: 0;
+$offcanvas-bg-color: var(--bs-tertiary-bg);
+$offcanvas-padding-x: 0;
+$offcanvas-padding-y: 0;
+
+$enable-grid-classes: true;
+
+$navdrawer-width: 17.5rem;
+$navdrawer-gutter-width: 3.5rem;
+$navdrawer-inner-spacer-x: 1rem;
+$navdrawer-inner-spacer-y: 0.5rem;
+$navdrawer-icon-width: 2rem;
+$navdrawer-link-height: 3rem;
+$navdrawer-subheader-height: 3rem;
+
+$icon-size: 1.5rem;
+$icon-size-xl: ($icon-size * 2.0);
+$icon-size-lg: ($icon-size * 1.5);
+$icon-size-sm: ($icon-size * 0.6);

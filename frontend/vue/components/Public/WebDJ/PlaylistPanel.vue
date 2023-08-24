@@ -21,7 +21,7 @@
                         class="btn btn-sm btn-success"
                         @click="play"
                     >
-                        <icon icon="play_arrow" />
+                        <icon :icon="IconPlayCircle" />
                     </button>
                     <button
                         v-if="isPlaying && !isPaused"
@@ -29,28 +29,28 @@
                         class="btn btn-sm btn-warning"
                         @click="togglePause()"
                     >
-                        <icon icon="pause" />
+                        <icon :icon="IconPauseCircle" />
                     </button>
                     <button
                         type="button"
                         class="btn btn-sm"
                         @click="previous()"
                     >
-                        <icon icon="fast_rewind" />
+                        <icon :icon="IconFastRewind" />
                     </button>
                     <button
                         type="button"
                         class="btn btn-sm"
                         @click="next()"
                     >
-                        <icon icon="fast_forward" />
+                        <icon :icon="IconFastForward" />
                     </button>
                     <button
                         type="button"
                         class="btn btn-sm btn-danger"
                         @click="stop()"
                     >
-                        <icon icon="stop" />
+                        <icon :icon="IconStop" />
                     </button>
                     <button
                         type="button"
@@ -185,6 +185,7 @@ import {useInjectMixer} from "~/components/Public/WebDJ/useMixerValue";
 import {usePassthroughSync} from "~/components/Public/WebDJ/usePassthroughSync";
 import {useWebDjSource} from "~/components/Public/WebDJ/useWebDjSource";
 import {useInjectWebcaster} from "~/components/Public/WebDJ/useWebcaster";
+import {IconFastForward, IconFastRewind, IconPauseCircle, IconPlayCircle, IconStop} from "~/components/Common/icons";
 
 const props = defineProps({
     id: {

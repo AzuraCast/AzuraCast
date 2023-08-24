@@ -72,7 +72,7 @@
                     class="btn btn-link text-secondary"
                     @click.prevent="doOpenEmbed"
                 >
-                    <icon icon="code" />
+                    <icon :icon="IconCode" />
                     <span>
                         {{ $gettext('Embed Widgets') }}
                     </span>
@@ -82,7 +82,7 @@
                     class="btn btn-link text-secondary"
                     :to="{name: 'stations:branding'}"
                 >
-                    <icon icon="design_services" />
+                    <icon :icon="IconBranding" />
                     <span>
                         {{ $gettext('Edit Branding') }}
                     </span>
@@ -93,7 +93,7 @@
                     class="btn btn-link text-danger"
                     @click="togglePublicPages"
                 >
-                    <icon icon="close" />
+                    <icon :icon="IconClose" />
                     <span>
                         {{ $gettext('Disable') }}
                     </span>
@@ -106,7 +106,7 @@
                     class="btn btn-link text-success"
                     @click="togglePublicPages"
                 >
-                    <icon icon="check" />
+                    <icon :icon="IconCheck" />
                     <span>
                         {{ $gettext('Enable') }}
                     </span>
@@ -132,6 +132,7 @@ import {pickProps} from "~/functions/pickProps";
 import CardPage from "~/components/Common/CardPage.vue";
 import {StationPermission, userAllowedForStation} from "~/acl";
 import useToggleFeature from "~/components/Stations/Profile/useToggleFeature";
+import {IconBranding, IconCheck, IconClose, IconCode} from "~/components/Common/icons";
 
 const props = defineProps({
     ...publicPagesPanelProps,

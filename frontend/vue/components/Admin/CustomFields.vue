@@ -8,16 +8,7 @@
             </p>
         </template>
         <template #actions>
-            <button
-                type="button"
-                class="btn btn-primary"
-                @click="doCreate"
-            >
-                <icon icon="add" />
-                <span>
-                    {{ $gettext('Add Custom Field') }}
-                </span>
-            </button>
+            <add-button text="$gettext('Add Custom Field')" @click="doCreate"/>
         </template>
 
         <data-table
@@ -62,7 +53,6 @@
 <script setup>
 import DataTable from '~/components/Common/DataTable.vue';
 import EditModal from './CustomFields/EditModal.vue';
-import Icon from '~/components/Common/Icon.vue';
 import {get} from 'lodash';
 import {useTranslate} from "~/vendor/gettext";
 import {ref} from "vue";
@@ -71,6 +61,7 @@ import useHasEditModal from "~/functions/useHasEditModal";
 import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
 import CardPage from "~/components/Common/CardPage.vue";
 import {getApiUrl} from "~/router";
+import AddButton from "~/components/Common/AddButton.vue";
 
 const props = defineProps({
     autoAssignTypes: {

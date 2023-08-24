@@ -31,7 +31,7 @@
                     <div class="flex-fill">
                         <div class="input-group">
                             <span class="input-group-text">
-                                <icon icon="search" />
+                                <icon :icon="IconSearch" />
                             </span>
                             <input
                                 v-model="searchPhrase"
@@ -51,7 +51,7 @@
                                 :title="$gettext('Refresh rows')"
                                 @click="onClickRefresh"
                             >
-                                <icon icon="refresh" />
+                                <icon :icon="IconRefresh" />
                             </button>
 
                             <div
@@ -103,7 +103,7 @@
                                     data-bs-placement="left"
                                     :title="$gettext('Display fields')"
                                 >
-                                    <icon icon="filter_list" />
+                                    <icon :icon="IconFilterList" />
                                     <span class="caret" />
                                 </button>
                                 <div class="dropdown-menu">
@@ -176,7 +176,7 @@
                                     {{ column.label }}
 
                                     <template v-if="column.sortable && sortField === column.key">
-                                        <icon :icon="(sortOrder === 'asc') ? 'arrow_drop_down' : 'arrow_drop_up'" />
+                                        <icon :icon="(sortOrder === 'asc') ? IconArrowDropDown : IconArrowDropUp" />
                                     </template>
                                 </div>
                             </slot>
@@ -304,6 +304,7 @@ import FormMultiCheck from "~/components/Form/FormMultiCheck.vue";
 import FormCheckbox from "~/components/Form/FormCheckbox.vue";
 import Pagination from "~/components/Common/Pagination.vue";
 import useOptionalStorage from "~/functions/useOptionalStorage";
+import {IconArrowDropDown, IconArrowDropUp, IconFilterList, IconRefresh, IconSearch} from "~/components/Common/icons";
 
 const props = defineProps({
     id: {

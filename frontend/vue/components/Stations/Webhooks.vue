@@ -8,16 +8,7 @@
             </p>
         </template>
         <template #actions>
-            <button
-                type="button"
-                class="btn btn-primary"
-                @click="doCreate"
-            >
-                <icon icon="add" />
-                <span>
-                    {{ $gettext('Add Web Hook') }}
-                </span>
-            </button>
+            <add-button :text="$gettext('Add Web Hook')" @click="doCreate"/>
         </template>
 
         <data-table
@@ -117,6 +108,7 @@ import {useTriggerDetails, useTypeDetails} from "~/components/Entity/Webhooks";
 import CardPage from "~/components/Common/CardPage.vue";
 import {useAzuraCastStation} from "~/vendor/azuracast";
 import {getApiUrl, getStationApiUrl} from "~/router";
+import AddButton from "~/components/Common/AddButton.vue";
 
 const listUrl = getStationApiUrl('/webhooks');
 

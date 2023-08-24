@@ -50,7 +50,10 @@ function genIconComponents() {
         const svgInner = svgDom.window.document.getElementsByTagName('svg')[0];
 
         const svgViewBox = svgInner.getAttribute('viewBox');
-        const svgContents = svgInner.innerHTML;
+        const svgContents = svgInner.innerHTML.replace(
+            ' xmlns="http://www.w3.org/2000/svg"',
+            ''
+        );
 
         const iconComponentExport = iconComponentTemplate
                 .replace('{{componentName}}', componentName)

@@ -34,6 +34,7 @@
             <data-table
                 :fields="fields"
                 :items="applyToResults.directories"
+                handle-client-side
                 :show-toolbar="false"
                 selectable
                 @row-selected="onRowSelected"

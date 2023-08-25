@@ -59,6 +59,7 @@
             ref="$datatable"
             :fields="syncTaskFields"
             :items="syncTasks"
+            handle-client-side
             :show-toolbar="false"
         >
             <template #cell(name)="row">

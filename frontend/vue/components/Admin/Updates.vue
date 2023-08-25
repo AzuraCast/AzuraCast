@@ -218,7 +218,7 @@ const doUpdate = () => {
     }).then((result) => {
         if (result.value) {
             wrapWithLoading(
-                axios.put(props.updatesApiUrl)
+                axios.put(updatesApiUrl.value)
             ).then(() => {
                 notifySuccess(
                     $gettext('Update started. Your installation will restart shortly.')

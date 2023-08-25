@@ -125,7 +125,7 @@
         <div
             class="datatable-main"
             :class="[
-                (responsive) ? 'table-responsive' : ''
+                responsiveClass
             ]"
         >
             <table
@@ -295,7 +295,7 @@
 </template>
 
 <script setup lang="ts">
-import {slice, filter, map, includes, isEmpty, get, some, indexOf, forEach} from 'lodash';
+import {filter, forEach, get, includes, indexOf, isEmpty, map, slice, some} from 'lodash';
 import Icon from './Icon.vue';
 import {computed, onMounted, ref, shallowRef, toRaw, toRef, useSlots, watch} from "vue";
 import {watchDebounced} from "@vueuse/core";
@@ -320,7 +320,7 @@ const props = defineProps({
         default: null
     },
     responsive: {
-        type: [String, Boolean],
+        type: [Boolean, String],
         default: true
     },
     paginated: {
@@ -716,6 +716,14 @@ const toggleDetails = (row) => {
         ? null
         : row;
 };
+
+const responsiveClass = computed(() => {
+    if (typeof props.responsive === 'string') {
+        return props.responsive;
+    }
+
+    return (props.responsive ? 'table-responsive' : '');
+});
 
 defineExpose({
     refresh,

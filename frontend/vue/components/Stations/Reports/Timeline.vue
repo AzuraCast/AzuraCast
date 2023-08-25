@@ -29,7 +29,6 @@
         </div>
         <data-table
             ref="$datatable"
-            responsive
             paginated
             select-fields
             :fields="fields"

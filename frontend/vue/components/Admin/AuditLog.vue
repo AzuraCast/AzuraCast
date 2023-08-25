@@ -16,7 +16,6 @@
 
         <data-table
             ref="$datatable"
-            responsive
             paginated
             :fields="fields"
             :api-url="apiUrl"

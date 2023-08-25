@@ -45,10 +45,6 @@ useChart(
                         enabled: true,
                         mode: 'x'
                     }
-                },
-                autocolors: {
-                    enabled: true,
-                    offset: 13
                 }
             },
             scales: {

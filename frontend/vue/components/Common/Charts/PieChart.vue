@@ -37,11 +37,6 @@ useChart(
         type: 'pie',
         options: {
             aspectRatio: props.aspectRatio,
-            plugins: {
-                autocolors: {
-                    enabled: true
-                }
-            }
         }
     }
 );

@@ -35,11 +35,6 @@ useChart(
         type: 'bar',
         options: {
             aspectRatio: 2,
-            plugins: {
-                autocolors: {
-                    enabled: true
-                }
-            },
             scales: {
                 x: {
                     scaleLabel: {

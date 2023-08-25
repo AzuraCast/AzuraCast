@@ -26,6 +26,7 @@
     "bootstrap": "^5.3.0",
     "chart.js": "^4.2.1",
     "chartjs-adapter-luxon": "^1.1.0",
+    "chartjs-plugin-autocolors": "^0.2.2",
     "chartjs-plugin-zoom": "^2.0.0",
     "codemirror": "^6",
     "hls.js": "^1.1.5",

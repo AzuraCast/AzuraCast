@@ -1,7 +1,7 @@
 import {Chart, registerables} from "chart.js";
 import {defaultsDeep} from "lodash";
 import {computed, onMounted, onUnmounted, toRef, watch} from "vue";
-import colorSchemesPlugin from '~/vendor/chartjs-colorschemes/plugin.colorschemes.js';
+import autocolors from 'chartjs-plugin-autocolors';
 import zoomPlugin from 'chartjs-plugin-zoom';
 
 import 'chartjs-adapter-luxon';
@@ -9,7 +9,7 @@ import '~/vendor/luxon';
 
 Chart.register(...registerables);
 
-Chart.register(colorSchemesPlugin);
+Chart.register(autocolors);
 
 Chart.register(zoomPlugin);
 

@@ -10,7 +10,6 @@
 </template>
 
 <script setup lang="ts">
-import {Tableau20} from "~/vendor/chartjs-colorschemes/colorschemes.tableau";
 import {ref} from "vue";
 import ChartAltValues from "~/components/Common/Charts/ChartAltValues.vue";
 import useChart, {chartProps} from "~/functions/useChart";
@@ -39,8 +38,8 @@ useChart(
         options: {
             aspectRatio: props.aspectRatio,
             plugins: {
-                colorschemes: {
-                    scheme: Tableau20
+                autocolors: {
+                    enabled: true
                 }
             }
         }

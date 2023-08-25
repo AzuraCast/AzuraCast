@@ -10,7 +10,6 @@
 </template>
 
 <script setup lang="ts">
-import {Tableau20} from "~/vendor/chartjs-colorschemes/colorschemes.tableau";
 import {ref} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import ChartAltValues from "~/components/Common/Charts/ChartAltValues.vue";
@@ -47,8 +46,9 @@ useChart(
                         mode: 'x'
                     }
                 },
-                colorschemes: {
-                    scheme: Tableau20
+                autocolors: {
+                    enabled: true,
+                    offset: 13
                 }
             },
             scales: {

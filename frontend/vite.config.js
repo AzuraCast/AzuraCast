@@ -29,12 +29,37 @@ export default defineConfig({
                     vue: ['vue'],
                     lodash: ['lodash'],
                     leaflet: ['leaflet'],
-                    hlsjs: ['hls.js']
+                    hlsjs: ['hls.js'],
+                    zxcvbn: ['zxcvbn']
+                },
+                chunkFileNames: (assetInfo) => {
+                    if (assetInfo.name) {
+                        if (assetInfo.name === 'translations') {
+                            const translationParts = assetInfo.facadeModuleId
+                                .split('/');
+
+                            const translationPath = translationParts[translationParts.length - 2];
+                            return `translations-${translationPath}-[hash:8].js`
+                        }
+
+                        const assetName = assetInfo.name.replace(
+                            '.vue_vue_type_style_index_0_lang',
+                            ''
+                        ).replace(
+                            '.vue_vue_type_script_setup_true_lang',
+                            ''
+                        );
+
+                        return `${assetName}-[hash:8].js`;
+                    }
+
+                    return '[name]-[hash:8].js';
                 }
             }
         },
         manifest: true,
         emptyOutDir: true,
+        chunkSizeWarningLimit: '1m',
         outDir: resolve(__dirname, '../web/static/vite_dist')
     },
     server: {

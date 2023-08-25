@@ -26,8 +26,8 @@
 </template>
 
 <script setup lang="ts">
-import PodcastFormBasicInfo from './PodcastForm/BasicInfo';
-import PodcastCommonArtwork from './Common/Artwork';
+import PodcastFormBasicInfo from './PodcastForm/BasicInfo.vue';
+import PodcastCommonArtwork from './Common/Artwork.vue';
 import mergeExisting from "~/functions/mergeExisting";
 import {baseEditModalProps, useBaseEditModal} from "~/functions/useBaseEditModal";
 import {computed, ref} from "vue";

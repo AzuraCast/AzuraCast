@@ -73,7 +73,7 @@
 </template>
 
 <script setup lang="ts">
-import VuelidateError from "./VuelidateError";
+import VuelidateError from "./VuelidateError.vue";
 import {computed, ref, useSlots} from "vue";
 import FormGroup from "~/components/Form/FormGroup.vue";
 import FormLabel from "~/components/Form/FormLabel.vue";

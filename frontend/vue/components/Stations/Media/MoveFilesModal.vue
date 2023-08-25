@@ -76,7 +76,7 @@
 <script setup lang="ts">
 import DataTable from '~/components/Common/DataTable.vue';
 import {forEach} from 'lodash';
-import Icon from '~/components/Common/Icon';
+import Icon from '~/components/Common/Icon.vue';
 import {computed, h, ref} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import {useNotify} from "~/functions/useNotify";

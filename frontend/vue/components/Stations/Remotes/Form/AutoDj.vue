@@ -87,8 +87,8 @@
 </template>
 
 <script setup lang="ts">
-import FormGroupField from "~/components/Form/FormGroupField";
-import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox";
+import FormGroupField from "~/components/Form/FormGroupField.vue";
+import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
 import {map} from "lodash";
 import {computed} from "vue";
 import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";

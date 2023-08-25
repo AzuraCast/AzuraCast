@@ -62,8 +62,8 @@
 import DataTable from '~/components/Common/DataTable.vue';
 import formatFileSize from '~/functions/formatFileSize';
 import InlinePlayer from '~/components/InlinePlayer';
-import Icon from '~/components/Common/Icon';
-import PlayButton from "~/components/Common/PlayButton";
+import Icon from '~/components/Common/Icon.vue';
+import PlayButton from "~/components/Common/PlayButton.vue";
 import '~/vendor/sweetalert';
 import {useAzuraCast} from "~/vendor/azuracast";
 import {ref} from "vue";

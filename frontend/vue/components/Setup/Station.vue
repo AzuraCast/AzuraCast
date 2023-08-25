@@ -38,9 +38,9 @@
 </template>
 
 <script setup lang="ts">
-import AdminStationsForm from "~/components/Admin/Stations/StationForm";
-import SetupStep from "./SetupStep";
-import InfoCard from "~/components/Common/InfoCard";
+import AdminStationsForm from "~/components/Admin/Stations/StationForm.vue";
+import SetupStep from "./SetupStep.vue";
+import InfoCard from "~/components/Common/InfoCard.vue";
 import {onMounted, ref} from "vue";
 import stationFormProps from "~/components/Admin/Stations/stationFormProps";
 

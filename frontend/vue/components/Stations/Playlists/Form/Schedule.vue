@@ -38,7 +38,7 @@
 </template>
 
 <script setup lang="ts">
-import Icon from '~/components/Common/Icon';
+import Icon from '~/components/Common/Icon.vue';
 import PlaylistsFormScheduleRow from "~/components/Stations/Playlists/Form/ScheduleRow.vue";
 import {useVModel} from "@vueuse/core";
 import FormMarkup from "~/components/Form/FormMarkup.vue";

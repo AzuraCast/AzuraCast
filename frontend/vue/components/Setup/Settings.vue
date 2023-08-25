@@ -23,9 +23,9 @@
 </template>
 
 <script setup lang="ts">
-import AdminSettings from "~/components/Admin/Settings";
-import SetupStep from "./SetupStep";
-import InfoCard from "~/components/Common/InfoCard";
+import AdminSettings from "~/components/Admin/Settings.vue";
+import SetupStep from "./SetupStep.vue";
+import InfoCard from "~/components/Common/InfoCard.vue";
 import settingsProps from "~/components/Admin/settingsProps";
 
 const props = defineProps({

@@ -73,8 +73,8 @@
 </template>
 
 <script setup lang="ts">
-import FormGroupField from "~/components/Form/FormGroupField";
-import CommonRateLimitFields from "./Common/RateLimitFields";
+import FormGroupField from "~/components/Form/FormGroupField.vue";
+import CommonRateLimitFields from "./Common/RateLimitFields.vue";
 import CommonSocialPostFields from "./Common/SocialPostFields";
 import {computed} from "vue";
 import {useTranslate} from "~/vendor/gettext";

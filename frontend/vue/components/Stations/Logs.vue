@@ -74,9 +74,9 @@
 </template>
 
 <script setup lang="ts">
-import Icon from "~/components/Common/Icon";
-import StreamingLogModal from "~/components/Common/StreamingLogModal";
-import LogList from "~/components/Common/LogList";
+import Icon from "~/components/Common/Icon.vue";
+import StreamingLogModal from "~/components/Common/StreamingLogModal.vue";
+import LogList from "~/components/Common/LogList.vue";
 import {Ref, ref} from "vue";
 import {getStationApiUrl} from "~/router";
 import Modal from "~/components/Common/Modal.vue";

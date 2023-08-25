@@ -258,7 +258,7 @@
 <script setup lang="ts">
 import FormMarkup from "~/components/Form/FormMarkup.vue";
 import FormGroupField from "~/components/Form/FormGroupField.vue";
-import FormFieldset from "~/components/Form/FormFieldset";
+import FormFieldset from "~/components/Form/FormFieldset.vue";
 import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
 import AdminSettingsTestMessageModal from "~/components/Admin/Settings/TestMessageModal.vue";
 import Icon from "~/components/Common/Icon.vue";

@@ -75,8 +75,8 @@
 </template>
 
 <script setup lang="ts">
-import DataTable from "~/components/Common/DataTable";
-import SftpUsersEditModal from "./SftpUsers/EditModal";
+import DataTable from "~/components/Common/DataTable.vue";
+import SftpUsersEditModal from "./SftpUsers/EditModal.vue";
 import {useTranslate} from "~/vendor/gettext";
 import {ref} from "vue";
 import useHasDatatable from "~/functions/useHasDatatable";

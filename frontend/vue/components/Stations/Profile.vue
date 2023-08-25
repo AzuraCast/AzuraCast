@@ -66,16 +66,16 @@
 </template>
 
 <script setup lang="ts">
-import ProfileStreams from './Profile/StreamsPanel';
-import ProfileHeader from './Profile/HeaderPanel';
-import ProfileNowPlaying from './Profile/NowPlayingPanel';
-import ProfileSchedule from './Profile/SchedulePanel';
-import ProfileRequests from './Profile/RequestsPanel';
-import ProfileStreamers from './Profile/StreamersPanel';
-import ProfilePublicPages from './Profile/PublicPagesPanel';
-import ProfileFrontend from './Profile/FrontendPanel';
-import ProfileBackendNone from './Profile/BackendNonePanel';
-import ProfileBackend from './Profile/BackendPanel';
+import ProfileStreams from './Profile/StreamsPanel.vue';
+import ProfileHeader from './Profile/HeaderPanel.vue';
+import ProfileNowPlaying from './Profile/NowPlayingPanel.vue';
+import ProfileSchedule from './Profile/SchedulePanel.vue';
+import ProfileRequests from './Profile/RequestsPanel.vue';
+import ProfileStreamers from './Profile/StreamersPanel.vue';
+import ProfilePublicPages from './Profile/PublicPagesPanel.vue';
+import ProfileFrontend from './Profile/FrontendPanel.vue';
+import ProfileBackendNone from './Profile/BackendNonePanel.vue';
+import ProfileBackend from './Profile/BackendPanel.vue';
 import NowPlayingNotStartedPanel from "./Profile/NowPlayingNotStartedPanel.vue";
 import {BackendAdapter, FrontendAdapter} from '~/components/Entity/RadioAdapters';
 import NowPlaying from '~/components/Entity/NowPlaying';

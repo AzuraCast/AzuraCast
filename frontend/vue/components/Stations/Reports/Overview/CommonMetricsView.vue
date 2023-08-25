@@ -51,7 +51,7 @@
 
 <script setup lang="ts">
 import PieChart from "~/components/Common/Charts/PieChart.vue";
-import DataTable from "~/components/Common/DataTable";
+import DataTable from "~/components/Common/DataTable.vue";
 import formatTime from "~/functions/formatTime";
 import {onMounted, ref, shallowRef, toRef, watch} from "vue";
 import {useTranslate} from "~/vendor/gettext";

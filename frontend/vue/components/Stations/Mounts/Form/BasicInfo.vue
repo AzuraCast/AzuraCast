@@ -105,8 +105,8 @@
 
 <script setup lang="ts">
 import {FrontendAdapter} from '~/components/Entity/RadioAdapters';
-import FormGroupField from "~/components/Form/FormGroupField";
-import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox";
+import FormGroupField from "~/components/Form/FormGroupField.vue";
+import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
 import {computed} from "vue";
 import {useVModel} from "@vueuse/core";
 import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";

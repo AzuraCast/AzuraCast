@@ -37,8 +37,8 @@
 </template>
 
 <script setup lang="ts">
-import FormGroupField from "~/components/Form/FormGroupField";
-import ModalForm from "~/components/Common/ModalForm";
+import FormGroupField from "~/components/Form/FormGroupField.vue";
+import ModalForm from "~/components/Common/ModalForm.vue";
 import {helpers, required} from "@vuelidate/validators";
 import validatePassword from "~/functions/validatePassword";
 import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";

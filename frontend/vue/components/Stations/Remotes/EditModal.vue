@@ -17,8 +17,8 @@
 </template>
 
 <script setup lang="ts">
-import RemoteFormBasicInfo from "./Form/BasicInfo";
-import RemoteFormAutoDj from "./Form/AutoDj";
+import RemoteFormBasicInfo from "./Form/BasicInfo.vue";
+import RemoteFormAutoDj from "./Form/AutoDj.vue";
 import {baseEditModalProps, useBaseEditModal} from "~/functions/useBaseEditModal";
 import {computed, ref} from "vue";
 import {useNotify} from "~/functions/useNotify";

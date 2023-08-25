@@ -83,9 +83,9 @@
 
 <script setup lang="ts">
 import Draggable from 'vuedraggable';
-import Icon from '~/components/Common/Icon';
-import PlayButton from "~/components/Common/PlayButton";
-import InlinePlayer from '~/components/InlinePlayer';
+import Icon from '~/components/Common/Icon.vue';
+import PlayButton from "~/components/Common/PlayButton.vue";
+import InlinePlayer from '~/components/InlinePlayer.vue';
 import {ref} from "vue";
 import {useAxios} from "~/vendor/axios";
 import {useNotify} from "~/functions/useNotify";

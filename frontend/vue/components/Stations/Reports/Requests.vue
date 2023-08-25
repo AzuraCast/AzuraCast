@@ -93,8 +93,8 @@
 </template>
 
 <script setup lang="ts">
-import DataTable from '~/components/Common/DataTable';
-import Icon from "~/components/Common/Icon";
+import DataTable from '~/components/Common/DataTable.vue';
+import Icon from "~/components/Common/Icon.vue";
 import {useAzuraCast, useAzuraCastStation} from "~/vendor/azuracast";
 import {computed, nextTick, ref} from "vue";
 import {useTranslate} from "~/vendor/gettext";

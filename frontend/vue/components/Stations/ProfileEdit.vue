@@ -54,7 +54,7 @@
 </template>
 
 <script setup lang="ts">
-import AdminStationsForm from "~/components/Admin/Stations/StationForm";
+import AdminStationsForm from "~/components/Admin/Stations/StationForm.vue";
 import {nextTick, onMounted, ref} from "vue";
 import stationFormProps from "~/components/Admin/Stations/stationFormProps";
 import {pickProps} from "~/functions/pickProps";

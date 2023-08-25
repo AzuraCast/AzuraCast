@@ -291,10 +291,10 @@
 </template>
 
 <script setup lang="ts">
-import Icon from '~/components/Common/Icon';
-import Avatar from '~/components/Common/Avatar';
-import PlayButton from "~/components/Common/PlayButton";
-import AlbumArt from "~/components/Common/AlbumArt";
+import Icon from '~/components/Common/Icon.vue';
+import Avatar from '~/components/Common/Avatar.vue';
+import PlayButton from "~/components/Common/PlayButton.vue";
+import AlbumArt from "~/components/Common/AlbumArt.vue";
 import {useAxios} from "~/vendor/axios";
 import {useAsyncState, useIntervalFn} from "@vueuse/core";
 import {computed, ref} from "vue";

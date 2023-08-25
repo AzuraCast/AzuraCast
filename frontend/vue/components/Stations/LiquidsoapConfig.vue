@@ -71,12 +71,12 @@
 </template>
 
 <script setup lang="ts">
-import FormFieldset from "~/components/Form/FormFieldset";
-import FormGroupField from "~/components/Form/FormGroupField";
-import FormMarkup from "~/components/Form/FormMarkup";
+import FormFieldset from "~/components/Form/FormFieldset.vue";
+import FormGroupField from "~/components/Form/FormGroupField.vue";
+import FormMarkup from "~/components/Form/FormMarkup.vue";
 import {forEach} from "lodash";
 import mergeExisting from "~/functions/mergeExisting";
-import InfoCard from "~/components/Common/InfoCard";
+import InfoCard from "~/components/Common/InfoCard.vue";
 import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
 import {computed, onMounted, ref} from "vue";
 import {useMayNeedRestart} from "~/functions/useMayNeedRestart";

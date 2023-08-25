@@ -122,7 +122,7 @@
 </template>
 
 <script setup lang="ts">
-import Icon from '~/components/Common/Icon';
+import Icon from '~/components/Common/Icon.vue';
 import EnabledBadge from "~/components/Common/Badges/EnabledBadge.vue";
 import {ref} from "vue";
 import EmbedModal from "~/components/Stations/Profile/EmbedModal.vue";

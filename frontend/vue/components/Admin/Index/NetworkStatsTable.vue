@@ -27,8 +27,8 @@
         </table>
     </div>
 </template>
-<script setup lang="ts">
 
+<script setup lang="ts">
 import {get} from "lodash";
 
 const props = defineProps({

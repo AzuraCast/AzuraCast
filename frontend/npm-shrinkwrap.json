@@ -47,6 +47,8 @@
         "zxcvbn": "^4.4.2"
       },
       "devDependencies": {
+        "@types/bootstrap": "^5.2.6",
+        "@types/leaflet": "^1.9.3",
         "@types/lodash": "^4.14.196",
         "@types/luxon": "^3.3.1",
         "@typescript-eslint/eslint-plugin": "^6.2.1",
@@ -1029,6 +1031,15 @@
         "node": ">= 10"
       }
     },
+    "node_modules/@types/bootstrap": {
+      "version": "5.2.6",
+      "resolved": "https://registry.npmjs.org/@types/bootstrap/-/bootstrap-5.2.6.tgz",
+      "integrity": "sha512-BlAc3YATdasbHoxMoBWODrSF6qwQO/E9X8wVxCCSa6rWjnaZfpkr2N6pUMCY6jj2+wf0muUtLySbvU9etX6YqA==",
+      "dev": true,
+      "dependencies": {
+        "@popperjs/core": "^2.9.2"
+      }
+    },
     "node_modules/@types/eslint": {
       "version": "8.44.2",
       "resolved": "https://registry.npmjs.org/@types/eslint/-/eslint-8.44.2.tgz",
@@ -1045,6 +1056,12 @@
       "integrity": "sha512-LG4opVs2ANWZ1TJoKc937iMmNstM/d0ae1vNbnBvBhqCSezgVUOzcLCqbI5elV8Vy6WKwKjaqR+zO9VKirBBCA==",
       "dev": true
     },
+    "node_modules/@types/geojson": {
+      "version": "7946.0.10",
+      "resolved": "https://registry.npmjs.org/@types/geojson/-/geojson-7946.0.10.tgz",
+      "integrity": "sha512-Nmh0K3iWQJzniTuPRcJn5hxXkfB1T1pgB89SBig5PlJQU5yocazeu4jATJlaA0GYFKWMqDdvYemoSnF2pXgLVA==",
+      "dev": true
+    },
     "node_modules/@types/glob": {
       "version": "7.2.0",
       "resolved": "https://registry.npmjs.org/@types/glob/-/glob-7.2.0.tgz",
@@ -1059,6 +1076,15 @@
       "resolved": "https://registry.npmjs.org/@types/json-schema/-/json-schema-7.0.12.tgz",
       "integrity": "sha512-Hr5Jfhc9eYOQNPYO5WLDq/n4jqijdHNlDXjuAQkkt+mWdQR+XJToOHrsD4cPaMXpn6KO7y2+wM8AZEs8VpBLVA==",
       "dev": true
+    },
+    "node_modules/@types/leaflet": {
+      "version": "1.9.3",
+      "resolved": "https://registry.npmjs.org/@types/leaflet/-/leaflet-1.9.3.tgz",
+      "integrity": "sha512-Caa1lYOgKVqDkDZVWkto2Z5JtVo09spEaUt2S69LiugbBpoqQu92HYFMGUbYezZbnBkyOxMNPXHSgRrRY5UyIA==",
+      "dev": true,
+      "dependencies": {
+        "@types/geojson": "*"
+      }
     },
     "node_modules/@types/lodash": {
       "version": "4.14.197",

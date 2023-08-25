@@ -161,8 +161,8 @@
 
 <script setup lang="ts">
 import {FrontendAdapter} from '~/components/Entity/RadioAdapters';
-import CopyToClipboardButton from '~/components/Common/CopyToClipboardButton';
-import Icon from '~/components/Common/Icon';
+import CopyToClipboardButton from '~/components/Common/CopyToClipboardButton.vue';
+import Icon from '~/components/Common/Icon.vue';
 import RunningBadge from "~/components/Common/Badges/RunningBadge.vue";
 import {computed} from "vue";
 import frontendPanelProps from "~/components/Stations/Profile/frontendPanelProps";

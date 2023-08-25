@@ -72,8 +72,8 @@
 </template>
 
 <script setup lang="ts">
-import DataTable from '~/components/Common/DataTable';
-import EditModal from './Mounts/EditModal';
+import DataTable from '~/components/Common/DataTable.vue';
+import EditModal from './Mounts/EditModal.vue';
 import {useMayNeedRestart} from "~/functions/useMayNeedRestart";
 import {useTranslate} from "~/vendor/gettext";
 import {ref} from "vue";

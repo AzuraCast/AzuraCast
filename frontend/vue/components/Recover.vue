@@ -71,8 +71,8 @@
 </template>
 
 <script setup lang="ts">
-import FormGroupField from "~/components/Form/FormGroupField";
-import Icon from "~/components/Common/Icon";
+import FormGroupField from "~/components/Form/FormGroupField.vue";
+import Icon from "~/components/Common/Icon.vue";
 import validatePassword from '~/functions/validatePassword';
 import {required} from '@vuelidate/validators';
 import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";

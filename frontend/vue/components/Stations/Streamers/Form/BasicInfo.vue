@@ -60,8 +60,8 @@
 </template>
 
 <script setup lang="ts">
-import FormGroupField from "~/components/Form/FormGroupField";
-import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox";
+import FormGroupField from "~/components/Form/FormGroupField.vue";
+import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
 import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
 import {required} from "@vuelidate/validators";
 import {computed} from "vue";

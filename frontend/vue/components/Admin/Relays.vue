@@ -46,7 +46,7 @@
 </template>
 
 <script setup lang="ts">
-import DataTable from '~/components/Common/DataTable';
+import DataTable from '~/components/Common/DataTable.vue';
 import {useTranslate} from "~/vendor/gettext";
 import {ref} from "vue";
 import useHasDatatable from "~/functions/useHasDatatable";

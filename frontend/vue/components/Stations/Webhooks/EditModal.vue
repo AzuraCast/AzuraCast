@@ -31,19 +31,19 @@
 </template>
 
 <script setup lang="ts">
-import TypeSelect from "./Form/TypeSelect";
-import BasicInfo from "./Form/BasicInfo";
+import TypeSelect from "./Form/TypeSelect.vue";
+import BasicInfo from "./Form/BasicInfo.vue";
 import {get, map} from "lodash";
-import Generic from "./Form/Generic";
-import Email from "./Form/Email";
-import Tunein from "./Form/Tunein";
-import Discord from "./Form/Discord";
-import Telegram from "./Form/Telegram";
-import Twitter from "./Form/Twitter";
-import GoogleAnalyticsV3 from "./Form/GoogleAnalyticsV3";
-import GoogleAnalyticsV4 from "./Form/GoogleAnalyticsV4";
-import MatomoAnalytics from "./Form/MatomoAnalytics";
-import Mastodon from "./Form/Mastodon";
+import Generic from "./Form/Generic.vue";
+import Email from "./Form/Email.vue";
+import Tunein from "./Form/Tunein.vue";
+import Discord from "./Form/Discord.vue";
+import Telegram from "./Form/Telegram.vue";
+import Twitter from "./Form/Twitter.vue";
+import GoogleAnalyticsV3 from "./Form/GoogleAnalyticsV3.vue";
+import GoogleAnalyticsV4 from "./Form/GoogleAnalyticsV4.vue";
+import MatomoAnalytics from "./Form/MatomoAnalytics.vue";
+import Mastodon from "./Form/Mastodon.vue";
 import {baseEditModalProps, useBaseEditModal} from "~/functions/useBaseEditModal";
 import {computed, nextTick, provide, ref} from "vue";
 import {useTranslate} from "~/vendor/gettext";

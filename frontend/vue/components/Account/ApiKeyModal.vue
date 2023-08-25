@@ -62,9 +62,9 @@
 </template>
 
 <script setup lang="ts">
-import InvisibleSubmitButton from "~/components/Common/InvisibleSubmitButton";
-import AccountApiKeyNewKey from "./ApiKeyNewKey";
-import FormGroupField from "~/components/Form/FormGroupField";
+import InvisibleSubmitButton from "~/components/Common/InvisibleSubmitButton.vue";
+import AccountApiKeyNewKey from "./ApiKeyNewKey.vue";
+import FormGroupField from "~/components/Form/FormGroupField.vue";
 import {required} from '@vuelidate/validators';
 import {ref} from "vue";
 import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";

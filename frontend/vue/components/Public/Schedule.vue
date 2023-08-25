@@ -42,7 +42,7 @@
 </template>
 
 <script setup lang="ts">
-import Schedule from '~/components/Common/ScheduleView';
+import Schedule from '~/components/Common/ScheduleView.vue';
 
 const props = defineProps({
     scheduleUrl: {

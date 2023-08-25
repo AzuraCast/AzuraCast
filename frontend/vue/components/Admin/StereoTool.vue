@@ -113,7 +113,7 @@
 </template>
 
 <script setup lang="ts">
-import FlowUpload from "~/components/Common/FlowUpload";
+import FlowUpload from "~/components/Common/FlowUpload.vue";
 import {computed, onMounted, ref} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import {useNotify} from "~/functions/useNotify";

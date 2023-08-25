@@ -14,7 +14,7 @@
 </template>
 
 <script setup lang="ts">
-import SongHistory from './SongHistory';
+import SongHistory from './SongHistory.vue';
 import Modal from "~/components/Common/Modal.vue";
 import {ref} from "vue";
 

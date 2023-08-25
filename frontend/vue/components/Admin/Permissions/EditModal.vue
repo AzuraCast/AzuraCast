@@ -29,8 +29,8 @@ import {computed, ref} from "vue";
 import {baseEditModalProps, useBaseEditModal} from "~/functions/useBaseEditModal";
 import {useTranslate} from "~/vendor/gettext";
 import {required} from '@vuelidate/validators';
-import AdminPermissionsGlobalForm from "./Form/GlobalForm";
-import AdminPermissionsStationForm from "./Form/StationForm";
+import AdminPermissionsGlobalForm from "./Form/GlobalForm.vue";
+import AdminPermissionsStationForm from "./Form/StationForm.vue";
 import {forEach, map} from 'lodash';
 import Tabs from "~/components/Common/Tabs.vue";
 

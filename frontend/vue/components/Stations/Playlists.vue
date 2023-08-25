@@ -300,13 +300,13 @@
 </template>
 
 <script setup lang="ts">
-import DataTable from '~/components/Common/DataTable';
-import Schedule from '~/components/Common/ScheduleView';
-import EditModal from './Playlists/EditModal';
-import ReorderModal from './Playlists/ReorderModal';
-import ImportModal from './Playlists/ImportModal';
-import QueueModal from './Playlists/QueueModal';
-import CloneModal from './Playlists/CloneModal';
+import DataTable from '~/components/Common/DataTable.vue';
+import Schedule from '~/components/Common/ScheduleView.vue';
+import EditModal from './Playlists/EditModal.vue';
+import ReorderModal from './Playlists/ReorderModal.vue';
+import ImportModal from './Playlists/ImportModal.vue';
+import QueueModal from './Playlists/QueueModal.vue';
+import CloneModal from './Playlists/CloneModal.vue';
 import ApplyToModal from "./Playlists/ApplyToModal.vue";
 import {useTranslate} from "~/vendor/gettext";
 import {ref} from "vue";

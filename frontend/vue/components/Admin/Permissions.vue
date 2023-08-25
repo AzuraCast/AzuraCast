@@ -71,8 +71,8 @@
 </template>
 
 <script setup lang="ts">
-import DataTable from '~/components/Common/DataTable';
-import EditModal from './Permissions/EditModal';
+import DataTable from '~/components/Common/DataTable.vue';
+import EditModal from './Permissions/EditModal.vue';
 import {filter, get, map} from 'lodash';
 import {useTranslate} from "~/vendor/gettext";
 import {ref} from "vue";

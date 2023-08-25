@@ -171,11 +171,11 @@
 </template>
 
 <script setup lang="ts">
-import StationReportsListenersMap from "./Listeners/Map";
-import Icon from "~/components/Common/Icon";
+import StationReportsListenersMap from "./Listeners/Map.vue";
+import Icon from "~/components/Common/Icon.vue";
 import formatTime from "~/functions/formatTime";
-import DataTable from "~/components/Common/DataTable";
-import DateRangeDropdown from "~/components/Common/DateRangeDropdown";
+import DataTable from "~/components/Common/DataTable.vue";
+import DateRangeDropdown from "~/components/Common/DateRangeDropdown.vue";
 import {computed, nextTick, onMounted, ref, shallowRef, watch} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import {useNotify} from "~/functions/useNotify";

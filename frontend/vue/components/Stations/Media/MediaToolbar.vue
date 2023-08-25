@@ -188,7 +188,7 @@
 
 <script setup lang="ts">
 import {forEach, intersection, map} from 'lodash';
-import Icon from '~/components/Common/Icon';
+import Icon from '~/components/Common/Icon.vue';
 import '~/vendor/sweetalert';
 import {h, ref, toRef, watch} from "vue";
 import {useTranslate} from "~/vendor/gettext";

@@ -71,8 +71,8 @@
 </template>
 
 <script setup lang="ts">
-import FormGroupField from "~/components/Form/FormGroupField";
-import CommonFormattingInfo from "./Common/FormattingInfo";
+import FormGroupField from "~/components/Form/FormGroupField.vue";
+import CommonFormattingInfo from "./Common/FormattingInfo.vue";
 import {computed} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";

@@ -72,7 +72,7 @@
 </template>
 
 <script setup lang="ts">
-import Icon from '~/components/Common/Icon';
+import Icon from '~/components/Common/Icon.vue';
 import {onMounted, onScopeDispose, shallowRef} from "vue";
 import {useAxios} from "~/vendor/axios";
 import {getApiUrl} from "~/router";

@@ -74,10 +74,10 @@
 </template>
 
 <script setup lang="ts">
-import DataTable from '~/components/Common/DataTable';
-import AdminStationsEditModal from "./Stations/EditModal";
+import DataTable from '~/components/Common/DataTable.vue';
+import AdminStationsEditModal from "./Stations/EditModal.vue";
 import {get} from "lodash";
-import AdminStationsCloneModal from "./Stations/CloneModal";
+import AdminStationsCloneModal from "./Stations/CloneModal.vue";
 import stationFormProps from "./Stations/stationFormProps";
 import {pickProps} from "~/functions/pickProps";
 import {useTranslate} from "~/vendor/gettext";

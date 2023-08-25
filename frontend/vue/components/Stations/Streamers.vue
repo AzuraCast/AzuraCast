@@ -116,12 +116,12 @@
 </template>
 
 <script setup lang="ts">
-import DataTable from '~/components/Common/DataTable';
-import EditModal from './Streamers/EditModal';
-import BroadcastsModal from './Streamers/BroadcastsModal';
-import Schedule from '~/components/Common/ScheduleView';
-import ConnectionInfo from "./Streamers/ConnectionInfo";
-import AlbumArt from "~/components/Common/AlbumArt";
+import DataTable from '~/components/Common/DataTable.vue';
+import EditModal from './Streamers/EditModal.vue';
+import BroadcastsModal from './Streamers/BroadcastsModal.vue';
+import Schedule from '~/components/Common/ScheduleView.vue';
+import ConnectionInfo from "./Streamers/ConnectionInfo.vue";
+import AlbumArt from "~/components/Common/AlbumArt.vue";
 import {useTranslate} from "~/vendor/gettext";
 import {ref} from "vue";
 import useHasDatatable from "~/functions/useHasDatatable";

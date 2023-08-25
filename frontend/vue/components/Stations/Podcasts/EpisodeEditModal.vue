@@ -32,9 +32,9 @@
 </template>
 
 <script setup lang="ts">
-import EpisodeFormBasicInfo from './EpisodeForm/BasicInfo';
-import PodcastCommonArtwork from './Common/Artwork';
-import EpisodeFormMedia from './EpisodeForm/Media';
+import EpisodeFormBasicInfo from './EpisodeForm/BasicInfo.vue';
+import PodcastCommonArtwork from './Common/Artwork.vue';
+import EpisodeFormMedia from './EpisodeForm/Media.vue';
 import {baseEditModalProps, useBaseEditModal} from "~/functions/useBaseEditModal";
 import {computed, ref} from "vue";
 import {useResettableRef} from "~/functions/useResettableRef";

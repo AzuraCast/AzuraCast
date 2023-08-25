@@ -113,9 +113,9 @@
 
 <script setup lang="ts">
 import {required} from '@vuelidate/validators';
-import FormGroupField from "~/components/Form/FormGroupField";
-import FormFieldset from "~/components/Form/FormFieldset";
-import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox";
+import FormGroupField from "~/components/Form/FormGroupField.vue";
+import FormFieldset from "~/components/Form/FormFieldset.vue";
+import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
 import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
 import {getStationApiUrl} from "~/router";
 import {useLuxon} from "~/vendor/luxon";

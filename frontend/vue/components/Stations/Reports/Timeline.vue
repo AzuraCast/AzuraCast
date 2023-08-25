@@ -86,9 +86,9 @@
 </template>
 
 <script setup lang="ts">
-import Icon from "~/components/Common/Icon";
-import DataTable from "~/components/Common/DataTable";
-import DateRangeDropdown from "~/components/Common/DateRangeDropdown";
+import Icon from "~/components/Common/Icon.vue";
+import DataTable from "~/components/Common/DataTable.vue";
+import DateRangeDropdown from "~/components/Common/DateRangeDropdown.vue";
 import {useAzuraCast, useAzuraCastStation} from "~/vendor/azuracast";
 import {computed, ref, watch} from "vue";
 import {useTranslate} from "~/vendor/gettext";

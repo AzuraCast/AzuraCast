@@ -205,13 +205,13 @@
 </template>
 
 <script setup lang="ts">
-import Icon from "~/components/Common/Icon";
-import DataTable from "~/components/Common/DataTable";
-import AccountChangePasswordModal from "./Account/ChangePasswordModal";
-import AccountApiKeyModal from "./Account/ApiKeyModal";
-import AccountTwoFactorModal from "./Account/TwoFactorModal";
-import AccountEditModal from "./Account/EditModal";
-import Avatar from "~/components/Common/Avatar";
+import Icon from "~/components/Common/Icon.vue";
+import DataTable from "~/components/Common/DataTable.vue";
+import AccountChangePasswordModal from "./Account/ChangePasswordModal.vue";
+import AccountApiKeyModal from "./Account/ApiKeyModal.vue";
+import AccountTwoFactorModal from "./Account/TwoFactorModal.vue";
+import AccountEditModal from "./Account/EditModal.vue";
+import Avatar from "~/components/Common/Avatar.vue";
 import EnabledBadge from "~/components/Common/Badges/EnabledBadge.vue";
 import {ref} from "vue";
 import {useTranslate} from "~/vendor/gettext";

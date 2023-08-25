@@ -82,7 +82,7 @@
 <script setup lang="ts">
 import FormGroupField from "~/components/Form/FormGroupField.vue";
 import ModalForm from "~/components/Common/ModalForm.vue";
-import FormFieldset from "~/components/Form/FormFieldset";
+import FormFieldset from "~/components/Form/FormFieldset.vue";
 import mergeExisting from "~/functions/mergeExisting";
 import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
 import TimeCode from "~/components/Common/TimeCode.vue";

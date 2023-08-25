@@ -104,8 +104,8 @@
 </template>
 
 <script setup lang="ts">
-import DataTable from '~/components/Common/DataTable';
-import EditModal from './StorageLocations/EditModal';
+import DataTable from '~/components/Common/DataTable.vue';
+import EditModal from './StorageLocations/EditModal.vue';
 import {computed, nextTick, ref} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import useHasDatatable from "~/functions/useHasDatatable";

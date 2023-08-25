@@ -75,9 +75,9 @@
 </template>
 
 <script setup lang="ts">
-import FormGroupField from "~/components/Form/FormGroupField";
-import CommonRateLimitFields from "./Common/RateLimitFields";
-import CommonSocialPostFields from "./Common/SocialPostFields";
+import FormGroupField from "~/components/Form/FormGroupField.vue";
+import CommonRateLimitFields from "./Common/RateLimitFields.vue";
+import CommonSocialPostFields from "./Common/SocialPostFields.vue";
 import FormMarkup from "~/components/Form/FormMarkup.vue";
 import {useVModel} from "@vueuse/core";
 import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";

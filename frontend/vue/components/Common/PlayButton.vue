@@ -14,7 +14,7 @@
 </template>
 
 <script setup lang="ts">
-import Icon from "./Icon";
+import Icon from "./Icon.vue";
 import {usePlayerStore} from "~/store";
 import {computed, toRef} from "vue";
 import {get} from "@vueuse/core";

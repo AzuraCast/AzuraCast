@@ -70,10 +70,10 @@
 </template>
 
 <script setup lang="ts">
-import ModalForm from "~/components/Common/ModalForm";
-import CopyToClipboardButton from "~/components/Common/CopyToClipboardButton";
-import FormFieldset from "~/components/Form/FormFieldset";
-import FormGroupField from "~/components/Form/FormGroupField";
+import ModalForm from "~/components/Common/ModalForm.vue";
+import CopyToClipboardButton from "~/components/Common/CopyToClipboardButton.vue";
+import FormFieldset from "~/components/Form/FormFieldset.vue";
+import FormGroupField from "~/components/Form/FormGroupField.vue";
 import {minLength, required} from "@vuelidate/validators";
 import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
 import {ref} from "vue";

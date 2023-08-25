@@ -10,7 +10,6 @@
 </template>
 
 <script setup lang="ts">
-
 import {computed} from "vue";
 import {isEmpty, padStart} from 'lodash';
 

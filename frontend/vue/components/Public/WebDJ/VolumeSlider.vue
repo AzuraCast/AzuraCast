@@ -21,7 +21,7 @@
 </template>
 
 <script setup lang="ts">
-import Icon from "~/components/Common/Icon";
+import Icon from "~/components/Common/Icon.vue";
 import {onMounted, ref} from "vue";
 import {useVModel} from "@vueuse/core";
 import {IconVolumeOff, IconVolumeUp} from "~/components/Common/icons";

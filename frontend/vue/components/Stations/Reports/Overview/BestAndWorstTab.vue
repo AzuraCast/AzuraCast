@@ -126,7 +126,7 @@
 </template>
 
 <script setup lang="ts">
-import Icon from "~/components/Common/Icon";
+import Icon from "~/components/Common/Icon.vue";
 import {useMounted} from "@vueuse/core";
 import {onMounted, ref, shallowRef, toRef, watch} from "vue";
 import {useAxios} from "~/vendor/axios";

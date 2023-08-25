@@ -70,9 +70,9 @@
 </template>
 
 <script setup lang="ts">
-import DataTable from '../Common/DataTable';
-import QueueLogsModal from './Queue/LogsModal';
-import Icon from "~/components/Common/Icon";
+import DataTable from '../Common/DataTable.vue';
+import QueueLogsModal from './Queue/LogsModal.vue';
+import Icon from "~/components/Common/Icon.vue";
 import {useAzuraCast, useAzuraCastStation} from "~/vendor/azuracast";
 import {useTranslate} from "~/vendor/gettext";
 import {ref} from "vue";

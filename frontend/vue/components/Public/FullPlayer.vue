@@ -63,9 +63,9 @@
 </template>
 
 <script setup lang="ts">
-import SongHistoryModal from './FullPlayer/SongHistoryModal';
-import RequestModal from './FullPlayer/RequestModal';
-import Icon from '~/components/Common/Icon';
+import SongHistoryModal from './FullPlayer/SongHistoryModal.vue';
+import RequestModal from './FullPlayer/RequestModal.vue';
+import Icon from '~/components/Common/Icon.vue';
 import RadioPlayer from './Player.vue';
 import {ref} from "vue";
 import playerProps from "~/components/Public/playerProps";

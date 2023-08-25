@@ -229,7 +229,7 @@
 
 <script setup lang="ts">
 import {BackendAdapter} from '~/components/Entity/RadioAdapters';
-import Icon from '~/components/Common/Icon';
+import Icon from '~/components/Common/Icon.vue';
 import {computed} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import nowPlayingPanelProps from "~/components/Stations/Profile/nowPlayingPanelProps";

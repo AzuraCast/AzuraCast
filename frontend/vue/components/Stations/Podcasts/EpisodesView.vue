@@ -111,11 +111,11 @@
 </template>
 
 <script setup lang="ts">
-import DataTable from '~/components/Common/DataTable';
-import EditModal from './EpisodeEditModal';
-import Icon from '~/components/Common/Icon';
-import AlbumArt from '~/components/Common/AlbumArt';
-import StationsCommonQuota from "~/components/Stations/Common/Quota";
+import DataTable from '~/components/Common/DataTable.vue';
+import EditModal from './EpisodeEditModal.vue';
+import Icon from '~/components/Common/Icon.vue';
+import AlbumArt from '~/components/Common/AlbumArt.vue';
+import StationsCommonQuota from "~/components/Stations/Common/Quota.vue";
 import {useTranslate} from "~/vendor/gettext";
 import {ref} from "vue";
 import {useSweetAlert} from "~/vendor/sweetalert";

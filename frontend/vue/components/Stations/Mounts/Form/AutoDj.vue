@@ -42,7 +42,7 @@
 </template>
 
 <script setup lang="ts">
-import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox";
+import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
 import {map} from "lodash";
 import {computed} from "vue";
 import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";

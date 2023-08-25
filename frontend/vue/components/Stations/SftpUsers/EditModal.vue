@@ -16,7 +16,7 @@
 </template>
 
 <script setup lang="ts">
-import SftpUsersForm from "./Form";
+import SftpUsersForm from "./Form.vue";
 import {baseEditModalProps, useBaseEditModal} from "~/functions/useBaseEditModal";
 import {computed, ref} from "vue";
 import {useTranslate} from "~/vendor/gettext";

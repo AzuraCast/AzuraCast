@@ -35,7 +35,7 @@
 
 <script setup lang="ts">
 import {required} from '@vuelidate/validators';
-import FormGroupField from "~/components/Form/FormGroupField";
+import FormGroupField from "~/components/Form/FormGroupField.vue";
 import {ref} from "vue";
 import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
 import {useNotify} from "~/functions/useNotify";

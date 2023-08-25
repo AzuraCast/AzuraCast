@@ -55,7 +55,7 @@
 </template>
 
 <script setup lang="ts">
-import Icon from '~/components/Common/Icon';
+import Icon from '~/components/Common/Icon.vue';
 import requestsPanelProps from "~/components/Stations/Profile/requestsPanelProps";
 import EnabledBadge from "~/components/Common/Badges/EnabledBadge.vue";
 import CardPage from "~/components/Common/CardPage.vue";

@@ -75,11 +75,11 @@
 </template>
 
 <script setup lang="ts">
-import InlinePlayer from '../InlinePlayer';
-import DataTable from '~/components/Common/DataTable';
+import InlinePlayer from '../InlinePlayer.vue';
+import DataTable from '~/components/Common/DataTable.vue';
 import {forEach} from 'lodash';
-import Icon from '~/components/Common/Icon';
-import PlayButton from "~/components/Common/PlayButton";
+import Icon from '~/components/Common/Icon.vue';
+import PlayButton from "~/components/Common/PlayButton.vue";
 import {useTranslate} from "~/vendor/gettext";
 import formatFileSize from "../../functions/formatFileSize";
 import AlbumArt from "~/components/Common/AlbumArt.vue";

@@ -15,8 +15,8 @@
 </template>
 
 <script setup lang="ts">
-import EpisodesView from './Podcasts/EpisodesView';
-import ListView from './Podcasts/ListView';
+import EpisodesView from './Podcasts/EpisodesView.vue';
+import ListView from './Podcasts/ListView.vue';
 import {ref} from "vue";
 import listViewProps from "./Podcasts/listViewProps";
 import {pickProps} from "~/functions/pickProps";

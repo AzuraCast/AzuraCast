@@ -72,7 +72,7 @@ import WS from 'wavesurfer.js';
 import timeline from 'wavesurfer.js/dist/plugins/timeline.js';
 import regions from 'wavesurfer.js/dist/plugins/regions.js';
 import getLogarithmicVolume from '~/functions/getLogarithmicVolume';
-import Icon from './Icon';
+import Icon from './Icon.vue';
 import {onMounted, onUnmounted, ref, watch} from "vue";
 import {useAxios} from "~/vendor/axios";
 import usePlayerVolume from "~/functions/usePlayerVolume";

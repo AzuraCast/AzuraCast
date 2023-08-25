@@ -16,7 +16,7 @@
 </template>
 
 <script setup lang="ts">
-import SongRequest from '../Requests';
+import SongRequest from '../Requests.vue';
 import {ref} from "vue";
 import Modal from "~/components/Common/Modal.vue";
 

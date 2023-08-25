@@ -95,10 +95,10 @@
 </template>
 
 <script setup lang="ts">
-import DataTable from '~/components/Common/DataTable';
-import EditModal from './Webhooks/EditModal';
+import DataTable from '~/components/Common/DataTable.vue';
+import EditModal from './Webhooks/EditModal.vue';
 import {get, map} from 'lodash';
-import StreamingLogModal from "~/components/Common/StreamingLogModal";
+import StreamingLogModal from "~/components/Common/StreamingLogModal.vue";
 import {useTranslate} from "~/vendor/gettext";
 import {ref} from "vue";
 import useHasDatatable from "~/functions/useHasDatatable";

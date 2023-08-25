@@ -76,8 +76,8 @@
 </template>
 
 <script setup lang="ts">
-import WaveformComponent from '~/components/Common/Waveform';
-import Icon from '~/components/Common/Icon';
+import WaveformComponent from '~/components/Common/Waveform.vue';
+import Icon from '~/components/Common/Icon.vue';
 import {ref} from "vue";
 import {IconPlayCircle, IconStop} from "~/components/Common/icons";
 

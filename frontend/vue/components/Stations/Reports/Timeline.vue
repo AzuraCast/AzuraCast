@@ -95,6 +95,7 @@ import {useTranslate} from "~/vendor/gettext";
 import {useLuxon} from "~/vendor/luxon";
 import {getStationApiUrl} from "~/router";
 import {IconDownload, IconTrendingDown, IconTrendingUp} from "~/components/Common/icons";
+import {DataTableTemplateRef} from "~/functions/useHasDatatable.ts";
 
 const baseApiUrl = getStationApiUrl('/history');
 
@@ -134,7 +135,7 @@ const fields = [
         sortable: false,
         selectable: true,
         visible: false,
-        formatter: (value, key, item) => {
+        formatter: (_value, _key, item) => {
             return DateTime.fromSeconds(
                 item.played_at,
                 {zone: timezone}
@@ -193,10 +194,10 @@ const abs = (val) => {
     return Math.abs(val);
 };
 
-const $datatable = ref(); // Template Ref
+const $datatable = ref<DataTableTemplateRef>(null);
 
 const relist = () => {
-    $datatable.value.relist();
+    $datatable.value?.relist();
 };
 
 watch(dateRange, relist);

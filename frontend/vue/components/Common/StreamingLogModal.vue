@@ -49,24 +49,24 @@ import FixedLogView from "~/components/Common/FixedLogView.vue";
 const logUrl = ref('');
 const isStreaming = ref(true);
 
-const $modal = ref(); // Template ref
-const $logView = ref(); // Template ref
+const $modal = ref<InstanceType<typeof Modal> | null>(null);
+const $logView = ref<InstanceType<typeof StreamingLogView | typeof FixedLogView> | null>(null);
 
 const show = (newLogUrl, newIsStreaming = true) => {
     logUrl.value = newLogUrl;
     isStreaming.value = newIsStreaming;
 
-    $modal.value.show();
+    $modal.value?.show();
 };
 
 const clipboard = useClipboard();
 
 const doCopy = () => {
-    clipboard.copy($logView.value.getContents());
+    clipboard.copy($logView.value?.getContents());
 };
 
 const close = () => {
-    $modal.value.hide();
+    $modal.value?.hide();
 }
 
 const clearContents = () => {

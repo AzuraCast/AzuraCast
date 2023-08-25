@@ -46,6 +46,7 @@ import {ref} from "vue";
 import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
 import {useTranslate} from "~/vendor/gettext";
+import {ModalFormTemplateRef} from "~/functions/useBaseEditModal.ts";
 
 const props = defineProps({
     changePasswordUrl: {
@@ -85,11 +86,11 @@ const clearContents = () => {
     resetForm();
 };
 
-const $modal = ref(); // ModalForm
+const $modal = ref<ModalFormTemplateRef>(null);
 
 const open = () => {
     clearContents();
-    $modal.value.show();
+    $modal.value?.show();
 };
 
 const {wrapWithLoading} = useNotify();
@@ -100,7 +101,7 @@ const onSubmit = () => {
         wrapWithLoading(
             axios.put(props.changePasswordUrl, form.value)
         ).finally(() => {
-            $modal.value.hide();
+            $modal.value?.hide();
             emit('relist');
         });
     });

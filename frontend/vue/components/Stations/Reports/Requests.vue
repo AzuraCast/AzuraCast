@@ -104,6 +104,7 @@ import {useAxios} from "~/vendor/axios";
 import {useLuxon} from "~/vendor/luxon";
 import {getStationApiUrl} from "~/router";
 import {IconRemove} from "~/components/Common/icons";
+import {DataTableTemplateRef} from "~/functions/useHasDatatable.ts";
 
 const listUrl = getStationApiUrl('/reports/requests');
 const clearUrl = getStationApiUrl('/reports/requests/clear');
@@ -135,10 +136,10 @@ const tabs = [
     }
 ];
 
-const $datatable = ref(); // Template Ref
+const $datatable = ref<DataTableTemplateRef>(null);
 
 const relist = () => {
-    $datatable.value.refresh();
+    $datatable.value?.refresh();
 };
 
 const setType = (type) => {

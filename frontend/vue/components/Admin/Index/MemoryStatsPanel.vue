@@ -74,10 +74,9 @@ const props = defineProps({
     }
 });
 
-const $memoryStatsHelpModal = ref(); // Template Ref
-
+const $memoryStatsHelpModal = ref<InstanceType<typeof MemoryStatsHelpModal> | null>(null);
 const showMemoryStatsHelpModal = () => {
-    $memoryStatsHelpModal.value.create();
+    $memoryStatsHelpModal.value?.create();
 };
 
 const getPercent = (amount, total) => {

@@ -37,6 +37,7 @@ import {useTranslate} from "~/vendor/gettext";
 import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
 import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
+import {ModalFormTemplateRef} from "~/functions/useBaseEditModal.ts";
 
 const emit = defineEmits(['relist', 'needs-restart']);
 
@@ -71,7 +72,7 @@ const copyOptions = [
     }
 ];
 
-const $modal = ref(); // Template Ref
+const $modal = ref<ModalFormTemplateRef>(null);
 
 const open = (name, newCloneUrl) => {
     clearContents();

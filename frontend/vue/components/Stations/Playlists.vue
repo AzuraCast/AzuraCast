@@ -310,7 +310,7 @@ import CloneModal from './Playlists/CloneModal.vue';
 import ApplyToModal from "./Playlists/ApplyToModal.vue";
 import {useTranslate} from "~/vendor/gettext";
 import {ref} from "vue";
-import useHasEditModal from "~/functions/useHasEditModal";
+import useHasEditModal, {EditModalTemplateRef} from "~/functions/useHasEditModal";
 import {useMayNeedRestart} from "~/functions/useMayNeedRestart";
 import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
@@ -367,46 +367,46 @@ const formatLength = (length) => {
     return duration.rescale().toHuman();
 };
 
-const $datatable = ref(); // Template Ref
-const $schedule = ref(); // Template Ref
+const $datatable = ref<InstanceType<typeof DataTable> | null>(null);
+const $schedule = ref<InstanceType<typeof Schedule> | null>(null);
 
 const relist = () => {
     $datatable.value?.refresh();
     $schedule.value?.refresh();
 };
 
-const $editModal = ref(); // Template Ref
+const $editModal = ref<EditModalTemplateRef>(null);
 const {doCreate, doEdit} = useHasEditModal($editModal);
 
 const doCalendarClick = (event) => {
     doEdit(event.extendedProps.edit_url);
 };
 
-const $reorderModal = ref(); // Template Ref
+const $reorderModal = ref<InstanceType<typeof ReorderModal> | null>(null);
 
 const doReorder = (url) => {
     $reorderModal.value?.open(url);
 };
 
-const $queueModal = ref(); // Template Ref
+const $queueModal = ref<InstanceType<typeof QueueModal> | null>(null);
 
 const doQueue = (url) => {
     $queueModal.value?.open(url);
 };
 
-const $importModal = ref(); // Template Ref
+const $importModal = ref<InstanceType<typeof ImportModal> | null>(null);
 
 const doImport = (url) => {
     $importModal.value?.open(url);
 };
 
-const $cloneModal = ref(); // Template Ref
+const $cloneModal = ref<InstanceType<typeof CloneModal> | null>(null);
 
 const doClone = (name, url) => {
     $cloneModal.value?.open(name, url);
 };
 
-const $applyToModal = ref(); // Template Ref
+const $applyToModal = ref<InstanceType<typeof ApplyToModal> | null>(null);
 
 const doApplyTo = (url) => {
     $applyToModal.value?.open(url);

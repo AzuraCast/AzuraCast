@@ -81,8 +81,8 @@ import DataTable from '~/components/Common/DataTable.vue';
 import EditModal from './Users/EditModal.vue';
 import {useTranslate} from "~/vendor/gettext";
 import {ref} from "vue";
-import useHasDatatable from "~/functions/useHasDatatable";
-import useHasEditModal from "~/functions/useHasEditModal";
+import useHasDatatable, {DataTableTemplateRef} from "~/functions/useHasDatatable";
+import useHasEditModal, {EditModalTemplateRef} from "~/functions/useHasEditModal";
 import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
 import CardPage from "~/components/Common/CardPage.vue";
 import {getApiUrl} from "~/router";
@@ -105,10 +105,10 @@ const fields = [
     {key: 'actions', label: $gettext('Actions'), sortable: false, class: 'shrink'}
 ];
 
-const $datatable = ref(); // Template Ref
+const $datatable = ref<DataTableTemplateRef>(null);
 const {relist} = useHasDatatable($datatable);
 
-const $editModal = ref(); // Template Ref
+const $editModal = ref<EditModalTemplateRef>(null);
 const {doCreate, doEdit} = useHasEditModal($editModal);
 
 const {doDelete} = useConfirmAndDelete(

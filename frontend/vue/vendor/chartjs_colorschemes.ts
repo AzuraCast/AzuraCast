@@ -15,7 +15,7 @@ export default {
     id: 'colorschemes',
     beforeUpdate: (chart) => {
         // Set scheme colors
-        forEach(chart.config.data.datasets, (dataset, datasetIndex) => {
+        forEach(chart.config.data.datasets, (dataset, datasetIndex: number) => {
             const color = scheme[datasetIndex % length];
 
             // Object to store which color option is set
@@ -50,7 +50,7 @@ export default {
                 case 'polarArea':
                     if (typeof dataset.backgroundColor === 'undefined') {
                         dataset[METADATA_KEY].backgroundColor = dataset.backgroundColor;
-                        dataset.backgroundColor = dataset.data.map(function (data, dataIndex) {
+                        dataset.backgroundColor = dataset.data.map(function (_, dataIndex) {
                             return scheme[dataIndex % length];
                         });
                     }

@@ -221,6 +221,7 @@ import useRefreshableAsyncState from "~/functions/useRefreshableAsyncState";
 import CardPage from "~/components/Common/CardPage.vue";
 import Loading from "~/components/Common/Loading.vue";
 import {IconAdd, IconEdit, IconLock, IconLockOpen, IconVpnKey} from "~/components/Common/icons";
+import {DataTableTemplateRef} from "~/functions/useHasDatatable.ts";
 
 const props = defineProps({
     userUrl: {
@@ -291,7 +292,7 @@ const apiKeyFields = [
     }
 ];
 
-const $dataTable = ref(); // DataTable
+const $dataTable = ref<DataTableTemplateRef>(null);
 
 const relist = () => {
     reloadUser();
@@ -303,19 +304,19 @@ const reload = () => {
     location.reload();
 };
 
-const $editModal = ref(); // EditModal
+const $editModal = ref<InstanceType<typeof AccountEditModal> | null>(null);
 
 const doEditProfile = () => {
     $editModal.value?.open();
 };
 
-const $changePasswordModal = ref(); // ChangePasswordModal
+const $changePasswordModal = ref<InstanceType<typeof AccountChangePasswordModal> | null>(null);
 
 const doChangePassword = () => {
     $changePasswordModal.value?.open();
 };
 
-const $twoFactorModal = ref(); // TwoFactorModal
+const $twoFactorModal = ref<InstanceType<typeof AccountTwoFactorModal> | null>(null);
 
 const enableTwoFactor = () => {
     $twoFactorModal.value?.open();
@@ -327,7 +328,7 @@ const {doDelete: doDisableTwoFactor} = useConfirmAndDelete(
 );
 const disableTwoFactor = () => doDisableTwoFactor(props.twoFactorUrl);
 
-const $apiKeyModal = ref(); // ApiKeyModal
+const $apiKeyModal = ref<InstanceType<typeof AccountApiKeyModal> | null>(null);
 
 const createApiKey = () => {
     $apiKeyModal.value?.create();

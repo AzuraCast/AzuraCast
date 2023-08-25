@@ -38,7 +38,7 @@ import MountFormAutoDj from './Form/AutoDj.vue';
 import MountFormAdvanced from './Form/Advanced.vue';
 import MountFormIntro from "./Form/Intro.vue";
 import mergeExisting from "~/functions/mergeExisting";
-import {baseEditModalProps, useBaseEditModal} from "~/functions/useBaseEditModal";
+import {baseEditModalProps, ModalFormTemplateRef, useBaseEditModal} from "~/functions/useBaseEditModal";
 import {computed, ref} from "vue";
 import {useNotify} from "~/functions/useNotify";
 import {useTranslate} from "~/vendor/gettext";
@@ -63,7 +63,7 @@ const {enableAdvancedFeatures} = useAzuraCast();
 
 const emit = defineEmits(['relist', 'needs-restart']);
 
-const $modal = ref(); // Template Ref
+const $modal = ref<ModalFormTemplateRef>(null);
 
 const {notifySuccess} = useNotify();
 

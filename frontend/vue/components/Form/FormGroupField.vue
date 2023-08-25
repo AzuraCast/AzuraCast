@@ -160,7 +160,7 @@ const filteredModel = computed({
     }
 });
 
-const $input = ref(); // Input
+const $input = ref<HTMLInputElement | HTMLTextAreaElement | null>(null);
 
 const focus = () => {
     $input.value?.focus();

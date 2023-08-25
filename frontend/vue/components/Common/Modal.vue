@@ -88,7 +88,7 @@ watch(isActive, (newActive) => {
 });
 
 let bsModal = null;
-const $modal = ref(); // div class="modal"
+const $modal = ref<HTMLDivElement | null>(null);
 
 onMounted(() => {
     bsModal = new Modal($modal.value);

@@ -124,8 +124,8 @@ import ConnectionInfo from "./Streamers/ConnectionInfo.vue";
 import AlbumArt from "~/components/Common/AlbumArt.vue";
 import {useTranslate} from "~/vendor/gettext";
 import {ref} from "vue";
-import useHasDatatable from "~/functions/useHasDatatable";
-import useHasEditModal from "~/functions/useHasEditModal";
+import useHasDatatable, {DataTableTemplateRef} from "~/functions/useHasDatatable";
+import useHasEditModal, {EditModalTemplateRef} from "~/functions/useHasEditModal";
 import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
 import CardPage from "~/components/Common/CardPage.vue";
 import {useAzuraCastStation} from "~/vendor/azuracast";
@@ -157,20 +157,20 @@ const fields = [
     {key: 'actions', label: $gettext('Actions'), sortable: false, class: 'shrink'}
 ];
 
-const $datatable = ref(); // Template Ref
+const $datatable = ref<DataTableTemplateRef>(null);
 const {relist} = useHasDatatable($datatable);
 
-const $editModal = ref(); // Template Ref
+const $editModal = ref<EditModalTemplateRef>(null);
 const {doCreate, doEdit} = useHasEditModal($editModal);
 
 const doCalendarClick = (event) => {
     doEdit(event.extendedProps.edit_url);
 };
 
-const $broadcastsModal = ref(); // Template Ref
+const $broadcastsModal = ref<InstanceType<typeof BroadcastsModal> | null>(null);
 
 const doShowBroadcasts = (url) => {
-    $broadcastsModal.value.open(url);
+    $broadcastsModal.value?.open(url);
 };
 
 const {doDelete} = useConfirmAndDelete(

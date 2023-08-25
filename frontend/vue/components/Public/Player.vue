@@ -208,7 +208,7 @@ const streams = computed(() => {
     return allStreams;
 });
 
-const $player = ref(); // Template ref
+const $player = ref<InstanceType<typeof AudioPlayer> | null>(null);
 
 const volume = usePlayerVolume();
 

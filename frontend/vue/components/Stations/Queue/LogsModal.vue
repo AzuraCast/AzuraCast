@@ -37,7 +37,7 @@ import {useClipboard} from "@vueuse/core";
 import Modal from "~/components/Common/Modal.vue";
 
 const logs = ref('Loading...');
-const $modal = ref(); // Template Ref
+const $modal = ref<InstanceType<typeof Modal> | null>(null);
 
 const show = (newLogs) => {
     const logDisplay = [];
@@ -46,7 +46,7 @@ const show = (newLogs) => {
     });
 
     logs.value = logDisplay.join('');
-    $modal.value.show();
+    $modal.value?.show();
 };
 
 const clipboard = useClipboard();
@@ -56,7 +56,7 @@ const doCopy = () => {
 };
 
 const close = () => {
-    $modal.value.hide();
+    $modal.value?.hide();
 }
 
 defineExpose({

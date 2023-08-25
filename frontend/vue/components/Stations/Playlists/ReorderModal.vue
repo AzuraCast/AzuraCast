@@ -97,7 +97,7 @@ const loading = ref(true);
 const reorderUrl = ref(null);
 const media = ref([]);
 
-const $modal = ref(); // Template Ref
+const $modal = ref<InstanceType<typeof Modal> | null>(null);
 
 const {axios} = useAxios();
 

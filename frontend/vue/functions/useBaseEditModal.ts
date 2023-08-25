@@ -1,8 +1,11 @@
-import {computed, nextTick, ref, toRef} from "vue";
+import {computed, nextTick, Ref, ref, toRef} from "vue";
 import mergeExisting from "~/functions/mergeExisting";
 import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
 import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
+import ModalForm from "~/components/Common/ModalForm.vue";
+
+export type ModalFormTemplateRef = InstanceType<typeof ModalForm> | null;
 
 export const baseEditModalProps = {
     createUrl: {
@@ -14,7 +17,7 @@ export const baseEditModalProps = {
 export function useBaseEditModal(
     props,
     emit,
-    $modal,
+    $modal: Ref<ModalFormTemplateRef>,
     validations = {},
     blankForm = {},
     userOptions = {}

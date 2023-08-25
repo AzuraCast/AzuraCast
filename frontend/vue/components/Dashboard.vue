@@ -305,7 +305,7 @@ import Loading from "~/components/Common/Loading.vue";
 import Lightbox from "~/components/Common/Lightbox.vue";
 import CardPage from "~/components/Common/CardPage.vue";
 import HeaderInlinePlayer from "~/components/HeaderInlinePlayer.vue";
-import {useProvideLightbox} from "~/vendor/lightbox";
+import {LightboxTemplateRef, useProvideLightbox} from "~/vendor/lightbox";
 import useOptionalStorage from "~/functions/useOptionalStorage";
 import {IconAccountCircle, IconHeadphones, IconInfo, IconSettings, IconWarning} from "~/components/Common/icons";
 
@@ -407,6 +407,6 @@ useIntervalFn(
     stationsReloadTimeout
 );
 
-const $lightbox = ref(); // Template Ref
+const $lightbox = ref<LightboxTemplateRef>(null);
 useProvideLightbox($lightbox);
 </script>

@@ -90,7 +90,7 @@ import {useAzuraCast} from "~/vendor/azuracast";
 import DataTable from "~/components/Common/DataTable.vue";
 import DateRangeDropdown from "~/components/Common/DateRangeDropdown.vue";
 import Icon from "~/components/Common/Icon.vue";
-import useHasDatatable from "~/functions/useHasDatatable";
+import useHasDatatable, {DataTableTemplateRef} from "~/functions/useHasDatatable";
 import DetailsModal from "./AuditLog/DetailsModal.vue";
 import CardPage from "~/components/Common/CardPage.vue";
 import {useLuxon} from "~/vendor/luxon";
@@ -139,13 +139,13 @@ const apiUrl = computed(() => {
     return apiUrl.toString();
 });
 
-const $datatable = ref(); // DataTable Template Ref
+const $datatable = ref<DataTableTemplateRef>(null);
 const {relist} = useHasDatatable($datatable);
 
 watch(dateRange, relist);
 
-const $detailsModal = ref(); // DetailsModal
+const $detailsModal = ref<InstanceType<typeof DetailsModal> | null>(null);
 const showDetails = (changes) => {
-    $detailsModal.value.open(changes);
+    $detailsModal.value?.open(changes);
 }
 </script>

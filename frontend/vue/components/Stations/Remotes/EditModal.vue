@@ -19,7 +19,7 @@
 <script setup lang="ts">
 import RemoteFormBasicInfo from "./Form/BasicInfo.vue";
 import RemoteFormAutoDj from "./Form/AutoDj.vue";
-import {baseEditModalProps, useBaseEditModal} from "~/functions/useBaseEditModal";
+import {baseEditModalProps, ModalFormTemplateRef, useBaseEditModal} from "~/functions/useBaseEditModal";
 import {computed, ref} from "vue";
 import {useNotify} from "~/functions/useNotify";
 import {useTranslate} from "~/vendor/gettext";
@@ -32,7 +32,7 @@ const props = defineProps({
 
 const emit = defineEmits(['relist', 'needs-restart']);
 
-const $modal = ref(); // Template Ref
+const $modal = ref<ModalFormTemplateRef>(null);
 
 const {notifySuccess} = useNotify();
 

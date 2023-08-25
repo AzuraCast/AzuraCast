@@ -120,14 +120,14 @@ const onHidden = () => {
     emit('hidden');
 };
 
-const $modal = ref(); // Template Ref
+const $modal = ref<InstanceType<typeof Modal> | null>(null);
 
 const hide = () => {
-    $modal.value.hide();
+    $modal.value?.hide();
 };
 
 const show = () => {
-    $modal.value.show();
+    $modal.value?.show();
 };
 
 defineExpose({

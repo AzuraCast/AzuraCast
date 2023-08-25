@@ -1,7 +1,7 @@
 import {useAzuraCast} from "~/vendor/azuracast";
 import {Component, h} from "vue";
 
-export default function useMinimalLayout(component: string | Component) {
+export default function useMinimalLayout(component: Component) {
     return {
         setup() {
             const {componentProps} = useAzuraCast();

@@ -20,7 +20,7 @@
 import AdminUsersForm from './Form.vue';
 import {map} from 'lodash';
 import {computed, ref} from "vue";
-import {baseEditModalProps, useBaseEditModal} from "~/functions/useBaseEditModal";
+import {baseEditModalProps, ModalFormTemplateRef, useBaseEditModal} from "~/functions/useBaseEditModal";
 import {useTranslate} from "~/vendor/gettext";
 import ModalForm from "~/components/Common/ModalForm.vue";
 
@@ -34,7 +34,7 @@ const props = defineProps({
 
 const emit = defineEmits(['relist']);
 
-const $modal = ref(); // Template Ref
+const $modal = ref<ModalFormTemplateRef>(null);
 
 const {
     loading,

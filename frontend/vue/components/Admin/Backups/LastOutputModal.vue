@@ -24,9 +24,9 @@ const props = defineProps({
     },
 });
 
-const $modal = ref(); // Template ref
+const $modal = ref<InstanceType<typeof Modal> | null>(null);
 const show = () => {
-    $modal.value.show();
+    $modal.value?.show();
 };
 
 defineExpose({

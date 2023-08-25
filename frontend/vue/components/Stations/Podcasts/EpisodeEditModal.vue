@@ -35,7 +35,7 @@
 import EpisodeFormBasicInfo from './EpisodeForm/BasicInfo.vue';
 import PodcastCommonArtwork from './Common/Artwork.vue';
 import EpisodeFormMedia from './EpisodeForm/Media.vue';
-import {baseEditModalProps, useBaseEditModal} from "~/functions/useBaseEditModal";
+import {baseEditModalProps, ModalFormTemplateRef, useBaseEditModal} from "~/functions/useBaseEditModal";
 import {computed, ref} from "vue";
 import {useResettableRef} from "~/functions/useResettableRef";
 import mergeExisting from "~/functions/mergeExisting";
@@ -62,7 +62,7 @@ const props = defineProps({
 
 const emit = defineEmits(['relist']);
 
-const $modal = ref(); // Template Ref
+const $modal = ref<ModalFormTemplateRef>(null);
 
 const {record, reset} = useResettableRef({
     has_custom_art: false,

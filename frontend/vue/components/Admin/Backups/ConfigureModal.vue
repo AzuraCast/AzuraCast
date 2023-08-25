@@ -93,6 +93,7 @@ import {useNotify} from "~/functions/useNotify";
 import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
 import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
 import FormGroupSelect from "~/components/Form/FormGroupSelect.vue";
+import {ModalFormTemplateRef} from "~/functions/useBaseEditModal.ts";
 
 const props = defineProps({
     settingsUrl: {
@@ -109,7 +110,7 @@ const emit = defineEmits(['relist']);
 
 const loading = ref(true);
 
-const $modal = ref(); // ModalForm
+const $modal = ref<ModalFormTemplateRef>(null);
 
 const {form, resetForm, v$, ifValid} = useVuelidateOnForm(
     {

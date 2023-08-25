@@ -1,5 +1,5 @@
 export default function (seconds: string | number) {
-    seconds = parseInt(seconds);
+    seconds = Number(seconds);
 
     const d: number = Math.floor(seconds / 86400),
         h: number = Math.floor(seconds / 3600) % 24,

@@ -83,6 +83,7 @@ import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
 import Modal from "~/components/Common/Modal.vue";
 import {IconChevronLeft, IconFolder} from "~/components/Common/icons";
+import {DataTableTemplateRef} from "~/functions/useHasDatatable.ts";
 
 const props = defineProps({
     selectedItems: {
@@ -121,17 +122,17 @@ const langHeader = computed(() => {
     );
 });
 
-const $modal = ref(); // Template Ref
+const $modal = ref<InstanceType<typeof Modal> | null>(null);
 
 const close = () => {
     dirHistory.value = [];
     destinationDirectory.value = '';
 
-    $modal.value.hide();
+    $modal.value?.hide();
 };
 
 const open = () => {
-    $modal.value.show();
+    $modal.value?.show();
 };
 
 const {wrapWithLoading, notifySuccess} = useNotify();
@@ -162,13 +163,13 @@ const doMove = () => {
     });
 };
 
-const $datatable = ref(); // Template Ref
+const $datatable = ref<DataTableTemplateRef>(null);
 
 const enterDirectory = (path) => {
     dirHistory.value.push(path);
     destinationDirectory.value = path;
 
-    $datatable.value.refresh();
+    $datatable.value?.refresh();
 };
 
 const pageBack = () => {
@@ -180,7 +181,7 @@ const pageBack = () => {
     }
 
     destinationDirectory.value = newDirectory;
-    $datatable.value.refresh();
+    $datatable.value?.refresh();
 };
 
 const requestConfig = (config) => {

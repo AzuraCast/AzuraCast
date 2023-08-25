@@ -96,7 +96,7 @@ const props = defineProps({
     }
 });
 
-const $waveform = ref(); // Waveform
+const $waveform = ref<InstanceType<typeof WaveformComponent> | null>(null);
 
 const playAudio = () => {
     $waveform.value?.play();

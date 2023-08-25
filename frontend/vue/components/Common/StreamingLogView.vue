@@ -38,7 +38,7 @@ const scrollToBottom = ref(true);
 
 const {axios} = useAxios();
 
-const $textarea = ref(); // Template Ref
+const $textarea = ref<HTMLTextAreaElement | null>(null);
 
 let updateInterval = null;
 
@@ -60,9 +60,9 @@ const updateLogs = () => {
     }).then((resp) => {
         if (resp.data.contents !== '') {
             logs.value = logs.value + resp.data.contents + "\n";
-            if (scrollToBottom.value) {
+            if (scrollToBottom.value && $textarea.value) {
                 nextTick(() => {
-                    $textarea.value.scrollTop = $textarea.value.scrollHeight;
+                    $textarea.value.scrollTop = $textarea.value?.scrollHeight;
                 });
             }
         }

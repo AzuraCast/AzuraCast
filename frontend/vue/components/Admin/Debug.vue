@@ -174,7 +174,7 @@
 
 <script setup lang="ts">
 import {ref} from "vue";
-import useHasDatatable from "~/functions/useHasDatatable";
+import useHasDatatable, {DataTableTemplateRef} from "~/functions/useHasDatatable";
 import DataTable from "~/components/Common/DataTable.vue";
 import {useTranslate} from "~/vendor/gettext";
 import CardPage from "~/components/Common/CardPage.vue";
@@ -230,10 +230,10 @@ const syncTaskFields = [
     {key: 'actions', label: $gettext('Actions')}
 ];
 
-const $datatable = ref(); // Template Ref
+const $datatable = ref<DataTableTemplateRef>(null);
 useHasDatatable($datatable);
 
-const $modal = ref();
+const $modal = ref<InstanceType<typeof TaskOutputModal> | null>(null);
 
 const {axios} = useAxios();
 const {notifySuccess} = useNotify();
@@ -241,7 +241,7 @@ const {notifySuccess} = useNotify();
 const makeDebugCall = (url) => {
     axios.put(url).then((resp) => {
         if (resp.data.logs) {
-            $modal.value.open(resp.data.logs);
+            $modal.value?.open(resp.data.logs);
         } else {
             notifySuccess(resp.data.message);
         }

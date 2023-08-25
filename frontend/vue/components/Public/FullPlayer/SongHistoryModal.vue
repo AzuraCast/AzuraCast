@@ -31,10 +31,10 @@ const props = defineProps({
     },
 });
 
-const $modal = ref(); // Modal
+const $modal = ref<InstanceType<typeof Modal> | null>(null);
 
 const open = () => {
-    $modal.value.show();
+    $modal.value?.show();
 }
 
 defineExpose({

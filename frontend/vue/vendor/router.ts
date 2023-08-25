@@ -5,7 +5,7 @@ import NProgress from 'nprogress';
 
 export function installRouter(router: Router, vueApp: App): void {
     // Add remote prop loading support
-    router.beforeEach(async (to, from, next) => {
+    router.beforeEach(async (to, _, next) => {
         if (to.meta.remoteUrl) {
             const {axios} = useAxios();
             to.meta.state = await axios.get(to.meta.remoteUrl).then(r => r.data);
@@ -14,7 +14,7 @@ export function installRouter(router: Router, vueApp: App): void {
     });
 
     // Add NProgress displays
-    router.beforeResolve((to, from, next) => {
+    router.beforeResolve((to, _, next) => {
         if (to.name) {
             NProgress.start();
         }

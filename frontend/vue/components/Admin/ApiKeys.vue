@@ -34,7 +34,7 @@ import DataTable from "~/components/Common/DataTable.vue";
 import {ref} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
-import useHasDatatable from "~/functions/useHasDatatable";
+import useHasDatatable, {DataTableTemplateRef} from "~/functions/useHasDatatable";
 import CardPage from "~/components/Common/CardPage.vue";
 import {getApiUrl} from "~/router";
 
@@ -62,7 +62,7 @@ const fields = ref([
     }
 ]);
 
-const $datatable = ref();
+const $datatable = ref<DataTableTemplateRef>(null);
 const {relist} = useHasDatatable($datatable);
 
 const {doDelete} = useConfirmAndDelete(

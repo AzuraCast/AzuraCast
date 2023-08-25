@@ -1,6 +1,6 @@
 import {Chart, registerables} from "chart.js";
 import {defaultsDeep} from "lodash";
-import {computed, onMounted, onUnmounted, toRef, watch} from "vue";
+import {computed, onMounted, onUnmounted, Ref, toRef, watch} from "vue";
 import zoomPlugin from 'chartjs-plugin-zoom';
 import chartjsColorSchemes from "~/vendor/chartjs_colorschemes.ts";
 
@@ -34,9 +34,11 @@ export const chartProps = {
     },
 };
 
+export type ChartTemplateRef = HTMLCanvasElement | null;
+
 export default function useChart(
     props,
-    $canvas,
+    $canvas: Ref<ChartTemplateRef>,
     defaultOptions = {}
 ) {
     let $chart = null;

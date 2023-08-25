@@ -24,6 +24,7 @@ import {ref} from "vue";
 import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
 import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
+import {ModalFormTemplateRef} from "~/functions/useBaseEditModal.ts";
 
 const props = defineProps({
     userUrl: {
@@ -62,10 +63,10 @@ const clearContents = () => {
     error.value = null;
 };
 
-const $modal = ref(); // BModal
+const $modal = ref<ModalFormTemplateRef>(null);
 
 const close = () => {
-    $modal.value.hide();
+    $modal.value?.hide();
 };
 
 const {wrapWithLoading, notifySuccess} = useNotify();

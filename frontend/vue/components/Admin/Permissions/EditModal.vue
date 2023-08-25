@@ -26,7 +26,7 @@
 <script setup lang="ts">
 import ModalForm from "~/components/Common/ModalForm.vue";
 import {computed, ref} from "vue";
-import {baseEditModalProps, useBaseEditModal} from "~/functions/useBaseEditModal";
+import {baseEditModalProps, ModalFormTemplateRef, useBaseEditModal} from "~/functions/useBaseEditModal";
 import {useTranslate} from "~/vendor/gettext";
 import {required} from '@vuelidate/validators';
 import AdminPermissionsGlobalForm from "./Form/GlobalForm.vue";
@@ -52,7 +52,7 @@ const props = defineProps({
 
 const emit = defineEmits(['relist']);
 
-const $modal = ref(); // Template Ref
+const $modal = ref<ModalFormTemplateRef>(null);
 
 const {
     loading,

@@ -147,10 +147,9 @@ const props = defineProps({
     }
 });
 
-const $cpuStatsHelpModal = ref(); // Template Ref
-
+const $cpuStatsHelpModal = ref<InstanceType<typeof CpuStatsHelpModal> | null>(null);
 const showCpuStatsHelpModal = () => {
-    $cpuStatsHelpModal.value.create();
+    $cpuStatsHelpModal.value?.create();
 };
 
 const formatCpuName = (cpuName) => upperFirst(cpuName);

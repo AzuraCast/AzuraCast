@@ -1,5 +1,5 @@
 import {useTranslate} from "~/vendor/gettext.ts";
-import filterMenu from "~/functions/filterMenu.ts";
+import filterMenu, { MenuCategory, ReactiveMenu } from "~/functions/filterMenu.ts";
 import {StationPermission, userAllowedForStation} from "~/acl.ts";
 import {useAzuraCast} from "~/vendor/azuracast.ts";
 import {computed, reactive} from "vue";
@@ -16,7 +16,7 @@ import {
     IconReport
 } from "~/components/Common/icons.ts";
 
-export function useStationsMenu(): array {
+export function useStationsMenu(): ReactiveMenu {
     const {$gettext} = useTranslate();
 
     const {enableAdvancedFeatures, sidebarProps} = useAzuraCast();
@@ -25,7 +25,7 @@ export function useStationsMenu(): array {
     // Reuse this variable to avoid multiple calls.
     const userCanManageMedia = userAllowedForStation(StationPermission.Media);
 
-    const menu = reactive([
+    const menu: ReactiveMenu = reactive<Array<MenuCategory>>([
         {
             key: 'profile',
             label: computed(() => $gettext('Profile')),

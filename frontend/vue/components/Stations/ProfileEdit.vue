@@ -68,7 +68,7 @@ const props = defineProps(stationFormProps);
 
 const editUrl = getStationApiUrl('/profile/edit');
 
-const $form = ref(); // AdminStationsForm
+const $form = ref<InstanceType<typeof AdminStationsForm> | null>(null);
 
 onMounted(() => {
     $form.value?.reset();

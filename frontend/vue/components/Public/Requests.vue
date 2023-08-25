@@ -80,7 +80,7 @@ const fields = computed(() => {
             sortable: true,
             selectable: true,
             visible: false,
-            formatter: (value, key, item) => item.song.title
+            formatter: (_value, _key, item) => item.song.title
         },
         {
             key: 'artist',
@@ -88,7 +88,7 @@ const fields = computed(() => {
             sortable: true,
             selectable: true,
             visible: false,
-            formatter: (value, key, item) => item.song.artist
+            formatter: (_value, _key, item) => item.song.artist
         },
         {
             key: 'album',
@@ -96,7 +96,7 @@ const fields = computed(() => {
             sortable: true,
             selectable: true,
             visible: false,
-            formatter: (value, key, item) => item.song.album
+            formatter: (_value, _key, item) => item.song.album
         },
         {
             key: 'genre',
@@ -104,7 +104,7 @@ const fields = computed(() => {
             sortable: true,
             selectable: true,
             visible: false,
-            formatter: (value, key, item) => item.song.genre
+            formatter: (_value, _key, item) => item.song.genre
         }
     ];
 
@@ -115,7 +115,7 @@ const fields = computed(() => {
             sortable: false,
             selectable: true,
             visible: false,
-            formatter: (value, key, item) => item.song.custom_fields[field.short_name]
+            formatter: (_value, _key, item) => item.song.custom_fields[field.short_name]
         });
     });
 

@@ -263,6 +263,7 @@ import {useLuxon} from "~/vendor/luxon";
 import {getStationApiUrl} from "~/router";
 import {useRoute, useRouter} from "vue-router";
 import {IconFile, IconFolder, IconImage} from "~/components/Common/icons";
+import {DataTableTemplateRef} from "~/functions/useHasDatatable.ts";
 
 const props = defineProps({
     initialPlaylists: {
@@ -380,17 +381,17 @@ const onRowSelected = (items) => {
     };
 };
 
-const $datatable = ref(); // Template Ref
+const $datatable = ref<DataTableTemplateRef>(null);
 
 const onTriggerNavigate = () => {
     $datatable.value?.navigate();
 };
 
 const filter = (newFilter) => {
-    $datatable.value.setFilter(newFilter);
+    $datatable.value?.setFilter(newFilter);
 };
 
-const $quota = ref(); // Template Ref
+const $quota = ref<InstanceType<typeof StationsCommonQuota> | null>(null);
 
 const onTriggerRelist = () => {
     $quota.value?.update();
@@ -405,28 +406,28 @@ const onFiltered = (newFilter) => {
     searchPhrase.value = newFilter;
 };
 
-const $renameModal = ref(); // Template Ref
+const $renameModal = ref<InstanceType<typeof RenameModal> | null>(null);
 
 const rename = (path) => {
     $renameModal.value?.open(path);
 };
 
-const $editModal = ref(); // Template Ref
+const $editModal = ref<InstanceType<typeof EditModal> | null>(null);
 
 const edit = (recordUrl, albumArtUrl, audioUrl, waveformUrl) => {
     $editModal.value?.open(recordUrl, albumArtUrl, audioUrl, waveformUrl);
 };
 
-const $newDirectoryModal = ref(); // Template Ref
+const $newDirectoryModal = ref<InstanceType<typeof NewDirectoryModal> | null>(null);
 
 const createDirectory = () => {
-    $newDirectoryModal.value.open();
+    $newDirectoryModal.value?.open();
 }
 
-const $moveFilesModal = ref(); // Template Ref
+const $moveFilesModal = ref<InstanceType<typeof MoveFilesModal> | null>(null);
 
 const moveFiles = () => {
-    $moveFilesModal.value.open();
+    $moveFilesModal.value?.open();
 }
 
 const requestConfig = (config) => {

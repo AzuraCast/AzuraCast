@@ -133,8 +133,8 @@ const files = reactive({
     }
 });
 
-const $fileBrowseTarget = ref(); // Template Ref
-const $fileDropTarget = ref(); // Template Ref
+const $fileBrowseTarget = ref<HTMLButtonElement | null>(null);
+const $fileDropTarget = ref<HTMLDivElement | null>(null);
 
 const {apiCsrf} = useAzuraCast();
 

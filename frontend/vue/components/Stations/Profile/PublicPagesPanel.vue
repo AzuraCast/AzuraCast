@@ -139,10 +139,10 @@ const props = defineProps({
     ...embedModalProps
 });
 
-const $embedModal = ref(); // Template Ref
+const $embedModal = ref<InstanceType<typeof EmbedModal> | null>(null);
 
 const doOpenEmbed = () => {
-    $embedModal.value.open();
+    $embedModal.value?.open();
 };
 
 const togglePublicPages = useToggleFeature('enable_public_page', !props.enablePublicPage);

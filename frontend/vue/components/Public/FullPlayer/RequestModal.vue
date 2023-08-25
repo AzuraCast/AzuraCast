@@ -36,7 +36,7 @@ const props = defineProps({
     }
 });
 
-const $modal = ref(); // Modal
+const $modal = ref<InstanceType<typeof Modal> | null>(null);
 
 const doClose = () => {
     $modal.value?.hide();

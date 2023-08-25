@@ -67,8 +67,8 @@ import EditModal from './HlsStreams/EditModal.vue';
 import {useTranslate} from "~/vendor/gettext";
 import {ref} from "vue";
 import {useMayNeedRestart} from "~/functions/useMayNeedRestart";
-import useHasDatatable from "~/functions/useHasDatatable";
-import useHasEditModal from "~/functions/useHasEditModal";
+import useHasDatatable, {DataTableTemplateRef} from "~/functions/useHasDatatable";
+import useHasEditModal, {EditModalTemplateRef} from "~/functions/useHasEditModal";
 import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
 import CardPage from "~/components/Common/CardPage.vue";
 import {getStationApiUrl} from "~/router";
@@ -93,10 +93,10 @@ const upper = (data) => {
     return upper.join(' ');
 };
 
-const $dataTable = ref(); // DataTable
+const $dataTable = ref<DataTableTemplateRef>(null);
 const {relist} = useHasDatatable($dataTable);
 
-const $editModal = ref(); // EditModal
+const $editModal = ref<EditModalTemplateRef>(null);
 const {doCreate, doEdit} = useHasEditModal($editModal);
 
 const {mayNeedRestart, needsRestart} = useMayNeedRestart();

@@ -209,10 +209,10 @@ const embedCode = computed(() => {
     return '<iframe src="' + embedUrl.value + '" frameborder="0" allowtransparency="true" style="width: 100%; min-height: ' + embedHeight.value + '; border: 0;"></iframe>';
 });
 
-const $modal = ref(); // Template Ref
+const $modal = ref<InstanceType<typeof Modal> | null>(null);
 
 const open = () => {
-    $modal.value.show();
+    $modal.value?.show();
 };
 
 defineExpose({

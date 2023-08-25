@@ -1,4 +1,4 @@
-import {computed, ComputedRef, onMounted, ref} from "vue";
+import {computed, ComputedRef, onMounted, Ref, ref} from "vue";
 import useOptionalStorage from "~/functions/useOptionalStorage.ts";
 
 export enum Theme {
@@ -8,7 +8,7 @@ export enum Theme {
 
 export default function useTheme() {
     const page: HTMLElement = document.documentElement;
-    const currentTheme: Theme | null = ref(null);
+    const currentTheme: Ref<Theme | string | null> = ref<Theme | string | null>(null);
 
     onMounted((): void => {
         currentTheme.value = page.getAttribute('data-bs-theme');

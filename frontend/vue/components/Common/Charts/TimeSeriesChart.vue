@@ -13,14 +13,14 @@
 import {ref} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import ChartAltValues from "~/components/Common/Charts/ChartAltValues.vue";
-import useChart, {chartProps} from "~/functions/useChart";
+import useChart, {chartProps, ChartTemplateRef} from "~/functions/useChart";
 import {useLuxon} from "~/vendor/luxon";
 
 const props = defineProps({
     ...chartProps,
 });
 
-const $canvas = ref(); // Template ref
+const $canvas = ref<ChartTemplateRef>(null);
 
 const {$gettext} = useTranslate();
 const {DateTime} = useLuxon();

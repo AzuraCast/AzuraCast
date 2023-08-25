@@ -65,16 +65,16 @@ const {form, v$, resetForm, ifValid} = useVuelidateOnForm(
     }
 );
 
-const $modal = ref(); // Template Ref
+const $modal = ref<InstanceType<typeof Modal> | null>(null);
 
 const close = () => {
     resetForm();
 
-    $modal.value.hide();
+    $modal.value?.hide();
 };
 
 const open = () => {
-    $modal.value.show();
+    $modal.value?.show();
 };
 
 const {wrapWithLoading, notifySuccess} = useNotify();

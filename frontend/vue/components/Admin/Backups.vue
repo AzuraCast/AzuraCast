@@ -168,6 +168,7 @@ import CardPage from "~/components/Common/CardPage.vue";
 import {useLuxon} from "~/vendor/luxon";
 import {getApiUrl} from "~/router";
 import {IconLogs, IconSend, IconSettings} from "~/components/Common/icons";
+import {DataTableTemplateRef} from "~/functions/useHasDatatable.ts";
 
 const props = defineProps({
     storageLocations: {
@@ -229,7 +230,7 @@ const fields = [
     }
 ];
 
-const $datatable = ref(); // DataTable
+const $datatable = ref<DataTableTemplateRef>(null);
 
 const {wrapWithLoading} = useNotify();
 const {axios} = useAxios();
@@ -247,26 +248,26 @@ const relist = () => {
         settingsLoading.value = false;
     });
 
-    $datatable.value.relist();
+    $datatable.value?.relist();
 };
 
 onMounted(relist);
 
 const {timestampToRelative} = useLuxon();
 
-const $lastOutputModal = ref(); // AdminBackupsLastOutputModal
+const $lastOutputModal = ref<InstanceType<typeof AdminBackupsLastOutputModal> | null>(null);
 const showLastOutput = () => {
-    $lastOutputModal.value.show();
+    $lastOutputModal.value?.show();
 };
 
-const $configureModal = ref(); // AdminBackupsConfigureModal
+const $configureModal = ref<InstanceType<typeof AdminBackupsConfigureModal> | null>(null);
 const doConfigure = () => {
-    $configureModal.value.open();
+    $configureModal.value?.open();
 };
 
-const $runBackupModal = ref(); // AdminBackupsRunBackupModal
+const $runBackupModal = ref<InstanceType<typeof AdminBackupsRunBackupModal> | null>(null);
 const doRunBackup = () => {
-    $runBackupModal.value.open();
+    $runBackupModal.value?.open();
 };
 
 const {doDelete} = useConfirmAndDelete(

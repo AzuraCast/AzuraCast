@@ -39,7 +39,7 @@ export function userAllowed(permission: GlobalPermission): boolean {
     return includes(globalPermissions, permission);
 }
 
-export function userAllowedForStation(permission: StationPermission, id: int | null = null): boolean {
+export function userAllowedForStation(permission: StationPermission, id: number | null = null): boolean {
     if (id === null) {
         const station = useAzuraCastStation();
         if ('id' in station) {

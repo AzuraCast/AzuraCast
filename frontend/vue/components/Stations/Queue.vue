@@ -77,7 +77,7 @@ import {useAzuraCast, useAzuraCastStation} from "~/vendor/azuracast";
 import {useTranslate} from "~/vendor/gettext";
 import {ref} from "vue";
 import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
-import useHasDatatable from "~/functions/useHasDatatable";
+import useHasDatatable, {DataTableTemplateRef} from "~/functions/useHasDatatable";
 import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
 import {useSweetAlert} from "~/vendor/sweetalert";
@@ -113,10 +113,10 @@ const formatTime = (time) => getDateTime(time).toLocaleString(
 
 const formatRelativeTime = (time) => getDateTime(time).toRelative();
 
-const $datatable = ref(); // Template Ref
+const $datatable = ref<DataTableTemplateRef>(null);
 const {relist} = useHasDatatable($datatable);
 
-const $logsModal = ref(); // Template Ref
+const $logsModal = ref<InstanceType<typeof QueueLogsModal> | null>(null);
 const doShowLogs = (logs) => {
     $logsModal.value?.show(logs);
 };

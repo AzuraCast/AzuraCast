@@ -82,12 +82,13 @@ import stationFormProps from "./Stations/stationFormProps";
 import {pickProps} from "~/functions/pickProps";
 import {useTranslate} from "~/vendor/gettext";
 import {ref} from "vue";
-import useHasDatatable from "~/functions/useHasDatatable";
-import useHasEditModal from "~/functions/useHasEditModal";
+import useHasDatatable, {DataTableTemplateRef} from "~/functions/useHasDatatable";
+import useHasEditModal, {EditModalTemplateRef} from "~/functions/useHasEditModal";
 import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
 import CardPage from "~/components/Common/CardPage.vue";
 import {getApiUrl} from "~/router";
 import AddButton from "~/components/Common/AddButton.vue";
+import CloneModal from "~/components/Admin/Stations/CloneModal.vue";
 
 const props = defineProps({
     ...stationFormProps,
@@ -136,13 +137,13 @@ const fields = [
     }
 ];
 
-const $datatable = ref(); // Template Ref
+const $datatable = ref<DataTableTemplateRef>(null);
 const {relist} = useHasDatatable($datatable);
 
-const $editModal = ref(); // Template Ref
+const $editModal = ref<EditModalTemplateRef>(null);
 const {doCreate, doEdit} = useHasEditModal($editModal);
 
-const $cloneModal = ref(); // Template Ref
+const $cloneModal = ref<InstanceType<typeof CloneModal> | null>(null);
 
 const doClone = (stationName, url) => {
     $cloneModal.value.create(stationName, url);

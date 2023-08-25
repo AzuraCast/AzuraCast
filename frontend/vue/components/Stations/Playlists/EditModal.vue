@@ -23,7 +23,7 @@
 import FormBasicInfo from './Form/BasicInfo.vue';
 import FormSchedule from './Form/Schedule.vue';
 import FormAdvanced from './Form/Advanced.vue';
-import {baseEditModalProps, useBaseEditModal} from "~/functions/useBaseEditModal";
+import {baseEditModalProps, ModalFormTemplateRef, useBaseEditModal} from "~/functions/useBaseEditModal";
 import {computed, ref} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import {useNotify} from "~/functions/useNotify";
@@ -39,7 +39,7 @@ const {enableAdvancedFeatures} = useAzuraCast();
 
 const emit = defineEmits(['relist', 'needs-restart']);
 
-const $modal = ref(); // Template Ref
+const $modal = ref<ModalFormTemplateRef>(null);
 
 const {notifySuccess} = useNotify();
 

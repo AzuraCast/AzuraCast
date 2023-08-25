@@ -74,6 +74,7 @@ import {useAxios} from "~/vendor/axios";
 import Modal from "~/components/Common/Modal.vue";
 import {useLuxon} from "~/vendor/luxon";
 import {IconDownload} from "~/components/Common/icons";
+import {DataTableTemplateRef} from "~/functions/useHasDatatable.ts";
 
 const listUrl = ref(null);
 
@@ -117,7 +118,7 @@ const fields = [
         key: 'size',
         label: $gettext('Size'),
         sortable: false,
-        formatter: (value, key, item) => {
+        formatter: (_value, _key, item) => {
             if (!item.recording?.size) {
                 return '';
             }
@@ -137,7 +138,7 @@ const {confirmDelete} = useSweetAlert();
 const {notifySuccess} = useNotify();
 const {axios} = useAxios();
 
-const $datatable = ref(); // Template Ref
+const $datatable = ref<DataTableTemplateRef>(null);
 
 const doDelete = (url) => {
     confirmDelete({
@@ -146,29 +147,29 @@ const doDelete = (url) => {
         if (result.value) {
             axios.delete(url).then((resp) => {
                 notifySuccess(resp.data.message);
-                $datatable.value.refresh();
+                $datatable.value?.refresh();
             });
 
-            $datatable.value.refresh();
+            $datatable.value?.refresh();
         }
     });
 };
 
-const $modal = ref(); // Template Ref
+const $modal = ref<InstanceType<typeof Modal> | null>(null);
 
 const open = (newListUrl) => {
     listUrl.value = newListUrl;
-    $modal.value.show();
+    $modal.value?.show();
 };
 
-const $player = ref(); // Template Ref
+const $player = ref<InstanceType<typeof InlinePlayer> | null>(null);
 
 const close = () => {
-    $player.value.stop();
+    $player.value?.stop();
 
     listUrl.value = null;
 
-    $modal.value.hide();
+    $modal.value?.hide();
 };
 
 defineExpose({

@@ -40,13 +40,13 @@
 import Modal from "~/components/Common/Modal.vue";
 import {ref} from "vue";
 
-const $modal = ref(); // Modal
+const $modal = ref<InstanceType<typeof Modal> | null>(null);
 
 const changes = ref(null);
 
 const open = (newChanges) => {
     changes.value = newChanges;
-    $modal.value.show();
+    $modal.value?.show();
 };
 
 defineExpose({

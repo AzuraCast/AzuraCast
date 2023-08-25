@@ -62,20 +62,20 @@ const {form, v$, resetForm, ifValid} = useVuelidateOnForm(
     }
 );
 
-const $modal = ref(); // Template Ref
+const $modal = ref<InstanceType<typeof Modal> | null>(null);
 
 const open = (filePath) => {
     file.value = filePath;
     form.value.newPath = filePath;
 
-    $modal.value.show();
+    $modal.value?.show();
 };
 
 const close = () => {
     resetForm();
     file.value = null;
 
-    $modal.value.hide();
+    $modal.value?.hide();
 };
 
 const {wrapWithLoading} = useNotify();

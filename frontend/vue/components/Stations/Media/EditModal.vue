@@ -63,6 +63,7 @@ import {useAxios} from "~/vendor/axios";
 import {useNotify} from "~/functions/useNotify";
 import Tabs from "~/components/Common/Tabs.vue";
 import Tab from "~/components/Common/Tab.vue";
+import {ModalFormTemplateRef} from "~/functions/useBaseEditModal.ts";
 
 const props = defineProps({
     customFields: {
@@ -146,7 +147,7 @@ const resetForm = () => {
     audioUrl.value = '';
 };
 
-const $modal = ref(); // BModal
+const $modal = ref<ModalFormTemplateRef>(null);
 
 const close = () => {
     $modal.value?.hide();

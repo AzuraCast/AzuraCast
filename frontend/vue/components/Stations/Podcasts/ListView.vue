@@ -100,6 +100,7 @@ import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
 import {getStationApiUrl} from "~/router";
 import AddButton from "~/components/Common/AddButton.vue";
+import {DataTableTemplateRef} from "~/functions/useHasDatatable.ts";
 
 const props = defineProps({
     ...listViewProps,
@@ -130,22 +131,22 @@ const fields = [
     {key: 'actions', label: $gettext('Actions'), sortable: false, class: 'shrink'}
 ];
 
-const $quota = ref(); // Template Ref
-const $datatable = ref(); // Template Ref
+const $quota = ref<InstanceType<typeof StationsCommonQuota> | null>(null);
+const $datatable = ref<DataTableTemplateRef>(null);
 
 const relist = () => {
-    $quota.value.update();
+    $quota.value?.update();
     $datatable.value?.refresh();
 };
 
-const $editPodcastModal = ref(); // Template Ref
+const $editPodcastModal = ref<InstanceType<typeof EditModal> | null>(null);
 
 const doCreate = () => {
-    $editPodcastModal.value.create();
+    $editPodcastModal.value?.create();
 };
 
 const doEdit = (url) => {
-    $editPodcastModal.value.edit(url);
+    $editPodcastModal.value?.edit(url);
 };
 
 const doSelectPodcast = (podcast) => {

@@ -74,7 +74,7 @@ import Modal from "~/components/Common/Modal.vue";
 
 const emit = defineEmits(['relist']);
 
-const $modal = ref(); // Template Ref
+const $modal = ref<InstanceType<typeof Modal> | null>(null);
 
 const {$gettext} = useTranslate();
 

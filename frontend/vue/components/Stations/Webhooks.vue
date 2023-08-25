@@ -101,8 +101,8 @@ import {get, map} from 'lodash';
 import StreamingLogModal from "~/components/Common/StreamingLogModal.vue";
 import {useTranslate} from "~/vendor/gettext";
 import {ref} from "vue";
-import useHasDatatable from "~/functions/useHasDatatable";
-import useHasEditModal from "~/functions/useHasEditModal";
+import useHasDatatable, {DataTableTemplateRef} from "~/functions/useHasDatatable";
+import useHasEditModal, {EditModalTemplateRef} from "~/functions/useHasEditModal";
 import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
 import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
@@ -150,10 +150,10 @@ const getTriggerNames = (triggers) => {
     });
 };
 
-const $datatable = ref(); // Template Ref
+const $datatable = ref<DataTableTemplateRef>(null);
 const {relist} = useHasDatatable($datatable);
 
-const $editModal = ref(); // Template Ref
+const $editModal = ref<EditModalTemplateRef>(null);
 const {doCreate, doEdit} = useHasEditModal($editModal);
 
 const {wrapWithLoading, notifySuccess} = useNotify();
@@ -168,13 +168,13 @@ const doToggle = (url) => {
     });
 };
 
-const $logModal = ref(); // Template Ref
+const $logModal = ref<InstanceType<typeof StreamingLogModal> | null>(null);
 
 const doTest = (url) => {
     wrapWithLoading(
         axios.put(url)
     ).then((resp) => {
-        $logModal.value.show(resp.data.links.log);
+        $logModal.value?.show(resp.data.links.log);
     });
 };
 

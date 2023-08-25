@@ -123,6 +123,7 @@ import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
 import AddButton from "~/components/Common/AddButton.vue";
 import {IconChevronLeft} from "~/components/Common/icons";
+import {DataTableTemplateRef} from "~/functions/useHasDatatable.ts";
 
 const props = defineProps({
     quotaUrl: {
@@ -147,22 +148,22 @@ const fields = [
     {key: 'actions', label: $gettext('Actions'), sortable: false, class: 'shrink'}
 ];
 
-const $quota = ref(); // Template Ref
-const $datatable = ref(); // Template Ref
+const $quota = ref<InstanceType<typeof StationsCommonQuota> | null>(null);
+const $datatable = ref<DataTableTemplateRef>(null);
 
 const relist = () => {
-    $quota.value.update();
+    $quota.value?.update();
     $datatable.value?.refresh();
 };
 
-const $editEpisodeModal = ref(); // Template Ref
+const $editEpisodeModal = ref<InstanceType<typeof EditModal> | null>(null);
 
 const doCreate = () => {
-    $editEpisodeModal.value.create();
+    $editEpisodeModal.value?.create();
 };
 
 const doEdit = (url) => {
-    $editEpisodeModal.value.edit(url);
+    $editEpisodeModal.value?.edit(url);
 };
 
 const doClearPodcast = () => {

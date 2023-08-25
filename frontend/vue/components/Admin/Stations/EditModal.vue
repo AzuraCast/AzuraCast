@@ -78,7 +78,7 @@ const langTitle = computed(() => {
         : $gettext('Add Station');
 });
 
-const $modal = ref(); // BModal
+const $modal = ref<InstanceType<typeof Modal> | null>(null);
 
 const onValidUpdate = (newValue) => {
     disableSaveButton.value = !newValue;
@@ -86,22 +86,22 @@ const onValidUpdate = (newValue) => {
 
 const create = () => {
     editUrl.value = null;
-    $modal.value.show();
+    $modal.value?.show();
 };
 
 const edit = (recordUrl) => {
     editUrl.value = recordUrl;
-    $modal.value.show();
+    $modal.value?.show();
 };
 
-const $form = ref(); // AdminStationsForm
+const $form = ref<InstanceType<typeof AdminStationsForm> | null>(null);
 
 const resetForm = () => {
-    $form.value.reset();
+    $form.value?.reset();
 };
 
 const close = () => {
-    $modal.value.hide();
+    $modal.value?.hide();
 };
 
 const onSubmit = () => {
@@ -110,7 +110,7 @@ const onSubmit = () => {
 };
 
 const doSubmit = () => {
-    $form.value.submit();
+    $form.value?.submit();
 };
 
 const clearContents = () => {

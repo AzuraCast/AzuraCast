@@ -360,7 +360,7 @@ const avatarServiceOptions = computed(() => {
     ]
 });
 
-const $acmeModal = ref(); // StreamingLogModal
+const $acmeModal = ref<InstanceType<typeof StreamingLogModal> | null>(null);
 const {wrapWithLoading} = useNotify();
 const {axios} = useAxios();
 
@@ -368,13 +368,13 @@ const generateAcmeCert = () => {
     wrapWithLoading(
         axios.put(props.acmeUrl)
     ).then((resp) => {
-        $acmeModal.value.show(resp.data.links.log);
+        $acmeModal.value?.show(resp.data.links.log);
     });
 }
 
-const $testMessageModal = ref(); // TestMessageModal
+const $testMessageModal = ref<InstanceType<typeof AdminSettingsTestMessageModal> | null>(null);
 
 const openTestMessage = () => {
-    $testMessageModal.value.open();
+    $testMessageModal.value?.open();
 }
 </script>

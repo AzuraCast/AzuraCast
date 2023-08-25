@@ -71,7 +71,7 @@ import {ref} from "vue";
 import playerProps from "~/components/Public/playerProps";
 import {pickProps} from "~/functions/pickProps";
 import Lightbox from "~/components/Common/Lightbox.vue";
-import {useProvideLightbox} from "~/vendor/lightbox";
+import {LightboxTemplateRef, useProvideLightbox} from "~/vendor/lightbox";
 import {IconDownload, IconHelp, IconHistory} from "~/components/Common/icons";
 
 const props = defineProps({
@@ -105,18 +105,18 @@ const onNowPlayingUpdate = (newNowPlaying) => {
     history.value = newNowPlaying?.song_history;
 }
 
-const $songHistoryModal = ref(); // SongHistoryModal
+const $songHistoryModal = ref<InstanceType<typeof SongHistoryModal> | null>(null);
 
 const openSongHistoryModal = () => {
-    $songHistoryModal.value.open();
+    $songHistoryModal.value?.open();
 }
 
-const $requestModal = ref(); // RequestModal
+const $requestModal = ref<InstanceType<typeof RequestModal> | null>(null);
 
 const openRequestModal = () => {
-    $requestModal.value.open();
+    $requestModal.value?.open();
 }
 
-const $lightbox = ref(); // Template Ref
+const $lightbox = ref<LightboxTemplateRef>(null);
 useProvideLightbox($lightbox);
 </script>

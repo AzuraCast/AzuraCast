@@ -119,7 +119,7 @@ const uploaded = (file) => {
     playlistFile.value = file;
 }
 
-const $modal = ref(); // Template Ref
+const $modal = ref<InstanceType<typeof Modal> | null>(null);
 
 const open = (newImportPlaylistUrl) => {
     playlistFile.value = null;
@@ -127,7 +127,7 @@ const open = (newImportPlaylistUrl) => {
 
     importPlaylistUrl.value = newImportPlaylistUrl;
 
-    $modal.value.show();
+    $modal.value?.show();
 };
 
 const {wrapWithLoading, notifySuccess, notifyError} = useNotify();
@@ -136,7 +136,6 @@ const {axios} = useAxios();
 const doSubmit = () => {
     const formData = new FormData();
     formData.append('playlist_file', playlistFile.value);
-
 
     wrapWithLoading(
         axios.post(importPlaylistUrl.value, formData)
@@ -153,7 +152,7 @@ const doSubmit = () => {
 };
 
 const close = () => {
-    $modal.value.hide();
+    $modal.value?.hide();
 };
 
 const onHidden = () => {

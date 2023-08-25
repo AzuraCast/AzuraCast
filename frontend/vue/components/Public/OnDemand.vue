@@ -85,7 +85,7 @@ import formatFileSize from "../../functions/formatFileSize";
 import AlbumArt from "~/components/Common/AlbumArt.vue";
 import Lightbox from "~/components/Common/Lightbox.vue";
 import {ref} from "vue";
-import {useProvideLightbox} from "~/vendor/lightbox";
+import {LightboxTemplateRef, useProvideLightbox} from "~/vendor/lightbox";
 import {IconDownload} from "~/components/Common/icons";
 
 const props = defineProps({
@@ -119,14 +119,14 @@ const fields = [
         label: $gettext('Title'),
         sortable: true,
         selectable: true,
-        formatter: (value, key, item) => item.media.title,
+        formatter: (_value, _key, item) => item.media.title,
     },
     {
         key: 'artist',
         label: $gettext('Artist'),
         sortable: true,
         selectable: true,
-        formatter: (value, key, item) => item.media.artist,
+        formatter: (_value, _key, item) => item.media.artist,
     },
     {
         key: 'album',
@@ -134,7 +134,7 @@ const fields = [
         sortable: true,
         selectable: true,
         visible: false,
-        formatter: (value, key, item) => item.media.album
+        formatter: (_value, _key, item) => item.media.album
     }
 ];
 
@@ -149,7 +149,7 @@ forEach(props.customFields.slice(), (field) => {
     });
 });
 
-const $lightbox = ref(); // Template Ref
+const $lightbox = ref<LightboxTemplateRef>(null);
 useProvideLightbox($lightbox);
 </script>
 

@@ -99,7 +99,7 @@ const clearContents = () => {
     newKey.value = null;
 };
 
-const $modal = ref(); // BModal
+const $modal = ref<InstanceType<typeof Modal> | null>(null);
 
 const create = () => {
     clearContents();

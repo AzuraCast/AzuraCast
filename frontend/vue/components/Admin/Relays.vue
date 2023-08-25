@@ -49,7 +49,7 @@
 import DataTable from '~/components/Common/DataTable.vue';
 import {useTranslate} from "~/vendor/gettext";
 import {ref} from "vue";
-import useHasDatatable from "~/functions/useHasDatatable";
+import useHasDatatable, {DataTableTemplateRef} from "~/functions/useHasDatatable";
 import {useAzuraCast} from "~/vendor/azuracast";
 import CardPage from "~/components/Common/CardPage.vue";
 import {useLuxon} from "~/vendor/luxon";
@@ -78,6 +78,6 @@ const fields = [
     {key: 'updated_at', label: $gettext('Latest Update'), formatter: dateTimeFormatter, sortable: true}
 ];
 
-const $datatable = ref(); // Template Ref
+const $datatable = ref<DataTableTemplateRef>(null);
 useHasDatatable($datatable);
 </script>

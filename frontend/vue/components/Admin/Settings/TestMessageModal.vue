@@ -62,15 +62,15 @@ const {form, v$, resetForm, ifValid} = useVuelidateOnForm(
     }
 );
 
-const $modal = ref(); // BModal
+const $modal = ref<InstanceType<typeof Modal> | null>(null);
 
 const open = () => {
-    $modal.value.show();
+    $modal.value?.show();
 };
 
 const close = () => {
     resetForm();
-    $modal.value.hide();
+    $modal.value?.hide();
 }
 
 const {wrapWithLoading, notifySuccess} = useNotify();

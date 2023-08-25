@@ -86,7 +86,7 @@ const current = toRef(store, 'current');
 const volume = usePlayerVolume();
 const isMuted = ref(false);
 
-const $player = ref(); // AudioPlayer
+const $player = ref<InstanceType<typeof AudioPlayer> | null>(null);
 
 const duration = computed(() => {
     return $player.value?.getDuration();

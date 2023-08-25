@@ -80,6 +80,7 @@ import {ref} from "vue";
 import {useResettableRef} from "~/functions/useResettableRef";
 import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
+import {ModalFormTemplateRef} from "~/functions/useBaseEditModal.ts";
 
 const props = defineProps({
     twoFactorUrl: {
@@ -119,7 +120,7 @@ const clearContents = () => {
     error.value = null;
 };
 
-const $modal = ref(); // BModal
+const $modal = ref<ModalFormTemplateRef>(null);
 
 const close = () => {
     $modal.value?.hide();

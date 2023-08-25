@@ -12,7 +12,7 @@
 <script setup lang="ts">
 import {ref} from "vue";
 import ChartAltValues from "~/components/Common/Charts/ChartAltValues.vue";
-import useChart, {chartProps} from "~/functions/useChart";
+import useChart, {chartProps, ChartTemplateRef} from "~/functions/useChart";
 
 const props = defineProps({
     ...chartProps,
@@ -28,7 +28,7 @@ const props = defineProps({
     }
 });
 
-const $canvas = ref(); // Template ref
+const $canvas = ref<ChartTemplateRef>(null);
 
 useChart(
     props,

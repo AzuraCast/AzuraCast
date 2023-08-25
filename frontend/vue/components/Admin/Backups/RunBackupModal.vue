@@ -134,7 +134,7 @@ const storageLocationOptions = computed(() => {
 
 const logUrl = ref(null);
 const error = ref(null);
-const $modal = ref(); // BModal
+const $modal = ref<InstanceType<typeof Modal> | null>(null);
 
 const {form, resetForm, v$, ifValid} = useVuelidateOnForm(
     {
@@ -150,11 +150,11 @@ const {form, resetForm, v$, ifValid} = useVuelidateOnForm(
 );
 
 const open = () => {
-    $modal.value.show();
+    $modal.value?.show();
 };
 
 const close = () => {
-    $modal.value.hide();
+    $modal.value?.hide();
     emit('relist');
 }
 

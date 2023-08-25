@@ -67,7 +67,7 @@ const loading = ref(true);
 const queueUrl = ref(null);
 const media = ref([]);
 
-const $modal = ref(); // Template Ref
+const $modal = ref<InstanceType<typeof Modal> | null>(null);
 
 const {axios} = useAxios();
 
@@ -80,14 +80,14 @@ const open = (newQueueUrl) => {
         loading.value = false;
     });
 
-    $modal.value.show();
+    $modal.value?.show();
 };
 
 const close = () => {
     loading.value = false;
     queueUrl.value = null;
 
-    $modal.value.hide();
+    $modal.value?.hide();
 }
 
 const {wrapWithLoading, notifySuccess} = useNotify();

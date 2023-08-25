@@ -171,10 +171,10 @@ const importResults = ref(null);
 const {wrapWithLoading, notifySuccess, notifyError} = useNotify();
 const {axios} = useAxios();
 
-const $modal = ref(); // Template Ref
+const $modal = ref<InstanceType<typeof Modal> | null>(null);
 
 const close = () => {
-    $modal.value.hide();
+    $modal.value?.hide();
 };
 
 const uploaded = (file) => {
@@ -194,7 +194,7 @@ const doSubmit = () => {
             importResults.value = resp.data;
             notifySuccess(resp.data.message);
 
-            $modal.value.show();
+            $modal.value?.show();
         } else {
             notifyError(resp.data.message);
 

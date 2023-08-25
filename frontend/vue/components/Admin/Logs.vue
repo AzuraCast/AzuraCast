@@ -58,7 +58,7 @@ defineProps({
     }
 });
 
-const $modal: Ref<StreamingLogModal> = ref();
+const $modal: Ref<InstanceType<typeof StreamingLogModal> | null> = ref(null);
 
 const viewLog = (url, isStreaming) => {
     $modal.value?.show(url, isStreaming);

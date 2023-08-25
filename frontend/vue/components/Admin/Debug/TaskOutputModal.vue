@@ -14,13 +14,13 @@ import Modal from "~/components/Common/Modal.vue";
 import {ref, Ref} from "vue";
 import TaskOutput from "~/components/Admin/Debug/TaskOutput.vue";
 
-const $modal: Ref<Modal> = ref();
+const $modal: Ref<InstanceType<typeof Modal> | null> = ref(null);
 
 const logOutput: Ref<array> = ref([]);
 
 const open = (newLogOutput: array) => {
     logOutput.value = newLogOutput;
-    $modal.value.show();
+    $modal.value?.show();
 }
 
 defineExpose({

@@ -82,13 +82,13 @@
 import {ref} from "vue";
 import Modal from "~/components/Common/Modal.vue";
 
-const $modal = ref(); // BModal
+const $modal = ref<InstanceType<typeof Modal> | null>(null);
 
 const create = () => {
-    $modal.value.show();
+    $modal.value?.show();
 }
 const close = () => {
-    $modal.value.hide();
+    $modal.value?.hide();
 }
 
 defineExpose({

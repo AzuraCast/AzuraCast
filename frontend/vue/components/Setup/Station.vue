@@ -56,10 +56,10 @@ const props = defineProps({
     }
 });
 
-const $adminForm = ref(); // Template Ref
+const $adminForm = ref<InstanceType<typeof AdminStationsForm> | null>(null);
 
 onMounted(() => {
-    $adminForm.value.reset();
+    $adminForm.value?.reset();
 });
 
 const onSubmitted = () => {

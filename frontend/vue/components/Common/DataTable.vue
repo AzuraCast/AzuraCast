@@ -295,7 +295,7 @@
 </template>
 
 <script setup lang="ts">
-import {filter, forEach, get, includes, indexOf, isEmpty, map, slice, some} from 'lodash';
+import {filter, forEach, get, includes, indexOf, isEmpty, map, reverse, slice, some} from 'lodash';
 import Icon from './Icon.vue';
 import {computed, onMounted, ref, shallowRef, toRaw, toRef, useSlots, watch} from "vue";
 import {watchDebounced} from "@vueuse/core";
@@ -305,6 +305,7 @@ import FormCheckbox from "~/components/Form/FormCheckbox.vue";
 import Pagination from "~/components/Common/Pagination.vue";
 import useOptionalStorage from "~/functions/useOptionalStorage";
 import {IconArrowDropDown, IconArrowDropUp, IconFilterList, IconRefresh, IconSearch} from "~/components/Common/icons";
+import {useAzuraCast} from "~/vendor/azuracast.ts";
 
 const props = defineProps({
     id: {
@@ -486,6 +487,8 @@ const showPagination = computed(() => {
     return props.paginated && perPage.value !== 0;
 });
 
+const {localeShort} = useAzuraCast();
+
 const refreshClientSide = () => {
     // Handle filtration client-side.
     let itemsOnPage = filter(toRaw(props.items), (item) =>
@@ -505,6 +508,19 @@ const refreshClientSide = () => {
     );
 
     totalRows.value = itemsOnPage.length;
+
+    // Handle sorting client-side.
+    if (sortField.value) {
+        const collator = new Intl.Collator(localeShort, {numeric: true, sensitivity: 'base'});
+
+        itemsOnPage = itemsOnPage.sort(
+            (a, b) => collator.compare(get(a, sortField.value), get(b, sortField.value))
+        );
+        
+        if (sortOrder.value === 'desc') {
+            itemsOnPage = reverse(itemsOnPage);
+        }
+    }
 
     // Handle pagination client-side.
     if (props.paginated && perPage.value > 0) {

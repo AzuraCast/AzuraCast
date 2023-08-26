@@ -184,7 +184,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <template v-if="loading">
+                    <template v-if="isLoading">
                         <tr>
                             <td
                                 :colspan="columnCount"
@@ -328,6 +328,10 @@ const props = defineProps({
         type: Boolean,
         default: false
     },
+    loading: {
+        type: Boolean,
+        default: false
+    },
     showToolbar: {
         type: Boolean,
         default: true
@@ -381,14 +385,19 @@ const emit = defineEmits([
 
 const selectedRows = shallowRef([]);
 
-const searchPhrase = ref('');
-const currentPage = ref(1);
-const flushCache = ref(false);
+const searchPhrase = ref<string | null>('');
+const currentPage = ref<number>(1);
+const flushCache = ref<boolean>(false);
 
-const sortField = ref(null);
-const sortOrder = ref(null);
+const sortField = ref<string>(null);
+const sortOrder = ref<string>(null);
 
-const loading = ref(false);
+const isLoading = ref<boolean>(false);
+
+watch(toRef(props, 'loading'), (newLoading: boolean) => {
+    isLoading.value = newLoading;
+});
+
 const visibleItems = shallowRef([]);
 const totalRows = ref(0);
 
@@ -579,7 +588,7 @@ const refreshServerSide = () => {
         requestConfig = props.requestConfig(requestConfig);
     }
 
-    loading.value = true;
+    isLoading.value = true;
 
     return axios.get(props.apiUrl, requestConfig).then((resp) => {
         totalRows.value = resp.data.total;
@@ -595,7 +604,7 @@ const refreshServerSide = () => {
         totalRows.value = 0;
         console.error(err.response.data.message);
     }).finally(() => {
-        loading.value = false;
+        isLoading.value = false;
         flushCache.value = false;
         emit('refreshed');
     });

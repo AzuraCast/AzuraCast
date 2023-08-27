@@ -1,41 +1,45 @@
-import {computed, inject, onBeforeMount, onBeforeUnmount, provide, reactive, watch} from "vue";
+import {InjectionKey, UnwrapNestedRefs, computed, inject, onBeforeMount, onBeforeUnmount, provide, reactive, watch} from "vue";
 
-const tabStateKey = Symbol();
-const addTabKey = Symbol();
-const updateTabKey = Symbol();
-const deleteTabKey = Symbol();
+interface TabChild {
+    computedId: string,
+    [key: string | number]: any
+}
+
+interface TabParent {
+    lazy: boolean,
+    active: string,
+    tabs: TabChild[],
+    add (tab: TabChild): void,
+    update(computedId: string, data: TabChild): void,
+    delete(computedId: string): void
+}
+
+const tabStateKey: InjectionKey<UnwrapNestedRefs<TabParent>> = Symbol() as InjectionKey<UnwrapNestedRefs<TabParent>>;
 
 export function useTabParent(props) {
-    const state = reactive({
+    const state = reactive<TabParent>({
         lazy: props.destroyOnHide,
         active: null,
-        tabs: []
+        tabs: [],
+        add(tab: TabChild): void {
+            this.tabs.push(tab)
+        },
+        update(computedId: string, data: TabChild): void {
+            const tabIndex = this.tabs.findIndex((tab) => tab.computedId === computedId);
+            this.tabs[tabIndex] = data;
+        },
+        delete(computedId: string): void {
+            const tabIndex = this.tabs.findIndex((tab) => tab.computedId === computedId)
+            this.tabs.splice(tabIndex, 1)
+        }
     });
 
     provide(tabStateKey, state);
-
-    provide(addTabKey, (tab) => {
-        state.tabs.push(tab)
-    });
-
-    provide(updateTabKey, (computedId: string, data) => {
-        const tabIndex = state.tabs.findIndex((tab) => tab.computedId === computedId)
-        state.tabs[tabIndex] = data
-    })
-
-    provide(deleteTabKey, (computedId: string) => {
-        const tabIndex = state.tabs.findIndex((tab) => tab.computedId === computedId)
-        state.tabs.splice(tabIndex, 1)
-    })
-
     return state;
 }
 
 export function useTabChild(props) {
     const tabState = inject(tabStateKey);
-    const addTab = inject(addTabKey);
-    const updateTab = inject(updateTabKey);
-    const deleteTab = inject(deleteTabKey);
 
     const computedId = props.id ?? props.label.toLowerCase().replace(/ /g, "-");
 
@@ -47,18 +51,18 @@ export function useTabChild(props) {
 
     watch(
         () => ({...props}),
-        () => updateTab(computedId, {
+        () => tabState.update(computedId, {
             ...props,
             computedId: computedId
         })
     );
 
-    onBeforeMount(() => addTab({
+    onBeforeMount(() => tabState.add({
         ...props,
         computedId: computedId
     }));
 
-    onBeforeUnmount(() => deleteTab(computedId));
+    onBeforeUnmount(() => tabState.delete(computedId));
 
     return {
         computedId,

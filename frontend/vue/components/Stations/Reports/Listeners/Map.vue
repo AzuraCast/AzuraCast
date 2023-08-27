@@ -31,7 +31,7 @@ import {filter} from "lodash";
 
 const props = defineProps({
     listeners: {
-        type: Array,
+        type: Array<any>,
         default: () => {
             return [];
         }

@@ -51,7 +51,7 @@ import {useLuxon} from "~/vendor/luxon";
 
 const props = defineProps({
     scheduleItems: {
-        type: Array,
+        type: Array<any>,
         required: true
     }
 });

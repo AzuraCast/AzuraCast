@@ -121,7 +121,10 @@ final class ChartsAction extends AbstractReportAction
         foreach ($daysOfWeekNames as $dayIndex => $dayName) {
             $dayTotals = $daysOfWeek[$dayIndex] ?? [0];
 
-            $statValue = round(array_sum($dayTotals) / count($dayTotals), 2);
+            $statValue = ($statKey === 'number_unique')
+                ? array_sum($dayTotals)
+                : round(array_sum($dayTotals) / count($dayTotals), 2);
+
             $dayOfWeekStats[] = $statValue;
 
             $dayOfWeekAlt['values'][] = [
@@ -207,7 +210,10 @@ final class ChartsAction extends AbstractReportAction
                     $totals = [0];
                 }
 
-                $statValue = round(array_sum($totals) / count($totals), 2);
+                $statValue = ($statKey === 'number_unique')
+                    ? array_sum($totals)
+                    : round(array_sum($totals) / count($totals), 2);
+
                 $hourlyRows[] = $statValue;
 
                 $hourlyAlt['values'][] = [

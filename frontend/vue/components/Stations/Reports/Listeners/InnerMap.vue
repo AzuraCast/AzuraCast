@@ -22,7 +22,7 @@ const $map = shallowRef(null);
 
 provide('map', $map);
 
-const {theme} = useTheme();
+const {currentTheme} = useTheme();
 const {$gettext} = useTranslate();
 
 onMounted(() => {
@@ -44,19 +44,24 @@ onMounted(() => {
     $map.value = mapObj;
 
     // Add tile layer
-    const tileUrl = 'https://cartodb-basemaps-{s}.global.ssl.fastly.net/{theme}_all/{z}/{x}/{y}.png';
-    const tileAttribution = 'Map tiles by Carto, under CC BY 3.0. Data by OpenStreetMap, under ODbL.';
+    const addTileLayer = () => {
+        if (!currentTheme.value) {
+            return;
+        }
 
-    tileLayer(tileUrl, {
-        theme: theme.value,
-        attribution: tileAttribution,
-    }).addTo(mapObj);
+        const tileUrl = `https://cartodb-basemaps-{s}.global.ssl.fastly.net/${currentTheme.value}_all/{z}/{x}/{y}.png`;
+        const tileAttribution = 'Map tiles by Carto, under CC BY 3.0. Data by OpenStreetMap, under ODbL.';
 
-    watch(theme, (newTheme) => {
         tileLayer(tileUrl, {
-            theme: newTheme,
+            id: 'main',
             attribution: tileAttribution,
         }).addTo(mapObj);
+    };
+
+    addTileLayer();
+
+    watch(currentTheme, () => {
+        addTileLayer();
     });
 });
 </script>

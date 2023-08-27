@@ -94,7 +94,7 @@ import {useTranslate} from "~/vendor/gettext";
 import {useLuxon} from "~/vendor/luxon";
 import {getStationApiUrl} from "~/router";
 import {IconDownload, IconTrendingDown, IconTrendingUp} from "~/components/Common/icons";
-import {DataTableTemplateRef} from "~/functions/useHasDatatable.ts";
+import useHasDatatable, {DataTableTemplateRef} from "~/functions/useHasDatatable.ts";
 
 const baseApiUrl = getStationApiUrl('/history');
 
@@ -171,7 +171,7 @@ const fields = [
 ];
 
 const apiUrl = computed(() => {
-    const apiUrl = new URL(baseApiUrl.value, document.location);
+    const apiUrl = new URL(baseApiUrl.value, document.location.href);
 
     const apiUrlParams = apiUrl.searchParams;
     apiUrlParams.set('start', DateTime.fromJSDate(dateRange.value.startDate).toISO());
@@ -181,7 +181,7 @@ const apiUrl = computed(() => {
 });
 
 const exportUrl = computed(() => {
-    const exportUrl = new URL(apiUrl.value, document.location);
+    const exportUrl = new URL(apiUrl.value, document.location.href);
     const exportUrlParams = exportUrl.searchParams;
 
     exportUrlParams.set('format', 'csv');
@@ -194,10 +194,7 @@ const abs = (val) => {
 };
 
 const $datatable = ref<DataTableTemplateRef>(null);
-
-const relist = () => {
-    $datatable.value?.relist();
-};
+const {relist} = useHasDatatable($datatable);
 
 watch(dateRange, relist);
 </script>

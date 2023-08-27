@@ -27,7 +27,7 @@
                         </thead>
                         <tbody>
                             <tr
-                                v-for="row in bestAndWorst.best"
+                                v-for="row in state.bestAndWorst.best"
                                 :key="row.song.id"
                             >
                                 <td class=" text-center text-success">
@@ -67,7 +67,7 @@
                         </thead>
                         <tbody>
                             <tr
-                                v-for="row in bestAndWorst.worst"
+                                v-for="row in state.bestAndWorst.worst"
                                 :key="row.song.id"
                             >
                                 <td class="text-center text-danger">
@@ -107,7 +107,7 @@
                         </thead>
                         <tbody>
                             <tr
-                                v-for="row in mostPlayed"
+                                v-for="row in state.mostPlayed"
                                 :key="row.song.id"
                             >
                                 <td class="text-center">
@@ -127,8 +127,8 @@
 
 <script setup lang="ts">
 import Icon from "~/components/Common/Icon.vue";
-import {useMounted} from "@vueuse/core";
-import {onMounted, ref, shallowRef, toRef, watch} from "vue";
+import {useAsyncState, useMounted} from "@vueuse/core";
+import {toRef, watch} from "vue";
 import {useAxios} from "~/vendor/axios";
 import SongText from "~/components/Stations/Reports/Overview/SongText.vue";
 import Loading from "~/components/Common/Loading.vue";
@@ -146,32 +146,26 @@ const props = defineProps({
     },
 });
 
-const isLoading = ref(true);
-const bestAndWorst = shallowRef({
-    best: [],
-    worst: []
-});
-const mostPlayed = ref([]);
-
 const dateRange = toRef(props, 'dateRange');
 const {axios} = useAxios();
 
 const {DateTime} = useLuxon();
 
-const relist = () => {
-    isLoading.value = true;
-
-    axios.get(props.apiUrl, {
+const {state, isLoading, execute: relist} = useAsyncState(
+    () => axios.get(props.apiUrl, {
         params: {
             start: DateTime.fromJSDate(dateRange.value.startDate).toISO(),
             end: DateTime.fromJSDate(dateRange.value.endDate).toISO()
         }
-    }).then((response) => {
-        bestAndWorst.value = response.data.bestAndWorst;
-        mostPlayed.value = response.data.mostPlayed;
-        isLoading.value = false;
-    });
-};
+    }).then(r => r.data),
+    {
+        bestAndWorst: {
+            best: [],
+            worst: []
+        },
+        mostPlayed: []
+    }
+);
 
 const isMounted = useMounted();
 
@@ -179,9 +173,5 @@ watch(dateRange, () => {
     if (isMounted.value) {
         relist();
     }
-});
-
-onMounted(() => {
-    relist();
 });
 </script>

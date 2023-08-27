@@ -5,6 +5,10 @@ release channel, you can take advantage of these new features and fixes.
 
 ## New Features/Changes
 
+- The "Listeners by Time Period" report has been expanded to include showing either "Average Listeners" (the previous
+  mode) or "Unique Listeners", similar to the dashboard charts. You can also view per-hour totals for every given day of
+  the week.
+
 ## Code Quality/Technical Changes
 
 ## Bug Fixes

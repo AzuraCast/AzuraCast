@@ -16,9 +16,9 @@ import TaskOutput from "~/components/Admin/Debug/TaskOutput.vue";
 
 const $modal: Ref<InstanceType<typeof Modal> | null> = ref(null);
 
-const logOutput: Ref<array> = ref([]);
+const logOutput: Ref<Array<object>> = ref([]);
 
-const open = (newLogOutput: array) => {
+const open = (newLogOutput: Array<object>) => {
     logOutput.value = newLogOutput;
     $modal.value?.show();
 }

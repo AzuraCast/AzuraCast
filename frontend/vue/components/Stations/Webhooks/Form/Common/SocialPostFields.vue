@@ -59,7 +59,7 @@
 </template>
 
 <script setup lang="ts">
-import FormGroupField from "~/components/Form/FormGroupField";
+import FormGroupField from "~/components/Form/FormGroupField.vue";
 import CommonFormattingInfo from "./FormattingInfo.vue";
 import {includes} from 'lodash';
 import {useVModel} from "@vueuse/core";

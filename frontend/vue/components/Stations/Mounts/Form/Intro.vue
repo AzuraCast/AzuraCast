@@ -94,7 +94,7 @@ const targetUrl = computed(() => {
         : props.newIntroUrl;
 });
 
-const onFileSuccess = (file, message) => {
+const onFileSuccess = (_file, message) => {
     hasIntro.value = true;
 
     if (!props.editIntroUrl) {

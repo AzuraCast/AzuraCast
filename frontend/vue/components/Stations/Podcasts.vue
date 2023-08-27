@@ -1,7 +1,6 @@
 <template>
     <episodes-view
         v-if="activePodcast"
-        v-bind="pickProps(props, episodesViewProps)"
         :podcast="activePodcast"
         :quota-url="quotaUrl"
         @clear-podcast="onClearPodcast"

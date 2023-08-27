@@ -99,7 +99,7 @@ const targetUrl = computed(() => {
         : props.newMediaUrl;
 });
 
-const onFileSuccess = (file, message) => {
+const onFileSuccess = (_file, message) => {
     hasMedia.value = true;
 
     if (!props.editMediaUrl) {

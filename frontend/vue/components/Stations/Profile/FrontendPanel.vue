@@ -182,7 +182,7 @@ const props = defineProps({
 
 const emit = defineEmits(['api-call']);
 
-const credentialsVisible = useOptionalStorage('station_show_frontend_credentials', false);
+const credentialsVisible = useOptionalStorage<boolean>('station_show_frontend_credentials', false);
 
 const {$gettext} = useTranslate();
 

@@ -76,7 +76,7 @@
 
 <script setup lang="ts">
 import FormGroupField from "~/components/Form/FormGroupField.vue";
-import FormFieldset from "~/components/Form/FormFieldset";
+import FormFieldset from "~/components/Form/FormFieldset.vue";
 import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
 import {computed} from "vue";
 import {useTranslate} from "~/vendor/gettext";

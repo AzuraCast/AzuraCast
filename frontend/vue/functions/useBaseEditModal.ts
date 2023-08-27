@@ -175,8 +175,8 @@ export function useBaseEditModal(
 
             wrapWithLoading(
                 axios(buildSubmitRequest())
-            ).then((resp) => {
-                onSubmitSuccess(resp);
+            ).then(() => {
+                onSubmitSuccess();
             }).catch((err) => {
                 onSubmitError(err);
             });

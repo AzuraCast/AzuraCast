@@ -103,7 +103,7 @@
                         type="file"
                         class="custom-file-input files"
                         accept="audio/*"
-                        multiple="multiple"
+                        multiple
                         @change="addNewFiles($event.target.files)"
                     >
                     <label
@@ -231,7 +231,7 @@ const isSeeking = ref(false);
 
 const seekingPosition = computed({
     get: () => {
-        return (100.0 * position.value / parseFloat(duration.value));
+        return (100.0 * (position.value / Number(duration.value)));
     },
     set: (val) => {
         if (!isSeeking.value || !source.value) {

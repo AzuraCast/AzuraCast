@@ -111,7 +111,9 @@ const form = useVModel(props, 'form', emit);
 
 const {v$, tabClass} = useVuelidateOnFormTab(
     computed(() => {
-        let validations = {
+        let validations: {
+            [key: string | number]: any
+        } = {
             enable_hls: {},
             backend_config: {
                 hls_enable_on_public_player: {},
@@ -135,7 +137,9 @@ const {v$, tabClass} = useVuelidateOnFormTab(
     }),
     form,
     () => {
-        let blankForm = {
+        let blankForm: {
+            [key: string | number]: any
+        } = {
             enable_hls: false,
             backend_config: {
                 hls_enable_on_public_player: false,

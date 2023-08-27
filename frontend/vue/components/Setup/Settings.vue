@@ -29,7 +29,11 @@ import InfoCard from "~/components/Common/InfoCard.vue";
 import settingsProps from "~/components/Admin/settingsProps";
 
 const props = defineProps({
-    ...settingsProps
+    ...settingsProps,
+    continueUrl: {
+        type: String,
+        required: true
+    }
 });
 
 const onSaved = () => {

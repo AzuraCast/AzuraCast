@@ -34,7 +34,7 @@
                     :stacked="stacked"
                 >
                     <template
-                        v-for="(_, slot) of useSlotsExcept($slots, ['default', 'label', 'description'])"
+                        v-for="(_, slot) of useSlotsExcept(['default', 'label', 'description'])"
                         #[slot]="scope"
                     >
                         <slot

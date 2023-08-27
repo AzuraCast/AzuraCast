@@ -47,12 +47,9 @@ import Tabs from "~/components/Common/Tabs.vue";
 import {isObject} from "lodash";
 import NetworkStatsTable from "~/components/Admin/Index/NetworkStatsTable.vue";
 
-const props = defineProps({
-    stats: {
-        type: Object,
-        required: true
-    }
-});
+const props = defineProps<{
+    stats: object
+}>();
 
 const getNetworkInterfaceTableFields = (interfaceData) => Object.keys(interfaceData);
 
@@ -61,7 +58,7 @@ const getNetworkInterfaceTableItems = (interfaceData) => {
 
     Object.entries(interfaceData).forEach((data) => {
         const key = data[0];
-        let value = data[1];
+        let value: any = data[1];
 
         if (isObject(value)) {
             value = value.readable + '/s';

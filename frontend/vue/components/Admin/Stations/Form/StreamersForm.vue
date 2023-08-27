@@ -160,7 +160,9 @@ const form = useVModel(props, 'form', emit);
 
 const {v$, tabClass} = useVuelidateOnFormTab(
     computed(() => {
-        let validations = {
+        let validations: {
+            [key: string | number]: any
+        } = {
             enable_streamers: {},
             disconnect_deactivate_streamer: {},
             backend_config: {
@@ -187,7 +189,9 @@ const {v$, tabClass} = useVuelidateOnFormTab(
     }),
     form,
     () => {
-        let blankForm = {
+        let blankForm: {
+            [key: string | number]: any
+        } = {
             enable_streamers: false,
             disconnect_deactivate_streamer: 0,
             backend_config: {

@@ -109,7 +109,7 @@ const {relist} = useHasDatatable($dataTable);
 const $editModal = ref<EditModalTemplateRef>(null);
 const {doCreate, doEdit} = useHasEditModal($editModal);
 
-const {needsRestart, mayNeedRestart} = useMayNeedRestart(props);
+const {needsRestart, mayNeedRestart} = useMayNeedRestart();
 
 const {doDelete} = useConfirmAndDelete(
     $gettext('Delete Mount Point?'),

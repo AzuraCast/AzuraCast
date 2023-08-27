@@ -212,9 +212,9 @@ const $player = ref<InstanceType<typeof AudioPlayer> | null>(null);
 
 const volume = usePlayerVolume();
 
-const urlParamVolume = (new URL(document.location)).searchParams.get('volume');
+const urlParamVolume = (new URL(document.location.href)).searchParams.get('volume');
 if (null !== urlParamVolume) {
-    volume.value = urlParamVolume;
+    volume.value = Number(urlParamVolume);
 }
 
 const isMuted = ref(false);

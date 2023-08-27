@@ -129,7 +129,7 @@ const fields = [
 ];
 
 const apiUrl = computed(() => {
-    const apiUrl = new URL(baseApiUrl.value, document.location);
+    const apiUrl = new URL(baseApiUrl.value, document.location.href);
 
     const apiUrlParams = apiUrl.searchParams;
     apiUrlParams.set('start', DateTime.fromJSDate(dateRange.value.startDate).toISO());

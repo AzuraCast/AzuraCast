@@ -83,7 +83,7 @@ import mergeExisting from "~/functions/mergeExisting";
 import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
 import stationFormProps from "~/components/Admin/Stations/stationFormProps";
 import {useResettableRef} from "~/functions/useResettableRef";
-import Loading from '~/components/Common/Loading';
+import Loading from '~/components/Common/Loading.vue';
 import Tabs from "~/components/Common/Tabs.vue";
 import {GlobalPermission, userAllowed} from "~/acl";
 

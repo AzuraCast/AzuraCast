@@ -29,7 +29,7 @@
     "strict": false,
     "noUnusedLocals": false,
     "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true,
+    "noFallthroughCasesInSwitch": true
   },
   "include": [
     "vue/**/*.ts",

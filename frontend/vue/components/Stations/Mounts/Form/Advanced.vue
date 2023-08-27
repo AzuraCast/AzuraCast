@@ -59,7 +59,9 @@ const isIcecast = computed(() => {
 
 const {v$, tabClass} = useVuelidateOnFormTab(
     computed(() => {
-        const validations = {
+        const validations: {
+            [key: string | number]: any
+        } = {
             custom_listen_url: {}
         };
 
@@ -71,7 +73,9 @@ const {v$, tabClass} = useVuelidateOnFormTab(
     }),
     form,
     () => {
-        const blankForm = {
+        const blankForm: {
+            [key: string | number]: any
+        } = {
             custom_listen_url: null,
         };
 

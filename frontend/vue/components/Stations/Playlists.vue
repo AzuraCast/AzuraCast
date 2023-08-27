@@ -372,7 +372,6 @@ const $schedule = ref<InstanceType<typeof Schedule> | null>(null);
 
 const relist = () => {
     $datatable.value?.refresh();
-    $schedule.value?.refresh();
 };
 
 const $editModal = ref<EditModalTemplateRef>(null);

@@ -28,5 +28,5 @@
 import FormMarkup from "~/components/Form/FormMarkup.vue";
 import {inject} from "vue";
 
-const nowPlayingUrl = inject('nowPlayingUrl');
+const nowPlayingUrl = inject<string>('nowPlayingUrl');
 </script>

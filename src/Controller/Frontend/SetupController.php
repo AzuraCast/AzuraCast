@@ -165,12 +165,17 @@ final class SetupController
             return $response->withRedirect($router->named('setup:' . $currentStep));
         }
 
+        $router = $request->getRouter();
+
         return $request->getView()->renderVuePage(
             response: $response,
             component: 'Setup/Settings',
             id: 'setup-settings',
             title: __('System Settings'),
-            props: $this->settingsComponent->getProps($request),
+            props: [
+                ...$this->settingsComponent->getProps($request),
+                'continueUrl' => $router->named('dashboard'),
+            ],
         );
     }
 

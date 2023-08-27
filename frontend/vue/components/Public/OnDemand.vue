@@ -145,7 +145,7 @@ forEach(props.customFields.slice(), (field) => {
         sortable: true,
         selectable: true,
         visible: false,
-        formatter: (value, key, item) => item.media.custom_fields[field.key]
+        formatter: (_value, _key, item) => item.media.custom_fields[field.key]
     });
 });
 

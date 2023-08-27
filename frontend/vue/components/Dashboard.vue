@@ -352,7 +352,7 @@ const props = defineProps({
     }
 });
 
-const chartsVisible = useOptionalStorage('dashboard_show_chart', true);
+const chartsVisible = useOptionalStorage<boolean>('dashboard_show_chart', true);
 
 const {$gettext} = useTranslate();
 

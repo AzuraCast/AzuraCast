@@ -65,7 +65,7 @@ const props = defineProps({
 
 
 const remainingStations = computed(() => {
-    return pickBy(props.stations, (stationName, stationId) => {
+    return pickBy(props.stations, (_stationName, stationId) => {
         return !find(props.form.permissions.$model.station, {'station_id': stationId});
     });
 });

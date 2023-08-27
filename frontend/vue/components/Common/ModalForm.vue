@@ -54,7 +54,7 @@
         </template>
 
         <template
-            v-for="(_, slot) of useSlotsExcept($slots, ['default', 'modal-footer'])"
+            v-for="(_, slot) of useSlotsExcept(['default', 'modal-footer'])"
             #[slot]="scope"
         >
             <slot

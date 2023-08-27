@@ -166,7 +166,7 @@
                                 column.class,
                                 (column.sortable) ? 'sortable' : ''
                             ]"
-                            @click.stop="sort(column, null, $event)"
+                            @click.stop="sort(column)"
                         >
                             <slot
                                 :name="'header('+column.key+')'"
@@ -337,7 +337,7 @@ const props = defineProps({
         default: true
     },
     pageOptions: {
-        type: Array,
+        type: Array<number>,
         default: () => [10, 25, 50, 100, 250, 500, 0]
     },
     defaultPerPage: {
@@ -345,7 +345,7 @@ const props = defineProps({
         default: 10
     },
     fields: {
-        type: Array,
+        type: Array<object>,
         required: true
     },
     selectable: {
@@ -555,7 +555,9 @@ watch(toRef(props, 'items'), () => {
 const {axios} = useAxios();
 
 const refreshServerSide = () => {
-    const queryParams = {
+    const queryParams: {
+        [key: string]: any
+    } = {
         internal: true
     };
 

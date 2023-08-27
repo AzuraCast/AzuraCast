@@ -202,7 +202,9 @@ const form = useVModel(props, 'form', emit);
 
 const {v$, tabClass} = useVuelidateOnFormTab(
     computed(() => {
-        let validations = {
+        let validations: {
+            [key: string | number]: any
+        } = {
             frontend_type: {required},
             frontend_config: {
                 sc_license_id: {},
@@ -232,7 +234,9 @@ const {v$, tabClass} = useVuelidateOnFormTab(
     }),
     form,
     () => {
-        let blankForm = {
+        let blankForm: {
+            [key: string | number]: any
+        } = {
             frontend_type: FrontendAdapter.Icecast,
             frontend_config: {
                 sc_license_id: '',

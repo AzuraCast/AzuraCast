@@ -288,7 +288,9 @@ const form = useVModel(props, 'form', emit);
 
 const {v$, tabClass} = useVuelidateOnFormTab(
     computed(() => {
-        let validations = {
+        let validations: {
+            [key: string | number]: any
+        } = {
             backend_type: {required},
             backend_config: {
                 crossfade_type: {},
@@ -321,7 +323,9 @@ const {v$, tabClass} = useVuelidateOnFormTab(
     }),
     form,
     () => {
-        let blankForm = {
+        let blankForm: {
+            [key: string | number]: any
+        } = {
             backend_type: BackendAdapter.Liquidsoap,
             backend_config: {
                 crossfade_type: 'normal',

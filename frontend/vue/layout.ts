@@ -18,7 +18,7 @@ export default function initApp(appConfig = {}, appCallback = null): InitApp {
     /* Pinia */
     installPinia(vueApp);
 
-    window.vueComponent = (el: string, globalProps: AzuraCastConstants): void => {
+    (<any>window).vueComponent = (el: string, globalProps: AzuraCastConstants): void => {
         setGlobalProps(globalProps);
 
         /* Gettext */

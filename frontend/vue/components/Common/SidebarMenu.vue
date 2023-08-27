@@ -115,7 +115,9 @@ const getLinkClass = (item) => {
 }
 
 const getCategoryLink = (item) => {
-    const linkAttrs = {};
+    const linkAttrs: {
+        [key: string]: any
+    } = {};
 
     if (item.items) {
         linkAttrs['data-bs-toggle'] = 'collapse';

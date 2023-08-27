@@ -8,7 +8,7 @@ export function installRouter(router: Router, vueApp: App): void {
     router.beforeEach(async (to, _, next) => {
         if (to.meta.remoteUrl) {
             const {axios} = useAxios();
-            to.meta.state = await axios.get(to.meta.remoteUrl).then(r => r.data);
+            to.meta.state = await axios.get(to.meta.remoteUrl as string).then(r => r.data);
         }
         next();
     });

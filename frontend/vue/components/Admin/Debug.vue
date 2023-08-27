@@ -68,7 +68,7 @@
                     <button
                         type="button"
                         class="btn btn-dark"
-                        @click="resetSyncTasks"
+                        @click="resetSyncTasks()"
                     >
                         <icon :icon="IconRefresh" />
                         <span>{{ $gettext('Refresh') }}</span>
@@ -119,7 +119,7 @@
                     <button
                         type="button"
                         class="btn btn-dark"
-                        @click="resetQueueTotals"
+                        @click="resetQueueTotals()"
                     >
                         <icon :icon="IconRefresh" />
                         <span>{{ $gettext('Refresh') }}</span>

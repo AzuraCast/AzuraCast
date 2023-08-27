@@ -67,7 +67,6 @@
 
         <common-social-post-fields
             v-model:form="form"
-            :now-playing-url="nowPlayingUrl"
         />
     </tab>
 </template>
@@ -75,7 +74,7 @@
 <script setup lang="ts">
 import FormGroupField from "~/components/Form/FormGroupField.vue";
 import CommonRateLimitFields from "./Common/RateLimitFields.vue";
-import CommonSocialPostFields from "./Common/SocialPostFields";
+import CommonSocialPostFields from "./Common/SocialPostFields.vue";
 import {computed} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import FormMarkup from "~/components/Form/FormMarkup.vue";

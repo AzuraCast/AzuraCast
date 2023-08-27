@@ -13,6 +13,7 @@ module.exports = {
         "@typescript-eslint/no-unused-vars": ["error", {
             "varsIgnorePattern": "^_|props",
         }],
+        "@typescript-eslint/no-explicit-any": "off",
         "vue/multi-word-component-names": "off",
         "vue/html-indent": ["error", 4, {
             "attribute": 1,

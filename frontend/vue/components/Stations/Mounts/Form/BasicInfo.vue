@@ -137,7 +137,9 @@ const isShoutcast = computed(() => {
 
 const {v$, tabClass} = useVuelidateOnFormTab(
     computed(() => {
-        const validations = {
+        const validations: {
+            [key: string | number]: any
+        } = {
             name: {required},
             display_name: {},
             is_visible_on_public_pages: {},
@@ -159,7 +161,9 @@ const {v$, tabClass} = useVuelidateOnFormTab(
     }),
     form,
     () => {
-        const blankForm = {
+        const blankForm: {
+            [key: string | number]: any
+        } = {
             name: null,
             display_name: null,
             is_visible_on_public_pages: true,

@@ -87,7 +87,9 @@ const form = useVModel(props, 'form', emit);
 
 const {v$, tabClass} = useVuelidateOnFormTab(
     computed(() => {
-        let validations = {
+        let validations: {
+            [key: string | number]: any
+        } = {
             is_enabled: {},
             media_storage_location: {},
             recordings_storage_location: {},
@@ -105,7 +107,9 @@ const {v$, tabClass} = useVuelidateOnFormTab(
     }),
     form,
     () => {
-        let blankForm = {
+        let blankForm: {
+            [key: string]: any
+        } = {
             media_storage_location: '',
             recordings_storage_location: '',
             podcasts_storage_location: '',

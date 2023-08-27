@@ -31,7 +31,7 @@ useChart(
     {
         type: 'line',
         options: {
-            aspectRatio: 3,
+            aspectRatio: props.aspectRatio,
             datasets: {
                 line: {
                     spanGaps: true,

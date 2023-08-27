@@ -21,10 +21,6 @@ const props = defineProps({
         default: () => {
             return [];
         }
-    },
-    aspectRatio: {
-        type: Number,
-        default: 2
     }
 });
 

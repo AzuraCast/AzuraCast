@@ -34,7 +34,7 @@ useChart(
     {
         type: 'bar',
         options: {
-            aspectRatio: 2,
+            aspectRatio: props.aspectRatio,
             scales: {
                 x: {
                     scaleLabel: {

@@ -32,6 +32,10 @@ export const chartProps = {
             return [];
         }
     },
+    aspectRatio: {
+        type: Number,
+        default: 2,
+    }
 };
 
 export type ChartTemplateRef = HTMLCanvasElement | null;

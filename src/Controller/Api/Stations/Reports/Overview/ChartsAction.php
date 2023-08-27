@@ -31,6 +31,12 @@ final class ChartsAction extends AbstractReportAction
                 ->withJson(new Status(false, 'Reporting is restricted due to system analytics level.'));
         }
 
+        $queryParams = $request->getQueryParams();
+        $statKey = match ($queryParams['type'] ?? null) {
+            'average' => 'number_avg',
+            default => 'number_unique'
+        };
+
         $station = $request->getStation();
         $stationTz = $station->getTimezoneObject();
 
@@ -65,7 +71,7 @@ final class ChartsAction extends AbstractReportAction
 
             $avgRow = new stdClass();
             $avgRow->x = $statTime->getTimestampMs();
-            $avgRow->y = round((float)$stat['number_avg'], 2);
+            $avgRow->y = round((float)$stat[$statKey], 2);
             $dailyAverages[] = $avgRow;
 
             $rowDate = $statTime->format('Y-m-d');
@@ -78,7 +84,7 @@ final class ChartsAction extends AbstractReportAction
             ];
 
             $dayOfWeek = (int)$statTime->format('N') - 1;
-            $daysOfWeek[$dayOfWeek][] = $stat['number_avg'];
+            $daysOfWeek[$dayOfWeek][] = $stat[$statKey];
         }
 
         $dailyChart->data = $dailyAverages;
@@ -144,7 +150,26 @@ final class ChartsAction extends AbstractReportAction
             AnalyticsIntervals::Hourly
         );
 
+        $hourlyTotalCategories = [
+            'all',
+            'day0',
+            'day1',
+            'day2',
+            'day3',
+            'day4',
+            'day5',
+            'day6',
+        ];
+
         $totalsByHour = [];
+
+        foreach ($hourlyTotalCategories as $category) {
+            $categoryHours = [];
+            for ($i = 0; $i < 24; $i++) {
+                $categoryHours[$i] = [];
+            }
+            $totalsByHour[$category] = $categoryHours;
+        }
 
         foreach ($hourlyStats as $stat) {
             /** @var CarbonImmutable $statTime */
@@ -152,45 +177,60 @@ final class ChartsAction extends AbstractReportAction
             $statTime = $statTime->shiftTimezone($stationTz);
 
             $hour = $statTime->hour;
-            $totalsByHour[$hour][] = $stat['number_avg'];
+
+            $statValue = $stat[$statKey];
+
+            $totalsByHour['all'][$hour][] = $statValue;
+
+            $dayOfWeek = 'day' . ((int)$statTime->format('N') - 1);
+            $totalsByHour[$dayOfWeek][$hour][] = $statValue;
         }
 
-        $hourlyLabels = [];
-        $hourlyChart = new stdClass();
-        $hourlyChart->label = __('Listeners by Hour');
+        $hourlyCharts = [];
 
-        $hourlyRows = [];
+        foreach ($hourlyTotalCategories as $category) {
+            $hourlyLabels = [];
+            $hourlyChart = new stdClass();
+            $hourlyChart->label = __('Listeners by Hour');
 
-        $hourlyAlt = [
-            'label' => $hourlyChart->label,
-            'values' => [],
-        ];
+            $hourlyRows = [];
 
-        for ($i = 0; $i < 24; $i++) {
-            $hourlyLabels[] = $i . ':00';
-            $totals = $totalsByHour[$i] ?? [0];
+            $hourlyAlt = [
+                'label' => $hourlyChart->label,
+                'values' => [],
+            ];
 
-            $statValue = round(array_sum($totals) / count($totals), 2);
-            $hourlyRows[] = $statValue;
+            for ($i = 0; $i < 24; $i++) {
+                $hourlyLabels[] = $i . ':00';
+                $totals = $totalsByHour[$category][$i] ?? [];
+                if (0 === count($totals)) {
+                    $totals = [0];
+                }
 
-            $hourlyAlt['values'][] = [
-                'label' => $i . ':00',
-                'type' => 'string',
-                'value' => $statValue . ' ' . __('Listeners'),
+                $statValue = round(array_sum($totals) / count($totals), 2);
+                $hourlyRows[] = $statValue;
+
+                $hourlyAlt['values'][] = [
+                    'label' => $i . ':00',
+                    'type' => 'string',
+                    'value' => $statValue . ' ' . __('Listeners'),
+                ];
+            }
+
+            $hourlyChart->data = $hourlyRows;
+
+            $hourlyCharts[$category] = [
+                'labels' => $hourlyLabels,
+                'metrics' => [
+                    $hourlyChart,
+                ],
+                'alt' => [
+                    $hourlyAlt,
+                ],
             ];
         }
 
-        $hourlyChart->data = $hourlyRows;
-
-        $stats['hourly'] = [
-            'labels' => $hourlyLabels,
-            'metrics' => [
-                $hourlyChart,
-            ],
-            'alt' => [
-                $hourlyAlt,
-            ],
-        ];
+        $stats['hourly'] = $hourlyCharts;
 
         return $response->withJson($stats);
     }

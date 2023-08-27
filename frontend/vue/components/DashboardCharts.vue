@@ -8,6 +8,7 @@
                     style="width: 100%;"
                     :data="chartsData.average.metrics"
                     :alt="chartsData.average.alt"
+                    :aspect-ratio="3"
                 />
             </tab>
             <tab :label="$gettext('Unique Listeners')">
@@ -15,6 +16,7 @@
                     style="width: 100%;"
                     :data="chartsData.unique.metrics"
                     :alt="chartsData.unique.alt"
+                    :aspect-ratio="3"
                 />
             </tab>
         </tabs>

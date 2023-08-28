@@ -52,6 +52,11 @@ final class PhpReader
             ];
 
             if (is_array($info['tags'])) {
+                // ID3v2 should always supersede ID3v1.
+                if (isset($info['tags']['id3v2'])) {
+                    unset($info['tags']['id3v1']);
+                }
+
                 foreach ($info['tags'] as $tagSet) {
                     $toProcess[] = $tagSet;
                 }

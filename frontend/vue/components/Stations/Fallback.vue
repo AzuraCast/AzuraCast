@@ -95,14 +95,12 @@ const relist = () => {
 
 onMounted(relist);
 
-const {wrapWithLoading, notifySuccess} = useNotify();
+const {notifySuccess} = useNotify();
 
 const deleteFallback = () => {
-    wrapWithLoading(
-        axios.delete(apiUrl.value).then(() => {
-            notifySuccess();
-            relist();
-        })
-    );
+    axios.delete(apiUrl.value).then(() => {
+        notifySuccess();
+        relist();
+    });
 };
 </script>

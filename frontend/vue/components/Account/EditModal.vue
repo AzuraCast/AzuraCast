@@ -69,7 +69,7 @@ const close = () => {
     $modal.value?.hide();
 };
 
-const {wrapWithLoading, notifySuccess} = useNotify();
+const {notifySuccess} = useNotify();
 const {axios} = useAxios();
 
 const open = () => {
@@ -77,9 +77,7 @@ const open = () => {
 
     $modal.value?.show();
 
-    wrapWithLoading(
-        axios.get(props.userUrl)
-    ).then((resp) => {
+    axios.get(props.userUrl).then((resp) => {
         form.value = mergeExisting(form.value, resp.data);
         loading.value = false;
     }).catch(() => {
@@ -91,13 +89,11 @@ const doSubmit = () => {
     ifValid(() => {
         error.value = null;
 
-        wrapWithLoading(
-            axios({
-                method: 'PUT',
-                url: props.userUrl,
-                data: form.value
-            })
-        ).then(() => {
+        axios({
+            method: 'PUT',
+            url: props.userUrl,
+            data: form.value
+        }).then(() => {
             notifySuccess();
             emit('reload');
             close();

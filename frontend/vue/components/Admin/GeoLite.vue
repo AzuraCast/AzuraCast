@@ -109,7 +109,6 @@ import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
 import {useSweetAlert} from "~/vendor/sweetalert";
 import {useAxios} from "~/vendor/axios";
 import {useTranslate} from "~/vendor/gettext";
-import {useNotify} from "~/functions/useNotify";
 import Loading from "~/components/Common/Loading.vue";
 import CardPage from "~/components/Common/CardPage.vue";
 import {getApiUrl} from "~/router";
@@ -153,15 +152,12 @@ const doFetch = () => {
 
 onMounted(doFetch);
 
-const {wrapWithLoading} = useNotify();
-
 const doUpdate = () => {
     isLoading.value = true;
-    wrapWithLoading(
-        axios.post(apiUrl.value, {
-            geolite_license_key: form.value.key
-        })
-    ).then((resp) => {
+
+    axios.post(apiUrl.value, {
+        geolite_license_key: form.value.key
+    }).then((resp) => {
         version.value = resp.data.version;
     }).finally(() => {
         isLoading.value = false;

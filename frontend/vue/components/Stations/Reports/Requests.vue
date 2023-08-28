@@ -159,7 +159,7 @@ const formatTime = (time) => {
 };
 
 const {confirmDelete} = useSweetAlert();
-const {wrapWithLoading, notifySuccess} = useNotify();
+const {notifySuccess} = useNotify();
 const {axios} = useAxios();
 
 const doDelete = (url) => {
@@ -167,9 +167,7 @@ const doDelete = (url) => {
         title: $gettext('Delete Request?'),
     }).then((result) => {
         if (result.value) {
-            wrapWithLoading(
-                axios.delete(url)
-            ).then((resp) => {
+            axios.delete(url).then((resp) => {
                 notifySuccess(resp.data.message);
                 relist();
             });
@@ -183,9 +181,7 @@ const doClear = () => {
         confirmButtonText: $gettext('Clear'),
     }).then((result) => {
         if (result.value) {
-            wrapWithLoading(
-                axios.post(clearUrl.value)
-            ).then((resp) => {
+            axios.post(clearUrl.value).then((resp) => {
                 notifySuccess(resp.data.message);
                 relist();
             });

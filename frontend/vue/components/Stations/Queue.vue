@@ -127,7 +127,7 @@ const {doDelete} = useConfirmAndDelete(
 );
 
 const {confirmDelete} = useSweetAlert();
-const {wrapWithLoading, notifySuccess} = useNotify();
+const {notifySuccess} = useNotify();
 const {axios} = useAxios();
 
 const doClear = () => {
@@ -136,9 +136,7 @@ const doClear = () => {
         confirmButtonText: $gettext('Clear'),
     }).then((result) => {
         if (result.value) {
-            wrapWithLoading(
-                axios.post(clearUrl.value)
-            ).then((resp) => {
+            axios.post(clearUrl.value).then((resp) => {
                 notifySuccess(resp.data.message);
                 relist();
             });

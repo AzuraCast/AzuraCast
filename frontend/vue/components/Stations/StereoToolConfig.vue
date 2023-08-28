@@ -113,15 +113,13 @@ const onFileSuccess = () => {
     relist();
 };
 
-const {wrapWithLoading, notifySuccess} = useNotify();
+const {notifySuccess} = useNotify();
 
 const deleteConfigurationFile = () => {
-    wrapWithLoading(
-        axios.delete(apiUrl.value).then(() => {
-            mayNeedRestart();
-            notifySuccess();
-            relist();
-        })
-    );
+    axios.delete(apiUrl.value).then(() => {
+        mayNeedRestart();
+        notifySuccess();
+        relist();
+    });
 };
 </script>

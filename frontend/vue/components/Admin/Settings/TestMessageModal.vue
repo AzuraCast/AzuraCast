@@ -73,17 +73,15 @@ const close = () => {
     $modal.value?.hide();
 }
 
-const {wrapWithLoading, notifySuccess} = useNotify();
+const {notifySuccess} = useNotify();
 const {axios} = useAxios();
 const {$gettext} = useTranslate();
 
 const doSendTest = () => {
     ifValid(() => {
-        wrapWithLoading(
-            axios.post(props.testMessageUrl, {
-                'email': form.value.emailAddress
-            })
-        ).then(() => {
+        axios.post(props.testMessageUrl, {
+            'email': form.value.emailAddress
+        }).then(() => {
             notifySuccess($gettext('Test message sent.'));
         }).finally(() => {
             close();

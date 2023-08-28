@@ -138,7 +138,7 @@ const close = () => {
     $modal.value.hide();
 };
 
-const {wrapWithLoading, notifySuccess} = useNotify();
+const {notifySuccess} = useNotify();
 
 const save = () => {
     v$.value.$touch();
@@ -147,12 +147,10 @@ const save = () => {
             return;
         }
 
-        (selectedDirs.value.length) && wrapWithLoading(
-            axios.put(applyToUrl.value, {
-                ...form.value,
-                directories: selectedDirs.value
-            })
-        ).then(() => {
+        (selectedDirs.value.length) && axios.put(applyToUrl.value, {
+            ...form.value,
+            directories: selectedDirs.value
+        }).then(() => {
             notifySuccess($gettext('Playlist successfully applied to folders.'));
         }).finally(() => {
             close();

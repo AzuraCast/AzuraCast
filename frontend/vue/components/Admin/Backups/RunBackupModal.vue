@@ -109,7 +109,6 @@ import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
 import objectToFormOptions from "~/functions/objectToFormOptions";
 import StreamingLogView from "~/components/Common/StreamingLogView.vue";
 import {computed, ref} from "vue";
-import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
 import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
 import Modal from "~/components/Common/Modal.vue";
@@ -158,19 +157,17 @@ const close = () => {
     emit('relist');
 }
 
-const {wrapWithLoading} = useNotify();
 const {axios} = useAxios();
 
 const submit = () => {
     ifValid(() => {
         error.value = null;
-        wrapWithLoading(
-            axios({
-                method: 'POST',
-                url: props.runBackupUrl,
-                data: form.value
-            })
-        ).then((resp) => {
+
+        axios({
+            method: 'POST',
+            url: props.runBackupUrl,
+            data: form.value
+        }).then((resp) => {
             logUrl.value = resp.data.links.log;
         }).catch((error) => {
             error.value = error.response.data.message;

@@ -135,19 +135,17 @@ const open = () => {
     $modal.value?.show();
 };
 
-const {wrapWithLoading, notifySuccess} = useNotify();
+const {notifySuccess} = useNotify();
 const {axios} = useAxios();
 
 const doMove = () => {
-    (props.selectedItems.all.length) && wrapWithLoading(
-        axios.put(props.batchUrl, {
+    (props.selectedItems.all.length) && axios.put(props.batchUrl, {
             'do': 'move',
             'currentDirectory': props.currentDirectory,
             'directory': destinationDirectory.value,
             'files': props.selectedItems.files,
             'dirs': props.selectedItems.directories
-        })
-    ).then(() => {
+    }).then(() => {
         const notifyMessage = $gettext('Files moved:');
         const itemNameNodes = [];
         forEach(props.selectedItems.all, (item) => {

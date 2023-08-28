@@ -9,7 +9,7 @@ import {useNotify} from "~/functions/useNotify";
 export default function useToggleFeature(feature, newValue) {
     const {axios} = useAxios();
     const {showAlert} = useSweetAlert();
-    const {wrapWithLoading, notifySuccess} = useNotify();
+    const {notifySuccess} = useNotify();
     const {$gettext} = useTranslate();
     const router = useRouter();
 
@@ -24,11 +24,9 @@ export default function useToggleFeature(feature, newValue) {
                 const remoteData = {};
                 set(remoteData, feature, newValue);
 
-                wrapWithLoading(
-                    axios.put(
-                        profileEditUrl.value,
-                        remoteData
-                    )
+                axios.put(
+                    profileEditUrl.value,
+                    remoteData
                 ).then((resp) => {
                     notifySuccess(resp.data.message);
                     router.go(0);

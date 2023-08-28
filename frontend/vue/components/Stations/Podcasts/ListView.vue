@@ -154,7 +154,7 @@ const doSelectPodcast = (podcast) => {
 };
 
 const {confirmDelete} = useSweetAlert();
-const {wrapWithLoading, notifySuccess} = useNotify();
+const {notifySuccess} = useNotify();
 const {axios} = useAxios();
 
 const doDelete = (url) => {
@@ -162,9 +162,7 @@ const doDelete = (url) => {
         title: $gettext('Delete Podcast?'),
     }).then((result) => {
         if (result.value) {
-            wrapWithLoading(
-                axios.delete(url)
-            ).then((resp) => {
+            axios.delete(url).then((resp) => {
                 notifySuccess(resp.data.message);
                 relist();
             });

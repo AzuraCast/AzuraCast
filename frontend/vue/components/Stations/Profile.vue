@@ -155,7 +155,7 @@ useIntervalFn(
 );
 
 const {showAlert} = useSweetAlert();
-const {wrapWithLoading, notify} = useNotify();
+const {notify} = useNotify();
 const {$gettext} = useTranslate();
 
 const makeApiCall = (uri) => {
@@ -166,9 +166,7 @@ const makeApiCall = (uri) => {
             return;
         }
 
-        wrapWithLoading(
-            axios.post(uri)
-        ).then((resp) => {
+        axios.post(uri).then((resp) => {
             notify(resp.data.formatted_message, {
                 variant: (resp.data.success) ? 'success' : 'warning'
             });

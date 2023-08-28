@@ -43,7 +43,6 @@ import {helpers, required} from "@vuelidate/validators";
 import validatePassword from "~/functions/validatePassword";
 import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
 import {ref} from "vue";
-import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
 import {useTranslate} from "~/vendor/gettext";
 import {ModalFormTemplateRef} from "~/functions/useBaseEditModal.ts";
@@ -93,17 +92,16 @@ const open = () => {
     $modal.value?.show();
 };
 
-const {wrapWithLoading} = useNotify();
 const {axios} = useAxios();
 
 const onSubmit = () => {
     ifValid(() => {
-        wrapWithLoading(
-            axios.put(props.changePasswordUrl, form.value)
-        ).finally(() => {
-            $modal.value?.hide();
-            emit('relist');
-        });
+        axios
+            .put(props.changePasswordUrl, form.value)
+            .finally(() => {
+                $modal.value?.hide();
+                emit('relist');
+            });
     });
 };
 

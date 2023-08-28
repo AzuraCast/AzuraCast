@@ -126,7 +126,7 @@ const close = () => {
     $modal.value?.hide();
 };
 
-const {wrapWithLoading, notifySuccess} = useNotify();
+const {notifySuccess} = useNotify();
 const {axios} = useAxios();
 
 const open = () => {
@@ -136,9 +136,7 @@ const open = () => {
 
     $modal.value?.show();
 
-    wrapWithLoading(
-        axios.put(props.twoFactorUrl)
-    ).then((resp) => {
+    axios.put(props.twoFactorUrl).then((resp) => {
         totp.value = resp.data;
         loading.value = false;
     }).catch(() => {
@@ -150,16 +148,14 @@ const doSubmit = () => {
     ifValid(() => {
         error.value = null;
 
-        wrapWithLoading(
-            axios({
-                method: 'PUT',
-                url: props.twoFactorUrl,
-                data: {
-                    secret: totp.value.secret,
-                    otp: form.value.otp
-                }
-            })
-        ).then(() => {
+        axios({
+            method: 'PUT',
+            url: props.twoFactorUrl,
+            data: {
+                secret: totp.value.secret,
+                otp: form.value.otp
+            }
+        }).then(() => {
             notifySuccess();
             emit('relist');
             close();

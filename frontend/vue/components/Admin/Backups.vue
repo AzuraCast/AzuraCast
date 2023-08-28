@@ -160,7 +160,6 @@ import EnabledBadge from "~/components/Common/Badges/EnabledBadge.vue";
 import {useAzuraCast} from "~/vendor/azuracast";
 import {onMounted, ref} from "vue";
 import {useTranslate} from "~/vendor/gettext";
-import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
 import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
 import Loading from "~/components/Common/Loading.vue";
@@ -232,14 +231,12 @@ const fields = [
 
 const $datatable = ref<DataTableTemplateRef>(null);
 
-const {wrapWithLoading} = useNotify();
 const {axios} = useAxios();
 
 const relist = () => {
     settingsLoading.value = true;
-    wrapWithLoading(
-        axios.get(settingsUrl.value)
-    ).then((resp) => {
+
+    axios.get(settingsUrl.value).then((resp) => {
         settings.value = {
             backupEnabled: resp.data.backup_enabled,
             backupLastRun: resp.data.backup_last_run,

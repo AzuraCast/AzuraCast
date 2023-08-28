@@ -169,13 +169,11 @@ const {relist} = useHasDatatable($datatable);
 const $editModal = ref<EditModalTemplateRef>(null);
 const {doCreate, doEdit} = useHasEditModal($editModal);
 
-const {wrapWithLoading, notifySuccess} = useNotify();
+const {notifySuccess} = useNotify();
 const {axios} = useAxios();
 
 const doToggle = (url) => {
-    wrapWithLoading(
-        axios.put(url)
-    ).then((resp) => {
+    axios.put(url).then((resp) => {
         notifySuccess(resp.data.message);
         relist();
     });
@@ -184,9 +182,7 @@ const doToggle = (url) => {
 const $logModal = ref<InstanceType<typeof StreamingLogModal> | null>(null);
 
 const doTest = (url) => {
-    wrapWithLoading(
-        axios.put(url)
-    ).then((resp) => {
+    axios.put(url).then((resp) => {
         $logModal.value?.show(resp.data.links.log);
     });
 };

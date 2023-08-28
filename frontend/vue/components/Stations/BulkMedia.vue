@@ -168,7 +168,7 @@ const apiUrl = getStationApiUrl('/files/bulk');
 const importFile = ref(null);
 const importResults = ref(null);
 
-const {wrapWithLoading, notifySuccess, notifyError} = useNotify();
+const {notifySuccess, notifyError} = useNotify();
 const {axios} = useAxios();
 
 const $modal = ref<InstanceType<typeof Modal> | null>(null);
@@ -185,9 +185,7 @@ const doSubmit = () => {
     const formData = new FormData();
     formData.append('import_file', importFile.value);
 
-    wrapWithLoading(
-        axios.post(apiUrl.value, formData)
-    ).then((resp) => {
+    axios.post(apiUrl.value, formData).then((resp) => {
         importFile.value = null;
 
         if (resp.data.success) {

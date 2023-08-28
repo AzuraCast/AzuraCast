@@ -86,18 +86,16 @@ const open = (name, newCloneUrl) => {
     $modal.value.show();
 };
 
-const {wrapWithLoading, notifySuccess} = useNotify();
+const {notifySuccess} = useNotify();
 const {axios} = useAxios();
 
 const doSubmit = () => {
     ifValid(() => {
-        wrapWithLoading(
-            axios({
-                method: 'POST',
-                url: cloneUrl.value,
-                data: form.value
-            })
-        ).then(() => {
+        axios({
+            method: 'POST',
+            url: cloneUrl.value,
+            data: form.value
+        }).then(() => {
             notifySuccess();
             emit('needs-restart');
             emit('relist');

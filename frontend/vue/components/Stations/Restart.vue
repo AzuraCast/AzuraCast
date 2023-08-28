@@ -125,7 +125,7 @@ const isLoading = ref(false);
 
 const {axios} = useAxios();
 const {showAlert} = useSweetAlert();
-const {wrapWithLoading, notify} = useNotify();
+const {notify} = useNotify();
 const {$gettext} = useTranslate();
 
 const router = useRouter();
@@ -140,9 +140,7 @@ const makeApiCall = (uri) => {
 
         isLoading.value = true;
 
-        wrapWithLoading(
-            axios.post(uri)
-        ).then((resp) => {
+        axios.post(uri).then((resp) => {
             notify(resp.data.formatted_message, {
                 variant: (resp.data.success) ? 'success' : 'warning'
             });

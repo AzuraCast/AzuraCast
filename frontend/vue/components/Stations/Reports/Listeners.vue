@@ -178,7 +178,6 @@ import DataTable from "~/components/Common/DataTable.vue";
 import DateRangeDropdown from "~/components/Common/DateRangeDropdown.vue";
 import {computed, nextTick, onMounted, ref, shallowRef, watch} from "vue";
 import {useTranslate} from "~/vendor/gettext";
-import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
 import {useAzuraCastStation} from "~/vendor/azuracast";
 import {useLuxon} from "~/vendor/luxon";
@@ -244,7 +243,6 @@ const totalListenerHours = computed(() => {
   return Math.round((tlh_hours + 0.00001) * 100) / 100;
 });
 
-const {wrapWithLoading} = useNotify();
 const {axios} = useAxios();
 
 const updateListeners = () => {
@@ -254,9 +252,7 @@ const updateListeners = () => {
         params.end = DateTime.fromJSDate(dateRange.value.endDate).toISO();
     }
 
-    wrapWithLoading(
-        axios.get(apiUrl.value, {params: params})
-    ).then((resp) => {
+    axios.get(apiUrl.value, {params: params}).then((resp) => {
         listeners.value = resp.data;
 
         if (isLive.value) {

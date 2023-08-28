@@ -68,7 +68,6 @@ import FormGroupField from "~/components/Form/FormGroupField.vue";
 import {required} from '@vuelidate/validators';
 import {ref} from "vue";
 import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
-import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
 import Modal from "~/components/Common/Modal.vue";
 
@@ -107,7 +106,6 @@ const create = () => {
     $modal.value?.show();
 };
 
-const {wrapWithLoading} = useNotify();
 const {axios} = useAxios();
 
 const doSubmit = async () => {
@@ -118,13 +116,11 @@ const doSubmit = async () => {
 
     error.value = null;
 
-    wrapWithLoading(
-        axios({
-            method: 'POST',
-            url: props.createUrl,
-            data: form.value
-        })
-    ).then((resp) => {
+    axios({
+        method: 'POST',
+        url: props.createUrl,
+        data: form.value
+    }).then((resp) => {
         newKey.value = resp.data.key;
         emit('relist');
     }).catch((error) => {

@@ -38,7 +38,6 @@ import {required} from '@vuelidate/validators';
 import FormGroupField from "~/components/Form/FormGroupField.vue";
 import {ref} from "vue";
 import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
-import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
 import Modal from "~/components/Common/Modal.vue";
 
@@ -78,17 +77,14 @@ const close = () => {
     $modal.value?.hide();
 };
 
-const {wrapWithLoading} = useNotify();
 const {axios} = useAxios();
 
 const doRename = () => {
     ifValid(() => {
-        wrapWithLoading(
-            axios.put(props.renameUrl, {
-                file: file.value,
-                ...form.value
-            })
-        ).finally(() => {
+        axios.put(props.renameUrl, {
+            file: file.value,
+            ...form.value
+        }).finally(() => {
             $modal.value.hide();
             emit('relist');
         });

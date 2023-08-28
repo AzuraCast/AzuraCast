@@ -248,7 +248,7 @@ watch(newPlaylist, (text) => {
     }
 });
 
-const {wrapWithLoading, notifySuccess, notifyError} = useNotify();
+const {notifySuccess, notifyError} = useNotify();
 const {axios} = useAxios();
 
 const notifyNoFiles = () => {
@@ -257,14 +257,12 @@ const notifyNoFiles = () => {
 
 const doBatch = (action, notifyMessage) => {
     if (props.selectedItems.all.length) {
-        wrapWithLoading(
-            axios.put(props.batchUrl, {
-                'do': action,
-                'current_directory': props.currentDirectory,
-                'files': props.selectedItems.files,
-                'dirs': props.selectedItems.directories
-            })
-        ).then((resp) => {
+        axios.put(props.batchUrl, {
+            'do': action,
+            'current_directory': props.currentDirectory,
+            'files': props.selectedItems.files,
+            'dirs': props.selectedItems.directories
+        }).then((resp) => {
             if (resp.data.success) {
                 const allItemNodes = [];
                 forEach(props.selectedItems.all, (item) => {
@@ -324,16 +322,14 @@ const doDelete = () => {
 
 const setPlaylists = () => {
     if (props.selectedItems.all.length) {
-        wrapWithLoading(
-            axios.put(props.batchUrl, {
-                'do': 'playlist',
-                'playlists': checkedPlaylists.value,
-                'new_playlist_name': newPlaylist.value,
-                'currentDirectory': props.currentDirectory,
-                'files': props.selectedItems.files,
-                'dirs': props.selectedItems.directories
-            })
-        ).then((resp) => {
+        axios.put(props.batchUrl, {
+            'do': 'playlist',
+            'playlists': checkedPlaylists.value,
+            'new_playlist_name': newPlaylist.value,
+            'currentDirectory': props.currentDirectory,
+            'files': props.selectedItems.files,
+            'dirs': props.selectedItems.directories
+        }).then((resp) => {
             if (resp.data.success) {
                 if (resp.data.record) {
                     emit('add-playlist', resp.data.record);

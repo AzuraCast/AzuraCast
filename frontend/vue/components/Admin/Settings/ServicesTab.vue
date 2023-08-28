@@ -265,7 +265,6 @@ import Icon from "~/components/Common/Icon.vue";
 import StreamingLogModal from "~/components/Common/StreamingLogModal.vue";
 import {computed, ref} from "vue";
 import {useTranslate} from "~/vendor/gettext";
-import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
 import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
 import {useVModel} from "@vueuse/core";
@@ -361,13 +360,10 @@ const avatarServiceOptions = computed(() => {
 });
 
 const $acmeModal = ref<InstanceType<typeof StreamingLogModal> | null>(null);
-const {wrapWithLoading} = useNotify();
 const {axios} = useAxios();
 
 const generateAcmeCert = () => {
-    wrapWithLoading(
-        axios.put(props.acmeUrl)
-    ).then((resp) => {
+    axios.put(props.acmeUrl).then((resp) => {
         $acmeModal.value?.show(resp.data.links.log);
     });
 }

@@ -77,18 +77,16 @@ const open = () => {
     $modal.value?.show();
 };
 
-const {wrapWithLoading, notifySuccess} = useNotify();
+const {notifySuccess} = useNotify();
 const {axios} = useAxios();
 const {$gettext} = useTranslate();
 
 const doMkdir = () => {
     ifValid(() => {
-        wrapWithLoading(
-            axios.post(props.mkdirUrl, {
-                'currentDirectory': props.currentDirectory,
-                'name': form.value.newDirectory
-            })
-        ).then(() => {
+        axios.post(props.mkdirUrl, {
+            'currentDirectory': props.currentDirectory,
+            'name': form.value.newDirectory
+        }).then(() => {
             notifySuccess($gettext('New directory created.'));
         }).finally(() => {
             emit('relist');

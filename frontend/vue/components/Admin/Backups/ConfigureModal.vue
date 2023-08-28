@@ -173,17 +173,15 @@ const open = () => {
     });
 };
 
-const {wrapWithLoading, notifySuccess} = useNotify();
+const {notifySuccess} = useNotify();
 
 const submit = () => {
     ifValid(() => {
-        wrapWithLoading(
-            axios({
-                method: 'PUT',
-                url: props.settingsUrl,
-                data: form.value
-            })
-        ).then(() => {
+        axios({
+            method: 'PUT',
+            url: props.settingsUrl,
+            data: form.value
+        }).then(() => {
             notifySuccess();
             close();
         });

@@ -140,19 +140,17 @@ const relist = () => {
 
 onMounted(relist);
 
-const {wrapWithLoading, notifySuccess} = useNotify();
+const {notifySuccess} = useNotify();
 
 const submit = () => {
     ifValid(() => {
-        wrapWithLoading(
-            axios({
-                method: 'PUT',
-                url: props.profileEditUrl,
-                data: {
-                    branding_config: form.value
-                }
-            })
-        ).then(() => {
+        axios({
+            method: 'PUT',
+            url: props.profileEditUrl,
+            data: {
+                branding_config: form.value
+            }
+        }).then(() => {
             notifySuccess();
             relist();
         });

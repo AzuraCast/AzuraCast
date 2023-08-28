@@ -150,15 +150,13 @@ const populateForm = (data) => {
     form.value = mergeExisting(form.value, data);
 };
 
-const {wrapWithLoading, notifySuccess} = useNotify();
+const {notifySuccess} = useNotify();
 const {axios} = useAxios();
 
 const doLoad = () => {
     isLoading.value = true;
 
-    wrapWithLoading(
-        axios.get(props.editUrl)
-    ).then((resp) => {
+    axios.get(props.editUrl).then((resp) => {
         populateForm(resp.data);
     }).catch((err) => {
         emit('error', err);
@@ -179,17 +177,16 @@ const reset = () => {
 const submit = () => {
     ifValid(() => {
         error.value = null;
-        wrapWithLoading(
-            axios({
-                method: (props.isEditMode)
-                    ? 'PUT'
-                    : 'POST',
-                url: (props.isEditMode)
-                    ? props.editUrl
-                    : props.createUrl,
-                data: form.value
-            })
-        ).then(() => {
+
+        axios({
+            method: (props.isEditMode)
+                ? 'PUT'
+                : 'POST',
+            url: (props.isEditMode)
+                ? props.editUrl
+                : props.createUrl,
+            data: form.value
+        }).then(() => {
             notifySuccess();
             emit('submitted');
         }).catch((err) => {

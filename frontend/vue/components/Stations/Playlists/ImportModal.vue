@@ -130,16 +130,14 @@ const open = (newImportPlaylistUrl) => {
     $modal.value?.show();
 };
 
-const {wrapWithLoading, notifySuccess, notifyError} = useNotify();
+const {notifySuccess, notifyError} = useNotify();
 const {axios} = useAxios();
 
 const doSubmit = () => {
     const formData = new FormData();
     formData.append('playlist_file', playlistFile.value);
 
-    wrapWithLoading(
-        axios.post(importPlaylistUrl.value, formData)
-    ).then((resp) => {
+    axios.post(importPlaylistUrl.value, formData).then((resp) => {
         if (resp.data.success) {
             results.value = resp.data;
 

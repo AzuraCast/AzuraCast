@@ -1,7 +1,6 @@
 import {useTranslate} from "~/vendor/gettext";
 import {h, render} from "vue";
 import {default as BSToast} from 'bootstrap/js/src/toast';
-import NProgress from 'nprogress';
 
 import Toast from '~/components/Common/Toast.vue';
 import {currentVueInstance} from "~/vendor/vueInstance";
@@ -73,52 +72,9 @@ export function useNotify() {
         return message;
     };
 
-    const showLoading = () => {
-        NProgress.start();
-    };
-
-    const hideLoading = () => {
-        NProgress.done();
-    };
-
-    let $isAxiosLoading = false;
-    let $axiosLoadCount = 0;
-
-    const setLoading = (isLoading) => {
-        const prevIsLoading = $isAxiosLoading;
-        if (isLoading) {
-            $axiosLoadCount++;
-            $isAxiosLoading = true;
-        } else if ($axiosLoadCount > 0) {
-            $axiosLoadCount--;
-            $isAxiosLoading = ($axiosLoadCount > 0);
-        }
-
-        // Handle state changes
-        if (!prevIsLoading && $isAxiosLoading) {
-            showLoading();
-        } else if (prevIsLoading && !$isAxiosLoading) {
-            hideLoading();
-        }
-    };
-
-    const wrapWithLoading = (promise) => {
-        setLoading(true);
-
-        promise.finally(() => {
-            setLoading(false);
-        });
-
-        return promise;
-    };
-
     return {
         notify,
         notifyError,
-        notifySuccess,
-        showLoading,
-        hideLoading,
-        setLoading,
-        wrapWithLoading
+        notifySuccess
     };
 }

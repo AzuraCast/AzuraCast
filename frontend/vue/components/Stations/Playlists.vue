@@ -432,13 +432,11 @@ const needsRestart = () => {
     originalNeedsRestart();
 };
 
-const {wrapWithLoading, notifySuccess} = useNotify();
+const {notifySuccess} = useNotify();
 const {axios} = useAxios();
 
 const doModify = (url) => {
-    wrapWithLoading(
-        axios.put(url)
-    ).then((resp) => {
+    axios.put(url).then((resp) => {
         needsRestart();
 
         notifySuccess(resp.data.message);

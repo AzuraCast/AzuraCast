@@ -68,20 +68,18 @@ const close = () => {
     $modal.value?.hide();
 };
 
-const {wrapWithLoading, notifySuccess} = useNotify();
+const {notifySuccess} = useNotify();
 const {axios} = useAxios();
 
 const doSubmit = () => {
     ifValid(() => {
         error.value = null;
 
-        wrapWithLoading(
-            axios({
-                method: 'POST',
-                url: cloneUrl.value,
-                data: form.value
-            })
-        ).then(() => {
+        axios({
+            method: 'POST',
+            url: cloneUrl.value,
+            data: form.value
+        }).then(() => {
             notifySuccess();
             emit('relist');
             close();

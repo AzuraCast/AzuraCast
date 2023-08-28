@@ -199,13 +199,11 @@ const needsUpdates = computed(() => {
     }
 });
 
-const {wrapWithLoading, notifySuccess} = useNotify();
+const {notifySuccess} = useNotify();
 const {axios} = useAxios();
 
 const checkForUpdates = () => {
-    wrapWithLoading(
-        axios.get(updatesApiUrl.value)
-    ).then((resp) => {
+    axios.get(updatesApiUrl.value).then((resp) => {
         updateInfo.value = resp.data;
     });
 };
@@ -217,9 +215,7 @@ const doUpdate = () => {
         title: $gettext('Update AzuraCast? Your installation will restart.')
     }).then((result) => {
         if (result.value) {
-            wrapWithLoading(
-                axios.put(updatesApiUrl.value)
-            ).then(() => {
+            axios.put(updatesApiUrl.value).then(() => {
                 notifySuccess(
                     $gettext('Update started. Your installation will restart shortly.')
                 );

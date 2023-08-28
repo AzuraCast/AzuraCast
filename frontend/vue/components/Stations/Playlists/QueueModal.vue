@@ -90,13 +90,11 @@ const close = () => {
     $modal.value?.hide();
 }
 
-const {wrapWithLoading, notifySuccess} = useNotify();
+const {notifySuccess} = useNotify();
 const {$gettext} = useTranslate();
 
 const doClear = () => {
-    wrapWithLoading(
-        axios.delete(queueUrl.value)
-    ).then(() => {
+    axios.delete(queueUrl.value).then(() => {
         notifySuccess($gettext('Playlist queue cleared.'));
         close();
     });

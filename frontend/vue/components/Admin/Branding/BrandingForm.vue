@@ -212,17 +212,15 @@ const relist = () => {
 
 onMounted(relist);
 
-const {wrapWithLoading, notifySuccess} = useNotify();
+const {notifySuccess} = useNotify();
 
 const submit = () => {
     ifValid(() => {
-        wrapWithLoading(
-            axios({
-                method: 'PUT',
-                url: props.apiUrl,
-                data: form.value
-            })
-        ).then(() => {
+        axios({
+            method: 'PUT',
+            url: props.apiUrl,
+            data: form.value
+        }).then(() => {
             notifySuccess($gettext('Changes saved.'));
             relist();
         });

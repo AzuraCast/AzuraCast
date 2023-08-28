@@ -128,14 +128,18 @@ const fields = computed(() => {
 
 const pageOptions = [10, 25];
 
-const {wrapWithLoading, notifySuccess} = useNotify();
+const {wrapWithLoading, notifySuccess, notifyError} = useNotify();
 const {axios} = useAxios();
 
 const doSubmitRequest = (url) => {
     wrapWithLoading(
         axios.post(url)
     ).then((resp) => {
-        notifySuccess(resp.data.message);
+        if (resp.data.success) {
+            notifySuccess(resp.data.message);
+        } else {
+            notifyError(resp.data.message);
+        }
     }).finally(() => {
         emit('submitted');
     });

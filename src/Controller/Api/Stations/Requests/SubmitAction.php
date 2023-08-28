@@ -6,15 +6,14 @@ namespace App\Controller\Api\Stations\Requests;
 
 use App\Container\SettingsAwareTrait;
 use App\Controller\SingleActionInterface;
-use App\Entity\Api\Error;
 use App\Entity\Api\Status;
 use App\Entity\Repository\StationRequestRepository;
 use App\Entity\User;
+use App\Exception;
 use App\Exception\InvalidRequestAttribute;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\OpenApi;
-use Exception;
 use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 
@@ -80,10 +79,12 @@ final class SubmitAction implements SingleActionInterface
                 $request->getHeaderLine('User-Agent')
             );
 
-            return $response->withJson(Status::success());
+            return $response->withJson(
+                new Status(true, __('Your request has been submitted and will be played soon.'))
+            );
         } catch (Exception $e) {
             return $response->withStatus(400)
-                ->withJson(Error::fromException($e));
+                ->withJson(new Status(false, $e->getMessage()));
         }
     }
 }

@@ -51,6 +51,7 @@ export default function installAxios(vueApp: App) {
         setLoading(true);
         return config;
     }, (error) => {
+        setLoading(false);
         handleAxiosError(error);
         return Promise.reject(error);
     });
@@ -59,6 +60,7 @@ export default function installAxios(vueApp: App) {
         setLoading(false);
         return response;
     }, (error) => {
+        setLoading(false);
         handleAxiosError(error);
         return Promise.reject(error);
     });

@@ -39,8 +39,6 @@ import Email from "./Form/Email.vue";
 import Tunein from "./Form/Tunein.vue";
 import Discord from "./Form/Discord.vue";
 import Telegram from "./Form/Telegram.vue";
-import Twitter from "./Form/Twitter.vue";
-import GoogleAnalyticsV3 from "./Form/GoogleAnalyticsV3.vue";
 import GoogleAnalyticsV4 from "./Form/GoogleAnalyticsV4.vue";
 import MatomoAnalytics from "./Form/MatomoAnalytics.vue";
 import Mastodon from "./Form/Mastodon.vue";
@@ -83,9 +81,7 @@ const webhookComponents = {
     [WebhookType.RadioDe]: RadioDe,
     [WebhookType.Discord]: Discord,
     [WebhookType.Telegram]: Telegram,
-    [WebhookType.Twitter]: Twitter,
     [WebhookType.Mastodon]: Mastodon,
-    [WebhookType.GoogleAnalyticsV3]: GoogleAnalyticsV3,
     [WebhookType.GoogleAnalyticsV4]: GoogleAnalyticsV4,
     [WebhookType.MatomoAnalytics]: MatomoAnalytics,
 };

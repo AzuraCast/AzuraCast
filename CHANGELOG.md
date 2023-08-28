@@ -11,6 +11,10 @@ release channel, you can take advantage of these new features and fixes.
 
 ## Code Quality/Technical Changes
 
+- The Google Analytics V3 and Twitter (now X) web hooks have been retired and are no longer supported. Google Analytics
+  has removed support for V3 properties entirely; we recommend switching to Analytics V4. Twitter has deprecated version
+  1 of their API in favor of version 2, which is not readily accessible to applications like ours.
+
 ## Bug Fixes
 
 ---

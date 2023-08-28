@@ -20,24 +20,31 @@
             :fields="fields"
             :api-url="listUrl"
         >
-            <template #cell(name)="row">
+            <template #cell(name)="{item}">
                 <div class="typography-subheading">
-                    {{ row.item.name }}
+                    {{ item.name }}
                 </div>
-                {{ getWebhookName(row.item.type) }}
 
-                <div
-                    v-if="!row.item.is_enabled"
-                    class="badge bg-danger"
-                >
-                    {{ $gettext('Disabled') }}
-                </div>
-            </template>
-            <template #cell(triggers)="row">
-                <template v-if="row.item.triggers.length > 0">
+                <template v-if="isWebhookSupported(item.type)">
+                    {{ getWebhookName(item.type) }}
                     <div
-                        v-for="(name, index) in getTriggerNames(row.item.triggers)"
-                        :key="row.item.id+'_'+index"
+                        v-if="!item.is_enabled"
+                        class="badge bg-danger"
+                    >
+                        {{ $gettext('Disabled') }}
+                    </div>
+                </template>
+                <template v-else>
+                    {{
+                        $gettext('This web hook is no longer supported. Removing it is recommended.')
+                    }}
+                </template>
+            </template>
+            <template #cell(triggers)="{item}">
+                <template v-if="isWebhookSupported(item.type) && item.triggers.length > 0">
+                    <div
+                        v-for="(name, index) in getTriggerNames(item.triggers)"
+                        :key="item.id+'_'+index"
                         class="small"
                     >
                         {{ name }}
@@ -47,34 +54,36 @@
 &nbsp;
                 </template>
             </template>
-            <template #cell(actions)="row">
+            <template #cell(actions)="{item}">
                 <div class="btn-group btn-group-sm">
-                    <button
-                        type="button"
-                        class="btn btn-primary"
-                        @click="doEdit(row.item.links.self)"
-                    >
-                        {{ $gettext('Edit') }}
-                    </button>
-                    <button
-                        type="button"
-                        class="btn"
-                        :class="getToggleVariant(row.item)"
-                        @click="doToggle(row.item.links.toggle)"
-                    >
-                        {{ langToggleButton(row.item) }}
-                    </button>
-                    <button
-                        type="button"
-                        class="btn btn-secondary"
-                        @click="doTest(row.item.links.test)"
-                    >
-                        {{ $gettext('Test') }}
-                    </button>
+                    <template v-if="isWebhookSupported(item.type)">
+                        <button
+                            type="button"
+                            class="btn btn-primary"
+                            @click="doEdit(item.links.self)"
+                        >
+                            {{ $gettext('Edit') }}
+                        </button>
+                        <button
+                            type="button"
+                            class="btn"
+                            :class="getToggleVariant(item)"
+                            @click="doToggle(item.links.toggle)"
+                        >
+                            {{ langToggleButton(item) }}
+                        </button>
+                        <button
+                            type="button"
+                            class="btn btn-secondary"
+                            @click="doTest(item.links.test)"
+                        >
+                            {{ $gettext('Test') }}
+                        </button>
+                    </template>
                     <button
                         type="button"
                         class="btn btn-danger"
-                        @click="doDelete(row.item.links.self)"
+                        @click="doDelete(item.links.self)"
                     >
                         {{ $gettext('Delete') }}
                     </button>
@@ -139,6 +148,10 @@ const getToggleVariant = (record) => {
         ? 'btn-warning'
         : 'btn-success';
 };
+
+const isWebhookSupported = (key) => {
+    return (key in langTypeDetails);
+}
 
 const getWebhookName = (key) => {
     return get(langTypeDetails, [key, 'title'], '');

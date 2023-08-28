@@ -15,8 +15,7 @@
                 :types="buildTypeInfo([
                     WebhookType.Discord,
                     WebhookType.Telegram,
-                    WebhookType.Mastodon,
-                    WebhookType.Twitter
+                    WebhookType.Mastodon
                 ])"
                 @select="selectType"
             />
@@ -34,7 +33,6 @@
             <type-select-section
                 :title="$gettext('Analytics')"
                 :types="buildTypeInfo([
-                    WebhookType.GoogleAnalyticsV3,
                     WebhookType.GoogleAnalyticsV4,
                     WebhookType.MatomoAnalytics
                 ])"

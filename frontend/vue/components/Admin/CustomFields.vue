@@ -54,7 +54,7 @@
 </template>
 
 <script setup lang="ts">
-import DataTable from '~/components/Common/DataTable.vue';
+import DataTable, { DataTableField } from '~/components/Common/DataTable.vue';
 import EditModal from './CustomFields/EditModal.vue';
 import {get} from 'lodash';
 import {useTranslate} from "~/vendor/gettext";
@@ -77,7 +77,7 @@ const listUrl = getApiUrl('/admin/custom_fields');
 
 const {$gettext} = useTranslate();
 
-const fields = [
+const fields: DataTableField[] = [
     {
         key: 'name',
         isRowHeader: true,

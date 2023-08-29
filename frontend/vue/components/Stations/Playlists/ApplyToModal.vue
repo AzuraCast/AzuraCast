@@ -61,7 +61,7 @@
 </template>
 
 <script setup lang="ts">
-import DataTable from '~/components/Common/DataTable.vue';
+import DataTable, { DataTableField } from '~/components/Common/DataTable.vue';
 import {ref} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import {useNotify} from "~/functions/useNotify";
@@ -79,7 +79,7 @@ const $modal = ref<InstanceType<typeof Modal> | null>(null);
 
 const {$gettext} = useTranslate();
 
-const fields = [
+const fields: DataTableField[] = [
     {
         key: 'name',
         isRowHeader: true,

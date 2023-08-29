@@ -59,9 +59,9 @@
 </template>
 
 <script setup lang="ts">
-import DataTable from '~/components/Common/DataTable.vue';
+import DataTable, { DataTableField } from '~/components/Common/DataTable.vue';
 import formatFileSize from '~/functions/formatFileSize';
-import InlinePlayer from '~/components/InlinePlayer';
+import InlinePlayer from '~/components/InlinePlayer.vue';
 import Icon from '~/components/Common/Icon.vue';
 import PlayButton from "~/components/Common/PlayButton.vue";
 import '~/vendor/sweetalert';
@@ -82,12 +82,12 @@ const {$gettext} = useTranslate();
 const {timeConfig} = useAzuraCast();
 const {DateTime} = useLuxon();
 
-const fields = [
+const fields: DataTableField[] = [
     {
         key: 'download',
         label: ' ',
         sortable: false,
-      class: 'shrink pe-3'
+        class: 'shrink pe-3'
     },
     {
         key: 'timestampStart',
@@ -98,7 +98,7 @@ const fields = [
                 {...DateTime.DATETIME_MED, ...timeConfig}
             );
         },
-      class: 'ps-3'
+        class: 'ps-3'
     },
     {
         key: 'timestampEnd',

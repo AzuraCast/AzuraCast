@@ -111,7 +111,7 @@
 </template>
 
 <script setup lang="ts">
-import DataTable from '~/components/Common/DataTable.vue';
+import DataTable, { DataTableField } from '~/components/Common/DataTable.vue';
 import EditModal from './EpisodeEditModal.vue';
 import Icon from '~/components/Common/Icon.vue';
 import AlbumArt from '~/components/Common/AlbumArt.vue';
@@ -140,7 +140,7 @@ const emit = defineEmits(['clear-podcast']);
 
 const {$gettext} = useTranslate();
 
-const fields = [
+const fields: DataTableField[] = [
     {key: 'art', label: $gettext('Art'), sortable: false, class: 'shrink pe-0'},
     {key: 'title', label: $gettext('Episode'), sortable: false},
     {key: 'podcast_media', label: $gettext('File Name'), sortable: false},

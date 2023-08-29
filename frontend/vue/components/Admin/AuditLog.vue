@@ -86,7 +86,7 @@
 import {computed, ref, watch} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import {useAzuraCast} from "~/vendor/azuracast";
-import DataTable from "~/components/Common/DataTable.vue";
+import DataTable, { DataTableField } from "~/components/Common/DataTable.vue";
 import DateRangeDropdown from "~/components/Common/DateRangeDropdown.vue";
 import Icon from "~/components/Common/Icon.vue";
 import useHasDatatable, {DataTableTemplateRef} from "~/functions/useHasDatatable";
@@ -108,7 +108,7 @@ const dateRange = ref({
 const {$gettext} = useTranslate();
 const {timeConfig} = useAzuraCast();
 
-const fields = [
+const fields: DataTableField[] = [
     {
         key: 'timestamp',
         label: $gettext('Date/Time'),

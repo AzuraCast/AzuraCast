@@ -71,7 +71,7 @@
 </template>
 
 <script setup lang="ts">
-import DataTable from '~/components/Common/DataTable.vue';
+import DataTable, { DataTableField } from '~/components/Common/DataTable.vue';
 import RemoteEditModal from "./Remotes/EditModal.vue";
 import '~/vendor/sweetalert';
 import {useMayNeedRestart} from "~/functions/useMayNeedRestart";
@@ -89,7 +89,7 @@ const listUrl = getStationApiUrl('/remotes');
 
 const {$gettext} = useTranslate();
 
-const fields = [
+const fields: DataTableField[] = [
     {key: 'display_name', isRowHeader: true, label: $gettext('Name'), sortable: true},
     {key: 'enable_autodj', label: $gettext('AutoDJ'), sortable: true},
     {key: 'actions', label: $gettext('Actions'), sortable: false, class: 'shrink'}

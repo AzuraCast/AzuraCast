@@ -300,7 +300,7 @@
 </template>
 
 <script setup lang="ts">
-import DataTable from '~/components/Common/DataTable.vue';
+import DataTable, { DataTableField } from '~/components/Common/DataTable.vue';
 import Schedule from '~/components/Common/ScheduleView.vue';
 import EditModal from './Playlists/EditModal.vue';
 import ReorderModal from './Playlists/ReorderModal.vue';
@@ -337,7 +337,7 @@ const {timezone} = useAzuraCastStation();
 
 const {$gettext} = useTranslate();
 
-const fields = [
+const fields: DataTableField[] = [
     {key: 'name', isRowHeader: true, label: $gettext('Playlist'), sortable: true},
     {key: 'scheduling', label: $gettext('Scheduling'), sortable: false},
     {key: 'num_songs', label: $gettext('# Songs'), sortable: false},

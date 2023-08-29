@@ -104,7 +104,7 @@
 </template>
 
 <script setup lang="ts">
-import DataTable from '~/components/Common/DataTable.vue';
+import DataTable, { DataTableField } from '~/components/Common/DataTable.vue';
 import EditModal from './Webhooks/EditModal.vue';
 import {get, map} from 'lodash';
 import StreamingLogModal from "~/components/Common/StreamingLogModal.vue";
@@ -128,7 +128,7 @@ const nowPlayingUrl = getApiUrl(`/nowplaying/${id}`);
 
 const {$gettext} = useTranslate();
 
-const fields = [
+const fields: DataTableField[] = [
     {key: 'name', isRowHeader: true, label: $gettext('Name/Type'), sortable: true},
     {key: 'triggers', label: $gettext('Triggers'), sortable: false},
     {key: 'actions', label: $gettext('Actions'), sortable: false, class: 'shrink'}

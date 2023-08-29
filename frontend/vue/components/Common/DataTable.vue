@@ -345,7 +345,7 @@ const props = defineProps({
         default: 10
     },
     fields: {
-        type: Array<object>,
+        type: Array<DataTableField>,
         required: true
     },
     selectable: {
@@ -403,8 +403,19 @@ const totalRows = ref(0);
 
 const activeDetailsRow = shallowRef(null);
 
-const allFields = computed(() => {
-    return map(props.fields, (field) => {
+export interface DataTableField {
+    key: string,
+    label: string,
+    isRowHeader?: boolean,
+    sortable?: boolean,
+    selectable?: boolean,
+    visible?: boolean,
+    class?: string | Array<any>,
+    formatter?(column: any, key: string, row: any): string,
+}
+
+const allFields = computed<DataTableField[]>(() => {
+    return map(props.fields, (field: DataTableField) => {
         return {
             label: '',
             isRowHeader: false,
@@ -418,7 +429,7 @@ const allFields = computed(() => {
     });
 });
 
-const selectableFields = computed(() => {
+const selectableFields = computed<DataTableField[]>(() => {
     return filter({...allFields.value}, (field) => {
         return field.selectable;
     });
@@ -466,7 +477,7 @@ const perPage = computed(() => {
     return settings.value?.perPage ?? props.defaultPerPage;
 });
 
-const visibleFields = computed(() => {
+const visibleFields = computed<DataTableField[]>(() => {
     const fields = allFields.value.slice();
 
     if (!props.selectFields) {
@@ -668,7 +679,7 @@ watchDebounced(searchPhrase, (newSearchPhrase) => {
 
 onMounted(refresh);
 
-const isAllChecked = computed(() => {
+const isAllChecked = computed<boolean>(() => {
     if (visibleItems.value.length === 0) {
         return false;
     }
@@ -680,7 +691,7 @@ const isAllChecked = computed(() => {
 
 const isRowChecked = (row) => {
     return indexOf(selectedRows.value, row) >= 0;
-}
+};
 
 const columnCount = computed(() => {
     let count = visibleFields.value.length;

@@ -74,7 +74,7 @@
 </template>
 
 <script setup lang="ts">
-import DataTable from '~/components/Common/DataTable.vue';
+import DataTable, { DataTableField } from '~/components/Common/DataTable.vue';
 import AdminStationsEditModal from "./Stations/EditModal.vue";
 import {get} from "lodash";
 import AdminStationsCloneModal from "./Stations/CloneModal.vue";
@@ -106,7 +106,7 @@ const listUrl = getApiUrl('/admin/stations');
 
 const {$gettext} = useTranslate();
 
-const fields = [
+const fields: DataTableField[] = [
     {
         key: 'name',
         isRowHeader: true,

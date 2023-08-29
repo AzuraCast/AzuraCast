@@ -241,7 +241,7 @@
 </template>
 
 <script setup lang="ts">
-import DataTable from '~/components/Common/DataTable.vue';
+import DataTable, { DataTableField } from '~/components/Common/DataTable.vue';
 import MediaToolbar from './Media/MediaToolbar.vue';
 import Breadcrumb from './Media/Breadcrumb.vue';
 import FileUpload from './Media/FileUpload.vue';
@@ -304,8 +304,8 @@ const {timeConfig} = useAzuraCast();
 const {timezone} = useAzuraCastStation();
 const {DateTime} = useLuxon();
 
-const fields = computed(() => {
-    const fields = [
+const fields = computed<DataTableField[]>(() => {
+    const fields: DataTableField[] = [
         {key: 'path', isRowHeader: true, label: $gettext('Name'), sortable: true},
         {key: 'media.title', label: $gettext('Title'), sortable: true, selectable: true, visible: false},
         {

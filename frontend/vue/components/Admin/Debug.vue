@@ -228,7 +228,7 @@
 <script setup lang="ts">
 import {ref} from "vue";
 import useHasDatatable, {DataTableTemplateRef} from "~/functions/useHasDatatable";
-import DataTable from "~/components/Common/DataTable.vue";
+import DataTable, { DataTableField } from "~/components/Common/DataTable.vue";
 import {useTranslate} from "~/vendor/gettext";
 import CardPage from "~/components/Common/CardPage.vue";
 import {useLuxon} from "~/vendor/luxon";
@@ -278,7 +278,7 @@ useIntervalFn(
 const {$gettext} = useTranslate();
 const {timestampToRelative} = useLuxon();
 
-const syncTaskFields = [
+const syncTaskFields: DataTableField[] = [
     {key: 'name', isRowHeader: true, label: $gettext('Task Name'), sortable: true},
     {
         key: 'time',

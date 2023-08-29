@@ -46,7 +46,7 @@
 </template>
 
 <script setup lang="ts">
-import DataTable from '~/components/Common/DataTable.vue';
+import DataTable, { DataTableField } from '~/components/Common/DataTable.vue';
 import {useTranslate} from "~/vendor/gettext";
 import {ref} from "vue";
 import useHasDatatable, {DataTableTemplateRef} from "~/functions/useHasDatatable";
@@ -71,7 +71,7 @@ const dateTimeFormatter = (value) => {
     );
 }
 
-const fields = [
+const fields: DataTableField[] = [
     {key: 'name', isRowHeader: true, label: $gettext('Relay'), sortable: true},
     {key: 'is_visible_on_public_pages', label: $gettext('Is Public'), sortable: true},
     {key: 'created_at', label: $gettext('First Connected'), formatter: dateTimeFormatter, sortable: true},

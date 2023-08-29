@@ -74,7 +74,7 @@
 </template>
 
 <script setup lang="ts">
-import DataTable from '~/components/Common/DataTable.vue';
+import DataTable, { DataTableField } from '~/components/Common/DataTable.vue';
 import {forEach} from 'lodash';
 import Icon from '~/components/Common/Icon.vue';
 import {computed, h, ref} from "vue";
@@ -111,7 +111,7 @@ const dirHistory = ref([]);
 
 const {$gettext} = useTranslate();
 
-const fields = [
+const fields: DataTableField[] = [
     {key: 'directory', label: $gettext('Directory'), sortable: false}
 ];
 

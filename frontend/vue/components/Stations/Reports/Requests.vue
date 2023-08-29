@@ -93,7 +93,7 @@
 </template>
 
 <script setup lang="ts">
-import DataTable from '~/components/Common/DataTable.vue';
+import DataTable, { DataTableField } from '~/components/Common/DataTable.vue';
 import Icon from "~/components/Common/Icon.vue";
 import {useAzuraCast, useAzuraCastStation} from "~/vendor/azuracast";
 import {computed, nextTick, ref} from "vue";
@@ -117,7 +117,7 @@ const listUrlForType = computed(() => {
 
 const {$gettext} = useTranslate();
 
-const fields = [
+const fields: DataTableField[] = [
     {key: 'timestamp', label: $gettext('Date Requested'), sortable: false},
     {key: 'played_at', label: $gettext('Date Played'), sortable: false},
     {key: 'song_title', isRowHeader: true, label: $gettext('Song Title'), sortable: false},

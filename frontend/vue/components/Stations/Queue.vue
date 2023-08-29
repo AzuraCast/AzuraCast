@@ -70,7 +70,7 @@
 </template>
 
 <script setup lang="ts">
-import DataTable from '../Common/DataTable.vue';
+import DataTable, { DataTableField } from '../Common/DataTable.vue';
 import QueueLogsModal from './Queue/LogsModal.vue';
 import Icon from "~/components/Common/Icon.vue";
 import {useAzuraCast, useAzuraCastStation} from "~/vendor/azuracast";
@@ -91,7 +91,7 @@ const clearUrl = getStationApiUrl('/queue/clear');
 
 const {$gettext} = useTranslate();
 
-const fields = [
+const fields: DataTableField[] = [
     {key: 'actions', label: $gettext('Actions'), sortable: false},
     {key: 'song_title', isRowHeader: true, label: $gettext('Song Title'), sortable: false},
     {key: 'played_at', label: $gettext('Expected to Play at'), sortable: false},

@@ -116,7 +116,7 @@
 </template>
 
 <script setup lang="ts">
-import DataTable from '~/components/Common/DataTable.vue';
+import DataTable, { DataTableField } from '~/components/Common/DataTable.vue';
 import EditModal from './Streamers/EditModal.vue';
 import BroadcastsModal from './Streamers/BroadcastsModal.vue';
 import Schedule from '~/components/Common/ScheduleView.vue';
@@ -149,7 +149,7 @@ const {timezone} = useAzuraCastStation();
 
 const {$gettext} = useTranslate();
 
-const fields = [
+const fields: DataTableField[] = [
     {key: 'art', label: $gettext('Art'), sortable: false, class: 'shrink pe-0'},
     {key: 'display_name', label: $gettext('Display Name'), sortable: true},
     {key: 'streamer_username', isRowHeader: true, label: $gettext('Username'), sortable: true},

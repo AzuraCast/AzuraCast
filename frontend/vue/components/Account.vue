@@ -206,7 +206,7 @@
 
 <script setup lang="ts">
 import Icon from "~/components/Common/Icon.vue";
-import DataTable from "~/components/Common/DataTable.vue";
+import DataTable, { DataTableField } from "~/components/Common/DataTable.vue";
 import AccountChangePasswordModal from "./Account/ChangePasswordModal.vue";
 import AccountApiKeyModal from "./Account/ApiKeyModal.vue";
 import AccountTwoFactorModal from "./Account/TwoFactorModal.vue";
@@ -277,7 +277,7 @@ const {state: security, isLoading: securityLoading, execute: reloadSecurity} = u
 
 const {$gettext} = useTranslate();
 
-const apiKeyFields = [
+const apiKeyFields: DataTableField[] = [
     {
         key: 'comment',
         isRowHeader: true,

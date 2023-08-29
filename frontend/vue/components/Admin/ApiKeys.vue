@@ -30,7 +30,7 @@
 </template>
 
 <script setup lang="ts">
-import DataTable from "~/components/Common/DataTable.vue";
+import DataTable, { DataTableField } from "~/components/Common/DataTable.vue";
 import {ref} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
@@ -42,7 +42,7 @@ const apiUrl = getApiUrl('/admin/api-keys');
 
 const {$gettext} = useTranslate();
 
-const fields = ref([
+const fields: DataTableField[] = [
     {
         key: 'comment',
         isRowHeader: true,
@@ -60,7 +60,7 @@ const fields = ref([
         sortable: false,
         class: 'shrink'
     }
-]);
+];
 
 const $datatable = ref<DataTableTemplateRef>(null);
 const {relist} = useHasDatatable($datatable);

@@ -27,8 +27,8 @@
 
 <script setup lang="ts">
 import PieChart from "~/components/Common/Charts/PieChart.vue";
-import DataTable from "~/components/Common/DataTable.vue";
-import {ref, shallowRef, toRef, watch} from "vue";
+import DataTable, { DataTableField } from "~/components/Common/DataTable.vue";
+import {ref, toRef, watch} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import {useAsyncState, useMounted} from "@vueuse/core";
 import {useAxios} from "~/vendor/axios";
@@ -49,10 +49,10 @@ const props = defineProps({
 
 const {$gettext} = useTranslate();
 
-const fields = shallowRef([
+const fields: DataTableField[] = [
     {key: 'label', label: $gettext('Listening Time'), sortable: false},
     {key: 'value', label: $gettext('Listeners'), sortable: false}
-]);
+];
 
 const dateRange = toRef(props, 'dateRange');
 const {axios} = useAxios();

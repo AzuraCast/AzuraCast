@@ -76,7 +76,7 @@
 
 <script setup lang="ts">
 import InlinePlayer from '../InlinePlayer.vue';
-import DataTable from '~/components/Common/DataTable.vue';
+import DataTable, { DataTableField } from '~/components/Common/DataTable.vue';
 import {forEach} from 'lodash';
 import Icon from '~/components/Common/Icon.vue';
 import PlayButton from "~/components/Common/PlayButton.vue";
@@ -111,7 +111,7 @@ const props = defineProps({
 
 const {$gettext} = useTranslate();
 
-const fields = [
+const fields: DataTableField[] = [
     {key: 'download_url', label: ' '},
     {key: 'art', label: $gettext('Art')},
     {

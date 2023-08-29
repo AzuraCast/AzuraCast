@@ -72,7 +72,7 @@
 </template>
 
 <script setup lang="ts">
-import DataTable from '~/components/Common/DataTable.vue';
+import DataTable, { DataTableField } from '~/components/Common/DataTable.vue';
 import EditModal from './Mounts/EditModal.vue';
 import {useMayNeedRestart} from "~/functions/useMayNeedRestart";
 import {useTranslate} from "~/vendor/gettext";
@@ -97,7 +97,7 @@ const newIntroUrl = getStationApiUrl('/mounts/intro');
 
 const {$gettext} = useTranslate();
 
-const fields = [
+const fields: DataTableField[] = [
     {key: 'display_name', isRowHeader: true, label: $gettext('Name'), sortable: true},
     {key: 'enable_autodj', label: $gettext('AutoDJ'), sortable: true},
     {key: 'actions', label: $gettext('Actions'), sortable: false, class: 'shrink'}

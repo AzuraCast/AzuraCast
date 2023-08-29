@@ -174,7 +174,7 @@
 import StationReportsListenersMap from "./Listeners/Map.vue";
 import Icon from "~/components/Common/Icon.vue";
 import formatTime from "~/functions/formatTime";
-import DataTable from "~/components/Common/DataTable.vue";
+import DataTable, { DataTableField } from "~/components/Common/DataTable.vue";
 import DateRangeDropdown from "~/components/Common/DateRangeDropdown.vue";
 import {computed, nextTick, onMounted, ref, shallowRef, watch} from "vue";
 import {useTranslate} from "~/vendor/gettext";
@@ -212,7 +212,7 @@ const dateRange = ref({
 
 const {$gettext} = useTranslate();
 
-const fields = [
+const fields: DataTableField[] = [
   {key: 'ip', label: $gettext('IP'), sortable: false},
   {key: 'time', label: $gettext('Time'), sortable: false},
   {key: 'time_sec', label: $gettext('Time (sec)'), sortable: false},

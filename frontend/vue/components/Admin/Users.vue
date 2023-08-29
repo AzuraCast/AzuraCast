@@ -77,7 +77,7 @@
 </template>
 
 <script setup lang="ts">
-import DataTable from '~/components/Common/DataTable.vue';
+import DataTable, { DataTableField } from '~/components/Common/DataTable.vue';
 import EditModal from './Users/EditModal.vue';
 import {useTranslate} from "~/vendor/gettext";
 import {ref} from "vue";
@@ -99,7 +99,7 @@ const listUrl = getApiUrl('/admin/users');
 
 const {$gettext} = useTranslate();
 
-const fields = [
+const fields: DataTableField[] = [
     {key: 'name', isRowHeader: true, label: $gettext('User Name'), sortable: true},
     {key: 'roles', label: $gettext('Roles'), sortable: false},
     {key: 'actions', label: $gettext('Actions'), sortable: false, class: 'shrink'}

@@ -104,7 +104,7 @@
 </template>
 
 <script setup lang="ts">
-import DataTable from '~/components/Common/DataTable.vue';
+import DataTable, { DataTableField } from '~/components/Common/DataTable.vue';
 import EditModal from './StorageLocations/EditModal.vue';
 import {computed, nextTick, ref} from "vue";
 import {useTranslate} from "~/vendor/gettext";
@@ -124,7 +124,7 @@ const listUrlForType = computed(() => {
 
 const {$gettext} = useTranslate();
 
-const fields = [
+const fields: DataTableField[] = [
     {key: 'adapter', label: $gettext('Adapter'), sortable: false},
     {key: 'space', label: $gettext('Space Used'), class: 'text-nowrap', sortable: false},
     {key: 'stations', label: $gettext('Station(s)'), sortable: false},

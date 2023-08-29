@@ -84,7 +84,7 @@
                     width="100%"
                     :src="embedUrl"
                     frameborder="0"
-                    style="width: 100%; border: 0;"
+                    style="width: 100%; border: 0; color-scheme: light;"
                     :style="{ 'min-height': embedHeight }"
                 />
             </div>
@@ -206,7 +206,7 @@ const embedHeight = computed(() => {
 });
 
 const embedCode = computed(() => {
-    return '<iframe src="' + embedUrl.value + '" frameborder="0" allowtransparency="true" style="width: 100%; min-height: ' + embedHeight.value + '; border: 0;"></iframe>';
+    return '<iframe src="' + embedUrl.value + '" frameborder="0" allowtransparency="true" style="width: 100%; min-height: ' + embedHeight.value + '; border: 0; color-scheme: light;"></iframe>';
 });
 
 const $modal = ref<InstanceType<typeof Modal> | null>(null);

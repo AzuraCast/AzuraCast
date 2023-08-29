@@ -25,7 +25,8 @@
                 :title="$gettext('Station Directories')"
                 :types="buildTypeInfo([
                     WebhookType.TuneIn,
-                    WebhookType.RadioDe
+                    WebhookType.RadioDe,
+                    WebhookType.GetMeRadio
                 ])"
                 @select="selectType"
             />

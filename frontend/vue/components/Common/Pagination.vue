@@ -63,7 +63,7 @@
 </template>
 
 <script setup lang="ts">
-import {computed, ref} from "vue";
+import {computed, ref, toRef, watch} from "vue";
 import PaginationItem from "~/components/Common/PaginationItem.vue";
 import {clamp} from "lodash";
 
@@ -101,6 +101,10 @@ const setPage = (newPage: number) => {
     page.value = newPage;
     inputPage.value = newPage;
 };
+
+watch(toRef(props, 'currentPage'), (newPage: number) => {
+    setPage(newPage);
+});
 
 const page = computed({
     get() {

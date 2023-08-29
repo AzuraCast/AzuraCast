@@ -203,10 +203,7 @@ final class ListAction implements SingleActionInterface
                 }
             } else {
                 $files = $fs->listContents($currentDir, false)->filter(
-                    fn(StorageAttributes $attributes) => !(
-                        $currentDir === ''
-                        && StationFilesystems::isDotFile($attributes->path())
-                    )
+                    fn(StorageAttributes $attributes) => !StationFilesystems::isDotFile($attributes->path())
                 );
             }
 

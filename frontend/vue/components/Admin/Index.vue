@@ -45,17 +45,32 @@
 
         <div class="row row-of-cards">
             <div class="col-sm-12 col-lg-6 col-xl-6">
-                <memory-stats-panel :stats="stats" />
+                <loading
+                    :loading="isLoading"
+                    lazy
+                >
+                    <memory-stats-panel :stats="stats" />
+                </loading>
             </div>
 
             <div class="col-sm-12 col-lg-6 col-xl-6">
-                <disk-usage-panel :stats="stats" />
+                <loading
+                    :loading="isLoading"
+                    lazy
+                >
+                    <disk-usage-panel :stats="stats" />
+                </loading>
             </div>
         </div>
 
         <div class="row row-of-cards">
             <div class="col-sm-12 col-lg-8 col-xl-6">
-                <cpu-stats-panel :stats="stats" />
+                <loading
+                    :loading="isLoading"
+                    lazy
+                >
+                    <cpu-stats-panel :stats="stats" />
+                </loading>
             </div>
 
             <div class="col-sm-12 col-lg-4 col-xl-6">
@@ -65,7 +80,12 @@
 
         <div class="row row-of-cards">
             <div class="col">
-                <network-stats-panel :stats="stats" />
+                <loading
+                    :loading="isLoading"
+                    lazy
+                >
+                    <network-stats-panel :stats="stats" />
+                </loading>
             </div>
         </div>
     </div>
@@ -73,7 +93,7 @@
 
 <script setup lang="ts">
 import Icon from '~/components/Common/Icon.vue';
-import {onMounted, onScopeDispose, shallowRef} from "vue";
+import {computed} from "vue";
 import {useAxios} from "~/vendor/axios";
 import {getApiUrl} from "~/router";
 import {useAdminMenu} from "~/components/Admin/menu";
@@ -82,77 +102,66 @@ import MemoryStatsPanel from "~/components/Admin/Index/MemoryStatsPanel.vue";
 import DiskUsagePanel from "~/components/Admin/Index/DiskUsagePanel.vue";
 import ServicesPanel from "~/components/Admin/Index/ServicesPanel.vue";
 import NetworkStatsPanel from "~/components/Admin/Index/NetworkStatsPanel.vue";
+import useRefreshableAsyncState from "~/functions/useRefreshableAsyncState.ts";
+import {useIntervalFn} from "@vueuse/core";
+import Loading from "~/components/Common/Loading.vue";
 
 const statsUrl = getApiUrl('/admin/server/stats');
 
 const menuItems = useAdminMenu();
 
-const stats = shallowRef({
-    cpu: {
-        total: {
-            name: 'Total',
-            steal: 0,
-            io_wait: 0,
-            usage: 0
-        },
-        cores: [],
-        load: [
-            0,
-            0,
-            0
-        ]
-    },
-    memory: {
-        bytes: {
-            total: 0,
-            used: 0,
-            cached: 0
-        },
-        readable: {
-            total: '',
-            used: '',
-            cached: ''
-        }
-    },
-    disk: {
-        bytes: {
-            total: 0,
-            used: 0
-        },
-        readable: {
-            total: '',
-            used: ''
-        }
-    },
-    network: []
-});
-
 const {axios} = useAxios();
 
-let statsTimeout = null;
-
-const clearUpdates = () => {
-    if (statsTimeout) {
-        clearTimeout(statsTimeout);
-        statsTimeout = null;
+const {state: stats, isLoading, execute: reloadStats} = useRefreshableAsyncState(
+    () => axios.get(statsUrl.value).then(r => r.data),
+    {
+        cpu: {
+            total: {
+                name: 'Total',
+                steal: 0,
+                io_wait: 0,
+                usage: 0
+            },
+            cores: [],
+            load: [
+                0,
+                0,
+                0
+            ]
+        },
+        memory: {
+            bytes: {
+                total: 0,
+                used: 0,
+                cached: 0
+            },
+            readable: {
+                total: '',
+                used: '',
+                cached: ''
+            }
+        },
+        disk: {
+            bytes: {
+                total: 0,
+                used: 0
+            },
+            readable: {
+                total: '',
+                used: ''
+            }
+        },
+        network: []
+    },
+    {
+        shallow: true
     }
-};
+);
 
-onScopeDispose(clearUpdates);
-
-const updateStats = () => {
-    axios.get(statsUrl.value).then((response) => {
-        stats.value = response.data;
-
-        clearUpdates();
-        statsTimeout = setTimeout(updateStats, (!document.hidden) ? 1000 : 5000);
-    }).catch((error) => {
-        if (!error.response || error.response.data.code !== 403) {
-            clearUpdates();
-            statsTimeout = setTimeout(updateStats, (!document.hidden) ? 5000 : 10000);
-        }
-    });
-};
-
-onMounted(updateStats);
+useIntervalFn(
+    () => {
+        reloadStats()
+    },
+    computed(() => (!document.hidden) ? 5000 : 10000)
+);
 </script>

@@ -104,7 +104,7 @@
 
                     <data-table
                         id="station_playlists"
-                        ref="datatable"
+                        ref="$datatable"
                         paginated
                         handle-client-side
                         :fields="fields"
@@ -183,6 +183,7 @@ import {useAzuraCastStation} from "~/vendor/azuracast";
 import {useLuxon} from "~/vendor/luxon";
 import {getStationApiUrl} from "~/router";
 import {IconDesktopWindows, IconDownload, IconSmartphone} from "~/components/Common/icons";
+import useHasDatatable, { DataTableTemplateRef } from "~/functions/useHasDatatable";
 
 const props = defineProps({
     attribution: {
@@ -193,7 +194,7 @@ const props = defineProps({
 
 const apiUrl = getStationApiUrl('/listeners');
 
-const isLive = ref(true);
+const isLive = ref<boolean>(true);
 const listeners = shallowRef([]);
 
 const {timezone} = useAzuraCastStation();
@@ -221,7 +222,7 @@ const fields = [
 ];
 
 const exportUrl = computed(() => {
-    const exportUrl = new URL(apiUrl.value, document.location);
+    const exportUrl = new URL(apiUrl.value, document.location.href);
     const exportUrlParams = exportUrl.searchParams;
   exportUrlParams.set('format', 'csv');
 
@@ -245,8 +246,14 @@ const totalListenerHours = computed(() => {
 
 const {axios} = useAxios();
 
+const $datatable = ref<DataTableTemplateRef>(null);
+const {navigate} = useHasDatatable($datatable);
+
 const updateListeners = () => {
-    const params = {};
+    const params: {
+        [key: string]: any
+    } = {};
+
     if (!isLive.value) {
         params.start = DateTime.fromJSDate(dateRange.value.startDate).toISO();
         params.end = DateTime.fromJSDate(dateRange.value.endDate).toISO();
@@ -254,6 +261,7 @@ const updateListeners = () => {
 
     axios.get(apiUrl.value, {params: params}).then((resp) => {
         listeners.value = resp.data;
+        navigate();
 
         if (isLive.value) {
             setTimeout(updateListeners, (!document.hidden) ? 15000 : 30000);
@@ -269,7 +277,7 @@ watch(dateRange, updateListeners);
 
 onMounted(updateListeners);
 
-const setIsLive = (newValue) => {
+const setIsLive = (newValue: boolean) => {
     isLive.value = newValue;
     nextTick(updateListeners);
 };

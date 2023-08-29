@@ -139,9 +139,9 @@ const apiUrl = computed(() => {
 });
 
 const $datatable = ref<DataTableTemplateRef>(null);
-const {relist} = useHasDatatable($datatable);
+const {navigate} = useHasDatatable($datatable);
 
-watch(dateRange, relist);
+watch(dateRange, navigate);
 
 const $detailsModal = ref<InstanceType<typeof DetailsModal> | null>(null);
 const showDetails = (changes) => {

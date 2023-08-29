@@ -194,7 +194,7 @@ const abs = (val) => {
 };
 
 const $datatable = ref<DataTableTemplateRef>(null);
-const {relist} = useHasDatatable($datatable);
+const {navigate} = useHasDatatable($datatable);
 
-watch(dateRange, relist);
+watch(dateRange, navigate);
 </script>

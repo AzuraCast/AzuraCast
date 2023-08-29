@@ -16,7 +16,7 @@
 
         <data-table
             id="listening_time_table"
-            ref="datatable"
+            ref="$datatable"
             paginated
             handle-client-side
             :fields="fields"
@@ -28,12 +28,13 @@
 <script setup lang="ts">
 import PieChart from "~/components/Common/Charts/PieChart.vue";
 import DataTable from "~/components/Common/DataTable.vue";
-import {shallowRef, toRef, watch} from "vue";
+import {ref, shallowRef, toRef, watch} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import {useAsyncState, useMounted} from "@vueuse/core";
 import {useAxios} from "~/vendor/axios";
 import Loading from "~/components/Common/Loading.vue";
 import {useLuxon} from "~/vendor/luxon";
+import useHasDatatable, { DataTableTemplateRef } from "~/functions/useHasDatatable";
 
 const props = defineProps({
     dateRange: {
@@ -57,7 +58,7 @@ const dateRange = toRef(props, 'dateRange');
 const {axios} = useAxios();
 const {DateTime} = useLuxon();
 
-const {state: stats, isLoading, execute: relist} = useAsyncState(
+const {state: stats, isLoading, execute: reloadData} = useAsyncState(
     () => axios.get(props.apiUrl, {
         params: {
             start: DateTime.fromJSDate(dateRange.value.startDate).toISO(),
@@ -74,11 +75,15 @@ const {state: stats, isLoading, execute: relist} = useAsyncState(
     }
 );
 
+const $datatable = ref<DataTableTemplateRef>();
+const {navigate} = useHasDatatable($datatable);
+
 const isMounted = useMounted();
 
 watch(dateRange, () => {
     if (isMounted.value) {
-        relist();
+        reloadData();
+        navigate();
     }
 });
 </script>

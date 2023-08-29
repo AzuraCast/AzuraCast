@@ -24,7 +24,7 @@ import objectToFormOptions from "~/functions/objectToFormOptions";
 
 const props = defineProps({
     options: {
-        type: Array,
+        type: Array<any>,
         required: true
     }
 });

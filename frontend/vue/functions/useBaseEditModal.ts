@@ -91,7 +91,7 @@ export function useBaseEditModal(
         form.value = mergeExisting(form.value, data);
     }
 
-    const {wrapWithLoading, notifySuccess} = useNotify();
+    const {notifySuccess} = useNotify();
     const {axios} = useAxios();
 
     const doLoad = () => {
@@ -173,9 +173,7 @@ export function useBaseEditModal(
 
             error.value = null;
 
-            wrapWithLoading(
-                axios(buildSubmitRequest())
-            ).then(() => {
+            axios(buildSubmitRequest()).then(() => {
                 onSubmitSuccess();
             }).catch((err) => {
                 onSubmitError(err);

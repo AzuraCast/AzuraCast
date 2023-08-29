@@ -99,6 +99,23 @@ const props = defineProps({
     }
 });
 
+interface FlowFile {
+    uniqueIdentifier: string,
+    isVisible: boolean,
+    name: string,
+    isCompleted: boolean,
+    progressPercent: number,
+    error?: string,
+    size: string
+}
+
+interface OriginalFlowFile {
+    uniqueIdentifier: string,
+    name: string,
+    size: number,
+    progress(): number
+}
+
 const emit = defineEmits(['complete', 'success', 'error']);
 
 const validMimeTypesList = computed(() => {
@@ -107,9 +124,17 @@ const validMimeTypesList = computed(() => {
 
 let flow = null;
 
-const files = reactive({
+const files = reactive<{
+    value: {
+        [key: string]: FlowFile
+    },
+    push(file: OriginalFlowFile): void,
+    get(file: OriginalFlowFile): FlowFile,
+    hideAll(): void,
+    reset(): void
+}>({
     value: {},
-    push(file) {
+    push(file: OriginalFlowFile): void {
         this.value[file.uniqueIdentifier] = {
             name: file.name,
             uniqueIdentifier: file.uniqueIdentifier,
@@ -120,11 +145,11 @@ const files = reactive({
             error: null
         };
     },
-    get(file) {
+    get(file: OriginalFlowFile): FlowFile {
         return this.value[file.uniqueIdentifier] ?? {};
     },
     hideAll() {
-        forEach(this.value, (file) => {
+        forEach(this.value, (file: FlowFile) => {
             file.isVisible = false;
         });
     },
@@ -166,7 +191,7 @@ onMounted(() => {
     flow.assignBrowse($fileBrowseTarget.value);
     flow.assignDrop($fileDropTarget.value);
 
-    flow.on('fileAdded', (file) => {
+    flow.on('fileAdded', (file: OriginalFlowFile) => {
         files.push(file);
         return true;
     });
@@ -175,18 +200,18 @@ onMounted(() => {
         flow.upload();
     });
 
-    flow.on('fileProgress', (file) => {
+    flow.on('fileProgress', (file: OriginalFlowFile) => {
       files.get(file).progressPercent = toInteger(file.progress() * 100);
     });
 
-    flow.on('fileSuccess', (file, message) => {
+    flow.on('fileSuccess', (file: OriginalFlowFile, message) => {
         files.get(file).isCompleted = true;
 
         const messageJson = JSON.parse(message);
         emit('success', file, messageJson);
     });
 
-    flow.on('error', (message, file, chunk) => {
+    flow.on('error', (message, file: OriginalFlowFile, chunk) => {
         console.error(message, file, chunk);
 
         let messageText = $gettext('Could not upload file.');

@@ -17,7 +17,7 @@ export function useWebDjTrack() {
     const source = ref(null);
 
     const createControlsNode = () => {
-        const bufferLog = Math.log(parseFloat(bufferSize.value));
+        const bufferLog = Math.log(Number(bufferSize.value));
         const log10 = 2.0 * Math.log(10);
 
         const newSource = context.value.createScriptProcessor(
@@ -88,7 +88,7 @@ export function useWebDjTrack() {
         controlsNode.connect(sink.value);
 
         trackGainNode = context.value.createGain();
-        trackGainNode.gain.value = parseFloat(trackGain.value) / 100.0;
+        trackGainNode.gain.value = Number(trackGain.value) / 100.0;
         trackGainNode.connect(controlsNode);
 
         passThroughNode = createPassThrough();

@@ -130,7 +130,7 @@ const getCategoryLink = (item) => {
         linkAttrs.target = '_blank';
     }
     if (item.title) {
-        linkAttrs.title = category.title;
+        linkAttrs.title = item.title;
     }
 
     return linkAttrs;

@@ -1,27 +1,30 @@
-import {inject, provide, watch} from "vue";
+import { createInjectionState } from "@vueuse/core";
+import {Ref, ref, watch} from "vue";
 
-const injectKey = 'webDjPassthroughSync';
+const [useProvidePassthroughSync, useInjectPassthroughSync] = createInjectionState(
+    (initialValue: string) => {
+        const passThroughSync = ref<string>(initialValue);
+        return {passThroughSync};
+    }
+);
 
-export function useProvidePassthroughSync (passthroughSync) {
-    provide(injectKey, passthroughSync);
-}
+export {useProvidePassthroughSync};
 
-export function useInjectPassthroughSync() {
-    return inject(injectKey);
-}
+export function usePassthroughSync(
+    thisPassThrough: Ref<boolean>,
+    stringVal: string
+) {
+    const {passThroughSync} = useInjectPassthroughSync();
 
-export function usePassthroughSync(thisPassthrough, stringVal) {
-    const passthroughSync = useInjectPassthroughSync();
-
-    watch(passthroughSync, (newVal) => {
+    watch(passThroughSync, (newVal) => {
         if (newVal !== stringVal) {
-            thisPassthrough.value = false;
+            thisPassThrough.value = false;
         }
     });
 
-    watch(thisPassthrough, (newVal) => {
+    watch(thisPassThrough, (newVal) => {
         if (newVal) {
-            passthroughSync.value = stringVal;
+            passThroughSync.value = stringVal;
         }
     });
 }

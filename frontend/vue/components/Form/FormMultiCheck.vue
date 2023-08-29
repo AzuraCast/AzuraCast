@@ -55,7 +55,7 @@ const props = defineProps({
         default: null,
     },
     options: {
-        type: Array,
+        type: Array<any>,
         required: true
     },
     radio: {

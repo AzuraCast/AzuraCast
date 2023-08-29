@@ -1,11 +1,10 @@
-import {inject, provide} from "vue";
+import { createInjectionState } from "@vueuse/core";
+import { ref } from "vue";
 
-const injectKey = "webDjMixer";
+export const [useProvideMixer, useInjectMixer] = createInjectionState(
+    (initialValue: number) => {
+        const mixer = ref<number>(initialValue);
 
-export function useProvideMixer(mixer) {
-    provide(injectKey, mixer);
-}
-
-export function useInjectMixer() {
-    return inject(injectKey);
-}
+        return { mixer };
+    }
+);

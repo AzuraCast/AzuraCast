@@ -244,7 +244,7 @@ const seekingPosition = computed({
 
 // Factor in mixer and local gain to calculate total gain.
 const localGain = ref(55);
-const mixer = useInjectMixer();
+const {mixer} = useInjectMixer();
 
 const computedGain = computed(() => {
     let multiplier;

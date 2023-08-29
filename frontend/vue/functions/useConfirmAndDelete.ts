@@ -7,7 +7,7 @@ export default function useConfirmAndDelete(
     onSuccess = null
 ) {
     const {confirmDelete} = useSweetAlert();
-    const {wrapWithLoading, notifySuccess} = useNotify();
+    const {notifySuccess} = useNotify();
     const {axios} = useAxios();
 
     const doDelete = (deleteUrl) => {
@@ -15,9 +15,7 @@ export default function useConfirmAndDelete(
             title: confirmMessage
         }).then((result) => {
             if (result.value) {
-                wrapWithLoading(
-                    axios.delete(deleteUrl)
-                ).then((resp) => {
+                axios.delete(deleteUrl).then((resp) => {
                     notifySuccess(resp.data.message);
 
                     if (typeof onSuccess === 'function') {

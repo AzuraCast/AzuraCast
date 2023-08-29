@@ -79,6 +79,7 @@ const {
         s3Version: 'latest',
         s3Bucket: null,
         s3Endpoint: null,
+        s3UsePathStyle: false,
         sftpHost: null,
         sftpPort: '22',
         sftpUsername: null,

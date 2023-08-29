@@ -9,13 +9,35 @@ release channel, you can take advantage of these new features and fixes.
   mode) or "Unique Listeners", similar to the dashboard charts. You can also view per-hour totals for every given day of
   the week.
 
+- A new webhook has been added to broadcast changes to the GetMeRadio API. GetMeRadio is a popular aggregator of web
+  radio stations.
+
 ## Code Quality/Technical Changes
 
 - The Google Analytics V3 and Twitter (now X) web hooks have been retired and are no longer supported. Google Analytics
   has removed support for V3 properties entirely; we recommend switching to Analytics V4. Twitter has deprecated version
   1 of their API in favor of version 2, which is not readily accessible to applications like ours.
 
+- Icons used around the application have been switched from an icon font to directly using SVGs to dramatically reduce
+  the overall size of CSS assets.
+
+- When importing media, multiple entries in a single metadata field (i.e. multiple Genre values) will be separated by a
+  semicolon (i.e. "Rock; Classic").
+
+- The "Genre" field for individual media items has been increased from 30 characters maximum to 255.
+
+- The "System Debugger" page now automatically reloads the sync task and message queue statuses once per minute, and can
+  be manually refreshed on-demand.
+
+- If using S3-style storage locations, you can now indicate that AzuraCast should use path-style endpoints instead of
+  subdomains; this is useful for self-hosted services like MinIO or other services that rely on subdirectories instead
+  of subdomains.
+
 ## Bug Fixes
+
+- Several issues with DataTable pagination and display have been fixed.
+
+- Fixed an issue preventing web updates from going through correctly.
 
 ---
 

@@ -2,11 +2,11 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "!/*": [
-        "*"
-      ],
       "~/*": [
         "vue/*"
+      ],
+      "!/*": [
+        "*"
       ]
     },
     "target": "ES2020",

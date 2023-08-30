@@ -20,7 +20,7 @@ if [[ "$(uname -m)" = "aarch64" ]]; then
 fi
 
 # wget -O /tmp/liquidsoap.deb "https://github.com/savonet/liquidsoap/releases/download/v2.2.0/liquidsoap_2.2.0-ubuntu-jammy-1_${ARCHITECTURE}.deb"
-wget -O /tmp/liquidsoap.deb "https://github.com/savonet/liquidsoap-release-assets/releases/download/rolling-release-v2.2.x/liquidsoap-b46726d_2.2.1-ubuntu-jammy-1_${ARCHITECTURE}.deb"
+wget -O /tmp/liquidsoap.deb "https://github.com/savonet/liquidsoap-release-assets/releases/download/rolling-release-v2.2.x/liquidsoap-de9dc76-minimal_2.2.1-ubuntu-jammy-1_${ARCHITECTURE}.deb"
 
 dpkg -i /tmp/liquidsoap.deb
 apt-get install -y -f --no-install-recommends

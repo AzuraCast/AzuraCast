@@ -247,12 +247,7 @@
                                     :item="row"
                                     :toggle-details="() => toggleDetails(row)"
                                 >
-                                    <template v-if="column.formatter">
-                                        {{ column.formatter(get(row, column.key, null), column.key, row) }}
-                                    </template>
-                                    <template v-else>
-                                        {{ get(row, column.key, null) }}
-                                    </template>
+                                    {{ getColumnValue(column, row) }}
                                 </slot>
                             </td>
                         </tr>
@@ -385,12 +380,12 @@ const emit = defineEmits([
 
 const selectedRows = shallowRef([]);
 
-const searchPhrase = ref<string | null>('');
+const searchPhrase = ref<string>('');
 const currentPage = ref<number>(1);
 const flushCache = ref<boolean>(false);
 
-const sortField = ref<string>(null);
-const sortOrder = ref<string>(null);
+const sortField = ref<string | null>(null);
+const sortOrder = ref<string | null>(null);
 
 const isLoading = ref<boolean>(false);
 
@@ -653,7 +648,7 @@ const onClickRefresh = (e) => {
 };
 
 const navigate = () => {
-    searchPhrase.value = null;
+    searchPhrase.value = '';
     currentPage.value = 1;
     relist();
 };
@@ -699,7 +694,7 @@ const columnCount = computed(() => {
     return count
 });
 
-const sort = (column) => {
+const sort = (column: DataTableField) => {
     if (!column.sortable) {
         return;
     }
@@ -762,6 +757,14 @@ const responsiveClass = computed(() => {
 
     return (props.responsive ? 'table-responsive' : '');
 });
+
+const getColumnValue = (field: DataTableField, row: object): string => {
+    const columnValue = get(row, field.key, null);
+
+    return (field.formatter)
+        ? field.formatter(columnValue, field.key, row)
+        : columnValue;
+}
 
 defineExpose({
     refresh,

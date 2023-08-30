@@ -1,6 +1,6 @@
 <template>
     <loading :loading="isLoading">
-        <div style="max-height: 300px; overflow-y: scroll;">
+        <div style="height: 300px; resize: vertical; overflow-y: auto !important;">
             <code-mirror
                 id="log-view-contents"
                 v-model="logs"

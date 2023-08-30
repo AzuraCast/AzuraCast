@@ -9,6 +9,10 @@
   body {
     color-scheme: dark;
   }
+  iframe {
+    // Workaround for Bootstrap 5.3 weirdness with embeds.
+    color-scheme: light;
+  }
 
   --public-page-bg: url('/static/img/hexbg_dark.webp');
   --scrollbar-color: #{$gray-800};

@@ -3,24 +3,25 @@ import {defineStore} from "pinia";
 export const usePlayerStore = defineStore(
     'player',
     {
-        state: () => {
-            return {
-                isPlaying: false,
-                current: {
+        state: () => ({
+            isPlaying: false,
+            current: {
+                url: null,
+                isStream: true
+            }
+        }),
+        actions: {
+            resetCurrent(): void {
+                this.current = {
                     url: null,
                     isStream: true
-                }
-            };
-        },
-        actions: {
+                };
+            },
             toggle(payload): void {
                 const url = payload.url;
 
                 if (this.current.url === url) {
-                    this.current = {
-                        url: null,
-                        isStream: true
-                    };
+                    this.resetCurrent();
                 } else {
                     this.current = payload;
                 }
@@ -30,6 +31,7 @@ export const usePlayerStore = defineStore(
             },
             stopPlaying(): void {
                 this.isPlaying = false;
+                this.resetCurrent();
             }
         }
     }

@@ -10,7 +10,7 @@
 import getLogarithmicVolume from '~/functions/getLogarithmicVolume';
 import Hls from 'hls.js';
 import {usePlayerStore} from "~/store";
-import {nextTick, onMounted, ref, toRef, watch} from "vue";
+import {nextTick, onMounted, onScopeDispose, ref, toRef, watch} from "vue";
 
 const props = defineProps({
     title: {
@@ -35,6 +35,8 @@ const currentTime = ref(0);
 const store = usePlayerStore();
 const isPlaying = toRef(store, 'isPlaying');
 const current = toRef(store, 'current');
+
+const bc = ref<BroadcastChannel | null>(null);
 
 watch(toRef(props, 'volume'), (newVol) => {
     if ($audio.value !== null) {
@@ -125,6 +127,10 @@ const play = () => {
 
         $audio.value.load();
         $audio.value.play();
+
+        if (bc.value) {
+            bc.value.postMessage('played');
+        }
     });
 };
 
@@ -165,6 +171,19 @@ onMounted(() => {
         navigator.mediaSession.setActionHandler('pause', () => {
             stop();
         });
+    }
+
+    if ('BroadcastChannel' in window) {
+        bc.value = new BroadcastChannel('audio_player');
+        bc.value.addEventListener('message', () => {
+            stop();
+        }, {passive: true});
+    }
+});
+
+onScopeDispose(() => {
+    if (bc.value) {
+        bc.value.close()
     }
 });
 

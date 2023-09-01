@@ -47,11 +47,11 @@ const isPlaying = toRef($store, 'isPlaying');
 const current = toRef($store, 'current');
 
 const isThisPlaying = computed(() => {
-    if (!get(isPlaying)) {
+    if (!isPlaying.value) {
         return false;
     }
 
-    const playingUrl = getUrlWithoutQuery(get(current).url);
+    const playingUrl = getUrlWithoutQuery(current.value.url);
     const thisUrl = getUrlWithoutQuery(props.url);
     return playingUrl === thisUrl;
 });

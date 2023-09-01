@@ -145,7 +145,7 @@
                 <button
                     class="btn btn-secondary"
                     type="button"
-                    @click="close"
+                    @click="hide"
                 >
                     {{ $gettext('Close') }}
                 </button>
@@ -162,6 +162,7 @@ import Modal from "~/components/Common/Modal.vue";
 import FormGroup from "~/components/Form/FormGroup.vue";
 import FormFile from "~/components/Form/FormFile.vue";
 import {getStationApiUrl} from "~/router";
+import {ModalTemplateRef, useHasModal} from "~/functions/useHasModal.ts";
 
 const apiUrl = getStationApiUrl('/files/bulk');
 
@@ -171,11 +172,8 @@ const importResults = ref(null);
 const {notifySuccess, notifyError} = useNotify();
 const {axios} = useAxios();
 
-const $modal = ref<InstanceType<typeof Modal> | null>(null);
-
-const close = () => {
-    $modal.value?.hide();
-};
+const $modal = ref<ModalTemplateRef>(null);
+const {show, hide} = useHasModal($modal);
 
 const uploaded = (file) => {
     importFile.value = file;
@@ -192,11 +190,10 @@ const doSubmit = () => {
             importResults.value = resp.data;
             notifySuccess(resp.data.message);
 
-            $modal.value?.show();
+            show();
         } else {
             notifyError(resp.data.message);
-
-            close();
+            hide();
         }
     });
 };

@@ -45,7 +45,7 @@
             <button
                 type="button"
                 class="btn btn-secondary"
-                @click="close"
+                @click="hide"
             >
                 {{ $gettext('Close') }}
             </button>
@@ -61,7 +61,7 @@
 </template>
 
 <script setup lang="ts">
-import DataTable, { DataTableField } from '~/components/Common/DataTable.vue';
+import DataTable, {DataTableField} from '~/components/Common/DataTable.vue';
 import {ref} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import {useNotify} from "~/functions/useNotify";
@@ -72,10 +72,12 @@ import {map} from "lodash";
 import {useResettableRef} from "~/functions/useResettableRef";
 import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
 import Modal from "~/components/Common/Modal.vue";
+import {ModalTemplateRef, useHasModal} from "~/functions/useHasModal.ts";
 
 const emit = defineEmits(['relist']);
 
-const $modal = ref<InstanceType<typeof Modal> | null>(null);
+const $modal = ref<ModalTemplateRef>(null);
+const {show, hide} = useHasModal($modal);
 
 const {$gettext} = useTranslate();
 
@@ -102,7 +104,7 @@ const onRowSelected = (items) => {
     selectedDirs.value = map(items, 'path');
 };
 
-const {form, v$, resetForm} = useVuelidateOnForm(
+const {form, v$, resetForm, ifValid} = useVuelidateOnForm(
     {
         copyPlaylist: {}
     },
@@ -126,7 +128,7 @@ const open = (newApplyToUrl) => {
 
     applyToUrl.value = newApplyToUrl;
     loading.value = true;
-    $modal.value?.show();
+    show();
 
     axios.get(newApplyToUrl).then((resp) => {
         applyToResults.value = resp.data;
@@ -134,26 +136,17 @@ const open = (newApplyToUrl) => {
     });
 };
 
-const close = () => {
-    $modal.value.hide();
-};
-
 const {notifySuccess} = useNotify();
 
 const save = () => {
-    v$.value.$touch();
-    v$.value.$validate().then((isValid) => {
-        if (!isValid) {
-            return;
-        }
-
+    ifValid(() => {
         (selectedDirs.value.length) && axios.put(applyToUrl.value, {
             ...form.value,
             directories: selectedDirs.value
         }).then(() => {
             notifySuccess($gettext('Playlist successfully applied to folders.'));
         }).finally(() => {
-            close();
+            hide();
             emit('relist');
         });
     });

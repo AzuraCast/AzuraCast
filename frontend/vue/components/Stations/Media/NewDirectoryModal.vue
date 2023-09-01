@@ -4,20 +4,24 @@
         ref="$modal"
         centered
         :title="$gettext('New Directory')"
+        @hidden="onHidden"
+        @shown="onShown"
     >
         <form @submit.prevent="doMkdir">
             <form-group-field
                 id="new_directory_name"
+                ref="$field"
                 :field="v$.newDirectory"
-                autofocus
                 :label="$gettext('Directory Name')"
             />
+
+            <invisible-submit-button />
         </form>
         <template #modal-footer>
             <button
                 type="button"
                 class="btn btn-secondary"
-                @click="close"
+                @click="hide"
             >
                 {{ $gettext('Close') }}
             </button>
@@ -37,11 +41,13 @@
 import {required} from '@vuelidate/validators';
 import FormGroupField from "~/components/Form/FormGroupField.vue";
 import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
-import {ref} from "vue";
+import {nextTick, ref} from "vue";
 import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
 import {useTranslate} from "~/vendor/gettext";
 import Modal from "~/components/Common/Modal.vue";
+import InvisibleSubmitButton from "~/components/Common/InvisibleSubmitButton.vue";
+import {ModalTemplateRef, useHasModal} from "~/functions/useHasModal.ts";
 
 const props = defineProps({
     currentDirectory: {
@@ -65,16 +71,19 @@ const {form, v$, resetForm, ifValid} = useVuelidateOnForm(
     }
 );
 
-const $modal = ref<InstanceType<typeof Modal> | null>(null);
+const $modal = ref<ModalTemplateRef>(null);
+const {hide, show: open} = useHasModal($modal);
 
-const close = () => {
+const onHidden = () => {
     resetForm();
+}
 
-    $modal.value?.hide();
-};
+const $field = ref<InstanceType<typeof FormGroupField> | null>(null);
 
-const open = () => {
-    $modal.value?.show();
+const onShown = () => {
+    nextTick(() => {
+        $field.value?.focus();
+    })
 };
 
 const {notifySuccess} = useNotify();

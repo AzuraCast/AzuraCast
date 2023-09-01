@@ -44,7 +44,7 @@
                 <button
                     type="button"
                     class="btn btn-secondary"
-                    @click="close"
+                    @click="hide"
                 >
                     {{ $gettext('Close') }}
                 </button>
@@ -70,6 +70,7 @@ import {ref} from "vue";
 import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
 import {useAxios} from "~/vendor/axios";
 import Modal from "~/components/Common/Modal.vue";
+import {ModalTemplateRef, useHasModal} from "~/functions/useHasModal.ts";
 
 const props = defineProps({
     createUrl: {
@@ -98,12 +99,12 @@ const clearContents = () => {
     newKey.value = null;
 };
 
-const $modal = ref<InstanceType<typeof Modal> | null>(null);
+const $modal = ref<ModalTemplateRef>(null);
+const {show, hide} = useHasModal($modal);
 
 const create = () => {
     clearContents();
-
-    $modal.value?.show();
+    show();
 };
 
 const {axios} = useAxios();
@@ -126,10 +127,6 @@ const doSubmit = async () => {
     }).catch((error) => {
         error.value = error.response.data.message;
     });
-};
-
-const close = () => {
-    $modal.value?.hide();
 };
 
 defineExpose({

@@ -33,7 +33,6 @@
                     v-model="filteredModel"
                     :name="name"
                     :required="isRequired"
-                    :autofocus="autofocus"
                     class="form-control"
                     :class="fieldClass"
                 />
@@ -46,7 +45,6 @@
                     :type="inputType"
                     :name="name"
                     :required="isRequired"
-                    :autofocus="autofocus"
                     class="form-control"
                     :class="fieldClass"
                 >
@@ -74,7 +72,7 @@
 
 <script setup lang="ts">
 import VuelidateError from "./VuelidateError.vue";
-import {computed, ref, useSlots} from "vue";
+import {computed, nextTick, onMounted, ref, useSlots} from "vue";
 import FormGroup from "~/components/Form/FormGroup.vue";
 import FormLabel from "~/components/Form/FormLabel.vue";
 import {formFieldProps, useFormField} from "~/components/Form/useFormField";
@@ -165,6 +163,14 @@ const $input = ref<HTMLInputElement | HTMLTextAreaElement | null>(null);
 const focus = () => {
     $input.value?.focus();
 };
+
+onMounted(() => {
+    if (props.autofocus) {
+        nextTick(() => {
+            focus();
+        });
+    }
+})
 
 defineExpose({
     focus

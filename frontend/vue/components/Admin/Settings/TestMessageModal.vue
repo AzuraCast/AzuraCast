@@ -4,6 +4,7 @@
         ref="$modal"
         centered
         :title="$gettext('Send Test Message')"
+        @hidden="resetForm()"
     >
         <form @submit.prevent="doSendTest">
             <form-group-field
@@ -17,7 +18,7 @@
             <button
                 type="button"
                 class="btn btn-secondary"
-                @click="close"
+                @click="hide"
             >
                 {{ $gettext('Close') }}
             </button>
@@ -42,6 +43,7 @@ import {useTranslate} from "~/vendor/gettext";
 import {useAxios} from "~/vendor/axios";
 import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
 import Modal from "~/components/Common/Modal.vue";
+import {ModalTemplateRef, useHasModal} from "~/functions/useHasModal.ts";
 
 const props = defineProps({
     testMessageUrl: {
@@ -62,16 +64,8 @@ const {form, v$, resetForm, ifValid} = useVuelidateOnForm(
     }
 );
 
-const $modal = ref<InstanceType<typeof Modal> | null>(null);
-
-const open = () => {
-    $modal.value?.show();
-};
-
-const close = () => {
-    resetForm();
-    $modal.value?.hide();
-}
+const $modal = ref<ModalTemplateRef>(null);
+const {show: open, hide} = useHasModal($modal);
 
 const {notifySuccess} = useNotify();
 const {axios} = useAxios();

@@ -99,6 +99,7 @@ import {useTranslate} from "~/vendor/gettext";
 import embedModalProps from "./embedModalProps";
 import Modal from "~/components/Common/Modal.vue";
 import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
+import {ModalTemplateRef, useHasModal} from "~/functions/useHasModal.ts";
 
 const props = defineProps({
     ...embedModalProps
@@ -209,11 +210,8 @@ const embedCode = computed(() => {
     return '<iframe src="' + embedUrl.value + '" frameborder="0" allowtransparency="true" style="width: 100%; min-height: ' + embedHeight.value + '; border: 0;"></iframe>';
 });
 
-const $modal = ref<InstanceType<typeof Modal> | null>(null);
-
-const open = () => {
-    $modal.value?.show();
-};
+const $modal = ref<ModalTemplateRef>(null);
+const {show: open} = useHasModal($modal);
 
 defineExpose({
     open

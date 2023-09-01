@@ -16,7 +16,7 @@
             <button
                 class="btn btn-secondary"
                 type="button"
-                @click="close"
+                @click="hide"
             >
                 {{ $gettext('Close') }}
             </button>
@@ -35,9 +35,12 @@
 import {ref} from "vue";
 import {useClipboard} from "@vueuse/core";
 import Modal from "~/components/Common/Modal.vue";
+import {ModalTemplateRef, useHasModal} from "~/functions/useHasModal.ts";
 
 const logs = ref('Loading...');
-const $modal = ref<InstanceType<typeof Modal> | null>(null);
+
+const $modal = ref<ModalTemplateRef>(null);
+const {show: showModal, hide} = useHasModal($modal);
 
 const show = (newLogs) => {
     const logDisplay = [];
@@ -46,7 +49,7 @@ const show = (newLogs) => {
     });
 
     logs.value = logDisplay.join('');
-    $modal.value?.show();
+    showModal();
 };
 
 const clipboard = useClipboard();
@@ -54,10 +57,6 @@ const clipboard = useClipboard();
 const doCopy = () => {
     clipboard.copy(logs.value);
 };
-
-const close = () => {
-    $modal.value?.hide();
-}
 
 defineExpose({
     show

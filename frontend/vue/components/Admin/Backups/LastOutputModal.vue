@@ -16,6 +16,7 @@
 <script setup lang="ts">
 import {ref} from "vue";
 import Modal from "~/components/Common/Modal.vue";
+import {ModalTemplateRef, useHasModal} from "~/functions/useHasModal.ts";
 
 const props = defineProps({
     lastOutput: {
@@ -24,10 +25,8 @@ const props = defineProps({
     },
 });
 
-const $modal = ref<InstanceType<typeof Modal> | null>(null);
-const show = () => {
-    $modal.value?.show();
-};
+const $modal = ref<ModalTemplateRef>(null);
+const {show} = useHasModal($modal);
 
 defineExpose({
     show

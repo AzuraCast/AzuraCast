@@ -10,7 +10,7 @@
             :show-album-art="showAlbumArt"
             :request-list-uri="requestListUri"
             :custom-fields="customFields"
-            @submitted="doClose"
+            @submitted="hide"
         />
     </modal>
 </template>
@@ -19,6 +19,7 @@
 import SongRequest from '../Requests.vue';
 import {ref} from "vue";
 import Modal from "~/components/Common/Modal.vue";
+import {ModalTemplateRef, useHasModal} from "~/functions/useHasModal.ts";
 
 const props = defineProps({
     requestListUri: {
@@ -36,15 +37,8 @@ const props = defineProps({
     }
 });
 
-const $modal = ref<InstanceType<typeof Modal> | null>(null);
-
-const doClose = () => {
-    $modal.value?.hide();
-};
-
-const open = () => {
-    $modal.value.show();
-}
+const $modal = ref<ModalTemplateRef>(null);
+const {show: open, hide} = useHasModal($modal);
 
 defineExpose({
     open

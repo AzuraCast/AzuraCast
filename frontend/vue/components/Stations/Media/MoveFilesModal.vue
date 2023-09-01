@@ -5,9 +5,10 @@
         size="xl"
         centered
         :title="langHeader"
+        @hidden="onHidden()"
     >
-        <div class="row mb-3 align-items-center">
-            <div class="col-md-6">
+        <div class="d-flex flex-column flex-md-row mb-3 align-items-center">
+            <div class="flex-shrink m-2 m-md-0 me-md-3">
                 <button
                     type="button"
                     class="btn btn-sm btn-primary"
@@ -20,7 +21,7 @@
                     </span>
                 </button>
             </div>
-            <div class="col-md-6 text-end">
+            <div class="flex-fill m-2 m-md-0 text-end">
                 <h6 class="m-0">
                     {{ destinationDirectory }}
                 </h6>
@@ -38,8 +39,8 @@
                     :request-config="requestConfig"
                 >
                     <template #cell(directory)="row">
-                        <div class="is_dir">
-                            <span class="file-icon">
+                        <div class="is_dir d-flex align-items-center">
+                            <span class="file-icon me-2">
                                 <icon :icon="IconFolder" />
                             </span>
 
@@ -58,7 +59,7 @@
             <button
                 type="button"
                 class="btn btn-secondary"
-                @click="close"
+                @click="hide"
             >
                 {{ $gettext('Close') }}
             </button>
@@ -74,7 +75,7 @@
 </template>
 
 <script setup lang="ts">
-import DataTable, { DataTableField } from '~/components/Common/DataTable.vue';
+import DataTable, {DataTableField} from '~/components/Common/DataTable.vue';
 import {forEach} from 'lodash';
 import Icon from '~/components/Common/Icon.vue';
 import {computed, h, ref} from "vue";
@@ -84,6 +85,7 @@ import {useAxios} from "~/vendor/axios";
 import Modal from "~/components/Common/Modal.vue";
 import {IconChevronLeft, IconFolder} from "~/components/Common/icons";
 import {DataTableTemplateRef} from "~/functions/useHasDatatable.ts";
+import {ModalTemplateRef, useHasModal} from "~/functions/useHasModal.ts";
 
 const props = defineProps({
     selectedItems: {
@@ -122,18 +124,13 @@ const langHeader = computed(() => {
     );
 });
 
-const $modal = ref<InstanceType<typeof Modal> | null>(null);
+const $modal = ref<ModalTemplateRef>(null);
+const {show: open, hide} = useHasModal($modal);
 
-const close = () => {
+const onHidden = () => {
     dirHistory.value = [];
     destinationDirectory.value = '';
-
-    $modal.value?.hide();
-};
-
-const open = () => {
-    $modal.value?.show();
-};
+}
 
 const {notifySuccess} = useNotify();
 const {axios} = useAxios();
@@ -156,7 +153,7 @@ const doMove = () => {
             title: notifyMessage
         });
     }).finally(() => {
-        close();
+        hide();
         emit('relist');
     });
 };

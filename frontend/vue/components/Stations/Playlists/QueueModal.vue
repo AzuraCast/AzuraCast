@@ -5,6 +5,7 @@
         size="lg"
         :title="$gettext('Playback Queue')"
         :busy="loading"
+        @hidden="onHidden"
     >
         <p>
             {{
@@ -41,7 +42,7 @@
             <button
                 class="btn btn-secondary"
                 type="button"
-                @click="close"
+                @click="hide"
             >
                 {{ $gettext('Close') }}
             </button>
@@ -62,12 +63,14 @@ import {useAxios} from "~/vendor/axios";
 import {useNotify} from "~/functions/useNotify";
 import {useTranslate} from "~/vendor/gettext";
 import Modal from "~/components/Common/Modal.vue";
+import {ModalTemplateRef, useHasModal} from "~/functions/useHasModal.ts";
 
 const loading = ref(true);
 const queueUrl = ref(null);
 const media = ref([]);
 
-const $modal = ref<InstanceType<typeof Modal> | null>(null);
+const $modal = ref<ModalTemplateRef>(null);
+const {show, hide} = useHasModal($modal);
 
 const {axios} = useAxios();
 
@@ -80,14 +83,12 @@ const open = (newQueueUrl) => {
         loading.value = false;
     });
 
-    $modal.value?.show();
+    show();
 };
 
-const close = () => {
+const onHidden = () => {
     loading.value = false;
     queueUrl.value = null;
-
-    $modal.value?.hide();
 }
 
 const {notifySuccess} = useNotify();
@@ -96,7 +97,7 @@ const {$gettext} = useTranslate();
 const doClear = () => {
     axios.delete(queueUrl.value).then(() => {
         notifySuccess($gettext('Playlist queue cleared.'));
-        close();
+        hide();
     });
 };
 

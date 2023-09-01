@@ -92,19 +92,21 @@ import {useNotify} from "~/functions/useNotify";
 import {useTranslate} from "~/vendor/gettext";
 import Modal from "~/components/Common/Modal.vue";
 import {IconChevronDown, IconChevronUp} from "~/components/Common/icons";
+import {ModalTemplateRef, useHasModal} from "~/functions/useHasModal.ts";
 
 const loading = ref(true);
 const reorderUrl = ref(null);
 const media = ref([]);
 
-const $modal = ref<InstanceType<typeof Modal> | null>(null);
+const $modal = ref<ModalTemplateRef>(null);
+const {show} = useHasModal($modal);
 
 const {axios} = useAxios();
 
 const open = (newReorderUrl) => {
     reorderUrl.value = newReorderUrl;
     loading.value = true;
-    $modal.value?.show();
+    show();
 
     axios.get(newReorderUrl).then((resp) => {
         media.value = resp.data;

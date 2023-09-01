@@ -5,7 +5,7 @@
         size="md"
         centered
         :title="$gettext('Run Manual Backup')"
-        @hidden="clearContents"
+        @hidden="onHidden"
     >
         <template #default>
             <div
@@ -83,7 +83,7 @@
                 <button
                     type="button"
                     class="btn btn-secondary"
-                    @click="close"
+                    @click="hide"
                 >
                     {{ $gettext('Close') }}
                 </button>
@@ -113,6 +113,7 @@ import {useAxios} from "~/vendor/axios";
 import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
 import Modal from "~/components/Common/Modal.vue";
 import FormGroupSelect from "~/components/Form/FormGroupSelect.vue";
+import {ModalTemplateRef, useHasModal} from "~/functions/useHasModal.ts";
 
 const props = defineProps({
     runBackupUrl: {
@@ -133,7 +134,9 @@ const storageLocationOptions = computed(() => {
 
 const logUrl = ref(null);
 const error = ref(null);
-const $modal = ref<InstanceType<typeof Modal> | null>(null);
+
+const $modal = ref<ModalTemplateRef>(null);
+const {show: open, hide} = useHasModal($modal);
 
 const {form, resetForm, v$, ifValid} = useVuelidateOnForm(
     {
@@ -147,15 +150,6 @@ const {form, resetForm, v$, ifValid} = useVuelidateOnForm(
         exclude_media: false,
     }
 );
-
-const open = () => {
-    $modal.value?.show();
-};
-
-const close = () => {
-    $modal.value?.hide();
-    emit('relist');
-}
 
 const {axios} = useAxios();
 
@@ -180,6 +174,11 @@ const clearContents = () => {
     error.value = null;
 
     resetForm();
+}
+
+onHidden = () => {
+    clearContents();
+    emit('relist');
 }
 
 defineExpose({

@@ -39,14 +39,16 @@
 <script setup lang="ts">
 import Modal from "~/components/Common/Modal.vue";
 import {ref} from "vue";
+import {ModalTemplateRef, useHasModal} from "~/functions/useHasModal.ts";
 
-const $modal = ref<InstanceType<typeof Modal> | null>(null);
+const $modal = ref<ModalTemplateRef>(null);
+const {show} = useHasModal($modal);
 
 const changes = ref(null);
 
 const open = (newChanges) => {
     changes.value = newChanges;
-    $modal.value?.show();
+    show();
 };
 
 defineExpose({

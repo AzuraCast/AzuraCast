@@ -82,7 +82,7 @@
             <button
                 type="button"
                 class="btn btn-secondary"
-                @click="close"
+                @click="hide"
             >
                 {{ $gettext('Close') }}
             </button>
@@ -106,6 +106,7 @@ import {useAxios} from "~/vendor/axios";
 import FormGroup from "~/components/Form/FormGroup.vue";
 import Modal from "~/components/Common/Modal.vue";
 import FormFile from "~/components/Form/FormFile.vue";
+import {ModalTemplateRef, useHasModal} from "~/functions/useHasModal.ts";
 
 const emit = defineEmits(['relist']);
 
@@ -119,15 +120,15 @@ const uploaded = (file) => {
     playlistFile.value = file;
 }
 
-const $modal = ref<InstanceType<typeof Modal> | null>(null);
+const $modal = ref<ModalTemplateRef>(null);
+const {show, hide} = useHasModal($modal);
 
 const open = (newImportPlaylistUrl) => {
     playlistFile.value = null;
     overwritePlaylist.value = false;
 
     importPlaylistUrl.value = newImportPlaylistUrl;
-
-    $modal.value?.show();
+    show();
 };
 
 const {notifySuccess, notifyError} = useNotify();
@@ -144,13 +145,9 @@ const doSubmit = () => {
             notifySuccess(resp.data.message);
         } else {
             notifyError(resp.data.message);
-            close();
+            hide();
         }
     });
-};
-
-const close = () => {
-    $modal.value?.hide();
 };
 
 const onHidden = () => {

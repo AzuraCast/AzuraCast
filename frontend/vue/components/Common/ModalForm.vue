@@ -70,6 +70,7 @@ import InvisibleSubmitButton from "~/components/Common/InvisibleSubmitButton.vue
 import {ref} from "vue";
 import useSlotsExcept from "~/functions/useSlotsExcept";
 import Modal from "~/components/Common/Modal.vue";
+import {ModalTemplateRef, useHasModal} from "~/functions/useHasModal.ts";
 
 const props = defineProps({
     title: {
@@ -120,15 +121,8 @@ const onHidden = () => {
     emit('hidden');
 };
 
-const $modal = ref<InstanceType<typeof Modal> | null>(null);
-
-const hide = () => {
-    $modal.value?.hide();
-};
-
-const show = () => {
-    $modal.value?.show();
-};
+const $modal = ref<ModalTemplateRef>(null);
+const {show, hide} = useHasModal($modal);
 
 defineExpose({
     show,

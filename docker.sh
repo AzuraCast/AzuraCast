@@ -854,7 +854,21 @@ rollback() {
     dc exec --user="azuracast" web azuracast_cli azuracast:setup:rollback "${AZURACAST_ROLLBACK_VERSION}"
 
     .env --file .env set AZURACAST_VERSION=${AZURACAST_ROLLBACK_VERSION}
-    update
+
+    dc pull
+    dc down --timeout 60
+
+    dc run --rm web -- azuracast_update "$@"
+    dc up -d
+
+    if ask "Clean up all stopped Docker containers and images to save space?" Y; then
+      d system prune -f
+    fi
+
+    echo "Rollback complete. Your installation has been returned to stable version '${AZURACAST_ROLLBACK_VERSION}'."
+    echo "To return to the regular update channels, run:"
+    echo "  ./docker.sh setup-release"
+    echo " "
   fi
   exit
 }

@@ -842,7 +842,7 @@ uninstall() {
 #
 rollback() {
   local AZURACAST_ROLLBACK_VERSION
-  AZURACAST_ROLLBACK_VERSION={$1:""}
+  AZURACAST_ROLLBACK_VERSION="$1"
 
   if [[ -z "$AZURACAST_ROLLBACK_VERSION" ]]; then
     echo "No version specified. Specify a version, like 0.19.0."

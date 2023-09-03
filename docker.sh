@@ -245,6 +245,10 @@ setup-release() {
     if ask "Your current release channel is 'Stable'. Switch to 'Rolling Release' release channel?" N; then
       AZURACAST_VERSION="latest"
     fi
+  else
+    if ask "Your current release channel is locked to a stable release, version '${OLD_RELEASE_CHANNEL}'. Switch to the 'Stable' release channel?" N; then
+      AZURACAST_VERSION="stable"
+    fi
   fi
 
   .env --file .env set AZURACAST_VERSION=${AZURACAST_VERSION}

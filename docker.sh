@@ -857,7 +857,7 @@ rollback() {
     .env --file .env set AZURACAST_VERSION=${AZURACAST_ROLLBACK_VERSION}
 
     dc pull
-    dc run --rm web -- azuracast_update "$@"
+    dc run --rm web -- azuracast_update
     dc up -d
 
     if ask "Clean up all stopped Docker containers and images to save space?" Y; then

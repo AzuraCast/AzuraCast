@@ -838,6 +838,28 @@ uninstall() {
 }
 
 #
+# Roll back to a specific stable release version.
+#
+rollback() {
+  local AZURACAST_ROLLBACK_VERSION
+  AZURACAST_ROLLBACK_VERSION={$1:""}
+
+  if [[ $AZURACAST_ROLLBACK_VERSION == "" ]]; then
+    echo "No version specified. Specify a version, like 0.19.0."
+    exit 1
+  fi
+
+  echo "[NOTICE] Before you continue, please make sure you have a recent snapshot of your system and or backed it up."
+  if ask "Are you ready to continue with the rollback?" Y; then
+    cli azuracast:setup:rollback "${AZURACAST_ROLLBACK_VERSION}"
+
+    .env --file .env set AZURACAST_VERSION=${AZURACAST_ROLLBACK_VERSION}
+    update
+  fi
+  exit
+}
+
+#
 # LetsEncrypt: Now managed via the Web UI.
 #
 setup-letsencrypt() {

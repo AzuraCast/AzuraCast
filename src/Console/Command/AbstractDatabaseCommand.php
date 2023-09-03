@@ -7,8 +7,11 @@ namespace App\Console\Command;
 use App\Console\Command\Traits\PassThruProcess;
 use App\Container\EntityManagerAwareTrait;
 use App\Container\EnvironmentAwareTrait;
+use App\Entity\StorageLocation;
+use Exception;
 use RuntimeException;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\Filesystem\Filesystem;
 
 abstract class AbstractDatabaseCommand extends CommandAbstract
 {
@@ -90,5 +93,54 @@ abstract class AbstractDatabaseCommand extends CommandAbstract
             dirname($path),
             $commandEnvVars
         );
+    }
+
+    protected function saveOrRestoreDatabase(
+        SymfonyStyle $io,
+    ): string {
+        $io->section(__('Backing up initial database state...'));
+
+        $tempDir = StorageLocation::DEFAULT_BACKUPS_PATH;
+        $dbDumpPath = $tempDir . '/pre_migration_db.sql';
+
+        $fs = new Filesystem();
+
+        if ($fs->exists($dbDumpPath)) {
+            $io->info([
+                __('We detected a database restore file from a previous (possibly failed) migration.'),
+                __('Attempting to restore that now...'),
+            ]);
+
+            $this->restoreDatabaseDump($io, $dbDumpPath);
+        } else {
+            $this->dumpDatabase($io, $dbDumpPath);
+        }
+
+        return $dbDumpPath;
+    }
+
+    protected function tryEmergencyRestore(
+        SymfonyStyle $io,
+        string $dbDumpPath
+    ): int {
+        $io->section(__('Attempting to roll back to previous database state...'));
+
+        try {
+            $this->restoreDatabaseDump($io, $dbDumpPath);
+
+            $io->warning([
+                __('Your database was restored due to a failed migration.'),
+                __('Please report this bug to our developers.'),
+            ]);
+            return 0;
+        } catch (Exception $e) {
+            $io->error(
+                sprintf(
+                    __('Restore failed: %s'),
+                    $e->getMessage()
+                )
+            );
+            return 1;
+        }
     }
 }

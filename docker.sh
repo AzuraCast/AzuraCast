@@ -852,12 +852,11 @@ rollback() {
   echo "[NOTICE] Before you continue, please make sure you have a recent snapshot of your system and or backed it up."
   if ask "Are you ready to continue with the rollback?" Y; then
     dc exec --user="azuracast" web azuracast_cli azuracast:setup:rollback "${AZURACAST_ROLLBACK_VERSION}"
+    dc down --timeout 60
 
     .env --file .env set AZURACAST_VERSION=${AZURACAST_ROLLBACK_VERSION}
 
     dc pull
-    dc down --timeout 60
-
     dc run --rm web -- azuracast_update "$@"
     dc up -d
 

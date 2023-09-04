@@ -16,11 +16,11 @@
 <script setup lang="ts">
 import Icon from "./Icon.vue";
 import {usePlayerStore} from "~/store";
-import {computed, toRef} from "vue";
-import {get} from "@vueuse/core";
+import {computed} from "vue";
 import {useTranslate} from "~/vendor/gettext";
-import getUrlWithoutQuery from "~/functions/getUrlWithoutQuery";
 import {IconPlayCircle, IconStopCircle} from "~/components/Common/icons";
+import {storeToRefs} from "pinia";
+import getUrlWithoutQuery from "~/functions/getUrlWithoutQuery.ts";
 
 const props = defineProps({
     url: {
@@ -42,16 +42,14 @@ const props = defineProps({
 });
 
 const $store = usePlayerStore();
-
-const isPlaying = toRef($store, 'isPlaying');
-const current = toRef($store, 'current');
+const {isPlaying, current} = storeToRefs($store);
 
 const isThisPlaying = computed(() => {
     if (!isPlaying.value) {
         return false;
     }
 
-    const playingUrl = getUrlWithoutQuery(current.value.url);
+    const playingUrl = getUrlWithoutQuery(current.value?.url);
     const thisUrl = getUrlWithoutQuery(props.url);
     return playingUrl === thisUrl;
 });
@@ -59,13 +57,13 @@ const isThisPlaying = computed(() => {
 const {$gettext} = useTranslate();
 
 const langTitle = computed(() => {
-    return get(isThisPlaying)
+    return isThisPlaying.value
         ? $gettext('Stop')
         : $gettext('Play');
 });
 
 const iconText = computed(() => {
-    return get(isThisPlaying)
+    return isThisPlaying.value
         ? IconStopCircle
         : IconPlayCircle;
 });
@@ -79,9 +77,6 @@ const toggle = () => {
 };
 
 defineExpose({
-    current,
-    isPlaying,
-    isThisPlaying,
     toggle
 })
 </script>

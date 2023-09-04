@@ -11,10 +11,9 @@
 </template>
 
 <script setup lang="ts">
-const props = defineProps({
-    icon: {
-        type: Object,
-        default: null
-    }
-});
+import {Icon} from "~/components/Common/icons.ts";
+
+const props = defineProps<{
+    icon: Icon
+}>();
 </script>

@@ -11,6 +11,7 @@ import getLogarithmicVolume from '~/functions/getLogarithmicVolume';
 import Hls from 'hls.js';
 import {usePlayerStore} from "~/store";
 import {nextTick, onMounted, onScopeDispose, ref, toRef, watch} from "vue";
+import {storeToRefs} from "pinia";
 
 const props = defineProps({
     title: {
@@ -33,8 +34,7 @@ const duration = ref(0);
 const currentTime = ref(0);
 
 const store = usePlayerStore();
-const isPlaying = toRef(store, 'isPlaying');
-const current = toRef(store, 'current');
+const {isPlaying, current} = storeToRefs(store);
 
 const bc = ref<BroadcastChannel | null>(null);
 
@@ -134,14 +134,6 @@ const play = () => {
     });
 };
 
-const toggle = (url, isStream, isHls) => {
-    store.toggle({
-        url: url,
-        isStream: isStream,
-        isHls: isHls,
-    });
-};
-
 watch(current, (newCurrent) => {
     if (newCurrent.url === null) {
         stop();
@@ -190,7 +182,6 @@ onScopeDispose(() => {
 defineExpose({
     play,
     stop,
-    toggle,
     getCurrentTime,
     getDuration,
     getProgress,

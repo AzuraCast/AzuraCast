@@ -149,6 +149,7 @@ import MuteButton from "~/components/Common/MuteButton.vue";
 import AlbumArt from "~/components/Common/AlbumArt.vue";
 import {useAzuraCastStation} from "~/vendor/azuracast";
 import usePlayerVolume from "~/functions/usePlayerVolume";
+import {usePlayerStore} from "~/store.ts";
 
 const props = defineProps({
     ...playerProps
@@ -165,43 +166,48 @@ const {
     currentTrackElapsedDisplay
 } = useNowPlaying(props);
 
-const currentStream = shallowRef({
-    'name': '',
-    'url': '',
-    'hls': false,
+interface CurrentStreamDescriptor {
+    name: string,
+    url: string,
+    hls: boolean,
+}
+
+const currentStream = shallowRef<CurrentStreamDescriptor>({
+    name: '',
+    url: '',
+    hls: false,
 });
 
 const enable_hls = computed(() => {
-    const $np = np.value;
-    return props.showHls && $np.station.hls_enabled;
+    return props.showHls && np.value?.station?.hls_enabled;
 });
 
 const {$gettext} = useTranslate();
 
-const streams = computed(() => {
+const streams = computed<CurrentStreamDescriptor[]>(() => {
     const allStreams = [];
-    const $np = np.value;
 
     if (enable_hls.value) {
         allStreams.push({
-            'name': $gettext('HLS'),
-            'url': $np.station.hls_url,
-            'hls': true,
+            name: $gettext('HLS'),
+            url: np.value?.station?.hls_url,
+            hls: true,
         });
     }
 
-    $np.station.mounts.forEach(function (mount) {
+    np.value?.station?.mounts.forEach(function (mount) {
         allStreams.push({
-            'name': mount.name,
-            'url': mount.url,
-            'hls': false,
+            name: mount.name,
+            url: mount.url,
+            hls: false,
         });
     });
-    $np.station.remotes.forEach(function (remote) {
+
+    np.value?.station?.remotes.forEach(function (remote) {
         allStreams.push({
-            'name': remote.name,
-            'url': remote.url,
-            'hls': false,
+            name: remote.name,
+            url: remote.url,
+            hls: false,
         });
     });
 
@@ -223,9 +229,16 @@ const toggleMute = () => {
     isMuted.value = !isMuted.value;
 }
 
-const switchStream = (new_stream) => {
+const $store = usePlayerStore();
+
+const switchStream = (new_stream: CurrentStreamDescriptor) => {
     currentStream.value = new_stream;
-    $player.value.toggle(new_stream.url, true, new_stream.hls);
+
+    $store.toggle({
+        url: new_stream.url,
+        isStream: true,
+        isHls: new_stream.hls
+    });
 };
 
 onMounted(() => {

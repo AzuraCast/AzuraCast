@@ -42,6 +42,7 @@ const {$gettext, interpolate} = useTranslate();
 
 const langSeconds = $gettext('%{ seconds } seconds');
 const langMinutes = $gettext('%{ minutes } minutes');
+const langHours   = $gettext('%{ hours } hours');
 
 const rateLimitOptions = [
     {
@@ -83,6 +84,22 @@ const rateLimitOptions = [
     {
         text: interpolate(langMinutes, {minutes: 60}),
         value: 3600,
-    }
+    },
+    {
+        text: interpolate(langHours, {hours: 2}),
+        value: 7200,
+    },
+    {
+        text: interpolate(langHours, {hours: 3}),
+        value: 10800,
+    },
+    {
+        text: interpolate(langHours, {hours: 6}),
+        value: 21600,
+    },
+    {
+        text: interpolate(langHours, {hours: 12}),
+        value: 43200,
+     }
 ];
 </script>

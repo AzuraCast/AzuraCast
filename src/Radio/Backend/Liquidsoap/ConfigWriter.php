@@ -1032,7 +1032,7 @@ final class ConfigWriter implements EventSubscriberInterface
             end
             live = metadata.map(insert_missing, live)
 
-            radio = fallback(id="live_fallback", replay_metadata=true, [live, radio])
+            radio = fallback(id="live_fallback", track_sensitive=false, replay_metadata=true, [live, radio])
 
             # Skip non-live track when live DJ goes live.
             def check_live() =

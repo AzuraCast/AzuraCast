@@ -202,7 +202,9 @@
                     <template v-else-if="visibleItems.length === 0">
                         <tr>
                             <td :colspan="columnCount">
-                                {{ $gettext('No records.') }}
+                                <slot name="empty">
+                                    {{ $gettext('No records.') }}
+                                </slot>
                             </td>
                         </tr>
                     </template>
@@ -265,12 +267,6 @@
                             </td>
                         </tr>
                     </template>
-
-                    <tr v-if="!visibleItems.length">
-                        <td :colspan="columnCount">
-                            <slot name="empty" />
-                        </td>
-                    </tr>
                 </tbody>
             </table>
         </div>
@@ -372,6 +368,7 @@ const props = defineProps({
 const slots = useSlots();
 
 const emit = defineEmits([
+    'refresh-clicked',
     'refreshed',
     'row-selected',
     'filtered',
@@ -640,6 +637,8 @@ const relist = () => {
 };
 
 const onClickRefresh = (e) => {
+    emit('refresh-clicked', e);
+
     if (e.shiftKey) {
         relist();
     } else {

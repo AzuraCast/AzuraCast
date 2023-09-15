@@ -109,6 +109,7 @@
                         handle-client-side
                         :fields="fields"
                         :items="listeners"
+                        @refresh-clicked="updateListeners()"
                     >
                         <template #cell(time)="row">
                             {{ formatTime(row.item.connected_time) }}
@@ -174,7 +175,7 @@
 import StationReportsListenersMap from "./Listeners/Map.vue";
 import Icon from "~/components/Common/Icon.vue";
 import formatTime from "~/functions/formatTime";
-import DataTable, { DataTableField } from "~/components/Common/DataTable.vue";
+import DataTable, {DataTableField} from "~/components/Common/DataTable.vue";
 import DateRangeDropdown from "~/components/Common/DateRangeDropdown.vue";
 import {computed, nextTick, onMounted, ref, shallowRef, watch} from "vue";
 import {useTranslate} from "~/vendor/gettext";
@@ -183,7 +184,7 @@ import {useAzuraCastStation} from "~/vendor/azuracast";
 import {useLuxon} from "~/vendor/luxon";
 import {getStationApiUrl} from "~/router";
 import {IconDesktopWindows, IconDownload, IconSmartphone} from "~/components/Common/icons";
-import useHasDatatable, { DataTableTemplateRef } from "~/functions/useHasDatatable";
+import useHasDatatable, {DataTableTemplateRef} from "~/functions/useHasDatatable";
 
 const props = defineProps({
     attribution: {

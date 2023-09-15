@@ -21,20 +21,21 @@
             handle-client-side
             :fields="fields"
             :items="stats.all"
+            @refresh-clicked="reloadData()"
         />
     </loading>
 </template>
 
 <script setup lang="ts">
 import PieChart from "~/components/Common/Charts/PieChart.vue";
-import DataTable, { DataTableField } from "~/components/Common/DataTable.vue";
+import DataTable, {DataTableField} from "~/components/Common/DataTable.vue";
 import {ref, toRef, watch} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import {useAsyncState, useMounted} from "@vueuse/core";
 import {useAxios} from "~/vendor/axios";
 import Loading from "~/components/Common/Loading.vue";
 import {useLuxon} from "~/vendor/luxon";
-import useHasDatatable, { DataTableTemplateRef } from "~/functions/useHasDatatable";
+import useHasDatatable, {DataTableTemplateRef} from "~/functions/useHasDatatable";
 
 const props = defineProps({
     dateRange: {

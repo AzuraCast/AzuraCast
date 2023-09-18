@@ -18,6 +18,7 @@ use Psr\Http\Message\ResponseInterface;
 
 #[OA\Post(
     path: '/station/{station_id}/podcast/{podcast_id}/art',
+    operationId: 'postPodcastArt',
     description: 'Sets the album art for a podcast.',
     security: OpenApi::API_KEY_SECURITY,
     tags: ['Stations: Podcasts'],

@@ -16,6 +16,7 @@ use Psr\Http\Message\ResponseInterface;
 #[
     OA\Get(
         path: '/nowplaying',
+        operationId: 'getAllNowPlaying',
         description: "Returns a full summary of all stations' current state.",
         tags: ['Now Playing'],
         parameters: [],
@@ -32,6 +33,7 @@ use Psr\Http\Message\ResponseInterface;
     ),
     OA\Get(
         path: '/nowplaying/{station_id}',
+        operationId: 'getStationNowPlaying',
         description: "Returns a full summary of the specified station's current state.",
         tags: ['Now Playing'],
         parameters: [

@@ -762,7 +762,7 @@ paths:
       tags:
         - Miscellaneous
       description: 'Returns an affirmative response if the API is active.'
-      operationId: bc32a129ca3e8ad2060b71bdd90da78d
+      operationId: getStatus
       responses:
         '200':
           description: Success
@@ -775,7 +775,7 @@ paths:
       tags:
         - Miscellaneous
       description: "Returns the time (with formatting) in GMT and the user's local time zone, if logged in."
-      operationId: 3092a8238a915a0b6b324f2a90942a94
+      operationId: getTime
       responses:
         '200':
           description: Success
@@ -803,6 +803,7 @@ paths:
       tags:
         - 'Now Playing'
       description: "Returns a full summary of all stations' current state."
+      operationId: getAllNowPlaying
       responses:
         '200':
           description: Success
@@ -817,6 +818,7 @@ paths:
       tags:
         - 'Now Playing'
       description: "Returns a full summary of the specified station's current state."
+      operationId: getStationNowPlaying
       parameters:
         -
           $ref: '#/components/parameters/StationIdRequired'
@@ -834,6 +836,7 @@ paths:
       tags:
         - 'Stations: Media'
       description: 'Returns the album art for a song, or a generic image.'
+      operationId: getMediaArt
       parameters:
         -
           $ref: '#/components/parameters/StationIdRequired'
@@ -853,6 +856,7 @@ paths:
       tags:
         - 'Stations: Media'
       description: 'Sets the album art for a track.'
+      operationId: postMediaArt
       parameters:
         -
           $ref: '#/components/parameters/StationIdRequired'
@@ -884,6 +888,7 @@ paths:
       tags:
         - 'Stations: Media'
       description: 'Removes the album art for a track.'
+      operationId: deleteMediaArt
       parameters:
         -
           $ref: '#/components/parameters/StationIdRequired'
@@ -916,6 +921,7 @@ paths:
       tags:
         - 'Stations: General'
       description: 'Get the custom fallback track for a station.'
+      operationId: getStationFallback
       parameters:
         -
           $ref: '#/components/parameters/StationIdRequired'
@@ -935,6 +941,7 @@ paths:
       tags:
         - 'Stations: General'
       description: 'Update the custom fallback track for the station.'
+      operationId: postStationFallback
       parameters:
         -
           $ref: '#/components/parameters/StationIdRequired'
@@ -954,6 +961,7 @@ paths:
       tags:
         - 'Stations: General'
       description: 'Removes the custom fallback track for a station.'
+      operationId: deleteStationFallback
       parameters:
         -
           $ref: '#/components/parameters/StationIdRequired'
@@ -1367,6 +1375,7 @@ paths:
       tags:
         - 'Stations: Mount Points'
       description: 'Get the intro track for a mount point.'
+      operationId: getMountIntro
       parameters:
         -
           $ref: '#/components/parameters/StationIdRequired'
@@ -1394,6 +1403,7 @@ paths:
       tags:
         - 'Stations: Mount Points'
       description: 'Update the intro track for a mount point.'
+      operationId: postMountIntro
       parameters:
         -
           $ref: '#/components/parameters/StationIdRequired'
@@ -1421,6 +1431,7 @@ paths:
       tags:
         - 'Stations: Mount Points'
       description: 'Removes the intro track for a mount point.'
+      operationId: deleteMountIntro
       parameters:
         -
           $ref: '#/components/parameters/StationIdRequired'
@@ -1923,6 +1934,7 @@ paths:
       tags:
         - 'Stations: Podcasts'
       description: 'Gets the album art for a podcast.'
+      operationId: getPodcastArt
       parameters:
         -
           $ref: '#/components/parameters/StationIdRequired'
@@ -1949,6 +1961,7 @@ paths:
       tags:
         - 'Stations: Podcasts'
       description: 'Sets the album art for a podcast.'
+      operationId: postPodcastArt
       parameters:
         -
           $ref: '#/components/parameters/StationIdRequired'
@@ -1975,6 +1988,7 @@ paths:
       tags:
         - 'Stations: Podcasts'
       description: 'Removes the album art for a podcast.'
+      operationId: deletePodcastArt
       parameters:
         -
           $ref: '#/components/parameters/StationIdRequired'
@@ -2002,6 +2016,7 @@ paths:
       tags:
         - 'Stations: Podcasts'
       description: 'Gets the album art for a podcast episode.'
+      operationId: getPodcastEpisodeArt
       parameters:
         -
           $ref: '#/components/parameters/StationIdRequired'
@@ -2035,6 +2050,7 @@ paths:
       tags:
         - 'Stations: Podcasts'
       description: 'Sets the album art for a podcast episode.'
+      operationId: postPodcastEpisodeArt
       parameters:
         -
           $ref: '#/components/parameters/StationIdRequired'
@@ -2068,6 +2084,7 @@ paths:
       tags:
         - 'Stations: Podcasts'
       description: 'Removes the album art for a podcast episode.'
+      operationId: deletePodcastEpisodeArt
       parameters:
         -
           $ref: '#/components/parameters/StationIdRequired'
@@ -2112,6 +2129,7 @@ paths:
       tags:
         - 'Stations: Podcasts'
       description: 'Gets the media for a podcast episode.'
+      operationId: getPodcastEpisodeMedia
       parameters:
         -
           $ref: '#/components/parameters/StationIdRequired'
@@ -2145,6 +2163,7 @@ paths:
       tags:
         - 'Stations: Podcasts'
       description: 'Sets the media for a podcast episode.'
+      operationId: postPodcastEpisodeMedia
       parameters:
         -
           $ref: '#/components/parameters/StationIdRequired'
@@ -2178,6 +2197,7 @@ paths:
       tags:
         - 'Stations: Podcasts'
       description: 'Removes the media for a podcast episode.'
+      operationId: deletePodcastEpisodeMedia
       parameters:
         -
           $ref: '#/components/parameters/StationIdRequired'
@@ -2936,6 +2956,7 @@ paths:
       tags:
         - 'Stations: Broadcasting'
       description: 'Get the Stereo Tool configuration file for a station.'
+      operationId: getStereoToolConfiguration
       parameters:
         -
           $ref: '#/components/parameters/StationIdRequired'
@@ -2955,6 +2976,7 @@ paths:
       tags:
         - 'Stations: Broadcasting'
       description: 'Update the Stereo Tool configuration file for a station.'
+      operationId: postStereoToolConfiguration
       parameters:
         -
           $ref: '#/components/parameters/StationIdRequired'
@@ -2974,6 +2996,7 @@ paths:
       tags:
         - 'Stations: Broadcasting'
       description: 'Removes the Stereo Tool configuration file for a station.'
+      operationId: deleteStereoToolConfiguration
       parameters:
         -
           $ref: '#/components/parameters/StationIdRequired'

@@ -17,6 +17,7 @@ use Psr\Http\Message\ResponseInterface;
 
 #[OA\Get(
     path: '/station/{station_id}/mount/{id}/intro',
+    operationId: 'getMountIntro',
     description: 'Get the intro track for a mount point.',
     security: OpenApi::API_KEY_SECURITY,
     tags: ['Stations: Mount Points'],

@@ -80,7 +80,7 @@
 </template>
 
 <script setup lang="ts">
-import {BackendAdapter} from '~/components/Entity/RadioAdapters';
+import {BackendAdapter} from '~/entities/RadioAdapters';
 import Icon from '~/components/Common/Icon.vue';
 import RunningBadge from "~/components/Common/Badges/RunningBadge.vue";
 import {useTranslate} from "~/vendor/gettext";

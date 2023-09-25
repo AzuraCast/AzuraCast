@@ -168,7 +168,7 @@
 <script setup lang="ts">
 import FormFieldset from "~/components/Form/FormFieldset.vue";
 import FormGroupField from "~/components/Form/FormGroupField.vue";
-import {FrontendAdapter} from "~/components/Entity/RadioAdapters";
+import {FrontendAdapter} from "~/entities/RadioAdapters";
 import objectToFormOptions from "~/functions/objectToFormOptions";
 import {computed} from "vue";
 import {useTranslate} from "~/vendor/gettext";

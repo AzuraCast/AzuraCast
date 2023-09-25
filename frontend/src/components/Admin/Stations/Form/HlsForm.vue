@@ -83,7 +83,7 @@
 <script setup lang="ts">
 import FormFieldset from "~/components/Form/FormFieldset.vue";
 import FormGroupField from "~/components/Form/FormGroupField.vue";
-import {BackendAdapter} from "~/components/Entity/RadioAdapters";
+import {BackendAdapter} from "~/entities/RadioAdapters";
 import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
 import BackendDisabled from "./Common/BackendDisabled.vue";
 import {computed} from "vue";

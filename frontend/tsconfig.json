@@ -32,9 +32,9 @@
     "noFallthroughCasesInSwitch": true
   },
   "include": [
-    "vue/**/*.ts",
-    "vue/**/*.d.ts",
-    "vue/**/*.tsx",
-    "vue/**/*.vue"
+    "src/**/*.ts",
+    "src/**/*.d.ts",
+    "src/**/*.tsx",
+    "src/**/*.vue"
   ]
 }

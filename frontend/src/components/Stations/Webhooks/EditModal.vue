@@ -46,7 +46,7 @@ import {baseEditModalProps, ModalFormTemplateRef, useBaseEditModal} from "~/func
 import {computed, nextTick, provide, ref} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import ModalForm from "~/components/Common/ModalForm.vue";
-import {getTriggers, WebhookType} from "~/components/Entity/Webhooks";
+import {getTriggers, WebhookType} from "~/entities/Webhooks";
 import Tabs from "~/components/Common/Tabs.vue";
 import RadioDe from "~/components/Stations/Webhooks/Form/RadioDe.vue";
 import GetMeRadio from "~/components/Stations/Webhooks/Form/GetMeRadio.vue";

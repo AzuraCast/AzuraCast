@@ -1,4 +1,4 @@
-import NowPlaying from '~/components/Entity/NowPlaying';
+import NowPlaying from '~/entities/NowPlaying';
 import {computed, onMounted, ref, shallowRef, watch} from "vue";
 import {useEventSource, useIntervalFn} from "@vueuse/core";
 import {useAxios} from "~/vendor/axios";

@@ -68,7 +68,7 @@
 </template>
 
 <script setup lang="ts">
-import {RemoteAdapter} from '~/components/Entity/RadioAdapters';
+import {RemoteAdapter} from '~/entities/RadioAdapters';
 import FormGroupField from "~/components/Form/FormGroupField.vue";
 import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
 import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";

@@ -104,7 +104,7 @@
 </template>
 
 <script setup lang="ts">
-import {FrontendAdapter} from '~/components/Entity/RadioAdapters';
+import {FrontendAdapter} from '~/entities/RadioAdapters';
 import FormGroupField from "~/components/Form/FormGroupField.vue";
 import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
 import {computed} from "vue";

@@ -5,7 +5,8 @@
   "scripts": {
     "build": "vite build",
     "serve": "vite",
-    "generate-locales": "vue-gettext-extract"
+    "generate-locales": "vue-gettext-extract",
+    "generate-api": "swagger-typescript-api --path http://localhost/api/openapi.yml --output ./src/entities --name ApiInterfaces.ts --no-client"
   },
   "dependencies": {
     "@codemirror/lang-css": "^6.0.1",
@@ -63,6 +64,7 @@
     "jsdom": "^22.1.0",
     "sass": "^1.39.2",
     "svg.js": "^2.7.1",
+    "swagger-typescript-api": "^13.0.3",
     "typescript": "^5.1.6",
     "vite": "^4.4.6",
     "vite-plugin-eslint": "^1.8.1",

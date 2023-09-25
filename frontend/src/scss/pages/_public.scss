@@ -26,8 +26,9 @@ body.page-minimal {
       }
 
       @include media-breakpoint-only('xs') {
-        width: calc(100% - 40px);
-        margin-left: 0;
+        width: 100%;
+        margin-left: 15px;
+        margin-right: 15px;
       }
     }
   }

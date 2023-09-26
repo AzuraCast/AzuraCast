@@ -35,6 +35,9 @@ release channel, you can take advantage of these new features and fixes.
 
 ## Bug Fixes
 
+- The public download for the Stereo Tool plugin module was changed by the vendor in a way that broke compatibility with
+  our uploader tool. This has been resolved, and plugin version 10.10 is now supported in the application.
+
 - Several issues with DataTable pagination and display have been fixed.
 
 - Fixed an issue preventing web updates from going through correctly.

@@ -17,8 +17,8 @@ final class StereoTool
     {
         $libraryPath = self::getLibraryPath();
 
-        return file_exists($libraryPath . '/stereo_tool')
-            || file_exists($libraryPath . '/libStereoTool.so');
+        return file_exists($libraryPath . '/' . self::VERSION_FILE)
+            || file_exists($libraryPath . '/stereo_tool');
     }
 
     public static function getLibraryPath(): string

@@ -53,23 +53,24 @@ final class PostAction implements SingleActionInterface
 
             $flowResponse->delete();
 
-            $unzippedPath = $destTempPath . '/Stereo_Tool_Generic_plugin_1000';
-            if (is_dir($unzippedPath)) {
-                $fsUtils->rename(
-                    $unzippedPath . '/libStereoTool.so',
-                    $libraryPath . '/libStereoTool.so',
-                    true
-                );
+            $pluginDirs = glob($destTempPath . '/Stereo_Tool_Generic_plugin_*') ?: [];
+            if (count($pluginDirs) > 0) {
+                $pluginDir = $pluginDirs[0];
+                $versionStr = str_replace($destTempPath . '/Stereo_Tool_Generic_plugin_', '', $pluginDir);
 
-                $fsUtils->rename(
-                    $unzippedPath . '/libStereoTool_64.so',
-                    $libraryPath . '/libStereoTool_64.so',
-                    true
-                );
+                $filesToCopy = glob($pluginDir . '/libStereoTool*.so') ?: [];
+
+                foreach ($filesToCopy as $fileToCopy) {
+                    $fsUtils->rename(
+                        $fileToCopy,
+                        $libraryPath . '/' . basename($fileToCopy),
+                        true
+                    );
+                }
 
                 $fsUtils->dumpFile(
                     $libraryPath . '/' . StereoTool::VERSION_FILE,
-                    '10.0',
+                    substr($versionStr, 0, 2) . '.' . substr($versionStr, 2),
                 );
             } else {
                 throw new InvalidArgumentException('Uploaded file not recognized.');

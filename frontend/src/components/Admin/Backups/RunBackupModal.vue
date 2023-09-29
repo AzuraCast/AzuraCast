@@ -176,7 +176,7 @@ const clearContents = () => {
     resetForm();
 }
 
-onHidden = () => {
+const onHidden = () => {
     clearContents();
     emit('relist');
 }

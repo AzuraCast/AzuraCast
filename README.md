@@ -101,6 +101,7 @@ We would like to thank the following organizations for their support of AzuraCas
 - [BrowserStack](https://www.browserstack.com/) for giving us tools to help test our software's accessibility and
   features across multiple browsers and operating systems.
 - [Depot](https://depot.dev/?utm_source=AzuraCast) for powering our Docker image builds.
+- [Elestio](https://elest.io/open-source/azuracast) for deploying and fully managing your Azuracast application.
 
 - The creators and maintainers of the many free and open-source tools that AzuraCast is built on, who have done so much
   to help move FOSS forward

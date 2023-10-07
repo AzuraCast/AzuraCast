@@ -103,11 +103,6 @@ final class ConfigWriter implements EventSubscriberInterface
             <<<NGINX
             # Reverse proxy the frontend broadcast.
             location {$hlsBaseUrl} {
-                types {
-                    application/vnd.apple.mpegurl m3u8;
-                    video/mp2t ts;
-                }
-
                 location ~ \.m3u8$ {
                     access_log {$hlsLogPath} hls_json;
                 }

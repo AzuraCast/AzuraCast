@@ -11,6 +11,7 @@ export function setGlobalProps(newGlobalProps: AzuraCastConstants): void {
 export interface AzuraCastStationConstants {
     id: number | null,
     name: string | null,
+    isEnabled: boolean | null,
     shortName: string | null,
     timezone: string | null,
     offlineText: string | null,
@@ -60,6 +61,7 @@ export function useAzuraCastStation(): AzuraCastStationConstants {
     return (station !== null) ? station : {
         id: null,
         name: null,
+        isEnabled: null,
         shortName: null,
         timezone: null,
         offlineText: null

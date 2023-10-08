@@ -6,8 +6,7 @@ export default function useStationsRoutes() {
         {
             path: '/',
             component: () => import('~/components/Stations/Profile.vue'),
-            name: 'stations:index',
-            ...populateComponentRemotely(getStationApiUrl('/vue/profile'))
+            name: 'stations:index'
         },
         {
             path: '/branding',

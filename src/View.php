@@ -227,6 +227,7 @@ final class View extends Engine
                 $this->globalProps->set('station', [
                     'id' => $station->getIdRequired(),
                     'name' => $station->getName(),
+                    'isEnabled' => $station->getIsEnabled(),
                     'shortName' => $station->getShortName(),
                     'timezone' => $station->getTimezone(),
                     'offlineText' => $station->getBrandingConfig()->getOfflineText(),

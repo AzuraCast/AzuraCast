@@ -17,12 +17,12 @@ currently beta software.
 
 ![](https://www.azuracast.com/img/ScreenshotTour.gif)
 
-You can learn more about AzuraCast via our [Documentation](https://docs.azuracast.com/):
+You can learn more about AzuraCast via our [Documentation](https://www.azuracast.com/docs):
 
-- [About AzuraCast](https://docs.azuracast.com/en/home#core-features)
-- [Included Software](https://docs.azuracast.com/en/home#whats-included)
-- [System Requirements](https://docs.azuracast.com/en/getting-started/requirements)
-- [Installation](https://docs.azuracast.com/en/getting-started/installation)
+- [About AzuraCast](https://www.azuracast.com/docs/#core-features)
+- [Included Software](https://www.azuracast.com/docs/#whats-included)
+- [System Requirements](https://www.azuracast.com/docs/getting-started/requirements/)
+- [Installation](https://www.azuracast.com/docs/getting-started/installation/)
 
 ## Live Demo
 
@@ -36,7 +36,8 @@ Want to see AzuraCast for yourself? Visit our demo site at [demo.azuracast.com](
 To install AzuraCast, you should have a basic understanding of the Linux shell terminal. Once installed, every aspect of
 your radio station can be managed via AzuraCast's web interface.
 
-Follow our **[installation guide](https://docs.azuracast.com/en/getting-started/installation)** for instructions on how
+Follow our **[installation guide](https://www.azuracast.com/docs/getting-started/installation/)** for instructions on
+how
 to install AzuraCast on your own server.
 
 ## License
@@ -49,7 +50,7 @@ and open-source software, and pull requests are always welcome.
 ## Need Help?
 
 If you need help with AzuraCast, the first place you should visit is
-our [Support page](https://docs.azuracast.com/en/user-guide/troubleshooting)
+our [Support page](https://www.azuracast.com/docs/help/troubleshooting/)
 , which features solutions to a number of commonly encountered issues and questions, as well as instructions on how to
 check your server's log files for more details. If you do need our help via GitHub, supplying these logs is absolutely
 essential in helping us diagnose and resolve your issue.

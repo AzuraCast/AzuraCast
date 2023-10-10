@@ -16,7 +16,7 @@
                 >
                     <template #description>
                         <a
-                            href="https://docs.azuracast.com/en/getting-started/updates/release-channels"
+                            href="/docs/getting-started/updates/release-channels/"
                             target="_blank"
                         >
                             {{ $gettext('Learn more about release channels in the AzuraCast docs.') }}

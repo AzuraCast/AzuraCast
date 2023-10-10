@@ -55,6 +55,9 @@ RUN bash /bd_build/mariadb/setup.sh
 COPY ./util/docker/redis /bd_build/redis/
 RUN bash /bd_build/redis/setup.sh
 
+COPY ./util/docker/docs /bd_build/docs/
+RUN bash /bd_build/docs/setup.sh
+
 RUN bash /bd_build/cleanup.sh \
     && rm -rf /bd_build
 

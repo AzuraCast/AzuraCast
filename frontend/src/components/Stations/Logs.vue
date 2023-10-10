@@ -43,7 +43,7 @@
                     </p>
                     <p class="card-text">
                         <a
-                            href="https://docs.azuracast.com/en/user-guide/troubleshooting"
+                            href="/docs/help/troubleshooting/"
                             target="_blank"
                         >
                             {{ $gettext('Support Documents') }}

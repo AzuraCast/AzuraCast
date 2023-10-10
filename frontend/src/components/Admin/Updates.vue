@@ -57,7 +57,7 @@
                 <template #footer_actions>
                     <a
                         class="btn btn-info"
-                        href="https://docs.azuracast.com/en/getting-started/updates/release-channels"
+                        href="/docs/getting-started/updates/release-channels/"
                         target="_blank"
                     >
                         <icon :icon="IconInfo" />
@@ -137,7 +137,7 @@
 
                     <a
                         class="btn btn-info"
-                        href="https://docs.azuracast.com/en/getting-started/updates"
+                        href="/docs/getting-started/updates/"
                         target="_blank"
                     >
                         <icon :icon="IconInfo" />

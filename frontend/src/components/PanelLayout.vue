@@ -93,13 +93,26 @@
                         {{ $gettext('Switch Theme') }}
                     </a>
                 </li>
+                <li class="dropdown-divider">
+                    &nbsp;
+                </li>
                 <li>
                     <a
                         class="dropdown-item"
-                        href="https://docs.azuracast.com/en/user-guide/troubleshooting"
+                        href="/docs"
                         target="_blank"
                     >
                         <icon :icon="IconSupport" />
+                        {{ $gettext('Documentation') }}
+                    </a>
+                </li>
+                <li>
+                    <a
+                        class="dropdown-item"
+                        href="/docs/help/troubleshooting"
+                        target="_blank"
+                    >
+                        <icon :icon="IconHelp" />
                         {{ $gettext('Help') }}
                     </a>
                 </li>
@@ -155,7 +168,7 @@
         <span v-html="platform" /><br>
         {{ $gettext('Like our software?') }}
         <a
-            href="https://docs.azuracast.com/en/contribute/donate"
+            href="https://donate.azuracast.com/"
             target="_blank"
         >
             {{ $gettext('Donate to support AzuraCast!') }}
@@ -170,6 +183,7 @@ import useTheme from "~/functions/theme";
 import {
     IconAccountCircle,
     IconExitToApp,
+    IconHelp,
     IconHome,
     IconInvertColors,
     IconMenu,

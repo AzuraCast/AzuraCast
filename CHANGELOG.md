@@ -5,6 +5,10 @@ release channel, you can take advantage of these new features and fixes.
 
 ## New Features/Changes
 
+- **Built-in Documentation**: AzuraCast now bundles its own documentation alongside the application itself. By
+  visiting `/docs`, you can see the documentation as it existed when the version you're using was released. This is
+  useful if you're on an older version or in an environment without good Internet connectivity.
+
 - The "Listeners by Time Period" report has been expanded to include showing either "Average Listeners" (the previous
   mode) or "Unique Listeners", similar to the dashboard charts. You can also view per-hour totals for every given day of
   the week.
@@ -321,7 +325,7 @@ multi-tenant installations (i.e. resellers). Upgrading is strongly recommended i
   high-performance (Websocket/SSE) Now Playing updates system due to an error in the library on Ubuntu 22.04. We have
   since found an excellent replacement library and implemented it. If you're using Websockets or Server-Sent Events (
   SSE) for your Now Playing updates, you'll need to make minor changes to how you connect, which we've documented
-  here: https://docs.azuracast.com/en/developers/apis/now-playing-data#high-performance-updates
+  here: https://www.azuracast.com/docs/developers/now-playing-data/#high-performance-updates
 
 - On Mastodon and Twitter posts, you can now specify different message bodies for the different web hook trigger types (
   i.e. live DJ connect/disconnect or station online/offline).
@@ -760,7 +764,7 @@ multi-tenant installations (i.e. resellers). Upgrading is strongly recommended i
   installation with fewer containers. If you are not using the multi-site setup (i.e. hosting another site on the same
   Docker installation), no changes are required to your installation. If you want to continue using the multi-site
   installation, you can follow
-  the [instructions in our documentation](https://docs.azuracast.com/en/administration/docker/multi-site-installation).
+  the [instructions in our documentation](https://www.azuracast.com/docs/administration/multi-site-installation/).
 
 - We have updated how we handle Listener Reports to significantly reduce both memory and overall processing times,
   meaning stations with large listener counts can now more easily view and export reports for long time periods.
@@ -1965,7 +1969,7 @@ important updates to the software in that time, especially in the fields of reli
   the "Now Playing" API, which is a rich summary of the state of a radio station at the moment. To improve performance
   of more popular stations using our software, we've introduced two new methods of accessing this data: a static JSON
   file and a live Websocket/EventSource-driven plugin. You can read more on our
-  new [Now Playing Data APIs Guide](https://docs.azuracast.com/en/developers/apis/now-playing-data).
+  new [Now Playing Data APIs Guide](https://www.azuracast.com/docs/developers/now-playing-data/).
 
 ## Bug Fixes and Minor Updates
 

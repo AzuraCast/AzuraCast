@@ -147,8 +147,9 @@ final class ListAction implements SingleActionInterface
                     }
 
                     if (!empty($searchPhrase)) {
-                        $mediaQueryBuilder->andWhere('(sm.title LIKE :query OR sm.artist LIKE :query OR sm.path LIKE :query)')
-                            ->setParameter('query', '%' . $searchPhrase . '%');
+                        $mediaQueryBuilder->andWhere(
+                            '(sm.title LIKE :query OR sm.artist LIKE :query OR sm.path LIKE :query)'
+                        )->setParameter('query', '%' . $searchPhrase . '%');
                     }
 
                     $unprocessableMediaRaw = [];

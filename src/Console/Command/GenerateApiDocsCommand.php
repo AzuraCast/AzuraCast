@@ -35,7 +35,7 @@ final class GenerateApiDocsCommand extends CommandAbstract
         $io = new SymfonyStyle($input, $output);
 
         $yaml = $this->generate()?->toYaml();
-        $yamlPath = $this->environment->getBaseDirectory() . '/web/static/api/openapi.yml';
+        $yamlPath = $this->environment->getBaseDirectory() . '/web/static/openapi.yml';
 
         file_put_contents($yamlPath, $yaml);
 

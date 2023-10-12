@@ -47,12 +47,8 @@ bash-root:
 	docker-compose exec web bash
 
 generate-locales:
-	docker-compose -p azuracast_frontend -f docker-compose.frontend.yml build
-	docker-compose -p azuracast_frontend -f docker-compose.frontend.yml run -e NODE_ENV=development --rm frontend npm run generate-locales
 	docker-compose exec --user=azuracast web azuracast_cli locale:generate
 
 import-locales:
-	docker-compose -p azuracast_frontend -f docker-compose.frontend.yml build
-	docker-compose -p azuracast_frontend -f docker-compose.frontend.yml run -e NODE_ENV=development --rm frontend npm run import-locales
 	docker-compose exec --user=azuracast web azuracast_cli locale:import
 

@@ -17,6 +17,7 @@ use App\Entity\Song;
 use App\Entity\Station;
 use App\Entity\StationQueue;
 use App\Http\Router;
+use App\Radio\Adapters;
 use Exception;
 use GuzzleHttp\Psr7\Uri;
 use NowPlaying\Result\Result;
@@ -35,6 +36,7 @@ final class NowPlayingApiGenerator
         private readonly SongHistoryRepository $historyRepo,
         private readonly StationQueueRepository $queueRepo,
         private readonly StationStreamerBroadcastRepository $broadcastRepo,
+        private readonly Adapters $adapters,
         private readonly Router $router,
         private readonly NowPlayingCache $nowPlayingCache
     ) {
@@ -47,6 +49,7 @@ final class NowPlayingApiGenerator
     ): NowPlaying {
         $baseUri = new Uri('');
 
+        // Only update songs directly from NP results if we're not getting them fed to us from the backend.
         $updateSongFromNowPlaying = !$station->getBackendType()->isEnabled();
 
         if ($updateSongFromNowPlaying && empty($npResult->currentSong->text)) {
@@ -54,7 +57,13 @@ final class NowPlayingApiGenerator
         }
 
         $np = new NowPlaying();
-        $np->is_online = $npResult->meta->online;
+
+        if ($updateSongFromNowPlaying) {
+            $np->is_online = $npResult->meta->online;
+        } else {
+            $np->is_online = $this->adapters->getBackendAdapter($station)?->isRunning($station) ?? false;
+        }
+
         $np->station = $this->stationApiGenerator->__invoke($station, $baseUri);
         $np->listeners = new Listeners(
             total: $npResult->listeners->total,

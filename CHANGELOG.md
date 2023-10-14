@@ -39,6 +39,10 @@ release channel, you can take advantage of these new features and fixes.
 
 ## Bug Fixes
 
+- For stations using the AutoDJ to broadcast, the threshold for what counts as "Station Offline" has been changed, which
+  should dramatically reduce the number of situations where the station is indeed online and broadcasting but appears
+  offline in players and API responses.
+
 - The public download for the Stereo Tool plugin module was changed by the vendor in a way that broke compatibility with
   our uploader tool. This has been resolved, and plugin version 10.10 is now supported in the application.
 

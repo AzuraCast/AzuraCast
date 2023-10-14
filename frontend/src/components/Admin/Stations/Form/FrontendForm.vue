@@ -11,8 +11,8 @@
                 :options="frontendTypeOptions"
                 stacked
                 radio
-                :label="$gettext('Broadcasting Service')"
-                :description="$gettext('This software delivers your broadcast to the listening audience.')"
+                :label="$gettext('Local Broadcasting Service')"
+                :description="$gettext('This software is traditionally used to deliver your broadcast to your listeners. You can still broadcast remotely or via HLS if this service is disabled.')"
             />
         </div>
 
@@ -284,7 +284,7 @@ const frontendTypeOptions = computed(() => {
     }
 
     frontendOptions.push({
-        text: $gettext('Only connect to a remote server.'),
+        text: $gettext('Do not use a local broadcasting service.'),
         value: FrontendAdapter.Remote
     });
 

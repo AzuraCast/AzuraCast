@@ -42,18 +42,14 @@
                 </form-fieldset>
             </div>
             <div class="col-md-5">
-                <img
-                    :src="totp.qr_code"
-                    :alt="$gettext('QR Code')"
-                >
-
                 <div
                     v-if="totp.totp_uri"
-                    class="mt-2"
                 >
+                    <qr-code :uri="totp.totp_uri" />
+
                     <code
                         id="totp_uri"
-                        class="d-inline-block text-truncate"
+                        class="d-inline-block text-truncate mt-2"
                         style="width: 100%;"
                     >
                         {{ totp.totp_uri }}
@@ -81,6 +77,7 @@ import {useResettableRef} from "~/functions/useResettableRef";
 import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
 import {ModalFormTemplateRef} from "~/functions/useBaseEditModal.ts";
+import QrCode from "~/components/Account/QrCode.vue";
 
 const props = defineProps({
     twoFactorUrl: {

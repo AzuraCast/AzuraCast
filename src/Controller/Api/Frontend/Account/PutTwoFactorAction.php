@@ -11,7 +11,6 @@ use App\Entity\Api\Error;
 use App\Entity\Api\Status;
 use App\Http\Response;
 use App\Http\ServerRequest;
-use BaconQrCode;
 use InvalidArgumentException;
 use OTPHP\TOTP;
 use ParagonIE\ConstantTime\Base32;
@@ -64,20 +63,9 @@ final class PutTwoFactorAction implements SingleActionInterface
             $totp->setIssuer('AzuraCast');
             $totp->setParameter('image', 'https://www.azuracast.com/img/logo.png');
 
-            // Generate QR code
-            $totpUri = $totp->getProvisioningUri();
-
-            $renderer = new BaconQrCode\Renderer\ImageRenderer(
-                new BaconQrCode\Renderer\RendererStyle\RendererStyle(300),
-                new BaconQrCode\Renderer\Image\SvgImageBackEnd()
-            );
-            $qrCodeImage = (new BaconQrCode\Writer($renderer))->writeString($totpUri);
-            $qrCodeBase64 = 'data:image/svg+xml;base64,' . base64_encode($qrCodeImage);
-
             return $response->withJson([
                 'secret' => $secret,
-                'totp_uri' => $totpUri,
-                'qr_code' => $qrCodeBase64,
+                'totp_uri' => $totp->getProvisioningUri(),
             ]);
         } catch (Throwable $e) {
             return $response->withStatus(400)->withJson(Error::fromException($e));

@@ -9,6 +9,11 @@
                     $gettext('Stereo Tool is a popular, proprietary tool for software audio processing. Using Stereo Tool, you can customize the sound of your stations using preset configuration files.')
                 }}
             </p>
+            <p class="card-text">
+                {{
+                    $gettext('Note that Stereo Tool can be resource-intensive for both CPU and Memory. Please ensure you have sufficient resources before proceeding.')
+                }}
+            </p>
         </template>
 
         <div class="card-body">
@@ -20,11 +25,6 @@
                                 {{ $gettext('Instructions') }}
                             </legend>
 
-                            <p class="card-text">
-                                {{
-                                    $gettext('Stereo Tool can be resource-intensive for both CPU and Memory. Please ensure you have sufficient resources before proceeding.')
-                                }}
-                            </p>
 
                             <p class="card-text">
                                 {{
@@ -36,35 +36,56 @@
                                 {{ $gettext('In order to install Stereo Tool:') }}
                             </p>
 
-                            <ul>
+                            <ol type="1">
                                 <li>
-                                    {{
-                                        $gettext('Download the appropriate binary from the Stereo Tool downloads page:')
-                                    }}
-                                    <br>
-                                    <a
-                                        href="https://www.thimeo.com/stereo-tool/download/"
-                                        target="_blank"
-                                    >
-                                        {{ $gettext('Stereo Tool Downloads') }}
-                                    </a>
+                                    <p class="card-text">
+                                        {{
+                                            $gettext('Download the appropriate binary from the Stereo Tool downloads page:')
+                                        }}
+                                    </p>
+                                    <div class="buttons mb-3">
+                                        <a
+                                            href="https://www.thimeo.com/stereo-tool/download/"
+                                            target="_blank"
+                                            class="btn btn-sm btn-secondary"
+                                        >
+                                            {{ $gettext('Stereo Tool Downloads') }}
+                                        </a>
+                                    </div>
+                                    <ul>
+                                        <li>
+                                            {{
+                                                $gettext('For x86/64 installations, choose "x86/64 Linux Thimeo-ST plugin".')
+                                            }}
+                                        </li>
+                                        <li>
+                                            {{
+                                                $gettext('For ARM (Raspberry Pi, etc.) installations, choose "Raspberry Pi Thimeo-ST plugin".')
+                                            }}
+                                        </li>
+                                    </ul>
                                 </li>
-                                <li>
-                                    {{
-                                        $gettext('For x86/64 installations, choose "x86/64 Linux Thimeo-ST plugin".')
-                                    }}
+                                <li class="mt-3">
+                                    <p class="card-text">
+                                        {{
+                                            $gettext('Upload the file on this page to automatically extract it into the proper directory.')
+                                        }}
+                                    </p>
+                                    <p class="card-text">
+                                        {{
+                                            $gettext('Any of the following file types are accepted:')
+                                        }}
+                                    </p>
+                                    <ul>
+                                        <li>
+                                            <code>libStereoTool_*.so</code>
+                                            ({{ $gettext('Ensure the library matches your system architecture') }})
+                                        </li>
+                                        <li><code>Stereo_Tool_Generic_plugin.zip</code></li>
+                                        <li><code>stereo_tool</code> ({{ $gettext('For the legacy version') }})</li>
+                                    </ul>
                                 </li>
-                                <li>
-                                    {{
-                                        $gettext('For ARM (Raspberry Pi, etc.) installations, choose "Raspberry Pi Thimeo-ST plugin".')
-                                    }}
-                                </li>
-                                <li>
-                                    {{
-                                        $gettext('Upload the file on this page to automatically extract it into the proper directory.')
-                                    }}
-                                </li>
-                            </ul>
+                            </ol>
                         </fieldset>
                     </div>
                     <div class="col-md-5">

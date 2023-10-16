@@ -21,5 +21,8 @@ touch /run/php/php${PHP_VERSION}-fpm.pid
 cp /bd_build/web/php/php.ini.tmpl /etc/php/${PHP_VERSION}/fpm/05-azuracast.ini.tmpl
 cp /bd_build/web/php/www.conf.tmpl /etc/php/${PHP_VERSION}/fpm/www.conf.tmpl
 
+# Enable FFI (for StereoTool inspection)
+echo 'ffi.enable="true"' >> /etc/php/${PHP_VERSION}/mods-available/ffi.ini
+
 # Install Composer
 curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer

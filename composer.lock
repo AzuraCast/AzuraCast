@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9116f1b4dc2e0cd79df47fe3c493f4fc",
+    "content-hash": "b992c7b41bfe8482f2c81e001d5cff93",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -9519,16 +9519,16 @@
         },
         {
             "name": "codeception/codeception",
-            "version": "5.0.11",
+            "version": "5.0.12",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Codeception/Codeception.git",
-                "reference": "1998a287a3d7f2771c9591aef1c528d9d44cc4b4"
+                "reference": "7f528f5fd8cdcd05cd0a85eb1e24d05df989e0c4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Codeception/Codeception/zipball/1998a287a3d7f2771c9591aef1c528d9d44cc4b4",
-                "reference": "1998a287a3d7f2771c9591aef1c528d9d44cc4b4",
+                "url": "https://api.github.com/repos/Codeception/Codeception/zipball/7f528f5fd8cdcd05cd0a85eb1e24d05df989e0c4",
+                "reference": "7f528f5fd8cdcd05cd0a85eb1e24d05df989e0c4",
                 "shasum": ""
             },
             "require": {
@@ -9623,7 +9623,7 @@
             ],
             "support": {
                 "issues": "https://github.com/Codeception/Codeception/issues",
-                "source": "https://github.com/Codeception/Codeception/tree/5.0.11"
+                "source": "https://github.com/Codeception/Codeception/tree/5.0.12"
             },
             "funding": [
                 {
@@ -9631,7 +9631,7 @@
                     "type": "open_collective"
                 }
             ],
-            "time": "2023-08-22T06:42:39+00:00"
+            "time": "2023-10-15T18:04:50+00:00"
         },
         {
             "name": "codeception/lib-asserts",
@@ -13815,6 +13815,7 @@
         "php": "^8.2",
         "ext-pdo": "*",
         "ext-curl": "*",
+        "ext-ffi": "*",
         "ext-fileinfo": "*",
         "ext-gd": "*",
         "ext-iconv": "*",

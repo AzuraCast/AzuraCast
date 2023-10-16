@@ -13,6 +13,7 @@
     "php": "^8.2",
     "ext-PDO": "*",
     "ext-curl": "*",
+    "ext-ffi": "*",
     "ext-fileinfo": "*",
     "ext-gd": "*",
     "ext-iconv": "*",

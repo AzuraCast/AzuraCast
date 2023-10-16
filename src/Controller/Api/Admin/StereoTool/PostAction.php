@@ -14,6 +14,10 @@ use App\Utilities\File;
 use FFI;
 use InvalidArgumentException;
 use Psr\Http\Message\ResponseInterface;
+use RecursiveDirectoryIterator;
+use RecursiveIteratorIterator;
+use RecursiveRegexIterator;
+use RegexIterator;
 use RuntimeException;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Process\Process;
@@ -56,29 +60,9 @@ final class PostAction implements SingleActionInterface
 
                 $flowResponse->delete();
 
-                $pluginDirs = glob($destTempPath . '/Stereo_Tool_Generic_plugin_*') ?: [];
-                if (count($pluginDirs) > 0) {
-                    $pluginDir = $pluginDirs[0];
-                    $versionStr = str_replace($destTempPath . '/Stereo_Tool_Generic_plugin_', '', $pluginDir);
+                $version = $this->processZipDir($destTempPath, $libraryPath, $fsUtils);
 
-                    $filesToCopy = glob($pluginDir . '/libStereoTool*.so') ?: [];
-
-                    foreach ($filesToCopy as $fileToCopy) {
-                        $fsUtils->rename(
-                            $fileToCopy,
-                            $libraryPath . '/' . basename($fileToCopy),
-                            true
-                        );
-                    }
-
-                    $fsUtils->dumpFile(
-                        $libraryPath . '/' . StereoTool::VERSION_FILE,
-                        substr($versionStr, 0, 2) . '.' . substr($versionStr, 2),
-                    );
-                } else {
-                    throw new InvalidArgumentException('Uploaded file not recognized.');
-                }
-
+                $fsUtils->dumpFile($libraryPath . '/' . StereoTool::VERSION_FILE, $version);
                 $fsUtils->remove($destTempPath);
                 break;
 
@@ -112,6 +96,67 @@ final class PostAction implements SingleActionInterface
         }
 
         return $response->withJson(Status::success());
+    }
+
+    private function processZipDir(
+        string $destTempPath,
+        string $libraryPath,
+        Filesystem $fsUtils
+    ): string {
+        // Newer format for StereoTool binaries.
+        $pluginDirs = glob($destTempPath . '/libStereoTool_*') ?: [];
+
+        if (count($pluginDirs) > 0) {
+            $pluginDir = $pluginDirs[0];
+            $versionStr = str_replace($destTempPath . '/libStereoTool_', '', $pluginDir);
+
+            $libDir = $pluginDir . '/lib/Linux';
+            if (is_dir($libDir)) {
+                $iterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($libDir));
+                $regex = new RegexIterator($iterator, '/^.+\.so$/i', RecursiveRegexIterator::GET_MATCH);
+
+                foreach ($regex as [$libFile]) {
+                    if (str_contains($libFile, 'X11')) {
+                        continue;
+                    }
+
+                    $fsUtils->rename(
+                        $libFile,
+                        $libraryPath . '/' . basename($libFile),
+                        true
+                    );
+                }
+            }
+
+            return $this->getVersionFromFolder($versionStr);
+        }
+
+        // Older format for StereoTool plugin zip files.
+        $pluginDirs = glob($destTempPath . '/Stereo_Tool_Generic_plugin_*') ?: [];
+        if (count($pluginDirs) > 0) {
+            $pluginDir = $pluginDirs[0];
+            $versionStr = str_replace($destTempPath . '/Stereo_Tool_Generic_plugin_', '', $pluginDir);
+
+            $filesToCopy = glob($pluginDir . '/libStereoTool*.so') ?: [];
+
+            foreach ($filesToCopy as $fileToCopy) {
+                $fsUtils->rename(
+                    $fileToCopy,
+                    $libraryPath . '/' . basename($fileToCopy),
+                    true
+                );
+            }
+
+            return $this->getVersionFromFolder($versionStr);
+        }
+
+        throw new InvalidArgumentException('Uploaded file not recognized.');
+    }
+
+    private function getVersionFromFolder(string $dir): string
+    {
+        $versionStr = str_replace('BETA', '', $dir);
+        return substr($versionStr, 0, 2) . '.' . substr($versionStr, 2);
     }
 
     private function getLegacyVersion(string $path): ?string

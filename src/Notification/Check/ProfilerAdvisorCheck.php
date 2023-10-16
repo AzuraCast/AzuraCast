@@ -22,7 +22,7 @@ final class ProfilerAdvisorCheck
             return;
         }
 
-        if (!$this->environment->isDocker()) {
+        if (!$this->environment->isDocker() || !$this->environment->isDevelopment()) {
             return;
         }
 

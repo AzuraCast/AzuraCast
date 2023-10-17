@@ -110,10 +110,10 @@ const statsUrl = getApiUrl('/admin/server/stats');
 
 const menuItems = useAdminMenu();
 
-const {axios} = useAxios();
+const {axiosSilent} = useAxios();
 
 const {state: stats, isLoading, execute: reloadStats} = useRefreshableAsyncState(
-    () => axios.get(statsUrl.value).then(r => r.data),
+    () => axiosSilent.get(statsUrl.value).then(r => r.data),
     {
         cpu: {
             total: {

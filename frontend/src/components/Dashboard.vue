@@ -362,7 +362,7 @@ const langShowHideCharts = computed(() => {
         : $gettext('Show Charts')
 });
 
-const {axios} = useAxios();
+const {axios, axiosSilent} = useAxios();
 
 const {state: user} = useAsyncState(
     () => axios.get(props.userUrl)
@@ -394,17 +394,13 @@ const {state: notifications, isLoading: notificationsLoading} = useAsyncState(
 );
 
 const {state: stations, isLoading: stationsLoading, execute: reloadStations} = useRefreshableAsyncState(
-    () => axios.get(props.stationsUrl).then((r) => r.data),
+    () => axiosSilent.get(props.stationsUrl).then((r) => r.data),
     [],
 );
 
-const stationsReloadTimeout = computed(() => {
-    return (!document.hidden) ? 15000 : 30000
-});
-
 useIntervalFn(
     reloadStations,
-    stationsReloadTimeout
+    computed(() => (!document.hidden) ? 15000 : 30000)
 );
 
 const $lightbox = ref<LightboxTemplateRef>(null);

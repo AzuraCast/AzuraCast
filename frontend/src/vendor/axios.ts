@@ -7,22 +7,28 @@ import {useAzuraCast} from "~/vendor/azuracast.ts";
 import {useNProgress} from "~/vendor/nprogress.ts";
 
 const injectKey: InjectionKey<AxiosStatic> = Symbol() as InjectionKey<AxiosStatic>;
+const injectKeySilent: InjectionKey<AxiosStatic> = Symbol() as InjectionKey<AxiosStatic>;
 
 /* Composition API Axios utilities */
 interface UseAxios {
-    axios: AxiosStatic
+    axios: AxiosStatic,
+    axiosSilent: AxiosStatic
 }
 
 export const useAxios = (): UseAxios => ({
-    axios: inject<AxiosStatic>(injectKey)
+    axios: inject<AxiosStatic>(injectKey),
+    axiosSilent: inject<AxiosStatic>(injectKeySilent)
 });
 
 export default function installAxios(vueApp: App) {
     // Configure auto-CSRF on requests
     const {apiCsrf} = useAzuraCast();
-    if (apiCsrf) {
-        axios.defaults.headers.common['X-API-CSRF'] = apiCsrf;
-    }
+
+    const axiosInstance = axios.create({
+        headers: {
+            'X-API-CSRF': apiCsrf
+        }
+    });
 
     // Configure some Axios settings that depend on the BootstrapVue $bvToast superglobal.
     const handleAxiosError = (error) => {
@@ -45,9 +51,11 @@ export default function installAxios(vueApp: App) {
         notifyError(notifyMessage);
     };
 
+    const axiosSilent = axiosInstance.create({});
+
     const {setLoading} = useNProgress();
 
-    axios.interceptors.request.use((config) => {
+    axiosInstance.interceptors.request.use((config) => {
         setLoading(true);
         return config;
     }, (error) => {
@@ -56,7 +64,7 @@ export default function installAxios(vueApp: App) {
         return Promise.reject(error);
     });
 
-    axios.interceptors.response.use((response) => {
+    axiosInstance.interceptors.response.use((response) => {
         setLoading(false);
         return response;
     }, (error) => {
@@ -65,7 +73,8 @@ export default function installAxios(vueApp: App) {
         return Promise.reject(error);
     });
 
-    vueApp.use(VueAxios, axios);
+    vueApp.use(VueAxios, axiosInstance);
 
-    vueApp.provide(injectKey, axios);
+    vueApp.provide(injectKey, axiosInstance);
+    vueApp.provide(injectKeySilent, axiosSilent);
 }

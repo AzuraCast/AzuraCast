@@ -127,10 +127,10 @@ const hasActiveBackend = computed(() => {
     return props.backendType !== BackendAdapter.None;
 });
 
-const {axios} = useAxios();
+const {axios, axiosSilent} = useAxios();
 
 const {state: profileInfo, execute: reloadProfile} = useRefreshableAsyncState(
-    () => axios.get(props.profileApiUri).then((r) => r.data),
+    () => axiosSilent.get(props.profileApiUri).then((r) => r.data),
     {
         station: {
             ...NowPlaying.station
@@ -145,13 +145,9 @@ const {state: profileInfo, execute: reloadProfile} = useRefreshableAsyncState(
     }
 );
 
-const profileReloadTimeout = computed(() => {
-    return (!document.hidden) ? 15000 : 30000
-});
-
 useIntervalFn(
     reloadProfile,
-    profileReloadTimeout
+    computed(() => (!document.hidden) ? 15000 : 30000)
 );
 
 const {showAlert} = useSweetAlert();

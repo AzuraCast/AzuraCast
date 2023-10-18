@@ -6,7 +6,7 @@ $autoloader->addClassMap([
 ]);
 
 if (!function_exists('__')) {
-    PhpMyAdmin\MoTranslator\Loader::loadFunctions();
+    Gettext\TranslatorFunctions::register(new Gettext\Translator());
 }
 
 // Clear output directory

@@ -6,8 +6,9 @@ namespace App\Enums;
 
 use App\Environment;
 use App\Http\ServerRequest;
+use Gettext\Translator;
+use Gettext\TranslatorFunctions;
 use Locale;
-use PhpMyAdmin\MoTranslator\Loader;
 use Psr\Http\Message\ServerRequestInterface;
 
 enum SupportedLocales: string
@@ -71,15 +72,19 @@ enum SupportedLocales: string
 
     public function register(Environment $environment): void
     {
+        $t = new Translator();
+
         // Skip translation file reading for default locale.
         if ($this !== self::default()) {
-            $translator = Loader::getInstance();
-            $translator->setlocale($this->value);
-            $translator->textdomain('default');
-            $translator->bindtextdomain('default', $environment->getBaseDirectory() . '/translations');
+            $translationsFile = $environment->getBaseDirectory() . '/translations/'
+                . $this->value . '/LC_MESSAGES/default.php';
+
+            if (file_exists($translationsFile)) {
+                $t->loadTranslations($translationsFile);
+            }
         }
 
-        Loader::loadFunctions();
+        TranslatorFunctions::register($t);
     }
 
     public static function default(): self

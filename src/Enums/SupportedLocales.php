@@ -26,6 +26,7 @@ enum SupportedLocales: string
     case Portuguese = 'pt_PT.UTF-8';
     case BrazilianPortuguese = 'pt_BR.UTF-8';
     case Russian = 'ru_RU.UTF-8';
+    case Ukrainian = 'uk_UA.UTF-8';
     case Swedish = 'sv_SE.UTF-8';
     case Turkish = 'tr_TR.UTF-8';
     case SimplifiedChinese = 'zh_CN.UTF-8';
@@ -47,6 +48,7 @@ enum SupportedLocales: string
             self::Portuguese => 'Português',
             self::BrazilianPortuguese => 'Português do Brasil',
             self::Russian => 'Русский язык',
+            self::Ukrainian => 'українська мова',
             self::Swedish => 'Svenska',
             self::Turkish => 'Türkçe',
             self::SimplifiedChinese => '簡化字',

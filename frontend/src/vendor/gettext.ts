@@ -11,14 +11,21 @@ export function useTranslate(): Language {
 export async function installTranslate(vueApp: App): Promise<void> {
     const {locale} = useAzuraCast();
 
-    const translations = import.meta.glob('../../../translations/**/translations.json', {as: 'json'});
+    const translationsRaw = import.meta.glob('../../../translations/**/translations.json', {
+        as: 'raw',
+    });
     const localePath = '../../../translations/' + locale + '.UTF-8/translations.json';
+
+    let translations = {};
+    if (localePath in translationsRaw) {
+        translations = await JSON.parse(
+            await translationsRaw[localePath]()
+        );
+    }
 
     gettext = createGettext({
         defaultLanguage: locale,
-        translations: (localePath in translations) ?
-            await translations[localePath]()
-            : {},
+        translations: translations,
         silent: true
     });
 

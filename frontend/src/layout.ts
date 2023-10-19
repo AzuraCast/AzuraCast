@@ -18,17 +18,17 @@ export default function initApp(appConfig = {}, appCallback = null): InitApp {
     /* Pinia */
     installPinia(vueApp);
 
-    (<any>window).vueComponent = (el: string, globalProps: AzuraCastConstants): void => {
+    (<any>window).vueComponent = async (el: string, globalProps: AzuraCastConstants): Promise<void> => {
         setGlobalProps(globalProps);
 
         /* Gettext */
-        installTranslate(vueApp);
+        await installTranslate(vueApp);
 
         /* Axios */
         installAxios(vueApp);
 
         if (typeof appCallback === 'function') {
-            appCallback(vueApp);
+            await appCallback(vueApp);
         }
 
         vueApp.mount(el);

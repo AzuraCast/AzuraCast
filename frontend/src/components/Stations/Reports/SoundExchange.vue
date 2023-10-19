@@ -1,14 +1,7 @@
 <template>
-    <section
-        class="card"
-        role="region"
+    <card-page
+        :title="$gettext('SoundExchange Report')"
     >
-        <div class="card-header text-bg-primary">
-            <h3 class="card-title">
-                {{ $gettext('SoundExchange Report') }}
-            </h3>
-        </div>
-
         <form
             id="report-form"
             class="form vue-form"
@@ -60,12 +53,13 @@
                     </ul>
                 </form-fieldset>
 
-                <form-fieldset>
+                <form-fieldset class="row">
                     <form-group-field
                         id="form_start_date"
                         name="start_date"
                         :field="v$.start_date"
                         input-type="date"
+                        class="col mb-3"
                     >
                         <template #label>
                             {{ $gettext('Start Date') }}
@@ -77,6 +71,7 @@
                         name="end_date"
                         :field="v$.end_date"
                         input-type="date"
+                        class="col mb-3"
                     >
                         <template #label>
                             {{ $gettext('End Date') }}
@@ -87,6 +82,7 @@
                         id="form_edit_fetch_isrc"
                         name="fetch_isrc"
                         :field="v$.fetch_isrc"
+                        class="col-md-12"
                     >
                         <template #label>
                             {{ $gettext('Attempt to Automatically Retrieve ISRC When Missing') }}
@@ -101,14 +97,14 @@
 
                 <button
                     type="submit"
-                    class="btn mt-2"
+                    class="btn"
                     :class="(v$.$invalid) ? 'btn-danger' : 'btn-primary'"
                 >
                     {{ $gettext('Generate Report') }}
                 </button>
             </div>
         </form>
-    </section>
+    </card-page>
 </template>
 
 <script setup lang="ts">
@@ -120,6 +116,7 @@ import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
 import {getStationApiUrl} from "~/router";
 import {useLuxon} from "~/vendor/luxon";
 import {useAzuraCastStation} from "~/vendor/azuracast";
+import CardPage from "~/components/Common/CardPage.vue";
 
 const apiUrl = getStationApiUrl('/reports/soundexchange');
 

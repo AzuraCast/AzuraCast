@@ -19,8 +19,8 @@ enum SupportedLocales: string
     case French = 'fr_FR.UTF-8';
     case German = 'de_DE.UTF-8';
     case Greek = 'el_GR.UTF-8';
-    case Hungarian = 'hu_HU.UTF-8';
     case Italian = 'it_IT.UTF-8';
+    case Japanese = 'ja_JP.UTF-8';
     case Korean = 'ko_KR.UTF-8';
     case Norwegian = 'nb_NO.UTF-8';
     case Polish = 'pl_PL.UTF-8';
@@ -43,7 +43,7 @@ enum SupportedLocales: string
             self::German => 'Deutsch',
             self::Greek => 'ελληνικά',
             self::Italian => 'Italiano',
-            self::Hungarian => 'magyar',
+            self::Japanese => '日本語',
             self::Korean => '한국어',
             self::Norwegian => 'norsk',
             self::Polish => 'Polski',

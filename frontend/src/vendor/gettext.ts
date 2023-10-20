@@ -19,10 +19,8 @@ export async function installTranslate(vueApp: App): Promise<void> {
         translations: (localePath in translations) ?
             await translations[localePath]()
             : {},
-        silent: false
+        silent: true
     });
-
-    window.gettext = gettext;
 
     vueApp.use(gettext);
 }

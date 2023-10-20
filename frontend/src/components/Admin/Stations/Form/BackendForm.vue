@@ -48,6 +48,10 @@
                     {{
                         $gettext('Post-processing allows you to apply audio processors (like compressors, limiters, or equalizers) to your stream to create a more uniform sound or enhance the listening experience. Post-processing requires extra CPU resources, so it may slow down your server.')
                     }}
+                    <a
+                        href="/docs/help/optimizing/#disable-audio-post-processing"
+                        target="_blank"
+                    >{{ $gettext('Learn More about Post-processing CPU Impact') }}</a>
                 </template>
 
                 <div class="row g-3 mb-3">
@@ -191,8 +195,17 @@
                         class="col-md-6"
                         :field="v$.backend_config.enable_replaygain_metadata"
                         :label="$gettext('Use Replaygain Metadata')"
-                        :description="$gettext('Instruct Liquidsoap to use any replaygain metadata associated with a song to control its volume level. This may increase CPU consumption.')"
-                    />
+                    >
+                        <template #description>
+                            {{
+                                $gettext('Instruct Liquidsoap to use any replaygain metadata associated with a song to control its volume level. This may increase CPU consumption.')
+                            }}
+                            <a
+                                href="/docs/help/optimizing/#disable-replaygain-or-pre-calculate-replaygain-for-audio-files"
+                                target="_blank"
+                            >{{ $gettext('Learn More about Replaygain') }}</a>
+                        </template>
+                    </form-group-checkbox>
 
                     <form-group-field
                         id="edit_form_backend_telnet_port"

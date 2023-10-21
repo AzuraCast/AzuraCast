@@ -28,6 +28,8 @@ $list-group-item-padding-y: 1rem;
 
 $dropdown-item-padding-y: .75rem;
 
+$focus-ring-opacity: 0.3;
+
 $input-btn-padding-y: .75rem;
 $input-btn-padding-x: .5rem;
 
@@ -36,8 +38,9 @@ $form-range-thumb-bg: var(--bs-body-color);
 
 $btn-font-size: 1rem;
 $btn-sm-font-size: .9rem;
-
 $btn-padding-x: .75rem;
+$btn-hover-bg-shade-amount: 40%;
+$btn-hover-border-shade-amount: 50%;
 
 $card-border-width: 0;
 $card-cap-padding-y: 1.1rem;

@@ -28,7 +28,7 @@
                 <form-multi-check
                     :id="id"
                     v-model="model"
-                    :name="name"
+                    :name="name || id"
                     :options="options"
                     :radio="radio"
                     :stacked="stacked"
@@ -82,7 +82,7 @@ const props = defineProps({
     },
     name: {
         type: String,
-        default: null
+        default: null,
     },
     label: {
         type: String,

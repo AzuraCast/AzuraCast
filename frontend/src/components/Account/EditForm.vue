@@ -3,18 +3,24 @@
         <div class="col-md-6">
             <form-group-field
                 id="form_name"
+                class="mb-3"
+                tabindex="1"
                 :field="form.name"
                 :label="$gettext('Name')"
             />
 
             <form-group-field
                 id="form_email"
+                class="mb-3"
+                tabindex="2"
                 :field="form.email"
                 :label="$gettext('E-mail Address')"
             />
 
             <form-group-multi-check
                 id="edit_form_show_24_hour_time"
+                class="mb-3"
+                tabindex="3"
                 :field="form.show_24_hour_time"
                 :options="show24hourOptions"
                 stacked
@@ -25,6 +31,7 @@
         <div class="col-md-6">
             <form-group-multi-check
                 id="edit_form_locale"
+                tabindex="4"
                 :field="form.locale"
                 :options="localeOptions"
                 stacked

@@ -48,7 +48,7 @@ const props = defineProps({
     },
     name: {
         type: String,
-        default: null
+        default: (props) => props.id
     },
     fieldClass: {
         type: String,

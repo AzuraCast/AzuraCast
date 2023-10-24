@@ -32,6 +32,7 @@
     "hls.js": "^1.1.5",
     "leaflet": "^1.7.1",
     "leaflet-fullscreen": "^1.0.2",
+    "lezer-liquidsoap": "^0.1.0",
     "lodash": "^4.17.21",
     "luxon": "^3",
     "nprogress": "^0.2.0",

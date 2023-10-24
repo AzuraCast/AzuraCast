@@ -14,6 +14,7 @@ import {computed} from "vue";
 import {css} from "@codemirror/lang-css";
 import {javascript} from "@codemirror/lang-javascript";
 import useTheme from "~/functions/theme";
+import {liquidsoap} from "~/vendor/lang_liquidsoap.ts";
 
 const props = defineProps({
     modelValue: {
@@ -31,12 +32,16 @@ const emit = defineEmits(['update:modelValue']);
 const textValue = useVModel(props, 'modelValue', emit);
 
 const lang = computed(() => {
-    if (props.mode === 'css') {
-        return css();
-    } else if (props.mode === 'javascript') {
-        return javascript();
+    switch (props.mode) {
+        case 'css':
+            return css();
+        case 'javascript':
+            return javascript();
+        case 'liquidsoap':
+            return liquidsoap();
+        default:
+            return null;
     }
-    return null;
 });
 
 const {isDark} = useTheme();

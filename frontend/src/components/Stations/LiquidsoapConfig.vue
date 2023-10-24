@@ -46,9 +46,15 @@
                             v-if="row.is_field"
                             :id="'form_edit_'+row.field_name"
                             :field="v$[row.field_name]"
-                            input-type="textarea"
-                            :input-attrs="{class: 'text-preformatted mb-3', spellcheck: 'false', 'max-rows': 20, rows: 5}"
-                        />
+                        >
+                            <template #default="slotProps">
+                                <codemirror-textarea
+                                    :id="slotProps.id"
+                                    v-model="slotProps.field.$model"
+                                    mode="liquidsoap"
+                                />
+                            </template>
+                        </form-group-field>
                         <form-markup
                             v-else
                             :id="'form_section_'+index"
@@ -84,6 +90,7 @@ import {useAxios} from "~/vendor/axios";
 import {useNotify} from "~/functions/useNotify";
 import Loading from "~/components/Common/Loading.vue";
 import {getStationApiUrl} from "~/router";
+import CodemirrorTextarea from "~/components/Common/CodemirrorTextarea.vue";
 
 const settingsUrl = getStationApiUrl('/liquidsoap-config');
 

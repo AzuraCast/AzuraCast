@@ -10,7 +10,8 @@ body.page-minimal {
   }
 
   .public-page {
-    height: 100dvh;
+    margin: 2.5rem 0;
+    min-height: calc(100dvh - 5rem);
     display: flex;
 
     .card {

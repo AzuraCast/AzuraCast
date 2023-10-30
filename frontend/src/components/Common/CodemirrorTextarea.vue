@@ -13,8 +13,8 @@ import {useVModel} from "@vueuse/core";
 import {computed} from "vue";
 import {css} from "@codemirror/lang-css";
 import {javascript} from "@codemirror/lang-javascript";
+import {liquidsoap} from "codemirror-lang-liquidsoap";
 import useTheme from "~/functions/theme";
-import {liquidsoap} from "~/vendor/lang_liquidsoap.ts";
 
 const props = defineProps({
     modelValue: {

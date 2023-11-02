@@ -6,8 +6,11 @@ namespace App\Radio\Frontend;
 
 use App\Entity\Station;
 use App\Entity\StationMount;
+use App\Environment;
 use App\Service\Acme;
+use App\Utilities\File;
 use GuzzleHttp\Promise\Utils;
+use InvalidArgumentException;
 use NowPlaying\Result\Result;
 use Psr\Http\Message\UriInterface;
 use Symfony\Component\Process\Process;
@@ -19,10 +22,23 @@ final class Shoutcast extends AbstractFrontend
      */
     public function getBinary(): ?string
     {
-        $newPath = '/var/azuracast/servers/shoutcast2/sc_serv';
-        return file_exists($newPath)
-            ? $newPath
-            : null;
+        try {
+            $binaryPath = self::getDirectory() . '/sc_serv';
+            return file_exists($binaryPath)
+                ? $binaryPath
+                : null;
+        } catch (InvalidArgumentException) {
+            return null;
+        }
+    }
+
+    public static function getDirectory(): string
+    {
+        $parentDir = Environment::getInstance()->getParentDirectory();
+        return File::getFirstExistingDirectory([
+            $parentDir . '/servers/shoutcast2',
+            $parentDir . '/storage/shoutcast2',
+        ]);
     }
 
     public function getVersion(): ?string

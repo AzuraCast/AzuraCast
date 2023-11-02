@@ -43,9 +43,9 @@
       }
     ],
     "host_keys": [
-      "persist/id_rsa",
-      "persist/id_ecdsa",
-      "persist/id_ed25519"
+      "../storage/sftpgo/id_rsa",
+      "../storage/sftpgo/id_ecdsa",
+      "../storage/sftpgo/id_ed25519"
     ],
     "enable_scp": true
   },

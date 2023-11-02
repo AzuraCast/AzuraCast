@@ -13,6 +13,7 @@ use App\Message\AbstractMessage;
 use App\Message\GenerateAcmeCertificate;
 use App\Nginx\Nginx;
 use App\Radio\Adapters;
+use App\Utilities\File;
 use Exception;
 use Monolog\Handler\StreamHandler;
 use Psr\Log\LogLevel;
@@ -205,7 +206,12 @@ final class Acme
 
     public static function getAcmeDirectory(): string
     {
-        return Environment::getInstance()->getParentDirectory() . '/acme';
+        $parentDir = Environment::getInstance()->getParentDirectory();
+
+        return File::getFirstExistingDirectory([
+            $parentDir . '/acme',
+            $parentDir . '/storage/acme',
+        ]);
     }
 
     public static function getCertificatePaths(): array

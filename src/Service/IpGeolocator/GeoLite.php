@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Service\IpGeolocator;
 
 use App\Environment;
+use App\Utilities\File;
 
 final class GeoLite extends AbstractIpGeolocator
 {
@@ -15,8 +16,12 @@ final class GeoLite extends AbstractIpGeolocator
 
     public static function getBaseDirectory(): string
     {
-        $environment = Environment::getInstance();
-        return dirname($environment->getBaseDirectory()) . '/geoip';
+        $parentDir = Environment::getInstance()->getParentDirectory();
+
+        return File::getFirstExistingDirectory([
+            $parentDir . '/geoip',
+            $parentDir . '/storage/geoip',
+        ]);
     }
 
     public static function getDatabasePath(): string

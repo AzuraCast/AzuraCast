@@ -8,6 +8,7 @@ use App\Console\Application;
 use App\Enums\SupportedLocales;
 use App\Http\Factory\ResponseFactory;
 use App\Http\Factory\ServerRequestFactory;
+use App\Utilities\File;
 use App\Utilities\Logger as AppLogger;
 use DI;
 use Monolog\ErrorHandler;
@@ -129,7 +130,10 @@ final class AppFactory
         $environment[Environment::TEMP_DIR] ??= $parentBaseDir . '/www_tmp';
         $environment[Environment::CONFIG_DIR] ??= $baseDir . '/config';
         $environment[Environment::VIEWS_DIR] ??= $baseDir . '/templates';
-        $environment[Environment::UPLOADS_DIR] ??= $parentBaseDir . '/uploads';
+        $environment[Environment::UPLOADS_DIR] ??= File::getFirstExistingDirectory([
+            $parentBaseDir . '/storage/uploads',
+            $parentBaseDir . '/uploads',
+        ]);
 
         $_ENV = getenv();
 

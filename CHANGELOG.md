@@ -37,6 +37,11 @@ release channel, you can take advantage of these new features and fixes.
   subdomains; this is useful for self-hosted services like MinIO or other services that rely on subdirectories instead
   of subdomains.
 
+- We have changed the mapping for many persistent items in our Docker filesystem to map to folders
+  within `/var/azuracast/storage`. To preserve back-compatibility, for most users we will continue to map the individual
+  folders within that as separate volumes, but if you manually manage your volume mounts, you can now just mount a
+  volume at `/var/azuracast/storage` instead of each of the separate subfolders.
+
 ## Bug Fixes
 
 - For stations using the AutoDJ to broadcast, the threshold for what counts as "Station Offline" has been changed, which

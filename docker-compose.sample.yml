@@ -181,15 +181,15 @@ services:
       PUID: ${AZURACAST_PUID:-1000}
       PGID: ${AZURACAST_PGID:-1000}
     volumes:
-      - www_uploads:/var/azuracast/uploads
       - station_data:/var/azuracast/stations
-      - shoutcast2_install:/var/azuracast/servers/shoutcast2
-      - stereo_tool_install:/var/azuracast/servers/stereo_tool
-      - geolite_install:/var/azuracast/geoip
-      - sftpgo_data:/var/azuracast/sftpgo/persist
       - backups:/var/azuracast/backups
-      - acme:/var/azuracast/acme
       - db_data:/var/lib/mysql
+      - www_uploads:/var/azuracast/storage/uploads
+      - shoutcast2_install:/var/azuracast/storage/shoutcast2
+      - stereo_tool_install:/var/azuracast/storage/stereo_tool
+      - geolite_install:/var/azuracast/storage/geoip
+      - sftpgo_data:/var/azuracast/storage/sftpgo
+      - acme:/var/azuracast/storage/acme
     restart: unless-stopped
     ulimits:
       nofile:

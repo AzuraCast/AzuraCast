@@ -6,6 +6,7 @@ namespace App\Radio;
 
 use App\Entity\Station;
 use App\Environment;
+use App\Utilities\File;
 
 final class StereoTool
 {
@@ -21,7 +22,11 @@ final class StereoTool
 
     public static function getLibraryPath(): string
     {
-        return Environment::getInstance()->getParentDirectory() . '/servers/stereo_tool';
+        $parentDir = Environment::getInstance()->getParentDirectory();
+        return File::getFirstExistingDirectory([
+            $parentDir . '/storage/stereo_tool',
+            $parentDir . '/servers/stereo_tool',
+        ]);
     }
 
     public static function isReady(Station $station): bool

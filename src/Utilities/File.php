@@ -153,4 +153,26 @@ final class File
             }
         }
     }
+
+    public static function getFirstExistingFile(array $files): string
+    {
+        foreach ($files as $file) {
+            if (file_exists($file)) {
+                return $file;
+            }
+        }
+
+        throw new InvalidArgumentException('No existing files found.');
+    }
+
+    public static function getFirstExistingDirectory(array $dirs): string
+    {
+        foreach ($dirs as $dir) {
+            if (is_dir($dir)) {
+                return $dir;
+            }
+        }
+
+        throw new InvalidArgumentException('No existing directories found.');
+    }
 }

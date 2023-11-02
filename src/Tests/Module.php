@@ -13,7 +13,6 @@ use App\AppFactory;
 use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Enums\ApplicationEnvironment;
 use App\Environment;
-use Codeception\Configuration;
 use Codeception\Lib\Framework;
 use Codeception\Lib\Interfaces\DoctrineProvider;
 use Codeception\Lib\ModuleContainer;
@@ -39,12 +38,10 @@ class Module extends Framework implements DoctrineProvider
         $this->requiredFields = ['container'];
     }
 
-
     public function _initialize(): void
     {
         $this->app = AppFactory::createApp(
             [
-                Environment::BASE_DIR => Configuration::projectDir(),
                 Environment::APP_ENV => ApplicationEnvironment::Testing->value,
             ]
         );

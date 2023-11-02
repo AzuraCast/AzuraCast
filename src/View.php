@@ -38,7 +38,10 @@ final class View extends Engine
         Version $version,
         RouterInterface $router
     ) {
-        parent::__construct($environment->getViewsDirectory(), 'phtml');
+        parent::__construct(
+            dirname(__DIR__) . '/templates',
+            'phtml'
+        );
 
         $this->sections = new GlobalSections();
         $this->globalProps = new ArrayCollection();

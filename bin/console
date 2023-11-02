@@ -8,9 +8,5 @@ ini_set('display_errors', '1');
 
 require dirname(__DIR__) . '/vendor/autoload.php';
 
-$cli = App\AppFactory::createCli(
-        [
-                App\Environment::BASE_DIR => dirname(__DIR__),
-        ]
-);
+$cli = App\AppFactory::createCli();
 $cli->run();

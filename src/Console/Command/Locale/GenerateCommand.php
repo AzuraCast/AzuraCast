@@ -57,9 +57,9 @@ final class GenerateCommand extends CommandAbstract
 
         // Find all PHP/PHTML files in the application's code.
         $translatableFolders = [
-            $this->environment->getBaseDirectory() . '/src',
-            $this->environment->getBaseDirectory() . '/config',
-            $this->environment->getViewsDirectory(),
+            dirname(__DIR__, 4) . '/src',
+            dirname(__DIR__, 4) . '/config',
+            dirname(__DIR__, 4) . '/templates',
         ];
 
         $phpScanner = new PhpScanner($translations);

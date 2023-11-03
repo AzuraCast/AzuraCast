@@ -12,6 +12,7 @@ adduser --home /var/azuracast --disabled-password --gecos "" azuracast
 usermod -aG www-data azuracast
 
 mkdir -p /var/azuracast/www /var/azuracast/stations /var/azuracast/www_tmp \
+  /var/azuracast/backups \
   /var/azuracast/dbip \
   /var/azuracast/storage/uploads \
   /var/azuracast/storage/shoutcast2 \

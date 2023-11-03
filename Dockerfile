@@ -70,6 +70,7 @@ USER root
 
 VOLUME "/var/azuracast/stations"
 VOLUME "/var/azuracast/backups"
+VOLUME "/var/lib/mysql"
 VOLUME "/var/azuracast/storage/uploads"
 VOLUME "/var/azuracast/storage/shoutcast2"
 VOLUME "/var/azuracast/storage/stereo_tool"

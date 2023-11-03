@@ -118,7 +118,7 @@ server {
     location /static/uploads {
         rewrite ^(.+)\.(?:\w+)\.(js|css|png|jpg|webp)$ $1.$2 last;
 
-        alias /var/azuracast/uploads;
+        alias {{ default .Env.UPLOADS_DIR "/var/azuracast/storage/uploads" }};
         try_files $uri =404;
     }
 

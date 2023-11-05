@@ -20,8 +20,8 @@ trait HasScheduleDisplay
         $dateRange = $this->getDateRange($request, $tz);
 
         return new DateRange(
-            $dateRange->getStart()->subDay()->startOf('day'),
-            $dateRange->getEnd()->endOf('day')
+            $dateRange->getStart(),
+            $dateRange->getEnd()
         );
     }
 
@@ -34,14 +34,14 @@ trait HasScheduleDisplay
     ): array {
         $events = [];
 
-        $startDate = $dateRange->getStart();
-        $endDate = $dateRange->getEnd();
+        $loopStartDate = $dateRange->getStart()->subDay()->startOf('day');
+        $loopEndDate = $dateRange->getEnd()->endOf('day');
 
         foreach ($scheduleItems as $scheduleItem) {
             /** @var StationSchedule $scheduleItem */
-            $i = $startDate;
+            $i = $loopStartDate;
 
-            while ($i <= $endDate) {
+            while ($i <= $loopEndDate) {
                 $dayOfWeek = $i->dayOfWeekIso;
 
                 if (
@@ -56,7 +56,10 @@ trait HasScheduleDisplay
                         $rowEnd = $rowEnd->addDay();
                     }
 
-                    $events[] = $rowRender($scheduleItem, $rowStart, $rowEnd, $now);
+                    $itemDateRange = new DateRange($rowStart, $rowEnd);
+                    if ($itemDateRange->isWithin($dateRange)) {
+                        $events[] = $rowRender($scheduleItem, $rowStart, $rowEnd, $now);
+                    }
                 }
 
                 $i = $i->addDay();

@@ -4,7 +4,7 @@
         :dark="isDark"
         range
         :partial-range="false"
-        :preset-ranges="ranges"
+        :preset-dates="ranges"
         :min-date="minDate"
         :max-date="maxDate"
         :locale="localeWithDashes"
@@ -66,10 +66,6 @@ const props = defineProps({
     modelValue: {
         type: Object,
         required: true
-    },
-    customRanges: {
-        type: [Object, Boolean],
-        default: null,
     }
 });
 
@@ -100,66 +96,62 @@ const dateRange = computed({
 const {$gettext} = useTranslate();
 
 const ranges = computed(() => {
-    if (null !== props.customRanges) {
-        return props.customRanges;
-    }
-
     const nowTz = DateTime.now().setZone(props.tz);
     const nowAtMidnightDate = nowTz.endOf('day').toJSDate();
 
     return [
         {
             label: $gettext('Last 24 Hours'),
-            range: [
+            value: [
                 nowTz.minus({days: 1}).toJSDate(),
                 nowTz.toJSDate()
             ]
         },
         {
             label: $gettext('Today'),
-            range: [
+            value: [
                 nowTz.minus({days: 1}).startOf('day').toJSDate(),
                 nowAtMidnightDate
             ]
         },
         {
             label: $gettext('Yesterday'),
-            range: [
+            value: [
                 nowTz.minus({days: 2}).startOf('day').toJSDate(),
                 nowTz.minus({days: 1}).endOf('day').toJSDate()
             ]
         },
         {
             label: $gettext('Last 7 Days'),
-            range: [
+            value: [
                 nowTz.minus({days: 7}).startOf('day').toJSDate(),
                 nowAtMidnightDate
             ]
         },
         {
             label: $gettext('Last 14 Days'),
-            range: [
+            value: [
                 nowTz.minus({days: 14}).startOf('day').toJSDate(),
                 nowAtMidnightDate
             ]
         },
         {
             label: $gettext('Last 30 Days'),
-            range: [
+            value: [
                 nowTz.minus({days: 30}).startOf('day').toJSDate(),
                 nowAtMidnightDate
             ]
         },
         {
             label: $gettext('This Month'),
-            range: [
+            value: [
                 nowTz.startOf('month').startOf('day').toJSDate(),
                 nowTz.endOf('month').endOf('day').toJSDate()
             ]
         },
         {
             label: $gettext('Last Month'),
-            range: [
+            value: [
                 nowTz.minus({months: 1}).startOf('month').startOf('day').toJSDate(),
                 nowTz.minus({months: 1}).endOf('month').endOf('day').toJSDate()
             ]

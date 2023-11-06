@@ -1413,9 +1413,10 @@ final class ConfigWriter implements EventSubscriberInterface
 
             case StreamFormats::Mp3:
                 return '%mp3(samplerate=44100, stereo=true, bitrate=' . $bitrate . ')';
-        }
 
-        throw new RuntimeException(sprintf('Unsupported stream format: %s', $format->value));
+            default:
+                throw new RuntimeException(sprintf('Unsupported stream format: %s', $format->value));
+        }
     }
 
     public function writeRemoteBroadcastConfiguration(WriteLiquidsoapConfiguration $event): void

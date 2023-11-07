@@ -79,11 +79,11 @@ msgstr ""
 msgid "%{station} - Copy"
 msgstr ""
 
-#: src/components/Account/EditForm.vue:74
+#: src/components/Account/EditForm.vue:81
 msgid "12 Hour"
 msgstr ""
 
-#: src/components/Account/EditForm.vue:78
+#: src/components/Account/EditForm.vue:85
 msgid "24 Hour"
 msgstr ""
 
@@ -111,7 +111,7 @@ msgstr ""
 msgid "About AzuraRelay"
 msgstr ""
 
-#: src/components/Admin/Stations/Form/BackendForm.vue:79
+#: src/components/Admin/Stations/Form/BackendForm.vue:83
 msgid "About Master_me"
 msgstr ""
 
@@ -277,7 +277,7 @@ msgstr ""
 msgid "Administration"
 msgstr ""
 
-#: src/components/Admin/Stations/Form/BackendForm.vue:171
+#: src/components/Admin/Stations/Form/BackendForm.vue:175
 #: src/components/Admin/Stations/Form/FrontendForm.vue:142
 #: src/components/Admin/Stations/Form/FrontendForm.vue:61
 #: src/components/Form/FormLabel.vue:13
@@ -288,7 +288,7 @@ msgstr ""
 msgid "Advanced"
 msgstr ""
 
-#: src/components/Admin/Stations/Form/BackendForm.vue:169
+#: src/components/Admin/Stations/Form/BackendForm.vue:173
 #: src/components/Admin/Stations/Form/FrontendForm.vue:59
 msgid "Advanced Configuration"
 msgstr ""
@@ -443,7 +443,7 @@ msgstr ""
 msgid "App Secret"
 msgstr ""
 
-#: src/components/Admin/Stations/Form/BackendForm.vue:459
+#: src/components/Admin/Stations/Form/BackendForm.vue:472
 msgid "Apple Podcasts"
 msgstr ""
 
@@ -455,7 +455,7 @@ msgstr ""
 msgid "Apply Playlist to Folders"
 msgstr ""
 
-#: src/components/Admin/Stations/Form/BackendForm.vue:70
+#: src/components/Admin/Stations/Form/BackendForm.vue:74
 msgid "Apply Post-processing to Live Streams"
 msgstr ""
 
@@ -523,7 +523,7 @@ msgstr ""
 msgid "Audio Post-processing"
 msgstr ""
 
-#: src/components/Admin/Stations/Form/BackendForm.vue:61
+#: src/components/Admin/Stations/Form/BackendForm.vue:65
 msgid "Audio Post-processing Method"
 msgstr ""
 
@@ -580,7 +580,7 @@ msgstr ""
 msgid "AutoDJ Queue"
 msgstr ""
 
-#: src/components/Admin/Stations/Form/BackendForm.vue:213
+#: src/components/Admin/Stations/Form/BackendForm.vue:226
 msgid "AutoDJ Queue Length"
 msgstr ""
 
@@ -698,7 +698,7 @@ msgstr ""
 msgid "Backups"
 msgstr ""
 
-#: src/components/Admin/Stations/Form/BackendForm.vue:476
+#: src/components/Admin/Stations/Form/BackendForm.vue:489
 msgid "Balanced"
 msgstr ""
 
@@ -738,7 +738,7 @@ msgstr ""
 msgid "Basic Information"
 msgstr ""
 
-#: src/components/Admin/Stations/Form/BackendForm.vue:416
+#: src/components/Admin/Stations/Form/BackendForm.vue:429
 msgid "Basic Normalization and Compression"
 msgstr ""
 
@@ -860,7 +860,7 @@ msgstr ""
 msgid "Changes saved."
 msgstr ""
 
-#: src/components/Admin/Stations/Form/BackendForm.vue:224
+#: src/components/Admin/Stations/Form/BackendForm.vue:237
 msgid "Character Set Encoding"
 msgstr ""
 
@@ -873,7 +873,7 @@ msgstr ""
 msgid "Check for Updates"
 msgstr ""
 
-#: src/components/Admin/Stations/Form/BackendForm.vue:71
+#: src/components/Admin/Stations/Form/BackendForm.vue:75
 msgid "Check this box to apply post-processing to all audio, including live streams. Uncheck this box to only apply post-processing to the AutoDJ."
 msgstr ""
 
@@ -1348,7 +1348,7 @@ msgstr ""
 msgid "Customize DJ/Streamer Port"
 msgstr ""
 
-#: src/components/Admin/Stations/Form/BackendForm.vue:203
+#: src/components/Admin/Stations/Form/BackendForm.vue:216
 msgid "Customize Internal Request Processing Port"
 msgstr ""
 
@@ -1643,11 +1643,11 @@ msgstr ""
 msgid "Disable"
 msgstr ""
 
-#: src/components/Admin/Stations/Form/BackendForm.vue:403
+#: src/components/Admin/Stations/Form/BackendForm.vue:416
 msgid "Disable Crossfading"
 msgstr ""
 
-#: src/components/Admin/Stations/Form/BackendForm.vue:484
+#: src/components/Admin/Stations/Form/BackendForm.vue:497
 msgid "Disable Optimizations"
 msgstr ""
 
@@ -1719,7 +1719,7 @@ msgstr ""
 msgid "Do not use a local broadcasting service."
 msgstr ""
 
-#: src/components/Admin/Stations/Form/BackendForm.vue:386
+#: src/components/Admin/Stations/Form/BackendForm.vue:399
 msgid "Do not use an AutoDJ service."
 msgstr ""
 
@@ -1798,7 +1798,7 @@ msgstr ""
 msgid "Duplicate Playlist"
 msgstr ""
 
-#: src/components/Admin/Stations/Form/BackendForm.vue:245
+#: src/components/Admin/Stations/Form/BackendForm.vue:258
 msgid "Duplicate Prevention Time Range (Minutes)"
 msgstr ""
 
@@ -1810,7 +1810,7 @@ msgstr ""
 msgid "E-Mail"
 msgstr ""
 
-#: src/components/Account/EditForm.vue:13
+#: src/components/Account/EditForm.vue:17
 #: src/components/Admin/Settings/TestMessageModal.vue:14
 #: src/components/Admin/Users/Form.vue:8
 #: src/components/Setup/Register.vue:66
@@ -1833,7 +1833,7 @@ msgstr ""
 msgid "E-mail Delivery Service"
 msgstr ""
 
-#: src/components/Admin/Stations/Form/BackendForm.vue:455
+#: src/components/Admin/Stations/Form/BackendForm.vue:468
 msgid "EBU R128"
 msgstr ""
 
@@ -2232,7 +2232,7 @@ msgstr ""
 msgid "For local filesystems, this is the base path of the directory. For remote filesystems, this is the folder prefix."
 msgstr ""
 
-#: src/components/Admin/Stations/Form/BackendForm.vue:225
+#: src/components/Admin/Stations/Form/BackendForm.vue:238
 msgid "For most cases, use the default UTF-8 encoding. The older ISO-8859-1 encoding can be used if accepting connections from Shoutcast 1 DJs or using other legacy software."
 msgstr ""
 
@@ -2559,7 +2559,7 @@ msgstr ""
 msgid "If you're experiencing a bug or error, you can submit a GitHub issue using the link below."
 msgstr ""
 
-#: src/components/Admin/Stations/Form/BackendForm.vue:236
+#: src/components/Admin/Stations/Form/BackendForm.vue:249
 msgid "If your installation is constrained by CPU or memory, you can change this setting to tune the resources used by Liquidsoap."
 msgstr ""
 
@@ -2665,7 +2665,7 @@ msgstr ""
 msgid "Install Stereo Tool"
 msgstr ""
 
-#: src/components/Admin/Stations/Form/BackendForm.vue:194
+#: src/components/Admin/Stations/Form/BackendForm.vue:201
 msgid "Instruct Liquidsoap to use any replaygain metadata associated with a song to control its volume level. This may increase CPU consumption."
 msgstr ""
 
@@ -2722,7 +2722,7 @@ msgstr ""
 msgid "Jingle Mode"
 msgstr ""
 
-#: src/components/Account/EditForm.vue:32
+#: src/components/Account/EditForm.vue:39
 #: src/components/Stations/Podcasts/PodcastForm/BasicInfo.vue:36
 #: /var/azuracast/www/src/Media/Enums/MetadataTags.php:106
 #: /var/azuracast/www/templates/frontend/public/podcasts.phtml:52
@@ -2730,7 +2730,7 @@ msgid "Language"
 msgstr ""
 
 #: src/components/Admin/Settings/GeneralTab.vue:127
-#: src/components/Common/DateRangeDropdown.vue:140
+#: src/components/Common/DateRangeDropdown.vue:132
 msgid "Last 14 Days"
 msgstr ""
 
@@ -2738,12 +2738,12 @@ msgstr ""
 msgid "Last 2 Years"
 msgstr ""
 
-#: src/components/Common/DateRangeDropdown.vue:112
+#: src/components/Common/DateRangeDropdown.vue:104
 msgid "Last 24 Hours"
 msgstr ""
 
 #: src/components/Admin/Settings/GeneralTab.vue:131
-#: src/components/Common/DateRangeDropdown.vue:147
+#: src/components/Common/DateRangeDropdown.vue:139
 msgid "Last 30 Days"
 msgstr ""
 
@@ -2751,7 +2751,7 @@ msgstr ""
 msgid "Last 60 Days"
 msgstr ""
 
-#: src/components/Common/DateRangeDropdown.vue:133
+#: src/components/Common/DateRangeDropdown.vue:125
 msgid "Last 7 Days"
 msgstr ""
 
@@ -2759,7 +2759,7 @@ msgstr ""
 msgid "Last Modified"
 msgstr ""
 
-#: src/components/Common/DateRangeDropdown.vue:161
+#: src/components/Common/DateRangeDropdown.vue:153
 msgid "Last Month"
 msgstr ""
 
@@ -2787,8 +2787,16 @@ msgstr ""
 msgid "Learn about Advanced Playlists"
 msgstr ""
 
+#: src/components/Admin/Stations/Form/BackendForm.vue:51
+msgid "Learn More about Post-processing CPU Impact"
+msgstr ""
+
 #: src/components/Admin/Settings/ServicesTab.vue:19
 msgid "Learn more about release channels in the AzuraCast docs."
+msgstr ""
+
+#: src/components/Admin/Stations/Form/BackendForm.vue:203
+msgid "Learn More about Replaygain"
 msgstr ""
 
 #: src/components/Admin/Settings/SecurityPrivacyTab.vue:69
@@ -2844,7 +2852,7 @@ msgstr ""
 msgid "LiquidSoap is currently shuffling from %{songs} and %{playlists}."
 msgstr ""
 
-#: src/components/Admin/Stations/Form/BackendForm.vue:235
+#: src/components/Admin/Stations/Form/BackendForm.vue:248
 msgid "Liquidsoap Performance Tuning"
 msgstr ""
 
@@ -3070,7 +3078,7 @@ msgstr ""
 msgid "Manage Stations"
 msgstr ""
 
-#: src/components/Admin/Stations/Form/BackendForm.vue:180
+#: src/components/Admin/Stations/Form/BackendForm.vue:184
 msgid "Manual AutoDJ Mode"
 msgstr ""
 
@@ -3086,23 +3094,23 @@ msgstr ""
 msgid "Markdown"
 msgstr ""
 
-#: src/components/Admin/Stations/Form/BackendForm.vue:84
+#: src/components/Admin/Stations/Form/BackendForm.vue:88
 msgid "Master_me is an open-source automatic mastering plugin for streaming, podcasts and Internet radio."
 msgstr ""
 
-#: src/components/Admin/Stations/Form/BackendForm.vue:114
+#: src/components/Admin/Stations/Form/BackendForm.vue:118
 msgid "Master_me Loudness Target (LUFS)"
 msgstr ""
 
-#: src/components/Admin/Stations/Form/BackendForm.vue:420
+#: src/components/Admin/Stations/Form/BackendForm.vue:433
 msgid "Master_me Post-processing"
 msgstr ""
 
-#: src/components/Admin/Stations/Form/BackendForm.vue:105
+#: src/components/Admin/Stations/Form/BackendForm.vue:109
 msgid "Master_me Preset"
 msgstr ""
 
-#: src/components/Admin/Stations/Form/BackendForm.vue:89
+#: src/components/Admin/Stations/Form/BackendForm.vue:93
 msgid "Master_me Project Homepage"
 msgstr ""
 
@@ -3333,7 +3341,7 @@ msgstr ""
 msgid "Music Files"
 msgstr ""
 
-#: src/components/Admin/Stations/Form/BackendForm.vue:447
+#: src/components/Admin/Stations/Form/BackendForm.vue:460
 msgid "Music General"
 msgstr ""
 
@@ -3358,7 +3366,7 @@ msgstr ""
 msgid "N/A"
 msgstr ""
 
-#: src/components/Account/EditForm.vue:7
+#: src/components/Account/EditForm.vue:9
 #: src/components/Admin/Stations.vue:113
 #: src/components/Admin/Stations/Form/ProfileForm.vue:11
 #: src/components/Public/Requests.vue:73
@@ -3455,7 +3463,7 @@ msgstr ""
 msgid "No other program can be using this port. Leave blank to automatically assign a port."
 msgstr ""
 
-#: src/components/Admin/Stations/Form/BackendForm.vue:412
+#: src/components/Admin/Stations/Form/BackendForm.vue:425
 msgid "No Post-processing"
 msgstr ""
 
@@ -3474,7 +3482,7 @@ msgstr ""
 msgid "None"
 msgstr ""
 
-#: src/components/Admin/Stations/Form/BackendForm.vue:399
+#: src/components/Admin/Stations/Form/BackendForm.vue:412
 msgid "Normal Mode"
 msgstr ""
 
@@ -3892,7 +3900,7 @@ msgstr ""
 msgid "Prefer Browser URL (If Available)"
 msgstr ""
 
-#: src/components/Account/EditForm.vue:70
+#: src/components/Account/EditForm.vue:77
 #: src/components/Admin/Branding/BrandingForm.vue:182
 msgid "Prefer System Default"
 msgstr ""
@@ -3920,7 +3928,7 @@ msgstr ""
 msgid "Programmatic Name"
 msgstr ""
 
-#: src/components/Admin/Stations/Form/BackendForm.vue:146
+#: src/components/Admin/Stations/Form/BackendForm.vue:150
 msgid "Provide a valid license key from Thimeo. Functionality is limited without a license key."
 msgstr ""
 
@@ -4353,7 +4361,7 @@ msgstr ""
 #: src/components/Admin/Stations/StationForm.vue:62
 #: src/components/Common/ModalForm.vue:50
 #: src/components/Stations/Branding/BrandingForm.vue:76
-#: src/components/Stations/LiquidsoapConfig.vue:61
+#: src/components/Stations/LiquidsoapConfig.vue:67
 msgid "Save Changes"
 msgstr ""
 
@@ -4463,7 +4471,7 @@ msgstr ""
 msgid "Select All Rows"
 msgstr ""
 
-#: src/components/Admin/Stations/Form/BackendForm.vue:62
+#: src/components/Admin/Stations/Form/BackendForm.vue:66
 msgid "Select an option here to apply post-processing using an easy preset or tool. You can also manually apply post-processing by editing your Liquidsoap configuration manually."
 msgstr ""
 
@@ -4772,7 +4780,7 @@ msgstr ""
 msgid "Skip to main content"
 msgstr ""
 
-#: src/components/Admin/Stations/Form/BackendForm.vue:395
+#: src/components/Admin/Stations/Form/BackendForm.vue:408
 msgid "Smart Mode"
 msgstr ""
 
@@ -4902,7 +4910,7 @@ msgstr ""
 msgid "Specify the minute of every hour that this playlist should play."
 msgstr ""
 
-#: src/components/Admin/Stations/Form/BackendForm.vue:451
+#: src/components/Admin/Stations/Form/BackendForm.vue:464
 msgid "Speech General"
 msgstr ""
 
@@ -5061,12 +5069,12 @@ msgstr ""
 msgid "Steps for configuring a Mastodon application:"
 msgstr ""
 
-#: src/components/Admin/Stations/Form/BackendForm.vue:123
-#: src/components/Admin/Stations/Form/BackendForm.vue:428
+#: src/components/Admin/Stations/Form/BackendForm.vue:127
+#: src/components/Admin/Stations/Form/BackendForm.vue:441
 msgid "Stereo Tool"
 msgstr ""
 
-#: src/components/Admin/Stations/Form/BackendForm.vue:131
+#: src/components/Admin/Stations/Form/BackendForm.vue:135
 #: src/components/Stations/StereoToolConfig.vue:20
 msgid "Stereo Tool documentation."
 msgstr ""
@@ -5079,7 +5087,7 @@ msgstr ""
 msgid "Stereo Tool is a popular, proprietary tool for software audio processing. Using Stereo Tool, you can customize the sound of your stations using preset configuration files."
 msgstr ""
 
-#: src/components/Admin/Stations/Form/BackendForm.vue:128
+#: src/components/Admin/Stations/Form/BackendForm.vue:132
 #: src/components/Stations/StereoToolConfig.vue:18
 msgid "Stereo Tool is an industry standard for software audio processing. For more information on how to configure it, please refer to the"
 msgstr ""
@@ -5092,7 +5100,7 @@ msgstr ""
 msgid "Stereo Tool is not free software, and its restrictive license does not allow AzuraCast to distribute the Stereo Tool binary."
 msgstr ""
 
-#: src/components/Admin/Stations/Form/BackendForm.vue:145
+#: src/components/Admin/Stations/Form/BackendForm.vue:149
 msgid "Stereo Tool License Key"
 msgstr ""
 
@@ -5259,7 +5267,7 @@ msgstr ""
 msgid "The amount of memory Linux is using for disk caching."
 msgstr ""
 
-#: src/components/Admin/Stations/Form/BackendForm.vue:115
+#: src/components/Admin/Stations/Form/BackendForm.vue:119
 msgid "The average target loudness (measured in LUFS) for the broadcasted stream. Values between -14 and -18 LUFS are common for Internet radio stations."
 msgstr ""
 
@@ -5463,7 +5471,7 @@ msgstr ""
 msgid "This CSS will be applied to the station public pages."
 msgstr ""
 
-#: src/components/Admin/Stations/Form/BackendForm.vue:214
+#: src/components/Admin/Stations/Form/BackendForm.vue:227
 msgid "This determines how many songs in advance the AutoDJ will automatically fill the queue."
 msgstr ""
 
@@ -5555,11 +5563,11 @@ msgstr ""
 msgid "This javascript code will be applied to the station public pages."
 msgstr ""
 
-#: src/components/Admin/Stations/Form/BackendForm.vue:184
+#: src/components/Admin/Stations/Form/BackendForm.vue:188
 msgid "This mode disables AzuraCast's AutoDJ management, using Liquidsoap itself to manage song playback. \"next song\" and some other features will not be available."
 msgstr ""
 
-#: src/components/Common/DateRangeDropdown.vue:154
+#: src/components/Common/DateRangeDropdown.vue:146
 msgid "This Month"
 msgstr ""
 
@@ -5591,7 +5599,7 @@ msgstr ""
 msgid "This playlist will play every $x songs, where $x is specified here."
 msgstr ""
 
-#: src/components/Admin/Stations/Form/BackendForm.vue:204
+#: src/components/Admin/Stations/Form/BackendForm.vue:217
 msgid "This port is not used by any external process. Only modify this port if the assigned port is in use. Leave blank to automatically assign a port."
 msgstr ""
 
@@ -5615,7 +5623,7 @@ msgstr ""
 msgid "This specifies the minimum time (in minutes) between a song playing on the radio and being available to request again. Set to 0 for no threshold."
 msgstr ""
 
-#: src/components/Admin/Stations/Form/BackendForm.vue:246
+#: src/components/Admin/Stations/Form/BackendForm.vue:259
 msgid "This specifies the time range (in minutes) of the song history that the duplicate song prevention algorithm should take into account."
 msgstr ""
 
@@ -5681,7 +5689,7 @@ msgstr ""
 msgid "Time (sec)"
 msgstr ""
 
-#: src/components/Account/EditForm.vue:22
+#: src/components/Account/EditForm.vue:28
 msgid "Time Display"
 msgstr ""
 
@@ -5745,7 +5753,7 @@ msgstr ""
 msgid "To verify that the code was set up correctly, enter the 6-digit code the app shows you."
 msgstr ""
 
-#: src/components/Common/DateRangeDropdown.vue:119
+#: src/components/Common/DateRangeDropdown.vue:111
 msgid "Today"
 msgstr ""
 
@@ -5970,7 +5978,7 @@ msgstr ""
 msgid "Updated successfully."
 msgstr ""
 
-#: src/components/Admin/Stations/Form/BackendForm.vue:159
+#: src/components/Admin/Stations/Form/BackendForm.vue:163
 msgid "Upload a Stereo Tool configuration file from the \"Broadcasting\" submenu in the station profile."
 msgstr ""
 
@@ -5979,7 +5987,7 @@ msgstr ""
 msgid "Upload Custom Assets"
 msgstr ""
 
-#: src/components/Admin/Stations/Form/BackendForm.vue:154
+#: src/components/Admin/Stations/Form/BackendForm.vue:158
 #: src/components/Stations/menu.ts:281
 #: src/components/Stations/StereoToolConfig.vue:9
 msgid "Upload Stereo Tool Configuration"
@@ -6010,7 +6018,7 @@ msgstr ""
 msgid "Use API keys to authenticate with the AzuraCast API using the same permissions as your user account."
 msgstr ""
 
-#: src/components/Account/EditForm.vue:61
+#: src/components/Account/EditForm.vue:68
 msgid "Use Browser Default"
 msgstr ""
 
@@ -6022,15 +6030,15 @@ msgstr ""
 msgid "Use Icecast 2.4 on this server."
 msgstr ""
 
-#: src/components/Admin/Stations/Form/BackendForm.vue:480
+#: src/components/Admin/Stations/Form/BackendForm.vue:493
 msgid "Use Less CPU (Uses More Memory)"
 msgstr ""
 
-#: src/components/Admin/Stations/Form/BackendForm.vue:472
+#: src/components/Admin/Stations/Form/BackendForm.vue:485
 msgid "Use Less Memory (Uses More CPU)"
 msgstr ""
 
-#: src/components/Admin/Stations/Form/BackendForm.vue:382
+#: src/components/Admin/Stations/Form/BackendForm.vue:395
 msgid "Use Liquidsoap on this server."
 msgstr ""
 
@@ -6038,7 +6046,7 @@ msgstr ""
 msgid "Use Path Instead of Subdomain Endpoint Style"
 msgstr ""
 
-#: src/components/Admin/Stations/Form/BackendForm.vue:193
+#: src/components/Admin/Stations/Form/BackendForm.vue:197
 msgid "Use Replaygain Metadata"
 msgstr ""
 
@@ -6292,7 +6300,7 @@ msgstr ""
 msgid "Yes"
 msgstr ""
 
-#: src/components/Common/DateRangeDropdown.vue:126
+#: src/components/Common/DateRangeDropdown.vue:118
 msgid "Yesterday"
 msgstr ""
 
@@ -6365,7 +6373,7 @@ msgstr ""
 msgid "Your station supports reloading configuration."
 msgstr ""
 
-#: src/components/Admin/Stations/Form/BackendForm.vue:463
+#: src/components/Admin/Stations/Form/BackendForm.vue:476
 msgid "YouTube"
 msgstr ""
 
@@ -6744,7 +6752,7 @@ msgstr ""
 msgid "Test message sent successfully."
 msgstr ""
 
-#: /var/azuracast/www/src/Service/IpGeolocator/GeoLite.php:30
+#: /var/azuracast/www/src/Service/IpGeolocator/GeoLite.php:35
 #, php-format
 msgid "This product includes GeoLite2 data created by MaxMind, available from %s."
 msgstr ""
@@ -7308,6 +7316,18 @@ msgstr ""
 
 #: /var/azuracast/www/src/Notification/Check/SyncTaskCheck.php:52
 msgid "The routine synchronization task has not run recently. This may indicate an error with your installation."
+msgstr ""
+
+#: /var/azuracast/www/src/Notification/Check/DonateAdvisorCheck.php:29
+msgid "AzuraCast is free and open-source software."
+msgstr ""
+
+#: /var/azuracast/www/src/Notification/Check/DonateAdvisorCheck.php:30
+msgid "If you are enjoying AzuraCast, please consider donating to support our work. We depend on donations to build new features, fix bugs, and keep AzuraCast modern, accessible and free."
+msgstr ""
+
+#: /var/azuracast/www/src/Notification/Check/DonateAdvisorCheck.php:36
+msgid "Donate to AzuraCast"
 msgstr ""
 
 #: /var/azuracast/www/src/Notification/Check/RecentBackupCheck.php:47

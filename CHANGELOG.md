@@ -5,6 +5,16 @@ release channel, you can take advantage of these new features and fixes.
 
 ## New Features/Changes
 
+## Code Quality/Technical Changes
+
+## Bug Fixes
+
+---
+
+# AzuraCast 0.19.2 (Nov 7, 2023)
+
+## New Features/Changes
+
 - **Built-in Documentation**: AzuraCast now bundles its own documentation alongside the application itself. By
   visiting `/docs`, you can see the documentation as it existed when the version you're using was released. This is
   useful if you're on an older version or in an environment without good Internet connectivity.

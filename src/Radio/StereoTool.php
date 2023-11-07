@@ -6,8 +6,7 @@ namespace App\Radio;
 
 use App\Entity\Station;
 use App\Environment;
-use RuntimeException;
-use Symfony\Component\Process\Process;
+use App\Utilities\File;
 
 final class StereoTool
 {
@@ -17,13 +16,17 @@ final class StereoTool
     {
         $libraryPath = self::getLibraryPath();
 
-        return file_exists($libraryPath . '/stereo_tool')
-            || file_exists($libraryPath . '/libStereoTool.so');
+        return file_exists($libraryPath . '/' . self::VERSION_FILE)
+            || file_exists($libraryPath . '/stereo_tool');
     }
 
     public static function getLibraryPath(): string
     {
-        return Environment::getInstance()->getParentDirectory() . '/servers/stereo_tool';
+        $parentDir = Environment::getInstance()->getParentDirectory();
+        return File::getFirstExistingDirectory([
+            $parentDir . '/storage/stereo_tool',
+            $parentDir . '/servers/stereo_tool',
+        ]);
     }
 
     public static function isReady(Station $station): bool
@@ -50,29 +53,8 @@ final class StereoTool
 
         $binaryPath = $libraryPath . '/stereo_tool';
 
-        if (!file_exists($binaryPath)) {
-            return null;
-        }
-
-        $process = new Process([$binaryPath, '--help']);
-        $process->setWorkingDirectory(dirname($binaryPath));
-        $process->setTimeout(5.0);
-
-        try {
-            $process->run();
-        } catch (RuntimeException) {
-            return null;
-        }
-
-        if (!$process->isSuccessful()) {
-            return null;
-        }
-
-        preg_match('/STEREO TOOL ([.\d]+) CONSOLE APPLICATION/i', $process->getErrorOutput(), $matches);
-        if (!isset($matches[1])) {
-            return null;
-        }
-
-        return $matches[1] . ' (CLI)';
+        return file_exists($binaryPath)
+            ? 'Legacy CLI'
+            : null;
     }
 }

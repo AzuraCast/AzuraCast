@@ -7,6 +7,7 @@ namespace App;
 use App\Enums\ApplicationEnvironment;
 use App\Enums\ReleaseChannel;
 use App\Radio\Configuration;
+use App\Utilities\File;
 use GuzzleHttp\Psr7\Uri;
 use Psr\Http\Message\UriInterface;
 use Psr\Log\LogLevel;
@@ -15,16 +16,19 @@ final class Environment
 {
     private static Environment $instance;
 
-    private array $data;
+    // Cached immutable values that are frequently used.
+    private readonly string $baseDir;
+    private readonly string $parentDir;
+    private readonly bool $isDocker;
+    private readonly ApplicationEnvironment $appEnv;
+
+    private readonly array $data;
 
     // Core settings values
     public const APP_NAME = 'APP_NAME';
     public const APP_ENV = 'APPLICATION_ENV';
 
-    public const BASE_DIR = 'BASE_DIR';
     public const TEMP_DIR = 'TEMP_DIR';
-    public const CONFIG_DIR = 'CONFIG_DIR';
-    public const VIEWS_DIR = 'VIEWS_DIR';
     public const UPLOADS_DIR = 'UPLOADS_DIR';
 
     public const IS_DOCKER = 'IS_DOCKER';
@@ -96,7 +100,13 @@ final class Environment
 
     public function __construct(array $elements = [])
     {
+        $this->baseDir = dirname(__DIR__);
+        $this->parentDir = dirname($this->baseDir);
+        $this->isDocker = file_exists($this->parentDir . '/.docker');
+
         $this->data = array_merge($this->defaults, $elements);
+        $this->appEnv = ApplicationEnvironment::tryFrom($this->data[self::APP_ENV] ?? '')
+            ?? ApplicationEnvironment::default();
     }
 
     /**
@@ -109,8 +119,7 @@ final class Environment
 
     public function getAppEnvironmentEnum(): ApplicationEnvironment
     {
-        return ApplicationEnvironment::tryFrom($this->data[self::APP_ENV] ?? '')
-            ?? ApplicationEnvironment::default();
+        return $this->appEnv;
     }
 
     public function isProduction(): bool
@@ -139,7 +148,7 @@ final class Environment
 
     public function isDocker(): bool
     {
-        return self::envToBool($this->data[self::IS_DOCKER] ?? true);
+        return $this->isDocker;
     }
 
     public function isCli(): bool
@@ -162,39 +171,7 @@ final class Environment
      */
     public function getBaseDirectory(): string
     {
-        return $this->data[self::BASE_DIR];
-    }
-
-    /**
-     * @return string The directory where temporary files are stored by the application, i.e. `/var/app/www_tmp`
-     */
-    public function getTempDirectory(): string
-    {
-        return $this->data[self::TEMP_DIR];
-    }
-
-    /**
-     * @return string The directory where configuration files are stored by default.
-     */
-    public function getConfigDirectory(): string
-    {
-        return $this->data[self::CONFIG_DIR];
-    }
-
-    /**
-     * @return string The directory where template/view files are stored.
-     */
-    public function getViewsDirectory(): string
-    {
-        return $this->data[self::VIEWS_DIR];
-    }
-
-    /**
-     * @return string The directory where user system-level uploads are stored.
-     */
-    public function getUploadsDirectory(): string
-    {
-        return $this->data[self::UPLOADS_DIR];
+        return $this->baseDir;
     }
 
     /**
@@ -202,7 +179,27 @@ final class Environment
      */
     public function getParentDirectory(): string
     {
-        return dirname($this->getBaseDirectory());
+        return $this->parentDir;
+    }
+
+    /**
+     * @return string The directory where temporary files are stored by the application, i.e. `/var/app/www_tmp`
+     */
+    public function getTempDirectory(): string
+    {
+        return $this->data[self::TEMP_DIR]
+            ?? $this->getParentDirectory() . '/www_tmp';
+    }
+
+    /**
+     * @return string The directory where user system-level uploads are stored.
+     */
+    public function getUploadsDirectory(): string
+    {
+        return $this->data[self::UPLOADS_DIR] ?? File::getFirstExistingDirectory([
+            $this->getParentDirectory() . '/storage/uploads',
+            $this->getParentDirectory() . '/uploads',
+        ]);
     }
 
     /**

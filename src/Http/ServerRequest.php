@@ -10,7 +10,7 @@ use App\Customization;
 use App\Entity\Station;
 use App\Entity\User;
 use App\Enums\SupportedLocales;
-use App\Exception;
+use App\Exception\InvalidRequestAttribute;
 use App\RateLimit;
 use App\Session;
 use App\View;
@@ -32,61 +32,97 @@ final class ServerRequest extends SlimServerRequest
     public const ATTR_STATION = 'station';
     public const ATTR_USER = 'user';
 
+    /**
+     * @throws InvalidRequestAttribute
+     */
     public function getView(): View
     {
         return $this->getAttributeOfClass(self::ATTR_VIEW, View::class);
     }
 
+    /**
+     * @throws InvalidRequestAttribute
+     */
     public function getSession(): SessionInterface
     {
         return $this->getAttributeOfClass(self::ATTR_SESSION, SessionInterface::class);
     }
 
+    /**
+     * @throws InvalidRequestAttribute
+     */
     public function getCsrf(): Session\Csrf
     {
         return $this->getAttributeOfClass(self::ATTR_SESSION_CSRF, Session\Csrf::class);
     }
 
+    /**
+     * @throws InvalidRequestAttribute
+     */
     public function getFlash(): Session\Flash
     {
         return $this->getAttributeOfClass(self::ATTR_SESSION_FLASH, Session\Flash::class);
     }
 
+    /**
+     * @throws InvalidRequestAttribute
+     */
     public function getRouter(): RouterInterface
     {
         return $this->getAttributeOfClass(self::ATTR_ROUTER, RouterInterface::class);
     }
 
+    /**
+     * @throws InvalidRequestAttribute
+     */
     public function getRateLimit(): RateLimit
     {
         return $this->getAttributeOfClass(self::ATTR_RATE_LIMIT, RateLimit::class);
     }
 
+    /**
+     * @throws InvalidRequestAttribute
+     */
     public function getLocale(): SupportedLocales
     {
         return $this->getAttributeOfClass(self::ATTR_LOCALE, SupportedLocales::class);
     }
 
+    /**
+     * @throws InvalidRequestAttribute
+     */
     public function getCustomization(): Customization
     {
         return $this->getAttributeOfClass(self::ATTR_CUSTOMIZATION, Customization::class);
     }
 
+    /**
+     * @throws InvalidRequestAttribute
+     */
     public function getAuth(): Auth
     {
         return $this->getAttributeOfClass(self::ATTR_AUTH, Auth::class);
     }
 
+    /**
+     * @throws InvalidRequestAttribute
+     */
     public function getAcl(): Acl
     {
         return $this->getAttributeOfClass(self::ATTR_ACL, Acl::class);
     }
 
+    /**
+     * @throws InvalidRequestAttribute
+     */
     public function getUser(): User
     {
         return $this->getAttributeOfClass(self::ATTR_USER, User::class);
     }
 
+    /**
+     * @throws InvalidRequestAttribute
+     */
     public function getStation(): Station
     {
         return $this->getAttributeOfClass(self::ATTR_STATION, Station::class);
@@ -96,14 +132,14 @@ final class ServerRequest extends SlimServerRequest
      * @param string $attr
      * @param string $className
      *
-     * @throws Exception\InvalidRequestAttribute
+     * @throws InvalidRequestAttribute
      */
     private function getAttributeOfClass(string $attr, string $className): mixed
     {
         $object = $this->serverRequest->getAttribute($attr);
 
         if (empty($object)) {
-            throw new Exception\InvalidRequestAttribute(
+            throw new InvalidRequestAttribute(
                 sprintf(
                     'Attribute "%s" is required and is empty in this request',
                     $attr
@@ -112,7 +148,7 @@ final class ServerRequest extends SlimServerRequest
         }
 
         if (!($object instanceof $className)) {
-            throw new Exception\InvalidRequestAttribute(
+            throw new InvalidRequestAttribute(
                 sprintf(
                     'Attribute "%s" must be of type "%s".',
                     $attr,

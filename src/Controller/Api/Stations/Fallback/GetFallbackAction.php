@@ -15,6 +15,7 @@ use Psr\Http\Message\ResponseInterface;
 
 #[OA\Get(
     path: '/station/{station_id}/fallback',
+    operationId: 'getStationFallback',
     description: 'Get the custom fallback track for a station.',
     security: OpenApi::API_KEY_SECURITY,
     tags: ['Stations: General'],

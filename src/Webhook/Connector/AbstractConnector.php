@@ -140,12 +140,13 @@ abstract class AbstractConnector implements ConnectorInterface
         ResponseInterface $response,
         mixed $requestBody = null
     ): void {
-        if (204 !== $response->getStatusCode()) {
+        $responseStatus = $response->getStatusCode();
+        if ($responseStatus >= 400) {
             $this->logger->error(
                 sprintf(
                     'Webhook "%s" returned unsuccessful response code %d.',
                     $webhook->getName(),
-                    $response->getStatusCode()
+                    $responseStatus
                 )
             );
         }

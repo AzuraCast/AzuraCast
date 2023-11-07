@@ -8,7 +8,7 @@ use App\Console\Command\CommandAbstract;
 use App\Container\EnvironmentAwareTrait;
 use App\Enums\SupportedLocales;
 use App\Translations\JsonGenerator;
-use Gettext\Generator\MoGenerator;
+use Gettext\Generator\ArrayGenerator;
 use Gettext\Loader\PoLoader;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputInterface;
@@ -35,7 +35,7 @@ final class ImportCommand extends CommandAbstract
         $defaultLocale = SupportedLocales::default();
 
         $poLoader = new PoLoader();
-        $moGenerator = new MoGenerator();
+        $arrayGenerator = new ArrayGenerator();
 
         foreach ($supportedLocales as $supportedLocale) {
             if ($supportedLocale === $defaultLocale) {
@@ -44,12 +44,13 @@ final class ImportCommand extends CommandAbstract
 
             $localeFolder = $localesBase . '/' . $supportedLocale->value;
             $localeSource = $localeFolder . '/LC_MESSAGES/default.po';
-            $localeDest = $localeFolder . '/LC_MESSAGES/default.mo';
+            $localeDest = $localeFolder . '/LC_MESSAGES/default.php';
             $jsonDest = $localeFolder . '/translations.json';
 
             if (is_file($localeSource)) {
                 $translations = $poLoader->loadFile($localeSource);
-                $moGenerator->generateFile($translations, $localeDest);
+                $arrayGenerator->generateFile($translations, $localeDest);
+
                 (new JsonGenerator($supportedLocale))->generateFile($translations, $jsonDest);
 
                 $io->writeln(

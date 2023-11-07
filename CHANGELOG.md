@@ -11,6 +11,64 @@ release channel, you can take advantage of these new features and fixes.
 
 ---
 
+# AzuraCast 0.19.2 (Nov 7, 2023)
+
+## New Features/Changes
+
+- **Built-in Documentation**: AzuraCast now bundles its own documentation alongside the application itself. By
+  visiting `/docs`, you can see the documentation as it existed when the version you're using was released. This is
+  useful if you're on an older version or in an environment without good Internet connectivity.
+
+- The "Listeners by Time Period" report has been expanded to include showing either "Average Listeners" (the previous
+  mode) or "Unique Listeners", similar to the dashboard charts. You can also view per-hour totals for every given day of
+  the week.
+
+- A new webhook has been added to broadcast changes to the GetMeRadio API. GetMeRadio is a popular aggregator of web
+  radio stations.
+
+## Code Quality/Technical Changes
+
+- The Google Analytics V3 and Twitter (now X) web hooks have been retired and are no longer supported. Google Analytics
+  has removed support for V3 properties entirely; we recommend switching to Analytics V4. Twitter has deprecated version
+  1 of their API in favor of version 2, which is not readily accessible to applications like ours.
+
+- Icons used around the application have been switched from an icon font to directly using SVGs to dramatically reduce
+  the overall size of CSS assets.
+
+- When importing media, multiple entries in a single metadata field (i.e. multiple Genre values) will be separated by a
+  semicolon (i.e. "Rock; Classic").
+
+- The "Genre" field for individual media items has been increased from 30 characters maximum to 255.
+
+- The "System Debugger" page now automatically reloads the sync task and message queue statuses once per minute, and can
+  be manually refreshed on-demand.
+
+- If using S3-style storage locations, you can now indicate that AzuraCast should use path-style endpoints instead of
+  subdomains; this is useful for self-hosted services like MinIO or other services that rely on subdirectories instead
+  of subdomains.
+
+- We have changed the mapping for many persistent items in our Docker filesystem to map to folders
+  within `/var/azuracast/storage`. To preserve back-compatibility, for most users we will continue to map the individual
+  folders within that as separate volumes, but if you manually manage your volume mounts, you can now just mount a
+  volume at `/var/azuracast/storage` instead of each of the separate subfolders.
+
+## Bug Fixes
+
+- For stations using the AutoDJ to broadcast, the threshold for what counts as "Station Offline" has been changed, which
+  should dramatically reduce the number of situations where the station is indeed online and broadcasting but appears
+  offline in players and API responses.
+
+- The public download for the Stereo Tool plugin module was changed by the vendor in a way that broke compatibility with
+  our uploader tool. This has been resolved, and plugin version 10.10 is now supported in the application.
+
+- Several issues with DataTable pagination and display have been fixed.
+
+- Fixed an issue preventing web updates from going through correctly.
+
+- Fixed an issue where disabled stations wouldn't show their profile pages at all.
+
+---
+
 # AzuraCast 0.19.1 (Aug 21, 2023)
 
 ## New Features/Changes
@@ -286,7 +344,7 @@ multi-tenant installations (i.e. resellers). Upgrading is strongly recommended i
   high-performance (Websocket/SSE) Now Playing updates system due to an error in the library on Ubuntu 22.04. We have
   since found an excellent replacement library and implemented it. If you're using Websockets or Server-Sent Events (
   SSE) for your Now Playing updates, you'll need to make minor changes to how you connect, which we've documented
-  here: https://docs.azuracast.com/en/developers/apis/now-playing-data#high-performance-updates
+  here: https://www.azuracast.com/docs/developers/now-playing-data/#high-performance-updates
 
 - On Mastodon and Twitter posts, you can now specify different message bodies for the different web hook trigger types (
   i.e. live DJ connect/disconnect or station online/offline).
@@ -725,7 +783,7 @@ multi-tenant installations (i.e. resellers). Upgrading is strongly recommended i
   installation with fewer containers. If you are not using the multi-site setup (i.e. hosting another site on the same
   Docker installation), no changes are required to your installation. If you want to continue using the multi-site
   installation, you can follow
-  the [instructions in our documentation](https://docs.azuracast.com/en/administration/docker/multi-site-installation).
+  the [instructions in our documentation](https://www.azuracast.com/docs/administration/multi-site-installation/).
 
 - We have updated how we handle Listener Reports to significantly reduce both memory and overall processing times,
   meaning stations with large listener counts can now more easily view and export reports for long time periods.
@@ -1930,7 +1988,7 @@ important updates to the software in that time, especially in the fields of reli
   the "Now Playing" API, which is a rich summary of the state of a radio station at the moment. To improve performance
   of more popular stations using our software, we've introduced two new methods of accessing this data: a static JSON
   file and a live Websocket/EventSource-driven plugin. You can read more on our
-  new [Now Playing Data APIs Guide](https://docs.azuracast.com/en/developers/apis/now-playing-data).
+  new [Now Playing Data APIs Guide](https://www.azuracast.com/docs/developers/now-playing-data/).
 
 ## Bug Fixes and Minor Updates
 

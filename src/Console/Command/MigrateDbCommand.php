@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Console\Command;
 
-use App\Entity\StorageLocation;
 use Exception;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputInterface;
@@ -41,42 +40,11 @@ final class MigrateDbCommand extends AbstractDatabaseCommand
         }
 
         // Back up current DB state.
-        $io->section(__('Backing up initial database state...'));
-
-        $tempDir = StorageLocation::DEFAULT_BACKUPS_PATH;
-        $dbDumpPath = $tempDir . '/pre_migration_db.sql';
-
-        $fs = new Filesystem();
-
-        if ($fs->exists($dbDumpPath)) {
-            $io->info([
-                __('We detected a database restore file from a previous (possibly failed) migration.'),
-                __('Attempting to restore that now...'),
-            ]);
-
-            try {
-                $this->restoreDatabaseDump($io, $dbDumpPath);
-            } catch (Exception $e) {
-                $io->error(
-                    sprintf(
-                        __('Restore failed: %s'),
-                        $e->getMessage()
-                    )
-                );
-                return 1;
-            }
-        } else {
-            try {
-                $this->dumpDatabase($io, $dbDumpPath);
-            } catch (Exception $e) {
-                $io->error(
-                    sprintf(
-                        __('Initial backup failed: %s'),
-                        $e->getMessage()
-                    )
-                );
-                return 1;
-            }
+        try {
+            $dbDumpPath = $this->saveOrRestoreDatabase($io);
+        } catch (Exception $e) {
+            $io->error($e->getMessage());
+            return 1;
         }
 
         // Attempt DB migration.
@@ -99,27 +67,9 @@ final class MigrateDbCommand extends AbstractDatabaseCommand
                 )
             );
 
-            $io->section(__('Attempting to roll back to previous database state...'));
-
-            try {
-                $this->restoreDatabaseDump($io, $dbDumpPath);
-
-                $io->warning([
-                    __('Your database was restored due to a failed migration.'),
-                    __('Please report this bug to our developers.'),
-                ]);
-                return 0;
-            } catch (Exception $e) {
-                $io->error(
-                    sprintf(
-                        __('Restore failed: %s'),
-                        $e->getMessage()
-                    )
-                );
-                return 1;
-            }
+            return $this->tryEmergencyRestore($io, $dbDumpPath);
         } finally {
-            $fs->remove($dbDumpPath);
+            (new Filesystem())->remove($dbDumpPath);
         }
 
         $io->newLine();

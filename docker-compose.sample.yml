@@ -17,15 +17,11 @@ services:
     labels:
       - "com.centurylinklabs.watchtower.scope=azuracast"
     # Want to customize the HTTP/S ports? Follow the instructions here:
-    # https://docs.azuracast.com/en/administration/docker#using-non-standard-ports
+    # https://www.azuracast.com/docs/administration/docker/#using-non-standard-ports
     ports:
       - '${AZURACAST_HTTP_PORT:-80}:80'
       - '${AZURACAST_HTTPS_PORT:-443}:443'
       - '${AZURACAST_SFTP_PORT:-2022}:2022'
-      # This default mapping is the outgoing and incoming ports for the first 50 stations.
-      # You can override this port mapping in your own docker-compose.override.yml file.
-      # For instructions, see:
-      # https://docs.azuracast.com/en/administration/docker#expanding-the-station-port-range
       - '8000:8000'
       - '8005:8005'
       - '8006:8006'
@@ -185,15 +181,15 @@ services:
       PUID: ${AZURACAST_PUID:-1000}
       PGID: ${AZURACAST_PGID:-1000}
     volumes:
-      - www_uploads:/var/azuracast/uploads
       - station_data:/var/azuracast/stations
-      - shoutcast2_install:/var/azuracast/servers/shoutcast2
-      - stereo_tool_install:/var/azuracast/servers/stereo_tool
-      - geolite_install:/var/azuracast/geoip
-      - sftpgo_data:/var/azuracast/sftpgo/persist
       - backups:/var/azuracast/backups
-      - acme:/var/azuracast/acme
       - db_data:/var/lib/mysql
+      - www_uploads:/var/azuracast/storage/uploads
+      - shoutcast2_install:/var/azuracast/storage/shoutcast2
+      - stereo_tool_install:/var/azuracast/storage/stereo_tool
+      - geolite_install:/var/azuracast/storage/geoip
+      - sftpgo_data:/var/azuracast/storage/sftpgo
+      - acme:/var/azuracast/storage/acme
     restart: unless-stopped
     ulimits:
       nofile:

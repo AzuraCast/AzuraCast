@@ -1,0 +1,25 @@
+:root,
+[data-bs-theme="light"] {
+  --public-page-bg: url('/static/img/hexbg.webp');
+  --scrollbar-color: #{$gray-400};
+}
+
+@include color-mode(dark, true) {
+  color-scheme: unset;
+  body {
+    color-scheme: dark;
+  }
+  iframe {
+    // Workaround for Bootstrap 5.3 weirdness with embeds.
+    color-scheme: light;
+  }
+
+  --public-page-bg: url('/static/img/hexbg_dark.webp');
+  --scrollbar-color: #{$gray-800};
+  --bs-info-bg-subtle: #bbdefb;
+  --bs-info-text-emphasis: #181d20;
+
+  .table-striped {
+    --bs-table-striped-bg: #2b2e37;
+  }
+}

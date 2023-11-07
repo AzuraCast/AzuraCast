@@ -94,11 +94,7 @@ final class AppFactory
 
         $containerBuilder->addDefinitions($diDefinitions);
 
-        // Check for services.php file and include it if one exists.
-        $configDir = $environment->getConfigDirectory();
-        if (file_exists($configDir . '/services.php')) {
-            $containerBuilder->addDefinitions($configDir . '/services.php');
-        }
+        $containerBuilder->addDefinitions(dirname(__DIR__) . '/config/services.php');
 
         $di = $containerBuilder->build();
 
@@ -117,39 +113,7 @@ final class AppFactory
      */
     public static function buildEnvironment(array $environment = []): Environment
     {
-        if (!isset($environment[Environment::BASE_DIR])) {
-            throw new Exception\BootstrapException('No base directory specified!');
-        }
-
-        $baseDir = $environment[Environment::BASE_DIR];
-        $parentBaseDir = dirname($baseDir);
-
-        $environment[Environment::IS_DOCKER] = file_exists($parentBaseDir . '/.docker');
-
-        $environment[Environment::TEMP_DIR] ??= $parentBaseDir . '/www_tmp';
-        $environment[Environment::CONFIG_DIR] ??= $baseDir . '/config';
-        $environment[Environment::VIEWS_DIR] ??= $baseDir . '/templates';
-        $environment[Environment::UPLOADS_DIR] ??= $parentBaseDir . '/uploads';
-
         $_ENV = getenv();
-
-        if (!$environment[Environment::IS_DOCKER]) {
-            $envPaths = [
-                $parentBaseDir . '/env.ini',
-                $baseDir . '/env.ini',
-            ];
-
-            foreach ($envPaths as $envPath) {
-                if (file_exists($envPath)) {
-                    $envIni = parse_ini_file($envPath);
-                    if (false !== $envIni) {
-                        $_ENV = array_merge($_ENV, $envIni);
-                        break;
-                    }
-                }
-            }
-        }
-
         $environment = array_merge(array_filter($_ENV), $environment);
 
         return new Environment($environment);

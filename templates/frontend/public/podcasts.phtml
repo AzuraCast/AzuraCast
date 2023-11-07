@@ -9,8 +9,8 @@ $this->layout('minimal', [
 $this->fetch('frontend/public/partials/station-custom', ['station' => $station]);
 
 ?>
-<div class="d-flex align-items-center justify-content-center" style="height: 100dvh;">
-    <section class="card" role="region" style="width: 500px;">
+<div class="public-page">
+    <section class="card" role="region">
         <div class="card-body">
             <h1 class="card-title mb-3">
                 <?= $this->e($station->getName()) ?>
@@ -68,13 +68,12 @@ $this->fetch('frontend/public/partials/station-custom', ['station' => $station])
                         </p>
 
                         <div class="buttons">
-                            <a href="<?= $episodesPageLink ?>" class="btn btn-primary">
+                            <a href="<?= $episodesPageLink ?>" class="btn btn-sm btn-primary">
                                 <?= __('Episodes') ?>
                             </a>
-
-                            <a href="<?= $feedLink ?>" class="btn btn-warning"
+                            <a href="<?= $feedLink ?>" class="btn btn-sm btn-warning"
                                target="_blank">
-                                <i class="material-icons">rss_feed</i>
+                                <?= $this->fetch('icons/rss') ?>
                                 <span><?= __('RSS Feed') ?></span>
                             </a>
                         </div>

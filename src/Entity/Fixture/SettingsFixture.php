@@ -28,6 +28,7 @@ final class SettingsFixture extends AbstractFixture
         $settings->setCheckForUpdates(true);
         $settings->setExternalIp('127.0.0.1');
         $settings->setEnableAdvancedFeatures(true);
+        $settings->setEnableStaticNowPlaying(true);
 
         if (!empty(getenv('INIT_DEMO_API_KEY') ?: '')) {
             $settings->setAnalytics(AnalyticsLevel::NoIp);

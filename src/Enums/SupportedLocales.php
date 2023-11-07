@@ -6,50 +6,55 @@ namespace App\Enums;
 
 use App\Environment;
 use App\Http\ServerRequest;
+use Gettext\Translator;
+use Gettext\TranslatorFunctions;
 use Locale;
-use PhpMyAdmin\MoTranslator\Loader;
 use Psr\Http\Message\ServerRequestInterface;
 
 enum SupportedLocales: string
 {
     case English = 'en_US.UTF-8';
     case Czech = 'cs_CZ.UTF-8';
-    case German = 'de_DE.UTF-8';
-    case Spanish = 'es_ES.UTF-8';
+    case Dutch = 'nl_NL.UTF-8';
     case French = 'fr_FR.UTF-8';
+    case German = 'de_DE.UTF-8';
     case Greek = 'el_GR.UTF-8';
     case Italian = 'it_IT.UTF-8';
-    case Hungarian = 'hu_HU.UTF-8';
-    case Dutch = 'nl_NL.UTF-8';
+    case Japanese = 'ja_JP.UTF-8';
+    case Korean = 'ko_KR.UTF-8';
+    case Norwegian = 'nb_NO.UTF-8';
     case Polish = 'pl_PL.UTF-8';
     case Portuguese = 'pt_PT.UTF-8';
-    case BrazilianPortuguese = 'pt_BR.UTF-8';
+    case PortugueseBrazilian = 'pt_BR.UTF-8';
     case Russian = 'ru_RU.UTF-8';
+    case SimplifiedChinese = 'zh_CN.UTF-8';
+    case Spanish = 'es_ES.UTF-8';
     case Swedish = 'sv_SE.UTF-8';
     case Turkish = 'tr_TR.UTF-8';
-    case SimplifiedChinese = 'zh_CN.UTF-8';
-    case Korean = 'ko_KR.UTF-8';
+    case Ukrainian = 'uk_UA.UTF-8';
 
     public function getLocalName(): string
     {
         return match ($this) {
             self::English => 'English (Default)',
             self::Czech => 'čeština',
-            self::German => 'Deutsch',
-            self::Spanish => 'Español',
+            self::Dutch => 'Nederlands',
             self::French => 'Français',
+            self::German => 'Deutsch',
             self::Greek => 'ελληνικά',
             self::Italian => 'Italiano',
-            self::Hungarian => 'magyar',
-            self::Dutch => 'Nederlands',
+            self::Japanese => '日本語',
+            self::Korean => '한국어',
+            self::Norwegian => 'norsk',
             self::Polish => 'Polski',
             self::Portuguese => 'Português',
-            self::BrazilianPortuguese => 'Português do Brasil',
+            self::PortugueseBrazilian => 'Português do Brasil',
             self::Russian => 'Русский язык',
+            self::SimplifiedChinese => '簡化字',
+            self::Spanish => 'Español',
             self::Swedish => 'Svenska',
             self::Turkish => 'Türkçe',
-            self::SimplifiedChinese => '簡化字',
-            self::Korean => '한국어',
+            self::Ukrainian => 'українська мова',
         };
     }
 
@@ -71,15 +76,19 @@ enum SupportedLocales: string
 
     public function register(Environment $environment): void
     {
+        $t = new Translator();
+
         // Skip translation file reading for default locale.
         if ($this !== self::default()) {
-            $translator = Loader::getInstance();
-            $translator->setlocale($this->value);
-            $translator->textdomain('default');
-            $translator->bindtextdomain('default', $environment->getBaseDirectory() . '/translations');
+            $translationsFile = $environment->getBaseDirectory() . '/translations/'
+                . $this->value . '/LC_MESSAGES/default.php';
+
+            if (file_exists($translationsFile)) {
+                $t->loadTranslations($translationsFile);
+            }
         }
 
-        Loader::loadFunctions();
+        TranslatorFunctions::register($t);
     }
 
     public static function default(): self

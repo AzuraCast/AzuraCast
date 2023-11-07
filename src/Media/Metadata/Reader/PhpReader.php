@@ -47,14 +47,17 @@ final class PhpReader
                 );
             }
 
-            $toProcess = [
-                $info['comments'] ?? [],
-            ];
+            // ID3v2 should always supersede ID3v1.
+            if (isset($info['tags']['id3v2'])) {
+                unset($info['tags']['id3v1']);
+            }
 
-            if (is_array($info['tags'])) {
-                foreach ($info['tags'] as $tagSet) {
-                    $toProcess[] = $tagSet;
-                }
+            if (!empty($info['tags'])) {
+                $toProcess = $info['tags'];
+            } else {
+                $toProcess = [
+                    $info['comments'] ?? [],
+                ];
             }
 
             $metaTags = $this->aggregateMetaTags($toProcess);

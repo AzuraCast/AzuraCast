@@ -8,7 +8,7 @@
  * @var App\Environment $environment
  */
 
-$componentDeps = $this->getVueComponentInfo('vue/pages/' . $component . '.js');
+$componentDeps = $this->getVueComponentInfo('src/js/pages/' . $component . '.js');
 
 $jsonFlags = $environment->isProduction()
     ? JSON_THROW_ON_ERROR

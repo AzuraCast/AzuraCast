@@ -29,7 +29,7 @@ return static function (RouteCollectorProxy $app) {
             $group->get(
                 '',
                 function (ServerRequest $request, Response $response, ...$params): ResponseInterface {
-                    return $response->withRedirect('/static/api/index.html');
+                    return $response->withRedirect('/docs/api/');
                 }
             )->setName('api:index:index');
 

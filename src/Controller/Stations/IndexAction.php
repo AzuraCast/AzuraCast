@@ -24,11 +24,6 @@ final class IndexAction implements SingleActionInterface
     ): ResponseInterface {
         $station = $request->getStation();
         $view = $request->getView();
-
-        if (!$station->getIsEnabled()) {
-            return $view->renderToResponse($response, 'stations/profile_disabled');
-        }
-
         $router = $request->getRouter();
 
         $globalProps = $view->getGlobalProps();

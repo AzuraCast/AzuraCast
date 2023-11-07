@@ -10,7 +10,7 @@ RUN go install github.com/jwilder/dockerize@v0.6.1
 
 RUN go install github.com/aptible/supercronic@v0.2.26
 
-RUN go install github.com/centrifugal/centrifugo/v5@v5.0.2
+RUN go install github.com/centrifugal/centrifugo/v5@v5.1.1
 
 #
 # MariaDB dependencies build step
@@ -55,7 +55,11 @@ RUN bash /bd_build/mariadb/setup.sh
 COPY ./util/docker/redis /bd_build/redis/
 RUN bash /bd_build/redis/setup.sh
 
-RUN bash /bd_build/cleanup.sh \
+COPY ./util/docker/docs /bd_build/docs/
+RUN bash /bd_build/docs/setup.sh
+
+RUN bash /bd_build/chown_dirs.sh \
+    bash /bd_build/cleanup.sh \
     && rm -rf /bd_build
 
 USER azuracast
@@ -64,7 +68,15 @@ RUN touch /var/azuracast/.docker
 
 USER root
 
-VOLUME ["/var/azuracast/stations", "/var/azuracast/uploads", "/var/azuracast/backups", "/var/azuracast/sftpgo/persist", "/var/azuracast/servers/shoutcast2", "/var/azuracast/meilisearch/persist"]
+VOLUME "/var/azuracast/stations"
+VOLUME "/var/azuracast/backups"
+VOLUME "/var/lib/mysql"
+VOLUME "/var/azuracast/storage/uploads"
+VOLUME "/var/azuracast/storage/shoutcast2"
+VOLUME "/var/azuracast/storage/stereo_tool"
+VOLUME "/var/azuracast/storage/geoip"
+VOLUME "/var/azuracast/storage/sftpgo"
+VOLUME "/var/azuracast/storage/acme"
 
 #
 # Development Build

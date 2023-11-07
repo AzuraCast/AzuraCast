@@ -1,0 +1,52 @@
+@import "roboto";
+
+// Include functions first (so you can manipulate colors, SVGs, calc, etc)
+@import "bootstrap/scss/functions";
+
+// Include any default variable overrides here
+@import 'variables';
+@import 'functions';
+
+// Include remainder of required Bootstrap stylesheets (including any separate color mode stylesheets)
+@import "bootstrap/scss/variables";
+@import "bootstrap/scss/variables-dark";
+
+// Include any default map overrides here
+
+// Core Bootstrap components
+@import "bootstrap-core";
+
+// Overrides for specific third-party products
+@import 'vendors/vue_datepicker';
+@import 'vendors/fullcalendar';
+@import 'vendors/sweetalert2';
+@import 'vendors/nprogress';
+
+// Material design components
+@import 'overrides/navdrawer';
+
+// Overrides for the Daemonite Material theme
+@import "root";
+@import 'overrides/body';
+@import 'overrides/buttons';
+@import 'overrides/card';
+@import 'overrides/codemirror';
+@import 'overrides/dropdown';
+@import 'overrides/file-uploads';
+@import 'overrides/footer';
+@import 'overrides/forms';
+@import 'overrides/header';
+@import 'overrides/icons';
+@import 'overrides/modal';
+@import 'overrides/navbar';
+@import 'overrides/notifications';
+@import 'overrides/sweetalert2';
+@import 'overrides/progressbar';
+@import 'overrides/tables';
+@import 'overrides/toasts';
+
+// Individual AzuraCast pages
+@import 'pages/search';
+@import 'pages/embed';
+@import 'pages/public';
+@import 'pages/log_viewer';

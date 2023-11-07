@@ -57,6 +57,9 @@ class StorageLocation implements Stringable, IdentifiableEntityInterface
     #[ORM\Column(name: 's3_endpoint', length: 255, nullable: true)]
     protected ?string $s3Endpoint = null;
 
+    #[ORM\Column(name: 's3_use_path_style', nullable: true)]
+    protected ?bool $s3UsePathStyle = false;
+
     #[ORM\Column(name: 'dropbox_app_key', length: 50, nullable: true)]
     protected ?string $dropboxAppKey = null;
 
@@ -188,6 +191,16 @@ class StorageLocation implements Stringable, IdentifiableEntityInterface
     public function setS3Endpoint(?string $s3Endpoint): void
     {
         $this->s3Endpoint = $this->truncateNullableString($s3Endpoint);
+    }
+
+    public function getS3UsePathStyle(): bool
+    {
+        return $this->s3UsePathStyle ?? false;
+    }
+
+    public function setS3UsePathStyle(?bool $s3UsePathStyle): void
+    {
+        $this->s3UsePathStyle = $s3UsePathStyle;
     }
 
     public function getDropboxAppKey(): ?string

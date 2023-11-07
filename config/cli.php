@@ -27,6 +27,7 @@ return function (App\Event\BuildConsoleCommands $event) {
         'azuracast:config:migrate' => Command\MigrateConfigCommand::class,
         'azuracast:setup:migrate' => Command\MigrateDbCommand::class,
         'azuracast:setup:fixtures' => Command\SetupFixturesCommand::class,
+        'azuracast:setup:rollback' => Command\RollbackDbCommand::class,
         'azuracast:setup' => Command\SetupCommand::class,
         'azuracast:radio:restart' => Command\RestartRadioCommand::class,
         'azuracast:sync:nowplaying' => Command\Sync\NowPlayingCommand::class,

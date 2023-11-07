@@ -1,0 +1,35 @@
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: calc(var(--bs-btn-padding-x) / 2);
+
+  font-weight: 500;
+  text-transform: uppercase;
+
+  &.btn-link {
+    text-decoration: none;
+
+    &:hover {
+      background-image: linear-gradient(to bottom, rgba(0, 0, 0, .12), rgba(0, 0, 0, .12));
+    }
+  }
+}
+
+.buttons {
+  & > * {
+    margin-right: .75rem;
+  }
+
+  & > *:last-child {
+    margin-right: 0;
+  }
+}
+
+.block-buttons {
+  display: grid;
+  gap: 0.5rem;
+
+  .btn {
+    display: block;
+  }
+}

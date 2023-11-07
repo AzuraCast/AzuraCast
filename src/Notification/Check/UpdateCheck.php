@@ -98,7 +98,7 @@ final class UpdateCheck
                 );
                 $notification->type = FlashLevels::Info->value;
                 $notification->actionLabel = __('About Release Channels');
-                $notification->actionUrl = 'https://docs.azuracast.com/en/getting-started/updates/release-channels';
+                $notification->actionUrl = '/docs/getting-started/updates/release-channels/';
 
                 $event->addNotification($notification);
             }

@@ -22,21 +22,7 @@ final class NowPlayingCache
         Station $station,
         ?NowPlaying $nowPlaying
     ): void {
-        $lookupCacheItem = $this->getLookupCache();
-
-        $lookupCache = $lookupCacheItem->isHit()
-            ? (array)$lookupCacheItem->get()
-            : [];
-
-        $lookupCache[$station->getIdRequired()] = [
-            'short_name' => $station->getShortName(),
-            'is_public' => $station->getEnablePublicPage(),
-            'updated_at' => time(),
-        ];
-
-        $lookupCacheItem->set($lookupCache);
-        $lookupCacheItem->expiresAfter(self::NOWPLAYING_CACHE_TTL);
-        $this->cache->saveDeferred($lookupCacheItem);
+        $this->populateLookupCache($station);
 
         $stationCacheItem = $this->getStationCache($station->getShortName());
 
@@ -100,11 +86,46 @@ final class NowPlayingCache
             : [];
     }
 
+    /**
+     * Given a station, remove it from the lookup cache so that the NowPlaying task runner immediately runs its Now
+     * Playing task next. This encourages timely updates when songs change without interfering with concurrency of the
+     * NowPlaying sync command.
+     *
+     * @param Station $station
+     * @return void
+     */
+    public function forceUpdate(Station $station): void
+    {
+        $this->populateLookupCache($station, 0);
+        $this->cache->commit();
+    }
+
     private function getLookupCache(): CacheItemInterface
     {
         return $this->cache->getItem(
             'now_playing.lookup'
         );
+    }
+
+    private function populateLookupCache(
+        Station $station,
+        ?int $updated = null
+    ): void {
+        $lookupCacheItem = $this->getLookupCache();
+
+        $lookupCache = $lookupCacheItem->isHit()
+            ? (array)$lookupCacheItem->get()
+            : [];
+
+        $lookupCache[$station->getIdRequired()] = [
+            'short_name' => $station->getShortName(),
+            'is_public' => $station->getEnablePublicPage(),
+            'updated_at' => $updated ?? time(),
+        ];
+
+        $lookupCacheItem->set($lookupCache);
+        $lookupCacheItem->expiresAfter(self::NOWPLAYING_CACHE_TTL);
+        $this->cache->saveDeferred($lookupCacheItem);
     }
 
     private function getStationCache(string $identifier): CacheItemInterface

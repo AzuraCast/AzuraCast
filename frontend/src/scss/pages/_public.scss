@@ -1,0 +1,50 @@
+@use "sass:math";
+
+body.page-minimal {
+  background: var(--bs-body-bg) var(--public-page-bg);
+  background-size: cover;
+  background-attachment: fixed;
+
+  footer {
+    text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black, 0 0 4px #000;
+  }
+
+  .public-page {
+    margin: 2.5rem 0;
+    min-height: calc(100dvh - 5rem);
+    display: flex;
+
+    .card {
+      margin: auto;
+      width: 500px;
+
+      .card-body {
+        position: relative;
+
+        .card-title {
+          font-weight: normal;
+        }
+      }
+
+      @include media-breakpoint-only('xs') {
+        width: 100%;
+        margin-left: 15px;
+        margin-right: 15px;
+      }
+    }
+  }
+
+  // Pulled from:
+  // https://stackoverflow.com/questions/5474871/html-how-can-i-show-tooltip-only-when-ellipsis-is-activated
+  .might-overflow {
+    text-overflow: ellipsis;
+    overflow : hidden;
+    white-space: nowrap;
+
+    &:hover {
+      text-overflow: clip;
+      white-space: normal;
+      word-break: break-all;
+    }
+  }
+}

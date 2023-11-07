@@ -174,7 +174,11 @@ final class QueueBuilder implements EventSubscriberInterface
             }
         }
 
-        $this->logger->error('No playable tracks were found.');
+        if ($event->isInterrupting()) {
+            $this->logger->info('No interrupting tracks to play.');
+        } else {
+            $this->logger->error('No playable tracks were found.');
+        }
     }
 
     /**

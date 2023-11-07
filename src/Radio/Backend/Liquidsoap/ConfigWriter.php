@@ -170,10 +170,24 @@ final class ConfigWriter implements EventSubscriberInterface
                         LIQ
                     );
                 } else {
-                    $stereoToolLibrary = match (php_uname('m')) {
-                        'x86_64', 'arm64' => $stereoToolLibraryPath . '/libStereoTool_64.so',
-                        default => $stereoToolLibraryPath . '/libStereoTool.so'
+                    $serverArch = php_uname('m');
+                    $stereoToolLibrary = match ($serverArch) {
+                        'x86' => $stereoToolLibraryPath . '/libStereoTool_intel32.so',
+                        'aarch64', 'arm64' => $stereoToolLibraryPath . '/libStereoTool_arm64.so',
+                        default => $stereoToolLibraryPath . '/libStereoTool_intel64.so',
                     };
+
+                    if (!file_exists($stereoToolLibrary)) {
+                        // Stereo Tool 10.0 uploaded using a different format.
+                        $is64Bit = in_array($serverArch, ['x86_64', 'arm64'], true);
+                        if ($is64Bit && file_exists($stereoToolLibraryPath . '/libStereoTool_64.so')) {
+                            $stereoToolLibrary = $stereoToolLibraryPath . '/libStereoTool_64.so';
+                        } elseif (file_exists(($stereoToolLibraryPath . '/libStereoTool.so'))) {
+                            $stereoToolLibrary = $stereoToolLibraryPath . '/libStereoTool.so';
+                        } else {
+                            break;
+                        }
+                    }
 
                     $event->appendBlock(
                         <<<LIQ
@@ -1032,7 +1046,7 @@ final class ConfigWriter implements EventSubscriberInterface
             end
             live = metadata.map(insert_missing, live)
 
-            radio = fallback(id="live_fallback", replay_metadata=true, [live, radio])
+            radio = fallback(id="live_fallback", track_sensitive=false, replay_metadata=true, [live, radio])
 
             # Skip non-live track when live DJ goes live.
             def check_live() =
@@ -1399,9 +1413,10 @@ final class ConfigWriter implements EventSubscriberInterface
 
             case StreamFormats::Mp3:
                 return '%mp3(samplerate=44100, stereo=true, bitrate=' . $bitrate . ')';
-        }
 
-        throw new RuntimeException(sprintf('Unsupported stream format: %s', $format->value));
+            default:
+                throw new RuntimeException(sprintf('Unsupported stream format: %s', $format->value));
+        }
     }
 
     public function writeRemoteBroadcastConfiguration(WriteLiquidsoapConfiguration $event): void

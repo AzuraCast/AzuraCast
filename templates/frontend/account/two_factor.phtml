@@ -6,15 +6,15 @@ $this->layout('minimal', [
 ?>
 
 <div class="public-page">
-    <div class="card">
+    <div class="card p-2">
         <div class="card-body">
             <h2 class="card-title"><?=__('Enter Two-Factor Code') ?></h2>
             <p class="text-left"><?=__('Your account uses a two-factor security code. Enter the code your device is currently showing below.') ?>
 
             <form id="login-form" class="pe-5" action="" method="post">
                 <div class="form-group">
-                    <label for="otp" class="mb-2">
-                        <i class="material-icons me-1" aria-hidden="true">vpn_key</i>
+                    <label for="otp" class="mb-2 d-flex align-items-center gap-2">
+                        <?= $this->fetch('icons/password') ?>
                         <strong><?=__('Security Code') ?></strong>
                     </label>
                     <input type="number" name="otp" class="form-control form-control-lg" placeholder="" aria-label="<?=__('Security Code') ?>" required autofocus>

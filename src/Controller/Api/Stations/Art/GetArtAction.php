@@ -19,6 +19,7 @@ use Psr\Http\Message\ResponseInterface;
 
 #[OA\Get(
     path: '/station/{station_id}/art/{media_id}',
+    operationId: 'getMediaArt',
     description: 'Returns the album art for a song, or a generic image.',
     tags: ['Stations: Media'],
     parameters: [

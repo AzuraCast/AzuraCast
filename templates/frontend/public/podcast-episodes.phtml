@@ -25,8 +25,8 @@ $sections->append(
 );
 ?>
 
-<div class="d-flex align-items-center justify-content-center" style="height: 100dvh;">
-    <section class="card" role="region" style="width: 500px;">
+<div class="public-page">
+    <section class="card" role="region">
         <div class="card-body">
             <h1 class="card-title mb-1">
                 <?= $this->e($podcast->getTitle()) ?>
@@ -37,11 +37,10 @@ $sections->append(
 
             <div class="buttons mb-3">
                 <a href="<?= $podcastsLink ?>" class="btn btn-sm btn-primary">
-                    <i class="material-icons">chevron_left</i>
                     <span><?= __('Back') ?></span>
                 </a>
                 <a href="<?= $feedLink ?>" class="btn btn-sm btn-warning" target="_blank">
-                    <i class="material-icons">rss_feed</i>
+                    <?= $this->fetch('icons/rss') ?>
                     <span><?= __('RSS Feed') ?></span>
                 </a>
             </div>
@@ -78,8 +77,7 @@ $sections->append(
                         <?php
                         if ($episode->getExplicit()) : ?>
                             <p class="card-text">
-                                <i class="material-icons" aria-hidden="true">warning</i>
-                                <small class="text-muted"><?= __('Contains explicit content') ?></small>
+                                <small class="text-warning-emphasis"><?= __('Contains explicit content') ?></small>
                             </p>
                         <?php
                         endif; ?>
@@ -99,7 +97,7 @@ $sections->append(
                             endif; ?>
                             <span class="badge badge-pill badge-dark" data-toggle="tooltip"
                                   data-placement="right" data-html="true"
-                                  title="<span class='material-icons'>schedule</span> <?= $publishedAt->format(
+                                  title="<?= $publishedAt->format(
                                       'H:i'
                                   ) ?>"><?= $publishedAt->format('d. M. Y') ?></span>
                         </p>

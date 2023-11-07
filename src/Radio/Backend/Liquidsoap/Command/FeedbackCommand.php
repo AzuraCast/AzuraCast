@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Radio\Backend\Liquidsoap\Command;
 
+use App\Cache\NowPlayingCache;
 use App\Container\EntityManagerAwareTrait;
 use App\Entity\Repository\SongHistoryRepository;
 use App\Entity\Repository\StationQueueRepository;
@@ -21,7 +22,8 @@ final class FeedbackCommand extends AbstractCommand
 
     public function __construct(
         private readonly StationQueueRepository $queueRepo,
-        private readonly SongHistoryRepository $historyRepo
+        private readonly SongHistoryRepository $historyRepo,
+        private readonly NowPlayingCache $nowPlayingCache
     ) {
     }
 
@@ -40,8 +42,10 @@ final class FeedbackCommand extends AbstractCommand
             $this->em->persist($historyRow);
 
             $this->historyRepo->changeCurrentSong($station, $historyRow);
-
             $this->em->flush();
+
+            $this->nowPlayingCache->forceUpdate($station);
+
             return true;
         } catch (Exception $e) {
             $this->logger->error(

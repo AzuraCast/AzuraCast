@@ -38,8 +38,8 @@ $sections->append(
     HTML
 );
 ?>
-<div class="d-flex align-items-center justify-content-center" style="height: 100dvh;">
-    <section class="card" role="region" style="width: 500px;">
+<div class="public-page">
+    <section class="card" role="region">
         <div class="card-body">
             <div class="d-flex mb-3">
                 <div class="flex-fill">
@@ -83,11 +83,10 @@ $sections->append(
 
             <div class="buttons">
                 <a href="<?= $podcastEpisodesLink ?>" class="btn btn-sm btn-primary">
-                    <i class="material-icons">chevron_left</i>
                     <span><?= __('Back') ?></span>
                 </a>
                 <a href="<?= $feedLink ?>" class="btn btn-sm btn-warning" target="_blank">
-                    <i class="material-icons">rss_feed</i>
+                    <?= $this->fetch('icons/rss') ?>
                     <span><?= __('RSS Feed') ?></span>
                 </a>
             </div>

@@ -99,22 +99,6 @@ abstract class AbstractFrontend extends AbstractLocalAdapter
             ->withPath('');
     }
 
-    /**
-     * @param Station $station
-     * @param UriInterface|null $baseUrl
-     *
-     * @return UriInterface[]
-     */
-    public function getStreamUrls(Station $station, UriInterface $baseUrl = null): array
-    {
-        $urls = [];
-        foreach ($station->getMounts() as $mount) {
-            $urls[] = $this->getUrlForMount($station, $mount, $baseUrl);
-        }
-
-        return $urls;
-    }
-
     abstract public function getAdminUrl(Station $station, UriInterface $baseUrl = null): UriInterface;
 
     public function getNowPlaying(Station $station, bool $includeClients = true): Result

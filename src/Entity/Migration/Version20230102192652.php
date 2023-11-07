@@ -4,12 +4,11 @@ declare(strict_types=1);
 
 namespace App\Entity\Migration;
 
+use App\Entity\Attributes\StableMigration;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 
-/**
- * Auto-generated Migration: Please modify to your needs!
- */
+#[StableMigration('0.17.7')]
 final class Version20230102192652 extends AbstractMigration
 {
     public function getDescription(): string

@@ -78,7 +78,7 @@ final class RestartRadioCommand extends CommandAbstract
                     reloadIfChanged: false
                 );
             } catch (Throwable $e) {
-                $io->error([
+                $io->warning([
                     $station . ': ' . $e->getMessage(),
                 ]);
             }

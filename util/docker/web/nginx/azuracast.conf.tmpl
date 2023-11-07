@@ -80,6 +80,12 @@ server {
         try_files $uri =404;
     }
 
+    # Built-in docs
+    location /docs {
+        alias /var/azuracast/docs;
+        index index.html;
+    }
+
     # Serve a static version of the nowplaying data for non-PHP-blocking delivery.
     location /api/nowplaying_static {
         expires 10s;
@@ -112,7 +118,7 @@ server {
     location /static/uploads {
         rewrite ^(.+)\.(?:\w+)\.(js|css|png|jpg|webp)$ $1.$2 last;
 
-        alias /var/azuracast/uploads;
+        alias {{ default .Env.UPLOADS_DIR "/var/azuracast/storage/uploads" }};
         try_files $uri =404;
     }
 

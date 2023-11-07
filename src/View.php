@@ -38,7 +38,10 @@ final class View extends Engine
         Version $version,
         RouterInterface $router
     ) {
-        parent::__construct($environment->getViewsDirectory(), 'phtml');
+        parent::__construct(
+            dirname(__DIR__) . '/templates',
+            'phtml'
+        );
 
         $this->sections = new GlobalSections();
         $this->globalProps = new ArrayCollection();
@@ -227,6 +230,7 @@ final class View extends Engine
                 $this->globalProps->set('station', [
                     'id' => $station->getIdRequired(),
                     'name' => $station->getName(),
+                    'isEnabled' => $station->getIsEnabled(),
                     'shortName' => $station->getShortName(),
                     'timezone' => $station->getTimezone(),
                     'offlineText' => $station->getBrandingConfig()->getOfflineText(),

@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Admin\Shoutcast;
 
-use App\Container\EnvironmentAwareTrait;
 use App\Controller\SingleActionInterface;
 use App\Entity\Api\Status;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use App\Radio\Frontend\Shoutcast;
 use App\Service\Flow;
 use Psr\Http\Message\ResponseInterface;
 use RuntimeException;
@@ -16,8 +16,6 @@ use Symfony\Component\Process\Process;
 
 final class PostAction implements SingleActionInterface
 {
-    use EnvironmentAwareTrait;
-
     public function __invoke(
         ServerRequest $request,
         Response $response,
@@ -32,8 +30,7 @@ final class PostAction implements SingleActionInterface
             return $flowResponse;
         }
 
-        $scBaseDir = $this->environment->getParentDirectory() . '/servers/shoutcast2';
-
+        $scBaseDir = Shoutcast::getDirectory();
         $scTgzPath = $scBaseDir . '/sc_serv.tar.gz';
         if (is_file($scTgzPath)) {
             unlink($scTgzPath);

@@ -19,10 +19,6 @@ return static function (RouteCollectorProxy $app) {
                 ->setName('api:vue:admin:custom_fields')
                 ->add(new Middleware\Permissions(GlobalPermissions::CustomFields));
 
-            $group->get('/debug', Controller\Api\Admin\Vue\DebugAction::class)
-                ->setName('api:vue:admin:debug')
-                ->add(new Middleware\Permissions(GlobalPermissions::All));
-
             $group->get('/logs', Controller\Api\Admin\Vue\LogsAction::class)
                 ->setName('api:vue:admin:logs')
                 ->add(new Middleware\Permissions(GlobalPermissions::Logs));

@@ -54,6 +54,8 @@ final class ConfigWriter implements EventSubscriberInterface
                 proxy_connect_timeout     60;
 
                 proxy_set_header Host \$host/{$listenBaseUrl};
+                
+                set \$args \$args&_ic2=1;
                 proxy_pass http://127.0.0.1:{$port}/\$2?\$args;
             }
             NGINX
@@ -101,11 +103,6 @@ final class ConfigWriter implements EventSubscriberInterface
             <<<NGINX
             # Reverse proxy the frontend broadcast.
             location {$hlsBaseUrl} {
-                types {
-                    application/vnd.apple.mpegurl m3u8;
-                    video/mp2t ts;
-                }
-
                 location ~ \.m3u8$ {
                     access_log {$hlsLogPath} hls_json;
                 }

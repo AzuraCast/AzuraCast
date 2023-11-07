@@ -2,11 +2,11 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
+      "~/*": [
+        "src/*"
+      ],
       "!/*": [
         "*"
-      ],
-      "~/*": [
-        "vue/*"
       ]
     },
     "target": "ES2020",
@@ -27,15 +27,15 @@
     "jsx": "preserve",
     /* Linting */
     "strict": false,
-    "noUnusedLocals": true,
+    "allowJs": true,
+    "noUnusedLocals": false,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true
   },
   "include": [
-    "vue/**/*.ts",
-    "vue/**/*.d.ts",
-    "vue/**/*.tsx",
-    "vue/**/*.vue",
-    "vue/**/*.js"
+    "src/**/*.ts",
+    "src/**/*.d.ts",
+    "src/**/*.tsx",
+    "src/**/*.vue"
   ]
 }

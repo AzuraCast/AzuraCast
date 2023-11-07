@@ -17,6 +17,7 @@ use App\Webhook\Connector\AbstractConnector;
 use App\Webhook\Enums\WebhookTriggers;
 use Monolog\Handler\StreamHandler;
 use Monolog\Level;
+use RuntimeException;
 use Throwable;
 
 final class Dispatcher
@@ -87,6 +88,16 @@ final class Dispatcher
             $webhookType = $webhook->getType();
             $webhookClass = $webhookType->getClass();
 
+            if (null === $webhookClass) {
+                $this->logger->error(
+                    sprintf(
+                        'Webhook type "%s" is no longer supported. Removing this webhook is recommended.',
+                        $webhookType->value
+                    )
+                );
+                continue;
+            }
+
             $this->logger->debug(
                 sprintf('Dispatching connector "%s".', $webhookType->value)
             );
@@ -154,6 +165,12 @@ final class Dispatcher
 
             $webhookType = $webhook->getType();
             $webhookClass = $webhookType->getClass();
+
+            if (null === $webhookClass) {
+                throw new RuntimeException(
+                    'Webhook type is no longer supported. Removing this webhook is recommended.'
+                );
+            }
 
             /** @var AbstractConnector $webhookObj */
             $webhookObj = $this->di->get($webhookClass);

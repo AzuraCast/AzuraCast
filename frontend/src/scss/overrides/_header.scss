@@ -1,0 +1,58 @@
+header.navbar {
+  background-image: url('/static/img/header_bg.webp'), linear-gradient(90deg, #0a6fc2 0%, #2196f3 100%);
+  background-position: top left, center;
+  background-repeat: no-repeat;
+  background-size: 500px 100px, cover;
+
+  min-height: $header-nav-height;
+  padding: 1rem;
+
+  color: $white !important;
+
+  .navbar-brand {
+    font-size: 3rem;
+    letter-spacing: -2px;
+    line-height: 1;
+    font-weight: normal;
+    align-items: baseline;
+    text-shadow: 0 0 2px #000;
+    padding: 0;
+
+    b {
+      font-weight: bold;
+    }
+
+    small {
+      padding-left: .75rem;
+      font-size: 1.5rem;
+      letter-spacing: normal;
+    }
+  }
+
+  @include media-breakpoint-down(sm) {
+    & {
+      position: relative;
+    }
+
+    .navbar-brand {
+      font-size: 2rem;
+
+      small {
+        font-size: 1rem;
+      }
+    }
+  }
+
+  .navbar-toggler {
+    border: 0;
+    line-height: 1rem;
+  }
+
+  .dropdown-menu {
+    .dropdown-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+  }
+}

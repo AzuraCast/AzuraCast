@@ -63,13 +63,28 @@ return static function (RouteCollectorProxy $group) {
                     $group->put('/clear-cache', Controller\Api\Admin\Debug\ClearCacheAction::class)
                         ->setName('api:admin:debug:clear-cache');
 
+                    $group->get(
+                        '/queues',
+                        Controller\Api\Admin\Debug\ListQueuesAction::class
+                    )->setName('api:admin:debug:queues');
+
                     $group->put(
                         '/clear-queue[/{queue}]',
                         Controller\Api\Admin\Debug\ClearQueueAction::class
                     )->setName('api:admin:debug:clear-queue');
 
+                    $group->get(
+                        '/sync-tasks',
+                        Controller\Api\Admin\Debug\ListSyncTasksAction::class
+                    )->setName('api:admin:debug:sync-tasks');
+
                     $group->put('/sync/{task}', Controller\Api\Admin\Debug\SyncAction::class)
                         ->setName('api:admin:debug:sync');
+
+                    $group->get(
+                        '/stations',
+                        Controller\Api\Admin\Debug\ListStationsAction::class
+                    )->setName('api:admin:debug:stations');
 
                     $group->group(
                         '/station/{station_id}',

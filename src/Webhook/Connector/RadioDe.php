@@ -30,7 +30,6 @@ final class RadioDe extends AbstractConnector
         if (
             empty($config['broadcastsubdomain'])
             || empty($config['apikey'])
-            || empty($config['station_id'])
         ) {
             throw $this->incompleteConfigException($webhook);
         }
@@ -38,9 +37,8 @@ final class RadioDe extends AbstractConnector
         $this->logger->debug('Dispatching RadioDe AIR API call...');
 
         $messageBody = [
-            'broadcastsubdomain' => $config['broadcastsubdomain'],
+            'broadcast' => $config['broadcastsubdomain'],
             'apikey' => $config['apikey'],
-            'id' => $config['station_id'],
             'title' => $np->now_playing?->song?->title,
             'artist' => $np->now_playing?->song?->artist,
             'album' => $np->now_playing?->song?->album,

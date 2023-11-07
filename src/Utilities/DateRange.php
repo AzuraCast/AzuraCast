@@ -38,4 +38,10 @@ final class DateRange
     {
         return $time->between($this->start, $this->end);
     }
+
+    public function isWithin(self $toCompare): bool
+    {
+        return $this->getEnd() >= $toCompare->getStart()
+            && $this->getStart() <= $toCompare->getEnd();
+    }
 }

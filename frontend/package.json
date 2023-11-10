@@ -42,7 +42,7 @@
     "sweetalert2": "11.4.8",
     "vue": "^3.2",
     "vue-axios": "^3.5",
-    "vue-codemirror6": "^1.0",
+    "vue-codemirror6": "1.1.0",
     "vue-easy-lightbox": "^1.16",
     "vue-router": "^4.2.4",
     "vue3-gettext": "^2.3.4",

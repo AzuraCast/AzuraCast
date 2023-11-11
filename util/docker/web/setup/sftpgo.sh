@@ -7,7 +7,7 @@ if [[ "$(uname -m)" = "aarch64" ]]; then
     ARCHITECTURE=arm64
 fi
 
-wget -O /tmp/sftpgo.deb "https://github.com/drakkan/sftpgo/releases/download/v2.5.4/sftpgo_2.5.4-1_${ARCHITECTURE}.deb"
+wget -O /tmp/sftpgo.deb "https://github.com/drakkan/sftpgo/releases/download/v2.5.5/sftpgo_2.5.5-1_${ARCHITECTURE}.deb"
 dpkg -i /tmp/sftpgo.deb
 rm -f /tmp/sftpgo.deb
 

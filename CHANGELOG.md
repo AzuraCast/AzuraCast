@@ -9,6 +9,8 @@ release channel, you can take advantage of these new features and fixes.
 
 ## Bug Fixes
 
+- A bug preventing SSL (HTTPS) certificates from loading from the new storage location has been fixed.
+
 ---
 
 # AzuraCast 0.19.2 (Nov 7, 2023)

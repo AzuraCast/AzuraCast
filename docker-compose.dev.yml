@@ -8,8 +8,8 @@ services:
       - "127.0.0.1:6025:6025" # Centrifugo
       - "127.0.0.1:6379:6379" # Redis
     volumes:
-      - $PWD/util/local_ssl/default.crt:/var/azuracast/acme/ssl.crt:ro
-      - $PWD/util/local_ssl/default.key:/var/azuracast/acme/ssl.key:ro
+      - $PWD/util/local_ssl/default.crt:/var/azuracast/storage/acme/ssl.crt:ro
+      - $PWD/util/local_ssl/default.key:/var/azuracast/storage/acme/ssl.key:ro
       - $PWD/frontend/node_modules:/var/azuracast/www/frontend/node_modules
       - $PWD/vendor:/var/azuracast/www/vendor
       - $PWD:/var/azuracast/www

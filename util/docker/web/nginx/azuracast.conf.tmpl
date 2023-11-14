@@ -54,8 +54,8 @@ server {
     listen 80;
     listen 443 default_server http2 ssl;
 
-    ssl_certificate        /var/azuracast/acme/ssl.crt;
-    ssl_certificate_key    /var/azuracast/acme/ssl.key;
+    ssl_certificate        {{ default .Env.ACME_DIR "/var/azuracast/storage/acme" }}/ssl.crt;
+    ssl_certificate_key    {{ default .Env.ACME_DIR "/var/azuracast/storage/acme" }}/ssl.key;
 
     ssl_protocols TLSv1.3 TLSv1.2;
     ssl_prefer_server_ciphers on;
@@ -76,7 +76,7 @@ server {
 
     # LetsEncrypt handling
     location /.well-known/acme-challenge {
-        alias /var/azuracast/acme/challenges;
+        alias {{ default .Env.ACME_DIR "/var/azuracast/storage/acme" }}/challenges;
         try_files $uri =404;
     }
 

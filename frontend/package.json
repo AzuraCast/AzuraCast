@@ -36,7 +36,6 @@
     "lodash": "^4.17.21",
     "luxon": "^3",
     "nprogress": "^0.2.0",
-    "pinia": "^2.0.28",
     "qrcode": "^1.5.3",
     "roboto-fontface": "^0.10.0",
     "sweetalert2": "11.4.8",

@@ -191,6 +191,7 @@ import {
     IconSettings,
     IconSupport
 } from "~/components/Common/icons";
+import {useProvidePlayerStore} from "~/functions/usePlayerStore.ts";
 
 const props = defineProps({
   instanceName: {
@@ -250,4 +251,6 @@ watch(
         immediate: true
     }
 );
+
+useProvidePlayerStore('global');
 </script>

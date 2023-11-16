@@ -15,12 +15,11 @@
 
 <script setup lang="ts">
 import Icon from "./Icon.vue";
-import {usePlayerStore} from "~/store";
 import {computed} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import {IconPlayCircle, IconStopCircle} from "~/components/Common/icons";
-import {storeToRefs} from "pinia";
 import getUrlWithoutQuery from "~/functions/getUrlWithoutQuery.ts";
+import {usePlayerStore} from "~/functions/usePlayerStore.ts";
 
 const props = defineProps({
     url: {
@@ -41,8 +40,7 @@ const props = defineProps({
     }
 });
 
-const $store = usePlayerStore();
-const {isPlaying, current} = storeToRefs($store);
+const {isPlaying, current, toggle: storeToggle} = usePlayerStore();
 
 const isThisPlaying = computed(() => {
     if (!isPlaying.value) {
@@ -69,7 +67,7 @@ const iconText = computed(() => {
 });
 
 const toggle = () => {
-    $store.toggle({
+    storeToggle({
         url: props.url,
         isStream: props.isStream,
         isHls: props.isHls

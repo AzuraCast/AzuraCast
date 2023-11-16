@@ -149,7 +149,7 @@ import MuteButton from "~/components/Common/MuteButton.vue";
 import AlbumArt from "~/components/Common/AlbumArt.vue";
 import {useAzuraCastStation} from "~/vendor/azuracast";
 import usePlayerVolume from "~/functions/usePlayerVolume";
-import {usePlayerStore} from "~/store.ts";
+import {usePlayerStore} from "~/functions/usePlayerStore.ts";
 
 const props = defineProps({
     ...playerProps
@@ -229,12 +229,12 @@ const toggleMute = () => {
     isMuted.value = !isMuted.value;
 }
 
-const $store = usePlayerStore();
+const {toggle} = usePlayerStore();
 
 const switchStream = (new_stream: CurrentStreamDescriptor) => {
     currentStream.value = new_stream;
 
-    $store.toggle({
+    toggle({
         url: new_stream.url,
         isStream: true,
         isHls: new_stream.hls

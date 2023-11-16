@@ -6,13 +6,9 @@
         :title="$gettext('Reorder Playlist')"
         :busy="loading"
         hide-footer
+        @hidden="onHidden"
     >
-        <div
-            style="min-height: 40px;"
-            class="flex-fill text-start bg-primary rounded mb-2"
-        >
-            <inline-player ref="player" />
-        </div>
+        <inline-player class="text-start bg-primary rounded mb-2 p-1" />
 
         <table class="table table-striped sortable mb-0">
             <thead>
@@ -93,6 +89,7 @@ import {useTranslate} from "~/vendor/gettext";
 import Modal from "~/components/Common/Modal.vue";
 import {IconChevronDown, IconChevronUp} from "~/components/Common/icons";
 import {ModalTemplateRef, useHasModal} from "~/functions/useHasModal.ts";
+import {usePlayerStore, useProvidePlayerStore} from "~/functions/usePlayerStore.ts";
 
 const loading = ref(true);
 const reorderUrl = ref(null);
@@ -139,6 +136,14 @@ const moveDown = (index) => {
 const moveUp = (index) => {
     media.value.splice(index - 1, 0, media.value.splice(index, 1)[0]);
     save();
+};
+
+useProvidePlayerStore('reorder');
+
+const {stop} = usePlayerStore();
+
+const onHidden = () => {
+    stop();
 };
 
 defineExpose({

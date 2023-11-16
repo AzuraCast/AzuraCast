@@ -69,19 +69,17 @@
 import AudioPlayer from '~/components/Common/AudioPlayer.vue';
 import formatTime from '~/functions/formatTime';
 import Icon from '~/components/Common/Icon.vue';
-import {usePlayerStore} from "~/store";
-import {computed, ref, toRef} from "vue";
+import {computed, ref} from "vue";
 import MuteButton from "~/components/Common/MuteButton.vue";
 import usePlayerVolume from "~/functions/usePlayerVolume";
 import {IconStop} from "~/components/Common/icons";
+import {usePlayerStore} from "~/functions/usePlayerStore.ts";
 
 defineOptions({
     inheritAttrs: false
 });
 
-const store = usePlayerStore();
-const isPlaying = toRef(store, 'isPlaying');
-const current = toRef(store, 'current');
+const {isPlaying, current, stop} = usePlayerStore();
 
 const volume = usePlayerVolume();
 const isMuted = ref(false);
@@ -112,14 +110,6 @@ const progress = computed({
         $player.value?.setProgress(prog);
     }
 });
-
-const stop = () => {
-    store.toggle({
-        url: null,
-        isStream: true,
-        isHls: false,
-    });
-};
 
 const toggleMute = () => {
     isMuted.value = !isMuted.value;

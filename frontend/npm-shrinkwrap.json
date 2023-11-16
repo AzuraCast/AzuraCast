@@ -34,7 +34,6 @@
         "lodash": "^4.17.21",
         "luxon": "^3",
         "nprogress": "^0.2.0",
-        "pinia": "^2.0.28",
         "qrcode": "^1.5.3",
         "roboto-fontface": "^0.10.0",
         "sweetalert2": "11.4.8",
@@ -4200,56 +4199,6 @@
       },
       "funding": {
         "url": "https://github.com/sponsors/jonschlinkert"
-      }
-    },
-    "node_modules/pinia": {
-      "version": "2.1.7",
-      "resolved": "https://registry.npmjs.org/pinia/-/pinia-2.1.7.tgz",
-      "integrity": "sha512-+C2AHFtcFqjPih0zpYuvof37SFxMQ7OEG2zV9jRI12i9BOy3YQVAHwdKtyyc8pDcDyIc33WCIsZaCFWU7WWxGQ==",
-      "dependencies": {
-        "@vue/devtools-api": "^6.5.0",
-        "vue-demi": ">=0.14.5"
-      },
-      "funding": {
-        "url": "https://github.com/sponsors/posva"
-      },
-      "peerDependencies": {
-        "@vue/composition-api": "^1.4.0",
-        "typescript": ">=4.4.4",
-        "vue": "^2.6.14 || ^3.3.0"
-      },
-      "peerDependenciesMeta": {
-        "@vue/composition-api": {
-          "optional": true
-        },
-        "typescript": {
-          "optional": true
-        }
-      }
-    },
-    "node_modules/pinia/node_modules/vue-demi": {
-      "version": "0.14.6",
-      "resolved": "https://registry.npmjs.org/vue-demi/-/vue-demi-0.14.6.tgz",
-      "integrity": "sha512-8QA7wrYSHKaYgUxDA5ZC24w+eHm3sYCbp0EzcDwKqN3p6HqtTCGR/GVsPyZW92unff4UlcSh++lmqDWN3ZIq4w==",
-      "hasInstallScript": true,
-      "bin": {
-        "vue-demi-fix": "bin/vue-demi-fix.js",
-        "vue-demi-switch": "bin/vue-demi-switch.js"
-      },
-      "engines": {
-        "node": ">=12"
-      },
-      "funding": {
-        "url": "https://github.com/sponsors/antfu"
-      },
-      "peerDependencies": {
-        "@vue/composition-api": "^1.0.0-rc.1",
-        "vue": "^3.0.0-0 || ^2.6.0"
-      },
-      "peerDependenciesMeta": {
-        "@vue/composition-api": {
-          "optional": true
-        }
       }
     },
     "node_modules/pngjs": {

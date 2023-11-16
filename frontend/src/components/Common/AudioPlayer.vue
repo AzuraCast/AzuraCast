@@ -9,9 +9,8 @@
 <script setup lang="ts">
 import getLogarithmicVolume from '~/functions/getLogarithmicVolume';
 import Hls from 'hls.js';
-import {usePlayerStore} from "~/store";
 import {nextTick, onMounted, onScopeDispose, ref, toRef, watch} from "vue";
-import {storeToRefs} from "pinia";
+import {usePlayerStore} from "~/functions/usePlayerStore.ts";
 
 const props = defineProps({
     title: {
@@ -33,8 +32,7 @@ const hls = ref(null);
 const duration = ref(0);
 const currentTime = ref(0);
 
-const store = usePlayerStore();
-const {isPlaying, current} = storeToRefs(store);
+const {isPlaying, current, stop: storeStop} = usePlayerStore();
 
 const bc = ref<BroadcastChannel | null>(null);
 
@@ -64,7 +62,7 @@ const stop = () => {
     duration.value = 0;
     currentTime.value = 0;
 
-    store.stopPlaying();
+    isPlaying.value = false;
 };
 
 const play = () => {
@@ -76,7 +74,7 @@ const play = () => {
         return;
     }
 
-    store.startPlaying();
+    isPlaying.value = true;
 
     nextTick(() => {
         // Handle audio errors.
@@ -161,14 +159,14 @@ onMounted(() => {
     // Allow pausing from the mobile metadata update.
     if ('mediaSession' in navigator) {
         navigator.mediaSession.setActionHandler('pause', () => {
-            stop();
+            storeStop();
         });
     }
 
     if ('BroadcastChannel' in window) {
         bc.value = new BroadcastChannel('audio_player');
         bc.value.addEventListener('message', () => {
-            stop();
+            storeStop();
         }, {passive: true});
     }
 });

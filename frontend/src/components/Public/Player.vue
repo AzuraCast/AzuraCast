@@ -213,8 +213,6 @@ const streams = computed<CurrentStreamDescriptor[]>(() => {
     return allStreams;
 });
 
-const $player = ref<InstanceType<typeof AudioPlayer> | null>(null);
-
 const volume = usePlayerVolume();
 
 const urlParamVolume = (new URL(document.location.href)).searchParams.get('volume');

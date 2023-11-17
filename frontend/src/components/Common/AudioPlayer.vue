@@ -9,8 +9,9 @@
 <script setup lang="ts">
 import getLogarithmicVolume from '~/functions/getLogarithmicVolume';
 import Hls from 'hls.js';
-import {nextTick, onMounted, onScopeDispose, ref, toRef, watch} from "vue";
+import {computed, nextTick, onMounted, onScopeDispose, ref, toRef, watch} from "vue";
 import {usePlayerStore} from "~/functions/usePlayerStore.ts";
+import {watchThrottled} from "@vueuse/core";
 
 const props = defineProps({
     title: {
@@ -26,6 +27,12 @@ const props = defineProps({
         default: false
     }
 });
+
+const emit = defineEmits([
+  'update:duration',
+  'update:currentTime',
+  'update:progress'
+]);
 
 const $audio = ref(null);
 const hls = ref(null);
@@ -61,7 +68,6 @@ const stop = () => {
 
     duration.value = 0;
     currentTime.value = 0;
-
     isPlaying.value = false;
 };
 
@@ -140,16 +146,37 @@ watch(current, (newCurrent) => {
     }
 });
 
-const getCurrentTime = () => currentTime.value;
-const getDuration = () => duration.value;
+watchThrottled(
+    duration,
+    (newValue) => {
+      emit('update:duration', newValue);
+    },
+    {throttle: 500}
+);
 
-const getProgress = () => {
+watchThrottled(
+    currentTime,
+    (newValue) => {
+      emit('update:currentTime', newValue);
+    },
+    {throttle: 500}
+);
+
+const progress = computed(() => {
     return (duration.value !== 0)
         ? +((currentTime.value / duration.value) * 100).toFixed(2)
         : 0;
-};
+});
 
-const setProgress = (progress) => {
+watchThrottled(
+    progress,
+    (newValue) => {
+      emit('update:progress', newValue);
+    },
+    {throttle: 500}
+);
+
+const setProgress = (progress: number) => {
     if ($audio.value !== null) {
         $audio.value.currentTime = (progress / 100) * duration.value;
     }
@@ -180,9 +207,6 @@ onScopeDispose(() => {
 defineExpose({
     play,
     stop,
-    getCurrentTime,
-    getDuration,
-    getProgress,
     setProgress
 });
 </script>

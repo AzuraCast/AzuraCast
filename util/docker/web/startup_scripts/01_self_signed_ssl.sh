@@ -25,6 +25,15 @@ if [ ! -f "$ACME_DIR/default.crt" ]; then
         -out "$ACME_DIR/default.crt"
 fi
 
+# Check for broken symlinks (may be caused by storage location changes)
+if [ -L "$ACME_DIR/ssl.crt" ]; then
+    readlink -q "$ACME_DIR/ssl.crt"
+    if [[ $? -ne 0 ]]; then
+      rm -rf "$ACME_DIR/ssl.key" || true
+      rm -rf "$ACME_DIR/ssl.crt" || true
+    fi
+fi
+
 if [ ! -f "$ACME_DIR/ssl.crt" ]; then
     ln -s "$ACME_DIR/default.key" "$ACME_DIR/ssl.key"
     ln -s "$ACME_DIR/default.crt" "$ACME_DIR/ssl.crt"

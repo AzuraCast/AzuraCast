@@ -1,7 +1,6 @@
 <template>
     <div class="radio-player-widget">
         <audio-player
-            ref="$player"
             :title="np.now_playing.song.text"
             :volume="volume"
             :is-muted="isMuted"
@@ -149,7 +148,7 @@ import MuteButton from "~/components/Common/MuteButton.vue";
 import AlbumArt from "~/components/Common/AlbumArt.vue";
 import {useAzuraCastStation} from "~/vendor/azuracast";
 import usePlayerVolume from "~/functions/usePlayerVolume";
-import {usePlayerStore} from "~/store.ts";
+import {usePlayerStore} from "~/functions/usePlayerStore.ts";
 
 const props = defineProps({
     ...playerProps
@@ -214,8 +213,6 @@ const streams = computed<CurrentStreamDescriptor[]>(() => {
     return allStreams;
 });
 
-const $player = ref<InstanceType<typeof AudioPlayer> | null>(null);
-
 const volume = usePlayerVolume();
 
 const urlParamVolume = (new URL(document.location.href)).searchParams.get('volume');
@@ -229,12 +226,12 @@ const toggleMute = () => {
     isMuted.value = !isMuted.value;
 }
 
-const $store = usePlayerStore();
+const {toggle} = usePlayerStore();
 
 const switchStream = (new_stream: CurrentStreamDescriptor) => {
     currentStream.value = new_stream;
 
-    $store.toggle({
+    toggle({
         url: new_stream.url,
         isStream: true,
         isHls: new_stream.hls

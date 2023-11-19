@@ -11,6 +11,26 @@ release channel, you can take advantage of these new features and fixes.
 
 ---
 
+# AzuraCast 0.19.3 (Nov 18, 2023)
+
+## New Features/Changes
+
+## Code Quality/Technical Changes
+
+- You can now reset sorting on a data table without needing to reload the page by clicking the sorted field once again;
+  the first click will toggle between ascending/descending mode, then the second click will reset to the default sort.
+
+## Bug Fixes
+
+- A bug preventing SSL (HTTPS) certificates from loading from the new storage location has been fixed.
+
+- Fixed a bug where the display of song playback times would wildly fluctuate in the built-in player.
+
+- Fixed a bug preventing audio playback from working correctly inside the "Reorder Playlist" and "Streamer Broadcast"
+  modals.
+
+---
+
 # AzuraCast 0.19.2 (Nov 7, 2023)
 
 ## New Features/Changes

@@ -9,9 +9,9 @@
 <script setup lang="ts">
 import getLogarithmicVolume from '~/functions/getLogarithmicVolume';
 import Hls from 'hls.js';
-import {usePlayerStore} from "~/store";
-import {nextTick, onMounted, onScopeDispose, ref, toRef, watch} from "vue";
-import {storeToRefs} from "pinia";
+import {computed, nextTick, onMounted, onScopeDispose, ref, toRef, watch} from "vue";
+import {usePlayerStore} from "~/functions/usePlayerStore.ts";
+import {watchThrottled} from "@vueuse/core";
 
 const props = defineProps({
     title: {
@@ -28,13 +28,18 @@ const props = defineProps({
     }
 });
 
+const emit = defineEmits([
+  'update:duration',
+  'update:currentTime',
+  'update:progress'
+]);
+
 const $audio = ref(null);
 const hls = ref(null);
 const duration = ref(0);
 const currentTime = ref(0);
 
-const store = usePlayerStore();
-const {isPlaying, current} = storeToRefs(store);
+const {isPlaying, current, stop: storeStop} = usePlayerStore();
 
 const bc = ref<BroadcastChannel | null>(null);
 
@@ -63,8 +68,7 @@ const stop = () => {
 
     duration.value = 0;
     currentTime.value = 0;
-
-    store.stopPlaying();
+    isPlaying.value = false;
 };
 
 const play = () => {
@@ -76,7 +80,7 @@ const play = () => {
         return;
     }
 
-    store.startPlaying();
+    isPlaying.value = true;
 
     nextTick(() => {
         // Handle audio errors.
@@ -142,16 +146,37 @@ watch(current, (newCurrent) => {
     }
 });
 
-const getCurrentTime = () => currentTime.value;
-const getDuration = () => duration.value;
+watchThrottled(
+    duration,
+    (newValue) => {
+      emit('update:duration', newValue);
+    },
+    {throttle: 500}
+);
 
-const getProgress = () => {
+watchThrottled(
+    currentTime,
+    (newValue) => {
+      emit('update:currentTime', newValue);
+    },
+    {throttle: 500}
+);
+
+const progress = computed(() => {
     return (duration.value !== 0)
         ? +((currentTime.value / duration.value) * 100).toFixed(2)
         : 0;
-};
+});
 
-const setProgress = (progress) => {
+watchThrottled(
+    progress,
+    (newValue) => {
+      emit('update:progress', newValue);
+    },
+    {throttle: 500}
+);
+
+const setProgress = (progress: number) => {
     if ($audio.value !== null) {
         $audio.value.currentTime = (progress / 100) * duration.value;
     }
@@ -161,14 +186,14 @@ onMounted(() => {
     // Allow pausing from the mobile metadata update.
     if ('mediaSession' in navigator) {
         navigator.mediaSession.setActionHandler('pause', () => {
-            stop();
+            storeStop();
         });
     }
 
     if ('BroadcastChannel' in window) {
         bc.value = new BroadcastChannel('audio_player');
         bc.value.addEventListener('message', () => {
-            stop();
+            storeStop();
         }, {passive: true});
     }
 });
@@ -182,9 +207,6 @@ onScopeDispose(() => {
 defineExpose({
     play,
     stop,
-    getCurrentTime,
-    getDuration,
-    getProgress,
     setProgress
 });
 </script>

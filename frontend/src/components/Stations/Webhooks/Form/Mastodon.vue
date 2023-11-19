@@ -129,7 +129,7 @@ const visibilityOptions = computed(() => {
             value: 'unlisted',
         },
         {
-            text: $gettext('Private'),
+            text: $gettext('Followers Only'),
             value: 'private',
         }
     ];

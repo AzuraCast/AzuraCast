@@ -3,6 +3,9 @@
         ref="$player"
         :volume="volume"
         :is-muted="isMuted"
+        @update:duration="onUpdateDuration"
+        @update:current-time="onUpdateCurrentTime"
+        @update:progress="onUpdateProgress"
     />
 
     <div
@@ -69,57 +72,52 @@
 import AudioPlayer from '~/components/Common/AudioPlayer.vue';
 import formatTime from '~/functions/formatTime';
 import Icon from '~/components/Common/Icon.vue';
-import {usePlayerStore} from "~/store";
-import {computed, ref, toRef} from "vue";
+import {computed, Ref, ref} from "vue";
 import MuteButton from "~/components/Common/MuteButton.vue";
 import usePlayerVolume from "~/functions/usePlayerVolume";
 import {IconStop} from "~/components/Common/icons";
+import {usePlayerStore} from "~/functions/usePlayerStore.ts";
 
 defineOptions({
     inheritAttrs: false
 });
 
-const store = usePlayerStore();
-const isPlaying = toRef(store, 'isPlaying');
-const current = toRef(store, 'current');
+const {isPlaying, current, stop} = usePlayerStore();
 
 const volume = usePlayerVolume();
 const isMuted = ref(false);
 
+const duration: Ref<number> = ref(0);
+const currentTime: Ref<number> = ref(0);
+const rawProgress: Ref<number> = ref(0);
+
+const onUpdateDuration = (newValue: number) => {
+    duration.value = newValue;
+};
+
+const onUpdateCurrentTime = (newValue: number) => {
+    console.log(newValue);
+    currentTime.value = newValue;
+};
+
+const onUpdateProgress = (newValue: number) => {
+    rawProgress.value = newValue;
+};
+
+const durationText = computed(() => formatTime(duration.value));
+const currentTimeText = computed(() => formatTime(currentTime.value));
+
 const $player = ref<InstanceType<typeof AudioPlayer> | null>(null);
-
-const duration = computed(() => {
-    return $player.value?.getDuration();
-});
-
-const durationText = computed(() => {
-    return formatTime(duration.value);
-});
-
-const currentTime = computed(() => {
-    return $player.value?.getCurrentTime();
-});
-
-const currentTimeText = computed(() => {
-    return formatTime(currentTime.value);
-});
 
 const progress = computed({
     get: () => {
-        return $player.value?.getProgress();
+        return rawProgress.value;
     },
     set: (prog) => {
         $player.value?.setProgress(prog);
+        rawProgress.value = prog;
     }
 });
-
-const stop = () => {
-    store.toggle({
-        url: null,
-        isStream: true,
-        isHls: false,
-    });
-};
 
 const toggleMute = () => {
     isMuted.value = !isMuted.value;

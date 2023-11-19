@@ -1,0 +1,13 @@
+@mixin might-overflow() {
+  // Pulled from:
+  // https://stackoverflow.com/questions/5474871/html-how-can-i-show-tooltip-only-when-ellipsis-is-activated
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+
+  &:hover {
+    text-overflow: clip;
+    white-space: normal;
+    word-break: break-all;
+  }
+}

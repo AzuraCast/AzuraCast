@@ -8,10 +8,7 @@
         @hidden="onHidden"
     >
         <template v-if="listUrl">
-            <inline-player
-                ref="$player"
-                class="bg-primary rounded mb-2 p-3"
-            />
+            <inline-player class="text-start bg-primary rounded mb-2 p-1" />
 
             <data-table
                 id="station_streamer_broadcasts"
@@ -77,6 +74,7 @@ import {useLuxon} from "~/vendor/luxon";
 import {IconDownload} from "~/components/Common/icons";
 import {DataTableTemplateRef} from "~/functions/useHasDatatable.ts";
 import {ModalTemplateRef, useHasModal} from "~/functions/useHasModal.ts";
+import {usePlayerStore, useProvidePlayerStore} from "~/functions/usePlayerStore.ts";
 
 const listUrl = ref(null);
 
@@ -165,10 +163,12 @@ const open = (newListUrl) => {
     show();
 };
 
-const $player = ref<InstanceType<typeof InlinePlayer> | null>(null);
+useProvidePlayerStore('broadcasts');
+
+const {stop} = usePlayerStore();
 
 const onHidden = () => {
-    $player.value?.stop();
+    stop();
     listUrl.value = null;
 };
 

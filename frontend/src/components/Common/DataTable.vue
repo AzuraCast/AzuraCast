@@ -698,15 +698,16 @@ const sort = (column: DataTableField) => {
         return;
     }
 
-    if (sortField.value === column.key) {
-        sortOrder.value = (sortOrder.value === 'asc')
+    if (sortField.value === column.key && sortOrder.value === 'desc') {
+        sortOrder.value = null;
+        sortField.value = null;
+    } else {
+        sortOrder.value = (sortField.value === column.key)
             ? 'desc'
             : 'asc';
-    } else {
-        sortOrder.value = 'asc';
+        sortField.value = column.key;
     }
-
-    sortField.value = column.key;
+    
     refresh();
 };
 

@@ -6,6 +6,7 @@
 // Include any default variable overrides here
 @import 'variables';
 @import 'functions';
+@import 'mixins';
 
 // Include remainder of required Bootstrap stylesheets (including any separate color mode stylesheets)
 @import "bootstrap/scss/variables";

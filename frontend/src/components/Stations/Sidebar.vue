@@ -5,7 +5,7 @@
                 :to="{ name: 'stations:index' }"
                 class="navbar-brand px-0 flex-fill"
             >
-                <div>{{ name }}</div>
+                {{ name }}
                 <div
                     id="station-time"
                     class="fs-6"

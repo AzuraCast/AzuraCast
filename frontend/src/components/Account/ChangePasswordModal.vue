@@ -46,15 +46,11 @@ import {ref} from "vue";
 import {useAxios} from "~/vendor/axios";
 import {useTranslate} from "~/vendor/gettext";
 import {ModalFormTemplateRef} from "~/functions/useBaseEditModal.ts";
-
-const props = defineProps({
-    changePasswordUrl: {
-        type: String,
-        required: true
-    }
-});
+import {getApiUrl} from "~/router.ts";
 
 const emit = defineEmits(['relist']);
+
+const changePasswordUrl = getApiUrl('/frontend/account/password');
 
 const passwordsMatch = (value, siblings) => {
     return siblings.new_password === value;
@@ -97,7 +93,7 @@ const {axios} = useAxios();
 const onSubmit = () => {
     ifValid(() => {
         axios
-            .put(props.changePasswordUrl, form.value)
+            .put(changePasswordUrl.value, form.value)
             .finally(() => {
                 $modal.value?.hide();
                 emit('relist');

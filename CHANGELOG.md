@@ -5,6 +5,13 @@ release channel, you can take advantage of these new features and fixes.
 
 ## New Features/Changes
 
+- **Passwordless Login with Passkeys**: You can now associate passkeys (also known as WebAuthn) with your account and
+  then automatically log in with those passkeys any time. Popular passkeys include those provided by your operating
+  system (i.e. Windows Hello or Apple's Safari passkey system) or may be provided by third-party software (like
+  Bitwarden). They're a secure alternative to passwords and two-factor authentication. You can register multiple
+  passkeys with a single account, and if you ever misplace your passkey, you can still log in with your regular e-mail
+  address and password (and two-factor auth, if you've set one up).
+
 ## Code Quality/Technical Changes
 
 - If you upload media to a folder and that folder is set to auto-assign to a playlist, the media will *instantly* be a

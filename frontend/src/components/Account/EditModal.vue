@@ -25,12 +25,9 @@ import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
 import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
 import {ModalFormTemplateRef} from "~/functions/useBaseEditModal.ts";
+import {getApiUrl} from "~/router.ts";
 
 const props = defineProps({
-    userUrl: {
-        type: String,
-        required: true
-    },
     supportedLocales: {
         type: Object,
         required: true
@@ -38,6 +35,8 @@ const props = defineProps({
 });
 
 const emit = defineEmits(['reload']);
+
+const userUrl = getApiUrl('/frontend/account/me');
 
 const loading = ref(true);
 const error = ref(null);
@@ -77,7 +76,7 @@ const open = () => {
 
     $modal.value?.show();
 
-    axios.get(props.userUrl).then((resp) => {
+    axios.get(userUrl.value).then((resp) => {
         form.value = mergeExisting(form.value, resp.data);
         loading.value = false;
     }).catch(() => {
@@ -91,7 +90,7 @@ const doSubmit = () => {
 
         axios({
             method: 'PUT',
-            url: props.userUrl,
+            url: userUrl.value,
             data: form.value
         }).then(() => {
             notifySuccess();

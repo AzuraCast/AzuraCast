@@ -172,9 +172,14 @@ final class Auth
      *
      * @param User $user
      */
-    public function setUser(User $user): void
+    public function setUser(User $user, ?bool $isLoginComplete = null): void
     {
-        $this->session->set(self::SESSION_IS_LOGIN_COMPLETE_KEY, null === $user->getTwoFactorSecret());
+        $this->session->set(
+            self::SESSION_IS_LOGIN_COMPLETE_KEY,
+            (null !== $isLoginComplete)
+                ? $isLoginComplete
+                : null === $user->getTwoFactorSecret()
+        );
         $this->session->set(self::SESSION_USER_ID_KEY, $user->getId());
         $this->session->regenerate();
 

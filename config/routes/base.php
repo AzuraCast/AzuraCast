@@ -53,6 +53,11 @@ return static function (RouteCollectorProxy $app) {
         ->setName('account:recover')
         ->add(Middleware\EnableView::class);
 
+    $app->get('/login/webauthn', Controller\Frontend\Account\WebAuthn\GetValidationAction::class)
+        ->setName('account:webauthn');
+
+    $app->post('/login/webauthn', Controller\Frontend\Account\WebAuthn\PostValidationAction::class);
+
     $app->group(
         '/setup',
         function (RouteCollectorProxy $group) {

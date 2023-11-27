@@ -45,6 +45,7 @@
                             type="email"
                             name="username"
                             class="form-control"
+                            autocomplete="username webauthn"
                             :placeholder="$gettext('name@example.com')"
                             :aria-label="$gettext('E-mail Address')"
                             required
@@ -64,6 +65,7 @@
                             type="password"
                             name="password"
                             class="form-control"
+                            autocomplete="current-password"
                             :placeholder="$gettext('Enter your password')"
                             :aria-label="$gettext('Password')"
                             required
@@ -141,7 +143,7 @@ import Icon from "~/components/Common/Icon.vue";
 import {IconMail, IconVpnKey} from "~/components/Common/icons.ts";
 import useWebAuthn from "~/functions/useWebAuthn.ts";
 import {useAxios} from "~/vendor/axios.ts";
-import {nextTick, ref} from "vue";
+import {nextTick, onMounted, ref} from "vue";
 
 const props = defineProps({
     hideProductName: {
@@ -167,16 +169,43 @@ const {isSupported: passkeySupported, processServerArgs, processValidateResponse
 const {axios} = useAxios();
 
 const $webAuthnForm = ref<HTMLFormElement | null>(null);
+
+const validateArgs = ref<object | null>(null);
 const validateData = ref<string | null>(null);
 
-const logInWithPasskey = async () => {
-    const validateArgs = await axios.get(props.webAuthnUrl).then(r => processServerArgs(r.data));
-
-    const attResp = await navigator.credentials.get(validateArgs);
+const handleValidationResponse = async (attResp) => {
     validateData.value = JSON.stringify(processValidateResponse(attResp));
-
     await nextTick();
-    
     $webAuthnForm.value?.submit();
+}
+
+const logInWithPasskey = async () => {
+    if (null === validateArgs.value) {
+        validateArgs.value = await axios.get(props.webAuthnUrl).then(r => processServerArgs(r.data));
+    }
+
+    const attResp = await navigator.credentials.get(validateArgs.value);
+    await handleValidationResponse(attResp);
 };
+
+onMounted(async () => {
+    if (passkeySupported && window.PublicKeyCredential
+        && PublicKeyCredential.isConditionalMediationAvailable) {
+        // Check if conditional mediation is available.
+        const isCMA = await PublicKeyCredential.isConditionalMediationAvailable();
+        if (!isCMA) {
+            return;
+        }
+
+        // Call WebAuthn authentication
+        validateArgs.value = await axios.get(props.webAuthnUrl).then(r => processServerArgs(r.data));
+
+        const attResp = await navigator.credentials.get({
+            ...validateArgs.value,
+            mediation: 'conditional'
+        });
+
+        await handleValidationResponse(attResp);
+    }
+});
 </script>

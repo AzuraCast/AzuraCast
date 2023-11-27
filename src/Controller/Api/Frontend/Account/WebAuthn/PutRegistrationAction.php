@@ -34,7 +34,8 @@ final class PutRegistrationAction
         $passkeyRaw = $webAuthn->processCreate(
             base64_decode($parsedBody['createResponse']['clientDataJSON'] ?? ''),
             base64_decode($parsedBody['createResponse']['attestationObject'] ?? ''),
-            $challenge
+            $challenge,
+            requireUserVerification: true
         );
 
         $passkey = WebAuthnPasskey::fromWebAuthnObject($passkeyRaw);

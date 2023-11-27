@@ -22,7 +22,8 @@ final class GetValidationAction
 
         $getArgs = $webAuthn->getGetArgs(
             [],
-            self::WEBAUTHN_TIMEOUT
+            self::WEBAUTHN_TIMEOUT,
+            requireUserVerification: 'preferred'
         );
 
         $this->setChallenge($request, $webAuthn->getChallenge());

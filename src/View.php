@@ -81,7 +81,7 @@ final class View extends Engine
         );
 
         $vueComponents = (!$environment->isDevelopment())
-            ? Json::loadFromFile($environment->getBaseDirectory() . '/web/static/vite_dist/manifest.json')
+            ? Json::loadFromFile($environment->getBaseDirectory() . '/web/static/vite_dist/.vite/manifest.json')
             : [];
 
         $this->registerFunction(

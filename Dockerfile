@@ -15,7 +15,7 @@ RUN go install github.com/centrifugal/centrifugo/v5@v5.1.2
 #
 # MariaDB dependencies build step
 #
-FROM mariadb:10.9-jammy AS mariadb
+FROM mariadb:11.2-jammy AS mariadb
 
 #
 # Final build image
@@ -32,6 +32,8 @@ COPY --from=go-dependencies /go/bin/centrifugo /usr/local/bin/centrifugo
 # Add MariaDB dependencies
 COPY --from=mariadb /usr/local/bin/healthcheck.sh /usr/local/bin/db_healthcheck.sh
 COPY --from=mariadb /usr/local/bin/docker-entrypoint.sh /usr/local/bin/db_entrypoint.sh
+COPY --from=mariadb /etc/apt/sources.list.d/mariadb.list /etc/apt/sources.list.d/mariadb.list
+COPY --from=mariadb /etc/apt/trusted.gpg.d/mariadb.gpg /etc/apt/trusted.gpg.d/mariadb.gpg
 
 # Run base build process
 COPY ./util/docker/common /bd_build/

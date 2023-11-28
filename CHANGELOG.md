@@ -14,6 +14,8 @@ release channel, you can take advantage of these new features and fixes.
 
 ## Code Quality/Technical Changes
 
+- MariaDB has been updated to 11.2. Databases will automatically be upgraded on the first boot after updating.
+
 - If you upload media to a folder and that folder is set to auto-assign to a playlist, the media will *instantly* be a
   part of that playlist, not subject to a sync task delay; this should greatly improve the user experience when using
   this feature.

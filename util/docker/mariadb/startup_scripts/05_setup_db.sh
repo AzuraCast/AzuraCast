@@ -9,7 +9,7 @@ export MARIADB_AUTO_UPGRADE=1
 
 source /usr/local/bin/db_entrypoint.sh
 
-set -- mysqld
+set -- mariadbd
 
 mysql_note "Initial DB setup..."
 

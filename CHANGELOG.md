@@ -22,6 +22,8 @@ release channel, you can take advantage of these new features and fixes.
 
 ## Bug Fixes
 
+- A bug causing fade/cue/etc. values on media of "0" or "0.0" to not properly disable crossfading/etc. has been fixed.
+
 ---
 
 # AzuraCast 0.19.3 (Nov 18, 2023)

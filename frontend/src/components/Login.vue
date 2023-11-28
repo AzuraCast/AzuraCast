@@ -164,7 +164,11 @@ const props = defineProps({
     }
 });
 
-const {isSupported: passkeySupported, processServerArgs, processValidateResponse} = useWebAuthn();
+const {
+    isSupported: passkeySupported,
+    isConditionalSupported: passkeyConditionalSupported,
+    doValidate
+} = useWebAuthn();
 
 const {axios} = useAxios();
 
@@ -173,39 +177,39 @@ const $webAuthnForm = ref<HTMLFormElement | null>(null);
 const validateArgs = ref<object | null>(null);
 const validateData = ref<string | null>(null);
 
-const handleValidationResponse = async (attResp) => {
-    validateData.value = JSON.stringify(processValidateResponse(attResp));
+const handleValidationResponse = async (validateResp) => {
+    validateData.value = JSON.stringify(validateResp);
     await nextTick();
     $webAuthnForm.value?.submit();
 }
 
 const logInWithPasskey = async () => {
-    if (null === validateArgs.value) {
-        validateArgs.value = await axios.get(props.webAuthnUrl).then(r => processServerArgs(r.data));
+    if (validateArgs.value === null) {
+        validateArgs.value = await axios.get(props.webAuthnUrl).then(r => r.data);
     }
 
-    const attResp = await navigator.credentials.get(validateArgs.value);
-    await handleValidationResponse(attResp);
+    try {
+        const validateResp = await doValidate(validateArgs.value, false);
+        await handleValidationResponse(validateResp);
+    } catch (e) {
+        console.error(e);
+    }
 };
 
 onMounted(async () => {
-    if (passkeySupported && window.PublicKeyCredential
-        && PublicKeyCredential.isConditionalMediationAvailable) {
-        // Check if conditional mediation is available.
-        const isCMA = await PublicKeyCredential.isConditionalMediationAvailable();
-        if (!isCMA) {
-            return;
-        }
+    const isConditionalSupported = await passkeyConditionalSupported();
+    if (!isConditionalSupported) {
+        return;
+    }
 
-        // Call WebAuthn authentication
-        validateArgs.value = await axios.get(props.webAuthnUrl).then(r => processServerArgs(r.data));
+    // Call WebAuthn authentication
+    validateArgs.value = await axios.get(props.webAuthnUrl).then(r => r.data);
 
-        const attResp = await navigator.credentials.get({
-            ...validateArgs.value,
-            mediation: 'conditional'
-        });
-
-        await handleValidationResponse(attResp);
+    try {
+        const validateResp = await doValidate(validateArgs.value, true);
+        await handleValidationResponse(validateResp);
+    } catch (e) {
+        console.error(e);
     }
 });
 </script>

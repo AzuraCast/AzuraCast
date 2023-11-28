@@ -120,7 +120,7 @@ const {form, resetForm, v$, validate} = useVuelidateOnForm(
         createResponse: {required}
     },
     {
-      name: '',
+        name: '',
         createResponse: null
     }
 );
@@ -138,34 +138,30 @@ const create = () => {
     show();
 };
 
+const {isSupported, doRegister, cancel} = useWebAuthn();
+
 const onHidden = () => {
-  clearContents();
-  emit('relist');
+    clearContents();
+    cancel();
+    emit('relist');
 };
 
 const {axios} = useAxios();
 
-const {isSupported, processServerArgs, processRegisterResponse} = useWebAuthn();
-
 const selectPasskey = async () => {
-  // GET registration options from the endpoint that calls
-    const registerArgs = await axios.get(registerWebAuthnUrl.value).then(r => processServerArgs(r.data));
+    const registerArgs = await axios.get(registerWebAuthnUrl.value).then(r => r.data);
 
-  let attResp;
-  try {
-    // Pass the options to the authenticator and wait for a response
-      attResp = await navigator.credentials.create(registerArgs);
-      form.value.createResponse = processRegisterResponse(attResp);
-  } catch (error) {
-    // Some basic error handling
-    if (error.name === 'InvalidStateError') {
-      error.value = 'Error: Authenticator was probably already registered by user';
-    } else {
-      error.value = error;
+    try {
+        form.value.createResponse = await doRegister(registerArgs);
+    } catch (err) {
+        if (err.name === 'InvalidStateError') {
+            error.value = 'Error: Authenticator was probably already registered by user';
+        } else {
+            error.value = err;
+        }
+
+        throw err;
     }
-
-    throw error;
-  }
 };
 
 const doSubmit = async () => {
@@ -174,14 +170,14 @@ const doSubmit = async () => {
         return;
     }
 
-  error.value = null;
+    error.value = null;
 
     axios({
-      method: 'PUT',
-      url: registerWebAuthnUrl.value,
+        method: 'PUT',
+        url: registerWebAuthnUrl.value,
         data: form.value
     }).then(() => {
-      hide();
+        hide();
     }).catch((error) => {
         error.value = error.response.data.message;
     });

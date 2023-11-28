@@ -1,6 +1,26 @@
 import {cloneDeep} from "lodash";
 
 export default function useWebAuthn() {
+    let abortController = null;
+    const abortAndCreateNew = (message: string) => {
+        if (abortController) {
+            const abortError = new Error(message);
+            abortError.name = 'AbortError';
+            abortController.abort(abortError);
+        }
+
+        abortController = new AbortController();
+        return abortController.signal;
+    };
+
+    const cancel = () => {
+        if (abortController) {
+            const abortError = new Error('Operation cancelled.');
+            abortError.name = 'AbortError';
+            abortController.abort(abortError);
+        }
+    }
+
     const recursiveBase64StrToArrayBuffer = (obj) => {
         const prefix = '=?BINARY?B?';
         const suffix = '?=';
@@ -36,7 +56,21 @@ export default function useWebAuthn() {
         return window.btoa(binary);
     }
 
-    const isSupported: boolean = !!window.fetch && !!navigator.credentials && !!navigator.credentials.create;
+    const isSupported: boolean =
+        window?.PublicKeyCredential !== undefined &&
+        typeof window.PublicKeyCredential === 'function';
+
+    const isConditionalSupported = async (): Promise<boolean> => {
+        if (!isSupported) {
+            return false;
+        }
+
+        if (!window.PublicKeyCredential || !PublicKeyCredential.isConditionalMediationAvailable) {
+            return false;
+        }
+
+        return await PublicKeyCredential.isConditionalMediationAvailable();
+    };
 
     const processServerArgs = (serverArgs) => {
         const newArgs = cloneDeep(serverArgs);
@@ -44,6 +78,7 @@ export default function useWebAuthn() {
         return newArgs;
     };
 
+    // Registration (private creation)
     const processRegisterResponse = (cred) => {
         return {
             transports: cred.response.getTransports ? cred.response.getTransports() : null,
@@ -52,6 +87,21 @@ export default function useWebAuthn() {
         };
     }
 
+    const doRegister = async (rawArgs: object) => {
+        const registerArgs = processServerArgs(rawArgs);
+
+        const signal = abortAndCreateNew('New registration started.');
+
+        const options = {
+            ...registerArgs,
+            signal: signal
+        };
+
+        const rawResp = await navigator.credentials.create(options);
+        return processRegisterResponse(rawResp);
+    };
+
+    // Validation (public login)
     const processValidateResponse = (cred) => {
         return {
             id: cred.rawId ? arrayBufferToBase64(cred.rawId) : null,
@@ -62,10 +112,30 @@ export default function useWebAuthn() {
         };
     };
 
+    const doValidate = async (rawArgs: object, isConditional: boolean = false) => {
+        const validateArgs = processServerArgs(rawArgs);
+
+        const mediation = (isConditional) ? {
+            mediation: 'conditional'
+        } : {};
+
+        const signal = abortAndCreateNew('New validation started.');
+
+        const options = {
+            ...validateArgs,
+            ...mediation,
+            signal: signal
+        };
+
+        const rawResp = await navigator.credentials.get(options);
+        return processValidateResponse(rawResp);
+    };
+
     return {
         isSupported,
-        processServerArgs,
-        processRegisterResponse,
-        processValidateResponse,
+        isConditionalSupported,
+        doValidate,
+        doRegister,
+        cancel
     };
 }

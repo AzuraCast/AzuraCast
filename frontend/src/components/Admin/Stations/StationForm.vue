@@ -114,7 +114,7 @@ const showAdminTab = userAllowed(GlobalPermission.Stations);
 const {form, resetForm, v$, ifValid} = useVuelidateOnForm();
 
 const isValid = computed(() => {
-    return !v$.value?.$invalid ?? true;
+    return !v$.value?.$invalid;
 });
 
 watch(isValid, (newValue) => {

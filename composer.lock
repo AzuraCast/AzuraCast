@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "89af2db97e6bf2e6179935c6e2d32ea9",
+    "content-hash": "58a22ecc0e553563dfac0654ca62c7e8",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -2737,16 +2737,16 @@
         },
         {
             "name": "james-heinrich/getid3",
-            "version": "v2.0.0-beta5",
+            "version": "v2.0.0-beta6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/JamesHeinrich/getID3.git",
-                "reference": "4e7aca96e7f4cf5ce6e08bca998334f567259965"
+                "reference": "8bf46222ae008d870e6676b4bf455ed664d90d05"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/JamesHeinrich/getID3/zipball/4e7aca96e7f4cf5ce6e08bca998334f567259965",
-                "reference": "4e7aca96e7f4cf5ce6e08bca998334f567259965",
+                "url": "https://api.github.com/repos/JamesHeinrich/getID3/zipball/8bf46222ae008d870e6676b4bf455ed664d90d05",
+                "reference": "8bf46222ae008d870e6676b4bf455ed664d90d05",
                 "shasum": ""
             },
             "require": {
@@ -2816,9 +2816,9 @@
             ],
             "support": {
                 "issues": "https://github.com/JamesHeinrich/getID3/issues",
-                "source": "https://github.com/JamesHeinrich/getID3/tree/v2.0.0-beta5"
+                "source": "https://github.com/JamesHeinrich/getID3/tree/v2.0.0-beta6"
             },
-            "time": "2022-10-28T11:52:26+00:00"
+            "time": "2023-11-02T19:40:57+00:00"
         },
         {
             "name": "laravel/serializable-closure",

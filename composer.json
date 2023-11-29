@@ -43,7 +43,7 @@
     "gettext/translator": "^1.1",
     "guzzlehttp/guzzle": "^7.0",
     "intervention/image": "^2.6",
-    "james-heinrich/getid3": "v2.0.0-beta5",
+    "james-heinrich/getid3": "v2.0.0-beta6",
     "lbuchs/webauthn": "^2.1",
     "league/csv": "^9.6",
     "league/flysystem-aws-s3-v3": "^3.0",

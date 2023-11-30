@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace App\MessageQueue;
 
-use App\Service\RedisFactory;
+use App\Environment;
+use Redis;
 use Symfony\Component\Messenger\Bridge\Redis\Transport\Connection;
 use Symfony\Component\Messenger\Bridge\Redis\Transport\RedisTransport;
 use Symfony\Component\Messenger\Exception\TransportException;
@@ -15,7 +16,7 @@ final class QueueManager extends AbstractQueueManager
     private array $connections = [];
 
     public function __construct(
-        private readonly RedisFactory $redisFactory
+        private readonly Environment $environment
     ) {
     }
 
@@ -49,14 +50,19 @@ final class QueueManager extends AbstractQueueManager
         $queueName = $queue->value;
 
         if (!isset($this->connections[$queueName])) {
+            $redisSettings = $this->environment->getRedisSettings();
+
             $this->connections[$queueName] = new Connection(
                 [
+                    'host' => $redisSettings['host'],
+                    'port' => $redisSettings['port'],
+                    'dbindex' => $redisSettings['db'],
                     'stream' => 'messages.' . $queueName,
                     'delete_after_ack' => true,
                     'redeliver_timeout' => 43200,
                     'claim_interval' => 86400,
                 ],
-                $this->redisFactory->createInstance()
+                new Redis()
             );
         }
 

@@ -57,6 +57,7 @@ final class QueueManager extends AbstractQueueManager
                     'host' => $redisSettings['host'],
                     'port' => $redisSettings['port'],
                     'dbindex' => $redisSettings['db'],
+                    'lazy' => true,
                     'stream' => 'messages.' . $queueName,
                     'delete_after_ack' => true,
                     'redeliver_timeout' => 43200,

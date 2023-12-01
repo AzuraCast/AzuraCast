@@ -45,8 +45,11 @@ final class DoctrineEntityNormalizer extends AbstractObjectNormalizer
      *
      * @return array|string|int|float|bool|ArrayObject<int, mixed>|null
      */
-    public function normalize(mixed $object, ?string $format = null, array $context = []): mixed
-    {
+    public function normalize(
+        mixed $object,
+        ?string $format = null,
+        array $context = []
+    ): array|string|int|float|bool|ArrayObject|null {
         if (!is_object($object)) {
             throw new InvalidArgumentException('Cannot normalize non-object.');
         }
@@ -113,12 +116,12 @@ final class DoctrineEntityNormalizer extends AbstractObjectNormalizer
         return $context;
     }
 
-    public function supportsNormalization($data, string $format = null): bool
+    public function supportsNormalization(mixed $data, string $format = null, array $context = []): bool
     {
         return $this->isEntity($data);
     }
 
-    public function supportsDenormalization($data, $type, string $format = null): bool
+    public function supportsDenormalization(mixed $data, string $type, string $format = null, array $context = []): bool
     {
         return $this->isEntity($type);
     }

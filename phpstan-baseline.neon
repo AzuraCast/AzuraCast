@@ -26,11 +26,6 @@ parameters:
 			path: src/Entity/Migration/Version20201204043539.php
 
 		-
-			message: "#^Cannot cast Symfony\\\\Component\\\\Validator\\\\ConstraintViolationListInterface to string\\.$#"
-			count: 1
-			path: src/Exception/ValidationException.php
-
-		-
 			message: "#^Method App\\\\Normalizer\\\\DoctrineEntityNormalizer\\:\\:getAllowedAttributes\\(\\) should return array\\|false but returns array\\<string\\|Symfony\\\\Component\\\\Serializer\\\\Mapping\\\\AttributeMetadataInterface\\>\\|bool\\.$#"
 			count: 1
 			path: src/Normalizer/DoctrineEntityNormalizer.php

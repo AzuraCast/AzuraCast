@@ -74,7 +74,11 @@ final class Version20201204043539 extends AbstractMigration
             }
         );
 
-        $this->connection->delete('settings', [1 => 1]);
+        $this->connection->executeStatement(
+            <<<'SQL'
+            DELETE FROM settings
+            SQL
+        );
 
         foreach ($newSettings as $settingKey => $settingValue) {
             $this->connection->insert('settings', [

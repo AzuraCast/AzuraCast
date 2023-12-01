@@ -14,6 +14,7 @@ use InvalidArgumentException;
 use ReflectionClass;
 use ReflectionException;
 use ReflectionProperty;
+use Symfony\Component\Serializer\Mapping\AttributeMetadataInterface;
 use Symfony\Component\Serializer\Mapping\Factory\ClassMetadataFactoryInterface;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
@@ -130,13 +131,13 @@ final class DoctrineEntityNormalizer extends AbstractObjectNormalizer
      * @param object|class-string<object> $classOrObject
      * @param array $context
      * @param bool $attributesAsString
-     * @return array|false
+     * @return string[]|AttributeMetadataInterface[]|bool
      */
     protected function getAllowedAttributes(
         $classOrObject,
         array $context,
         bool $attributesAsString = false
-    ): array|false {
+    ): array|bool {
         $groups = $this->getGroups($context);
         if (empty($groups)) {
             return false;

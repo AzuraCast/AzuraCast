@@ -19,6 +19,7 @@ use DateTimeInterface;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Iterator;
 use IteratorAggregate;
+use RuntimeException;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\ConstraintDefinitionException;
@@ -124,7 +125,11 @@ final class UniqueEntityValidator extends ConstraintValidator
                 );
             }
         } else {
-            $repository = $this->em->getRepository(get_class($value));
+            $repoClass = get_class($value);
+            if (!$repoClass) {
+                throw new RuntimeException('Invalid class specified.');
+            }
+            $repository = $this->em->getRepository($repoClass);
         }
 
         $result = $repository->{$constraint->repositoryMethod}($criteria);

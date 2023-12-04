@@ -121,7 +121,7 @@
     "phpstan/phpstan-doctrine": "^1",
     "phpunit/php-timer": "^6",
     "phpunit/phpunit": "^10",
-    "psy/psysh": "^0.11.0",
+    "psy/psysh": "^0.11.22",
     "pyrech/composer-changelogs": "^2",
     "roave/security-advisories": "dev-latest",
     "slevomat/coding-standard": "^8",

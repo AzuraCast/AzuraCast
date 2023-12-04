@@ -129,12 +129,15 @@ final class ServerRequest extends SlimServerRequest
     }
 
     /**
+     * @template T of object
+     *
      * @param string $attr
-     * @param string $className
+     * @param class-string<T> $className
+     * @return T
      *
      * @throws InvalidRequestAttribute
      */
-    private function getAttributeOfClass(string $attr, string $className): mixed
+    private function getAttributeOfClass(string $attr, string $className): object
     {
         $object = $this->serverRequest->getAttribute($attr);
 

@@ -26,9 +26,10 @@ final class JsonGenerator extends Generator
     public function generateArray(Translations $translations): array
     {
         $pluralForm = $translations->getHeaders()->getPluralForm();
-        $pluralSize = is_array($pluralForm) ? ($pluralForm[0] - 1) : null;
+        $pluralSize = is_array($pluralForm) ? (int)($pluralForm[0] - 1) : null;
         $messages = [];
 
+        /** @var Translation $translation */
         foreach ($translations as $translation) {
             if (!$translation->getTranslation() || $translation->isDisabled()) {
                 continue;

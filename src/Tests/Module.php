@@ -52,7 +52,10 @@ class Module extends Framework implements DoctrineProvider
         }
 
         $this->container = $container;
-        $this->em = $this->container->get(ReloadableEntityManagerInterface::class);
+
+        /** @var ReloadableEntityManagerInterface $em */
+        $em = $this->container->get(ReloadableEntityManagerInterface::class);
+        $this->em = $em;
 
         parent::_initialize();
     }

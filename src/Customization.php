@@ -12,8 +12,8 @@ use App\Entity\Settings;
 use App\Entity\Station;
 use App\Enums\SupportedLocales;
 use App\Enums\SupportedThemes;
+use App\Http\ServerRequest;
 use App\Traits\RequestAwareTrait;
-use Psr\Http\Message\ServerRequestInterface;
 
 final class Customization
 {
@@ -37,7 +37,7 @@ final class Customization
         $this->locale = SupportedLocales::default();
     }
 
-    public function setRequest(?ServerRequestInterface $request): void
+    public function setRequest(?ServerRequest $request): void
     {
         $this->request = $request;
 

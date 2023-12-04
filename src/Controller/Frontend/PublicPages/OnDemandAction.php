@@ -35,6 +35,7 @@ final class OnDemandAction implements SingleActionInterface
         }
 
         // Get list of custom fields.
+        /** @var array<array{id: int, short_name: string, name: string}> $customFieldsRaw */
         $customFieldsRaw = $this->em->createQuery(
             <<<'DQL'
                 SELECT cf.id, cf.short_name, cf.name

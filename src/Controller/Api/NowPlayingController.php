@@ -7,6 +7,7 @@ namespace App\Controller\Api;
 use App\Cache\NowPlayingCache;
 use App\Entity\Api\Error;
 use App\Entity\Api\NowPlaying\NowPlaying;
+use App\Exception\InvalidRequestAttribute;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\OpenApi;
@@ -83,9 +84,13 @@ final class NowPlayingController
         $baseUrl = $router->getBaseUrl();
 
         // If unauthenticated, hide non-public stations from full view.
-        $np = $this->nowPlayingCache->getForAllStations(
-            $request->getAttribute('user') === null
-        );
+        try {
+            $user = $request->getUser();
+        } catch (InvalidRequestAttribute) {
+            $user = null;
+        }
+
+        $np = $this->nowPlayingCache->getForAllStations(null === $user);
 
         $np = array_map(
             function (NowPlaying $npRow) use ($baseUrl) {

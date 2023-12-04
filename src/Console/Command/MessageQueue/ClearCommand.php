@@ -7,6 +7,7 @@ namespace App\Console\Command\MessageQueue;
 use App\Console\Command\CommandAbstract;
 use App\MessageQueue\QueueManagerInterface;
 use App\MessageQueue\QueueNames;
+use App\Utilities\Types;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -35,9 +36,9 @@ final class ClearCommand extends CommandAbstract
     {
         $io = new SymfonyStyle($input, $output);
 
-        $queueName = $input->getArgument('queue');
+        $queueName = Types::stringOrNull($input->getArgument('queue'), true);
 
-        if (!empty($queueName)) {
+        if (null !== $queueName) {
             $queue = QueueNames::tryFrom($queueName);
 
             if (null !== $queue) {

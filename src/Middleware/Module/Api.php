@@ -7,8 +7,10 @@ namespace App\Middleware\Module;
 use App\Container\EnvironmentAwareTrait;
 use App\Container\SettingsAwareTrait;
 use App\Entity\User;
+use App\Exception\InvalidRequestAttribute;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use App\Middleware\AbstractMiddleware;
 use App\Utilities\Urls;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Server\RequestHandlerInterface;
@@ -20,7 +22,7 @@ use Symfony\Component\VarDumper\VarDumper;
 /**
  * Handle API calls and wrap exceptions in JSON formatting.
  */
-final class Api
+final class Api extends AbstractMiddleware
 {
     use EnvironmentAwareTrait;
     use SettingsAwareTrait;
@@ -40,7 +42,11 @@ final class Api
         }
 
         // Attempt API key auth if a key exists.
-        $apiUser = $request->getAttribute(ServerRequest::ATTR_USER);
+        try {
+            $apiUser = $request->getUser();
+        } catch (InvalidRequestAttribute) {
+            $apiUser = null;
+        }
 
         // Set default cache control for API pages.
         $settings = $this->readSettings();

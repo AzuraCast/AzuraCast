@@ -205,9 +205,10 @@ final class CheckMediaTask extends AbstractTask
             DQL
         )->setParameter('storageLocation', $storageLocation);
 
+        /** @var array<array-key, int|string> $mediaRow */
         foreach ($existingMediaQuery->toIterable([], AbstractQuery::HYDRATE_ARRAY) as $mediaRow) {
             // Check if media file still exists.
-            $path = $mediaRow['path'];
+            $path = (string)$mediaRow['path'];
             $pathHash = md5($path);
 
             if (isset($musicFiles[$pathHash])) {
@@ -216,11 +217,11 @@ final class CheckMediaTask extends AbstractTask
 
                 if (
                     empty($mediaRow['unique_id'])
-                    || StationMedia::needsReprocessing($mtime, $mediaRow['mtime'] ?? 0)
+                    || StationMedia::needsReprocessing($mtime, (int)$mediaRow['mtime'])
                 ) {
                     $message = new ReprocessMediaMessage();
                     $message->storage_location_id = $storageLocation->getIdRequired();
-                    $message->media_id = $mediaRow['id'];
+                    $message->media_id = (int)$mediaRow['id'];
                     $message->force = empty($mediaRow['unique_id']);
 
                     $this->messageBus->dispatch($message);

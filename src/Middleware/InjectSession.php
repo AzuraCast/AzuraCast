@@ -15,8 +15,6 @@ use Mezzio\Session\LazySession;
 use Mezzio\Session\SessionPersistenceInterface;
 use Psr\Cache\CacheItemPoolInterface;
 use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
-use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Symfony\Component\Cache\Adapter\ArrayAdapter;
 use Symfony\Component\Cache\Adapter\ProxyAdapter;
@@ -24,7 +22,7 @@ use Symfony\Component\Cache\Adapter\ProxyAdapter;
 /**
  * Inject the session object into the request.
  */
-final class InjectSession implements MiddlewareInterface
+final class InjectSession extends AbstractMiddleware
 {
     use SettingsAwareTrait;
 
@@ -41,7 +39,7 @@ final class InjectSession implements MiddlewareInterface
         $this->cachePool = new ProxyAdapter($dbCache, 'session.');
     }
 
-    public function getSessionPersistence(ServerRequestInterface $request): SessionPersistenceInterface
+    public function getSessionPersistence(ServerRequest $request): SessionPersistenceInterface
     {
         $alwaysUseSsl = $this->readSettings()->getAlwaysUseSsl();
         $isHttpsUrl = ('https' === $request->getUri()->getScheme());
@@ -59,7 +57,7 @@ final class InjectSession implements MiddlewareInterface
         );
     }
 
-    public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
+    public function __invoke(ServerRequest $request, RequestHandlerInterface $handler): ResponseInterface
     {
         $sessionPersistence = $this->getSessionPersistence($request);
         $session = new LazySession($sessionPersistence, $request);

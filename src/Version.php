@@ -53,7 +53,7 @@ final class Version
     /**
      * Load cache or generate new repository details from the underlying Git repository.
      *
-     * @return mixed[]
+     * @return string[]
      */
     public function getDetails(): array
     {

@@ -352,6 +352,7 @@ final class Configuration
                 DQL
             )->getArrayResult();
 
+            /** @var array<array-key, int|string|array> $row */
             foreach ($stationConfigs as $row) {
                 $stationReference = ['id' => $row['id'], 'name' => $row['name']];
 

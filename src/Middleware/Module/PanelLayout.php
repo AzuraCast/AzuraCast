@@ -7,6 +7,7 @@ namespace App\Middleware\Module;
 use App\Container\EnvironmentAwareTrait;
 use App\Enums\GlobalPermissions;
 use App\Http\ServerRequest;
+use App\Middleware\AbstractMiddleware;
 use App\Middleware\Auth\ApiAuth;
 use App\Version;
 use Psr\Http\Message\ResponseInterface;
@@ -15,7 +16,7 @@ use Psr\Http\Server\RequestHandlerInterface;
 use const PHP_MAJOR_VERSION;
 use const PHP_MINOR_VERSION;
 
-final class PanelLayout
+final class PanelLayout extends AbstractMiddleware
 {
     use EnvironmentAwareTrait;
 

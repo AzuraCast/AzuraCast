@@ -21,7 +21,7 @@ use Slim\Routing\RouteContext;
 /**
  * Require that the podcast has a published episode for public access
  */
-final class RequirePublishedPodcastEpisodeMiddleware
+final class RequirePublishedPodcastEpisodeMiddleware extends AbstractMiddleware
 {
     public function __construct(
         private readonly PodcastRepository $podcastRepository

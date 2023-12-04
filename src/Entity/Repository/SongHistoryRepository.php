@@ -137,7 +137,7 @@ final class SongHistoryRepository extends AbstractStationBasedRepository
      * @param int $start
      * @param int $end
      *
-     * @return mixed[] [int $minimumListeners, int $maximumListeners, float $averageListeners]
+     * @return array{int, int, float}
      */
     public function getStatsByTimeRange(Station $station, int $start, int $end): array
     {

@@ -9,6 +9,7 @@ use App\Entity\Repository\StationRepository;
 use App\Entity\Station;
 use App\Sync\NowPlaying\Task\BuildQueueTask;
 use App\Sync\NowPlaying\Task\NowPlayingTask;
+use App\Utilities\Types;
 use Monolog\LogRecord;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputArgument;
@@ -43,7 +44,7 @@ final class NowPlayingPerStationCommand extends AbstractSyncCommand
         $this->logToExtraFile('app_nowplaying.log');
 
         $io = new SymfonyStyle($input, $output);
-        $stationName = $input->getArgument('station');
+        $stationName = Types::string($input->getArgument('station'));
 
         $station = $this->stationRepo->findByIdentifier($stationName);
         if (!($station instanceof Station)) {

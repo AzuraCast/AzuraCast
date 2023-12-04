@@ -4,14 +4,13 @@ declare(strict_types=1);
 
 namespace App\Http;
 
-use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\UriInterface;
 
 interface RouterInterface
 {
-    public function setRequest(?ServerRequestInterface $request): void;
+    public function setRequest(?ServerRequest $request): void;
 
-    public function withRequest(?ServerRequestInterface $request): self;
+    public function withRequest(?ServerRequest $request): self;
 
     public function getBaseUrl(): UriInterface;
 

@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use App\Utilities\Strings;
+use App\Utilities\Types;
+use LogicException;
 
 class StationFrontendConfiguration extends AbstractStationConfiguration
 {
@@ -31,7 +33,7 @@ class StationFrontendConfiguration extends AbstractStationConfiguration
 
     public function getCustomConfiguration(): ?string
     {
-        return $this->get(self::CUSTOM_CONFIGURATION);
+        return Types::stringOrNull($this->get(self::CUSTOM_CONFIGURATION), true);
     }
 
     public function setCustomConfiguration(?string $config): void
@@ -43,7 +45,8 @@ class StationFrontendConfiguration extends AbstractStationConfiguration
 
     public function getSourcePassword(): string
     {
-        return $this->get(self::SOURCE_PASSWORD);
+        return Types::stringOrNull($this->get(self::SOURCE_PASSWORD), true)
+            ?? throw new LogicException('Password not generated');
     }
 
     public function setSourcePassword(string $pw): void
@@ -55,7 +58,8 @@ class StationFrontendConfiguration extends AbstractStationConfiguration
 
     public function getAdminPassword(): string
     {
-        return $this->get(self::ADMIN_PASSWORD);
+        return Types::stringOrNull($this->get(self::ADMIN_PASSWORD), true)
+            ?? throw new LogicException('Password not generated');
     }
 
     public function setAdminPassword(string $pw): void
@@ -67,7 +71,8 @@ class StationFrontendConfiguration extends AbstractStationConfiguration
 
     public function getRelayPassword(): string
     {
-        return $this->get(self::RELAY_PASSWORD);
+        return Types::stringOrNull($this->get(self::RELAY_PASSWORD), true)
+            ?? throw new LogicException('Password not generated');
     }
 
     public function setRelayPassword(string $pw): void
@@ -79,7 +84,8 @@ class StationFrontendConfiguration extends AbstractStationConfiguration
 
     public function getStreamerPassword(): string
     {
-        return $this->get(self::STREAMER_PASSWORD);
+        return Types::stringOrNull($this->get(self::STREAMER_PASSWORD))
+            ?? throw new LogicException('Password not generated');
     }
 
     public function setStreamerPassword(string $pw): void
@@ -91,8 +97,7 @@ class StationFrontendConfiguration extends AbstractStationConfiguration
 
     public function getPort(): ?int
     {
-        $port = $this->get(self::PORT);
-        return is_numeric($port) ? (int)$port : null;
+        return Types::intOrNull($this->get(self::PORT));
     }
 
     public function setPort(?int $port): void
@@ -104,8 +109,7 @@ class StationFrontendConfiguration extends AbstractStationConfiguration
 
     public function getMaxListeners(): ?int
     {
-        $listeners = $this->get(self::MAX_LISTENERS);
-        return is_numeric($listeners) ? (int)$listeners : null;
+        return Types::intOrNull($this->get(self::MAX_LISTENERS));
     }
 
     public function setMaxListeners(?int $listeners): void
@@ -117,7 +121,7 @@ class StationFrontendConfiguration extends AbstractStationConfiguration
 
     public function getBannedIps(): ?string
     {
-        return $this->get(self::BANNED_IPS);
+        return Types::stringOrNull($this->get(self::BANNED_IPS), true);
     }
 
     public function setBannedIps(?string $ips): void
@@ -129,7 +133,7 @@ class StationFrontendConfiguration extends AbstractStationConfiguration
 
     public function getBannedUserAgents(): ?string
     {
-        return $this->get(self::BANNED_USER_AGENTS);
+        return Types::stringOrNull($this->get(self::BANNED_USER_AGENTS), true);
     }
 
     public function setBannedUserAgents(?string $userAgents): void
@@ -141,7 +145,7 @@ class StationFrontendConfiguration extends AbstractStationConfiguration
 
     public function getBannedCountries(): ?array
     {
-        return $this->get(self::BANNED_COUNTRIES);
+        return Types::arrayOrNull($this->get(self::BANNED_COUNTRIES));
     }
 
     public function setBannedCountries(?array $countries): void
@@ -153,7 +157,7 @@ class StationFrontendConfiguration extends AbstractStationConfiguration
 
     public function getAllowedIps(): ?string
     {
-        return $this->get(self::ALLOWED_IPS);
+        return Types::stringOrNull($this->get(self::ALLOWED_IPS), true);
     }
 
     public function setAllowedIps(?string $ips): void
@@ -165,7 +169,7 @@ class StationFrontendConfiguration extends AbstractStationConfiguration
 
     public function getScLicenseId(): ?string
     {
-        return $this->get(self::SC_LICENSE_ID);
+        return Types::stringOrNull($this->get(self::SC_LICENSE_ID), true);
     }
 
     public function setScLicenseId(?string $licenseId): void
@@ -177,7 +181,7 @@ class StationFrontendConfiguration extends AbstractStationConfiguration
 
     public function getScUserId(): ?string
     {
-        return $this->get(self::SC_USER_ID);
+        return Types::stringOrNull($this->get(self::SC_USER_ID), true);
     }
 
     public function setScUserId(?string $userId): void

@@ -8,6 +8,7 @@ use App\Container\EntityManagerAwareTrait;
 use App\Entity\Repository\StationRepository;
 use App\Entity\Station;
 use App\Entity\StationMedia;
+use App\Utilities\Types;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -37,11 +38,11 @@ final class ReprocessMediaCommand extends CommandAbstract
     {
         $io = new SymfonyStyle($input, $output);
 
-        $stationName = $input->getArgument('station-name');
+        $stationName = Types::stringOrNull($input->getArgument('station-name'), true);
 
         $io->title('Manually Reprocess Media');
 
-        if (empty($stationName)) {
+        if (null === $stationName) {
             $io->section('Reprocessing media for all stations...');
 
             $storageLocation = null;

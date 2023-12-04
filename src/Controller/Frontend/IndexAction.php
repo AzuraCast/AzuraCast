@@ -6,7 +6,7 @@ namespace App\Controller\Frontend;
 
 use App\Container\SettingsAwareTrait;
 use App\Controller\SingleActionInterface;
-use App\Entity\User;
+use App\Exception\InvalidRequestAttribute;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
@@ -27,9 +27,12 @@ final class IndexAction implements SingleActionInterface
         }
 
         // Redirect to login screen if the user isn't logged in.
-        $user = $request->getAttribute(ServerRequest::ATTR_USER);
+        try {
+            $request->getUser();
 
-        if (!($user instanceof User)) {
+            // Redirect to dashboard if no other custom redirection rules exist.
+            return $response->withRedirect($request->getRouter()->named('dashboard'));
+        } catch (InvalidRequestAttribute) {
             // Redirect to a custom homepage URL if specified in settings.
             $homepageRedirect = $settings->getHomepageRedirectUrl();
             if (null !== $homepageRedirect) {
@@ -38,8 +41,5 @@ final class IndexAction implements SingleActionInterface
 
             return $response->withRedirect($request->getRouter()->named('account:login'));
         }
-
-        // Redirect to dashboard if no other custom redirection rules exist.
-        return $response->withRedirect($request->getRouter()->named('dashboard'));
     }
 }

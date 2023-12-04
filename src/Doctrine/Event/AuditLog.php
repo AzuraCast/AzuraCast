@@ -106,10 +106,10 @@ final class AuditLog implements EventSubscriber
                     }
 
                     // Check if either field value is an object.
-                    if ($this->isEntity($em, $fieldPrev)) {
+                    if (is_object($fieldPrev) && $this->isEntity($em, $fieldPrev)) {
                         $fieldPrev = $this->getIdentifier($fieldPrev);
                     }
-                    if ($this->isEntity($em, $fieldNow)) {
+                    if (is_object($fieldNow) && $this->isEntity($em, $fieldNow)) {
                         $fieldNow = $this->getIdentifier($fieldNow);
                     }
 

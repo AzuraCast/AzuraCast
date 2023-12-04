@@ -13,7 +13,7 @@ use Psr\Http\Server\RequestHandlerInterface;
 /**
  * Require that the user be logged in to view this page.
  */
-final class RequireStation
+final class RequireStation extends AbstractMiddleware
 {
     public function __invoke(ServerRequest $request, RequestHandlerInterface $handler): ResponseInterface
     {

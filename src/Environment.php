@@ -8,6 +8,7 @@ use App\Enums\ApplicationEnvironment;
 use App\Enums\ReleaseChannel;
 use App\Radio\Configuration;
 use App\Utilities\File;
+use App\Utilities\Types;
 use GuzzleHttp\Psr7\Uri;
 use Psr\Http\Message\UriInterface;
 use Psr\Log\LogLevel;
@@ -22,6 +23,7 @@ final class Environment
     private readonly bool $isDocker;
     private readonly ApplicationEnvironment $appEnv;
 
+    /** @var array<string, string|int|bool|float> */
     private readonly array $data;
 
     // Core settings values
@@ -71,47 +73,18 @@ final class Environment
     public const REDIS_PORT = 'REDIS_PORT';
     public const REDIS_DB = 'REDIS_DB';
 
-    // Default settings
-    private array $defaults = [
-        self::APP_NAME => 'AzuraCast',
-
-        self::LOG_LEVEL => LogLevel::NOTICE,
-        self::IS_DOCKER => true,
-        self::IS_CLI => ('cli' === PHP_SAPI),
-
-        self::ASSET_URL => '/static',
-
-        self::AUTO_ASSIGN_PORT_MIN => 8000,
-        self::AUTO_ASSIGN_PORT_MAX => 8499,
-
-        self::ENABLE_REDIS => true,
-
-        self::SYNC_SHORT_EXECUTION_TIME => 600,
-        self::SYNC_LONG_EXECUTION_TIME => 1800,
-        self::NOW_PLAYING_DELAY_TIME => 0,
-        self::NOW_PLAYING_MAX_CONCURRENT_PROCESSES => 5,
-
-        self::PROFILING_EXTENSION_ENABLED => 0,
-        self::PROFILING_EXTENSION_ALWAYS_ON => 0,
-        self::PROFILING_EXTENSION_HTTP_KEY => 'dev',
-
-        self::ENABLE_WEB_UPDATER => false,
-    ];
-
     public function __construct(array $elements = [])
     {
         $this->baseDir = dirname(__DIR__);
         $this->parentDir = dirname($this->baseDir);
         $this->isDocker = file_exists($this->parentDir . '/.docker');
 
-        $this->data = array_merge($this->defaults, $elements);
-        $this->appEnv = ApplicationEnvironment::tryFrom($this->data[self::APP_ENV] ?? '')
-            ?? ApplicationEnvironment::default();
+        $this->data = $elements;
+        $this->appEnv = ApplicationEnvironment::tryFrom(
+            Types::string($this->data[self::APP_ENV] ?? null, '', true)
+        ) ?? ApplicationEnvironment::default();
     }
 
-    /**
-     * @return mixed[]
-     */
     public function toArray(): array
     {
         return $this->data;
@@ -120,6 +93,27 @@ final class Environment
     public function getAppEnvironmentEnum(): ApplicationEnvironment
     {
         return $this->appEnv;
+    }
+
+    /**
+     * @return string The base directory of the application, i.e. `/var/app/www` for Docker installations.
+     */
+    public function getBaseDirectory(): string
+    {
+        return $this->baseDir;
+    }
+
+    /**
+     * @return string The parent directory the application is within, i.e. `/var/azuracast`.
+     */
+    public function getParentDirectory(): string
+    {
+        return $this->parentDir;
+    }
+
+    public function isDocker(): bool
+    {
+        return $this->isDocker;
     }
 
     public function isProduction(): bool
@@ -139,47 +133,37 @@ final class Environment
 
     public function showDetailedErrors(): bool
     {
-        if (self::envToBool($this->data[self::SHOW_DETAILED_ERRORS] ?? false)) {
-            return true;
-        }
-
-        return !$this->isProduction();
-    }
-
-    public function isDocker(): bool
-    {
-        return $this->isDocker;
+        return Types::bool(
+            $this->data[self::SHOW_DETAILED_ERRORS] ?? null,
+            !$this->isProduction(),
+            true
+        );
     }
 
     public function isCli(): bool
     {
-        return $this->data[self::IS_CLI] ?? ('cli' === PHP_SAPI);
+        return Types::bool(
+            $this->data[self::IS_CLI] ?? null,
+            ('cli' === PHP_SAPI)
+        );
     }
 
     public function getAppName(): string
     {
-        return $this->data[self::APP_NAME] ?? 'Application';
+        return Types::string(
+            $this->data[self::APP_NAME] ?? null,
+            'AzuraCast',
+            true
+        );
     }
 
     public function getAssetUrl(): ?string
     {
-        return $this->data[self::ASSET_URL] ?? '';
-    }
-
-    /**
-     * @return string The base directory of the application, i.e. `/var/app/www` for Docker installations.
-     */
-    public function getBaseDirectory(): string
-    {
-        return $this->baseDir;
-    }
-
-    /**
-     * @return string The parent directory the application is within, i.e. `/var/azuracast`.
-     */
-    public function getParentDirectory(): string
-    {
-        return $this->parentDir;
+        return Types::string(
+            $this->data[self::ASSET_URL] ?? null,
+            '/static',
+            true
+        );
     }
 
     /**
@@ -187,8 +171,11 @@ final class Environment
      */
     public function getTempDirectory(): string
     {
-        return $this->data[self::TEMP_DIR]
-            ?? $this->getParentDirectory() . '/www_tmp';
+        return Types::string(
+            $this->data[self::TEMP_DIR] ?? null,
+            $this->getParentDirectory() . '/www_tmp',
+            true
+        );
     }
 
     /**
@@ -196,10 +183,14 @@ final class Environment
      */
     public function getUploadsDirectory(): string
     {
-        return $this->data[self::UPLOADS_DIR] ?? File::getFirstExistingDirectory([
-            $this->getParentDirectory() . '/storage/uploads',
-            $this->getParentDirectory() . '/uploads',
-        ]);
+        return Types::string(
+            $this->data[self::UPLOADS_DIR] ?? null,
+            File::getFirstExistingDirectory([
+                $this->getParentDirectory() . '/storage/uploads',
+                $this->getParentDirectory() . '/uploads',
+            ]),
+            true
+        );
     }
 
     /**
@@ -222,56 +213,65 @@ final class Environment
 
     public function getLang(): ?string
     {
-        return $this->data[self::LANG];
+        return Types::stringOrNull($this->data[self::LANG]);
     }
 
     public function getReleaseChannelEnum(): ReleaseChannel
     {
-        return ReleaseChannel::tryFrom($this->data[self::RELEASE_CHANNEL] ?? '')
+        return ReleaseChannel::tryFrom(Types::string($this->data[self::RELEASE_CHANNEL] ?? null))
             ?? ReleaseChannel::default();
     }
 
     public function getSftpPort(): int
     {
-        return (int)($this->data[self::SFTP_PORT] ?? 2022);
+        return Types::int(
+            $this->data[self::SFTP_PORT] ?? null,
+            2022
+        );
     }
 
     public function getAutoAssignPortMin(): int
     {
-        return (int)($this->data[self::AUTO_ASSIGN_PORT_MIN] ?? Configuration::DEFAULT_PORT_MIN);
+        return Types::int(
+            $this->data[self::AUTO_ASSIGN_PORT_MIN] ?? null,
+            Configuration::DEFAULT_PORT_MIN
+        );
     }
 
     public function getAutoAssignPortMax(): int
     {
-        return (int)($this->data[self::AUTO_ASSIGN_PORT_MAX] ?? Configuration::DEFAULT_PORT_MAX);
+        return Types::int(
+            $this->data[self::AUTO_ASSIGN_PORT_MAX] ?? null,
+            Configuration::DEFAULT_PORT_MAX
+        );
     }
 
     public function getSyncShortExecutionTime(): int
     {
-        return (int)(
-            $this->data[self::SYNC_SHORT_EXECUTION_TIME] ?? $this->defaults[self::SYNC_SHORT_EXECUTION_TIME]
+        return Types::int(
+            $this->data[self::SYNC_SHORT_EXECUTION_TIME] ?? null,
+            600
         );
     }
 
     public function getSyncLongExecutionTime(): int
     {
-        return (int)(
-            $this->data[self::SYNC_LONG_EXECUTION_TIME] ?? $this->defaults[self::SYNC_LONG_EXECUTION_TIME]
+        return Types::int(
+            $this->data[self::SYNC_LONG_EXECUTION_TIME] ?? null,
+            1800
         );
     }
 
     public function getNowPlayingDelayTime(): int
     {
-        return (int)(
-            $this->data[self::NOW_PLAYING_DELAY_TIME] ?? $this->defaults[self::NOW_PLAYING_DELAY_TIME]
-        );
+        return Types::int($this->data[self::NOW_PLAYING_DELAY_TIME] ?? null);
     }
 
     public function getNowPlayingMaxConcurrentProcesses(): int
     {
-        return (int)(
-            $this->data[self::NOW_PLAYING_MAX_CONCURRENT_PROCESSES]
-            ?? $this->defaults[self::NOW_PLAYING_MAX_CONCURRENT_PROCESSES]
+        return Types::int(
+            $this->data[self::NOW_PLAYING_MAX_CONCURRENT_PROCESSES] ?? null,
+            5
         );
     }
 
@@ -280,9 +280,9 @@ final class Environment
      */
     public function getLogLevel(): string
     {
-        if (!empty($this->data[self::LOG_LEVEL])) {
-            $loggingLevel = strtolower($this->data[self::LOG_LEVEL]);
-
+        $logLevelRaw = Types::stringOrNull($this->data[self::LOG_LEVEL] ?? null, true);
+        if (null !== $logLevelRaw) {
+            $loggingLevel = strtolower($logLevelRaw);
             $allowedLogLevels = [
                 LogLevel::DEBUG,
                 LogLevel::INFO,
@@ -305,16 +305,42 @@ final class Environment
     }
 
     /**
-     * @return mixed[]
+     * @return array{
+     *     host: string,
+     *     port: int,
+     *     dbname: string,
+     *     user: string,
+     *     password: string,
+     *     unix_socket?: string
+     * }
      */
     public function getDatabaseSettings(): array
     {
         $dbSettings = [
-            'host' => $this->data[self::DB_HOST] ?? 'localhost',
-            'port' => (int)($this->data[self::DB_PORT] ?? 3306),
-            'dbname' => $this->data[self::DB_NAME] ?? 'azuracast',
-            'user' => $this->data[self::DB_USER] ?? 'azuracast',
-            'password' => $this->data[self::DB_PASSWORD] ?? 'azur4c457',
+            'host' => Types::string(
+                $this->data[self::DB_HOST] ?? null,
+                'localhost',
+                true
+            ),
+            'port' => Types::int(
+                $this->data[self::DB_PORT] ?? null,
+                3306
+            ),
+            'dbname' => Types::string(
+                $this->data[self::DB_NAME] ?? null,
+                'azuracast',
+                true
+            ),
+            'user' => Types::string(
+                $this->data[self::DB_USER] ?? null,
+                'azuracast',
+                true
+            ),
+            'password' => Types::string(
+                $this->data[self::DB_PASSWORD] ?? null,
+                'azur4c457',
+                true
+            ),
         ];
 
         if ('localhost' === $dbSettings['host'] && $this->isDocker()) {
@@ -326,23 +352,42 @@ final class Environment
 
     public function useLocalDatabase(): bool
     {
-        return 'localhost' === ($this->data[self::DB_HOST] ?? 'localhost');
+        return 'localhost' === $this->getDatabaseSettings()['host'];
     }
 
     public function enableRedis(): bool
     {
-        return self::envToBool($this->data[self::ENABLE_REDIS] ?? true);
+        return Types::bool(
+            $this->data[self::ENABLE_REDIS],
+            true,
+            true
+        );
     }
 
     /**
-     * @return mixed[]
+     * @return array{
+     *     host: string,
+     *     port: int,
+     *     db: int,
+     *     socket?: string
+     * }
      */
     public function getRedisSettings(): array
     {
         $redisSettings = [
-            'host' => $this->data[self::REDIS_HOST] ?? 'localhost',
-            'port' => (int)($this->data[self::REDIS_PORT] ?? 6379),
-            'db' => (int)($this->data[self::REDIS_DB] ?? 1),
+            'host' => Types::string(
+                $this->data[self::REDIS_HOST] ?? null,
+                'localhost',
+                true
+            ),
+            'port' => Types::int(
+                $this->data[self::REDIS_PORT] ?? null,
+                6379
+            ),
+            'db' => Types::int(
+                $this->data[self::REDIS_DB] ?? null,
+                1
+            ),
         ];
 
         if ('localhost' === $redisSettings['host'] && $this->isDocker()) {
@@ -354,27 +399,47 @@ final class Environment
 
     public function useLocalRedis(): bool
     {
-        return $this->enableRedis() && 'localhost' === ($this->data[self::REDIS_HOST] ?? 'localhost');
+        return $this->enableRedis() && 'localhost' === $this->getRedisSettings()['host'];
     }
 
     public function isProfilingExtensionEnabled(): bool
     {
-        return self::envToBool($this->data[self::PROFILING_EXTENSION_ENABLED] ?? false);
+        return Types::bool(
+            $this->data[self::PROFILING_EXTENSION_ENABLED] ?? null,
+            false,
+            true
+        );
     }
 
     public function isProfilingExtensionAlwaysOn(): bool
     {
-        return self::envToBool($this->data[self::PROFILING_EXTENSION_ALWAYS_ON] ?? false);
+        return Types::bool(
+            $this->data[self::PROFILING_EXTENSION_ALWAYS_ON] ?? null,
+            false,
+            true
+        );
     }
 
     public function getProfilingExtensionHttpKey(): string
     {
-        return $this->data[self::PROFILING_EXTENSION_HTTP_KEY] ?? 'dev';
+        return Types::string(
+            $this->data[self::PROFILING_EXTENSION_HTTP_KEY] ?? null,
+            'dev',
+            true
+        );
     }
 
     public function enableWebUpdater(): bool
     {
-        return $this->isDocker() && self::envToBool($this->data[self::ENABLE_WEB_UPDATER] ?? false);
+        if (!$this->isDocker()) {
+            return false;
+        }
+
+        return Types::bool(
+            $this->data[self::ENABLE_WEB_UPDATER] ?? null,
+            false,
+            true
+        );
     }
 
     public static function getDefaultsForEnvironment(Environment $existingEnv): self
@@ -383,24 +448,6 @@ final class Environment
             self::IS_CLI => $existingEnv->isCli(),
             self::IS_DOCKER => $existingEnv->isDocker(),
         ]);
-    }
-
-    public static function envToBool(mixed $value): bool
-    {
-        if (is_bool($value)) {
-            return $value;
-        }
-        if (is_int($value)) {
-            return 0 !== $value;
-        }
-        if (null === $value) {
-            return false;
-        }
-
-        $value = (string)$value;
-        return str_starts_with(strtolower($value), 'y')
-            || 'true' === strtolower($value)
-            || '1' === $value;
     }
 
     public static function getInstance(): Environment

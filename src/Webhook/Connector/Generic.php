@@ -7,6 +7,7 @@ namespace App\Webhook\Connector;
 use App\Entity\Api\NowPlaying\NowPlaying;
 use App\Entity\Station;
 use App\Entity\StationWebhook;
+use App\Utilities\Types;
 
 final class Generic extends AbstractConnector
 {
@@ -32,7 +33,7 @@ final class Generic extends AbstractConnector
                 'Content-Type' => 'application/json',
             ],
             'json' => $np,
-            'timeout' => (float)($config['timeout'] ?? 5.0),
+            'timeout' => Types::floatOrNull($config['timeout']) ?? 5.0,
         ];
 
         if (!empty($config['basic_auth_username']) && !empty($config['basic_auth_password'])) {

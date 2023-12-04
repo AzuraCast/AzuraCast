@@ -6,6 +6,7 @@ namespace App\Installer\EnvFiles;
 
 use App\Environment;
 use App\Utilities\Strings;
+use App\Utilities\Types;
 use ArrayAccess;
 use DateTimeImmutable;
 use DateTimeZone;
@@ -58,10 +59,7 @@ abstract class AbstractEnvFile implements ArrayAccess
 
     public function getAsBool(string $key, bool $default): bool
     {
-        if (isset($this->data[$key])) {
-            return Environment::envToBool($this->data[$key]);
-        }
-        return $default;
+        return Types::bool($this->data[$key], $default, true);
     }
 
     public function offsetExists(mixed $offset): bool
@@ -96,7 +94,7 @@ abstract class AbstractEnvFile implements ArrayAccess
         ];
 
         foreach (static::getConfiguration($environment) as $key => $keyInfo) {
-            $envFile[] = '# ' . ($keyInfo['name'] ?? $key);
+            $envFile[] = sprintf('# %s', $keyInfo['name']);
 
             if (!empty($keyInfo['description'])) {
                 $desc = Strings::mbWordwrap($keyInfo['description']);
@@ -191,7 +189,7 @@ abstract class AbstractEnvFile implements ArrayAccess
     }
 
     /**
-     * @return mixed[]
+     * @return array<string, array{name: string, description?: string, options?: array, default?: string, required?: bool}>
      */
     abstract public static function getConfiguration(Environment $environment): array;
 

@@ -9,6 +9,7 @@ use App\Entity\Repository\ListenerRepository;
 use App\Entity\Station;
 use App\Entity\StationWebhook;
 use App\Http\RouterInterface;
+use App\Utilities\Types;
 use App\Utilities\Urls;
 use GuzzleHttp\Client;
 use Psr\Http\Message\UriInterface;
@@ -39,7 +40,10 @@ final class MatomoAnalytics extends AbstractConnector
     ): void {
         $config = $webhook->getConfig();
 
-        if (empty($config['matomo_url']) || empty($config['site_id'])) {
+        $matomoUrl = Types::stringOrNull($config['matomo_url'], true);
+        $siteId = Types::intOrNull($config['site_id']);
+
+        if (null === $matomoUrl || null === $siteId) {
             throw $this->incompleteConfigException($webhook);
         }
 
@@ -66,17 +70,17 @@ final class MatomoAnalytics extends AbstractConnector
 
         // Build Matomo URI
         $apiUrl = Urls::parseUserUrl(
-            $config['matomo_url'],
+            $matomoUrl,
             'Matomo Analytics URL',
         )->withPath('/matomo.php');
 
-        $apiToken = $config['token'] ?? null;
+        $apiToken = Types::stringOrNull($config['token'], true);
 
         $stationName = $station->getName();
 
         // Get all current listeners
         $liveListeners = $this->listenerRepo->iterateLiveListenersArray($station);
-        $webhookLastSent = (int)$webhook->getMetadataKey($webhook::LAST_SENT_TIMESTAMP_KEY, 0);
+        $webhookLastSent = Types::intOrNull($webhook->getMetadataKey($webhook::LAST_SENT_TIMESTAMP_KEY)) ?? 0;
 
         $i = 0;
         $entries = [];
@@ -98,7 +102,7 @@ final class MatomoAnalytics extends AbstractConnector
             }
 
             $entry = [
-                'idsite' => (int)$config['site_id'],
+                'idsite' => $siteId,
                 'rec' => 1,
                 'action_name' => 'Listeners / ' . $stationName . ' / ' . $streamName,
                 'url' => $listenerUrl,

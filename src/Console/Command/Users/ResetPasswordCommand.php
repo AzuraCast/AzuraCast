@@ -31,7 +31,7 @@ final class ResetPasswordCommand extends CommandAbstract
     {
         $io = new SymfonyStyle($input, $output);
 
-        $email = $input->getArgument('email');
+        $email = Utilities\Types::string($input->getArgument('email'));
 
         $io->title('Reset Account Password');
 

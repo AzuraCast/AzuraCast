@@ -13,6 +13,7 @@ use App\MessageQueue\LogWorkerExceptionSubscriber;
 use App\MessageQueue\QueueManagerInterface;
 use App\MessageQueue\ResetArrayCacheSubscriber;
 use App\Service\HighAvailability;
+use App\Utilities\Types;
 use Psr\Log\LogLevel;
 use Psr\Log\NullLogger;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -55,8 +56,8 @@ final class ProcessCommand extends AbstractSyncCommand
     {
         $this->logToExtraFile('app_worker.log');
 
-        $runtime = (int)$input->getArgument('runtime');
-        $workerName = $input->getOption('worker-name');
+        $runtime = Types::int($input->getArgument('runtime'));
+        $workerName = Types::stringOrNull($input->getOption('worker-name'), true);
 
         if (!$this->highAvailability->isActiveServer()) {
             $this->logger->error('This instance is not the current active instance.');

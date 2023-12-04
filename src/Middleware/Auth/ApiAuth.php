@@ -13,7 +13,6 @@ use App\Entity\User;
 use App\Exception\CsrfValidationException;
 use App\Http\ServerRequest;
 use App\Security\SplitToken;
-use App\Session\Csrf;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
@@ -31,17 +30,17 @@ final class ApiAuth extends AbstractAuth
         parent::__construct($userRepo, $acl, $customization);
     }
 
-    public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
+    public function __invoke(ServerRequest $request, RequestHandlerInterface $handler): ResponseInterface
     {
         // Initialize the Auth for this request.
         $user = $this->getApiUser($request);
 
         $request = $request->withAttribute(ServerRequest::ATTR_USER, $user);
 
-        return parent::process($request, $handler);
+        return parent::__invoke($request, $handler);
     }
 
-    private function getApiUser(ServerRequestInterface $request): ?User
+    private function getApiUser(ServerRequest $request): ?User
     {
         $apiKey = $this->getApiKey($request);
 
@@ -55,7 +54,7 @@ final class ApiAuth extends AbstractAuth
         // Fallback to session login if available.
         $auth = new Auth(
             userRepo: $this->userRepo,
-            session: $request->getAttribute(ServerRequest::ATTR_SESSION),
+            session: $request->getSession(),
         );
         $auth->setEnvironment($this->environment);
 
@@ -70,14 +69,11 @@ final class ApiAuth extends AbstractAuth
                 return null;
             }
 
-            $csrf = $request->getAttribute(ServerRequest::ATTR_SESSION_CSRF);
-
-            if ($csrf instanceof Csrf) {
-                try {
-                    $csrf->verify($csrfKey, self::API_CSRF_NAMESPACE);
-                    return $user;
-                } catch (CsrfValidationException) {
-                }
+            $csrf = $request->getCsrf();
+            try {
+                $csrf->verify($csrfKey, self::API_CSRF_NAMESPACE);
+                return $user;
+            } catch (CsrfValidationException) {
             }
         }
 

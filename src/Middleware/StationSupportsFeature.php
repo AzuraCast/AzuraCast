@@ -10,7 +10,7 @@ use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
-final class StationSupportsFeature
+final class StationSupportsFeature extends AbstractMiddleware
 {
     public function __construct(
         private readonly StationFeatures $feature

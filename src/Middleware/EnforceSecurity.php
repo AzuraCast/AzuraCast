@@ -5,17 +5,16 @@ declare(strict_types=1);
 namespace App\Middleware;
 
 use App\Container\SettingsAwareTrait;
+use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
-use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Slim\App;
 
 /**
  * Remove trailing slash from all URLs when routing.
  */
-final class EnforceSecurity implements MiddlewareInterface
+final class EnforceSecurity extends AbstractMiddleware
 {
     use SettingsAwareTrait;
 
@@ -27,11 +26,7 @@ final class EnforceSecurity implements MiddlewareInterface
         $this->responseFactory = $app->getResponseFactory();
     }
 
-    /**
-     * @param ServerRequestInterface $request
-     * @param RequestHandlerInterface $handler
-     */
-    public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
+    public function __invoke(ServerRequest $request, RequestHandlerInterface $handler): ResponseInterface
     {
         $alwaysUseSsl = $this->readSettings()->getAlwaysUseSsl();
 

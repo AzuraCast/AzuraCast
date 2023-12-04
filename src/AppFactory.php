@@ -141,6 +141,9 @@ final class AppFactory
                 : $environment->getTempDirectory() . '/php_errors.log'
         );
 
+        mb_internal_encoding('UTF-8');
+        ini_set('default_charset', 'utf-8');
+
         if (!headers_sent()) {
             ini_set('session.use_only_cookies', '1');
             ini_set('session.cookie_httponly', '1');

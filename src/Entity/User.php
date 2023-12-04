@@ -127,7 +127,7 @@ class User implements Stringable, IdentifiableEntityInterface
 
     /** @var Collection<int, UserPasskey> */
     #[
-        ORM\OneToMany(mappedBy: 'user', targetEntity: ApiKey::class),
+        ORM\OneToMany(mappedBy: 'user', targetEntity: UserPasskey::class),
         Groups([EntityGroupsInterface::GROUP_ADMIN, EntityGroupsInterface::GROUP_ALL]),
         DeepNormalize(true)
     ]

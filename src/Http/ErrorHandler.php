@@ -134,6 +134,10 @@ final class ErrorHandler extends SlimErrorHandler
             return $response;
         }
 
+        if (!($this->request instanceof ServerRequest)) {
+            return parent::respond();
+        }
+
         if ($this->exception instanceof HttpException) {
             /** @var Response $response */
             $response = $this->responseFactory->createResponse($this->exception->getCode());

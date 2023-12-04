@@ -7,6 +7,7 @@ namespace App\Radio\Backend\Liquidsoap\Command;
 use App\Container\LoggerAwareTrait;
 use App\Entity\Station;
 use App\Radio\Enums\BackendAdapters;
+use App\Utilities\Types;
 use Monolog\LogRecord;
 use ReflectionClass;
 use Throwable;
@@ -54,7 +55,7 @@ abstract class AbstractCommand
                 return 'false';
             }
 
-            return (string)$result;
+            return Types::string($result);
         } catch (Throwable $e) {
             $this->logger->error(
                 sprintf(

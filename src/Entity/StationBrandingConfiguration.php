@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use App\Utilities\Types;
 use App\Utilities\Urls;
 use Psr\Http\Message\UriInterface;
 
@@ -13,7 +14,7 @@ class StationBrandingConfiguration extends AbstractStationConfiguration
 
     public function getDefaultAlbumArtUrl(): ?string
     {
-        return $this->get(self::DEFAULT_ALBUM_ART_URL);
+        return Types::stringOrNull($this->get(self::DEFAULT_ALBUM_ART_URL), true);
     }
 
     public function getDefaultAlbumArtUrlAsUri(): ?UriInterface
@@ -34,7 +35,7 @@ class StationBrandingConfiguration extends AbstractStationConfiguration
 
     public function getPublicCustomCss(): ?string
     {
-        return $this->get(self::PUBLIC_CUSTOM_CSS);
+        return Types::stringOrNull($this->get(self::PUBLIC_CUSTOM_CSS), true);
     }
 
     public function setPublicCustomCss(?string $css): void
@@ -46,7 +47,7 @@ class StationBrandingConfiguration extends AbstractStationConfiguration
 
     public function getPublicCustomJs(): ?string
     {
-        return $this->get(self::PUBLIC_CUSTOM_JS);
+        return Types::stringOrNull($this->get(self::PUBLIC_CUSTOM_JS), true);
     }
 
     public function setPublicCustomJs(?string $js): void
@@ -58,11 +59,7 @@ class StationBrandingConfiguration extends AbstractStationConfiguration
 
     public function getOfflineText(): ?string
     {
-        $message = $this->get(self::OFFLINE_TEXT);
-
-        return (!empty($message))
-            ? $message
-            : null;
+        return Types::stringOrNull($this->get(self::OFFLINE_TEXT), true);
     }
 
     public function setOfflineText(?string $message): void

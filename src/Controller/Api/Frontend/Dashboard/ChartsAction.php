@@ -66,7 +66,6 @@ final class ChartsAction implements SingleActionInterface
         } else {
             $threshold = CarbonImmutable::parse('-180 days');
 
-            /** @var array<array{station_id: int, moment: CarbonImmutable, number_avg: float, number_unique: int}> $stats */
             $stats = $this->em->createQuery(
                 <<<'DQL'
                     SELECT a.station_id, a.moment, a.number_avg, a.number_unique
@@ -94,7 +93,7 @@ final class ChartsAction implements SingleActionInterface
                 $sortableKey = $moment->format('Y-m-d');
                 $jsTimestamp = $moment->getTimestamp() * 1000;
 
-                $average = round($row['number_avg'], 2);
+                $average = round((float)$row['number_avg'], 2);
                 $unique = $row['number_unique'];
 
                 $rawStats['average'][$stationId][$sortableKey] = [

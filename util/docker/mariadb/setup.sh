@@ -19,12 +19,3 @@ cp -rT /bd_build/mariadb/service.minimal/. /etc/supervisor/minimal.conf.d/
 for f in /bd_build/mariadb/setup/*.sh; do
   bash "$f" -H 
 done
-
-# Cleanup
-apt-get -y autoremove
-apt-get clean
-rm -rf /var/lib/apt/lists/*
-rm -rf /tmp/tmp*
-
-chmod -R a+x /usr/local/bin
-chmod -R +x /etc/my_init.d

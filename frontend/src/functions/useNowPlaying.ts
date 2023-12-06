@@ -1,48 +1,50 @@
 import NowPlaying from '~/entities/NowPlaying';
-import {computed, onMounted, ref, shallowRef, watch} from "vue";
+import {computed, onMounted, Ref, ref, ShallowRef, shallowRef, watch} from "vue";
 import {useEventSource, useIntervalFn} from "@vueuse/core";
-import {useAxios} from "~/vendor/axios";
-import {has} from "lodash";
-import formatTime from "~/functions/formatTime";
+import {ApiNowPlaying} from "~/entities/ApiInterfaces.ts";
+import {getApiUrl} from "~/router.ts";
+import {useAxios} from "~/vendor/axios.ts";
+import formatTime from "~/functions/formatTime.ts";
 
 export const nowPlayingProps = {
-    nowPlayingUri: {
+    stationShortName: {
         type: String,
-        required: true
+        required: true,
+    },
+    useStatic: {
+        type: Boolean,
+        required: false,
+        default: false,
     },
     useSse: {
         type: Boolean,
         required: false,
         default: false
     },
-    sseUri: {
-        type: String,
-        required: false,
-        default: null
-    },
-    initialNowPlaying: {
-        type: Object,
-        default() {
-            return NowPlaying;
-        }
-    },
-    timeUri: {
-        type: String,
-        required: true
-    },
 };
 
+interface NowPlayingSSETime {
+    timestamp: number
+}
+
+interface NowPlayingSSEResponse {
+    type: string,
+    payload: NowPlayingSSETime | ApiNowPlaying
+}
+
 export default function useNowPlaying(props) {
-    const np = shallowRef(props.initialNowPlaying);
+    const np: ShallowRef<ApiNowPlaying> = shallowRef(NowPlaying);
+    const npUpdated: Ref<number> = ref(0);
 
-    const currentTime = ref(Math.floor(Date.now() / 1000));
-    const currentTrackDuration = ref(0);
-    const currentTrackElapsed = ref(0);
+    const currentTime: Ref<number> = ref(Math.floor(Date.now() / 1000));
+    const currentTrackDuration: Ref<number> = ref(0);
+    const currentTrackElapsed: Ref<number> = ref(0);
 
-    const setNowPlaying = (np_new) => {
+    const setNowPlaying = (np_new: ApiNowPlaying) => {
         np.value = np_new;
+        npUpdated.value = currentTime.value;
 
-        currentTrackDuration.value = np_new?.now_playing?.duration ?? 0;
+        currentTrackDuration.value = np_new.now_playing.duration ?? 0;
 
         // Update the browser metadata for browsers that support it (i.e. Mobile Chrome)
         if ('mediaSession' in navigator) {
@@ -60,27 +62,35 @@ export default function useNowPlaying(props) {
         }));
     }
 
-    // Trigger initial NP set.
-    setNowPlaying(np.value);
-
     if (props.useSse) {
-        const {data} = useEventSource(props.sseUri);
-        watch(data, (data_raw) => {
-            const json_data = JSON.parse(data_raw);
-            const json_data_np = json_data?.pub?.data ?? {};
+        const sseUri = getApiUrl(`/live/nowplaying/${props.stationShortName}`);
 
-            if (has(json_data_np, 'np')) {
-                setTimeout(() => {
-                    setNowPlaying(json_data_np.np);
-                }, 3000);
-            } else if (has(json_data_np, 'time')) {
-                currentTime.value = json_data_np.time;
+        const {data} = useEventSource(sseUri.value);
+        watch(data, (dataRaw: string) => {
+            const jsonData: NowPlayingSSEResponse = JSON.parse(dataRaw);
+
+            if (jsonData.type === 'time') {
+                currentTime.value = jsonData.payload.timestamp;
+            } else if (jsonData.type === 'nowplaying') {
+                if (npUpdated.value === 0) {
+                    setNowPlaying(jsonData.payload);
+                } else {
+                    setTimeout(() => {
+                        setNowPlaying(jsonData.payload);
+                    }, 3000);
+                }
             }
         });
     } else {
+        const nowPlayingUri = props.useStatic
+            ? getApiUrl(`/nowplaying_static/${props.stationShortName}`)
+            : getApiUrl(`/nowplaying/${props.stationShortName}`);
+
+        const timeUri = getApiUrl('/time');
+
         const {axios} = useAxios();
         const checkNowPlaying = () => {
-            axios.get(props.nowPlayingUri, {
+            axios.get(nowPlayingUri.value, {
                 headers: {
                     'Cache-Control': 'no-cache',
                     'Pragma': 'no-cache',
@@ -96,7 +106,7 @@ export default function useNowPlaying(props) {
         };
 
         const checkTime = () => {
-            axios.get(props.timeUri, {
+            axios.get(timeUri.value, {
                 headers: {
                     'Cache-Control': 'no-cache',
                     'Pragma': 'no-cache',
@@ -110,8 +120,8 @@ export default function useNowPlaying(props) {
         };
 
         onMounted(() => {
-            setTimeout(checkTime, 5000);
-            setTimeout(checkNowPlaying, 5000);
+            checkTime();
+            checkNowPlaying();
         });
     }
 
@@ -135,39 +145,30 @@ export default function useNowPlaying(props) {
     });
 
     const currentTrackPercent = computed(() => {
-        const $currentTrackElapsed = currentTrackElapsed.value;
-        const $currentTrackDuration = currentTrackDuration.value;
-
-        if (!$currentTrackDuration) {
+        if (!currentTrackDuration.value) {
             return 0;
         }
-        if ($currentTrackElapsed > $currentTrackDuration) {
+        if (currentTrackElapsed.value > currentTrackDuration.value) {
             return 100;
         }
 
-        return ($currentTrackElapsed / $currentTrackDuration) * 100;
+        return (currentTrackElapsed.value / currentTrackDuration.value) * 100;
     });
 
     const currentTrackDurationDisplay = computed(() => {
-        const $currentTrackDuration = currentTrackDuration.value;
-        return ($currentTrackDuration) ? formatTime($currentTrackDuration) : null;
+        return (currentTrackDuration.value) ? formatTime(currentTrackDuration.value) : null;
     });
 
     const currentTrackElapsedDisplay = computed(() => {
-        let $currentTrackElapsed = currentTrackElapsed.value;
-        const $currentTrackDuration = currentTrackDuration.value;
-
-        if (!$currentTrackDuration) {
+        if (!currentTrackDuration.value) {
             return null;
         }
 
-        if ($currentTrackElapsed > $currentTrackDuration) {
-            $currentTrackElapsed = $currentTrackDuration;
-        }
-
-        return formatTime($currentTrackElapsed);
+        return (currentTrackElapsed.value <= currentTrackDuration.value)
+            ? formatTime(currentTrackElapsed.value)
+            : currentTrackDurationDisplay.value;
     });
-    
+
     return {
         np,
         currentTime,

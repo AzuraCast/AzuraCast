@@ -8,7 +8,7 @@ use App\Container\EnvironmentAwareTrait;
 use App\Container\LoggerAwareTrait;
 use App\Entity\Api\NowPlaying\NowPlaying;
 use App\Entity\Station;
-use App\Service\Centrifugo;
+use App\Service\HpNp;
 use Symfony\Component\Filesystem\Filesystem;
 
 use const JSON_PRETTY_PRINT;
@@ -21,7 +21,7 @@ final class LocalWebhookHandler
     public const NAME = 'local';
 
     public function __construct(
-        private readonly Centrifugo $centrifugo
+        private readonly HpNp $hpNp
     ) {
     }
 
@@ -68,8 +68,8 @@ final class LocalWebhookHandler
         );
 
         // Publish to websocket library
-        if ($this->centrifugo->isSupported()) {
-            $this->centrifugo->publishToStation($station, $np);
+        if ($this->hpNp->isSupported()) {
+            $this->hpNp->publishToStation($station, $np);
         }
     }
 }

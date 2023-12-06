@@ -8,11 +8,12 @@ use App\Container\EnvironmentAwareTrait;
 use App\Entity\Station;
 use GuzzleHttp\Client;
 
-final class Centrifugo
+/**
+ * Utility class for the High-Performance Now-Playing (HPNP) library.
+ */
+final class HpNp
 {
     use EnvironmentAwareTrait;
-
-    public const GLOBAL_TIME_CHANNEL = 'global:time';
 
     public function __construct(
         private readonly Client $client,
@@ -24,38 +25,15 @@ final class Centrifugo
         return $this->environment->isDocker() && !$this->environment->isTesting();
     }
 
-    public function sendTime(): void
-    {
-        $this->send([
-            'method' => 'publish',
-            'params' => [
-                'channel' => self::GLOBAL_TIME_CHANNEL,
-                'data' => [
-                    'time' => time(),
-                ],
-            ],
-        ]);
-    }
-
     public function publishToStation(Station $station, mixed $message): void
     {
-        $this->send([
-            'method' => 'publish',
-            'params' => [
-                'channel' => $this->getChannelName($station),
-                'data' => [
-                    'np' => $message,
-                ],
-            ],
-        ]);
-    }
-
-    private function send(array $body): void
-    {
         $this->client->post(
-            'http://localhost:6025/api',
+            'http://localhost:6055',
             [
-                'json' => $body,
+                'json' => [
+                    'channel' => $station->getShortName(),
+                    'payload' => $message,
+                ],
             ]
         );
     }
@@ -75,10 +53,5 @@ final class Centrifugo
                     ),
                 ]
         );
-    }
-
-    public function getChannelName(Station $station): string
-    {
-        return 'station:' . $station->getShortName();
     }
 }

@@ -14,6 +14,10 @@ release channel, you can take advantage of these new features and fixes.
 
 ## Code Quality/Technical Changes
 
+- We are switching our implementation of High-Performance Now Playing updates to a simple script that we directly build
+  and maintain. This will greatly simplify the process of using and updating our high-performance nowplaying data, and
+  will also offer other improvements like sending Now Playing updates immediately upon initial connection.
+
 - MariaDB has been updated to 11.2. Databases will automatically be upgraded on the first boot after updating.
 
 - If you upload media to a folder and that folder is set to auto-assign to a playlist, the media will *instantly* be a

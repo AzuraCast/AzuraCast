@@ -130,7 +130,6 @@ return static function (CallableEventDispatcherInterface $dispatcher) {
                 App\Sync\Task\RotateLogsTask::class,
                 App\Sync\Task\RunAnalyticsTask::class,
                 App\Sync\Task\RunBackupTask::class,
-                App\Sync\Task\SendTimeOnSocketTask::class,
                 App\Sync\Task\UpdateGeoLiteTask::class,
                 App\Sync\Task\UpdateStorageLocationSizesTask::class,
             ]);

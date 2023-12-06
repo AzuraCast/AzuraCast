@@ -37,21 +37,4 @@ final class HpNp
             ]
         );
     }
-
-    public function getSseUrl(Station $station): string
-    {
-        return '/api/live/nowplaying/sse?' . http_build_query(
-            [
-                    'cf_connect' => json_encode(
-                        [
-                            'subs' => [
-                                $this->getChannelName($station) => [],
-                                self::GLOBAL_TIME_CHANNEL => [],
-                            ],
-                        ],
-                        JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR | JSON_FORCE_OBJECT
-                    ),
-                ]
-        );
-    }
 }

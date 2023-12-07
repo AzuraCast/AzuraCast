@@ -7,8 +7,7 @@
     "serve": "vite",
     "generate-locales": "vue-gettext-extract",
     "generate-api": "swagger-typescript-api --path http://localhost/api/openapi.yml --output ./src/entities --name ApiInterfaces.ts --no-client",
-    "hpnp-dev": "bun --hot ./src/hpnp/index.ts",
-    "build-hpnp": "bun build --compile --minify --outfile ./hpnp ./src/hpnp/index.ts"
+    "build-hpnp": "esbuild --bundle --target=node20 --platform=node ./src/hpnp/index.ts > /var/azuracast/scripts/hpnp.cjs"
   },
   "dependencies": {
     "@codemirror/lang-css": "^6.0.1",

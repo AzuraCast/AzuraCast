@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 import {ApiNowPlaying} from "~/entities/ApiInterfaces.ts";
 import {Channel, createChannel, createSession, Session} from "better-sse";
 import {App} from '@tinyhttp/app';

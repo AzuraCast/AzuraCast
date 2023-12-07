@@ -14,6 +14,7 @@ usermod -aG www-data azuracast
 mkdir -p /var/azuracast/www /var/azuracast/stations /var/azuracast/www_tmp \
   /var/azuracast/backups \
   /var/azuracast/dbip \
+  /var/azuracast/scripts \
   /var/azuracast/storage/uploads \
   /var/azuracast/storage/shoutcast2 \
   /var/azuracast/storage/stereo_tool \

@@ -63,7 +63,18 @@ RUN bash /bd_build/chown_dirs.sh \
 
 USER azuracast
 
-RUN touch /var/azuracast/.docker
+# Build HPNP
+RUN mkdir -p /tmp/hpnp
+
+COPY --chown=azuracast:azuracast ./frontend /tmp/hpnp
+
+RUN cd /tmp/hpnp \
+    && npm ci --include=dev \
+    && npm run build-hpnp \
+    && chmod a+x /var/azuracast/scripts/hpnp.cjs
+
+RUN rm -rf /tmp/hpnp \
+    && touch /var/azuracast/.docker
 
 USER root
 
@@ -161,13 +172,6 @@ COPY --chown=azuracast:azuracast . .
 RUN composer dump-autoload --optimize --classmap-authoritative
 
 USER root
-
-COPY ./util/docker/common /bd_build/
-COPY ./util/docker/hpnp /bd_build/hpnp
-
-RUN bash /bd_build/hpnp/setup.sh \
-    && bash /bd_build/cleanup.sh \
-    && rm -rf /bd_build
 
 EXPOSE 80 443 2022
 EXPOSE 8000-8999

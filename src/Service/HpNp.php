@@ -25,14 +25,15 @@ final class HpNp
         return $this->environment->isDocker() && !$this->environment->isTesting();
     }
 
-    public function publishToStation(Station $station, mixed $message): void
+    public function publishToStation(Station $station, mixed $message, array $triggers = []): void
     {
         $this->client->post(
             'http://localhost:6055',
             [
                 'json' => [
-                    'channel' => $station->getShortName(),
-                    'payload' => $message,
+                    'station' => $station->getShortName(),
+                    'np' => $message,
+                    'triggers' => $triggers,
                 ],
             ]
         );

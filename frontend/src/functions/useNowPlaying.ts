@@ -23,13 +23,19 @@ export const nowPlayingProps = {
     },
 };
 
-interface NowPlayingSSETime {
+interface SSETimePayload {
     timestamp: number
 }
 
-interface NowPlayingSSEResponse {
+interface SSENowPlayingPayload {
+    station: string,
+    np: ApiNowPlaying,
+    triggers: string[] | null
+}
+
+interface SSEResponse {
     type: string,
-    payload: NowPlayingSSETime | ApiNowPlaying
+    payload: SSETimePayload | SSENowPlayingPayload
 }
 
 export default function useNowPlaying(props) {
@@ -67,16 +73,16 @@ export default function useNowPlaying(props) {
 
         const {data} = useEventSource(sseUri.value);
         watch(data, (dataRaw: string) => {
-            const jsonData: NowPlayingSSEResponse = JSON.parse(dataRaw);
+            const jsonData: SSEResponse = JSON.parse(dataRaw);
 
             if (jsonData.type === 'time') {
                 currentTime.value = jsonData.payload.timestamp;
             } else if (jsonData.type === 'nowplaying') {
                 if (npUpdated.value === 0) {
-                    setNowPlaying(jsonData.payload);
+                    setNowPlaying(jsonData.payload.np);
                 } else {
                     setTimeout(() => {
-                        setNowPlaying(jsonData.payload);
+                        setNowPlaying(jsonData.payload.np);
                     }, 3000);
                 }
             }

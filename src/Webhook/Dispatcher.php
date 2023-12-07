@@ -60,7 +60,7 @@ final class Dispatcher
 
         // Always dispatch the special "local" updater task.
         try {
-            $this->localHandler->dispatch($station, $np);
+            $this->localHandler->dispatch($station, $np, $triggers);
         } catch (Throwable $e) {
             $this->logger->error(
                 sprintf('%s L%d: %s', $e->getFile(), $e->getLine(), $e->getMessage()),
@@ -161,7 +161,7 @@ final class Dispatcher
             $np->resolveUrls($this->router->getBaseUrl());
             $np->cache = 'event';
 
-            $this->localHandler->dispatch($station, $np);
+            $this->localHandler->dispatch($station, $np, []);
 
             $webhookType = $webhook->getType();
             $webhookClass = $webhookType->getClass();

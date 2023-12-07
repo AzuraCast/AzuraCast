@@ -96,7 +96,7 @@ server {
     }
 
     # SSE Now Playing Updates
-    location ~ ^/api/live/nowplaying/(\w+)$ {
+    location ~ ^/api/live/nowplaying/(.*)$ {
         include proxy_params;
         proxy_pass http://hpnp/$1?$args;
     }

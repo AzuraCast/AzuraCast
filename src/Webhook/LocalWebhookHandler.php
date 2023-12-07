@@ -27,7 +27,8 @@ final class LocalWebhookHandler
 
     public function dispatch(
         Station $station,
-        NowPlaying $np
+        NowPlaying $np,
+        array $triggers
     ): void {
         $fsUtils = new Filesystem();
 
@@ -69,7 +70,7 @@ final class LocalWebhookHandler
 
         // Publish to websocket library
         if ($this->hpNp->isSupported()) {
-            $this->hpNp->publishToStation($station, $np);
+            $this->hpNp->publishToStation($station, $np, $triggers);
         }
     }
 }

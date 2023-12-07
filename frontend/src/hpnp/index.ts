@@ -9,8 +9,9 @@ const publicPort: number = 6050;
 const internalPort: number = 6055;
 
 interface NowPlayingSubmission {
-    channel: string,
-    payload: ApiNowPlaying
+    station: string,
+    np: ApiNowPlaying,
+    triggers: string[] | null
 }
 
 interface StationChannelState extends Record<string, unknown> {
@@ -60,24 +61,34 @@ setInterval(() => {
 const publicServer = new App();
 
 publicServer.get('/:station', async (req, res) => {
-    const stationId: string = req.params.station;
+    res.set("Access-Control-Allow-Origin", "*");
+    res.set("X-Accel-Buffering", "no");
 
-    if (!stationChannels.has(stationId)) {
-        res.status(404).send('Station Not Found');
+    const stations: string[] = req.params.station.split(',');
+
+    let anyStationsFound: boolean = false;
+    for (const stationId of stations) {
+        if (stationChannels.has(stationId)) {
+            anyStationsFound = true;
+            break;
+        }
+    }
+
+    if (!anyStationsFound) {
+        return res.status(404).send('Station(s) Not Found');
     }
 
     const session = await createSession(req, res, {
         retry: 5000,
-        headers: {
-            "Access-Control-Allow-Origin": "*",
-            "X-Accel-Buffering": "no",
-        }
+        keepAlive: null,
     });
 
     timeChannel.register(session);
 
-    const stationChannel = stationChannels.get(stationId);
-    stationChannel.register(session);
+    for (const stationId of stations) {
+        const stationChannel = stationChannels.get(stationId);
+        stationChannel.register(session);
+    }
 });
 
 publicServer.listen(publicPort, () => {
@@ -92,12 +103,12 @@ privateServer.post('/', async (req, res) => {
     const body: NowPlayingSubmission = req.body;
 
     console.debug(
-        `NP Update received for channel ${body.channel}.`
+        `NP Update received for channel ${body.station}.`
     );
 
     let channel: Channel<StationChannelState>;
-    if (stationChannels.has(body.channel)) {
-        channel = stationChannels.get(body.channel);
+    if (stationChannels.has(body.station)) {
+        channel = stationChannels.get(body.station);
     } else {
         // Create a new channel if none exists.
         channel = createChannel();
@@ -107,14 +118,14 @@ privateServer.post('/', async (req, res) => {
                 payload: channel.state.lastMessage
             });
         });
-        stationChannels.set(body.channel, channel);
+        stationChannels.set(body.station, channel);
     }
 
     channel.state.timestamp = unixTimestamp();
-    channel.state.lastMessage = body.payload;
+    channel.state.lastMessage = body;
     channel.broadcast({
         type: 'nowplaying',
-        payload: body.payload
+        payload: body
     });
 
     return res.send('OK');

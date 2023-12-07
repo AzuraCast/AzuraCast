@@ -58,7 +58,7 @@ COPY ./util/docker/docs /bd_build/docs/
 RUN bash /bd_build/docs/setup.sh
 
 RUN bash /bd_build/chown_dirs.sh \
-    bash /bd_build/cleanup.sh \
+    && bash /bd_build/cleanup.sh \
     && rm -rf /bd_build
 
 USER azuracast

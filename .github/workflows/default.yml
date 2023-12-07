@@ -87,8 +87,6 @@ jobs:
           path: vendor
           key: ${{ runner.OS }}-build-${{ hashFiles('composer.lock') }}
 
-      - uses: oven-sh/setup-bun@v1
-
       - name: Set console permissions and clear static assets.
         run: |
           rm -rf web/static/vite_dist
@@ -102,7 +100,7 @@ jobs:
       - name: Generate new translations from existing code.
         run: |
           cd frontend
-          bun install
+          npm ci --include=dev
           
           cd ..
           bin/console locale:generate

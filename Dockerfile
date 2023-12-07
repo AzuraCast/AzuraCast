@@ -100,7 +100,7 @@ RUN composer install --no-ansi --no-interaction
 
 WORKDIR /var/azuracast/www/frontend
 
-RUN bun install
+RUN npm ci --include=dev
 
 WORKDIR /var/azuracast/www
 
@@ -160,13 +160,14 @@ COPY --chown=azuracast:azuracast . .
 
 RUN composer dump-autoload --optimize --classmap-authoritative
 
-WORKDIR /var/azuracast/www/frontend
-
-RUN bun install --production
-
-WORKDIR /var/azuracast/www
-
 USER root
+
+COPY ./util/docker/common /bd_build/
+COPY ./util/docker/hpnp /bd_build/hpnp
+
+RUN bash /bd_build/hpnp/setup.sh \
+    && bash /bd_build/cleanup.sh \
+    && rm -rf /bd_build
 
 EXPOSE 80 443 2022
 EXPOSE 8000-8999

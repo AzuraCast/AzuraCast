@@ -27,26 +27,7 @@ fi
 # there's no database, so it needs to be initialized
 if [ -z "$DATABASE_ALREADY_EXISTS" ]; then
     docker_verify_minimum_env
-
-    # check dir permissions to reduce likelihood of half-initialized database
-    ls /docker-entrypoint-initdb.d/ > /dev/null
-
-    docker_init_database_dir "$@"
-
-    mysql_note "Starting temporary server"
-    docker_temp_server_start "$@"
-    mysql_note "Temporary server started."
-
-    docker_setup_db
-    docker_process_init_files /docker-entrypoint-initdb.d/*
-
-    mysql_note "Stopping temporary server"
-    docker_temp_server_stop
-    mysql_note "Temporary server stopped"
-
-    echo
-    mysql_note "MariaDB init process done. Ready for start up."
-    echo
+    docker_mariadb_init "$@"
 # MDEV-27636 mariadb_upgrade --check-if-upgrade-is-needed cannot be run offline
 #elif mysql_upgrade --check-if-upgrade-is-needed; then
 elif _check_if_upgrade_is_needed; then

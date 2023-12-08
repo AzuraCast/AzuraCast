@@ -71,10 +71,11 @@ COPY --chown=azuracast:azuracast ./frontend /tmp/hpnp
 RUN cd /tmp/hpnp \
     && npm ci --include=dev \
     && npm run build-hpnp \
-    && chmod a+x /var/azuracast/scripts/hpnp.cjs
+    && chmod a+x /var/azuracast/scripts/hpnp.cjs \
+    && cd /tmp \
+    && rm -rf /tmp/hpnp
 
-RUN rm -rf /tmp/hpnp \
-    && touch /var/azuracast/.docker
+RUN touch /var/azuracast/.docker
 
 USER root
 

@@ -59,7 +59,7 @@ abstract class AbstractEnvFile implements ArrayAccess
 
     public function getAsBool(string $key, bool $default): bool
     {
-        return Types::bool($this->data[$key], $default, true);
+        return Types::bool($this->data[$key] ?? null, $default, true);
     }
 
     public function offsetExists(mixed $offset): bool

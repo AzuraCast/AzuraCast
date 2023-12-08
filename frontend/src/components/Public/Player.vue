@@ -140,7 +140,7 @@
 <script setup lang="ts">
 import AudioPlayer from '~/components/Common/AudioPlayer.vue';
 import PlayButton from "~/components/Common/PlayButton.vue";
-import {computed, onMounted, ref, shallowRef, watch} from "vue";
+import {computed, nextTick, onMounted, ref, shallowRef, watch} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import useNowPlaying from "~/functions/useNowPlaying";
 import playerProps from "~/components/Public/playerProps";
@@ -149,6 +149,7 @@ import AlbumArt from "~/components/Common/AlbumArt.vue";
 import {useAzuraCastStation} from "~/vendor/azuracast";
 import usePlayerVolume from "~/functions/usePlayerVolume";
 import {usePlayerStore} from "~/functions/usePlayerStore.ts";
+import {useEventListener} from "@vueuse/core";
 
 const props = defineProps({
     ...playerProps
@@ -238,12 +239,17 @@ const switchStream = (new_stream: CurrentStreamDescriptor) => {
     });
 };
 
+if (props.autoplay) {
+    const stop = useEventListener(document, "now-playing", async () => {
+        await nextTick();
+
+        switchStream(currentStream.value);
+        stop();
+    });
+}
+
 onMounted(() => {
     document.dispatchEvent(new CustomEvent("player-ready"));
-
-    if (props.autoplay) {
-        switchStream(currentStream.value);
-    }
 });
 
 const onNowPlayingUpdated = (np_new) => {

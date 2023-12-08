@@ -344,7 +344,7 @@ class StationMedia implements
 
     public function setAmplify(?float $amplify = null): void
     {
-        $this->amplify = (string)$amplify;
+        $this->amplify = Types::stringOrNull($amplify, true);
     }
 
     public function getFadeOverlap(): ?float
@@ -354,7 +354,7 @@ class StationMedia implements
 
     public function setFadeOverlap(?float $fadeOverlap = null): void
     {
-        $this->fade_overlap = (string)$fadeOverlap;
+        $this->fade_overlap = Types::stringOrNull($fadeOverlap, true);
     }
 
     public function getFadeIn(): ?float
@@ -364,7 +364,7 @@ class StationMedia implements
 
     public function setFadeIn(string|int|float $fadeIn = null): void
     {
-        $this->fade_in = Types::stringOrNull(Time::displayTimeToSeconds($fadeIn));
+        $this->fade_in = Types::stringOrNull(Time::displayTimeToSeconds($fadeIn), true);
     }
 
     public function getFadeOut(): ?float
@@ -374,7 +374,7 @@ class StationMedia implements
 
     public function setFadeOut(string|int|float $fadeOut = null): void
     {
-        $this->fade_out = Types::stringOrNull(Time::displayTimeToSeconds($fadeOut));
+        $this->fade_out = Types::stringOrNull(Time::displayTimeToSeconds($fadeOut), true);
     }
 
     public function getCueIn(): ?float
@@ -384,7 +384,7 @@ class StationMedia implements
 
     public function setCueIn(string|int|float $cueIn = null): void
     {
-        $this->cue_in = Types::stringOrNull(Time::displayTimeToSeconds($cueIn));
+        $this->cue_in = Types::stringOrNull(Time::displayTimeToSeconds($cueIn), true);
     }
 
     public function getCueOut(): ?float
@@ -394,7 +394,7 @@ class StationMedia implements
 
     public function setCueOut(string|int|float $cueOut = null): void
     {
-        $this->cue_out = Types::stringOrNull(Time::displayTimeToSeconds($cueOut));
+        $this->cue_out = Types::stringOrNull(Time::displayTimeToSeconds($cueOut), true);
     }
 
     /**

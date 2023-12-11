@@ -161,12 +161,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/AzuraCast/nowplaying.git",
-                "reference": "20d44ab956fc2b85583f0bfe49cb66f800342a0f"
+                "reference": "a2e5ab46c51c5179f8993d693edf0843520dc145"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/AzuraCast/nowplaying/zipball/20d44ab956fc2b85583f0bfe49cb66f800342a0f",
-                "reference": "20d44ab956fc2b85583f0bfe49cb66f800342a0f",
+                "url": "https://api.github.com/repos/AzuraCast/nowplaying/zipball/a2e5ab46c51c5179f8993d693edf0843520dc145",
+                "reference": "a2e5ab46c51c5179f8993d693edf0843520dc145",
                 "shasum": ""
             },
             "require": {
@@ -223,7 +223,7 @@
                     "type": "patreon"
                 }
             ],
-            "time": "2023-08-16T21:41:22+00:00"
+            "time": "2023-12-11T17:01:06+00:00"
         },
         {
             "name": "beberlei/doctrineextensions",

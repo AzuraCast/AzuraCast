@@ -16,7 +16,7 @@ interface NowPlayingSubmission {
 
 interface StationChannelState extends Record<string, unknown> {
     timestamp: number,
-    lastMessage: ApiNowPlaying
+    lastMessage: NowPlayingSubmission
 }
 
 const unixTimestamp = (): number => Math.floor(Date.now() / 1000);
@@ -87,7 +87,7 @@ publicServer.get('/:station', async (req, res) => {
 
     for (const stationId of stations) {
         const stationChannel = stationChannels.get(stationId);
-        stationChannel.register(session);
+        stationChannel!.register(session);
     }
 });
 
@@ -108,7 +108,7 @@ privateServer.post('/', async (req, res) => {
 
     let channel: Channel<StationChannelState>;
     if (stationChannels.has(body.station)) {
-        channel = stationChannels.get(body.station);
+        channel = stationChannels.get(body.station)!;
     } else {
         // Create a new channel if none exists.
         channel = createChannel();

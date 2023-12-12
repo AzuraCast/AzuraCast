@@ -44,9 +44,6 @@ apt-get install -y --no-install-recommends apt-utils
 ## Install HTTPS support for APT.
 apt-get install -y --no-install-recommends apt-transport-https ca-certificates
 
-## Install add-apt-repository
-apt-get install -y --no-install-recommends software-properties-common
-
 ## Upgrade all packages.
 apt-get dist-upgrade -y --no-install-recommends -o Dpkg::Options::="--force-confold"
 

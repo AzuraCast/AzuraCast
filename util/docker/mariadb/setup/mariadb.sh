@@ -16,7 +16,8 @@ set -x
 apt-get update
 
 apt-get install -q -y --no-install-recommends \
-  mariadb-server mariadb-backup mariadb-client
+  mariadb-server mariadb-backup mariadb-client \
+  ca-certificates gpg gpgv libjemalloc2 pwgen tzdata xz-utils zstd
 
 rm -rf /var/lib/mysql
 mkdir -p /var/lib/mysql /var/run/mysqld

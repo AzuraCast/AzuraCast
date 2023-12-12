@@ -7,7 +7,7 @@
     "serve": "vite",
     "generate-locales": "vue-gettext-extract",
     "generate-api": "swagger-typescript-api --path http://localhost/api/openapi.yml --output ./src/entities --name ApiInterfaces.ts --no-client",
-    "build-hpnp": "esbuild --bundle --target=node20 --platform=node ./src/hpnp/index.ts > /var/azuracast/scripts/hpnp.cjs"
+    "build-hpnp": "esbuild --bundle --target=node18 --platform=node ./src/hpnp/index.ts > ./hpnp.cjs && pkg --target=node18-linux --output ./hpnp ./hpnp.cjs"
   },
   "dependencies": {
     "@codemirror/lang-css": "^6.0.1",
@@ -41,6 +41,7 @@
     "luxon": "^3",
     "milliparsec": "^2.3.0",
     "nprogress": "^0.2.0",
+    "pkg": "^5.8.1",
     "qrcode": "^1.5.3",
     "roboto-fontface": "^0.10.0",
     "sweetalert2": "11.4.8",

@@ -16,6 +16,11 @@ RUN go install github.com/aptible/supercronic@v0.2.28
 FROM mariadb:11.2-jammy AS mariadb
 
 #
+# Built-in docs build step
+#
+FROM ghcr.io/azuracast/azuracast.com:builtin AS docs
+
+#
 # Final build image
 #
 FROM ubuntu:jammy AS pre-final
@@ -37,6 +42,9 @@ COPY ./util/docker/common /bd_build/
 
 RUN bash /bd_build/prepare.sh \
     && bash /bd_build/add_user.sh
+
+# Add built-in docs
+COPY --from=docs --chown=azuracast:azuracast /dist /var/azuracast/docs
 
 # Build each set of dependencies in their own step for cacheability.
 COPY ./util/docker/supervisor /bd_build/supervisor/
@@ -64,27 +72,10 @@ RUN bash /bd_build/redis/setup.sh \
     && bash /bd_build/cleanup.sh \
     && rm -rf /bd_build/redis
 
-COPY ./util/docker/docs /bd_build/docs/
-RUN bash /bd_build/docs/setup.sh \
-    && bash /bd_build/cleanup.sh \
-    && rm -rf /bd_build/docs
-
 RUN bash /bd_build/chown_dirs.sh \
     && rm -rf /bd_build
 
 USER azuracast
-
-# Build HPNP
-RUN mkdir -p /tmp/hpnp
-
-COPY --chown=azuracast:azuracast ./frontend /tmp/hpnp
-
-RUN cd /tmp/hpnp \
-    && npm ci --include=dev \
-    && npm run build-hpnp \
-    && chmod a+x /var/azuracast/scripts/hpnp.cjs \
-    && cd /tmp \
-    && rm -rf /tmp/hpnp
 
 RUN touch /var/azuracast/.docker
 
@@ -162,11 +153,27 @@ ENTRYPOINT ["tini", "--", "/usr/local/bin/my_init"]
 CMD ["--no-main-command"]
 
 #
+# High-Performance Now Playing (HPNP) Build
+#
+FROM node:20-alpine AS hpnp
+
+COPY --chown=node:node ./frontend /data
+WORKDIR /data
+USER node
+
+RUN npm ci --include=dev \
+    && npm run build-hpnp
+
+#
 # Final build (Just environment vars and squishing the FS)
 #
 FROM ubuntu:jammy AS final
 
 COPY --from=pre-final / /
+
+# Add HPNP from previous step
+COPY --from=hpnp --chown=azuracast:azuracast /data/hpnp /usr/local/bin/hpnp
+RUN chmod a+x /usr/local/bin/hpnp
 
 USER azuracast
 

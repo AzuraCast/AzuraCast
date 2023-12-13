@@ -5,7 +5,6 @@ import {ApiNowPlaying} from "~/entities/ApiInterfaces.ts";
 import {getApiUrl} from "~/router.ts";
 import {useAxios} from "~/vendor/axios.ts";
 import formatTime from "~/functions/formatTime.ts";
-import {has} from "lodash";
 
 export const nowPlayingProps = {
     stationShortName: {
@@ -23,21 +22,6 @@ export const nowPlayingProps = {
         default: false
     },
 };
-
-interface SSETimePayload {
-    timestamp: number
-}
-
-interface SSENowPlayingPayload {
-    station: string,
-    np: ApiNowPlaying,
-    triggers: string[] | null
-}
-
-interface SSEResponse {
-    type: string,
-    payload: SSETimePayload | SSENowPlayingPayload
-}
 
 export default function useNowPlaying(props) {
     const np: ShallowRef<ApiNowPlaying> = shallowRef(NowPlaying);
@@ -83,6 +67,18 @@ export default function useNowPlaying(props) {
     };
 
     if (props.useSse) {
+        // Make an initial AJAX request before SSE takes over.
+        onMounted(() => {
+            axiosSilent.get(nowPlayingUri.value, axiosNoCacheConfig).then((response) => {
+                setNowPlaying(response.data);
+            });
+
+            axiosSilent.get(timeUri.value, axiosNoCacheConfig).then((response) => {
+                currentTime.value = response.data.timestamp;
+            });
+        });
+
+        // Subsequent events come from SSE.
         const sseBaseUri = getApiUrl('/live/nowplaying/sse');
         const sseUriParams = new URLSearchParams({
             "cf_connect": JSON.stringify({
@@ -94,26 +90,19 @@ export default function useNowPlaying(props) {
         });
         const sseUri = sseBaseUri.value + '?' + sseUriParams.toString();
 
-        // Make an initial AJAX request before SSE takes over.
-        axiosSilent.get(nowPlayingUri.value, axiosNoCacheConfig).then((response) => {
-            setNowPlaying(response.data);
-        });
-
-        axiosSilent.get(timeUri.value, axiosNoCacheConfig).then((response) => {
-            currentTime.value = response.data.timestamp;
-        });
-
-        // Subsequent events come from SSE.
         const {data} = useEventSource(sseUri);
         watch(data, (dataRaw: string) => {
             const jsonData: SSEResponse = JSON.parse(dataRaw);
             const jsonDataNp = jsonData?.pub?.data ?? {};
 
-            if (has(jsonDataNp, 'np')) {
+            if ('np' in jsonDataNp) {
+                // SSE events often dispatch *too quickly* relative to the delays involved in
+                // Liquidsoap and Icecast, so we delay these changes from showing up to better
+                // approximate when listeners will really hear the track change.
                 setTimeout(() => {
                     setNowPlaying(jsonDataNp.np);
                 }, 3000);
-            } else if (has(jsonDataNp, 'time')) {
+            } else if ('time' in jsonDataNp) {
                 currentTime.value = jsonDataNp.time;
             }
         });

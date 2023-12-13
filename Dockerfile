@@ -10,6 +10,8 @@ RUN go install github.com/jwilder/dockerize@v0.6.1
 
 RUN go install github.com/aptible/supercronic@v0.2.28
 
+RUN go install github.com/centrifugal/centrifugo/v5@v5.1.2
+
 #
 # MariaDB dependencies build step
 #
@@ -35,6 +37,7 @@ ENV TZ="UTC"
 # Add Go dependencies
 COPY --from=go-dependencies /go/bin/dockerize /usr/local/bin
 COPY --from=go-dependencies /go/bin/supercronic /usr/local/bin/supercronic
+COPY --from=go-dependencies /go/bin/centrifugo /usr/local/bin/centrifugo
 
 # Add MariaDB dependencies
 COPY --from=mariadb /usr/local/bin/healthcheck.sh /usr/local/bin/db_healthcheck.sh
@@ -162,27 +165,11 @@ ENTRYPOINT ["tini", "--", "/usr/local/bin/my_init"]
 CMD ["--no-main-command"]
 
 #
-# High-Performance Now Playing (HPNP) Build
-#
-FROM node:20-alpine AS hpnp
-
-COPY --chown=node:node ./frontend /data
-WORKDIR /data
-USER node
-
-RUN npm ci --include=dev \
-    && npm run build-hpnp
-
-#
 # Final build (Just environment vars and squishing the FS)
 #
 FROM ubuntu:jammy AS final
 
 COPY --from=pre-final / /
-
-# Add HPNP from previous step
-COPY --from=hpnp --chown=azuracast:azuracast /data/hpnp /usr/local/bin/hpnp
-RUN chmod a+x /usr/local/bin/hpnp
 
 USER azuracast
 

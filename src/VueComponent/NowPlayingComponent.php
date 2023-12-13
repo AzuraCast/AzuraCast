@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace App\VueComponent;
 
 use App\Http\ServerRequest;
-use App\Service\HpNp;
+use App\Service\Centrifugo;
 
 final class NowPlayingComponent implements VueComponentInterface
 {
     public function __construct(
-        private readonly HpNp $hpNp
+        private readonly Centrifugo $centrifugo
     ) {
     }
 
@@ -38,7 +38,7 @@ final class NowPlayingComponent implements VueComponentInterface
         return [
             'stationShortName' => $station->getShortName(),
             'useStatic' => $customization->useStaticNowPlaying(),
-            'useSse' => $customization->useStaticNowPlaying() && $this->hpNp->isSupported(),
+            'useSse' => $customization->useStaticNowPlaying() && $this->centrifugo->isSupported(),
         ];
     }
 }

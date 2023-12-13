@@ -5,6 +5,7 @@ import {ApiNowPlaying} from "~/entities/ApiInterfaces.ts";
 import {getApiUrl} from "~/router.ts";
 import {useAxios} from "~/vendor/axios.ts";
 import formatTime from "~/functions/formatTime.ts";
+import {has} from "lodash";
 
 export const nowPlayingProps = {
     stationShortName: {
@@ -40,7 +41,6 @@ interface SSEResponse {
 
 export default function useNowPlaying(props) {
     const np: ShallowRef<ApiNowPlaying> = shallowRef(NowPlaying);
-    const npUpdated: Ref<number> = ref(0);
 
     const currentTime: Ref<number> = ref(Math.floor(Date.now() / 1000));
     const currentTrackDuration: Ref<number> = ref(0);
@@ -48,7 +48,6 @@ export default function useNowPlaying(props) {
 
     const setNowPlaying = (np_new: ApiNowPlaying) => {
         np.value = np_new;
-        npUpdated.value = currentTime.value;
 
         currentTrackDuration.value = np_new.now_playing.duration ?? 0;
 
@@ -68,41 +67,59 @@ export default function useNowPlaying(props) {
         }));
     }
 
-    if (props.useSse) {
-        const sseUri = getApiUrl(`/live/nowplaying/${props.stationShortName}`);
+    const nowPlayingUri = props.useStatic
+        ? getApiUrl(`/nowplaying_static/${props.stationShortName}.json`)
+        : getApiUrl(`/nowplaying/${props.stationShortName}`);
 
-        const {data} = useEventSource(sseUri.value);
+    const timeUri = getApiUrl('/time');
+    const {axiosSilent} = useAxios();
+
+    const axiosNoCacheConfig = {
+        headers: {
+            'Cache-Control': 'no-cache',
+            'Pragma': 'no-cache',
+            'Expires': '0',
+        }
+    };
+
+    if (props.useSse) {
+        const sseBaseUri = getApiUrl('/live/nowplaying/sse');
+        const sseUriParams = new URLSearchParams({
+            "cf_connect": JSON.stringify({
+                "subs": {
+                    [`station:${props.stationShortName}`]: {},
+                    "global:time": {},
+                }
+            }),
+        });
+        const sseUri = sseBaseUri.value + '?' + sseUriParams.toString();
+
+        // Make an initial AJAX request before SSE takes over.
+        axiosSilent.get(nowPlayingUri.value, axiosNoCacheConfig).then((response) => {
+            setNowPlaying(response.data);
+        });
+
+        axiosSilent.get(timeUri.value, axiosNoCacheConfig).then((response) => {
+            currentTime.value = response.data.timestamp;
+        });
+
+        // Subsequent events come from SSE.
+        const {data} = useEventSource(sseUri);
         watch(data, (dataRaw: string) => {
             const jsonData: SSEResponse = JSON.parse(dataRaw);
+            const jsonDataNp = jsonData?.pub?.data ?? {};
 
-            if (jsonData.type === 'time') {
-                currentTime.value = jsonData.payload.timestamp;
-            } else if (jsonData.type === 'nowplaying') {
-                if (npUpdated.value === 0) {
-                    setNowPlaying(jsonData.payload.np);
-                } else {
-                    setTimeout(() => {
-                        setNowPlaying(jsonData.payload.np);
-                    }, 3000);
-                }
+            if (has(jsonDataNp, 'np')) {
+                setTimeout(() => {
+                    setNowPlaying(jsonDataNp.np);
+                }, 3000);
+            } else if (has(jsonDataNp, 'time')) {
+                currentTime.value = jsonDataNp.time;
             }
         });
     } else {
-        const nowPlayingUri = props.useStatic
-            ? getApiUrl(`/nowplaying_static/${props.stationShortName}`)
-            : getApiUrl(`/nowplaying/${props.stationShortName}`);
-
-        const timeUri = getApiUrl('/time');
-
-        const {axios} = useAxios();
         const checkNowPlaying = () => {
-            axios.get(nowPlayingUri.value, {
-                headers: {
-                    'Cache-Control': 'no-cache',
-                    'Pragma': 'no-cache',
-                    'Expires': '0',
-                }
-            }).then((response) => {
+            axiosSilent.get(nowPlayingUri.value, axiosNoCacheConfig).then((response) => {
                 setNowPlaying(response.data);
 
                 setTimeout(checkNowPlaying, (!document.hidden) ? 15000 : 30000);
@@ -112,13 +129,7 @@ export default function useNowPlaying(props) {
         };
 
         const checkTime = () => {
-            axios.get(timeUri.value, {
-                headers: {
-                    'Cache-Control': 'no-cache',
-                    'Pragma': 'no-cache',
-                    'Expires': '0',
-                }
-            }).then((response) => {
+            axiosSilent.get(timeUri.value, axiosNoCacheConfig).then((response) => {
                 currentTime.value = response.data.timestamp;
             }).finally(() => {
                 setTimeout(checkTime, (!document.hidden) ? 300000 : 600000);

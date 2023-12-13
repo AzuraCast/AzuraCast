@@ -20,7 +20,7 @@ final class ServiceControl
 
     public function __construct(
         private readonly SupervisorInterface $supervisor,
-        private readonly HpNp $hpNp
+        private readonly Centrifugo $centrifugo
     ) {
     }
 
@@ -85,12 +85,12 @@ final class ServiceControl
             'php-worker' => __('PHP queue processing worker'),
             'redis' => __('Cache'),
             'sftpgo' => __('SFTP service'),
-            'hpnp' => __('High-Performance Now Playing updates'),
+            'centrifugo' => __('Live Now Playing updates'),
             'vite' => __('Frontend Assets'),
         ];
 
-        if (!$this->hpNp->isSupported()) {
-            unset($services['hpnp']);
+        if (!$this->centrifugo->isSupported()) {
+            unset($services['centrifugo']);
         }
 
         if (!$this->environment->useLocalDatabase()) {

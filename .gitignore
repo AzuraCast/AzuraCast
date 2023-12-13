@@ -1,6 +1,5 @@
 # Frontend
 node_modules
-/frontend/hpnp*
 
 # Junk/cache files.
 *Thumbs.db

@@ -122,11 +122,13 @@ WORKDIR /var/azuracast/www
 
 COPY --chown=azuracast:azuracast . .
 
-RUN composer install --no-ansi --no-interaction
+RUN composer install --no-ansi --no-interaction \
+    && composer clear-cache
 
 WORKDIR /var/azuracast/www/frontend
 
-RUN npm ci --include=dev
+RUN npm ci --include=dev \
+    && npm cache clean --force
 
 WORKDIR /var/azuracast/www
 
@@ -175,16 +177,11 @@ USER azuracast
 
 WORKDIR /var/azuracast/www
 
-COPY --chown=azuracast:azuracast ./composer.json ./composer.lock ./
-RUN composer install \
-    --no-dev \
-    --no-ansi \
-    --no-autoloader \
-    --no-interaction
-
 COPY --chown=azuracast:azuracast . .
 
-RUN composer dump-autoload --optimize --classmap-authoritative
+RUN composer install --no-dev --no-ansi --no-autoloader --no-interaction \
+    && composer dump-autoload --optimize --classmap-authoritative \
+    && composer clear-cache
 
 USER root
 

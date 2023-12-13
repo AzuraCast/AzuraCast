@@ -21,6 +21,11 @@ FROM mariadb:11.2-jammy AS mariadb
 FROM ghcr.io/azuracast/azuracast.com:builtin AS docs
 
 #
+# Icecast-KH with AzuraCast customizations build step
+#
+FROM ghcr.io/azuracast/icecast-kh-ac:latest AS icecast
+
+#
 # Final build image
 #
 FROM ubuntu:jammy AS pre-final
@@ -36,6 +41,10 @@ COPY --from=mariadb /usr/local/bin/healthcheck.sh /usr/local/bin/db_healthcheck.
 COPY --from=mariadb /usr/local/bin/docker-entrypoint.sh /usr/local/bin/db_entrypoint.sh
 COPY --from=mariadb /etc/apt/sources.list.d/mariadb.list /etc/apt/sources.list.d/mariadb.list
 COPY --from=mariadb /etc/apt/trusted.gpg.d/mariadb.gpg /etc/apt/trusted.gpg.d/mariadb.gpg
+
+# Add Icecast
+COPY --from=icecast /usr/local/bin/icecast /usr/local/bin/icecast
+COPY --from=icecast /usr/local/share/icecast /usr/local/share/icecast
 
 # Run base build process
 COPY ./util/docker/common /bd_build/

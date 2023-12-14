@@ -53,7 +53,8 @@ COPY --from=icecast /usr/local/share/icecast /usr/local/share/icecast
 COPY ./util/docker/common /bd_build/
 
 RUN bash /bd_build/prepare.sh \
-    && bash /bd_build/add_user.sh
+    && bash /bd_build/add_user.sh \
+    && bash /bd_build/cleanup.sh
 
 # Add built-in docs
 COPY --from=docs --chown=azuracast:azuracast /dist /var/azuracast/docs

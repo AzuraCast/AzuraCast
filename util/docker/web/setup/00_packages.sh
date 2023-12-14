@@ -15,10 +15,17 @@ curl -S "https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x14aa40ec0831756
 echo "deb [signed-by=/etc/apt/keyrings/php.gpg] https://ppa.launchpadcontent.net/ondrej/php/ubuntu jammy main" >> /etc/apt/sources.list.d/php.list
 echo "deb-src [signed-by=/etc/apt/keyrings/php.gpg] https://ppa.launchpadcontent.net/ondrej/php/ubuntu jammy main" >> /etc/apt/sources.list.d/php.list
 
+curl -S "https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x19f81a792d451fb0c42afb35fb22bf628e6f7e24" \
+  | sudo gpg --batch --yes --dearmor --output "/etc/apt/keyrings/sftpgo.gpg"
+
+echo "deb [signed-by=/etc/apt/keyrings/sftpgo.gpg] https://ppa.launchpadcontent.net/sftpgo/sftpgo/ubuntu jammy main" >> /etc/apt/sources.list.d/sftpgo.list
+echo "deb-src [signed-by=/etc/apt/keyrings/sftpgo.gpg] https://ppa.launchpadcontent.net/sftpgo/sftpgo/ubuntu jammy main" >> /etc/apt/sources.list.d/sftpgo.list
+
 apt-get update
 
 apt-get install -y --no-install-recommends \
   audiowaveform=1.9.1-1jammy1 \
   nginx-light openssl \
   tmpreaper \
-  zstd
+  zstd \
+  sftpgo

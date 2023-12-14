@@ -7,6 +7,7 @@ namespace App\Controller\Api\Internal;
 use App\Cache\NowPlayingCache;
 use App\Container\LoggerAwareTrait;
 use App\Controller\SingleActionInterface;
+use App\Entity\Api\NowPlaying\NowPlaying;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Service\Centrifugo;
@@ -33,6 +34,7 @@ final class CentrifugoAction implements SingleActionInterface
         );
 
         $allInitialData = [];
+        $baseUrl = $request->getRouter()->getBaseUrl();
 
         foreach ($channels as $channel) {
             $initialData = [];
@@ -42,10 +44,15 @@ final class CentrifugoAction implements SingleActionInterface
             } elseif (str_starts_with($channel, 'station:')) {
                 $stationName = substr($channel, 8);
                 $np = $this->npCache->getForStation($stationName);
-                if (null === $np) {
+                if (!($np instanceof NowPlaying)) {
                     continue;
                 }
+
+                $np->resolveUrls($baseUrl);
+                $np->update();
+
                 $initialData['np'] = $np;
+                $initialData['triggers'] = [];
             }
 
             $allInitialData[] = [

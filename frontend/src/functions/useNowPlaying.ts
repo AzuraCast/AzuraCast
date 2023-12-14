@@ -85,7 +85,7 @@ export default function useNowPlaying(props) {
 
         const {data} = useEventSource(sseUri);
         watch(data, (dataRaw: string) => {
-            const jsonData: SSEResponse = JSON.parse(dataRaw);
+            const jsonData = JSON.parse(dataRaw);
             if ('connect' in jsonData) {
                 const initialData = jsonData.connect.data ?? [];
                 initialData.forEach((initialRow) => handleSseData(initialRow));

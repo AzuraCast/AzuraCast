@@ -34,7 +34,9 @@ final class CentrifugoAction implements SingleActionInterface
         );
 
         $allInitialData = [];
-        $baseUrl = $request->getRouter()->getBaseUrl();
+
+        $router = $request->getRouter();
+        $router->buildBaseUrl(false);
 
         foreach ($channels as $channel) {
             $initialData = [];
@@ -48,7 +50,7 @@ final class CentrifugoAction implements SingleActionInterface
                     continue;
                 }
 
-                $np->resolveUrls($baseUrl);
+                $np->resolveUrls($router->getBaseUrl());
                 $np->update();
 
                 $initialData['np'] = $np;

@@ -19,6 +19,6 @@ apt-get update
 
 apt-get install -y --no-install-recommends \
   audiowaveform=1.9.1-1jammy1 \
-  nginx nginx-common openssl \
+  nginx-light openssl \
   tmpreaper \
   zstd

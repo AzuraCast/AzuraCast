@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Assets;
 
-use Intervention\Image\Image;
+use Intervention\Image\Interfaces\ImageInterface;
 use Psr\Http\Message\UriInterface;
 
 interface CustomAssetInterface
@@ -19,7 +19,7 @@ interface CustomAssetInterface
 
     public function getUri(): UriInterface;
 
-    public function upload(Image $image): void;
+    public function upload(ImageInterface $image, string $mimeType): void;
 
     public function delete(): void;
 }

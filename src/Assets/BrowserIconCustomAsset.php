@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Assets;
 
-use Intervention\Image\Image;
+use Intervention\Image\Interfaces\ImageInterface;
 use Symfony\Component\Filesystem\Filesystem;
 
 final class BrowserIconCustomAsset extends AbstractCustomAsset
@@ -38,7 +38,7 @@ final class BrowserIconCustomAsset extends AbstractCustomAsset
         return $assetUrl . '/icons/' . $this->environment->getAppEnvironmentEnum()->value . '/original.png';
     }
 
-    public function upload(Image $image): void
+    public function upload(ImageInterface $image, string $mimeType): void
     {
         $this->delete();
 
@@ -47,12 +47,12 @@ final class BrowserIconCustomAsset extends AbstractCustomAsset
 
         $newImage = clone $image;
         $newImage->resize(256, 256);
-        $newImage->save($uploadsDir . '/original.png');
+        $newImage->toPng()->save($uploadsDir . '/original.png');
 
         foreach (self::ICON_SIZES as $iconSize) {
             $newImage = clone $image;
             $newImage->resize($iconSize, $iconSize);
-            $newImage->save($uploadsDir . '/' . $iconSize . '.png');
+            $newImage->toPng()->save($uploadsDir . '/' . $iconSize . '.png');
         }
     }
 

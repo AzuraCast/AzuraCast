@@ -11,6 +11,7 @@ use App\Entity\Api\Status;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Media\AlbumArt;
+use App\Media\MimeType;
 use App\Service\Flow;
 use Psr\Http\Message\ResponseInterface;
 
@@ -34,8 +35,10 @@ final class PostCustomAssetAction implements SingleActionInterface
         }
 
         $imageContents = $flowResponse->readAndDeleteUploadedFile();
+
         $customAsset->upload(
-            AlbumArt::getImageManager()->make($imageContents)
+            AlbumArt::getImageManager()->read($imageContents),
+            MimeType::getMimeTypeDetector()->detectMimeTypeFromBuffer($imageContents) ?? 'image/jpeg'
         );
 
         return $response->withJson(Status::success());

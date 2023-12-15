@@ -41,7 +41,7 @@
     "gettext/php-scanner": "^1.3",
     "gettext/translator": "^1.1",
     "guzzlehttp/guzzle": "^7.0",
-    "intervention/image": "^2.6",
+    "intervention/image": "^3",
     "james-heinrich/getid3": "v2.0.0-beta6",
     "lbuchs/webauthn": "^2.1",
     "league/csv": "^9.6",

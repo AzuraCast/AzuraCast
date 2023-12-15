@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Media;
 
-use Intervention\Image\Constraint;
+use Intervention\Image\Drivers\Gd\Driver;
 use Intervention\Image\ImageManager;
 
 final class AlbumArt
@@ -17,28 +17,21 @@ final class AlbumArt
         int $height = self::IMAGE_WIDTH,
         bool $upsize = false,
     ): string {
-        $newArtwork = self::getImageManager()->make($rawArtworkString);
-        $newArtwork->fit(
-            $width,
-            $height,
-            function (Constraint $constraint) use ($upsize) {
-                if (!$upsize) {
-                    $constraint->upsize();
-                }
-            }
-        );
+        $newArtwork = self::getImageManager()->read($rawArtworkString);
 
-        $newArtwork->encode('jpg');
+        if ($upsize) {
+            $newArtwork->cover($width, $height);
+        } else {
+            $newArtwork->coverDown($width, $height);
+        }
 
-        return $newArtwork->getEncoded();
+        return $newArtwork->toJpeg()->toString();
     }
 
     public static function getImageManager(): ImageManager
     {
         return new ImageManager(
-            [
-                'driver' => 'gd',
-            ]
+            new Driver()
         );
     }
 }

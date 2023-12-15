@@ -9,12 +9,6 @@ curl -S "https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x90908c2298e5d46
 echo "deb [signed-by=/etc/apt/keyrings/audiowaveform.gpg] https://ppa.launchpadcontent.net/chris-needham/ppa/ubuntu jammy main" >> /etc/apt/sources.list.d/audiowaveform.list
 echo "deb-src [signed-by=/etc/apt/keyrings/audiowaveform.gpg] https://ppa.launchpadcontent.net/chris-needham/ppa/ubuntu jammy main" >> /etc/apt/sources.list.d/audiowaveform.list
 
-curl -S "https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x14aa40ec0831756756d7f66c4f4ea0aae5267a6c" \
-  | sudo gpg --batch --yes --dearmor --output "/etc/apt/keyrings/php.gpg"
-
-echo "deb [signed-by=/etc/apt/keyrings/php.gpg] https://ppa.launchpadcontent.net/ondrej/php/ubuntu jammy main" >> /etc/apt/sources.list.d/php.list
-echo "deb-src [signed-by=/etc/apt/keyrings/php.gpg] https://ppa.launchpadcontent.net/ondrej/php/ubuntu jammy main" >> /etc/apt/sources.list.d/php.list
-
 curl -S "https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x19f81a792d451fb0c42afb35fb22bf628e6f7e24" \
   | sudo gpg --batch --yes --dearmor --output "/etc/apt/keyrings/sftpgo.gpg"
 

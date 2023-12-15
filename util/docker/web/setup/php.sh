@@ -2,9 +2,15 @@
 set -e
 set -x
 
-PHP_VERSION=8.2
+PHP_VERSION=8.3
 
-# PPA set up in 00_packages.sh
+curl -S "https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x14aa40ec0831756756d7f66c4f4ea0aae5267a6c" \
+  | sudo gpg --batch --yes --dearmor --output "/etc/apt/keyrings/php.gpg"
+
+echo "deb [signed-by=/etc/apt/keyrings/php.gpg] https://ppa.launchpadcontent.net/ondrej/php/ubuntu jammy main" >> /etc/apt/sources.list.d/php.list
+echo "deb-src [signed-by=/etc/apt/keyrings/php.gpg] https://ppa.launchpadcontent.net/ondrej/php/ubuntu jammy main" >> /etc/apt/sources.list.d/php.list
+
+apt-get update
 
 apt-get install -y --no-install-recommends php${PHP_VERSION}-fpm php${PHP_VERSION}-cli php${PHP_VERSION}-gd \
   php${PHP_VERSION}-curl php${PHP_VERSION}-xml php${PHP_VERSION}-zip \

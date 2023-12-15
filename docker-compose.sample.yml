@@ -19,9 +19,9 @@ services:
     # Want to customize the HTTP/S ports? Follow the instructions here:
     # https://www.azuracast.com/docs/administration/docker/#using-non-standard-ports
     ports:
-      - '${AZURACAST_HTTP_PORT:-80}:80'
-      - '${AZURACAST_HTTPS_PORT:-443}:443'
-      - '${AZURACAST_SFTP_PORT:-2022}:2022'
+      - '${AZURACAST_HTTP_PORT:-80}:${AZURACAST_HTTP_PORT:-80}'
+      - '${AZURACAST_HTTPS_PORT:-443}:${AZURACAST_HTTPS_PORT:-443}'
+      - '${AZURACAST_SFTP_PORT:-2022}:${AZURACAST_SFTP_PORT:-2022}'
       - '8000:8000'
       - '8005:8005'
       - '8006:8006'
@@ -169,17 +169,9 @@ services:
       - '8490:8490'
       - '8495:8495'
       - '8496:8496'
-    env_file: azuracast.env
-    environment:
-      LANG: ${LANG:-en_US.UTF-8}
-      AZURACAST_DC_REVISION: 14
-      AZURACAST_VERSION: ${AZURACAST_VERSION:-latest}
-      AZURACAST_SFTP_PORT: ${AZURACAST_SFTP_PORT:-2022}
-      NGINX_TIMEOUT: ${NGINX_TIMEOUT:-1800}
-      LETSENCRYPT_HOST: ${LETSENCRYPT_HOST:-}
-      LETSENCRYPT_EMAIL: ${LETSENCRYPT_EMAIL:-}
-      PUID: ${AZURACAST_PUID:-1000}
-      PGID: ${AZURACAST_PGID:-1000}
+    env_file:
+      - azuracast.env
+      - .env
     volumes:
       - station_data:/var/azuracast/stations
       - backups:/var/azuracast/backups

@@ -51,8 +51,8 @@ server {
 }
 
 server {
-    listen 80;
-    listen 443 default_server http2 ssl;
+    listen {{ default .Env.AZURACAST_HTTP_PORT "80" }};
+    listen {{ default .Env.AZURACAST_HTTPS_PORT "443" }} default_server http2 ssl;
 
     ssl_certificate        {{ default .Env.ACME_DIR "/var/azuracast/storage/acme" }}/ssl.crt;
     ssl_certificate_key    {{ default .Env.ACME_DIR "/var/azuracast/storage/acme" }}/ssl.key;

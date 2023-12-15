@@ -2,7 +2,9 @@
 set -e
 set -x
 
-mkdir -p /var/azuracast/sftpgo/persist /var/azuracast/sftpgo/backups
+mkdir -p /var/azuracast/sftpgo/persist \
+  /var/azuracast/sftpgo/backups \
+  /var/azuracast/sftpgo/env.d
 
 cp /bd_build/web/sftpgo/sftpgo.json /var/azuracast/sftpgo/sftpgo.json
 

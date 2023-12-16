@@ -15,6 +15,7 @@
             :input-attrs="{ step: '0.1' }"
             :label="$gettext('Amplify: Amplification (dB)')"
             :description="$gettext('The volume in decibels to amplify the track with. Leave blank to use the system default.')"
+            clearable
         />
 
         <form-group-field
@@ -25,6 +26,7 @@
             :input-attrs="{ step: '0.1' }"
             :label="$gettext('Custom Fading: Overlap Time (seconds)')"
             :description="$gettext('The time that this song should overlap its surrounding songs when fading. Leave blank to use the system default.')"
+            clearable
         />
 
         <form-group-field
@@ -35,6 +37,7 @@
             :input-attrs="{ step: '0.1' }"
             :label="$gettext('Custom Fading: Fade-In Time (seconds)')"
             :description="$gettext('The time period that the song should fade in. Leave blank to use the system default.')"
+            clearable
         />
 
         <form-group-field
@@ -45,6 +48,7 @@
             :input-attrs="{ step: '0.1' }"
             :label="$gettext('Custom Fading: Fade-Out Time (seconds)')"
             :description="$gettext('The time period that the song should fade out. Leave blank to use the system default.')"
+            clearable
         />
 
         <form-group-field
@@ -55,6 +59,7 @@
             :input-attrs="{ step: '0.1' }"
             :label="$gettext('Custom Cues: Cue-In Point (seconds)')"
             :description="$gettext('Seconds from the start of the song that the AutoDJ should start playing.')"
+            clearable
         />
 
         <form-group-field
@@ -65,6 +70,7 @@
             :input-attrs="{ step: '0.1' }"
             :label="$gettext('Custom Cues: Cue-Out Point (seconds)')"
             :description="$gettext('Seconds from the start of the song that the AutoDJ should stop playing.')"
+            clearable
         />
     </div>
 </template>

@@ -57,9 +57,22 @@
         </template>
 
         <template
-            v-if="description || slots.description"
+            v-if="description || slots.description || clearable"
             #description="slotProps"
         >
+            <div
+                v-if="clearable"
+                class="buttons"
+            >
+                <button
+                    type="button"
+                    class="btn btn-sm btn-outline-secondary"
+                    @click.prevent="clear"
+                >
+                    {{ $gettext('Clear Field') }}
+                </button>
+            </div>
+
             <slot
                 v-bind="slotProps"
                 name="description"
@@ -121,6 +134,10 @@ const props = defineProps({
         type: Boolean,
         default: false
     },
+    clearable: {
+        type: Boolean,
+        default: false
+    },
     advanced: {
         type: Boolean,
         default: false
@@ -143,18 +160,18 @@ const filteredModel = computed({
     },
     set(newValue) {
         if ((isNumeric.value || props.inputEmptyIsNull) && '' === newValue) {
-            newValue = null;
-        }
+            model.value = null;
+        } else {
+            if (props.inputTrim && null !== newValue) {
+                newValue = newValue.replace(/^\s+|\s+$/gm, '');
+            }
 
-        if (props.inputTrim && null !== newValue) {
-            newValue = newValue.replace(/^\s+|\s+$/gm, '');
-        }
+            if (isNumeric.value) {
+                newValue = Number(newValue);
+            }
 
-        if (isNumeric.value) {
-            newValue = Number(newValue);
+            model.value = newValue;
         }
-
-        model.value = newValue;
     }
 });
 
@@ -163,6 +180,10 @@ const $input = ref<HTMLInputElement | HTMLTextAreaElement | null>(null);
 const focus = () => {
     $input.value?.focus();
 };
+
+const clear = () => {
+    filteredModel.value = '';
+}
 
 onMounted(() => {
     if (props.autofocus) {

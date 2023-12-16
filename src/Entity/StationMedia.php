@@ -344,7 +344,7 @@ class StationMedia implements
 
     public function setAmplify(?float $amplify = null): void
     {
-        $this->amplify = Types::stringOrNull($amplify, true);
+        $this->amplify = $this->annotationToString($amplify);
     }
 
     public function getFadeOverlap(): ?float
@@ -354,7 +354,7 @@ class StationMedia implements
 
     public function setFadeOverlap(?float $fadeOverlap = null): void
     {
-        $this->fade_overlap = Types::stringOrNull($fadeOverlap, true);
+        $this->fade_overlap = $this->annotationToString($fadeOverlap);
     }
 
     public function getFadeIn(): ?float
@@ -364,7 +364,7 @@ class StationMedia implements
 
     public function setFadeIn(string|int|float $fadeIn = null): void
     {
-        $this->fade_in = Types::stringOrNull(Time::displayTimeToSeconds($fadeIn), true);
+        $this->fade_in = $this->annotationToString($fadeIn);
     }
 
     public function getFadeOut(): ?float
@@ -374,7 +374,7 @@ class StationMedia implements
 
     public function setFadeOut(string|int|float $fadeOut = null): void
     {
-        $this->fade_out = Types::stringOrNull(Time::displayTimeToSeconds($fadeOut), true);
+        $this->fade_out = $this->annotationToString($fadeOut);
     }
 
     public function getCueIn(): ?float
@@ -384,7 +384,7 @@ class StationMedia implements
 
     public function setCueIn(string|int|float $cueIn = null): void
     {
-        $this->cue_in = Types::stringOrNull(Time::displayTimeToSeconds($cueIn), true);
+        $this->cue_in = $this->annotationToString($cueIn);
     }
 
     public function getCueOut(): ?float
@@ -394,7 +394,7 @@ class StationMedia implements
 
     public function setCueOut(string|int|float $cueOut = null): void
     {
-        $this->cue_out = Types::stringOrNull(Time::displayTimeToSeconds($cueOut), true);
+        $this->cue_out = $this->annotationToString($cueOut);
     }
 
     /**
@@ -471,6 +471,13 @@ class StationMedia implements
     public function getPlaylists(): Collection
     {
         return $this->playlists;
+    }
+
+    private function annotationToString(string|float|int $annotation = null): ?string
+    {
+        return Types::stringOrNull(
+            Time::displayTimeToSeconds($annotation)
+        );
     }
 
     public function fromMetadata(MetadataInterface $metadata): void

@@ -423,14 +423,14 @@ class StorageLocation implements Stringable, IdentifiableEntityInterface
 
     public function isStorageFull(): bool
     {
-        $available = $this->getStorageAvailableBytes();
-        if ($available === null) {
+        $quota = $this->getStorageQuotaBytes();
+        if ($quota === null) {
             return false;
         }
 
         $used = $this->getStorageUsedBytes();
 
-        return ($used->compareTo($available) !== -1);
+        return ($used->compareTo($quota) !== -1);
     }
 
     public function canHoldFile(BigInteger|int|string $size): bool
@@ -439,13 +439,13 @@ class StorageLocation implements Stringable, IdentifiableEntityInterface
             return true;
         }
 
-        $available = $this->getStorageAvailableBytes();
-        if ($available === null) {
+        $quota = $this->getStorageQuotaBytes();
+        if ($quota === null) {
             return true;
         }
 
         $newStorageUsed = $this->getStorageUsedBytes()->plus($size);
-        return ($newStorageUsed->compareTo($available) === -1);
+        return ($newStorageUsed->compareTo($quota) === -1);
     }
 
     public function errorIfFull(): void

@@ -8,8 +8,7 @@ use App\Controller\SingleActionInterface;
 use App\Entity\PodcastEpisode;
 use App\Entity\Repository\PodcastEpisodeRepository;
 use App\Entity\Repository\PodcastRepository;
-use App\Exception\PodcastNotFoundException;
-use App\Exception\StationNotFoundException;
+use App\Exception\NotFoundException;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
@@ -37,13 +36,13 @@ final class PodcastEpisodeAction implements SingleActionInterface
         $station = $request->getStation();
 
         if (!$station->getEnablePublicPage()) {
-            throw new StationNotFoundException();
+            throw NotFoundException::station();
         }
 
         $podcast = $this->podcastRepository->fetchPodcastForStation($station, $podcastId);
 
         if ($podcast === null) {
-            throw new PodcastNotFoundException();
+            throw NotFoundException::podcast();
         }
 
         $episode = $this->episodeRepository->fetchEpisodeForStation($station, $episodeId);

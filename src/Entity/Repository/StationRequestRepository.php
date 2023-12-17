@@ -8,6 +8,7 @@ use App\Entity\Api\StationPlaylistQueue;
 use App\Entity\Station;
 use App\Entity\StationMedia;
 use App\Entity\StationRequest;
+use App\Enums\StationFeatures;
 use App\Exception;
 use App\Radio\AutoDJ;
 use App\Radio\Frontend\Blocklist\BlocklistParser;
@@ -62,27 +63,31 @@ final class StationRequestRepository extends AbstractStationBasedRepository
         string $userAgent
     ): int {
         // Verify that the station supports requests.
-        if (!$station->getEnableRequests()) {
-            throw new Exception(__('This station does not accept requests currently.'));
-        }
+        StationFeatures::Requests->assertSupportedForStation($station);
 
         // Forbid web crawlers from using this feature.
         $dd = $this->deviceDetector->parse($userAgent);
 
         if ($dd->isBot) {
-            throw new Exception(__('Search engine crawlers are not permitted to use this feature.'));
+            throw Exception\CannotCompleteActionException::submitRequest(
+                __('Search engine crawlers are not permitted to use this feature.')
+            );
         }
 
         // Check frontend blocklist and apply it to requests.
         if (!$this->blocklistParser->isAllowed($station, $ip, $userAgent)) {
-            throw new Exception(__('You are not permitted to submit requests.'));
+            throw Exception\CannotCompleteActionException::submitRequest(
+                __('You are not permitted to submit requests.')
+            );
         }
 
         // Verify that Track ID exists with station.
         $mediaItem = $this->mediaRepo->requireByUniqueId($trackId, $station);
 
         if (!$mediaItem->isRequestable()) {
-            throw new Exception(__('The song ID you specified cannot be requested for this station.'));
+            throw Exception\CannotCompleteActionException::submitRequest(
+                __('This track is not requestable.')
+            );
         }
 
         // Check if the song is already enqueued as a request.
@@ -112,7 +117,7 @@ final class StationRequestRepository extends AbstractStationBasedRepository
                 ->getSingleScalarResult();
 
             if ($recentRequests > 0) {
-                throw new Exception(
+                throw Exception\CannotCompleteActionException::submitRequest(
                     __('You have submitted a request too recently! Please wait before submitting another one.')
                 );
             }
@@ -158,7 +163,9 @@ final class StationRequestRepository extends AbstractStationBasedRepository
         }
 
         if ($pendingRequest > 0) {
-            throw new Exception(__('Duplicate request: this song was already requested and will play soon.'));
+            throw Exception\CannotCompleteActionException::submitRequest(
+                __('This song was already requested and will play soon.')
+            );
         }
 
         return true;
@@ -236,7 +243,7 @@ final class StationRequestRepository extends AbstractStationBasedRepository
         $isDuplicate = (null === $this->duplicatePrevention->getDistinctTrack([$eligibleTrack], $recentTracks));
 
         if ($isDuplicate) {
-            throw new Exception(
+            throw Exception\CannotCompleteActionException::submitRequest(
                 __('This song or artist has been played too recently. Wait a while before requesting it again.')
             );
         }

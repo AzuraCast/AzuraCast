@@ -10,7 +10,7 @@ use App\Entity\Repository\PodcastRepository;
 use App\Entity\Station;
 use App\Entity\User;
 use App\Enums\StationPermissions;
-use App\Exception\PodcastNotFoundException;
+use App\Exception\NotFoundException;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use Exception;
@@ -44,7 +44,7 @@ final class RequirePublishedPodcastEpisodeMiddleware extends AbstractMiddleware
         $podcastId = $this->getPodcastIdFromRequest($request);
 
         if ($podcastId === null || !$this->checkPodcastHasPublishedEpisodes($station, $podcastId)) {
-            throw new PodcastNotFoundException();
+            throw NotFoundException::podcast();
         }
 
         $response = $handler->handle($request);

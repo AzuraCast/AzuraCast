@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Exception;
 
 use App\Exception;
-use Psr\Log\LogLevel;
+use Monolog\Level;
 use Throwable;
 
 final class CsrfValidationException extends Exception
@@ -14,7 +14,7 @@ final class CsrfValidationException extends Exception
         string $message = 'CSRF Validation Error',
         int $code = 0,
         Throwable $previous = null,
-        string $loggerLevel = LogLevel::INFO
+        Level $loggerLevel = Level::Info
     ) {
         parent::__construct($message, $code, $previous, $loggerLevel);
     }

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Frontend\PublicPages;
 
 use App\Controller\SingleActionInterface;
-use App\Exception\StationNotFoundException;
+use App\Exception\NotFoundException;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\VueComponent\NowPlayingComponent;
@@ -26,7 +26,7 @@ final class HistoryAction implements SingleActionInterface
         $station = $request->getStation();
 
         if (!$station->getEnablePublicPage()) {
-            throw new StationNotFoundException();
+            throw NotFoundException::station();
         }
 
         $view = $request->getView();

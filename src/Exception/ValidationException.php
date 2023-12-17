@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Exception;
 
 use App\Exception;
-use Psr\Log\LogLevel;
+use Monolog\Level;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Throwable;
 
@@ -17,7 +17,7 @@ final class ValidationException extends Exception
         string $message = 'Validation error.',
         int $code = 0,
         Throwable $previous = null,
-        string $loggerLevel = LogLevel::INFO
+        Level $loggerLevel = Level::Info
     ) {
         parent::__construct($message, $code, $previous, $loggerLevel);
     }

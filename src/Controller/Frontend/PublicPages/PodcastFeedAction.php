@@ -11,8 +11,7 @@ use App\Entity\PodcastEpisode;
 use App\Entity\Repository\PodcastRepository;
 use App\Entity\Repository\StationRepository;
 use App\Entity\Station;
-use App\Exception\PodcastNotFoundException;
-use App\Exception\StationNotFoundException;
+use App\Exception\NotFoundException;
 use App\Flysystem\StationFilesystems;
 use App\Http\Response;
 use App\Http\RouterInterface;
@@ -65,17 +64,17 @@ final class PodcastFeedAction implements SingleActionInterface
         $station = $request->getStation();
 
         if (!$station->getEnablePublicPage()) {
-            throw new StationNotFoundException();
+            throw NotFoundException::station();
         }
 
         $podcast = $this->podcastRepository->fetchPodcastForStation($station, $podcastId);
 
         if ($podcast === null) {
-            throw new PodcastNotFoundException();
+            throw NotFoundException::podcast();
         }
 
         if (!$this->checkHasPublishedEpisodes($podcast)) {
-            throw new PodcastNotFoundException();
+            throw NotFoundException::podcast();
         }
 
         $generatedRss = $this->generateRssFeed($podcast, $station, $request);

@@ -36,7 +36,7 @@ abstract class AbstractFileAction implements SingleActionInterface
             ->getFilesystem();
 
         if (!$fs->fileExists($path)) {
-            throw new NotFoundException(__('Backup not found.'));
+            throw NotFoundException::file();
         }
 
         return [$path, $fs];

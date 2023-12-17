@@ -69,7 +69,7 @@ final class StationMediaRepository extends Repository
     {
         $record = $this->findForStation($id, $station);
         if (null === $record) {
-            throw new NotFoundException();
+            throw NotFoundException::generic();
         }
         return $record;
     }
@@ -136,7 +136,7 @@ final class StationMediaRepository extends Repository
     ): StationMedia {
         $record = $this->findByUniqueId($uniqueId, $source);
         if (null === $record) {
-            throw new NotFoundException();
+            throw NotFoundException::generic();
         }
         return $record;
     }

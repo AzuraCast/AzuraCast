@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Enums;
 
 use App\Entity\Station;
+use App\Exception\StationUnsupportedException;
 
 enum StationFeatures
 {
@@ -17,6 +18,7 @@ enum StationFeatures
     case Streamers;
     case Webhooks;
     case Podcasts;
+    case OnDemand;
     case Requests;
 
     public function supportedForStation(Station $station): bool
@@ -30,7 +32,24 @@ enum StationFeatures
             self::MountPoints => $station->getFrontendType()->supportsMounts(),
             self::HlsStreams => $backendEnabled && $station->getEnableHls(),
             self::Requests => $backendEnabled && $station->getEnableRequests(),
+            self::OnDemand => $station->getEnableOnDemand(),
             self::Webhooks, self::Podcasts, self::RemoteRelays => true,
         };
+    }
+
+    /**
+     * @param Station $station
+     * @return void
+     * @throws StationUnsupportedException
+     */
+    public function assertSupportedForStation(Station $station): void
+    {
+        if (!$this->supportedForStation($station)) {
+            throw match ($this) {
+                self::Requests => StationUnsupportedException::requests(),
+                self::OnDemand => StationUnsupportedException::onDemand(),
+                default => StationUnsupportedException::generic(),
+            };
+        }
     }
 }

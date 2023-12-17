@@ -6,7 +6,6 @@ namespace App\Controller\Api\Admin\Debug;
 
 use App\Container\LoggerAwareTrait;
 use App\Controller\SingleActionInterface;
-use App\Exception\StationUnsupportedException;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Radio\Adapters;
@@ -32,11 +31,7 @@ final class TelnetAction implements SingleActionInterface
         $this->logger->pushHandler($testHandler);
 
         $station = $request->getStation();
-        $backend = $this->adapters->getBackendAdapter($station);
-
-        if (null === $backend) {
-            throw new StationUnsupportedException();
-        }
+        $backend = $this->adapters->requireBackendAdapter($station);
 
         $command = $request->getParam('command');
 

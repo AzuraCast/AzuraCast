@@ -37,8 +37,9 @@ export default function installAxios(vueApp: App) {
         let notifyMessage = $gettext('An error occurred and your request could not be completed.');
         if (error.response) {
             // Request made and server responded
-            notifyMessage = error.response.data.message;
-            console.error(notifyMessage);
+            const responseJson = error.response.data ?? {};
+            notifyMessage = responseJson.message ?? notifyMessage;
+            console.error(responseJson);
         } else if (error.request) {
             // The request was made but no response was received
             console.error(error.request);

@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace App\Controller\Api\Stations\Requests;
 
 use App\Controller\Api\Stations\AbstractSearchableListAction;
-use App\Entity\Api\Error;
 use App\Entity\Api\StationRequest;
 use App\Entity\ApiGenerator\SongApiGenerator;
 use App\Entity\Station;
 use App\Entity\StationMedia;
 use App\Entity\StationPlaylist;
+use App\Exception\StationUnsupportedException;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\OpenApi;
@@ -61,16 +61,12 @@ final class ListAction extends AbstractSearchableListAction
     ): ResponseInterface {
         $station = $request->getStation();
 
-        // Verify that the station supports on-demand streaming.
-        if (!$station->getEnableRequests()) {
-            return $response->withStatus(403)
-                ->withJson(new Error(403, __('This station does not support requests.')));
+        $playlists = $this->getPlaylists($station);
+        if (empty($playlists)) {
+            throw StationUnsupportedException::requests();
         }
 
-        $paginator = $this->getPaginator(
-            $request,
-            $this->getPlaylists($station)
-        );
+        $paginator = $this->getPaginator($request, $playlists);
 
         $router = $request->getRouter();
 

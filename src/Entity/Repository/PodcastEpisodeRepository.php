@@ -10,11 +10,11 @@ use App\Entity\PodcastEpisode;
 use App\Entity\PodcastMedia;
 use App\Entity\Station;
 use App\Entity\StorageLocation;
-use App\Exception\InvalidPodcastMediaFileException;
 use App\Exception\StorageLocationFullException;
 use App\Flysystem\ExtendedFilesystemInterface;
 use App\Media\AlbumArt;
 use App\Media\MetadataManager;
+use http\Exception\InvalidArgumentException;
 use League\Flysystem\UnableToDeleteFile;
 use League\Flysystem\UnableToRetrieveMetadata;
 
@@ -152,8 +152,8 @@ final class PodcastEpisodeRepository extends Repository
         $metadata = $this->metadataManager->read($uploadPath);
 
         if (!in_array($metadata->getMimeType(), ['audio/x-m4a', 'audio/mpeg'])) {
-            throw new InvalidPodcastMediaFileException(
-                'Invalid Podcast Media mime type: ' . $metadata->getMimeType()
+            throw new InvalidArgumentException(
+                sprintf('Invalid Podcast Media mime type: %s', $metadata->getMimeType())
             );
         }
 

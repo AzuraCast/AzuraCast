@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Exception;
 
 use App\Exception;
-use Psr\Log\LogLevel;
+use Monolog\Level;
 use Throwable;
 
 final class StationUnsupportedException extends Exception
@@ -14,8 +14,29 @@ final class StationUnsupportedException extends Exception
         string $message = 'This feature is not currently supported on this station.',
         int $code = 0,
         Throwable $previous = null,
-        string $loggerLevel = LogLevel::INFO
+        Level $loggerLevel = Level::Info
     ) {
         parent::__construct($message, $code, $previous, $loggerLevel);
+    }
+
+    public static function generic(): self
+    {
+        return new self(
+            __('This station does not currently support this functionality.')
+        );
+    }
+
+    public static function onDemand(): self
+    {
+        return new self(
+            __('This station does not currently support on-demand media.')
+        );
+    }
+
+    public static function requests(): self
+    {
+        return new self(
+            __('This station does not currently accept requests.')
+        );
     }
 }

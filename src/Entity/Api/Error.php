@@ -96,21 +96,22 @@ final class Error
 
         $className = (new ReflectionClass($e))->getShortName();
 
-        $errorHeader = $className . ' at ' . $e->getFile() . ' L' . $e->getLine();
-        $message = $errorHeader . ': ' . $e->getMessage();
-
         if ($e instanceof Exception) {
-            $messageFormatted = '<b>' . $errorHeader . ':</b> ' . $e->getFormattedMessage();
+            $messageFormatted = $e->getFormattedMessage();
             $extraData = $e->getExtraData();
         } else {
-            $messageFormatted = '<b>' . $errorHeader . ':</b> ' . $e->getMessage();
+            $messageFormatted = $e->getMessage();
             $extraData = [];
         }
+
+        $extraData['class'] = $className;
+        $extraData['file'] = $e->getFile();
+        $extraData['line'] = $e->getLine();
 
         if ($includeTrace) {
             $extraData['trace'] = $e->getTrace();
         }
 
-        return new self($code, $message, $messageFormatted, $extraData, $className);
+        return new self($code, $e->getMessage(), $messageFormatted, $extraData, $className);
     }
 }

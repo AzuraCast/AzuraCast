@@ -6,7 +6,7 @@ namespace App\Controller\Frontend\PublicPages;
 
 use App\Controller\SingleActionInterface;
 use App\Entity\Repository\PodcastRepository;
-use App\Exception\StationNotFoundException;
+use App\Exception\NotFoundException;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
@@ -26,7 +26,7 @@ final class PodcastsAction implements SingleActionInterface
         $station = $request->getStation();
 
         if (!$station->getEnablePublicPage()) {
-            throw new StationNotFoundException();
+            throw NotFoundException::station();
         }
 
         $publishedPodcasts = $this->podcastRepository->fetchPublishedPodcastsForStation($station);

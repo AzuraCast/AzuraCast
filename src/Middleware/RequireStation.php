@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Middleware;
 
-use App\Exception\StationNotFoundException;
+use App\Exception\NotFoundException;
 use App\Http\ServerRequest;
 use Exception;
 use Psr\Http\Message\ResponseInterface;
@@ -20,7 +20,7 @@ final class RequireStation extends AbstractMiddleware
         try {
             $request->getStation();
         } catch (Exception) {
-            throw new StationNotFoundException();
+            throw NotFoundException::station();
         }
 
         return $handler->handle($request);

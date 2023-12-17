@@ -40,10 +40,12 @@ return static function (RouteCollectorProxy $group) {
 
             // On-Demand Streaming
             $group->get('/ondemand', Controller\Api\Stations\OnDemand\ListAction::class)
-                ->setName('api:stations:ondemand:list');
+                ->setName('api:stations:ondemand:list')
+                ->add(new Middleware\StationSupportsFeature(StationFeatures::OnDemand));
 
             $group->get('/ondemand/download/{media_id}', Controller\Api\Stations\OnDemand\DownloadAction::class)
                 ->setName('api:stations:ondemand:download')
+                ->add(new Middleware\StationSupportsFeature(StationFeatures::OnDemand))
                 ->add(new Middleware\RateLimit('ondemand', 1, 2));
 
             // Podcast Public Pages

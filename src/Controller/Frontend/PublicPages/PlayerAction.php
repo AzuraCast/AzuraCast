@@ -6,7 +6,7 @@ namespace App\Controller\Frontend\PublicPages;
 
 use App\Controller\SingleActionInterface;
 use App\Entity\Repository\CustomFieldRepository;
-use App\Exception\StationNotFoundException;
+use App\Exception\NotFoundException;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\VueComponent\NowPlayingComponent;
@@ -35,7 +35,7 @@ final class PlayerAction implements SingleActionInterface
         $station = $request->getStation();
 
         if (!$station->getEnablePublicPage()) {
-            throw new StationNotFoundException();
+            throw NotFoundException::station();
         }
 
         // Build Vue props.

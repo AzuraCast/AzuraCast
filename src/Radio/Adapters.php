@@ -8,6 +8,7 @@ use App\Container\ContainerAwareTrait;
 use App\Entity\Station;
 use App\Entity\StationRemote;
 use App\Exception\NotFoundException;
+use App\Exception\StationUnsupportedException;
 use App\Radio\Backend\Liquidsoap;
 use App\Radio\Enums\AdapterTypeInterface;
 use App\Radio\Enums\BackendAdapters;
@@ -31,6 +32,20 @@ final class Adapters
     }
 
     /**
+     * @throws StationUnsupportedException
+     */
+    public function requireFrontendAdapter(Station $station): Frontend\AbstractFrontend
+    {
+        $frontend = $this->getFrontendAdapter($station);
+
+        if (null === $frontend) {
+            throw StationUnsupportedException::generic();
+        }
+
+        return $frontend;
+    }
+
+    /**
      * @param bool $checkInstalled
      * @return mixed[]
      */
@@ -49,6 +64,20 @@ final class Adapters
     }
 
     /**
+     * @throws StationUnsupportedException
+     */
+    public function requireBackendAdapter(Station $station): Liquidsoap
+    {
+        $backend = $this->getBackendAdapter($station);
+
+        if (null === $backend) {
+            throw StationUnsupportedException::generic();
+        }
+
+        return $backend;
+    }
+
+    /**
      * @param bool $checkInstalled
      * @return mixed[]
      */
@@ -64,7 +93,9 @@ final class Adapters
             return $this->di->get($className);
         }
 
-        throw new NotFoundException('Adapter not found: ' . $className);
+        throw new NotFoundException(
+            sprintf('Adapter not found: %s', $className)
+        );
     }
 
     /**

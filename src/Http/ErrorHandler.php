@@ -14,10 +14,10 @@ use App\Middleware\InjectSession;
 use App\Session\Flash;
 use App\View;
 use Mezzio\Session\Session;
+use Monolog\Level;
 use Monolog\Logger;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Psr\Log\LogLevel;
 use Slim\App;
 use Slim\Exception\HttpException;
 use Slim\Handlers\ErrorHandler as SlimErrorHandler;
@@ -33,7 +33,7 @@ final class ErrorHandler extends SlimErrorHandler
 
     private bool $showDetailed = false;
 
-    private string $loggerLevel = LogLevel::ERROR;
+    private Level $loggerLevel = Level::Error;
 
     public function __construct(
         private readonly View $view,
@@ -59,7 +59,7 @@ final class ErrorHandler extends SlimErrorHandler
         if ($exception instanceof Exception) {
             $this->loggerLevel = $exception->getLoggerLevel();
         } elseif ($exception instanceof HttpException) {
-            $this->loggerLevel = LogLevel::INFO;
+            $this->loggerLevel = Level::Info;
         }
 
         $this->showDetailed = $this->environment->showDetailedErrors();

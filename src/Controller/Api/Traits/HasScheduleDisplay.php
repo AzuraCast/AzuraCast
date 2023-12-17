@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Controller\Api\Traits;
 
 use App\Entity\StationSchedule;
-use App\Http\ServerRequest;
 use App\Radio\AutoDJ\Scheduler;
 use App\Utilities\DateRange;
 use Carbon\CarbonInterface;
@@ -13,17 +12,6 @@ use Carbon\CarbonInterface;
 trait HasScheduleDisplay
 {
     use AcceptsDateRange;
-
-    protected function getScheduleDateRange(ServerRequest $request): DateRange
-    {
-        $tz = $request->getStation()->getTimezoneObject();
-        $dateRange = $this->getDateRange($request, $tz);
-
-        return new DateRange(
-            $dateRange->getStart(),
-            $dateRange->getEnd()
-        );
-    }
 
     protected function getEvents(
         DateRange $dateRange,

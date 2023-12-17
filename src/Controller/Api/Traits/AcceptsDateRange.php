@@ -6,6 +6,7 @@ namespace App\Controller\Api\Traits;
 
 use App\Http\ServerRequest;
 use App\Utilities\DateRange;
+use App\Utilities\Types;
 use Carbon\CarbonImmutable;
 use DateTimeZone;
 
@@ -26,20 +27,15 @@ trait AcceptsDateRange
         );
 
         $queryParams = $request->getQueryParams();
+        $startRaw = Types::stringOrNull($queryParams[$startParam] ?? null, true);
+        $endRaw = Types::stringOrNull($queryParams[$endParam] ?? null, true) ?? $startRaw;
 
-        if (empty($queryParams[$startParam]) || empty($queryParams[$endParam])) {
+        if (null === $startRaw) {
             return $default;
         }
 
-        $start = CarbonImmutable::parse($queryParams[$startParam], $tz)
-            ->setTimezone($tz);
-
-        $end = CarbonImmutable::parse($queryParams[$endParam], $tz)
-            ->setTimezone($tz);
-
-        if ($start->equalTo($end)) {
-            return $default;
-        }
+        $start = CarbonImmutable::parse($startRaw, $tz)->setTimezone($tz);
+        $end = CarbonImmutable::parse($endRaw, $tz)->setTimezone($tz);
 
         return new DateRange(
             $start->setSecond(0),

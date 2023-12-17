@@ -14,15 +14,21 @@ release channel, you can take advantage of these new features and fixes.
 
 ## Code Quality/Technical Changes
 
-- We are switching our implementation of High-Performance Now Playing updates to a simple script that we directly build
-  and maintain. This will greatly simplify the process of using and updating our high-performance nowplaying data, and
-  will also offer other improvements like sending Now Playing updates immediately upon initial connection.
+- Our High-Performance Now Playing updates through Centrifugo now send the current Now Playing data immediately upon
+  connection, meaning you can rely on it exclusively for Now Playing data instead of making another API call to load the
+  initial data. See
+  our [updated code samples](https://www.azuracast.com/docs/developers/now-playing-data/#high-performance-updates) for
+  more information.
 
 - MariaDB has been updated to 11.2. Databases will automatically be upgraded on the first boot after updating.
 
 - If you upload media to a folder and that folder is set to auto-assign to a playlist, the media will *instantly* be a
   part of that playlist, not subject to a sync task delay; this should greatly improve the user experience when using
   this feature.
+
+- We've identified several places in our Docker image where caches led to excessive image size. We've reduced our
+  uncompressed Docker image size from 3GB to 1.4GB, and the compressed images from 700MB to under 500MB. This should
+  mean faster update pulls and less disk space used for installation operators.
 
 ## Bug Fixes
 

@@ -28,18 +28,25 @@ trait AcceptsDateRange
 
         $queryParams = $request->getQueryParams();
         $startRaw = Types::stringOrNull($queryParams[$startParam] ?? null, true);
-        $endRaw = Types::stringOrNull($queryParams[$endParam] ?? null, true) ?? $startRaw;
+        $endRaw = Types::stringOrNull($queryParams[$endParam] ?? null, true);
 
-        if (null === $startRaw) {
+        if (null === $startRaw && null === $endRaw) {
             return $default;
         }
 
-        $start = CarbonImmutable::parse($startRaw, $tz)->setTimezone($tz);
-        $end = CarbonImmutable::parse($endRaw, $tz)->setTimezone($tz);
+        $start = (null !== $startRaw)
+            ? CarbonImmutable::parse($startRaw, $tz)->setTimezone($tz)
+            : CarbonImmutable::now($tz)->startOf('day');
 
-        return new DateRange(
-            $start->setSecond(0),
-            $end->setSecond(59)
-        );
+        $end = (null !== $endRaw)
+            ? CarbonImmutable::parse($endRaw, $tz)->setTimezone($tz)
+            : CarbonImmutable::now($tz)->endOf('day');
+
+        $start = $start->setSecond(0);
+        $end = $end->setSecond(59);
+
+        return ($start < $end)
+            ? new DateRange($start, $end)
+            : new DateRange($end, $start);
     }
 }

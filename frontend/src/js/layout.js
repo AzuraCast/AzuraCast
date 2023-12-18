@@ -37,6 +37,16 @@ ready(() => {
         const toast = new bootstrap.Toast(el);
         toast.show();
     });
+
+    // If in a frame, notify the parent frame of the frame dimensions.
+    if (window.self !== window.top) {
+        const message = {
+            height: document.body.scrollHeight,
+            width: document.body.scrollWidth
+        };
+
+        window.top.postMessage(message, "*");
+    }
 });
 
 export default bootstrap;

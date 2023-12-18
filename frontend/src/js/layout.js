@@ -40,12 +40,17 @@ ready(() => {
 
     // If in a frame, notify the parent frame of the frame dimensions.
     if (window.self !== window.top) {
-        const message = {
+        window.top.postMessage({
             height: document.body.scrollHeight,
             width: document.body.scrollWidth
-        };
+        }, "*");
 
-        window.top.postMessage(message, "*");
+        document.addEventListener("vue-ready", () => {
+            window.top.postMessage({
+                height: document.body.scrollHeight,
+                width: document.body.scrollWidth
+            }, "*");
+        });
     }
 });
 

@@ -37,21 +37,6 @@ ready(() => {
         const toast = new bootstrap.Toast(el);
         toast.show();
     });
-
-    // If in a frame, notify the parent frame of the frame dimensions.
-    if (window.self !== window.top) {
-        window.top.postMessage({
-            height: document.body.scrollHeight,
-            width: document.body.scrollWidth
-        }, "*");
-
-        document.addEventListener("vue-ready", () => {
-            window.top.postMessage({
-                height: document.body.scrollHeight,
-                width: document.body.scrollWidth
-            }, "*");
-        });
-    }
 });
 
 export default bootstrap;

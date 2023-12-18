@@ -35,15 +35,20 @@ trait AcceptsDateRange
         }
 
         $start = (null !== $startRaw)
-            ? CarbonImmutable::parse($startRaw, $tz)->setTimezone($tz)
+            ? CarbonImmutable::parse($startRaw, $tz)->setTimezone($tz)->setSecond(0)
             : CarbonImmutable::now($tz)->startOf('day');
 
         $end = (null !== $endRaw)
-            ? CarbonImmutable::parse($endRaw, $tz)->setTimezone($tz)
+            ? CarbonImmutable::parse($endRaw, $tz)->setTimezone($tz)->setSecond(59)
             : CarbonImmutable::now($tz)->endOf('day');
 
-        $start = $start->setSecond(0);
-        $end = $end->setSecond(59);
+        // If no time is passed for the end date, use the end of the day instead of midnight.
+        if (null !== $endRaw) {
+            $endDateParts = date_parse($endRaw);
+            if ($endDateParts['hour'] === false) {
+                $end = $end->endOf('day');
+            }
+        }
 
         return ($start < $end)
             ? new DateRange($start, $end)

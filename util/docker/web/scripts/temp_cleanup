@@ -7,5 +7,6 @@ exec tmpreaper 12h --verbose \
     --protect 'active_server' \
     /tmp/app_nginx_client \
     /tmp/app_fastcgi_temp \
+    /tmp/sftpgo_temp \
     /var/azuracast/stations/*/temp \
     /var/azuracast/www_tmp

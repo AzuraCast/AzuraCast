@@ -10,17 +10,11 @@ $this->layout('minimal', [
 <div class="public-page">
     <div class="card p-3">
         <div class="card-body">
-            <h2 class="display-1"><?= $this->e($exception->getCode()) ?></h2>
+            <h2 class="display-4">Error</h2>
             <h4><?= $this->e($exception->getMessage()) ?></h4>
             <p class="text-muted card-text">
                 <?= $this->e($exception->getDescription()) ?>
             </p>
-
-            <div class="block-buttons">
-                <a role="button" title="<?= __('Dashboard') ?>" class="btn btn-login btn-primary" href="/">
-                    Home
-                </a>
-            </div>
         </div>
     </div>
 </div>

@@ -76,16 +76,15 @@
 
 <script setup lang="ts">
 import DataTable, {DataTableField} from '~/components/Common/DataTable.vue';
-import {forEach} from 'lodash';
 import Icon from '~/components/Common/Icon.vue';
-import {computed, h, ref} from "vue";
+import {computed, ref} from "vue";
 import {useTranslate} from "~/vendor/gettext";
-import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
 import Modal from "~/components/Common/Modal.vue";
 import {IconChevronLeft, IconFolder} from "~/components/Common/icons";
 import {DataTableTemplateRef} from "~/functions/useHasDatatable.ts";
 import {ModalTemplateRef, useHasModal} from "~/functions/useHasModal.ts";
+import useHandleBatchResponse from "~/components/Stations/Media/useHandleBatchResponse.ts";
 
 const props = defineProps({
     selectedItems: {
@@ -132,8 +131,9 @@ const onHidden = () => {
     destinationDirectory.value = '';
 }
 
-const {notifySuccess} = useNotify();
 const {axios} = useAxios();
+
+const {handleBatchResponse} = useHandleBatchResponse();
 
 const doMove = () => {
     (props.selectedItems.all.length) && axios.put(props.batchUrl, {
@@ -142,16 +142,12 @@ const doMove = () => {
             'directory': destinationDirectory.value,
             'files': props.selectedItems.files,
             'dirs': props.selectedItems.directories
-    }).then(() => {
-        const notifyMessage = $gettext('Files moved:');
-        const itemNameNodes = [];
-        forEach(props.selectedItems.all, (item) => {
-            itemNameNodes.push(h('div', {}, item.path_short));
-        });
-
-        notifySuccess(itemNameNodes, {
-            title: notifyMessage
-        });
+    }).then(({data}) => {
+        handleBatchResponse(
+            data,
+            $gettext('Files moved:'),
+            $gettext('Error moving files:')
+        );
     }).finally(() => {
         hide();
         emit('relist');

@@ -31,6 +31,8 @@ use App\Utilities\File;
 use Exception;
 use InvalidArgumentException;
 use League\Flysystem\StorageAttributes;
+use League\Flysystem\UnableToDeleteDirectory;
+use League\Flysystem\UnableToDeleteFile;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ResponseInterface;
 use RuntimeException;
@@ -88,25 +90,33 @@ final class BatchAction implements SingleActionInterface
     ): BatchResult {
         $result = $this->parseRequest($request, $fs, true);
 
+        $successfulFiles = [];
         foreach ($result->files as $file) {
             try {
                 $fs->delete($file);
+                $successfulFiles[] = $file;
+            } catch (UnableToDeleteFile $e) {
+                $result->errors[] = sprintf('%s: %s', $file, $e->reason());
             } catch (Throwable $e) {
-                $result->errors[] = $file . ': ' . $e->getMessage();
+                $result->errors[] = sprintf('%s: %s', $file, $e->getMessage());
             }
         }
 
+        $successfulDirs = [];
         foreach ($result->directories as $dir) {
             try {
                 $fs->deleteDirectory($dir);
+                $successfulDirs[] = $dir;
+            } catch (UnableToDeleteDirectory $e) {
+                $result->errors[] = sprintf('%s: %s', $dir, $e->reason());
             } catch (Throwable $e) {
-                $result->errors[] = $dir . ': ' . $e->getMessage();
+                $result->errors[] = sprintf('%s: %s', $dir, $e->getMessage());
             }
         }
 
         $affectedPlaylistIds = $this->batchUtilities->handleDelete(
-            $result->files,
-            $result->directories,
+            $successfulFiles,
+            $successfulDirs,
             $storageLocation,
             $fs
         );
@@ -221,17 +231,24 @@ final class BatchAction implements SingleActionInterface
 
                 try {
                     $fs->move($oldPath, $newPath);
+
                     $record->setPath($newPath);
                     $this->em->persist($record);
                 } catch (Throwable $e) {
-                    $result->errors[] = $oldPath . ': ' . $e->getMessage();
+                    $result->errors[] = sprintf('%s: %s', $oldPath, $e->getMessage());
                 }
             }
         }
 
         foreach ($result->directories as $dirPath) {
             $newDirPath = File::renameDirectoryInPath($dirPath, $from, $to);
-            $fs->move($dirPath, $newDirPath);
+
+            try {
+                $fs->move($dirPath, $newDirPath);
+            } catch (Throwable $e) {
+                $result->errors[] = sprintf('%s: %s', $dirPath, $e->getMessage());
+                continue;
+            }
 
             $toMove = [
                 $this->batchUtilities->iterateMediaInDirectory($storageLocation, $dirPath),
@@ -288,7 +305,7 @@ final class BatchAction implements SingleActionInterface
                     $newQueue->setTimestampCued($cuedTimestamp);
                     $this->em->persist($newQueue);
                 } catch (Throwable $e) {
-                    $result->errors[] = $media->getPath() . ': ' . $e->getMessage();
+                    $result->errors[] = sprintf('%s: %s', $media->getPath(), $e->getMessage());
                 }
 
                 $cuedTimestamp -= 10;
@@ -349,7 +366,7 @@ final class BatchAction implements SingleActionInterface
                         $event->buildAnnotations()
                     );
                 } catch (Throwable $e) {
-                    $result->errors[] = $media->getPath() . ': ' . $e->getMessage();
+                    $result->errors[] = sprintf('%s: %s', $media->getPath(), $e->getMessage());
                 }
 
                 $cuedTimestamp += 10;

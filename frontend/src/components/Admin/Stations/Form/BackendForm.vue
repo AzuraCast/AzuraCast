@@ -114,9 +114,10 @@
                             class="col-md-6"
                             :field="v$.backend_config.master_me_loudness_target"
                             input-type="number"
-                            :input-attrs="{ min: '-50', max: '-2', step: '1' }"
+                            :input-attrs="{ min: '-50', max: '0', step: '1' }"
                             :label="$gettext('Master_me Loudness Target (LUFS)')"
                             :description="$gettext('The average target loudness (measured in LUFS) for the broadcasted stream. Values between -14 and -18 LUFS are common for Internet radio stations.')"
+                            clearable
                         />
                     </div>
                 </template>

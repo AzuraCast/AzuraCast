@@ -26,7 +26,6 @@ final class NowPlayingComponent implements VueComponentInterface
             'showAlbumArt' => !$customization->hideAlbumArt(),
             'autoplay' => !empty($request->getQueryParam('autoplay')),
             'showHls' => $backendConfig->getHlsEnableOnPublicPlayer(),
-            'hlsIsDefault' => $backendConfig->getHlsIsDefault(),
         ];
     }
 

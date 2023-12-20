@@ -323,7 +323,7 @@ const setPlaylists = () => {
             'dirs': props.selectedItems.directories
         }).then(({data}) => {
             if (data.success) {
-                emit('add-playlist', resp.data.record);
+                emit('add-playlist', data.record);
 
                 checkedPlaylists.value = [];
                 newPlaylist.value = '';

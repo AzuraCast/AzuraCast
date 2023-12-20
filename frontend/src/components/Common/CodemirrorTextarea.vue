@@ -16,16 +16,10 @@ import {javascript} from "@codemirror/lang-javascript";
 import {liquidsoap} from "codemirror-lang-liquidsoap";
 import useTheme from "~/functions/theme";
 
-const props = defineProps({
-    modelValue: {
-        type: String,
-        required: true
-    },
-    mode: {
-        type: String,
-        required: true
-    }
-});
+const props = defineProps<{
+    modelValue: string | null,
+    mode: string
+}>();
 
 const emit = defineEmits(['update:modelValue']);
 

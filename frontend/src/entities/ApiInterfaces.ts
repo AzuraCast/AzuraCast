@@ -446,6 +446,11 @@ export interface ApiNowPlayingStation {
    */
   hls_enabled?: boolean;
   /**
+   * If the station has HLS default.
+   * @example true
+   */
+  hls_is_default?: boolean
+  /**
    * The full URL to listen to the HLS stream for the station.
    * @example "https://example.com/hls/azuratest_radio/live.m3u8"
    */

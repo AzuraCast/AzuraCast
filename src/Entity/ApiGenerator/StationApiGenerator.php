@@ -76,6 +76,8 @@ final class StationApiGenerator
         $response->remotes = $remotes;
 
         $response->hls_enabled = $station->getBackendType()->isEnabled() && $station->getEnableHls();
+        $response->hls_is_default = $response->hls_enabled && $station->getBackendConfig()->getHlsIsDefault();
+
         $response->hls_url = (null !== $backend && $response->hls_enabled)
             ? $backend->getHlsUrl($station, $baseUri)
             : null;

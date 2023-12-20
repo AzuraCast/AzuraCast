@@ -6,10 +6,6 @@ export default {
         type: Boolean,
         default: true
     },
-    hlsIsDefault: {
-        type: Boolean,
-        default: true
-    },
     showAlbumArt: {
         type: Boolean,
         default: true

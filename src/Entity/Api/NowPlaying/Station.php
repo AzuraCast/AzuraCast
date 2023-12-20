@@ -102,6 +102,12 @@ final class Station implements ResolvableUrlInterface
     public bool $hls_enabled = false;
 
     #[OA\Property(
+        description: 'If the HLS stream should be the default one for the station.',
+        example: true
+    )]
+    public bool $hls_is_default = false;
+
+    #[OA\Property(
         description: 'The full URL to listen to the HLS stream for the station.',
         example: 'https://example.com/hls/azuratest_radio/live.m3u8',
         nullable: true

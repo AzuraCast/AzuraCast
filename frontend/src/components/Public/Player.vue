@@ -178,8 +178,12 @@ const currentStream = shallowRef<CurrentStreamDescriptor>({
     hls: false,
 });
 
-const enable_hls = computed(() => {
+const enableHls = computed(() => {
     return props.showHls && np.value?.station?.hls_enabled;
+});
+
+const hlsIsDefault = computed(() => {
+    return enableHls.value && np.value?.station?.hls_is_default;
 });
 
 const {$gettext} = useTranslate();
@@ -187,7 +191,7 @@ const {$gettext} = useTranslate();
 const streams = computed<CurrentStreamDescriptor[]>(() => {
     const allStreams = [];
 
-    if (enable_hls.value) {
+    if (enableHls.value) {
         allStreams.push({
             name: $gettext('HLS'),
             url: np.value?.station?.hls_url,
@@ -260,7 +264,7 @@ const onNowPlayingUpdated = (np_new) => {
     let $currentStream = currentStream.value;
 
     if ($currentStream.url === '' && $streams.length > 0) {
-        if (props.hlsIsDefault && enable_hls.value) {
+        if (hlsIsDefault.value) {
             currentStream.value = $streams[0];
         } else {
             $currentStream = null;

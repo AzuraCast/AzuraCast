@@ -3506,6 +3506,7 @@ components:
                 type: string
                 example: 'AzuraTest Radio'
               nullable: true
+          type: object
     Api_DetailedSongHistory:
       type: object
       allOf:
@@ -3529,6 +3530,7 @@ components:
               description: 'Whether the entry is visible on public playlists.'
               type: boolean
               example: true
+          type: object
     Api_Error:
       properties:
         code:
@@ -3612,6 +3614,7 @@ components:
               items:
                 type: string
                 example: 'http://localhost/api/record/1'
+          type: object
     Api_NowPlaying_CurrentSong:
       type: object
       allOf:
@@ -3627,6 +3630,7 @@ components:
               description: 'Remaining time in the song, in seconds.'
               type: integer
               example: 155
+          type: object
     Api_NowPlaying_Listeners:
       properties:
         total:
@@ -3785,6 +3789,10 @@ components:
           description: 'If the station has HLS streaming enabled.'
           type: boolean
           example: true
+        hls_is_default:
+          description: 'If the HLS stream should be the default one for the station.'
+          type: boolean
+          example: true
         hls_url:
           description: 'The full URL to listen to the HLS stream for the station.'
           example: 'https://example.com/hls/azuratest_radio/live.m3u8'
@@ -3809,6 +3817,7 @@ components:
               description: 'If the mount is the default mount for the parent station'
               type: boolean
               example: true
+          type: object
     Api_NowPlaying_StationQueue:
       properties:
         cued_at:
@@ -3906,6 +3915,7 @@ components:
               type: array
               items:
                 type: string
+          type: object
     Api_PodcastEpisode:
       type: object
       allOf:
@@ -3938,6 +3948,7 @@ components:
               nullable: true
             art_updated_at:
               type: integer
+          type: object
     Api_PodcastMedia:
       properties:
         id:
@@ -4063,6 +4074,7 @@ components:
               type: array
               items: {  }
               nullable: true
+          type: object
     Api_StationRemote:
       type: object
       allOf:
@@ -4139,6 +4151,7 @@ components:
               description: 'The most recent number of total (non-unique) listeners.'
               type: integer
               example: 12
+          type: object
     Api_StationRequest:
       properties:
         request_id:
@@ -4290,6 +4303,7 @@ components:
               description: 'An ID3v2 field to automatically assign to this value, if it exists in the media file.'
               type: string
               nullable: true
+          type: object
     Relay:
       type: object
       allOf:
@@ -4313,6 +4327,7 @@ components:
             updated_at:
               type: integer
               example: 1609480800
+          type: object
     Role:
       type: object
       allOf:
@@ -4327,6 +4342,7 @@ components:
               description: RolePermission>
               type: array
               items: {  }
+          type: object
     Settings:
       properties:
         app_unique_identifier:
@@ -4573,6 +4589,7 @@ components:
             publicKeys:
               type: string
               nullable: true
+          type: object
     Station:
       type: object
       allOf:
@@ -4675,6 +4692,7 @@ components:
               description: 'An array containing station-specific branding configuration'
               type: array
               items: {  }
+          type: object
     StationHlsStream:
       type: object
       allOf:
@@ -4692,6 +4710,7 @@ components:
               type: integer
               example: 128
               nullable: true
+          type: object
     StationMedia:
       type: object
       allOf:
@@ -4728,8 +4747,7 @@ components:
               nullable: true
             length:
               description: 'The song duration in seconds.'
-              type: number
-              format: float
+              type: string
               example: 240
               nullable: true
             length_text:
@@ -4748,38 +4766,32 @@ components:
               nullable: true
             amplify:
               description: 'The amount of amplification (in dB) to be applied to the radio source (liq_amplify)'
-              type: number
-              format: float
+              type: string
               example: -14
               nullable: true
             fade_overlap:
               description: 'The length of time (in seconds) before the next song starts in the fade (liq_start_next)'
-              type: number
-              format: float
+              type: string
               example: 2
               nullable: true
             fade_in:
               description: 'The length of time (in seconds) to fade in the next track (liq_fade_in)'
-              type: number
-              format: float
+              type: string
               example: 3
               nullable: true
             fade_out:
               description: 'The length of time (in seconds) to fade out the previous track (liq_fade_out)'
-              type: number
-              format: float
+              type: string
               example: 3
               nullable: true
             cue_in:
               description: 'The length of time (in seconds) from the start of the track to start playing (liq_cue_in)'
-              type: number
-              format: float
+              type: string
               example: 30
               nullable: true
             cue_out:
               description: 'The length of time (in seconds) from the CUE-IN of the track to stop playing (liq_cue_out)'
-              type: number
-              format: float
+              type: string
               example: 30
               nullable: true
             art_updated_at:
@@ -4790,6 +4802,7 @@ components:
               description: StationPlaylistMedia>
               type: array
               items: {  }
+          type: object
     StationMount:
       type: object
       allOf:
@@ -4853,6 +4866,7 @@ components:
               description: 'The most recent number of total (non-unique) listeners.'
               type: integer
               example: 12
+          type: object
     StationPlaylist:
       type: object
       allOf:
@@ -4917,6 +4931,7 @@ components:
               description: StationSchedule>
               type: array
               items: {  }
+          type: object
     StationSchedule:
       type: object
       allOf:
@@ -4938,6 +4953,7 @@ components:
             loop_once:
               type: boolean
               example: false
+          type: object
     StationStreamer:
       description: 'Station streamers (DJ accounts) allowed to broadcast to a station.'
       type: object
@@ -4974,6 +4990,7 @@ components:
               description: StationSchedule>
               type: array
               items: {  }
+          type: object
     StationStreamerBroadcast:
       description: 'Each individual broadcast associated with a streamer.'
       type: object
@@ -5010,6 +5027,7 @@ components:
               description: 'Internal details used by the webhook to preserve state.'
               type: array
               items: {  }
+          type: object
     HasAutoIncrementId:
       properties:
         id:
@@ -5076,6 +5094,7 @@ components:
               description: Role>
               type: array
               items: {  }
+          type: object
   responses:
     Success:
       description: Success

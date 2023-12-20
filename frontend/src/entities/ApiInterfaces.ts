@@ -446,6 +446,11 @@ export interface ApiNowPlayingStation {
    */
   hls_enabled?: boolean;
   /**
+   * If the HLS stream should be the default one for the station.
+   * @example true
+   */
+  hls_is_default?: boolean;
+  /**
    * The full URL to listen to the HLS stream for the station.
    * @example "https://example.com/hls/azuratest_radio/live.m3u8"
    */
@@ -1264,10 +1269,9 @@ export type StationMedia = HasAutoIncrementId &
     isrc?: string | null;
     /**
      * The song duration in seconds.
-     * @format float
      * @example 240
      */
-    length?: number | null;
+    length?: string | null;
     /**
      * The formatted song duration (in mm:ss format)
      * @example "4:00"
@@ -1285,40 +1289,34 @@ export type StationMedia = HasAutoIncrementId &
     mtime?: number | null;
     /**
      * The amount of amplification (in dB) to be applied to the radio source (liq_amplify)
-     * @format float
      * @example -14
      */
-    amplify?: number | null;
+    amplify?: string | null;
     /**
      * The length of time (in seconds) before the next song starts in the fade (liq_start_next)
-     * @format float
      * @example 2
      */
-    fade_overlap?: number | null;
+    fade_overlap?: string | null;
     /**
      * The length of time (in seconds) to fade in the next track (liq_fade_in)
-     * @format float
      * @example 3
      */
-    fade_in?: number | null;
+    fade_in?: string | null;
     /**
      * The length of time (in seconds) to fade out the previous track (liq_fade_out)
-     * @format float
      * @example 3
      */
-    fade_out?: number | null;
+    fade_out?: string | null;
     /**
      * The length of time (in seconds) from the start of the track to start playing (liq_cue_in)
-     * @format float
      * @example 30
      */
-    cue_in?: number | null;
+    cue_in?: string | null;
     /**
      * The length of time (in seconds) from the CUE-IN of the track to stop playing (liq_cue_out)
-     * @format float
      * @example 30
      */
-    cue_out?: number | null;
+    cue_out?: string | null;
     /**
      * The latest time (UNIX timestamp) when album art was updated.
      * @example 1609480800

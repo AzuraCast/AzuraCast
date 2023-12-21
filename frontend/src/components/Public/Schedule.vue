@@ -1,18 +1,11 @@
 <template>
     <section
         id="content"
+        class="full-height-wrapper"
         role="main"
-        class="d-flex align-items-stretch"
-        style="height: 100vh;"
     >
-        <div
-            class="container pt-5 pb-5 h-100"
-            style="flex: 1;"
-        >
-            <div
-                class="card"
-                style="height: 100%;"
-            >
+        <div class="container">
+            <div class="card">
                 <div class="card-header text-bg-primary">
                     <div class="d-flex align-items-center">
                         <div class="flex-shrink">
@@ -60,14 +53,7 @@ const props = defineProps({
 });
 </script>
 
-<style lang="scss">
-.schedule.embed {
-    .container {
-        max-width: 100%;
-        padding: 0 !important;
-    }
-}
-
+<style lang="scss" scoped>
 #station-schedule-calendar {
     overflow-y: auto;
 }

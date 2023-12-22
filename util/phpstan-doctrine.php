@@ -10,9 +10,10 @@ require dirname(__DIR__) . '/vendor/autoload.php';
 
 $tempDir = sys_get_temp_dir();
 
-$ci = App\AppFactory::buildContainer([
+$app = App\AppFactory::createApp([
     App\Environment::TEMP_DIR => $tempDir,
     App\Environment::UPLOADS_DIR => $tempDir,
 ]);
+$di = $app->getContainer();
 
-return $ci->get(Doctrine\ORM\EntityManagerInterface::class);
+return $di->get(Doctrine\ORM\EntityManagerInterface::class);

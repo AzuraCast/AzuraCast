@@ -35,6 +35,9 @@ final class AppFactory
         $diBuilder = self::createContainerBuilder($environment);
         $di = self::buildContainer($diBuilder);
 
+        // Some CLI commands require the App to be injected for routing.
+        self::buildAppFromContainer($di);
+
         SupportedLocales::createForCli($environment);
 
         return $di->get(Application::class);

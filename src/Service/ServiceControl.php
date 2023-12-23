@@ -80,7 +80,7 @@ final class ServiceControl
             'cron' => __('Runs routine synchronized tasks'),
             'mariadb' => __('Database'),
             'nginx' => __('Web server'),
-            'php-fpm' => __('PHP FastCGI Process Manager'),
+            'roadrunner' => __('Roadrunner PHP Server'),
             'php-nowplaying' => __('Now Playing manager service'),
             'php-worker' => __('PHP queue processing worker'),
             'redis' => __('Cache'),

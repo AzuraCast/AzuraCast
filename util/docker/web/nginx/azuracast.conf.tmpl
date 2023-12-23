@@ -1,9 +1,5 @@
-upstream php-fpm-internal {
-    server unix:/var/run/php-fpm-internal.sock;
-}
-
-upstream php-fpm-www {
-    server unix:/var/run/php-fpm-www.sock;
+upstream roadrunner {
+    server 127.0.0.1:6090;
 }
 
 upstream centrifugo {
@@ -15,40 +11,6 @@ upstream vite {
     server 127.0.0.1:5173;
 }
 {{end}}
-
-# Internal connection handler for PubSub and internal API calls
-server {
-    listen 127.0.0.1:6010;
-
-    root /var/azuracast/www/web;
-    index index.php;
-
-    server_name localhost;
-
-    # Default clean URL routing
-    location / {
-        try_files $uri @clean_url;
-    }
-
-    location @clean_url {
-        rewrite ^(.*)$ /index.php last;
-    }
-
-    location ~ ^/index\.php(/|$) {
-        fastcgi_split_path_info ^(.+\.php)(/.+)$;
-
-        fastcgi_pass php-fpm-internal;
-        fastcgi_index index.php;
-        fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
-        fastcgi_param DOCUMENT_ROOT $realpath_root;
-        include fastcgi_params;
-
-        fastcgi_read_timeout 600;
-        fastcgi_buffering off;
-
-        internal;
-    }
-}
 
 server {
     listen {{ default .Env.AZURACAST_HTTP_PORT "80" }};
@@ -134,18 +96,10 @@ server {
     {{end}}
 
     location ~ ^/index\.php(/|$) {
-        fastcgi_split_path_info ^(.+\.php)(/.+)$;
-
-        # NOTE: You should have "cgi.fix_pathinfo = 0;" in php.ini
-        fastcgi_pass php-fpm-www;
-        fastcgi_index index.php;
-        fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
-        fastcgi_param DOCUMENT_ROOT $realpath_root;
         include fastcgi_params;
-
+        fastcgi_pass roadrunner;
         fastcgi_read_timeout {{ default .Env.NGINX_TIMEOUT "1800" }};
         fastcgi_buffering off;
-
         internal;
     }
 

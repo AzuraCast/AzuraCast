@@ -20,4 +20,3 @@ apt-get remove --purge -y php${PHP_VERSION}-dev zlib1g-dev build-essential
 
 echo "extension=spx.so" > /etc/php/${PHP_VERSION}/mods-available/30-spx.ini
 ln -s /etc/php/${PHP_VERSION}/mods-available/30-spx.ini /etc/php/${PHP_VERSION}/cli/conf.d/30-spx.ini
-ln -s /etc/php/${PHP_VERSION}/mods-available/30-spx.ini /etc/php/${PHP_VERSION}/fpm/conf.d/30-spx.ini

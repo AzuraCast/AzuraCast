@@ -1,0 +1,30 @@
+version: '3'
+
+rpc:
+  listen: tcp://127.0.0.1:6401
+
+server:
+  relay: pipes
+  command: "php util/rr_http_worker.php"
+
+logs:
+  mode: {{if eq .Env.APPLICATION_ENV "development"}}development{{else}}production{{end}}
+
+http:
+  address: 0.0.0.0:6010
+  fcgi:
+    address: tcp://127.0.0.1:6090
+  pool:
+    debug: {{if eq .Env.APPLICATION_ENV "development"}}true{{else}}false{{end}}
+    max_jobs: 50
+
+centrifuge:
+  proxy_address: tcp://127.0.0.1:6300
+  grpc_api_address: tcp://127.0.0.1:6301
+  use_compressor: true
+  name: "azuracast"
+  pool:
+    debug: {{if eq .Env.APPLICATION_ENV "development"}}true{{else}}false{{end}}
+    command: "php util/rr_centrifugo_worker.php"
+    num_workers: 1
+    max_jobs: 250

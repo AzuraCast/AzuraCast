@@ -28,6 +28,11 @@ FROM ghcr.io/azuracast/azuracast.com:builtin AS docs
 FROM ghcr.io/azuracast/icecast-kh-ac:latest AS icecast
 
 #
+# Roadrunner build step
+#
+FROM ghcr.io/roadrunner-server/roadrunner:2023.3.8 AS roadrunner
+
+#
 # Final build image
 #
 FROM ubuntu:jammy AS pre-final
@@ -48,6 +53,9 @@ COPY --from=mariadb /etc/apt/trusted.gpg.d/mariadb.gpg /etc/apt/trusted.gpg.d/ma
 # Add Icecast
 COPY --from=icecast /usr/local/bin/icecast /usr/local/bin/icecast
 COPY --from=icecast /usr/local/share/icecast /usr/local/share/icecast
+
+# Add Roadrunner
+COPY --from=roadrunner /usr/bin/rr /usr/local/bin/rr
 
 # Run base build process
 COPY ./util/docker/common /bd_build/

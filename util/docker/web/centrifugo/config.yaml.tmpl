@@ -8,8 +8,10 @@ websocket_disable: true
 uni_websocket: true
 uni_sse: true
 uni_http_stream: true
-proxy_connect_endpoint: http://localhost:6010/api/internal/centrifugo
+proxy_connect_endpoint: grpc://127.0.0.1:6300
 proxy_connect_timeout: 10s
+grpc_api: true
+grpc_api_port: 6301
 allowed_origins:
   - "*"
 

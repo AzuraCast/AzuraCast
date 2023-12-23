@@ -1,0 +1,20 @@
+#!/bin/bash
+
+if [ $(whoami) != 'azuracast' ]; then
+    echo 'This script must be run as the "azuracast" user. Rerunning...'
+    exec gosu azuracast run_roadrunner "$@"
+fi
+
+dockerize -template "/var/azuracast/rr.yaml.tmpl:/var/azuracast/rr.yaml"
+
+# Wait for services to spin up.
+php /var/azuracast/www/bin/uptime_wait || exit 1
+
+# Initialize before running FPM
+azuracast_cli azuracast:setup --init || exit 1
+
+# Run initial Acme check
+azuracast_cli azuracast:acme:get-certificate || true
+
+# Run PHP-FPM
+exec rr serve -c /var/azuracast/rr.yaml -w /var/azuracast/www

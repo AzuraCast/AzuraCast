@@ -30,11 +30,16 @@ final class Centrifugo
             'method' => 'publish',
             'params' => [
                 'channel' => self::GLOBAL_TIME_CHANNEL,
-                'data' => [
-                    'time' => time(),
-                ],
+                'data' => $this->buildTimeMessage(),
             ],
         ]);
+    }
+
+    public function buildTimeMessage(): array
+    {
+        return [
+            'time' => time(),
+        ];
     }
 
     public function publishToStation(Station $station, mixed $message, array $triggers): void
@@ -43,12 +48,17 @@ final class Centrifugo
             'method' => 'publish',
             'params' => [
                 'channel' => $this->getChannelName($station),
-                'data' => [
-                    'np' => $message,
-                    'triggers' => $triggers,
-                ],
+                'data' => $this->buildStationMessage($message, $triggers),
             ],
         ]);
+    }
+
+    public function buildStationMessage(mixed $message, array $triggers = []): array
+    {
+        return [
+            'np' => $message,
+            'triggers' => $triggers,
+        ];
     }
 
     private function send(array $body): void

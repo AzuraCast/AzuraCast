@@ -116,6 +116,19 @@ final class ErrorHandler extends SlimErrorHandler
             $locale->register($this->environment);
         }
 
+        if ($this->exception instanceof Exception\DumpException) {
+            $response = $this->responseFactory->createResponse($this->statusCode);
+            $responseBody = $response->getBody();
+            foreach ($this->exception->getDumps() as $dump) {
+                $responseBody->write($dump);
+            }
+            return $response;
+        }
+
+        if (!($this->request instanceof ServerRequest)) {
+            return parent::respond();
+        }
+
         // Special handling for cURL requests.
         $ua = $this->request->getHeaderLine('User-Agent');
 
@@ -132,10 +145,6 @@ final class ErrorHandler extends SlimErrorHandler
             );
 
             return $response;
-        }
-
-        if (!($this->request instanceof ServerRequest)) {
-            return parent::respond();
         }
 
         if ($this->exception instanceof HttpException) {

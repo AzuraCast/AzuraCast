@@ -112,6 +112,32 @@ VOLUME "/var/azuracast/storage/geoip"
 VOLUME "/var/azuracast/storage/sftpgo"
 VOLUME "/var/azuracast/storage/acme"
 
+EXPOSE 80 443 2022
+EXPOSE 8000-8999
+
+# Sensible default environment variables.
+ENV LANG="en_US.UTF-8" \
+    PATH="${PATH}:/var/azuracast/storage/shoutcast2" \
+    APPLICATION_ENV="production" \
+    MYSQL_HOST="localhost" \
+    MYSQL_PORT=3306 \
+    MYSQL_USER="azuracast" \
+    MYSQL_PASSWORD="azur4c457" \
+    MYSQL_DATABASE="azuracast" \
+    ENABLE_REDIS="true" \
+    REDIS_HOST="localhost" \
+    REDIS_PORT=6379 \
+    REDIS_DB=1 \
+    NGINX_RADIO_PORTS="default" \
+    NGINX_WEBDJ_PORTS="default" \
+    COMPOSER_PLUGIN_MODE="false" \
+    ADDITIONAL_MEDIA_SYNC_WORKER_COUNT=0 \
+    PROFILING_EXTENSION_ENABLED=0 \
+    PROFILING_EXTENSION_ALWAYS_ON=0 \
+    PROFILING_EXTENSION_HTTP_KEY=dev \
+    PROFILING_EXTENSION_HTTP_IP_WHITELIST=* \
+    ENABLE_WEB_UPDATER="true"
+
 #
 # Development Build
 #
@@ -143,32 +169,9 @@ WORKDIR /var/azuracast/www
 
 USER root
 
-EXPOSE 80 443 2022
-EXPOSE 8000-8999
-
 # Sensible default environment variables.
-ENV TZ="UTC" \
-    LANG="en_US.UTF-8" \
-    PATH="${PATH}:/var/azuracast/storage/shoutcast2" \
-    DOCKER_IS_STANDALONE="true" \
-    APPLICATION_ENV="development" \
-    MYSQL_HOST="localhost" \
-    MYSQL_PORT=3306 \
-    MYSQL_USER="azuracast" \
-    MYSQL_PASSWORD="azur4c457" \
-    MYSQL_DATABASE="azuracast" \
-    ENABLE_REDIS="true" \
-    REDIS_HOST="localhost" \
-    REDIS_PORT=6379 \
-    REDIS_DB=1 \
-    NGINX_RADIO_PORTS="default" \
-    NGINX_WEBDJ_PORTS="default" \
-    COMPOSER_PLUGIN_MODE="false" \
-    ADDITIONAL_MEDIA_SYNC_WORKER_COUNT=0 \
+ENV APPLICATION_ENV="development" \
     PROFILING_EXTENSION_ENABLED=1 \
-    PROFILING_EXTENSION_ALWAYS_ON=0 \
-    PROFILING_EXTENSION_HTTP_KEY=dev \
-    PROFILING_EXTENSION_HTTP_IP_WHITELIST=* \
     ENABLE_WEB_UPDATER="false"
 
 # Entrypoint and default command
@@ -178,9 +181,7 @@ CMD ["--no-main-command"]
 #
 # Final build (Just environment vars and squishing the FS)
 #
-FROM ubuntu:jammy AS final
-
-COPY --from=pre-final / /
+FROM pre-final AS final
 
 USER azuracast
 
@@ -193,34 +194,6 @@ RUN composer install --no-dev --no-ansi --no-autoloader --no-interaction \
     && composer clear-cache
 
 USER root
-
-EXPOSE 80 443 2022
-EXPOSE 8000-8999
-
-# Sensible default environment variables.
-ENV TZ="UTC" \
-    LANG="en_US.UTF-8" \
-    PATH="${PATH}:/var/azuracast/storage/shoutcast2" \
-    DOCKER_IS_STANDALONE="true" \
-    APPLICATION_ENV="production" \
-    MYSQL_HOST="localhost" \
-    MYSQL_PORT=3306 \
-    MYSQL_USER="azuracast" \
-    MYSQL_PASSWORD="azur4c457" \
-    MYSQL_DATABASE="azuracast" \
-    ENABLE_REDIS="true" \
-    REDIS_HOST="localhost" \
-    REDIS_PORT=6379 \
-    REDIS_DB=1 \
-    NGINX_RADIO_PORTS="default" \
-    NGINX_WEBDJ_PORTS="default" \
-    COMPOSER_PLUGIN_MODE="false" \
-    ADDITIONAL_MEDIA_SYNC_WORKER_COUNT=0 \
-    PROFILING_EXTENSION_ENABLED=0 \
-    PROFILING_EXTENSION_ALWAYS_ON=0 \
-    PROFILING_EXTENSION_HTTP_KEY=dev \
-    PROFILING_EXTENSION_HTTP_IP_WHITELIST=* \
-    ENABLE_WEB_UPDATER="true"
 
 # Entrypoint and default command
 ENTRYPOINT ["tini", "--", "/usr/local/bin/my_init"]

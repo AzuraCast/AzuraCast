@@ -161,9 +161,11 @@
   "autoload": {
     "psr-4": {
       "App\\": "src"
-    },
+    }
+  },
+  "autoload-dev": {
     "files": [
-      "./config/functions.php"
+      "./config/functions.dev.php"
     ]
   },
   "minimum-stability": "dev",

@@ -2,22 +2,14 @@
 
 declare(strict_types=1);
 
-function env(): App\Environment
-{
-    return App\Environment::getInstance();
-}
-
-function logger(): Monolog\Logger
-{
-    return App\Utilities\Logger::getInstance();
-}
-
 /**
  * @throws App\Exception\DumpException
  */
 function dumpdie(mixed ...$vars): never
 {
-    if (env()->isCli()) {
+    $env = App\Environment::getInstance();
+
+    if ($env->isCli()) {
         $dumper = new Symfony\Component\VarDumper\Dumper\CliDumper();
         $varCloner = new Symfony\Component\VarDumper\Cloner\VarCloner();
 

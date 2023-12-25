@@ -1,6 +1,0 @@
-#!/bin/bash
-set -e
-
-gosu azuracast php /var/azuracast/www/bin/uptime_wait || exit 1
-
-exec "$@"

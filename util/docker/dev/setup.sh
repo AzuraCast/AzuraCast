@@ -7,7 +7,7 @@ export DEBIAN_FRONTEND=noninteractive
 apt-get update
 
 # Install common scripts
-# cp -rT /bd_build/dev/scripts/ /usr/local/bin
+cp -rT /bd_build/dev/scripts/ /usr/local/bin
 
 # cp -rT /bd_build/dev/startup_scripts/. /etc/my_init.d/
 

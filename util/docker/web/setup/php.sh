@@ -20,7 +20,7 @@ apt-get install -y --no-install-recommends php${PHP_VERSION}-cli php${PHP_VERSIO
 # Copy PHP configuration
 echo "PHP_VERSION=$PHP_VERSION" >> /etc/php/.version
 
-cp /bd_build/web/php/php.ini.tmpl /etc/php/${PHP_VERSION}/cli/05-azuracast.ini.tmpl
+cp /bd_build/web/php/php.ini.tmpl /etc/php/${PHP_VERSION}/05-azuracast.ini.tmpl
 
 # Enable FFI (for StereoTool inspection)
 echo 'ffi.enable="true"' >> /etc/php/${PHP_VERSION}/mods-available/ffi.ini

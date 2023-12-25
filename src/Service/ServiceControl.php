@@ -81,6 +81,7 @@ final class ServiceControl
             'mariadb' => __('Database'),
             'nginx' => __('Web server'),
             'roadrunner' => __('Roadrunner PHP Server'),
+            'php-fpm' => __('PHP FastCGI Process Manager'),
             'php-nowplaying' => __('Now Playing manager service'),
             'php-worker' => __('PHP queue processing worker'),
             'redis' => __('Cache'),
@@ -102,6 +103,7 @@ final class ServiceControl
         }
 
         if (!$this->environment->isDevelopment()) {
+            unset($services['php-fpm']);
             unset($services['vite']);
         }
 

@@ -1,15 +1,22 @@
-upstream roadrunner {
-    server 127.0.0.1:6090;
-}
-
 upstream centrifugo {
     server 127.0.0.1:6020;
 }
 
 {{if eq .Env.APPLICATION_ENV "development"}}
-upstream vite {
-    server 127.0.0.1:5173;
-}
+    upstream php {
+        server 127.0.0.1:6080;
+    }
+
+    upstream vite {
+        server 127.0.0.1:5173;
+    }
+
+{{else}}
+
+    upstream php {
+        server 127.0.0.1:6090;
+    }
+
 {{end}}
 
 server {
@@ -97,9 +104,13 @@ server {
 
     location ~ ^/index\.php(/|$) {
         include fastcgi_params;
-        fastcgi_pass roadrunner;
         fastcgi_read_timeout {{ default .Env.NGINX_TIMEOUT "1800" }};
         fastcgi_buffering off;
+
+        fastcgi_index index.php;
+        fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
+        fastcgi_param DOCUMENT_ROOT $realpath_root;
+        fastcgi_pass php;
         internal;
     }
 

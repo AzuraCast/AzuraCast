@@ -163,11 +163,6 @@
       "App\\": "src"
     }
   },
-  "autoload-dev": {
-    "files": [
-      "./config/functions.dev.php"
-    ]
-  },
   "minimum-stability": "dev",
   "prefer-stable": true,
   "bin": [

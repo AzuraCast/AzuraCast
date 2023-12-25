@@ -1,43 +1,41 @@
 <template>
-    <div style="overflow-x: hidden">
-        <data-table
-            id="public_requests"
-            ref="datatable"
-            paginated
-            select-fields
-            :page-options="pageOptions"
-            :fields="fields"
-            :api-url="requestListUri"
-        >
-            <template #cell(name)="row">
-                <div class="d-flex align-items-center">
-                    <album-art
-                        v-if="showAlbumArt"
-                        :src="row.item.song.art"
-                        :width="40"
-                        class="flex-shrink-1 pe-3"
-                    />
-                    <div class="flex-fill">
-                        {{ row.item.song.title }}<br>
-                        <small>{{ row.item.song.artist }}</small>
-                    </div>
+    <data-table
+        id="public_requests"
+        ref="datatable"
+        paginated
+        select-fields
+        :page-options="pageOptions"
+        :fields="fields"
+        :api-url="requestListUri"
+    >
+        <template #cell(name)="row">
+            <div class="d-flex align-items-center">
+                <album-art
+                    v-if="showAlbumArt"
+                    :src="row.item.song.art"
+                    :width="40"
+                    class="flex-shrink-1 pe-3"
+                />
+                <div class="flex-fill">
+                    {{ row.item.song.title }}<br>
+                    <small>{{ row.item.song.artist }}</small>
                 </div>
-            </template>
-            <template #cell(actions)="row">
-                <button
-                    type="button"
-                    class="btn btn-sm btn-primary"
-                    @click="doSubmitRequest(row.item.request_url)"
-                >
-                    {{ $gettext('Request') }}
-                </button>
-            </template>
-        </data-table>
-    </div>
+            </div>
+        </template>
+        <template #cell(actions)="row">
+            <button
+                type="button"
+                class="btn btn-sm btn-primary"
+                @click="doSubmitRequest(row.item.request_url)"
+            >
+                {{ $gettext('Request') }}
+            </button>
+        </template>
+    </data-table>
 </template>
 
 <script setup lang="ts">
-import DataTable, { DataTableField } from '~/components/Common/DataTable.vue';
+import DataTable, {DataTableField} from '~/components/Common/DataTable.vue';
 import {forEach} from 'lodash';
 import AlbumArt from '~/components/Common/AlbumArt.vue';
 import {computed} from "vue";

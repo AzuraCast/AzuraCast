@@ -105,8 +105,8 @@ const props = defineProps({
 const {$gettext} = useTranslate();
 
 const fields: DataTableField[] = [
-    {key: 'download_url', label: ' '},
-    {key: 'art', label: $gettext('Art')},
+    {key: 'download_url', label: ' ', class: 'shrink'},
+    {key: 'art', label: $gettext('Art'), class: 'shrink'},
     {
         key: 'title',
         label: $gettext('Title'),
@@ -145,30 +145,3 @@ forEach(props.customFields.slice(), (field) => {
 const $lightbox = ref<LightboxTemplateRef>(null);
 useProvideLightbox($lightbox);
 </script>
-
-<style lang="scss" scoped>
-.datatable-main {
-    overflow-y: auto;
-}
-
-table.table {
-    thead tr th:nth-child(1),
-    tbody tr td:nth-child(1) {
-        padding-right: 0.75rem;
-        width: 3rem;
-        white-space: nowrap;
-    }
-
-    thead tr th:nth-child(2),
-    tbody tr td:nth-child(2) {
-        padding-left: 0.5rem;
-        padding-right: 0.5rem;
-        width: 40px;
-    }
-
-    thead tr th:nth-child(3),
-    tbody tr td:nth-child(3) {
-        padding-left: 0.5rem;
-    }
-}
-</style>

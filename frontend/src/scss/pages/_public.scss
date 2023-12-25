@@ -62,6 +62,10 @@ body.page-minimal {
         .card {
           height: 100%;
         }
+
+        .datatable-main {
+          overflow-y: auto;
+        }
       }
     }
   }

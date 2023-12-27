@@ -3,19 +3,20 @@ upstream centrifugo {
 }
 
 {{if eq .Env.APPLICATION_ENV "development"}}
-    upstream php {
-        server 127.0.0.1:6080;
-    }
 
-    upstream vite {
-        server 127.0.0.1:5173;
-    }
+upstream php {
+    server 127.0.0.1:6080;
+}
+
+upstream vite {
+    server 127.0.0.1:5173;
+}
 
 {{else}}
 
-    upstream php {
-        server 127.0.0.1:6090;
-    }
+upstream php {
+    server 127.0.0.1:6090;
+}
 
 {{end}}
 
@@ -113,7 +114,10 @@ server {
         fastcgi_cache app;
         fastcgi_cache_valid 200 301 302 1m;
         fastcgi_cache_lock on;
+
+        {{if eq .Env.APPLICATION_ENV "development"}}
         add_header X-FastCGI-Cache $upstream_cache_status;
+        {{end}}
 
         fastcgi_pass php;
         internal;

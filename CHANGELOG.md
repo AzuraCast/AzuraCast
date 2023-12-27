@@ -14,6 +14,10 @@ release channel, you can take advantage of these new features and fixes.
 
 ## Code Quality/Technical Changes
 
+- We've even further improved our performance on production installations by switching from PHP-FPM to the Roadrunner
+  PHP application engine and tweaking how we handle caching on things like album art images. These changes should
+  dramatically reduce how often PHP is called, and make it much faster when it is called.
+
 - Our High-Performance Now Playing updates through Centrifugo now send the current Now Playing data immediately upon
   connection, meaning you can rely on it exclusively for Now Playing data instead of making another API call to load the
   initial data. See

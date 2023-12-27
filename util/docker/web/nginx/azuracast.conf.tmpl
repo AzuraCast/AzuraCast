@@ -105,11 +105,16 @@ server {
     location ~ ^/index\.php(/|$) {
         include fastcgi_params;
         fastcgi_read_timeout {{ default .Env.NGINX_TIMEOUT "1800" }};
-        fastcgi_buffering off;
 
         fastcgi_index index.php;
         fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
         fastcgi_param DOCUMENT_ROOT $realpath_root;
+
+        fastcgi_cache app;
+        fastcgi_cache_valid 200 301 302 1m;
+        fastcgi_cache_lock on;
+        add_header X-FastCGI-Cache $upstream_cache_status;
+
         fastcgi_pass php;
         internal;
     }

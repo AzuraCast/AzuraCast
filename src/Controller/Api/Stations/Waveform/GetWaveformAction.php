@@ -28,7 +28,7 @@ final class GetWaveformAction implements SingleActionInterface
         /** @var string $mediaId */
         $mediaId = $params['media_id'];
 
-        $response = $response->withCacheLifetime(Response::CACHE_ONE_YEAR);
+        $response = $response->withCacheLifetime(Response::CACHE_ONE_YEAR, Response::CACHE_ONE_DAY);
 
         $station = $request->getStation();
 

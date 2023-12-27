@@ -66,7 +66,7 @@ final class GetArtAction implements SingleActionInterface
         $fsPodcasts = $this->stationFilesystems->getPodcastsFilesystem($station);
 
         if ($fsPodcasts->fileExists($podcastPath)) {
-            return $response->withCacheLifetime(Response::CACHE_ONE_YEAR)
+            return $response->withCacheLifetime(Response::CACHE_ONE_YEAR, Response::CACHE_ONE_DAY)
                 ->streamFilesystemFile($fsPodcasts, $podcastPath, null, 'inline', false);
         }
 

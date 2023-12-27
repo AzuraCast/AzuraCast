@@ -36,7 +36,7 @@ final class GetArtAction implements SingleActionInterface
 
         $fsConfig = StationFilesystems::buildConfigFilesystem($station);
         if ($fsConfig->fileExists($artworkPath)) {
-            return $response->withCacheLifetime(Response::CACHE_ONE_YEAR)
+            return $response->withCacheLifetime(Response::CACHE_ONE_YEAR, Response::CACHE_ONE_DAY)
                 ->streamFilesystemFile($fsConfig, $artworkPath, null, 'inline', false);
         }
 

@@ -30,7 +30,8 @@ final class Response extends SlimResponse
             ->withHeader('Pragma', 'no-cache')
             ->withHeader('Expires', gmdate('D, d M Y H:i:s \G\M\T', 0))
             ->withHeader('Cache-Control', 'private, no-cache, no-store')
-            ->withHeader('X-Accel-Expires', '0'); // CloudFlare
+            ->withHeader('X-Accel-Buffering', 'no') // Nginx
+            ->withHeader('X-Accel-Expires', '0'); // CloudFlare/nginx
 
         return new Response($response, $this->streamFactory);
     }
@@ -42,13 +43,18 @@ final class Response extends SlimResponse
      *
      * @return static
      */
-    public function withCacheLifetime(int $seconds = self::CACHE_ONE_MONTH): Response
-    {
+    public function withCacheLifetime(
+        int $seconds = self::CACHE_ONE_MONTH,
+        ?int $serverCacheSeconds = null
+    ): Response {
+        $serverCacheSeconds ??= $seconds;
+
         $response = $this->response
-            ->withHeader('Pragma', '')
+            ->withoutHeader('Pragma')
             ->withHeader('Expires', gmdate('D, d M Y H:i:s \G\M\T', time() + $seconds))
-            ->withHeader('Cache-Control', 'public, must-revalidate, max-age=' . $seconds)
-            ->withHeader('X-Accel-Expires', (string)$seconds); // CloudFlare
+            ->withHeader('Cache-Control', 'public, max-age=' . $seconds)
+            ->withHeader('X-Accel-Buffering', 'yes') // Nginx
+            ->withHeader('X-Accel-Expires', (string)$serverCacheSeconds); // CloudFlare/nginx
 
         return new Response($response, $this->streamFactory);
     }
@@ -134,8 +140,7 @@ final class Response extends SlimResponse
         }
 
         $response = $this->withHeader('Content-Disposition', $disposition)
-            ->withHeader('Content-Length', (string)$fileMeta->fileSize())
-            ->withHeader('X-Accel-Buffering', 'no');
+            ->withHeader('Content-Length', (string)$fileMeta->fileSize());
 
         if ($useXAccelRedirect) {
             $adapter = $filesystem->getAdapter();

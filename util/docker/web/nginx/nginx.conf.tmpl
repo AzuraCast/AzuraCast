@@ -2,7 +2,7 @@ user azuracast;
 worker_processes auto;
 worker_rlimit_nofile 65000;
 
-error_log stderr;
+error_log /dev/stderr {{if eq .Env.APPLICATION_ENV "development"}}info{{else}}warn{{end}};
 pid /var/run/nginx.pid;
 
 include /etc/nginx/modules-enabled/*.conf;
@@ -35,9 +35,12 @@ http {
     sendfile on;
 
     client_max_body_size 50M;
-    client_body_temp_path /tmp/app_nginx_client 1 1;
+    client_body_temp_path /tmp/nginx_client 1 1;
 
-    fastcgi_temp_path /tmp/app_fastcgi_temp 1 1;
+    fastcgi_temp_path /tmp/nginx_fastcgi 1 1;
+
+    fastcgi_cache_path /tmp/nginx_cache levels=1:2 keys_zone=app:50m max_size=1g inactive=60m use_temp_path=off;
+    fastcgi_cache_key "$scheme$request_method$host$request_uri";
 
     proxy_max_temp_file_size 0;
 

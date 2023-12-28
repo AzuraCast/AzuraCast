@@ -1,6 +1,6 @@
 <template>
     <div
-        class="card-body bg-info-subtle text-info-emphasis d-flex flex-md-row flex-column align-items-center"
+        class="card-body alert alert-info d-flex flex-md-row flex-column align-items-center"
         role="alert"
         aria-live="off"
     >

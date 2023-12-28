@@ -10,6 +10,7 @@
 
             <a
                 href="/api"
+                class="alert-link"
                 target="_blank"
             >
                 {{ $gettext('API Documentation') }}

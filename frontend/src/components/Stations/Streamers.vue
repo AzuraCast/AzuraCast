@@ -12,13 +12,8 @@
                                 {{ $gettext('Streamer/DJ Accounts') }}
                             </h2>
                         </div>
-                        <div class="col-md-6 text-end text-muted">
-                            {{
-                                $gettext(
-                                    'This station\'s time zone is currently %{tz}.',
-                                    {tz: timezone}
-                                )
-                            }}
+                        <div class="col-md-6 text-end">
+                            <time-zone />
                         </div>
                     </div>
                 </template>
@@ -116,7 +111,7 @@
 </template>
 
 <script setup lang="ts">
-import DataTable, { DataTableField } from '~/components/Common/DataTable.vue';
+import DataTable, {DataTableField} from '~/components/Common/DataTable.vue';
 import EditModal from './Streamers/EditModal.vue';
 import BroadcastsModal from './Streamers/BroadcastsModal.vue';
 import Schedule from '~/components/Common/ScheduleView.vue';
@@ -133,6 +128,7 @@ import {getStationApiUrl} from "~/router";
 import Tabs from "~/components/Common/Tabs.vue";
 import Tab from "~/components/Common/Tab.vue";
 import AddButton from "~/components/Common/AddButton.vue";
+import TimeZone from "~/components/Stations/Common/TimeZone.vue";
 
 const props = defineProps({
     connectionInfo: {

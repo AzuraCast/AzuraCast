@@ -10,6 +10,7 @@
                         class="btn btn-primary dropdown-toggle"
                         type="button"
                         data-bs-toggle="dropdown"
+                        data-bs-auto-close="outside"
                         aria-expanded="false"
                     >
                         <icon :icon="IconClearAll" />

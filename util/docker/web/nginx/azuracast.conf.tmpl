@@ -112,8 +112,7 @@ server {
         fastcgi_param DOCUMENT_ROOT $realpath_root;
 
         fastcgi_cache app;
-        fastcgi_cache_valid 200 301 302 1m;
-        fastcgi_cache_lock on;
+        fastcgi_cache_use_stale timeout updating;
 
         {{if eq .Env.APPLICATION_ENV "development"}}
         add_header X-FastCGI-Cache $upstream_cache_status;

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Middleware;
 
 use App\Exception\NotLoggedInException;
-use App\Http\Response;
 use App\Http\ServerRequest;
 use Exception;
 use Psr\Http\Message\ResponseInterface;
@@ -24,12 +23,6 @@ final class RequireLogin extends AbstractMiddleware
             throw new NotLoggedInException();
         }
 
-        $response = $handler->handle($request);
-
-        if ($response instanceof Response) {
-            $response = $response->withNoCache();
-        }
-
-        return $response;
+        return $handler->handle($request);
     }
 }

@@ -11,7 +11,6 @@ use App\Entity\Station;
 use App\Entity\User;
 use App\Enums\StationPermissions;
 use App\Exception\NotFoundException;
-use App\Http\Response;
 use App\Http\ServerRequest;
 use Exception;
 use Psr\Http\Message\ResponseInterface;
@@ -47,13 +46,7 @@ final class RequirePublishedPodcastEpisodeMiddleware extends AbstractMiddleware
             throw NotFoundException::podcast();
         }
 
-        $response = $handler->handle($request);
-
-        if ($response instanceof Response) {
-            $response = $response->withNoCache();
-        }
-
-        return $response;
+        return $handler->handle($request);
     }
 
     private function getLoggedInUser(ServerRequest $request): ?User

@@ -8,7 +8,6 @@ use App\Container\EnvironmentAwareTrait;
 use App\Container\SettingsAwareTrait;
 use App\Entity\User;
 use App\Exception\InvalidRequestAttribute;
-use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Middleware\AbstractMiddleware;
 use App\Utilities\Urls;
@@ -101,14 +100,6 @@ final class Api extends AbstractMiddleware
             // Only set global CORS for GET requests and API-authenticated requests;
             // Session-authenticated, non-GET requests should only be made in a same-host situation.
             $response = $response->withHeader('Access-Control-Allow-Origin', '*');
-        }
-
-        if ($response instanceof Response && !$response->hasCacheLifetime()) {
-            if ($preferBrowserUrl || $request->getAttribute(ServerRequest::ATTR_USER) instanceof User) {
-                $response = $response->withNoCache();
-            } else {
-                $response = $response->withCacheLifetime(15);
-            }
         }
 
         return $response;

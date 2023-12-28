@@ -69,22 +69,17 @@ final class GetArtAction implements SingleActionInterface
 
         $station = $request->getStation();
 
-        // If a timestamp delimiter is added, strip it automatically.
-        $episode_id = explode('|', $episodeId, 2)[0];
-
-        $episodeArtPath = PodcastEpisode::getArtPath($episode_id);
+        $episodeArtPath = PodcastEpisode::getArtPath($episodeId);
 
         $fsPodcasts = $this->stationFilesystems->getPodcastsFilesystem($station);
         if ($fsPodcasts->fileExists($episodeArtPath)) {
-            return $response->withCacheLifetime(Response::CACHE_ONE_YEAR, Response::CACHE_ONE_DAY)
-                ->streamFilesystemFile($fsPodcasts, $episodeArtPath, null, 'inline', false);
+            return $response->streamFilesystemFile($fsPodcasts, $episodeArtPath, null, 'inline', false);
         }
 
         $podcastArtPath = Podcast::getArtPath($podcastId);
 
         if ($fsPodcasts->fileExists($podcastArtPath)) {
-            return $response->withCacheLifetime(Response::CACHE_ONE_DAY, Response::CACHE_ONE_MINUTE)
-                ->streamFilesystemFile($fsPodcasts, $podcastArtPath, null, 'inline', false);
+            return $response->streamFilesystemFile($fsPodcasts, $podcastArtPath, null, 'inline', false);
         }
 
         return $response->withRedirect(

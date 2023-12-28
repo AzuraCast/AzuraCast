@@ -62,16 +62,6 @@ final class GetArtAction implements SingleActionInterface
 
         $station = $request->getStation();
 
-        if (str_contains($mediaId, '-')) {
-            $response = $response->withCacheLifetime(
-                Response::CACHE_ONE_YEAR,
-                Response::CACHE_ONE_DAY
-            );
-        }
-
-        // If a timestamp delimiter is added, strip it automatically.
-        $mediaId = explode('-', $mediaId, 2)[0];
-
         $fsMedia = $this->stationFilesystems->getMediaFilesystem($station);
 
         $mediaPath = $this->getMediaPath($station, $fsMedia, $mediaId);

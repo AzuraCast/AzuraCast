@@ -70,6 +70,7 @@ final class InjectSession extends AbstractMiddleware
             ->withAttribute(ServerRequest::ATTR_SESSION_FLASH, $flash);
 
         $response = $handler->handle($request);
+
         return $sessionPersistence->persistSession($session, $response);
     }
 }

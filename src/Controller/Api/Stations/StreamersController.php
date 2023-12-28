@@ -278,9 +278,17 @@ final class StreamersController extends AbstractScheduledEntityController
         $isInternal = ('true' === $request->getParam('internal', 'false'));
 
         $return['has_custom_art'] = (0 !== $record->getArtUpdatedAt());
+
+        $routeParams = [
+            'id' => $record->getIdRequired(),
+        ];
+        if ($return['has_custom_art']) {
+            $routeParams['timestamp'] = $record->getArtUpdatedAt();
+        }
+
         $return['art'] = $router->fromHere(
             routeName: 'api:stations:streamer:art',
-            routeParams: ['id' => $record->getIdRequired() . '|' . $record->getArtUpdatedAt()],
+            routeParams: $routeParams,
             absolute: !$isInternal
         );
 

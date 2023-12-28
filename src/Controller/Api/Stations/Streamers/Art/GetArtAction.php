@@ -27,17 +27,13 @@ final class GetArtAction implements SingleActionInterface
         /** @var string $id */
         $id = $params['id'];
 
-        // If a timestamp delimiter is added, strip it automatically.
-        $id = explode('|', $id, 2)[0];
-
         $station = $request->getStation();
 
         $artworkPath = StationStreamer::getArtworkPath($id);
 
         $fsConfig = StationFilesystems::buildConfigFilesystem($station);
         if ($fsConfig->fileExists($artworkPath)) {
-            return $response->withCacheLifetime(Response::CACHE_ONE_YEAR, Response::CACHE_ONE_DAY)
-                ->streamFilesystemFile($fsConfig, $artworkPath, null, 'inline', false);
+            return $response->streamFilesystemFile($fsConfig, $artworkPath, null, 'inline', false);
         }
 
         return $response->withRedirect(

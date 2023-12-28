@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Api;
 
 use App\Cache\NowPlayingCache;
+use App\Controller\SingleActionInterface;
 use App\Entity\Api\Error;
 use App\Entity\Api\NowPlaying\NowPlaying;
 use App\Exception\InvalidRequestAttribute;
@@ -50,25 +51,28 @@ use Psr\Http\Message\ResponseInterface;
         ]
     )
 ]
-final class NowPlayingController
+final class NowPlayingAction implements SingleActionInterface
 {
     public function __construct(
         private readonly NowPlayingCache $nowPlayingCache
     ) {
     }
 
-    public function getAction(
+    public function __invoke(
         ServerRequest $request,
         Response $response,
         array $params
     ): ResponseInterface {
-        /** @var string|null $stationId */
-        $stationId = $params['station_id'] ?? null;
+        try {
+            $station = $request->getStation();
+        } catch (InvalidRequestAttribute) {
+            $station = null;
+        }
 
         $router = $request->getRouter();
 
-        if (!empty($stationId)) {
-            $np = $this->nowPlayingCache->getForStation($stationId);
+        if (null !== $station) {
+            $np = $this->nowPlayingCache->getForStation($station);
 
             if ($np instanceof NowPlaying) {
                 $np->resolveUrls($router->getBaseUrl());
@@ -83,15 +87,7 @@ final class NowPlayingController
 
         $baseUrl = $router->getBaseUrl();
 
-        // If unauthenticated, hide non-public stations from full view.
-        try {
-            $user = $request->getUser();
-        } catch (InvalidRequestAttribute) {
-            $user = null;
-        }
-
-        $np = $this->nowPlayingCache->getForAllStations(null === $user);
-
+        $np = $this->nowPlayingCache->getForAllStations(true);
         $np = array_map(
             function (NowPlaying $npRow) use ($baseUrl) {
                 $npRow->resolveUrls($baseUrl);
@@ -102,29 +98,5 @@ final class NowPlayingController
         );
 
         return $response->withJson($np);
-    }
-
-    public function getArtAction(
-        ServerRequest $request,
-        Response $response,
-        array $params
-    ): ResponseInterface {
-        /** @var string $stationId */
-        $stationId = $params['station_id'];
-
-        $np = $this->nowPlayingCache->getForStation($stationId);
-
-        if ($np instanceof NowPlaying) {
-            $np->resolveUrls($request->getRouter()->getBaseUrl());
-            $np->update();
-
-            $currentArt = $np->now_playing?->song?->art;
-            if (null !== $currentArt) {
-                return $response->withRedirect((string)$currentArt, 302);
-            }
-        }
-
-        return $response->withStatus(404)
-            ->withJson(Error::notFound());
     }
 }

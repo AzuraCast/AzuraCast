@@ -142,8 +142,9 @@ final class NowPlayingApiGenerator
                 $live->art = $this->router->namedAsUri(
                     routeName: 'api:stations:streamer:art',
                     routeParams: [
-                        'station_id' => $station->getIdRequired(),
-                        'id' => $currentStreamer->getIdRequired() . '|' . $currentStreamer->getArtUpdatedAt(),
+                        'station_id' => $station->getShortName(),
+                        'id' => $currentStreamer->getIdRequired(),
+                        'timestamp' => $currentStreamer->getArtUpdatedAt(),
                     ],
                 );
             }

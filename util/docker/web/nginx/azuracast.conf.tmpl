@@ -53,6 +53,7 @@ server {
     # Built-in docs
     location /docs {
         alias /var/azuracast/docs;
+        expires 1d;
         index index.html;
     }
 
@@ -102,6 +103,18 @@ server {
         expires 365d;
     }
     {{end}}
+
+    location /static/icons {
+        expires 365d;
+    }
+    location /static/img {
+        expires 7d;
+    }
+
+    location /favicon.ico {
+        add_header Access-Control-Allow-Origin *;
+        expires 365d;
+    }
 
     location ~ ^/index\.php(/|$) {
         include fastcgi_params;

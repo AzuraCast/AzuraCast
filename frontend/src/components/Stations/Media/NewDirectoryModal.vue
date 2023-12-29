@@ -99,7 +99,7 @@ const doMkdir = () => {
             notifySuccess($gettext('New directory created.'));
         }).finally(() => {
             emit('relist');
-            close();
+            hide();
         });
     });
 };

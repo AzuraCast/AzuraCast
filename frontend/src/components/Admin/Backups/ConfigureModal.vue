@@ -94,6 +94,7 @@ import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
 import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
 import FormGroupSelect from "~/components/Form/FormGroupSelect.vue";
 import {ModalFormTemplateRef} from "~/functions/useBaseEditModal.ts";
+import {useHasModal} from "~/functions/useHasModal.ts";
 
 const props = defineProps({
     settingsUrl: {
@@ -109,8 +110,6 @@ const props = defineProps({
 const emit = defineEmits(['relist']);
 
 const loading = ref(true);
-
-const $modal = ref<ModalFormTemplateRef>(null);
 
 const {form, resetForm, v$, ifValid} = useVuelidateOnForm(
     {
@@ -154,16 +153,19 @@ const formatOptions = computed(() => {
 
 const {axios} = useAxios();
 
+const $modal = ref<ModalFormTemplateRef>(null);
+const {hide, show} = useHasModal($modal);
+
 const close = () => {
     emit('relist');
-    $modal.value.hide();
+    hide();
 };
 
 const open = () => {
     resetForm();
     loading.value = true;
 
-    $modal.value.show();
+    show();
 
     axios.get(props.settingsUrl).then((resp) => {
         form.value = mergeExisting(form.value, resp.data);

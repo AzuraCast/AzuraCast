@@ -26,6 +26,7 @@ import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
 import {ModalFormTemplateRef} from "~/functions/useBaseEditModal.ts";
 import {getApiUrl} from "~/router.ts";
+import {useHasModal} from "~/functions/useHasModal.ts";
 
 const props = defineProps({
     supportedLocales: {
@@ -63,10 +64,7 @@ const clearContents = () => {
 };
 
 const $modal = ref<ModalFormTemplateRef>(null);
-
-const close = () => {
-    $modal.value?.hide();
-};
+const {show, hide} = useHasModal($modal);
 
 const {notifySuccess} = useNotify();
 const {axios} = useAxios();
@@ -74,13 +72,13 @@ const {axios} = useAxios();
 const open = () => {
     clearContents();
 
-    $modal.value?.show();
+    show();
 
     axios.get(userUrl.value).then((resp) => {
         form.value = mergeExisting(form.value, resp.data);
         loading.value = false;
     }).catch(() => {
-        close();
+        hide();
     });
 };
 
@@ -95,7 +93,7 @@ const doSubmit = () => {
         }).then(() => {
             notifySuccess();
             emit('reload');
-            close();
+            hide();
         }).catch((error) => {
             error.value = error.response.data.message;
         });

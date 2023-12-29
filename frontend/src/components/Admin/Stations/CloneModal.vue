@@ -22,6 +22,7 @@ import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
 import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
 import {ModalFormTemplateRef} from "~/functions/useBaseEditModal.ts";
+import {useHasModal} from "~/functions/useHasModal.ts";
 
 const emit = defineEmits(['relist']);
 
@@ -43,6 +44,8 @@ const {form, resetForm, v$, ifValid} = useVuelidateOnForm(
 );
 
 const $modal = ref<ModalFormTemplateRef>(null);
+const {hide, show} = useHasModal($modal);
+
 const {$gettext} = useTranslate();
 
 const create = (stationName, stationCloneUrl) => {
@@ -56,16 +59,12 @@ const create = (stationName, stationCloneUrl) => {
     error.value = null;
     cloneUrl.value = stationCloneUrl;
 
-    $modal.value?.show();
+    show();
 };
 
 const clearContents = () => {
     resetForm();
     cloneUrl.value = null;
-};
-
-const close = () => {
-    $modal.value?.hide();
 };
 
 const {notifySuccess} = useNotify();
@@ -82,7 +81,7 @@ const doSubmit = () => {
         }).then(() => {
             notifySuccess();
             emit('relist');
-            close();
+            hide();
         }).catch((error) => {
             error.value = error.response.data.message;
         });

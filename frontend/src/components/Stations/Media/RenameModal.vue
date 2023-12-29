@@ -98,7 +98,7 @@ const doRename = () => {
             file: file.value,
             ...form.value
         }).finally(() => {
-            close();
+            hide();
             emit('relist');
         });
     });

@@ -276,9 +276,8 @@ import Icon from '~/components/Common/Icon.vue';
 import PlayButton from "~/components/Common/PlayButton.vue";
 import AlbumArt from "~/components/Common/AlbumArt.vue";
 import {useAxios} from "~/vendor/axios";
-import {useAsyncState, useIntervalFn} from "@vueuse/core";
+import {useAsyncState} from "@vueuse/core";
 import {computed, ref} from "vue";
-import useRefreshableAsyncState from "~/functions/useRefreshableAsyncState";
 import DashboardCharts from "~/components/DashboardCharts.vue";
 import {useTranslate} from "~/vendor/gettext";
 import Loading from "~/components/Common/Loading.vue";
@@ -290,6 +289,7 @@ import useOptionalStorage from "~/functions/useOptionalStorage";
 import {IconAccountCircle, IconHeadphones, IconInfo, IconSettings, IconWarning} from "~/components/Common/icons";
 import UserInfoPanel from "~/components/Account/UserInfoPanel.vue";
 import {getApiUrl} from "~/router.ts";
+import useAutoRefreshingAsyncState from "~/functions/useAutoRefreshingAsyncState.ts";
 
 const props = defineProps({
     profileUrl: {
@@ -339,14 +339,12 @@ const {state: notifications, isLoading: notificationsLoading} = useAsyncState(
     []
 );
 
-const {state: stations, isLoading: stationsLoading, execute: reloadStations} = useRefreshableAsyncState(
+const {state: stations, isLoading: stationsLoading} = useAutoRefreshingAsyncState(
     () => axiosSilent.get(stationsUrl.value).then((r) => r.data),
     [],
-);
-
-useIntervalFn(
-    reloadStations,
-    computed(() => (!document.hidden) ? 15000 : 30000)
+    {
+        timeout: 15000
+    }
 );
 
 const $lightbox = ref<LightboxTemplateRef>(null);

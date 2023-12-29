@@ -300,8 +300,9 @@ class StationMedia implements
 
     public function setLength(float $length): void
     {
-        $lengthMin = floor($length / 60);
-        $lengthSec = $length % 60;
+        $lengthInt = (int)floor($length);
+        $lengthMin = floor($lengthInt / 60);
+        $lengthSec = $lengthInt % 60;
 
         $this->length = (string)$length;
         $this->length_text = $lengthMin . ':' . str_pad((string)$lengthSec, 2, '0', STR_PAD_LEFT);

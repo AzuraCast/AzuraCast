@@ -42,21 +42,19 @@ return static function (RouteCollectorProxy $group) {
         ->setName('api:index:time')
         ->add(new Middleware\Cache\SetCache(1));
 
-    $group->group(
-        '/nowplaying/{station_id}',
-        function (RouteCollectorProxy $group) {
-            $group->get(
-                '',
-                Controller\Api\NowPlayingAction::class
-            )->setName('api:nowplaying:index');
+    $group->get(
+        '/nowplaying[/{station_id}]',
+        Controller\Api\NowPlayingAction::class
+    )->setName('api:nowplaying:index')
+        ->add(new Middleware\Cache\SetCache(15))
+        ->add(Middleware\GetStation::class);
 
-            $group->get(
-                '/art[/{timestamp}.jpg]',
-                Controller\Api\NowPlayingArtAction::class
-            )->setName('api:nowplaying:art')
-                ->add(Middleware\RequireStation::class);
-        }
-    )->add(new Middleware\Cache\SetCache(15))
+    $group->get(
+        '/nowplaying/{station_id}/art[/{timestamp}.jpg]',
+        Controller\Api\NowPlayingArtAction::class
+    )->setName('api:nowplaying:art')
+        ->add(new Middleware\Cache\SetCache(15))
+        ->add(Middleware\RequireStation::class)
         ->add(Middleware\GetStation::class);
 
     $group->get('/stations', Controller\Api\Stations\IndexController::class . ':listAction')

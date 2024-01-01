@@ -304,11 +304,10 @@ return [
     },
 
     App\MessageQueue\QueueManagerInterface::class => static function (
-        App\Service\RedisFactory $redisFactory,
-        Environment $environment
+        App\Service\RedisFactory $redisFactory
     ) {
         return ($redisFactory->isSupported())
-            ? new App\MessageQueue\QueueManager($environment)
+            ? new App\MessageQueue\QueueManager($redisFactory)
             : new App\MessageQueue\TestQueueManager();
     },
 

@@ -462,7 +462,6 @@ final class ListAction implements SingleActionInterface
                     [
                         'station_id' => $stationId,
                         'media_id' => $row->media->media_id,
-                        'timestamp' => $row->media->art_updated_at,
                     ]
                 ),
                 'waveform' => $router->named(

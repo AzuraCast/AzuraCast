@@ -7,9 +7,7 @@
         hide-footer
     >
         <song-request
-            :show-album-art="showAlbumArt"
-            :request-list-uri="requestListUri"
-            :custom-fields="customFields"
+            v-bind="props"
             @submitted="hide"
         />
     </modal>
@@ -20,21 +18,10 @@ import SongRequest from '../Requests.vue';
 import {ref} from "vue";
 import Modal from "~/components/Common/Modal.vue";
 import {ModalTemplateRef, useHasModal} from "~/functions/useHasModal.ts";
+import requestsProps from "~/components/Public/Requests/requestsProps.ts";
 
 const props = defineProps({
-    requestListUri: {
-        type: String,
-        required: true
-    },
-    showAlbumArt: {
-        type: Boolean,
-        default: true
-    },
-    customFields: {
-        type: Array,
-        required: false,
-        default: () => []
-    }
+    ...requestsProps
 });
 
 const $modal = ref<ModalTemplateRef>(null);

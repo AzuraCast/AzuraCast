@@ -53,10 +53,9 @@
     />
 
     <request-modal
+        v-if="enableRequests"
         ref="$requestModal"
-        :show-album-art="showAlbumArt"
-        :request-list-uri="requestListUri"
-        :custom-fields="customFields"
+        v-bind="pickProps(props, requestsProps)"
     />
 
     <lightbox ref="$lightbox" />
@@ -73,9 +72,11 @@ import {pickProps} from "~/functions/pickProps";
 import Lightbox from "~/components/Common/Lightbox.vue";
 import {LightboxTemplateRef, useProvideLightbox} from "~/vendor/lightbox";
 import {IconDownload, IconHelp, IconHistory} from "~/components/Common/icons";
+import requestsProps from "~/components/Public/Requests/requestsProps.ts";
 
 const props = defineProps({
     ...playerProps,
+    ...requestsProps,
     stationName: {
         type: String,
         required: true
@@ -88,15 +89,6 @@ const props = defineProps({
         type: String,
         required: true
     },
-    requestListUri: {
-        type: String,
-        required: true
-    },
-    customFields: {
-        type: Array,
-        required: false,
-        default: () => []
-    }
 });
 
 const history = ref({});

@@ -8,8 +8,13 @@ use App\Container\EntityManagerAwareTrait;
 use App\Container\LoggerAwareTrait;
 use App\Doctrine\ReadWriteBatchIteratorAggregate;
 use App\Entity\Enums\StorageLocationTypes;
+use App\Entity\Settings;
 use App\Entity\Station;
 use App\Entity\StorageLocation;
+use App\Environment;
+use Cron\CronExpression;
+use DateTimeInterface;
+use RuntimeException;
 
 abstract class AbstractTask implements ScheduledTaskInterface
 {
@@ -19,6 +24,42 @@ abstract class AbstractTask implements ScheduledTaskInterface
     public static function isLongTask(): bool
     {
         return false;
+    }
+
+    /**
+     * The CRON-styled pattern for execution of this task.
+     */
+    public static function getSchedulePattern(): ?string
+    {
+        return null;
+    }
+
+    public static function isDue(
+        DateTimeInterface $now,
+        Environment $environment,
+        Settings $settings
+    ): bool {
+        $schedulePattern = static::getSchedulePattern();
+        if (null === $schedulePattern) {
+            throw new RuntimeException('Schedule not defined.');
+        }
+
+        $cronExpression = new CronExpression($schedulePattern);
+        return $cronExpression->isDue($now);
+    }
+
+    public static function getNextRun(
+        DateTimeInterface $now,
+        Environment $environment,
+        Settings $settings
+    ): int {
+        $schedulePattern = static::getSchedulePattern();
+        if (null === $schedulePattern) {
+            throw new RuntimeException('Schedule not defined.');
+        }
+
+        $cronExpression = new CronExpression($schedulePattern);
+        return $cronExpression->getNextRunDate($now)->getTimestamp();
     }
 
     abstract public function run(bool $force = false): void;

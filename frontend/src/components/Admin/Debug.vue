@@ -87,7 +87,12 @@
         >
             <template #cell(name)="row">
                 <h5>{{ row.item.task }}</h5>
-                {{ row.item.pattern }}
+                <span v-if="row.item.pattern">
+                    {{ row.item.pattern }}
+                </span>
+                <span v-else>
+                    {{ $gettext('Custom') }}
+                </span>
             </template>
             <template #cell(actions)="row">
                 <button

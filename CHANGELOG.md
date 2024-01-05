@@ -5,6 +5,16 @@ release channel, you can take advantage of these new features and fixes.
 
 ## New Features/Changes
 
+## Code Quality/Technical Changes
+
+## Bug Fixes
+
+---
+
+# AzuraCast 0.19.4 (Jan 4, 2024)
+
+## New Features/Changes
+
 - **Passwordless Login with Passkeys**: You can now associate passkeys (also known as WebAuthn) with your account and
   then automatically log in with those passkeys any time. Popular passkeys include those provided by your operating
   system (i.e. Windows Hello or Apple's Safari passkey system) or may be provided by third-party software (like
@@ -35,6 +45,9 @@ release channel, you can take advantage of these new features and fixes.
   mean faster update pulls and less disk space used for installation operators.
 
 ## Bug Fixes
+
+- An issue causing audio recordings to break the station filesystem was fixed by Liquidsoap, and the fixed version is
+  included in this version of AzuraCast.
 
 - A bug causing fade/cue/etc. values on media of "0" or "0.0" to not properly disable crossfading/etc. has been fixed.
 

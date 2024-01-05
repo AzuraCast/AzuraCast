@@ -8,8 +8,8 @@ use Exception;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Lock\BlockingStoreInterface;
 use Symfony\Component\Lock\LockFactory as SymfonyLockFactory;
-use Symfony\Component\Lock\LockInterface;
 use Symfony\Component\Lock\PersistingStoreInterface;
+use Symfony\Component\Lock\SharedLockInterface;
 
 final class LockFactory extends SymfonyLockFactory
 {
@@ -26,7 +26,7 @@ final class LockFactory extends SymfonyLockFactory
         $this->setLogger($logger);
     }
 
-    public function createLock(string $resource, ?float $ttl = 300.0, bool $autoRelease = true): LockInterface
+    public function createLock(string $resource, ?float $ttl = 300.0, bool $autoRelease = true): SharedLockInterface
     {
         return parent::createLock($this->getPrefixedResourceName($resource), $ttl, $autoRelease);
     }
@@ -36,7 +36,7 @@ final class LockFactory extends SymfonyLockFactory
         ?float $ttl = 300.0,
         bool $autoRelease = true,
         bool $force = false
-    ): LockInterface|false {
+    ): SharedLockInterface|false {
         $lock = $this->createLock($resource, $ttl, $autoRelease);
 
         if ($force) {

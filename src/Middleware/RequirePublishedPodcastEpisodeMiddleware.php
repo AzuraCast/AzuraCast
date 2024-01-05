@@ -10,8 +10,7 @@ use App\Entity\Repository\PodcastRepository;
 use App\Entity\Station;
 use App\Entity\User;
 use App\Enums\StationPermissions;
-use App\Exception\PodcastNotFoundException;
-use App\Http\Response;
+use App\Exception\NotFoundException;
 use App\Http\ServerRequest;
 use Exception;
 use Psr\Http\Message\ResponseInterface;
@@ -21,7 +20,7 @@ use Slim\Routing\RouteContext;
 /**
  * Require that the podcast has a published episode for public access
  */
-final class RequirePublishedPodcastEpisodeMiddleware
+final class RequirePublishedPodcastEpisodeMiddleware extends AbstractMiddleware
 {
     public function __construct(
         private readonly PodcastRepository $podcastRepository
@@ -44,16 +43,10 @@ final class RequirePublishedPodcastEpisodeMiddleware
         $podcastId = $this->getPodcastIdFromRequest($request);
 
         if ($podcastId === null || !$this->checkPodcastHasPublishedEpisodes($station, $podcastId)) {
-            throw new PodcastNotFoundException();
+            throw NotFoundException::podcast();
         }
 
-        $response = $handler->handle($request);
-
-        if ($response instanceof Response) {
-            $response = $response->withNoCache();
-        }
-
-        return $response;
+        return $handler->handle($request);
     }
 
     private function getLoggedInUser(ServerRequest $request): ?User

@@ -122,6 +122,21 @@ final class LoginAction implements SingleActionInterface
             return $response->withRedirect((string)$request->getUri());
         }
 
-        return $request->getView()->renderToResponse($response, 'frontend/account/login');
+        $customization = $request->getCustomization();
+        $router = $request->getRouter();
+
+        return $request->getView()->renderVuePage(
+            response: $response,
+            component: 'Login',
+            id: 'account-login',
+            layout: 'minimal',
+            title: __('Log In'),
+            props: [
+                'hideProductName' => $customization->hideProductName(),
+                'instanceName' => $customization->getInstanceName(),
+                'forgotPasswordUrl' => $router->named('account:forgot'),
+                'webAuthnUrl' => $router->named('account:webauthn'),
+            ]
+        );
     }
 }

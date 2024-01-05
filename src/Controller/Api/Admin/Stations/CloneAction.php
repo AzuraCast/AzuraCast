@@ -43,6 +43,9 @@ final class CloneAction extends StationsController implements SingleActionInterf
         Response $response,
         array $params
     ): ResponseInterface {
+        set_time_limit(0);
+        ini_set('memory_limit', '-1');
+
         $record = $this->getRecord($request, $params);
         $data = (array)$request->getParsedBody();
 

@@ -2,10 +2,6 @@ body.embed {
   background: transparent !important;
   color-scheme: unset;
   min-height: auto;
-
-  &.ondemand {
-    overflow: hidden;
-  }
 }
 
 body.embed-social {

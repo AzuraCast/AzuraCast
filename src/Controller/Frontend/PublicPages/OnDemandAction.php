@@ -6,8 +6,7 @@ namespace App\Controller\Frontend\PublicPages;
 
 use App\Container\EntityManagerAwareTrait;
 use App\Controller\SingleActionInterface;
-use App\Exception\StationNotFoundException;
-use App\Exception\StationUnsupportedException;
+use App\Exception\NotFoundException;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
@@ -27,14 +26,11 @@ final class OnDemandAction implements SingleActionInterface
         $station = $request->getStation();
 
         if (!$station->getEnablePublicPage()) {
-            throw new StationNotFoundException();
-        }
-
-        if (!$station->getEnableOnDemand()) {
-            throw new StationUnsupportedException();
+            throw NotFoundException::station();
         }
 
         // Get list of custom fields.
+        /** @var array<array{id: int, short_name: string, name: string}> $customFieldsRaw */
         $customFieldsRaw = $this->em->createQuery(
             <<<'DQL'
                 SELECT cf.id, cf.short_name, cf.name

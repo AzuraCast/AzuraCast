@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Exception;
 
 use App\Exception;
-use Psr\Log\LogLevel;
+use Monolog\Level;
 use Throwable;
 
 final class InvalidRequestAttribute extends Exception
@@ -14,7 +14,7 @@ final class InvalidRequestAttribute extends Exception
         string $message = 'Invalid request attribute.',
         int $code = 0,
         Throwable $previous = null,
-        string $loggerLevel = LogLevel::DEBUG
+        Level $loggerLevel = Level::Info
     ) {
         parent::__construct($message, $code, $previous, $loggerLevel);
     }

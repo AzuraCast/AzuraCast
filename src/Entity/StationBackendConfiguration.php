@@ -9,6 +9,7 @@ use App\Radio\Enums\AudioProcessingMethods;
 use App\Radio\Enums\CrossfadeModes;
 use App\Radio\Enums\MasterMePresets;
 use App\Radio\Enums\StreamFormats;
+use App\Utilities\Types;
 use InvalidArgumentException;
 use LogicException;
 
@@ -18,7 +19,7 @@ class StationBackendConfiguration extends AbstractStationConfiguration
 
     public function getCharset(): string
     {
-        return $this->get(self::CHARSET) ?? 'UTF-8';
+        return Types::stringOrNull($this->get(self::CHARSET), true) ?? 'UTF-8';
     }
 
     public function setCharset(?string $charset): void
@@ -30,8 +31,7 @@ class StationBackendConfiguration extends AbstractStationConfiguration
 
     public function getDjPort(): ?int
     {
-        $port = $this->get(self::DJ_PORT);
-        return is_numeric($port) ? (int)$port : null;
+        return Types::intOrNull($this->get(self::DJ_PORT));
     }
 
     public function setDjPort(?int $port): void
@@ -43,8 +43,7 @@ class StationBackendConfiguration extends AbstractStationConfiguration
 
     public function getTelnetPort(): ?int
     {
-        $port = $this->get(self::TELNET_PORT);
-        return is_numeric($port) ? (int)$port : null;
+        return Types::intOrNull($this->get(self::TELNET_PORT));
     }
 
     public function setTelnetPort(?int $port): void
@@ -56,7 +55,7 @@ class StationBackendConfiguration extends AbstractStationConfiguration
 
     public function recordStreams(): bool
     {
-        return (bool)($this->get(self::RECORD_STREAMS) ?? false);
+        return Types::boolOrNull($this->get(self::RECORD_STREAMS)) ?? false;
     }
 
     public function setRecordStreams(?bool $recordStreams): void
@@ -73,7 +72,9 @@ class StationBackendConfiguration extends AbstractStationConfiguration
 
     public function getRecordStreamsFormatEnum(): StreamFormats
     {
-        return StreamFormats::tryFrom($this->get(self::RECORD_STREAMS_FORMAT) ?? '')
+        return StreamFormats::tryFrom(
+            Types::stringOrNull($this->get(self::RECORD_STREAMS_FORMAT)) ?? ''
+        )
             ?? StreamFormats::Mp3;
     }
 
@@ -94,7 +95,7 @@ class StationBackendConfiguration extends AbstractStationConfiguration
 
     public function getRecordStreamsBitrate(): int
     {
-        return (int)($this->get(self::RECORD_STREAMS_BITRATE) ?? 128);
+        return Types::intOrNull($this->get(self::RECORD_STREAMS_BITRATE)) ?? 128;
     }
 
     public function setRecordStreamsBitrate(?int $bitrate): void
@@ -106,7 +107,7 @@ class StationBackendConfiguration extends AbstractStationConfiguration
 
     public function useManualAutoDj(): bool
     {
-        return (bool)($this->get(self::USE_MANUAL_AUTODJ) ?? false);
+        return Types::boolOrNull($this->get(self::USE_MANUAL_AUTODJ)) ?? false;
     }
 
     public function setUseManualAutoDj(?bool $useManualAutoDj): void
@@ -120,7 +121,7 @@ class StationBackendConfiguration extends AbstractStationConfiguration
 
     public function getAutoDjQueueLength(): int
     {
-        return (int)($this->get(self::AUTODJ_QUEUE_LENGTH) ?? self::DEFAULT_QUEUE_LENGTH);
+        return Types::intOrNull($this->get(self::AUTODJ_QUEUE_LENGTH)) ?? self::DEFAULT_QUEUE_LENGTH;
     }
 
     public function setAutoDjQueueLength(?int $queueLength): void
@@ -132,7 +133,7 @@ class StationBackendConfiguration extends AbstractStationConfiguration
 
     public function getDjMountPoint(): string
     {
-        return $this->get(self::DJ_MOUNT_POINT) ?? '/';
+        return Types::stringOrNull($this->get(self::DJ_MOUNT_POINT)) ?? '/';
     }
 
     public function setDjMountPoint(?string $mountPoint): void
@@ -146,7 +147,7 @@ class StationBackendConfiguration extends AbstractStationConfiguration
 
     public function getDjBuffer(): int
     {
-        return (int)$this->get(self::DJ_BUFFER, self::DEFAULT_DJ_BUFFER);
+        return Types::intOrNull($this->get(self::DJ_BUFFER)) ?? self::DEFAULT_DJ_BUFFER;
     }
 
     public function setDjBuffer(?int $buffer): void
@@ -163,8 +164,9 @@ class StationBackendConfiguration extends AbstractStationConfiguration
 
     public function getAudioProcessingMethodEnum(): AudioProcessingMethods
     {
-        return AudioProcessingMethods::tryFrom($this->get(self::AUDIO_PROCESSING_METHOD) ?? '')
-            ?? AudioProcessingMethods::default();
+        return AudioProcessingMethods::tryFrom(
+            Types::stringOrNull($this->get(self::AUDIO_PROCESSING_METHOD)) ?? ''
+        ) ?? AudioProcessingMethods::default();
     }
 
     public function isAudioProcessingEnabled(): bool
@@ -189,7 +191,7 @@ class StationBackendConfiguration extends AbstractStationConfiguration
 
     public function getPostProcessingIncludeLive(): bool
     {
-        return $this->get(self::POST_PROCESSING_INCLUDE_LIVE, false);
+        return Types::boolOrNull($this->get(self::POST_PROCESSING_INCLUDE_LIVE)) ?? false;
     }
 
     public function setPostProcessingIncludeLive(bool $postProcessingIncludeLive): void
@@ -201,7 +203,7 @@ class StationBackendConfiguration extends AbstractStationConfiguration
 
     public function getStereoToolLicenseKey(): ?string
     {
-        return $this->get(self::STEREO_TOOL_LICENSE_KEY);
+        return Types::stringOrNull($this->get(self::STEREO_TOOL_LICENSE_KEY), true);
     }
 
     public function setStereoToolLicenseKey(?string $licenseKey): void
@@ -213,7 +215,7 @@ class StationBackendConfiguration extends AbstractStationConfiguration
 
     public function getStereoToolConfigurationPath(): ?string
     {
-        return $this->get(self::STEREO_TOOL_CONFIGURATION_PATH);
+        return Types::stringOrNull($this->get(self::STEREO_TOOL_CONFIGURATION_PATH), true);
     }
 
     public function setStereoToolConfigurationPath(?string $stereoToolConfigurationPath): void
@@ -225,12 +227,12 @@ class StationBackendConfiguration extends AbstractStationConfiguration
 
     public function getMasterMePreset(): ?string
     {
-        return $this->get(self::MASTER_ME_PRESET);
+        return Types::stringOrNull($this->get(self::MASTER_ME_PRESET), true);
     }
 
     public function getMasterMePresetEnum(): MasterMePresets
     {
-        return MasterMePresets::tryFrom($this->get(self::MASTER_ME_PRESET) ?? '')
+        return MasterMePresets::tryFrom($this->getMasterMePreset() ?? '')
             ?? MasterMePresets::default();
     }
 
@@ -249,14 +251,15 @@ class StationBackendConfiguration extends AbstractStationConfiguration
 
     public const MASTER_ME_LOUDNESS_TARGET = 'master_me_loudness_target';
 
-    protected const MASTER_ME_DEFAULT_LOUDNESS_TARGET = -16.0;
+    protected const MASTER_ME_DEFAULT_LOUDNESS_TARGET = -16;
 
-    public function getMasterMeLoudnessTarget(): float
+    public function getMasterMeLoudnessTarget(): int
     {
-        return (float)$this->get(self::MASTER_ME_LOUDNESS_TARGET, self::MASTER_ME_DEFAULT_LOUDNESS_TARGET);
+        return Types::intOrNull($this->get(self::MASTER_ME_LOUDNESS_TARGET))
+            ?? self::MASTER_ME_DEFAULT_LOUDNESS_TARGET;
     }
 
-    public function setMasterMeLoudnessTarget(?float $masterMeLoudnessTarget): void
+    public function setMasterMeLoudnessTarget(?int $masterMeLoudnessTarget): void
     {
         $this->set(self::MASTER_ME_LOUDNESS_TARGET, $masterMeLoudnessTarget);
     }
@@ -265,7 +268,7 @@ class StationBackendConfiguration extends AbstractStationConfiguration
 
     public function useReplayGain(): bool
     {
-        return $this->get(self::USE_REPLAYGAIN) ?? false;
+        return Types::boolOrNull($this->get(self::USE_REPLAYGAIN)) ?? false;
     }
 
     public function setUseReplayGain(?bool $useReplayGain): void
@@ -277,8 +280,9 @@ class StationBackendConfiguration extends AbstractStationConfiguration
 
     public function getCrossfadeTypeEnum(): CrossfadeModes
     {
-        return CrossfadeModes::tryFrom($this->get(self::CROSSFADE_TYPE) ?? '')
-            ?? CrossfadeModes::default();
+        return CrossfadeModes::tryFrom(
+            Types::stringOrNull($this->get(self::CROSSFADE_TYPE)) ?? ''
+        ) ?? CrossfadeModes::default();
     }
 
     public function getCrossfadeType(): string
@@ -297,7 +301,10 @@ class StationBackendConfiguration extends AbstractStationConfiguration
 
     public function getCrossfade(): float
     {
-        return round((float)($this->get(self::CROSSFADE) ?? self::DEFAULT_CROSSFADE_DURATION), 1);
+        return round(
+            Types::floatOrNull($this->get(self::CROSSFADE)) ?? self::DEFAULT_CROSSFADE_DURATION,
+            1
+        );
     }
 
     public function setCrossfade(?float $crossfade): void
@@ -328,9 +335,8 @@ class StationBackendConfiguration extends AbstractStationConfiguration
 
     public function getDuplicatePreventionTimeRange(): int
     {
-        return (int)(
-            $this->get(self::DUPLICATE_PREVENTION_TIME_RANGE) ?? self::DEFAULT_DUPLICATE_PREVENTION_TIME_RANGE
-        );
+        return Types::intOrNull($this->get(self::DUPLICATE_PREVENTION_TIME_RANGE))
+            ?? self::DEFAULT_DUPLICATE_PREVENTION_TIME_RANGE;
     }
 
     public function setDuplicatePreventionTimeRange(?int $duplicatePreventionTimeRange): void
@@ -347,8 +353,9 @@ class StationBackendConfiguration extends AbstractStationConfiguration
 
     public function getPerformanceModeEnum(): StationBackendPerformanceModes
     {
-        return StationBackendPerformanceModes::tryFrom($this->get(self::PERFORMANCE_MODE) ?? '')
-            ?? StationBackendPerformanceModes::default();
+        return StationBackendPerformanceModes::tryFrom(
+            Types::stringOrNull($this->get(self::PERFORMANCE_MODE)) ?? ''
+        ) ?? StationBackendPerformanceModes::default();
     }
 
     public function setPerformanceMode(?string $performanceMode): void
@@ -365,7 +372,7 @@ class StationBackendConfiguration extends AbstractStationConfiguration
 
     public function getHlsSegmentLength(): int
     {
-        return $this->get(self::HLS_SEGMENT_LENGTH, 4);
+        return Types::intOrNull($this->get(self::HLS_SEGMENT_LENGTH)) ?? 4;
     }
 
     public function setHlsSegmentLength(?int $length): void
@@ -377,7 +384,7 @@ class StationBackendConfiguration extends AbstractStationConfiguration
 
     public function getHlsSegmentsInPlaylist(): int
     {
-        return $this->get(self::HLS_SEGMENTS_IN_PLAYLIST, 5);
+        return Types::intOrNull($this->get(self::HLS_SEGMENTS_IN_PLAYLIST)) ?? 5;
     }
 
     public function setHlsSegmentsInPlaylist(?int $value): void
@@ -389,7 +396,7 @@ class StationBackendConfiguration extends AbstractStationConfiguration
 
     public function getHlsSegmentsOverhead(): int
     {
-        return $this->get(self::HLS_SEGMENTS_OVERHEAD, 2);
+        return Types::intOrNull($this->get(self::HLS_SEGMENTS_OVERHEAD)) ?? 2;
     }
 
     public function setHlsSegmentsOverhead(?int $value): void
@@ -401,7 +408,7 @@ class StationBackendConfiguration extends AbstractStationConfiguration
 
     public function getHlsEnableOnPublicPlayer(): bool
     {
-        return $this->get(self::HLS_ENABLE_ON_PUBLIC_PLAYER, false);
+        return Types::boolOrNull($this->get(self::HLS_ENABLE_ON_PUBLIC_PLAYER)) ?? false;
     }
 
     public function setHlsEnableOnPublicPlayer(?bool $enable): void
@@ -413,7 +420,7 @@ class StationBackendConfiguration extends AbstractStationConfiguration
 
     public function getHlsIsDefault(): bool
     {
-        return $this->get(self::HLS_IS_DEFAULT, false);
+        return Types::boolOrNull($this->get(self::HLS_IS_DEFAULT)) ?? false;
     }
 
     public function setHlsIsDefault(?bool $value): void
@@ -425,11 +432,8 @@ class StationBackendConfiguration extends AbstractStationConfiguration
 
     public function getLiveBroadcastText(): string
     {
-        $text = $this->get(self::LIVE_BROADCAST_TEXT);
-
-        return (!empty($text))
-            ? $text
-            : 'Live Broadcast';
+        return Types::stringOrNull($this->get(self::LIVE_BROADCAST_TEXT), true)
+            ?? 'Live Broadcast';
     }
 
     public function setLiveBroadcastText(?string $text): void
@@ -464,7 +468,7 @@ class StationBackendConfiguration extends AbstractStationConfiguration
             throw new LogicException('Invalid custom configuration section.');
         }
 
-        return $this->get($section);
+        return Types::stringOrNull($this->get($section), true);
     }
 
     public function setCustomConfigurationSection(string $section, ?string $value = null): void

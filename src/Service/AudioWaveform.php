@@ -6,6 +6,7 @@ namespace App\Service;
 
 use App\Utilities\Json;
 use InvalidArgumentException;
+use LogicException;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Process\Process;
 
@@ -42,7 +43,15 @@ final class AudioWaveform
         $process->setTimeout(60);
         $process->setIdleTimeout(3600);
 
-        $process->mustRun();
+        $process->run();
+
+        if (0 !== $process->getExitCode()) {
+            throw new LogicException(sprintf(
+                'Cannot process waveform for file "%s": %s',
+                basename($path),
+                $process->getErrorOutput()
+            ));
+        }
 
         $input = Json::loadFromFile($jsonOutPath);
 

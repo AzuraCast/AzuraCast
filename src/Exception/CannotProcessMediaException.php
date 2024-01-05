@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Exception;
 
 use App\Exception;
-use Psr\Log\LogLevel;
+use Monolog\Level;
 use Throwable;
 
 final class CannotProcessMediaException extends Exception
@@ -16,7 +16,7 @@ final class CannotProcessMediaException extends Exception
         string $message = 'Cannot process media file.',
         int $code = 0,
         Throwable $previous = null,
-        string $loggerLevel = LogLevel::WARNING
+        Level $loggerLevel = Level::Warning
     ) {
         parent::__construct($message, $code, $previous, $loggerLevel);
     }

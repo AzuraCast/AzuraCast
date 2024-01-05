@@ -38,7 +38,8 @@ return static function (RouteCollectorProxy $app) {
                 ->setName('public:manifest');
 
             $group->get('/embed-requests', Controller\Frontend\PublicPages\RequestsAction::class)
-                ->setName('public:embedrequests');
+                ->setName('public:embedrequests')
+                ->add(new Middleware\StationSupportsFeature(App\Enums\StationFeatures::Requests));
 
             $group->get('/playlist[.{format}]', Controller\Frontend\PublicPages\PlaylistAction::class)
                 ->setName('public:playlist');
@@ -50,7 +51,8 @@ return static function (RouteCollectorProxy $app) {
                 ->setName('public:dj');
 
             $group->get('/ondemand[/{embed:embed}]', Controller\Frontend\PublicPages\OnDemandAction::class)
-                ->setName('public:ondemand');
+                ->setName('public:ondemand')
+                ->add(new Middleware\StationSupportsFeature(App\Enums\StationFeatures::OnDemand));
 
             $group->get('/schedule[/{embed:embed}]', Controller\Frontend\PublicPages\ScheduleAction::class)
                 ->setName('public:schedule');

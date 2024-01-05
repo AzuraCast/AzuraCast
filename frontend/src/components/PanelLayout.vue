@@ -177,7 +177,7 @@
 </template>
 
 <script setup lang="ts">
-import {useSlots, watch} from "vue";
+import {nextTick, onMounted, useSlots, watch} from "vue";
 import Icon from "~/components/Common/Icon.vue";
 import useTheme from "~/functions/theme";
 import {
@@ -253,4 +253,9 @@ watch(
 );
 
 useProvidePlayerStore('global');
+
+onMounted(async () => {
+    await nextTick();
+    document.dispatchEvent(new CustomEvent("vue-ready"));
+});
 </script>

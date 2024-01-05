@@ -255,9 +255,17 @@ final class PodcastsController extends AbstractApiCrudController
         $return->episodes = $episodes;
 
         $return->has_custom_art = (0 !== $record->getArtUpdatedAt());
+
+        $routeParams = [
+            'podcast_id' => $record->getId(),
+        ];
+        if ($return->has_custom_art) {
+            $routeParams['timestamp'] = $record->getArtUpdatedAt();
+        }
+
         $return->art = $router->fromHere(
             routeName: 'api:stations:podcast:art',
-            routeParams: ['podcast_id' => $record->getId() . '|' . $record->getArtUpdatedAt()],
+            routeParams: $routeParams,
             absolute: true
         );
 

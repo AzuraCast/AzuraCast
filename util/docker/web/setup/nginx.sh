@@ -15,7 +15,12 @@ sed -i 's#application/vnd.apple.mpegurl#application/x-mpegurl#' /etc/nginx/mime.
 mkdir -p /etc/nginx/azuracast.conf.d/
 
 # Create nginx temp dirs
-mkdir -p /tmp/app_nginx_client /tmp/app_fastcgi_temp
-touch /tmp/app_nginx_client/.tmpreaper
-touch /tmp/app_fastcgi_temp/.tmpreaper
-chmod -R 777 /tmp/app_*
+mkdir -p /tmp/nginx_client \
+  /tmp/nginx_fastcgi \
+  /tmp/nginx_cache
+
+touch /tmp/nginx_client/.tmpreaper
+touch /tmp/nginx_fastcgi/.tmpreaper
+touch /tmp/nginx_cache/.tmpreaper
+
+chmod -R 777 /tmp/nginx_*

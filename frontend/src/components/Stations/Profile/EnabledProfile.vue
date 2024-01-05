@@ -90,11 +90,10 @@ import publicPagesPanelProps from "./publicPagesPanelProps";
 import requestsPanelProps from "./requestsPanelProps";
 import streamersPanelProps from "./streamersPanelProps";
 import {pickProps} from "~/functions/pickProps";
-import useRefreshableAsyncState from "~/functions/useRefreshableAsyncState";
-import {useIntervalFn} from "@vueuse/core";
 import {useSweetAlert} from "~/vendor/sweetalert";
 import {useNotify} from "~/functions/useNotify";
 import {useTranslate} from "~/vendor/gettext";
+import useAutoRefreshingAsyncState from "~/functions/useAutoRefreshingAsyncState.ts";
 
 const props = defineProps({
     ...backendPanelProps,
@@ -129,7 +128,7 @@ const hasActiveBackend = computed(() => {
 
 const {axios, axiosSilent} = useAxios();
 
-const {state: profileInfo, execute: reloadProfile} = useRefreshableAsyncState(
+const {state: profileInfo} = useAutoRefreshingAsyncState(
     () => axiosSilent.get(props.profileApiUri).then((r) => r.data),
     {
         station: {
@@ -142,12 +141,10 @@ const {state: profileInfo, execute: reloadProfile} = useRefreshableAsyncState(
             needs_restart: false
         },
         schedule: []
+    },
+    {
+        timeout: 15000
     }
-);
-
-useIntervalFn(
-    reloadProfile,
-    computed(() => (!document.hidden) ? 15000 : 30000)
 );
 
 const {showAlert} = useSweetAlert();

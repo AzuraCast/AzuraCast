@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Entity\Migration;
 
+use App\Entity\Migration\Traits\UpdateAllRecords;
 use DateTime;
 use DateTimeZone;
 use Doctrine\DBAL\Schema\Schema;
@@ -14,6 +15,8 @@ use Doctrine\Migrations\AbstractMigration;
  */
 final class Version20190513163051 extends AbstractMigration
 {
+    use UpdateAllRecords;
+
     public function up(Schema $schema): void
     {
         // Move "play once per day" playlists to be standard scheduled ones with the same start/end time.
@@ -36,9 +39,9 @@ final class Version20190513163051 extends AbstractMigration
         }
 
         // Set all stations' timezones to this value.
-        $this->connection->update('station', [
+        $this->updateAllRecords('station', [
             'timezone' => $globalTz,
-        ], [1 => 1]);
+        ]);
 
         // Calculate the offset of any currently scheduled playlists.
         if ('UTC' !== $globalTz) {

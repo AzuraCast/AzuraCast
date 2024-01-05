@@ -1,11 +1,15 @@
 includes:
 	- phpstan-baseline.neon
 	- vendor/phpstan/phpstan-doctrine/extension.neon
+	- vendor/phpstan/phpstan-doctrine/rules.neon
 
 parameters:
     level: 8
 
     checkMissingIterableValueType: false
+
+    doctrine:
+        objectManagerLoader: util/phpstan-doctrine.php
 
     paths:
         - bin

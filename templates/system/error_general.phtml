@@ -18,17 +18,11 @@ $filePath = Symfony\Component\Filesystem\Path::makeRelative(
 <div class="public-page">
     <div class="card p-3">
         <div class="card-body">
-            <h2 class="display-1">500</h2>
+            <h2 class="display-4">Error</h2>
             <h4><?= $this->e($exception->getMessage()) ?></h4>
             <p class="text-muted card-text">
                 <?= $this->e($filePath) ?> : L<?= $exception->getLine() ?>
             </p>
-
-            <div class="block-buttons">
-                <a role="button" title="<?= __('Dashboard') ?>" class="btn btn-login btn-primary" href="/">
-                    Home
-                </a>
-            </div>
         </div>
     </div>
 </div>

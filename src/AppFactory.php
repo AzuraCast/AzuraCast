@@ -6,8 +6,7 @@ namespace App;
 
 use App\Console\Application;
 use App\Enums\SupportedLocales;
-use App\Http\Factory\ResponseFactory;
-use App\Http\Factory\ServerRequestFactory;
+use App\Http\HttpFactory;
 use App\Utilities\Logger as AppLogger;
 use DI;
 use Monolog\ErrorHandler;
@@ -21,34 +20,40 @@ use Slim\Handlers\Strategies\RequestResponse;
 final class AppFactory
 {
     public static function createApp(
-        array $appEnvironment = [],
-        array $diDefinitions = []
+        array $appEnvironment = []
     ): App {
-        $di = self::buildContainer($appEnvironment, $diDefinitions);
+        $environment = self::buildEnvironment($appEnvironment);
+        $diBuilder = self::createContainerBuilder($environment);
+        $di = self::buildContainer($diBuilder);
         return self::buildAppFromContainer($di);
     }
 
     public static function createCli(
-        array $appEnvironment = [],
-        array $diDefinitions = []
+        array $appEnvironment = []
     ): Application {
-        $di = self::buildContainer($appEnvironment, $diDefinitions);
+        $environment = self::buildEnvironment($appEnvironment);
+        $diBuilder = self::createContainerBuilder($environment);
+        $di = self::buildContainer($diBuilder);
+
+        // Some CLI commands require the App to be injected for routing.
         self::buildAppFromContainer($di);
 
-        $env = $di->get(Environment::class);
-
-        SupportedLocales::createForCli($env);
+        SupportedLocales::createForCli($environment);
 
         return $di->get(Application::class);
     }
 
-    public static function buildAppFromContainer(DI\Container $container): App
-    {
+    public static function buildAppFromContainer(
+        DI\Container $container,
+        ?HttpFactory $httpFactory = null
+    ): App {
+        $httpFactory ??= new HttpFactory();
+
         ServerRequestCreatorFactory::setSlimHttpDecoratorsAutomaticDetection(false);
-        ServerRequestCreatorFactory::setServerRequestCreator(new ServerRequestFactory());
+        ServerRequestCreatorFactory::setServerRequestCreator($httpFactory);
 
         $app = new App(
-            responseFactory: new ResponseFactory(),
+            responseFactory: $httpFactory,
             container: $container,
         );
         $container->set(App::class, $app);
@@ -67,18 +72,19 @@ final class AppFactory
         return $app;
     }
 
-    public static function buildContainer(
-        array $appEnvironment = [],
-        array $diDefinitions = []
-    ): DI\Container {
-        $environment = self::buildEnvironment($appEnvironment);
+    /**
+     * @return DI\ContainerBuilder<DI\Container>
+     */
+    public static function createContainerBuilder(
+        Environment $environment
+    ): DI\ContainerBuilder {
+        $diDefinitions = [
+            Environment::class => $environment,
+        ];
+
         Environment::setInstance($environment);
 
-        self::applyPhpSettings($environment);
-
         // Override DI definitions for settings.
-        $diDefinitions[Environment::class] = $environment;
-
         $plugins = new Plugins($environment->getBaseDirectory() . '/plugins');
 
         $diDefinitions[Plugins::class] = $plugins;
@@ -96,6 +102,16 @@ final class AppFactory
 
         $containerBuilder->addDefinitions(dirname(__DIR__) . '/config/services.php');
 
+        return $containerBuilder;
+    }
+
+    /**
+     * @param DI\ContainerBuilder<DI\Container> $containerBuilder
+     * @return DI\Container
+     */
+    public static function buildContainer(
+        DI\ContainerBuilder $containerBuilder
+    ): DI\Container {
         $di = $containerBuilder->build();
 
         // Monolog setup
@@ -109,14 +125,17 @@ final class AppFactory
     }
 
     /**
-     * @param array<string, mixed> $environment
+     * @param array<string, mixed> $rawEnvironment
      */
-    public static function buildEnvironment(array $environment = []): Environment
+    public static function buildEnvironment(array $rawEnvironment = []): Environment
     {
         $_ENV = getenv();
-        $environment = array_merge(array_filter($_ENV), $environment);
+        $rawEnvironment = array_merge(array_filter($_ENV), $rawEnvironment);
+        $environment = new Environment($rawEnvironment);
 
-        return new Environment($environment);
+        self::applyPhpSettings($environment);
+
+        return $environment;
     }
 
     private static function applyPhpSettings(Environment $environment): void
@@ -140,6 +159,9 @@ final class AppFactory
                 ? '/dev/stderr'
                 : $environment->getTempDirectory() . '/php_errors.log'
         );
+
+        mb_internal_encoding('UTF-8');
+        ini_set('default_charset', 'utf-8');
 
         if (!headers_sent()) {
             ini_set('session.use_only_cookies', '1');

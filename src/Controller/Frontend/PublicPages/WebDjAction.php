@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Controller\Frontend\PublicPages;
 
 use App\Controller\SingleActionInterface;
-use App\Exception\StationNotFoundException;
-use App\Exception\StationUnsupportedException;
+use App\Enums\StationFeatures;
+use App\Exception\NotFoundException;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Radio\Adapters;
@@ -27,17 +27,12 @@ final class WebDjAction implements SingleActionInterface
         $station = $request->getStation();
 
         if (!$station->getEnablePublicPage()) {
-            throw new StationNotFoundException();
+            throw NotFoundException::station();
         }
 
-        if (!$station->getEnableStreamers()) {
-            throw new StationUnsupportedException();
-        }
+        StationFeatures::Streamers->assertSupportedForStation($station);
 
-        $backend = $this->adapters->getBackendAdapter($station);
-        if (null === $backend) {
-            throw new StationUnsupportedException();
-        }
+        $backend = $this->adapters->requireBackendAdapter($station);
 
         $wssUrl = (string)$backend->getWebStreamingUrl($station, $request->getRouter()->getBaseUrl());
 

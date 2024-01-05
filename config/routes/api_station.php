@@ -19,7 +19,7 @@ return static function (RouteCollectorProxy $group) {
                 ->setName('api:stations:index')
                 ->add(new Middleware\RateLimit('api', 5, 2));
 
-            $group->get('/nowplaying', Controller\Api\NowPlayingController::class . ':getAction');
+            $group->get('/nowplaying', Controller\Api\NowPlayingAction::class . ':getAction');
 
             $group->get('/schedule', Controller\Api\Stations\ScheduleAction::class)
                 ->setName('api:stations:schedule');
@@ -40,10 +40,12 @@ return static function (RouteCollectorProxy $group) {
 
             // On-Demand Streaming
             $group->get('/ondemand', Controller\Api\Stations\OnDemand\ListAction::class)
-                ->setName('api:stations:ondemand:list');
+                ->setName('api:stations:ondemand:list')
+                ->add(new Middleware\StationSupportsFeature(StationFeatures::OnDemand));
 
             $group->get('/ondemand/download/{media_id}', Controller\Api\Stations\OnDemand\DownloadAction::class)
                 ->setName('api:stations:ondemand:download')
+                ->add(new Middleware\StationSupportsFeature(StationFeatures::OnDemand))
                 ->add(new Middleware\RateLimit('ondemand', 1, 2));
 
             // Podcast Public Pages
@@ -53,10 +55,7 @@ return static function (RouteCollectorProxy $group) {
                     $group->get('', Controller\Api\Stations\PodcastsController::class . ':getAction')
                         ->setName('api:stations:podcast');
 
-                    $group->get(
-                        '/art',
-                        Controller\Api\Stations\Podcasts\Art\GetArtAction::class
-                    )->setName('api:stations:podcast:art');
+                    // See ./api_public for podcast art.
 
                     $group->get(
                         '/episodes',
@@ -72,11 +71,6 @@ return static function (RouteCollectorProxy $group) {
                             )->setName('api:stations:podcast:episode');
 
                             $group->get(
-                                '/art',
-                                Controller\Api\Stations\Podcasts\Episodes\Art\GetArtAction::class
-                            )->setName('api:stations:podcast:episode:art');
-
-                            $group->get(
                                 '/download',
                                 Controller\Api\Stations\Podcasts\Episodes\Media\GetMediaAction::class
                             )->setName('api:stations:podcast:episode:download');
@@ -85,18 +79,7 @@ return static function (RouteCollectorProxy $group) {
                 }
             )->add(Middleware\RequirePublishedPodcastEpisodeMiddleware::class);
 
-            // Media Art
-            $group->get('/art/{media_id:[a-zA-Z0-9\-]+}.jpg', Controller\Api\Stations\Art\GetArtAction::class)
-                ->setName('api:stations:media:art');
-
-            $group->get('/art/{media_id:[a-zA-Z0-9\-]+}', Controller\Api\Stations\Art\GetArtAction::class)
-                ->setName('api:stations:media:art-internal');
-
-            // Streamer Art
-            $group->get(
-                '/streamer/{id}/art',
-                Controller\Api\Stations\Streamers\Art\GetArtAction::class
-            )->setName('api:stations:streamer:art');
+            // NOTE: See ./api_public.php for media art public path.
 
             /*
              * Authenticated Functions
@@ -254,9 +237,10 @@ return static function (RouteCollectorProxy $group) {
                         ->add(new Middleware\Permissions(StationPermissions::View, true));
 
                     $group->get(
-                        '/waveform/{media_id:[a-zA-Z0-9\-]+}.json',
+                        '/waveform/{media_id:[a-zA-Z0-9\-]+}[-{timestamp}.json]',
                         Controller\Api\Stations\Waveform\GetWaveformAction::class
-                    )->setName('api:stations:media:waveform');
+                    )->setName('api:stations:media:waveform')
+                        ->add(new Middleware\Cache\SetStaticFileCache());
 
                     $group->post('/art/{media_id:[a-zA-Z0-9]+}', Controller\Api\Stations\Art\PostArtAction::class)
                         ->add(new Middleware\Permissions(StationPermissions::Media, true));

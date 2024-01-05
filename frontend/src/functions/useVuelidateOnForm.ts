@@ -42,7 +42,7 @@ export function useVuelidateOnForm(validations = {}, blankForm = {}, options = {
     }
 
     const isValid = computed(() => {
-        return !v$.value.$invalid ?? true;
+        return !v$.value.$invalid;
     });
 
     const validate = () => {

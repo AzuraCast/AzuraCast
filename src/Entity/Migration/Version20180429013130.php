@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Entity\Migration;
 
+use App\Entity\Migration\Traits\UpdateAllRecords;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 
@@ -12,6 +13,8 @@ use Doctrine\Migrations\AbstractMigration;
  */
 final class Version20180429013130 extends AbstractMigration
 {
+    use UpdateAllRecords;
+
     public function up(Schema $schema): void
     {
         $this->addSql('ALTER TABLE station_playlists ADD playback_order VARCHAR(50) NOT NULL, ADD remote_url VARCHAR(255) DEFAULT NULL');
@@ -19,10 +22,10 @@ final class Version20180429013130 extends AbstractMigration
 
     public function postup(Schema $schema): void
     {
-        $this->connection->update('station_playlists', [
+        $this->updateAllRecords('station_playlists', [
             'source' => 'songs',
             'playback_order' => 'random',
-        ], [1 => 1]);
+        ]);
     }
 
     public function down(Schema $schema): void

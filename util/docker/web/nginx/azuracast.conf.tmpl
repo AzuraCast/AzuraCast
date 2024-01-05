@@ -1,58 +1,28 @@
-upstream php-fpm-internal {
-    server unix:/var/run/php-fpm-internal.sock;
-}
-
-upstream php-fpm-www {
-    server unix:/var/run/php-fpm-www.sock;
-}
-
 upstream centrifugo {
     server 127.0.0.1:6020;
 }
 
 {{if eq .Env.APPLICATION_ENV "development"}}
+
+upstream php {
+    server 127.0.0.1:6080;
+}
+
 upstream vite {
     server 127.0.0.1:5173;
 }
-{{end}}
 
-# Internal connection handler for PubSub and internal API calls
-server {
-    listen 127.0.0.1:6010;
+{{else}}
 
-    root /var/azuracast/www/web;
-    index index.php;
-
-    server_name localhost;
-
-    # Default clean URL routing
-    location / {
-        try_files $uri @clean_url;
-    }
-
-    location @clean_url {
-        rewrite ^(.*)$ /index.php last;
-    }
-
-    location ~ ^/index\.php(/|$) {
-        fastcgi_split_path_info ^(.+\.php)(/.+)$;
-
-        fastcgi_pass php-fpm-internal;
-        fastcgi_index index.php;
-        fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
-        fastcgi_param DOCUMENT_ROOT $realpath_root;
-        include fastcgi_params;
-
-        fastcgi_read_timeout 600;
-        fastcgi_buffering off;
-
-        internal;
-    }
+upstream php {
+    server 127.0.0.1:6090;
 }
 
+{{end}}
+
 server {
-    listen 80;
-    listen 443 default_server http2 ssl;
+    listen {{ default .Env.AZURACAST_HTTP_PORT "80" }};
+    listen {{ default .Env.AZURACAST_HTTPS_PORT "443" }} default_server http2 ssl;
 
     ssl_certificate        {{ default .Env.ACME_DIR "/var/azuracast/storage/acme" }}/ssl.crt;
     ssl_certificate_key    {{ default .Env.ACME_DIR "/var/azuracast/storage/acme" }}/ssl.key;
@@ -83,6 +53,7 @@ server {
     # Built-in docs
     location /docs {
         alias /var/azuracast/docs;
+        expires 1d;
         index index.html;
     }
 
@@ -133,19 +104,34 @@ server {
     }
     {{end}}
 
-    location ~ ^/index\.php(/|$) {
-        fastcgi_split_path_info ^(.+\.php)(/.+)$;
+    location /static/icons {
+        expires 365d;
+    }
+    location /static/img {
+        expires 7d;
+    }
 
-        # NOTE: You should have "cgi.fix_pathinfo = 0;" in php.ini
-        fastcgi_pass php-fpm-www;
+    location /favicon.ico {
+        add_header Access-Control-Allow-Origin *;
+        expires 365d;
+    }
+
+    location ~ ^/index\.php(/|$) {
+        include fastcgi_params;
+        fastcgi_read_timeout {{ default .Env.NGINX_TIMEOUT "1800" }};
+
         fastcgi_index index.php;
         fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
         fastcgi_param DOCUMENT_ROOT $realpath_root;
-        include fastcgi_params;
 
-        fastcgi_read_timeout {{ default .Env.NGINX_TIMEOUT "1800" }};
-        fastcgi_buffering off;
+        fastcgi_cache app;
+        fastcgi_cache_use_stale timeout updating;
 
+        {{if eq .Env.APPLICATION_ENV "development"}}
+        add_header X-FastCGI-Cache $upstream_cache_status;
+        {{end}}
+
+        fastcgi_pass php;
         internal;
     }
 

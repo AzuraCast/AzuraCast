@@ -30,24 +30,35 @@ final class Centrifugo
             'method' => 'publish',
             'params' => [
                 'channel' => self::GLOBAL_TIME_CHANNEL,
-                'data' => [
-                    'time' => time(),
-                ],
+                'data' => $this->buildTimeMessage(),
             ],
         ]);
     }
 
-    public function publishToStation(Station $station, mixed $message): void
+    public function buildTimeMessage(): array
+    {
+        return [
+            'time' => time(),
+        ];
+    }
+
+    public function publishToStation(Station $station, mixed $message, array $triggers): void
     {
         $this->send([
             'method' => 'publish',
             'params' => [
                 'channel' => $this->getChannelName($station),
-                'data' => [
-                    'np' => $message,
-                ],
+                'data' => $this->buildStationMessage($message, $triggers),
             ],
         ]);
+    }
+
+    public function buildStationMessage(mixed $message, array $triggers = []): array
+    {
+        return [
+            'np' => $message,
+            'triggers' => $triggers,
+        ];
     }
 
     private function send(array $body): void
@@ -57,23 +68,6 @@ final class Centrifugo
             [
                 'json' => $body,
             ]
-        );
-    }
-
-    public function getSseUrl(Station $station): string
-    {
-        return '/api/live/nowplaying/sse?' . http_build_query(
-            [
-                    'cf_connect' => json_encode(
-                        [
-                            'subs' => [
-                                $this->getChannelName($station) => [],
-                                self::GLOBAL_TIME_CHANNEL => [],
-                            ],
-                        ],
-                        JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR | JSON_FORCE_OBJECT
-                    ),
-                ]
         );
     }
 

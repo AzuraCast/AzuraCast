@@ -51,6 +51,7 @@ final class QueueManager extends AbstractQueueManager
         if (!isset($this->connections[$queueName])) {
             $this->connections[$queueName] = new Connection(
                 [
+                    'lazy' => true,
                     'stream' => 'messages.' . $queueName,
                     'delete_after_ack' => true,
                     'redeliver_timeout' => 43200,

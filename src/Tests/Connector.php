@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Tests;
 
-use App\Http\Factory\ServerRequestFactory;
+use App\Http\HttpFactory;
 use Codeception\Lib\Connector\Shared\PhpSuperGlobalsConverter;
 use Slim\App;
 use Symfony\Component\BrowserKit\AbstractBrowser;
@@ -53,7 +53,7 @@ class Connector extends AbstractBrowser
         $_SERVER['REQUEST_METHOD'] = strtoupper($request->getMethod());
         $_SERVER['REQUEST_URI'] = $uri;
 
-        $request = (new ServerRequestFactory())->createServerRequestFromGlobals();
+        $request = (new HttpFactory())->createServerRequestFromGlobals();
 
         $slimResponse = $this->app->handle($request);
 

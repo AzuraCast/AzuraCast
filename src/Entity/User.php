@@ -125,6 +125,14 @@ class User implements Stringable, IdentifiableEntityInterface
     ]
     protected Collection $api_keys;
 
+    /** @var Collection<int, UserPasskey> */
+    #[
+        ORM\OneToMany(mappedBy: 'user', targetEntity: UserPasskey::class),
+        Groups([EntityGroupsInterface::GROUP_ADMIN, EntityGroupsInterface::GROUP_ALL]),
+        DeepNormalize(true)
+    ]
+    protected Collection $passkeys;
+
     public function __construct()
     {
         $this->created_at = time();
@@ -272,6 +280,14 @@ class User implements Stringable, IdentifiableEntityInterface
     public function getApiKeys(): Collection
     {
         return $this->api_keys;
+    }
+
+    /**
+     * @return Collection<int, UserPasskey>
+     */
+    public function getPasskeys(): Collection
+    {
+        return $this->passkeys;
     }
 
     public function __toString(): string

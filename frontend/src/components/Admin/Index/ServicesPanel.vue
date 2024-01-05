@@ -51,28 +51,20 @@ import RunningBadge from "~/components/Common/Badges/RunningBadge.vue";
 import {getApiUrl} from "~/router.ts";
 import {useAxios} from "~/vendor/axios.ts";
 import {useNotify} from "~/functions/useNotify";
-import useRefreshableAsyncState from "~/functions/useRefreshableAsyncState.ts";
-import {useIntervalFn} from "@vueuse/core";
-import {computed} from "vue";
 import Loading from "~/components/Common/Loading.vue";
+import useAutoRefreshingAsyncState from "~/functions/useAutoRefreshingAsyncState.ts";
 
 const servicesUrl = getApiUrl('/admin/services');
 
 const {axios, axiosSilent} = useAxios();
 
-const {state: services, isLoading, execute: reloadServices} = useRefreshableAsyncState(
+const {state: services, isLoading} = useAutoRefreshingAsyncState(
     () => axiosSilent.get(servicesUrl.value).then(r => r.data),
     [],
     {
+        timeout: 5000,
         shallow: true
     }
-);
-
-useIntervalFn(
-    () => {
-        reloadServices()
-    },
-    computed(() => (!document.hidden) ? 5000 : 15000)
 );
 
 const {notifySuccess} = useNotify();

@@ -17,8 +17,6 @@ final class IndexAction implements SingleActionInterface
         Response $response,
         array $params
     ): ResponseInterface {
-        $router = $request->getRouter();
-
         $supportedLocales = [];
         foreach (SupportedLocales::cases() as $supportedLocale) {
             $supportedLocales[$supportedLocale->value] = $supportedLocale->getLocalName();
@@ -30,10 +28,6 @@ final class IndexAction implements SingleActionInterface
             id: 'account',
             title: __('My Account'),
             props: [
-                'userUrl' => $router->named('api:frontend:account:me'),
-                'changePasswordUrl' => $router->named('api:frontend:account:password'),
-                'twoFactorUrl' => $router->named('api:frontend:account:two-factor'),
-                'apiKeysApiUrl' => $router->named('api:frontend:api-keys'),
                 'supportedLocales' => $supportedLocales,
             ]
         );

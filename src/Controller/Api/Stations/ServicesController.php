@@ -8,7 +8,6 @@ use App\Container\EntityManagerAwareTrait;
 use App\Entity\Api\Error;
 use App\Entity\Api\StationServiceStatus;
 use App\Entity\Api\Status;
-use App\Exception\StationUnsupportedException;
 use App\Exception\Supervisor\NotRunningException;
 use App\Http\Response;
 use App\Http\ServerRequest;
@@ -196,11 +195,7 @@ final class ServicesController
         $do = $params['do'] ?? 'restart';
 
         $station = $request->getStation();
-        $frontend = $this->adapters->getFrontendAdapter($station);
-
-        if (null === $frontend) {
-            throw new StationUnsupportedException();
-        }
+        $frontend = $this->adapters->requireFrontendAdapter($station);
 
         switch ($do) {
             case 'stop':
@@ -242,11 +237,7 @@ final class ServicesController
         $do = $params['do'] ?? 'restart';
 
         $station = $request->getStation();
-        $backend = $this->adapters->getBackendAdapter($station);
-
-        if (null === $backend) {
-            throw new StationUnsupportedException();
-        }
+        $backend = $this->adapters->requireBackendAdapter($station);
 
         switch ($do) {
             case 'skip':

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use App\Entity\Interfaces\IdentifiableEntityInterface;
-use App\Entity\Traits;
+use App\Utilities\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -32,7 +32,7 @@ class PodcastMedia implements IdentifiableEntityInterface
     protected string $original_name;
 
     #[ORM\Column(type: 'decimal', precision: 7, scale: 2)]
-    protected float $length = 0.00;
+    protected string $length = '0.0';
 
     /** @var string The formatted podcast media's duration (in mm:ss format) */
     #[ORM\Column(length: 10)]
@@ -89,7 +89,7 @@ class PodcastMedia implements IdentifiableEntityInterface
 
     public function getLength(): float
     {
-        return $this->length;
+        return Types::float($this->length);
     }
 
     public function setLength(float $length): self
@@ -97,7 +97,7 @@ class PodcastMedia implements IdentifiableEntityInterface
         $lengthMin = floor($length / 60);
         $lengthSec = (int)$length % 60;
 
-        $this->length = $length;
+        $this->length = (string)$length;
         $this->length_text = $lengthMin . ':' . str_pad((string)$lengthSec, 2, '0', STR_PAD_LEFT);
 
         return $this;

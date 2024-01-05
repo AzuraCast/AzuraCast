@@ -75,7 +75,7 @@ final class ScheduleAction implements SingleActionInterface
         $queryParams = $request->getQueryParams();
 
         if (isset($queryParams['start'])) {
-            $dateRange = $this->getScheduleDateRange($request);
+            $dateRange = $this->getDateRange($request, $tz);
 
             $cacheKey = 'api_station_' . $station->getId() . '_schedule_'
                 . $dateRange->getStart()->format('Ymd') . '-'

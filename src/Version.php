@@ -18,7 +18,7 @@ use Throwable;
 final class Version
 {
     /** @var string Version that is displayed if no Git repository information is present. */
-    public const FALLBACK_VERSION = '0.19.3';
+    public const FALLBACK_VERSION = '0.19.4';
 
     private string $repoDir;
 
@@ -53,7 +53,7 @@ final class Version
     /**
      * Load cache or generate new repository details from the underlying Git repository.
      *
-     * @return mixed[]
+     * @return string[]
      */
     public function getDetails(): array
     {

@@ -6,6 +6,7 @@ namespace App\Console\Command\Settings;
 
 use App\Console\Command\CommandAbstract;
 use App\Container\SettingsAwareTrait;
+use App\Utilities\Types;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -30,8 +31,8 @@ final class SetCommand extends CommandAbstract
     {
         $io = new SymfonyStyle($input, $output);
 
-        $settingKey = $input->getArgument('setting-key');
-        $settingValue = $input->getArgument('setting-value');
+        $settingKey = Types::string($input->getArgument('setting-key'));
+        $settingValue = Types::string($input->getArgument('setting-value'));
 
         $io->title('AzuraCast Settings');
 

@@ -9,7 +9,6 @@ use App\Controller\SingleActionInterface;
 use App\Entity\Api\Status;
 use App\Entity\Repository\StationRequestRepository;
 use App\Entity\User;
-use App\Exception;
 use App\Exception\InvalidRequestAttribute;
 use App\Http\Response;
 use App\Http\ServerRequest;
@@ -66,25 +65,18 @@ final class SubmitAction implements SingleActionInterface
             $user = null;
         }
 
-        $isAuthenticated = ($user instanceof User);
+        $ip = $this->readSettings()->getIp($request);
 
-        try {
-            $ip = $this->readSettings()->getIp($request);
+        $this->requestRepo->submit(
+            $station,
+            $mediaId,
+            ($user instanceof User),
+            $ip,
+            $request->getHeaderLine('User-Agent')
+        );
 
-            $this->requestRepo->submit(
-                $station,
-                $mediaId,
-                $isAuthenticated,
-                $ip,
-                $request->getHeaderLine('User-Agent')
-            );
-
-            return $response->withJson(
-                new Status(true, __('Your request has been submitted and will be played soon.'))
-            );
-        } catch (Exception $e) {
-            return $response->withStatus(400)
-                ->withJson(new Status(false, $e->getMessage()));
-        }
+        return $response->withJson(
+            new Status(true, __('Your request has been submitted and will be played soon.'))
+        );
     }
 }

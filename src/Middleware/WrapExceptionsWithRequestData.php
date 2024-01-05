@@ -5,18 +5,17 @@ declare(strict_types=1);
 namespace App\Middleware;
 
 use App\Exception\WrappedException;
+use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
-use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Throwable;
 
 /**
  * Wrap all exceptions thrown past this point with rich metadata.
  */
-final class WrapExceptionsWithRequestData implements MiddlewareInterface
+final class WrapExceptionsWithRequestData extends AbstractMiddleware
 {
-    public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
+    public function __invoke(ServerRequest $request, RequestHandlerInterface $handler): ResponseInterface
     {
         try {
             return $handler->handle($request);

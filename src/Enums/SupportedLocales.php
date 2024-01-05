@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace App\Enums;
 
 use App\Environment;
+use App\Exception\InvalidRequestAttribute;
 use App\Http\ServerRequest;
 use Gettext\Translator;
 use Gettext\TranslatorFunctions;
 use Locale;
-use Psr\Http\Message\ServerRequestInterface;
 
 enum SupportedLocales: string
 {
@@ -126,14 +126,17 @@ enum SupportedLocales: string
 
     public static function createFromRequest(
         Environment $environment,
-        ServerRequestInterface $request
+        ServerRequest $request
     ): self {
         $possibleLocales = [];
 
         // Prefer user-based profile locale.
-        $user = $request->getAttribute(ServerRequest::ATTR_USER);
-        if (null !== $user && !empty($user->getLocale()) && 'default' !== $user->getLocale()) {
-            $possibleLocales[] = $user->getLocale();
+        try {
+            $user = $request->getUser();
+            if (!empty($user->getLocale()) && 'default' !== $user->getLocale()) {
+                $possibleLocales[] = $user->getLocale();
+            }
+        } catch (InvalidRequestAttribute) {
         }
 
         $serverParams = $request->getServerParams();

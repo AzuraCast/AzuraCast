@@ -6,6 +6,7 @@ namespace App\Console\Command\Backup;
 
 use App\Console\Command\AbstractDatabaseCommand;
 use App\Entity\StorageLocation;
+use App\Utilities\Types;
 use Exception;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputArgument;
@@ -34,7 +35,7 @@ final class RestoreCommand extends AbstractDatabaseCommand
     {
         $io = new SymfonyStyle($input, $output);
 
-        $path = $input->getArgument('path');
+        $path = Types::stringOrNull($input->getArgument('path'), true);
         $startTime = microtime(true);
 
         $io->title('AzuraCast Restore');

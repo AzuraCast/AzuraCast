@@ -11,7 +11,6 @@ use App\Entity\StationMedia;
 use App\Http\ServerRequest;
 use App\Paginator;
 use Psr\Cache\CacheItemPoolInterface;
-use RuntimeException;
 
 abstract class AbstractSearchableListAction implements SingleActionInterface
 {
@@ -31,10 +30,6 @@ abstract class AbstractSearchableListAction implements SingleActionInterface
         ServerRequest $request,
         array $playlists
     ): Paginator {
-        if (empty($playlists)) {
-            throw new RuntimeException('This station has no qualifying playlists for this feature.');
-        }
-
         $station = $request->getStation();
 
         $queryParams = $request->getQueryParams();

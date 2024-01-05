@@ -101,7 +101,7 @@ final class Annotations implements EventSubscriberInterface
             'liq_fade_out' => $media->getFadeOut(),
             'liq_cue_in' => $media->getCueIn(),
             'liq_cue_out' => $media->getCueOut(),
-        ]);
+        ], fn($row) => ('' !== $row && null !== $row));
 
         // Safety checks for cue lengths.
         if (

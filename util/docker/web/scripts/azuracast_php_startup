@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+if [ $(whoami) != 'azuracast' ]; then
+    echo 'This script must be run as the "azuracast" user. Rerunning...'
+    exec gosu azuracast azuracast_startup "$@"
+fi
+

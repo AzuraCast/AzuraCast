@@ -58,7 +58,7 @@ class Repository
     {
         $record = $this->find($id);
         if (null === $record) {
-            throw new NotFoundException();
+            throw NotFoundException::generic();
         }
         return $record;
     }

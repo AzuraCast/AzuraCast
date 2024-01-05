@@ -6,7 +6,6 @@ namespace App\Controller\Api\Stations;
 
 use App\Controller\SingleActionInterface;
 use App\Entity\Api\Status;
-use App\Exception\StationUnsupportedException;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Radio\Adapters;
@@ -28,11 +27,7 @@ final class UpdateMetadataAction implements SingleActionInterface
     ): ResponseInterface {
         $station = $request->getStation();
 
-        $backend = $this->adapters->getBackendAdapter($station);
-
-        if (null === $backend) {
-            throw new StationUnsupportedException();
-        }
+        $backend = $this->adapters->requireBackendAdapter($station);
 
         $allowedMetaFields = [
             'title',

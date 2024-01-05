@@ -88,8 +88,6 @@ final class ChartsAction implements SingleActionInterface
 
             foreach ($stats as $row) {
                 $stationId = $row['station_id'];
-
-                /** @var CarbonImmutable $moment */
                 $moment = $row['moment'];
 
                 $sortableKey = $moment->format('Y-m-d');

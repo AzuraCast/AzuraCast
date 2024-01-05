@@ -94,7 +94,7 @@ abstract class AbstractConnector implements ConnectorInterface
             // Replaces {{ var.name }} with the flattened $values['var.name']
             $vars[$varKey] = preg_replace_callback(
                 "/\{\{(\s*)([a-zA-Z\d\-_.]+)(\s*)}}/",
-                static function ($matches) use ($values) {
+                static function (array $matches) use ($values): string {
                     $innerValue = strtolower(trim($matches[2]));
                     return $values[$innerValue] ?? '';
                 },
@@ -107,11 +107,11 @@ abstract class AbstractConnector implements ConnectorInterface
 
     /**
      * Determine if a passed URL is valid and return it if so, or return null otherwise.
-     *
-     * @param string|null $urlString
      */
-    protected function getValidUrl(?string $urlString = null): ?string
+    protected function getValidUrl(mixed $urlString = null): ?string
     {
+        $urlString = Utilities\Types::stringOrNull($urlString, true);
+
         $uri = Utilities\Urls::tryParseUserUrl(
             $urlString,
             'Webhook'

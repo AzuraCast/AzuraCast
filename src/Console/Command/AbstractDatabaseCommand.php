@@ -60,7 +60,7 @@ abstract class AbstractDatabaseCommand extends CommandAbstract
 
         $this->passThruProcess(
             $io,
-            'mysqldump ' . implode(' ', $commandFlags) . ' $DB_DATABASE > $DB_DEST',
+            'mariadb-dump ' . implode(' ', $commandFlags) . ' $DB_DATABASE > $DB_DEST',
             dirname($path),
             $commandEnvVars
         );
@@ -89,7 +89,7 @@ abstract class AbstractDatabaseCommand extends CommandAbstract
 
         $this->passThruProcess(
             $io,
-            'mysql ' . implode(' ', $commandFlags) . ' $DB_DATABASE < $DB_DUMP',
+            'mariadb ' . implode(' ', $commandFlags) . ' $DB_DATABASE < $DB_DUMP',
             dirname($path),
             $commandEnvVars
         );

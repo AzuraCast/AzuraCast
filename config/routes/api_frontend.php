@@ -47,6 +47,31 @@ return static function (RouteCollectorProxy $group) {
                         '/api-key/{id}',
                         Controller\Api\Frontend\Account\ApiKeysController::class . ':deleteAction'
                     );
+
+                    $group->get(
+                        '/webauthn/register',
+                        Controller\Api\Frontend\Account\WebAuthn\GetRegistrationAction::class
+                    )->setName('api:frontend:webauthn:register');
+
+                    $group->put(
+                        '/webauthn/register',
+                        Controller\Api\Frontend\Account\WebAuthn\PutRegistrationAction::class
+                    );
+
+                    $group->get(
+                        '/passkeys',
+                        Controller\Api\Frontend\Account\PasskeysController::class . ':listAction'
+                    )->setName('api:frontend:passkeys');
+
+                    $group->get(
+                        '/passkey/{id}',
+                        Controller\Api\Frontend\Account\PasskeysController::class . ':getAction'
+                    )->setName('api:frontend:passkey');
+
+                    $group->delete(
+                        '/passkey/{id}',
+                        Controller\Api\Frontend\Account\PasskeysController::class . ':deleteAction'
+                    );
                 }
             );
 

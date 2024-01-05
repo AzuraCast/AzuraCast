@@ -7,6 +7,7 @@ namespace App\Webhook\Connector;
 use App\Entity\Api\NowPlaying\NowPlaying;
 use App\Entity\Station;
 use App\Entity\StationWebhook;
+use App\Utilities\Types;
 
 /**
  * Telegram web hook connector.
@@ -26,10 +27,10 @@ final class Telegram extends AbstractConnector
     ): void {
         $config = $webhook->getConfig();
 
-        $botToken = trim($config['bot_token'] ?? '');
-        $chatId = trim($config['chat_id'] ?? '');
+        $botToken = Types::stringOrNull($config['bot_token'], true);
+        $chatId = Types::stringOrNull($config['chat_id'], true);
 
-        if (empty($botToken) || empty($chatId)) {
+        if (null === $botToken || null === $chatId) {
             throw $this->incompleteConfigException($webhook);
         }
 
@@ -40,13 +41,17 @@ final class Telegram extends AbstractConnector
             $np
         );
 
-        $apiUrl = (!empty($config['api'])) ? rtrim($config['api'], '/') : 'https://api.telegram.org';
+        $apiUrl = Types::stringOrNull($config['api'], true);
+        $apiUrl = (null !== $apiUrl)
+            ? rtrim($apiUrl, '/')
+            : 'https://api.telegram.org';
+
         $webhookUrl = $apiUrl . '/bot' . $botToken . '/sendMessage';
 
         $requestParams = [
             'chat_id' => $chatId,
             'text' => $messages['text'],
-            'parse_mode' => $config['parse_mode'] ?? 'Markdown', // Markdown or HTML
+            'parse_mode' => Types::stringOrNull($config['parse_mode'], true) ?? 'Markdown', // Markdown or HTML
         ];
 
         $response = $this->httpClient->request(

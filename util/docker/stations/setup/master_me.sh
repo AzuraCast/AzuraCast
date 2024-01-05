@@ -21,3 +21,6 @@ mkdir -p /usr/lib/lv2
 mv ./master_me-easy-presets.lv2 /usr/lib/lv2
 mv ./master_me.lv2 /usr/lib/lv2
 mv ./master_me-ladspa.so /usr/lib/ladspa/master_me.so
+
+cd /tmp
+rm -rf /tmp/master_me

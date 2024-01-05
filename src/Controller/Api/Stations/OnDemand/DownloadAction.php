@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Controller\Api\Stations\OnDemand;
 
 use App\Controller\SingleActionInterface;
-use App\Entity\Api\Error;
 use App\Entity\Repository\StationMediaRepository;
 use App\Flysystem\StationFilesystems;
 use App\Http\Response;
@@ -29,12 +28,6 @@ final class DownloadAction implements SingleActionInterface
         $mediaId = $params['media_id'];
 
         $station = $request->getStation();
-
-        // Verify that the station supports on-demand streaming.
-        if (!$station->getEnableOnDemand()) {
-            return $response->withStatus(403)
-                ->withJson(new Error(403, __('This station does not support on-demand streaming.')));
-        }
 
         $media = $this->mediaRepo->requireByUniqueId($mediaId, $station);
 

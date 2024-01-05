@@ -14,57 +14,6 @@ use Slim\Http\Response as SlimResponse;
 
 final class Response extends SlimResponse
 {
-    public const CACHE_ONE_MINUTE = 60;
-    public const CACHE_ONE_HOUR = 3600;
-    public const CACHE_ONE_DAY = 86400;
-    public const CACHE_ONE_MONTH = 2592000;
-    public const CACHE_ONE_YEAR = 31536000;
-
-    /**
-     * Send headers that expire the content immediately and prevent caching.
-     * @return static
-     */
-    public function withNoCache(): Response
-    {
-        $response = $this->response
-            ->withHeader('Pragma', 'no-cache')
-            ->withHeader('Expires', gmdate('D, d M Y H:i:s \G\M\T', 0))
-            ->withHeader('Cache-Control', 'private, no-cache, no-store')
-            ->withHeader('X-Accel-Expires', '0'); // CloudFlare
-
-        return new Response($response, $this->streamFactory);
-    }
-
-    /**
-     * Send headers that expire the content in the specified number of seconds.
-     *
-     * @param int $seconds
-     *
-     * @return static
-     */
-    public function withCacheLifetime(int $seconds = self::CACHE_ONE_MONTH): Response
-    {
-        $response = $this->response
-            ->withHeader('Pragma', '')
-            ->withHeader('Expires', gmdate('D, d M Y H:i:s \G\M\T', time() + $seconds))
-            ->withHeader('Cache-Control', 'public, must-revalidate, max-age=' . $seconds)
-            ->withHeader('X-Accel-Expires', (string)$seconds); // CloudFlare
-
-        return new Response($response, $this->streamFactory);
-    }
-
-    /**
-     * Returns whether the request has a "cache lifetime" assigned to it.
-     */
-    public function hasCacheLifetime(): bool
-    {
-        if ($this->response->hasHeader('Pragma')) {
-            return (!str_contains($this->response->getHeaderLine('Pragma'), 'no-cache'));
-        }
-
-        return (!str_contains($this->response->getHeaderLine('Cache-Control'), 'no-cache'));
-    }
-
     /**
      * Don't escape forward slashes by default on JSON responses.
      *
@@ -134,8 +83,7 @@ final class Response extends SlimResponse
         }
 
         $response = $this->withHeader('Content-Disposition', $disposition)
-            ->withHeader('Content-Length', (string)$fileMeta->fileSize())
-            ->withHeader('X-Accel-Buffering', 'no');
+            ->withHeader('Content-Length', (string)$fileMeta->fileSize());
 
         if ($useXAccelRedirect) {
             $adapter = $filesystem->getAdapter();

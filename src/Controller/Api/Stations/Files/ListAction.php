@@ -432,17 +432,18 @@ final class ListAction implements SingleActionInterface
         int $stationId
     ): FileList {
         if (null !== $row->media->media_id) {
-            $artMediaId = $row->media->unique_id;
+            $routeParams = [
+                'station_id' => $stationId,
+                'media_id' => $row->media->unique_id,
+            ];
+
             if (0 !== $row->media->art_updated_at) {
-                $artMediaId .= '-' . $row->media->art_updated_at;
+                $routeParams['timestamp'] = $row->media->art_updated_at;
             }
 
             $row->media->art = $router->named(
                 'api:stations:media:art',
-                [
-                    'station_id' => $stationId,
-                    'media_id' => $artMediaId,
-                ]
+                routeParams: $routeParams
             );
 
             $row->media->links = [
@@ -457,14 +458,18 @@ final class ListAction implements SingleActionInterface
                     ['station_id' => $stationId, 'id' => $row->media->media_id],
                 ),
                 'art' => $router->named(
-                    'api:stations:media:art-internal',
-                    ['station_id' => $stationId, 'media_id' => $row->media->media_id]
+                    'api:stations:media:art',
+                    [
+                        'station_id' => $stationId,
+                        'media_id' => $row->media->media_id,
+                    ]
                 ),
                 'waveform' => $router->named(
                     'api:stations:media:waveform',
                     [
                         'station_id' => $stationId,
-                        'media_id' => $row->media->unique_id . '-' . $row->media->art_updated_at,
+                        'media_id' => $row->media->unique_id,
+                        'timestamp' => $row->media->art_updated_at,
                     ]
                 ),
             ];

@@ -78,7 +78,7 @@ const doSendTest = () => {
         }).then(() => {
             notifySuccess($gettext('Test message sent.'));
         }).finally(() => {
-            close();
+            hide();
         });
     });
 };

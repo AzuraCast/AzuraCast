@@ -4,21 +4,16 @@ declare(strict_types=1);
 
 namespace App\Middleware;
 
+use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
-use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
 /**
  * Apply the "X-Forwarded-Proto" header if it exists.
  */
-final class ApplyXForwardedProto implements MiddlewareInterface
+final class ApplyXForwardedProto extends AbstractMiddleware
 {
-    /**
-     * @param ServerRequestInterface $request
-     * @param RequestHandlerInterface $handler
-     */
-    public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
+    public function __invoke(ServerRequest $request, RequestHandlerInterface $handler): ResponseInterface
     {
         if ($request->hasHeader('X-Forwarded-Proto')) {
             $uri = $request->getUri();

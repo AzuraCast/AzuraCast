@@ -25,6 +25,8 @@ final class StationPlaylistFolderRepository extends AbstractStationBasedReposito
         string $path,
         array $playlists
     ): void {
+        $path = self::filterPath($path);
+
         foreach ($this->getPlaylistIdsForFolder($station, $path) as $playlistId) {
             unset($playlists[$playlistId]);
         }
@@ -50,8 +52,9 @@ final class StationPlaylistFolderRepository extends AbstractStationBasedReposito
         string $path,
         array $playlists
     ): void {
-        $toDelete = [];
+        $path = self::filterPath($path);
 
+        $toDelete = [];
         foreach ($this->getPlaylistIdsForFolder($station, $path) as $playlistId) {
             if (isset($playlists[$playlistId])) {
                 unset($playlists[$playlistId]);
@@ -88,6 +91,25 @@ final class StationPlaylistFolderRepository extends AbstractStationBasedReposito
     /**
      * @return int[]
      */
+    public function getPlaylistIdsForFolderAndParents(
+        Station $station,
+        string $path
+    ): array {
+        $path = self::filterPath($path);
+        $playlistIds = [];
+
+        for ($i = 0; $i <= substr_count($path, '/'); $i++) {
+            $pathToSearch = implode('/', explode('/', $path, 0 - $i));
+
+            $playlistIds = array_merge($playlistIds, $this->getPlaylistIdsForFolder($station, $pathToSearch));
+        }
+
+        return array_unique($playlistIds);
+    }
+
+    /**
+     * @return int[]
+     */
     protected function getPlaylistIdsForFolder(
         Station $station,
         string $path
@@ -99,7 +121,12 @@ final class StationPlaylistFolderRepository extends AbstractStationBasedReposito
                 WHERE spf.station = :station AND spf.path = :path
             DQL
         )->setParameter('station', $station)
-            ->setParameter('path', $path)
+            ->setParameter('path', self::filterPath($path))
             ->getSingleColumnResult();
+    }
+
+    public static function filterPath(string $path): string
+    {
+        return trim($path, '/');
     }
 }

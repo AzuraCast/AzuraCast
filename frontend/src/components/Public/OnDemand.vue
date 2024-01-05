@@ -1,18 +1,11 @@
 <template>
     <section
         id="content"
+        class="full-height-wrapper"
         role="main"
-        class="d-flex align-items-stretch"
-        style="height: 100vh;"
     >
-        <div
-            class="container pt-5 pb-5 h-100"
-            style="flex: 1;"
-        >
-            <div
-                class="card"
-                style="height: 100%;"
-            >
+        <div class="container">
+            <div class="card">
                 <div class="card-header text-bg-primary">
                     <div class="d-flex align-items-center">
                         <div class="flex-shrink">
@@ -76,7 +69,7 @@
 
 <script setup lang="ts">
 import InlinePlayer from '../InlinePlayer.vue';
-import DataTable, { DataTableField } from '~/components/Common/DataTable.vue';
+import DataTable, {DataTableField} from '~/components/Common/DataTable.vue';
 import {forEach} from 'lodash';
 import Icon from '~/components/Common/Icon.vue';
 import PlayButton from "~/components/Common/PlayButton.vue";
@@ -112,8 +105,8 @@ const props = defineProps({
 const {$gettext} = useTranslate();
 
 const fields: DataTableField[] = [
-    {key: 'download_url', label: ' '},
-    {key: 'art', label: $gettext('Art')},
+    {key: 'download_url', label: ' ', class: 'shrink'},
+    {key: 'art', label: $gettext('Art'), class: 'shrink'},
     {
         key: 'title',
         label: $gettext('Title'),
@@ -152,39 +145,3 @@ forEach(props.customFields.slice(), (field) => {
 const $lightbox = ref<LightboxTemplateRef>(null);
 useProvideLightbox($lightbox);
 </script>
-
-<style lang="scss">
-.ondemand.embed {
-    .container {
-        max-width: 100%;
-        padding: 0 !important;
-    }
-}
-
-#public_on_demand {
-    .datatable-main {
-        overflow-y: auto;
-    }
-
-    table.table {
-        thead tr th:nth-child(1),
-        tbody tr td:nth-child(1) {
-            padding-right: 0.75rem;
-            width: 3rem;
-            white-space: nowrap;
-        }
-
-        thead tr th:nth-child(2),
-        tbody tr td:nth-child(2) {
-            padding-left: 0.5rem;
-            padding-right: 0.5rem;
-            width: 40px;
-        }
-
-        thead tr th:nth-child(3),
-        tbody tr td:nth-child(3) {
-            padding-left: 0.5rem;
-        }
-    }
-}
-</style>

@@ -13,6 +13,7 @@ use App\Http\Response;
 use App\Http\ServerRequest;
 use App\OpenApi;
 use Carbon\CarbonInterface;
+use Doctrine\ORM\AbstractQuery;
 use InvalidArgumentException;
 use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
@@ -244,6 +245,7 @@ final class PlaylistsController extends AbstractScheduledEntityController
 
         $return = $this->toArray($record);
 
+        /** @var array{num_songs: int, total_length: string} $songTotals */
         $songTotals = $this->em->createQuery(
             <<<'DQL'
                 SELECT count(sm.id) AS num_songs, sum(sm.length) AS total_length
@@ -252,12 +254,12 @@ final class PlaylistsController extends AbstractScheduledEntityController
                 WHERE spm.playlist = :playlist
             DQL
         )->setParameter('playlist', $record)
-            ->getArrayResult();
+            ->getSingleResult(AbstractQuery::HYDRATE_SCALAR);
 
         $return['short_name'] = StationPlaylist::generateShortName($return['name']);
 
-        $return['num_songs'] = (int)$songTotals[0]['num_songs'];
-        $return['total_length'] = (int)$songTotals[0]['total_length'];
+        $return['num_songs'] = $songTotals['num_songs'];
+        $return['total_length'] = round((float)$songTotals['total_length']);
 
         $isInternal = ('true' === $request->getParam('internal', 'false'));
         $router = $request->getRouter();

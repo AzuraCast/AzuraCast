@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace App\Middleware;
 
+use App\Http\ServerRequest;
 use JsonException;
 use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
-use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
 use const JSON_THROW_ON_ERROR;
@@ -21,13 +20,9 @@ use const JSON_THROW_ON_ERROR;
  * attribute of the PSR-7 request. This implementation is transparent to any controllers
  * using this code.
  */
-final class HandleMultipartJson implements MiddlewareInterface
+final class HandleMultipartJson extends AbstractMiddleware
 {
-    /**
-     * @param ServerRequestInterface $request
-     * @param RequestHandlerInterface $handler
-     */
-    public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
+    public function __invoke(ServerRequest $request, RequestHandlerInterface $handler): ResponseInterface
     {
         $parsedBody = $request->getParsedBody();
 

@@ -8,6 +8,7 @@ use App\Entity\Api\NowPlaying\NowPlaying;
 use App\Entity\Station;
 use App\Entity\StationWebhook;
 use App\Service\Mail;
+use App\Utilities\Types;
 use GuzzleHttp\Client;
 use RuntimeException;
 
@@ -34,11 +35,11 @@ final class Email extends AbstractConnector
         }
 
         $config = $webhook->getConfig();
-        $emailTo = $config['to'];
-        $emailSubject = $config['subject'];
-        $emailBody = $config['message'];
+        $emailTo = Types::stringOrNull($config['to'], true);
+        $emailSubject = Types::stringOrNull($config['subject'], true);
+        $emailBody = Types::stringOrNull($config['message'], true);
 
-        if (empty($emailTo) || empty($emailSubject) || empty($emailBody)) {
+        if (null === $emailTo || null === $emailSubject || null === $emailBody) {
             throw $this->incompleteConfigException($webhook);
         }
 

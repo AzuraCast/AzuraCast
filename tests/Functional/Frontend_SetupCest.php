@@ -37,8 +37,8 @@ class Frontend_SetupCest extends CestAbstract
 
         $I->amOnPage('/login');
 
-        $I->submitForm(
-            '#login-form',
+        $I->sendPost(
+            '/login',
             [
                 'username' => $this->login_username,
                 'password' => $this->login_password,

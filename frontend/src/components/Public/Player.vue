@@ -140,7 +140,7 @@
 <script setup lang="ts">
 import AudioPlayer from '~/components/Common/AudioPlayer.vue';
 import PlayButton from "~/components/Common/PlayButton.vue";
-import {computed, onMounted, ref, shallowRef, watch} from "vue";
+import {computed, nextTick, onMounted, ref, shallowRef, watch} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import useNowPlaying from "~/functions/useNowPlaying";
 import playerProps from "~/components/Public/playerProps";
@@ -149,6 +149,7 @@ import AlbumArt from "~/components/Common/AlbumArt.vue";
 import {useAzuraCastStation} from "~/vendor/azuracast";
 import usePlayerVolume from "~/functions/usePlayerVolume";
 import {usePlayerStore} from "~/functions/usePlayerStore.ts";
+import {useEventListener} from "@vueuse/core";
 
 const props = defineProps({
     ...playerProps
@@ -177,8 +178,12 @@ const currentStream = shallowRef<CurrentStreamDescriptor>({
     hls: false,
 });
 
-const enable_hls = computed(() => {
+const enableHls = computed(() => {
     return props.showHls && np.value?.station?.hls_enabled;
+});
+
+const hlsIsDefault = computed(() => {
+    return enableHls.value && np.value?.station?.hls_is_default;
 });
 
 const {$gettext} = useTranslate();
@@ -186,7 +191,7 @@ const {$gettext} = useTranslate();
 const streams = computed<CurrentStreamDescriptor[]>(() => {
     const allStreams = [];
 
-    if (enable_hls.value) {
+    if (enableHls.value) {
         allStreams.push({
             name: $gettext('HLS'),
             url: np.value?.station?.hls_url,
@@ -238,12 +243,17 @@ const switchStream = (new_stream: CurrentStreamDescriptor) => {
     });
 };
 
+if (props.autoplay) {
+    const stop = useEventListener(document, "now-playing", async () => {
+        await nextTick();
+
+        switchStream(currentStream.value);
+        stop();
+    });
+}
+
 onMounted(() => {
     document.dispatchEvent(new CustomEvent("player-ready"));
-
-    if (props.autoplay) {
-        switchStream(currentStream.value);
-    }
 });
 
 const onNowPlayingUpdated = (np_new) => {
@@ -254,7 +264,7 @@ const onNowPlayingUpdated = (np_new) => {
     let $currentStream = currentStream.value;
 
     if ($currentStream.url === '' && $streams.length > 0) {
-        if (props.hlsIsDefault && enable_hls.value) {
+        if (hlsIsDefault.value) {
             currentStream.value = $streams[0];
         } else {
             $currentStream = null;

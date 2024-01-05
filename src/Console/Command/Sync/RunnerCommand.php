@@ -10,7 +10,6 @@ use App\Lock\LockFactory;
 use App\Service\HighAvailability;
 use App\Sync\Task\AbstractTask;
 use Carbon\CarbonImmutable;
-use Cron\CronExpression;
 use DateTimeZone;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -60,10 +59,7 @@ final class RunnerCommand extends AbstractSyncRunnerCommand
         $now = CarbonImmutable::now(new DateTimeZone('UTC'));
 
         foreach ($syncTasksEvent->getTasks() as $taskClass) {
-            $schedulePattern = $taskClass::getSchedulePattern();
-            $cronExpression = new CronExpression($schedulePattern);
-
-            if ($cronExpression->isDue($now)) {
+            if ($taskClass::isDue($now, $this->environment, $settings)) {
                 $this->start($io, $taskClass);
             }
         }

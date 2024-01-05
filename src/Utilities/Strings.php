@@ -10,28 +10,10 @@ use voku\helper\UTF8;
 final class Strings
 {
     /**
-     * Given a nullable string value, return null if the string is null or otherwise
-     * is considered "empty", or the trimmed value otherwise.
-     */
-    public static function nonEmptyOrNull(?string $input): ?string
-    {
-        if (null === $input || '' === $input) {
-            return null;
-        }
-
-        $input = trim($input);
-        return (!empty($input))
-            ? $input
-            : null;
-    }
-
-    /**
      * Truncate text (adding "..." if needed)
      */
     public static function truncateText(string $text, int $limit = 80, string $pad = '...'): string
     {
-        mb_internal_encoding('UTF-8');
-
         if (mb_strlen($text) <= $limit) {
             return $text;
         }

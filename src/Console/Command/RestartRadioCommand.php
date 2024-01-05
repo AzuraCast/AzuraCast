@@ -8,6 +8,7 @@ use App\Entity\Repository\StationRepository;
 use App\Entity\Station;
 use App\Nginx\Nginx;
 use App\Radio\Configuration;
+use App\Utilities\Types;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -45,8 +46,8 @@ final class RestartRadioCommand extends CommandAbstract
     {
         $io = new SymfonyStyle($input, $output);
 
-        $stationName = $input->getArgument('station-name');
-        $noSupervisorRestart = (bool)$input->getOption('no-supervisor-restart');
+        $stationName = Types::stringOrNull($input->getArgument('station-name'));
+        $noSupervisorRestart = Types::bool($input->getOption('no-supervisor-restart'));
 
         if (!empty($stationName)) {
             $station = $this->stationRepo->findByIdentifier($stationName);

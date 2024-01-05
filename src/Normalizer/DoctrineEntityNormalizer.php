@@ -14,6 +14,7 @@ use InvalidArgumentException;
 use ReflectionClass;
 use ReflectionException;
 use ReflectionProperty;
+use Symfony\Component\Serializer\Mapping\AttributeMetadataInterface;
 use Symfony\Component\Serializer\Mapping\Factory\ClassMetadataFactoryInterface;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
@@ -45,8 +46,11 @@ final class DoctrineEntityNormalizer extends AbstractObjectNormalizer
      *
      * @return array|string|int|float|bool|ArrayObject<int, mixed>|null
      */
-    public function normalize(mixed $object, ?string $format = null, array $context = []): mixed
-    {
+    public function normalize(
+        mixed $object,
+        ?string $format = null,
+        array $context = []
+    ): array|string|int|float|bool|ArrayObject|null {
         if (!is_object($object)) {
             throw new InvalidArgumentException('Cannot normalize non-object.');
         }
@@ -113,12 +117,12 @@ final class DoctrineEntityNormalizer extends AbstractObjectNormalizer
         return $context;
     }
 
-    public function supportsNormalization($data, string $format = null): bool
+    public function supportsNormalization(mixed $data, string $format = null, array $context = []): bool
     {
         return $this->isEntity($data);
     }
 
-    public function supportsDenormalization($data, $type, string $format = null): bool
+    public function supportsDenormalization(mixed $data, string $type, string $format = null, array $context = []): bool
     {
         return $this->isEntity($type);
     }
@@ -127,13 +131,13 @@ final class DoctrineEntityNormalizer extends AbstractObjectNormalizer
      * @param object|class-string<object> $classOrObject
      * @param array $context
      * @param bool $attributesAsString
-     * @return array|false
+     * @return string[]|AttributeMetadataInterface[]|bool
      */
     protected function getAllowedAttributes(
         $classOrObject,
         array $context,
         bool $attributesAsString = false
-    ): array|false {
+    ): array|bool {
         $groups = $this->getGroups($context);
         if (empty($groups)) {
             return false;

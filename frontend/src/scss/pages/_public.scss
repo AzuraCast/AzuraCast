@@ -37,4 +37,36 @@ body.page-minimal {
   .might-overflow {
     @include might-overflow();
   }
+
+  &.embed {
+    .full-height-wrapper {
+      .container {
+        max-width: 100%;
+        padding: 0 !important;
+      }
+    }
+  }
+
+  &:not(.embed) {
+    .full-height-wrapper {
+      display: flex;
+      align-items: stretch;
+      height: 100vh;
+
+      .container {
+        padding-top: 3rem;
+        padding-bottom: 3rem;
+        height: 100%;
+        flex: 1;
+
+        .card {
+          height: 100%;
+        }
+
+        .datatable-main {
+          overflow-y: auto;
+        }
+      }
+    }
+  }
 }

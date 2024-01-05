@@ -22,8 +22,6 @@ final class DownloadAction extends AbstractFileAction
         [$path, $fs] = $this->getFile($path);
 
         /** @var ExtendedFilesystemInterface $fs */
-        return $response
-            ->withNoCache()
-            ->streamFilesystemFile($fs, $path);
+        return $response->streamFilesystemFile($fs, $path);
     }
 }

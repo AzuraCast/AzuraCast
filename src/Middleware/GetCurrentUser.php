@@ -12,14 +12,12 @@ use App\Entity\AuditLog;
 use App\Entity\Repository\UserRepository;
 use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
-use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
 /**
  * Get the current user entity object and assign it into the request if it exists.
  */
-final class GetCurrentUser implements MiddlewareInterface
+final class GetCurrentUser extends AbstractMiddleware
 {
     use EnvironmentAwareTrait;
 
@@ -30,12 +28,12 @@ final class GetCurrentUser implements MiddlewareInterface
     ) {
     }
 
-    public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
+    public function __invoke(ServerRequest $request, RequestHandlerInterface $handler): ResponseInterface
     {
         // Initialize the Auth for this request.
         $auth = new Auth(
             userRepo: $this->userRepo,
-            session: $request->getAttribute(ServerRequest::ATTR_SESSION),
+            session: $request->getSession(),
         );
         $auth->setEnvironment($this->environment);
 
@@ -43,8 +41,7 @@ final class GetCurrentUser implements MiddlewareInterface
 
         $request = $request
             ->withAttribute(ServerRequest::ATTR_AUTH, $auth)
-            ->withAttribute(ServerRequest::ATTR_USER, $user)
-            ->withAttribute('is_logged_in', (null !== $user));
+            ->withAttribute(ServerRequest::ATTR_USER, $user);
 
         // Initialize Customization (timezones, locales, etc) based on the current logged in user.
         $customization = $this->customization->withRequest($request);

@@ -204,15 +204,13 @@ abstract class CestAbstract
         $I->amOnPage('/');
         $I->seeInCurrentUrl('/login');
 
-        $I->submitForm(
-            '#login-form',
-            [
-                'username' => $this->login_username,
-                'password' => $this->login_password,
-            ]
-        );
+        $I->sendPost('/login', [
+            'username' => $this->login_username,
+            'password' => $this->login_password,
+        ]);
 
-        $I->seeInSource('Logged In');
+        $I->amOnPage('/');
+        $I->seeInCurrentUrl('/dashboard');
     }
 
     protected function testCrudApi(

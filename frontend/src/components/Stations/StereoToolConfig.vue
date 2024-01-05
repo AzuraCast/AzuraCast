@@ -17,6 +17,7 @@
             <p class="card-text">
                 {{ $gettext('Stereo Tool is an industry standard for software audio processing. For more information on how to configure it, please refer to the') }}
                 <a
+                    class="alert-link"
                     href="https://www.thimeo.com/stereo-tool/"
                     target="_blank"
                 >

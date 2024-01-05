@@ -110,6 +110,7 @@ final class HlsListeners
         }
 
         try {
+            /** @var array<array-key, string> $rowJson */
             $rowJson = json_decode($row, true, 512, JSON_THROW_ON_ERROR);
         } catch (JsonException) {
             return null;

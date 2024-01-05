@@ -6,6 +6,7 @@ namespace App\Controller\Api\Traits;
 
 use App\Http\ServerRequest;
 use App\Utilities\DateRange;
+use App\Utilities\Types;
 use Carbon\CarbonImmutable;
 use DateTimeZone;
 
@@ -26,24 +27,31 @@ trait AcceptsDateRange
         );
 
         $queryParams = $request->getQueryParams();
+        $startRaw = Types::stringOrNull($queryParams[$startParam] ?? null, true);
+        $endRaw = Types::stringOrNull($queryParams[$endParam] ?? null, true);
 
-        if (empty($queryParams[$startParam]) || empty($queryParams[$endParam])) {
+        if (null === $startRaw && null === $endRaw) {
             return $default;
         }
 
-        $start = CarbonImmutable::parse($queryParams[$startParam], $tz)
-            ->setTimezone($tz);
+        $start = (null !== $startRaw)
+            ? CarbonImmutable::parse($startRaw, $tz)->setTimezone($tz)->setSecond(0)
+            : CarbonImmutable::now($tz)->startOf('day');
 
-        $end = CarbonImmutable::parse($queryParams[$endParam], $tz)
-            ->setTimezone($tz);
+        $end = (null !== $endRaw)
+            ? CarbonImmutable::parse($endRaw, $tz)->setTimezone($tz)->setSecond(59)
+            : CarbonImmutable::now($tz)->endOf('day');
 
-        if ($start->equalTo($end)) {
-            return $default;
+        // If no time is passed for the end date, use the end of the day instead of midnight.
+        if (null !== $endRaw) {
+            $endDateParts = date_parse($endRaw);
+            if ($endDateParts['hour'] === false) {
+                $end = $end->endOf('day');
+            }
         }
 
-        return new DateRange(
-            $start->setSecond(0),
-            $end->setSecond(59)
-        );
+        return ($start < $end)
+            ? new DateRange($start, $end)
+            : new DateRange($end, $start);
     }
 }

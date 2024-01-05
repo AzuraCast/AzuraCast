@@ -9,6 +9,7 @@ use App\Container\EntityManagerAwareTrait;
 use App\Entity\Repository\UserLoginTokenRepository;
 use App\Entity\User;
 use App\Http\RouterInterface;
+use App\Utilities\Types;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -39,7 +40,7 @@ final class LoginTokenCommand extends CommandAbstract
     {
         $io = new SymfonyStyle($input, $output);
 
-        $email = $input->getArgument('email');
+        $email = Types::string($input->getArgument('email'));
 
         $io->title('Generate Account Login Recovery URL');
 

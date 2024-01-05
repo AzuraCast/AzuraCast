@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Api\Stations\Waveform;
 
 use App\Controller\SingleActionInterface;
+use App\Controller\Traits\ResponseHasCacheLifetime;
 use App\Entity\Repository\StationMediaRepository;
 use App\Entity\StationMedia;
 use App\Flysystem\StationFilesystems;
@@ -28,14 +29,9 @@ final class GetWaveformAction implements SingleActionInterface
         /** @var string $mediaId */
         $mediaId = $params['media_id'];
 
-        $response = $response->withCacheLifetime(Response::CACHE_ONE_YEAR);
-
         $station = $request->getStation();
 
         $fsMedia = $this->stationFilesystems->getMediaFilesystem($station);
-
-        // If a timestamp delimiter is added, strip it automatically.
-        $mediaId = explode('-', $mediaId, 2)[0];
 
         if (StationMedia::UNIQUE_ID_LENGTH === strlen($mediaId)) {
             $waveformPath = StationMedia::getWaveformPath($mediaId);

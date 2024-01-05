@@ -11,8 +11,7 @@ use App\Entity\PodcastEpisode;
 use App\Entity\Repository\PodcastRepository;
 use App\Entity\Repository\StationRepository;
 use App\Entity\Station;
-use App\Exception\PodcastNotFoundException;
-use App\Exception\StationNotFoundException;
+use App\Exception\NotFoundException;
 use App\Flysystem\StationFilesystems;
 use App\Http\Response;
 use App\Http\RouterInterface;
@@ -65,17 +64,17 @@ final class PodcastFeedAction implements SingleActionInterface
         $station = $request->getStation();
 
         if (!$station->getEnablePublicPage()) {
-            throw new StationNotFoundException();
+            throw NotFoundException::station();
         }
 
         $podcast = $this->podcastRepository->fetchPodcastForStation($station, $podcastId);
 
         if ($podcast === null) {
-            throw new PodcastNotFoundException();
+            throw NotFoundException::podcast();
         }
 
         if (!$this->checkHasPublishedEpisodes($podcast)) {
-            throw new PodcastNotFoundException();
+            throw NotFoundException::podcast();
         }
 
         $generatedRss = $this->generateRssFeed($podcast, $station, $request);
@@ -241,9 +240,16 @@ final class PodcastFeedAction implements SingleActionInterface
         );
 
         if ($podcastsFilesystem->fileExists(Podcast::getArtPath($podcast->getIdRequired()))) {
+            $routeParams = [
+                'podcast_id' => $podcast->getIdRequired(),
+            ];
+            if (0 !== $podcast->getArtUpdatedAt()) {
+                $routeParams['timestamp'] = $podcast->getArtUpdatedAt();
+            }
+
             $podcastArtworkSrc = $this->router->fromHere(
                 routeName: 'api:stations:podcast:art',
-                routeParams: ['podcast_id' => $podcast->getIdRequired() . '|' . $podcast->getArtUpdatedAt()],
+                routeParams: $routeParams,
                 absolute: true
             );
         }
@@ -349,9 +355,16 @@ final class PodcastFeedAction implements SingleActionInterface
         );
 
         if ($podcastsFilesystem->fileExists(PodcastEpisode::getArtPath($episode->getIdRequired()))) {
+            $routeParams = [
+                'episode_id' => $episode->getId(),
+            ];
+            if (0 !== $episode->getArtUpdatedAt()) {
+                $routeParams['timestamp'] = $episode->getArtUpdatedAt();
+            }
+
             $episodeArtworkSrc = $this->router->fromHere(
                 routeName: 'api:stations:podcast:episode:art',
-                routeParams: ['episode_id' => $episode->getId() . '|' . $episode->getArtUpdatedAt()],
+                routeParams: $routeParams,
                 absolute: true
             );
         }

@@ -16,6 +16,10 @@ final class DonateAdvisorCheck
 
     public function __invoke(GetNotifications $event): void
     {
+        if (!$this->environment->isProduction()) {
+            return;
+        }
+
         $request = $event->getRequest();
 
         $rateLimit = $request->getRateLimit();

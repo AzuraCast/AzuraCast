@@ -1,8 +1,11 @@
 <?php
-/** @var Psr\Http\Message\RequestInterface $request */
 
-/** @var App\Session\Flash|null $flashObj */
-$flashObj = $request->getAttribute(App\Http\ServerRequest::ATTR_SESSION_FLASH);
+/** @var \App\Http\ServerRequest $request */
+try {
+    $flashObj = $request->getFlash();
+} catch (App\Exception\InvalidRequestAttribute) {
+    $flashObj = null;
+}
 
 $notifies = [];
 ?>

@@ -29,7 +29,7 @@ final class Router implements RouterInterface
     ) {
     }
 
-    public function setRequest(?ServerRequestInterface $request): void
+    public function setRequest(?ServerRequest $request): void
     {
         $this->request = $request;
         $this->baseUrl = null;

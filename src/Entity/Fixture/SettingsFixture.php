@@ -37,8 +37,9 @@ final class SettingsFixture extends AbstractFixture
             $settings->setPublicCustomJs(
                 <<<'JS'
                 (() => {
-                    window.addEventListener('DOMContentLoaded', () => {
-                        if (document.body.classList.contains('login-content')) {
+                    document.addEventListener('vue-ready', () => {
+                        var form = document.getElementById('login-form');
+                        if (form) {
                             document.querySelector('input[name="username"]').value = 'demo@azuracast.com';
                             document.querySelector('input[name="password"]').value = 'demo';
                         }

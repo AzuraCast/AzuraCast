@@ -11,6 +11,48 @@ release channel, you can take advantage of these new features and fixes.
 
 ---
 
+# AzuraCast 0.19.4 (Jan 4, 2024)
+
+## New Features/Changes
+
+- **Passwordless Login with Passkeys**: You can now associate passkeys (also known as WebAuthn) with your account and
+  then automatically log in with those passkeys any time. Popular passkeys include those provided by your operating
+  system (i.e. Windows Hello or Apple's Safari passkey system) or may be provided by third-party software (like
+  Bitwarden). They're a secure alternative to passwords and two-factor authentication. You can register multiple
+  passkeys with a single account, and if you ever misplace your passkey, you can still log in with your regular e-mail
+  address and password (and two-factor auth, if you've set one up).
+
+## Code Quality/Technical Changes
+
+- We've even further improved our performance on production installations by switching from PHP-FPM to the Roadrunner
+  PHP application engine and tweaking how we handle caching on things like album art images. These changes should
+  dramatically reduce how often PHP is called, and make it much faster when it is called.
+
+- Our High-Performance Now Playing updates through Centrifugo now send the current Now Playing data immediately upon
+  connection, meaning you can rely on it exclusively for Now Playing data instead of making another API call to load the
+  initial data. See
+  our [updated code samples](https://www.azuracast.com/docs/developers/now-playing-data/#high-performance-updates) for
+  more information.
+
+- MariaDB has been updated to 11.2. Databases will automatically be upgraded on the first boot after updating.
+
+- If you upload media to a folder and that folder is set to auto-assign to a playlist, the media will *instantly* be a
+  part of that playlist, not subject to a sync task delay; this should greatly improve the user experience when using
+  this feature.
+
+- We've identified several places in our Docker image where caches led to excessive image size. We've reduced our
+  uncompressed Docker image size from 3GB to 1.4GB, and the compressed images from 700MB to under 500MB. This should
+  mean faster update pulls and less disk space used for installation operators.
+
+## Bug Fixes
+
+- An issue causing audio recordings to break the station filesystem was fixed by Liquidsoap, and the fixed version is
+  included in this version of AzuraCast.
+
+- A bug causing fade/cue/etc. values on media of "0" or "0.0" to not properly disable crossfading/etc. has been fixed.
+
+---
+
 # AzuraCast 0.19.3 (Nov 18, 2023)
 
 ## New Features/Changes

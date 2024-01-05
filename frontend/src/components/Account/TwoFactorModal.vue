@@ -78,6 +78,7 @@ import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
 import {ModalFormTemplateRef} from "~/functions/useBaseEditModal.ts";
 import QrCode from "~/components/Account/QrCode.vue";
+import {useHasModal} from "~/functions/useHasModal.ts";
 
 const props = defineProps({
     twoFactorUrl: {
@@ -118,10 +119,7 @@ const clearContents = () => {
 };
 
 const $modal = ref<ModalFormTemplateRef>(null);
-
-const close = () => {
-    $modal.value?.hide();
-};
+const {hide, show} = useHasModal($modal);
 
 const {notifySuccess} = useNotify();
 const {axios} = useAxios();
@@ -131,13 +129,13 @@ const open = () => {
 
     loading.value = true;
 
-    $modal.value?.show();
+    show();
 
     axios.put(props.twoFactorUrl).then((resp) => {
         totp.value = resp.data;
         loading.value = false;
     }).catch(() => {
-        close();
+        hide();
     });
 };
 
@@ -155,7 +153,7 @@ const doSubmit = () => {
         }).then(() => {
             notifySuccess();
             emit('relist');
-            close();
+            hide();
         }).catch((error) => {
             error.value = error.response.data.message;
         });

@@ -4,18 +4,18 @@ declare(strict_types=1);
 
 namespace App\Traits;
 
-use Psr\Http\Message\ServerRequestInterface;
+use App\Http\ServerRequest;
 
 trait RequestAwareTrait
 {
-    protected ?ServerRequestInterface $request = null;
+    protected ?ServerRequest $request = null;
 
-    public function setRequest(?ServerRequestInterface $request): void
+    public function setRequest(?ServerRequest $request): void
     {
         $this->request = $request;
     }
 
-    public function withRequest(?ServerRequestInterface $request): self
+    public function withRequest(?ServerRequest $request): self
     {
         $newInstance = clone $this;
         $newInstance->setRequest($request);

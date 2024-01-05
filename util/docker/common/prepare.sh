@@ -44,9 +44,6 @@ apt-get install -y --no-install-recommends apt-utils
 ## Install HTTPS support for APT.
 apt-get install -y --no-install-recommends apt-transport-https ca-certificates
 
-## Install add-apt-repository
-apt-get install -y --no-install-recommends software-properties-common
-
 ## Upgrade all packages.
 apt-get dist-upgrade -y --no-install-recommends -o Dpkg::Options::="--force-confold"
 
@@ -61,7 +58,7 @@ mkdir -p /etc/my_init.d
 
 # Install other common scripts.
 apt-get install -y --no-install-recommends \
-    tini gosu curl wget tar zip unzip git rsync tzdata gnupg gpg-agent openssh-client
+    tini gosu curl wget tar zip unzip xz-utils git rsync tzdata gnupg gpg-agent openssh-client
 
 # Add scripts
 cp -rT /bd_build/scripts/ /usr/local/bin

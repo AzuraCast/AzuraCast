@@ -93,7 +93,6 @@
 
 <script setup lang="ts">
 import Icon from '~/components/Common/Icon.vue';
-import {computed} from "vue";
 import {useAxios} from "~/vendor/axios";
 import {getApiUrl} from "~/router";
 import {useAdminMenu} from "~/components/Admin/menu";
@@ -102,9 +101,8 @@ import MemoryStatsPanel from "~/components/Admin/Index/MemoryStatsPanel.vue";
 import DiskUsagePanel from "~/components/Admin/Index/DiskUsagePanel.vue";
 import ServicesPanel from "~/components/Admin/Index/ServicesPanel.vue";
 import NetworkStatsPanel from "~/components/Admin/Index/NetworkStatsPanel.vue";
-import useRefreshableAsyncState from "~/functions/useRefreshableAsyncState.ts";
-import {useIntervalFn} from "@vueuse/core";
 import Loading from "~/components/Common/Loading.vue";
+import useAutoRefreshingAsyncState from "~/functions/useAutoRefreshingAsyncState.ts";
 
 const statsUrl = getApiUrl('/admin/server/stats');
 
@@ -112,7 +110,7 @@ const menuItems = useAdminMenu();
 
 const {axiosSilent} = useAxios();
 
-const {state: stats, isLoading, execute: reloadStats} = useRefreshableAsyncState(
+const {state: stats, isLoading} = useAutoRefreshingAsyncState(
     () => axiosSilent.get(statsUrl.value).then(r => r.data),
     {
         cpu: {
@@ -154,14 +152,8 @@ const {state: stats, isLoading, execute: reloadStats} = useRefreshableAsyncState
         network: []
     },
     {
-        shallow: true
+        shallow: true,
+        timeout: 5000
     }
-);
-
-useIntervalFn(
-    () => {
-        reloadStats()
-    },
-    computed(() => (!document.hidden) ? 5000 : 10000)
 );
 </script>

@@ -3,13 +3,14 @@
     "idle_timeout": 15,
     "upload_mode": 2,
     "setstat_mode": 1,
+    "temp_path": "/tmp/sftpgo_temp",
     "actions": {
       "execute_on": [
         "upload",
         "pre-delete",
         "rename"
       ],
-      "hook": "http://127.0.0.1:6010/api/internal/sftp-event"
+      "hook": "http://localhost:6010/api/internal/sftp-event"
     },
     "defender": {
       "enabled": true,
@@ -65,7 +66,7 @@
     "driver": "bolt",
     "name": "sftpgo.db",
     "users_base_dir": "/var/azuracast/stations",
-    "external_auth_hook": "http://127.0.0.1:6010/api/internal/sftp-auth",
+    "external_auth_hook": "http://localhost:6010/api/internal/sftp-auth",
     "external_auth_scope": 0,
     "auto_backup": {
       "enabled": false

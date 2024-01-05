@@ -10,8 +10,10 @@ use App\Controller\Api\Traits\HasMediaSearch;
 use App\Controller\SingleActionInterface;
 use App\Entity\Api\Error;
 use App\Entity\Api\Status;
+use App\Entity\Repository\StationPlaylistFolderRepository;
 use App\Entity\Repository\StationPlaylistMediaRepository;
 use App\Entity\StationMedia;
+use App\Entity\StationPlaylist;
 use App\Exception\CannotProcessMediaException;
 use App\Exception\StorageLocationFullException;
 use App\Http\Response;
@@ -29,6 +31,7 @@ final class FlowUploadAction implements SingleActionInterface
     public function __construct(
         private readonly MediaProcessor $mediaProcessor,
         private readonly StationPlaylistMediaRepository $spmRepo,
+        private readonly StationPlaylistFolderRepository $spfRepo,
     ) {
     }
 
@@ -80,16 +83,32 @@ final class FlowUploadAction implements SingleActionInterface
             return $response->withJson(Error::fromException($e));
         }
 
-        // If the user is looking at a playlist's contents, add uploaded media to that playlist.
-        if ($stationMedia instanceof StationMedia && !empty($allParams['searchPhrase'])) {
-            [$searchPhrase, $playlist] = $this->parseSearchQuery(
-                $station,
-                $allParams['searchPhrase']
-            );
+        if ($stationMedia instanceof StationMedia) {
+            if (!empty($allParams['searchPhrase'])) {
+                // If the user is looking at a playlist's contents, add uploaded media to that playlist.
+                [$searchPhrase, $playlist] = $this->parseSearchQuery(
+                    $station,
+                    $allParams['searchPhrase']
+                );
 
-            if (null !== $playlist) {
-                $this->spmRepo->addMediaToPlaylist($stationMedia, $playlist);
-                $this->em->flush();
+                if (null !== $playlist) {
+                    $this->spmRepo->addMediaToPlaylist($stationMedia, $playlist);
+                    $this->em->flush();
+                }
+            } elseif (!empty($currentDir)) {
+                // If the user is viewing a regular directory, check for playlists assigned to the directory and assign
+                // them to this media immediately.
+                $playlistIds = $this->spfRepo->getPlaylistIdsForFolderAndParents($station, $currentDir);
+
+                if (!empty($playlistIds)) {
+                    foreach ($playlistIds as $playlistId) {
+                        $playlist = $this->em->find(StationPlaylist::class, $playlistId);
+                        if (null !== $playlist) {
+                            $this->spmRepo->addMediaToPlaylist($stationMedia, $playlist);
+                        }
+                    }
+                    $this->em->flush();
+                }
             }
         }
 

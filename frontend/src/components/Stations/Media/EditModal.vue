@@ -64,6 +64,7 @@ import {useNotify} from "~/functions/useNotify";
 import Tabs from "~/components/Common/Tabs.vue";
 import Tab from "~/components/Common/Tab.vue";
 import {ModalFormTemplateRef} from "~/functions/useBaseEditModal.ts";
+import {useHasModal} from "~/functions/useHasModal.ts";
 
 const props = defineProps({
     customFields: {
@@ -148,10 +149,7 @@ const resetForm = () => {
 };
 
 const $modal = ref<ModalFormTemplateRef>(null);
-
-const close = () => {
-    $modal.value?.hide();
-};
+const {hide, show} = useHasModal($modal);
 
 const {axios} = useAxios();
 
@@ -164,7 +162,7 @@ const open = (newRecordUrl, newAlbumArtUrl, newAudioUrl, newWaveformUrl) => {
     audioUrl.value = newAudioUrl;
     waveformUrl.value = newWaveformUrl;
 
-    $modal.value?.show();
+    show();
 
     axios.get(newRecordUrl).then((resp) => {
         const d = resp.data;
@@ -195,7 +193,7 @@ const open = (newRecordUrl, newAlbumArtUrl, newAudioUrl, newWaveformUrl) => {
 
         form.value = newForm;
     }).catch(() => {
-        close();
+        hide();
     }).finally(() => {
         loading.value = false;
     });
@@ -210,7 +208,7 @@ const doEdit = () => {
         axios.put(recordUrl.value, form.value).then(() => {
             notifySuccess();
             emit('relist');
-            close();
+            hide();
         }).catch((error) => {
             error.value = error.response.data.message;
         });

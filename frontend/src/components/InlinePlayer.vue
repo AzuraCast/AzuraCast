@@ -96,7 +96,6 @@ const onUpdateDuration = (newValue: number) => {
 };
 
 const onUpdateCurrentTime = (newValue: number) => {
-    console.log(newValue);
     currentTime.value = newValue;
 };
 

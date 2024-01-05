@@ -7,6 +7,7 @@ namespace App\Console\Command;
 use App\Container\ContainerAwareTrait;
 use App\Container\EnvironmentAwareTrait;
 use App\Entity\Attributes\StableMigration;
+use App\Utilities\Types;
 use Exception;
 use FilesystemIterator;
 use InvalidArgumentException;
@@ -44,7 +45,7 @@ final class RollbackDbCommand extends AbstractDatabaseCommand
 
         // Pull migration corresponding to the stable version specified.
         try {
-            $version = $input->getArgument('version');
+            $version = Types::string($input->getArgument('version'));
             $migrationVersion = $this->findMigration($version);
         } catch (Throwable $e) {
             $io->error($e->getMessage());

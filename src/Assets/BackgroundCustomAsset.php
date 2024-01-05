@@ -4,17 +4,28 @@ declare(strict_types=1);
 
 namespace App\Assets;
 
-use Intervention\Image\Constraint;
-use Intervention\Image\Image;
+use Intervention\Image\Encoders\JpegEncoder;
+use Intervention\Image\Encoders\PngEncoder;
+use Intervention\Image\Encoders\WebpEncoder;
+use Intervention\Image\Interfaces\ImageInterface;
 
 final class BackgroundCustomAsset extends AbstractMultiPatternCustomAsset
 {
     protected function getPatterns(): array
     {
         return [
-            'default' => 'background%s.jpg',
-            'image/png' => 'background%s.png',
-            'image/webp' => 'background%s.webp',
+            'default' => [
+                'background%s.jpg',
+                new JpegEncoder(90),
+            ],
+            'image/png' => [
+                'background%s.png',
+                new PngEncoder(),
+            ],
+            'image/webp' => [
+                'background%s.webp',
+                new WebpEncoder(90),
+            ],
         ];
     }
 
@@ -23,23 +34,19 @@ final class BackgroundCustomAsset extends AbstractMultiPatternCustomAsset
         return $this->environment->getAssetUrl() . '/img/hexbg.png';
     }
 
-    public function upload(Image $image): void
+    public function upload(ImageInterface $image, string $mimeType): void
     {
         $newImage = clone $image;
-        $newImage->resize(3264, 2160, function (Constraint $constraint) {
-            $constraint->upsize();
-        });
+        $newImage->resizeDown(3264, 2160);
 
         $this->delete();
 
         $patterns = $this->getPatterns();
-        $mimeType = $newImage->mime();
-
-        $pattern = $patterns[$mimeType] ?? $patterns['default'];
+        [$pattern, $encoder] = $patterns[$mimeType] ?? $patterns['default'];
 
         $destPath = $this->getPathForPattern($pattern);
         $this->ensureDirectoryExists(dirname($destPath));
 
-        $newImage->save($destPath, 90);
+        $newImage->encode($encoder)->save($destPath);
     }
 }

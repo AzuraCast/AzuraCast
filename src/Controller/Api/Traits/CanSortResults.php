@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Api\Traits;
 
 use App\Http\ServerRequest;
+use App\Utilities\Types;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\PropertyAccess\PropertyAccess;
@@ -59,21 +60,25 @@ trait CanSortResults
         return $results;
     }
 
+    /**
+     * @return array{string, string}
+     */
     protected function getSortFromRequest(
         ServerRequest $request,
         string $defaultSortOrder = Criteria::ASC
     ): array {
+        $sortOrder = Types::stringOrNull($request->getParam('sortOrder'), true) ?? $defaultSortOrder;
         return [
             $request->getParam('sort'),
-            ('desc' === strtolower($request->getParam('sortOrder', $defaultSortOrder)))
+            (Criteria::DESC === strtoupper($sortOrder))
                 ? Criteria::DESC
                 : Criteria::ASC,
         ];
     }
 
     protected static function sortByDotNotation(
-        mixed $a,
-        mixed $b,
+        object|array $a,
+        object|array $b,
         PropertyAccessorInterface $propertyAccessor,
         string $sortValue,
         string $sortOrder

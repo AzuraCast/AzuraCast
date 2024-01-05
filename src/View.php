@@ -17,7 +17,6 @@ use League\Plates\Engine;
 use League\Plates\Template\Data;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
 use stdClass;
 use Symfony\Component\VarDumper\Cloner\VarCloner;
 use Symfony\Component\VarDumper\Dumper\CliDumper;
@@ -28,7 +27,7 @@ final class View extends Engine
 
     private GlobalSections $sections;
 
-    /** @var ArrayCollection<string, array|object|string|int> */
+    /** @var ArrayCollection<string, array|object|string|int|bool> */
     private ArrayCollection $globalProps;
 
     public function __construct(
@@ -81,7 +80,7 @@ final class View extends Engine
         );
 
         $vueComponents = (!$environment->isDevelopment())
-            ? Json::loadFromFile($environment->getBaseDirectory() . '/web/static/vite_dist/manifest.json')
+            ? Json::loadFromFile($environment->getBaseDirectory() . '/web/static/vite_dist/.vite/manifest.json')
             : [];
 
         $this->registerFunction(
@@ -151,7 +150,7 @@ final class View extends Engine
         $dispatcher->dispatch(new Event\BuildView($this));
     }
 
-    public function setRequest(?ServerRequestInterface $request): void
+    public function setRequest(?ServerRequest $request): void
     {
         $this->request = $request;
 
@@ -169,7 +168,7 @@ final class View extends Engine
             }
 
             $customization = $request->getAttribute(ServerRequest::ATTR_CUSTOMIZATION);
-            if (null !== $customization) {
+            if ($customization instanceof Customization) {
                 $requestData['customization'] = $customization;
 
                 $this->globalProps->set(
@@ -246,7 +245,7 @@ final class View extends Engine
         return $this->sections;
     }
 
-    /** @return ArrayCollection<string, array|object|string|int> */
+    /** @return ArrayCollection<string, array|object|string|int|bool> */
     public function getGlobalProps(): ArrayCollection
     {
         return $this->globalProps;

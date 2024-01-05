@@ -11,10 +11,10 @@ use App\Entity\User;
 use App\Enums\GlobalPermissions;
 use App\Enums\PermissionInterface;
 use App\Enums\StationPermissions;
+use App\Exception\InvalidRequestAttribute;
 use App\Http\ServerRequest;
 use App\Traits\RequestAwareTrait;
 use Psr\EventDispatcher\EventDispatcherInterface;
-use Psr\Http\Message\ServerRequestInterface;
 
 use function in_array;
 use function is_array;
@@ -106,9 +106,12 @@ final class Acl
         array|string|PermissionInterface $action,
         Station|int $stationId = null
     ): bool {
-        if ($this->request instanceof ServerRequestInterface) {
-            $user = $this->request->getAttribute(ServerRequest::ATTR_USER);
-            return $this->userAllowed($user, $action, $stationId);
+        if ($this->request instanceof ServerRequest) {
+            try {
+                $user = $this->request->getUser();
+                return $this->userAllowed($user, $action, $stationId);
+            } catch (InvalidRequestAttribute) {
+            }
         }
 
         return false;

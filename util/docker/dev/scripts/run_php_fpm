@@ -1,0 +1,11 @@
+#!/bin/bash
+
+source /etc/php/.version
+
+cp /etc/php/${PHP_VERSION}/cli/conf.d/05-azuracast.ini /etc/php/${PHP_VERSION}/fpm/conf.d/05-azuracast.ini
+
+gosu azuracast azuracast_php_startup
+
+# Run PHP-FPM
+exec /usr/sbin/php-fpm${PHP_VERSION} -F --fpm-config /etc/php/${PHP_VERSION}/fpm/php-fpm.conf \
+    -c /etc/php/${PHP_VERSION}/fpm/

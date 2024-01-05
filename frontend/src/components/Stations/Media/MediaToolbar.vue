@@ -10,6 +10,7 @@
                         class="btn btn-primary dropdown-toggle"
                         type="button"
                         data-bs-toggle="dropdown"
+                        data-bs-auto-close="outside"
                         aria-expanded="false"
                     >
                         <icon :icon="IconClearAll" />
@@ -187,15 +188,15 @@
 </template>
 
 <script setup lang="ts">
-import {forEach, intersection, map} from 'lodash';
+import {intersection, map} from 'lodash';
 import Icon from '~/components/Common/Icon.vue';
 import '~/vendor/sweetalert';
-import {h, ref, toRef, watch} from "vue";
+import {ref, toRef, watch} from "vue";
 import {useTranslate} from "~/vendor/gettext";
-import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
 import {useSweetAlert} from "~/vendor/sweetalert";
 import {IconClearAll, IconDelete, IconFolder, IconMoreHoriz, IconMove} from "~/components/Common/icons";
+import useHandleBatchResponse from "~/components/Stations/Media/useHandleBatchResponse.ts";
 
 const props = defineProps({
     currentDirectory: {
@@ -227,9 +228,6 @@ const emit = defineEmits(['relist', 'add-playlist', 'move-files', 'create-direct
 const checkedPlaylists = ref([]);
 const newPlaylist = ref('');
 
-const {$gettext} = useTranslate();
-const langErrors = $gettext('The request could not be processed.');
-
 watch(toRef(props, 'selectedItems'), (items) => {
     // Get all playlists that are active on ALL selected items.
     const playlistsForItems = map(items.all, (item) => {
@@ -248,41 +246,20 @@ watch(newPlaylist, (text) => {
     }
 });
 
-const {notifySuccess, notifyError} = useNotify();
+const {$gettext} = useTranslate();
 const {axios} = useAxios();
 
-const notifyNoFiles = () => {
-    notifyError($gettext('No files selected.'));
-};
+const {notifyNoFiles, handleBatchResponse} = useHandleBatchResponse();
 
-const doBatch = (action, notifyMessage) => {
+const doBatch = (action, successMessage, errorMessage) => {
     if (props.selectedItems.all.length) {
         axios.put(props.batchUrl, {
             'do': action,
             'current_directory': props.currentDirectory,
             'files': props.selectedItems.files,
             'dirs': props.selectedItems.directories
-        }).then((resp) => {
-            if (resp.data.success) {
-                const allItemNodes = [];
-                forEach(props.selectedItems.all, (item) => {
-                    allItemNodes.push(h('div', {}, item.path_short));
-                });
-
-                notifySuccess(allItemNodes, {
-                    title: notifyMessage
-                });
-            } else {
-                const errorNodes = [];
-                forEach(resp.data.errors, (error) => {
-                    errorNodes.push(h('div', {}, error));
-                });
-
-                notifyError(errorNodes, {
-                    title: langErrors
-                });
-            }
-
+        }).then(({data}) => {
+            handleBatchResponse(data, successMessage, errorMessage);
             emit('relist');
         });
     } else {
@@ -291,15 +268,27 @@ const doBatch = (action, notifyMessage) => {
 };
 
 const doImmediateQueue = () => {
-    doBatch('immediate', $gettext('Files played immediately:'));
+    doBatch(
+        'immediate',
+        $gettext('Files played immediately:'),
+        $gettext('Error queueing files:')
+    );
 };
 
 const doQueue = () => {
-    doBatch('queue', $gettext('Files queued for playback:'));
+    doBatch(
+        'queue',
+        $gettext('Files queued for playback:'),
+        $gettext('Error queueing files:')
+    );
 };
 
 const doReprocess = () => {
-    doBatch('reprocess', $gettext('Files marked for reprocessing:'));
+    doBatch(
+        'reprocess',
+        $gettext('Files marked for reprocessing:'),
+        $gettext('Error reprocessing files:')
+    );
 };
 
 const {confirmDelete} = useSweetAlert();
@@ -315,7 +304,11 @@ const doDelete = () => {
         title: buttonConfirmText,
     }).then((result) => {
         if (result.value) {
-            doBatch('delete', $gettext('Files removed:'));
+            doBatch(
+                'delete',
+                $gettext('Files removed:'),
+                $gettext('Error removing files:')
+            );
         }
     });
 };
@@ -329,37 +322,23 @@ const setPlaylists = () => {
             'currentDirectory': props.currentDirectory,
             'files': props.selectedItems.files,
             'dirs': props.selectedItems.directories
-        }).then((resp) => {
-            if (resp.data.success) {
-                if (resp.data.record) {
-                    emit('add-playlist', resp.data.record);
+        }).then(({data}) => {
+            if (data.success) {
+                if (data.record) {
+                    emit('add-playlist', data.record);
                 }
-
-                const notifyMessage = (checkedPlaylists.value.length > 0)
-                    ? $gettext('Playlists updated for selected files:')
-                    : $gettext('Playlists cleared for selected files:');
-
-                const allItemNodes = [];
-                forEach(props.selectedItems.all, (item) => {
-                    allItemNodes.push(h('div', {}, item.path_short));
-                });
-
-                notifySuccess(allItemNodes, {
-                    title: notifyMessage
-                });
 
                 checkedPlaylists.value = [];
                 newPlaylist.value = '';
-            } else {
-                const errorNodes = [];
-                forEach(resp.data.errors, (error) => {
-                    errorNodes.push(h('div', {}, error));
-                });
-
-                notifyError(errorNodes, {
-                    title: langErrors
-                });
             }
+
+            handleBatchResponse(
+                data,
+                (checkedPlaylists.value.length > 0)
+                    ? $gettext('Playlists updated for selected files:')
+                    : $gettext('Playlists cleared for selected files:'),
+                $gettext('Error updating playlists:')
+            );
 
             emit('relist');
         });

@@ -87,7 +87,12 @@
         >
             <template #cell(name)="row">
                 <h5>{{ row.item.task }}</h5>
-                {{ row.item.pattern }}
+                <span v-if="row.item.pattern">
+                    {{ row.item.pattern }}
+                </span>
+                <span v-else>
+                    {{ $gettext('Custom') }}
+                </span>
             </template>
             <template #cell(actions)="row">
                 <button
@@ -228,7 +233,7 @@
 <script setup lang="ts">
 import {ref} from "vue";
 import useHasDatatable, {DataTableTemplateRef} from "~/functions/useHasDatatable";
-import DataTable, { DataTableField } from "~/components/Common/DataTable.vue";
+import DataTable, {DataTableField} from "~/components/Common/DataTable.vue";
 import {useTranslate} from "~/vendor/gettext";
 import CardPage from "~/components/Common/CardPage.vue";
 import {useLuxon} from "~/vendor/luxon";
@@ -237,12 +242,12 @@ import {useAxios} from "~/vendor/axios";
 import {useNotify} from "~/functions/useNotify";
 import Tabs from "~/components/Common/Tabs.vue";
 import Tab from "~/components/Common/Tab.vue";
-import {useIntervalFn} from "@vueuse/core";
 import {getApiUrl} from "~/router.ts";
 import useRefreshableAsyncState from "~/functions/useRefreshableAsyncState.ts";
 import Loading from "~/components/Common/Loading.vue";
 import {IconRefresh} from "~/components/Common/icons.ts";
 import Icon from "~/components/Common/Icon.vue";
+import useAutoRefreshingAsyncState from "~/functions/useAutoRefreshingAsyncState.ts";
 
 const listSyncTasksUrl = getApiUrl('/admin/debug/sync-tasks');
 const listQueueTotalsUrl = getApiUrl('/admin/debug/queues');
@@ -252,27 +257,25 @@ const clearQueuesUrl = getApiUrl('/admin/debug/clear-queue');
 
 const {axios} = useAxios();
 
-const {state: syncTasks, isLoading: syncTasksLoading, execute: resetSyncTasks} = useRefreshableAsyncState(
+const {state: syncTasks, isLoading: syncTasksLoading, execute: resetSyncTasks} = useAutoRefreshingAsyncState(
     () => axios.get(listSyncTasksUrl.value).then(r => r.data),
     [],
+    {
+        timeout: 60000
+    }
 );
 
-const {state: queueTotals, isLoading: queueTotalsLoading, execute: resetQueueTotals} = useRefreshableAsyncState(
+const {state: queueTotals, isLoading: queueTotalsLoading, execute: resetQueueTotals} = useAutoRefreshingAsyncState(
     () => axios.get(listQueueTotalsUrl.value).then(r => r.data),
     [],
+    {
+        timeout: 60000
+    }
 );
 
 const {state: stations, isLoading: stationsLoading} = useRefreshableAsyncState(
     () => axios.get(listStationsUrl.value).then(r => r.data),
     [],
-);
-
-useIntervalFn(
-    () => {
-        resetSyncTasks();
-        resetQueueTotals();
-    },
-    60000
 );
 
 const {$gettext} = useTranslate();

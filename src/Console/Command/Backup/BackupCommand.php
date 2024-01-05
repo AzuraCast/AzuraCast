@@ -9,6 +9,7 @@ use App\Entity\Enums\StorageLocationTypes;
 use App\Entity\Repository\StorageLocationRepository;
 use App\Entity\Station;
 use App\Entity\StorageLocation;
+use App\Utilities\Types;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -45,15 +46,13 @@ final class BackupCommand extends AbstractDatabaseCommand
         $io = new SymfonyStyle($input, $output);
         $fsUtils = new Filesystem();
 
-        $path = $input->getArgument('path');
-        $excludeMedia = (bool)$input->getOption('exclude-media');
-        $storageLocationId = $input->getOption('storage-location-id');
+        $path = Types::stringOrNull($input->getArgument('path'), true)
+            ?? 'manual_backup_' . gmdate('Ymd_Hi') . '.zip';
+
+        $excludeMedia = Types::bool($input->getOption('exclude-media'));
+        $storageLocationId = Types::intOrNull($input->getOption('storage-location-id'));
 
         $startTime = microtime(true);
-
-        if (empty($path)) {
-            $path = 'manual_backup_' . gmdate('Ymd_Hi') . '.zip';
-        }
 
         $fileExt = strtolower(pathinfo($path, PATHINFO_EXTENSION));
 

@@ -14,9 +14,11 @@ const AZURACAST_API_NAME = 'Testing API';
 
 $tempDir = sys_get_temp_dir();
 
-App\AppFactory::createCli(
+$app = App\AppFactory::createCli(
     [
         App\Environment::TEMP_DIR => $tempDir,
         App\Environment::UPLOADS_DIR => $tempDir,
     ]
 );
+
+return $app;

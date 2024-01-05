@@ -266,27 +266,12 @@ return [
 
     Psr\Log\LoggerInterface::class => DI\get(Monolog\Logger::class),
 
-    // Doctrine annotations reader
-    Doctrine\Common\Annotations\Reader::class => static function (
-        Psr\Cache\CacheItemPoolInterface $psr6Cache,
-        Environment $settings
-    ) {
-        $proxyCache = new Symfony\Component\Cache\Adapter\ProxyAdapter($psr6Cache, 'annotations.');
-
-        return new Doctrine\Common\Annotations\PsrCachedReader(
-            new Doctrine\Common\Annotations\AnnotationReader(),
-            $proxyCache,
-            !$settings->isProduction()
-        );
-    },
-
     // Symfony Serializer
     Symfony\Component\Serializer\Serializer::class => static function (
-        Doctrine\Common\Annotations\Reader $reader,
-        App\Doctrine\ReloadableEntityManagerInterface $em,
+        App\Doctrine\ReloadableEntityManagerInterface $em
     ) {
         $classMetaFactory = new Symfony\Component\Serializer\Mapping\Factory\ClassMetadataFactory(
-            new Symfony\Component\Serializer\Mapping\Loader\AnnotationLoader($reader)
+            new Symfony\Component\Serializer\Mapping\Loader\AttributeLoader()
         );
 
         $normalizers = [
@@ -309,19 +294,17 @@ return [
 
     // Symfony Validator
     Symfony\Component\Validator\Validator\ValidatorInterface::class => static function (
-        Doctrine\Common\Annotations\Reader $reader,
         Symfony\Component\Validator\ContainerConstraintValidatorFactory $constraintValidatorFactory
     ) {
         $builder = new Symfony\Component\Validator\ValidatorBuilder();
         $builder->setConstraintValidatorFactory($constraintValidatorFactory);
-        $builder->enableAnnotationMapping();
-        $builder->setDoctrineAnnotationReader($reader);
+        $builder->enableAttributeMapping();
 
         return $builder->getValidator();
     },
 
     App\MessageQueue\QueueManagerInterface::class => static function (
-        App\Service\RedisFactory $redisFactory,
+        App\Service\RedisFactory $redisFactory
     ) {
         return ($redisFactory->isSupported())
             ? new App\MessageQueue\QueueManager($redisFactory)

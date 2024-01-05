@@ -24,7 +24,7 @@ trait HasLogViewer
         clearstatcache();
 
         if (!is_file($logPath)) {
-            throw new NotFoundException('Log file not found!');
+            throw NotFoundException::file();
         }
 
         if (!$tailFile) {

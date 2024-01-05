@@ -14,7 +14,7 @@ use Psr\Http\Server\RequestHandlerInterface;
 /**
  * Get the current user entity object and assign it into the request if it exists.
  */
-final class Permissions
+final class Permissions extends AbstractMiddleware
 {
     public function __construct(
         private readonly string|PermissionInterface $action,

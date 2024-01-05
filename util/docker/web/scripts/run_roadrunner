@@ -1,0 +1,13 @@
+#!/bin/bash
+
+if [ $(whoami) != 'azuracast' ]; then
+    echo 'This script must be run as the "azuracast" user. Rerunning...'
+    exec gosu azuracast run_roadrunner "$@"
+fi
+
+dockerize -template "/var/azuracast/rr.yaml.tmpl:/var/azuracast/rr.yaml"
+
+azuracast_php_startup
+
+# Run PHP-FPM
+exec rr serve -c /var/azuracast/rr.yaml -w /var/azuracast/www

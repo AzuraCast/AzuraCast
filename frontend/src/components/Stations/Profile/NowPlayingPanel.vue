@@ -153,7 +153,7 @@
                                                 style="line-height: 1;"
                                             >
                                                 {{ np.playing_next.song.title }}<br>
-                                                <small>{{ np.playing_next.song.artist }}</small>
+                                                <small class="text-muted">{{ np.playing_next.song.artist }}</small>
                                             </h6>
                                         </div>
                                         <div v-else>

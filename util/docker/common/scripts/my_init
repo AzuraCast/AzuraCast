@@ -22,7 +22,7 @@ supervisord -c /etc/supervisor/supervisord-minimal.conf
 echo "** Supervisord started."
 echo "** Running uptime_wait..."
 
-uptime_wait
+gosu azuracast php /var/azuracast/www/bin/uptime_wait || exit 1
 
 echo "** Services up and ready!"
 

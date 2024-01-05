@@ -10,6 +10,7 @@ use App\Media\MetadataInterface;
 use App\Normalizer\Attributes\DeepNormalize;
 use App\OpenApi;
 use App\Utilities\Time;
+use App\Utilities\Types;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -97,7 +98,7 @@ class StationMedia implements
         ),
         ORM\Column(type: 'decimal', precision: 7, scale: 2, nullable: true)
     ]
-    protected ?float $length = 0.00;
+    protected ?string $length = '0.00';
 
     #[
         OA\Property(
@@ -133,7 +134,7 @@ class StationMedia implements
         ),
         ORM\Column(type: 'decimal', precision: 6, scale: 1, nullable: true)
     ]
-    protected ?float $amplify = null;
+    protected ?string $amplify = null;
 
     #[
         OA\Property(
@@ -142,7 +143,7 @@ class StationMedia implements
         ),
         ORM\Column(type: 'decimal', precision: 6, scale: 1, nullable: true)
     ]
-    protected ?float $fade_overlap = null;
+    protected ?string $fade_overlap = null;
 
     #[
         OA\Property(
@@ -151,7 +152,7 @@ class StationMedia implements
         ),
         ORM\Column(type: 'decimal', precision: 6, scale: 1, nullable: true)
     ]
-    protected ?float $fade_in = null;
+    protected ?string $fade_in = null;
 
     #[
         OA\Property(
@@ -160,7 +161,7 @@ class StationMedia implements
         ),
         ORM\Column(type: 'decimal', precision: 6, scale: 1, nullable: true)
     ]
-    protected ?float $fade_out = null;
+    protected ?string $fade_out = null;
 
     #[
         OA\Property(
@@ -169,7 +170,7 @@ class StationMedia implements
         ),
         ORM\Column(type: 'decimal', precision: 6, scale: 1, nullable: true)
     ]
-    protected ?float $cue_in = null;
+    protected ?string $cue_in = null;
 
     #[
         OA\Property(
@@ -178,7 +179,7 @@ class StationMedia implements
         ),
         ORM\Column(type: 'decimal', precision: 6, scale: 1, nullable: true)
     ]
-    protected ?float $cue_out = null;
+    protected ?string $cue_out = null;
 
     #[
         OA\Property(
@@ -294,18 +295,16 @@ class StationMedia implements
 
     public function getLength(): ?float
     {
-        return $this->length;
+        return Types::floatOrNull($this->length);
     }
 
-    /**
-     * @param int $length
-     */
-    public function setLength(int $length): void
+    public function setLength(float $length): void
     {
-        $lengthMin = floor($length / 60);
-        $lengthSec = $length % 60;
+        $lengthInt = (int)floor($length);
+        $lengthMin = floor($lengthInt / 60);
+        $lengthSec = $lengthInt % 60;
 
-        $this->length = (float)$length;
+        $this->length = (string)$length;
         $this->length_text = $lengthMin . ':' . str_pad((string)$lengthSec, 2, '0', STR_PAD_LEFT);
     }
 
@@ -341,62 +340,62 @@ class StationMedia implements
 
     public function getAmplify(): ?float
     {
-        return $this->amplify;
+        return Types::floatOrNull($this->amplify);
     }
 
     public function setAmplify(?float $amplify = null): void
     {
-        $this->amplify = $amplify;
+        $this->amplify = $this->annotationToString($amplify);
     }
 
     public function getFadeOverlap(): ?float
     {
-        return $this->fade_overlap;
+        return Types::floatOrNull($this->fade_overlap);
     }
 
     public function setFadeOverlap(?float $fadeOverlap = null): void
     {
-        $this->fade_overlap = $fadeOverlap;
+        $this->fade_overlap = $this->annotationToString($fadeOverlap);
     }
 
     public function getFadeIn(): ?float
     {
-        return $this->fade_in;
+        return Types::floatOrNull($this->fade_in);
     }
 
     public function setFadeIn(string|int|float $fadeIn = null): void
     {
-        $this->fade_in = Time::displayTimeToSeconds($fadeIn);
+        $this->fade_in = $this->annotationToString($fadeIn);
     }
 
     public function getFadeOut(): ?float
     {
-        return $this->fade_out;
+        return Types::floatOrNull($this->fade_out);
     }
 
     public function setFadeOut(string|int|float $fadeOut = null): void
     {
-        $this->fade_out = Time::displayTimeToSeconds($fadeOut);
+        $this->fade_out = $this->annotationToString($fadeOut);
     }
 
     public function getCueIn(): ?float
     {
-        return $this->cue_in;
+        return Types::floatOrNull($this->cue_in);
     }
 
     public function setCueIn(string|int|float $cueIn = null): void
     {
-        $this->cue_in = Time::displayTimeToSeconds($cueIn);
+        $this->cue_in = $this->annotationToString($cueIn);
     }
 
     public function getCueOut(): ?float
     {
-        return $this->cue_out;
+        return Types::floatOrNull($this->cue_out);
     }
 
     public function setCueOut(string|int|float $cueOut = null): void
     {
-        $this->cue_out = Time::displayTimeToSeconds($cueOut);
+        $this->cue_out = $this->annotationToString($cueOut);
     }
 
     /**
@@ -404,17 +403,20 @@ class StationMedia implements
      */
     public function getCalculatedLength(): int
     {
-        $length = (int)$this->length;
+        $length = $this->getLength() ?? 0.0;
 
-        if ((int)$this->cue_out > 0) {
-            $lengthRemoved = $length - (int)$this->cue_out;
+        $cueOut = $this->getCueOut();
+        if ($cueOut > 0) {
+            $lengthRemoved = $length - $cueOut;
             $length -= $lengthRemoved;
         }
-        if ((int)$this->cue_in > 0) {
-            $length -= $this->cue_in;
+
+        $cueIn = $this->getCueIn();
+        if ($cueIn > 0) {
+            $length -= $cueIn;
         }
 
-        return (int)$length;
+        return (int)floor($length);
     }
 
     public function getArtUpdatedAt(): int
@@ -472,29 +474,36 @@ class StationMedia implements
         return $this->playlists;
     }
 
+    private function annotationToString(string|float|int $annotation = null): ?string
+    {
+        return Types::stringOrNull(
+            Time::displayTimeToSeconds($annotation)
+        );
+    }
+
     public function fromMetadata(MetadataInterface $metadata): void
     {
-        $this->setLength((int)$metadata->getDuration());
+        $this->setLength($metadata->getDuration());
 
         $tags = $metadata->getTags();
 
         if (isset($tags['title'])) {
-            $this->setTitle($tags['title']);
+            $this->setTitle(Types::stringOrNull($tags['title']));
         }
         if (isset($tags['artist'])) {
-            $this->setArtist($tags['artist']);
+            $this->setArtist(Types::stringOrNull($tags['artist']));
         }
         if (isset($tags['album'])) {
-            $this->setAlbum($tags['album']);
+            $this->setAlbum(Types::stringOrNull($tags['album']));
         }
         if (isset($tags['genre'])) {
-            $this->setGenre($tags['genre']);
+            $this->setGenre(Types::stringOrNull($tags['genre']));
         }
         if (isset($tags['unsynchronised_lyric'])) {
-            $this->setLyrics($tags['unsynchronised_lyric']);
+            $this->setLyrics(Types::stringOrNull($tags['unsynchronised_lyric']));
         }
         if (isset($tags['isrc'])) {
-            $this->setIsrc($tags['isrc']);
+            $this->setIsrc(Types::stringOrNull($tags['isrc']));
         }
 
         $this->updateSongId();

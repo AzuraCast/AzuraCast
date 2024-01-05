@@ -7,6 +7,7 @@ namespace App\Webhook\Connector;
 use App\Entity\Api\NowPlaying\NowPlaying;
 use App\Entity\Station;
 use App\Entity\StationWebhook;
+use App\Utilities\Types;
 use App\Utilities\Urls;
 
 /**
@@ -30,15 +31,15 @@ final class Mastodon extends AbstractSocialConnector
     ): void {
         $config = $webhook->getConfig();
 
-        $instanceUrl = trim($config['instance_url'] ?? '');
-        $accessToken = trim($config['access_token'] ?? '');
+        $instanceUrl = Types::stringOrNull($config['instance_url'], true);
+        $accessToken = Types::stringOrNull($config['access_token'], true);
 
-        if (empty($instanceUrl) || empty($accessToken)) {
+        if (null === $instanceUrl || null === $accessToken) {
             throw $this->incompleteConfigException($webhook);
         }
 
         $instanceUri = Urls::parseUserUrl($instanceUrl, 'Mastodon Instance URL');
-        $visibility = $config['visibility'] ?? 'public';
+        $visibility = Types::stringOrNull($config['visibility'], true) ?? 'public';
 
         $this->logger->debug(
             'Posting to Mastodon...',

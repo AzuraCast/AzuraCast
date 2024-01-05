@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use App\Utilities\Types;
 use Doctrine\ORM\Mapping as ORM;
 use JsonSerializable;
 
@@ -23,10 +24,10 @@ class ListenerLocation implements JsonSerializable
     protected ?string $country = null;
 
     #[ORM\Column(type: 'decimal', precision: 10, scale: 6, nullable: true)]
-    protected ?float $lat = null;
+    protected ?string $lat = null;
 
     #[ORM\Column(type: 'decimal', precision: 10, scale: 6, nullable: true)]
-    protected ?float $lon = null;
+    protected ?string $lon = null;
 
     public function getDescription(): string
     {
@@ -50,12 +51,12 @@ class ListenerLocation implements JsonSerializable
 
     public function getLat(): ?float
     {
-        return $this->lat;
+        return Types::floatOrNull($this->lat);
     }
 
     public function getLon(): ?float
     {
-        return $this->lon;
+        return Types::floatOrNull($this->lon);
     }
 
     public function jsonSerialize(): array

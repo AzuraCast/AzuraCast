@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App;
 
+use App\Exception\InvalidRequestAttribute;
 use App\Http\Response;
 use App\Http\RouterInterface;
 use App\Http\ServerRequest;
@@ -19,7 +20,6 @@ use Pagerfanta\Doctrine\Collections\CollectionAdapter;
 use Pagerfanta\Doctrine\ORM\QueryAdapter;
 use Pagerfanta\Pagerfanta;
 use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
 
 /**
  * @template TKey of array-key
@@ -47,11 +47,16 @@ final class Paginator implements IteratorAggregate, Countable
      */
     public function __construct(
         private readonly Pagerfanta $paginator,
-        ServerRequestInterface $request
+        ServerRequest $request
     ) {
-        $this->router = $request->getAttribute(ServerRequest::ATTR_ROUTER);
+        $this->router = $request->getRouter();
 
-        $user = $request->getAttribute(ServerRequest::ATTR_USER);
+        try {
+            $user = $request->getUser();
+        } catch (InvalidRequestAttribute) {
+            $user = null;
+        }
+
         $this->isAuthenticated = ($user !== null);
 
         $params = $request->getQueryParams();
@@ -194,7 +199,7 @@ final class Paginator implements IteratorAggregate, Countable
      */
     public static function fromAdapter(
         AdapterInterface $adapter,
-        ServerRequestInterface $request
+        ServerRequest $request
     ): self {
         return new self(
             new Pagerfanta($adapter),
@@ -209,7 +214,7 @@ final class Paginator implements IteratorAggregate, Countable
      * @param array<XKey, X> $input
      * @return static<XKey, X>
      */
-    public static function fromArray(array $input, ServerRequestInterface $request): self
+    public static function fromArray(array $input, ServerRequest $request): self
     {
         return self::fromAdapter(new ArrayAdapter($input), $request);
     }
@@ -221,7 +226,7 @@ final class Paginator implements IteratorAggregate, Countable
      * @param Collection<XKey, X> $collection
      * @return static<XKey, X>
      */
-    public static function fromCollection(Collection $collection, ServerRequestInterface $request): self
+    public static function fromCollection(Collection $collection, ServerRequest $request): self
     {
         return self::fromAdapter(new CollectionAdapter($collection), $request);
     }
@@ -229,7 +234,7 @@ final class Paginator implements IteratorAggregate, Countable
     /**
      * @return static<int, mixed>
      */
-    public static function fromQueryBuilder(QueryBuilder $qb, ServerRequestInterface $request): self
+    public static function fromQueryBuilder(QueryBuilder $qb, ServerRequest $request): self
     {
         return self::fromAdapter(new QueryAdapter($qb), $request);
     }
@@ -237,7 +242,7 @@ final class Paginator implements IteratorAggregate, Countable
     /**
      * @return static<int, mixed>
      */
-    public static function fromQuery(Query $query, ServerRequestInterface $request): self
+    public static function fromQuery(Query $query, ServerRequest $request): self
     {
         return self::fromAdapter(new QueryAdapter($query), $request);
     }

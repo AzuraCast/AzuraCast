@@ -6,7 +6,7 @@ export function useVuelidateOnFormTab(validations, form, blankForm = {}, vuelida
     const v$ = useVuelidate(validations, form, vuelidateOptions);
 
     const isValid = computed(() => {
-        return !v$.value.$invalid ?? true;
+        return !v$.value.$invalid;
     });
 
     const tabClass = computed(() => {

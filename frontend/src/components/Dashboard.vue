@@ -8,44 +8,25 @@
             role="region"
             :aria-label="$gettext('Account Details')"
         >
-            <div class="card-header text-bg-primary d-flex flex-wrap align-items-center">
-                <avatar
-                    v-if="user.avatar.url"
-                    class="flex-shrink-0 me-3"
-                    :url="user.avatar.url"
-                    :service="user.avatar.service"
-                    :service-url="user.avatar.serviceUrl"
-                />
-
-                <div class="flex-fill">
-                    <h2 class="card-title mt-0">
-                        {{ user.name }}
-                    </h2>
-                    <h3 class="card-subtitle">
-                        {{ user.email }}
-                    </h3>
-                </div>
-
-                <div class="flex-md-shrink-0 mt-3 mt-md-0 buttons">
-                    <a
-                        class="btn btn-dark"
-                        role="button"
-                        :href="profileUrl"
-                    >
-                        <icon :icon="IconAccountCircle" />
-                        <span>{{ $gettext('My Account') }}</span>
-                    </a>
-                    <a
-                        v-if="showAdmin"
-                        class="btn btn-dark"
-                        role="button"
-                        :href="adminUrl"
-                    >
-                        <icon :icon="IconSettings" />
-                        <span>{{ $gettext('Administration') }}</span>
-                    </a>
-                </div>
-            </div>
+            <user-info-panel>
+                <a
+                    class="btn btn-dark"
+                    role="button"
+                    :href="profileUrl"
+                >
+                    <icon :icon="IconAccountCircle" />
+                    <span>{{ $gettext('My Account') }}</span>
+                </a>
+                <a
+                    v-if="showAdmin"
+                    class="btn btn-dark"
+                    role="button"
+                    :href="adminUrl"
+                >
+                    <icon :icon="IconSettings" />
+                    <span>{{ $gettext('Administration') }}</span>
+                </a>
+            </user-info-panel>
 
             <template v-if="!notificationsLoading && notifications.length > 0">
                 <div
@@ -292,13 +273,11 @@
 
 <script setup lang="ts">
 import Icon from '~/components/Common/Icon.vue';
-import Avatar from '~/components/Common/Avatar.vue';
 import PlayButton from "~/components/Common/PlayButton.vue";
 import AlbumArt from "~/components/Common/AlbumArt.vue";
 import {useAxios} from "~/vendor/axios";
-import {useAsyncState, useIntervalFn} from "@vueuse/core";
+import {useAsyncState} from "@vueuse/core";
 import {computed, ref} from "vue";
-import useRefreshableAsyncState from "~/functions/useRefreshableAsyncState";
 import DashboardCharts from "~/components/DashboardCharts.vue";
 import {useTranslate} from "~/vendor/gettext";
 import Loading from "~/components/Common/Loading.vue";
@@ -308,12 +287,11 @@ import HeaderInlinePlayer from "~/components/HeaderInlinePlayer.vue";
 import {LightboxTemplateRef, useProvideLightbox} from "~/vendor/lightbox";
 import useOptionalStorage from "~/functions/useOptionalStorage";
 import {IconAccountCircle, IconHeadphones, IconInfo, IconSettings, IconWarning} from "~/components/Common/icons";
+import UserInfoPanel from "~/components/Account/UserInfoPanel.vue";
+import {getApiUrl} from "~/router.ts";
+import useAutoRefreshingAsyncState from "~/functions/useAutoRefreshingAsyncState.ts";
 
 const props = defineProps({
-    userUrl: {
-        type: String,
-        required: true
-    },
     profileUrl: {
         type: String,
         required: true
@@ -326,23 +304,11 @@ const props = defineProps({
         type: Boolean,
         required: true
     },
-    notificationsUrl: {
-        type: String,
-        required: true
-    },
     showCharts: {
         type: Boolean,
         required: true
     },
-    chartsUrl: {
-        type: String,
-        required: true
-    },
     manageStationsUrl: {
-        type: String,
-        required: true
-    },
-    stationsUrl: {
         type: String,
         required: true
     },
@@ -351,6 +317,10 @@ const props = defineProps({
         required: true
     }
 });
+
+const notificationsUrl = getApiUrl('/frontend/dashboard/notifications');
+const chartsUrl = getApiUrl('/frontend/dashboard/charts');
+const stationsUrl = getApiUrl('/frontend/dashboard/stations');
 
 const chartsVisible = useOptionalStorage<boolean>('dashboard_show_chart', true);
 
@@ -364,43 +334,17 @@ const langShowHideCharts = computed(() => {
 
 const {axios, axiosSilent} = useAxios();
 
-const {state: user} = useAsyncState(
-    () => axios.get(props.userUrl)
-        .then((resp) => {
-            return {
-                name: resp.data.name,
-                email: resp.data.email,
-                avatar: {
-                    url: resp.data.avatar.url_64,
-                    service: resp.data.avatar.service_name,
-                    serviceUrl: resp.data.avatar.service_url
-                }
-            };
-        }),
-    {
-        name: $gettext('AzuraCast User'),
-        email: null,
-        avatar: {
-            url: null,
-            service: null,
-            serviceUrl: null
-        },
-    }
-);
-
 const {state: notifications, isLoading: notificationsLoading} = useAsyncState(
-    () => axios.get(props.notificationsUrl).then((r) => r.data),
+    () => axios.get(notificationsUrl.value).then((r) => r.data),
     []
 );
 
-const {state: stations, isLoading: stationsLoading, execute: reloadStations} = useRefreshableAsyncState(
-    () => axiosSilent.get(props.stationsUrl).then((r) => r.data),
+const {state: stations, isLoading: stationsLoading} = useAutoRefreshingAsyncState(
+    () => axiosSilent.get(stationsUrl.value).then((r) => r.data),
     [],
-);
-
-useIntervalFn(
-    reloadStations,
-    computed(() => (!document.hidden) ? 15000 : 30000)
+    {
+        timeout: 15000
+    }
 );
 
 const $lightbox = ref<LightboxTemplateRef>(null);

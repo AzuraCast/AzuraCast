@@ -15,124 +15,124 @@ msgstr ""
 
 #: src/components/Stations/Podcasts/ListView.vue:125
 msgid "# Episodes"
-msgstr ""
+msgstr "#개의 에피소드"
 
 #: src/components/Stations/Playlists.vue:343
 msgid "# Songs"
-msgstr ""
+msgstr "#개의 노래"
 
 #: src/components/Stations/Webhooks/Form/Common/SocialPostFields.vue:115
 msgid "%{ dj } is now live on %{ station }! Tune in now: %{ url }"
-msgstr ""
+msgstr "%{ dj }가 이제 %{ station }에서 방송됩니다! 지금 청취하세요: %{ url }"
 
 #: src/components/Stations/Webhooks/Form/Common/RateLimitFields.vue:45
 msgid "%{ hours } hours"
-msgstr ""
+msgstr "%{ hours } 시간"
 
 #: src/components/Stations/Webhooks/Form/Common/RateLimitFields.vue:44
 msgid "%{ minutes } minutes"
-msgstr ""
+msgstr "%{ minutes } 분"
 
 #: src/components/Stations/Webhooks/Form/Common/RateLimitFields.vue:43
 msgid "%{ seconds } seconds"
-msgstr ""
+msgstr "%{ seconds } 초"
 
 #: src/components/Stations/Webhooks/Form/Common/SocialPostFields.vue:135
 msgid "%{ station } is back online! Tune in now: %{ url }"
-msgstr ""
+msgstr "%{ station }이(가) 다시 온라인 상태가 되었습니다! 지금 청취하세요: %{ url }"
 
 #: src/components/Stations/Webhooks/Form/Common/SocialPostFields.vue:129
 msgid "%{ station } is going offline for now."
-msgstr ""
+msgstr "%{ station }이(가) 현재 오프라인 상태입니다."
 
 #: src/components/Stations/Common/Quota.vue:93
 msgid "%{filesCount} File"
 msgid_plural "%{filesCount} Files"
-msgstr[0] ""
+msgstr[0] "%{filesCount}개의 파일"
 
 #: src/components/Stations/Profile/NowPlayingPanel.vue:261
 msgid "%{listeners} Listener"
 msgid_plural "%{listeners} Listeners"
-msgstr[0] ""
+msgstr[0] "%{listeners}명의 청취자"
 
 #: src/components/Admin/Debug.vue:150
 msgid "%{messages} queued messages"
-msgstr ""
+msgstr "%{messages}개의 대기 중인 메시지"
 
 #: src/components/Stations/Playlists/CloneModal.vue:81
 msgid "%{name} - Copy"
-msgstr ""
+msgstr "%{name} - 복사"
 
 #: src/components/Stations/Profile/BackendPanel.vue:113
 msgid "%{numPlaylists} playlist"
 msgid_plural "%{numPlaylists} playlists"
-msgstr[0] ""
+msgstr[0] "%{numPlaylists}개의 재생 목록"
 
 #: src/components/Stations/Profile/BackendPanel.vue:106
 msgid "%{numSongs} uploaded song"
 msgid_plural "%{numSongs} uploaded songs"
-msgstr[0] ""
+msgstr[0] "%{numSongs}개의 업로드된 노래"
 
 #: src/components/Stations/Common/Quota.vue:76
 msgid "%{spaceUsed} of %{spaceTotal} Used"
-msgstr ""
+msgstr "%{spaceUsed}/%{spaceTotal} 사용됨"
 
 #: src/components/Stations/Common/Quota.vue:84
 msgid "%{spaceUsed} Used"
-msgstr ""
+msgstr "%{spaceUsed} 사용됨"
 
 #: src/components/Admin/Stations/CloneModal.vue:54
 msgid "%{station} - Copy"
-msgstr ""
+msgstr "%{station} - 복사"
 
 #: src/components/Account/EditForm.vue:81
 msgid "12 Hour"
-msgstr ""
+msgstr "12시간"
 
 #: src/components/Account/EditForm.vue:85
 msgid "24 Hour"
-msgstr ""
+msgstr "24시간"
 
 #: src/components/Stations/Playlists/Form/BasicInfo.vue:343
 msgid "A completely random track is picked for playback every time the queue is populated."
-msgstr ""
+msgstr "대기열이 채워질 때마다 완전히 무작위로 트랙이 선택되어 재생됩니다."
 
 #: src/components/Stations/HlsStreams/Form/BasicInfo.vue:15
 msgid "A name for this stream that will be used internally in code. Should only contain letters, numbers, and underscores (i.e. \"stream_lofi\")."
-msgstr ""
+msgstr "이 스트림의 이름은 코드에서 내부적으로 사용됩니다. 문자, 숫자, 밑줄만 포함해야 합니다(예: \"stream_lofi\")."
 
 #: src/components/Account/PasskeyModal.vue:45
 msgid "A passkey has been selected. Submit this form to add it to your account."
-msgstr ""
+msgstr "패스키가 선택되었습니다. 이 양식을 제출하여 계정에 추가하세요."
 
 #: src/components/Stations/Playlists/Form/BasicInfo.vue:297
 msgid "A playlist containing media files hosted on this server."
-msgstr ""
+msgstr "이 서버에서 호스팅되는 미디어 파일이 포함된 재생 목록입니다."
 
 #: src/components/Stations/Playlists/Form/BasicInfo.vue:302
 msgid "A playlist that instructs the station to play from a remote URL."
-msgstr ""
+msgstr "원격 URL에서 재생하도록 스테이션에 지시하는 재생 목록입니다."
 
 #: src/components/Stations/Webhooks/Form/GoogleAnalyticsV4.vue:20
 msgid "A unique identifier (i.e. \"G-A1B2C3D4\") for this measurement stream."
-msgstr ""
+msgstr "이 측정 스트림의 고유 식별자(예: \"G-A1B2C3D4\")입니다."
 
 #: src/components/Admin/Relays.vue:15
 msgid "About AzuraRelay"
-msgstr ""
+msgstr "AzuraRelay에 대하여"
 
 #: src/components/Admin/Stations/Form/BackendForm.vue:83
 msgid "About Master_me"
-msgstr ""
+msgstr "Master_me에 대하여"
 
 #: src/components/Admin/Updates.vue:64
 #: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/UpdateCheck.php:100
 msgid "About Release Channels"
-msgstr ""
+msgstr "릴리즈 채널에 대하여"
 
 #: src/components/Admin/StorageLocations/Form/Dropbox.vue:66
 msgid "Access Code"
-msgstr ""
+msgstr "액세스 코드"
 
 #: src/components/Admin/StorageLocations/Form/S3.vue:11
 msgid "Access Key ID"
@@ -145,7 +145,7 @@ msgstr "액세스 토큰"
 #: src/components/Account.vue:9
 #: src/components/Dashboard.vue:9
 msgid "Account Details"
-msgstr ""
+msgstr "계정 상세 정보"
 
 #: src/components/Stations/Streamers/Form/BasicInfo.vue:47
 msgid "Account is Active"
@@ -186,7 +186,7 @@ msgstr "액션"
 
 #: src/components/Admin/StorageLocations.vue:128
 msgid "Adapter"
-msgstr ""
+msgstr "어댑터"
 
 #: src/components/Account/ApiKeyModal.vue:7
 #: src/components/Account/ApiKeysPanel.vue:27
@@ -225,7 +225,7 @@ msgstr "새로운 GitHub Issue 추가"
 #: src/components/Account/PasskeyModal.vue:91
 #: src/components/Account/SecurityPanel.vue:87
 msgid "Add New Passkey"
-msgstr ""
+msgstr "새 패스키 추가"
 
 #: src/components/Stations/Playlists.vue:35
 #: src/components/Stations/Playlists/EditModal.vue:80
@@ -240,7 +240,7 @@ msgstr "팟캐스트 추가"
 #: src/components/Stations/Remotes.vue:12
 #: src/components/Stations/Remotes/EditModal.vue:71
 msgid "Add Remote Relay"
-msgstr ""
+msgstr "원격 릴레이 추가"
 
 #: src/components/Admin/Permissions.vue:12
 #: src/components/Admin/Permissions/EditModal.vue:125
@@ -311,11 +311,11 @@ msgstr "고급 구성"
 
 #: src/components/Stations/Playlists/Form/Advanced.vue:13
 msgid "Advanced Manual AutoDJ Scheduling Options"
-msgstr ""
+msgstr "고급 수동 AutoDJ 예약 옵션"
 
 #: src/components/Admin/Settings/SecurityPrivacyTab.vue:20
 msgid "Aggregate listener statistics are used to show station reports across the system. IP-based listener statistics are used to view live listener tracking and may be required for royalty reports."
-msgstr ""
+msgstr "집계된 청취자 통계는 시스템 전반에 걸쳐 스테이션 보고서를 표시하는 데 사용됩니다. IP 기반 청취자 통계는 실시간 청취자 추적을 보는 데 사용되며 로열티 보고서에 필요할 수 있습니다."
 
 #: src/components/Public/OnDemand.vue:126
 #: src/components/Public/Requests/RequestsDataTable.vue:82
@@ -332,15 +332,15 @@ msgstr "앨범 이미지"
 
 #: src/components/Admin/Debug/TaskOutput.vue:96
 msgid "Alert"
-msgstr ""
+msgstr "경보"
 
 #: src/components/Stations/Reports/Overview/ListenersByTimePeriodTab.vue:174
 msgid "All Days"
-msgstr ""
+msgstr "모든 날"
 
 #: src/components/Admin/Settings/ServicesTab.vue:57
 msgid "All listed domain names should point to this AzuraCast installation. Separate multiple domain names with commas."
-msgstr ""
+msgstr "나열된 모든 도메인 이름은 이 AzuraCast 설치를 가리켜야 합니다. 여러 도메인 이름을 쉼표로 구분하세요."
 
 #: src/components/Stations/Playlists.vue:30
 msgid "All Playlists"
@@ -352,11 +352,11 @@ msgstr "모든 팟캐스트"
 
 #: src/components/Stations/Webhooks/Form/Common/FormattingInfo.vue:14
 msgid "All values in the NowPlaying API response are available for use. Any empty fields are ignored."
-msgstr ""
+msgstr "NowPlaying API 응답의 모든 값을 사용할 수 있습니다. 빈 필드는 무시됩니다."
 
 #: src/components/Stations/Playlists/Form/BasicInfo.vue:65
 msgid "Allow Requests from This Playlist"
-msgstr ""
+msgstr "이 재생 목록의 요청 허용"
 
 #: src/components/Admin/Stations/Form/RequestsForm.vue:21
 msgid "Allow Song Requests"
@@ -364,7 +364,7 @@ msgstr "곡 요청 승인"
 
 #: src/components/Admin/Stations/Form/StreamersForm.vue:16
 msgid "Allow Streamers / DJs"
-msgstr ""
+msgstr "스트리머/DJ 허용"
 
 #: src/components/Admin/Stations/Form/FrontendForm.vue:101
 msgid "Allowed IP Addresses"
@@ -376,24 +376,24 @@ msgstr "항상 HTTPS 사용"
 
 #: src/components/Stations/Media/Form/AdvancedSettings.vue:16
 msgid "Amplify: Amplification (dB)"
-msgstr ""
+msgstr "Amplify: 증폭 (dB)"
 
 #: src/functions/useNotify.ts:49
 #: src/vendor/axios.ts:37
 msgid "An error occurred and your request could not be completed."
-msgstr ""
+msgstr "오류가 발생하여 요청을 완료할 수 없습니다."
 
 #: src/components/Stations/ProfileEdit.vue:18
 msgid "An error occurred while loading the station profile:"
-msgstr ""
+msgstr "스테이션 프로필을 로드하는 동안 오류가 발생했습니다:"
 
 #: src/components/Public/WebDJ/useWebcaster.ts:77
 msgid "An error occurred with the WebDJ socket."
-msgstr ""
+msgstr "WebDJ 소켓에 오류가 발생했습니다."
 
 #: src/components/Stations/Webhooks/Form/TypeSelect.vue:35
 msgid "Analytics"
-msgstr ""
+msgstr "분석"
 
 #: src/components/Stations/Media/MediaToolbar.vue:154
 msgid "Analyze and reprocess the selected media"
@@ -401,31 +401,31 @@ msgstr "선택한 미디어 분석 및 재처리"
 
 #: src/components/Admin/StereoTool.vue:76
 msgid "Any of the following file types are accepted:"
-msgstr ""
+msgstr "다음 파일 형식이 허용됩니다:"
 
 #: src/entities/Webhooks.ts:56
 msgid "Any time a live streamer/DJ connects to the stream"
-msgstr ""
+msgstr "라이브 스트리머/DJ가 스트림에 연결할 때마다"
 
 #: src/entities/Webhooks.ts:60
 msgid "Any time a live streamer/DJ disconnects from the stream"
-msgstr ""
+msgstr "라이브 스트리머/DJ가 스트림 연결을 끊을 때마다"
 
 #: src/entities/Webhooks.ts:40
 msgid "Any time the currently playing song changes"
-msgstr ""
+msgstr "현재 재생 중인 노래가 바뀔 때마다"
 
 #: src/entities/Webhooks.ts:52
 msgid "Any time the listener count decreases"
-msgstr ""
+msgstr "청취자 수가 감소할 때마다"
 
 #: src/entities/Webhooks.ts:48
 msgid "Any time the listener count increases"
-msgstr ""
+msgstr "청취자 수가 늘어날 때마다"
 
 #: src/components/Admin/Settings/SecurityPrivacyTab.vue:61
 msgid "API \"Access-Control-Allow-Origin\" Header"
-msgstr ""
+msgstr "API \"Access-Control-Allow-Origin\" 헤더"
 
 #: src/components/Account/ApiKeysPanel.vue:16
 msgid "API Documentation"
@@ -435,7 +435,7 @@ msgstr "API 문서"
 #: src/components/Account/ApiKeysPanel.vue:81
 #: src/components/Admin/ApiKeys.vue:49
 msgid "API Key Description/Comments"
-msgstr ""
+msgstr "API 키 설명/코멘트"
 
 #: src/components/Account/ApiKeysPanel.vue:4
 #: src/components/Admin/ApiKeys.vue:2
@@ -445,7 +445,7 @@ msgstr "API 키"
 
 #: src/components/Stations/Webhooks/Form/GetMeRadio.vue:11
 msgid "API Token"
-msgstr ""
+msgstr "API 토큰"
 
 #: src/components/Admin/StorageLocations/Form/S3.vue:46
 msgid "API Version"
@@ -453,44 +453,44 @@ msgstr "API 버전"
 
 #: src/components/Admin/StorageLocations/Form/Dropbox.vue:35
 msgid "App Key"
-msgstr ""
+msgstr "앱 키"
 
 #: src/components/Admin/StorageLocations/Form/Dropbox.vue:42
 msgid "App Secret"
-msgstr ""
+msgstr "앱 비밀 코드"
 
 #: src/components/Admin/Stations/Form/BackendForm.vue:473
 msgid "Apple Podcasts"
-msgstr ""
+msgstr "Apple 팟캐스트"
 
 #: src/components/Admin/Settings/ServicesTab.vue:242
 msgid "Apply for an API key at Last.fm"
-msgstr ""
+msgstr "Last.fm에서 API 키를 신청하세요"
 
 #: src/components/Stations/Playlists/ApplyToModal.vue:8
 msgid "Apply Playlist to Folders"
-msgstr ""
+msgstr "폴더에 재생 목록 적용"
 
 #: src/components/Admin/Stations/Form/BackendForm.vue:74
 msgid "Apply Post-processing to Live Streams"
-msgstr ""
+msgstr "라이브 스트림에 후처리 적용"
 
 #: src/components/Stations/Playlists.vue:233
 #: src/components/Stations/Playlists/ApplyToModal.vue:57
 msgid "Apply to Folders"
-msgstr ""
+msgstr "폴더에 적용"
 
 #: src/components/Stations/Profile/EnabledProfile.vue:156
 #: src/components/Stations/Restart.vue:135
 msgid "Are you sure?"
-msgstr ""
+msgstr "확실합니까?"
 
 #: src/components/Public/OnDemand.vue:109
 #: src/components/Stations/Podcasts/EpisodesView.vue:144
 #: src/components/Stations/Podcasts/ListView.vue:121
 #: src/components/Stations/Streamers.vue:149
 msgid "Art"
-msgstr ""
+msgstr "아트"
 
 #: src/components/Public/OnDemand.vue:119
 #: src/components/Public/Requests/RequestsDataTable.vue:74
@@ -515,7 +515,7 @@ msgstr "Apple 팟캐스트의 경우 아트워크 크기는 최소 1400 x 1400 �
 
 #: src/components/Stations/Reports/SoundExchange.vue:88
 msgid "Attempt to Automatically Retrieve ISRC When Missing"
-msgstr ""
+msgstr "ISRC가 누락된 경우 자동으로 검색을 시도합니다."
 
 #: src/components/Stations/HlsStreams/Form/BasicInfo.vue:37
 msgid "Audio Bitrate (kbps)"
@@ -527,33 +527,33 @@ msgstr "오디오 포맷"
 
 #: src/components/Admin/Stations/Form/BackendForm.vue:45
 msgid "Audio Post-processing"
-msgstr ""
+msgstr "오디오 후처리"
 
 #: src/components/Admin/Stations/Form/BackendForm.vue:65
 msgid "Audio Post-processing Method"
-msgstr ""
+msgstr "오디오 후처리 매서드"
 
 #: src/components/Admin/Index/CpuStatsHelpModal.vue:29
 msgid "Audio transcoding applications like Liquidsoap use a consistent amount of CPU over time, which gradually drains this available credit. If you regularly see stolen CPU time, you should consider migrating to a VM that has CPU resources dedicated to your instance."
-msgstr ""
+msgstr "Liquidsoap과 같은 오디오 트랜스코딩 애플리케이션은 시간이 지남에 따라 일정한 양의 CPU를 사용하므로 사용 가능한 크레딧이 점차적으로 소모됩니다. CPU 시간 도난이 정기적으로 발생하는 경우 인스턴스 전용 CPU 리소스가 있는 VM으로 마이그레이션하는 것을 고려해야 합니다."
 
 #: src/components/Admin/AuditLog.vue:9
 #: src/components/Admin/menu.ts:97
 msgid "Audit Log"
-msgstr ""
+msgstr "로그 감사"
 
 #: src/components/Stations/Podcasts/PodcastForm/BasicInfo.vue:44
 #: src/components/Stations/Webhooks/Form/Discord.vue:55
 msgid "Author"
-msgstr ""
+msgstr "저자"
 
 #: src/components/Admin/CustomFields.vue:89
 msgid "Auto-Assign Value"
-msgstr ""
+msgstr "자동 할당 값"
 
 #: src/components/Stations/Playlists.vue:109
 msgid "Auto-Assigned"
-msgstr "자동 할당"
+msgstr "자동 할당됨"
 
 #: src/components/Admin/Stations.vue:126
 #: src/components/Admin/Stations/Form/BackendForm.vue:3
@@ -562,7 +562,7 @@ msgstr "자동 할당"
 #: src/components/Stations/Remotes.vue:94
 #: src/components/Stations/Remotes/Form/AutoDj.vue:3
 msgid "AutoDJ"
-msgstr ""
+msgstr "AutoDJ"
 
 #: src/components/Stations/Mounts/Form/AutoDj.vue:38
 #: src/components/Stations/Remotes/Form/AutoDj.vue:38
@@ -584,11 +584,11 @@ msgstr "이 스테이션의 AutoDJ가 비활성화되었습니다. 소스가 활
 
 #: src/components/Admin/Debug.vue:191
 msgid "AutoDJ Queue"
-msgstr ""
+msgstr "AutoDJ 대기열"
 
 #: src/components/Admin/Stations/Form/BackendForm.vue:227
 msgid "AutoDJ Queue Length"
-msgstr ""
+msgstr "AutoDJ 대기열 길이"
 
 #: src/components/Admin/Stations/Form/BackendForm.vue:14
 #: src/components/Stations/Profile/BackendPanel.vue:11
@@ -601,36 +601,36 @@ msgstr "자동 백업"
 
 #: src/entities/Webhooks.ts:120
 msgid "Automatically publish to a Mastodon instance."
-msgstr ""
+msgstr "Mastodon 인스턴스에 자동으로 게시합니다."
 
 #: src/components/Common/StreamingLogView.vue:6
 msgid "Automatically Scroll to Bottom"
-msgstr ""
+msgstr "자동으로 아래쪽으로 스크롤"
 
 #: src/entities/Webhooks.ts:112
 msgid "Automatically send a customized message to your Discord server."
-msgstr ""
+msgstr "Discord 서버에 맞춤 메시지를 자동으로 보냅니다."
 
 #: src/entities/Webhooks.ts:92
 msgid "Automatically send a message to any URL when your station data changes."
-msgstr ""
+msgstr "스테이션 데이터가 변경되면 자동으로 어떤 URL로든 메시지를 보냅니다."
 
 #: src/components/Admin/CustomFields/Form.vue:28
 msgid "Automatically Set from ID3v2 Value"
-msgstr ""
+msgstr "ID3v2 값에서 자동으로 설정"
 
 #: src/components/Stations/Logs.vue:14
 msgid "Available Logs"
-msgstr ""
+msgstr "사용 가능한 로그"
 
 #: src/components/Admin/Settings/ServicesTab.vue:183
 #: src/components/Admin/Settings/ServicesTab.vue:194
 msgid "Avatar Service"
-msgstr ""
+msgstr "아바타 서비스스"
 
 #: src/components/Common/Avatar.vue:44
 msgid "Avatars are retrieved based on your e-mail address from the %{ service } service. Click to manage your %{ service } settings."
-msgstr ""
+msgstr "아바타는 %{ service } 서비스에서 귀하의 이메일 주소를 기반으로 검색됩니다. %{ service } 설정을 관리하려면 클릭하세요."
 
 #: src/components/DashboardCharts.vue:6
 #: src/components/Stations/Reports/Overview/ListenersByTimePeriodTab.vue:15
@@ -651,7 +651,7 @@ msgstr "AzuraCast 인스턴스 이름"
 
 #: src/components/Admin/GeoLite.vue:21
 msgid "AzuraCast ships with a built-in free IP geolocation database. You may prefer to use the MaxMind GeoLite service instead to achieve more accurate results. Using MaxMind GeoLite requires a license key, but once the key is provided, we will automatically keep the database updated."
-msgstr ""
+msgstr "AzuraCast에는 무료 IP 지리 위치 데이터베이스가 내장되어 있습니다. 보다 정확한 결과를 얻으려면 대신 MaxMind GeoLite 서비스를 사용하는 것이 좋습니다. MaxMind GeoLite를 사용하려면 라이센스 키가 필요하지만 키가 제공되면 자동으로 데이터베이스가 업데이트됩니다."
 
 #: src/components/Admin/Settings/ServicesTab.vue:8
 msgid "AzuraCast Update Checks"
@@ -663,7 +663,7 @@ msgstr "AzuraCast 사용자"
 
 #: src/components/Admin/Permissions.vue:6
 msgid "AzuraCast uses a role-based access control system. Roles are given permissions to certain sections of the site, then users are assigned into those roles."
-msgstr ""
+msgstr "AzuraCast는 역할 기반 액세스 제어 시스템을 사용합니다. 역할에는 사이트의 특정 섹션에 대한 권한이 부여되고 사용자는 해당 역할에 할당됩니다."
 
 #: src/components/Stations/Streamers/ConnectionInfo.vue:85
 msgid "AzuraCast Wiki"
@@ -675,7 +675,7 @@ msgstr "AzuraCast는 이 방송국의 음악 라이브러리에서 업로드된 
 
 #: src/components/Admin/Relays.vue:6
 msgid "AzuraRelay is a standalone service that connects to your AzuraCast instance, automatically relays your stations via its own server, then reports the listener details back to your main instance. This page shows all currently connected instances."
-msgstr ""
+msgstr "AzuraRelay는 AzuraCast 인스턴스에 연결하고 자체 서버를 통해 스테이션을 자동으로 릴레이한 다음 수신기 세부 정보를 기본 인스턴스에 다시 보고하는 독립 실행형 서비스입니다. 이 페이지에는 현재 연결된 모든 인스턴스가 표시됩니다."
 
 #: src/components/Stations/Media/MoveFilesModal.vue:20
 #: /home/runner/work/AzuraCast/AzuraCast/templates/frontend/public/podcast-episodes.phtml:40
@@ -685,15 +685,15 @@ msgstr "뒤로"
 
 #: src/components/Admin/Updates.vue:85
 msgid "Backing up your installation is strongly recommended before any update."
-msgstr ""
+msgstr "업데이트하기 전에 설치를 백업하는 것이 좋습니다."
 
 #: src/components/Admin/Updates.vue:110
 msgid "Backup"
-msgstr ""
+msgstr "백업"
 
 #: src/components/Admin/Backups/ConfigureModal.vue:75
 msgid "Backup Format"
-msgstr ""
+msgstr "백업 형식"
 
 #: src/components/Admin/Backups.vue:3
 #: src/components/Admin/Backups.vue:90
@@ -705,27 +705,27 @@ msgstr "백업"
 
 #: src/components/Admin/Stations/Form/BackendForm.vue:490
 msgid "Balanced"
-msgstr ""
+msgstr "균형 조정됨"
 
 #: src/components/Admin/Stations/Form/FrontendForm.vue:121
 msgid "Banned Countries"
-msgstr ""
+msgstr "차단된 국가"
 
 #: src/components/Admin/Stations/Form/FrontendForm.vue:92
 msgid "Banned IP Addresses"
-msgstr ""
+msgstr "차단된 IP 주소"
 
 #: src/components/Admin/Stations/Form/FrontendForm.vue:110
 msgid "Banned User Agents"
-msgstr ""
+msgstr "차단된 사용자 에이전트"
 
 #: src/components/Admin/Stations/Form/AdminForm.vue:21
 msgid "Base Station Directory"
-msgstr ""
+msgstr "베이스 스테이션 디렉토리"
 
 #: src/components/Admin/Branding/BrandingForm.vue:33
 msgid "Base Theme for Public Pages"
-msgstr ""
+msgstr "공개 페이지의 기본 테마"
 
 #: src/components/Admin/StorageLocations/Form.vue:3
 #: src/components/Stations/HlsStreams/Form/BasicInfo.vue:3
@@ -749,7 +749,7 @@ msgstr ""
 
 #: src/components/Stations/Reports/Overview.vue:23
 msgid "Best & Worst"
-msgstr ""
+msgstr "최고 및 최악"
 
 #: src/components/Stations/Reports/Overview/BestAndWorstTab.vue:10
 msgid "Best Performing Songs"

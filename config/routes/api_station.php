@@ -19,7 +19,7 @@ return static function (RouteCollectorProxy $group) {
                 ->setName('api:stations:index')
                 ->add(new Middleware\RateLimit('api', 5, 2));
 
-            $group->get('/nowplaying', Controller\Api\NowPlayingAction::class . ':getAction');
+            $group->get('/nowplaying', Controller\Api\NowPlayingAction::class);
 
             $group->get('/schedule', Controller\Api\Stations\ScheduleAction::class)
                 ->setName('api:stations:schedule');

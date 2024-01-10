@@ -131,6 +131,9 @@ final class LoginAction implements SingleActionInterface
             id: 'account-login',
             layout: 'minimal',
             title: __('Log In'),
+            layoutParams: [
+                'page_class' => 'login-content',
+            ],
             props: [
                 'hideProductName' => $customization->hideProductName(),
                 'instanceName' => $customization->getInstanceName(),

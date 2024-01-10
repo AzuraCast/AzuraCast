@@ -352,7 +352,7 @@ class Settings implements Stringable
 
     public function getHomepageRedirectUrl(): ?string
     {
-        return Types::stringOrNull($this->homepage_redirect_url);
+        return Types::stringOrNull($this->homepage_redirect_url, true);
     }
 
     public function setHomepageRedirectUrl(?string $homepageRedirectUrl): void

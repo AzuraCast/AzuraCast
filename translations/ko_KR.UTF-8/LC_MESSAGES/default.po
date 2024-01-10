@@ -3455,11 +3455,11 @@ msgstr ""
 
 #: src/components/Stations/Streamers.vue:152
 msgid "Notes"
-msgstr ""
+msgstr "참고"
 
 #: src/components/Admin/Debug/TaskOutput.vue:92
 msgid "Notice"
-msgstr ""
+msgstr "공지"
 
 #: src/components/Common/DateRangeDropdown.vue:13
 #: src/components/Stations/Profile/SchedulePanel.vue:32
@@ -3473,44 +3473,44 @@ msgstr "지금 재생 중"
 
 #: src/components/Stations/Webhooks/Form/Discord.vue:119
 msgid "Now playing on %{ station }:"
-msgstr ""
+msgstr "지금 %{ station }에서 재생 중:"
 
 #: src/components/Stations/Webhooks/Form/Common/SocialPostFields.vue:105
 msgid "Now playing on %{ station }: %{ title } by %{ artist } with your host, %{ dj }! Tune in now: %{ url }"
-msgstr ""
+msgstr "지금 %{ station }에서 호스트 %{ dj }와 함께  %{ artist }의 %{ title }을(를) 재생 중입니다! 지금 청취하세요: %{ url }"
 
 #: src/components/Stations/Webhooks/Form/Common/SocialPostFields.vue:96
 msgid "Now playing on %{ station }: %{ title } by %{ artist }! Tune in now: %{ url }"
-msgstr ""
+msgstr "지금 %{ station }에서 %{ artist }의 %{ title }을(를) 재생 중입니다! 지금 청취하세요: %{ url }"
 
 #: src/components/Stations/Webhooks/Form/Telegram.vue:117
 msgid "Now playing on %{ station }: %{ title } by %{ artist }! Tune in now."
-msgstr ""
+msgstr "지금 %{ station }에서 %{ artist }의 %{ title }을(를) 재생 중입니다! 지금 청취하세요."
 
 #: src/components/Stations/Webhooks/Form/Common/FormattingInfo.vue:21
 #: src/components/Stations/Webhooks/Form/Generic.vue:27
 msgid "NowPlaying API Response"
-msgstr ""
+msgstr "NowPlaying API 응답"
 
 #: src/components/Admin/Backups/ConfigureModal.vue:56
 msgid "Number of Backup Copies to Keep"
-msgstr ""
+msgstr "보관할 백업 복사본 수"
 
 #: src/components/Stations/Playlists/Form/BasicInfo.vue:157
 msgid "Number of Minutes Between Plays"
-msgstr ""
+msgstr "재생 간격(분)"
 
 #: src/components/Admin/Stations/Form/BackendForm.vue:39
 msgid "Number of seconds to overlap songs."
-msgstr ""
+msgstr "노래를 겹치는 데 걸리는 시간(초)입니다."
 
 #: src/components/Stations/Playlists/Form/BasicInfo.vue:139
 msgid "Number of Songs Between Plays"
-msgstr ""
+msgstr "재생 간 노래 수"
 
 #: src/components/Admin/Stations/Form/ProfileForm.vue:69
 msgid "Number of Visible Recent Songs"
-msgstr ""
+msgstr "표시되는 최근 노래 수"
 
 #: src/components/Stations/Profile/NowPlayingNotStartedPanel.vue:5
 #: src/components/Stations/Profile/NowPlayingPanel.vue:13
@@ -3519,7 +3519,7 @@ msgstr "방송중"
 
 #: src/components/Stations/Playlists.vue:103
 msgid "On-Demand"
-msgstr ""
+msgstr "온디맨드"
 
 #: src/components/Public/OnDemand.vue:17
 #: src/components/Stations/menu.ts:116
@@ -3531,38 +3531,38 @@ msgstr "주문형 미디어"
 
 #: src/components/Admin/Stations/Form/ProfileForm.vue:97
 msgid "On-Demand Streaming"
-msgstr ""
+msgstr "주문형 스트리밍"
 
 #: src/components/Stations/Playlists.vue:137
 msgid "Once per %{minutes} Minutes"
-msgstr ""
+msgstr "%{minutes}분당 한 번"
 
 #: src/components/Stations/Playlists.vue:129
 msgid "Once per %{songs} Songs"
-msgstr ""
+msgstr "%{songs}곡당 한 번씩"
 
 #: src/components/Stations/Playlists/Form/BasicInfo.vue:165
 #: src/components/Stations/Playlists/Form/BasicInfo.vue:324
 msgid "Once per Hour"
-msgstr "시간 마다"
+msgstr "시간당 한 번"
 
 #: src/components/Stations/Playlists.vue:145
 msgid "Once per Hour (at %{minute})"
-msgstr ""
+msgstr "한 시간에 한 번(at %{minute}분)"
 
 #: src/components/Stations/Playlists/Form/BasicInfo.vue:147
 #: src/components/Stations/Playlists/Form/BasicInfo.vue:319
 msgid "Once per x Minutes"
-msgstr ""
+msgstr "x분당 한 번"
 
 #: src/components/Stations/Playlists/Form/BasicInfo.vue:129
 #: src/components/Stations/Playlists/Form/BasicInfo.vue:314
 msgid "Once per x Songs"
-msgstr ""
+msgstr "x곡당 한 번"
 
 #: src/components/Stations/Webhooks/Form/Mastodon.vue:32
 msgid "Once these steps are completed, enter the \"Access Token\" from the application's page into the field below."
-msgstr ""
+msgstr "이 단계가 완료되면 애플리케이션 페이지의 \"액세스 토큰\"을 아래 필드에 입력하세요."
 
 #: src/components/Admin/Index/CpuStatsHelpModal.vue:54
 msgid "One important note on I/O Wait is that it can indicate a bottleneck or problem but also may be completely meaningless, depending on the workload and general available resources. A constantly high I/O Wait should prompt further investigation with more sophisticated tools."
@@ -5839,7 +5839,7 @@ msgstr ""
 
 #: src/components/Admin/Updates.vue:145
 msgid "Update Instructions"
-msgstr "지침 업데이트"
+msgstr "업데이트 지침"
 
 #: src/components/Public/WebDJ/SettingsPanel.vue:50
 msgid "Update Metadata"
@@ -5847,15 +5847,15 @@ msgstr "메타데이터 업데이트"
 
 #: src/components/Admin/Updates.vue:220
 msgid "Update started. Your installation will restart shortly."
-msgstr ""
+msgstr "업데이트가 시작되었습니다. 설치가 곧 다시 시작됩니다."
 
 #: src/components/Stations/Restart.vue:3
 msgid "Update Station Configuration"
-msgstr ""
+msgstr "스테이션 업데이트 구성"
 
 #: src/components/Admin/Updates.vue:120
 msgid "Update via Web"
-msgstr ""
+msgstr "웹을 통한 업데이트"
 
 #: src/components/Admin/AuditLog/DetailsModal.vue:18
 msgid "Updated"
@@ -5863,43 +5863,43 @@ msgstr "업데이트됨"
 
 #: src/components/Stations/BulkMedia.vue:128
 msgid "Updated successfully."
-msgstr ""
+msgstr "성공적으로 업데이트되었습니다."
 
 #: src/components/Admin/Stations/Form/BackendForm.vue:164
 msgid "Upload a Stereo Tool configuration file from the \"Broadcasting\" submenu in the station profile."
-msgstr ""
+msgstr "스테이션 프로필의 \"방송\" 하위 메뉴에서 Stereo Tool 구성 파일을 업로드하세요."
 
 #: src/components/Admin/Branding.vue:9
 #: src/components/Stations/Branding.vue:13
 msgid "Upload Custom Assets"
-msgstr ""
+msgstr "사용자 정의 애셋 업로드"
 
 #: src/components/Admin/Stations/Form/BackendForm.vue:159
 #: src/components/Stations/menu.ts:281
 #: src/components/Stations/StereoToolConfig.vue:12
 msgid "Upload Stereo Tool Configuration"
-msgstr ""
+msgstr "Stereo Tool 구성 업로드"
 
 #: src/components/Admin/Shoutcast.vue:43
 #: src/components/Admin/StereoTool.vue:71
 msgid "Upload the file on this page to automatically extract it into the proper directory."
-msgstr ""
+msgstr "이 페이지에 파일을 업로드하면 적절한 디렉터리에 자동으로 압축이 풀립니다."
 
 #: src/components/Stations/Webhooks/Form/Discord.vue:48
 msgid "URL"
-msgstr ""
+msgstr "URL"
 
 #: src/components/Admin/Stations/Form/ProfileForm.vue:53
 msgid "URL Stub"
-msgstr ""
+msgstr "URL 스텁"
 
 #: src/components/Admin/Index/CpuStatsPanel.vue:60
 msgid "Use"
-msgstr ""
+msgstr "사용"
 
 #: src/components/Admin/Index/CpuStatsHelpModal.vue:62
 msgid "Use (Us)"
-msgstr ""
+msgstr "사용 (Us)"
 
 #: src/components/Account/ApiKeysPanel.vue:8
 msgid "Use API keys to authenticate with the AzuraCast API using the same permissions as your user account."
@@ -5907,11 +5907,11 @@ msgstr "API 키를 사용해 사용자 계정과 동일한 권한을 사용하�
 
 #: src/components/Account/EditForm.vue:68
 msgid "Use Browser Default"
-msgstr ""
+msgstr "브라우저 기본값 사용"
 
 #: src/components/Admin/Settings/GeneralTab.vue:61
 msgid "Use High-Performance Now Playing Updates"
-msgstr ""
+msgstr "고성능 '지금 재생 중' 업데이트 사용"
 
 #: src/components/Admin/Stations/Form/FrontendForm.vue:274
 msgid "Use Icecast 2.4 on this server."

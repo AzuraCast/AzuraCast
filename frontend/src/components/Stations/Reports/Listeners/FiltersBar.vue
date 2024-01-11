@@ -1,7 +1,7 @@
 <template>
     <div class="row row-cols-md-auto g-3 align-items-center">
         <div class="col-12">
-            <label for="minLength">{{ $gettext('Minimum Connected Time') }}</label>
+            <label for="minLength">{{ $gettext('Min. Connected Time') }}</label>
             <div class="input-group input-group-sm">
                 <input
                     id="minLength"
@@ -14,7 +14,7 @@
             </div>
         </div>
         <div class="col-12">
-            <label for="maxLength">{{ $gettext('Maximum Connected Time') }}</label>
+            <label for="maxLength">{{ $gettext('Max. Connected Time') }}</label>
             <div class="input-group input-group-sm">
                 <input
                     id="maxLength"

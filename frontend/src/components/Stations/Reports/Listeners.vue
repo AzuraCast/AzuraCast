@@ -80,31 +80,30 @@
                 </div>
                 <div>
                     <div class="card-body">
-                        <div class="row">
-                            <div class="col-md-3">
-                                <h5>
-                                    {{ $gettext('Unique Listeners') }}
-                                    <br>
-                                    <small>
-                                        {{ $gettext('for selected period') }}
-                                    </small>
-                                </h5>
-                                <h3>{{ listeners.length }}</h3>
+                        <div class="row row-cols-md-auto align-items-center">
+                            <div class="col-12 text-start text-md-end h5">
+                                {{ $gettext('Unique Listeners') }}
+                                <br>
+                                <small>
+                                    {{ $gettext('for selected period') }}
+                                </small>
                             </div>
-                            <div class="col-md-3">
-                                <h5>
-                                    {{ $gettext('Total Listener Hours') }}
-                                    <br>
-                                    <small>
-                                        {{ $gettext('for selected period') }}
-                                    </small>
-                                </h5>
-                                <h3>{{ totalListenerHours }}</h3>
+                            <div class="col-12 h3">
+                                {{ listeners.length }}
                             </div>
-                        </div>
-
-                        <div class="mt-3">
-                            <listener-filters-bar v-model:filters="filters" />
+                            <div class="col-12 text-start text-md-end h5">
+                                {{ $gettext('Total Listener Hours') }}
+                                <br>
+                                <small>
+                                    {{ $gettext('for selected period') }}
+                                </small>
+                            </div>
+                            <div class="col-12 h3">
+                                {{ totalListenerHours }}
+                            </div>
+                            <div class="col-12">
+                                <listener-filters-bar v-model:filters="filters" />
+                            </div>
                         </div>
                     </div>
 

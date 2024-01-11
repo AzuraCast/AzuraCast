@@ -75,30 +75,36 @@
 
                 <div id="map">
                     <StationReportsListenersMap
-                        :listeners="listeners"
+                        :listeners="filteredListeners"
                     />
                 </div>
                 <div>
-                    <div class="card-body row">
-                        <div class="col-md-4">
-                            <h5>
-                                {{ $gettext('Unique Listeners') }}
-                                <br>
-                                <small>
-                                    {{ $gettext('for selected period') }}
-                                </small>
-                            </h5>
-                            <h3>{{ listeners.length }}</h3>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <h5>
+                                    {{ $gettext('Unique Listeners') }}
+                                    <br>
+                                    <small>
+                                        {{ $gettext('for selected period') }}
+                                    </small>
+                                </h5>
+                                <h3>{{ listeners.length }}</h3>
+                            </div>
+                            <div class="col-md-3">
+                                <h5>
+                                    {{ $gettext('Total Listener Hours') }}
+                                    <br>
+                                    <small>
+                                        {{ $gettext('for selected period') }}
+                                    </small>
+                                </h5>
+                                <h3>{{ totalListenerHours }}</h3>
+                            </div>
                         </div>
-                        <div class="col-md-4">
-                            <h5>
-                                {{ $gettext('Total Listener Hours') }}
-                                <br>
-                                <small>
-                                    {{ $gettext('for selected period') }}
-                                </small>
-                            </h5>
-                            <h3>{{ totalListenerHours }}</h3>
+
+                        <div class="mt-3">
+                            <listener-filters-bar v-model:filters="filters" />
                         </div>
                     </div>
 
@@ -108,27 +114,21 @@
                         paginated
                         handle-client-side
                         :fields="fields"
-                        :items="listeners"
+                        :items="filteredListeners"
                         @refresh-clicked="updateListeners()"
                     >
-                        <template #cell(time)="row">
-                            {{ formatTime(row.item.connected_time) }}
-                        </template>
-                        <template #cell(time_sec)="row">
-                            {{ row.item.connected_time }}
-                        </template>
                         <template #cell(user_agent)="row">
                             <div>
                                 <span v-if="row.item.is_mobile">
                                     <icon :icon="IconSmartphone" />
                                     <span class="visually-hidden">
-                                        {{ $gettext('Mobile Device') }}
+                                        {{ $gettext('Mobile') }}
                                     </span>
                                 </span>
                                 <span v-else>
                                     <icon :icon="IconDesktopWindows" />
                                     <span class="visually-hidden">
-                                        {{ $gettext('Desktop Device') }}
+                                        {{ $gettext('Desktop') }}
                                     </span>
                                 </span>
 
@@ -174,10 +174,9 @@
 <script setup lang="ts">
 import StationReportsListenersMap from "./Listeners/Map.vue";
 import Icon from "~/components/Common/Icon.vue";
-import formatTime from "~/functions/formatTime";
 import DataTable, {DataTableField} from "~/components/Common/DataTable.vue";
 import DateRangeDropdown from "~/components/Common/DateRangeDropdown.vue";
-import {computed, nextTick, onMounted, ref, shallowRef, watch} from "vue";
+import {computed, ComputedRef, nextTick, onMounted, Ref, ref, shallowRef, watch} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import {useAxios} from "~/vendor/axios";
 import {useAzuraCastStation} from "~/vendor/azuracast";
@@ -185,6 +184,10 @@ import {useLuxon} from "~/vendor/luxon";
 import {getStationApiUrl} from "~/router";
 import {IconDesktopWindows, IconDownload, IconSmartphone} from "~/components/Common/icons";
 import useHasDatatable, {DataTableTemplateRef} from "~/functions/useHasDatatable";
+import {ListenerFilters, ListenerTypeFilter} from "~/components/Stations/Reports/Listeners/listenerFilters.ts";
+import {filter} from "lodash";
+import formatTime from "~/functions/formatTime.ts";
+import ListenerFiltersBar from "./Listeners/FiltersBar.vue";
 
 const props = defineProps({
     attribution: {
@@ -211,12 +214,32 @@ const dateRange = ref({
     endDate: nowTz.toJSDate()
 });
 
+const filters: Ref<ListenerFilters> = ref({
+    minLength: null,
+    maxLength: null,
+    type: ListenerTypeFilter.All,
+});
+
 const {$gettext} = useTranslate();
 
 const fields: DataTableField[] = [
   {key: 'ip', label: $gettext('IP'), sortable: false},
-  {key: 'time', label: $gettext('Time'), sortable: false},
-  {key: 'time_sec', label: $gettext('Time (sec)'), sortable: false},
+    {
+        key: 'time',
+        label: $gettext('Time'),
+        sortable: false,
+        formatter: (_col, _key, item) => {
+            return formatTime(item.connected_time)
+        },
+    },
+    {
+        key: 'time_sec',
+        label: $gettext('Time (sec)'),
+        sortable: false,
+        formatter: (_col, _key, item) => {
+            return item.connected_time;
+        }
+    },
   {key: 'user_agent', isRowHeader: true, label: $gettext('User Agent'), sortable: false},
   {key: 'stream', label: $gettext('Stream'), sortable: false},
   {key: 'location', label: $gettext('Location'), sortable: false}
@@ -225,30 +248,64 @@ const fields: DataTableField[] = [
 const exportUrl = computed(() => {
     const exportUrl = new URL(apiUrl.value, document.location.href);
     const exportUrlParams = exportUrl.searchParams;
-  exportUrlParams.set('format', 'csv');
+    exportUrlParams.set('format', 'csv');
 
-  if (!isLive.value) {
-    exportUrlParams.set('start', DateTime.fromJSDate(dateRange.value.startDate).toISO());
-    exportUrlParams.set('end', DateTime.fromJSDate(dateRange.value.endDate).toISO());
-  }
+    if (!isLive.value) {
+        exportUrlParams.set('start', DateTime.fromJSDate(dateRange.value.startDate).toISO());
+        exportUrlParams.set('end', DateTime.fromJSDate(dateRange.value.endDate).toISO());
+    }
 
-  return exportUrl.toString();
+    return exportUrl.toString();
 });
 
 const totalListenerHours = computed(() => {
-  let tlh_seconds = 0;
-  listeners.value.forEach(function (listener) {
-    tlh_seconds += listener.connected_time;
-  });
+    let tlh_seconds = 0;
+    filteredListeners.value.forEach(function (listener) {
+        tlh_seconds += listener.connected_time;
+    });
 
-  const tlh_hours = tlh_seconds / 3600;
-  return Math.round((tlh_hours + 0.00001) * 100) / 100;
+    const tlh_hours = tlh_seconds / 3600;
+    return Math.round((tlh_hours + 0.00001) * 100) / 100;
 });
 
 const {axios} = useAxios();
 
 const $datatable = ref<DataTableTemplateRef>(null);
 const {navigate} = useHasDatatable($datatable);
+
+const hasFilters: ComputedRef<boolean> = computed(() => {
+    return null !== filters.value.minLength
+        || null !== filters.value.maxLength
+        || ListenerTypeFilter.All !== filters.value.type;
+});
+
+const filteredListeners = computed(() => {
+    if (!hasFilters.value) {
+        return listeners.value;
+    }
+
+    return filter(
+        listeners.value,
+        (row) => {
+            const connectedTime: number = row.connected_time;
+            if (null !== filters.value.minLength && connectedTime < filters.value.minLength) {
+                return false;
+            }
+            if (null !== filters.value.maxLength && connectedTime > filters.value.maxLength) {
+                return false;
+            }
+            if (ListenerTypeFilter.All !== filters.value.type) {
+                if (ListenerTypeFilter.Mobile === filters.value.type && !row.is_mobile) {
+                    return false;
+                } else if (ListenerTypeFilter.Desktop === filters.value.type && row.is_mobile) {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+    );
+});
 
 const updateListeners = () => {
     const params: {

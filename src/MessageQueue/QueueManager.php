@@ -57,7 +57,7 @@ final class QueueManager extends AbstractQueueManager
                     'redeliver_timeout' => 43200,
                     'claim_interval' => 86400,
                 ],
-                $this->redisFactory->createInstance()
+                $this->redisFactory->getInstance()
             );
         }
 

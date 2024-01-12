@@ -182,12 +182,6 @@ final class AzuraCastEnvFile extends AbstractEnvFile
                     'default' => $redisSettings['port'],
                     'required' => true,
                 ],
-                Environment::REDIS_DB => [
-                    'name' => __('Redis Database Index'),
-                    'options' => range(0, 15),
-                    'default' => $redisSettings['db'],
-                    'required' => true,
-                ],
                 'PHP_MAX_FILE_SIZE' => [
                     'name' => __('PHP Maximum POST File Size'),
                     'default' => '25M',

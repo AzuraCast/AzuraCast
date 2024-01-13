@@ -269,10 +269,76 @@ export interface ApiListener {
    * @example 30
    */
   connected_time?: number;
-  /** Device metadata, if available */
-  device?: any[];
-  /** Location metadata, if available */
-  location?: any[];
+  device?: ApiListenerDevice;
+  location?: ApiListenerLocation;
+}
+
+export interface ApiListenerDevice {
+  /**
+   * If the listener device is likely a browser.
+   * @example true
+   */
+  is_browser?: boolean;
+  /**
+   * If the listener device is likely a mobile device.
+   * @example true
+   */
+  is_mobile?: boolean;
+  /**
+   * If the listener device is likely a crawler.
+   * @example true
+   */
+  is_bot?: boolean;
+  /**
+   * Summary of the listener client.
+   * @example "Firefox 121.0, Windows"
+   */
+  client?: string | null;
+  /**
+   * Summary of the listener browser family.
+   * @example "Firefox"
+   */
+  browser_family?: string | null;
+  /**
+   * Summary of the listener OS family.
+   * @example "Windows"
+   */
+  os_family?: string | null;
+}
+
+export interface ApiListenerLocation {
+  /**
+   * The approximate city of the listener.
+   * @example "Austin"
+   */
+  city?: string | null;
+  /**
+   * The approximate region/state of the listener.
+   * @example "Texas"
+   */
+  region?: string | null;
+  /**
+   * The approximate country of the listener.
+   * @example "United States"
+   */
+  country?: string | null;
+  /**
+   * A description of the location.
+   * @example "Austin, Texas, US"
+   */
+  description?: string;
+  /**
+   * Latitude.
+   * @format float
+   * @example "30.000000"
+   */
+  lat?: number | null;
+  /**
+   * Latitude.
+   * @format float
+   * @example "-97.000000"
+   */
+  lon?: number | null;
 }
 
 export type ApiNewRecord = ApiStatus & {

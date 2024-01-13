@@ -175,7 +175,7 @@ import StationReportsListenersMap from "./Listeners/Map.vue";
 import Icon from "~/components/Common/Icon.vue";
 import DataTable, {DataTableField} from "~/components/Common/DataTable.vue";
 import DateRangeDropdown from "~/components/Common/DateRangeDropdown.vue";
-import {computed, ComputedRef, nextTick, onMounted, Ref, ref, shallowRef, watch} from "vue";
+import {computed, ComputedRef, nextTick, onMounted, Ref, ref, ShallowRef, shallowRef, watch} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import {useAxios} from "~/vendor/axios";
 import {useAzuraCastStation} from "~/vendor/azuracast";
@@ -187,6 +187,7 @@ import {ListenerFilters, ListenerTypeFilter} from "~/components/Stations/Reports
 import {filter} from "lodash";
 import formatTime from "~/functions/formatTime.ts";
 import ListenerFiltersBar from "./Listeners/FiltersBar.vue";
+import {ApiListener} from "~/entities/ApiInterfaces.ts";
 
 const props = defineProps({
     attribution: {
@@ -198,7 +199,7 @@ const props = defineProps({
 const apiUrl = getStationApiUrl('/listeners');
 
 const isLive = ref<boolean>(true);
-const listeners = shallowRef([]);
+const listeners: ShallowRef<ApiListener[]> = shallowRef([]);
 
 const {timezone} = useAzuraCastStation();
 
@@ -278,14 +279,14 @@ const hasFilters: ComputedRef<boolean> = computed(() => {
         || ListenerTypeFilter.All !== filters.value.type;
 });
 
-const filteredListeners = computed(() => {
+const filteredListeners: ComputedRef<ApiListener[]> = computed(() => {
     if (!hasFilters.value) {
         return listeners.value;
     }
 
     return filter(
         listeners.value,
-        (row) => {
+        (row: ApiListener) => {
             const connectedTime: number = row.connected_time;
             if (null !== filters.value.minLength && connectedTime < filters.value.minLength) {
                 return false;
@@ -294,9 +295,9 @@ const filteredListeners = computed(() => {
                 return false;
             }
             if (ListenerTypeFilter.All !== filters.value.type) {
-                if (ListenerTypeFilter.Mobile === filters.value.type && !row.is_mobile) {
+                if (ListenerTypeFilter.Mobile === filters.value.type && !row.device.is_mobile) {
                     return false;
-                } else if (ListenerTypeFilter.Desktop === filters.value.type && row.is_mobile) {
+                } else if (ListenerTypeFilter.Desktop === filters.value.type && row.device.is_mobile) {
                     return false;
                 }
             }

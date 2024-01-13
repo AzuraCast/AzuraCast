@@ -117,25 +117,37 @@
                         select-fields
                         @refresh-clicked="updateListeners()"
                     >
-                        <template #cell(user_agent)="row">
-                            <div>
-                                <span v-if="row.item.is_mobile">
-                                    <icon :icon="IconSmartphone" />
-                                    <span class="visually-hidden">
-                                        {{ $gettext('Mobile') }}
+                        <!-- eslint-disable-next-line -->
+                        <template #cell(device.client)="row">
+                            <div class="d-flex align-items-center">
+                                <div class="flex-shrink-0 pe-2">
+                                    <span v-if="row.item.device.is_bot">
+                                        <icon :icon="IconRouter" />
+                                        <span class="visually-hidden">
+                                            {{ $gettext('Bot/Crawler') }}
+                                        </span>
                                     </span>
-                                </span>
-                                <span v-else>
-                                    <icon :icon="IconDesktopWindows" />
-                                    <span class="visually-hidden">
-                                        {{ $gettext('Desktop') }}
+                                    <span v-else-if="row.item.device.is_mobile">
+                                        <icon :icon="IconSmartphone" />
+                                        <span class="visually-hidden">
+                                            {{ $gettext('Mobile') }}
+                                        </span>
                                     </span>
-                                </span>
-
-                                {{ row.item.user_agent }}
-                            </div>
-                            <div v-if="row.item.device.client">
-                                <small>{{ row.item.device.client }}</small>
+                                    <span v-else>
+                                        <icon :icon="IconDesktopWindows" />
+                                        <span class="visually-hidden">
+                                            {{ $gettext('Desktop') }}
+                                        </span>
+                                    </span>
+                                </div>
+                                <div class="flex-fill">
+                                    <div v-if="row.item.device.client">
+                                        {{ row.item.device.client }}
+                                    </div>
+                                    <div class="small">
+                                        {{ row.item.user_agent }}
+                                    </div>
+                                </div>
                             </div>
                         </template>
                         <template #cell(stream)="row">
@@ -182,7 +194,7 @@ import {useAxios} from "~/vendor/axios";
 import {useAzuraCast, useAzuraCastStation} from "~/vendor/azuracast";
 import {useLuxon} from "~/vendor/luxon";
 import {getStationApiUrl} from "~/router";
-import {IconDesktopWindows, IconDownload, IconSmartphone} from "~/components/Common/icons";
+import {IconDesktopWindows, IconDownload, IconRouter, IconSmartphone} from "~/components/Common/icons";
 import useHasDatatable, {DataTableTemplateRef} from "~/functions/useHasDatatable";
 import {ListenerFilters, ListenerTypeFilter} from "~/components/Stations/Reports/Listeners/listenerFilters.ts";
 import {filter} from "lodash";
@@ -281,7 +293,7 @@ const fields: DataTableField[] = [
         visible: false
     },
     {
-        key: 'user_agent',
+        key: 'device.client',
         isRowHeader: true,
         label: $gettext('User Agent'),
         sortable: true,

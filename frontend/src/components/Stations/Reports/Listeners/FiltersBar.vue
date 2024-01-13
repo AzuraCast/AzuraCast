@@ -42,6 +42,9 @@
                     <option :value="ListenerTypeFilter.Desktop">
                         {{ $gettext('Desktop') }}
                     </option>
+                    <option :value="ListenerTypeFilter.Bot">
+                        {{ $gettext('Bot/Crawler') }}
+                    </option>
                 </select>
             </div>
         </div>

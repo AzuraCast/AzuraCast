@@ -1,7 +1,8 @@
 export enum ListenerTypeFilter {
     All = 'all',
     Mobile = 'mobile',
-    Desktop = 'desktop'
+    Desktop = 'desktop',
+    Bot = 'bot'
 }
 
 export interface ListenerFilters {

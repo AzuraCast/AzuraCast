@@ -110,7 +110,7 @@
                                     <div class="px-3 py-1">
                                         <form-multi-check
                                             id="field_select"
-                                            v-model="settings.visibleFieldKeys"
+                                            v-model="visibleFieldKeys"
                                             :options="selectableFieldOptions"
                                             stacked
                                         />
@@ -453,12 +453,22 @@ const settings = useOptionalStorage(
     }
 );
 
-const visibleFieldKeys = computed(() => {
-    if (!isEmpty(settings.value.visibleFieldKeys)) {
-        return settings.value.visibleFieldKeys;
-    }
+const visibleFieldKeys = computed({
+    get: () => {
+        const settingsKeys = toRaw(settings.value.visibleFieldKeys);
+        if (!isEmpty(settingsKeys)) {
+            return settingsKeys;
+        }
 
-    return map(defaultSelectableFields.value, (field) => field.key);
+        return map(defaultSelectableFields.value, (field) => field.key);
+    },
+    set: (newValue) => {
+        if (isEmpty(newValue)) {
+            newValue = map(defaultSelectableFields.value, (field) => field.key);
+        }
+
+        settings.value.visibleFieldKeys = newValue;
+    }
 });
 
 const perPage = computed(() => {

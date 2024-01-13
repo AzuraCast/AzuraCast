@@ -108,12 +108,13 @@
                     </div>
 
                     <data-table
-                        id="station_playlists"
+                        id="station_listeners"
                         ref="$datatable"
                         paginated
                         handle-client-side
                         :fields="fields"
                         :items="filteredListeners"
+                        select-fields
                         @refresh-clicked="updateListeners()"
                     >
                         <template #cell(user_agent)="row">
@@ -178,7 +179,7 @@ import DateRangeDropdown from "~/components/Common/DateRangeDropdown.vue";
 import {computed, ComputedRef, nextTick, onMounted, Ref, ref, ShallowRef, shallowRef, watch} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import {useAxios} from "~/vendor/axios";
-import {useAzuraCastStation} from "~/vendor/azuracast";
+import {useAzuraCast, useAzuraCastStation} from "~/vendor/azuracast";
 import {useLuxon} from "~/vendor/luxon";
 import {getStationApiUrl} from "~/router";
 import {IconDesktopWindows, IconDownload, IconSmartphone} from "~/components/Common/icons";
@@ -202,6 +203,7 @@ const isLive = ref<boolean>(true);
 const listeners: ShallowRef<ApiListener[]> = shallowRef([]);
 
 const {timezone} = useAzuraCastStation();
+const {timeConfig} = useAzuraCast();
 
 const {DateTime} = useLuxon();
 const nowTz = DateTime.now().setZone(timezone);
@@ -223,26 +225,83 @@ const filters: Ref<ListenerFilters> = ref({
 const {$gettext} = useTranslate();
 
 const fields: DataTableField[] = [
-  {key: 'ip', label: $gettext('IP'), sortable: false},
     {
-        key: 'time',
+        key: 'ip', label: $gettext('IP'), sortable: false,
+        selectable: true,
+        visible: true
+    },
+    {
+        key: 'connected_time',
         label: $gettext('Time'),
-        sortable: false,
+        sortable: true,
         formatter: (_col, _key, item) => {
             return formatTime(item.connected_time)
         },
+        selectable: true,
+        visible: true
     },
     {
-        key: 'time_sec',
+        key: 'connected_time_sec',
         label: $gettext('Time (sec)'),
         sortable: false,
         formatter: (_col, _key, item) => {
             return item.connected_time;
-        }
+        },
+        selectable: true,
+        visible: false
     },
-  {key: 'user_agent', isRowHeader: true, label: $gettext('User Agent'), sortable: false},
-  {key: 'stream', label: $gettext('Stream'), sortable: false},
-  {key: 'location', label: $gettext('Location'), sortable: false}
+    {
+        key: 'connected_on',
+        label: $gettext('Start Time'),
+        sortable: true,
+        formatter: (_col, _key, item) => {
+            return DateTime.fromSeconds(
+                item.connected_on,
+                {zone: timezone}
+            ).toLocaleString(
+                {...DateTime.DATETIME_SHORT, ...timeConfig}
+            );
+        },
+        selectable: true,
+        visible: false
+    },
+    {
+        key: 'connected_until',
+        label: $gettext('End Time'),
+        sortable: true,
+        formatter: (_col, _key, item) => {
+            return DateTime.fromSeconds(
+                item.connected_until,
+                {zone: timezone}
+            ).toLocaleString(
+                {...DateTime.DATETIME_SHORT, ...timeConfig}
+            );
+        },
+        selectable: true,
+        visible: false
+    },
+    {
+        key: 'user_agent',
+        isRowHeader: true,
+        label: $gettext('User Agent'),
+        sortable: true,
+        selectable: true,
+        visible: true
+    },
+    {
+        key: 'stream',
+        label: $gettext('Stream'),
+        sortable: true,
+        selectable: true,
+        visible: true
+    },
+    {
+        key: 'location',
+        label: $gettext('Location'),
+        sortable: true,
+        selectable: true,
+        visible: true
+    }
 ];
 
 const exportUrl = computed(() => {

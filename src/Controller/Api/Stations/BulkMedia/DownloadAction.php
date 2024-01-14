@@ -88,32 +88,32 @@ final class DownloadAction implements SingleActionInterface
 
         foreach ($query->getArrayResult() as $row) {
             $customFieldsById = [];
-            foreach ($row['custom_fields'] as $rowCustomField) {
+            foreach ($row['custom_fields'] ?? [] as $rowCustomField) {
                 $customFieldsById[$rowCustomField['field_id']] = $rowCustomField['value'];
             }
 
             $playlists = [];
-            foreach ($row['playlists'] as $rowPlaylistMedia) {
+            foreach ($row['playlists'] ?? [] as $rowPlaylistMedia) {
                 if (isset($playlistsById[$rowPlaylistMedia['playlist_id']])) {
                     $playlists[] = $playlistsById[$rowPlaylistMedia['playlist_id']];
                 }
             }
 
             $bodyRow = [
-                $row['unique_id'],
-                $row['path'],
-                $row['title'],
-                $row['artist'],
-                $row['album'],
-                $row['genre'],
-                $row['lyrics'],
-                $row['isrc'],
-                $row['amplify'],
-                $row['fade_overlap'],
-                $row['fade_in'],
-                $row['fade_out'],
-                $row['cue_in'],
-                $row['cue_out'],
+                $row['unique_id'] ?? '',
+                $row['path'] ?? '',
+                $row['title'] ?? '',
+                $row['artist'] ?? '',
+                $row['album'] ?? '',
+                $row['genre'] ?? '',
+                $row['lyrics'] ?? '',
+                $row['isrc'] ?? '',
+                $row['amplify'] ?? '',
+                $row['fade_overlap'] ?? '',
+                $row['fade_in'] ?? '',
+                $row['fade_out'] ?? '',
+                $row['cue_in'] ?? '',
+                $row['cue_out'] ?? '',
                 implode(', ', $playlists),
             ];
 

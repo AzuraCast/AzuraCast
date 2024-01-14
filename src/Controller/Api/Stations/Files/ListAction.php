@@ -19,7 +19,8 @@ use App\Http\RouterInterface;
 use App\Http\ServerRequest;
 use App\Media\MimeType;
 use App\Paginator;
-use App\Utilities;
+use App\Utilities\Strings;
+use App\Utilities\Types;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\QueryBuilder;
 use League\Flysystem\StorageAttributes;
@@ -249,7 +250,7 @@ final class ListAction implements SingleActionInterface
                 } elseif (isset($unprocessableMedia[$row->path])) {
                     $row->text = sprintf(
                         __('File Not Processed: %s'),
-                        Utilities\Strings::truncateText($unprocessableMedia[$row->path])
+                        Strings::truncateText($unprocessableMedia[$row->path])
                     );
                 } elseif (MimeType::isPathImage($row->path)) {
                     $row->is_cover_art = true;
@@ -316,6 +317,21 @@ final class ListAction implements SingleActionInterface
             'sm.art_updated_at'
         );
 
+        /** @var array<array{
+         *     id: int,
+         *     unique_id: string,
+         *     song_id: string,
+         *     path: string,
+         *     artist: string | null,
+         *     title: string | null,
+         *     album: string | null,
+         *     genre: string | null,
+         *     isrc: string | null,
+         *     length: string,
+         *     length_text: string,
+         *     art_updated_at: int
+         * }> $mediaInDirRaw
+         */
         $mediaInDirRaw = $qb->getQuery()->getScalarResult();
 
         $mediaIds = array_column($mediaInDirRaw, 'id');
@@ -337,6 +353,13 @@ final class ListAction implements SingleActionInterface
         }
 
         // Fetch playlists for all shown media.
+
+        /** @var array<array{
+         *     media_id: int,
+         *     playlist_id: int,
+         *     name: string
+         * }> $allPlaylistsRaw
+         */
         $allPlaylistsRaw = $this->em->createQuery(
             <<<'DQL'
             SELECT spm.media_id, spm.playlist_id, sp.name
@@ -359,17 +382,17 @@ final class ListAction implements SingleActionInterface
             $id = $row['id'];
             $media = new FileListMedia();
 
-            $media->id = (string)$row['song_id'];
-            $media->title = (string)$row['title'];
-            $media->artist = (string)$row['artist'];
-            $media->text = $row['artist'] . ' - ' . $row['title'];
-            $media->album = (string)$row['album'];
-            $media->genre = (string)$row['genre'];
-            $media->isrc = (string)$row['isrc'];
+            $media->id = $row['song_id'];
+            $media->title = $row['title'];
+            $media->artist = $row['artist'];
+            $media->text = ($media->artist ?? '') . ' - ' . ($media->title ?? '');
+            $media->album = $row['album'];
+            $media->genre = $row['genre'];
+            $media->isrc = $row['isrc'];
 
-            $media->is_playable = ($row['length'] !== 0);
-            $media->length = (int)$row['length'];
+            $media->length = Types::int($row['length']);
             $media->length_text = $row['length_text'];
+            $media->is_playable = ($media->length !== 0);
 
             $media->media_id = $id;
             $media->unique_id = $row['unique_id'];

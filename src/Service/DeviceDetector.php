@@ -49,6 +49,8 @@ final class DeviceDetector
         }
 
         $deviceResult = $cacheItem->get();
+        assert($deviceResult instanceof DeviceResult);
+
         $this->deviceResults[$userAgentHash] = $deviceResult;
 
         return $deviceResult;

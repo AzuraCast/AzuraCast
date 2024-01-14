@@ -43,6 +43,14 @@
                     </button>
                     <button
                         type="button"
+                        class="btn btn-sm"
+                        :class="(row.item.is_enabled) ? 'btn-warning' : 'btn-success'"
+                        @click="doToggle(row.item)"
+                    >
+                        {{ (row.item.is_enabled) ? $gettext('Disable') : $gettext('Enable') }}
+                    </button>
+                    <button
+                        type="button"
                         class="btn btn-primary"
                         @click="doEdit(row.item.links.self)"
                     >
@@ -74,7 +82,7 @@
 </template>
 
 <script setup lang="ts">
-import DataTable, { DataTableField } from '~/components/Common/DataTable.vue';
+import DataTable, {DataTableField} from '~/components/Common/DataTable.vue';
 import AdminStationsEditModal from "./Stations/EditModal.vue";
 import {get} from "lodash";
 import AdminStationsCloneModal from "./Stations/CloneModal.vue";
@@ -89,6 +97,9 @@ import CardPage from "~/components/Common/CardPage.vue";
 import {getApiUrl} from "~/router";
 import AddButton from "~/components/Common/AddButton.vue";
 import CloneModal from "~/components/Admin/Stations/CloneModal.vue";
+import {useSweetAlert} from "~/vendor/sweetalert.ts";
+import {useNotify} from "~/functions/useNotify.ts";
+import {useAxios} from "~/vendor/axios.ts";
 
 const props = defineProps({
     ...stationFormProps,
@@ -147,6 +158,29 @@ const $cloneModal = ref<InstanceType<typeof CloneModal> | null>(null);
 
 const doClone = (stationName, url) => {
     $cloneModal.value.create(stationName, url);
+};
+
+const {confirmDelete} = useSweetAlert();
+const {notifySuccess} = useNotify();
+const {axios} = useAxios();
+
+const doToggle = (station) => {
+    const title = (station.is_enabled)
+        ? $gettext('Disable station?')
+        : $gettext('Enable station?');
+
+    confirmDelete({
+        title: title
+    }).then((result) => {
+        if (result.value) {
+            axios.put(station.links.self, {
+                is_enabled: !station.is_enabled
+            }).then((resp) => {
+                notifySuccess(resp.data.message);
+                relist();
+            });
+        }
+    });
 };
 
 const {doDelete} = useConfirmAndDelete(

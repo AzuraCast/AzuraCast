@@ -179,10 +179,10 @@
                                     <button
                                         type="button"
                                         class="btn btn-sm"
-                                        :class="toggleButtonClass(item)"
+                                        :class="(item.is_enabled) ? 'btn-warning' : 'btn-success'"
                                         @click="doModify(item.links.toggle)"
                                     >
-                                        {{ langToggleButton(item) }}
+                                        {{ (item.is_enabled) ? $gettext('Disable') : $gettext('Enable') }}
                                     </button>
                                     <button
                                         v-if="item.links.empty"
@@ -300,7 +300,7 @@
 </template>
 
 <script setup lang="ts">
-import DataTable, { DataTableField } from '~/components/Common/DataTable.vue';
+import DataTable, {DataTableField} from '~/components/Common/DataTable.vue';
 import Schedule from '~/components/Common/ScheduleView.vue';
 import EditModal from './Playlists/EditModal.vue';
 import ReorderModal from './Playlists/ReorderModal.vue';
@@ -343,18 +343,6 @@ const fields: DataTableField[] = [
     {key: 'num_songs', label: $gettext('# Songs'), sortable: false},
     {key: 'actions', label: $gettext('Actions'), sortable: false, class: 'shrink'}
 ];
-
-const toggleButtonClass = (record) => {
-    return (record.is_enabled)
-        ? 'btn-warning'
-        : 'btn-success';
-}
-
-const langToggleButton = (record) => {
-    return (record.is_enabled)
-        ? $gettext('Disable')
-        : $gettext('Enable');
-};
 
 const {Duration} = useLuxon();
 

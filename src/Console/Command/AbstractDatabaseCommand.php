@@ -78,9 +78,12 @@ abstract class AbstractDatabaseCommand extends CommandAbstract
 
         // Drop all preloaded tables prior to running a DB dump backup.
         $conn->executeQuery('SET FOREIGN_KEY_CHECKS = 0');
+
+        /** @var string $table */
         foreach ($conn->fetchFirstColumn('SHOW TABLES') as $table) {
             $conn->executeQuery('DROP TABLE IF EXISTS ' . $conn->quoteIdentifier($table));
         }
+
         $conn->executeQuery('SET FOREIGN_KEY_CHECKS = 1');
 
         [$commandFlags, $commandEnvVars] = $this->getDatabaseSettingsAsCliFlags();

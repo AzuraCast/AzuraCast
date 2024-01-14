@@ -30,6 +30,7 @@ final class OptimizeTablesCommand extends CommandAbstract
         $io->title('Optimizing Database Tables...');
 
         foreach ($this->db->fetchAllAssociative('SHOW TABLES') as $tableRow) {
+            /** @var string $table */
             $table = reset($tableRow);
 
             $io->listing([$table]);

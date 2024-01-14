@@ -10,6 +10,13 @@ use App\Utilities\Types;
 use Psr\Cache\CacheItemInterface;
 use Psr\Cache\CacheItemPoolInterface;
 
+/**
+ * @phpstan-type LookupRow array{
+ *     short_name: string,
+ *     is_public: bool,
+ *     updated_at: int
+ * }
+ */
 final class NowPlayingCache
 {
     private const NOWPLAYING_CACHE_TTL = 180;
@@ -63,6 +70,8 @@ final class NowPlayingCache
         }
 
         $np = [];
+
+        /** @var LookupRow[] $lookupCache */
         $lookupCache = (array)$lookupCacheItem->get();
 
         foreach ($lookupCache as $stationInfo) {
@@ -84,11 +93,7 @@ final class NowPlayingCache
     }
 
     /**
-     * @return array<int, array{
-     *     short_name: string,
-     *     is_public: bool,
-     *     updated_at: int
-     * }>
+     * @return array<int, LookupRow>
      */
     public function getLookup(): array
     {

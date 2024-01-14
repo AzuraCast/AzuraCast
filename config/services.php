@@ -336,6 +336,7 @@ return [
          */
         foreach ($receivers as $messageClass => $handlerClass) {
             $handlers[$messageClass][] = static function ($message) use ($handlerClass, $di) {
+                /** @var callable $obj */
                 $obj = $di->get($handlerClass);
                 return $obj($message);
             };

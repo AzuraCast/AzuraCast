@@ -114,7 +114,7 @@ final class NowPlayingCommand extends AbstractSyncRunnerCommand
         $lookupRaw = $this->nowPlayingCache->getLookup();
         $lookup = [];
         foreach ($lookupRaw as $stationRow) {
-            $lookup[$stationRow['short_name']] = (int)($stationRow['updated_at'] ?? 0);
+            $lookup[$stationRow['short_name']] = $stationRow['updated_at'];
         }
 
         $allStations = $this->em->createQuery(

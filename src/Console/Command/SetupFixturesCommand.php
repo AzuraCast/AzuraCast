@@ -8,6 +8,7 @@ use App\Container\ContainerAwareTrait;
 use App\Container\EntityManagerAwareTrait;
 use App\Container\EnvironmentAwareTrait;
 use Doctrine\Common\DataFixtures\Executor\ORMExecutor;
+use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\DataFixtures\Loader;
 use Doctrine\Common\DataFixtures\Purger\ORMPurger;
 use RecursiveDirectoryIterator;
@@ -46,7 +47,10 @@ final class SetupFixturesCommand extends CommandAbstract
                 continue;
             }
 
+            /** @var class-string $className */
             $className = 'App\\Entity\\Fixture\\' . $fileName;
+
+            /** @var FixtureInterface $fixture */
             $fixture = $this->di->get($className);
 
             $loader->addFixture($fixture);

@@ -31,6 +31,10 @@ parameters:
     scanDirectories:
        - ./vendor/zircote/swagger-php/src/Annotations
 
+    stubFiles:
+        - util/phpstan_di.stub
+        - util/phpstan_phpdi.stub
+
     universalObjectCratesClasses:
         - App\Session\NamespaceInterface
         - App\View

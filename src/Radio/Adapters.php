@@ -17,6 +17,12 @@ use App\Radio\Enums\RemoteAdapters;
 
 /**
  * Manager class for radio adapters.
+ *
+ * @phpstan-type AdapterInfo array<string, array{
+ *     enum: AdapterTypeInterface,
+ *     name: string,
+ *     class: class-string|null
+ * }>
  */
 final class Adapters
 {
@@ -109,10 +115,11 @@ final class Adapters
     /**
      * @param array<AdapterTypeInterface> $cases
      * @param bool $checkInstalled
-     * @return mixed[]
+     * @return AdapterInfo
      */
     private function listAdaptersFromEnum(array $cases, bool $checkInstalled = false): array
     {
+        /** @var AdapterInfo $adapters */
         $adapters = [];
         foreach ($cases as $adapter) {
             $adapters[$adapter->getValue()] = [
@@ -130,9 +137,10 @@ final class Adapters
                         return true;
                     }
 
-                    /** @var AbstractLocalAdapter $adapter */
                     $adapter = $this->di->get($adapterInfo['class']);
-                    return $adapter->isInstalled();
+                    return ($adapter instanceof AbstractLocalAdapter)
+                        ? $adapter->isInstalled()
+                        : true;
                 }
             );
         }

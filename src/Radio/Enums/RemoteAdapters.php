@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Radio\Enums;
 
+use App\Radio\Remote\AbstractRemote;
 use App\Radio\Remote\AzuraRelay;
 use App\Radio\Remote\Icecast;
 use App\Radio\Remote\Shoutcast1;
@@ -31,6 +32,9 @@ enum RemoteAdapters: string implements AdapterTypeInterface
         };
     }
 
+    /**
+     * @return class-string<AbstractRemote>
+     */
     public function getClass(): string
     {
         return match ($this) {

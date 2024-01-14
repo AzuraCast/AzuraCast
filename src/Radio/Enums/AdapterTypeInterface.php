@@ -10,5 +10,6 @@ interface AdapterTypeInterface
 
     public function getName(): string;
 
+    /** @return class-string|null */
     public function getClass(): ?string;
 }

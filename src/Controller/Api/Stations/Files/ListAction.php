@@ -59,7 +59,7 @@ final class ListAction implements SingleActionInterface
 
         [$searchPhrase, $playlist, $special] = $this->parseSearchQuery(
             $station,
-            $searchPhraseFull
+            $searchPhraseFull ?? ''
         );
 
         $cacheKeyParts = [

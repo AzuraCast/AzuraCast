@@ -85,6 +85,9 @@ final class CallableEventDispatcher extends EventDispatcher implements CallableE
         }
     }
 
+    /**
+     * @param class-string $className
+     */
     public function addCallableListener(
         string $eventName,
         string $className,
@@ -98,6 +101,9 @@ final class CallableEventDispatcher extends EventDispatcher implements CallableE
         );
     }
 
+    /**
+     * @param class-string $className
+     */
     public function removeCallableListener(
         string $eventName,
         string $className,
@@ -109,6 +115,9 @@ final class CallableEventDispatcher extends EventDispatcher implements CallableE
         );
     }
 
+    /**
+     * @param class-string $className
+     */
     private function getCallable(
         string $className,
         ?string $method = '__invoke'

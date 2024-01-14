@@ -1,0 +1,15 @@
+<?php
+
+namespace DI;
+
+class Container
+{
+    /**
+     * Finds an entry of the container by its identifier and returns it.
+     *
+     * @template T
+     * @param class-string<T> $id Identifier of the entry to look for.
+     * @return T Entry.
+     */
+    public function get(string $id);
+}

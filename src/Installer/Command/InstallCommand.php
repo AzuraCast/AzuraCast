@@ -117,10 +117,10 @@ final class InstallCommand extends Command
             $env['AZURACAST_VERSION'] = $releaseChannel;
         }
         if (null !== $httpPort) {
-            $env['AZURACAST_HTTP_PORT'] = $httpPort;
+            $env['AZURACAST_HTTP_PORT'] = (string)$httpPort;
         }
         if (null !== $httpsPort) {
-            $env['AZURACAST_HTTPS_PORT'] = $httpsPort;
+            $env['AZURACAST_HTTPS_PORT'] = (string)$httpsPort;
         }
 
         // Migrate legacy config values.
@@ -222,29 +222,29 @@ final class InstallCommand extends Command
                 ];
 
                 foreach ($simplePorts as $port) {
-                    $env[$port] = (int)$io->ask(
+                    $env[$port] = $io->ask(
                         sprintf(
                             '%s - %s',
                             $envConfig[$port]['name'],
                             $envConfig[$port]['description'] ?? ''
                         ),
-                        (string)$env[$port]
+                        $env[$port]
                     );
                 }
 
-                $azuracastEnv[Environment::AUTO_ASSIGN_PORT_MIN] = (int)$io->ask(
+                $azuracastEnv[Environment::AUTO_ASSIGN_PORT_MIN] = $io->ask(
                     $azuracastEnvConfig[Environment::AUTO_ASSIGN_PORT_MIN]['name'],
-                    (string)$azuracastEnv[Environment::AUTO_ASSIGN_PORT_MIN]
+                    $azuracastEnv[Environment::AUTO_ASSIGN_PORT_MIN]
                 );
 
-                $azuracastEnv[Environment::AUTO_ASSIGN_PORT_MAX] = (int)$io->ask(
+                $azuracastEnv[Environment::AUTO_ASSIGN_PORT_MAX] = $io->ask(
                     $azuracastEnvConfig[Environment::AUTO_ASSIGN_PORT_MAX]['name'],
-                    (string)$azuracastEnv[Environment::AUTO_ASSIGN_PORT_MAX]
+                    $azuracastEnv[Environment::AUTO_ASSIGN_PORT_MAX]
                 );
 
                 $stationPorts = Configuration::enumerateDefaultPorts(
-                    rangeMin: $azuracastEnv[Environment::AUTO_ASSIGN_PORT_MIN],
-                    rangeMax: $azuracastEnv[Environment::AUTO_ASSIGN_PORT_MAX]
+                    rangeMin: Types::int($azuracastEnv[Environment::AUTO_ASSIGN_PORT_MIN]),
+                    rangeMax: Types::int($azuracastEnv[Environment::AUTO_ASSIGN_PORT_MAX])
                 );
                 $env['AZURACAST_STATION_PORTS'] = implode(',', $stationPorts);
             }
@@ -252,13 +252,13 @@ final class InstallCommand extends Command
             $azuracastEnv['COMPOSER_PLUGIN_MODE'] = $io->confirm(
                 $azuracastEnvConfig['COMPOSER_PLUGIN_MODE']['name'],
                 $azuracastEnv->getAsBool('COMPOSER_PLUGIN_MODE', false)
-            );
+            ) ? 'true' : 'false';
 
             if (!$isPodman) {
                 $azuracastEnv[Environment::ENABLE_WEB_UPDATER] = $io->confirm(
                     $azuracastEnvConfig[Environment::ENABLE_WEB_UPDATER]['name'],
                     $azuracastEnv->getAsBool(Environment::ENABLE_WEB_UPDATER, true)
-                );
+                ) ? 'true' : 'false';
             }
         }
 
@@ -300,6 +300,8 @@ final class InstallCommand extends Command
     ): string {
         // Attempt to parse Docker Compose YAML file
         $sampleFile = $this->environment->getBaseDirectory() . '/docker-compose.sample.yml';
+
+        /** @var array $yaml */
         $yaml = Yaml::parseFile($sampleFile);
 
         // Parse port listing and convert into YAML format.

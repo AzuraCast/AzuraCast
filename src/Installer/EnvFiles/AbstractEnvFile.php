@@ -15,7 +15,7 @@ use Dotenv\Exception\ExceptionInterface;
 use InvalidArgumentException;
 
 /**
- * @implements ArrayAccess<string, mixed>
+ * @implements ArrayAccess<string, string>
  */
 abstract class AbstractEnvFile implements ArrayAccess
 {
@@ -166,16 +166,10 @@ abstract class AbstractEnvFile implements ArrayAccess
     }
 
     protected function getEnvValue(
-        mixed $value
+        array|string|null $value
     ): string {
         if (is_null($value)) {
             return '';
-        }
-        if (is_bool($value)) {
-            return $value ? 'true' : 'false';
-        }
-        if (is_int($value)) {
-            return (string)$value;
         }
         if (is_array($value)) {
             return implode(',', $value);
@@ -189,7 +183,13 @@ abstract class AbstractEnvFile implements ArrayAccess
     }
 
     /**
-     * @return array<string, array{name: string, description?: string, options?: array, default?: string, required?: bool}>
+     * @return array<string, array{
+     *     name: string,
+     *     description?: string,
+     *     options?: array,
+     *     default?: string,
+     *     required?: bool
+     * }>
      */
     abstract public static function getConfiguration(Environment $environment): array;
 
@@ -202,7 +202,7 @@ abstract class AbstractEnvFile implements ArrayAccess
             $fileContents = file_get_contents($path);
             if (!empty($fileContents)) {
                 try {
-                    $data = Dotenv::parse($fileContents);
+                    $data = array_filter(Dotenv::parse($fileContents));
                 } catch (ExceptionInterface $e) {
                     throw new InvalidArgumentException(
                         sprintf(

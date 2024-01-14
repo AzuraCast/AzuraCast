@@ -12,7 +12,7 @@ $environment = App\AppFactory::buildEnvironment();
 
 $console = new Symfony\Component\Console\Application(
         'AzuraCast installer',
-        App\Version::FALLBACK_VERSION
+        App\Version::STABLE_VERSION
 );
 
 $installCommand = new App\Installer\Command\InstallCommand();

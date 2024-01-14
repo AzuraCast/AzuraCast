@@ -86,6 +86,7 @@ final class DownloadAction implements SingleActionInterface
 
         $csv->insertOne($headerRow);
 
+        /** @var array $row */
         foreach ($query->getArrayResult() as $row) {
             $customFieldsById = [];
             foreach ($row['custom_fields'] ?? [] as $rowCustomField) {

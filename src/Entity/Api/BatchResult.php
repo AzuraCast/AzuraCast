@@ -8,8 +8,10 @@ use JsonSerializable;
 
 final class BatchResult implements JsonSerializable
 {
+    /** @var string[] */
     public array $files = [];
 
+    /** @var string[] */
     public array $directories = [];
 
     public array $errors = [];

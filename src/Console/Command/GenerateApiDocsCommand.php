@@ -51,7 +51,7 @@ final class GenerateApiDocsCommand extends CommandAbstract
         define('AZURACAST_API_NAME', 'AzuraCast Public Demo Server');
         define(
             'AZURACAST_VERSION',
-            $useCurrentVersion ? $this->version->getVersion() : Version::FALLBACK_VERSION
+            $useCurrentVersion ? $this->version->getVersion() : Version::STABLE_VERSION
         );
 
         $finder = Util::finder(

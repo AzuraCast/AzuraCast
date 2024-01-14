@@ -7,7 +7,9 @@ namespace App\Webhook\Connector;
 use App\Container\LoggerAwareTrait;
 use App\Entity\Api\NowPlaying\NowPlaying;
 use App\Entity\StationWebhook;
-use App\Utilities;
+use App\Utilities\Arrays;
+use App\Utilities\Types;
+use App\Utilities\Urls;
 use GuzzleHttp\Client;
 use InvalidArgumentException;
 use Psr\Http\Message\ResponseInterface;
@@ -87,7 +89,7 @@ abstract class AbstractConnector implements ConnectorInterface
      */
     public function replaceVariables(array $rawVars, NowPlaying $np): array
     {
-        $values = Utilities\Arrays::flattenArray($np);
+        $values = Arrays::flattenArray($np);
         $vars = [];
 
         foreach ($rawVars as $varKey => $varValue) {
@@ -96,7 +98,7 @@ abstract class AbstractConnector implements ConnectorInterface
                 "/\{\{(\s*)([a-zA-Z\d\-_.]+)(\s*)}}/",
                 static function (array $matches) use ($values): string {
                     $innerValue = strtolower(trim($matches[2]));
-                    return $values[$innerValue] ?? '';
+                    return Types::string($values[$innerValue] ?? '');
                 },
                 $varValue
             );
@@ -110,9 +112,9 @@ abstract class AbstractConnector implements ConnectorInterface
      */
     protected function getValidUrl(mixed $urlString = null): ?string
     {
-        $urlString = Utilities\Types::stringOrNull($urlString, true);
+        $urlString = Types::stringOrNull($urlString, true);
 
-        $uri = Utilities\Urls::tryParseUserUrl(
+        $uri = Urls::tryParseUserUrl(
             $urlString,
             'Webhook'
         );

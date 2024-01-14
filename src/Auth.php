@@ -8,6 +8,7 @@ use App\Container\EnvironmentAwareTrait;
 use App\Entity\Repository\UserRepository;
 use App\Entity\User;
 use App\Exception\NotLoggedInException;
+use App\Utilities\Types;
 use Mezzio\Session\SessionInterface;
 
 final class Auth
@@ -83,7 +84,7 @@ final class Auth
             if (!$this->session->has(self::SESSION_MASQUERADE_USER_ID_KEY)) {
                 $this->masqueraded_user = false;
             } else {
-                $maskUserId = (int)$this->session->get(self::SESSION_MASQUERADE_USER_ID_KEY);
+                $maskUserId = Types::int($this->session->get(self::SESSION_MASQUERADE_USER_ID_KEY));
                 if (0 !== $maskUserId) {
                     $user = $this->userRepo->getRepository()->find($maskUserId);
                 } else {
@@ -125,7 +126,7 @@ final class Auth
      */
     public function isLoginComplete(): bool
     {
-        return $this->session->get(self::SESSION_IS_LOGIN_COMPLETE_KEY, false) ?? false;
+        return Types::bool($this->session->get(self::SESSION_IS_LOGIN_COMPLETE_KEY, false));
     }
 
     /**
@@ -136,7 +137,7 @@ final class Auth
     public function getUser(): ?User
     {
         if (null === $this->user) {
-            $userId = (int)$this->session->get(self::SESSION_USER_ID_KEY);
+            $userId = Types::int($this->session->get(self::SESSION_USER_ID_KEY));
 
             if (0 === $userId) {
                 $this->user = false;

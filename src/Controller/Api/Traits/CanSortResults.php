@@ -61,7 +61,7 @@ trait CanSortResults
     }
 
     /**
-     * @return array{string, string}
+     * @return array{string|null, Criteria::ASC|Criteria::DESC}
      */
     protected function getSortFromRequest(
         ServerRequest $request,
@@ -69,7 +69,7 @@ trait CanSortResults
     ): array {
         $sortOrder = Types::stringOrNull($request->getParam('sortOrder'), true) ?? $defaultSortOrder;
         return [
-            $request->getParam('sort'),
+            Types::stringOrNull($request->getParam('sort'), true),
             (Criteria::DESC === strtoupper($sortOrder))
                 ? Criteria::DESC
                 : Criteria::ASC,

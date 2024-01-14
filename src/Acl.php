@@ -19,12 +19,30 @@ use Psr\EventDispatcher\EventDispatcherInterface;
 use function in_array;
 use function is_array;
 
+/**
+ * @phpstan-type PermissionsArray array{
+ *     global: array<string, string>,
+ *     station: array<string, string>
+ * }
+ */
 final class Acl
 {
     use RequestAwareTrait;
 
+    /**
+     * @var PermissionsArray
+     */
     private array $permissions;
 
+    /**
+     * @var null|array<
+     *     int,
+     *     array{
+     *         stations?: array<int, array<string>>,
+     *         global?: array<string>
+     *     }
+     * >
+     */
     private ?array $actions;
 
     public function __construct(
@@ -41,12 +59,12 @@ final class Acl
     {
         $sql = $this->em->createQuery(
             <<<'DQL'
-                SELECT rp FROM App\Entity\RolePermission rp
+                SELECT rp.station_id, rp.role_id, rp.action_name FROM App\Entity\RolePermission rp
             DQL
         );
 
         $this->actions = [];
-        foreach ($sql->getArrayResult() as $row) {
+        foreach ($sql->toIterable() as $row) {
             if ($row['station_id']) {
                 $this->actions[$row['role_id']]['stations'][$row['station_id']][] = $row['action_name'];
             } else {
@@ -69,12 +87,11 @@ final class Acl
     }
 
     /**
-     * @return mixed[]
+     * @return array
      */
     public function listPermissions(): array
     {
         if (!isset($this->permissions)) {
-            /** @var array<string,array<string, string>> $permissions */
             $permissions = [
                 'global' => [],
                 'station' => [],

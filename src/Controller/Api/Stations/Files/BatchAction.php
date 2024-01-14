@@ -28,6 +28,7 @@ use App\Radio\Backend\Liquidsoap;
 use App\Radio\Enums\BackendAdapters;
 use App\Radio\Enums\LiquidsoapQueues;
 use App\Utilities\File;
+use App\Utilities\Types;
 use Exception;
 use InvalidArgumentException;
 use League\Flysystem\StorageAttributes;
@@ -411,8 +412,12 @@ final class BatchAction implements SingleActionInterface
         ExtendedFilesystemInterface $fs,
         bool $recursive = false
     ): BatchResult {
-        $files = array_values((array)$request->getParam('files', []));
-        $directories = array_values((array)$request->getParam('dirs', []));
+        $files = array_values(
+            Types::array($request->getParam('files', []))
+        );
+        $directories = array_values(
+            Types::array($request->getParam('dirs', []))
+        );
 
         if ($recursive) {
             foreach ($directories as $dir) {

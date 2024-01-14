@@ -18,7 +18,7 @@ final class Mastodon extends AbstractSocialConnector
     protected function getRateLimitTime(StationWebhook $webhook): ?int
     {
         $config = $webhook->getConfig();
-        $rateLimitSeconds = (int)($config['rate_limit'] ?? 0);
+        $rateLimitSeconds = Types::int($config['rate_limit'] ?? null);
 
         return max(10, $rateLimitSeconds);
     }

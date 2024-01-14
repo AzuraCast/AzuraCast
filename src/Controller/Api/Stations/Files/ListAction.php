@@ -52,10 +52,10 @@ final class ListAction implements SingleActionInterface
 
         $fs = $this->stationFilesystems->getMediaFilesystem($station);
 
-        $currentDir = $request->getParam('currentDirectory', '');
+        $currentDir = Types::string($request->getParam('currentDirectory'));
 
-        $searchPhraseFull = trim($request->getParam('searchPhrase', ''));
-        $isSearch = !empty($searchPhraseFull);
+        $searchPhraseFull = Types::stringOrNull($request->getParam('searchPhrase'), true);
+        $isSearch = null !== $searchPhraseFull;
 
         [$searchPhrase, $playlist, $special] = $this->parseSearchQuery(
             $station,
@@ -74,7 +74,7 @@ final class ListAction implements SingleActionInterface
 
         $cacheKey = implode('.', $cacheKeyParts);
 
-        $flushCache = (bool)$request->getParam('flushCache', false);
+        $flushCache = Types::bool($request->getParam('flushCache'));
 
         if (!$flushCache && $this->cache->has($cacheKey)) {
             /** @var array<int, FileList> $result */

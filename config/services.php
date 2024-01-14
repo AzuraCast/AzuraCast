@@ -330,6 +330,10 @@ return [
         // Register plugin-provided message queue receivers
         $receivers = $plugins->registerMessageQueueReceivers($receivers);
 
+        /**
+         * @var class-string $messageClass
+         * @var class-string $handlerClass
+         */
         foreach ($receivers as $messageClass => $handlerClass) {
             $handlers[$messageClass][] = static function ($message) use ($handlerClass, $di) {
                 $obj = $di->get($handlerClass);

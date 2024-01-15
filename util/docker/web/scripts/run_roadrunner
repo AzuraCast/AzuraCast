@@ -2,7 +2,7 @@
 
 if [ $(whoami) != 'azuracast' ]; then
     echo 'This script must be run as the "azuracast" user. Rerunning...'
-    exec sudo gosu azuracast run_roadrunner "$@"
+    exec gosu azuracast run_roadrunner "$@"
 fi
 
 dockerize -template "/var/azuracast/rr.yaml.tmpl:/var/azuracast/rr.yaml"

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 if [ `whoami` != 'azuracast' ]; then
-    exec sudo gosu azuracast azuracast_cli "$@"
+    exec gosu azuracast azuracast_cli "$@"
 fi
 
 cd /var/azuracast/www

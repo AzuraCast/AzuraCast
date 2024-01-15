@@ -143,126 +143,98 @@
                 </div>
             </template>
 
-            <loading :loading="stationsLoading">
-                <div class="table-responsive">
-                    <table
-                        id="station_dashboard"
-                        class="table table-striped"
-                    >
-                        <colgroup>
-                            <col width="5%">
-                            <col width="30%">
-                            <col width="10%">
-                            <col width="40%">
-                            <col width="15%">
-                        </colgroup>
-                        <thead>
-                            <tr>
-                                <th class="pe-3">
-                                &nbsp;
-                                </th>
-                                <th class="ps-2">
-                                    {{ $gettext('Station Name') }}
-                                </th>
-                                <th class="text-center">
-                                    {{ $gettext('Listeners') }}
-                                </th>
-                                <th>{{ $gettext('Now Playing') }}</th>
-                                <th class="text-end" />
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr
-                                v-for="item in stations"
-                                :key="item.station.id"
-                                class="align-middle"
-                            >
-                                <td class="text-center pe-1">
-                                    <play-button
-                                        class="file-icon btn-lg"
-                                        :url="item.station.listen_url"
-                                        is-stream
-                                    />
-                                </td>
-                                <td class="ps-2">
-                                    <div class="h5 m-0">
-                                        {{ item.station.name }}
-                                    </div>
-                                    <div v-if="item.station.is_public">
-                                        <a
-                                            :href="item.links.public"
-                                            target="_blank"
-                                        >
-                                            {{ $gettext('Public Page') }}
-                                        </a>
-                                    </div>
-                                </td>
-                                <td class="text-center">
-                                    <span class="pe-1">
-                                        <icon
-                                            class="sm align-middle"
-                                            :icon="IconHeadphones"
-                                        />
-                                    </span>
-                                    <template v-if="item.links.listeners">
-                                        <a
-                                            :href="item.links.listeners"
-                                            :aria-label="$gettext('View Listener Report')"
-                                        >
-                                            {{ item.listeners.total }}
-                                        </a>
-                                    </template>
-                                    <template v-else>
-                                        {{ item.listeners.total }}
-                                    </template>
-                                </td>
-                                <td>
-                                    <div class="d-flex align-items-center">
-                                        <album-art
-                                            v-if="showAlbumArt"
-                                            :src="item.now_playing.song.art"
-                                            class="flex-shrink-0 pe-3"
-                                        />
+            <data-table
+                id="dashboard_stations"
+                ref="$datatable"
+                :fields="stationFields"
+                :api-url="stationsUrl"
+                paginated
+                responsive
+                show-toolbar
+                :hide-on-loading="false"
+            >
+                <template #cell(play_button)="{ item }">
+                    <play-button
+                        class="file-icon btn-lg"
+                        :url="item.station.listen_url"
+                        is-stream
+                    />
+                </template>
+                <template #cell(name)="{ item }">
+                    <div class="h5 m-0">
+                        {{ item.station.name }}
+                    </div>
+                    <div v-if="item.station.is_public">
+                        <a
+                            :href="item.links.public"
+                            target="_blank"
+                        >
+                            {{ $gettext('Public Page') }}
+                        </a>
+                    </div>
+                </template>
+                <template #cell(listeners)="{ item }">
+                    <span class="pe-1">
+                        <icon
+                            class="sm align-middle"
+                            :icon="IconHeadphones"
+                        />
+                    </span>
+                    <template v-if="item.links.listeners">
+                        <a
+                            :href="item.links.listeners"
+                            :aria-label="$gettext('View Listener Report')"
+                        >
+                            {{ item.listeners.total }}
+                        </a>
+                    </template>
+                    <template v-else>
+                        {{ item.listeners.total }}
+                    </template>
+                </template>
+                <template #cell(now_playing)="{ item }">
+                    <div class="d-flex align-items-center">
+                        <album-art
+                            v-if="showAlbumArt"
+                            :src="item.now_playing.song.art"
+                            class="flex-shrink-0 pe-3"
+                        />
 
-                                        <div
-                                            v-if="!item.is_online"
-                                            class="flex-fill text-muted"
-                                        >
-                                            {{ $gettext('Station Offline') }}
-                                        </div>
-                                        <div
-                                            v-else-if="item.now_playing.song.title !== ''"
-                                            class="flex-fill"
-                                        >
-                                            <strong><span class="nowplaying-title">
-                                                {{ item.now_playing.song.title }}
-                                            </span></strong><br>
-                                            <span class="nowplaying-artist">{{ item.now_playing.song.artist }}</span>
-                                        </div>
-                                        <div
-                                            v-else
-                                            class="flex-fill"
-                                        >
-                                            <strong><span class="nowplaying-title">
-                                                {{ item.now_playing.song.text }}
-                                            </span></strong>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td class="text-end">
-                                    <a
-                                        class="btn btn-primary"
-                                        :href="item.links.manage"
-                                        role="button"
-                                    >
-                                        {{ $gettext('Manage') }}
-                                    </a>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </loading>
+                        <div
+                            v-if="!item.is_online"
+                            class="flex-fill text-muted"
+                        >
+                            {{ $gettext('Station Offline') }}
+                        </div>
+                        <div
+                            v-else-if="item.now_playing.song.title !== ''"
+                            class="flex-fill"
+                        >
+                            <strong><span class="nowplaying-title">
+                                {{ item.now_playing.song.title }}
+                            </span></strong><br>
+                            <span class="nowplaying-artist">{{ item.now_playing.song.artist }}</span>
+                        </div>
+                        <div
+                            v-else
+                            class="flex-fill"
+                        >
+                            <strong><span class="nowplaying-title">
+                                {{ item.now_playing.song.text }}
+                            </span></strong>
+                        </div>
+                    </div>
+                </template>
+                <template #cell(actions)="{ item }">
+                    <a
+                        class="btn btn-primary"
+                        :href="item.links.manage"
+                        role="button"
+                    >
+                        {{ $gettext('Manage') }}
+                    </a>
+                </template>
+            </data-table>
         </card-page>
     </div>
 
@@ -276,11 +248,10 @@ import Icon from '~/components/Common/Icon.vue';
 import PlayButton from "~/components/Common/PlayButton.vue";
 import AlbumArt from "~/components/Common/AlbumArt.vue";
 import {useAxios} from "~/vendor/axios";
-import {useAsyncState} from "@vueuse/core";
+import {useAsyncState, useIntervalFn} from "@vueuse/core";
 import {computed, ref} from "vue";
 import DashboardCharts from "~/components/DashboardCharts.vue";
 import {useTranslate} from "~/vendor/gettext";
-import Loading from "~/components/Common/Loading.vue";
 import Lightbox from "~/components/Common/Lightbox.vue";
 import CardPage from "~/components/Common/CardPage.vue";
 import HeaderInlinePlayer from "~/components/HeaderInlinePlayer.vue";
@@ -289,7 +260,8 @@ import useOptionalStorage from "~/functions/useOptionalStorage";
 import {IconAccountCircle, IconHeadphones, IconInfo, IconSettings, IconWarning} from "~/components/Common/icons";
 import UserInfoPanel from "~/components/Account/UserInfoPanel.vue";
 import {getApiUrl} from "~/router.ts";
-import useAutoRefreshingAsyncState from "~/functions/useAutoRefreshingAsyncState.ts";
+import DataTable, {DataTableField} from "~/components/Common/DataTable.vue";
+import useHasDatatable, {DataTableTemplateRef} from "~/functions/useHasDatatable.ts";
 
 const props = defineProps({
     profileUrl: {
@@ -332,19 +304,47 @@ const langShowHideCharts = computed(() => {
         : $gettext('Show Charts')
 });
 
-const {axios, axiosSilent} = useAxios();
+const {axios} = useAxios();
 
 const {state: notifications, isLoading: notificationsLoading} = useAsyncState(
     () => axios.get(notificationsUrl.value).then((r) => r.data),
     []
 );
 
-const {state: stations, isLoading: stationsLoading} = useAutoRefreshingAsyncState(
-    () => axiosSilent.get(stationsUrl.value).then((r) => r.data),
-    [],
+const stationFields: DataTableField[] = [
     {
-        timeout: 15000
+        key: 'play_button',
+        sortable: false,
+        class: 'shrink'
+    },
+    {
+        key: 'name',
+        label: $gettext('Station Name'),
+        sortable: true,
+    },
+    {
+        key: 'listeners',
+        label: $gettext('Listeners'),
+        sortable: true
+    },
+    {
+        key: 'now_playing',
+        label: $gettext('Now Playing'),
+        sortable: true
+    },
+    {
+        key: 'actions',
+        sortable: false,
+        class: 'shrink'
     }
+];
+
+const $datatable = ref<DataTableTemplateRef>(null);
+const {refresh} = useHasDatatable($datatable);
+
+useIntervalFn(
+    refresh,
+    computed(() => (document.hidden) ? 30000 : 15000)
 );
 
 const $lightbox = ref<LightboxTemplateRef>(null);

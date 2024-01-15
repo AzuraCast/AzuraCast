@@ -184,7 +184,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <template v-if="isLoading">
+                    <template v-if="isLoading && hideOnLoading">
                         <tr>
                             <td
                                 :colspan="columnCount"
@@ -322,6 +322,10 @@ const props = defineProps({
     loading: {
         type: Boolean,
         default: false
+    },
+    hideOnLoading: {
+        type: Boolean,
+        default: true
     },
     showToolbar: {
         type: Boolean,

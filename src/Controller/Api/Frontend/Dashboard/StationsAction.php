@@ -10,6 +10,7 @@ use App\Controller\Api\Traits\CanSearchResults;
 use App\Controller\Api\Traits\CanSortResults;
 use App\Controller\SingleActionInterface;
 use App\Entity\Api\Dashboard;
+use App\Entity\Api\NowPlaying\NowPlaying;
 use App\Entity\ApiGenerator\NowPlayingApiGenerator;
 use App\Entity\Station;
 use App\Enums\StationPermissions;
@@ -35,63 +36,72 @@ final class StationsAction implements SingleActionInterface
         Response $response,
         array $params
     ): ResponseInterface {
-        $router = $request->getRouter();
         $acl = $request->getAcl();
 
         /** @var Station[] $stations */
         $stations = array_filter(
-            $this->em->getRepository(Station::class)->findAll(),
-            static function ($station) use ($acl) {
-                /** @var Station $station */
-                return $station->getIsEnabled() &&
-                    $acl->isAllowed(StationPermissions::View, $station->getId());
+            $this->em->getRepository(Station::class)->findBy([
+                'is_enabled' => 1,
+            ]),
+            static function (Station $station) use ($acl) {
+                return $acl->isAllowed(StationPermissions::View, $station->getId());
             }
         );
 
-        $listenersEnabled = $this->readSettings()->isAnalyticsEnabled();
+        /** @var NowPlaying[] $viewStations */
+        $viewStations = array_map(
+            fn(Station $station) => $this->npApiGenerator->currentOrEmpty($station),
+            $stations
+        );
 
-        $viewStations = [];
-        foreach ($stations as $station) {
-            $np = $this->npApiGenerator->currentOrEmpty($station);
-            $np->resolveUrls($request->getRouter()->getBaseUrl());
-
-            $row = new Dashboard();
-            $row->fromParentObject($np);
-
-            $row->links = [
-                'public' => $router->named('public:index', ['station_id' => $station->getShortName()]),
-                'manage' => $router->named('stations:index:index', ['station_id' => $station->getId()]),
-            ];
-
-            if ($listenersEnabled && $acl->isAllowed(StationPermissions::Reports, $station->getId())) {
-                $row->links['listeners'] = $router->named(
-                    'stations:reports:listeners',
-                    ['station_id' => $station->getId()]
-                );
-            }
-
-            $viewStations[] = $row;
-        }
-
-        $searchPhrase = $this->getSearchPhrase($request);
-        if (null !== $searchPhrase) {
-            $viewStations = array_filter(
-                $viewStations,
-                static function (Dashboard $row) use ($searchPhrase) {
-                    return false !== mb_stripos($row->station->name, $searchPhrase);
-                }
-            );
-        }
+        $viewStations = $this->searchArray(
+            $request,
+            $viewStations,
+            [
+                'station.name',
+            ]
+        );
 
         $viewStations = $this->sortArray(
             $request,
             $viewStations,
             [
+                'name' => 'station.name',
                 'listeners' => 'listeners.current',
+                'now_playing' => 'is_online',
             ],
             'station.name'
         );
 
-        return Paginator::fromArray($viewStations, $request)->write($response);
+        $paginator = Paginator::fromArray($viewStations, $request);
+
+        $router = $request->getRouter();
+        $baseUrl = $router->getBaseUrl();
+        $listenersEnabled = $this->readSettings()->isAnalyticsEnabled();
+
+        $paginator->setPostprocessor(
+            function (NowPlaying $np) use ($router, $baseUrl, $listenersEnabled, $acl) {
+                $np->resolveUrls($baseUrl);
+
+                $row = new Dashboard();
+                $row->fromParentObject($np);
+
+                $row->links = [
+                    'public' => $router->named('public:index', ['station_id' => $np->station->shortcode]),
+                    'manage' => $router->named('stations:index:index', ['station_id' => $np->station->id]),
+                ];
+
+                if ($listenersEnabled && $acl->isAllowed(StationPermissions::Reports, $np->station->id)) {
+                    $row->links['listeners'] = $router->named(
+                        'stations:reports:listeners',
+                        ['station_id' => $np->station->id]
+                    );
+                }
+
+                return $row;
+            }
+        );
+
+        return $paginator->write($response);
     }
 }

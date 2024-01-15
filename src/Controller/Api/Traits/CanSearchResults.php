@@ -10,6 +10,8 @@ use Doctrine\ORM\QueryBuilder;
 
 trait CanSearchResults
 {
+    use UsesPropertyAccessor;
+
     /**
      * @param string[] $fieldsToSearch
      */
@@ -32,6 +34,40 @@ trait CanSearchResults
         return $queryBuilder->andWhere(
             implode(' OR ', $searchQuery)
         )->setParameter('search', '%' . $searchPhrase . '%');
+    }
+
+    /**
+     * @param string[] $fieldsToSearch
+     */
+    protected function searchArray(
+        ServerRequest $request,
+        array $results,
+        array $fieldsToSearch,
+        string $searchParam = 'searchPhrase'
+    ): array {
+        $searchPhrase = $this->getSearchPhrase($request, $searchParam);
+        if (null === $searchPhrase) {
+            return $results;
+        }
+
+        $propertyAccessor = self::getPropertyAccessor();
+
+        return array_filter(
+            $results,
+            function (mixed $result) use ($propertyAccessor, $searchPhrase, $fieldsToSearch): bool {
+                foreach ($fieldsToSearch as $field) {
+                    $fieldVal = Types::string(
+                        $propertyAccessor->getValue($result, $field)
+                    );
+
+                    if (false !== mb_stripos($fieldVal, $searchPhrase)) {
+                        return true;
+                    }
+                }
+
+                return false;
+            }
+        );
     }
 
     protected function getSearchPhrase(

@@ -166,14 +166,13 @@ abstract class AbstractEnvFile implements ArrayAccess
     }
 
     protected function getEnvValue(
-        array|string|null $value
+        mixed $value
     ): string {
-        if (is_null($value)) {
-            return '';
-        }
         if (is_array($value)) {
             return implode(',', $value);
         }
+
+        $value = Types::string($value);
 
         if (str_contains($value, ' ')) {
             $value = '"' . $value . '"';

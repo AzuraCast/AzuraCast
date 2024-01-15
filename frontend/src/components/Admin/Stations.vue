@@ -160,7 +160,7 @@ const doClone = (stationName, url) => {
     $cloneModal.value.create(stationName, url);
 };
 
-const {confirmDelete} = useSweetAlert();
+const {showAlert} = useSweetAlert();
 const {notifySuccess} = useNotify();
 const {axios} = useAxios();
 
@@ -169,7 +169,7 @@ const doToggle = (station) => {
         ? $gettext('Disable station?')
         : $gettext('Enable station?');
 
-    confirmDelete({
+    showAlert({
         title: title
     }).then((result) => {
         if (result.value) {

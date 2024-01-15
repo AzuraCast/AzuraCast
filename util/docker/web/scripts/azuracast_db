@@ -2,7 +2,7 @@
 
 if [ $(whoami) != 'mysql' ]; then
     echo 'This script must be run as the "mysql" user. Rerunning...'
-    exec gosu mysql azuracast_db "$@"
+    exec sudo gosu mysql azuracast_db "$@"
 fi
 
 MYSQL_HOST="${MYSQL_HOST:-localhost}"
@@ -11,5 +11,5 @@ MYSQL_USER="${MYSQL_USER:-azuracast}"
 MYSQL_PASSWORD="${MYSQL_PASSWORD:-azur4c457}"
 MYSQL_DATABASE="${MYSQL_DATABASE:-azuracast}"
 
-exec mysql --user=${MYSQL_USER} --password=${MYSQL_PASSWORD} \
+exec mariadb --user=${MYSQL_USER} --password=${MYSQL_PASSWORD} \
     --host=${MYSQL_HOST} --port=${MYSQL_PORT} --database=${MYSQL_DATABASE} "$@"

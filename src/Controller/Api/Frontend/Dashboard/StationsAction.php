@@ -6,6 +6,8 @@ namespace App\Controller\Api\Frontend\Dashboard;
 
 use App\Container\EntityManagerAwareTrait;
 use App\Container\SettingsAwareTrait;
+use App\Controller\Api\Traits\CanSearchResults;
+use App\Controller\Api\Traits\CanSortResults;
 use App\Controller\SingleActionInterface;
 use App\Entity\Api\Dashboard;
 use App\Entity\ApiGenerator\NowPlayingApiGenerator;
@@ -20,6 +22,8 @@ final class StationsAction implements SingleActionInterface
 {
     use EntityManagerAwareTrait;
     use SettingsAwareTrait;
+    use CanSortResults;
+    use CanSearchResults;
 
     public function __construct(
         private readonly NowPlayingApiGenerator $npApiGenerator
@@ -69,8 +73,8 @@ final class StationsAction implements SingleActionInterface
             $viewStations[] = $row;
         }
 
-        $searchPhrase = trim($request->getParam('searchPhrase', ''));
-        if (!empty($searchPhrase)) {
+        $searchPhrase = $this->getSearchPhrase($request);
+        if (null !== $searchPhrase) {
             $viewStations = array_filter(
                 $viewStations,
                 static function (Dashboard $row) use ($searchPhrase) {
@@ -79,21 +83,14 @@ final class StationsAction implements SingleActionInterface
             );
         }
 
-        $sort = $request->getParam('sort');
-        usort(
+        $viewStations = $this->sortArray(
+            $request,
             $viewStations,
-            static function (Dashboard $a, Dashboard $b) use ($sort) {
-                if ('listeners' === $sort) {
-                    return $a->listeners->current <=> $b->listeners->current;
-                }
-
-                return $a->station->name <=> $b->station->name;
-            }
+            [
+                'listeners' => 'listeners.current',
+            ],
+            'station.name'
         );
-
-        if ('desc' === strtolower($request->getParam('sortOrder', 'asc'))) {
-            $viewStations = array_reverse($viewStations);
-        }
 
         return Paginator::fromArray($viewStations, $request)->write($response);
     }

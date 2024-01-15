@@ -11,6 +11,7 @@ use App\Exception\PermissionDeniedException;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Radio\Frontend\Blocklist\BlocklistParser;
+use App\Utilities\Types;
 use Psr\Http\Message\ResponseInterface;
 
 final class ListenerAuthAction implements SingleActionInterface
@@ -46,7 +47,7 @@ final class ListenerAuthAction implements SingleActionInterface
         }
 
         $station = $request->getStation();
-        $listenerIp = $request->getParam('ip') ?? '';
+        $listenerIp = Types::string($request->getParam('ip'));
 
         if ($this->blocklistParser->isAllowed($station, $listenerIp)) {
             return $response->withHeader('icecast-auth-user', '1');

@@ -13,6 +13,7 @@ use App\Enums\SupportedLocales;
 use App\Exception\InvalidRequestAttribute;
 use App\RateLimit;
 use App\Session;
+use App\Utilities\Types;
 use App\View;
 use Mezzio\Session\SessionInterface;
 use Slim\Http\ServerRequest as SlimServerRequest;
@@ -161,5 +162,14 @@ final class ServerRequest extends SlimServerRequest
         }
 
         return $object;
+    }
+
+    public function isInternal(): bool
+    {
+        return Types::bool(
+            $this->getParam('internal', false),
+            false,
+            true
+        );
     }
 }

@@ -8,6 +8,7 @@ use App\Controller\SingleActionInterface;
 use App\Entity\User;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use App\Utilities\Types;
 use Psr\Http\Message\ResponseInterface;
 
 final class TwoFactorAction implements SingleActionInterface
@@ -21,7 +22,7 @@ final class TwoFactorAction implements SingleActionInterface
 
         if ($request->isPost()) {
             $flash = $request->getFlash();
-            $otp = $request->getParam('otp');
+            $otp = Types::string($request->getParam('otp'));
 
             if ($auth->verifyTwoFactor($otp)) {
                 /** @var User $user */

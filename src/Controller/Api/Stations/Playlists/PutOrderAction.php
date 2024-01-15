@@ -12,6 +12,7 @@ use App\Entity\Repository\StationPlaylistRepository;
 use App\Exception;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use App\Utilities\Types;
 use Psr\Http\Message\ResponseInterface;
 
 final class PutOrderAction implements SingleActionInterface
@@ -39,7 +40,7 @@ final class PutOrderAction implements SingleActionInterface
             throw new Exception(__('This playlist is not a sequential playlist.'));
         }
 
-        $order = $request->getParam('order');
+        $order = Types::array($request->getParam('order'));
 
         $this->spmRepo->setMediaOrder($record, $order);
         return $response->withJson($order);

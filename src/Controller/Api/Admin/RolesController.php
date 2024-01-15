@@ -6,6 +6,7 @@ namespace App\Controller\Api\Admin;
 
 use App\Acl;
 use App\Controller\Api\AbstractApiCrudController;
+use App\Controller\Api\Traits\CanSearchResults;
 use App\Controller\Api\Traits\CanSortResults;
 use App\Entity\Repository\RolePermissionRepository;
 use App\Entity\Role;
@@ -138,6 +139,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 final class RolesController extends AbstractApiCrudController
 {
     use CanSortResults;
+    use CanSearchResults;
 
     protected string $entityClass = Role::class;
     protected string $resourceRouteName = 'api:admin:role';
@@ -174,11 +176,13 @@ final class RolesController extends AbstractApiCrudController
             'r.name'
         );
 
-        $searchPhrase = trim($request->getParam('searchPhrase', ''));
-        if (!empty($searchPhrase)) {
-            $qb->andWhere('(r.name LIKE :name)')
-                ->setParameter('name', '%' . $searchPhrase . '%');
-        }
+        $qb = $this->searchQueryBuilder(
+            $request,
+            $qb,
+            [
+                'r.name',
+            ]
+        );
 
         return $this->listPaginatedFromQuery($request, $response, $qb->getQuery());
     }

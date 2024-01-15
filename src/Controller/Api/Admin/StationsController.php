@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Api\Admin;
 
 use App\Controller\Api\AbstractApiCrudController;
+use App\Controller\Api\Traits\CanSearchResults;
 use App\Controller\Api\Traits\CanSortResults;
 use App\Entity\Repository\StationQueueRepository;
 use App\Entity\Repository\StationRepository;
@@ -142,6 +143,7 @@ use Throwable;
 class StationsController extends AbstractApiCrudController
 {
     use CanSortResults;
+    use CanSearchResults;
 
     protected string $entityClass = Station::class;
     protected string $resourceRouteName = 'api:admin:station';
@@ -175,11 +177,14 @@ class StationsController extends AbstractApiCrudController
             'e.name'
         );
 
-        $searchPhrase = trim($request->getParam('searchPhrase', ''));
-        if (!empty($searchPhrase)) {
-            $qb->andWhere('(e.name LIKE :name OR e.short_name LIKE :name)')
-                ->setParameter('name', '%' . $searchPhrase . '%');
-        }
+        $qb = $this->searchQueryBuilder(
+            $request,
+            $qb,
+            [
+                'e.name',
+                'e.short_name',
+            ]
+        );
 
         return $this->listPaginatedFromQuery($request, $response, $qb->getQuery());
     }
@@ -192,7 +197,7 @@ class StationsController extends AbstractApiCrudController
 
         $return = $this->toArray($record);
 
-        $isInternal = ('true' === $request->getParam('internal', 'false'));
+        $isInternal = $request->isInternal();
         $router = $request->getRouter();
 
         $return['links'] = [

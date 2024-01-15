@@ -126,7 +126,7 @@ final class BatchUtilities
      * @param StorageLocation $storageLocation
      * @param array $paths
      *
-     * @return iterable|StationMedia[]
+     * @return iterable<StationMedia>
      */
     public function iterateMedia(StorageLocation $storageLocation, array $paths): iterable
     {
@@ -141,7 +141,7 @@ final class BatchUtilities
      * @param StorageLocation $storageLocation
      * @param string $dir
      *
-     * @return iterable|StationMedia[]
+     * @return iterable<StationMedia>
      */
     public function iterateMediaInDirectory(StorageLocation $storageLocation, string $dir): iterable
     {
@@ -166,7 +166,7 @@ final class BatchUtilities
      * @param StorageLocation $storageLocation
      * @param array $paths
      *
-     * @return iterable|UnprocessableMedia[]
+     * @return iterable<UnprocessableMedia>
      */
     public function iterateUnprocessableMedia(StorageLocation $storageLocation, array $paths): iterable
     {
@@ -181,7 +181,7 @@ final class BatchUtilities
      * @param StorageLocation $storageLocation
      * @param string $dir
      *
-     * @return iterable|UnprocessableMedia[]
+     * @return iterable<UnprocessableMedia>
      */
     public function iterateUnprocessableMediaInDirectory(
         StorageLocation $storageLocation,
@@ -204,7 +204,7 @@ final class BatchUtilities
      * @param StorageLocation $storageLocation
      * @param string $dir
      *
-     * @return iterable|StationPlaylistFolder[]
+     * @return iterable<StationPlaylistFolder>
      */
     public function iteratePlaylistFoldersInDirectory(
         StorageLocation $storageLocation,

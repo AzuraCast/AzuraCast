@@ -10,6 +10,7 @@ use App\Entity\Api\Status;
 use App\Flysystem\StationFilesystems;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use App\Utilities\Types;
 use League\Flysystem\UnableToCreateDirectory;
 use Psr\Http\Message\ResponseInterface;
 
@@ -25,8 +26,8 @@ final class MakeDirectoryAction implements SingleActionInterface
         Response $response,
         array $params
     ): ResponseInterface {
-        $currentDir = $request->getParam('currentDirectory', '');
-        $newDirName = $request->getParam('name', '');
+        $currentDir = Types::string($request->getParam('currentDirectory'));
+        $newDirName = Types::string($request->getParam('name'));
 
         if (empty($newDirName)) {
             return $response->withStatus(400)

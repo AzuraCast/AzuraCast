@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Stations;
 
+use App\Controller\Api\Traits\CanSearchResults;
 use App\Controller\Api\Traits\CanSortResults;
 use App\Entity\Enums\PlaylistOrders;
 use App\Entity\Enums\PlaylistSources;
@@ -12,6 +13,7 @@ use App\Entity\StationSchedule;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\OpenApi;
+use App\Utilities\Types;
 use Carbon\CarbonInterface;
 use Doctrine\ORM\AbstractQuery;
 use InvalidArgumentException;
@@ -145,6 +147,7 @@ use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 final class PlaylistsController extends AbstractScheduledEntityController
 {
     use CanSortResults;
+    use CanSearchResults;
 
     protected string $entityClass = StationPlaylist::class;
     protected string $resourceRouteName = 'api:stations:playlist';
@@ -172,11 +175,13 @@ final class PlaylistsController extends AbstractScheduledEntityController
             'sp.name'
         );
 
-        $searchPhrase = trim($request->getParam('searchPhrase', ''));
-        if (!empty($searchPhrase)) {
-            $qb->andWhere('sp.name LIKE :name')
-                ->setParameter('name', '%' . $searchPhrase . '%');
-        }
+        $qb = $this->searchQueryBuilder(
+            $request,
+            $qb,
+            [
+                'sp.name',
+            ]
+        );
 
         return $this->listPaginatedFromQuery($request, $response, $qb->getQuery());
     }
@@ -261,7 +266,7 @@ final class PlaylistsController extends AbstractScheduledEntityController
         $return['num_songs'] = $songTotals['num_songs'];
         $return['total_length'] = round((float)$songTotals['total_length']);
 
-        $isInternal = ('true' === $request->getParam('internal', 'false'));
+        $isInternal = Types::bool($request->getParam('internal'), false, true);
         $router = $request->getRouter();
 
         $return['links'] = [

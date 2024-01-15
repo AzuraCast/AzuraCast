@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Stations;
 
+use App\Controller\Api\Traits\CanSearchResults;
 use App\Controller\Api\Traits\CanSortResults;
 use App\Entity\Repository\StationMountRepository;
 use App\Entity\StationMount;
@@ -144,6 +145,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 final class MountsController extends AbstractStationApiCrudController
 {
     use CanSortResults;
+    use CanSearchResults;
 
     protected string $entityClass = StationMount::class;
     protected string $resourceRouteName = 'api:stations:mount';
@@ -180,11 +182,14 @@ final class MountsController extends AbstractStationApiCrudController
             'e.display_name'
         );
 
-        $searchPhrase = trim($request->getParam('searchPhrase', ''));
-        if (!empty($searchPhrase)) {
-            $qb->andWhere('(e.name LIKE :name OR e.display_name LIKE :name)')
-                ->setParameter('name', '%' . $searchPhrase . '%');
-        }
+        $qb = $this->searchQueryBuilder(
+            $request,
+            $qb,
+            [
+                'e.name',
+                'e.display_name',
+            ]
+        );
 
         return $this->listPaginatedFromQuery($request, $response, $qb->getQuery());
     }

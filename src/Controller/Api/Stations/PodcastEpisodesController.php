@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Api\Stations;
 
 use App\Controller\Api\AbstractApiCrudController;
+use App\Controller\Api\Traits\CanSearchResults;
 use App\Entity\Api\PodcastEpisode as ApiPodcastEpisode;
 use App\Entity\Api\PodcastMedia as ApiPodcastMedia;
 use App\Entity\PodcastEpisode;
@@ -16,6 +17,7 @@ use App\Http\Response;
 use App\Http\ServerRequest;
 use App\OpenApi;
 use App\Service\Flow\UploadedFile;
+use App\Utilities\Types;
 use InvalidArgumentException;
 use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
@@ -185,6 +187,8 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 ]
 final class PodcastEpisodesController extends AbstractApiCrudController
 {
+    use CanSearchResults;
+
     protected string $entityClass = PodcastEpisode::class;
     protected string $resourceRouteName = 'api:stations:podcast:episode';
 
@@ -218,11 +222,13 @@ final class PodcastEpisodesController extends AbstractApiCrudController
             ->orderBy('e.created_at', 'DESC')
             ->setParameter('podcast', $podcast);
 
-        $searchPhrase = trim($request->getParam('searchPhrase', ''));
-        if (!empty($searchPhrase)) {
-            $queryBuilder->andWhere('e.title LIKE :title')
-                ->setParameter('title', '%' . $searchPhrase . '%');
-        }
+        $queryBuilder = $this->searchQueryBuilder(
+            $request,
+            $queryBuilder,
+            [
+                'e.title',
+            ]
+        );
 
         return $this->listPaginatedFromQuery($request, $response, $queryBuilder->getQuery());
     }
@@ -299,7 +305,7 @@ final class PodcastEpisodesController extends AbstractApiCrudController
             throw new InvalidArgumentException(sprintf('Record must be an instance of %s.', $this->entityClass));
         }
 
-        $isInternal = ('true' === $request->getParam('internal', 'false'));
+        $isInternal = Types::bool($request->getParam('internal'), false, true);
         $router = $request->getRouter();
 
         $return = new ApiPodcastEpisode();

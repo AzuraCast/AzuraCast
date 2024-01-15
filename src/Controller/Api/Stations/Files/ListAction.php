@@ -74,7 +74,7 @@ final class ListAction implements SingleActionInterface
 
         $cacheKey = implode('.', $cacheKeyParts);
 
-        $flushCache = Types::bool($request->getParam('flushCache'));
+        $flushCache = Types::bool($request->getParam('flushCache'), false, true);
 
         if (!$flushCache && $this->cache->has($cacheKey)) {
             /** @var array<int, FileList> $result */

@@ -5,18 +5,23 @@ declare(strict_types=1);
 namespace App\Controller\Api\Stations\Reports;
 
 use App\Container\EntityManagerAwareTrait;
+use App\Controller\Api\Traits\CanSearchResults;
+use App\Controller\Api\Traits\CanSortResults;
 use App\Entity\Api\Status;
 use App\Entity\Repository\StationRequestRepository;
 use App\Entity\StationRequest;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Paginator;
+use App\Utilities\Types;
 use Doctrine\ORM\AbstractQuery;
 use Psr\Http\Message\ResponseInterface;
 
 final class RequestsController
 {
     use EntityManagerAwareTrait;
+    use CanSortResults;
+    use CanSearchResults;
 
     public function __construct(
         private readonly StationRequestRepository $requestRepo
@@ -36,33 +41,35 @@ final class RequestsController
             ->where('sr.station = :station')
             ->setParameter('station', $station);
 
-        $qb = match ($request->getParam('type', 'recent')) {
+        $type = Types::string($request->getParam('type', 'recent'));
+        $qb = match ($type) {
             'history' => $qb->andWhere('sr.played_at != 0'),
             default => $qb->andWhere('sr.played_at = 0'),
         };
 
-        $queryParams = $request->getQueryParams();
-        $searchPhrase = trim($queryParams['searchPhrase'] ?? '');
+        $qb = $this->sortQueryBuilder(
+            $request,
+            $qb,
+            [
+                'name' => 'sm.title',
+                'title' => 'sm.title',
+                'artist' => 'sm.artist',
+                'album' => 'sm.album',
+                'genre' => 'sm.genre',
+            ],
+            'sr.timestamp',
+            'DESC'
+        );
 
-        $sortField = (string)($queryParams['sort'] ?? '');
-        $sortDirection = strtolower($queryParams['sortOrder'] ?? 'asc');
-
-        if (!empty($sortField)) {
-            match ($sortField) {
-                'name', 'title' => $qb->addOrderBy('sm.title', $sortDirection),
-                'artist' => $qb->addOrderBy('sm.artist', $sortDirection),
-                'album' => $qb->addOrderBy('sm.album', $sortDirection),
-                'genre' => $qb->addOrderBy('sm.genre', $sortDirection),
-                default => null,
-            };
-        } else {
-            $qb->addOrderBy('sr.timestamp', 'DESC');
-        }
-
-        if (!empty($searchPhrase)) {
-            $qb->andWhere('(sm.title LIKE :query OR sm.artist LIKE :query OR sm.album LIKE :query)')
-                ->setParameter('query', '%' . $searchPhrase . '%');
-        }
+        $qb = $this->searchQueryBuilder(
+            $request,
+            $qb,
+            [
+                'sm.title',
+                'sm.artist',
+                'sm.album',
+            ]
+        );
 
         $query = $qb->getQuery()
             ->setHydrationMode(AbstractQuery::HYDRATE_ARRAY);

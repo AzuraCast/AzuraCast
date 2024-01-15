@@ -12,6 +12,7 @@ use App\Exception\RateLimitExceededException;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\RateLimit;
+use App\Utilities\Types;
 use Mezzio\Session\SessionCookiePersistenceInterface;
 use Psr\Http\Message\ResponseInterface;
 
@@ -69,14 +70,17 @@ final class LoginAction implements SingleActionInterface
                 return $response->withRedirect($request->getUri()->getPath());
             }
 
-            $user = $auth->authenticate($request->getParam('username'), $request->getParam('password'));
+            $user = $auth->authenticate(
+                Types::string($request->getParam('username')),
+                Types::string($request->getParam('password'))
+            );
 
             if ($user instanceof User) {
                 $session = $request->getSession();
 
                 // If user selects "remember me", extend the cookie/session lifetime.
                 if ($session instanceof SessionCookiePersistenceInterface) {
-                    $rememberMe = (bool)$request->getParam('remember', 0);
+                    $rememberMe = Types::bool($request->getParam('remember'), false, true);
                     /** @noinspection SummerTimeUnsafeTimeManipulationInspection */
                     $session->persistSessionFor(($rememberMe) ? 86400 * 14 : 0);
                 }

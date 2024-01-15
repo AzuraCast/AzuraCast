@@ -11,6 +11,7 @@ use App\Exception\ValidationException;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Service\Mail;
+use App\Utilities\Types;
 use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\Mailer\Exception\TransportException;
 use Symfony\Component\Validator\Constraints\Email;
@@ -30,7 +31,7 @@ final class SendTestMessageAction implements SingleActionInterface
         Response $response,
         array $params
     ): ResponseInterface {
-        $emailAddress = $request->getParam('email', '');
+        $emailAddress = Types::string($request->getParam('email'));
 
         $errors = $this->validator->validate(
             $emailAddress,

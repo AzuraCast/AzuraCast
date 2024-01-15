@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Api\Stations;
 
 use App\Controller\Api\AbstractApiCrudController;
+use App\Controller\Api\Traits\CanSearchResults;
 use App\Entity\Api\Podcast as ApiPodcast;
 use App\Entity\Podcast;
 use App\Entity\PodcastCategory;
@@ -14,6 +15,7 @@ use App\Http\Response;
 use App\Http\ServerRequest;
 use App\OpenApi;
 use App\Service\Flow\UploadedFile;
+use App\Utilities\Types;
 use InvalidArgumentException;
 use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
@@ -147,6 +149,8 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 ]
 final class PodcastsController extends AbstractApiCrudController
 {
+    use CanSearchResults;
+
     protected string $entityClass = Podcast::class;
     protected string $resourceRouteName = 'api:stations:podcast';
 
@@ -173,11 +177,13 @@ final class PodcastsController extends AbstractApiCrudController
             ->orderBy('p.title', 'ASC')
             ->setParameter('storageLocation', $station->getPodcastsStorageLocation());
 
-        $searchPhrase = trim($request->getParam('searchPhrase', ''));
-        if (!empty($searchPhrase)) {
-            $queryBuilder->andWhere('p.title LIKE :title')
-                ->setParameter('title', '%' . $searchPhrase . '%');
-        }
+        $queryBuilder = $this->searchQueryBuilder(
+            $request,
+            $queryBuilder,
+            [
+                'p.title',
+            ]
+        );
 
         return $this->listPaginatedFromQuery($request, $response, $queryBuilder->getQuery());
     }
@@ -228,7 +234,7 @@ final class PodcastsController extends AbstractApiCrudController
             throw new InvalidArgumentException(sprintf('Record must be an instance of %s.', $this->entityClass));
         }
 
-        $isInternal = ('true' === $request->getParam('internal', 'false'));
+        $isInternal = Types::bool($request->getParam('internal'), false, true);
         $router = $request->getRouter();
         $station = $request->getStation();
 

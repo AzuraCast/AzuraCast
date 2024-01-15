@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Api\Admin;
 
 use App\Controller\Api\AbstractApiCrudController;
+use App\Controller\Api\Traits\CanSearchResults;
 use App\Controller\Api\Traits\CanSortResults;
 use App\Controller\Frontend\Account\MasqueradeAction;
 use App\Entity\Api\Error;
@@ -134,6 +135,7 @@ use Psr\Http\Message\ResponseInterface;
 class UsersController extends AbstractApiCrudController
 {
     use CanSortResults;
+    use CanSearchResults;
 
     protected string $entityClass = User::class;
     protected string $resourceRouteName = 'api:admin:user';
@@ -156,11 +158,14 @@ class UsersController extends AbstractApiCrudController
             'e.name'
         );
 
-        $searchPhrase = trim($request->getParam('searchPhrase', ''));
-        if (!empty($searchPhrase)) {
-            $qb->andWhere('(e.name LIKE :name OR e.email LIKE :name)')
-                ->setParameter('name', '%' . $searchPhrase . '%');
-        }
+        $qb = $this->searchQueryBuilder(
+            $request,
+            $qb,
+            [
+                'e.name',
+                'e.email',
+            ]
+        );
 
         return $this->listPaginatedFromQuery($request, $response, $qb->getQuery());
     }
@@ -173,7 +178,7 @@ class UsersController extends AbstractApiCrudController
 
         $return = $this->toArray($record);
 
-        $isInternal = ('true' === $request->getParam('internal', 'false'));
+        $isInternal = $request->isInternal();
         $router = $request->getRouter();
         $csrf = $request->getCsrf();
         $currentUser = $request->getUser();

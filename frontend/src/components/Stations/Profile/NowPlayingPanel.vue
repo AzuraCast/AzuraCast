@@ -223,14 +223,29 @@
                     {{ $gettext('Disconnect Streamer') }}
                 </span>
             </button>
+            <button
+                id="btn_update_metadata"
+                type="button"
+                class="btn btn-link text-secondary"
+                @click="updateMetadata()"
+            >
+                <icon :icon="IconUpdate" />
+                <span>
+                    {{ $gettext('Update Metadata') }}
+                </span>
+            </button>
         </template>
     </card-page>
+
+    <template v-if="isLiquidsoap && userAllowedForStation(StationPermission.Broadcasting)">
+        <update-metadata-modal ref="$updateMetadataModal" />
+    </template>
 </template>
 
 <script setup lang="ts">
 import {BackendAdapter} from '~/entities/RadioAdapters';
 import Icon from '~/components/Common/Icon.vue';
-import {computed} from "vue";
+import {computed, Ref, ref} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import nowPlayingPanelProps from "~/components/Stations/Profile/nowPlayingPanelProps";
 import useNowPlaying from "~/functions/useNowPlaying";
@@ -239,7 +254,16 @@ import CardPage from "~/components/Common/CardPage.vue";
 import {useLightbox} from "~/vendor/lightbox";
 import {StationPermission, userAllowedForStation} from "~/acl";
 import {useAzuraCastStation} from "~/vendor/azuracast";
-import {IconHeadphones, IconLogs, IconMic, IconMusicNote, IconSkipNext, IconVolumeOff} from "~/components/Common/icons";
+import {
+    IconHeadphones,
+    IconLogs,
+    IconMic,
+    IconMusicNote,
+    IconSkipNext,
+    IconUpdate,
+    IconVolumeOff
+} from "~/components/Common/icons";
+import UpdateMetadataModal from "~/components/Stations/Profile/UpdateMetadataModal.vue";
 
 const props = defineProps({
     ...nowPlayingPanelProps,
@@ -275,4 +299,9 @@ const {vLightbox} = useLightbox();
 const makeApiCall = (uri) => {
     emit('api-call', uri);
 };
+
+const $updateMetadataModal: Ref<InstanceType<typeof UpdateMetadataModal> | null> = ref(null);
+const updateMetadata = () => {
+    $updateMetadataModal.value?.open();
+}
 </script>

@@ -9,6 +9,9 @@ release channel, you can take advantage of these new features and fixes.
   fields supplying more information about your listeners, and filter your results to only show listeners with a certain
   total connected time or using a certain kind of device.
 
+- When configuring Mount Points, Remote Relays, or broadcast recordings, you can now specify a custom bitrate in
+  kilobits per second (kbps) if you want to use a bitrate outside the default options.
+
 - You can now submit a manual metadata update directly via the station profile page. This is useful in cases where the
   metadata does not update correctly (i.e. from a live DJ).
 

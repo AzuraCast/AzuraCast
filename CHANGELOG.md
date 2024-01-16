@@ -5,9 +5,21 @@ release channel, you can take advantage of these new features and fixes.
 
 ## New Features/Changes
 
+- **Improved Listeners Report**: You can now search and sort through the listeners report, view several additional
+  fields supplying more information about your listeners, and filter your results to only show listeners with a certain
+  total connected time or using a certain kind of device.
+
+- You can now submit a manual metadata update directly via the station profile page. This is useful in cases where the
+  metadata does not update correctly (i.e. from a live DJ).
+
+- The list of stations on the home dashboard is now paginated, searchable and sortable.
+
 ## Code Quality/Technical Changes
 
 ## Bug Fixes
+
+- We're continuing to work with Liquidsoap to resolve known issues relating to crackles and pops on crossfade
+  transitions and issues with metadata not updating on shorter tracks.
 
 ---
 

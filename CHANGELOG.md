@@ -17,6 +17,11 @@ release channel, you can take advantage of these new features and fixes.
 
 - The list of stations on the home dashboard is now paginated, searchable and sortable.
 
+- The "Reorder" dialog for sequential playlists has been emphasized better and now has a "move to top" and "move to
+  bottom" button.
+
+- You can now specify a path when using the ``
+
 ## Code Quality/Technical Changes
 
 ## Bug Fixes

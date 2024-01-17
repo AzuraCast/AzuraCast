@@ -52,6 +52,14 @@ export const IconCheck: Icon = {
   viewBox: materialIconsViewBox,
   contents: '<path d="M378-235 142-471l52-52 184 184 388-388 52 52-440 440Z"/>'
 };
+export const IconChevronBarDown: Icon = {
+  viewBox: bootstrapIconsViewBox,
+  contents: '<path fill-rule="evenodd" d="M3.646 4.146a.5.5 0 0 1 .708 0L8 7.793l3.646-3.647a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 0-.708M1 11.5a.5.5 0 0 1 .5-.5h13a.5.5 0 0 1 0 1h-13a.5.5 0 0 1-.5-.5"/>'
+};
+export const IconChevronBarUp: Icon = {
+  viewBox: bootstrapIconsViewBox,
+  contents: '<path fill-rule="evenodd" d="M3.646 11.854a.5.5 0 0 0 .708 0L8 8.207l3.646 3.647a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 0 0 0 .708M2.4 5.2c0 .22.18.4.4.4h10.4a.4.4 0 0 0 0-.8H2.8a.4.4 0 0 0-.4.4"/>'
+};
 export const IconChevronDoubleDown: Icon = {
   viewBox: bootstrapIconsViewBox,
   contents: '<path fill-rule="evenodd" d="M1.646 6.646a.5.5 0 0 1 .708 0L8 12.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708"/>  <path xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" d="M1.646 2.646a.5.5 0 0 1 .708 0L8 8.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708"/>'
@@ -61,20 +69,20 @@ export const IconChevronDoubleUp: Icon = {
   contents: '<path fill-rule="evenodd" d="M7.646 2.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1-.708.708L8 3.707 2.354 9.354a.5.5 0 1 1-.708-.708z"/>  <path xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" d="M7.646 6.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1-.708.708L8 7.707l-5.646 5.647a.5.5 0 0 1-.708-.708z"/>'
 };
 export const IconChevronDown: Icon = {
-  viewBox: materialIconsViewBox,
-  contents: '<path d="M480-335 230-585l53-53 197 199 198-198 52 53-250 249Z"/>'
+  viewBox: bootstrapIconsViewBox,
+  contents: '<path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708"/>'
 };
 export const IconChevronLeft: Icon = {
-  viewBox: materialIconsViewBox,
-  contents: '<path d="M562-231 311-482l251-251 52 52-199 199 199 199-52 52Z"/>'
+  viewBox: bootstrapIconsViewBox,
+  contents: '<path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0"/>'
 };
 export const IconChevronRight: Icon = {
-  viewBox: materialIconsViewBox,
-  contents: '<path d="M522-482 323-681l52-52 251 251-251 251-52-52 199-199Z"/>'
+  viewBox: bootstrapIconsViewBox,
+  contents: '<path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708"/>'
 };
 export const IconChevronUp: Icon = {
-  viewBox: materialIconsViewBox,
-  contents: '<path d="m283-335-53-53 250-250 250 249-52 53-198-198-197 199Z"/>'
+  viewBox: bootstrapIconsViewBox,
+  contents: '<path fill-rule="evenodd" d="M7.646 4.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1-.708.708L8 5.707l-5.646 5.647a.5.5 0 0 1-.708-.708z"/>'
 };
 export const IconClearAll: Icon = {
   viewBox: materialIconsViewBox,

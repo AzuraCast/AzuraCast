@@ -52,6 +52,16 @@ export const IconCheck: Icon = {
   viewBox: materialIconsViewBox,
   contents: '<path d="M378-235 142-471l52-52 184 184 388-388 52 52-440 440Z"/>'
 };
+export const IconChevronDoubleDown: Icon = {
+  viewBox: bootstrapIconsViewBox,
+  contents: '<path fill-rule="evenodd" d="M1.646 6.646a.5.5 0 0 1 .708 0L8 12.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708"/>
+  <path xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" d="M1.646 2.646a.5.5 0 0 1 .708 0L8 8.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708"/>'
+};
+export const IconChevronDoubleUp: Icon = {
+  viewBox: bootstrapIconsViewBox,
+  contents: '<path fill-rule="evenodd" d="M7.646 2.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1-.708.708L8 3.707 2.354 9.354a.5.5 0 1 1-.708-.708z"/>
+  <path xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" d="M7.646 6.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1-.708.708L8 7.707l-5.646 5.647a.5.5 0 0 1-.708-.708z"/>'
+};
 export const IconChevronDown: Icon = {
   viewBox: materialIconsViewBox,
   contents: '<path d="M480-335 230-585l53-53 197 199 198-198 52 53-250 249Z"/>'
@@ -79,6 +89,10 @@ export const IconClose: Icon = {
 export const IconCode: Icon = {
   viewBox: materialIconsViewBox,
   contents: '<path d="M318-232 68-483l253-253 52 53-200 200 198 198-53 53Zm322 2-52-53 201-201-198-198 51-51 251 250-253 253Z"/>'
+};
+export const IconContract: Icon = {
+  viewBox: bootstrapIconsViewBox,
+  contents: '<path fill-rule="evenodd" d="M3.646 14.854a.5.5 0 0 0 .708 0L8 11.207l3.646 3.647a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 0 0 0 .708m0-13.708a.5.5 0 0 1 .708 0L8 4.793l3.646-3.647a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 0-.708M1 8a.5.5 0 0 1 .5-.5h13a.5.5 0 0 1 0 1h-13A.5.5 0 0 1 1 8"/>'
 };
 export const IconCopy: Icon = {
   viewBox: materialIconsViewBox,
@@ -111,6 +125,10 @@ export const IconError: Icon = {
 export const IconExitToApp: Icon = {
   viewBox: materialIconsViewBox,
   contents: '<path d="M177-104q-28.725 0-50.863-22.137Q104-148.275 104-177v-194h73v194h606v-606H177v193h-73v-193q0-28.725 22.137-50.862Q148.275-856 177-856h606q28.725 0 50.862 22.138Q856-811.725 856-783v606q0 28.725-22.138 50.863Q811.725-104 783-104H177Zm235-166-54-56 118-118H104v-73h372L358-635l54-55 209 209-209 211Z"/>'
+};
+export const IconExpand: Icon = {
+  viewBox: bootstrapIconsViewBox,
+  contents: '<path fill-rule="evenodd" d="M3.646 9.146a.5.5 0 0 1 .708 0L8 12.793l3.646-3.647a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 0-.708m0-2.292a.5.5 0 0 0 .708 0L8 3.207l3.646 3.647a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 0 0 0 .708"/>'
 };
 export const IconFastForward: Icon = {
   viewBox: materialIconsViewBox,

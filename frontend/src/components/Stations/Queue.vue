@@ -18,6 +18,7 @@
             ref="$datatable"
             :fields="fields"
             :api-url="listUrl"
+            :hide-on-loading="false"
         >
             <template #cell(actions)="row">
                 <div class="btn-group btn-group-sm">
@@ -70,12 +71,12 @@
 </template>
 
 <script setup lang="ts">
-import DataTable, { DataTableField } from '../Common/DataTable.vue';
+import DataTable, {DataTableField} from '../Common/DataTable.vue';
 import QueueLogsModal from './Queue/LogsModal.vue';
 import Icon from "~/components/Common/Icon.vue";
 import {useAzuraCast, useAzuraCastStation} from "~/vendor/azuracast";
 import {useTranslate} from "~/vendor/gettext";
-import {ref} from "vue";
+import {computed, ref} from "vue";
 import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
 import useHasDatatable, {DataTableTemplateRef} from "~/functions/useHasDatatable";
 import {useNotify} from "~/functions/useNotify";
@@ -85,6 +86,7 @@ import CardPage from "~/components/Common/CardPage.vue";
 import {useLuxon} from "~/vendor/luxon";
 import {getStationApiUrl} from "~/router";
 import {IconRemove} from "~/components/Common/icons";
+import {useIntervalFn} from "@vueuse/core";
 
 const listUrl = getStationApiUrl('/queue');
 const clearUrl = getStationApiUrl('/queue/clear');
@@ -115,6 +117,11 @@ const formatRelativeTime = (time) => getDateTime(time).toRelative();
 
 const $datatable = ref<DataTableTemplateRef>(null);
 const {relist} = useHasDatatable($datatable);
+
+useIntervalFn(
+    relist,
+    computed(() => (document.hidden) ? 60000 : 30000)
+);
 
 const $logsModal = ref<InstanceType<typeof QueueLogsModal> | null>(null);
 const doShowLogs = (logs) => {

@@ -64,7 +64,7 @@ function genIconComponents() {
             svgViewBox = `'${svgViewBox}'`;
         }
 
-        const svgContents = svgInner.innerHTML.trim().replace(
+        const svgContents = svgInner.innerHTML.trim().replace("\n", "").replace(
             ' xmlns="http://www.w3.org/2000/svg"',
             ''
         );

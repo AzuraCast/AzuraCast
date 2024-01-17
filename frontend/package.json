@@ -5,6 +5,7 @@
   "scripts": {
     "build": "vite build",
     "serve": "vite",
+    "generate-icons": "node genicons.mjs",
     "generate-locales": "vue-gettext-extract",
     "generate-api": "swagger-typescript-api --path http://localhost/api/openapi.yml --output ./src/entities --name ApiInterfaces.ts --no-client"
   },

@@ -103,10 +103,10 @@
                                         {{ $gettext('On-Demand') }}
                                     </span>
                                     <span
-                                        v-if="row.item.include_in_automation"
-                                        class="badge text-bg-success me-1"
+                                        v-if="row.item.schedule_items.length > 0"
+                                        class="badge text-bg-info me-1"
                                     >
-                                        {{ $gettext('Auto-Assigned') }}
+                                        {{ $gettext('Scheduled') }}
                                     </span>
                                     <span
                                         v-if="!row.item.is_enabled"

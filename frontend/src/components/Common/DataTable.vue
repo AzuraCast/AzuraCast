@@ -247,6 +247,7 @@
                                     :name="'cell('+column.key+')'"
                                     :column="column"
                                     :item="row"
+                                    :is-active="isActiveDetailRow(row)"
                                     :toggle-details="() => toggleDetails(row)"
                                 >
                                     {{ getColumnValue(column, row) }}

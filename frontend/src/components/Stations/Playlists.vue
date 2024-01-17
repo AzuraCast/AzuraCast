@@ -45,32 +45,6 @@
                             :api-url="listUrl"
                             detailed
                         >
-                            <template #cell(actions)="{ item, toggleDetails }">
-                                <div class="btn-group btn-group-sm">
-                                    <button
-                                        type="button"
-                                        class="btn btn-primary"
-                                        @click="doEdit(item.links.self)"
-                                    >
-                                        {{ $gettext('Edit') }}
-                                    </button>
-                                    <button
-                                        type="button"
-                                        class="btn btn-danger"
-                                        @click="doDelete(item.links.self)"
-                                    >
-                                        {{ $gettext('Delete') }}
-                                    </button>
-
-                                    <button
-                                        class="btn btn-sm btn-secondary"
-                                        type="button"
-                                        @click="toggleDetails()"
-                                    >
-                                        {{ $gettext('More') }}
-                                    </button>
-                                </div>
-                            </template>
                             <template #cell(name)="row">
                                 <h5 class="m-0">
                                     {{ row.item.name }}
@@ -171,11 +145,47 @@
                                     &nbsp;
                                 </template>
                             </template>
+                            <template #cell(actions)="{ item, isActive, toggleDetails }">
+                                <div class="btn-group btn-group-sm">
+                                    <button
+                                        type="button"
+                                        class="btn btn-primary"
+                                        @click="doEdit(item.links.self)"
+                                    >
+                                        {{ $gettext('Edit') }}
+                                    </button>
+                                    <button
+                                        type="button"
+                                        class="btn btn-danger"
+                                        @click="doDelete(item.links.self)"
+                                    >
+                                        {{ $gettext('Delete') }}
+                                    </button>
+
+                                    <button
+                                        class="btn btn-sm btn-secondary"
+                                        type="button"
+                                        @click="toggleDetails()"
+                                    >
+                                        <icon :icon="isActive ? IconContract : IconExpand" />
+
+                                        {{ $gettext('More') }}
+                                    </button>
+                                </div>
+                            </template>
                             <template #detail="{ item }">
                                 <div
                                     class="buttons"
                                     style="line-height: 2.5;"
                                 >
+                                    <button
+                                        v-if="item.links.order"
+                                        type="button"
+                                        class="btn btn-sm btn-primary"
+                                        @click="doReorder(item.links.order)"
+                                    >
+                                        {{ $gettext('Reorder') }}
+                                    </button>
                                     <button
                                         type="button"
                                         class="btn btn-sm"
@@ -207,14 +217,6 @@
                                         @click="doImport(item.links.import)"
                                     >
                                         {{ $gettext('Import from PLS/M3U') }}
-                                    </button>
-                                    <button
-                                        v-if="item.links.order"
-                                        type="button"
-                                        class="btn btn-sm btn-secondary"
-                                        @click="doReorder(item.links.order)"
-                                    >
-                                        {{ $gettext('Reorder') }}
                                     </button>
                                     <button
                                         v-if="item.links.queue"
@@ -322,6 +324,8 @@ import TimeZone from "~/components/Stations/Common/TimeZone.vue";
 import Tabs from "~/components/Common/Tabs.vue";
 import Tab from "~/components/Common/Tab.vue";
 import AddButton from "~/components/Common/AddButton.vue";
+import {IconContract, IconExpand} from "~/components/Common/icons.ts";
+import Icon from "~/components/Common/Icon.vue";
 
 const props = defineProps({
     useManualAutoDj: {

@@ -1,7 +1,8 @@
 import {getApiUrl} from "~/router.ts";
 import populateComponentRemotely from "~/functions/populateComponentRemotely.ts";
+import {RouteRecordRaw} from "vue-router";
 
-export default function useAdminRoutes() {
+export default function useAdminRoutes(): RouteRecordRaw[] {
     return [
         {
             path: '/',

@@ -1,7 +1,8 @@
 import {getStationApiUrl} from "~/router.ts";
 import populateComponentRemotely from "~/functions/populateComponentRemotely.ts";
+import {RouteRecordRaw} from "vue-router";
 
-export default function useStationsRoutes() {
+export default function useStationsRoutes(): RouteRecordRaw[] {
     return [
         {
             path: '/',

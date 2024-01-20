@@ -61,6 +61,10 @@ body.page-minimal {
 
         .card {
           height: 100%;
+
+          .card-body {
+            flex: 0 1 auto;
+          }
         }
 
         .datatable-main {

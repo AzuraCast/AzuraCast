@@ -1,0 +1,9 @@
+.badges {
+  & > * {
+    margin-right: .25rem;
+  }
+
+  & > *:last-child {
+    margin-right: 0;
+  }
+}

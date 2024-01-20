@@ -10,6 +10,7 @@ use App\Exception\NotFoundException;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Radio\Adapters;
+use League\Plates\Template\Template;
 use Psr\Http\Message\ResponseInterface;
 
 final class WebDjAction implements SingleActionInterface
@@ -36,13 +37,37 @@ final class WebDjAction implements SingleActionInterface
 
         $wssUrl = (string)$backend->getWebStreamingUrl($station, $request->getRouter()->getBaseUrl());
 
-        return $request->getView()->renderToResponse(
-            response: $response->withHeader('X-Frame-Options', '*'),
-            templateName: 'frontend/public/webdj',
-            templateArgs: [
-                'station' => $station,
+        $view = $request->getView();
+
+        // Add station public code.
+        $view->fetch(
+            'frontend/public/partials/station-custom',
+            ['station' => $station]
+        );
+
+        $view->getSections()->set(
+            'bodyjs',
+            <<<'HTML'
+                <script src="/static/js/taglib.js"></script>
+            HTML,
+            Template::SECTION_MODE_APPEND
+        );
+
+        return $view->renderVuePage(
+            response: $response
+                ->withHeader('X-Frame-Options', '*')
+                ->withHeader('X-Robots-Tag', 'index, nofollow'),
+            component: 'Public/WebDJ',
+            id: 'webdj',
+            layout: 'minimal',
+            title: __('Web DJ') . ' - ' . $station->getName(),
+            layoutParams: [
+                'page_class' => 'dj station-' . $station->getShortName(),
+                'hide_footer' => true,
+            ],
+            props: [
                 'wss_url' => $wssUrl,
-            ]
+            ],
         );
     }
 }

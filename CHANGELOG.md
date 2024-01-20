@@ -5,6 +5,14 @@ release channel, you can take advantage of these new features and fixes.
 
 ## New Features/Changes
 
+- **Redesigned Public Podcast Pages**: We've completely overhauled the public-facing podcasts pages to be a single
+  cohesive experience similar to our On-Demand streaming and other public pages.
+    - Podcasts and episodes are searchable, sortable and paginated, and the pages now use our built-in player for
+      playing back the podcasts themselves, ensuring uniform controls across browsers.
+    - Because it's built in our new frontend, you can also continue listening to your podcast episode as you navigate
+      around the podcast pages.
+    - The entire new podcast component is also now an embeddable widget in external pages.
+
 - **Improved Listeners Report**: You can now search and sort through the listeners report, view several additional
   fields supplying more information about your listeners, and filter your results to only show listeners with a certain
   total connected time or using a certain kind of device.

@@ -49,8 +49,8 @@
                                 <h5 class="m-0">
                                     {{ row.item.name }}
                                 </h5>
-                                <div>
-                                    <span class="badge text-bg-secondary me-1">
+                                <div class="badges">
+                                    <span class="badge text-bg-secondary">
                                         <template v-if="row.item.source === 'songs'">
                                             {{ $gettext('Song-based') }}
                                         </template>
@@ -60,31 +60,31 @@
                                     </span>
                                     <span
                                         v-if="row.item.is_jingle"
-                                        class="badge text-bg-primary me-1"
+                                        class="badge text-bg-primary"
                                     >
                                         {{ $gettext('Jingle Mode') }}
                                     </span>
                                     <span
                                         v-if="row.item.source === 'songs' && row.item.order === 'sequential'"
-                                        class="badge text-bg-info me-1"
+                                        class="badge text-bg-info"
                                     >
                                         {{ $gettext('Sequential') }}
                                     </span>
                                     <span
                                         v-if="row.item.include_in_on_demand"
-                                        class="badge text-bg-info me-1"
+                                        class="badge text-bg-info"
                                     >
                                         {{ $gettext('On-Demand') }}
                                     </span>
                                     <span
                                         v-if="row.item.schedule_items.length > 0"
-                                        class="badge text-bg-info me-1"
+                                        class="badge text-bg-info"
                                     >
                                         {{ $gettext('Scheduled') }}
                                     </span>
                                     <span
                                         v-if="!row.item.is_enabled"
-                                        class="badge text-bg-danger me-1"
+                                        class="badge text-bg-danger"
                                     >
                                         {{ $gettext('Disabled') }}
                                     </span>

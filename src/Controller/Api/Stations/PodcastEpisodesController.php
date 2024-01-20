@@ -17,6 +17,7 @@ use App\Http\Response;
 use App\Http\ServerRequest;
 use App\OpenApi;
 use App\Service\Flow\UploadedFile;
+use App\Utilities\Strings;
 use App\Utilities\Types;
 use InvalidArgumentException;
 use OpenApi\Attributes as OA;
@@ -222,6 +223,15 @@ final class PodcastEpisodesController extends AbstractApiCrudController
             ->orderBy('e.created_at', 'DESC')
             ->setParameter('podcast', $podcast);
 
+        $acl = $request->getAcl();
+        if (!$acl->isAllowed(StationPermissions::Podcasts, $station)) {
+            $queryBuilder = $queryBuilder
+                ->andWhere('e.publish_at IS NULL OR e.publish_at <= :publishTime')
+                ->setParameter('publishTime', time())
+                ->andWhere('pm.id IS NOT NULL')
+                ->orderBy('e.publish_at', 'DESC');
+        }
+
         $queryBuilder = $this->searchQueryBuilder(
             $request,
             $queryBuilder,
@@ -309,10 +319,14 @@ final class PodcastEpisodesController extends AbstractApiCrudController
         $router = $request->getRouter();
 
         $return = new ApiPodcastEpisode();
-        $return->id = $record->getId();
+        $return->id = $record->getIdRequired();
         $return->title = $record->getTitle();
+
         $return->description = $record->getDescription();
+        $return->description_short = Strings::truncateText($return->description, 100);
+
         $return->explicit = $record->getExplicit();
+        $return->created_at = $record->getCreatedAt();
         $return->publish_at = $record->getPublishAt();
 
         $mediaRow = $record->getMedia();

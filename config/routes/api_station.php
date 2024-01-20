@@ -49,6 +49,9 @@ return static function (RouteCollectorProxy $group) {
                 ->add(new Middleware\RateLimit('ondemand', 1, 2));
 
             // Podcast Public Pages
+            $group->get('/podcasts', Controller\Api\Stations\PodcastsController::class . ':listAction')
+                ->setName('api:stations:podcasts');
+
             $group->group(
                 '/podcast/{podcast_id}',
                 function (RouteCollectorProxy $group) {
@@ -145,9 +148,6 @@ return static function (RouteCollectorProxy $group) {
                     $group->group(
                         '',
                         function (RouteCollectorProxy $group) {
-                            $group->get('/podcasts', Controller\Api\Stations\PodcastsController::class . ':listAction')
-                                ->setName('api:stations:podcasts');
-
                             $group->post(
                                 '/podcasts',
                                 Controller\Api\Stations\PodcastsController::class . ':createAction'

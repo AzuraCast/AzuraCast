@@ -44,35 +44,6 @@ final class PodcastRepository extends Repository
         );
     }
 
-    /**
-     * @return Podcast[]
-     */
-    public function fetchPublishedPodcastsForStation(Station $station): array
-    {
-        $podcasts = $this->em->createQuery(
-            <<<'DQL'
-                SELECT p, pe
-                FROM App\Entity\Podcast p
-                LEFT JOIN p.episodes pe
-                WHERE p.storage_location = :storageLocation
-            DQL
-        )->setParameter('storageLocation', $station->getPodcastsStorageLocation())
-            ->getResult();
-
-        return array_filter(
-            $podcasts,
-            static function (Podcast $podcast) {
-                foreach ($podcast->getEpisodes() as $episode) {
-                    if ($episode->isPublished()) {
-                        return true;
-                    }
-                }
-
-                return false;
-            }
-        );
-    }
-
     public function writePodcastArt(
         Podcast $podcast,
         string $rawArtworkString,

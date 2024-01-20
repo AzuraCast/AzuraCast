@@ -7,6 +7,7 @@ namespace App\Controller\Api\Stations;
 use App\Controller\Api\AbstractApiCrudController;
 use App\Controller\Api\Traits\CanSearchResults;
 use App\Entity\Api\Podcast as ApiPodcast;
+use App\Entity\Api\PodcastCategory as ApiPodcastCategory;
 use App\Entity\Podcast;
 use App\Entity\PodcastCategory;
 use App\Entity\Repository\PodcastRepository;
@@ -15,10 +16,13 @@ use App\Http\Response;
 use App\Http\ServerRequest;
 use App\OpenApi;
 use App\Service\Flow\UploadedFile;
+use App\Utilities\Strings;
 use App\Utilities\Types;
 use InvalidArgumentException;
 use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
+use Symfony\Component\Intl\Exception\MissingResourceException;
+use Symfony\Component\Intl\Languages;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -239,18 +243,40 @@ final class PodcastsController extends AbstractApiCrudController
         $station = $request->getStation();
 
         $return = new ApiPodcast();
-        $return->id = $record->getId();
-        $return->storage_location_id = $record->getStorageLocation()->getId();
+        $return->id = $record->getIdRequired();
+        $return->storage_location_id = $record->getStorageLocation()->getIdRequired();
+
         $return->title = $record->getTitle();
         $return->link = $record->getLink();
+
         $return->description = $record->getDescription();
+        $return->description_short = Strings::truncateText($return->description, 200);
+
         $return->language = $record->getLanguage();
+        try {
+            $locale = $request->getCustomization()->getLocale();
+            $return->language_name = Languages::getName(
+                $return->language,
+                $locale->value
+            );
+        } catch (MissingResourceException) {
+        }
+
         $return->author = $record->getAuthor();
         $return->email = $record->getEmail();
 
         $categories = [];
         foreach ($record->getCategories() as $category) {
-            $categories[] = $category->getCategory();
+            $categoryRow = new ApiPodcastCategory();
+            $categoryRow->category = $category->getCategory();
+            $categoryRow->title = $category->getTitle();
+            $categoryRow->subtitle = $category->getSubTitle();
+
+            $categoryRow->text = (!empty($categoryRow->subtitle))
+                ? $categoryRow->title . ' - ' . $categoryRow->subtitle
+                : $categoryRow->title;
+
+            $categories[] = $categoryRow;
         }
         $return->categories = $categories;
 
@@ -287,7 +313,7 @@ final class PodcastsController extends AbstractApiCrudController
                 absolute: !$isInternal
             ),
             'public_episodes' => $router->fromHere(
-                routeName: 'public:podcast:episodes',
+                routeName: 'public:podcast',
                 routeParams: ['podcast_id' => $record->getId()],
                 absolute: !$isInternal
             ),

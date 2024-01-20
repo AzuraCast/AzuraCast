@@ -57,20 +57,16 @@ return static function (RouteCollectorProxy $app) {
             $group->get('/schedule[/{embed:embed}]', Controller\Frontend\PublicPages\ScheduleAction::class)
                 ->setName('public:schedule');
 
-            $group->get('/podcasts', Controller\Frontend\PublicPages\PodcastsAction::class)
-                ->setName('public:podcasts');
+            $routes = [
+                'public:podcasts' => '/podcasts',
+                'public:podcast' => '/podcast/{podcast_id}',
+                'public:podcast:episode' => '/podcast/{podcast_id}/episode/{episode_id}',
+            ];
 
-            $group->get(
-                '/podcast/{podcast_id}/episodes',
-                Controller\Frontend\PublicPages\PodcastEpisodesAction::class
-            )
-                ->setName('public:podcast:episodes');
-
-            $group->get(
-                '/podcast/{podcast_id}/episode/{episode_id}',
-                Controller\Frontend\PublicPages\PodcastEpisodeAction::class
-            )
-                ->setName('public:podcast:episode');
+            foreach ($routes as $routeName => $routePath) {
+                $group->get($routePath, Controller\Frontend\PublicPages\PodcastsAction::class)
+                    ->setName($routeName);
+            }
 
             $group->get('/podcast/{podcast_id}/feed', Controller\Frontend\PublicPages\PodcastFeedAction::class)
                 ->setName('public:podcast:feed');

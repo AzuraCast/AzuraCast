@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Frontend\PublicPages;
 
+use App\Controller\Frontend\PublicPages\Traits\IsEmbeddable;
 use App\Controller\SingleActionInterface;
 use App\Entity\Repository\CustomFieldRepository;
 use App\Exception\NotFoundException;
@@ -14,6 +15,8 @@ use Psr\Http\Message\ResponseInterface;
 
 final class PlayerAction implements SingleActionInterface
 {
+    use IsEmbeddable;
+
     public function __construct(
         private readonly CustomFieldRepository $customFieldRepo,
         private readonly NowPlayingComponent $nowPlayingComponent
@@ -25,8 +28,7 @@ final class PlayerAction implements SingleActionInterface
         Response $response,
         array $params
     ): ResponseInterface {
-        /** @var string|null $embed */
-        $embed = $params['embed'] ?? null;
+        $embed = $this->isEmbedded($request, $params);
 
         $response = $response
             ->withHeader('X-Frame-Options', '*')
@@ -44,10 +46,10 @@ final class PlayerAction implements SingleActionInterface
         $props = $this->nowPlayingComponent->getProps($request);
 
         // Render embedded player.
-        if (!empty($embed)) {
+        if ($embed) {
             $pageClasses = [];
             $pageClasses[] = 'page-station-public-player-embed station-' . $station->getShortName();
-            $pageClasses[] = ('social' === $embed) ? 'embed-social' : 'embed';
+            $pageClasses[] = ('social' === ($params['embed'] ?? null)) ? 'embed-social' : 'embed';
 
             $view = $request->getView();
 

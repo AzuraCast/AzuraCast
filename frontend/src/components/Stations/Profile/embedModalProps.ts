@@ -42,5 +42,9 @@ export default {
     publicScheduleEmbedUri: {
         type: String,
         required: true
+    },
+    publicPodcastsEmbedUri: {
+        type: String,
+        required: true
     }
 }

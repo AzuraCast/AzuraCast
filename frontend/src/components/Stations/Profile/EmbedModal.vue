@@ -121,6 +121,10 @@ const types = computed(() => {
             text: $gettext('History')
         },
         {
+            value: 'podcasts',
+            text: $gettext('Podcasts')
+        },
+        {
             value: 'schedule',
             text: $gettext('Schedule')
         }
@@ -174,6 +178,9 @@ const baseEmbedUrl = computed(() => {
         case 'schedule':
             return props.publicScheduleEmbedUri;
 
+        case 'podcasts':
+            return props.publicPodcastsEmbedUri;
+
         case 'player':
         default:
             return props.publicPageEmbedUri;
@@ -181,14 +188,17 @@ const baseEmbedUrl = computed(() => {
 });
 
 const embedUrl = computed(() => {
-    return (selectedTheme.value !== "browser")
-        ? baseEmbedUrl.value + '?theme=' + selectedTheme.value
-        : baseEmbedUrl.value;
+    const baseUrl = new URL(baseEmbedUrl.value);
+    if (selectedTheme.value !== 'browser') {
+        baseUrl.searchParams.set('theme', selectedTheme.value);
+    }
+    return baseUrl.toString();
 });
 
 const embedHeight = computed(() => {
     switch (selectedType.value) {
         case 'ondemand':
+        case 'podcasts':
             return '400px';
 
         case 'requests':

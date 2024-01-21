@@ -53,9 +53,7 @@ final class PodcastsAction implements SingleActionInterface
                 'hide_footer' => true,
             ],
             props: [
-                'baseUrl' => $router->named('public:index', [
-                    'station_id' => $station->getShortName(),
-                ]),
+                'baseUrl' => $router->fromHere('public:index'),
             ],
         );
     }

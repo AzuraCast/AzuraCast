@@ -70,7 +70,7 @@
             <div class="d-flex">
                 <div class="flex-shrink-0 pe-3">
                     <play-button
-                        icon-class="lg"
+                        icon-class="xl"
                         :url="episode.links.download"
                     />
                 </div>

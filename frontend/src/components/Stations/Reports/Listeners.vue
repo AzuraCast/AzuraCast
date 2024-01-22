@@ -200,6 +200,7 @@ import formatTime from "~/functions/formatTime.ts";
 import ListenerFiltersBar from "./Listeners/FiltersBar.vue";
 import {ApiListener} from "~/entities/ApiInterfaces.ts";
 import useStationDateTimeFormatter from "~/functions/useStationDateTimeFormatter.ts";
+import {useLuxon} from "~/vendor/luxon.ts";
 
 const props = defineProps({
     attribution: {
@@ -213,8 +214,8 @@ const apiUrl = getStationApiUrl('/listeners');
 const isLive = ref<boolean>(true);
 const listeners: ShallowRef<ApiListener[]> = shallowRef([]);
 
+const {DateTime} = useLuxon();
 const {
-    DateTime,
     now,
     formatTimestampAsDateTime
 } = useStationDateTimeFormatter();

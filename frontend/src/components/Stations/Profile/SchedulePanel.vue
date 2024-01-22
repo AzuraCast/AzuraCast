@@ -47,6 +47,7 @@ import {map} from "lodash";
 import {computed} from "vue";
 import CardPage from "~/components/Common/CardPage.vue";
 import useStationDateTimeFormatter from "~/functions/useStationDateTimeFormatter.ts";
+import {useLuxon} from "~/vendor/luxon.ts";
 
 const props = defineProps({
     scheduleItems: {
@@ -55,8 +56,8 @@ const props = defineProps({
     }
 });
 
+const {DateTime} = useLuxon();
 const {
-    DateTime,
     now,
     timestampToDateTime,
     formatDateTime

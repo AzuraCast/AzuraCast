@@ -3,15 +3,15 @@ import {useAzuraCast, useAzuraCastStation} from "~/vendor/azuracast.ts";
 import {DateTimeMaybeValid} from "luxon";
 
 export default function useStationDateTimeFormatter() {
-    const {DateTime, Duration} = useLuxon();
+    const {DateTime} = useLuxon();
     const {timeConfig} = useAzuraCast();
     const {timezone} = useAzuraCastStation();
 
-    const timestampToDateTime = (value): DateTimeMaybeValid =>
-        DateTime.fromSeconds(value).setZone(timezone);
-
     const now = (): DateTimeMaybeValid =>
-        DateTime.now().setZone(timezone);
+        DateTime.local({zone: timezone});
+
+    const timestampToDateTime = (value): DateTimeMaybeValid =>
+        DateTime.fromSeconds(value, {zone: timezone});
 
     const formatDateTime = (
         value: DateTimeMaybeValid,
@@ -55,27 +55,15 @@ export default function useStationDateTimeFormatter() {
             ? formatDateTimeAsRelative(timestampToDateTime(value))
             : '';
 
-    const formatNowAsDateTime = (
-        format: Intl.DateTimeFormatOptions | null = null
-    ) => formatDateTimeAsDateTime(now(), format);
-
-    const formatNowAsTime = (
-        format: Intl.DateTimeFormatOptions | null = null
-    ) => formatDateTimeAsTime(now(), format);
-
     return {
-        DateTime,
-        Duration,
-        timestampToDateTime,
         now,
+        timestampToDateTime,
         formatDateTime,
         formatDateTimeAsDateTime,
         formatDateTimeAsTime,
         formatDateTimeAsRelative,
         formatTimestampAsDateTime,
         formatTimestampAsTime,
-        formatTimestampAsRelative,
-        formatNowAsDateTime,
-        formatNowAsTime
+        formatTimestampAsRelative
     };
 }

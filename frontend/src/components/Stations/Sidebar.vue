@@ -72,6 +72,7 @@ import {useAxios} from "~/vendor/axios.ts";
 import {getStationApiUrl} from "~/router.ts";
 import {IconEdit} from "~/components/Common/icons.ts";
 import useStationDateTimeFormatter from "~/functions/useStationDateTimeFormatter.ts";
+import {useLuxon} from "~/vendor/luxon.ts";
 
 const props = defineProps({
     station: {
@@ -83,12 +84,14 @@ const props = defineProps({
 const menuItems = useStationsMenu();
 
 const {name} = useAzuraCastStation();
-const {DateTime, formatNowAsTime} = useStationDateTimeFormatter();
+
+const {DateTime} = useLuxon();
+const {now, formatDateTimeAsTime} = useStationDateTimeFormatter();
 
 const clock = ref('');
 
 useIntervalFn(() => {
-    clock.value = formatNowAsTime(DateTime.TIME_WITH_SHORT_OFFSET);
+    clock.value = formatDateTimeAsTime(now(), DateTime.TIME_WITH_SHORT_OFFSET);
 }, 1000, {
     immediate: true,
     immediateCallback: true

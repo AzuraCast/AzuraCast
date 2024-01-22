@@ -114,16 +114,14 @@ import FormFieldset from "~/components/Form/FormFieldset.vue";
 import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
 import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
 import {getStationApiUrl} from "~/router";
-import {useLuxon} from "~/vendor/luxon";
-import {useAzuraCastStation} from "~/vendor/azuracast";
 import CardPage from "~/components/Common/CardPage.vue";
+import useStationDateTimeFormatter from "~/functions/useStationDateTimeFormatter.ts";
 
 const apiUrl = getStationApiUrl('/reports/soundexchange');
 
-const {DateTime} = useLuxon();
-const {timezone} = useAzuraCastStation();
+const {now} = useStationDateTimeFormatter();
 
-const lastMonth = DateTime.now().setZone(timezone).minus({months: 1});
+const lastMonth = now().minus({months: 1});
 
 const {v$} = useVuelidateOnForm(
     {

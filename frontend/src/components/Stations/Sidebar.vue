@@ -64,14 +64,14 @@
 import {ref} from "vue";
 import Icon from "~/components/Common/Icon.vue";
 import SidebarMenu from "~/components/Common/SidebarMenu.vue";
-import {useAzuraCast, useAzuraCastStation} from "~/vendor/azuracast";
+import {useAzuraCastStation} from "~/vendor/azuracast";
 import {useEventBus, useIntervalFn} from "@vueuse/core";
 import {useStationsMenu} from "~/components/Stations/menu";
 import {StationPermission, userAllowedForStation} from "~/acl";
 import {useAxios} from "~/vendor/axios.ts";
 import {getStationApiUrl} from "~/router.ts";
-import {useLuxon} from "~/vendor/luxon.ts";
 import {IconEdit} from "~/components/Common/icons.ts";
+import useStationDateTimeFormatter from "~/functions/useStationDateTimeFormatter.ts";
 
 const props = defineProps({
     station: {
@@ -82,17 +82,13 @@ const props = defineProps({
 
 const menuItems = useStationsMenu();
 
-const {timeConfig} = useAzuraCast();
-const {name, timezone} = useAzuraCastStation();
-const {DateTime} = useLuxon();
+const {name} = useAzuraCastStation();
+const {DateTime, formatNowAsTime} = useStationDateTimeFormatter();
 
 const clock = ref('');
 
 useIntervalFn(() => {
-    clock.value = DateTime.now().setZone(timezone).toLocaleString({
-        ...DateTime.TIME_WITH_SHORT_OFFSET,
-        ...timeConfig
-    })
+    clock.value = formatNowAsTime(DateTime.TIME_WITH_SHORT_OFFSET);
 }, 1000, {
     immediate: true,
     immediateCallback: true

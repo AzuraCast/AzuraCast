@@ -241,7 +241,7 @@
 </template>
 
 <script setup lang="ts">
-import DataTable, { DataTableField } from '~/components/Common/DataTable.vue';
+import DataTable, {DataTableField} from '~/components/Common/DataTable.vue';
 import MediaToolbar from './Media/MediaToolbar.vue';
 import Breadcrumb from './Media/Breadcrumb.vue';
 import FileUpload from './Media/FileUpload.vue';
@@ -256,14 +256,13 @@ import PlayButton from "~/components/Common/PlayButton.vue";
 import {useTranslate} from "~/vendor/gettext";
 import {computed, ref, watch} from "vue";
 import {forEach, map, partition} from "lodash";
-import {useAzuraCast, useAzuraCastStation} from "~/vendor/azuracast";
 import formatFileSize from "../../functions/formatFileSize";
 import InfoCard from "~/components/Common/InfoCard.vue";
-import {useLuxon} from "~/vendor/luxon";
 import {getStationApiUrl} from "~/router";
 import {useRoute, useRouter} from "vue-router";
 import {IconFile, IconFolder, IconImage} from "~/components/Common/icons";
 import {DataTableTemplateRef} from "~/functions/useHasDatatable.ts";
+import useStationDateTimeFormatter from "~/functions/useStationDateTimeFormatter.ts";
 
 const props = defineProps({
     initialPlaylists: {
@@ -300,9 +299,8 @@ const renameUrl = getStationApiUrl('/files/rename');
 const quotaUrl = getStationApiUrl('/quota/station_media');
 
 const {$gettext} = useTranslate();
-const {timeConfig} = useAzuraCast();
-const {timezone} = useAzuraCastStation();
-const {DateTime} = useLuxon();
+
+const {formatTimestampAsDateTime} = useStationDateTimeFormatter();
 
 const fields = computed<DataTableField[]>(() => {
     const fields: DataTableField[] = [
@@ -337,15 +335,7 @@ const fields = computed<DataTableField[]>(() => {
             key: 'timestamp',
             label: $gettext('Modified'),
             sortable: true,
-            formatter: (value) => {
-                if (!value) {
-                    return '';
-                }
-
-                return DateTime.fromSeconds(value).setZone(timezone).toLocaleString(
-                    {...DateTime.DATETIME_MED, ...timeConfig}
-                );
-            },
+            formatter: (value) => formatTimestampAsDateTime(value),
             selectable: true,
             visible: true
         },

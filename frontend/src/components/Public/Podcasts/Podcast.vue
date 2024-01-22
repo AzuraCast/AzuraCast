@@ -96,13 +96,13 @@
                         v-if="item.publish_at"
                         class="badge text-bg-secondary"
                     >
-                        {{ formatTime(item.publish_at) }}
+                        {{ formatTimestampAsDateTime(item.publish_at) }}
                     </span>
                     <span
                         v-else
                         class="badge text-bg-secondary"
                     >
-                        {{ formatTime(item.created_at) }}
+                        {{ formatTimestampAsDateTime(item.created_at) }}
                     </span>
                     <span
                         v-if="item.explicit"
@@ -141,8 +141,7 @@ import {useTranslate} from "~/vendor/gettext.ts";
 import {IconRss} from "~/components/Common/icons.ts";
 import Icon from "~/components/Common/Icon.vue";
 import PlayButton from "~/components/Common/PlayButton.vue";
-import {useLuxon} from "~/vendor/luxon.ts";
-import {useAzuraCast, useAzuraCastStation} from "~/vendor/azuracast.ts";
+import useStationDateTimeFormatter from "~/functions/useStationDateTimeFormatter.ts";
 
 const {params} = useRoute();
 
@@ -164,17 +163,5 @@ const fields: DataTableField[] = [
     {key: 'actions', label: $gettext('Actions'), sortable: false, class: 'shrink'}
 ];
 
-const {DateTime} = useLuxon();
-const {timezone} = useAzuraCastStation();
-const {timeConfig} = useAzuraCast();
-
-const formatTime = (value) => {
-    if (!value) {
-        return '';
-    }
-
-    return DateTime.fromSeconds(value).setZone(timezone).toLocaleString(
-        {...DateTime.DATETIME_MED, ...timeConfig}
-    );
-};
+const {formatTimestampAsDateTime} = useStationDateTimeFormatter();
 </script>

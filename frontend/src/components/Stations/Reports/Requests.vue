@@ -56,14 +56,14 @@
             :api-url="listUrlForType"
         >
             <template #cell(timestamp)="row">
-                {{ formatTime(row.item.timestamp) }}
+                {{ formatTimestampAsDateTime(row.item.timestamp) }}
             </template>
             <template #cell(played_at)="row">
                 <span v-if="row.item.played_at === 0">
                     {{ $gettext('Not Played') }}
                 </span>
                 <span v-else>
-                    {{ formatTime(row.item.played_at) }}
+                    {{ formatTimestampAsDateTime(row.item.played_at) }}
                 </span>
             </template>
             <template #cell(song_title)="row">
@@ -93,18 +93,17 @@
 </template>
 
 <script setup lang="ts">
-import DataTable, { DataTableField } from '~/components/Common/DataTable.vue';
+import DataTable, {DataTableField} from '~/components/Common/DataTable.vue';
 import Icon from "~/components/Common/Icon.vue";
-import {useAzuraCast, useAzuraCastStation} from "~/vendor/azuracast";
 import {computed, nextTick, ref} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import {useSweetAlert} from "~/vendor/sweetalert";
 import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
-import {useLuxon} from "~/vendor/luxon";
 import {getStationApiUrl} from "~/router";
 import {IconRemove} from "~/components/Common/icons";
 import {DataTableTemplateRef} from "~/functions/useHasDatatable.ts";
+import useStationDateTimeFormatter from "~/functions/useStationDateTimeFormatter.ts";
 
 const listUrl = getStationApiUrl('/reports/requests');
 const clearUrl = getStationApiUrl('/reports/requests/clear');
@@ -147,16 +146,7 @@ const setType = (type) => {
     nextTick(relist);
 };
 
-const {timeConfig} = useAzuraCast();
-const {timezone} = useAzuraCastStation();
-
-const {DateTime} = useLuxon();
-
-const formatTime = (time) => {
-    return DateTime.fromSeconds(time).setZone(timezone).toLocaleString(
-        {...DateTime.DATETIME_MED, ...timeConfig}
-    );
-};
+const {formatTimestampAsDateTime} = useStationDateTimeFormatter();
 
 const {confirmDelete} = useSweetAlert();
 const {notifySuccess} = useNotify();

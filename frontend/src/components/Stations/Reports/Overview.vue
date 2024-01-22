@@ -92,11 +92,10 @@ import StreamsTab from "./Overview/StreamsTab.vue";
 import ClientsTab from "./Overview/ClientsTab.vue";
 import ListeningTimeTab from "~/components/Stations/Reports/Overview/ListeningTimeTab.vue";
 import {ref} from "vue";
-import {useAzuraCastStation} from "~/vendor/azuracast";
-import {useLuxon} from "~/vendor/luxon";
 import {getStationApiUrl} from "~/router";
 import Tabs from "~/components/Common/Tabs.vue";
 import Tab from "~/components/Common/Tab.vue";
+import useStationDateTimeFormatter from "~/functions/useStationDateTimeFormatter.ts";
 
 const props = defineProps({
     showFullAnalytics: {
@@ -113,11 +112,9 @@ const byCountryUrl = getStationApiUrl('/reports/overview/by-country');
 const byClientUrl = getStationApiUrl('/reports/overview/by-client');
 const listeningTimeUrl = getStationApiUrl('/reports/overview/by-listening-time');
 
-const {timezone} = useAzuraCastStation();
-const {DateTime} = useLuxon();
+const {now} = useStationDateTimeFormatter();
 
-const nowTz = DateTime.now().setZone(timezone);
-
+const nowTz = now();
 const dateRange = ref({
     startDate: nowTz.minus({days: 13}).toJSDate(),
     endDate: nowTz.toJSDate(),

@@ -191,8 +191,6 @@ import DateRangeDropdown from "~/components/Common/DateRangeDropdown.vue";
 import {computed, ComputedRef, nextTick, onMounted, Ref, ref, ShallowRef, shallowRef, watch} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import {useAxios} from "~/vendor/axios";
-import {useAzuraCast, useAzuraCastStation} from "~/vendor/azuracast";
-import {useLuxon} from "~/vendor/luxon";
 import {getStationApiUrl} from "~/router";
 import {IconDesktopWindows, IconDownload, IconRouter, IconSmartphone} from "~/components/Common/icons";
 import useHasDatatable, {DataTableTemplateRef} from "~/functions/useHasDatatable";
@@ -201,6 +199,7 @@ import {filter} from "lodash";
 import formatTime from "~/functions/formatTime.ts";
 import ListenerFiltersBar from "./Listeners/FiltersBar.vue";
 import {ApiListener} from "~/entities/ApiInterfaces.ts";
+import useStationDateTimeFormatter from "~/functions/useStationDateTimeFormatter.ts";
 
 const props = defineProps({
     attribution: {
@@ -214,11 +213,13 @@ const apiUrl = getStationApiUrl('/listeners');
 const isLive = ref<boolean>(true);
 const listeners: ShallowRef<ApiListener[]> = shallowRef([]);
 
-const {timezone} = useAzuraCastStation();
-const {timeConfig} = useAzuraCast();
+const {
+    DateTime,
+    now,
+    formatTimestampAsDateTime
+} = useStationDateTimeFormatter();
 
-const {DateTime} = useLuxon();
-const nowTz = DateTime.now().setZone(timezone);
+const nowTz = now();
 
 const minDate = nowTz.minus({years: 5}).toJSDate();
 const maxDate = nowTz.plus({days: 5}).toJSDate();
@@ -266,14 +267,10 @@ const fields: DataTableField[] = [
         key: 'connected_on',
         label: $gettext('Start Time'),
         sortable: true,
-        formatter: (_col, _key, item) => {
-            return DateTime.fromSeconds(
-                item.connected_on,
-                {zone: timezone}
-            ).toLocaleString(
-                {...DateTime.DATETIME_SHORT, ...timeConfig}
-            );
-        },
+        formatter: (_col, _key, item) => formatTimestampAsDateTime(
+            item.connected_on,
+            DateTime.DATETIME_SHORT
+        ),
         selectable: true,
         visible: false
     },
@@ -281,14 +278,10 @@ const fields: DataTableField[] = [
         key: 'connected_until',
         label: $gettext('End Time'),
         sortable: true,
-        formatter: (_col, _key, item) => {
-            return DateTime.fromSeconds(
-                item.connected_until,
-                {zone: timezone}
-            ).toLocaleString(
-                {...DateTime.DATETIME_SHORT, ...timeConfig}
-            );
-        },
+        formatter: (_col, _key, item) => formatTimestampAsDateTime(
+            item.connected_until,
+            DateTime.DATETIME_SHORT
+        ),
         selectable: true,
         visible: false
     },

@@ -53,8 +53,8 @@
                 </div>
             </template>
             <template #cell(played_at)="row">
-                {{ formatTime(row.item.played_at) }}<br>
-                <small>{{ formatRelativeTime(row.item.played_at) }}</small>
+                {{ formatTimestampAsTime(row.item.played_at) }}<br>
+                <small>{{ formatTimestampAsRelative(row.item.played_at) }}</small>
             </template>
             <template #cell(source)="row">
                 <div v-if="row.item.is_request">
@@ -74,7 +74,6 @@
 import DataTable, {DataTableField} from '../Common/DataTable.vue';
 import QueueLogsModal from './Queue/LogsModal.vue';
 import Icon from "~/components/Common/Icon.vue";
-import {useAzuraCast, useAzuraCastStation} from "~/vendor/azuracast";
 import {useTranslate} from "~/vendor/gettext";
 import {computed, ref} from "vue";
 import useConfirmAndDelete from "~/functions/useConfirmAndDelete";
@@ -83,10 +82,10 @@ import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
 import {useSweetAlert} from "~/vendor/sweetalert";
 import CardPage from "~/components/Common/CardPage.vue";
-import {useLuxon} from "~/vendor/luxon";
 import {getStationApiUrl} from "~/router";
 import {IconRemove} from "~/components/Common/icons";
 import {useIntervalFn} from "@vueuse/core";
+import useStationDateTimeFormatter from "~/functions/useStationDateTimeFormatter.ts";
 
 const listUrl = getStationApiUrl('/queue');
 const clearUrl = getStationApiUrl('/queue/clear');
@@ -100,20 +99,10 @@ const fields: DataTableField[] = [
     {key: 'source', label: $gettext('Source'), sortable: false}
 ];
 
-const {timezone} = useAzuraCastStation();
-
-const {DateTime} = useLuxon();
-
-const getDateTime = (timestamp) =>
-    DateTime.fromSeconds(timestamp).setZone(timezone);
-
-const {timeConfig} = useAzuraCast();
-
-const formatTime = (time) => getDateTime(time).toLocaleString(
-    {...DateTime.TIME_WITH_SECONDS, ...timeConfig}
-);
-
-const formatRelativeTime = (time) => getDateTime(time).toRelative();
+const {
+    formatTimestampAsTime,
+    formatTimestampAsRelative
+} = useStationDateTimeFormatter();
 
 const $datatable = ref<DataTableTemplateRef>(null);
 const {relist} = useHasDatatable($datatable);

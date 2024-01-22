@@ -84,13 +84,13 @@
                             v-if="episode.publish_at"
                             class="badge text-bg-secondary"
                         >
-                            {{ formatTime(episode.publish_at) }}
+                            {{ formatTimestampAsDateTime(episode.publish_at) }}
                         </span>
                         <span
                             v-else
                             class="badge text-bg-secondary"
                         >
-                            {{ formatTime(episode.created_at) }}
+                            {{ formatTimestampAsDateTime(episode.created_at) }}
                         </span>
                         <span
                             v-if="episode.explicit"
@@ -123,8 +123,7 @@ import {useAxios} from "~/vendor/axios.ts";
 import useRefreshableAsyncState from "~/functions/useRefreshableAsyncState.ts";
 import AlbumArt from "~/components/Common/AlbumArt.vue";
 import PlayButton from "~/components/Common/PlayButton.vue";
-import {useLuxon} from "~/vendor/luxon.ts";
-import {useAzuraCast, useAzuraCastStation} from "~/vendor/azuracast.ts";
+import useStationDateTimeFormatter from "~/functions/useStationDateTimeFormatter.ts";
 
 const {params} = useRoute();
 
@@ -143,17 +142,5 @@ const {state: episode, isLoading: episodeLoading} = useRefreshableAsyncState(
     {},
 );
 
-const {DateTime} = useLuxon();
-const {timezone} = useAzuraCastStation();
-const {timeConfig} = useAzuraCast();
-
-const formatTime = (value) => {
-    if (!value) {
-        return '';
-    }
-
-    return DateTime.fromSeconds(value).setZone(timezone).toLocaleString(
-        {...DateTime.DATETIME_MED, ...timeConfig}
-    );
-};
+const {formatTimestampAsDateTime} = useStationDateTimeFormatter();
 </script>

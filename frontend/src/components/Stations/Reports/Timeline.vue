@@ -86,22 +86,20 @@
 
 <script setup lang="ts">
 import Icon from "~/components/Common/Icon.vue";
-import DataTable, { DataTableField } from "~/components/Common/DataTable.vue";
+import DataTable, {DataTableField} from "~/components/Common/DataTable.vue";
 import DateRangeDropdown from "~/components/Common/DateRangeDropdown.vue";
-import {useAzuraCast, useAzuraCastStation} from "~/vendor/azuracast";
+import {useAzuraCast} from "~/vendor/azuracast";
 import {computed, ref, watch} from "vue";
 import {useTranslate} from "~/vendor/gettext";
-import {useLuxon} from "~/vendor/luxon";
 import {getStationApiUrl} from "~/router";
 import {IconDownload, IconTrendingDown, IconTrendingUp} from "~/components/Common/icons";
 import useHasDatatable, {DataTableTemplateRef} from "~/functions/useHasDatatable.ts";
+import useStationDateTimeFormatter from "~/functions/useStationDateTimeFormatter.ts";
 
 const baseApiUrl = getStationApiUrl('/history');
 
-const {timezone} = useAzuraCastStation();
-const {DateTime} = useLuxon();
-
-const nowTz = DateTime.now().setZone(timezone);
+const {now} = useStationDateTimeFormatter();
+const nowTz = now();
 
 const dateRange = ref(
     {

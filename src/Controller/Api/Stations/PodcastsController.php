@@ -7,22 +7,17 @@ namespace App\Controller\Api\Stations;
 use App\Controller\Api\AbstractApiCrudController;
 use App\Controller\Api\Traits\CanSearchResults;
 use App\Entity\Api\Podcast as ApiPodcast;
-use App\Entity\Api\PodcastCategory as ApiPodcastCategory;
+use App\Entity\ApiGenerator\PodcastApiGenerator;
 use App\Entity\Podcast;
 use App\Entity\PodcastCategory;
 use App\Entity\Repository\PodcastRepository;
-use App\Enums\StationPermissions;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\OpenApi;
 use App\Service\Flow\UploadedFile;
-use App\Utilities\Strings;
-use App\Utilities\Types;
 use InvalidArgumentException;
 use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
-use Symfony\Component\Intl\Exception\MissingResourceException;
-use Symfony\Component\Intl\Languages;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -160,6 +155,7 @@ final class PodcastsController extends AbstractApiCrudController
 
     public function __construct(
         private readonly PodcastRepository $podcastRepository,
+        private readonly PodcastApiGenerator $podcastApiGen,
         Serializer $serializer,
         ValidatorInterface $validator,
     ) {
@@ -238,112 +234,55 @@ final class PodcastsController extends AbstractApiCrudController
             throw new InvalidArgumentException(sprintf('Record must be an instance of %s.', $this->entityClass));
         }
 
-        $isInternal = Types::bool($request->getParam('internal'), false, true);
+        $isInternal = $request->isInternal();
         $router = $request->getRouter();
-        $station = $request->getStation();
 
-        $return = new ApiPodcast();
-        $return->id = $record->getIdRequired();
-        $return->storage_location_id = $record->getStorageLocation()->getIdRequired();
+        $return = $this->podcastApiGen->__invoke($record, $request);
 
-        $return->title = $record->getTitle();
-        $return->link = $record->getLink();
-
-        $return->description = $record->getDescription();
-        $return->description_short = Strings::truncateText($return->description, 200);
-
-        $return->language = $record->getLanguage();
-        try {
-            $locale = $request->getCustomization()->getLocale();
-            $return->language_name = Languages::getName(
-                $return->language,
-                $locale->value
-            );
-        } catch (MissingResourceException) {
-        }
-
-        $return->author = $record->getAuthor();
-        $return->email = $record->getEmail();
-
-        $categories = [];
-        foreach ($record->getCategories() as $category) {
-            $categoryRow = new ApiPodcastCategory();
-            $categoryRow->category = $category->getCategory();
-            $categoryRow->title = $category->getTitle();
-            $categoryRow->subtitle = $category->getSubTitle();
-
-            $categoryRow->text = (!empty($categoryRow->subtitle))
-                ? $categoryRow->title . ' - ' . $categoryRow->subtitle
-                : $categoryRow->title;
-
-            $categories[] = $categoryRow;
-        }
-        $return->categories = $categories;
-
-        $episodes = [];
-        foreach ($record->getEpisodes() as $episode) {
-            $episodes[] = $episode->getId();
-        }
-        $return->episodes = $episodes;
-
-        $return->has_custom_art = (0 !== $record->getArtUpdatedAt());
-
-        $routeParams = [
-            'podcast_id' => $record->getId(),
+        $baseRouteParams = [
+            'station_id' => $request->getStation()->getIdRequired(),
+            'podcast_id' => $record->getIdRequired(),
         ];
-        if ($return->has_custom_art) {
-            $routeParams['timestamp'] = $record->getArtUpdatedAt();
+
+        $artRouteParams = $baseRouteParams;
+        if (0 !== $return->art_updated_at) {
+            $artRouteParams['timestamp'] = $return->art_updated_at;
         }
 
-        $return->art = $router->fromHere(
+        $return->art = $router->named(
             routeName: 'api:stations:podcast:art',
-            routeParams: $routeParams,
-            absolute: true
+            routeParams: $artRouteParams,
+            absolute: !$isInternal
         );
 
         $return->links = [
-            'self' => $router->fromHere(
+            ...$return->links,
+            'self' => $router->named(
                 routeName: $this->resourceRouteName,
-                routeParams: ['podcast_id' => $record->getId()],
+                routeParams: $baseRouteParams,
                 absolute: !$isInternal
             ),
-            'episodes' => $router->fromHere(
+            'art' => $router->named(
+                routeName: 'api:stations:podcast:art',
+                routeParams: $baseRouteParams,
+                absolute: !$isInternal
+            ),
+            'episodes' => $router->named(
                 routeName: 'api:stations:podcast:episodes',
-                routeParams: ['podcast_id' => $record->getId()],
+                routeParams: $baseRouteParams,
                 absolute: !$isInternal
             ),
-            'public_episodes' => $router->fromHere(
-                routeName: 'public:podcast',
-                routeParams: ['podcast_id' => $record->getId()],
+            'episode_new_art' => $router->named(
+                routeName: 'api:stations:podcast:episodes:new-art',
+                routeParams: $baseRouteParams,
                 absolute: !$isInternal
             ),
-            'public_feed' => $router->fromHere(
-                routeName: 'public:podcast:feed',
-                routeParams: ['podcast_id' => $record->getId()],
+            'episode_new_media' => $router->named(
+                routeName: 'api:stations:podcast:episodes:new-media',
+                routeParams: $baseRouteParams,
                 absolute: !$isInternal
             ),
         ];
-
-        $acl = $request->getAcl();
-
-        if ($acl->isAllowed(StationPermissions::Podcasts, $station)) {
-            $return->links['art'] = $router->fromHere(
-                routeName: 'api:stations:podcast:art-internal',
-                routeParams: ['podcast_id' => $record->getId()],
-                absolute: !$isInternal
-            );
-
-            $return->links['episode_new_art'] = $router->fromHere(
-                routeName: 'api:stations:podcast:episodes:new-art',
-                routeParams: ['podcast_id' => $record->getId()],
-                absolute: !$isInternal
-            );
-            $return->links['episode_new_media'] = $router->fromHere(
-                routeName: 'api:stations:podcast:episodes:new-media',
-                routeParams: ['podcast_id' => $record->getId()],
-                absolute: !$isInternal
-            );
-        }
 
         return $return;
     }

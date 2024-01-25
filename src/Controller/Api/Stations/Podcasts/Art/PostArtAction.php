@@ -6,9 +6,9 @@ namespace App\Controller\Api\Stations\Podcasts\Art;
 
 use App\Container\EntityManagerAwareTrait;
 use App\Controller\SingleActionInterface;
-use App\Entity\Api\Error;
 use App\Entity\Api\Status;
 use App\Entity\Repository\PodcastRepository;
+use App\Exception\InvalidRequestAttribute;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\OpenApi;
@@ -53,10 +53,13 @@ final class PostArtAction implements SingleActionInterface
         Response $response,
         array $params
     ): ResponseInterface {
-        /** @var string|null $podcastId */
-        $podcastId = $params['podcast_id'] ?? null;
-
         $station = $request->getStation();
+
+        try {
+            $podcast = $request->getPodcast();
+        } catch (InvalidRequestAttribute) {
+            $podcast = null;
+        }
 
         $mediaStorage = $station->getPodcastsStorageLocation();
         $mediaStorage->errorIfFull();
@@ -66,14 +69,7 @@ final class PostArtAction implements SingleActionInterface
             return $flowResponse;
         }
 
-        if (null !== $podcastId) {
-            $podcast = $this->podcastRepo->fetchPodcastForStation($station, $podcastId);
-
-            if (null === $podcast) {
-                return $response->withStatus(404)
-                    ->withJson(Error::notFound());
-            }
-
+        if (null !== $podcast) {
             $this->podcastRepo->writePodcastArt(
                 $podcast,
                 $flowResponse->readAndDeleteUploadedFile()

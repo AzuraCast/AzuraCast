@@ -33,42 +33,42 @@
             :fields="fields"
             :api-url="listUrl"
         >
-            <template #cell(art)="row">
-                <album-art :src="row.item.art" />
+            <template #cell(art)="{item}">
+                <album-art :src="item.art" />
             </template>
-            <template #cell(title)="row">
+            <template #cell(title)="{item}">
                 <h5 class="m-0">
-                    {{ row.item.title }}
+                    {{ item.title }}
                 </h5>
                 <a
-                    :href="row.item.links.public_episodes"
+                    :href="item.links.public_episodes"
                     target="_blank"
                 >{{ $gettext('Public Page') }}</a> &bull;
                 <a
-                    :href="row.item.links.public_feed"
+                    :href="item.links.public_feed"
                     target="_blank"
                 >{{ $gettext('RSS Feed') }}</a>
             </template>
-            <template #cell(actions)="row">
+            <template #cell(actions)="{item}">
                 <div class="btn-group btn-group-sm">
                     <button
                         type="button"
                         class="btn btn-primary"
-                        @click="doEdit(row.item.links.self)"
+                        @click="doEdit(item.links.self)"
                     >
                         {{ $gettext('Edit') }}
                     </button>
                     <button
                         type="button"
                         class="btn btn-danger"
-                        @click="doDelete(row.item.links.self)"
+                        @click="doDelete(item.links.self)"
                     >
                         {{ $gettext('Delete') }}
                     </button>
                     <button
                         type="button"
                         class="btn btn-secondary"
-                        @click="doSelectPodcast(row.item)"
+                        @click="doSelectPodcast(item)"
                     >
                         {{ $gettext('Episodes') }}
                     </button>
@@ -88,7 +88,7 @@
 </template>
 
 <script setup lang="ts">
-import DataTable, { DataTableField } from '~/components/Common/DataTable.vue';
+import DataTable, {DataTableField} from '~/components/Common/DataTable.vue';
 import EditModal from './PodcastEditModal.vue';
 import AlbumArt from '~/components/Common/AlbumArt.vue';
 import StationsCommonQuota from "~/components/Stations/Common/Quota.vue";

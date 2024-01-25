@@ -73,7 +73,7 @@ import {useTranslate} from "~/vendor/gettext.ts";
 import {IconRss} from "~/components/Common/icons.ts";
 import Icon from "~/components/Common/Icon.vue";
 
-const apiUrl = getStationApiUrl('/podcasts');
+const apiUrl = getStationApiUrl('/public/podcasts');
 
 const {$gettext} = useTranslate();
 

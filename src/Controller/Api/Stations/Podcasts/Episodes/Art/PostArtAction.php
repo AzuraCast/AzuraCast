@@ -13,6 +13,7 @@ use App\Http\Response;
 use App\Http\ServerRequest;
 use App\OpenApi;
 use App\Service\Flow;
+use App\Utilities\Types;
 use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 
@@ -60,8 +61,7 @@ final class PostArtAction implements SingleActionInterface
         Response $response,
         array $params
     ): ResponseInterface {
-        /** @var string|null $episodeId */
-        $episodeId = $params['episode_id'] ?? null;
+        $episodeId = Types::stringOrNull($params['episode_id'] ?? null, true);
 
         $station = $request->getStation();
 
@@ -71,7 +71,10 @@ final class PostArtAction implements SingleActionInterface
         }
 
         if (null !== $episodeId) {
-            $episode = $this->episodeRepo->fetchEpisodeForStation($station, $episodeId);
+            $episode = $this->episodeRepo->fetchEpisodeForPodcast(
+                $request->getPodcast(),
+                $episodeId
+            );
 
             if (null === $episode) {
                 return $response->withStatus(404)

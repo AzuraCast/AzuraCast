@@ -7,22 +7,16 @@ namespace App\Controller\Api\Stations;
 use App\Controller\Api\AbstractApiCrudController;
 use App\Controller\Api\Traits\CanSearchResults;
 use App\Entity\Api\PodcastEpisode as ApiPodcastEpisode;
-use App\Entity\Api\PodcastMedia as ApiPodcastMedia;
+use App\Entity\ApiGenerator\PodcastEpisodeApiGenerator;
 use App\Entity\PodcastEpisode;
-use App\Entity\PodcastMedia;
 use App\Entity\Repository\PodcastEpisodeRepository;
-use App\Entity\Repository\PodcastRepository;
-use App\Enums\StationPermissions;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\OpenApi;
 use App\Service\Flow\UploadedFile;
-use App\Utilities\Strings;
-use App\Utilities\Types;
 use InvalidArgumentException;
 use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
-use RuntimeException;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -194,8 +188,8 @@ final class PodcastEpisodesController extends AbstractApiCrudController
     protected string $resourceRouteName = 'api:stations:podcast:episode';
 
     public function __construct(
-        private readonly PodcastRepository $podcastRepository,
         private readonly PodcastEpisodeRepository $episodeRepository,
+        private readonly PodcastEpisodeApiGenerator $episodeApiGen,
         Serializer $serializer,
         ValidatorInterface $validator,
     ) {
@@ -207,12 +201,7 @@ final class PodcastEpisodesController extends AbstractApiCrudController
         Response $response,
         array $params
     ): ResponseInterface {
-        /** @var string $podcastId */
-        $podcastId = $params['podcast_id'];
-
-        $station = $request->getStation();
-
-        $podcast = $this->podcastRepository->fetchPodcastForStation($station, $podcastId);
+        $podcast = $request->getPodcast();
 
         $queryBuilder = $this->em->createQueryBuilder()
             ->select('e, p, pm')
@@ -222,15 +211,6 @@ final class PodcastEpisodesController extends AbstractApiCrudController
             ->where('e.podcast = :podcast')
             ->orderBy('e.created_at', 'DESC')
             ->setParameter('podcast', $podcast);
-
-        $acl = $request->getAcl();
-        if (!$acl->isAllowed(StationPermissions::Podcasts, $station)) {
-            $queryBuilder = $queryBuilder
-                ->andWhere('e.publish_at IS NULL OR e.publish_at <= :publishTime')
-                ->setParameter('publishTime', time())
-                ->andWhere('pm.id IS NOT NULL')
-                ->orderBy('e.publish_at', 'DESC');
-        }
 
         $queryBuilder = $this->searchQueryBuilder(
             $request,
@@ -251,8 +231,8 @@ final class PodcastEpisodesController extends AbstractApiCrudController
         /** @var string $id */
         $id = $params['episode_id'];
 
-        return $this->episodeRepository->fetchEpisodeForStation(
-            $request->getStation(),
+        return $this->episodeRepository->fetchEpisodeForPodcast(
+            $request->getPodcast(),
             $id
         );
     }
@@ -260,17 +240,7 @@ final class PodcastEpisodesController extends AbstractApiCrudController
     protected function createRecord(ServerRequest $request, array $data): object
     {
         $station = $request->getStation();
-
-        $podcastId = $request->getAttribute('podcast_id');
-
-        $podcast = $this->podcastRepository->fetchPodcastForStation(
-            $station,
-            $podcastId
-        );
-
-        if (null === $podcast) {
-            throw new RuntimeException('Podcast not found.');
-        }
+        $podcast = $request->getPodcast();
 
         $record = $this->editRecord(
             $data,
@@ -315,86 +285,46 @@ final class PodcastEpisodesController extends AbstractApiCrudController
             throw new InvalidArgumentException(sprintf('Record must be an instance of %s.', $this->entityClass));
         }
 
-        $isInternal = Types::bool($request->getParam('internal'), false, true);
+        $isInternal = $request->isInternal();
         $router = $request->getRouter();
 
-        $return = new ApiPodcastEpisode();
-        $return->id = $record->getIdRequired();
-        $return->title = $record->getTitle();
+        $return = $this->episodeApiGen->__invoke($record, $request);
 
-        $return->description = $record->getDescription();
-        $return->description_short = Strings::truncateText($return->description, 100);
-
-        $return->explicit = $record->getExplicit();
-        $return->created_at = $record->getCreatedAt();
-        $return->publish_at = $record->getPublishAt();
-
-        $mediaRow = $record->getMedia();
-        $return->has_media = ($mediaRow instanceof PodcastMedia);
-        if ($mediaRow instanceof PodcastMedia) {
-            $media = new ApiPodcastMedia();
-            $media->id = $mediaRow->getId();
-            $media->original_name = $mediaRow->getOriginalName();
-            $media->length = $mediaRow->getLength();
-            $media->length_text = $mediaRow->getLengthText();
-            $media->path = $mediaRow->getPath();
-
-            $return->has_media = true;
-            $return->media = $media;
-        } else {
-            $return->has_media = false;
-            $return->media = new ApiPodcastMedia();
-        }
-
-        $return->art_updated_at = $record->getArtUpdatedAt();
-        $return->has_custom_art = (0 !== $return->art_updated_at);
-
-        $routeParams = [
-            'episode_id' => $record->getId(),
+        $baseRouteParams = [
+            'station_id' => $request->getStation()->getIdRequired(),
+            'podcast_id' => $record->getPodcast()->getIdRequired(),
+            'episode_id' => $record->getIdRequired(),
         ];
-        if ($return->has_custom_art) {
-            $routeParams['timestamp'] = $return->art_updated_at;
+
+        $artRouteParams = $baseRouteParams;
+        if (0 !== $return->art_updated_at) {
+            $artRouteParams['timestamp'] = $return->art_updated_at;
         }
 
-        $return->art = $router->fromHere(
+        $return->art = $router->named(
             routeName: 'api:stations:podcast:episode:art',
-            routeParams: $routeParams,
-            absolute: true
+            routeParams: $artRouteParams,
+            absolute: !$isInternal
         );
 
         $return->links = [
+            ...$return->links,
             'self' => $router->fromHere(
                 routeName: $this->resourceRouteName,
-                routeParams: ['episode_id' => $record->getId()],
+                routeParams: $baseRouteParams,
                 absolute: !$isInternal
             ),
-            'public' => $router->fromHere(
-                routeName: 'public:podcast:episode',
-                routeParams: ['episode_id' => $record->getId()],
+            'art' => $router->named(
+                routeName: 'api:stations:podcast:episode:art',
+                routeParams: $baseRouteParams,
                 absolute: !$isInternal
             ),
-            'download' => $router->fromHere(
-                routeName: 'api:stations:podcast:episode:download',
-                routeParams: ['episode_id' => $record->getId()],
+            'media' => $router->fromHere(
+                routeName: 'api:stations:podcast:episode:media',
+                routeParams: $baseRouteParams,
                 absolute: !$isInternal
             ),
         ];
-
-        $acl = $request->getAcl();
-        $station = $request->getStation();
-
-        if ($acl->isAllowed(StationPermissions::Podcasts, $station)) {
-            $return->links['art'] = $router->fromHere(
-                routeName: 'api:stations:podcast:episode:art-internal',
-                routeParams: ['episode_id' => $record->getId()],
-                absolute: !$isInternal
-            );
-            $return->links['media'] = $router->fromHere(
-                routeName: 'api:stations:podcast:episode:media-internal',
-                routeParams: ['episode_id' => $record->getId()],
-                absolute: !$isInternal
-            );
-        }
 
         return $return;
     }

@@ -12,7 +12,7 @@ final class NotFoundException extends Exception
 {
     public function __construct(
         string $message = 'Record not found.',
-        int $code = 0,
+        int $code = 404,
         Throwable $previous = null,
         Level $loggerLevel = Level::Debug
     ) {

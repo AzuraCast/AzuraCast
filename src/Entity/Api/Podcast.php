@@ -62,10 +62,4 @@ final class Podcast
         items: new OA\Items(type: PodcastCategory::class)
     )]
     public array $categories = [];
-
-    #[OA\Property(
-        type: 'array',
-        items: new OA\Items(type: 'string')
-    )]
-    public array $episodes = [];
 }

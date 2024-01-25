@@ -145,7 +145,7 @@ import useStationDateTimeFormatter from "~/functions/useStationDateTimeFormatter
 
 const {params} = useRoute();
 
-const podcastUrl = getStationApiUrl(`/podcast/${params.podcast_id}`);
+const podcastUrl = getStationApiUrl(`/public/podcast/${params.podcast_id}`);
 
 const {axios} = useAxios();
 const {state: podcast, isLoading} = useRefreshableAsyncState(
@@ -153,7 +153,7 @@ const {state: podcast, isLoading} = useRefreshableAsyncState(
     {},
 );
 
-const episodesUrl = getStationApiUrl(`/podcast/${params.podcast_id}/episodes`);
+const episodesUrl = getStationApiUrl(`/public/podcast/${params.podcast_id}/episodes`);
 
 const {$gettext} = useTranslate();
 const fields: DataTableField[] = [

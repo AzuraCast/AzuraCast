@@ -17,9 +17,8 @@
 
             <podcast-common-artwork
                 v-model="form.artwork_file"
-                :artwork-src="record.art"
+                :artwork-src="record.links.art"
                 :new-art-url="newArtUrl"
-                :edit-art-url="record.links.art"
             />
         </tabs>
     </modal-form>
@@ -35,6 +34,7 @@ import {useResettableRef} from "~/functions/useResettableRef";
 import {useTranslate} from "~/vendor/gettext";
 import ModalForm from "~/components/Common/ModalForm.vue";
 import Tabs from "~/components/Common/Tabs.vue";
+import {map} from "lodash";
 
 const props = defineProps({
     ...baseEditModalProps,
@@ -59,7 +59,9 @@ const $modal = ref<ModalFormTemplateRef>(null);
 const {record, reset} = useResettableRef({
     has_custom_art: false,
     art: null,
-    links: {}
+    links: {
+        art: null
+    }
 });
 
 const {
@@ -87,6 +89,11 @@ const {
             reset();
         },
         populateForm: (data, formRef) => {
+            data.categories = map(
+                data.categories,
+                (row) => row.category
+            );
+
             record.value = data;
             formRef.value = mergeExisting(formRef.value, data);
         },

@@ -127,8 +127,8 @@ import useStationDateTimeFormatter from "~/functions/useStationDateTimeFormatter
 
 const {params} = useRoute();
 
-const podcastUrl = getStationApiUrl(`/podcast/${params.podcast_id}`);
-const episodeUrl = getStationApiUrl(`/podcast/${params.podcast_id}/episode/${params.episode_id}`);
+const podcastUrl = getStationApiUrl(`/public/podcast/${params.podcast_id}`);
+const episodeUrl = getStationApiUrl(`/public/podcast/${params.podcast_id}/episode/${params.episode_id}`);
 
 const {axios} = useAxios();
 

@@ -12,6 +12,7 @@ use App\Flysystem\StationFilesystems;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\OpenApi;
+use App\Utilities\Types;
 use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 
@@ -61,12 +62,9 @@ final class GetArtAction implements SingleActionInterface
         Response $response,
         array $params
     ): ResponseInterface {
-        /** @var string $podcastId */
-        $podcastId = $params['podcast_id'];
+        $episodeId = Types::string($params['episode_id'] ?? null);
 
-        /** @var string $episodeId */
-        $episodeId = $params['episode_id'];
-
+        $podcast = $request->getPodcast();
         $station = $request->getStation();
 
         $episodeArtPath = PodcastEpisode::getArtPath($episodeId);
@@ -76,8 +74,7 @@ final class GetArtAction implements SingleActionInterface
             return $response->streamFilesystemFile($fsPodcasts, $episodeArtPath, null, 'inline', false);
         }
 
-        $podcastArtPath = Podcast::getArtPath($podcastId);
-
+        $podcastArtPath = Podcast::getArtPath($podcast->getIdRequired());
         if ($fsPodcasts->fileExists($podcastArtPath)) {
             return $response->streamFilesystemFile($fsPodcasts, $podcastArtPath, null, 'inline', false);
         }

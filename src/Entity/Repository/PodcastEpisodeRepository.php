@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Entity\Repository;
 
 use App\Doctrine\Repository;
+use App\Entity\Podcast;
 use App\Entity\PodcastEpisode;
 use App\Entity\PodcastMedia;
 use App\Entity\Station;
@@ -28,6 +29,14 @@ final class PodcastEpisodeRepository extends Repository
         private readonly MetadataManager $metadataManager,
         private readonly StorageLocationRepository $storageLocationRepo,
     ) {
+    }
+
+    public function fetchEpisodeForPodcast(Podcast $podcast, string $episodeId): ?PodcastEpisode
+    {
+        return $this->repository->findOneBy([
+            'id' => $episodeId,
+            'podcast' => $podcast,
+        ]);
     }
 
     public function fetchEpisodeForStation(Station $station, string $episodeId): ?PodcastEpisode

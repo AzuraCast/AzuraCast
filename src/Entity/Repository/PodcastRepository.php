@@ -7,7 +7,6 @@ namespace App\Entity\Repository;
 use App\Doctrine\Repository;
 use App\Entity\Podcast;
 use App\Entity\Station;
-use App\Entity\StorageLocation;
 use App\Exception\StorageLocationFullException;
 use App\Flysystem\ExtendedFilesystemInterface;
 use App\Media\AlbumArt;
@@ -29,19 +28,32 @@ final class PodcastRepository extends Repository
 
     public function fetchPodcastForStation(Station $station, string $podcastId): ?Podcast
     {
-        return $this->fetchPodcastForStorageLocation($station->getPodcastsStorageLocation(), $podcastId);
-    }
-
-    public function fetchPodcastForStorageLocation(
-        StorageLocation $storageLocation,
-        string $podcastId
-    ): ?Podcast {
         return $this->repository->findOneBy(
             [
                 'id' => $podcastId,
-                'storage_location' => $storageLocation,
+                'storage_location' => $station->getPodcastsStorageLocation(),
             ]
         );
+    }
+
+    /**
+     * @param Station $station
+     * @return string[]
+     */
+    public function getPodcastIdsWithPublishedEpisodes(Station $station): array
+    {
+        return $this->em->createQuery(
+            <<<'DQL'
+            SELECT DISTINCT p.id
+            FROM App\Entity\PodcastEpisode pe
+            JOIN pe.podcast p
+            JOIN pe.media pm
+            WHERE pm.id IS NOT NULL
+            AND (pe.publish_at IS NULL OR pe.publish_at <= :time)
+            DQL
+        )->setParameter('time', time())
+            ->enableResultCache(60, 'podcast_ids_' . $station->getIdRequired())
+            ->getSingleColumnResult();
     }
 
     public function writePodcastArt(

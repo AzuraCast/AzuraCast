@@ -13,6 +13,7 @@ use App\Flysystem\StationFilesystems;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\OpenApi;
+use App\Utilities\Types;
 use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 
@@ -64,11 +65,13 @@ final class GetMediaAction implements SingleActionInterface
     ): ResponseInterface {
         set_time_limit(600);
 
-        /** @var string $episodeId */
-        $episodeId = $params['episode_id'];
+        $episodeId = Types::string($params['episode_id'] ?? null);
 
         $station = $request->getStation();
-        $episode = $this->episodeRepo->fetchEpisodeForStation($station, $episodeId);
+        $episode = $this->episodeRepo->fetchEpisodeForPodcast(
+            $request->getPodcast(),
+            $episodeId
+        );
 
         if ($episode instanceof PodcastEpisode) {
             $podcastMedia = $episode->getMedia();

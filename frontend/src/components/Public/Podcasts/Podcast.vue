@@ -1,69 +1,72 @@
 <template>
-    <loading
-        :loading="isLoading"
-        lazy
-    >
-        <div class="card-body">
-            <div class="d-flex">
-                <div class="flex-fill">
-                    <nav aria-label="breadcrumb">
-                        <ol class="breadcrumb">
-                            <li class="breadcrumb-item">
-                                <router-link :to="{name: 'public:podcasts'}">
-                                    {{ $gettext('Podcasts') }}
-                                </router-link>
-                            </li>
-                            <li class="breadcrumb-item">
-                                {{ podcast.title }}
-                            </li>
-                        </ol>
-                    </nav>
+    <div class="full-height-scrollable">
+        <loading
+            :loading="isLoading"
+            lazy
+        >
+            <div class="card-body">
+                <div class="d-flex">
+                    <div class="flex-fill">
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item">
+                                    <router-link :to="{name: 'public:podcasts'}">
+                                        {{ $gettext('Podcasts') }}
+                                    </router-link>
+                                </li>
+                                <li class="breadcrumb-item">
+                                    {{ podcast.title }}
+                                </li>
+                            </ol>
+                        </nav>
 
-                    <h4 class="card-title mb-1">
-                        {{ podcast.title }}
-                        <br>
-                        <small>
-                            {{ $gettext('by') }} <a
-                                :href="'mailto:'+podcast.email"
+                        <h4 class="card-title mb-1">
+                            {{ podcast.title }}
+                            <br>
+                            <small>
+                                {{ $gettext('by') }} <a
+                                    :href="'mailto:'+podcast.email"
+                                    target="_blank"
+                                >{{ podcast.author }}</a>
+                            </small>
+                        </h4>
+
+                        <div class="badges my-2">
+                            <span class="badge text-bg-info">
+                                {{ podcast.language_name }}
+                            </span>
+                            <span
+                                v-for="category in podcast.categories"
+                                :key="category.category"
+                                class="badge text-bg-secondary"
+                            >
+                                {{ category.text }}
+                            </span>
+                        </div>
+                        <p class="card-text">
+                            {{ podcast.description }}
+                        </p>
+                        <div class="buttons">
+                            <a
+                                class="btn btn-warning btn-sm"
+                                :href="podcast.links.public_feed"
                                 target="_blank"
-                            >{{ podcast.author }}</a>
-                        </small>
-                    </h4>
-
-                    <div class="badges my-2">
-                        <span class="badge text-bg-info">
-                            {{ podcast.language_name }}
-                        </span>
-                        <span
-                            v-for="category in podcast.categories"
-                            :key="category.category"
-                            class="badge text-bg-secondary"
-                        >
-                            {{ category.text }}
-                        </span>
+                            >
+                                <icon :icon="IconRss" />
+                                {{ $gettext('RSS') }}
+                            </a>
+                        </div>
                     </div>
-                    <p class="card-text">
-                        {{ podcast.description }}
-                    </p>
-                    <div class="buttons">
-                        <a
-                            class="btn btn-warning btn-sm"
-                            :href="podcast.links.public_feed"
-                            target="_blank"
-                        >
-                            <icon :icon="IconRss" />
-                            {{ $gettext('RSS') }}
-                        </a>
+                    <div class="flex-shrink ps-3">
+                        <album-art
+                            :src="podcast.art"
+                            :width="128"
+                        />
                     </div>
-                </div>
-                <div class="flex-shrink ps-3">
-                    <album-art
-                        :src="podcast.art"
-                        :width="128"
-                    />
                 </div>
             </div>
-        </div>
+        </loading>
+
         <data-table
             id="podcast-episodes"
             ref="$datatable"
@@ -126,7 +129,7 @@
                 </div>
             </template>
         </data-table>
-    </loading>
+    </div>
 </template>
 
 <script setup lang="ts">

@@ -1,7 +1,7 @@
 <template>
     <div
         :id="id"
-        style="display: contents"
+        class="datatable-wrapper"
     >
         <div
             v-if="showToolbar"

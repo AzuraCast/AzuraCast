@@ -14,7 +14,7 @@ final class CannotProcessMediaException extends Exception
 
     public function __construct(
         string $message = 'Cannot process media file.',
-        int $code = 0,
+        int $code = 500,
         Throwable $previous = null,
         Level $loggerLevel = Level::Warning
     ) {

@@ -12,7 +12,7 @@ final class InvalidRequestAttribute extends Exception
 {
     public function __construct(
         string $message = 'Invalid request attribute.',
-        int $code = 0,
+        int $code = 500,
         Throwable $previous = null,
         Level $loggerLevel = Level::Info
     ) {

@@ -42,7 +42,7 @@ final class ListenerAuthAction implements SingleActionInterface
                     ]
                 );
 
-                throw new PermissionDeniedException();
+                throw PermissionDeniedException::create();
             }
         }
 

@@ -22,7 +22,7 @@ class Frontend_PublicCest extends CestAbstract
         $this->em->flush();
 
         $I->amOnPage('/public/' . $testStation->getId());
-        $I->seeResponseCodeIs(500);
+        $I->seeResponseCodeIs(404);
 
         // Enable public pages
         $testStation = $this->getTestStation();

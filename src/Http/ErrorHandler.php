@@ -68,6 +68,19 @@ final class ErrorHandler extends SlimErrorHandler
         return parent::__invoke($request, $exception, $displayErrorDetails, $logErrors, $logErrorDetails);
     }
 
+    protected function determineStatusCode(): int
+    {
+        if ($this->method === 'OPTIONS') {
+            return 200;
+        }
+
+        if ($this->exception instanceof Exception || $this->exception instanceof HttpException) {
+            return $this->exception->getCode();
+        }
+
+        return 500;
+    }
+
     private function shouldReturnJson(ServerRequestInterface $req): bool
     {
         $xhr = $req->getHeaderLine('X-Requested-With') === 'XMLHttpRequest';
@@ -120,12 +133,13 @@ final class ErrorHandler extends SlimErrorHandler
             return parent::respond();
         }
 
+        /** @var Response $response */
+        $response = $this->responseFactory->createResponse($this->statusCode);
+
         // Special handling for cURL requests.
         $ua = $this->request->getHeaderLine('User-Agent');
 
         if (false !== stripos($ua, 'curl') || false !== stripos($ua, 'Liquidsoap')) {
-            $response = $this->responseFactory->createResponse($this->statusCode);
-
             $response->getBody()->write(
                 sprintf(
                     'Error: %s on %s L%s',
@@ -138,42 +152,12 @@ final class ErrorHandler extends SlimErrorHandler
             return $response;
         }
 
-        if ($this->exception instanceof HttpException) {
-            /** @var Response $response */
-            $response = $this->responseFactory->createResponse($this->exception->getCode());
-
-            if ($this->returnJson) {
-                $apiResponse = Error::fromException($this->exception, $this->showDetailed);
-                return $response->withJson($apiResponse);
-            }
-
-            $view = $this->view->withRequest($this->request);
-
-            try {
-                return $view->renderToResponse(
-                    $response,
-                    'system/error_http',
-                    [
-                        'exception' => $this->exception,
-                    ]
-                );
-            } catch (Throwable) {
-                return parent::respond();
-            }
+        if ($this->returnJson) {
+            $apiResponse = Error::fromException($this->exception, $this->showDetailed);
+            return $response->withJson($apiResponse);
         }
 
         if ($this->exception instanceof NotLoggedInException) {
-            /** @var Response $response */
-            $response = $this->responseFactory->createResponse(403);
-
-            if ($this->returnJson) {
-                $error = Error::fromException($this->exception);
-                $error->code = 403;
-                $error->message = __('You must be logged in to access this page.');
-
-                return $response->withJson($error);
-            }
-
             // Redirect to login page for not-logged-in users.
             $sessionPersistence = $this->injectSession->getSessionPersistence($this->request);
 
@@ -181,52 +165,31 @@ final class ErrorHandler extends SlimErrorHandler
             $session = $sessionPersistence->initializeSessionFromRequest($this->request);
 
             $flash = new Flash($session);
-            $flash->error(__('You must be logged in to access this page.'));
+            $flash->error($this->exception->getMessage());
 
             // Set referrer for login redirection.
             $session->set('login_referrer', $this->request->getUri()->getPath());
 
+            /** @var Response $response */
             $response = $sessionPersistence->persistSession($session, $response);
 
-            /** @var Response $response */
             return $response->withRedirect($this->router->named('account:login'));
         }
 
         if ($this->exception instanceof PermissionDeniedException) {
-            /** @var Response $response */
-            $response = $this->responseFactory->createResponse(403);
-
-            if ($this->returnJson) {
-                $error = Error::fromException($this->exception);
-                $error->code = 403;
-                $error->message = __('You do not have permission to access this portion of the site.');
-
-                return $response->withJson($error);
-            }
-
             $sessionPersistence = $this->injectSession->getSessionPersistence($this->request);
 
             /** @var Session $session */
             $session = $sessionPersistence->initializeSessionFromRequest($this->request);
 
             $flash = new Flash($session);
-            $flash->error(
-                __('You do not have permission to access this portion of the site.'),
-            );
+            $flash->error($this->exception->getMessage());
 
+            /** @var Response $response */
             $response = $sessionPersistence->persistSession($session, $response);
 
             // Bounce back to homepage for permission-denied users.
-            /** @var Response $response */
             return $response->withRedirect($this->router->named('home'));
-        }
-
-        /** @var Response $response */
-        $response = $this->responseFactory->createResponse(500);
-
-        if ($this->returnJson) {
-            $apiResponse = Error::fromException($this->exception, $this->showDetailed);
-            return $response->withJson($apiResponse);
         }
 
         if ($this->showDetailed && class_exists(Run::class)) {
@@ -246,12 +209,14 @@ final class ErrorHandler extends SlimErrorHandler
             return $response->write($run->handleException($this->exception));
         }
 
-        $view = $this->view->withRequest($this->request);
-
         try {
+            $view = $this->view->withRequest($this->request);
+
             return $view->renderToResponse(
                 $response,
-                'system/error_general',
+                ($this->exception instanceof HttpException)
+                    ? 'system/error_http'
+                    : 'system/error_general',
                 [
                     'exception' => $this->exception,
                 ]

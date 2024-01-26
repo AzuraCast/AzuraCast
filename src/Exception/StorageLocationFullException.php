@@ -12,7 +12,7 @@ final class StorageLocationFullException extends Exception
 {
     public function __construct(
         string $message = 'Storage location is full.',
-        int $code = 0,
+        int $code = 500,
         Throwable $previous = null,
         Level $loggerLevel = Level::Info
     ) {

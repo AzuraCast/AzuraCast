@@ -33,12 +33,12 @@ final class Permissions extends AbstractMiddleware
         try {
             $user = $request->getUser();
         } catch (Exception) {
-            throw new PermissionDeniedException();
+            throw PermissionDeniedException::create();
         }
 
         $acl = $request->getAcl();
         if (!$acl->userAllowed($user, $this->action, $stationId)) {
-            throw new PermissionDeniedException();
+            throw PermissionDeniedException::create();
         }
 
         return $handler->handle($request);

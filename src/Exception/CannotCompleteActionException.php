@@ -12,7 +12,7 @@ final class CannotCompleteActionException extends Exception
 {
     public function __construct(
         string $message = 'Cannot complete action.',
-        int $code = 0,
+        int $code = 500,
         Throwable $previous = null,
         Level $loggerLevel = Level::Info
     ) {

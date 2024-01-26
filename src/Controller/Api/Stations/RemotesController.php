@@ -218,7 +218,7 @@ final class RemotesController extends AbstractStationApiCrudController
         $record = parent::getRecord($request, $params);
 
         if ($record instanceof StationRemote && !$record->isEditable()) {
-            throw new PermissionDeniedException('This record cannot be edited.');
+            throw PermissionDeniedException::create();
         }
 
         return $record;

@@ -239,7 +239,7 @@ final class Auth
         $user = $this->getUser();
 
         if (!($user instanceof User)) {
-            throw new NotLoggedInException();
+            throw NotLoggedInException::create();
         }
 
         if ($user->verifyTwoFactor($otp)) {

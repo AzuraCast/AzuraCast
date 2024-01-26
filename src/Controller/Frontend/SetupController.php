@@ -220,7 +220,7 @@ final class SetupController
         // If past "register" step, require login.
         $auth = $request->getAuth();
         if (!$auth->isLoggedIn()) {
-            throw new NotLoggedInException();
+            throw NotLoggedInException::create();
         }
 
         // Step 2: Set up Station

@@ -18,7 +18,7 @@ echo "deb-src [signed-by=/etc/apt/keyrings/sftpgo.gpg] https://ppa.launchpadcont
 apt-get update
 
 apt-get install -y --no-install-recommends \
-  audiowaveform=1.9.1-1jammy1 \
+  audiowaveform=1.10.1-1jammy1 \
   nginx-light openssl \
   tmpreaper \
   zstd \

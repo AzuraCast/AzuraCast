@@ -34,6 +34,9 @@ final class PodcastEpisode
     public int $created_at;
 
     #[OA\Property]
+    public bool $is_published = true;
+
+    #[OA\Property]
     public ?int $publish_at = null;
 
     #[OA\Property]

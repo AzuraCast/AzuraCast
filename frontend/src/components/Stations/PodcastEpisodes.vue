@@ -30,16 +30,14 @@
         </div>
 
         <div class="card-body buttons">
-            <button
-                type="button"
+            <router-link
                 class="btn btn-secondary"
-                @click="doClearPodcast()"
+                :to="{name: 'stations:podcasts:index'}"
             >
                 <icon :icon="IconChevronLeft" />
-                <span>
-                    {{ $gettext('All Podcasts') }}
-                </span>
-            </button>
+                {{ $gettext('All Podcasts') }}
+            </router-link>
+
             <add-button
                 :text="$gettext('Add Episode')"
                 @click="doCreate"
@@ -53,45 +51,55 @@
             :fields="fields"
             :api-url="podcast.links.episodes"
         >
-            <template #cell(art)="row">
-                <album-art :src="row.item.art" />
+            <template #cell(art)="{item}">
+                <album-art :src="item.art" />
             </template>
-            <template #cell(title)="row">
+            <template #cell(title)="{item}">
                 <h5 class="m-0">
-                    {{ row.item.title }}
+                    {{ item.title }}
                 </h5>
-                <a
-                    :href="row.item.links.public"
-                    target="_blank"
-                >{{ $gettext('Public Page') }}</a>
+                <div v-if="item.is_published">
+                    <a
+                        :href="item.links.public"
+                        target="_blank"
+                    >{{ $gettext('Public Page') }}</a>
+                </div>
+                <div
+                    v-else
+                    class="badges"
+                >
+                    <span class="badge text-bg-info">
+                        {{ $gettext('Unpublished') }}
+                    </span>
+                </div>
             </template>
-            <template #cell(podcast_media)="row">
-                <template v-if="row.item.media">
-                    <span>{{ row.item.media.original_name }}</span>
+            <template #cell(podcast_media)="{item}">
+                <template v-if="item.media">
+                    <span>{{ item.media.original_name }}</span>
                     <br>
-                    <small>{{ row.item.media.length_text }}</small>
+                    <small>{{ item.media.length_text }}</small>
                 </template>
             </template>
-            <template #cell(explicit)="row">
+            <template #cell(explicit)="{item}">
                 <span
-                    v-if="row.item.explicit"
+                    v-if="item.explicit"
                     class="badge text-bg-danger"
                 >{{ $gettext('Explicit') }}</span>
                 <span v-else>&nbsp;</span>
             </template>
-            <template #cell(actions)="row">
+            <template #cell(actions)="{item}">
                 <div class="btn-group btn-group-sm">
                     <button
                         type="button"
                         class="btn btn-primary"
-                        @click="doEdit(row.item.links.self)"
+                        @click="doEdit(item.links.self)"
                     >
                         {{ $gettext('Edit') }}
                     </button>
                     <button
                         type="button"
                         class="btn btn-danger"
-                        @click="doDelete(row.item.links.self)"
+                        @click="doDelete(item.links.self)"
                     >
                         {{ $gettext('Delete') }}
                     </button>
@@ -111,32 +119,25 @@
 </template>
 
 <script setup lang="ts">
-import DataTable, { DataTableField } from '~/components/Common/DataTable.vue';
-import EditModal from './EpisodeEditModal.vue';
+import DataTable, {DataTableField} from '~/components/Common/DataTable.vue';
+import EditModal from './Podcasts/EpisodeEditModal.vue';
 import Icon from '~/components/Common/Icon.vue';
 import AlbumArt from '~/components/Common/AlbumArt.vue';
 import StationsCommonQuota from "~/components/Stations/Common/Quota.vue";
 import {useTranslate} from "~/vendor/gettext";
 import {ref} from "vue";
-import {useSweetAlert} from "~/vendor/sweetalert";
-import {useNotify} from "~/functions/useNotify";
-import {useAxios} from "~/vendor/axios";
 import AddButton from "~/components/Common/AddButton.vue";
 import {IconChevronLeft} from "~/components/Common/icons";
 import {DataTableTemplateRef} from "~/functions/useHasDatatable.ts";
+import {getStationApiUrl} from "~/router.ts";
+import useConfirmAndDelete from "~/functions/useConfirmAndDelete.ts";
+import {ApiPodcast} from "~/entities/ApiInterfaces.ts";
 
-const props = defineProps({
-    quotaUrl: {
-        type: String,
-        required: true
-    },
-    podcast: {
-        type: Object,
-        required: true
-    }
-});
+const props = defineProps<{
+    podcast: ApiPodcast
+}>();
 
-const emit = defineEmits(['clear-podcast']);
+const quotaUrl = getStationApiUrl('/quota/station_podcasts');
 
 const {$gettext} = useTranslate();
 
@@ -166,24 +167,8 @@ const doEdit = (url) => {
     $editEpisodeModal.value?.edit(url);
 };
 
-const doClearPodcast = () => {
-    emit('clear-podcast');
-};
-
-const {confirmDelete} = useSweetAlert();
-const {notifySuccess} = useNotify();
-const {axios} = useAxios();
-
-const doDelete = (url) => {
-    confirmDelete({
-        title: $gettext('Delete Episode?'),
-    }).then((result) => {
-        if (result.value) {
-            axios.delete(url).then((resp) => {
-                notifySuccess(resp.data.message);
-                relist();
-            });
-        }
-    });
-};
+const {doDelete} = useConfirmAndDelete(
+    $gettext('Delete Episode?'),
+    () => relist()
+);
 </script>

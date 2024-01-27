@@ -7,6 +7,8 @@ namespace App\Entity\ApiGenerator;
 use App\Entity\Api\Podcast as ApiPodcast;
 use App\Entity\Api\PodcastCategory as ApiPodcastCategory;
 use App\Entity\Podcast;
+use App\Entity\Repository\PodcastRepository;
+use App\Entity\Station;
 use App\Http\ServerRequest;
 use App\Utilities\Strings;
 use Symfony\Component\Intl\Exception\MissingResourceException;
@@ -14,6 +16,16 @@ use Symfony\Component\Intl\Languages;
 
 final class PodcastApiGenerator
 {
+    /**
+     * @var array<string, array<string>>
+     */
+    private array $publishedPodcasts = [];
+
+    public function __construct(
+        private readonly PodcastRepository $podcastRepo
+    ) {
+    }
+
     public function __invoke(
         Podcast $record,
         ServerRequest $request
@@ -60,8 +72,12 @@ final class PodcastApiGenerator
         }
         $return->categories = $categories;
 
+        $return->is_published = $this->isPublished($record, $station);
+
         $return->art_updated_at = $record->getArtUpdatedAt();
         $return->has_custom_art = (0 !== $record->getArtUpdatedAt());
+
+        $return->episodes = $record->getEpisodes()->count();
 
         $baseRouteParams = [
             'station_id' => $station->getIdRequired(),
@@ -103,5 +119,22 @@ final class PodcastApiGenerator
         ];
 
         return $return;
+    }
+
+    private function isPublished(
+        Podcast $podcast,
+        Station $station
+    ): bool {
+        if (!isset($this->publishedPodcasts[$station->getShortName()])) {
+            $this->publishedPodcasts[$station->getShortName()] = $this->podcastRepo->getPodcastIdsWithPublishedEpisodes(
+                $station
+            );
+        }
+
+        return in_array(
+            $podcast->getIdRequired(),
+            $this->publishedPodcasts[$station->getShortName()] ?? [],
+            true
+        );
     }
 }

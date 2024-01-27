@@ -1,6 +1,7 @@
 import {getStationApiUrl} from "~/router.ts";
 import populateComponentRemotely from "~/functions/populateComponentRemotely.ts";
 import {RouteRecordRaw} from "vue-router";
+import {useAxios} from "~/vendor/axios.ts";
 
 export default function useStationsRoutes(): RouteRecordRaw[] {
     return [
@@ -61,6 +62,22 @@ export default function useStationsRoutes(): RouteRecordRaw[] {
             component: () => import('~/components/Stations/Podcasts.vue'),
             name: 'stations:podcasts:index',
             ...populateComponentRemotely(getStationApiUrl('/vue/podcasts'))
+        },
+        {
+            path: '/podcast/:podcast_id',
+            component: () => import('~/components/Stations/PodcastEpisodes.vue'),
+            name: 'stations:podcast:episodes',
+            beforeEnter: async (to, _, next) => {
+                const apiUrl = getStationApiUrl(`/podcast/${to.params.podcast_id}`);
+                const {axios} = useAxios();
+                to.meta.state = {
+                    podcast: await axios.get(apiUrl.value).then(r => r.data)
+                };
+                next();
+            },
+            props: (to) => {
+                return to.meta.state;
+            }
         },
         {
             path: '/profile',

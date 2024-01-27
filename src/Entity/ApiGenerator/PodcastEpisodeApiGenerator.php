@@ -51,6 +51,8 @@ final class PodcastEpisodeApiGenerator
             $return->media = new ApiPodcastMedia();
         }
 
+        $return->is_published = $record->isPublished();
+
         $return->art_updated_at = $record->getArtUpdatedAt();
         $return->has_custom_art = (0 !== $return->art_updated_at);
 

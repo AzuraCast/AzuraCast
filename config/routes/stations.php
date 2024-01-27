@@ -23,6 +23,7 @@ return static function (RouteCollectorProxy $app) {
                 'stations:logs' => '/logs',
                 'stations:playlists:index' => '/playlists',
                 'stations:podcasts:index' => '/podcasts',
+                'stations:podcast:episodes' => '/podcast/{podcast_id}',
                 'stations:mounts:index' => '/mounts',
                 'stations:profile:index' => '/profile',
                 'stations:profile:edit' => '/profile/edit',

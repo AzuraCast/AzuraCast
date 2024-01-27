@@ -3938,44 +3938,52 @@ components:
           properties:
             id:
               type: string
-              nullable: true
             storage_location_id:
               type: integer
-              nullable: true
             title:
               type: string
-              nullable: true
             link:
               type: string
               nullable: true
             description:
               type: string
-              nullable: true
+            description_short:
+              type: string
             language:
               type: string
-              nullable: true
+            language_name:
+              type: string
             author:
               type: string
-              nullable: true
             email:
               type: string
-              nullable: true
             has_custom_art:
               type: boolean
             art:
               type: string
-              nullable: true
             art_updated_at:
+              type: integer
+            is_published:
+              type: boolean
+            episodes:
               type: integer
             categories:
               type: array
               items:
-                type: string
-            episodes:
-              type: array
-              items:
-                type: string
+                $ref: '#/components/schemas/Api_PodcastCategory'
           type: object
+    Api_PodcastCategory:
+      properties:
+        category:
+          type: string
+        text:
+          type: string
+        title:
+          type: string
+        subtitle:
+          type: string
+          nullable: true
+      type: object
     Api_PodcastEpisode:
       type: object
       allOf:
@@ -3985,14 +3993,17 @@ components:
           properties:
             id:
               type: string
-              nullable: true
             title:
               type: string
-              nullable: true
             description:
               type: string
-              nullable: true
+            description_short:
+              type: string
             explicit:
+              type: boolean
+            created_at:
+              type: integer
+            is_published:
               type: boolean
             publish_at:
               type: integer
@@ -4041,26 +4052,32 @@ components:
           description: 'The song artist.'
           type: string
           example: 'Chet Porter'
+          nullable: true
         title:
           description: 'The song title.'
           type: string
           example: 'Aluko River'
+          nullable: true
         album:
           description: 'The song album.'
           type: string
           example: 'Moving Castle'
+          nullable: true
         genre:
           description: 'The song genre.'
           type: string
           example: Rock
+          nullable: true
         isrc:
           description: 'The International Standard Recording Code (ISRC) of the file.'
           type: string
           example: US28E1600021
+          nullable: true
         lyrics:
           description: 'Lyrics to the song.'
           type: string
           example: ''
+          nullable: true
         art:
           description: 'URL to the album artwork (if available).'
           example: 'https://picsum.photos/1200/1200'

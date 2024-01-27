@@ -597,26 +597,39 @@ export interface ApiNowPlayingStationRemote {
 }
 
 export type ApiPodcast = HasLinks & {
-  id?: string | null;
-  storage_location_id?: number | null;
-  title?: string | null;
+  id?: string;
+  storage_location_id?: number;
+  title?: string;
   link?: string | null;
-  description?: string | null;
-  language?: string | null;
-  author?: string | null;
-  email?: string | null;
+  description?: string;
+  description_short?: string;
+  language?: string;
+  language_name?: string;
+  author?: string;
+  email?: string;
   has_custom_art?: boolean;
-  art?: string | null;
+  art?: string;
   art_updated_at?: number;
-  categories?: string[];
-  episodes?: string[];
+  is_published?: boolean;
+  episodes?: number;
+  categories?: ApiPodcastCategory[];
 };
 
+export interface ApiPodcastCategory {
+  category?: string;
+  text?: string;
+  title?: string;
+  subtitle?: string | null;
+}
+
 export type ApiPodcastEpisode = HasLinks & {
-  id?: string | null;
-  title?: string | null;
-  description?: string | null;
+  id?: string;
+  title?: string;
+  description?: string;
+  description_short?: string;
   explicit?: boolean;
+  created_at?: number;
+  is_published?: boolean;
   publish_at?: number | null;
   has_media?: boolean;
   media?: ApiPodcastMedia;
@@ -649,32 +662,32 @@ export interface ApiSong {
    * The song artist.
    * @example "Chet Porter"
    */
-  artist?: string;
+  artist?: string | null;
   /**
    * The song title.
    * @example "Aluko River"
    */
-  title?: string;
+  title?: string | null;
   /**
    * The song album.
    * @example "Moving Castle"
    */
-  album?: string;
+  album?: string | null;
   /**
    * The song genre.
    * @example "Rock"
    */
-  genre?: string;
+  genre?: string | null;
   /**
    * The International Standard Recording Code (ISRC) of the file.
    * @example "US28E1600021"
    */
-  isrc?: string;
+  isrc?: string | null;
   /**
    * Lyrics to the song.
    * @example ""
    */
-  lyrics?: string;
+  lyrics?: string | null;
   /**
    * URL to the album artwork (if available).
    * @example "https://picsum.photos/1200/1200"

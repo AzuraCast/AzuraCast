@@ -54,6 +54,12 @@ final class Podcast
     #[OA\Property]
     public int $art_updated_at = 0;
 
+    #[OA\Property]
+    public bool $is_published = true;
+
+    #[OA\Property]
+    public int $episodes = 0;
+
     /**
      * @var PodcastCategory[]
      */

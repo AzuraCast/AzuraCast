@@ -244,7 +244,7 @@ final class PodcastFeedAction implements SingleActionInterface
             }
 
             $podcastArtworkSrc = $this->router->fromHere(
-                routeName: 'api:stations:podcast:art',
+                routeName: 'api:stations:public:podcast:art',
                 routeParams: $routeParams,
                 absolute: true
             );
@@ -328,7 +328,7 @@ final class PodcastFeedAction implements SingleActionInterface
         $rssEnclosure = new RssEnclosure();
 
         $podcastMediaPlayUrl = $this->router->fromHere(
-            routeName: 'api:stations:podcast:episode:download',
+            routeName: 'api:stations:public:podcast:episode:download',
             routeParams: ['episode_id' => $episode->getId()],
             absolute: true
         );

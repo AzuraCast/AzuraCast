@@ -334,6 +334,8 @@ const props = withDefaults(defineProps<DataTableProps>(), {
     detailed: false,
     selectFields: false,
     handleClientSide: false,
+    requestConfig: undefined,
+    requestProcess: undefined
 });
 
 const slots = useSlots();

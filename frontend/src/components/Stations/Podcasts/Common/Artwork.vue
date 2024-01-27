@@ -54,11 +54,11 @@ import Tab from "~/components/Common/Tab.vue";
 const props = defineProps({
     modelValue: {
         type: Object,
-        required: false
+        default: null
     },
     artworkSrc: {
         type: String,
-        required: false
+        default: null
     },
     newArtUrl: {
         type: String,

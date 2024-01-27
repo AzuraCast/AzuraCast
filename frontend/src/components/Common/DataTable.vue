@@ -286,7 +286,7 @@
     </div>
 </template>
 
-<script setup lang="ts">
+<script setup lang="ts" generic="Row extends object">
 import {filter, forEach, get, includes, indexOf, isEmpty, map, reverse, slice, some} from 'lodash';
 import Icon from './Icon.vue';
 import {computed, onMounted, ref, shallowRef, toRaw, toRef, useSlots, watch} from "vue";
@@ -299,75 +299,41 @@ import useOptionalStorage from "~/functions/useOptionalStorage";
 import {IconArrowDropDown, IconArrowDropUp, IconFilterList, IconRefresh, IconSearch} from "~/components/Common/icons";
 import {useAzuraCast} from "~/vendor/azuracast.ts";
 
-const props = defineProps({
-    id: {
-        type: String,
-        default: null
-    },
-    apiUrl: {
-        type: String,
-        default: null
-    },
-    items: {
-        type: Array,
-        default: null
-    },
-    responsive: {
-        type: [Boolean, String],
-        default: true
-    },
-    paginated: {
-        type: Boolean,
-        default: false
-    },
-    loading: {
-        type: Boolean,
-        default: false
-    },
-    hideOnLoading: {
-        type: Boolean,
-        default: true
-    },
-    showToolbar: {
-        type: Boolean,
-        default: true
-    },
-    pageOptions: {
-        type: Array<number>,
-        default: () => [10, 25, 50, 100, 250, 500, 0]
-    },
-    defaultPerPage: {
-        type: Number,
-        default: 10
-    },
-    fields: {
-        type: Array<DataTableField>,
-        required: true
-    },
-    selectable: {
-        type: Boolean,
-        default: false
-    },
-    detailed: {
-        type: Boolean,
-        default: false
-    },
-    selectFields: {
-        type: Boolean,
-        default: false
-    },
-    handleClientSide: {
-        type: Boolean,
-        default: false
-    },
-    requestConfig: {
-        type: Function,
-        default: null
-    },
-    requestProcess: {
-        type: Function,
-        default: null
-    }
+export interface DataTableProps {
+    id?: string,
+    fields: DataTableField[],
+    apiUrl?: string, // URL to fetch for server-side data
+    items?: Row[], // Array of items for client-side data
+    responsive?: boolean | string, // Make table responsive (boolean or CSS class for specific responsiveness width)
+    paginated?: boolean, // Enable pagination.
+    loading?: boolean, // Pass to override the "loading" property for this table.
+    hideOnLoading?: boolean, // Replace the table contents with a loading animation when data is being retrieved.
+    showToolbar?: boolean, // Show the header "Toolbar" with search, refresh, per-page, etc.
+    pageOptions?: number[],
+    defaultPerPage?: number,
+    selectable?: boolean, // Allow selecting individual rows with checkboxes at the side of each row
+    detailed?: boolean, // Allow showing "Detail" panel for selected rows.
+    selectFields?: boolean, // Allow selecting which columns are visible.
+    handleClientSide?: boolean, // Handle searching, sorting and pagination client-side without API calls.
+    requestConfig?(config: object): object, // Custom server-side request configuration (pre-request)
+    requestProcess?(rawData: object[]): Row[], // Custom server-side request result processing (post-request)
+}
+
+const props = withDefaults(defineProps<DataTableProps>(), {
+    id: null,
+    apiUrl: null,
+    items: null,
+    responsive: () => true,
+    paginated: false,
+    loading: false,
+    hideOnLoading: true,
+    showToolbar: true,
+    pageOptions: () => [10, 25, 50, 100, 250, 500, 0],
+    defaultPerPage: 10,
+    selectable: false,
+    detailed: false,
+    selectFields: false,
+    handleClientSide: false,
 });
 
 const slots = useSlots();
@@ -380,7 +346,7 @@ const emit = defineEmits([
     'data-loaded'
 ]);
 
-const selectedRows = shallowRef([]);
+const selectedRows = shallowRef<Row[]>([]);
 
 const searchPhrase = ref<string>('');
 const currentPage = ref<number>(1);
@@ -395,10 +361,10 @@ watch(toRef(props, 'loading'), (newLoading: boolean) => {
     isLoading.value = newLoading;
 });
 
-const visibleItems = shallowRef([]);
+const visibleItems = shallowRef<Row[]>([]);
 const totalRows = ref(0);
 
-const activeDetailsRow = shallowRef(null);
+const activeDetailsRow = shallowRef<Row>(null);
 
 export interface DataTableField {
     key: string,
@@ -476,7 +442,7 @@ const visibleFieldKeys = computed({
     }
 });
 
-const perPage = computed(() => {
+const perPage = computed<number>(() => {
     if (!props.paginated) {
         return -1;
     }
@@ -502,15 +468,15 @@ const visibleFields = computed<DataTableField[]>(() => {
     });
 });
 
-const getPerPageLabel = (num) => {
+const getPerPageLabel = (num): string => {
     return (num === 0) ? 'All' : num.toString();
 };
 
-const perPageLabel = computed(() => {
+const perPageLabel = computed<string>(() => {
     return getPerPageLabel(perPage.value);
 });
 
-const showPagination = computed(() => {
+const showPagination = computed<boolean>(() => {
     return props.paginated && perPage.value !== 0;
 });
 
@@ -698,7 +664,7 @@ const isAllChecked = computed<boolean>(() => {
     });
 });
 
-const isRowChecked = (row) => {
+const isRowChecked = (row: Row) => {
     return indexOf(selectedRows.value, row) >= 0;
 };
 
@@ -726,7 +692,7 @@ const sort = (column: DataTableField) => {
     refresh();
 };
 
-const checkRow = (row) => {
+const checkRow = (row: Row) => {
     const newSelectedRows = selectedRows.value;
 
     if (isRowChecked(row)) {
@@ -755,11 +721,11 @@ const checkAll = () => {
     selectedRows.value = newSelectedRows;
 };
 
-const isActiveDetailRow = (row) => {
+const isActiveDetailRow = (row: Row) => {
     return activeDetailsRow.value === row;
 };
 
-const toggleDetails = (row) => {
+const toggleDetails = (row: Row) => {
     activeDetailsRow.value = isActiveDetailRow(row)
         ? null
         : row;
@@ -773,7 +739,7 @@ const responsiveClass = computed(() => {
     return (props.responsive ? 'table-responsive' : '');
 });
 
-const getColumnValue = (field: DataTableField, row: object): string => {
+const getColumnValue = (field: DataTableField, row: Row): string => {
     const columnValue = get(row, field.key, null);
 
     return (field.formatter)

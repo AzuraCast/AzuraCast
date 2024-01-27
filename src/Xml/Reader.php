@@ -64,18 +64,14 @@ final class Reader
         $text = '';
 
         while ($reader->read()) {
-            // @phpstan-ignore-next-line
             if ($reader->nodeType === XMLReader::ELEMENT) {
-                // @phpstan-ignore-next-line
                 if ($reader->depth === 0) {
                     return self::processNextElement($reader);
                 }
 
                 $attributes = self::getAttributes($reader);
-                // @phpstan-ignore-next-line
                 $name = $reader->name;
 
-                // @phpstan-ignore-next-line
                 if ($reader->isEmptyElement) {
                     $child = [];
                 } else {
@@ -106,7 +102,6 @@ final class Reader
             } elseif ($reader->nodeType === XMLReader::END_ELEMENT) {
                 break;
             } elseif (in_array($reader->nodeType, self::$textNodes)) {
-                // @phpstan-ignore-next-line
                 $text .= $reader->value;
             }
         }
@@ -123,10 +118,8 @@ final class Reader
     {
         $attributes = [];
 
-        // @phpstan-ignore-next-line
         if ($reader->hasAttributes) {
             while ($reader->moveToNextAttribute()) {
-                // @phpstan-ignore-next-line
                 $attributes['@' . $reader->localName] = $reader->value;
             }
 

@@ -28,7 +28,6 @@
                     class="col-md-6"
                     :field="v$.backup_time_code"
                     :label="$gettext('Scheduled Backup Time')"
-                    :description="$gettext('If the end time is before the start time, the playlist will play overnight.')"
                 >
                     <template #default="slotProps">
                         <time-code

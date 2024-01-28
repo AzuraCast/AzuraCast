@@ -13,7 +13,7 @@
                 </template>
 
                 <data-table
-                    id="station_remotes"
+                    id="station_sftp_users"
                     ref="$datatable"
                     :show-toolbar="false"
                     :fields="fields"
@@ -75,7 +75,7 @@
 </template>
 
 <script setup lang="ts">
-import DataTable, { DataTableField } from "~/components/Common/DataTable.vue";
+import DataTable, {DataTableField} from "~/components/Common/DataTable.vue";
 import SftpUsersEditModal from "./SftpUsers/EditModal.vue";
 import {useTranslate} from "~/vendor/gettext";
 import {ref} from "vue";

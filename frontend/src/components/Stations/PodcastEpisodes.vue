@@ -128,10 +128,11 @@ import {useTranslate} from "~/vendor/gettext";
 import {ref} from "vue";
 import AddButton from "~/components/Common/AddButton.vue";
 import {IconChevronLeft} from "~/components/Common/icons";
-import {DataTableTemplateRef} from "~/functions/useHasDatatable.ts";
+import useHasDatatable, {DataTableTemplateRef} from "~/functions/useHasDatatable.ts";
 import {getStationApiUrl} from "~/router.ts";
 import useConfirmAndDelete from "~/functions/useConfirmAndDelete.ts";
 import {ApiPodcast} from "~/entities/ApiInterfaces.ts";
+import useHasEditModal from "~/functions/useHasEditModal.ts";
 
 const props = defineProps<{
     podcast: ApiPodcast
@@ -150,22 +151,17 @@ const fields: DataTableField[] = [
 ];
 
 const $quota = ref<InstanceType<typeof StationsCommonQuota> | null>(null);
+
 const $datatable = ref<DataTableTemplateRef>(null);
+const {refresh} = useHasDatatable($datatable);
 
 const relist = () => {
     $quota.value?.update();
-    $datatable.value?.refresh();
+    refresh();
 };
 
 const $editEpisodeModal = ref<InstanceType<typeof EditModal> | null>(null);
-
-const doCreate = () => {
-    $editEpisodeModal.value?.create();
-};
-
-const doEdit = (url) => {
-    $editEpisodeModal.value?.edit(url);
-};
+const {doCreate, doEdit} = useHasEditModal($editEpisodeModal);
 
 const {doDelete} = useConfirmAndDelete(
     $gettext('Delete Episode?'),

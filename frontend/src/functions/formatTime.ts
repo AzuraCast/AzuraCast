@@ -1,4 +1,4 @@
-export default function (seconds: string | number) {
+export default function (seconds: string | number): string {
     seconds = Math.floor(Number(seconds));
 
     const d: number = Math.floor(seconds / 86400),

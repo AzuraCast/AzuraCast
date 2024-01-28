@@ -8,7 +8,6 @@ interface EditModalCompatible {
 
 export type EditModalTemplateRef = InstanceType<EditModalCompatible> | null;
 
-
 export default function useHasEditModal($modalRef: Ref<EditModalTemplateRef>) {
     const doCreate = (): void => {
         $modalRef.value?.create();

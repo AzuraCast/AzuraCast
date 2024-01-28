@@ -101,9 +101,10 @@ import {useTranslate} from "~/vendor/gettext";
 import {ref} from "vue";
 import {getStationApiUrl} from "~/router";
 import AddButton from "~/components/Common/AddButton.vue";
-import {DataTableTemplateRef} from "~/functions/useHasDatatable.ts";
+import useHasDatatable, {DataTableTemplateRef} from "~/functions/useHasDatatable.ts";
 import CardPage from "~/components/Common/CardPage.vue";
 import useConfirmAndDelete from "~/functions/useConfirmAndDelete.ts";
+import useHasEditModal from "~/functions/useHasEditModal.ts";
 
 const props = defineProps({
     languageOptions: {
@@ -134,22 +135,17 @@ const fields: DataTableField[] = [
 ];
 
 const $quota = ref<InstanceType<typeof StationsCommonQuota> | null>(null);
+
 const $datatable = ref<DataTableTemplateRef>(null);
+const {refresh} = useHasDatatable($datatable);
 
 const relist = () => {
     $quota.value?.update();
-    $datatable.value?.refresh();
+    refresh();
 };
 
 const $editPodcastModal = ref<InstanceType<typeof EditModal> | null>(null);
-
-const doCreate = () => {
-    $editPodcastModal.value?.create();
-};
-
-const doEdit = (url) => {
-    $editPodcastModal.value?.edit(url);
-};
+const {doCreate, doEdit} = useHasEditModal($editPodcastModal);
 
 const {doDelete} = useConfirmAndDelete(
     $gettext('Delete Podcast?'),

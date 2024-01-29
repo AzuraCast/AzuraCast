@@ -34,7 +34,7 @@ http {
 
     sendfile on;
 
-    client_max_body_size 50M;
+    client_max_body_size {{ default .Env.NGINX_CLIENT_MAX_BODY_SIZE "50M" }};
     client_body_temp_path /tmp/nginx_client 1 1;
 
     fastcgi_temp_path /tmp/nginx_fastcgi 1 1;

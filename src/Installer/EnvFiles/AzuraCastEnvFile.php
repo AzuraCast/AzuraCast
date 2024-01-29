@@ -246,6 +246,13 @@ final class AzuraCastEnvFile extends AbstractEnvFile
                     'options' => ['127.0.0.1', '*'],
                     'default' => '*',
                 ],
+                'NGINX_CLIENT_MAX_BODY_SIZE' => [
+                    'name' => __('Nginx Max Client Body Size'),
+                    'description' => __(
+                        'This is the total size any single request body can be. AzuraCast chunks its uploads into smaller file sizes, so this only applies when doing custom uploads via the API. Sizes should be listed in a format like "100K", "128M", "1G" for kilobytes, megabytes, and gigabytes respectively.'
+                    ),
+                    'default' => '50M',
+                ],
                 Environment::ENABLE_WEB_UPDATER => [
                     'name' => __('Enable web-based Docker image updates'),
                     'default' => true,

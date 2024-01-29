@@ -52,6 +52,12 @@ final class Station implements ResolvableUrlInterface
     public string $backend = '';
 
     #[OA\Property(
+        description: 'The station\'s IANA time zone',
+        example: 'America/Chicago'
+    )]
+    public string $timezone = '';
+
+    #[OA\Property(
         description: 'The full URL to listen to the default mount of the station',
         example: 'http://localhost:8000/radio.mp3'
     )]

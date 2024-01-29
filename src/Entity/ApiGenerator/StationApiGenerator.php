@@ -33,6 +33,7 @@ final class StationApiGenerator
         $response->description = (string)$station->getDescription();
         $response->frontend = $station->getFrontendType()->value;
         $response->backend = $station->getBackendType()->value;
+        $response->timezone = $station->getTimezone();
         $response->url = $station->getUrl();
         $response->is_public = $station->getEnablePublicPage();
         $response->listen_url = $frontend?->getStreamUrl($station, $baseUri);

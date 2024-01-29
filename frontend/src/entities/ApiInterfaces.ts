@@ -475,6 +475,11 @@ export interface ApiNowPlayingStation {
    */
   backend?: string;
   /**
+   * The station's IANA time zone
+   * @example "America/Chicago"
+   */
+  timezone?: string;
+  /**
    * The full URL to listen to the default mount of the station
    * @example "http://localhost:8000/radio.mp3"
    */

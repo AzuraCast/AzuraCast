@@ -3816,6 +3816,10 @@ components:
           description: 'Which AutoDJ software (backend) the station uses'
           type: string
           example: liquidsoap
+        timezone:
+          description: "The station's IANA time zone"
+          type: string
+          example: America/Chicago
         listen_url:
           description: 'The full URL to listen to the default mount of the station'
           example: 'http://localhost:8000/radio.mp3'

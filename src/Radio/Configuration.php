@@ -289,6 +289,12 @@ final class Configuration
                 $station->setBackendConfig($backendConfig);
             }
 
+            $djPortSecondary = $backendConfig->getDjPortSecondary();
+            if ($force || null === $djPortSecondary) {
+                $backendConfig->setDjPortSecondary($basePort + 7);
+                $station->setBackendConfig($backendConfig);
+            }
+
             $telnetPort = $backendConfig->getTelnetPort();
             if ($force || null === $telnetPort) {
                 $backendConfig->setTelnetPort($basePort + 4);
@@ -371,6 +377,11 @@ final class Configuration
                     // For DJ port, consider both the assigned port and port+1 to be reserved and in-use.
                     if (!empty($backendConfig['dj_port'])) {
                         $port = (int)$backendConfig['dj_port'];
+                        $usedPorts[$port] = $stationReference;
+                        $usedPorts[$port + 1] = $stationReference;
+                    }
+                    if (!empty($backendConfig['dj_port_secondary'])) {
+                        $port = (int)$backendConfig['dj_port_secondary'];
                         $usedPorts[$port] = $stationReference;
                         $usedPorts[$port + 1] = $stationReference;
                     }

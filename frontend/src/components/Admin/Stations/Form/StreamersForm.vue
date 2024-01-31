@@ -91,6 +91,27 @@
                     </form-group-field>
 
                     <form-group-field
+                        v-if="enableAdvancedFeatures"
+                        id="edit_form_backend_dj_port_secondary"
+                        class="col-md-6"
+                        :field="v$.backend_config.dj_port_secondary"
+                        input-type="number"
+                        :input-attrs="{ min: '0' }"
+                        advanced
+                        :label="$gettext('Customize DJ/Streamer Port Secondary')"
+                    >
+                        <template #description>
+                            {{
+                                $gettext('No other program can be using this port. Leave blank to automatically assign a port.')
+                            }}
+                            <br>
+                            {{
+                                $gettext('Note: the port after this one will automatically be used for legacy connections.')
+                            }}
+                        </template>
+                    </form-group-field>
+
+                    <form-group-field
                         id="edit_form_backend_dj_buffer"
                         class="col-md-6"
                         :field="v$.backend_config.dj_buffer"

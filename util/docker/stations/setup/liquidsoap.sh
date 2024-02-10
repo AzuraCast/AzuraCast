@@ -19,7 +19,7 @@ if [[ "$(uname -m)" = "aarch64" ]]; then
     ARCHITECTURE=arm64
 fi
 
-wget -O /tmp/liquidsoap.deb "https://github.com/savonet/liquidsoap/releases/download/v2.2.4/liquidsoap_2.2.4-ubuntu-jammy-1_${ARCHITECTURE}.deb"
+wget -O /tmp/liquidsoap.deb "https://github.com/savonet/liquidsoap/releases/download/v2.2.4/liquidsoap_2.2.4-ubuntu-jammy-2_${ARCHITECTURE}.deb"
 # wget -O /tmp/liquidsoap.deb "https://github.com/savonet/liquidsoap-release-assets/releases/download/rolling-release-v2.2.x/liquidsoap-6721bb1_2.2.4-ubuntu-jammy-1_${ARCHITECTURE}.deb"
 
 dpkg -i /tmp/liquidsoap.deb

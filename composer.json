@@ -10,7 +10,7 @@
     }
   ],
   "require": {
-    "php": "^8.2",
+    "php": "^8.3",
     "ext-PDO": "*",
     "ext-curl": "*",
     "ext-ffi": "*",
@@ -28,7 +28,7 @@
     "ext-xmlreader": "*",
     "ext-xmlwriter": "*",
     "azuracast/nowplaying": "dev-main",
-    "beberlei/doctrineextensions": "^1.2",
+    "beberlei/doctrineextensions": "^1.4",
     "br33f/php-ga4-mp": "^0.1.2",
     "brick/math": "^0.11",
     "composer/ca-bundle": "^1.2",
@@ -57,7 +57,7 @@
     "mezzio/mezzio-session-cache": "^1.7",
     "monolog/monolog": "^3",
     "myclabs/deep-copy": "^1.10",
-    "nesbot/carbon": "^2.36",
+    "nesbot/carbon": "^3",
     "pagerfanta/doctrine-collections-adapter": "^4",
     "pagerfanta/doctrine-orm-adapter": "^4",
     "php-di/php-di": "^7.0.1",

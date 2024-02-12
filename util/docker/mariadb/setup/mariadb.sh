@@ -2,11 +2,8 @@
 set -e
 set -x
 
-{
-    echo 'Package: *'; \
-    echo 'Pin: release o=MariaDB'; \
-    echo 'Pin-Priority: 999'; \
-} > /etc/apt/preferences.d/mariadb
+curl -LsS https://r.mariadb.com/downloads/mariadb_repo_setup | bash -s -- \
+  --mariadb-server-version=11.2
 
 { \
 		echo "mariadb-server" mysql-server/root_password password 'unused'; \

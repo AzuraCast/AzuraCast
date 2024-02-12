@@ -47,8 +47,6 @@ COPY --from=go-dependencies /go/bin/centrifugo /usr/local/bin/centrifugo
 # Add MariaDB dependencies
 COPY --from=mariadb /usr/local/bin/healthcheck.sh /usr/local/bin/db_healthcheck.sh
 COPY --from=mariadb /usr/local/bin/docker-entrypoint.sh /usr/local/bin/db_entrypoint.sh
-COPY --from=mariadb /etc/apt/sources.list.d/mariadb.list /etc/apt/sources.list.d/mariadb.list
-COPY --from=mariadb /etc/apt/trusted.gpg.d/mariadb.gpg /etc/apt/trusted.gpg.d/mariadb.gpg
 
 # Add Icecast
 COPY --from=icecast /usr/local/bin/icecast /usr/local/bin/icecast

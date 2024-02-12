@@ -11,7 +11,7 @@ export function useTranslate(): Language {
 export async function installTranslate(vueApp: App): Promise<void> {
     const {locale} = useAzuraCast();
 
-    const translations = import.meta.glob('../../../translations/**/translations.json', {as: 'json'});
+    const translations = import.meta.glob('../../../translations/**/translations.json', {query: '?json'});
     const localePath = '../../../translations/' + locale + '.UTF-8/translations.json';
 
     gettext = createGettext({

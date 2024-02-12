@@ -97,13 +97,15 @@ final class StationStreamerBroadcastRepository extends Repository
             '',
             pathinfo($recordingPath, PATHINFO_FILENAME)
         );
+
+        /** @var CarbonImmutable|null $startTime */
         $startTime = CarbonImmutable::createFromFormat(
             'Ymd-His',
             $startTimeRaw,
             $station->getTimezoneObject()
         );
 
-        if (false === $startTime) {
+        if (!$startTime) {
             return null;
         }
 

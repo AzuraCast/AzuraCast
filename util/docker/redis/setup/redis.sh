@@ -6,3 +6,6 @@ apt-get install -y --no-install-recommends redis-server
 
 cp /bd_build/redis/redis/redis.conf /etc/redis/redis.conf
 chown redis:redis /etc/redis/redis.conf
+
+mkdir -p /run/redis
+chown redis:redis /run/redis

@@ -1,7 +1,7 @@
 #
 # Golang dependencies build step
 #
-FROM golang:1.21-bullseye AS go-dependencies
+FROM golang:1.21-bookworm AS go-dependencies
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends openssl git
@@ -25,7 +25,7 @@ FROM ghcr.io/azuracast/azuracast.com:builtin AS docs
 #
 # Icecast-KH with AzuraCast customizations build step
 #
-FROM ghcr.io/azuracast/icecast-kh-ac:latest AS icecast
+FROM ghcr.io/azuracast/icecast-kh-ac:2024-02-13 AS icecast
 
 #
 # Roadrunner build step
@@ -35,9 +35,16 @@ FROM ghcr.io/roadrunner-server/roadrunner:2023.3.8 AS roadrunner
 #
 # Final build image
 #
-FROM ubuntu:jammy AS pre-final
+FROM php:8.3-fpm-bookworm AS pre-final
 
-ENV TZ="UTC"
+ENV TZ="UTC" \
+    LANGUAGE="en_US.UTF-8" \
+    LC_ALL="en_US.UTF-8" \
+    LANG="en_US.UTF-8" \
+    LC_TYPE="en_US.UTF-8"
+
+# Add PHP extension installer tool
+COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr/local/bin/
 
 # Add Go dependencies
 COPY --from=go-dependencies /go/bin/dockerize /usr/local/bin

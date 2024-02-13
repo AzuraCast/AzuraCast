@@ -4,4 +4,4 @@ set -x
 
 # Icecast is built and imported in its own Docker container.
 
-apt-get install -q -y --no-install-recommends libxml2 openssl
+apt-get install -q -y --no-install-recommends libxml2 libxslt1.1 openssl

@@ -25,6 +25,11 @@ release channel, you can take advantage of these new features and fixes.
 
 ## Code Quality/Technical Changes
 
+- Our Docker image is now built directly on top of the official PHP image, which is powered by Debian Bookworm instead
+  of Ubuntu 22.04 (Jammy). For a majority of station operators, this change will not impact your station operations at
+  all, but if you specify custom packages to be installed on startup, you should make sure those packages exist in the
+  Debian repository as well.
+
 - You can now specify a path when using the `azuracast:media:reprocess` command to only mark items starting with the
   given (file or directory) path for reprocessing.
 

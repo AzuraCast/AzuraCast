@@ -6,6 +6,7 @@ namespace App\Controller\Api\Stations;
 
 use App\Controller\Api\AbstractApiCrudController;
 use App\Controller\Api\Traits\CanSearchResults;
+use App\Controller\Api\Traits\CanSortResults;
 use App\Entity\Api\PodcastEpisode as ApiPodcastEpisode;
 use App\Entity\ApiGenerator\PodcastEpisodeApiGenerator;
 use App\Entity\PodcastEpisode;
@@ -13,6 +14,7 @@ use App\Entity\Repository\PodcastEpisodeRepository;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\OpenApi;
+use App\Paginator;
 use App\Service\Flow\UploadedFile;
 use InvalidArgumentException;
 use OpenApi\Attributes as OA;
@@ -183,6 +185,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 final class PodcastEpisodesController extends AbstractApiCrudController
 {
     use CanSearchResults;
+    use CanSortResults;
 
     protected string $entityClass = PodcastEpisode::class;
     protected string $resourceRouteName = 'api:stations:podcast:episode';
@@ -220,7 +223,25 @@ final class PodcastEpisodesController extends AbstractApiCrudController
             ]
         );
 
-        return $this->listPaginatedFromQuery($request, $response, $queryBuilder->getQuery());
+        $episodes = array_map(
+            fn($row) => $this->viewRecord($row, $request),
+            $queryBuilder->getQuery()->getResult()
+        );
+
+        $episodes = $this->sortArray(
+            $request,
+            $episodes,
+            [
+                'is_published' => 'is_published',
+                'publish_at' => 'publish_at',
+                'is_explicit' => 'is_explicit',
+            ],
+            'id',
+            'DESC'
+        );
+
+        $paginator = Paginator::fromArray($episodes, $request);
+        return $paginator->write($response);
     }
 
     /**

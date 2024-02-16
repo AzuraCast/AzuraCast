@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use App\Controller\Admin\IndexAction;
+use App\Controller\AdminAction;
 use App\Enums\GlobalPermissions;
 use App\Middleware;
 use Slim\Routing\RouteCollectorProxy;
@@ -33,11 +33,11 @@ return static function (RouteCollectorProxy $app) {
             ];
 
             foreach ($routes as $routeName => $routePath) {
-                $group->get($routePath, IndexAction::class)
+                $group->get($routePath, AdminAction::class)
                     ->setName($routeName);
             }
 
-            $group->get('/{routes:.+}', IndexAction::class);
+            $group->get('/{routes:.+}', AdminAction::class);
         }
     )->add(Middleware\Module\PanelLayout::class)
         ->add(Middleware\EnableView::class)

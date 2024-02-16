@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use App\Controller\Stations\IndexAction;
+use App\Controller\StationsAction;
 use App\Enums\StationPermissions;
 use App\Middleware;
 use Slim\Routing\RouteCollectorProxy;
@@ -41,11 +41,11 @@ return static function (RouteCollectorProxy $app) {
             ];
 
             foreach ($routes as $routeName => $routePath) {
-                $group->get($routePath, IndexAction::class)
+                $group->get($routePath, StationsAction::class)
                     ->setName($routeName);
             }
 
-            $group->get('/{routes:.+}', IndexAction::class);
+            $group->get('/{routes:.+}', StationsAction::class);
         }
     )->add(Middleware\Module\PanelLayout::class)
         ->add(new Middleware\Permissions(StationPermissions::View, true))

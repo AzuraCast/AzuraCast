@@ -48,6 +48,7 @@
             id="station_podcast_episodes"
             ref="$datatable"
             paginated
+            select-fields
             :fields="fields"
             :api-url="podcast.links.episodes"
         >
@@ -79,6 +80,14 @@
                     <br>
                     <small>{{ item.media.length_text }}</small>
                 </template>
+            </template>
+            <template #cell(is_published)="{item}">
+                <span v-if="item.is_published">
+                    {{ $gettext('Yes') }}
+                </span>
+                <span v-else>
+                    {{ $gettext('No') }}
+                </span>
             </template>
             <template #cell(explicit)="{item}">
                 <span
@@ -133,6 +142,7 @@ import {getStationApiUrl} from "~/router.ts";
 import useConfirmAndDelete from "~/functions/useConfirmAndDelete.ts";
 import {ApiPodcast} from "~/entities/ApiInterfaces.ts";
 import useHasEditModal from "~/functions/useHasEditModal.ts";
+import useStationDateTimeFormatter from "~/functions/useStationDateTimeFormatter.ts";
 
 const props = defineProps<{
     podcast: ApiPodcast
@@ -142,12 +152,52 @@ const quotaUrl = getStationApiUrl('/quota/station_podcasts');
 
 const {$gettext} = useTranslate();
 
+const {formatTimestampAsDateTime} = useStationDateTimeFormatter();
+
 const fields: DataTableField[] = [
-    {key: 'art', label: $gettext('Art'), sortable: false, class: 'shrink pe-0'},
-    {key: 'title', label: $gettext('Episode'), sortable: false},
-    {key: 'podcast_media', label: $gettext('File Name'), sortable: false},
-    {key: 'explicit', label: $gettext('Explicit'), sortable: false},
-    {key: 'actions', label: $gettext('Actions'), sortable: false, class: 'shrink'}
+    {
+        key: 'art',
+        label: $gettext('Art'),
+        sortable: false,
+        class: 'shrink pe-0',
+        selectable: true
+    },
+    {
+        key: 'title',
+        label: $gettext('Episode'),
+        sortable: false
+    },
+    {
+        key: 'podcast_media',
+        label: $gettext('File Name'),
+        sortable: false
+    },
+    {
+        key: 'is_published',
+        label: $gettext('Is Published'),
+        visible: false,
+        sortable: true,
+        selectable: true
+    },
+    {
+        key: 'publish_at',
+        label: $gettext('Publish At'),
+        formatter: (_col, _key, item) => formatTimestampAsDateTime(item.publish_at),
+        sortable: true,
+        selectable: true
+    },
+    {
+        key: 'explicit',
+        label: $gettext('Explicit'),
+        sortable: true,
+        selectable: true
+    },
+    {
+        key: 'actions',
+        label: $gettext('Actions'),
+        sortable: false,
+        class: 'shrink'
+    }
 ];
 
 const $quota = ref<InstanceType<typeof StationsCommonQuota> | null>(null);

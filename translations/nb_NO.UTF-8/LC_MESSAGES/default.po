@@ -11,13 +11,13 @@ msgstr ""
 "Project-Id-Version: azuracast\n"
 "Language-Team: Norwegian Bokmal\n"
 "Language: nb_NO\n"
-"PO-Revision-Date: 2024-01-05 01:02\n"
+"PO-Revision-Date: 2024-02-20 10:36\n"
 
-#: src/components/Stations/Podcasts/ListView.vue:125
+#: src/components/Stations/Podcasts.vue:131
 msgid "# Episodes"
 msgstr "# Episoder"
 
-#: src/components/Stations/Playlists.vue:343
+#: src/components/Stations/Playlists.vue:347
 msgid "# Songs"
 msgstr "# Sanger"
 
@@ -51,7 +51,7 @@ msgid_plural "%{filesCount} Files"
 msgstr[0] "%{filesCount} Fil"
 msgstr[1] "%{filesCount} Filer"
 
-#: src/components/Stations/Profile/NowPlayingPanel.vue:261
+#: src/components/Stations/Profile/NowPlayingPanel.vue:285
 msgid "%{listeners} Listener"
 msgid_plural "%{listeners} Listeners"
 msgstr[0] "%{listeners} Lytter"
@@ -167,23 +167,25 @@ msgstr "Konto Liste"
 #: src/components/Admin/CustomFields.vue:97
 #: src/components/Admin/Debug.vue:300
 #: src/components/Admin/Permissions.vue:108
-#: src/components/Admin/Stations.vue:134
+#: src/components/Admin/Stations.vue:145
 #: src/components/Admin/StorageLocations.vue:131
 #: src/components/Admin/Users.vue:105
+#: src/components/Public/Podcasts/Podcast.vue:166
+#: src/components/Public/Podcasts/PodcastList.vue:83
 #: src/components/Public/Requests/RequestsDataTable.vue:110
 #: src/components/Stations/HlsStreams.vue:85
-#: src/components/Stations/Media.vue:359
+#: src/components/Stations/Media.vue:349
 #: src/components/Stations/Mounts.vue:103
-#: src/components/Stations/Playlists.vue:344
+#: src/components/Stations/Playlists.vue:348
 #: src/components/Stations/Playlists/ReorderModal.vue:29
-#: src/components/Stations/Podcasts/EpisodesView.vue:148
-#: src/components/Stations/Podcasts/ListView.vue:131
-#: src/components/Stations/Queue.vue:95
+#: src/components/Stations/PodcastEpisodes.vue:197
+#: src/components/Stations/Podcasts.vue:134
+#: src/components/Stations/Queue.vue:96
 #: src/components/Stations/Remotes.vue:95
-#: src/components/Stations/Reports/Requests.vue:125
+#: src/components/Stations/Reports/Requests.vue:124
 #: src/components/Stations/SftpUsers.vue:102
 #: src/components/Stations/Streamers.vue:153
-#: src/components/Stations/Streamers/BroadcastsModal.vue:131
+#: src/components/Stations/Streamers/BroadcastsModal.vue:122
 #: src/components/Stations/Webhooks.vue:134
 msgid "Actions"
 msgstr "Handlinger"
@@ -202,8 +204,8 @@ msgstr "Legg til API Nøkkel"
 msgid "Add Custom Field"
 msgstr "Legg til tilpasset felt"
 
-#: src/components/Stations/Podcasts/EpisodeEditModal.vue:146
-#: src/components/Stations/Podcasts/EpisodesView.vue:44
+#: src/components/Stations/PodcastEpisodes.vue:42
+#: src/components/Stations/Podcasts/EpisodeEditModal.vue:144
 msgid "Add Episode"
 msgstr "Legg til episode"
 
@@ -236,8 +238,8 @@ msgstr ""
 msgid "Add Playlist"
 msgstr "Legg til spilleliste"
 
-#: src/components/Stations/Podcasts/ListView.vue:24
-#: src/components/Stations/Podcasts/PodcastEditModal.vue:101
+#: src/components/Stations/Podcasts.vue:20
+#: src/components/Stations/Podcasts/PodcastEditModal.vue:108
 msgid "Add Podcast"
 msgstr "Legg til podcast"
 
@@ -292,8 +294,8 @@ msgstr "Legg til Web Hook"
 #: src/components/Admin/Stations/Form/AdminForm.vue:3
 #: src/components/Dashboard.vue:27
 #: src/components/Stations/Profile/FrontendPanel.vue:33
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Admin/IndexAction.php:23
 #: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/ServiceCheck.php:42
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/AdminAction.php:22
 msgid "Administration"
 msgstr "Administrasjon"
 
@@ -321,9 +323,9 @@ msgstr "Avanserte manuelle AutoDJ-planleggingsalternativer"
 msgid "Aggregate listener statistics are used to show station reports across the system. IP-based listener statistics are used to view live listener tracking and may be required for royalty reports."
 msgstr "Samlet lytterstatistikk brukes til å vise stasjonsrapporter på tvers av systemet. IP-basert lytterstatistikk brukes til å se live lyttersporing og kan være nødvendig for royaltyrapporter."
 
-#: src/components/Public/OnDemand.vue:126
+#: src/components/Public/OnDemand.vue:115
 #: src/components/Public/Requests/RequestsDataTable.vue:82
-#: src/components/Stations/Media.vue:318
+#: src/components/Stations/Media.vue:316
 #: src/components/Stations/Playlists/ReorderModal.vue:26
 #: /home/runner/work/AzuraCast/AzuraCast/src/Media/Enums/MetadataTags.php:80
 msgid "Album"
@@ -350,9 +352,13 @@ msgstr "Alle opplistede domenenavn må peke på denne AzuraCast installasjonen. 
 msgid "All Playlists"
 msgstr "Alle Spillelister"
 
-#: src/components/Stations/Podcasts/EpisodesView.vue:40
+#: src/components/Stations/PodcastEpisodes.vue:38
 msgid "All Podcasts"
 msgstr "Alle Podcaster"
+
+#: src/components/Stations/Reports/Listeners/FiltersBar.vue:37
+msgid "All Types"
+msgstr ""
 
 #: src/components/Stations/Webhooks/Form/Common/FormattingInfo.vue:14
 msgid "All values in the NowPlaying API response are available for use. Any empty fields are ignored."
@@ -479,7 +485,7 @@ msgstr "Legg Til Spilleliste på Mapper"
 msgid "Apply Post-processing to Live Streams"
 msgstr "Bruk Post-prosessering på direktesendinger"
 
-#: src/components/Stations/Playlists.vue:233
+#: src/components/Stations/Playlists.vue:235
 #: src/components/Stations/Playlists/ApplyToModal.vue:57
 msgid "Apply to Folders"
 msgstr "Bruk på mapper"
@@ -489,19 +495,20 @@ msgstr "Bruk på mapper"
 msgid "Are you sure?"
 msgstr "Er du sikker?"
 
-#: src/components/Public/OnDemand.vue:109
-#: src/components/Stations/Podcasts/EpisodesView.vue:144
-#: src/components/Stations/Podcasts/ListView.vue:121
+#: src/components/Public/OnDemand.vue:98
+#: src/components/Stations/PodcastEpisodes.vue:160
+#: src/components/Stations/Podcasts.vue:127
 #: src/components/Stations/Streamers.vue:149
 msgid "Art"
 msgstr "Kunst"
 
-#: src/components/Public/OnDemand.vue:119
+#: src/components/Public/OnDemand.vue:108
 #: src/components/Public/Requests/RequestsDataTable.vue:74
 #: src/components/Public/WebDJ/SettingsPanel.vue:33
-#: src/components/Stations/Media.vue:313
+#: src/components/Stations/Media.vue:311
 #: src/components/Stations/Playlists/QueueModal.vue:23
 #: src/components/Stations/Playlists/ReorderModal.vue:23
+#: src/components/Stations/Profile/UpdateMetadataModal.vue:30
 #: /home/runner/work/AzuraCast/AzuraCast/src/Media/Enums/MetadataTags.php:84
 msgid "Artist"
 msgstr "Artist"
@@ -555,11 +562,7 @@ msgstr "Forfatter"
 msgid "Auto-Assign Value"
 msgstr "Auto-tilordne Verdi"
 
-#: src/components/Stations/Playlists.vue:109
-msgid "Auto-Assigned"
-msgstr "Auto-tildelt"
-
-#: src/components/Admin/Stations.vue:126
+#: src/components/Admin/Stations.vue:137
 #: src/components/Admin/Stations/Form/BackendForm.vue:3
 #: src/components/Stations/Mounts.vue:102
 #: src/components/Stations/Mounts/Form/AutoDj.vue:3
@@ -568,8 +571,8 @@ msgstr "Auto-tildelt"
 msgid "AutoDJ"
 msgstr "AutoDJ"
 
-#: src/components/Stations/Mounts/Form/AutoDj.vue:38
-#: src/components/Stations/Remotes/Form/AutoDj.vue:38
+#: src/components/Stations/Mounts/Form/AutoDj.vue:35
+#: src/components/Stations/Remotes/Form/AutoDj.vue:35
 msgid "AutoDJ Bitrate (kbps)"
 msgstr "AutoDJ Bitrate (kbps)"
 
@@ -682,8 +685,6 @@ msgid "AzuraRelay is a standalone service that connects to your AzuraCast instan
 msgstr "AzuraRelay er en frittstående tjeneste som kobler til AzuraCast-forekomsten. automatisk Sender stasjonene dine via sin egen server, så rapporter lytterdetaljene tilbake til din hovedinstans. Denne siden viser alle tilkoblede forekomster."
 
 #: src/components/Stations/Media/MoveFilesModal.vue:20
-#: /home/runner/work/AzuraCast/AzuraCast/templates/frontend/public/podcast-episodes.phtml:40
-#: /home/runner/work/AzuraCast/AzuraCast/templates/frontend/public/podcast-episode.phtml:86
 msgid "Back"
 msgstr "Tilbake"
 
@@ -695,7 +696,7 @@ msgstr "Sikkerhetskopiering av installasjonen er sterkt anbefalt før en oppdate
 msgid "Backup"
 msgstr "Sikkerhetskopi"
 
-#: src/components/Admin/Backups/ConfigureModal.vue:75
+#: src/components/Admin/Backups/ConfigureModal.vue:74
 msgid "Backup Format"
 msgstr "Backup Format"
 
@@ -771,6 +772,12 @@ msgstr "Bitrate"
 msgid "Bot Token"
 msgstr "Bot Token"
 
+#: src/components/Stations/Reports/Listeners.vue:127
+#: src/components/Stations/Reports/Listeners/FiltersBar.vue:46
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ByClient.php:61
+msgid "Bot/Crawler"
+msgstr "Bot/Crawler"
+
 #: src/components/Stations/menu.ts:51
 msgid "Branding"
 msgstr "Merkevare"
@@ -784,7 +791,7 @@ msgstr "Innstillinger for branding"
 msgid "Broadcast AutoDJ to Remote Station"
 msgstr "Send AutoDJ til ekstern stasjon"
 
-#: src/components/Admin/Stations.vue:118
+#: src/components/Admin/Stations.vue:129
 #: src/components/Admin/Stations/Form/FrontendForm.vue:3
 #: src/components/Stations/menu.ts:235
 msgid "Broadcasting"
@@ -802,7 +809,7 @@ msgstr "Meldinger"
 msgid "Browser"
 msgstr "Nettleser"
 
-#: src/components/Stations/Profile/EmbedModal.vue:150
+#: src/components/Stations/Profile/EmbedModal.vue:154
 msgid "Browser Default"
 msgstr "Standard Nettleser"
 
@@ -822,6 +829,12 @@ msgstr "Bucket Navn"
 msgid "Bulk Media Import/Export"
 msgstr "Fler Media Import/Eksport"
 
+#: src/components/Public/Podcasts/Podcast.vue:27
+#: src/components/Public/Podcasts/PodcastEpisode.vue:40
+#: src/components/Public/Podcasts/PodcastList.vue:24
+msgid "by"
+msgstr ""
+
 #: src/components/Admin/Settings/GeneralTab.vue:43
 msgid "By default, radio stations broadcast on their own ports (i.e. 8000). If you're using a service like CloudFlare or accessing your radio station by SSL, you should enable this feature, which routes all radio through the web ports (80 and 443)."
 msgstr "Som standard sender radiostasjoner på sine egne porter (dvs. 8000). Hvis du bruker en tjeneste som CloudFlare eller får tilgang til radiostasjonen din med SSL, bør du aktivere denne funksjonen, som ruter all radio gjennom nettportene (80 og 443)."
@@ -837,13 +850,12 @@ msgid "Cancel"
 msgstr "Avbryt"
 
 #: src/components/Stations/Podcasts/PodcastForm/BasicInfo.vue:63
-#: /home/runner/work/AzuraCast/AzuraCast/templates/frontend/public/podcasts.phtml:56
 msgid "Categories"
 msgstr "Kategorier"
 
 #: src/components/Stations/Reports/Overview/BestAndWorstTab.vue:21
 #: src/components/Stations/Reports/Overview/BestAndWorstTab.vue:61
-#: src/components/Stations/Reports/Timeline.vue:154
+#: src/components/Stations/Reports/Timeline.vue:152
 msgid "Change"
 msgstr "Endre"
 
@@ -905,12 +917,12 @@ msgid "City"
 msgstr ""
 
 #: src/components/Stations/Media/MediaToolbar.vue:95
-#: src/components/Stations/Queue.vue:136
-#: src/components/Stations/Reports/Requests.vue:181
+#: src/components/Stations/Queue.vue:132
+#: src/components/Stations/Reports/Requests.vue:171
 msgid "Clear"
 msgstr "Fjern"
 
-#: src/components/Stations/Playlists.vue:456
+#: src/components/Stations/Playlists.vue:448
 msgid "Clear all media from playlist?"
 msgstr "Slett alle medier fra spillelisten?"
 
@@ -919,7 +931,7 @@ msgstr "Slett alle medier fra spillelisten?"
 msgid "Clear All Message Queues"
 msgstr "Fjern alle meldingskøer"
 
-#: src/components/Stations/Reports/Requests.vue:180
+#: src/components/Stations/Reports/Requests.vue:170
 msgid "Clear All Pending Requests?"
 msgstr "Vil du fjerne alle ventende forespørsler?"
 
@@ -942,6 +954,10 @@ msgstr ""
 #: src/components/Stations/StereoToolConfig.vue:72
 msgid "Clear File"
 msgstr "Fjern"
+
+#: src/components/Stations/Reports/Listeners/FiltersBar.vue:59
+msgid "Clear Filters"
+msgstr ""
 
 #: src/components/Admin/Branding/CustomAssetForm.vue:35
 msgid "Clear Image"
@@ -969,7 +985,7 @@ msgstr "Fjern Kø"
 msgid "Clear Upcoming Song Queue"
 msgstr "Fjern kommende sangkø"
 
-#: src/components/Stations/Queue.vue:135
+#: src/components/Stations/Queue.vue:131
 msgid "Clear Upcoming Song Queue?"
 msgstr "Fjerne kommende sangkø?"
 
@@ -1044,6 +1060,7 @@ msgstr "Klon Stasjon"
 #: src/components/Stations/Playlists/ApplyToModal.vue:50
 #: src/components/Stations/Playlists/ImportModal.vue:87
 #: src/components/Stations/Playlists/QueueModal.vue:47
+#: src/components/Stations/Profile/UpdateMetadataModal.vue:42
 #: src/components/Stations/Queue/LogsModal.vue:20
 #: src/components/Stations/Streamers/BroadcastsModal.vue:53
 msgid "Close"
@@ -1096,7 +1113,6 @@ msgid "Connection Information"
 msgstr "Tilkoblingsinformasjon"
 
 #: src/components/Stations/Podcasts/EpisodeForm/BasicInfo.vue:53
-#: /home/runner/work/AzuraCast/AzuraCast/templates/frontend/public/podcast-episodes.phtml:80
 msgid "Contains explicit content"
 msgstr "Inneholder eksplisitt innhold"
 
@@ -1116,7 +1132,7 @@ msgstr "Kontroller hvordan denne spillelisten håndteres av AutoDJ-programvaren.
 msgid "Copied!"
 msgstr "Kopiert!"
 
-#: src/components/Admin/Backups/ConfigureModal.vue:57
+#: src/components/Admin/Backups/ConfigureModal.vue:56
 msgid "Copies older than the specified number of days will automatically be deleted. Set to zero to disable automatic deletion."
 msgstr "Kopier som er eldre enn det angitte antall dager vil automatisk bli slettet. Sett til null for å deaktivere automatisk sletting."
 
@@ -1247,7 +1263,8 @@ msgid "Current Podcast Media"
 msgstr "Nåværende podcastmedier"
 
 #: src/components/Admin/Debug.vue:94
-#: src/components/Stations/Playlists.vue:152
+#: src/components/Common/BitrateOptions.vue:43
+#: src/components/Stations/Playlists.vue:126
 msgid "Custom"
 msgstr "Tilpasset"
 
@@ -1334,11 +1351,11 @@ msgstr "Tilpass kringkastingsporten"
 msgid "Customize Copy"
 msgstr "Tilpass kopi"
 
-#: src/components/Admin/Stations/Form/StreamersForm.vue:112
+#: src/components/Admin/Stations/Form/StreamersForm.vue:109
 msgid "Customize DJ/Streamer Mount Point"
 msgstr "Tilpass DJ/Streamer Mount Point"
 
-#: src/components/Admin/Stations/Form/StreamersForm.vue:83
+#: src/components/Admin/Stations/Form/StreamersForm.vue:80
 msgid "Customize DJ/Streamer Port"
 msgstr "Tilpass DJ/Streamer-port"
 
@@ -1359,7 +1376,7 @@ msgid "Customize this setting to ensure you get the correct IP address for remot
 msgstr "Tilpass denne innstillingen for å forsikre deg om at du får riktig IP-adresse for eksterne brukere. Endre bare denne innstillingen hvis du bruker en omvendt proxy, enten i Docker eller en tredjepartstjeneste som CloudFlare."
 
 #: src/components/Admin/Branding/BrandingForm.vue:190
-#: src/components/Stations/Profile/EmbedModal.vue:158
+#: src/components/Stations/Profile/EmbedModal.vue:162
 msgid "Dark"
 msgstr "Mørk"
 
@@ -1368,11 +1385,11 @@ msgstr "Mørk"
 msgid "Dashboard"
 msgstr "Kontrollpanel"
 
-#: src/components/Stations/Reports/Requests.vue:122
+#: src/components/Stations/Reports/Requests.vue:121
 msgid "Date Played"
 msgstr "Spilledato"
 
-#: src/components/Stations/Reports/Requests.vue:121
+#: src/components/Stations/Reports/Requests.vue:120
 msgid "Date Requested"
 msgstr "Forespurt Dato"
 
@@ -1380,11 +1397,11 @@ msgstr "Forespurt Dato"
 msgid "Date/Time"
 msgstr "Dato/Klokkeslett"
 
-#: src/components/Stations/Reports/Timeline.vue:119
+#: src/components/Stations/Reports/Timeline.vue:124
 msgid "Date/Time (Browser)"
 msgstr "Dato/Tid (Nettleser)"
 
-#: src/components/Stations/Reports/Timeline.vue:133
+#: src/components/Stations/Reports/Timeline.vue:135
 msgid "Date/Time (Station)"
 msgstr "Dato/Tid (Stasjon)"
 
@@ -1392,7 +1409,7 @@ msgstr "Dato/Tid (Stasjon)"
 msgid "Days of Playback History to Keep"
 msgstr "Dager med avspillingshistorikk å beholde"
 
-#: src/components/Admin/Stations/Form/StreamersForm.vue:66
+#: src/components/Admin/Stations/Form/StreamersForm.vue:63
 msgid "Deactivate Streamer on Disconnect (Seconds)"
 msgstr "Deaktiver Streamer ved frakobling (sekunder)"
 
@@ -1414,7 +1431,7 @@ msgstr "Standard URL for albumgrafikk"
 msgid "Default Avatar URL"
 msgstr "Standard avatar-URL"
 
-#: src/components/Admin/Stations/Form/StreamersForm.vue:120
+#: src/components/Admin/Stations/Form/StreamersForm.vue:117
 msgid "Default Live Broadcast Message"
 msgstr "Standard Live Broadcast melding"
 
@@ -1429,16 +1446,16 @@ msgstr "Standardmontering"
 #: src/components/Admin/Backups.vue:125
 #: src/components/Admin/CustomFields.vue:41
 #: src/components/Admin/Permissions.vue:56
-#: src/components/Admin/Stations.vue:56
+#: src/components/Admin/Stations.vue:64
 #: src/components/Admin/StorageLocations.vue:58
 #: src/components/Admin/Users.vue:64
 #: src/components/Stations/HlsStreams.vue:49
 #: src/components/Stations/Media/MediaToolbar.vue:171
 #: src/components/Stations/Mounts.vue:57
-#: src/components/Stations/Playlists.vue:62
-#: src/components/Stations/Podcasts/EpisodesView.vue:96
-#: src/components/Stations/Podcasts/ListView.vue:66
-#: src/components/Stations/Queue.vue:38
+#: src/components/Stations/Playlists.vue:162
+#: src/components/Stations/PodcastEpisodes.vue:113
+#: src/components/Stations/Podcasts.vue:72
+#: src/components/Stations/Queue.vue:39
 #: src/components/Stations/Remotes.vue:58
 #: src/components/Stations/Reports/Requests.vue:88
 #: src/components/Stations/SftpUsers.vue:36
@@ -1462,11 +1479,11 @@ msgstr "Slett albumbilde"
 msgid "Delete API Key?"
 msgstr "Vil du slette API Nøkkelen?"
 
-#: src/components/Admin/Backups.vue:271
+#: src/components/Admin/Backups.vue:269
 msgid "Delete Backup?"
 msgstr "Vil du slette sikkerhetskopi?"
 
-#: src/components/Stations/Streamers/BroadcastsModal.vue:145
+#: src/components/Stations/Streamers/BroadcastsModal.vue:136
 msgid "Delete Broadcast?"
 msgstr "Vil du slette kringkastingen?"
 
@@ -1474,7 +1491,7 @@ msgstr "Vil du slette kringkastingen?"
 msgid "Delete Custom Field?"
 msgstr "Slett Tilpasset Felt?"
 
-#: src/components/Stations/Podcasts/EpisodesView.vue:179
+#: src/components/Stations/PodcastEpisodes.vue:217
 msgid "Delete Episode?"
 msgstr "Vil du slette episoden?"
 
@@ -1490,15 +1507,15 @@ msgstr "Vil du slette Mount Point?"
 msgid "Delete Passkey?"
 msgstr ""
 
-#: src/components/Stations/Playlists.vue:448
+#: src/components/Stations/Playlists.vue:440
 msgid "Delete Playlist?"
 msgstr "Slett Spilleliste?"
 
-#: src/components/Stations/Podcasts/ListView.vue:162
+#: src/components/Stations/Podcasts.vue:151
 msgid "Delete Podcast?"
 msgstr "Vil du slette podcasten?"
 
-#: src/components/Stations/Queue.vue:125
+#: src/components/Stations/Queue.vue:121
 msgid "Delete Queue Item?"
 msgstr "Slette Køelementet?"
 
@@ -1510,7 +1527,7 @@ msgstr "Slett Post?"
 msgid "Delete Remote Relay?"
 msgstr "Vil du slette Remote Relay?"
 
-#: src/components/Stations/Reports/Requests.vue:167
+#: src/components/Stations/Reports/Requests.vue:157
 msgid "Delete Request?"
 msgstr "Vil du slette forespørselen?"
 
@@ -1522,7 +1539,7 @@ msgstr "Vil du slette rolle?"
 msgid "Delete SFTP User?"
 msgstr "Vil du slette SFTP-bruker?"
 
-#: src/components/Admin/Stations.vue:153
+#: src/components/Admin/Stations.vue:187
 msgid "Delete Station?"
 msgstr "Vil du slette stasjonen?"
 
@@ -1549,17 +1566,19 @@ msgstr "Vil du slette Web Hook?"
 msgid "Description"
 msgstr "Beskrivelse"
 
-#: src/components/Stations/Reports/Listeners.vue:131
-msgid "Desktop Device"
-msgstr "Desktop-enhet"
+#: src/components/Stations/Reports/Listeners.vue:139
+#: src/components/Stations/Reports/Listeners/FiltersBar.vue:43
+msgid "Desktop"
+msgstr ""
 
 #: src/components/Admin/Debug/TaskOutput.vue:31
+#: src/components/Public/Podcasts/Podcast.vue:127
 msgid "Details"
 msgstr "Detaljer"
 
 #: src/components/Stations/Media/MoveFilesModal.vue:116
 #: src/components/Stations/Playlists/ApplyToModal.vue:88
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Files/ListAction.php:244
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Files/ListAction.php:245
 msgid "Directory"
 msgstr "Katalog"
 
@@ -1568,7 +1587,8 @@ msgid "Directory Name"
 msgstr "Katalognavn"
 
 #: src/components/Admin/CustomFields/Form.vue:58
-#: src/components/Stations/Playlists.vue:355
+#: src/components/Admin/Stations.vue:50
+#: src/components/Stations/Playlists.vue:195
 #: src/components/Stations/Profile/PublicPagesPanel.vue:98
 #: src/components/Stations/Profile/RequestsPanel.vue:36
 #: src/components/Stations/Profile/StreamersPanel.vue:35
@@ -1583,6 +1603,10 @@ msgstr "Deaktiver Crossfading"
 #: src/components/Admin/Stations/Form/BackendForm.vue:498
 msgid "Disable Optimizations"
 msgstr "Deaktiver Optimaliseringer"
+
+#: src/components/Admin/Stations.vue:169
+msgid "Disable station?"
+msgstr ""
 
 #: src/components/Account/SecurityPanel.vue:50
 msgid "Disable Two-Factor"
@@ -1601,8 +1625,8 @@ msgstr "Deaktiver?"
 #: src/components/Admin/Stations/Form/ProfileForm.vue:218
 #: src/components/Common/Badges/EnabledBadge.vue:30
 #: src/components/Stations/Mounts.vue:40
-#: src/components/Stations/Playlists.vue:115
-#: src/components/Stations/Playlists.vue:121
+#: src/components/Stations/Playlists.vue:89
+#: src/components/Stations/Playlists.vue:95
 #: src/components/Stations/Remotes.vue:38
 #: src/components/Stations/Streamers.vue:52
 #: src/components/Stations/Webhooks.vue:34
@@ -1640,7 +1664,7 @@ msgstr "Vis felter"
 msgid "Display Name"
 msgstr "Visningsnavn"
 
-#: src/components/Admin/Stations/Form/StreamersForm.vue:102
+#: src/components/Admin/Stations/Form/StreamersForm.vue:99
 msgid "DJ/Streamer Buffer Time (Seconds)"
 msgstr "DJ/streamerbuffertid (sekunder)"
 
@@ -1668,12 +1692,8 @@ msgstr "Domene Navn"
 msgid "Donate to support AzuraCast!"
 msgstr "Doner for å støtte AzuraCast!"
 
-#: src/components/Stations/Playlists/ReorderModal.vue:57
-msgid "Down"
-msgstr "Nedover"
-
 #: src/components/Admin/Backups.vue:118
-#: src/components/Public/OnDemand.vue:45
+#: src/components/Public/OnDemand.vue:40
 #: src/components/Stations/Fallback.vue:54
 #: src/components/Stations/Mounts/Form/Intro.vue:40
 #: src/components/Stations/Podcasts/EpisodeForm/Media.vue:40
@@ -1715,7 +1735,7 @@ msgstr "Dropbox App Konsoll"
 msgid "Dropbox Setup Instructions"
 msgstr "Dropbox Oppsetts Instruksjoner"
 
-#: src/components/Stations/Playlists.vue:240
+#: src/components/Stations/Playlists.vue:242
 msgid "Duplicate"
 msgstr "Dupliser"
 
@@ -1764,15 +1784,15 @@ msgstr "EBU R128"
 
 #: src/components/Admin/CustomFields.vue:34
 #: src/components/Admin/Permissions.vue:48
-#: src/components/Admin/Stations.vue:49
+#: src/components/Admin/Stations.vue:57
 #: src/components/Admin/StorageLocations.vue:51
 #: src/components/Admin/Users.vue:57
 #: src/components/Stations/HlsStreams.vue:42
 #: src/components/Stations/Media.vue:197
 #: src/components/Stations/Mounts.vue:50
-#: src/components/Stations/Playlists.vue:55
-#: src/components/Stations/Podcasts/EpisodesView.vue:89
-#: src/components/Stations/Podcasts/ListView.vue:59
+#: src/components/Stations/Playlists.vue:155
+#: src/components/Stations/PodcastEpisodes.vue:106
+#: src/components/Stations/Podcasts.vue:65
 #: src/components/Stations/Remotes.vue:51
 #: src/components/Stations/SftpUsers.vue:29
 #: src/components/Stations/Streamers.vue:63
@@ -1788,7 +1808,7 @@ msgstr "Rediger profilering"
 msgid "Edit Custom Field"
 msgstr "Rediger tilpasset felt"
 
-#: src/components/Stations/Podcasts/EpisodeEditModal.vue:145
+#: src/components/Stations/Podcasts/EpisodeEditModal.vue:143
 msgid "Edit Episode"
 msgstr "Endre Episode"
 
@@ -1813,7 +1833,7 @@ msgstr "Rediger Oppkobliings Punkt"
 msgid "Edit Playlist"
 msgstr "Rediger Spilleliste"
 
-#: src/components/Stations/Podcasts/PodcastEditModal.vue:100
+#: src/components/Stations/Podcasts/PodcastEditModal.vue:107
 msgid "Edit Podcast"
 msgstr "Endre Podcast"
 
@@ -1875,11 +1895,12 @@ msgstr "Bygg inn widgets"
 msgid "Emergency"
 msgstr "Nødsituasjon"
 
-#: src/components/Stations/Playlists.vue:193
+#: src/components/Stations/Playlists.vue:203
 msgid "Empty"
 msgstr "Tom"
 
-#: src/components/Stations/Playlists.vue:356
+#: src/components/Admin/Stations.vue:50
+#: src/components/Stations/Playlists.vue:195
 #: src/components/Stations/Playlists/Form/BasicInfo.vue:18
 #: src/components/Stations/Profile/PublicPagesPanel.vue:111
 #: src/components/Stations/Profile/RequestsPanel.vue:49
@@ -1928,6 +1949,10 @@ msgstr "Aktiver On-Demand Streaming"
 msgid "Enable Public Pages"
 msgstr "Aktiver Offentlige Sider"
 
+#: src/components/Admin/Stations.vue:170
+msgid "Enable station?"
+msgstr ""
+
 #: src/components/Admin/StorageLocations/Form/S3.vue:54
 msgid "Enable this option if your S3 provider is using paths instead of sub-domains for their S3 endpoint; for example, when using MinIO or with other self-hosted S3 storage solutions that are accessible via a path on a domain/IP instead of a subdomain."
 msgstr "Aktiver dette alternativet hvis din S3-leverandør bruker stier i stedet for underdomener for S3-endepunktet; for eksempel når du bruker MinIO eller med andre selvbetjente S3 lagringsløsninger som er tilgjengelige via en vei på et domene/IP i stedet for et underdomene."
@@ -1940,7 +1965,7 @@ msgstr "Aktiver denne innstillingen for å forhindre at metadata sendes til Auto
 msgid "Enable to advertise this mount point on \"Yellow Pages\" public radio directories."
 msgstr "Aktiver for å annonsere dette monteringspunktet på \"Gule sider\" offentlige radiokataloger."
 
-#: src/components/Stations/Remotes/Form/AutoDj.vue:82
+#: src/components/Stations/Remotes/Form/AutoDj.vue:79
 msgid "Enable to advertise this relay on \"Yellow Pages\" public radio directories."
 msgstr "Aktiver for å annonsere denne reléet på \"Gule sider\" offentlige radiokataloger."
 
@@ -1985,7 +2010,8 @@ msgid "End Date"
 msgstr "Sluttdato"
 
 #: src/components/Stations/Playlists/Form/ScheduleRow.vue:44
-#: src/components/Stations/Streamers/BroadcastsModal.vue:105
+#: src/components/Stations/Reports/Listeners.vue:280
+#: src/components/Stations/Streamers/BroadcastsModal.vue:100
 #: src/components/Stations/Streamers/Form/ScheduleRow.vue:47
 msgid "End Time"
 msgstr "Sluttidspunkt"
@@ -2035,16 +2061,15 @@ msgstr "Skriv inn e-postadressen din for å motta oppdateringer om sertifikatet 
 msgid "Enter your password"
 msgstr "Skriv inn ditt passord"
 
+#: src/components/Public/Podcasts/Podcast.vue:165
+#: src/components/Stations/PodcastEpisodes.vue:167
 #: src/components/Stations/Podcasts/EpisodeForm/BasicInfo.vue:11
-#: src/components/Stations/Podcasts/EpisodesView.vue:145
 msgid "Episode"
 msgstr "Episode"
 
-#: src/components/Stations/Podcasts/EpisodesView.vue:18
-#: src/components/Stations/Podcasts/ListView.vue:73
-#: /home/runner/work/AzuraCast/AzuraCast/templates/frontend/public/podcast-episodes.phtml:35
-#: /home/runner/work/AzuraCast/AzuraCast/templates/frontend/public/podcasts.phtml:37
-#: /home/runner/work/AzuraCast/AzuraCast/templates/frontend/public/podcasts.phtml:72
+#: src/components/Public/Podcasts/PodcastList.vue:52
+#: src/components/Stations/PodcastEpisodes.vue:18
+#: src/components/Stations/Podcasts.vue:78
 msgid "Episodes"
 msgstr "Episoder"
 
@@ -2077,12 +2102,12 @@ msgstr ""
 msgid "Example: if the remote radio URL is http://station.example.com:8000/radio.mp3, enter \"http://station.example.com:8000\"."
 msgstr "Eksempel: hvis nettadressen for den eksterne radioen er http://stasjon.example.com:8000/radio.mp3, skriv inn \"http://station.example.com:8000\"."
 
-#: src/components/Admin/Backups/ConfigureModal.vue:46
+#: src/components/Admin/Backups/ConfigureModal.vue:45
 #: src/components/Admin/Backups/RunBackupModal.vue:64
 msgid "Exclude Media from Backup"
 msgstr "Ekskluder media fra sikkerhetskopiering"
 
-#: src/components/Admin/Backups/ConfigureModal.vue:47
+#: src/components/Admin/Backups/ConfigureModal.vue:46
 msgid "Excluding media from automated backups will save space, but you should make sure to back up your media elsewhere. Note that only locally stored media will be backed up."
 msgstr "Å ekskludere media fra automatiserte sikkerhetskopier vil spare plass, men du bør sørge for å sikkerhetskopiere mediene andre steder. Merk at kun lokalt lagrede medier vil bli sikkerhetskopiert."
 
@@ -2090,17 +2115,18 @@ msgstr "Å ekskludere media fra automatiserte sikkerhetskopier vil spare plass, 
 msgid "Exit Fullscreen"
 msgstr "Avslutt Fullskjerm"
 
-#: src/components/Stations/Queue.vue:97
+#: src/components/Stations/Queue.vue:98
 msgid "Expected to Play at"
 msgstr "Forventes å spille kl"
 
-#: src/components/Stations/Podcasts/EpisodesView.vue:147
-#: src/components/Stations/Podcasts/EpisodesView.vue:79
-#: /home/runner/work/AzuraCast/AzuraCast/templates/frontend/public/podcast-episode.phtml:60
+#: src/components/Public/Podcasts/Podcast.vue:114
+#: src/components/Public/Podcasts/PodcastEpisode.vue:100
+#: src/components/Stations/PodcastEpisodes.vue:191
+#: src/components/Stations/PodcastEpisodes.vue:96
 msgid "Explicit"
 msgstr "Eksplisitt"
 
-#: src/components/Stations/Playlists.vue:250
+#: src/components/Stations/Playlists.vue:252
 msgid "Export %{format}"
 msgstr "Eksporter %{format}"
 
@@ -2127,7 +2153,7 @@ msgstr "Feltnavn"
 #: src/components/Admin/Backups.vue:205
 #: src/components/Admin/Backups/RunBackupModal.vue:37
 #: src/components/Stations/Media/Form/BasicInfo.vue:7
-#: src/components/Stations/Podcasts/EpisodesView.vue:146
+#: src/components/Stations/PodcastEpisodes.vue:172
 msgid "File Name"
 msgstr "Filnavn"
 
@@ -2223,7 +2249,7 @@ msgstr "Full"
 msgid "Full Volume"
 msgstr "Fullt volum"
 
-#: src/components/Stations/Playlists.vue:124
+#: src/components/Stations/Playlists.vue:98
 #: src/components/Stations/Playlists/Form/BasicInfo.vue:112
 #: src/components/Stations/Playlists/Form/BasicInfo.vue:309
 msgid "General Rotation"
@@ -2251,7 +2277,7 @@ msgstr "Generisk Webhook"
 
 #: src/components/Admin/Stations/Form/ProfileForm.vue:26
 #: src/components/Public/Requests/RequestsDataTable.vue:90
-#: src/components/Stations/Media.vue:319
+#: src/components/Stations/Media.vue:317
 #: /home/runner/work/AzuraCast/AzuraCast/src/Media/Enums/MetadataTags.php:100
 msgid "Genre"
 msgstr "Sjanger"
@@ -2309,7 +2335,7 @@ msgstr "Skjul albumomslag på offentlige sider"
 msgid "Hide AzuraCast Branding on Public Pages"
 msgstr "Skjul AzuraCast-merkevarebygging på offentlige sider"
 
-#: src/components/Dashboard.vue:331
+#: src/components/Dashboard.vue:303
 msgid "Hide Charts"
 msgstr "Skjul Lister"
 
@@ -2385,7 +2411,7 @@ msgstr "Icecast/Shoutcast Stream URL"
 msgid "Identifier"
 msgstr "Identifikator"
 
-#: src/components/Admin/Stations/Form/StreamersForm.vue:121
+#: src/components/Admin/Stations/Form/StreamersForm.vue:118
 msgid "If a live DJ connects but has not yet sent metadata, this is the message that will display on player pages."
 msgstr "Dersom en live DJ kobles til men ikke har sendt metadata, er dette meldingen som vil vises på spillernes sider."
 
@@ -2454,7 +2480,6 @@ msgstr "Hvis valgt, vil ikke albumgrafikk vises på offentlige radiosider."
 msgid "If selected, this will remove the AzuraCast branding from public-facing pages."
 msgstr "Hvis valgt, vil dette fjerne AzuraCast-merkevaren fra offentlige sider."
 
-#: src/components/Admin/Backups/ConfigureModal.vue:31
 #: src/components/Stations/Playlists/Form/ScheduleRow.vue:45
 msgid "If the end time is before the start time, the playlist will play overnight."
 msgstr "Hvis slutttiden er før starttiden, spilles spillelisten av over natten."
@@ -2463,11 +2488,11 @@ msgstr "Hvis slutttiden er før starttiden, spilles spillelisten av over natten.
 msgid "If the end time is before the start time, the schedule entry will continue overnight."
 msgstr "Hvis slutttiden er før starttidspunktet, fortsetter planleggingen over natten."
 
-#: src/components/Stations/Remotes/Form/AutoDj.vue:54
+#: src/components/Stations/Remotes/Form/AutoDj.vue:51
 msgid "If the mountpoint (i.e. /radio.mp3) or Shoutcast SID (i.e. 2) you broadcast to is different from the stream URL, specify the source mount point here."
 msgstr "Hvis monteringspunktet (dvs. /radio.mp3) eller Shoutcast SID (dvs. 2) du kringkaster til er noe annet enn stream URL, spesifiser kildemonteringspunktet her."
 
-#: src/components/Stations/Remotes/Form/AutoDj.vue:46
+#: src/components/Stations/Remotes/Form/AutoDj.vue:43
 msgid "If the port you broadcast to is different from the stream URL, specify the source port here."
 msgstr "Hvis porten du sender på er forskjellig fra stream URL, angir du kildeporten her."
 
@@ -2487,11 +2512,11 @@ msgstr "Hvis denne innstillingen er satt til \"Ja\", vil nettleserens URL brukes
 msgid "If this station has on-demand streaming and downloading enabled, only songs that are in playlists with this setting enabled will be visible."
 msgstr "Hvis denne stasjonen har streaming og nedlasting på forespørsel aktivert, vil bare sanger som er i spillelister med denne innstillingen aktivert være synlige."
 
-#: src/components/Stations/Remotes/Form/AutoDj.vue:70
+#: src/components/Stations/Remotes/Form/AutoDj.vue:67
 msgid "If you are broadcasting using AutoDJ, enter the source password here."
 msgstr "Hvis du kringkaster med AutoDJ, skriv inn kildepassordet her."
 
-#: src/components/Stations/Remotes/Form/AutoDj.vue:62
+#: src/components/Stations/Remotes/Form/AutoDj.vue:59
 msgid "If you are broadcasting using AutoDJ, enter the source username here. This may be blank."
 msgstr "Hvis du kringkaster med AutoDJ, skriv inn kildebrukernavnet her. Dette kan være tomt."
 
@@ -2511,7 +2536,7 @@ msgstr "Hvis Mastodon-brukernavnet ditt er \"@test@example.com\", skriv inn \"ex
 msgid "If your stream is set to advertise to YP directories above, you must specify an authorization hash. You can manage these on the Shoutcast web site."
 msgstr "Hvis strømmen din settes til å annonsere til YP-mapper ovenfor, må du angi en autorisasjonshash. Du kan administrere disse på nettstedet Shoutcast."
 
-#: src/components/Admin/Stations/Form/StreamersForm.vue:113
+#: src/components/Admin/Stations/Form/StreamersForm.vue:110
 msgid "If your streaming software requires a specific mount point path, specify it here. Otherwise, use the default."
 msgstr "Hvis strømmeprogramvaren din krever en bestemt monteringspunktbane, spesifiser den her. Ellers bruker du standarden."
 
@@ -2528,7 +2553,7 @@ msgstr "Hvis netthooken din krever grunnleggende HTTP-autentisering, oppgi bruke
 msgid "Import Changes from CSV"
 msgstr "Importer endringer fra CSV"
 
-#: src/components/Stations/Playlists.vue:209
+#: src/components/Stations/Playlists.vue:219
 #: src/components/Stations/Playlists/ImportModal.vue:5
 #: src/components/Stations/Playlists/ImportModal.vue:95
 msgid "Import from PLS/M3U"
@@ -2623,7 +2648,7 @@ msgstr "Avbryt andre sanger for å spille på planlagt tidspunkt."
 msgid "Intro"
 msgstr "Introduksjon"
 
-#: src/components/Stations/Reports/Listeners.vue:217
+#: src/components/Stations/Reports/Listeners.vue:243
 #: src/components/Stations/Reports/Listeners/Map.vue:10
 msgid "IP"
 msgstr "IP"
@@ -2640,7 +2665,11 @@ msgstr "IP Geolocation brukes til å gjette den omtrentlige plasseringen til lyt
 msgid "Is Public"
 msgstr "Er Offentlig"
 
-#: src/components/Stations/Media.vue:320
+#: src/components/Stations/PodcastEpisodes.vue:177
+msgid "Is Published"
+msgstr ""
+
+#: src/components/Stations/Media.vue:318
 #: src/components/Stations/Media/Form/BasicInfo.vue:51
 #: /home/runner/work/AzuraCast/AzuraCast/src/Media/Enums/MetadataTags.php:105
 msgid "ISRC"
@@ -2650,14 +2679,13 @@ msgstr "ISRC"
 msgid "Items per page"
 msgstr "Elementer per side"
 
-#: src/components/Stations/Playlists.vue:91
+#: src/components/Stations/Playlists.vue:65
 msgid "Jingle Mode"
 msgstr "Jingle-modus"
 
 #: src/components/Account/EditForm.vue:39
 #: src/components/Stations/Podcasts/PodcastForm/BasicInfo.vue:36
 #: /home/runner/work/AzuraCast/AzuraCast/src/Media/Enums/MetadataTags.php:106
-#: /home/runner/work/AzuraCast/AzuraCast/templates/frontend/public/podcasts.phtml:52
 msgid "Language"
 msgstr "Språk"
 
@@ -2754,7 +2782,7 @@ msgstr "La stå tomt for å bruke gjeldende passord."
 msgid "Leave blank to use the default Telegram API URL (recommended)."
 msgstr "La stå tomt for å bruke standard Telegram API URL (anbefalt)."
 
-#: src/components/Stations/Media.vue:321
+#: src/components/Stations/Media.vue:319
 #: /home/runner/work/AzuraCast/AzuraCast/src/Media/Enums/MetadataTags.php:107
 msgid "Length"
 msgstr "Lengde"
@@ -2772,7 +2800,7 @@ msgid "LetsEncrypt provides simple, free SSL certificates allowing you to secure
 msgstr "LetsEncrypt tilbyr enkel, gratis SSL sertifikater tillater deg å sikre trafikk igjennom ditt kontrollpanel og radio strømmer."
 
 #: src/components/Admin/Branding/BrandingForm.vue:186
-#: src/components/Stations/Profile/EmbedModal.vue:154
+#: src/components/Stations/Profile/EmbedModal.vue:158
 msgid "Light"
 msgstr "Lyst"
 
@@ -2821,14 +2849,18 @@ msgstr "Lytter Tapt"
 msgid "Listener Report"
 msgstr "LytteRapport"
 
-#: src/components/Stations/Queue.vue:60
+#: src/components/Stations/Queue.vue:61
 #: src/components/Stations/Reports/Timeline.vue:69
 msgid "Listener Request"
 msgstr "Lytterforespørsel"
 
+#: src/components/Stations/Reports/Listeners/FiltersBar.vue:30
+msgid "Listener Type"
+msgstr ""
+
 #: src/components/Common/Charts/HourChart.vue:48
 #: src/components/Common/Charts/TimeSeriesChart.vue:70
-#: src/components/Dashboard.vue:168
+#: src/components/Dashboard.vue:327
 #: src/components/Stations/menu.ts:204
 #: src/components/Stations/Profile/StreamsPanel.vue:115
 #: src/components/Stations/Profile/StreamsPanel.vue:19
@@ -2836,16 +2868,16 @@ msgstr "Lytterforespørsel"
 #: src/components/Stations/Reports/Listeners.vue:9
 #: src/components/Stations/Reports/Overview/CommonMetricsView.vue:88
 #: src/components/Stations/Reports/Overview/ListeningTimeTab.vue:55
-#: src/components/Stations/Reports/Timeline.vue:148
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ByClient.php:81
+#: src/components/Stations/Reports/Timeline.vue:146
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Frontend/Dashboard/ChartsAction.php:182
 #: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ByListeningTime.php:85
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ByBrowser.php:61
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ByCountry.php:74
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ByStream.php:98
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ByClient.php:81
 #: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ChartsAction.php:83
 #: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ChartsAction.php:133
 #: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ChartsAction.php:222
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ByStream.php:98
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ByCountry.php:74
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ByBrowser.php:61
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Frontend/Dashboard/ChartsAction.php:182
 msgid "Listeners"
 msgstr "Lyttere"
 
@@ -2883,11 +2915,11 @@ msgstr "Lytte Tid"
 
 #: src/components/Public/Player.vue:22
 #: src/components/Stations/Profile/NowPlayingPanel.vue:183
-#: src/components/Stations/Streamers/BroadcastsModal.vue:109
+#: src/components/Stations/Streamers/BroadcastsModal.vue:104
 msgid "Live"
 msgstr "Direkte"
 
-#: src/components/Admin/Stations/Form/StreamersForm.vue:53
+#: src/components/Admin/Stations/Form/StreamersForm.vue:50
 msgid "Live Broadcast Recording Bitrate (kbps)"
 msgstr "Live kringkasting opptak bitrate (kbps)"
 
@@ -2928,7 +2960,7 @@ msgid "Loading"
 msgstr "Laster"
 
 #: src/components/Admin/StorageLocations.vue:167
-#: src/components/Stations/Reports/Listeners.vue:148
+#: src/components/Stations/Reports/Listeners.vue:160
 msgid "Local"
 msgstr "Lokal"
 
@@ -2948,12 +2980,12 @@ msgstr "Lokal IP (Standard)"
 msgid "Local Streams"
 msgstr "Lokale strømmer"
 
-#: src/components/Stations/Reports/Listeners.vue:222
+#: src/components/Stations/Reports/Listeners.vue:306
 msgid "Location"
 msgstr "Steder"
 
 #: src/components/Admin/Users.vue:50
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/LoginAction.php:133
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/LoginAction.php:137
 #: /home/runner/work/AzuraCast/AzuraCast/templates/frontend/account/two_factor.phtml:3
 msgid "Log In"
 msgstr "Logg inn"
@@ -2969,7 +3001,7 @@ msgid "Log Viewer"
 msgstr "Loggvisning"
 
 #: src/components/Stations/menu.ts:308
-#: src/components/Stations/Queue.vue:30
+#: src/components/Stations/Queue.vue:31
 msgid "Logs"
 msgstr "Logger"
 
@@ -2995,7 +3027,7 @@ msgid "Make the selected media play immediately, interrupting existing media"
 msgstr "Gjør de valgte mediene til spill umiddelbart og avbryt eksisterende media"
 
 #: src/components/Admin/Stations.vue:35
-#: src/components/Dashboard.vue:258
+#: src/components/Dashboard.vue:234
 #: src/components/Stations/Profile/StreamersPanel.vue:24
 msgid "Manage"
 msgstr "Administrer"
@@ -3083,6 +3115,10 @@ msgstr "Matomo nettsteds-ID"
 #: src/components/Stations/Mounts/Form/BasicInfo.vue:68
 msgid "Max Listener Duration"
 msgstr "Maks lyttervarighet"
+
+#: src/components/Stations/Reports/Listeners/FiltersBar.vue:17
+msgid "Max. Connected Time"
+msgstr ""
 
 #: src/components/Admin/Stations/Form/FrontendForm.vue:80
 msgid "Maximum Listeners"
@@ -3185,6 +3221,10 @@ msgstr "Meldingsemne"
 msgid "Message Visibility"
 msgstr "Meldingssynlighet"
 
+#: src/components/Stations/Profile/UpdateMetadataModal.vue:105
+msgid "Metadata updated."
+msgstr ""
+
 #: src/components/Public/WebDJ/MicrophonePanel.vue:7
 msgid "Microphone"
 msgstr "Mikrofon"
@@ -3192,6 +3232,10 @@ msgstr "Mikrofon"
 #: src/components/Public/WebDJ/MicrophonePanel.vue:46
 msgid "Microphone Source"
 msgstr "Mikrofon Kilde"
+
+#: src/components/Stations/Reports/Listeners/FiltersBar.vue:4
+msgid "Min. Connected Time"
+msgstr ""
 
 #: src/components/Stations/Playlists/Form/BasicInfo.vue:175
 msgid "Minute of Hour to Play"
@@ -3201,12 +3245,12 @@ msgstr "Minutt av Time å Spille"
 msgid "Mixer"
 msgstr "Mikser"
 
-#: src/components/Stations/Reports/Listeners.vue:125
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ByClient.php:62
-msgid "Mobile Device"
-msgstr "Mobil Enhet"
+#: src/components/Stations/Reports/Listeners.vue:133
+#: src/components/Stations/Reports/Listeners/FiltersBar.vue:40
+msgid "Mobile"
+msgstr ""
 
-#: src/components/Stations/Media.vue:338
+#: src/components/Stations/Media.vue:336
 msgid "Modified"
 msgstr "Endret"
 
@@ -3218,7 +3262,7 @@ msgid "Monday"
 msgstr "Mandag"
 
 #: src/components/Stations/Media/MediaToolbar.vue:124
-#: src/components/Stations/Playlists.vue:70
+#: src/components/Stations/Playlists.vue:172
 msgid "More"
 msgstr "Mer"
 
@@ -3261,9 +3305,25 @@ msgstr "Flytt"
 msgid "Move %{ num } File(s) to"
 msgstr "Flytt %{ num } fil(er) til"
 
+#: src/components/Stations/Playlists/ReorderModal.vue:66
+msgid "Move Down"
+msgstr ""
+
+#: src/components/Stations/Playlists/ReorderModal.vue:57
+msgid "Move to Bottom"
+msgstr ""
+
 #: src/components/Stations/Media/MoveFilesModal.vue:71
 msgid "Move to Directory"
 msgstr "Flytt til katalog"
+
+#: src/components/Stations/Playlists/ReorderModal.vue:84
+msgid "Move to Top"
+msgstr ""
+
+#: src/components/Stations/Playlists/ReorderModal.vue:75
+msgid "Move Up"
+msgstr ""
 
 #: src/components/Stations/Media.vue:14
 #: src/components/Stations/menu.ts:75
@@ -3296,11 +3356,11 @@ msgid "N/A"
 msgstr "Ikke tilgjengelig"
 
 #: src/components/Account/EditForm.vue:9
-#: src/components/Admin/Stations.vue:113
+#: src/components/Admin/Stations.vue:124
 #: src/components/Admin/Stations/Form/ProfileForm.vue:11
 #: src/components/Public/Requests/RequestsDataTable.vue:60
 #: src/components/Stations/HlsStreams.vue:82
-#: src/components/Stations/Media.vue:309
+#: src/components/Stations/Media.vue:307
 #: src/components/Stations/Mounts.vue:101
 #: src/components/Stations/Remotes.vue:93
 msgid "Name"
@@ -3373,6 +3433,7 @@ msgid "Next Run"
 msgstr "Neste kjøring"
 
 #: src/components/Admin/Relays.vue:41
+#: src/components/Stations/PodcastEpisodes.vue:89
 msgid "No"
 msgstr "Nei"
 
@@ -3393,7 +3454,7 @@ msgid "No Match"
 msgstr "Ingen treff"
 
 #: src/components/Admin/Stations/Form/FrontendForm.vue:73
-#: src/components/Admin/Stations/Form/StreamersForm.vue:87
+#: src/components/Admin/Stations/Form/StreamersForm.vue:84
 msgid "No other program can be using this port. Leave blank to automatically assign a port."
 msgstr "Ingen andre programmer kan bruke denne porten. La stå tomt for automatisk å tilordne en port."
 
@@ -3411,7 +3472,7 @@ msgstr "Ingen oppføringer."
 
 #: src/components/Admin/CustomFields.vue:92
 #: src/components/Admin/Settings/SecurityPrivacyTab.vue:135
-#: src/components/Stations/Playlists.vue:363
+#: src/components/Stations/Playlists.vue:355
 #: /home/runner/work/AzuraCast/AzuraCast/src/Entity/Repository/StorageLocationRepository.php:74
 msgid "None"
 msgstr "Ingen"
@@ -3449,7 +3510,7 @@ msgstr "Stereo verktøy kan være ressurskrevende for både CPU og minne. Vennli
 msgid "Note: If your media metadata has UTF-8 characters, you should use a spreadsheet editor that supports UTF-8 encoding, like OpenOffice."
 msgstr "Merk: Hvis ditt media metadata har UTF-8 tegn, skal du bruke et regnearkeditor som støtter UTF-8 koding, som OpenOffice."
 
-#: src/components/Admin/Stations/Form/StreamersForm.vue:91
+#: src/components/Admin/Stations/Form/StreamersForm.vue:88
 msgid "Note: the port after this one will automatically be used for legacy connections."
 msgstr ""
 
@@ -3470,7 +3531,7 @@ msgstr "Merknad"
 msgid "Now"
 msgstr "Nå"
 
-#: src/components/Dashboard.vue:170
+#: src/components/Dashboard.vue:332
 #: src/components/Stations/Profile/NowPlayingPanel.vue:56
 msgid "Now Playing"
 msgstr "Spiller Nå"
@@ -3496,7 +3557,7 @@ msgstr "Spiller nå på %{ station }: %{ title } av %{ artist }! Still inn nå."
 msgid "NowPlaying API Response"
 msgstr "NowPlaying API-respons"
 
-#: src/components/Admin/Backups/ConfigureModal.vue:56
+#: src/components/Admin/Backups/ConfigureModal.vue:55
 msgid "Number of Backup Copies to Keep"
 msgstr "Antall sikkerhetskopier å beholde"
 
@@ -3521,15 +3582,15 @@ msgstr "Antall synlige nylige sanger"
 msgid "On the Air"
 msgstr "På lufta"
 
-#: src/components/Stations/Playlists.vue:103
+#: src/components/Stations/Playlists.vue:77
 msgid "On-Demand"
 msgstr "På etterspørsel"
 
-#: src/components/Public/OnDemand.vue:17
+#: src/components/Public/OnDemand.vue:11
 #: src/components/Stations/menu.ts:116
-#: src/components/Stations/Profile/EmbedModal.vue:139
+#: src/components/Stations/Profile/EmbedModal.vue:143
 #: src/components/Stations/Profile/PublicPagesPanel.vue:39
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/PublicPages/OnDemandAction.php:70
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/PublicPages/OnDemandAction.php:69
 msgid "On-Demand Media"
 msgstr "On-Demand Media"
 
@@ -3537,11 +3598,11 @@ msgstr "On-Demand Media"
 msgid "On-Demand Streaming"
 msgstr "Etterspørsel Strømming"
 
-#: src/components/Stations/Playlists.vue:137
+#: src/components/Stations/Playlists.vue:111
 msgid "Once per %{minutes} Minutes"
 msgstr "En gang per %{minutes} minutter"
 
-#: src/components/Stations/Playlists.vue:129
+#: src/components/Stations/Playlists.vue:103
 msgid "Once per %{songs} Songs"
 msgstr "En gang per %{songs} Sanger"
 
@@ -3550,7 +3611,7 @@ msgstr "En gang per %{songs} Sanger"
 msgid "Once per Hour"
 msgstr "En gang i timen"
 
-#: src/components/Stations/Playlists.vue:145
+#: src/components/Stations/Playlists.vue:119
 msgid "Once per Hour (at %{minute})"
 msgstr "En gang i Timen (kl. %{minute})"
 
@@ -3678,7 +3739,7 @@ msgstr "Lim inn den genererte lisensnøkkelen i feltet på denne siden."
 msgid "Path/Suffix"
 msgstr "Bane/suffiks"
 
-#: src/components/Stations/Reports/Requests.vue:131
+#: src/components/Stations/Reports/Requests.vue:130
 msgid "Pending Requests"
 msgstr "Ventende forespørsler"
 
@@ -3707,7 +3768,7 @@ msgstr "Spill en gang for hver $x sang."
 msgid "Play once per hour at the specified minute."
 msgstr "Spill én gang i timen på det angitte minuttet."
 
-#: src/components/Stations/Playlists.vue:225
+#: src/components/Stations/Playlists.vue:227
 #: src/components/Stations/Playlists/QueueModal.vue:6
 msgid "Playback Queue"
 msgstr "Avspillingskø"
@@ -3717,11 +3778,11 @@ msgid "Playing Next"
 msgstr "Spiller neste"
 
 #: src/components/Public/FullPlayer.vue:42
-#: src/components/Stations/Playlists.vue:341
+#: src/components/Stations/Playlists.vue:345
 #: src/components/Stations/Profile/NowPlayingPanel.vue:101
 #: src/components/Stations/Profile/NowPlayingPanel.vue:170
 #: src/components/Stations/Profile/SchedulePanel.vue:19
-#: src/components/Stations/Queue.vue:63
+#: src/components/Stations/Queue.vue:64
 msgid "Playlist"
 msgstr "Spilleliste"
 
@@ -3743,7 +3804,7 @@ msgstr "Spilleliste"
 msgid "Playlist Name"
 msgstr "Spillelistenavn"
 
-#: src/components/Stations/Playlists/ReorderModal.vue:127
+#: src/components/Stations/Playlists/ReorderModal.vue:145
 msgid "Playlist order set."
 msgstr "Spillelisterekkefølge satt."
 
@@ -3770,7 +3831,7 @@ msgid "Playlist:"
 msgstr "Spilleliste:"
 
 #: src/components/Admin/Stations/CloneModalForm.vue:59
-#: src/components/Stations/Media.vue:354
+#: src/components/Stations/Media.vue:344
 #: src/components/Stations/Media/EditModal.vue:15
 #: src/components/Stations/Media/Form/Playlists.vue:9
 #: src/components/Stations/Media/MediaToolbar.vue:18
@@ -3796,7 +3857,8 @@ msgstr "Avspillinger"
 msgid "Please log in to continue."
 msgstr "Vennligst Logg inn for å fortsette."
 
-#: src/components/Stations/Podcasts/ListView.vue:122
+#: src/components/Public/Podcasts/PodcastList.vue:82
+#: src/components/Stations/Podcasts.vue:128
 msgid "Podcast"
 msgstr "Podcast"
 
@@ -3808,8 +3870,11 @@ msgstr "Podcast-medier bør være i MP3- eller M4A-format (AAC) for best mulig k
 msgid "Podcast Title"
 msgstr "Podcasttittel"
 
+#: src/components/Public/Podcasts/Podcast.vue:14
+#: src/components/Public/Podcasts/PodcastEpisode.vue:12
 #: src/components/Stations/menu.ts:150
-#: src/components/Stations/Podcasts/ListView.vue:10
+#: src/components/Stations/Podcasts.vue:7
+#: src/components/Stations/Profile/EmbedModal.vue:125
 #: src/components/Stations/Profile/PublicPagesPanel.vue:48
 msgid "Podcasts"
 msgstr "Podcaster"
@@ -3879,10 +3944,10 @@ msgstr "Oppgi en gyldig lisensnøkkel fra Thimeo. Funksjonalitet er begrenset ut
 msgid "Public"
 msgstr "Offentlig"
 
-#: src/components/Dashboard.vue:196
+#: src/components/Dashboard.vue:172
 #: src/components/Stations/menu.ts:61
-#: src/components/Stations/Podcasts/EpisodesView.vue:66
-#: src/components/Stations/Podcasts/ListView.vue:46
+#: src/components/Stations/PodcastEpisodes.vue:66
+#: src/components/Stations/Podcasts.vue:43
 #: src/components/Stations/Profile/PublicPagesPanel.vue:21
 msgid "Public Page"
 msgstr "Offentlig side"
@@ -3897,6 +3962,10 @@ msgstr "Offentlig sidebakgrunn"
 msgid "Public Pages"
 msgstr "Offentlige sider"
 
+#: src/components/Stations/PodcastEpisodes.vue:184
+msgid "Publish At"
+msgstr ""
+
 #: src/components/Stations/Podcasts/EpisodeForm/BasicInfo.vue:36
 msgid "Publish Date"
 msgstr "Publiseringsdato"
@@ -3906,7 +3975,7 @@ msgid "Publish Time"
 msgstr "Publiser Time"
 
 #: src/components/Stations/Mounts/Form/BasicInfo.vue:53
-#: src/components/Stations/Remotes/Form/AutoDj.vue:79
+#: src/components/Stations/Remotes/Form/AutoDj.vue:76
 msgid "Publish to \"Yellow Pages\" Directories"
 msgstr "Publiser til \"Gule sider\"-kataloger"
 
@@ -4006,7 +4075,7 @@ msgstr "Omlasting av kringkasting vil ikke koble fra lytterne dine."
 msgid "Remember me"
 msgstr "Husk meg"
 
-#: src/components/Stations/Reports/Listeners.vue:151
+#: src/components/Stations/Reports/Listeners.vue:163
 msgid "Remote"
 msgstr "Fjern"
 
@@ -4037,19 +4106,19 @@ msgstr "Fjernstasjons Monteringspunkt/SID for lytting"
 msgid "Remote Station Listening URL"
 msgstr "Lytteres URL for ekstern stasjon"
 
-#: src/components/Stations/Remotes/Form/AutoDj.vue:53
+#: src/components/Stations/Remotes/Form/AutoDj.vue:50
 msgid "Remote Station Source Mountpoint/SID"
 msgstr "Fjernstasjonskilde Mountpoint/SID"
 
-#: src/components/Stations/Remotes/Form/AutoDj.vue:69
+#: src/components/Stations/Remotes/Form/AutoDj.vue:66
 msgid "Remote Station Source Password"
 msgstr "Fjernstasjonskildeport"
 
-#: src/components/Stations/Remotes/Form/AutoDj.vue:45
+#: src/components/Stations/Remotes/Form/AutoDj.vue:42
 msgid "Remote Station Source Port"
 msgstr "Kildeport for ekstern stasjon"
 
-#: src/components/Stations/Remotes/Form/AutoDj.vue:61
+#: src/components/Stations/Remotes/Form/AutoDj.vue:58
 msgid "Remote Station Source Username"
 msgstr "Brukernavn for ekstern stasjonskilde"
 
@@ -4057,7 +4126,7 @@ msgstr "Brukernavn for ekstern stasjonskilde"
 msgid "Remote Station Type"
 msgstr "Ekstern stasjonstype"
 
-#: src/components/Stations/Playlists.vue:84
+#: src/components/Stations/Playlists.vue:58
 #: src/components/Stations/Playlists/Form/BasicInfo.vue:200
 #: src/components/Stations/Playlists/Form/BasicInfo.vue:301
 msgid "Remote URL"
@@ -4108,7 +4177,7 @@ msgstr "Endre navn"
 msgid "Rename File/Directory"
 msgstr "Gi nytt navn til fil/mappe"
 
-#: src/components/Stations/Playlists.vue:217
+#: src/components/Stations/Playlists.vue:187
 msgid "Reorder"
 msgstr "Endre rekkefølge"
 
@@ -4140,7 +4209,7 @@ msgstr "Forespørsel"
 msgid "Request a Song"
 msgstr "Be om en sang"
 
-#: src/components/Stations/Reports/Requests.vue:135
+#: src/components/Stations/Reports/Requests.vue:134
 msgid "Request History"
 msgstr "Forespørselshistorikk"
 
@@ -4156,11 +4225,11 @@ msgstr "Be om minimumsforsinkelse (minutter)"
 msgid "Request Song"
 msgstr "Be om sang"
 
-#: src/components/Stations/Reports/Requests.vue:124
+#: src/components/Stations/Reports/Requests.vue:123
 msgid "Requester IP"
 msgstr "Anmoder IP"
 
-#: src/components/Stations/Profile/EmbedModal.vue:132
+#: src/components/Stations/Profile/EmbedModal.vue:136
 #: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/PublicPages/RequestsAction.php:41
 msgid "Requests"
 msgstr "Forespørsler"
@@ -4169,7 +4238,7 @@ msgstr "Forespørsler"
 msgid "Required"
 msgstr "Nødvendig"
 
-#: src/components/Stations/Playlists.vue:201
+#: src/components/Stations/Playlists.vue:211
 msgid "Reshuffle"
 msgstr "Omstokke"
 
@@ -4221,10 +4290,12 @@ msgstr "Roller & tillatelser"
 msgid "Rolling Release"
 msgstr "Rullende Utgivelse"
 
-#: src/components/Stations/Podcasts/ListView.vue:50
-#: /home/runner/work/AzuraCast/AzuraCast/templates/frontend/public/podcast-episodes.phtml:44
-#: /home/runner/work/AzuraCast/AzuraCast/templates/frontend/public/podcast-episode.phtml:90
-#: /home/runner/work/AzuraCast/AzuraCast/templates/frontend/public/podcasts.phtml:77
+#: src/components/Public/Podcasts/Podcast.vue:56
+#: src/components/Public/Podcasts/PodcastList.vue:61
+msgid "RSS"
+msgstr ""
+
+#: src/components/Stations/Podcasts.vue:47
 msgid "RSS Feed"
 msgstr "Aktivitet RSS Strøm"
 
@@ -4282,20 +4353,21 @@ msgstr "Lagre endringer"
 msgid "Save Changes first"
 msgstr "Lagre Endringer først"
 
-#: src/components/Public/Schedule.vue:17
+#: src/components/Public/Schedule.vue:8
 #: src/components/Stations/Playlists/Form/Schedule.vue:2
-#: src/components/Stations/Profile/EmbedModal.vue:125
+#: src/components/Stations/Profile/EmbedModal.vue:129
 #: src/components/Stations/Profile/PublicPagesPanel.vue:57
 #: src/components/Stations/Streamers/Form/Schedule.vue:2
 #: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/PublicPages/ScheduleAction.php:50
 msgid "Schedule"
 msgstr "Planlegging"
 
-#: src/components/Stations/Playlists.vue:263
+#: src/components/Stations/Playlists.vue:265
 #: src/components/Stations/Streamers.vue:84
 msgid "Schedule View"
 msgstr "Tidsplanvisning"
 
+#: src/components/Stations/Playlists.vue:83
 #: src/components/Stations/Profile/SchedulePanel.vue:6
 msgid "Scheduled"
 msgstr "Planlagt"
@@ -4318,7 +4390,7 @@ msgstr "Planlagte spillelister og andre tidsbestemte elementer vil bli kontrolle
 msgid "Scheduled Time #%{num}"
 msgstr "Planlagt tid #%{num}"
 
-#: src/components/Stations/Playlists.vue:342
+#: src/components/Stations/Playlists.vue:346
 msgid "Scheduling"
 msgstr "Planlegging"
 
@@ -4480,7 +4552,7 @@ msgstr "Avsender e-postadresse"
 msgid "Sender Name"
 msgstr "Avsenders navn"
 
-#: src/components/Stations/Playlists.vue:97
+#: src/components/Stations/Playlists.vue:71
 #: src/components/Stations/Playlists/Form/BasicInfo.vue:347
 msgid "Sequential"
 msgstr "Sekvensiell"
@@ -4627,7 +4699,7 @@ msgstr "Shoutcast Bruker ID"
 msgid "Shoutcast version \"%{ version }\" is currently installed."
 msgstr "Shoutcast versjon \"%{ version }\" er for øyeblikket installert."
 
-#: src/components/Dashboard.vue:332
+#: src/components/Dashboard.vue:304
 msgid "Show Charts"
 msgstr "Vis Lister"
 
@@ -4683,8 +4755,8 @@ msgid "Site Base URL"
 msgstr "Nettstedsbase-URL"
 
 #: src/components/Admin/Backups.vue:220
-#: src/components/Stations/Media.vue:335
-#: src/components/Stations/Streamers/BroadcastsModal.vue:119
+#: src/components/Stations/Media.vue:333
+#: src/components/Stations/Streamers/BroadcastsModal.vue:110
 msgid "Size"
 msgstr "Størrelse"
 
@@ -4781,13 +4853,13 @@ msgid "Song Requests"
 msgstr "Sangforespørsler"
 
 #: src/components/Stations/Media/Form/BasicInfo.vue:15
-#: src/components/Stations/Queue.vue:96
-#: src/components/Stations/Reports/Requests.vue:123
-#: src/components/Stations/Reports/Timeline.vue:161
+#: src/components/Stations/Queue.vue:97
+#: src/components/Stations/Reports/Requests.vue:122
+#: src/components/Stations/Reports/Timeline.vue:159
 msgid "Song Title"
 msgstr "Sang tittel"
 
-#: src/components/Stations/Playlists.vue:81
+#: src/components/Stations/Playlists.vue:55
 msgid "Song-based"
 msgstr "Sang-baserte"
 
@@ -4809,8 +4881,8 @@ msgstr "SoundExchange royalties"
 
 #: src/components/Stations/Playlists/Form/BasicInfo.vue:29
 #: src/components/Stations/Profile/FrontendPanel.vue:66
-#: src/components/Stations/Queue.vue:98
-#: src/components/Stations/Reports/Timeline.vue:167
+#: src/components/Stations/Queue.vue:99
+#: src/components/Stations/Reports/Timeline.vue:165
 msgid "Source"
 msgstr "Kilde"
 
@@ -4863,7 +4935,8 @@ msgid "Start Streaming"
 msgstr "Start streaming"
 
 #: src/components/Stations/Playlists/Form/ScheduleRow.vue:28
-#: src/components/Stations/Streamers/BroadcastsModal.vue:94
+#: src/components/Stations/Reports/Listeners.vue:269
+#: src/components/Stations/Streamers/BroadcastsModal.vue:93
 #: src/components/Stations/Streamers/Form/ScheduleRow.vue:30
 msgid "Start Time"
 msgstr "Starttid"
@@ -4888,11 +4961,11 @@ msgstr "Stasjonen Kommer På Nett"
 msgid "Station Media"
 msgstr "Stasjons Media"
 
-#: src/components/Dashboard.vue:165
+#: src/components/Dashboard.vue:322
 msgid "Station Name"
 msgstr "Stasjons Navn"
 
-#: src/components/Dashboard.vue:231
+#: src/components/Dashboard.vue:207
 #: src/components/Public/Player.vue:29
 #: src/components/Stations/Branding/BrandingForm.vue:31
 #: src/components/Stations/Profile/NowPlayingPanel.vue:79
@@ -5033,7 +5106,7 @@ msgstr "Stopp streaming"
 msgid "Storage Adapter"
 msgstr "Lagringsadapter"
 
-#: src/components/Admin/Backups/ConfigureModal.vue:64
+#: src/components/Admin/Backups/ConfigureModal.vue:63
 #: src/components/Admin/Backups/RunBackupModal.vue:30
 msgid "Storage Location"
 msgstr "Lagringsplass"
@@ -5047,7 +5120,7 @@ msgstr "Lagringssteder"
 msgid "Storage Quota"
 msgstr "Lagringskvote"
 
-#: src/components/Stations/Reports/Listeners.vue:221
+#: src/components/Stations/Reports/Listeners.vue:299
 #: src/components/Stations/Reports/Overview/StreamsTab.vue:6
 msgid "Stream"
 msgstr "Strøm"
@@ -5138,8 +5211,8 @@ msgstr "System vedlikehold"
 #: src/components/Admin/menu.ts:18
 #: src/components/Admin/Settings.vue:19
 #: src/components/Setup/SetupStep.vue:34
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/SetupController.php:174
 #: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/BaseUrlCheck.php:58
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/SetupController.php:174
 msgid "System Settings"
 msgstr "Systeminnstillinger"
 
@@ -5251,7 +5324,7 @@ msgstr "Språket som snakkes på podcasten."
 msgid "The length of playback time that Liquidsoap should buffer when playing this remote playlist. Shorter times may lead to intermittent playback on unstable connections."
 msgstr "Lengden på avspillingstid som Liquidsoap skal bufre når du spiller denne eksterne spillelisten. Kortere tider kan føre til avbrudd avspilling på ustabile tilkoblinger."
 
-#: src/components/Admin/Stations/Form/StreamersForm.vue:103
+#: src/components/Admin/Stations/Form/StreamersForm.vue:100
 msgid "The number of seconds of signal to store in case of interruption. Set to the lowest value that your DJs can use without stream interruptions."
 msgstr "Antall sekunder signal som skal lagres i tilfelle avbrudd. Sett til den laveste verdien DJ-ene dine kan bruke uten strømavbrudd."
 
@@ -5451,7 +5524,7 @@ msgstr "Dette er en avansert funksjon og tilpasset kode støttes ikke offisielt 
 msgid "This is the informal display name that will be shown in API responses if the streamer/DJ is live."
 msgstr "Dette er det uformelle visningsnavnet som vises i API-svar hvis streameren/DJ-en er live."
 
-#: src/components/Admin/Stations/Form/StreamersForm.vue:70
+#: src/components/Admin/Stations/Form/StreamersForm.vue:67
 msgid "This is the number of seconds until a streamer who has been manually disconnected can reconnect to the stream. Set to 0 to allow the streamer to immediately reconnect."
 msgstr "Dette er antall sekunder før en streamer som har blitt koblet fra manuelt kan koble seg til strømmen igjen. Sett til 0 for å la streameren umiddelbart koble til igjen."
 
@@ -5578,13 +5651,13 @@ msgstr "Miniatyrbilde URL"
 msgid "Thursday"
 msgstr "Torsdag"
 
-#: src/components/Stations/Reports/Listeners.vue:218
+#: src/components/Stations/Reports/Listeners.vue:249
 #: src/components/Stations/Reports/Listeners/Map.vue:18
 #: src/components/Stations/Reports/Overview/CommonMetricsView.vue:89
 msgid "Time"
 msgstr "Tid"
 
-#: src/components/Stations/Reports/Listeners.vue:219
+#: src/components/Stations/Reports/Listeners.vue:259
 #: src/components/Stations/Reports/Overview/CommonMetricsView.vue:90
 msgid "Time (sec)"
 msgstr "Tid (sek)"
@@ -5605,12 +5678,13 @@ msgstr "Tid stjålet av andre virtuelle maskiner på samme fysiske server."
 msgid "Time Zone"
 msgstr "Tidssone"
 
-#: src/components/Public/OnDemand.vue:112
+#: src/components/Public/OnDemand.vue:101
 #: src/components/Public/Requests/RequestsDataTable.vue:66
 #: src/components/Public/WebDJ/SettingsPanel.vue:17
-#: src/components/Stations/Media.vue:310
+#: src/components/Stations/Media.vue:308
 #: src/components/Stations/Playlists/QueueModal.vue:20
 #: src/components/Stations/Playlists/ReorderModal.vue:20
+#: src/components/Stations/Profile/UpdateMetadataModal.vue:23
 #: src/components/Stations/Webhooks/Form/Discord.vue:32
 #: /home/runner/work/AzuraCast/AzuraCast/src/Media/Enums/MetadataTags.php:133
 msgid "Title"
@@ -5777,8 +5851,8 @@ msgstr "Unik identifikator for målchatten eller brukernavnet til målkanalen (i
 msgid "Unique Listeners"
 msgstr "Unike lyttere"
 
-#: src/components/Stations/Reports/Listeners.vue:143
-#: src/components/Stations/Reports/Listeners.vue:160
+#: src/components/Stations/Reports/Listeners.vue:155
+#: src/components/Stations/Reports/Listeners.vue:172
 msgid "Unknown"
 msgstr "Ukjent"
 
@@ -5802,6 +5876,11 @@ msgstr "Slå på lyd"
 msgid "Unprocessable Files"
 msgstr "Ubearbeidbare filer"
 
+#: src/components/Stations/PodcastEpisodes.vue:73
+#: src/components/Stations/Podcasts.vue:54
+msgid "Unpublished"
+msgstr ""
+
 #: src/components/Common/DataTable.vue:154
 msgid "Unselect All Rows"
 msgstr "Avvelg alle rader"
@@ -5809,10 +5888,6 @@ msgstr "Avvelg alle rader"
 #: src/components/Common/DataTable.vue:233
 msgid "Unselect Row"
 msgstr "Avvelg rad"
-
-#: src/components/Stations/Playlists/ReorderModal.vue:66
-msgid "Up"
-msgstr "Opp"
 
 #: src/components/Stations/menu.ts:290
 #: src/components/Stations/Queue.vue:2
@@ -5846,6 +5921,9 @@ msgid "Update Instructions"
 msgstr "Oppdateringsinstruksjoner"
 
 #: src/components/Public/WebDJ/SettingsPanel.vue:50
+#: src/components/Stations/Profile/NowPlayingPanel.vue:234
+#: src/components/Stations/Profile/UpdateMetadataModal.vue:50
+#: src/components/Stations/Profile/UpdateMetadataModal.vue:6
 msgid "Update Metadata"
 msgstr "Oppdater metadata"
 
@@ -5953,6 +6031,10 @@ msgstr "Bruk SHOUTcast DNAS 2 på denne serveren."
 msgid "Use the Telegram Bot API to send a message to a channel."
 msgstr "Bruk Telegram Bot API for å sende en melding til en kanal."
 
+#: src/components/Stations/Profile/UpdateMetadataModal.vue:12
+msgid "Use this form to send a manual metadata update. Note that this will override any existing metadata on the stream."
+msgstr ""
+
 #: src/components/Admin/Settings/GeneralTab.vue:42
 msgid "Use Web Proxy for Radio"
 msgstr "Bruk nettproxy for radio"
@@ -5975,7 +6057,7 @@ msgstr "Bruker"
 msgid "User Accounts"
 msgstr "Brukerkontoer"
 
-#: src/components/Stations/Reports/Listeners.vue:220
+#: src/components/Stations/Reports/Listeners.vue:292
 #: src/components/Stations/Reports/Listeners/Map.vue:20
 msgid "User Agent"
 msgstr "Bruker agent"
@@ -6042,7 +6124,7 @@ msgstr "Vis"
 msgid "View Fullscreen"
 msgstr "Vis fullskjerm"
 
-#: src/components/Dashboard.vue:210
+#: src/components/Dashboard.vue:186
 msgid "View Listener Report"
 msgstr "Vis lytterrapport"
 
@@ -6098,7 +6180,7 @@ msgstr "Bølgeform zoom"
 
 #: src/components/Stations/menu.ts:173
 #: src/components/Stations/Profile/PublicPagesPanel.vue:30
-#: /home/runner/work/AzuraCast/AzuraCast/templates/frontend/public/webdj.phtml:13
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/PublicPages/WebDjAction.php:63
 msgid "Web DJ"
 msgstr "Web DJ"
 
@@ -6160,7 +6242,7 @@ msgstr "Nettsted"
 msgid "Wednesday"
 msgstr "Onsdag"
 
-#: src/components/Stations/Playlists.vue:125
+#: src/components/Stations/Playlists.vue:99
 msgid "Weight"
 msgstr ""
 
@@ -6202,6 +6284,7 @@ msgid "Worst Performing Songs"
 msgstr "Dårligste sanger"
 
 #: src/components/Admin/Relays.vue:38
+#: src/components/Stations/PodcastEpisodes.vue:86
 msgid "Yes"
 msgstr "Ja"
 
@@ -6290,232 +6373,704 @@ msgstr "YouTube"
 msgid "YP Directory Authorization Hash"
 msgstr "YP Katalog Autorisasjon Hash"
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/BulkMedia/UploadAction.php:171
+#: /home/runner/work/AzuraCast/AzuraCast/src/Doctrine/Repository.php:108
+msgid "Select..."
+msgstr "Velg..."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/SetupFixturesCommand.php:63
+msgid "Fixtures loaded."
+msgstr "Inventar lastet."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/MigrateConfigCommand.php:108
+msgid "Configuration successfully written."
+msgstr "Konfigurasjonen er skrevet."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/Settings/ListCommand.php:26
+msgid "AzuraCast Settings"
+msgstr "AzuraCast-innstillinger"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/Settings/ListCommand.php:29
+msgid "Setting Key"
+msgstr "Innstillingsnøkkel"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/Settings/ListCommand.php:30
+msgid "Setting Value"
+msgstr "Innstillingsverdi"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/Locale/ImportCommand.php:58
 #, php-format
-msgid "%d files processed."
-msgstr "%d filer behandlet."
+msgid "Imported locale: %s"
+msgstr "Importert språk: %s"
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Requests/SubmitAction.php:79
-msgid "Your request has been submitted and will be played soon."
-msgstr "Din forespørsel er sendt og vil bli spilt snart."
+#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/Backup/BackupCommand.php:95
+msgid "AzuraCast Backup"
+msgstr "AzuraCast sikkerhetskopi"
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/ServicesController.php:160
-msgid "Station reloaded."
-msgstr "Stasjonen er lastet inn på nytt."
+#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/Backup/BackupCommand.php:96
+msgid "Please wait while a backup is generated..."
+msgstr "Vennligst vent mens en sikkerhetskopi genereres..."
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/ServicesController.php:186
-msgid "Station restarted."
-msgstr "Stasjonen startet på nytt."
+#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/Backup/BackupCommand.php:99
+msgid "Creating temporary directories..."
+msgstr "Oppretter midlertidige kataloger..."
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/ServicesController.php:204
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/ServicesController.php:256
-msgid "Service stopped."
-msgstr "Tjenesten stoppet."
+#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/Backup/BackupCommand.php:112
+msgid "Backing up MariaDB..."
+msgstr "Sikkerhetskopierer MariaDB..."
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/ServicesController.php:209
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/ServicesController.php:261
-msgid "Service started."
-msgstr "Tjenesten startet."
+#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/Backup/BackupCommand.php:138
+msgid "Creating backup archive..."
+msgstr "Oppretter sikkerhetskopieringsarkiv ..."
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/ServicesController.php:215
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/ServicesController.php:267
-msgid "Service reloaded."
-msgstr "Tjenesten er lastet inn på nytt."
+#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/Backup/BackupCommand.php:214
+msgid "Cleaning up temporary files..."
+msgstr "Rydder opp i midlertidige filer..."
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/ServicesController.php:227
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/ServicesController.php:279
-msgid "Service restarted."
-msgstr "Tjenesten startet på nytt."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/ServicesController.php:246
-msgid "Song skipped."
-msgstr "Sangen hoppet over."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/ServicesController.php:251
-msgid "Streamer disconnected."
-msgstr "Streameren er frakoblet."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/FilesController.php:201
-msgid "This station is out of available storage space."
-msgstr "Denne stasjonen er tom for tilgjengelig lagringsplass."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/LogsAction.php:86
-msgid "Station Nginx Configuration"
-msgstr "Stasjon Nginx Konfigurasjon"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/LogsAction.php:93
-msgid "Liquidsoap Log"
-msgstr "Liquidsoap Logg"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/LogsAction.php:98
-msgid "Liquidsoap Configuration"
-msgstr "Liquidsoap konfigurasjon"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/LogsAction.php:107
-msgid "Icecast Access Log"
-msgstr "Icecast tilgangslogg"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/LogsAction.php:112
-msgid "Icecast Error Log"
-msgstr "Icecast Feillogg"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/LogsAction.php:117
-msgid "Icecast Configuration"
-msgstr "Icecast Konfigurasjon"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/LogsAction.php:125
-msgid "Shoutcast Log"
-msgstr "Shoutcast Logg"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/LogsAction.php:130
-msgid "Shoutcast Configuration"
-msgstr "Shoutcast Konfigurasjon"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Playlists/ToggleAction.php:39
-msgid "Playlist enabled."
-msgstr "Spilleliste aktivert."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Playlists/ToggleAction.php:40
-msgid "Playlist disabled."
-msgstr "Spilleliste deaktivert."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Playlists/PutOrderAction.php:39
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Playlists/GetOrderAction.php:41
-msgid "This playlist is not a sequential playlist."
-msgstr "Denne spillelisten er ikke en sekvensiell spilleliste."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Playlists/EmptyAction.php:36
-msgid "This playlist is not song-based."
-msgstr "Denne spillelisten er ikke sangbasert."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Playlists/EmptyAction.php:44
-msgid "Playlist emptied."
-msgstr "Spilleliste tømt."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Playlists/GetApplyToAction.php:44
-msgid "Base Directory"
-msgstr "Hoved Mappe"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Playlists/ImportAction.php:200
+#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/Backup/BackupCommand.php:226
 #, php-format
-msgid "Playlist successfully imported; %d of %d files were successfully matched."
-msgstr "Spilleliste importert; %d av %d filer ble matchet."
+msgid "Backup complete in %.2f seconds."
+msgstr "Sikkerhetskopiering fullført om %.2f sekunder."
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Playlists/PutApplyToAction.php:62
-msgid "Playlist applied to folders."
-msgstr "Spilleliste anvendt på mapper."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Playlists/ReshuffleAction.php:38
-msgid "Playlist reshuffled."
-msgstr "Spillelisten er stokket om."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Streamers/BroadcastsController.php:153
-msgid "No recording available."
-msgstr "Ingen opptak tilgjengelig."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Files/MakeDirectoryAction.php:33
-msgid "No directory specified"
-msgstr "Ingen katalog spesifisert"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Files/ListAction.php:251
+#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/Backup/RestoreCommand.php:77
 #, php-format
-msgid "File Not Processed: %s"
-msgstr "Fil ikke behandlet: %s"
+msgid "Backup path %s not found!"
+msgstr "Finner ikke sikkerhetskopibanen %s!"
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Files/ListAction.php:256
-msgid "Cover Art"
-msgstr "Cover Bilde"
+#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/AbstractDatabaseCommand.php:104
+msgid "Backing up initial database state..."
+msgstr "Sikkerhetskopierer den første databasetilstanden..."
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Files/ListAction.php:258
-msgid "File Processing"
-msgstr "Filbehandling"
+#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/AbstractDatabaseCommand.php:113
+msgid "We detected a database restore file from a previous (possibly failed) migration."
+msgstr "Vi fant en databasegjenopprettingsfil fra en tidligere (mulig feilet) overføring."
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Files/RenameAction.php:32
-msgid "File not specified."
-msgstr "Filen er ikke spesifisert."
+#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/AbstractDatabaseCommand.php:114
+msgid "Attempting to restore that now..."
+msgstr "Forsøker å gjenopprette det nå..."
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Files/RenameAction.php:38
-msgid "New path not specified."
-msgstr "Ny bane ikke spesifisert."
+#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/AbstractDatabaseCommand.php:129
+msgid "Attempting to roll back to previous database state..."
+msgstr "Forsøker å rulle tilbake til forrige databasetilstand..."
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Podcasts/Art/DeleteArtAction.php:67
-msgid "Podcast not found!"
-msgstr "Podcast ikke funnet!"
+#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/AbstractDatabaseCommand.php:135
+msgid "Your database was restored due to a failed migration."
+msgstr "Databasen din ble gjenopprettet på grunn av mislykket overføring."
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ByClient.php:61
-msgid "Bot/Crawler"
-msgstr "Bot/Crawler"
+#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/AbstractDatabaseCommand.php:136
+msgid "Please report this bug to our developers."
+msgstr "Vennligst rapporter denne feilen til våre utviklere."
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ByClient.php:63
-msgid "Desktop Browser"
-msgstr "Skrivebord Nettleser"
+#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/AbstractDatabaseCommand.php:142
+#, php-format
+msgid "Restore failed: %s"
+msgstr "Gjenoppretting mislyktes: %s"
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ByClient.php:64
-msgid "Non-Browser"
-msgstr "Ikke-Nettleser"
+#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/SetupCommand.php:60
+msgid "AzuraCast Initializing..."
+msgstr "AzuraCast initialiserer..."
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ByClient.php:82
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ByStream.php:99
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ByCountry.php:75
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ByBrowser.php:62
-msgid "Connected Seconds"
-msgstr "Tilkoblede Sekunder"
+#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/SetupCommand.php:62
+msgid "AzuraCast Setup"
+msgstr "AzuraCast-oppsett"
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ByListeningTime.php:47
-msgid "Less than Thirty Seconds"
-msgstr "Mindre enn Tretti Sekunder"
+#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/SetupCommand.php:64
+msgid "Welcome to AzuraCast. Please wait while some key dependencies of AzuraCast are set up..."
+msgstr "Velkommen til AzuraCast. Vennligst vent mens noen nøkkelavhengigheter til AzuraCast er konfigurert..."
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ByListeningTime.php:48
-msgid "Thirty Seconds to One Minute"
-msgstr "Tretti sekunder til ett minutt"
+#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/SetupCommand.php:69
+msgid "Running Database Migrations"
+msgstr "Kjører Database Migrations"
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ByListeningTime.php:49
-msgid "One Minute to Five Minutes"
-msgstr "Ett Minutt til Fem Minutter"
+#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/SetupCommand.php:77
+msgid "Generating Database Proxy Classes"
+msgstr "Generering av databaseproxyklasser"
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ByListeningTime.php:50
-msgid "Five Minutes to Ten Minutes"
-msgstr "Fem Minutter til Ti Minutter"
+#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/SetupCommand.php:82
+msgid "Reload System Data"
+msgstr "Last inn systemdata på nytt"
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ByListeningTime.php:51
-msgid "Ten Minutes to Thirty Minutes"
-msgstr "Ti Minutter til Ti Minutter"
+#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/SetupCommand.php:92
+msgid "Installing Data Fixtures"
+msgstr "Installere datafiksturer"
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ByListeningTime.php:52
-msgid "Thirty Minutes to One Hour"
-msgstr "Tretti minutter til En Time"
+#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/SetupCommand.php:98
+msgid "Refreshing All Stations"
+msgstr "Oppdaterer alle stasjoner"
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ByListeningTime.php:53
-msgid "One Hour to Two Hours"
-msgstr "En Time til To Timer"
+#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/SetupCommand.php:125
+msgid "AzuraCast is now updated to the latest version!"
+msgstr "AzuraCast er nå oppdatert til siste versjon!"
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ByListeningTime.php:54
-msgid "More than Two Hours"
-msgstr "Mer enn To Timer"
+#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/SetupCommand.php:134
+msgid "AzuraCast installation complete!"
+msgstr "AzuraCast-installasjonen er fullført!"
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Webhooks/ToggleAction.php:39
-msgid "Web hook enabled."
-msgstr "Web-hook aktivert."
+#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/SetupCommand.php:136
+#, php-format
+msgid "Visit %s to complete setup."
+msgstr "Besøk %s for å fullføre oppsettet."
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Webhooks/ToggleAction.php:40
-msgid "Web hook disabled."
-msgstr "Web-hook deaktivert."
+#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/MigrateDbCommand.php:25
+msgid "Database Migrations"
+msgstr "Database Migreringer"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/MigrateDbCommand.php:38
+msgid "Database is already up to date!"
+msgstr "Databasen er allerede oppdatert!"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/MigrateDbCommand.php:51
+#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/RollbackDbCommand.php:61
+msgid "Running database migrations..."
+msgstr "Kjører databaseoverføringer..."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/MigrateDbCommand.php:65
+#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/RollbackDbCommand.php:86
+#, php-format
+msgid "Database migration failed: %s"
+msgstr "Database migrering feilet: %s"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/MigrateDbCommand.php:77
+msgid "Database migration completed!"
+msgstr "Database migrering fullført!"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/RollbackDbCommand.php:44
+msgid "Roll Back Database"
+msgstr "Rull Tilbake Database"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/RollbackDbCommand.php:99
+#, php-format
+msgid "Database rolled back to stable release version \"%s\"."
+msgstr "Database rullet tilbake til stabil utgivelsesversjon \"%s\"."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/Users/SetAdministratorCommand.php:61
+#, php-format
+msgid "The account associated with e-mail address \"%s\" has been set as an administrator"
+msgstr "Kontoen knyttet til e-postadressen \"%s\" er satt som administrator"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/Users/SetAdministratorCommand.php:69
+msgid "Account not found."
+msgstr "Konto ikke funnet."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Enums/GlobalPermissions.php:22
+#: /home/runner/work/AzuraCast/AzuraCast/src/Enums/StationPermissions.php:26
+msgid "All Permissions"
+msgstr "Alle Tillatelser"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Enums/GlobalPermissions.php:23
+msgid "View Administration Page"
+msgstr "Se administrasjonssiden"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Enums/GlobalPermissions.php:24
+msgid "View System Logs"
+msgstr "Se systemlogger"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Enums/GlobalPermissions.php:25
+msgid "Administer Settings"
+msgstr "Administrer innstillinger"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Enums/GlobalPermissions.php:26
+msgid "Administer API Keys"
+msgstr "Administrer API-nøkler"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Enums/GlobalPermissions.php:27
+msgid "Administer Stations"
+msgstr "Administrer stasjoner"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Enums/GlobalPermissions.php:28
+msgid "Administer Custom Fields"
+msgstr "Administrer egendefinerte felt"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Enums/GlobalPermissions.php:29
+msgid "Administer Backups"
+msgstr "Administrer sikkerhetskopier"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Enums/GlobalPermissions.php:30
+msgid "Administer Storage Locations"
+msgstr "Administrer lagringsplasseringer"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Enums/StationPermissions.php:27
+msgid "View Station Page"
+msgstr "Se stasjonssiden"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Enums/StationPermissions.php:28
+msgid "View Station Reports"
+msgstr "Se stasjonsrapporter"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Enums/StationPermissions.php:29
+msgid "View Station Logs"
+msgstr "Vis stasjonslogger"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Enums/StationPermissions.php:30
+msgid "Manage Station Profile"
+msgstr "Administrer stasjonsprofil"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Enums/StationPermissions.php:31
+msgid "Manage Station Broadcasting"
+msgstr "Administrer stasjonskringkasting"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Enums/StationPermissions.php:32
+msgid "Manage Station Streamers"
+msgstr "Administrer stasjonsstreamere"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Enums/StationPermissions.php:33
+msgid "Manage Station Mount Points"
+msgstr "Administrer stasjonsfestepunkter"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Enums/StationPermissions.php:34
+msgid "Manage Station Remote Relays"
+msgstr "Administrer stasjonsfjernreléer"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Enums/StationPermissions.php:35
+msgid "Manage Station Media"
+msgstr "Administrer Station Media"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Enums/StationPermissions.php:36
+msgid "Manage Station Automation"
+msgstr "Administrer stasjonsautomatisering"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Enums/StationPermissions.php:37
+msgid "Manage Station Web Hooks"
+msgstr "Administrer Station Web Hooks"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Enums/StationPermissions.php:38
+msgid "Manage Station Podcasts"
+msgstr "Administrer stasjonspodcaster"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Exception/StationUnsupportedException.php:25
+msgid "This station does not currently support this functionality."
+msgstr ""
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Exception/StationUnsupportedException.php:32
+msgid "This station does not currently support on-demand media."
+msgstr ""
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Exception/StationUnsupportedException.php:39
+msgid "This station does not currently accept requests."
+msgstr ""
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Exception/PermissionDeniedException.php:25
+msgid "You do not have permission to access this portion of the site."
+msgstr "Du har ikke tillatelse til å få tilgang til denne delen av nettstedet."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Exception/NotLoggedInException.php:25
+msgid "You must be logged in to access this page."
+msgstr "Du må være logget inn for å få tilgang til denne siden."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Exception/CannotCompleteActionException.php:26
+#, php-format
+msgid "Cannot submit request: %s"
+msgstr ""
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Exception/SupervisorException.php:24
+#, php-format
+msgid "%s is not recognized as a service."
+msgstr "%s gjenkjennes ikke som en tjeneste."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Exception/SupervisorException.php:27
+msgid "It may not be registered with Supervisor yet. Restarting broadcasting may help."
+msgstr "Den er kanskje ikke registrert hos Supervisor ennå. Det kan hjelpe å starte kringkastingen på nytt."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Exception/SupervisorException.php:36
+#, php-format
+msgid "%s cannot start"
+msgstr "%s kan ikke starte"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Exception/SupervisorException.php:39
+msgid "It is already running."
+msgstr "Den kjører allerede."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Exception/SupervisorException.php:48
+#, php-format
+msgid "%s cannot stop"
+msgstr "%s kan ikke stoppe"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Exception/SupervisorException.php:51
+msgid "It is not running."
+msgstr "Kjører ikke."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Exception/SupervisorException.php:63
+#, php-format
+msgid "%s encountered an error: %s"
+msgstr "%s opplever en feil: %s"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Exception/SupervisorException.php:67
+msgid "Check the log for details."
+msgstr "Sjekk loggen for detaljer."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Exception/NotFoundException.php:24
+msgid "Record not found."
+msgstr ""
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Exception/NotFoundException.php:29
+msgid "File not found."
+msgstr ""
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Exception/NotFoundException.php:34
+msgid "Station not found."
+msgstr ""
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Exception/NotFoundException.php:39
+msgid "Podcast not found."
+msgstr ""
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/Api/Status.php:33
+msgid "Changes saved successfully."
+msgstr "Endringene er lagret."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/Api/Status.php:38
+msgid "Record created successfully."
+msgstr "Oppføringen ble opprettet."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/Api/Status.php:43
+msgid "Record updated successfully."
+msgstr "Oppføringen ble oppdatert."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/Api/Status.php:48
+msgid "Record deleted successfully."
+msgstr "Oppføringen ble slettet."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/Api/Error.php:71
+msgid "Record not found"
+msgstr "Finner ikke posten"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/Api/Error.php:77
+msgid "The uploaded file exceeds the upload_max_filesize directive in php.ini."
+msgstr "Den opplastede filen overskrider upload_max_filesize-direktivet i php.ini."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/Api/Error.php:78
+msgid "The uploaded file exceeds the MAX_FILE_SIZE directive from the HTML form."
+msgstr "Den opplastede filen overskrider MAX_FILE_SIZE-direktivet fra HTML-skjemaet."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/Api/Error.php:79
+msgid "The uploaded file was only partially uploaded."
+msgstr "Filen ble bare delvis lastet opp."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/Api/Error.php:80
+msgid "No file was uploaded."
+msgstr "Ingen fil ble lastet opp."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/Api/Error.php:81
+msgid "No temporary directory is available."
+msgstr "Ingen midlertidig katalog er tilgjengelig."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/Api/Error.php:82
+msgid "Could not write to filesystem."
+msgstr "Kunne ikke skrive til filsystemet."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/Api/Error.php:83
+msgid "Upload halted by a PHP extension."
+msgstr "Opplasting stoppet av en PHP-utvidelse."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/Api/Error.php:84
+msgid "Unspecified error."
+msgstr "Uspesifisert error."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/ApiGenerator/ScheduleApiGenerator.php:59
+#, php-format
+msgid "Playlist: %s"
+msgstr "Spilleliste: %s"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/ApiGenerator/ScheduleApiGenerator.php:64
+#, php-format
+msgid "Streamer: %s"
+msgstr "Strømmer: %s"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/Repository/StationRequestRepository.php:73
+msgid "Search engine crawlers are not permitted to use this feature."
+msgstr "Søkemotorsøkeprogrammer har ikke tillatelse til å bruke denne funksjonen."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/Repository/StationRequestRepository.php:80
+msgid "You are not permitted to submit requests."
+msgstr "Du har ikke lov til å sende inn forespørsler."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/Repository/StationRequestRepository.php:89
+msgid "This track is not requestable."
+msgstr ""
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/Repository/StationRequestRepository.php:121
+msgid "You have submitted a request too recently! Please wait before submitting another one."
+msgstr "Du har sendt inn en forespørsel for nylig! Vent før du sender inn en ny."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/Repository/StationRequestRepository.php:167
+msgid "This song was already requested and will play soon."
+msgstr ""
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/Repository/StationRequestRepository.php:247
+msgid "This song or artist has been played too recently. Wait a while before requesting it again."
+msgstr "Denne sangen eller artisten har blitt spilt for nylig. Vent en stund før du ber om det igjen."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/ServiceCheck.php:34
+#, php-format
+msgid "Service Not Running: %s"
+msgstr "Tjenester Kjører Ikke: %s"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/ServiceCheck.php:35
+msgid "One of the essential services on this installation is not currently running. Visit the system administration and check the system logs to find the cause of this issue."
+msgstr "En av de essensielle tjenestene på denne installasjonen kjører ikke for øyeblikket. Besøk systemadministrasjonen og sjekk systemloggene for å finne årsaken til dette problemet."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/BaseUrlCheck.php:42
+msgid "You may want to update your base URL to ensure it is correct."
+msgstr "Det kan være lurt å oppdatere basis-URLen for å sikre at den er riktig."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/BaseUrlCheck.php:45
+msgid "If you regularly use different URLs to access AzuraCast, you should enable the \"Prefer Browser URL\" setting."
+msgstr "Hvis du regelmessig bruker forskjellige URL-er for å få tilgang til AzuraCast, bør du aktivere innstillingen \"Foretrekk nettleser-URL\"."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/BaseUrlCheck.php:52
+#, php-format
+msgid "Your \"Base URL\" setting (%s) does not match the URL you are currently using (%s)."
+msgstr "Din \"Basis-URL\"-innstilling (%s) samsvarer ikke med URL-en du bruker for øyeblikket (%s)."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/ProfilerAdvisorCheck.php:34
+msgid "The performance profiling extension is currently enabled on this installation."
+msgstr "Ytelsesprofileringsutvidelsen er for øyeblikket aktivert på denne installasjonen."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/ProfilerAdvisorCheck.php:35
+msgid "You can track the execution time and memory usage of any AzuraCast page or application from the profiler page."
+msgstr "Du kan spore utførelsestiden og minnebruken til enhver AzuraCast-side eller -applikasjon fra profileringssiden."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/ProfilerAdvisorCheck.php:41
+msgid "Profiler Control Panel"
+msgstr "Profiler kontrollpanel"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/ProfilerAdvisorCheck.php:53
+msgid "Performance profiling is currently enabled for all requests."
+msgstr "Ytelsesprofilering er for øyeblikket aktivert for alle forespørsler."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/ProfilerAdvisorCheck.php:54
+msgid "This can have an adverse impact on system performance. You should disable this when possible."
+msgstr "Dette kan ha en negativ innvirkning på systemytelsen. Du bør deaktivere dette når det er mulig."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/RecentBackupCheck.php:47
+msgid "Installation Not Recently Backed Up"
+msgstr "Installasjon ikke nylig sikkerhetskopiert"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/RecentBackupCheck.php:48
+msgid "This installation has not been backed up in the last two weeks."
+msgstr "Denne installasjonen har ikke blitt sikkerhetskopiert de siste to ukene."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/DonateAdvisorCheck.php:33
+msgid "AzuraCast is free and open-source software."
+msgstr "AzuraCast er fri og åpen kildekode programvare."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/DonateAdvisorCheck.php:34
+msgid "If you are enjoying AzuraCast, please consider donating to support our work. We depend on donations to build new features, fix bugs, and keep AzuraCast modern, accessible and free."
+msgstr "Hvis du liker AzuraCast, vennligst vurder å donere for å støtte arbeidet vårt. Vi er avhengige av donasjoner for å bygge nye funksjoner, fikse feil og beholde AzuraCast modern, tilgjengelig og gratis."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/DonateAdvisorCheck.php:40
+msgid "Donate to AzuraCast"
+msgstr "Doner til AzuraCast"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/SyncTaskCheck.php:36
+msgid "Synchronization Disabled"
+msgstr "Synkronisering deaktivert"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/SyncTaskCheck.php:37
+msgid "Routine synchronization is currently disabled. Make sure to re-enable it to resume routine maintenance tasks."
+msgstr "Rutinesynkronisering er for øyeblikket deaktivert. Sørg for å aktivere den på nytt for å gjenoppta rutinemessige vedlikeholdsoppgaver."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/SyncTaskCheck.php:51
+msgid "Synchronization Not Recently Run"
+msgstr "Synkronisering ikke nylig kjørt"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/SyncTaskCheck.php:52
+msgid "The routine synchronization task has not run recently. This may indicate an error with your installation."
+msgstr "Den rutinemessige synkroniseringsoppgaven har ikke kjørt nylig. Dette kan indikere en feil med installasjonen."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/ActiveServerCheck.php:32
+msgid "This server is not the current active instance."
+msgstr "Denne serveren er ikke den gjeldende instansen."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/ActiveServerCheck.php:33
+msgid "This likely means that multiple AzuraCast instances are connecting to the same database. This instance is not the current active one, so synchronized tasks won't run on this server. If this is intentional, you can disregard this message."
+msgstr "Dette betyr sannsynligvis at flere AzuraCast-forekomster kobles opp mot samme database. Denne forekomsten er ikke den aktive en, så synkroniserte oppgaver blir ikke kjørt på denne serveren. Hvis dette er intentional, kan du overse denne meldingen."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/UpdateCheck.php:54
+msgid "New AzuraCast Stable Release Available"
+msgstr "Ny AzuraCast Stabil Utgivelse Tilgjengelig"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/UpdateCheck.php:58
+#, php-format
+msgid "Version %s is now available. You are currently running version %s. Updating is recommended."
+msgstr "Versjon %s er nå tilgjengelig. Du kjører for øyeblikket versjon %s. Oppdatering anbefales."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/UpdateCheck.php:75
+msgid "New AzuraCast Rolling Release Available"
+msgstr "Ny AzuraCast Rolling release tilgjengelig"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/UpdateCheck.php:79
+#, php-format
+msgid "Your installation is currently %d update(s) behind the latest version. Updating is recommended."
+msgstr "Din installasjon er for tiden %d oppdatering(er) bak den nyeste versjonen. Oppdatering er anbefalt."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/UpdateCheck.php:93
+msgid "Switch to Stable Channel Available"
+msgstr "Bytt til Stabel Kanal Tilgjengelig"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/UpdateCheck.php:96
+msgid "Your Rolling Release installation is currently older than the latest Stable release. This means you can switch releases to the \"Stable\" release channel if desired."
+msgstr "Installasjonen av rullende utgivelse er eldre enn den nyeste utgivelsen. Dette betyr at du kan bytte utgivelse til kanalen for \"Stabel\" dersom det er ønskelig."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Service/IpGeolocation.php:56
+msgid "GeoLite database not configured for this installation. See System Administration for instructions."
+msgstr "GeoLite-databasen er ikke konfigurert for denne installasjonen. Se Systemadministrasjon for instruksjoner."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Service/ServiceControl.php:80
+msgid "Runs routine synchronized tasks"
+msgstr "Kjører rutinesynkroniserte oppgaver"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Service/ServiceControl.php:81
+msgid "Database"
+msgstr "Database"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Service/ServiceControl.php:82
+msgid "Web server"
+msgstr "Nettjener"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Service/ServiceControl.php:83
+msgid "Roadrunner PHP Server"
+msgstr ""
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Service/ServiceControl.php:84
+msgid "PHP FastCGI Process Manager"
+msgstr ""
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Service/ServiceControl.php:85
+msgid "Now Playing manager service"
+msgstr "Spiller nå managertjeneste"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Service/ServiceControl.php:86
+msgid "PHP queue processing worker"
+msgstr "PHP-købehandlingsarbeider"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Service/ServiceControl.php:87
+msgid "Cache"
+msgstr "Hurtiglager"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Service/ServiceControl.php:88
+msgid "SFTP service"
+msgstr "SFTP-tjeneste"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Service/ServiceControl.php:89
+msgid "Live Now Playing updates"
+msgstr ""
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Service/ServiceControl.php:90
+msgid "Frontend Assets"
+msgstr "Frontend eiendeler"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Service/IpGeolocator/DbIp.php:29
+msgid "IP Geolocation by DB-IP"
+msgstr "IP Geolocation av DB-IP"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Service/IpGeolocator/GeoLite.php:35
+#, php-format
+msgid "This product includes GeoLite2 data created by MaxMind, available from %s."
+msgstr "Dette produktet inkluderer GeoLite2-data laget av MaxMind, tilgjengelig fra %s."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/SetupController.php:113
+msgid "Set Up AzuraCast"
+msgstr "Sett opp AzuraCast"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/SetupController.php:192
+msgid "Setup has already been completed!"
+msgstr "Oppsettet er allerede fullført!"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/MasqueradeAction.php:40
+msgid "User not found."
+msgstr "Bruker ble ikke funnet."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/MasqueradeAction.php:47
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/TwoFactorAction.php:32
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/WebAuthn/PostValidationAction.php:77
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/LoginAction.php:105
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/LoginAction.php:113
+msgid "Logged in successfully."
+msgstr "Logget på vellykket."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/TwoFactorAction.php:44
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/WebAuthn/PostValidationAction.php:56
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/LoginAction.php:123
+msgid "Login unsuccessful"
+msgstr "Innlogging mislykket"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/TwoFactorAction.php:44
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/LoginAction.php:123
+msgid "Your credentials could not be verified."
+msgstr "Påloggingsinformasjonen din kunne ikke bekreftes."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/ForgotPasswordAction.php:47
+msgid "Too many forgot password attempts"
+msgstr "For mange glemte passordforsøk"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/ForgotPasswordAction.php:48
+msgid "You have attempted to reset your password too many times. Please wait 30 seconds and try again."
+msgstr "Du har forsøkt å tilbakestille passordet ditt for mange ganger. Vent 30 sekunder og prøv igjen."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/ForgotPasswordAction.php:65
+#: /home/runner/work/AzuraCast/AzuraCast/templates/mail/forgot.phtml:8
+msgid "Account Recovery"
+msgstr "Gjenopprettelse av konto"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/ForgotPasswordAction.php:83
+msgid "Account recovery e-mail sent."
+msgstr "E-post for kontogjenoppretting er sendt."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/ForgotPasswordAction.php:84
+msgid "If the e-mail address you provided is in the system, check your inbox for a password reset message."
+msgstr "Hvis e-postadressen du oppga er i systemet, sjekk innboksen din for en melding om tilbakestilling av passord."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/LoginAction.php:65
+msgid "Too many login attempts"
+msgstr "For mange påloggingsforsøk"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/LoginAction.php:66
+msgid "You have attempted to log in too many times. Please wait 30 seconds and try again."
+msgstr "Du har forsøkt å logge på for mange ganger. Vent 30 sekunder og prøv igjen."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/LoginAction.php:106
+msgid "Complete the setup process to get started."
+msgstr "Fullfør konfigurasjonsprosessen for å komme i gang."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/RecoverAction.php:41
+msgid "Invalid token specified."
+msgstr "Ugyldig token er angitt."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/RecoverAction.php:74
+msgid "Logged in using account recovery token"
+msgstr "Logget på med kontogjenopprettingstoken"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/RecoverAction.php:75
+msgid "Your password has been updated."
+msgstr "Passordet er oppdatert."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Frontend/Dashboard/ChartsAction.php:134
+msgid "All Stations"
+msgstr "Alle Stasjoner"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Admin/SendTestMessageAction.php:51
+msgid "Test Message"
+msgstr "Testmelding"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Admin/SendTestMessageAction.php:54
+msgid "This is a test message from AzuraCast. If you are receiving this message, it means your e-mail settings are configured correctly."
+msgstr "Dette er en testmelding fra AzuraCast. Hvis du mottar denne meldingen, betyr det at e-postinnstillingene dine er riktig konfigurert."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Admin/SendTestMessageAction.php:68
+msgid "Test message sent successfully."
+msgstr "Testmeldingen ble sendt."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Admin/UsersController.php:222
+msgid "You cannot modify yourself."
+msgstr "Du kan ikke endre deg selv."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Admin/UsersController.php:257
+msgid "You cannot remove yourself."
+msgstr "Du kan ikke fjerne deg selv."
 
 #: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Admin/Stations/StorageLocationsAction.php:21
 msgid "Create a new storage location based on the base directory."
 msgstr "Opprett en ny lagringsplass basert på basiskatalogen."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Admin/SendTestMessageAction.php:50
-msgid "Test Message"
-msgstr "Testmelding"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Admin/SendTestMessageAction.php:53
-msgid "This is a test message from AzuraCast. If you are receiving this message, it means your e-mail settings are configured correctly."
-msgstr "Dette er en testmelding fra AzuraCast. Hvis du mottar denne meldingen, betyr det at e-postinnstillingene dine er riktig konfigurert."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Admin/SendTestMessageAction.php:67
-msgid "Test message sent successfully."
-msgstr "Testmeldingen ble sendt."
 
 #: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Admin/LogsAction.php:80
 msgid "AzuraCast Application Log"
@@ -6554,217 +7109,231 @@ msgstr "PHP App Logg"
 msgid "Supervisord Log"
 msgstr "Tilsynslogg"
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Admin/UsersController.php:217
-msgid "You cannot modify yourself."
-msgstr "Du kan ikke endre deg selv."
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/FilesController.php:201
+msgid "This station is out of available storage space."
+msgstr "Denne stasjonen er tom for tilgjengelig lagringsplass."
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Admin/UsersController.php:252
-msgid "You cannot remove yourself."
-msgstr "Du kan ikke fjerne deg selv."
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Requests/SubmitAction.php:79
+msgid "Your request has been submitted and will be played soon."
+msgstr "Din forespørsel er sendt og vil bli spilt snart."
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Frontend/Dashboard/ChartsAction.php:134
-msgid "All Stations"
-msgstr "Alle Stasjoner"
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ByListeningTime.php:47
+msgid "Less than Thirty Seconds"
+msgstr "Mindre enn Tretti Sekunder"
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/TwoFactorAction.php:31
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/WebAuthn/PostValidationAction.php:77
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/MasqueradeAction.php:47
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/LoginAction.php:101
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/LoginAction.php:109
-msgid "Logged in successfully."
-msgstr "Logget på vellykket."
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ByListeningTime.php:48
+msgid "Thirty Seconds to One Minute"
+msgstr "Tretti sekunder til ett minutt"
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/TwoFactorAction.php:43
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/WebAuthn/PostValidationAction.php:56
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/LoginAction.php:119
-msgid "Login unsuccessful"
-msgstr "Innlogging mislykket"
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ByListeningTime.php:49
+msgid "One Minute to Five Minutes"
+msgstr "Ett Minutt til Fem Minutter"
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/TwoFactorAction.php:43
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/LoginAction.php:119
-msgid "Your credentials could not be verified."
-msgstr "Påloggingsinformasjonen din kunne ikke bekreftes."
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ByListeningTime.php:50
+msgid "Five Minutes to Ten Minutes"
+msgstr "Fem Minutter til Ti Minutter"
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/MasqueradeAction.php:40
-msgid "User not found."
-msgstr "Bruker ble ikke funnet."
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ByListeningTime.php:51
+msgid "Ten Minutes to Thirty Minutes"
+msgstr "Ti Minutter til Ti Minutter"
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/LoginAction.php:64
-msgid "Too many login attempts"
-msgstr "For mange påloggingsforsøk"
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ByListeningTime.php:52
+msgid "Thirty Minutes to One Hour"
+msgstr "Tretti minutter til En Time"
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/LoginAction.php:65
-msgid "You have attempted to log in too many times. Please wait 30 seconds and try again."
-msgstr "Du har forsøkt å logge på for mange ganger. Vent 30 sekunder og prøv igjen."
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ByListeningTime.php:53
+msgid "One Hour to Two Hours"
+msgstr "En Time til To Timer"
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/LoginAction.php:102
-msgid "Complete the setup process to get started."
-msgstr "Fullfør konfigurasjonsprosessen for å komme i gang."
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ByListeningTime.php:54
+msgid "More than Two Hours"
+msgstr "Mer enn To Timer"
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/RecoverAction.php:41
-msgid "Invalid token specified."
-msgstr "Ugyldig token er angitt."
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ByBrowser.php:62
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ByCountry.php:75
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ByStream.php:99
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ByClient.php:82
+msgid "Connected Seconds"
+msgstr "Tilkoblede Sekunder"
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/RecoverAction.php:74
-msgid "Logged in using account recovery token"
-msgstr "Logget på med kontogjenopprettingstoken"
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ByClient.php:62
+msgid "Mobile Device"
+msgstr "Mobil Enhet"
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/RecoverAction.php:75
-msgid "Your password has been updated."
-msgstr "Passordet er oppdatert."
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ByClient.php:63
+msgid "Desktop Browser"
+msgstr "Skrivebord Nettleser"
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/ForgotPasswordAction.php:47
-msgid "Too many forgot password attempts"
-msgstr "For mange glemte passordforsøk"
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ByClient.php:64
+msgid "Non-Browser"
+msgstr "Ikke-Nettleser"
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/ForgotPasswordAction.php:48
-msgid "You have attempted to reset your password too many times. Please wait 30 seconds and try again."
-msgstr "Du har forsøkt å tilbakestille passordet ditt for mange ganger. Vent 30 sekunder og prøv igjen."
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/ServicesController.php:160
+msgid "Station reloaded."
+msgstr "Stasjonen er lastet inn på nytt."
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/ForgotPasswordAction.php:65
-#: /home/runner/work/AzuraCast/AzuraCast/templates/mail/forgot.phtml:8
-msgid "Account Recovery"
-msgstr "Gjenopprettelse av konto"
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/ServicesController.php:186
+msgid "Station restarted."
+msgstr "Stasjonen startet på nytt."
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/ForgotPasswordAction.php:83
-msgid "Account recovery e-mail sent."
-msgstr "E-post for kontogjenoppretting er sendt."
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/ServicesController.php:204
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/ServicesController.php:256
+msgid "Service stopped."
+msgstr "Tjenesten stoppet."
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/ForgotPasswordAction.php:84
-msgid "If the e-mail address you provided is in the system, check your inbox for a password reset message."
-msgstr "Hvis e-postadressen du oppga er i systemet, sjekk innboksen din for en melding om tilbakestilling av passord."
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/ServicesController.php:209
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/ServicesController.php:261
+msgid "Service started."
+msgstr "Tjenesten startet."
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/SetupController.php:113
-msgid "Set Up AzuraCast"
-msgstr "Sett opp AzuraCast"
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/ServicesController.php:215
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/ServicesController.php:267
+msgid "Service reloaded."
+msgstr "Tjenesten er lastet inn på nytt."
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/SetupController.php:192
-msgid "Setup has already been completed!"
-msgstr "Oppsettet er allerede fullført!"
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/ServicesController.php:227
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/ServicesController.php:279
+msgid "Service restarted."
+msgstr "Tjenesten startet på nytt."
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/PublicPages/PodcastEpisodeAction.php:59
-msgid "Episode not found."
-msgstr "Finner ikke episoden."
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/ServicesController.php:246
+msgid "Song skipped."
+msgstr "Sangen hoppet over."
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/PublicPages/PodcastEpisodesAction.php:69
-msgid "No episodes found."
-msgstr "Ingen episoder funnet."
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/ServicesController.php:251
+msgid "Streamer disconnected."
+msgstr "Streameren er frakoblet."
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/UpdateCheck.php:54
-msgid "New AzuraCast Stable Release Available"
-msgstr "Ny AzuraCast Stabil Utgivelse Tilgjengelig"
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Playlists/PutApplyToAction.php:62
+msgid "Playlist applied to folders."
+msgstr "Spilleliste anvendt på mapper."
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/UpdateCheck.php:58
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Playlists/GetApplyToAction.php:44
+msgid "Base Directory"
+msgstr "Hoved Mappe"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Playlists/ReshuffleAction.php:38
+msgid "Playlist reshuffled."
+msgstr "Spillelisten er stokket om."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Playlists/EmptyAction.php:36
+msgid "This playlist is not song-based."
+msgstr "Denne spillelisten er ikke sangbasert."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Playlists/EmptyAction.php:44
+msgid "Playlist emptied."
+msgstr "Spilleliste tømt."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Playlists/ImportAction.php:200
 #, php-format
-msgid "Version %s is now available. You are currently running version %s. Updating is recommended."
-msgstr "Versjon %s er nå tilgjengelig. Du kjører for øyeblikket versjon %s. Oppdatering anbefales."
+msgid "Playlist successfully imported; %d of %d files were successfully matched."
+msgstr "Spilleliste importert; %d av %d filer ble matchet."
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/UpdateCheck.php:75
-msgid "New AzuraCast Rolling Release Available"
-msgstr "Ny AzuraCast Rolling release tilgjengelig"
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Playlists/GetOrderAction.php:41
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Playlists/PutOrderAction.php:40
+msgid "This playlist is not a sequential playlist."
+msgstr "Denne spillelisten er ikke en sekvensiell spilleliste."
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/UpdateCheck.php:79
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Playlists/ToggleAction.php:39
+msgid "Playlist enabled."
+msgstr "Spilleliste aktivert."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Playlists/ToggleAction.php:40
+msgid "Playlist disabled."
+msgstr "Spilleliste deaktivert."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Streamers/BroadcastsController.php:153
+msgid "No recording available."
+msgstr "Ingen opptak tilgjengelig."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Webhooks/ToggleAction.php:39
+msgid "Web hook enabled."
+msgstr "Web-hook aktivert."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Webhooks/ToggleAction.php:40
+msgid "Web hook disabled."
+msgstr "Web-hook deaktivert."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Files/MakeDirectoryAction.php:34
+msgid "No directory specified"
+msgstr "Ingen katalog spesifisert"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Files/RenameAction.php:33
+msgid "File not specified."
+msgstr "Filen er ikke spesifisert."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Files/RenameAction.php:39
+msgid "New path not specified."
+msgstr "Ny bane ikke spesifisert."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Files/ListAction.php:252
 #, php-format
-msgid "Your installation is currently %d update(s) behind the latest version. Updating is recommended."
-msgstr "Din installasjon er for tiden %d oppdatering(er) bak den nyeste versjonen. Oppdatering er anbefalt."
+msgid "File Not Processed: %s"
+msgstr "Fil ikke behandlet: %s"
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/UpdateCheck.php:93
-msgid "Switch to Stable Channel Available"
-msgstr "Bytt til Stabel Kanal Tilgjengelig"
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Files/ListAction.php:257
+msgid "Cover Art"
+msgstr "Cover Bilde"
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/UpdateCheck.php:96
-msgid "Your Rolling Release installation is currently older than the latest Stable release. This means you can switch releases to the \"Stable\" release channel if desired."
-msgstr "Installasjonen av rullende utgivelse er eldre enn den nyeste utgivelsen. Dette betyr at du kan bytte utgivelse til kanalen for \"Stabel\" dersom det er ønskelig."
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Files/ListAction.php:259
+msgid "File Processing"
+msgstr "Filbehandling"
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/ServiceCheck.php:34
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/BulkMedia/UploadAction.php:171
 #, php-format
-msgid "Service Not Running: %s"
-msgstr "Tjenester Kjører Ikke: %s"
+msgid "%d files processed."
+msgstr "%d filer behandlet."
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/ServiceCheck.php:35
-msgid "One of the essential services on this installation is not currently running. Visit the system administration and check the system logs to find the cause of this issue."
-msgstr "En av de essensielle tjenestene på denne installasjonen kjører ikke for øyeblikket. Besøk systemadministrasjonen og sjekk systemloggene for å finne årsaken til dette problemet."
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/LogsAction.php:86
+msgid "Station Nginx Configuration"
+msgstr "Stasjon Nginx Konfigurasjon"
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/DonateAdvisorCheck.php:33
-msgid "AzuraCast is free and open-source software."
-msgstr "AzuraCast er fri og åpen kildekode programvare."
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/LogsAction.php:93
+msgid "Liquidsoap Log"
+msgstr "Liquidsoap Logg"
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/DonateAdvisorCheck.php:34
-msgid "If you are enjoying AzuraCast, please consider donating to support our work. We depend on donations to build new features, fix bugs, and keep AzuraCast modern, accessible and free."
-msgstr "Hvis du liker AzuraCast, vennligst vurder å donere for å støtte arbeidet vårt. Vi er avhengige av donasjoner for å bygge nye funksjoner, fikse feil og beholde AzuraCast modern, tilgjengelig og gratis."
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/LogsAction.php:98
+msgid "Liquidsoap Configuration"
+msgstr "Liquidsoap konfigurasjon"
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/DonateAdvisorCheck.php:40
-msgid "Donate to AzuraCast"
-msgstr "Doner til AzuraCast"
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/LogsAction.php:107
+msgid "Icecast Access Log"
+msgstr "Icecast tilgangslogg"
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/RecentBackupCheck.php:47
-msgid "Installation Not Recently Backed Up"
-msgstr "Installasjon ikke nylig sikkerhetskopiert"
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/LogsAction.php:112
+msgid "Icecast Error Log"
+msgstr "Icecast Feillogg"
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/RecentBackupCheck.php:48
-msgid "This installation has not been backed up in the last two weeks."
-msgstr "Denne installasjonen har ikke blitt sikkerhetskopiert de siste to ukene."
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/LogsAction.php:117
+msgid "Icecast Configuration"
+msgstr "Icecast Konfigurasjon"
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/SyncTaskCheck.php:36
-msgid "Synchronization Disabled"
-msgstr "Synkronisering deaktivert"
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/LogsAction.php:125
+msgid "Shoutcast Log"
+msgstr "Shoutcast Logg"
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/SyncTaskCheck.php:37
-msgid "Routine synchronization is currently disabled. Make sure to re-enable it to resume routine maintenance tasks."
-msgstr "Rutinesynkronisering er for øyeblikket deaktivert. Sørg for å aktivere den på nytt for å gjenoppta rutinemessige vedlikeholdsoppgaver."
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/LogsAction.php:130
+msgid "Shoutcast Configuration"
+msgstr "Shoutcast Konfigurasjon"
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/SyncTaskCheck.php:51
-msgid "Synchronization Not Recently Run"
-msgstr "Synkronisering ikke nylig kjørt"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/SyncTaskCheck.php:52
-msgid "The routine synchronization task has not run recently. This may indicate an error with your installation."
-msgstr "Den rutinemessige synkroniseringsoppgaven har ikke kjørt nylig. Dette kan indikere en feil med installasjonen."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/ProfilerAdvisorCheck.php:34
-msgid "The performance profiling extension is currently enabled on this installation."
-msgstr "Ytelsesprofileringsutvidelsen er for øyeblikket aktivert på denne installasjonen."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/ProfilerAdvisorCheck.php:35
-msgid "You can track the execution time and memory usage of any AzuraCast page or application from the profiler page."
-msgstr "Du kan spore utførelsestiden og minnebruken til enhver AzuraCast-side eller -applikasjon fra profileringssiden."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/ProfilerAdvisorCheck.php:41
-msgid "Profiler Control Panel"
-msgstr "Profiler kontrollpanel"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/ProfilerAdvisorCheck.php:53
-msgid "Performance profiling is currently enabled for all requests."
-msgstr "Ytelsesprofilering er for øyeblikket aktivert for alle forespørsler."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/ProfilerAdvisorCheck.php:54
-msgid "This can have an adverse impact on system performance. You should disable this when possible."
-msgstr "Dette kan ha en negativ innvirkning på systemytelsen. Du bør deaktivere dette når det er mulig."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/ActiveServerCheck.php:32
-msgid "This server is not the current active instance."
-msgstr "Denne serveren er ikke den gjeldende instansen."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/ActiveServerCheck.php:33
-msgid "This likely means that multiple AzuraCast instances are connecting to the same database. This instance is not the current active one, so synchronized tasks won't run on this server. If this is intentional, you can disregard this message."
-msgstr "Dette betyr sannsynligvis at flere AzuraCast-forekomster kobles opp mot samme database. Denne forekomsten er ikke den aktive en, så synkroniserte oppgaver blir ikke kjørt på denne serveren. Hvis dette er intentional, kan du overse denne meldingen."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/BaseUrlCheck.php:42
-msgid "You may want to update your base URL to ensure it is correct."
-msgstr "Det kan være lurt å oppdatere basis-URLen for å sikre at den er riktig."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/BaseUrlCheck.php:45
-msgid "If you regularly use different URLs to access AzuraCast, you should enable the \"Prefer Browser URL\" setting."
-msgstr "Hvis du regelmessig bruker forskjellige URL-er for å få tilgang til AzuraCast, bør du aktivere innstillingen \"Foretrekk nettleser-URL\"."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/BaseUrlCheck.php:52
+#: /home/runner/work/AzuraCast/AzuraCast/src/Validator/Constraints/StorageLocationValidator.php:41
 #, php-format
-msgid "Your \"Base URL\" setting (%s) does not match the URL you are currently using (%s)."
-msgstr "Din \"Basis-URL\"-innstilling (%s) samsvarer ikke med URL-en du bruker for øyeblikket (%s)."
+msgid "Storage location %s could not be validated: %s"
+msgstr "Lagringsplasseringen %s kunne ikke valideres: %s"
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Doctrine/Repository.php:108
-msgid "Select..."
-msgstr "Velg..."
+#: /home/runner/work/AzuraCast/AzuraCast/src/Validator/Constraints/StorageLocationValidator.php:72
+#, php-format
+msgid "Storage location %s already exists."
+msgstr "Lagringssted %s eksisterer allerede."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Validator/Constraints/StationPortCheckerValidator.php:41
+#, php-format
+msgid "The port %s is in use by another station."
+msgstr "Porten %s er i bruk av en annen stasjon."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Validator/Constraints/UniqueEntityValidator.php:169
+msgid "This value is already used."
+msgstr "Denne verdien er allerede brukt."
 
 #: /home/runner/work/AzuraCast/AzuraCast/src/Media/Enums/MetadataTags.php:81
 msgid "Album Artist"
@@ -6998,449 +7567,6 @@ msgstr "URL bruker"
 msgid "Year"
 msgstr "År"
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/Repository/StationRequestRepository.php:73
-msgid "Search engine crawlers are not permitted to use this feature."
-msgstr "Søkemotorsøkeprogrammer har ikke tillatelse til å bruke denne funksjonen."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/Repository/StationRequestRepository.php:80
-msgid "You are not permitted to submit requests."
-msgstr "Du har ikke lov til å sende inn forespørsler."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/Repository/StationRequestRepository.php:89
-msgid "This track is not requestable."
-msgstr ""
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/Repository/StationRequestRepository.php:121
-msgid "You have submitted a request too recently! Please wait before submitting another one."
-msgstr "Du har sendt inn en forespørsel for nylig! Vent før du sender inn en ny."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/Repository/StationRequestRepository.php:167
-msgid "This song was already requested and will play soon."
-msgstr ""
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/Repository/StationRequestRepository.php:247
-msgid "This song or artist has been played too recently. Wait a while before requesting it again."
-msgstr "Denne sangen eller artisten har blitt spilt for nylig. Vent en stund før du ber om det igjen."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/Api/Error.php:71
-msgid "Record not found"
-msgstr "Finner ikke posten"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/Api/Error.php:77
-msgid "The uploaded file exceeds the upload_max_filesize directive in php.ini."
-msgstr "Den opplastede filen overskrider upload_max_filesize-direktivet i php.ini."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/Api/Error.php:78
-msgid "The uploaded file exceeds the MAX_FILE_SIZE directive from the HTML form."
-msgstr "Den opplastede filen overskrider MAX_FILE_SIZE-direktivet fra HTML-skjemaet."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/Api/Error.php:79
-msgid "The uploaded file was only partially uploaded."
-msgstr "Filen ble bare delvis lastet opp."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/Api/Error.php:80
-msgid "No file was uploaded."
-msgstr "Ingen fil ble lastet opp."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/Api/Error.php:81
-msgid "No temporary directory is available."
-msgstr "Ingen midlertidig katalog er tilgjengelig."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/Api/Error.php:82
-msgid "Could not write to filesystem."
-msgstr "Kunne ikke skrive til filsystemet."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/Api/Error.php:83
-msgid "Upload halted by a PHP extension."
-msgstr "Opplasting stoppet av en PHP-utvidelse."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/Api/Error.php:84
-msgid "Unspecified error."
-msgstr "Uspesifisert error."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/Api/Status.php:33
-msgid "Changes saved successfully."
-msgstr "Endringene er lagret."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/Api/Status.php:38
-msgid "Record created successfully."
-msgstr "Oppføringen ble opprettet."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/Api/Status.php:43
-msgid "Record updated successfully."
-msgstr "Oppføringen ble oppdatert."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/Api/Status.php:48
-msgid "Record deleted successfully."
-msgstr "Oppføringen ble slettet."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/ApiGenerator/ScheduleApiGenerator.php:59
-#, php-format
-msgid "Playlist: %s"
-msgstr "Spilleliste: %s"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/ApiGenerator/ScheduleApiGenerator.php:64
-#, php-format
-msgid "Streamer: %s"
-msgstr "Strømmer: %s"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Exception/StationUnsupportedException.php:25
-msgid "This station does not currently support this functionality."
-msgstr ""
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Exception/StationUnsupportedException.php:32
-msgid "This station does not currently support on-demand media."
-msgstr ""
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Exception/StationUnsupportedException.php:39
-msgid "This station does not currently accept requests."
-msgstr ""
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Exception/SupervisorException.php:24
-#, php-format
-msgid "%s is not recognized as a service."
-msgstr "%s gjenkjennes ikke som en tjeneste."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Exception/SupervisorException.php:27
-msgid "It may not be registered with Supervisor yet. Restarting broadcasting may help."
-msgstr "Den er kanskje ikke registrert hos Supervisor ennå. Det kan hjelpe å starte kringkastingen på nytt."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Exception/SupervisorException.php:36
-#, php-format
-msgid "%s cannot start"
-msgstr "%s kan ikke starte"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Exception/SupervisorException.php:39
-msgid "It is already running."
-msgstr "Den kjører allerede."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Exception/SupervisorException.php:48
-#, php-format
-msgid "%s cannot stop"
-msgstr "%s kan ikke stoppe"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Exception/SupervisorException.php:51
-msgid "It is not running."
-msgstr "Kjører ikke."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Exception/SupervisorException.php:63
-#, php-format
-msgid "%s encountered an error: %s"
-msgstr "%s opplever en feil: %s"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Exception/SupervisorException.php:67
-msgid "Check the log for details."
-msgstr "Sjekk loggen for detaljer."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Exception/NotFoundException.php:24
-msgid "Record not found."
-msgstr ""
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Exception/NotFoundException.php:29
-msgid "File not found."
-msgstr ""
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Exception/NotFoundException.php:34
-msgid "Station not found."
-msgstr ""
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Exception/NotFoundException.php:39
-msgid "Podcast not found."
-msgstr ""
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Exception/CannotCompleteActionException.php:26
-#, php-format
-msgid "Cannot submit request: %s"
-msgstr ""
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Http/ErrorHandler.php:172
-#: /home/runner/work/AzuraCast/AzuraCast/src/Http/ErrorHandler.php:184
-msgid "You must be logged in to access this page."
-msgstr "Du må være logget inn for å få tilgang til denne siden."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Http/ErrorHandler.php:202
-#: /home/runner/work/AzuraCast/AzuraCast/src/Http/ErrorHandler.php:214
-msgid "You do not have permission to access this portion of the site."
-msgstr "Du har ikke tillatelse til å få tilgang til denne delen av nettstedet."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Validator/Constraints/UniqueEntityValidator.php:169
-msgid "This value is already used."
-msgstr "Denne verdien er allerede brukt."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Validator/Constraints/StorageLocationValidator.php:41
-#, php-format
-msgid "Storage location %s could not be validated: %s"
-msgstr "Lagringsplasseringen %s kunne ikke valideres: %s"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Validator/Constraints/StorageLocationValidator.php:72
-#, php-format
-msgid "Storage location %s already exists."
-msgstr "Lagringssted %s eksisterer allerede."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Validator/Constraints/StationPortCheckerValidator.php:41
-#, php-format
-msgid "The port %s is in use by another station."
-msgstr "Porten %s er i bruk av en annen stasjon."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/SetupFixturesCommand.php:59
-msgid "Fixtures loaded."
-msgstr "Inventar lastet."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/Users/SetAdministratorCommand.php:61
-#, php-format
-msgid "The account associated with e-mail address \"%s\" has been set as an administrator"
-msgstr "Kontoen knyttet til e-postadressen \"%s\" er satt som administrator"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/Users/SetAdministratorCommand.php:69
-msgid "Account not found."
-msgstr "Konto ikke funnet."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/Settings/ListCommand.php:26
-msgid "AzuraCast Settings"
-msgstr "AzuraCast-innstillinger"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/Settings/ListCommand.php:29
-msgid "Setting Key"
-msgstr "Innstillingsnøkkel"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/Settings/ListCommand.php:30
-msgid "Setting Value"
-msgstr "Innstillingsverdi"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/Backup/RestoreCommand.php:77
-#, php-format
-msgid "Backup path %s not found!"
-msgstr "Finner ikke sikkerhetskopibanen %s!"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/Backup/BackupCommand.php:95
-msgid "AzuraCast Backup"
-msgstr "AzuraCast sikkerhetskopi"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/Backup/BackupCommand.php:96
-msgid "Please wait while a backup is generated..."
-msgstr "Vennligst vent mens en sikkerhetskopi genereres..."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/Backup/BackupCommand.php:99
-msgid "Creating temporary directories..."
-msgstr "Oppretter midlertidige kataloger..."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/Backup/BackupCommand.php:112
-msgid "Backing up MariaDB..."
-msgstr "Sikkerhetskopierer MariaDB..."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/Backup/BackupCommand.php:138
-msgid "Creating backup archive..."
-msgstr "Oppretter sikkerhetskopieringsarkiv ..."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/Backup/BackupCommand.php:214
-msgid "Cleaning up temporary files..."
-msgstr "Rydder opp i midlertidige filer..."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/Backup/BackupCommand.php:226
-#, php-format
-msgid "Backup complete in %.2f seconds."
-msgstr "Sikkerhetskopiering fullført om %.2f sekunder."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/Locale/ImportCommand.php:58
-#, php-format
-msgid "Imported locale: %s"
-msgstr "Importert språk: %s"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/MigrateDbCommand.php:25
-msgid "Database Migrations"
-msgstr "Database Migreringer"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/MigrateDbCommand.php:38
-msgid "Database is already up to date!"
-msgstr "Databasen er allerede oppdatert!"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/MigrateDbCommand.php:51
-#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/RollbackDbCommand.php:61
-msgid "Running database migrations..."
-msgstr "Kjører databaseoverføringer..."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/MigrateDbCommand.php:65
-#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/RollbackDbCommand.php:86
-#, php-format
-msgid "Database migration failed: %s"
-msgstr "Database migrering feilet: %s"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/MigrateDbCommand.php:77
-msgid "Database migration completed!"
-msgstr "Database migrering fullført!"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/MigrateConfigCommand.php:108
-msgid "Configuration successfully written."
-msgstr "Konfigurasjonen er skrevet."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/AbstractDatabaseCommand.php:101
-msgid "Backing up initial database state..."
-msgstr "Sikkerhetskopierer den første databasetilstanden..."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/AbstractDatabaseCommand.php:110
-msgid "We detected a database restore file from a previous (possibly failed) migration."
-msgstr "Vi fant en databasegjenopprettingsfil fra en tidligere (mulig feilet) overføring."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/AbstractDatabaseCommand.php:111
-msgid "Attempting to restore that now..."
-msgstr "Forsøker å gjenopprette det nå..."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/AbstractDatabaseCommand.php:126
-msgid "Attempting to roll back to previous database state..."
-msgstr "Forsøker å rulle tilbake til forrige databasetilstand..."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/AbstractDatabaseCommand.php:132
-msgid "Your database was restored due to a failed migration."
-msgstr "Databasen din ble gjenopprettet på grunn av mislykket overføring."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/AbstractDatabaseCommand.php:133
-msgid "Please report this bug to our developers."
-msgstr "Vennligst rapporter denne feilen til våre utviklere."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/AbstractDatabaseCommand.php:139
-#, php-format
-msgid "Restore failed: %s"
-msgstr "Gjenoppretting mislyktes: %s"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/SetupCommand.php:60
-msgid "AzuraCast Initializing..."
-msgstr "AzuraCast initialiserer..."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/SetupCommand.php:62
-msgid "AzuraCast Setup"
-msgstr "AzuraCast-oppsett"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/SetupCommand.php:64
-msgid "Welcome to AzuraCast. Please wait while some key dependencies of AzuraCast are set up..."
-msgstr "Velkommen til AzuraCast. Vennligst vent mens noen nøkkelavhengigheter til AzuraCast er konfigurert..."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/SetupCommand.php:69
-msgid "Running Database Migrations"
-msgstr "Kjører Database Migrations"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/SetupCommand.php:77
-msgid "Generating Database Proxy Classes"
-msgstr "Generering av databaseproxyklasser"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/SetupCommand.php:82
-msgid "Reload System Data"
-msgstr "Last inn systemdata på nytt"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/SetupCommand.php:92
-msgid "Installing Data Fixtures"
-msgstr "Installere datafiksturer"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/SetupCommand.php:98
-msgid "Refreshing All Stations"
-msgstr "Oppdaterer alle stasjoner"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/SetupCommand.php:125
-msgid "AzuraCast is now updated to the latest version!"
-msgstr "AzuraCast er nå oppdatert til siste versjon!"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/SetupCommand.php:134
-msgid "AzuraCast installation complete!"
-msgstr "AzuraCast-installasjonen er fullført!"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/SetupCommand.php:136
-#, php-format
-msgid "Visit %s to complete setup."
-msgstr "Besøk %s for å fullføre oppsettet."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/RollbackDbCommand.php:44
-msgid "Roll Back Database"
-msgstr "Rull Tilbake Database"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/RollbackDbCommand.php:99
-#, php-format
-msgid "Database rolled back to stable release version \"%s\"."
-msgstr "Database rullet tilbake til stabil utgivelsesversjon \"%s\"."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Enums/StationPermissions.php:26
-#: /home/runner/work/AzuraCast/AzuraCast/src/Enums/GlobalPermissions.php:22
-msgid "All Permissions"
-msgstr "Alle Tillatelser"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Enums/StationPermissions.php:27
-msgid "View Station Page"
-msgstr "Se stasjonssiden"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Enums/StationPermissions.php:28
-msgid "View Station Reports"
-msgstr "Se stasjonsrapporter"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Enums/StationPermissions.php:29
-msgid "View Station Logs"
-msgstr "Vis stasjonslogger"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Enums/StationPermissions.php:30
-msgid "Manage Station Profile"
-msgstr "Administrer stasjonsprofil"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Enums/StationPermissions.php:31
-msgid "Manage Station Broadcasting"
-msgstr "Administrer stasjonskringkasting"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Enums/StationPermissions.php:32
-msgid "Manage Station Streamers"
-msgstr "Administrer stasjonsstreamere"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Enums/StationPermissions.php:33
-msgid "Manage Station Mount Points"
-msgstr "Administrer stasjonsfestepunkter"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Enums/StationPermissions.php:34
-msgid "Manage Station Remote Relays"
-msgstr "Administrer stasjonsfjernreléer"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Enums/StationPermissions.php:35
-msgid "Manage Station Media"
-msgstr "Administrer Station Media"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Enums/StationPermissions.php:36
-msgid "Manage Station Automation"
-msgstr "Administrer stasjonsautomatisering"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Enums/StationPermissions.php:37
-msgid "Manage Station Web Hooks"
-msgstr "Administrer Station Web Hooks"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Enums/StationPermissions.php:38
-msgid "Manage Station Podcasts"
-msgstr "Administrer stasjonspodcaster"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Enums/GlobalPermissions.php:23
-msgid "View Administration Page"
-msgstr "Se administrasjonssiden"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Enums/GlobalPermissions.php:24
-msgid "View System Logs"
-msgstr "Se systemlogger"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Enums/GlobalPermissions.php:25
-msgid "Administer Settings"
-msgstr "Administrer innstillinger"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Enums/GlobalPermissions.php:26
-msgid "Administer API Keys"
-msgstr "Administrer API-nøkler"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Enums/GlobalPermissions.php:27
-msgid "Administer Stations"
-msgstr "Administrer stasjoner"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Enums/GlobalPermissions.php:28
-msgid "Administer Custom Fields"
-msgstr "Administrer egendefinerte felt"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Enums/GlobalPermissions.php:29
-msgid "Administer Backups"
-msgstr "Administrer sikkerhetskopier"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Enums/GlobalPermissions.php:30
-msgid "Administer Storage Locations"
-msgstr "Administrer lagringsplasseringer"
-
 #: /home/runner/work/AzuraCast/AzuraCast/src/Installer/Command/InstallCommand.php:176
 msgid "AzuraCast Installer"
 msgstr "AzuraCast installasjonsprogram"
@@ -7492,6 +7618,66 @@ msgstr "Skriver konfigurasjonsfiler..."
 #: /home/runner/work/AzuraCast/AzuraCast/src/Installer/Command/InstallCommand.php:291
 msgid "Server configuration complete!"
 msgstr "Serverkonfigurasjon fullført!"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/EnvFile.php:22
+msgid "(Docker Compose) All Docker containers are prefixed by this name. Do not change this after installation."
+msgstr "(Docker Compose) Alle Docker-beholdere har dette navnet foran. Ikke endre dette etter installasjon."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/EnvFile.php:29
+msgid "(Docker Compose) The amount of time to wait before a Docker Compose operation fails. Increase this on lower performance computers."
+msgstr "(Docker Compose) Hvor lang tid det må vente før en Docker Compose-operasjon mislykkes. Øk dette på datamaskiner med lavere ytelse."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/EnvFile.php:42
+msgid "HTTP Port"
+msgstr "HTTP-port"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/EnvFile.php:43
+msgid "The main port AzuraCast listens to for insecure HTTP connections."
+msgstr "Hovedporten AzuraCast lytter til for usikre HTTP-tilkoblinger."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/EnvFile.php:49
+msgid "HTTPS Port"
+msgstr "HTTPS-port"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/EnvFile.php:50
+msgid "The main port AzuraCast listens to for secure HTTPS connections."
+msgstr "Hovedporten AzuraCast lytter til for sikre HTTPS-tilkoblinger."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/EnvFile.php:57
+msgid "The port AzuraCast listens to for SFTP file management connections."
+msgstr "Porten AzuraCast lytter til for SFTP-filbehandlingstilkoblinger."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/EnvFile.php:63
+msgid "Station Ports"
+msgstr "Stasjonshavner"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/EnvFile.php:64
+msgid "The ports AzuraCast should listen to for station broadcasts and incoming DJ connections."
+msgstr "Portene AzuraCast skal lytte til for stasjonssendinger og innkommende DJ-tilkoblinger."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/EnvFile.php:70
+msgid "Docker User UID"
+msgstr "Docker Bruker UID"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/EnvFile.php:71
+msgid "Set the UID of the user running inside the Docker containers. Matching this with your host UID can fix permission issues."
+msgstr "Angi UID-en til brukeren som kjører inne i Docker-beholderne. Å matche dette med verts-UID-en din kan fikse tillatelsesproblemer."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/EnvFile.php:77
+msgid "Docker User GID"
+msgstr "Docker Bruker GID"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/EnvFile.php:78
+msgid "Set the GID of the user running inside the Docker containers. Matching this with your host GID can fix permission issues."
+msgstr "Angi GID-en til brukeren som kjører inne i Docker-beholderne. Å matche dette med verts-GID-en kan fikse tillatelsesproblemer."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/EnvFile.php:84
+msgid "Use Podman instead of Docker."
+msgstr "Benytt Podman i stedet for Docker."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/EnvFile.php:88
+msgid "Advanced: Use Privileged Docker Settings"
+msgstr "Avansert: Bruk Privileged Docker-innstillinger"
 
 #: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AbstractEnvFile.php:90
 msgid "This file was automatically generated by AzuraCast."
@@ -7651,242 +7837,127 @@ msgid "Redis Port"
 msgstr "Redis Port"
 
 #: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AzuraCastEnvFile.php:186
-msgid "Redis Database Index"
-msgstr "Redis Database Indeks"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AzuraCastEnvFile.php:192
 msgid "PHP Maximum POST File Size"
 msgstr "PHP Maksimal POST-filstørrelse"
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AzuraCastEnvFile.php:196
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AzuraCastEnvFile.php:190
 msgid "PHP Memory Limit"
 msgstr "PHP minnegrense"
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AzuraCastEnvFile.php:200
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AzuraCastEnvFile.php:194
 msgid "PHP Script Maximum Execution Time (Seconds)"
 msgstr "PHP skript Maksimal kjøringstid (sekunder)"
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AzuraCastEnvFile.php:204
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AzuraCastEnvFile.php:198
 msgid "Short Sync Task Execution Time (Seconds)"
 msgstr "Kort synkroniseringstid kjøretid (i sekunder)"
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AzuraCastEnvFile.php:205
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AzuraCastEnvFile.php:199
 msgid "The maximum execution time (and lock timeout) for the 15-second, 1-minute and 5-minute synchronization tasks."
 msgstr "Maksimal utførelsestid (og låsetidsavbrudd) for synkroniseringsoppgavene på 15 sekunder, 1 minutter og 5 minutter."
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AzuraCastEnvFile.php:210
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AzuraCastEnvFile.php:204
 msgid "Long Sync Task Execution Time (Seconds)"
 msgstr "Tid for lang synkronisering kjøring av oppgaver (i sekunder)"
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AzuraCastEnvFile.php:211
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AzuraCastEnvFile.php:205
 msgid "The maximum execution time (and lock timeout) for the 1-hour synchronization task."
 msgstr "Maksimal utførelsestid (og låsetidsavbrudd) for synkroniseringsoppgaven på 1 time."
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AzuraCastEnvFile.php:216
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AzuraCastEnvFile.php:210
 msgid "Now Playing Delay Time (Seconds)"
 msgstr "Nå spilles forsinkelse tid (i sekunder)"
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AzuraCastEnvFile.php:217
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AzuraCastEnvFile.php:211
 msgid "The delay between Now Playing checks for every station. Decrease for more frequent checks at the expense of performance; increase for less frequent checks but better performance (for large installations)."
 msgstr "Forsinkelsen mellom Nå Spilles etter hver stasjon. Reduser for hyppigere kontroller på bekostning av ytelse. Øk for sjeldnere kontroller, men bedre ytelse (for store installasjoner)."
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AzuraCastEnvFile.php:222
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AzuraCastEnvFile.php:216
 msgid "Now Playing Max Concurrent Processes"
 msgstr "Spilling av maks samtidige prosesser"
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AzuraCastEnvFile.php:223
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AzuraCastEnvFile.php:217
 msgid "The maximum number of concurrent processes for now playing updates. Increasing this can help reduce the latency between updates now playing updates on large installations."
 msgstr "Maksimalt antall samtidige prosesser for nå spilling av oppdateringer. Øker dette kan bidra til å redusere forsinkelse mellom oppdateringer som spilles av oppdateringer på store installasjoner."
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AzuraCastEnvFile.php:228
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AzuraCastEnvFile.php:222
 msgid "Maximum PHP-FPM Worker Processes"
 msgstr "Maksimal PHP-FPM-arbeidsprosesser"
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AzuraCastEnvFile.php:232
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AzuraCastEnvFile.php:226
 msgid "Enable Performance Profiling Extension"
 msgstr "Aktiver Performance Profiling Extension"
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AzuraCastEnvFile.php:234
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AzuraCastEnvFile.php:228
 #, php-format
 msgid "Profiling data can be viewed by visiting %s."
 msgstr "Profildata kan vises ved å gå til %s."
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AzuraCastEnvFile.php:239
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AzuraCastEnvFile.php:233
 msgid "Profile Performance on All Requests"
 msgstr "Profilytelse på alle forespørsler"
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AzuraCastEnvFile.php:240
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AzuraCastEnvFile.php:234
 msgid "This will have a significant performance impact on your installation."
 msgstr "Dette vil ha en betydelig ytelsespåvirkning på installasjonen din."
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AzuraCastEnvFile.php:245
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AzuraCastEnvFile.php:239
 msgid "Profiling Extension HTTP Key"
 msgstr "HTTP-nøkkel for profileringsutvidelse"
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AzuraCastEnvFile.php:246
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AzuraCastEnvFile.php:240
 msgid "The value for the \"SPX_KEY\" parameter for viewing profiling pages."
 msgstr "Verdien for «SPX_KEY»-parameteren for visning av profileringssider."
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AzuraCastEnvFile.php:251
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AzuraCastEnvFile.php:245
 msgid "Profiling Extension IP Allow List"
 msgstr "IP-tillatelsesliste for profilutvidelse"
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AzuraCastEnvFile.php:256
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AzuraCastEnvFile.php:250
+msgid "Nginx Max Client Body Size"
+msgstr ""
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AzuraCastEnvFile.php:251
+msgid "This is the total size any single request body can be. AzuraCast chunks its uploads into smaller file sizes, so this only applies when doing custom uploads via the API. Sizes should be listed in a format like \"100K\", \"128M\", \"1G\" for kilobytes, megabytes, and gigabytes respectively."
+msgstr ""
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AzuraCastEnvFile.php:257
 msgid "Enable web-based Docker image updates"
 msgstr "Aktiver web-baserte Docker bildeoppdateringer"
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AzuraCastEnvFile.php:260
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AzuraCastEnvFile.php:261
 msgid "Extra Ubuntu packages to install upon startup"
 msgstr "Ekstra Ubuntu pakker å installere ved oppstart"
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AzuraCastEnvFile.php:261
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AzuraCastEnvFile.php:262
 msgid "Separate package names with a space. Packages will be installed during container startup."
 msgstr "Separer pakkenavnene med et mellomrom. Pakker vil bli installert ved oppstart av beholderen."
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/EnvFile.php:22
-msgid "(Docker Compose) All Docker containers are prefixed by this name. Do not change this after installation."
-msgstr "(Docker Compose) Alle Docker-beholdere har dette navnet foran. Ikke endre dette etter installasjon."
+#: /home/runner/work/AzuraCast/AzuraCast/templates/minimal.phtml:56
+msgid "Footer"
+msgstr "Bunntekst"
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/EnvFile.php:29
-msgid "(Docker Compose) The amount of time to wait before a Docker Compose operation fails. Increase this on lower performance computers."
-msgstr "(Docker Compose) Hvor lang tid det må vente før en Docker Compose-operasjon mislykkes. Øk dette på datamaskiner med lavere ytelse."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/EnvFile.php:42
-msgid "HTTP Port"
-msgstr "HTTP-port"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/EnvFile.php:43
-msgid "The main port AzuraCast listens to for insecure HTTP connections."
-msgstr "Hovedporten AzuraCast lytter til for usikre HTTP-tilkoblinger."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/EnvFile.php:49
-msgid "HTTPS Port"
-msgstr "HTTPS-port"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/EnvFile.php:50
-msgid "The main port AzuraCast listens to for secure HTTPS connections."
-msgstr "Hovedporten AzuraCast lytter til for sikre HTTPS-tilkoblinger."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/EnvFile.php:57
-msgid "The port AzuraCast listens to for SFTP file management connections."
-msgstr "Porten AzuraCast lytter til for SFTP-filbehandlingstilkoblinger."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/EnvFile.php:63
-msgid "Station Ports"
-msgstr "Stasjonshavner"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/EnvFile.php:64
-msgid "The ports AzuraCast should listen to for station broadcasts and incoming DJ connections."
-msgstr "Portene AzuraCast skal lytte til for stasjonssendinger og innkommende DJ-tilkoblinger."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/EnvFile.php:70
-msgid "Docker User UID"
-msgstr "Docker Bruker UID"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/EnvFile.php:71
-msgid "Set the UID of the user running inside the Docker containers. Matching this with your host UID can fix permission issues."
-msgstr "Angi UID-en til brukeren som kjører inne i Docker-beholderne. Å matche dette med verts-UID-en din kan fikse tillatelsesproblemer."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/EnvFile.php:77
-msgid "Docker User GID"
-msgstr "Docker Bruker GID"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/EnvFile.php:78
-msgid "Set the GID of the user running inside the Docker containers. Matching this with your host GID can fix permission issues."
-msgstr "Angi GID-en til brukeren som kjører inne i Docker-beholderne. Å matche dette med verts-GID-en kan fikse tillatelsesproblemer."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/EnvFile.php:84
-msgid "Use Podman instead of Docker."
-msgstr "Benytt Podman i stedet for Docker."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/EnvFile.php:88
-msgid "Advanced: Use Privileged Docker Settings"
-msgstr "Avansert: Bruk Privileged Docker-innstillinger"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Service/IpGeolocation.php:56
-msgid "GeoLite database not configured for this installation. See System Administration for instructions."
-msgstr "GeoLite-databasen er ikke konfigurert for denne installasjonen. Se Systemadministrasjon for instruksjoner."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Service/IpGeolocator/DbIp.php:29
-msgid "IP Geolocation by DB-IP"
-msgstr "IP Geolocation av DB-IP"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Service/IpGeolocator/GeoLite.php:35
+#: /home/runner/work/AzuraCast/AzuraCast/templates/minimal.phtml:58
 #, php-format
-msgid "This product includes GeoLite2 data created by MaxMind, available from %s."
-msgstr "Dette produktet inkluderer GeoLite2-data laget av MaxMind, tilgjengelig fra %s."
+msgid "Powered by %s"
+msgstr "Drevet av %s"
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Service/ServiceControl.php:80
-msgid "Runs routine synchronized tasks"
-msgstr "Kjører rutinesynkroniserte oppgaver"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Service/ServiceControl.php:81
-msgid "Database"
-msgstr "Database"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Service/ServiceControl.php:82
-msgid "Web server"
-msgstr "Nettjener"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Service/ServiceControl.php:83
-msgid "Roadrunner PHP Server"
-msgstr ""
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Service/ServiceControl.php:84
-msgid "PHP FastCGI Process Manager"
-msgstr ""
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Service/ServiceControl.php:85
-msgid "Now Playing manager service"
-msgstr "Spiller nå managertjeneste"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Service/ServiceControl.php:86
-msgid "PHP queue processing worker"
-msgstr "PHP-købehandlingsarbeider"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Service/ServiceControl.php:87
-msgid "Cache"
-msgstr "Hurtiglager"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Service/ServiceControl.php:88
-msgid "SFTP service"
-msgstr "SFTP-tjeneste"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Service/ServiceControl.php:89
-msgid "Live Now Playing updates"
-msgstr ""
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Service/ServiceControl.php:90
-msgid "Frontend Assets"
-msgstr "Frontend eiendeler"
-
-#: /home/runner/work/AzuraCast/AzuraCast/templates/frontend/public/podcast-episodes.phtml:62
-#: /home/runner/work/AzuraCast/AzuraCast/templates/frontend/public/podcast-episodes.phtml:107
-msgid "View Details"
-msgstr "Vis detaljer"
-
-#: /home/runner/work/AzuraCast/AzuraCast/templates/frontend/public/podcasts.phtml:87
-msgid "No entries found."
-msgstr "Ingen oppføringer funnet."
-
-#: /home/runner/work/AzuraCast/AzuraCast/templates/frontend/account/forgot_disabled.phtml:6
-#: /home/runner/work/AzuraCast/AzuraCast/templates/frontend/account/forgot_disabled.phtml:17
 #: /home/runner/work/AzuraCast/AzuraCast/templates/frontend/account/forgot.phtml:6
 #: /home/runner/work/AzuraCast/AzuraCast/templates/frontend/account/forgot.phtml:15
+#: /home/runner/work/AzuraCast/AzuraCast/templates/frontend/account/forgot_disabled.phtml:6
+#: /home/runner/work/AzuraCast/AzuraCast/templates/frontend/account/forgot_disabled.phtml:17
 msgid "Forgot Password"
 msgstr "Glemt passord"
 
-#: /home/runner/work/AzuraCast/AzuraCast/templates/frontend/account/forgot_disabled.phtml:22
-msgid "This installation's administrator has not configured this functionality."
-msgstr "Denne installasjonens administrator har ikke konfigurert denne funksjonaliteten."
+#: /home/runner/work/AzuraCast/AzuraCast/templates/frontend/account/forgot.phtml:29
+#: /home/runner/work/AzuraCast/AzuraCast/templates/frontend/account/two_factor.phtml:22
+#: /home/runner/work/AzuraCast/AzuraCast/templates/frontend/account/two_factor.phtml:23
+msgid "Sign in"
+msgstr "Logg inn"
 
-#: /home/runner/work/AzuraCast/AzuraCast/templates/frontend/account/forgot_disabled.phtml:25
-msgid "Contact an administrator to reset your password following the instructions in our documentation:"
-msgstr "Kontakt en administrator for å tilbakestille passordet ditt ved å følge instruksjonene i dokumentasjonen vår:"
-
-#: /home/runner/work/AzuraCast/AzuraCast/templates/frontend/account/forgot_disabled.phtml:31
-msgid "Password Reset Instructions"
-msgstr "Instruksjoner for tilbakestilling av passord"
+#: /home/runner/work/AzuraCast/AzuraCast/templates/frontend/account/forgot.phtml:32
+msgid "Send Recovery E-mail"
+msgstr "Send gjenopprettingse-post"
 
 #: /home/runner/work/AzuraCast/AzuraCast/templates/frontend/account/two_factor.phtml:11
 msgid "Enter Two-Factor Code"
@@ -7901,24 +7972,17 @@ msgstr "Kontoen din bruker en to-faktor sikkerhetskode. Skriv inn koden enheten 
 msgid "Security Code"
 msgstr "Sikkerhetskode (CVV)"
 
-#: /home/runner/work/AzuraCast/AzuraCast/templates/frontend/account/two_factor.phtml:22
-#: /home/runner/work/AzuraCast/AzuraCast/templates/frontend/account/two_factor.phtml:23
-#: /home/runner/work/AzuraCast/AzuraCast/templates/frontend/account/forgot.phtml:29
-msgid "Sign in"
-msgstr "Logg inn"
+#: /home/runner/work/AzuraCast/AzuraCast/templates/frontend/account/forgot_disabled.phtml:22
+msgid "This installation's administrator has not configured this functionality."
+msgstr "Denne installasjonens administrator har ikke konfigurert denne funksjonaliteten."
 
-#: /home/runner/work/AzuraCast/AzuraCast/templates/frontend/account/forgot.phtml:32
-msgid "Send Recovery E-mail"
-msgstr "Send gjenopprettingse-post"
+#: /home/runner/work/AzuraCast/AzuraCast/templates/frontend/account/forgot_disabled.phtml:25
+msgid "Contact an administrator to reset your password following the instructions in our documentation:"
+msgstr "Kontakt en administrator for å tilbakestille passordet ditt ved å følge instruksjonene i dokumentasjonen vår:"
 
-#: /home/runner/work/AzuraCast/AzuraCast/templates/minimal.phtml:56
-msgid "Footer"
-msgstr "Bunntekst"
-
-#: /home/runner/work/AzuraCast/AzuraCast/templates/minimal.phtml:58
-#, php-format
-msgid "Powered by %s"
-msgstr "Drevet av %s"
+#: /home/runner/work/AzuraCast/AzuraCast/templates/frontend/account/forgot_disabled.phtml:31
+msgid "Password Reset Instructions"
+msgstr "Instruksjoner for tilbakestilling av passord"
 
 #: /home/runner/work/AzuraCast/AzuraCast/templates/mail/forgot.phtml:10
 #, php-format

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Service\Dropbox;
 
 use App\Entity\StorageLocation;
+use App\Utilities\Types;
 use GuzzleHttp\Exception\ClientException;
 use Psr\Cache\CacheItemPoolInterface;
 use Spatie\Dropbox\RefreshableTokenProvider;
@@ -80,7 +81,7 @@ final class OAuthAdapter implements RefreshableTokenProvider
             $this->psr6Cache->save($cacheItem);
         }
 
-        return $cacheItem->get();
+        return Types::string($cacheItem->get());
     }
 
     private function getOauthProvider(): OAuthProvider

@@ -3,7 +3,7 @@ import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
 
 export default function useConfirmAndDelete(
-    confirmMessage,
+    confirmMessage: string,
     onSuccess = null
 ) {
     const {confirmDelete} = useSweetAlert();

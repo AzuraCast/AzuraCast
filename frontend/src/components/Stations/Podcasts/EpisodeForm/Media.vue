@@ -32,9 +32,9 @@
                 <template v-if="hasMedia">
                     <div class="block-buttons pt-3">
                         <a
-                            v-if="downloadUrl"
+                            v-if="editMediaUrl"
                             class="btn btn-block btn-dark"
-                            :href="downloadUrl"
+                            :href="editMediaUrl"
                             target="_blank"
                         >
                             {{ $gettext('Download') }}
@@ -72,10 +72,6 @@ const props = defineProps({
     },
     recordHasMedia: {
         type: Boolean,
-        required: true
-    },
-    downloadUrl: {
-        type: String,
         required: true
     },
     editMediaUrl: {

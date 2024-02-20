@@ -14,11 +14,19 @@ use Throwable;
 
 /**
  * App Core Framework Version
+ *
+ * @phpstan-type VersionDetails array{
+ *     commit: string|null,
+ *     commit_short: string,
+ *     commit_timestamp: int,
+ *     commit_date: string,
+ *     branch: string|null,
+ * }
  */
 final class Version
 {
-    /** @var string Version that is displayed if no Git repository information is present. */
-    public const FALLBACK_VERSION = '0.19.4';
+    /** @var string The current latest stable version. */
+    public const STABLE_VERSION = '0.19.5';
 
     private string $repoDir;
 
@@ -42,18 +50,9 @@ final class Version
     }
 
     /**
-     * @return string The current tagged version.
-     */
-    public function getVersion(): string
-    {
-        $details = $this->getDetails();
-        return $details['tag'] ?? self::FALLBACK_VERSION;
-    }
-
-    /**
      * Load cache or generate new repository details from the underlying Git repository.
      *
-     * @return string[]
+     * @return VersionDetails
      */
     public function getDetails(): array
     {
@@ -63,12 +62,16 @@ final class Version
             $details = $this->cache->get('app_version_details');
 
             if (empty($details)) {
-                $details = $this->getRawDetails();
+                $rawDetails = $this->getRawDetails();
 
-                $details['commit_short'] = substr($details['commit'] ?? '', 0, 7);
+                $details = [
+                    'commit' => $rawDetails['commit'],
+                    'commit_short' => substr($rawDetails['commit'] ?? '', 0, 7),
+                    'branch' => $rawDetails['branch'],
+                ];
 
-                if (!empty($details['commit_date_raw'])) {
-                    $commitDate = new DateTime($details['commit_date_raw']);
+                if (!empty($rawDetails['commit_date_raw'])) {
+                    $commitDate = new DateTime($rawDetails['commit_date_raw']);
                     $commitDate->setTimezone(new DateTimeZone('UTC'));
 
                     $details['commit_timestamp'] = $commitDate->getTimestamp();
@@ -77,8 +80,6 @@ final class Version
                     $details['commit_timestamp'] = 0;
                     $details['commit_date'] = 'N/A';
                 }
-
-                $details['tag'] = self::FALLBACK_VERSION;
 
                 $ttl = $this->environment->isProduction() ? 86400 : 600;
 
@@ -92,7 +93,11 @@ final class Version
     /**
      * Generate new repository details from the underlying Git repository.
      *
-     * @return mixed[]
+     * @return array{
+     *     commit: string|null,
+     *     commit_date_raw: string|null,
+     *     branch: string|null
+     * }
      */
     private function getRawDetails(): array
     {
@@ -120,7 +125,11 @@ final class Version
             ];
         }
 
-        return [];
+        return [
+            'commit' => null,
+            'commit_date_raw' => null,
+            'branch' => null,
+        ];
     }
 
     /**
@@ -145,8 +154,9 @@ final class Version
     public function getVersionText(): string
     {
         $details = $this->getDetails();
+        $releaseChannel = $this->getReleaseChannelEnum();
 
-        if (isset($details['tag'])) {
+        if (ReleaseChannel::RollingRelease === $releaseChannel) {
             $commitLink = 'https://github.com/AzuraCast/AzuraCast/commit/' . $details['commit'];
             $commitText = sprintf(
                 '#<a href="%s" target="_blank">%s</a> (%s)',
@@ -155,14 +165,10 @@ final class Version
                 $details['commit_date']
             );
 
-            $releaseChannel = $this->getReleaseChannelEnum();
-            if (ReleaseChannel::RollingRelease === $releaseChannel) {
-                return 'Rolling Release ' . $commitText;
-            }
-            return 'v' . $details['tag'] . ' Stable';
+            return 'Rolling Release ' . $commitText;
         }
 
-        return 'v' . self::FALLBACK_VERSION . ' Release Build';
+        return 'v' . self::STABLE_VERSION . ' Stable';
     }
 
     /**
@@ -171,15 +177,20 @@ final class Version
     public function getCommitHash(): ?string
     {
         $details = $this->getDetails();
-        return $details['commit'] ?? null;
+        return $details['commit'];
     }
 
     /**
-     * @return string|null The shortened Git hash corresponding to the current commit.
+     * @return string The shortened Git hash corresponding to the current commit.
      */
-    public function getCommitShort(): ?string
+    public function getCommitShort(): string
     {
         $details = $this->getDetails();
-        return $details['commit_short'] ?? null;
+        return $details['commit_short'];
+    }
+
+    public function getVersion(): string
+    {
+        return self::STABLE_VERSION;
     }
 }

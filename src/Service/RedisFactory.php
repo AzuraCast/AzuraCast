@@ -12,27 +12,30 @@ final class RedisFactory
 {
     use EnvironmentAwareTrait;
 
+    protected ?Redis $instance = null;
+
     public function isSupported(): bool
     {
         return !$this->environment->isTesting() && $this->environment->enableRedis();
     }
 
-    public function createInstance(): Redis
+    public function getInstance(): Redis
     {
         if (!$this->isSupported()) {
             throw new RuntimeException('Redis is disabled on this installation.');
         }
 
-        $settings = $this->environment->getRedisSettings();
+        if (null === $this->instance) {
+            $settings = $this->environment->getRedisSettings();
 
-        $redis = new Redis();
-        if (isset($settings['socket'])) {
-            $redis->connect($settings['socket']);
-        } else {
-            $redis->connect($settings['host'], $settings['port'], 15);
+            $this->instance = new Redis();
+            if (isset($settings['socket'])) {
+                $this->instance->connect($settings['socket']);
+            } else {
+                $this->instance->connect($settings['host'], $settings['port'], 15);
+            }
         }
-        $redis->select($settings['db']);
 
-        return $redis;
+        return $this->instance;
     }
 }

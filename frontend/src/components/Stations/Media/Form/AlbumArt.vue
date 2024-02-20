@@ -37,7 +37,6 @@
 
 <script setup lang="ts">
 import {ref, toRef, watch} from "vue";
-import {syncRef} from "@vueuse/core";
 import {useAxios} from "~/vendor/axios";
 import FormGroup from "~/components/Form/FormGroup.vue";
 import FormFile from "~/components/Form/FormFile.vue";
@@ -49,9 +48,7 @@ const props = defineProps({
     }
 });
 
-const albumArtSrc = ref(null);
-syncRef(toRef(props, 'albumArtUrl'), albumArtSrc, {direction: 'ltr'});
-
+const albumArtSrc = ref(props.albumArtUrl);
 const reloadArt = () => {
     albumArtSrc.value = props.albumArtUrl + '?' + Math.floor(Date.now() / 1000);
 }

@@ -1,0 +1,69 @@
+import {useLuxon} from "~/vendor/luxon.ts";
+import {useAzuraCast, useAzuraCastStation} from "~/vendor/azuracast.ts";
+import {DateTimeMaybeValid} from "luxon";
+
+export default function useStationDateTimeFormatter() {
+    const {DateTime} = useLuxon();
+    const {timeConfig} = useAzuraCast();
+    const {timezone} = useAzuraCastStation();
+
+    const now = (): DateTimeMaybeValid =>
+        DateTime.local({zone: timezone});
+
+    const timestampToDateTime = (value): DateTimeMaybeValid =>
+        DateTime.fromSeconds(value, {zone: timezone});
+
+    const formatDateTime = (
+        value: DateTimeMaybeValid,
+        format: Intl.DateTimeFormatOptions
+    ) => value.toLocaleString(
+        {...format, ...timeConfig}
+    );
+
+    const formatDateTimeAsDateTime = (
+        value: DateTimeMaybeValid,
+        format: Intl.DateTimeFormatOptions | null = null
+    ) => formatDateTime(value, format ?? DateTime.DATETIME_MED);
+
+    const formatDateTimeAsTime = (
+        value: DateTimeMaybeValid,
+        format: Intl.DateTimeFormatOptions | null = null
+    ) => formatDateTime(value, format ?? DateTime.TIME_WITH_SECONDS);
+
+    const formatDateTimeAsRelative = (
+        value: DateTimeMaybeValid
+    ) => value.toRelative();
+
+    const formatTimestampAsDateTime = (
+        value: any,
+        format: Intl.DateTimeFormatOptions | null = null
+    ) =>
+        (value)
+            ? formatDateTimeAsDateTime(timestampToDateTime(value), format)
+            : ''
+
+    const formatTimestampAsTime = (
+        value: any,
+        format: Intl.DateTimeFormatOptions | null = null
+    ) =>
+        (value)
+            ? formatDateTimeAsTime(timestampToDateTime(value), format)
+            : ''
+
+    const formatTimestampAsRelative = (value) =>
+        (value)
+            ? formatDateTimeAsRelative(timestampToDateTime(value))
+            : '';
+
+    return {
+        now,
+        timestampToDateTime,
+        formatDateTime,
+        formatDateTimeAsDateTime,
+        formatDateTimeAsTime,
+        formatDateTimeAsRelative,
+        formatTimestampAsDateTime,
+        formatTimestampAsTime,
+        formatTimestampAsRelative
+    };
+}

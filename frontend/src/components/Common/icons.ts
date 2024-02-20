@@ -52,21 +52,37 @@ export const IconCheck: Icon = {
   viewBox: materialIconsViewBox,
   contents: '<path d="M378-235 142-471l52-52 184 184 388-388 52 52-440 440Z"/>'
 };
+export const IconChevronBarDown: Icon = {
+  viewBox: bootstrapIconsViewBox,
+  contents: '<path fill-rule="evenodd" d="M3.646 4.146a.5.5 0 0 1 .708 0L8 7.793l3.646-3.647a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 0-.708M1 11.5a.5.5 0 0 1 .5-.5h13a.5.5 0 0 1 0 1h-13a.5.5 0 0 1-.5-.5"/>'
+};
+export const IconChevronBarUp: Icon = {
+  viewBox: bootstrapIconsViewBox,
+  contents: '<path fill-rule="evenodd" d="M3.646 11.854a.5.5 0 0 0 .708 0L8 8.207l3.646 3.647a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 0 0 0 .708M2.4 5.2c0 .22.18.4.4.4h10.4a.4.4 0 0 0 0-.8H2.8a.4.4 0 0 0-.4.4"/>'
+};
+export const IconChevronDoubleDown: Icon = {
+  viewBox: bootstrapIconsViewBox,
+  contents: '<path fill-rule="evenodd" d="M1.646 6.646a.5.5 0 0 1 .708 0L8 12.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708"/>  <path xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" d="M1.646 2.646a.5.5 0 0 1 .708 0L8 8.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708"/>'
+};
+export const IconChevronDoubleUp: Icon = {
+  viewBox: bootstrapIconsViewBox,
+  contents: '<path fill-rule="evenodd" d="M7.646 2.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1-.708.708L8 3.707 2.354 9.354a.5.5 0 1 1-.708-.708z"/>  <path xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" d="M7.646 6.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1-.708.708L8 7.707l-5.646 5.647a.5.5 0 0 1-.708-.708z"/>'
+};
 export const IconChevronDown: Icon = {
-  viewBox: materialIconsViewBox,
-  contents: '<path d="M480-335 230-585l53-53 197 199 198-198 52 53-250 249Z"/>'
+  viewBox: bootstrapIconsViewBox,
+  contents: '<path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708"/>'
 };
 export const IconChevronLeft: Icon = {
-  viewBox: materialIconsViewBox,
-  contents: '<path d="M562-231 311-482l251-251 52 52-199 199 199 199-52 52Z"/>'
+  viewBox: bootstrapIconsViewBox,
+  contents: '<path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0"/>'
 };
 export const IconChevronRight: Icon = {
-  viewBox: materialIconsViewBox,
-  contents: '<path d="M522-482 323-681l52-52 251 251-251 251-52-52 199-199Z"/>'
+  viewBox: bootstrapIconsViewBox,
+  contents: '<path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708"/>'
 };
 export const IconChevronUp: Icon = {
-  viewBox: materialIconsViewBox,
-  contents: '<path d="m283-335-53-53 250-250 250 249-52 53-198-198-197 199Z"/>'
+  viewBox: bootstrapIconsViewBox,
+  contents: '<path fill-rule="evenodd" d="M7.646 4.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1-.708.708L8 5.707l-5.646 5.647a.5.5 0 0 1-.708-.708z"/>'
 };
 export const IconClearAll: Icon = {
   viewBox: materialIconsViewBox,
@@ -79,6 +95,10 @@ export const IconClose: Icon = {
 export const IconCode: Icon = {
   viewBox: materialIconsViewBox,
   contents: '<path d="M318-232 68-483l253-253 52 53-200 200 198 198-53 53Zm322 2-52-53 201-201-198-198 51-51 251 250-253 253Z"/>'
+};
+export const IconContract: Icon = {
+  viewBox: bootstrapIconsViewBox,
+  contents: '<path fill-rule="evenodd" d="M3.646 14.854a.5.5 0 0 0 .708 0L8 11.207l3.646 3.647a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 0 0 0 .708m0-13.708a.5.5 0 0 1 .708 0L8 4.793l3.646-3.647a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 0-.708M1 8a.5.5 0 0 1 .5-.5h13a.5.5 0 0 1 0 1h-13A.5.5 0 0 1 1 8"/>'
 };
 export const IconCopy: Icon = {
   viewBox: materialIconsViewBox,
@@ -111,6 +131,10 @@ export const IconError: Icon = {
 export const IconExitToApp: Icon = {
   viewBox: materialIconsViewBox,
   contents: '<path d="M177-104q-28.725 0-50.863-22.137Q104-148.275 104-177v-194h73v194h606v-606H177v193h-73v-193q0-28.725 22.137-50.862Q148.275-856 177-856h606q28.725 0 50.862 22.138Q856-811.725 856-783v606q0 28.725-22.138 50.863Q811.725-104 783-104H177Zm235-166-54-56 118-118H104v-73h372L358-635l54-55 209 209-209 211Z"/>'
+};
+export const IconExpand: Icon = {
+  viewBox: bootstrapIconsViewBox,
+  contents: '<path fill-rule="evenodd" d="M3.646 9.146a.5.5 0 0 1 .708 0L8 12.793l3.646-3.647a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 0-.708m0-2.292a.5.5 0 0 0 .708 0L8 3.207l3.646 3.647a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 0 0 0 .708"/>'
 };
 export const IconFastForward: Icon = {
   viewBox: materialIconsViewBox,
@@ -259,6 +283,10 @@ export const IconReport: Icon = {
 export const IconRouter: Icon = {
   viewBox: materialIconsViewBox,
   contents: '<path d="M160-84q-28.725 0-50.863-21.637Q87-127.275 87-157v-209q0-28.725 22.137-50.862Q131.275-439 160-439h460v-178h73v178h99q28.725 0 50.862 22.138Q865-394.725 865-366v209q0 29.725-22.138 51.363Q820.725-84 792-84H160Zm142-177.105Q302-280 288.895-293q-13.106-13-32-13Q238-306 225-292.895q-13 13.106-13 32Q212-241 225.105-228.5q13.106 12.5 32 12.5Q276-216 289-228.605q13-12.606 13-32.5Zm150 0Q452-280 438.895-293q-13.106-13-32-13Q387-306 374.5-292.895q-12.5 13.106-12.5 32Q362-241 374.605-228.5q12.606 12.5 32.5 12.5Q426-216 439-228.605q13-12.606 13-32.5ZM556.105-216Q575-216 588-228.605q13-12.606 13-32.5Q601-280 587.895-293q-13.106-13-32-13Q537-306 524-292.895q-13 13.106-13 32Q511-241 524.105-228.5q13.106 12.5 32 12.5ZM566-664l-50-50q28-27 62.989-43.5 34.988-16.5 78.068-16.5 42.08 0 77.012 16.5Q769-741 797-714l-49 50q-17-16-40.409-26.5t-50-10.5Q630-701 606-690.5T566-664ZM466-764l-53-53q39.2-39.638 103.1-68.819Q580-915 657-915q76 0 139.5 29T901-817l-54 53q-31-33-79.5-55.5T657-842q-63 0-111 22.5T466-764Z"/>'
+};
+export const IconRss: Icon = {
+  viewBox: bootstrapIconsViewBox,
+  contents: '<path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm1.5 2.5c5.523 0 10 4.477 10 10a1 1 0 1 1-2 0 8 8 0 0 0-8-8 1 1 0 0 1 0-2m0 4a6 6 0 0 1 6 6 1 1 0 1 1-2 0 4 4 0 0 0-4-4 1 1 0 0 1 0-2m.5 7a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3"/>'
 };
 export const IconSearch: Icon = {
   viewBox: materialIconsViewBox,

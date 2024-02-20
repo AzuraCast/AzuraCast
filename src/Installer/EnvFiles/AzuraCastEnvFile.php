@@ -182,12 +182,6 @@ final class AzuraCastEnvFile extends AbstractEnvFile
                     'default' => $redisSettings['port'],
                     'required' => true,
                 ],
-                Environment::REDIS_DB => [
-                    'name' => __('Redis Database Index'),
-                    'options' => range(0, 15),
-                    'default' => $redisSettings['db'],
-                    'required' => true,
-                ],
                 'PHP_MAX_FILE_SIZE' => [
                     'name' => __('PHP Maximum POST File Size'),
                     'default' => '25M',
@@ -251,6 +245,13 @@ final class AzuraCastEnvFile extends AbstractEnvFile
                     'name' => __('Profiling Extension IP Allow List'),
                     'options' => ['127.0.0.1', '*'],
                     'default' => '*',
+                ],
+                'NGINX_CLIENT_MAX_BODY_SIZE' => [
+                    'name' => __('Nginx Max Client Body Size'),
+                    'description' => __(
+                        'This is the total size any single request body can be. AzuraCast chunks its uploads into smaller file sizes, so this only applies when doing custom uploads via the API. Sizes should be listed in a format like "100K", "128M", "1G" for kilobytes, megabytes, and gigabytes respectively.'
+                    ),
+                    'default' => '50M',
                 ],
                 Environment::ENABLE_WEB_UPDATER => [
                     'name' => __('Enable web-based Docker image updates'),

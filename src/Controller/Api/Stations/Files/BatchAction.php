@@ -28,6 +28,7 @@ use App\Radio\Backend\Liquidsoap;
 use App\Radio\Enums\BackendAdapters;
 use App\Radio\Enums\LiquidsoapQueues;
 use App\Utilities\File;
+use App\Utilities\Types;
 use Exception;
 use InvalidArgumentException;
 use League\Flysystem\StorageAttributes;
@@ -65,7 +66,7 @@ final class BatchAction implements SingleActionInterface
 
         $fsMedia = $this->stationFilesystems->getMediaFilesystem($station);
 
-        $result = match ($request->getParam('do')) {
+        $result = match (Types::string($request->getParam('do'))) {
             'delete' => $this->doDelete($request, $station, $storageLocation, $fsMedia),
             'playlist' => $this->doPlaylist($request, $station, $storageLocation, $fsMedia),
             'move' => $this->doMove($request, $station, $storageLocation, $fsMedia),
@@ -140,10 +141,15 @@ final class BatchAction implements SingleActionInterface
         /** @var array<int, int> $affectedPlaylistIds */
         $affectedPlaylistIds = [];
 
-        foreach ($request->getParam('playlists') as $playlistId) {
+        /** @var string[] $requestPlaylists */
+        $requestPlaylists = Types::array($request->getParam('playlists'));
+
+        foreach ($requestPlaylists as $playlistId) {
             if ('new' === $playlistId) {
                 $playlist = new StationPlaylist($station);
-                $playlist->setName($request->getParam('new_playlist_name'));
+                $playlist->setName(
+                    Types::string($request->getParam('new_playlist_name'))
+                );
 
                 $this->em->persist($playlist);
                 $this->em->flush();
@@ -215,8 +221,8 @@ final class BatchAction implements SingleActionInterface
     ): BatchResult {
         $result = $this->parseRequest($request, $fs);
 
-        $from = $request->getParam('currentDirectory', '');
-        $to = $request->getParam('directory', '');
+        $from = Types::string($request->getParam('currentDirectory'));
+        $to = Types::string($request->getParam('directory'));
 
         $toMove = [
             $this->batchUtilities->iterateMedia($storageLocation, $result->files),
@@ -411,8 +417,12 @@ final class BatchAction implements SingleActionInterface
         ExtendedFilesystemInterface $fs,
         bool $recursive = false
     ): BatchResult {
-        $files = array_values((array)$request->getParam('files', []));
-        $directories = array_values((array)$request->getParam('dirs', []));
+        $files = array_values(
+            Types::array($request->getParam('files', []))
+        );
+        $directories = array_values(
+            Types::array($request->getParam('dirs', []))
+        );
 
         if ($recursive) {
             foreach ($directories as $dir) {

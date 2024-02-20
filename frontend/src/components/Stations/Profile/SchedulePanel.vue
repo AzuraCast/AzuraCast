@@ -45,9 +45,9 @@
 <script setup lang="ts">
 import {map} from "lodash";
 import {computed} from "vue";
-import {useAzuraCast, useAzuraCastStation} from "~/vendor/azuracast";
 import CardPage from "~/components/Common/CardPage.vue";
-import {useLuxon} from "~/vendor/luxon";
+import useStationDateTimeFormatter from "~/functions/useStationDateTimeFormatter.ts";
+import {useLuxon} from "~/vendor/luxon.ts";
 
 const props = defineProps({
     scheduleItems: {
@@ -56,39 +56,35 @@ const props = defineProps({
     }
 });
 
-const {timeConfig} = useAzuraCast();
-const {timezone} = useAzuraCastStation();
-
 const {DateTime} = useLuxon();
+const {
+    now,
+    timestampToDateTime,
+    formatDateTime
+} = useStationDateTimeFormatter();
 
 const processedScheduleItems = computed(() => {
-    const now = DateTime.now().setZone(timezone);
+    const nowTz = now();
 
     return map(props.scheduleItems, (row) => {
-        const start_moment = DateTime.fromSeconds(row.start_timestamp).setZone(timezone);
-        const end_moment = DateTime.fromSeconds(row.end_timestamp).setZone(timezone);
+        const startMoment = timestampToDateTime(row.start_timestamp);
+        const endMoment = timestampToDateTime(row.end_timestamp);
 
-        row.time_until = start_moment.toRelative();
+        row.time_until = startMoment.toRelative();
 
-        if (start_moment.hasSame(now, 'day')) {
-            row.start_formatted = start_moment.toLocaleString(
-                {...DateTime.TIME_SIMPLE, ...timeConfig}
-            );
-        } else {
-            row.start_formatted = start_moment.toLocaleString(
-                {...DateTime.DATETIME_MED, ...timeConfig}
-            );
-        }
+        row.start_formatted = formatDateTime(
+            startMoment,
+            startMoment.hasSame(nowTz, 'day')
+                ? DateTime.TIME_SIMPLE
+                : DateTime.DATETIME_MED
+        );
 
-        if (end_moment.hasSame(start_moment, 'day')) {
-            row.end_formatted = end_moment.toLocaleString(
-                {...DateTime.TIME_SIMPLE, ...timeConfig}
-            );
-        } else {
-            row.end_formatted = end_moment.toLocaleString(
-                {...DateTime.DATETIME_MED, ...timeConfig}
-            );
-        }
+        row.end_formatted = formatDateTime(
+            endMoment,
+            endMoment.hasSame(startMoment, 'day')
+                ? DateTime.TIME_SIMPLE
+                : DateTime.DATETIME_MED
+        );
 
         return row;
     });

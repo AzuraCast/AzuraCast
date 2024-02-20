@@ -45,38 +45,12 @@
                             :api-url="listUrl"
                             detailed
                         >
-                            <template #cell(actions)="{ item, toggleDetails }">
-                                <div class="btn-group btn-group-sm">
-                                    <button
-                                        type="button"
-                                        class="btn btn-primary"
-                                        @click="doEdit(item.links.self)"
-                                    >
-                                        {{ $gettext('Edit') }}
-                                    </button>
-                                    <button
-                                        type="button"
-                                        class="btn btn-danger"
-                                        @click="doDelete(item.links.self)"
-                                    >
-                                        {{ $gettext('Delete') }}
-                                    </button>
-
-                                    <button
-                                        class="btn btn-sm btn-secondary"
-                                        type="button"
-                                        @click="toggleDetails()"
-                                    >
-                                        {{ $gettext('More') }}
-                                    </button>
-                                </div>
-                            </template>
                             <template #cell(name)="row">
                                 <h5 class="m-0">
                                     {{ row.item.name }}
                                 </h5>
-                                <div>
-                                    <span class="badge text-bg-secondary me-1">
+                                <div class="badges">
+                                    <span class="badge text-bg-secondary">
                                         <template v-if="row.item.source === 'songs'">
                                             {{ $gettext('Song-based') }}
                                         </template>
@@ -86,31 +60,31 @@
                                     </span>
                                     <span
                                         v-if="row.item.is_jingle"
-                                        class="badge text-bg-primary me-1"
+                                        class="badge text-bg-primary"
                                     >
                                         {{ $gettext('Jingle Mode') }}
                                     </span>
                                     <span
                                         v-if="row.item.source === 'songs' && row.item.order === 'sequential'"
-                                        class="badge text-bg-info me-1"
+                                        class="badge text-bg-info"
                                     >
                                         {{ $gettext('Sequential') }}
                                     </span>
                                     <span
                                         v-if="row.item.include_in_on_demand"
-                                        class="badge text-bg-info me-1"
+                                        class="badge text-bg-info"
                                     >
                                         {{ $gettext('On-Demand') }}
                                     </span>
                                     <span
-                                        v-if="row.item.include_in_automation"
-                                        class="badge text-bg-success me-1"
+                                        v-if="row.item.schedule_items.length > 0"
+                                        class="badge text-bg-info"
                                     >
-                                        {{ $gettext('Auto-Assigned') }}
+                                        {{ $gettext('Scheduled') }}
                                     </span>
                                     <span
                                         v-if="!row.item.is_enabled"
-                                        class="badge text-bg-danger me-1"
+                                        class="badge text-bg-danger"
                                     >
                                         {{ $gettext('Disabled') }}
                                     </span>
@@ -171,18 +145,54 @@
                                     &nbsp;
                                 </template>
                             </template>
+                            <template #cell(actions)="{ item, isActive, toggleDetails }">
+                                <div class="btn-group btn-group-sm">
+                                    <button
+                                        type="button"
+                                        class="btn btn-primary"
+                                        @click="doEdit(item.links.self)"
+                                    >
+                                        {{ $gettext('Edit') }}
+                                    </button>
+                                    <button
+                                        type="button"
+                                        class="btn btn-danger"
+                                        @click="doDelete(item.links.self)"
+                                    >
+                                        {{ $gettext('Delete') }}
+                                    </button>
+
+                                    <button
+                                        class="btn btn-sm btn-secondary"
+                                        type="button"
+                                        @click="toggleDetails()"
+                                    >
+                                        <icon :icon="isActive ? IconContract : IconExpand" />
+
+                                        {{ $gettext('More') }}
+                                    </button>
+                                </div>
+                            </template>
                             <template #detail="{ item }">
                                 <div
                                     class="buttons"
                                     style="line-height: 2.5;"
                                 >
                                     <button
+                                        v-if="item.links.order"
+                                        type="button"
+                                        class="btn btn-sm btn-primary"
+                                        @click="doReorder(item.links.order)"
+                                    >
+                                        {{ $gettext('Reorder') }}
+                                    </button>
+                                    <button
                                         type="button"
                                         class="btn btn-sm"
-                                        :class="toggleButtonClass(item)"
+                                        :class="(item.is_enabled) ? 'btn-warning' : 'btn-success'"
                                         @click="doModify(item.links.toggle)"
                                     >
-                                        {{ langToggleButton(item) }}
+                                        {{ (item.is_enabled) ? $gettext('Disable') : $gettext('Enable') }}
                                     </button>
                                     <button
                                         v-if="item.links.empty"
@@ -207,14 +217,6 @@
                                         @click="doImport(item.links.import)"
                                     >
                                         {{ $gettext('Import from PLS/M3U') }}
-                                    </button>
-                                    <button
-                                        v-if="item.links.order"
-                                        type="button"
-                                        class="btn btn-sm btn-secondary"
-                                        @click="doReorder(item.links.order)"
-                                    >
-                                        {{ $gettext('Reorder') }}
                                     </button>
                                     <button
                                         v-if="item.links.queue"
@@ -300,7 +302,7 @@
 </template>
 
 <script setup lang="ts">
-import DataTable, { DataTableField } from '~/components/Common/DataTable.vue';
+import DataTable, {DataTableField} from '~/components/Common/DataTable.vue';
 import Schedule from '~/components/Common/ScheduleView.vue';
 import EditModal from './Playlists/EditModal.vue';
 import ReorderModal from './Playlists/ReorderModal.vue';
@@ -322,6 +324,8 @@ import TimeZone from "~/components/Stations/Common/TimeZone.vue";
 import Tabs from "~/components/Common/Tabs.vue";
 import Tab from "~/components/Common/Tab.vue";
 import AddButton from "~/components/Common/AddButton.vue";
+import {IconContract, IconExpand} from "~/components/Common/icons.ts";
+import Icon from "~/components/Common/Icon.vue";
 
 const props = defineProps({
     useManualAutoDj: {
@@ -343,18 +347,6 @@ const fields: DataTableField[] = [
     {key: 'num_songs', label: $gettext('# Songs'), sortable: false},
     {key: 'actions', label: $gettext('Actions'), sortable: false, class: 'shrink'}
 ];
-
-const toggleButtonClass = (record) => {
-    return (record.is_enabled)
-        ? 'btn-warning'
-        : 'btn-success';
-}
-
-const langToggleButton = (record) => {
-    return (record.is_enabled)
-        ? $gettext('Disable')
-        : $gettext('Enable');
-};
 
 const {Duration} = useLuxon();
 

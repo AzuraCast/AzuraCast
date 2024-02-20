@@ -61,10 +61,21 @@ body.page-minimal {
 
         .card {
           height: 100%;
-        }
 
-        .datatable-main {
-          overflow-y: auto;
+          .card-body {
+            flex: 0 1 auto;
+          }
+
+          // Only make the datatable scrollable if it's the only element in the card.
+          & > .datatable-wrapper {
+            .datatable-main {
+              overflow-y: auto;
+            }
+          }
+
+          & > .full-height-scrollable {
+            overflow-y: auto;
+          }
         }
       }
     }

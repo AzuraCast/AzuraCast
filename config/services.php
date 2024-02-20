@@ -155,7 +155,7 @@ return [
             $cacheInterface = new Symfony\Component\Cache\Adapter\ArrayAdapter();
         } elseif ($redisFactory->isSupported()) {
             $cacheInterface = new Symfony\Component\Cache\Adapter\RedisAdapter(
-                $redisFactory->createInstance(),
+                $redisFactory->getInstance(),
                 marshaller: new Symfony\Component\Cache\Marshaller\DefaultMarshaller(
                     $environment->isProduction() ? null : false
                 )
@@ -190,7 +190,7 @@ return [
         Environment $environment,
         App\Service\RedisFactory $redisFactory
     ) => ($redisFactory->isSupported())
-        ? new Symfony\Component\Lock\Store\RedisStore($redisFactory->createInstance())
+        ? new Symfony\Component\Lock\Store\RedisStore($redisFactory->getInstance())
         : new Symfony\Component\Lock\Store\FlockStore($environment->getTempDirectory()),
 
     // Console
@@ -330,8 +330,13 @@ return [
         // Register plugin-provided message queue receivers
         $receivers = $plugins->registerMessageQueueReceivers($receivers);
 
+        /**
+         * @var class-string $messageClass
+         * @var class-string $handlerClass
+         */
         foreach ($receivers as $messageClass => $handlerClass) {
             $handlers[$messageClass][] = static function ($message) use ($handlerClass, $di) {
+                /** @var callable $obj */
                 $obj = $di->get($handlerClass);
                 return $obj($message);
             };

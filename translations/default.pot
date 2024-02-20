@@ -3,11 +3,11 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "X-Domain: default\n"
 
-#: src/components/Stations/Podcasts/ListView.vue:125
+#: src/components/Stations/Podcasts.vue:131
 msgid "# Episodes"
 msgstr ""
 
-#: src/components/Stations/Playlists.vue:343
+#: src/components/Stations/Playlists.vue:347
 msgid "# Songs"
 msgstr ""
 
@@ -41,7 +41,7 @@ msgid_plural "%{filesCount} Files"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/components/Stations/Profile/NowPlayingPanel.vue:261
+#: src/components/Stations/Profile/NowPlayingPanel.vue:285
 msgid "%{listeners} Listener"
 msgid_plural "%{listeners} Listeners"
 msgstr[0] ""
@@ -157,23 +157,25 @@ msgstr ""
 #: src/components/Admin/CustomFields.vue:97
 #: src/components/Admin/Debug.vue:300
 #: src/components/Admin/Permissions.vue:108
-#: src/components/Admin/Stations.vue:134
+#: src/components/Admin/Stations.vue:145
 #: src/components/Admin/StorageLocations.vue:131
 #: src/components/Admin/Users.vue:105
+#: src/components/Public/Podcasts/Podcast.vue:166
+#: src/components/Public/Podcasts/PodcastList.vue:83
 #: src/components/Public/Requests/RequestsDataTable.vue:110
 #: src/components/Stations/HlsStreams.vue:85
-#: src/components/Stations/Media.vue:359
+#: src/components/Stations/Media.vue:349
 #: src/components/Stations/Mounts.vue:103
-#: src/components/Stations/Playlists.vue:344
+#: src/components/Stations/Playlists.vue:348
 #: src/components/Stations/Playlists/ReorderModal.vue:29
-#: src/components/Stations/Podcasts/EpisodesView.vue:148
-#: src/components/Stations/Podcasts/ListView.vue:131
-#: src/components/Stations/Queue.vue:95
+#: src/components/Stations/PodcastEpisodes.vue:197
+#: src/components/Stations/Podcasts.vue:134
+#: src/components/Stations/Queue.vue:96
 #: src/components/Stations/Remotes.vue:95
-#: src/components/Stations/Reports/Requests.vue:125
+#: src/components/Stations/Reports/Requests.vue:124
 #: src/components/Stations/SftpUsers.vue:102
 #: src/components/Stations/Streamers.vue:153
-#: src/components/Stations/Streamers/BroadcastsModal.vue:131
+#: src/components/Stations/Streamers/BroadcastsModal.vue:122
 #: src/components/Stations/Webhooks.vue:134
 msgid "Actions"
 msgstr ""
@@ -192,8 +194,8 @@ msgstr ""
 msgid "Add Custom Field"
 msgstr ""
 
-#: src/components/Stations/Podcasts/EpisodeEditModal.vue:146
-#: src/components/Stations/Podcasts/EpisodesView.vue:44
+#: src/components/Stations/PodcastEpisodes.vue:42
+#: src/components/Stations/Podcasts/EpisodeEditModal.vue:144
 msgid "Add Episode"
 msgstr ""
 
@@ -226,8 +228,8 @@ msgstr ""
 msgid "Add Playlist"
 msgstr ""
 
-#: src/components/Stations/Podcasts/ListView.vue:24
-#: src/components/Stations/Podcasts/PodcastEditModal.vue:101
+#: src/components/Stations/Podcasts.vue:20
+#: src/components/Stations/Podcasts/PodcastEditModal.vue:108
 msgid "Add Podcast"
 msgstr ""
 
@@ -282,7 +284,7 @@ msgstr ""
 #: src/components/Admin/Stations/Form/AdminForm.vue:3
 #: src/components/Dashboard.vue:27
 #: src/components/Stations/Profile/FrontendPanel.vue:33
-#: /var/azuracast/www/src/Controller/Admin/IndexAction.php:23
+#: /var/azuracast/www/src/Controller/AdminAction.php:22
 #: /var/azuracast/www/src/Notification/Check/ServiceCheck.php:42
 msgid "Administration"
 msgstr ""
@@ -311,9 +313,9 @@ msgstr ""
 msgid "Aggregate listener statistics are used to show station reports across the system. IP-based listener statistics are used to view live listener tracking and may be required for royalty reports."
 msgstr ""
 
-#: src/components/Public/OnDemand.vue:126
+#: src/components/Public/OnDemand.vue:115
 #: src/components/Public/Requests/RequestsDataTable.vue:82
-#: src/components/Stations/Media.vue:318
+#: src/components/Stations/Media.vue:316
 #: src/components/Stations/Playlists/ReorderModal.vue:26
 #: /var/azuracast/www/src/Media/Enums/MetadataTags.php:80
 msgid "Album"
@@ -340,8 +342,12 @@ msgstr ""
 msgid "All Playlists"
 msgstr ""
 
-#: src/components/Stations/Podcasts/EpisodesView.vue:40
+#: src/components/Stations/PodcastEpisodes.vue:38
 msgid "All Podcasts"
+msgstr ""
+
+#: src/components/Stations/Reports/Listeners/FiltersBar.vue:37
+msgid "All Types"
 msgstr ""
 
 #: src/components/Stations/Webhooks/Form/Common/FormattingInfo.vue:14
@@ -469,7 +475,7 @@ msgstr ""
 msgid "Apply Post-processing to Live Streams"
 msgstr ""
 
-#: src/components/Stations/Playlists.vue:233
+#: src/components/Stations/Playlists.vue:235
 #: src/components/Stations/Playlists/ApplyToModal.vue:57
 msgid "Apply to Folders"
 msgstr ""
@@ -479,19 +485,20 @@ msgstr ""
 msgid "Are you sure?"
 msgstr ""
 
-#: src/components/Public/OnDemand.vue:109
-#: src/components/Stations/Podcasts/EpisodesView.vue:144
-#: src/components/Stations/Podcasts/ListView.vue:121
+#: src/components/Public/OnDemand.vue:98
+#: src/components/Stations/PodcastEpisodes.vue:160
+#: src/components/Stations/Podcasts.vue:127
 #: src/components/Stations/Streamers.vue:149
 msgid "Art"
 msgstr ""
 
-#: src/components/Public/OnDemand.vue:119
+#: src/components/Public/OnDemand.vue:108
 #: src/components/Public/Requests/RequestsDataTable.vue:74
 #: src/components/Public/WebDJ/SettingsPanel.vue:33
-#: src/components/Stations/Media.vue:313
+#: src/components/Stations/Media.vue:311
 #: src/components/Stations/Playlists/QueueModal.vue:23
 #: src/components/Stations/Playlists/ReorderModal.vue:23
+#: src/components/Stations/Profile/UpdateMetadataModal.vue:30
 #: /var/azuracast/www/src/Media/Enums/MetadataTags.php:84
 msgid "Artist"
 msgstr ""
@@ -545,11 +552,7 @@ msgstr ""
 msgid "Auto-Assign Value"
 msgstr ""
 
-#: src/components/Stations/Playlists.vue:109
-msgid "Auto-Assigned"
-msgstr ""
-
-#: src/components/Admin/Stations.vue:126
+#: src/components/Admin/Stations.vue:137
 #: src/components/Admin/Stations/Form/BackendForm.vue:3
 #: src/components/Stations/Mounts.vue:102
 #: src/components/Stations/Mounts/Form/AutoDj.vue:3
@@ -558,8 +561,8 @@ msgstr ""
 msgid "AutoDJ"
 msgstr ""
 
-#: src/components/Stations/Mounts/Form/AutoDj.vue:38
-#: src/components/Stations/Remotes/Form/AutoDj.vue:38
+#: src/components/Stations/Mounts/Form/AutoDj.vue:35
+#: src/components/Stations/Remotes/Form/AutoDj.vue:35
 msgid "AutoDJ Bitrate (kbps)"
 msgstr ""
 
@@ -672,8 +675,6 @@ msgid "AzuraRelay is a standalone service that connects to your AzuraCast instan
 msgstr ""
 
 #: src/components/Stations/Media/MoveFilesModal.vue:20
-#: /var/azuracast/www/templates/frontend/public/podcast-episodes.phtml:40
-#: /var/azuracast/www/templates/frontend/public/podcast-episode.phtml:86
 msgid "Back"
 msgstr ""
 
@@ -685,7 +686,7 @@ msgstr ""
 msgid "Backup"
 msgstr ""
 
-#: src/components/Admin/Backups/ConfigureModal.vue:75
+#: src/components/Admin/Backups/ConfigureModal.vue:74
 msgid "Backup Format"
 msgstr ""
 
@@ -761,6 +762,12 @@ msgstr ""
 msgid "Bot Token"
 msgstr ""
 
+#: src/components/Stations/Reports/Listeners.vue:127
+#: src/components/Stations/Reports/Listeners/FiltersBar.vue:46
+#: /var/azuracast/www/src/Controller/Api/Stations/Reports/Overview/ByClient.php:61
+msgid "Bot/Crawler"
+msgstr ""
+
 #: src/components/Stations/menu.ts:51
 msgid "Branding"
 msgstr ""
@@ -774,7 +781,7 @@ msgstr ""
 msgid "Broadcast AutoDJ to Remote Station"
 msgstr ""
 
-#: src/components/Admin/Stations.vue:118
+#: src/components/Admin/Stations.vue:129
 #: src/components/Admin/Stations/Form/FrontendForm.vue:3
 #: src/components/Stations/menu.ts:235
 msgid "Broadcasting"
@@ -792,7 +799,7 @@ msgstr ""
 msgid "Browser"
 msgstr ""
 
-#: src/components/Stations/Profile/EmbedModal.vue:150
+#: src/components/Stations/Profile/EmbedModal.vue:154
 msgid "Browser Default"
 msgstr ""
 
@@ -812,6 +819,12 @@ msgstr ""
 msgid "Bulk Media Import/Export"
 msgstr ""
 
+#: src/components/Public/Podcasts/Podcast.vue:27
+#: src/components/Public/Podcasts/PodcastEpisode.vue:40
+#: src/components/Public/Podcasts/PodcastList.vue:24
+msgid "by"
+msgstr ""
+
 #: src/components/Admin/Settings/GeneralTab.vue:43
 msgid "By default, radio stations broadcast on their own ports (i.e. 8000). If you're using a service like CloudFlare or accessing your radio station by SSL, you should enable this feature, which routes all radio through the web ports (80 and 443)."
 msgstr ""
@@ -827,13 +840,12 @@ msgid "Cancel"
 msgstr ""
 
 #: src/components/Stations/Podcasts/PodcastForm/BasicInfo.vue:63
-#: /var/azuracast/www/templates/frontend/public/podcasts.phtml:56
 msgid "Categories"
 msgstr ""
 
 #: src/components/Stations/Reports/Overview/BestAndWorstTab.vue:21
 #: src/components/Stations/Reports/Overview/BestAndWorstTab.vue:61
-#: src/components/Stations/Reports/Timeline.vue:154
+#: src/components/Stations/Reports/Timeline.vue:152
 msgid "Change"
 msgstr ""
 
@@ -895,12 +907,12 @@ msgid "City"
 msgstr ""
 
 #: src/components/Stations/Media/MediaToolbar.vue:95
-#: src/components/Stations/Queue.vue:136
-#: src/components/Stations/Reports/Requests.vue:181
+#: src/components/Stations/Queue.vue:132
+#: src/components/Stations/Reports/Requests.vue:171
 msgid "Clear"
 msgstr ""
 
-#: src/components/Stations/Playlists.vue:456
+#: src/components/Stations/Playlists.vue:448
 msgid "Clear all media from playlist?"
 msgstr ""
 
@@ -909,7 +921,7 @@ msgstr ""
 msgid "Clear All Message Queues"
 msgstr ""
 
-#: src/components/Stations/Reports/Requests.vue:180
+#: src/components/Stations/Reports/Requests.vue:170
 msgid "Clear All Pending Requests?"
 msgstr ""
 
@@ -931,6 +943,10 @@ msgstr ""
 #: src/components/Stations/Mounts/Form/Intro.vue:47
 #: src/components/Stations/StereoToolConfig.vue:72
 msgid "Clear File"
+msgstr ""
+
+#: src/components/Stations/Reports/Listeners/FiltersBar.vue:59
+msgid "Clear Filters"
 msgstr ""
 
 #: src/components/Admin/Branding/CustomAssetForm.vue:35
@@ -959,7 +975,7 @@ msgstr ""
 msgid "Clear Upcoming Song Queue"
 msgstr ""
 
-#: src/components/Stations/Queue.vue:135
+#: src/components/Stations/Queue.vue:131
 msgid "Clear Upcoming Song Queue?"
 msgstr ""
 
@@ -1034,6 +1050,7 @@ msgstr ""
 #: src/components/Stations/Playlists/ApplyToModal.vue:50
 #: src/components/Stations/Playlists/ImportModal.vue:87
 #: src/components/Stations/Playlists/QueueModal.vue:47
+#: src/components/Stations/Profile/UpdateMetadataModal.vue:42
 #: src/components/Stations/Queue/LogsModal.vue:20
 #: src/components/Stations/Streamers/BroadcastsModal.vue:53
 msgid "Close"
@@ -1086,7 +1103,6 @@ msgid "Connection Information"
 msgstr ""
 
 #: src/components/Stations/Podcasts/EpisodeForm/BasicInfo.vue:53
-#: /var/azuracast/www/templates/frontend/public/podcast-episodes.phtml:80
 msgid "Contains explicit content"
 msgstr ""
 
@@ -1106,7 +1122,7 @@ msgstr ""
 msgid "Copied!"
 msgstr ""
 
-#: src/components/Admin/Backups/ConfigureModal.vue:57
+#: src/components/Admin/Backups/ConfigureModal.vue:56
 msgid "Copies older than the specified number of days will automatically be deleted. Set to zero to disable automatic deletion."
 msgstr ""
 
@@ -1237,7 +1253,8 @@ msgid "Current Podcast Media"
 msgstr ""
 
 #: src/components/Admin/Debug.vue:94
-#: src/components/Stations/Playlists.vue:152
+#: src/components/Common/BitrateOptions.vue:43
+#: src/components/Stations/Playlists.vue:126
 msgid "Custom"
 msgstr ""
 
@@ -1324,11 +1341,11 @@ msgstr ""
 msgid "Customize Copy"
 msgstr ""
 
-#: src/components/Admin/Stations/Form/StreamersForm.vue:112
+#: src/components/Admin/Stations/Form/StreamersForm.vue:109
 msgid "Customize DJ/Streamer Mount Point"
 msgstr ""
 
-#: src/components/Admin/Stations/Form/StreamersForm.vue:83
+#: src/components/Admin/Stations/Form/StreamersForm.vue:80
 msgid "Customize DJ/Streamer Port"
 msgstr ""
 
@@ -1349,7 +1366,7 @@ msgid "Customize this setting to ensure you get the correct IP address for remot
 msgstr ""
 
 #: src/components/Admin/Branding/BrandingForm.vue:190
-#: src/components/Stations/Profile/EmbedModal.vue:158
+#: src/components/Stations/Profile/EmbedModal.vue:162
 msgid "Dark"
 msgstr ""
 
@@ -1358,11 +1375,11 @@ msgstr ""
 msgid "Dashboard"
 msgstr ""
 
-#: src/components/Stations/Reports/Requests.vue:122
+#: src/components/Stations/Reports/Requests.vue:121
 msgid "Date Played"
 msgstr ""
 
-#: src/components/Stations/Reports/Requests.vue:121
+#: src/components/Stations/Reports/Requests.vue:120
 msgid "Date Requested"
 msgstr ""
 
@@ -1370,11 +1387,11 @@ msgstr ""
 msgid "Date/Time"
 msgstr ""
 
-#: src/components/Stations/Reports/Timeline.vue:119
+#: src/components/Stations/Reports/Timeline.vue:124
 msgid "Date/Time (Browser)"
 msgstr ""
 
-#: src/components/Stations/Reports/Timeline.vue:133
+#: src/components/Stations/Reports/Timeline.vue:135
 msgid "Date/Time (Station)"
 msgstr ""
 
@@ -1382,7 +1399,7 @@ msgstr ""
 msgid "Days of Playback History to Keep"
 msgstr ""
 
-#: src/components/Admin/Stations/Form/StreamersForm.vue:66
+#: src/components/Admin/Stations/Form/StreamersForm.vue:63
 msgid "Deactivate Streamer on Disconnect (Seconds)"
 msgstr ""
 
@@ -1404,7 +1421,7 @@ msgstr ""
 msgid "Default Avatar URL"
 msgstr ""
 
-#: src/components/Admin/Stations/Form/StreamersForm.vue:120
+#: src/components/Admin/Stations/Form/StreamersForm.vue:117
 msgid "Default Live Broadcast Message"
 msgstr ""
 
@@ -1419,16 +1436,16 @@ msgstr ""
 #: src/components/Admin/Backups.vue:125
 #: src/components/Admin/CustomFields.vue:41
 #: src/components/Admin/Permissions.vue:56
-#: src/components/Admin/Stations.vue:56
+#: src/components/Admin/Stations.vue:64
 #: src/components/Admin/StorageLocations.vue:58
 #: src/components/Admin/Users.vue:64
 #: src/components/Stations/HlsStreams.vue:49
 #: src/components/Stations/Media/MediaToolbar.vue:171
 #: src/components/Stations/Mounts.vue:57
-#: src/components/Stations/Playlists.vue:62
-#: src/components/Stations/Podcasts/EpisodesView.vue:96
-#: src/components/Stations/Podcasts/ListView.vue:66
-#: src/components/Stations/Queue.vue:38
+#: src/components/Stations/Playlists.vue:162
+#: src/components/Stations/PodcastEpisodes.vue:113
+#: src/components/Stations/Podcasts.vue:72
+#: src/components/Stations/Queue.vue:39
 #: src/components/Stations/Remotes.vue:58
 #: src/components/Stations/Reports/Requests.vue:88
 #: src/components/Stations/SftpUsers.vue:36
@@ -1452,11 +1469,11 @@ msgstr ""
 msgid "Delete API Key?"
 msgstr ""
 
-#: src/components/Admin/Backups.vue:271
+#: src/components/Admin/Backups.vue:269
 msgid "Delete Backup?"
 msgstr ""
 
-#: src/components/Stations/Streamers/BroadcastsModal.vue:145
+#: src/components/Stations/Streamers/BroadcastsModal.vue:136
 msgid "Delete Broadcast?"
 msgstr ""
 
@@ -1464,7 +1481,7 @@ msgstr ""
 msgid "Delete Custom Field?"
 msgstr ""
 
-#: src/components/Stations/Podcasts/EpisodesView.vue:179
+#: src/components/Stations/PodcastEpisodes.vue:217
 msgid "Delete Episode?"
 msgstr ""
 
@@ -1480,15 +1497,15 @@ msgstr ""
 msgid "Delete Passkey?"
 msgstr ""
 
-#: src/components/Stations/Playlists.vue:448
+#: src/components/Stations/Playlists.vue:440
 msgid "Delete Playlist?"
 msgstr ""
 
-#: src/components/Stations/Podcasts/ListView.vue:162
+#: src/components/Stations/Podcasts.vue:151
 msgid "Delete Podcast?"
 msgstr ""
 
-#: src/components/Stations/Queue.vue:125
+#: src/components/Stations/Queue.vue:121
 msgid "Delete Queue Item?"
 msgstr ""
 
@@ -1500,7 +1517,7 @@ msgstr ""
 msgid "Delete Remote Relay?"
 msgstr ""
 
-#: src/components/Stations/Reports/Requests.vue:167
+#: src/components/Stations/Reports/Requests.vue:157
 msgid "Delete Request?"
 msgstr ""
 
@@ -1512,7 +1529,7 @@ msgstr ""
 msgid "Delete SFTP User?"
 msgstr ""
 
-#: src/components/Admin/Stations.vue:153
+#: src/components/Admin/Stations.vue:187
 msgid "Delete Station?"
 msgstr ""
 
@@ -1539,17 +1556,19 @@ msgstr ""
 msgid "Description"
 msgstr ""
 
-#: src/components/Stations/Reports/Listeners.vue:131
-msgid "Desktop Device"
+#: src/components/Stations/Reports/Listeners.vue:139
+#: src/components/Stations/Reports/Listeners/FiltersBar.vue:43
+msgid "Desktop"
 msgstr ""
 
 #: src/components/Admin/Debug/TaskOutput.vue:31
+#: src/components/Public/Podcasts/Podcast.vue:127
 msgid "Details"
 msgstr ""
 
 #: src/components/Stations/Media/MoveFilesModal.vue:116
 #: src/components/Stations/Playlists/ApplyToModal.vue:88
-#: /var/azuracast/www/src/Controller/Api/Stations/Files/ListAction.php:244
+#: /var/azuracast/www/src/Controller/Api/Stations/Files/ListAction.php:245
 msgid "Directory"
 msgstr ""
 
@@ -1558,7 +1577,8 @@ msgid "Directory Name"
 msgstr ""
 
 #: src/components/Admin/CustomFields/Form.vue:58
-#: src/components/Stations/Playlists.vue:355
+#: src/components/Admin/Stations.vue:50
+#: src/components/Stations/Playlists.vue:195
 #: src/components/Stations/Profile/PublicPagesPanel.vue:98
 #: src/components/Stations/Profile/RequestsPanel.vue:36
 #: src/components/Stations/Profile/StreamersPanel.vue:35
@@ -1572,6 +1592,10 @@ msgstr ""
 
 #: src/components/Admin/Stations/Form/BackendForm.vue:498
 msgid "Disable Optimizations"
+msgstr ""
+
+#: src/components/Admin/Stations.vue:169
+msgid "Disable station?"
 msgstr ""
 
 #: src/components/Account/SecurityPanel.vue:50
@@ -1591,8 +1615,8 @@ msgstr ""
 #: src/components/Admin/Stations/Form/ProfileForm.vue:218
 #: src/components/Common/Badges/EnabledBadge.vue:30
 #: src/components/Stations/Mounts.vue:40
-#: src/components/Stations/Playlists.vue:115
-#: src/components/Stations/Playlists.vue:121
+#: src/components/Stations/Playlists.vue:89
+#: src/components/Stations/Playlists.vue:95
 #: src/components/Stations/Remotes.vue:38
 #: src/components/Stations/Streamers.vue:52
 #: src/components/Stations/Webhooks.vue:34
@@ -1630,7 +1654,7 @@ msgstr ""
 msgid "Display Name"
 msgstr ""
 
-#: src/components/Admin/Stations/Form/StreamersForm.vue:102
+#: src/components/Admin/Stations/Form/StreamersForm.vue:99
 msgid "DJ/Streamer Buffer Time (Seconds)"
 msgstr ""
 
@@ -1658,12 +1682,8 @@ msgstr ""
 msgid "Donate to support AzuraCast!"
 msgstr ""
 
-#: src/components/Stations/Playlists/ReorderModal.vue:57
-msgid "Down"
-msgstr ""
-
 #: src/components/Admin/Backups.vue:118
-#: src/components/Public/OnDemand.vue:45
+#: src/components/Public/OnDemand.vue:40
 #: src/components/Stations/Fallback.vue:54
 #: src/components/Stations/Mounts/Form/Intro.vue:40
 #: src/components/Stations/Podcasts/EpisodeForm/Media.vue:40
@@ -1705,7 +1725,7 @@ msgstr ""
 msgid "Dropbox Setup Instructions"
 msgstr ""
 
-#: src/components/Stations/Playlists.vue:240
+#: src/components/Stations/Playlists.vue:242
 msgid "Duplicate"
 msgstr ""
 
@@ -1754,15 +1774,15 @@ msgstr ""
 
 #: src/components/Admin/CustomFields.vue:34
 #: src/components/Admin/Permissions.vue:48
-#: src/components/Admin/Stations.vue:49
+#: src/components/Admin/Stations.vue:57
 #: src/components/Admin/StorageLocations.vue:51
 #: src/components/Admin/Users.vue:57
 #: src/components/Stations/HlsStreams.vue:42
 #: src/components/Stations/Media.vue:197
 #: src/components/Stations/Mounts.vue:50
-#: src/components/Stations/Playlists.vue:55
-#: src/components/Stations/Podcasts/EpisodesView.vue:89
-#: src/components/Stations/Podcasts/ListView.vue:59
+#: src/components/Stations/Playlists.vue:155
+#: src/components/Stations/PodcastEpisodes.vue:106
+#: src/components/Stations/Podcasts.vue:65
 #: src/components/Stations/Remotes.vue:51
 #: src/components/Stations/SftpUsers.vue:29
 #: src/components/Stations/Streamers.vue:63
@@ -1778,7 +1798,7 @@ msgstr ""
 msgid "Edit Custom Field"
 msgstr ""
 
-#: src/components/Stations/Podcasts/EpisodeEditModal.vue:145
+#: src/components/Stations/Podcasts/EpisodeEditModal.vue:143
 msgid "Edit Episode"
 msgstr ""
 
@@ -1803,7 +1823,7 @@ msgstr ""
 msgid "Edit Playlist"
 msgstr ""
 
-#: src/components/Stations/Podcasts/PodcastEditModal.vue:100
+#: src/components/Stations/Podcasts/PodcastEditModal.vue:107
 msgid "Edit Podcast"
 msgstr ""
 
@@ -1865,11 +1885,12 @@ msgstr ""
 msgid "Emergency"
 msgstr ""
 
-#: src/components/Stations/Playlists.vue:193
+#: src/components/Stations/Playlists.vue:203
 msgid "Empty"
 msgstr ""
 
-#: src/components/Stations/Playlists.vue:356
+#: src/components/Admin/Stations.vue:50
+#: src/components/Stations/Playlists.vue:195
 #: src/components/Stations/Playlists/Form/BasicInfo.vue:18
 #: src/components/Stations/Profile/PublicPagesPanel.vue:111
 #: src/components/Stations/Profile/RequestsPanel.vue:49
@@ -1918,6 +1939,10 @@ msgstr ""
 msgid "Enable Public Pages"
 msgstr ""
 
+#: src/components/Admin/Stations.vue:170
+msgid "Enable station?"
+msgstr ""
+
 #: src/components/Admin/StorageLocations/Form/S3.vue:54
 msgid "Enable this option if your S3 provider is using paths instead of sub-domains for their S3 endpoint; for example, when using MinIO or with other self-hosted S3 storage solutions that are accessible via a path on a domain/IP instead of a subdomain."
 msgstr ""
@@ -1930,7 +1955,7 @@ msgstr ""
 msgid "Enable to advertise this mount point on \"Yellow Pages\" public radio directories."
 msgstr ""
 
-#: src/components/Stations/Remotes/Form/AutoDj.vue:82
+#: src/components/Stations/Remotes/Form/AutoDj.vue:79
 msgid "Enable to advertise this relay on \"Yellow Pages\" public radio directories."
 msgstr ""
 
@@ -1975,7 +2000,8 @@ msgid "End Date"
 msgstr ""
 
 #: src/components/Stations/Playlists/Form/ScheduleRow.vue:44
-#: src/components/Stations/Streamers/BroadcastsModal.vue:105
+#: src/components/Stations/Reports/Listeners.vue:280
+#: src/components/Stations/Streamers/BroadcastsModal.vue:100
 #: src/components/Stations/Streamers/Form/ScheduleRow.vue:47
 msgid "End Time"
 msgstr ""
@@ -2025,16 +2051,15 @@ msgstr ""
 msgid "Enter your password"
 msgstr ""
 
+#: src/components/Public/Podcasts/Podcast.vue:165
+#: src/components/Stations/PodcastEpisodes.vue:167
 #: src/components/Stations/Podcasts/EpisodeForm/BasicInfo.vue:11
-#: src/components/Stations/Podcasts/EpisodesView.vue:145
 msgid "Episode"
 msgstr ""
 
-#: src/components/Stations/Podcasts/EpisodesView.vue:18
-#: src/components/Stations/Podcasts/ListView.vue:73
-#: /var/azuracast/www/templates/frontend/public/podcast-episodes.phtml:35
-#: /var/azuracast/www/templates/frontend/public/podcasts.phtml:37
-#: /var/azuracast/www/templates/frontend/public/podcasts.phtml:72
+#: src/components/Public/Podcasts/PodcastList.vue:52
+#: src/components/Stations/PodcastEpisodes.vue:18
+#: src/components/Stations/Podcasts.vue:78
 msgid "Episodes"
 msgstr ""
 
@@ -2067,12 +2092,12 @@ msgstr ""
 msgid "Example: if the remote radio URL is http://station.example.com:8000/radio.mp3, enter \"http://station.example.com:8000\"."
 msgstr ""
 
-#: src/components/Admin/Backups/ConfigureModal.vue:46
+#: src/components/Admin/Backups/ConfigureModal.vue:45
 #: src/components/Admin/Backups/RunBackupModal.vue:64
 msgid "Exclude Media from Backup"
 msgstr ""
 
-#: src/components/Admin/Backups/ConfigureModal.vue:47
+#: src/components/Admin/Backups/ConfigureModal.vue:46
 msgid "Excluding media from automated backups will save space, but you should make sure to back up your media elsewhere. Note that only locally stored media will be backed up."
 msgstr ""
 
@@ -2080,17 +2105,18 @@ msgstr ""
 msgid "Exit Fullscreen"
 msgstr ""
 
-#: src/components/Stations/Queue.vue:97
+#: src/components/Stations/Queue.vue:98
 msgid "Expected to Play at"
 msgstr ""
 
-#: src/components/Stations/Podcasts/EpisodesView.vue:147
-#: src/components/Stations/Podcasts/EpisodesView.vue:79
-#: /var/azuracast/www/templates/frontend/public/podcast-episode.phtml:60
+#: src/components/Public/Podcasts/Podcast.vue:114
+#: src/components/Public/Podcasts/PodcastEpisode.vue:100
+#: src/components/Stations/PodcastEpisodes.vue:191
+#: src/components/Stations/PodcastEpisodes.vue:96
 msgid "Explicit"
 msgstr ""
 
-#: src/components/Stations/Playlists.vue:250
+#: src/components/Stations/Playlists.vue:252
 msgid "Export %{format}"
 msgstr ""
 
@@ -2117,7 +2143,7 @@ msgstr ""
 #: src/components/Admin/Backups.vue:205
 #: src/components/Admin/Backups/RunBackupModal.vue:37
 #: src/components/Stations/Media/Form/BasicInfo.vue:7
-#: src/components/Stations/Podcasts/EpisodesView.vue:146
+#: src/components/Stations/PodcastEpisodes.vue:172
 msgid "File Name"
 msgstr ""
 
@@ -2213,7 +2239,7 @@ msgstr ""
 msgid "Full Volume"
 msgstr ""
 
-#: src/components/Stations/Playlists.vue:124
+#: src/components/Stations/Playlists.vue:98
 #: src/components/Stations/Playlists/Form/BasicInfo.vue:112
 #: src/components/Stations/Playlists/Form/BasicInfo.vue:309
 msgid "General Rotation"
@@ -2241,7 +2267,7 @@ msgstr ""
 
 #: src/components/Admin/Stations/Form/ProfileForm.vue:26
 #: src/components/Public/Requests/RequestsDataTable.vue:90
-#: src/components/Stations/Media.vue:319
+#: src/components/Stations/Media.vue:317
 #: /var/azuracast/www/src/Media/Enums/MetadataTags.php:100
 msgid "Genre"
 msgstr ""
@@ -2299,7 +2325,7 @@ msgstr ""
 msgid "Hide AzuraCast Branding on Public Pages"
 msgstr ""
 
-#: src/components/Dashboard.vue:331
+#: src/components/Dashboard.vue:303
 msgid "Hide Charts"
 msgstr ""
 
@@ -2375,7 +2401,7 @@ msgstr ""
 msgid "Identifier"
 msgstr ""
 
-#: src/components/Admin/Stations/Form/StreamersForm.vue:121
+#: src/components/Admin/Stations/Form/StreamersForm.vue:118
 msgid "If a live DJ connects but has not yet sent metadata, this is the message that will display on player pages."
 msgstr ""
 
@@ -2444,7 +2470,6 @@ msgstr ""
 msgid "If selected, this will remove the AzuraCast branding from public-facing pages."
 msgstr ""
 
-#: src/components/Admin/Backups/ConfigureModal.vue:31
 #: src/components/Stations/Playlists/Form/ScheduleRow.vue:45
 msgid "If the end time is before the start time, the playlist will play overnight."
 msgstr ""
@@ -2453,11 +2478,11 @@ msgstr ""
 msgid "If the end time is before the start time, the schedule entry will continue overnight."
 msgstr ""
 
-#: src/components/Stations/Remotes/Form/AutoDj.vue:54
+#: src/components/Stations/Remotes/Form/AutoDj.vue:51
 msgid "If the mountpoint (i.e. /radio.mp3) or Shoutcast SID (i.e. 2) you broadcast to is different from the stream URL, specify the source mount point here."
 msgstr ""
 
-#: src/components/Stations/Remotes/Form/AutoDj.vue:46
+#: src/components/Stations/Remotes/Form/AutoDj.vue:43
 msgid "If the port you broadcast to is different from the stream URL, specify the source port here."
 msgstr ""
 
@@ -2477,11 +2502,11 @@ msgstr ""
 msgid "If this station has on-demand streaming and downloading enabled, only songs that are in playlists with this setting enabled will be visible."
 msgstr ""
 
-#: src/components/Stations/Remotes/Form/AutoDj.vue:70
+#: src/components/Stations/Remotes/Form/AutoDj.vue:67
 msgid "If you are broadcasting using AutoDJ, enter the source password here."
 msgstr ""
 
-#: src/components/Stations/Remotes/Form/AutoDj.vue:62
+#: src/components/Stations/Remotes/Form/AutoDj.vue:59
 msgid "If you are broadcasting using AutoDJ, enter the source username here. This may be blank."
 msgstr ""
 
@@ -2501,7 +2526,7 @@ msgstr ""
 msgid "If your stream is set to advertise to YP directories above, you must specify an authorization hash. You can manage these on the Shoutcast web site."
 msgstr ""
 
-#: src/components/Admin/Stations/Form/StreamersForm.vue:113
+#: src/components/Admin/Stations/Form/StreamersForm.vue:110
 msgid "If your streaming software requires a specific mount point path, specify it here. Otherwise, use the default."
 msgstr ""
 
@@ -2518,7 +2543,7 @@ msgstr ""
 msgid "Import Changes from CSV"
 msgstr ""
 
-#: src/components/Stations/Playlists.vue:209
+#: src/components/Stations/Playlists.vue:219
 #: src/components/Stations/Playlists/ImportModal.vue:5
 #: src/components/Stations/Playlists/ImportModal.vue:95
 msgid "Import from PLS/M3U"
@@ -2613,7 +2638,7 @@ msgstr ""
 msgid "Intro"
 msgstr ""
 
-#: src/components/Stations/Reports/Listeners.vue:217
+#: src/components/Stations/Reports/Listeners.vue:243
 #: src/components/Stations/Reports/Listeners/Map.vue:10
 msgid "IP"
 msgstr ""
@@ -2630,7 +2655,11 @@ msgstr ""
 msgid "Is Public"
 msgstr ""
 
-#: src/components/Stations/Media.vue:320
+#: src/components/Stations/PodcastEpisodes.vue:177
+msgid "Is Published"
+msgstr ""
+
+#: src/components/Stations/Media.vue:318
 #: src/components/Stations/Media/Form/BasicInfo.vue:51
 #: /var/azuracast/www/src/Media/Enums/MetadataTags.php:105
 msgid "ISRC"
@@ -2640,14 +2669,13 @@ msgstr ""
 msgid "Items per page"
 msgstr ""
 
-#: src/components/Stations/Playlists.vue:91
+#: src/components/Stations/Playlists.vue:65
 msgid "Jingle Mode"
 msgstr ""
 
 #: src/components/Account/EditForm.vue:39
 #: src/components/Stations/Podcasts/PodcastForm/BasicInfo.vue:36
 #: /var/azuracast/www/src/Media/Enums/MetadataTags.php:106
-#: /var/azuracast/www/templates/frontend/public/podcasts.phtml:52
 msgid "Language"
 msgstr ""
 
@@ -2744,7 +2772,7 @@ msgstr ""
 msgid "Leave blank to use the default Telegram API URL (recommended)."
 msgstr ""
 
-#: src/components/Stations/Media.vue:321
+#: src/components/Stations/Media.vue:319
 #: /var/azuracast/www/src/Media/Enums/MetadataTags.php:107
 msgid "Length"
 msgstr ""
@@ -2762,7 +2790,7 @@ msgid "LetsEncrypt provides simple, free SSL certificates allowing you to secure
 msgstr ""
 
 #: src/components/Admin/Branding/BrandingForm.vue:186
-#: src/components/Stations/Profile/EmbedModal.vue:154
+#: src/components/Stations/Profile/EmbedModal.vue:158
 msgid "Light"
 msgstr ""
 
@@ -2811,14 +2839,18 @@ msgstr ""
 msgid "Listener Report"
 msgstr ""
 
-#: src/components/Stations/Queue.vue:60
+#: src/components/Stations/Queue.vue:61
 #: src/components/Stations/Reports/Timeline.vue:69
 msgid "Listener Request"
 msgstr ""
 
+#: src/components/Stations/Reports/Listeners/FiltersBar.vue:30
+msgid "Listener Type"
+msgstr ""
+
 #: src/components/Common/Charts/HourChart.vue:48
 #: src/components/Common/Charts/TimeSeriesChart.vue:70
-#: src/components/Dashboard.vue:168
+#: src/components/Dashboard.vue:327
 #: src/components/Stations/menu.ts:204
 #: src/components/Stations/Profile/StreamsPanel.vue:115
 #: src/components/Stations/Profile/StreamsPanel.vue:19
@@ -2826,7 +2858,7 @@ msgstr ""
 #: src/components/Stations/Reports/Listeners.vue:9
 #: src/components/Stations/Reports/Overview/CommonMetricsView.vue:88
 #: src/components/Stations/Reports/Overview/ListeningTimeTab.vue:55
-#: src/components/Stations/Reports/Timeline.vue:148
+#: src/components/Stations/Reports/Timeline.vue:146
 #: /var/azuracast/www/src/Controller/Api/Stations/Reports/Overview/ByStream.php:98
 #: /var/azuracast/www/src/Controller/Api/Stations/Reports/Overview/ByCountry.php:74
 #: /var/azuracast/www/src/Controller/Api/Stations/Reports/Overview/ChartsAction.php:83
@@ -2873,11 +2905,11 @@ msgstr ""
 
 #: src/components/Public/Player.vue:22
 #: src/components/Stations/Profile/NowPlayingPanel.vue:183
-#: src/components/Stations/Streamers/BroadcastsModal.vue:109
+#: src/components/Stations/Streamers/BroadcastsModal.vue:104
 msgid "Live"
 msgstr ""
 
-#: src/components/Admin/Stations/Form/StreamersForm.vue:53
+#: src/components/Admin/Stations/Form/StreamersForm.vue:50
 msgid "Live Broadcast Recording Bitrate (kbps)"
 msgstr ""
 
@@ -2918,7 +2950,7 @@ msgid "Loading"
 msgstr ""
 
 #: src/components/Admin/StorageLocations.vue:167
-#: src/components/Stations/Reports/Listeners.vue:148
+#: src/components/Stations/Reports/Listeners.vue:160
 msgid "Local"
 msgstr ""
 
@@ -2938,12 +2970,12 @@ msgstr ""
 msgid "Local Streams"
 msgstr ""
 
-#: src/components/Stations/Reports/Listeners.vue:222
+#: src/components/Stations/Reports/Listeners.vue:306
 msgid "Location"
 msgstr ""
 
 #: src/components/Admin/Users.vue:50
-#: /var/azuracast/www/src/Controller/Frontend/Account/LoginAction.php:133
+#: /var/azuracast/www/src/Controller/Frontend/Account/LoginAction.php:137
 #: /var/azuracast/www/templates/frontend/account/two_factor.phtml:3
 msgid "Log In"
 msgstr ""
@@ -2959,7 +2991,7 @@ msgid "Log Viewer"
 msgstr ""
 
 #: src/components/Stations/menu.ts:308
-#: src/components/Stations/Queue.vue:30
+#: src/components/Stations/Queue.vue:31
 msgid "Logs"
 msgstr ""
 
@@ -2985,7 +3017,7 @@ msgid "Make the selected media play immediately, interrupting existing media"
 msgstr ""
 
 #: src/components/Admin/Stations.vue:35
-#: src/components/Dashboard.vue:258
+#: src/components/Dashboard.vue:234
 #: src/components/Stations/Profile/StreamersPanel.vue:24
 msgid "Manage"
 msgstr ""
@@ -3072,6 +3104,10 @@ msgstr ""
 
 #: src/components/Stations/Mounts/Form/BasicInfo.vue:68
 msgid "Max Listener Duration"
+msgstr ""
+
+#: src/components/Stations/Reports/Listeners/FiltersBar.vue:17
+msgid "Max. Connected Time"
 msgstr ""
 
 #: src/components/Admin/Stations/Form/FrontendForm.vue:80
@@ -3175,12 +3211,20 @@ msgstr ""
 msgid "Message Visibility"
 msgstr ""
 
+#: src/components/Stations/Profile/UpdateMetadataModal.vue:105
+msgid "Metadata updated."
+msgstr ""
+
 #: src/components/Public/WebDJ/MicrophonePanel.vue:7
 msgid "Microphone"
 msgstr ""
 
 #: src/components/Public/WebDJ/MicrophonePanel.vue:46
 msgid "Microphone Source"
+msgstr ""
+
+#: src/components/Stations/Reports/Listeners/FiltersBar.vue:4
+msgid "Min. Connected Time"
 msgstr ""
 
 #: src/components/Stations/Playlists/Form/BasicInfo.vue:175
@@ -3191,12 +3235,12 @@ msgstr ""
 msgid "Mixer"
 msgstr ""
 
-#: src/components/Stations/Reports/Listeners.vue:125
-#: /var/azuracast/www/src/Controller/Api/Stations/Reports/Overview/ByClient.php:62
-msgid "Mobile Device"
+#: src/components/Stations/Reports/Listeners.vue:133
+#: src/components/Stations/Reports/Listeners/FiltersBar.vue:40
+msgid "Mobile"
 msgstr ""
 
-#: src/components/Stations/Media.vue:338
+#: src/components/Stations/Media.vue:336
 msgid "Modified"
 msgstr ""
 
@@ -3208,7 +3252,7 @@ msgid "Monday"
 msgstr ""
 
 #: src/components/Stations/Media/MediaToolbar.vue:124
-#: src/components/Stations/Playlists.vue:70
+#: src/components/Stations/Playlists.vue:172
 msgid "More"
 msgstr ""
 
@@ -3251,8 +3295,24 @@ msgstr ""
 msgid "Move %{ num } File(s) to"
 msgstr ""
 
+#: src/components/Stations/Playlists/ReorderModal.vue:66
+msgid "Move Down"
+msgstr ""
+
+#: src/components/Stations/Playlists/ReorderModal.vue:57
+msgid "Move to Bottom"
+msgstr ""
+
 #: src/components/Stations/Media/MoveFilesModal.vue:71
 msgid "Move to Directory"
+msgstr ""
+
+#: src/components/Stations/Playlists/ReorderModal.vue:84
+msgid "Move to Top"
+msgstr ""
+
+#: src/components/Stations/Playlists/ReorderModal.vue:75
+msgid "Move Up"
 msgstr ""
 
 #: src/components/Stations/Media.vue:14
@@ -3286,11 +3346,11 @@ msgid "N/A"
 msgstr ""
 
 #: src/components/Account/EditForm.vue:9
-#: src/components/Admin/Stations.vue:113
+#: src/components/Admin/Stations.vue:124
 #: src/components/Admin/Stations/Form/ProfileForm.vue:11
 #: src/components/Public/Requests/RequestsDataTable.vue:60
 #: src/components/Stations/HlsStreams.vue:82
-#: src/components/Stations/Media.vue:309
+#: src/components/Stations/Media.vue:307
 #: src/components/Stations/Mounts.vue:101
 #: src/components/Stations/Remotes.vue:93
 msgid "Name"
@@ -3363,6 +3423,7 @@ msgid "Next Run"
 msgstr ""
 
 #: src/components/Admin/Relays.vue:41
+#: src/components/Stations/PodcastEpisodes.vue:89
 msgid "No"
 msgstr ""
 
@@ -3383,7 +3444,7 @@ msgid "No Match"
 msgstr ""
 
 #: src/components/Admin/Stations/Form/FrontendForm.vue:73
-#: src/components/Admin/Stations/Form/StreamersForm.vue:87
+#: src/components/Admin/Stations/Form/StreamersForm.vue:84
 msgid "No other program can be using this port. Leave blank to automatically assign a port."
 msgstr ""
 
@@ -3401,7 +3462,7 @@ msgstr ""
 
 #: src/components/Admin/CustomFields.vue:92
 #: src/components/Admin/Settings/SecurityPrivacyTab.vue:135
-#: src/components/Stations/Playlists.vue:363
+#: src/components/Stations/Playlists.vue:355
 #: /var/azuracast/www/src/Entity/Repository/StorageLocationRepository.php:74
 msgid "None"
 msgstr ""
@@ -3439,7 +3500,7 @@ msgstr ""
 msgid "Note: If your media metadata has UTF-8 characters, you should use a spreadsheet editor that supports UTF-8 encoding, like OpenOffice."
 msgstr ""
 
-#: src/components/Admin/Stations/Form/StreamersForm.vue:91
+#: src/components/Admin/Stations/Form/StreamersForm.vue:88
 msgid "Note: the port after this one will automatically be used for legacy connections."
 msgstr ""
 
@@ -3460,7 +3521,7 @@ msgstr ""
 msgid "Now"
 msgstr ""
 
-#: src/components/Dashboard.vue:170
+#: src/components/Dashboard.vue:332
 #: src/components/Stations/Profile/NowPlayingPanel.vue:56
 msgid "Now Playing"
 msgstr ""
@@ -3486,7 +3547,7 @@ msgstr ""
 msgid "NowPlaying API Response"
 msgstr ""
 
-#: src/components/Admin/Backups/ConfigureModal.vue:56
+#: src/components/Admin/Backups/ConfigureModal.vue:55
 msgid "Number of Backup Copies to Keep"
 msgstr ""
 
@@ -3511,15 +3572,15 @@ msgstr ""
 msgid "On the Air"
 msgstr ""
 
-#: src/components/Stations/Playlists.vue:103
+#: src/components/Stations/Playlists.vue:77
 msgid "On-Demand"
 msgstr ""
 
-#: src/components/Public/OnDemand.vue:17
+#: src/components/Public/OnDemand.vue:11
 #: src/components/Stations/menu.ts:116
-#: src/components/Stations/Profile/EmbedModal.vue:139
+#: src/components/Stations/Profile/EmbedModal.vue:143
 #: src/components/Stations/Profile/PublicPagesPanel.vue:39
-#: /var/azuracast/www/src/Controller/Frontend/PublicPages/OnDemandAction.php:70
+#: /var/azuracast/www/src/Controller/Frontend/PublicPages/OnDemandAction.php:69
 msgid "On-Demand Media"
 msgstr ""
 
@@ -3527,11 +3588,11 @@ msgstr ""
 msgid "On-Demand Streaming"
 msgstr ""
 
-#: src/components/Stations/Playlists.vue:137
+#: src/components/Stations/Playlists.vue:111
 msgid "Once per %{minutes} Minutes"
 msgstr ""
 
-#: src/components/Stations/Playlists.vue:129
+#: src/components/Stations/Playlists.vue:103
 msgid "Once per %{songs} Songs"
 msgstr ""
 
@@ -3540,7 +3601,7 @@ msgstr ""
 msgid "Once per Hour"
 msgstr ""
 
-#: src/components/Stations/Playlists.vue:145
+#: src/components/Stations/Playlists.vue:119
 msgid "Once per Hour (at %{minute})"
 msgstr ""
 
@@ -3668,7 +3729,7 @@ msgstr ""
 msgid "Path/Suffix"
 msgstr ""
 
-#: src/components/Stations/Reports/Requests.vue:131
+#: src/components/Stations/Reports/Requests.vue:130
 msgid "Pending Requests"
 msgstr ""
 
@@ -3697,7 +3758,7 @@ msgstr ""
 msgid "Play once per hour at the specified minute."
 msgstr ""
 
-#: src/components/Stations/Playlists.vue:225
+#: src/components/Stations/Playlists.vue:227
 #: src/components/Stations/Playlists/QueueModal.vue:6
 msgid "Playback Queue"
 msgstr ""
@@ -3707,11 +3768,11 @@ msgid "Playing Next"
 msgstr ""
 
 #: src/components/Public/FullPlayer.vue:42
-#: src/components/Stations/Playlists.vue:341
+#: src/components/Stations/Playlists.vue:345
 #: src/components/Stations/Profile/NowPlayingPanel.vue:101
 #: src/components/Stations/Profile/NowPlayingPanel.vue:170
 #: src/components/Stations/Profile/SchedulePanel.vue:19
-#: src/components/Stations/Queue.vue:63
+#: src/components/Stations/Queue.vue:64
 msgid "Playlist"
 msgstr ""
 
@@ -3733,7 +3794,7 @@ msgstr ""
 msgid "Playlist Name"
 msgstr ""
 
-#: src/components/Stations/Playlists/ReorderModal.vue:127
+#: src/components/Stations/Playlists/ReorderModal.vue:145
 msgid "Playlist order set."
 msgstr ""
 
@@ -3760,7 +3821,7 @@ msgid "Playlist:"
 msgstr ""
 
 #: src/components/Admin/Stations/CloneModalForm.vue:59
-#: src/components/Stations/Media.vue:354
+#: src/components/Stations/Media.vue:344
 #: src/components/Stations/Media/EditModal.vue:15
 #: src/components/Stations/Media/Form/Playlists.vue:9
 #: src/components/Stations/Media/MediaToolbar.vue:18
@@ -3786,7 +3847,8 @@ msgstr ""
 msgid "Please log in to continue."
 msgstr ""
 
-#: src/components/Stations/Podcasts/ListView.vue:122
+#: src/components/Public/Podcasts/PodcastList.vue:82
+#: src/components/Stations/Podcasts.vue:128
 msgid "Podcast"
 msgstr ""
 
@@ -3798,8 +3860,11 @@ msgstr ""
 msgid "Podcast Title"
 msgstr ""
 
+#: src/components/Public/Podcasts/Podcast.vue:14
+#: src/components/Public/Podcasts/PodcastEpisode.vue:12
 #: src/components/Stations/menu.ts:150
-#: src/components/Stations/Podcasts/ListView.vue:10
+#: src/components/Stations/Podcasts.vue:7
+#: src/components/Stations/Profile/EmbedModal.vue:125
 #: src/components/Stations/Profile/PublicPagesPanel.vue:48
 msgid "Podcasts"
 msgstr ""
@@ -3869,10 +3934,10 @@ msgstr ""
 msgid "Public"
 msgstr ""
 
-#: src/components/Dashboard.vue:196
+#: src/components/Dashboard.vue:172
 #: src/components/Stations/menu.ts:61
-#: src/components/Stations/Podcasts/EpisodesView.vue:66
-#: src/components/Stations/Podcasts/ListView.vue:46
+#: src/components/Stations/PodcastEpisodes.vue:66
+#: src/components/Stations/Podcasts.vue:43
 #: src/components/Stations/Profile/PublicPagesPanel.vue:21
 msgid "Public Page"
 msgstr ""
@@ -3887,6 +3952,10 @@ msgstr ""
 msgid "Public Pages"
 msgstr ""
 
+#: src/components/Stations/PodcastEpisodes.vue:184
+msgid "Publish At"
+msgstr ""
+
 #: src/components/Stations/Podcasts/EpisodeForm/BasicInfo.vue:36
 msgid "Publish Date"
 msgstr ""
@@ -3896,7 +3965,7 @@ msgid "Publish Time"
 msgstr ""
 
 #: src/components/Stations/Mounts/Form/BasicInfo.vue:53
-#: src/components/Stations/Remotes/Form/AutoDj.vue:79
+#: src/components/Stations/Remotes/Form/AutoDj.vue:76
 msgid "Publish to \"Yellow Pages\" Directories"
 msgstr ""
 
@@ -3996,7 +4065,7 @@ msgstr ""
 msgid "Remember me"
 msgstr ""
 
-#: src/components/Stations/Reports/Listeners.vue:151
+#: src/components/Stations/Reports/Listeners.vue:163
 msgid "Remote"
 msgstr ""
 
@@ -4027,19 +4096,19 @@ msgstr ""
 msgid "Remote Station Listening URL"
 msgstr ""
 
-#: src/components/Stations/Remotes/Form/AutoDj.vue:53
+#: src/components/Stations/Remotes/Form/AutoDj.vue:50
 msgid "Remote Station Source Mountpoint/SID"
 msgstr ""
 
-#: src/components/Stations/Remotes/Form/AutoDj.vue:69
+#: src/components/Stations/Remotes/Form/AutoDj.vue:66
 msgid "Remote Station Source Password"
 msgstr ""
 
-#: src/components/Stations/Remotes/Form/AutoDj.vue:45
+#: src/components/Stations/Remotes/Form/AutoDj.vue:42
 msgid "Remote Station Source Port"
 msgstr ""
 
-#: src/components/Stations/Remotes/Form/AutoDj.vue:61
+#: src/components/Stations/Remotes/Form/AutoDj.vue:58
 msgid "Remote Station Source Username"
 msgstr ""
 
@@ -4047,7 +4116,7 @@ msgstr ""
 msgid "Remote Station Type"
 msgstr ""
 
-#: src/components/Stations/Playlists.vue:84
+#: src/components/Stations/Playlists.vue:58
 #: src/components/Stations/Playlists/Form/BasicInfo.vue:200
 #: src/components/Stations/Playlists/Form/BasicInfo.vue:301
 msgid "Remote URL"
@@ -4098,7 +4167,7 @@ msgstr ""
 msgid "Rename File/Directory"
 msgstr ""
 
-#: src/components/Stations/Playlists.vue:217
+#: src/components/Stations/Playlists.vue:187
 msgid "Reorder"
 msgstr ""
 
@@ -4130,7 +4199,7 @@ msgstr ""
 msgid "Request a Song"
 msgstr ""
 
-#: src/components/Stations/Reports/Requests.vue:135
+#: src/components/Stations/Reports/Requests.vue:134
 msgid "Request History"
 msgstr ""
 
@@ -4146,11 +4215,11 @@ msgstr ""
 msgid "Request Song"
 msgstr ""
 
-#: src/components/Stations/Reports/Requests.vue:124
+#: src/components/Stations/Reports/Requests.vue:123
 msgid "Requester IP"
 msgstr ""
 
-#: src/components/Stations/Profile/EmbedModal.vue:132
+#: src/components/Stations/Profile/EmbedModal.vue:136
 #: /var/azuracast/www/src/Controller/Frontend/PublicPages/RequestsAction.php:41
 msgid "Requests"
 msgstr ""
@@ -4159,7 +4228,7 @@ msgstr ""
 msgid "Required"
 msgstr ""
 
-#: src/components/Stations/Playlists.vue:201
+#: src/components/Stations/Playlists.vue:211
 msgid "Reshuffle"
 msgstr ""
 
@@ -4211,10 +4280,12 @@ msgstr ""
 msgid "Rolling Release"
 msgstr ""
 
-#: src/components/Stations/Podcasts/ListView.vue:50
-#: /var/azuracast/www/templates/frontend/public/podcast-episodes.phtml:44
-#: /var/azuracast/www/templates/frontend/public/podcast-episode.phtml:90
-#: /var/azuracast/www/templates/frontend/public/podcasts.phtml:77
+#: src/components/Public/Podcasts/Podcast.vue:56
+#: src/components/Public/Podcasts/PodcastList.vue:61
+msgid "RSS"
+msgstr ""
+
+#: src/components/Stations/Podcasts.vue:47
 msgid "RSS Feed"
 msgstr ""
 
@@ -4272,20 +4343,21 @@ msgstr ""
 msgid "Save Changes first"
 msgstr ""
 
-#: src/components/Public/Schedule.vue:17
+#: src/components/Public/Schedule.vue:8
 #: src/components/Stations/Playlists/Form/Schedule.vue:2
-#: src/components/Stations/Profile/EmbedModal.vue:125
+#: src/components/Stations/Profile/EmbedModal.vue:129
 #: src/components/Stations/Profile/PublicPagesPanel.vue:57
 #: src/components/Stations/Streamers/Form/Schedule.vue:2
 #: /var/azuracast/www/src/Controller/Frontend/PublicPages/ScheduleAction.php:50
 msgid "Schedule"
 msgstr ""
 
-#: src/components/Stations/Playlists.vue:263
+#: src/components/Stations/Playlists.vue:265
 #: src/components/Stations/Streamers.vue:84
 msgid "Schedule View"
 msgstr ""
 
+#: src/components/Stations/Playlists.vue:83
 #: src/components/Stations/Profile/SchedulePanel.vue:6
 msgid "Scheduled"
 msgstr ""
@@ -4308,7 +4380,7 @@ msgstr ""
 msgid "Scheduled Time #%{num}"
 msgstr ""
 
-#: src/components/Stations/Playlists.vue:342
+#: src/components/Stations/Playlists.vue:346
 msgid "Scheduling"
 msgstr ""
 
@@ -4470,7 +4542,7 @@ msgstr ""
 msgid "Sender Name"
 msgstr ""
 
-#: src/components/Stations/Playlists.vue:97
+#: src/components/Stations/Playlists.vue:71
 #: src/components/Stations/Playlists/Form/BasicInfo.vue:347
 msgid "Sequential"
 msgstr ""
@@ -4617,7 +4689,7 @@ msgstr ""
 msgid "Shoutcast version \"%{ version }\" is currently installed."
 msgstr ""
 
-#: src/components/Dashboard.vue:332
+#: src/components/Dashboard.vue:304
 msgid "Show Charts"
 msgstr ""
 
@@ -4673,8 +4745,8 @@ msgid "Site Base URL"
 msgstr ""
 
 #: src/components/Admin/Backups.vue:220
-#: src/components/Stations/Media.vue:335
-#: src/components/Stations/Streamers/BroadcastsModal.vue:119
+#: src/components/Stations/Media.vue:333
+#: src/components/Stations/Streamers/BroadcastsModal.vue:110
 msgid "Size"
 msgstr ""
 
@@ -4771,13 +4843,13 @@ msgid "Song Requests"
 msgstr ""
 
 #: src/components/Stations/Media/Form/BasicInfo.vue:15
-#: src/components/Stations/Queue.vue:96
-#: src/components/Stations/Reports/Requests.vue:123
-#: src/components/Stations/Reports/Timeline.vue:161
+#: src/components/Stations/Queue.vue:97
+#: src/components/Stations/Reports/Requests.vue:122
+#: src/components/Stations/Reports/Timeline.vue:159
 msgid "Song Title"
 msgstr ""
 
-#: src/components/Stations/Playlists.vue:81
+#: src/components/Stations/Playlists.vue:55
 msgid "Song-based"
 msgstr ""
 
@@ -4799,8 +4871,8 @@ msgstr ""
 
 #: src/components/Stations/Playlists/Form/BasicInfo.vue:29
 #: src/components/Stations/Profile/FrontendPanel.vue:66
-#: src/components/Stations/Queue.vue:98
-#: src/components/Stations/Reports/Timeline.vue:167
+#: src/components/Stations/Queue.vue:99
+#: src/components/Stations/Reports/Timeline.vue:165
 msgid "Source"
 msgstr ""
 
@@ -4853,7 +4925,8 @@ msgid "Start Streaming"
 msgstr ""
 
 #: src/components/Stations/Playlists/Form/ScheduleRow.vue:28
-#: src/components/Stations/Streamers/BroadcastsModal.vue:94
+#: src/components/Stations/Reports/Listeners.vue:269
+#: src/components/Stations/Streamers/BroadcastsModal.vue:93
 #: src/components/Stations/Streamers/Form/ScheduleRow.vue:30
 msgid "Start Time"
 msgstr ""
@@ -4878,11 +4951,11 @@ msgstr ""
 msgid "Station Media"
 msgstr ""
 
-#: src/components/Dashboard.vue:165
+#: src/components/Dashboard.vue:322
 msgid "Station Name"
 msgstr ""
 
-#: src/components/Dashboard.vue:231
+#: src/components/Dashboard.vue:207
 #: src/components/Public/Player.vue:29
 #: src/components/Stations/Branding/BrandingForm.vue:31
 #: src/components/Stations/Profile/NowPlayingPanel.vue:79
@@ -5023,7 +5096,7 @@ msgstr ""
 msgid "Storage Adapter"
 msgstr ""
 
-#: src/components/Admin/Backups/ConfigureModal.vue:64
+#: src/components/Admin/Backups/ConfigureModal.vue:63
 #: src/components/Admin/Backups/RunBackupModal.vue:30
 msgid "Storage Location"
 msgstr ""
@@ -5037,7 +5110,7 @@ msgstr ""
 msgid "Storage Quota"
 msgstr ""
 
-#: src/components/Stations/Reports/Listeners.vue:221
+#: src/components/Stations/Reports/Listeners.vue:299
 #: src/components/Stations/Reports/Overview/StreamsTab.vue:6
 msgid "Stream"
 msgstr ""
@@ -5241,7 +5314,7 @@ msgstr ""
 msgid "The length of playback time that Liquidsoap should buffer when playing this remote playlist. Shorter times may lead to intermittent playback on unstable connections."
 msgstr ""
 
-#: src/components/Admin/Stations/Form/StreamersForm.vue:103
+#: src/components/Admin/Stations/Form/StreamersForm.vue:100
 msgid "The number of seconds of signal to store in case of interruption. Set to the lowest value that your DJs can use without stream interruptions."
 msgstr ""
 
@@ -5441,7 +5514,7 @@ msgstr ""
 msgid "This is the informal display name that will be shown in API responses if the streamer/DJ is live."
 msgstr ""
 
-#: src/components/Admin/Stations/Form/StreamersForm.vue:70
+#: src/components/Admin/Stations/Form/StreamersForm.vue:67
 msgid "This is the number of seconds until a streamer who has been manually disconnected can reconnect to the stream. Set to 0 to allow the streamer to immediately reconnect."
 msgstr ""
 
@@ -5568,13 +5641,13 @@ msgstr ""
 msgid "Thursday"
 msgstr ""
 
-#: src/components/Stations/Reports/Listeners.vue:218
+#: src/components/Stations/Reports/Listeners.vue:249
 #: src/components/Stations/Reports/Listeners/Map.vue:18
 #: src/components/Stations/Reports/Overview/CommonMetricsView.vue:89
 msgid "Time"
 msgstr ""
 
-#: src/components/Stations/Reports/Listeners.vue:219
+#: src/components/Stations/Reports/Listeners.vue:259
 #: src/components/Stations/Reports/Overview/CommonMetricsView.vue:90
 msgid "Time (sec)"
 msgstr ""
@@ -5595,12 +5668,13 @@ msgstr ""
 msgid "Time Zone"
 msgstr ""
 
-#: src/components/Public/OnDemand.vue:112
+#: src/components/Public/OnDemand.vue:101
 #: src/components/Public/Requests/RequestsDataTable.vue:66
 #: src/components/Public/WebDJ/SettingsPanel.vue:17
-#: src/components/Stations/Media.vue:310
+#: src/components/Stations/Media.vue:308
 #: src/components/Stations/Playlists/QueueModal.vue:20
 #: src/components/Stations/Playlists/ReorderModal.vue:20
+#: src/components/Stations/Profile/UpdateMetadataModal.vue:23
 #: src/components/Stations/Webhooks/Form/Discord.vue:32
 #: /var/azuracast/www/src/Media/Enums/MetadataTags.php:133
 msgid "Title"
@@ -5767,8 +5841,8 @@ msgstr ""
 msgid "Unique Listeners"
 msgstr ""
 
-#: src/components/Stations/Reports/Listeners.vue:143
-#: src/components/Stations/Reports/Listeners.vue:160
+#: src/components/Stations/Reports/Listeners.vue:155
+#: src/components/Stations/Reports/Listeners.vue:172
 msgid "Unknown"
 msgstr ""
 
@@ -5792,16 +5866,17 @@ msgstr ""
 msgid "Unprocessable Files"
 msgstr ""
 
+#: src/components/Stations/PodcastEpisodes.vue:73
+#: src/components/Stations/Podcasts.vue:54
+msgid "Unpublished"
+msgstr ""
+
 #: src/components/Common/DataTable.vue:154
 msgid "Unselect All Rows"
 msgstr ""
 
 #: src/components/Common/DataTable.vue:233
 msgid "Unselect Row"
-msgstr ""
-
-#: src/components/Stations/Playlists/ReorderModal.vue:66
-msgid "Up"
 msgstr ""
 
 #: src/components/Stations/menu.ts:290
@@ -5836,6 +5911,9 @@ msgid "Update Instructions"
 msgstr ""
 
 #: src/components/Public/WebDJ/SettingsPanel.vue:50
+#: src/components/Stations/Profile/NowPlayingPanel.vue:234
+#: src/components/Stations/Profile/UpdateMetadataModal.vue:50
+#: src/components/Stations/Profile/UpdateMetadataModal.vue:6
 msgid "Update Metadata"
 msgstr ""
 
@@ -5943,6 +6021,10 @@ msgstr ""
 msgid "Use the Telegram Bot API to send a message to a channel."
 msgstr ""
 
+#: src/components/Stations/Profile/UpdateMetadataModal.vue:12
+msgid "Use this form to send a manual metadata update. Note that this will override any existing metadata on the stream."
+msgstr ""
+
 #: src/components/Admin/Settings/GeneralTab.vue:42
 msgid "Use Web Proxy for Radio"
 msgstr ""
@@ -5965,7 +6047,7 @@ msgstr ""
 msgid "User Accounts"
 msgstr ""
 
-#: src/components/Stations/Reports/Listeners.vue:220
+#: src/components/Stations/Reports/Listeners.vue:292
 #: src/components/Stations/Reports/Listeners/Map.vue:20
 msgid "User Agent"
 msgstr ""
@@ -6032,7 +6114,7 @@ msgstr ""
 msgid "View Fullscreen"
 msgstr ""
 
-#: src/components/Dashboard.vue:210
+#: src/components/Dashboard.vue:186
 msgid "View Listener Report"
 msgstr ""
 
@@ -6088,7 +6170,7 @@ msgstr ""
 
 #: src/components/Stations/menu.ts:173
 #: src/components/Stations/Profile/PublicPagesPanel.vue:30
-#: /var/azuracast/www/templates/frontend/public/webdj.phtml:13
+#: /var/azuracast/www/src/Controller/Frontend/PublicPages/WebDjAction.php:63
 msgid "Web DJ"
 msgstr ""
 
@@ -6150,7 +6232,7 @@ msgstr ""
 msgid "Wednesday"
 msgstr ""
 
-#: src/components/Stations/Playlists.vue:125
+#: src/components/Stations/Playlists.vue:99
 msgid "Weight"
 msgstr ""
 
@@ -6192,6 +6274,7 @@ msgid "Worst Performing Songs"
 msgstr ""
 
 #: src/components/Admin/Relays.vue:38
+#: src/components/Stations/PodcastEpisodes.vue:86
 msgid "Yes"
 msgstr ""
 
@@ -6280,14 +6363,6 @@ msgstr ""
 msgid "YP Directory Authorization Hash"
 msgstr ""
 
-#: /var/azuracast/www/src/Controller/Frontend/PublicPages/PodcastEpisodesAction.php:69
-msgid "No episodes found."
-msgstr ""
-
-#: /var/azuracast/www/src/Controller/Frontend/PublicPages/PodcastEpisodeAction.php:59
-msgid "Episode not found."
-msgstr ""
-
 #: /var/azuracast/www/src/Controller/Frontend/SetupController.php:113
 msgid "Set Up AzuraCast"
 msgstr ""
@@ -6322,33 +6397,33 @@ msgid "User not found."
 msgstr ""
 
 #: /var/azuracast/www/src/Controller/Frontend/Account/MasqueradeAction.php:47
-#: /var/azuracast/www/src/Controller/Frontend/Account/TwoFactorAction.php:31
+#: /var/azuracast/www/src/Controller/Frontend/Account/TwoFactorAction.php:32
 #: /var/azuracast/www/src/Controller/Frontend/Account/WebAuthn/PostValidationAction.php:77
-#: /var/azuracast/www/src/Controller/Frontend/Account/LoginAction.php:101
-#: /var/azuracast/www/src/Controller/Frontend/Account/LoginAction.php:109
+#: /var/azuracast/www/src/Controller/Frontend/Account/LoginAction.php:105
+#: /var/azuracast/www/src/Controller/Frontend/Account/LoginAction.php:113
 msgid "Logged in successfully."
 msgstr ""
 
-#: /var/azuracast/www/src/Controller/Frontend/Account/TwoFactorAction.php:43
+#: /var/azuracast/www/src/Controller/Frontend/Account/TwoFactorAction.php:44
 #: /var/azuracast/www/src/Controller/Frontend/Account/WebAuthn/PostValidationAction.php:56
-#: /var/azuracast/www/src/Controller/Frontend/Account/LoginAction.php:119
+#: /var/azuracast/www/src/Controller/Frontend/Account/LoginAction.php:123
 msgid "Login unsuccessful"
 msgstr ""
 
-#: /var/azuracast/www/src/Controller/Frontend/Account/TwoFactorAction.php:43
-#: /var/azuracast/www/src/Controller/Frontend/Account/LoginAction.php:119
+#: /var/azuracast/www/src/Controller/Frontend/Account/TwoFactorAction.php:44
+#: /var/azuracast/www/src/Controller/Frontend/Account/LoginAction.php:123
 msgid "Your credentials could not be verified."
 msgstr ""
 
-#: /var/azuracast/www/src/Controller/Frontend/Account/LoginAction.php:64
+#: /var/azuracast/www/src/Controller/Frontend/Account/LoginAction.php:65
 msgid "Too many login attempts"
 msgstr ""
 
-#: /var/azuracast/www/src/Controller/Frontend/Account/LoginAction.php:65
+#: /var/azuracast/www/src/Controller/Frontend/Account/LoginAction.php:66
 msgid "You have attempted to log in too many times. Please wait 30 seconds and try again."
 msgstr ""
 
-#: /var/azuracast/www/src/Controller/Frontend/Account/LoginAction.php:102
+#: /var/azuracast/www/src/Controller/Frontend/Account/LoginAction.php:106
 msgid "Complete the setup process to get started."
 msgstr ""
 
@@ -6403,8 +6478,8 @@ msgstr ""
 msgid "More than Two Hours"
 msgstr ""
 
-#: /var/azuracast/www/src/Controller/Api/Stations/Reports/Overview/ByClient.php:61
-msgid "Bot/Crawler"
+#: /var/azuracast/www/src/Controller/Api/Stations/Reports/Overview/ByClient.php:62
+msgid "Mobile Device"
 msgstr ""
 
 #: /var/azuracast/www/src/Controller/Api/Stations/Reports/Overview/ByClient.php:63
@@ -6420,7 +6495,7 @@ msgstr ""
 msgid "Playlist successfully imported; %d of %d files were successfully matched."
 msgstr ""
 
-#: /var/azuracast/www/src/Controller/Api/Stations/Playlists/PutOrderAction.php:39
+#: /var/azuracast/www/src/Controller/Api/Stations/Playlists/PutOrderAction.php:40
 #: /var/azuracast/www/src/Controller/Api/Stations/Playlists/GetOrderAction.php:41
 msgid "This playlist is not a sequential playlist."
 msgstr ""
@@ -6542,32 +6617,28 @@ msgstr ""
 msgid "Web hook disabled."
 msgstr ""
 
-#: /var/azuracast/www/src/Controller/Api/Stations/Podcasts/Art/DeleteArtAction.php:67
-msgid "Podcast not found!"
-msgstr ""
-
-#: /var/azuracast/www/src/Controller/Api/Stations/Files/ListAction.php:251
+#: /var/azuracast/www/src/Controller/Api/Stations/Files/ListAction.php:252
 #, php-format
 msgid "File Not Processed: %s"
 msgstr ""
 
-#: /var/azuracast/www/src/Controller/Api/Stations/Files/ListAction.php:256
+#: /var/azuracast/www/src/Controller/Api/Stations/Files/ListAction.php:257
 msgid "Cover Art"
 msgstr ""
 
-#: /var/azuracast/www/src/Controller/Api/Stations/Files/ListAction.php:258
+#: /var/azuracast/www/src/Controller/Api/Stations/Files/ListAction.php:259
 msgid "File Processing"
 msgstr ""
 
-#: /var/azuracast/www/src/Controller/Api/Stations/Files/MakeDirectoryAction.php:33
+#: /var/azuracast/www/src/Controller/Api/Stations/Files/MakeDirectoryAction.php:34
 msgid "No directory specified"
 msgstr ""
 
-#: /var/azuracast/www/src/Controller/Api/Stations/Files/RenameAction.php:32
+#: /var/azuracast/www/src/Controller/Api/Stations/Files/RenameAction.php:33
 msgid "File not specified."
 msgstr ""
 
-#: /var/azuracast/www/src/Controller/Api/Stations/Files/RenameAction.php:38
+#: /var/azuracast/www/src/Controller/Api/Stations/Files/RenameAction.php:39
 msgid "New path not specified."
 msgstr ""
 
@@ -6579,11 +6650,11 @@ msgstr ""
 msgid "All Stations"
 msgstr ""
 
-#: /var/azuracast/www/src/Controller/Api/Admin/UsersController.php:217
+#: /var/azuracast/www/src/Controller/Api/Admin/UsersController.php:222
 msgid "You cannot modify yourself."
 msgstr ""
 
-#: /var/azuracast/www/src/Controller/Api/Admin/UsersController.php:252
+#: /var/azuracast/www/src/Controller/Api/Admin/UsersController.php:257
 msgid "You cannot remove yourself."
 msgstr ""
 
@@ -6628,15 +6699,15 @@ msgstr ""
 msgid "Create a new storage location based on the base directory."
 msgstr ""
 
-#: /var/azuracast/www/src/Controller/Api/Admin/SendTestMessageAction.php:50
+#: /var/azuracast/www/src/Controller/Api/Admin/SendTestMessageAction.php:51
 msgid "Test Message"
 msgstr ""
 
-#: /var/azuracast/www/src/Controller/Api/Admin/SendTestMessageAction.php:53
+#: /var/azuracast/www/src/Controller/Api/Admin/SendTestMessageAction.php:54
 msgid "This is a test message from AzuraCast. If you are receiving this message, it means your e-mail settings are configured correctly."
 msgstr ""
 
-#: /var/azuracast/www/src/Controller/Api/Admin/SendTestMessageAction.php:67
+#: /var/azuracast/www/src/Controller/Api/Admin/SendTestMessageAction.php:68
 msgid "Test message sent successfully."
 msgstr ""
 
@@ -6697,6 +6768,10 @@ msgstr ""
 msgid "Frontend Assets"
 msgstr ""
 
+#: /var/azuracast/www/src/Exception/NotLoggedInException.php:25
+msgid "You must be logged in to access this page."
+msgstr ""
+
 #: /var/azuracast/www/src/Exception/StationUnsupportedException.php:25
 msgid "This station does not currently support this functionality."
 msgstr ""
@@ -6707,6 +6782,10 @@ msgstr ""
 
 #: /var/azuracast/www/src/Exception/StationUnsupportedException.php:39
 msgid "This station does not currently accept requests."
+msgstr ""
+
+#: /var/azuracast/www/src/Exception/PermissionDeniedException.php:25
+msgid "You do not have permission to access this portion of the site."
 msgstr ""
 
 #: /var/azuracast/www/src/Exception/SupervisorException.php:24
@@ -6921,95 +7000,99 @@ msgid "Redis Port"
 msgstr ""
 
 #: /var/azuracast/www/src/Installer/EnvFiles/AzuraCastEnvFile.php:186
-msgid "Redis Database Index"
-msgstr ""
-
-#: /var/azuracast/www/src/Installer/EnvFiles/AzuraCastEnvFile.php:192
 msgid "PHP Maximum POST File Size"
 msgstr ""
 
-#: /var/azuracast/www/src/Installer/EnvFiles/AzuraCastEnvFile.php:196
+#: /var/azuracast/www/src/Installer/EnvFiles/AzuraCastEnvFile.php:190
 msgid "PHP Memory Limit"
 msgstr ""
 
-#: /var/azuracast/www/src/Installer/EnvFiles/AzuraCastEnvFile.php:200
+#: /var/azuracast/www/src/Installer/EnvFiles/AzuraCastEnvFile.php:194
 msgid "PHP Script Maximum Execution Time (Seconds)"
 msgstr ""
 
-#: /var/azuracast/www/src/Installer/EnvFiles/AzuraCastEnvFile.php:204
+#: /var/azuracast/www/src/Installer/EnvFiles/AzuraCastEnvFile.php:198
 msgid "Short Sync Task Execution Time (Seconds)"
 msgstr ""
 
-#: /var/azuracast/www/src/Installer/EnvFiles/AzuraCastEnvFile.php:205
+#: /var/azuracast/www/src/Installer/EnvFiles/AzuraCastEnvFile.php:199
 msgid "The maximum execution time (and lock timeout) for the 15-second, 1-minute and 5-minute synchronization tasks."
 msgstr ""
 
-#: /var/azuracast/www/src/Installer/EnvFiles/AzuraCastEnvFile.php:210
+#: /var/azuracast/www/src/Installer/EnvFiles/AzuraCastEnvFile.php:204
 msgid "Long Sync Task Execution Time (Seconds)"
 msgstr ""
 
-#: /var/azuracast/www/src/Installer/EnvFiles/AzuraCastEnvFile.php:211
+#: /var/azuracast/www/src/Installer/EnvFiles/AzuraCastEnvFile.php:205
 msgid "The maximum execution time (and lock timeout) for the 1-hour synchronization task."
 msgstr ""
 
-#: /var/azuracast/www/src/Installer/EnvFiles/AzuraCastEnvFile.php:216
+#: /var/azuracast/www/src/Installer/EnvFiles/AzuraCastEnvFile.php:210
 msgid "Now Playing Delay Time (Seconds)"
 msgstr ""
 
-#: /var/azuracast/www/src/Installer/EnvFiles/AzuraCastEnvFile.php:217
+#: /var/azuracast/www/src/Installer/EnvFiles/AzuraCastEnvFile.php:211
 msgid "The delay between Now Playing checks for every station. Decrease for more frequent checks at the expense of performance; increase for less frequent checks but better performance (for large installations)."
 msgstr ""
 
-#: /var/azuracast/www/src/Installer/EnvFiles/AzuraCastEnvFile.php:222
+#: /var/azuracast/www/src/Installer/EnvFiles/AzuraCastEnvFile.php:216
 msgid "Now Playing Max Concurrent Processes"
 msgstr ""
 
-#: /var/azuracast/www/src/Installer/EnvFiles/AzuraCastEnvFile.php:223
+#: /var/azuracast/www/src/Installer/EnvFiles/AzuraCastEnvFile.php:217
 msgid "The maximum number of concurrent processes for now playing updates. Increasing this can help reduce the latency between updates now playing updates on large installations."
 msgstr ""
 
-#: /var/azuracast/www/src/Installer/EnvFiles/AzuraCastEnvFile.php:228
+#: /var/azuracast/www/src/Installer/EnvFiles/AzuraCastEnvFile.php:222
 msgid "Maximum PHP-FPM Worker Processes"
 msgstr ""
 
-#: /var/azuracast/www/src/Installer/EnvFiles/AzuraCastEnvFile.php:232
+#: /var/azuracast/www/src/Installer/EnvFiles/AzuraCastEnvFile.php:226
 msgid "Enable Performance Profiling Extension"
 msgstr ""
 
-#: /var/azuracast/www/src/Installer/EnvFiles/AzuraCastEnvFile.php:234
+#: /var/azuracast/www/src/Installer/EnvFiles/AzuraCastEnvFile.php:228
 #, php-format
 msgid "Profiling data can be viewed by visiting %s."
 msgstr ""
 
-#: /var/azuracast/www/src/Installer/EnvFiles/AzuraCastEnvFile.php:239
+#: /var/azuracast/www/src/Installer/EnvFiles/AzuraCastEnvFile.php:233
 msgid "Profile Performance on All Requests"
 msgstr ""
 
-#: /var/azuracast/www/src/Installer/EnvFiles/AzuraCastEnvFile.php:240
+#: /var/azuracast/www/src/Installer/EnvFiles/AzuraCastEnvFile.php:234
 msgid "This will have a significant performance impact on your installation."
 msgstr ""
 
-#: /var/azuracast/www/src/Installer/EnvFiles/AzuraCastEnvFile.php:245
+#: /var/azuracast/www/src/Installer/EnvFiles/AzuraCastEnvFile.php:239
 msgid "Profiling Extension HTTP Key"
 msgstr ""
 
-#: /var/azuracast/www/src/Installer/EnvFiles/AzuraCastEnvFile.php:246
+#: /var/azuracast/www/src/Installer/EnvFiles/AzuraCastEnvFile.php:240
 msgid "The value for the \"SPX_KEY\" parameter for viewing profiling pages."
 msgstr ""
 
-#: /var/azuracast/www/src/Installer/EnvFiles/AzuraCastEnvFile.php:251
+#: /var/azuracast/www/src/Installer/EnvFiles/AzuraCastEnvFile.php:245
 msgid "Profiling Extension IP Allow List"
 msgstr ""
 
-#: /var/azuracast/www/src/Installer/EnvFiles/AzuraCastEnvFile.php:256
+#: /var/azuracast/www/src/Installer/EnvFiles/AzuraCastEnvFile.php:250
+msgid "Nginx Max Client Body Size"
+msgstr ""
+
+#: /var/azuracast/www/src/Installer/EnvFiles/AzuraCastEnvFile.php:251
+msgid "This is the total size any single request body can be. AzuraCast chunks its uploads into smaller file sizes, so this only applies when doing custom uploads via the API. Sizes should be listed in a format like \"100K\", \"128M\", \"1G\" for kilobytes, megabytes, and gigabytes respectively."
+msgstr ""
+
+#: /var/azuracast/www/src/Installer/EnvFiles/AzuraCastEnvFile.php:257
 msgid "Enable web-based Docker image updates"
 msgstr ""
 
-#: /var/azuracast/www/src/Installer/EnvFiles/AzuraCastEnvFile.php:260
+#: /var/azuracast/www/src/Installer/EnvFiles/AzuraCastEnvFile.php:261
 msgid "Extra Ubuntu packages to install upon startup"
 msgstr ""
 
-#: /var/azuracast/www/src/Installer/EnvFiles/AzuraCastEnvFile.php:261
+#: /var/azuracast/www/src/Installer/EnvFiles/AzuraCastEnvFile.php:262
 msgid "Separate package names with a space. Packages will be installed during container startup."
 msgstr ""
 
@@ -7387,31 +7470,31 @@ msgstr ""
 msgid "Backup complete in %.2f seconds."
 msgstr ""
 
-#: /var/azuracast/www/src/Console/Command/AbstractDatabaseCommand.php:101
+#: /var/azuracast/www/src/Console/Command/AbstractDatabaseCommand.php:104
 msgid "Backing up initial database state..."
 msgstr ""
 
-#: /var/azuracast/www/src/Console/Command/AbstractDatabaseCommand.php:110
+#: /var/azuracast/www/src/Console/Command/AbstractDatabaseCommand.php:113
 msgid "We detected a database restore file from a previous (possibly failed) migration."
 msgstr ""
 
-#: /var/azuracast/www/src/Console/Command/AbstractDatabaseCommand.php:111
+#: /var/azuracast/www/src/Console/Command/AbstractDatabaseCommand.php:114
 msgid "Attempting to restore that now..."
 msgstr ""
 
-#: /var/azuracast/www/src/Console/Command/AbstractDatabaseCommand.php:126
+#: /var/azuracast/www/src/Console/Command/AbstractDatabaseCommand.php:129
 msgid "Attempting to roll back to previous database state..."
 msgstr ""
 
-#: /var/azuracast/www/src/Console/Command/AbstractDatabaseCommand.php:132
+#: /var/azuracast/www/src/Console/Command/AbstractDatabaseCommand.php:135
 msgid "Your database was restored due to a failed migration."
 msgstr ""
 
-#: /var/azuracast/www/src/Console/Command/AbstractDatabaseCommand.php:133
+#: /var/azuracast/www/src/Console/Command/AbstractDatabaseCommand.php:136
 msgid "Please report this bug to our developers."
 msgstr ""
 
-#: /var/azuracast/www/src/Console/Command/AbstractDatabaseCommand.php:139
+#: /var/azuracast/www/src/Console/Command/AbstractDatabaseCommand.php:142
 #, php-format
 msgid "Restore failed: %s"
 msgstr ""
@@ -7451,7 +7534,7 @@ msgstr ""
 msgid "Database migration completed!"
 msgstr ""
 
-#: /var/azuracast/www/src/Console/Command/SetupFixturesCommand.php:59
+#: /var/azuracast/www/src/Console/Command/SetupFixturesCommand.php:63
 msgid "Fixtures loaded."
 msgstr ""
 
@@ -7521,16 +7604,6 @@ msgstr ""
 #: /var/azuracast/www/src/Console/Command/RollbackDbCommand.php:99
 #, php-format
 msgid "Database rolled back to stable release version \"%s\"."
-msgstr ""
-
-#: /var/azuracast/www/src/Http/ErrorHandler.php:172
-#: /var/azuracast/www/src/Http/ErrorHandler.php:184
-msgid "You must be logged in to access this page."
-msgstr ""
-
-#: /var/azuracast/www/src/Http/ErrorHandler.php:202
-#: /var/azuracast/www/src/Http/ErrorHandler.php:214
-msgid "You do not have permission to access this portion of the site."
 msgstr ""
 
 #: /var/azuracast/www/src/Media/Enums/MetadataTags.php:81
@@ -7857,15 +7930,6 @@ msgstr ""
 #: /var/azuracast/www/templates/minimal.phtml:58
 #, php-format
 msgid "Powered by %s"
-msgstr ""
-
-#: /var/azuracast/www/templates/frontend/public/podcast-episodes.phtml:62
-#: /var/azuracast/www/templates/frontend/public/podcast-episodes.phtml:107
-msgid "View Details"
-msgstr ""
-
-#: /var/azuracast/www/templates/frontend/public/podcasts.phtml:87
-msgid "No entries found."
 msgstr ""
 
 #: /var/azuracast/www/templates/frontend/account/two_factor.phtml:11

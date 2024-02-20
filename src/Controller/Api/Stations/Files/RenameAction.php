@@ -11,6 +11,7 @@ use App\Flysystem\StationFilesystems;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Media\BatchUtilities;
+use App\Utilities\Types;
 use Psr\Http\Message\ResponseInterface;
 
 final class RenameAction implements SingleActionInterface
@@ -26,13 +27,13 @@ final class RenameAction implements SingleActionInterface
         Response $response,
         array $params
     ): ResponseInterface {
-        $from = $request->getParam('file');
+        $from = Types::string($request->getParam('file'));
         if (empty($from)) {
             return $response->withStatus(500)
                 ->withJson(new Error(500, __('File not specified.')));
         }
 
-        $to = $request->getParam('newPath');
+        $to = Types::string($request->getParam('newPath'));
         if (empty($to)) {
             return $response->withStatus(500)
                 ->withJson(new Error(500, __('New path not specified.')));

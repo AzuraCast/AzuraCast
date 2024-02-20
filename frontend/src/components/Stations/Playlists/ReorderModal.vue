@@ -53,8 +53,17 @@
                                 <button
                                     v-if="index+1 < media.length"
                                     type="button"
+                                    class="btn btn-secondary"
+                                    :title="$gettext('Move to Bottom')"
+                                    @click.prevent="moveToBottom(index)"
+                                >
+                                    <icon :icon="IconChevronBarDown" />
+                                </button>
+                                <button
+                                    v-if="index+1 < media.length"
+                                    type="button"
                                     class="btn btn-primary"
-                                    :title="$gettext('Down')"
+                                    :title="$gettext('Move Down')"
                                     @click.prevent="moveDown(index)"
                                 >
                                     <icon :icon="IconChevronDown" />
@@ -63,10 +72,19 @@
                                     v-if="index > 0"
                                     type="button"
                                     class="btn btn-primary"
-                                    :title="$gettext('Up')"
+                                    :title="$gettext('Move Up')"
                                     @click.prevent="moveUp(index)"
                                 >
                                     <icon :icon="IconChevronUp" />
+                                </button>
+                                <button
+                                    v-if="index > 0"
+                                    type="button"
+                                    class="btn btn-secondary"
+                                    :title="$gettext('Move to Top')"
+                                    @click.prevent="moveToTop(index)"
+                                >
+                                    <icon :icon="IconChevronBarUp" />
                                 </button>
                             </div>
                         </td>
@@ -87,7 +105,7 @@ import {useAxios} from "~/vendor/axios";
 import {useNotify} from "~/functions/useNotify";
 import {useTranslate} from "~/vendor/gettext";
 import Modal from "~/components/Common/Modal.vue";
-import {IconChevronDown, IconChevronUp} from "~/components/Common/icons";
+import {IconChevronBarDown, IconChevronBarUp, IconChevronDown, IconChevronUp} from "~/components/Common/icons";
 import {ModalTemplateRef, useHasModal} from "~/functions/useHasModal.ts";
 import {usePlayerStore, useProvidePlayerStore} from "~/functions/usePlayerStore.ts";
 
@@ -129,12 +147,26 @@ const save = () => {
 };
 
 const moveDown = (index) => {
-    media.value.splice(index + 1, 0, media.value.splice(index, 1)[0]);
+    const currentItem = media.value.splice(index, 1)[0];
+    media.value.splice(index + 1, 0, currentItem);
+    save();
+};
+
+const moveToBottom = (index) => {
+    const currentItem = media.value.splice(index, 1)[0];
+    media.value.splice(media.value.length, 0, currentItem);
     save();
 };
 
 const moveUp = (index) => {
-    media.value.splice(index - 1, 0, media.value.splice(index, 1)[0]);
+    const currentItem = media.value.splice(index, 1)[0];
+    media.value.splice(index - 1, 0, currentItem);
+    save();
+};
+
+const moveToTop = (index) => {
+    const currentItem = media.value.splice(index, 1)[0];
+    media.value.splice(0, 0, currentItem);
     save();
 };
 

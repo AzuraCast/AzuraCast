@@ -206,7 +206,8 @@ final class CloneAction extends StationsController implements SingleActionInterf
     }
 
     /**
-     * @param Collection<int, mixed> $collection
+     * @template T of mixed
+     * @param Collection<int, T> $collection
      */
     private function cloneCollection(
         Collection $collection,

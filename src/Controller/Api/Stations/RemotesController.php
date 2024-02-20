@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Stations;
 
+use App\Controller\Api\Traits\CanSearchResults;
 use App\Controller\Api\Traits\CanSortResults;
 use App\Entity\Api\StationRemote as ApiStationRemote;
 use App\Entity\StationRemote;
@@ -11,6 +12,7 @@ use App\Exception\PermissionDeniedException;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\OpenApi;
+use App\Utilities\Types;
 use InvalidArgumentException;
 use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
@@ -143,6 +145,7 @@ use Psr\Http\Message\ResponseInterface;
 final class RemotesController extends AbstractStationApiCrudController
 {
     use CanSortResults;
+    use CanSearchResults;
 
     protected string $entityClass = StationRemote::class;
     protected string $resourceRouteName = 'api:stations:remote';
@@ -170,11 +173,13 @@ final class RemotesController extends AbstractStationApiCrudController
             'e.display_name'
         );
 
-        $searchPhrase = trim($request->getParam('searchPhrase', ''));
-        if (!empty($searchPhrase)) {
-            $qb->andWhere('(e.display_name LIKE :name)')
-                ->setParameter('name', '%' . $searchPhrase . '%');
-        }
+        $qb = $this->searchQueryBuilder(
+            $request,
+            $qb,
+            [
+                'e.display_name',
+            ]
+        );
 
         return $this->listPaginatedFromQuery($request, $response, $qb->getQuery());
     }
@@ -192,7 +197,7 @@ final class RemotesController extends AbstractStationApiCrudController
         $return = new ApiStationRemote();
         $return->fromParentObject($returnArray);
 
-        $isInternal = ('true' === $request->getParam('internal', 'false'));
+        $isInternal = Types::bool($request->getParam('internal'), false, true);
         $router = $request->getRouter();
 
         $return->is_editable = $record->isEditable();
@@ -213,7 +218,7 @@ final class RemotesController extends AbstractStationApiCrudController
         $record = parent::getRecord($request, $params);
 
         if ($record instanceof StationRemote && !$record->isEditable()) {
-            throw new PermissionDeniedException('This record cannot be edited.');
+            throw PermissionDeniedException::create();
         }
 
         return $record;

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Stations;
 
+use App\Controller\Api\Traits\CanSearchResults;
 use App\Controller\Api\Traits\CanSortResults;
 use App\Entity\Repository\StationScheduleRepository;
 use App\Entity\Repository\StationStreamerRepository;
@@ -14,6 +15,7 @@ use App\Http\ServerRequest;
 use App\OpenApi;
 use App\Radio\AutoDJ\Scheduler;
 use App\Service\Flow\UploadedFile;
+use App\Utilities\Types;
 use Carbon\CarbonInterface;
 use InvalidArgumentException;
 use OpenApi\Attributes as OA;
@@ -149,6 +151,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 final class StreamersController extends AbstractScheduledEntityController
 {
     use CanSortResults;
+    use CanSearchResults;
 
     protected string $entityClass = StationStreamer::class;
     protected string $resourceRouteName = 'api:stations:streamer';
@@ -186,11 +189,14 @@ final class StreamersController extends AbstractScheduledEntityController
             'e.streamer_username'
         );
 
-        $searchPhrase = trim($request->getParam('searchPhrase', ''));
-        if (!empty($searchPhrase)) {
-            $qb->andWhere('(e.streamer_username LIKE :name OR e.display_name LIKE :name)')
-                ->setParameter('name', '%' . $searchPhrase . '%');
-        }
+        $qb = $this->searchQueryBuilder(
+            $request,
+            $qb,
+            [
+                'e.streamer_username',
+                'e.display_name',
+            ]
+        );
 
         return $this->listPaginatedFromQuery($request, $response, $qb->getQuery());
     }
@@ -275,7 +281,7 @@ final class StreamersController extends AbstractScheduledEntityController
         $return = parent::viewRecord($record, $request);
 
         $router = $request->getRouter();
-        $isInternal = ('true' === $request->getParam('internal', 'false'));
+        $isInternal = Types::bool($request->getParam('internal'), false, true);
 
         $return['has_custom_art'] = (0 !== $record->getArtUpdatedAt());
 

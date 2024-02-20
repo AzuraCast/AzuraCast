@@ -53,12 +53,10 @@ final class GetArtAction implements SingleActionInterface
         Response $response,
         array $params
     ): ResponseInterface {
-        /** @var string $podcastId */
-        $podcastId = $params['podcast_id'];
-
+        $podcast = $request->getPodcast();
         $station = $request->getStation();
 
-        $podcastPath = Podcast::getArtPath($podcastId);
+        $podcastPath = Podcast::getArtPath($podcast->getIdRequired());
 
         $fsPodcasts = $this->stationFilesystems->getPodcastsFilesystem($station);
 

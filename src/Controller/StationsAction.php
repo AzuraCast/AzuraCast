@@ -2,17 +2,16 @@
 
 declare(strict_types=1);
 
-namespace App\Controller\Stations;
+namespace App\Controller;
 
 use App\Container\EntityManagerAwareTrait;
 use App\Container\SettingsAwareTrait;
-use App\Controller\SingleActionInterface;
 use App\Enums\StationFeatures;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
 
-final class IndexAction implements SingleActionInterface
+final class StationsAction implements SingleActionInterface
 {
     use EntityManagerAwareTrait;
     use SettingsAwareTrait;

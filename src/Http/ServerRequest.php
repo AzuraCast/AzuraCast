@@ -7,12 +7,14 @@ namespace App\Http;
 use App\Acl;
 use App\Auth;
 use App\Customization;
+use App\Entity\Podcast;
 use App\Entity\Station;
 use App\Entity\User;
 use App\Enums\SupportedLocales;
 use App\Exception\InvalidRequestAttribute;
 use App\RateLimit;
 use App\Session;
+use App\Utilities\Types;
 use App\View;
 use Mezzio\Session\SessionInterface;
 use Slim\Http\ServerRequest as SlimServerRequest;
@@ -30,6 +32,7 @@ final class ServerRequest extends SlimServerRequest
     public const ATTR_CUSTOMIZATION = 'customization';
     public const ATTR_AUTH = 'auth';
     public const ATTR_STATION = 'station';
+    public const ATTR_PODCAST = 'podcast';
     public const ATTR_USER = 'user';
 
     /**
@@ -129,6 +132,14 @@ final class ServerRequest extends SlimServerRequest
     }
 
     /**
+     * @throws InvalidRequestAttribute
+     */
+    public function getPodcast(): Podcast
+    {
+        return $this->getAttributeOfClass(self::ATTR_PODCAST, Podcast::class);
+    }
+
+    /**
      * @template T of object
      *
      * @param string $attr
@@ -161,5 +172,14 @@ final class ServerRequest extends SlimServerRequest
         }
 
         return $object;
+    }
+
+    public function isInternal(): bool
+    {
+        return Types::bool(
+            $this->getParam('internal', false),
+            false,
+            true
+        );
     }
 }

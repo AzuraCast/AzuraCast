@@ -14,7 +14,7 @@ use App\Exception\StorageLocationFullException;
 use App\Flysystem\ExtendedFilesystemInterface;
 use App\Media\AlbumArt;
 use App\Media\MetadataManager;
-use http\Exception\InvalidArgumentException;
+use InvalidArgumentException;
 use League\Flysystem\UnableToDeleteFile;
 use League\Flysystem\UnableToRetrieveMetadata;
 
@@ -29,6 +29,14 @@ final class PodcastEpisodeRepository extends Repository
         private readonly MetadataManager $metadataManager,
         private readonly StorageLocationRepository $storageLocationRepo,
     ) {
+    }
+
+    public function fetchEpisodeForPodcast(Podcast $podcast, string $episodeId): ?PodcastEpisode
+    {
+        return $this->repository->findOneBy([
+            'id' => $episodeId,
+            'podcast' => $podcast,
+        ]);
     }
 
     public function fetchEpisodeForStation(Station $station, string $episodeId): ?PodcastEpisode
@@ -54,28 +62,6 @@ final class PodcastEpisodeRepository extends Repository
         )->setParameter('id', $episodeId)
             ->setParameter('storageLocation', $storageLocation)
             ->getOneOrNullResult();
-    }
-
-    /**
-     * @return PodcastEpisode[]
-     */
-    public function fetchPublishedEpisodesForPodcast(Podcast $podcast): array
-    {
-        $episodes = $this->em->createQueryBuilder()
-            ->select('pe')
-            ->from(PodcastEpisode::class, 'pe')
-            ->where('pe.podcast = :podcast')
-            ->setParameter('podcast', $podcast)
-            ->orderBy('pe.created_at', 'DESC')
-            ->getQuery()
-            ->getResult();
-
-        return array_filter(
-            $episodes,
-            static function (PodcastEpisode $episode) {
-                return $episode->isPublished();
-            }
-        );
     }
 
     public function writeEpisodeArt(

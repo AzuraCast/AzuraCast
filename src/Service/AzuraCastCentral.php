@@ -43,7 +43,7 @@ final class AzuraCastCentral
         if ($commitHash) {
             $requestBody['version'] = $commitHash;
         } else {
-            $requestBody['release'] = Version::FALLBACK_VERSION;
+            $requestBody['release'] = Version::STABLE_VERSION;
         }
 
         $this->logger->debug(

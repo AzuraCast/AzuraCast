@@ -65,7 +65,7 @@ final class MusicBrainz
                 RequestOptions::TIMEOUT => 7,
                 RequestOptions::HTTP_ERRORS => true,
                 RequestOptions::HEADERS => [
-                    'User-Agent' => 'AzuraCast ' . Version::FALLBACK_VERSION,
+                    'User-Agent' => 'AzuraCast ' . Version::STABLE_VERSION,
                     'Accept' => 'application/json',
                 ],
                 RequestOptions::QUERY => $query,
@@ -157,7 +157,7 @@ final class MusicBrainz
             [
                 RequestOptions::ALLOW_REDIRECTS => true,
                 RequestOptions::HEADERS => [
-                    'User-Agent' => 'AzuraCast ' . Version::FALLBACK_VERSION,
+                    'User-Agent' => 'AzuraCast ' . Version::STABLE_VERSION,
                     'Accept' => 'application/json',
                 ],
             ]

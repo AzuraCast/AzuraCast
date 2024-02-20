@@ -27,8 +27,6 @@ use MarcW\RssWriter\Extension\Core\Enclosure as RssEnclosure;
 use MarcW\RssWriter\Extension\Core\Guid as RssGuid;
 use MarcW\RssWriter\Extension\Core\Image as RssImage;
 use MarcW\RssWriter\Extension\Core\Item as RssItem;
-use MarcW\RssWriter\Extension\DublinCore\DublinCore;
-use MarcW\RssWriter\Extension\DublinCore\DublinCoreWriter;
 use MarcW\RssWriter\Extension\Itunes\ItunesChannel;
 use MarcW\RssWriter\Extension\Itunes\ItunesItem;
 use MarcW\RssWriter\Extension\Itunes\ItunesOwner;
@@ -119,7 +117,6 @@ final class PodcastFeedAction implements SingleActionInterface
         $rssWriter->registerWriter(new SyWriter());
         $rssWriter->registerWriter(new SlashWriter());
         $rssWriter->registerWriter(new AtomWriter());
-        $rssWriter->registerWriter(new DublinCoreWriter());
 
         return $rssWriter;
     }
@@ -140,7 +137,7 @@ final class PodcastFeedAction implements SingleActionInterface
         $channelLink = $podcast->getLink();
         if (empty($channelLink)) {
             $channelLink = $serverRequest->getRouter()->fromHere(
-                routeName: 'public:podcast:episodes',
+                routeName: 'public:podcast',
                 absolute: true
             );
         }
@@ -175,7 +172,6 @@ final class PodcastFeedAction implements SingleActionInterface
                 ->setHref((string)$serverRequest->getUri())
                 ->setType('application/rss+xml')
         );
-        $channel->addExtension(new DublinCore());
 
         return $channel;
     }
@@ -248,14 +244,18 @@ final class PodcastFeedAction implements SingleActionInterface
             }
 
             $podcastArtworkSrc = $this->router->fromHere(
-                routeName: 'api:stations:podcast:art',
+                routeName: 'api:stations:public:podcast:art',
                 routeParams: $routeParams,
                 absolute: true
             );
         }
 
         $rssImage->setUrl($podcastArtworkSrc);
-        $rssImage->setLink($podcast->getLink());
+
+        if (null !== $podcast->getLink()) {
+            $rssImage->setLink($podcast->getLink());
+        }
+
         $rssImage->setTitle($podcast->getTitle());
 
         return $rssImage;
@@ -277,7 +277,7 @@ final class PodcastFeedAction implements SingleActionInterface
             $rssItem = new RssItem();
 
             $rssGuid = new RssGuid();
-            $rssGuid->setGuid($episode->getId());
+            $rssGuid->setGuid($episode->getIdRequired());
 
             $rssItem->setGuid($rssGuid);
             $rssItem->setTitle($episode->getTitle());
@@ -291,7 +291,6 @@ final class PodcastFeedAction implements SingleActionInterface
                     absolute: true
                 );
             }
-
 
             $rssItem->setLink($episodeLink);
 
@@ -329,7 +328,7 @@ final class PodcastFeedAction implements SingleActionInterface
         $rssEnclosure = new RssEnclosure();
 
         $podcastMediaPlayUrl = $this->router->fromHere(
-            routeName: 'api:stations:podcast:episode:download',
+            routeName: 'api:stations:public:podcast:episode:download',
             routeParams: ['episode_id' => $episode->getId()],
             absolute: true
         );

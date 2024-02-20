@@ -12,7 +12,7 @@ final class RateLimitExceededException extends Exception
 {
     public function __construct(
         string $message = 'You have exceeded the rate limit for this application.',
-        int $code = 0,
+        int $code = 429,
         Throwable $previous = null,
         Level $loggerLevel = Level::Info
     ) {

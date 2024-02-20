@@ -449,9 +449,6 @@ final class ConfigWriter implements EventSubscriberInterface
                     $playlistConfigLines[] = $playlistVarName . ' = merge_tracks(id="merge_'
                         . self::cleanUpString($playlistVarName) . '", ' . $playlistVarName . ')';
                 }
-
-                $playlistConfigLines[] = $playlistVarName . ' = cue_cut(id="cue_'
-                    . self::cleanUpString($playlistVarName) . '", ' . $playlistVarName . ')';
             } elseif (PlaylistRemoteTypes::Playlist === $playlist->getRemoteType()) {
                 $playlistFunc = 'playlist("'
                     . self::cleanUpString($playlist->getRemoteUrl())
@@ -684,7 +681,6 @@ final class ConfigWriter implements EventSubscriberInterface
                 end
 
                 dynamic = request.dynamic(id="next_song", timeout=20.0, retry_delay=10., autodj_next_song)
-                dynamic = cue_cut(id="cue_next_song", dynamic)
 
                 dynamic_startup = fallback(
                     id = "dynamic_startup",
@@ -721,11 +717,9 @@ final class ConfigWriter implements EventSubscriberInterface
         $event->appendBlock(
             <<< LIQ
             requests = request.queue(id="{$requestsQueueName}")
-            requests = cue_cut(id="cue_{$requestsQueueName}", requests)
             radio = fallback(id="requests_fallback", track_sensitive = true, [requests, radio])
 
             interrupting_queue = request.queue(id="{$interruptingQueueName}")
-            interrupting_queue = cue_cut(id="cue_{$interruptingQueueName}", interrupting_queue)
             radio = fallback(id="interrupting_fallback", track_sensitive = false, [interrupting_queue, radio])
             LIQ
         );

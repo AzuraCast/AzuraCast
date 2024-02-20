@@ -50,7 +50,7 @@
                     class="col-md-4"
                     :field="v$.backend_config.hls_segment_length"
                     input-type="number"
-                    :input-attrs="{ min: '0', max: '60' }"
+                    :input-attrs="{ min: '0', max: '9999' }"
                     advanced
                     :label="$gettext('Segment Length (Seconds)')"
                 />

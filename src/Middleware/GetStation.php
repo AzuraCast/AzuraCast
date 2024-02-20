@@ -12,7 +12,7 @@ use Psr\Http\Server\RequestHandlerInterface;
 use Slim\Routing\RouteContext;
 
 /**
- * Retrieve the station specified in the request parameters, and throw an error if none exists but one is required.
+ * Retrieve the station specified in the request parameters.
  */
 final class GetStation extends AbstractMiddleware
 {

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Radio\Enums;
 
+use App\Radio\Frontend\AbstractFrontend;
 use App\Radio\Frontend\Icecast;
 use App\Radio\Frontend\Shoutcast;
 
@@ -27,6 +28,9 @@ enum FrontendAdapters: string implements AdapterTypeInterface
         };
     }
 
+    /**
+     * @return class-string<AbstractFrontend>|null
+     */
     public function getClass(): ?string
     {
         return match ($this) {

@@ -6,9 +6,17 @@ namespace App\Cache;
 
 use App\Entity\Api\NowPlaying\NowPlaying;
 use App\Entity\Station;
+use App\Utilities\Types;
 use Psr\Cache\CacheItemInterface;
 use Psr\Cache\CacheItemPoolInterface;
 
+/**
+ * @phpstan-type LookupRow array{
+ *     short_name: string,
+ *     is_public: bool,
+ *     updated_at: int
+ * }
+ */
 final class NowPlayingCache
 {
     private const NOWPLAYING_CACHE_TTL = 180;
@@ -41,9 +49,13 @@ final class NowPlayingCache
 
         $stationCacheItem = $this->getStationCache($station);
 
-        return ($stationCacheItem->isHit())
-            ? $stationCacheItem->get()
-            : null;
+        if (!$stationCacheItem->isHit()) {
+            return null;
+        }
+
+        $np = $stationCacheItem->get();
+        assert($np instanceof NowPlaying);
+        return $np;
     }
 
     /**
@@ -58,6 +70,8 @@ final class NowPlayingCache
         }
 
         $np = [];
+
+        /** @var LookupRow[] $lookupCache */
         $lookupCache = (array)$lookupCacheItem->get();
 
         foreach ($lookupCache as $stationInfo) {
@@ -78,11 +92,14 @@ final class NowPlayingCache
         return $np;
     }
 
+    /**
+     * @return array<int, LookupRow>
+     */
     public function getLookup(): array
     {
         $lookupCacheItem = $this->getLookupCache();
         return $lookupCacheItem->isHit()
-            ? (array)$lookupCacheItem->get()
+            ? Types::array($lookupCacheItem->get())
             : [];
     }
 
@@ -114,7 +131,7 @@ final class NowPlayingCache
         $lookupCacheItem = $this->getLookupCache();
 
         $lookupCache = $lookupCacheItem->isHit()
-            ? (array)$lookupCacheItem->get()
+            ? Types::array($lookupCacheItem->get())
             : [];
 
         $lookupCache[$station->getIdRequired()] = [
@@ -131,12 +148,9 @@ final class NowPlayingCache
     private function getStationCache(string $identifier): CacheItemInterface
     {
         if (is_numeric($identifier)) {
-            $lookupCacheItem = $this->getLookupCache();
-            $lookupCache = $lookupCacheItem->isHit()
-                ? (array)$lookupCacheItem->get()
-                : [];
+            $lookupCache = $this->getLookup();
 
-            $identifier = (int)$identifier;
+            $identifier = Types::int($identifier);
             if (isset($lookupCache[$identifier])) {
                 $identifier = $lookupCache[$identifier]['short_name'];
             }

@@ -5,3 +5,11 @@ if [ $(whoami) != 'azuracast' ]; then
     exec gosu azuracast azuracast_startup "$@"
 fi
 
+# Wait for services to spin up.
+php /var/azuracast/www/bin/uptime_wait || exit 1
+
+# Initialize before running FPM
+azuracast_cli azuracast:setup --init || exit 1
+
+# Run initial Acme check
+azuracast_cli azuracast:acme:get-certificate || true

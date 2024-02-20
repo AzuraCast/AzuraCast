@@ -56,7 +56,7 @@ class Podcast implements Interfaces\IdentifiableEntityInterface
     protected Collection $categories;
 
     /** @var Collection<int, PodcastEpisode> */
-    #[ORM\OneToMany(mappedBy: 'podcast', targetEntity: PodcastEpisode::class)]
+    #[ORM\OneToMany(mappedBy: 'podcast', targetEntity: PodcastEpisode::class, fetch: 'EXTRA_LAZY')]
     protected Collection $episodes;
 
     public function __construct(StorageLocation $storageLocation)

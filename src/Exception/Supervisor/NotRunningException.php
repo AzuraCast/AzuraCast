@@ -12,7 +12,7 @@ final class NotRunningException extends SupervisorException
 {
     public function __construct(
         string $message = 'Process was not running yet.',
-        int $code = 0,
+        int $code = 500,
         Throwable $previous = null,
         Level $loggerLevel = Level::Info
     ) {

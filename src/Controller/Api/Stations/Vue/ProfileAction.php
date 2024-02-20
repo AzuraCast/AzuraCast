@@ -140,6 +140,12 @@ final class ProfileAction implements SingleActionInterface
                 routeParams: ['station_id' => $station->getShortName(), 'embed' => 'embed'],
                 absolute: true
             ),
+            'publicPodcastsEmbedUri' => $router->named(
+                routeName: 'public:podcasts',
+                routeParams: ['station_id' => $station->getShortName()],
+                queryParams: ['embed' => 'true'],
+                absolute: true
+            ),
 
             // Frontend
             'frontendAdminUri' => (string)$frontend?->getAdminUrl($station, $router->getBaseUrl()),

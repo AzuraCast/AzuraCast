@@ -269,10 +269,76 @@ export interface ApiListener {
    * @example 30
    */
   connected_time?: number;
-  /** Device metadata, if available */
-  device?: any[];
-  /** Location metadata, if available */
-  location?: any[];
+  device?: ApiListenerDevice;
+  location?: ApiListenerLocation;
+}
+
+export interface ApiListenerDevice {
+  /**
+   * If the listener device is likely a browser.
+   * @example true
+   */
+  is_browser?: boolean;
+  /**
+   * If the listener device is likely a mobile device.
+   * @example true
+   */
+  is_mobile?: boolean;
+  /**
+   * If the listener device is likely a crawler.
+   * @example true
+   */
+  is_bot?: boolean;
+  /**
+   * Summary of the listener client.
+   * @example "Firefox 121.0, Windows"
+   */
+  client?: string | null;
+  /**
+   * Summary of the listener browser family.
+   * @example "Firefox"
+   */
+  browser_family?: string | null;
+  /**
+   * Summary of the listener OS family.
+   * @example "Windows"
+   */
+  os_family?: string | null;
+}
+
+export interface ApiListenerLocation {
+  /**
+   * The approximate city of the listener.
+   * @example "Austin"
+   */
+  city?: string | null;
+  /**
+   * The approximate region/state of the listener.
+   * @example "Texas"
+   */
+  region?: string | null;
+  /**
+   * The approximate country of the listener.
+   * @example "United States"
+   */
+  country?: string | null;
+  /**
+   * A description of the location.
+   * @example "Austin, Texas, US"
+   */
+  description?: string;
+  /**
+   * Latitude.
+   * @format float
+   * @example "30.000000"
+   */
+  lat?: number | null;
+  /**
+   * Latitude.
+   * @format float
+   * @example "-97.000000"
+   */
+  lon?: number | null;
 }
 
 export type ApiNewRecord = ApiStatus & {
@@ -409,6 +475,11 @@ export interface ApiNowPlayingStation {
    */
   backend?: string;
   /**
+   * The station's IANA time zone
+   * @example "America/Chicago"
+   */
+  timezone?: string;
+  /**
    * The full URL to listen to the default mount of the station
    * @example "http://localhost:8000/radio.mp3"
    */
@@ -531,26 +602,39 @@ export interface ApiNowPlayingStationRemote {
 }
 
 export type ApiPodcast = HasLinks & {
-  id?: string | null;
-  storage_location_id?: number | null;
-  title?: string | null;
+  id?: string;
+  storage_location_id?: number;
+  title?: string;
   link?: string | null;
-  description?: string | null;
-  language?: string | null;
-  author?: string | null;
-  email?: string | null;
+  description?: string;
+  description_short?: string;
+  language?: string;
+  language_name?: string;
+  author?: string;
+  email?: string;
   has_custom_art?: boolean;
-  art?: string | null;
+  art?: string;
   art_updated_at?: number;
-  categories?: string[];
-  episodes?: string[];
+  is_published?: boolean;
+  episodes?: number;
+  categories?: ApiPodcastCategory[];
 };
 
+export interface ApiPodcastCategory {
+  category?: string;
+  text?: string;
+  title?: string;
+  subtitle?: string | null;
+}
+
 export type ApiPodcastEpisode = HasLinks & {
-  id?: string | null;
-  title?: string | null;
-  description?: string | null;
+  id?: string;
+  title?: string;
+  description?: string;
+  description_short?: string;
   explicit?: boolean;
+  created_at?: number;
+  is_published?: boolean;
   publish_at?: number | null;
   has_media?: boolean;
   media?: ApiPodcastMedia;
@@ -583,32 +667,32 @@ export interface ApiSong {
    * The song artist.
    * @example "Chet Porter"
    */
-  artist?: string;
+  artist?: string | null;
   /**
    * The song title.
    * @example "Aluko River"
    */
-  title?: string;
+  title?: string | null;
   /**
    * The song album.
    * @example "Moving Castle"
    */
-  album?: string;
+  album?: string | null;
   /**
    * The song genre.
    * @example "Rock"
    */
-  genre?: string;
+  genre?: string | null;
   /**
    * The International Standard Recording Code (ISRC) of the file.
    * @example "US28E1600021"
    */
-  isrc?: string;
+  isrc?: string | null;
   /**
    * Lyrics to the song.
    * @example ""
    */
-  lyrics?: string;
+  lyrics?: string | null;
   /**
    * URL to the album artwork (if available).
    * @example "https://picsum.photos/1200/1200"

@@ -18,14 +18,12 @@
                 :record-has-media="record.has_media"
                 :new-media-url="newMediaUrl"
                 :edit-media-url="record.links.media"
-                :download-url="record.links.download"
             />
 
             <podcast-common-artwork
                 v-model="form.artwork_file"
-                :artwork-src="record.art"
+                :artwork-src="record.links.art"
                 :new-art-url="newArtUrl"
-                :edit-art-url="record.links.art"
             />
         </tabs>
     </modal-form>

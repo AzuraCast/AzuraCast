@@ -16,47 +16,56 @@ final class Podcast
     use HasLinks;
 
     #[OA\Property]
-    public ?string $id = null;
+    public string $id;
 
     #[OA\Property]
-    public ?int $storage_location_id = null;
+    public int $storage_location_id;
 
     #[OA\Property]
-    public ?string $title = null;
+    public string $title;
 
     #[OA\Property]
     public ?string $link = null;
 
     #[OA\Property]
-    public ?string $description = null;
+    public string $description;
 
     #[OA\Property]
-    public ?string $language = null;
+    public string $description_short;
 
     #[OA\Property]
-    public ?string $author = null;
+    public string $language;
 
     #[OA\Property]
-    public ?string $email = null;
+    public string $language_name;
+
+    #[OA\Property]
+    public string $author;
+
+    #[OA\Property]
+    public string $email;
 
     #[OA\Property]
     public bool $has_custom_art = false;
 
     #[OA\Property]
-    public ?string $art = null;
+    public string $art;
 
     #[OA\Property]
     public int $art_updated_at = 0;
 
+    #[OA\Property]
+    public bool $is_published = true;
+
+    #[OA\Property]
+    public int $episodes = 0;
+
+    /**
+     * @var PodcastCategory[]
+     */
     #[OA\Property(
         type: 'array',
-        items: new OA\Items(type: 'string')
+        items: new OA\Items(type: PodcastCategory::class)
     )]
     public array $categories = [];
-
-    #[OA\Property(
-        type: 'array',
-        items: new OA\Items(type: 'string')
-    )]
-    public array $episodes = [];
 }

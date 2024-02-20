@@ -63,24 +63,23 @@ import InlinePlayer from '~/components/InlinePlayer.vue';
 import Icon from '~/components/Common/Icon.vue';
 import PlayButton from "~/components/Common/PlayButton.vue";
 import '~/vendor/sweetalert';
-import {useAzuraCast} from "~/vendor/azuracast";
 import {ref} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import {useSweetAlert} from "~/vendor/sweetalert";
 import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
 import Modal from "~/components/Common/Modal.vue";
-import {useLuxon} from "~/vendor/luxon";
 import {IconDownload} from "~/components/Common/icons";
 import {DataTableTemplateRef} from "~/functions/useHasDatatable.ts";
 import {ModalTemplateRef, useHasModal} from "~/functions/useHasModal.ts";
 import {usePlayerStore, useProvidePlayerStore} from "~/functions/usePlayerStore.ts";
+import useStationDateTimeFormatter from "~/functions/useStationDateTimeFormatter.ts";
 
 const listUrl = ref(null);
 
 const {$gettext} = useTranslate();
-const {timeConfig} = useAzuraCast();
-const {DateTime} = useLuxon();
+
+const {formatTimestampAsDateTime} = useStationDateTimeFormatter();
 
 const fields: DataTableField[] = [
     {
@@ -93,11 +92,7 @@ const fields: DataTableField[] = [
         key: 'timestampStart',
         label: $gettext('Start Time'),
         sortable: false,
-        formatter: (value) => {
-            return DateTime.fromSeconds(value).toLocaleString(
-                {...DateTime.DATETIME_MED, ...timeConfig}
-            );
-        },
+        formatter: (value) => formatTimestampAsDateTime(value),
         class: 'ps-3'
     },
     {
@@ -105,13 +100,9 @@ const fields: DataTableField[] = [
         label: $gettext('End Time'),
         sortable: false,
         formatter: (value) => {
-            if (value === 0) {
-                return $gettext('Live');
-            }
-
-            return DateTime.fromSeconds(value).toLocaleString(
-                {...DateTime.DATETIME_MED, ...timeConfig}
-            );
+            return value === 0
+                ? $gettext('Live')
+                : formatTimestampAsDateTime(value);
         }
     },
     {

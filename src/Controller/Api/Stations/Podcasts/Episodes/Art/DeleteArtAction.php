@@ -12,6 +12,7 @@ use App\Entity\Repository\PodcastEpisodeRepository;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\OpenApi;
+use App\Utilities\Types;
 use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 
@@ -70,12 +71,13 @@ final class DeleteArtAction implements SingleActionInterface
         Response $response,
         array $params
     ): ResponseInterface {
-        /** @var string $episodeId */
-        $episodeId = $params['episode_id'];
+        $episodeId = Types::string($params['episode_id'] ?? null);
 
-        $station = $request->getStation();
+        $episode = $this->episodeRepo->fetchEpisodeForPodcast(
+            $request->getPodcast(),
+            $episodeId
+        );
 
-        $episode = $this->episodeRepo->fetchEpisodeForStation($station, $episodeId);
         if ($episode === null) {
             return $response->withStatus(404)
                 ->withJson(Error::notFound());

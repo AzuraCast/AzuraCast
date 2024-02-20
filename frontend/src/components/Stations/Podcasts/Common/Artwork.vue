@@ -45,7 +45,7 @@
 </template>
 
 <script setup lang="ts">
-import {computed, ref, toRef} from "vue";
+import {computed, ref, toRef, watch} from "vue";
 import {useAxios} from "~/vendor/axios";
 import FormGroup from "~/components/Form/FormGroup.vue";
 import FormFile from "~/components/Form/FormFile.vue";
@@ -54,15 +54,11 @@ import Tab from "~/components/Common/Tab.vue";
 const props = defineProps({
     modelValue: {
         type: Object,
-        required: true
+        default: null
     },
     artworkSrc: {
         type: String,
-        required: true
-    },
-    editArtUrl: {
-        type: String,
-        required: true
+        default: null
     },
     newArtUrl: {
         type: String,
@@ -72,7 +68,12 @@ const props = defineProps({
 
 const emit = defineEmits(['update:modelValue']);
 
-const artworkSrc = toRef(props, 'artworkSrc');
+const artworkSrc = ref(props.artworkSrc);
+const reloadArt = () => {
+    artworkSrc.value = props.artworkSrc + '?' + Math.floor(Date.now() / 1000);
+}
+watch(toRef(props, 'artworkSrc'), reloadArt);
+
 const localSrc = ref(null);
 
 const src = computed(() => {
@@ -92,21 +93,24 @@ const uploaded = (file) => {
     }, false);
     fileReader.readAsDataURL(file);
 
-    const url = (props.editArtUrl) ? props.editArtUrl : props.newArtUrl;
+    const url = (props.artworkSrc) ? props.artworkSrc : props.newArtUrl;
     const formData = new FormData();
     formData.append('art', file);
 
     axios.post(url, formData).then((resp) => {
         emit('update:modelValue', resp.data);
+        reloadArt();
     });
 };
 
 const deleteArt = () => {
-    if (props.editArtUrl) {
-        axios.delete(props.editArtUrl).then(() => {
+    if (props.artworkSrc) {
+        axios.delete(props.artworkSrc).then(() => {
+            reloadArt();
             localSrc.value = null;
         });
     } else {
+        reloadArt();
         localSrc.value = null;
     }
 }

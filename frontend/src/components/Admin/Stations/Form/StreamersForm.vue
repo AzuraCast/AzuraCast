@@ -43,13 +43,10 @@
                         :label="$gettext('Live Broadcast Recording Format')"
                     />
 
-                    <form-group-multi-check
+                    <bitrate-options
                         id="edit_form_backend_record_streams_bitrate"
                         class="col-md-6"
                         :field="v$.backend_config.record_streams_bitrate"
-                        :options="recordBitrateOptions"
-                        stacked
-                        radio
                         :label="$gettext('Live Broadcast Recording Bitrate (kbps)')"
                     />
                 </div>
@@ -140,6 +137,7 @@ import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
 import {numeric} from "@vuelidate/validators";
 import {useAzuraCast} from "~/vendor/azuracast";
 import Tab from "~/components/Common/Tab.vue";
+import BitrateOptions from "~/components/Common/BitrateOptions.vue";
 
 const props = defineProps({
     form: {
@@ -248,19 +246,6 @@ const recordStreamsOptions = computed(() => {
             text: 'AAC+ (MPEG4 HE-AAC v2)',
             value: 'aac'
         }
-    ];
-});
-
-const recordBitrateOptions = computed(() => {
-    return [
-        {text: '32', value: 32},
-        {text: '48', value: 48},
-        {text: '64', value: 64},
-        {text: '96', value: 96},
-        {text: '128', value: 128},
-        {text: '192', value: 192},
-        {text: '256', value: 256},
-        {text: '320', value: 320}
     ];
 });
 </script>

@@ -16,16 +16,25 @@ final class PodcastEpisode
     use HasLinks;
 
     #[OA\Property]
-    public ?string $id = null;
+    public string $id;
 
     #[OA\Property]
-    public ?string $title = null;
+    public string $title;
 
     #[OA\Property]
-    public ?string $description = null;
+    public string $description;
+
+    #[OA\Property]
+    public string $description_short;
 
     #[OA\Property]
     public bool $explicit = false;
+
+    #[OA\Property]
+    public int $created_at;
+
+    #[OA\Property]
+    public bool $is_published = true;
 
     #[OA\Property]
     public ?int $publish_at = null;

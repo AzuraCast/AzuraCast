@@ -6,6 +6,7 @@ namespace App\Session;
 
 use App\Environment;
 use App\Exception;
+use App\Utilities\Types;
 use Mezzio\Session\SessionInterface;
 
 final class Csrf
@@ -32,9 +33,9 @@ final class Csrf
     {
         $sessionKey = $this->getSessionIdentifier($namespace);
         if ($this->session->has($sessionKey)) {
-            $csrf = $this->session->get($sessionKey);
-            if (!empty($csrf)) {
-                return (string)$csrf;
+            $csrf = Types::stringOrNull($this->session->get($sessionKey), true);
+            if (null !== $csrf) {
+                return $csrf;
             }
         }
 
@@ -71,9 +72,8 @@ final class Csrf
             throw new Exception\CsrfValidationException('No CSRF token supplied for this namespace.');
         }
 
-        $sessionKey = $this->session->get($sessionIdentifier);
-
-        if (0 !== strcmp($key, (string)$sessionKey)) {
+        $sessionKey = Types::string($this->session->get($sessionIdentifier));
+        if (0 !== strcmp($key, $sessionKey)) {
             throw new Exception\CsrfValidationException('Invalid CSRF token supplied.');
         }
     }

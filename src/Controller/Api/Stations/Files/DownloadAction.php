@@ -9,6 +9,7 @@ use App\Entity\Api\Error;
 use App\Flysystem\StationFilesystems;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use App\Utilities\Types;
 use Psr\Http\Message\ResponseInterface;
 
 final class DownloadAction implements SingleActionInterface
@@ -29,7 +30,7 @@ final class DownloadAction implements SingleActionInterface
 
         $fsMedia = $this->stationFilesystems->getMediaFilesystem($station);
 
-        $path = $request->getParam('file');
+        $path = Types::string($request->getParam('file'));
 
         if (!$fsMedia->fileExists($path)) {
             return $response->withStatus(404)

@@ -20,7 +20,7 @@ final class RequireLogin extends AbstractMiddleware
         try {
             $request->getUser();
         } catch (Exception) {
-            throw new NotLoggedInException();
+            throw NotLoggedInException::create();
         }
 
         return $handler->handle($request);

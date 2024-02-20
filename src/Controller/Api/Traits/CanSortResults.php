@@ -8,11 +8,12 @@ use App\Http\ServerRequest;
 use App\Utilities\Types;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\QueryBuilder;
-use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 
 trait CanSortResults
 {
+    use UsesPropertyAccessor;
+
     protected function sortQueryBuilder(
         ServerRequest $request,
         QueryBuilder $queryBuilder,
@@ -61,7 +62,7 @@ trait CanSortResults
     }
 
     /**
-     * @return array{string, string}
+     * @return array{string|null, Criteria::ASC|Criteria::DESC}
      */
     protected function getSortFromRequest(
         ServerRequest $request,
@@ -69,7 +70,7 @@ trait CanSortResults
     ): array {
         $sortOrder = Types::stringOrNull($request->getParam('sortOrder'), true) ?? $defaultSortOrder;
         return [
-            $request->getParam('sort'),
+            Types::stringOrNull($request->getParam('sort'), true),
             (Criteria::DESC === strtoupper($sortOrder))
                 ? Criteria::DESC
                 : Criteria::ASC,
@@ -96,20 +97,5 @@ trait CanSortResults
         return (Criteria::ASC === $sortOrder)
             ? $aVal <=> $bVal
             : $bVal <=> $aVal;
-    }
-
-    protected static ?PropertyAccessorInterface $propertyAccessor = null;
-
-    protected static function getPropertyAccessor(): PropertyAccessorInterface
-    {
-        if (null === self::$propertyAccessor) {
-            self::$propertyAccessor = PropertyAccess::createPropertyAccessorBuilder()
-                ->disableExceptionOnInvalidIndex()
-                ->disableExceptionOnInvalidPropertyPath()
-                ->disableMagicMethods()
-                ->getPropertyAccessor();
-        }
-
-        return self::$propertyAccessor;
     }
 }

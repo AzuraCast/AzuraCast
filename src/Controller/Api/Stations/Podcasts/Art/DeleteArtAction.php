@@ -6,7 +6,6 @@ namespace App\Controller\Api\Stations\Podcasts\Art;
 
 use App\Container\EntityManagerAwareTrait;
 use App\Controller\SingleActionInterface;
-use App\Entity\Api\Error;
 use App\Entity\Api\Status;
 use App\Entity\Repository\PodcastRepository;
 use App\Http\Response;
@@ -52,22 +51,7 @@ final class DeleteArtAction implements SingleActionInterface
         Response $response,
         array $params
     ): ResponseInterface {
-        /** @var string $podcastId */
-        $podcastId = $params['podcast_id'];
-
-        $station = $request->getStation();
-
-        $podcast = $this->podcastRepo->fetchPodcastForStation($station, $podcastId);
-
-        if ($podcast === null) {
-            return $response->withStatus(404)
-                ->withJson(
-                    new Error(
-                        404,
-                        __('Podcast not found!')
-                    )
-                );
-        }
+        $podcast = $request->getPodcast();
 
         $this->podcastRepo->removePodcastArt($podcast);
         $this->em->persist($podcast);

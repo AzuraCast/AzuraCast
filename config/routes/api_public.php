@@ -68,31 +68,67 @@ return static function (RouteCollectorProxy $group) {
             $group->get(
                 '/art/{media_id:[a-zA-Z0-9\-]+}[-{timestamp}.jpg]',
                 Controller\Api\Stations\Art\GetArtAction::class
-            )->setName('api:stations:media:art');
+            )->setName('api:stations:media:art')
+                ->add(new Middleware\Cache\SetStaticFileCache());
 
             // Streamer Art
             $group->get(
                 '/streamer/{id}/art[-{timestamp}.jpg]',
                 Controller\Api\Stations\Streamers\Art\GetArtAction::class
-            )->setName('api:stations:streamer:art');
+            )->setName('api:stations:streamer:art')
+                ->add(new Middleware\Cache\SetStaticFileCache());
 
-            // Podcast and Episode Art
             $group->group(
-                '/podcast/{podcast_id}',
+                '/public',
                 function (RouteCollectorProxy $group) {
-                    $group->get(
-                        '/art[-{timestamp}.jpg]',
-                        Controller\Api\Stations\Podcasts\Art\GetArtAction::class
-                    )->setName('api:stations:podcast:art');
+                    // Podcast Public Pages
+                    $group->get('/podcasts', Controller\Api\Stations\Podcasts\ListPodcastsAction::class)
+                        ->setName('api:stations:public:podcasts');
 
-                    $group->get(
-                        '/episode/{episode_id}/art[-{timestamp}.jpg]',
-                        Controller\Api\Stations\Podcasts\Episodes\Art\GetArtAction::class
-                    )->setName('api:stations:podcast:episode:art');
+                    $group->group(
+                        '/podcast/{podcast_id}',
+                        function (RouteCollectorProxy $group) {
+                            $group->get('', Controller\Api\Stations\Podcasts\GetPodcastAction::class)
+                                ->setName('api:stations:public:podcast');
+
+                            $group->get(
+                                '/art[-{timestamp}.jpg]',
+                                Controller\Api\Stations\Podcasts\Art\GetArtAction::class
+                            )->setName('api:stations:public:podcast:art')
+                                ->add(new Middleware\Cache\SetStaticFileCache());
+
+                            $group->get(
+                                '/episodes',
+                                Controller\Api\Stations\Podcasts\Episodes\ListEpisodesAction::class
+                            )->setName('api:stations:public:podcast:episodes');
+
+                            $group->group(
+                                '/episode/{episode_id}',
+                                function (RouteCollectorProxy $group) {
+                                    $group->get(
+                                        '',
+                                        Controller\Api\Stations\Podcasts\Episodes\GetEpisodeAction::class
+                                    )->setName('api:stations:public:podcast:episode')
+                                        ->add(new Middleware\Cache\SetStaticFileCache());
+
+                                    $group->get(
+                                        '/art[-{timestamp}.jpg]',
+                                        Controller\Api\Stations\Podcasts\Episodes\Art\GetArtAction::class
+                                    )->setName('api:stations:public:podcast:episode:art')
+                                        ->add(new Middleware\Cache\SetStaticFileCache());
+
+                                    $group->get(
+                                        '/download',
+                                        Controller\Api\Stations\Podcasts\Episodes\Media\GetMediaAction::class
+                                    )->setName('api:stations:public:podcast:episode:download');
+                                }
+                            );
+                        }
+                    )->add(Middleware\RequirePublishedPodcastEpisodeMiddleware::class)
+                        ->add(Middleware\GetAndRequirePodcast::class);
                 }
-            )->add(Middleware\RequirePublishedPodcastEpisodeMiddleware::class);
+            );
         }
-    )->add(new Middleware\Cache\SetStaticFileCache())
-        ->add(Middleware\RequireStation::class)
+    )->add(Middleware\RequireStation::class)
         ->add(Middleware\GetStation::class);
 };

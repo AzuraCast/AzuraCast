@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Entity\Api;
 
 use App\OpenApi;
+use App\Utilities\Types;
 use OpenApi\Attributes as OA;
 
 #[OA\Schema(
@@ -63,25 +64,23 @@ final class Listener
     public int $connected_time = 0;
 
     #[OA\Property(
-        description: 'Device metadata, if available',
-        items: new OA\Items()
+        description: 'Device metadata, if available.',
     )]
-    public array $device = [];
+    public ListenerDevice $device;
 
     #[OA\Property(
-        description: 'Location metadata, if available',
-        items: new OA\Items()
+        description: 'Location metadata, if available.',
     )]
-    public array $location = [];
+    public ListenerLocation $location;
 
     public static function fromArray(array $row): self
     {
         $api = new self();
-        $api->ip = $row['listener_ip'];
-        $api->user_agent = $row['listener_user_agent'];
-        $api->hash = $row['listener_hash'];
-        $api->connected_on = $row['timestamp_start'];
-        $api->connected_until = $row['timestamp_end'];
+        $api->ip = Types::string($row['listener_ip'] ?? null);
+        $api->user_agent = Types::string($row['listener_user_agent'] ?? null);
+        $api->hash = Types::string($row['listener_hash'] ?? null);
+        $api->connected_on = Types::int($row['timestamp_start'] ?? null);
+        $api->connected_until = Types::int($row['timestamp_end'] ?? null);
         $api->connected_time = $api->connected_until - $api->connected_on;
 
         $device = [];
@@ -94,8 +93,8 @@ final class Listener
             }
         }
 
-        $api->device = $device;
-        $api->location = $location;
+        $api->device = ListenerDevice::fromArray($device);
+        $api->location = ListenerLocation::fromArray($location);
 
         return $api;
     }

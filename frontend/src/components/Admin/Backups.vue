@@ -151,7 +151,7 @@
 
 <script setup lang="ts">
 import Icon from "~/components/Common/Icon.vue";
-import DataTable, { DataTableField } from "~/components/Common/DataTable.vue";
+import DataTable, {DataTableField} from "~/components/Common/DataTable.vue";
 import AdminBackupsLastOutputModal from "./Backups/LastOutputModal.vue";
 import formatFileSize from "~/functions/formatFileSize";
 import AdminBackupsConfigureModal from "~/components/Admin/Backups/ConfigureModal.vue";
@@ -196,7 +196,7 @@ const settings = ref({...blankSettings});
 
 const {$gettext} = useTranslate();
 const {timeConfig} = useAzuraCast();
-const {DateTime} = useLuxon();
+const {DateTime, timestampToRelative} = useLuxon();
 
 const fields: DataTableField[] = [
     {
@@ -249,8 +249,6 @@ const relist = () => {
 };
 
 onMounted(relist);
-
-const {timestampToRelative} = useLuxon();
 
 const $lastOutputModal = ref<InstanceType<typeof AdminBackupsLastOutputModal> | null>(null);
 const showLastOutput = () => {

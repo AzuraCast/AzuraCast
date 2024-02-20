@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Frontend\PublicPages;
 
 use App\Container\EntityManagerAwareTrait;
+use App\Controller\Frontend\PublicPages\Traits\IsEmbeddable;
 use App\Controller\SingleActionInterface;
 use App\Exception\NotFoundException;
 use App\Http\Response;
@@ -14,15 +15,13 @@ use Psr\Http\Message\ResponseInterface;
 final class OnDemandAction implements SingleActionInterface
 {
     use EntityManagerAwareTrait;
+    use IsEmbeddable;
 
     public function __invoke(
         ServerRequest $request,
         Response $response,
         array $params
     ): ResponseInterface {
-        /** @var string|null $embed */
-        $embed = $params['embed'] ?? null;
-
         $station = $request->getStation();
 
         if (!$station->getEnablePublicPage()) {
@@ -50,7 +49,7 @@ final class OnDemandAction implements SingleActionInterface
         $router = $request->getRouter();
 
         $pageClass = 'ondemand station-' . $station->getShortName();
-        if (null !== $embed) {
+        if ($this->isEmbedded($request, $params)) {
             $pageClass .= ' embed';
         }
 

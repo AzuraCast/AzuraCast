@@ -86,22 +86,28 @@
 
 <script setup lang="ts">
 import Icon from "~/components/Common/Icon.vue";
-import DataTable, { DataTableField } from "~/components/Common/DataTable.vue";
+import DataTable, {DataTableField} from "~/components/Common/DataTable.vue";
 import DateRangeDropdown from "~/components/Common/DateRangeDropdown.vue";
-import {useAzuraCast, useAzuraCastStation} from "~/vendor/azuracast";
 import {computed, ref, watch} from "vue";
 import {useTranslate} from "~/vendor/gettext";
-import {useLuxon} from "~/vendor/luxon";
 import {getStationApiUrl} from "~/router";
 import {IconDownload, IconTrendingDown, IconTrendingUp} from "~/components/Common/icons";
 import useHasDatatable, {DataTableTemplateRef} from "~/functions/useHasDatatable.ts";
+import useStationDateTimeFormatter from "~/functions/useStationDateTimeFormatter.ts";
+import {useLuxon} from "~/vendor/luxon.ts";
+import {useAzuraCastStation} from "~/vendor/azuracast.ts";
 
 const baseApiUrl = getStationApiUrl('/history');
 
 const {timezone} = useAzuraCastStation();
 const {DateTime} = useLuxon();
+const {
+    now,
+    formatDateTimeAsDateTime,
+    formatTimestampAsDateTime
+} = useStationDateTimeFormatter();
 
-const nowTz = DateTime.now().setZone(timezone);
+const nowTz = now();
 
 const dateRange = ref(
     {
@@ -111,7 +117,6 @@ const dateRange = ref(
 );
 
 const {$gettext} = useTranslate();
-const {timeConfig} = useAzuraCast();
 
 const fields: DataTableField[] = [
     {
@@ -119,29 +124,22 @@ const fields: DataTableField[] = [
         label: $gettext('Date/Time (Browser)'),
         selectable: true,
         sortable: false,
-        formatter: (value) => {
-            return DateTime.fromSeconds(
-                value,
-                {zone: 'system'}
-            ).toLocaleString(
-                {...DateTime.DATETIME_SHORT, ...timeConfig}
-            );
-        }
+        visible: false,
+        formatter: (value) => formatDateTimeAsDateTime(
+            DateTime.fromSeconds(value, {zone: 'system'}),
+            DateTime.DATETIME_SHORT
+        )
     },
     {
         key: 'played_at_station',
         label: $gettext('Date/Time (Station)'),
         sortable: false,
         selectable: true,
-        visible: false,
-        formatter: (_value, _key, item) => {
-            return DateTime.fromSeconds(
-                item.played_at,
-                {zone: timezone}
-            ).toLocaleString(
-                {...DateTime.DATETIME_SHORT, ...timeConfig}
-            );
-        }
+        visible: true,
+        formatter: (_value, _key, item) => formatTimestampAsDateTime(
+            item.played_at,
+            DateTime.DATETIME_SHORT
+        )
     },
     {
         key: 'listeners_start',

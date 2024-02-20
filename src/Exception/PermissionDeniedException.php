@@ -12,10 +12,17 @@ final class PermissionDeniedException extends Exception
 {
     public function __construct(
         string $message = 'Permission denied.',
-        int $code = 0,
+        int $code = 403,
         Throwable $previous = null,
         Level $loggerLevel = Level::Info
     ) {
         parent::__construct($message, $code, $previous, $loggerLevel);
+    }
+
+    public static function create(): self
+    {
+        return new self(
+            __('You do not have permission to access this portion of the site.')
+        );
     }
 }

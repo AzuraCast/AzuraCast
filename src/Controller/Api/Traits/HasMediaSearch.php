@@ -41,10 +41,9 @@ trait HasMediaSearch
                         FROM App\Entity\StationPlaylist sp
                         WHERE sp.station = :station
                         DQL
-                    )->setParameter('station', $station)
-                        ->getArrayResult();
+                    )->setParameter('station', $station);
 
-                    foreach ($playlistNameLookupRaw as $playlistRow) {
+                    foreach ($playlistNameLookupRaw->toIterable() as $playlistRow) {
                         $shortName = StationPlaylist::generateShortName($playlistRow['name']);
                         if ($shortName === $playlistId) {
                             $playlistId = $playlistRow['id'];

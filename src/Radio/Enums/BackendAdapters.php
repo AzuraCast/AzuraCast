@@ -24,6 +24,9 @@ enum BackendAdapters: string implements AdapterTypeInterface
         };
     }
 
+    /**
+     * @return class-string<Liquidsoap>|null
+     */
     public function getClass(): ?string
     {
         return match ($this) {

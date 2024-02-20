@@ -27,14 +27,11 @@
                 :label="$gettext('AutoDJ Format')"
             />
 
-            <form-group-multi-check
+            <bitrate-options
                 v-if="formatSupportsBitrateOptions"
                 id="edit_form_autodj_bitrate"
                 class="col-md-6"
                 :field="v$.autodj_bitrate"
-                :options="bitrateOptions"
-                stacked
-                radio
                 :label="$gettext('AutoDJ Bitrate (kbps)')"
             />
 
@@ -89,12 +86,12 @@
 <script setup lang="ts">
 import FormGroupField from "~/components/Form/FormGroupField.vue";
 import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
-import {map} from "lodash";
 import {computed} from "vue";
 import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
 import {useVModel} from "@vueuse/core";
 import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
 import Tab from "~/components/Common/Tab.vue";
+import BitrateOptions from "~/components/Common/BitrateOptions.vue";
 
 const props = defineProps({
     form: {
@@ -152,16 +149,6 @@ const formatOptions = [
         text: 'FLAC (OGG FLAC)'
     }
 ];
-
-const bitrateOptions = map(
-    [32, 48, 64, 96, 128, 192, 256, 320],
-    (val) => {
-        return {
-            value: val,
-            text: val
-        };
-    }
-);
 
 const formatSupportsBitrateOptions = computed(() => {
     return form.value?.autodj_format !== 'flac';

@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Stations;
 
+use App\Controller\Api\Traits\CanSearchResults;
 use App\Controller\Api\Traits\CanSortResults;
 use App\Entity\StationWebhook;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\OpenApi;
+use App\Utilities\Types;
 use InvalidArgumentException;
 use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
@@ -141,6 +143,7 @@ use Psr\Http\Message\ResponseInterface;
 final class WebhooksController extends AbstractStationApiCrudController
 {
     use CanSortResults;
+    use CanSearchResults;
 
     protected string $entityClass = StationWebhook::class;
     protected string $resourceRouteName = 'api:stations:webhook';
@@ -171,11 +174,13 @@ final class WebhooksController extends AbstractStationApiCrudController
             'e.name'
         );
 
-        $searchPhrase = trim($request->getParam('searchPhrase', ''));
-        if (!empty($searchPhrase)) {
-            $qb->andWhere('(e.name LIKE :name)')
-                ->setParameter('name', '%' . $searchPhrase . '%');
-        }
+        $qb = $this->searchQueryBuilder(
+            $request,
+            $qb,
+            [
+                'e.name',
+            ]
+        );
 
         return $this->listPaginatedFromQuery($request, $response, $qb->getQuery());
     }
@@ -188,7 +193,7 @@ final class WebhooksController extends AbstractStationApiCrudController
 
         $return = $this->toArray($record);
 
-        $isInternal = ('true' === $request->getParam('internal', 'false'));
+        $isInternal = Types::bool($request->getParam('internal'), false, true);
         $router = $request->getRouter();
 
         $return['links'] = [

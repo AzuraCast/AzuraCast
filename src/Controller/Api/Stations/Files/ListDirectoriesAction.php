@@ -8,6 +8,7 @@ use App\Controller\SingleActionInterface;
 use App\Flysystem\StationFilesystems;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use App\Utilities\Types;
 use League\Flysystem\StorageAttributes;
 use Psr\Http\Message\ResponseInterface;
 
@@ -25,7 +26,7 @@ final class ListDirectoriesAction implements SingleActionInterface
     ): ResponseInterface {
         $station = $request->getStation();
 
-        $currentDir = $request->getParam('currentDirectory', '');
+        $currentDir = Types::string($request->getParam('currentDirectory', ''));
 
         $fsMedia = $this->stationFilesystems->getMediaFilesystem($station);
 

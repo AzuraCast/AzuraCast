@@ -16,7 +16,15 @@ mysql_note "Initial DB setup..."
 mysql_check_config "$@"
 # Load various environment variables
 docker_setup_env "$@"
-docker_create_db_directories
+
+# Create DB directories
+mkdir -p "$DATADIR"
+if [ "$(id -u)" = "0" ]; then
+  # this will cause less disk access than `chown -R`
+  find "$DATADIR" \! -user mysql -exec chown mysql: '{}' +
+  # See https://github.com/MariaDB/mariadb-docker/issues/363
+  find "${SOCKET%/*}" -maxdepth 0 \! -user mysql -exec chown mysql: '{}' \;
+fi
 
 # If container is started as root user, restart as dedicated mysql user
 if [ "$(id -u)" = "0" ]; then

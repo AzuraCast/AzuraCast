@@ -11,6 +11,52 @@ release channel, you can take advantage of these new features and fixes.
 
 ---
 
+# AzuraCast 0.19.5 (Feb 20, 2024)
+
+## New Features/Changes
+
+- **Redesigned Public Podcast Pages**: We've completely overhauled the public-facing podcasts pages to be a single
+  cohesive experience similar to our On-Demand streaming and other public pages.
+    - Podcasts and episodes are searchable, sortable and paginated, and the pages now use our built-in player for
+      playing back the podcasts themselves, ensuring uniform controls across browsers.
+    - Because it's built in our new frontend, you can also continue listening to your podcast episode as you navigate
+      around the podcast pages.
+    - The entire new podcast component is also now an embeddable widget in external pages.
+
+- **Improved Listeners Report**: You can now search and sort through the listeners report, view several additional
+  fields supplying more information about your listeners, and filter your results to only show listeners with a certain
+  total connected time or using a certain kind of device.
+
+- **Custom Bitrates**: When configuring Mount Points, Remote Relays, or broadcast recordings, you can now specify a
+  custom bitrate in kilobits per second (kbps) if you want to use a bitrate outside the default options.
+
+- You can now submit a manual metadata update directly via the station profile page. This is useful in cases where the
+  metadata does not update correctly (i.e. from a live DJ).
+
+## Code Quality/Technical Changes
+
+- Our Docker image is now built directly on top of the official PHP image, which is powered by Debian Bookworm instead
+  of Ubuntu 22.04 (Jammy). For a majority of station operators, this change will not impact your station operations at
+  all, but if you specify custom packages to be installed on startup, you should make sure those packages exist in the
+  Debian repository as well.
+
+- You can now specify a path when using the `azuracast:media:reprocess` command to only mark items starting with the
+  given (file or directory) path for reprocessing.
+
+- The list of stations on the home dashboard is now paginated, searchable and sortable.
+
+- The "Reorder" dialog for sequential playlists has been emphasized better and now has a "move to top" and "move to
+  bottom" button.
+
+- The Upcoming Song Queue page automatically refreshes periodically.
+
+## Bug Fixes
+
+- We're continuing to work with Liquidsoap to resolve known issues relating to crackles and pops on crossfade
+  transitions and issues with metadata not updating on shorter tracks.
+
+---
+
 # AzuraCast 0.19.4 (Jan 4, 2024)
 
 ## New Features/Changes

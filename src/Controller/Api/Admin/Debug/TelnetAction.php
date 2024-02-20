@@ -9,6 +9,7 @@ use App\Controller\SingleActionInterface;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Radio\Adapters;
+use App\Utilities\Types;
 use Monolog\Handler\TestHandler;
 use Monolog\Level;
 use Psr\Http\Message\ResponseInterface;
@@ -33,7 +34,7 @@ final class TelnetAction implements SingleActionInterface
         $station = $request->getStation();
         $backend = $this->adapters->requireBackendAdapter($station);
 
-        $command = $request->getParam('command');
+        $command = Types::string($request->getParam('command'));
 
         $telnetResponse = $backend->command($station, $command);
         $this->logger->debug(

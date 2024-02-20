@@ -19,7 +19,7 @@ return static function (RouteCollectorProxy $group) {
                 ->setName('api:stations:index')
                 ->add(new Middleware\RateLimit('api', 5, 2));
 
-            $group->get('/nowplaying', Controller\Api\NowPlayingAction::class . ':getAction');
+            $group->get('/nowplaying', Controller\Api\NowPlayingAction::class);
 
             $group->get('/schedule', Controller\Api\Stations\ScheduleAction::class)
                 ->setName('api:stations:schedule');
@@ -48,38 +48,7 @@ return static function (RouteCollectorProxy $group) {
                 ->add(new Middleware\StationSupportsFeature(StationFeatures::OnDemand))
                 ->add(new Middleware\RateLimit('ondemand', 1, 2));
 
-            // Podcast Public Pages
-            $group->group(
-                '/podcast/{podcast_id}',
-                function (RouteCollectorProxy $group) {
-                    $group->get('', Controller\Api\Stations\PodcastsController::class . ':getAction')
-                        ->setName('api:stations:podcast');
-
-                    // See ./api_public for podcast art.
-
-                    $group->get(
-                        '/episodes',
-                        Controller\Api\Stations\PodcastEpisodesController::class . ':listAction'
-                    )->setName('api:stations:podcast:episodes');
-
-                    $group->group(
-                        '/episode/{episode_id}',
-                        function (RouteCollectorProxy $group) {
-                            $group->get(
-                                '',
-                                Controller\Api\Stations\PodcastEpisodesController::class . ':getAction'
-                            )->setName('api:stations:podcast:episode');
-
-                            $group->get(
-                                '/download',
-                                Controller\Api\Stations\Podcasts\Episodes\Media\GetMediaAction::class
-                            )->setName('api:stations:podcast:episode:download');
-                        }
-                    );
-                }
-            )->add(Middleware\RequirePublishedPodcastEpisodeMiddleware::class);
-
-            // NOTE: See ./api_public.php for media art public path.
+            // NOTE: See ./api_public.php for podcast public pages.
 
             /*
              * Authenticated Functions
@@ -159,6 +128,9 @@ return static function (RouteCollectorProxy $group) {
                             $group->group(
                                 '/podcast/{podcast_id}',
                                 function (RouteCollectorProxy $group) {
+                                    $group->get('', Controller\Api\Stations\PodcastsController::class . ':getAction')
+                                        ->setName('api:stations:podcast');
+
                                     $group->put('', Controller\Api\Stations\PodcastsController::class . ':editAction');
 
                                     $group->delete(
@@ -166,15 +138,25 @@ return static function (RouteCollectorProxy $group) {
                                         Controller\Api\Stations\PodcastsController::class . ':deleteAction'
                                     );
 
+                                    $group->get(
+                                        '/art[-{timestamp}.jpg]',
+                                        Controller\Api\Stations\Podcasts\Art\GetArtAction::class
+                                    )->setName('api:stations:podcast:art');
+
                                     $group->post(
                                         '/art',
                                         Controller\Api\Stations\Podcasts\Art\PostArtAction::class
-                                    )->setName('api:stations:podcast:art-internal');
+                                    );
 
                                     $group->delete(
                                         '/art',
                                         Controller\Api\Stations\Podcasts\Art\DeleteArtAction::class
                                     );
+
+                                    $group->get(
+                                        '/episodes',
+                                        Controller\Api\Stations\PodcastEpisodesController::class . ':listAction'
+                                    )->setName('api:stations:podcast:episodes');
 
                                     $group->post(
                                         '/episodes',
@@ -194,6 +176,11 @@ return static function (RouteCollectorProxy $group) {
                                     $group->group(
                                         '/episode/{episode_id}',
                                         function (RouteCollectorProxy $group) {
+                                            $group->get(
+                                                '',
+                                                Controller\Api\Stations\PodcastEpisodesController::class . ':getAction'
+                                            )->setName('api:stations:podcast:episode');
+
                                             $group->put(
                                                 '',
                                                 Controller\Api\Stations\PodcastEpisodesController::class . ':editAction'
@@ -205,20 +192,30 @@ return static function (RouteCollectorProxy $group) {
                                                 . ':deleteAction'
                                             );
 
+                                            $group->get(
+                                                '/art[-{timestamp}.jpg]',
+                                                Controller\Api\Stations\Podcasts\Episodes\Art\GetArtAction::class
+                                            )->setName('api:stations:podcast:episode:art');
+
                                             $group->post(
                                                 '/art',
                                                 Controller\Api\Stations\Podcasts\Episodes\Art\PostArtAction::class
-                                            )->setName('api:stations:podcast:episode:art-internal');
+                                            );
 
                                             $group->delete(
                                                 '/art',
                                                 Controller\Api\Stations\Podcasts\Episodes\Art\DeleteArtAction::class
                                             );
 
+                                            $group->get(
+                                                '/media',
+                                                Controller\Api\Stations\Podcasts\Episodes\Media\GetMediaAction::class
+                                            )->setName('api:stations:podcast:episode:media');
+
                                             $group->post(
                                                 '/media',
                                                 Controller\Api\Stations\Podcasts\Episodes\Media\PostMediaAction::class
-                                            )->setName('api:stations:podcast:episode:media-internal');
+                                            );
 
                                             $group->delete(
                                                 '/media',
@@ -227,7 +224,7 @@ return static function (RouteCollectorProxy $group) {
                                         }
                                     );
                                 }
-                            );
+                            )->add(Middleware\GetAndRequirePodcast::class);
                         }
                     )->add(new Middleware\Permissions(StationPermissions::Podcasts, true));
 

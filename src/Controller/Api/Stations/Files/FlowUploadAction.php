@@ -20,6 +20,7 @@ use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Media\MediaProcessor;
 use App\Service\Flow;
+use App\Utilities\Types;
 use Psr\Http\Message\ResponseInterface;
 
 final class FlowUploadAction implements SingleActionInterface
@@ -51,7 +52,7 @@ final class FlowUploadAction implements SingleActionInterface
             return $flowResponse;
         }
 
-        $currentDir = $request->getParam('currentDirectory', '');
+        $currentDir = Types::string($request->getParam('currentDirectory'));
 
         $destPath = $flowResponse->getClientFilename();
         if (!empty($currentDir)) {

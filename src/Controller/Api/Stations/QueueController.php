@@ -13,6 +13,7 @@ use App\Http\Response;
 use App\Http\ServerRequest;
 use App\OpenApi;
 use App\Radio\AutoDJ\Queue;
+use App\Utilities\Types;
 use InvalidArgumentException;
 use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
@@ -147,7 +148,7 @@ final class QueueController extends AbstractStationApiCrudController
         $row = ($this->queueApiGenerator)($record);
         $row->resolveUrls($router->getBaseUrl());
 
-        $isInternal = ('true' === $request->getParam('internal', 'false'));
+        $isInternal = Types::bool($request->getParam('internal'), false, true);
 
         $apiResponse = new StationQueueDetailed();
         $apiResponse->fromParentObject($row);

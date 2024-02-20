@@ -76,7 +76,7 @@ final class BroadcastsController extends AbstractApiCrudController
         $paginator = Paginator::fromQuery($query, $request);
 
         $router = $request->getRouter();
-        $isInternal = ('true' === $request->getParam('internal', 'false'));
+        $isInternal = $request->isInternal();
         $fsRecordings = $this->stationFilesystems->getRecordingsFilesystem($station);
 
         $paginator->setPostprocessor(

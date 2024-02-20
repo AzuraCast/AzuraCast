@@ -6,6 +6,7 @@ namespace App\Controller\Traits;
 
 use App\Container\SettingsAwareTrait;
 use App\Http\ServerRequest;
+use App\Utilities\Types;
 use InvalidArgumentException;
 use lbuchs\WebAuthn\Binary\ByteBuffer;
 use lbuchs\WebAuthn\WebAuthn;
@@ -50,9 +51,12 @@ trait UsesWebAuthnTrait
         ServerRequest $request
     ): ByteBuffer {
         $session = $request->getSession();
-        $challengeRaw = $session->get(self::SESSION_CHALLENGE_KEY);
+        $challengeRaw = Types::stringOrNull(
+            $session->get(self::SESSION_CHALLENGE_KEY),
+            true
+        );
 
-        if (empty($challengeRaw)) {
+        if (null === $challengeRaw) {
             throw new InvalidArgumentException('Invalid challenge provided.');
         }
 

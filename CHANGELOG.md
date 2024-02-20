@@ -5,6 +5,16 @@ release channel, you can take advantage of these new features and fixes.
 
 ## New Features/Changes
 
+## Code Quality/Technical Changes
+
+## Bug Fixes
+
+---
+
+# AzuraCast 0.19.5 (Feb 20, 2024)
+
+## New Features/Changes
+
 - **Redesigned Public Podcast Pages**: We've completely overhauled the public-facing podcasts pages to be a single
   cohesive experience similar to our On-Demand streaming and other public pages.
     - Podcasts and episodes are searchable, sortable and paginated, and the pages now use our built-in player for

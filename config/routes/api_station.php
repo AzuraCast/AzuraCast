@@ -125,6 +125,9 @@ return static function (RouteCollectorProxy $group) {
                             $group->post('/podcasts/art', Controller\Api\Stations\Podcasts\Art\PostArtAction::class)
                                 ->setName('api:stations:podcasts:new-art');
 
+                            $group->get('/podcasts/playlists', Controller\Api\Stations\Podcasts\PlaylistsAction::class)
+                                ->setName('api:stations:podcasts:playlists');
+
                             $group->group(
                                 '/podcast/{podcast_id}',
                                 function (RouteCollectorProxy $group) {

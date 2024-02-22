@@ -302,6 +302,12 @@ final class PodcastsController extends AbstractApiCrudController
             unset($data['categories']);
         }
 
+        if (isset($data['playlist_id'])) {
+            $data['playlist'] = $data['playlist_id'];
+            unset($data['playlist_id']);
+        }
+
+
         $record = parent::fromArray($data, $record, $context);
 
         if (null !== $newCategories) {

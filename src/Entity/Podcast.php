@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use App\Entity\Enums\PodcastSources;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -24,6 +25,19 @@ class Podcast implements Interfaces\IdentifiableEntityInterface
     #[ORM\ManyToOne(targetEntity: StorageLocation::class)]
     #[ORM\JoinColumn(name: 'storage_location_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     protected StorageLocation $storage_location;
+
+    #[ORM\Column(nullable: false, insertable: false, updatable: false)]
+    protected int $storage_location_id;
+
+    #[ORM\ManyToOne(inversedBy: 'podcasts')]
+    #[ORM\JoinColumn(name: 'playlist_id', referencedColumnName: 'id', nullable: true, onDelete: 'CASCADE')]
+    protected ?StationPlaylist $playlist = null;
+
+    #[ORM\Column(nullable: true, insertable: false, updatable: false)]
+    protected ?int $playlist_id = null;
+
+    #[ORM\Column(type: 'string', length: 50, enumType: PodcastSources::class)]
+    protected PodcastSources $source = PodcastSources::Manual;
 
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank]
@@ -51,6 +65,9 @@ class Podcast implements Interfaces\IdentifiableEntityInterface
     #[Attributes\AuditIgnore]
     protected int $art_updated_at = 0;
 
+    #[ORM\Column]
+    protected bool $playlist_auto_publish = true;
+
     /** @var Collection<int, PodcastCategory> */
     #[ORM\OneToMany(mappedBy: 'podcast', targetEntity: PodcastCategory::class)]
     protected Collection $categories;
@@ -70,6 +87,26 @@ class Podcast implements Interfaces\IdentifiableEntityInterface
     public function getStorageLocation(): StorageLocation
     {
         return $this->storage_location;
+    }
+
+    public function getPlaylist(): ?StationPlaylist
+    {
+        return $this->playlist;
+    }
+
+    public function setPlaylist(?StationPlaylist $playlist): void
+    {
+        $this->playlist = $playlist;
+    }
+
+    public function getSource(): PodcastSources
+    {
+        return $this->source;
+    }
+
+    public function setSource(PodcastSources $source): void
+    {
+        $this->source = $source;
     }
 
     public function getTitle(): string
@@ -154,6 +191,16 @@ class Podcast implements Interfaces\IdentifiableEntityInterface
         $this->art_updated_at = $artUpdatedAt;
 
         return $this;
+    }
+
+    public function playlistAutoPublish(): bool
+    {
+        return $this->playlist_auto_publish;
+    }
+
+    public function setPlaylistAutoPublish(bool $playlist_auto_publish): void
+    {
+        $this->playlist_auto_publish = $playlist_auto_publish;
     }
 
     /**

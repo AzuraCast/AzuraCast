@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use App\Entity\Enums\PodcastSources;
 use App\Entity\Interfaces\IdentifiableEntityInterface;
-use App\Entity\Traits;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -24,6 +24,10 @@ class PodcastEpisode implements IdentifiableEntityInterface
     #[ORM\ManyToOne(inversedBy: 'episodes')]
     #[ORM\JoinColumn(name: 'podcast_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     protected Podcast $podcast;
+
+    #[ORM\OneToOne(inversedBy: 'podcast_episode')]
+    #[ORM\JoinColumn(name: 'playlist_media_id', referencedColumnName: 'id', nullable: true, onDelete: 'CASCADE')]
+    protected ?StationMedia $playlist_media = null;
 
     #[ORM\OneToOne(mappedBy: 'episode')]
     protected ?PodcastMedia $media = null;
@@ -71,6 +75,16 @@ class PodcastEpisode implements IdentifiableEntityInterface
     public function getMedia(): ?PodcastMedia
     {
         return $this->media;
+    }
+
+    public function getPlaylistMedia(): ?StationMedia
+    {
+        return $this->playlist_media;
+    }
+
+    public function setPlaylistMedia(?StationMedia $playlist_media): void
+    {
+        $this->playlist_media = $playlist_media;
     }
 
     public function getTitle(): string
@@ -168,10 +182,9 @@ class PodcastEpisode implements IdentifiableEntityInterface
             return false;
         }
 
-        if ($this->getMedia() === null) {
-            return false;
-        }
-
-        return true;
+        return match ($this->getPodcast()->getSource()) {
+            PodcastSources::Manual => ($this->getMedia() !== null),
+            PodcastSources::Playlist => ($this->getPlaylistMedia() !== null)
+        };
     }
 }

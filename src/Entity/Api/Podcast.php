@@ -22,6 +22,15 @@ final class Podcast
     public int $storage_location_id;
 
     #[OA\Property]
+    public string $source;
+
+    #[OA\Property]
+    public ?int $playlist_id = null;
+
+    #[OA\Property]
+    public bool $playlist_auto_publish = false;
+
+    #[OA\Property]
     public string $title;
 
     #[OA\Property]

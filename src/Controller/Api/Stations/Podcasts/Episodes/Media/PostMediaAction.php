@@ -7,6 +7,7 @@ namespace App\Controller\Api\Stations\Podcasts\Episodes\Media;
 use App\Controller\SingleActionInterface;
 use App\Entity\Api\Error;
 use App\Entity\Api\Status;
+use App\Entity\Enums\PodcastSources;
 use App\Entity\Repository\PodcastEpisodeRepository;
 use App\Flysystem\StationFilesystems;
 use App\Http\Response;
@@ -14,6 +15,7 @@ use App\Http\ServerRequest;
 use App\OpenApi;
 use App\Service\Flow;
 use App\Utilities\Types;
+use InvalidArgumentException;
 use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 
@@ -60,9 +62,14 @@ final class PostMediaAction implements SingleActionInterface
         Response $response,
         array $params
     ): ResponseInterface {
-        $episodeId = Types::stringOrNull($params['episode_id'] ?? null, true);
-
+        $podcast = $request->getPodcast();
         $station = $request->getStation();
+
+        if ($podcast->getSource() !== PodcastSources::Manual) {
+            throw new InvalidArgumentException('Media cannot be manually set on this podcast.');
+        }
+
+        $episodeId = Types::stringOrNull($params['episode_id'] ?? null, true);
 
         $flowResponse = Flow::process($request, $response, $station->getRadioTempDir());
         if ($flowResponse instanceof ResponseInterface) {
@@ -70,10 +77,7 @@ final class PostMediaAction implements SingleActionInterface
         }
 
         if (null !== $episodeId) {
-            $episode = $this->episodeRepo->fetchEpisodeForPodcast(
-                $request->getPodcast(),
-                $episodeId
-            );
+            $episode = $this->episodeRepo->fetchEpisodeForPodcast($podcast, $episodeId);
 
             if (null === $episode) {
                 return $response->withStatus(404)

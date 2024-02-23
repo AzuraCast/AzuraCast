@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use App\Entity\Enums\PodcastSources;
+use App\Normalizer\Attributes\DeepNormalize;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -29,6 +30,7 @@ class Podcast implements Interfaces\IdentifiableEntityInterface
     #[ORM\Column(nullable: false, insertable: false, updatable: false)]
     protected int $storage_location_id;
 
+    #[DeepNormalize(true)]
     #[ORM\ManyToOne(inversedBy: 'podcasts')]
     #[ORM\JoinColumn(name: 'playlist_id', referencedColumnName: 'id', nullable: true, onDelete: 'CASCADE')]
     protected ?StationPlaylist $playlist = null;

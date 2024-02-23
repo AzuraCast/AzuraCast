@@ -46,11 +46,17 @@
                         target="_blank"
                     >{{ $gettext('RSS Feed') }}</a>
                 </div>
-                <div
-                    v-else
-                    class="badges"
-                >
-                    <span class="badge text-bg-info">
+                <div class="badges">
+                    <span
+                        v-if="item.source === 'playlist'"
+                        class="badge text-bg-info"
+                    >
+                        {{ $gettext('Playlist-Based') }}
+                    </span>
+                    <span
+                        v-if="!item.is_published"
+                        class="badge text-bg-info"
+                    >
                         {{ $gettext('Unpublished') }}
                     </span>
                 </div>

@@ -176,13 +176,17 @@
       "@phpcbf",
       "@dev-test"
     ],
+    "cleanup-and-test-full": [
+      "@phpcbf",
+      "@dev-test",
+      "@codeception-no-coverage"
+    ],
     "codeception": "codecept run --no-interaction --coverage --coverage-xml --fail-fast",
     "codeception-no-coverage": "codecept run --no-interaction",
     "dev-test": [
       "@phplint",
       "@phpstan",
-      "@phpcs",
-      "@codeception-no-coverage"
+      "@phpcs"
     ],
     "phpcbf": "phpcbf",
     "phpcs": "phpcs",

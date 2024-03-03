@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Entity\Migration;
 
+use Doctrine\DBAL\ParameterType;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
-use PDO;
 
 /**
  * Auto-generated Migration: Please modify to your needs!
@@ -24,7 +24,7 @@ final class Version20191101065730 extends AbstractMigration
         $playlists = $this->connection->fetchAllAssociative(
             'SELECT sp.* FROM station_playlists AS sp WHERE sp.type = ?',
             ['scheduled'],
-            [PDO::PARAM_STR]
+            [ParameterType::STRING]
         );
 
         foreach ($playlists as $row) {

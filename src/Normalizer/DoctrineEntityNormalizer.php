@@ -7,9 +7,9 @@ use App\Normalizer\Attributes\DeepNormalize;
 use App\Normalizer\Exception\NoGetterAvailableException;
 use ArrayObject;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\Common\Util\ClassUtils;
 use Doctrine\Inflector\Inflector;
 use Doctrine\Inflector\InflectorFactory;
+use Doctrine\ORM\Proxy\DefaultProxyClassNameResolver;
 use InvalidArgumentException;
 use ReflectionClass;
 use ReflectionException;
@@ -21,8 +21,8 @@ use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
 
 final class DoctrineEntityNormalizer extends AbstractObjectNormalizer
 {
-    private const CLASS_METADATA = 'class_metadata';
-    private const ASSOCIATION_MAPPINGS = 'association_mappings';
+    private const string CLASS_METADATA = 'class_metadata';
+    private const string ASSOCIATION_MAPPINGS = 'association_mappings';
 
     private readonly Inflector $inflector;
 
@@ -375,7 +375,7 @@ final class DoctrineEntityNormalizer extends AbstractObjectNormalizer
     private function isEntity(mixed $class): bool
     {
         if (is_object($class)) {
-            $class = ClassUtils::getClass($class);
+            $class = DefaultProxyClassNameResolver::getClass($class);
         }
 
         if (!is_string($class) || !class_exists($class)) {

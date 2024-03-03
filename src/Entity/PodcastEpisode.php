@@ -25,7 +25,7 @@ class PodcastEpisode implements IdentifiableEntityInterface
     #[ORM\JoinColumn(name: 'podcast_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     protected Podcast $podcast;
 
-    #[ORM\OneToOne(inversedBy: 'podcast_episode')]
+    #[ORM\ManyToOne(inversedBy: 'podcast_episodes')]
     #[ORM\JoinColumn(name: 'playlist_media_id', referencedColumnName: 'id', nullable: true, onDelete: 'CASCADE')]
     protected ?StationMedia $playlist_media = null;
 

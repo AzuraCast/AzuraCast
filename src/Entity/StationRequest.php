@@ -19,7 +19,7 @@ class StationRequest implements
 {
     use Traits\HasAutoIncrementId;
 
-    #[ORM\ManyToOne(inversedBy: 'media')]
+    #[ORM\ManyToOne(inversedBy: 'requests')]
     #[ORM\JoinColumn(name: 'station_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     protected Station $station;
 

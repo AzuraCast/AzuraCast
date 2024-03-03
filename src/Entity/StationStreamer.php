@@ -101,16 +101,25 @@ class StationStreamer implements
     /** @var Collection<int, StationSchedule> */
     #[
         OA\Property(type: "array", items: new OA\Items()),
-        ORM\OneToMany(mappedBy: 'streamer', targetEntity: StationSchedule::class),
+        ORM\OneToMany(targetEntity: StationSchedule::class, mappedBy: 'streamer'),
         DeepNormalize(true),
         Serializer\MaxDepth(1)
     ]
     protected Collection $schedule_items;
 
+    /** @var Collection<int, StationStreamerBroadcast> */
+    #[
+        ORM\OneToMany(targetEntity: StationStreamerBroadcast::class, mappedBy: 'streamer'),
+        DeepNormalize(true)
+    ]
+    protected Collection $broadcasts;
+
     public function __construct(Station $station)
     {
         $this->station = $station;
+
         $this->schedule_items = new ArrayCollection();
+        $this->broadcasts = new ArrayCollection();
     }
 
     public function getStation(): Station

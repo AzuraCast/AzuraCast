@@ -71,11 +71,11 @@ class Podcast implements Interfaces\IdentifiableEntityInterface
     protected bool $playlist_auto_publish = true;
 
     /** @var Collection<int, PodcastCategory> */
-    #[ORM\OneToMany(mappedBy: 'podcast', targetEntity: PodcastCategory::class)]
+    #[ORM\OneToMany(targetEntity: PodcastCategory::class, mappedBy: 'podcast')]
     protected Collection $categories;
 
     /** @var Collection<int, PodcastEpisode> */
-    #[ORM\OneToMany(mappedBy: 'podcast', targetEntity: PodcastEpisode::class, fetch: 'EXTRA_LAZY')]
+    #[ORM\OneToMany(targetEntity: PodcastEpisode::class, mappedBy: 'podcast', fetch: 'EXTRA_LAZY')]
     protected Collection $episodes;
 
     public function __construct(StorageLocation $storageLocation)

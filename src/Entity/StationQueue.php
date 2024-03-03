@@ -9,10 +9,10 @@ use Doctrine\ORM\Mapping as ORM;
 #[
     ORM\Entity,
     ORM\Table(name: 'station_queue'),
-    ORM\Index(columns: ['is_played'], name: 'idx_is_played'),
-    ORM\Index(columns: ['timestamp_played'], name: 'idx_timestamp_played'),
-    ORM\Index(columns: ['sent_to_autodj'], name: 'idx_sent_to_autodj'),
-    ORM\Index(columns: ['timestamp_cued'], name: 'idx_timestamp_cued')
+    ORM\Index(name: 'idx_is_played', columns: ['is_played']),
+    ORM\Index(name: 'idx_timestamp_played', columns: ['timestamp_played']),
+    ORM\Index(name: 'idx_sent_to_autodj', columns: ['sent_to_autodj']),
+    ORM\Index(name: 'idx_timestamp_cued', columns: ['timestamp_cued'])
 ]
 class StationQueue implements
     Interfaces\SongInterface,

@@ -53,7 +53,7 @@ class Relay implements IdentifiableEntityInterface
     protected int $updated_at;
 
     /** @var Collection<int, StationRemote> */
-    #[ORM\OneToMany(mappedBy: 'relay', targetEntity: StationRemote::class)]
+    #[ORM\OneToMany(targetEntity: StationRemote::class, mappedBy: 'relay')]
     protected Collection $remotes;
 
     public function __construct(string $baseUrl)

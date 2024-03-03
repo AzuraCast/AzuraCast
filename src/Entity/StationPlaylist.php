@@ -175,25 +175,34 @@ class StationPlaylist implements
 
     /** @var Collection<int, StationPlaylistMedia> */
     #[
-        ORM\OneToMany(mappedBy: 'playlist', targetEntity: StationPlaylistMedia::class, fetch: 'EXTRA_LAZY'),
+        ORM\OneToMany(targetEntity: StationPlaylistMedia::class, mappedBy: 'playlist', fetch: 'EXTRA_LAZY'),
         ORM\OrderBy(['weight' => 'ASC'])
     ]
     protected Collection $media_items;
 
     /** @var Collection<int, StationPlaylistFolder> */
     #[
-        ORM\OneToMany(mappedBy: 'playlist', targetEntity: StationPlaylistFolder::class, fetch: 'EXTRA_LAZY')
+        ORM\OneToMany(targetEntity: StationPlaylistFolder::class, mappedBy: 'playlist', fetch: 'EXTRA_LAZY')
     ]
     protected Collection $folders;
 
     /** @var Collection<int, StationSchedule> */
     #[
         OA\Property(type: "array", items: new OA\Items()),
-        ORM\OneToMany(mappedBy: 'playlist', targetEntity: StationSchedule::class, fetch: 'EXTRA_LAZY'),
+        ORM\OneToMany(targetEntity: StationSchedule::class, mappedBy: 'playlist', fetch: 'EXTRA_LAZY'),
         DeepNormalize(true),
         Serializer\MaxDepth(1)
     ]
     protected Collection $schedule_items;
+
+    /** @var Collection<int, Podcast> */
+    #[
+        OA\Property(type: "array", items: new OA\Items()),
+        ORM\OneToMany(targetEntity: Podcast::class, mappedBy: 'playlist', fetch: 'EXTRA_LAZY'),
+        DeepNormalize(true),
+        Serializer\MaxDepth(1)
+    ]
+    protected Collection $podcasts;
 
     public function __construct(Station $station)
     {
@@ -207,6 +216,7 @@ class StationPlaylist implements
         $this->media_items = new ArrayCollection();
         $this->folders = new ArrayCollection();
         $this->schedule_items = new ArrayCollection();
+        $this->podcasts = new ArrayCollection();
     }
 
     public function getStation(): Station
@@ -412,6 +422,14 @@ class StationPlaylist implements
     public function getScheduleItems(): Collection
     {
         return $this->schedule_items;
+    }
+
+    /**
+     * @return Collection<int, Podcast>
+     */
+    public function getPodcasts(): Collection
+    {
+        return $this->podcasts;
     }
 
     /**

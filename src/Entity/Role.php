@@ -38,7 +38,7 @@ class Role implements JsonSerializable, Stringable, IdentifiableEntityInterface
     /** @var Collection<int, RolePermission> */
     #[
         OA\Property(type: "array", items: new OA\Items()),
-        ORM\OneToMany(mappedBy: 'role', targetEntity: RolePermission::class)
+        ORM\OneToMany(targetEntity: RolePermission::class, mappedBy: 'role')
     ]
     protected Collection $permissions;
 

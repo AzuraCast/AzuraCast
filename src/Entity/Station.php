@@ -33,7 +33,7 @@ use Symfony\Component\Validator\Constraints as Assert;
     OA\Schema(schema: "Station", type: "object"),
     ORM\Entity,
     ORM\Table(name: 'station'),
-    ORM\Index(columns: ['short_name'], name: 'idx_short_name'),
+    ORM\Index(name: 'idx_short_name', columns: ['short_name']),
     ORM\HasLifecycleCallbacks,
     Attributes\Auditable,
     AppAssert\StationPortChecker,
@@ -285,7 +285,7 @@ class Station implements Stringable, IdentifiableEntityInterface
 
     /** @var Collection<int, SongHistory> */
     #[
-        ORM\OneToMany(mappedBy: 'station', targetEntity: SongHistory::class),
+        ORM\OneToMany(targetEntity: SongHistory::class, mappedBy: 'station'),
         ORM\OrderBy(['timestamp_start' => 'desc'])
     ]
     protected Collection $history;
@@ -333,7 +333,7 @@ class Station implements Stringable, IdentifiableEntityInterface
     protected ?StorageLocation $podcasts_storage_location = null;
 
     /** @var Collection<int, StationStreamer> */
-    #[ORM\OneToMany(mappedBy: 'station', targetEntity: StationStreamer::class)]
+    #[ORM\OneToMany(targetEntity: StationStreamer::class, mappedBy: 'station')]
     protected Collection $streamers;
 
     #[
@@ -353,40 +353,48 @@ class Station implements Stringable, IdentifiableEntityInterface
     protected ?string $fallback_path = null;
 
     /** @var Collection<int, RolePermission> */
-    #[ORM\OneToMany(mappedBy: 'station', targetEntity: RolePermission::class)]
+    #[ORM\OneToMany(targetEntity: RolePermission::class, mappedBy: 'station')]
     protected Collection $permissions;
 
     /** @var Collection<int, StationPlaylist> */
     #[
-        ORM\OneToMany(mappedBy: 'station', targetEntity: StationPlaylist::class),
+        ORM\OneToMany(targetEntity: StationPlaylist::class, mappedBy: 'station'),
         ORM\OrderBy(['type' => 'ASC', 'weight' => 'DESC'])
     ]
     protected Collection $playlists;
 
     /** @var Collection<int, StationMount> */
-    #[ORM\OneToMany(mappedBy: 'station', targetEntity: StationMount::class)]
+    #[ORM\OneToMany(targetEntity: StationMount::class, mappedBy: 'station')]
     protected Collection $mounts;
 
     /** @var Collection<int, StationRemote> */
-    #[ORM\OneToMany(mappedBy: 'station', targetEntity: StationRemote::class)]
+    #[ORM\OneToMany(targetEntity: StationRemote::class, mappedBy: 'station')]
     protected Collection $remotes;
 
     /** @var Collection<int, StationHlsStream> */
-    #[ORM\OneToMany(mappedBy: 'station', targetEntity: StationHlsStream::class)]
+    #[ORM\OneToMany(targetEntity: StationHlsStream::class, mappedBy: 'station')]
     protected Collection $hls_streams;
 
     /** @var Collection<int, StationWebhook> */
     #[ORM\OneToMany(
-        mappedBy: 'station',
         targetEntity: StationWebhook::class,
+        mappedBy: 'station',
         cascade: ['persist'],
         fetch: 'EXTRA_LAZY'
     )]
     protected Collection $webhooks;
 
+    /** @var Collection<int, StationStreamerBroadcast> */
+    #[ORM\OneToMany(targetEntity: StationStreamerBroadcast::class, mappedBy: 'station')]
+    protected Collection $streamer_broadcasts;
+
     /** @var Collection<int, SftpUser> */
-    #[ORM\OneToMany(mappedBy: 'station', targetEntity: SftpUser::class)]
+    #[ORM\OneToMany(targetEntity: SftpUser::class, mappedBy: 'station')]
     protected Collection $sftp_users;
+
+    /** @var Collection<int, StationRequest> */
+    #[ORM\OneToMany(targetEntity: StationRequest::class, mappedBy: 'station')]
+    protected Collection $requests;
 
     #[
         ORM\ManyToOne,
@@ -408,7 +416,9 @@ class Station implements Stringable, IdentifiableEntityInterface
         $this->hls_streams = new ArrayCollection();
         $this->webhooks = new ArrayCollection();
         $this->streamers = new ArrayCollection();
+        $this->streamer_broadcasts = new ArrayCollection();
         $this->sftp_users = new ArrayCollection();
+        $this->requests = new ArrayCollection();
     }
 
     public function getName(): ?string

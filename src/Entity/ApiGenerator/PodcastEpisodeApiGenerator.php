@@ -15,6 +15,11 @@ use App\Utilities\Strings;
 
 final class PodcastEpisodeApiGenerator
 {
+    public function __construct(
+        private readonly SongApiGenerator $songApiGen
+    ) {
+    }
+
     public function __invoke(
         PodcastEpisode $record,
         ServerRequest $request
@@ -43,14 +48,19 @@ final class PodcastEpisodeApiGenerator
                 $playlistMediaRow = $record->getPlaylistMedia();
                 if ($playlistMediaRow instanceof StationMedia) {
                     $return->has_media = true;
+
+                    $return->playlist_media = $this->songApiGen->__invoke($playlistMediaRow);
                     $return->playlist_media_id = $playlistMediaRow->getUniqueId();
                 } else {
                     $return->has_media = false;
+
+                    $return->playlist_media = null;
                     $return->playlist_media_id = null;
                 }
                 break;
 
             case PodcastSources::Manual:
+                $return->playlist_media = null;
                 $return->playlist_media_id = null;
 
                 $mediaRow = $record->getMedia();

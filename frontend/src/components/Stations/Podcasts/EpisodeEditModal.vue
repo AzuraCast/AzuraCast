@@ -14,6 +14,7 @@
             />
 
             <episode-form-media
+                v-if="podcastIsManual"
                 v-model="form.media_file"
                 :record-has-media="record.has_media"
                 :new-media-url="newMediaUrl"
@@ -44,18 +45,16 @@ import Tabs from "~/components/Common/Tabs.vue";
 
 const props = defineProps({
     ...baseEditModalProps,
-    podcastId: {
-        type: String,
-        required: true
-    },
-    newArtUrl: {
-        type: String,
-        required: true
-    },
-    newMediaUrl: {
-        type: String,
+    podcast: {
+        type: Object,
         required: true
     }
+});
+
+const newArtUrl = computed(() => props.podcast.links.episode_new_art);
+const newMediaUrl = computed(() => props.podcast.links.episode_new_media);
+const podcastIsManual = computed(() => {
+    return props.podcast.source == 'manual';
 });
 
 const emit = defineEmits(['relist']);

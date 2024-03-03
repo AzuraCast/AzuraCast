@@ -46,6 +46,9 @@ final class PodcastEpisode
     public ?string $playlist_media_id = null;
 
     #[OA\Property]
+    public ?Song $playlist_media = null;
+
+    #[OA\Property]
     public ?PodcastMedia $media = null;
 
     #[OA\Property]

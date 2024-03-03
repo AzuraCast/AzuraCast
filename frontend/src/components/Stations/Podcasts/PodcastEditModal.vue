@@ -15,6 +15,10 @@
                 :language-options="languageOptions"
             />
 
+            <podcast-form-source
+                :form="form"
+            />
+
             <podcast-common-artwork
                 v-model="form.artwork_file"
                 :artwork-src="record.links.art"
@@ -26,6 +30,7 @@
 
 <script setup lang="ts">
 import PodcastFormBasicInfo from './PodcastForm/BasicInfo.vue';
+import PodcastFormSource from './PodcastForm/Source.vue';
 import PodcastCommonArtwork from './Common/Artwork.vue';
 import mergeExisting from "~/functions/mergeExisting";
 import {baseEditModalProps, ModalFormTemplateRef, useBaseEditModal} from "~/functions/useBaseEditModal";

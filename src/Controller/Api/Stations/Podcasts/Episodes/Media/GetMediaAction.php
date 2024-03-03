@@ -6,9 +6,11 @@ namespace App\Controller\Api\Stations\Podcasts\Episodes\Media;
 
 use App\Controller\SingleActionInterface;
 use App\Entity\Api\Error;
+use App\Entity\Enums\PodcastSources;
 use App\Entity\PodcastEpisode;
 use App\Entity\PodcastMedia;
 use App\Entity\Repository\PodcastEpisodeRepository;
+use App\Entity\StationMedia;
 use App\Flysystem\StationFilesystems;
 use App\Http\Response;
 use App\Http\ServerRequest;
@@ -68,26 +70,46 @@ final class GetMediaAction implements SingleActionInterface
         $episodeId = Types::string($params['episode_id'] ?? null);
 
         $station = $request->getStation();
+        $podcast = $request->getPodcast();
+
         $episode = $this->episodeRepo->fetchEpisodeForPodcast(
-            $request->getPodcast(),
+            $podcast,
             $episodeId
         );
 
         if ($episode instanceof PodcastEpisode) {
-            $podcastMedia = $episode->getMedia();
+            switch ($podcast->getSource()) {
+                case PodcastSources::Playlist:
+                    $playlistMedia = $episode->getPlaylistMedia();
 
-            if ($podcastMedia instanceof PodcastMedia) {
-                $fsPodcasts = $this->stationFilesystems->getPodcastsFilesystem($station);
+                    if ($playlistMedia instanceof StationMedia) {
+                        $fsMedia = $this->stationFilesystems->getMediaFilesystem($station);
 
-                $path = $podcastMedia->getPath();
+                        set_time_limit(600);
+                        return $response->streamFilesystemFile(
+                            $fsMedia,
+                            $playlistMedia->getPath()
+                        );
+                    }
+                    break;
 
-                if ($fsPodcasts->fileExists($path)) {
-                    return $response->streamFilesystemFile(
-                        $fsPodcasts,
-                        $path,
-                        $podcastMedia->getOriginalName()
-                    );
-                }
+                case PodcastSources::Manual:
+                    $podcastMedia = $episode->getMedia();
+
+                    if ($podcastMedia instanceof PodcastMedia) {
+                        $fsPodcasts = $this->stationFilesystems->getPodcastsFilesystem($station);
+
+                        $path = $podcastMedia->getPath();
+
+                        if ($fsPodcasts->fileExists($path)) {
+                            return $response->streamFilesystemFile(
+                                $fsPodcasts,
+                                $path,
+                                $podcastMedia->getOriginalName()
+                            );
+                        }
+                    }
+                    break;
             }
         }
 

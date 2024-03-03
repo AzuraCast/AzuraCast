@@ -43,7 +43,13 @@ final class PodcastEpisode
     public bool $has_media = false;
 
     #[OA\Property]
-    public PodcastMedia $media;
+    public ?string $playlist_media_id = null;
+
+    #[OA\Property]
+    public ?Song $playlist_media = null;
+
+    #[OA\Property]
+    public ?PodcastMedia $media = null;
 
     #[OA\Property]
     public bool $has_custom_art = false;

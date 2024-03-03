@@ -10,10 +10,10 @@ use NowPlaying\Result\Client;
 #[
     ORM\Entity,
     ORM\Table(name: 'listener'),
-    ORM\Index(columns: ['timestamp_end', 'timestamp_start'], name: 'idx_timestamps'),
-    ORM\Index(columns: ['location_country'], name: 'idx_statistics_country'),
-    ORM\Index(columns: ['device_os_family'], name: 'idx_statistics_os'),
-    ORM\Index(columns: ['device_browser_family'], name: 'idx_statistics_browser')
+    ORM\Index(name: 'idx_timestamps', columns: ['timestamp_end', 'timestamp_start']),
+    ORM\Index(name: 'idx_statistics_country', columns: ['location_country']),
+    ORM\Index(name: 'idx_statistics_os', columns: ['device_os_family']),
+    ORM\Index(name: 'idx_statistics_browser', columns: ['device_browser_family'])
 ]
 class Listener implements
     Interfaces\IdentifiableEntityInterface,

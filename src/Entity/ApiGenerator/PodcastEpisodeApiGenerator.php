@@ -6,13 +6,20 @@ namespace App\Entity\ApiGenerator;
 
 use App\Entity\Api\PodcastEpisode as ApiPodcastEpisode;
 use App\Entity\Api\PodcastMedia as ApiPodcastMedia;
+use App\Entity\Enums\PodcastSources;
 use App\Entity\PodcastEpisode;
 use App\Entity\PodcastMedia;
+use App\Entity\StationMedia;
 use App\Http\ServerRequest;
 use App\Utilities\Strings;
 
 final class PodcastEpisodeApiGenerator
 {
+    public function __construct(
+        private readonly SongApiGenerator $songApiGen
+    ) {
+    }
+
     public function __invoke(
         PodcastEpisode $record,
         ServerRequest $request
@@ -34,21 +41,45 @@ final class PodcastEpisodeApiGenerator
         $return->created_at = $record->getCreatedAt();
         $return->publish_at = $record->getPublishAt();
 
-        $mediaRow = $record->getMedia();
-        $return->has_media = ($mediaRow instanceof PodcastMedia);
-        if ($mediaRow instanceof PodcastMedia) {
-            $media = new ApiPodcastMedia();
-            $media->id = $mediaRow->getId();
-            $media->original_name = $mediaRow->getOriginalName();
-            $media->length = $mediaRow->getLength();
-            $media->length_text = $mediaRow->getLengthText();
-            $media->path = $mediaRow->getPath();
+        switch ($podcast->getSource()) {
+            case PodcastSources::Playlist:
+                $return->media = null;
 
-            $return->has_media = true;
-            $return->media = $media;
-        } else {
-            $return->has_media = false;
-            $return->media = new ApiPodcastMedia();
+                $playlistMediaRow = $record->getPlaylistMedia();
+                if ($playlistMediaRow instanceof StationMedia) {
+                    $return->has_media = true;
+
+                    $return->playlist_media = $this->songApiGen->__invoke($playlistMediaRow);
+                    $return->playlist_media_id = $playlistMediaRow->getUniqueId();
+                } else {
+                    $return->has_media = false;
+
+                    $return->playlist_media = null;
+                    $return->playlist_media_id = null;
+                }
+                break;
+
+            case PodcastSources::Manual:
+                $return->playlist_media = null;
+                $return->playlist_media_id = null;
+
+                $mediaRow = $record->getMedia();
+                $return->has_media = ($mediaRow instanceof PodcastMedia);
+                if ($mediaRow instanceof PodcastMedia) {
+                    $media = new ApiPodcastMedia();
+                    $media->id = $mediaRow->getId();
+                    $media->original_name = $mediaRow->getOriginalName();
+                    $media->length = $mediaRow->getLength();
+                    $media->length_text = $mediaRow->getLengthText();
+                    $media->path = $mediaRow->getPath();
+
+                    $return->has_media = true;
+                    $return->media = $media;
+                } else {
+                    $return->has_media = false;
+                    $return->media = null;
+                }
+                break;
         }
 
         $return->is_published = $record->isPublished();

@@ -15,7 +15,7 @@ use RuntimeException;
 #[
     ORM\Entity(readOnly: true),
     ORM\Table(name: 'analytics'),
-    ORM\Index(columns: ['type', 'moment'], name: 'search_idx'),
+    ORM\Index(name: 'search_idx', columns: ['type', 'moment']),
     ORM\UniqueConstraint(name: 'stats_unique_idx', columns: ['station_id', 'type', 'moment'])
 ]
 class Analytics implements IdentifiableEntityInterface

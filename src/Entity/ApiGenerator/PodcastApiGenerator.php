@@ -38,6 +38,10 @@ final class PodcastApiGenerator
         $return->id = $record->getIdRequired();
         $return->storage_location_id = $record->getStorageLocation()->getIdRequired();
 
+        $return->source = $record->getSource()->value;
+        $return->playlist_id = $record->getPlaylist()?->getIdRequired();
+        $return->playlist_auto_publish = $record->playlistAutoPublish();
+
         $return->title = $record->getTitle();
         $return->link = $record->getLink();
 

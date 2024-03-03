@@ -6,6 +6,8 @@ namespace App\Entity;
 
 use App\Entity\Interfaces\IdentifiableEntityInterface;
 use App\Utilities\File;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use OpenApi\Attributes as OA;
 use Stringable;
@@ -44,6 +46,15 @@ class CustomField implements Stringable, IdentifiableEntityInterface
         ORM\Column(length: 100, nullable: true)
     ]
     protected ?string $auto_assign = null;
+
+    /** @var Collection<int, StationMediaCustomField> */
+    #[ORM\OneToMany(targetEntity: StationMediaCustomField::class, mappedBy: 'field')]
+    protected Collection $media_fields;
+
+    public function __construct()
+    {
+        $this->media_fields = new ArrayCollection();
+    }
 
     public function getName(): string
     {

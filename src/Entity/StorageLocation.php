@@ -91,11 +91,11 @@ class StorageLocation implements Stringable, IdentifiableEntityInterface
     protected ?string $sftpPrivateKeyPassPhrase = null;
 
     #[ORM\Column(name: 'storage_quota', type: 'bigint', nullable: true)]
-    protected ?string $storageQuota = null;
+    protected string|int|null $storageQuota = null;
 
     #[ORM\Column(name: 'storage_used', type: 'bigint', nullable: true)]
     #[Attributes\AuditIgnore]
-    protected ?string $storageUsed = null;
+    protected string|int|null $storageUsed = null;
 
     /** @var Collection<int, StationMedia> */
     #[ORM\OneToMany(mappedBy: 'storage_location', targetEntity: StationMedia::class)]

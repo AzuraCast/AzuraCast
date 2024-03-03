@@ -74,7 +74,7 @@ final class Version20210512225946 extends AbstractMigration
                 ]
             );
 
-            $podcastsStorageLocationId = $this->connection->lastInsertId('storage_location');
+            $podcastsStorageLocationId = $this->connection->lastInsertId();
 
             $this->connection->update(
                 'station',

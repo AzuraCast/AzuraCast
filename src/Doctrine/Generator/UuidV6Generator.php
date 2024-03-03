@@ -19,7 +19,7 @@ final class UuidV6Generator extends AbstractIdGenerator
         $this->factory = clone Uuid::getFactory();
     }
 
-    public function generateId(EntityManagerInterface $em, $entity)
+    public function generateId(EntityManagerInterface $em, object|null $entity): mixed
     {
         $nodeProvider = new RandomNodeProvider();
         return $this->factory->uuid6($nodeProvider->getNode())->toString();

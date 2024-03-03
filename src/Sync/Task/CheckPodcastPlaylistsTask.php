@@ -110,6 +110,9 @@ final class CheckPodcastPlaylistsTask extends AbstractTask
                     $podcastEpisode = new PodcastEpisode($podcast);
                     $podcastEpisode->setPlaylistMedia($media);
 
+                    $podcastEpisode->setExplicit(false);
+
+                    $podcastEpisode->setTitle($media->getTitle() ?? 'Untitled Episode');
                     $podcastEpisode->setDescription(
                         implode("\n", array_filter([
                             $media->getArtist(),
@@ -117,7 +120,6 @@ final class CheckPodcastPlaylistsTask extends AbstractTask
                             $media->getLyrics(),
                         ]))
                     );
-                    $podcastEpisode->setTitle($media->getTitle() ?? 'Untitled Episode');
 
                     if (!$podcast->playlistAutoPublish()) {
                         // Set a date in the future to unpublish the episode.

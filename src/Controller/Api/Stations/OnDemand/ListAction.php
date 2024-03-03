@@ -65,7 +65,11 @@ final class ListAction extends AbstractSearchableListAction
     private function getPlaylists(
         Station $station
     ): array {
-        $item = $this->psr6Cache->getItem('station_' . $station->getIdRequired() . '_on_demand_playlists');
+        $item = $this->psr6Cache->getItem(
+            urlencode(
+                'station_' . $station->getIdRequired() . '_on_demand_playlists'
+            )
+        );
 
         if (!$item->isHit()) {
             $playlistIds = $this->em->createQuery(

@@ -106,7 +106,7 @@ final class SingleTaskCommand extends AbstractSyncCommand
      */
     public static function getCacheKey(string $taskClass): string
     {
-        return 'sync_last_run.' . self::getClassShortName($taskClass);
+        return urlencode('sync_last_run.' . self::getClassShortName($taskClass));
     }
 
     /**

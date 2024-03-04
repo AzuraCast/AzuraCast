@@ -131,7 +131,9 @@ final class Acme
             && empty(array_diff($domains, $acme->getSAN('file://' . $acmeDir . '/acme.crt')))
             && $acme->getRemainingDays('file://' . $acmeDir . '/acme.crt') > self::THRESHOLD_DAYS
         ) {
-            $this->checkLinks($acmeDir);
+            if (!$this->checkLinks($acmeDir)) {
+                $this->reloadServices();
+            }
 
             throw new RuntimeException('Certificate does not need renewal.');
         }
@@ -169,10 +171,12 @@ final class Acme
         // Symlink to the shared SSL cert.
         $this->checkLinks($acmeDir);
 
+        $this->reloadServices();
+
         $this->logger->notice('ACME certificate process successful.');
     }
 
-    private function checkLinks(string $acmeDir): void
+    private function checkLinks(string $acmeDir): bool
     {
         $fs = new Filesystem();
 
@@ -180,7 +184,7 @@ final class Acme
             $fs->readlink($acmeDir . '/ssl.crt', true) === $acmeDir . '/acme.crt'
             && $fs->readlink($acmeDir . '/ssl.key', true) === $acmeDir . '/acme.key'
         ) {
-            return;
+            return true;
         }
 
         $fs->remove([
@@ -191,7 +195,7 @@ final class Acme
         $fs->symlink($acmeDir . '/acme.crt', $acmeDir . '/ssl.crt');
         $fs->symlink($acmeDir . '/acme.key', $acmeDir . '/ssl.key');
 
-        $this->reloadServices();
+        return false;
     }
 
     private function reloadServices(): void

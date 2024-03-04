@@ -131,7 +131,7 @@ final class Acme
             && empty(array_diff($domains, $acme->getSAN('file://' . $acmeDir . '/acme.crt')))
             && $acme->getRemainingDays('file://' . $acmeDir . '/acme.crt') > self::THRESHOLD_DAYS
         ) {
-            if (!$this->checkLinks($acmeDir)){
+            if (!$this->checkLinks($acmeDir)) {
                 $this->reloadServices();
             }
 
@@ -172,7 +172,7 @@ final class Acme
         $this->checkLinks($acmeDir);
 
         $this->reloadServices();
-        
+
         $this->logger->notice('ACME certificate process successful.');
     }
 

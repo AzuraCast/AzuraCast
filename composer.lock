@@ -62,16 +62,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.300.9",
+            "version": "3.300.12",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "2704b9b10b42d53066eb383f47541124296db77c"
+                "reference": "0c38aec51d8dc76d6b56a6be05c37b0aff86de2d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/2704b9b10b42d53066eb383f47541124296db77c",
-                "reference": "2704b9b10b42d53066eb383f47541124296db77c",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/0c38aec51d8dc76d6b56a6be05c37b0aff86de2d",
+                "reference": "0c38aec51d8dc76d6b56a6be05c37b0aff86de2d",
                 "shasum": ""
             },
             "require": {
@@ -151,9 +151,9 @@
             "support": {
                 "forum": "https://forums.aws.amazon.com/forum.jspa?forumID=80",
                 "issues": "https://github.com/aws/aws-sdk-php/issues",
-                "source": "https://github.com/aws/aws-sdk-php/tree/3.300.9"
+                "source": "https://github.com/aws/aws-sdk-php/tree/3.300.12"
             },
-            "time": "2024-03-01T19:04:32+00:00"
+            "time": "2024-03-06T19:38:08+00:00"
         },
         {
             "name": "azuracast/nowplaying",
@@ -598,16 +598,16 @@
         },
         {
             "name": "doctrine/collections",
-            "version": "2.2.0",
+            "version": "2.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/collections.git",
-                "reference": "07e16cd7b80a2cffed99e36b541876af172f0257"
+                "reference": "420480fc085bc65f3c956af13abe8e7546f94813"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/collections/zipball/07e16cd7b80a2cffed99e36b541876af172f0257",
-                "reference": "07e16cd7b80a2cffed99e36b541876af172f0257",
+                "url": "https://api.github.com/repos/doctrine/collections/zipball/420480fc085bc65f3c956af13abe8e7546f94813",
+                "reference": "420480fc085bc65f3c956af13abe8e7546f94813",
                 "shasum": ""
             },
             "require": {
@@ -664,7 +664,7 @@
             ],
             "support": {
                 "issues": "https://github.com/doctrine/collections/issues",
-                "source": "https://github.com/doctrine/collections/tree/2.2.0"
+                "source": "https://github.com/doctrine/collections/tree/2.2.1"
             },
             "funding": [
                 {
@@ -680,7 +680,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-02-25T22:55:36+00:00"
+            "time": "2024-03-05T22:28:45+00:00"
         },
         {
             "name": "doctrine/data-fixtures",
@@ -1252,16 +1252,16 @@
         },
         {
             "name": "doctrine/migrations",
-            "version": "3.7.3",
+            "version": "3.7.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/migrations.git",
-                "reference": "ebb383e8e689767ac719bbb6fbf32f6293e899b0"
+                "reference": "954e0a314c2f0eb9fb418210445111747de254a6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/migrations/zipball/ebb383e8e689767ac719bbb6fbf32f6293e899b0",
-                "reference": "ebb383e8e689767ac719bbb6fbf32f6293e899b0",
+                "url": "https://api.github.com/repos/doctrine/migrations/zipball/954e0a314c2f0eb9fb418210445111747de254a6",
+                "reference": "954e0a314c2f0eb9fb418210445111747de254a6",
                 "shasum": ""
             },
             "require": {
@@ -1334,7 +1334,7 @@
             ],
             "support": {
                 "issues": "https://github.com/doctrine/migrations/issues",
-                "source": "https://github.com/doctrine/migrations/tree/3.7.3"
+                "source": "https://github.com/doctrine/migrations/tree/3.7.4"
             },
             "funding": [
                 {
@@ -1350,7 +1350,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-03-01T12:07:17+00:00"
+            "time": "2024-03-06T13:41:11+00:00"
         },
         {
             "name": "doctrine/orm",
@@ -5795,16 +5795,16 @@
         },
         {
             "name": "roadrunner-php/centrifugo",
-            "version": "2.0.0",
+            "version": "v2.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/roadrunner-php/centrifugo.git",
-                "reference": "9b48bfa1d6aee0c889ea77bb2afe8f733e0ad8e7"
+                "reference": "8ffc623f2bdddecdbf8105285c4526ed91522c5a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/roadrunner-php/centrifugo/zipball/9b48bfa1d6aee0c889ea77bb2afe8f733e0ad8e7",
-                "reference": "9b48bfa1d6aee0c889ea77bb2afe8f733e0ad8e7",
+                "url": "https://api.github.com/repos/roadrunner-php/centrifugo/zipball/8ffc623f2bdddecdbf8105285c4526ed91522c5a",
+                "reference": "8ffc623f2bdddecdbf8105285c4526ed91522c5a",
                 "shasum": ""
             },
             "require": {
@@ -5861,10 +5861,10 @@
             "homepage": "https://roadrunner.dev/",
             "support": {
                 "chat": "https://discord.gg/V6EK4he",
-                "docs": "https://roadrunner.dev/docs",
+                "docs": "https://docs.roadrunner.dev",
                 "forum": "https://forum.roadrunner.dev/",
                 "issues": "https://github.com/roadrunner-server/roadrunner/issues",
-                "source": "https://github.com/roadrunner-php/centrifugo/tree/2.0.0"
+                "source": "https://github.com/roadrunner-php/centrifugo/tree/v2.0.1"
             },
             "funding": [
                 {
@@ -5872,20 +5872,20 @@
                     "type": "github"
                 }
             ],
-            "time": "2023-04-13T11:38:58+00:00"
+            "time": "2024-03-06T13:36:00+00:00"
         },
         {
             "name": "roadrunner-php/roadrunner-api-dto",
-            "version": "1.4.0",
+            "version": "v1.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/roadrunner-php/roadrunner-api-dto.git",
-                "reference": "82e0889171086b485bd4c31a3575b8ffa531e6d1"
+                "reference": "473066245acde1038c557cc855a6030f07731f44"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/roadrunner-php/roadrunner-api-dto/zipball/82e0889171086b485bd4c31a3575b8ffa531e6d1",
-                "reference": "82e0889171086b485bd4c31a3575b8ffa531e6d1",
+                "url": "https://api.github.com/repos/roadrunner-php/roadrunner-api-dto/zipball/473066245acde1038c557cc855a6030f07731f44",
+                "reference": "473066245acde1038c557cc855a6030f07731f44",
                 "shasum": ""
             },
             "require": {
@@ -5894,6 +5894,9 @@
             },
             "conflict": {
                 "temporal/sdk": "<2.6.0"
+            },
+            "suggest": {
+                "google/common-protos": "Required for Temporal API"
             },
             "type": "library",
             "autoload": {
@@ -5922,13 +5925,13 @@
                 }
             ],
             "description": "RoadRunner PHP API",
-            "homepage": "https://roadrunner.dev/",
+            "homepage": "https://roadrunner.dev",
             "support": {
                 "chat": "https://discord.gg/V6EK4he",
-                "docs": "https://roadrunner.dev/docs",
-                "forum": "https://forum.roadrunner.dev/",
+                "docs": "https://docs.roadrunner.dev",
+                "forum": "https://forum.roadrunner.dev",
                 "issues": "https://github.com/roadrunner-server/roadrunner/issues",
-                "source": "https://github.com/roadrunner-php/roadrunner-api-dto/tree/1.4.0"
+                "source": "https://github.com/roadrunner-php/roadrunner-api-dto/tree/v1.5.0"
             },
             "funding": [
                 {
@@ -5936,7 +5939,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2023-10-11T13:36:31+00:00"
+            "time": "2024-03-06T09:50:04+00:00"
         },
         {
             "name": "skoerfgen/acmecert",
@@ -7006,16 +7009,16 @@
         },
         {
             "name": "symfony/clock",
-            "version": "v7.0.3",
+            "version": "v7.0.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/clock.git",
-                "reference": "1c680e565dc0044d8ed3baeb57835fcacd9c6aed"
+                "reference": "8b9d08887353d627d5f6c3bf3373b398b49051c2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/clock/zipball/1c680e565dc0044d8ed3baeb57835fcacd9c6aed",
-                "reference": "1c680e565dc0044d8ed3baeb57835fcacd9c6aed",
+                "url": "https://api.github.com/repos/symfony/clock/zipball/8b9d08887353d627d5f6c3bf3373b398b49051c2",
+                "reference": "8b9d08887353d627d5f6c3bf3373b398b49051c2",
                 "shasum": ""
             },
             "require": {
@@ -7060,7 +7063,7 @@
                 "time"
             ],
             "support": {
-                "source": "https://github.com/symfony/clock/tree/v7.0.3"
+                "source": "https://github.com/symfony/clock/tree/v7.0.5"
             },
             "funding": [
                 {
@@ -7076,7 +7079,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-01-23T15:02:46+00:00"
+            "time": "2024-03-02T12:46:12+00:00"
         },
         {
             "name": "symfony/console",
@@ -9016,16 +9019,16 @@
         },
         {
             "name": "symfony/validator",
-            "version": "v7.0.4",
+            "version": "v7.0.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/validator.git",
-                "reference": "104bc3620d0ee4091034cfbcdcf82ed727f15b7d"
+                "reference": "6a73d479191a0bbbd9ffa3886af6e6ff6e79fb86"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/validator/zipball/104bc3620d0ee4091034cfbcdcf82ed727f15b7d",
-                "reference": "104bc3620d0ee4091034cfbcdcf82ed727f15b7d",
+                "url": "https://api.github.com/repos/symfony/validator/zipball/6a73d479191a0bbbd9ffa3886af6e6ff6e79fb86",
+                "reference": "6a73d479191a0bbbd9ffa3886af6e6ff6e79fb86",
                 "shasum": ""
             },
             "require": {
@@ -9090,7 +9093,7 @@
             "description": "Provides tools to validate values",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/validator/tree/v7.0.4"
+                "source": "https://github.com/symfony/validator/tree/v7.0.5"
             },
             "funding": [
                 {
@@ -9106,7 +9109,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-02-22T20:27:20+00:00"
+            "time": "2024-02-27T12:53:56+00:00"
         },
         {
             "name": "symfony/var-exporter",
@@ -11943,12 +11946,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Roave/SecurityAdvisories.git",
-                "reference": "8f1e484da92817191c75c9b00108f13fb62fd741"
+                "reference": "b011d993ca68a5c59d746b276756051550bbe026"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/8f1e484da92817191c75c9b00108f13fb62fd741",
-                "reference": "8f1e484da92817191c75c9b00108f13fb62fd741",
+                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/b011d993ca68a5c59d746b276756051550bbe026",
+                "reference": "b011d993ca68a5c59d746b276756051550bbe026",
                 "shasum": ""
             },
             "conflict": {
@@ -12031,7 +12034,7 @@
                 "codeigniter4/shield": "<1.0.0.0-beta8",
                 "codiad/codiad": "<=2.8.4",
                 "composer/composer": "<1.10.27|>=2,<2.2.23|>=2.3,<2.7",
-                "concrete5/concrete5": "<9.2.5",
+                "concrete5/concrete5": "<9.2.7",
                 "concrete5/core": "<8.5.8|>=9,<9.1",
                 "contao-components/mediaelement": ">=2.14.2,<2.21.1",
                 "contao/contao": ">=4,<4.4.56|>=4.5,<4.9.40|>=4.10,<4.11.7|>=4.13,<4.13.21|>=5.1,<5.1.4",
@@ -12100,7 +12103,7 @@
                 "ezsystems/ezplatform-solr-search-engine": ">=1.7,<1.7.12|>=2,<2.0.2|>=3.3,<3.3.15",
                 "ezsystems/ezplatform-user": ">=1,<1.0.1",
                 "ezsystems/ezpublish-kernel": "<6.13.8.2-dev|>=7,<7.5.31",
-                "ezsystems/ezpublish-legacy": "<=2017.12.7.3|>=2018.6,<=2019.03.5.1",
+                "ezsystems/ezpublish-legacy": "<=2017.12.7.3|>=2018.06,<=2019.03.5.1",
                 "ezsystems/platform-ui-assets-bundle": ">=4.2,<4.2.3",
                 "ezsystems/repository-forms": ">=2.3,<2.3.2.1-dev|>=2.5,<2.5.15",
                 "ezyang/htmlpurifier": "<4.1.1",
@@ -12342,7 +12345,7 @@
                 "phpmyfaq/phpmyfaq": "<3.2.5",
                 "phpoffice/phpexcel": "<1.8",
                 "phpoffice/phpspreadsheet": "<1.16",
-                "phpseclib/phpseclib": "<2.0.31|>=3,<3.0.34",
+                "phpseclib/phpseclib": "<2.0.47|>=3,<3.0.36",
                 "phpservermon/phpservermon": "<3.6",
                 "phpsysinfo/phpsysinfo": "<3.4.3",
                 "phpunit/phpunit": ">=4.8.19,<4.8.28|>=5.0.10,<5.6.3",
@@ -12360,7 +12363,7 @@
                 "pixelfed/pixelfed": "<0.11.11",
                 "plotly/plotly.js": "<2.25.2",
                 "pocketmine/bedrock-protocol": "<8.0.2",
-                "pocketmine/pocketmine-mp": "<=4.23|>=5,<5.3.1",
+                "pocketmine/pocketmine-mp": "<5.11.2",
                 "pocketmine/raklib": ">=0.14,<0.14.6|>=0.15,<0.15.1",
                 "pressbooks/pressbooks": "<5.18",
                 "prestashop/autoupgrade": ">=4,<4.10.1",
@@ -12409,10 +12412,10 @@
                 "sfroemken/url_redirect": "<=1.2.1",
                 "sheng/yiicms": "<=1.2",
                 "shopware/core": "<=6.5.7.3",
-                "shopware/platform": "<=6.5.7.3",
+                "shopware/platform": "<=6.5.7.3|>=6.5.8,<6.5.8.7-dev",
                 "shopware/production": "<=6.3.5.2",
                 "shopware/shopware": "<=5.7.17",
-                "shopware/storefront": "<=6.4.8.1",
+                "shopware/storefront": "<=6.4.8.1|>=6.5.8,<6.5.8.7-dev",
                 "shopxo/shopxo": "<2.2.6",
                 "showdoc/showdoc": "<2.10.4",
                 "silverstripe-australia/advancedreports": ">=1,<=2",
@@ -12460,7 +12463,7 @@
                 "studio-42/elfinder": "<2.1.62",
                 "subhh/libconnect": "<7.0.8|>=8,<8.1",
                 "sukohi/surpass": "<1",
-                "sulu/sulu": "<1.6.44|>=2,<2.4.16|>=2.5,<2.5.12",
+                "sulu/sulu": "<1.6.44|>=2,<2.4.17|>=2.5,<2.5.13",
                 "sumocoders/framework-user-bundle": "<1.4",
                 "superbig/craft-audit": "<3.0.2",
                 "swag/paypal": "<5.4.4",
@@ -12675,7 +12678,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-03-01T21:04:56+00:00"
+            "time": "2024-03-06T18:04:39+00:00"
         },
         {
             "name": "sebastian/cli-parser",

@@ -6,7 +6,6 @@ namespace App\Entity\Migration;
 
 use App\Entity\Attributes\StableMigration;
 use Doctrine\DBAL\Schema\Schema;
-use Doctrine\Migrations\AbstractMigration;
 
 #[StableMigration('0.17.3')]
 final class Version20220724223136 extends AbstractMigration

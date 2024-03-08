@@ -62,16 +62,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.300.12",
+            "version": "3.300.13",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "0c38aec51d8dc76d6b56a6be05c37b0aff86de2d"
+                "reference": "b1eb7307d30ebcfa4e156971f658c2d177434db3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/0c38aec51d8dc76d6b56a6be05c37b0aff86de2d",
-                "reference": "0c38aec51d8dc76d6b56a6be05c37b0aff86de2d",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/b1eb7307d30ebcfa4e156971f658c2d177434db3",
+                "reference": "b1eb7307d30ebcfa4e156971f658c2d177434db3",
                 "shasum": ""
             },
             "require": {
@@ -151,9 +151,9 @@
             "support": {
                 "forum": "https://forums.aws.amazon.com/forum.jspa?forumID=80",
                 "issues": "https://github.com/aws/aws-sdk-php/issues",
-                "source": "https://github.com/aws/aws-sdk-php/tree/3.300.12"
+                "source": "https://github.com/aws/aws-sdk-php/tree/3.300.13"
             },
-            "time": "2024-03-06T19:38:08+00:00"
+            "time": "2024-03-07T19:14:04+00:00"
         },
         {
             "name": "azuracast/nowplaying",
@@ -3900,7 +3900,7 @@
             "version": "0.6.3",
             "source": {
                 "type": "git",
-                "url": "git@github.com:mustangostang/spyc.git",
+                "url": "https://github.com/mustangostang/spyc.git",
                 "reference": "4627c838b16550b666d15aeae1e5289dd5b77da0"
             },
             "dist": {
@@ -3943,6 +3943,10 @@
                 "yaml",
                 "yml"
             ],
+            "support": {
+                "issues": "https://github.com/mustangostang/spyc/issues",
+                "source": "https://github.com/mustangostang/spyc/tree/0.6.3"
+            },
             "time": "2019-09-10T13:16:29+00:00"
         },
         {
@@ -4218,16 +4222,16 @@
         },
         {
             "name": "pagerfanta/core",
-            "version": "v4.3.1",
+            "version": "v4.3.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Pagerfanta/core.git",
-                "reference": "4154ca642c3a6c2e13df786fc5ff2002bf7a87b8"
+                "reference": "2fe70a38067d74a514bee1b90d301d115dce0b87"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Pagerfanta/core/zipball/4154ca642c3a6c2e13df786fc5ff2002bf7a87b8",
-                "reference": "4154ca642c3a6c2e13df786fc5ff2002bf7a87b8",
+                "url": "https://api.github.com/repos/Pagerfanta/core/zipball/2fe70a38067d74a514bee1b90d301d115dce0b87",
+                "reference": "2fe70a38067d74a514bee1b90d301d115dce0b87",
                 "shasum": ""
             },
             "require": {
@@ -4235,7 +4239,7 @@
                 "php": "^8.1"
             },
             "require-dev": {
-                "phpunit/phpunit": "^10.3"
+                "phpunit/phpunit": "^10.5"
             },
             "type": "library",
             "autoload": {
@@ -4255,22 +4259,22 @@
                 "pagerfanta"
             ],
             "support": {
-                "source": "https://github.com/Pagerfanta/core/tree/v4.3.1"
+                "source": "https://github.com/Pagerfanta/core/tree/v4.3.2"
             },
-            "time": "2023-09-28T23:06:30+00:00"
+            "time": "2024-03-06T23:53:35+00:00"
         },
         {
             "name": "pagerfanta/doctrine-collections-adapter",
-            "version": "v4.3.1",
+            "version": "v4.3.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Pagerfanta/doctrine-collections-adapter.git",
-                "reference": "d50fb0cb5c14a6d75ca661d16114c9de094e2bca"
+                "reference": "b113afc33398c76971c1a216bec274f997320738"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Pagerfanta/doctrine-collections-adapter/zipball/d50fb0cb5c14a6d75ca661d16114c9de094e2bca",
-                "reference": "d50fb0cb5c14a6d75ca661d16114c9de094e2bca",
+                "url": "https://api.github.com/repos/Pagerfanta/doctrine-collections-adapter/zipball/b113afc33398c76971c1a216bec274f997320738",
+                "reference": "b113afc33398c76971c1a216bec274f997320738",
                 "shasum": ""
             },
             "require": {
@@ -4279,7 +4283,7 @@
                 "php": "^8.1"
             },
             "require-dev": {
-                "phpunit/phpunit": "^10.3"
+                "phpunit/phpunit": "^10.5"
             },
             "type": "library",
             "autoload": {
@@ -4301,22 +4305,22 @@
                 "pagerfanta"
             ],
             "support": {
-                "source": "https://github.com/Pagerfanta/doctrine-collections-adapter/tree/v4.3.1"
+                "source": "https://github.com/Pagerfanta/doctrine-collections-adapter/tree/v4.3.2"
             },
-            "time": "2024-02-01T01:28:44+00:00"
+            "time": "2024-03-06T23:51:47+00:00"
         },
         {
             "name": "pagerfanta/doctrine-orm-adapter",
-            "version": "v4.3.1",
+            "version": "v4.3.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Pagerfanta/doctrine-orm-adapter.git",
-                "reference": "faf3d8841e2dff37e3fddd928813a5dd6bc0d40a"
+                "reference": "c51e5c7b2c704e83442a365604d94ebcdec3d054"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Pagerfanta/doctrine-orm-adapter/zipball/faf3d8841e2dff37e3fddd928813a5dd6bc0d40a",
-                "reference": "faf3d8841e2dff37e3fddd928813a5dd6bc0d40a",
+                "url": "https://api.github.com/repos/Pagerfanta/doctrine-orm-adapter/zipball/c51e5c7b2c704e83442a365604d94ebcdec3d054",
+                "reference": "c51e5c7b2c704e83442a365604d94ebcdec3d054",
                 "shasum": ""
             },
             "require": {
@@ -4325,7 +4329,7 @@
                 "php": "^8.1"
             },
             "require-dev": {
-                "phpunit/phpunit": "^10.3",
+                "phpunit/phpunit": "^10.5",
                 "symfony/cache": "^5.4 || ^6.3 || ^7.0"
             },
             "type": "library",
@@ -4348,9 +4352,9 @@
                 "pagerfanta"
             ],
             "support": {
-                "source": "https://github.com/Pagerfanta/doctrine-orm-adapter/tree/v4.3.1"
+                "source": "https://github.com/Pagerfanta/doctrine-orm-adapter/tree/v4.3.2"
             },
-            "time": "2024-01-27T17:20:48+00:00"
+            "time": "2024-03-06T23:51:47+00:00"
         },
         {
             "name": "paragonie/constant_time_encoding",
@@ -9638,12 +9642,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zircote/swagger-php.git",
-                "reference": "a6d8a93e5daa83d3b959221b0f8f176953d145e9"
+                "reference": "038da8ad219f1e9c3f82c5d84c47da3b6f35039c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zircote/swagger-php/zipball/a6d8a93e5daa83d3b959221b0f8f176953d145e9",
-                "reference": "a6d8a93e5daa83d3b959221b0f8f176953d145e9",
+                "url": "https://api.github.com/repos/zircote/swagger-php/zipball/038da8ad219f1e9c3f82c5d84c47da3b6f35039c",
+                "reference": "038da8ad219f1e9c3f82c5d84c47da3b6f35039c",
                 "shasum": ""
             },
             "require": {
@@ -9712,7 +9716,7 @@
                 "issues": "https://github.com/zircote/swagger-php/issues",
                 "source": "https://github.com/zircote/swagger-php/tree/master"
             },
-            "time": "2024-02-18T22:00:16+00:00"
+            "time": "2024-03-07T23:56:26+00:00"
         }
     ],
     "packages-dev": [
@@ -9781,16 +9785,16 @@
         },
         {
             "name": "codeception/codeception",
-            "version": "5.1.1",
+            "version": "5.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Codeception/Codeception.git",
-                "reference": "fcfa1d0ec2eb7439e5290fd3ea685b5d1f90075a"
+                "reference": "3b2d7d1a88e7e1d9dc0acb6d3c8f0acda0a37374"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Codeception/Codeception/zipball/fcfa1d0ec2eb7439e5290fd3ea685b5d1f90075a",
-                "reference": "fcfa1d0ec2eb7439e5290fd3ea685b5d1f90075a",
+                "url": "https://api.github.com/repos/Codeception/Codeception/zipball/3b2d7d1a88e7e1d9dc0acb6d3c8f0acda0a37374",
+                "reference": "3b2d7d1a88e7e1d9dc0acb6d3c8f0acda0a37374",
                 "shasum": ""
             },
             "require": {
@@ -9885,7 +9889,7 @@
             ],
             "support": {
                 "issues": "https://github.com/Codeception/Codeception/issues",
-                "source": "https://github.com/Codeception/Codeception/tree/5.1.1"
+                "source": "https://github.com/Codeception/Codeception/tree/5.1.2"
             },
             "funding": [
                 {
@@ -9893,7 +9897,7 @@
                     "type": "open_collective"
                 }
             ],
-            "time": "2024-02-23T21:42:47+00:00"
+            "time": "2024-03-07T07:19:42+00:00"
         },
         {
             "name": "codeception/lib-asserts",
@@ -11250,16 +11254,16 @@
         },
         {
             "name": "phpstan/phpstan",
-            "version": "1.10.59",
+            "version": "1.10.60",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpstan.git",
-                "reference": "e607609388d3a6d418a50a49f7940e8086798281"
+                "reference": "95dcea7d6c628a3f2f56d091d8a0219485a86bbe"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/e607609388d3a6d418a50a49f7940e8086798281",
-                "reference": "e607609388d3a6d418a50a49f7940e8086798281",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/95dcea7d6c628a3f2f56d091d8a0219485a86bbe",
+                "reference": "95dcea7d6c628a3f2f56d091d8a0219485a86bbe",
                 "shasum": ""
             },
             "require": {
@@ -11308,7 +11312,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-02-20T13:59:13+00:00"
+            "time": "2024-03-07T13:30:19+00:00"
         },
         {
             "name": "phpstan/phpstan-doctrine",

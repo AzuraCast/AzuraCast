@@ -46,11 +46,24 @@ export default function useNowPlaying(props) {
                     {src: np_new.now_playing.song.art}
                 ]
             });
+
+            setPositionState(np_new.now_playing.duration, np_new.now_playing.elapsed);
+
+            navigator.mediaSession.setActionHandler("seekto", function () {
+                setPositionState(np_new.now_playing.duration, np_new.now_playing.elapsed);
+            });
         }
 
         document.dispatchEvent(new CustomEvent("now-playing", {
             detail: np_new
         }));
+
+        function setPositionState(duration, position) {
+            navigator.mediaSession.setPositionState({
+                duration,
+                position,
+            });
+        }
     }
 
     if (props.useSse) {

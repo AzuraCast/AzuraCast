@@ -46,6 +46,11 @@ export default function useNowPlaying(props) {
                     {src: np_new.now_playing.song.art}
                 ]
             });
+
+            navigator.mediaSession.setPositionState({
+                duration: np_new.now_playing.duration,
+                position: np_new.now_playing.elapsed,
+            });
         }
 
         document.dispatchEvent(new CustomEvent("now-playing", {

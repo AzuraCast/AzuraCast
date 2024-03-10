@@ -38,7 +38,7 @@
     "doctrine/orm": "^3",
     "dragonmantank/cron-expression": "^3.1",
     "gettext/gettext": "^5",
-    "gettext/php-scanner": "dev-master",
+    "gettext/php-scanner": "^2",
     "gettext/translator": "^1.1",
     "guzzlehttp/guzzle": "^7.0",
     "intervention/image": "^3",
@@ -169,12 +169,6 @@
   "prefer-stable": true,
   "bin": [
     "bin/console"
-  ],
-  "repositories": [
-    {
-      "type": "github",
-      "url": "https://github.com/busterneece/php-scanner"
-    }
   ],
   "scripts": {
     "ci-import-locales": [

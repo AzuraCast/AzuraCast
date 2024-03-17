@@ -1,7 +1,7 @@
 #
 # Golang dependencies build step
 #
-FROM golang:1.21-bookworm AS go-dependencies
+FROM golang:1.22-bookworm AS go-dependencies
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends openssl git
@@ -10,7 +10,7 @@ RUN go install github.com/jwilder/dockerize@v0.6.1
 
 RUN go install github.com/aptible/supercronic@v0.2.28
 
-RUN go install github.com/centrifugal/centrifugo/v5@v5.2.2
+RUN go install github.com/centrifugal/centrifugo/v5@v5.3.0
 
 #
 # MariaDB dependencies build step

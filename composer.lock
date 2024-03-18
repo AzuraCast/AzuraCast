@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "51e424d0099e99a1f4b376244844d555",
+    "content-hash": "201fa8d6f4ca06afe1f45c39845a3603",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -62,16 +62,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.300.14",
+            "version": "3.301.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "f1e0c37d8403d7097c2c808c184137e6517d54be"
+                "reference": "0a910d2b35e7087337cdf3569dc9b6ce232aafba"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/f1e0c37d8403d7097c2c808c184137e6517d54be",
-                "reference": "f1e0c37d8403d7097c2c808c184137e6517d54be",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/0a910d2b35e7087337cdf3569dc9b6ce232aafba",
+                "reference": "0a910d2b35e7087337cdf3569dc9b6ce232aafba",
                 "shasum": ""
             },
             "require": {
@@ -151,9 +151,9 @@
             "support": {
                 "forum": "https://forums.aws.amazon.com/forum.jspa?forumID=80",
                 "issues": "https://github.com/aws/aws-sdk-php/issues",
-                "source": "https://github.com/aws/aws-sdk-php/tree/3.300.14"
+                "source": "https://github.com/aws/aws-sdk-php/tree/3.301.1"
             },
-            "time": "2024-03-08T19:05:39+00:00"
+            "time": "2024-03-15T18:14:42+00:00"
         },
         {
             "name": "azuracast/nowplaying",
@@ -460,28 +460,28 @@
         },
         {
             "name": "composer/ca-bundle",
-            "version": "1.4.1",
+            "version": "1.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer/ca-bundle.git",
-                "reference": "3ce240142f6d59b808dd65c1f52f7a1c252e6cfd"
+                "reference": "0c5ccfcfea312b5c5a190a21ac5cef93f74baf99"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer/ca-bundle/zipball/3ce240142f6d59b808dd65c1f52f7a1c252e6cfd",
-                "reference": "3ce240142f6d59b808dd65c1f52f7a1c252e6cfd",
+                "url": "https://api.github.com/repos/composer/ca-bundle/zipball/0c5ccfcfea312b5c5a190a21ac5cef93f74baf99",
+                "reference": "0c5ccfcfea312b5c5a190a21ac5cef93f74baf99",
                 "shasum": ""
             },
             "require": {
                 "ext-openssl": "*",
                 "ext-pcre": "*",
-                "php": "^5.3.2 || ^7.0 || ^8.0"
+                "php": "^7.2 || ^8.0"
             },
             "require-dev": {
-                "phpstan/phpstan": "^0.12.55",
+                "phpstan/phpstan": "^1.10",
                 "psr/log": "^1.0",
                 "symfony/phpunit-bridge": "^4.2 || ^5",
-                "symfony/process": "^2.5 || ^3.0 || ^4.0 || ^5.0 || ^6.0 || ^7.0"
+                "symfony/process": "^4.0 || ^5.0 || ^6.0 || ^7.0"
             },
             "type": "library",
             "extra": {
@@ -516,7 +516,7 @@
             "support": {
                 "irc": "irc://irc.freenode.org/composer",
                 "issues": "https://github.com/composer/ca-bundle/issues",
-                "source": "https://github.com/composer/ca-bundle/tree/1.4.1"
+                "source": "https://github.com/composer/ca-bundle/tree/1.5.0"
             },
             "funding": [
                 {
@@ -532,7 +532,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-02-23T10:16:52+00:00"
+            "time": "2024-03-15T14:00:32+00:00"
         },
         {
             "name": "dflydev/fig-cookies",
@@ -1442,16 +1442,16 @@
         },
         {
             "name": "doctrine/persistence",
-            "version": "3.3.1",
+            "version": "3.3.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/persistence.git",
-                "reference": "b6fd1f126b13c1f7e7321f7338b14a19116b5de4"
+                "reference": "477da35bd0255e032826f440b94b3e37f2d56f42"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/persistence/zipball/b6fd1f126b13c1f7e7321f7338b14a19116b5de4",
-                "reference": "b6fd1f126b13c1f7e7321f7338b14a19116b5de4",
+                "url": "https://api.github.com/repos/doctrine/persistence/zipball/477da35bd0255e032826f440b94b3e37f2d56f42",
+                "reference": "477da35bd0255e032826f440b94b3e37f2d56f42",
                 "shasum": ""
             },
             "require": {
@@ -1520,7 +1520,7 @@
             ],
             "support": {
                 "issues": "https://github.com/doctrine/persistence/issues",
-                "source": "https://github.com/doctrine/persistence/tree/3.3.1"
+                "source": "https://github.com/doctrine/persistence/tree/3.3.2"
             },
             "funding": [
                 {
@@ -1536,7 +1536,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-03-01T19:53:13+00:00"
+            "time": "2024-03-12T14:54:36+00:00"
         },
         {
             "name": "dragonmantank/cron-expression",
@@ -2556,16 +2556,16 @@
         },
         {
             "name": "intervention/image",
-            "version": "3.4.0",
+            "version": "3.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Intervention/image.git",
-                "reference": "fe1b0e2e64157133322974c28b44c25c2770a0c5"
+                "reference": "408d3655c7705339e8c79731ea7efb51546cfa10"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Intervention/image/zipball/fe1b0e2e64157133322974c28b44c25c2770a0c5",
-                "reference": "fe1b0e2e64157133322974c28b44c25c2770a0c5",
+                "url": "https://api.github.com/repos/Intervention/image/zipball/408d3655c7705339e8c79731ea7efb51546cfa10",
+                "reference": "408d3655c7705339e8c79731ea7efb51546cfa10",
                 "shasum": ""
             },
             "require": {
@@ -2576,7 +2576,7 @@
             "require-dev": {
                 "mockery/mockery": "^1.6",
                 "phpstan/phpstan": "^1",
-                "phpunit/phpunit": "^9",
+                "phpunit/phpunit": "^10.0",
                 "slevomat/coding-standard": "~8.0",
                 "squizlabs/php_codesniffer": "^3.8"
             },
@@ -2612,7 +2612,7 @@
             ],
             "support": {
                 "issues": "https://github.com/Intervention/image/issues",
-                "source": "https://github.com/Intervention/image/tree/3.4.0"
+                "source": "https://github.com/Intervention/image/tree/3.5.0"
             },
             "funding": [
                 {
@@ -2624,7 +2624,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-02-14T15:11:21+00:00"
+            "time": "2024-03-13T16:26:15+00:00"
         },
         {
             "name": "james-heinrich/getid3",
@@ -2907,16 +2907,16 @@
         },
         {
             "name": "league/flysystem",
-            "version": "3.25.0",
+            "version": "3.25.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/flysystem.git",
-                "reference": "4c44347133618cccd9b3df1729647a1577b4ad99"
+                "reference": "abbd664eb4381102c559d358420989f835208f18"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/4c44347133618cccd9b3df1729647a1577b4ad99",
-                "reference": "4c44347133618cccd9b3df1729647a1577b4ad99",
+                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/abbd664eb4381102c559d358420989f835208f18",
+                "reference": "abbd664eb4381102c559d358420989f835208f18",
                 "shasum": ""
             },
             "require": {
@@ -2981,7 +2981,7 @@
             ],
             "support": {
                 "issues": "https://github.com/thephpleague/flysystem/issues",
-                "source": "https://github.com/thephpleague/flysystem/tree/3.25.0"
+                "source": "https://github.com/thephpleague/flysystem/tree/3.25.1"
             },
             "funding": [
                 {
@@ -2993,20 +2993,20 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-03-09T17:06:45+00:00"
+            "time": "2024-03-16T12:53:19+00:00"
         },
         {
             "name": "league/flysystem-aws-s3-v3",
-            "version": "3.24.0",
+            "version": "3.25.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/flysystem-aws-s3-v3.git",
-                "reference": "809474e37b7fb1d1f8bcc0f8a98bc1cae99aa513"
+                "reference": "6a5be0e6d6a93574e80805c9cc108a4b63c824d8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/flysystem-aws-s3-v3/zipball/809474e37b7fb1d1f8bcc0f8a98bc1cae99aa513",
-                "reference": "809474e37b7fb1d1f8bcc0f8a98bc1cae99aa513",
+                "url": "https://api.github.com/repos/thephpleague/flysystem-aws-s3-v3/zipball/6a5be0e6d6a93574e80805c9cc108a4b63c824d8",
+                "reference": "6a5be0e6d6a93574e80805c9cc108a4b63c824d8",
                 "shasum": ""
             },
             "require": {
@@ -3046,7 +3046,7 @@
                 "storage"
             ],
             "support": {
-                "source": "https://github.com/thephpleague/flysystem-aws-s3-v3/tree/3.24.0"
+                "source": "https://github.com/thephpleague/flysystem-aws-s3-v3/tree/3.25.1"
             },
             "funding": [
                 {
@@ -3058,20 +3058,20 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-01-26T18:43:21+00:00"
+            "time": "2024-03-15T19:58:44+00:00"
         },
         {
             "name": "league/flysystem-local",
-            "version": "3.23.1",
+            "version": "3.25.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/flysystem-local.git",
-                "reference": "b884d2bf9b53bb4804a56d2df4902bb51e253f00"
+                "reference": "61a6a90d6e999e4ddd9ce5adb356de0939060b92"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/flysystem-local/zipball/b884d2bf9b53bb4804a56d2df4902bb51e253f00",
-                "reference": "b884d2bf9b53bb4804a56d2df4902bb51e253f00",
+                "url": "https://api.github.com/repos/thephpleague/flysystem-local/zipball/61a6a90d6e999e4ddd9ce5adb356de0939060b92",
+                "reference": "61a6a90d6e999e4ddd9ce5adb356de0939060b92",
                 "shasum": ""
             },
             "require": {
@@ -3105,8 +3105,7 @@
                 "local"
             ],
             "support": {
-                "issues": "https://github.com/thephpleague/flysystem-local/issues",
-                "source": "https://github.com/thephpleague/flysystem-local/tree/3.23.1"
+                "source": "https://github.com/thephpleague/flysystem-local/tree/3.25.1"
             },
             "funding": [
                 {
@@ -3118,20 +3117,20 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-01-26T18:25:23+00:00"
+            "time": "2024-03-15T19:58:44+00:00"
         },
         {
             "name": "league/flysystem-sftp-v3",
-            "version": "3.25.0",
+            "version": "3.25.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/flysystem-sftp-v3.git",
-                "reference": "7102bf14c18647b04acdf08075c94a7a52d7ac3f"
+                "reference": "5cf169f33e4351832373f9d1b663c137589aa260"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/flysystem-sftp-v3/zipball/7102bf14c18647b04acdf08075c94a7a52d7ac3f",
-                "reference": "7102bf14c18647b04acdf08075c94a7a52d7ac3f",
+                "url": "https://api.github.com/repos/thephpleague/flysystem-sftp-v3/zipball/5cf169f33e4351832373f9d1b663c137589aa260",
+                "reference": "5cf169f33e4351832373f9d1b663c137589aa260",
                 "shasum": ""
             },
             "require": {
@@ -3165,7 +3164,7 @@
                 "sftp"
             ],
             "support": {
-                "source": "https://github.com/thephpleague/flysystem-sftp-v3/tree/3.25.0"
+                "source": "https://github.com/thephpleague/flysystem-sftp-v3/tree/3.25.1"
             },
             "funding": [
                 {
@@ -3177,7 +3176,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-03-09T15:59:56+00:00"
+            "time": "2024-03-16T11:44:18+00:00"
         },
         {
             "name": "league/mime-type-detection",
@@ -4009,16 +4008,16 @@
         },
         {
             "name": "nesbot/carbon",
-            "version": "3.0.2",
+            "version": "3.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/briannesbitt/Carbon.git",
-                "reference": "cf30cfceac9693bdb339ffb51f091e6039bdf10d"
+                "reference": "34ccf6f6b49c915421c7886c88c0cb77f3ebbfd2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/briannesbitt/Carbon/zipball/cf30cfceac9693bdb339ffb51f091e6039bdf10d",
-                "reference": "cf30cfceac9693bdb339ffb51f091e6039bdf10d",
+                "url": "https://api.github.com/repos/briannesbitt/Carbon/zipball/34ccf6f6b49c915421c7886c88c0cb77f3ebbfd2",
+                "reference": "34ccf6f6b49c915421c7886c88c0cb77f3ebbfd2",
                 "shasum": ""
             },
             "require": {
@@ -4111,7 +4110,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-02-06T09:28:31+00:00"
+            "time": "2024-03-13T12:42:37+00:00"
         },
         {
             "name": "nikic/fast-route",
@@ -9643,12 +9642,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zircote/swagger-php.git",
-                "reference": "038da8ad219f1e9c3f82c5d84c47da3b6f35039c"
+                "reference": "d3265da27c8983345190123378f4cfda59c2fb41"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zircote/swagger-php/zipball/038da8ad219f1e9c3f82c5d84c47da3b6f35039c",
-                "reference": "038da8ad219f1e9c3f82c5d84c47da3b6f35039c",
+                "url": "https://api.github.com/repos/zircote/swagger-php/zipball/d3265da27c8983345190123378f4cfda59c2fb41",
+                "reference": "d3265da27c8983345190123378f4cfda59c2fb41",
                 "shasum": ""
             },
             "require": {
@@ -9715,9 +9714,9 @@
             ],
             "support": {
                 "issues": "https://github.com/zircote/swagger-php/issues",
-                "source": "https://github.com/zircote/swagger-php/tree/4.8.5"
+                "source": "https://github.com/zircote/swagger-php/tree/master"
             },
-            "time": "2024-03-07T23:56:26+00:00"
+            "time": "2024-03-15T02:35:23+00:00"
         }
     ],
     "packages-dev": [
@@ -10849,7 +10848,7 @@
         },
         {
             "name": "mockery/mockery",
-            "version": "1.6.7",
+            "version": "1.6.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mockery/mockery.git",
@@ -11255,16 +11254,16 @@
         },
         {
             "name": "phpstan/phpstan",
-            "version": "1.10.60",
+            "version": "1.10.62",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpstan.git",
-                "reference": "95dcea7d6c628a3f2f56d091d8a0219485a86bbe"
+                "reference": "cd5c8a1660ed3540b211407c77abf4af193a6af9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/95dcea7d6c628a3f2f56d091d8a0219485a86bbe",
-                "reference": "95dcea7d6c628a3f2f56d091d8a0219485a86bbe",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/cd5c8a1660ed3540b211407c77abf4af193a6af9",
+                "reference": "cd5c8a1660ed3540b211407c77abf4af193a6af9",
                 "shasum": ""
             },
             "require": {
@@ -11313,7 +11312,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-03-07T13:30:19+00:00"
+            "time": "2024-03-13T12:27:20+00:00"
         },
         {
             "name": "phpstan/phpstan-doctrine",
@@ -11389,16 +11388,16 @@
         },
         {
             "name": "phpunit/php-code-coverage",
-            "version": "11.0.2",
+            "version": "11.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/php-code-coverage.git",
-                "reference": "9e0a298b4dc6438a1e70ac8e1b3ea4980ae5a09b"
+                "reference": "7e35a2cbcabac0e6865fd373742ea432a3c34f92"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/9e0a298b4dc6438a1e70ac8e1b3ea4980ae5a09b",
-                "reference": "9e0a298b4dc6438a1e70ac8e1b3ea4980ae5a09b",
+                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/7e35a2cbcabac0e6865fd373742ea432a3c34f92",
+                "reference": "7e35a2cbcabac0e6865fd373742ea432a3c34f92",
                 "shasum": ""
             },
             "require": {
@@ -11455,7 +11454,7 @@
             "support": {
                 "issues": "https://github.com/sebastianbergmann/php-code-coverage/issues",
                 "security": "https://github.com/sebastianbergmann/php-code-coverage/security/policy",
-                "source": "https://github.com/sebastianbergmann/php-code-coverage/tree/11.0.2"
+                "source": "https://github.com/sebastianbergmann/php-code-coverage/tree/11.0.3"
             },
             "funding": [
                 {
@@ -11463,7 +11462,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-03-09T16:56:49+00:00"
+            "time": "2024-03-12T15:35:40+00:00"
         },
         {
             "name": "phpunit/php-file-iterator",
@@ -11712,16 +11711,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "11.0.5",
+            "version": "11.0.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "da2de3900beab025398ba37705b0f5ecafb3e1ab"
+                "reference": "6af32d7938fc366f86e49a5f5ebb314018d1b1fb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/da2de3900beab025398ba37705b0f5ecafb3e1ab",
-                "reference": "da2de3900beab025398ba37705b0f5ecafb3e1ab",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/6af32d7938fc366f86e49a5f5ebb314018d1b1fb",
+                "reference": "6af32d7938fc366f86e49a5f5ebb314018d1b1fb",
                 "shasum": ""
             },
             "require": {
@@ -11792,7 +11791,7 @@
             "support": {
                 "issues": "https://github.com/sebastianbergmann/phpunit/issues",
                 "security": "https://github.com/sebastianbergmann/phpunit/security/policy",
-                "source": "https://github.com/sebastianbergmann/phpunit/tree/11.0.5"
+                "source": "https://github.com/sebastianbergmann/phpunit/tree/11.0.6"
             },
             "funding": [
                 {
@@ -11808,20 +11807,20 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-03-09T12:12:14+00:00"
+            "time": "2024-03-12T15:40:01+00:00"
         },
         {
             "name": "psy/psysh",
-            "version": "v0.12.0",
+            "version": "v0.12.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/bobthecow/psysh.git",
-                "reference": "750bf031a48fd07c673dbe3f11f72362ea306d0d"
+                "reference": "9185c66c2165bbf4d71de78a69dccf4974f9538d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/bobthecow/psysh/zipball/750bf031a48fd07c673dbe3f11f72362ea306d0d",
-                "reference": "750bf031a48fd07c673dbe3f11f72362ea306d0d",
+                "url": "https://api.github.com/repos/bobthecow/psysh/zipball/9185c66c2165bbf4d71de78a69dccf4974f9538d",
+                "reference": "9185c66c2165bbf4d71de78a69dccf4974f9538d",
                 "shasum": ""
             },
             "require": {
@@ -11885,9 +11884,9 @@
             ],
             "support": {
                 "issues": "https://github.com/bobthecow/psysh/issues",
-                "source": "https://github.com/bobthecow/psysh/tree/v0.12.0"
+                "source": "https://github.com/bobthecow/psysh/tree/v0.12.2"
             },
-            "time": "2023-12-20T15:28:09+00:00"
+            "time": "2024-03-17T01:53:00+00:00"
         },
         {
             "name": "pyrech/composer-changelogs",
@@ -11952,12 +11951,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Roave/SecurityAdvisories.git",
-                "reference": "bb15a6dc9a8493ace041a6de2929eb63ba0809ef"
+                "reference": "eedc674d89085b0199bd96bfad410404fb2f5dbf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/bb15a6dc9a8493ace041a6de2929eb63ba0809ef",
-                "reference": "bb15a6dc9a8493ace041a6de2929eb63ba0809ef",
+                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/eedc674d89085b0199bd96bfad410404fb2f5dbf",
+                "reference": "eedc674d89085b0199bd96bfad410404fb2f5dbf",
                 "shasum": ""
             },
             "conflict": {
@@ -12109,7 +12108,7 @@
                 "ezsystems/ezplatform-solr-search-engine": ">=1.7,<1.7.12|>=2,<2.0.2|>=3.3,<3.3.15",
                 "ezsystems/ezplatform-user": ">=1,<1.0.1",
                 "ezsystems/ezpublish-kernel": "<6.13.8.2-dev|>=7,<7.5.31",
-                "ezsystems/ezpublish-legacy": "<=2017.12.7.3|>=2018.06,<=2019.03.5.1",
+                "ezsystems/ezpublish-legacy": "<=2017.12.7.3|>=2018.6,<=2019.03.5.1",
                 "ezsystems/platform-ui-assets-bundle": ">=4.2,<4.2.3",
                 "ezsystems/repository-forms": ">=2.3,<2.3.2.1-dev|>=2.5,<2.5.15",
                 "ezyang/htmlpurifier": "<4.1.1",
@@ -12684,7 +12683,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-03-10T05:04:21+00:00"
+            "time": "2024-03-13T21:04:41+00:00"
         },
         {
             "name": "sebastian/cli-parser",

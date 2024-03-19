@@ -12,8 +12,6 @@ final class Centrifugo
 {
     use EnvironmentAwareTrait;
 
-    public const GLOBAL_TIME_CHANNEL = 'global:time';
-
     public function __construct(
         private readonly Client $client,
     ) {
@@ -22,24 +20,6 @@ final class Centrifugo
     public function isSupported(): bool
     {
         return $this->environment->isDocker() && !$this->environment->isTesting();
-    }
-
-    public function sendTime(): void
-    {
-        $this->send([
-            'method' => 'publish',
-            'params' => [
-                'channel' => self::GLOBAL_TIME_CHANNEL,
-                'data' => $this->buildTimeMessage(),
-            ],
-        ]);
-    }
-
-    public function buildTimeMessage(): array
-    {
-        return [
-            'time' => time(),
-        ];
     }
 
     public function publishToStation(Station $station, mixed $message, array $triggers): void
@@ -58,6 +38,7 @@ final class Centrifugo
         return [
             'np' => $message,
             'triggers' => $triggers,
+            'current_time' => time(),
         ];
     }
 

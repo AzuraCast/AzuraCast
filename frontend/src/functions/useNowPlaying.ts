@@ -72,7 +72,6 @@ export default function useNowPlaying(props) {
             "cf_connect": JSON.stringify({
                 "subs": {
                     [`station:${props.stationShortName}`]: {},
-                    "global:time": {},
                 }
             }),
         });
@@ -80,19 +79,20 @@ export default function useNowPlaying(props) {
 
         const handleSseData = (ssePayload) => {
             const jsonData = ssePayload?.pub?.data ?? {};
-            if (ssePayload.channel === 'global:time') {
-                currentTime.value = jsonData.time;
+
+            if ('current_time' in jsonData) {
+                currentTime.value = jsonData.current_time;
+            }
+
+            if (npTimestamp.value === 0) {
+                setNowPlaying(jsonData.np);
             } else {
-                if (npTimestamp.value === 0) {
+                // SSE events often dispatch *too quickly* relative to the delays involved in
+                // Liquidsoap and Icecast, so we delay these changes from showing up to better
+                // approximate when listeners will really hear the track change.
+                setTimeout(() => {
                     setNowPlaying(jsonData.np);
-                } else {
-                    // SSE events often dispatch *too quickly* relative to the delays involved in
-                    // Liquidsoap and Icecast, so we delay these changes from showing up to better
-                    // approximate when listeners will really hear the track change.
-                    setTimeout(() => {
-                        setNowPlaying(jsonData.np);
-                    }, 3000);
-                }
+                }, 3000);
             }
         }
 

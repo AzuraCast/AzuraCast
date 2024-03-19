@@ -406,7 +406,7 @@ final class Scheduler
         if (!empty($startDate)) {
             $startDate = CarbonImmutable::createFromFormat('Y-m-d', $startDate, $now->getTimezone());
 
-            if (false !== $startDate) {
+            if (null !== $startDate) {
                 $startDate = $startDate->setTime(0, 0);
                 if ($now->lt($startDate)) {
                     return false;
@@ -417,7 +417,7 @@ final class Scheduler
         if (!empty($endDate)) {
             $endDate = CarbonImmutable::createFromFormat('Y-m-d', $endDate, $now->getTimezone());
 
-            if (false !== $endDate) {
+            if (null !== $endDate) {
                 $endDate = $endDate->setTime(23, 59, 59);
                 if ($now->gt($endDate)) {
                     return false;

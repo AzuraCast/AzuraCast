@@ -33,6 +33,11 @@ FROM ghcr.io/azuracast/icecast-kh-ac:2024-02-13 AS icecast
 FROM ghcr.io/roadrunner-server/roadrunner:2023.3.8 AS roadrunner
 
 #
+# PHP Extension Installer build step
+#
+FROM mlocati/php-extension-installer AS php-extension-installer
+
+#
 # Final build image
 #
 FROM php:8.3-fpm-bookworm AS pre-final
@@ -44,7 +49,7 @@ ENV TZ="UTC" \
     LC_TYPE="en_US.UTF-8"
 
 # Add PHP extension installer tool
-COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr/local/bin/
+COPY --from=php-extension-installer /usr/bin/install-php-extensions /usr/local/bin/
 
 # Add Go dependencies
 COPY --from=go-dependencies /go/bin/dockerize /usr/local/bin

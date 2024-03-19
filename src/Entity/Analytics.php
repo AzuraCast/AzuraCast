@@ -7,6 +7,7 @@ namespace App\Entity;
 use App\Entity\Enums\AnalyticsIntervals;
 use App\Entity\Interfaces\IdentifiableEntityInterface;
 use Carbon\CarbonImmutable;
+use DateTimeImmutable;
 use DateTimeInterface;
 use DateTimeZone;
 use Doctrine\ORM\Mapping as ORM;
@@ -32,8 +33,8 @@ class Analytics implements IdentifiableEntityInterface
     #[ORM\Column(type: 'string', length: 15, enumType: AnalyticsIntervals::class)]
     protected AnalyticsIntervals $type;
 
-    #[ORM\Column(type: 'carbon_immutable')]
-    protected CarbonImmutable $moment;
+    #[ORM\Column(type: 'datetime_immutable')]
+    protected DateTimeImmutable $moment;
 
     #[ORM\Column]
     protected int $number_min;
@@ -81,7 +82,7 @@ class Analytics implements IdentifiableEntityInterface
 
     public function getMoment(): CarbonImmutable
     {
-        return $this->moment;
+        return CarbonImmutable::instance($this->moment);
     }
 
     public function getMomentInStationTimeZone(): CarbonImmutable
@@ -91,7 +92,7 @@ class Analytics implements IdentifiableEntityInterface
         }
 
         $tz = $this->station->getTimezoneObject();
-        return CarbonImmutable::parse($this->moment, $tz)->shiftTimezone($tz);
+        return CarbonImmutable::instance($this->moment)->shiftTimezone($tz);
     }
 
     public function getNumberMin(): int

@@ -135,10 +135,6 @@ return [
         $config->addCustomNumericFunction('RAND', DoctrineExtensions\Query\Mysql\Rand::class);
         $config->addCustomStringFunction('FIELD', DoctrineExtensions\Query\Mysql\Field::class);
 
-        if (!Doctrine\DBAL\Types\Type::hasType('carbon_immutable')) {
-            Doctrine\DBAL\Types\Type::addType('carbon_immutable', Carbon\Doctrine\CarbonImmutableType::class);
-        }
-
         $eventManager = new Doctrine\Common\EventManager();
         $eventManager->addEventSubscriber($eventRequiresRestart);
         $eventManager->addEventSubscriber($eventAuditLog);

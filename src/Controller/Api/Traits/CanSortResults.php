@@ -68,15 +68,14 @@ trait CanSortResults
         ServerRequest $request,
         Order $defaultSortOrder = Order::Ascending
     ): array {
+        $sortValue = Types::stringOrNull($request->getParam('sort'), true);
         $sortOrder = Types::stringOrNull($request->getParam('sortOrder'), true);
 
-        $orderEnum = (null !== $sortOrder)
-            ? Order::tryFrom(strtoupper($sortOrder)) ?? $defaultSortOrder
-            : $defaultSortOrder;
-
         return [
-            Types::stringOrNull($request->getParam('sort'), true),
-            $orderEnum,
+            $sortValue,
+            (null !== $sortValue && null !== $sortOrder)
+                ? Order::tryFrom(strtoupper($sortOrder)) ?? $defaultSortOrder
+                : $defaultSortOrder,
         ];
     }
 

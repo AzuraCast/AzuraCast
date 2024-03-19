@@ -34,10 +34,10 @@ final class PodcastEpisode
     public int $created_at;
 
     #[OA\Property]
-    public bool $is_published = true;
+    public int $publish_at;
 
     #[OA\Property]
-    public ?int $publish_at = null;
+    public bool $is_published = true;
 
     #[OA\Property]
     public bool $has_media = false;

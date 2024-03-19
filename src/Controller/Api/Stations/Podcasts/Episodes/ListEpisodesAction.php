@@ -37,7 +37,7 @@ final class ListEpisodesAction implements SingleActionInterface
             ->leftJoin('e.playlist_media', 'sm')
             ->where('e.podcast = :podcast')
             ->setParameter('podcast', $podcast)
-            ->andWhere('e.publish_at IS NULL OR e.publish_at <= :publishTime')
+            ->andWhere('e.publish_at <= :publishTime')
             ->setParameter('publishTime', time())
             ->andWhere(
                 '(p.source = :sourceManual AND pm.id IS NOT NULL) OR (p.source = :sourcePlaylist AND sm.id IS NOT NULL)'

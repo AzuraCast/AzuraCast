@@ -46,8 +46,8 @@ class PodcastEpisode implements IdentifiableEntityInterface
     #[Assert\NotBlank]
     protected string $description;
 
-    #[ORM\Column(nullable: true)]
-    protected ?int $publish_at = null;
+    #[ORM\Column]
+    protected int $publish_at;
 
     #[ORM\Column]
     protected bool $explicit;
@@ -63,6 +63,7 @@ class PodcastEpisode implements IdentifiableEntityInterface
     {
         $this->podcast = $podcast;
         $this->created_at = time();
+        $this->publish_at = time();
     }
 
     public function getPodcast(): Podcast
@@ -126,14 +127,14 @@ class PodcastEpisode implements IdentifiableEntityInterface
         return $this;
     }
 
-    public function getPublishAt(): ?int
+    public function getPublishAt(): int
     {
         return $this->publish_at;
     }
 
     public function setPublishAt(?int $publishAt): self
     {
-        $this->publish_at = $publishAt;
+        $this->publish_at = $publishAt ?? $this->created_at;
 
         return $this;
     }
@@ -181,7 +182,7 @@ class PodcastEpisode implements IdentifiableEntityInterface
 
     public function isPublished(): bool
     {
-        if ($this->getPublishAt() !== null && $this->getPublishAt() > time()) {
+        if ($this->getPublishAt() > time()) {
             return false;
         }
 

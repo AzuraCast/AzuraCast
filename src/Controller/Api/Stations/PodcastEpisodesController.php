@@ -14,7 +14,6 @@ use App\Entity\Repository\PodcastEpisodeRepository;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\OpenApi;
-use App\Paginator;
 use App\Service\Flow\UploadedFile;
 use Doctrine\Common\Collections\Order;
 use InvalidArgumentException;
@@ -213,7 +212,6 @@ final class PodcastEpisodesController extends AbstractApiCrudController
             ->join('e.podcast', 'p')
             ->leftJoin('e.media', 'pm')
             ->where('e.podcast = :podcast')
-            ->orderBy('e.created_at', 'DESC')
             ->setParameter('podcast', $podcast);
 
         $queryBuilder = $this->searchQueryBuilder(
@@ -224,25 +222,18 @@ final class PodcastEpisodesController extends AbstractApiCrudController
             ]
         );
 
-        $episodes = array_map(
-            fn($row) => $this->viewRecord($row, $request),
-            $queryBuilder->getQuery()->getResult()
-        );
-
-        $episodes = $this->sortArray(
+        $queryBuilder = $this->sortQueryBuilder(
             $request,
-            $episodes,
+            $queryBuilder,
             [
-                'is_published' => 'is_published',
-                'publish_at' => 'publish_at',
-                'is_explicit' => 'is_explicit',
+                'publish_at' => 'e.publish_at',
+                'is_explicit' => 'e.is_explicit',
             ],
-            'id',
+            'e.publish_at',
             Order::Descending
         );
 
-        $paginator = Paginator::fromArray($episodes, $request);
-        return $paginator->write($response);
+        return $this->listPaginatedFromQuery($request, $response, $queryBuilder->getQuery());
     }
 
     /**

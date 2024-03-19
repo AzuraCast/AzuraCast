@@ -189,7 +189,7 @@ const fields: DataTableField[] = [
         key: 'is_published',
         label: $gettext('Is Published'),
         visible: false,
-        sortable: true,
+        sortable: false,
         selectable: true
     },
     {

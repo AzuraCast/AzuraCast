@@ -21,7 +21,7 @@ use App\Media\MimeType;
 use App\Paginator;
 use App\Utilities\Strings;
 use App\Utilities\Types;
-use Doctrine\Common\Collections\Criteria;
+use Doctrine\Common\Collections\Order;
 use Doctrine\ORM\QueryBuilder;
 use League\Flysystem\StorageAttributes;
 use Psr\Http\Message\ResponseInterface;
@@ -429,7 +429,7 @@ final class ListAction implements SingleActionInterface
         PropertyAccessorInterface $propertyAccessor,
         ?string $searchPhrase = null,
         ?string $sort = null,
-        string $sortOrder = Criteria::ASC
+        Order $sortOrder = Order::Ascending
     ): int {
         if ('special:duplicates' === $searchPhrase) {
             return $a->media->id <=> $b->media->id;
@@ -443,7 +443,7 @@ final class ListAction implements SingleActionInterface
         if (!$sort) {
             $aVal = $a->path;
             $bVal = $b->path;
-            return (Criteria::ASC === $sortOrder) ? $aVal <=> $bVal : $bVal <=> $aVal;
+            return (Order::Ascending === $sortOrder) ? $aVal <=> $bVal : $bVal <=> $aVal;
         }
 
         return self::sortByDotNotation($a, $b, $propertyAccessor, $sort, $sortOrder);

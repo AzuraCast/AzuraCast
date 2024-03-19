@@ -14,6 +14,7 @@ use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Paginator;
 use App\Utilities\Types;
+use Doctrine\Common\Collections\Order;
 use Doctrine\ORM\AbstractQuery;
 use Psr\Http\Message\ResponseInterface;
 
@@ -58,7 +59,7 @@ final class RequestsController
                 'genre' => 'sm.genre',
             ],
             'sr.timestamp',
-            'DESC'
+            Order::Descending
         );
 
         $qb = $this->searchQueryBuilder(

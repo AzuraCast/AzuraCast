@@ -6,7 +6,7 @@ namespace App\Controller\Api\Traits;
 
 use App\Http\ServerRequest;
 use App\Utilities\Types;
-use Doctrine\Common\Collections\Criteria;
+use Doctrine\Common\Collections\Order;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 
@@ -19,7 +19,7 @@ trait CanSortResults
         QueryBuilder $queryBuilder,
         array $sortLookup,
         ?string $defaultSort,
-        string $defaultSortOrder = Criteria::ASC
+        Order $defaultSortOrder = Order::Ascending
     ): QueryBuilder {
         [$sort, $sortOrder] = $this->getSortFromRequest($request, $defaultSortOrder);
 
@@ -31,7 +31,7 @@ trait CanSortResults
             return $queryBuilder;
         }
 
-        return $queryBuilder->addOrderBy($sortValue, $sortOrder);
+        return $queryBuilder->addOrderBy($sortValue, $sortOrder->value);
     }
 
     protected function sortArray(
@@ -39,7 +39,7 @@ trait CanSortResults
         array $results,
         array $sortLookup,
         ?string $defaultSort = null,
-        string $defaultSortOrder = Criteria::ASC
+        Order $defaultSortOrder = Order::Ascending
     ): array {
         [$sort, $sortOrder] = $this->getSortFromRequest($request, $defaultSortOrder);
 
@@ -62,18 +62,21 @@ trait CanSortResults
     }
 
     /**
-     * @return array{string|null, Criteria::ASC|Criteria::DESC}
+     * @return array{string|null, Order}
      */
     protected function getSortFromRequest(
         ServerRequest $request,
-        string $defaultSortOrder = Criteria::ASC
+        Order $defaultSortOrder = Order::Ascending
     ): array {
-        $sortOrder = Types::stringOrNull($request->getParam('sortOrder'), true) ?? $defaultSortOrder;
+        $sortOrder = Types::stringOrNull($request->getParam('sortOrder'), true);
+
+        $orderEnum = (null !== $sortOrder)
+            ? Order::tryFrom(strtoupper($sortOrder)) ?? $defaultSortOrder
+            : $defaultSortOrder;
+
         return [
             Types::stringOrNull($request->getParam('sort'), true),
-            (Criteria::DESC === strtoupper($sortOrder))
-                ? Criteria::DESC
-                : Criteria::ASC,
+            $orderEnum,
         ];
     }
 
@@ -82,7 +85,7 @@ trait CanSortResults
         object|array $b,
         PropertyAccessorInterface $propertyAccessor,
         string $sortValue,
-        string $sortOrder
+        Order $sortOrder = Order::Ascending
     ): int {
         $aVal = $propertyAccessor->getValue($a, $sortValue);
         $bVal = $propertyAccessor->getValue($b, $sortValue);
@@ -94,7 +97,7 @@ trait CanSortResults
             $bVal = mb_strtolower($bVal, 'UTF-8');
         }
 
-        return (Criteria::ASC === $sortOrder)
+        return (Order::Ascending === $sortOrder)
             ? $aVal <=> $bVal
             : $bVal <=> $aVal;
     }

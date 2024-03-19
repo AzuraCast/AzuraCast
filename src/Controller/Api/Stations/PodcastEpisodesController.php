@@ -16,6 +16,7 @@ use App\Http\ServerRequest;
 use App\OpenApi;
 use App\Paginator;
 use App\Service\Flow\UploadedFile;
+use Doctrine\Common\Collections\Order;
 use InvalidArgumentException;
 use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
@@ -237,7 +238,7 @@ final class PodcastEpisodesController extends AbstractApiCrudController
                 'is_explicit' => 'is_explicit',
             ],
             'id',
-            'DESC'
+            Order::Descending
         );
 
         $paginator = Paginator::fromArray($episodes, $request);

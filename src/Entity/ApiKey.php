@@ -6,8 +6,8 @@ namespace App\Entity;
 
 use App\Entity\Interfaces\EntityGroupsInterface;
 use App\Entity\Interfaces\IdentifiableEntityInterface;
-use App\Normalizer\Attributes\DeepNormalize;
 use App\Security\SplitToken;
+use Azura\Normalizer\Attributes\DeepNormalize;
 use Doctrine\ORM\Mapping as ORM;
 use Stringable;
 use Symfony\Component\Serializer\Annotation as Serializer;

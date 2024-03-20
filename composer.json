@@ -27,6 +27,7 @@
     "ext-xml": "*",
     "ext-xmlreader": "*",
     "ext-xmlwriter": "*",
+    "azuracast/doctrine-entity-normalizer": "^3.0",
     "azuracast/nowplaying": "dev-main",
     "beberlei/doctrineextensions": "^1.5",
     "br33f/php-ga4-mp": "^0.1.2",

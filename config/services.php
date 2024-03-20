@@ -279,7 +279,7 @@ return [
         $normalizers = [
             new Symfony\Component\Serializer\Normalizer\BackedEnumNormalizer(),
             new Symfony\Component\Serializer\Normalizer\JsonSerializableNormalizer(),
-            new App\Normalizer\DoctrineEntityNormalizer(
+            new Azura\Normalizer\DoctrineEntityNormalizer(
                 $em,
                 classMetadataFactory: $classMetaFactory
             ),

@@ -22,6 +22,9 @@ final class PodcastEpisode
     public string $title;
 
     #[OA\Property]
+    public ?string $link = null;
+
+    #[OA\Property]
     public string $description;
 
     #[OA\Property]

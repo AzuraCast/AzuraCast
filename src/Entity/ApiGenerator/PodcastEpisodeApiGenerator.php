@@ -12,6 +12,7 @@ use App\Entity\PodcastMedia;
 use App\Entity\StationMedia;
 use App\Http\ServerRequest;
 use App\Utilities\Strings;
+use Symfony\Component\Filesystem\Path;
 
 final class PodcastEpisodeApiGenerator
 {
@@ -34,12 +35,16 @@ final class PodcastEpisodeApiGenerator
         $return->id = $record->getIdRequired();
         $return->title = $record->getTitle();
 
+        $return->link = $record->getLink();
+
         $return->description = $record->getDescription();
         $return->description_short = Strings::truncateText($return->description, 100);
 
         $return->explicit = $record->getExplicit();
         $return->created_at = $record->getCreatedAt();
         $return->publish_at = $record->getPublishAt();
+
+        $mediaExtension = '';
 
         switch ($podcast->getSource()) {
             case PodcastSources::Playlist:
@@ -51,6 +56,8 @@ final class PodcastEpisodeApiGenerator
 
                     $return->playlist_media = $this->songApiGen->__invoke($playlistMediaRow);
                     $return->playlist_media_id = $playlistMediaRow->getUniqueId();
+
+                    $mediaExtension = Path::getExtension($playlistMediaRow->getPath());
                 } else {
                     $return->has_media = false;
 
@@ -75,6 +82,8 @@ final class PodcastEpisodeApiGenerator
 
                     $return->has_media = true;
                     $return->media = $media;
+
+                    $mediaExtension = Path::getExtension($mediaRow->getPath());
                 } else {
                     $return->has_media = false;
                     $return->media = null;
@@ -98,6 +107,11 @@ final class PodcastEpisodeApiGenerator
             $artRouteParams['timestamp'] = $return->art_updated_at;
         }
 
+        $downloadRouteParams = $baseRouteParams;
+        if ('' !== $mediaExtension) {
+            $downloadRouteParams['extension'] = $mediaExtension;
+        }
+
         $return->art = $router->named(
             routeName: 'api:stations:public:podcast:episode:art',
             routeParams: $artRouteParams,
@@ -117,7 +131,7 @@ final class PodcastEpisodeApiGenerator
             ),
             'download' => $router->fromHere(
                 routeName: 'api:stations:public:podcast:episode:download',
-                routeParams: $baseRouteParams,
+                routeParams: $downloadRouteParams,
                 absolute: !$isInternal
             ),
         ];

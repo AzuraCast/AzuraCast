@@ -42,6 +42,7 @@ import {useTranslate} from "~/vendor/gettext";
 import ModalForm from "~/components/Common/ModalForm.vue";
 import {useLuxon} from "~/vendor/luxon";
 import Tabs from "~/components/Common/Tabs.vue";
+import {useAzuraCastStation} from "~/vendor/azuracast.ts";
 
 const props = defineProps({
     ...baseEditModalProps,
@@ -74,6 +75,7 @@ const {record, reset} = useResettableRef({
 });
 
 const {DateTime} = useLuxon();
+const {timezone} = useAzuraCastStation();
 
 const {
     loading,
@@ -105,7 +107,7 @@ const {
             let publishTime = '';
 
             if (data.publish_at !== null) {
-                const publishDateTime = DateTime.fromSeconds(data.publish_at);
+                const publishDateTime = DateTime.fromSeconds(data.publish_at, {zone: timezone});
                 publishDate = publishDateTime.toISODate();
                 publishTime = publishDateTime.toISOTime({
                     suppressMilliseconds: true,
@@ -125,7 +127,7 @@ const {
 
             if (modifiedForm.publish_date.length > 0 && modifiedForm.publish_time.length > 0) {
                 const publishDateTimeString = modifiedForm.publish_date + 'T' + modifiedForm.publish_time;
-                const publishDateTime = DateTime.fromISO(publishDateTimeString);
+                const publishDateTime = DateTime.fromISO(publishDateTimeString, {zone: timezone});
 
                 modifiedForm.publish_at = publishDateTime.toSeconds();
             }

@@ -13,6 +13,7 @@ use App\Entity\PodcastEpisode;
 use App\Exception\NotFoundException;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use App\Rss\PodcastNamespaceWriter;
 use DateTime;
 use MarcW\RssWriter\Extension\Atom\AtomLink;
 use MarcW\RssWriter\Extension\Atom\AtomWriter;
@@ -54,14 +55,6 @@ final class PodcastFeedAction implements SingleActionInterface
 
         $podcast = $request->getPodcast();
 
-        // Create RSS Writer
-        $rssWriter = new RssWriter(null, [], true);
-        $rssWriter->registerWriter(new CoreWriter());
-        $rssWriter->registerWriter(new ItunesWriter());
-        $rssWriter->registerWriter(new SyWriter());
-        $rssWriter->registerWriter(new SlashWriter());
-        $rssWriter->registerWriter(new AtomWriter());
-
         $channel = new RssChannel();
         $channel->setTtl(5);
         $channel->setLastBuildDate(new DateTime());
@@ -98,8 +91,6 @@ final class PodcastFeedAction implements SingleActionInterface
         $channel->setImage($rssImage);
 
         // Iterate through episodes.
-        $rssItems = [];
-
         $hasPublishedEpisode = false;
         $hasExplicitEpisode = false;
 
@@ -114,41 +105,12 @@ final class PodcastFeedAction implements SingleActionInterface
                 $hasExplicitEpisode = true;
             }
 
-            $episodeApi = $this->episodeApiGenerator->__invoke($episode, $request);
-
-            $rssItem = new RssItem();
-
-            $rssItem->setGuid((new RssGuid())->setGuid($episodeApi->id));
-            $rssItem->setTitle($episodeApi->title);
-            $rssItem->setDescription($episodeApi->description);
-            $rssItem->setLink($episodeApi->link ?? $episodeApi->links['self']);
-
-            $rssItem->setPubDate((new DateTime())->setTimestamp($episode->getPublishAt()));
-
-            $rssEnclosure = new RssEnclosure();
-            $rssEnclosure->setUrl($episodeApi->links['download']);
-
-            $podcastMedia = $episode->getMedia();
-            if (null !== $podcastMedia) {
-                $rssEnclosure->setType($podcastMedia->getMimeType());
-                $rssEnclosure->setLength($podcastMedia->getLength());
-            }
-            $rssItem->setEnclosure($rssEnclosure);
-
-            $rssItem->addExtension(
-                (new ItunesItem())
-                    ->setExplicit($episode->getExplicit())
-                    ->setImage($episodeApi->art)
-            );
-
-            $rssItems[] = $rssItem;
+            $channel->addItem($this->buildItemForEpisode($episode, $request));
         }
 
         if (!$hasPublishedEpisode) {
             throw NotFoundException::podcast();
         }
-
-        $channel->setItems($rssItems);
 
         $itunesChannel = new ItunesChannel();
         $itunesChannel->setExplicit($hasExplicitEpisode);
@@ -179,6 +141,15 @@ final class PodcastFeedAction implements SingleActionInterface
                 ->setType('application/rss+xml')
         );
 
+        $rssWriter = new RssWriter(null, [
+            new CoreWriter(),
+            new ItunesWriter(),
+            new SyWriter(),
+            new SlashWriter(),
+            new AtomWriter(),
+            new PodcastNamespaceWriter(),
+        ], true);
+
         $response->getBody()->write(
             $rssWriter->writeChannel($channel)
         );
@@ -186,6 +157,38 @@ final class PodcastFeedAction implements SingleActionInterface
         return $response
             ->withHeader('Content-Type', 'application/rss+xml')
             ->withHeader('X-Robots-Tag', 'index, nofollow');
+    }
+
+    private function buildItemForEpisode(PodcastEpisode $episode, ServerRequest $request): RssItem
+    {
+        $episodeApi = $this->episodeApiGenerator->__invoke($episode, $request);
+
+        $rssItem = new RssItem();
+
+        $rssItem->setGuid((new RssGuid())->setGuid($episodeApi->id));
+        $rssItem->setTitle($episodeApi->title);
+        $rssItem->setDescription($episodeApi->description);
+        $rssItem->setLink($episodeApi->link ?? $episodeApi->links['self']);
+
+        $rssItem->setPubDate((new DateTime())->setTimestamp($episode->getPublishAt()));
+
+        $rssEnclosure = new RssEnclosure();
+        $rssEnclosure->setUrl($episodeApi->links['download']);
+
+        $podcastMedia = $episode->getMedia();
+        if (null !== $podcastMedia) {
+            $rssEnclosure->setType($podcastMedia->getMimeType());
+            $rssEnclosure->setLength($podcastMedia->getLength());
+        }
+        $rssItem->setEnclosure($rssEnclosure);
+
+        $rssItem->addExtension(
+            (new ItunesItem())
+                ->setExplicit($episode->getExplicit())
+                ->setImage($episodeApi->art)
+        );
+
+        return $rssItem;
     }
 
     private function buildItunesOwner(Podcast $podcast): ?ItunesOwner

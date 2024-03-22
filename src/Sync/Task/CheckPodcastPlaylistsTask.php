@@ -11,6 +11,7 @@ use App\Entity\Repository\PodcastEpisodeRepository;
 use App\Entity\Station;
 use App\Entity\StationMedia;
 use App\Flysystem\StationFilesystems;
+use Carbon\CarbonImmutable;
 
 final class CheckPodcastPlaylistsTask extends AbstractTask
 {
@@ -121,13 +122,14 @@ final class CheckPodcastPlaylistsTask extends AbstractTask
                         ]))
                     );
 
+                    $publishAt = CarbonImmutable::createFromTimestamp($media->getMtime() ?? time(), 'UTC');
                     if (!$podcast->playlistAutoPublish()) {
                         // Set a date in the future to unpublish the episode.
                         $podcastEpisode->setPublishAt(
-                            strtotime('+10 years')
+                            $publishAt->addYears(10)->getTimestamp()
                         );
                     } else {
-                        $podcastEpisode->setPublishAt($media->getMtime());
+                        $podcastEpisode->setPublishAt($publishAt->getTimestamp());
                     }
 
                     $this->em->persist($podcastEpisode);

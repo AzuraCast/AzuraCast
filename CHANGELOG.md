@@ -5,6 +5,10 @@ release channel, you can take advantage of these new features and fixes.
 
 ## New Features/Changes
 
+- **Improved Media Search**: We've overhauled our media search functions to add support
+  for [extended search](https://www.fusejs.io/examples.html#extended-search) queries. Searches now also include values
+  stored in custom fields.
+
 ## Code Quality/Technical Changes
 
 ## Bug Fixes

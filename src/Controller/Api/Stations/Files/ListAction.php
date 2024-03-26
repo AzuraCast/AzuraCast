@@ -19,6 +19,7 @@ use App\Http\RouterInterface;
 use App\Http\ServerRequest;
 use App\Media\MimeType;
 use App\Paginator;
+use App\Service\FuseSearch;
 use App\Utilities\Strings;
 use App\Utilities\Types;
 use Doctrine\Common\Collections\Order;
@@ -36,7 +37,8 @@ final class ListAction implements SingleActionInterface
 
     public function __construct(
         private readonly CacheInterface $cache,
-        private readonly StationFilesystems $stationFilesystems
+        private readonly StationFilesystems $stationFilesystems,
+        private readonly FuseSearch $fuseSearch
     ) {
     }
 
@@ -69,7 +71,12 @@ final class ListAction implements SingleActionInterface
         ];
 
         if ($isSearch) {
-            $cacheKeyParts[] = 'search_' . rawurlencode($searchPhraseFull);
+            if ($playlist instanceof StationPlaylist) {
+                $cacheKeyParts[] = 'search_playlist_' . $playlist->getIdRequired();
+            }
+            if (!empty($special)) {
+                $cacheKeyParts[] = 'search_special_' . rawurlencode($special);
+            }
         }
 
         $cacheKey = implode('.', $cacheKeyParts);
@@ -113,7 +120,7 @@ final class ListAction implements SingleActionInterface
             )->setParameter('storageLocation', $storageLocation)
                 ->setParameter('path', $pathLike);
 
-            // Apply searching
+            // Apply special searches (string searches happen below).
             if ($isSearch) {
                 if ('unprocessable' === $special) {
                     $mediaQueryBuilder = null;
@@ -145,12 +152,6 @@ final class ListAction implements SingleActionInterface
                             'sm.id IN (SELECT spm2.media_id FROM App\Entity\StationPlaylistMedia spm2 '
                             . 'WHERE spm2.playlist = :playlist)'
                         )->setParameter('playlist', $playlist);
-                    }
-
-                    if (!empty($searchPhrase)) {
-                        $mediaQueryBuilder->andWhere(
-                            '(sm.title LIKE :query OR sm.artist LIKE :query OR sm.path LIKE :query)'
-                        )->setParameter('query', '%' . $searchPhrase . '%');
                     }
 
                     $unprocessableMediaRaw = [];
@@ -265,10 +266,40 @@ final class ListAction implements SingleActionInterface
             $this->cache->set($cacheKey, $result, 300);
         }
 
-        // Apply sorting
-        [$sort, $sortOrder] = $this->getSortFromRequest($request);
+        // Apply searching
+        if (!empty($searchPhrase)) {
+            $result = $this->fuseSearch->search(
+                $searchPhrase,
+                $result,
+                [
+                    'keys' => [
+                        'text',
+                        'path',
+                        'album',
+                        'genre',
+                        'custom_fields',
+                    ],
+                    'threshold' => 0.2,
+                    'useExtendedSearch' => true,
+                    'getFn' => fn(FileList $record, array $key) => match ($key[0] ?? null) {
+                        'text' => $record->media->text,
+                        'path' => $record->path,
+                        'album' => $record->media->album,
+                        'genre' => $record->media->genre,
+                        'custom_fields' => implode(' ', $record->media->custom_fields),
+                        default => null,
+                    },
+                ],
+                $cacheKey,
+                300,
+                $flushCache
+            );
+        }
 
         $propertyAccessor = self::getPropertyAccessor();
+
+        // Apply sorting
+        [$sort, $sortOrder] = $this->getSortFromRequest($request);
 
         usort(
             $result,

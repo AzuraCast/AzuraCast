@@ -39,6 +39,18 @@ class StationBackendConfiguration extends AbstractStationConfiguration
         $this->set(self::DJ_PORT, $port);
     }
 
+    public const DJ_PORT_SECONDARY = 'dj_port_decondary';
+
+    public function getDjPortSecondary(): ?int
+    {
+        return Types::intOrNull($this->get(self::DJ_PORT_SECONDARY));
+    }
+
+    public function setDjPortSecondary(?int $port): void
+    {
+        $this->set(self::DJ_PORT_SECONDARY, $port);
+    }
+
     public const TELNET_PORT = 'telnet_port';
 
     public function getTelnetPort(): ?int

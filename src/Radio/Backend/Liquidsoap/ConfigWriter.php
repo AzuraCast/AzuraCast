@@ -1030,7 +1030,41 @@ final class ConfigWriter implements EventSubscriberInterface
 
             # Live Broadcasting
             live = input.harbor({$harborParams})
+            LIQ
+        );
 
+        
+        // Live Secondary Port
+        $streamPortSecondary = $this->liquidsoap->getStreamPortSecondary($station);
+        // Paramètres pour live Secondary
+        $harborSecondary_params = [
+            '"' . self::cleanUpString($dj_mount) . '"', // Assurez-vous que $dj_mount est défini correctement
+            'id = "input_streamer_live_secondary"', // ID unique pour live1
+            'port = ' . $streamPortSecondary, // Utilisation de getStreamPort1 pour le port
+            'auth = dj_auth', // Authentification, assurez-vous que 'dj_auth' est correctement défini
+            'icy = true', // Paramètres ICY
+            'icy_metadata_charset = "' . $charset . '"', // Charset pour les métadonnées ICY, assurez-vous que $charset est défini
+            'metadata_charset = "' . $charset . '"', // Charset pour les métadonnées, assurez-vous que $charset est défini
+            'on_connect = live_connected', // Action à la connexion
+            'on_disconnect = live_disconnected', // Action à la déconnexion
+        ];
+    
+        // Ajouter des paramètres de buffer si nécessaire
+        $djBuffer = $settings->getDjBuffer(); // Assurez-vous que $settings est défini et a une méthode getDjBuffer
+        if (0 !== $djBuffer) {
+            $harborSecondary_params[] = 'buffer = ' . self::toFloat($djBuffer);
+            $harborSecondary_params[] = 'max = ' . self::toFloat(max($djBuffer + 5, 10));
+        }
+    
+        // Concaténer les paramètres pour former la chaîne de configuration live1
+        $harborSecondaryParams = implode(', ', $harborSecondary_params);
+    
+        // Ajout de la configuration live1 au fichier de configuration LiquidSoap
+        // Assurez-vous que cette ligne est placée au bon endroit dans votre script pour écrire dans le fichier de configuration
+        $event->appendBlock("live1 = input.harbor({$harbor1Params})\n");
+
+        $event->appendBlock(
+            <<<LIQ
             def insert_missing(m) =
                 if m == [] then
                     [("title", "{$liveBroadcastText}"), ("is_live", "true")]
@@ -1039,8 +1073,9 @@ final class ConfigWriter implements EventSubscriberInterface
                 end
             end
             live = metadata.map(insert_missing, live)
+            live1 = metadata.map(insert_missing, live1)
 
-            radio = fallback(id="live_fallback", track_sensitive=false, replay_metadata=true, [live, radio])
+            radio = fallback(id="live_fallback", track_sensitive=false, replay_metadata=true, [live, live1, radio])
 
             # Skip non-live track when live DJ goes live.
             def check_live() =

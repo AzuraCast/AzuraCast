@@ -35,6 +35,7 @@ return static function (CallableEventDispatcherInterface $dispatcher) {
                     'table_name' => 'app_migrations',
                     'version_column_length' => 191,
                 ],
+                'custom_template' => $environment->getBaseDirectory() . '/util/doctrine_migration.php.tmpl',
             ];
 
             $buildMigrationConfigurationsEvent = new Event\BuildMigrationConfigurationArray(

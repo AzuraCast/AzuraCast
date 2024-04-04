@@ -26,6 +26,7 @@
                 :types="buildTypeInfo([
                     WebhookType.TuneIn,
                     WebhookType.RadioDe,
+                    WebhookType.RadioReg,
                     WebhookType.GetMeRadio
                 ])"
                 @select="selectType"

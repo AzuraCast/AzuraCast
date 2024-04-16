@@ -51,7 +51,6 @@
     "league/mime-type-detection": "^1.7",
     "league/oauth2-client": "^2.6",
     "league/plates": "^3.1",
-    "loilo/fuse": "^7.0",
     "lstrojny/fxmlrpc": "dev-master",
     "marcw/rss-writer": "^0.4.0",
     "matomo/device-detector": "^6",

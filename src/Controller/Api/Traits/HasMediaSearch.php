@@ -12,15 +12,6 @@ trait HasMediaSearch
 {
     use EntityManagerAwareTrait;
 
-    /**
-     * @param Station $station
-     * @param string $query
-     * @return array{
-     *     string,
-     *     StationPlaylist|null,
-     *     string|null
-     * }
-     */
     private function parseSearchQuery(
         Station $station,
         string $query

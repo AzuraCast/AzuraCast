@@ -149,17 +149,19 @@ server {
     # Internal handlers used by the application to perform X-Accel-Redirect's for higher performance.
     location /internal/backups/ {
         internal;
-
         add_header Access-Control-Allow-Origin "$upstream_http_access_control_allow_origin";
-
         alias /var/azuracast/backups/;
+    }
+
+    location /internal/storage/ {
+        internal;
+        add_header Access-Control-Allow-Origin "$upstream_http_access_control_allow_origin";
+        alias /var/azuracast/storage/;
     }
 
     location /internal/stations/ {
         internal;
-
         add_header Access-Control-Allow-Origin "$upstream_http_access_control_allow_origin";
-        
         alias /var/azuracast/stations/;
     }
 

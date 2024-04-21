@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5bca0c641ba21645d05ab830394898ae",
+    "content-hash": "77d8e4e6837ec47f02ea21d3f3cb767e",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -3504,64 +3504,6 @@
                 "source": "https://github.com/lstrojny/fxmlrpc/tree/master"
             },
             "time": "2023-08-22T06:06:43+00:00"
-        },
-        {
-            "name": "marcw/rss-writer",
-            "version": "0.4.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/marcw/rss-writer.git",
-                "reference": "4bbd63aea62246fe43bec589a1e8bdda2f4ef219"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/marcw/rss-writer/zipball/4bbd63aea62246fe43bec589a1e8bdda2f4ef219",
-                "reference": "4bbd63aea62246fe43bec589a1e8bdda2f4ef219",
-                "shasum": ""
-            },
-            "require": {
-                "ext-xmlwriter": "*"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "^5.4",
-                "symfony/debug": "^3.1",
-                "symfony/http-foundation": "^3.1",
-                "symfony/validator": "^3.1",
-                "symfony/var-dumper": "^3.1"
-            },
-            "suggest": {
-                "symfony/http-foundation": "Enable streaming RSS response",
-                "symfony/validator": ""
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "MarcW\\RssWriter\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Marc Weistroff",
-                    "email": "marc@weistroff.net"
-                }
-            ],
-            "description": "A simple yet powerful RSS2 feed writer with RSS extensions support (like iTunes podcast tags)",
-            "keywords": [
-                "feed",
-                "podcast",
-                "podcasting",
-                "rss",
-                "rss2"
-            ],
-            "support": {
-                "issues": "https://github.com/marcw/rss-writer/issues",
-                "source": "https://github.com/marcw/rss-writer/tree/master"
-            },
-            "time": "2017-04-01T11:53:47+00:00"
         },
         {
             "name": "matomo/device-detector",

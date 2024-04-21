@@ -15,9 +15,12 @@ use App\Http\ServerRequest;
 use App\Xml\Writer;
 use Carbon\CarbonImmutable;
 use Psr\Http\Message\ResponseInterface;
+use Ramsey\Uuid\Uuid;
 
 final class PodcastFeedAction implements SingleActionInterface
 {
+    public const string PODCAST_NAMESPACE = 'ead4c236-bf58-58c6-a2c6-a6b28d128cb6';
+
     public function __construct(
         private readonly PodcastApiGenerator $podcastApiGenerator,
         private readonly PodcastEpisodeApiGenerator $episodeApiGenerator
@@ -52,7 +55,7 @@ final class PodcastFeedAction implements SingleActionInterface
 
         $channel = [
             'title' => $podcastApi->title,
-            'link' => $podcastApi->link ?? $podcastApi->links['self'],
+            'link' => $podcastApi->link ?? $podcastApi->links['public_episodes'],
             'description' => $podcastApi->description,
             'language' => $podcastApi->language,
             'lastBuildDate' => $now->toRssString(),
@@ -92,6 +95,7 @@ final class PodcastFeedAction implements SingleActionInterface
                 '@type' => 'application/rss+xml',
                 '@href' => (string)$request->getUri(),
             ],
+            'podcast:guid' => $this->buildPodcastGuid($podcastApi->links['public_feed']),
             'item' => [],
         ];
 
@@ -155,7 +159,7 @@ final class PodcastFeedAction implements SingleActionInterface
 
         $item = [
             'title' => $episodeApi->title,
-            'link' => $episodeApi->link ?? $episodeApi->links['self'],
+            'link' => $episodeApi->link ?? $episodeApi->links['public'],
             'description' => $episodeApi->description,
             'enclosure' => [
                 '@url' => $episodeApi->links['download'],
@@ -185,5 +189,18 @@ final class PodcastFeedAction implements SingleActionInterface
         }
 
         return $item;
+    }
+
+    private function buildPodcastGuid(string $uri): string
+    {
+        $baseUri = rtrim(
+            str_replace(['https://', 'http://'], '', $uri),
+            '/'
+        );
+
+        return (string)Uuid::uuid5(
+            self::PODCAST_NAMESPACE,
+            $baseUri
+        );
     }
 }

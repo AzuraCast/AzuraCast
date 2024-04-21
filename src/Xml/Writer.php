@@ -15,21 +15,18 @@ final class Writer
 {
     public static function toString(
         array $config,
-        string $baseElement = 'xml-config'
-    ): string {
-        return self::processConfig($config, $baseElement);
-    }
-
-    private static function processConfig(
-        array $config,
-        string $baseElement = 'xml-config'
+        string $baseElement = 'xml-config',
+        bool $includeOpeningTag = true
     ): string {
         $writer = new XMLWriter();
         $writer->openMemory();
         $writer->setIndent(true);
         $writer->setIndentString(str_repeat(' ', 4));
 
-        $writer->startDocument('1.0', 'UTF-8');
+        if ($includeOpeningTag) {
+            $writer->startDocument('1.0', 'UTF-8');
+        }
+
         $writer->startElement($baseElement);
 
         // Make sure attributes come first

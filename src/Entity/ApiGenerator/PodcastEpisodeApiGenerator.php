@@ -41,6 +41,9 @@ final class PodcastEpisodeApiGenerator
         $return->description_short = Strings::truncateText($return->description, 100);
 
         $return->explicit = $record->getExplicit();
+        $return->season_number = $record->getSeasonNumber();
+        $return->episode_number = $record->getEpisodeNumber();
+
         $return->created_at = $record->getCreatedAt();
         $return->publish_at = $record->getPublishAt();
 

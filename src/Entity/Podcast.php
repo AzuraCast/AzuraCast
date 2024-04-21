@@ -52,6 +52,9 @@ class Podcast implements Interfaces\IdentifiableEntityInterface
     #[Assert\NotBlank]
     protected string $description;
 
+    #[ORM\Column(type: 'json', nullable: true)]
+    protected ?array $branding_config = null;
+
     #[ORM\Column(length: 2)]
     #[Assert\NotBlank]
     protected string $language;
@@ -145,6 +148,24 @@ class Podcast implements Interfaces\IdentifiableEntityInterface
         $this->description = $this->truncateString($description, 4000);
 
         return $this;
+    }
+
+    public function getBrandingConfig(): PodcastBrandingConfiguration
+    {
+        return new PodcastBrandingConfiguration((array)$this->branding_config);
+    }
+
+    public function setBrandingConfig(
+        PodcastBrandingConfiguration|array $brandingConfig,
+        bool $forceOverwrite = false
+    ): void {
+        if (is_array($brandingConfig)) {
+            $brandingConfig = new PodcastBrandingConfiguration(
+                $forceOverwrite ? $brandingConfig : array_merge((array)$this->branding_config, $brandingConfig)
+            );
+        }
+
+        $this->branding_config = $brandingConfig->toArray();
     }
 
     public function getLanguage(): string

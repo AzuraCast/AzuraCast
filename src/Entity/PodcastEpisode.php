@@ -53,6 +53,12 @@ class PodcastEpisode implements IdentifiableEntityInterface
     protected bool $explicit;
 
     #[ORM\Column]
+    protected ?int $season_number;
+
+    #[ORM\Column]
+    protected ?int $episode_number;
+
+    #[ORM\Column]
     protected int $created_at;
 
     #[ORM\Column]
@@ -147,6 +153,30 @@ class PodcastEpisode implements IdentifiableEntityInterface
     public function setExplicit(bool $explicit): self
     {
         $this->explicit = $explicit;
+
+        return $this;
+    }
+
+    public function getSeasonNumber(): ?int
+    {
+        return $this->season_number;
+    }
+
+    public function setSeasonNumber(?int $season_number): self
+    {
+        $this->season_number = $season_number;
+
+        return $this;
+    }
+
+    public function getEpisodeNumber(): ?int
+    {
+        return $this->episode_number;
+    }
+
+    public function setEpisodeNumber(?int $episode_number): self
+    {
+        $this->episode_number = $episode_number;
 
         return $this;
     }

@@ -42,6 +42,13 @@ final class Podcast
     #[OA\Property]
     public string $description_short;
 
+    #[OA\Property(
+        description: "An array containing podcast-specific branding configuration",
+        type: "array",
+        items: new OA\Items()
+    )]
+    public array $branding_config;
+
     #[OA\Property]
     public string $language;
 

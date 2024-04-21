@@ -14,8 +14,6 @@ use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Xml\Writer;
 use Carbon\CarbonImmutable;
-use DateTime;
-use MarcW\RssWriter\Extension\Core\Channel as RssChannel;
 use Psr\Http\Message\ResponseInterface;
 
 final class PodcastFeedAction implements SingleActionInterface
@@ -37,10 +35,6 @@ final class PodcastFeedAction implements SingleActionInterface
         }
 
         $podcast = $request->getPodcast();
-
-        $channel = new RssChannel();
-        $channel->setTtl(5);
-        $channel->setLastBuildDate(new DateTime());
 
         // Fetch podcast API feed.
         $podcastApi = $this->podcastApiGenerator->__invoke($podcast, $request);

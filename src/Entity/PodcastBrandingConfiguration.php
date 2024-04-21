@@ -6,5 +6,4 @@ namespace App\Entity;
 
 class PodcastBrandingConfiguration extends AbstractStationConfiguration
 {
-    
 }

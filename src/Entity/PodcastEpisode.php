@@ -52,10 +52,10 @@ class PodcastEpisode implements IdentifiableEntityInterface
     #[ORM\Column]
     protected bool $explicit;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     protected ?int $season_number;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     protected ?int $episode_number;
 
     #[ORM\Column]

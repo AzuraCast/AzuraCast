@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "77d8e4e6837ec47f02ea21d3f3cb767e",
+    "content-hash": "e787b1c33e7b29a06d97ee12c0ce8810",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -10220,36 +10220,34 @@
             "time": "2023-01-13T18:41:03+00:00"
         },
         {
-            "name": "codeception/module-doctrine2",
-            "version": "3.0.3",
+            "name": "codeception/module-doctrine",
+            "version": "3.1.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/Codeception/module-doctrine2.git",
-                "reference": "3ba1c67fc15a0fe9dcf594746e81a876c667daf1"
+                "url": "https://github.com/Codeception/module-doctrine.git",
+                "reference": "465ef7d4021d694612bfe788150b7d5131c6f87c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Codeception/module-doctrine2/zipball/3ba1c67fc15a0fe9dcf594746e81a876c667daf1",
-                "reference": "3ba1c67fc15a0fe9dcf594746e81a876c667daf1",
+                "url": "https://api.github.com/repos/Codeception/module-doctrine/zipball/465ef7d4021d694612bfe788150b7d5131c6f87c",
+                "reference": "465ef7d4021d694612bfe788150b7d5131c6f87c",
                 "shasum": ""
             },
             "require": {
-                "codeception/codeception": "^5.0.0-alpha2",
+                "codeception/codeception": "^5.1",
                 "ext-json": "*",
                 "ext-pdo": "*",
-                "php": "^8.0"
-            },
-            "conflict": {
-                "codeception/codeception": "<5.0"
+                "php": "^8.1"
             },
             "require-dev": {
-                "codeception/stub": "^4.0",
-                "doctrine/annotations": "^1.13",
-                "doctrine/data-fixtures": "^1.5",
-                "doctrine/orm": "^2.10",
-                "phpstan/phpstan": "^1.0",
-                "ramsey/uuid-doctrine": "^1.6",
-                "symfony/cache": "^4.4 || ^5.4 || ^6.0"
+                "codeception/stub": "^4.1.3",
+                "doctrine/annotations": "^2.0.1",
+                "doctrine/data-fixtures": "^1.7",
+                "doctrine/orm": "^2.14 || ^3.0",
+                "phpstan/phpstan": "^1.10.58",
+                "symfony/cache": "^5.4.35 || ^6.4.3 || ^7.0",
+                "symfony/doctrine-bridge": "^5.4.35 || ^6.4.3 || ^7.0",
+                "symfony/uid": "^5.4.35 || ^6.4.3 || ^7.0"
             },
             "type": "library",
             "autoload": {
@@ -10269,17 +10267,17 @@
                     "name": "Alex Kunin"
                 }
             ],
-            "description": "Doctrine2 module for Codeception",
+            "description": "Doctrine module for Codeception",
             "homepage": "https://codeception.com/",
             "keywords": [
                 "codeception",
-                "doctrine2"
+                "doctrine"
             ],
             "support": {
-                "issues": "https://github.com/Codeception/module-doctrine2/issues",
-                "source": "https://github.com/Codeception/module-doctrine2/tree/3.0.3"
+                "issues": "https://github.com/Codeception/module-doctrine/issues",
+                "source": "https://github.com/Codeception/module-doctrine/tree/3.1.0"
             },
-            "time": "2023-04-18T19:35:17+00:00"
+            "time": "2024-02-17T22:31:34+00:00"
         },
         {
             "name": "codeception/module-phpbrowser",

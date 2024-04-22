@@ -113,7 +113,7 @@
     "codeception/codeception": "^5.0.0-RC1",
     "codeception/module-asserts": "^3",
     "codeception/module-cli": "^2",
-    "codeception/module-doctrine2": "^3",
+    "codeception/module-doctrine": "^3.1",
     "codeception/module-phpbrowser": "dev-master",
     "codeception/module-rest": "^3",
     "filp/whoops": "^2",

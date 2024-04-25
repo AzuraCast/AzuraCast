@@ -50,7 +50,7 @@ final class PodcastApiGenerator
 
         $return->is_enabled = $record->isEnabled();
 
-        $return->branding_config = $record->getBrandingConfig()->toArray();
+        $return->branding_config = $record->getBrandingConfig();
 
         $return->language = $record->getLanguage();
         try {

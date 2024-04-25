@@ -52,6 +52,9 @@ class Podcast implements Interfaces\IdentifiableEntityInterface
     #[Assert\NotBlank]
     protected string $description;
 
+    #[ORM\Column]
+    protected bool $is_enabled = true;
+
     #[ORM\Column(type: 'json', nullable: true)]
     protected ?array $branding_config = null;
 
@@ -148,6 +151,16 @@ class Podcast implements Interfaces\IdentifiableEntityInterface
         $this->description = $this->truncateString($description, 4000);
 
         return $this;
+    }
+
+    public function isEnabled(): bool
+    {
+        return $this->is_enabled;
+    }
+
+    public function setIsEnabled(bool $is_enabled): void
+    {
+        $this->is_enabled = $is_enabled;
     }
 
     public function getBrandingConfig(): PodcastBrandingConfiguration

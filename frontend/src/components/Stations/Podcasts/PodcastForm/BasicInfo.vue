@@ -63,6 +63,14 @@
                 :label="$gettext('Categories')"
                 :description="$gettext('Select the category/categories that best reflects the content of your podcast.')"
             />
+
+            <form-group-checkbox
+                id="edit_form_is_enabled"
+                class="col-md-12"
+                :field="v$.is_enabled"
+                :label="$gettext('Enable on Public Pages')"
+                :description="$gettext('If disabled, the station will not be visible on public-facing pages or APIs.')"
+            />
         </div>
     </tab>
 </template>
@@ -74,6 +82,7 @@ import {useVModel} from "@vueuse/core";
 import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
 import {required} from "@vuelidate/validators";
 import Tab from "~/components/Common/Tab.vue";
+import FormGroupCheckbox from "~/components/Form/FormGroupCheckbox.vue";
 
 const props = defineProps({
     form: {
@@ -102,6 +111,7 @@ const {v$, tabClass} = useVuelidateOnFormTab(
         author: {},
         email: {},
         categories: {required},
+        is_enabled: {},
     },
     form,
     {
@@ -112,6 +122,7 @@ const {v$, tabClass} = useVuelidateOnFormTab(
         author: '',
         email: '',
         categories: [],
+        is_enabled: true
     }
 );
 </script>

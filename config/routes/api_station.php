@@ -46,7 +46,7 @@ return static function (RouteCollectorProxy $group) {
             $group->get('/ondemand/download/{media_id}', Controller\Api\Stations\OnDemand\DownloadAction::class)
                 ->setName('api:stations:ondemand:download')
                 ->add(new Middleware\StationSupportsFeature(StationFeatures::OnDemand))
-                ->add(new Middleware\RateLimit('ondemand', 1, 2));
+                ->add(Middleware\RateLimit::forDownloads());
 
             // NOTE: See ./api_public.php for podcast public pages.
 

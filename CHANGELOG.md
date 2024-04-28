@@ -11,6 +11,8 @@ release channel, you can take advantage of these new features and fixes.
       into your playback, and also creating podcasts with the same media.
     - You can now disable podcasts from public view while still editing them, similar to playlists.
     - You can specify season and episode numbers on individual podcast episodes.
+    - Podcasts can have public HTML associated with them that will display on public pages (useful for things like links
+      to third-party syndication sites).
 
 ## Code Quality/Technical Changes
 

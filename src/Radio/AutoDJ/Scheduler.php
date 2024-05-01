@@ -407,7 +407,10 @@ final class Scheduler
             $startDate = CarbonImmutable::createFromFormat('Y-m-d', $startDate, $now->getTimezone());
 
             if (null !== $startDate) {
-                $startDate = $startDate->setTime(0, 0);
+                $startDate = StationSchedule::getDateTime(
+                    $schedule->getStartTime(),
+                    $startDate
+                );
                 if ($now->lt($startDate)) {
                     return false;
                 }
@@ -418,7 +421,10 @@ final class Scheduler
             $endDate = CarbonImmutable::createFromFormat('Y-m-d', $endDate, $now->getTimezone());
 
             if (null !== $endDate) {
-                $endDate = $endDate->setTime(23, 59, 59);
+                $endDate = StationSchedule::getDateTime(
+                    $schedule->getEndTime(),
+                    $endDate
+                );
                 if ($now->gt($endDate)) {
                     return false;
                 }

@@ -120,7 +120,8 @@ return static function (RouteCollectorProxy $group) {
                                     $group->get(
                                         '/download[.{extension}]',
                                         Controller\Api\Stations\Podcasts\Episodes\Media\GetMediaAction::class
-                                    )->setName('api:stations:public:podcast:episode:download');
+                                    )->setName('api:stations:public:podcast:episode:download')
+                                        ->add(Middleware\RateLimit::forDownloads());
                                 }
                             );
                         }

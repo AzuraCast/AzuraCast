@@ -5,9 +5,38 @@ release channel, you can take advantage of these new features and fixes.
 
 ## New Features/Changes
 
+- Several improvements have been made to Podcast functionality:
+    - You can now create podcasts that automatically synchronize with the contents of a media playlist; this is very
+      useful for uploading episodes of a podcast to your media directory, using the playlist to incorporate the podcast
+      into your playback, and also creating podcasts with the same media.
+    - You can now disable podcasts from public view while still editing them, similar to playlists.
+    - You can specify season and episode numbers on individual podcast episodes.
+    - Podcasts can have public HTML associated with them that will display on public pages (useful for things like links
+      to third-party syndication sites).
+
 ## Code Quality/Technical Changes
 
+- Further improvements have been made to the ability to stream large responses from the server (i.e. media or podcast
+  downloads) without consuming excessive resources.
+
+- The Doctrine Database Abstraction Layer (DBAL) and ORM have been updated to their latest versions. If you are building
+  a plugin related to database functionality, this may require updates to your code.
+
 ## Bug Fixes
+
+- Fixed an issue causing stations with special characters (especially `()`) to break the cache mechanism, preventing
+  several dashboard pages from displaying.
+
+- Fixed an issue preventing the WebDJ from connecting properly.
+
+- Fixed an issue preventing some passkeys from authenticating on the login screen.
+
+- Fixed a minor bug preventing the Statistics Overview page from appearing.
+
+- Fixed an error that would sometimes cause the "Edit Station Profile" page to break on stations that had empty
+  configuration blocks (i.e. were syndication-only).
+
+- Fixed an error causing messages like "Cannot rollback transaction" during updates or setup.
 
 ---
 

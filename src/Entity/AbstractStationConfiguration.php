@@ -29,9 +29,13 @@ abstract class AbstractStationConfiguration implements JsonSerializable
         return $return;
     }
 
-    public function jsonSerialize(): array
+    public function jsonSerialize(): array|object
     {
-        return $this->toArray();
+        $result = $this->toArray();
+
+        return (0 !== count($result))
+            ? $result
+            : (object)[];
     }
 
     protected function get(string $key, mixed $default = null): mixed

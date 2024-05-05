@@ -22,7 +22,7 @@ final class RenewAcmeCertTask extends AbstractTask
     public function run(bool $force = false): void
     {
         try {
-            $this->acme->getCertificate();
+            $this->acme->getCertificate($force);
         } catch (Exception $e) {
             $this->logger->warning(
                 sprintf('ACME Failed: %s', $e->getMessage()),

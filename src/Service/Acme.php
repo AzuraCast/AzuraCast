@@ -49,7 +49,7 @@ final class Acme
             }
 
             try {
-                $this->getCertificate();
+                $this->getCertificate($message->force);
             } catch (Exception $e) {
                 $this->logger->error(
                     sprintf('ACME Error: %s', $e->getMessage()),

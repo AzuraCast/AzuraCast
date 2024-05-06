@@ -5,6 +5,16 @@ release channel, you can take advantage of these new features and fixes.
 
 ## New Features/Changes
 
+## Code Quality/Technical Changes
+
+## Bug Fixes
+
+---
+
+# AzuraCast 0.19.6 (May 5, 2024)
+
+## New Features/Changes
+
 - Several improvements have been made to Podcast functionality:
     - You can now create podcasts that automatically synchronize with the contents of a media playlist; this is very
       useful for uploading episodes of a podcast to your media directory, using the playlist to incorporate the podcast

@@ -11,6 +11,14 @@ release channel, you can take advantage of these new features and fixes.
 
 ---
 
+# AzuraCast 0.19.7 (May 6, 2024)
+
+## Bug Fixes
+
+- This release is solely a bug fix release to incorporate updates to PHP dependencies that resolve critical bugs.
+
+---
+
 # AzuraCast 0.19.6 (May 5, 2024)
 
 ## New Features/Changes

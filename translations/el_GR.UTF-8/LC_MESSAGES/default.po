@@ -11,9 +11,9 @@ msgstr ""
 "Project-Id-Version: azuracast\n"
 "Language-Team: Greek\n"
 "Language: el_GR\n"
-"PO-Revision-Date: 2024-02-20 10:36\n"
+"PO-Revision-Date: 2024-05-06 03:03\n"
 
-#: src/components/Stations/Podcasts.vue:131
+#: src/components/Stations/Podcasts.vue:143
 msgid "# Episodes"
 msgstr "# Επεισόδια"
 
@@ -170,7 +170,7 @@ msgstr "Λίστα Λογαριασμών"
 #: src/components/Admin/Stations.vue:145
 #: src/components/Admin/StorageLocations.vue:131
 #: src/components/Admin/Users.vue:105
-#: src/components/Public/Podcasts/Podcast.vue:166
+#: src/components/Public/Podcasts/Podcast.vue:143
 #: src/components/Public/Podcasts/PodcastList.vue:83
 #: src/components/Public/Requests/RequestsDataTable.vue:110
 #: src/components/Stations/HlsStreams.vue:85
@@ -178,8 +178,8 @@ msgstr "Λίστα Λογαριασμών"
 #: src/components/Stations/Mounts.vue:103
 #: src/components/Stations/Playlists.vue:348
 #: src/components/Stations/Playlists/ReorderModal.vue:29
-#: src/components/Stations/PodcastEpisodes.vue:197
-#: src/components/Stations/Podcasts.vue:134
+#: src/components/Stations/PodcastEpisodes.vue:224
+#: src/components/Stations/Podcasts.vue:146
 #: src/components/Stations/Queue.vue:96
 #: src/components/Stations/Remotes.vue:95
 #: src/components/Stations/Reports/Requests.vue:124
@@ -204,8 +204,8 @@ msgstr "Προσθήκη Κλειδιού Api"
 msgid "Add Custom Field"
 msgstr "Προσθήκη προσαρμοσμένου πεδίου"
 
-#: src/components/Stations/PodcastEpisodes.vue:42
-#: src/components/Stations/Podcasts/EpisodeEditModal.vue:144
+#: src/components/Stations/PodcastEpisodes.vue:49
+#: src/components/Stations/Podcasts/EpisodeEditModal.vue:145
 msgid "Add Episode"
 msgstr "Προσθήκη Επεισόδιο"
 
@@ -239,7 +239,7 @@ msgid "Add Playlist"
 msgstr "Προσθήκη λίστας αναπαραγωγής"
 
 #: src/components/Stations/Podcasts.vue:20
-#: src/components/Stations/Podcasts/PodcastEditModal.vue:108
+#: src/components/Stations/Podcasts/PodcastEditModal.vue:121
 msgid "Add Podcast"
 msgstr "Προσθήκη Podcast"
 
@@ -352,7 +352,7 @@ msgstr "Όλα τα ονόματα τομέα που αναφέρονται θα
 msgid "All Playlists"
 msgstr "Όλες οι λίστες αναπαραγωγής"
 
-#: src/components/Stations/PodcastEpisodes.vue:38
+#: src/components/Stations/PodcastEpisodes.vue:44
 msgid "All Podcasts"
 msgstr "Όλα Τα Podcast"
 
@@ -496,8 +496,8 @@ msgid "Are you sure?"
 msgstr "Είσαι σίγουρος?"
 
 #: src/components/Public/OnDemand.vue:98
-#: src/components/Stations/PodcastEpisodes.vue:160
-#: src/components/Stations/Podcasts.vue:127
+#: src/components/Stations/PodcastEpisodes.vue:173
+#: src/components/Stations/Podcasts.vue:139
 #: src/components/Stations/Streamers.vue:149
 msgid "Art"
 msgstr "Εξώφυλλο"
@@ -605,6 +605,14 @@ msgstr "Υπηρεσία AutoDJ"
 #: src/components/Admin/Backups.vue:14
 msgid "Automatic Backups"
 msgstr "Αυτόματα αντίγραφα ασφαλείας"
+
+#: src/components/Stations/Podcasts/PodcastForm/Source.vue:109
+msgid "Automatically create new podcast episodes when media is added to a specified playlist."
+msgstr ""
+
+#: src/components/Stations/Podcasts/PodcastForm/Source.vue:49
+msgid "Automatically Publish New Episodes"
+msgstr ""
 
 #: src/entities/Webhooks.ts:120
 msgid "Automatically publish to a Mastodon instance."
@@ -779,6 +787,7 @@ msgid "Bot/Crawler"
 msgstr "Bot/Ερπυστριοφόρο"
 
 #: src/components/Stations/menu.ts:51
+#: src/components/Stations/Podcasts/PodcastForm/Branding.vue:3
 msgid "Branding"
 msgstr "Branding"
 
@@ -829,8 +838,7 @@ msgstr "Όνομα Κάδου"
 msgid "Bulk Media Import/Export"
 msgstr "Μαζική Εισαγωγή/Εξαγωγή Μέσων"
 
-#: src/components/Public/Podcasts/Podcast.vue:27
-#: src/components/Public/Podcasts/PodcastEpisode.vue:40
+#: src/components/Public/Podcasts/PodcastCommon.vue:7
 #: src/components/Public/Podcasts/PodcastList.vue:24
 msgid "by"
 msgstr ""
@@ -1214,6 +1222,10 @@ msgstr "Δημιουργία Νέου Κλειδιού"
 msgid "Create New Playlist for Each Folder"
 msgstr "Δημιουργία νέας λίστας αναπαραγωγής για κάθε φάκελο"
 
+#: src/components/Stations/Podcasts/PodcastForm/Source.vue:104
+msgid "Create podcast episodes independent of your station's media collection."
+msgstr ""
+
 #: src/components/Setup/SetupStep.vue:21
 msgid "Create Station"
 msgstr "Δημιουργία Σταθμού"
@@ -1325,6 +1337,10 @@ msgstr "Προσαρμοσμένα πεδία"
 #: src/components/Stations/Mounts/Form/Advanced.vue:27
 msgid "Custom Frontend Configuration"
 msgstr "Προσαρμοσμένες Ρυθμίσεις Frontend"
+
+#: src/components/Stations/Podcasts/PodcastForm/Branding.vue:11
+msgid "Custom HTML for Public Pages"
+msgstr ""
 
 #: src/components/Admin/Branding/BrandingForm.vue:90
 #: src/components/Stations/Branding/BrandingForm.vue:62
@@ -1453,8 +1469,8 @@ msgstr "Προεπιλεγμένη Προσάρτηση"
 #: src/components/Stations/Media/MediaToolbar.vue:171
 #: src/components/Stations/Mounts.vue:57
 #: src/components/Stations/Playlists.vue:162
-#: src/components/Stations/PodcastEpisodes.vue:113
-#: src/components/Stations/Podcasts.vue:72
+#: src/components/Stations/PodcastEpisodes.vue:127
+#: src/components/Stations/Podcasts.vue:84
 #: src/components/Stations/Queue.vue:39
 #: src/components/Stations/Remotes.vue:58
 #: src/components/Stations/Reports/Requests.vue:88
@@ -1491,7 +1507,7 @@ msgstr "Διαγραφή Μετάδοσης;"
 msgid "Delete Custom Field?"
 msgstr "Διαγραφή προσαρμοσμένου πεδίου \"%s\";"
 
-#: src/components/Stations/PodcastEpisodes.vue:217
+#: src/components/Stations/PodcastEpisodes.vue:248
 msgid "Delete Episode?"
 msgstr "Διαγραφή Επεισόδιο;"
 
@@ -1511,7 +1527,7 @@ msgstr "Διαγραφή κλειδιού πρόσβασης;"
 msgid "Delete Playlist?"
 msgstr "Διαγραφή Λίστας Αναπαραγωγής;"
 
-#: src/components/Stations/Podcasts.vue:151
+#: src/components/Stations/Podcasts.vue:163
 msgid "Delete Podcast?"
 msgstr "Διαγραφή Μετάδοσης;"
 
@@ -1572,7 +1588,7 @@ msgid "Desktop"
 msgstr ""
 
 #: src/components/Admin/Debug/TaskOutput.vue:31
-#: src/components/Public/Podcasts/Podcast.vue:127
+#: src/components/Public/Podcasts/Podcast.vue:103
 msgid "Details"
 msgstr "Λεπτομέρειες"
 
@@ -1627,6 +1643,7 @@ msgstr "Απενεργοποίηση;"
 #: src/components/Stations/Mounts.vue:40
 #: src/components/Stations/Playlists.vue:89
 #: src/components/Stations/Playlists.vue:95
+#: src/components/Stations/Podcasts.vue:66
 #: src/components/Stations/Remotes.vue:38
 #: src/components/Stations/Streamers.vue:52
 #: src/components/Stations/Webhooks.vue:34
@@ -1791,8 +1808,8 @@ msgstr "EBU R128"
 #: src/components/Stations/Media.vue:197
 #: src/components/Stations/Mounts.vue:50
 #: src/components/Stations/Playlists.vue:155
-#: src/components/Stations/PodcastEpisodes.vue:106
-#: src/components/Stations/Podcasts.vue:65
+#: src/components/Stations/PodcastEpisodes.vue:119
+#: src/components/Stations/Podcasts.vue:77
 #: src/components/Stations/Remotes.vue:51
 #: src/components/Stations/SftpUsers.vue:29
 #: src/components/Stations/Streamers.vue:63
@@ -1808,7 +1825,7 @@ msgstr "Επεξεργασία Branding"
 msgid "Edit Custom Field"
 msgstr "Επεξεργασία Προσαρμοσμένου Πεδίου"
 
-#: src/components/Stations/Podcasts/EpisodeEditModal.vue:143
+#: src/components/Stations/Podcasts/EpisodeEditModal.vue:144
 msgid "Edit Episode"
 msgstr "Επεξεργασία Επεισόδιο"
 
@@ -1833,7 +1850,7 @@ msgstr "Επεξεργασία Σημείου Προσάρτησης"
 msgid "Edit Playlist"
 msgstr "Επεξεργασία λίστας αναπαραγωγής"
 
-#: src/components/Stations/Podcasts/PodcastEditModal.vue:107
+#: src/components/Stations/Podcasts/PodcastEditModal.vue:120
 msgid "Edit Podcast"
 msgstr "Επεξεργασία Podcast"
 
@@ -1940,6 +1957,10 @@ msgstr "Ενεργοποιήστε τους ακροατές για να ζητ�
 #: src/components/Admin/Settings/ServicesTab.vue:101
 msgid "Enable Mail Delivery"
 msgstr "Ενεργοποίηση Παράδοσης Email"
+
+#: src/components/Stations/Podcasts/PodcastForm/BasicInfo.vue:71
+msgid "Enable on Public Pages"
+msgstr ""
 
 #: src/components/Admin/Stations/Form/ProfileForm.vue:105
 msgid "Enable On-Demand Streaming"
@@ -2061,15 +2082,20 @@ msgstr "Εισάγετε τη διεύθυνση ηλεκτρονικού ταχ
 msgid "Enter your password"
 msgstr "Εισάγετε τον κωδικό σας"
 
-#: src/components/Public/Podcasts/Podcast.vue:165
-#: src/components/Stations/PodcastEpisodes.vue:167
+#: src/components/Public/Podcasts/Podcast.vue:142
+#: src/components/Stations/PodcastEpisodes.vue:180
 #: src/components/Stations/Podcasts/EpisodeForm/BasicInfo.vue:11
 msgid "Episode"
 msgstr "Επεισόδιο"
 
+#: src/components/Stations/PodcastEpisodes.vue:217
+#: src/components/Stations/Podcasts/EpisodeForm/BasicInfo.vue:74
+msgid "Episode Number"
+msgstr ""
+
 #: src/components/Public/Podcasts/PodcastList.vue:52
-#: src/components/Stations/PodcastEpisodes.vue:18
-#: src/components/Stations/Podcasts.vue:78
+#: src/components/Stations/PodcastEpisodes.vue:15
+#: src/components/Stations/Podcasts.vue:90
 msgid "Episodes"
 msgstr "Επεισόδια"
 
@@ -2119,10 +2145,10 @@ msgstr "Βγείτε από πλήρη οθόνη"
 msgid "Expected to Play at"
 msgstr "Αναμένεται να παίξει στις"
 
-#: src/components/Public/Podcasts/Podcast.vue:114
-#: src/components/Public/Podcasts/PodcastEpisode.vue:100
-#: src/components/Stations/PodcastEpisodes.vue:191
-#: src/components/Stations/PodcastEpisodes.vue:96
+#: src/components/Public/Podcasts/Podcast.vue:90
+#: src/components/Public/Podcasts/PodcastEpisode.vue:74
+#: src/components/Stations/PodcastEpisodes.vue:109
+#: src/components/Stations/PodcastEpisodes.vue:204
 msgid "Explicit"
 msgstr "Ακριβής"
 
@@ -2153,7 +2179,7 @@ msgstr "Όνομα πεδίου"
 #: src/components/Admin/Backups.vue:205
 #: src/components/Admin/Backups/RunBackupModal.vue:37
 #: src/components/Stations/Media/Form/BasicInfo.vue:7
-#: src/components/Stations/PodcastEpisodes.vue:172
+#: src/components/Stations/PodcastEpisodes.vue:185
 msgid "File Name"
 msgstr "Όνομα αρχείου"
 
@@ -2233,7 +2259,7 @@ msgstr "Μορφή"
 #: src/components/Stations/Playlists/Form/ScheduleRow.vue:149
 #: src/components/Stations/Reports/Overview/ListenersByTimePeriodTab.vue:179
 #: src/components/Stations/Streamers/Form/ScheduleRow.vue:149
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ChartsAction.php:114
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ChartsAction.php:113
 msgid "Friday"
 msgstr "Παρασκευή"
 
@@ -2427,6 +2453,10 @@ msgstr "Αν ένας επισκέπτης δεν είναι συνδεδεμέ�
 #: src/components/Stations/Playlists/Form/BasicInfo.vue:19
 msgid "If disabled, the playlist will not be included in radio playback, but can still be managed."
 msgstr "Αν απενεργοποιηθεί, η λίστα αναπαραγωγής δεν θα συμπεριληφθεί στην αναπαραγωγή του ραδιοφώνου, αλλά μπορεί ακόμα να διαχειριστεί."
+
+#: src/components/Stations/Podcasts/PodcastForm/BasicInfo.vue:72
+msgid "If disabled, the station will not be visible on public-facing pages or APIs."
+msgstr ""
 
 #: src/components/Admin/Stations/Form/AdminForm.vue:12
 msgid "If disabled, the station will not broadcast or shuffle its AutoDJ."
@@ -2665,7 +2695,7 @@ msgstr "Η Γεωτοποθεσία IP χρησιμοποιείται για ν�
 msgid "Is Public"
 msgstr "Είναι Δημόσιο"
 
-#: src/components/Stations/PodcastEpisodes.vue:177
+#: src/components/Stations/PodcastEpisodes.vue:190
 msgid "Is Published"
 msgstr ""
 
@@ -2870,14 +2900,14 @@ msgstr ""
 #: src/components/Stations/Reports/Overview/ListeningTimeTab.vue:55
 #: src/components/Stations/Reports/Timeline.vue:146
 #: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Frontend/Dashboard/ChartsAction.php:182
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ByListeningTime.php:85
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ByBrowser.php:61
 #: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ByCountry.php:74
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ByStream.php:98
 #: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ByClient.php:81
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ChartsAction.php:83
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ChartsAction.php:133
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ChartsAction.php:222
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ByListeningTime.php:85
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ByStream.php:98
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ChartsAction.php:82
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ChartsAction.php:132
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ChartsAction.php:220
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ByBrowser.php:61
 msgid "Listeners"
 msgstr "Ακροατές"
 
@@ -2887,12 +2917,12 @@ msgid "Listeners by Day"
 msgstr "Ακροατές ανά ημέρα"
 
 #: src/components/Stations/Reports/Overview/ListenersByTimePeriodTab.vue:55
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ChartsAction.php:102
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ChartsAction.php:101
 msgid "Listeners by Day of Week"
 msgstr "Ακροατές ανά ημέρα της εβδομάδας"
 
 #: src/components/Stations/Reports/Overview/ListenersByTimePeriodTab.vue:69
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ChartsAction.php:197
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ChartsAction.php:195
 msgid "Listeners by Hour"
 msgstr "Ακροατές ανά ώρα"
 
@@ -3051,6 +3081,10 @@ msgstr "Χειροκίνητη Λειτουργία AutoDJ"
 #: src/components/Admin/Updates.vue:129
 msgid "Manual Updates"
 msgstr "Χειροκίνητες Ενημερώσεις"
+
+#: src/components/Stations/Podcasts/PodcastForm/Source.vue:103
+msgid "Manually Add Episodes"
+msgstr ""
 
 #: src/components/Stations/Playlists/Form/BasicInfo.vue:330
 msgid "Manually define how this playlist is used in Liquidsoap configuration."
@@ -3257,7 +3291,7 @@ msgstr "Τροποποιήθηκε"
 #: src/components/Stations/Playlists/Form/ScheduleRow.vue:145
 #: src/components/Stations/Reports/Overview/ListenersByTimePeriodTab.vue:175
 #: src/components/Stations/Streamers/Form/ScheduleRow.vue:145
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ChartsAction.php:110
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ChartsAction.php:109
 msgid "Monday"
 msgstr "Δευτέρα"
 
@@ -3433,7 +3467,7 @@ msgid "Next Run"
 msgstr "Επόμενη Εκτέλεση"
 
 #: src/components/Admin/Relays.vue:41
-#: src/components/Stations/PodcastEpisodes.vue:89
+#: src/components/Stations/PodcastEpisodes.vue:102
 msgid "No"
 msgstr "Όχι"
 
@@ -3665,9 +3699,17 @@ msgstr "Προαιρετικό: HTTP Βασικό Όνομα Χρήστη Ελέ
 msgid "Optional: Request Timeout (Seconds)"
 msgstr "Προαιρετικό: Χρονικό Όριο Αίτησης (Δευτερόλεπτα)"
 
+#: src/components/Stations/Podcasts/EpisodeForm/BasicInfo.vue:64
+msgid "Optionally list this episode as part of a season in some podcast aggregators."
+msgstr ""
+
 #: src/components/Admin/CustomFields/Form.vue:30
 msgid "Optionally select an ID3v2 metadata field that, if present, will be used to set this field's value."
 msgstr "Προαιρετικά επιλέξτε ένα πεδίο μεταδεδομένων ID3v2 το οποίο, αν υπάρχει, θα χρησιμοποιηθεί για τον ορισμό της τιμής αυτού του πεδίου."
+
+#: src/components/Stations/Podcasts/EpisodeForm/BasicInfo.vue:75
+msgid "Optionally set a specific episode number in some podcast aggregators."
+msgstr ""
 
 #: src/components/Admin/Stations/Form/ProfileForm.vue:57
 msgid "Optionally specify a short URL-friendly name, such as \"my_station_name\", that will be used in this station's URLs. Leave this field blank to automatically create one based on the station name."
@@ -3825,6 +3867,18 @@ msgstr "Τύπος Λίστας Αναπαραγωγής"
 msgid "Playlist Weight"
 msgstr "Βάρος Λίστας Αναπαραγωγής"
 
+#: src/components/Stations/Podcasts.vue:54
+msgid "Playlist-Based"
+msgstr ""
+
+#: src/components/Stations/Podcasts/PodcastForm/Source.vue:25
+msgid "Playlist-Based Podcast"
+msgstr ""
+
+#: src/components/Stations/Podcasts/PodcastForm/Source.vue:31
+msgid "Playlist-based podcasts will automatically sync with the contents of a playlist, creating new podcast episodes for any media added to the playlist."
+msgstr ""
+
 #: src/components/Stations/Playlists/ApplyToModal.vue:15
 #: src/components/Stations/Reports/Timeline.vue:72
 msgid "Playlist:"
@@ -3858,7 +3912,7 @@ msgid "Please log in to continue."
 msgstr "Παρακαλούμε συνδεθείτε για να συνεχίσετε."
 
 #: src/components/Public/Podcasts/PodcastList.vue:82
-#: src/components/Stations/Podcasts.vue:128
+#: src/components/Stations/Podcasts.vue:140
 msgid "Podcast"
 msgstr "Podcast"
 
@@ -3946,7 +4000,7 @@ msgstr "Δημόσιοι χώροι"
 
 #: src/components/Dashboard.vue:172
 #: src/components/Stations/menu.ts:61
-#: src/components/Stations/PodcastEpisodes.vue:66
+#: src/components/Stations/PodcastEpisodes.vue:73
 #: src/components/Stations/Podcasts.vue:43
 #: src/components/Stations/Profile/PublicPagesPanel.vue:21
 msgid "Public Page"
@@ -3962,7 +4016,7 @@ msgstr "Φόντο δημόσιας σελίδας"
 msgid "Public Pages"
 msgstr "Δημόσιες Σελίδες"
 
-#: src/components/Stations/PodcastEpisodes.vue:184
+#: src/components/Stations/PodcastEpisodes.vue:197
 msgid "Publish At"
 msgstr ""
 
@@ -4290,7 +4344,7 @@ msgstr "Ρόλοι & Δικαιώματα"
 msgid "Rolling Release"
 msgstr "Κυκλοφορία Κύλισης"
 
-#: src/components/Public/Podcasts/Podcast.vue:56
+#: src/components/Public/Podcasts/Podcast.vue:32
 #: src/components/Public/Podcasts/PodcastList.vue:61
 msgid "RSS"
 msgstr ""
@@ -4325,7 +4379,7 @@ msgstr "Ρυθμός Δειγμάτων"
 #: src/components/Stations/Playlists/Form/ScheduleRow.vue:150
 #: src/components/Stations/Reports/Overview/ListenersByTimePeriodTab.vue:180
 #: src/components/Stations/Streamers/Form/ScheduleRow.vue:150
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ChartsAction.php:115
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ChartsAction.php:114
 msgid "Saturday"
 msgstr "Σάββατο"
 
@@ -4397,6 +4451,11 @@ msgstr "Προγραμματισμός"
 #: src/components/Common/DataTable.vue:40
 msgid "Search"
 msgstr "Αναζήτηση"
+
+#: src/components/Stations/PodcastEpisodes.vue:210
+#: src/components/Stations/Podcasts/EpisodeForm/BasicInfo.vue:63
+msgid "Season Number"
+msgstr ""
 
 #: src/components/Stations/Media/Form/AdvancedSettings.vue:61
 msgid "Seconds from the start of the song that the AutoDJ should start playing."
@@ -4487,6 +4546,10 @@ msgstr "Επιλογή Αρχείου Πολυμέσων"
 #: src/components/Account/PasskeyModal.vue:56
 msgid "Select Passkey"
 msgstr "Επιλογή κλειδιού πρόσβασης"
+
+#: src/components/Stations/Podcasts/PodcastForm/Source.vue:42
+msgid "Select Playlist"
+msgstr ""
 
 #: src/components/Stations/Playlists/ImportModal.vue:63
 msgid "Select PLS/M3U File to Import"
@@ -4880,6 +4943,8 @@ msgid "SoundExchange Royalties"
 msgstr "SoundExchange Royalties"
 
 #: src/components/Stations/Playlists/Form/BasicInfo.vue:29
+#: src/components/Stations/Podcasts/PodcastForm/Source.vue:14
+#: src/components/Stations/Podcasts/PodcastForm/Source.vue:3
 #: src/components/Stations/Profile/FrontendPanel.vue:66
 #: src/components/Stations/Queue.vue:99
 #: src/components/Stations/Reports/Timeline.vue:165
@@ -4930,7 +4995,7 @@ msgstr "Ημερομηνία Έναρξης"
 msgid "Start Station"
 msgstr "Εκκίνηση Σταθμού"
 
-#: src/components/Public/WebDJ/SettingsPanel.vue:295
+#: src/components/Public/WebDJ/SettingsPanel.vue:291
 msgid "Start Streaming"
 msgstr "Έναρξη Μετάδοσης"
 
@@ -5098,7 +5163,7 @@ msgstr "Η στερεοφωνική έκδοση εργαλείων %{ version }
 msgid "Stop"
 msgstr "Διακοπή"
 
-#: src/components/Public/WebDJ/SettingsPanel.vue:294
+#: src/components/Public/WebDJ/SettingsPanel.vue:290
 msgid "Stop Streaming"
 msgstr "Διακοπή Μετάδοσης"
 
@@ -5169,7 +5234,7 @@ msgstr "Υποβολή Κωδικού"
 #: src/components/Stations/Playlists/Form/ScheduleRow.vue:151
 #: src/components/Stations/Reports/Overview/ListenersByTimePeriodTab.vue:181
 #: src/components/Stations/Streamers/Form/ScheduleRow.vue:151
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ChartsAction.php:116
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ChartsAction.php:115
 msgid "Sunday"
 msgstr "Κυριακή"
 
@@ -5188,6 +5253,10 @@ msgstr "Αλλαγή Θέματος"
 #: src/components/Admin/Debug.vue:64
 msgid "Synchronization Tasks"
 msgstr "Εργασίες συγχρονισμού"
+
+#: src/components/Stations/Podcasts/PodcastForm/Source.vue:108
+msgid "Synchronize with Playlist"
+msgstr ""
 
 #: src/components/PanelLayout.vue:74
 msgid "System Administration"
@@ -5572,6 +5641,10 @@ msgstr "Αυτή η λίστα αναπαραγωγής θα παίζει κάθ
 msgid "This playlist will play every $x songs, where $x is specified here."
 msgstr "Αυτή η λίστα αναπαραγωγής θα αναπαράγει κάθε $x τραγούδια, όπου $x ορίζεται εδώ."
 
+#: src/components/Stations/PodcastEpisodes.vue:34
+msgid "This podcast is automatically synchronized with a playlist. Episodes cannot be manually added or removed via this panel."
+msgstr ""
+
 #: src/components/Admin/Stations/Form/BackendForm.vue:218
 msgid "This port is not used by any external process. Only modify this port if the assigned port is in use. Leave blank to automatically assign a port."
 msgstr "Αυτή η θύρα δεν χρησιμοποιείται από καμία εξωτερική διεργασία. Τροποποίηση αυτής της θύρας μόνο αν η αντιστοιχισμένη θύρα είναι σε χρήση. Αφήστε κενό για να αντιστοιχίσετε αυτόματα μια θύρα."
@@ -5647,7 +5720,7 @@ msgstr "Εικόνα Μικρογραφίας"
 #: src/components/Stations/Playlists/Form/ScheduleRow.vue:148
 #: src/components/Stations/Reports/Overview/ListenersByTimePeriodTab.vue:178
 #: src/components/Stations/Streamers/Form/ScheduleRow.vue:148
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ChartsAction.php:113
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ChartsAction.php:112
 msgid "Thursday"
 msgstr "Πέμπτη"
 
@@ -5786,7 +5859,7 @@ msgstr "Ενεργοποίηση"
 #: src/components/Stations/Playlists/Form/ScheduleRow.vue:146
 #: src/components/Stations/Reports/Overview/ListenersByTimePeriodTab.vue:176
 #: src/components/Stations/Streamers/Form/ScheduleRow.vue:146
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ChartsAction.php:111
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ChartsAction.php:110
 msgid "Tuesday"
 msgstr "Τρίτη"
 
@@ -5876,8 +5949,8 @@ msgstr "Κατάργηση σίγασης"
 msgid "Unprocessable Files"
 msgstr "Μη Επεξεργασμένα Αρχεία"
 
-#: src/components/Stations/PodcastEpisodes.vue:73
-#: src/components/Stations/Podcasts.vue:54
+#: src/components/Stations/PodcastEpisodes.vue:80
+#: src/components/Stations/Podcasts.vue:60
 msgid "Unpublished"
 msgstr ""
 
@@ -6238,7 +6311,7 @@ msgstr "Τοποθεσία web"
 #: src/components/Stations/Playlists/Form/ScheduleRow.vue:147
 #: src/components/Stations/Reports/Overview/ListenersByTimePeriodTab.vue:177
 #: src/components/Stations/Streamers/Form/ScheduleRow.vue:147
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ChartsAction.php:112
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ChartsAction.php:111
 msgid "Wednesday"
 msgstr "Τετάρτη"
 
@@ -6271,6 +6344,10 @@ msgstr "Όταν η εκπομπή σταθμού έρχεται σε απευθ
 msgid "When the station broadcast goes offline"
 msgstr "Όταν η εκπομπή του σταθμού πηγαίνει εκτός σύνδεσης"
 
+#: src/components/Stations/Podcasts/PodcastForm/Source.vue:50
+msgid "Whether new episodes should be marked as published or held for review as unpublished."
+msgstr ""
+
 #: src/components/Stations/Playlists/Form/BasicInfo.vue:50
 msgid "Whether the AutoDJ should attempt to avoid duplicate artists and track titles when playing media from this playlist."
 msgstr "Αν το AutoDJ θα προσπαθήσει να αποφύγει την αναπαραγωγή καλλιτεχνών και την παρακολούθηση τίτλων κατά την αναπαραγωγή πολυμέσων από αυτήν τη λίστα αναπαραγωγής."
@@ -6284,7 +6361,7 @@ msgid "Worst Performing Songs"
 msgstr "Χειρότερα Τραγούδια"
 
 #: src/components/Admin/Relays.vue:38
-#: src/components/Stations/PodcastEpisodes.vue:86
+#: src/components/Stations/PodcastEpisodes.vue:99
 msgid "Yes"
 msgstr "Ναι"
 
@@ -6373,34 +6450,664 @@ msgstr "Δεν υπάρχουν δημοσιεύσεις"
 msgid "YP Directory Authorization Hash"
 msgstr "Κατακερματισμός Εξουσιοδότησης Yp Καταλόγου"
 
+#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/Repository/StationRequestRepository.php:73
+msgid "Search engine crawlers are not permitted to use this feature."
+msgstr "Οι ανιχνευτές μηχανών αναζήτησης δεν επιτρέπεται να χρησιμοποιούν αυτή τη λειτουργία."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/Repository/StationRequestRepository.php:80
+msgid "You are not permitted to submit requests."
+msgstr "Δεν σας επιτρέπεται να υποβάλετε αιτήσεις."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/Repository/StationRequestRepository.php:89
+msgid "This track is not requestable."
+msgstr ""
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/Repository/StationRequestRepository.php:121
+msgid "You have submitted a request too recently! Please wait before submitting another one."
+msgstr "Έχετε υποβάλει ένα αίτημα πολύ πρόσφατα! Παρακαλώ περιμένετε πριν από την υποβολή ενός άλλου."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/Repository/StationRequestRepository.php:167
+msgid "This song was already requested and will play soon."
+msgstr ""
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/Repository/StationRequestRepository.php:247
+msgid "This song or artist has been played too recently. Wait a while before requesting it again."
+msgstr "Αυτό το τραγούδι ή ο καλλιτέχνης έχει παίξει πολύ πρόσφατα. Περιμένετε λίγο πριν το ζητήσετε ξανά."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/ApiGenerator/ScheduleApiGenerator.php:59
+#, php-format
+msgid "Playlist: %s"
+msgstr "Λίστα αναπαραγωγής: %s"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/ApiGenerator/ScheduleApiGenerator.php:64
+#, php-format
+msgid "Streamer: %s"
+msgstr "Ροή: %s"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/Api/Status.php:33
+msgid "Changes saved successfully."
+msgstr "Οι αλλαγές αποθηκεύτηκαν με επιτυχία."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/Api/Status.php:38
+msgid "Record created successfully."
+msgstr "Η εγγραφή δημιουργήθηκε επιτυχώς."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/Api/Status.php:43
+msgid "Record updated successfully."
+msgstr "Η εγγραφή ενημερώθηκε με επιτυχία."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/Api/Status.php:48
+msgid "Record deleted successfully."
+msgstr "Η εγγραφή διαγράφηκε με επιτυχία."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/Api/Error.php:71
+msgid "Record not found"
+msgstr "Η εγγραφή δεν βρέθηκε"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/Api/Error.php:77
+msgid "The uploaded file exceeds the upload_max_filesize directive in php.ini."
+msgstr "Το μεταφορτωμένο αρχείο υπερβαίνει την οδηγία upload_max_filesize στο php.ini."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/Api/Error.php:78
+msgid "The uploaded file exceeds the MAX_FILE_SIZE directive from the HTML form."
+msgstr "Το μεταφορτωμένο αρχείο υπερβαίνει την οδηγία MAX_FILE_SIZE από τη φόρμα HTML."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/Api/Error.php:79
+msgid "The uploaded file was only partially uploaded."
+msgstr "Προειδοποίηση: Το αρχείο δεν μεταφορτώθηκε ολόκληρο."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/Api/Error.php:80
+msgid "No file was uploaded."
+msgstr "Κανένα αρχείο δεν μεταφορτώθηκε."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/Api/Error.php:81
+msgid "No temporary directory is available."
+msgstr "Δεν υπάρχει διαθέσιμος φάκελος."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/Api/Error.php:82
+msgid "Could not write to filesystem."
+msgstr "Αδυναμία εγγραφής στο σύστημα αρχείων."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/Api/Error.php:83
+msgid "Upload halted by a PHP extension."
+msgstr "Ανέβασμα σταμάτησε από επέκταση PHP."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/Api/Error.php:84
+msgid "Unspecified error."
+msgstr "Απροσδιόριστο σφάλμα."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/UpdateCheck.php:54
+msgid "New AzuraCast Stable Release Available"
+msgstr "Διαθέσιμη Νέα AzuraCast Σταθερή Κυκλοφορία"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/UpdateCheck.php:58
+#, php-format
+msgid "Version %s is now available. You are currently running version %s. Updating is recommended."
+msgstr "Η έκδοση %s είναι τώρα διαθέσιμη. Εκτελείτε την έκδοση %s. Συνιστάται η ενημέρωση."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/UpdateCheck.php:75
+msgid "New AzuraCast Rolling Release Available"
+msgstr "Διαθέσιμη Νέα AzuraCast Σταθερή Κυκλοφορία"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/UpdateCheck.php:79
+#, php-format
+msgid "Your installation is currently %d update(s) behind the latest version. Updating is recommended."
+msgstr "Η εγκατάστασή σας είναι προς το παρόν %d ενημερώσεις(ες) πίσω από την τελευταία έκδοση."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/UpdateCheck.php:93
+msgid "Switch to Stable Channel Available"
+msgstr "Εναλλαγή σε Σταθερό κανάλι διαθέσιμο"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/UpdateCheck.php:96
+msgid "Your Rolling Release installation is currently older than the latest Stable release. This means you can switch releases to the \"Stable\" release channel if desired."
+msgstr "Η εγκατάσταση του Rolling Release σας είναι αυτή τη στιγμή παλαιότερη από την τελευταία έκδοση Stable. Αυτό σημαίνει ότι μπορείτε να μεταβείτε στο κανάλι απελευθέρωσης \"Σταθερό\" εάν το επιθυμείτε."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/BaseUrlCheck.php:42
+msgid "You may want to update your base URL to ensure it is correct."
+msgstr "Μπορεί να θέλετε να ενημερώσετε το βασικό URL σας για να βεβαιωθείτε ότι είναι σωστή."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/BaseUrlCheck.php:45
+msgid "If you regularly use different URLs to access AzuraCast, you should enable the \"Prefer Browser URL\" setting."
+msgstr "Αν χρησιμοποιείτε τακτικά διαφορετικές διευθύνσεις URL για να αποκτήσετε πρόσβαση στο AzuraCast, θα πρέπει να ενεργοποιήσετε τη ρύθμιση \"Prefer Browser URL\"."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/BaseUrlCheck.php:52
+#, php-format
+msgid "Your \"Base URL\" setting (%s) does not match the URL you are currently using (%s)."
+msgstr "Η ρύθμιση \"Base URL\" (%s) δεν ταιριάζει με τη διεύθυνση URL που χρησιμοποιείτε επί του παρόντος (%s)."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/DonateAdvisorCheck.php:33
+msgid "AzuraCast is free and open-source software."
+msgstr "Το AzuraCast είναι ελεύθερο και ανοικτού κώδικα λογισμικό."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/DonateAdvisorCheck.php:34
+msgid "If you are enjoying AzuraCast, please consider donating to support our work. We depend on donations to build new features, fix bugs, and keep AzuraCast modern, accessible and free."
+msgstr "Εάν απολαμβάνετε AzuraCast, παρακαλούμε σκεφτείτε να δωρίσετε για να υποστηρίξετε το έργο μας. Εξαρτόμαστε από τις δωρεές για να οικοδομήσουμε νέα χαρακτηριστικά, διορθώνουμε σφάλματα, και να κρατήσει AzuraCast σύγχρονο, προσβάσιμο και δωρεάν."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/DonateAdvisorCheck.php:40
+msgid "Donate to AzuraCast"
+msgstr "Δωρεά στο AzuraCast"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/ProfilerAdvisorCheck.php:34
+msgid "The performance profiling extension is currently enabled on this installation."
+msgstr "Η επέκταση προφίλ επιδόσεων είναι ενεργοποιημένη σε αυτήν την εγκατάσταση."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/ProfilerAdvisorCheck.php:35
+msgid "You can track the execution time and memory usage of any AzuraCast page or application from the profiler page."
+msgstr "Μπορείτε να παρακολουθείτε τον χρόνο εκτέλεσης και τη χρήση μνήμης οποιασδήποτε σελίδας AzuraCast ή εφαρμογής από τη σελίδα προφίλ."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/ProfilerAdvisorCheck.php:41
+msgid "Profiler Control Panel"
+msgstr "Πίνακας Ελέγχου Προφίλ"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/ProfilerAdvisorCheck.php:53
+msgid "Performance profiling is currently enabled for all requests."
+msgstr "Το προφίλ απόδοσης είναι ενεργοποιημένο για όλα τα αιτήματα."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/ProfilerAdvisorCheck.php:54
+msgid "This can have an adverse impact on system performance. You should disable this when possible."
+msgstr "Αυτό μπορεί να έχει αρνητικές επιπτώσεις στην απόδοση του συστήματος. Θα πρέπει να το απενεργοποιήσετε όταν είναι δυνατόν."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/ServiceCheck.php:34
+#, php-format
+msgid "Service Not Running: %s"
+msgstr "Η Υπηρεσία Δεν Εκτελείται: %s"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/ServiceCheck.php:35
+msgid "One of the essential services on this installation is not currently running. Visit the system administration and check the system logs to find the cause of this issue."
+msgstr "Μία από τις βασικές υπηρεσίες σε αυτήν την εγκατάσταση δεν εκτελείται αυτήν τη στιγμή. Επισκεφτείτε τη διαχείριση του συστήματος και ελέγξτε τα αρχεία καταγραφής συστήματος για να βρείτε την αιτία αυτού του ζητήματος."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/SyncTaskCheck.php:36
+msgid "Synchronization Disabled"
+msgstr "Απενεργοποιημένος Συγχρονισμός"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/SyncTaskCheck.php:37
+msgid "Routine synchronization is currently disabled. Make sure to re-enable it to resume routine maintenance tasks."
+msgstr "Ο συγχρονισμός ρουτίνας είναι απενεργοποιημένος. Σιγουρευτείτε για να τον ενεργοποιήσετε ξανά για να συνεχίσετε τις εργασίες συντήρησης ρουτίνας."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/SyncTaskCheck.php:51
+msgid "Synchronization Not Recently Run"
+msgstr "Ο Συγχρονισμός Δεν Εκτελείται Πρόσφατα"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/SyncTaskCheck.php:52
+msgid "The routine synchronization task has not run recently. This may indicate an error with your installation."
+msgstr "Η εργασία συγχρονισμού ρουτίνας δεν εκτελέστηκε πρόσφατα. Αυτό μπορεί να υποδεικνύει ένα σφάλμα με την εγκατάστασή σας."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/RecentBackupCheck.php:47
+msgid "Installation Not Recently Backed Up"
+msgstr "Δεν δημιουργήθηκε πρόσφατο αντίγραφο ασφαλείας για την εγκατάσταση"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/RecentBackupCheck.php:48
+msgid "This installation has not been backed up in the last two weeks."
+msgstr "Αυτή η εγκατάσταση δεν έχει δημιουργήσει αντίγραφο ασφαλείας τις τελευταίες δύο εβδομάδες."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/ActiveServerCheck.php:32
+msgid "This server is not the current active instance."
+msgstr "Αυτός ο διακομιστής δεν είναι το τρέχον ενεργό στιγμιότυπο."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/ActiveServerCheck.php:33
+msgid "This likely means that multiple AzuraCast instances are connecting to the same database. This instance is not the current active one, so synchronized tasks won't run on this server. If this is intentional, you can disregard this message."
+msgstr "Αυτό πιθανόν σημαίνει ότι πολλές περιπτώσεις AzuraCast συνδέονται με την ίδια βάση δεδομένων. Αυτή η παρουσία δεν είναι η τρέχουσα ενεργή, οπότε οι συγχρονισμένες εργασίες δεν θα εκτελούνται σε αυτόν τον διακομιστή. Αν αυτό είναι σκόπιμο, μπορείτε να αγνοήσετε αυτό το μήνυμα."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Exception/NotLoggedInException.php:25
+msgid "You must be logged in to access this page."
+msgstr "Πρέπει να είστε συνδεδεμένοι για να αποκτήσετε πρόσβαση σε αυτήν τη σελίδα."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Exception/CannotCompleteActionException.php:26
+#, php-format
+msgid "Cannot submit request: %s"
+msgstr ""
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Exception/PermissionDeniedException.php:25
+msgid "You do not have permission to access this portion of the site."
+msgstr "Δεν έχετε άδεια πρόσβασης σε αυτό το τμήμα του ιστότοπου."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Exception/StationUnsupportedException.php:25
+msgid "This station does not currently support this functionality."
+msgstr ""
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Exception/StationUnsupportedException.php:32
+msgid "This station does not currently support on-demand media."
+msgstr ""
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Exception/StationUnsupportedException.php:39
+msgid "This station does not currently accept requests."
+msgstr ""
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Exception/NotFoundException.php:24
+msgid "Record not found."
+msgstr ""
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Exception/NotFoundException.php:29
+msgid "File not found."
+msgstr ""
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Exception/NotFoundException.php:34
+msgid "Station not found."
+msgstr ""
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Exception/NotFoundException.php:39
+msgid "Podcast not found."
+msgstr ""
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Exception/SupervisorException.php:24
+#, php-format
+msgid "%s is not recognized as a service."
+msgstr "%s δεν αναγνωρίζεται ως υπηρεσία."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Exception/SupervisorException.php:27
+msgid "It may not be registered with Supervisor yet. Restarting broadcasting may help."
+msgstr "Μπορεί ακόμη να μην είναι εγγεγραμμένο στον Επόπτη. \" επανεκκίνηση της μετάδοσης μπορεί να βοηθήσει."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Exception/SupervisorException.php:36
+#, php-format
+msgid "%s cannot start"
+msgstr "%s δεν μπορεί να ξεκινήσει"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Exception/SupervisorException.php:39
+msgid "It is already running."
+msgstr "Είναι ήδη σε λειτουργία."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Exception/SupervisorException.php:48
+#, php-format
+msgid "%s cannot stop"
+msgstr "%s δεν μπορεί να σταματήσει"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Exception/SupervisorException.php:51
+msgid "It is not running."
+msgstr "Δεν λειτουργεί."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Exception/SupervisorException.php:63
+#, php-format
+msgid "%s encountered an error: %s"
+msgstr "%s αντιμετώπισε ένα σφάλμα: %s"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Exception/SupervisorException.php:67
+msgid "Check the log for details."
+msgstr "Ελέγξτε το αρχείο καταγραφής για λεπτομέρειες."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/SetupController.php:113
+msgid "Set Up AzuraCast"
+msgstr "Ρύθμιση AzuraCast"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/SetupController.php:192
+msgid "Setup has already been completed!"
+msgstr "Η εγκατάσταση έχει ήδη ολοκληρωθεί!"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/WebAuthn/PostValidationAction.php:55
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/TwoFactorAction.php:44
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/LoginAction.php:123
+msgid "Login unsuccessful"
+msgstr "Ανεπιτυχής σύνδεση"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/WebAuthn/PostValidationAction.php:76
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/TwoFactorAction.php:32
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/LoginAction.php:105
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/LoginAction.php:113
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/MasqueradeAction.php:47
+msgid "Logged in successfully."
+msgstr "Επιτυχής σύνδεση"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/RecoverAction.php:41
+msgid "Invalid token specified."
+msgstr "Καθορίστηκε μη έγκυρο διακριτικό."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/RecoverAction.php:74
+msgid "Logged in using account recovery token"
+msgstr "Συνδεδεμένος με χρήση διακριτικού ανάκτησης λογαριασμού"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/RecoverAction.php:75
+msgid "Your password has been updated."
+msgstr "Ο κωδικός πρόσβασης ενημερώθηκε."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/TwoFactorAction.php:44
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/LoginAction.php:123
+msgid "Your credentials could not be verified."
+msgstr "Τα διαπιστευτήριά σας δεν μπορούν να επαληθευτούν."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/LoginAction.php:65
+msgid "Too many login attempts"
+msgstr "Πάρα πολλές προσπάθειες σύνδεσης"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/LoginAction.php:66
+msgid "You have attempted to log in too many times. Please wait 30 seconds and try again."
+msgstr "Προσπαθήσατε να συνδεθείτε πάρα πολλές φορές. Παρακαλώ περιμένετε 30 δευτερόλεπτα και προσπαθήστε ξανά."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/LoginAction.php:106
+msgid "Complete the setup process to get started."
+msgstr "Ολοκληρώστε τη διαδικασία εγκατάστασης για να ξεκινήσετε."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/MasqueradeAction.php:40
+msgid "User not found."
+msgstr "Ο χρήστης δεν βρέθηκε."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/ForgotPasswordAction.php:47
+msgid "Too many forgot password attempts"
+msgstr "Πάρα πολλές προσπάθειες ξέχασα τον κωδικό πρόσβασης"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/ForgotPasswordAction.php:48
+msgid "You have attempted to reset your password too many times. Please wait 30 seconds and try again."
+msgstr "Προσπαθήσατε να επαναφέρετε τον κωδικό πρόσβασής σας πάρα πολλές φορές. Παρακαλώ περιμένετε 30 δευτερόλεπτα και προσπαθήστε ξανά."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/ForgotPasswordAction.php:65
+#: /home/runner/work/AzuraCast/AzuraCast/templates/mail/forgot.phtml:8
+msgid "Account Recovery"
+msgstr "Ανάκτηση Λογαριασμού"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/ForgotPasswordAction.php:83
+msgid "Account recovery e-mail sent."
+msgstr "Στάλθηκε e-mail ανάκτησης λογαριασμού."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/ForgotPasswordAction.php:84
+msgid "If the e-mail address you provided is in the system, check your inbox for a password reset message."
+msgstr "Εάν η διεύθυνση ηλεκτρονικού ταχυδρομείου που δώσατε είναι στο σύστημα, ελέγξτε τα εισερχόμενά σας για ένα μήνυμα επαναφοράς κωδικού πρόσβασης."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Frontend/Dashboard/ChartsAction.php:134
+msgid "All Stations"
+msgstr "Όλοι Οι Σταθμοί"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Admin/UsersController.php:222
+msgid "You cannot modify yourself."
+msgstr "Δεν μπορείτε να τροποποιήσετε τον εαυτό σας."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Admin/UsersController.php:257
+msgid "You cannot remove yourself."
+msgstr "Δεν μπορείτε να αφαιρέσετε τον εαυτό σας."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Admin/Stations/StorageLocationsAction.php:21
+msgid "Create a new storage location based on the base directory."
+msgstr "Δημιουργήστε μια νέα θέση αποθήκευσης με βάση τον βασικό κατάλογο."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Admin/LogsAction.php:80
+msgid "AzuraCast Application Log"
+msgstr "Αρχείο Καταγραφής Εφαρμογών AzuraCast"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Admin/LogsAction.php:86
+msgid "AzuraCast Now Playing Log"
+msgstr "AzuraCast Τώρα Παίζοντας Καταγραφή"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Admin/LogsAction.php:92
+msgid "AzuraCast Synchronized Task Log"
+msgstr "AzuraCast Συγχρονισμένο Αρχείο Καταγραφής Εργασιών"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Admin/LogsAction.php:98
+msgid "AzuraCast Queue Worker Log"
+msgstr "AzuraCast Καταγραφή Εργαζομένων Ουράς"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Admin/LogsAction.php:104
+#, php-format
+msgid "Service Log: %s (%s)"
+msgstr "Αρχείο καταγραφής υπηρεσιών: %s (%s)"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Admin/LogsAction.php:119
+msgid "Nginx Access Log"
+msgstr "Καταγραφή Πρόσβασης Nginx"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Admin/LogsAction.php:124
+msgid "Nginx Error Log"
+msgstr "Καταγραφή Σφαλμάτων Nginx"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Admin/LogsAction.php:129
+msgid "PHP Application Log"
+msgstr "Αρχείο Καταγραφής Εφαρμογής PHP"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Admin/LogsAction.php:134
+msgid "Supervisord Log"
+msgstr "Αρχείο Καταγραφής Supervisord"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Admin/SendTestMessageAction.php:51
+msgid "Test Message"
+msgstr "Δοκιμαστικό Μήνυμα"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Admin/SendTestMessageAction.php:54
+msgid "This is a test message from AzuraCast. If you are receiving this message, it means your e-mail settings are configured correctly."
+msgstr "Αυτό είναι ένα δοκιμαστικό μήνυμα από το AzuraCast. Αν λαμβάνετε αυτό το μήνυμα, σημαίνει ότι οι ρυθμίσεις του e-mail σας έχουν ρυθμιστεί σωστά."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Admin/SendTestMessageAction.php:68
+msgid "Test message sent successfully."
+msgstr "Δοκιμαστικό μήνυμα εστάλη επιτυχώς."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Webhooks/ToggleAction.php:39
+msgid "Web hook enabled."
+msgstr "Web Hook ενεργοποιήθηκε."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Webhooks/ToggleAction.php:40
+msgid "Web hook disabled."
+msgstr "Το Web Hook απενεργοποιήθηκε."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/BulkMedia/UploadAction.php:171
+#, php-format
+msgid "%d files processed."
+msgstr "%d αρχεία επεξεργάσθηκαν επιτυχώς."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Playlists/ImportAction.php:200
+#, php-format
+msgid "Playlist successfully imported; %d of %d files were successfully matched."
+msgstr "Η λίστα αναπαραγωγής εισήχθη επιτυχώς: %d από %d αρχεία ταιριάχθηκαν επιτυχώς."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Playlists/GetOrderAction.php:41
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Playlists/PutOrderAction.php:40
+msgid "This playlist is not a sequential playlist."
+msgstr "Αυτή η λίστα αναπαραγωγής δεν είναι μια διαδοχική λίστα αναπαραγωγής."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Playlists/GetApplyToAction.php:44
+msgid "Base Directory"
+msgstr "Δημιουργία καταλόγου"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Playlists/PutApplyToAction.php:62
+msgid "Playlist applied to folders."
+msgstr "Η λίστα αναπαραγωγής εφαρμόστηκε στους φακέλους."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Playlists/ToggleAction.php:39
+msgid "Playlist enabled."
+msgstr "Η λίστα αναπαραγωγής ενεργοποιήθηκε."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Playlists/ToggleAction.php:40
+msgid "Playlist disabled."
+msgstr "Η λίστα αναπαραγωγής απενεργοποιήθηκε."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Playlists/ReshuffleAction.php:38
+msgid "Playlist reshuffled."
+msgstr "Η λίστα μετονομάστηκε."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Playlists/EmptyAction.php:36
+msgid "This playlist is not song-based."
+msgstr "Αυτή η λίστα αναπαραγωγής δεν βασίζεται σε τραγούδια."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Playlists/EmptyAction.php:44
+msgid "Playlist emptied."
+msgstr "Η λίστα αναπαραγωγής ενεργοποιήθηκε."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Streamers/BroadcastsController.php:153
+msgid "No recording available."
+msgstr "Δεν υπάρχει διαθέσιμη εγγραφή."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ByCountry.php:75
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ByClient.php:82
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ByStream.php:99
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ByBrowser.php:62
+msgid "Connected Seconds"
+msgstr "Συνδεδεμένα δευτερόλεπτα"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ByClient.php:62
+msgid "Mobile Device"
+msgstr "Κινητή Συσκευή"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ByClient.php:63
+msgid "Desktop Browser"
+msgstr "Περιηγητής επιφάνειας εργασίας"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ByClient.php:64
+msgid "Non-Browser"
+msgstr "Χωρίς πρόγραμμα περιήγησης"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ByListeningTime.php:47
+msgid "Less than Thirty Seconds"
+msgstr "Λιγότερο από τριάντα δευτερόλεπτα"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ByListeningTime.php:48
+msgid "Thirty Seconds to One Minute"
+msgstr "Τριάντα δευτερόλεπτα έως ένα λεπτό"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ByListeningTime.php:49
+msgid "One Minute to Five Minutes"
+msgstr "Ένα λεπτό έως πέντε λεπτά"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ByListeningTime.php:50
+msgid "Five Minutes to Ten Minutes"
+msgstr "Πέντε λεπτά έως δέκα λεπτά"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ByListeningTime.php:51
+msgid "Ten Minutes to Thirty Minutes"
+msgstr "Δέκα λεπτά έως τριάντα λεπτά"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ByListeningTime.php:52
+msgid "Thirty Minutes to One Hour"
+msgstr "Τριάντα λεπτά έως μία ώρα"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ByListeningTime.php:53
+msgid "One Hour to Two Hours"
+msgstr "Μία ώρα έως δύο ώρες"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ByListeningTime.php:54
+msgid "More than Two Hours"
+msgstr "Περισσότερες από δύο ώρες"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/LogsAction.php:86
+msgid "Station Nginx Configuration"
+msgstr "Ρύθμιση Σταθμού Nginx"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/LogsAction.php:93
+msgid "Liquidsoap Log"
+msgstr "Αρχείο καταγραφής Liquidsoap"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/LogsAction.php:98
+msgid "Liquidsoap Configuration"
+msgstr "Διαμόρφωση Liquidsoap"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/LogsAction.php:107
+msgid "Icecast Access Log"
+msgstr "Καταγραφή Πρόσβασης Icecast"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/LogsAction.php:112
+msgid "Icecast Error Log"
+msgstr "Καταγραφή Σφάλματος Icecast"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/LogsAction.php:117
+msgid "Icecast Configuration"
+msgstr "Ρύθμιση Icecast"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/LogsAction.php:125
+msgid "Shoutcast Log"
+msgstr "Αρχείο Καταγραφής Shoutcast"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/LogsAction.php:130
+msgid "Shoutcast Configuration"
+msgstr "Ρυθμίσεις Shoutcast"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/FilesController.php:201
+msgid "This station is out of available storage space."
+msgstr "Αυτός ο σταθμός είναι εκτός διαθέσιμου αποθηκευτικού χώρου."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Files/RenameAction.php:33
+msgid "File not specified."
+msgstr "Το αρχείο δεν καθορίστηκε."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Files/RenameAction.php:39
+msgid "New path not specified."
+msgstr "Δεν ορίστηκε νέα διαδρομή."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Files/ListAction.php:252
+#, php-format
+msgid "File Not Processed: %s"
+msgstr "Το αρχείο δεν έχει επεξεργαστεί: %s"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Files/ListAction.php:257
+msgid "Cover Art"
+msgstr "Εξώφυλλο"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Files/ListAction.php:259
+msgid "File Processing"
+msgstr "Επεξεργασία Αρχείου"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Files/MakeDirectoryAction.php:34
+msgid "No directory specified"
+msgstr "Δεν καθορίστηκε κατάλογος"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Requests/SubmitAction.php:79
+msgid "Your request has been submitted and will be played soon."
+msgstr "Το αίτημά σας έχει υποβληθεί και θα παίξει σύντομα."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/ServicesController.php:160
+msgid "Station reloaded."
+msgstr "Ο σταθμός επαναφορτώθηκε."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/ServicesController.php:186
+msgid "Station restarted."
+msgstr "Ο σταθμός επανεκκινήθηκε."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/ServicesController.php:204
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/ServicesController.php:256
+msgid "Service stopped."
+msgstr "Η υπηρεσία σταμάτησε."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/ServicesController.php:209
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/ServicesController.php:261
+msgid "Service started."
+msgstr "Η υπηρεσία ξεκίνησε."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/ServicesController.php:215
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/ServicesController.php:267
+msgid "Service reloaded."
+msgstr "Η υπηρεσία επαναφορτώθηκε."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/ServicesController.php:227
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/ServicesController.php:279
+msgid "Service restarted."
+msgstr "Η υπηρεσία επανεκκίνησε."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/ServicesController.php:246
+msgid "Song skipped."
+msgstr "Το τραγούδι παραλείφθηκε."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/ServicesController.php:251
+msgid "Streamer disconnected."
+msgstr "Η ροή αποσυνδέθηκε."
+
 #: /home/runner/work/AzuraCast/AzuraCast/src/Doctrine/Repository.php:108
 msgid "Select..."
 msgstr "Επιλογή..."
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/SetupFixturesCommand.php:63
-msgid "Fixtures loaded."
-msgstr "Fixtures Φορτώθηκαν "
+#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/MigrateDbCommand.php:25
+msgid "Database Migrations"
+msgstr "Συγχωνεύσεις Βάσεων Δεδομένων"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/MigrateDbCommand.php:38
+msgid "Database is already up to date!"
+msgstr "Η βάση δεδομένων είναι ενημερωμένη!"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/MigrateDbCommand.php:51
+#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/RollbackDbCommand.php:61
+msgid "Running database migrations..."
+msgstr "Εκτέλεση συγχώνευσης Βάσης Δεδομένων..."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/MigrateDbCommand.php:65
+#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/RollbackDbCommand.php:86
+#, php-format
+msgid "Database migration failed: %s"
+msgstr "Αποτυχία συγχώνευσης βάσης δεδομένων: %s"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/MigrateDbCommand.php:77
+msgid "Database migration completed!"
+msgstr "Συγχώνευση βάσης δεδομένων ολοκληρώθηκε!"
 
 #: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/MigrateConfigCommand.php:108
 msgid "Configuration successfully written."
 msgstr "Οι ρυθμίσεις αποθηκεύτηκαν επιτυχώς."
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/Settings/ListCommand.php:26
-msgid "AzuraCast Settings"
-msgstr "Ρυθμίσεις AzuraCast"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/Settings/ListCommand.php:29
-msgid "Setting Key"
-msgstr "Κλειδί Ρύθμισης"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/Settings/ListCommand.php:30
-msgid "Setting Value"
-msgstr "Τιμή ρύθμισης"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/Locale/ImportCommand.php:58
+#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/Backup/RestoreCommand.php:77
 #, php-format
-msgid "Imported locale: %s"
-msgstr "Εισαγωγή τοπικής: %s"
+msgid "Backup path %s not found!"
+msgstr "Η διαδρομή αντιγράφου ασφαλείας %s δεν βρέθηκε!"
 
 #: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/Backup/BackupCommand.php:95
 msgid "AzuraCast Backup"
@@ -6431,10 +7138,35 @@ msgstr "Εκκαθάριση προσωρινών αρχείων..."
 msgid "Backup complete in %.2f seconds."
 msgstr "Το αντίγραφο ασφαλείας ολοκληρώθηκε σε %.2f δευτερόλεπτα."
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/Backup/RestoreCommand.php:77
+#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/SetupFixturesCommand.php:63
+msgid "Fixtures loaded."
+msgstr "Fixtures Φορτώθηκαν "
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/RollbackDbCommand.php:44
+msgid "Roll Back Database"
+msgstr "Roll Πίσω Βάση Δεδομένων"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/RollbackDbCommand.php:99
 #, php-format
-msgid "Backup path %s not found!"
-msgstr "Η διαδρομή αντιγράφου ασφαλείας %s δεν βρέθηκε!"
+msgid "Database rolled back to stable release version \"%s\"."
+msgstr "Η βάση δεδομένων επέστρεψε στην έκδοση σταθερής έκδοσης \"%s\"."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/Locale/ImportCommand.php:58
+#, php-format
+msgid "Imported locale: %s"
+msgstr "Εισαγωγή τοπικής: %s"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/Settings/ListCommand.php:26
+msgid "AzuraCast Settings"
+msgstr "Ρυθμίσεις AzuraCast"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/Settings/ListCommand.php:29
+msgid "Setting Key"
+msgstr "Κλειδί Ρύθμισης"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/Settings/ListCommand.php:30
+msgid "Setting Value"
+msgstr "Τιμή ρύθμισης"
 
 #: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/AbstractDatabaseCommand.php:104
 msgid "Backing up initial database state..."
@@ -6510,38 +7242,6 @@ msgstr "Η εγκατάσταση του AzuraCast ολοκληρώθηκε!"
 msgid "Visit %s to complete setup."
 msgstr "Επισκεφθείτε το %s για να ολοκληρώσετε τη ρύθμιση."
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/MigrateDbCommand.php:25
-msgid "Database Migrations"
-msgstr "Συγχωνεύσεις Βάσεων Δεδομένων"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/MigrateDbCommand.php:38
-msgid "Database is already up to date!"
-msgstr "Η βάση δεδομένων είναι ενημερωμένη!"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/MigrateDbCommand.php:51
-#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/RollbackDbCommand.php:61
-msgid "Running database migrations..."
-msgstr "Εκτέλεση συγχώνευσης Βάσης Δεδομένων..."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/MigrateDbCommand.php:65
-#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/RollbackDbCommand.php:86
-#, php-format
-msgid "Database migration failed: %s"
-msgstr "Αποτυχία συγχώνευσης βάσης δεδομένων: %s"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/MigrateDbCommand.php:77
-msgid "Database migration completed!"
-msgstr "Συγχώνευση βάσης δεδομένων ολοκληρώθηκε!"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/RollbackDbCommand.php:44
-msgid "Roll Back Database"
-msgstr "Roll Πίσω Βάση Δεδομένων"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/RollbackDbCommand.php:99
-#, php-format
-msgid "Database rolled back to stable release version \"%s\"."
-msgstr "Η βάση δεδομένων επέστρεψε στην έκδοση σταθερής έκδοσης \"%s\"."
-
 #: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/Users/SetAdministratorCommand.php:61
 #, php-format
 msgid "The account associated with e-mail address \"%s\" has been set as an administrator"
@@ -6551,42 +7251,10 @@ msgstr "Ο λογαριασμός που σχετίζεται με τη διεύ
 msgid "Account not found."
 msgstr "Ο λογαριασμός δεν βρέθηκε."
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Enums/GlobalPermissions.php:22
 #: /home/runner/work/AzuraCast/AzuraCast/src/Enums/StationPermissions.php:26
+#: /home/runner/work/AzuraCast/AzuraCast/src/Enums/GlobalPermissions.php:22
 msgid "All Permissions"
 msgstr "Δικαιώματα"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Enums/GlobalPermissions.php:23
-msgid "View Administration Page"
-msgstr "Προβολή Σελίδας Διαχείρισης"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Enums/GlobalPermissions.php:24
-msgid "View System Logs"
-msgstr "Προβολή Αρχείων Καταγραφής Συστήματος"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Enums/GlobalPermissions.php:25
-msgid "Administer Settings"
-msgstr "Διαχειριστείτε τις ρυθμίσεις"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Enums/GlobalPermissions.php:26
-msgid "Administer API Keys"
-msgstr "Διαχειριστείτε τα κλειδιά API"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Enums/GlobalPermissions.php:27
-msgid "Administer Stations"
-msgstr "Διαχειριστείτε σταθμούς"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Enums/GlobalPermissions.php:28
-msgid "Administer Custom Fields"
-msgstr "Διαχείριση Προσαρμοσμένων Πεδίων"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Enums/GlobalPermissions.php:29
-msgid "Administer Backups"
-msgstr "Διαχείριση Αντιγράφων Ασφαλείας"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Enums/GlobalPermissions.php:30
-msgid "Administer Storage Locations"
-msgstr "Διαχειριστείτε θέσεις αποθήκευσης"
 
 #: /home/runner/work/AzuraCast/AzuraCast/src/Enums/StationPermissions.php:27
 msgid "View Station Page"
@@ -6636,280 +7304,37 @@ msgstr "Διαχείριση Βάσης Web Hooks"
 msgid "Manage Station Podcasts"
 msgstr "Διαχείριση podcast σταθμού"
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Exception/StationUnsupportedException.php:25
-msgid "This station does not currently support this functionality."
-msgstr ""
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Exception/StationUnsupportedException.php:32
-msgid "This station does not currently support on-demand media."
-msgstr ""
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Exception/StationUnsupportedException.php:39
-msgid "This station does not currently accept requests."
-msgstr ""
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Exception/PermissionDeniedException.php:25
-msgid "You do not have permission to access this portion of the site."
-msgstr "Δεν έχετε άδεια πρόσβασης σε αυτό το τμήμα του ιστότοπου."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Exception/NotLoggedInException.php:25
-msgid "You must be logged in to access this page."
-msgstr "Πρέπει να είστε συνδεδεμένοι για να αποκτήσετε πρόσβαση σε αυτήν τη σελίδα."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Exception/CannotCompleteActionException.php:26
-#, php-format
-msgid "Cannot submit request: %s"
-msgstr ""
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Exception/SupervisorException.php:24
-#, php-format
-msgid "%s is not recognized as a service."
-msgstr "%s δεν αναγνωρίζεται ως υπηρεσία."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Exception/SupervisorException.php:27
-msgid "It may not be registered with Supervisor yet. Restarting broadcasting may help."
-msgstr "Μπορεί ακόμη να μην είναι εγγεγραμμένο στον Επόπτη. \" επανεκκίνηση της μετάδοσης μπορεί να βοηθήσει."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Exception/SupervisorException.php:36
-#, php-format
-msgid "%s cannot start"
-msgstr "%s δεν μπορεί να ξεκινήσει"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Exception/SupervisorException.php:39
-msgid "It is already running."
-msgstr "Είναι ήδη σε λειτουργία."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Exception/SupervisorException.php:48
-#, php-format
-msgid "%s cannot stop"
-msgstr "%s δεν μπορεί να σταματήσει"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Exception/SupervisorException.php:51
-msgid "It is not running."
-msgstr "Δεν λειτουργεί."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Exception/SupervisorException.php:63
-#, php-format
-msgid "%s encountered an error: %s"
-msgstr "%s αντιμετώπισε ένα σφάλμα: %s"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Exception/SupervisorException.php:67
-msgid "Check the log for details."
-msgstr "Ελέγξτε το αρχείο καταγραφής για λεπτομέρειες."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Exception/NotFoundException.php:24
-msgid "Record not found."
-msgstr ""
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Exception/NotFoundException.php:29
-msgid "File not found."
-msgstr ""
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Exception/NotFoundException.php:34
-msgid "Station not found."
-msgstr ""
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Exception/NotFoundException.php:39
-msgid "Podcast not found."
-msgstr ""
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/Api/Status.php:33
-msgid "Changes saved successfully."
-msgstr "Οι αλλαγές αποθηκεύτηκαν με επιτυχία."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/Api/Status.php:38
-msgid "Record created successfully."
-msgstr "Η εγγραφή δημιουργήθηκε επιτυχώς."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/Api/Status.php:43
-msgid "Record updated successfully."
-msgstr "Η εγγραφή ενημερώθηκε με επιτυχία."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/Api/Status.php:48
-msgid "Record deleted successfully."
-msgstr "Η εγγραφή διαγράφηκε με επιτυχία."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/Api/Error.php:71
-msgid "Record not found"
-msgstr "Η εγγραφή δεν βρέθηκε"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/Api/Error.php:77
-msgid "The uploaded file exceeds the upload_max_filesize directive in php.ini."
-msgstr "Το μεταφορτωμένο αρχείο υπερβαίνει την οδηγία upload_max_filesize στο php.ini."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/Api/Error.php:78
-msgid "The uploaded file exceeds the MAX_FILE_SIZE directive from the HTML form."
-msgstr "Το μεταφορτωμένο αρχείο υπερβαίνει την οδηγία MAX_FILE_SIZE από τη φόρμα HTML."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/Api/Error.php:79
-msgid "The uploaded file was only partially uploaded."
-msgstr "Προειδοποίηση: Το αρχείο δεν μεταφορτώθηκε ολόκληρο."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/Api/Error.php:80
-msgid "No file was uploaded."
-msgstr "Κανένα αρχείο δεν μεταφορτώθηκε."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/Api/Error.php:81
-msgid "No temporary directory is available."
-msgstr "Δεν υπάρχει διαθέσιμος φάκελος."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/Api/Error.php:82
-msgid "Could not write to filesystem."
-msgstr "Αδυναμία εγγραφής στο σύστημα αρχείων."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/Api/Error.php:83
-msgid "Upload halted by a PHP extension."
-msgstr "Ανέβασμα σταμάτησε από επέκταση PHP."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/Api/Error.php:84
-msgid "Unspecified error."
-msgstr "Απροσδιόριστο σφάλμα."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/ApiGenerator/ScheduleApiGenerator.php:59
-#, php-format
-msgid "Playlist: %s"
-msgstr "Λίστα αναπαραγωγής: %s"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/ApiGenerator/ScheduleApiGenerator.php:64
-#, php-format
-msgid "Streamer: %s"
-msgstr "Ροή: %s"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/Repository/StationRequestRepository.php:73
-msgid "Search engine crawlers are not permitted to use this feature."
-msgstr "Οι ανιχνευτές μηχανών αναζήτησης δεν επιτρέπεται να χρησιμοποιούν αυτή τη λειτουργία."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/Repository/StationRequestRepository.php:80
-msgid "You are not permitted to submit requests."
-msgstr "Δεν σας επιτρέπεται να υποβάλετε αιτήσεις."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/Repository/StationRequestRepository.php:89
-msgid "This track is not requestable."
-msgstr ""
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/Repository/StationRequestRepository.php:121
-msgid "You have submitted a request too recently! Please wait before submitting another one."
-msgstr "Έχετε υποβάλει ένα αίτημα πολύ πρόσφατα! Παρακαλώ περιμένετε πριν από την υποβολή ενός άλλου."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/Repository/StationRequestRepository.php:167
-msgid "This song was already requested and will play soon."
-msgstr ""
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/Repository/StationRequestRepository.php:247
-msgid "This song or artist has been played too recently. Wait a while before requesting it again."
-msgstr "Αυτό το τραγούδι ή ο καλλιτέχνης έχει παίξει πολύ πρόσφατα. Περιμένετε λίγο πριν το ζητήσετε ξανά."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/ServiceCheck.php:34
-#, php-format
-msgid "Service Not Running: %s"
-msgstr "Η Υπηρεσία Δεν Εκτελείται: %s"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/ServiceCheck.php:35
-msgid "One of the essential services on this installation is not currently running. Visit the system administration and check the system logs to find the cause of this issue."
-msgstr "Μία από τις βασικές υπηρεσίες σε αυτήν την εγκατάσταση δεν εκτελείται αυτήν τη στιγμή. Επισκεφτείτε τη διαχείριση του συστήματος και ελέγξτε τα αρχεία καταγραφής συστήματος για να βρείτε την αιτία αυτού του ζητήματος."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/BaseUrlCheck.php:42
-msgid "You may want to update your base URL to ensure it is correct."
-msgstr "Μπορεί να θέλετε να ενημερώσετε το βασικό URL σας για να βεβαιωθείτε ότι είναι σωστή."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/BaseUrlCheck.php:45
-msgid "If you regularly use different URLs to access AzuraCast, you should enable the \"Prefer Browser URL\" setting."
-msgstr "Αν χρησιμοποιείτε τακτικά διαφορετικές διευθύνσεις URL για να αποκτήσετε πρόσβαση στο AzuraCast, θα πρέπει να ενεργοποιήσετε τη ρύθμιση \"Prefer Browser URL\"."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/BaseUrlCheck.php:52
-#, php-format
-msgid "Your \"Base URL\" setting (%s) does not match the URL you are currently using (%s)."
-msgstr "Η ρύθμιση \"Base URL\" (%s) δεν ταιριάζει με τη διεύθυνση URL που χρησιμοποιείτε επί του παρόντος (%s)."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/ProfilerAdvisorCheck.php:34
-msgid "The performance profiling extension is currently enabled on this installation."
-msgstr "Η επέκταση προφίλ επιδόσεων είναι ενεργοποιημένη σε αυτήν την εγκατάσταση."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/ProfilerAdvisorCheck.php:35
-msgid "You can track the execution time and memory usage of any AzuraCast page or application from the profiler page."
-msgstr "Μπορείτε να παρακολουθείτε τον χρόνο εκτέλεσης και τη χρήση μνήμης οποιασδήποτε σελίδας AzuraCast ή εφαρμογής από τη σελίδα προφίλ."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/ProfilerAdvisorCheck.php:41
-msgid "Profiler Control Panel"
-msgstr "Πίνακας Ελέγχου Προφίλ"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/ProfilerAdvisorCheck.php:53
-msgid "Performance profiling is currently enabled for all requests."
-msgstr "Το προφίλ απόδοσης είναι ενεργοποιημένο για όλα τα αιτήματα."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/ProfilerAdvisorCheck.php:54
-msgid "This can have an adverse impact on system performance. You should disable this when possible."
-msgstr "Αυτό μπορεί να έχει αρνητικές επιπτώσεις στην απόδοση του συστήματος. Θα πρέπει να το απενεργοποιήσετε όταν είναι δυνατόν."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/RecentBackupCheck.php:47
-msgid "Installation Not Recently Backed Up"
-msgstr "Δεν δημιουργήθηκε πρόσφατο αντίγραφο ασφαλείας για την εγκατάσταση"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/RecentBackupCheck.php:48
-msgid "This installation has not been backed up in the last two weeks."
-msgstr "Αυτή η εγκατάσταση δεν έχει δημιουργήσει αντίγραφο ασφαλείας τις τελευταίες δύο εβδομάδες."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/DonateAdvisorCheck.php:33
-msgid "AzuraCast is free and open-source software."
-msgstr "Το AzuraCast είναι ελεύθερο και ανοικτού κώδικα λογισμικό."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/DonateAdvisorCheck.php:34
-msgid "If you are enjoying AzuraCast, please consider donating to support our work. We depend on donations to build new features, fix bugs, and keep AzuraCast modern, accessible and free."
-msgstr "Εάν απολαμβάνετε AzuraCast, παρακαλούμε σκεφτείτε να δωρίσετε για να υποστηρίξετε το έργο μας. Εξαρτόμαστε από τις δωρεές για να οικοδομήσουμε νέα χαρακτηριστικά, διορθώνουμε σφάλματα, και να κρατήσει AzuraCast σύγχρονο, προσβάσιμο και δωρεάν."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/DonateAdvisorCheck.php:40
-msgid "Donate to AzuraCast"
-msgstr "Δωρεά στο AzuraCast"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/SyncTaskCheck.php:36
-msgid "Synchronization Disabled"
-msgstr "Απενεργοποιημένος Συγχρονισμός"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/SyncTaskCheck.php:37
-msgid "Routine synchronization is currently disabled. Make sure to re-enable it to resume routine maintenance tasks."
-msgstr "Ο συγχρονισμός ρουτίνας είναι απενεργοποιημένος. Σιγουρευτείτε για να τον ενεργοποιήσετε ξανά για να συνεχίσετε τις εργασίες συντήρησης ρουτίνας."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/SyncTaskCheck.php:51
-msgid "Synchronization Not Recently Run"
-msgstr "Ο Συγχρονισμός Δεν Εκτελείται Πρόσφατα"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/SyncTaskCheck.php:52
-msgid "The routine synchronization task has not run recently. This may indicate an error with your installation."
-msgstr "Η εργασία συγχρονισμού ρουτίνας δεν εκτελέστηκε πρόσφατα. Αυτό μπορεί να υποδεικνύει ένα σφάλμα με την εγκατάστασή σας."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/ActiveServerCheck.php:32
-msgid "This server is not the current active instance."
-msgstr "Αυτός ο διακομιστής δεν είναι το τρέχον ενεργό στιγμιότυπο."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/ActiveServerCheck.php:33
-msgid "This likely means that multiple AzuraCast instances are connecting to the same database. This instance is not the current active one, so synchronized tasks won't run on this server. If this is intentional, you can disregard this message."
-msgstr "Αυτό πιθανόν σημαίνει ότι πολλές περιπτώσεις AzuraCast συνδέονται με την ίδια βάση δεδομένων. Αυτή η παρουσία δεν είναι η τρέχουσα ενεργή, οπότε οι συγχρονισμένες εργασίες δεν θα εκτελούνται σε αυτόν τον διακομιστή. Αν αυτό είναι σκόπιμο, μπορείτε να αγνοήσετε αυτό το μήνυμα."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/UpdateCheck.php:54
-msgid "New AzuraCast Stable Release Available"
-msgstr "Διαθέσιμη Νέα AzuraCast Σταθερή Κυκλοφορία"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/UpdateCheck.php:58
-#, php-format
-msgid "Version %s is now available. You are currently running version %s. Updating is recommended."
-msgstr "Η έκδοση %s είναι τώρα διαθέσιμη. Εκτελείτε την έκδοση %s. Συνιστάται η ενημέρωση."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/UpdateCheck.php:75
-msgid "New AzuraCast Rolling Release Available"
-msgstr "Διαθέσιμη Νέα AzuraCast Σταθερή Κυκλοφορία"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/UpdateCheck.php:79
-#, php-format
-msgid "Your installation is currently %d update(s) behind the latest version. Updating is recommended."
-msgstr "Η εγκατάστασή σας είναι προς το παρόν %d ενημερώσεις(ες) πίσω από την τελευταία έκδοση."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/UpdateCheck.php:93
-msgid "Switch to Stable Channel Available"
-msgstr "Εναλλαγή σε Σταθερό κανάλι διαθέσιμο"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/UpdateCheck.php:96
-msgid "Your Rolling Release installation is currently older than the latest Stable release. This means you can switch releases to the \"Stable\" release channel if desired."
-msgstr "Η εγκατάσταση του Rolling Release σας είναι αυτή τη στιγμή παλαιότερη από την τελευταία έκδοση Stable. Αυτό σημαίνει ότι μπορείτε να μεταβείτε στο κανάλι απελευθέρωσης \"Σταθερό\" εάν το επιθυμείτε."
+#: /home/runner/work/AzuraCast/AzuraCast/src/Enums/GlobalPermissions.php:23
+msgid "View Administration Page"
+msgstr "Προβολή Σελίδας Διαχείρισης"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Enums/GlobalPermissions.php:24
+msgid "View System Logs"
+msgstr "Προβολή Αρχείων Καταγραφής Συστήματος"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Enums/GlobalPermissions.php:25
+msgid "Administer Settings"
+msgstr "Διαχειριστείτε τις ρυθμίσεις"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Enums/GlobalPermissions.php:26
+msgid "Administer API Keys"
+msgstr "Διαχειριστείτε τα κλειδιά API"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Enums/GlobalPermissions.php:27
+msgid "Administer Stations"
+msgstr "Διαχειριστείτε σταθμούς"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Enums/GlobalPermissions.php:28
+msgid "Administer Custom Fields"
+msgstr "Διαχείριση Προσαρμοσμένων Πεδίων"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Enums/GlobalPermissions.php:29
+msgid "Administer Backups"
+msgstr "Διαχείριση Αντιγράφων Ασφαλείας"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Enums/GlobalPermissions.php:30
+msgid "Administer Storage Locations"
+msgstr "Διαχειριστείτε θέσεις αποθήκευσης"
 
 #: /home/runner/work/AzuraCast/AzuraCast/src/Service/IpGeolocation.php:56
 msgid "GeoLite database not configured for this installation. See System Administration for instructions."
@@ -6959,381 +7384,14 @@ msgstr ""
 msgid "Frontend Assets"
 msgstr "Περιουσιακά Στοιχεία Περιοχής"
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Service/IpGeolocator/DbIp.php:29
-msgid "IP Geolocation by DB-IP"
-msgstr "Γεωγραφική τοποθεσία IP από DB-IP"
-
 #: /home/runner/work/AzuraCast/AzuraCast/src/Service/IpGeolocator/GeoLite.php:35
 #, php-format
 msgid "This product includes GeoLite2 data created by MaxMind, available from %s."
 msgstr "Αυτό το προϊόν περιλαμβάνει δεδομένα GeoLite2 που δημιουργήθηκαν από το MaxMind, διαθέσιμα από %s."
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/SetupController.php:113
-msgid "Set Up AzuraCast"
-msgstr "Ρύθμιση AzuraCast"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/SetupController.php:192
-msgid "Setup has already been completed!"
-msgstr "Η εγκατάσταση έχει ήδη ολοκληρωθεί!"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/MasqueradeAction.php:40
-msgid "User not found."
-msgstr "Ο χρήστης δεν βρέθηκε."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/MasqueradeAction.php:47
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/TwoFactorAction.php:32
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/WebAuthn/PostValidationAction.php:77
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/LoginAction.php:105
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/LoginAction.php:113
-msgid "Logged in successfully."
-msgstr "Επιτυχής σύνδεση"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/TwoFactorAction.php:44
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/WebAuthn/PostValidationAction.php:56
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/LoginAction.php:123
-msgid "Login unsuccessful"
-msgstr "Ανεπιτυχής σύνδεση"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/TwoFactorAction.php:44
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/LoginAction.php:123
-msgid "Your credentials could not be verified."
-msgstr "Τα διαπιστευτήριά σας δεν μπορούν να επαληθευτούν."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/ForgotPasswordAction.php:47
-msgid "Too many forgot password attempts"
-msgstr "Πάρα πολλές προσπάθειες ξέχασα τον κωδικό πρόσβασης"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/ForgotPasswordAction.php:48
-msgid "You have attempted to reset your password too many times. Please wait 30 seconds and try again."
-msgstr "Προσπαθήσατε να επαναφέρετε τον κωδικό πρόσβασής σας πάρα πολλές φορές. Παρακαλώ περιμένετε 30 δευτερόλεπτα και προσπαθήστε ξανά."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/ForgotPasswordAction.php:65
-#: /home/runner/work/AzuraCast/AzuraCast/templates/mail/forgot.phtml:8
-msgid "Account Recovery"
-msgstr "Ανάκτηση Λογαριασμού"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/ForgotPasswordAction.php:83
-msgid "Account recovery e-mail sent."
-msgstr "Στάλθηκε e-mail ανάκτησης λογαριασμού."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/ForgotPasswordAction.php:84
-msgid "If the e-mail address you provided is in the system, check your inbox for a password reset message."
-msgstr "Εάν η διεύθυνση ηλεκτρονικού ταχυδρομείου που δώσατε είναι στο σύστημα, ελέγξτε τα εισερχόμενά σας για ένα μήνυμα επαναφοράς κωδικού πρόσβασης."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/LoginAction.php:65
-msgid "Too many login attempts"
-msgstr "Πάρα πολλές προσπάθειες σύνδεσης"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/LoginAction.php:66
-msgid "You have attempted to log in too many times. Please wait 30 seconds and try again."
-msgstr "Προσπαθήσατε να συνδεθείτε πάρα πολλές φορές. Παρακαλώ περιμένετε 30 δευτερόλεπτα και προσπαθήστε ξανά."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/LoginAction.php:106
-msgid "Complete the setup process to get started."
-msgstr "Ολοκληρώστε τη διαδικασία εγκατάστασης για να ξεκινήσετε."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/RecoverAction.php:41
-msgid "Invalid token specified."
-msgstr "Καθορίστηκε μη έγκυρο διακριτικό."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/RecoverAction.php:74
-msgid "Logged in using account recovery token"
-msgstr "Συνδεδεμένος με χρήση διακριτικού ανάκτησης λογαριασμού"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/RecoverAction.php:75
-msgid "Your password has been updated."
-msgstr "Ο κωδικός πρόσβασης ενημερώθηκε."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Frontend/Dashboard/ChartsAction.php:134
-msgid "All Stations"
-msgstr "Όλοι Οι Σταθμοί"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Admin/SendTestMessageAction.php:51
-msgid "Test Message"
-msgstr "Δοκιμαστικό Μήνυμα"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Admin/SendTestMessageAction.php:54
-msgid "This is a test message from AzuraCast. If you are receiving this message, it means your e-mail settings are configured correctly."
-msgstr "Αυτό είναι ένα δοκιμαστικό μήνυμα από το AzuraCast. Αν λαμβάνετε αυτό το μήνυμα, σημαίνει ότι οι ρυθμίσεις του e-mail σας έχουν ρυθμιστεί σωστά."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Admin/SendTestMessageAction.php:68
-msgid "Test message sent successfully."
-msgstr "Δοκιμαστικό μήνυμα εστάλη επιτυχώς."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Admin/UsersController.php:222
-msgid "You cannot modify yourself."
-msgstr "Δεν μπορείτε να τροποποιήσετε τον εαυτό σας."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Admin/UsersController.php:257
-msgid "You cannot remove yourself."
-msgstr "Δεν μπορείτε να αφαιρέσετε τον εαυτό σας."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Admin/Stations/StorageLocationsAction.php:21
-msgid "Create a new storage location based on the base directory."
-msgstr "Δημιουργήστε μια νέα θέση αποθήκευσης με βάση τον βασικό κατάλογο."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Admin/LogsAction.php:80
-msgid "AzuraCast Application Log"
-msgstr "Αρχείο Καταγραφής Εφαρμογών AzuraCast"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Admin/LogsAction.php:86
-msgid "AzuraCast Now Playing Log"
-msgstr "AzuraCast Τώρα Παίζοντας Καταγραφή"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Admin/LogsAction.php:92
-msgid "AzuraCast Synchronized Task Log"
-msgstr "AzuraCast Συγχρονισμένο Αρχείο Καταγραφής Εργασιών"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Admin/LogsAction.php:98
-msgid "AzuraCast Queue Worker Log"
-msgstr "AzuraCast Καταγραφή Εργαζομένων Ουράς"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Admin/LogsAction.php:104
-#, php-format
-msgid "Service Log: %s (%s)"
-msgstr "Αρχείο καταγραφής υπηρεσιών: %s (%s)"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Admin/LogsAction.php:119
-msgid "Nginx Access Log"
-msgstr "Καταγραφή Πρόσβασης Nginx"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Admin/LogsAction.php:124
-msgid "Nginx Error Log"
-msgstr "Καταγραφή Σφαλμάτων Nginx"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Admin/LogsAction.php:129
-msgid "PHP Application Log"
-msgstr "Αρχείο Καταγραφής Εφαρμογής PHP"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Admin/LogsAction.php:134
-msgid "Supervisord Log"
-msgstr "Αρχείο Καταγραφής Supervisord"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/FilesController.php:201
-msgid "This station is out of available storage space."
-msgstr "Αυτός ο σταθμός είναι εκτός διαθέσιμου αποθηκευτικού χώρου."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Requests/SubmitAction.php:79
-msgid "Your request has been submitted and will be played soon."
-msgstr "Το αίτημά σας έχει υποβληθεί και θα παίξει σύντομα."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ByListeningTime.php:47
-msgid "Less than Thirty Seconds"
-msgstr "Λιγότερο από τριάντα δευτερόλεπτα"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ByListeningTime.php:48
-msgid "Thirty Seconds to One Minute"
-msgstr "Τριάντα δευτερόλεπτα έως ένα λεπτό"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ByListeningTime.php:49
-msgid "One Minute to Five Minutes"
-msgstr "Ένα λεπτό έως πέντε λεπτά"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ByListeningTime.php:50
-msgid "Five Minutes to Ten Minutes"
-msgstr "Πέντε λεπτά έως δέκα λεπτά"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ByListeningTime.php:51
-msgid "Ten Minutes to Thirty Minutes"
-msgstr "Δέκα λεπτά έως τριάντα λεπτά"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ByListeningTime.php:52
-msgid "Thirty Minutes to One Hour"
-msgstr "Τριάντα λεπτά έως μία ώρα"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ByListeningTime.php:53
-msgid "One Hour to Two Hours"
-msgstr "Μία ώρα έως δύο ώρες"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ByListeningTime.php:54
-msgid "More than Two Hours"
-msgstr "Περισσότερες από δύο ώρες"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ByBrowser.php:62
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ByCountry.php:75
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ByStream.php:99
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ByClient.php:82
-msgid "Connected Seconds"
-msgstr "Συνδεδεμένα δευτερόλεπτα"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ByClient.php:62
-msgid "Mobile Device"
-msgstr "Κινητή Συσκευή"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ByClient.php:63
-msgid "Desktop Browser"
-msgstr "Περιηγητής επιφάνειας εργασίας"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ByClient.php:64
-msgid "Non-Browser"
-msgstr "Χωρίς πρόγραμμα περιήγησης"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/ServicesController.php:160
-msgid "Station reloaded."
-msgstr "Ο σταθμός επαναφορτώθηκε."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/ServicesController.php:186
-msgid "Station restarted."
-msgstr "Ο σταθμός επανεκκινήθηκε."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/ServicesController.php:204
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/ServicesController.php:256
-msgid "Service stopped."
-msgstr "Η υπηρεσία σταμάτησε."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/ServicesController.php:209
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/ServicesController.php:261
-msgid "Service started."
-msgstr "Η υπηρεσία ξεκίνησε."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/ServicesController.php:215
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/ServicesController.php:267
-msgid "Service reloaded."
-msgstr "Η υπηρεσία επαναφορτώθηκε."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/ServicesController.php:227
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/ServicesController.php:279
-msgid "Service restarted."
-msgstr "Η υπηρεσία επανεκκίνησε."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/ServicesController.php:246
-msgid "Song skipped."
-msgstr "Το τραγούδι παραλείφθηκε."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/ServicesController.php:251
-msgid "Streamer disconnected."
-msgstr "Η ροή αποσυνδέθηκε."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Playlists/PutApplyToAction.php:62
-msgid "Playlist applied to folders."
-msgstr "Η λίστα αναπαραγωγής εφαρμόστηκε στους φακέλους."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Playlists/GetApplyToAction.php:44
-msgid "Base Directory"
-msgstr "Δημιουργία καταλόγου"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Playlists/ReshuffleAction.php:38
-msgid "Playlist reshuffled."
-msgstr "Η λίστα μετονομάστηκε."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Playlists/EmptyAction.php:36
-msgid "This playlist is not song-based."
-msgstr "Αυτή η λίστα αναπαραγωγής δεν βασίζεται σε τραγούδια."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Playlists/EmptyAction.php:44
-msgid "Playlist emptied."
-msgstr "Η λίστα αναπαραγωγής ενεργοποιήθηκε."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Playlists/ImportAction.php:200
-#, php-format
-msgid "Playlist successfully imported; %d of %d files were successfully matched."
-msgstr "Η λίστα αναπαραγωγής εισήχθη επιτυχώς: %d από %d αρχεία ταιριάχθηκαν επιτυχώς."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Playlists/GetOrderAction.php:41
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Playlists/PutOrderAction.php:40
-msgid "This playlist is not a sequential playlist."
-msgstr "Αυτή η λίστα αναπαραγωγής δεν είναι μια διαδοχική λίστα αναπαραγωγής."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Playlists/ToggleAction.php:39
-msgid "Playlist enabled."
-msgstr "Η λίστα αναπαραγωγής ενεργοποιήθηκε."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Playlists/ToggleAction.php:40
-msgid "Playlist disabled."
-msgstr "Η λίστα αναπαραγωγής απενεργοποιήθηκε."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Streamers/BroadcastsController.php:153
-msgid "No recording available."
-msgstr "Δεν υπάρχει διαθέσιμη εγγραφή."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Webhooks/ToggleAction.php:39
-msgid "Web hook enabled."
-msgstr "Web Hook ενεργοποιήθηκε."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Webhooks/ToggleAction.php:40
-msgid "Web hook disabled."
-msgstr "Το Web Hook απενεργοποιήθηκε."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Files/MakeDirectoryAction.php:34
-msgid "No directory specified"
-msgstr "Δεν καθορίστηκε κατάλογος"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Files/RenameAction.php:33
-msgid "File not specified."
-msgstr "Το αρχείο δεν καθορίστηκε."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Files/RenameAction.php:39
-msgid "New path not specified."
-msgstr "Δεν ορίστηκε νέα διαδρομή."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Files/ListAction.php:252
-#, php-format
-msgid "File Not Processed: %s"
-msgstr "Το αρχείο δεν έχει επεξεργαστεί: %s"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Files/ListAction.php:257
-msgid "Cover Art"
-msgstr "Εξώφυλλο"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Files/ListAction.php:259
-msgid "File Processing"
-msgstr "Επεξεργασία Αρχείου"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/BulkMedia/UploadAction.php:171
-#, php-format
-msgid "%d files processed."
-msgstr "%d αρχεία επεξεργάσθηκαν επιτυχώς."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/LogsAction.php:86
-msgid "Station Nginx Configuration"
-msgstr "Ρύθμιση Σταθμού Nginx"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/LogsAction.php:93
-msgid "Liquidsoap Log"
-msgstr "Αρχείο καταγραφής Liquidsoap"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/LogsAction.php:98
-msgid "Liquidsoap Configuration"
-msgstr "Διαμόρφωση Liquidsoap"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/LogsAction.php:107
-msgid "Icecast Access Log"
-msgstr "Καταγραφή Πρόσβασης Icecast"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/LogsAction.php:112
-msgid "Icecast Error Log"
-msgstr "Καταγραφή Σφάλματος Icecast"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/LogsAction.php:117
-msgid "Icecast Configuration"
-msgstr "Ρύθμιση Icecast"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/LogsAction.php:125
-msgid "Shoutcast Log"
-msgstr "Αρχείο Καταγραφής Shoutcast"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/LogsAction.php:130
-msgid "Shoutcast Configuration"
-msgstr "Ρυθμίσεις Shoutcast"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Validator/Constraints/StorageLocationValidator.php:41
-#, php-format
-msgid "Storage location %s could not be validated: %s"
-msgstr "Η θέση αποθήκευσης %s δεν μπόρεσε να επικυρωθεί: %s"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Validator/Constraints/StorageLocationValidator.php:72
-#, php-format
-msgid "Storage location %s already exists."
-msgstr "Η τοποθεσία αποθήκευσης %s υπάρχει ήδη."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Validator/Constraints/StationPortCheckerValidator.php:41
-#, php-format
-msgid "The port %s is in use by another station."
-msgstr "Η θύρα %s χρησιμοποιείται από άλλο σταθμό."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Validator/Constraints/UniqueEntityValidator.php:169
-msgid "This value is already used."
-msgstr "Αυτή η τιμή χρησιμοποιείται ήδη."
+#: /home/runner/work/AzuraCast/AzuraCast/src/Service/IpGeolocator/DbIp.php:29
+msgid "IP Geolocation by DB-IP"
+msgstr "Γεωγραφική τοποθεσία IP από DB-IP"
 
 #: /home/runner/work/AzuraCast/AzuraCast/src/Media/Enums/MetadataTags.php:81
 msgid "Album Artist"
@@ -7567,57 +7625,24 @@ msgstr "Χρήστης URL"
 msgid "Year"
 msgstr "Έτος"
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/Command/InstallCommand.php:176
-msgid "AzuraCast Installer"
-msgstr "Εγκατάσταση AzuraCast"
+#: /home/runner/work/AzuraCast/AzuraCast/src/Validator/Constraints/UniqueEntityValidator.php:169
+msgid "This value is already used."
+msgstr "Αυτή η τιμή χρησιμοποιείται ήδη."
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/Command/InstallCommand.php:179
-msgid "Welcome to AzuraCast! Complete the initial server setup by answering a few questions."
-msgstr "Καλώς ήρθατε στο AzuraCast! Ολοκληρώστε την αρχική εγκατάσταση του διακομιστή απαντώντας σε μερικές ερωτήσεις."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/Command/InstallCommand.php:185
-msgid "AzuraCast Updater"
-msgstr "AzuraCast Updater"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/Command/InstallCommand.php:192
-msgid "Change installation settings?"
-msgstr "Αλλαγή ρυθμίσεων εγκατάστασης;"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/Command/InstallCommand.php:201
-msgid "AzuraCast is currently configured to listen on the following ports:"
-msgstr "Το AzuraCast έχει ρυθμιστεί να ακούει στις ακόλουθες θύρες:"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/Command/InstallCommand.php:205
+#: /home/runner/work/AzuraCast/AzuraCast/src/Validator/Constraints/StorageLocationValidator.php:41
 #, php-format
-msgid "HTTP Port: %d"
-msgstr "Θύρα HTTP: %d"
+msgid "Storage location %s could not be validated: %s"
+msgstr "Η θέση αποθήκευσης %s δεν μπόρεσε να επικυρωθεί: %s"
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/Command/InstallCommand.php:206
+#: /home/runner/work/AzuraCast/AzuraCast/src/Validator/Constraints/StorageLocationValidator.php:72
 #, php-format
-msgid "HTTPS Port: %d"
-msgstr "Θύρα HTTPS: %d"
+msgid "Storage location %s already exists."
+msgstr "Η τοποθεσία αποθήκευσης %s υπάρχει ήδη."
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/Command/InstallCommand.php:207
+#: /home/runner/work/AzuraCast/AzuraCast/src/Validator/Constraints/StationPortCheckerValidator.php:41
 #, php-format
-msgid "SFTP Port: %d"
-msgstr "Θύρα SFTP: %d"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/Command/InstallCommand.php:208
-#, php-format
-msgid "Radio Ports: %s"
-msgstr "Ραδιοθυρίδες: %s"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/Command/InstallCommand.php:213
-msgid "Customize ports used for AzuraCast?"
-msgstr "Προσαρμόστε τις θύρες που χρησιμοποιούνται για το AzuraCast;"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/Command/InstallCommand.php:266
-msgid "Writing configuration files..."
-msgstr "Εγγραφή αρχείων ρυθμίσεων..."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/Command/InstallCommand.php:291
-msgid "Server configuration complete!"
-msgstr "Η ρύθμιση παραμέτρων του διακομιστή ολοκληρώθηκε!"
+msgid "The port %s is in use by another station."
+msgstr "Η θύρα %s χρησιμοποιείται από άλλο σταθμό."
 
 #: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/EnvFile.php:22
 msgid "(Docker Compose) All Docker containers are prefixed by this name. Do not change this after installation."
@@ -7933,14 +7958,57 @@ msgstr "Επιπλέον πακέτα Ubuntu για εγκατάσταση κα�
 msgid "Separate package names with a space. Packages will be installed during container startup."
 msgstr "Ξεχωριστά ονόματα πακέτων με χώρο. Τα πακέτα θα εγκατασταθούν κατά την εκκίνηση του εμπορευματοκιβωτίου."
 
-#: /home/runner/work/AzuraCast/AzuraCast/templates/minimal.phtml:56
-msgid "Footer"
-msgstr "Υποσέλιδο"
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/Command/InstallCommand.php:176
+msgid "AzuraCast Installer"
+msgstr "Εγκατάσταση AzuraCast"
 
-#: /home/runner/work/AzuraCast/AzuraCast/templates/minimal.phtml:58
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/Command/InstallCommand.php:179
+msgid "Welcome to AzuraCast! Complete the initial server setup by answering a few questions."
+msgstr "Καλώς ήρθατε στο AzuraCast! Ολοκληρώστε την αρχική εγκατάσταση του διακομιστή απαντώντας σε μερικές ερωτήσεις."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/Command/InstallCommand.php:185
+msgid "AzuraCast Updater"
+msgstr "AzuraCast Updater"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/Command/InstallCommand.php:192
+msgid "Change installation settings?"
+msgstr "Αλλαγή ρυθμίσεων εγκατάστασης;"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/Command/InstallCommand.php:201
+msgid "AzuraCast is currently configured to listen on the following ports:"
+msgstr "Το AzuraCast έχει ρυθμιστεί να ακούει στις ακόλουθες θύρες:"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/Command/InstallCommand.php:205
 #, php-format
-msgid "Powered by %s"
-msgstr "Τροφοδοτείται από %s"
+msgid "HTTP Port: %d"
+msgstr "Θύρα HTTP: %d"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/Command/InstallCommand.php:206
+#, php-format
+msgid "HTTPS Port: %d"
+msgstr "Θύρα HTTPS: %d"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/Command/InstallCommand.php:207
+#, php-format
+msgid "SFTP Port: %d"
+msgstr "Θύρα SFTP: %d"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/Command/InstallCommand.php:208
+#, php-format
+msgid "Radio Ports: %s"
+msgstr "Ραδιοθυρίδες: %s"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/Command/InstallCommand.php:213
+msgid "Customize ports used for AzuraCast?"
+msgstr "Προσαρμόστε τις θύρες που χρησιμοποιούνται για το AzuraCast;"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/Command/InstallCommand.php:266
+msgid "Writing configuration files..."
+msgstr "Εγγραφή αρχείων ρυθμίσεων..."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/Command/InstallCommand.php:291
+msgid "Server configuration complete!"
+msgstr "Η ρύθμιση παραμέτρων του διακομιστή ολοκληρώθηκε!"
 
 #: /home/runner/work/AzuraCast/AzuraCast/templates/frontend/account/forgot.phtml:6
 #: /home/runner/work/AzuraCast/AzuraCast/templates/frontend/account/forgot.phtml:15
@@ -7992,4 +8060,13 @@ msgstr "Ένας σύνδεσμος ανάκτησης λογαριασμού έ
 #: /home/runner/work/AzuraCast/AzuraCast/templates/mail/forgot.phtml:12
 msgid "Click the link below to log in to your account."
 msgstr "Κάντε κλικ στον παρακάτω σύνδεσμο για να συνδεθείτε στο λογαριασμό σας."
+
+#: /home/runner/work/AzuraCast/AzuraCast/templates/minimal.phtml:56
+msgid "Footer"
+msgstr "Υποσέλιδο"
+
+#: /home/runner/work/AzuraCast/AzuraCast/templates/minimal.phtml:58
+#, php-format
+msgid "Powered by %s"
+msgstr "Τροφοδοτείται από %s"
 

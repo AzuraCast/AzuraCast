@@ -228,18 +228,18 @@ final class InstallCommand extends Command
                             $envConfig[$port]['name'],
                             $envConfig[$port]['description'] ?? ''
                         ),
-                        $env[$port]
+                        Types::stringOrNull($env[$port])
                     );
                 }
 
                 $azuracastEnv[Environment::AUTO_ASSIGN_PORT_MIN] = $io->ask(
                     $azuracastEnvConfig[Environment::AUTO_ASSIGN_PORT_MIN]['name'],
-                    $azuracastEnv[Environment::AUTO_ASSIGN_PORT_MIN]
+                    Types::stringOrNull($azuracastEnv[Environment::AUTO_ASSIGN_PORT_MIN])
                 );
 
                 $azuracastEnv[Environment::AUTO_ASSIGN_PORT_MAX] = $io->ask(
                     $azuracastEnvConfig[Environment::AUTO_ASSIGN_PORT_MAX]['name'],
-                    $azuracastEnv[Environment::AUTO_ASSIGN_PORT_MAX]
+                    Types::stringOrNull($azuracastEnv[Environment::AUTO_ASSIGN_PORT_MAX])
                 );
 
                 $stationPorts = Configuration::enumerateDefaultPorts(

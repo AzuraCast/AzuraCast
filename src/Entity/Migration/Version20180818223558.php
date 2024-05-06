@@ -6,7 +6,6 @@ namespace App\Entity\Migration;
 
 use App\Entity\Migration\Traits\UpdateAllRecords;
 use Doctrine\DBAL\Schema\Schema;
-use Doctrine\Migrations\AbstractMigration;
 
 /**
  * Add per-station-configurable number of history items to be shown in the NowPlaying API.

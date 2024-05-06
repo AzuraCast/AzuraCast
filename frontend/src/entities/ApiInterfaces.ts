@@ -604,10 +604,15 @@ export interface ApiNowPlayingStationRemote {
 export type ApiPodcast = HasLinks & {
   id?: string;
   storage_location_id?: number;
+  source?: string;
+  playlist_id?: number | null;
+  playlist_auto_publish?: boolean;
   title?: string;
   link?: string | null;
   description?: string;
   description_short?: string;
+  /** An array containing podcast-specific branding configuration */
+  branding_config?: any[];
   language?: string;
   language_name?: string;
   author?: string;
@@ -630,14 +635,19 @@ export interface ApiPodcastCategory {
 export type ApiPodcastEpisode = HasLinks & {
   id?: string;
   title?: string;
+  link?: string | null;
   description?: string;
   description_short?: string;
   explicit?: boolean;
+  season_number?: number | null;
+  episode_number?: number | null;
   created_at?: number;
+  publish_at?: number;
   is_published?: boolean;
-  publish_at?: number | null;
   has_media?: boolean;
-  media?: ApiPodcastMedia;
+  playlist_media_id?: string | null;
+  playlist_media?: ApiSong | null;
+  media?: ApiPodcastMedia | null;
   has_custom_art?: boolean;
   art?: string | null;
   art_updated_at?: number;
@@ -1496,6 +1506,8 @@ export type StationPlaylist = HasAutoIncrementId & {
   avoid_duplicates?: boolean;
   /** StationSchedule> */
   schedule_items?: any[];
+  /** Podcast> */
+  podcasts?: any[];
 };
 
 export type StationSchedule = HasAutoIncrementId & {

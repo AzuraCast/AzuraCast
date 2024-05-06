@@ -35,6 +35,7 @@ return static function (CallableEventDispatcherInterface $dispatcher) {
                     'table_name' => 'app_migrations',
                     'version_column_length' => 191,
                 ],
+                'custom_template' => $environment->getBaseDirectory() . '/util/doctrine_migration.php.tmpl',
             ];
 
             $buildMigrationConfigurationsEvent = new Event\BuildMigrationConfigurationArray(
@@ -114,6 +115,7 @@ return static function (CallableEventDispatcherInterface $dispatcher) {
             $e->addTasks([
                 App\Sync\Task\CheckFolderPlaylistsTask::class,
                 App\Sync\Task\CheckMediaTask::class,
+                App\Sync\Task\CheckPodcastPlaylistsTask::class,
                 App\Sync\Task\CheckRequestsTask::class,
                 App\Sync\Task\CheckUpdatesTask::class,
                 App\Sync\Task\CleanupHistoryTask::class,
@@ -128,7 +130,6 @@ return static function (CallableEventDispatcherInterface $dispatcher) {
                 App\Sync\Task\RotateLogsTask::class,
                 App\Sync\Task\RunAnalyticsTask::class,
                 App\Sync\Task\RunBackupTask::class,
-                App\Sync\Task\SendTimeOnSocketTask::class,
                 App\Sync\Task\UpdateGeoLiteTask::class,
                 App\Sync\Task\UpdateStorageLocationSizesTask::class,
             ]);

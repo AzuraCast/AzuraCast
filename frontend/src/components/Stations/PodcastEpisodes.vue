@@ -1,9 +1,6 @@
 <template>
-    <section
-        class="card"
-        role="region"
-    >
-        <div class="card-header text-bg-primary">
+    <card-page>
+        <template #header>
             <div class="row align-items-center">
                 <div class="col-md-7">
                     <div class="d-flex align-items-center">
@@ -27,9 +24,18 @@
                     />
                 </div>
             </div>
-        </div>
-
-        <div class="card-body buttons">
+        </template>
+        <template
+            v-if="!podcastIsManual"
+            #info
+        >
+            <p class="card-text">
+                {{
+                    $gettext('This podcast is automatically synchronized with a playlist. Episodes cannot be manually added or removed via this panel.')
+                }}
+            </p>
+        </template>
+        <template #actions>
             <router-link
                 class="btn btn-secondary"
                 :to="{name: 'stations:podcasts:index'}"
@@ -39,10 +45,11 @@
             </router-link>
 
             <add-button
+                v-if="podcastIsManual"
                 :text="$gettext('Add Episode')"
                 @click="doCreate"
             />
-        </div>
+        </template>
 
         <data-table
             id="station_podcast_episodes"
@@ -74,11 +81,17 @@
                     </span>
                 </div>
             </template>
-            <template #cell(podcast_media)="{item}">
+            <template #cell(media)="{item}">
                 <template v-if="item.media">
                     <span>{{ item.media.original_name }}</span>
                     <br>
                     <small>{{ item.media.length_text }}</small>
+                </template>
+                <template v-else-if="item.playlist_media">
+                    <span>{{ item.playlist_media.text }}</span>
+                </template>
+                <template v-else>
+&nbsp;
                 </template>
             </template>
             <template #cell(is_published)="{item}">
@@ -106,6 +119,7 @@
                         {{ $gettext('Edit') }}
                     </button>
                     <button
+                        v-if="podcastIsManual"
                         type="button"
                         class="btn btn-danger"
                         @click="doDelete(item.links.self)"
@@ -115,14 +129,12 @@
                 </div>
             </template>
         </data-table>
-    </section>
+    </card-page>
 
     <edit-modal
         ref="$editEpisodeModal"
+        :podcast="podcast"
         :create-url="podcast.links.episodes"
-        :new-art-url="podcast.links.episode_new_art"
-        :new-media-url="podcast.links.episode_new_media"
-        :podcast-id="podcast.id"
         @relist="relist"
     />
 </template>
@@ -134,7 +146,7 @@ import Icon from '~/components/Common/Icon.vue';
 import AlbumArt from '~/components/Common/AlbumArt.vue';
 import StationsCommonQuota from "~/components/Stations/Common/Quota.vue";
 import {useTranslate} from "~/vendor/gettext";
-import {ref} from "vue";
+import {computed, ref} from "vue";
 import AddButton from "~/components/Common/AddButton.vue";
 import {IconChevronLeft} from "~/components/Common/icons";
 import useHasDatatable, {DataTableTemplateRef} from "~/functions/useHasDatatable.ts";
@@ -143,6 +155,7 @@ import useConfirmAndDelete from "~/functions/useConfirmAndDelete.ts";
 import {ApiPodcast} from "~/entities/ApiInterfaces.ts";
 import useHasEditModal from "~/functions/useHasEditModal.ts";
 import useStationDateTimeFormatter from "~/functions/useStationDateTimeFormatter.ts";
+import CardPage from "~/components/Common/CardPage.vue";
 
 const props = defineProps<{
     podcast: ApiPodcast
@@ -168,7 +181,7 @@ const fields: DataTableField[] = [
         sortable: false
     },
     {
-        key: 'podcast_media',
+        key: 'media',
         label: $gettext('File Name'),
         sortable: false
     },
@@ -176,7 +189,7 @@ const fields: DataTableField[] = [
         key: 'is_published',
         label: $gettext('Is Published'),
         visible: false,
-        sortable: true,
+        sortable: false,
         selectable: true
     },
     {
@@ -193,12 +206,30 @@ const fields: DataTableField[] = [
         selectable: true
     },
     {
+        key: 'season_number',
+        label: $gettext('Season Number'),
+        visible: false,
+        sortable: true,
+        selectable: true
+    },
+    {
+        key: 'episode_number',
+        label: $gettext('Episode Number'),
+        visible: false,
+        sortable: true,
+        selectable: true
+    },
+    {
         key: 'actions',
         label: $gettext('Actions'),
         sortable: false,
         class: 'shrink'
     }
 ];
+
+const podcastIsManual = computed(() => {
+    return props.podcast.source == 'manual';
+});
 
 const $quota = ref<InstanceType<typeof StationsCommonQuota> | null>(null);
 

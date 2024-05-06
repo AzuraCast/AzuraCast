@@ -4,11 +4,14 @@ declare(strict_types=1);
 
 namespace App\Entity\Migration\Traits;
 
+use Doctrine\DBAL\ArrayParameterType;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Exception;
 use Doctrine\DBAL\ParameterType;
-use Doctrine\DBAL\Types\Type;
 
+/**
+ * @phpstan-type Param ParameterType|ArrayParameterType|string
+ */
 trait UpdateAllRecords
 {
     /** @var Connection */
@@ -21,7 +24,7 @@ trait UpdateAllRecords
      *
      * @param string $table Table name
      * @param array<string, mixed> $data Column-value pairs
-     * @param array<int, int|string|Type|null>|array<string, int|string|Type|null> $types Parameter types
+     * @param array<Param> $types Parameter types
      *
      * @return int|string The number of affected rows.
      *
@@ -51,10 +54,12 @@ trait UpdateAllRecords
     /**
      * Extract ordered type list from an ordered column list and type map.
      *
-     * @param array<int, string> $columnList
-     * @param array<int, int|string|Type|null>|array<string, int|string|Type|null> $types
      *
-     * @return array<int, int|string|Type|null>|array<string, int|string|Type|null>
+     *
+     * @param array<int, string> $columnList
+     * @param array<Param> $types
+     *
+     * @return array<Param>
      */
     private function extractTypeValues(array $columnList, array $types): array
     {

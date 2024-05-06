@@ -7,10 +7,10 @@ namespace App\Entity;
 use App\Auth;
 use App\Entity\Interfaces\EntityGroupsInterface;
 use App\Entity\Interfaces\IdentifiableEntityInterface;
-use App\Normalizer\Attributes\DeepNormalize;
 use App\OpenApi;
 use App\Utilities\Strings;
 use App\Validator\Constraints\UniqueEntity;
+use Azura\Normalizer\Attributes\DeepNormalize;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -119,7 +119,7 @@ class User implements Stringable, IdentifiableEntityInterface
 
     /** @var Collection<int, ApiKey> */
     #[
-        ORM\OneToMany(mappedBy: 'user', targetEntity: ApiKey::class),
+        ORM\OneToMany(targetEntity: ApiKey::class, mappedBy: 'user'),
         Groups([EntityGroupsInterface::GROUP_ADMIN, EntityGroupsInterface::GROUP_ALL]),
         DeepNormalize(true)
     ]
@@ -127,11 +127,19 @@ class User implements Stringable, IdentifiableEntityInterface
 
     /** @var Collection<int, UserPasskey> */
     #[
-        ORM\OneToMany(mappedBy: 'user', targetEntity: UserPasskey::class),
+        ORM\OneToMany(targetEntity: UserPasskey::class, mappedBy: 'user'),
         Groups([EntityGroupsInterface::GROUP_ADMIN, EntityGroupsInterface::GROUP_ALL]),
         DeepNormalize(true)
     ]
     protected Collection $passkeys;
+
+    /** @var Collection<int, UserLoginToken> */
+    #[
+        ORM\OneToMany(targetEntity: UserLoginToken::class, mappedBy: 'user'),
+        Groups([EntityGroupsInterface::GROUP_ADMIN, EntityGroupsInterface::GROUP_ALL]),
+        DeepNormalize(true)
+    ]
+    protected Collection $login_tokens;
 
     public function __construct()
     {
@@ -140,6 +148,7 @@ class User implements Stringable, IdentifiableEntityInterface
 
         $this->roles = new ArrayCollection();
         $this->api_keys = new ArrayCollection();
+        $this->login_tokens = new ArrayCollection();
     }
 
     #[ORM\PreUpdate]

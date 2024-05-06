@@ -118,9 +118,10 @@ return static function (RouteCollectorProxy $group) {
                                         ->add(new Middleware\Cache\SetStaticFileCache());
 
                                     $group->get(
-                                        '/download',
+                                        '/download[.{extension}]',
                                         Controller\Api\Stations\Podcasts\Episodes\Media\GetMediaAction::class
-                                    )->setName('api:stations:public:podcast:episode:download');
+                                    )->setName('api:stations:public:podcast:episode:download')
+                                        ->add(Middleware\RateLimit::forDownloads());
                                 }
                             );
                         }

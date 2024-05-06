@@ -6,7 +6,6 @@ namespace App\Entity\Migration;
 
 use Doctrine\DBAL\ParameterType;
 use Doctrine\DBAL\Schema\Schema;
-use Doctrine\Migrations\AbstractMigration;
 
 final class Version20201027130504 extends AbstractMigration
 {
@@ -32,7 +31,7 @@ final class Version20201027130504 extends AbstractMigration
             ]
         );
 
-        $storageLocationId = $this->connection->lastInsertId('storage_location');
+        $storageLocationId = $this->connection->lastInsertId();
         $this->connection->update(
             'settings',
             [
@@ -81,7 +80,7 @@ final class Version20201027130504 extends AbstractMigration
                 ]
             );
 
-            $recordingsStorageLocationId = $this->connection->lastInsertId('storage_location');
+            $recordingsStorageLocationId = $this->connection->lastInsertId();
 
             $this->connection->update(
                 'station',
@@ -111,7 +110,7 @@ final class Version20201027130504 extends AbstractMigration
                 ]
             );
 
-            $mediaStorageLocationId = $this->connection->lastInsertId('storage_location');
+            $mediaStorageLocationId = $this->connection->lastInsertId();
 
             foreach ($dirInfo['stations'] as $stationId) {
                 $this->connection->update(

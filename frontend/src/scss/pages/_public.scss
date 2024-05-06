@@ -4,6 +4,7 @@ body.page-minimal {
   background: var(--bs-body-bg) var(--public-page-bg);
   background-size: cover;
   background-attachment: fixed;
+  background-position: center center;
 
   footer {
     text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black, 0 0 4px #000;

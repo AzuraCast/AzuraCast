@@ -8,6 +8,7 @@ use App\Container\EntityManagerAwareTrait;
 use App\Controller\Api\Traits\CanSearchResults;
 use App\Controller\SingleActionInterface;
 use App\Entity\ApiGenerator\PodcastEpisodeApiGenerator;
+use App\Entity\Enums\PodcastSources;
 use App\Entity\PodcastEpisode;
 use App\Http\Response;
 use App\Http\ServerRequest;
@@ -33,11 +34,16 @@ final class ListEpisodesAction implements SingleActionInterface
             ->from(PodcastEpisode::class, 'e')
             ->join('e.podcast', 'p')
             ->leftJoin('e.media', 'pm')
+            ->leftJoin('e.playlist_media', 'sm')
             ->where('e.podcast = :podcast')
             ->setParameter('podcast', $podcast)
-            ->andWhere('e.publish_at IS NULL OR e.publish_at <= :publishTime')
+            ->andWhere('e.publish_at <= :publishTime')
             ->setParameter('publishTime', time())
-            ->andWhere('pm.id IS NOT NULL')
+            ->andWhere(
+                '(p.source = :sourceManual AND pm.id IS NOT NULL) OR (p.source = :sourcePlaylist AND sm.id IS NOT NULL)'
+            )
+            ->setParameter('sourceManual', PodcastSources::Manual->value)
+            ->setParameter('sourcePlaylist', PodcastSources::Playlist->value)
             ->orderBy('e.publish_at', 'DESC');
 
         $queryBuilder = $this->searchQueryBuilder(

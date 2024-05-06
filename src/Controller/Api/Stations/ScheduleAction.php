@@ -81,7 +81,7 @@ final class ScheduleAction implements SingleActionInterface
                 . $dateRange->getStart()->format('Ymd') . '-'
                 . $dateRange->getEnd()->format('Ymd');
 
-            $cacheItem = $this->psr6Cache->getItem($cacheKey);
+            $cacheItem = $this->psr6Cache->getItem(urlencode($cacheKey));
 
             if (!$cacheItem->isHit()) {
                 $nowTz = CarbonImmutable::now($station->getTimezoneObject());
@@ -113,7 +113,7 @@ final class ScheduleAction implements SingleActionInterface
                 $cacheKey = 'api_station_' . $station->getId() . '_schedule_upcoming';
             }
 
-            $cacheItem = $this->psr6Cache->getItem($cacheKey);
+            $cacheItem = $this->psr6Cache->getItem(urlencode($cacheKey));
 
             if (!$cacheItem->isHit()) {
                 $cacheItem->set($this->scheduleRepo->getUpcomingSchedule($station, $now));

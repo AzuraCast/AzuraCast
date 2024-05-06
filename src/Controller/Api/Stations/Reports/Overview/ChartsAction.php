@@ -65,8 +65,7 @@ final class ChartsAction extends AbstractReportAction
         $daysOfWeek = [];
 
         foreach ($dailyStats as $stat) {
-            /** @var CarbonImmutable $statTime */
-            $statTime = $stat['moment'];
+            $statTime = CarbonImmutable::instance($stat['moment']);
             $statTime = $statTime->shiftTimezone($stationTz);
 
             $avgRow = new stdClass();
@@ -175,8 +174,7 @@ final class ChartsAction extends AbstractReportAction
         }
 
         foreach ($hourlyStats as $stat) {
-            /** @var CarbonImmutable $statTime */
-            $statTime = $stat['moment'];
+            $statTime = CarbonImmutable::instance($stat['moment']);
             $statTime = $statTime->shiftTimezone($stationTz);
 
             $hour = $statTime->hour;

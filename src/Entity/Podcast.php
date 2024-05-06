@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use App\Entity\Enums\PodcastSources;
+use Azura\Normalizer\Attributes\DeepNormalize;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -25,6 +27,20 @@ class Podcast implements Interfaces\IdentifiableEntityInterface
     #[ORM\JoinColumn(name: 'storage_location_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     protected StorageLocation $storage_location;
 
+    #[ORM\Column(nullable: false, insertable: false, updatable: false)]
+    protected int $storage_location_id;
+
+    #[DeepNormalize(true)]
+    #[ORM\ManyToOne(inversedBy: 'podcasts')]
+    #[ORM\JoinColumn(name: 'playlist_id', referencedColumnName: 'id', nullable: true, onDelete: 'CASCADE')]
+    protected ?StationPlaylist $playlist = null;
+
+    #[ORM\Column(nullable: true, insertable: false, updatable: false)]
+    protected ?int $playlist_id = null;
+
+    #[ORM\Column(type: 'string', length: 50, enumType: PodcastSources::class)]
+    protected PodcastSources $source = PodcastSources::Manual;
+
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank]
     protected string $title;
@@ -35,6 +51,12 @@ class Podcast implements Interfaces\IdentifiableEntityInterface
     #[ORM\Column(type: 'text')]
     #[Assert\NotBlank]
     protected string $description;
+
+    #[ORM\Column]
+    protected bool $is_enabled = true;
+
+    #[ORM\Column(type: 'json', nullable: true)]
+    protected ?array $branding_config = null;
 
     #[ORM\Column(length: 2)]
     #[Assert\NotBlank]
@@ -51,12 +73,15 @@ class Podcast implements Interfaces\IdentifiableEntityInterface
     #[Attributes\AuditIgnore]
     protected int $art_updated_at = 0;
 
+    #[ORM\Column]
+    protected bool $playlist_auto_publish = true;
+
     /** @var Collection<int, PodcastCategory> */
-    #[ORM\OneToMany(mappedBy: 'podcast', targetEntity: PodcastCategory::class)]
+    #[ORM\OneToMany(targetEntity: PodcastCategory::class, mappedBy: 'podcast')]
     protected Collection $categories;
 
     /** @var Collection<int, PodcastEpisode> */
-    #[ORM\OneToMany(mappedBy: 'podcast', targetEntity: PodcastEpisode::class, fetch: 'EXTRA_LAZY')]
+    #[ORM\OneToMany(targetEntity: PodcastEpisode::class, mappedBy: 'podcast', fetch: 'EXTRA_LAZY')]
     protected Collection $episodes;
 
     public function __construct(StorageLocation $storageLocation)
@@ -70,6 +95,26 @@ class Podcast implements Interfaces\IdentifiableEntityInterface
     public function getStorageLocation(): StorageLocation
     {
         return $this->storage_location;
+    }
+
+    public function getPlaylist(): ?StationPlaylist
+    {
+        return $this->playlist;
+    }
+
+    public function setPlaylist(?StationPlaylist $playlist): void
+    {
+        $this->playlist = $playlist;
+    }
+
+    public function getSource(): PodcastSources
+    {
+        return $this->source;
+    }
+
+    public function setSource(PodcastSources $source): void
+    {
+        $this->source = $source;
     }
 
     public function getTitle(): string
@@ -106,6 +151,34 @@ class Podcast implements Interfaces\IdentifiableEntityInterface
         $this->description = $this->truncateString($description, 4000);
 
         return $this;
+    }
+
+    public function isEnabled(): bool
+    {
+        return $this->is_enabled;
+    }
+
+    public function setIsEnabled(bool $is_enabled): void
+    {
+        $this->is_enabled = $is_enabled;
+    }
+
+    public function getBrandingConfig(): PodcastBrandingConfiguration
+    {
+        return new PodcastBrandingConfiguration((array)$this->branding_config);
+    }
+
+    public function setBrandingConfig(
+        PodcastBrandingConfiguration|array $brandingConfig,
+        bool $forceOverwrite = false
+    ): void {
+        if (is_array($brandingConfig)) {
+            $brandingConfig = new PodcastBrandingConfiguration(
+                $forceOverwrite ? $brandingConfig : array_merge((array)$this->branding_config, $brandingConfig)
+            );
+        }
+
+        $this->branding_config = $brandingConfig->toArray();
     }
 
     public function getLanguage(): string
@@ -154,6 +227,16 @@ class Podcast implements Interfaces\IdentifiableEntityInterface
         $this->art_updated_at = $artUpdatedAt;
 
         return $this;
+    }
+
+    public function playlistAutoPublish(): bool
+    {
+        return $this->playlist_auto_publish;
+    }
+
+    public function setPlaylistAutoPublish(bool $playlist_auto_publish): void
+    {
+        $this->playlist_auto_publish = $playlist_auto_publish;
     }
 
     /**

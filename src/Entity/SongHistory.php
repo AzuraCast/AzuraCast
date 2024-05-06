@@ -10,9 +10,9 @@ use Doctrine\ORM\Mapping as ORM;
 #[
     ORM\Entity,
     ORM\Table(name: 'song_history'),
-    ORM\Index(columns: ['is_visible'], name: 'idx_is_visible'),
-    ORM\Index(columns: ['timestamp_start'], name: 'idx_timestamp_start'),
-    ORM\Index(columns: ['timestamp_end'], name: 'idx_timestamp_end')
+    ORM\Index(name: 'idx_is_visible', columns: ['is_visible']),
+    ORM\Index(name: 'idx_timestamp_start', columns: ['timestamp_start']),
+    ORM\Index(name: 'idx_timestamp_end', columns: ['timestamp_end'])
 ]
 class SongHistory implements
     Interfaces\SongInterface,

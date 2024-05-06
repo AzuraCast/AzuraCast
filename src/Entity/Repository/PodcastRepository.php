@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Entity\Repository;
 
 use App\Doctrine\Repository;
+use App\Entity\Enums\PodcastSources;
 use App\Entity\Podcast;
 use App\Entity\Station;
 use App\Exception\StorageLocationFullException;
@@ -47,11 +48,15 @@ final class PodcastRepository extends Repository
             SELECT DISTINCT p.id
             FROM App\Entity\PodcastEpisode pe
             JOIN pe.podcast p
-            JOIN pe.media pm
-            WHERE pm.id IS NOT NULL
-            AND (pe.publish_at IS NULL OR pe.publish_at <= :time)
+            LEFT JOIN pe.media pm
+            LEFT JOIN pe.playlist_media sm
+            WHERE 
+                ((p.source = :sourceManual AND pm.id IS NOT NULL) OR (p.source = :sourcePlaylist AND sm.id IS NOT NULL))
+                AND (pe.publish_at <= :time)
             DQL
         )->setParameter('time', time())
+            ->setParameter('sourceManual', PodcastSources::Manual->value)
+            ->setParameter('sourcePlaylist', PodcastSources::Playlist->value)
             ->enableResultCache(60, 'podcast_ids_' . $station->getIdRequired())
             ->getSingleColumnResult();
     }

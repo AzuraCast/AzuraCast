@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Entity\Repository;
 
 use App\Doctrine\Repository;
+use App\Entity\Enums\PodcastSources;
 use App\Entity\Podcast;
 use App\Entity\PodcastEpisode;
 use App\Entity\PodcastMedia;
@@ -17,6 +18,7 @@ use App\Media\MetadataManager;
 use InvalidArgumentException;
 use League\Flysystem\UnableToDeleteFile;
 use League\Flysystem\UnableToRetrieveMetadata;
+use LogicException;
 
 /**
  * @extends Repository<PodcastEpisode>
@@ -124,6 +126,11 @@ final class PodcastEpisodeRepository extends Repository
         ?ExtendedFilesystemInterface $fs = null
     ): void {
         $podcast = $episode->getPodcast();
+
+        if ($podcast->getSource() !== PodcastSources::Manual) {
+            throw new LogicException('Cannot upload media to this podcast type.');
+        }
+
         $storageLocation = $podcast->getStorageLocation();
 
         $fs ??= $this->storageLocationRepo->getAdapter($storageLocation)

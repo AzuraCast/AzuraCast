@@ -33,33 +33,7 @@
                 :loading="podcastLoading"
                 lazy
             >
-                <h4 class="card-title mb-1">
-                    {{ podcast.title }}
-                    <br>
-                    <small>
-                        {{ $gettext('by') }} <a
-                            :href="'mailto:'+podcast.email"
-                            class="alert-link"
-                            target="_blank"
-                        >{{ podcast.author }}</a>
-                    </small>
-                </h4>
-
-                <div class="badges my-2">
-                    <span class="badge text-bg-info">
-                        {{ podcast.language_name }}
-                    </span>
-                    <span
-                        v-for="category in podcast.categories"
-                        :key="category.category"
-                        class="badge text-bg-secondary"
-                    >
-                        {{ category.text }}
-                    </span>
-                </div>
-                <p class="card-text">
-                    {{ podcast.description }}
-                </p>
+                <podcast-common :podcast="podcast" />
             </loading>
         </div>
 
@@ -126,6 +100,7 @@ import useRefreshableAsyncState from "~/functions/useRefreshableAsyncState.ts";
 import AlbumArt from "~/components/Common/AlbumArt.vue";
 import PlayButton from "~/components/Common/PlayButton.vue";
 import useStationDateTimeFormatter from "~/functions/useStationDateTimeFormatter.ts";
+import PodcastCommon from "./PodcastCommon.vue";
 
 const {params} = useRoute();
 

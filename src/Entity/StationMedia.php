@@ -7,10 +7,10 @@ namespace App\Entity;
 use App\Flysystem\StationFilesystems;
 use App\Media\Metadata;
 use App\Media\MetadataInterface;
-use App\Normalizer\Attributes\DeepNormalize;
 use App\OpenApi;
 use App\Utilities\Time;
 use App\Utilities\Types;
+use Azura\Normalizer\Attributes\DeepNormalize;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -23,7 +23,7 @@ use Symfony\Component\Serializer\Annotation as Serializer;
     OA\Schema(type: "object"),
     ORM\Entity,
     ORM\Table(name: 'station_media'),
-    ORM\Index(columns: ['title', 'artist', 'album'], name: 'search_idx'),
+    ORM\Index(name: 'search_idx', columns: ['title', 'artist', 'album']),
     ORM\UniqueConstraint(name: 'path_unique_idx', columns: ['path', 'storage_location_id'])
 ]
 class StationMedia implements
@@ -193,15 +193,19 @@ class StationMedia implements
     /** @var Collection<int, StationPlaylistMedia> */
     #[
         OA\Property(type: "array", items: new OA\Items()),
-        ORM\OneToMany(mappedBy: 'media', targetEntity: StationPlaylistMedia::class),
+        ORM\OneToMany(targetEntity: StationPlaylistMedia::class, mappedBy: 'media'),
         DeepNormalize(true),
         Serializer\MaxDepth(1)
     ]
     protected Collection $playlists;
 
     /** @var Collection<int, StationMediaCustomField> */
-    #[ORM\OneToMany(mappedBy: 'media', targetEntity: StationMediaCustomField::class)]
+    #[ORM\OneToMany(targetEntity: StationMediaCustomField::class, mappedBy: 'media')]
     protected Collection $custom_fields;
+
+    /** @var Collection<int, PodcastEpisode> */
+    #[ORM\OneToMany(targetEntity: PodcastEpisode::class, mappedBy: 'playlist_media')]
+    protected Collection $podcast_episodes;
 
     public function __construct(StorageLocation $storageLocation, string $path)
     {
@@ -209,6 +213,7 @@ class StationMedia implements
 
         $this->playlists = new ArrayCollection();
         $this->custom_fields = new ArrayCollection();
+        $this->podcast_episodes = new ArrayCollection();
 
         $this->setPath($path);
         $this->generateUniqueId();
@@ -443,6 +448,14 @@ class StationMedia implements
     public function setCustomFields(Collection $customFields): void
     {
         $this->custom_fields = $customFields;
+    }
+
+    /**
+     * @return Collection<int, PodcastEpisode>
+     */
+    public function getPodcastEpisodes(): Collection
+    {
+        return $this->podcast_episodes;
     }
 
     public static function needsReprocessing(int $fileModifiedTime = 0, int $dbModifiedTime = 0): bool

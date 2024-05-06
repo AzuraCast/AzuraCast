@@ -1,7 +1,7 @@
 #
 # Golang dependencies build step
 #
-FROM golang:1.21-bookworm AS go-dependencies
+FROM golang:1.22-bookworm AS go-dependencies
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends openssl git
@@ -10,7 +10,7 @@ RUN go install github.com/jwilder/dockerize@v0.6.1
 
 RUN go install github.com/aptible/supercronic@v0.2.28
 
-RUN go install github.com/centrifugal/centrifugo/v5@v5.2.2
+RUN go install github.com/centrifugal/centrifugo/v5@v5.3.0
 
 #
 # MariaDB dependencies build step
@@ -33,6 +33,11 @@ FROM ghcr.io/azuracast/icecast-kh-ac:2024-02-13 AS icecast
 FROM ghcr.io/roadrunner-server/roadrunner:2023.3.8 AS roadrunner
 
 #
+# PHP Extension Installer build step
+#
+FROM mlocati/php-extension-installer AS php-extension-installer
+
+#
 # Final build image
 #
 FROM php:8.3-fpm-bookworm AS pre-final
@@ -44,7 +49,7 @@ ENV TZ="UTC" \
     LC_TYPE="en_US.UTF-8"
 
 # Add PHP extension installer tool
-COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr/local/bin/
+COPY --from=php-extension-installer /usr/bin/install-php-extensions /usr/local/bin/
 
 # Add Go dependencies
 COPY --from=go-dependencies /go/bin/dockerize /usr/local/bin

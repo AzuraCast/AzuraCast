@@ -46,7 +46,7 @@ return static function (RouteCollectorProxy $group) {
             $group->get('/ondemand/download/{media_id}', Controller\Api\Stations\OnDemand\DownloadAction::class)
                 ->setName('api:stations:ondemand:download')
                 ->add(new Middleware\StationSupportsFeature(StationFeatures::OnDemand))
-                ->add(new Middleware\RateLimit('ondemand', 1, 2));
+                ->add(Middleware\RateLimit::forDownloads());
 
             // NOTE: See ./api_public.php for podcast public pages.
 
@@ -124,6 +124,9 @@ return static function (RouteCollectorProxy $group) {
 
                             $group->post('/podcasts/art', Controller\Api\Stations\Podcasts\Art\PostArtAction::class)
                                 ->setName('api:stations:podcasts:new-art');
+
+                            $group->get('/podcasts/playlists', Controller\Api\Stations\Podcasts\PlaylistsAction::class)
+                                ->setName('api:stations:podcasts:playlists');
 
                             $group->group(
                                 '/podcast/{podcast_id}',

@@ -11,7 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[
     ORM\Entity(readOnly: true),
     ORM\Table(name: 'audit_log'),
-    ORM\Index(columns: ['class', 'user', 'identifier'], name: 'idx_search')
+    ORM\Index(name: 'idx_search', columns: ['class', 'user', 'identifier'])
 ]
 class AuditLog implements IdentifiableEntityInterface
 {

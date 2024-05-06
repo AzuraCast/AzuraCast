@@ -6,7 +6,6 @@ namespace App\Entity\Migration;
 
 use App\Entity\Migration\Traits\UpdateAllRecords;
 use Doctrine\DBAL\Schema\Schema;
-use Doctrine\Migrations\AbstractMigration;
 
 /**
  * Auto-generated Migration: Please modify to your needs!

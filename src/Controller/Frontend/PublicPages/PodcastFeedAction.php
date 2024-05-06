@@ -5,47 +5,25 @@ declare(strict_types=1);
 namespace App\Controller\Frontend\PublicPages;
 
 use App\Controller\SingleActionInterface;
-use App\Entity\Podcast;
+use App\Entity\ApiGenerator\PodcastApiGenerator;
+use App\Entity\ApiGenerator\PodcastEpisodeApiGenerator;
 use App\Entity\PodcastCategory;
 use App\Entity\PodcastEpisode;
-use App\Entity\Repository\PodcastRepository;
-use App\Entity\Repository\StationRepository;
-use App\Entity\Station;
 use App\Exception\NotFoundException;
-use App\Flysystem\StationFilesystems;
 use App\Http\Response;
-use App\Http\RouterInterface;
 use App\Http\ServerRequest;
-use DateTime;
-use GuzzleHttp\Psr7\UriResolver;
-use MarcW\RssWriter\Extension\Atom\AtomLink;
-use MarcW\RssWriter\Extension\Atom\AtomWriter;
-use MarcW\RssWriter\Extension\Core\Category as RssCategory;
-use MarcW\RssWriter\Extension\Core\Channel as RssChannel;
-use MarcW\RssWriter\Extension\Core\CoreWriter;
-use MarcW\RssWriter\Extension\Core\Enclosure as RssEnclosure;
-use MarcW\RssWriter\Extension\Core\Guid as RssGuid;
-use MarcW\RssWriter\Extension\Core\Image as RssImage;
-use MarcW\RssWriter\Extension\Core\Item as RssItem;
-use MarcW\RssWriter\Extension\Itunes\ItunesChannel;
-use MarcW\RssWriter\Extension\Itunes\ItunesItem;
-use MarcW\RssWriter\Extension\Itunes\ItunesOwner;
-use MarcW\RssWriter\Extension\Itunes\ItunesWriter;
-use MarcW\RssWriter\Extension\Slash\Slash;
-use MarcW\RssWriter\Extension\Slash\SlashWriter;
-use MarcW\RssWriter\Extension\Sy\Sy;
-use MarcW\RssWriter\Extension\Sy\SyWriter;
-use MarcW\RssWriter\RssWriter;
+use App\Xml\Writer;
+use Carbon\CarbonImmutable;
 use Psr\Http\Message\ResponseInterface;
+use Ramsey\Uuid\Uuid;
 
 final class PodcastFeedAction implements SingleActionInterface
 {
-    private RouterInterface $router;
+    public const string PODCAST_NAMESPACE = 'ead4c236-bf58-58c6-a2c6-a6b28d128cb6';
 
     public function __construct(
-        private readonly StationRepository $stationRepository,
-        private readonly PodcastRepository $podcastRepository,
-        private readonly StationFilesystems $stationFilesystems
+        private readonly PodcastApiGenerator $podcastApiGenerator,
+        private readonly PodcastEpisodeApiGenerator $episodeApiGenerator
     ) {
     }
 
@@ -54,219 +32,89 @@ final class PodcastFeedAction implements SingleActionInterface
         Response $response,
         array $params
     ): ResponseInterface {
-        /** @var string $podcastId */
-        $podcastId = $params['podcast_id'];
-
-        $this->router = $request->getRouter();
-
         $station = $request->getStation();
-
         if (!$station->getEnablePublicPage()) {
             throw NotFoundException::station();
         }
 
-        $podcast = $this->podcastRepository->fetchPodcastForStation($station, $podcastId);
+        $podcast = $request->getPodcast();
 
-        if ($podcast === null) {
-            throw NotFoundException::podcast();
-        }
+        // Fetch podcast API feed.
+        $podcastApi = $this->podcastApiGenerator->__invoke($podcast, $request);
 
-        if (!$this->checkHasPublishedEpisodes($podcast)) {
-            throw NotFoundException::podcast();
-        }
+        $now = CarbonImmutable::now($station->getTimezoneObject());
 
-        $generatedRss = $this->generateRssFeed($podcast, $station, $request);
+        $rss = [
+            '@xmlns:itunes' => 'http://www.itunes.com/dtds/podcast-1.0.dtd',
+            '@xmlns:sy' => 'http://purl.org/rss/1.0/modules/syndication/',
+            '@xmlns:slash' => 'http://purl.org/rss/1.0/modules/slash/',
+            '@xmlns:atom' => 'http://www.w3.org/2005/Atom',
+            '@xmlns:podcast' => 'https://podcastindex.org/namespace/1.0',
+            '@version' => '2.0',
+        ];
 
-        $response->getBody()->write($generatedRss);
-
-        return $response
-            ->withHeader('Content-Type', 'application/rss+xml')
-            ->withHeader('X-Robots-Tag', 'index, nofollow');
-    }
-
-    private function checkHasPublishedEpisodes(Podcast $podcast): bool
-    {
-        /** @var PodcastEpisode $episode */
-        foreach ($podcast->getEpisodes() as $episode) {
-            if ($episode->isPublished()) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    private function generateRssFeed(
-        Podcast $podcast,
-        Station $station,
-        ServerRequest $serverRequest
-    ): string {
-        $rssWriter = $this->createRssWriter();
-
-        $channel = $this->buildRssChannelForPodcast($podcast, $station, $serverRequest);
-
-        return $rssWriter->writeChannel($channel);
-    }
-
-    private function createRssWriter(): RssWriter
-    {
-        $rssWriter = new RssWriter(null, [], true);
-
-        $rssWriter->registerWriter(new CoreWriter());
-        $rssWriter->registerWriter(new ItunesWriter());
-        $rssWriter->registerWriter(new SyWriter());
-        $rssWriter->registerWriter(new SlashWriter());
-        $rssWriter->registerWriter(new AtomWriter());
-
-        return $rssWriter;
-    }
-
-    private function buildRssChannelForPodcast(
-        Podcast $podcast,
-        Station $station,
-        ServerRequest $serverRequest
-    ): RssChannel {
-        $channel = new RssChannel();
-
-        $channel->setTtl(5);
-        $channel->setLastBuildDate(new DateTime());
-
-        $channel->setTitle($podcast->getTitle());
-        $channel->setDescription($podcast->getDescription());
-
-        $channelLink = $podcast->getLink();
-        if (empty($channelLink)) {
-            $channelLink = $serverRequest->getRouter()->fromHere(
-                routeName: 'public:podcast',
-                absolute: true
-            );
-        }
-        $channel->setLink($channelLink);
-
-        $channel->setLanguage($podcast->getLanguage());
-
-        $categories = $this->buildRssCategoriesForPodcast($podcast);
-        $channel->setCategories($categories);
-
-        $rssImage = $this->buildRssImageForPodcast($podcast, $station);
-        $channel->setImage($rssImage);
-
-        $rssItems = $this->buildRssItemsForPodcast($podcast, $station);
-        $channel->setItems($rssItems);
-
-        $containsExplicitContent = $this->rssItemsContainsExplicitContent($rssItems);
-
-        $itunesChannel = new ItunesChannel();
-        $itunesChannel->setExplicit($containsExplicitContent);
-        $itunesChannel->setImage($rssImage->getUrl());
-        $itunesChannel->setCategories($this->buildItunesCategoriesForPodcast($podcast));
-        $itunesChannel->setOwner($this->buildItunesOwner($podcast));
-        $itunesChannel->setAuthor($podcast->getAuthor());
-
-        $channel->addExtension($itunesChannel);
-        $channel->addExtension(new Sy());
-        $channel->addExtension(new Slash());
-        $channel->addExtension(
-            (new AtomLink())
-                ->setRel('self')
-                ->setHref((string)$serverRequest->getUri())
-                ->setType('application/rss+xml')
-        );
-
-        return $channel;
-    }
-
-    /**
-     * @return RssCategory[]
-     */
-    private function buildRssCategoriesForPodcast(Podcast $podcast): array
-    {
-        return $podcast->getCategories()->map(
-            function (PodcastCategory $podcastCategory) {
-                $rssCategory = new RssCategory();
-                if (null === $podcastCategory->getSubTitle()) {
-                    $rssCategory->setTitle($podcastCategory->getTitle());
-                } else {
-                    $rssCategory->setTitle($podcastCategory->getSubTitle());
+        $channel = [
+            'title' => $podcastApi->title,
+            'link' => $podcastApi->link ?? $podcastApi->links['public_episodes'],
+            'description' => $podcastApi->description,
+            'language' => $podcastApi->language,
+            'lastBuildDate' => $now->toRssString(),
+            'category' => $podcast->getCategories()->map(
+                function (PodcastCategory $podcastCategory) {
+                    return (null === $podcastCategory->getSubTitle())
+                        ? $podcastCategory->getTitle()
+                        : $podcastCategory->getSubTitle();
                 }
-                return $rssCategory;
-            }
-        )->getValues();
-    }
+            )->getValues(),
+            'ttl' => 5,
+            'image' => [
+                'url' => $podcastApi->art,
+                'title' => $podcastApi->title,
+            ],
+            'itunes:author' => $podcastApi->author,
+            'itunes:owner' => [],
+            'itunes:image' => [
+                '@href' => $podcastApi->art,
+            ],
+            'itunes:explicit' => 'false',
+            'itunes:category' => $podcast->getCategories()->map(
+                function (PodcastCategory $podcastCategory) {
+                    return (null === $podcastCategory->getSubTitle())
+                        ? [
+                            '@text' => $podcastCategory->getTitle(),
+                        ] : [
+                            '@text' => $podcastCategory->getTitle(),
+                            'itunes:category' => [
+                                '@text' => $podcastCategory->getSubTitle(),
+                            ],
+                        ];
+                }
+            )->getValues(),
+            'atom:link' => [
+                '@rel' => 'self',
+                '@type' => 'application/rss+xml',
+                '@href' => (string)$request->getUri(),
+            ],
+            'podcast:guid' => $this->buildPodcastGuid($podcastApi->links['public_feed']),
+            'item' => [],
+        ];
 
-    /**
-     * @return mixed[]
-     */
-    private function buildItunesCategoriesForPodcast(Podcast $podcast): array
-    {
-        return $podcast->getCategories()->map(
-            function (PodcastCategory $podcastCategory) {
-                return (null === $podcastCategory->getSubTitle())
-                    ? $podcastCategory->getTitle()
-                    : [
-                        $podcastCategory->getTitle(),
-                        $podcastCategory->getSubTitle(),
-                    ];
-            }
-        )->getValues();
-    }
-
-    private function buildItunesOwner(Podcast $podcast): ?ItunesOwner
-    {
-        if (empty($podcast->getAuthor()) && empty($podcast->getEmail())) {
-            return null;
+        if (null !== $podcastApi->link) {
+            $channel['image']['link'] = $podcastApi->link;
         }
 
-        $itunesOwner = new ItunesOwner();
-        $itunesOwner->setName($podcast->getAuthor());
-        $itunesOwner->setEmail($podcast->getEmail());
-
-        return $itunesOwner;
-    }
-
-    private function buildRssImageForPodcast(Podcast $podcast, Station $station): RssImage
-    {
-        $podcastsFilesystem = $this->stationFilesystems->getPodcastsFilesystem($station);
-
-        $rssImage = new RssImage();
-
-        $podcastArtworkSrc = (string)UriResolver::resolve(
-            $this->router->getBaseUrl(),
-            $this->stationRepository->getDefaultAlbumArtUrl($station)
-        );
-
-        if ($podcastsFilesystem->fileExists(Podcast::getArtPath($podcast->getIdRequired()))) {
-            $routeParams = [
-                'podcast_id' => $podcast->getIdRequired(),
+        if (empty($podcastApi->author) && empty($podcastApi->email)) {
+            unset($channel['itunes:owner']);
+        } else {
+            $channel['itunes:owner'] = [
+                'itunes:name' => $podcastApi->author,
+                'itunes:email' => $podcastApi->email,
             ];
-            if (0 !== $podcast->getArtUpdatedAt()) {
-                $routeParams['timestamp'] = $podcast->getArtUpdatedAt();
-            }
-
-            $podcastArtworkSrc = $this->router->fromHere(
-                routeName: 'api:stations:public:podcast:art',
-                routeParams: $routeParams,
-                absolute: true
-            );
         }
 
-        $rssImage->setUrl($podcastArtworkSrc);
-
-        if (null !== $podcast->getLink()) {
-            $rssImage->setLink($podcast->getLink());
-        }
-
-        $rssImage->setTitle($podcast->getTitle());
-
-        return $rssImage;
-    }
-
-    /**
-     * @return RssItem[]
-     */
-    private function buildRssItemsForPodcast(Podcast $podcast, Station $station): array
-    {
-        $rssItems = [];
+        // Iterate through episodes.
+        $hasPublishedEpisode = false;
+        $hasExplicitEpisode = false;
 
         /** @var PodcastEpisode $episode */
         foreach ($podcast->getEpisodes() as $episode) {
@@ -274,120 +122,85 @@ final class PodcastFeedAction implements SingleActionInterface
                 continue;
             }
 
-            $rssItem = new RssItem();
-
-            $rssGuid = new RssGuid();
-            $rssGuid->setGuid($episode->getIdRequired());
-
-            $rssItem->setGuid($rssGuid);
-            $rssItem->setTitle($episode->getTitle());
-            $rssItem->setDescription($episode->getDescription());
-
-            $episodeLink = $episode->getLink();
-            if (empty($episodeLink)) {
-                $episodeLink = $this->router->fromHere(
-                    routeName: 'public:podcast:episode',
-                    routeParams: ['episode_id' => $episode->getId()],
-                    absolute: true
-                );
+            $hasPublishedEpisode = true;
+            if ($episode->getExplicit()) {
+                $hasExplicitEpisode = true;
             }
 
-            $rssItem->setLink($episodeLink);
-
-            $publishAtDateTime = (new DateTime())->setTimestamp($episode->getCreatedAt());
-
-            if ($episode->getPublishAt() !== null) {
-                $publishAtDateTime = (new DateTime())->setTimestamp($episode->getPublishAt());
-            }
-
-            $rssItem->setPubDate($publishAtDateTime);
-
-            $rssEnclosure = $this->buildRssEnclosureForPodcastMedia(
-                $episode,
-                $station
-            );
-            $rssItem->setEnclosure($rssEnclosure);
-
-            $itunesImage = $this->buildItunesImageForEpisode($episode, $station);
-            $rssItem->addExtension(
-                (new ItunesItem())
-                    ->setExplicit($episode->getExplicit())
-                    ->setImage($itunesImage)
-            );
-
-            $rssItems[] = $rssItem;
+            $channel['item'][] = $this->buildItemForEpisode($episode, $request);
         }
 
-        return $rssItems;
-    }
+        if (!$hasPublishedEpisode) {
+            throw NotFoundException::podcast();
+        }
 
-    private function buildRssEnclosureForPodcastMedia(
-        PodcastEpisode $episode,
-        Station $station
-    ): RssEnclosure {
-        $rssEnclosure = new RssEnclosure();
+        if ($hasExplicitEpisode) {
+            $channel['itunes:explicit'] = 'true';
+        }
 
-        $podcastMediaPlayUrl = $this->router->fromHere(
-            routeName: 'api:stations:public:podcast:episode:download',
-            routeParams: ['episode_id' => $episode->getId()],
-            absolute: true
+        $rss['channel'] = $channel;
+
+        $response->getBody()->write(
+            Writer::toString($rss, 'rss')
         );
 
-        $rssEnclosure->setUrl($podcastMediaPlayUrl);
+        return $response
+            ->withHeader('Content-Type', 'application/rss+xml')
+            ->withHeader('X-Robots-Tag', 'index, nofollow');
+    }
+
+    private function buildItemForEpisode(PodcastEpisode $episode, ServerRequest $request): array
+    {
+        $station = $request->getStation();
+
+        $episodeApi = $this->episodeApiGenerator->__invoke($episode, $request);
+
+        $publishedAt = CarbonImmutable::createFromTimestamp($episodeApi->publish_at, $station->getTimezoneObject());
+
+        $item = [
+            'title' => $episodeApi->title,
+            'link' => $episodeApi->link ?? $episodeApi->links['public'],
+            'description' => $episodeApi->description,
+            'enclosure' => [
+                '@url' => $episodeApi->links['download'],
+            ],
+            'guid' => [
+                '@isPermaLink' => 'false',
+                '_' => $episodeApi->id,
+            ],
+            'pubDate' => $publishedAt->toRssString(),
+            'itunes:image' => [
+                '@href' => $episodeApi->art,
+            ],
+            'itunes:explicit' => $episodeApi->explicit ? 'true' : 'false',
+        ];
 
         $podcastMedia = $episode->getMedia();
         if (null !== $podcastMedia) {
-            $rssEnclosure->setType($podcastMedia->getMimeType());
-            $rssEnclosure->setLength($podcastMedia->getLength());
+            $item['enclosure']['@length'] = $podcastMedia->getLength();
+            $item['enclosure']['@type'] = $podcastMedia->getMimeType();
         }
 
-        return $rssEnclosure;
+        if (null !== $episodeApi->season_number) {
+            $item['itunes:season'] = (string)$episodeApi->season_number;
+        }
+        if (null !== $episodeApi->episode_number) {
+            $item['itunes:episode'] = (string)$episodeApi->episode_number;
+        }
+
+        return $item;
     }
 
-    private function buildItunesImageForEpisode(PodcastEpisode $episode, Station $station): string
+    private function buildPodcastGuid(string $uri): string
     {
-        $podcastsFilesystem = $this->stationFilesystems->getPodcastsFilesystem($station);
-
-        $episodeArtworkSrc = (string)UriResolver::resolve(
-            $this->router->getBaseUrl(),
-            $this->stationRepository->getDefaultAlbumArtUrl($station)
+        $baseUri = rtrim(
+            str_replace(['https://', 'http://'], '', $uri),
+            '/'
         );
 
-        if ($podcastsFilesystem->fileExists(PodcastEpisode::getArtPath($episode->getIdRequired()))) {
-            $routeParams = [
-                'episode_id' => $episode->getId(),
-            ];
-            if (0 !== $episode->getArtUpdatedAt()) {
-                $routeParams['timestamp'] = $episode->getArtUpdatedAt();
-            }
-
-            $episodeArtworkSrc = $this->router->fromHere(
-                routeName: 'api:stations:podcast:episode:art',
-                routeParams: $routeParams,
-                absolute: true
-            );
-        }
-
-        return $episodeArtworkSrc;
-    }
-
-    /**
-     * @param RssItem[] $rssItems
-     */
-    private function rssItemsContainsExplicitContent(array $rssItems): bool
-    {
-        foreach ($rssItems as $rssItem) {
-            foreach ($rssItem->getExtensions() as $extension) {
-                if (!($extension instanceof ItunesItem)) {
-                    continue;
-                }
-
-                if ($extension->getExplicit()) {
-                    return true;
-                }
-            }
-        }
-
-        return false;
+        return (string)Uuid::uuid5(
+            self::PODCAST_NAMESPACE,
+            $baseUri
+        );
     }
 }

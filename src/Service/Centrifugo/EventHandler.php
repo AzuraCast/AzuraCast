@@ -61,7 +61,7 @@ final class EventHandler
     {
         $channels = array_filter(
             $request->channels,
-            fn($channel) => str_starts_with($channel, 'station:') || $channel === Centrifugo::GLOBAL_TIME_CHANNEL
+            fn($channel) => str_starts_with($channel, 'station:')
         );
 
         if (empty($channels)) {
@@ -71,27 +71,19 @@ final class EventHandler
         $allInitialData = [];
 
         foreach ($channels as $channel) {
-            if ($channel === Centrifugo::GLOBAL_TIME_CHANNEL) {
-                $initialData = $this->centrifugo->buildTimeMessage();
-            } elseif (str_starts_with($channel, 'station:')) {
-                $stationName = substr($channel, 8);
-                $np = $this->npCache->getForStation($stationName);
-                if (!($np instanceof NowPlaying)) {
-                    continue;
-                }
-
-                $np->resolveUrls($this->router->getBaseUrl());
-                $np->update();
-
-                $initialData = $this->centrifugo->buildStationMessage($np);
-            } else {
+            $stationName = substr($channel, 8);
+            $np = $this->npCache->getForStation($stationName);
+            if (!($np instanceof NowPlaying)) {
                 continue;
             }
+
+            $np->resolveUrls($this->router->getBaseUrl());
+            $np->update();
 
             $allInitialData[] = [
                 'channel' => $channel,
                 'pub' => [
-                    'data' => $initialData,
+                    'data' => $this->centrifugo->buildStationMessage($np),
                 ],
             ];
         }

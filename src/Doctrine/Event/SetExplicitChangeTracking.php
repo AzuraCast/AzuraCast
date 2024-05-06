@@ -7,7 +7,7 @@ namespace App\Doctrine\Event;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Event\LoadClassMetadataEventArgs;
 use Doctrine\ORM\Events;
-use Doctrine\ORM\Mapping\ClassMetadataInfo;
+use Doctrine\ORM\Mapping\ClassMetadata;
 
 final class SetExplicitChangeTracking implements EventSubscriber
 {
@@ -25,7 +25,7 @@ final class SetExplicitChangeTracking implements EventSubscriber
     {
         $classMetadata = $args->getClassMetadata();
         $classMetadata->setChangeTrackingPolicy(
-            ClassMetadataInfo::CHANGETRACKING_DEFERRED_EXPLICIT
+            ClassMetadata::CHANGETRACKING_DEFERRED_EXPLICIT
         );
     }
 }

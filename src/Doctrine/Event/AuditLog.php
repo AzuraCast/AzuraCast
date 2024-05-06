@@ -10,11 +10,10 @@ use App\Entity\AuditLog as AuditLogEntity;
 use App\Entity\Enums\AuditLogOperations;
 use App\Entity\Interfaces\IdentifiableEntityInterface;
 use Doctrine\Common\EventSubscriber;
-use Doctrine\Common\Util\ClassUtils;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Event\OnFlushEventArgs;
 use Doctrine\ORM\Events;
-use Doctrine\ORM\Mapping\ClassMetadataInfo;
+use Doctrine\ORM\Proxy\DefaultProxyClassNameResolver;
 use Doctrine\ORM\UnitOfWork;
 use ReflectionClass;
 use ReflectionObject;
@@ -159,7 +158,7 @@ final class AuditLog implements EventSubscriber
 
             // Ignore inverse side or one to many relations
             $mapping = $collection->getMapping();
-            if (!$mapping['isOwningSide'] || $mapping['type'] !== ClassMetadataInfo::MANY_TO_MANY) {
+            if (!$mapping->isOwningSide() || !$mapping->isManyToMany()) {
                 continue;
             }
 
@@ -199,7 +198,7 @@ final class AuditLog implements EventSubscriber
 
             // Ignore inverse side or one to many relations
             $mapping = $collection->getMapping();
-            if (!$mapping['isOwningSide'] || $mapping['type'] !== ClassMetadataInfo::MANY_TO_MANY) {
+            if (!$mapping->isOwningSide() || !$mapping->isManyToMany()) {
                 continue;
             }
 
@@ -244,7 +243,7 @@ final class AuditLog implements EventSubscriber
     private function isEntity(EntityManagerInterface $em, mixed $class): bool
     {
         if (is_object($class)) {
-            $class = ClassUtils::getClass($class);
+            $class = DefaultProxyClassNameResolver::getClass($class);
         }
 
         if (!is_string($class)) {

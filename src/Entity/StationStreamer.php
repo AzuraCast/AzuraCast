@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
-use App\Normalizer\Attributes\DeepNormalize;
 use App\OpenApi;
 use App\Validator\Constraints\UniqueEntity;
+use Azura\Normalizer\Attributes\DeepNormalize;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -101,16 +101,25 @@ class StationStreamer implements
     /** @var Collection<int, StationSchedule> */
     #[
         OA\Property(type: "array", items: new OA\Items()),
-        ORM\OneToMany(mappedBy: 'streamer', targetEntity: StationSchedule::class),
+        ORM\OneToMany(targetEntity: StationSchedule::class, mappedBy: 'streamer'),
         DeepNormalize(true),
         Serializer\MaxDepth(1)
     ]
     protected Collection $schedule_items;
 
+    /** @var Collection<int, StationStreamerBroadcast> */
+    #[
+        ORM\OneToMany(targetEntity: StationStreamerBroadcast::class, mappedBy: 'streamer'),
+        DeepNormalize(true)
+    ]
+    protected Collection $broadcasts;
+
     public function __construct(Station $station)
     {
         $this->station = $station;
+
         $this->schedule_items = new ArrayCollection();
+        $this->broadcasts = new ArrayCollection();
     }
 
     public function getStation(): Station

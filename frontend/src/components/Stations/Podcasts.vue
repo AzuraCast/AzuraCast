@@ -36,7 +36,7 @@
                 <h5 class="m-0">
                     {{ item.title }}
                 </h5>
-                <div v-if="item.is_published">
+                <div v-if="item.is_published && item.is_enabled">
                     <a
                         :href="item.links.public_episodes"
                         target="_blank"
@@ -46,12 +46,24 @@
                         target="_blank"
                     >{{ $gettext('RSS Feed') }}</a>
                 </div>
-                <div
-                    v-else
-                    class="badges"
-                >
-                    <span class="badge text-bg-info">
+                <div class="badges">
+                    <span
+                        v-if="item.source === 'playlist'"
+                        class="badge text-bg-info"
+                    >
+                        {{ $gettext('Playlist-Based') }}
+                    </span>
+                    <span
+                        v-if="!item.is_published"
+                        class="badge text-bg-info"
+                    >
                         {{ $gettext('Unpublished') }}
+                    </span>
+                    <span
+                        v-if="!item.is_enabled"
+                        class="badge text-bg-danger"
+                    >
+                        {{ $gettext('Disabled') }}
                     </span>
                 </div>
             </template>

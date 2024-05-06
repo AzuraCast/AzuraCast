@@ -16,7 +16,7 @@ class StationMediaCustomField implements IdentifiableEntityInterface
     use Traits\HasAutoIncrementId;
     use Traits\TruncateStrings;
 
-    #[ORM\ManyToOne(inversedBy: 'metadata')]
+    #[ORM\ManyToOne(inversedBy: 'custom_fields')]
     #[ORM\JoinColumn(name: 'media_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     protected StationMedia $media;
 

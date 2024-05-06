@@ -35,6 +35,7 @@ final class ListPodcastsAction implements SingleActionInterface
             ->from(Podcast::class, 'p')
             ->leftJoin('p.categories', 'pc')
             ->where('p.storage_location = :storageLocation')
+            ->andWhere('p.is_enabled = 1')
             ->setParameter('storageLocation', $station->getPodcastsStorageLocation())
             ->andWhere('p.id IN (:podcastIds)')
             ->setParameter('podcastIds', $this->podcastRepo->getPodcastIdsWithPublishedEpisodes($station))

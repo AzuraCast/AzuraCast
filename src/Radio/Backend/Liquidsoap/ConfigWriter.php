@@ -848,7 +848,7 @@ final class ConfigWriter implements EventSubscriberInterface
             if (!empty($startDate)) {
                 $startDateObj = CarbonImmutable::createFromFormat('Y-m-d', $startDate, $tzObject);
 
-                if (false !== $startDateObj) {
+                if (null !== $startDateObj) {
                     $startDateObj = $startDateObj->setTime(0, 0);
 
                     $customFunctionBody[] = '    # ' . $startDateObj->__toString();
@@ -860,7 +860,7 @@ final class ConfigWriter implements EventSubscriberInterface
             if (!empty($endDate)) {
                 $endDateObj = CarbonImmutable::createFromFormat('Y-m-d', $endDate, $tzObject);
 
-                if (false !== $endDateObj) {
+                if (null !== $endDateObj) {
                     $endDateObj = $endDateObj->setTime(23, 59, 59);
 
                     $customFunctionBody[] = '    # ' . $endDateObj->__toString();

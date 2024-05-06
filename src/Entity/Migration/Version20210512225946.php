@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Entity\Migration;
 
 use Doctrine\DBAL\Schema\Schema;
-use Doctrine\Migrations\AbstractMigration;
 
 /**
  * Auto-generated Migration: Please modify to your needs!
@@ -74,7 +73,7 @@ final class Version20210512225946 extends AbstractMigration
                 ]
             );
 
-            $podcastsStorageLocationId = $this->connection->lastInsertId('storage_location');
+            $podcastsStorageLocationId = $this->connection->lastInsertId();
 
             $this->connection->update(
                 'station',

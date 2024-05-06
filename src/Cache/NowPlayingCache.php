@@ -157,7 +157,9 @@ final class NowPlayingCache
         }
 
         return $this->cache->getItem(
-            'now_playing.station_' . $identifier
+            urlencode(
+                'now_playing.station_' . $identifier
+            )
         );
     }
 }

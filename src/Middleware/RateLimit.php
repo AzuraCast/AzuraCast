@@ -27,4 +27,9 @@ final class RateLimit extends AbstractMiddleware
 
         return $handler->handle($request);
     }
+
+    public static function forDownloads(): self
+    {
+        return new self('downloads', 30, 10);
+    }
 }

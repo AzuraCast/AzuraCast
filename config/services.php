@@ -60,10 +60,40 @@ return [
     GuzzleHttp\Client::class => static fn(App\Service\GuzzleFactory $guzzleFactory) => $guzzleFactory->buildClient(),
 
     // DBAL
-    Doctrine\DBAL\Connection::class => static fn(Doctrine\ORM\EntityManagerInterface $em) => $em->getConnection(),
+    Doctrine\DBAL\Connection::class => static function (
+        Environment $environment,
+        Psr\Cache\CacheItemPoolInterface $psr6Cache,
+    ) {
+        $dbSettings = $environment->getDatabaseSettings();
+        if (isset($dbSettings['unix_socket'])) {
+            unset($dbSettings['host'], $dbSettings['port']);
+        }
+
+        $connectionOptions = [
+            ...$dbSettings,
+            'driver' => 'pdo_mysql',
+            'charset' => 'utf8mb4',
+            'defaultTableOptions' => [
+                'charset' => 'utf8mb4',
+                'collate' => 'utf8mb4_general_ci',
+            ],
+            'driverOptions' => [
+                PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8mb4 COLLATE utf8mb4_general_ci',
+                PDO::MYSQL_ATTR_LOCAL_INFILE => true,
+            ],
+            'serverVersion' => '11.2.3-MariaDB-1',
+        ];
+
+        $config = new Doctrine\DBAL\Configuration();
+        $config->setResultCache($psr6Cache);
+
+        /** @phpstan-ignore-next-line */
+        return Doctrine\DBAL\DriverManager::getConnection($connectionOptions, $config);
+    },
 
     // Doctrine Entity Manager
     App\Doctrine\DecoratedEntityManager::class => static function (
+        Doctrine\DBAL\Connection $connection,
         Psr\Cache\CacheItemPoolInterface $psr6Cache,
         Environment $environment,
         App\Doctrine\Event\StationRequiresRestart $eventRequiresRestart,
@@ -76,30 +106,6 @@ return [
         } else {
             $psr6Cache = new Symfony\Component\Cache\Adapter\ProxyAdapter($psr6Cache, 'doctrine.');
         }
-
-        $dbSettings = $environment->getDatabaseSettings();
-        if (isset($dbSettings['unix_socket'])) {
-            unset($dbSettings['host'], $dbSettings['port']);
-        }
-
-        $connectionOptions = array_merge(
-            $dbSettings,
-            [
-                'driver' => 'pdo_mysql',
-                'charset' => 'utf8mb4',
-                'defaultTableOptions' => [
-                    'charset' => 'utf8mb4',
-                    'collate' => 'utf8mb4_general_ci',
-                ],
-                'driverOptions' => [
-                    // PDO::MYSQL_ATTR_INIT_COMMAND = 1002;
-                    1002 => 'SET NAMES utf8mb4 COLLATE utf8mb4_general_ci',
-                    // PDO::MYSQL_ATTR_LOCAL_INFILE = 1001
-                    1001 => true,
-                ],
-                'platform' => new Doctrine\DBAL\Platforms\MariaDb1027Platform(),
-            ]
-        );
 
         $mappingClassesPaths = [$environment->getBaseDirectory() . '/src/Entity'];
 
@@ -120,7 +126,7 @@ return [
         );
 
         $config->setAutoGenerateProxyClasses(
-            Doctrine\Common\Proxy\AbstractProxyFactory::AUTOGENERATE_FILE_NOT_EXISTS_OR_CHANGED
+            Doctrine\ORM\Proxy\ProxyFactory::AUTOGENERATE_FILE_NOT_EXISTS_OR_CHANGED
         );
 
         // Debug mode:
@@ -129,17 +135,13 @@ return [
         $config->addCustomNumericFunction('RAND', DoctrineExtensions\Query\Mysql\Rand::class);
         $config->addCustomStringFunction('FIELD', DoctrineExtensions\Query\Mysql\Field::class);
 
-        if (!Doctrine\DBAL\Types\Type::hasType('carbon_immutable')) {
-            Doctrine\DBAL\Types\Type::addType('carbon_immutable', Carbon\Doctrine\CarbonImmutableType::class);
-        }
-
         $eventManager = new Doctrine\Common\EventManager();
         $eventManager->addEventSubscriber($eventRequiresRestart);
         $eventManager->addEventSubscriber($eventAuditLog);
         $eventManager->addEventSubscriber($eventChangeTracking);
 
         return new App\Doctrine\DecoratedEntityManager(
-            fn() => Doctrine\ORM\EntityManager::create($connectionOptions, $config, $eventManager)
+            fn() => new Doctrine\ORM\EntityManager($connection, $config, $eventManager)
         );
     },
 
@@ -277,7 +279,7 @@ return [
         $normalizers = [
             new Symfony\Component\Serializer\Normalizer\BackedEnumNormalizer(),
             new Symfony\Component\Serializer\Normalizer\JsonSerializableNormalizer(),
-            new App\Normalizer\DoctrineEntityNormalizer(
+            new Azura\Normalizer\DoctrineEntityNormalizer(
                 $em,
                 classMetadataFactory: $classMetaFactory
             ),

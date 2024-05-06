@@ -20,32 +20,8 @@
                             </ol>
                         </nav>
 
-                        <h4 class="card-title mb-1">
-                            {{ podcast.title }}
-                            <br>
-                            <small>
-                                {{ $gettext('by') }} <a
-                                    :href="'mailto:'+podcast.email"
-                                    target="_blank"
-                                >{{ podcast.author }}</a>
-                            </small>
-                        </h4>
+                        <podcast-common :podcast="podcast" />
 
-                        <div class="badges my-2">
-                            <span class="badge text-bg-info">
-                                {{ podcast.language_name }}
-                            </span>
-                            <span
-                                v-for="category in podcast.categories"
-                                :key="category.category"
-                                class="badge text-bg-secondary"
-                            >
-                                {{ category.text }}
-                            </span>
-                        </div>
-                        <p class="card-text">
-                            {{ podcast.description }}
-                        </p>
                         <div class="buttons">
                             <a
                                 class="btn btn-warning btn-sm"
@@ -145,6 +121,7 @@ import {IconRss} from "~/components/Common/icons.ts";
 import Icon from "~/components/Common/Icon.vue";
 import PlayButton from "~/components/Common/PlayButton.vue";
 import useStationDateTimeFormatter from "~/functions/useStationDateTimeFormatter.ts";
+import PodcastCommon from "./PodcastCommon.vue";
 
 const {params} = useRoute();
 

@@ -7,7 +7,7 @@
         <div class="container pt-5">
             <div class="row g-3">
                 <div class="col-md-4 mb-sm-4">
-                    <settings-panel :station-name="stationName" />
+                    <settings-panel />
                 </div>
 
                 <div class="col-md-8">
@@ -47,11 +47,7 @@ import {useProvideMixer} from "~/components/Public/WebDJ/useMixerValue";
 import {useProvidePassthroughSync} from "~/components/Public/WebDJ/usePassthroughSync";
 
 const props = defineProps({
-    ...webcasterProps,
-    stationName: {
-        type: String,
-        required: true
-    },
+    ...webcasterProps
 });
 
 const webcaster = useProvideWebcaster(props);

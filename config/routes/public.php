@@ -69,7 +69,8 @@ return static function (RouteCollectorProxy $app) {
             }
 
             $group->get('/podcast/{podcast_id}/feed', Controller\Frontend\PublicPages\PodcastFeedAction::class)
-                ->setName('public:podcast:feed');
+                ->setName('public:podcast:feed')
+                ->add(Middleware\GetAndRequirePodcast::class);
         }
     )
         ->add(Middleware\EnableView::class)

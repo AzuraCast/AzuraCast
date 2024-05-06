@@ -91,15 +91,19 @@ class StorageLocation implements Stringable, IdentifiableEntityInterface
     protected ?string $sftpPrivateKeyPassPhrase = null;
 
     #[ORM\Column(name: 'storage_quota', type: 'bigint', nullable: true)]
-    protected ?string $storageQuota = null;
+    protected string|int|null $storageQuota = null;
 
     #[ORM\Column(name: 'storage_used', type: 'bigint', nullable: true)]
     #[Attributes\AuditIgnore]
-    protected ?string $storageUsed = null;
+    protected string|int|null $storageUsed = null;
 
     /** @var Collection<int, StationMedia> */
-    #[ORM\OneToMany(mappedBy: 'storage_location', targetEntity: StationMedia::class)]
+    #[ORM\OneToMany(targetEntity: StationMedia::class, mappedBy: 'storage_location')]
     protected Collection $media;
+
+    /** @var Collection<int, UnprocessableMedia> */
+    #[ORM\OneToMany(targetEntity: UnprocessableMedia::class, mappedBy: 'storage_location')]
+    protected Collection $unprocessable_media;
 
     public function __construct(
         StorageLocationTypes $type,
@@ -109,6 +113,7 @@ class StorageLocation implements Stringable, IdentifiableEntityInterface
         $this->adapter = $adapter;
 
         $this->media = new ArrayCollection();
+        $this->unprocessable_media = new ArrayCollection();
     }
 
     public function getType(): StorageLocationTypes

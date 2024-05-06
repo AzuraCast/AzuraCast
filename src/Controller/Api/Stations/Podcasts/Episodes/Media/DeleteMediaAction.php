@@ -7,6 +7,7 @@ namespace App\Controller\Api\Stations\Podcasts\Episodes\Media;
 use App\Controller\SingleActionInterface;
 use App\Entity\Api\Error;
 use App\Entity\Api\Status;
+use App\Entity\Enums\PodcastSources;
 use App\Entity\PodcastEpisode;
 use App\Entity\PodcastMedia;
 use App\Entity\Repository\PodcastEpisodeRepository;
@@ -14,6 +15,7 @@ use App\Http\Response;
 use App\Http\ServerRequest;
 use App\OpenApi;
 use App\Utilities\Types;
+use InvalidArgumentException;
 use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 
@@ -59,12 +61,14 @@ final class DeleteMediaAction implements SingleActionInterface
         Response $response,
         array $params
     ): ResponseInterface {
-        $episodeId = Types::string($params['episode_id'] ?? null);
+        $podcast = $request->getPodcast();
 
-        $episode = $this->episodeRepo->fetchEpisodeForPodcast(
-            $request->getPodcast(),
-            $episodeId
-        );
+        if ($podcast->getSource() !== PodcastSources::Manual) {
+            throw new InvalidArgumentException('Media cannot be manually set on this podcast.');
+        }
+
+        $episodeId = Types::string($params['episode_id'] ?? null);
+        $episode = $this->episodeRepo->fetchEpisodeForPodcast($podcast, $episodeId);
 
         if (!($episode instanceof PodcastEpisode)) {
             return $response->withStatus(404)

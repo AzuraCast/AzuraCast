@@ -66,7 +66,7 @@ final class WebDjAction implements SingleActionInterface
                 'hide_footer' => true,
             ],
             props: [
-                'wss_url' => $wssUrl,
+                'baseUri' => $wssUrl,
             ],
         );
     }

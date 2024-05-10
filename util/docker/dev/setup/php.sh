@@ -6,4 +6,3 @@ set -x
 install-php-extensions xdebug spx
 
 rm -rf /usr/local/etc/php-fpm.d/*
-cp /bd_build/dev/php/www.conf /usr/local/etc/php-fpm.d/www.conf

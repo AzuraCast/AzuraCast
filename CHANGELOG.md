@@ -7,7 +7,18 @@ release channel, you can take advantage of these new features and fixes.
 
 ## Code Quality/Technical Changes
 
+- We are investigating limited circumstances where our PHP server, RoadRunner, could return the wrong response for a
+  given request, particularly when the server is under heavy load. To investigate this, we have reverted back to the
+  more stable PHP-FPM service to serve PHP. This may result in poorer performance but should remove any issues of this
+  type.
+
+- Our original implementation of "High Availability" support was prone to mistakenly declaring that single-instance
+  AzuraCast installations were not the primary instance, which prevented synchronized tasks from running. We are
+  reverting this implementation to pursue more reliable ways of achieving this parallelism.
+
 ## Bug Fixes
+
+- An issue preventing some cron tasks from running was fixed.
 
 ---
 

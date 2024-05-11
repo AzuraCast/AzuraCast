@@ -12,7 +12,6 @@ use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Radio\Backend\Liquidsoap\Command\AbstractCommand;
 use App\Radio\Enums\LiquidsoapCommands;
-use App\Service\HighAvailability;
 use InvalidArgumentException;
 use Psr\Http\Message\ResponseInterface;
 use RuntimeException;
@@ -23,11 +22,6 @@ final class LiquidsoapAction implements SingleActionInterface
     use LoggerAwareTrait;
     use ContainerAwareTrait;
 
-    public function __construct(
-        private readonly HighAvailability $highAvailability
-    ) {
-    }
-
     public function __invoke(
         ServerRequest $request,
         Response $response,
@@ -37,8 +31,7 @@ final class LiquidsoapAction implements SingleActionInterface
         $action = $params['action'];
 
         $station = $request->getStation();
-        $asAutoDj = $request->hasHeader('X-Liquidsoap-Api-Key')
-            && $this->highAvailability->isActiveServer();
+        $asAutoDj = $request->hasHeader('X-Liquidsoap-Api-Key');
         $payload = (array)$request->getParsedBody();
 
         try {

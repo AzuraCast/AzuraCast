@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Admin\Debug;
 
-use App\Cache\DatabaseCache;
 use App\Console\Command\Sync\SingleTaskCommand;
 use App\Container\EnvironmentAwareTrait;
 use App\Container\SettingsAwareTrait;
@@ -14,6 +13,7 @@ use App\Http\Response;
 use App\Http\ServerRequest;
 use Carbon\CarbonImmutable;
 use DateTimeZone;
+use Psr\Cache\CacheItemPoolInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ResponseInterface;
 
@@ -24,7 +24,7 @@ final class ListSyncTasksAction implements SingleActionInterface
 
     public function __construct(
         private readonly EventDispatcherInterface $dispatcher,
-        private readonly DatabaseCache $cache
+        private readonly CacheItemPoolInterface $cache
     ) {
     }
 

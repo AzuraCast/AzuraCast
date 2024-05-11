@@ -12,7 +12,6 @@ use App\Doctrine\Messenger\ClearEntityManagerSubscriber;
 use App\MessageQueue\LogWorkerExceptionSubscriber;
 use App\MessageQueue\QueueManagerInterface;
 use App\MessageQueue\ResetArrayCacheSubscriber;
-use App\Service\HighAvailability;
 use App\Utilities\Types;
 use Psr\Log\LogLevel;
 use Psr\Log\NullLogger;
@@ -40,8 +39,7 @@ final class ProcessCommand extends AbstractSyncCommand
     public function __construct(
         private readonly MessageBus $messageBus,
         private readonly CallableEventDispatcherInterface $eventDispatcher,
-        private readonly QueueManagerInterface $queueManager,
-        private readonly HighAvailability $highAvailability
+        private readonly QueueManagerInterface $queueManager
     ) {
         parent::__construct();
     }
@@ -58,12 +56,6 @@ final class ProcessCommand extends AbstractSyncCommand
 
         $runtime = Types::int($input->getArgument('runtime'));
         $workerName = Types::stringOrNull($input->getOption('worker-name'), true);
-
-        if (!$this->highAvailability->isActiveServer()) {
-            $this->logger->error('This instance is not the current active instance.');
-            sleep(30);
-            return 0;
-        }
 
         $this->logger->notice(
             'Starting new Message Queue worker process.',

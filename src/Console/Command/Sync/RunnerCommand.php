@@ -7,7 +7,6 @@ namespace App\Console\Command\Sync;
 use App\Container\SettingsAwareTrait;
 use App\Event\GetSyncTasks;
 use App\Lock\LockFactory;
-use App\Service\HighAvailability;
 use App\Sync\Task\AbstractTask;
 use Carbon\CarbonImmutable;
 use DateTimeZone;
@@ -29,7 +28,6 @@ final class RunnerCommand extends AbstractSyncRunnerCommand
 
     public function __construct(
         private readonly EventDispatcherInterface $dispatcher,
-        private readonly HighAvailability $highAvailability,
         LockFactory $lockFactory
     ) {
         parent::__construct($lockFactory);
@@ -40,12 +38,6 @@ final class RunnerCommand extends AbstractSyncRunnerCommand
         $this->logToExtraFile('app_sync.log');
 
         $io = new SymfonyStyle($input, $output);
-
-        if (!$this->highAvailability->isActiveServer()) {
-            $this->logger->error('This instance is not the current active instance.');
-            sleep(30);
-            return 0;
-        }
 
         $settings = $this->readSettings();
         if ($settings->getSyncDisabled()) {

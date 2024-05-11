@@ -206,6 +206,20 @@ const fields: DataTableField[] = [
         selectable: true
     },
     {
+        key: 'season_number',
+        label: $gettext('Season Number'),
+        visible: false,
+        sortable: true,
+        selectable: true
+    },
+    {
+        key: 'episode_number',
+        label: $gettext('Episode Number'),
+        visible: false,
+        sortable: true,
+        selectable: true
+    },
+    {
         key: 'actions',
         label: $gettext('Actions'),
         sortable: false,

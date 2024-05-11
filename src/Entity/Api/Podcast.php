@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Entity\Api;
 
 use App\Entity\Api\Traits\HasLinks;
+use App\Entity\PodcastBrandingConfiguration;
 use OpenApi\Attributes as OA;
 
 #[OA\Schema(
@@ -41,6 +42,16 @@ final class Podcast
 
     #[OA\Property]
     public string $description_short;
+
+    #[OA\Property]
+    public bool $is_enabled = true;
+
+    #[OA\Property(
+        description: "An array containing podcast-specific branding configuration",
+        type: "array",
+        items: new OA\Items()
+    )]
+    public PodcastBrandingConfiguration $branding_config;
 
     #[OA\Property]
     public string $language;

@@ -53,6 +53,28 @@
                 :label="$gettext('Contains explicit content')"
                 :description="$gettext('Indicates the presence of explicit content (explicit language or adult content). Apple Podcasts displays an Explicit parental advisory graphic for your episode if turned on. Episodes containing explicit material aren\'t available in some Apple Podcasts territories.')"
             />
+
+            <form-group-field
+                id="form_edit_season_number"
+                class="col-md-6"
+                :field="v$.season_number"
+                input-type="number"
+                :input-attrs="{ step: '1' }"
+                :label="$gettext('Season Number')"
+                :description="$gettext('Optionally list this episode as part of a season in some podcast aggregators.')"
+                clearable
+            />
+
+            <form-group-field
+                id="form_edit_episode_number"
+                class="col-md-6"
+                :field="v$.episode_number"
+                input-type="number"
+                :input-attrs="{ step: '1' }"
+                :label="$gettext('Episode Number')"
+                :description="$gettext('Optionally set a specific episode number in some podcast aggregators.')"
+                clearable
+            />
         </div>
     </tab>
 </template>
@@ -83,6 +105,8 @@ const {v$, tabClass} = useVuelidateOnFormTab(
         publish_date: {},
         publish_time: {},
         explicit: {},
+        season_number: {},
+        episode_number: {}
     },
     form,
     {
@@ -91,7 +115,9 @@ const {v$, tabClass} = useVuelidateOnFormTab(
         description: '',
         publish_date: '',
         publish_time: '',
-        explicit: false
+        explicit: false,
+        season_number: null,
+        episode_number: null
     }
 );
 </script>

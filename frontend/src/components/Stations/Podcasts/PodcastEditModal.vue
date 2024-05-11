@@ -10,19 +10,23 @@
     >
         <tabs>
             <podcast-form-basic-info
-                :form="form"
+                v-model:form="form"
                 :categories-options="categoriesOptions"
                 :language-options="languageOptions"
             />
 
             <podcast-form-source
-                :form="form"
+                v-model:form="form"
             />
 
             <podcast-common-artwork
                 v-model="form.artwork_file"
                 :artwork-src="record.links.art"
                 :new-art-url="newArtUrl"
+            />
+
+            <podcast-form-branding
+                v-model:form="form"
             />
         </tabs>
     </modal-form>
@@ -31,6 +35,7 @@
 <script setup lang="ts">
 import PodcastFormBasicInfo from './PodcastForm/BasicInfo.vue';
 import PodcastFormSource from './PodcastForm/Source.vue';
+import PodcastFormBranding from './PodcastForm/Branding.vue';
 import PodcastCommonArtwork from './Common/Artwork.vue';
 import mergeExisting from "~/functions/mergeExisting";
 import {baseEditModalProps, ModalFormTemplateRef, useBaseEditModal} from "~/functions/useBaseEditModal";
@@ -99,8 +104,11 @@ const {
                 (row) => row.category
             );
 
+
             record.value = data;
             formRef.value = mergeExisting(formRef.value, data);
+
+            console.log(formRef.value);
         },
     },
 );

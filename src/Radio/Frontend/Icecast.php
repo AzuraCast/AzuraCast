@@ -292,10 +292,7 @@ final class Icecast extends AbstractFrontend
             }
         }
 
-        $configString = Writer::toString($config, 'icecast');
-
-        // Strip the first line (the XML charset)
-        return substr($configString, strpos($configString, "\n") + 1);
+        return Writer::toString($config, 'icecast', false);
     }
 
     public function getCommand(Station $station): ?string

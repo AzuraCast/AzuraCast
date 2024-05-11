@@ -48,6 +48,10 @@ final class PodcastApiGenerator
         $return->description = $record->getDescription();
         $return->description_short = Strings::truncateText($return->description, 200);
 
+        $return->is_enabled = $record->isEnabled();
+
+        $return->branding_config = $record->getBrandingConfig();
+
         $return->language = $record->getLanguage();
         try {
             $locale = $request->getCustomization()->getLocale();

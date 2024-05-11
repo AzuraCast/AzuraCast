@@ -47,8 +47,7 @@ final class PostValidationAction
                 base64_decode($validateData['authenticatorData'] ?? ''),
                 base64_decode($validateData['signature'] ?? ''),
                 $record->getPasskey()->getPublicKeyPem(),
-                $challenge,
-                requireUserVerification: true
+                $challenge
             );
         } catch (Throwable $e) {
             $flash = $request->getFlash();

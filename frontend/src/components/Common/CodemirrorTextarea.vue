@@ -13,6 +13,7 @@ import {useVModel} from "@vueuse/core";
 import {computed} from "vue";
 import {css} from "@codemirror/lang-css";
 import {javascript} from "@codemirror/lang-javascript";
+import {html} from "@codemirror/lang-html";
 import {liquidsoap} from "codemirror-lang-liquidsoap";
 import useTheme from "~/functions/theme";
 
@@ -31,6 +32,8 @@ const lang = computed(() => {
             return css();
         case 'javascript':
             return javascript();
+        case 'html':
+            return html();
         case 'liquidsoap':
             return liquidsoap();
         default:

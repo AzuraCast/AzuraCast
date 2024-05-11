@@ -3944,6 +3944,13 @@ components:
               type: string
             storage_location_id:
               type: integer
+            source:
+              type: string
+            playlist_id:
+              type: integer
+              nullable: true
+            playlist_auto_publish:
+              type: boolean
             title:
               type: string
             link:
@@ -3953,6 +3960,10 @@ components:
               type: string
             description_short:
               type: string
+            branding_config:
+              description: 'An array containing podcast-specific branding configuration'
+              type: array
+              items: {  }
             language:
               type: string
             language_name:
@@ -3999,23 +4010,42 @@ components:
               type: string
             title:
               type: string
+            link:
+              type: string
+              nullable: true
             description:
               type: string
             description_short:
               type: string
             explicit:
               type: boolean
+            season_number:
+              type: integer
+              nullable: true
+            episode_number:
+              type: integer
+              nullable: true
             created_at:
+              type: integer
+            publish_at:
               type: integer
             is_published:
               type: boolean
-            publish_at:
-              type: integer
-              nullable: true
             has_media:
               type: boolean
+            playlist_media_id:
+              type: string
+              nullable: true
+            playlist_media:
+              nullable: true
+              oneOf:
+                -
+                  $ref: '#/components/schemas/Api_Song'
             media:
-              $ref: '#/components/schemas/Api_PodcastMedia'
+              nullable: true
+              oneOf:
+                -
+                  $ref: '#/components/schemas/Api_PodcastMedia'
             has_custom_art:
               type: boolean
             art:
@@ -5010,6 +5040,10 @@ components:
               example: true
             schedule_items:
               description: StationSchedule>
+              type: array
+              items: {  }
+            podcasts:
+              description: Podcast>
               type: array
               items: {  }
           type: object

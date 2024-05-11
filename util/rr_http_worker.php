@@ -16,7 +16,11 @@ $diBuilder = AppFactory::createContainerBuilder($environment);
 
 $httpFactory = new App\Http\HttpFactory();
 $worker = \Spiral\RoadRunner\Worker::create();
+
 $psr7Worker = new Spiral\RoadRunner\Http\PSR7Worker($worker, $httpFactory, $httpFactory, $httpFactory);
+
+// Allow for streaming larger responses back to Roadrunner.
+$psr7Worker->chunkSize = 1024 * 25;
 
 while (true) {
     try {

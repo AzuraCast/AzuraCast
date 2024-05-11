@@ -34,6 +34,12 @@ final class PodcastEpisode
     public bool $explicit = false;
 
     #[OA\Property]
+    public ?int $season_number = null;
+
+    #[OA\Property]
+    public ?int $episode_number = null;
+
+    #[OA\Property]
     public int $created_at;
 
     #[OA\Property]

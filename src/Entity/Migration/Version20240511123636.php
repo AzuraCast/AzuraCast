@@ -10,7 +10,7 @@ final class Version20240511123636 extends AbstractMigration
 {
     public function getDescription(): string
     {
-        return '';
+        return 'Remove DB cache.';
     }
 
     public function up(Schema $schema): void

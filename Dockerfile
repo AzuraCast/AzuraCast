@@ -28,11 +28,6 @@ FROM ghcr.io/azuracast/azuracast.com:builtin AS docs
 FROM ghcr.io/azuracast/icecast-kh-ac:2024-02-13 AS icecast
 
 #
-# Roadrunner build step
-#
-FROM ghcr.io/roadrunner-server/roadrunner:2023.3.8 AS roadrunner
-
-#
 # PHP Extension Installer build step
 #
 FROM mlocati/php-extension-installer AS php-extension-installer
@@ -63,9 +58,6 @@ COPY --from=mariadb /usr/local/bin/docker-entrypoint.sh /usr/local/bin/db_entryp
 # Add Icecast
 COPY --from=icecast /usr/local/bin/icecast /usr/local/bin/icecast
 COPY --from=icecast /usr/local/share/icecast /usr/local/share/icecast
-
-# Add Roadrunner
-COPY --from=roadrunner /usr/bin/rr /usr/local/bin/rr
 
 # Run base build process
 COPY ./util/docker/common /bd_build/

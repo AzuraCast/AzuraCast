@@ -11,4 +11,6 @@ chmod 777 ./vendor/ ./web/static/
 azuracast_install "$@"
 
 cd /var/azuracast/www/frontend
+
+gosu azuracast npm ci --include=dev
 gosu azuracast npm run build

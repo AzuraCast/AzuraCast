@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace App\Console\Command\Sync;
 
-use App\Cache\DatabaseCache;
 use App\Container\ContainerAwareTrait;
 use App\Container\LoggerAwareTrait;
 use App\Sync\Task\AbstractTask;
 use App\Utilities\Types;
 use InvalidArgumentException;
 use Monolog\LogRecord;
+use Psr\Cache\CacheItemPoolInterface;
 use ReflectionClass;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputArgument;
@@ -28,7 +28,7 @@ final class SingleTaskCommand extends AbstractSyncCommand
     use LoggerAwareTrait;
 
     public function __construct(
-        private readonly DatabaseCache $cache
+        private readonly CacheItemPoolInterface $cache
     ) {
         parent::__construct();
     }

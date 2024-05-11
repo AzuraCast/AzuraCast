@@ -5,6 +5,35 @@ release channel, you can take advantage of these new features and fixes.
 
 ## New Features/Changes
 
+## Code Quality/Technical Changes
+
+- We are investigating limited circumstances where our PHP server, RoadRunner, could return the wrong response for a
+  given request, particularly when the server is under heavy load. To investigate this, we have reverted back to the
+  more stable PHP-FPM service to serve PHP. This may result in poorer performance but should remove any issues of this
+  type.
+
+- Our original implementation of "High Availability" support was prone to mistakenly declaring that single-instance
+  AzuraCast installations were not the primary instance, which prevented synchronized tasks from running. We are
+  reverting this implementation to pursue more reliable ways of achieving this parallelism.
+
+## Bug Fixes
+
+- An issue preventing some cron tasks from running was fixed.
+
+---
+
+# AzuraCast 0.19.7 (May 6, 2024)
+
+## Bug Fixes
+
+- This release is solely a bug fix release to incorporate updates to PHP dependencies that resolve critical bugs.
+
+---
+
+# AzuraCast 0.19.6 (May 5, 2024)
+
+## New Features/Changes
+
 - Several improvements have been made to Podcast functionality:
     - You can now create podcasts that automatically synchronize with the contents of a media playlist; this is very
       useful for uploading episodes of a podcast to your media directory, using the playlist to incorporate the podcast

@@ -165,10 +165,6 @@ return static function (CallableEventDispatcherInterface $dispatcher) {
         Event\GetNotifications::class,
         App\Notification\Check\ServiceCheck::class
     );
-    $dispatcher->addCallableListener(
-        Event\GetNotifications::class,
-        App\Notification\Check\ActiveServerCheck::class
-    );
 
     $dispatcher->addCallableListener(
         Event\Media\GetAlbumArt::class,

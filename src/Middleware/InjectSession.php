@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Middleware;
 
-use App\Cache\DatabaseCache;
 use App\Container\SettingsAwareTrait;
 use App\Environment;
 use App\Http\ServerRequest;
@@ -29,14 +28,14 @@ final class InjectSession extends AbstractMiddleware
     private CacheItemPoolInterface $cachePool;
 
     public function __construct(
-        DatabaseCache $dbCache,
+        CacheItemPoolInterface $psrCache,
         private readonly Environment $environment
     ) {
         if ($environment->isCli()) {
-            $dbCache = new ArrayAdapter();
+            $psrCache = new ArrayAdapter();
         }
 
-        $this->cachePool = new ProxyAdapter($dbCache, 'session.');
+        $this->cachePool = new ProxyAdapter($psrCache, 'session.');
     }
 
     public function getSessionPersistence(ServerRequest $request): SessionPersistenceInterface

@@ -5,7 +5,7 @@ info:
   license:
     name: 'Apache 2.0'
     url: 'https://www.apache.org/licenses/LICENSE-2.0.html'
-  version: 0.19.5
+  version: 0.19.7
 servers:
   -
     url: 'https://demo.azuracast.com/api'
@@ -3960,6 +3960,8 @@ components:
               type: string
             description_short:
               type: string
+            is_enabled:
+              type: boolean
             branding_config:
               description: 'An array containing podcast-specific branding configuration'
               type: array

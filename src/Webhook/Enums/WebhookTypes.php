@@ -12,6 +12,7 @@ use App\Webhook\Connector\GoogleAnalyticsV4;
 use App\Webhook\Connector\Mastodon;
 use App\Webhook\Connector\MatomoAnalytics;
 use App\Webhook\Connector\RadioDe;
+use App\Webhook\Connector\RadioReg;
 use App\Webhook\Connector\Telegram;
 use App\Webhook\Connector\TuneIn;
 
@@ -22,6 +23,7 @@ enum WebhookTypes: string
 
     case TuneIn = 'tunein';
     case RadioDe = 'radiode';
+    case RadioReg = 'radioreg';
     case GetMeRadio = 'getmeradio';
 
     case Discord = 'discord';
@@ -44,6 +46,7 @@ enum WebhookTypes: string
             self::Generic => Generic::class,
             self::Email => Email::class,
             self::TuneIn => TuneIn::class,
+            self::RadioReg => RadioReg::class,
             self::RadioDe => RadioDe::class,
             self::GetMeRadio => GetMeRadio::class,
             self::Discord => Discord::class,

@@ -50,6 +50,7 @@ import {getTriggers, WebhookType} from "~/entities/Webhooks";
 import Tabs from "~/components/Common/Tabs.vue";
 import RadioDe from "~/components/Stations/Webhooks/Form/RadioDe.vue";
 import GetMeRadio from "~/components/Stations/Webhooks/Form/GetMeRadio.vue";
+import RadioReg from "~/components/Stations/Webhooks/Form/RadioReg.vue";
 
 const props = defineProps({
     ...baseEditModalProps,
@@ -80,6 +81,7 @@ const webhookComponents = {
     [WebhookType.Email]: Email,
     [WebhookType.TuneIn]: Tunein,
     [WebhookType.RadioDe]: RadioDe,
+    [WebhookType.RadioReg]: RadioReg,
     [WebhookType.GetMeRadio]: GetMeRadio,
     [WebhookType.Discord]: Discord,
     [WebhookType.Telegram]: Telegram,

@@ -695,7 +695,7 @@ const sort = (column: DataTableField) => {
 };
 
 const checkRow = (row: Row) => {
-    const newSelectedRows = selectedRows.value;
+    const newSelectedRows = selectedRows.value.slice();
 
     if (isRowChecked(row)) {
         const index = indexOf(newSelectedRows, row);

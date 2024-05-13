@@ -7,7 +7,7 @@
             <form-group-field
                 id="form_config_webhookurl"
                 class="col-md-12"
-                :field="v$.config.broadcastsubdomain"
+                :field="v$.config.webhookurl"
                 :label="$gettext('RadioReg Webhook URL')"
             />
 

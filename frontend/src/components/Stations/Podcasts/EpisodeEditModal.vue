@@ -40,9 +40,7 @@ import {useResettableRef} from "~/functions/useResettableRef";
 import mergeExisting from "~/functions/mergeExisting";
 import {useTranslate} from "~/vendor/gettext";
 import ModalForm from "~/components/Common/ModalForm.vue";
-import {useLuxon} from "~/vendor/luxon";
 import Tabs from "~/components/Common/Tabs.vue";
-import {useAzuraCastStation} from "~/vendor/azuracast.ts";
 
 const props = defineProps({
     ...baseEditModalProps,
@@ -74,9 +72,6 @@ const {record, reset} = useResettableRef({
     }
 });
 
-const {DateTime} = useLuxon();
-const {timezone} = useAzuraCastStation();
-
 const {
     loading,
     error,
@@ -103,37 +98,9 @@ const {
             reset();
         },
         populateForm: (data, formRef) => {
-            let publishDate = '';
-            let publishTime = '';
-
-            if (data.publish_at !== null) {
-                const publishDateTime = DateTime.fromSeconds(data.publish_at, {zone: timezone});
-                publishDate = publishDateTime.toISODate();
-                publishTime = publishDateTime.toISOTime({
-                    suppressMilliseconds: true,
-                    includeOffset: false
-                });
-            }
-
             record.value = mergeExisting(record.value, data);
-            formRef.value = mergeExisting(formRef.value, {
-                ...data,
-                publish_date: publishDate,
-                publish_time: publishTime
-            });
+            formRef.value = mergeExisting(formRef.value, data);
         },
-        getSubmittableFormData: (formRef) => {
-            const modifiedForm = formRef.value;
-
-            if (modifiedForm.publish_date.length > 0 && modifiedForm.publish_time.length > 0) {
-                const publishDateTimeString = modifiedForm.publish_date + 'T' + modifiedForm.publish_time;
-                const publishDateTime = DateTime.fromISO(publishDateTimeString, {zone: timezone});
-
-                modifiedForm.publish_at = publishDateTime.toSeconds();
-            }
-
-            return modifiedForm;
-        }
     },
 );
 

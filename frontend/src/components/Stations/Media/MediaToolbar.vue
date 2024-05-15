@@ -1,17 +1,25 @@
 <template>
     <div
         id="app-toolbar"
-        class="row pt-4"
+        class="d-flex pt-4"
     >
-        <div class="col-md-8 buttons">
-            <div class="btn-group dropdown allow-focus">
+        <div class="flex-fill buttons d-flex align-items-center">
+            <span>
+                {{ $gettext('With selected:') }}
+            </span>
+
+            <div
+                class="btn-group btn-group-sm dropdown allow-focus"
+            >
                 <div class="dropdown">
                     <button
-                        class="btn btn-primary dropdown-toggle"
+                        ref="$playlistDropdown"
+                        class="btn btn-sm btn-primary dropdown-toggle"
                         type="button"
                         data-bs-toggle="dropdown"
                         data-bs-auto-close="outside"
                         aria-expanded="false"
+                        :disabled="!hasSelectedItems"
                     >
                         <icon :icon="IconClearAll" />
                         <span>
@@ -102,7 +110,8 @@
 
             <button
                 type="button"
-                class="btn btn-primary"
+                class="btn btn-sm btn-primary"
+                :disabled="!hasSelectedItems"
                 @click="moveFiles"
             >
                 <icon :icon="IconMove" />
@@ -111,13 +120,14 @@
                 </span>
             </button>
 
-            <div class="btn-group dropdown allow-focus">
+            <div class="btn-group btn-group-sm dropdown allow-focus">
                 <div class="dropdown">
                     <button
-                        class="btn btn-secondary dropdown-toggle"
+                        class="btn btn-sm btn-secondary dropdown-toggle"
                         type="button"
                         data-bs-toggle="dropdown"
                         aria-expanded="false"
+                        :disabled="!hasSelectedItems"
                     >
                         <icon :icon="IconMoreHoriz" />
                         <span>
@@ -163,7 +173,8 @@
 
             <button
                 type="button"
-                class="btn btn-danger"
+                class="btn btn-sm btn-danger"
+                :disabled="!hasSelectedItems"
                 @click="doDelete"
             >
                 <icon :icon="IconDelete" />
@@ -172,10 +183,10 @@
                 </span>
             </button>
         </div>
-        <div class="col-md-4 text-end">
+        <div class="flex-shrink-0">
             <button
                 type="button"
-                class="btn btn-primary"
+                class="btn btn-sm btn-primary"
                 @click="createDirectory"
             >
                 <icon :icon="IconFolder" />
@@ -188,15 +199,17 @@
 </template>
 
 <script setup lang="ts">
+import {Dropdown} from 'bootstrap';
 import {intersection, map} from 'lodash';
 import Icon from '~/components/Common/Icon.vue';
 import '~/vendor/sweetalert';
-import {ref, toRef, watch} from "vue";
+import {computed, ref, toRef, watch} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import {useAxios} from "~/vendor/axios";
 import {useSweetAlert} from "~/vendor/sweetalert";
 import {IconClearAll, IconDelete, IconFolder, IconMoreHoriz, IconMove} from "~/components/Common/icons";
 import useHandleBatchResponse from "~/components/Stations/Media/useHandleBatchResponse.ts";
+import {useNotify} from "~/functions/useNotify.ts";
 
 const props = defineProps({
     currentDirectory: {
@@ -225,10 +238,16 @@ const props = defineProps({
 
 const emit = defineEmits(['relist', 'add-playlist', 'move-files', 'create-directory']);
 
+const selectedItems = toRef(props, 'selectedItems');
+
+const hasSelectedItems = computed(() => {
+    return selectedItems.value.all.length > 0;
+});
+
 const checkedPlaylists = ref([]);
 const newPlaylist = ref('');
 
-watch(toRef(props, 'selectedItems'), (items) => {
+watch(selectedItems, (items) => {
     // Get all playlists that are active on ALL selected items.
     const playlistsForItems = map(items.all, (item) => {
         return map(item.playlists, 'id');
@@ -249,15 +268,21 @@ watch(newPlaylist, (text) => {
 const {$gettext} = useTranslate();
 const {axios} = useAxios();
 
-const {notifyNoFiles, handleBatchResponse} = useHandleBatchResponse();
+const {handleBatchResponse} = useHandleBatchResponse();
+
+const {notifyError} = useNotify();
+
+const notifyNoFiles = () => {
+    notifyError($gettext('No files selected.'));
+}
 
 const doBatch = (action, successMessage, errorMessage) => {
-    if (props.selectedItems.all.length) {
+    if (hasSelectedItems.value) {
         axios.put(props.batchUrl, {
             'do': action,
             'current_directory': props.currentDirectory,
-            'files': props.selectedItems.files,
-            'dirs': props.selectedItems.directories
+            'files': selectedItems.value.files,
+            'dirs': selectedItems.value.directories
         }).then(({data}) => {
             handleBatchResponse(data, successMessage, errorMessage);
             emit('relist');
@@ -294,7 +319,7 @@ const doReprocess = () => {
 const {confirmDelete} = useSweetAlert();
 
 const doDelete = () => {
-    const numFiles = props.selectedItems.all.length;
+    const numFiles = selectedItems.value.all.length;
     const buttonConfirmText = $gettext(
         'Delete %{ num } media files?',
         {num: numFiles}
@@ -313,16 +338,30 @@ const doDelete = () => {
     });
 };
 
+const $playlistDropdown = ref<InstanceType<typeof HTMLDivElement> | null>(null);
+
 const setPlaylists = () => {
-    if (props.selectedItems.all.length) {
+    if ($playlistDropdown.value) {
+        Dropdown.getInstance($playlistDropdown.value).hide();
+    }
+
+    if (hasSelectedItems.value) {
         axios.put(props.batchUrl, {
             'do': 'playlist',
             'playlists': checkedPlaylists.value,
             'new_playlist_name': newPlaylist.value,
             'currentDirectory': props.currentDirectory,
-            'files': props.selectedItems.files,
-            'dirs': props.selectedItems.directories
+            'files': selectedItems.value.files,
+            'dirs': selectedItems.value.directories
         }).then(({data}) => {
+            handleBatchResponse(
+                data,
+                (checkedPlaylists.value.length > 0)
+                    ? $gettext('Playlists updated for selected files:')
+                    : $gettext('Playlists cleared for selected files:'),
+                $gettext('Error updating playlists:')
+            );
+
             if (data.success) {
                 if (data.record) {
                     emit('add-playlist', data.record);
@@ -331,14 +370,6 @@ const setPlaylists = () => {
                 checkedPlaylists.value = [];
                 newPlaylist.value = '';
             }
-
-            handleBatchResponse(
-                data,
-                (checkedPlaylists.value.length > 0)
-                    ? $gettext('Playlists updated for selected files:')
-                    : $gettext('Playlists cleared for selected files:'),
-                $gettext('Error updating playlists:')
-            );
 
             emit('relist');
         });

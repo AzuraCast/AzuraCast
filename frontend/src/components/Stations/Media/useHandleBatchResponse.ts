@@ -1,10 +1,9 @@
 import {forEach} from "lodash";
 import {h} from "vue";
 import {useNotify} from "~/functions/useNotify.ts";
-import {useTranslate} from "~/vendor/gettext.ts";
 
 interface BatchResponse {
-    success: bool,
+    success: boolean,
     dirs: string[],
     files: string[],
     errors: string[]
@@ -12,11 +11,6 @@ interface BatchResponse {
 
 export default function useHandleBatchResponse() {
     const {notifySuccess, notifyError} = useNotify();
-    const {$gettext} = useTranslate();
-
-    const notifyNoFiles = () => {
-        notifyError($gettext('No files selected.'));
-    };
 
     const handleBatchResponse = (
         data: BatchResponse,
@@ -48,7 +42,6 @@ export default function useHandleBatchResponse() {
     }
 
     return {
-        notifyNoFiles,
         handleBatchResponse
     };
 }

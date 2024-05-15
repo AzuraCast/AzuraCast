@@ -43,9 +43,10 @@ final class RadioReg extends AbstractConnector
         $response = $this->httpClient->post(
             $config['webhookurl'],
             [
-                'query' => $messageBody,
+                'json' => $messageBody,
                 'headers' => [
                     'Accept' => 'application/json',
+                    'Content-Type' => 'application/json',
                     'X-API-KEY' => $config['apikey'],
                 ],
             ],

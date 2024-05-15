@@ -88,7 +88,7 @@
 import Icon from "~/components/Common/Icon.vue";
 import DataTable, {DataTableField} from "~/components/Common/DataTable.vue";
 import DateRangeDropdown from "~/components/Common/DateRangeDropdown.vue";
-import {computed, ref, watch} from "vue";
+import {computed, nextTick, ref, watch} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import {getStationApiUrl} from "~/router";
 import {IconDownload, IconTrendingDown, IconTrendingUp} from "~/components/Common/icons";
@@ -194,5 +194,5 @@ const abs = (val) => {
 const $datatable = ref<DataTableTemplateRef>(null);
 const {navigate} = useHasDatatable($datatable);
 
-watch(dateRange, navigate);
+watch(dateRange, () => nextTick(navigate));
 </script>

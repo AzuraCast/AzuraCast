@@ -52,7 +52,8 @@ final class InjectSession extends AbstractMiddleware
             lastModified: time(),
             persistent: true,
             cookieSecure: $alwaysUseSsl && $isHttpsUrl,
-            cookieHttpOnly: true
+            cookieHttpOnly: true,
+            autoRegenerate: false
         );
     }
 

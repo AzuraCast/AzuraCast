@@ -282,6 +282,11 @@ final class PodcastsController extends AbstractApiCrudController
                 routeParams: $baseRouteParams,
                 absolute: !$isInternal
             ),
+            'batch' => $router->named(
+                routeName: 'api:stations:podcast:batch',
+                routeParams: $baseRouteParams,
+                absolute: !$isInternal
+            ),
         ];
 
         return $return;

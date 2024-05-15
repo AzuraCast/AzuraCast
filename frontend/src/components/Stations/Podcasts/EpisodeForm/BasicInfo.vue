@@ -29,22 +29,20 @@
             />
 
             <form-group-field
-                id="form_edit_publish_date"
-                class="col-md-6"
-                input-type="date"
-                :field="v$.publish_date"
-                :label="$gettext('Publish Date')"
-                :description="$gettext('The date when the episode should be published.')"
-            />
-
-            <form-group-field
-                id="form_edit_publish_time"
-                class="col-md-6"
-                input-type="time"
-                :field="v$.publish_time"
-                :label="$gettext('Publish Time')"
-                :description="$gettext('The time when the episode should be published (according to the stations timezone).')"
-            />
+                id="form_edit_publish_at"
+                class="col-md-12"
+                :field="v$.publish_at"
+                :label="$gettext('Publish At')"
+                :description="$gettext('The date and time when the episode should be published.')"
+            >
+                <template #default="slotProps">
+                    <publish-at-fields
+                        :id="slotProps.id"
+                        v-model="slotProps.field.$model"
+                        :class="slotProps.class"
+                    />
+                </template>
+            </form-group-field>
 
             <form-group-checkbox
                 id="form_edit_explicit"
@@ -86,6 +84,7 @@ import {useVModel} from "@vueuse/core";
 import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
 import {required} from "@vuelidate/validators";
 import Tab from "~/components/Common/Tab.vue";
+import PublishAtFields from "~/components/Stations/Podcasts/Common/PublishAtFields.vue";
 
 const props = defineProps({
     form: {
@@ -102,8 +101,7 @@ const {v$, tabClass} = useVuelidateOnFormTab(
         title: {required},
         link: {},
         description: {required},
-        publish_date: {},
-        publish_time: {},
+        publish_at: {},
         explicit: {},
         season_number: {},
         episode_number: {}
@@ -113,8 +111,7 @@ const {v$, tabClass} = useVuelidateOnFormTab(
         title: '',
         link: '',
         description: '',
-        publish_date: '',
-        publish_time: '',
+        publish_at: null,
         explicit: false,
         season_number: null,
         episode_number: null

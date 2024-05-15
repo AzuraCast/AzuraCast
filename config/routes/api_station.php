@@ -166,6 +166,12 @@ return static function (RouteCollectorProxy $group) {
                                         Controller\Api\Stations\PodcastEpisodesController::class . ':createAction'
                                     );
 
+                                    $group->map(
+                                        ['PUT', 'POST'],
+                                        '/batch',
+                                        Controller\Api\Stations\Podcasts\BatchAction::class
+                                    )->setName('api:stations:podcast:batch');
+
                                     $group->post(
                                         '/episodes/art',
                                         Controller\Api\Stations\Podcasts\Episodes\Art\PostArtAction::class

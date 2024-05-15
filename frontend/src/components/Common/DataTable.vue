@@ -350,6 +350,10 @@ const emit = defineEmits([
 
 const selectedRows = shallowRef<Row[]>([]);
 
+watch(selectedRows, (newRows: Row[]) => {
+    emit('row-selected', newRows);
+});
+
 const searchPhrase = ref<string>('');
 const currentPage = ref<number>(1);
 const flushCache = ref<boolean>(false);
@@ -600,6 +604,7 @@ const refreshServerSide = () => {
 
 const refresh = () => {
     selectedRows.value = [];
+
     activeDetailsRow.value = null;
 
     if (props.handleClientSide) {
@@ -706,7 +711,6 @@ const checkRow = (row: Row) => {
         newSelectedRows.push(row);
     }
 
-    emit('row-selected', newSelectedRows);
     selectedRows.value = newSelectedRows;
 }
 
@@ -719,7 +723,6 @@ const checkAll = () => {
         });
     }
 
-    emit('row-selected', newSelectedRows);
     selectedRows.value = newSelectedRows;
 };
 

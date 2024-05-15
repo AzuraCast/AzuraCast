@@ -182,7 +182,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
         ]
     )
 ]
-final class PodcastEpisodesController extends AbstractApiCrudController
+class PodcastEpisodesController extends AbstractApiCrudController
 {
     use CanSearchResults;
     use CanSortResults;
@@ -191,8 +191,8 @@ final class PodcastEpisodesController extends AbstractApiCrudController
     protected string $resourceRouteName = 'api:stations:podcast:episode';
 
     public function __construct(
-        private readonly PodcastEpisodeRepository $episodeRepository,
-        private readonly PodcastEpisodeApiGenerator $episodeApiGen,
+        protected readonly PodcastEpisodeRepository $episodeRepository,
+        protected readonly PodcastEpisodeApiGenerator $episodeApiGen,
         Serializer $serializer,
         ValidatorInterface $validator,
     ) {

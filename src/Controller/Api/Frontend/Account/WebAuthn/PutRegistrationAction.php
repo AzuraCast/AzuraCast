@@ -11,6 +11,7 @@ use App\Entity\UserPasskey;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Security\WebAuthnPasskey;
+use App\Utilities\Types;
 use Psr\Http\Message\ResponseInterface;
 
 final class PutRegistrationAction
@@ -27,7 +28,7 @@ final class PutRegistrationAction
 
         $webAuthn = $this->getWebAuthn($request);
 
-        $parsedBody = $request->getParsedBody();
+        $parsedBody = Types::array($request->getParsedBody());
         $challenge = $this->getChallenge($request);
 
         // Turn the submitted data into a raw passkey.

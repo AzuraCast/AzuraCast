@@ -11,6 +11,13 @@
             <loading :loading="isLoading">
                 <div class="table-responsive">
                     <table class="table table-sm align-middle table-striped table-hover">
+                        <colgroup>
+                            <col>
+                            <col>
+                            <col style="width: 8rem;">
+                            <col style="width: 11rem;">
+                            <col style="width: 11rem;">
+                        </colgroup>
                         <thead>
                             <tr>
                                 <th>{{ $gettext('Episode') }}</th>

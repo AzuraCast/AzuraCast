@@ -18,7 +18,7 @@ final class Version20201027130504 extends AbstractMigration
     {
         // Create temp index
         $this->addSql(
-            'CREATE INDEX IF NOT EXISTS IDX_TEMP_CONVERT ON station_media (path, storage_location_id, station_id)'
+            'CREATE INDEX IDX_TEMP_CONVERT ON station_media (path, storage_location_id, station_id)'
         );
 
         // Create initial backup directory.
@@ -197,7 +197,7 @@ final class Version20201027130504 extends AbstractMigration
         }
 
         // Drop temp index
-        $this->addSql('DROP INDEX IF EXISTS IDX_TEMP_CONVERT ON station_media');
+        $this->addSql('DROP INDEX IDX_TEMP_CONVERT ON station_media');
     }
 
     public function up(Schema $schema): void

@@ -15,7 +15,7 @@ final class Version20220406121125 extends AbstractMigration
 
     public function up(Schema $schema): void
     {
-        $this->addSql('ALTER TABLE station_queue DROP IF EXISTS log');
+        $this->addSql('ALTER TABLE station_queue DROP log');
     }
 
     public function postUp(Schema $schema): void

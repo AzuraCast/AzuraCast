@@ -32,6 +32,7 @@ final class StationPortCheckerValidator extends ConstraintValidator
         $portsToCheck = [
             'frontend_config_port' => $frontendConfig->getPort(),
             'backend_config_dj_port' => $backendConfig->getDjPort(),
+            'backend_config_dj_port_secondary' => $backendConfig->getDjPortSecondary(),
             'backend_config_telnet_port' => $backendConfig->getTelnetPort(),
         ];
 

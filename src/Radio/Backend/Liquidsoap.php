@@ -60,6 +60,27 @@ final class Liquidsoap extends AbstractLocalAdapter
     }
 
     /**
+     * Returns the port used for a second DJs/Streamers to connect to LiquidSoap for broadcasting.
+     *
+     * @param Station $station
+     *
+     * @return int The port number to use for this station.
+     */
+    public function getStreamPortSecondary(Station $station): int
+    {
+        $djPortSecondary = $station->getBackendConfig()->getDjPortSecondary();
+        if (null !== $djPortSecondary) {
+            return $djPortSecondary;
+        }
+
+        // Default to frontend port + 7
+        $frontendConfig = $station->getFrontendConfig();
+        $frontendPort = $frontendConfig->getPort() ?? (8000 + (($station->getId() - 1) * 10));
+
+        return $frontendPort + 7;
+    }
+
+    /**
      * Execute the specified remote command on LiquidSoap via the telnet API.
      *
      * @param Station $station

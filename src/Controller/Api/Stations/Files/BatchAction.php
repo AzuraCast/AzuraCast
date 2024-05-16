@@ -233,7 +233,7 @@ final class BatchAction implements SingleActionInterface
             foreach ($iterator as $record) {
                 /** @var PathAwareInterface $record */
                 $oldPath = $record->getPath();
-                $newPath = File::renameDirectoryInPath($oldPath, $from, $to);
+                $newPath = File::renameDirectoryInPath($oldPath, $from, $to, false);
 
                 try {
                     $fs->move($oldPath, $newPath);

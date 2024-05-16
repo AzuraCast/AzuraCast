@@ -72,8 +72,25 @@ final class File
         return $fullPath;
     }
 
-    public static function renameDirectoryInPath(string $path, string $fromDir, string $toDir): string
-    {
+    /**
+     * Given a "from" and "to" directory, update the given path to be relative to the "to" directory.
+     * If $preserveFolderStructure is set to "true" (default), this will preserve the folder structure
+     * that's underneath "fromDir". If it's set to "false", it will use the basename of the files and
+     * drop them directly into the "toDir".
+     */
+    public static function renameDirectoryInPath(
+        string $path,
+        string $fromDir,
+        string $toDir,
+        bool $preserveFolderStructure = true
+    ): string {
+        if (!$preserveFolderStructure) {
+            $basename = basename($path);
+            return ('' === $toDir)
+                ? $basename
+                : $toDir . '/' . $basename;
+        }
+
         if ('' === $fromDir && '' !== $toDir) {
             // Just prepend the new directory.
             return $toDir . '/' . $path;

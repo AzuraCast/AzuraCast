@@ -78,11 +78,16 @@ return [
                 'collate' => 'utf8mb4_general_ci',
             ],
             'driverOptions' => [
-                PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8mb4 COLLATE utf8mb4_general_ci',
+                PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8mb4 COLLATE utf8mb4_general_ci; '
+                    . 'SET sql_mode=(SELECT REPLACE(@@sql_mode, \"ONLY_FULL_GROUP_BY\", \"\"))',
                 PDO::MYSQL_ATTR_LOCAL_INFILE => true,
             ],
-            'serverVersion' => '11.2.3-MariaDB-1',
         ];
+
+        // Specify MariaDB version for local Docker installs. Let non-local ones auto-detect via Doctrine.
+        if (isset($connectionOptions['unix_socket'])) {
+            $connectionOptions['serverVersion'] = '11.2.3-MariaDB-1';
+        }
 
         $config = new Doctrine\DBAL\Configuration();
         $config->setResultCache($psr6Cache);

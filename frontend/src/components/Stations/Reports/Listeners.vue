@@ -305,6 +305,9 @@ const fields: DataTableField[] = [
         key: 'location',
         label: $gettext('Location'),
         sortable: true,
+        sorter: (row: ApiListener): string => {
+            return row.location?.country + ' ' + row.location?.region + ' ' + row.location?.city;
+        },
         selectable: true,
         visible: true
     }

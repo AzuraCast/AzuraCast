@@ -175,7 +175,7 @@
                                 <div class="d-flex align-items-center">
                                     {{ column.label }}
 
-                                    <template v-if="column.sortable && sortField === column.key">
+                                    <template v-if="column.sortable && sortField?.key === column.key">
                                         <icon :icon="(sortOrder === 'asc') ? IconArrowDropDown : IconArrowDropUp" />
                                     </template>
                                 </div>
@@ -358,7 +358,7 @@ const searchPhrase = ref<string>('');
 const currentPage = ref<number>(1);
 const flushCache = ref<boolean>(false);
 
-const sortField = ref<string | null>(null);
+const sortField = ref<DataTableField | null>(null);
 const sortOrder = ref<string | null>(null);
 
 const isLoading = ref<boolean>(false);
@@ -380,7 +380,10 @@ export interface DataTableField {
     selectable?: boolean,
     visible?: boolean,
     class?: string | Array<any>,
-    formatter?(column: any, key: string, row: any): string,
+
+    formatter?(column: any, key: string, row: Row): string,
+
+    sorter?(row: Row): string
 }
 
 const allFields = computed<DataTableField[]>(() => {
@@ -391,8 +394,9 @@ const allFields = computed<DataTableField[]>(() => {
             sortable: false,
             selectable: false,
             visible: true,
-            formatter: null,
             class: null,
+            formatter: null,
+            sorter: (row: Row): string => get(row, field.key),
             ...field
         };
     });
@@ -513,7 +517,10 @@ const refreshClientSide = () => {
         const collator = new Intl.Collator(localeShort, {numeric: true, sensitivity: 'base'});
 
         itemsOnPage = itemsOnPage.sort(
-            (a, b) => collator.compare(get(a, sortField.value), get(b, sortField.value))
+            (a, b) => collator.compare(
+                sortField.value.sorter(a),
+                sortField.value.sorter(b)
+            )
         );
         
         if (sortOrder.value === 'desc') {
@@ -569,8 +576,8 @@ const refreshServerSide = () => {
             queryParams.searchPhrase = searchPhrase.value;
         }
 
-        if ('' !== sortField.value) {
-            queryParams.sort = sortField.value;
+        if (null !== sortField.value) {
+            queryParams.sort = sortField.value.key;
             queryParams.sortOrder = (sortOrder.value === 'desc') ? 'DESC' : 'ASC';
         }
     }
@@ -686,14 +693,14 @@ const sort = (column: DataTableField) => {
         return;
     }
 
-    if (sortField.value === column.key && sortOrder.value === 'desc') {
+    if (sortField.value?.key === column.key && sortOrder.value === 'desc') {
         sortOrder.value = null;
         sortField.value = null;
     } else {
-        sortOrder.value = (sortField.value === column.key)
+        sortOrder.value = (sortField.value?.key === column.key)
             ? 'desc'
             : 'asc';
-        sortField.value = column.key;
+        sortField.value = column;
     }
     
     refresh();

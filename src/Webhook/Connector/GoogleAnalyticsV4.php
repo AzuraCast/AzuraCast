@@ -47,6 +47,11 @@ final class GoogleAnalyticsV4 extends AbstractGoogleAnalyticsConnector
         $liveListeners = $this->listenerRepo->iterateLiveListenersArray($station);
 
         foreach ($liveListeners as $listener) {
+            $uid = Types::stringOrNull($listener['listener_uid'], true);
+            if (null === $uid) {
+                continue;
+            }
+
             $listenerUrl = $this->getListenUrl($listener, $listenUrls);
             if (null === $listenerUrl) {
                 continue;
@@ -59,10 +64,7 @@ final class GoogleAnalyticsV4 extends AbstractGoogleAnalyticsConnector
                 ->setParamValue('user_agent', $listener['listener_user_agent']);
 
             $ga4Service->send(
-                new BaseRequest(
-                    (string)$listener['listener_uid'],
-                    $event
-                )
+                (new BaseRequest())->setClientId($uid)->addEvent($event)
             );
         }
     }

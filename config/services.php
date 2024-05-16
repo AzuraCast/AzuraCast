@@ -85,7 +85,7 @@ return [
         ];
 
         // Specify MariaDB version for local Docker installs. Let non-local ones auto-detect via Doctrine.
-        if (isset($connectionOptions['unix_socket'])) {
+        if (isset($connectionOptions['unix_socket']) || $environment->isTesting()) {
             $connectionOptions['serverVersion'] = '11.2.3-MariaDB-1';
         }
 

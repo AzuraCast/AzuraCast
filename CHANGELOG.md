@@ -25,6 +25,8 @@ release channel, you can take advantage of these new features and fixes.
 
 ## Bug Fixes
 
+- Fixed an issue where the first day of date-locked schedule items would not trigger the schedule.
+
 - An issue preventing some cron tasks from running was fixed.
 
 - A number of bugs and inconsistencies with the checkboxes in the Media Manager have been fixed.

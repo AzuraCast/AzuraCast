@@ -79,7 +79,7 @@ return [
             ],
             'driverOptions' => [
                 PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8mb4 COLLATE utf8mb4_general_ci; '
-                    . 'SET sql_mode=(SELECT REPLACE(@@sql_mode, \"ONLY_FULL_GROUP_BY\", \"\"))',
+                    . 'SET sql_mode=(SELECT REPLACE(@@sql_mode, "ONLY_FULL_GROUP_BY", ""))',
                 PDO::MYSQL_ATTR_LOCAL_INFILE => true,
             ],
         ];

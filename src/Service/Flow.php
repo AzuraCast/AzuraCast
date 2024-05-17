@@ -27,13 +27,12 @@ declare(strict_types=1);
 
 namespace App\Service;
 
-use App\Exception;
+use App\Exception\Http\FlowUploadException;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Service\Flow\UploadedFile;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\UploadedFileInterface;
-use RuntimeException;
 use Symfony\Component\Filesystem\Filesystem;
 
 use const SCANDIR_SORT_NONE;
@@ -95,21 +94,32 @@ final class Flow
 
         $files = $request->getUploadedFiles();
         if (empty($files)) {
-            throw new Exception\NoFileUploadedException();
+            throw new FlowUploadException(
+                $request,
+                'No file uploaded.'
+            );
         }
 
         /** @var UploadedFileInterface $file */
         $file = reset($files);
 
         if ($file->getError() !== UPLOAD_ERR_OK) {
-            throw new RuntimeException('Error ' . $file->getError() . ' in file ' . $flowFilename);
+            throw new FlowUploadException(
+                $request,
+                sprintf(
+                    'Error %s in file %s',
+                    $file->getError(),
+                    $flowFilename
+                )
+            );
         }
 
         // the file is stored in a temporary directory
         (new Filesystem())->mkdir($chunkBaseDir);
 
         if ($file->getSize() !== $currentChunkSize) {
-            throw new RuntimeException(
+            throw new FlowUploadException(
+                $request,
                 sprintf(
                     'File size of %s does not match expected size of %s',
                     $file->getSize(),
@@ -126,6 +136,7 @@ final class Flow
             // Handle last chunk.
             if (self::allPartsExist($chunkBaseDir, $targetSize, $targetChunks)) {
                 return self::createFileFromChunks(
+                    $request,
                     $tempDir,
                     $chunkBaseDir,
                     $flowIdentifier,
@@ -148,14 +159,23 @@ final class Flow
     ): UploadedFile {
         $files = $request->getUploadedFiles();
         if (empty($files)) {
-            throw new Exception\NoFileUploadedException();
+            throw new FlowUploadException(
+                $request,
+                'No file uploaded.'
+            );
         }
 
         /** @var UploadedFileInterface $file */
         $file = reset($files);
 
         if ($file->getError() !== UPLOAD_ERR_OK) {
-            throw new RuntimeException('Uploaded file error code: ' . $file->getError());
+            throw new FlowUploadException(
+                $request,
+                sprintf(
+                    'Uploaded file error code: %s',
+                    $file->getError()
+                )
+            );
         }
 
         $uploadedFile = new UploadedFile($file->getClientFilename(), null, $tempDir);
@@ -188,6 +208,7 @@ final class Flow
     }
 
     private static function createFileFromChunks(
+        ServerRequest $request,
         string $tempDir,
         string $chunkBaseDir,
         string $chunkIdentifier,
@@ -200,7 +221,8 @@ final class Flow
         $fp = fopen($finalPath, 'wb+');
 
         if (false === $fp) {
-            throw new RuntimeException(
+            throw new FlowUploadException(
+                $request,
                 sprintf(
                     'Could not open final path "%s" for writing.',
                     $finalPath
@@ -211,7 +233,8 @@ final class Flow
         for ($i = 1; $i <= $numChunks; $i++) {
             $chunkContents = file_get_contents($chunkBaseDir . '/' . $chunkIdentifier . '.part' . $i);
             if (empty($chunkContents)) {
-                throw new RuntimeException(
+                throw new FlowUploadException(
+                    $request,
                     sprintf(
                         'Could not load chunk "%d" for writing.',
                         $i

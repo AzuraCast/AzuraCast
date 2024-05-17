@@ -7,7 +7,7 @@ namespace App\Middleware\Module;
 use App\Container\EnvironmentAwareTrait;
 use App\Container\SettingsAwareTrait;
 use App\Entity\User;
-use App\Exception\InvalidRequestAttribute;
+use App\Exception\Http\InvalidRequestAttribute;
 use App\Http\ServerRequest;
 use App\Middleware\AbstractMiddleware;
 use App\Utilities\Urls;

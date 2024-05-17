@@ -62,7 +62,7 @@ final class InjectSession extends AbstractMiddleware
         $sessionPersistence = $this->getSessionPersistence($request);
         $session = new LazySession($sessionPersistence, $request);
 
-        $csrf = new Csrf($session, $this->environment);
+        $csrf = new Csrf($request, $session, $this->environment);
         $flash = new Flash($session);
 
         $request = $request->withAttribute(ServerRequest::ATTR_SESSION, $session)

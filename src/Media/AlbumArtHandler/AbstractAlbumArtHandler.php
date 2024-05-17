@@ -7,7 +7,7 @@ namespace App\Media\AlbumArtHandler;
 use App\Container\LoggerAwareTrait;
 use App\Entity\Interfaces\SongInterface;
 use App\Event\Media\GetAlbumArt;
-use App\Exception\RateLimitExceededException;
+use App\Exception\Http\RateLimitExceededException;
 use RuntimeException;
 use Throwable;
 

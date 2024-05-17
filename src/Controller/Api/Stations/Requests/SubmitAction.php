@@ -14,7 +14,7 @@ use App\Entity\StationRequest;
 use App\Entity\User;
 use App\Enums\StationFeatures;
 use App\Exception\Http\CannotCompleteActionException;
-use App\Exception\InvalidRequestAttribute;
+use App\Exception\Http\InvalidRequestAttribute;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\OpenApi;

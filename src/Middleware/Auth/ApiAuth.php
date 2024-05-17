@@ -10,7 +10,7 @@ use App\Customization;
 use App\Entity\Repository\ApiKeyRepository;
 use App\Entity\Repository\UserRepository;
 use App\Entity\User;
-use App\Exception\CsrfValidationException;
+use App\Exception\Http\CsrfValidationException;
 use App\Http\ServerRequest;
 use App\Security\SplitToken;
 use Psr\Http\Message\ResponseInterface;

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Service;
 
 use App\Container\SettingsAwareTrait;
-use App\Exception\RateLimitExceededException;
 use App\Lock\LockFactory;
 use App\Version;
 use GuzzleHttp\Client;
@@ -63,7 +62,7 @@ final class LastFm
         try {
             $rateLimitLock->acquire(true);
         } catch (LockConflictedException) {
-            throw new RateLimitExceededException('Could not acquire rate limiting lock.');
+            throw new RuntimeException('Could not acquire rate limiting lock.');
         }
 
         $query = array_merge(

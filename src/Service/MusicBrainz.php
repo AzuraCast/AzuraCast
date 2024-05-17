@@ -6,7 +6,6 @@ namespace App\Service;
 
 use App\Entity\Interfaces\SongInterface;
 use App\Entity\StationMedia;
-use App\Exception\RateLimitExceededException;
 use App\Lock\LockFactory;
 use App\Version;
 use GuzzleHttp\Client;
@@ -15,6 +14,7 @@ use GuzzleHttp\Psr7\Utils;
 use GuzzleHttp\RequestOptions;
 use JsonException;
 use Psr\Http\Message\UriInterface;
+use RuntimeException;
 use Symfony\Component\Lock\Exception\LockConflictedException;
 
 final class MusicBrainz
@@ -48,7 +48,7 @@ final class MusicBrainz
         try {
             $rateLimitLock->acquire(true);
         } catch (LockConflictedException) {
-            throw new RateLimitExceededException('Could not acquire rate limiting lock.');
+            throw new RuntimeException('Could not acquire rate limiting lock.');
         }
 
         $query['fmt'] = 'json';

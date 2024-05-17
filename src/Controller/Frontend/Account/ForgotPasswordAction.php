@@ -8,7 +8,7 @@ use App\Controller\SingleActionInterface;
 use App\Entity\Repository\UserLoginTokenRepository;
 use App\Entity\Repository\UserRepository;
 use App\Entity\User;
-use App\Exception\RateLimitExceededException;
+use App\Exception\Http\RateLimitExceededException;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\RateLimit;

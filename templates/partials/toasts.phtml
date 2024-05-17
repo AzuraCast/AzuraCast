@@ -3,7 +3,7 @@
 /** @var \App\Http\ServerRequest $request */
 try {
     $flashObj = $request->getFlash();
-} catch (App\Exception\InvalidRequestAttribute) {
+} catch (\App\Exception\Http\InvalidRequestAttribute) {
     $flashObj = null;
 }
 

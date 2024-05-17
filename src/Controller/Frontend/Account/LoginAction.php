@@ -8,7 +8,7 @@ use App\Container\EntityManagerAwareTrait;
 use App\Container\SettingsAwareTrait;
 use App\Controller\SingleActionInterface;
 use App\Entity\User;
-use App\Exception\RateLimitExceededException;
+use App\Exception\Http\RateLimitExceededException;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\RateLimit;

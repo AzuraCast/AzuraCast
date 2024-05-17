@@ -7,7 +7,7 @@ namespace App\Notification\Check;
 use App\Container\EnvironmentAwareTrait;
 use App\Entity\Api\Notification;
 use App\Event\GetNotifications;
-use App\Exception\RateLimitExceededException;
+use App\Exception\Http\RateLimitExceededException;
 use App\Session\FlashLevels;
 
 final class DonateAdvisorCheck

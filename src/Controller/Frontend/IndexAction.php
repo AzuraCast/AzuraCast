@@ -6,7 +6,7 @@ namespace App\Controller\Frontend;
 
 use App\Container\SettingsAwareTrait;
 use App\Controller\SingleActionInterface;
-use App\Exception\InvalidRequestAttribute;
+use App\Exception\Http\InvalidRequestAttribute;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;

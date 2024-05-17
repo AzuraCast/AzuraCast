@@ -22,7 +22,6 @@ final class InjectRateLimit extends AbstractMiddleware
     public function __invoke(ServerRequest $request, RequestHandlerInterface $handler): ResponseInterface
     {
         $request = $request->withAttribute(ServerRequest::ATTR_RATE_LIMIT, $this->rateLimit);
-
         return $handler->handle($request);
     }
 }

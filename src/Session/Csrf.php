@@ -5,9 +5,10 @@ declare(strict_types=1);
 namespace App\Session;
 
 use App\Environment;
-use App\Exception;
+use App\Exception\Http\CsrfValidationException;
 use App\Utilities\Types;
 use Mezzio\Session\SessionInterface;
+use Psr\Http\Message\ServerRequestInterface;
 
 final class Csrf
 {
@@ -15,6 +16,7 @@ final class Csrf
     public const DEFAULT_NAMESPACE = 'general';
 
     public function __construct(
+        private readonly ServerRequestInterface $request,
         private readonly SessionInterface $session,
         private readonly Environment $environment
     ) {
@@ -51,7 +53,7 @@ final class Csrf
      * @param string $key
      * @param string $namespace
      *
-     * @throws Exception\CsrfValidationException
+     * @throws CsrfValidationException
      */
     public function verify(string $key, string $namespace = self::DEFAULT_NAMESPACE): void
     {
@@ -60,21 +62,33 @@ final class Csrf
         }
 
         if (empty($key)) {
-            throw new Exception\CsrfValidationException('A CSRF token is required for this request.');
+            throw new CsrfValidationException(
+                $this->request,
+                'A CSRF token is required for this request.'
+            );
         }
 
         if (strlen($key) !== self::CODE_LENGTH) {
-            throw new Exception\CsrfValidationException('Malformed CSRF token supplied.');
+            throw new CsrfValidationException(
+                $this->request,
+                'Malformed CSRF token supplied.'
+            );
         }
 
         $sessionIdentifier = $this->getSessionIdentifier($namespace);
         if (!$this->session->has($sessionIdentifier)) {
-            throw new Exception\CsrfValidationException('No CSRF token supplied for this namespace.');
+            throw new CsrfValidationException(
+                $this->request,
+                'No CSRF token supplied for this namespace.'
+            );
         }
 
         $sessionKey = Types::string($this->session->get($sessionIdentifier));
         if (0 !== strcmp($key, $sessionKey)) {
-            throw new Exception\CsrfValidationException('Invalid CSRF token supplied.');
+            throw new CsrfValidationException(
+                $this->request,
+                'Invalid CSRF token supplied.'
+            );
         }
     }
 

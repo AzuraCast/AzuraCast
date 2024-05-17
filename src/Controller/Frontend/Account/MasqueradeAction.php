@@ -10,6 +10,7 @@ use App\Entity\User;
 use App\Exception\NotFoundException;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use App\Utilities\Types;
 use Psr\Http\Message\ResponseInterface;
 
 final class MasqueradeAction implements SingleActionInterface
@@ -26,11 +27,8 @@ final class MasqueradeAction implements SingleActionInterface
         Response $response,
         array $params
     ): ResponseInterface {
-        /** @var string $id */
-        $id = $params['id'];
-
-        /** @var string $csrf */
-        $csrf = $params['csrf'];
+        $id = Types::string($params['id']);
+        $csrf = Types::string($params['csrf']);
 
         $request->getCsrf()->verify($csrf, self::CSRF_NAMESPACE);
 

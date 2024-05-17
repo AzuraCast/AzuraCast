@@ -7,7 +7,6 @@ namespace App;
 use App\Container\EnvironmentAwareTrait;
 use App\Entity\Repository\UserRepository;
 use App\Entity\User;
-use App\Exception\NotLoggedInException;
 use App\Utilities\Types;
 use Mezzio\Session\SessionInterface;
 
@@ -239,7 +238,7 @@ final class Auth
         $user = $this->getUser();
 
         if (!($user instanceof User)) {
-            throw NotLoggedInException::create();
+            return false;
         }
 
         if ($user->verifyTwoFactor($otp)) {

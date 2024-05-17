@@ -205,7 +205,8 @@ return [
         DI\Container $di,
         App\CallableEventDispatcherInterface $dispatcher,
         App\Version $version,
-        Environment $environment
+        Environment $environment,
+        Doctrine\ORM\EntityManagerInterface $em
     ) {
         $console = new App\Console\Application(
             $environment->getAppName() . ' Command Line Tools ('
@@ -213,6 +214,42 @@ return [
             $version->getVersion()
         );
         $console->setDispatcher($dispatcher);
+
+        // Doctrine ORM/DBAL
+        Doctrine\ORM\Tools\Console\ConsoleRunner::addCommands(
+            $console,
+            new Doctrine\ORM\Tools\Console\EntityManagerProvider\SingleManagerProvider($em)
+        );
+
+        // Add Doctrine Migrations
+        $migrationConfigurations = [
+            'migrations_paths' => [
+                'App\Entity\Migration' => $environment->getBaseDirectory() . '/src/Entity/Migration',
+            ],
+            'table_storage' => [
+                'table_name' => 'app_migrations',
+                'version_column_length' => 191,
+            ],
+            'custom_template' => $environment->getBaseDirectory() . '/util/doctrine_migration.php.tmpl',
+        ];
+
+        $buildMigrationConfigurationsEvent = new Event\BuildMigrationConfigurationArray(
+            $migrationConfigurations,
+            $environment->getBaseDirectory()
+        );
+        $dispatcher->dispatch($buildMigrationConfigurationsEvent);
+
+        $migrationConfigurations = $buildMigrationConfigurationsEvent->getMigrationConfigurations();
+
+        $migrateConfig = new Doctrine\Migrations\Configuration\Migration\ConfigurationArray(
+            $migrationConfigurations
+        );
+
+        $migrateFactory = Doctrine\Migrations\DependencyFactory::fromEntityManager(
+            $migrateConfig,
+            new Doctrine\Migrations\Configuration\EntityManager\ExistingEntityManager($em)
+        );
+        Doctrine\Migrations\Tools\Console\ConsoleRunner::addCommands($console, $migrateFactory);
 
         // Trigger an event for the core app and all plugins to build their CLI commands.
         $event = new Event\BuildConsoleCommands($console, $di);

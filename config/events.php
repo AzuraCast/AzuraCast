@@ -10,52 +10,7 @@ use App\Middleware;
 return static function (CallableEventDispatcherInterface $dispatcher) {
     $dispatcher->addListener(
         Event\BuildConsoleCommands::class,
-        function (Event\BuildConsoleCommands $event) use ($dispatcher) {
-            $console = $event->getConsole();
-            $di = $event->getContainer();
-
-            /** @var Doctrine\ORM\EntityManagerInterface $em */
-            $em = $di->get(Doctrine\ORM\EntityManagerInterface::class);
-
-            // Doctrine ORM/DBAL
-            Doctrine\ORM\Tools\Console\ConsoleRunner::addCommands(
-                $console,
-                new Doctrine\ORM\Tools\Console\EntityManagerProvider\SingleManagerProvider($em)
-            );
-
-            // Add Doctrine Migrations
-            /** @var Environment $environment */
-            $environment = $di->get(Environment::class);
-
-            $migrationConfigurations = [
-                'migrations_paths' => [
-                    'App\Entity\Migration' => $environment->getBaseDirectory() . '/src/Entity/Migration',
-                ],
-                'table_storage' => [
-                    'table_name' => 'app_migrations',
-                    'version_column_length' => 191,
-                ],
-                'custom_template' => $environment->getBaseDirectory() . '/util/doctrine_migration.php.tmpl',
-            ];
-
-            $buildMigrationConfigurationsEvent = new Event\BuildMigrationConfigurationArray(
-                $migrationConfigurations,
-                $environment->getBaseDirectory()
-            );
-            $dispatcher->dispatch($buildMigrationConfigurationsEvent);
-
-            $migrationConfigurations = $buildMigrationConfigurationsEvent->getMigrationConfigurations();
-
-            $migrateConfig = new Doctrine\Migrations\Configuration\Migration\ConfigurationArray(
-                $migrationConfigurations
-            );
-
-            $migrateFactory = Doctrine\Migrations\DependencyFactory::fromEntityManager(
-                $migrateConfig,
-                new Doctrine\Migrations\Configuration\EntityManager\ExistingEntityManager($em)
-            );
-            Doctrine\Migrations\Tools\Console\ConsoleRunner::addCommands($console, $migrateFactory);
-
+        function (Event\BuildConsoleCommands $event) {
             call_user_func(include(__DIR__ . '/cli.php'), $event);
         }
     );

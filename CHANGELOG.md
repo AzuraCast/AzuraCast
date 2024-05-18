@@ -5,6 +5,16 @@ release channel, you can take advantage of these new features and fixes.
 
 ## New Features/Changes
 
+## Code Quality/Technical Changes
+
+## Bug Fixes
+
+--
+
+# AzuraCast 0.20.0 (May 18, 2024)
+
+## New Features/Changes
+
 - **Podcast Batch Editing**: You can now batch edit podcast episodes by selecting the checkbox next to them on the
   Episodes page table. This will let you modify the published date and other metadata for the episodes in bulk.
 

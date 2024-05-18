@@ -6,8 +6,6 @@ includes:
 parameters:
     level: 8
 
-    checkMissingIterableValueType: false
-
     doctrine:
         objectManagerLoader: util/phpstan-doctrine.php
 

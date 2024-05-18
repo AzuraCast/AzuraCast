@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Enums;
 
 use App\Environment;
-use App\Exception\InvalidRequestAttribute;
+use App\Exception\Http\InvalidRequestAttribute;
 use App\Http\ServerRequest;
 use Gettext\Translator;
 use Gettext\TranslatorFunctions;

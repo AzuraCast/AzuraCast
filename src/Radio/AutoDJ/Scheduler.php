@@ -411,7 +411,7 @@ final class Scheduler
                     $schedule->getStartTime(),
                     $startDate
                 );
-                if ($now->lt($startDate)) {
+                if ($now->endOfDay()->lt($startDate)) {
                     return false;
                 }
             }
@@ -425,7 +425,7 @@ final class Scheduler
                     $schedule->getEndTime(),
                     $endDate
                 );
-                if ($now->gt($endDate)) {
+                if ($now->startOfDay()->gt($endDate)) {
                     return false;
                 }
             }

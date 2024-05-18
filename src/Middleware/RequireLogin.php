@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Middleware;
 
-use App\Exception\NotLoggedInException;
+use App\Exception\Http\NotLoggedInException;
 use App\Http\ServerRequest;
 use Exception;
 use Psr\Http\Message\ResponseInterface;
@@ -20,7 +20,7 @@ final class RequireLogin extends AbstractMiddleware
         try {
             $request->getUser();
         } catch (Exception) {
-            throw NotLoggedInException::create();
+            throw NotLoggedInException::create($request);
         }
 
         return $handler->handle($request);

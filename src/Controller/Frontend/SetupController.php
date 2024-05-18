@@ -9,7 +9,7 @@ use App\Container\EnvironmentAwareTrait;
 use App\Container\SettingsAwareTrait;
 use App\Entity\Repository\RolePermissionRepository;
 use App\Entity\User;
-use App\Exception\NotLoggedInException;
+use App\Exception\Http\NotLoggedInException;
 use App\Exception\ValidationException;
 use App\Http\Response;
 use App\Http\ServerRequest;
@@ -220,7 +220,7 @@ final class SetupController
         // If past "register" step, require login.
         $auth = $request->getAuth();
         if (!$auth->isLoggedIn()) {
-            throw NotLoggedInException::create();
+            throw NotLoggedInException::create($request);
         }
 
         // Step 2: Set up Station

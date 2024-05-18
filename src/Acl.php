@@ -11,7 +11,7 @@ use App\Entity\User;
 use App\Enums\GlobalPermissions;
 use App\Enums\PermissionInterface;
 use App\Enums\StationPermissions;
-use App\Exception\InvalidRequestAttribute;
+use App\Exception\Http\InvalidRequestAttribute;
 use App\Http\ServerRequest;
 use App\Traits\RequestAwareTrait;
 use Psr\EventDispatcher\EventDispatcherInterface;

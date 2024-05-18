@@ -9,6 +9,40 @@ release channel, you can take advantage of these new features and fixes.
 
 ## Bug Fixes
 
+--
+
+# AzuraCast 0.20.0 (May 18, 2024)
+
+## New Features/Changes
+
+- **Podcast Batch Editing**: You can now batch edit podcast episodes by selecting the checkbox next to them on the
+  Episodes page table. This will let you modify the published date and other metadata for the episodes in bulk.
+
+- Added a new Webhook for the RadioReg service.
+
+## Code Quality/Technical Changes
+
+- We are investigating limited circumstances where our PHP server, RoadRunner, could return the wrong response for a
+  given request, particularly when the server is under heavy load. To investigate this, we have reverted back to the
+  more stable PHP-FPM service to serve PHP. This may result in poorer performance but should remove any issues of this
+  type.
+
+- Our original implementation of "High Availability" support was prone to mistakenly declaring that single-instance
+  AzuraCast installations were not the primary instance, which prevented synchronized tasks from running. We are
+  reverting this implementation to pursue more reliable ways of achieving this parallelism.
+
+- We have removed some MariaDB-specific elements of the code to allow for compatibility with newer versions of MySQL.
+
+## Bug Fixes
+
+- Fixed an issue where the first day of date-locked schedule items would not trigger the schedule.
+
+- An issue preventing some cron tasks from running was fixed.
+
+- A number of bugs and inconsistencies with the checkboxes in the Media Manager have been fixed.
+
+- The Song Playback Timeline will properly reflect date changes immediately, not needing a refresh.
+
 ---
 
 # AzuraCast 0.19.7 (May 6, 2024)

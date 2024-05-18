@@ -9,6 +9,7 @@ use App\Entity\Repository\UserPasskeyRepository;
 use App\Entity\UserPasskey;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use App\Utilities\Types;
 use InvalidArgumentException;
 use Mezzio\Session\SessionCookiePersistenceInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -30,7 +31,7 @@ final class PostValidationAction
     ): ResponseInterface {
         $webAuthn = $this->getWebAuthn($request);
 
-        $parsedBody = $request->getParsedBody();
+        $parsedBody = Types::array($request->getParsedBody());
         $validateData = json_decode($parsedBody['validateData'] ?? '', true, 512, JSON_THROW_ON_ERROR);
 
         $challenge = $this->getChallenge($request);

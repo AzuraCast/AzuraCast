@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Middleware;
 
-use App\Cache\DatabaseCache;
 use App\Container\SettingsAwareTrait;
 use App\Environment;
 use App\Http\ServerRequest;
@@ -29,14 +28,14 @@ final class InjectSession extends AbstractMiddleware
     private CacheItemPoolInterface $cachePool;
 
     public function __construct(
-        DatabaseCache $dbCache,
+        CacheItemPoolInterface $psrCache,
         private readonly Environment $environment
     ) {
         if ($environment->isCli()) {
-            $dbCache = new ArrayAdapter();
+            $psrCache = new ArrayAdapter();
         }
 
-        $this->cachePool = new ProxyAdapter($dbCache, 'session.');
+        $this->cachePool = new ProxyAdapter($psrCache, 'session.');
     }
 
     public function getSessionPersistence(ServerRequest $request): SessionPersistenceInterface
@@ -53,7 +52,8 @@ final class InjectSession extends AbstractMiddleware
             lastModified: time(),
             persistent: true,
             cookieSecure: $alwaysUseSsl && $isHttpsUrl,
-            cookieHttpOnly: true
+            cookieHttpOnly: true,
+            autoRegenerate: false
         );
     }
 
@@ -62,7 +62,7 @@ final class InjectSession extends AbstractMiddleware
         $sessionPersistence = $this->getSessionPersistence($request);
         $session = new LazySession($sessionPersistence, $request);
 
-        $csrf = new Csrf($session, $this->environment);
+        $csrf = new Csrf($request, $session, $this->environment);
         $flash = new Flash($session);
 
         $request = $request->withAttribute(ServerRequest::ATTR_SESSION, $session)

@@ -9,7 +9,7 @@ use App\Container\EnvironmentAwareTrait;
 use App\Customization;
 use App\Entity\AuditLog;
 use App\Entity\Repository\UserRepository;
-use App\Exception\InvalidRequestAttribute;
+use App\Exception\Http\InvalidRequestAttribute;
 use App\Http\ServerRequest;
 use App\Middleware\AbstractMiddleware;
 use Psr\Http\Message\ResponseInterface;

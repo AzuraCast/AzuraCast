@@ -8,7 +8,7 @@ use App\Controller\Api\Traits\CanSearchResults;
 use App\Controller\Api\Traits\CanSortResults;
 use App\Entity\Api\StationRemote as ApiStationRemote;
 use App\Entity\StationRemote;
-use App\Exception\PermissionDeniedException;
+use App\Exception\Http\PermissionDeniedException;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\OpenApi;
@@ -218,7 +218,7 @@ final class RemotesController extends AbstractStationApiCrudController
         $record = parent::getRecord($request, $params);
 
         if ($record instanceof StationRemote && !$record->isEditable()) {
-            throw PermissionDeniedException::create();
+            throw PermissionDeniedException::create($request);
         }
 
         return $record;

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Middleware;
 
 use App\Enums\PermissionInterface;
-use App\Exception\PermissionDeniedException;
+use App\Exception\Http\PermissionDeniedException;
 use App\Http\ServerRequest;
 use Exception;
 use Psr\Http\Message\ResponseInterface;
@@ -33,12 +33,12 @@ final class Permissions extends AbstractMiddleware
         try {
             $user = $request->getUser();
         } catch (Exception) {
-            throw PermissionDeniedException::create();
+            throw PermissionDeniedException::create($request);
         }
 
         $acl = $request->getAcl();
         if (!$acl->userAllowed($user, $this->action, $stationId)) {
-            throw PermissionDeniedException::create();
+            throw PermissionDeniedException::create($request);
         }
 
         return $handler->handle($request);

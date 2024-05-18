@@ -96,6 +96,7 @@ import {getStationApiUrl} from "~/router";
 import Tabs from "~/components/Common/Tabs.vue";
 import Tab from "~/components/Common/Tab.vue";
 import useStationDateTimeFormatter from "~/functions/useStationDateTimeFormatter.ts";
+import {useAzuraCastStation} from "~/vendor/azuracast.ts";
 
 const props = defineProps({
     showFullAnalytics: {
@@ -111,6 +112,8 @@ const byBrowserUrl = getStationApiUrl('/reports/overview/by-browser');
 const byCountryUrl = getStationApiUrl('/reports/overview/by-country');
 const byClientUrl = getStationApiUrl('/reports/overview/by-client');
 const listeningTimeUrl = getStationApiUrl('/reports/overview/by-listening-time');
+
+const {timezone} = useAzuraCastStation();
 
 const {now} = useStationDateTimeFormatter();
 

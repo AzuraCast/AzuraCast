@@ -63,7 +63,7 @@
     "@vitejs/plugin-vue": "^5",
     "@vue/eslint-config-typescript": "^13",
     "del": "^7",
-    "esbuild": "^0.20",
+    "esbuild": "^0.21",
     "eslint": "^8.45.0",
     "eslint-plugin-vue": "^9.8.0",
     "glob": "^10.2.7",

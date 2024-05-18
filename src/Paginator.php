@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App;
 
-use App\Exception\InvalidRequestAttribute;
+use App\Exception\Http\InvalidRequestAttribute;
 use App\Http\Response;
 use App\Http\RouterInterface;
 use App\Http\ServerRequest;

@@ -11,7 +11,7 @@ use App\Entity\Podcast;
 use App\Entity\Station;
 use App\Entity\User;
 use App\Enums\SupportedLocales;
-use App\Exception\InvalidRequestAttribute;
+use App\Exception\Http\InvalidRequestAttribute;
 use App\RateLimit;
 use App\Session;
 use App\Utilities\Types;
@@ -154,6 +154,7 @@ final class ServerRequest extends SlimServerRequest
 
         if (empty($object)) {
             throw new InvalidRequestAttribute(
+                $this,
                 sprintf(
                     'Attribute "%s" is required and is empty in this request',
                     $attr
@@ -163,6 +164,7 @@ final class ServerRequest extends SlimServerRequest
 
         if (!($object instanceof $className)) {
             throw new InvalidRequestAttribute(
+                $this,
                 sprintf(
                     'Attribute "%s" must be of type "%s".',
                     $attr,

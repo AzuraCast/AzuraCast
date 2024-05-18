@@ -51,13 +51,23 @@
             />
         </template>
 
+        <episodes-toolbar
+            :batch-url="podcast.links.batch"
+            :selected-items="selectedItems"
+            :podcast-is-manual="podcastIsManual"
+            @relist="relist"
+            @batch-edit="doBatchEdit"
+        />
+
         <data-table
             id="station_podcast_episodes"
             ref="$datatable"
+            selectable
             paginated
             select-fields
             :fields="fields"
             :api-url="podcast.links.episodes"
+            @row-selected="onRowSelected"
         >
             <template #cell(art)="{item}">
                 <album-art :src="item.art" />
@@ -137,6 +147,13 @@
         :create-url="podcast.links.episodes"
         @relist="relist"
     />
+
+    <batch-edit-modal
+        ref="$batchEditModal"
+        :batch-url="podcast.links.batch"
+        :selected-items="selectedItems"
+        @relist="relist"
+    />
 </template>
 
 <script setup lang="ts">
@@ -146,7 +163,7 @@ import Icon from '~/components/Common/Icon.vue';
 import AlbumArt from '~/components/Common/AlbumArt.vue';
 import StationsCommonQuota from "~/components/Stations/Common/Quota.vue";
 import {useTranslate} from "~/vendor/gettext";
-import {computed, ref} from "vue";
+import {computed, ref, shallowRef} from "vue";
 import AddButton from "~/components/Common/AddButton.vue";
 import {IconChevronLeft} from "~/components/Common/icons";
 import useHasDatatable, {DataTableTemplateRef} from "~/functions/useHasDatatable.ts";
@@ -156,6 +173,10 @@ import {ApiPodcast} from "~/entities/ApiInterfaces.ts";
 import useHasEditModal from "~/functions/useHasEditModal.ts";
 import useStationDateTimeFormatter from "~/functions/useStationDateTimeFormatter.ts";
 import CardPage from "~/components/Common/CardPage.vue";
+import EpisodesToolbar from "~/components/Stations/Podcasts/EpisodesToolbar.vue";
+import BatchEditModal from "~/components/Stations/Podcasts/BatchEditModal.vue";
+import Modal from "~/components/Common/Modal.vue";
+import {useHasModal} from "~/functions/useHasModal.ts";
 
 const props = defineProps<{
     podcast: ApiPodcast
@@ -248,4 +269,17 @@ const {doDelete} = useConfirmAndDelete(
     $gettext('Delete Episode?'),
     () => relist()
 );
+
+const selectedItems = shallowRef([]);
+
+const onRowSelected = (items) => {
+    selectedItems.value = items;
+};
+
+const $batchEditModal = ref<InstanceType<typeof Modal> | null>(null);
+const {show: showBatchEditModal} = useHasModal($batchEditModal);
+
+const doBatchEdit = () => {
+    showBatchEditModal();
+};
 </script>

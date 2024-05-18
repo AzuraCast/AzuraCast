@@ -1,6 +1,0 @@
-#!/bin/bash
-
-gosu azuracast azuracast_php_startup
-
-# Run PHP-FPM
-exec php-fpm -F --fpm-config /usr/local/etc/php-fpm.conf

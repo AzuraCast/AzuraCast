@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Media;
 
 use App\Container\EntityManagerAwareTrait;
+use App\Container\LoggerAwareTrait;
 use App\Entity\Repository\StationMediaRepository;
 use App\Entity\Repository\StorageLocationRepository;
 use App\Entity\Repository\UnprocessableMediaRepository;
@@ -19,6 +20,7 @@ use Symfony\Component\Filesystem\Filesystem;
 final class MediaProcessor
 {
     use EntityManagerAwareTrait;
+    use LoggerAwareTrait;
 
     public function __construct(
         private readonly StationMediaRepository $mediaRepo,
@@ -35,13 +37,22 @@ final class MediaProcessor
             return;
         }
 
-        if ($message instanceof ReprocessMediaMessage) {
-            $mediaRow = $this->em->find(StationMedia::class, $message->media_id);
-            if ($mediaRow instanceof StationMedia) {
-                $this->process($storageLocation, $mediaRow, $message->force);
+        try {
+            if ($message instanceof ReprocessMediaMessage) {
+                $mediaRow = $this->em->find(StationMedia::class, $message->media_id);
+                if ($mediaRow instanceof StationMedia) {
+                    $this->process($storageLocation, $mediaRow, $message->force);
+                }
+            } else {
+                $this->process($storageLocation, $message->path);
             }
-        } else {
-            $this->process($storageLocation, $message->path);
+        } catch (CannotProcessMediaException $e) {
+            $this->logger->error(
+                $e->getMessage(),
+                [
+                    'exception' => $e,
+                ]
+            );
         }
     }
 
@@ -66,22 +77,12 @@ final class MediaProcessor
                     $record = new StationMedia($storageLocation, $path);
                 }
 
-                try {
-                    $this->mediaRepo->loadFromFile($record, $localPath, $fs);
+                $this->mediaRepo->loadFromFile($record, $localPath, $fs);
 
-                    $record->setMtime(time());
-                    $this->em->persist($record);
-                } catch (CannotProcessMediaException $e) {
-                    $this->unprocessableMediaRepo->setForPath(
-                        $storageLocation,
-                        $path,
-                        $e->getMessage()
-                    );
-
-                    throw $e;
-                }
-
+                $record->setMtime(time());
+                $this->em->persist($record);
                 $this->em->flush();
+
                 $this->unprocessableMediaRepo->clearForPath($storageLocation, $path);
 
                 return $record;
@@ -100,6 +101,14 @@ final class MediaProcessor
                 $path,
                 'File type cannot be processed.'
             );
+        } catch (CannotProcessMediaException $e) {
+            $this->unprocessableMediaRepo->setForPath(
+                $storageLocation,
+                $path,
+                $e->getMessage()
+            );
+
+            throw $e;
         } finally {
             $fs->uploadAndDeleteOriginal($localPath, $path);
         }
@@ -118,46 +127,46 @@ final class MediaProcessor
             $path = $pathOrMedia;
         }
 
-        if (MimeType::isPathProcessable($path)) {
-            $record ??= $this->mediaRepo->findByPath($path, $storageLocation);
-            $created = false;
-            if (!($record instanceof StationMedia)) {
-                $record = new StationMedia($storageLocation, $path);
-                $created = true;
-            }
+        try {
+            if (MimeType::isPathProcessable($path)) {
+                $record ??= $this->mediaRepo->findByPath($path, $storageLocation);
+                $created = false;
+                if (!($record instanceof StationMedia)) {
+                    $record = new StationMedia($storageLocation, $path);
+                    $created = true;
+                }
 
-            try {
                 $reprocessed = $this->processMedia($storageLocation, $record, $force);
-            } catch (CannotProcessMediaException $e) {
-                $this->unprocessableMediaRepo->setForPath(
+
+                if ($created || $reprocessed) {
+                    $this->em->flush();
+                    $this->unprocessableMediaRepo->clearForPath($storageLocation, $path);
+                }
+
+                return $record;
+            }
+
+            if (null === $record && MimeType::isPathImage($path)) {
+                $this->processCoverArt(
                     $storageLocation,
-                    $path,
-                    $e->getMessage()
+                    $path
                 );
-
-                throw $e;
+                return null;
             }
 
-            if ($created || $reprocessed) {
-                $this->em->flush();
-                $this->unprocessableMediaRepo->clearForPath($storageLocation, $path);
-            }
-
-            return $record;
-        }
-
-        if (null === $record && MimeType::isPathImage($path)) {
-            $this->processCoverArt(
-                $storageLocation,
-                $path
+            throw CannotProcessMediaException::forPath(
+                $path,
+                'File type cannot be processed.'
             );
-            return null;
-        }
+        } catch (CannotProcessMediaException $e) {
+            $this->unprocessableMediaRepo->setForPath(
+                $storageLocation,
+                $path,
+                $e->getMessage()
+            );
 
-        throw CannotProcessMediaException::forPath(
-            $path,
-            'File type cannot be processed.'
-        );
+            throw $e;
+        }
     }
 
     public function processMedia(

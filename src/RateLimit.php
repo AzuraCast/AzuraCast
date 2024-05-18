@@ -6,6 +6,7 @@ namespace App;
 
 use App\Container\EnvironmentAwareTrait;
 use App\Entity\Repository\SettingsRepository;
+use App\Exception\Http\RateLimitExceededException;
 use App\Http\ServerRequest;
 use App\Lock\LockFactory;
 use Psr\Cache\CacheItemPoolInterface;
@@ -33,7 +34,7 @@ final class RateLimit
      * @param int $interval
      * @param int $limit
      *
-     * @throws Exception\RateLimitExceededException
+     * @throws RateLimitExceededException
      */
     public function checkRequestRateLimit(
         ServerRequest $request,
@@ -46,25 +47,19 @@ final class RateLimit
         }
 
         $ip = $this->settingsRepo->readSettings()->getIp($request);
-
         $ipKey = str_replace([':', '.'], '_', $ip);
-        $this->checkRateLimit($groupName, $ipKey, $interval, $limit);
+
+        if (!$this->checkRateLimit($groupName, $ipKey, $interval, $limit)) {
+            throw new RateLimitExceededException($request);
+        }
     }
 
-    /**
-     * @param string $groupName
-     * @param string $key
-     * @param int $interval
-     * @param int $limit
-     *
-     * @throws Exception\RateLimitExceededException
-     */
     public function checkRateLimit(
         string $groupName,
         string $key,
         int $interval = 5,
         int $limit = 2
-    ): void {
+    ): bool {
         $cacheStore = new CacheStorage($this->psr6Cache);
 
         $config = [
@@ -77,8 +72,6 @@ final class RateLimit
         $rateLimiterFactory = new RateLimiterFactory($config, $cacheStore, $this->lockFactory);
         $rateLimiter = $rateLimiterFactory->create($key);
 
-        if (!$rateLimiter->consume()->isAccepted()) {
-            throw new Exception\RateLimitExceededException();
-        }
+        return $rateLimiter->consume()->isAccepted();
     }
 }

@@ -7,7 +7,7 @@ namespace App\Controller\Api\Internal;
 use App\Container\LoggerAwareTrait;
 use App\Controller\SingleActionInterface;
 use App\Enums\StationPermissions;
-use App\Exception\PermissionDeniedException;
+use App\Exception\Http\PermissionDeniedException;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Radio\Frontend\Blocklist\BlocklistParser;
@@ -42,7 +42,7 @@ final class ListenerAuthAction implements SingleActionInterface
                     ]
                 );
 
-                throw PermissionDeniedException::create();
+                throw PermissionDeniedException::create($request);
             }
         }
 

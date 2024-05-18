@@ -8,7 +8,6 @@ use App\Cache\NowPlayingCache;
 use App\Container\EntityManagerAwareTrait;
 use App\Container\SettingsAwareTrait;
 use App\Lock\LockFactory;
-use App\Service\HighAvailability;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -28,7 +27,6 @@ final class NowPlayingCommand extends AbstractSyncRunnerCommand
 
     public function __construct(
         private readonly NowPlayingCache $nowPlayingCache,
-        private readonly HighAvailability $highAvailability,
         LockFactory $lockFactory,
     ) {
         parent::__construct($lockFactory);
@@ -50,12 +48,6 @@ final class NowPlayingCommand extends AbstractSyncRunnerCommand
         $this->logToExtraFile('app_nowplaying.log');
 
         $io = new SymfonyStyle($input, $output);
-
-        if (!$this->highAvailability->isActiveServer()) {
-            $this->logger->error('This instance is not the current active instance.');
-            sleep(30);
-            return 0;
-        }
 
         $settings = $this->readSettings();
         if ($settings->getSyncDisabled()) {

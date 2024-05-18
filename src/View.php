@@ -197,7 +197,8 @@ final class View extends Engine
             $timeConfig = new stdClass();
 
             if ($userObj instanceof User) {
-                $timeConfig->hour12 = !$userObj->getShow24HourTime();
+                // See: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat/DateTimeFormat#hourcycle
+                $timeConfig->hourCycle = $userObj->getShow24HourTime() ? 'h23' : 'h12';
 
                 $globalPermissions = [];
                 $stationPermissions = [];

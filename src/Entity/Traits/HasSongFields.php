@@ -25,21 +25,21 @@ trait HasSongFields
 
     #[
         OA\Property,
-        ORM\Column(length: 303, nullable: true),
+        ORM\Column(length: 512, nullable: true),
         Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])
     ]
     protected ?string $text = null;
 
     #[
         OA\Property,
-        ORM\Column(length: 150, nullable: true),
+        ORM\Column(length: 255, nullable: true),
         Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])
     ]
     protected ?string $artist = null;
 
     #[
         OA\Property,
-        ORM\Column(length: 150, nullable: true),
+        ORM\Column(length: 255, nullable: true),
         Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])
     ]
     protected ?string $title = null;
@@ -86,7 +86,7 @@ trait HasSongFields
     public function setText(?string $text): void
     {
         $oldText = $this->text;
-        $this->text = $this->truncateNullableString($text, 303);
+        $this->text = $this->truncateNullableString($text, 512);
 
         if (0 !== strcmp($oldText ?? '', $this->text ?? '')) {
             $this->updateSongId();
@@ -101,7 +101,7 @@ trait HasSongFields
     public function setArtist(?string $artist): void
     {
         $oldArtist = $this->artist;
-        $this->artist = $this->truncateNullableString($artist, 150);
+        $this->artist = $this->truncateNullableString($artist);
 
         if (0 !== strcmp($oldArtist ?? '', $this->artist ?? '')) {
             $this->setTextFromArtistAndTitle();
@@ -116,7 +116,7 @@ trait HasSongFields
     public function setTitle(?string $title): void
     {
         $oldTitle = $this->title;
-        $this->title = $this->truncateNullableString($title, 150);
+        $this->title = $this->truncateNullableString($title);
 
         if (0 !== strcmp($oldTitle ?? '', $this->title ?? '')) {
             $this->setTextFromArtistAndTitle();

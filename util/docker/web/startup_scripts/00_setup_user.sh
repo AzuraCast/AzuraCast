@@ -11,3 +11,5 @@ usermod -o -u "$PUID" azuracast
 
 echo "Docker 'azuracast' User UID: $(id -u azuracast)"
 echo "Docker 'azuracast' User GID: $(id -g azuracast)"
+
+chown -R azuracast:azuracast /var/azuracast

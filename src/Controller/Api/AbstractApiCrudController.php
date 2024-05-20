@@ -119,9 +119,7 @@ abstract class AbstractApiCrudController
      */
     protected function viewRecord(object $record, ServerRequest $request): mixed
     {
-        if (!($record instanceof $this->entityClass)) {
-            throw new InvalidArgumentException(sprintf('Record must be an instance of %s.', $this->entityClass));
-        }
+        assert($record instanceof $this->entityClass);
 
         $return = $this->toArray($record);
 
@@ -244,7 +242,10 @@ abstract class AbstractApiCrudController
             $context[AbstractNormalizer::OBJECT_TO_POPULATE] = $record;
         }
 
-        return $this->serializer->denormalize($data, $this->entityClass, null, $context);
+        /** @var TEntity $result */
+        $result = $this->serializer->denormalize($data, $this->entityClass, null, $context);
+
+        return $result;
     }
 
     public function deleteAction(

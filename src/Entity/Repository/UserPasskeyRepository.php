@@ -27,8 +27,13 @@ final class UserPasskeyRepository extends Repository
         return $record;
     }
 
+    /**
+     * @param User $user
+     * @return string[]
+     */
     public function getCredentialIds(User $user): array
     {
+        /** @var string[] $records */
         $records = $this->em->createQuery(
             <<<'DQL'
             SELECT up.full_id

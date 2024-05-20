@@ -8,8 +8,14 @@ use JsonSerializable;
 use ReflectionClassConstant;
 use ReflectionObject;
 
+/**
+ * @phpstan-type ConfigData array<string, mixed>
+ */
 abstract class AbstractStationConfiguration implements JsonSerializable
 {
+    /**
+     * @param ConfigData $data
+     */
     public function __construct(
         private array $data = []
     ) {

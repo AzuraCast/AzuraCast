@@ -40,7 +40,7 @@ final class RestoreCommand extends AbstractDatabaseCommand
 
         $io->title('AzuraCast Restore');
 
-        if (empty($path)) {
+        if (null === $path) {
             $filesRaw = glob(StorageLocation::DEFAULT_BACKUPS_PATH . '/*', GLOB_NOSORT) ?: [];
             usort(
                 $filesRaw,
@@ -64,7 +64,7 @@ final class RestoreCommand extends AbstractDatabaseCommand
                 $i++;
             }
 
-            $path = $io->choice('Select backup file to restore:', $files, 1);
+            $path = Types::string($io->choice('Select backup file to restore:', $files, 1));
         }
 
         if ('/' !== $path[0]) {

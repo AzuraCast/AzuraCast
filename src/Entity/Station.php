@@ -29,6 +29,9 @@ use Symfony\Component\Filesystem\Path;
 use Symfony\Component\Serializer\Annotation as Serializer;
 use Symfony\Component\Validator\Constraints as Assert;
 
+/**
+ * @phpstan-import-type ConfigData from AbstractStationConfiguration
+ */
 #[
     OA\Schema(schema: "Station", type: "object"),
     ORM\Entity,
@@ -83,6 +86,9 @@ class Station implements Stringable, IdentifiableEntityInterface
     ]
     protected FrontendAdapters $frontend_type;
 
+    /**
+     * @var ConfigData|null
+     */
     #[
         OA\Property(
             description: "An array containing station-specific frontend configuration",
@@ -104,6 +110,9 @@ class Station implements Stringable, IdentifiableEntityInterface
     ]
     protected BackendAdapters $backend_type;
 
+    /**
+     * @var ConfigData|null
+     */
     #[
         OA\Property(
             description: "An array containing station-specific backend configuration",
@@ -272,6 +281,9 @@ class Station implements Stringable, IdentifiableEntityInterface
     ]
     protected ?string $timezone = 'UTC';
 
+    /**
+     * @var ConfigData|null
+     */
     #[
         OA\Property(
             description: "An array containing station-specific branding configuration",
@@ -478,6 +490,9 @@ class Station implements Stringable, IdentifiableEntityInterface
         return new StationFrontendConfiguration((array)$this->frontend_config);
     }
 
+    /**
+     * @param StationFrontendConfiguration|ConfigData $frontendConfig
+     */
     public function setFrontendConfig(
         StationFrontendConfiguration|array $frontendConfig,
         bool $forceOverwrite = false
@@ -531,6 +546,9 @@ class Station implements Stringable, IdentifiableEntityInterface
             ($this->getBackendType()->isEnabled() || $this->getFrontendType()->isEnabled());
     }
 
+    /**
+     * @param StationBackendConfiguration|ConfigData $backendConfig
+     */
     public function setBackendConfig(
         StationBackendConfiguration|array $backendConfig,
         bool $forceOverwrite = false
@@ -875,6 +893,9 @@ class Station implements Stringable, IdentifiableEntityInterface
         return new StationBrandingConfiguration((array)$this->branding_config);
     }
 
+    /**
+     * @param StationBrandingConfiguration|ConfigData $brandingConfig
+     */
     public function setBrandingConfig(
         StationBrandingConfiguration|array $brandingConfig,
         bool $forceOverwrite = false

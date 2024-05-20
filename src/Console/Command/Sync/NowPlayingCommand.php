@@ -8,6 +8,7 @@ use App\Cache\NowPlayingCache;
 use App\Container\EntityManagerAwareTrait;
 use App\Container\SettingsAwareTrait;
 use App\Lock\LockFactory;
+use App\Utilities\Types;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -55,7 +56,7 @@ final class NowPlayingCommand extends AbstractSyncRunnerCommand
             return 1;
         }
 
-        $timeout = (int)$input->getOption('timeout');
+        $timeout = Types::int($input->getOption('timeout'));
         $this->loop($io, $timeout);
 
         return 0;

@@ -10,6 +10,7 @@ use App\Entity\AuditLog;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Paginator;
+use App\Utilities\Types;
 use Psr\Http\Message\ResponseInterface;
 
 use const JSON_PRETTY_PRINT;
@@ -35,7 +36,9 @@ final class AuditLogAction
             ->setParameter('start', $start->getTimestamp())
             ->setParameter('end', $end->getTimestamp());
 
-        $searchPhrase = trim($request->getQueryParam('searchPhrase', ''));
+        $searchPhrase = trim(
+            Types::string($request->getQueryParam('searchPhrase'))
+        );
         if (!empty($searchPhrase)) {
             $qb->andWhere('(a.user LIKE :query OR a.identifier LIKE :query OR a.target LIKE :query)')
                 ->setParameter('query', '%' . $searchPhrase . '%');

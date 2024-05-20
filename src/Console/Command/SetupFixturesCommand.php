@@ -13,6 +13,7 @@ use Doctrine\Common\DataFixtures\Loader;
 use Doctrine\Common\DataFixtures\Purger\ORMPurger;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
+use SplFileInfo;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -41,6 +42,7 @@ final class SetupFixturesCommand extends CommandAbstract
             RecursiveIteratorIterator::LEAVES_ONLY
         );
 
+        /** @var SplFileInfo $file */
         foreach ($iterator as $file) {
             // Skip dotfiles
             if (($fileName = $file->getBasename('.php')) == $file->getBasename()) {

@@ -343,7 +343,7 @@ final class QueueBuilder implements EventSubscriberInterface
      * Returns either an array containing the URL of a remote stream and the duration,
      * an array with a media id and the duration or null if no media has been found.
      *
-     * @return mixed[]|null
+     * @return array{string|null, int}|null
      */
     private function getMediaFromRemoteUrl(StationPlaylist $playlist): ?array
     {

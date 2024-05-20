@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Stations;
 
-use App;
 use App\Container\EntityManagerAwareTrait;
 use App\Container\EnvironmentAwareTrait;
 use App\Controller\Api\Traits\AcceptsDateRange;
@@ -16,6 +15,8 @@ use App\Entity\Station;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\OpenApi;
+use App\Paginator;
+use App\Utilities\Types;
 use Carbon\CarbonImmutable;
 use Doctrine\ORM\Query;
 use League\Csv\Writer;
@@ -119,15 +120,15 @@ final class HistoryAction implements SingleActionInterface
             );
         }
 
-        $searchPhrase = trim($request->getQueryParam('searchPhrase') ?? '');
-        if (!empty($searchPhrase)) {
+        $searchPhrase = Types::stringOrNull($request->getQueryParam('searchPhrase'), true);
+        if (null !== $searchPhrase) {
             $qb->andWhere('(sh.title LIKE :query OR sh.artist LIKE :query)')
                 ->setParameter('query', '%' . $searchPhrase . '%');
         }
 
         $qb->orderBy('sh.timestamp_start', 'DESC');
 
-        $paginator = App\Paginator::fromQueryBuilder($qb, $request);
+        $paginator = Paginator::fromQueryBuilder($qb, $request);
 
         $router = $request->getRouter();
 

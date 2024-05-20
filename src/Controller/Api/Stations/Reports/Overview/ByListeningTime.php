@@ -7,6 +7,7 @@ namespace App\Controller\Api\Stations\Reports\Overview;
 use App\Entity\Api\Status;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use App\Utilities\Types;
 use Psr\Http\Message\ResponseInterface;
 
 final class ByListeningTime extends AbstractReportAction
@@ -60,7 +61,7 @@ final class ByListeningTime extends AbstractReportAction
         }
 
         foreach ($statsRaw as $row) {
-            $listenerTime = (int)$row['connected_seconds'];
+            $listenerTime = Types::int($row['connected_seconds']);
 
             foreach ($ranges as [$max, $label]) {
                 if ($listenerTime <= $max) {

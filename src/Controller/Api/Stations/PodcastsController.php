@@ -15,6 +15,7 @@ use App\Http\Response;
 use App\Http\ServerRequest;
 use App\OpenApi;
 use App\Service\Flow\UploadedFile;
+use App\Utilities\Types;
 use InvalidArgumentException;
 use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
@@ -301,9 +302,10 @@ final class PodcastsController extends AbstractApiCrudController
      */
     protected function fromArray($data, $record = null, array $context = []): object
     {
+        /** @var null|string[] $newCategories */
         $newCategories = null;
         if (isset($data['categories'])) {
-            $newCategories = (array)$data['categories'];
+            $newCategories = Types::arrayOrNull($data['categories']);
             unset($data['categories']);
         }
 
@@ -311,7 +313,6 @@ final class PodcastsController extends AbstractApiCrudController
             $data['playlist'] = $data['playlist_id'];
             unset($data['playlist_id']);
         }
-
 
         $record = parent::fromArray($data, $record, $context);
 

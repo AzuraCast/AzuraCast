@@ -13,6 +13,7 @@ use App\Http\Response;
 use App\Http\ServerRequest;
 use App\RateLimit;
 use App\Service\Mail;
+use App\Utilities\Types;
 use Psr\Http\Message\ResponseInterface;
 
 final class ForgotPasswordAction implements SingleActionInterface
@@ -55,7 +56,7 @@ final class ForgotPasswordAction implements SingleActionInterface
                 return $response->withRedirect($request->getUri()->getPath());
             }
 
-            $email = $request->getParsedBodyParam('email', '');
+            $email = Types::string($request->getParsedBodyParam('email'));
             $user = $this->userRepo->findByEmail($email);
 
             if ($user instanceof User) {

@@ -32,12 +32,10 @@ final class TwoFactorAction implements SingleActionInterface
                     '<b>' . __('Logged in successfully.') . '</b><br>' . $user->getEmail(),
                 );
 
-                $referrer = $request->getSession()->get('login_referrer');
-                if (!empty($referrer)) {
-                    return $response->withRedirect($referrer);
-                }
-
-                return $response->withRedirect($request->getRouter()->named('dashboard'));
+                $referrer = Types::stringOrNull($request->getSession()->get('login_referrer'), true);
+                return $response->withRedirect(
+                    $referrer ?? $request->getRouter()->named('dashboard')
+                );
             }
 
             $flash->error(

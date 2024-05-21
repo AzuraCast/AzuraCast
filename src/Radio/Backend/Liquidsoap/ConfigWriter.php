@@ -908,10 +908,82 @@ final class ConfigWriter implements EventSubscriberInterface
         // Write pre-crossfade section.
         $this->writeCustomConfigurationSection($event, StationBackendConfiguration::CUSTOM_PRE_FADE);
 
-        // Crossfading happens before the live broadcast is mixed in, because of buffer issues.
-        $crossfadeType = $settings->getCrossfadeTypeEnum();
-
-        if ($settings->isCrossfadeEnabled()) {
+        if ($settings->getEnableAutoCue()) {
+            // AutoCue preempts normal fading to use its own settings.
+            $event->appendBlock(
+                <<<LS
+                # Show metadata in log (Debug)
+                def show_meta(m)
+                    label="show_meta"
+                    l = list.sort.natural(metadata.cover.remove(m))
+                    list.iter(fun(v) -> log(level=4, label=label, "#{v}"), l)
+                    
+                    nowplaying = ref(m["artist"] ^ " - " ^ m["title"])
+                    
+                    if m["artist"] == "" then
+                        if string.contains(substring=" - ", m["title"]) then
+                            let (a, t) = string.split.first(separator=" - ", m["title"])
+                            nowplaying := a ^ " - " ^ t
+                        end
+                    end
+                    
+                    # show `liq_` & other metadata in level 3
+                    def fl(k, _) =
+                        tags = ["duration", "replaygain_track_gain", "replaygain_reference_loudness"]
+                        string.contains(prefix="liq_", k) or list.mem(k, tags)
+                    end
+                    
+                    liq = list.assoc.filter((fl), l)
+                    list.iter(fun(v) -> log(level=3, label=label, "#{v}"), liq)
+                    log(level=3, label=label, "Now playing: #{nowplaying()}")
+                    
+                    if m["liq_amplify"] == "" then
+                        log(level=2, label=label, "Warning: No liq_amplify found, expect loudness jumps!")
+                    end
+                    if m["liq_blank_skipped"] == "true" then
+                        log(level=2, label=label, "Blank (silence) detected in track, ending early.")
+                    end
+                end
+                
+                radio.on_metadata(show_meta)
+                
+                # Fading/crossing/segueing
+                def live_aware_crossfade(old, new) =
+                    label = "live_aware_crossfade"
+                    if to_live() then
+                        # If going to the live show, play a simple sequence
+                        # fade out AutoDJ, do (almost) not fade in streamer
+                        sequence([
+                          fade.out(duration=settings.autocue.cue_file.fade_out(), old.source),
+                          fade.in(duration=settings.autocue.cue_file.fade_in(), new.source)
+                        ])
+                    else
+                        # Otherwise, use a beautiful add
+                        add(normalize=false, [
+                            fade.in(
+                                initial_metadata=new.metadata,
+                                duration=settings.autocue.cue_file.fade_in(),
+                                new.source
+                            ),
+                            fade.out(
+                                initial_metadata=old.metadata,
+                                duration=settings.autocue.cue_file.fade_out(),
+                                old.source
+                            )
+                        ])
+                    end
+                end
+                
+                radio = cross(
+                    duration=settings.autocue.cue_file.fade_out(),
+                    live_aware_crossfade,
+                    radio
+                )
+                LS
+            );
+        } elseif ($settings->isCrossfadeEnabled()) {
+            // Crossfading happens before the live broadcast is mixed in, because of buffer issues.
+            $crossfadeType = $settings->getCrossfadeTypeEnum();
             $crossfade = self::toFloat($settings->getCrossfade());
             $crossDuration = self::toFloat($settings->getCrossfadeDuration());
 

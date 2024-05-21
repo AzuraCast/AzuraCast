@@ -5,6 +5,12 @@ release channel, you can take advantage of these new features and fixes.
 
 ## New Features/Changes
 
+- **AutoCue**: Thanks to the hard work
+  of [many community members](https://github.com/AzuraCast/AzuraCast/discussions/6252), we are beginning to offer the
+  exciting new AutoCue tool for all AzuraCast users. AutoCue will analyze your music files on-the-fly and calculate
+  ideal settings for cue, fade, volume and more. The result is a refined playback experience that sounds very
+  professional. Enable it on the "AutoDJ" tab of the station profile, under "Audio Processing".
+
 ## Code Quality/Technical Changes
 
 ## Bug Fixes

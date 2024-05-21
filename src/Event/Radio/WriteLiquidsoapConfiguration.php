@@ -5,22 +5,31 @@ declare(strict_types=1);
 namespace App\Event\Radio;
 
 use App\Entity\Station;
+use App\Entity\StationBackendConfiguration;
 use Symfony\Contracts\EventDispatcher\Event;
 
 final class WriteLiquidsoapConfiguration extends Event
 {
     private array $configLines = [];
 
+    private StationBackendConfiguration $backendConfig;
+
     public function __construct(
         private readonly Station $station,
         private readonly bool $forEditing = false,
         private readonly bool $writeToDisk = true
     ) {
+        $this->backendConfig = $station->getBackendConfig();
     }
 
     public function getStation(): Station
     {
         return $this->station;
+    }
+
+    public function getBackendConfig(): StationBackendConfiguration
+    {
+        return $this->backendConfig;
     }
 
     public function isForEditing(): bool

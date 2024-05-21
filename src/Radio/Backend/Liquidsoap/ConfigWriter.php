@@ -12,7 +12,6 @@ use App\Entity\Enums\PlaylistSources;
 use App\Entity\Enums\PlaylistTypes;
 use App\Entity\Enums\StationBackendPerformanceModes;
 use App\Entity\Interfaces\StationMountInterface;
-use App\Entity\Station;
 use App\Entity\StationBackendConfiguration;
 use App\Entity\StationMount;
 use App\Entity\StationPlaylist;
@@ -97,7 +96,7 @@ final class ConfigWriter implements EventSubscriberInterface
     public function writePostProcessingSection(WriteLiquidsoapConfiguration $event): void
     {
         $station = $event->getStation();
-        $settings = $station->getBackendConfig();
+        $settings = $event->getBackendConfig();
 
         switch ($settings->getAudioProcessingMethodEnum()) {
             case AudioProcessingMethods::Liquidsoap:
@@ -360,7 +359,7 @@ final class ConfigWriter implements EventSubscriberInterface
             );
         }
 
-        $backendConfig = $station->getBackendConfig();
+        $backendConfig = $event->getBackendConfig();
 
         $perfMode = $backendConfig->getPerformanceModeEnum();
         if ($perfMode !== StationBackendPerformanceModes::Disabled) {
@@ -381,6 +380,21 @@ final class ConfigWriter implements EventSubscriberInterface
                 LIQ
             );
         }
+
+        // Add AutoCue common configuration.
+        if ($backendConfig->getEnableAutoCue()) {
+            $autoCueCommon = $this->environment->getParentDirectory() . '/autocue/autocue.liq';
+
+            $event->appendBlock(
+                <<<LIQ
+                # AutoCue
+                %include "{$autoCueCommon}"
+                
+                settings.autocue.cue_file.nice := true
+                settings.request.prefetch := 2
+                LIQ
+            );
+        }
     }
 
     public function writePlaylistConfiguration(WriteLiquidsoapConfiguration $event): void
@@ -388,6 +402,16 @@ final class ConfigWriter implements EventSubscriberInterface
         $station = $event->getStation();
 
         $this->writeCustomConfigurationSection($event, StationBackendConfiguration::CUSTOM_PRE_PLAYLISTS);
+
+        // Override some AutoCue settings if they're set in the section above.
+        if ($event->getBackendConfig()->getEnableAutoCue()) {
+            $event->appendBlock(
+                <<<LIQ
+                # AutoCue
+                settings.autocue.target_cross_duration := settings.autocue.cue_file.fade_out()
+                LIQ
+            );
+        }
 
         // Set up playlists using older format as a fallback.
         $playlistVarNames = [];
@@ -755,7 +779,7 @@ final class ConfigWriter implements EventSubscriberInterface
         );
 
         // Replaygain metadata
-        $settings = $station->getBackendConfig();
+        $settings = $event->getBackendConfig();
 
         if ($settings->useReplayGain()) {
             $event->appendBlock(
@@ -931,7 +955,7 @@ final class ConfigWriter implements EventSubscriberInterface
 
         $this->writeCustomConfigurationSection($event, StationBackendConfiguration::CUSTOM_PRE_LIVE);
 
-        $settings = $station->getBackendConfig();
+        $settings = $event->getBackendConfig();
         $charset = $settings->getCharset();
         $djMount = $settings->getDjMountPoint();
         $recordLiveStreams = $settings->recordStreams();
@@ -1097,7 +1121,7 @@ final class ConfigWriter implements EventSubscriberInterface
     public function writePreBroadcastConfiguration(WriteLiquidsoapConfiguration $event): void
     {
         $station = $event->getStation();
-        $settings = $station->getBackendConfig();
+        $settings = $event->getBackendConfig();
 
         $event->appendBlock(
             <<<LIQ
@@ -1205,7 +1229,7 @@ final class ConfigWriter implements EventSubscriberInterface
                 continue;
             }
 
-            $lsConfig[] = $this->getOutputString($station, $mountRow, 'local_', $i);
+            $lsConfig[] = $this->getOutputString($event, $mountRow, 'local_', $i);
         }
 
         $event->appendLines($lsConfig);
@@ -1269,7 +1293,7 @@ final class ConfigWriter implements EventSubscriberInterface
         $hlsBaseDir = $station->getRadioHlsDir();
         $tempDir = $station->getRadioTempDir();
 
-        $backendConfig = $station->getBackendConfig();
+        $backendConfig = $event->getBackendConfig();
         $hlsSegmentLength = $backendConfig->getHlsSegmentLength();
         $hlsSegmentsInPlaylist = $backendConfig->getHlsSegmentsInPlaylist();
         $hlsSegmentsOverhead = $backendConfig->getHlsSegmentsOverhead();
@@ -1301,12 +1325,13 @@ final class ConfigWriter implements EventSubscriberInterface
      * Given outbound broadcast information, produce a suitable LiquidSoap configuration line for the stream.
      */
     private function getOutputString(
-        Station $station,
+        WriteLiquidsoapConfiguration $event,
         StationMountInterface $mount,
         string $idPrefix,
         int $id
     ): string {
-        $charset = $station->getBackendConfig()->getCharset();
+        $station = $event->getStation();
+        $charset = $event->getBackendConfig()->getCharset();
 
         $format = $mount->getAutodjFormat() ?? StreamFormats::default();
         $outputFormat = $this->getOutputFormatString(
@@ -1426,7 +1451,7 @@ final class ConfigWriter implements EventSubscriberInterface
                 continue;
             }
 
-            $lsConfig[] = $this->getOutputString($station, $remoteRow, 'relay_', $i);
+            $lsConfig[] = $this->getOutputString($event, $remoteRow, 'relay_', $i);
         }
 
         $event->appendLines($lsConfig);

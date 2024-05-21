@@ -42,11 +42,11 @@
 
             <form-fieldset>
                 <template #label>
-                    {{ $gettext('Audio Post-processing') }}
+                    {{ $gettext('Audio Processing') }}
                 </template>
                 <template #description>
                     {{
-                        $gettext('Post-processing allows you to apply audio processors (like compressors, limiters, or equalizers) to your stream to create a more uniform sound or enhance the listening experience. Post-processing requires extra CPU resources, so it may slow down your server.')
+                        $gettext('Apply audio processors (like compressors, limiters, or equalizers) to your stream to create a more uniform sound or enhance the listening experience. Processing requires extra CPU resources, so it may slow down your server.')
                     }}
                     <a
                         href="/docs/help/optimizing/#disable-audio-post-processing"
@@ -167,6 +167,16 @@
                         </form-markup>
                     </div>
                 </template>
+
+                <div class="row g-3 mb-3">
+                    <form-group-checkbox
+                        id="edit_form_backend_config_enable_auto_cue"
+                        class="col-md-12"
+                        :field="v$.backend_config.enable_auto_cue"
+                        :label="$gettext('Enable AutoCue Automatic Detection')"
+                        :description="$gettext('AutoCue analyzes your music and automatically calculates cue points, fade points, and volume levels for a consistent listening experience.')"
+                    />
+                </div>
             </form-fieldset>
 
             <form-fieldset v-if="enableAdvancedFeatures">
@@ -314,6 +324,7 @@ const {v$, tabClass} = useVuelidateOnFormTab(
                 master_me_preset: {},
                 master_me_loudness_target: {},
                 stereo_tool_license_key: {},
+                enable_auto_cue: {}
             },
         };
 
@@ -349,6 +360,7 @@ const {v$, tabClass} = useVuelidateOnFormTab(
                 master_me_preset: MasterMePreset.MusicGeneral,
                 master_me_loudness_target: -16,
                 stereo_tool_license_key: '',
+                enable_auto_cue: false
             },
         };
 

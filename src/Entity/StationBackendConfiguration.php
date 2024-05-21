@@ -441,6 +441,18 @@ class StationBackendConfiguration extends AbstractStationConfiguration
         $this->set(self::LIVE_BROADCAST_TEXT, $text);
     }
 
+    public const ENABLE_AUTO_CUE = 'enable_auto_cue';
+
+    public function getEnableAutoCue(): bool
+    {
+        return Types::bool($this->get(self::ENABLE_AUTO_CUE));
+    }
+
+    public function setEnableAutoCue(bool $value): void
+    {
+        $this->set(self::ENABLE_AUTO_CUE, $value);
+    }
+
     public const CUSTOM_TOP = 'custom_config_top';
     public const CUSTOM_PRE_PLAYLISTS = 'custom_config_pre_playlists';
     public const CUSTOM_PRE_LIVE = 'custom_config_pre_live';

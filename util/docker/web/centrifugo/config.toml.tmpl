@@ -8,11 +8,10 @@ websocket_disable = true
 uni_websocket = true
 uni_sse = true
 uni_http_stream = true
-proxy_connect_endpoint = "http://localhost:6010/api/internal/centrifugo"
-proxy_connect_timeout = "10s"
 grpc_api = true
 grpc_api_port = 6_301
 allowed_origins = ["*"]
+client_connect_include_server_time = true
 
 {{ if isTrue .Env.ENABLE_REDIS }}
 engine = "redis"
@@ -28,3 +27,5 @@ allow_subscribe_for_client = true
 allow_subscribe_for_anonymous = true
 allow_history_for_client = true
 allow_history_for_anonymous = true
+force_recovery = true
+force_recovery_mode = "cache"

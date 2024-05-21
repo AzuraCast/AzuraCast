@@ -654,12 +654,7 @@ final class ConfigWriter implements EventSubscriberInterface
                     if (response == "") or (response == "false") then
                         null()
                     else
-                        r = request.create(response)
-                        if request.resolve(r) then
-                            r
-                        else
-                            null()
-                       end
+                        request.create(response)
                     end
                 end
 

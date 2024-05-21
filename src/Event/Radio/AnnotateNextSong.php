@@ -106,7 +106,7 @@ final class AnnotateNextSong extends Event
             $annotateParts = [
                 'annotate',
                 implode(',', $annotationsStr),
-                $this->songPath
+                $this->songPath,
             ];
 
             if (null !== $this->protocol) {

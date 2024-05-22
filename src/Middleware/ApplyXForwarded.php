@@ -18,7 +18,14 @@ final class ApplyXForwarded extends AbstractMiddleware
     {
         $uri = $request->getUri();
 
+        $hasXForwardedHeader = false;
+
+        if ($request->hasHeader('X-Forwarded-For')) {
+            $hasXForwardedHeader = true;
+        }
+
         if ($request->hasHeader('X-Forwarded-Proto')) {
+            $hasXForwardedHeader = true;
             $xfProto = Types::stringOrNull($request->getHeaderLine('X-Forwarded-Proto'), true);
             if (null !== $xfProto) {
                 $uri = $uri->withScheme($xfProto);
@@ -26,6 +33,7 @@ final class ApplyXForwarded extends AbstractMiddleware
         }
 
         if ($request->hasHeader('X-Forwarded-Host')) {
+            $hasXForwardedHeader = true;
             $xfHost = Types::stringOrNull($request->getHeaderLine('X-Forwarded-Host'), true);
             if (null !== $xfHost) {
                 $uri = $uri->withHost($xfHost);
@@ -37,6 +45,10 @@ final class ApplyXForwarded extends AbstractMiddleware
             if (null !== $xfPort) {
                 $uri = $uri->withPort($xfPort);
             }
+        } elseif ($hasXForwardedHeader) {
+            // A vast majority of reverse proxies will be proxying to the default web ports, so
+            // if *any* X-Forwarded-* value is set, unset the port in the request.
+            $uri = $uri->withPort(null);
         }
 
         $request = $request->withUri($uri);

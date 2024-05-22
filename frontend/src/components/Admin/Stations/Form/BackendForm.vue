@@ -17,28 +17,30 @@
         </div>
 
         <template v-if="isBackendEnabled">
-            <div class="row g-3 mb-3">
-                <form-group-multi-check
-                    id="edit_form_backend_crossfade_type"
-                    class="col-md-7"
-                    :field="v$.backend_config.crossfade_type"
-                    :options="crossfadeOptions"
-                    stacked
-                    radio
-                    :label="$gettext('Crossfade Method')"
-                    :description="$gettext('Choose a method to use when transitioning from one song to another. Smart Mode considers the volume of the two tracks when fading for a smoother effect, but requires more CPU resources.')"
-                />
+            <template v-if="!isAutoCueEnabled">
+                <div class="row g-3 mb-3">
+                    <form-group-multi-check
+                        id="edit_form_backend_crossfade_type"
+                        class="col-md-7"
+                        :field="v$.backend_config.crossfade_type"
+                        :options="crossfadeOptions"
+                        stacked
+                        radio
+                        :label="$gettext('Crossfade Method')"
+                        :description="$gettext('Choose a method to use when transitioning from one song to another. Smart Mode considers the volume of the two tracks when fading for a smoother effect, but requires more CPU resources.')"
+                    />
 
-                <form-group-field
-                    id="edit_form_backend_crossfade"
-                    class="col-md-5"
-                    :field="v$.backend_config.crossfade"
-                    input-type="number"
-                    :input-attrs="{ min: '0.0', max: '30.0', step: '0.1' }"
-                    :label="$gettext('Crossfade Duration (Seconds)')"
-                    :description="$gettext('Number of seconds to overlap songs.')"
-                />
-            </div>
+                    <form-group-field
+                        id="edit_form_backend_crossfade"
+                        class="col-md-5"
+                        :field="v$.backend_config.crossfade"
+                        input-type="number"
+                        :input-attrs="{ min: '0.0', max: '30.0', step: '0.1' }"
+                        :label="$gettext('Crossfade Duration (Seconds)')"
+                        :description="$gettext('Number of seconds to overlap songs.')"
+                    />
+                </div>
+            </template>
 
             <form-fieldset>
                 <template #label>
@@ -398,6 +400,10 @@ const isMasterMeEnabled = computed(() => {
 
 const isPostProcessingEnabled = computed(() => {
     return form.value?.backend_config?.audio_processing_method !== AudioProcessingMethod.None;
+});
+
+const isAutoCueEnabled = computed(() => {
+    return form.value?.backend_config?.enable_auto_cue ?? false;
 });
 
 const {$gettext} = useTranslate();

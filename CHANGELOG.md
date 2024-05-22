@@ -13,7 +13,18 @@ release channel, you can take advantage of these new features and fixes.
 
 ## Code Quality/Technical Changes
 
+- The lengths for title and artist metadata have been expanded to 255 characters.
+
+- We have updated our high-performance Now Playing library to incorporate new features that improve the program's
+  performance. You may need to update any custom code using it; see
+  our [documentation](https://www.azuracast.com/docs/developers/now-playing-data/#high-performance-updates) for updated
+  code samples.
+
+- AzuraCast now respects the `X-Forwarded-Host` and `X-Forwarded-Port` headers if provided by upstream reverse proxies.
+
 ## Bug Fixes
+
+- Fixed an issue where queues would fail to populate if media exists with no artist or title set.
 
 --
 

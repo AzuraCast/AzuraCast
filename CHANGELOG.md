@@ -26,7 +26,7 @@ release channel, you can take advantage of these new features and fixes.
 
 - Fixed an issue where queues would fail to populate if media exists with no artist or title set.
 
---
+---
 
 # AzuraCast 0.20.0 (May 18, 2024)
 

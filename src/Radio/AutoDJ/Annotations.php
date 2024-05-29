@@ -97,7 +97,7 @@ final class Annotations implements EventSubscriberInterface
             'song_id' => $media->getSongId(),
             'media_id' => $media->getId(),
             'liq_amplify' => $media->getAmplify(),
-            'liq_cross_duration' => $media->getFadeOverlap(),
+            'liq_cross_start_next' => $media->getFadeStartNext(),
             'liq_fade_in' => $media->getFadeIn(),
             'liq_fade_out' => $media->getFadeOut(),
             'liq_cue_in' => $media->getCueIn(),

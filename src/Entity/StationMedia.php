@@ -138,12 +138,12 @@ class StationMedia implements
 
     #[
         OA\Property(
-            description: "The length of time (in seconds) before the next song starts in the fade (liq_start_next)",
+            description: "The length of time (in seconds) from the start of the track before the next song starts in the fade (liq_cross_start_next)",
             example: 2.00
         ),
         ORM\Column(type: 'decimal', precision: 6, scale: 1, nullable: true)
     ]
-    protected ?string $fade_overlap = null;
+    protected ?string $fade_start_next = null;
 
     #[
         OA\Property(
@@ -353,14 +353,14 @@ class StationMedia implements
         $this->amplify = $this->annotationToString($amplify);
     }
 
-    public function getFadeOverlap(): ?float
+    public function getFadeStartNext(): ?float
     {
-        return Types::floatOrNull($this->fade_overlap);
+        return Types::floatOrNull($this->fade_start_next);
     }
 
-    public function setFadeOverlap(?float $fadeOverlap = null): void
+    public function setFadeStartNext(?float $fade_start_next = null): void
     {
-        $this->fade_overlap = $this->annotationToString($fadeOverlap);
+        $this->fade_start_next = $this->annotationToString($fade_start_next);
     }
 
     public function getFadeIn(): ?float

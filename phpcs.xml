@@ -28,6 +28,7 @@
             It's not very practical to check for the line length here since the "solutions" to the
             warnings would make the code partly less readable
         -->
+        <exclude-pattern>src/Entity/StationMedia.php</exclude-pattern>
         <exclude-pattern>src/Notification/Check/UpdateCheck.php</exclude-pattern>
         <exclude-pattern>src/Radio/Backend/Liquidsoap/ConfigWriter.php</exclude-pattern>
         <exclude-pattern>src/Installer/EnvFiles/*.php</exclude-pattern>

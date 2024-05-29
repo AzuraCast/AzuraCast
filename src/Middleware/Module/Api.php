@@ -50,8 +50,6 @@ final class Api extends AbstractMiddleware
         // Set default cache control for API pages.
         $settings = $this->readSettings();
 
-        $preferBrowserUrl = $settings->getPreferBrowserUrl();
-
         $response = $handler->handle($request);
 
         // Check for a user-set CORS header override.

@@ -18,7 +18,7 @@ use League\MimeTypeDetection\MimeTypeDetector;
 
 final class SftpAdapter extends LeagueSftpAdapter implements ExtendedAdapterInterface
 {
-    private const NET_SFTP_TYPE_DIRECTORY = 2;
+    private const int NET_SFTP_TYPE_DIRECTORY = 2;
 
     private readonly VisibilityConverter $visibilityConverter;
 

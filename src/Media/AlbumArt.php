@@ -9,7 +9,7 @@ use Intervention\Image\ImageManager;
 
 final class AlbumArt
 {
-    public const IMAGE_WIDTH = 1500;
+    public const int IMAGE_WIDTH = 1500;
 
     public static function resize(
         string $rawArtworkString,

@@ -29,7 +29,7 @@ class StationFrontendConfiguration extends AbstractStationConfiguration
         parent::__construct($elements);
     }
 
-    public const CUSTOM_CONFIGURATION = 'custom_config';
+    public const string CUSTOM_CONFIGURATION = 'custom_config';
 
     public function getCustomConfiguration(): ?string
     {
@@ -41,7 +41,7 @@ class StationFrontendConfiguration extends AbstractStationConfiguration
         $this->set(self::CUSTOM_CONFIGURATION, $config);
     }
 
-    public const SOURCE_PASSWORD = 'source_pw';
+    public const string SOURCE_PASSWORD = 'source_pw';
 
     public function getSourcePassword(): string
     {
@@ -54,7 +54,7 @@ class StationFrontendConfiguration extends AbstractStationConfiguration
         $this->set(self::SOURCE_PASSWORD, $pw);
     }
 
-    public const ADMIN_PASSWORD = 'admin_pw';
+    public const string ADMIN_PASSWORD = 'admin_pw';
 
     public function getAdminPassword(): string
     {
@@ -67,7 +67,7 @@ class StationFrontendConfiguration extends AbstractStationConfiguration
         $this->set(self::ADMIN_PASSWORD, $pw);
     }
 
-    public const RELAY_PASSWORD = 'relay_pw';
+    public const string RELAY_PASSWORD = 'relay_pw';
 
     public function getRelayPassword(): string
     {
@@ -80,7 +80,7 @@ class StationFrontendConfiguration extends AbstractStationConfiguration
         $this->set(self::RELAY_PASSWORD, $pw);
     }
 
-    public const STREAMER_PASSWORD = 'streamer_pw';
+    public const string STREAMER_PASSWORD = 'streamer_pw';
 
     public function getStreamerPassword(): string
     {
@@ -93,7 +93,7 @@ class StationFrontendConfiguration extends AbstractStationConfiguration
         $this->set(self::STREAMER_PASSWORD, $pw);
     }
 
-    public const PORT = 'port';
+    public const string PORT = 'port';
 
     public function getPort(): ?int
     {
@@ -105,7 +105,7 @@ class StationFrontendConfiguration extends AbstractStationConfiguration
         $this->set(self::PORT, $port);
     }
 
-    public const MAX_LISTENERS = 'max_listeners';
+    public const string MAX_LISTENERS = 'max_listeners';
 
     public function getMaxListeners(): ?int
     {
@@ -117,7 +117,7 @@ class StationFrontendConfiguration extends AbstractStationConfiguration
         $this->set(self::MAX_LISTENERS, $listeners);
     }
 
-    public const BANNED_IPS = 'banned_ips';
+    public const string BANNED_IPS = 'banned_ips';
 
     public function getBannedIps(): ?string
     {
@@ -129,7 +129,7 @@ class StationFrontendConfiguration extends AbstractStationConfiguration
         $this->set(self::BANNED_IPS, $ips);
     }
 
-    public const BANNED_USER_AGENTS = 'banned_user_agents';
+    public const string BANNED_USER_AGENTS = 'banned_user_agents';
 
     public function getBannedUserAgents(): ?string
     {
@@ -141,7 +141,7 @@ class StationFrontendConfiguration extends AbstractStationConfiguration
         $this->set(self::BANNED_USER_AGENTS, $userAgents);
     }
 
-    public const BANNED_COUNTRIES = 'banned_countries';
+    public const string BANNED_COUNTRIES = 'banned_countries';
 
     public function getBannedCountries(): ?array
     {
@@ -153,7 +153,7 @@ class StationFrontendConfiguration extends AbstractStationConfiguration
         $this->set(self::BANNED_COUNTRIES, $countries);
     }
 
-    public const ALLOWED_IPS = 'allowed_ips';
+    public const string ALLOWED_IPS = 'allowed_ips';
 
     public function getAllowedIps(): ?string
     {
@@ -165,7 +165,7 @@ class StationFrontendConfiguration extends AbstractStationConfiguration
         $this->set(self::ALLOWED_IPS, $ips);
     }
 
-    public const SC_LICENSE_ID = 'sc_license_id';
+    public const string SC_LICENSE_ID = 'sc_license_id';
 
     public function getScLicenseId(): ?string
     {
@@ -177,7 +177,7 @@ class StationFrontendConfiguration extends AbstractStationConfiguration
         $this->set(self::SC_LICENSE_ID, $licenseId);
     }
 
-    public const SC_USER_ID = 'sc_user_id';
+    public const string SC_USER_ID = 'sc_user_id';
 
     public function getScUserId(): ?string
     {

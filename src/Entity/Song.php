@@ -12,7 +12,7 @@ class Song implements SongInterface
 {
     use Traits\HasSongFields;
 
-    public final const OFFLINE_SONG_ID = '5a6a865199cf5df73b1417326d2ff24f';
+    public final const string OFFLINE_SONG_ID = '5a6a865199cf5df73b1417326d2ff24f';
 
     public function __construct(?SongInterface $song = null)
     {

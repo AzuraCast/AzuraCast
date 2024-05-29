@@ -18,7 +18,7 @@ final class LocalWebhookHandler
     use LoggerAwareTrait;
     use EnvironmentAwareTrait;
 
-    public const NAME = 'local';
+    public const string NAME = 'local';
 
     public function __construct(
         private readonly Centrifugo $centrifugo

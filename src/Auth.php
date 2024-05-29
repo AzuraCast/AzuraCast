@@ -14,12 +14,12 @@ final class Auth
 {
     use EnvironmentAwareTrait;
 
-    public const SESSION_IS_LOGIN_COMPLETE_KEY = 'is_login_complete';
-    public const SESSION_USER_ID_KEY = 'user_id';
-    public const SESSION_MASQUERADE_USER_ID_KEY = 'masquerade_user_id';
+    public const string SESSION_IS_LOGIN_COMPLETE_KEY = 'is_login_complete';
+    public const string SESSION_USER_ID_KEY = 'user_id';
+    public const string SESSION_MASQUERADE_USER_ID_KEY = 'masquerade_user_id';
 
     /** @var int The window of valid one-time passwords outside the current timestamp. */
-    public const TOTP_WINDOW = 5;
+    public const int TOTP_WINDOW = 5;
 
     private bool|User|null $user = null;
 

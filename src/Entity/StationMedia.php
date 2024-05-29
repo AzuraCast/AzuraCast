@@ -35,7 +35,7 @@ class StationMedia implements
     use Traits\HasAutoIncrementId;
     use Traits\HasSongFields;
 
-    public const UNIQUE_ID_LENGTH = 24;
+    public const int UNIQUE_ID_LENGTH = 24;
 
     #[
         OA\Property(

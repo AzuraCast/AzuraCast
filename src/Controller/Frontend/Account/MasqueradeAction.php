@@ -15,7 +15,7 @@ use Psr\Http\Message\ResponseInterface;
 
 final class MasqueradeAction implements SingleActionInterface
 {
-    public const CSRF_NAMESPACE = 'user_masquerade';
+    public const string CSRF_NAMESPACE = 'user_masquerade';
 
     public function __construct(
         private readonly UserRepository $userRepo,

@@ -27,9 +27,9 @@ final class Acme
     use EnvironmentAwareTrait;
     use SettingsAwareTrait;
 
-    public const LETSENCRYPT_PROD = 'https://acme-v02.api.letsencrypt.org/directory';
-    public const LETSENCRYPT_DEV = 'https://acme-staging-v02.api.letsencrypt.org/directory';
-    public const THRESHOLD_DAYS = 30;
+    public const string LETSENCRYPT_PROD = 'https://acme-v02.api.letsencrypt.org/directory';
+    public const string LETSENCRYPT_DEV = 'https://acme-staging-v02.api.letsencrypt.org/directory';
+    public const int THRESHOLD_DAYS = 30;
 
     public function __construct(
         private readonly StationRepository $stationRepo,

@@ -27,50 +27,50 @@ final class Environment
     private readonly array $data;
 
     // Core settings values
-    public const APP_NAME = 'APP_NAME';
-    public const APP_ENV = 'APPLICATION_ENV';
+    public const string APP_NAME = 'APP_NAME';
+    public const string APP_ENV = 'APPLICATION_ENV';
 
-    public const TEMP_DIR = 'TEMP_DIR';
-    public const UPLOADS_DIR = 'UPLOADS_DIR';
+    public const string TEMP_DIR = 'TEMP_DIR';
+    public const string UPLOADS_DIR = 'UPLOADS_DIR';
 
-    public const IS_DOCKER = 'IS_DOCKER';
-    public const IS_CLI = 'IS_CLI';
+    public const string IS_DOCKER = 'IS_DOCKER';
+    public const string IS_CLI = 'IS_CLI';
 
-    public const ASSET_URL = 'ASSETS_URL';
+    public const string ASSET_URL = 'ASSETS_URL';
 
-    public const LANG = 'LANG';
+    public const string LANG = 'LANG';
 
-    public const RELEASE_CHANNEL = 'AZURACAST_VERSION';
+    public const string RELEASE_CHANNEL = 'AZURACAST_VERSION';
 
-    public const SFTP_PORT = 'AZURACAST_SFTP_PORT';
+    public const string SFTP_PORT = 'AZURACAST_SFTP_PORT';
 
-    public const AUTO_ASSIGN_PORT_MIN = 'AUTO_ASSIGN_PORT_MIN';
-    public const AUTO_ASSIGN_PORT_MAX = 'AUTO_ASSIGN_PORT_MAX';
+    public const string AUTO_ASSIGN_PORT_MIN = 'AUTO_ASSIGN_PORT_MIN';
+    public const string AUTO_ASSIGN_PORT_MAX = 'AUTO_ASSIGN_PORT_MAX';
 
-    public const SYNC_SHORT_EXECUTION_TIME = 'SYNC_SHORT_EXECUTION_TIME';
-    public const SYNC_LONG_EXECUTION_TIME = 'SYNC_LONG_EXECUTION_TIME';
-    public const NOW_PLAYING_DELAY_TIME = 'NOW_PLAYING_DELAY_TIME';
-    public const NOW_PLAYING_MAX_CONCURRENT_PROCESSES = 'NOW_PLAYING_MAX_CONCURRENT_PROCESSES';
+    public const string SYNC_SHORT_EXECUTION_TIME = 'SYNC_SHORT_EXECUTION_TIME';
+    public const string SYNC_LONG_EXECUTION_TIME = 'SYNC_LONG_EXECUTION_TIME';
+    public const string NOW_PLAYING_DELAY_TIME = 'NOW_PLAYING_DELAY_TIME';
+    public const string NOW_PLAYING_MAX_CONCURRENT_PROCESSES = 'NOW_PLAYING_MAX_CONCURRENT_PROCESSES';
 
-    public const LOG_LEVEL = 'LOG_LEVEL';
-    public const SHOW_DETAILED_ERRORS = 'SHOW_DETAILED_ERRORS';
+    public const string LOG_LEVEL = 'LOG_LEVEL';
+    public const string SHOW_DETAILED_ERRORS = 'SHOW_DETAILED_ERRORS';
 
-    public const PROFILING_EXTENSION_ENABLED = 'PROFILING_EXTENSION_ENABLED';
-    public const PROFILING_EXTENSION_ALWAYS_ON = 'PROFILING_EXTENSION_ALWAYS_ON';
-    public const PROFILING_EXTENSION_HTTP_KEY = 'PROFILING_EXTENSION_HTTP_KEY';
+    public const string PROFILING_EXTENSION_ENABLED = 'PROFILING_EXTENSION_ENABLED';
+    public const string PROFILING_EXTENSION_ALWAYS_ON = 'PROFILING_EXTENSION_ALWAYS_ON';
+    public const string PROFILING_EXTENSION_HTTP_KEY = 'PROFILING_EXTENSION_HTTP_KEY';
 
-    public const ENABLE_WEB_UPDATER = 'ENABLE_WEB_UPDATER';
+    public const string ENABLE_WEB_UPDATER = 'ENABLE_WEB_UPDATER';
 
     // Database and Cache Configuration Variables
-    public const DB_HOST = 'MYSQL_HOST';
-    public const DB_PORT = 'MYSQL_PORT';
-    public const DB_NAME = 'MYSQL_DATABASE';
-    public const DB_USER = 'MYSQL_USER';
-    public const DB_PASSWORD = 'MYSQL_PASSWORD';
+    public const string DB_HOST = 'MYSQL_HOST';
+    public const string DB_PORT = 'MYSQL_PORT';
+    public const string DB_NAME = 'MYSQL_DATABASE';
+    public const string DB_USER = 'MYSQL_USER';
+    public const string DB_PASSWORD = 'MYSQL_PASSWORD';
 
-    public const ENABLE_REDIS = 'ENABLE_REDIS';
-    public const REDIS_HOST = 'REDIS_HOST';
-    public const REDIS_PORT = 'REDIS_PORT';
+    public const string ENABLE_REDIS = 'ENABLE_REDIS';
+    public const string REDIS_HOST = 'REDIS_HOST';
+    public const string REDIS_PORT = 'REDIS_PORT';
 
     public function __construct(array $elements = [])
     {

@@ -19,7 +19,7 @@ use Psr\Http\Server\RequestHandlerInterface;
 
 final class ApiAuth extends AbstractAuth
 {
-    public const API_CSRF_NAMESPACE = 'api';
+    public const string API_CSRF_NAMESPACE = 'api';
 
     public function __construct(
         protected ApiKeyRepository $apiKeyRepo,

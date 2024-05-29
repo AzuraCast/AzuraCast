@@ -11,11 +11,11 @@ use Psr\Http\Server\RequestHandlerInterface;
 
 class SetCache extends AbstractMiddleware
 {
-    public const CACHE_ONE_MINUTE = 60;
-    public const CACHE_ONE_HOUR = 3600;
-    public const CACHE_ONE_DAY = 86400;
-    public const CACHE_ONE_MONTH = 2592000;
-    public const CACHE_ONE_YEAR = 31536000;
+    public const int CACHE_ONE_MINUTE = 60;
+    public const int CACHE_ONE_HOUR = 3600;
+    public const int CACHE_ONE_DAY = 86400;
+    public const int CACHE_ONE_MONTH = 2592000;
+    public const int CACHE_ONE_YEAR = 31536000;
 
     public function __construct(
         protected int $browserLifetime,

@@ -12,7 +12,7 @@ use Symfony\Component\Filesystem\Filesystem;
 
 final class Nginx
 {
-    private const PROCESS_NAME = 'nginx';
+    private const string PROCESS_NAME = 'nginx';
 
     public function __construct(
         private readonly SupervisorInterface $supervisor,

@@ -10,7 +10,7 @@ use Psr\Cache\CacheItemPoolInterface;
 
 final class AzuraRelayCache
 {
-    private const CACHE_TTL = 600;
+    private const int CACHE_TTL = 600;
 
     public function __construct(
         private readonly CacheItemPoolInterface $cache

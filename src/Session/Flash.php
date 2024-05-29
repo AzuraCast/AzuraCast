@@ -11,7 +11,7 @@ use Mezzio\Session\SessionInterface;
  */
 final class Flash
 {
-    public const SESSION_KEY = 'flash';
+    public const string SESSION_KEY = 'flash';
 
     private ?array $messages = null;
 

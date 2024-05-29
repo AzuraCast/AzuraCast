@@ -19,7 +19,7 @@ class PodcastEpisode implements IdentifiableEntityInterface
     use Traits\HasUniqueId;
     use Traits\TruncateStrings;
 
-    public const DIR_PODCAST_EPISODE_ARTWORK = '.podcast_episode_art';
+    public const string DIR_PODCAST_EPISODE_ARTWORK = '.podcast_episode_art';
 
     #[ORM\ManyToOne(inversedBy: 'episodes')]
     #[ORM\JoinColumn(name: 'podcast_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]

@@ -9,7 +9,7 @@ use Symfony\Component\Filesystem\Filesystem;
 
 final class BrowserIconCustomAsset extends AbstractCustomAsset
 {
-    public const ICON_SIZES = [
+    public const array ICON_SIZES = [
         16, // Favicon
         32, // Favicon
         36, // Android

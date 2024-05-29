@@ -16,7 +16,7 @@ final class UpdateGeoLiteTask extends AbstractTask
 {
     use SettingsAwareTrait;
 
-    private const UPDATE_THRESHOLD = 86000;
+    private const int UPDATE_THRESHOLD = 86000;
 
     public function __construct(
         private readonly Client $httpClient

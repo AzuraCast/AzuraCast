@@ -18,7 +18,7 @@ class UnprocessableMedia implements ProcessableMediaInterface, PathAwareInterfac
 {
     use Traits\HasAutoIncrementId;
 
-    public const REPROCESS_THRESHOLD_MINIMUM = 604800; // One week
+    public const int REPROCESS_THRESHOLD_MINIMUM = 604800; // One week
 
     #[ORM\ManyToOne(inversedBy: 'unprocessable_media')]
     #[ORM\JoinColumn(name: 'storage_location_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]

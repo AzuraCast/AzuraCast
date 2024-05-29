@@ -9,7 +9,7 @@ use SensitiveParameter;
 
 final class SplitToken
 {
-    public const SEPARATOR = ':';
+    public const string SEPARATOR = ':';
 
     public string $identifier;
 

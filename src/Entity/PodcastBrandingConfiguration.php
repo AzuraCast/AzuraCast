@@ -8,7 +8,7 @@ use App\Utilities\Types;
 
 class PodcastBrandingConfiguration extends AbstractStationConfiguration
 {
-    public const PUBLIC_CUSTOM_HTML = 'public_custom_html';
+    public const string PUBLIC_CUSTOM_HTML = 'public_custom_html';
 
     public function getPublicCustomHtml(): ?string
     {

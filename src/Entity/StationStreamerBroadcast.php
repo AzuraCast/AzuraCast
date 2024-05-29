@@ -21,7 +21,7 @@ class StationStreamerBroadcast implements IdentifiableEntityInterface
     use Traits\HasAutoIncrementId;
     use Traits\TruncateStrings;
 
-    public const PATH_PREFIX = 'stream';
+    public const string PATH_PREFIX = 'stream';
 
     #[
         ORM\ManyToOne(inversedBy: 'streamer_broadcasts'),

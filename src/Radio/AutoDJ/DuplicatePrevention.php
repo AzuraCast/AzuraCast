@@ -20,7 +20,7 @@ final class DuplicatePrevention
 {
     use LoggerAwareTrait;
 
-    public const ARTIST_SEPARATORS = [
+    public const array ARTIST_SEPARATORS = [
         ', ',
         ' feat ',
         ' feat. ',

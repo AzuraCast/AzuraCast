@@ -10,7 +10,7 @@ use Psr\Http\Message\UriInterface;
 
 class StationBrandingConfiguration extends AbstractStationConfiguration
 {
-    public const DEFAULT_ALBUM_ART_URL = 'default_album_art_url';
+    public const string DEFAULT_ALBUM_ART_URL = 'default_album_art_url';
 
     public function getDefaultAlbumArtUrl(): ?string
     {
@@ -31,7 +31,7 @@ class StationBrandingConfiguration extends AbstractStationConfiguration
         $this->set(self::DEFAULT_ALBUM_ART_URL, $defaultAlbumArtUrl);
     }
 
-    public const PUBLIC_CUSTOM_CSS = 'public_custom_css';
+    public const string PUBLIC_CUSTOM_CSS = 'public_custom_css';
 
     public function getPublicCustomCss(): ?string
     {
@@ -43,7 +43,7 @@ class StationBrandingConfiguration extends AbstractStationConfiguration
         $this->set(self::PUBLIC_CUSTOM_CSS, $css);
     }
 
-    public const PUBLIC_CUSTOM_JS = 'public_custom_js';
+    public const string PUBLIC_CUSTOM_JS = 'public_custom_js';
 
     public function getPublicCustomJs(): ?string
     {
@@ -55,7 +55,7 @@ class StationBrandingConfiguration extends AbstractStationConfiguration
         $this->set(self::PUBLIC_CUSTOM_JS, $js);
     }
 
-    public const OFFLINE_TEXT = 'offline_text';
+    public const string OFFLINE_TEXT = 'offline_text';
 
     public function getOfflineText(): ?string
     {

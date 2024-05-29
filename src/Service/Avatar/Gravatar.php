@@ -6,7 +6,7 @@ namespace App\Service\Avatar;
 
 final class Gravatar implements AvatarServiceInterface
 {
-    public const BASE_URL = 'https://www.gravatar.com/avatar';
+    public const string BASE_URL = 'https://www.gravatar.com/avatar';
 
     public function getServiceName(): string
     {

@@ -25,10 +25,10 @@ class SongHistory implements
     use Traits\HasSongFields;
 
     /** @var int The expected delay between when a song history record is registered and when listeners hear it. */
-    public const PLAYBACK_DELAY_SECONDS = 5;
+    public const int PLAYBACK_DELAY_SECONDS = 5;
 
     /** @var int */
-    public const DEFAULT_DAYS_TO_KEEP = 60;
+    public const int DEFAULT_DAYS_TO_KEEP = 60;
 
     #[ORM\ManyToOne(inversedBy: 'history')]
     #[ORM\JoinColumn(name: 'station_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]

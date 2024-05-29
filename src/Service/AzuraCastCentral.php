@@ -17,7 +17,7 @@ final class AzuraCastCentral
     use EnvironmentAwareTrait;
     use SettingsAwareTrait;
 
-    private const BASE_URL = 'https://central.azuracast.com';
+    private const string BASE_URL = 'https://central.azuracast.com';
 
     public function __construct(
         private readonly Version $version,

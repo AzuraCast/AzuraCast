@@ -26,7 +26,7 @@ class StationWebhook implements
     use Traits\HasAutoIncrementId;
     use Traits\TruncateStrings;
 
-    public const LAST_SENT_TIMESTAMP_KEY = 'last_message_sent';
+    public const string LAST_SENT_TIMESTAMP_KEY = 'last_message_sent';
 
     #[
         ORM\ManyToOne(inversedBy: 'webhooks'),

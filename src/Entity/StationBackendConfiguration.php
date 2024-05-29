@@ -15,7 +15,7 @@ use LogicException;
 
 class StationBackendConfiguration extends AbstractStationConfiguration
 {
-    public const CHARSET = 'charset';
+    public const string CHARSET = 'charset';
 
     public function getCharset(): string
     {
@@ -27,7 +27,7 @@ class StationBackendConfiguration extends AbstractStationConfiguration
         $this->set(self::CHARSET, $charset);
     }
 
-    public const DJ_PORT = 'dj_port';
+    public const string DJ_PORT = 'dj_port';
 
     public function getDjPort(): ?int
     {
@@ -39,7 +39,7 @@ class StationBackendConfiguration extends AbstractStationConfiguration
         $this->set(self::DJ_PORT, $port);
     }
 
-    public const TELNET_PORT = 'telnet_port';
+    public const string TELNET_PORT = 'telnet_port';
 
     public function getTelnetPort(): ?int
     {
@@ -51,7 +51,7 @@ class StationBackendConfiguration extends AbstractStationConfiguration
         $this->set(self::TELNET_PORT, $port);
     }
 
-    public const RECORD_STREAMS = 'record_streams';
+    public const string RECORD_STREAMS = 'record_streams';
 
     public function recordStreams(): bool
     {
@@ -63,7 +63,7 @@ class StationBackendConfiguration extends AbstractStationConfiguration
         $this->set(self::RECORD_STREAMS, $recordStreams);
     }
 
-    public const RECORD_STREAMS_FORMAT = 'record_streams_format';
+    public const string RECORD_STREAMS_FORMAT = 'record_streams_format';
 
     public function getRecordStreamsFormat(): string
     {
@@ -91,7 +91,7 @@ class StationBackendConfiguration extends AbstractStationConfiguration
         $this->set(self::RECORD_STREAMS_FORMAT, $format);
     }
 
-    public const RECORD_STREAMS_BITRATE = 'record_streams_bitrate';
+    public const string RECORD_STREAMS_BITRATE = 'record_streams_bitrate';
 
     public function getRecordStreamsBitrate(): int
     {
@@ -103,7 +103,7 @@ class StationBackendConfiguration extends AbstractStationConfiguration
         $this->set(self::RECORD_STREAMS_BITRATE, $bitrate);
     }
 
-    public const USE_MANUAL_AUTODJ = 'use_manual_autodj';
+    public const string USE_MANUAL_AUTODJ = 'use_manual_autodj';
 
     public function useManualAutoDj(): bool
     {
@@ -115,9 +115,9 @@ class StationBackendConfiguration extends AbstractStationConfiguration
         $this->set(self::USE_MANUAL_AUTODJ, $useManualAutoDj);
     }
 
-    public const AUTODJ_QUEUE_LENGTH = 'autodj_queue_length';
+    public const string AUTODJ_QUEUE_LENGTH = 'autodj_queue_length';
 
-    protected const DEFAULT_QUEUE_LENGTH = 3;
+    protected const int DEFAULT_QUEUE_LENGTH = 3;
 
     public function getAutoDjQueueLength(): int
     {
@@ -129,7 +129,7 @@ class StationBackendConfiguration extends AbstractStationConfiguration
         $this->set(self::AUTODJ_QUEUE_LENGTH, $queueLength);
     }
 
-    public const DJ_MOUNT_POINT = 'dj_mount_point';
+    public const string DJ_MOUNT_POINT = 'dj_mount_point';
 
     public function getDjMountPoint(): string
     {
@@ -141,9 +141,9 @@ class StationBackendConfiguration extends AbstractStationConfiguration
         $this->set(self::DJ_MOUNT_POINT, $mountPoint);
     }
 
-    public const DJ_BUFFER = 'dj_buffer';
+    public const string DJ_BUFFER = 'dj_buffer';
 
-    protected const DEFAULT_DJ_BUFFER = 5;
+    protected const int DEFAULT_DJ_BUFFER = 5;
 
     public function getDjBuffer(): int
     {
@@ -155,7 +155,7 @@ class StationBackendConfiguration extends AbstractStationConfiguration
         $this->set(self::DJ_BUFFER, $buffer);
     }
 
-    public const AUDIO_PROCESSING_METHOD = 'audio_processing_method';
+    public const string AUDIO_PROCESSING_METHOD = 'audio_processing_method';
 
     public function getAudioProcessingMethod(): ?string
     {
@@ -187,7 +187,7 @@ class StationBackendConfiguration extends AbstractStationConfiguration
         $this->set(self::AUDIO_PROCESSING_METHOD, $method);
     }
 
-    public const POST_PROCESSING_INCLUDE_LIVE = 'post_processing_include_live';
+    public const string POST_PROCESSING_INCLUDE_LIVE = 'post_processing_include_live';
 
     public function getPostProcessingIncludeLive(): bool
     {
@@ -199,7 +199,7 @@ class StationBackendConfiguration extends AbstractStationConfiguration
         $this->set(self::POST_PROCESSING_INCLUDE_LIVE, $postProcessingIncludeLive);
     }
 
-    public const STEREO_TOOL_LICENSE_KEY = 'stereo_tool_license_key';
+    public const string STEREO_TOOL_LICENSE_KEY = 'stereo_tool_license_key';
 
     public function getStereoToolLicenseKey(): ?string
     {
@@ -211,7 +211,7 @@ class StationBackendConfiguration extends AbstractStationConfiguration
         $this->set(self::STEREO_TOOL_LICENSE_KEY, $licenseKey);
     }
 
-    public const STEREO_TOOL_CONFIGURATION_PATH = 'stereo_tool_configuration_path';
+    public const string STEREO_TOOL_CONFIGURATION_PATH = 'stereo_tool_configuration_path';
 
     public function getStereoToolConfigurationPath(): ?string
     {
@@ -223,7 +223,7 @@ class StationBackendConfiguration extends AbstractStationConfiguration
         $this->set(self::STEREO_TOOL_CONFIGURATION_PATH, $stereoToolConfigurationPath);
     }
 
-    public const MASTER_ME_PRESET = 'master_me_preset';
+    public const string MASTER_ME_PRESET = 'master_me_preset';
 
     public function getMasterMePreset(): ?string
     {
@@ -249,9 +249,9 @@ class StationBackendConfiguration extends AbstractStationConfiguration
         $this->set(self::MASTER_ME_PRESET, $masterMePreset);
     }
 
-    public const MASTER_ME_LOUDNESS_TARGET = 'master_me_loudness_target';
+    public const string MASTER_ME_LOUDNESS_TARGET = 'master_me_loudness_target';
 
-    protected const MASTER_ME_DEFAULT_LOUDNESS_TARGET = -16;
+    protected const int MASTER_ME_DEFAULT_LOUDNESS_TARGET = -16;
 
     public function getMasterMeLoudnessTarget(): int
     {
@@ -264,7 +264,7 @@ class StationBackendConfiguration extends AbstractStationConfiguration
         $this->set(self::MASTER_ME_LOUDNESS_TARGET, $masterMeLoudnessTarget);
     }
 
-    public const USE_REPLAYGAIN = 'enable_replaygain_metadata';
+    public const string USE_REPLAYGAIN = 'enable_replaygain_metadata';
 
     public function useReplayGain(): bool
     {
@@ -276,7 +276,7 @@ class StationBackendConfiguration extends AbstractStationConfiguration
         $this->set(self::USE_REPLAYGAIN, $useReplayGain);
     }
 
-    public const CROSSFADE_TYPE = 'crossfade_type';
+    public const string CROSSFADE_TYPE = 'crossfade_type';
 
     public function getCrossfadeTypeEnum(): CrossfadeModes
     {
@@ -295,9 +295,9 @@ class StationBackendConfiguration extends AbstractStationConfiguration
         $this->set(self::CROSSFADE_TYPE, $crossfadeType);
     }
 
-    public const CROSSFADE = 'crossfade';
+    public const string CROSSFADE = 'crossfade';
 
-    protected const DEFAULT_CROSSFADE_DURATION = 2;
+    protected const int DEFAULT_CROSSFADE_DURATION = 2;
 
     public function getCrossfade(): float
     {
@@ -329,9 +329,9 @@ class StationBackendConfiguration extends AbstractStationConfiguration
         return $this->getCrossfadeDuration() > 0;
     }
 
-    public const DUPLICATE_PREVENTION_TIME_RANGE = 'duplicate_prevention_time_range';
+    public const string DUPLICATE_PREVENTION_TIME_RANGE = 'duplicate_prevention_time_range';
 
-    protected const DEFAULT_DUPLICATE_PREVENTION_TIME_RANGE = 120;
+    protected const int DEFAULT_DUPLICATE_PREVENTION_TIME_RANGE = 120;
 
     public function getDuplicatePreventionTimeRange(): int
     {
@@ -344,7 +344,7 @@ class StationBackendConfiguration extends AbstractStationConfiguration
         $this->set(self::DUPLICATE_PREVENTION_TIME_RANGE, $duplicatePreventionTimeRange);
     }
 
-    public const PERFORMANCE_MODE = 'performance_mode';
+    public const string PERFORMANCE_MODE = 'performance_mode';
 
     public function getPerformanceMode(): string
     {
@@ -368,7 +368,7 @@ class StationBackendConfiguration extends AbstractStationConfiguration
         }
     }
 
-    public const HLS_SEGMENT_LENGTH = 'hls_segment_length';
+    public const string HLS_SEGMENT_LENGTH = 'hls_segment_length';
 
     public function getHlsSegmentLength(): int
     {
@@ -380,7 +380,7 @@ class StationBackendConfiguration extends AbstractStationConfiguration
         $this->set(self::HLS_SEGMENT_LENGTH, $length);
     }
 
-    public const HLS_SEGMENTS_IN_PLAYLIST = 'hls_segments_in_playlist';
+    public const string HLS_SEGMENTS_IN_PLAYLIST = 'hls_segments_in_playlist';
 
     public function getHlsSegmentsInPlaylist(): int
     {
@@ -392,7 +392,7 @@ class StationBackendConfiguration extends AbstractStationConfiguration
         $this->set(self::HLS_SEGMENTS_IN_PLAYLIST, $value);
     }
 
-    public const HLS_SEGMENTS_OVERHEAD = 'hls_segments_overhead';
+    public const string HLS_SEGMENTS_OVERHEAD = 'hls_segments_overhead';
 
     public function getHlsSegmentsOverhead(): int
     {
@@ -404,7 +404,7 @@ class StationBackendConfiguration extends AbstractStationConfiguration
         $this->set(self::HLS_SEGMENTS_OVERHEAD, $value);
     }
 
-    public const HLS_ENABLE_ON_PUBLIC_PLAYER = 'hls_enable_on_public_player';
+    public const string HLS_ENABLE_ON_PUBLIC_PLAYER = 'hls_enable_on_public_player';
 
     public function getHlsEnableOnPublicPlayer(): bool
     {
@@ -416,7 +416,7 @@ class StationBackendConfiguration extends AbstractStationConfiguration
         $this->set(self::HLS_ENABLE_ON_PUBLIC_PLAYER, $enable);
     }
 
-    public const HLS_IS_DEFAULT = 'hls_is_default';
+    public const string HLS_IS_DEFAULT = 'hls_is_default';
 
     public function getHlsIsDefault(): bool
     {
@@ -428,7 +428,7 @@ class StationBackendConfiguration extends AbstractStationConfiguration
         $this->set(self::HLS_IS_DEFAULT, $value);
     }
 
-    public const LIVE_BROADCAST_TEXT = 'live_broadcast_text';
+    public const string LIVE_BROADCAST_TEXT = 'live_broadcast_text';
 
     public function getLiveBroadcastText(): string
     {
@@ -441,7 +441,7 @@ class StationBackendConfiguration extends AbstractStationConfiguration
         $this->set(self::LIVE_BROADCAST_TEXT, $text);
     }
 
-    public const ENABLE_AUTO_CUE = 'enable_auto_cue';
+    public const string ENABLE_AUTO_CUE = 'enable_auto_cue';
 
     public function getEnableAutoCue(): bool
     {
@@ -453,12 +453,12 @@ class StationBackendConfiguration extends AbstractStationConfiguration
         $this->set(self::ENABLE_AUTO_CUE, $value);
     }
 
-    public const CUSTOM_TOP = 'custom_config_top';
-    public const CUSTOM_PRE_PLAYLISTS = 'custom_config_pre_playlists';
-    public const CUSTOM_PRE_LIVE = 'custom_config_pre_live';
-    public const CUSTOM_PRE_FADE = 'custom_config_pre_fade';
-    public const CUSTOM_PRE_BROADCAST = 'custom_config';
-    public const CUSTOM_BOTTOM = 'custom_config_bottom';
+    public const string CUSTOM_TOP = 'custom_config_top';
+    public const string CUSTOM_PRE_PLAYLISTS = 'custom_config_pre_playlists';
+    public const string CUSTOM_PRE_LIVE = 'custom_config_pre_live';
+    public const string CUSTOM_PRE_FADE = 'custom_config_pre_fade';
+    public const string CUSTOM_PRE_BROADCAST = 'custom_config';
+    public const string CUSTOM_BOTTOM = 'custom_config_bottom';
 
     /** @return array<int, string> */
     public static function getCustomConfigurationSections(): array

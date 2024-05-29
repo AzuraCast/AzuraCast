@@ -33,12 +33,12 @@ class Settings implements Stringable
     use Traits\TruncateInts;
 
     // Sorting groups for settings, as used in Symfony serialization.
-    public const GROUP_GENERAL = 'general';
-    public const GROUP_BRANDING = 'branding';
-    public const GROUP_BACKUP = 'backup';
-    public const GROUP_GEO_IP = 'geo_ip';
+    public const string GROUP_GENERAL = 'general';
+    public const string GROUP_BRANDING = 'branding';
+    public const string GROUP_BACKUP = 'backup';
+    public const string GROUP_GEO_IP = 'geo_ip';
 
-    public const VALID_GROUPS = [
+    public const array VALID_GROUPS = [
         self::GROUP_GENERAL,
         self::GROUP_BRANDING,
         self::GROUP_BACKUP,

@@ -21,19 +21,19 @@ use Slim\Http\ServerRequest as SlimServerRequest;
 
 final class ServerRequest extends SlimServerRequest
 {
-    public const ATTR_VIEW = 'app_view';
-    public const ATTR_SESSION = 'app_session';
-    public const ATTR_SESSION_CSRF = 'app_session_csrf';
-    public const ATTR_SESSION_FLASH = 'app_session_flash';
-    public const ATTR_ROUTER = 'app_router';
-    public const ATTR_RATE_LIMIT = 'app_rate_limit';
-    public const ATTR_ACL = 'acl';
-    public const ATTR_LOCALE = 'locale';
-    public const ATTR_CUSTOMIZATION = 'customization';
-    public const ATTR_AUTH = 'auth';
-    public const ATTR_STATION = 'station';
-    public const ATTR_PODCAST = 'podcast';
-    public const ATTR_USER = 'user';
+    public const string ATTR_VIEW = 'app_view';
+    public const string ATTR_SESSION = 'app_session';
+    public const string ATTR_SESSION_CSRF = 'app_session_csrf';
+    public const string ATTR_SESSION_FLASH = 'app_session_flash';
+    public const string ATTR_ROUTER = 'app_router';
+    public const string ATTR_RATE_LIMIT = 'app_rate_limit';
+    public const string ATTR_ACL = 'acl';
+    public const string ATTR_LOCALE = 'locale';
+    public const string ATTR_CUSTOMIZATION = 'customization';
+    public const string ATTR_AUTH = 'auth';
+    public const string ATTR_STATION = 'station';
+    public const string ATTR_PODCAST = 'podcast';
+    public const string ATTR_USER = 'user';
 
     /**
      * @throws InvalidRequestAttribute

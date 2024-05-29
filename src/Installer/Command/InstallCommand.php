@@ -30,7 +30,7 @@ final class InstallCommand extends Command
 {
     use EnvironmentAwareTrait;
 
-    public const DEFAULT_BASE_DIRECTORY = '/installer';
+    public const string DEFAULT_BASE_DIRECTORY = '/installer';
 
     protected function configure(): void
     {

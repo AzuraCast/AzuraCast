@@ -5,8 +5,8 @@
         :title="$gettext('Edit Media')"
         :error="error"
         :disable-save-button="v$.$invalid"
-        @submit="doEdit"
-        @hidden="resetForm"
+        @submit="doSubmit"
+        @hidden="onClose"
     >
         <tabs destroy-on-hide>
             <tab :label="$gettext('Basic Information')">
@@ -58,13 +58,10 @@ import MediaFormPlaylists from './Form/Playlists.vue';
 import MediaFormWaveformEditor from './Form/WaveformEditor.vue';
 import ModalForm from "~/components/Common/ModalForm.vue";
 import {ref} from "vue";
-import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
-import {useAxios} from "~/vendor/axios";
-import {useNotify} from "~/functions/useNotify";
 import Tabs from "~/components/Common/Tabs.vue";
 import Tab from "~/components/Common/Tab.vue";
-import {ModalFormTemplateRef} from "~/functions/useBaseEditModal.ts";
-import {useHasModal} from "~/functions/useHasModal.ts";
+import {ModalFormTemplateRef, useBaseEditModal} from "~/functions/useBaseEditModal.ts";
+import mergeExisting from "~/functions/mergeExisting.ts";
 
 const props = defineProps({
     customFields: {
@@ -79,141 +76,108 @@ const props = defineProps({
 
 const emit = defineEmits(['relist']);
 
-const loading = ref(true);
-const error = ref(null);
-const recordUrl = ref('');
 const albumArtUrl = ref('');
 const waveformUrl = ref('');
 const audioUrl = ref('');
-const songLength = ref(0);
-
-const buildForm = () => {
-    const blankForm = {
-        path: null,
-        title: null,
-        artist: null,
-        album: null,
-        genre: null,
-        lyrics: null,
-        isrc: null,
-        amplify: null,
-        fade_overlap: null,
-        fade_in: null,
-        fade_out: null,
-        cue_in: null,
-        cue_out: null,
-        playlists: [],
-        custom_fields: {}
-    };
-
-    const validations = {
-        path: {required},
-        title: {},
-        artist: {},
-        album: {},
-        genre: {},
-        lyrics: {},
-        isrc: {},
-        art: {},
-        amplify: {},
-        fade_overlap: {},
-        fade_in: {},
-        fade_out: {},
-        cue_in: {},
-        cue_out: {},
-        playlists: {},
-        custom_fields: {}
-    };
-
-    forEach(props.customFields.slice(), (field) => {
-        validations.custom_fields[field.short_name] = {};
-        blankForm.custom_fields[field.short_name] = null;
-    });
-
-    return {blankForm, validations};
-};
-
-const {blankForm, validations} = buildForm();
-const {form, resetForm: resetBaseForm, v$, ifValid} = useVuelidateOnForm(validations, blankForm);
-
-const resetForm = () => {
-    resetBaseForm();
-
-    loading.value = false;
-    error.value = null;
-
-    albumArtUrl.value = '';
-    waveformUrl.value = '';
-    recordUrl.value = '';
-    audioUrl.value = '';
-};
+const songLength = ref('');
 
 const $modal = ref<ModalFormTemplateRef>(null);
-const {hide, show} = useHasModal($modal);
 
-const {axios} = useAxios();
-
-const open = (newRecordUrl, newAlbumArtUrl, newAudioUrl, newWaveformUrl) => {
-    resetForm();
-
-    loading.value = true;
-    recordUrl.value = newRecordUrl;
-    albumArtUrl.value = newAlbumArtUrl;
-    audioUrl.value = newAudioUrl;
-    waveformUrl.value = newWaveformUrl;
-
-    show();
-
-    axios.get(newRecordUrl).then((resp) => {
-        const d = resp.data;
-
-        songLength.value = d.length_text;
-
-        const newForm = {
-            path: d.path,
-            title: d.title,
-            artist: d.artist,
-            album: d.album,
-            genre: d.genre,
-            lyrics: d.lyrics,
-            isrc: d.isrc,
-            amplify: d.amplify,
-            fade_overlap: d.fade_overlap,
-            fade_in: d.fade_in,
-            fade_out: d.fade_out,
-            cue_in: d.cue_in,
-            cue_out: d.cue_out,
-            playlists: map(d.playlists, 'id'),
+const {
+    loading,
+    error,
+    form,
+    v$,
+    clearContents,
+    edit,
+    doSubmit
+} = useBaseEditModal(
+    props,
+    emit,
+    $modal,
+    () => {
+        const validations = {
+            path: {required},
+            title: {},
+            artist: {},
+            album: {},
+            genre: {},
+            lyrics: {},
+            isrc: {},
+            art: {},
+            amplify: {},
+            fade_start_next: {},
+            fade_in: {},
+            fade_out: {},
+            cue_in: {},
+            cue_out: {},
+            playlists: {},
             custom_fields: {}
         };
 
         forEach(props.customFields.slice(), (field) => {
-            newForm.custom_fields[field.short_name] = defaultTo(d.custom_fields[field.short_name], null);
+            validations.custom_fields[field.short_name] = {};
         });
 
-        form.value = newForm;
-    }).catch(() => {
-        hide();
-    }).finally(() => {
-        loading.value = false;
-    });
-};
+        return validations;
+    },
+    () => {
+        const blankForm = {
+            path: null,
+            title: null,
+            artist: null,
+            album: null,
+            genre: null,
+            lyrics: null,
+            isrc: null,
+            amplify: null,
+            fade_start_next: null,
+            fade_in: null,
+            fade_out: null,
+            cue_in: null,
+            cue_out: null,
+            playlists: [],
+            custom_fields: {}
+        };
 
-const {notifySuccess} = useNotify();
-
-const doEdit = () => {
-    ifValid(() => {
-        error.value = null;
-
-        axios.put(recordUrl.value, form.value).then(() => {
-            notifySuccess();
-            emit('relist');
-            hide();
-        }).catch((error) => {
-            error.value = error.response.data.message;
+        forEach(props.customFields.slice(), (field) => {
+            blankForm.custom_fields[field.short_name] = null;
         });
-    });
+
+        return blankForm;
+    },
+    {
+        populateForm: (data, form) => {
+            songLength.value = data.length_text;
+
+            const newForm = mergeExisting(form.value, data);
+            newForm.playlists = map(data.playlists, 'id');
+            newForm.custom_fields = {};
+
+            forEach(props.customFields.slice(), (field) => {
+                newForm.custom_fields[field.short_name] = defaultTo(data.custom_fields[field.short_name], null);
+            });
+
+            form.value = newForm;
+        },
+    }
+);
+
+const open = (editRecordUrl, newAlbumArtUrl, newAudioUrl, newWaveformUrl) => {
+    albumArtUrl.value = newAlbumArtUrl;
+    audioUrl.value = newAudioUrl;
+    waveformUrl.value = newWaveformUrl;
+
+    edit(editRecordUrl);
 };
+
+const onClose = () => {
+    clearContents();
+
+    albumArtUrl.value = '';
+    audioUrl.value = '';
+    waveformUrl.value = '';
+}
 
 defineExpose({
     open

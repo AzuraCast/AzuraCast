@@ -846,7 +846,9 @@ class Station implements Stringable, IdentifiableEntityInterface
 
     public function setNeedsRestart(bool $needsRestart): void
     {
-        $this->needs_restart = $needsRestart;
+        $this->needs_restart = $this->hasLocalServices()
+            ? $needsRestart
+            : false;
     }
 
     public function getHasStarted(): bool
@@ -856,7 +858,9 @@ class Station implements Stringable, IdentifiableEntityInterface
 
     public function setHasStarted(bool $hasStarted): void
     {
-        $this->has_started = $hasStarted;
+        $this->has_started = $this->hasLocalServices()
+            ? $hasStarted
+            : true;
     }
 
     public function getApiHistoryItems(): int

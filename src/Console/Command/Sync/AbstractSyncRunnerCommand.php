@@ -86,7 +86,7 @@ abstract class AbstractSyncRunnerCommand extends AbstractSyncCommand
         $process->setTimeout($timeout);
         $process->setIdleTimeout($timeout);
 
-        $process->run(function ($type, $data) use ($io): void {
+        $process->start(function ($type, $data) use ($io): void {
             if (Process::ERR === $type) {
                 $io->getErrorStyle()->write($data);
             } else {

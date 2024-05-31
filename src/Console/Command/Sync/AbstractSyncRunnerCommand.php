@@ -61,7 +61,7 @@ abstract class AbstractSyncRunnerCommand extends AbstractSyncCommand
         string $lockPrefix,
         array $consoleCommand,
         int $timeout = 60
-    ): void {
+    ): bool {
         $lockName = $lockPrefix . '_' . $processKey;
 
         $lock = $this->lockFactory->createAndAcquireLock($lockName, $timeout);
@@ -69,7 +69,7 @@ abstract class AbstractSyncRunnerCommand extends AbstractSyncCommand
             $this->logger->error(
                 sprintf('Could not obtain lock for task "%s"; skipping it.', $processKey)
             );
-            return;
+            return false;
         }
 
         $process = new Process(
@@ -86,16 +86,11 @@ abstract class AbstractSyncRunnerCommand extends AbstractSyncCommand
         $process->setTimeout($timeout);
         $process->setIdleTimeout($timeout);
 
-        $stdout = [];
-        $stderr = [];
-
-        $process->run(function ($type, $data) use ($process, $io, &$stdout, &$stderr): void {
-            if ($process::ERR === $type) {
+        $process->run(function ($type, $data) use ($io): void {
+            if (Process::ERR === $type) {
                 $io->getErrorStyle()->write($data);
-                $stderr[] = $data;
             } else {
                 $io->write($data);
-                $stdout[] = $data;
             }
         }, getenv());
 
@@ -103,5 +98,7 @@ abstract class AbstractSyncRunnerCommand extends AbstractSyncCommand
             'process' => $process,
             'lock' => $lock,
         ];
+
+        return true;
     }
 }

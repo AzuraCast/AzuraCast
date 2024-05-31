@@ -70,6 +70,7 @@ final class NowPlayingCommand extends AbstractSyncRunnerCommand
             // Check existing processes.
             $this->checkRunningProcesses();
 
+            // Only spawn new processes if we're before the timeout threshold and there are not too many processes.
             $numProcesses = count($this->processes);
 
             if (
@@ -90,8 +91,9 @@ final class NowPlayingCommand extends AbstractSyncRunnerCommand
 
                     $this->logger->debug('Starting NP process for station: ' . $shortName);
 
-                    $this->start($io, $shortName);
-                    usleep(250000);
+                    if ($this->start($io, $shortName)) {
+                        usleep(250000);
+                    }
                 }
             }
 
@@ -136,8 +138,8 @@ final class NowPlayingCommand extends AbstractSyncRunnerCommand
     private function start(
         SymfonyStyle $io,
         string $shortName
-    ): void {
-        $this->lockAndRunConsoleCommand(
+    ): bool {
+        return $this->lockAndRunConsoleCommand(
             $io,
             $shortName,
             'nowplaying',

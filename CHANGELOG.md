@@ -24,6 +24,9 @@ release channel, you can take advantage of these new features and fixes.
 
 ## Bug Fixes
 
+- Fixed an issue affecting concurrency of sync and Now Playing tasks; installations with large station counts should
+  especially notice a significant improvement in stability and reliability.
+
 - Fixed an issue that would cause stations to be unplayable on public pages if they briefly went Offline.
 
 - Fixed an issue where queues would fail to populate if media exists with no artist or title set.

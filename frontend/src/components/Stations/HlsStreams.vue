@@ -99,12 +99,12 @@ const {relist} = useHasDatatable($dataTable);
 const $editModal = ref<EditModalTemplateRef>(null);
 const {doCreate, doEdit} = useHasEditModal($editModal);
 
-const {mayNeedRestart, needsRestart} = useMayNeedRestart();
+const {mayNeedRestart} = useMayNeedRestart();
 
 const {doDelete} = useConfirmAndDelete(
     $gettext('Delete HLS Stream?'),
     () => {
-        needsRestart();
+        mayNeedRestart();
         relist();
     }
 );

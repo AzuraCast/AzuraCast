@@ -72,7 +72,7 @@
 </template>
 
 <script setup lang="ts">
-import DataTable, { DataTableField } from '~/components/Common/DataTable.vue';
+import DataTable, {DataTableField} from '~/components/Common/DataTable.vue';
 import EditModal from './Mounts/EditModal.vue';
 import {useMayNeedRestart} from "~/functions/useMayNeedRestart";
 import {useTranslate} from "~/vendor/gettext";
@@ -109,12 +109,12 @@ const {relist} = useHasDatatable($dataTable);
 const $editModal = ref<EditModalTemplateRef>(null);
 const {doCreate, doEdit} = useHasEditModal($editModal);
 
-const {needsRestart, mayNeedRestart} = useMayNeedRestart();
+const {mayNeedRestart} = useMayNeedRestart();
 
 const {doDelete} = useConfirmAndDelete(
     $gettext('Delete Mount Point?'),
     () => {
-        needsRestart();
+        mayNeedRestart();
         relist();
     }
 );

@@ -54,25 +54,25 @@ export default function useNowPlaying(props) {
                 ]
             });
 
-            if (np_new.now_playing.elapsed < np_new.now_playing.duration) {
-                setPositionState(np_new.now_playing.duration, np_new.now_playing.elapsed);
-            }
+            const setPositionState = (duration: number, position: number): void => {
+                if (position <= duration) {
+                    navigator.mediaSession.setPositionState({
+                        duration,
+                        position,
+                    });
+                }
+            };
 
-            navigator.mediaSession.setActionHandler("seekto", function () {
-                setPositionState(np_new.now_playing.duration, np_new.now_playing.elapsed);
+            setPositionState(np_new.now_playing.duration ?? 0, np_new.now_playing.elapsed ?? 0);
+
+            navigator.mediaSession.setActionHandler("seekto", () => {
+                setPositionState(np_new.now_playing.duration ?? 0, np_new.now_playing.elapsed ?? 0);
             });
         }
 
         document.dispatchEvent(new CustomEvent("now-playing", {
             detail: np_new
         }));
-
-        function setPositionState(duration, position) {
-            navigator.mediaSession.setPositionState({
-                duration,
-                position,
-            });
-        }
     }
 
     if (props.useSse) {

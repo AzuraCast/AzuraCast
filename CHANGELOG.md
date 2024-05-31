@@ -24,6 +24,8 @@ release channel, you can take advantage of these new features and fixes.
 
 ## Bug Fixes
 
+- Fixed an issue that would cause stations to be unplayable on public pages if they briefly went Offline.
+
 - Fixed an issue where queues would fail to populate if media exists with no artist or title set.
 
 ---

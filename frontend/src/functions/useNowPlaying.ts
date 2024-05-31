@@ -54,7 +54,9 @@ export default function useNowPlaying(props) {
                 ]
             });
 
-            setPositionState(np_new.now_playing.duration, np_new.now_playing.elapsed);
+            if (np_new.now_playing.elapsed < np_new.now_playing.duration) {
+                setPositionState(np_new.now_playing.duration, np_new.now_playing.elapsed);
+            }
 
             navigator.mediaSession.setActionHandler("seekto", function () {
                 setPositionState(np_new.now_playing.duration, np_new.now_playing.elapsed);

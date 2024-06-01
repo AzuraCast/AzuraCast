@@ -92,7 +92,7 @@ final class NowPlayingCommand extends AbstractSyncRunnerCommand
                     $this->logger->debug('Starting NP process for station: ' . $shortName);
 
                     if ($this->start($io, $shortName)) {
-                        usleep(250000);
+                        usleep(100000);
                     }
                 }
             }

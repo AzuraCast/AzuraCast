@@ -36,7 +36,6 @@ final class StationApiGenerator
         $response->timezone = $station->getTimezone();
         $response->url = $station->getUrl();
         $response->is_public = $station->getEnablePublicPage();
-        $response->listen_url = $frontend?->getStreamUrl($station, $baseUri);
 
         $response->public_player_url = $this->router->named(
             'public:index',
@@ -75,6 +74,13 @@ final class StationApiGenerator
         }
 
         $response->remotes = $remotes;
+
+        // Pull the "listen URL" from the best available source for the station.
+        $response->listen_url = match (true) {
+            (null !== $frontend) => $frontend->getStreamUrl($station, $baseUri),
+            (count($remotes) > 0) => $remotes[0]->url,
+            default => null
+        };
 
         $response->hls_enabled = $station->getBackendType()->isEnabled() && $station->getEnableHls();
         $response->hls_is_default = $response->hls_enabled && $station->getBackendConfig()->getHlsIsDefault();

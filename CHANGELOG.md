@@ -5,6 +5,16 @@ release channel, you can take advantage of these new features and fixes.
 
 ## New Features/Changes
 
+## Code Quality/Technical Changes
+
+## Bug Fixes
+
+---
+
+# AzuraCast 0.20.1 (Jun 2, 2024)
+
+## New Features/Changes
+
 - **AutoCue**: Thanks to the hard work
   of [many community members](https://github.com/AzuraCast/AzuraCast/discussions/6252), we are beginning to offer the
   exciting new AutoCue tool for all AzuraCast users. AutoCue will analyze your music files on-the-fly and calculate

@@ -127,6 +127,8 @@ final class StationStreamerBroadcastRepository extends Repository
             $record = new StationStreamerBroadcast($streamer);
         }
 
+        assert($record instanceof StationStreamerBroadcast);
+
         $record->setTimestampStart($startTime->getTimestamp());
         $record->setRecordingPath($recordingPath);
         return $record;

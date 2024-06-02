@@ -18,7 +18,7 @@ class PodcastCategory implements IdentifiableEntityInterface
     use Traits\HasAutoIncrementId;
     use Traits\TruncateStrings;
 
-    public const CATEGORY_SEPARATOR = '|';
+    public const string CATEGORY_SEPARATOR = '|';
 
     #[ORM\ManyToOne(inversedBy: 'categories')]
     #[ORM\JoinColumn(name: 'podcast_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]

@@ -14,15 +14,15 @@ final class Avatar
 {
     use SettingsAwareTrait;
 
-    public const DEFAULT_SIZE = 64;
+    public const int DEFAULT_SIZE = 64;
 
-    public const DEFAULT_AVATAR = 'https://www.azuracast.com/img/avatar.png';
+    public const string DEFAULT_AVATAR = 'https://www.azuracast.com/img/avatar.png';
 
-    public const SERVICE_LIBRAVATAR = 'libravatar';
-    public const SERVICE_GRAVATAR = 'gravatar';
-    public const SERVICE_DISABLED = 'disabled';
+    public const string SERVICE_LIBRAVATAR = 'libravatar';
+    public const string SERVICE_GRAVATAR = 'gravatar';
+    public const string SERVICE_DISABLED = 'disabled';
 
-    public const DEFAULT_SERVICE = self::SERVICE_LIBRAVATAR;
+    public const string DEFAULT_SERVICE = self::SERVICE_LIBRAVATAR;
 
     public function getAvatarService(): AvatarServiceInterface
     {

@@ -13,8 +13,8 @@ use OpenApi\Attributes as OA;
 )]
 final class StationSchedule
 {
-    public const TYPE_PLAYLIST = 'playlist';
-    public const TYPE_STREAMER = 'streamer';
+    public const string TYPE_PLAYLIST = 'playlist';
+    public const string TYPE_STREAMER = 'streamer';
 
     #[OA\Property(
         description: 'Unique identifier for this schedule entry.',

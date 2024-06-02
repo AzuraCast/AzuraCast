@@ -15,8 +15,8 @@ trait UsesWebAuthnTrait
 {
     use SettingsAwareTrait;
 
-    protected const SESSION_CHALLENGE_KEY = 'webauthn_challenge';
-    protected const WEBAUTHN_TIMEOUT = 300;
+    protected const string SESSION_CHALLENGE_KEY = 'webauthn_challenge';
+    protected const int WEBAUTHN_TIMEOUT = 300;
 
     protected ?WebAuthn $webAuthn = null;
 

@@ -9,7 +9,39 @@ release channel, you can take advantage of these new features and fixes.
 
 ## Bug Fixes
 
---
+---
+
+# AzuraCast 0.20.1 (Jun 2, 2024)
+
+## New Features/Changes
+
+- **AutoCue**: Thanks to the hard work
+  of [many community members](https://github.com/AzuraCast/AzuraCast/discussions/6252), we are beginning to offer the
+  exciting new AutoCue tool for all AzuraCast users. AutoCue will analyze your music files on-the-fly and calculate
+  ideal settings for cue, fade, volume and more. The result is a refined playback experience that sounds very
+  professional. Enable it on the "AutoDJ" tab of the station profile, under "Audio Processing".
+
+## Code Quality/Technical Changes
+
+- The lengths for title and artist metadata have been expanded to 255 characters.
+
+- We have updated our high-performance Now Playing library to incorporate new features that improve the program's
+  performance. You may need to update any custom code using it; see
+  our [documentation](https://www.azuracast.com/docs/developers/now-playing-data/#high-performance-updates) for updated
+  code samples.
+
+- AzuraCast now respects the `X-Forwarded-Host` and `X-Forwarded-Port` headers if provided by upstream reverse proxies.
+
+## Bug Fixes
+
+- Fixed an issue affecting concurrency of sync and Now Playing tasks; installations with large station counts should
+  especially notice a significant improvement in stability and reliability.
+
+- Fixed an issue that would cause stations to be unplayable on public pages if they briefly went Offline.
+
+- Fixed an issue where queues would fail to populate if media exists with no artist or title set.
+
+---
 
 # AzuraCast 0.20.0 (May 18, 2024)
 

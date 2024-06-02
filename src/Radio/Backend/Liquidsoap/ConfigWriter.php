@@ -12,7 +12,6 @@ use App\Entity\Enums\PlaylistSources;
 use App\Entity\Enums\PlaylistTypes;
 use App\Entity\Enums\StationBackendPerformanceModes;
 use App\Entity\Interfaces\StationMountInterface;
-use App\Entity\Station;
 use App\Entity\StationBackendConfiguration;
 use App\Entity\StationMount;
 use App\Entity\StationPlaylist;
@@ -97,7 +96,7 @@ final class ConfigWriter implements EventSubscriberInterface
     public function writePostProcessingSection(WriteLiquidsoapConfiguration $event): void
     {
         $station = $event->getStation();
-        $settings = $station->getBackendConfig();
+        $settings = $event->getBackendConfig();
 
         switch ($settings->getAudioProcessingMethodEnum()) {
             case AudioProcessingMethods::Liquidsoap:
@@ -360,7 +359,7 @@ final class ConfigWriter implements EventSubscriberInterface
             );
         }
 
-        $backendConfig = $station->getBackendConfig();
+        $backendConfig = $event->getBackendConfig();
 
         $perfMode = $backendConfig->getPerformanceModeEnum();
         if ($perfMode !== StationBackendPerformanceModes::Disabled) {
@@ -381,6 +380,21 @@ final class ConfigWriter implements EventSubscriberInterface
                 LIQ
             );
         }
+
+        // Add AutoCue common configuration.
+        if ($backendConfig->getEnableAutoCue()) {
+            $autoCueCommon = $this->environment->getParentDirectory() . '/autocue/autocue.liq';
+
+            $event->appendBlock(
+                <<<LIQ
+                # AutoCue
+                %include "{$autoCueCommon}"
+                
+                settings.autocue.cue_file.nice := true
+                settings.request.prefetch := 2
+                LIQ
+            );
+        }
     }
 
     public function writePlaylistConfiguration(WriteLiquidsoapConfiguration $event): void
@@ -388,6 +402,16 @@ final class ConfigWriter implements EventSubscriberInterface
         $station = $event->getStation();
 
         $this->writeCustomConfigurationSection($event, StationBackendConfiguration::CUSTOM_PRE_PLAYLISTS);
+
+        // Override some AutoCue settings if they're set in the section above.
+        if ($event->getBackendConfig()->getEnableAutoCue()) {
+            $event->appendBlock(
+                <<<LIQ
+                # AutoCue
+                settings.autocue.target_cross_duration := settings.autocue.cue_file.fade_out()
+                LIQ
+            );
+        }
 
         // Set up playlists using older format as a fallback.
         $playlistVarNames = [];
@@ -654,12 +678,7 @@ final class ConfigWriter implements EventSubscriberInterface
                     if (response == "") or (response == "false") then
                         null()
                     else
-                        r = request.create(response)
-                        if request.resolve(r) then
-                            r
-                        else
-                            null()
-                       end
+                        request.create(response)
                     end
                 end
 
@@ -760,7 +779,7 @@ final class ConfigWriter implements EventSubscriberInterface
         );
 
         // Replaygain metadata
-        $settings = $station->getBackendConfig();
+        $settings = $event->getBackendConfig();
 
         if ($settings->useReplayGain()) {
             $event->appendBlock(
@@ -889,10 +908,81 @@ final class ConfigWriter implements EventSubscriberInterface
         // Write pre-crossfade section.
         $this->writeCustomConfigurationSection($event, StationBackendConfiguration::CUSTOM_PRE_FADE);
 
-        // Crossfading happens before the live broadcast is mixed in, because of buffer issues.
-        $crossfadeType = $settings->getCrossfadeTypeEnum();
-
-        if ($settings->isCrossfadeEnabled()) {
+        if ($settings->getEnableAutoCue()) {
+            // AutoCue preempts normal fading to use its own settings.
+            $event->appendBlock(
+                <<<LS
+                # Show metadata in log (Debug)
+                def show_meta(m)
+                    label="show_meta"
+                    l = list.sort.natural(metadata.cover.remove(m))
+                    list.iter(fun(v) -> log(level=4, label=label, "#{v}"), l)
+                    
+                    nowplaying = ref(m["artist"] ^ " - " ^ m["title"])
+                    
+                    if m["artist"] == "" then
+                        if string.contains(substring=" - ", m["title"]) then
+                            let (a, t) = string.split.first(separator=" - ", m["title"])
+                            nowplaying := a ^ " - " ^ t
+                        end
+                    end
+                    
+                    # show `liq_` & other metadata in level 3
+                    def fl(k, _) =
+                        tags = ["duration", "replaygain_track_gain", "replaygain_reference_loudness"]
+                        string.contains(prefix="liq_", k) or list.mem(k, tags)
+                    end
+                    
+                    liq = list.assoc.filter((fl), l)
+                    list.iter(fun(v) -> log(level=3, label=label, "#{v}"), liq)
+                    log(level=3, label=label, "Now playing: #{nowplaying()}")
+                    
+                    if m["liq_amplify"] == "" then
+                        log(level=2, label=label, "Warning: No liq_amplify found, expect loudness jumps!")
+                    end
+                    if m["liq_blank_skipped"] == "true" then
+                        log(level=2, label=label, "Blank (silence) detected in track, ending early.")
+                    end
+                end
+                
+                radio.on_metadata(show_meta)
+                
+                # Fading/crossing/segueing
+                def live_aware_crossfade(old, new) =
+                    if to_live() then
+                        # If going to the live show, play a simple sequence
+                        # fade out AutoDJ, do (almost) not fade in streamer
+                        sequence([
+                          fade.out(duration=settings.autocue.cue_file.fade_out(), old.source),
+                          fade.in(duration=settings.autocue.cue_file.fade_in(), new.source)
+                        ])
+                    else
+                        # Otherwise, use a beautiful add
+                        add(normalize=false, [
+                            fade.in(
+                                initial_metadata=new.metadata,
+                                duration=settings.autocue.cue_file.fade_in(),
+                                new.source
+                            ),
+                            fade.out(
+                                initial_metadata=old.metadata,
+                                duration=settings.autocue.cue_file.fade_out(),
+                                old.source
+                            )
+                        ])
+                    end
+                end
+                
+                radio = cross(
+                    duration=settings.autocue.cue_file.fade_out(),
+                    live_aware_crossfade,
+                    radio
+                )
+                LS
+            );
+        } elseif ($settings->isCrossfadeEnabled()) {
+            // Crossfading happens before the live broadcast is mixed in, because of buffer issues.
+            $crossfadeType = $settings->getCrossfadeTypeEnum();
             $crossfade = self::toFloat($settings->getCrossfade());
             $crossDuration = self::toFloat($settings->getCrossfadeDuration());
 
@@ -936,7 +1026,7 @@ final class ConfigWriter implements EventSubscriberInterface
 
         $this->writeCustomConfigurationSection($event, StationBackendConfiguration::CUSTOM_PRE_LIVE);
 
-        $settings = $station->getBackendConfig();
+        $settings = $event->getBackendConfig();
         $charset = $settings->getCharset();
         $djMount = $settings->getDjMountPoint();
         $recordLiveStreams = $settings->recordStreams();
@@ -1102,7 +1192,7 @@ final class ConfigWriter implements EventSubscriberInterface
     public function writePreBroadcastConfiguration(WriteLiquidsoapConfiguration $event): void
     {
         $station = $event->getStation();
-        $settings = $station->getBackendConfig();
+        $settings = $event->getBackendConfig();
 
         $event->appendBlock(
             <<<LIQ
@@ -1210,7 +1300,7 @@ final class ConfigWriter implements EventSubscriberInterface
                 continue;
             }
 
-            $lsConfig[] = $this->getOutputString($station, $mountRow, 'local_', $i);
+            $lsConfig[] = $this->getOutputString($event, $mountRow, 'local_', $i);
         }
 
         $event->appendLines($lsConfig);
@@ -1274,7 +1364,7 @@ final class ConfigWriter implements EventSubscriberInterface
         $hlsBaseDir = $station->getRadioHlsDir();
         $tempDir = $station->getRadioTempDir();
 
-        $backendConfig = $station->getBackendConfig();
+        $backendConfig = $event->getBackendConfig();
         $hlsSegmentLength = $backendConfig->getHlsSegmentLength();
         $hlsSegmentsInPlaylist = $backendConfig->getHlsSegmentsInPlaylist();
         $hlsSegmentsOverhead = $backendConfig->getHlsSegmentsOverhead();
@@ -1306,12 +1396,13 @@ final class ConfigWriter implements EventSubscriberInterface
      * Given outbound broadcast information, produce a suitable LiquidSoap configuration line for the stream.
      */
     private function getOutputString(
-        Station $station,
+        WriteLiquidsoapConfiguration $event,
         StationMountInterface $mount,
         string $idPrefix,
         int $id
     ): string {
-        $charset = $station->getBackendConfig()->getCharset();
+        $station = $event->getStation();
+        $charset = $event->getBackendConfig()->getCharset();
 
         $format = $mount->getAutodjFormat() ?? StreamFormats::default();
         $outputFormat = $this->getOutputFormatString(
@@ -1431,7 +1522,7 @@ final class ConfigWriter implements EventSubscriberInterface
                 continue;
             }
 
-            $lsConfig[] = $this->getOutputString($station, $remoteRow, 'relay_', $i);
+            $lsConfig[] = $this->getOutputString($event, $remoteRow, 'relay_', $i);
         }
 
         $event->appendLines($lsConfig);

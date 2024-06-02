@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Service;
 
-use App\Service\IpGeolocator;
 use Exception;
 use MaxMind\Db\Reader;
 use Psr\Cache\CacheItemPoolInterface;

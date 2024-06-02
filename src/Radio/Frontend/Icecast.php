@@ -19,10 +19,10 @@ use Symfony\Component\Filesystem\Path;
 
 final class Icecast extends AbstractFrontend
 {
-    public const LOGLEVEL_DEBUG = 4;
-    public const LOGLEVEL_INFO = 3;
-    public const LOGLEVEL_WARN = 2;
-    public const LOGLEVEL_ERROR = 1;
+    public const int LOGLEVEL_DEBUG = 4;
+    public const int LOGLEVEL_INFO = 3;
+    public const int LOGLEVEL_WARN = 2;
+    public const int LOGLEVEL_ERROR = 1;
 
     public function reload(Station $station): void
     {

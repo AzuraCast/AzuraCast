@@ -107,14 +107,14 @@ use OpenApi\Attributes as OA;
 ]
 final class OpenApi
 {
-    public const SAMPLE_TIMESTAMP = 1609480800;
+    public const int SAMPLE_TIMESTAMP = 1609480800;
 
-    public const API_KEY_SECURITY = [['ApiKey' => []]];
+    public const array API_KEY_SECURITY = [['ApiKey' => []]];
 
-    public const REF_STATION_ID_REQUIRED = '#/components/parameters/StationIdRequired';
+    public const string REF_STATION_ID_REQUIRED = '#/components/parameters/StationIdRequired';
 
-    public const REF_RESPONSE_SUCCESS = '#/components/responses/Success';
-    public const REF_RESPONSE_ACCESS_DENIED = '#/components/responses/AccessDenied';
-    public const REF_RESPONSE_NOT_FOUND = '#/components/responses/RecordNotFound';
-    public const REF_RESPONSE_GENERIC_ERROR = '#/components/responses/GenericError';
+    public const string REF_RESPONSE_SUCCESS = '#/components/responses/Success';
+    public const string REF_RESPONSE_ACCESS_DENIED = '#/components/responses/AccessDenied';
+    public const string REF_RESPONSE_NOT_FOUND = '#/components/responses/RecordNotFound';
+    public const string REF_RESPONSE_GENERIC_ERROR = '#/components/responses/GenericError';
 }

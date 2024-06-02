@@ -12,8 +12,8 @@ use Psr\Http\Message\ServerRequestInterface;
 
 final class Csrf
 {
-    public const CODE_LENGTH = 10;
-    public const DEFAULT_NAMESPACE = 'general';
+    public const int CODE_LENGTH = 10;
+    public const string DEFAULT_NAMESPACE = 'general';
 
     public function __construct(
         private readonly ServerRequestInterface $request,
@@ -95,17 +95,15 @@ final class Csrf
     /**
      * Generates a random string of given $length.
      *
-     * @param int $length The string length.
-     *
      * @return string The randomly generated string.
      */
-    private function randomString(int $length = self::CODE_LENGTH): string
+    private function randomString(): string
     {
         $seed = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijqlmnopqrtsuvwxyz0123456789';
         $max = strlen($seed) - 1;
 
         $string = '';
-        for ($i = 0; $i < $length; ++$i) {
+        for ($i = 0; $i < self::CODE_LENGTH; ++$i) {
             $string .= $seed[random_int(0, $max)];
         }
 

@@ -10,8 +10,8 @@ use DateTimeInterface;
 
 interface ScheduledTaskInterface
 {
-    public const SCHEDULE_EVERY_MINUTE = '* * * * *';
-    public const SCHEDULE_EVERY_FIVE_MINUTES = '*/5 * * * *';
+    public const string SCHEDULE_EVERY_MINUTE = '* * * * *';
+    public const string SCHEDULE_EVERY_FIVE_MINUTES = '*/5 * * * *';
 
     public static function isDue(
         DateTimeInterface $now,

@@ -13,7 +13,7 @@ final class WebUpdater
     use EnvironmentAwareTrait;
 
     // Don't worry that this is insecure; it's only ever used for internal communications.
-    public const WATCHTOWER_TOKEN = 'azur4c457';
+    public const string WATCHTOWER_TOKEN = 'azur4c457';
 
     public function __construct(
         private readonly GuzzleFactory $guzzleFactory

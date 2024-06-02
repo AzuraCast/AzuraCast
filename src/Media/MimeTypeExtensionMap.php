@@ -8,7 +8,7 @@ use League\MimeTypeDetection\GeneratedExtensionToMimeTypeMap;
 
 final class MimeTypeExtensionMap extends GeneratedExtensionToMimeTypeMap
 {
-    public const ADDED_MIME_TYPES = [
+    public const array ADDED_MIME_TYPES = [
         'mod' => 'audio/x-mod',
         'stm' => 'audio/x-mod',
     ];

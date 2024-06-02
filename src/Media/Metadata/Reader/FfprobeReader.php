@@ -12,6 +12,7 @@ use App\Utilities\Arrays;
 use App\Utilities\File;
 use App\Utilities\Strings;
 use App\Utilities\Time;
+use App\Utilities\Types;
 use FFMpeg\FFMpeg;
 use FFMpeg\FFProbe;
 use FFMpeg\FFProbe\DataMapping\Stream;
@@ -88,14 +89,14 @@ final class FfprobeReader
         FFProbe\DataMapping\StreamCollection $streams
     ): array {
         $toProcess = [
-            $format->get('comments'),
-            $format->get('tags'),
+            Types::array($format->get('comments')),
+            Types::array($format->get('tags')),
         ];
 
         /** @var Stream $stream */
         foreach ($streams->audios() as $stream) {
-            $toProcess[] = $stream->get('comments');
-            $toProcess[] = $stream->get('tags');
+            $toProcess[] = Types::array($stream->get('comments'));
+            $toProcess[] = Types::array($stream->get('tags'));
         }
 
         $metaTags = [];

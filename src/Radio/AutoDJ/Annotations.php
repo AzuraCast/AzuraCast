@@ -36,6 +36,7 @@ final class Annotations implements EventSubscriberInterface
                 ['annotateForLiquidsoap', 15],
                 ['annotatePlaylist', 10],
                 ['annotateRequest', 5],
+                ['enableAutoCue', -5],
                 ['postAnnotation', -10],
             ],
         ];
@@ -96,7 +97,7 @@ final class Annotations implements EventSubscriberInterface
             'song_id' => $media->getSongId(),
             'media_id' => $media->getId(),
             'liq_amplify' => $media->getAmplify(),
-            'liq_cross_duration' => $media->getFadeOverlap(),
+            'liq_cross_start_next' => $media->getFadeStartNext(),
             'liq_fade_in' => $media->getFadeIn(),
             'liq_fade_out' => $media->getFadeOut(),
             'liq_cue_in' => $media->getCueIn(),
@@ -180,6 +181,13 @@ final class Annotations implements EventSubscriberInterface
             $event->addAnnotations([
                 'request_id' => $request->getId(),
             ]);
+        }
+    }
+
+    public function enableAutoCue(AnnotateNextSong $event): void
+    {
+        if ($event->getStation()->getBackendConfig()->getEnableAutoCue()) {
+            $event->setProtocol('autocue');
         }
     }
 

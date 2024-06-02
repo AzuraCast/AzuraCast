@@ -119,8 +119,8 @@ final class QueueController extends AbstractStationApiCrudController
         $station = $request->getStation();
         $qb = $this->queueRepo->getUnplayedBaseQuery($station);
 
-        $searchPhrase = trim($request->getQueryParam('searchPhrase') ?? '');
-        if (!empty($searchPhrase)) {
+        $searchPhrase = Types::stringOrNull($request->getQueryParam('searchPhrase'), true);
+        if (null !== $searchPhrase) {
             $qb->andWhere('(sm.title LIKE :query OR sm.artist LIKE :query OR sm.text LIKE :query)')
                 ->setParameter('query', '%' . $searchPhrase . '%');
         }

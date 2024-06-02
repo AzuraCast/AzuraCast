@@ -65,7 +65,7 @@ import {ref} from "vue";
 import Icon from "~/components/Common/Icon.vue";
 import SidebarMenu from "~/components/Common/SidebarMenu.vue";
 import {useAzuraCastStation} from "~/vendor/azuracast";
-import {useEventBus, useIntervalFn} from "@vueuse/core";
+import {useIntervalFn} from "@vueuse/core";
 import {useStationsMenu} from "~/components/Stations/menu";
 import {StationPermission, userAllowedForStation} from "~/acl";
 import {useAxios} from "~/vendor/axios.ts";
@@ -73,6 +73,7 @@ import {getStationApiUrl} from "~/router.ts";
 import {IconEdit} from "~/components/Common/icons.ts";
 import useStationDateTimeFormatter from "~/functions/useStationDateTimeFormatter.ts";
 import {useLuxon} from "~/vendor/luxon.ts";
+import {useRestartEventBus} from "~/functions/useMayNeedRestart.ts";
 
 const props = defineProps({
     station: {
@@ -97,7 +98,7 @@ useIntervalFn(() => {
     immediateCallback: true
 });
 
-const restartEventBus = useEventBus<boolean>('station-restart');
+const restartEventBus = useRestartEventBus();
 const restartStatusUrl = getStationApiUrl('/restart-status');
 const needsRestart = ref(props.station.needsRestart);
 const {axios} = useAxios();

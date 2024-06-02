@@ -22,9 +22,9 @@ final class Configuration
     use EntityManagerAwareTrait;
     use EnvironmentAwareTrait;
 
-    public const DEFAULT_PORT_MIN = 8000;
-    public const DEFAULT_PORT_MAX = 8499;
-    public const PROTECTED_PORTS = [
+    public const int DEFAULT_PORT_MIN = 8000;
+    public const int DEFAULT_PORT_MAX = 8499;
+    public const array PROTECTED_PORTS = [
         3306, // MariaDB
         6010, // Nginx internal
         6379, // Redis

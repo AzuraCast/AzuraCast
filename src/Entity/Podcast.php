@@ -21,7 +21,7 @@ class Podcast implements Interfaces\IdentifiableEntityInterface
     use Traits\HasUniqueId;
     use Traits\TruncateStrings;
 
-    public const DIR_PODCAST_ARTWORK = '.podcast_art';
+    public const string DIR_PODCAST_ARTWORK = '.podcast_art';
 
     #[ORM\ManyToOne(targetEntity: StorageLocation::class)]
     #[ORM\JoinColumn(name: 'storage_location_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]

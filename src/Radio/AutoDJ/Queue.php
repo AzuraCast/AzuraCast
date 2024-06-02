@@ -10,6 +10,7 @@ use App\Entity\Repository\StationQueueRepository;
 use App\Entity\Station;
 use App\Entity\StationQueue;
 use App\Event\Radio\BuildQueue;
+use App\Utilities\Types;
 use Carbon\CarbonImmutable;
 use Carbon\CarbonInterface;
 use Monolog\Handler\TestHandler;
@@ -268,8 +269,8 @@ final class Queue
 
     public function getQueueRowLog(StationQueue $queueRow): ?array
     {
-        return $this->cache->get(
-            $this->getQueueRowLogCacheKey($queueRow)
+        return Types::arrayOrNull(
+            $this->cache->get($this->getQueueRowLogCacheKey($queueRow))
         );
     }
 

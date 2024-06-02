@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: azuracast\n"
 "Language-Team: Ukrainian\n"
 "Language: uk_UA\n"
-"PO-Revision-Date: 2024-05-06 03:03\n"
+"PO-Revision-Date: 2024-06-02 19:00\n"
 
 #: src/components/Stations/Podcasts.vue:143
 msgid "# Episodes"
@@ -133,7 +133,7 @@ msgstr "Унікальний ідентифікатор (тобто \"G-A1B2C3D4
 msgid "About AzuraRelay"
 msgstr "Про AzuraRelay"
 
-#: src/components/Admin/Stations/Form/BackendForm.vue:83
+#: src/components/Admin/Stations/Form/BackendForm.vue:85
 msgid "About Master_me"
 msgstr "Про Master_me"
 
@@ -186,7 +186,7 @@ msgstr "Список облікових записів"
 #: src/components/Stations/Mounts.vue:103
 #: src/components/Stations/Playlists.vue:348
 #: src/components/Stations/Playlists/ReorderModal.vue:29
-#: src/components/Stations/PodcastEpisodes.vue:224
+#: src/components/Stations/PodcastEpisodes.vue:245
 #: src/components/Stations/Podcasts.vue:146
 #: src/components/Stations/Queue.vue:96
 #: src/components/Stations/Remotes.vue:95
@@ -213,7 +213,7 @@ msgid "Add Custom Field"
 msgstr "Додати своє поле"
 
 #: src/components/Stations/PodcastEpisodes.vue:49
-#: src/components/Stations/Podcasts/EpisodeEditModal.vue:145
+#: src/components/Stations/Podcasts/EpisodeEditModal.vue:112
 msgid "Add Episode"
 msgstr "Додати епізод"
 
@@ -293,7 +293,7 @@ msgid "Add User"
 msgstr "Додати користувача"
 
 #: src/components/Stations/Webhooks.vue:12
-#: src/components/Stations/Webhooks/EditModal.vue:161
+#: src/components/Stations/Webhooks/EditModal.vue:163
 msgid "Add Web Hook"
 msgstr "Додати веб хук"
 
@@ -302,12 +302,12 @@ msgstr "Додати веб хук"
 #: src/components/Admin/Stations/Form/AdminForm.vue:3
 #: src/components/Dashboard.vue:27
 #: src/components/Stations/Profile/FrontendPanel.vue:33
-#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/ServiceCheck.php:42
 #: /home/runner/work/AzuraCast/AzuraCast/src/Controller/AdminAction.php:22
+#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/ServiceCheck.php:42
 msgid "Administration"
 msgstr " Адміністрування "
 
-#: src/components/Admin/Stations/Form/BackendForm.vue:176
+#: src/components/Admin/Stations/Form/BackendForm.vue:188
 #: src/components/Admin/Stations/Form/FrontendForm.vue:142
 #: src/components/Admin/Stations/Form/FrontendForm.vue:61
 #: src/components/Form/FormLabel.vue:16
@@ -318,7 +318,7 @@ msgstr " Адміністрування "
 msgid "Advanced"
 msgstr "Розширені налаштування"
 
-#: src/components/Admin/Stations/Form/BackendForm.vue:174
+#: src/components/Admin/Stations/Form/BackendForm.vue:186
 #: src/components/Admin/Stations/Form/FrontendForm.vue:59
 msgid "Advanced Configuration"
 msgstr "Розширена конфігурація"
@@ -409,11 +409,11 @@ msgstr "Під час завантаження профілю станції с�
 msgid "An error occurred with the WebDJ socket."
 msgstr "Виникла помилка з сокетом WebDJ."
 
-#: src/components/Stations/Webhooks/Form/TypeSelect.vue:35
+#: src/components/Stations/Webhooks/Form/TypeSelect.vue:36
 msgid "Analytics"
 msgstr "Аналітика"
 
-#: src/components/Stations/Media/MediaToolbar.vue:154
+#: src/components/Stations/Media/MediaToolbar.vue:164
 msgid "Analyze and reprocess the selected media"
 msgstr "Проаналізувати і обробити обрані медіа"
 
@@ -477,9 +477,13 @@ msgstr "App Key"
 msgid "App Secret"
 msgstr "App Secret"
 
-#: src/components/Admin/Stations/Form/BackendForm.vue:473
+#: src/components/Admin/Stations/Form/BackendForm.vue:491
 msgid "Apple Podcasts"
 msgstr "Apple Podcasts"
+
+#: src/components/Admin/Stations/Form/BackendForm.vue:51
+msgid "Apply audio processors (like compressors, limiters, or equalizers) to your stream to create a more uniform sound or enhance the listening experience. Processing requires extra CPU resources, so it may slow down your server."
+msgstr ""
 
 #: src/components/Admin/Settings/ServicesTab.vue:242
 msgid "Apply for an API key at Last.fm"
@@ -489,7 +493,7 @@ msgstr "Застосувати для API ключа в Last.fm"
 msgid "Apply Playlist to Folders"
 msgstr "Застосувати плейлист до тек"
 
-#: src/components/Admin/Stations/Form/BackendForm.vue:74
+#: src/components/Admin/Stations/Form/BackendForm.vue:76
 msgid "Apply Post-processing to Live Streams"
 msgstr "Застосувати постобробку до прямих трансляцій"
 
@@ -504,7 +508,7 @@ msgid "Are you sure?"
 msgstr "Ви впевнені?"
 
 #: src/components/Public/OnDemand.vue:98
-#: src/components/Stations/PodcastEpisodes.vue:173
+#: src/components/Stations/PodcastEpisodes.vue:194
 #: src/components/Stations/Podcasts.vue:139
 #: src/components/Stations/Streamers.vue:149
 msgid "Art"
@@ -544,13 +548,13 @@ msgstr "Audio Bitrate (kbps)"
 msgid "Audio Format"
 msgstr "Формат аудіо"
 
-#: src/components/Admin/Stations/Form/BackendForm.vue:45
-msgid "Audio Post-processing"
-msgstr "Аудіо постобробка"
-
-#: src/components/Admin/Stations/Form/BackendForm.vue:65
+#: src/components/Admin/Stations/Form/BackendForm.vue:67
 msgid "Audio Post-processing Method"
 msgstr "Метод обробки звуку"
+
+#: src/components/Admin/Stations/Form/BackendForm.vue:47
+msgid "Audio Processing"
+msgstr ""
 
 #: src/components/Admin/Index/CpuStatsHelpModal.vue:29
 msgid "Audio transcoding applications like Liquidsoap use a consistent amount of CPU over time, which gradually drains this available credit. If you regularly see stolen CPU time, you should consider migrating to a VM that has CPU resources dedicated to your instance."
@@ -569,6 +573,10 @@ msgstr "Автор"
 #: src/components/Admin/CustomFields.vue:89
 msgid "Auto-Assign Value"
 msgstr "Автоматичне призначення значення"
+
+#: src/components/Admin/Stations/Form/BackendForm.vue:179
+msgid "AutoCue analyzes your music and automatically calculates cue points, fade points, and volume levels for a consistent listening experience."
+msgstr ""
 
 #: src/components/Admin/Stations.vue:137
 #: src/components/Admin/Stations/Form/BackendForm.vue:3
@@ -601,7 +609,7 @@ msgstr "AutoDJ був вимкнений для цієї станції. Муз�
 msgid "AutoDJ Queue"
 msgstr "Черга AutoDJ"
 
-#: src/components/Admin/Stations/Form/BackendForm.vue:227
+#: src/components/Admin/Stations/Form/BackendForm.vue:239
 msgid "AutoDJ Queue Length"
 msgstr "Довжина черги AutoDJ"
 
@@ -622,7 +630,7 @@ msgstr ""
 msgid "Automatically Publish New Episodes"
 msgstr ""
 
-#: src/entities/Webhooks.ts:120
+#: src/entities/Webhooks.ts:125
 msgid "Automatically publish to a Mastodon instance."
 msgstr "Автоматично публікувати в екземпляр Mastodon."
 
@@ -630,11 +638,11 @@ msgstr "Автоматично публікувати в екземпляр Mast
 msgid "Automatically Scroll to Bottom"
 msgstr "Автоматично прокручувати до низу"
 
-#: src/entities/Webhooks.ts:112
+#: src/entities/Webhooks.ts:117
 msgid "Automatically send a customized message to your Discord server."
 msgstr "Автоматично надсилати змінене повідомлення на ваш сервер Discord."
 
-#: src/entities/Webhooks.ts:92
+#: src/entities/Webhooks.ts:93
 msgid "Automatically send a message to any URL when your station data changes."
 msgstr "Автоматично надсилати повідомлення на будь-який URL при зміні даних вашої станції."
 
@@ -724,7 +732,7 @@ msgstr "Формат резервних копій"
 msgid "Backups"
 msgstr "Резервні копії"
 
-#: src/components/Admin/Stations/Form/BackendForm.vue:490
+#: src/components/Admin/Stations/Form/BackendForm.vue:508
 msgid "Balanced"
 msgstr "Збалансовано"
 
@@ -764,7 +772,7 @@ msgstr "Основна інформація"
 msgid "Basic Information"
 msgstr "Основна інформація"
 
-#: src/components/Admin/Stations/Form/BackendForm.vue:430
+#: src/components/Admin/Stations/Form/BackendForm.vue:448
 msgid "Basic Normalization and Compression"
 msgstr "Базова нормалізація та компресія"
 
@@ -842,6 +850,10 @@ msgstr "Браузери"
 msgid "Bucket Name"
 msgstr "Назва сегмента"
 
+#: src/components/Stations/Podcasts/BatchEditModal.vue:7
+msgid "Bulk Edit Episodes"
+msgstr ""
+
 #: src/components/Stations/menu.ts:131
 msgid "Bulk Media Import/Export"
 msgstr "Масовий імпорт/експорт мультимедіа"
@@ -892,7 +904,7 @@ msgstr "Зміни"
 msgid "Changes saved."
 msgstr "Зміни збережені."
 
-#: src/components/Admin/Stations/Form/BackendForm.vue:238
+#: src/components/Admin/Stations/Form/BackendForm.vue:250
 msgid "Character Set Encoding"
 msgstr "Кодування символів"
 
@@ -904,7 +916,7 @@ msgstr "ID чату"
 msgid "Check for Updates"
 msgstr "Перевірити наявність оновлень"
 
-#: src/components/Admin/Stations/Form/BackendForm.vue:75
+#: src/components/Admin/Stations/Form/BackendForm.vue:77
 msgid "Check this box to apply post-processing to all audio, including live streams. Uncheck this box to only apply post-processing to the AutoDJ."
 msgstr "Поставте цей прапорець, щоб застосувати постобробку до всього аудіо, включаючи прямі трансляції. Зніміть цей прапорець, щоб застосувати постобробку лише до AutoDJ."
 
@@ -916,7 +928,7 @@ msgstr "Перевірити вебсервіси на наявність обк
 msgid "Check Web Services for Album Art When Uploading Media"
 msgstr "Перевірити вебсервіси на наявність обкладинок альбому при завантаженні медіафайлу"
 
-#: src/components/Admin/Stations/Form/BackendForm.vue:29
+#: src/components/Admin/Stations/Form/BackendForm.vue:30
 msgid "Choose a method to use when transitioning from one song to another. Smart Mode considers the volume of the two tracks when fading for a smoother effect, but requires more CPU resources."
 msgstr "Виберіть метод для переходу від однієї пісні до іншої. Розумний режим враховує гучність двох доріжок під час затухання для більш плавного ефекту, але вимагає більше ресурсів ЦП."
 
@@ -932,13 +944,13 @@ msgstr "Виберіть новий пароль для вашого облік�
 msgid "City"
 msgstr "Місто"
 
-#: src/components/Stations/Media/MediaToolbar.vue:95
+#: src/components/Stations/Media/MediaToolbar.vue:103
 #: src/components/Stations/Queue.vue:132
 #: src/components/Stations/Reports/Requests.vue:171
 msgid "Clear"
 msgstr "Очистити"
 
-#: src/components/Stations/Playlists.vue:448
+#: src/components/Stations/Playlists.vue:437
 msgid "Clear all media from playlist?"
 msgstr "Очистити всі медіа з плейлисту?"
 
@@ -1076,6 +1088,7 @@ msgstr "Дублювати станцію"
 #: src/components/Stations/Playlists/ApplyToModal.vue:50
 #: src/components/Stations/Playlists/ImportModal.vue:87
 #: src/components/Stations/Playlists/QueueModal.vue:47
+#: src/components/Stations/Podcasts/BatchEditModal.vue:50
 #: src/components/Stations/Profile/UpdateMetadataModal.vue:42
 #: src/components/Stations/Queue/LogsModal.vue:20
 #: src/components/Stations/Streamers/BroadcastsModal.vue:53
@@ -1128,7 +1141,7 @@ msgstr "Підключені AzuraRelays"
 msgid "Connection Information"
 msgstr "Інформація про підключення"
 
-#: src/components/Stations/Podcasts/EpisodeForm/BasicInfo.vue:53
+#: src/components/Stations/Podcasts/EpisodeForm/BasicInfo.vue:51
 msgid "Contains explicit content"
 msgstr "Містить дорослий контент"
 
@@ -1242,11 +1255,11 @@ msgstr "Створити станцію"
 msgid "Critical"
 msgstr "Критичний"
 
-#: src/components/Admin/Stations/Form/BackendForm.vue:38
+#: src/components/Admin/Stations/Form/BackendForm.vue:39
 msgid "Crossfade Duration (Seconds)"
 msgstr "Тривалість затухання (у секундах)"
 
-#: src/components/Admin/Stations/Form/BackendForm.vue:28
+#: src/components/Admin/Stations/Form/BackendForm.vue:29
 msgid "Crossfade Method"
 msgstr "Метод затухання"
 
@@ -1328,8 +1341,8 @@ msgid "Custom Fading: Fade-Out Time (seconds)"
 msgstr "Власні точки затухання в кінці (у секундах)"
 
 #: src/components/Stations/Media/Form/AdvancedSettings.vue:27
-msgid "Custom Fading: Overlap Time (seconds)"
-msgstr "Власні точки затухання: час перекриття (у секундах)"
+msgid "Custom Fading: Start Next (seconds)"
+msgstr ""
 
 #: src/components/Stations/Fallback.vue:12
 #: src/components/Stations/menu.ts:264
@@ -1383,7 +1396,7 @@ msgstr "Налаштувати точку монтування ведучого/
 msgid "Customize DJ/Streamer Port"
 msgstr "Змінити порт DJ/Streamer"
 
-#: src/components/Admin/Stations/Form/BackendForm.vue:217
+#: src/components/Admin/Stations/Form/BackendForm.vue:229
 msgid "Customize Internal Request Processing Port"
 msgstr "Змінити порт обробки внутрішнього запиту"
 
@@ -1474,11 +1487,12 @@ msgstr "Стандартне підключення"
 #: src/components/Admin/StorageLocations.vue:58
 #: src/components/Admin/Users.vue:64
 #: src/components/Stations/HlsStreams.vue:49
-#: src/components/Stations/Media/MediaToolbar.vue:171
+#: src/components/Stations/Media/MediaToolbar.vue:182
 #: src/components/Stations/Mounts.vue:57
 #: src/components/Stations/Playlists.vue:162
-#: src/components/Stations/PodcastEpisodes.vue:127
+#: src/components/Stations/PodcastEpisodes.vue:137
 #: src/components/Stations/Podcasts.vue:84
+#: src/components/Stations/Podcasts/EpisodesToolbar.vue:28
 #: src/components/Stations/Queue.vue:39
 #: src/components/Stations/Remotes.vue:58
 #: src/components/Stations/Reports/Requests.vue:88
@@ -1490,7 +1504,11 @@ msgstr "Стандартне підключення"
 msgid "Delete"
 msgstr "Видалити"
 
-#: src/components/Stations/Media/MediaToolbar.vue:298
+#: src/components/Stations/Podcasts/EpisodesToolbar.vue:87
+msgid "Delete %{ num } episodes?"
+msgstr ""
+
+#: src/components/Stations/Media/MediaToolbar.vue:323
 msgid "Delete %{ num } media files?"
 msgstr "Видалити %{ num } медіа-файлів?"
 
@@ -1515,7 +1533,7 @@ msgstr "Видалити трансляцію?"
 msgid "Delete Custom Field?"
 msgstr "Видалити користувальницьке поле?"
 
-#: src/components/Stations/PodcastEpisodes.vue:248
+#: src/components/Stations/PodcastEpisodes.vue:269
 msgid "Delete Episode?"
 msgstr "Видалити епізод?"
 
@@ -1531,7 +1549,7 @@ msgstr "Видалити точку монтування?"
 msgid "Delete Passkey?"
 msgstr "Видалити ключ?"
 
-#: src/components/Stations/Playlists.vue:440
+#: src/components/Stations/Playlists.vue:429
 msgid "Delete Playlist?"
 msgstr "Видалити плейлист?"
 
@@ -1620,11 +1638,11 @@ msgstr "Ім'я каталогу"
 msgid "Disable"
 msgstr "Вимкнути"
 
-#: src/components/Admin/Stations/Form/BackendForm.vue:417
+#: src/components/Admin/Stations/Form/BackendForm.vue:435
 msgid "Disable Crossfading"
 msgstr "Вимкнути кроссфейдинг"
 
-#: src/components/Admin/Stations/Form/BackendForm.vue:498
+#: src/components/Admin/Stations/Form/BackendForm.vue:516
 msgid "Disable Optimizations"
 msgstr "Вимкнути оптимізацію"
 
@@ -1666,7 +1684,7 @@ msgstr "Відключити ведучого"
 msgid "Discord Web Hook URL"
 msgstr "URL-адреса веб-хука Discord"
 
-#: src/entities/Webhooks.ts:111
+#: src/entities/Webhooks.ts:116
 msgid "Discord Webhook"
 msgstr "Веб-хук Discord"
 
@@ -1701,7 +1719,7 @@ msgstr "Не збирати аналітику слухачів"
 msgid "Do not use a local broadcasting service."
 msgstr "Не використовуйте локальний сервіс трансляції."
 
-#: src/components/Admin/Stations/Form/BackendForm.vue:400
+#: src/components/Admin/Stations/Form/BackendForm.vue:418
 msgid "Do not use an AutoDJ service."
 msgstr "Не використовувати службу AutoDJ."
 
@@ -1768,7 +1786,7 @@ msgstr "Дублювати"
 msgid "Duplicate Playlist"
 msgstr "Дублювати плейлист"
 
-#: src/components/Admin/Stations/Form/BackendForm.vue:259
+#: src/components/Admin/Stations/Form/BackendForm.vue:271
 msgid "Duplicate Prevention Time Range (Minutes)"
 msgstr "Дублювати діапазон часу запобігання (Хвилин)"
 
@@ -1803,7 +1821,7 @@ msgstr "Адреси електронної пошти можуть бути р�
 msgid "E-mail Delivery Service"
 msgstr "Служба доставки E-mail"
 
-#: src/components/Admin/Stations/Form/BackendForm.vue:469
+#: src/components/Admin/Stations/Form/BackendForm.vue:487
 msgid "EBU R128"
 msgstr "EBU R128"
 
@@ -1816,8 +1834,9 @@ msgstr "EBU R128"
 #: src/components/Stations/Media.vue:197
 #: src/components/Stations/Mounts.vue:50
 #: src/components/Stations/Playlists.vue:155
-#: src/components/Stations/PodcastEpisodes.vue:119
+#: src/components/Stations/PodcastEpisodes.vue:129
 #: src/components/Stations/Podcasts.vue:77
+#: src/components/Stations/Podcasts/EpisodesToolbar.vue:15
 #: src/components/Stations/Remotes.vue:51
 #: src/components/Stations/SftpUsers.vue:29
 #: src/components/Stations/Streamers.vue:63
@@ -1833,7 +1852,7 @@ msgstr "Редагування бренду"
 msgid "Edit Custom Field"
 msgstr "Редагувати спеціальне поле"
 
-#: src/components/Stations/Podcasts/EpisodeEditModal.vue:144
+#: src/components/Stations/Podcasts/EpisodeEditModal.vue:111
 msgid "Edit Episode"
 msgstr "Редагувати епізод"
 
@@ -1903,7 +1922,7 @@ msgstr "Редагувати Стрімер"
 msgid "Edit User"
 msgstr "Редагувати користувача"
 
-#: src/components/Stations/Webhooks/EditModal.vue:157
+#: src/components/Stations/Webhooks/EditModal.vue:159
 msgid "Edit Web Hook"
 msgstr "Редагувати веб-хук"
 
@@ -1937,6 +1956,10 @@ msgstr "Увімкнути"
 #: src/components/Admin/Settings/GeneralTab.vue:69
 msgid "Enable Advanced Features"
 msgstr "Активувати додаткові функції"
+
+#: src/components/Admin/Stations/Form/BackendForm.vue:178
+msgid "Enable AutoCue Automatic Detection"
+msgstr ""
 
 #: src/components/Stations/Mounts/Form/AutoDj.vue:11
 msgid "Enable AutoDJ"
@@ -2091,13 +2114,15 @@ msgid "Enter your password"
 msgstr "Введіть ваш пароль"
 
 #: src/components/Public/Podcasts/Podcast.vue:142
-#: src/components/Stations/PodcastEpisodes.vue:180
+#: src/components/Stations/PodcastEpisodes.vue:201
+#: src/components/Stations/Podcasts/BatchEditModal.vue:23
 #: src/components/Stations/Podcasts/EpisodeForm/BasicInfo.vue:11
 msgid "Episode"
 msgstr "Епізод"
 
-#: src/components/Stations/PodcastEpisodes.vue:217
-#: src/components/Stations/Podcasts/EpisodeForm/BasicInfo.vue:74
+#: src/components/Stations/PodcastEpisodes.vue:238
+#: src/components/Stations/Podcasts/BatchEditModal.vue:27
+#: src/components/Stations/Podcasts/EpisodeForm/BasicInfo.vue:72
 msgid "Episode Number"
 msgstr ""
 
@@ -2107,6 +2132,14 @@ msgstr ""
 msgid "Episodes"
 msgstr "Епізоди"
 
+#: src/components/Stations/Podcasts/EpisodesToolbar.vue:98
+msgid "Episodes removed:"
+msgstr ""
+
+#: src/components/Stations/Podcasts/BatchEditModal.vue:142
+msgid "Episodes updated:"
+msgstr ""
+
 #: src/components/Admin/Debug/TaskOutput.vue:94
 msgid "Error"
 msgstr "Помилка"
@@ -2115,20 +2148,28 @@ msgstr "Помилка"
 msgid "Error moving files:"
 msgstr "Помилка переміщення файлів:"
 
-#: src/components/Stations/Media/MediaToolbar.vue:274
-#: src/components/Stations/Media/MediaToolbar.vue:282
+#: src/components/Stations/Media/MediaToolbar.vue:299
+#: src/components/Stations/Media/MediaToolbar.vue:307
 msgid "Error queueing files:"
 msgstr "Помилка з файлами в черзі:"
 
-#: src/components/Stations/Media/MediaToolbar.vue:310
+#: src/components/Stations/Podcasts/EpisodesToolbar.vue:99
+msgid "Error removing episodes:"
+msgstr ""
+
+#: src/components/Stations/Media/MediaToolbar.vue:335
 msgid "Error removing files:"
 msgstr "Помилка видалення файлів:"
 
-#: src/components/Stations/Media/MediaToolbar.vue:290
+#: src/components/Stations/Media/MediaToolbar.vue:315
 msgid "Error reprocessing files:"
 msgstr "Помилка обробки файлів:"
 
-#: src/components/Stations/Media/MediaToolbar.vue:340
+#: src/components/Stations/Podcasts/BatchEditModal.vue:143
+msgid "Error updating episodes:"
+msgstr ""
+
+#: src/components/Stations/Media/MediaToolbar.vue:362
 msgid "Error updating playlists:"
 msgstr "Помилка при оновленні списків відтворення:"
 
@@ -2155,8 +2196,9 @@ msgstr "Очікується відтворення в"
 
 #: src/components/Public/Podcasts/Podcast.vue:90
 #: src/components/Public/Podcasts/PodcastEpisode.vue:74
-#: src/components/Stations/PodcastEpisodes.vue:109
-#: src/components/Stations/PodcastEpisodes.vue:204
+#: src/components/Stations/PodcastEpisodes.vue:119
+#: src/components/Stations/PodcastEpisodes.vue:225
+#: src/components/Stations/Podcasts/BatchEditModal.vue:25
 msgid "Explicit"
 msgstr "Відвертий"
 
@@ -2187,11 +2229,11 @@ msgstr "Назва поля"
 #: src/components/Admin/Backups.vue:205
 #: src/components/Admin/Backups/RunBackupModal.vue:37
 #: src/components/Stations/Media/Form/BasicInfo.vue:7
-#: src/components/Stations/PodcastEpisodes.vue:185
+#: src/components/Stations/PodcastEpisodes.vue:206
 msgid "File Name"
 msgstr "Ім'я файлу"
 
-#: src/components/Stations/Media/MediaToolbar.vue:289
+#: src/components/Stations/Media/MediaToolbar.vue:314
 msgid "Files marked for reprocessing:"
 msgstr "Файли, позначені для повторної обробки:"
 
@@ -2199,15 +2241,15 @@ msgstr "Файли, позначені для повторної обробки:
 msgid "Files moved:"
 msgstr "Переміщено файлів:"
 
-#: src/components/Stations/Media/MediaToolbar.vue:273
+#: src/components/Stations/Media/MediaToolbar.vue:298
 msgid "Files played immediately:"
 msgstr "Файли, відтворені негайно:"
 
-#: src/components/Stations/Media/MediaToolbar.vue:281
+#: src/components/Stations/Media/MediaToolbar.vue:306
 msgid "Files queued for playback:"
 msgstr "Файли, що виставлені у чергу для відтворення:"
 
-#: src/components/Stations/Media/MediaToolbar.vue:309
+#: src/components/Stations/Media/MediaToolbar.vue:334
 msgid "Files removed:"
 msgstr "Видалені файли:"
 
@@ -2231,7 +2273,7 @@ msgstr "Для ARM (Raspberry Pi та ін.) встановлення вибер
 msgid "For local filesystems, this is the base path of the directory. For remote filesystems, this is the folder prefix."
 msgstr "Для локальних файлових систем, це є базовим шляхом до директорії. Для віддалених файлових систем, це є префіксом теки."
 
-#: src/components/Admin/Stations/Form/BackendForm.vue:239
+#: src/components/Admin/Stations/Form/BackendForm.vue:251
 msgid "For most cases, use the default UTF-8 encoding. The older ISO-8859-1 encoding can be used if accepting connections from Shoutcast 1 DJs or using other legacy software."
 msgstr "У більшості випадків використовуйте типове кодування UTF-8. Старе кодування ISO-8859-1 можна використовувати, якщо приймаєте з'єднання від діджеїв Shoutcast 1 або використовуєте інше застаріле програмне забезпечення."
 
@@ -2301,7 +2343,7 @@ msgstr "Згенерувати звіт"
 msgid "Generate/Renew Certificate"
 msgstr "Згенерувати / Поновити сертифікат"
 
-#: src/entities/Webhooks.ts:91
+#: src/entities/Webhooks.ts:92
 msgid "Generic Web Hook"
 msgstr "Загальний веб-хук"
 
@@ -2332,7 +2374,7 @@ msgstr "Отримати наступну пісню"
 msgid "Get Now Playing"
 msgstr "Показати, що грає зараз"
 
-#: src/entities/Webhooks.ts:107
+#: src/entities/Webhooks.ts:112
 msgid "GetMeRadio"
 msgstr "GetMeRadio"
 
@@ -2353,7 +2395,7 @@ msgstr "Глобальні дозволи"
 msgid "Go"
 msgstr "Далі"
 
-#: src/entities/Webhooks.ts:123
+#: src/entities/Webhooks.ts:128
 msgid "Google Analytics V4 Integration"
 msgstr "Інтеграція Google Analytics V4"
 
@@ -2562,7 +2604,7 @@ msgstr "Якщо ви транслюєте за допомогою AutoDJ, вв�
 msgid "If you're experiencing a bug or error, you can submit a GitHub issue using the link below."
 msgstr "Якщо у вас виникла помилка або проблема, ви можете подати заявку на GitHub за посиланням нижче."
 
-#: src/components/Admin/Stations/Form/BackendForm.vue:250
+#: src/components/Admin/Stations/Form/BackendForm.vue:262
 msgid "If your installation is constrained by CPU or memory, you can change this setting to tune the resources used by Liquidsoap."
 msgstr "Якщо вашу установку обмежує обсяг ЦП або оперативної пам'яті, ви можете змінити це налаштування, щоб налаштувати ресурси, які використовує Liquidsoap."
 
@@ -2626,7 +2668,7 @@ msgstr "Включити в програвач на вимогу"
 msgid "Indefinitely"
 msgstr "Необмежено"
 
-#: src/components/Stations/Podcasts/EpisodeForm/BasicInfo.vue:54
+#: src/components/Stations/Podcasts/EpisodeForm/BasicInfo.vue:52
 msgid "Indicates the presence of explicit content (explicit language or adult content). Apple Podcasts displays an Explicit parental advisory graphic for your episode if turned on. Episodes containing explicit material aren't available in some Apple Podcasts territories."
 msgstr "Вказує на наявність експліцитного контенту (експліцитна мова або контент для дорослих). Apple Podcasts показує графічний попереджувальний знак \"Експліцитно\" для вашого епізоду, якщо це включено. Епізоди з експліцитним матеріалом не доступні в деяких територіях Apple Podcasts."
 
@@ -2660,7 +2702,7 @@ msgstr "Встановити Shoutcast 2 DNAS"
 msgid "Install Stereo Tool"
 msgstr "Встановити Stereo Tool"
 
-#: src/components/Admin/Stations/Form/BackendForm.vue:202
+#: src/components/Admin/Stations/Form/BackendForm.vue:214
 msgid "Instruct Liquidsoap to use any replaygain metadata associated with a song to control its volume level. This may increase CPU consumption."
 msgstr "Вкажіть Liquidsoap використовувати будь-яку метадану ReplayGain, пов'язану з піснею, для керування її рівнем гучності. Це може збільшити використання ЦП."
 
@@ -2703,7 +2745,7 @@ msgstr "IP-геолокація використовується для приб
 msgid "Is Public"
 msgstr "Є публічним"
 
-#: src/components/Stations/PodcastEpisodes.vue:190
+#: src/components/Stations/PodcastEpisodes.vue:211
 msgid "Is Published"
 msgstr ""
 
@@ -2785,7 +2827,7 @@ msgstr "Останнє оновлення"
 msgid "Learn about Advanced Playlists"
 msgstr "Дізнайтеся про розширені плейлисти"
 
-#: src/components/Admin/Stations/Form/BackendForm.vue:54
+#: src/components/Admin/Stations/Form/BackendForm.vue:56
 msgid "Learn More about Post-processing CPU Impact"
 msgstr "Дізнайтеся більше про вплив на ЦП після обробки"
 
@@ -2793,7 +2835,7 @@ msgstr "Дізнайтеся більше про вплив на ЦП після
 msgid "Learn more about release channels in the AzuraCast docs."
 msgstr "Дізнайтесь більше про канали релізів в документації AzuraCast."
 
-#: src/components/Admin/Stations/Form/BackendForm.vue:207
+#: src/components/Admin/Stations/Form/BackendForm.vue:219
 msgid "Learn More about Replaygain"
 msgstr "Дізнайтеся більше про Replaygain"
 
@@ -2854,7 +2896,7 @@ msgstr "Обмежений"
 msgid "LiquidSoap is currently shuffling from %{songs} and %{playlists}."
 msgstr "LiquidSoap зараз змішує %{songs} та %{playlists}."
 
-#: src/components/Admin/Stations/Form/BackendForm.vue:249
+#: src/components/Admin/Stations/Form/BackendForm.vue:261
 msgid "Liquidsoap Performance Tuning"
 msgstr "Налаштування продуктивності Liquidsoap"
 
@@ -2907,15 +2949,15 @@ msgstr ""
 #: src/components/Stations/Reports/Overview/CommonMetricsView.vue:88
 #: src/components/Stations/Reports/Overview/ListeningTimeTab.vue:55
 #: src/components/Stations/Reports/Timeline.vue:146
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Frontend/Dashboard/ChartsAction.php:182
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ByCountry.php:74
 #: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ByClient.php:81
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ByListeningTime.php:85
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ByStream.php:98
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ByListeningTime.php:86
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ByCountry.php:74
 #: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ChartsAction.php:82
 #: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ChartsAction.php:132
 #: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ChartsAction.php:220
 #: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ByBrowser.php:61
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ByStream.php:98
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Frontend/Dashboard/ChartsAction.php:182
 msgid "Listeners"
 msgstr "Слухачі"
 
@@ -3060,7 +3102,7 @@ msgstr "Основний вміст повідомлення"
 msgid "Make HLS Stream Default in Public Player"
 msgstr "Зробити HLS-потік типовим для публічного плеєра"
 
-#: src/components/Stations/Media/MediaToolbar.vue:144
+#: src/components/Stations/Media/MediaToolbar.vue:154
 msgid "Make the selected media play immediately, interrupting existing media"
 msgstr "Зробити вибраний медіа-файл програванням без затримок, перериваючи поточний медіа-файл"
 
@@ -3082,7 +3124,7 @@ msgstr "Керування обліковими записами SFTP"
 msgid "Manage Stations"
 msgstr "Керування станціями"
 
-#: src/components/Admin/Stations/Form/BackendForm.vue:185
+#: src/components/Admin/Stations/Form/BackendForm.vue:197
 msgid "Manual AutoDJ Mode"
 msgstr "Ручний режим AutoDJ"
 
@@ -3102,23 +3144,23 @@ msgstr "Вручну визначте, як цей список відтворе
 msgid "Markdown"
 msgstr "Markdown"
 
-#: src/components/Admin/Stations/Form/BackendForm.vue:88
+#: src/components/Admin/Stations/Form/BackendForm.vue:90
 msgid "Master_me is an open-source automatic mastering plugin for streaming, podcasts and Internet radio."
 msgstr "Master_me - це відкрите програмне забезпечення для автоматичного мастерингу, яке призначено для стрімінгу, подкастів і інтернет-радіо."
 
-#: src/components/Admin/Stations/Form/BackendForm.vue:118
+#: src/components/Admin/Stations/Form/BackendForm.vue:120
 msgid "Master_me Loudness Target (LUFS)"
 msgstr "Цільовий рівень гучності (LUFS) для Master_me"
 
-#: src/components/Admin/Stations/Form/BackendForm.vue:434
+#: src/components/Admin/Stations/Form/BackendForm.vue:452
 msgid "Master_me Post-processing"
 msgstr "Master_me Постобробка"
 
-#: src/components/Admin/Stations/Form/BackendForm.vue:109
+#: src/components/Admin/Stations/Form/BackendForm.vue:111
 msgid "Master_me Preset"
 msgstr "Master_me Preset"
 
-#: src/components/Admin/Stations/Form/BackendForm.vue:96
+#: src/components/Admin/Stations/Form/BackendForm.vue:98
 msgid "Master_me Project Homepage"
 msgstr "Домашня сторінка проєкту Master_me"
 
@@ -3130,7 +3172,7 @@ msgstr "Деталі облікового запису Mastodon"
 msgid "Mastodon Instance URL"
 msgstr "URL інстанції Mastodon"
 
-#: src/entities/Webhooks.ts:119
+#: src/entities/Webhooks.ts:124
 msgid "Mastodon Post"
 msgstr "Mastodon Post"
 
@@ -3138,7 +3180,7 @@ msgstr "Mastodon Post"
 msgid "Matched"
 msgstr "Збігається"
 
-#: src/entities/Webhooks.ts:127
+#: src/entities/Webhooks.ts:132
 msgid "Matomo Analytics Integration"
 msgstr "Інтеграція Matomo Analytics"
 
@@ -3303,7 +3345,7 @@ msgstr "Змінено"
 msgid "Monday"
 msgstr "Понеділок"
 
-#: src/components/Stations/Media/MediaToolbar.vue:124
+#: src/components/Stations/Media/MediaToolbar.vue:134
 #: src/components/Stations/Playlists.vue:172
 msgid "More"
 msgstr "Більше"
@@ -3339,7 +3381,7 @@ msgstr "Точки підключення"
 msgid "Mount points are how listeners connect and listen to your station. Each mount point can be a different audio format or quality. Using mount points, you can set up a high-quality stream for broadband listeners and a mobile stream for phone users."
 msgstr "Точки підключення - це те, як слухачі підключаються та слухають вашу станцію. Кожна точка підключення може бути в іншому форматі аудіо або якості. За допомогою точок підключення, ви можете налаштувати потік високої якості для користувачів з високою швидкістю Інтернету і мобільний потік для користувачів з мобільними пристроями."
 
-#: src/components/Stations/Media/MediaToolbar.vue:110
+#: src/components/Stations/Media/MediaToolbar.vue:119
 msgid "Move"
 msgstr "Перемістити"
 
@@ -3373,7 +3415,7 @@ msgstr ""
 msgid "Music Files"
 msgstr "Музичні файли"
 
-#: src/components/Admin/Stations/Form/BackendForm.vue:461
+#: src/components/Admin/Stations/Form/BackendForm.vue:479
 msgid "Music General"
 msgstr "Музика (Загальна)"
 
@@ -3441,7 +3483,7 @@ msgstr "Створено новий каталог."
 msgid "New File Name"
 msgstr "Назва нового файлу"
 
-#: src/components/Stations/Media/MediaToolbar.vue:183
+#: src/components/Stations/Media/MediaToolbar.vue:194
 msgid "New Folder"
 msgstr "Нова тека"
 
@@ -3454,7 +3496,7 @@ msgstr "Згенеровано новий ключ"
 msgid "New Password"
 msgstr "Новий пароль"
 
-#: src/components/Stations/Media/MediaToolbar.vue:78
+#: src/components/Stations/Media/MediaToolbar.vue:86
 msgid "New Playlist"
 msgstr "Новий плейлист"
 
@@ -3475,7 +3517,7 @@ msgid "Next Run"
 msgstr "Наступний запуск"
 
 #: src/components/Admin/Relays.vue:41
-#: src/components/Stations/PodcastEpisodes.vue:102
+#: src/components/Stations/PodcastEpisodes.vue:112
 msgid "No"
 msgstr "Ні"
 
@@ -3483,7 +3525,7 @@ msgstr "Ні"
 msgid "No AutoDJ Enabled"
 msgstr "AutoDJ не ввімкнено"
 
-#: src/components/Stations/Media/useHandleBatchResponse.ts:18
+#: src/components/Stations/Media/MediaToolbar.vue:276
 msgid "No files selected."
 msgstr "Файли не вибрано."
 
@@ -3500,7 +3542,7 @@ msgstr "Немає відповідностей"
 msgid "No other program can be using this port. Leave blank to automatically assign a port."
 msgstr "Жодна інша програма не може використовувати цей порт. Залиште поле порожнім для автоматичного призначення порту."
 
-#: src/components/Admin/Stations/Form/BackendForm.vue:426
+#: src/components/Admin/Stations/Form/BackendForm.vue:444
 msgid "No Post-processing"
 msgstr "Без постобробки"
 
@@ -3519,7 +3561,7 @@ msgstr "Записів немає."
 msgid "None"
 msgstr "Не вибрано"
 
-#: src/components/Admin/Stations/Form/BackendForm.vue:413
+#: src/components/Admin/Stations/Form/BackendForm.vue:431
 msgid "Normal Mode"
 msgstr "Звичайний режим"
 
@@ -3607,7 +3649,7 @@ msgstr "Кількість резервних копій для збережен
 msgid "Number of Minutes Between Plays"
 msgstr "Кількість хвилин між відтворенням пісень"
 
-#: src/components/Admin/Stations/Form/BackendForm.vue:39
+#: src/components/Admin/Stations/Form/BackendForm.vue:40
 msgid "Number of seconds to overlap songs."
 msgstr "Тривалість злиття пісень у секундах."
 
@@ -3707,7 +3749,7 @@ msgstr "Додатково: Ім'я користувача для базової
 msgid "Optional: Request Timeout (Seconds)"
 msgstr "Додатково: Тайм-аут запиту (у секундах)"
 
-#: src/components/Stations/Podcasts/EpisodeForm/BasicInfo.vue:64
+#: src/components/Stations/Podcasts/EpisodeForm/BasicInfo.vue:62
 msgid "Optionally list this episode as part of a season in some podcast aggregators."
 msgstr ""
 
@@ -3715,7 +3757,7 @@ msgstr ""
 msgid "Optionally select an ID3v2 metadata field that, if present, will be used to set this field's value."
 msgstr "За потреби виберіть поле метаданих ID3v2, якщо воно присутнє, щоб встановити значення цього поля."
 
-#: src/components/Stations/Podcasts/EpisodeForm/BasicInfo.vue:75
+#: src/components/Stations/Podcasts/EpisodeForm/BasicInfo.vue:73
 msgid "Optionally set a specific episode number in some podcast aggregators."
 msgstr ""
 
@@ -3802,7 +3844,7 @@ msgstr "Дозволи"
 msgid "Play"
 msgstr "Відтворити"
 
-#: src/components/Stations/Media/MediaToolbar.vue:147
+#: src/components/Stations/Media/MediaToolbar.vue:157
 msgid "Play Now"
 msgstr "Відтворити зараз"
 
@@ -3896,18 +3938,18 @@ msgstr "Плейлист:"
 #: src/components/Stations/Media.vue:344
 #: src/components/Stations/Media/EditModal.vue:15
 #: src/components/Stations/Media/Form/Playlists.vue:9
-#: src/components/Stations/Media/MediaToolbar.vue:18
+#: src/components/Stations/Media/MediaToolbar.vue:26
 #: src/components/Stations/menu.ts:141
 #: src/components/Stations/Playlists.vue:14
 #: src/components/Stations/Profile/BackendPanel.vue:37
 msgid "Playlists"
 msgstr "Плейлисти"
 
-#: src/components/Stations/Media/MediaToolbar.vue:339
+#: src/components/Stations/Media/MediaToolbar.vue:361
 msgid "Playlists cleared for selected files:"
 msgstr "Плейлисти очищені для вибраних файлів:"
 
-#: src/components/Stations/Media/MediaToolbar.vue:338
+#: src/components/Stations/Media/MediaToolbar.vue:360
 msgid "Playlists updated for selected files:"
 msgstr "Плейлисти оновлені для вибраних файлів:"
 
@@ -3955,10 +3997,6 @@ msgstr "Порт"
 msgid "Port:"
 msgstr "Порт:"
 
-#: src/components/Admin/Stations/Form/BackendForm.vue:49
-msgid "Post-processing allows you to apply audio processors (like compressors, limiters, or equalizers) to your stream to create a more uniform sound or enhance the listening experience. Post-processing requires extra CPU resources, so it may slow down your server."
-msgstr "Постобробка дозволяє застосовувати аудіопроцесори (такі як компресори, лімітери або еквалайзери) до потоку, щоб створити більш однорідний звук або покращити відчуття від прослуховування. Після обробки вимагає додаткових ресурсів процесора, тому це може сповільнити роботу вашого сервера."
-
 #: src/components/PanelLayout.vue:160
 msgid "Powered by"
 msgstr "Працює на"
@@ -3998,7 +4036,7 @@ msgstr "Профіль"
 msgid "Programmatic Name"
 msgstr "Системне ім'я"
 
-#: src/components/Admin/Stations/Form/BackendForm.vue:151
+#: src/components/Admin/Stations/Form/BackendForm.vue:153
 msgid "Provide a valid license key from Thimeo. Functionality is limited without a license key."
 msgstr "Надайте дійсний ліцензійний ключ від Thimeo. Функціональність обмежена без ліцензійного ключа."
 
@@ -4008,7 +4046,7 @@ msgstr "Публічний"
 
 #: src/components/Dashboard.vue:172
 #: src/components/Stations/menu.ts:61
-#: src/components/Stations/PodcastEpisodes.vue:73
+#: src/components/Stations/PodcastEpisodes.vue:83
 #: src/components/Stations/Podcasts.vue:43
 #: src/components/Stations/Profile/PublicPagesPanel.vue:21
 msgid "Public Page"
@@ -4024,28 +4062,22 @@ msgstr "Фон публічної сторінки"
 msgid "Public Pages"
 msgstr "Публічні сторінки"
 
-#: src/components/Stations/PodcastEpisodes.vue:197
+#: src/components/Stations/PodcastEpisodes.vue:218
+#: src/components/Stations/Podcasts/BatchEditModal.vue:24
+#: src/components/Stations/Podcasts/EpisodeForm/BasicInfo.vue:35
 msgid "Publish At"
 msgstr ""
-
-#: src/components/Stations/Podcasts/EpisodeForm/BasicInfo.vue:36
-msgid "Publish Date"
-msgstr "Дата публікації"
-
-#: src/components/Stations/Podcasts/EpisodeForm/BasicInfo.vue:45
-msgid "Publish Time"
-msgstr "Час публікації"
 
 #: src/components/Stations/Mounts/Form/BasicInfo.vue:53
 #: src/components/Stations/Remotes/Form/AutoDj.vue:76
 msgid "Publish to \"Yellow Pages\" Directories"
 msgstr "Опублікувати в довідник \"Yellow Pages\""
 
-#: src/components/Stations/Media/MediaToolbar.vue:136
+#: src/components/Stations/Media/MediaToolbar.vue:146
 msgid "Queue"
 msgstr "Черга"
 
-#: src/components/Stations/Media/MediaToolbar.vue:132
+#: src/components/Stations/Media/MediaToolbar.vue:142
 msgid "Queue the selected media to play next"
 msgstr "Поставити в чергу обрану медіа для відтворення наступною"
 
@@ -4053,7 +4085,7 @@ msgstr "Поставити в чергу обрану медіа для відт
 msgid "Radio Player"
 msgstr "Радіоплеєр"
 
-#: src/entities/Webhooks.ts:103
+#: src/entities/Webhooks.ts:104
 msgid "Radio.de"
 msgstr "Radio.de"
 
@@ -4063,6 +4095,18 @@ msgstr "Radio.de API Key"
 
 #: src/components/Stations/Webhooks/Form/RadioDe.vue:11
 msgid "Radio.de Broadcast Subdomain"
+msgstr ""
+
+#: src/components/Stations/Webhooks/Form/RadioReg.vue:18
+msgid "RadioRed Organization API Key"
+msgstr ""
+
+#: src/components/Stations/Webhooks/Form/RadioReg.vue:11
+msgid "RadioReg Webhook URL"
+msgstr ""
+
+#: src/entities/Webhooks.ts:108
+msgid "RadioReg.net"
 msgstr ""
 
 #: src/components/Stations/Playlists/Form/BasicInfo.vue:342
@@ -4259,7 +4303,7 @@ msgstr "Замінити обкладинку альбому"
 msgid "Reports"
 msgstr "Звіти"
 
-#: src/components/Stations/Media/MediaToolbar.vue:157
+#: src/components/Stations/Media/MediaToolbar.vue:167
 msgid "Reprocess"
 msgstr "Повторний аналіз"
 
@@ -4391,7 +4435,7 @@ msgstr "Частота дискретизації"
 msgid "Saturday"
 msgstr "Субота"
 
-#: src/components/Stations/Media/MediaToolbar.vue:88
+#: src/components/Stations/Media/MediaToolbar.vue:96
 msgid "Save"
 msgstr "Зберегти"
 
@@ -4407,6 +4451,7 @@ msgstr "Зберегти та продовжити"
 #: src/components/Common/ModalForm.vue:50
 #: src/components/Stations/Branding/BrandingForm.vue:79
 #: src/components/Stations/LiquidsoapConfig.vue:71
+#: src/components/Stations/Podcasts/BatchEditModal.vue:58
 msgid "Save Changes"
 msgstr "Зберегти зміни"
 
@@ -4460,8 +4505,9 @@ msgstr "Планувальник"
 msgid "Search"
 msgstr "Пошук"
 
-#: src/components/Stations/PodcastEpisodes.vue:210
-#: src/components/Stations/Podcasts/EpisodeForm/BasicInfo.vue:63
+#: src/components/Stations/PodcastEpisodes.vue:231
+#: src/components/Stations/Podcasts/BatchEditModal.vue:26
+#: src/components/Stations/Podcasts/EpisodeForm/BasicInfo.vue:61
 msgid "Season Number"
 msgstr ""
 
@@ -4472,6 +4518,10 @@ msgstr "Секунди від початку пісні, яку AutoDJ пови�
 #: src/components/Stations/Media/Form/AdvancedSettings.vue:72
 msgid "Seconds from the start of the song that the AutoDJ should stop playing."
 msgstr "Через скільки секунд від початку пісні AutoDJ має припинити відтворення."
+
+#: src/components/Stations/Media/Form/AdvancedSettings.vue:28
+msgid "Seconds from the start of the song that the next song should begin when fading. Leave blank to use the system default."
+msgstr ""
 
 #: src/components/Admin/StorageLocations/Form/S3.vue:18
 msgid "Secret Key"
@@ -4522,7 +4572,7 @@ msgstr "Виберіть тему, яку використовуватимете
 msgid "Select All Rows"
 msgstr ""
 
-#: src/components/Admin/Stations/Form/BackendForm.vue:66
+#: src/components/Admin/Stations/Form/BackendForm.vue:68
 msgid "Select an option here to apply post-processing using an easy preset or tool. You can also manually apply post-processing by editing your Liquidsoap configuration manually."
 msgstr "Виберіть опцію тут, щоб застосувати постобробку за допомогою простого стилю або інструменту. Ви також можете вручну застосувати постобробку, відредагувавши конфігурацію Liquidsoap вручну."
 
@@ -4580,32 +4630,33 @@ msgstr "Виберіть категорію або категорії, які н
 msgid "Select the countries that are not allowed to connect to the streams."
 msgstr "Виберіть країни, яким не дозволено підключатися до потоків."
 
-#: src/components/Stations/Webhooks/EditModal.vue:162
+#: src/components/Stations/Webhooks/EditModal.vue:164
 msgid "Select Web Hook Type"
 msgstr "Виберіть тип веб-хука"
 
-#: src/entities/Webhooks.ts:96
+#: src/entities/Webhooks.ts:97
 msgid "Send an e-mail to specified address(es)."
 msgstr "Відправити електронну пошту на вказані адреси."
 
-#: src/entities/Webhooks.ts:95
+#: src/entities/Webhooks.ts:96
 msgid "Send E-mail"
 msgstr "Відправити E-mail"
 
-#: src/entities/Webhooks.ts:108
+#: src/entities/Webhooks.ts:113
 msgid "Send song metadata changes to %{service}"
 msgstr ""
 
-#: src/entities/Webhooks.ts:100
-#: src/entities/Webhooks.ts:104
+#: src/entities/Webhooks.ts:101
+#: src/entities/Webhooks.ts:105
+#: src/entities/Webhooks.ts:109
 msgid "Send song metadata changes to %{service}."
 msgstr ""
 
-#: src/entities/Webhooks.ts:124
+#: src/entities/Webhooks.ts:129
 msgid "Send stream listener details to Google Analytics."
 msgstr "Відправити деталі слухачів потоку до Google Analytics."
 
-#: src/entities/Webhooks.ts:128
+#: src/entities/Webhooks.ts:133
 msgid "Send stream listener details to Matomo Analytics."
 msgstr "Відправити деталі слухачів потоку до аналітики Matomo."
 
@@ -4671,13 +4722,13 @@ msgstr "Мітка старту Fade"
 msgid "Set Fade Out"
 msgstr "Мітка кінця Fade"
 
+#: src/components/Stations/Media/Form/WaveformEditor.vue:56
+msgid "Set Fade Start Next"
+msgstr ""
+
 #: src/components/Admin/Settings/GeneralTab.vue:54
 msgid "Set longer to preserve more playback history and listener metadata for stations. Set shorter to save disk space."
 msgstr "Встановіть більшу тривалість, щоб зберегти більше історії відтворення та метаданих слухача для станцій. Встановіть меншу тривалість, щоб заощадити дисковий простір."
-
-#: src/components/Stations/Media/Form/WaveformEditor.vue:56
-msgid "Set Overlap"
-msgstr "Мітка перекриття"
 
 #: src/components/Stations/Mounts/Form/BasicInfo.vue:69
 msgid "Set the length of time (seconds) a listener will stay connected to the stream. If set to 0, listeners can stay connected infinitely."
@@ -4839,7 +4890,7 @@ msgstr "Пропустити пісню"
 msgid "Skip to main content"
 msgstr "Перейти до основного вмісту"
 
-#: src/components/Admin/Stations/Form/BackendForm.vue:409
+#: src/components/Admin/Stations/Form/BackendForm.vue:427
 msgid "Smart Mode"
 msgstr "Режим Smart"
 
@@ -4971,7 +5022,7 @@ msgstr "Укажіть точку монтування (наприклад «/ra
 msgid "Specify the minute of every hour that this playlist should play."
 msgstr "Вкажіть хвилину кожної години, коли цей плейлист має бути зіграний."
 
-#: src/components/Admin/Stations/Form/BackendForm.vue:465
+#: src/components/Admin/Stations/Form/BackendForm.vue:483
 msgid "Speech General"
 msgstr "Загальні налаштування мовлення"
 
@@ -5124,12 +5175,12 @@ msgstr "Крок 2. Перевірте згенерований код"
 msgid "Steps for configuring a Mastodon application:"
 msgstr "Кроки для налаштування програми Mastodon:"
 
-#: src/components/Admin/Stations/Form/BackendForm.vue:128
-#: src/components/Admin/Stations/Form/BackendForm.vue:442
+#: src/components/Admin/Stations/Form/BackendForm.vue:130
+#: src/components/Admin/Stations/Form/BackendForm.vue:460
 msgid "Stereo Tool"
 msgstr ""
 
-#: src/components/Admin/Stations/Form/BackendForm.vue:139
+#: src/components/Admin/Stations/Form/BackendForm.vue:141
 #: src/components/Stations/StereoToolConfig.vue:24
 msgid "Stereo Tool documentation."
 msgstr "Документація Stereo Tool."
@@ -5142,7 +5193,7 @@ msgstr "Завантаження Stereo Tool"
 msgid "Stereo Tool is a popular, proprietary tool for software audio processing. Using Stereo Tool, you can customize the sound of your stations using preset configuration files."
 msgstr "Stereo Tool — це популярний запатентований інструмент для програмної обробки звуку. Використовуючи Stereo Tool, ви можете налаштувати звучання своїх станцій за допомогою попередньо встановлених файлів конфігурації."
 
-#: src/components/Admin/Stations/Form/BackendForm.vue:133
+#: src/components/Admin/Stations/Form/BackendForm.vue:135
 #: src/components/Stations/StereoToolConfig.vue:18
 msgid "Stereo Tool is an industry standard for software audio processing. For more information on how to configure it, please refer to the"
 msgstr "Stereo Tool — це галузевий стандарт програмної обробки звуку. Для отримання додаткової інформації про те, як його налаштувати, зверніться до"
@@ -5155,7 +5206,7 @@ msgstr "Stereo Tool наразі не інстальовано."
 msgid "Stereo Tool is not free software, and its restrictive license does not allow AzuraCast to distribute the Stereo Tool binary."
 msgstr "Stereo Tool не є безкоштовним програмним забезпеченням, і його обмежувальна ліцензія не дозволяє AzuraCast поширювати двійковий файл Stereo Tool."
 
-#: src/components/Admin/Stations/Form/BackendForm.vue:150
+#: src/components/Admin/Stations/Form/BackendForm.vue:152
 msgid "Stereo Tool License Key"
 msgstr "Ліцензійний ключ Stereo Tool"
 
@@ -5288,8 +5339,8 @@ msgstr "Обслуговування системи"
 #: src/components/Admin/menu.ts:18
 #: src/components/Admin/Settings.vue:19
 #: src/components/Setup/SetupStep.vue:34
-#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/BaseUrlCheck.php:58
 #: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/SetupController.php:174
+#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/BaseUrlCheck.php:58
 msgid "System Settings"
 msgstr "Налаштування системи"
 
@@ -5301,7 +5352,7 @@ msgstr "Цільова"
 msgid "Task Name"
 msgstr "Назва завдання"
 
-#: src/entities/Webhooks.ts:115
+#: src/entities/Webhooks.ts:120
 msgid "Telegram Chat Message"
 msgstr "Повідомлення у чат Telegram"
 
@@ -5321,7 +5372,7 @@ msgstr "Дякуємо, що слухаєте %{ station }!"
 msgid "The amount of memory Linux is using for disk caching."
 msgstr "Обсяг пам’яті, який Linux використовує для кешування диска."
 
-#: src/components/Admin/Stations/Form/BackendForm.vue:119
+#: src/components/Admin/Stations/Form/BackendForm.vue:121
 msgid "The average target loudness (measured in LUFS) for the broadcasted stream. Values between -14 and -18 LUFS are common for Internet radio stations."
 msgstr "Середня цільова гучність (виміряна в LUFS) для трансльованого потоку. Значення від -14 до -18 LUFS є звичайними для інтернет-радіостанцій."
 
@@ -5345,9 +5396,9 @@ msgstr "Поточне використання ЦП, включаючи очі�
 msgid "The current Memory usage excluding cached memory."
 msgstr "Поточне використання пам’яті за винятком кешованої пам’яті."
 
-#: src/components/Stations/Podcasts/EpisodeForm/BasicInfo.vue:37
-msgid "The date when the episode should be published."
-msgstr "Дата, коли потрібно опублікувати епізод."
+#: src/components/Stations/Podcasts/EpisodeForm/BasicInfo.vue:36
+msgid "The date and time when the episode should be published."
+msgstr ""
 
 #: src/components/Stations/Podcasts/EpisodeForm/BasicInfo.vue:28
 msgid "The description of the episode. The typical maximum amount of text allowed for this is 4000 characters."
@@ -5445,14 +5496,6 @@ msgstr "Проміжок часу, протягом якого пісня пов
 msgid "The time period that the song should fade out. Leave blank to use the system default."
 msgstr "Проміжок часу, протягом якого пісня повинна поступово затухати. Залиште поле порожнім, щоб використовувати системне значення за замовчуванням."
 
-#: src/components/Stations/Media/Form/AdvancedSettings.vue:28
-msgid "The time that this song should overlap its surrounding songs when fading. Leave blank to use the system default."
-msgstr "Час, протягом якого ця пісня повинна накладатися на іншу наступну пісню під час затухання. Залиште поле порожнім, щоб використовувати системне значення за замовчуванням."
-
-#: src/components/Stations/Podcasts/EpisodeForm/BasicInfo.vue:46
-msgid "The time when the episode should be published (according to the stations timezone)."
-msgstr "Час, коли має бути опублікований випуск (відповідно до часового поясу станцій)."
-
 #: src/components/Stations/Webhooks/Form/Generic.vue:45
 msgid "The URL that will receive the POST messages any time an event is triggered."
 msgstr "URL, який отримує POST-повідомлення кожного разу, коли відбувається подія."
@@ -5521,7 +5564,7 @@ msgstr "Цей CSS буде застосовано до публічних ст�
 msgid "This CSS will be applied to the station public pages."
 msgstr "Цей CSS буде застосовано до публічних сторінок станції."
 
-#: src/components/Admin/Stations/Form/BackendForm.vue:228
+#: src/components/Admin/Stations/Form/BackendForm.vue:240
 msgid "This determines how many songs in advance the AutoDJ will automatically fill the queue."
 msgstr "Це визначає, скільки пісень заздалегідь AutoDJ автоматично заповнить чергу."
 
@@ -5613,7 +5656,7 @@ msgstr "Цей код JavaScript буде застосовано до публі
 msgid "This javascript code will be applied to the station public pages."
 msgstr "Цей код JavaScript буде застосовано до публічних сторінок станції."
 
-#: src/components/Admin/Stations/Form/BackendForm.vue:189
+#: src/components/Admin/Stations/Form/BackendForm.vue:201
 msgid "This mode disables AzuraCast's AutoDJ management, using Liquidsoap itself to manage song playback. \"next song\" and some other features will not be available."
 msgstr "У цьому режимі вимикається автоматичне керування AutoDJ AzuraCast, а сам Liquidsoap використовується для управління відтворенням пісень. \"Наступна пісня\" та деякі інші функції не будуть доступні."
 
@@ -5653,7 +5696,7 @@ msgstr "Цей плейлист буде відтворюватися кожні
 msgid "This podcast is automatically synchronized with a playlist. Episodes cannot be manually added or removed via this panel."
 msgstr ""
 
-#: src/components/Admin/Stations/Form/BackendForm.vue:218
+#: src/components/Admin/Stations/Form/BackendForm.vue:230
 msgid "This port is not used by any external process. Only modify this port if the assigned port is in use. Leave blank to automatically assign a port."
 msgstr "Цей порт не використовується жодним зовнішнім процесом. Змінюйте цей порт, лише якщо призначений порт використовується. Залиште поле порожнім, щоб автоматично призначити порт."
 
@@ -5677,7 +5720,7 @@ msgstr "Це програмне забезпечення постійно пер
 msgid "This specifies the minimum time (in minutes) between a song playing on the radio and being available to request again. Set to 0 for no threshold."
 msgstr "Це вказує мінімальний проміжок часу (у хвилинах) між звучанням пісні на радіо та можливістю повторного запиту. Встановіть 0, щоб порогу не було."
 
-#: src/components/Admin/Stations/Form/BackendForm.vue:260
+#: src/components/Admin/Stations/Form/BackendForm.vue:272
 msgid "This specifies the time range (in minutes) of the song history that the duplicate song prevention algorithm should take into account."
 msgstr "Це вказує часовий діапазон (у хвилинах) історії пісень, який повинен враховувати алгоритм запобігання повторюваним композиціям."
 
@@ -5871,7 +5914,7 @@ msgstr "Тригери"
 msgid "Tuesday"
 msgstr "Вівторок"
 
-#: src/entities/Webhooks.ts:99
+#: src/entities/Webhooks.ts:100
 msgid "TuneIn AIR"
 msgstr ""
 
@@ -5957,7 +6000,7 @@ msgstr "Включити звук"
 msgid "Unprocessable Files"
 msgstr "Неопрацьовані файли"
 
-#: src/components/Stations/PodcastEpisodes.vue:80
+#: src/components/Stations/PodcastEpisodes.vue:90
 #: src/components/Stations/Podcasts.vue:60
 msgid "Unpublished"
 msgstr ""
@@ -6028,7 +6071,7 @@ msgstr "Оновлено"
 msgid "Updated successfully."
 msgstr "Оновлено успішно."
 
-#: src/components/Admin/Stations/Form/BackendForm.vue:164
+#: src/components/Admin/Stations/Form/BackendForm.vue:166
 msgid "Upload a Stereo Tool configuration file from the \"Broadcasting\" submenu in the station profile."
 msgstr "Завантажте файл конфігурації Stereo Tool з підменю \"Трансляція\" у профілі станції."
 
@@ -6037,7 +6080,7 @@ msgstr "Завантажте файл конфігурації Stereo Tool з п
 msgid "Upload Custom Assets"
 msgstr "Завантаження користувацьких ресурсів"
 
-#: src/components/Admin/Stations/Form/BackendForm.vue:159
+#: src/components/Admin/Stations/Form/BackendForm.vue:161
 #: src/components/Stations/menu.ts:281
 #: src/components/Stations/StereoToolConfig.vue:12
 msgid "Upload Stereo Tool Configuration"
@@ -6080,15 +6123,15 @@ msgstr "Використовувати високопродуктивні оно
 msgid "Use Icecast 2.4 on this server."
 msgstr "Використовуйте Icecast 2.4 на цьому сервері."
 
-#: src/components/Admin/Stations/Form/BackendForm.vue:494
+#: src/components/Admin/Stations/Form/BackendForm.vue:512
 msgid "Use Less CPU (Uses More Memory)"
 msgstr "Використовувати менше ЦП (використовуйте більше ОЗУ)"
 
-#: src/components/Admin/Stations/Form/BackendForm.vue:486
+#: src/components/Admin/Stations/Form/BackendForm.vue:504
 msgid "Use Less Memory (Uses More CPU)"
 msgstr "Використовувати менше ОЗУ (використовує більше ЦП)"
 
-#: src/components/Admin/Stations/Form/BackendForm.vue:396
+#: src/components/Admin/Stations/Form/BackendForm.vue:414
 msgid "Use Liquidsoap on this server."
 msgstr "Використовуйте Liquidsoap на цьому сервері."
 
@@ -6096,7 +6139,7 @@ msgstr "Використовуйте Liquidsoap на цьому сервері."
 msgid "Use Path Instead of Subdomain Endpoint Style"
 msgstr ""
 
-#: src/components/Admin/Stations/Form/BackendForm.vue:198
+#: src/components/Admin/Stations/Form/BackendForm.vue:210
 msgid "Use Replaygain Metadata"
 msgstr "Використовувати метадані Replaygain"
 
@@ -6108,7 +6151,7 @@ msgstr "Використовувати безпечне (TLS) SMTP з'єднан
 msgid "Use Shoutcast DNAS 2 on this server."
 msgstr "Використовуйте Shoutcast DNAS 2 на цьому сервері."
 
-#: src/entities/Webhooks.ts:116
+#: src/entities/Webhooks.ts:121
 msgid "Use the Telegram Bot API to send a message to a channel."
 msgstr "Використовуйте Telegram Bot API, щоб надіслати повідомлення на канал."
 
@@ -6364,12 +6407,17 @@ msgstr "AutoDJ повинен намагатися уникати дублюва
 msgid "Widget Type"
 msgstr "Тип віджета"
 
+#: src/components/Stations/Media/MediaToolbar.vue:8
+#: src/components/Stations/Podcasts/EpisodesToolbar.vue:4
+msgid "With selected:"
+msgstr ""
+
 #: src/components/Stations/Reports/Overview/BestAndWorstTab.vue:50
 msgid "Worst Performing Songs"
 msgstr "Найгірші програні пісні"
 
 #: src/components/Admin/Relays.vue:38
-#: src/components/Stations/PodcastEpisodes.vue:99
+#: src/components/Stations/PodcastEpisodes.vue:109
 msgid "Yes"
 msgstr "Так"
 
@@ -6450,956 +6498,13 @@ msgstr ""
 msgid "Your station supports reloading configuration."
 msgstr "Ваша станція підтримує перезавантаження конфігурації."
 
-#: src/components/Admin/Stations/Form/BackendForm.vue:477
+#: src/components/Admin/Stations/Form/BackendForm.vue:495
 msgid "YouTube"
 msgstr ""
 
 #: src/components/Stations/Mounts/Form/BasicInfo.vue:77
 msgid "YP Directory Authorization Hash"
 msgstr "Хеш авторизації каталогу \"Жовтих сторінок\""
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/Repository/StationRequestRepository.php:73
-msgid "Search engine crawlers are not permitted to use this feature."
-msgstr "Роботам пошукових систем заборонено використовувати цю функцію."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/Repository/StationRequestRepository.php:80
-msgid "You are not permitted to submit requests."
-msgstr "Вам не дозволено подавати запити."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/Repository/StationRequestRepository.php:89
-msgid "This track is not requestable."
-msgstr ""
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/Repository/StationRequestRepository.php:121
-msgid "You have submitted a request too recently! Please wait before submitting another one."
-msgstr "Ви недавно подали запит! Зачекайте, перш ніж подавати наступний."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/Repository/StationRequestRepository.php:167
-msgid "This song was already requested and will play soon."
-msgstr ""
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/Repository/StationRequestRepository.php:247
-msgid "This song or artist has been played too recently. Wait a while before requesting it again."
-msgstr "Ця пісня або виконавець вже були недавно відтворені. Зачекайте трохи часу перед тим, як подати запит знову."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/ApiGenerator/ScheduleApiGenerator.php:59
-#, php-format
-msgid "Playlist: %s"
-msgstr "Плейлист: %s"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/ApiGenerator/ScheduleApiGenerator.php:64
-#, php-format
-msgid "Streamer: %s"
-msgstr "Стрімер: %s"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/Api/Status.php:33
-msgid "Changes saved successfully."
-msgstr "Зміни успішно збережено."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/Api/Status.php:38
-msgid "Record created successfully."
-msgstr "Запис успішно створено."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/Api/Status.php:43
-msgid "Record updated successfully."
-msgstr "Запис успішно оновлено."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/Api/Status.php:48
-msgid "Record deleted successfully."
-msgstr "Запис успішно видалено."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/Api/Error.php:71
-msgid "Record not found"
-msgstr "Запис не знайдено"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/Api/Error.php:77
-msgid "The uploaded file exceeds the upload_max_filesize directive in php.ini."
-msgstr "Завантажений файл перевищує директиву upload_max_filesize в php.ini."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/Api/Error.php:78
-msgid "The uploaded file exceeds the MAX_FILE_SIZE directive from the HTML form."
-msgstr "Завантажений файл перевищує директиву MAX_FILE_SIZE з HTML-форми."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/Api/Error.php:79
-msgid "The uploaded file was only partially uploaded."
-msgstr "Завантажений файл був завантажений лише частково."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/Api/Error.php:80
-msgid "No file was uploaded."
-msgstr "Файл не був завантажений."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/Api/Error.php:81
-msgid "No temporary directory is available."
-msgstr "Тимчасовий каталог відсутній."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/Api/Error.php:82
-msgid "Could not write to filesystem."
-msgstr "Не вдалося записати у файлову систему."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/Api/Error.php:83
-msgid "Upload halted by a PHP extension."
-msgstr "Завантаження припинено через розширення PHP."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/Api/Error.php:84
-msgid "Unspecified error."
-msgstr "Невизначена помилка."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/UpdateCheck.php:54
-msgid "New AzuraCast Stable Release Available"
-msgstr "Доступна нова стабільна версія AzuraCast"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/UpdateCheck.php:58
-#, php-format
-msgid "Version %s is now available. You are currently running version %s. Updating is recommended."
-msgstr "Версія %s тепер доступна. Зараз ви використовуєте версію %s. Рекомендовано оновлення."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/UpdateCheck.php:75
-msgid "New AzuraCast Rolling Release Available"
-msgstr "Доступна нова версія AzuraCast Rolling Release"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/UpdateCheck.php:79
-#, php-format
-msgid "Your installation is currently %d update(s) behind the latest version. Updating is recommended."
-msgstr "Зараз ваша інсталяція на %d оновлення(ь) відстає від останньої версії. Рекомендовано оновлення."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/UpdateCheck.php:93
-msgid "Switch to Stable Channel Available"
-msgstr "Доступно перемикання на стабільний канал"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/UpdateCheck.php:96
-msgid "Your Rolling Release installation is currently older than the latest Stable release. This means you can switch releases to the \"Stable\" release channel if desired."
-msgstr "Ваша інсталяція Rolling Release наразі є старішою за останню стабільну версію. Це означає, що ви можете перемкнутись на канал \"Стабільних\" версій, якщо бажаєте."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/BaseUrlCheck.php:42
-msgid "You may want to update your base URL to ensure it is correct."
-msgstr "Ви можете оновити базову URL-адресу, щоб переконатися, що вона правильна."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/BaseUrlCheck.php:45
-msgid "If you regularly use different URLs to access AzuraCast, you should enable the \"Prefer Browser URL\" setting."
-msgstr "Якщо ви регулярно використовуєте різні URL-адреси для доступу до AzuraCast, вам слід увімкнути параметр \"Надавати перевагу URL-адресі браузера\"."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/BaseUrlCheck.php:52
-#, php-format
-msgid "Your \"Base URL\" setting (%s) does not match the URL you are currently using (%s)."
-msgstr "Ваше налаштування \"Базова URL-адреса\" (%s) не відповідає URL-адресі, яку ви зараз використовуєте (%s)."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/DonateAdvisorCheck.php:33
-msgid "AzuraCast is free and open-source software."
-msgstr ""
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/DonateAdvisorCheck.php:34
-msgid "If you are enjoying AzuraCast, please consider donating to support our work. We depend on donations to build new features, fix bugs, and keep AzuraCast modern, accessible and free."
-msgstr ""
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/DonateAdvisorCheck.php:40
-msgid "Donate to AzuraCast"
-msgstr ""
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/ProfilerAdvisorCheck.php:34
-msgid "The performance profiling extension is currently enabled on this installation."
-msgstr "Розширення профілювання продуктивності наразі увімкнено в цій установці."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/ProfilerAdvisorCheck.php:35
-msgid "You can track the execution time and memory usage of any AzuraCast page or application from the profiler page."
-msgstr "Ви можете відстежувати час виконання та використання пам'яті будь-якої сторінки або додатка AzuraCast зі сторінки профілювання."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/ProfilerAdvisorCheck.php:41
-msgid "Profiler Control Panel"
-msgstr "Панель керування профілюванням"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/ProfilerAdvisorCheck.php:53
-msgid "Performance profiling is currently enabled for all requests."
-msgstr "Профілювання продуктивності наразі увімкнено для всіх запитів."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/ProfilerAdvisorCheck.php:54
-msgid "This can have an adverse impact on system performance. You should disable this when possible."
-msgstr "Це може негативно вплинути на продуктивність системи. Ви повинні вимкнути це, коли є можливість."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/ServiceCheck.php:34
-#, php-format
-msgid "Service Not Running: %s"
-msgstr "Служба не працює: %s"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/ServiceCheck.php:35
-msgid "One of the essential services on this installation is not currently running. Visit the system administration and check the system logs to find the cause of this issue."
-msgstr "Одна з необхідних служб у цій установці не працює. Відвідайте адміністрування системи та перевірте системні журнали, щоб знайти причину цієї проблеми."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/SyncTaskCheck.php:36
-msgid "Synchronization Disabled"
-msgstr "Синхронізацію вимкнено"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/SyncTaskCheck.php:37
-msgid "Routine synchronization is currently disabled. Make sure to re-enable it to resume routine maintenance tasks."
-msgstr "Регулярна синхронізація вимкнена. Переконайтеся, що ви знову включили її, щоб продовжити регулярні завдання технічного обслуговування."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/SyncTaskCheck.php:51
-msgid "Synchronization Not Recently Run"
-msgstr "Останнім часом синхронізація не виконувалась"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/SyncTaskCheck.php:52
-msgid "The routine synchronization task has not run recently. This may indicate an error with your installation."
-msgstr "Регулярне завдання синхронізації не виконувалося недавно. Це може свідчити про помилку в установці."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/RecentBackupCheck.php:47
-msgid "Installation Not Recently Backed Up"
-msgstr "Резервна копія установки давня"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/RecentBackupCheck.php:48
-msgid "This installation has not been backed up in the last two weeks."
-msgstr "Резервна копія цієї інсталяції не створювалася протягом останніх двох тижнів."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/ActiveServerCheck.php:32
-msgid "This server is not the current active instance."
-msgstr "Цей сервер не є поточним активним екземпляром."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/ActiveServerCheck.php:33
-msgid "This likely means that multiple AzuraCast instances are connecting to the same database. This instance is not the current active one, so synchronized tasks won't run on this server. If this is intentional, you can disregard this message."
-msgstr "Це, ймовірно, означає, що кілька екземплярів AzuraCast підключені до одної бази даних. Цей екземпляр не є поточним активним, тому синхронізовані завдання не будуть запускатись на цьому сервері. Якщо це було зроблено навмисно, то ви можете не звертати уваги на це повідомлення."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Exception/NotLoggedInException.php:25
-msgid "You must be logged in to access this page."
-msgstr "Ви повинні увійти, щоб отримати доступ до цієї сторінки."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Exception/CannotCompleteActionException.php:26
-#, php-format
-msgid "Cannot submit request: %s"
-msgstr ""
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Exception/PermissionDeniedException.php:25
-msgid "You do not have permission to access this portion of the site."
-msgstr "Ви не маєте дозволу на доступ до цієї частини сайту."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Exception/StationUnsupportedException.php:25
-msgid "This station does not currently support this functionality."
-msgstr ""
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Exception/StationUnsupportedException.php:32
-msgid "This station does not currently support on-demand media."
-msgstr ""
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Exception/StationUnsupportedException.php:39
-msgid "This station does not currently accept requests."
-msgstr ""
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Exception/NotFoundException.php:24
-msgid "Record not found."
-msgstr ""
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Exception/NotFoundException.php:29
-msgid "File not found."
-msgstr ""
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Exception/NotFoundException.php:34
-msgid "Station not found."
-msgstr ""
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Exception/NotFoundException.php:39
-msgid "Podcast not found."
-msgstr ""
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Exception/SupervisorException.php:24
-#, php-format
-msgid "%s is not recognized as a service."
-msgstr "%s не визнаний сервісом."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Exception/SupervisorException.php:27
-msgid "It may not be registered with Supervisor yet. Restarting broadcasting may help."
-msgstr "Цей елемент може ще не бути зареєстрований у диспетчері процесів Supervisor. Спробуйте перезапустити трансляцію, це може допомогти."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Exception/SupervisorException.php:36
-#, php-format
-msgid "%s cannot start"
-msgstr "%s не може почати"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Exception/SupervisorException.php:39
-msgid "It is already running."
-msgstr "Він вже запущений."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Exception/SupervisorException.php:48
-#, php-format
-msgid "%s cannot stop"
-msgstr "%s не може зупинити"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Exception/SupervisorException.php:51
-msgid "It is not running."
-msgstr "Він не запущений."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Exception/SupervisorException.php:63
-#, php-format
-msgid "%s encountered an error: %s"
-msgstr "%s зіткнувся з помилкою: %s"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Exception/SupervisorException.php:67
-msgid "Check the log for details."
-msgstr "Подробиці перевірте в журналі."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/SetupController.php:113
-msgid "Set Up AzuraCast"
-msgstr "Налаштування AzuraCast"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/SetupController.php:192
-msgid "Setup has already been completed!"
-msgstr "Налаштування вже завершено!"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/WebAuthn/PostValidationAction.php:55
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/TwoFactorAction.php:44
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/LoginAction.php:123
-msgid "Login unsuccessful"
-msgstr "Вхід не виконано"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/WebAuthn/PostValidationAction.php:76
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/TwoFactorAction.php:32
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/LoginAction.php:105
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/LoginAction.php:113
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/MasqueradeAction.php:47
-msgid "Logged in successfully."
-msgstr "Ви успішно увійшли в систему."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/RecoverAction.php:41
-msgid "Invalid token specified."
-msgstr "Вказано недійсний токен."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/RecoverAction.php:74
-msgid "Logged in using account recovery token"
-msgstr "Увійшли використовуючи токен відновлення облікового запису"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/RecoverAction.php:75
-msgid "Your password has been updated."
-msgstr "Ваш пароль був оновлений."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/TwoFactorAction.php:44
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/LoginAction.php:123
-msgid "Your credentials could not be verified."
-msgstr "Ваші облікові дані не можуть бути перевірені."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/LoginAction.php:65
-msgid "Too many login attempts"
-msgstr "Забагато спроб входу"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/LoginAction.php:66
-msgid "You have attempted to log in too many times. Please wait 30 seconds and try again."
-msgstr "Ви намагалися увійти забагато разів. Зачекайте 30 секунд і повторіть спробу."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/LoginAction.php:106
-msgid "Complete the setup process to get started."
-msgstr "Завершіть процес налаштування, щоб розпочати роботу."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/MasqueradeAction.php:40
-msgid "User not found."
-msgstr "Користувач не знайдений."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/ForgotPasswordAction.php:47
-msgid "Too many forgot password attempts"
-msgstr "Занадто багато спроб відновлення пароля"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/ForgotPasswordAction.php:48
-msgid "You have attempted to reset your password too many times. Please wait 30 seconds and try again."
-msgstr "Ви забагато разів намагалися скинути пароль. Зачекайте 30 секунд і повторіть спробу."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/ForgotPasswordAction.php:65
-#: /home/runner/work/AzuraCast/AzuraCast/templates/mail/forgot.phtml:8
-msgid "Account Recovery"
-msgstr "Відновлення облікового запису"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/ForgotPasswordAction.php:83
-msgid "Account recovery e-mail sent."
-msgstr "Надіслано лист з відновлення облікового запису."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/ForgotPasswordAction.php:84
-msgid "If the e-mail address you provided is in the system, check your inbox for a password reset message."
-msgstr "Якщо вказана вами електронна адреса є в системі, перевірте свою поштову скриньку на наявність повідомлення зі скиданням пароля."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Frontend/Dashboard/ChartsAction.php:134
-msgid "All Stations"
-msgstr "Всі станції"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Admin/UsersController.php:222
-msgid "You cannot modify yourself."
-msgstr "Ви не можете змінювати самого себе."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Admin/UsersController.php:257
-msgid "You cannot remove yourself."
-msgstr "Ви не можете видалити себе."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Admin/Stations/StorageLocationsAction.php:21
-msgid "Create a new storage location based on the base directory."
-msgstr "Створити нове місце зберігання на основі базового каталогу."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Admin/LogsAction.php:80
-msgid "AzuraCast Application Log"
-msgstr "Журнал AzuraCast"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Admin/LogsAction.php:86
-msgid "AzuraCast Now Playing Log"
-msgstr "Журнал відтворення AzuraCast"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Admin/LogsAction.php:92
-msgid "AzuraCast Synchronized Task Log"
-msgstr "Журнал синхронізованих завдань AzuraCast"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Admin/LogsAction.php:98
-msgid "AzuraCast Queue Worker Log"
-msgstr "Журнал роботи черги AzuraCast"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Admin/LogsAction.php:104
-#, php-format
-msgid "Service Log: %s (%s)"
-msgstr "Журнал обслуговування: %s (%s)"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Admin/LogsAction.php:119
-msgid "Nginx Access Log"
-msgstr "Журнал доступу Nginx"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Admin/LogsAction.php:124
-msgid "Nginx Error Log"
-msgstr "Журнал помилок Nginx"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Admin/LogsAction.php:129
-msgid "PHP Application Log"
-msgstr "Журнал PHP"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Admin/LogsAction.php:134
-msgid "Supervisord Log"
-msgstr "Журнал керівника"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Admin/SendTestMessageAction.php:51
-msgid "Test Message"
-msgstr "Тестове повідомлення"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Admin/SendTestMessageAction.php:54
-msgid "This is a test message from AzuraCast. If you are receiving this message, it means your e-mail settings are configured correctly."
-msgstr "Тестове повідомлення від AzuraCast. Якщо ви його отримали, означає, що налаштування електронної пошти вірні."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Admin/SendTestMessageAction.php:68
-msgid "Test message sent successfully."
-msgstr "Тестове повідомлення успішно надіслано."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Webhooks/ToggleAction.php:39
-msgid "Web hook enabled."
-msgstr "Веб хук ввімкнено."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Webhooks/ToggleAction.php:40
-msgid "Web hook disabled."
-msgstr "Веб хук вимкнено."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/BulkMedia/UploadAction.php:171
-#, php-format
-msgid "%d files processed."
-msgstr "Оброблено %d файлів."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Playlists/ImportAction.php:200
-#, php-format
-msgid "Playlist successfully imported; %d of %d files were successfully matched."
-msgstr "Плейлист успішно імпортовано; %d із %d файлів успішно знайдено."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Playlists/GetOrderAction.php:41
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Playlists/PutOrderAction.php:40
-msgid "This playlist is not a sequential playlist."
-msgstr "Цей плейлист не є послідовним."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Playlists/GetApplyToAction.php:44
-msgid "Base Directory"
-msgstr "Базовий каталог"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Playlists/PutApplyToAction.php:62
-msgid "Playlist applied to folders."
-msgstr "Плейлист застосований до тек."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Playlists/ToggleAction.php:39
-msgid "Playlist enabled."
-msgstr "Плейлист ввімкнено."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Playlists/ToggleAction.php:40
-msgid "Playlist disabled."
-msgstr "Плейлист вимкнено."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Playlists/ReshuffleAction.php:38
-msgid "Playlist reshuffled."
-msgstr "Плейлист перемішаний."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Playlists/EmptyAction.php:36
-msgid "This playlist is not song-based."
-msgstr "Цей плейлист не складається з пісень."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Playlists/EmptyAction.php:44
-msgid "Playlist emptied."
-msgstr "Плейлист порожній."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Streamers/BroadcastsController.php:153
-msgid "No recording available."
-msgstr "Немає доступних записів."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ByCountry.php:75
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ByClient.php:82
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ByStream.php:99
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ByBrowser.php:62
-msgid "Connected Seconds"
-msgstr "Підключення в секундах"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ByClient.php:62
-msgid "Mobile Device"
-msgstr "Мобільний пристрій"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ByClient.php:63
-msgid "Desktop Browser"
-msgstr "Браузер"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ByClient.php:64
-msgid "Non-Browser"
-msgstr "Не браузер"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ByListeningTime.php:47
-msgid "Less than Thirty Seconds"
-msgstr "Менше ніж тридцять секунд"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ByListeningTime.php:48
-msgid "Thirty Seconds to One Minute"
-msgstr "Тридцять секунд до однієї хвилини"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ByListeningTime.php:49
-msgid "One Minute to Five Minutes"
-msgstr "Від однієї хвилини до п'яти хвилин"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ByListeningTime.php:50
-msgid "Five Minutes to Ten Minutes"
-msgstr "П'ять хвилин до десяти хвилин"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ByListeningTime.php:51
-msgid "Ten Minutes to Thirty Minutes"
-msgstr "Від десяти до тридцяти хвилин"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ByListeningTime.php:52
-msgid "Thirty Minutes to One Hour"
-msgstr "Від тридцяти хвилин до однієї години"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ByListeningTime.php:53
-msgid "One Hour to Two Hours"
-msgstr "Від 1 години до 2 годин"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ByListeningTime.php:54
-msgid "More than Two Hours"
-msgstr "Більше ніж дві години"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/LogsAction.php:86
-msgid "Station Nginx Configuration"
-msgstr "Конфігурація станції Nginx"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/LogsAction.php:93
-msgid "Liquidsoap Log"
-msgstr "Журнал Liquidsoap"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/LogsAction.php:98
-msgid "Liquidsoap Configuration"
-msgstr "Конфігурація Liquidsoap"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/LogsAction.php:107
-msgid "Icecast Access Log"
-msgstr "Журнал доступу до Icecast"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/LogsAction.php:112
-msgid "Icecast Error Log"
-msgstr "Журнал помилок Icecast"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/LogsAction.php:117
-msgid "Icecast Configuration"
-msgstr "Налаштування Icecast"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/LogsAction.php:125
-msgid "Shoutcast Log"
-msgstr "Журнал Shoutcast"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/LogsAction.php:130
-msgid "Shoutcast Configuration"
-msgstr "Налаштування Shoutcast"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/FilesController.php:201
-msgid "This station is out of available storage space."
-msgstr "На цій станції закінчився доступний простір для зберігання."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Files/RenameAction.php:33
-msgid "File not specified."
-msgstr "Файл не вказано."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Files/RenameAction.php:39
-msgid "New path not specified."
-msgstr "Новий шлях не вказано."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Files/ListAction.php:252
-#, php-format
-msgid "File Not Processed: %s"
-msgstr "Файл не оброблено: %s"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Files/ListAction.php:257
-msgid "Cover Art"
-msgstr "Обкладинка"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Files/ListAction.php:259
-msgid "File Processing"
-msgstr "Обробка файлів"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Files/MakeDirectoryAction.php:34
-msgid "No directory specified"
-msgstr "Тека не вказана"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Requests/SubmitAction.php:79
-msgid "Your request has been submitted and will be played soon."
-msgstr "Ваш запит надіслано та незабаром буде відтворено."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/ServicesController.php:160
-msgid "Station reloaded."
-msgstr "Станція перезавантажена."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/ServicesController.php:186
-msgid "Station restarted."
-msgstr "Станція перезапущена."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/ServicesController.php:204
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/ServicesController.php:256
-msgid "Service stopped."
-msgstr "Служба зупинена."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/ServicesController.php:209
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/ServicesController.php:261
-msgid "Service started."
-msgstr "Служба запущена."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/ServicesController.php:215
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/ServicesController.php:267
-msgid "Service reloaded."
-msgstr "Служба перезавантажена."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/ServicesController.php:227
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/ServicesController.php:279
-msgid "Service restarted."
-msgstr "Служба перезапущена."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/ServicesController.php:246
-msgid "Song skipped."
-msgstr "Пісню пропущено."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/ServicesController.php:251
-msgid "Streamer disconnected."
-msgstr "Стрімер або діджей від'єднався."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Doctrine/Repository.php:108
-msgid "Select..."
-msgstr "Виберіть..."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/MigrateDbCommand.php:25
-msgid "Database Migrations"
-msgstr "Переміщення бази даних"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/MigrateDbCommand.php:38
-msgid "Database is already up to date!"
-msgstr "База даних вже оновлена!"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/MigrateDbCommand.php:51
-#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/RollbackDbCommand.php:61
-msgid "Running database migrations..."
-msgstr "Виконую переміщення бази даних..."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/MigrateDbCommand.php:65
-#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/RollbackDbCommand.php:86
-#, php-format
-msgid "Database migration failed: %s"
-msgstr "Переміщення бази даних не вдалося: %s"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/MigrateDbCommand.php:77
-msgid "Database migration completed!"
-msgstr "Перенесення бази даних завершено!"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/MigrateConfigCommand.php:108
-msgid "Configuration successfully written."
-msgstr "Конфігурацію успішно збережено."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/Backup/RestoreCommand.php:77
-#, php-format
-msgid "Backup path %s not found!"
-msgstr "Шлях резервного копіювання %s не знайдено!"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/Backup/BackupCommand.php:95
-msgid "AzuraCast Backup"
-msgstr "Резервне копіювання AzuraCast"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/Backup/BackupCommand.php:96
-msgid "Please wait while a backup is generated..."
-msgstr "Зачекайте, поки створиться резервна копія..."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/Backup/BackupCommand.php:99
-msgid "Creating temporary directories..."
-msgstr "Створення тимчасових каталогів..."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/Backup/BackupCommand.php:112
-msgid "Backing up MariaDB..."
-msgstr "Резервне копіювання MariaDB..."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/Backup/BackupCommand.php:138
-msgid "Creating backup archive..."
-msgstr "Створення архіву резервної копії..."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/Backup/BackupCommand.php:214
-msgid "Cleaning up temporary files..."
-msgstr "Очищення тимчасових файлів..."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/Backup/BackupCommand.php:226
-#, php-format
-msgid "Backup complete in %.2f seconds."
-msgstr "Резервне копіювання завершено за %.2f секунд."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/SetupFixturesCommand.php:63
-msgid "Fixtures loaded."
-msgstr "Модифікатор завантажений."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/RollbackDbCommand.php:44
-msgid "Roll Back Database"
-msgstr "Відновлення бази даних"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/RollbackDbCommand.php:99
-#, php-format
-msgid "Database rolled back to stable release version \"%s\"."
-msgstr "Базу даних було відновлено до стабільної версії \"%s\"."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/Locale/ImportCommand.php:58
-#, php-format
-msgid "Imported locale: %s"
-msgstr "Імпортована мова: %s"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/Settings/ListCommand.php:26
-msgid "AzuraCast Settings"
-msgstr "Налаштування AzuraCast"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/Settings/ListCommand.php:29
-msgid "Setting Key"
-msgstr "Налаштування ключів"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/Settings/ListCommand.php:30
-msgid "Setting Value"
-msgstr "Налаштування значення"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/AbstractDatabaseCommand.php:104
-msgid "Backing up initial database state..."
-msgstr "Резервне копіювання початкового стану бази даних..."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/AbstractDatabaseCommand.php:113
-msgid "We detected a database restore file from a previous (possibly failed) migration."
-msgstr "Ми виявили файл відновлення бази даних із попереднього (можливо невдалого) переміщення."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/AbstractDatabaseCommand.php:114
-msgid "Attempting to restore that now..."
-msgstr "Намагаюся відновити це зараз..."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/AbstractDatabaseCommand.php:129
-msgid "Attempting to roll back to previous database state..."
-msgstr "Спроба повернутися до попереднього стану бази даних..."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/AbstractDatabaseCommand.php:135
-msgid "Your database was restored due to a failed migration."
-msgstr "Вашу базу даних було відновлено через невдале переміщення."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/AbstractDatabaseCommand.php:136
-msgid "Please report this bug to our developers."
-msgstr "Будь ласка, повідомте про цю помилку нашим розробникам."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/AbstractDatabaseCommand.php:142
-#, php-format
-msgid "Restore failed: %s"
-msgstr "Не вдалося відновити: %s"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/SetupCommand.php:60
-msgid "AzuraCast Initializing..."
-msgstr "Ініціалізація AzuraCast..."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/SetupCommand.php:62
-msgid "AzuraCast Setup"
-msgstr "Налаштування AzuraCast"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/SetupCommand.php:64
-msgid "Welcome to AzuraCast. Please wait while some key dependencies of AzuraCast are set up..."
-msgstr "Ласкаво просимо до AzuraCast. Зачекайте, будь ласка, поки встановлюються деякі ключові залежності AzuraCast..."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/SetupCommand.php:69
-msgid "Running Database Migrations"
-msgstr "Запуск міграції бази даних"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/SetupCommand.php:77
-msgid "Generating Database Proxy Classes"
-msgstr "Генерація проксі-класів бази даних"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/SetupCommand.php:82
-msgid "Reload System Data"
-msgstr "Перезавантаження системних даних"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/SetupCommand.php:92
-msgid "Installing Data Fixtures"
-msgstr "Встановлення модифікатора даних"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/SetupCommand.php:98
-msgid "Refreshing All Stations"
-msgstr "Оновлення всіх станцій"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/SetupCommand.php:125
-msgid "AzuraCast is now updated to the latest version!"
-msgstr "AzuraCast оновлено до останньої версії!"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/SetupCommand.php:134
-msgid "AzuraCast installation complete!"
-msgstr "Встановлення AzuraCast завершено!"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/SetupCommand.php:136
-#, php-format
-msgid "Visit %s to complete setup."
-msgstr "Відвідайте %s щоб завершити налаштування."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/Users/SetAdministratorCommand.php:61
-#, php-format
-msgid "The account associated with e-mail address \"%s\" has been set as an administrator"
-msgstr "Обліковий запис, пов'язаний з адресою електронної пошти \"%s\", встановлено як адміністратор"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/Users/SetAdministratorCommand.php:69
-msgid "Account not found."
-msgstr "Обліковий запис не знайдено."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Enums/StationPermissions.php:26
-#: /home/runner/work/AzuraCast/AzuraCast/src/Enums/GlobalPermissions.php:22
-msgid "All Permissions"
-msgstr "Усі дозволи"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Enums/StationPermissions.php:27
-msgid "View Station Page"
-msgstr "Переглянути сторінку станції"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Enums/StationPermissions.php:28
-msgid "View Station Reports"
-msgstr "Перегляд звітів станції"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Enums/StationPermissions.php:29
-msgid "View Station Logs"
-msgstr "Перегляд журналів станцій"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Enums/StationPermissions.php:30
-msgid "Manage Station Profile"
-msgstr "Керування профілем станції"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Enums/StationPermissions.php:31
-msgid "Manage Station Broadcasting"
-msgstr "Керування трансляцією станції"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Enums/StationPermissions.php:32
-msgid "Manage Station Streamers"
-msgstr "Керування стрімерами станції"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Enums/StationPermissions.php:33
-msgid "Manage Station Mount Points"
-msgstr "Керування точками підключення станції"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Enums/StationPermissions.php:34
-msgid "Manage Station Remote Relays"
-msgstr "Управління ретрансляторами станції"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Enums/StationPermissions.php:35
-msgid "Manage Station Media"
-msgstr "Керування медіафайлами станції"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Enums/StationPermissions.php:36
-msgid "Manage Station Automation"
-msgstr "Керування автоматизацією станції"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Enums/StationPermissions.php:37
-msgid "Manage Station Web Hooks"
-msgstr "Керування веб хуками станції"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Enums/StationPermissions.php:38
-msgid "Manage Station Podcasts"
-msgstr "Керування подкастами станції"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Enums/GlobalPermissions.php:23
-msgid "View Administration Page"
-msgstr "Переглянути сторінку адміністрування"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Enums/GlobalPermissions.php:24
-msgid "View System Logs"
-msgstr "Переглянути системні журнали"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Enums/GlobalPermissions.php:25
-msgid "Administer Settings"
-msgstr "Керування налаштуваннями"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Enums/GlobalPermissions.php:26
-msgid "Administer API Keys"
-msgstr "Керування ключами API"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Enums/GlobalPermissions.php:27
-msgid "Administer Stations"
-msgstr "Керування станціями"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Enums/GlobalPermissions.php:28
-msgid "Administer Custom Fields"
-msgstr "Керування користувацькими полями"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Enums/GlobalPermissions.php:29
-msgid "Administer Backups"
-msgstr "Керування резервними копіями"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Enums/GlobalPermissions.php:30
-msgid "Administer Storage Locations"
-msgstr "Керування місцем зберігання"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Service/IpGeolocation.php:56
-msgid "GeoLite database not configured for this installation. See System Administration for instructions."
-msgstr "База даних GeoLite не налаштована для цієї установки. Дивіться Розділ адміністрування системи для отримання інструкцій."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Service/ServiceControl.php:80
-msgid "Runs routine synchronized tasks"
-msgstr "Виконування регулярних синхронізованих завдань"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Service/ServiceControl.php:81
-msgid "Database"
-msgstr "База даних"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Service/ServiceControl.php:82
-msgid "Web server"
-msgstr "Веб Сервер"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Service/ServiceControl.php:83
-msgid "Roadrunner PHP Server"
-msgstr ""
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Service/ServiceControl.php:84
-msgid "PHP FastCGI Process Manager"
-msgstr ""
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Service/ServiceControl.php:85
-msgid "Now Playing manager service"
-msgstr "Керування сервісом Now Playing"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Service/ServiceControl.php:86
-msgid "PHP queue processing worker"
-msgstr "PHP-обробник черги"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Service/ServiceControl.php:87
-msgid "Cache"
-msgstr "Кеш"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Service/ServiceControl.php:88
-msgid "SFTP service"
-msgstr "Служба SFTP"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Service/ServiceControl.php:89
-msgid "Live Now Playing updates"
-msgstr ""
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Service/ServiceControl.php:90
-msgid "Frontend Assets"
-msgstr "Frontend Assets"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Service/IpGeolocator/GeoLite.php:35
-#, php-format
-msgid "This product includes GeoLite2 data created by MaxMind, available from %s."
-msgstr "Цей продукт включає дані GeoLite2, створені компанією MaxMind, доступні від %s."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Service/IpGeolocator/DbIp.php:29
-msgid "IP Geolocation by DB-IP"
-msgstr "Геолокація IP за допомогою DB-IP"
 
 #: /home/runner/work/AzuraCast/AzuraCast/src/Media/Enums/MetadataTags.php:81
 msgid "Album Artist"
@@ -7633,9 +6738,463 @@ msgstr "URL Користувача"
 msgid "Year"
 msgstr "Рік"
 
+#: /home/runner/work/AzuraCast/AzuraCast/src/Exception/StationUnsupportedException.php:25
+msgid "This station does not currently support this functionality."
+msgstr ""
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Exception/StationUnsupportedException.php:32
+msgid "This station does not currently support on-demand media."
+msgstr ""
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Exception/StationUnsupportedException.php:39
+msgid "This station does not currently accept requests."
+msgstr ""
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Exception/NotFoundException.php:24
+msgid "Record not found."
+msgstr ""
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Exception/NotFoundException.php:29
+msgid "File not found."
+msgstr ""
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Exception/NotFoundException.php:34
+msgid "Station not found."
+msgstr ""
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Exception/NotFoundException.php:39
+msgid "Podcast not found."
+msgstr ""
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Exception/Http/CannotCompleteActionException.php:29
+#, php-format
+msgid "Cannot submit request: %s"
+msgstr ""
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Exception/Http/PermissionDeniedException.php:26
+msgid "You do not have permission to access this portion of the site."
+msgstr "Ви не маєте дозволу на доступ до цієї частини сайту."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Exception/Http/NotLoggedInException.php:26
+msgid "You must be logged in to access this page."
+msgstr "Ви повинні увійти, щоб отримати доступ до цієї сторінки."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Exception/SupervisorException.php:24
+#, php-format
+msgid "%s is not recognized as a service."
+msgstr "%s не визнаний сервісом."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Exception/SupervisorException.php:27
+msgid "It may not be registered with Supervisor yet. Restarting broadcasting may help."
+msgstr "Цей елемент може ще не бути зареєстрований у диспетчері процесів Supervisor. Спробуйте перезапустити трансляцію, це може допомогти."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Exception/SupervisorException.php:36
+#, php-format
+msgid "%s cannot start"
+msgstr "%s не може почати"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Exception/SupervisorException.php:39
+msgid "It is already running."
+msgstr "Він вже запущений."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Exception/SupervisorException.php:48
+#, php-format
+msgid "%s cannot stop"
+msgstr "%s не може зупинити"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Exception/SupervisorException.php:51
+msgid "It is not running."
+msgstr "Він не запущений."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Exception/SupervisorException.php:63
+#, php-format
+msgid "%s encountered an error: %s"
+msgstr "%s зіткнувся з помилкою: %s"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Exception/SupervisorException.php:67
+msgid "Check the log for details."
+msgstr "Подробиці перевірте в журналі."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ByClient.php:62
+msgid "Mobile Device"
+msgstr "Мобільний пристрій"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ByClient.php:63
+msgid "Desktop Browser"
+msgstr "Браузер"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ByClient.php:64
+msgid "Non-Browser"
+msgstr "Не браузер"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ByClient.php:82
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ByCountry.php:75
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ByBrowser.php:62
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ByStream.php:99
+msgid "Connected Seconds"
+msgstr "Підключення в секундах"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ByListeningTime.php:48
+msgid "Less than Thirty Seconds"
+msgstr "Менше ніж тридцять секунд"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ByListeningTime.php:49
+msgid "Thirty Seconds to One Minute"
+msgstr "Тридцять секунд до однієї хвилини"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ByListeningTime.php:50
+msgid "One Minute to Five Minutes"
+msgstr "Від однієї хвилини до п'яти хвилин"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ByListeningTime.php:51
+msgid "Five Minutes to Ten Minutes"
+msgstr "П'ять хвилин до десяти хвилин"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ByListeningTime.php:52
+msgid "Ten Minutes to Thirty Minutes"
+msgstr "Від десяти до тридцяти хвилин"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ByListeningTime.php:53
+msgid "Thirty Minutes to One Hour"
+msgstr "Від тридцяти хвилин до однієї години"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ByListeningTime.php:54
+msgid "One Hour to Two Hours"
+msgstr "Від 1 години до 2 годин"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ByListeningTime.php:55
+msgid "More than Two Hours"
+msgstr "Більше ніж дві години"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Requests/SubmitAction.php:92
+msgid "Search engine crawlers are not permitted to use this feature."
+msgstr "Роботам пошукових систем заборонено використовувати цю функцію."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Requests/SubmitAction.php:100
+msgid "You are not permitted to submit requests."
+msgstr "Вам не дозволено подавати запити."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Requests/SubmitAction.php:110
+msgid "This track is not requestable."
+msgstr ""
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Requests/SubmitAction.php:118
+msgid "This song was already requested and will play soon."
+msgstr ""
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Requests/SubmitAction.php:126
+msgid "This song or artist has been played too recently. Wait a while before requesting it again."
+msgstr "Ця пісня або виконавець вже були недавно відтворені. Зачекайте трохи часу перед тим, як подати запит знову."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Requests/SubmitAction.php:153
+msgid "You have submitted a request too recently! Please wait before submitting another one."
+msgstr "Ви недавно подали запит! Зачекайте, перш ніж подавати наступний."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Requests/SubmitAction.php:164
+msgid "Your request has been submitted and will be played soon."
+msgstr "Ваш запит надіслано та незабаром буде відтворено."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/LogsAction.php:86
+msgid "Station Nginx Configuration"
+msgstr "Конфігурація станції Nginx"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/LogsAction.php:93
+msgid "Liquidsoap Log"
+msgstr "Журнал Liquidsoap"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/LogsAction.php:98
+msgid "Liquidsoap Configuration"
+msgstr "Конфігурація Liquidsoap"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/LogsAction.php:107
+msgid "Icecast Access Log"
+msgstr "Журнал доступу до Icecast"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/LogsAction.php:112
+msgid "Icecast Error Log"
+msgstr "Журнал помилок Icecast"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/LogsAction.php:117
+msgid "Icecast Configuration"
+msgstr "Налаштування Icecast"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/LogsAction.php:125
+msgid "Shoutcast Log"
+msgstr "Журнал Shoutcast"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/LogsAction.php:130
+msgid "Shoutcast Configuration"
+msgstr "Налаштування Shoutcast"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/FilesController.php:201
+msgid "This station is out of available storage space."
+msgstr "На цій станції закінчився доступний простір для зберігання."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Files/MakeDirectoryAction.php:34
+msgid "No directory specified"
+msgstr "Тека не вказана"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Files/ListAction.php:252
+#, php-format
+msgid "File Not Processed: %s"
+msgstr "Файл не оброблено: %s"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Files/ListAction.php:257
+msgid "Cover Art"
+msgstr "Обкладинка"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Files/ListAction.php:259
+msgid "File Processing"
+msgstr "Обробка файлів"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Files/RenameAction.php:33
+msgid "File not specified."
+msgstr "Файл не вказано."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Files/RenameAction.php:39
+msgid "New path not specified."
+msgstr "Новий шлях не вказано."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Playlists/ImportAction.php:200
+#, php-format
+msgid "Playlist successfully imported; %d of %d files were successfully matched."
+msgstr "Плейлист успішно імпортовано; %d із %d файлів успішно знайдено."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Playlists/PutOrderAction.php:40
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Playlists/GetOrderAction.php:41
+msgid "This playlist is not a sequential playlist."
+msgstr "Цей плейлист не є послідовним."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Playlists/ToggleAction.php:39
+msgid "Playlist enabled."
+msgstr "Плейлист ввімкнено."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Playlists/ToggleAction.php:40
+msgid "Playlist disabled."
+msgstr "Плейлист вимкнено."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Playlists/PutApplyToAction.php:62
+msgid "Playlist applied to folders."
+msgstr "Плейлист застосований до тек."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Playlists/EmptyAction.php:36
+msgid "This playlist is not song-based."
+msgstr "Цей плейлист не складається з пісень."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Playlists/EmptyAction.php:44
+msgid "Playlist emptied."
+msgstr "Плейлист порожній."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Playlists/GetApplyToAction.php:44
+msgid "Base Directory"
+msgstr "Базовий каталог"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Playlists/ReshuffleAction.php:38
+msgid "Playlist reshuffled."
+msgstr "Плейлист перемішаний."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/ServicesController.php:160
+msgid "Station reloaded."
+msgstr "Станція перезавантажена."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/ServicesController.php:186
+msgid "Station restarted."
+msgstr "Станція перезапущена."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/ServicesController.php:204
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/ServicesController.php:256
+msgid "Service stopped."
+msgstr "Служба зупинена."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/ServicesController.php:209
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/ServicesController.php:261
+msgid "Service started."
+msgstr "Служба запущена."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/ServicesController.php:215
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/ServicesController.php:267
+msgid "Service reloaded."
+msgstr "Служба перезавантажена."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/ServicesController.php:227
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/ServicesController.php:279
+msgid "Service restarted."
+msgstr "Служба перезапущена."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/ServicesController.php:246
+msgid "Song skipped."
+msgstr "Пісню пропущено."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/ServicesController.php:251
+msgid "Streamer disconnected."
+msgstr "Стрімер або діджей від'єднався."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/BulkMedia/UploadAction.php:171
+#, php-format
+msgid "%d files processed."
+msgstr "Оброблено %d файлів."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Webhooks/ToggleAction.php:39
+msgid "Web hook enabled."
+msgstr "Веб хук ввімкнено."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Webhooks/ToggleAction.php:40
+msgid "Web hook disabled."
+msgstr "Веб хук вимкнено."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Streamers/BroadcastsController.php:153
+msgid "No recording available."
+msgstr "Немає доступних записів."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Admin/Stations/StorageLocationsAction.php:21
+msgid "Create a new storage location based on the base directory."
+msgstr "Створити нове місце зберігання на основі базового каталогу."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Admin/LogsAction.php:80
+msgid "AzuraCast Application Log"
+msgstr "Журнал AzuraCast"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Admin/LogsAction.php:86
+msgid "AzuraCast Now Playing Log"
+msgstr "Журнал відтворення AzuraCast"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Admin/LogsAction.php:92
+msgid "AzuraCast Synchronized Task Log"
+msgstr "Журнал синхронізованих завдань AzuraCast"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Admin/LogsAction.php:98
+msgid "AzuraCast Queue Worker Log"
+msgstr "Журнал роботи черги AzuraCast"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Admin/LogsAction.php:104
+#, php-format
+msgid "Service Log: %s (%s)"
+msgstr "Журнал обслуговування: %s (%s)"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Admin/LogsAction.php:119
+msgid "Nginx Access Log"
+msgstr "Журнал доступу Nginx"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Admin/LogsAction.php:124
+msgid "Nginx Error Log"
+msgstr "Журнал помилок Nginx"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Admin/LogsAction.php:129
+msgid "PHP Application Log"
+msgstr "Журнал PHP"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Admin/LogsAction.php:134
+msgid "Supervisord Log"
+msgstr "Журнал керівника"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Admin/SendTestMessageAction.php:51
+msgid "Test Message"
+msgstr "Тестове повідомлення"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Admin/SendTestMessageAction.php:54
+msgid "This is a test message from AzuraCast. If you are receiving this message, it means your e-mail settings are configured correctly."
+msgstr "Тестове повідомлення від AzuraCast. Якщо ви його отримали, означає, що налаштування електронної пошти вірні."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Admin/SendTestMessageAction.php:68
+msgid "Test message sent successfully."
+msgstr "Тестове повідомлення успішно надіслано."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Admin/UsersController.php:223
+msgid "You cannot modify yourself."
+msgstr "Ви не можете змінювати самого себе."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Admin/UsersController.php:259
+msgid "You cannot remove yourself."
+msgstr "Ви не можете видалити себе."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Frontend/Dashboard/ChartsAction.php:134
+msgid "All Stations"
+msgstr "Всі станції"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/SetupController.php:113
+msgid "Set Up AzuraCast"
+msgstr "Налаштування AzuraCast"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/SetupController.php:192
+msgid "Setup has already been completed!"
+msgstr "Налаштування вже завершено!"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/TwoFactorAction.php:32
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/WebAuthn/PostValidationAction.php:77
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/MasqueradeAction.php:45
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/LoginAction.php:105
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/LoginAction.php:113
+msgid "Logged in successfully."
+msgstr "Ви успішно увійшли в систему."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/TwoFactorAction.php:42
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/WebAuthn/PostValidationAction.php:56
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/LoginAction.php:123
+msgid "Login unsuccessful"
+msgstr "Вхід не виконано"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/TwoFactorAction.php:42
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/LoginAction.php:123
+msgid "Your credentials could not be verified."
+msgstr "Ваші облікові дані не можуть бути перевірені."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/MasqueradeAction.php:38
+msgid "User not found."
+msgstr "Користувач не знайдений."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/ForgotPasswordAction.php:48
+msgid "Too many forgot password attempts"
+msgstr "Занадто багато спроб відновлення пароля"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/ForgotPasswordAction.php:49
+msgid "You have attempted to reset your password too many times. Please wait 30 seconds and try again."
+msgstr "Ви забагато разів намагалися скинути пароль. Зачекайте 30 секунд і повторіть спробу."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/ForgotPasswordAction.php:66
+#: /home/runner/work/AzuraCast/AzuraCast/templates/mail/forgot.phtml:8
+msgid "Account Recovery"
+msgstr "Відновлення облікового запису"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/ForgotPasswordAction.php:84
+msgid "Account recovery e-mail sent."
+msgstr "Надіслано лист з відновлення облікового запису."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/ForgotPasswordAction.php:85
+msgid "If the e-mail address you provided is in the system, check your inbox for a password reset message."
+msgstr "Якщо вказана вами електронна адреса є в системі, перевірте свою поштову скриньку на наявність повідомлення зі скиданням пароля."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/LoginAction.php:65
+msgid "Too many login attempts"
+msgstr "Забагато спроб входу"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/LoginAction.php:66
+msgid "You have attempted to log in too many times. Please wait 30 seconds and try again."
+msgstr "Ви намагалися увійти забагато разів. Зачекайте 30 секунд і повторіть спробу."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/LoginAction.php:106
+msgid "Complete the setup process to get started."
+msgstr "Завершіть процес налаштування, щоб розпочати роботу."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/RecoverAction.php:41
+msgid "Invalid token specified."
+msgstr "Вказано недійсний токен."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/RecoverAction.php:74
+msgid "Logged in using account recovery token"
+msgstr "Увійшли використовуючи токен відновлення облікового запису"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/RecoverAction.php:75
+msgid "Your password has been updated."
+msgstr "Ваш пароль був оновлений."
+
 #: /home/runner/work/AzuraCast/AzuraCast/src/Validator/Constraints/UniqueEntityValidator.php:169
 msgid "This value is already used."
 msgstr "Це значення вже використовується."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Validator/Constraints/StationPortCheckerValidator.php:41
+#, php-format
+msgid "The port %s is in use by another station."
+msgstr "Порт %s використовується іншою станцією."
 
 #: /home/runner/work/AzuraCast/AzuraCast/src/Validator/Constraints/StorageLocationValidator.php:41
 #, php-format
@@ -7647,96 +7206,284 @@ msgstr "Місце зберігання %s не може бути перевір
 msgid "Storage location %s already exists."
 msgstr "Місце зберігання %s вже існує."
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Validator/Constraints/StationPortCheckerValidator.php:41
+#: /home/runner/work/AzuraCast/AzuraCast/src/Service/IpGeolocation.php:55
+msgid "GeoLite database not configured for this installation. See System Administration for instructions."
+msgstr "База даних GeoLite не налаштована для цієї установки. Дивіться Розділ адміністрування системи для отримання інструкцій."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Service/ServiceControl.php:80
+msgid "Runs routine synchronized tasks"
+msgstr "Виконування регулярних синхронізованих завдань"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Service/ServiceControl.php:81
+msgid "Database"
+msgstr "База даних"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Service/ServiceControl.php:82
+msgid "Web server"
+msgstr "Веб Сервер"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Service/ServiceControl.php:83
+msgid "PHP FastCGI Process Manager"
+msgstr ""
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Service/ServiceControl.php:84
+msgid "Now Playing manager service"
+msgstr "Керування сервісом Now Playing"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Service/ServiceControl.php:85
+msgid "PHP queue processing worker"
+msgstr "PHP-обробник черги"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Service/ServiceControl.php:86
+msgid "Cache"
+msgstr "Кеш"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Service/ServiceControl.php:87
+msgid "SFTP service"
+msgstr "Служба SFTP"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Service/ServiceControl.php:88
+msgid "Live Now Playing updates"
+msgstr ""
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Service/ServiceControl.php:89
+msgid "Frontend Assets"
+msgstr "Frontend Assets"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Service/IpGeolocator/GeoLite.php:35
 #, php-format
-msgid "The port %s is in use by another station."
-msgstr "Порт %s використовується іншою станцією."
+msgid "This product includes GeoLite2 data created by MaxMind, available from %s."
+msgstr "Цей продукт включає дані GeoLite2, створені компанією MaxMind, доступні від %s."
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/EnvFile.php:22
-msgid "(Docker Compose) All Docker containers are prefixed by this name. Do not change this after installation."
-msgstr "(Docker Compose) Усі контейнери Docker мають префікс цієї назви. Не змінюйте це після встановлення."
+#: /home/runner/work/AzuraCast/AzuraCast/src/Service/IpGeolocator/DbIp.php:29
+msgid "IP Geolocation by DB-IP"
+msgstr "Геолокація IP за допомогою DB-IP"
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/EnvFile.php:29
-msgid "(Docker Compose) The amount of time to wait before a Docker Compose operation fails. Increase this on lower performance computers."
-msgstr "(Docker Compose) Час очікування перед тим, як операція Docker Compose закінчиться неуспішно. Збільште це значення на менш потужних комп'ютерах."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/EnvFile.php:42
-msgid "HTTP Port"
-msgstr "HTTP Порт"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/EnvFile.php:43
-msgid "The main port AzuraCast listens to for insecure HTTP connections."
-msgstr "Основний порт, який AzuraCast перевіряє на наявність небезпечних HTTP-з’єднань."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/EnvFile.php:49
-msgid "HTTPS Port"
-msgstr "HTTPS Порт"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/EnvFile.php:50
-msgid "The main port AzuraCast listens to for secure HTTPS connections."
-msgstr "Основний порт, який AzuraCast прослуховує для безпечних з’єднань HTTPS."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/EnvFile.php:57
-msgid "The port AzuraCast listens to for SFTP file management connections."
-msgstr "Порт, який AzuraCast прослуховує підключення для керування файлами SFTP."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/EnvFile.php:63
-msgid "Station Ports"
-msgstr "Порти Станції"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/EnvFile.php:64
-msgid "The ports AzuraCast should listen to for station broadcasts and incoming DJ connections."
-msgstr "Порти, які AzuraCast має прослуховувати для трансляцій станцій і вхідних з’єднань діджеїв."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/EnvFile.php:70
-msgid "Docker User UID"
-msgstr "UID користувача Docker"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/EnvFile.php:71
-msgid "Set the UID of the user running inside the Docker containers. Matching this with your host UID can fix permission issues."
-msgstr "Встановіть UID користувача, який працює в межах контейнерів Docker. Відповідність цього значення з UID вашого хоста може вирішити проблеми з дозволами."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/EnvFile.php:77
-msgid "Docker User GID"
-msgstr "GID користувача Docker"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/EnvFile.php:78
-msgid "Set the GID of the user running inside the Docker containers. Matching this with your host GID can fix permission issues."
-msgstr "Встановіть GID користувача, який працює в межах контейнерів Docker. Відповідність цього значення з GID вашого хоста може вирішити проблеми з дозволами."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/EnvFile.php:84
-msgid "Use Podman instead of Docker."
-msgstr "Використовуйте Podman замість Docker."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/EnvFile.php:88
-msgid "Advanced: Use Privileged Docker Settings"
-msgstr "Розширено: Використовуйте привілейовані налаштування Docker"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AbstractEnvFile.php:90
-msgid "This file was automatically generated by AzuraCast."
-msgstr "Цей файл був автоматично створений AzuraCast."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AbstractEnvFile.php:91
-msgid "You can modify it as necessary. To apply changes, restart the Docker containers."
-msgstr "Ви можете змінити його за потреби. Щоб застосувати зміни, перезапустіть контейнери Docker."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AbstractEnvFile.php:92
-msgid "Remove the leading \"#\" symbol from lines to uncomment them."
-msgstr "Щоб розкоментувати рядки, видаліть із рядків символ «#» на початку."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AbstractEnvFile.php:113
+#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/Users/SetAdministratorCommand.php:61
 #, php-format
-msgid "Valid options: %s"
-msgstr "Допустимі параметри: %s"
+msgid "The account associated with e-mail address \"%s\" has been set as an administrator"
+msgstr "Обліковий запис, пов'язаний з адресою електронної пошти \"%s\", встановлено як адміністратор"
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AbstractEnvFile.php:125
+#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/Users/SetAdministratorCommand.php:69
+msgid "Account not found."
+msgstr "Обліковий запис не знайдено."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/MigrateConfigCommand.php:108
+msgid "Configuration successfully written."
+msgstr "Конфігурацію успішно збережено."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/RollbackDbCommand.php:44
+msgid "Roll Back Database"
+msgstr "Відновлення бази даних"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/RollbackDbCommand.php:61
+#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/MigrateDbCommand.php:51
+msgid "Running database migrations..."
+msgstr "Виконую переміщення бази даних..."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/RollbackDbCommand.php:86
+#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/MigrateDbCommand.php:65
 #, php-format
-msgid "Default: %s"
-msgstr "За замовчуванням: %s"
+msgid "Database migration failed: %s"
+msgstr "Переміщення бази даних не вдалося: %s"
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AbstractEnvFile.php:144
-msgid "Additional Environment Variables"
-msgstr "Додаткові змінні середовища"
+#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/RollbackDbCommand.php:99
+#, php-format
+msgid "Database rolled back to stable release version \"%s\"."
+msgstr "Базу даних було відновлено до стабільної версії \"%s\"."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/Locale/ImportCommand.php:58
+#, php-format
+msgid "Imported locale: %s"
+msgstr "Імпортована мова: %s"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/MigrateDbCommand.php:25
+msgid "Database Migrations"
+msgstr "Переміщення бази даних"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/MigrateDbCommand.php:38
+msgid "Database is already up to date!"
+msgstr "База даних вже оновлена!"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/MigrateDbCommand.php:77
+msgid "Database migration completed!"
+msgstr "Перенесення бази даних завершено!"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/AbstractDatabaseCommand.php:104
+msgid "Backing up initial database state..."
+msgstr "Резервне копіювання початкового стану бази даних..."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/AbstractDatabaseCommand.php:113
+msgid "We detected a database restore file from a previous (possibly failed) migration."
+msgstr "Ми виявили файл відновлення бази даних із попереднього (можливо невдалого) переміщення."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/AbstractDatabaseCommand.php:114
+msgid "Attempting to restore that now..."
+msgstr "Намагаюся відновити це зараз..."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/AbstractDatabaseCommand.php:129
+msgid "Attempting to roll back to previous database state..."
+msgstr "Спроба повернутися до попереднього стану бази даних..."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/AbstractDatabaseCommand.php:135
+msgid "Your database was restored due to a failed migration."
+msgstr "Вашу базу даних було відновлено через невдале переміщення."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/AbstractDatabaseCommand.php:136
+msgid "Please report this bug to our developers."
+msgstr "Будь ласка, повідомте про цю помилку нашим розробникам."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/AbstractDatabaseCommand.php:142
+#, php-format
+msgid "Restore failed: %s"
+msgstr "Не вдалося відновити: %s"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/SetupFixturesCommand.php:65
+msgid "Fixtures loaded."
+msgstr "Модифікатор завантажений."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/SetupCommand.php:60
+msgid "AzuraCast Initializing..."
+msgstr "Ініціалізація AzuraCast..."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/SetupCommand.php:62
+msgid "AzuraCast Setup"
+msgstr "Налаштування AzuraCast"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/SetupCommand.php:64
+msgid "Welcome to AzuraCast. Please wait while some key dependencies of AzuraCast are set up..."
+msgstr "Ласкаво просимо до AzuraCast. Зачекайте, будь ласка, поки встановлюються деякі ключові залежності AzuraCast..."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/SetupCommand.php:69
+msgid "Running Database Migrations"
+msgstr "Запуск міграції бази даних"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/SetupCommand.php:77
+msgid "Generating Database Proxy Classes"
+msgstr "Генерація проксі-класів бази даних"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/SetupCommand.php:82
+msgid "Reload System Data"
+msgstr "Перезавантаження системних даних"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/SetupCommand.php:92
+msgid "Installing Data Fixtures"
+msgstr "Встановлення модифікатора даних"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/SetupCommand.php:98
+msgid "Refreshing All Stations"
+msgstr "Оновлення всіх станцій"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/SetupCommand.php:125
+msgid "AzuraCast is now updated to the latest version!"
+msgstr "AzuraCast оновлено до останньої версії!"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/SetupCommand.php:134
+msgid "AzuraCast installation complete!"
+msgstr "Встановлення AzuraCast завершено!"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/SetupCommand.php:136
+#, php-format
+msgid "Visit %s to complete setup."
+msgstr "Відвідайте %s щоб завершити налаштування."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/Settings/ListCommand.php:26
+msgid "AzuraCast Settings"
+msgstr "Налаштування AzuraCast"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/Settings/ListCommand.php:29
+msgid "Setting Key"
+msgstr "Налаштування ключів"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/Settings/ListCommand.php:30
+msgid "Setting Value"
+msgstr "Налаштування значення"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/Backup/BackupCommand.php:95
+msgid "AzuraCast Backup"
+msgstr "Резервне копіювання AzuraCast"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/Backup/BackupCommand.php:96
+msgid "Please wait while a backup is generated..."
+msgstr "Зачекайте, поки створиться резервна копія..."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/Backup/BackupCommand.php:99
+msgid "Creating temporary directories..."
+msgstr "Створення тимчасових каталогів..."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/Backup/BackupCommand.php:112
+msgid "Backing up MariaDB..."
+msgstr "Резервне копіювання MariaDB..."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/Backup/BackupCommand.php:138
+msgid "Creating backup archive..."
+msgstr "Створення архіву резервної копії..."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/Backup/BackupCommand.php:214
+msgid "Cleaning up temporary files..."
+msgstr "Очищення тимчасових файлів..."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/Backup/BackupCommand.php:226
+#, php-format
+msgid "Backup complete in %.2f seconds."
+msgstr "Резервне копіювання завершено за %.2f секунд."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/Backup/RestoreCommand.php:77
+#, php-format
+msgid "Backup path %s not found!"
+msgstr "Шлях резервного копіювання %s не знайдено!"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/Command/InstallCommand.php:176
+msgid "AzuraCast Installer"
+msgstr "Інсталятор AzuraCast"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/Command/InstallCommand.php:179
+msgid "Welcome to AzuraCast! Complete the initial server setup by answering a few questions."
+msgstr "Ласкаво просимо до AzuraCast! Завершіть початкове налаштування сервера, відповівши на кілька запитань."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/Command/InstallCommand.php:185
+msgid "AzuraCast Updater"
+msgstr "Оновлення AzuraCast"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/Command/InstallCommand.php:192
+msgid "Change installation settings?"
+msgstr "Змінити налаштування встановлення?"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/Command/InstallCommand.php:201
+msgid "AzuraCast is currently configured to listen on the following ports:"
+msgstr "AzuraCast налаштована прослуховувати наступні порти:"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/Command/InstallCommand.php:205
+#, php-format
+msgid "HTTP Port: %d"
+msgstr "HTTP Порт: %d"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/Command/InstallCommand.php:206
+#, php-format
+msgid "HTTPS Port: %d"
+msgstr "HTTPS Порт: %d"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/Command/InstallCommand.php:207
+#, php-format
+msgid "SFTP Port: %d"
+msgstr "SFTP Порт: %d"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/Command/InstallCommand.php:208
+#, php-format
+msgid "Radio Ports: %s"
+msgstr "Радіо Порти: %s"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/Command/InstallCommand.php:213
+msgid "Customize ports used for AzuraCast?"
+msgstr "Налаштувати порти, які використовуються для AzuraCast?"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/Command/InstallCommand.php:266
+msgid "Writing configuration files..."
+msgstr "Запис конфігураційних файлів..."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/Command/InstallCommand.php:291
+msgid "Server configuration complete!"
+msgstr "Налаштування сервера завершено!"
 
 #: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AzuraCastEnvFile.php:35
 msgid "The locale to use for CLI commands."
@@ -7966,74 +7713,355 @@ msgstr "Додаткові пакети Ubuntu для встановлення �
 msgid "Separate package names with a space. Packages will be installed during container startup."
 msgstr "Розділяйте назви пакетів пробілом. Пакети будуть встановлені під час запуску контейнера."
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/Command/InstallCommand.php:176
-msgid "AzuraCast Installer"
-msgstr "Інсталятор AzuraCast"
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AbstractEnvFile.php:90
+msgid "This file was automatically generated by AzuraCast."
+msgstr "Цей файл був автоматично створений AzuraCast."
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/Command/InstallCommand.php:179
-msgid "Welcome to AzuraCast! Complete the initial server setup by answering a few questions."
-msgstr "Ласкаво просимо до AzuraCast! Завершіть початкове налаштування сервера, відповівши на кілька запитань."
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AbstractEnvFile.php:91
+msgid "You can modify it as necessary. To apply changes, restart the Docker containers."
+msgstr "Ви можете змінити його за потреби. Щоб застосувати зміни, перезапустіть контейнери Docker."
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/Command/InstallCommand.php:185
-msgid "AzuraCast Updater"
-msgstr "Оновлення AzuraCast"
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AbstractEnvFile.php:92
+msgid "Remove the leading \"#\" symbol from lines to uncomment them."
+msgstr "Щоб розкоментувати рядки, видаліть із рядків символ «#» на початку."
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/Command/InstallCommand.php:192
-msgid "Change installation settings?"
-msgstr "Змінити налаштування встановлення?"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/Command/InstallCommand.php:201
-msgid "AzuraCast is currently configured to listen on the following ports:"
-msgstr "AzuraCast налаштована прослуховувати наступні порти:"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/Command/InstallCommand.php:205
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AbstractEnvFile.php:113
 #, php-format
-msgid "HTTP Port: %d"
-msgstr "HTTP Порт: %d"
+msgid "Valid options: %s"
+msgstr "Допустимі параметри: %s"
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/Command/InstallCommand.php:206
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AbstractEnvFile.php:125
 #, php-format
-msgid "HTTPS Port: %d"
-msgstr "HTTPS Порт: %d"
+msgid "Default: %s"
+msgstr "За замовчуванням: %s"
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/Command/InstallCommand.php:207
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AbstractEnvFile.php:144
+msgid "Additional Environment Variables"
+msgstr "Додаткові змінні середовища"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/EnvFile.php:22
+msgid "(Docker Compose) All Docker containers are prefixed by this name. Do not change this after installation."
+msgstr "(Docker Compose) Усі контейнери Docker мають префікс цієї назви. Не змінюйте це після встановлення."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/EnvFile.php:29
+msgid "(Docker Compose) The amount of time to wait before a Docker Compose operation fails. Increase this on lower performance computers."
+msgstr "(Docker Compose) Час очікування перед тим, як операція Docker Compose закінчиться неуспішно. Збільште це значення на менш потужних комп'ютерах."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/EnvFile.php:42
+msgid "HTTP Port"
+msgstr "HTTP Порт"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/EnvFile.php:43
+msgid "The main port AzuraCast listens to for insecure HTTP connections."
+msgstr "Основний порт, який AzuraCast перевіряє на наявність небезпечних HTTP-з’єднань."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/EnvFile.php:49
+msgid "HTTPS Port"
+msgstr "HTTPS Порт"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/EnvFile.php:50
+msgid "The main port AzuraCast listens to for secure HTTPS connections."
+msgstr "Основний порт, який AzuraCast прослуховує для безпечних з’єднань HTTPS."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/EnvFile.php:57
+msgid "The port AzuraCast listens to for SFTP file management connections."
+msgstr "Порт, який AzuraCast прослуховує підключення для керування файлами SFTP."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/EnvFile.php:63
+msgid "Station Ports"
+msgstr "Порти Станції"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/EnvFile.php:64
+msgid "The ports AzuraCast should listen to for station broadcasts and incoming DJ connections."
+msgstr "Порти, які AzuraCast має прослуховувати для трансляцій станцій і вхідних з’єднань діджеїв."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/EnvFile.php:70
+msgid "Docker User UID"
+msgstr "UID користувача Docker"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/EnvFile.php:71
+msgid "Set the UID of the user running inside the Docker containers. Matching this with your host UID can fix permission issues."
+msgstr "Встановіть UID користувача, який працює в межах контейнерів Docker. Відповідність цього значення з UID вашого хоста може вирішити проблеми з дозволами."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/EnvFile.php:77
+msgid "Docker User GID"
+msgstr "GID користувача Docker"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/EnvFile.php:78
+msgid "Set the GID of the user running inside the Docker containers. Matching this with your host GID can fix permission issues."
+msgstr "Встановіть GID користувача, який працює в межах контейнерів Docker. Відповідність цього значення з GID вашого хоста може вирішити проблеми з дозволами."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/EnvFile.php:84
+msgid "Use Podman instead of Docker."
+msgstr "Використовуйте Podman замість Docker."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/EnvFile.php:88
+msgid "Advanced: Use Privileged Docker Settings"
+msgstr "Розширено: Використовуйте привілейовані налаштування Docker"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Doctrine/Repository.php:108
+msgid "Select..."
+msgstr "Виберіть..."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/UpdateCheck.php:54
+msgid "New AzuraCast Stable Release Available"
+msgstr "Доступна нова стабільна версія AzuraCast"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/UpdateCheck.php:58
 #, php-format
-msgid "SFTP Port: %d"
-msgstr "SFTP Порт: %d"
+msgid "Version %s is now available. You are currently running version %s. Updating is recommended."
+msgstr "Версія %s тепер доступна. Зараз ви використовуєте версію %s. Рекомендовано оновлення."
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/Command/InstallCommand.php:208
+#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/UpdateCheck.php:75
+msgid "New AzuraCast Rolling Release Available"
+msgstr "Доступна нова версія AzuraCast Rolling Release"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/UpdateCheck.php:79
 #, php-format
-msgid "Radio Ports: %s"
-msgstr "Радіо Порти: %s"
+msgid "Your installation is currently %d update(s) behind the latest version. Updating is recommended."
+msgstr "Зараз ваша інсталяція на %d оновлення(ь) відстає від останньої версії. Рекомендовано оновлення."
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/Command/InstallCommand.php:213
-msgid "Customize ports used for AzuraCast?"
-msgstr "Налаштувати порти, які використовуються для AzuraCast?"
+#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/UpdateCheck.php:93
+msgid "Switch to Stable Channel Available"
+msgstr "Доступно перемикання на стабільний канал"
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/Command/InstallCommand.php:266
-msgid "Writing configuration files..."
-msgstr "Запис конфігураційних файлів..."
+#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/UpdateCheck.php:96
+msgid "Your Rolling Release installation is currently older than the latest Stable release. This means you can switch releases to the \"Stable\" release channel if desired."
+msgstr "Ваша інсталяція Rolling Release наразі є старішою за останню стабільну версію. Це означає, що ви можете перемкнутись на канал \"Стабільних\" версій, якщо бажаєте."
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/Command/InstallCommand.php:291
-msgid "Server configuration complete!"
-msgstr "Налаштування сервера завершено!"
+#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/BaseUrlCheck.php:42
+msgid "You may want to update your base URL to ensure it is correct."
+msgstr "Ви можете оновити базову URL-адресу, щоб переконатися, що вона правильна."
 
-#: /home/runner/work/AzuraCast/AzuraCast/templates/frontend/account/forgot.phtml:6
-#: /home/runner/work/AzuraCast/AzuraCast/templates/frontend/account/forgot.phtml:15
-#: /home/runner/work/AzuraCast/AzuraCast/templates/frontend/account/forgot_disabled.phtml:6
-#: /home/runner/work/AzuraCast/AzuraCast/templates/frontend/account/forgot_disabled.phtml:17
-msgid "Forgot Password"
-msgstr "Забули пароль"
+#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/BaseUrlCheck.php:45
+msgid "If you regularly use different URLs to access AzuraCast, you should enable the \"Prefer Browser URL\" setting."
+msgstr "Якщо ви регулярно використовуєте різні URL-адреси для доступу до AzuraCast, вам слід увімкнути параметр \"Надавати перевагу URL-адресі браузера\"."
 
-#: /home/runner/work/AzuraCast/AzuraCast/templates/frontend/account/forgot.phtml:29
-#: /home/runner/work/AzuraCast/AzuraCast/templates/frontend/account/two_factor.phtml:22
-#: /home/runner/work/AzuraCast/AzuraCast/templates/frontend/account/two_factor.phtml:23
-msgid "Sign in"
-msgstr "Увійти"
+#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/BaseUrlCheck.php:52
+#, php-format
+msgid "Your \"Base URL\" setting (%s) does not match the URL you are currently using (%s)."
+msgstr "Ваше налаштування \"Базова URL-адреса\" (%s) не відповідає URL-адресі, яку ви зараз використовуєте (%s)."
 
-#: /home/runner/work/AzuraCast/AzuraCast/templates/frontend/account/forgot.phtml:32
-msgid "Send Recovery E-mail"
-msgstr "Надіслати E-mail для відновлення"
+#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/ProfilerAdvisorCheck.php:34
+msgid "The performance profiling extension is currently enabled on this installation."
+msgstr "Розширення профілювання продуктивності наразі увімкнено в цій установці."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/ProfilerAdvisorCheck.php:35
+msgid "You can track the execution time and memory usage of any AzuraCast page or application from the profiler page."
+msgstr "Ви можете відстежувати час виконання та використання пам'яті будь-якої сторінки або додатка AzuraCast зі сторінки профілювання."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/ProfilerAdvisorCheck.php:41
+msgid "Profiler Control Panel"
+msgstr "Панель керування профілюванням"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/ProfilerAdvisorCheck.php:53
+msgid "Performance profiling is currently enabled for all requests."
+msgstr "Профілювання продуктивності наразі увімкнено для всіх запитів."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/ProfilerAdvisorCheck.php:54
+msgid "This can have an adverse impact on system performance. You should disable this when possible."
+msgstr "Це може негативно вплинути на продуктивність системи. Ви повинні вимкнути це, коли є можливість."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/ServiceCheck.php:34
+#, php-format
+msgid "Service Not Running: %s"
+msgstr "Служба не працює: %s"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/ServiceCheck.php:35
+msgid "One of the essential services on this installation is not currently running. Visit the system administration and check the system logs to find the cause of this issue."
+msgstr "Одна з необхідних служб у цій установці не працює. Відвідайте адміністрування системи та перевірте системні журнали, щоб знайти причину цієї проблеми."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/RecentBackupCheck.php:47
+msgid "Installation Not Recently Backed Up"
+msgstr "Резервна копія установки давня"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/RecentBackupCheck.php:48
+msgid "This installation has not been backed up in the last two weeks."
+msgstr "Резервна копія цієї інсталяції не створювалася протягом останніх двох тижнів."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/DonateAdvisorCheck.php:33
+msgid "AzuraCast is free and open-source software."
+msgstr ""
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/DonateAdvisorCheck.php:34
+msgid "If you are enjoying AzuraCast, please consider donating to support our work. We depend on donations to build new features, fix bugs, and keep AzuraCast modern, accessible and free."
+msgstr ""
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/DonateAdvisorCheck.php:40
+msgid "Donate to AzuraCast"
+msgstr ""
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/SyncTaskCheck.php:36
+msgid "Synchronization Disabled"
+msgstr "Синхронізацію вимкнено"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/SyncTaskCheck.php:37
+msgid "Routine synchronization is currently disabled. Make sure to re-enable it to resume routine maintenance tasks."
+msgstr "Регулярна синхронізація вимкнена. Переконайтеся, що ви знову включили її, щоб продовжити регулярні завдання технічного обслуговування."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/SyncTaskCheck.php:51
+msgid "Synchronization Not Recently Run"
+msgstr "Останнім часом синхронізація не виконувалась"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/SyncTaskCheck.php:52
+msgid "The routine synchronization task has not run recently. This may indicate an error with your installation."
+msgstr "Регулярне завдання синхронізації не виконувалося недавно. Це може свідчити про помилку в установці."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Enums/GlobalPermissions.php:22
+#: /home/runner/work/AzuraCast/AzuraCast/src/Enums/StationPermissions.php:26
+msgid "All Permissions"
+msgstr "Усі дозволи"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Enums/GlobalPermissions.php:23
+msgid "View Administration Page"
+msgstr "Переглянути сторінку адміністрування"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Enums/GlobalPermissions.php:24
+msgid "View System Logs"
+msgstr "Переглянути системні журнали"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Enums/GlobalPermissions.php:25
+msgid "Administer Settings"
+msgstr "Керування налаштуваннями"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Enums/GlobalPermissions.php:26
+msgid "Administer API Keys"
+msgstr "Керування ключами API"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Enums/GlobalPermissions.php:27
+msgid "Administer Stations"
+msgstr "Керування станціями"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Enums/GlobalPermissions.php:28
+msgid "Administer Custom Fields"
+msgstr "Керування користувацькими полями"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Enums/GlobalPermissions.php:29
+msgid "Administer Backups"
+msgstr "Керування резервними копіями"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Enums/GlobalPermissions.php:30
+msgid "Administer Storage Locations"
+msgstr "Керування місцем зберігання"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Enums/StationPermissions.php:27
+msgid "View Station Page"
+msgstr "Переглянути сторінку станції"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Enums/StationPermissions.php:28
+msgid "View Station Reports"
+msgstr "Перегляд звітів станції"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Enums/StationPermissions.php:29
+msgid "View Station Logs"
+msgstr "Перегляд журналів станцій"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Enums/StationPermissions.php:30
+msgid "Manage Station Profile"
+msgstr "Керування профілем станції"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Enums/StationPermissions.php:31
+msgid "Manage Station Broadcasting"
+msgstr "Керування трансляцією станції"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Enums/StationPermissions.php:32
+msgid "Manage Station Streamers"
+msgstr "Керування стрімерами станції"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Enums/StationPermissions.php:33
+msgid "Manage Station Mount Points"
+msgstr "Керування точками підключення станції"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Enums/StationPermissions.php:34
+msgid "Manage Station Remote Relays"
+msgstr "Управління ретрансляторами станції"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Enums/StationPermissions.php:35
+msgid "Manage Station Media"
+msgstr "Керування медіафайлами станції"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Enums/StationPermissions.php:36
+msgid "Manage Station Automation"
+msgstr "Керування автоматизацією станції"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Enums/StationPermissions.php:37
+msgid "Manage Station Web Hooks"
+msgstr "Керування веб хуками станції"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Enums/StationPermissions.php:38
+msgid "Manage Station Podcasts"
+msgstr "Керування подкастами станції"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/ApiGenerator/ScheduleApiGenerator.php:59
+#, php-format
+msgid "Playlist: %s"
+msgstr "Плейлист: %s"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/ApiGenerator/ScheduleApiGenerator.php:64
+#, php-format
+msgid "Streamer: %s"
+msgstr "Стрімер: %s"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/Api/Status.php:33
+msgid "Changes saved successfully."
+msgstr "Зміни успішно збережено."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/Api/Status.php:38
+msgid "Record created successfully."
+msgstr "Запис успішно створено."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/Api/Status.php:43
+msgid "Record updated successfully."
+msgstr "Запис успішно оновлено."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/Api/Status.php:48
+msgid "Record deleted successfully."
+msgstr "Запис успішно видалено."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/Api/Error.php:71
+msgid "Record not found"
+msgstr "Запис не знайдено"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/Api/Error.php:77
+msgid "The uploaded file exceeds the upload_max_filesize directive in php.ini."
+msgstr "Завантажений файл перевищує директиву upload_max_filesize в php.ini."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/Api/Error.php:78
+msgid "The uploaded file exceeds the MAX_FILE_SIZE directive from the HTML form."
+msgstr "Завантажений файл перевищує директиву MAX_FILE_SIZE з HTML-форми."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/Api/Error.php:79
+msgid "The uploaded file was only partially uploaded."
+msgstr "Завантажений файл був завантажений лише частково."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/Api/Error.php:80
+msgid "No file was uploaded."
+msgstr "Файл не був завантажений."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/Api/Error.php:81
+msgid "No temporary directory is available."
+msgstr "Тимчасовий каталог відсутній."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/Api/Error.php:82
+msgid "Could not write to filesystem."
+msgstr "Не вдалося записати у файлову систему."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/Api/Error.php:83
+msgid "Upload halted by a PHP extension."
+msgstr "Завантаження припинено через розширення PHP."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/Api/Error.php:84
+msgid "Unspecified error."
+msgstr "Невизначена помилка."
+
+#: /home/runner/work/AzuraCast/AzuraCast/templates/minimal.phtml:56
+msgid "Footer"
+msgstr "Footer"
+
+#: /home/runner/work/AzuraCast/AzuraCast/templates/minimal.phtml:58
+#, php-format
+msgid "Powered by %s"
+msgstr "За підтримки %s"
 
 #: /home/runner/work/AzuraCast/AzuraCast/templates/frontend/account/two_factor.phtml:11
 msgid "Enter Two-Factor Code"
@@ -8047,6 +8075,23 @@ msgstr "Ваш обліковий запис використовує двофа
 #: /home/runner/work/AzuraCast/AzuraCast/templates/frontend/account/two_factor.phtml:20
 msgid "Security Code"
 msgstr "Код безпеки"
+
+#: /home/runner/work/AzuraCast/AzuraCast/templates/frontend/account/two_factor.phtml:22
+#: /home/runner/work/AzuraCast/AzuraCast/templates/frontend/account/two_factor.phtml:23
+#: /home/runner/work/AzuraCast/AzuraCast/templates/frontend/account/forgot.phtml:29
+msgid "Sign in"
+msgstr "Увійти"
+
+#: /home/runner/work/AzuraCast/AzuraCast/templates/frontend/account/forgot.phtml:6
+#: /home/runner/work/AzuraCast/AzuraCast/templates/frontend/account/forgot.phtml:15
+#: /home/runner/work/AzuraCast/AzuraCast/templates/frontend/account/forgot_disabled.phtml:6
+#: /home/runner/work/AzuraCast/AzuraCast/templates/frontend/account/forgot_disabled.phtml:17
+msgid "Forgot Password"
+msgstr "Забули пароль"
+
+#: /home/runner/work/AzuraCast/AzuraCast/templates/frontend/account/forgot.phtml:32
+msgid "Send Recovery E-mail"
+msgstr "Надіслати E-mail для відновлення"
 
 #: /home/runner/work/AzuraCast/AzuraCast/templates/frontend/account/forgot_disabled.phtml:22
 msgid "This installation's administrator has not configured this functionality."
@@ -8068,13 +8113,4 @@ msgstr "Для вашого облікового запису на \"%s\" над
 #: /home/runner/work/AzuraCast/AzuraCast/templates/mail/forgot.phtml:12
 msgid "Click the link below to log in to your account."
 msgstr "Натисніть посилання нижче, щоб увійти до свого облікового запису."
-
-#: /home/runner/work/AzuraCast/AzuraCast/templates/minimal.phtml:56
-msgid "Footer"
-msgstr "Footer"
-
-#: /home/runner/work/AzuraCast/AzuraCast/templates/minimal.phtml:58
-#, php-format
-msgid "Powered by %s"
-msgstr "За підтримки %s"
 

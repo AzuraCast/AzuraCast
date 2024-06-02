@@ -10,6 +10,7 @@ use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Service\IpGeolocator\GeoLite;
 use App\Sync\Task\UpdateGeoLiteTask;
+use App\Utilities\Types;
 use Psr\Http\Message\ResponseInterface;
 
 final class PostAction implements SingleActionInterface
@@ -26,7 +27,9 @@ final class PostAction implements SingleActionInterface
         Response $response,
         array $params
     ): ResponseInterface {
-        $newKey = trim($request->getParsedBodyParam('geolite_license_key', ''));
+        $newKey = trim(
+            Types::string($request->getParsedBodyParam('geolite_license_key'))
+        );
 
         $settings = $this->readSettings();
         $settings->setGeoliteLicenseKey($newKey);

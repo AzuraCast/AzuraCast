@@ -18,7 +18,7 @@ final class OAuthProvider extends AbstractProvider
     /**
      * @var string Key used in the access token response to identify the resource owner.
      */
-    public const ACCESS_TOKEN_RESOURCE_OWNER_ID = 'account_id';
+    public const string ACCESS_TOKEN_RESOURCE_OWNER_ID = 'account_id';
 
     public function getBaseAuthorizationUrl(): string
     {

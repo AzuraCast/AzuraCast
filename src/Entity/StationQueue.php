@@ -23,8 +23,8 @@ class StationQueue implements
     use Traits\TruncateInts;
     use Traits\HasSongFields;
 
-    public const DAYS_TO_KEEP = 7;
-    public const QUEUE_LOG_TTL = 86400;
+    public const int DAYS_TO_KEEP = 7;
+    public const int QUEUE_LOG_TTL = 86400;
 
     #[ORM\ManyToOne(inversedBy: 'history')]
     #[ORM\JoinColumn(name: 'station_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]

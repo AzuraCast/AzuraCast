@@ -71,7 +71,7 @@
 </template>
 
 <script setup lang="ts">
-import DataTable, { DataTableField } from '~/components/Common/DataTable.vue';
+import DataTable, {DataTableField} from '~/components/Common/DataTable.vue';
 import RemoteEditModal from "./Remotes/EditModal.vue";
 import '~/vendor/sweetalert';
 import {useMayNeedRestart} from "~/functions/useMayNeedRestart";
@@ -101,12 +101,12 @@ const {relist} = useHasDatatable($dataTable);
 const $editModal = ref<EditModalTemplateRef>(null);
 const {doCreate, doEdit} = useHasEditModal($editModal);
 
-const {mayNeedRestart, needsRestart} = useMayNeedRestart();
+const {mayNeedRestart} = useMayNeedRestart();
 
 const {doDelete} = useConfirmAndDelete(
     $gettext('Delete Remote Relay?'),
     () => {
-        needsRestart();
+        mayNeedRestart();
         relist();
     }
 );

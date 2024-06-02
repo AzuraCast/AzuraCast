@@ -17,36 +17,38 @@
         </div>
 
         <template v-if="isBackendEnabled">
-            <div class="row g-3 mb-3">
-                <form-group-multi-check
-                    id="edit_form_backend_crossfade_type"
-                    class="col-md-7"
-                    :field="v$.backend_config.crossfade_type"
-                    :options="crossfadeOptions"
-                    stacked
-                    radio
-                    :label="$gettext('Crossfade Method')"
-                    :description="$gettext('Choose a method to use when transitioning from one song to another. Smart Mode considers the volume of the two tracks when fading for a smoother effect, but requires more CPU resources.')"
-                />
+            <template v-if="!isAutoCueEnabled">
+                <div class="row g-3 mb-3">
+                    <form-group-multi-check
+                        id="edit_form_backend_crossfade_type"
+                        class="col-md-7"
+                        :field="v$.backend_config.crossfade_type"
+                        :options="crossfadeOptions"
+                        stacked
+                        radio
+                        :label="$gettext('Crossfade Method')"
+                        :description="$gettext('Choose a method to use when transitioning from one song to another. Smart Mode considers the volume of the two tracks when fading for a smoother effect, but requires more CPU resources.')"
+                    />
 
-                <form-group-field
-                    id="edit_form_backend_crossfade"
-                    class="col-md-5"
-                    :field="v$.backend_config.crossfade"
-                    input-type="number"
-                    :input-attrs="{ min: '0.0', max: '30.0', step: '0.1' }"
-                    :label="$gettext('Crossfade Duration (Seconds)')"
-                    :description="$gettext('Number of seconds to overlap songs.')"
-                />
-            </div>
+                    <form-group-field
+                        id="edit_form_backend_crossfade"
+                        class="col-md-5"
+                        :field="v$.backend_config.crossfade"
+                        input-type="number"
+                        :input-attrs="{ min: '0.0', max: '30.0', step: '0.1' }"
+                        :label="$gettext('Crossfade Duration (Seconds)')"
+                        :description="$gettext('Number of seconds to overlap songs.')"
+                    />
+                </div>
+            </template>
 
             <form-fieldset>
                 <template #label>
-                    {{ $gettext('Audio Post-processing') }}
+                    {{ $gettext('Audio Processing') }}
                 </template>
                 <template #description>
                     {{
-                        $gettext('Post-processing allows you to apply audio processors (like compressors, limiters, or equalizers) to your stream to create a more uniform sound or enhance the listening experience. Post-processing requires extra CPU resources, so it may slow down your server.')
+                        $gettext('Apply audio processors (like compressors, limiters, or equalizers) to your stream to create a more uniform sound or enhance the listening experience. Processing requires extra CPU resources, so it may slow down your server.')
                     }}
                     <a
                         href="/docs/help/optimizing/#disable-audio-post-processing"
@@ -167,6 +169,16 @@
                         </form-markup>
                     </div>
                 </template>
+
+                <div class="row g-3 mb-3">
+                    <form-group-checkbox
+                        id="edit_form_backend_config_enable_auto_cue"
+                        class="col-md-12"
+                        :field="v$.backend_config.enable_auto_cue"
+                        :label="$gettext('Enable AutoCue Automatic Detection')"
+                        :description="$gettext('AutoCue analyzes your music and automatically calculates cue points, fade points, and volume levels for a consistent listening experience.')"
+                    />
+                </div>
             </form-fieldset>
 
             <form-fieldset v-if="enableAdvancedFeatures">
@@ -314,6 +326,7 @@ const {v$, tabClass} = useVuelidateOnFormTab(
                 master_me_preset: {},
                 master_me_loudness_target: {},
                 stereo_tool_license_key: {},
+                enable_auto_cue: {}
             },
         };
 
@@ -349,6 +362,7 @@ const {v$, tabClass} = useVuelidateOnFormTab(
                 master_me_preset: MasterMePreset.MusicGeneral,
                 master_me_loudness_target: -16,
                 stereo_tool_license_key: '',
+                enable_auto_cue: false
             },
         };
 
@@ -386,6 +400,10 @@ const isMasterMeEnabled = computed(() => {
 
 const isPostProcessingEnabled = computed(() => {
     return form.value?.backend_config?.audio_processing_method !== AudioProcessingMethod.None;
+});
+
+const isAutoCueEnabled = computed(() => {
+    return form.value?.backend_config?.enable_auto_cue ?? false;
 });
 
 const {$gettext} = useTranslate();

@@ -8,6 +8,7 @@ use App\Cache\NowPlayingCache;
 use App\Container\EntityManagerAwareTrait;
 use App\Container\SettingsAwareTrait;
 use App\Lock\LockFactory;
+use App\Utilities\Types;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -55,7 +56,7 @@ final class NowPlayingCommand extends AbstractSyncRunnerCommand
             return 1;
         }
 
-        $timeout = (int)$input->getOption('timeout');
+        $timeout = Types::int($input->getOption('timeout'));
         $this->loop($io, $timeout);
 
         return 0;
@@ -69,6 +70,7 @@ final class NowPlayingCommand extends AbstractSyncRunnerCommand
             // Check existing processes.
             $this->checkRunningProcesses();
 
+            // Only spawn new processes if we're before the timeout threshold and there are not too many processes.
             $numProcesses = count($this->processes);
 
             if (
@@ -89,8 +91,9 @@ final class NowPlayingCommand extends AbstractSyncRunnerCommand
 
                     $this->logger->debug('Starting NP process for station: ' . $shortName);
 
-                    $this->start($io, $shortName);
-                    usleep(250000);
+                    if ($this->start($io, $shortName)) {
+                        usleep(100000);
+                    }
                 }
             }
 
@@ -135,8 +138,8 @@ final class NowPlayingCommand extends AbstractSyncRunnerCommand
     private function start(
         SymfonyStyle $io,
         string $shortName
-    ): void {
-        $this->lockAndRunConsoleCommand(
+    ): bool {
+        return $this->lockAndRunConsoleCommand(
             $io,
             $shortName,
             'nowplaying',

@@ -12,6 +12,7 @@ use App\Http\Response;
 use App\Http\ServerRequest;
 use App\OpenApi;
 use App\Radio\AutoDJ\Scheduler;
+use App\Utilities\Types;
 use Carbon\CarbonImmutable;
 use OpenApi\Attributes as OA;
 use Psr\Cache\CacheItemPoolInterface;
@@ -124,7 +125,7 @@ final class ScheduleAction implements SingleActionInterface
 
             $events = $cacheItem->get();
 
-            $rows = (int)$request->getQueryParam('rows', 5);
+            $rows = Types::int($request->getQueryParam('rows'), 5);
             $events = array_slice($events, 0, $rows);
         }
 

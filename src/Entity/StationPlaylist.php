@@ -33,12 +33,12 @@ class StationPlaylist implements
     use Traits\HasAutoIncrementId;
     use Traits\TruncateStrings;
 
-    public const DEFAULT_WEIGHT = 3;
-    public const DEFAULT_REMOTE_BUFFER = 20;
+    public const int DEFAULT_WEIGHT = 3;
+    public const int DEFAULT_REMOTE_BUFFER = 20;
 
-    public const OPTION_INTERRUPT_OTHER_SONGS = 'interrupt';
-    public const OPTION_PLAY_SINGLE_TRACK = 'single_track';
-    public const OPTION_MERGE = 'merge';
+    public const string OPTION_INTERRUPT_OTHER_SONGS = 'interrupt';
+    public const string OPTION_PLAY_SINGLE_TRACK = 'single_track';
+    public const string OPTION_MERGE = 'merge';
 
     #[
         ORM\ManyToOne(inversedBy: 'playlists'),

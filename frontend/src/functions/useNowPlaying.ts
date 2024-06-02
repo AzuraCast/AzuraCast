@@ -23,6 +23,13 @@ export const nowPlayingProps = {
     },
 };
 
+interface SsePayload {
+    data: {
+        current_time?: number,
+        np: ApiNowPlaying
+    }
+}
+
 export default function useNowPlaying(props) {
     const np: ShallowRef<ApiNowPlaying> = shallowRef(NowPlaying);
     const npTimestamp: Ref<number> = ref(0);
@@ -47,23 +54,25 @@ export default function useNowPlaying(props) {
                 ]
             });
 
-            setPositionState(np_new.now_playing.duration, np_new.now_playing.elapsed);
+            const setPositionState = (duration: number, position: number): void => {
+                if (position <= duration) {
+                    navigator.mediaSession.setPositionState({
+                        duration,
+                        position,
+                    });
+                }
+            };
 
-            navigator.mediaSession.setActionHandler("seekto", function () {
-                setPositionState(np_new.now_playing.duration, np_new.now_playing.elapsed);
+            setPositionState(np_new.now_playing.duration ?? 0, np_new.now_playing.elapsed ?? 0);
+
+            navigator.mediaSession.setActionHandler("seekto", () => {
+                setPositionState(np_new.now_playing.duration ?? 0, np_new.now_playing.elapsed ?? 0);
             });
         }
 
         document.dispatchEvent(new CustomEvent("now-playing", {
             detail: np_new
         }));
-
-        function setPositionState(duration, position) {
-            navigator.mediaSession.setPositionState({
-                duration,
-                position,
-            });
-        }
     }
 
     if (props.useSse) {
@@ -71,16 +80,18 @@ export default function useNowPlaying(props) {
         const sseUriParams = new URLSearchParams({
             "cf_connect": JSON.stringify({
                 "subs": {
-                    [`station:${props.stationShortName}`]: {},
+                    [`station:${props.stationShortName}`]: {
+                        "recover": true
+                    },
                 }
             }),
         });
         const sseUri = sseBaseUri.value + '?' + sseUriParams.toString();
 
-        const handleSseData = (ssePayload) => {
-            const jsonData = ssePayload?.pub?.data ?? {};
+        const handleSseData = (ssePayload: SsePayload, useTime: boolean = true) => {
+            const jsonData = ssePayload.data;
 
-            if ('current_time' in jsonData) {
+            if (useTime && 'current_time' in jsonData) {
                 currentTime.value = jsonData.current_time;
             }
 
@@ -99,11 +110,24 @@ export default function useNowPlaying(props) {
         const {data} = useEventSource(sseUri);
         watch(data, (dataRaw: string) => {
             const jsonData = JSON.parse(dataRaw);
+
             if ('connect' in jsonData) {
-                const initialData = jsonData.connect.data ?? [];
-                initialData.forEach((initialRow) => handleSseData(initialRow));
-            } else if ('channel' in jsonData) {
-                handleSseData(jsonData);
+                const connectData = jsonData.connect;
+
+                // New Centrifugo time format
+                if ('time' in connectData) {
+                    currentTime.value = Math.floor(connectData.time / 1000);
+                }
+
+                // New Centrifugo cached NowPlaying initial push.
+                for (const subName in connectData.subs) {
+                    const sub = connectData.subs[subName];
+                    if ('publications' in sub && sub.publications.length > 0) {
+                        sub.publications.forEach((initialRow) => handleSseData(initialRow, false));
+                    }
+                }
+            } else if ('pub' in jsonData) {
+                handleSseData(jsonData.pub);
             }
         });
     } else {

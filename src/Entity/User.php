@@ -21,8 +21,6 @@ use Symfony\Component\Serializer\Annotation as Serializer;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
-use const PASSWORD_BCRYPT;
-
 #[
     OA\Schema(type: "object"),
     ORM\Entity,
@@ -185,9 +183,7 @@ class User implements Stringable, IdentifiableEntityInterface
     public function verifyPassword(string $password): bool
     {
         if (password_verify($password, $this->auth_password)) {
-            [$algo, $algoOpts] = $this->getPasswordAlgorithm();
-
-            if (password_needs_rehash($this->auth_password, $algo, $algoOpts)) {
+            if (password_needs_rehash($this->auth_password, PASSWORD_ARGON2ID)) {
                 $this->setNewPassword($password);
             }
             return true;
@@ -196,25 +192,10 @@ class User implements Stringable, IdentifiableEntityInterface
         return false;
     }
 
-    /**
-     * Get the most secure available password hashing algorithm.
-     *
-     * @return mixed[] [algorithm constant string, algorithm options array]
-     */
-    protected function getPasswordAlgorithm(): array
-    {
-        if (defined('PASSWORD_ARGON2ID')) {
-            return [PASSWORD_ARGON2ID, []];
-        }
-
-        return [PASSWORD_BCRYPT, []];
-    }
-
     public function setNewPassword(?string $password): void
     {
         if (null !== $password && trim($password)) {
-            [$algo, $algoOpts] = $this->getPasswordAlgorithm();
-            $this->auth_password = password_hash($password, $algo, $algoOpts);
+            $this->auth_password = password_hash($password, PASSWORD_ARGON2ID);
         }
     }
 

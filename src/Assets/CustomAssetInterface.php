@@ -9,7 +9,7 @@ use Psr\Http\Message\UriInterface;
 
 interface CustomAssetInterface
 {
-    public const UPLOADS_URL_PREFIX = '/uploads';
+    public const string UPLOADS_URL_PREFIX = '/uploads';
 
     public function getPath(): string;
 

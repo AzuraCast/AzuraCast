@@ -187,13 +187,14 @@ final class RolesController extends AbstractApiCrudController
         return $this->listPaginatedFromQuery($request, $response, $qb->getQuery());
     }
 
-    protected function viewRecord(object $record, ServerRequest $request): mixed
+    protected function viewRecord(object $record, ServerRequest $request): array
     {
+        assert($record instanceof Role);
+
+        /** @var array<array-key, mixed> $result */
         $result = parent::viewRecord($record, $request);
 
-        if ($record instanceof Role) {
-            $result['is_super_admin'] = $record->getIdRequired() === $this->superAdminRole->getIdRequired();
-        }
+        $result['is_super_admin'] = $record->getIdRequired() === $this->superAdminRole->getIdRequired();
 
         return $result;
     }

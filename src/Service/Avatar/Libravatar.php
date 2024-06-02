@@ -6,7 +6,7 @@ namespace App\Service\Avatar;
 
 final class Libravatar implements AvatarServiceInterface
 {
-    public const BASE_URL = 'https://seccdn.libravatar.org/avatar';
+    public const string BASE_URL = 'https://seccdn.libravatar.org/avatar';
 
     public function getServiceName(): string
     {

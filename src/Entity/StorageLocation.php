@@ -28,7 +28,7 @@ class StorageLocation implements Stringable, IdentifiableEntityInterface
     use Traits\HasAutoIncrementId;
     use Traits\TruncateStrings;
 
-    public const DEFAULT_BACKUPS_PATH = '/var/azuracast/backups';
+    public const string DEFAULT_BACKUPS_PATH = '/var/azuracast/backups';
 
     #[ORM\Column(type: 'string', length: 50, enumType: StorageLocationTypes::class)]
     protected StorageLocationTypes $type;

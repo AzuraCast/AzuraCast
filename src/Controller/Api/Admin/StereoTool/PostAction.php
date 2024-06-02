@@ -16,7 +16,6 @@ use InvalidArgumentException;
 use Psr\Http\Message\ResponseInterface;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
-use RecursiveRegexIterator;
 use RegexIterator;
 use RuntimeException;
 use Symfony\Component\Filesystem\Filesystem;
@@ -113,9 +112,10 @@ final class PostAction implements SingleActionInterface
             $libDir = $pluginDir . '/lib/Linux';
             if (is_dir($libDir)) {
                 $iterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($libDir));
-                $regex = new RegexIterator($iterator, '/^.+\.so$/i', RecursiveRegexIterator::GET_MATCH);
+                $regex = new RegexIterator($iterator, '/^.+\.so$/i', RegexIterator::GET_MATCH);
 
                 foreach ($regex as [$libFile]) {
+                    /** @var string $libFile */
                     if (str_contains($libFile, 'X11')) {
                         continue;
                     }

@@ -125,8 +125,8 @@ final class BackupCommand extends AbstractDatabaseCommand
                 DQL
             )->execute();
 
-            /** @var Station $station */
             foreach ($stations as $station) {
+                /** @var Station $station */
                 $mediaAdapter = $station->getMediaStorageLocation();
                 if ($mediaAdapter->isLocal()) {
                     $filesToBackup[] = $mediaAdapter->getPath();

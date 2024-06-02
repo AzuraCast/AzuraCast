@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use App\Utilities\Types;
 use App\Webhook\Enums\WebhookTriggers;
 use App\Webhook\Enums\WebhookTypes;
 use Doctrine\ORM\Mapping as ORM;
@@ -25,7 +26,7 @@ class StationWebhook implements
     use Traits\HasAutoIncrementId;
     use Traits\TruncateStrings;
 
-    public const LAST_SENT_TIMESTAMP_KEY = 'last_message_sent';
+    public const string LAST_SENT_TIMESTAMP_KEY = 'last_message_sent';
 
     #[
         ORM\ManyToOne(inversedBy: 'webhooks'),
@@ -216,7 +217,7 @@ class StationWebhook implements
      */
     public function checkRateLimit(int $seconds): bool
     {
-        $lastMessageSent = (int)$this->getMetadataKey(self::LAST_SENT_TIMESTAMP_KEY, 0);
+        $lastMessageSent = Types::int($this->getMetadataKey(self::LAST_SENT_TIMESTAMP_KEY));
         return $lastMessageSent <= (time() - $seconds);
     }
 

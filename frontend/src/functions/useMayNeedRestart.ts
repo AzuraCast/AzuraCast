@@ -1,18 +1,17 @@
 import {useEventBus} from "@vueuse/core";
 
-export function useMayNeedRestart() {
-    const eventBus = useEventBus<boolean>('station-restart');
+export function useRestartEventBus() {
+    return useEventBus<boolean>('station-restart');
+}
 
-    const needsRestart = () => {
-        eventBus.emit(true);
-    }
+export function useMayNeedRestart() {
+    const eventBus = useRestartEventBus();
 
     const mayNeedRestart = () => {
         eventBus.emit(false);
     }
 
     return {
-        needsRestart,
         mayNeedRestart
     }
 }

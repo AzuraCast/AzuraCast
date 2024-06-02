@@ -19,7 +19,7 @@ use Psr\Cache\CacheItemPoolInterface;
  */
 final class NowPlayingCache
 {
-    private const NOWPLAYING_CACHE_TTL = 180;
+    private const int NOWPLAYING_CACHE_TTL = 180;
 
     public function __construct(
         private readonly CacheItemPoolInterface $cache

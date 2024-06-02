@@ -82,7 +82,9 @@ final class StationRequiresRestart implements EventSubscriber
                     }
 
                     $station = $entity->getStation();
-                    $stationsToRestart[$station->getId()] = $station;
+                    if ($station->hasLocalServices()) {
+                        $stationsToRestart[$station->getId()] = $station;
+                    }
                 }
             }
         }

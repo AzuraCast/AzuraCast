@@ -19,13 +19,13 @@
         />
 
         <form-group-field
-            id="edit_form_fade_overlap"
+            id="edit_form_fade_start_next"
             class="col-md-6"
-            :field="form.fade_overlap"
+            :field="form.fade_start_next"
             input-type="number"
             :input-attrs="{ step: '0.1' }"
-            :label="$gettext('Custom Fading: Overlap Time (seconds)')"
-            :description="$gettext('The time that this song should overlap its surrounding songs when fading. Leave blank to use the system default.')"
+            :label="$gettext('Custom Fading: Start Next (seconds)')"
+            :description="$gettext('Seconds from the start of the song that the next song should begin when fading. Leave blank to use the system default.')"
             clearable
         />
 

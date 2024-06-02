@@ -7,11 +7,20 @@ namespace App\Radio\AutoDJ;
 use App\Container\LoggerAwareTrait;
 use App\Entity\Api\StationPlaylistQueue;
 
+/**
+ * @phpstan-type PlayedTrack array{
+ *     song_id: string,
+ *     text: string|null,
+ *     artist: string|null,
+ *     title: string|null,
+ *     timestamp_played: int
+ * }
+ */
 final class DuplicatePrevention
 {
     use LoggerAwareTrait;
 
-    public const ARTIST_SEPARATORS = [
+    public const array ARTIST_SEPARATORS = [
         ', ',
         ' feat ',
         ' feat. ',
@@ -24,7 +33,7 @@ final class DuplicatePrevention
 
     /**
      * @param StationPlaylistQueue[] $eligibleTracks
-     * @param array $playedTracks
+     * @param PlayedTrack[] $playedTracks
      * @param bool $allowDuplicates Whether to return a media ID even if duplicates can't be prevented.
      */
     public function preventDuplicates(
@@ -115,7 +124,7 @@ final class DuplicatePrevention
      *  [ 'id' => ['artist' => 'Foo', 'title' => 'Fighters'] ]
      *
      * @param StationPlaylistQueue[] $eligibleTracks
-     * @param array $playedTracks
+     * @param PlayedTrack[] $playedTracks
      *
      */
     public function getDistinctTrack(
@@ -154,13 +163,13 @@ final class DuplicatePrevention
         return null;
     }
 
-    private function getArtistParts(string $artists): array
+    private function getArtistParts(?string $artists): array
     {
         $dividerString = chr(7);
 
         $artistParts = explode(
             $dividerString,
-            str_replace(self::ARTIST_SEPARATORS, $dividerString, trim($artists))
+            str_replace(self::ARTIST_SEPARATORS, $dividerString, trim($artists ?? ''))
         );
 
         return array_filter(
@@ -171,8 +180,8 @@ final class DuplicatePrevention
         );
     }
 
-    private function prepareStringForMatching(string $string): string
+    private function prepareStringForMatching(?string $string): string
     {
-        return mb_strtolower(trim($string));
+        return mb_strtolower(trim($string ?? ''));
     }
 }

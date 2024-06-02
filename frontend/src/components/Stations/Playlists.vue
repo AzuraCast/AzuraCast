@@ -403,10 +403,7 @@ const doApplyTo = (url) => {
     $applyToModal.value?.open(url);
 }
 
-const {
-    mayNeedRestart: originalMayNeedRestart,
-    needsRestart: originalNeedsRestart
-} = useMayNeedRestart();
+const {mayNeedRestart: originalMayNeedRestart} = useMayNeedRestart();
 
 const mayNeedRestart = () => {
     if (!props.useManualAutoDj) {
@@ -416,20 +413,12 @@ const mayNeedRestart = () => {
     originalMayNeedRestart();
 };
 
-const needsRestart = () => {
-    if (!props.useManualAutoDj) {
-        return;
-    }
-
-    originalNeedsRestart();
-};
-
 const {notifySuccess} = useNotify();
 const {axios} = useAxios();
 
 const doModify = (url) => {
     axios.put(url).then((resp) => {
-        needsRestart();
+        mayNeedRestart();
 
         notifySuccess(resp.data.message);
         relist();
@@ -440,7 +429,7 @@ const {doDelete} = useConfirmAndDelete(
     $gettext('Delete Playlist?'),
     () => {
         relist();
-        needsRestart();
+        mayNeedRestart();
     },
 );
 
@@ -448,7 +437,7 @@ const {doDelete: doEmpty} = useConfirmAndDelete(
     $gettext('Clear all media from playlist?'),
     () => {
         relist();
-        needsRestart();
+        mayNeedRestart();
     },
 );
 </script>

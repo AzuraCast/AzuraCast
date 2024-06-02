@@ -10,7 +10,7 @@ use App\Utilities\File;
 
 final class StereoTool
 {
-    public const VERSION_FILE = '.currentversion';
+    public const string VERSION_FILE = '.currentversion';
 
     public static function isInstalled(): bool
     {

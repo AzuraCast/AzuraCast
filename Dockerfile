@@ -10,7 +10,7 @@ RUN go install github.com/jwilder/dockerize@v0.6.1
 
 RUN go install github.com/aptible/supercronic@v0.2.28
 
-RUN go install github.com/centrifugal/centrifugo/v5@v5.3.0
+RUN go install github.com/centrifugal/centrifugo/v5@v5.4.0
 
 #
 # MariaDB dependencies build step

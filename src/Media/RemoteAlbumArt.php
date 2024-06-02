@@ -23,7 +23,7 @@ final class RemoteAlbumArt
     use LoggerAwareTrait;
     use SettingsAwareTrait;
 
-    public const CACHE_LIFETIME = 86400 * 14; // Two Weeks
+    public const int|float CACHE_LIFETIME = 86400 * 14; // Two Weeks
 
     public function __construct(
         private readonly CacheInterface $cache,

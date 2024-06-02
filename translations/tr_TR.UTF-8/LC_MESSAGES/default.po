@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: azuracast\n"
 "Language-Team: Turkish\n"
 "Language: tr_TR\n"
-"PO-Revision-Date: 2024-05-06 03:03\n"
+"PO-Revision-Date: 2024-06-02 19:00\n"
 
 #: src/components/Stations/Podcasts.vue:143
 msgid "# Episodes"
@@ -103,11 +103,11 @@ msgstr "Kuyruk her doldurulduğunda oynatma için tamamen rastgele bir parça se
 
 #: src/components/Stations/HlsStreams/Form/BasicInfo.vue:15
 msgid "A name for this stream that will be used internally in code. Should only contain letters, numbers, and underscores (i.e. \"stream_lofi\")."
-msgstr ""
+msgstr "Bu yayının kodda dahili olarak kullanılacak adı. Yalnızca harf, rakam ve alt çizgi içermelidir (Örnek: \"stream_lofi\")."
 
 #: src/components/Account/PasskeyModal.vue:45
 msgid "A passkey has been selected. Submit this form to add it to your account."
-msgstr ""
+msgstr "Bir geçiş anahtarı seçildi. Hesabınıza eklemek için bu formu gönderin."
 
 #: src/components/Stations/Playlists/Form/BasicInfo.vue:297
 msgid "A playlist containing media files hosted on this server."
@@ -119,20 +119,20 @@ msgstr "Uzak sunucudaki müzik dosyalarını içeren bir çalma listesidir."
 
 #: src/components/Stations/Webhooks/Form/GoogleAnalyticsV4.vue:20
 msgid "A unique identifier (i.e. \"G-A1B2C3D4\") for this measurement stream."
-msgstr ""
+msgstr "Bu ölçüm akışı için benzersiz bir tanımlayıcı (Örnek: \"G-A1B2C3D4\")."
 
 #: src/components/Admin/Relays.vue:15
 msgid "About AzuraRelay"
-msgstr ""
+msgstr "AzuraRelay Hakkında"
 
-#: src/components/Admin/Stations/Form/BackendForm.vue:83
+#: src/components/Admin/Stations/Form/BackendForm.vue:85
 msgid "About Master_me"
-msgstr ""
+msgstr "Master_me Hakkında"
 
 #: src/components/Admin/Updates.vue:64
 #: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/UpdateCheck.php:100
 msgid "About Release Channels"
-msgstr ""
+msgstr "Güncelleme Kanalları Hakkında"
 
 #: src/components/Admin/StorageLocations/Form/Dropbox.vue:66
 msgid "Access Code"
@@ -178,7 +178,7 @@ msgstr "Hesap Listesi"
 #: src/components/Stations/Mounts.vue:103
 #: src/components/Stations/Playlists.vue:348
 #: src/components/Stations/Playlists/ReorderModal.vue:29
-#: src/components/Stations/PodcastEpisodes.vue:224
+#: src/components/Stations/PodcastEpisodes.vue:245
 #: src/components/Stations/Podcasts.vue:146
 #: src/components/Stations/Queue.vue:96
 #: src/components/Stations/Remotes.vue:95
@@ -205,7 +205,7 @@ msgid "Add Custom Field"
 msgstr "Özel Alan Ekle"
 
 #: src/components/Stations/PodcastEpisodes.vue:49
-#: src/components/Stations/Podcasts/EpisodeEditModal.vue:145
+#: src/components/Stations/Podcasts/EpisodeEditModal.vue:112
 msgid "Add Episode"
 msgstr "Bölüm Ekle"
 
@@ -285,7 +285,7 @@ msgid "Add User"
 msgstr "Kullanıcı Ekle"
 
 #: src/components/Stations/Webhooks.vue:12
-#: src/components/Stations/Webhooks/EditModal.vue:161
+#: src/components/Stations/Webhooks/EditModal.vue:163
 msgid "Add Web Hook"
 msgstr "Web Kancası Ekle"
 
@@ -294,12 +294,12 @@ msgstr "Web Kancası Ekle"
 #: src/components/Admin/Stations/Form/AdminForm.vue:3
 #: src/components/Dashboard.vue:27
 #: src/components/Stations/Profile/FrontendPanel.vue:33
-#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/ServiceCheck.php:42
 #: /home/runner/work/AzuraCast/AzuraCast/src/Controller/AdminAction.php:22
+#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/ServiceCheck.php:42
 msgid "Administration"
 msgstr "Yönetim"
 
-#: src/components/Admin/Stations/Form/BackendForm.vue:176
+#: src/components/Admin/Stations/Form/BackendForm.vue:188
 #: src/components/Admin/Stations/Form/FrontendForm.vue:142
 #: src/components/Admin/Stations/Form/FrontendForm.vue:61
 #: src/components/Form/FormLabel.vue:16
@@ -310,7 +310,7 @@ msgstr "Yönetim"
 msgid "Advanced"
 msgstr "Gelişmiş"
 
-#: src/components/Admin/Stations/Form/BackendForm.vue:174
+#: src/components/Admin/Stations/Form/BackendForm.vue:186
 #: src/components/Admin/Stations/Form/FrontendForm.vue:59
 msgid "Advanced Configuration"
 msgstr "Gelişmiş Yapılandırma"
@@ -346,7 +346,7 @@ msgstr "Tüm Günler"
 
 #: src/components/Admin/Settings/ServicesTab.vue:57
 msgid "All listed domain names should point to this AzuraCast installation. Separate multiple domain names with commas."
-msgstr ""
+msgstr "Listelenen tüm etki alanı adları bu AzuraCast kurulumuna işaret etmelidir. Birden fazla alan adını virgülle ayırın."
 
 #: src/components/Stations/Playlists.vue:30
 msgid "All Playlists"
@@ -395,23 +395,23 @@ msgstr "Bir hata oluştu ve işleminiz tamamlanamadı."
 
 #: src/components/Stations/ProfileEdit.vue:18
 msgid "An error occurred while loading the station profile:"
-msgstr ""
+msgstr "Radyo profili yüklenirken bir hata oluştu:"
 
 #: src/components/Public/WebDJ/useWebcaster.ts:77
 msgid "An error occurred with the WebDJ socket."
-msgstr ""
+msgstr "WebDJ bağlantısında bir hata oluştu."
 
-#: src/components/Stations/Webhooks/Form/TypeSelect.vue:35
+#: src/components/Stations/Webhooks/Form/TypeSelect.vue:36
 msgid "Analytics"
 msgstr ""
 
-#: src/components/Stations/Media/MediaToolbar.vue:154
+#: src/components/Stations/Media/MediaToolbar.vue:164
 msgid "Analyze and reprocess the selected media"
 msgstr "Müzik dosyalarını analiz et ve yeniden işle"
 
 #: src/components/Admin/StereoTool.vue:76
 msgid "Any of the following file types are accepted:"
-msgstr ""
+msgstr "Aşağıdaki dosya türlerinden herhangi biri kabul edilir:"
 
 #: src/entities/Webhooks.ts:56
 msgid "Any time a live streamer/DJ connects to the stream"
@@ -469,8 +469,12 @@ msgstr ""
 msgid "App Secret"
 msgstr ""
 
-#: src/components/Admin/Stations/Form/BackendForm.vue:473
+#: src/components/Admin/Stations/Form/BackendForm.vue:491
 msgid "Apple Podcasts"
+msgstr ""
+
+#: src/components/Admin/Stations/Form/BackendForm.vue:51
+msgid "Apply audio processors (like compressors, limiters, or equalizers) to your stream to create a more uniform sound or enhance the listening experience. Processing requires extra CPU resources, so it may slow down your server."
 msgstr ""
 
 #: src/components/Admin/Settings/ServicesTab.vue:242
@@ -481,9 +485,9 @@ msgstr "Last.fm'de bir API anahtarı için başvurun"
 msgid "Apply Playlist to Folders"
 msgstr ""
 
-#: src/components/Admin/Stations/Form/BackendForm.vue:74
+#: src/components/Admin/Stations/Form/BackendForm.vue:76
 msgid "Apply Post-processing to Live Streams"
-msgstr ""
+msgstr "Canlı Yayınlara Ses İşleme Uygula"
 
 #: src/components/Stations/Playlists.vue:235
 #: src/components/Stations/Playlists/ApplyToModal.vue:57
@@ -496,7 +500,7 @@ msgid "Are you sure?"
 msgstr "Emin misiniz?"
 
 #: src/components/Public/OnDemand.vue:98
-#: src/components/Stations/PodcastEpisodes.vue:173
+#: src/components/Stations/PodcastEpisodes.vue:194
 #: src/components/Stations/Podcasts.vue:139
 #: src/components/Stations/Streamers.vue:149
 msgid "Art"
@@ -536,13 +540,13 @@ msgstr "Ses Bit Hızı (kbps)"
 msgid "Audio Format"
 msgstr "Ses Formatı"
 
-#: src/components/Admin/Stations/Form/BackendForm.vue:45
-msgid "Audio Post-processing"
-msgstr ""
-
-#: src/components/Admin/Stations/Form/BackendForm.vue:65
+#: src/components/Admin/Stations/Form/BackendForm.vue:67
 msgid "Audio Post-processing Method"
-msgstr "Ses İşlem Sonrası Yöntemi"
+msgstr "Ses İşleme Yöntemi"
+
+#: src/components/Admin/Stations/Form/BackendForm.vue:47
+msgid "Audio Processing"
+msgstr ""
 
 #: src/components/Admin/Index/CpuStatsHelpModal.vue:29
 msgid "Audio transcoding applications like Liquidsoap use a consistent amount of CPU over time, which gradually drains this available credit. If you regularly see stolen CPU time, you should consider migrating to a VM that has CPU resources dedicated to your instance."
@@ -561,6 +565,10 @@ msgstr "Yazar"
 #: src/components/Admin/CustomFields.vue:89
 msgid "Auto-Assign Value"
 msgstr "Otomatik Atanmış Değer"
+
+#: src/components/Admin/Stations/Form/BackendForm.vue:179
+msgid "AutoCue analyzes your music and automatically calculates cue points, fade points, and volume levels for a consistent listening experience."
+msgstr ""
 
 #: src/components/Admin/Stations.vue:137
 #: src/components/Admin/Stations/Form/BackendForm.vue:3
@@ -593,7 +601,7 @@ msgstr "AutoDJ bu radyoda için devredışı bırakıldı. Canlı yayın olmadı
 msgid "AutoDJ Queue"
 msgstr "AutoDJ Kuyruğu"
 
-#: src/components/Admin/Stations/Form/BackendForm.vue:227
+#: src/components/Admin/Stations/Form/BackendForm.vue:239
 msgid "AutoDJ Queue Length"
 msgstr "AutoDJ Kuyruk Uzunluğu"
 
@@ -608,13 +616,13 @@ msgstr "Otomatik Yedeklemeler"
 
 #: src/components/Stations/Podcasts/PodcastForm/Source.vue:109
 msgid "Automatically create new podcast episodes when media is added to a specified playlist."
-msgstr ""
+msgstr "Belirli bir çalma listesine müzik dosyası eklendiğinde otomatik olarak yeni podcast bölümleri oluşturun."
 
 #: src/components/Stations/Podcasts/PodcastForm/Source.vue:49
 msgid "Automatically Publish New Episodes"
 msgstr ""
 
-#: src/entities/Webhooks.ts:120
+#: src/entities/Webhooks.ts:125
 msgid "Automatically publish to a Mastodon instance."
 msgstr ""
 
@@ -622,11 +630,11 @@ msgstr ""
 msgid "Automatically Scroll to Bottom"
 msgstr ""
 
-#: src/entities/Webhooks.ts:112
+#: src/entities/Webhooks.ts:117
 msgid "Automatically send a customized message to your Discord server."
 msgstr "Discord sunucunuza otomatik olarak özelleştirilmiş bir mesaj gönderin."
 
-#: src/entities/Webhooks.ts:92
+#: src/entities/Webhooks.ts:93
 msgid "Automatically send a message to any URL when your station data changes."
 msgstr "Radyo verileriniz değiştiğinde otomatik olarak herhangi bir URLye mesaj gönderin."
 
@@ -690,7 +698,7 @@ msgstr "AzuraCast yüklenen dosyayı bu istasyonun müzik kitaplığındaki eşl
 
 #: src/components/Admin/Relays.vue:6
 msgid "AzuraRelay is a standalone service that connects to your AzuraCast instance, automatically relays your stations via its own server, then reports the listener details back to your main instance. This page shows all currently connected instances."
-msgstr ""
+msgstr "AzuraRelay, AzuraCast örneğinize bağlanan, istasyonlarınızı kendi sunucusu aracılığıyla otomatik olarak aktaran ve ardından dinleyici ayrıntılarını ana örneğinize raporlayan bağımsız bir hizmettir. Bu sayfa şu anda bağlı olan tüm örnekleri gösterir."
 
 #: src/components/Stations/Media/MoveFilesModal.vue:20
 msgid "Back"
@@ -698,7 +706,7 @@ msgstr "Geri"
 
 #: src/components/Admin/Updates.vue:85
 msgid "Backing up your installation is strongly recommended before any update."
-msgstr ""
+msgstr "Herhangi bir güncellemeden önce kurulumunuzu yedeklemeniz önemle tavsiye edilir."
 
 #: src/components/Admin/Updates.vue:110
 msgid "Backup"
@@ -716,7 +724,7 @@ msgstr "Yedekleme Formatı"
 msgid "Backups"
 msgstr "Yedekleme"
 
-#: src/components/Admin/Stations/Form/BackendForm.vue:490
+#: src/components/Admin/Stations/Form/BackendForm.vue:508
 msgid "Balanced"
 msgstr "Dengeli"
 
@@ -756,7 +764,7 @@ msgstr "Temel Bilgiler"
 msgid "Basic Information"
 msgstr "Temel Bilgiler"
 
-#: src/components/Admin/Stations/Form/BackendForm.vue:430
+#: src/components/Admin/Stations/Form/BackendForm.vue:448
 msgid "Basic Normalization and Compression"
 msgstr ""
 
@@ -834,6 +842,10 @@ msgstr "Tarayıcılar"
 msgid "Bucket Name"
 msgstr "Kova Adı"
 
+#: src/components/Stations/Podcasts/BatchEditModal.vue:7
+msgid "Bulk Edit Episodes"
+msgstr ""
+
 #: src/components/Stations/menu.ts:131
 msgid "Bulk Media Import/Export"
 msgstr "Toplu Müzik Dosyası İçe/Dışa Aktarma"
@@ -884,7 +896,7 @@ msgstr "Değişiklikler"
 msgid "Changes saved."
 msgstr "Değişiklikler Kaydedildi."
 
-#: src/components/Admin/Stations/Form/BackendForm.vue:238
+#: src/components/Admin/Stations/Form/BackendForm.vue:250
 msgid "Character Set Encoding"
 msgstr "Kodlama Karakter Seti"
 
@@ -896,9 +908,9 @@ msgstr "Sohbet ID"
 msgid "Check for Updates"
 msgstr "Güncellemeleri Kontrol Et"
 
-#: src/components/Admin/Stations/Form/BackendForm.vue:75
+#: src/components/Admin/Stations/Form/BackendForm.vue:77
 msgid "Check this box to apply post-processing to all audio, including live streams. Uncheck this box to only apply post-processing to the AutoDJ."
-msgstr ""
+msgstr "Canlı yayınlar dahil tüm seslere işlem uygulamak için bu kutuyu işaretleyin. Yalnızca AutoDJ'e işlem uygulamak için bu kutunun işaretini kaldırın."
 
 #: src/components/Admin/Settings/ServicesTab.vue:218
 msgid "Check Web Services for Album Art for \"Now Playing\" Tracks"
@@ -908,7 +920,7 @@ msgstr "\"Şimdi Çalan\" Parçalar için Albüm Resmi için Web Hizmetlerini Ko
 msgid "Check Web Services for Album Art When Uploading Media"
 msgstr "Müzik Dosyası Yüklerken Albüm Resmi için Web Hizmetlerini Kontrol Edin"
 
-#: src/components/Admin/Stations/Form/BackendForm.vue:29
+#: src/components/Admin/Stations/Form/BackendForm.vue:30
 msgid "Choose a method to use when transitioning from one song to another. Smart Mode considers the volume of the two tracks when fading for a smoother effect, but requires more CPU resources."
 msgstr "Bir şarkıdan diğerine geçiş yaparken kullanılacak bir yöntemi belirleyin.  Akıllı Mod daha yumuşak bir efekt ile geçişi yaparken iki parçanın sesini dikkate alır ancak daha fazla CPU kaynağı gerektirir."
 
@@ -924,13 +936,13 @@ msgstr "Hesabınız için yeni bir şifre giriniz."
 msgid "City"
 msgstr "Şehir"
 
-#: src/components/Stations/Media/MediaToolbar.vue:95
+#: src/components/Stations/Media/MediaToolbar.vue:103
 #: src/components/Stations/Queue.vue:132
 #: src/components/Stations/Reports/Requests.vue:171
 msgid "Clear"
 msgstr "Temizle"
 
-#: src/components/Stations/Playlists.vue:448
+#: src/components/Stations/Playlists.vue:437
 msgid "Clear all media from playlist?"
 msgstr ""
 
@@ -1068,6 +1080,7 @@ msgstr "Radyo Kopyalama"
 #: src/components/Stations/Playlists/ApplyToModal.vue:50
 #: src/components/Stations/Playlists/ImportModal.vue:87
 #: src/components/Stations/Playlists/QueueModal.vue:47
+#: src/components/Stations/Podcasts/BatchEditModal.vue:50
 #: src/components/Stations/Profile/UpdateMetadataModal.vue:42
 #: src/components/Stations/Queue/LogsModal.vue:20
 #: src/components/Stations/Streamers/BroadcastsModal.vue:53
@@ -1084,7 +1097,7 @@ msgstr "Authenticator Uygulaması Kodu"
 
 #: src/components/Admin/Settings/SecurityPrivacyTab.vue:126
 msgid "Collect aggregate listener statistics and IP-based listener statistics"
-msgstr ""
+msgstr "Toplu dinleyici istatistiklerini ve IP tabanlı dinleyici istatistiklerini toplayın"
 
 #: src/components/Stations/Streamers/Form/BasicInfo.vue:38
 msgid "Comments"
@@ -1120,7 +1133,7 @@ msgstr "AzuraRelays Bağlantısı"
 msgid "Connection Information"
 msgstr "Bağlantı Bilgileri"
 
-#: src/components/Stations/Podcasts/EpisodeForm/BasicInfo.vue:53
+#: src/components/Stations/Podcasts/EpisodeForm/BasicInfo.vue:51
 msgid "Contains explicit content"
 msgstr "Yetişkinlere yönelik içerik vardır"
 
@@ -1224,7 +1237,7 @@ msgstr ""
 
 #: src/components/Stations/Podcasts/PodcastForm/Source.vue:104
 msgid "Create podcast episodes independent of your station's media collection."
-msgstr ""
+msgstr "Radyonuzun müzik dosyalarından bağımsız olarak podcast bölümleri oluşturun."
 
 #: src/components/Setup/SetupStep.vue:21
 msgid "Create Station"
@@ -1234,11 +1247,11 @@ msgstr "Radyo Oluştur"
 msgid "Critical"
 msgstr ""
 
-#: src/components/Admin/Stations/Form/BackendForm.vue:38
+#: src/components/Admin/Stations/Form/BackendForm.vue:39
 msgid "Crossfade Duration (Seconds)"
 msgstr "Crossfade Süresi (saniye)"
 
-#: src/components/Admin/Stations/Form/BackendForm.vue:28
+#: src/components/Admin/Stations/Form/BackendForm.vue:29
 msgid "Crossfade Method"
 msgstr "Crossfade Seçenekleri"
 
@@ -1320,8 +1333,8 @@ msgid "Custom Fading: Fade-Out Time (seconds)"
 msgstr "Custom Fading: Solma Zamanı (saniye)"
 
 #: src/components/Stations/Media/Form/AdvancedSettings.vue:27
-msgid "Custom Fading: Overlap Time (seconds)"
-msgstr "Custom Fading: Örtüşme Zamanı (saniye)"
+msgid "Custom Fading: Start Next (seconds)"
+msgstr ""
 
 #: src/components/Stations/Fallback.vue:12
 #: src/components/Stations/menu.ts:264
@@ -1375,7 +1388,7 @@ msgstr "DJ Bağlantı Noktası"
 msgid "Customize DJ/Streamer Port"
 msgstr "DJ Portu"
 
-#: src/components/Admin/Stations/Form/BackendForm.vue:217
+#: src/components/Admin/Stations/Form/BackendForm.vue:229
 msgid "Customize Internal Request Processing Port"
 msgstr "İstek Portu"
 
@@ -1389,7 +1402,7 @@ msgstr "Bu istasyon için \"Şarkı Geçmişi\" bölümünde ve tüm ortak API'l
 
 #: src/components/Admin/Settings/SecurityPrivacyTab.vue:52
 msgid "Customize this setting to ensure you get the correct IP address for remote users. Only change this setting if you use a reverse proxy, either within Docker or a third-party service like CloudFlare."
-msgstr ""
+msgstr "Ziyaretçilerin doğru IP adresini aldığınızdan emin olmak için bu ayarı özelleştirin. Bu ayarı yalnızca Docker'da veya CloudFlare gibi bir üçüncü taraf hizmetinde ters proxy kullanıyorsanız değiştirin."
 
 #: src/components/Admin/Branding/BrandingForm.vue:190
 #: src/components/Stations/Profile/EmbedModal.vue:162
@@ -1466,11 +1479,12 @@ msgstr "Varsayılan Bağlantı Noktası"
 #: src/components/Admin/StorageLocations.vue:58
 #: src/components/Admin/Users.vue:64
 #: src/components/Stations/HlsStreams.vue:49
-#: src/components/Stations/Media/MediaToolbar.vue:171
+#: src/components/Stations/Media/MediaToolbar.vue:182
 #: src/components/Stations/Mounts.vue:57
 #: src/components/Stations/Playlists.vue:162
-#: src/components/Stations/PodcastEpisodes.vue:127
+#: src/components/Stations/PodcastEpisodes.vue:137
 #: src/components/Stations/Podcasts.vue:84
+#: src/components/Stations/Podcasts/EpisodesToolbar.vue:28
 #: src/components/Stations/Queue.vue:39
 #: src/components/Stations/Remotes.vue:58
 #: src/components/Stations/Reports/Requests.vue:88
@@ -1482,7 +1496,11 @@ msgstr "Varsayılan Bağlantı Noktası"
 msgid "Delete"
 msgstr "Sil"
 
-#: src/components/Stations/Media/MediaToolbar.vue:298
+#: src/components/Stations/Podcasts/EpisodesToolbar.vue:87
+msgid "Delete %{ num } episodes?"
+msgstr ""
+
+#: src/components/Stations/Media/MediaToolbar.vue:323
 msgid "Delete %{ num } media files?"
 msgstr "%{ num } adet müzik dosyası silinsin mi?"
 
@@ -1507,7 +1525,7 @@ msgstr "Canlı yayın silinsin mi?"
 msgid "Delete Custom Field?"
 msgstr "Özel alan silinsin mi?"
 
-#: src/components/Stations/PodcastEpisodes.vue:248
+#: src/components/Stations/PodcastEpisodes.vue:269
 msgid "Delete Episode?"
 msgstr "Bölüm silinsin mi?"
 
@@ -1523,7 +1541,7 @@ msgstr "Bağlantı Noktası Silinsin mi?"
 msgid "Delete Passkey?"
 msgstr ""
 
-#: src/components/Stations/Playlists.vue:440
+#: src/components/Stations/Playlists.vue:429
 msgid "Delete Playlist?"
 msgstr "Çalma listesi silinsin mi?"
 
@@ -1612,11 +1630,11 @@ msgstr "Dizin İsmi"
 msgid "Disable"
 msgstr "Devredışı"
 
-#: src/components/Admin/Stations/Form/BackendForm.vue:417
+#: src/components/Admin/Stations/Form/BackendForm.vue:435
 msgid "Disable Crossfading"
 msgstr "Kapat"
 
-#: src/components/Admin/Stations/Form/BackendForm.vue:498
+#: src/components/Admin/Stations/Form/BackendForm.vue:516
 msgid "Disable Optimizations"
 msgstr "Optimizasyonları Devre Dışı Bırak"
 
@@ -1658,7 +1676,7 @@ msgstr "DJ Bağlantısını Kes"
 msgid "Discord Web Hook URL"
 msgstr "Discord Web Kanca URLsi"
 
-#: src/entities/Webhooks.ts:111
+#: src/entities/Webhooks.ts:116
 msgid "Discord Webhook"
 msgstr "Discord Web Kancası"
 
@@ -1693,7 +1711,7 @@ msgstr "Herhangi bir dinleyici istatistiği toplamayın"
 msgid "Do not use a local broadcasting service."
 msgstr ""
 
-#: src/components/Admin/Stations/Form/BackendForm.vue:400
+#: src/components/Admin/Stations/Form/BackendForm.vue:418
 msgid "Do not use an AutoDJ service."
 msgstr "AutoDJ hizmeti kullanmayın."
 
@@ -1760,7 +1778,7 @@ msgstr "Kopyala"
 msgid "Duplicate Playlist"
 msgstr "Çalma Listesini Kopyala"
 
-#: src/components/Admin/Stations/Form/BackendForm.vue:259
+#: src/components/Admin/Stations/Form/BackendForm.vue:271
 msgid "Duplicate Prevention Time Range (Minutes)"
 msgstr "Yinelenen Önleme Süresi Aralığı (Dakika)"
 
@@ -1795,7 +1813,7 @@ msgstr "E-posta adresleri virgülle ayrılabilir."
 msgid "E-mail Delivery Service"
 msgstr "E-posta İletim Raporu Hizmeti"
 
-#: src/components/Admin/Stations/Form/BackendForm.vue:469
+#: src/components/Admin/Stations/Form/BackendForm.vue:487
 msgid "EBU R128"
 msgstr ""
 
@@ -1808,8 +1826,9 @@ msgstr ""
 #: src/components/Stations/Media.vue:197
 #: src/components/Stations/Mounts.vue:50
 #: src/components/Stations/Playlists.vue:155
-#: src/components/Stations/PodcastEpisodes.vue:119
+#: src/components/Stations/PodcastEpisodes.vue:129
 #: src/components/Stations/Podcasts.vue:77
+#: src/components/Stations/Podcasts/EpisodesToolbar.vue:15
 #: src/components/Stations/Remotes.vue:51
 #: src/components/Stations/SftpUsers.vue:29
 #: src/components/Stations/Streamers.vue:63
@@ -1825,7 +1844,7 @@ msgstr ""
 msgid "Edit Custom Field"
 msgstr ""
 
-#: src/components/Stations/Podcasts/EpisodeEditModal.vue:144
+#: src/components/Stations/Podcasts/EpisodeEditModal.vue:111
 msgid "Edit Episode"
 msgstr ""
 
@@ -1895,7 +1914,7 @@ msgstr ""
 msgid "Edit User"
 msgstr ""
 
-#: src/components/Stations/Webhooks/EditModal.vue:157
+#: src/components/Stations/Webhooks/EditModal.vue:159
 msgid "Edit Web Hook"
 msgstr ""
 
@@ -1929,6 +1948,10 @@ msgstr "Etkin"
 #: src/components/Admin/Settings/GeneralTab.vue:69
 msgid "Enable Advanced Features"
 msgstr "Gelişmiş Özellikleri Etkinleştir"
+
+#: src/components/Admin/Stations/Form/BackendForm.vue:178
+msgid "Enable AutoCue Automatic Detection"
+msgstr ""
 
 #: src/components/Stations/Mounts/Form/AutoDj.vue:11
 msgid "Enable AutoDJ"
@@ -2083,13 +2106,15 @@ msgid "Enter your password"
 msgstr "Şifrenizi Girin"
 
 #: src/components/Public/Podcasts/Podcast.vue:142
-#: src/components/Stations/PodcastEpisodes.vue:180
+#: src/components/Stations/PodcastEpisodes.vue:201
+#: src/components/Stations/Podcasts/BatchEditModal.vue:23
 #: src/components/Stations/Podcasts/EpisodeForm/BasicInfo.vue:11
 msgid "Episode"
 msgstr "Bölüm"
 
-#: src/components/Stations/PodcastEpisodes.vue:217
-#: src/components/Stations/Podcasts/EpisodeForm/BasicInfo.vue:74
+#: src/components/Stations/PodcastEpisodes.vue:238
+#: src/components/Stations/Podcasts/BatchEditModal.vue:27
+#: src/components/Stations/Podcasts/EpisodeForm/BasicInfo.vue:72
 msgid "Episode Number"
 msgstr ""
 
@@ -2099,6 +2124,14 @@ msgstr ""
 msgid "Episodes"
 msgstr "Bölümler"
 
+#: src/components/Stations/Podcasts/EpisodesToolbar.vue:98
+msgid "Episodes removed:"
+msgstr ""
+
+#: src/components/Stations/Podcasts/BatchEditModal.vue:142
+msgid "Episodes updated:"
+msgstr ""
+
 #: src/components/Admin/Debug/TaskOutput.vue:94
 msgid "Error"
 msgstr ""
@@ -2107,20 +2140,28 @@ msgstr ""
 msgid "Error moving files:"
 msgstr ""
 
-#: src/components/Stations/Media/MediaToolbar.vue:274
-#: src/components/Stations/Media/MediaToolbar.vue:282
+#: src/components/Stations/Media/MediaToolbar.vue:299
+#: src/components/Stations/Media/MediaToolbar.vue:307
 msgid "Error queueing files:"
 msgstr ""
 
-#: src/components/Stations/Media/MediaToolbar.vue:310
+#: src/components/Stations/Podcasts/EpisodesToolbar.vue:99
+msgid "Error removing episodes:"
+msgstr ""
+
+#: src/components/Stations/Media/MediaToolbar.vue:335
 msgid "Error removing files:"
 msgstr ""
 
-#: src/components/Stations/Media/MediaToolbar.vue:290
+#: src/components/Stations/Media/MediaToolbar.vue:315
 msgid "Error reprocessing files:"
 msgstr ""
 
-#: src/components/Stations/Media/MediaToolbar.vue:340
+#: src/components/Stations/Podcasts/BatchEditModal.vue:143
+msgid "Error updating episodes:"
+msgstr ""
+
+#: src/components/Stations/Media/MediaToolbar.vue:362
 msgid "Error updating playlists:"
 msgstr ""
 
@@ -2147,8 +2188,9 @@ msgstr "Oynanması Bekleniyor"
 
 #: src/components/Public/Podcasts/Podcast.vue:90
 #: src/components/Public/Podcasts/PodcastEpisode.vue:74
-#: src/components/Stations/PodcastEpisodes.vue:109
-#: src/components/Stations/PodcastEpisodes.vue:204
+#: src/components/Stations/PodcastEpisodes.vue:119
+#: src/components/Stations/PodcastEpisodes.vue:225
+#: src/components/Stations/Podcasts/BatchEditModal.vue:25
 msgid "Explicit"
 msgstr "Açık"
 
@@ -2179,11 +2221,11 @@ msgstr "Alan Adı"
 #: src/components/Admin/Backups.vue:205
 #: src/components/Admin/Backups/RunBackupModal.vue:37
 #: src/components/Stations/Media/Form/BasicInfo.vue:7
-#: src/components/Stations/PodcastEpisodes.vue:185
+#: src/components/Stations/PodcastEpisodes.vue:206
 msgid "File Name"
 msgstr "Dosya Adı"
 
-#: src/components/Stations/Media/MediaToolbar.vue:289
+#: src/components/Stations/Media/MediaToolbar.vue:314
 msgid "Files marked for reprocessing:"
 msgstr "Tekrar işlenecek dosyalar:"
 
@@ -2191,15 +2233,15 @@ msgstr "Tekrar işlenecek dosyalar:"
 msgid "Files moved:"
 msgstr "Dosyalar taşındı:"
 
-#: src/components/Stations/Media/MediaToolbar.vue:273
+#: src/components/Stations/Media/MediaToolbar.vue:298
 msgid "Files played immediately:"
 msgstr "Hemen oynatılan dosyalar:"
 
-#: src/components/Stations/Media/MediaToolbar.vue:281
+#: src/components/Stations/Media/MediaToolbar.vue:306
 msgid "Files queued for playback:"
 msgstr "Çalınmak üzere sıraya alınmış müzik dosyaları:"
 
-#: src/components/Stations/Media/MediaToolbar.vue:309
+#: src/components/Stations/Media/MediaToolbar.vue:334
 msgid "Files removed:"
 msgstr "Silinen Dosyalar:"
 
@@ -2223,7 +2265,7 @@ msgstr ""
 msgid "For local filesystems, this is the base path of the directory. For remote filesystems, this is the folder prefix."
 msgstr "Bu yerel dosya sistemleri için dizinin temel yoludur. Bu uzak dosya sistemleri için klasör önekidir."
 
-#: src/components/Admin/Stations/Form/BackendForm.vue:239
+#: src/components/Admin/Stations/Form/BackendForm.vue:251
 msgid "For most cases, use the default UTF-8 encoding. The older ISO-8859-1 encoding can be used if accepting connections from Shoutcast 1 DJs or using other legacy software."
 msgstr "Çoğu durumda varsayılan UTF-8 kodlamasını kullanın. Eski yazılım kullanılıyorsa ISO-8859-1 kodlaması kullanılabilir."
 
@@ -2293,7 +2335,7 @@ msgstr "Rapor Oluştur"
 msgid "Generate/Renew Certificate"
 msgstr ""
 
-#: src/entities/Webhooks.ts:91
+#: src/entities/Webhooks.ts:92
 msgid "Generic Web Hook"
 msgstr "Genel Web Kancası"
 
@@ -2324,7 +2366,7 @@ msgstr "Sonraki Şarkıyı Al"
 msgid "Get Now Playing"
 msgstr "Şimdi Oynat"
 
-#: src/entities/Webhooks.ts:107
+#: src/entities/Webhooks.ts:112
 msgid "GetMeRadio"
 msgstr ""
 
@@ -2345,7 +2387,7 @@ msgstr "Global İzinler"
 msgid "Go"
 msgstr ""
 
-#: src/entities/Webhooks.ts:123
+#: src/entities/Webhooks.ts:128
 msgid "Google Analytics V4 Integration"
 msgstr "Google Analytics V4 Entegrasyonu"
 
@@ -2520,11 +2562,11 @@ msgstr "Bitiş zamanı başlangıç zamanından önce ise program girişi gece d
 
 #: src/components/Stations/Remotes/Form/AutoDj.vue:51
 msgid "If the mountpoint (i.e. /radio.mp3) or Shoutcast SID (i.e. 2) you broadcast to is different from the stream URL, specify the source mount point here."
-msgstr ""
+msgstr "Radyo bağlantı noktası (Örnek: /radio.mp3) veya Shoutcast SID (Örnek: 2) yayın URLsinden farklıysa kaynak bağlantı noktasını burada belirtin."
 
 #: src/components/Stations/Remotes/Form/AutoDj.vue:43
 msgid "If the port you broadcast to is different from the stream URL, specify the source port here."
-msgstr ""
+msgstr "Yayın yaptığınız bağlantı noktası yayın URLsinden farklıysa kaynak bağlantı noktasını burada belirtin."
 
 #: src/components/Stations/Mounts/Form/BasicInfo.vue:36
 msgid "If this mount is the default, it will be played on the radio preview and the public radio page in this system."
@@ -2554,17 +2596,17 @@ msgstr "AutoDJ kullanarak yayın yapıyorsanız kullanıcı adını buraya girin
 msgid "If you're experiencing a bug or error, you can submit a GitHub issue using the link below."
 msgstr "Bir bug veya hata yaşıyorsanız aşağıdaki bağlantıyı kullanarak GitHub sorunu gönderebilirsiniz."
 
-#: src/components/Admin/Stations/Form/BackendForm.vue:250
+#: src/components/Admin/Stations/Form/BackendForm.vue:262
 msgid "If your installation is constrained by CPU or memory, you can change this setting to tune the resources used by Liquidsoap."
 msgstr "Kurulumunuz CPU veya bellek tarafından kısıtlıysa Liquidsoap tarafından kullanılan kaynakları ayarlamak için bu ayarı değiştirebilirsiniz."
 
 #: src/components/Stations/Webhooks/Form/Mastodon.vue:43
 msgid "If your Mastodon username is \"@test@example.com\", enter \"example.com\"."
-msgstr ""
+msgstr "Mastodon kullanıcı adınız \"@test@example.com\" ise \"example.com\" yazın."
 
 #: src/components/Stations/Mounts/Form/BasicInfo.vue:81
 msgid "If your stream is set to advertise to YP directories above, you must specify an authorization hash. You can manage these on the Shoutcast web site."
-msgstr ""
+msgstr "Yayınınız yukarıdaki YP dizinlerine reklam verecek şekilde ayarlanmışsa bir yetkilendirme anahtarı belirtmeniz gerekir. Bunları Shoutcast web sitesinden yönetebilirsiniz."
 
 #: src/components/Admin/Stations/Form/StreamersForm.vue:110
 msgid "If your streaming software requires a specific mount point path, specify it here. Otherwise, use the default."
@@ -2618,17 +2660,17 @@ msgstr "İsteğe Bağlı Oynatıcıya Dahil Et"
 msgid "Indefinitely"
 msgstr "Süresiz"
 
-#: src/components/Stations/Podcasts/EpisodeForm/BasicInfo.vue:54
+#: src/components/Stations/Podcasts/EpisodeForm/BasicInfo.vue:52
 msgid "Indicates the presence of explicit content (explicit language or adult content). Apple Podcasts displays an Explicit parental advisory graphic for your episode if turned on. Episodes containing explicit material aren't available in some Apple Podcasts territories."
 msgstr "Yetişkinlere ait içeriğin varlığını gösterir (açık dil veya yetişkinlere uygun içerik). Apple Podcasts aktif ise yetişkinlere ait bölümünüz için bir ebeveyn danışma grafiği görüntüler. Yetişkinlere ait materyal içeren bölümler bazı Apple Podcasts bölgelerinde mevcut değildir."
 
 #: src/components/Admin/Debug/TaskOutput.vue:91
 msgid "Info"
-msgstr ""
+msgstr "Bilgi"
 
 #: src/components/Stations/Profile/NowPlayingNotStartedPanel.vue:10
 msgid "Information about the current playing track will appear here once your station has started."
-msgstr ""
+msgstr "Radyonuz başlatıldığında geçerli çalınan şarkı hakkındaki bilgiler burada görünecektir."
 
 #: src/components/Admin/AuditLog.vue:27
 msgid "Insert"
@@ -2652,7 +2694,7 @@ msgstr "Shoutcast Kurulumu"
 msgid "Install Stereo Tool"
 msgstr "Stereo Aracını Yükle"
 
-#: src/components/Admin/Stations/Form/BackendForm.vue:202
+#: src/components/Admin/Stations/Form/BackendForm.vue:214
 msgid "Instruct Liquidsoap to use any replaygain metadata associated with a song to control its volume level. This may increase CPU consumption."
 msgstr "Liquidsoap'a şarkının ses seviyesini kontrol etmek için bir şarkıyla ilişkili herhangi bir yeniden oynatma meta verisini kullanmasını söyleyin. Bu CPU tüketimini artırabilir."
 
@@ -2672,7 +2714,7 @@ msgstr "Uluslararası Standart Kayıt Kodu lisans raporları için kullanılır.
 
 #: src/components/Stations/Playlists/Form/Advanced.vue:52
 msgid "Interrupt other songs to play at scheduled time."
-msgstr ""
+msgstr "Planlanan saatte çalmak için diğer şarkıları yarıda kesin."
 
 #: src/components/Stations/Mounts/Form/Intro.vue:2
 msgid "Intro"
@@ -2681,7 +2723,7 @@ msgstr "Karşılama"
 #: src/components/Stations/Reports/Listeners.vue:243
 #: src/components/Stations/Reports/Listeners/Map.vue:10
 msgid "IP"
-msgstr ""
+msgstr "IP"
 
 #: src/components/Admin/Settings/SecurityPrivacyTab.vue:51
 msgid "IP Address Source"
@@ -2695,7 +2737,7 @@ msgstr "IP Geolocation dinleyicilerinizin bağlandıkları IP adresine göre yak
 msgid "Is Public"
 msgstr ""
 
-#: src/components/Stations/PodcastEpisodes.vue:190
+#: src/components/Stations/PodcastEpisodes.vue:211
 msgid "Is Published"
 msgstr ""
 
@@ -2722,40 +2764,40 @@ msgstr "Dil"
 #: src/components/Admin/Settings/GeneralTab.vue:127
 #: src/components/Common/DateRangeDropdown.vue:132
 msgid "Last 14 Days"
-msgstr ""
+msgstr "Son 14 Gün"
 
 #: src/components/Admin/Settings/GeneralTab.vue:143
 msgid "Last 2 Years"
-msgstr ""
+msgstr "Son 2 Yıl"
 
 #: src/components/Common/DateRangeDropdown.vue:104
 msgid "Last 24 Hours"
-msgstr ""
+msgstr "Son 24 Saat"
 
 #: src/components/Admin/Settings/GeneralTab.vue:131
 #: src/components/Common/DateRangeDropdown.vue:139
 msgid "Last 30 Days"
-msgstr ""
+msgstr "Son 30 Gün"
 
 #: src/components/Admin/Settings/GeneralTab.vue:135
 msgid "Last 60 Days"
-msgstr ""
+msgstr "Son 60 Gün"
 
 #: src/components/Common/DateRangeDropdown.vue:125
 msgid "Last 7 Days"
-msgstr ""
+msgstr "Son 7 Gün"
 
 #: src/components/Admin/Backups.vue:210
 msgid "Last Modified"
-msgstr ""
+msgstr "Değişiklik Tarihi"
 
 #: src/components/Common/DateRangeDropdown.vue:153
 msgid "Last Month"
-msgstr ""
+msgstr "Geçen Ay"
 
 #: src/components/Admin/Debug.vue:288
 msgid "Last Run"
-msgstr ""
+msgstr "Son Çalışma"
 
 #: src/components/Admin/Backups.vue:28
 msgid "Last run:"
@@ -2763,7 +2805,7 @@ msgstr "Son çalıştırma:"
 
 #: src/components/Admin/Settings/GeneralTab.vue:139
 msgid "Last Year"
-msgstr ""
+msgstr "Geçen Yıl"
 
 #: src/components/Admin/Settings/ServicesTab.vue:233
 msgid "Last.fm API Key"
@@ -2771,23 +2813,23 @@ msgstr "Last.fm API Anahtarı"
 
 #: src/components/Admin/Relays.vue:78
 msgid "Latest Update"
-msgstr ""
+msgstr "Son Güncelleme"
 
 #: src/components/Stations/Playlists/Form/BasicInfo.vue:94
 msgid "Learn about Advanced Playlists"
 msgstr "Gelişmiş Çalma Listeleri Hakkında Bilgi Edinin"
 
-#: src/components/Admin/Stations/Form/BackendForm.vue:54
+#: src/components/Admin/Stations/Form/BackendForm.vue:56
 msgid "Learn More about Post-processing CPU Impact"
-msgstr ""
+msgstr " Ses İşleme Sonrası CPU Etkisi Hakkında Daha Fazla Bilgi Edinin"
 
 #: src/components/Admin/Settings/ServicesTab.vue:22
 msgid "Learn more about release channels in the AzuraCast docs."
 msgstr "AzuraCast belgelerinde yayın kanalları hakkında daha fazla bilgi edinin."
 
-#: src/components/Admin/Stations/Form/BackendForm.vue:207
+#: src/components/Admin/Stations/Form/BackendForm.vue:219
 msgid "Learn More about Replaygain"
-msgstr ""
+msgstr "Replaygain hakkında daha fazla bilgi edinin"
 
 #: src/components/Admin/Settings/SecurityPrivacyTab.vue:72
 msgid "Learn more about this header."
@@ -2823,20 +2865,20 @@ msgstr "Süper yönetici hesabınızı oluşturarak başlayalım."
 
 #: src/components/Admin/Settings/ServicesTab.vue:43
 msgid "LetsEncrypt"
-msgstr ""
+msgstr "LetsEncrypt"
 
 #: src/components/Admin/Settings/ServicesTab.vue:47
 msgid "LetsEncrypt provides simple, free SSL certificates allowing you to secure traffic through your control panel and radio streams."
-msgstr ""
+msgstr "LetsEncrypt kontrol paneliniz ve radyo yayınlarınız üzerinden trafiği güvence altına almanıza olanak tanıyan basit, ücretsiz SSL sertifikaları sağlar."
 
 #: src/components/Admin/Branding/BrandingForm.vue:186
 #: src/components/Stations/Profile/EmbedModal.vue:158
 msgid "Light"
-msgstr ""
+msgstr "Açık Tema"
 
 #: src/components/PanelLayout.vue:169
 msgid "Like our software?"
-msgstr ""
+msgstr "AzuraCast'i beğendiniz mi?"
 
 #: src/components/Admin/Settings/SecurityPrivacyTab.vue:130
 msgid "Limited"
@@ -2844,9 +2886,9 @@ msgstr ""
 
 #: src/components/Stations/Profile/BackendPanel.vue:120
 msgid "LiquidSoap is currently shuffling from %{songs} and %{playlists}."
-msgstr ""
+msgstr "LiquidSoap şu anda %{songs} adet şarkıyı %{playlists} adet çalma listesinden karışık olarak çalıyor."
 
-#: src/components/Admin/Stations/Form/BackendForm.vue:249
+#: src/components/Admin/Stations/Form/BackendForm.vue:261
 msgid "Liquidsoap Performance Tuning"
 msgstr "Liquidsoap Performans Ayarı"
 
@@ -2899,15 +2941,15 @@ msgstr ""
 #: src/components/Stations/Reports/Overview/CommonMetricsView.vue:88
 #: src/components/Stations/Reports/Overview/ListeningTimeTab.vue:55
 #: src/components/Stations/Reports/Timeline.vue:146
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Frontend/Dashboard/ChartsAction.php:182
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ByCountry.php:74
 #: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ByClient.php:81
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ByListeningTime.php:85
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ByStream.php:98
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ByListeningTime.php:86
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ByCountry.php:74
 #: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ChartsAction.php:82
 #: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ChartsAction.php:132
 #: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ChartsAction.php:220
 #: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ByBrowser.php:61
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ByStream.php:98
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Frontend/Dashboard/ChartsAction.php:182
 msgid "Listeners"
 msgstr "Dinleyiciler"
 
@@ -3052,7 +3094,7 @@ msgstr "Ana Mesaj İçeriği"
 msgid "Make HLS Stream Default in Public Player"
 msgstr ""
 
-#: src/components/Stations/Media/MediaToolbar.vue:144
+#: src/components/Stations/Media/MediaToolbar.vue:154
 msgid "Make the selected media play immediately, interrupting existing media"
 msgstr "Mevcut müziği keserek seçilen müziği hemen oynatın"
 
@@ -3074,7 +3116,7 @@ msgstr "SFTP Hesaplarını Yönet"
 msgid "Manage Stations"
 msgstr "Radyo Yönetimi"
 
-#: src/components/Admin/Stations/Form/BackendForm.vue:185
+#: src/components/Admin/Stations/Form/BackendForm.vue:197
 msgid "Manual AutoDJ Mode"
 msgstr "Manuel AutoDJ Modu"
 
@@ -3088,29 +3130,29 @@ msgstr ""
 
 #: src/components/Stations/Playlists/Form/BasicInfo.vue:330
 msgid "Manually define how this playlist is used in Liquidsoap configuration."
-msgstr ""
+msgstr "Bu çalma listesinin Liquidsoap yapılandırmasında nasıl kullanıldığını manuel olarak tanımlayın."
 
 #: src/components/Stations/Webhooks/Form/Telegram.vue:134
 msgid "Markdown"
-msgstr ""
+msgstr "Etiketleme"
 
-#: src/components/Admin/Stations/Form/BackendForm.vue:88
+#: src/components/Admin/Stations/Form/BackendForm.vue:90
 msgid "Master_me is an open-source automatic mastering plugin for streaming, podcasts and Internet radio."
 msgstr ""
 
-#: src/components/Admin/Stations/Form/BackendForm.vue:118
+#: src/components/Admin/Stations/Form/BackendForm.vue:120
 msgid "Master_me Loudness Target (LUFS)"
 msgstr ""
 
-#: src/components/Admin/Stations/Form/BackendForm.vue:434
+#: src/components/Admin/Stations/Form/BackendForm.vue:452
 msgid "Master_me Post-processing"
-msgstr ""
+msgstr "Master_me Ses İşleme Yöntemi"
 
-#: src/components/Admin/Stations/Form/BackendForm.vue:109
+#: src/components/Admin/Stations/Form/BackendForm.vue:111
 msgid "Master_me Preset"
 msgstr ""
 
-#: src/components/Admin/Stations/Form/BackendForm.vue:96
+#: src/components/Admin/Stations/Form/BackendForm.vue:98
 msgid "Master_me Project Homepage"
 msgstr ""
 
@@ -3122,7 +3164,7 @@ msgstr ""
 msgid "Mastodon Instance URL"
 msgstr ""
 
-#: src/entities/Webhooks.ts:119
+#: src/entities/Webhooks.ts:124
 msgid "Mastodon Post"
 msgstr ""
 
@@ -3130,7 +3172,7 @@ msgstr ""
 msgid "Matched"
 msgstr ""
 
-#: src/entities/Webhooks.ts:127
+#: src/entities/Webhooks.ts:132
 msgid "Matomo Analytics Integration"
 msgstr ""
 
@@ -3257,7 +3299,7 @@ msgstr ""
 
 #: src/components/Stations/Profile/UpdateMetadataModal.vue:105
 msgid "Metadata updated."
-msgstr ""
+msgstr "Meta verileri güncellendi."
 
 #: src/components/Public/WebDJ/MicrophonePanel.vue:7
 msgid "Microphone"
@@ -3286,7 +3328,7 @@ msgstr ""
 
 #: src/components/Stations/Media.vue:336
 msgid "Modified"
-msgstr ""
+msgstr "Değiştirme Zamanı"
 
 #: src/components/Stations/Playlists/Form/ScheduleRow.vue:145
 #: src/components/Stations/Reports/Overview/ListenersByTimePeriodTab.vue:175
@@ -3295,7 +3337,7 @@ msgstr ""
 msgid "Monday"
 msgstr "Pazartesi"
 
-#: src/components/Stations/Media/MediaToolbar.vue:124
+#: src/components/Stations/Media/MediaToolbar.vue:134
 #: src/components/Stations/Playlists.vue:172
 msgid "More"
 msgstr "Daha Fazla"
@@ -3331,13 +3373,13 @@ msgstr "Bağlantı Noktası"
 msgid "Mount points are how listeners connect and listen to your station. Each mount point can be a different audio format or quality. Using mount points, you can set up a high-quality stream for broadband listeners and a mobile stream for phone users."
 msgstr "Bağlantı noktaları dinleyicilerin radyonuza nasıl bağlayıp dinlediğini gösterir. Her bir bağlantı noktası farklı ses formatı veya kalitede olabilir. Bağlantı noktalarını kullanarak limitsiz internetli dinleyiciler için yüksek kaliteli bir yayın belirleyebilir veya telefon kullanıcıları için düşük kaliteli bir yayın ayarlayabilirsiniz."
 
-#: src/components/Stations/Media/MediaToolbar.vue:110
+#: src/components/Stations/Media/MediaToolbar.vue:119
 msgid "Move"
 msgstr "Taşı"
 
 #: src/components/Stations/Media/MoveFilesModal.vue:120
 msgid "Move %{ num } File(s) to"
-msgstr ""
+msgstr "%{ num } adet dosyayı taşı"
 
 #: src/components/Stations/Playlists/ReorderModal.vue:66
 msgid "Move Down"
@@ -3365,7 +3407,7 @@ msgstr ""
 msgid "Music Files"
 msgstr "Müzik Dosyaları"
 
-#: src/components/Admin/Stations/Form/BackendForm.vue:461
+#: src/components/Admin/Stations/Form/BackendForm.vue:479
 msgid "Music General"
 msgstr ""
 
@@ -3407,7 +3449,7 @@ msgstr "E-Posta Adresinizi Yazın"
 
 #: src/components/Stations/Webhooks.vue:132
 msgid "Name/Type"
-msgstr ""
+msgstr "İsim/Tür"
 
 #: src/components/Stations/Logs.vue:37
 msgid "Need Help?"
@@ -3427,13 +3469,13 @@ msgstr "Yeni Dizin"
 
 #: src/components/Stations/Media/NewDirectoryModal.vue:99
 msgid "New directory created."
-msgstr ""
+msgstr "Yeni Klasör Oluşturuldu!"
 
 #: src/components/Stations/Media/RenameModal.vue:15
 msgid "New File Name"
 msgstr "Yeni Klasör Adı"
 
-#: src/components/Stations/Media/MediaToolbar.vue:183
+#: src/components/Stations/Media/MediaToolbar.vue:194
 msgid "New Folder"
 msgstr "Yeni Klasör"
 
@@ -3446,7 +3488,7 @@ msgstr "Yeni Anahtar Üretildi"
 msgid "New Password"
 msgstr "Yeni Şifre"
 
-#: src/components/Stations/Media/MediaToolbar.vue:78
+#: src/components/Stations/Media/MediaToolbar.vue:86
 msgid "New Playlist"
 msgstr "Yeni Çalma Listesi"
 
@@ -3464,10 +3506,10 @@ msgstr "Yeni Radyo İsmi"
 
 #: src/components/Admin/Debug.vue:296
 msgid "Next Run"
-msgstr ""
+msgstr "Sonraki Çalışma"
 
 #: src/components/Admin/Relays.vue:41
-#: src/components/Stations/PodcastEpisodes.vue:102
+#: src/components/Stations/PodcastEpisodes.vue:112
 msgid "No"
 msgstr "Hayır"
 
@@ -3475,13 +3517,13 @@ msgstr "Hayır"
 msgid "No AutoDJ Enabled"
 msgstr ""
 
-#: src/components/Stations/Media/useHandleBatchResponse.ts:18
+#: src/components/Stations/Media/MediaToolbar.vue:276
 msgid "No files selected."
-msgstr ""
+msgstr "Hiçbir dosya seçilmedi."
 
 #: src/components/Stations/Webhooks/Form/Common/RateLimitFields.vue:49
 msgid "No Limit"
-msgstr ""
+msgstr "Limitsiz"
 
 #: src/components/Stations/Playlists/ImportModal.vue:47
 msgid "No Match"
@@ -3492,9 +3534,9 @@ msgstr "Eşleşme Bulunamadı"
 msgid "No other program can be using this port. Leave blank to automatically assign a port."
 msgstr "Bu port başka hiçbir programda kullanamaz. Portu otomatik olarak atamak için boş bırakın."
 
-#: src/components/Admin/Stations/Form/BackendForm.vue:426
+#: src/components/Admin/Stations/Form/BackendForm.vue:444
 msgid "No Post-processing"
-msgstr ""
+msgstr "Ses İşlemeyi Kapat"
 
 #: src/components/Public/FullPlayer/SongHistory.vue:4
 msgid "No records to display."
@@ -3511,9 +3553,9 @@ msgstr ""
 msgid "None"
 msgstr "Hiçbiri"
 
-#: src/components/Admin/Stations/Form/BackendForm.vue:413
+#: src/components/Admin/Stations/Form/BackendForm.vue:431
 msgid "Normal Mode"
-msgstr ""
+msgstr "Normal Mod"
 
 #: src/components/Stations/Reports/Requests.vue:63
 msgid "Not Played"
@@ -3521,11 +3563,11 @@ msgstr "Oynatılmadı"
 
 #: src/components/Admin/Debug.vue:290
 msgid "Not Run"
-msgstr ""
+msgstr "Çalışmadı"
 
 #: src/components/Common/Badges/RunningBadge.vue:30
 msgid "Not Running"
-msgstr ""
+msgstr "Çalışmıyor"
 
 #: src/components/Stations/Playlists/Form/Schedule.vue:8
 #: src/components/Stations/Streamers/Form/Schedule.vue:8
@@ -3538,7 +3580,7 @@ msgstr "Bir yedeğin geri yüklenmesinin mevcut veritabanınızı temizleyeceği
 
 #: src/components/Admin/StereoTool.vue:14
 msgid "Note that Stereo Tool can be resource-intensive for both CPU and Memory. Please ensure you have sufficient resources before proceeding."
-msgstr ""
+msgstr "Stereo Aracının hem CPU hem de Bellek açısından yoğun kaynak kullanabileceğini unutmayın. Lütfen devam etmeden önce yeterli kaynağa sahip olduğunuzdan emin olun."
 
 #: src/components/Stations/BulkMedia.vue:26
 msgid "Note: If your media metadata has UTF-8 characters, you should use a spreadsheet editor that supports UTF-8 encoding, like OpenOffice."
@@ -3546,7 +3588,7 @@ msgstr "Not: Müzik meta verileriniz UTF-8 karakterleri içeriyorsa OpenOffice g
 
 #: src/components/Admin/Stations/Form/StreamersForm.vue:88
 msgid "Note: the port after this one will automatically be used for legacy connections."
-msgstr ""
+msgstr "Not: Bundan sonraki bağlantı noktası eski bağlantılar için otomatik olarak kullanılacaktır."
 
 #: src/components/Admin/Stations/Form/ProfileForm.vue:35
 msgid "Note: This should be the public-facing homepage of the radio station, not the AzuraCast URL. It will be included in broadcast details."
@@ -3554,7 +3596,7 @@ msgstr "Not: AzuraCast URLsi değil radyonuzun web adresi olmalıdır. Yayın de
 
 #: src/components/Stations/Streamers.vue:152
 msgid "Notes"
-msgstr ""
+msgstr "Notlar"
 
 #: src/components/Admin/Debug/TaskOutput.vue:92
 msgid "Notice"
@@ -3572,7 +3614,7 @@ msgstr "Çalan Şarkı"
 
 #: src/components/Stations/Webhooks/Form/Discord.vue:119
 msgid "Now playing on %{ station }:"
-msgstr ""
+msgstr "%{ station } çalan şarkı:"
 
 #: src/components/Stations/Webhooks/Form/Common/SocialPostFields.vue:105
 msgid "Now playing on %{ station }: %{ title } by %{ artist } with your host, %{ dj }! Tune in now: %{ url }"
@@ -3580,11 +3622,11 @@ msgstr ""
 
 #: src/components/Stations/Webhooks/Form/Common/SocialPostFields.vue:96
 msgid "Now playing on %{ station }: %{ title } by %{ artist }! Tune in now: %{ url }"
-msgstr ""
+msgstr "%{ station } çalan şarkı: %{ artist } - %{ title }! Şimdi dinle: %{ url }"
 
 #: src/components/Stations/Webhooks/Form/Telegram.vue:117
 msgid "Now playing on %{ station }: %{ title } by %{ artist }! Tune in now."
-msgstr ""
+msgstr "%{ station } çalan şarkı: %{ artist } - %{ title }! Şimdi dinle."
 
 #: src/components/Stations/Webhooks/Form/Common/FormattingInfo.vue:21
 #: src/components/Stations/Webhooks/Form/Generic.vue:27
@@ -3599,7 +3641,7 @@ msgstr "Saklanacak Yedek Kopya Sayısı"
 msgid "Number of Minutes Between Plays"
 msgstr "Kaç Dakikada Bir Çalınsın?"
 
-#: src/components/Admin/Stations/Form/BackendForm.vue:39
+#: src/components/Admin/Stations/Form/BackendForm.vue:40
 msgid "Number of seconds to overlap songs."
 msgstr "Şarkıların üst üste geleceği zamanı belirleyin."
 
@@ -3634,11 +3676,11 @@ msgstr "İsteğe Bağlı Canlı Yayın"
 
 #: src/components/Stations/Playlists.vue:111
 msgid "Once per %{minutes} Minutes"
-msgstr ""
+msgstr "%{minutes} Dakikada Bir"
 
 #: src/components/Stations/Playlists.vue:103
 msgid "Once per %{songs} Songs"
-msgstr ""
+msgstr "%{songs} Şarkıda Bir"
 
 #: src/components/Stations/Playlists/Form/BasicInfo.vue:165
 #: src/components/Stations/Playlists/Form/BasicInfo.vue:324
@@ -3647,7 +3689,7 @@ msgstr "Saatte Bir Çal"
 
 #: src/components/Stations/Playlists.vue:119
 msgid "Once per Hour (at %{minute})"
-msgstr ""
+msgstr "Saatte Bir Kez ( %{minute} ) "
 
 #: src/components/Stations/Playlists/Form/BasicInfo.vue:147
 #: src/components/Stations/Playlists/Form/BasicInfo.vue:319
@@ -3669,7 +3711,7 @@ msgstr "G/Ç Bekleme ile ilgili önemli bir not bir darboğaz veya sorun belirte
 
 #: src/components/Admin/Settings/SecurityPrivacyTab.vue:131
 msgid "Only collect aggregate listener statistics"
-msgstr ""
+msgstr "Yalnızca toplu dinleyici istatistiklerini topla"
 
 #: src/components/Stations/Playlists/Form/ScheduleRow.vue:86
 msgid "Only loop through playlist once."
@@ -3677,7 +3719,7 @@ msgstr "Çalma listesinde yalnızca bir kez döngü yapın."
 
 #: src/components/Stations/Playlists/Form/Advanced.vue:56
 msgid "Only play one track at scheduled time."
-msgstr ""
+msgstr "Planlanan zamanda sadece bir parça çalın."
 
 #: src/components/Stations/Webhooks/Form/Common/RateLimitFields.vue:7
 msgid "Only Post Once Every..."
@@ -3685,7 +3727,7 @@ msgstr ""
 
 #: src/components/Admin/AuditLog.vue:125
 msgid "Operation"
-msgstr ""
+msgstr "Operasyon"
 
 #: src/components/Stations/Webhooks/Form/Generic.vue:60
 msgid "Optional: HTTP Basic Authentication Password"
@@ -3699,7 +3741,7 @@ msgstr "İsteğe Bağlı: HTTP Temel Kimlik Doğrulama Kullanıcı Adı"
 msgid "Optional: Request Timeout (Seconds)"
 msgstr "İsteğe bağlı: İstek Zaman Aşımı (Saniye)"
 
-#: src/components/Stations/Podcasts/EpisodeForm/BasicInfo.vue:64
+#: src/components/Stations/Podcasts/EpisodeForm/BasicInfo.vue:62
 msgid "Optionally list this episode as part of a season in some podcast aggregators."
 msgstr ""
 
@@ -3707,7 +3749,7 @@ msgstr ""
 msgid "Optionally select an ID3v2 metadata field that, if present, will be used to set this field's value."
 msgstr "İsteğe bağlı olarak varsa bu alanın değerini ayarlamak için kullanılacak bir ID3v2 metadata alanı belirtin."
 
-#: src/components/Stations/Podcasts/EpisodeForm/BasicInfo.vue:75
+#: src/components/Stations/Podcasts/EpisodeForm/BasicInfo.vue:73
 msgid "Optionally set a specific episode number in some podcast aggregators."
 msgstr ""
 
@@ -3783,32 +3825,32 @@ msgstr "Yol/Son Ek"
 
 #: src/components/Stations/Reports/Requests.vue:130
 msgid "Pending Requests"
-msgstr ""
+msgstr "Bekleyen İstekler"
 
 #: src/components/Admin/Permissions.vue:107
 msgid "Permissions"
-msgstr ""
+msgstr "İzinler"
 
 #: src/components/Common/PlayButton.vue:60
 #: src/components/Stations/Media/Form/WaveformEditor.vue:20
 msgid "Play"
 msgstr "Oynat"
 
-#: src/components/Stations/Media/MediaToolbar.vue:147
+#: src/components/Stations/Media/MediaToolbar.vue:157
 msgid "Play Now"
 msgstr "Şimdi Oynat"
 
 #: src/components/Stations/Playlists/Form/BasicInfo.vue:320
 msgid "Play once every $x minutes."
-msgstr ""
+msgstr "Her $x dakikada bir çalınır."
 
 #: src/components/Stations/Playlists/Form/BasicInfo.vue:315
 msgid "Play once every $x songs."
-msgstr ""
+msgstr "Her $x şarkıda bir çalınır."
 
 #: src/components/Stations/Playlists/Form/BasicInfo.vue:325
 msgid "Play once per hour at the specified minute."
-msgstr ""
+msgstr "Belirtilen dakikada saatte bir çalınır."
 
 #: src/components/Stations/Playlists.vue:227
 #: src/components/Stations/Playlists/QueueModal.vue:6
@@ -3830,7 +3872,7 @@ msgstr "Çalma Listesi"
 
 #: src/components/Stations/Playlists/Form/BasicInfo.vue:359
 msgid "Playlist (M3U/PLS) URL"
-msgstr ""
+msgstr "Çalma Listesi URLsi (M3U/PLS)"
 
 #: src/components/Public/WebDJ/MixerPanel.vue:13
 #: src/components/Public/WebDJ/PlaylistPanel.vue:271
@@ -3888,18 +3930,18 @@ msgstr "Çalma Listesi: "
 #: src/components/Stations/Media.vue:344
 #: src/components/Stations/Media/EditModal.vue:15
 #: src/components/Stations/Media/Form/Playlists.vue:9
-#: src/components/Stations/Media/MediaToolbar.vue:18
+#: src/components/Stations/Media/MediaToolbar.vue:26
 #: src/components/Stations/menu.ts:141
 #: src/components/Stations/Playlists.vue:14
 #: src/components/Stations/Profile/BackendPanel.vue:37
 msgid "Playlists"
 msgstr "Çalma Listeleri"
 
-#: src/components/Stations/Media/MediaToolbar.vue:339
+#: src/components/Stations/Media/MediaToolbar.vue:361
 msgid "Playlists cleared for selected files:"
 msgstr ""
 
-#: src/components/Stations/Media/MediaToolbar.vue:338
+#: src/components/Stations/Media/MediaToolbar.vue:360
 msgid "Playlists updated for selected files:"
 msgstr ""
 
@@ -3914,7 +3956,7 @@ msgstr "Devam etmek için lütfen giriş yapın."
 #: src/components/Public/Podcasts/PodcastList.vue:82
 #: src/components/Stations/Podcasts.vue:140
 msgid "Podcast"
-msgstr ""
+msgstr "Podcast"
 
 #: src/components/Stations/Podcasts/EpisodeForm/Media.vue:13
 msgid "Podcast media should be in the MP3 or M4A (AAC) format for the greatest compatibility."
@@ -3931,7 +3973,7 @@ msgstr "Podcast Başlığı"
 #: src/components/Stations/Profile/EmbedModal.vue:125
 #: src/components/Stations/Profile/PublicPagesPanel.vue:48
 msgid "Podcasts"
-msgstr ""
+msgstr "Podcastler"
 
 #: src/components/Admin/Stations/Form/AdminForm.vue:49
 msgid "Podcasts Storage Location"
@@ -3939,17 +3981,13 @@ msgstr "Podcast Depolama Konumu"
 
 #: src/components/Stations/Profile/FrontendPanel.vue:55
 msgid "Port"
-msgstr ""
+msgstr "Port"
 
 #: src/components/Stations/SftpUsers.vue:61
 #: src/components/Stations/Streamers/ConnectionInfo.vue:32
 #: src/components/Stations/Streamers/ConnectionInfo.vue:59
 msgid "Port:"
-msgstr ""
-
-#: src/components/Admin/Stations/Form/BackendForm.vue:49
-msgid "Post-processing allows you to apply audio processors (like compressors, limiters, or equalizers) to your stream to create a more uniform sound or enhance the listening experience. Post-processing requires extra CPU resources, so it may slow down your server."
-msgstr ""
+msgstr "Port:"
 
 #: src/components/PanelLayout.vue:160
 msgid "Powered by"
@@ -3957,7 +3995,7 @@ msgstr ""
 
 #: src/components/Stations/Webhooks/Form/Discord.vue:128
 msgid "Powered by AzuraCast"
-msgstr ""
+msgstr "AzuraCast tarafından desteklenmektedir"
 
 #: src/components/Admin/Settings/GeneralTab.vue:29
 msgid "Prefer Browser URL (If Available)"
@@ -3966,11 +4004,11 @@ msgstr "Tarayıcı URLsini Tercih Et (Varsa)"
 #: src/components/Account/EditForm.vue:77
 #: src/components/Admin/Branding/BrandingForm.vue:182
 msgid "Prefer System Default"
-msgstr ""
+msgstr "Sistem Varsayılanını Kullan"
 
 #: src/components/Stations/Profile/EmbedModal.vue:78
 msgid "Preview"
-msgstr ""
+msgstr "Önizleme"
 
 #: src/components/Admin/AuditLog/DetailsModal.vue:17
 msgid "Previous"
@@ -3990,17 +4028,17 @@ msgstr "Profil"
 msgid "Programmatic Name"
 msgstr "Program İsmi"
 
-#: src/components/Admin/Stations/Form/BackendForm.vue:151
+#: src/components/Admin/Stations/Form/BackendForm.vue:153
 msgid "Provide a valid license key from Thimeo. Functionality is limited without a license key."
 msgstr "Thimeo'dan geçerli bir lisans anahtarı sağlayın. İşlevsellik bir lisans anahtarı olmadan sınırlıdır."
 
 #: src/components/Stations/Webhooks/Form/Mastodon.vue:124
 msgid "Public"
-msgstr ""
+msgstr "Genel"
 
 #: src/components/Dashboard.vue:172
 #: src/components/Stations/menu.ts:61
-#: src/components/Stations/PodcastEpisodes.vue:73
+#: src/components/Stations/PodcastEpisodes.vue:83
 #: src/components/Stations/Podcasts.vue:43
 #: src/components/Stations/Profile/PublicPagesPanel.vue:21
 msgid "Public Page"
@@ -4016,38 +4054,32 @@ msgstr "Genel Sayfa Arkaplanı"
 msgid "Public Pages"
 msgstr "Genel Sayfalar"
 
-#: src/components/Stations/PodcastEpisodes.vue:197
+#: src/components/Stations/PodcastEpisodes.vue:218
+#: src/components/Stations/Podcasts/BatchEditModal.vue:24
+#: src/components/Stations/Podcasts/EpisodeForm/BasicInfo.vue:35
 msgid "Publish At"
 msgstr ""
-
-#: src/components/Stations/Podcasts/EpisodeForm/BasicInfo.vue:36
-msgid "Publish Date"
-msgstr "Podcast Tarihi"
-
-#: src/components/Stations/Podcasts/EpisodeForm/BasicInfo.vue:45
-msgid "Publish Time"
-msgstr "Podcast Zamanı"
 
 #: src/components/Stations/Mounts/Form/BasicInfo.vue:53
 #: src/components/Stations/Remotes/Form/AutoDj.vue:76
 msgid "Publish to \"Yellow Pages\" Directories"
 msgstr "\"Yellow Pages\" Dizininde Yayınla"
 
-#: src/components/Stations/Media/MediaToolbar.vue:136
+#: src/components/Stations/Media/MediaToolbar.vue:146
 msgid "Queue"
 msgstr "Sırala"
 
-#: src/components/Stations/Media/MediaToolbar.vue:132
+#: src/components/Stations/Media/MediaToolbar.vue:142
 msgid "Queue the selected media to play next"
 msgstr "Bir sonrakini oynatmak için seçilen müzik dosyasını sırala"
 
 #: src/components/Stations/Profile/EmbedModal.vue:117
 msgid "Radio Player"
-msgstr ""
+msgstr "Radyo Çalar"
 
-#: src/entities/Webhooks.ts:103
+#: src/entities/Webhooks.ts:104
 msgid "Radio.de"
-msgstr ""
+msgstr "Radio.de"
 
 #: src/components/Stations/Webhooks/Form/RadioDe.vue:18
 msgid "Radio.de API Key"
@@ -4057,9 +4089,21 @@ msgstr ""
 msgid "Radio.de Broadcast Subdomain"
 msgstr ""
 
+#: src/components/Stations/Webhooks/Form/RadioReg.vue:18
+msgid "RadioRed Organization API Key"
+msgstr ""
+
+#: src/components/Stations/Webhooks/Form/RadioReg.vue:11
+msgid "RadioReg Webhook URL"
+msgstr ""
+
+#: src/entities/Webhooks.ts:108
+msgid "RadioReg.net"
+msgstr ""
+
 #: src/components/Stations/Playlists/Form/BasicInfo.vue:342
 msgid "Random"
-msgstr ""
+msgstr "Rastgele"
 
 #: src/components/Stations/Sidebar.vue:39
 msgid "Ready to start broadcasting? Click to start your station."
@@ -4082,7 +4126,7 @@ msgstr "Hesap Kurtarma"
 #: src/components/Admin/Debug.vue:130
 #: src/components/Admin/Debug.vue:74
 msgid "Refresh"
-msgstr ""
+msgstr "Yenile"
 
 #: src/components/Common/DataTable.vue:51
 msgid "Refresh rows"
@@ -4251,7 +4295,7 @@ msgstr "Albüm Kapağını Değiştir"
 msgid "Reports"
 msgstr "Raporlar"
 
-#: src/components/Stations/Media/MediaToolbar.vue:157
+#: src/components/Stations/Media/MediaToolbar.vue:167
 msgid "Reprocess"
 msgstr "Yeniden İşle"
 
@@ -4265,7 +4309,7 @@ msgstr "Bir Şarkı İsteyin"
 
 #: src/components/Stations/Reports/Requests.vue:134
 msgid "Request History"
-msgstr ""
+msgstr "İstek Geçmişi"
 
 #: src/components/Admin/Stations/Form/RequestsForm.vue:46
 msgid "Request Last Played Threshold (Minutes)"
@@ -4281,7 +4325,7 @@ msgstr "Şarkı İste"
 
 #: src/components/Stations/Reports/Requests.vue:123
 msgid "Requester IP"
-msgstr ""
+msgstr "Talep Eden IP"
 
 #: src/components/Stations/Profile/EmbedModal.vue:136
 #: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/PublicPages/RequestsAction.php:41
@@ -4342,12 +4386,12 @@ msgstr "Yetkiler ve İzinler"
 #: src/components/Admin/Settings/ServicesTab.vue:342
 #: src/components/Admin/Updates.vue:191
 msgid "Rolling Release"
-msgstr ""
+msgstr "Değişiklikler Günlüğü"
 
 #: src/components/Public/Podcasts/Podcast.vue:32
 #: src/components/Public/Podcasts/PodcastList.vue:61
 msgid "RSS"
-msgstr ""
+msgstr "RSS"
 
 #: src/components/Stations/Podcasts.vue:47
 msgid "RSS Feed"
@@ -4370,11 +4414,11 @@ msgstr "Görevi Çalıştır"
 
 #: src/components/Common/Badges/RunningBadge.vue:29
 msgid "Running"
-msgstr ""
+msgstr "Çalışıyor"
 
 #: src/components/Public/WebDJ/SettingsPanel.vue:113
 msgid "Sample Rate"
-msgstr ""
+msgstr "Sample Rate"
 
 #: src/components/Stations/Playlists/Form/ScheduleRow.vue:150
 #: src/components/Stations/Reports/Overview/ListenersByTimePeriodTab.vue:180
@@ -4383,7 +4427,7 @@ msgstr ""
 msgid "Saturday"
 msgstr "Cumartesi"
 
-#: src/components/Stations/Media/MediaToolbar.vue:88
+#: src/components/Stations/Media/MediaToolbar.vue:96
 msgid "Save"
 msgstr "Kaydet"
 
@@ -4399,6 +4443,7 @@ msgstr "Kaydet ve Devam Et"
 #: src/components/Common/ModalForm.vue:50
 #: src/components/Stations/Branding/BrandingForm.vue:79
 #: src/components/Stations/LiquidsoapConfig.vue:71
+#: src/components/Stations/Podcasts/BatchEditModal.vue:58
 msgid "Save Changes"
 msgstr "Kaydet"
 
@@ -4446,14 +4491,15 @@ msgstr "Planlanan Zaman #%{num}"
 
 #: src/components/Stations/Playlists.vue:346
 msgid "Scheduling"
-msgstr ""
+msgstr "Zamanlama"
 
 #: src/components/Common/DataTable.vue:40
 msgid "Search"
 msgstr "Arama"
 
-#: src/components/Stations/PodcastEpisodes.vue:210
-#: src/components/Stations/Podcasts/EpisodeForm/BasicInfo.vue:63
+#: src/components/Stations/PodcastEpisodes.vue:231
+#: src/components/Stations/Podcasts/BatchEditModal.vue:26
+#: src/components/Stations/Podcasts/EpisodeForm/BasicInfo.vue:61
 msgid "Season Number"
 msgstr ""
 
@@ -4464,6 +4510,10 @@ msgstr "AutoDJ'in şarkıyı çalmaya başlaması için gereken zamanı belirtin
 #: src/components/Stations/Media/Form/AdvancedSettings.vue:72
 msgid "Seconds from the start of the song that the AutoDJ should stop playing."
 msgstr "AutoDJ'in şarkıyı çalmaya sonlandırması için gereken zamanı belirtin."
+
+#: src/components/Stations/Media/Form/AdvancedSettings.vue:28
+msgid "Seconds from the start of the song that the next song should begin when fading. Leave blank to use the system default."
+msgstr ""
 
 #: src/components/Admin/StorageLocations/Form/S3.vue:18
 msgid "Secret Key"
@@ -4514,9 +4564,9 @@ msgstr "Radyo genel sayfaları ve giriş sayfası için kullanılacak bir tema s
 msgid "Select All Rows"
 msgstr ""
 
-#: src/components/Admin/Stations/Form/BackendForm.vue:66
+#: src/components/Admin/Stations/Form/BackendForm.vue:68
 msgid "Select an option here to apply post-processing using an easy preset or tool. You can also manually apply post-processing by editing your Liquidsoap configuration manually."
-msgstr ""
+msgstr "Kolay bir ön ayar veya araç kullanarak ses işlemeyi uygulamak için burada bir seçenek belirleyin. Liquidsoap konfigürasyonunuzu manuel olarak düzenleyerek ses işleme işlemlerini manuel olarak da uygulayabilirsiniz."
 
 #: src/components/Stations/StereoToolConfig.vue:36
 msgid "Select Configuration File"
@@ -4572,34 +4622,35 @@ msgstr "Podcast içeriğini en iyi yansıtan kategoriyi/kategorileri seçin."
 msgid "Select the countries that are not allowed to connect to the streams."
 msgstr "Canlı yayınlara bağlanmasına izin verilmeyen ülkeleri seçin."
 
-#: src/components/Stations/Webhooks/EditModal.vue:162
+#: src/components/Stations/Webhooks/EditModal.vue:164
 msgid "Select Web Hook Type"
 msgstr ""
 
-#: src/entities/Webhooks.ts:96
+#: src/entities/Webhooks.ts:97
 msgid "Send an e-mail to specified address(es)."
 msgstr ""
 
-#: src/entities/Webhooks.ts:95
+#: src/entities/Webhooks.ts:96
 msgid "Send E-mail"
 msgstr ""
 
-#: src/entities/Webhooks.ts:108
+#: src/entities/Webhooks.ts:113
 msgid "Send song metadata changes to %{service}"
 msgstr ""
 
-#: src/entities/Webhooks.ts:100
-#: src/entities/Webhooks.ts:104
+#: src/entities/Webhooks.ts:101
+#: src/entities/Webhooks.ts:105
+#: src/entities/Webhooks.ts:109
 msgid "Send song metadata changes to %{service}."
 msgstr ""
 
-#: src/entities/Webhooks.ts:124
+#: src/entities/Webhooks.ts:129
 msgid "Send stream listener details to Google Analytics."
 msgstr ""
 
-#: src/entities/Webhooks.ts:128
+#: src/entities/Webhooks.ts:133
 msgid "Send stream listener details to Matomo Analytics."
-msgstr ""
+msgstr "Akış dinleyici ayrıntılarını Matomo Analiz'e gönderin."
 
 #: src/components/Admin/Settings/ServicesTab.vue:171
 #: src/components/Admin/Settings/TestMessageModal.vue:31
@@ -4663,13 +4714,13 @@ msgstr "Giriş Solma Ayarı"
 msgid "Set Fade Out"
 msgstr "Çıkış Solma Ayarı"
 
+#: src/components/Stations/Media/Form/WaveformEditor.vue:56
+msgid "Set Fade Start Next"
+msgstr ""
+
 #: src/components/Admin/Settings/GeneralTab.vue:54
 msgid "Set longer to preserve more playback history and listener metadata for stations. Set shorter to save disk space."
 msgstr "Radyolar için uzun süre çalma geçmişini saklamak için en büyük değeri seçin veya disk alanından tasarruf etmek için küçük değeri seçin."
-
-#: src/components/Stations/Media/Form/WaveformEditor.vue:56
-msgid "Set Overlap"
-msgstr "Çakışma Ayarı"
 
 #: src/components/Stations/Mounts/Form/BasicInfo.vue:69
 msgid "Set the length of time (seconds) a listener will stay connected to the stream. If set to 0, listeners can stay connected infinitely."
@@ -4723,15 +4774,15 @@ msgstr "SFTP Kullanıcıları"
 
 #: src/components/Admin/Stations/CloneModalForm.vue:47
 msgid "Share Media Storage Location"
-msgstr ""
+msgstr "Müzik Dosyaları Depolama Konumunu Paylaş"
 
 #: src/components/Admin/Stations/CloneModalForm.vue:55
 msgid "Share Podcasts Storage Location"
-msgstr ""
+msgstr "Podcast Depolama Konumunu Paylaş"
 
 #: src/components/Admin/Stations/CloneModalForm.vue:51
 msgid "Share Recordings Storage Location"
-msgstr ""
+msgstr "Canlı Yayın Kayıtlarının Depolama Konumunu Paylaş"
 
 #: src/components/Admin/Shoutcast.vue:65
 msgid "Shoutcast 2 DNAS is not currently installed on this installation."
@@ -4743,7 +4794,7 @@ msgstr "Shoutcast 2 DNAS özgür yazılım değildir ve kısıtlayıcı lisansı
 
 #: src/components/Stations/Streamers/ConnectionInfo.vue:44
 msgid "Shoutcast Clients"
-msgstr ""
+msgstr "ShoutCast v1 Bilgileri"
 
 #: src/components/Admin/Stations/Form/FrontendForm.vue:28
 msgid "Shoutcast License ID"
@@ -4752,7 +4803,7 @@ msgstr "Shoutcast Lisans ID"
 #: src/components/Admin/Shoutcast.vue:33
 #: src/components/Stations/Mounts/Form/BasicInfo.vue:88
 msgid "Shoutcast Radio Manager"
-msgstr ""
+msgstr "Shoutcast Radio Manager"
 
 #: src/components/Admin/Stations/Form/FrontendForm.vue:35
 msgid "Shoutcast User ID"
@@ -4760,11 +4811,11 @@ msgstr "SHOUTcast Kullanıcı ID"
 
 #: src/components/Admin/Shoutcast.vue:97
 msgid "Shoutcast version \"%{ version }\" is currently installed."
-msgstr ""
+msgstr "Shoutcast \"%{ version }\"versiyonu kuruludur."
 
 #: src/components/Dashboard.vue:304
 msgid "Show Charts"
-msgstr ""
+msgstr "Grafikleri Göster"
 
 #: src/components/Stations/Profile/FrontendPanel.vue:192
 msgid "Show Credentials"
@@ -4793,7 +4844,7 @@ msgstr "Güncelleme Duyurularını Göster"
 
 #: src/components/Stations/Playlists/Form/BasicInfo.vue:337
 msgid "Shuffled"
-msgstr ""
+msgstr "Karıştır"
 
 #: src/components/PanelLayout.vue:140
 msgid "Sidebar"
@@ -4802,12 +4853,12 @@ msgstr ""
 #: src/components/Login.vue:95
 #: src/components/Login.vue:98
 msgid "Sign In"
-msgstr ""
+msgstr "Oturum Aç"
 
 #: src/components/Login.vue:120
 #: src/components/Login.vue:124
 msgid "Sign In with Passkey"
-msgstr ""
+msgstr "Passkey ile oturum aç"
 
 #: src/components/PanelLayout.vue:128
 msgid "Sign Out"
@@ -4821,7 +4872,7 @@ msgstr "Sunucu Kontrol Paneli URLsi"
 #: src/components/Stations/Media.vue:333
 #: src/components/Stations/Streamers/BroadcastsModal.vue:110
 msgid "Size"
-msgstr ""
+msgstr "Boyut"
 
 #: src/components/Stations/Profile/NowPlayingPanel.vue:211
 msgid "Skip Song"
@@ -4831,9 +4882,9 @@ msgstr "Şarkıyı Atla"
 msgid "Skip to main content"
 msgstr "Ana İçeriğe Atla"
 
-#: src/components/Admin/Stations/Form/BackendForm.vue:409
+#: src/components/Admin/Stations/Form/BackendForm.vue:427
 msgid "Smart Mode"
-msgstr ""
+msgstr "Akıllı Mod"
 
 #: src/components/Admin/Settings/ServicesTab.vue:128
 msgid "SMTP Host"
@@ -4845,7 +4896,7 @@ msgstr "SMTP Şifresi"
 
 #: src/components/Admin/Settings/ServicesTab.vue:136
 msgid "SMTP Port"
-msgstr ""
+msgstr "SMTP Port"
 
 #: src/components/Admin/Settings/ServicesTab.vue:151
 msgid "SMTP Username"
@@ -4853,7 +4904,7 @@ msgstr "SMTP Kullanıcı Adı"
 
 #: src/components/Stations/Webhooks/Form/TypeSelect.vue:14
 msgid "Social Media"
-msgstr ""
+msgstr "Sosyal Medya"
 
 #: src/components/Admin/Stations/Form/RequestsForm.vue:12
 msgid "Some stream licensing providers may have specific rules regarding song requests. Check your local regulations for more information."
@@ -4928,7 +4979,7 @@ msgstr "Çalma Listesi Modu"
 
 #: src/components/Stations/Playlists/Form/BasicInfo.vue:296
 msgid "Song-Based"
-msgstr ""
+msgstr "Şarkı Tabanlı"
 
 #: src/components/Stations/Playlists/Form/BasicInfo.vue:40
 msgid "Song-Based Playlist"
@@ -4953,7 +5004,7 @@ msgstr "Kaynak"
 
 #: src/components/Admin/StorageLocations.vue:129
 msgid "Space Used"
-msgstr ""
+msgstr "Kullanılan Alan"
 
 #: src/components/Stations/Remotes/Form/BasicInfo.vue:46
 msgid "Specify a mountpoint (i.e. \"/radio.mp3\") or a Shoutcast SID (i.e. \"2\") to specify a specific stream to use for statistics or broadcasting."
@@ -4963,7 +5014,7 @@ msgstr "İstatistikler veya yayın için kullanılacak belirli bir akışı beli
 msgid "Specify the minute of every hour that this playlist should play."
 msgstr "Bu çalma listesinin saatin hangi dakikasında oynatılmasını istiyorsanız belirtin."
 
-#: src/components/Admin/Stations/Form/BackendForm.vue:465
+#: src/components/Admin/Stations/Form/BackendForm.vue:483
 msgid "Speech General"
 msgstr ""
 
@@ -4974,11 +5025,11 @@ msgstr "SSH Ortak Anahtarları"
 #: src/components/Admin/Settings/ServicesTab.vue:341
 #: src/components/Admin/Updates.vue:190
 msgid "Stable"
-msgstr ""
+msgstr "Kararlı"
 
 #: src/components/Stations/Playlists/Form/BasicInfo.vue:310
 msgid "Standard playlist, shuffles with other standard playlists based on weight."
-msgstr ""
+msgstr "Gün boyu oynatılır ve önceliğe göre diğer standart çalma listeleriyle karıştırılır."
 
 #: src/components/Stations/Profile/BackendPanel.vue:64
 #: src/components/Stations/Profile/FrontendPanel.vue:143
@@ -4997,7 +5048,7 @@ msgstr "Radyoyu Başlat"
 
 #: src/components/Public/WebDJ/SettingsPanel.vue:291
 msgid "Start Streaming"
-msgstr ""
+msgstr "Yayını Başlat"
 
 #: src/components/Stations/Playlists/Form/ScheduleRow.vue:28
 #: src/components/Stations/Reports/Listeners.vue:269
@@ -5092,11 +5143,11 @@ msgstr ""
 
 #: src/components/Admin/Index/CpuStatsPanel.vue:50
 msgid "Steal"
-msgstr ""
+msgstr "Steal"
 
 #: src/components/Admin/Index/CpuStatsHelpModal.vue:13
 msgid "Steal (St)"
-msgstr ""
+msgstr "Steal (St)"
 
 #: src/components/Setup/SetupStep.vue:20
 #: src/components/Setup/SetupStep.vue:33
@@ -5114,14 +5165,14 @@ msgstr "Adım 2: Oluşturulan Kodu Doğrulayın"
 
 #: src/components/Stations/Webhooks/Form/Mastodon.vue:12
 msgid "Steps for configuring a Mastodon application:"
-msgstr ""
+msgstr "Bir Mastodon uygulamasını yapılandırma adımları:"
 
-#: src/components/Admin/Stations/Form/BackendForm.vue:128
-#: src/components/Admin/Stations/Form/BackendForm.vue:442
+#: src/components/Admin/Stations/Form/BackendForm.vue:130
+#: src/components/Admin/Stations/Form/BackendForm.vue:460
 msgid "Stereo Tool"
 msgstr "Stereo Aracı"
 
-#: src/components/Admin/Stations/Form/BackendForm.vue:139
+#: src/components/Admin/Stations/Form/BackendForm.vue:141
 #: src/components/Stations/StereoToolConfig.vue:24
 msgid "Stereo Tool documentation."
 msgstr "Stereo Aracı belgeleri."
@@ -5134,7 +5185,7 @@ msgstr "Stereo Aracı İndirmeleri"
 msgid "Stereo Tool is a popular, proprietary tool for software audio processing. Using Stereo Tool, you can customize the sound of your stations using preset configuration files."
 msgstr ""
 
-#: src/components/Admin/Stations/Form/BackendForm.vue:133
+#: src/components/Admin/Stations/Form/BackendForm.vue:135
 #: src/components/Stations/StereoToolConfig.vue:18
 msgid "Stereo Tool is an industry standard for software audio processing. For more information on how to configure it, please refer to the"
 msgstr "Stereo Aracı yazılım ses işleme için bir endüstri standardıdır. Nasıl yapılandırılacağı hakkında daha fazla bilgi için lütfen bkz"
@@ -5147,13 +5198,13 @@ msgstr "Stereo Aracı şu anda kurulu değil."
 msgid "Stereo Tool is not free software, and its restrictive license does not allow AzuraCast to distribute the Stereo Tool binary."
 msgstr "Stereo Aracı ücretsiz bir yazılım değildir ve kısıtlayıcı lisansı AzuraCast'ın Stereo Araç ikili dosyasını dağıtmasına izin vermez."
 
-#: src/components/Admin/Stations/Form/BackendForm.vue:150
+#: src/components/Admin/Stations/Form/BackendForm.vue:152
 msgid "Stereo Tool License Key"
 msgstr "Stereo Aracı Lisans Anahtarı"
 
 #: src/components/Admin/StereoTool.vue:155
 msgid "Stereo Tool version %{ version } is currently installed."
-msgstr ""
+msgstr "Stereo Aracı %{ version } sürümü şu anda yüklü."
 
 #: src/components/Common/PlayButton.vue:59
 #: src/components/InlinePlayer.vue:42
@@ -5165,7 +5216,7 @@ msgstr "Durdur"
 
 #: src/components/Public/WebDJ/SettingsPanel.vue:290
 msgid "Stop Streaming"
-msgstr ""
+msgstr "Yayını Durdur"
 
 #: src/components/Admin/StorageLocations/Form.vue:14
 msgid "Storage Adapter"
@@ -5280,22 +5331,22 @@ msgstr "Sunucu Bakımı"
 #: src/components/Admin/menu.ts:18
 #: src/components/Admin/Settings.vue:19
 #: src/components/Setup/SetupStep.vue:34
-#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/BaseUrlCheck.php:58
 #: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/SetupController.php:174
+#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/BaseUrlCheck.php:58
 msgid "System Settings"
 msgstr "Sistem Ayarları"
 
 #: src/components/Admin/AuditLog.vue:127
 msgid "Target"
-msgstr ""
+msgstr "Hedef"
 
 #: src/components/Admin/Debug.vue:285
 msgid "Task Name"
-msgstr ""
+msgstr "Görev Adı"
 
-#: src/entities/Webhooks.ts:115
+#: src/entities/Webhooks.ts:120
 msgid "Telegram Chat Message"
-msgstr ""
+msgstr "Telegram Sohbet Mesajı"
 
 #: src/components/Stations/Webhooks.vue:80
 msgid "Test"
@@ -5303,7 +5354,7 @@ msgstr "Deneme"
 
 #: src/components/Admin/Settings/TestMessageModal.vue:79
 msgid "Test message sent."
-msgstr ""
+msgstr "Test mesajı gönderildi."
 
 #: src/components/Stations/Webhooks/Form/Common/SocialPostFields.vue:123
 msgid "Thanks for listening to %{ station }!"
@@ -5313,7 +5364,7 @@ msgstr ""
 msgid "The amount of memory Linux is using for disk caching."
 msgstr "Linux'un disk önbelleğe alma için kullandığı bellek miktarı."
 
-#: src/components/Admin/Stations/Form/BackendForm.vue:119
+#: src/components/Admin/Stations/Form/BackendForm.vue:121
 msgid "The average target loudness (measured in LUFS) for the broadcasted stream. Values between -14 and -18 LUFS are common for Internet radio stations."
 msgstr ""
 
@@ -5337,9 +5388,9 @@ msgstr "G/Ç Bekleme ve Çalma dahil mevcut CPU kullanımı."
 msgid "The current Memory usage excluding cached memory."
 msgstr "Önbelleğe alınmış bellek hariç geçerli Bellek kullanımı."
 
-#: src/components/Stations/Podcasts/EpisodeForm/BasicInfo.vue:37
-msgid "The date when the episode should be published."
-msgstr "Bölümün yayınlanması gereken tarih."
+#: src/components/Stations/Podcasts/EpisodeForm/BasicInfo.vue:36
+msgid "The date and time when the episode should be published."
+msgstr ""
 
 #: src/components/Stations/Podcasts/EpisodeForm/BasicInfo.vue:28
 msgid "The description of the episode. The typical maximum amount of text allowed for this is 4000 characters."
@@ -5379,7 +5430,7 @@ msgstr "Matomo kurulumunuzun tam temel URLsini yazın."
 
 #: src/components/Stations/Playlists/Form/BasicInfo.vue:338
 msgid "The full playlist is shuffled and then played through in the shuffled order."
-msgstr ""
+msgstr "Tam oynatma listesi karıştırılır ve ardından karışık sırayla oynatılır."
 
 #: src/components/Admin/Index/CpuStatsHelpModal.vue:44
 msgid "The I/O Wait is the percentage of time that the CPU is waiting for disk access before it can continue the work that depends on the result of this."
@@ -5407,7 +5458,7 @@ msgstr "Bu site için sayısal site kimliğini yazın."
 
 #: src/components/Stations/Playlists/Form/BasicInfo.vue:348
 msgid "The order of the playlist is manually specified and followed by the AutoDJ."
-msgstr ""
+msgstr "Çalma listesinin sırası manuel olarak belirlenir ve ardından AutoDJ gelir."
 
 #: src/components/Admin/Stations/Form/AdminForm.vue:22
 msgid "The parent directory where station playlist and configuration files are stored. Leave blank to use default directory."
@@ -5436,14 +5487,6 @@ msgstr "Bu şarkıya geçiş sırasında önceki şarkının solma zamanını be
 #: src/components/Stations/Media/Form/AdvancedSettings.vue:50
 msgid "The time period that the song should fade out. Leave blank to use the system default."
 msgstr "Bu şarkıdan diğer şarkıya geçiş sırasında sonraki şarkının solma zamanını belirtin. Sistem varsayılan değeri için boş bırakın."
-
-#: src/components/Stations/Media/Form/AdvancedSettings.vue:28
-msgid "The time that this song should overlap its surrounding songs when fading. Leave blank to use the system default."
-msgstr "Bu şarkıdan sonraki şarkıya geçiş sırasında örtüşme süresini belirtin. Sistem varsayılan değeri için boş bırakın."
-
-#: src/components/Stations/Podcasts/EpisodeForm/BasicInfo.vue:46
-msgid "The time when the episode should be published (according to the stations timezone)."
-msgstr "Bölümün yayınlanması gereken saat (radyoların saat dilimine göre)."
 
 #: src/components/Stations/Webhooks/Form/Generic.vue:45
 msgid "The URL that will receive the POST messages any time an event is triggered."
@@ -5513,7 +5556,7 @@ msgstr "Bu CSS genel sayfa ve giriş sayfasına uygulanacaktır."
 msgid "This CSS will be applied to the station public pages."
 msgstr "Bu CSS radyo genel sayfasına uygulanacaktır."
 
-#: src/components/Admin/Stations/Form/BackendForm.vue:228
+#: src/components/Admin/Stations/Form/BackendForm.vue:240
 msgid "This determines how many songs in advance the AutoDJ will automatically fill the queue."
 msgstr "Bu AutoDJ'nin kuyruğu otomatik olarak kaç şarkı önceden dolduracağını belirler."
 
@@ -5523,51 +5566,51 @@ msgstr ""
 
 #: src/components/Form/VuelidateError.vue:27
 msgid "This field is required."
-msgstr ""
+msgstr "Bu alan gereklidir."
 
 #: src/components/Form/VuelidateError.vue:60
 msgid "This field must be a valid decimal number."
-msgstr ""
+msgstr "Bu alan geçerli bir ondalık sayı olmalıdır."
 
 #: src/components/Form/VuelidateError.vue:63
 msgid "This field must be a valid e-mail address."
-msgstr ""
+msgstr "Bu alan geçerli bir e-posta adresi olmalıdır."
 
 #: src/components/Form/VuelidateError.vue:57
 msgid "This field must be a valid integer."
-msgstr ""
+msgstr "Bu alan geçerli bir tam sayı olmalıdır."
 
 #: src/components/Form/VuelidateError.vue:66
 msgid "This field must be a valid IP address."
-msgstr ""
+msgstr "Bu alan geçerli bir IP adresi olmalıdır."
 
 #: src/components/Form/VuelidateError.vue:69
 msgid "This field must be a valid URL."
-msgstr ""
+msgstr "Bu alan geçerli bir URL olmalıdır."
 
 #: src/components/Form/VuelidateError.vue:42
 msgid "This field must be between %{ min } and %{ max }."
-msgstr ""
+msgstr "Bu alan %{ min } ile %{ max } arasında olmalıdır."
 
 #: src/components/Form/VuelidateError.vue:30
 msgid "This field must have at least %{ min } letters."
-msgstr ""
+msgstr "Bu alan en az %{ min } harf içermelidir."
 
 #: src/components/Form/VuelidateError.vue:36
 msgid "This field must have at most %{ max } letters."
-msgstr ""
+msgstr "Bu alan en fazla %{ max } harf içermelidir."
 
 #: src/components/Form/VuelidateError.vue:48
 msgid "This field must only contain alphabetic characters."
-msgstr ""
+msgstr "Bu alan yalnızca alfabetik karakterler içermelidir."
 
 #: src/components/Form/VuelidateError.vue:51
 msgid "This field must only contain alphanumeric characters."
-msgstr ""
+msgstr "Bu alan yalnızca alfasayısal karakterler içermelidir."
 
 #: src/components/Form/VuelidateError.vue:54
 msgid "This field must only contain numeric characters."
-msgstr ""
+msgstr "Bu alan yalnızca sayısal karakterler içermelidir."
 
 #: src/components/Stations/Fallback.vue:18
 msgid "This file will be played on your radio station any time no media is scheduled to play or a critical error occurs that interrupts regular broadcasting."
@@ -5605,13 +5648,13 @@ msgstr "Bu JS genel sayfa ve giriş sayfasına uygulanacaktır."
 msgid "This javascript code will be applied to the station public pages."
 msgstr "Bu JS radyo genel sayfasına uygulanacaktır."
 
-#: src/components/Admin/Stations/Form/BackendForm.vue:189
+#: src/components/Admin/Stations/Form/BackendForm.vue:201
 msgid "This mode disables AzuraCast's AutoDJ management, using Liquidsoap itself to manage song playback. \"next song\" and some other features will not be available."
-msgstr ""
+msgstr "Bu mod AutoDJ yönetimini devre dışı bırakır ve şarkı çalmayı yönetmek için Liquidsoap işlevini kullanır. \"Sıradaki Şarkı\" ve diğer bazı özellikler kullanılamayacaktır."
 
 #: src/components/Common/DateRangeDropdown.vue:146
 msgid "This Month"
-msgstr ""
+msgstr "Bu Ay"
 
 #: src/components/Stations/Mounts/Form/BasicInfo.vue:12
 msgid "This name should always begin with a slash (/), and must be a valid URL, such as /autodj.mp3"
@@ -5627,7 +5670,7 @@ msgstr ""
 
 #: src/components/Form/VuelidateError.vue:72
 msgid "This password is too common or insecure."
-msgstr ""
+msgstr "Bu parola çok yaygın veya güvensiz."
 
 #: src/components/Stations/Playlists/Form/Schedule.vue:12
 msgid "This playlist currently has no scheduled times. It will play at all times. To add a new scheduled time, click the button below."
@@ -5645,7 +5688,7 @@ msgstr "Bu çalma listesi burada $x belirtildiğinde her $x şarkıyı çalacakt
 msgid "This podcast is automatically synchronized with a playlist. Episodes cannot be manually added or removed via this panel."
 msgstr ""
 
-#: src/components/Admin/Stations/Form/BackendForm.vue:218
+#: src/components/Admin/Stations/Form/BackendForm.vue:230
 msgid "This port is not used by any external process. Only modify this port if the assigned port is in use. Leave blank to automatically assign a port."
 msgstr "Bu port başka hiçbir programda kullanamaz. Portu otomatik olarak atamak için boş bırakın. Bu portu yalnızca atanmış port kullanılıyorsa değiştirin."
 
@@ -5669,7 +5712,7 @@ msgstr "Bu yazılım çalma listesindeki müzikleri otomatik olarak çalar."
 msgid "This specifies the minimum time (in minutes) between a song playing on the radio and being available to request again. Set to 0 for no threshold."
 msgstr "Bu bir şarkının radyoda çalınması ile tekrar talep edilebilir olması arasındaki minimum süreyi (dakika olarak) belirtir. Aralığı kapatmak için sıfır (0) olarak ayarlayın."
 
-#: src/components/Admin/Stations/Form/BackendForm.vue:260
+#: src/components/Admin/Stations/Form/BackendForm.vue:272
 msgid "This specifies the time range (in minutes) of the song history that the duplicate song prevention algorithm should take into account."
 msgstr "Bu, yinelenen şarkı önleme algoritmasının hesaba katması gereken şarkı geçmişinin zaman aralığını (dakika cinsinden) belirtir."
 
@@ -5733,7 +5776,7 @@ msgstr "Zaman"
 #: src/components/Stations/Reports/Listeners.vue:259
 #: src/components/Stations/Reports/Overview/CommonMetricsView.vue:90
 msgid "Time (sec)"
-msgstr ""
+msgstr "Zaman (sn)"
 
 #: src/components/Account/EditForm.vue:28
 msgid "Time Display"
@@ -5802,7 +5845,7 @@ msgstr "Kodun doğru ayarlandığından emin olmak için uygulamanın size göst
 
 #: src/components/Common/DateRangeDropdown.vue:111
 msgid "Today"
-msgstr ""
+msgstr "Bugün"
 
 #: src/components/PanelLayout.vue:46
 msgid "Toggle Menu"
@@ -5854,7 +5897,7 @@ msgstr "Giden"
 
 #: src/components/Stations/Webhooks.vue:133
 msgid "Triggers"
-msgstr ""
+msgstr "Tetikleyiciler"
 
 #: src/components/Stations/Playlists/Form/ScheduleRow.vue:146
 #: src/components/Stations/Reports/Overview/ListenersByTimePeriodTab.vue:176
@@ -5863,9 +5906,9 @@ msgstr ""
 msgid "Tuesday"
 msgstr "Salı"
 
-#: src/entities/Webhooks.ts:99
+#: src/entities/Webhooks.ts:100
 msgid "TuneIn AIR"
-msgstr ""
+msgstr "TuneIn AIR"
 
 #: src/components/Stations/Webhooks/Form/Tunein.vue:19
 msgid "TuneIn Partner ID"
@@ -5949,7 +5992,7 @@ msgstr ""
 msgid "Unprocessable Files"
 msgstr "İşlenemeyen Dosyalar"
 
-#: src/components/Stations/PodcastEpisodes.vue:80
+#: src/components/Stations/PodcastEpisodes.vue:90
 #: src/components/Stations/Podcasts.vue:60
 msgid "Unpublished"
 msgstr ""
@@ -6020,7 +6063,7 @@ msgstr "Güncellendi"
 msgid "Updated successfully."
 msgstr "Başarıyla güncellendi."
 
-#: src/components/Admin/Stations/Form/BackendForm.vue:164
+#: src/components/Admin/Stations/Form/BackendForm.vue:166
 msgid "Upload a Stereo Tool configuration file from the \"Broadcasting\" submenu in the station profile."
 msgstr "Radyo profilindeki \"Yayın\" alt menüsünden bir Stereo Aracı yapılandırma dosyası yükleyin."
 
@@ -6029,7 +6072,7 @@ msgstr "Radyo profilindeki \"Yayın\" alt menüsünden bir Stereo Aracı yapıla
 msgid "Upload Custom Assets"
 msgstr "Marka Görünümü Özelleştir"
 
-#: src/components/Admin/Stations/Form/BackendForm.vue:159
+#: src/components/Admin/Stations/Form/BackendForm.vue:161
 #: src/components/Stations/menu.ts:281
 #: src/components/Stations/StereoToolConfig.vue:12
 msgid "Upload Stereo Tool Configuration"
@@ -6042,7 +6085,7 @@ msgstr "Otomatik olarak uygun dizine çıkarmak için dosyayı bu sayfaya yükle
 
 #: src/components/Stations/Webhooks/Form/Discord.vue:48
 msgid "URL"
-msgstr ""
+msgstr "URL"
 
 #: src/components/Admin/Stations/Form/ProfileForm.vue:53
 msgid "URL Stub"
@@ -6062,7 +6105,7 @@ msgstr "Kullanıcı hesabınızla aynı izinleri kullanarak AzuraCast API ile ki
 
 #: src/components/Account/EditForm.vue:68
 msgid "Use Browser Default"
-msgstr ""
+msgstr "Tarayıcı Dilini Kullan"
 
 #: src/components/Admin/Settings/GeneralTab.vue:61
 msgid "Use High-Performance Now Playing Updates"
@@ -6070,25 +6113,25 @@ msgstr ""
 
 #: src/components/Admin/Stations/Form/FrontendForm.vue:274
 msgid "Use Icecast 2.4 on this server."
-msgstr ""
+msgstr "Icecast 2.4 kullan"
 
-#: src/components/Admin/Stations/Form/BackendForm.vue:494
+#: src/components/Admin/Stations/Form/BackendForm.vue:512
 msgid "Use Less CPU (Uses More Memory)"
-msgstr ""
+msgstr "Daha Az CPU Kullanın (Daha Fazla Bellek Kullanır)"
 
-#: src/components/Admin/Stations/Form/BackendForm.vue:486
+#: src/components/Admin/Stations/Form/BackendForm.vue:504
 msgid "Use Less Memory (Uses More CPU)"
-msgstr ""
+msgstr "Daha Az Bellek Kullanın (Daha Fazla CPU Kullanır)"
 
-#: src/components/Admin/Stations/Form/BackendForm.vue:396
+#: src/components/Admin/Stations/Form/BackendForm.vue:414
 msgid "Use Liquidsoap on this server."
-msgstr ""
+msgstr "Liquidsoap (AutoDJ) kullan"
 
 #: src/components/Admin/StorageLocations/Form/S3.vue:53
 msgid "Use Path Instead of Subdomain Endpoint Style"
 msgstr ""
 
-#: src/components/Admin/Stations/Form/BackendForm.vue:198
+#: src/components/Admin/Stations/Form/BackendForm.vue:210
 msgid "Use Replaygain Metadata"
 msgstr "Replaygain Meta Verilerini Kullan"
 
@@ -6098,9 +6141,9 @@ msgstr "Güvenli (TLS) SMTP Bağlantısını Kullan"
 
 #: src/components/Admin/Stations/Form/FrontendForm.vue:281
 msgid "Use Shoutcast DNAS 2 on this server."
-msgstr ""
+msgstr "Shoutcast DNAS 2 kullan"
 
-#: src/entities/Webhooks.ts:116
+#: src/entities/Webhooks.ts:121
 msgid "Use the Telegram Bot API to send a message to a channel."
 msgstr ""
 
@@ -6124,7 +6167,7 @@ msgstr "\"Şifremi Unuttum\" sistemi web kancaları ve diğer işlevler için ku
 
 #: src/components/Admin/AuditLog.vue:124
 msgid "User"
-msgstr ""
+msgstr "Kullanıcı"
 
 #: src/components/Admin/menu.ts:81
 msgid "User Accounts"
@@ -6137,11 +6180,11 @@ msgstr "Tarayıcı Bilgisi"
 
 #: src/components/Admin/Users.vue:103
 msgid "User Name"
-msgstr ""
+msgstr "Kullanıcı Adı"
 
 #: src/components/Admin/Stations/CloneModalForm.vue:75
 msgid "User Permissions"
-msgstr ""
+msgstr "Kullanıcı İzinleri"
 
 #: src/components/Public/WebDJ/SettingsPanel.vue:75
 #: src/components/Stations/SftpUsers.vue:101
@@ -6245,7 +6288,7 @@ msgstr "Bekleyen (Be)"
 
 #: src/components/Admin/Debug/TaskOutput.vue:93
 msgid "Warning"
-msgstr ""
+msgstr "Uyarı"
 
 #: src/components/Common/Waveform.vue:16
 msgid "Waveform Zoom"
@@ -6297,11 +6340,11 @@ msgstr ""
 
 #: src/components/Public/WebDJ/SettingsPanel.vue:5
 msgid "WebDJ"
-msgstr ""
+msgstr "WebDJ"
 
 #: src/components/Public/WebDJ/useWebcaster.ts:64
 msgid "WebDJ connected!"
-msgstr ""
+msgstr "WebDJ bağlandı!"
 
 #: src/components/Stations/Podcasts/EpisodeForm/BasicInfo.vue:18
 #: src/components/Stations/Podcasts/PodcastForm/BasicInfo.vue:18
@@ -6317,7 +6360,7 @@ msgstr "Çarşamba"
 
 #: src/components/Stations/Playlists.vue:99
 msgid "Weight"
-msgstr ""
+msgstr "Öncelik"
 
 #: src/components/Login.vue:17
 #: src/components/Setup/Register.vue:19
@@ -6338,11 +6381,11 @@ msgstr ""
 
 #: src/entities/Webhooks.ts:68
 msgid "When the station broadcast comes online"
-msgstr ""
+msgstr "Radyo yayını çevrimiçi olduğunda"
 
 #: src/entities/Webhooks.ts:64
 msgid "When the station broadcast goes offline"
-msgstr ""
+msgstr "Radyo yayını çevrimdışı olduğunda"
 
 #: src/components/Stations/Podcasts/PodcastForm/Source.vue:50
 msgid "Whether new episodes should be marked as published or held for review as unpublished."
@@ -6356,18 +6399,23 @@ msgstr "AutoDJ'nin bu çalma listesinden medya oynatırken yinelenen sanatçıla
 msgid "Widget Type"
 msgstr "Widget Türü"
 
+#: src/components/Stations/Media/MediaToolbar.vue:8
+#: src/components/Stations/Podcasts/EpisodesToolbar.vue:4
+msgid "With selected:"
+msgstr ""
+
 #: src/components/Stations/Reports/Overview/BestAndWorstTab.vue:50
 msgid "Worst Performing Songs"
 msgstr "En Kötü Performanslı Şarkılar"
 
 #: src/components/Admin/Relays.vue:38
-#: src/components/Stations/PodcastEpisodes.vue:99
+#: src/components/Stations/PodcastEpisodes.vue:109
 msgid "Yes"
 msgstr "Evet"
 
 #: src/components/Common/DateRangeDropdown.vue:118
 msgid "Yesterday"
-msgstr ""
+msgstr "Dün"
 
 #: src/components/Admin/Users.vue:29
 msgid "You"
@@ -6436,962 +6484,19 @@ msgstr ""
 
 #: src/components/Stations/Profile/StationDisabledPanel.vue:31
 msgid "Your station is currently not enabled for broadcasting. You can still manage media, playlists, and other station settings. To re-enable broadcasting, edit your station profile."
-msgstr ""
+msgstr "Radyonuz yayın için şu anda etkin değil. Müzikleri, çalma listelerini ve diğer  radyo ayarlarını halen yönetebilirsiniz. Yayını yeniden etkinleştirmek için radyo profilinizi düzenleyin."
 
 #: src/components/Stations/Restart.vue:37
 msgid "Your station supports reloading configuration."
 msgstr ""
 
-#: src/components/Admin/Stations/Form/BackendForm.vue:477
+#: src/components/Admin/Stations/Form/BackendForm.vue:495
 msgid "YouTube"
 msgstr "YouTube"
 
 #: src/components/Stations/Mounts/Form/BasicInfo.vue:77
 msgid "YP Directory Authorization Hash"
 msgstr "YP Dizini Yetkilendirme Kodu"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/Repository/StationRequestRepository.php:73
-msgid "Search engine crawlers are not permitted to use this feature."
-msgstr "Arama motoru tarayıcılarının bu özelliği kullanmasına izin verilmemektedir."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/Repository/StationRequestRepository.php:80
-msgid "You are not permitted to submit requests."
-msgstr "İstek göndermenize izin verilmiyor."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/Repository/StationRequestRepository.php:89
-msgid "This track is not requestable."
-msgstr ""
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/Repository/StationRequestRepository.php:121
-msgid "You have submitted a request too recently! Please wait before submitting another one."
-msgstr "Çok yakın zamanda bir istek gönderdiniz! Lütfen başka bir tane göndermeden önce bekleyin."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/Repository/StationRequestRepository.php:167
-msgid "This song was already requested and will play soon."
-msgstr ""
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/Repository/StationRequestRepository.php:247
-msgid "This song or artist has been played too recently. Wait a while before requesting it again."
-msgstr "Bu şarkı veya sanatçı zaten çok yeni çalındı. Tekrar talep etmeden önce biraz bekleyin."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/ApiGenerator/ScheduleApiGenerator.php:59
-#, php-format
-msgid "Playlist: %s"
-msgstr "Çalma Listesi: %s"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/ApiGenerator/ScheduleApiGenerator.php:64
-#, php-format
-msgid "Streamer: %s"
-msgstr "DJ: %s"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/Api/Status.php:33
-msgid "Changes saved successfully."
-msgstr "Değişiklikler başarıyla kaydedildi."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/Api/Status.php:38
-msgid "Record created successfully."
-msgstr "Kayıt başarıyla oluşturuldu."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/Api/Status.php:43
-msgid "Record updated successfully."
-msgstr "Kayıt başarıyla güncellendi."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/Api/Status.php:48
-msgid "Record deleted successfully."
-msgstr "Kayıt başarıyla silindi."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/Api/Error.php:71
-msgid "Record not found"
-msgstr "Kayıt bulunamadı"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/Api/Error.php:77
-msgid "The uploaded file exceeds the upload_max_filesize directive in php.ini."
-msgstr "Yüklenen dosya php.ini'deki upload_max_filesize yönergesini aşıyor."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/Api/Error.php:78
-msgid "The uploaded file exceeds the MAX_FILE_SIZE directive from the HTML form."
-msgstr "Yüklenen dosya HTML formundaki MAX_FILE_SIZE yönergesini aşıyor."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/Api/Error.php:79
-msgid "The uploaded file was only partially uploaded."
-msgstr "Yüklenen dosya yalnızca kısmen yüklendi."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/Api/Error.php:80
-msgid "No file was uploaded."
-msgstr "Dosya yüklenemedi."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/Api/Error.php:81
-msgid "No temporary directory is available."
-msgstr "Geçici dizin kullanılamaz."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/Api/Error.php:82
-msgid "Could not write to filesystem."
-msgstr "Dosya sistemine yazılamadı."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/Api/Error.php:83
-msgid "Upload halted by a PHP extension."
-msgstr "Yükleme bir PHP uzantısı tarafından durduruldu."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/Api/Error.php:84
-msgid "Unspecified error."
-msgstr "Belirtilmemiş hata."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/UpdateCheck.php:54
-msgid "New AzuraCast Stable Release Available"
-msgstr ""
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/UpdateCheck.php:58
-#, php-format
-msgid "Version %s is now available. You are currently running version %s. Updating is recommended."
-msgstr ""
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/UpdateCheck.php:75
-msgid "New AzuraCast Rolling Release Available"
-msgstr ""
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/UpdateCheck.php:79
-#, php-format
-msgid "Your installation is currently %d update(s) behind the latest version. Updating is recommended."
-msgstr ""
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/UpdateCheck.php:93
-msgid "Switch to Stable Channel Available"
-msgstr ""
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/UpdateCheck.php:96
-msgid "Your Rolling Release installation is currently older than the latest Stable release. This means you can switch releases to the \"Stable\" release channel if desired."
-msgstr ""
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/BaseUrlCheck.php:42
-msgid "You may want to update your base URL to ensure it is correct."
-msgstr "Doğru olduğundan emin olmak için temel URLnizi güncellemek isteyebilirsiniz."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/BaseUrlCheck.php:45
-msgid "If you regularly use different URLs to access AzuraCast, you should enable the \"Prefer Browser URL\" setting."
-msgstr "AzuraCast'a erişmek için düzenli olarak farklı URL'ler kullanıyorsanız, \"Tarayıcı URLsini Tercih Et\" ayarını etkinleştirmelisiniz."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/BaseUrlCheck.php:52
-#, php-format
-msgid "Your \"Base URL\" setting (%s) does not match the URL you are currently using (%s)."
-msgstr "\"Temel URL\" ayarınız (%s) şu anda kullanmakta olduğunuz URL ile (%s) eşleşmiyor."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/DonateAdvisorCheck.php:33
-msgid "AzuraCast is free and open-source software."
-msgstr ""
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/DonateAdvisorCheck.php:34
-msgid "If you are enjoying AzuraCast, please consider donating to support our work. We depend on donations to build new features, fix bugs, and keep AzuraCast modern, accessible and free."
-msgstr ""
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/DonateAdvisorCheck.php:40
-msgid "Donate to AzuraCast"
-msgstr ""
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/ProfilerAdvisorCheck.php:34
-msgid "The performance profiling extension is currently enabled on this installation."
-msgstr "Performans profili oluşturma uzantısı şu anda bu kurulumda etkin."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/ProfilerAdvisorCheck.php:35
-msgid "You can track the execution time and memory usage of any AzuraCast page or application from the profiler page."
-msgstr "Profil oluşturucu sayfasından herhangi bir AzuraCast sayfasının veya uygulamasının yürütme süresini ve bellek kullanımını izleyebilirsiniz."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/ProfilerAdvisorCheck.php:41
-msgid "Profiler Control Panel"
-msgstr "Profiler Kontrol Paneli"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/ProfilerAdvisorCheck.php:53
-msgid "Performance profiling is currently enabled for all requests."
-msgstr "Performans profili oluşturma şu anda tüm istekler için etkindir."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/ProfilerAdvisorCheck.php:54
-msgid "This can have an adverse impact on system performance. You should disable this when possible."
-msgstr "Bunun sistem performansı üzerinde olumsuz bir etkisi olabilir. Mümkün olduğunda bunu devre dışı bırakmalısınız."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/ServiceCheck.php:34
-#, php-format
-msgid "Service Not Running: %s"
-msgstr ""
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/ServiceCheck.php:35
-msgid "One of the essential services on this installation is not currently running. Visit the system administration and check the system logs to find the cause of this issue."
-msgstr ""
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/SyncTaskCheck.php:36
-msgid "Synchronization Disabled"
-msgstr "Senkronizasyon Devre Dışı"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/SyncTaskCheck.php:37
-msgid "Routine synchronization is currently disabled. Make sure to re-enable it to resume routine maintenance tasks."
-msgstr "Rutin senkronizasyon şu anda devre dışı. Rutin bakım görevlerini sürdürmek için yeniden etkinleştirdiğinizden emin olun."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/SyncTaskCheck.php:51
-msgid "Synchronization Not Recently Run"
-msgstr "Senkronizasyon Yakın Zamanda Çalıştırılmadı"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/SyncTaskCheck.php:52
-msgid "The routine synchronization task has not run recently. This may indicate an error with your installation."
-msgstr "Rutin senkronizasyon görevi yakın zamanda çalışmadı. Bu kurulumunuzda bir hata olduğunu gösterebilir."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/RecentBackupCheck.php:47
-msgid "Installation Not Recently Backed Up"
-msgstr "Yükleme Son Zamanlarda Yedeklenmedi"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/RecentBackupCheck.php:48
-msgid "This installation has not been backed up in the last two weeks."
-msgstr "Bu kurulum son iki hafta içerisinde yedeklenmedi."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/ActiveServerCheck.php:32
-msgid "This server is not the current active instance."
-msgstr ""
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/ActiveServerCheck.php:33
-msgid "This likely means that multiple AzuraCast instances are connecting to the same database. This instance is not the current active one, so synchronized tasks won't run on this server. If this is intentional, you can disregard this message."
-msgstr ""
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Exception/NotLoggedInException.php:25
-msgid "You must be logged in to access this page."
-msgstr "Bu sayfayı görüntülemek için giriş yapmalısınız."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Exception/CannotCompleteActionException.php:26
-#, php-format
-msgid "Cannot submit request: %s"
-msgstr ""
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Exception/PermissionDeniedException.php:25
-msgid "You do not have permission to access this portion of the site."
-msgstr "Sitenin bu bölümüne erişmek için yetkiniz bulunmamaktadır."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Exception/StationUnsupportedException.php:25
-msgid "This station does not currently support this functionality."
-msgstr ""
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Exception/StationUnsupportedException.php:32
-msgid "This station does not currently support on-demand media."
-msgstr ""
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Exception/StationUnsupportedException.php:39
-msgid "This station does not currently accept requests."
-msgstr ""
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Exception/NotFoundException.php:24
-msgid "Record not found."
-msgstr "Kayıt bulunamadı!"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Exception/NotFoundException.php:29
-msgid "File not found."
-msgstr "Dosya bulunamadı."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Exception/NotFoundException.php:34
-msgid "Station not found."
-msgstr "Radyo bulunamadı."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Exception/NotFoundException.php:39
-msgid "Podcast not found."
-msgstr "Podcasts Bulunamadı."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Exception/SupervisorException.php:24
-#, php-format
-msgid "%s is not recognized as a service."
-msgstr "%s bir servis olarak tanınmıyor."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Exception/SupervisorException.php:27
-msgid "It may not be registered with Supervisor yet. Restarting broadcasting may help."
-msgstr "Supervisor'a henüz kayıtlı olmayabilir. Yayını yeniden başlatmak yardımcı olabilir."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Exception/SupervisorException.php:36
-#, php-format
-msgid "%s cannot start"
-msgstr "%s başlatılamadı!"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Exception/SupervisorException.php:39
-msgid "It is already running."
-msgstr "Zaten Çalışıyor."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Exception/SupervisorException.php:48
-#, php-format
-msgid "%s cannot stop"
-msgstr "%s durdurulamadı!"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Exception/SupervisorException.php:51
-msgid "It is not running."
-msgstr "Zaten Çalışmıyor."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Exception/SupervisorException.php:63
-#, php-format
-msgid "%s encountered an error: %s"
-msgstr "%s bir hata ile karşılaştı: %s"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Exception/SupervisorException.php:67
-msgid "Check the log for details."
-msgstr "Detaylar için günlükleri kontrol edin."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/SetupController.php:113
-msgid "Set Up AzuraCast"
-msgstr "AzuraCast Kurulumu"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/SetupController.php:192
-msgid "Setup has already been completed!"
-msgstr "Kurulum zaten tamamlanmış!"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/WebAuthn/PostValidationAction.php:55
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/TwoFactorAction.php:44
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/LoginAction.php:123
-msgid "Login unsuccessful"
-msgstr "Giriş Başarısız!"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/WebAuthn/PostValidationAction.php:76
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/TwoFactorAction.php:32
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/LoginAction.php:105
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/LoginAction.php:113
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/MasqueradeAction.php:47
-msgid "Logged in successfully."
-msgstr "Giriş Yapıldı!"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/RecoverAction.php:41
-msgid "Invalid token specified."
-msgstr "Geçersiz anahtar belirtildi."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/RecoverAction.php:74
-msgid "Logged in using account recovery token"
-msgstr "Hesap kurtarma anahtarı kullanılarak giriş yapıldı"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/RecoverAction.php:75
-msgid "Your password has been updated."
-msgstr "Şifreniz güncellendi."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/TwoFactorAction.php:44
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/LoginAction.php:123
-msgid "Your credentials could not be verified."
-msgstr "Kimlik bilgileriniz doğrulamanadı!"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/LoginAction.php:65
-msgid "Too many login attempts"
-msgstr "Çok fazla giriş denemesi yapıldı"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/LoginAction.php:66
-msgid "You have attempted to log in too many times. Please wait 30 seconds and try again."
-msgstr "Çok fazla giriş yapmayı denediniz. Lütfen 30 saniye bekleyin ve tekrar deneyin."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/LoginAction.php:106
-msgid "Complete the setup process to get started."
-msgstr "Başlamak için kurulum işlemini tamamlayın."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/MasqueradeAction.php:40
-msgid "User not found."
-msgstr "Kullanıcı bulunamadı!"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/ForgotPasswordAction.php:47
-msgid "Too many forgot password attempts"
-msgstr "Çok fazla unutulmuş şifre denemesi"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/ForgotPasswordAction.php:48
-msgid "You have attempted to reset your password too many times. Please wait 30 seconds and try again."
-msgstr "Şifrenizi birçok kez sıfırlamayı denediniz. Lütfen 30 saniye bekleyin ve tekrar deneyin."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/ForgotPasswordAction.php:65
-#: /home/runner/work/AzuraCast/AzuraCast/templates/mail/forgot.phtml:8
-msgid "Account Recovery"
-msgstr "Hesap Kurtarma"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/ForgotPasswordAction.php:83
-msgid "Account recovery e-mail sent."
-msgstr "Hesap kurtarma e-postası gönderildi."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/ForgotPasswordAction.php:84
-msgid "If the e-mail address you provided is in the system, check your inbox for a password reset message."
-msgstr "Verdiğiniz e-posta adresi sistemimizde kayıtlı ise şifre sıfırlama mesajı için gelen kutunuzu kontrol edin."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Frontend/Dashboard/ChartsAction.php:134
-msgid "All Stations"
-msgstr "Tüm Radyolar"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Admin/UsersController.php:222
-msgid "You cannot modify yourself."
-msgstr "Kendinizi değiştiremezsiniz."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Admin/UsersController.php:257
-msgid "You cannot remove yourself."
-msgstr "Kendini silemezsin!"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Admin/Stations/StorageLocationsAction.php:21
-msgid "Create a new storage location based on the base directory."
-msgstr "Temel dizini temel alan yeni bir depolama konumu oluşturun."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Admin/LogsAction.php:80
-msgid "AzuraCast Application Log"
-msgstr "AzuraCast Günlüğü"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Admin/LogsAction.php:86
-msgid "AzuraCast Now Playing Log"
-msgstr ""
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Admin/LogsAction.php:92
-msgid "AzuraCast Synchronized Task Log"
-msgstr ""
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Admin/LogsAction.php:98
-msgid "AzuraCast Queue Worker Log"
-msgstr ""
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Admin/LogsAction.php:104
-#, php-format
-msgid "Service Log: %s (%s)"
-msgstr ""
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Admin/LogsAction.php:119
-msgid "Nginx Access Log"
-msgstr "Nginx Erişim Günlüğü"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Admin/LogsAction.php:124
-msgid "Nginx Error Log"
-msgstr "Nginx Hata Günlüğü"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Admin/LogsAction.php:129
-msgid "PHP Application Log"
-msgstr "PHP Uygulama Günlüğü"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Admin/LogsAction.php:134
-msgid "Supervisord Log"
-msgstr "Supervisord Günlüğü"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Admin/SendTestMessageAction.php:51
-msgid "Test Message"
-msgstr "Test Mesajı"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Admin/SendTestMessageAction.php:54
-msgid "This is a test message from AzuraCast. If you are receiving this message, it means your e-mail settings are configured correctly."
-msgstr "Bu AzuraCast'tan bir test mesajıdır. Bu mesajı alıyorsanız e-posta ayarlarınızın doğru yapılandırıldığı anlamına gelir."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Admin/SendTestMessageAction.php:68
-msgid "Test message sent successfully."
-msgstr "Test mesajı başarıyla gönderildi."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Webhooks/ToggleAction.php:39
-msgid "Web hook enabled."
-msgstr "Web kancası etkinleştirildi!"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Webhooks/ToggleAction.php:40
-msgid "Web hook disabled."
-msgstr "Web kancası devredışı bırakıldı!"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/BulkMedia/UploadAction.php:171
-#, php-format
-msgid "%d files processed."
-msgstr "%d dosya işlendi."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Playlists/ImportAction.php:200
-#, php-format
-msgid "Playlist successfully imported; %d of %d files were successfully matched."
-msgstr "Oynatma listesi başarıyla içe aktarıldı; %d tanesi %d dosyadan başarıyla eşleştirildi."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Playlists/GetOrderAction.php:41
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Playlists/PutOrderAction.php:40
-msgid "This playlist is not a sequential playlist."
-msgstr "Bu çalma listesi \"SIRALI\" bir çalma listesi değildir."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Playlists/GetApplyToAction.php:44
-msgid "Base Directory"
-msgstr ""
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Playlists/PutApplyToAction.php:62
-msgid "Playlist applied to folders."
-msgstr ""
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Playlists/ToggleAction.php:39
-msgid "Playlist enabled."
-msgstr "Çalma Listesi Etkinleştirildi!"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Playlists/ToggleAction.php:40
-msgid "Playlist disabled."
-msgstr "Çalma Listesi Devredışı Bırakıldı!"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Playlists/ReshuffleAction.php:38
-msgid "Playlist reshuffled."
-msgstr "Çalma listesi yeniden karıştırıldı!"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Playlists/EmptyAction.php:36
-msgid "This playlist is not song-based."
-msgstr ""
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Playlists/EmptyAction.php:44
-msgid "Playlist emptied."
-msgstr ""
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Streamers/BroadcastsController.php:153
-msgid "No recording available."
-msgstr "Kullanılabilir kayıt yoktur."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ByCountry.php:75
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ByClient.php:82
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ByStream.php:99
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ByBrowser.php:62
-msgid "Connected Seconds"
-msgstr ""
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ByClient.php:62
-msgid "Mobile Device"
-msgstr "Mobil Cihaz"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ByClient.php:63
-msgid "Desktop Browser"
-msgstr ""
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ByClient.php:64
-msgid "Non-Browser"
-msgstr ""
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ByListeningTime.php:47
-msgid "Less than Thirty Seconds"
-msgstr ""
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ByListeningTime.php:48
-msgid "Thirty Seconds to One Minute"
-msgstr ""
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ByListeningTime.php:49
-msgid "One Minute to Five Minutes"
-msgstr ""
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ByListeningTime.php:50
-msgid "Five Minutes to Ten Minutes"
-msgstr ""
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ByListeningTime.php:51
-msgid "Ten Minutes to Thirty Minutes"
-msgstr ""
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ByListeningTime.php:52
-msgid "Thirty Minutes to One Hour"
-msgstr ""
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ByListeningTime.php:53
-msgid "One Hour to Two Hours"
-msgstr ""
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ByListeningTime.php:54
-msgid "More than Two Hours"
-msgstr ""
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/LogsAction.php:86
-msgid "Station Nginx Configuration"
-msgstr "Radyo Nginx Yapılandırması"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/LogsAction.php:93
-msgid "Liquidsoap Log"
-msgstr "Liquidsoap Günlüğü"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/LogsAction.php:98
-msgid "Liquidsoap Configuration"
-msgstr "Liquidsoap Ayar Dosyası"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/LogsAction.php:107
-msgid "Icecast Access Log"
-msgstr "Icecast Erişim Günlüğü"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/LogsAction.php:112
-msgid "Icecast Error Log"
-msgstr "Icecast Hata Günlüğü"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/LogsAction.php:117
-msgid "Icecast Configuration"
-msgstr "Icecast Ayar Dosyası"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/LogsAction.php:125
-msgid "Shoutcast Log"
-msgstr ""
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/LogsAction.php:130
-msgid "Shoutcast Configuration"
-msgstr "Shoutcast Ayar Dosyası"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/FilesController.php:201
-msgid "This station is out of available storage space."
-msgstr "Radyo depolama alanı doldu."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Files/RenameAction.php:33
-msgid "File not specified."
-msgstr "Dosya belirtilmedi!"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Files/RenameAction.php:39
-msgid "New path not specified."
-msgstr "Yeni dizin belirlenmedi!"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Files/ListAction.php:252
-#, php-format
-msgid "File Not Processed: %s"
-msgstr "Dosya İşlenemedi: %s"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Files/ListAction.php:257
-msgid "Cover Art"
-msgstr "Kapak Resmi"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Files/ListAction.php:259
-msgid "File Processing"
-msgstr "Dosya İşleniyor"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Files/MakeDirectoryAction.php:34
-msgid "No directory specified"
-msgstr "Hiçbir dizin seçilmedi"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Requests/SubmitAction.php:79
-msgid "Your request has been submitted and will be played soon."
-msgstr ""
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/ServicesController.php:160
-msgid "Station reloaded."
-msgstr "Sunucu yeniden başlatıldı."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/ServicesController.php:186
-msgid "Station restarted."
-msgstr "Sunucu yeniden başlatıldı!"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/ServicesController.php:204
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/ServicesController.php:256
-msgid "Service stopped."
-msgstr "Servis durduruldu."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/ServicesController.php:209
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/ServicesController.php:261
-msgid "Service started."
-msgstr "Servis başlatıldı."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/ServicesController.php:215
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/ServicesController.php:267
-msgid "Service reloaded."
-msgstr "Servis yeniden yüklendi."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/ServicesController.php:227
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/ServicesController.php:279
-msgid "Service restarted."
-msgstr "Servis yeniden başlatıldı."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/ServicesController.php:246
-msgid "Song skipped."
-msgstr "Şarkı atlandı!"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/ServicesController.php:251
-msgid "Streamer disconnected."
-msgstr "DJ bağlantısı kesildi!"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Doctrine/Repository.php:108
-msgid "Select..."
-msgstr "Seç..."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/MigrateDbCommand.php:25
-msgid "Database Migrations"
-msgstr ""
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/MigrateDbCommand.php:38
-msgid "Database is already up to date!"
-msgstr ""
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/MigrateDbCommand.php:51
-#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/RollbackDbCommand.php:61
-msgid "Running database migrations..."
-msgstr ""
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/MigrateDbCommand.php:65
-#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/RollbackDbCommand.php:86
-#, php-format
-msgid "Database migration failed: %s"
-msgstr ""
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/MigrateDbCommand.php:77
-msgid "Database migration completed!"
-msgstr ""
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/MigrateConfigCommand.php:108
-msgid "Configuration successfully written."
-msgstr "Yapılandırma başarıyla yazıldı."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/Backup/RestoreCommand.php:77
-#, php-format
-msgid "Backup path %s not found!"
-msgstr "Yedekleme dizini %s bulunamadı!"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/Backup/BackupCommand.php:95
-msgid "AzuraCast Backup"
-msgstr "AzuraCast Yedekleme"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/Backup/BackupCommand.php:96
-msgid "Please wait while a backup is generated..."
-msgstr "Lütfen bir yedekleme oluşturulurken bekleyin..."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/Backup/BackupCommand.php:99
-msgid "Creating temporary directories..."
-msgstr "Geçici dizinler oluşturuluyor..."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/Backup/BackupCommand.php:112
-msgid "Backing up MariaDB..."
-msgstr "MariaDB yedekleniyor..."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/Backup/BackupCommand.php:138
-msgid "Creating backup archive..."
-msgstr "Yedekleme arşivi oluşturuluyor..."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/Backup/BackupCommand.php:214
-msgid "Cleaning up temporary files..."
-msgstr "Geçici dizin dosyaları temizleniyor..."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/Backup/BackupCommand.php:226
-#, php-format
-msgid "Backup complete in %.2f seconds."
-msgstr "Yedekleme %.2f saniyede tamamlandı."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/SetupFixturesCommand.php:63
-msgid "Fixtures loaded."
-msgstr "Fikstürler yüklendi."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/RollbackDbCommand.php:44
-msgid "Roll Back Database"
-msgstr ""
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/RollbackDbCommand.php:99
-#, php-format
-msgid "Database rolled back to stable release version \"%s\"."
-msgstr ""
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/Locale/ImportCommand.php:58
-#, php-format
-msgid "Imported locale: %s"
-msgstr "İçe aktarılan dil: %s"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/Settings/ListCommand.php:26
-msgid "AzuraCast Settings"
-msgstr "AzuraCast Ayarları"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/Settings/ListCommand.php:29
-msgid "Setting Key"
-msgstr "Ayar Anahtarı"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/Settings/ListCommand.php:30
-msgid "Setting Value"
-msgstr "Ayar Değeri"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/AbstractDatabaseCommand.php:104
-msgid "Backing up initial database state..."
-msgstr ""
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/AbstractDatabaseCommand.php:113
-msgid "We detected a database restore file from a previous (possibly failed) migration."
-msgstr ""
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/AbstractDatabaseCommand.php:114
-msgid "Attempting to restore that now..."
-msgstr ""
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/AbstractDatabaseCommand.php:129
-msgid "Attempting to roll back to previous database state..."
-msgstr ""
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/AbstractDatabaseCommand.php:135
-msgid "Your database was restored due to a failed migration."
-msgstr ""
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/AbstractDatabaseCommand.php:136
-msgid "Please report this bug to our developers."
-msgstr ""
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/AbstractDatabaseCommand.php:142
-#, php-format
-msgid "Restore failed: %s"
-msgstr ""
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/SetupCommand.php:60
-msgid "AzuraCast Initializing..."
-msgstr ""
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/SetupCommand.php:62
-msgid "AzuraCast Setup"
-msgstr "AzuraCast Kurulumu"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/SetupCommand.php:64
-msgid "Welcome to AzuraCast. Please wait while some key dependencies of AzuraCast are set up..."
-msgstr "AzuraCast'a hoşgeldiniz. AzuraCast’in bazı temel sistemleri kurulurken lütfen bekleyin..."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/SetupCommand.php:69
-msgid "Running Database Migrations"
-msgstr "Veritabanı Geçişleri Çalışıyor"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/SetupCommand.php:77
-msgid "Generating Database Proxy Classes"
-msgstr "Veritabanı Proxy Sınıfları Oluşturuluyor"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/SetupCommand.php:82
-msgid "Reload System Data"
-msgstr "Sistem Verilerini Yeniden Yükle"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/SetupCommand.php:92
-msgid "Installing Data Fixtures"
-msgstr "Veri Fikstürleri Kuruluyor"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/SetupCommand.php:98
-msgid "Refreshing All Stations"
-msgstr "Tüm Radyolar Yenileniyor"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/SetupCommand.php:125
-msgid "AzuraCast is now updated to the latest version!"
-msgstr "AzuraCast şimdi en son sürüme güncellendi!"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/SetupCommand.php:134
-msgid "AzuraCast installation complete!"
-msgstr "AzuraCast kurulumu tamamlandı!"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/SetupCommand.php:136
-#, php-format
-msgid "Visit %s to complete setup."
-msgstr "Kurulumu tamamlamak için %s adresini ziyaret edin."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/Users/SetAdministratorCommand.php:61
-#, php-format
-msgid "The account associated with e-mail address \"%s\" has been set as an administrator"
-msgstr "%s e-posta adresi yönetici olarak atandı."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/Users/SetAdministratorCommand.php:69
-msgid "Account not found."
-msgstr "Hesap bulunamadı."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Enums/StationPermissions.php:26
-#: /home/runner/work/AzuraCast/AzuraCast/src/Enums/GlobalPermissions.php:22
-msgid "All Permissions"
-msgstr "Tüm İzinler"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Enums/StationPermissions.php:27
-msgid "View Station Page"
-msgstr "Radyo Sayfasını Görme"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Enums/StationPermissions.php:28
-msgid "View Station Reports"
-msgstr "Radyo Raporlarını Görme"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Enums/StationPermissions.php:29
-msgid "View Station Logs"
-msgstr "Radyo Günlüklerini Görme"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Enums/StationPermissions.php:30
-msgid "Manage Station Profile"
-msgstr "Profil Yönetimi"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Enums/StationPermissions.php:31
-msgid "Manage Station Broadcasting"
-msgstr "Canlı Yayın Yönetimi"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Enums/StationPermissions.php:32
-msgid "Manage Station Streamers"
-msgstr "DJ Yönetimi"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Enums/StationPermissions.php:33
-msgid "Manage Station Mount Points"
-msgstr "Bağlantı Noktası Yönetimi"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Enums/StationPermissions.php:34
-msgid "Manage Station Remote Relays"
-msgstr "Radyo Yönlendirme Yönetimi"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Enums/StationPermissions.php:35
-msgid "Manage Station Media"
-msgstr "Müzik Dosyaları Yönetimi"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Enums/StationPermissions.php:36
-msgid "Manage Station Automation"
-msgstr "Radyo Otomasyon Yönetimi"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Enums/StationPermissions.php:37
-msgid "Manage Station Web Hooks"
-msgstr "Web Kancası Yönetimi"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Enums/StationPermissions.php:38
-msgid "Manage Station Podcasts"
-msgstr "Podcasts Yönetimi"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Enums/GlobalPermissions.php:23
-msgid "View Administration Page"
-msgstr "Yönetici Panelini Görme"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Enums/GlobalPermissions.php:24
-msgid "View System Logs"
-msgstr "Sistem Günlüklerini Görme"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Enums/GlobalPermissions.php:25
-msgid "Administer Settings"
-msgstr "Ayar Yönetimi"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Enums/GlobalPermissions.php:26
-msgid "Administer API Keys"
-msgstr "API Anahtarı Yönetimi"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Enums/GlobalPermissions.php:27
-msgid "Administer Stations"
-msgstr "Radyo Yönetimi"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Enums/GlobalPermissions.php:28
-msgid "Administer Custom Fields"
-msgstr "Özel Alan Yönetimi"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Enums/GlobalPermissions.php:29
-msgid "Administer Backups"
-msgstr "Yedekleme Yönetimi"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Enums/GlobalPermissions.php:30
-msgid "Administer Storage Locations"
-msgstr "Depolama Yönetimi"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Service/IpGeolocation.php:56
-msgid "GeoLite database not configured for this installation. See System Administration for instructions."
-msgstr "GeoLite veritabanı bu kurulum için yapılandırılmamış. Talimatlar için \"Sistem Yönetimi\" sayfasına gidiniz."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Service/ServiceControl.php:80
-msgid "Runs routine synchronized tasks"
-msgstr "Rutin senkronize edilmiş görevleri çalıştırır"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Service/ServiceControl.php:81
-msgid "Database"
-msgstr "Veritabanı"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Service/ServiceControl.php:82
-msgid "Web server"
-msgstr "Web sunucusu"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Service/ServiceControl.php:83
-msgid "Roadrunner PHP Server"
-msgstr ""
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Service/ServiceControl.php:84
-msgid "PHP FastCGI Process Manager"
-msgstr "PHP FastCGI İşlem Yöneticisi"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Service/ServiceControl.php:85
-msgid "Now Playing manager service"
-msgstr "Çalan şarkı hizmeti"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Service/ServiceControl.php:86
-msgid "PHP queue processing worker"
-msgstr "PHP kuyruk işleme hizmeti"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Service/ServiceControl.php:87
-msgid "Cache"
-msgstr "Önbellek"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Service/ServiceControl.php:88
-msgid "SFTP service"
-msgstr "SFTP servisi"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Service/ServiceControl.php:89
-msgid "Live Now Playing updates"
-msgstr ""
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Service/ServiceControl.php:90
-msgid "Frontend Assets"
-msgstr ""
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Service/IpGeolocator/GeoLite.php:35
-#, php-format
-msgid "This product includes GeoLite2 data created by MaxMind, available from %s."
-msgstr "Bu ürün MaxMind tarafından oluşturulan GeoLite2 verilerini içerir. Daha geniş bilgi için %s internet adresini ziyaret edebilirsiniz."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Service/IpGeolocator/DbIp.php:29
-msgid "IP Geolocation by DB-IP"
-msgstr "DB-IP ile IP Konumu"
 
 #: /home/runner/work/AzuraCast/AzuraCast/src/Media/Enums/MetadataTags.php:81
 msgid "Album Artist"
@@ -7625,9 +6730,463 @@ msgstr "Kullanıcı URLsi"
 msgid "Year"
 msgstr "Yıl"
 
+#: /home/runner/work/AzuraCast/AzuraCast/src/Exception/StationUnsupportedException.php:25
+msgid "This station does not currently support this functionality."
+msgstr ""
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Exception/StationUnsupportedException.php:32
+msgid "This station does not currently support on-demand media."
+msgstr ""
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Exception/StationUnsupportedException.php:39
+msgid "This station does not currently accept requests."
+msgstr ""
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Exception/NotFoundException.php:24
+msgid "Record not found."
+msgstr "Kayıt bulunamadı!"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Exception/NotFoundException.php:29
+msgid "File not found."
+msgstr "Dosya bulunamadı."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Exception/NotFoundException.php:34
+msgid "Station not found."
+msgstr "Radyo bulunamadı."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Exception/NotFoundException.php:39
+msgid "Podcast not found."
+msgstr "Podcasts Bulunamadı."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Exception/Http/CannotCompleteActionException.php:29
+#, php-format
+msgid "Cannot submit request: %s"
+msgstr ""
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Exception/Http/PermissionDeniedException.php:26
+msgid "You do not have permission to access this portion of the site."
+msgstr "Sitenin bu bölümüne erişmek için yetkiniz bulunmamaktadır."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Exception/Http/NotLoggedInException.php:26
+msgid "You must be logged in to access this page."
+msgstr "Bu sayfayı görüntülemek için giriş yapmalısınız."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Exception/SupervisorException.php:24
+#, php-format
+msgid "%s is not recognized as a service."
+msgstr "%s bir servis olarak tanınmıyor."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Exception/SupervisorException.php:27
+msgid "It may not be registered with Supervisor yet. Restarting broadcasting may help."
+msgstr "Supervisor'a henüz kayıtlı olmayabilir. Yayını yeniden başlatmak yardımcı olabilir."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Exception/SupervisorException.php:36
+#, php-format
+msgid "%s cannot start"
+msgstr "%s başlatılamadı!"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Exception/SupervisorException.php:39
+msgid "It is already running."
+msgstr "Zaten Çalışıyor."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Exception/SupervisorException.php:48
+#, php-format
+msgid "%s cannot stop"
+msgstr "%s durdurulamadı!"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Exception/SupervisorException.php:51
+msgid "It is not running."
+msgstr "Zaten Çalışmıyor."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Exception/SupervisorException.php:63
+#, php-format
+msgid "%s encountered an error: %s"
+msgstr "%s bir hata ile karşılaştı: %s"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Exception/SupervisorException.php:67
+msgid "Check the log for details."
+msgstr "Detaylar için günlükleri kontrol edin."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ByClient.php:62
+msgid "Mobile Device"
+msgstr "Mobil Cihaz"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ByClient.php:63
+msgid "Desktop Browser"
+msgstr ""
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ByClient.php:64
+msgid "Non-Browser"
+msgstr ""
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ByClient.php:82
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ByCountry.php:75
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ByBrowser.php:62
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ByStream.php:99
+msgid "Connected Seconds"
+msgstr ""
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ByListeningTime.php:48
+msgid "Less than Thirty Seconds"
+msgstr ""
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ByListeningTime.php:49
+msgid "Thirty Seconds to One Minute"
+msgstr ""
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ByListeningTime.php:50
+msgid "One Minute to Five Minutes"
+msgstr ""
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ByListeningTime.php:51
+msgid "Five Minutes to Ten Minutes"
+msgstr ""
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ByListeningTime.php:52
+msgid "Ten Minutes to Thirty Minutes"
+msgstr ""
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ByListeningTime.php:53
+msgid "Thirty Minutes to One Hour"
+msgstr ""
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ByListeningTime.php:54
+msgid "One Hour to Two Hours"
+msgstr ""
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Reports/Overview/ByListeningTime.php:55
+msgid "More than Two Hours"
+msgstr ""
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Requests/SubmitAction.php:92
+msgid "Search engine crawlers are not permitted to use this feature."
+msgstr "Arama motoru tarayıcılarının bu özelliği kullanmasına izin verilmemektedir."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Requests/SubmitAction.php:100
+msgid "You are not permitted to submit requests."
+msgstr "İstek göndermenize izin verilmiyor."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Requests/SubmitAction.php:110
+msgid "This track is not requestable."
+msgstr ""
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Requests/SubmitAction.php:118
+msgid "This song was already requested and will play soon."
+msgstr "Bu şarkı zaten istenmişti ve yakında çalınacak."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Requests/SubmitAction.php:126
+msgid "This song or artist has been played too recently. Wait a while before requesting it again."
+msgstr "Bu şarkı veya sanatçı zaten çok yeni çalındı. Tekrar talep etmeden önce biraz bekleyin."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Requests/SubmitAction.php:153
+msgid "You have submitted a request too recently! Please wait before submitting another one."
+msgstr "Çok yakın zamanda bir istek gönderdiniz! Lütfen başka bir tane göndermeden önce bekleyin."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Requests/SubmitAction.php:164
+msgid "Your request has been submitted and will be played soon."
+msgstr ""
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/LogsAction.php:86
+msgid "Station Nginx Configuration"
+msgstr "Radyo Nginx Yapılandırması"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/LogsAction.php:93
+msgid "Liquidsoap Log"
+msgstr "Liquidsoap Günlüğü"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/LogsAction.php:98
+msgid "Liquidsoap Configuration"
+msgstr "Liquidsoap Ayar Dosyası"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/LogsAction.php:107
+msgid "Icecast Access Log"
+msgstr "Icecast Erişim Günlüğü"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/LogsAction.php:112
+msgid "Icecast Error Log"
+msgstr "Icecast Hata Günlüğü"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/LogsAction.php:117
+msgid "Icecast Configuration"
+msgstr "Icecast Ayar Dosyası"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/LogsAction.php:125
+msgid "Shoutcast Log"
+msgstr ""
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/LogsAction.php:130
+msgid "Shoutcast Configuration"
+msgstr "Shoutcast Ayar Dosyası"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/FilesController.php:201
+msgid "This station is out of available storage space."
+msgstr "Radyo depolama alanı doldu."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Files/MakeDirectoryAction.php:34
+msgid "No directory specified"
+msgstr "Hiçbir dizin seçilmedi"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Files/ListAction.php:252
+#, php-format
+msgid "File Not Processed: %s"
+msgstr "Dosya İşlenemedi: %s"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Files/ListAction.php:257
+msgid "Cover Art"
+msgstr "Kapak Resmi"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Files/ListAction.php:259
+msgid "File Processing"
+msgstr "Dosya İşleniyor"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Files/RenameAction.php:33
+msgid "File not specified."
+msgstr "Dosya belirtilmedi!"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Files/RenameAction.php:39
+msgid "New path not specified."
+msgstr "Yeni dizin belirlenmedi!"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Playlists/ImportAction.php:200
+#, php-format
+msgid "Playlist successfully imported; %d of %d files were successfully matched."
+msgstr "Oynatma listesi başarıyla içe aktarıldı; %d tanesi %d dosyadan başarıyla eşleştirildi."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Playlists/PutOrderAction.php:40
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Playlists/GetOrderAction.php:41
+msgid "This playlist is not a sequential playlist."
+msgstr "Bu çalma listesi \"SIRALI\" bir çalma listesi değildir."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Playlists/ToggleAction.php:39
+msgid "Playlist enabled."
+msgstr "Çalma Listesi Etkinleştirildi!"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Playlists/ToggleAction.php:40
+msgid "Playlist disabled."
+msgstr "Çalma Listesi Devredışı Bırakıldı!"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Playlists/PutApplyToAction.php:62
+msgid "Playlist applied to folders."
+msgstr ""
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Playlists/EmptyAction.php:36
+msgid "This playlist is not song-based."
+msgstr ""
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Playlists/EmptyAction.php:44
+msgid "Playlist emptied."
+msgstr "Çalma listesi boşaltıldı."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Playlists/GetApplyToAction.php:44
+msgid "Base Directory"
+msgstr ""
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Playlists/ReshuffleAction.php:38
+msgid "Playlist reshuffled."
+msgstr "Çalma listesi yeniden karıştırıldı!"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/ServicesController.php:160
+msgid "Station reloaded."
+msgstr "Sunucu yeniden başlatıldı."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/ServicesController.php:186
+msgid "Station restarted."
+msgstr "Sunucu yeniden başlatıldı!"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/ServicesController.php:204
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/ServicesController.php:256
+msgid "Service stopped."
+msgstr "Servis durduruldu."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/ServicesController.php:209
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/ServicesController.php:261
+msgid "Service started."
+msgstr "Servis başlatıldı."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/ServicesController.php:215
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/ServicesController.php:267
+msgid "Service reloaded."
+msgstr "Servis yeniden yüklendi."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/ServicesController.php:227
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/ServicesController.php:279
+msgid "Service restarted."
+msgstr "Servis yeniden başlatıldı."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/ServicesController.php:246
+msgid "Song skipped."
+msgstr "Şarkı atlandı!"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/ServicesController.php:251
+msgid "Streamer disconnected."
+msgstr "DJ bağlantısı kesildi!"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/BulkMedia/UploadAction.php:171
+#, php-format
+msgid "%d files processed."
+msgstr "%d dosya işlendi."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Webhooks/ToggleAction.php:39
+msgid "Web hook enabled."
+msgstr "Web kancası etkinleştirildi!"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Webhooks/ToggleAction.php:40
+msgid "Web hook disabled."
+msgstr "Web kancası devredışı bırakıldı!"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Stations/Streamers/BroadcastsController.php:153
+msgid "No recording available."
+msgstr "Kullanılabilir kayıt yoktur."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Admin/Stations/StorageLocationsAction.php:21
+msgid "Create a new storage location based on the base directory."
+msgstr "Temel dizini temel alan yeni bir depolama konumu oluşturun."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Admin/LogsAction.php:80
+msgid "AzuraCast Application Log"
+msgstr "AzuraCast Günlüğü"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Admin/LogsAction.php:86
+msgid "AzuraCast Now Playing Log"
+msgstr ""
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Admin/LogsAction.php:92
+msgid "AzuraCast Synchronized Task Log"
+msgstr ""
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Admin/LogsAction.php:98
+msgid "AzuraCast Queue Worker Log"
+msgstr ""
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Admin/LogsAction.php:104
+#, php-format
+msgid "Service Log: %s (%s)"
+msgstr ""
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Admin/LogsAction.php:119
+msgid "Nginx Access Log"
+msgstr "Nginx Erişim Günlüğü"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Admin/LogsAction.php:124
+msgid "Nginx Error Log"
+msgstr "Nginx Hata Günlüğü"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Admin/LogsAction.php:129
+msgid "PHP Application Log"
+msgstr "PHP Uygulama Günlüğü"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Admin/LogsAction.php:134
+msgid "Supervisord Log"
+msgstr "Supervisord Günlüğü"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Admin/SendTestMessageAction.php:51
+msgid "Test Message"
+msgstr "Test Mesajı"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Admin/SendTestMessageAction.php:54
+msgid "This is a test message from AzuraCast. If you are receiving this message, it means your e-mail settings are configured correctly."
+msgstr "Bu AzuraCast'tan bir test mesajıdır. Bu mesajı alıyorsanız e-posta ayarlarınızın doğru yapılandırıldığı anlamına gelir."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Admin/SendTestMessageAction.php:68
+msgid "Test message sent successfully."
+msgstr "Test mesajı başarıyla gönderildi."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Admin/UsersController.php:223
+msgid "You cannot modify yourself."
+msgstr "Kendinizi değiştiremezsiniz."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Admin/UsersController.php:259
+msgid "You cannot remove yourself."
+msgstr "Kendini silemezsin!"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Api/Frontend/Dashboard/ChartsAction.php:134
+msgid "All Stations"
+msgstr "Tüm Radyolar"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/SetupController.php:113
+msgid "Set Up AzuraCast"
+msgstr "AzuraCast Kurulumu"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/SetupController.php:192
+msgid "Setup has already been completed!"
+msgstr "Kurulum zaten tamamlanmış!"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/TwoFactorAction.php:32
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/WebAuthn/PostValidationAction.php:77
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/MasqueradeAction.php:45
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/LoginAction.php:105
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/LoginAction.php:113
+msgid "Logged in successfully."
+msgstr "Giriş Yapıldı!"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/TwoFactorAction.php:42
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/WebAuthn/PostValidationAction.php:56
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/LoginAction.php:123
+msgid "Login unsuccessful"
+msgstr "Giriş Başarısız!"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/TwoFactorAction.php:42
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/LoginAction.php:123
+msgid "Your credentials could not be verified."
+msgstr "Kimlik bilgileriniz doğrulamanadı!"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/MasqueradeAction.php:38
+msgid "User not found."
+msgstr "Kullanıcı bulunamadı!"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/ForgotPasswordAction.php:48
+msgid "Too many forgot password attempts"
+msgstr "Çok fazla unutulmuş şifre denemesi"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/ForgotPasswordAction.php:49
+msgid "You have attempted to reset your password too many times. Please wait 30 seconds and try again."
+msgstr "Şifrenizi birçok kez sıfırlamayı denediniz. Lütfen 30 saniye bekleyin ve tekrar deneyin."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/ForgotPasswordAction.php:66
+#: /home/runner/work/AzuraCast/AzuraCast/templates/mail/forgot.phtml:8
+msgid "Account Recovery"
+msgstr "Hesap Kurtarma"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/ForgotPasswordAction.php:84
+msgid "Account recovery e-mail sent."
+msgstr "Hesap kurtarma e-postası gönderildi."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/ForgotPasswordAction.php:85
+msgid "If the e-mail address you provided is in the system, check your inbox for a password reset message."
+msgstr "Verdiğiniz e-posta adresi sistemimizde kayıtlı ise şifre sıfırlama mesajı için gelen kutunuzu kontrol edin."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/LoginAction.php:65
+msgid "Too many login attempts"
+msgstr "Çok fazla giriş denemesi yapıldı"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/LoginAction.php:66
+msgid "You have attempted to log in too many times. Please wait 30 seconds and try again."
+msgstr "Çok fazla giriş yapmayı denediniz. Lütfen 30 saniye bekleyin ve tekrar deneyin."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/LoginAction.php:106
+msgid "Complete the setup process to get started."
+msgstr "Başlamak için kurulum işlemini tamamlayın."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/RecoverAction.php:41
+msgid "Invalid token specified."
+msgstr "Geçersiz anahtar belirtildi."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/RecoverAction.php:74
+msgid "Logged in using account recovery token"
+msgstr "Hesap kurtarma anahtarı kullanılarak giriş yapıldı"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Controller/Frontend/Account/RecoverAction.php:75
+msgid "Your password has been updated."
+msgstr "Şifreniz güncellendi."
+
 #: /home/runner/work/AzuraCast/AzuraCast/src/Validator/Constraints/UniqueEntityValidator.php:169
 msgid "This value is already used."
 msgstr "Bu değer zaten kullanılıyor."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Validator/Constraints/StationPortCheckerValidator.php:41
+#, php-format
+msgid "The port %s is in use by another station."
+msgstr "%s portu başka bir radyo tarafından kullanılıyor."
 
 #: /home/runner/work/AzuraCast/AzuraCast/src/Validator/Constraints/StorageLocationValidator.php:41
 #, php-format
@@ -7639,96 +7198,284 @@ msgstr "%s depolama konumu doğrulanamadı: %s"
 msgid "Storage location %s already exists."
 msgstr "%s depolama alanı zaten var."
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Validator/Constraints/StationPortCheckerValidator.php:41
-#, php-format
-msgid "The port %s is in use by another station."
-msgstr "%s portu başka bir radyo tarafından kullanılıyor."
+#: /home/runner/work/AzuraCast/AzuraCast/src/Service/IpGeolocation.php:55
+msgid "GeoLite database not configured for this installation. See System Administration for instructions."
+msgstr "GeoLite veritabanı bu kurulum için yapılandırılmamış. Talimatlar için \"Sistem Yönetimi\" sayfasına gidiniz."
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/EnvFile.php:22
-msgid "(Docker Compose) All Docker containers are prefixed by this name. Do not change this after installation."
-msgstr "(Docker Compose) Tüm Docker kapsayıcıları bu adla öne çıkar. Kurulumdan sonra bunu değiştirmeyin."
+#: /home/runner/work/AzuraCast/AzuraCast/src/Service/ServiceControl.php:80
+msgid "Runs routine synchronized tasks"
+msgstr "Rutin senkronize edilmiş görevleri çalıştırır"
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/EnvFile.php:29
-msgid "(Docker Compose) The amount of time to wait before a Docker Compose operation fails. Increase this on lower performance computers."
-msgstr "(Docker Compose) Bir Docker oluşturma işlemi başarısız olmadan önce beklenecek süre. Daha düşük performanslı bilgisayarlarda bunu artırın."
+#: /home/runner/work/AzuraCast/AzuraCast/src/Service/ServiceControl.php:81
+msgid "Database"
+msgstr "Veritabanı"
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/EnvFile.php:42
-msgid "HTTP Port"
-msgstr "HTTP Portu"
+#: /home/runner/work/AzuraCast/AzuraCast/src/Service/ServiceControl.php:82
+msgid "Web server"
+msgstr "Web sunucusu"
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/EnvFile.php:43
-msgid "The main port AzuraCast listens to for insecure HTTP connections."
-msgstr "AzuraCast ana bağlantı noktası güvenli olmayan HTTP bağlantılarını dinler."
+#: /home/runner/work/AzuraCast/AzuraCast/src/Service/ServiceControl.php:83
+msgid "PHP FastCGI Process Manager"
+msgstr "PHP FastCGI İşlem Yöneticisi"
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/EnvFile.php:49
-msgid "HTTPS Port"
-msgstr "HTTPS Portu"
+#: /home/runner/work/AzuraCast/AzuraCast/src/Service/ServiceControl.php:84
+msgid "Now Playing manager service"
+msgstr "Çalan şarkı hizmeti"
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/EnvFile.php:50
-msgid "The main port AzuraCast listens to for secure HTTPS connections."
-msgstr "AzuraCast ana bağlantı noktası güvenli HTTPS bağlantılarını dinler."
+#: /home/runner/work/AzuraCast/AzuraCast/src/Service/ServiceControl.php:85
+msgid "PHP queue processing worker"
+msgstr "PHP kuyruk işleme hizmeti"
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/EnvFile.php:57
-msgid "The port AzuraCast listens to for SFTP file management connections."
-msgstr "AzuraCast bağlantı noktası SFTP dosya yönetimi bağlantılarını dinler."
+#: /home/runner/work/AzuraCast/AzuraCast/src/Service/ServiceControl.php:86
+msgid "Cache"
+msgstr "Önbellek"
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/EnvFile.php:63
-msgid "Station Ports"
-msgstr "Radyo Yayın Portları"
+#: /home/runner/work/AzuraCast/AzuraCast/src/Service/ServiceControl.php:87
+msgid "SFTP service"
+msgstr "SFTP servisi"
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/EnvFile.php:64
-msgid "The ports AzuraCast should listen to for station broadcasts and incoming DJ connections."
-msgstr "AzuraCast bağlantı noktaları radyo yayınlarını ve gelen DJ bağlantılarını dinlemelidir."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/EnvFile.php:70
-msgid "Docker User UID"
-msgstr "Docker Kullanıcı UID"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/EnvFile.php:71
-msgid "Set the UID of the user running inside the Docker containers. Matching this with your host UID can fix permission issues."
-msgstr "Docker konteynerlerinin içinde çalışan kullanıcının UIDsini ayarlayın. Bunu ana bilgisayar UIDnizle eşleştirmek izin sorunlarını çözebilir."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/EnvFile.php:77
-msgid "Docker User GID"
-msgstr "Docker Kullanıcı GID"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/EnvFile.php:78
-msgid "Set the GID of the user running inside the Docker containers. Matching this with your host GID can fix permission issues."
-msgstr "Docker konteynerlerinin içinde çalışan kullanıcının GIDsini ayarlayın. Bunu ana bilgisayar GIDnizle eşleştirmek izin sorunlarını çözebilir."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/EnvFile.php:84
-msgid "Use Podman instead of Docker."
+#: /home/runner/work/AzuraCast/AzuraCast/src/Service/ServiceControl.php:88
+msgid "Live Now Playing updates"
 msgstr ""
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/EnvFile.php:88
-msgid "Advanced: Use Privileged Docker Settings"
-msgstr "Gelişmiş: Ayrıcalıklı Docker Ayarlarını Kullan"
+#: /home/runner/work/AzuraCast/AzuraCast/src/Service/ServiceControl.php:89
+msgid "Frontend Assets"
+msgstr ""
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AbstractEnvFile.php:90
-msgid "This file was automatically generated by AzuraCast."
-msgstr "Bu dosya AzuraCast tarafından otomatik olarak oluşturulmuştur."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AbstractEnvFile.php:91
-msgid "You can modify it as necessary. To apply changes, restart the Docker containers."
-msgstr "Gerektiğinde değiştirebilirsiniz. Değişiklikleri uygulamak için Docker konteynerlerini yeniden başlatın."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AbstractEnvFile.php:92
-msgid "Remove the leading \"#\" symbol from lines to uncomment them."
-msgstr "Yorumları kaldırmak için satırların başındaki \"#\" sembolünü kaldırın."
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AbstractEnvFile.php:113
+#: /home/runner/work/AzuraCast/AzuraCast/src/Service/IpGeolocator/GeoLite.php:35
 #, php-format
-msgid "Valid options: %s"
-msgstr "Geçerli seçenekler: %s"
+msgid "This product includes GeoLite2 data created by MaxMind, available from %s."
+msgstr "Bu ürün MaxMind tarafından oluşturulan GeoLite2 verilerini içerir. Daha geniş bilgi için %s internet adresini ziyaret edebilirsiniz."
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AbstractEnvFile.php:125
+#: /home/runner/work/AzuraCast/AzuraCast/src/Service/IpGeolocator/DbIp.php:29
+msgid "IP Geolocation by DB-IP"
+msgstr "DB-IP ile IP Konumu"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/Users/SetAdministratorCommand.php:61
 #, php-format
-msgid "Default: %s"
-msgstr "Varsayılan: %s"
+msgid "The account associated with e-mail address \"%s\" has been set as an administrator"
+msgstr "%s e-posta adresi yönetici olarak atandı."
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AbstractEnvFile.php:144
-msgid "Additional Environment Variables"
-msgstr "Ek Ortam Değişkenleri"
+#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/Users/SetAdministratorCommand.php:69
+msgid "Account not found."
+msgstr "Hesap bulunamadı."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/MigrateConfigCommand.php:108
+msgid "Configuration successfully written."
+msgstr "Yapılandırma başarıyla yazıldı."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/RollbackDbCommand.php:44
+msgid "Roll Back Database"
+msgstr ""
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/RollbackDbCommand.php:61
+#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/MigrateDbCommand.php:51
+msgid "Running database migrations..."
+msgstr ""
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/RollbackDbCommand.php:86
+#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/MigrateDbCommand.php:65
+#, php-format
+msgid "Database migration failed: %s"
+msgstr ""
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/RollbackDbCommand.php:99
+#, php-format
+msgid "Database rolled back to stable release version \"%s\"."
+msgstr ""
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/Locale/ImportCommand.php:58
+#, php-format
+msgid "Imported locale: %s"
+msgstr "İçe aktarılan dil: %s"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/MigrateDbCommand.php:25
+msgid "Database Migrations"
+msgstr ""
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/MigrateDbCommand.php:38
+msgid "Database is already up to date!"
+msgstr ""
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/MigrateDbCommand.php:77
+msgid "Database migration completed!"
+msgstr ""
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/AbstractDatabaseCommand.php:104
+msgid "Backing up initial database state..."
+msgstr ""
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/AbstractDatabaseCommand.php:113
+msgid "We detected a database restore file from a previous (possibly failed) migration."
+msgstr ""
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/AbstractDatabaseCommand.php:114
+msgid "Attempting to restore that now..."
+msgstr ""
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/AbstractDatabaseCommand.php:129
+msgid "Attempting to roll back to previous database state..."
+msgstr ""
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/AbstractDatabaseCommand.php:135
+msgid "Your database was restored due to a failed migration."
+msgstr ""
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/AbstractDatabaseCommand.php:136
+msgid "Please report this bug to our developers."
+msgstr ""
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/AbstractDatabaseCommand.php:142
+#, php-format
+msgid "Restore failed: %s"
+msgstr ""
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/SetupFixturesCommand.php:65
+msgid "Fixtures loaded."
+msgstr "Fikstürler yüklendi."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/SetupCommand.php:60
+msgid "AzuraCast Initializing..."
+msgstr ""
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/SetupCommand.php:62
+msgid "AzuraCast Setup"
+msgstr "AzuraCast Kurulumu"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/SetupCommand.php:64
+msgid "Welcome to AzuraCast. Please wait while some key dependencies of AzuraCast are set up..."
+msgstr "AzuraCast'a hoşgeldiniz. AzuraCast’in bazı temel sistemleri kurulurken lütfen bekleyin..."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/SetupCommand.php:69
+msgid "Running Database Migrations"
+msgstr "Veritabanı Geçişleri Çalışıyor"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/SetupCommand.php:77
+msgid "Generating Database Proxy Classes"
+msgstr "Veritabanı Proxy Sınıfları Oluşturuluyor"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/SetupCommand.php:82
+msgid "Reload System Data"
+msgstr "Sistem Verilerini Yeniden Yükle"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/SetupCommand.php:92
+msgid "Installing Data Fixtures"
+msgstr "Veri Fikstürleri Kuruluyor"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/SetupCommand.php:98
+msgid "Refreshing All Stations"
+msgstr "Tüm Radyolar Yenileniyor"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/SetupCommand.php:125
+msgid "AzuraCast is now updated to the latest version!"
+msgstr "AzuraCast şimdi en son sürüme güncellendi!"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/SetupCommand.php:134
+msgid "AzuraCast installation complete!"
+msgstr "AzuraCast kurulumu tamamlandı!"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/SetupCommand.php:136
+#, php-format
+msgid "Visit %s to complete setup."
+msgstr "Kurulumu tamamlamak için %s adresini ziyaret edin."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/Settings/ListCommand.php:26
+msgid "AzuraCast Settings"
+msgstr "AzuraCast Ayarları"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/Settings/ListCommand.php:29
+msgid "Setting Key"
+msgstr "Ayar Anahtarı"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/Settings/ListCommand.php:30
+msgid "Setting Value"
+msgstr "Ayar Değeri"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/Backup/BackupCommand.php:95
+msgid "AzuraCast Backup"
+msgstr "AzuraCast Yedekleme"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/Backup/BackupCommand.php:96
+msgid "Please wait while a backup is generated..."
+msgstr "Lütfen bir yedekleme oluşturulurken bekleyin..."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/Backup/BackupCommand.php:99
+msgid "Creating temporary directories..."
+msgstr "Geçici dizinler oluşturuluyor..."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/Backup/BackupCommand.php:112
+msgid "Backing up MariaDB..."
+msgstr "MariaDB yedekleniyor..."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/Backup/BackupCommand.php:138
+msgid "Creating backup archive..."
+msgstr "Yedekleme arşivi oluşturuluyor..."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/Backup/BackupCommand.php:214
+msgid "Cleaning up temporary files..."
+msgstr "Geçici dizin dosyaları temizleniyor..."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/Backup/BackupCommand.php:226
+#, php-format
+msgid "Backup complete in %.2f seconds."
+msgstr "Yedekleme %.2f saniyede tamamlandı."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Console/Command/Backup/RestoreCommand.php:77
+#, php-format
+msgid "Backup path %s not found!"
+msgstr "Yedekleme dizini %s bulunamadı!"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/Command/InstallCommand.php:176
+msgid "AzuraCast Installer"
+msgstr "AzuraCast Yükleyici"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/Command/InstallCommand.php:179
+msgid "Welcome to AzuraCast! Complete the initial server setup by answering a few questions."
+msgstr "AzuraCast'a hoş geldiniz! Birkaç soruyu yanıtlayarak ilk sunucu kurulumunu tamamlayın."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/Command/InstallCommand.php:185
+msgid "AzuraCast Updater"
+msgstr "AzuraCast Güncelleyici"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/Command/InstallCommand.php:192
+msgid "Change installation settings?"
+msgstr "Kurulum ayarları değiştirilsin mi?"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/Command/InstallCommand.php:201
+msgid "AzuraCast is currently configured to listen on the following ports:"
+msgstr "AzuraCast şu anda aşağıdaki port numaralarını kullanacak şekilde yapılandırılmıştır:"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/Command/InstallCommand.php:205
+#, php-format
+msgid "HTTP Port: %d"
+msgstr "HTTP Portu: %d"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/Command/InstallCommand.php:206
+#, php-format
+msgid "HTTPS Port: %d"
+msgstr "HTTPS Portu: %d"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/Command/InstallCommand.php:207
+#, php-format
+msgid "SFTP Port: %d"
+msgstr "SFTP Portu: %d"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/Command/InstallCommand.php:208
+#, php-format
+msgid "Radio Ports: %s"
+msgstr "Radyo Canlı Yayın Portları: %s"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/Command/InstallCommand.php:213
+msgid "Customize ports used for AzuraCast?"
+msgstr "AzuraCast için kullanılacak port numaraları özelleştirilsin mi?"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/Command/InstallCommand.php:266
+msgid "Writing configuration files..."
+msgstr "Yapılandırma dosyaları yazılıyor..."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/Command/InstallCommand.php:291
+msgid "Server configuration complete!"
+msgstr "Sunucu yapılandırması tamamlandı!"
 
 #: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AzuraCastEnvFile.php:35
 msgid "The locale to use for CLI commands."
@@ -7958,74 +7705,355 @@ msgstr ""
 msgid "Separate package names with a space. Packages will be installed during container startup."
 msgstr ""
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/Command/InstallCommand.php:176
-msgid "AzuraCast Installer"
-msgstr "AzuraCast Yükleyici"
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AbstractEnvFile.php:90
+msgid "This file was automatically generated by AzuraCast."
+msgstr "Bu dosya AzuraCast tarafından otomatik olarak oluşturulmuştur."
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/Command/InstallCommand.php:179
-msgid "Welcome to AzuraCast! Complete the initial server setup by answering a few questions."
-msgstr "AzuraCast'a hoş geldiniz! Birkaç soruyu yanıtlayarak ilk sunucu kurulumunu tamamlayın."
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AbstractEnvFile.php:91
+msgid "You can modify it as necessary. To apply changes, restart the Docker containers."
+msgstr "Gerektiğinde değiştirebilirsiniz. Değişiklikleri uygulamak için Docker konteynerlerini yeniden başlatın."
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/Command/InstallCommand.php:185
-msgid "AzuraCast Updater"
-msgstr "AzuraCast Güncelleyici"
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AbstractEnvFile.php:92
+msgid "Remove the leading \"#\" symbol from lines to uncomment them."
+msgstr "Yorumları kaldırmak için satırların başındaki \"#\" sembolünü kaldırın."
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/Command/InstallCommand.php:192
-msgid "Change installation settings?"
-msgstr "Kurulum ayarları değiştirilsin mi?"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/Command/InstallCommand.php:201
-msgid "AzuraCast is currently configured to listen on the following ports:"
-msgstr "AzuraCast şu anda aşağıdaki port numaralarını kullanacak şekilde yapılandırılmıştır:"
-
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/Command/InstallCommand.php:205
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AbstractEnvFile.php:113
 #, php-format
-msgid "HTTP Port: %d"
-msgstr "HTTP Portu: %d"
+msgid "Valid options: %s"
+msgstr "Geçerli seçenekler: %s"
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/Command/InstallCommand.php:206
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AbstractEnvFile.php:125
 #, php-format
-msgid "HTTPS Port: %d"
-msgstr "HTTPS Portu: %d"
+msgid "Default: %s"
+msgstr "Varsayılan: %s"
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/Command/InstallCommand.php:207
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/AbstractEnvFile.php:144
+msgid "Additional Environment Variables"
+msgstr "Ek Ortam Değişkenleri"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/EnvFile.php:22
+msgid "(Docker Compose) All Docker containers are prefixed by this name. Do not change this after installation."
+msgstr "(Docker Compose) Tüm Docker kapsayıcıları bu adla öne çıkar. Kurulumdan sonra bunu değiştirmeyin."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/EnvFile.php:29
+msgid "(Docker Compose) The amount of time to wait before a Docker Compose operation fails. Increase this on lower performance computers."
+msgstr "(Docker Compose) Bir Docker oluşturma işlemi başarısız olmadan önce beklenecek süre. Daha düşük performanslı bilgisayarlarda bunu artırın."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/EnvFile.php:42
+msgid "HTTP Port"
+msgstr "HTTP Portu"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/EnvFile.php:43
+msgid "The main port AzuraCast listens to for insecure HTTP connections."
+msgstr "AzuraCast ana bağlantı noktası güvenli olmayan HTTP bağlantılarını dinler."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/EnvFile.php:49
+msgid "HTTPS Port"
+msgstr "HTTPS Portu"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/EnvFile.php:50
+msgid "The main port AzuraCast listens to for secure HTTPS connections."
+msgstr "AzuraCast ana bağlantı noktası güvenli HTTPS bağlantılarını dinler."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/EnvFile.php:57
+msgid "The port AzuraCast listens to for SFTP file management connections."
+msgstr "AzuraCast bağlantı noktası SFTP dosya yönetimi bağlantılarını dinler."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/EnvFile.php:63
+msgid "Station Ports"
+msgstr "Radyo Yayın Portları"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/EnvFile.php:64
+msgid "The ports AzuraCast should listen to for station broadcasts and incoming DJ connections."
+msgstr "AzuraCast bağlantı noktaları radyo yayınlarını ve gelen DJ bağlantılarını dinlemelidir."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/EnvFile.php:70
+msgid "Docker User UID"
+msgstr "Docker Kullanıcı UID"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/EnvFile.php:71
+msgid "Set the UID of the user running inside the Docker containers. Matching this with your host UID can fix permission issues."
+msgstr "Docker konteynerlerinin içinde çalışan kullanıcının UIDsini ayarlayın. Bunu ana bilgisayar UIDnizle eşleştirmek izin sorunlarını çözebilir."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/EnvFile.php:77
+msgid "Docker User GID"
+msgstr "Docker Kullanıcı GID"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/EnvFile.php:78
+msgid "Set the GID of the user running inside the Docker containers. Matching this with your host GID can fix permission issues."
+msgstr "Docker konteynerlerinin içinde çalışan kullanıcının GIDsini ayarlayın. Bunu ana bilgisayar GIDnizle eşleştirmek izin sorunlarını çözebilir."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/EnvFile.php:84
+msgid "Use Podman instead of Docker."
+msgstr ""
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/EnvFiles/EnvFile.php:88
+msgid "Advanced: Use Privileged Docker Settings"
+msgstr "Gelişmiş: Ayrıcalıklı Docker Ayarlarını Kullan"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Doctrine/Repository.php:108
+msgid "Select..."
+msgstr "Seç..."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/UpdateCheck.php:54
+msgid "New AzuraCast Stable Release Available"
+msgstr ""
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/UpdateCheck.php:58
 #, php-format
-msgid "SFTP Port: %d"
-msgstr "SFTP Portu: %d"
+msgid "Version %s is now available. You are currently running version %s. Updating is recommended."
+msgstr ""
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/Command/InstallCommand.php:208
+#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/UpdateCheck.php:75
+msgid "New AzuraCast Rolling Release Available"
+msgstr ""
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/UpdateCheck.php:79
 #, php-format
-msgid "Radio Ports: %s"
-msgstr "Radyo Canlı Yayın Portları: %s"
+msgid "Your installation is currently %d update(s) behind the latest version. Updating is recommended."
+msgstr ""
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/Command/InstallCommand.php:213
-msgid "Customize ports used for AzuraCast?"
-msgstr "AzuraCast için kullanılacak port numaraları özelleştirilsin mi?"
+#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/UpdateCheck.php:93
+msgid "Switch to Stable Channel Available"
+msgstr ""
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/Command/InstallCommand.php:266
-msgid "Writing configuration files..."
-msgstr "Yapılandırma dosyaları yazılıyor..."
+#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/UpdateCheck.php:96
+msgid "Your Rolling Release installation is currently older than the latest Stable release. This means you can switch releases to the \"Stable\" release channel if desired."
+msgstr ""
 
-#: /home/runner/work/AzuraCast/AzuraCast/src/Installer/Command/InstallCommand.php:291
-msgid "Server configuration complete!"
-msgstr "Sunucu yapılandırması tamamlandı!"
+#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/BaseUrlCheck.php:42
+msgid "You may want to update your base URL to ensure it is correct."
+msgstr "Doğru olduğundan emin olmak için temel URLnizi güncellemek isteyebilirsiniz."
 
-#: /home/runner/work/AzuraCast/AzuraCast/templates/frontend/account/forgot.phtml:6
-#: /home/runner/work/AzuraCast/AzuraCast/templates/frontend/account/forgot.phtml:15
-#: /home/runner/work/AzuraCast/AzuraCast/templates/frontend/account/forgot_disabled.phtml:6
-#: /home/runner/work/AzuraCast/AzuraCast/templates/frontend/account/forgot_disabled.phtml:17
-msgid "Forgot Password"
-msgstr "Şifremi Unuttum"
+#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/BaseUrlCheck.php:45
+msgid "If you regularly use different URLs to access AzuraCast, you should enable the \"Prefer Browser URL\" setting."
+msgstr "AzuraCast'a erişmek için düzenli olarak farklı URL'ler kullanıyorsanız, \"Tarayıcı URLsini Tercih Et\" ayarını etkinleştirmelisiniz."
 
-#: /home/runner/work/AzuraCast/AzuraCast/templates/frontend/account/forgot.phtml:29
-#: /home/runner/work/AzuraCast/AzuraCast/templates/frontend/account/two_factor.phtml:22
-#: /home/runner/work/AzuraCast/AzuraCast/templates/frontend/account/two_factor.phtml:23
-msgid "Sign in"
-msgstr "Giriş Yap"
+#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/BaseUrlCheck.php:52
+#, php-format
+msgid "Your \"Base URL\" setting (%s) does not match the URL you are currently using (%s)."
+msgstr "\"Temel URL\" ayarınız (%s) şu anda kullanmakta olduğunuz URL ile (%s) eşleşmiyor."
 
-#: /home/runner/work/AzuraCast/AzuraCast/templates/frontend/account/forgot.phtml:32
-msgid "Send Recovery E-mail"
-msgstr "Kurtarma E-postası Gönderin"
+#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/ProfilerAdvisorCheck.php:34
+msgid "The performance profiling extension is currently enabled on this installation."
+msgstr "Performans profili oluşturma uzantısı şu anda bu kurulumda etkin."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/ProfilerAdvisorCheck.php:35
+msgid "You can track the execution time and memory usage of any AzuraCast page or application from the profiler page."
+msgstr "Profil oluşturucu sayfasından herhangi bir AzuraCast sayfasının veya uygulamasının yürütme süresini ve bellek kullanımını izleyebilirsiniz."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/ProfilerAdvisorCheck.php:41
+msgid "Profiler Control Panel"
+msgstr "Profiler Kontrol Paneli"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/ProfilerAdvisorCheck.php:53
+msgid "Performance profiling is currently enabled for all requests."
+msgstr "Performans profili oluşturma şu anda tüm istekler için etkindir."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/ProfilerAdvisorCheck.php:54
+msgid "This can have an adverse impact on system performance. You should disable this when possible."
+msgstr "Bunun sistem performansı üzerinde olumsuz bir etkisi olabilir. Mümkün olduğunda bunu devre dışı bırakmalısınız."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/ServiceCheck.php:34
+#, php-format
+msgid "Service Not Running: %s"
+msgstr ""
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/ServiceCheck.php:35
+msgid "One of the essential services on this installation is not currently running. Visit the system administration and check the system logs to find the cause of this issue."
+msgstr ""
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/RecentBackupCheck.php:47
+msgid "Installation Not Recently Backed Up"
+msgstr "Yükleme Son Zamanlarda Yedeklenmedi"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/RecentBackupCheck.php:48
+msgid "This installation has not been backed up in the last two weeks."
+msgstr "Bu kurulum son iki hafta içerisinde yedeklenmedi."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/DonateAdvisorCheck.php:33
+msgid "AzuraCast is free and open-source software."
+msgstr ""
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/DonateAdvisorCheck.php:34
+msgid "If you are enjoying AzuraCast, please consider donating to support our work. We depend on donations to build new features, fix bugs, and keep AzuraCast modern, accessible and free."
+msgstr ""
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/DonateAdvisorCheck.php:40
+msgid "Donate to AzuraCast"
+msgstr "AzuraCast'a bağış yapın"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/SyncTaskCheck.php:36
+msgid "Synchronization Disabled"
+msgstr "Senkronizasyon Devre Dışı"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/SyncTaskCheck.php:37
+msgid "Routine synchronization is currently disabled. Make sure to re-enable it to resume routine maintenance tasks."
+msgstr "Rutin senkronizasyon şu anda devre dışı. Rutin bakım görevlerini sürdürmek için yeniden etkinleştirdiğinizden emin olun."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/SyncTaskCheck.php:51
+msgid "Synchronization Not Recently Run"
+msgstr "Senkronizasyon Yakın Zamanda Çalıştırılmadı"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Notification/Check/SyncTaskCheck.php:52
+msgid "The routine synchronization task has not run recently. This may indicate an error with your installation."
+msgstr "Rutin senkronizasyon görevi yakın zamanda çalışmadı. Bu kurulumunuzda bir hata olduğunu gösterebilir."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Enums/GlobalPermissions.php:22
+#: /home/runner/work/AzuraCast/AzuraCast/src/Enums/StationPermissions.php:26
+msgid "All Permissions"
+msgstr "Tüm İzinler"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Enums/GlobalPermissions.php:23
+msgid "View Administration Page"
+msgstr "Yönetici Panelini Görme"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Enums/GlobalPermissions.php:24
+msgid "View System Logs"
+msgstr "Sistem Günlüklerini Görme"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Enums/GlobalPermissions.php:25
+msgid "Administer Settings"
+msgstr "Ayar Yönetimi"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Enums/GlobalPermissions.php:26
+msgid "Administer API Keys"
+msgstr "API Anahtarı Yönetimi"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Enums/GlobalPermissions.php:27
+msgid "Administer Stations"
+msgstr "Radyo Yönetimi"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Enums/GlobalPermissions.php:28
+msgid "Administer Custom Fields"
+msgstr "Özel Alan Yönetimi"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Enums/GlobalPermissions.php:29
+msgid "Administer Backups"
+msgstr "Yedekleme Yönetimi"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Enums/GlobalPermissions.php:30
+msgid "Administer Storage Locations"
+msgstr "Depolama Yönetimi"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Enums/StationPermissions.php:27
+msgid "View Station Page"
+msgstr "Radyo Sayfasını Görme"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Enums/StationPermissions.php:28
+msgid "View Station Reports"
+msgstr "Radyo Raporlarını Görme"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Enums/StationPermissions.php:29
+msgid "View Station Logs"
+msgstr "Radyo Günlüklerini Görme"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Enums/StationPermissions.php:30
+msgid "Manage Station Profile"
+msgstr "Profil Yönetimi"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Enums/StationPermissions.php:31
+msgid "Manage Station Broadcasting"
+msgstr "Canlı Yayın Yönetimi"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Enums/StationPermissions.php:32
+msgid "Manage Station Streamers"
+msgstr "DJ Yönetimi"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Enums/StationPermissions.php:33
+msgid "Manage Station Mount Points"
+msgstr "Bağlantı Noktası Yönetimi"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Enums/StationPermissions.php:34
+msgid "Manage Station Remote Relays"
+msgstr "Radyo Yönlendirme Yönetimi"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Enums/StationPermissions.php:35
+msgid "Manage Station Media"
+msgstr "Müzik Dosyaları Yönetimi"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Enums/StationPermissions.php:36
+msgid "Manage Station Automation"
+msgstr "Radyo Otomasyon Yönetimi"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Enums/StationPermissions.php:37
+msgid "Manage Station Web Hooks"
+msgstr "Web Kancası Yönetimi"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Enums/StationPermissions.php:38
+msgid "Manage Station Podcasts"
+msgstr "Podcasts Yönetimi"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/ApiGenerator/ScheduleApiGenerator.php:59
+#, php-format
+msgid "Playlist: %s"
+msgstr "Çalma Listesi: %s"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/ApiGenerator/ScheduleApiGenerator.php:64
+#, php-format
+msgid "Streamer: %s"
+msgstr "DJ: %s"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/Api/Status.php:33
+msgid "Changes saved successfully."
+msgstr "Değişiklikler başarıyla kaydedildi."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/Api/Status.php:38
+msgid "Record created successfully."
+msgstr "Kayıt başarıyla oluşturuldu."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/Api/Status.php:43
+msgid "Record updated successfully."
+msgstr "Kayıt başarıyla güncellendi."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/Api/Status.php:48
+msgid "Record deleted successfully."
+msgstr "Kayıt başarıyla silindi."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/Api/Error.php:71
+msgid "Record not found"
+msgstr "Kayıt bulunamadı"
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/Api/Error.php:77
+msgid "The uploaded file exceeds the upload_max_filesize directive in php.ini."
+msgstr "Yüklenen dosya php.ini'deki upload_max_filesize yönergesini aşıyor."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/Api/Error.php:78
+msgid "The uploaded file exceeds the MAX_FILE_SIZE directive from the HTML form."
+msgstr "Yüklenen dosya HTML formundaki MAX_FILE_SIZE yönergesini aşıyor."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/Api/Error.php:79
+msgid "The uploaded file was only partially uploaded."
+msgstr "Yüklenen dosya yalnızca kısmen yüklendi."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/Api/Error.php:80
+msgid "No file was uploaded."
+msgstr "Dosya yüklenemedi."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/Api/Error.php:81
+msgid "No temporary directory is available."
+msgstr "Geçici dizin kullanılamaz."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/Api/Error.php:82
+msgid "Could not write to filesystem."
+msgstr "Dosya sistemine yazılamadı."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/Api/Error.php:83
+msgid "Upload halted by a PHP extension."
+msgstr "Yükleme bir PHP uzantısı tarafından durduruldu."
+
+#: /home/runner/work/AzuraCast/AzuraCast/src/Entity/Api/Error.php:84
+msgid "Unspecified error."
+msgstr "Belirtilmemiş hata."
+
+#: /home/runner/work/AzuraCast/AzuraCast/templates/minimal.phtml:56
+msgid "Footer"
+msgstr ""
+
+#: /home/runner/work/AzuraCast/AzuraCast/templates/minimal.phtml:58
+#, php-format
+msgid "Powered by %s"
+msgstr "%s tarafından güçlendirilmiştir."
 
 #: /home/runner/work/AzuraCast/AzuraCast/templates/frontend/account/two_factor.phtml:11
 msgid "Enter Two-Factor Code"
@@ -8039,6 +8067,23 @@ msgstr "Hesabınız iki faktörlü güvenlik doğrulamasını kullanıyor. Cihaz
 #: /home/runner/work/AzuraCast/AzuraCast/templates/frontend/account/two_factor.phtml:20
 msgid "Security Code"
 msgstr "Güvenlik Kodu"
+
+#: /home/runner/work/AzuraCast/AzuraCast/templates/frontend/account/two_factor.phtml:22
+#: /home/runner/work/AzuraCast/AzuraCast/templates/frontend/account/two_factor.phtml:23
+#: /home/runner/work/AzuraCast/AzuraCast/templates/frontend/account/forgot.phtml:29
+msgid "Sign in"
+msgstr "Giriş Yap"
+
+#: /home/runner/work/AzuraCast/AzuraCast/templates/frontend/account/forgot.phtml:6
+#: /home/runner/work/AzuraCast/AzuraCast/templates/frontend/account/forgot.phtml:15
+#: /home/runner/work/AzuraCast/AzuraCast/templates/frontend/account/forgot_disabled.phtml:6
+#: /home/runner/work/AzuraCast/AzuraCast/templates/frontend/account/forgot_disabled.phtml:17
+msgid "Forgot Password"
+msgstr "Şifremi Unuttum"
+
+#: /home/runner/work/AzuraCast/AzuraCast/templates/frontend/account/forgot.phtml:32
+msgid "Send Recovery E-mail"
+msgstr "Kurtarma E-postası Gönderin"
 
 #: /home/runner/work/AzuraCast/AzuraCast/templates/frontend/account/forgot_disabled.phtml:22
 msgid "This installation's administrator has not configured this functionality."
@@ -8060,13 +8105,4 @@ msgstr "\"%s\" tarihinde hesabınız için bir hesap kurtarma bağlantısı tale
 #: /home/runner/work/AzuraCast/AzuraCast/templates/mail/forgot.phtml:12
 msgid "Click the link below to log in to your account."
 msgstr "Hesabınıza giriş yapmak için aşağıdaki bağlantıya tıklayın."
-
-#: /home/runner/work/AzuraCast/AzuraCast/templates/minimal.phtml:56
-msgid "Footer"
-msgstr ""
-
-#: /home/runner/work/AzuraCast/AzuraCast/templates/minimal.phtml:58
-#, php-format
-msgid "Powered by %s"
-msgstr "%s tarafından güçlendirilmiştir."
 

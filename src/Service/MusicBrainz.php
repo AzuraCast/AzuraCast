@@ -19,9 +19,9 @@ use Symfony\Component\Lock\Exception\LockConflictedException;
 
 final class MusicBrainz
 {
-    public const API_BASE_URL = 'https://musicbrainz.org/ws/2/';
+    public const string API_BASE_URL = 'https://musicbrainz.org/ws/2/';
 
-    public const COVER_ART_ARCHIVE_BASE_URL = 'https://coverartarchive.org/';
+    public const string COVER_ART_ARCHIVE_BASE_URL = 'https://coverartarchive.org/';
 
     public function __construct(
         private readonly Client $httpClient,

@@ -14,6 +14,7 @@ use App\Entity\User;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\OpenApi;
+use App\Utilities\Types;
 use InvalidArgumentException;
 use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
@@ -229,11 +230,12 @@ class UsersController extends AbstractApiCrudController
 
     protected function fromArray(array $data, ?object $record = null, array $context = []): object
     {
-        /** @var User $record */
         $record = parent::fromArray($data, $record, $context);
 
-        if (!empty($data['new_password'])) {
-            $record->setNewPassword($data['new_password']);
+        assert($record instanceof User);
+
+        if (isset($data['new_password'])) {
+            $record->setNewPassword(Types::stringOrNull($data['new_password'], true));
         }
 
         return $record;

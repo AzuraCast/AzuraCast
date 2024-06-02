@@ -27,16 +27,16 @@ final class CloneAction extends StationsController implements SingleActionInterf
 {
     use EnvironmentAwareTrait;
 
-    public const CLONE_MEDIA_STORAGE = 'media_storage';
-    public const CLONE_RECORDINGS_STORAGE = 'recordings_storage';
-    public const CLONE_PODCASTS_STORAGE = 'podcasts_storage';
+    public const string CLONE_MEDIA_STORAGE = 'media_storage';
+    public const string CLONE_RECORDINGS_STORAGE = 'recordings_storage';
+    public const string CLONE_PODCASTS_STORAGE = 'podcasts_storage';
 
-    public const CLONE_PLAYLISTS = 'playlists';
-    public const CLONE_MOUNTS = 'mounts';
-    public const CLONE_REMOTES = 'remotes';
-    public const CLONE_STREAMERS = 'streamers';
-    public const CLONE_PERMISSIONS = 'permissions';
-    public const CLONE_WEBHOOKS = 'webhooks';
+    public const string CLONE_PLAYLISTS = 'playlists';
+    public const string CLONE_MOUNTS = 'mounts';
+    public const string CLONE_REMOTES = 'remotes';
+    public const string CLONE_STREAMERS = 'streamers';
+    public const string CLONE_PERMISSIONS = 'permissions';
+    public const string CLONE_WEBHOOKS = 'webhooks';
 
     public function __invoke(
         ServerRequest $request,

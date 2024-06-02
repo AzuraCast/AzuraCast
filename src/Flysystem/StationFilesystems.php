@@ -11,11 +11,11 @@ use App\Flysystem\Adapter\LocalFilesystemAdapter;
 
 final class StationFilesystems
 {
-    public const DIR_ALBUM_ART = '.albumart';
-    public const DIR_FOLDER_COVERS = '.covers';
-    public const DIR_WAVEFORMS = '.waveforms';
+    public const string DIR_ALBUM_ART = '.albumart';
+    public const string DIR_FOLDER_COVERS = '.covers';
+    public const string DIR_WAVEFORMS = '.waveforms';
 
-    public const PROTECTED_DIRS = [
+    public const array PROTECTED_DIRS = [
         self::DIR_ALBUM_ART,
         self::DIR_FOLDER_COVERS,
         self::DIR_WAVEFORMS,

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use App\Entity\Interfaces\SongInterface;
+use App\Utilities\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[
@@ -24,10 +25,10 @@ class SongHistory implements
     use Traits\HasSongFields;
 
     /** @var int The expected delay between when a song history record is registered and when listeners hear it. */
-    public const PLAYBACK_DELAY_SECONDS = 5;
+    public const int PLAYBACK_DELAY_SECONDS = 5;
 
     /** @var int */
-    public const DEFAULT_DAYS_TO_KEEP = 60;
+    public const int DEFAULT_DAYS_TO_KEEP = 60;
 
     #[ORM\ManyToOne(inversedBy: 'history')]
     #[ORM\JoinColumn(name: 'station_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
@@ -258,14 +259,17 @@ class SongHistory implements
         $this->delta_negative = $this->truncateSmallInt($deltaNegative);
     }
 
-    public function getDeltaPoints(): mixed
+    /**
+     * @return int[]
+     */
+    public function getDeltaPoints(): array
     {
-        return $this->delta_points;
+        return Types::array($this->delta_points);
     }
 
     public function addDeltaPoint(int $deltaPoint): void
     {
-        $deltaPoints = (array)$this->delta_points;
+        $deltaPoints = $this->getDeltaPoints();
 
         if (0 === count($deltaPoints)) {
             $this->setListenersStart($deltaPoint);
@@ -282,10 +286,12 @@ class SongHistory implements
             return;
         }
 
-        $deltaPoints = (array)$lastSong->getDeltaPoints();
-        $lastDeltaPoint = array_pop($deltaPoints);
+        $deltaPoints = $lastSong->getDeltaPoints();
 
-        $this->addDeltaPoint($lastDeltaPoint);
+        $lastDeltaPoint = array_pop($deltaPoints);
+        if (null !== $lastDeltaPoint) {
+            $this->addDeltaPoint($lastDeltaPoint);
+        }
     }
 
     public function getIsVisible(): bool

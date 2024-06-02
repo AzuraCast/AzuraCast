@@ -113,9 +113,9 @@ final class LoginAction implements SingleActionInterface
                     '<b>' . __('Logged in successfully.') . '</b><br>' . $user->getEmail(),
                 );
 
-                $referrer = $session->get('login_referrer');
+                $referrer = Types::stringOrNull($session->get('login_referrer'), true);
                 return $response->withRedirect(
-                    (!empty($referrer)) ? $referrer : $request->getRouter()->named('dashboard')
+                    $referrer ?? $request->getRouter()->named('dashboard')
                 );
             }
 

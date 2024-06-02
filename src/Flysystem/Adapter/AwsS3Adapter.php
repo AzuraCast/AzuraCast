@@ -6,6 +6,7 @@ namespace App\Flysystem\Adapter;
 
 use App\Flysystem\Attributes\DirectoryAttributes;
 use App\Flysystem\Attributes\FileAttributes;
+use App\Utilities\Types;
 use Aws\Api\DateTimeResult;
 use Aws\S3\S3ClientInterface;
 use League\Flysystem\AwsS3V3\AwsS3V3Adapter;
@@ -50,11 +51,12 @@ final class AwsS3Adapter extends AwsS3V3Adapter implements ExtendedAdapterInterf
             return new DirectoryAttributes(rtrim($path, '/'));
         }
 
-        $mimetype = $metadata['ContentType'] ?? null;
-        $fileSize = $metadata['ContentLength'] ?? $metadata['Size'] ?? null;
-        $fileSize = $fileSize === null ? null : (int)$fileSize;
+        $mimetype = Types::stringOrNull($metadata['ContentType'], true);
+        $fileSize = Types::intOrNull($metadata['ContentLength'] ?? $metadata['Size'] ?? null);
+
         $dateTime = $metadata['LastModified'] ?? null;
         $lastModified = $dateTime instanceof DateTimeResult ? $dateTime->getTimeStamp() : null;
+
         $visibility = function ($path) {
             return $this->visibility($path)->visibility();
         };

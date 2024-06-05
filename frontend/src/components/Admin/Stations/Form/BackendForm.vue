@@ -57,6 +57,32 @@
                 </template>
 
                 <div class="row g-3 mb-3">
+                    <form-group-checkbox
+                        id="edit_form_backend_config_enable_auto_cue"
+                        class="col-md-12"
+                        :field="v$.backend_config.enable_auto_cue"
+                        :label="$gettext('Enable AutoCue (Beta)')"
+                        :description="$gettext('AutoCue analyzes your music and automatically calculates cue points, fade points, and volume levels for a consistent listening experience.')"
+                        high-cpu
+                    />
+
+                    <form-group-checkbox
+                        v-if="!isAutoCueEnabled"
+                        id="edit_form_backend_enable_replaygain_metadata"
+                        class="col-md-12"
+                        :field="v$.backend_config.enable_replaygain_metadata"
+                        :label="$gettext('Enable ReplayGain')"
+                        high-cpu
+                    >
+                        <template #description>
+                            {{
+                                $gettext('Calculate and use normalized volume level metadata for each track.')
+                            }}
+                        </template>
+                    </form-group-checkbox>
+                </div>
+
+                <div class="row g-3 mb-3">
                     <form-group-multi-check
                         id="edit_form_backend_config_audio_processing_method"
                         class="col-md-6"
@@ -66,6 +92,7 @@
                         radio
                         :label="$gettext('Audio Post-processing Method')"
                         :description="$gettext('Select an option here to apply post-processing using an easy preset or tool. You can also manually apply post-processing by editing your Liquidsoap configuration manually.')"
+                        high-cpu
                     />
 
                     <template v-if="isPostProcessingEnabled">
@@ -169,16 +196,6 @@
                         </form-markup>
                     </div>
                 </template>
-
-                <div class="row g-3 mb-3">
-                    <form-group-checkbox
-                        id="edit_form_backend_config_enable_auto_cue"
-                        class="col-md-12"
-                        :field="v$.backend_config.enable_auto_cue"
-                        :label="$gettext('Enable AutoCue Automatic Detection')"
-                        :description="$gettext('AutoCue analyzes your music and automatically calculates cue points, fade points, and volume levels for a consistent listening experience.')"
-                    />
-                </div>
             </form-fieldset>
 
             <form-fieldset v-if="enableAdvancedFeatures">
@@ -192,7 +209,7 @@
                 <div class="row g-3">
                     <form-group-checkbox
                         id="edit_form_backend_use_manual_autodj"
-                        class="col-md-6"
+                        class="col-md-12"
                         :field="v$.backend_config.use_manual_autodj"
                         :label="$gettext('Manual AutoDJ Mode')"
                     >
@@ -200,23 +217,6 @@
                             {{
                                 $gettext('This mode disables AzuraCast\'s AutoDJ management, using Liquidsoap itself to manage song playback. "next song" and some other features will not be available.')
                             }}
-                        </template>
-                    </form-group-checkbox>
-
-                    <form-group-checkbox
-                        id="edit_form_backend_enable_replaygain_metadata"
-                        class="col-md-6"
-                        :field="v$.backend_config.enable_replaygain_metadata"
-                        :label="$gettext('Use Replaygain Metadata')"
-                    >
-                        <template #description>
-                            {{
-                                $gettext('Instruct Liquidsoap to use any replaygain metadata associated with a song to control its volume level. This may increase CPU consumption.')
-                            }}
-                            <a
-                                href="/docs/help/optimizing/#disable-replaygain-or-pre-calculate-replaygain-for-audio-files"
-                                target="_blank"
-                            >{{ $gettext('Learn More about Replaygain') }}</a>
                         </template>
                     </form-group-checkbox>
 
@@ -326,7 +326,8 @@ const {v$, tabClass} = useVuelidateOnFormTab(
                 master_me_preset: {},
                 master_me_loudness_target: {},
                 stereo_tool_license_key: {},
-                enable_auto_cue: {}
+                enable_auto_cue: {},
+                enable_replaygain_metadata: {}
             },
         };
 
@@ -336,7 +337,6 @@ const {v$, tabClass} = useVuelidateOnFormTab(
                 backend_config: {
                     ...validations.backend_config,
                     telnet_port: {numeric},
-                    enable_replaygain_metadata: {},
                     autodj_queue_length: {},
                     use_manual_autodj: {},
                     charset: {},
@@ -362,7 +362,8 @@ const {v$, tabClass} = useVuelidateOnFormTab(
                 master_me_preset: MasterMePreset.MusicGeneral,
                 master_me_loudness_target: -16,
                 stereo_tool_license_key: '',
-                enable_auto_cue: false
+                enable_auto_cue: false,
+                enable_replaygain_metadata: false
             },
         };
 
@@ -372,7 +373,6 @@ const {v$, tabClass} = useVuelidateOnFormTab(
                 backend_config: {
                     ...blankForm.backend_config,
                     telnet_port: '',
-                    enable_replaygain_metadata: false,
                     autodj_queue_length: 3,
                     use_manual_autodj: false,
                     charset: 'UTF-8',

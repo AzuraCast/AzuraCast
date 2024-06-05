@@ -268,6 +268,11 @@ class StationBackendConfiguration extends AbstractStationConfiguration
 
     public function useReplayGain(): bool
     {
+        // AutoCue overrides this functionality.
+        if ($this->getEnableAutoCue()) {
+            return false;
+        }
+
         return Types::boolOrNull($this->get(self::USE_REPLAYGAIN)) ?? false;
     }
 
@@ -280,6 +285,11 @@ class StationBackendConfiguration extends AbstractStationConfiguration
 
     public function getCrossfadeTypeEnum(): CrossfadeModes
     {
+        // AutoCue overrides this functionality.
+        if ($this->getEnableAutoCue()) {
+            return CrossfadeModes::Disabled;
+        }
+
         return CrossfadeModes::tryFrom(
             Types::stringOrNull($this->get(self::CROSSFADE_TYPE)) ?? ''
         ) ?? CrossfadeModes::default();

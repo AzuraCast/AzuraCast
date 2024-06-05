@@ -9,7 +9,7 @@
         >
             <form-label
                 :is-required="isRequired"
-                :advanced="advanced"
+                v-bind="pickProps(props, formLabelProps)"
             >
                 <slot
                     name="label"
@@ -89,9 +89,12 @@ import {computed, nextTick, onMounted, ref, useSlots} from "vue";
 import FormGroup from "~/components/Form/FormGroup.vue";
 import FormLabel from "~/components/Form/FormLabel.vue";
 import {formFieldProps, useFormField} from "~/components/Form/useFormField";
+import formLabelProps from "~/components/Form/formLabelProps.ts";
+import {pickProps} from "~/functions/pickProps.ts";
 
 const props = defineProps({
     ...formFieldProps,
+    ...formLabelProps,
     id: {
         type: String,
         required: true
@@ -135,10 +138,6 @@ const props = defineProps({
         default: false
     },
     clearable: {
-        type: Boolean,
-        default: false
-    },
-    advanced: {
         type: Boolean,
         default: false
     }

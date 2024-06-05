@@ -9,7 +9,7 @@
         >
             <form-label
                 :is-required="isRequired"
-                :advanced="advanced"
+                v-bind="pickProps(props, formLabelProps)"
             >
                 <slot
                     name="label"
@@ -73,9 +73,12 @@ import FormMultiCheck from "~/components/Form/FormMultiCheck.vue";
 import useSlotsExcept from "~/functions/useSlotsExcept";
 import {formFieldProps, useFormField} from "~/components/Form/useFormField";
 import {useSlots} from "vue";
+import formLabelProps from "~/components/Form/formLabelProps.ts";
+import {pickProps} from "~/functions/pickProps.ts";
 
 const props = defineProps({
     ...formFieldProps,
+    ...formLabelProps,
     id: {
         type: String,
         required: true
@@ -101,10 +104,6 @@ const props = defineProps({
         default: false
     },
     stacked: {
-        type: Boolean,
-        default: false
-    },
-    advanced: {
         type: Boolean,
         default: false
     }

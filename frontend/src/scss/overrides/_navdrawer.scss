@@ -4,11 +4,8 @@
 }
 
 @include media-breakpoint-up(lg) {
-  #main.has-sidebar {
+  #page-wrapper.has-sidebar {
     margin-left: $navdrawer-width;
-  }
-  #footer.has-sidebar {
-    left: $navdrawer-width;
   }
 
   .offcanvas-backdrop {

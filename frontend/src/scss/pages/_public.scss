@@ -11,10 +11,6 @@ body.page-minimal {
   }
 
   .public-page {
-    margin: 2.5rem 0;
-    min-height: calc(100dvh - 5rem);
-    display: flex;
-
     .card {
       margin: auto;
       width: 500px;
@@ -39,44 +35,44 @@ body.page-minimal {
     @include might-overflow();
   }
 
-  &.embed {
-    .full-height-wrapper {
-      .container {
-        max-width: 100%;
-        padding: 0 !important;
-      }
-    }
-  }
-
   &:not(.embed) {
-    .full-height-wrapper {
+    #main {
       display: flex;
       align-items: stretch;
-      height: 100vh;
+      justify-content: stretch;
+      padding: 1.5rem;
+    }
 
-      .container {
-        padding-top: 3rem;
-        padding-bottom: 3rem;
-        height: 100%;
+    #footer {
+      padding-top: 0.5rem;
+    }
+
+    .public-page {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .full-height-wrapper {
+      display: contents;
+
+      .card {
         flex: 1;
 
-        .card {
-          height: 100%;
+        .card-body {
+          flex: 0 1 auto;
+        }
 
-          .card-body {
-            flex: 0 1 auto;
-          }
-
-          // Only make the datatable scrollable if it's the only element in the card.
-          & > .datatable-wrapper {
-            .datatable-main {
-              overflow-y: auto;
-            }
-          }
-
-          & > .full-height-scrollable {
+        // Only make the datatable scrollable if it's the only element in the card.
+        & > .datatable-wrapper {
+          .datatable-main {
             overflow-y: auto;
           }
+        }
+
+        & > .full-height-scrollable {
+          overflow-y: auto;
         }
       }
     }

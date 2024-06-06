@@ -1,11 +1,6 @@
-body {
-  position: relative;
-
+body.page-full {
   #main {
-    padding-bottom: 4rem;
     padding-top: ($header-nav-height + ($container-padding-x * .5));
-
-    min-height: 100vh;
   }
 
   @include media-breakpoint-down(sm) {

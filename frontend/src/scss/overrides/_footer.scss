@@ -1,10 +1,21 @@
+// Enables a "sticky" footer that adheres to the bottom but scrolls with larger pages.
+#page-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  align-items: stretch;
+
+  #main {
+    flex-grow: 1;
+  }
+
+  #footer {
+    flex-shrink: 1;
+  }
+}
+
 #footer {
   opacity: .6;
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 1rem;
   text-align: center;
-
-  padding-top: 1.5rem;
+  padding: 1.5rem;
 }

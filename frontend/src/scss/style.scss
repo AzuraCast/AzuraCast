@@ -18,6 +18,7 @@
 @import "bootstrap-core";
 
 // Overrides for specific third-party products
+@import 'vendors/codemirror';
 @import 'vendors/vue_datepicker';
 @import 'vendors/fullcalendar';
 @import 'vendors/sweetalert2';
@@ -32,7 +33,7 @@
 @import 'overrides/body';
 @import 'overrides/buttons';
 @import 'overrides/card';
-@import 'overrides/codemirror';
+@import 'overrides/components';
 @import 'overrides/dropdown';
 @import 'overrides/file-uploads';
 @import 'overrides/footer';

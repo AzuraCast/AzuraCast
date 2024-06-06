@@ -63,7 +63,6 @@ final class WebDjAction implements SingleActionInterface
             title: __('Web DJ') . ' - ' . $station->getName(),
             layoutParams: [
                 'page_class' => 'dj station-' . $station->getShortName(),
-                'hide_footer' => true,
             ],
             props: [
                 'baseUri' => $wssUrl,

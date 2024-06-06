@@ -2,7 +2,7 @@
     <section
         id="content"
         role="main"
-        style="height: 100vh;"
+        style="flex: 1"
     >
         <div class="container pt-5">
             <div class="row g-3">

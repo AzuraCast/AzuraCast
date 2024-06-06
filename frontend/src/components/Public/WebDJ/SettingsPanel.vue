@@ -66,7 +66,7 @@
 
             <div class="card-body">
                 <div class="row g-3">
-                    <div class="col md-6">
+                    <div class="col-md-6">
                         <div class="form-group">
                             <label
                                 for="dj_username"
@@ -84,7 +84,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col md-6">
+                    <div class="col-md-6">
                         <div class="form-group">
                             <label
                                 for="dj_password"
@@ -102,9 +102,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="row g-3">
-                    <div class="col md-6">
+                    <div class="col-md-6">
                         <div class="form-group">
                             <label
                                 for="select_samplerate"
@@ -149,7 +147,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col md-6">
+                    <div class="col-md-6">
                         <div class="form-group">
                             <label
                                 for="select_bitrate"

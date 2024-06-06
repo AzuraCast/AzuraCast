@@ -404,7 +404,9 @@ final class ConfigWriter implements EventSubscriberInterface
         $this->writeCustomConfigurationSection($event, StationBackendConfiguration::CUSTOM_PRE_PLAYLISTS);
 
         // Override some AutoCue settings if they're set in the section above.
-        if ($event->getBackendConfig()->getEnableAutoCue()) {
+        $enableAutoCue = $event->getBackendConfig()->getEnableAutoCue();
+
+        if ($enableAutoCue) {
             $event->appendBlock(
                 <<<LIQ
                 # AutoCue
@@ -667,6 +669,8 @@ final class ConfigWriter implements EventSubscriberInterface
         }
 
         if (!$station->useManualAutoDJ()) {
+            $nextSongTimeout = $enableAutoCue ? 'settings.autocue.cue_file.timeout()' : '20.0';
+
             $event->appendBlock(
                 <<< LIQ
                 # AutoDJ Next Song Script
@@ -699,7 +703,7 @@ final class ConfigWriter implements EventSubscriberInterface
                     end
                 end
 
-                dynamic = request.dynamic(id="next_song", timeout=20.0, retry_delay=10., autodj_next_song)
+                dynamic = request.dynamic(id="next_song", timeout={$nextSongTimeout}, retry_delay=10., autodj_next_song)
 
                 dynamic_startup = fallback(
                     id = "dynamic_startup",
@@ -733,12 +737,14 @@ final class ConfigWriter implements EventSubscriberInterface
         $requestsQueueName = LiquidsoapQueues::Requests->value;
         $interruptingQueueName = LiquidsoapQueues::Interrupting->value;
 
+        $requestQueueTimeout = $enableAutoCue ? 'settings.autocue.cue_file.timeout()' : '20.0';
+
         $event->appendBlock(
             <<< LIQ
-            requests = request.queue(id="{$requestsQueueName}")
+            requests = request.queue(id="{$requestsQueueName}", timeout={$requestQueueTimeout})
             radio = fallback(id="requests_fallback", track_sensitive = true, [requests, radio])
 
-            interrupting_queue = request.queue(id="{$interruptingQueueName}")
+            interrupting_queue = request.queue(id="{$interruptingQueueName}", timeout={$requestQueueTimeout})
             radio = fallback(id="interrupting_fallback", track_sensitive = false, [interrupting_queue, radio])
             LIQ
         );

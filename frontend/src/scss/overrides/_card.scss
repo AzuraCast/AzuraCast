@@ -6,6 +6,10 @@
 
   padding: $card-spacer-y $card-spacer-x;
   margin: 0;
+
+  &:first-child {
+    padding-top: ($container-padding-x - $card-spacer-x);
+  }
 }
 
 .card {

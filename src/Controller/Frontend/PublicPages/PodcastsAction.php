@@ -26,8 +26,10 @@ final class PodcastsAction implements SingleActionInterface
             throw NotFoundException::station();
         }
 
+        $isEmbedded = $this->isEmbedded($request, $params);
+
         $pageClass = 'podcasts station-' . $station->getShortName();
-        if ($this->isEmbedded($request, $params)) {
+        if ($isEmbedded) {
             $pageClass .= ' embed';
         }
 
@@ -50,7 +52,7 @@ final class PodcastsAction implements SingleActionInterface
             title: 'Podcasts - ' . $station->getName(),
             layoutParams: [
                 'page_class' => $pageClass,
-                'hide_footer' => true,
+                'hide_footer' => $isEmbedded,
             ],
             props: [
                 'baseUrl' => $router->fromHere('public:index'),

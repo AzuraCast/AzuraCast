@@ -40,9 +40,6 @@ return static function (CallableEventDispatcherInterface $dispatcher) {
             $app->add(Middleware\InjectRouter::class);
             $app->add(Middleware\InjectRateLimit::class);
 
-            // Re-establish database connection if multiple requests are handled by the same stack.
-            $app->add(Middleware\ReopenEntityManagerMiddleware::class);
-
             // System middleware for routing and body parsing.
             $app->addBodyParsingMiddleware();
             $app->addRoutingMiddleware();

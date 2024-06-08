@@ -8,6 +8,7 @@ use App\Container\EnvironmentAwareTrait;
 use App\Container\SettingsAwareTrait;
 use App\Entity\User;
 use App\Exception\Http\InvalidRequestAttribute;
+use App\Exception\WrappedException;
 use App\Http\ServerRequest;
 use App\Middleware\AbstractMiddleware;
 use App\Utilities\Urls;
@@ -17,6 +18,7 @@ use Symfony\Component\VarDumper\Caster\ReflectionCaster;
 use Symfony\Component\VarDumper\Cloner\VarCloner;
 use Symfony\Component\VarDumper\Dumper\CliDumper;
 use Symfony\Component\VarDumper\VarDumper;
+use Throwable;
 
 /**
  * Handle API calls and wrap exceptions in JSON formatting.
@@ -28,29 +30,45 @@ final class Api extends AbstractMiddleware
 
     public function __invoke(ServerRequest $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        if ($this->environment->isDevelopment()) {
-            $cloner = new VarCloner();
-            $cloner->addCasters(ReflectionCaster::UNSET_CLOSURE_FILE_INFO);
+        $request = $request->withAttribute(ServerRequest::ATTR_IS_API, true);
 
-            $dumper = new CliDumper('php://output');
-            VarDumper::setHandler(
-                static function ($var) use ($cloner, $dumper): void {
-                    $dumper->dump($cloner->cloneVar($var));
-                }
-            );
+        try {
+            if ($this->environment->isDevelopment()) {
+                $this->registerCliDumper();
+            }
+
+            $response = $handler->handle($request);
+
+            return $this->setAccessControl($request, $response);
+        } catch (Throwable $e) {
+            throw new WrappedException($request, $e);
         }
+    }
 
-        // Attempt API key auth if a key exists.
+    private function registerCliDumper(): void
+    {
+        $cloner = new VarCloner();
+        $cloner->addCasters(ReflectionCaster::UNSET_CLOSURE_FILE_INFO);
+
+        $dumper = new CliDumper('php://output');
+        VarDumper::setHandler(
+            static function ($var) use ($cloner, $dumper): void {
+                $dumper->dump($cloner->cloneVar($var));
+            }
+        );
+    }
+
+    private function setAccessControl(
+        ServerRequest $request,
+        ResponseInterface $response
+    ): ResponseInterface {
         try {
             $apiUser = $request->getUser();
         } catch (InvalidRequestAttribute) {
             $apiUser = null;
         }
 
-        // Set default cache control for API pages.
         $settings = $this->readSettings();
-
-        $response = $handler->handle($request);
 
         // Check for a user-set CORS header override.
         $acaoHeader = trim($settings->getApiAccessControl());

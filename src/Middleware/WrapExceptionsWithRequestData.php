@@ -19,6 +19,9 @@ final class WrapExceptionsWithRequestData extends AbstractMiddleware
     {
         try {
             return $handler->handle($request);
+        } catch (WrappedException $e) {
+            // Don't modify WrappedExceptions
+            throw $e;
         } catch (Throwable $e) {
             throw new WrappedException($request, $e);
         }

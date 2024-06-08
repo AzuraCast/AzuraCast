@@ -83,12 +83,19 @@ final class ErrorHandler extends SlimErrorHandler
 
     private function shouldReturnJson(ServerRequestInterface $req): bool
     {
+        // All API calls return JSON regardless.
+        if ($req instanceof ServerRequest && $req->isApi()) {
+            return true;
+        }
+
+        // Return JSON for all AJAX (XMLHttpRequest) queries.
         $xhr = $req->getHeaderLine('X-Requested-With') === 'XMLHttpRequest';
 
         if ($xhr || $this->environment->isCli() || $this->environment->isTesting()) {
             return true;
         }
 
+        // Return JSON if "application/json" is in the "Accept" header.
         if ($req->hasHeader('Accept')) {
             $accept = $req->getHeaderLine('Accept');
             if (false !== stripos($accept, 'application/json')) {

@@ -21,6 +21,7 @@ use Slim\Http\ServerRequest as SlimServerRequest;
 
 final class ServerRequest extends SlimServerRequest
 {
+    public const string ATTR_IS_API = 'is_api';
     public const string ATTR_VIEW = 'app_view';
     public const string ATTR_SESSION = 'app_session';
     public const string ATTR_SESSION_CSRF = 'app_session_csrf';
@@ -137,6 +138,11 @@ final class ServerRequest extends SlimServerRequest
     public function getPodcast(): Podcast
     {
         return $this->getAttributeOfClass(self::ATTR_PODCAST, Podcast::class);
+    }
+
+    public function isApi(): bool
+    {
+        return Types::bool($this->getAttribute(self::ATTR_IS_API));
     }
 
     /**

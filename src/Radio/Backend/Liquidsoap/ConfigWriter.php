@@ -389,7 +389,7 @@ final class ConfigWriter implements EventSubscriberInterface
                 <<<LIQ
                 # AutoCue
                 %include "{$autoCueCommon}"
-                
+
                 settings.autocue.cue_file.nice := true
                 settings.request.prefetch := 2
                 LIQ
@@ -437,6 +437,10 @@ final class ConfigWriter implements EventSubscriberInterface
 
         foreach ($station->getPlaylists() as $playlist) {
             if (!$playlist->getIsEnabled()) {
+                continue;
+            }
+
+            if (!self::doesStationPlaylistNeedLiquidsoapPlaylist($playlist)) {
                 continue;
             }
 
@@ -778,7 +782,7 @@ final class ConfigWriter implements EventSubscriberInterface
             end
 
             add_skip_command(radio)
-            
+
             # Apply amplification metadata (if supplied)
             radio = amplify(override="liq_amplify", 1., radio)
             LIQ
@@ -923,26 +927,26 @@ final class ConfigWriter implements EventSubscriberInterface
                     label="show_meta"
                     l = list.sort.natural(metadata.cover.remove(m))
                     list.iter(fun(v) -> log(level=4, label=label, "#{v}"), l)
-                    
+
                     nowplaying = ref(m["artist"] ^ " - " ^ m["title"])
-                    
+
                     if m["artist"] == "" then
                         if string.contains(substring=" - ", m["title"]) then
                             let (a, t) = string.split.first(separator=" - ", m["title"])
                             nowplaying := a ^ " - " ^ t
                         end
                     end
-                    
+
                     # show `liq_` & other metadata in level 3
                     def fl(k, _) =
                         tags = ["duration", "replaygain_track_gain", "replaygain_reference_loudness"]
                         string.contains(prefix="liq_", k) or list.mem(k, tags)
                     end
-                    
+
                     liq = list.assoc.filter((fl), l)
                     list.iter(fun(v) -> log(level=3, label=label, "#{v}"), liq)
                     log(level=3, label=label, "Now playing: #{nowplaying()}")
-                    
+
                     if m["liq_amplify"] == "" then
                         log(level=2, label=label, "Warning: No liq_amplify found, expect loudness jumps!")
                     end
@@ -950,9 +954,9 @@ final class ConfigWriter implements EventSubscriberInterface
                         log(level=2, label=label, "Blank (silence) detected in track, ending early.")
                     end
                 end
-                
+
                 radio.on_metadata(show_meta)
-                
+
                 # Fading/crossing/segueing
                 def live_aware_crossfade(old, new) =
                     if to_live() then
@@ -978,7 +982,7 @@ final class ConfigWriter implements EventSubscriberInterface
                         ])
                     end
                 end
-                
+
                 radio = cross(
                     duration=settings.autocue.cue_file.fade_out(),
                     live_aware_crossfade,
@@ -1601,5 +1605,31 @@ final class ConfigWriter implements EventSubscriberInterface
     {
         $str = mb_convert_encoding($str, 'UTF-8');
         return str_replace(['"', "\n", "\t", "\r"], ['\"', '', '', ''], $str);
+    }
+
+    public static function doesStationPlaylistNeedLiquidsoapPlaylist(StationPlaylist $playlist): bool
+    {
+        if ($playlist->getStation()->getEnableLiquidsoapPlaylistDefinitions()) {
+            return true;
+        }
+
+        if ($playlist->getStation()->useManualAutoDJ()) {
+            return true;
+        }
+
+        if ($playlist->getType() !== PlaylistSources::Songs) {
+            return true;
+        }
+
+        if (
+            !$playlist->backendInterruptOtherSongs()
+            && !$playlist->backendPlaySingleTrack()
+            && !$playlist->backendMerge()
+            && $playlist->getType() !== PlaylistTypes::Advanced
+        ) {
+            return false;
+        }
+
+        return true;
     }
 }

@@ -4,8 +4,13 @@ declare(strict_types=1);
 
 namespace App\Entity\Migration;
 
+use App\Entity\Attributes\StableMigration;
 use Doctrine\DBAL\Schema\Schema;
 
+#[
+    StableMigration('0.19.6'),
+    StableMigration('0.19.7')
+]
 final class Version20240425151151 extends AbstractMigration
 {
     public function getDescription(): string

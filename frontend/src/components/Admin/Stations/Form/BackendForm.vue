@@ -42,6 +42,16 @@
                 </div>
             </template>
 
+            <div class="row g-3 mb-3">
+                <form-group-checkbox
+                    id="edit_form_backend_config_enable_liquidsoap_playlist_definitions"
+                    class="col-md-12"
+                    :field="v$.backend_config.enable_liquidsoap_playlist_definitions"
+                    :label="$gettext('Enable Playlist Definitions')"
+                    :description="$gettext('Control whether playlist definitions in the Liquidsoap config file should always be generated. If disabled only explicitly in Liquidsoap needed playlist definitions will be generated. This can reduce memory usage, CPU load on startup and startup time of Liquidsoap.')"
+                />
+            </div>
+
             <form-fieldset>
                 <template #label>
                     {{ $gettext('Audio Processing') }}
@@ -321,6 +331,7 @@ const {v$, tabClass} = useVuelidateOnFormTab(
             backend_config: {
                 crossfade_type: {},
                 crossfade: {decimal},
+                enable_liquidsoap_playlist_definitions: {},
                 audio_processing_method: {},
                 post_processing_include_live: {},
                 master_me_preset: {},
@@ -357,6 +368,7 @@ const {v$, tabClass} = useVuelidateOnFormTab(
             backend_config: {
                 crossfade_type: 'normal',
                 crossfade: 2,
+                enable_liquidsoap_playlist_definitions: true,
                 audio_processing_method: AudioProcessingMethod.None,
                 post_processing_include_live: true,
                 master_me_preset: MasterMePreset.MusicGeneral,

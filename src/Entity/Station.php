@@ -250,16 +250,6 @@ class Station implements Stringable, IdentifiableEntityInterface
     protected bool $enable_hls = false;
 
     #[
-        OA\Property(
-            description: "Whether playlist definitions should be generated in Liquidsoap, even if not strictly needed.",
-            example: true
-        ),
-        ORM\Column,
-        Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])
-    ]
-    protected bool $enable_liquidsoap_playlist_definitions = true;
-
-    #[
         ORM\Column,
         Attributes\AuditIgnore
     ]
@@ -842,16 +832,6 @@ class Station implements Stringable, IdentifiableEntityInterface
     public function setEnableHls(bool $enableHls): void
     {
         $this->enable_hls = $enableHls;
-    }
-
-    public function getEnableLiquidsoapPlaylistDefinitions(): bool
-    {
-        return $this->enable_liquidsoap_playlist_definitions;
-    }
-
-    public function setEnableLiquidsoapPlaylistDefinitions(bool $enableLiquidsoapPlaylistDefinitions): void
-    {
-        $this->enable_liquidsoap_playlist_definitions = $enableLiquidsoapPlaylistDefinitions;
     }
 
     public function getIsEnabled(): bool

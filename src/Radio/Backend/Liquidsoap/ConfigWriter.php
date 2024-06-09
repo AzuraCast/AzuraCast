@@ -1609,7 +1609,7 @@ final class ConfigWriter implements EventSubscriberInterface
 
     public static function doesStationPlaylistNeedLiquidsoapPlaylist(StationPlaylist $playlist): bool
     {
-        if ($playlist->getStation()->getEnableLiquidsoapPlaylistDefinitions()) {
+        if ($playlist->getStation()->getBackendConfig()->getEnableLiquidsoapPlaylistDefinitions()) {
             return true;
         }
 

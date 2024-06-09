@@ -1617,7 +1617,7 @@ final class ConfigWriter implements EventSubscriberInterface
             return true;
         }
 
-        if ($playlist->getType() !== PlaylistSources::Songs) {
+        if ($playlist->getSource() !== PlaylistSources::Songs) {
             return true;
         }
 

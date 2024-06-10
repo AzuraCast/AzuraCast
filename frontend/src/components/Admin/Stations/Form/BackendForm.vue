@@ -220,6 +220,14 @@
                         </template>
                     </form-group-checkbox>
 
+                    <form-group-checkbox
+                        id="edit_form_backend_config_write_playlists_to_liquidsoap"
+                        class="col-md-12"
+                        :field="v$.backend_config.write_playlists_to_liquidsoap"
+                        :label="$gettext('Always Write Playlists to Liquidsoap')"
+                        :description="$gettext('By default, all playlists are written to Liquidsoap as a backup in case the normal AutoDJ fails. This can affect CPU load, especially on startup. Disable to only write essential playlists to Liquidsoap.')"
+                    />
+
                     <form-group-field
                         id="edit_form_backend_telnet_port"
                         class="col-md-6"
@@ -321,6 +329,7 @@ const {v$, tabClass} = useVuelidateOnFormTab(
             backend_config: {
                 crossfade_type: {},
                 crossfade: {decimal},
+                write_playlists_to_liquidsoap: {},
                 audio_processing_method: {},
                 post_processing_include_live: {},
                 master_me_preset: {},
@@ -357,6 +366,7 @@ const {v$, tabClass} = useVuelidateOnFormTab(
             backend_config: {
                 crossfade_type: 'normal',
                 crossfade: 2,
+                write_playlists_to_liquidsoap: true,
                 audio_processing_method: AudioProcessingMethod.None,
                 post_processing_include_live: true,
                 master_me_preset: MasterMePreset.MusicGeneral,

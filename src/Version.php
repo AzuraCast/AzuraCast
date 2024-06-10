@@ -32,7 +32,7 @@ final class Version
 
     public function __construct(
         private readonly CacheInterface $cache,
-        private readonly Environment $environment
+        private readonly Environment $environment,
     ) {
         $this->repoDir = $environment->getBaseDirectory();
     }

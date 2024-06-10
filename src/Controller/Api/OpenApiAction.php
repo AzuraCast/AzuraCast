@@ -8,11 +8,13 @@ use App\Console\Command\GenerateApiDocsCommand;
 use App\Controller\SingleActionInterface;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use App\Version;
 use Psr\Http\Message\ResponseInterface;
 
 final class OpenApiAction implements SingleActionInterface
 {
     public function __construct(
+        private readonly Version $version,
         private readonly GenerateApiDocsCommand $apiDocsCommand
     ) {
     }
@@ -28,7 +30,7 @@ final class OpenApiAction implements SingleActionInterface
             $request->getRouter()->fromHere(absolute: true)
         );
 
-        $yaml = $this->apiDocsCommand->generate(true, $apiBaseUrl)?->toYaml();
+        $yaml = $this->apiDocsCommand->generate($this->version->getVersion(), $apiBaseUrl)?->toYaml();
 
         return $response->renderStringAsFile(
             $yaml ?? '',

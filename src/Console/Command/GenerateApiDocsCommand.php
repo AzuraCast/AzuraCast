@@ -6,12 +6,14 @@ namespace App\Console\Command;
 
 use App\Container\EnvironmentAwareTrait;
 use App\Container\LoggerAwareTrait;
+use App\Utilities\Types;
 use App\Version;
 use OpenApi\Annotations\OpenApi;
 use OpenApi\Generator;
 use OpenApi\Util;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
@@ -24,17 +26,23 @@ final class GenerateApiDocsCommand extends CommandAbstract
     use LoggerAwareTrait;
     use EnvironmentAwareTrait;
 
-    public function __construct(
-        private readonly Version $version
-    ) {
-        parent::__construct();
+    protected function configure(): void
+    {
+        $this->addOption(
+            'api-version',
+            null,
+            InputOption::VALUE_REQUIRED,
+            'The version to tag, if different from the default.'
+        );
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        $version = Types::stringOrNull($input->getOption('api-version'));
+
         $io = new SymfonyStyle($input, $output);
 
-        $yaml = $this->generate()?->toYaml();
+        $yaml = $this->generate($version)?->toYaml();
         $yamlPath = $this->environment->getBaseDirectory() . '/web/static/openapi.yml';
 
         file_put_contents($yamlPath, $yaml);
@@ -44,15 +52,12 @@ final class GenerateApiDocsCommand extends CommandAbstract
     }
 
     public function generate(
-        bool $useCurrentVersion = false,
+        string $version = null,
         string $apiBaseUrl = 'https://demo.azuracast.com/api'
     ): ?OpenApi {
         define('AZURACAST_API_URL', $apiBaseUrl);
         define('AZURACAST_API_NAME', 'AzuraCast Public Demo Server');
-        define(
-            'AZURACAST_VERSION',
-            $useCurrentVersion ? $this->version->getVersion() : Version::STABLE_VERSION
-        );
+        define('AZURACAST_VERSION', $version ?? Version::STABLE_VERSION);
 
         $finder = Util::finder(
             [

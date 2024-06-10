@@ -12,6 +12,8 @@ return function (App\Event\BuildConsoleCommands $event) {
         'azuracast:debug:optimize-tables' => Command\Debug\OptimizeTablesCommand::class,
         'azuracast:internal:on-ssl-renewal' => Command\Internal\OnSslRenewal::class,
         'azuracast:internal:ip' => Command\Internal\GetIpCommand::class,
+        'azuracast:locale:generate' => Command\Locale\GenerateCommand::class,
+        'azuracast:locale:import' => Command\Locale\ImportCommand::class,
         'azuracast:queue:process' => Command\MessageQueue\ProcessCommand::class,
         'azuracast:queue:clear' => Command\MessageQueue\ClearCommand::class,
         'azuracast:settings:list' => Command\Settings\ListCommand::class,
@@ -32,6 +34,8 @@ return function (App\Event\BuildConsoleCommands $event) {
         'azuracast:sync:run' => Command\Sync\RunnerCommand::class,
         'azuracast:sync:task' => Command\Sync\SingleTaskCommand::class,
         'azuracast:media:reprocess' => Command\ReprocessMediaCommand::class,
+        'locale:generate' => Command\Locale\GenerateCommand::class,
+        'locale:import' => Command\Locale\ImportCommand::class,
         'queue:process' => Command\MessageQueue\ProcessCommand::class,
         'queue:clear' => Command\MessageQueue\ClearCommand::class,
         'cache:clear' => Command\ClearCacheCommand::class,
@@ -41,11 +45,7 @@ return function (App\Event\BuildConsoleCommands $event) {
     if ($event->getEnvironment()->isDevelopment()) {
         $event->addAliases([
             'azuracast:api:docs' => Command\GenerateApiDocsCommand::class,
-            'azuracast:locale:generate' => Command\Locale\GenerateCommand::class,
-            'azuracast:locale:import' => Command\Locale\ImportCommand::class,
             'azuracast:new-version' => Command\NewVersionCommand::class,
-            'locale:generate' => Command\Locale\GenerateCommand::class,
-            'locale:import' => Command\Locale\ImportCommand::class,
         ]);
     }
 };

@@ -252,7 +252,7 @@ return [
         Doctrine\Migrations\Tools\Console\ConsoleRunner::addCommands($console, $migrateFactory);
 
         // Trigger an event for the core app and all plugins to build their CLI commands.
-        $event = new Event\BuildConsoleCommands($console, $di);
+        $event = new Event\BuildConsoleCommands($console, $di, $environment);
         $dispatcher->dispatch($event);
 
         $commandLoader = new Symfony\Component\Console\CommandLoader\ContainerCommandLoader(

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Event;
 
 use App\Console\Application;
+use App\Environment;
 use Psr\Container\ContainerInterface;
 use Symfony\Contracts\EventDispatcher\Event;
 
@@ -14,7 +15,8 @@ final class BuildConsoleCommands extends Event
 
     public function __construct(
         private readonly Application $cli,
-        private readonly ContainerInterface $di
+        private readonly ContainerInterface $di,
+        private readonly Environment $environment
     ) {
     }
 
@@ -26,6 +28,11 @@ final class BuildConsoleCommands extends Event
     public function getContainer(): ContainerInterface
     {
         return $this->di;
+    }
+
+    public function getEnvironment(): Environment
+    {
+        return $this->environment;
     }
 
     public function addAliases(array $aliases): void

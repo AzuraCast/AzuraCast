@@ -40,22 +40,6 @@ final class NewVersionCommand extends CommandAbstract
 
         $io->title(sprintf('Preparing codebase for release of stable version "%s"...', $version));
 
-        $io->section('Generate Locales');
-
-        $this->runCommand(
-            $output,
-            'locale:generate'
-        );
-
-        // TODO: Translations
-
-        $io->section('Import Locales');
-
-        $this->runCommand(
-            $output,
-            'locale:import'
-        );
-
         $io->section('Update Version file and API docs.');
 
         $this->updateVersionFile($io, $version);

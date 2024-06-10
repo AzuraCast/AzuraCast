@@ -14,6 +14,7 @@ return function (App\Event\BuildConsoleCommands $event) {
         'azuracast:internal:ip' => Command\Internal\GetIpCommand::class,
         'azuracast:locale:generate' => Command\Locale\GenerateCommand::class,
         'azuracast:locale:import' => Command\Locale\ImportCommand::class,
+        'azuracast:new-version' => Command\NewVersionCommand::class,
         'azuracast:queue:process' => Command\MessageQueue\ProcessCommand::class,
         'azuracast:queue:clear' => Command\MessageQueue\ClearCommand::class,
         'azuracast:settings:list' => Command\Settings\ListCommand::class,

@@ -463,16 +463,16 @@ class StationBackendConfiguration extends AbstractStationConfiguration
         $this->set(self::ENABLE_AUTO_CUE, $value);
     }
 
-    public const string ENABLE_LIQUIDSOAP_PLAYLIST_DEFINITIONS = 'enable_liquidsoap_playlist_definitions';
+    public const string WRITE_PLAYLISTS_TO_LIQUIDSOAP = 'write_playlists_to_liquidsoap';
 
-    public function getEnableLiquidsoapPlaylistDefinitions(): bool
+    public function getWritePlaylistsToLiquidsoap(): bool
     {
-        return Types::bool($this->get(self::ENABLE_LIQUIDSOAP_PLAYLIST_DEFINITIONS), true);
+        return Types::bool($this->get(self::WRITE_PLAYLISTS_TO_LIQUIDSOAP), true);
     }
 
-    public function setEnableLiquidsoapPlaylistDefinitions(bool $value): void
+    public function setWritePlaylistsToLiquidsoap(bool $value): void
     {
-        $this->set(self::ENABLE_LIQUIDSOAP_PLAYLIST_DEFINITIONS, $value);
+        $this->set(self::WRITE_PLAYLISTS_TO_LIQUIDSOAP, $value);
     }
 
     public const string CUSTOM_TOP = 'custom_config_top';

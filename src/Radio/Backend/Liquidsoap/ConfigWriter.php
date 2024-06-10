@@ -440,7 +440,7 @@ final class ConfigWriter implements EventSubscriberInterface
                 continue;
             }
 
-            if (!self::doesStationPlaylistNeedLiquidsoapPlaylist($playlist)) {
+            if (!self::shouldWritePlaylist($event, $playlist)) {
                 continue;
             }
 
@@ -1607,29 +1607,34 @@ final class ConfigWriter implements EventSubscriberInterface
         return str_replace(['"', "\n", "\t", "\r"], ['\"', '', '', ''], $str);
     }
 
-    public static function doesStationPlaylistNeedLiquidsoapPlaylist(StationPlaylist $playlist): bool
-    {
-        if ($playlist->getStation()->getBackendConfig()->getEnableLiquidsoapPlaylistDefinitions()) {
+    public static function shouldWritePlaylist(
+        WriteLiquidsoapConfiguration $event,
+        StationPlaylist $playlist
+    ): bool {
+        $station = $event->getStation();
+        $backendConfig = $event->getBackendConfig();
+
+        if ($backendConfig->getWritePlaylistsToLiquidsoap()) {
             return true;
         }
 
-        if ($playlist->getStation()->useManualAutoDJ()) {
+        if ($station->useManualAutoDJ()) {
             return true;
         }
 
-        if ($playlist->getSource() !== PlaylistSources::Songs) {
+        if (PlaylistSources::Songs !== $playlist->getSource()) {
             return true;
         }
 
         if (
-            !$playlist->backendInterruptOtherSongs()
-            && !$playlist->backendPlaySingleTrack()
-            && !$playlist->backendMerge()
-            && $playlist->getType() !== PlaylistTypes::Advanced
+            $playlist->backendInterruptOtherSongs()
+            || $playlist->backendPlaySingleTrack()
+            || $playlist->backendMerge()
+            || PlaylistTypes::Advanced === $playlist->getType()
         ) {
-            return false;
+            return true;
         }
 
-        return true;
+        return false;
     }
 }

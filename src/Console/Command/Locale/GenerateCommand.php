@@ -44,7 +44,7 @@ final class GenerateCommand extends CommandAbstract
         $this->passThruProcess(
             $io,
             ['npm', 'run', 'generate-locales'],
-            $this->environment->getBaseDirectory() . '/frontend'
+            $this->environment->getBaseDirectory()
         );
 
         // Import the JS-generated files if they exist

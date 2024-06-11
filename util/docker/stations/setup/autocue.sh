@@ -11,7 +11,7 @@ mkdir -p /var/azuracast/autocue
 
 cd /tmp/autocue
 
-wget -O autocue.tar.gz "https://github.com/Moonbase59/autocue/archive/refs/tags/v2.0.3.tar.gz"
+wget -O autocue.tar.gz "https://github.com/Moonbase59/autocue/archive/refs/tags/v2.2.1.tar.gz"
 tar -xvf autocue.tar.gz --strip-components=1
 
 # git clone https://github.com/Moonbase59/autocue .

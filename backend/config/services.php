@@ -112,7 +112,7 @@ return [
             $psr6Cache = new Symfony\Component\Cache\Adapter\ProxyAdapter($psr6Cache, 'doctrine.');
         }
 
-        $mappingClassesPaths = [$environment->getBaseDirectory() . '/src/Entity'];
+        $mappingClassesPaths = [$environment->getBackendDirectory() . '/src/Entity'];
 
         $buildDoctrineMappingPathsEvent = new Event\BuildDoctrineMappingPaths(
             $mappingClassesPaths,
@@ -224,7 +224,7 @@ return [
         // Add Doctrine Migrations
         $migrationConfigurations = [
             'migrations_paths' => [
-                'App\Entity\Migration' => $environment->getBaseDirectory() . '/src/Entity/Migration',
+                'App\Entity\Migration' => $environment->getBackendDirectory() . '/src/Entity/Migration',
             ],
             'table_storage' => [
                 'table_name' => 'app_migrations',

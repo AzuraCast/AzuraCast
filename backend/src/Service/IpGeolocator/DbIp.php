@@ -16,7 +16,7 @@ final class DbIp extends AbstractIpGeolocator
     public static function getBaseDirectory(): string
     {
         $environment = Environment::getInstance();
-        return dirname($environment->getBaseDirectory()) . '/dbip';
+        return $environment->getParentDirectory() . '/dbip';
     }
 
     public static function getDatabasePath(): string

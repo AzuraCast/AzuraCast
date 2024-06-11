@@ -19,6 +19,7 @@ final class Environment
 
     // Cached immutable values that are frequently used.
     private readonly string $baseDir;
+    private readonly string $backendDir;
     private readonly string $parentDir;
     private readonly bool $isDocker;
     private readonly ApplicationEnvironment $appEnv;
@@ -74,7 +75,8 @@ final class Environment
 
     public function __construct(array $elements = [])
     {
-        $this->baseDir = dirname(__DIR__);
+        $this->baseDir = dirname(__DIR__, 2);
+        $this->backendDir = dirname(__DIR__);
         $this->parentDir = dirname($this->baseDir);
         $this->isDocker = file_exists($this->parentDir . '/.docker');
 
@@ -100,6 +102,14 @@ final class Environment
     public function getBaseDirectory(): string
     {
         return $this->baseDir;
+    }
+
+    /**
+     * @return string The base directory for PHP application files, i.e. `/var/app/www/backend`.
+     */
+    public function getBackendDirectory(): string
+    {
+        return $this->backendDir;
     }
 
     /**

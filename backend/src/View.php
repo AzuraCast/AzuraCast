@@ -38,7 +38,7 @@ final class View extends Engine
         RouterInterface $router
     ) {
         parent::__construct(
-            dirname(__DIR__) . '/templates',
+            $environment->getBackendDirectory() . '/templates',
             'phtml'
         );
 

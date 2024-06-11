@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Wait for services to spin up.
-gosu azuracast php /var/azuracast/www/bin/uptime_wait || exit 1
+gosu azuracast uptime_wait || exit 1
 
 # Initialize before running FPM
 gosu azuracast azuracast_cli azuracast:setup --init || exit 1

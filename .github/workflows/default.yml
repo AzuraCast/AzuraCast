@@ -91,7 +91,7 @@ jobs:
         run: |
           rm -rf web/static/vite_dist
           rm -rf translations/*.UTF-8
-          chmod a+x bin/console
+          chmod a+x backend/bin/*
 
       - name: Run Composer install
         run: |
@@ -100,7 +100,7 @@ jobs:
       - name: Generate new translations from existing code.
         run: |
           npm ci --include=dev
-          bin/console locale:generate
+          backend/bin/console locale:generate
 
       - name: Pull latest translations.
         uses: crowdin/github-action@1.5.3
@@ -118,11 +118,11 @@ jobs:
 
       - name: Import locales, build static assets.
         run: |
-          bin/console locale:import
+          backend/bin/console locale:import
           npm run build
 
       - name: Build OpenAPI Docs
-        run: bin/console azuracast:api:docs
+        run: backend/bin/console azuracast:api:docs
 
       - name: Write .gitinfo File
         run: |

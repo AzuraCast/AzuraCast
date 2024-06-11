@@ -2,5 +2,5 @@
 .github
 .run
 /node_modules
-vendor
+/vendor
 resources/*.mp3

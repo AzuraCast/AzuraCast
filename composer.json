@@ -159,17 +159,17 @@
   },
   "autoload": {
     "psr-4": {
-      "App\\": "src"
+      "App\\": "backend/src"
     }
   },
   "minimum-stability": "dev",
   "prefer-stable": true,
   "bin": [
-    "bin/console"
+    "backend/bin/console"
   ],
   "scripts": {
     "ci-import-locales": [
-      "bin/console locale:import"
+      "backend/bin/console locale:import"
     ],
     "cleanup-and-test": [
       "@phpcbf",

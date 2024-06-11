@@ -118,7 +118,7 @@ final class RollbackDbCommand extends AbstractDatabaseCommand
             );
         }
 
-        $migrationsDir = $this->environment->getBaseDirectory() . '/src/Entity/Migration';
+        $migrationsDir = $this->environment->getBackendDirectory() . '/src/Entity/Migration';
         $iterator = new RecursiveIteratorIterator(
             new RecursiveDirectoryIterator($migrationsDir, FilesystemIterator::SKIP_DOTS),
             RecursiveIteratorIterator::LEAVES_ONLY

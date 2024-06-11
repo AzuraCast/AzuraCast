@@ -35,7 +35,7 @@ final class SetupFixturesCommand extends CommandAbstract
         $loader = new Loader();
 
         // Dependency-inject the fixtures and load them.
-        $fixturesDir = $this->environment->getBaseDirectory() . '/src/Entity/Fixture';
+        $fixturesDir = $this->environment->getBackendDirectory() . '/src/Entity/Fixture';
 
         $iterator = new RecursiveIteratorIterator(
             new RecursiveDirectoryIterator($fixturesDir),

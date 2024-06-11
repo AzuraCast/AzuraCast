@@ -76,7 +76,7 @@ abstract class AbstractSyncRunnerCommand extends AbstractSyncCommand
             array_merge(
                 [
                     'php',
-                    $this->environment->getBaseDirectory() . '/bin/console',
+                    $this->environment->getBackendDirectory() . '/bin/console',
                 ],
                 $consoleCommand
             ),

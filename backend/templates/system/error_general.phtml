@@ -11,7 +11,7 @@ $this->layout('minimal', [
 
 $filePath = Symfony\Component\Filesystem\Path::makeRelative(
     $exception->getFile(),
-    $environment->getBaseDirectory()
+    $environment->getBackendDirectory()
 );
 ?>
 

@@ -66,7 +66,7 @@ final class NewVersionCommand extends CommandAbstract
 
     private function updateVersionFile(SymfonyStyle $io, string $version): void
     {
-        $versionFile = $this->environment->getBaseDirectory() . '/src/Version.php';
+        $versionFile = $this->environment->getBackendDirectory() . '/src/Version.php';
 
         $fsUtils = new Filesystem();
 
@@ -108,7 +108,7 @@ final class NewVersionCommand extends CommandAbstract
 
     private function getLatestMigration(): string
     {
-        $migrationsDir = $this->environment->getBaseDirectory() . '/src/Entity/Migration';
+        $migrationsDir = $this->environment->getBackendDirectory() . '/src/Entity/Migration';
 
         $migrationsByPath = [];
         foreach (new DirectoryIterator($migrationsDir) as $file) {

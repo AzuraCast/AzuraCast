@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 
 cd /var/azuracast/www
-exec php bin/installer "$@"
+exec php backend/bin/installer "$@"

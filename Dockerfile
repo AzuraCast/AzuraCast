@@ -162,12 +162,8 @@ COPY --chown=azuracast:azuracast . .
 RUN composer install --no-ansi --no-interaction \
     && composer clear-cache
 
-WORKDIR /var/azuracast/www/frontend
-
 RUN npm ci --include=dev \
     && npm cache clean --force
-
-WORKDIR /var/azuracast/www
 
 USER root
 

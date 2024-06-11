@@ -4,17 +4,17 @@ import {glob} from "glob";
 import {resolve} from "path";
 import eslint from "vite-plugin-eslint";
 
-const inputs = glob.sync('./src/js/pages/**/*.js').reduce((acc, path) => {
+const inputs = glob.sync('./frontend/js/pages/**/*.js').reduce((acc, path) => {
     // vue/pages/Admin/Index becomes AdminIndex
     const entry = path.replace(/\.js$/g, '')
-        .replace(/^src\/js\/pages\//g, '')
+        .replace(/^frontend\/js\/pages\//g, '')
         .replace(/\//g, '');
 
     acc[entry] = resolve(__dirname, path)
     return acc
 }, {});
 
-inputs['Layout'] = resolve(__dirname, './src/js/layout.js');
+inputs['Layout'] = resolve(__dirname, './frontend/js/layout.js');
 
 console.log(inputs);
 
@@ -60,7 +60,7 @@ export default defineConfig({
         manifest: true,
         emptyOutDir: true,
         chunkSizeWarningLimit: '1m',
-        outDir: resolve(__dirname, '../web/static/vite_dist')
+        outDir: resolve(__dirname, './web/static/vite_dist')
     },
     server: {
         strictPort: true,
@@ -71,8 +71,8 @@ export default defineConfig({
     },
     resolve: {
         alias: {
-            '!': resolve(__dirname),
-            '~': resolve(__dirname, './src')
+            '!': resolve(__dirname, '.'),
+            '~': resolve(__dirname, './frontend')
         },
         extensions: ['.mjs', '.js', '.mts', '.ts', '.jsx', '.tsx', '.json', '.vue']
     },

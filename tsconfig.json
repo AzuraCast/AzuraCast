@@ -3,7 +3,7 @@
     "baseUrl": ".",
     "paths": {
       "~/*": [
-        "src/*"
+        "frontend/*"
       ],
       "!/*": [
         "*"
@@ -33,10 +33,10 @@
     "noFallthroughCasesInSwitch": true
   },
   "include": [
-    "src/**/*.ts",
-    "src/**/*.d.ts",
-    "src/**/*.tsx",
-    "src/**/*.vue"
+    "frontend/**/*.ts",
+    "frontend/**/*.d.ts",
+    "frontend/**/*.tsx",
+    "frontend/**/*.vue"
   ],
   "exclude": [
     "node_modules"

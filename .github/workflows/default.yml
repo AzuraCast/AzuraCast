@@ -99,10 +99,7 @@ jobs:
 
       - name: Generate new translations from existing code.
         run: |
-          cd frontend
           npm ci --include=dev
-          
-          cd ..
           bin/console locale:generate
 
       - name: Pull latest translations.
@@ -122,8 +119,6 @@ jobs:
       - name: Import locales, build static assets.
         run: |
           bin/console locale:import
-          
-          cd frontend
           npm run build
 
       - name: Build OpenAPI Docs

@@ -1,10 +1,10 @@
 module.exports = {
     input: {
-        path: './src',
+        path: './frontend',
         include: ["**/*.js", "**/*.ts", "**/*.vue"]
     },
     output: {
-        path: '../translations',
+        path: './translations',
         potPath: './frontend.pot',
         jsonPath: './translations.json',
         locales: [],

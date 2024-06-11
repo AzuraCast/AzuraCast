@@ -5,9 +5,9 @@
   "scripts": {
     "build": "vite build",
     "serve": "vite",
-    "generate-icons": "node genicons.mjs",
+    "generate-icons": "node frontend/genicons.mjs",
     "generate-locales": "vue-gettext-extract",
-    "generate-api": "swagger-typescript-api --path http://localhost/api/openapi.yml --output ./src/entities --name ApiInterfaces.ts --no-client"
+    "generate-api": "swagger-typescript-api --path http://localhost/api/openapi.yml --output ./frontend/entities --name ApiInterfaces.ts --no-client"
   },
   "dependencies": {
     "@codemirror/lang-css": "^6.0.1",

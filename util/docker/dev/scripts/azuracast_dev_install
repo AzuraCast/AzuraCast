@@ -6,11 +6,9 @@ echo "AzuraCast Dev Install"
 cd /var/azuracast/www
 
 chown -R azuracast:azuracast .
-chmod 777 ./vendor/ ./web/static/
+chmod 777 ./vendor/ ./node_modules/ ./web/static/
 
 azuracast_install "$@"
-
-cd /var/azuracast/www/frontend
 
 gosu azuracast npm ci --include=dev
 gosu azuracast npm run build

@@ -720,6 +720,12 @@ return static function (RouteCollectorProxy $group) {
                                         Controller\Api\Stations\Streamers\BroadcastsController::class . ':listAction'
                                     )->setName('api:stations:streamer:broadcasts');
 
+                                    $group->map(
+                                        ['PUT', 'POST'],
+                                        '/broadcasts/batch',
+                                        Controller\Api\Stations\Streamers\Broadcasts\BatchAction::class
+                                    )->setName('api:stations:streamer:broadcasts:batch');
+
                                     $group->get(
                                         '/broadcast/{broadcast_id}/download',
                                         Controller\Api\Stations\Streamers\BroadcastsController::class

@@ -15,6 +15,7 @@ use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Paginator;
 use App\Utilities\File;
+use App\Utilities\Types;
 use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -22,12 +23,12 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 /**
  * @extends AbstractApiCrudController<StationStreamerBroadcast>
  */
-final class BroadcastsController extends AbstractApiCrudController
+class BroadcastsController extends AbstractApiCrudController
 {
     protected string $entityClass = StationStreamerBroadcast::class;
 
     public function __construct(
-        private readonly StationFilesystems $stationFilesystems,
+        protected readonly StationFilesystems $stationFilesystems,
         Serializer $serializer,
         ValidatorInterface $validator
     ) {
@@ -39,8 +40,7 @@ final class BroadcastsController extends AbstractApiCrudController
         Response $response,
         array $params
     ): ResponseInterface {
-        /** @var string|null $id */
-        $id = $params['id'] ?? null;
+        $id = Types::intOrNull($params['id'] ?? null);
 
         $station = $request->getStation();
 
@@ -202,7 +202,7 @@ final class BroadcastsController extends AbstractApiCrudController
         return $broadcast;
     }
 
-    private function getStreamer(Station $station, int|string $id): ?StationStreamer
+    protected function getStreamer(Station $station, int|string $id): ?StationStreamer
     {
         /** @var StationStreamer|null $streamer */
         $streamer = $this->em->getRepository(StationStreamer::class)->findOneBy(

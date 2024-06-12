@@ -5,6 +5,8 @@ release channel, you can take advantage of these new features and fixes.
 
 ## New Features/Changes
 
+- The streamer broadcasts list is now paginated and you can delete broadcasts in bulk.
+
 ## Code Quality/Technical Changes
 
 ## Bug Fixes

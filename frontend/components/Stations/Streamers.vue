@@ -65,7 +65,7 @@
                                             <button
                                                 type="button"
                                                 class="btn btn-secondary"
-                                                @click="doShowBroadcasts(row.item.links.broadcasts)"
+                                                @click="doShowBroadcasts(row.item.links.broadcasts, row.item.links.broadcasts_batch)"
                                             >
                                                 {{ $gettext('Broadcasts') }}
                                             </button>
@@ -165,8 +165,8 @@ const doCalendarClick = (event) => {
 
 const $broadcastsModal = ref<InstanceType<typeof BroadcastsModal> | null>(null);
 
-const doShowBroadcasts = (url) => {
-    $broadcastsModal.value?.open(url);
+const doShowBroadcasts = (listUrl, batchUrl) => {
+    $broadcastsModal.value?.open(listUrl, batchUrl);
 };
 
 const {doDelete} = useConfirmAndDelete(

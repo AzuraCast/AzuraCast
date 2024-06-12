@@ -4,17 +4,15 @@ declare(strict_types=1);
 
 namespace App\Entity\Api;
 
-final class PodcastBatchResult extends BatchResult
+final class GenericBatchResult extends BatchResult
 {
     /**
      * @var array<array{
-     *   id: string,
+     *   id: int,
      *   title: string
      * }>
      */
-    public array $episodes = [];
-
-    public ?array $records = null;
+    public array $records = [];
 
     /**
      * @return mixed[]
@@ -23,7 +21,6 @@ final class PodcastBatchResult extends BatchResult
     {
         return [
             ...parent::jsonSerialize(),
-            'episodes' => $this->episodes,
             'records' => $this->records,
         ];
     }

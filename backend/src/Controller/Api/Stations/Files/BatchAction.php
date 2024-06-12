@@ -6,7 +6,7 @@ namespace App\Controller\Api\Stations\Files;
 
 use App\Container\EntityManagerAwareTrait;
 use App\Controller\SingleActionInterface;
-use App\Entity\Api\BatchResult;
+use App\Entity\Api\MediaBatchResult;
 use App\Entity\Interfaces\PathAwareInterface;
 use App\Entity\Repository\StationPlaylistFolderRepository;
 use App\Entity\Repository\StationPlaylistMediaRepository;
@@ -88,7 +88,7 @@ final class BatchAction implements SingleActionInterface
         Station $station,
         StorageLocation $storageLocation,
         ExtendedFilesystemInterface $fs
-    ): BatchResult {
+    ): MediaBatchResult {
         $result = $this->parseRequest($request, $fs, true);
 
         $successfulFiles = [];
@@ -132,7 +132,7 @@ final class BatchAction implements SingleActionInterface
         Station $station,
         StorageLocation $storageLocation,
         ExtendedFilesystemInterface $fs
-    ): BatchResult {
+    ): MediaBatchResult {
         $result = $this->parseRequest($request, $fs, true);
 
         /** @var array<int, int> $playlists */
@@ -218,7 +218,7 @@ final class BatchAction implements SingleActionInterface
         Station $station,
         StorageLocation $storageLocation,
         ExtendedFilesystemInterface $fs
-    ): BatchResult {
+    ): MediaBatchResult {
         $result = $this->parseRequest($request, $fs);
 
         $from = Types::string($request->getParam('currentDirectory'));
@@ -285,7 +285,7 @@ final class BatchAction implements SingleActionInterface
         Station $station,
         StorageLocation $storageLocation,
         ExtendedFilesystemInterface $fs
-    ): BatchResult {
+    ): MediaBatchResult {
         $result = $this->parseRequest($request, $fs, true);
 
         if ($station->useManualAutoDJ()) {
@@ -326,7 +326,7 @@ final class BatchAction implements SingleActionInterface
         Station $station,
         StorageLocation $storageLocation,
         ExtendedFilesystemInterface $fs
-    ): BatchResult {
+    ): MediaBatchResult {
         $result = $this->parseRequest($request, $fs, true);
 
         if (BackendAdapters::Liquidsoap !== $station->getBackendType()) {
@@ -387,7 +387,7 @@ final class BatchAction implements SingleActionInterface
         Station $station,
         StorageLocation $storageLocation,
         ExtendedFilesystemInterface $fs
-    ): BatchResult {
+    ): MediaBatchResult {
         $result = $this->parseRequest($request, $fs, true);
 
         foreach ($this->batchUtilities->iterateMedia($storageLocation, $result->files) as $media) {
@@ -416,7 +416,7 @@ final class BatchAction implements SingleActionInterface
         ServerRequest $request,
         ExtendedFilesystemInterface $fs,
         bool $recursive = false
-    ): BatchResult {
+    ): MediaBatchResult {
         $files = array_values(
             Types::array($request->getParam('files', []))
         );
@@ -438,7 +438,7 @@ final class BatchAction implements SingleActionInterface
             }
         }
 
-        $result = new BatchResult();
+        $result = new MediaBatchResult();
         $result->files = $files;
         $result->directories = $directories;
 

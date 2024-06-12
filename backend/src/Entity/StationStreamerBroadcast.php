@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use App\Entity\Interfaces\IdentifiableEntityInterface;
+use Carbon\CarbonImmutable;
 use Doctrine\ORM\Mapping as ORM;
 use OpenApi\Attributes as OA;
+use Stringable;
 
 #[
     OA\Schema(
@@ -16,7 +18,7 @@ use OpenApi\Attributes as OA;
     ORM\Entity,
     ORM\Table(name: 'station_streamer_broadcasts')
 ]
-class StationStreamerBroadcast implements IdentifiableEntityInterface
+class StationStreamerBroadcast implements IdentifiableEntityInterface, Stringable
 {
     use Traits\HasAutoIncrementId;
     use Traits\TruncateStrings;
@@ -90,5 +92,15 @@ class StationStreamerBroadcast implements IdentifiableEntityInterface
     public function setRecordingPath(?string $recordingPath): void
     {
         $this->recordingPath = $recordingPath;
+    }
+
+    public function __toString(): string
+    {
+        return (CarbonImmutable::createFromTimestamp($this->timestampStart, 'UTC'))->toAtomString()
+            . '-'
+            . (0 !== $this->timestampEnd
+                ? (CarbonImmutable::createFromTimestamp($this->timestampEnd, 'UTC'))->toAtomString()
+                : 'Now'
+            );
     }
 }

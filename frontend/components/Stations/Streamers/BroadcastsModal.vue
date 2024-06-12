@@ -2,7 +2,7 @@
     <modal
         id="streamer_broadcasts"
         ref="$modal"
-        size="lg"
+        size="xl"
         centered
         :title="$gettext('Streamer Broadcasts')"
         @hidden="onHidden"
@@ -10,12 +10,20 @@
         <template v-if="listUrl">
             <inline-player class="text-start bg-primary rounded mb-2 p-1" />
 
+            <broadcasts-modal-toolbar
+                :batch-url="batchUrl"
+                :selected-items="selectedItems"
+                @relist="relist"
+            />
+
             <data-table
                 id="station_streamer_broadcasts"
                 ref="$datatable"
-                :show-toolbar="false"
+                selectable
+                paginated
                 :fields="fields"
                 :api-url="listUrl"
+                @row-selected="onRowSelected"
             >
                 <template #cell(download)="row">
                     <template v-if="row.item.recording?.links?.download">
@@ -63,19 +71,21 @@ import InlinePlayer from '~/components/InlinePlayer.vue';
 import Icon from '~/components/Common/Icon.vue';
 import PlayButton from "~/components/Common/PlayButton.vue";
 import '~/vendor/sweetalert';
-import {ref} from "vue";
+import {ref, shallowRef} from "vue";
 import {useTranslate} from "~/vendor/gettext";
 import {useSweetAlert} from "~/vendor/sweetalert";
 import {useNotify} from "~/functions/useNotify";
 import {useAxios} from "~/vendor/axios";
 import Modal from "~/components/Common/Modal.vue";
 import {IconDownload} from "~/components/Common/icons";
-import {DataTableTemplateRef} from "~/functions/useHasDatatable.ts";
+import useHasDatatable, {DataTableTemplateRef} from "~/functions/useHasDatatable.ts";
 import {ModalTemplateRef, useHasModal} from "~/functions/useHasModal.ts";
 import {usePlayerStore, useProvidePlayerStore} from "~/functions/usePlayerStore.ts";
 import useStationDateTimeFormatter from "~/functions/useStationDateTimeFormatter.ts";
+import BroadcastsModalToolbar from "~/components/Stations/Streamers/BroadcastsModalToolbar.vue";
 
 const listUrl = ref(null);
+const batchUrl = ref(null);
 
 const {$gettext} = useTranslate();
 
@@ -130,6 +140,13 @@ const {notifySuccess} = useNotify();
 const {axios} = useAxios();
 
 const $datatable = ref<DataTableTemplateRef>(null);
+const {relist} = useHasDatatable($datatable);
+
+const selectedItems = shallowRef([]);
+
+const onRowSelected = (items) => {
+    selectedItems.value = items;
+};
 
 const doDelete = (url) => {
     confirmDelete({
@@ -138,10 +155,8 @@ const doDelete = (url) => {
         if (result.value) {
             axios.delete(url).then((resp) => {
                 notifySuccess(resp.data.message);
-                $datatable.value?.refresh();
+                relist();
             });
-
-            $datatable.value?.refresh();
         }
     });
 };
@@ -149,8 +164,10 @@ const doDelete = (url) => {
 const $modal = ref<ModalTemplateRef>(null);
 const {show, hide} = useHasModal($modal);
 
-const open = (newListUrl) => {
+const open = (newListUrl, newBatchUrl) => {
     listUrl.value = newListUrl;
+    batchUrl.value = newBatchUrl;
+
     show();
 };
 
@@ -160,7 +177,9 @@ const {stop} = usePlayerStore();
 
 const onHidden = () => {
     stop();
+
     listUrl.value = null;
+    batchUrl.value = null;
 };
 
 defineExpose({

@@ -7,9 +7,28 @@ release channel, you can take advantage of these new features and fixes.
 
 - The streamer broadcasts list is now paginated and you can delete broadcasts in bulk.
 
+- A new setting in the "AutoDJ" tab of the station profile has been added: "Write Playlists to Liquidsoap". This
+  setting, enabled by default, controls whether non-essential (basically, fallback) playlists are defined in
+  Liquidsoap's configuration. Defining these playlists can give you more robust protection against AutoDJ failure, but
+  will greatly increase your initial CPU load if using ReplayGain or AutoCue. Most stations can safely disable this
+  feature to see a significant bump in performance when restarting their stations.
+
 ## Code Quality/Technical Changes
 
+- We continue to work with Moonbase59, maintainer of the AutoCue library we use, to update to the latest version as it
+  is being very rapidly iterated upon.
+
+- The application code has been restructured so that `package.json` is at the project root (like `composer.json`),
+  backend PHP application code is located in the `backend` folder, and frontend Vue/JS/SCSS code is located in
+  the `frontend` folder. This should not impact normal operations or plugins.
+
+- A minor change has been made to how the CSS styles the "Powered by AzuraCast" footer on public and private pages; the
+  new setup uses Flexbox to achieve a "sticky" footer without complicated CSS rules. If you're using custom CSS, you may
+  need to update your code to reflect this change.
+
 ## Bug Fixes
+
+- API calls will always prefer to return JSON, even if not specified by the requesting client.
 
 ---
 

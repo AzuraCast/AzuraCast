@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Stations;
 
+use App\Controller\Api\Traits\CanSearchResults;
+use App\Controller\Api\Traits\CanSortResults;
 use App\Entity\Api\Error;
 use App\Entity\Api\Status;
 use App\Entity\Api\UploadFile;
@@ -154,6 +156,9 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 ]
 final class FilesController extends AbstractStationApiCrudController
 {
+    use CanSortResults;
+    use CanSearchResults;
+
     protected string $entityClass = StationMedia::class;
     protected string $resourceRouteName = 'api:stations:file';
 
@@ -178,14 +183,38 @@ final class FilesController extends AbstractStationApiCrudController
     ): ResponseInterface {
         $storageLocation = $this->getStation($request)->getMediaStorageLocation();
 
-        $query = $this->em->createQuery(
-            <<<'DQL'
-                SELECT e FROM App\Entity\StationMedia e
-                WHERE e.storage_location = :storageLocation
-            DQL
-        )->setParameter('storageLocation', $storageLocation);
+        $qb = $this->em->createQueryBuilder()
+            ->select('e')
+            ->from(StationMedia::class, 'e')
+            ->where('e.storage_location = :storageLocation')
+            ->setParameter('storageLocation', $storageLocation);
 
-        return $this->listPaginatedFromQuery($request, $response, $query);
+        $qb = $this->sortQueryBuilder(
+            $request,
+            $qb,
+            [
+                'path' => 'e.path',
+                'title' => 'e.title',
+                'artist' => 'e.artist',
+                'album' => 'e.album',
+                'genre' => 'e.genre',
+                'length' => 'e.length',
+                'mtime' => 'e.mtime',
+            ],
+            'e.path'
+        );
+
+        $qb = $this->searchQueryBuilder(
+            $request,
+            $qb,
+            [
+                'e.title',
+                'e.artist',
+                'e.path',
+            ]
+        );
+
+        return $this->listPaginatedFromQuery($request, $response, $qb->getQuery());
     }
 
     public function createAction(

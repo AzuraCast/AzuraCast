@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Tests;
 
+use App\AppFactory;
 use App\Http\HttpFactory;
 use Codeception\Lib\Connector\Shared\PhpSuperGlobalsConverter;
 use Slim\App;
@@ -11,12 +12,21 @@ use Symfony\Component\BrowserKit\AbstractBrowser;
 use Symfony\Component\BrowserKit\Request as BrowserKitRequest;
 use Symfony\Component\BrowserKit\Response as BrowserKitResponse;
 
+/**
+ * @phpstan-import-type AppWithContainer from AppFactory
+ */
 class Connector extends AbstractBrowser
 {
     use PhpSuperGlobalsConverter;
 
+    /**
+     * @var AppWithContainer
+     */
     protected App $app;
 
+    /**
+     * @param AppWithContainer $app
+     */
     public function setApp(App $app): void
     {
         $this->app = $app;

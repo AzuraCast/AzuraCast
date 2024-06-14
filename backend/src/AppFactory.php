@@ -17,8 +17,14 @@ use Slim\App;
 use Slim\Factory\ServerRequestCreatorFactory;
 use Slim\Handlers\Strategies\RequestResponse;
 
+/**
+ * @phpstan-type AppWithContainer App<DI\Container>
+ */
 final class AppFactory
 {
+    /**
+     * @return AppWithContainer
+     */
     public static function createApp(
         array $appEnvironment = []
     ): App {
@@ -43,6 +49,9 @@ final class AppFactory
         return $di->get(Application::class);
     }
 
+    /**
+     * @return AppWithContainer
+     */
     public static function buildAppFromContainer(
         DI\Container $container,
         ?HttpFactory $httpFactory = null

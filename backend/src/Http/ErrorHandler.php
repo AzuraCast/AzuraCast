@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http;
 
+use App\AppFactory;
 use App\Container\EnvironmentAwareTrait;
 use App\Entity\Api\Error;
 use App\Enums\SupportedLocales;
@@ -25,6 +26,9 @@ use Throwable;
 use Whoops\Handler\PrettyPageHandler;
 use Whoops\Run;
 
+/**
+ * @phpstan-import-type AppWithContainer from AppFactory
+ */
 final class ErrorHandler extends SlimErrorHandler
 {
     use EnvironmentAwareTrait;
@@ -35,6 +39,13 @@ final class ErrorHandler extends SlimErrorHandler
 
     private Level $loggerLevel = Level::Error;
 
+    /**
+     * @param View $view
+     * @param Router $router
+     * @param InjectSession $injectSession
+     * @param AppWithContainer $app
+     * @param Logger $logger
+     */
     public function __construct(
         private readonly View $view,
         private readonly Router $router,

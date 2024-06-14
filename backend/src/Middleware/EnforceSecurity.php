@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Middleware;
 
+use App\AppFactory;
 use App\Container\SettingsAwareTrait;
 use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseFactoryInterface;
@@ -13,6 +14,7 @@ use Slim\App;
 
 /**
  * Remove trailing slash from all URLs when routing.
+ * @phpstan-import-type AppWithContainer from AppFactory
  */
 final class EnforceSecurity extends AbstractMiddleware
 {
@@ -20,6 +22,9 @@ final class EnforceSecurity extends AbstractMiddleware
 
     private ResponseFactoryInterface $responseFactory;
 
+    /**
+     * @param AppWithContainer $app
+     */
     public function __construct(
         App $app
     ) {

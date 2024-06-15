@@ -409,8 +409,8 @@ final class ConfigWriter implements EventSubscriberInterface
         if ($enableAutoCue) {
             $event->appendBlock(
                 <<<LIQ
-                # AutoCue
-                settings.autocue.target_cross_duration := settings.autocue.cue_file.fade_out()
+                # Ensure AutoCue settings are valid
+                ignore(check_autocue_setup(shutdown=true, print=false))
                 LIQ
             );
         }

@@ -55,10 +55,18 @@
                                 {{ $gettext('Port') }}
                             </td>
                             <td
-                                class="px-0"
+                                class="ps-0"
                                 colspan="2"
                             >
                                 {{ frontendPort }}
+                                <div
+                                    v-if="isShoutcast"
+                                    class="form-text"
+                                >
+                                    {{
+                                        $gettext('Some clients may require that you enter a port number that is either one above or one below this number.')
+                                    }}
+                                </div>
                             </td>
                         </tr>
                         <tr class="align-middle">
@@ -199,6 +207,10 @@ const frontendName = computed(() => {
         return 'Shoutcast';
     }
     return '';
+});
+
+const isShoutcast = computed(() => {
+    return props.frontendType === FrontendAdapter.Shoutcast;
 });
 
 const makeApiCall = (uri) => {

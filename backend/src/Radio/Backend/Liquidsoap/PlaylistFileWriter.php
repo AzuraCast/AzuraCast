@@ -6,6 +6,7 @@ namespace App\Radio\Backend\Liquidsoap;
 
 use App\Container\EntityManagerAwareTrait;
 use App\Container\LoggerAwareTrait;
+use App\Entity\Enums\PlaylistSources;
 use App\Entity\Station;
 use App\Entity\StationMedia;
 use App\Entity\StationPlaylist;
@@ -40,28 +41,38 @@ final class PlaylistFileWriter implements EventSubscriberInterface
      */
     public function __invoke(Message\AbstractMessage $message): void
     {
-        if ($message instanceof Message\WritePlaylistFileMessage) {
-            $playlist = $this->em->find(StationPlaylist::class, $message->playlist_id);
+        if (!($message instanceof Message\WritePlaylistFileMessage)) {
+            return;
+        }
 
-            if ($playlist instanceof StationPlaylist) {
-                $this->writePlaylistFile($playlist);
+        $playlist = $this->em->find(StationPlaylist::class, $message->playlist_id);
+        if (!($playlist instanceof StationPlaylist)) {
+            return;
+        }
 
-                $playlistVarName = ConfigWriter::getPlaylistVariableName($playlist);
-                $station = $playlist->getStation();
+        // @DEV: to prevent increased nesting I've switched to early returns here
+        // can't write playlist files for playlist groups
+        // they are not really representable in simple .pls file
+        if (PlaylistSources::Playlists === $playlist->getSource()) {
+            return;
+        }
 
-                try {
-                    $this->liquidsoap->command($station, $playlistVarName . '.reload');
-                } catch (Exception $e) {
-                    $this->logger->error(
-                        'Could not reload playlist with AutoDJ.',
-                        [
-                            'message' => $e->getMessage(),
-                            'playlist' => $playlistVarName,
-                            'station' => $station->getId(),
-                        ]
-                    );
-                }
-            }
+        $this->writePlaylistFile($playlist);
+
+        $playlistVarName = ConfigWriter::getPlaylistVariableName($playlist);
+        $station = $playlist->getStation();
+
+        try {
+            $this->liquidsoap->command($station, $playlistVarName . '.reload');
+        } catch (Exception $e) {
+            $this->logger->error(
+                'Could not reload playlist with AutoDJ.',
+                [
+                    'message' => $e->getMessage(),
+                    'playlist' => $playlistVarName,
+                    'station' => $station->getId(),
+                ]
+            );
         }
     }
 

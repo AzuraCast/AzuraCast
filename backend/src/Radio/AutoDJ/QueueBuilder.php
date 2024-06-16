@@ -22,6 +22,7 @@ use App\Entity\StationQueue;
 use App\Event\Radio\BuildQueue;
 use App\Radio\PlaylistParser;
 use Carbon\CarbonInterface;
+use Doctrine\Common\Collections\Collection;
 use Psr\SimpleCache\CacheInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -68,17 +69,10 @@ final class QueueBuilder implements EventSubscriberInterface
         $station = $event->getStation();
         $expectedPlayTime = $event->getExpectedPlayTime();
 
-        $activePlaylistsByType = [];
-        foreach ($station->getPlaylists() as $playlist) {
-            /** @var StationPlaylist $playlist */
-            if ($playlist->isPlayable($event->isInterrupting())) {
-                $type = $playlist->getType()->value;
+        // @See: "@DEV: Reference1"
+        // @TODO: need to extract specific stuff from this into a reusable method
 
-                $subType = ($playlist->getScheduleItems()->count() > 0) ? 'scheduled' : 'unscheduled';
-                $activePlaylistsByType[$type . '_' . $subType][$playlist->getId()] = $playlist;
-            }
-        }
-
+        $activePlaylistsByType = $this->assembleActivePlaylistsByType($event, $station->getPlaylists());
         if (empty($activePlaylistsByType)) {
             $this->logger->error('No valid playlists detected. Skipping AutoDJ calculations.');
             return;
@@ -97,23 +91,15 @@ final class QueueBuilder implements EventSubscriberInterface
             ]
         );
 
-        $typesToPlay = [
-            PlaylistTypes::OncePerHour->value,
-            PlaylistTypes::OncePerXSongs->value,
-            PlaylistTypes::OncePerXMinutes->value,
-            PlaylistTypes::Standard->value,
-        ];
-        $typesToPlayByPriority = [];
-        foreach ($typesToPlay as $type) {
-            $typesToPlayByPriority[] = $type . '_scheduled';
-            $typesToPlayByPriority[] = $type . '_unscheduled';
-        }
+        $playlistTypesToPlayByPriority = $this->assemblePlaylistTypesToPlayByPriority();
 
-        foreach ($typesToPlayByPriority as $currentPlaylistType) {
+        foreach ($playlistTypesToPlayByPriority as $currentPlaylistType) {
             if (empty($activePlaylistsByType[$currentPlaylistType])) {
                 continue;
             }
 
+            // @TODO: extract this into method
+            // - should it return an array-shape and we destruct-assign here?
             $eligiblePlaylists = [];
             $logPlaylists = [];
             foreach ($activePlaylistsByType[$currentPlaylistType] as $playlistId => $playlist) {
@@ -139,7 +125,7 @@ final class QueueBuilder implements EventSubscriberInterface
                 sprintf(
                     '%d playable playlist(s) of type "%s" found.',
                     count($eligiblePlaylists),
-                    $type
+                    $currentPlaylistType
                 ),
                 ['playlists' => $logPlaylists]
             );
@@ -179,6 +165,58 @@ final class QueueBuilder implements EventSubscriberInterface
         } else {
             $this->logger->error('No playable tracks were found.');
         }
+    }
+
+    /**
+     * @param Collection<int, StationPlaylist> $playlists
+     *
+     * @TODO: I'm unhappy about the "unspecific" typing of these PlaylistType::xyz->value . '_' . $subType keys...
+     * @return array<string, array<int|string, StationPlaylist>>
+     */
+    private function assembleActivePlaylistsByType(
+        BuildQueue $event,
+        Collection $playlists
+    ): array {
+        $activePlaylistsByType = [];
+
+        foreach ($playlists as $playlist) {
+            // @DEV: playlists that are part of a playlist group are not included in general playout rotation
+            // their playlist groups should determine their initial "should/should not play" status
+            if ($playlist->getPlaylistGroups() > 0) {
+                continue;
+            }
+
+            if ($playlist->isPlayable($event->isInterrupting())) {
+                $type = $playlist->getType()->value;
+
+                $subType = ($playlist->getScheduleItems()->count() > 0) ? 'scheduled' : 'unscheduled';
+                $activePlaylistsByType[$type . '_' . $subType][$playlist->getId()] = $playlist;
+            }
+        }
+
+        return $activePlaylistsByType;
+    }
+
+    /**
+     * @TODO: I'm unhappy about the "unspecific" typing of these PlaylistType::xyz->value . '_<scheduled/unscheduled>' values...
+     * @return string[]
+     */
+    private function assemblePlaylistTypesToPlayByPriority(): array
+    {
+        $typesToPlay = [
+            PlaylistTypes::OncePerHour->value,
+            PlaylistTypes::OncePerXSongs->value,
+            PlaylistTypes::OncePerXMinutes->value,
+            PlaylistTypes::Standard->value,
+        ];
+
+        $typesToPlayByPriority = [];
+        foreach ($typesToPlay as $type) {
+            $typesToPlayByPriority[] = $type . '_scheduled';
+            $typesToPlayByPriority[] = $type . '_unscheduled';
+        }
+
+        return $typesToPlayByPriority;
     }
 
     /**
@@ -231,6 +269,36 @@ final class QueueBuilder implements EventSubscriberInterface
     ): StationQueue|array|null {
         if (PlaylistSources::RemoteUrl === $playlist->getSource()) {
             return $this->getSongFromRemotePlaylist($playlist, $expectedPlayTime);
+        }
+
+        // @TODO: if playlist is part of playlist_groups
+            // - they should get checked in the playSongFromPlaylist
+
+        // @TODO: handle playlist groups
+        if (PlaylistSources::Playlists === $playlist->getSource()) {
+            // @TODO: First need to define valid settings for playlist groups
+            // - wouldn't allow advanced backend options at all
+            //      - this would make handling groups much too hard imho as we would neet to figure out how to translate this into LS code
+            // - wouldn't allow the following options in the beginning to keep the first version simple
+            //      - avoid duplicate artists
+            //      - include in on-demand player
+            //      - hide metadata
+            //      - allow requests
+            // - wouldn't allow PlaylistTypes::Advanced, can't really represent these in LS Code
+            // - other PlaylistType should all be fine
+            // - all PlaylistOrders should be fine
+            // - weight should be fine
+            // - enabled / disabled should be fine
+
+            // @DEV: Reference1
+            // @TODO: Get playlists in playlist group
+            // - handle assembleActivePlaylistsByType
+            // - handle PlaylistType::xyz stuff
+            // - handle shouldPlaylistPlayNow
+            // - handle weighted shuffle
+            // - handle duplicate check loop
+            // Maybe I should extract this stuff from the calculateNextSong method
+            // and put it into a method that can be re-used here...
         }
 
         if ($playlist->backendMerge()) {

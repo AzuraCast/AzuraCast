@@ -358,12 +358,12 @@ final class Scheduler
         );
 
         $isQueueEmpty = $this->spmRepo->isQueueEmpty($playlist);
-        $hasCuedPlaylistMedia = $this->queueRepo->hasCuedPlaylistMedia($playlist);
+        $hasCuedPlaylistMedia = $this->queueRepo->hasCuedPlaylistMedia($playlist); // @TODO: do we need to handle playlist groups here?
 
         if (!$dateRange->contains($playlistPlayedAt)) {
             $this->logger->debug('Playlist was not played yet.');
 
-            $isQueueFilled = $this->spmRepo->isQueueCompletelyFilled($playlist);
+            $isQueueFilled = $this->spmRepo->isQueueCompletelyFilled($playlist); // @TODO: do we need to handle playlist groups here?
 
             if ((!$isQueueFilled || $isQueueEmpty) && !$hasCuedPlaylistMedia) {
                 $now = $dateRange->getStart()->subSecond();

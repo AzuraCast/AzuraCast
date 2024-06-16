@@ -444,6 +444,11 @@ final class ConfigWriter implements EventSubscriberInterface
                 continue;
             }
 
+            // @TODO: Do special handling for playlists that are part of a playlist group
+            //      - Do not schedule a playlist that is part of a playlist group in LS
+            //          - They are also not scheduled in AzuraCast AutoDJ so we should keep this behaviour consistent in LS too
+            //      - Still generate playlist definition in LS for those playlists if user wants to do any advanced stuff with them
+
             $playlistVarName = self::getPlaylistVariableName($playlist);
 
             if (in_array($playlistVarName, $playlistVarNames, true)) {
@@ -484,6 +489,8 @@ final class ConfigWriter implements EventSubscriberInterface
                     . self::cleanUpString($playlist->getRemoteUrl())
                     . '")';
                 $playlistConfigLines[] = $playlistVarName . ' = ' . $playlistFunc;
+            } elseif (PlaylistSources::Playlists) {
+                // @TODO: Do we need to handle anything here?
             } else {
                 // Special handling for Remote Stream URLs.
                 $remoteUrl = $playlist->getRemoteUrl();

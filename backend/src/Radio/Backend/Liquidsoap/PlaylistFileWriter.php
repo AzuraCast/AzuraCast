@@ -50,8 +50,8 @@ final class PlaylistFileWriter implements EventSubscriberInterface
             return;
         }
 
-        // @DEV: to prevent increased nesting I've switched to early returns here
-        // can't write playlist files for playlist groups
+        // @DEV: to prevent increased nesting I've switched to early returns here;
+        // also can't write playlist files for playlist groups
         // they are not really representable in simple .pls file
         if (PlaylistSources::Playlists === $playlist->getSource()) {
             return;

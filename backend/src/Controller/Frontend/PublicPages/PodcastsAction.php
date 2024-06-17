@@ -9,6 +9,7 @@ use App\Controller\SingleActionInterface;
 use App\Exception\NotFoundException;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use App\Utilities\Types;
 use Psr\Http\Message\ResponseInterface;
 
 final class PodcastsAction implements SingleActionInterface
@@ -33,6 +34,8 @@ final class PodcastsAction implements SingleActionInterface
             $pageClass .= ' embed';
         }
 
+        $groupLayout = Types::string($request->getQueryParam('layout'), 'table', true);
+
         $router = $request->getRouter();
         $view = $request->getView();
 
@@ -56,6 +59,7 @@ final class PodcastsAction implements SingleActionInterface
             ],
             props: [
                 'baseUrl' => $router->fromHere('public:index'),
+                'groupLayout' => $groupLayout,
             ],
         );
     }

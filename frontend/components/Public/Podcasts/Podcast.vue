@@ -44,6 +44,7 @@
         </loading>
 
         <data-table
+            v-if="groupLayout === 'table'"
             id="podcast-episodes"
             ref="$datatable"
             paginated
@@ -105,6 +106,64 @@
                 </div>
             </template>
         </data-table>
+        <grid-layout
+            v-else
+            id="podcast-episodes-grid"
+            ref="$grid"
+            paginated
+            :api-url="episodesUrl"
+        >
+            <template #item="{item}">
+                <div class="card mb-4">
+                    <div class="card-header d-flex align-items-center">
+                        <div class="flex-shrink-0 pe-2">
+                            <play-button
+                                icon-class="lg"
+                                :url="item.links.download"
+                            />
+                        </div>
+                        <h5 class="card-title flex-fill m-0">
+                            <router-link
+                                :to="{name: 'public:podcast:episode', params: {podcast_id: podcast.id, episode_id: item.id}}"
+                            >
+                                {{ item.title }}
+                            </router-link>
+                        </h5>
+                        <div class="flex-shrink-0 ps-2">
+                            <album-art
+                                :src="item.art"
+                                :width="64"
+                            />
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="badges my-2">
+                            <span
+                                v-if="item.publish_at"
+                                class="badge text-bg-secondary"
+                            >
+                                {{ formatTimestampAsDateTime(item.publish_at) }}
+                            </span>
+                            <span
+                                v-else
+                                class="badge text-bg-secondary"
+                            >
+                                {{ formatTimestampAsDateTime(item.created_at) }}
+                            </span>
+                            <span
+                                v-if="item.explicit"
+                                class="badge text-bg-danger"
+                            >
+                                {{ $gettext('Explicit') }}
+                            </span>
+                        </div>
+                        <p class="card-text">
+                            {{ item.description_short }}
+                        </p>
+                    </div>
+                </div>
+            </template>
+        </grid-layout>
     </div>
 </template>
 
@@ -122,6 +181,10 @@ import Icon from "~/components/Common/Icon.vue";
 import PlayButton from "~/components/Common/PlayButton.vue";
 import useStationDateTimeFormatter from "~/functions/useStationDateTimeFormatter.ts";
 import PodcastCommon from "./PodcastCommon.vue";
+import GridLayout from "~/components/Common/GridLayout.vue";
+import {usePodcastGroupLayout} from "~/components/Public/Podcasts/usePodcastGroupLayout.ts";
+
+const {groupLayout} = usePodcastGroupLayout();
 
 const {params} = useRoute();
 

@@ -27,6 +27,20 @@ import FullHeightCard from "~/components/Public/FullHeightCard.vue";
 import InlinePlayer from "~/components/InlinePlayer.vue";
 import {useAzuraCastStation} from "~/vendor/azuracast.ts";
 import MinimalLayout from "~/components/MinimalLayout.vue";
+import {useProvidePodcastGroupLayout} from "~/components/Public/Podcasts/usePodcastGroupLayout.ts";
+
+const props = defineProps({
+    baseUrl: {
+        type: String,
+        required: true
+    },
+    groupLayout: {
+        type: String,
+        default: 'table'
+    }
+});
+
+useProvidePodcastGroupLayout(props.groupLayout);
 
 const {name} = useAzuraCastStation();
 </script>

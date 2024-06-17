@@ -117,6 +117,9 @@ final class BackupCommand extends AbstractDatabaseCommand
         $filesToBackup[] = $pathDbDump;
         $io->newLine();
 
+        // Backup uploaded custom assets
+        $filesToBackup[] = $this->environment->getUploadsDirectory();
+
         // Include station media if specified.
         if ($includeMedia) {
             $stations = $this->em->createQuery(
@@ -130,6 +133,16 @@ final class BackupCommand extends AbstractDatabaseCommand
                 $mediaAdapter = $station->getMediaStorageLocation();
                 if ($mediaAdapter->isLocal()) {
                     $filesToBackup[] = $mediaAdapter->getPath();
+                }
+
+                $podcastsAdapter = $station->getPodcastsStorageLocation();
+                if ($podcastsAdapter->isLocal()) {
+                    $filesToBackup[] = $podcastsAdapter->getPath();
+                }
+
+                $recordingsAdapter = $station->getRecordingsStorageLocation();
+                if ($recordingsAdapter->isLocal()) {
+                    $filesToBackup[] = $recordingsAdapter->getPath();
                 }
             }
         }

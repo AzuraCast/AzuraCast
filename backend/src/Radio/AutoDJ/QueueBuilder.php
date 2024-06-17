@@ -69,9 +69,6 @@ final class QueueBuilder implements EventSubscriberInterface
         $station = $event->getStation();
         $expectedPlayTime = $event->getExpectedPlayTime();
 
-        // @See: "@DEV: Reference1"
-        // @TODO: need to extract specific stuff from this into a reusable method
-
         $activePlaylistsByType = $this->assembleActivePlaylistsByType($event, $station->getPlaylists());
         if (empty($activePlaylistsByType)) {
             $this->logger->error('No valid playlists detected. Skipping AutoDJ calculations.');
@@ -98,24 +95,11 @@ final class QueueBuilder implements EventSubscriberInterface
                 continue;
             }
 
-            // @TODO: extract this into method
-            // - should it return an array-shape and we destruct-assign here?
-            $eligiblePlaylists = [];
-            $logPlaylists = [];
-            foreach ($activePlaylistsByType[$currentPlaylistType] as $playlistId => $playlist) {
-                /** @var StationPlaylist $playlist */
-                if (!$this->scheduler->shouldPlaylistPlayNow($playlist, $expectedPlayTime)) {
-                    continue;
-                }
-
-                $eligiblePlaylists[$playlistId] = $playlist->getWeight();
-
-                $logPlaylists[] = [
-                    'id' => $playlist->getId(),
-                    'name' => $playlist->getName(),
-                    'weight' => $playlist->getWeight(),
-                ];
-            }
+            [$eligiblePlaylists, $logPlaylists] = $this->assembleEligiblePlaylistsAndPlaylistsLog(
+                $activePlaylistsByType,
+                $currentPlaylistType,
+                $expectedPlayTime
+            );
 
             if (empty($eligiblePlaylists)) {
                 continue;
@@ -220,6 +204,47 @@ final class QueueBuilder implements EventSubscriberInterface
     }
 
     /**
+     * @param array<string, array<int|string, StationPlaylist>> $activePlaylistsByType
+     *
+     * @return array{
+     *  eligiblePlaylists: array<int|string, int>,
+     *  logPlaylists: array<array{
+     *      id: int|string,
+     *      name: string,
+     *      weight: int
+     *  }>
+     * }
+     */
+    private function assembleEligiblePlaylistsAndPlaylistsLog(
+        array $activePlaylistsByType,
+        string $currentPlaylistType,
+        CarbonInterface $expectedPlayTime
+    ): array {
+        $eligiblePlaylists = [];
+        $logPlaylists = [];
+
+        foreach ($activePlaylistsByType[$currentPlaylistType] as $playlistId => $playlist) {
+            /** @var StationPlaylist $playlist */
+            if (!$this->scheduler->shouldPlaylistPlayNow($playlist, $expectedPlayTime)) {
+                continue;
+            }
+
+            $eligiblePlaylists[$playlistId] = $playlist->getWeight();
+
+            $logPlaylists[] = [
+                'id' => $playlist->getId(),
+                'name' => $playlist->getName(),
+                'weight' => $playlist->getWeight(),
+            ];
+        }
+
+        return [
+            'eligiblePlaylists' => $eligiblePlaylists,
+            'logPlaylists' => $logPlaylists,
+        ];
+    }
+
+    /**
      * Apply a weighted shuffle to the given array in the form:
      *  [ key1 => weight1, key2 => weight2 ]
      *
@@ -250,6 +275,21 @@ final class QueueBuilder implements EventSubscriberInterface
         );
 
         return $new;
+    }
+
+    private function playSongFromPlaylistGroup(
+        StationPlaylist $playlistGroup,
+        array $recentSongHistory,
+        CarbonInterface $expectedPlayTime,
+        bool $allowDuplicates = false
+    ): StationQueue|array|null {
+        // @TODO: iterate over entries, only one type of content shall be present, other playlists or media
+        // - Need to handle the PlaylistOrders here to first decide what to do next
+        //
+        // Should I adjust  getRandomMediaIdFromPlaylist, getSequentialMediaIdFromPlaylist & getShuffledMediaIdFromPlaylist
+        // to be able to handle playlist groups or should I handle this in here somehow?
+
+        return null;
     }
 
     /**
@@ -290,7 +330,6 @@ final class QueueBuilder implements EventSubscriberInterface
             // - weight should be fine
             // - enabled / disabled should be fine
 
-            // @DEV: Reference1
             // @TODO: Get playlists in playlist group
             // - handle assembleActivePlaylistsByType
             // - handle PlaylistType::xyz stuff
@@ -298,7 +337,7 @@ final class QueueBuilder implements EventSubscriberInterface
             // - handle weighted shuffle
             // - handle duplicate check loop
             // Maybe I should extract this stuff from the calculateNextSong method
-            // and put it into a method that can be re-used here...
+            // and put it into a method that can be re-used here... (done extraction)
         }
 
         if ($playlist->backendMerge()) {

@@ -118,6 +118,10 @@ final class CheckMediaTask extends AbstractTask
                 continue;
             }
 
+            if ($size === 0) {
+                continue;
+            }
+
             if (MimeType::isPathProcessable($file->path())) {
                 $pathHash = md5($file->path());
                 $musicFiles[$pathHash] = [

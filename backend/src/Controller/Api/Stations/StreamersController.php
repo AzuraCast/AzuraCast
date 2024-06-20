@@ -15,7 +15,6 @@ use App\Http\ServerRequest;
 use App\OpenApi;
 use App\Radio\AutoDJ\Scheduler;
 use App\Service\Flow\UploadedFile;
-use App\Utilities\Types;
 use Carbon\CarbonInterface;
 use InvalidArgumentException;
 use OpenApi\Attributes as OA;
@@ -270,18 +269,14 @@ final class StreamersController extends AbstractScheduledEntityController
         );
     }
 
-    /**
-     * @param StationStreamer $record
-     * @param ServerRequest $request
-     *
-     * @return mixed[]
-     */
     protected function viewRecord(object $record, ServerRequest $request): array
     {
+        assert($record instanceof StationStreamer);
+
         $return = parent::viewRecord($record, $request);
 
+        $isInternal = $request->isInternal();
         $router = $request->getRouter();
-        $isInternal = Types::bool($request->getParam('internal'), false, true);
 
         $return['has_custom_art'] = (0 !== $record->getArtUpdatedAt());
 

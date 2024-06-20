@@ -13,10 +13,8 @@ use App\Entity\StationSchedule;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\OpenApi;
-use App\Utilities\Types;
 use Carbon\CarbonInterface;
 use Doctrine\ORM\AbstractQuery;
-use InvalidArgumentException;
 use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
@@ -242,11 +240,7 @@ final class PlaylistsController extends AbstractScheduledEntityController
      */
     protected function viewRecord(object $record, ServerRequest $request): array
     {
-        if (!($record instanceof $this->entityClass)) {
-            throw new InvalidArgumentException(sprintf('Record must be an instance of %s.', $this->entityClass));
-        }
-
-        /** @var StationPlaylist $record */
+        assert($record instanceof StationPlaylist);
 
         $return = $this->toArray($record);
 
@@ -266,7 +260,7 @@ final class PlaylistsController extends AbstractScheduledEntityController
         $return['num_songs'] = $songTotals['num_songs'];
         $return['total_length'] = round((float)$songTotals['total_length']);
 
-        $isInternal = Types::bool($request->getParam('internal'), false, true);
+        $isInternal = $request->isInternal();
         $router = $request->getRouter();
 
         $return['links'] = [

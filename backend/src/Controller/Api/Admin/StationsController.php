@@ -191,9 +191,7 @@ class StationsController extends AbstractApiCrudController
 
     protected function viewRecord(object $record, ServerRequest $request): mixed
     {
-        if (!($record instanceof $this->entityClass)) {
-            throw new InvalidArgumentException(sprintf('Record must be an instance of %s.', $this->entityClass));
-        }
+        assert($record instanceof Station);
 
         $return = $this->toArray($record);
 

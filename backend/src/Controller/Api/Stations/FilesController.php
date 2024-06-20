@@ -7,6 +7,7 @@ namespace App\Controller\Api\Stations;
 use App\Controller\Api\Traits\CanSearchResults;
 use App\Controller\Api\Traits\CanSortResults;
 use App\Entity\Api\Error;
+use App\Entity\Api\StationMedia as ApiStationMedia;
 use App\Entity\Api\Status;
 use App\Entity\Api\UploadFile;
 use App\Entity\Repository\CustomFieldRepository;
@@ -48,7 +49,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
                 description: 'Success',
                 content: new OA\JsonContent(
                     type: 'array',
-                    items: new OA\Items(ref: '#/components/schemas/StationMedia')
+                    items: new OA\Items(ref: '#/components/schemas/Api_StationMedia')
                 )
             ),
             new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
@@ -71,7 +72,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
             new OA\Response(
                 response: 200,
                 description: 'Success',
-                content: new OA\JsonContent(ref: '#/components/schemas/StationMedia')
+                content: new OA\JsonContent(ref: '#/components/schemas/Api_StationMedia')
             ),
             new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
             new OA\Response(ref: OpenApi::REF_RESPONSE_GENERIC_ERROR, response: 500),
@@ -97,7 +98,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
             new OA\Response(
                 response: 200,
                 description: 'Success',
-                content: new OA\JsonContent(ref: '#/components/schemas/StationMedia')
+                content: new OA\JsonContent(ref: '#/components/schemas/Api_StationMedia')
             ),
             new OA\Response(ref: OpenApi::REF_RESPONSE_ACCESS_DENIED, response: 403),
             new OA\Response(ref: OpenApi::REF_RESPONSE_NOT_FOUND, response: 404),
@@ -110,7 +111,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
         description: 'Update details of a single file.',
         security: OpenApi::API_KEY_SECURITY,
         requestBody: new OA\RequestBody(
-            content: new OA\JsonContent(ref: '#/components/schemas/StationMedia')
+            content: new OA\JsonContent(ref: '#/components/schemas/Api_StationMedia')
         ),
         tags: ['Stations: Media'],
         parameters: [
@@ -215,6 +216,64 @@ final class FilesController extends AbstractStationApiCrudController
         );
 
         return $this->listPaginatedFromQuery($request, $response, $qb->getQuery());
+    }
+
+    protected function viewRecord(object $record, ServerRequest $request): ApiStationMedia
+    {
+        assert($record instanceof StationMedia);
+
+        $returnArray = $this->toArray($record);
+
+        $return = ApiStationMedia::fromArray(
+            $returnArray,
+            $this->customFieldsRepo->getCustomFields($record),
+            ApiStationMedia::aggregatePlaylists($returnArray['playlists'] ?? []),
+        );
+
+        $isInternal = $request->isInternal();
+        $router = $request->getRouter();
+
+        $routeParams = [
+            'media_id' => $record->getUniqueId(),
+        ];
+
+        if (0 !== $record->getArtUpdatedAt()) {
+            $routeParams['timestamp'] = $record->getArtUpdatedAt();
+        }
+
+        $return->art = $router->fromHere(
+            'api:stations:media:art',
+            routeParams: $routeParams,
+            absolute: !$isInternal
+        );
+
+        $return->links = [
+            'self' => $router->fromHere(
+                routeName: $this->resourceRouteName,
+                routeParams: ['id' => $record->getIdRequired()],
+                absolute: !$isInternal
+            ),
+            'play' => $router->fromHere(
+                'api:stations:files:play',
+                ['id' => $record->getIdRequired()],
+                absolute: true
+            ),
+            'art' => $router->fromHere(
+                'api:stations:media:art',
+                ['media_id' => $record->getIdRequired()],
+                absolute: !$isInternal
+            ),
+            'waveform' => $router->fromHere(
+                'api:stations:media:waveform',
+                [
+                    'media_id' => $record->getUniqueId(),
+                    'timestamp' => $record->getArtUpdatedAt(),
+                ],
+                absolute: !$isInternal
+            ),
+        ];
+
+        return $return;
     }
 
     public function createAction(

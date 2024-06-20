@@ -8,6 +8,7 @@ use App\Container\EntityManagerAwareTrait;
 use App\Entity\Repository\StationQueueRepository;
 use App\Entity\Station;
 use App\Entity\StationMedia;
+use App\Entity\StationMediaMetadata;
 use App\Entity\StationQueue;
 use App\Entity\StationRequest;
 use App\Event\Radio\AnnotateNextSong;
@@ -96,46 +97,41 @@ final class Annotations implements EventSubscriberInterface
             'duration' => $media->getLength(),
             'song_id' => $media->getSongId(),
             'media_id' => $media->getId(),
-            'liq_amplify' => $media->getAmplify(),
-            'liq_cross_start_next' => $media->getFadeStartNext(),
-            'liq_fade_in' => $media->getFadeIn(),
-            'liq_fade_out' => $media->getFadeOut(),
-            'liq_cue_in' => $media->getCueIn(),
-            'liq_cue_out' => $media->getCueOut(),
+            ...$media->getExtraMetadata()->toArray(),
         ], fn($row) => ('' !== $row && null !== $row));
 
         // Safety checks for cue lengths.
         if (
-            isset($annotationsRaw['liq_cue_out'])
-            && $annotationsRaw['liq_cue_out'] < 0
+            isset($annotationsRaw[StationMediaMetadata::CUE_OUT])
+            && $annotationsRaw[StationMediaMetadata::CUE_OUT] < 0
         ) {
-            $cueOut = abs($annotationsRaw['liq_cue_out']);
+            $cueOut = abs($annotationsRaw[StationMediaMetadata::CUE_OUT]);
 
             if (0.0 === $cueOut) {
-                unset($annotationsRaw['liq_cue_out']);
+                unset($annotationsRaw[StationMediaMetadata::CUE_OUT]);
             }
 
             if (isset($annotationsRaw['duration'])) {
                 if ($cueOut > $annotationsRaw['duration']) {
-                    unset($annotationsRaw['liq_cue_out']);
+                    unset($annotationsRaw[StationMediaMetadata::CUE_OUT]);
                 } else {
-                    $annotationsRaw['liq_cue_out'] = max(0, $annotationsRaw['duration'] - $cueOut);
+                    $annotationsRaw[StationMediaMetadata::CUE_OUT] = max(0, $annotationsRaw['duration'] - $cueOut);
                 }
             }
         }
 
         if (
-            isset($annotationsRaw['liq_cue_out'], $annotationsRaw['duration'])
-            && $annotationsRaw['liq_cue_out'] > $annotationsRaw['duration']
+            isset($annotationsRaw[StationMediaMetadata::CUE_OUT], $annotationsRaw['duration'])
+            && $annotationsRaw[StationMediaMetadata::CUE_OUT] > $annotationsRaw['duration']
         ) {
-            unset($annotationsRaw['liq_cue_out']);
+            unset($annotationsRaw[StationMediaMetadata::CUE_OUT]);
         }
 
         if (
-            isset($annotationsRaw['liq_cue_in'], $annotationsRaw['duration'])
-            && $annotationsRaw['liq_cue_in'] > $annotationsRaw['duration']
+            isset($annotationsRaw[StationMediaMetadata::CUE_IN], $annotationsRaw['duration'])
+            && $annotationsRaw[StationMediaMetadata::CUE_IN] > $annotationsRaw['duration']
         ) {
-            unset($annotationsRaw['liq_cue_in']);
+            unset($annotationsRaw[StationMediaMetadata::CUE_IN]);
         }
 
         foreach ($annotationsRaw as $name => $prop) {
@@ -146,8 +142,8 @@ final class Annotations implements EventSubscriberInterface
                 $prop = ConfigWriter::toFloat($prop);
             }
 
-            if ('liq_amplify' === $name) {
-                $prop .= 'dB';
+            if (StationMediaMetadata::AMPLIFY === $name) {
+                $prop .= ' dB';
             }
 
             $annotations[$name] = $prop;

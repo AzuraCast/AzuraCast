@@ -196,7 +196,8 @@ final class MountsController extends AbstractStationApiCrudController
 
     protected function viewRecord(object $record, ServerRequest $request): mixed
     {
-        /** @var StationMount $record */
+        assert($record instanceof StationMount);
+
         $return = parent::viewRecord($record, $request);
 
         $station = $request->getStation();

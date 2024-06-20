@@ -169,7 +169,8 @@ final class StorageLocationsController extends AbstractApiCrudController
     /** @inheritDoc */
     protected function viewRecord(object $record, ServerRequest $request): object
     {
-        /** @var StorageLocation $record */
+        assert($record instanceof StorageLocation);
+
         $original = parent::viewRecord($record, $request);
 
         $return = new ApiStorageLocation();

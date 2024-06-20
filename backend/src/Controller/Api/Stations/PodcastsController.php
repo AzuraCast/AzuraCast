@@ -16,7 +16,6 @@ use App\Http\ServerRequest;
 use App\OpenApi;
 use App\Service\Flow\UploadedFile;
 use App\Utilities\Types;
-use InvalidArgumentException;
 use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\Serializer\Serializer;
@@ -231,9 +230,7 @@ final class PodcastsController extends AbstractApiCrudController
 
     protected function viewRecord(object $record, ServerRequest $request): ApiPodcast
     {
-        if (!($record instanceof Podcast)) {
-            throw new InvalidArgumentException(sprintf('Record must be an instance of %s.', $this->entityClass));
-        }
+        assert($record instanceof Podcast);
 
         $isInternal = $request->isInternal();
         $router = $request->getRouter();

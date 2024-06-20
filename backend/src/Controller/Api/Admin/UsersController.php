@@ -15,7 +15,6 @@ use App\Http\Response;
 use App\Http\ServerRequest;
 use App\OpenApi;
 use App\Utilities\Types;
-use InvalidArgumentException;
 use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 
@@ -173,9 +172,7 @@ class UsersController extends AbstractApiCrudController
 
     protected function viewRecord(object $record, ServerRequest $request): mixed
     {
-        if (!($record instanceof User)) {
-            throw new InvalidArgumentException(sprintf('Record must be an instance of %s.', $this->entityClass));
-        }
+        assert($record instanceof User);
 
         $return = $this->toArray($record);
 

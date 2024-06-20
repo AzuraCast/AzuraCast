@@ -10,8 +10,6 @@ use App\Entity\StationWebhook;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\OpenApi;
-use App\Utilities\Types;
-use InvalidArgumentException;
 use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 
@@ -187,13 +185,11 @@ final class WebhooksController extends AbstractStationApiCrudController
 
     protected function viewRecord(object $record, ServerRequest $request): mixed
     {
-        if (!($record instanceof StationWebhook)) {
-            throw new InvalidArgumentException(sprintf('Record must be an instance of %s.', $this->entityClass));
-        }
+        assert($record instanceof StationWebhook);
 
         $return = $this->toArray($record);
 
-        $isInternal = Types::bool($request->getParam('internal'), false, true);
+        $isInternal = $request->isInternal();
         $router = $request->getRouter();
 
         $return['links'] = [

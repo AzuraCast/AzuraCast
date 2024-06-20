@@ -105,14 +105,16 @@ const {
             lyrics: {},
             isrc: {},
             art: {},
-            amplify: {},
-            fade_start_next: {},
-            fade_in: {},
-            fade_out: {},
-            cue_in: {},
-            cue_out: {},
+            custom_fields: {},
+            extra_metadata: {
+                liq_amplify: {},
+                liq_cross_start_next: {},
+                liq_fade_in: {},
+                liq_fade_out: {},
+                liq_cue_in: {},
+                liq_cue_out: {}
+            },
             playlists: {},
-            custom_fields: {}
         };
 
         forEach(props.customFields.slice(), (field) => {
@@ -130,14 +132,16 @@ const {
             genre: null,
             lyrics: null,
             isrc: null,
-            amplify: null,
-            fade_start_next: null,
-            fade_in: null,
-            fade_out: null,
-            cue_in: null,
-            cue_out: null,
+            custom_fields: {},
+            extra_metadata: {
+                liq_amplify: null,
+                liq_cross_start_next: null,
+                liq_fade_in: null,
+                liq_fade_out: null,
+                liq_cue_in: null,
+                liq_cue_out: null
+            },
             playlists: [],
-            custom_fields: {}
         };
 
         forEach(props.customFields.slice(), (field) => {
@@ -155,7 +159,10 @@ const {
             newForm.custom_fields = {};
 
             forEach(props.customFields.slice(), (field) => {
-                newForm.custom_fields[field.short_name] = defaultTo(data.custom_fields[field.short_name], null);
+                newForm.custom_fields[field.short_name] = defaultTo(
+                    data.custom_fields[field.short_name],
+                    null
+                );
             });
 
             form.value = newForm;

@@ -79,12 +79,7 @@ final class CustomFieldRepository extends Repository
         )->setParameter('media_id', $media->getId())
             ->getArrayResult();
 
-        $result = [];
-        foreach ($metadataRaw as $row) {
-            $result[$row['short_name']] = $row['value'];
-        }
-
-        return $result;
+        return array_column($metadataRaw, 'value', 'short_name');
     }
 
     /**

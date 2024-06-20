@@ -172,13 +172,9 @@ class Podcast implements Interfaces\IdentifiableEntityInterface
         PodcastBrandingConfiguration|array $brandingConfig,
         bool $forceOverwrite = false
     ): void {
-        if (is_array($brandingConfig)) {
-            $brandingConfig = new PodcastBrandingConfiguration(
-                $forceOverwrite ? $brandingConfig : array_merge((array)$this->branding_config, $brandingConfig)
-            );
-        }
-
-        $this->branding_config = $brandingConfig->toArray();
+        $this->branding_config = $this->getBrandingConfig()
+            ->fromArray($brandingConfig, $forceOverwrite)
+            ->toArray();
     }
 
     public function getLanguage(): string

@@ -228,6 +228,21 @@ export interface ApiError {
   success?: boolean;
 }
 
+export type ApiFileList = HasLinks & {
+  path?: string;
+  path_short?: string;
+  text?: string;
+  type?: FileTypes;
+  timestamp?: number;
+  size?: number | null;
+  media?: ApiStationMedia | null;
+  dir?: ApiFileListDir | null;
+};
+
+export interface ApiFileListDir {
+  playlists?: any[];
+}
+
 export interface ApiListener {
   /**
    * The listener's IP address
@@ -611,6 +626,7 @@ export type ApiPodcast = HasLinks & {
   link?: string | null;
   description?: string;
   description_short?: string;
+  is_enabled?: boolean;
   /** An array containing podcast-specific branding configuration */
   branding_config?: any[];
   language?: string;
@@ -662,54 +678,72 @@ export interface ApiPodcastMedia {
   path?: string | null;
 }
 
-export interface ApiSong {
+export type ApiSong = ApiHasSongFields & {
   /**
    * The song's 32-character unique identifier hash
    * @example "9f33bbc912c19603e51be8e0987d076b"
    */
   id?: string;
   /**
-   * The song title, usually "Artist - Title"
-   * @example "Chet Porter - Aluko River"
-   */
-  text?: string;
-  /**
-   * The song artist.
-   * @example "Chet Porter"
-   */
-  artist?: string | null;
-  /**
-   * The song title.
-   * @example "Aluko River"
-   */
-  title?: string | null;
-  /**
-   * The song album.
-   * @example "Moving Castle"
-   */
-  album?: string | null;
-  /**
-   * The song genre.
-   * @example "Rock"
-   */
-  genre?: string | null;
-  /**
-   * The International Standard Recording Code (ISRC) of the file.
-   * @example "US28E1600021"
-   */
-  isrc?: string | null;
-  /**
-   * Lyrics to the song.
-   * @example ""
-   */
-  lyrics?: string | null;
-  /**
    * URL to the album artwork (if available).
    * @example "https://picsum.photos/1200/1200"
    */
   art?: any;
   custom_fields?: string[];
-}
+};
+
+export type ApiStationMedia = ApiHasSongFields &
+  HasLinks & {
+    /**
+     * The media's identifier.
+     * @example 1
+     */
+    id?: number;
+    /**
+     * A unique identifier associated with this record.
+     * @example "69b536afc7ebbf16457b8645"
+     */
+    unique_id?: string;
+    /**
+     * The media file's 32-character unique song identifier hash
+     * @example "9f33bbc912c19603e51be8e0987d076b"
+     */
+    song_id?: string;
+    /**
+     * URL to the album art.
+     * @example "https://picsum.photos/1200/1200"
+     */
+    art?: string;
+    /**
+     * The relative path of the media file.
+     * @example "test.mp3"
+     */
+    path?: string;
+    /**
+     * The UNIX timestamp when the database was last modified.
+     * @example 1609480800
+     */
+    mtime?: number;
+    /**
+     * The latest time (UNIX timestamp) when album art was updated.
+     * @example 1609480800
+     */
+    art_updated_at?: number;
+    /**
+     * The song duration in seconds.
+     * @format float
+     * @example 240
+     */
+    length?: number;
+    /**
+     * The formatted song duration (in mm:ss format)
+     * @example "4:00"
+     */
+    length_text?: string;
+    custom_fields?: string[];
+    extra_metadata?: any[];
+    playlists?: any[];
+  };
 
 export interface ApiStationOnDemand {
   /**
@@ -932,7 +966,45 @@ export interface ApiTime {
 }
 
 export interface HasLinks {
-  links?: string[];
+  links?: Record<string, string>;
+}
+
+export interface ApiHasSongFields {
+  /**
+   * The song title, usually "Artist - Title"
+   * @example "Chet Porter - Aluko River"
+   */
+  text?: string;
+  /**
+   * The song artist.
+   * @example "Chet Porter"
+   */
+  artist?: string | null;
+  /**
+   * The song title.
+   * @example "Aluko River"
+   */
+  title?: string | null;
+  /**
+   * The song album.
+   * @example "Moving Castle"
+   */
+  album?: string | null;
+  /**
+   * The song genre.
+   * @example "Rock"
+   */
+  genre?: string | null;
+  /**
+   * The International Standard Recording Code (ISRC) of the file.
+   * @example "US28E1600021"
+   */
+  isrc?: string | null;
+  /**
+   * Lyrics to the song.
+   * @example ""
+   */
+  lyrics?: string | null;
 }
 
 export interface ApiUploadFile {
@@ -955,6 +1027,14 @@ export type CustomField = HasAutoIncrementId & {
   /** An ID3v2 field to automatically assign to this value, if it exists in the media file. */
   auto_assign?: string | null;
 };
+
+export enum FileTypes {
+  Directory = "directory",
+  Media = "media",
+  CoverArt = "cover_art",
+  UnprocessableFile = "unprocessable_file",
+  Other = "other",
+}
 
 export type Relay = HasAutoIncrementId & {
   /** @example "https://custom-url.example.com" */
@@ -1333,92 +1413,6 @@ export type StationHlsStream = HasAutoIncrementId & {
   /** @example 128 */
   bitrate?: number | null;
 };
-
-export type StationMedia = HasAutoIncrementId &
-  HasSongFields & {
-    /**
-     * A unique identifier associated with this record.
-     * @example "69b536afc7ebbf16457b8645"
-     */
-    unique_id?: string | null;
-    /**
-     * The name of the media file's album.
-     * @example "Test Album"
-     */
-    album?: string | null;
-    /**
-     * The genre of the media file.
-     * @example "Rock"
-     */
-    genre?: string | null;
-    /**
-     * Full lyrics of the track, if available.
-     * @example "...Never gonna give you up..."
-     */
-    lyrics?: string | null;
-    /**
-     * The track ISRC (International Standard Recording Code), used for licensing purposes.
-     * @example "GBARL0600786"
-     */
-    isrc?: string | null;
-    /**
-     * The song duration in seconds.
-     * @example 240
-     */
-    length?: string | null;
-    /**
-     * The formatted song duration (in mm:ss format)
-     * @example "4:00"
-     */
-    length_text?: string | null;
-    /**
-     * The relative path of the media file.
-     * @example "test.mp3"
-     */
-    path?: string;
-    /**
-     * The UNIX timestamp when the database was last modified.
-     * @example 1609480800
-     */
-    mtime?: number | null;
-    /**
-     * The amount of amplification (in dB) to be applied to the radio source (liq_amplify)
-     * @example -14
-     */
-    amplify?: string | null;
-    /**
-     * The length of time (in seconds) before the next song starts in the fade (liq_start_next)
-     * @example 2
-     */
-    fade_overlap?: string | null;
-    /**
-     * The length of time (in seconds) to fade in the next track (liq_fade_in)
-     * @example 3
-     */
-    fade_in?: string | null;
-    /**
-     * The length of time (in seconds) to fade out the previous track (liq_fade_out)
-     * @example 3
-     */
-    fade_out?: string | null;
-    /**
-     * The length of time (in seconds) from the start of the track to start playing (liq_cue_in)
-     * @example 30
-     */
-    cue_in?: string | null;
-    /**
-     * The length of time (in seconds) from the CUE-IN of the track to stop playing (liq_cue_out)
-     * @example 30
-     */
-    cue_out?: string | null;
-    /**
-     * The latest time (UNIX timestamp) when album art was updated.
-     * @example 1609480800
-     */
-    art_updated_at?: number;
-    /** StationPlaylistMedia> */
-    playlists?: any[];
-  };
 
 export type StationMount = HasAutoIncrementId & {
   /** @example "/radio.mp3" */

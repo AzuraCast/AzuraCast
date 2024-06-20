@@ -4,47 +4,40 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use App\Entity\Interfaces\IdentifiableEntityInterface;
+use App\Entity\Interfaces\PathAwareInterface;
+use App\Entity\Interfaces\ProcessableMediaInterface;
+use App\Entity\Interfaces\SongInterface;
+use App\Entity\Interfaces\TimestampableInterface;
 use App\Flysystem\StationFilesystems;
 use App\Media\Metadata;
 use App\Media\MetadataInterface;
-use App\OpenApi;
-use App\Utilities\Time;
 use App\Utilities\Types;
 use Azura\Normalizer\Attributes\DeepNormalize;
+use Carbon\CarbonImmutable;
+use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Exception;
-use OpenApi\Attributes as OA;
-use RuntimeException;
 use Symfony\Component\Serializer\Annotation as Serializer;
 
 #[
-    OA\Schema(type: "object"),
     ORM\Entity,
     ORM\Table(name: 'station_media'),
     ORM\Index(name: 'search_idx', columns: ['title', 'artist', 'album']),
     ORM\UniqueConstraint(name: 'path_unique_idx', columns: ['path', 'storage_location_id'])
 ]
 class StationMedia implements
-    Interfaces\SongInterface,
-    Interfaces\ProcessableMediaInterface,
-    Interfaces\PathAwareInterface,
-    Interfaces\IdentifiableEntityInterface
+    SongInterface,
+    ProcessableMediaInterface,
+    PathAwareInterface,
+    IdentifiableEntityInterface,
+    TimestampableInterface
 {
     use Traits\HasAutoIncrementId;
     use Traits\HasSongFields;
 
     public const int UNIQUE_ID_LENGTH = 24;
-
-    #[
-        OA\Property(
-            description: "A unique identifier associated with this record.",
-            example: "69b536afc7ebbf16457b8645"
-        ),
-        ORM\Column(length: 25, nullable: true)
-    ]
-    protected ?string $unique_id = null;
 
     #[
         ORM\ManyToOne(inversedBy: 'media'),
@@ -55,144 +48,38 @@ class StationMedia implements
     #[ORM\Column(nullable: false, insertable: false, updatable: false)]
     protected int $storage_location_id;
 
-    #[
-        OA\Property(
-            description: "The name of the media file's album.",
-            example: "Test Album"
-        ),
-        ORM\Column(length: 200, nullable: true)
-    ]
+    #[ORM\Column(length: 25, nullable: false)]
+    protected string $unique_id;
+
+    #[ORM\Column(length: 200, nullable: true)]
     protected ?string $album = null;
 
-    #[
-        OA\Property(
-            description: "The genre of the media file.",
-            example: "Rock"
-        ),
-        ORM\Column(length: 255, nullable: true)
-    ]
+    #[ORM\Column(length: 255, nullable: true)]
     protected ?string $genre = null;
 
-    #[
-        OA\Property(
-            description: "Full lyrics of the track, if available.",
-            example: "...Never gonna give you up..."
-        ),
-        ORM\Column(type: 'text', nullable: true)
-    ]
+    #[ORM\Column(type: 'text', nullable: true)]
     protected ?string $lyrics = null;
 
-    #[
-        OA\Property(
-            description: "The track ISRC (International Standard Recording Code), used for licensing purposes.",
-            example: "GBARL0600786"
-        ),
-        ORM\Column(length: 15, nullable: true)
-    ]
+    #[ORM\Column(length: 15, nullable: true)]
     protected ?string $isrc = null;
 
-    #[
-        OA\Property(
-            description: "The song duration in seconds.",
-            example: 240.00
-        ),
-        ORM\Column(type: 'decimal', precision: 7, scale: 2, nullable: true)
-    ]
-    protected ?string $length = '0.00';
+    #[ORM\Column(type: 'decimal', precision: 7, scale: 2, nullable: false)]
+    protected string $length = '0.00';
 
-    #[
-        OA\Property(
-            description: "The formatted song duration (in mm:ss format)",
-            example: "4:00"
-        ),
-        ORM\Column(length: 10, nullable: true)
-    ]
-    protected ?string $length_text = '0:00';
-
-    #[
-        OA\Property(
-            description: "The relative path of the media file.",
-            example: "test.mp3"
-        ),
-        ORM\Column(length: 500)
-    ]
+    #[ORM\Column(length: 500)]
     protected string $path;
 
-    #[
-        OA\Property(
-            description: "The UNIX timestamp when the database was last modified.",
-            example: OpenApi::SAMPLE_TIMESTAMP
-        ),
-        ORM\Column(nullable: true)
-    ]
-    protected ?int $mtime = 0;
+    #[ORM\Column(nullable: false)]
+    protected int $mtime;
 
-    #[
-        OA\Property(
-            description: "The amount of amplification (in dB) to be applied to the radio source (liq_amplify)",
-            example: -14.00
-        ),
-        ORM\Column(type: 'decimal', precision: 6, scale: 1, nullable: true)
-    ]
-    protected ?string $amplify = null;
-
-    #[
-        OA\Property(
-            description: "The length of time (in seconds) from the start of the track before the next song starts in the fade (liq_cross_start_next)",
-            example: 2.00
-        ),
-        ORM\Column(type: 'decimal', precision: 6, scale: 1, nullable: true)
-    ]
-    protected ?string $fade_start_next = null;
-
-    #[
-        OA\Property(
-            description: "The length of time (in seconds) to fade in the next track (liq_fade_in)",
-            example: 3.00
-        ),
-        ORM\Column(type: 'decimal', precision: 6, scale: 1, nullable: true)
-    ]
-    protected ?string $fade_in = null;
-
-    #[
-        OA\Property(
-            description: "The length of time (in seconds) to fade out the previous track (liq_fade_out)",
-            example: 3.00
-        ),
-        ORM\Column(type: 'decimal', precision: 6, scale: 1, nullable: true)
-    ]
-    protected ?string $fade_out = null;
-
-    #[
-        OA\Property(
-            description: "The length of time (in seconds) from the start of the track to start playing (liq_cue_in)",
-            example: 30.00
-        ),
-        ORM\Column(type: 'decimal', precision: 6, scale: 1, nullable: true)
-    ]
-    protected ?string $cue_in = null;
-
-    #[
-        OA\Property(
-            description: "The length of time (in seconds) from the CUE-IN of the track to stop playing (liq_cue_out)",
-            example: 30.00
-        ),
-        ORM\Column(type: 'decimal', precision: 6, scale: 1, nullable: true)
-    ]
-    protected ?string $cue_out = null;
-
-    #[
-        OA\Property(
-            description: "The latest time (UNIX timestamp) when album art was updated.",
-            example: OpenApi::SAMPLE_TIMESTAMP
-        ),
-        ORM\Column
-    ]
+    #[ORM\Column]
     protected int $art_updated_at = 0;
+
+    #[ORM\Column(type: 'json', nullable: true)]
+    protected ?array $extra_metadata = null;
 
     /** @var Collection<int, StationPlaylistMedia> */
     #[
-        OA\Property(type: "array", items: new OA\Items()),
         ORM\OneToMany(targetEntity: StationPlaylistMedia::class, mappedBy: 'media'),
         DeepNormalize(true),
         Serializer\MaxDepth(1)
@@ -215,26 +102,17 @@ class StationMedia implements
         $this->custom_fields = new ArrayCollection();
         $this->podcast_episodes = new ArrayCollection();
 
-        $this->setPath($path);
+        $this->mtime = time();
         $this->generateUniqueId();
+
+        $this->setPath($path);
     }
 
     public function getUniqueId(): string
     {
-        if (!isset($this->unique_id)) {
-            throw new RuntimeException('Unique ID has not been generated yet.');
-        }
-
         return $this->unique_id;
     }
 
-    /**
-     * Generate a new unique ID for this item.
-     *
-     * @param bool $forceNew
-     *
-     * @throws Exception
-     */
     public function generateUniqueId(bool $forceNew = false): void
     {
         if (!isset($this->unique_id) || $forceNew) {
@@ -298,29 +176,14 @@ class StationMedia implements
         $this->isrc = $this->truncateNullableString($isrc, 15);
     }
 
-    public function getLength(): ?float
+    public function getLength(): float
     {
-        return Types::floatOrNull($this->length);
+        return Types::float($this->length);
     }
 
     public function setLength(float $length): void
     {
-        $lengthInt = (int)floor($length);
-        $lengthMin = floor($lengthInt / 60);
-        $lengthSec = $lengthInt % 60;
-
         $this->length = (string)$length;
-        $this->length_text = $lengthMin . ':' . str_pad((string)$lengthSec, 2, '0', STR_PAD_LEFT);
-    }
-
-    public function getLengthText(): ?string
-    {
-        return $this->length_text;
-    }
-
-    public function setLengthText(?string $lengthText = null): void
-    {
-        $this->length_text = $lengthText;
     }
 
     public function getPath(): string
@@ -333,95 +196,19 @@ class StationMedia implements
         $this->path = $path;
     }
 
-    public function getMtime(): ?int
+    public function getMtime(): int
     {
         return $this->mtime;
     }
 
-    public function setMtime(?int $mtime = null): void
+    public function setMtime(int $mtime): void
     {
         $this->mtime = $mtime;
     }
 
-    public function getAmplify(): ?float
+    public function getTimestamp(): DateTimeInterface
     {
-        return Types::floatOrNull($this->amplify);
-    }
-
-    public function setAmplify(?float $amplify = null): void
-    {
-        $this->amplify = $this->annotationToString($amplify);
-    }
-
-    public function getFadeStartNext(): ?float
-    {
-        return Types::floatOrNull($this->fade_start_next);
-    }
-
-    public function setFadeStartNext(?float $fade_start_next = null): void
-    {
-        $this->fade_start_next = $this->annotationToString($fade_start_next);
-    }
-
-    public function getFadeIn(): ?float
-    {
-        return Types::floatOrNull($this->fade_in);
-    }
-
-    public function setFadeIn(string|int|float $fadeIn = null): void
-    {
-        $this->fade_in = $this->annotationToString($fadeIn);
-    }
-
-    public function getFadeOut(): ?float
-    {
-        return Types::floatOrNull($this->fade_out);
-    }
-
-    public function setFadeOut(string|int|float $fadeOut = null): void
-    {
-        $this->fade_out = $this->annotationToString($fadeOut);
-    }
-
-    public function getCueIn(): ?float
-    {
-        return Types::floatOrNull($this->cue_in);
-    }
-
-    public function setCueIn(string|int|float $cueIn = null): void
-    {
-        $this->cue_in = $this->annotationToString($cueIn);
-    }
-
-    public function getCueOut(): ?float
-    {
-        return Types::floatOrNull($this->cue_out);
-    }
-
-    public function setCueOut(string|int|float $cueOut = null): void
-    {
-        $this->cue_out = $this->annotationToString($cueOut);
-    }
-
-    /**
-     * Get the length with cue-in and cue-out points included.
-     */
-    public function getCalculatedLength(): int
-    {
-        $length = $this->getLength() ?? 0.0;
-
-        $cueOut = $this->getCueOut();
-        if ($cueOut > 0) {
-            $lengthRemoved = $length - $cueOut;
-            $length -= $lengthRemoved;
-        }
-
-        $cueIn = $this->getCueIn();
-        if ($cueIn > 0) {
-            $length -= $cueIn;
-        }
-
-        return (int)floor($length);
+        return CarbonImmutable::createFromTimestamp($this->mtime);
     }
 
     public function getArtUpdatedAt(): int
@@ -432,6 +219,43 @@ class StationMedia implements
     public function setArtUpdatedAt(int $artUpdatedAt): void
     {
         $this->art_updated_at = $artUpdatedAt;
+    }
+
+    public function getExtraMetadata(): StationMediaMetadata
+    {
+        return new StationMediaMetadata((array)$this->extra_metadata);
+    }
+
+    public function setExtraMetadata(
+        StationMediaMetadata|array $metadata,
+        bool $forceOverwrite = false
+    ): void {
+        $this->extra_metadata = $this->getExtraMetadata()
+            ->fromArray($metadata, $forceOverwrite)
+            ->toArray();
+    }
+
+    /**
+     * Get the length with cue-in and cue-out points included.
+     */
+    public function getCalculatedLength(): int
+    {
+        $length = $this->getLength();
+
+        $extraMeta = $this->getExtraMetadata();
+
+        $cueOut = $extraMeta->getCueOut();
+        if ($cueOut > 0) {
+            $lengthRemoved = $length - $cueOut;
+            $length -= $lengthRemoved;
+        }
+
+        $cueIn = $extraMeta->getCueIn();
+        if ($cueIn > 0) {
+            $length -= $cueIn;
+        }
+
+        return (int)floor($length);
     }
 
     /**
@@ -458,11 +282,6 @@ class StationMedia implements
         return $this->podcast_episodes;
     }
 
-    public static function needsReprocessing(int $fileModifiedTime = 0, int $dbModifiedTime = 0): bool
-    {
-        return $fileModifiedTime > $dbModifiedTime;
-    }
-
     /**
      * Indicates whether this media is a part of any "requestable" playlists.
      */
@@ -485,13 +304,6 @@ class StationMedia implements
     public function getPlaylists(): Collection
     {
         return $this->playlists;
-    }
-
-    private function annotationToString(string|float|int $annotation = null): ?string
-    {
-        return Types::stringOrNull(
-            Time::displayTimeToSeconds($annotation)
-        );
     }
 
     public function fromMetadata(MetadataInterface $metadata): void
@@ -519,33 +331,40 @@ class StationMedia implements
             $this->setIsrc(Types::stringOrNull($tags['isrc']));
         }
 
+        $this->setExtraMetadata($tags);
         $this->updateSongId();
     }
 
     public function toMetadata(): MetadataInterface
     {
         $metadata = new Metadata();
-        $metadata->setDuration($this->getLength() ?? 0.0);
+        $metadata->setDuration($this->getLength());
 
-        $metadata->setTags(
-            array_filter(
-                [
-                    'title' => $this->getTitle(),
-                    'artist' => $this->getArtist(),
-                    'album' => $this->getAlbum(),
-                    'genre' => $this->getGenre(),
-                    'unsynchronised_lyric' => $this->getLyrics(),
-                    'isrc' => $this->getIsrc(),
-                ]
-            )
+        $tags = array_filter(
+            [
+                'title' => $this->getTitle(),
+                'artist' => $this->getArtist(),
+                'album' => $this->getAlbum(),
+                'genre' => $this->getGenre(),
+                'unsynchronised_lyric' => $this->getLyrics(),
+                'isrc' => $this->getIsrc(),
+            ]
         );
+
+        $tags = array_merge($tags, $this->getExtraMetadata()->toArray());
+        $metadata->setTags($tags);
 
         return $metadata;
     }
 
     public function __toString(): string
     {
-        return 'StationMedia ' . $this->unique_id . ': ' . $this->artist . ' - ' . $this->title;
+        return 'StationMedia ' . $this->id . ': ' . $this->artist . ' - ' . $this->title;
+    }
+
+    public static function needsReprocessing(int $fileModifiedTime = 0, int $dbModifiedTime = 0): bool
+    {
+        return $fileModifiedTime > $dbModifiedTime;
     }
 
     public static function getArtPath(string $uniqueId): string

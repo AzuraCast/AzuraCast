@@ -497,13 +497,10 @@ class Station implements Stringable, IdentifiableEntityInterface
         StationFrontendConfiguration|array $frontendConfig,
         bool $forceOverwrite = false
     ): void {
-        if (is_array($frontendConfig)) {
-            $frontendConfig = new StationFrontendConfiguration(
-                $forceOverwrite ? $frontendConfig : array_merge((array)$this->frontend_config, $frontendConfig)
-            );
-        }
+        $config = $this->getFrontendConfig()
+            ->fromArray($frontendConfig, $forceOverwrite)
+            ->toArray();
 
-        $config = $frontendConfig->toArray();
         if ($this->frontend_config !== $config) {
             $this->setNeedsRestart(true);
         }
@@ -553,13 +550,9 @@ class Station implements Stringable, IdentifiableEntityInterface
         StationBackendConfiguration|array $backendConfig,
         bool $forceOverwrite = false
     ): void {
-        if (is_array($backendConfig)) {
-            $backendConfig = new StationBackendConfiguration(
-                $forceOverwrite ? $backendConfig : array_merge((array)$this->backend_config, $backendConfig)
-            );
-        }
-
-        $config = $backendConfig->toArray();
+        $config = $this->getBackendConfig()
+            ->fromArray($backendConfig, $forceOverwrite)
+            ->toArray();
 
         if ($this->backend_config !== $config) {
             $this->setNeedsRestart(true);
@@ -904,13 +897,9 @@ class Station implements Stringable, IdentifiableEntityInterface
         StationBrandingConfiguration|array $brandingConfig,
         bool $forceOverwrite = false
     ): void {
-        if (is_array($brandingConfig)) {
-            $brandingConfig = new StationBrandingConfiguration(
-                $forceOverwrite ? $brandingConfig : array_merge((array)$this->branding_config, $brandingConfig)
-            );
-        }
-
-        $this->branding_config = $brandingConfig->toArray();
+        $this->branding_config = $this->getBrandingConfig()
+            ->fromArray($brandingConfig, $forceOverwrite)
+            ->toArray();
     }
 
     /**

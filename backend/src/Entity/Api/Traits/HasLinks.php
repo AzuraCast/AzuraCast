@@ -10,7 +10,8 @@ use OpenApi\Attributes as OA;
 trait HasLinks
 {
     #[OA\Property(
-        items: new OA\Items(type: 'string', example: 'http://localhost/api/stations/1/queue/1')
+        type: 'object',
+        additionalProperties: new OA\AdditionalProperties(type: 'string')
     )]
     public array $links = [];
 }

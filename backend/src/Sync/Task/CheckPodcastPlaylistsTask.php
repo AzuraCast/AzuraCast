@@ -122,7 +122,7 @@ final class CheckPodcastPlaylistsTask extends AbstractTask
                         ]))
                     );
 
-                    $publishAt = CarbonImmutable::createFromTimestamp($media->getMtime() ?? time(), 'UTC');
+                    $publishAt = CarbonImmutable::createFromTimestamp($media->getMtime(), 'UTC');
                     if (!$podcast->playlistAutoPublish()) {
                         // Set a date in the future to unpublish the episode.
                         $podcastEpisode->setPublishAt(

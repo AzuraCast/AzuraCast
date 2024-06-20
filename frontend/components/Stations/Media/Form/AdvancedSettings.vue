@@ -10,7 +10,7 @@
         <form-group-field
             id="edit_form_amplify"
             class="col-md-6"
-            :field="form.amplify"
+            :field="form.extra_metadata.liq_amplify"
             input-type="number"
             :input-attrs="{ step: '0.1' }"
             :label="$gettext('Amplify: Amplification (dB)')"
@@ -21,7 +21,7 @@
         <form-group-field
             id="edit_form_fade_start_next"
             class="col-md-6"
-            :field="form.fade_start_next"
+            :field="form.extra_metadata.liq_cross_start_next"
             input-type="number"
             :input-attrs="{ step: '0.1' }"
             :label="$gettext('Custom Fading: Start Next (seconds)')"
@@ -32,7 +32,7 @@
         <form-group-field
             id="edit_form_fade_in"
             class="col-md-6"
-            :field="form.fade_in"
+            :field="form.extra_metadata.liq_fade_in"
             input-type="number"
             :input-attrs="{ step: '0.1' }"
             :label="$gettext('Custom Fading: Fade-In Time (seconds)')"
@@ -43,7 +43,7 @@
         <form-group-field
             id="edit_form_fade_out"
             class="col-md-6"
-            :field="form.fade_out"
+            :field="form.extra_metadata.liq_fade_out"
             input-type="number"
             :input-attrs="{ step: '0.1' }"
             :label="$gettext('Custom Fading: Fade-Out Time (seconds)')"
@@ -54,7 +54,7 @@
         <form-group-field
             id="edit_form_cue_in"
             class="col-md-6"
-            :field="form.cue_in"
+            :field="form.extra_metadata.liq_cue_in"
             input-type="number"
             :input-attrs="{ step: '0.1' }"
             :label="$gettext('Custom Cues: Cue-In Point (seconds)')"
@@ -65,7 +65,7 @@
         <form-group-field
             id="edit_form_cue_out"
             class="col-md-6"
-            :field="form.cue_out"
+            :field="form.extra_metadata.liq_cue_out"
             input-type="number"
             :input-attrs="{ step: '0.1' }"
             :label="$gettext('Custom Cues: Cue-Out Point (seconds)')"

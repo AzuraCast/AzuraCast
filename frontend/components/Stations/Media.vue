@@ -77,24 +77,24 @@
             @row-selected="onRowSelected"
             @filtered="onFiltered"
         >
-            <template #cell(path)="row">
+            <template #cell(path)="{ item }: { item: ApiFileList }">
                 <div class="d-flex align-items-center">
                     <div class="flex-shrink-0 pe-2">
-                        <template v-if="row.item.media.is_playable">
+                        <template v-if="item.type === FileTypes.Media">
                             <play-button
-                                :url="row.item.media.links.play"
+                                :url="item.media.links.play"
                                 class="btn-lg"
                             />
                         </template>
                         <template v-else>
                             <span
-                                v-if="row.item.is_dir"
+                                v-if="item.type === FileTypes.Directory"
                                 class="file-icon"
                             >
                                 <icon :icon="IconFolder" />
                             </span>
                             <span
-                                v-else-if="row.item.is_cover_art"
+                                v-else-if="item.type === FileTypes.CoverArt"
                                 class="file-icon"
                             >
                                 <icon :icon="IconImage" />
@@ -109,69 +109,69 @@
                     </div>
 
                     <div class="flex-fill">
-                        <template v-if="row.item.is_dir">
+                        <template v-if="item.type === FileTypes.Directory">
                             <a
                                 class="name"
                                 href="#"
-                                :title="row.item.name"
-                                @click.prevent="changeDirectory(row.item.path)"
+                                :title="item.text"
+                                @click.prevent="changeDirectory(item.path)"
                             >
-                                {{ row.item.path_short }}
+                                {{ item.path_short }}
                             </a>
                         </template>
-                        <template v-else-if="row.item.media.is_playable">
+                        <template v-else-if="item.type === FileTypes.Media">
                             <a
                                 class="name"
-                                :href="row.item.media.links.play"
+                                :href="item.media.links.play"
                                 target="_blank"
-                                :title="row.item.name"
+                                :title="item.text"
                             >
-                                {{ row.item.text }}
+                                {{ item.text }}
                             </a>
                         </template>
                         <template v-else>
                             <a
                                 class="name"
-                                :href="row.item.links.download"
+                                :href="item.links.download"
                                 target="_blank"
-                                :title="row.item.text"
+                                :title="item.text"
                             >
-                                {{ row.item.path_short }}
+                                {{ item.path_short }}
                             </a>
                         </template>
                         <br>
-                        <small v-if="row.item.media.is_playable">{{ row.item.path_short }}</small>
-                        <small v-else>{{ row.item.text }}</small>
+                        <small v-if="item.type === FileTypes.Media">{{ item.path_short }}</small>
+                        <small v-else>{{ item.text }}</small>
                     </div>
 
                     <album-art
-                        v-if="row.item.media.art"
-                        :src="row.item.media.art"
+                        v-if="item.media?.art"
+                        :src="item.media.art"
                         class="flex-shrink-1 ps-2"
                     />
                     <album-art
-                        v-else-if="row.item.is_cover_art"
-                        :src="row.item.links.download"
+                        v-else-if="item.type === FileTypes.CoverArt"
+                        :src="item.links.download"
                         class="flex-shrink-1 ps-2"
                     />
                 </div>
             </template>
             <!-- eslint-disable-next-line -->
-            <template #cell(media.length)="row">
-                {{ row.item.media.length_text }}
+            <template #cell(media.length)="{ item }: { item: ApiFileList }">
+                {{ item.media?.length_text }}
             </template>
-            <template #cell(size)="row">
-                <template v-if="!row.item.size">
+            <template #cell(size)="{ item }: { item: ApiFileList }">
+                <template v-if="!item.size">
                     &nbsp;
                 </template>
                 <template v-else>
-                    {{ formatFileSize(row.item.size) }}
+                    {{ formatFileSize(item.size) }}
                 </template>
             </template>
-            <template #cell(playlists)="row">
-                <template v-if="row.item.playlists.length > 0">
+            <template #cell(playlists)="{ item }: { item: ApiFileList }">
+                <template v-if="item.media?.playlists?.length > 0">
                     <template
-                        v-for="(playlist, index) in row.item.playlists"
+                        v-for="(playlist, index) in item.media.playlists"
                         :key="playlist.id"
                     >
                         <a
@@ -180,19 +180,33 @@
                             :title="$gettext('View tracks in playlist')"
                             @click.prevent="filter('playlist:'+playlist.short_name)"
                         >{{ playlist.name }}</a>
-                        <span v-if="index+1 < row.item.playlists.length">, </span>
+                        <span v-if="index+1 < item.media.playlists.length">, </span>
+                    </template>
+                </template>
+                <template v-else-if="item.dir?.playlists?.length > 0">
+                    <template
+                        v-for="(playlist, index) in item.dir.playlists"
+                        :key="playlist.id"
+                    >
+                        <a
+                            class="btn-search"
+                            href="#"
+                            :title="$gettext('View tracks in playlist')"
+                            @click.prevent="filter('playlist:'+playlist.short_name)"
+                        >{{ playlist.name }}</a>
+                        <span v-if="index+1 < item.dir.playlists.length">, </span>
                     </template>
                 </template>
                 <template v-else>
                     &nbsp;
                 </template>
             </template>
-            <template #cell(commands)="row">
-                <template v-if="row.item.media.links.edit">
+            <template #cell(commands)="{ item }: { item: ApiFileList }">
+                <template v-if="item.media?.links?.self">
                     <button
                         type="button"
                         class="btn btn-sm btn-primary"
-                        @click="edit(row.item.media.links.edit, row.item.media.links.art, row.item.media.links.play, row.item.media.links.waveform)"
+                        @click="edit(item.media.links.self, item.media.links.art, item.media.links.play, item.media.links.waveform)"
                     >
                         {{ $gettext('Edit') }}
                     </button>
@@ -201,7 +215,7 @@
                     <button
                         type="button"
                         class="btn btn-sm btn-primary"
-                        @click="rename(row.item.path)"
+                        @click="rename(item.path)"
                     >
                         {{ $gettext('Rename') }}
                     </button>
@@ -263,6 +277,7 @@ import {useRoute, useRouter} from "vue-router";
 import {IconFile, IconFolder, IconImage} from "~/components/Common/icons";
 import {DataTableTemplateRef} from "~/functions/useHasDatatable.ts";
 import useStationDateTimeFormatter from "~/functions/useStationDateTimeFormatter.ts";
+import {ApiFileList, CustomField, FileTypes} from "~/entities/ApiInterfaces.ts";
 
 const props = defineProps({
     initialPlaylists: {
@@ -319,9 +334,9 @@ const fields = computed<DataTableField[]>(() => {
         {key: 'media.length', label: $gettext('Length'), sortable: true, selectable: true, visible: true}
     ];
 
-    forEach({...props.customFields}, (field) => {
+    forEach({...props.customFields}, (field: CustomField) => {
         fields.push({
-            key: 'media.custom_fields[' + field.id + ']',
+            key: 'media.custom_fields[' + field.short_name + ']',
             label: field.name,
             sortable: true,
             selectable: true,
@@ -362,7 +377,7 @@ const currentDirectory = ref('');
 const searchPhrase = ref('');
 
 const onRowSelected = (items) => {
-    const splitItems = partition(items, 'is_dir');
+    const splitItems = partition(items, (row: ApiFileList) => row.type === FileTypes.Directory);
 
     selectedItems.value = {
         all: items,

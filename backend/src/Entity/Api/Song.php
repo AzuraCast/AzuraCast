@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Entity\Api;
 
+use App\Entity\Api\Traits\HasSongFields;
 use App\Http\Router;
 use OpenApi\Attributes as OA;
 use Psr\Http\Message\UriInterface;
@@ -14,53 +15,13 @@ use Psr\Http\Message\UriInterface;
 )]
 class Song implements ResolvableUrlInterface
 {
+    use HasSongFields;
+
     #[OA\Property(
         description: 'The song\'s 32-character unique identifier hash',
         example: '9f33bbc912c19603e51be8e0987d076b'
     )]
     public string $id = '';
-
-    #[OA\Property(
-        description: 'The song title, usually "Artist - Title"',
-        example: 'Chet Porter - Aluko River'
-    )]
-    public string $text = '';
-
-    #[OA\Property(
-        description: 'The song artist.',
-        example: 'Chet Porter'
-    )]
-    public ?string $artist = '';
-
-    #[OA\Property(
-        description: 'The song title.',
-        example: 'Aluko River'
-    )]
-    public ?string $title = '';
-
-    #[OA\Property(
-        description: 'The song album.',
-        example: 'Moving Castle'
-    )]
-    public ?string $album = '';
-
-    #[OA\Property(
-        description: 'The song genre.',
-        example: 'Rock'
-    )]
-    public ?string $genre = '';
-
-    #[OA\Property(
-        description: 'The International Standard Recording Code (ISRC) of the file.',
-        example: 'US28E1600021'
-    )]
-    public ?string $isrc = '';
-
-    #[OA\Property(
-        description: 'Lyrics to the song.',
-        example: ''
-    )]
-    public ?string $lyrics = '';
 
     #[OA\Property(
         description: 'URL to the album artwork (if available).',

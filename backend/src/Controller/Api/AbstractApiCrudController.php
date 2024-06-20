@@ -12,7 +12,6 @@ use App\Exception\ValidationException;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Paginator;
-use App\Utilities\Types;
 use Doctrine\ORM\Query;
 use InvalidArgumentException;
 use Psr\Http\Message\ResponseInterface;
@@ -123,7 +122,7 @@ abstract class AbstractApiCrudController
 
         $return = $this->toArray($record);
 
-        $isInternal = Types::bool($request->getParam('internal'), false, true);
+        $isInternal = $request->isInternal();
         $router = $request->getRouter();
 
         if ($record instanceof IdentifiableEntityInterface) {

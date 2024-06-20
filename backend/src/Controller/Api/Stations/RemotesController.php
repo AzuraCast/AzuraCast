@@ -12,8 +12,6 @@ use App\Exception\Http\PermissionDeniedException;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\OpenApi;
-use App\Utilities\Types;
-use InvalidArgumentException;
 use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 
@@ -186,18 +184,14 @@ final class RemotesController extends AbstractStationApiCrudController
 
     protected function viewRecord(object $record, ServerRequest $request): ApiStationRemote
     {
-        if (!($record instanceof StationRemote)) {
-            throw new InvalidArgumentException(
-                sprintf('Record must be an instance of %s.', StationRemote::class)
-            );
-        }
+        assert($record instanceof StationRemote);
 
         $returnArray = $this->toArray($record);
 
         $return = new ApiStationRemote();
         $return->fromParentObject($returnArray);
 
-        $isInternal = Types::bool($request->getParam('internal'), false, true);
+        $isInternal = $request->isInternal();
         $router = $request->getRouter();
 
         $return->is_editable = $record->isEditable();

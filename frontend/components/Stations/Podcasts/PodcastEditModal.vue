@@ -104,11 +104,8 @@ const {
                 (row) => row.category
             );
 
-
             record.value = data;
             formRef.value = mergeExisting(formRef.value, data);
-
-            console.log(formRef.value);
         },
     },
 );

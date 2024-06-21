@@ -97,7 +97,7 @@ final class Annotations implements EventSubscriberInterface
             'duration' => $media->getLength(),
             'song_id' => $media->getSongId(),
             'media_id' => $media->getId(),
-            ...$media->getExtraMetadata()->toArray(),
+            ...$media->getExtraMetadata()->toArray(true),
         ], fn($row) => ('' !== $row && null !== $row));
 
         // Safety checks for cue lengths.

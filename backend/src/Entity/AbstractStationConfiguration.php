@@ -29,15 +29,20 @@ abstract class AbstractStationConfiguration implements JsonSerializable
         $this->fromArray($data);
     }
 
+    /**
+     * @param array|AbstractStationConfiguration $data
+     * @param bool $clearExisting Whether to clear existing data before setting new data.
+     * @return $this
+     */
     public function fromArray(
         array|self $data,
-        bool $forceOverwrite = false
+        bool $clearExisting = false
     ): static {
         if ($data instanceof self) {
             $data = $data->toArray();
         }
 
-        if ($forceOverwrite) {
+        if ($clearExisting) {
             $this->data = [];
         }
 
@@ -55,27 +60,44 @@ abstract class AbstractStationConfiguration implements JsonSerializable
         return $this;
     }
 
-    public function toArray(): array
+    /**
+     * @param bool $callGetters Whether to run data through the relevant "get" functions if they exist.
+     * @return ConfigData
+     */
+    public function toArray(bool $callGetters = false): array
     {
         if ($this->unrestricted) {
+            if (!$callGetters) {
+                return $this->data;
+            }
+
             $keys = array_keys($this->data);
         } else {
             $reflClass = new ReflectionObject($this);
             $keys = $reflClass->getConstants(ReflectionClassConstant::IS_PUBLIC);
         }
 
-        $inflector = InflectorFactory::create()->build();
-
         $return = [];
-        foreach ($keys as $dataKey) {
-            $getMethodName = $inflector->camelize('get_' . $dataKey);
-            $methodName = $inflector->camelize($dataKey);
+        if ($callGetters) {
+            $inflector = InflectorFactory::create()->build();
 
-            $return[$dataKey] = match (true) {
-                method_exists($this, $getMethodName) => $this->$getMethodName(),
-                method_exists($this, $methodName) => $this->$methodName(),
-                default => $this->get($dataKey)
-            };
+            foreach ($keys as $dataKey) {
+                $getMethodName = $inflector->camelize('get_' . $dataKey);
+                $methodName = $inflector->camelize($dataKey);
+
+                $return[$dataKey] = match (true) {
+                    method_exists($this, $getMethodName) => $this->$getMethodName(),
+                    method_exists($this, $methodName) => $this->$methodName(),
+                    default => $this->get($dataKey)
+                };
+            }
+        } else {
+            foreach ($keys as $constantKey) {
+                $constantResult = $this->get($constantKey);
+                if (null !== $constantResult) {
+                    $return[$constantKey] = $constantResult;
+                }
+            }
         }
 
         return $return;

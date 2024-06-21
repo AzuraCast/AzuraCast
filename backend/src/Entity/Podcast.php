@@ -169,11 +169,10 @@ class Podcast implements Interfaces\IdentifiableEntityInterface
     }
 
     public function setBrandingConfig(
-        PodcastBrandingConfiguration|array $brandingConfig,
-        bool $forceOverwrite = false
+        PodcastBrandingConfiguration|array $brandingConfig
     ): void {
         $this->branding_config = $this->getBrandingConfig()
-            ->fromArray($brandingConfig, $forceOverwrite)
+            ->fromArray($brandingConfig)
             ->toArray();
     }
 

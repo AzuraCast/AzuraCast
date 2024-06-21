@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use Doctrine\Inflector\Inflector;
 use Doctrine\Inflector\InflectorFactory;
 use JsonSerializable;
 use ReflectionClassConstant;
@@ -17,8 +18,7 @@ abstract class AbstractStationConfiguration implements JsonSerializable
     /** @var ConfigData */
     protected array $data = [];
 
-    /** @var bool Whether this container can hold arbitrary values that aren't configured. */
-    protected bool $unrestricted = false;
+    protected readonly Inflector $inflector;
 
     /**
      * @param ConfigData $data
@@ -26,30 +26,23 @@ abstract class AbstractStationConfiguration implements JsonSerializable
     public function __construct(
         array $data = []
     ) {
+        $this->inflector = InflectorFactory::create()->build();
         $this->fromArray($data);
     }
 
     /**
-     * @param array|AbstractStationConfiguration $data
-     * @param bool $clearExisting Whether to clear existing data before setting new data.
+     * @param ConfigData|AbstractStationConfiguration $data
      * @return $this
      */
     public function fromArray(
-        array|self $data,
-        bool $clearExisting = false
+        array|self $data
     ): static {
         if ($data instanceof self) {
             $data = $data->toArray();
         }
 
-        if ($clearExisting) {
-            $this->data = [];
-        }
-
-        $inflector = InflectorFactory::create()->build();
-
         foreach ($data as $dataKey => $dataVal) {
-            $methodName = $inflector->camelize('set_' . $dataKey);
+            $methodName = $this->inflector->camelize('set_' . $dataKey);
             if (method_exists($this, $methodName)) {
                 $this->$methodName($dataVal);
             } else {
@@ -61,43 +54,21 @@ abstract class AbstractStationConfiguration implements JsonSerializable
     }
 
     /**
-     * @param bool $callGetters Whether to run data through the relevant "get" functions if they exist.
      * @return ConfigData
      */
-    public function toArray(bool $callGetters = false): array
+    public function toArray(): array
     {
-        if ($this->unrestricted) {
-            if (!$callGetters) {
-                return $this->data;
-            }
-
-            $keys = array_keys($this->data);
-        } else {
-            $reflClass = new ReflectionObject($this);
-            $keys = $reflClass->getConstants(ReflectionClassConstant::IS_PUBLIC);
-        }
-
         $return = [];
-        if ($callGetters) {
-            $inflector = InflectorFactory::create()->build();
 
-            foreach ($keys as $dataKey) {
-                $getMethodName = $inflector->camelize('get_' . $dataKey);
-                $methodName = $inflector->camelize($dataKey);
+        foreach ($this->getValidKeys() as $dataKey) {
+            $getMethodName = $this->inflector->camelize('get_' . $dataKey);
+            $methodName = $this->inflector->camelize($dataKey);
 
-                $return[$dataKey] = match (true) {
-                    method_exists($this, $getMethodName) => $this->$getMethodName(),
-                    method_exists($this, $methodName) => $this->$methodName(),
-                    default => $this->get($dataKey)
-                };
-            }
-        } else {
-            foreach ($keys as $constantKey) {
-                $constantResult = $this->get($constantKey);
-                if (null !== $constantResult) {
-                    $return[$constantKey] = $constantResult;
-                }
-            }
+            $return[$dataKey] = match (true) {
+                method_exists($this, $getMethodName) => $this->$getMethodName(),
+                method_exists($this, $methodName) => $this->$methodName(),
+                default => $this->get($dataKey)
+            };
         }
 
         return $return;
@@ -110,6 +81,12 @@ abstract class AbstractStationConfiguration implements JsonSerializable
         return (0 !== count($result))
             ? $result
             : (object)[];
+    }
+
+    protected function getValidKeys(): array
+    {
+        $reflClass = new ReflectionObject($this);
+        return $reflClass->getConstants(ReflectionClassConstant::IS_PUBLIC);
     }
 
     protected function get(string $key, mixed $default = null): mixed

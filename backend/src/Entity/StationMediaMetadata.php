@@ -9,7 +9,10 @@ use App\Utilities\Types;
 
 class StationMediaMetadata extends AbstractStationConfiguration
 {
-    protected bool $unrestricted = true;
+    protected function getValidKeys(): array
+    {
+        return array_keys($this->data);
+    }
 
     protected function set(string $key, mixed $value): static
     {

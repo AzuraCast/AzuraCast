@@ -494,11 +494,10 @@ class Station implements Stringable, IdentifiableEntityInterface
      * @param StationFrontendConfiguration|ConfigData $frontendConfig
      */
     public function setFrontendConfig(
-        StationFrontendConfiguration|array $frontendConfig,
-        bool $forceOverwrite = false
+        StationFrontendConfiguration|array $frontendConfig
     ): void {
         $config = $this->getFrontendConfig()
-            ->fromArray($frontendConfig, $forceOverwrite)
+            ->fromArray($frontendConfig)
             ->toArray();
 
         if ($this->frontend_config !== $config) {
@@ -546,12 +545,10 @@ class Station implements Stringable, IdentifiableEntityInterface
     /**
      * @param StationBackendConfiguration|ConfigData $backendConfig
      */
-    public function setBackendConfig(
-        StationBackendConfiguration|array $backendConfig,
-        bool $forceOverwrite = false
-    ): void {
+    public function setBackendConfig(StationBackendConfiguration|array $backendConfig): void
+    {
         $config = $this->getBackendConfig()
-            ->fromArray($backendConfig, $forceOverwrite)
+            ->fromArray($backendConfig)
             ->toArray();
 
         if ($this->backend_config !== $config) {
@@ -894,11 +891,10 @@ class Station implements Stringable, IdentifiableEntityInterface
      * @param StationBrandingConfiguration|ConfigData $brandingConfig
      */
     public function setBrandingConfig(
-        StationBrandingConfiguration|array $brandingConfig,
-        bool $forceOverwrite = false
+        StationBrandingConfiguration|array $brandingConfig
     ): void {
         $this->branding_config = $this->getBrandingConfig()
-            ->fromArray($brandingConfig, $forceOverwrite)
+            ->fromArray($brandingConfig)
             ->toArray();
     }
 

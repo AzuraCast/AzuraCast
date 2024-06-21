@@ -34,7 +34,7 @@ class StationBackendConfiguration extends AbstractStationConfiguration
         return Types::intOrNull($this->get(self::DJ_PORT));
     }
 
-    public function setDjPort(?int $port): void
+    public function setDjPort(int|string $port = null): void
     {
         $this->set(self::DJ_PORT, $port);
     }
@@ -46,7 +46,7 @@ class StationBackendConfiguration extends AbstractStationConfiguration
         return Types::intOrNull($this->get(self::TELNET_PORT));
     }
 
-    public function setTelnetPort(?int $port): void
+    public function setTelnetPort(int|string $port = null): void
     {
         $this->set(self::TELNET_PORT, $port);
     }
@@ -58,7 +58,7 @@ class StationBackendConfiguration extends AbstractStationConfiguration
         return Types::boolOrNull($this->get(self::RECORD_STREAMS)) ?? false;
     }
 
-    public function setRecordStreams(?bool $recordStreams): void
+    public function setRecordStreams(string|bool $recordStreams): void
     {
         $this->set(self::RECORD_STREAMS, $recordStreams);
     }
@@ -98,7 +98,7 @@ class StationBackendConfiguration extends AbstractStationConfiguration
         return Types::intOrNull($this->get(self::RECORD_STREAMS_BITRATE)) ?? 128;
     }
 
-    public function setRecordStreamsBitrate(?int $bitrate): void
+    public function setRecordStreamsBitrate(int|string $bitrate = null): void
     {
         $this->set(self::RECORD_STREAMS_BITRATE, $bitrate);
     }
@@ -124,7 +124,7 @@ class StationBackendConfiguration extends AbstractStationConfiguration
         return Types::intOrNull($this->get(self::AUTODJ_QUEUE_LENGTH)) ?? self::DEFAULT_QUEUE_LENGTH;
     }
 
-    public function setAutoDjQueueLength(?int $queueLength): void
+    public function setAutoDjQueueLength(int|string $queueLength = null): void
     {
         $this->set(self::AUTODJ_QUEUE_LENGTH, $queueLength);
     }
@@ -150,7 +150,7 @@ class StationBackendConfiguration extends AbstractStationConfiguration
         return Types::intOrNull($this->get(self::DJ_BUFFER)) ?? self::DEFAULT_DJ_BUFFER;
     }
 
-    public function setDjBuffer(?int $buffer): void
+    public function setDjBuffer(int|string $buffer = null): void
     {
         $this->set(self::DJ_BUFFER, $buffer);
     }
@@ -194,7 +194,7 @@ class StationBackendConfiguration extends AbstractStationConfiguration
         return Types::boolOrNull($this->get(self::POST_PROCESSING_INCLUDE_LIVE)) ?? false;
     }
 
-    public function setPostProcessingIncludeLive(bool $postProcessingIncludeLive): void
+    public function setPostProcessingIncludeLive(bool|string $postProcessingIncludeLive = null): void
     {
         $this->set(self::POST_PROCESSING_INCLUDE_LIVE, $postProcessingIncludeLive);
     }
@@ -259,7 +259,7 @@ class StationBackendConfiguration extends AbstractStationConfiguration
             ?? self::MASTER_ME_DEFAULT_LOUDNESS_TARGET;
     }
 
-    public function setMasterMeLoudnessTarget(?int $masterMeLoudnessTarget): void
+    public function setMasterMeLoudnessTarget(int|string $masterMeLoudnessTarget = null): void
     {
         $this->set(self::MASTER_ME_LOUDNESS_TARGET, $masterMeLoudnessTarget);
     }
@@ -276,7 +276,7 @@ class StationBackendConfiguration extends AbstractStationConfiguration
         return Types::boolOrNull($this->get(self::USE_REPLAYGAIN)) ?? false;
     }
 
-    public function setUseReplayGain(?bool $useReplayGain): void
+    public function setUseReplayGain(bool|string $useReplayGain): void
     {
         $this->set(self::USE_REPLAYGAIN, $useReplayGain);
     }
@@ -317,7 +317,7 @@ class StationBackendConfiguration extends AbstractStationConfiguration
         );
     }
 
-    public function setCrossfade(?float $crossfade): void
+    public function setCrossfade(float|string $crossfade = null): void
     {
         $this->set(self::CROSSFADE, $crossfade);
     }
@@ -349,7 +349,7 @@ class StationBackendConfiguration extends AbstractStationConfiguration
             ?? self::DEFAULT_DUPLICATE_PREVENTION_TIME_RANGE;
     }
 
-    public function setDuplicatePreventionTimeRange(?int $duplicatePreventionTimeRange): void
+    public function setDuplicatePreventionTimeRange(int|string $duplicatePreventionTimeRange = null): void
     {
         $this->set(self::DUPLICATE_PREVENTION_TIME_RANGE, $duplicatePreventionTimeRange);
     }
@@ -385,7 +385,7 @@ class StationBackendConfiguration extends AbstractStationConfiguration
         return Types::intOrNull($this->get(self::HLS_SEGMENT_LENGTH)) ?? 4;
     }
 
-    public function setHlsSegmentLength(?int $length): void
+    public function setHlsSegmentLength(int|string $length = null): void
     {
         $this->set(self::HLS_SEGMENT_LENGTH, $length);
     }
@@ -397,7 +397,7 @@ class StationBackendConfiguration extends AbstractStationConfiguration
         return Types::intOrNull($this->get(self::HLS_SEGMENTS_IN_PLAYLIST)) ?? 5;
     }
 
-    public function setHlsSegmentsInPlaylist(?int $value): void
+    public function setHlsSegmentsInPlaylist(int|string $value = null): void
     {
         $this->set(self::HLS_SEGMENTS_IN_PLAYLIST, $value);
     }
@@ -409,7 +409,7 @@ class StationBackendConfiguration extends AbstractStationConfiguration
         return Types::intOrNull($this->get(self::HLS_SEGMENTS_OVERHEAD)) ?? 2;
     }
 
-    public function setHlsSegmentsOverhead(?int $value): void
+    public function setHlsSegmentsOverhead(int|string $value = null): void
     {
         $this->set(self::HLS_SEGMENTS_OVERHEAD, $value);
     }
@@ -421,7 +421,7 @@ class StationBackendConfiguration extends AbstractStationConfiguration
         return Types::boolOrNull($this->get(self::HLS_ENABLE_ON_PUBLIC_PLAYER)) ?? false;
     }
 
-    public function setHlsEnableOnPublicPlayer(?bool $enable): void
+    public function setHlsEnableOnPublicPlayer(bool|string $enable): void
     {
         $this->set(self::HLS_ENABLE_ON_PUBLIC_PLAYER, $enable);
     }
@@ -433,7 +433,7 @@ class StationBackendConfiguration extends AbstractStationConfiguration
         return Types::boolOrNull($this->get(self::HLS_IS_DEFAULT)) ?? false;
     }
 
-    public function setHlsIsDefault(?bool $value): void
+    public function setHlsIsDefault(bool|string $value): void
     {
         $this->set(self::HLS_IS_DEFAULT, $value);
     }

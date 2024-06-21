@@ -227,11 +227,10 @@ class StationMedia implements
     }
 
     public function setExtraMetadata(
-        StationMediaMetadata|array $metadata,
-        bool $forceOverwrite = false
+        StationMediaMetadata|array $metadata
     ): void {
         $this->extra_metadata = $this->getExtraMetadata()
-            ->fromArray($metadata, $forceOverwrite)
+            ->fromArray($metadata)
             ->toArray();
     }
 

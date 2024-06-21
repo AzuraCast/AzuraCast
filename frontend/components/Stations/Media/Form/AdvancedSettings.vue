@@ -19,7 +19,7 @@
         />
 
         <form-group-field
-            id="edit_form_fade_start_next"
+            id="edit_form_liq_cross_start_next"
             class="col-md-6"
             :field="form.extra_metadata.liq_cross_start_next"
             input-type="number"

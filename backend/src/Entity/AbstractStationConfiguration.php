@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use Doctrine\Inflector\InflectorFactory;
 use JsonSerializable;
 use ReflectionClassConstant;
 use ReflectionObject;
@@ -15,6 +16,9 @@ abstract class AbstractStationConfiguration implements JsonSerializable
 {
     /** @var ConfigData */
     protected array $data = [];
+
+    /** @var bool Whether this container can hold arbitrary values that aren't configured. */
+    protected bool $unrestricted = false;
 
     /**
      * @param ConfigData $data
@@ -37,8 +41,15 @@ abstract class AbstractStationConfiguration implements JsonSerializable
             $this->data = [];
         }
 
+        $inflector = InflectorFactory::create()->build();
+
         foreach ($data as $dataKey => $dataVal) {
-            $this->set($dataKey, $dataVal);
+            $methodName = $inflector->camelize('set_' . $dataKey);
+            if (method_exists($this, $methodName)) {
+                $this->$methodName($dataVal);
+            } else {
+                $this->set($dataKey, $dataVal);
+            }
         }
 
         return $this;
@@ -46,15 +57,27 @@ abstract class AbstractStationConfiguration implements JsonSerializable
 
     public function toArray(): array
     {
-        $reflClass = new ReflectionObject($this);
+        if ($this->unrestricted) {
+            $keys = array_keys($this->data);
+        } else {
+            $reflClass = new ReflectionObject($this);
+            $keys = $reflClass->getConstants(ReflectionClassConstant::IS_PUBLIC);
+        }
+
+        $inflector = InflectorFactory::create()->build();
 
         $return = [];
-        foreach ($reflClass->getConstants(ReflectionClassConstant::IS_PUBLIC) as $constantVal) {
-            $constantResult = $this->get($constantVal);
-            if (null !== $constantResult) {
-                $return[(string)$constantVal] = $constantResult;
-            }
+        foreach ($keys as $dataKey) {
+            $getMethodName = $inflector->camelize('get_' . $dataKey);
+            $methodName = $inflector->camelize($dataKey);
+
+            $return[$dataKey] = match (true) {
+                method_exists($this, $getMethodName) => $this->$getMethodName(),
+                method_exists($this, $methodName) => $this->$methodName(),
+                default => $this->get($dataKey)
+            };
         }
+
         return $return;
     }
 

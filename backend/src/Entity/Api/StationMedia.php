@@ -80,16 +80,17 @@ class StationMedia
         type: 'array',
         items: new OA\Items(type: 'string', example: 'custom_field_value')
     )]
-    public array $custom_fields = [];
+    public HashMap $custom_fields;
 
     #[OA\Property(type: "array", items: new OA\Items())]
-    public array $extra_metadata = [];
+    public HashMap $extra_metadata;
 
     #[OA\Property(type: "array", items: new OA\Items())]
     public array $playlists;
 
     public static function fromArray(
         array $row,
+        array $extraMetadata = [],
         array $customFields = [],
         array $playlists = []
     ): self {
@@ -111,7 +112,8 @@ class StationMedia
         $media->length_text = self::getLengthText($row['length']);
         $media->art_updated_at = $row['art_updated_at'];
 
-        $media->custom_fields = $customFields;
+        $media->extra_metadata = new HashMap($extraMetadata);
+        $media->custom_fields = new HashMap($customFields);
         $media->playlists = $playlists;
 
         return $media;

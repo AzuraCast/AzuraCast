@@ -380,6 +380,7 @@ final class ListAction implements SingleActionInterface
 
             $mediaInDir[$row['path']] = ApiStationMedia::fromArray(
                 $row,
+                [],
                 $customFields[$id] ?? [],
                 ApiStationMedia::aggregatePlaylists($allPlaylists[$id] ?? [])
             );

@@ -226,6 +226,7 @@ final class FilesController extends AbstractStationApiCrudController
 
         $return = ApiStationMedia::fromArray(
             $returnArray,
+            $record->getExtraMetadata()->toArray(),
             $this->customFieldsRepo->getCustomFields($record),
             ApiStationMedia::aggregatePlaylists($returnArray['playlists'] ?? []),
         );

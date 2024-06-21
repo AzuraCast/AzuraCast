@@ -222,7 +222,7 @@ const streams = computed(() => {
 
 const $player = ref(); // Template ref
 
-const volume = useLocalStorage('player_volume', 55, {
+const volume = useLocalStorage('player_volume', 85, {
     listenToStorageChanges: false
 });
 const isMuted = useLocalStorage('player_is_muted', false, {
@@ -241,9 +241,9 @@ const switchStream = (new_stream) => {
 onMounted(() => {
     document.dispatchEvent(new CustomEvent("player-ready"));
 
-    if (props.autoplay) {
+    // if (props.autoplay) {
         switchStream(currentStream.value);
-    }
+    // }
 });
 
 const onNowPlayingUpdated = (np_new) => {
@@ -379,6 +379,7 @@ watch(np, onNowPlayingUpdated, {immediate: true});
 
         .radio-control-play-button {
             margin-right: .25rem;
+            display: none;
         }
 
         .radio-control-select-stream {

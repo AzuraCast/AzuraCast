@@ -4,7 +4,7 @@
             <div class="card-body">
                 <div class="card-title">
                     <img
-                        src="/static/img/public-player-header.svg"
+                        src="/static/img/dc-radio.png"
                         height="16"
                         alt="Public Player"
                     >
@@ -20,14 +20,14 @@
 
             <div
                 class="card-actions"
-                style="position: relative; top: -48;"
+                style="position: relative; top: -48"
             >
                 <a
                     class="btn btn-sm btn-outline-secondary"
                     :href="downloadPlaylistUri"
                 >
                     <icon icon="file_download" />
-                    {{ $gettext('Playlist') }}
+                    {{ $gettext("Playlist") }}
                 </a>
             </div>
 
@@ -72,17 +72,17 @@
 <script setup>
 // import SongHistoryModal from './FullPlayer/SongHistoryModal';
 // import RequestModal from './FullPlayer/RequestModal';
-import Icon from '~/components/Common/Icon';
-import RadioPlayer from './Player.vue';
-import {ref} from "vue";
+import Icon from "~/components/Common/Icon";
+import RadioPlayer from "./Player.vue";
+import { ref } from "vue";
 import playerProps from "~/components/Public/playerProps";
-import {pickProps} from "~/functions/pickProps";
+import { pickProps } from "~/functions/pickProps";
 
 const props = defineProps({
     ...playerProps,
     stationName: {
         type: String,
-        required: true
+        required: true,
     },
     // enableRequests: {
     //     type: Boolean,
@@ -90,7 +90,7 @@ const props = defineProps({
     // },
     downloadPlaylistUri: {
         type: String,
-        required: true
+        required: true,
     },
     // requestListUri: {
     //     type: String,
@@ -107,5 +107,5 @@ const history = ref({});
 
 const onNowPlayingUpdate = (newNowPlaying) => {
     history.value = newNowPlaying?.song_history;
-}
+};
 </script>

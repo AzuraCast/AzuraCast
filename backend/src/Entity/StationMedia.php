@@ -330,7 +330,10 @@ class StationMedia implements
             $this->setIsrc(Types::stringOrNull($tags['isrc']));
         }
 
-        $this->setExtraMetadata($tags);
+        if (isset($tags['text'])) {
+            $this->setExtraMetadata($tags['text']);
+        }
+
         $this->updateSongId();
     }
 
@@ -347,10 +350,10 @@ class StationMedia implements
                 'genre' => $this->getGenre(),
                 'unsynchronised_lyric' => $this->getLyrics(),
                 'isrc' => $this->getIsrc(),
+                'text' => $this->getExtraMetadata()->toArray(),
             ]
         );
 
-        $tags = array_merge($tags, $this->getExtraMetadata()->toArray());
         $metadata->setTags($tags);
 
         return $metadata;

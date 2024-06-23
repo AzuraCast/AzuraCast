@@ -111,19 +111,33 @@ final class PhpReader
                     continue;
                 }
 
-                $tagValues = $metaTags[$tagName] ?? [];
+                $tagContents = (array)$tagContents;
 
-                $newTagValues = Arrays::flattenArray((array)$tagContents);
-                foreach ($newTagValues as $newTagValue) {
-                    if (0 === count($tagValues) || !in_array($newTagValue, $tagValues, true)) {
-                        $metaTags[$tagName][] = $newTagValue;
+                // Most metadata is in numbered lists, but some fields (i.e. "text" are hashmaps).
+                if (array_is_list($tagContents)) {
+                    $tagValues = $metaTags[$tagName] ?? [];
+
+                    $newTagValues = Arrays::flattenArray($tagContents);
+                    foreach ($newTagValues as $newTagValue) {
+                        if (0 === count($tagValues) || !in_array($newTagValue, $tagValues, true)) {
+                            $metaTags[$tagName][] = $newTagValue;
+                        }
+                    }
+                } else {
+                    foreach ($tagContents as $tagSubKey => $tagSubValue) {
+                        $tagValues = $metaTags[$tagName][$tagSubKey] ?? [];
+                        if (0 === count($tagValues) || !in_array($tagSubValue, $tagValues, true)) {
+                            $metaTags[$tagName][$tagSubKey][] = $tagSubValue;
+                        }
                     }
                 }
             }
         }
 
         return array_map(
-            fn(array $tagValues): string => Strings::stringToUtf8(implode('; ', $tagValues)),
+            fn(array $tagValues): array|string => array_is_list($tagValues)
+                ? Strings::stringToUtf8(implode('; ', $tagValues))
+                : array_map(fn(array $tagSubValues) => Strings::stringToUtf8(implode('; ', $tagSubValues)), $tagValues),
             $metaTags
         );
     }

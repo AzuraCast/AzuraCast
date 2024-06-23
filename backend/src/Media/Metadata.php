@@ -9,6 +9,7 @@ final class Metadata implements MetadataInterface
     /** @var array<string, mixed> */
     private array $tags = [];
 
+
     private float $duration = 0.0;
 
     private ?string $artwork = null;

@@ -30,9 +30,17 @@ class StationMediaMetadata extends AbstractStationConfiguration
         return Types::floatOrNull($this->get(self::AMPLIFY));
     }
 
-    public function setLiqAmplify(?float $amplify = null): void
+    public function setLiqAmplify(float|string $amplify = null): void
     {
-        $this->set(self::AMPLIFY, $amplify);
+        if (is_string($amplify)) {
+            $amplify = mb_strtolower($amplify);
+
+            if (str_contains($amplify, 'db')) {
+                $amplify = trim(str_replace('db', '', $amplify));
+            }
+        }
+
+        $this->set(self::AMPLIFY, Types::floatOrNull($amplify));
     }
 
     public const string CROSS_START_NEXT = 'liq_cross_start_next';

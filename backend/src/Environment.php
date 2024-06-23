@@ -6,6 +6,7 @@ namespace App;
 
 use App\Enums\ApplicationEnvironment;
 use App\Enums\ReleaseChannel;
+use App\Installer\EnvFiles\AzuraCastEnvFile;
 use App\Radio\Configuration;
 use App\Utilities\File;
 use App\Utilities\Types;
@@ -80,7 +81,19 @@ final class Environment
         $this->parentDir = dirname($this->baseDir);
         $this->isDocker = file_exists($this->parentDir . '/.docker');
 
-        $this->data = $elements;
+        if (! $this->isDocker) {
+            try {
+                $azuracastEnvPath = AzuraCastEnvFile::buildPathFromBase($this->baseDir);
+                $azuracastEnv = AzuraCastEnvFile::fromEnvFile($azuracastEnvPath);
+                $this->data = array_merge($elements, $azuracastEnv->toArray());
+            } catch (\Exception $e) {
+                $this->data = $elements;
+            }
+        }
+        else {
+            $this->data = $elements;
+        }
+        
         $this->appEnv = ApplicationEnvironment::tryFrom(
             Types::string($this->data[self::APP_ENV] ?? null, '', true)
         ) ?? ApplicationEnvironment::default();

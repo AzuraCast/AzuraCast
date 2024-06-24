@@ -1135,14 +1135,14 @@ paths:
         -
           name: start
           in: query
-          description: 'The start date for records, in YYYY-MM-DD format.'
+          description: 'The start date for records, in ISO 8601 (YYYY-MM-DD) format.'
           required: false
           schema:
             type: string
         -
           name: end
           in: query
-          description: 'The end date for records, in YYYY-MM-DD format.'
+          description: 'The end date for records, in ISO-8601 (YYYY-MM-DD) format.'
           required: false
           schema:
             type: string

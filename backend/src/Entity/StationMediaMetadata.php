@@ -32,15 +32,7 @@ class StationMediaMetadata extends AbstractStationConfiguration
 
     public function setLiqAmplify(float|string $amplify = null): void
     {
-        if (is_string($amplify)) {
-            $amplify = mb_strtolower($amplify);
-
-            if (str_contains($amplify, 'db')) {
-                $amplify = trim(str_replace('db', '', $amplify));
-            }
-        }
-
-        $this->set(self::AMPLIFY, Types::floatOrNull($amplify));
+        $this->set(self::AMPLIFY, self::getNumericValue($amplify));
     }
 
     public const string CROSS_START_NEXT = 'liq_cross_start_next';
@@ -52,7 +44,7 @@ class StationMediaMetadata extends AbstractStationConfiguration
 
     public function setLiqCrossStartNext(string|int|float $startNext = null): void
     {
-        $this->set(self::CROSS_START_NEXT, self::annotationToString($startNext));
+        $this->set(self::CROSS_START_NEXT, self::getNumericValue($startNext));
     }
 
     public const string FADE_IN = 'liq_fade_in';
@@ -64,7 +56,7 @@ class StationMediaMetadata extends AbstractStationConfiguration
 
     public function setLiqFadeIn(string|int|float $fadeIn = null): void
     {
-        $this->set(self::FADE_IN, self::annotationToString($fadeIn));
+        $this->set(self::FADE_IN, self::getNumericValue($fadeIn));
     }
 
     public const string FADE_OUT = 'liq_fade_out';
@@ -88,7 +80,7 @@ class StationMediaMetadata extends AbstractStationConfiguration
 
     public function setLiqCueIn(string|int|float $cueIn = null): void
     {
-        $this->set(self::CUE_IN, self::annotationToString($cueIn));
+        $this->set(self::CUE_IN, self::getNumericValue($cueIn));
     }
 
     public const string CUE_OUT = 'liq_cue_out';
@@ -100,18 +92,21 @@ class StationMediaMetadata extends AbstractStationConfiguration
 
     public function setLiqCueOut(string|int|float $cueOut = null): void
     {
-        $this->set(self::CUE_OUT, self::annotationToString($cueOut));
+        $this->set(self::CUE_OUT, self::getNumericValue($cueOut));
     }
 
-    protected static function annotationToString(string|int|float $annotation = null): ?float
+    public static function getNumericValue(string|int|float $annotation = null): ?float
     {
-        if (null === $annotation) {
-            return null;
+        if (is_string($annotation)) {
+            if (str_contains($annotation, ':')) {
+                $annotation = Time::displayTimeToSeconds($annotation);
+            } else {
+                preg_match('/([+-]?\d*\.?\d+)/', $annotation, $matches);
+                $annotation = $matches[1] ?? null;
+            }
         }
 
-        return Types::floatOrNull(
-            Time::displayTimeToSeconds($annotation)
-        );
+        return Types::floatOrNull($annotation);
     }
 
     public static function isLiquidsoapAnnotation(string $key): bool

@@ -5,12 +5,10 @@ declare(strict_types=1);
 namespace App\Media\Metadata\Reader;
 
 use App\Event\Media\ReadMetadata;
-use App\Media\Enums\MetadataTags;
 use App\Media\Metadata;
+use App\Media\MetadataInterface;
 use App\Media\MimeType;
-use App\Utilities\Arrays;
 use App\Utilities\File;
-use App\Utilities\Strings;
 use App\Utilities\Time;
 use App\Utilities\Types;
 use FFMpeg\FFMpeg;
@@ -19,7 +17,7 @@ use FFMpeg\FFProbe\DataMapping\Stream;
 use Psr\Log\LoggerInterface;
 use Throwable;
 
-final class FfprobeReader
+final class FfprobeReader extends AbstractReader
 {
     private readonly FFProbe $ffprobe;
 
@@ -47,11 +45,10 @@ final class FfprobeReader
             $metadata->setDuration($duration);
         }
 
-        $metadata->setTags(
-            $this->aggregateMetaTags(
-                $format,
-                $streams
-            )
+        $this->aggregateFFProbeMetaTags(
+            $metadata,
+            $format,
+            $streams
         );
 
         $metadata->setArtwork(
@@ -84,10 +81,11 @@ final class FfprobeReader
         return null;
     }
 
-    private function aggregateMetaTags(
+    private function aggregateFFProbeMetaTags(
+        MetadataInterface $metadata,
         FFProbe\DataMapping\Format $format,
         FFProbe\DataMapping\StreamCollection $streams
-    ): array {
+    ): void {
         $toProcess = [
             Types::array($format->get('comments')),
             Types::array($format->get('tags')),
@@ -99,44 +97,7 @@ final class FfprobeReader
             $toProcess[] = Types::array($stream->get('tags'));
         }
 
-        $metaTags = [];
-
-        foreach ($toProcess as $tagSet) {
-            if (empty($tagSet)) {
-                continue;
-            }
-
-            foreach ($tagSet as $tagName => $tagValue) {
-                if (empty($tagValue)) {
-                    continue;
-                }
-
-                $tagEnum = MetadataTags::getTag((string)$tagName);
-                if (null === $tagEnum) {
-                    continue;
-                }
-
-                if (is_array($tagValue)) {
-                    // Skip pictures
-                    if (isset($tagValue['data'])) {
-                        continue;
-                    }
-                    $flatValue = Arrays::flattenArray($tagValue);
-                    $tagValue = implode(', ', $flatValue);
-                }
-
-                $tagValue = Strings::stringToUtf8((string)$tagValue);
-
-                $tagName = $tagEnum->value;
-                if (isset($metaTags[$tagName])) {
-                    $metaTags[$tagName] .= ', ' . $tagValue;
-                } else {
-                    $metaTags[$tagName] = $tagValue;
-                }
-            }
-        }
-
-        return $metaTags;
+        $this->aggregateMetaTags($metadata, $toProcess);
     }
 
     private function getAlbumArt(

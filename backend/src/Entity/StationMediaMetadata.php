@@ -6,23 +6,10 @@ namespace App\Entity;
 
 use App\Utilities\Time;
 use App\Utilities\Types;
+use ReflectionObject;
 
 class StationMediaMetadata extends AbstractStationConfiguration
 {
-    protected function getValidKeys(): array
-    {
-        return array_keys($this->data);
-    }
-
-    protected function set(string $key, mixed $value): static
-    {
-        if (!self::isLiquidsoapAnnotation($key)) {
-            return $this;
-        }
-
-        return parent::set($key, $value);
-    }
-
     public const string AMPLIFY = 'liq_amplify';
 
     public function getLiqAmplify(): ?float
@@ -95,6 +82,58 @@ class StationMediaMetadata extends AbstractStationConfiguration
         $this->set(self::CUE_OUT, self::getNumericValue($cueOut));
     }
 
+    public function fromArray(
+        array|AbstractStationConfiguration $data
+    ): static {
+        if ($data instanceof AbstractStationConfiguration) {
+            $data = $data->toArray();
+        }
+
+        $reflClass = new ReflectionObject($this);
+
+        foreach ($data as $dataKey => $dataVal) {
+            $dataKey = mb_strtolower($dataKey);
+
+            if (!$reflClass->hasConstant($dataKey) && !self::isLiquidsoapAnnotation($dataKey)) {
+                continue;
+            }
+
+            $methodName = $this->inflector->camelize('set_' . $dataKey);
+            if (method_exists($this, $methodName)) {
+                $this->$methodName($dataVal);
+            } else {
+                // Apply some normalization of incoming data.
+                $dataVal = match (true) {
+                    'true' === $dataVal || 'false' === $dataVal => Types::bool($dataVal, false, true),
+                    is_numeric($dataVal) => Types::float($dataVal),
+                    default => $dataVal
+                };
+
+                $this->set($dataKey, $dataVal);
+            }
+        }
+
+        return $this;
+    }
+
+    public function toArray(): array
+    {
+        $return = [];
+
+        foreach ($this->data as $dataKey => $dataVal) {
+            $getMethodName = $this->inflector->camelize('get_' . $dataKey);
+            $methodName = $this->inflector->camelize($dataKey);
+
+            $return[$dataKey] = match (true) {
+                method_exists($this, $getMethodName) => $this->$getMethodName(),
+                method_exists($this, $methodName) => $this->$methodName(),
+                default => $this->get($dataKey)
+            };
+        }
+
+        return $return;
+    }
+
     public static function getNumericValue(string|int|float $annotation = null): ?float
     {
         if (is_string($annotation)) {
@@ -111,6 +150,8 @@ class StationMediaMetadata extends AbstractStationConfiguration
 
     public static function isLiquidsoapAnnotation(string $key): bool
     {
+        $key = mb_strtolower($key);
+
         return str_starts_with($key, 'liq_')
             || str_starts_with($key, 'replaygain_');
     }

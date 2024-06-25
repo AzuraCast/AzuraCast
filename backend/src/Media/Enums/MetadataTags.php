@@ -147,7 +147,7 @@ enum MetadataTags: string
 
     public static function getTag(string $value): ?self
     {
-        $value = str_replace('-', '_', strtolower($value));
+        $value = str_replace('-', '_', mb_strtolower($value));
 
         $tag = self::tryFrom($value);
         if (null !== $tag) {

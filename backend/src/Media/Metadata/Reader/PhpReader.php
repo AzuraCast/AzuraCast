@@ -7,8 +7,6 @@ namespace App\Media\Metadata\Reader;
 use App\Container\LoggerAwareTrait;
 use App\Event\Media\ReadMetadata;
 use App\Media\Metadata;
-use App\Utilities\Arrays;
-use App\Utilities\Strings;
 use App\Utilities\Time;
 use JamesHeinrich\GetID3\GetID3;
 use RuntimeException;
@@ -16,7 +14,7 @@ use Throwable;
 
 use const JSON_THROW_ON_ERROR;
 
-final class PhpReader
+final class PhpReader extends AbstractReader
 {
     use LoggerAwareTrait;
 
@@ -60,9 +58,8 @@ final class PhpReader
                 ];
             }
 
-            $metaTags = $this->aggregateMetaTags($toProcess);
+            $this->aggregateMetaTags($metadata, $toProcess);
 
-            $metadata->setTags($metaTags);
             $metadata->setMimeType($info['mime_type']);
 
             $artwork = null;
@@ -94,51 +91,5 @@ final class PhpReader
                 ]
             );
         }
-    }
-
-    private function aggregateMetaTags(array $toProcess): array
-    {
-        $metaTags = [];
-
-        foreach ($toProcess as $tagSet) {
-            if (empty($tagSet)) {
-                continue;
-            }
-
-            foreach ($tagSet as $tagName => $tagContents) {
-                // Skip pictures
-                if (isset($tagContents[0]['data'])) {
-                    continue;
-                }
-
-                $tagContents = (array)$tagContents;
-
-                // Most metadata is in numbered lists, but some fields (i.e. "text" are hashmaps).
-                if (array_is_list($tagContents)) {
-                    $tagValues = $metaTags[$tagName] ?? [];
-
-                    $newTagValues = Arrays::flattenArray($tagContents);
-                    foreach ($newTagValues as $newTagValue) {
-                        if (0 === count($tagValues) || !in_array($newTagValue, $tagValues, true)) {
-                            $metaTags[$tagName][] = $newTagValue;
-                        }
-                    }
-                } else {
-                    foreach ($tagContents as $tagSubKey => $tagSubValue) {
-                        $tagValues = $metaTags[$tagName][$tagSubKey] ?? [];
-                        if (0 === count($tagValues) || !in_array($tagSubValue, $tagValues, true)) {
-                            $metaTags[$tagName][$tagSubKey][] = $tagSubValue;
-                        }
-                    }
-                }
-            }
-        }
-
-        return array_map(
-            fn(array $tagValues): array|string => array_is_list($tagValues)
-                ? Strings::stringToUtf8(implode('; ', $tagValues))
-                : array_map(fn(array $tagSubValues) => Strings::stringToUtf8(implode('; ', $tagSubValues)), $tagValues),
-            $metaTags
-        );
     }
 }

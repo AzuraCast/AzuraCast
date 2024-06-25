@@ -42,7 +42,8 @@ final class Writer
 
         $tagwriter->tagformats = $tagFormats;
 
-        $writeTags = $metadata->getTags();
+        $writeTags = $metadata->getKnownTags();
+        $writeTags['text'] = $metadata->getExtraTags();
 
         if ($metadata->getArtwork()) {
             $artContents = $metadata->getArtwork();

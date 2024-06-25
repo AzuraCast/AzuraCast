@@ -59,8 +59,9 @@ abstract class AbstractStationConfiguration implements JsonSerializable
     public function toArray(): array
     {
         $return = [];
+        $reflClass = new ReflectionObject($this);
 
-        foreach ($this->getValidKeys() as $dataKey) {
+        foreach ($reflClass->getConstants(ReflectionClassConstant::IS_PUBLIC) as $dataKey) {
             $getMethodName = $this->inflector->camelize('get_' . $dataKey);
             $methodName = $this->inflector->camelize($dataKey);
 
@@ -81,12 +82,6 @@ abstract class AbstractStationConfiguration implements JsonSerializable
         return (0 !== count($result))
             ? $result
             : (object)[];
-    }
-
-    protected function getValidKeys(): array
-    {
-        $reflClass = new ReflectionObject($this);
-        return $reflClass->getConstants(ReflectionClassConstant::IS_PUBLIC);
     }
 
     protected function get(string $key, mixed $default = null): mixed

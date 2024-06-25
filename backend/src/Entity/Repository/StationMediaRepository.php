@@ -181,7 +181,7 @@ final class StationMediaRepository extends Repository
         }
 
         $customFieldsToSet = $this->customFieldRepo->getAutoAssignableFields();
-        $tags = $metadata->getTags();
+        $tags = $metadata->getKnownTags();
         foreach ($customFieldsToSet as $tag => $customFieldKey) {
             if (!empty($tags[$tag])) {
                 $customFieldRow = new StationMediaCustomField($media, $customFieldKey);

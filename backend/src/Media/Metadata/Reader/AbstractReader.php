@@ -11,76 +11,60 @@ use App\Utilities\Strings;
 
 abstract class AbstractReader
 {
-    protected function aggregateMetaTags(MetadataInterface $metadata, array $toProcess): void
+    protected function aggregateMetaTags(MetadataInterface $metadata, array $toProcessRaw): void
     {
-        $knownTags = [];
-        $extraTags = [];
+        $toProcess = [];
 
-        foreach ($toProcess as $tagSet) {
+        // Restructure the incoming array to handle nested hashmaps.
+        foreach ($toProcessRaw as $tagSet) {
             if (empty($tagSet)) {
                 continue;
             }
 
             foreach ($tagSet as $tagName => $tagContents) {
+                $tagContents = (array)$tagContents;
+
+                if (empty($tagContents)) {
+                    continue;
+                }
+
                 // Skip pictures
                 if (isset($tagContents[0]['data'])) {
                     continue;
                 }
 
-                $tagContents = (array)$tagContents;
-
-                // Most metadata is in numbered lists, but some fields (i.e. "text" are hashmaps).
                 if (array_is_list($tagContents)) {
-                    $tagName = mb_strtolower((string)$tagName);
-                    $tagEnum = MetadataTags::getTag($tagName);
-
-                    $tagValues = null !== $tagEnum
-                        ? $knownTags[$tagEnum->value] ?? []
-                        : $extraTags[$tagName] ?? [];
-
-                    $newTagValues = Arrays::flattenArray($tagContents);
-                    foreach ($newTagValues as $newTagValue) {
-                        if (0 === count($tagValues) || !in_array($newTagValue, $tagValues, true)) {
-                            if (null !== $tagEnum) {
-                                $knownTags[$tagEnum->value][] = $newTagValue;
-                            } else {
-                                $extraTags[$tagName][] = $newTagValue;
-                            }
-                        }
-                    }
+                    $toProcess[$tagName][] = $tagContents;
                 } else {
                     foreach ($tagContents as $tagSubKey => $tagSubValue) {
-                        $tagSubKey = mb_strtolower((string)$tagSubKey);
-                        $tagSubEnum = MetadataTags::getTag($tagSubKey);
-
-                        $tagValues = null !== $tagSubEnum
-                            ? $knownTags[$tagSubEnum->value] ?? []
-                            : $extraTags[$tagSubKey] ?? [];
-
-                        if (0 === count($tagValues) || !in_array($tagSubValue, $tagValues, true)) {
-                            if (null !== $tagSubEnum) {
-                                $knownTags[$tagSubEnum->value][] = $tagSubValue;
-                            } else {
-                                $extraTags[$tagSubKey][] = $tagSubValue;
-                            }
+                        if (empty($tagSubValue)) {
+                            continue;
                         }
+
+                        $toProcess[$tagSubKey][] = $tagSubValue;
                     }
                 }
             }
         }
 
-        $metadata->setKnownTags(
-            array_map(
-                fn(array $tagValues) => Strings::stringToUtf8(implode('; ', $tagValues)),
-                $knownTags
-            )
-        );
+        $knownTags = [];
+        $extraTags = [];
 
-        $metadata->setExtraTags(
-            array_map(
-                fn(array $tagValues) => Strings::stringToUtf8(implode('; ', $tagValues)),
-                $extraTags
-            )
-        );
+        foreach ($toProcess as $tagName => $tagContents) {
+            $tagName = mb_strtolower((string)$tagName);
+            $tagEnum = MetadataTags::getTag($tagName);
+
+            $newTagValues = Strings::stringToUtf8(
+                implode('; ', array_unique(Arrays::flattenArray($tagContents)))
+            );
+            if (null !== $tagEnum) {
+                $knownTags[$tagEnum->value] = $newTagValues;
+            } else {
+                $extraTags[$tagName] = $newTagValues;
+            }
+        }
+
+        $metadata->setKnownTags($knownTags);
+        $metadata->setExtraTags($extraTags);
     }
 }

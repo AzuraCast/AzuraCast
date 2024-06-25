@@ -16,7 +16,7 @@ class StationMediaMetadata extends AbstractStationConfiguration
 
     protected function set(string $key, mixed $value): static
     {
-        if (!self::isValidKey($key)) {
+        if (!self::isLiquidsoapAnnotation($key)) {
             return $this;
         }
 
@@ -114,7 +114,7 @@ class StationMediaMetadata extends AbstractStationConfiguration
         );
     }
 
-    protected static function isValidKey(string $key): bool
+    public static function isLiquidsoapAnnotation(string $key): bool
     {
         return str_starts_with($key, 'liq_')
             || str_starts_with($key, 'replaygain_');

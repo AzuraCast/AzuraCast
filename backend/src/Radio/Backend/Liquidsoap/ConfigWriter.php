@@ -28,6 +28,7 @@ use App\Radio\Enums\StreamFormats;
 use App\Radio\Enums\StreamProtocols;
 use App\Radio\FallbackFile;
 use App\Radio\StereoTool;
+use App\Utilities\Types;
 use Carbon\CarbonImmutable;
 use RuntimeException;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -1551,7 +1552,25 @@ final class ConfigWriter implements EventSubscriberInterface
      */
     public static function toFloat(float|int|string $number, int $decimals = 2): string
     {
-        return number_format((float)$number, $decimals, '.', '');
+        return number_format(
+            Types::float($number),
+            $decimals,
+            '.',
+            ''
+        );
+    }
+
+    /**
+     * Convert a boolean-ish value into a Liquidsoap annotated boolean.
+     *
+     * @param string|bool $value
+     * @return string
+     */
+    public static function toBool(string|bool $value): string
+    {
+        return Types::bool($value, false, true)
+            ? 'true'
+            : 'false';
     }
 
     public static function formatTimeCode(int $timeCode): string

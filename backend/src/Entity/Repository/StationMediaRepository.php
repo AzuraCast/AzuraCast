@@ -181,7 +181,7 @@ final class StationMediaRepository extends Repository
         }
 
         $customFieldsToSet = $this->customFieldRepo->getAutoAssignableFields();
-        $tags = $metadata->getTags();
+        $tags = $metadata->getKnownTags();
         foreach ($customFieldsToSet as $tag => $customFieldKey) {
             if (!empty($tags[$tag])) {
                 $customFieldRow = new StationMediaCustomField($media, $customFieldKey);
@@ -318,15 +318,22 @@ final class StationMediaRepository extends Repository
         string $path,
         ?ExtendedFilesystemInterface $fs = null
     ): void {
+        $waveformData = AudioWaveform::getWaveformFor($path);
+        $this->saveWaveformData($media, $waveformData, $fs);
+    }
+
+    public function saveWaveformData(
+        StationMedia $media,
+        array $waveformData,
+        ?ExtendedFilesystemInterface $fs = null
+    ): void {
         $fs ??= $this->getFilesystem($media);
 
-        $waveform = AudioWaveform::getWaveformFor($path);
         $waveformPath = StationMedia::getWaveformPath($media->getUniqueId());
-
         $fs->write(
             $waveformPath,
             json_encode(
-                $waveform,
+                $waveformData,
                 JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT | JSON_THROW_ON_ERROR | JSON_PARTIAL_OUTPUT_ON_ERROR
             )
         );

@@ -13,6 +13,7 @@ use App\Entity\StationQueue;
 use App\Entity\StationRequest;
 use App\Event\Radio\AnnotateNextSong;
 use App\Radio\Backend\Liquidsoap\ConfigWriter;
+use App\Utilities\Types;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -137,13 +138,19 @@ final class Annotations implements EventSubscriberInterface
         foreach ($annotationsRaw as $name => $prop) {
             $prop = ConfigWriter::annotateString((string)$prop);
 
-            // Convert Liquidsoap-specific annotations to floats.
-            if ('duration' === $name || str_starts_with($name, 'liq')) {
+            if ('duration' === $name) {
                 $prop = ConfigWriter::toFloat($prop);
             }
 
-            if (StationMediaMetadata::AMPLIFY === $name) {
-                $prop .= ' dB';
+            // Process Liquidsoap-specific annotations.
+            if (StationMediaMetadata::isLiquidsoapAnnotation($name)) {
+                $prop = match ($name) {
+                    'liq_blank_skipped', 'liq_longtail', 'liq_sustained_ending' => ConfigWriter::toBool($prop),
+                    'liq_amplify' => $prop . ' dB',
+                    default => is_numeric($prop)
+                        ? ConfigWriter::toFloat($prop)
+                        : Types::string($prop)
+                };
             }
 
             $annotations[$name] = $prop;

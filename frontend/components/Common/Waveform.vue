@@ -86,6 +86,10 @@ const props = defineProps({
     waveformUrl: {
         type: String,
         required: true
+    },
+    waveformCacheUrl: {
+        type: String,
+        default: null
     }
 });
 
@@ -105,7 +109,32 @@ watch(volume, (val) => {
     wavesurfer?.setVolume(getLogarithmicVolume(val));
 });
 
-const {axios} = useAxios();
+const isExternalJson = ref(false);
+
+const {axiosSilent} = useAxios();
+
+const cacheWaveformRemotely = () => {
+    if (props.waveformCacheUrl === null) {
+        return;
+    }
+
+    const decodedData = wavesurfer?.getDecodedData() ?? null;
+    const peaks = wavesurfer?.exportPeaks() ?? null;
+
+    if (decodedData === null || peaks === null) {
+        return;
+    }
+
+    const dataToCache = {
+        source: 'wavesurfer',
+        channels: decodedData.numberOfChannels,
+        sample_rate: decodedData.sampleRate,
+        length: decodedData.length,
+        data: peaks
+    };
+
+    axiosSilent.post(props.waveformCacheUrl, dataToCache);
+};
 
 onMounted(() => {
     wavesurfer = WS.create({
@@ -128,18 +157,25 @@ onMounted(() => {
     wavesurfer.on('ready', () => {
         wavesurfer.setVolume(getLogarithmicVolume(volume.value));
 
+        if (!isExternalJson.value) {
+            cacheWaveformRemotely();
+        }
+
         emit('ready');
     });
 
-    axios.get(props.waveformUrl).then((resp) => {
+    axiosSilent.get(props.waveformUrl).then((resp) => {
         const waveformJson = resp?.data?.data ?? null;
+
         if (waveformJson) {
+            isExternalJson.value = true;
             wavesurfer.load(props.audioUrl, waveformJson);
         } else {
+            isExternalJson.value = false;
             wavesurfer.load(props.audioUrl);
         }
-    }).catch((err) => {
-        console.error(err);
+    }).catch(() => {
+        isExternalJson.value = false;
         wavesurfer.load(props.audioUrl);
     });
 });

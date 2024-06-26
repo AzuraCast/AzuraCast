@@ -248,6 +248,11 @@ return static function (RouteCollectorProxy $group) {
                     )->setName('api:stations:media:waveform')
                         ->add(new Middleware\Cache\SetStaticFileCache());
 
+                    $group->post(
+                        '/waveform/{media_id:[a-zA-Z0-9\-]+}',
+                        Controller\Api\Stations\Waveform\PostCacheWaveformAction::class
+                    )->setName('api:stations:media:waveform-cache');
+
                     $group->post('/art/{media_id:[a-zA-Z0-9]+}', Controller\Api\Stations\Art\PostArtAction::class)
                         ->add(new Middleware\Permissions(StationPermissions::Media, true));
 

@@ -309,7 +309,7 @@ class StationMedia implements
     {
         $this->setLength($metadata->getDuration());
 
-        $tags = $metadata->getTags();
+        $tags = $metadata->getKnownTags();
 
         if (isset($tags['title'])) {
             $this->setTitle(Types::stringOrNull($tags['title']));
@@ -330,10 +330,7 @@ class StationMedia implements
             $this->setIsrc(Types::stringOrNull($tags['isrc']));
         }
 
-        if (isset($tags['text'])) {
-            $this->setExtraMetadata($tags['text']);
-        }
-
+        $this->setExtraMetadata($metadata->getExtraTags());
         $this->updateSongId();
     }
 
@@ -350,11 +347,11 @@ class StationMedia implements
                 'genre' => $this->getGenre(),
                 'unsynchronised_lyric' => $this->getLyrics(),
                 'isrc' => $this->getIsrc(),
-                'text' => $this->getExtraMetadata()->toArray(),
             ]
         );
 
-        $metadata->setTags($tags);
+        $metadata->setKnownTags($tags);
+        $metadata->setExtraTags($this->getExtraMetadata()->toArray());
 
         return $metadata;
     }

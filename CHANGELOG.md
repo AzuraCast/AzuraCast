@@ -18,6 +18,14 @@ release channel, you can take advantage of these new features and fixes.
 - We continue to work with Moonbase59, maintainer of the AutoCue library we use, to update to the latest version as it
   is being very rapidly iterated upon.
 
+- We now store a much larger amount of extra metadata associated with each media row; rather than create individual
+  database migrations for each update, we've moved this data into an `extra_metadata` field. If you're calling
+  media-related APIs, update your code accordingly. Currently, this field only includes metadata prefixed with `liq_`
+  or `replaygain_`, used by Liquidsoap, Replaygain, and AutoCue to significantly improve performance.
+
+- When using the Visual Cue Editor, if our script can't generate a waveform for a media file and the frontend javascript
+  library does it instead, we'll cache that generated waveform so future requests load instantly.
+
 - The application code has been restructured so that `package.json` is at the project root (like `composer.json`),
   backend PHP application code is located in the `backend` folder, and frontend Vue/JS/SCSS code is located in
   the `frontend` folder. This should not impact normal operations or plugins.

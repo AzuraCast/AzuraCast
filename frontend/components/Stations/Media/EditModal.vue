@@ -19,7 +19,7 @@
                 />
             </tab>
             <tab :label="$gettext('Album Art')">
-                <media-form-album-art :album-art-url="albumArtUrl" />
+                <media-form-album-art :album-art-url="record.links.art" />
             </tab>
             <tab
                 v-if="customFields.length > 0"
@@ -33,14 +33,15 @@
             <tab :label="$gettext('Visual Cue Editor')">
                 <media-form-waveform-editor
                     :form="form"
-                    :audio-url="audioUrl"
-                    :waveform-url="waveformUrl"
+                    :audio-url="record.links.play"
+                    :waveform-url="record.links.waveform"
+                    :waveform-cache-url="record.links.waveform_cache"
                 />
             </tab>
             <tab :label="$gettext('Advanced')">
                 <media-form-advanced-settings
                     :form="v$"
-                    :song-length="songLength"
+                    :song-length="record.length_text"
                 />
             </tab>
         </tabs>
@@ -62,6 +63,7 @@ import Tabs from "~/components/Common/Tabs.vue";
 import Tab from "~/components/Common/Tab.vue";
 import {ModalFormTemplateRef, useBaseEditModal} from "~/functions/useBaseEditModal.ts";
 import mergeExisting from "~/functions/mergeExisting.ts";
+import {useResettableRef} from "~/functions/useResettableRef.ts";
 
 const props = defineProps({
     customFields: {
@@ -76,10 +78,15 @@ const props = defineProps({
 
 const emit = defineEmits(['relist']);
 
-const albumArtUrl = ref('');
-const waveformUrl = ref('');
-const audioUrl = ref('');
-const songLength = ref('');
+const {record, reset} = useResettableRef({
+    length_text: null,
+    links: {
+        art: null,
+        waveform: null,
+        waveform_cache: null,
+        play: null
+    }
+});
 
 const $modal = ref<ModalFormTemplateRef>(null);
 
@@ -151,8 +158,12 @@ const {
         return blankForm;
     },
     {
+        resetForm: (originalResetForm) => {
+            originalResetForm();
+            reset();
+        },
         populateForm: (data, form) => {
-            songLength.value = data.length_text;
+            record.value = mergeExisting(record.value, data);
 
             const newForm = mergeExisting(form.value, data);
             newForm.playlists = map(data.playlists, 'id');
@@ -170,20 +181,12 @@ const {
     }
 );
 
-const open = (editRecordUrl, newAlbumArtUrl, newAudioUrl, newWaveformUrl) => {
-    albumArtUrl.value = newAlbumArtUrl;
-    audioUrl.value = newAudioUrl;
-    waveformUrl.value = newWaveformUrl;
-
+const open = (editRecordUrl) => {
     edit(editRecordUrl);
 };
 
 const onClose = () => {
     clearContents();
-
-    albumArtUrl.value = '';
-    audioUrl.value = '';
-    waveformUrl.value = '';
 }
 
 defineExpose({

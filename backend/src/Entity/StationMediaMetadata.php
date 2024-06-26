@@ -6,23 +6,10 @@ namespace App\Entity;
 
 use App\Utilities\Time;
 use App\Utilities\Types;
+use ReflectionObject;
 
 class StationMediaMetadata extends AbstractStationConfiguration
 {
-    protected function getValidKeys(): array
-    {
-        return array_keys($this->data);
-    }
-
-    protected function set(string $key, mixed $value): static
-    {
-        if (!self::isValidKey($key)) {
-            return $this;
-        }
-
-        return parent::set($key, $value);
-    }
-
     public const string AMPLIFY = 'liq_amplify';
 
     public function getLiqAmplify(): ?float
@@ -32,15 +19,7 @@ class StationMediaMetadata extends AbstractStationConfiguration
 
     public function setLiqAmplify(float|string $amplify = null): void
     {
-        if (is_string($amplify)) {
-            $amplify = mb_strtolower($amplify);
-
-            if (str_contains($amplify, 'db')) {
-                $amplify = trim(str_replace('db', '', $amplify));
-            }
-        }
-
-        $this->set(self::AMPLIFY, Types::floatOrNull($amplify));
+        $this->set(self::AMPLIFY, self::getNumericValue($amplify));
     }
 
     public const string CROSS_START_NEXT = 'liq_cross_start_next';
@@ -52,7 +31,7 @@ class StationMediaMetadata extends AbstractStationConfiguration
 
     public function setLiqCrossStartNext(string|int|float $startNext = null): void
     {
-        $this->set(self::CROSS_START_NEXT, self::annotationToString($startNext));
+        $this->set(self::CROSS_START_NEXT, self::getNumericValue($startNext));
     }
 
     public const string FADE_IN = 'liq_fade_in';
@@ -64,7 +43,7 @@ class StationMediaMetadata extends AbstractStationConfiguration
 
     public function setLiqFadeIn(string|int|float $fadeIn = null): void
     {
-        $this->set(self::FADE_IN, self::annotationToString($fadeIn));
+        $this->set(self::FADE_IN, self::getNumericValue($fadeIn));
     }
 
     public const string FADE_OUT = 'liq_fade_out';
@@ -88,7 +67,7 @@ class StationMediaMetadata extends AbstractStationConfiguration
 
     public function setLiqCueIn(string|int|float $cueIn = null): void
     {
-        $this->set(self::CUE_IN, self::annotationToString($cueIn));
+        $this->set(self::CUE_IN, self::getNumericValue($cueIn));
     }
 
     public const string CUE_OUT = 'liq_cue_out';
@@ -100,22 +79,79 @@ class StationMediaMetadata extends AbstractStationConfiguration
 
     public function setLiqCueOut(string|int|float $cueOut = null): void
     {
-        $this->set(self::CUE_OUT, self::annotationToString($cueOut));
+        $this->set(self::CUE_OUT, self::getNumericValue($cueOut));
     }
 
-    protected static function annotationToString(string|int|float $annotation = null): ?float
-    {
-        if (null === $annotation) {
-            return null;
+    public function fromArray(
+        array|AbstractStationConfiguration $data
+    ): static {
+        if ($data instanceof AbstractStationConfiguration) {
+            $data = $data->toArray();
         }
 
-        return Types::floatOrNull(
-            Time::displayTimeToSeconds($annotation)
-        );
+        $reflClass = new ReflectionObject($this);
+
+        foreach ($data as $dataKey => $dataVal) {
+            $dataKey = mb_strtolower($dataKey);
+
+            if (!$reflClass->hasConstant($dataKey) && !self::isLiquidsoapAnnotation($dataKey)) {
+                continue;
+            }
+
+            $methodName = $this->inflector->camelize('set_' . $dataKey);
+            if (method_exists($this, $methodName)) {
+                $this->$methodName($dataVal);
+            } else {
+                // Apply some normalization of incoming data.
+                $dataVal = match (true) {
+                    'true' === $dataVal || 'false' === $dataVal => Types::bool($dataVal, false, true),
+                    is_numeric($dataVal) => Types::float($dataVal),
+                    default => $dataVal
+                };
+
+                $this->set($dataKey, $dataVal);
+            }
+        }
+
+        return $this;
     }
 
-    protected static function isValidKey(string $key): bool
+    public function toArray(): array
     {
+        $return = [];
+
+        foreach ($this->data as $dataKey => $dataVal) {
+            $getMethodName = $this->inflector->camelize('get_' . $dataKey);
+            $methodName = $this->inflector->camelize($dataKey);
+
+            $return[$dataKey] = match (true) {
+                method_exists($this, $getMethodName) => $this->$getMethodName(),
+                method_exists($this, $methodName) => $this->$methodName(),
+                default => $this->get($dataKey)
+            };
+        }
+
+        return $return;
+    }
+
+    public static function getNumericValue(string|int|float $annotation = null): ?float
+    {
+        if (is_string($annotation)) {
+            if (str_contains($annotation, ':')) {
+                $annotation = Time::displayTimeToSeconds($annotation);
+            } else {
+                preg_match('/([+-]?\d*\.?\d+)/', $annotation, $matches);
+                $annotation = $matches[1] ?? null;
+            }
+        }
+
+        return Types::floatOrNull($annotation);
+    }
+
+    public static function isLiquidsoapAnnotation(string $key): bool
+    {
+        $key = mb_strtolower($key);
+
         return str_starts_with($key, 'liq_')
             || str_starts_with($key, 'replaygain_');
     }

@@ -458,6 +458,12 @@ final class ListAction implements SingleActionInterface
                         'timestamp' => $row->media->art_updated_at,
                     ]
                 ),
+                'waveform_cache' => $router->fromHere(
+                    'api:stations:media:waveform-cache',
+                    [
+                        'media_id' => $row->media->unique_id,
+                    ]
+                ),
             ];
         }
 

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Media\Metadata\Reader;
 
 use App\Media\Enums\MetadataTags;
+use App\Media\Metadata;
 use App\Media\MetadataInterface;
 use App\Utilities\Arrays;
 use App\Utilities\Strings;
@@ -66,18 +67,13 @@ abstract class AbstractReader
         $metadata->setExtraTags($extraTags);
     }
 
-    /**
-     * @param array $values
-     * @param non-empty-string $separator
-     * @return string
-     */
-    protected function aggregateValues(array $values, string $separator = ';'): string
+    protected function aggregateValues(array $values): string
     {
         $newValues = [];
 
         foreach (Arrays::flattenArray($values) as $valueRow) {
-            if (str_contains($valueRow, $separator)) {
-                foreach (explode($separator, $valueRow) as $valueSubRow) {
+            if (str_contains($valueRow, Metadata::MULTI_VALUE_SEPARATOR)) {
+                foreach (explode(Metadata::MULTI_VALUE_SEPARATOR, $valueRow) as $valueSubRow) {
                     $newValues[] = trim($valueSubRow);
                 }
             } else {
@@ -86,7 +82,7 @@ abstract class AbstractReader
         }
 
         return Strings::stringToUtf8(
-            implode($separator . ' ', array_unique($newValues))
+            implode(Metadata::MULTI_VALUE_SEPARATOR . ' ', array_unique($newValues))
         );
     }
 }

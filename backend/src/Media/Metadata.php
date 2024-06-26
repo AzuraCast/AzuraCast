@@ -10,6 +10,8 @@ namespace App\Media;
  */
 final class Metadata implements MetadataInterface
 {
+    public const string MULTI_VALUE_SEPARATOR = ';';
+
     /** @var KnownTags */
     private array $knownTags = [];
 

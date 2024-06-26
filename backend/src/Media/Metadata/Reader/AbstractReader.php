@@ -54,9 +54,7 @@ abstract class AbstractReader
             $tagName = mb_strtolower((string)$tagName);
             $tagEnum = MetadataTags::getTag($tagName);
 
-            $newTagValues = Strings::stringToUtf8(
-                implode('; ', array_unique(Arrays::flattenArray($tagContents)))
-            );
+            $newTagValues = $this->aggregateValues($tagContents);
             if (null !== $tagEnum) {
                 $knownTags[$tagEnum->value] = $newTagValues;
             } else {
@@ -66,5 +64,29 @@ abstract class AbstractReader
 
         $metadata->setKnownTags($knownTags);
         $metadata->setExtraTags($extraTags);
+    }
+
+    /**
+     * @param array $values
+     * @param non-empty-string $separator
+     * @return string
+     */
+    protected function aggregateValues(array $values, string $separator = ';'): string
+    {
+        $newValues = [];
+
+        foreach (Arrays::flattenArray($values) as $valueRow) {
+            if (str_contains($valueRow, $separator)) {
+                foreach (explode($separator, $valueRow) as $valueSubRow) {
+                    $newValues[] = trim($valueSubRow);
+                }
+            } else {
+                $newValues[] = $valueRow;
+            }
+        }
+
+        return Strings::stringToUtf8(
+            implode($separator . ' ', array_unique($newValues))
+        );
     }
 }

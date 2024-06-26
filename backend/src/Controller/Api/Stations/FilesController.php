@@ -272,6 +272,13 @@ final class FilesController extends AbstractStationApiCrudController
                 ],
                 absolute: !$isInternal
             ),
+            'waveform_cache' => $router->fromHere(
+                'api:stations:media:waveform-cache',
+                [
+                    'media_id' => $record->getUniqueId(),
+                ],
+                absolute: !$isInternal
+            ),
         ];
 
         return $return;

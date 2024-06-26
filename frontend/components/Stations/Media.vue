@@ -419,8 +419,8 @@ const rename = (path) => {
 
 const $editModal = ref<InstanceType<typeof EditModal> | null>(null);
 
-const edit = (recordUrl, albumArtUrl, audioUrl, waveformUrl) => {
-    $editModal.value?.open(recordUrl, albumArtUrl, audioUrl, waveformUrl);
+const edit = (recordUrl: string) => {
+    $editModal.value?.open(recordUrl);
 };
 
 const $newDirectoryModal = ref<InstanceType<typeof NewDirectoryModal> | null>(null);

@@ -9,6 +9,7 @@
         ref="$waveform"
         :audio-url="audioUrl"
         :waveform-url="waveformUrl"
+        :waveform-cache-url="waveformCacheUrl"
         @ready="updateRegions"
     />
 
@@ -93,6 +94,10 @@ const props = defineProps({
     waveformUrl: {
         type: String,
         required: true
+    },
+    waveformCacheUrl: {
+        type: String,
+        default: null
     }
 });
 

@@ -35,14 +35,16 @@ use RuntimeException;
             new OA\Parameter(ref: OpenApi::REF_STATION_ID_REQUIRED),
             new OA\Parameter(
                 name: 'start',
-                description: 'The start date for records, in ISO 8601 (YYYY-MM-DD) format.',
+                description: 'The start date for records, in PHP-supported date/time format.'
+                . ' (https://www.php.net/manual/en/datetime.formats.php)',
                 in: 'query',
                 required: false,
                 schema: new OA\Schema(type: 'string')
             ),
             new OA\Parameter(
                 name: 'end',
-                description: 'The end date for records, in ISO-8601 (YYYY-MM-DD) format.',
+                description: 'The end date for records, in PHP-supported date/time format.'
+                . ' (https://www.php.net/manual/en/datetime.formats.php)',
                 in: 'query',
                 required: false,
                 schema: new OA\Schema(type: 'string')

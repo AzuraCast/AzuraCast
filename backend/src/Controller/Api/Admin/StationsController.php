@@ -320,12 +320,14 @@ class StationsController extends AbstractApiCrudController
         $oldFrontend = $originalRecord['frontend_type'];
         $oldBackend = $originalRecord['backend_type'];
         $oldHls = (bool)$originalRecord['enable_hls'];
+        $oldEnabled = (bool)$originalRecord['is_enabled'];
 
         $frontendChanged = ($oldFrontend !== $station->getFrontendType());
         $backendChanged = ($oldBackend !== $station->getBackendType());
         $adapterChanged = $frontendChanged || $backendChanged;
 
         $hlsChanged = $oldHls !== $station->getEnableHls();
+        $enabledChanged = $oldEnabled !== $station->getIsEnabled();
 
         if ($frontendChanged) {
             $this->stationRepo->resetMounts($station);
@@ -335,7 +337,7 @@ class StationsController extends AbstractApiCrudController
             $this->stationRepo->resetHls($station);
         }
 
-        if ($adapterChanged || !$station->getIsEnabled()) {
+        if ($adapterChanged || $enabledChanged) {
             try {
                 $this->configuration->writeConfiguration(
                     station: $station,

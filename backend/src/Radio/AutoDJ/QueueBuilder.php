@@ -159,14 +159,14 @@ final class QueueBuilder implements EventSubscriberInterface
      */
     private function assembleActivePlaylistsByType(
         BuildQueue $event,
-        Collection $playlists
+        Collection $playlists,
+        bool $skipGroupedPlaylists = true
     ): array {
         $activePlaylistsByType = [];
 
         foreach ($playlists as $playlist) {
             // @DEV: playlists that are part of a playlist group are not included in general playout rotation
-            // their playlist groups should determine their initial "should/should not play" status
-            if ($playlist->getPlaylistGroups() > 0) {
+            if ($skipGroupedPlaylists && $playlist->getPlaylistGroups() > 0) {
                 continue;
             }
 
@@ -285,10 +285,72 @@ final class QueueBuilder implements EventSubscriberInterface
     ): StationQueue|array|null {
         // @TODO: iterate over entries, only one type of content shall be present, other playlists or media
         // - Need to handle the PlaylistOrders here to first decide what to do next
-        //
-        // Should I adjust  getRandomMediaIdFromPlaylist, getSequentialMediaIdFromPlaylist & getShuffledMediaIdFromPlaylist
-        // to be able to handle playlist groups or should I handle this in here somehow?
+        $selectedPlaylist = match ($playlistGroup->getOrder()) {
+            PlaylistOrders::Random => $this->getRandomPlaylistFromPlaylistGroup(),
+            PlaylistOrders::Sequential => $this->getSequentialPlaylistFromPlaylistGroup(),
+            PlaylistOrders::Shuffle => $this->getShuffledPlaylistFromPlaylistGroup()
+        };
 
+        if ($selectedPlaylist === null) {
+            return null;
+        }
+
+        // @DEV: Playlists that contain playlists need to recursively resolve down until they reach a playlist that
+        // is a media containing one in order to continue on with selecting something to play
+        if ($selectedPlaylist->getPlaylists()->count() > 0) {
+            $selectedPlaylist = $this->playSongFromPlaylistGroup(
+                $selectedPlaylist,
+                $recentSongHistory,
+                $expectedPlayTime,
+                $allowDuplicates
+            );
+        }
+
+        // @TODO: what to do if the selected playlist has no entries???
+        // - maybe i should prevent those from being returned by the "get" match methods above?
+        // - still, what happens when that still returns nothing?
+
+        // @TODO: Resolve
+        $validTrack = null;
+
+        // @TODO: I probably need to also advance the playlist groups queue
+        if (null !== $validTrack) {
+            $queueEntry = $this->makeQueueFromApi($validTrack, $selectedPlaylist, $expectedPlayTime);
+
+            if (null !== $queueEntry) {
+                $selectedPlaylist->setPlayedAt($expectedPlayTime->getTimestamp());
+                $this->em->persist($selectedPlaylist);
+                return $queueEntry;
+            }
+        }
+
+        $this->logger->warning(
+            sprintf('Playlist "%s" did not return a playable track.', $selectedPlaylist->getName()),
+            [
+                'playlist_id' => $selectedPlaylist->getId(),
+                'playlist_order' => $selectedPlaylist->getOrder()->value,
+                'allow_duplicates' => $allowDuplicates,
+            ]
+        );
+
+        return null;
+    }
+
+    private function getRandomPlaylistFromPlaylistGroup(): ?StationPlaylist
+    {
+        // @TODO: implement
+        return null;
+    }
+
+    private function getSequentialPlaylistFromPlaylistGroup(): ?StationPlaylist
+    {
+        // @TODO: implement
+        return null;
+    }
+
+    private function getShuffledPlaylistFromPlaylistGroup(): ?StationPlaylist
+    {
+        // @TODO: implement
         return null;
     }
 
@@ -338,6 +400,12 @@ final class QueueBuilder implements EventSubscriberInterface
             // - handle duplicate check loop
             // Maybe I should extract this stuff from the calculateNextSong method
             // and put it into a method that can be re-used here... (done extraction)
+            return $this->playSongFromPlaylistGroup(
+                $playlist,
+                $recentSongHistory,
+                $expectedPlayTime,
+                $allowDuplicates
+            );
         }
 
         if ($playlist->backendMerge()) {
@@ -391,6 +459,7 @@ final class QueueBuilder implements EventSubscriberInterface
                 'allow_duplicates' => $allowDuplicates,
             ]
         );
+
         return null;
     }
 

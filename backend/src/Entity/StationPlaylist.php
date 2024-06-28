@@ -448,7 +448,7 @@ class StationPlaylist implements
     }
 
     /**
-     * @return Collection<int, StationPlaylistGroup>
+     * @return Collection<int, StationPlaylist>
      */
     public function getPlaylists(): Collection
     {

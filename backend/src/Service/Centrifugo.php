@@ -19,7 +19,7 @@ final class Centrifugo
 
     public function isSupported(): bool
     {
-        return $this->environment->isDocker() && !$this->environment->isTesting();
+        return !$this->environment->isTesting();
     }
 
     public function publishToStation(Station $station, mixed $message, array $triggers): void

@@ -22,9 +22,15 @@
                 </button>
             </div>
             <div class="flex-fill m-2 m-md-0 text-end">
-                <h6 class="m-0">
-                    {{ destinationDirectory }}
-                </h6>
+                <h5 class="m-0">
+                    <small>{{ $gettext('Selected directory:') }}</small><br>
+                    <template v-if="destinationDirectory">
+                        {{ destinationDirectory }}
+                    </template>
+                    <template v-else>
+                        {{ $gettext('Base Directory') }}
+                    </template>
+                </h5>
             </div>
         </div>
         <div class="row">
@@ -32,13 +38,15 @@
                 <data-table
                     id="station_media"
                     ref="$datatable"
-                    :show-toolbar="false"
-                    :selectable="false"
+                    show-toolbar
+                    paginated
                     :fields="fields"
-                    :api-url="listDirectoriesUrl"
-                    :request-config="requestConfig"
+                    :items="directories"
+                    :loading="isLoading"
+                    handle-client-side
+                    @refresh-clicked="reload()"
                 >
-                    <template #cell(directory)="row">
+                    <template #cell(name)="{item}">
                         <div class="is_dir d-flex align-items-center">
                             <span class="file-icon me-2">
                                 <icon :icon="IconFolder" />
@@ -46,9 +54,9 @@
 
                             <a
                                 href="#"
-                                @click.prevent="enterDirectory(row.item.path)"
+                                @click.prevent="enterDirectory(item.path)"
                             >
-                                {{ row.item.name }}
+                                {{ item.name }}
                             </a>
                         </div>
                     </template>
@@ -85,6 +93,7 @@ import {IconChevronLeft, IconFolder} from "~/components/Common/icons";
 import {DataTableTemplateRef} from "~/functions/useHasDatatable.ts";
 import {ModalTemplateRef, useHasModal} from "~/functions/useHasModal.ts";
 import useHandleBatchResponse from "~/components/Stations/Media/useHandleBatchResponse.ts";
+import {useAsyncState} from "@vueuse/core";
 
 const props = defineProps({
     selectedItems: {
@@ -113,7 +122,7 @@ const dirHistory = ref([]);
 const {$gettext} = useTranslate();
 
 const fields: DataTableField[] = [
-    {key: 'directory', label: $gettext('Directory'), sortable: false}
+    {key: 'name', label: $gettext('Directory'), sortable: true}
 ];
 
 const langHeader = computed(() => {
@@ -134,6 +143,15 @@ const onHidden = () => {
 const {axios} = useAxios();
 
 const {handleBatchResponse} = useHandleBatchResponse();
+
+const {state: directories, execute: reload, isLoading} = useAsyncState(
+    () => axios.get(props.listDirectoriesUrl, {
+        params: {
+            currentDirectory: destinationDirectory.value
+        }
+    }).then((r) => r.data.rows),
+    [],
+);
 
 const doMove = () => {
     (props.selectedItems.all.length) && axios.put(props.batchUrl, {
@@ -156,11 +174,15 @@ const doMove = () => {
 
 const $datatable = ref<DataTableTemplateRef>(null);
 
+const onDirChange = () => {
+    reload();
+    $datatable.value?.refresh();
+}
+
 const enterDirectory = (path) => {
     dirHistory.value.push(path);
     destinationDirectory.value = path;
-
-    $datatable.value?.refresh();
+    onDirChange();
 };
 
 const pageBack = () => {
@@ -172,12 +194,7 @@ const pageBack = () => {
     }
 
     destinationDirectory.value = newDirectory;
-    $datatable.value?.refresh();
-};
-
-const requestConfig = (config) => {
-    config.params.currentDirectory = destinationDirectory.value;
-    return config;
+    onDirChange();
 };
 
 defineExpose({

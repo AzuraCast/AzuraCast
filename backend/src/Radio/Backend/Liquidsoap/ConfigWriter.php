@@ -1499,10 +1499,10 @@ final class ConfigWriter implements EventSubscriberInterface
                 return '%fdkaac(channels=2, samplerate=44100, bitrate=' . $bitrate . ', afterburner=' . $afterburner . ', aot="' . $aot . '", sbr_mode=true)';
 
             case StreamFormats::Ogg:
-                return '%vorbis.cbr(samplerate=44100, channels=2, bitrate=' . $bitrate . ')';
+                return '%ffmpeg(format="ogg", %audio(codec="libvorbis", samplerate=48000, b="' . $bitrate . 'k", channels=2))';
 
             case StreamFormats::Opus:
-                return '%opus(samplerate=48000, bitrate=' . $bitrate . ', vbr="constrained", application="audio", channels=2, signal="music", complexity=10, max_bandwidth="full_band")';
+                return '%ffmpeg(format="ogg", %audio(codec="libopus", samplerate=48000, b="' . $bitrate . 'k", vbr="constrained", application="audio", channels=2, compression_level=10, cutoff=20000))';
 
             case StreamFormats::Flac:
                 return '%ogg(%flac(samplerate=48000, channels=2, compression=4, bits_per_sample=24))';

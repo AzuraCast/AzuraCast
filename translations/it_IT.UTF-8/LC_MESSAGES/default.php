@@ -465,7 +465,7 @@
       'Server Status' => 'Stato del server',
       'Services' => 'Servizi',
       'Set as Default Mount Point' => 'Imposta come mount point predefinito',
-      'Set to "Yes" to always use "https://" secure URLs, and to automatically redirect to the secure URL when an insecure URL is visited.' => 'Impostare su "Sì" per utilizzare sempre URL "https://" protetti e per reindirizzare automaticamente all\'URL protetto quando viene visitato un URL non protetto.',
+      'Set to "Yes" to always use "https://" secure URLs, and to automatically redirect to the secure URL when an insecure URL is visited (HSTS).' => 'Impostare su "Sì" per utilizzare sempre URL "https://" protetti e per reindirizzare automaticamente all\'URL protetto quando viene visitato un URL non protetto (HSTS).',
       'Settings' => 'Impostazioni',
       'SFTP Users' => 'Utenti SFTP',
       'Show on Public Pages' => 'Mostra su pagine pubbliche',

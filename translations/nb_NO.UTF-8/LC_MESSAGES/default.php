@@ -996,7 +996,7 @@
       'Set Fade Out' => 'Sett Fade Ut',
       'Set longer to preserve more playback history and listener metadata for stations. Set shorter to save disk space.' => 'Still inn lenger for å bevare mer avspillingshistorikk og lyttermetadata for stasjoner. Sett kortere for å spare diskplass.',
       'Set the length of time (seconds) a listener will stay connected to the stream. If set to 0, listeners can stay connected infinitely.' => 'Angi hvor lenge (sekunder) en lytter skal være koblet til strømmen. Hvis satt til 0, kan lyttere forbli tilkoblet uendelig.',
-      'Set to "Yes" to always use "https://" secure URLs, and to automatically redirect to the secure URL when an insecure URL is visited.' => 'Sett til "Ja" for alltid å bruke "https://" sikre nettadresser, og for automatisk å omdirigere til den sikre nettadressen når en usikker URL besøkes.',
+      'Set to "Yes" to always use "https://" secure URLs, and to automatically redirect to the secure URL when an insecure URL is visited (HSTS).' => 'Sett til "Ja" for alltid å bruke "https://" sikre nettadresser, og for automatisk å omdirigere til den sikre nettadressen når en usikker URL besøkes (HSTS).',
       'Set to * to allow all sources, or specify a list of origins separated by a comma (,).' => 'Sett til * for å tillate alle kilder, eller spesifiser en liste over opprinnelser atskilt med komma (,).',
       'Settings' => 'Innstillinger',
       'Setup instructions for broadcasting software are available on the AzuraCast wiki.' => 'Oppsettinstruksjoner for kringkastingsprogramvare er tilgjengelig på AzuraCast-wikien.',

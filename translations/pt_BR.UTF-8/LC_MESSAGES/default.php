@@ -1064,7 +1064,7 @@
       'Set Fade Start Next' => 'Definir Fade Iniciar no Próximo',
       'Set longer to preserve more playback history and listener metadata for stations. Set shorter to save disk space.' => 'Defina a mais para preservar mais histórico de reprodução e metadados de ouvinte para estações. Defina menos para economizar espaço em disco.',
       'Set the length of time (seconds) a listener will stay connected to the stream. If set to 0, listeners can stay connected infinitely.' => 'Defina o tempo em segundos que um ouvinte ficará conectado à transmissão. Se for definido como 0, os ouvintes podem permanecer conectados indefinidamente.',
-      'Set to "Yes" to always use "https://" secure URLs, and to automatically redirect to the secure URL when an insecure URL is visited.' => 'Defina como "Sim" para sempre usar URLs seguros "https: //" e redirecionar automaticamente para o URL seguro quando um URL inseguro for visitado.',
+      'Set to "Yes" to always use "https://" secure URLs, and to automatically redirect to the secure URL when an insecure URL is visited (HSTS).' => 'Defina como "Sim" para sempre usar URLs seguros "https: //" e redirecionar automaticamente para o URL seguro quando um URL inseguro for visitado (HSTS).',
       'Set to * to allow all sources, or specify a list of origins separated by a comma (,).' => 'Defina como * para permitir todas as fontes, ou especifique uma lista separadas por uma vírgula (,).',
       'Settings' => 'Configurações',
       'Setup instructions for broadcasting software are available on the AzuraCast wiki.' => 'Instruções para configurar softwares de transmissão estão disponíveis na wiki do AzuraCast.',

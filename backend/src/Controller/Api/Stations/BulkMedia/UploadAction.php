@@ -12,6 +12,7 @@ use App\Entity\Repository\StationPlaylistMediaRepository;
 use App\Entity\Repository\StationPlaylistRepository;
 use App\Entity\Station;
 use App\Entity\StationMedia;
+use App\Entity\StationMediaMetadata;
 use App\Entity\StationPlaylist;
 use App\Exception\ValidationException;
 use App\Http\Response;
@@ -88,6 +89,8 @@ final class UploadAction implements SingleActionInterface
             $mediaByUniqueId[$mediaRow['unique_id']] = $mediaRow['id'];
         }
 
+        $extraMetadataFieldNames = StationMediaMetadata::getFields();
+
         $customFieldShortNames = [];
         foreach ($this->customFieldRepo->fetchArray() as $row) {
             $customFieldShortNames[$row['short_name']] = $row['id'];
@@ -141,6 +144,7 @@ final class UploadAction implements SingleActionInterface
                     $record,
                     $station,
                     $row,
+                    $extraMetadataFieldNames,
                     $customFieldShortNames,
                     $playlistsByName
                 );
@@ -178,10 +182,12 @@ final class UploadAction implements SingleActionInterface
         StationMedia $record,
         Station $station,
         array $row,
+        array $extraMetadataFieldNames,
         array $customFieldShortNames,
         array $playlistsByName
     ): bool {
         $mediaRow = [];
+        $extraMetadata = [];
 
         $hasCustomFields = false;
         $customFields = [];
@@ -196,6 +202,8 @@ final class UploadAction implements SingleActionInterface
 
             if (in_array($key, self::ALLOWED_MEDIA_FIELDS, true)) {
                 $mediaRow[$key] = $value;
+            } elseif (in_array($key, $extraMetadataFieldNames, true)) {
+                $extraMetadata[$key] = $value;
             } elseif (str_starts_with($key, 'custom_field_')) {
                 $fieldName = str_replace('custom_field_', '', $key);
                 if (isset($customFieldShortNames[$fieldName])) {
@@ -215,6 +223,10 @@ final class UploadAction implements SingleActionInterface
                     }
                 }
             }
+        }
+
+        if (!empty($extraMetadata)) {
+            $mediaRow['extra_metadata'] = $extraMetadata;
         }
 
         if (empty($mediaRow) && !$hasPlaylists && !$hasCustomFields) {

@@ -13,6 +13,10 @@ release channel, you can take advantage of these new features and fixes.
   will greatly increase your initial CPU load if using ReplayGain or AutoCue. Most stations can safely disable this
   feature to see a significant bump in performance when restarting their stations.
 
+- We now expose a Prometheus metrics endpoint at `GET /api/prometheus`. Prometheus is a popular tool for consuming
+  time-series data; metrics provided by AzuraCast include CPU load, disk and memory usage, and total and unique
+  listeners per-stream and per-station.
+
 ## Code Quality/Technical Changes
 
 - We continue to work with Moonbase59, maintainer of the AutoCue library we use, to update to the latest version as it

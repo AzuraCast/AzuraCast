@@ -48,7 +48,7 @@ class Station implements Stringable, IdentifiableEntityInterface
     use Traits\TruncateStrings;
 
     #[
-        OA\Property(description: "The full display name of the station.", example: "AzuraTest Radio"),
+        OA\Property(description: "The full display name of the station.", example: "Caster.fm Radio"),
         ORM\Column(length: 100, nullable: false),
         Assert\NotBlank,
         Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])
@@ -58,7 +58,7 @@ class Station implements Stringable, IdentifiableEntityInterface
     #[
         OA\Property(
             description: "The URL-friendly name for the station, typically auto-generated from the full station name.",
-            example: "azuratest_radio"
+            example: "casterfm_radio"
         ),
         ORM\Column(length: 100, nullable: false),
         Assert\NotBlank,
@@ -152,7 +152,7 @@ class Station implements Stringable, IdentifiableEntityInterface
     protected ?string $genre = null;
 
     #[
-        OA\Property(example: "/var/azuracast/stations/azuratest_radio"),
+        OA\Property(example: "/var/casterfm/stations/casterfm_radio"),
         ORM\Column(length: 255, nullable: true),
         Serializer\Groups([EntityGroupsInterface::GROUP_ADMIN, EntityGroupsInterface::GROUP_ALL])
     ]
@@ -280,6 +280,16 @@ class Station implements Stringable, IdentifiableEntityInterface
         Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])
     ]
     protected ?string $timezone = 'UTC';
+
+    #[
+        OA\Property(
+            description: "The maximum bitrate at which a station may broadcast, in Kbps",
+            example: 128
+        ),
+        ORM\Column(type: 'int'),
+        Serializer\Groups([EntityGroupsInterface::GROUP_ADMIN, EntityGroupsInterface::GROUP_ALL])
+    ]
+    protected int $max_bitrate = 128;
 
     /**
      * @var ConfigData|null
@@ -880,6 +890,20 @@ class Station implements Stringable, IdentifiableEntityInterface
     public function setTimezone(?string $timezone): void
     {
         $this->timezone = $timezone;
+    }
+
+    public function getMaxBitrate(): int
+    {
+        if (!empty($this->max_bitrate)) {
+            return $this->max_bitrate;
+        }
+
+        return 128;
+    }
+
+    public function setMaxBitrate(?int $max_bitrate): void
+    {
+        $this->max_bitrate = $max_bitrate;
     }
 
     public function getBrandingConfig(): StationBrandingConfiguration

@@ -6,10 +6,18 @@
         <div class="row g-3 mb-3">
             <form-group-checkbox
                 id="edit_form_is_enabled"
-                class="col-md-6"
+                class="col-md-3"
                 :field="v$.is_enabled"
                 :label="$gettext('Enable Broadcasting')"
                 :description="$gettext('If disabled, the station will not broadcast or shuffle its AutoDJ.')"
+            />
+
+            <form-group-field
+                id="edit_form_max_bitrate"
+                class="col-md-2"
+                :field="v$.max_bitrate"
+                :label="$gettext('Maximum Broadcast Bitrate')"
+                :description="$gettext('The maximum bitrate in which the station allowed to broadcast at, in Kbps. ')"
             />
 
             <form-group-field
@@ -94,6 +102,7 @@ const {v$, tabClass} = useVuelidateOnFormTab(
             media_storage_location: {},
             recordings_storage_location: {},
             podcasts_storage_location: {},
+            max_bitrate: {}
         };
 
         if (enableAdvancedFeatures) {
@@ -114,6 +123,7 @@ const {v$, tabClass} = useVuelidateOnFormTab(
             recordings_storage_location: '',
             podcasts_storage_location: '',
             is_enabled: true,
+            max_bitrate: 128,
         };
 
         if (enableAdvancedFeatures) {

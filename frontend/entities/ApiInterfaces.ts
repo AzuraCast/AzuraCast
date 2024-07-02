@@ -466,12 +466,12 @@ export interface ApiNowPlayingStation {
   id?: number;
   /**
    * Station name
-   * @example "AzuraTest Radio"
+   * @example "Casterfm Radio"
    */
   name?: string;
   /**
    * Station "short code", used for URL and folder paths
-   * @example "azuratest_radio"
+   * @example "Casterfm_radio"
    */
   shortcode?: string;
   /**
@@ -1315,12 +1315,12 @@ export type SftpUser = HasAutoIncrementId & {
 export type Station = HasAutoIncrementId & {
   /**
    * The full display name of the station.
-   * @example "AzuraTest Radio"
+   * @example "Caster.fm Radio"
    */
   name?: string;
   /**
    * The URL-friendly name for the station, typically auto-generated from the full station name.
-   * @example "azuratest_radio"
+   * @example "casterfm_radio"
    */
   short_name?: string;
   /**
@@ -1348,7 +1348,7 @@ export type Station = HasAutoIncrementId & {
   url?: string | null;
   /** @example "Various" */
   genre?: string | null;
-  /** @example "/var/azuracast/stations/azuratest_radio" */
+  /** @example "/var/casterfm/stations/casterfm_radio" */
   radio_base_dir?: string | null;
   /**
    * Whether listeners can request songs to play on this station.
@@ -1401,6 +1401,11 @@ export type Station = HasAutoIncrementId & {
    * @example "UTC"
    */
   timezone?: string | null;
+  /**
+   * The maximum bitrate at which a station may broadcast, in Kbps
+   * @example 128
+   */
+  max_bitrate?: number;
   /** An array containing station-specific branding configuration */
   branding_config?: any[];
 };

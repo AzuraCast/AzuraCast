@@ -19,6 +19,10 @@ release channel, you can take advantage of these new features and fixes.
 
 ## Code Quality/Technical Changes
 
+- We have rewritten the app startup process when the container is started or restarted. The new process is managed by
+  a "launcher" program that waits for core services to be available before starting others. This should dramatically cut
+  down on the number of HTTP 502 "Bad Gateway" errors seen in both web browsers and application logs during startup.
+
 - We continue to work with Moonbase59, maintainer of the AutoCue library we use, to update to the latest version as it
   is being very rapidly iterated upon.
 

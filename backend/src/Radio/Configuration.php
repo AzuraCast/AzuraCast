@@ -158,6 +158,8 @@ final class Configuration
                 'command' => $adapter->getCommand($station),
                 'directory' => $station->getRadioConfigDir(),
                 'environment' => 'TZ="' . $station->getTimezone() . '"',
+                'autostart' => 'false',
+                'autorestart' => 'true',
                 'stdout_logfile' => $adapter->getLogPath($station),
                 'stdout_logfile_maxbytes' => '5MB',
                 'stdout_logfile_backups' => '5',

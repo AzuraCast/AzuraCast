@@ -12,6 +12,7 @@ return function (App\Event\BuildConsoleCommands $event) {
         'azuracast:debug:optimize-tables' => Command\Debug\OptimizeTablesCommand::class,
         'azuracast:internal:on-ssl-renewal' => Command\Internal\OnSslRenewal::class,
         'azuracast:internal:ip' => Command\Internal\GetIpCommand::class,
+        'azuracast:internal:uptime-wait' => Command\Internal\UptimeWaitCommand::class,
         'azuracast:queue:process' => Command\MessageQueue\ProcessCommand::class,
         'azuracast:queue:clear' => Command\MessageQueue\ClearCommand::class,
         'azuracast:settings:list' => Command\Settings\ListCommand::class,

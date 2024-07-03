@@ -6306,12 +6306,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/supervisorphp/supervisor.git",
-                "reference": "2c84202360aef07ba2130948c73172b22a6f1389"
+                "reference": "ef53807601bd1d69072e5fe13726616b04b03d7f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/supervisorphp/supervisor/zipball/2c84202360aef07ba2130948c73172b22a6f1389",
-                "reference": "2c84202360aef07ba2130948c73172b22a6f1389",
+                "url": "https://api.github.com/repos/supervisorphp/supervisor/zipball/ef53807601bd1d69072e5fe13726616b04b03d7f",
+                "reference": "ef53807601bd1d69072e5fe13726616b04b03d7f",
                 "shasum": ""
             },
             "require": {
@@ -6365,7 +6365,7 @@
                 "issues": "https://github.com/supervisorphp/supervisor/issues",
                 "source": "https://github.com/supervisorphp/supervisor/tree/main"
             },
-            "time": "2023-02-16T04:08:41+00:00"
+            "time": "2024-07-03T19:20:58+00:00"
         },
         {
             "name": "symfony/cache",

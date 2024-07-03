@@ -28,7 +28,6 @@
                         :description="$gettext('If enabled, AzuraCast will automatically record any live broadcasts made to this station to per-broadcast recordings.')"
                     />
                 </div>
-
                 <div
                     v-if="form.backend_config.record_streams"
                     class="row g-3 mb-3"
@@ -46,6 +45,7 @@
                     <bitrate-options
                         id="edit_form_backend_record_streams_bitrate"
                         class="col-md-6"
+                        :max-bitrate="form.max_bitrate"
                         :field="v$.backend_config.record_streams_bitrate"
                         :label="$gettext('Live Broadcast Recording Bitrate (kbps)')"
                     />

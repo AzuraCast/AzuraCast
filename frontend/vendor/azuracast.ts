@@ -15,6 +15,7 @@ export interface AzuraCastStationConstants {
     shortName: string | null,
     timezone: string | null,
     offlineText: string | null,
+    maxBitrate: number | null
 }
 
 export interface AzuraCastUserConstants {
@@ -64,6 +65,7 @@ export function useAzuraCastStation(): AzuraCastStationConstants {
         isEnabled: null,
         shortName: null,
         timezone: null,
-        offlineText: null
+        offlineText: null,
+        maxBitrate: null
     };
 }

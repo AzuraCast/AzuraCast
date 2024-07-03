@@ -37,8 +37,6 @@ final class StationApiGenerator
         $response->url = $station->getUrl();
         $response->is_public = $station->getEnablePublicPage();
 
-        $response->max_bitrate = $station->getMaxBitrate();
-
         $response->public_player_url = $this->router->named(
             'public:index',
             ['station_id' => $station->getShortName()]

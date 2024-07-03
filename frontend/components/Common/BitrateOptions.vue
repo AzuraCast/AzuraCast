@@ -84,6 +84,10 @@ const props = defineProps({
         type: String,
         required: true
     },
+    maxBitrate: {
+        type: Number,
+        required: true
+    },
     name: {
         type: String,
         default: null,
@@ -110,7 +114,8 @@ const {model} = useFormField(props, emit);
 
 const radioBitrates = [
     32, 48, 64, 96, 128, 192, 256, 320
-];
+].filter((bitrate) => bitrate <=  props.maxBitrate);
+
 
 const customField: ComputedRef<number | null> = computed({
     get() {
@@ -146,8 +151,8 @@ const bitrateOptions = map(
     }
 );
 
-bitrateOptions.push({
-    value: 'custom',
-    text: 'Custom'
-});
+// bitrateOptions.push({
+//     value: 'custom',
+//     text: 'Custom'
+// });
 </script>

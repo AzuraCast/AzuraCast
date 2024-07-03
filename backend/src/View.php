@@ -234,6 +234,7 @@ final class View extends Engine
                     'shortName' => $station->getShortName(),
                     'timezone' => $station->getTimezone(),
                     'offlineText' => $station->getBrandingConfig()->getOfflineText(),
+                    'maxBitrate' => $station->getMaxBitrate()
                 ]);
             }
 

@@ -31,7 +31,7 @@ abstract class AbstractStationConfiguration implements JsonSerializable
     }
 
     /**
-     * @param ConfigData|AbstractStationConfiguration $data
+     * @param AbstractStationConfiguration|ConfigData|array<array-key, mixed> $data
      * @return $this
      */
     public function fromArray(

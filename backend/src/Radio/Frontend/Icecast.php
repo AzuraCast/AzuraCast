@@ -178,7 +178,7 @@ final class Icecast extends AbstractFrontend
         $bannedCountries = $station->getFrontendConfig()->getBannedCountries() ?? [];
         $allowedIps = $this->getIpsAsArray($station->getFrontendConfig()->getAllowedIps());
         $useListenerAuth = !empty($bannedCountries) || !empty($allowedIps);
-
+        $maxBitrateInBps = (int) $station->getMaxBitrate() * 1000 + 2500;
         /** @var StationMount $mountRow */
         foreach ($station->getMounts() as $mountRow) {
             $mount = [
@@ -187,6 +187,7 @@ final class Icecast extends AbstractFrontend
                 'charset' => 'UTF8',
                 'stream-name' => $station->getName(),
                 'listenurl' => $this->getUrlForMount($station, $mountRow),
+                'limit-rate' => $maxBitrateInBps,
             ];
 
             if (!empty($station->getDescription())) {

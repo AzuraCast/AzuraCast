@@ -320,6 +320,7 @@ class StationsController extends AbstractApiCrudController
         $oldFrontend = $originalRecord['frontend_type'];
         $oldBackend = $originalRecord['backend_type'];
         $oldHls = (bool)$originalRecord['enable_hls'];
+        $oldMaxBitrate = (int)$originalRecord['max_bitrate'];
 
         $frontendChanged = ($oldFrontend !== $station->getFrontendType());
         $backendChanged = ($oldBackend !== $station->getBackendType());
@@ -335,7 +336,21 @@ class StationsController extends AbstractApiCrudController
             $this->stationRepo->resetHls($station);
         }
 
-        if ($adapterChanged || !$station->getIsEnabled()) {
+        $maxBitrateLowered = $oldMaxBitrate > $station->getMaxBitrate();
+        if ($maxBitrateLowered) {
+            if (!$frontendChanged) {
+                $this->stationRepo->lowerMountsBitrate($station);
+            }
+
+            if (!$hlsChanged && !$backendChanged) {
+                $this->stationRepo->lowerHlsBitrate($station);
+            }
+
+            $this->stationRepo->lowerRemoteRelayAutoDjBitrate($station);
+            $this->stationRepo->lowerLiveBroadcastRecordingBitrate($station);
+        }
+
+        if ($adapterChanged || $maxBitrateLowered || !$station->getIsEnabled()) {
             try {
                 $this->configuration->writeConfiguration(
                     station: $station,

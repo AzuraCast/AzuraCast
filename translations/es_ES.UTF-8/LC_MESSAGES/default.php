@@ -1041,7 +1041,7 @@
       'Set Fade Out' => 'Establecer Fade Out',
       'Set longer to preserve more playback history and listener metadata for stations. Set shorter to save disk space.' => 'Ajuste más tiempo para conservar más historial de reproducción y metadatos del oyente para las estaciones. Ajuste más corto para ahorrar espacio en disco.',
       'Set the length of time (seconds) a listener will stay connected to the stream. If set to 0, listeners can stay connected infinitely.' => 'Establece el tiempo (en segundos) que un oyente permanecerá conectado al stream. Si se establece en 0, los oyentes permanecerán conectados indefinidamente.',
-      'Set to "Yes" to always use "https://" secure URLs, and to automatically redirect to the secure URL when an insecure URL is visited.' => 'Establezca "Sí" para usar siempre URLs seguras "https://", y para redirigir automáticamente a la URL segura cuando se visita una URL insegura.',
+      'Set to "Yes" to always use "https://" secure URLs, and to automatically redirect to the secure URL when an insecure URL is visited (HSTS).' => 'Establezca "Sí" para usar siempre URLs seguras "https://", y para redirigir automáticamente a la URL segura cuando se visita una URL insegura (HSTS).',
       'Set to * to allow all sources, or specify a list of origins separated by a comma (,).' => 'Establecer a * para permitir todas las fuentes, o especificar una lista de orígenes separados por una coma (,).',
       'Settings' => 'Ajustes',
       'Setup instructions for broadcasting software are available on the AzuraCast wiki.' => 'Las instrucciones de configuración para el software de transmisión están disponibles en la wiki de AzuraCast.',

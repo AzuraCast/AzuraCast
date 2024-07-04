@@ -1033,7 +1033,7 @@
       'Set Fade Out' => '페이드 아웃 설정',
       'Set longer to preserve more playback history and listener metadata for stations. Set shorter to save disk space.' => '스테이션에 대한 더 많은 재생 기록과 청취자 메타데이터를 보존하려면 더 길게 설정하세요. 디스크 공간을 절약하려면 더 짧게 설정하세요.',
       'Set the length of time (seconds) a listener will stay connected to the stream. If set to 0, listeners can stay connected infinitely.' => '청취자가 스트림에 연결된 상태를 유지할 시간(초)을 설정합니다. 0으로 설정하면 청취자가 무제한으로 연결된 상태를 유지할 수 있습니다.',
-      'Set to "Yes" to always use "https://" secure URLs, and to automatically redirect to the secure URL when an insecure URL is visited.' => '항상 "https://" 보안 URL을 사용하고, 안전하지 않은 URL을 방문할 때 자동으로 보안 URL로 리디렉션하려면 "예"로 설정합니다.',
+      'Set to "Yes" to always use "https://" secure URLs, and to automatically redirect to the secure URL when an insecure URL is visited (HSTS).' => '항상 "https://" 보안 URL을 사용하고, 안전하지 않은 URL을 방문할 때 자동으로 보안 URL로 리디렉션하려면 "예"로 설정합니다 (HSTS).',
       'Set to * to allow all sources, or specify a list of origins separated by a comma (,).' => '모든 소스를 허용하려면 *로 설정하거나, 쉼표(,)로 구분된 출처 목록을 지정하세요.',
       'Settings' => '설정',
       'Setup instructions for broadcasting software are available on the AzuraCast wiki.' => '방송 소프트웨어에 대한 설정 지침은 AzuraCast wiki에서 확인할 수 있습니다.',

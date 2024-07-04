@@ -157,7 +157,7 @@
       'Select a theme to use as a base for station public pages and the login page.' => 'เลือกธีมเพื่อใช้เป็นธีมพื้นฐานสำหรับหน้าสาธารณะของสถานีและหน้าล็อกอิน',
       'Select File' => 'เลือกไฟล์',
       'Set as Default Mount Point' => 'ตั้งค่าเป็น Mount Point เริ่มต้น',
-      'Set to "Yes" to always use "https://" secure URLs, and to automatically redirect to the secure URL when an insecure URL is visited.' => 'ตั้งค่าเป็น "ใช่" เพื่อใช้ URL ที่ปลอดภัย "https://" เสมอและเปลี่ยนเส้นทางไปยัง URL ที่ปลอดภัยโดยอัตโนมัติเมื่อมีการเยี่ยมชม URL ที่ไม่ปลอดภัย',
+      'Set to "Yes" to always use "https://" secure URLs, and to automatically redirect to the secure URL when an insecure URL is visited (HSTS).' => 'ตั้งค่าเป็น "ใช่" เพื่อใช้ URL ที่ปลอดภัย "https://" เสมอและเปลี่ยนเส้นทางไปยัง URL ที่ปลอดภัยโดยอัตโนมัติเมื่อมีการเยี่ยมชม URL ที่ไม่ปลอดภัย (HSTS)',
       'Show new releases within your update channel on the AzuraCast homepage.' => 'แสดงเวอร์ชั่นใหม่ที่อยู่ในช่องการอัปเดตของคุณบนหน้าแรกของ AzuraCast',
       'Show on Public Pages' => 'แสดงบนหน้าสาธารณะ',
       'Show the station in public pages and general API results.' => 'แสดงสถานีในหน้าสาธารณะและผล API ทั่วไป',

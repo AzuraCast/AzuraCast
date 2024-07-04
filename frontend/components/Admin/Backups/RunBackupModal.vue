@@ -38,7 +38,7 @@
                         >
                             <template #description>
                                 {{
-                                    $gettext('This will be the file name for your backup, include the extension for file type you wish to use.')
+                                    $gettext('This will be the file name for your backup, include the extension for file type you wish to use. Leave blank to have a name generated automatically.')
                                 }}
                                 <br>
                                 <strong>

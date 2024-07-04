@@ -1008,7 +1008,7 @@
       'Set Fade Out' => 'Ορισμός Cue Έξω',
       'Set longer to preserve more playback history and listener metadata for stations. Set shorter to save disk space.' => 'Ρυθμίστε περισσότερο για να διατηρήσετε περισσότερο ιστορικό αναπαραγωγής και μεταδεδομένα ακροατή για σταθμούς. Ορίστε μικρότερη για εξοικονόμηση χώρου στο δίσκο.',
       'Set the length of time (seconds) a listener will stay connected to the stream. If set to 0, listeners can stay connected infinitely.' => 'Ορίστε το χρονικό διάστημα (δευτερόλεπτα) που ένας ακροατής θα παραμείνει συνδεδεμένος στη ροή. Αν οριστεί σε 0, οι ακροατές μπορούν να παραμείνουν συνδεδεμένοι άπειρα.',
-      'Set to "Yes" to always use "https://" secure URLs, and to automatically redirect to the secure URL when an insecure URL is visited.' => 'Ορίστε "Ναι" για να χρησιμοποιείτε πάντα "https://" ασφαλή URL και να ανακατευθύνετε αυτόματα στην ασφαλή διεύθυνση URL όταν επισκέπτεστε ένα μη ασφαλές URL.',
+      'Set to "Yes" to always use "https://" secure URLs, and to automatically redirect to the secure URL when an insecure URL is visited (HSTS).' => 'Ορίστε "Ναι" για να χρησιμοποιείτε πάντα "https://" ασφαλή URL και να ανακατευθύνετε αυτόματα στην ασφαλή διεύθυνση URL όταν επισκέπτεστε ένα μη ασφαλές URL (HSTS).',
       'Set to * to allow all sources, or specify a list of origins separated by a comma (,).' => 'Ορίστε σε * για να επιτρέψετε όλες τις πηγές, ή καθορίστε μια λίστα προέλευσης που χωρίζονται με κόμμα (,).',
       'Settings' => 'Ρυθμίσεις',
       'Setup instructions for broadcasting software are available on the AzuraCast wiki.' => 'Οδηγίες εγκατάστασης για την εκπομπή λογισμικού είναι διαθέσιμα στο AzuraCast wiki.',

@@ -12,7 +12,7 @@
             class="col-md-6"
             :field="form.extra_metadata.liq_amplify"
             input-type="number"
-            :input-attrs="{ step: '0.1' }"
+            :input-attrs="{ step: 'any' }"
             :label="$gettext('Amplify: Amplification (dB)')"
             :description="$gettext('The volume in decibels to amplify the track with. Leave blank to use the system default.')"
             clearable
@@ -23,7 +23,7 @@
             class="col-md-6"
             :field="form.extra_metadata.liq_cross_start_next"
             input-type="number"
-            :input-attrs="{ step: '0.1' }"
+            :input-attrs="{ step: 'any' }"
             :label="$gettext('Custom Fading: Start Next (seconds)')"
             :description="$gettext('Seconds from the start of the song that the next song should begin when fading. Leave blank to use the system default.')"
             clearable
@@ -34,7 +34,7 @@
             class="col-md-6"
             :field="form.extra_metadata.liq_fade_in"
             input-type="number"
-            :input-attrs="{ step: '0.1' }"
+            :input-attrs="{ step: 'any' }"
             :label="$gettext('Custom Fading: Fade-In Time (seconds)')"
             :description="$gettext('The time period that the song should fade in. Leave blank to use the system default.')"
             clearable
@@ -45,7 +45,7 @@
             class="col-md-6"
             :field="form.extra_metadata.liq_fade_out"
             input-type="number"
-            :input-attrs="{ step: '0.1' }"
+            :input-attrs="{ step: 'any' }"
             :label="$gettext('Custom Fading: Fade-Out Time (seconds)')"
             :description="$gettext('The time period that the song should fade out. Leave blank to use the system default.')"
             clearable
@@ -56,7 +56,7 @@
             class="col-md-6"
             :field="form.extra_metadata.liq_cue_in"
             input-type="number"
-            :input-attrs="{ step: '0.1' }"
+            :input-attrs="{ step: 'any' }"
             :label="$gettext('Custom Cues: Cue-In Point (seconds)')"
             :description="$gettext('Seconds from the start of the song that the AutoDJ should start playing.')"
             clearable
@@ -67,7 +67,7 @@
             class="col-md-6"
             :field="form.extra_metadata.liq_cue_out"
             input-type="number"
-            :input-attrs="{ step: '0.1' }"
+            :input-attrs="{ step: 'any' }"
             :label="$gettext('Custom Cues: Cue-Out Point (seconds)')"
             :description="$gettext('Seconds from the start of the song that the AutoDJ should stop playing.')"
             clearable

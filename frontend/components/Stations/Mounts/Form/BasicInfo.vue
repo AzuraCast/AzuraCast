@@ -25,7 +25,7 @@
                 class="col-md-6"
                 :field="v$.is_visible_on_public_pages"
                 :label="$gettext('Show on Public Pages')"
-                :description="$gettext('Enable to allow listeners to select this mount point on this station\'s public pages.')"
+                :description="$gettext('Enable to allow listeners to select and play from this mount point on this station\'s public pages, including embedded widgets.')"
             />
 
             <form-group-checkbox

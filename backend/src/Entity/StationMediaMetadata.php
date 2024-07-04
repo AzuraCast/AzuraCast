@@ -92,7 +92,16 @@ class StationMediaMetadata extends AbstractStationConfiguration
 
         $reflClass = new ReflectionObject($this);
 
+        // Only accept hashmap-style data, not lists.
+        if (array_is_list($data)) {
+            return $this;
+        }
+
         foreach ($data as $dataKey => $dataVal) {
+            if (is_int($dataKey)) {
+                continue;
+            }
+
             $dataKey = mb_strtolower($dataKey);
 
             if (!$reflClass->hasConstant($dataKey) && !self::isLiquidsoapAnnotation($dataKey)) {

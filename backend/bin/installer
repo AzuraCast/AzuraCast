@@ -19,4 +19,6 @@ $installCommand = new App\Installer\Command\InstallCommand();
 $installCommand->setEnvironment($environment);
 $console->add($installCommand);
 
+$console->setDefaultCommand('install', true);
+
 $console->run();

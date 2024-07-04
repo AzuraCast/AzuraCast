@@ -8,6 +8,7 @@ use App\Http\ServerRequest;
 use App\Utilities\Types;
 use Doctrine\Common\Collections\Order;
 use Doctrine\ORM\QueryBuilder;
+use Symfony\Component\PropertyAccess\Exception\UnexpectedTypeException;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 
 trait CanSortResults
@@ -86,8 +87,17 @@ trait CanSortResults
         string $sortValue,
         Order $sortOrder = Order::Ascending
     ): int {
-        $aVal = $propertyAccessor->getValue($a, $sortValue);
-        $bVal = $propertyAccessor->getValue($b, $sortValue);
+        try {
+            $aVal = $propertyAccessor->getValue($a, $sortValue);
+        } catch (UnexpectedTypeException) {
+            $aVal = null;
+        }
+
+        try {
+            $bVal = $propertyAccessor->getValue($b, $sortValue);
+        } catch (UnexpectedTypeException) {
+            $bVal = null;
+        }
 
         if (is_string($aVal)) {
             $aVal = mb_strtolower($aVal, 'UTF-8');

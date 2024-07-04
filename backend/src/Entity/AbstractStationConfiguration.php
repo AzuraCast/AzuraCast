@@ -7,8 +7,8 @@ namespace App\Entity;
 use Doctrine\Inflector\Inflector;
 use Doctrine\Inflector\InflectorFactory;
 use JsonSerializable;
+use ReflectionClass;
 use ReflectionClassConstant;
-use ReflectionObject;
 
 /**
  * @phpstan-type ConfigData array<string, mixed>
@@ -31,7 +31,7 @@ abstract class AbstractStationConfiguration implements JsonSerializable
     }
 
     /**
-     * @param ConfigData|AbstractStationConfiguration $data
+     * @param AbstractStationConfiguration|ConfigData|array<array-key, mixed> $data
      * @return $this
      */
     public function fromArray(
@@ -59,9 +59,8 @@ abstract class AbstractStationConfiguration implements JsonSerializable
     public function toArray(): array
     {
         $return = [];
-        $reflClass = new ReflectionObject($this);
 
-        foreach ($reflClass->getConstants(ReflectionClassConstant::IS_PUBLIC) as $dataKey) {
+        foreach (self::getFields() as $dataKey) {
             $getMethodName = $this->inflector->camelize('get_' . $dataKey);
             $methodName = $this->inflector->camelize($dataKey);
 
@@ -93,5 +92,11 @@ abstract class AbstractStationConfiguration implements JsonSerializable
     {
         $this->data[$key] = $value;
         return $this;
+    }
+
+    public static function getFields(): array
+    {
+        $reflClass = new ReflectionClass(static::class);
+        return $reflClass->getConstants(ReflectionClassConstant::IS_PUBLIC);
     }
 }

@@ -22,7 +22,8 @@ supervisord -c /etc/supervisor/supervisord-minimal.conf
 echo "** Supervisord started."
 echo "** Running uptime_wait..."
 
-gosu azuracast uptime_wait || exit 1
+uptime_wait redis || exit 1
+uptime_wait db || exit 1
 
 echo "** Services up and ready!"
 

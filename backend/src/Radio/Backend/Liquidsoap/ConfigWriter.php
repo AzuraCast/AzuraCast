@@ -919,44 +919,49 @@ final class ConfigWriter implements EventSubscriberInterface
         // Write pre-crossfade section.
         $this->writeCustomConfigurationSection($event, StationBackendConfiguration::CUSTOM_PRE_FADE);
 
+        // Show metadata, used with and without Autocue
+        $showMetaFunc = <<<LS
+        # Show metadata in log (Debug)
+        def show_meta(m)
+            label="show_meta"
+            l = list.sort.natural(metadata.cover.remove(m))
+            list.iter(fun(v) -> log(level=4, label=label, "#{v}"), l)
+
+            nowplaying = ref(m["artist"] ^ " - " ^ m["title"])
+
+            if m["artist"] == "" then
+                if string.contains(substring=" - ", m["title"]) then
+                    let (a, t) = string.split.first(separator=" - ", m["title"])
+                    nowplaying := a ^ " - " ^ t
+                end
+            end
+
+            # show `liq_` & other metadata in level 3
+            def fl(k, _) =
+                tags = ["duration", "media_id", "replaygain_track_gain", "replaygain_reference_loudness"]
+                string.contains(prefix="liq_", k) or list.mem(k, tags)
+            end
+
+            liq = list.assoc.filter((fl), l)
+            list.iter(fun(v) -> log(level=3, label=label, "#{v}"), liq)
+            log(level=3, label=label, "Now playing: #{nowplaying()}")
+
+            if m["liq_amplify"] == "" then
+                log(level=2, label=label, "Warning: No liq_amplify found, expect loudness jumps!")
+            end
+            if m["liq_blank_skipped"] == "true" then
+                log(level=2, label=label, "Blank (silence) detected in track, ending early.")
+            end
+        end
+
+        radio.on_metadata(show_meta)
+        LS;
+
         if ($settings->getEnableAutoCue()) {
             // AutoCue preempts normal fading to use its own settings.
             $event->appendBlock(
                 <<<LS
-                # Show metadata in log (Debug)
-                def show_meta(m)
-                    label="show_meta"
-                    l = list.sort.natural(metadata.cover.remove(m))
-                    list.iter(fun(v) -> log(level=4, label=label, "#{v}"), l)
-
-                    nowplaying = ref(m["artist"] ^ " - " ^ m["title"])
-
-                    if m["artist"] == "" then
-                        if string.contains(substring=" - ", m["title"]) then
-                            let (a, t) = string.split.first(separator=" - ", m["title"])
-                            nowplaying := a ^ " - " ^ t
-                        end
-                    end
-
-                    # show `liq_` & other metadata in level 3
-                    def fl(k, _) =
-                        tags = ["duration", "replaygain_track_gain", "replaygain_reference_loudness"]
-                        string.contains(prefix="liq_", k) or list.mem(k, tags)
-                    end
-
-                    liq = list.assoc.filter((fl), l)
-                    list.iter(fun(v) -> log(level=3, label=label, "#{v}"), liq)
-                    log(level=3, label=label, "Now playing: #{nowplaying()}")
-
-                    if m["liq_amplify"] == "" then
-                        log(level=2, label=label, "Warning: No liq_amplify found, expect loudness jumps!")
-                    end
-                    if m["liq_blank_skipped"] == "true" then
-                        log(level=2, label=label, "Blank (silence) detected in track, ending early.")
-                    end
-                end
-
-                radio.on_metadata(show_meta)
+                {$showMetaFunc}
 
                 # Fading/crossing/segueing
                 def live_aware_crossfade(old, new) =
@@ -998,7 +1003,7 @@ final class ConfigWriter implements EventSubscriberInterface
             $crossDuration = self::toFloat($settings->getCrossfadeDuration());
 
             if (CrossfadeModes::Smart === $crossfadeType) {
-                $crossfadeFunc = 'cross.smart(old, new, fade_in=' . $crossfade
+                $crossfadeFunc = 'cross.smart(old, new, margin=8., fade_in=' . $crossfade
                     . ', fade_out=' . $crossfade . ')';
             } else {
                 $crossfadeFunc = 'cross.simple(old.source, new.source, fade_in=' . $crossfade
@@ -1007,6 +1012,25 @@ final class ConfigWriter implements EventSubscriberInterface
 
             $event->appendBlock(
                 <<<LS
+                # reinstate liq_cross_duration if AutoCue is disabled
+                def set_cross_duration(m) =
+                    fade_out = float_of_string(default=0., m["liq_fade_out"])
+                    duration = float_of_string(default=0., m["duration"])
+                    cue_out = float_of_string(default=duration, m["liq_cue_out"])
+                    start_next = float_of_string(default=cue_out, m["liq_cross_start_next"])
+                    cross_duration = max(cue_out - start_next, fade_out)
+                    log(level=4, label="set_cross_duration", "Setting liq_cross_duration=#{cross_duration}")
+                    
+                    if cross_duration > 0. then
+                        [("liq_cross_duration", "#{cross_duration}")]
+                    else
+                        []
+                    end
+                end
+                radio = metadata.map(set_cross_duration, radio)
+
+                {$showMetaFunc}
+
                 def live_aware_crossfade(old, new) =
                     if to_live() then
                         # If going to the live show, play a simple sequence

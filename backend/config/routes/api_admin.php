@@ -10,6 +10,12 @@ use App\Middleware;
 use Slim\Routing\RouteCollectorProxy;
 
 return static function (RouteCollectorProxy $group) {
+    $group->get(
+        '/prometheus',
+        Controller\Api\PrometheusAction::class
+    )->setName('api:prometheus')
+        ->add(new Middleware\Permissions(GlobalPermissions::View));
+
     $group->group(
         '/admin',
         function (RouteCollectorProxy $group) {

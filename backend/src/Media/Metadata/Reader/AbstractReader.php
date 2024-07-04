@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Media\Metadata\Reader;
 
 use App\Media\Enums\MetadataTags;
+use App\Media\Metadata;
 use App\Media\MetadataInterface;
 use App\Utilities\Arrays;
 use App\Utilities\Strings;
@@ -54,9 +55,7 @@ abstract class AbstractReader
             $tagName = mb_strtolower((string)$tagName);
             $tagEnum = MetadataTags::getTag($tagName);
 
-            $newTagValues = Strings::stringToUtf8(
-                implode('; ', array_unique(Arrays::flattenArray($tagContents)))
-            );
+            $newTagValues = $this->aggregateValues($tagContents);
             if (null !== $tagEnum) {
                 $knownTags[$tagEnum->value] = $newTagValues;
             } else {
@@ -66,5 +65,24 @@ abstract class AbstractReader
 
         $metadata->setKnownTags($knownTags);
         $metadata->setExtraTags($extraTags);
+    }
+
+    protected function aggregateValues(array $values): string
+    {
+        $newValues = [];
+
+        foreach (Arrays::flattenArray($values) as $valueRow) {
+            if (str_contains($valueRow, Metadata::MULTI_VALUE_SEPARATOR)) {
+                foreach (explode(Metadata::MULTI_VALUE_SEPARATOR, $valueRow) as $valueSubRow) {
+                    $newValues[] = trim($valueSubRow);
+                }
+            } else {
+                $newValues[] = $valueRow;
+            }
+        }
+
+        return Strings::stringToUtf8(
+            implode(Metadata::MULTI_VALUE_SEPARATOR . ' ', array_unique($newValues))
+        );
     }
 }

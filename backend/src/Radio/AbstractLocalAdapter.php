@@ -101,7 +101,7 @@ abstract class AbstractLocalAdapter
     public function isRunning(Station $station): bool
     {
         if (!$this->hasCommand($station)) {
-            return true;
+            return false;
         }
 
         $programName = $this->getSupervisorFullName($station);

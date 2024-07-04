@@ -10,7 +10,7 @@
                 :field="v$.custom_listen_url"
                 advanced
                 :label="$gettext('Mount Point URL')"
-                :description="$gettext('You can set a custom URL for this stream that AzuraCast will use when referring to it. Leave empty to use the default value.')"
+                :description="$gettext('You can set a custom URL for this stream that AzuraCast will use when referring to it on the web interface and in the Now Playing API return data. Leave empty to use the default value.')"
             />
         </div>
         <div

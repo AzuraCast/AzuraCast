@@ -13,7 +13,15 @@ release channel, you can take advantage of these new features and fixes.
   will greatly increase your initial CPU load if using ReplayGain or AutoCue. Most stations can safely disable this
   feature to see a significant bump in performance when restarting their stations.
 
+- We now expose a Prometheus metrics endpoint at `GET /api/prometheus`. Prometheus is a popular tool for consuming
+  time-series data; metrics provided by AzuraCast include CPU load, disk and memory usage, and total and unique
+  listeners per-stream and per-station.
+
 ## Code Quality/Technical Changes
+
+- We have rewritten the app startup process when the container is started or restarted. The new process is managed by
+  a "launcher" program that waits for core services to be available before starting others. This should dramatically cut
+  down on the number of HTTP 502 "Bad Gateway" errors seen in both web browsers and application logs during startup.
 
 - We continue to work with Moonbase59, maintainer of the AutoCue library we use, to update to the latest version as it
   is being very rapidly iterated upon.

@@ -32,7 +32,7 @@ enum StreamFormats: string
     public function sendIcyMetadata(): bool
     {
         return match ($this) {
-            self::Opus, self::Flac => true,
+            self::Flac => true,
             default => false,
         };
     }

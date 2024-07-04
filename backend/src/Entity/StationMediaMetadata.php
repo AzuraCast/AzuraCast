@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use App\Media\Metadata;
 use App\Utilities\Time;
 use App\Utilities\Types;
 use ReflectionObject;
@@ -91,11 +92,24 @@ class StationMediaMetadata extends AbstractStationConfiguration
 
         $reflClass = new ReflectionObject($this);
 
+        // Only accept hashmap-style data, not lists.
+        if (array_is_list($data)) {
+            return $this;
+        }
+
         foreach ($data as $dataKey => $dataVal) {
+            if (is_int($dataKey)) {
+                continue;
+            }
+
             $dataKey = mb_strtolower($dataKey);
 
             if (!$reflClass->hasConstant($dataKey) && !self::isLiquidsoapAnnotation($dataKey)) {
                 continue;
+            }
+
+            if (is_string($dataVal) && ($sepPos = strpos($dataVal, Metadata::MULTI_VALUE_SEPARATOR)) !== false) {
+                $dataVal = substr($dataVal, 0, $sepPos);
             }
 
             $methodName = $this->inflector->camelize('set_' . $dataKey);

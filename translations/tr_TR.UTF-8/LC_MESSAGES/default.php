@@ -848,7 +848,7 @@
       'Set Fade Out' => 'Çıkış Solma Ayarı',
       'Set longer to preserve more playback history and listener metadata for stations. Set shorter to save disk space.' => 'Radyolar için uzun süre çalma geçmişini saklamak için en büyük değeri seçin veya disk alanından tasarruf etmek için küçük değeri seçin.',
       'Set the length of time (seconds) a listener will stay connected to the stream. If set to 0, listeners can stay connected infinitely.' => 'Dinleyicinin akışa bağlı kalacağı süreyi saniye olarak ayarlayın. Sıfır (0) olarak ayarlanırsa dinleyiciler sonsuza kadar bağlı kalabilir.',
-      'Set to "Yes" to always use "https://" secure URLs, and to automatically redirect to the secure URL when an insecure URL is visited.' => '"Evet" olarak ayarlandığında her zaman güvenli bağlantı "https://" kullanılır.',
+      'Set to "Yes" to always use "https://" secure URLs, and to automatically redirect to the secure URL when an insecure URL is visited (HSTS).' => '"Evet" olarak ayarlandığında her zaman güvenli bağlantı "https://" kullanılır (HSTS).',
       'Set to * to allow all sources, or specify a list of origins separated by a comma (,).' => 'Tüm kaynaklara izin vermek için * olarak ayarlayın veya virgülle (,) ayrılmış bir başlangıç listesi belirtin.',
       'Settings' => 'Ayarlar',
       'Setup instructions for broadcasting software are available on the AzuraCast wiki.' => 'Canlı yayın programlarına ait dökümanlar için AzuraCast Wiki sayfasını ziyaret edebilirsiniz.',

@@ -10,6 +10,7 @@ use App\Installer\EnvFiles\AzuraCastEnvFile;
 use App\Radio\Configuration;
 use App\Utilities\File;
 use App\Utilities\Types;
+use Exception;
 use GuzzleHttp\Psr7\Uri;
 use Psr\Http\Message\UriInterface;
 use Psr\Log\LogLevel;
@@ -86,14 +87,12 @@ final class Environment
                 $azuracastEnvPath = AzuraCastEnvFile::buildPathFromBase($this->baseDir);
                 $azuracastEnv = AzuraCastEnvFile::fromEnvFile($azuracastEnvPath);
                 $this->data = array_merge($elements, $azuracastEnv->toArray());
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 $this->data = $elements;
             }
-        }
-        else {
+        } else {
             $this->data = $elements;
         }
-        
         $this->appEnv = ApplicationEnvironment::tryFrom(
             Types::string($this->data[self::APP_ENV] ?? null, '', true)
         ) ?? ApplicationEnvironment::default();

@@ -1046,7 +1046,7 @@
       'Set Fade Start Next' => '设置淡入淡出开始下一步',
       'Set longer to preserve more playback history and listener metadata for stations. Set shorter to save disk space.' => '设置更长的时间可为电台保留更多播放历史记录和听众元数据。设置较短时间可节省磁盘空间。',
       'Set the length of time (seconds) a listener will stay connected to the stream. If set to 0, listeners can stay connected infinitely.' => '设置监听器与数据流保持连接的时间长度（秒）。如果设置为 0，监听器可以无限期地保持连接。',
-      'Set to "Yes" to always use "https://" secure URLs, and to automatically redirect to the secure URL when an insecure URL is visited.' => '设置为 "是"，将始终使用 "https://"安全URL，并在访问不安全的URL时自动重定向到安全URL。',
+      'Set to "Yes" to always use "https://" secure URLs, and to automatically redirect to the secure URL when an insecure URL is visited (HSTS).' => '设置为 "是"，将始终使用 "https://"安全URL，并在访问不安全的URL时自动重定向到安全URL (HSTS)。',
       'Set to * to allow all sources, or specify a list of origins separated by a comma (,).' => '设为 * 则允许所有来源，或指定一个用逗号（,）分隔的来源列表。',
       'Settings' => '设置',
       'Setup instructions for broadcasting software are available on the AzuraCast wiki.' => 'AzuraCast wiki 上有广播软件的设置说明。',

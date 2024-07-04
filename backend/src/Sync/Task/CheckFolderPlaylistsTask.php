@@ -106,6 +106,7 @@ final class CheckFolderPlaylistsTask extends AbstractTask
                 ->getArrayResult();
 
             $addedRecords = 0;
+            $weight = $this->spmRepo->getHighestSongWeight($playlist);
 
             foreach ($mediaInFolderRaw as $row) {
                 $mediaId = $row['id'];
@@ -114,7 +115,8 @@ final class CheckFolderPlaylistsTask extends AbstractTask
                     $media = $this->em->find(StationMedia::class, $mediaId);
 
                     if ($media instanceof StationMedia) {
-                        $this->spmRepo->addMediaToPlaylist($media, $playlist);
+                        $this->spmRepo->addMediaToPlaylist($media, $playlist, $weight);
+                        $weight++;
 
                         $mediaInPlaylist[$mediaId] = $mediaId;
                         $addedRecords++;

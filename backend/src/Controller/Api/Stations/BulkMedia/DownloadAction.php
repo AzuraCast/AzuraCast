@@ -8,6 +8,7 @@ use App\Container\EntityManagerAwareTrait;
 use App\Controller\SingleActionInterface;
 use App\Entity\Repository\CustomFieldRepository;
 use App\Entity\Repository\StationPlaylistRepository;
+use App\Entity\StationMediaMetadata;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use League\Csv\Writer;
@@ -58,6 +59,8 @@ final class DownloadAction implements SingleActionInterface
         }
         $csv = Writer::createFromStream($tempFile);
 
+        $extraMetadataFields = StationMediaMetadata::getFields();
+
         /*
          * NOTE: These field names should correspond with DB property names when converted into short_names.
          * i.e. Fade Overlap -> fade_overlap
@@ -71,13 +74,8 @@ final class DownloadAction implements SingleActionInterface
             'genre',
             'lyrics',
             'isrc',
-            'amplify',
-            'fade_overlap',
-            'fade_in',
-            'fade_out',
-            'cue_in',
-            'cue_out',
             'playlists',
+            ...$extraMetadataFields,
         ];
 
         foreach ($customFields as $customField) {
@@ -88,6 +86,11 @@ final class DownloadAction implements SingleActionInterface
 
         /** @var array $row */
         foreach ($query->getArrayResult() as $row) {
+            $extraMetadata = [];
+            foreach ($extraMetadataFields as $fieldName) {
+                $extraMetadata[] = $row['extra_metadata'][$fieldName] ?? '';
+            }
+
             $customFieldsById = [];
             foreach ($row['custom_fields'] ?? [] as $rowCustomField) {
                 $customFieldsById[$rowCustomField['field_id']] = $rowCustomField['value'];
@@ -109,13 +112,8 @@ final class DownloadAction implements SingleActionInterface
                 $row['genre'] ?? '',
                 $row['lyrics'] ?? '',
                 $row['isrc'] ?? '',
-                $row['amplify'] ?? '',
-                $row['fade_overlap'] ?? '',
-                $row['fade_in'] ?? '',
-                $row['fade_out'] ?? '',
-                $row['cue_in'] ?? '',
-                $row['cue_out'] ?? '',
                 implode(', ', $playlists),
+                ...$extraMetadata,
             ];
 
             foreach ($customFields as $customFieldId => $customField) {

@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace App\Controller\Api\Stations;
 
 use App\Container\EntityManagerAwareTrait;
-use App\Entity\Api\Error;
 use App\Entity\Api\StationServiceStatus;
 use App\Entity\Api\Status;
+use App\Entity\Station;
 use App\Exception\Supervisor\NotRunningException;
 use App\Http\Response;
 use App\Http\ServerRequest;
@@ -17,7 +17,6 @@ use App\Radio\Adapters;
 use App\Radio\Configuration;
 use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
-use Throwable;
 
 #[
     OA\Get(
@@ -139,23 +138,7 @@ final class ServicesController
         ServerRequest $request,
         Response $response
     ): ResponseInterface {
-        // Reloading attempts to update configuration without restarting broadcasting, if possible and supported.
-        $station = $request->getStation();
-
-        try {
-            $station->setHasStarted(true);
-            $this->em->persist($station);
-            $this->em->flush();
-
-            $this->configuration->writeConfiguration(
-                station: $station,
-                forceRestart: true
-            );
-
-            $this->nginx->writeConfiguration($station);
-        } catch (Throwable $e) {
-            return $response->withJson(Error::fromException($e));
-        }
+        $this->reloadOrRestartStation($request->getStation(), true);
 
         return $response->withJson(new Status(true, __('Station reloaded.')));
     }
@@ -164,26 +147,26 @@ final class ServicesController
         ServerRequest $request,
         Response $response
     ): ResponseInterface {
-        // Restarting will always shut down and restart any services.
-        $station = $request->getStation();
-
-        try {
-            $station->setHasStarted(true);
-            $this->em->persist($station);
-            $this->em->flush();
-
-            $this->configuration->writeConfiguration(
-                station: $station,
-                forceRestart: true,
-                attemptReload: false
-            );
-
-            $this->nginx->writeConfiguration($station);
-        } catch (Throwable $e) {
-            return $response->withJson(Error::fromException($e));
-        }
+        $this->reloadOrRestartStation($request->getStation(), false);
 
         return $response->withJson(new Status(true, __('Station restarted.')));
+    }
+
+    protected function reloadOrRestartStation(
+        Station $station,
+        bool $attemptReload
+    ): void {
+        $station->setHasStarted(true);
+        $this->em->persist($station);
+        $this->em->flush();
+
+        $this->configuration->writeConfiguration(
+            station: $station,
+            forceRestart: true,
+            attemptReload: $attemptReload
+        );
+
+        $this->nginx->writeConfiguration($station);
     }
 
     public function frontendAction(

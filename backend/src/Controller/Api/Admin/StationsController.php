@@ -353,7 +353,6 @@ class StationsController extends AbstractApiCrudController
         }
 
         if ($adapterChanged || $maxBitrateLowered || $enabledChanged) {
-
             try {
                 $this->configuration->writeConfiguration(
                     station: $station,

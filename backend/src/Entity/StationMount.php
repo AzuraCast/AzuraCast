@@ -117,15 +117,6 @@ class StationMount implements
     ]
     protected ?int $autodj_bitrate = 128;
 
-    public function validateAutodjBitrate($context)
-    {
-        var_dump($context);
-        die;
-        // Your custom validation logic goes here
-        // Access properties, perform checks, and add violations if needed
-    }
-
-
     #[
         OA\Property(example: "https://custom-listen-url.example.com/stream.mp3"),
         ORM\Column(length: 255, nullable: true)

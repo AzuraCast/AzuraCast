@@ -121,7 +121,10 @@ class Station implements Stringable, IdentifiableEntityInterface
         ),
         ORM\Column(type: 'json', nullable: true),
         Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL]),
-        AppAssert\StationMaxBitrateChecker(stationGetter: 'self', selectedBitrate: ['backendConfig', 'recordStreamsBitrate'])
+        AppAssert\StationMaxBitrateChecker(
+            stationGetter: 'self',
+            selectedBitrate: ['backendConfig', 'recordStreamsBitrate']
+        )
     ]
     protected ?array $backend_config = null;
 

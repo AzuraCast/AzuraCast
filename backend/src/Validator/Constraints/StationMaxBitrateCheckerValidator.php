@@ -21,23 +21,25 @@ final class StationMaxBitrateCheckerValidator extends ConstraintValidator
         $stationGetter = $constraint->stationGetter;
         $selectedBitrateProperty = $constraint->selectedBitrate;
 
-        $station = ($stationGetter === 'self') ? $this->context->getObject() : $this->context->getObject()->{'get' . $stationGetter}();
+        $station = ($stationGetter === 'self') ?
+            $this->context->getObject() :
+            $this->context->getObject()->{'get' . $stationGetter}();
+
         $stationMaxBitrate = $station->getMaxBitrate();
 
-        if (is_array($selectedBitrateProperty))
-        {
+        if (is_array($selectedBitrateProperty)) {
             $selectedBitrate = $this->context->getObject();
-            foreach ($selectedBitrateProperty as $value)
-            {
+            foreach ($selectedBitrateProperty as $value) {
                 $selectedBitrate = $selectedBitrate->{'get' . ucfirst($value)}();
             }
-        }
-        else {
+        } else {
             $selectedBitrate = $this->context->getObject()->{'get' . ucfirst($selectedBitrateProperty)}();
         }
-        //$selectedBitrate = (strpos($selectedBitrateProperty, '->') !== -1) ? $this->context->getObject()->{'get' . ucfirst($selectedBitrateProperty)}() : $this->context->getObject()->{$selectedBitrateProperty} ;
 
-        $message = __('The bitrate you selected: %selected_bitrate%, is higher than your station\'s bitrate limit:  %station_limit%');
+        $message = __(
+            'The bitrate you selected: %selected_bitrate%, 
+                    is higher than your station\'s bitrate limit:  %station_limit%'
+        );
 
         if ($selectedBitrate > $stationMaxBitrate) {
             $this->context->buildViolation($message)
@@ -45,6 +47,5 @@ final class StationMaxBitrateCheckerValidator extends ConstraintValidator
                 ->setParameter('%station_limit%', (string) $stationMaxBitrate)
                 ->addViolation();
         }
-
     }
 }

@@ -153,8 +153,10 @@ final class StationRepository extends Repository
         foreach ($station->getMounts() as $mount) {
             if ($mount->getAutodjBitrate() > $station->getMaxBitrate()) {
                 $mountObject = $this->em->find(StationMount::class, $mount->getId());
-                $mountObject->setAutodjBitrate($station->getMaxBitrate());
-                $this->em->persist($mountObject);
+                if ($mountObject !== null) {
+                    $mountObject->setAutodjBitrate($station->getMaxBitrate());
+                    $this->em->persist($mountObject);
+                }
             }
         }
 
@@ -167,8 +169,10 @@ final class StationRepository extends Repository
         foreach ($station->getHlsStreams() as $hlsStream) {
             if ($hlsStream->getBitrate() > $station->getMaxBitrate()) {
                 $hlsStreamObject = $this->em->find(StationHlsStream::class, $hlsStream->getId());
-                $hlsStreamObject->setBitrate($station->getMaxBitrate());
-                $this->em->persist($hlsStreamObject);
+                if ($hlsStreamObject !== null) {
+                    $hlsStreamObject->setBitrate($station->getMaxBitrate());
+                    $this->em->persist($hlsStreamObject);
+                }
             }
         }
 
@@ -181,8 +185,10 @@ final class StationRepository extends Repository
         foreach ($station->getRemotes() as $remoteRelay) {
             if ($remoteRelay->getAutodjBitrate() > $station->getMaxBitrate()) {
                 $remoteRelayObject = $this->em->find(StationRemote::class, $remoteRelay->getId());
-                $remoteRelayObject->setAutodjBitrate($station->getMaxBitrate());
-                $this->em->persist($remoteRelayObject);
+                if ($remoteRelayObject !== null) {
+                    $remoteRelayObject->setAutodjBitrate($station->getMaxBitrate());
+                    $this->em->persist($remoteRelayObject);
+                }
             }
         }
 
@@ -196,8 +202,10 @@ final class StationRepository extends Repository
         if ($backendConfig->getRecordStreamsBitrate() > $station->getMaxBitrate()) {
             $backendConfig->setRecordStreamsBitrate($station->getMaxBitrate());
             $stationObject = $this->em->find(Station::class, $station->getId());
-            $stationObject->setBackendConfig($backendConfig);
-            $this->em->persist($stationObject);
+            if ($stationObject !== null) {
+                $stationObject->setBackendConfig($backendConfig);
+                $this->em->persist($stationObject);
+            }
         }
 
         $this->em->flush();

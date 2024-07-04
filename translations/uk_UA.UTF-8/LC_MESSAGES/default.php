@@ -1013,7 +1013,7 @@
       'Set Fade Out' => 'Мітка кінця Fade',
       'Set longer to preserve more playback history and listener metadata for stations. Set shorter to save disk space.' => 'Встановіть більшу тривалість, щоб зберегти більше історії відтворення та метаданих слухача для станцій. Встановіть меншу тривалість, щоб заощадити дисковий простір.',
       'Set the length of time (seconds) a listener will stay connected to the stream. If set to 0, listeners can stay connected infinitely.' => 'Встановіть тривалість (у секундах), протягом якої слухач буде залишатися підключеним до потоку. Якщо встановлено значення 0, слухачі можуть залишатися підключеними постійно.',
-      'Set to "Yes" to always use "https://" secure URLs, and to automatically redirect to the secure URL when an insecure URL is visited.' => 'Установіть значення "Так", щоб завжди використовувати захищені URL-адреси "https://" і автоматично переспрямовувати на безпечну URL-адресу під час відвідування незахищеної URL-адреси.',
+      'Set to "Yes" to always use "https://" secure URLs, and to automatically redirect to the secure URL when an insecure URL is visited (HSTS).' => 'Установіть значення "Так", щоб завжди використовувати захищені URL-адреси "https://" і автоматично переспрямовувати на безпечну URL-адресу під час відвідування незахищеної URL-адреси (HSTS).',
       'Set to * to allow all sources, or specify a list of origins separated by a comma (,).' => 'Установіть *, щоб дозволити всі джерела, або вкажіть список джерел, розділених комою (,).',
       'Settings' => 'Налаштування',
       'Setup instructions for broadcasting software are available on the AzuraCast wiki.' => 'Інструкції з налаштування програмного забезпечення для трансляції доступні на вікі AzuraCast.',

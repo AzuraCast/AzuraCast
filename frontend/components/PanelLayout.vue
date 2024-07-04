@@ -99,7 +99,7 @@
                 <li>
                     <a
                         class="dropdown-item"
-                        href="/docs"
+                        href="/docs/"
                         target="_blank"
                     >
                         <icon :icon="IconSupport" />
@@ -109,7 +109,7 @@
                 <li>
                     <a
                         class="dropdown-item"
-                        href="/docs/help/troubleshooting"
+                        href="/docs/help/troubleshooting/"
                         target="_blank"
                     >
                         <icon :icon="IconHelp" />

@@ -922,7 +922,7 @@
       'Set Fade Out' => 'Fade Out instellen',
       'Set longer to preserve more playback history and listener metadata for stations. Set shorter to save disk space.' => 'Stel langer in om meer afspeel geschiedenis van stations te bewaren. Stel korter in om schijfruimte te besparen.',
       'Set the length of time (seconds) a listener will stay connected to the stream. If set to 0, listeners can stay connected infinitely.' => 'Stel maximaal aantal seconden in hoe lang een luisteraar mag luisteren naar de stream, zet op 0 voor oneindig.',
-      'Set to "Yes" to always use "https://" secure URLs, and to automatically redirect to the secure URL when an insecure URL is visited.' => 'Stel in op "Ja" om altijd "https://" (veilige) URL\'s te gebruiken en automatisch naar de beveiligde URL te verwijzen wanneer een onveilige URL wordt bezocht.',
+      'Set to "Yes" to always use "https://" secure URLs, and to automatically redirect to the secure URL when an insecure URL is visited (HSTS).' => 'Stel in op "Ja" om altijd "https://" (veilige) URL\'s te gebruiken en automatisch naar de beveiligde URL te verwijzen wanneer een onveilige URL wordt bezocht (HSTS).',
       'Set to * to allow all sources, or specify a list of origins separated by a comma (,).' => 'Zet op * om alle bronnen toe te staan, of geef een lijst op van oorsprong gescheiden door een komma (,).',
       'Settings' => 'Instellingen',
       'Setup instructions for broadcasting software are available on the AzuraCast wiki.' => 'Instructies voor het instellen van uitzendingssoftware zijn beschikbaar op de AzuraCast wiki.',

@@ -36,7 +36,7 @@
                 >
                     <template #description>
                         {{
-                            $gettext('Set to "Yes" to always use "https://" secure URLs, and to automatically redirect to the secure URL when an insecure URL is visited.')
+                            $gettext('Set to "Yes" to always use "https://" secure URLs, and to automatically redirect to the secure URL when an insecure URL is visited (HSTS).')
                         }}
                     </template>
                 </form-group-checkbox>

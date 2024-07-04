@@ -703,7 +703,7 @@
       'Set Fade Out' => 'Nastavení Fade Out',
       'Set longer to preserve more playback history and listener metadata for stations. Set shorter to save disk space.' => 'Nastavte delší dobu, aby se zachovalo více historie přehrávání a metadat posluchačů stanic. Nastavte kratší, abyste ušetřili místo na disku.',
       'Set the length of time (seconds) a listener will stay connected to the stream. If set to 0, listeners can stay connected infinitely.' => 'Nastavení doby (vteřiny), po kterou bude posluchač připojen ke streamu. Je-li nastavena hodnota 0, mohou posluchači zůstat připojeni nekonečně dlouho.',
-      'Set to "Yes" to always use "https://" secure URLs, and to automatically redirect to the secure URL when an insecure URL is visited.' => 'Chcete-li vždy používat zabezpečené URL adresy „https: //“, nastavte možnost „Ano“ a při navštívení nezabezpečené URL adresy automaticky přesměrujete na zabezpečenou URL adresu.',
+      'Set to "Yes" to always use "https://" secure URLs, and to automatically redirect to the secure URL when an insecure URL is visited (HSTS).' => 'Chcete-li vždy používat zabezpečené URL adresy „https: //“, nastavte možnost „Ano“ a při navštívení nezabezpečené URL adresy automaticky přesměrujete na zabezpečenou URL adresu (HSTS).',
       'Set to * to allow all sources, or specify a list of origins separated by a comma (,).' => 'Nastavte * pro povolení všech zdrojů nebo zadejte seznam zdrojů oddělených čárkou (,).',
       'Settings' => 'Nastavení',
       'Setup instructions for broadcasting software are available on the AzuraCast wiki.' => 'Pokyny k nastavení vysílacího softwaru jsou k dispozici na wiki AzuraCast.',

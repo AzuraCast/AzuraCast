@@ -146,11 +146,12 @@ const makeApiCall = (uri) => {
             });
 
             setTimeout(
-                async () => {
-                    await router.push({
+                () => {
+                    const profileRoute = router.resolve({
                         name: 'stations:index'
                     });
-                    await router.go(0);
+
+                    window.location.href = profileRoute.href;
                 },
                 2000
             );

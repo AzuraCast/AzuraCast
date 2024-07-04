@@ -45,7 +45,7 @@
                     <bitrate-options
                         id="edit_form_backend_record_streams_bitrate"
                         class="col-md-6"
-                        :max-bitrate="form.max_bitrate"
+                        :max-bitrate="maxBitrate"
                         :field="v$.backend_config.record_streams_bitrate"
                         :label="$gettext('Live Broadcast Recording Bitrate (kbps)')"
                     />
@@ -135,7 +135,7 @@ import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
 import {useVModel} from "@vueuse/core";
 import {useVuelidateOnFormTab} from "~/functions/useVuelidateOnFormTab";
 import {numeric} from "@vuelidate/validators";
-import {useAzuraCast} from "~/vendor/azuracast";
+import {useAzuraCast, useAzuraCastStation} from "~/vendor/azuracast";
 import Tab from "~/components/Common/Tab.vue";
 import BitrateOptions from "~/components/Common/BitrateOptions.vue";
 
@@ -150,7 +150,9 @@ const props = defineProps({
     }
 });
 
+
 const {enableAdvancedFeatures} = useAzuraCast();
+const {maxBitrate} = useAzuraCastStation();
 
 const emit = defineEmits(['update:form']);
 const form = useVModel(props, 'form', emit);

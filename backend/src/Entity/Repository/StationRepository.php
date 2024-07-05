@@ -152,11 +152,8 @@ final class StationRepository extends Repository
     {
         foreach ($station->getMounts() as $mount) {
             if ($mount->getAutodjBitrate() > $station->getMaxBitrate()) {
-                $mountObject = $this->em->find(StationMount::class, $mount->getId());
-                if ($mountObject !== null) {
-                    $mountObject->setAutodjBitrate($station->getMaxBitrate());
-                    $this->em->persist($mountObject);
-                }
+                $mount->setAutodjBitrate($station->getMaxBitrate());
+                $this->em->persist($mount);
             }
         }
 
@@ -168,11 +165,8 @@ final class StationRepository extends Repository
     {
         foreach ($station->getHlsStreams() as $hlsStream) {
             if ($hlsStream->getBitrate() > $station->getMaxBitrate()) {
-                $hlsStreamObject = $this->em->find(StationHlsStream::class, $hlsStream->getId());
-                if ($hlsStreamObject !== null) {
-                    $hlsStreamObject->setBitrate($station->getMaxBitrate());
-                    $this->em->persist($hlsStreamObject);
-                }
+                $hlsStream->setBitrate($station->getMaxBitrate());
+                $this->em->persist($hlsStream);
             }
         }
 
@@ -184,11 +178,8 @@ final class StationRepository extends Repository
     {
         foreach ($station->getRemotes() as $remoteRelay) {
             if ($remoteRelay->getAutodjBitrate() > $station->getMaxBitrate()) {
-                $remoteRelayObject = $this->em->find(StationRemote::class, $remoteRelay->getId());
-                if ($remoteRelayObject !== null) {
-                    $remoteRelayObject->setAutodjBitrate($station->getMaxBitrate());
-                    $this->em->persist($remoteRelayObject);
-                }
+                $remoteRelay->setAutodjBitrate($station->getMaxBitrate());
+                $this->em->persist($remoteRelay);
             }
         }
 
@@ -201,11 +192,8 @@ final class StationRepository extends Repository
         $backendConfig = $station->getBackendConfig();
         if ($backendConfig->getRecordStreamsBitrate() > $station->getMaxBitrate()) {
             $backendConfig->setRecordStreamsBitrate($station->getMaxBitrate());
-            $stationObject = $this->em->find(Station::class, $station->getId());
-            if ($stationObject !== null) {
-                $stationObject->setBackendConfig($backendConfig);
-                $this->em->persist($stationObject);
-            }
+            $station->setBackendConfig($backendConfig);
+            $this->em->persist($station);
         }
 
         $this->em->flush();

@@ -138,6 +138,8 @@ final class Shoutcast extends AbstractFrontend
 
         $urlHost = $this->getPublicUrl($station)->getHost();
 
+        $maxBitrateInBps = (int) $station->getMaxBitrate() * 1000 + 2500;
+
         $config = [
             'password' => $frontendConfig->getSourcePassword(),
             'adminpassword' => $frontendConfig->getAdminPassword(),
@@ -159,6 +161,7 @@ final class Shoutcast extends AbstractFrontend
             'destip' => $urlHost,
             'publicdns' => $urlHost,
             'publicip' => $urlHost,
+            'maxbitrate' => $maxBitrateInBps,
         ];
 
         $customConfig = trim($frontendConfig->getCustomConfiguration() ?? '');

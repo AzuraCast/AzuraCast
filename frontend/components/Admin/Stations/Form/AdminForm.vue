@@ -17,7 +17,7 @@
                 class="col-md-2"
                 :field="v$.max_bitrate"
                 :label="$gettext('Maximum Bitrate')"
-                :description="$gettext('The maximum bitrate in which the station allowed to broadcast at, in Kbps. ')"
+                :description="$gettext('The maximum bitrate in which the station allowed to broadcast at, in Kbps. 0 for unlimited.')"
             />
 
             <form-group-field

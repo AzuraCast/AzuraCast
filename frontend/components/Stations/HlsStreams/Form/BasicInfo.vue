@@ -83,7 +83,7 @@ const formatOptions = [
 ];
 
 const bitrateOptions = map(
-    [32, 48, 64, 96, 128, 192, 256, 320].filter((bitrate) => bitrate <=  maxBitrate),
+    [32, 48, 64, 96, 128, 192, 256, 320].filter((bitrate) => maxBitrate === 0 || bitrate <= maxBitrate),
     (val) => {
         return {
             value: val,

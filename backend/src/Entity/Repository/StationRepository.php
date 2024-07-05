@@ -114,7 +114,7 @@ final class StationRepository extends Repository
             $record->setIsDefault(true);
             $record->setEnableAutodj(true);
             $record->setAutodjFormat(StreamFormats::Mp3);
-            $record->setAutodjBitrate($station->getMaxBitrate());
+            $record->setAutodjBitrate($station->getMaxBitrate() !== 0 ? $station->getMaxBitrate() : 128);
             $this->em->persist($record);
         }
 
@@ -132,7 +132,7 @@ final class StationRepository extends Repository
             $streams = [
                 'aac_lofi' => 48,
                 'aac_midfi' => 96,
-                'aac_hifi' => $station->getMaxBitrate(),
+                'aac_hifi' => $station->getMaxBitrate() !== 0 ? $station->getMaxBitrate() : 128,
             ];
 
             foreach ($streams as $name => $bitrate) {

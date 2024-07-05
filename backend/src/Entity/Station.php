@@ -287,13 +287,13 @@ class Station implements Stringable, IdentifiableEntityInterface
 
     #[
         OA\Property(
-            description: "The maximum bitrate at which a station may broadcast, in Kbps",
+            description: "The maximum bitrate at which a station may broadcast, in Kbps. 0 for unlimited",
             example: 128
         ),
         ORM\Column,
         Serializer\Groups([EntityGroupsInterface::GROUP_ADMIN, EntityGroupsInterface::GROUP_ALL])
     ]
-    protected int $max_bitrate = 128;
+    protected int $max_bitrate = 0;
 
     /**
      * @var ConfigData|null
@@ -898,11 +898,7 @@ class Station implements Stringable, IdentifiableEntityInterface
 
     public function getMaxBitrate(): int
     {
-        if (!empty($this->max_bitrate)) {
-            return $this->max_bitrate;
-        }
-
-        return 128;
+        return $this->max_bitrate;
     }
 
     public function setMaxBitrate(int $max_bitrate): void

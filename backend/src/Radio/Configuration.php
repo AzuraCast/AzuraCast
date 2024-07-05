@@ -338,6 +338,11 @@ final class Configuration
 
     /**
      * Get an array of all used ports across the system, except the ones used by the station specified (if specified).
+     *
+     * @return array<int, array{
+     *   id: int,
+     *   name: string
+     * }>
      */
     public function getUsedPorts(Station $exceptStation = null): array
     {

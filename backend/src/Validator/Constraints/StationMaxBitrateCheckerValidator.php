@@ -27,8 +27,9 @@ final class StationMaxBitrateCheckerValidator extends ConstraintValidator
 
         $stationMaxBitrate = $station->getMaxBitrate();
 
-        if ($stationMaxBitrate === 0)
+        if ($stationMaxBitrate === 0) {
             return;
+        }
 
         if (is_array($selectedBitrateProperty)) {
             $selectedBitrate = $this->context->getObject();

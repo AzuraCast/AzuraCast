@@ -45,7 +45,7 @@
                     <bitrate-options
                         id="edit_form_backend_record_streams_bitrate"
                         class="col-md-6"
-                        :max-bitrate="maxBitrate"
+                        :max-bitrate="_maxBitrate ?? props.form.max_bitrate"
                         :field="v$.backend_config.record_streams_bitrate"
                         :label="$gettext('Live Broadcast Recording Bitrate (kbps)')"
                     />
@@ -138,6 +138,7 @@ import {numeric} from "@vuelidate/validators";
 import {useAzuraCast, useAzuraCastStation} from "~/vendor/azuracast";
 import Tab from "~/components/Common/Tab.vue";
 import BitrateOptions from "~/components/Common/BitrateOptions.vue";
+import { useRoute } from 'vue-router'
 
 const props = defineProps({
     form: {
@@ -152,7 +153,6 @@ const props = defineProps({
 
 
 const {enableAdvancedFeatures} = useAzuraCast();
-const {maxBitrate} = useAzuraCastStation();
 
 const emit = defineEmits(['update:form']);
 const form = useVModel(props, 'form', emit);
@@ -250,4 +250,13 @@ const recordStreamsOptions = computed(() => {
         }
     ];
 });
+
+const route = useRoute()
+let _maxBitrate;
+if(route.matched.some(({ name }) => name.startsWith('admin:'))){
+    _maxBitrate = null;
+}
+else {
+    ({maxBitrate: _maxBitrate} = useAzuraCastStation());
+}
 </script>

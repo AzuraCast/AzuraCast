@@ -783,24 +783,9 @@ final class ConfigWriter implements EventSubscriberInterface
             end
 
             add_skip_command(radio)
-
-            # Apply amplification metadata (if supplied)
-            radio = amplify(override="liq_amplify", 1., radio)
             LIQ
         );
 
-        // Replaygain metadata
-        $settings = $event->getBackendConfig();
-
-        if ($settings->useReplayGain()) {
-            $event->appendBlock(
-                <<<LIQ
-                # Replaygain Metadata
-                enable_replaygain_metadata()
-                radio = replaygain(radio)
-                LIQ
-            );
-        }
     }
 
     /**
@@ -918,6 +903,30 @@ final class ConfigWriter implements EventSubscriberInterface
 
         // Write pre-crossfade section.
         $this->writeCustomConfigurationSection($event, StationBackendConfiguration::CUSTOM_PRE_FADE);
+
+        // Need to move amplify & Replaygain after CUSTOM_PRE_FADE
+        // in case user has defined own fallbacks/switches
+
+        // Amplify
+        $event->appendBlock(
+            <<<LIQ
+            # Apply amplification metadata (if supplied)
+            radio = amplify(override="liq_amplify", 1., radio)
+            LIQ
+        );
+
+        // Replaygain metadata
+        $settings = $event->getBackendConfig();
+
+        if ($settings->useReplayGain()) {
+            $event->appendBlock(
+                <<<LIQ
+                # Replaygain Metadata
+                enable_replaygain_metadata()
+                radio = replaygain(radio)
+                LIQ
+            );
+        }
 
         // Show metadata, used with and without Autocue
         $showMetaFunc = <<<LS

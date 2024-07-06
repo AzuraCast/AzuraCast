@@ -785,7 +785,6 @@ final class ConfigWriter implements EventSubscriberInterface
             add_skip_command(radio)
             LIQ
         );
-
     }
 
     /**

@@ -466,12 +466,12 @@ export interface ApiNowPlayingStation {
   id?: number;
   /**
    * Station name
-   * @example "Casterfm Radio"
+   * @example "AzuraTest Radio"
    */
   name?: string;
   /**
    * Station "short code", used for URL and folder paths
-   * @example "Casterfm_radio"
+   * @example "azuratest_radio"
    */
   shortcode?: string;
   /**
@@ -1315,12 +1315,12 @@ export type SftpUser = HasAutoIncrementId & {
 export type Station = HasAutoIncrementId & {
   /**
    * The full display name of the station.
-   * @example "Caster.fm Radio"
+   * @example "AzuraTest Radio"
    */
   name?: string;
   /**
    * The URL-friendly name for the station, typically auto-generated from the full station name.
-   * @example "casterfm_radio"
+   * @example "azuratest_radio"
    */
   short_name?: string;
   /**
@@ -1348,7 +1348,7 @@ export type Station = HasAutoIncrementId & {
   url?: string | null;
   /** @example "Various" */
   genre?: string | null;
-  /** @example "/var/casterfm/stations/casterfm_radio" */
+  /** @example "/var/azuracast/stations/azuratest_radio" */
   radio_base_dir?: string | null;
   /**
    * Whether listeners can request songs to play on this station.

@@ -10,7 +10,6 @@ use App\Radio\Enums\CrossfadeModes;
 use App\Radio\Enums\MasterMePresets;
 use App\Radio\Enums\StreamFormats;
 use App\Utilities\Types;
-use InvalidArgumentException;
 use LogicException;
 
 class StationBackendConfiguration extends AbstractStationConfiguration
@@ -82,10 +81,10 @@ class StationBackendConfiguration extends AbstractStationConfiguration
     {
         if (null !== $format) {
             $format = strtolower($format);
-        }
 
-        if (null !== $format && null === StreamFormats::tryFrom($format)) {
-            throw new InvalidArgumentException('Invalid recording type specified.');
+            if (null === StreamFormats::tryFrom($format)) {
+                $format = null;
+            }
         }
 
         $this->set(self::RECORD_STREAMS_FORMAT, $format);
@@ -178,10 +177,10 @@ class StationBackendConfiguration extends AbstractStationConfiguration
     {
         if (null !== $method) {
             $method = strtolower($method);
-        }
 
-        if (null !== $method && null === AudioProcessingMethods::tryFrom($method)) {
-            throw new InvalidArgumentException('Invalid audio processing method specified.');
+            if (null === AudioProcessingMethods::tryFrom($method)) {
+                $method = null;
+            }
         }
 
         $this->set(self::AUDIO_PROCESSING_METHOD, $method);
@@ -240,10 +239,10 @@ class StationBackendConfiguration extends AbstractStationConfiguration
     {
         if (null !== $masterMePreset) {
             $masterMePreset = strtolower($masterMePreset);
-        }
 
-        if (null !== $masterMePreset && null === MasterMePresets::tryFrom($masterMePreset)) {
-            throw new InvalidArgumentException('Invalid master_me preset specified.');
+            if (null === MasterMePresets::tryFrom($masterMePreset)) {
+                $masterMePreset = null;
+            }
         }
 
         $this->set(self::MASTER_ME_PRESET, $masterMePreset);

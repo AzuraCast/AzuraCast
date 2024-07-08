@@ -62,9 +62,19 @@
                         class="col-md-12"
                         :field="v$.backend_config.enable_auto_cue"
                         :label="$gettext('Enable AutoCue (Beta)')"
-                        :description="$gettext('AutoCue analyzes your music and automatically calculates cue points, fade points, and volume levels for a consistent listening experience.')"
                         high-cpu
-                    />
+                    >
+                        <template #description>
+                            {{
+                                $gettext('AutoCue analyzes your music and automatically calculates cue points, fade points, and volume levels for a consistent listening experience.')
+                            }}
+                            <br>
+                            <a
+                                href="https://github.com/Moonbase59/autocue/"
+                                target="_blank"
+                            >{{ $gettext('Learn more about AutoCue') }}</a>
+                        </template>
+                    </form-group-checkbox>
 
                     <form-group-checkbox
                         v-if="!isAutoCueEnabled"

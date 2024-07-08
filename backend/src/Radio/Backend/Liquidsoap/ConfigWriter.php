@@ -1277,21 +1277,24 @@ final class ConfigWriter implements EventSubscriberInterface
                         if (m["title"] != last_title() or m["artist"] != last_artist()) then
                             last_title.set(m["title"])
                             last_artist.set(m["artist"])
-
-                            j = json()
-
-                            if (m["song_id"] != "") then
-                                j.add("song_id", m["song_id"])
-                                j.add("media_id", m["media_id"])
-                                j.add("playlist_id", m["playlist_id"])
-                            else
-                                j.add("artist", m["artist"])
-                                j.add("title", m["title"])
+                            
+                            # Only send some metadata to AzuraCast
+                            def fl(k, _) =
+                                tags = ["song_id", "media_id", "playlist_id", "artist", "title"]
+                                string.contains(prefix="liq_", k) or string.contains(prefix="replaygain_", k) or list.mem(k, tags)
                             end
-
+                            
+                            feedback_meta = list.assoc.filter((fl), metadata.cover.remove(m))
+                            
+                            j = json()
+                            for item = list.iterator(feedback_meta) do
+                                let (tag, value) = item
+                                j.add(tag, value)
+                            end
+                            
                             _ = azuracast_api_call(
                                 "feedback",
-                                json.stringify(j)
+                                json.stringify(compact=true, j)
                             )
                         end
                     end

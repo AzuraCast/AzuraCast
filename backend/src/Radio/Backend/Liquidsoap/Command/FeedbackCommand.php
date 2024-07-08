@@ -12,6 +12,7 @@ use App\Entity\Song;
 use App\Entity\SongHistory;
 use App\Entity\Station;
 use App\Entity\StationMedia;
+use App\Entity\StationMediaMetadata;
 use App\Entity\StationPlaylist;
 use Exception;
 use RuntimeException;
@@ -35,6 +36,12 @@ final class FeedbackCommand extends AbstractCommand
         if (!$asAutoDj) {
             return false;
         }
+
+        // Process Liquidsoap list.assoc to JSON mapping
+        $payload = array_map(
+            [StationMediaMetadata::class, 'normalizeLiquidsoapValue'],
+            $payload
+        );
 
         // Process extra metadata sent by Liquidsoap (if it exists).
         try {
@@ -63,7 +70,11 @@ final class FeedbackCommand extends AbstractCommand
         Station $station,
         array $payload
     ): SongHistory {
-        if (isset($payload['artist'])) {
+        if (empty($payload['media_id'])) {
+            if (empty($payload['artist'])) {
+                throw new RuntimeException('No payload provided.');
+            }
+
             $newSong = Song::createFromArray([
                 'artist' => $payload['artist'],
                 'title' => $payload['title'] ?? '',
@@ -79,13 +90,23 @@ final class FeedbackCommand extends AbstractCommand
             );
         }
 
-        if (empty($payload['media_id'])) {
-            throw new RuntimeException('No payload provided.');
-        }
-
         $media = $this->em->find(StationMedia::class, $payload['media_id']);
         if (!$media instanceof StationMedia) {
             throw new RuntimeException('Media ID does not exist for station.');
+        }
+
+        // If AutoCue information exists, cache it back to the DB to improve performance.
+        if ($station->getBackendConfig()->getEnableAutoCue()) {
+            $currentExtraMeta = $media->getExtraMetadata()->toArray();
+
+            $media->setExtraMetadata($payload);
+
+            $newExtraMeta = $media->getExtraMetadata()->toArray();
+
+            if ($newExtraMeta !== $currentExtraMeta) {
+                $this->em->persist($media);
+                $this->em->flush();
+            }
         }
 
         if (!$this->historyRepo->isDifferentFromCurrentSong($station, $media)) {

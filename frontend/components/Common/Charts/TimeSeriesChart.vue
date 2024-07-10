@@ -20,7 +20,7 @@ const props = defineProps({
     ...chartProps,
     tz: {
         type: String,
-        default: 'local'
+        default: 'UTC'
     }
 });
 

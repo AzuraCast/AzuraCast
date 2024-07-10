@@ -10,6 +10,7 @@ use App\Utilities\Spinner;
 use App\Utilities\Types;
 use Doctrine\DBAL\Driver\PDO\MySQL\Driver;
 use GuzzleHttp\Client;
+use GuzzleHttp\RequestOptions;
 use InvalidArgumentException;
 use Psr\Log\LogLevel;
 use Redis;
@@ -60,8 +61,8 @@ final class UptimeWaitCommand extends CommandAbstract
         $spinner = new Spinner($output);
         $io = new SymfonyStyle($input, $output);
 
-        $applicationEnv = $this->environment->getLogLevel();
-        $debugMode = (LogLevel::DEBUG === $applicationEnv);
+        $logLevel = $this->environment->getLogLevel();
+        $debugMode = (LogLevel::DEBUG === $logLevel);
 
         $service = Types::string($input->getArgument('service'));
         $timeout = Types::int($input->getOption('timeout'));
@@ -145,7 +146,8 @@ final class UptimeWaitCommand extends CommandAbstract
         $response = $guzzle->get(
             'http://127.0.0.1:6010/api/status',
             [
-                'http_errors' => true,
+                RequestOptions::ALLOW_REDIRECTS => false,
+                RequestOptions::HTTP_ERRORS => true,
             ]
         );
 

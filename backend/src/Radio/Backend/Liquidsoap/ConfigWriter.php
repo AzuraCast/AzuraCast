@@ -1608,6 +1608,16 @@ final class ConfigWriter implements EventSubscriberInterface
             : 'false';
     }
 
+    public static function valueToString(string|int|float|bool $dataVal): string
+    {
+        return match (true) {
+            'true' === $dataVal || 'false' === $dataVal => $dataVal,
+            is_bool($dataVal) => self::toBool($dataVal),
+            is_numeric($dataVal) => self::toFloat($dataVal),
+            default => Types::string($dataVal)
+        };
+    }
+
     public static function formatTimeCode(int $timeCode): string
     {
         $hours = floor($timeCode / 100);

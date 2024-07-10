@@ -13,7 +13,6 @@ use App\Entity\StationQueue;
 use App\Entity\StationRequest;
 use App\Event\Radio\AnnotateNextSong;
 use App\Radio\Backend\Liquidsoap\ConfigWriter;
-use App\Utilities\Types;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -147,9 +146,7 @@ final class Annotations implements EventSubscriberInterface
                 $prop = match ($name) {
                     'liq_blank_skipped', 'liq_longtail', 'liq_sustained_ending' => ConfigWriter::toBool($prop),
                     'liq_amplify' => $prop . ' dB',
-                    default => is_numeric($prop)
-                        ? ConfigWriter::toFloat($prop)
-                        : Types::string($prop)
+                    default => ConfigWriter::valueToString($prop)
                 };
             }
 

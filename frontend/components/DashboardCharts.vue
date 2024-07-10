@@ -9,7 +9,6 @@
                     :data="chartsData.average.metrics"
                     :alt="chartsData.average.alt"
                     :aspect-ratio="3"
-                    tz="UTC"
                 />
             </tab>
             <tab :label="$gettext('Unique Listeners')">
@@ -18,7 +17,6 @@
                     :data="chartsData.unique.metrics"
                     :alt="chartsData.unique.alt"
                     :aspect-ratio="3"
-                    tz="UTC"
                 />
             </tab>
         </tabs>

@@ -136,7 +136,7 @@ final class MediaProcessor
                     $created = true;
                 }
 
-                $reprocessed = $this->processMedia($storageLocation, $record, $force);
+                $reprocessed = $this->processMedia($storageLocation, $record, $force || $created);
 
                 if ($created || $reprocessed) {
                     $this->em->flush();

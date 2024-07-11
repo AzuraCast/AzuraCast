@@ -54,7 +54,7 @@ final class ReprocessMediaCommand extends CommandAbstract
 
         $reprocessMediaQueue = $this->em->createQueryBuilder()
             ->update(StationMedia::class, 'sm')
-            ->set('sm.mtime', 'NULL');
+            ->set('sm.mtime', 0);
 
         if (null === $stationName) {
             $io->section('Reprocessing media for all stations...');

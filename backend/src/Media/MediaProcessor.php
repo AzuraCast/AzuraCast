@@ -184,10 +184,11 @@ final class MediaProcessor
             );
         }
 
-        $mediaMtime = $fs->lastModified($path);
+        $fileModified = $fs->lastModified($path);
+        $mediaProcessedAt = $media->getMtime();
 
         // No need to update if all of these conditions are true.
-        if (!$force && !$media->needsReprocessing($mediaMtime)) {
+        if (!$force && !StationMedia::needsReprocessing($fileModified, $mediaProcessedAt)) {
             return false;
         }
 
@@ -198,7 +199,7 @@ final class MediaProcessor
             }
         );
 
-        $media->setMtime($mediaMtime);
+        $media->setMtime(time() + 5);
         $this->em->persist($media);
 
         return true;

@@ -59,6 +59,12 @@ class StationMedia
     public int $mtime;
 
     #[OA\Property(
+        description: "The UNIX timestamp when the item was first imported into the database.",
+        example: OpenApi::SAMPLE_TIMESTAMP
+    )]
+    public int $uploaded_at;
+
+    #[OA\Property(
         description: "The latest time (UNIX timestamp) when album art was updated.",
         example: OpenApi::SAMPLE_TIMESTAMP
     )]
@@ -111,6 +117,9 @@ class StationMedia
         $media->length = Types::int($row['length']);
         $media->length_text = self::getLengthText($row['length']);
         $media->art_updated_at = $row['art_updated_at'];
+
+        $media->mtime = Types::int($row['mtime'] ?? 0);
+        $media->uploaded_at = Types::int($row['uploaded_at'] ?? 0);
 
         $media->extra_metadata = new HashMap($extraMetadata);
         $media->custom_fields = new HashMap($customFields);

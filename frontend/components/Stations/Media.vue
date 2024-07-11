@@ -355,6 +355,22 @@ const fields = computed<DataTableField[]>(() => {
             visible: true
         },
         {
+            key: 'media.uploaded_at',
+            label: $gettext('Uploaded Time'),
+            sortable: true,
+            formatter: (value) => formatTimestampAsDateTime(value),
+            selectable: true,
+            visible: false
+        },
+        {
+            key: 'media.mtime',
+            label: $gettext('Last Processed Time'),
+            sortable: true,
+            formatter: (value) => formatTimestampAsDateTime(value),
+            selectable: true,
+            visible: false
+        },
+        {
             key: 'playlists',
             label: $gettext('Playlists'),
             sortable: false,

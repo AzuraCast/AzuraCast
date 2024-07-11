@@ -144,7 +144,7 @@ final class Annotations implements EventSubscriberInterface
             // Process Liquidsoap-specific annotations.
             if (StationMediaMetadata::isLiquidsoapAnnotation($name)) {
                 $prop = match ($name) {
-                    'liq_blank_skipped', 'liq_longtail', 'liq_sustained_ending' => ConfigWriter::toBool($prop),
+                    'liq_blank_skipped', 'liq_cue_file', 'liq_longtail', 'liq_sustained_ending' => ConfigWriter::toBool($prop),
                     'liq_amplify' => $prop . ' dB',
                     default => ConfigWriter::valueToString($prop)
                 };

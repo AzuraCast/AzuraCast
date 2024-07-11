@@ -167,6 +167,16 @@
                                 {{ $gettext('Reprocess') }}
                             </button>
                         </li>
+                        <li>
+                            <button
+                                type="button"
+                                class="dropdown-item"
+                                :title="$gettext('Remove any extra metadata (fade points, cue points, etc.) from the selected media')"
+                                @click="doClearExtra"
+                            >
+                                {{ $gettext('Clear Extra Metadata') }}
+                            </button>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -312,6 +322,14 @@ const doReprocess = () => {
     doBatch(
         'reprocess',
         $gettext('Files marked for reprocessing:'),
+        $gettext('Error reprocessing files:')
+    );
+};
+
+const doClearExtra = () => {
+    doBatch(
+        'clear-extra',
+        $gettext('Extra metadata cleared for files:'),
         $gettext('Error reprocessing files:')
     );
 };

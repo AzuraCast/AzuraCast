@@ -8,14 +8,11 @@ use App\Entity\Interfaces\IdentifiableEntityInterface;
 use App\Entity\Interfaces\PathAwareInterface;
 use App\Entity\Interfaces\ProcessableMediaInterface;
 use App\Entity\Interfaces\SongInterface;
-use App\Entity\Interfaces\TimestampableInterface;
 use App\Flysystem\StationFilesystems;
 use App\Media\Metadata;
 use App\Media\MetadataInterface;
 use App\Utilities\Types;
 use Azura\Normalizer\Attributes\DeepNormalize;
-use Carbon\CarbonImmutable;
-use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -31,8 +28,7 @@ class StationMedia implements
     SongInterface,
     ProcessableMediaInterface,
     PathAwareInterface,
-    IdentifiableEntityInterface,
-    TimestampableInterface
+    IdentifiableEntityInterface
 {
     use Traits\HasAutoIncrementId;
     use Traits\HasSongFields;
@@ -72,6 +68,9 @@ class StationMedia implements
     #[ORM\Column(nullable: false)]
     protected int $mtime;
 
+    #[ORM\Column(nullable: false)]
+    protected int $uploaded_at;
+
     #[ORM\Column]
     protected int $art_updated_at = 0;
 
@@ -102,7 +101,8 @@ class StationMedia implements
         $this->custom_fields = new ArrayCollection();
         $this->podcast_episodes = new ArrayCollection();
 
-        $this->mtime = time();
+        $this->mtime = $this->uploaded_at = time();
+
         $this->generateUniqueId();
 
         $this->setPath($path);
@@ -206,9 +206,9 @@ class StationMedia implements
         $this->mtime = $mtime;
     }
 
-    public function getTimestamp(): DateTimeInterface
+    public function getUploadedAt(): int
     {
-        return CarbonImmutable::createFromTimestamp($this->mtime);
+        return $this->uploaded_at;
     }
 
     public function getArtUpdatedAt(): int

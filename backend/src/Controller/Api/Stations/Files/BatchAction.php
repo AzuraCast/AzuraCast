@@ -73,6 +73,7 @@ final class BatchAction implements SingleActionInterface
             'queue' => $this->doQueue($request, $station, $storageLocation, $fsMedia),
             'immediate' => $this->doPlayImmediately($request, $station, $storageLocation, $fsMedia),
             'reprocess' => $this->doReprocess($request, $station, $storageLocation, $fsMedia),
+            'clear-extra' => $this->doClearExtra($request, $station, $storageLocation, $fsMedia),
             default => throw new InvalidArgumentException('Invalid batch action specified.')
         };
 
@@ -407,6 +408,26 @@ final class BatchAction implements SingleActionInterface
             $message->path = $unprocessable->getPath();
 
             $this->messageBus->dispatch($message);
+        }
+
+        return $result;
+    }
+
+    private function doClearExtra(
+        ServerRequest $request,
+        Station $station,
+        StorageLocation $storageLocation,
+        ExtendedFilesystemInterface $fs
+    ): MediaBatchResult {
+        $result = $this->parseRequest($request, $fs, true);
+
+        foreach ($this->batchUtilities->iterateMedia($storageLocation, $result->files) as $media) {
+            $media->clearExtraMetadata();
+
+            // Always flag for reprocessing to repopulate extra metadata from the file.
+            $media->setMtime(0);
+
+            $this->em->persist($media);
         }
 
         return $result;

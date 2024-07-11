@@ -234,6 +234,11 @@ class StationMedia implements
             ->toArray();
     }
 
+    public function clearExtraMetadata(): void
+    {
+        $this->extra_metadata = (new StationMediaMetadata([]))->toArray();
+    }
+
     /**
      * Get the length with cue-in and cue-out points included.
      */

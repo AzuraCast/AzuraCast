@@ -42,14 +42,13 @@ final class SingleTaskCommand extends AbstractSyncCommand
     {
         $this->logToExtraFile('app_sync.log');
 
-        $io = new SymfonyStyle($input, $output);
-
         /** @var class-string $task */
         $task = Types::string($input->getArgument('task'));
 
         try {
             $this->runTask($task);
         } catch (InvalidArgumentException $e) {
+            $io = new SymfonyStyle($input, $output);
             $io->error($e->getMessage());
             return 1;
         }

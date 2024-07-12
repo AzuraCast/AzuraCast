@@ -7,7 +7,6 @@ namespace App\Console\Command\Sync;
 use App\Container\SettingsAwareTrait;
 use App\Event\GetSyncTasks;
 use App\Lock\LockFactory;
-use App\Sync\Task\AbstractTask;
 use Carbon\CarbonImmutable;
 use DateTimeZone;
 use Psr\EventDispatcher\EventDispatcherInterface;
@@ -18,6 +17,9 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 use function usleep;
 
+/**
+ * @phpstan-import-type TaskClass from GetSyncTasks
+ */
 #[AsCommand(
     name: 'azuracast:sync:run',
     description: 'Task to run the minute\'s synchronized tasks.'
@@ -37,10 +39,9 @@ final class RunnerCommand extends AbstractSyncRunnerCommand
     {
         $this->logToExtraFile('app_sync.log');
 
-        $io = new SymfonyStyle($input, $output);
-
         $settings = $this->readSettings();
         if ($settings->getSyncDisabled()) {
+            $io = new SymfonyStyle($input, $output);
             $io->error('Automated synchronization is temporarily disabled.');
             return 1;
         }
@@ -52,7 +53,7 @@ final class RunnerCommand extends AbstractSyncRunnerCommand
 
         foreach ($syncTasksEvent->getTasks() as $taskClass) {
             if ($taskClass::isDue($now, $this->environment, $settings)) {
-                $this->start($io, $taskClass);
+                $this->start($output, $taskClass);
             }
         }
 
@@ -74,11 +75,11 @@ final class RunnerCommand extends AbstractSyncRunnerCommand
     }
 
     /**
-     * @param SymfonyStyle $io
-     * @param class-string<AbstractTask> $taskClass
+     * @param OutputInterface $output
+     * @param TaskClass $taskClass
      */
     private function start(
-        SymfonyStyle $io,
+        OutputInterface $output,
         string $taskClass,
     ): void {
         $taskShortName = SingleTaskCommand::getClassShortName($taskClass);
@@ -89,7 +90,7 @@ final class RunnerCommand extends AbstractSyncRunnerCommand
             : $this->environment->getSyncShortExecutionTime();
 
         $this->lockAndRunConsoleCommand(
-            $io,
+            $output,
             $taskShortName,
             'sync_task',
             [

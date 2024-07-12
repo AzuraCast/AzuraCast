@@ -284,17 +284,14 @@ final class Environment
         );
     }
 
-    public function getNowPlayingDelayTime(): int
+    public function getNowPlayingDelayTime(): ?int
     {
-        return Types::int($this->data[self::NOW_PLAYING_DELAY_TIME] ?? null);
+        return Types::intOrNull($this->data[self::NOW_PLAYING_DELAY_TIME] ?? null);
     }
 
-    public function getNowPlayingMaxConcurrentProcesses(): int
+    public function getNowPlayingMaxConcurrentProcesses(): ?int
     {
-        return Types::int(
-            $this->data[self::NOW_PLAYING_MAX_CONCURRENT_PROCESSES] ?? null,
-            5
-        );
+        return Types::intOrNull($this->data[self::NOW_PLAYING_MAX_CONCURRENT_PROCESSES] ?? null);
     }
 
     /**

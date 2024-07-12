@@ -91,7 +91,7 @@ final class RestoreCommand extends AbstractDatabaseCommand
         switch ($fileExt) {
             case 'tzst':
                 $this->passThruProcess(
-                    $io,
+                    $output,
                     [
                         'tar',
                         '-I',
@@ -106,7 +106,7 @@ final class RestoreCommand extends AbstractDatabaseCommand
             case 'gz':
             case 'tgz':
                 $this->passThruProcess(
-                    $io,
+                    $output,
                     [
                         'tar',
                         'zxvf',
@@ -119,7 +119,7 @@ final class RestoreCommand extends AbstractDatabaseCommand
             case 'zip':
             default:
                 $this->passThruProcess(
-                    $io,
+                    $output,
                     [
                         'unzip',
                         '-o',

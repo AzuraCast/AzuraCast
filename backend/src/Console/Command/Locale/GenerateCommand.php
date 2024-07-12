@@ -42,7 +42,7 @@ final class GenerateCommand extends CommandAbstract
 
         // Run the JS generator
         $this->passThruProcess(
-            $io,
+            $output,
             ['npm', 'run', 'generate-locales'],
             $this->environment->getBaseDirectory()
         );

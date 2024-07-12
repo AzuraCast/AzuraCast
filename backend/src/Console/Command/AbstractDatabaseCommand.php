@@ -10,6 +10,7 @@ use App\Container\EnvironmentAwareTrait;
 use App\Entity\StorageLocation;
 use Exception;
 use RuntimeException;
+use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Filesystem\Filesystem;
 
@@ -48,7 +49,7 @@ abstract class AbstractDatabaseCommand extends CommandAbstract
     }
 
     protected function dumpDatabase(
-        SymfonyStyle $io,
+        OutputInterface $output,
         string $path
     ): void {
         [$commandFlags, $commandEnvVars] = $this->getDatabaseSettingsAsCliFlags();
@@ -59,7 +60,7 @@ abstract class AbstractDatabaseCommand extends CommandAbstract
         $commandEnvVars['DB_DEST'] = $path;
 
         $this->passThruProcess(
-            $io,
+            $output,
             'mariadb-dump ' . implode(' ', $commandFlags) . ' $DB_DATABASE > $DB_DEST',
             dirname($path),
             $commandEnvVars

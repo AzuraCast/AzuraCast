@@ -9,6 +9,7 @@ use App\Container\LoggerAwareTrait;
 use App\Lock\LockFactory;
 use Symfony\Component\Console\Output\ConsoleOutputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Lock\Lock;
 use Symfony\Component\Process\Process;
 
@@ -85,9 +86,11 @@ abstract class AbstractSyncRunnerCommand extends AbstractSyncCommand
         $process->setTimeout($timeout);
         $process->setIdleTimeout($timeout);
 
-        $stderr = ($output instanceof ConsoleOutputInterface)
-            ? $output->getErrorOutput()
-            : $output;
+        $stderr = match (true) {
+            $output instanceof SymfonyStyle => $output->getErrorStyle(),
+            $output instanceof ConsoleOutputInterface => $output->getErrorOutput(),
+            default => $output
+        };
 
         $process->start(function ($type, $data) use ($output, $stderr): void {
             if (Process::ERR === $type) {

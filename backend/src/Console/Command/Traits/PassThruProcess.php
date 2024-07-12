@@ -4,13 +4,15 @@ declare(strict_types=1);
 
 namespace App\Console\Command\Traits;
 
+use Symfony\Component\Console\Output\ConsoleOutputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Process\Process;
 
 trait PassThruProcess
 {
     protected function passThruProcess(
-        SymfonyStyle $io,
+        OutputInterface $output,
         string|array $cmd,
         ?string $cwd = null,
         array $env = [],
@@ -27,16 +29,17 @@ trait PassThruProcess
         $process->setTimeout($timeout - 60);
         $process->setIdleTimeout(null);
 
-        $stdout = [];
-        $stderr = [];
+        $stderr = match (true) {
+            $output instanceof SymfonyStyle => $output->getErrorStyle(),
+            $output instanceof ConsoleOutputInterface => $output->getErrorOutput(),
+            default => $output
+        };
 
-        $process->mustRun(function ($type, $data) use ($process, $io, &$stdout, &$stderr): void {
+        $process->mustRun(function ($type, $data) use ($process, $output, $stderr): void {
             if ($process::ERR === $type) {
-                $io->getErrorStyle()->write($data);
-                $stderr[] = $data;
+                $stderr->write($data);
             } else {
-                $io->write($data);
-                $stdout[] = $data;
+                $output->write($data);
             }
         }, $env);
 

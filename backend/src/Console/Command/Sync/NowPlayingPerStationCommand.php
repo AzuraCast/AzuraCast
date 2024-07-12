@@ -43,11 +43,11 @@ final class NowPlayingPerStationCommand extends AbstractSyncCommand
     {
         $this->logToExtraFile('app_nowplaying.log');
 
-        $io = new SymfonyStyle($input, $output);
         $stationName = Types::string($input->getArgument('station'));
 
         $station = $this->stationRepo->findByIdentifier($stationName);
         if (!($station instanceof Station)) {
+            $io = new SymfonyStyle($input, $output);
             $io->error('Station not found.');
             return 1;
         }

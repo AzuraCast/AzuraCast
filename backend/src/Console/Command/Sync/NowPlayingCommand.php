@@ -15,8 +15,6 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
-use function random_int;
-
 #[AsCommand(
     name: 'azuracast:sync:nowplaying',
     description: 'Task to run the Now Playing worker task.'
@@ -62,9 +60,24 @@ final class NowPlayingCommand extends AbstractSyncRunnerCommand
         return 0;
     }
 
-    private function loop(SymfonyStyle $io, int $timeout): void
+    private function loop(OutputInterface $output, int $timeout): void
     {
         $threshold = time() + $timeout;
+
+        // If max current processes isn't specified, make it 1/3 of all stations, rounded up.
+        $npMaxCurrentProcesses = $this->environment->getNowPlayingMaxConcurrentProcesses();
+        if (null === $npMaxCurrentProcesses) {
+            $npMaxCurrentProcesses = ceil(count($this->getStationsToRun($threshold)) / 3);
+        }
+
+        // Gate the Now Playing delay time between a reasonable minimum and maximum.
+        $npDelayTime = max(
+            min(
+                $this->environment->getNowPlayingDelayTime() ?? 10,
+                60
+            ),
+            5
+        );
 
         while (time() < $threshold || !empty($this->processes)) {
             // Check existing processes.
@@ -74,15 +87,14 @@ final class NowPlayingCommand extends AbstractSyncRunnerCommand
             $numProcesses = count($this->processes);
 
             if (
-                $numProcesses < $this->environment->getNowPlayingMaxConcurrentProcesses()
+                $numProcesses < $npMaxCurrentProcesses
                 && time() < $threshold - 5
             ) {
                 // Ensure a process is running for every active station.
-                $npDelay = max(min($this->environment->getNowPlayingDelayTime(), 60), 5);
-                $npThreshold = time() - $npDelay - random_int(0, 5);
+                $npThreshold = time() - $npDelayTime - rand(0, 5);
 
                 foreach ($this->getStationsToRun($npThreshold) as $shortName) {
-                    if (count($this->processes) >= $this->environment->getNowPlayingMaxConcurrentProcesses()) {
+                    if (count($this->processes) >= $npMaxCurrentProcesses) {
                         break;
                     }
                     if (isset($this->processes[$shortName])) {
@@ -91,7 +103,7 @@ final class NowPlayingCommand extends AbstractSyncRunnerCommand
 
                     $this->logger->debug('Starting NP process for station: ' . $shortName);
 
-                    if ($this->start($io, $shortName)) {
+                    if ($this->start($output, $shortName)) {
                         usleep(100000);
                     }
                 }
@@ -136,11 +148,11 @@ final class NowPlayingCommand extends AbstractSyncRunnerCommand
     }
 
     private function start(
-        SymfonyStyle $io,
+        OutputInterface $output,
         string $shortName
     ): bool {
         return $this->lockAndRunConsoleCommand(
-            $io,
+            $output,
             $shortName,
             'nowplaying',
             [

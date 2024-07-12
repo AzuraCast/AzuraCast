@@ -7,11 +7,10 @@ namespace App\Console\Command\Sync;
 use App\Container\EnvironmentAwareTrait;
 use App\Container\LoggerAwareTrait;
 use App\Lock\LockFactory;
-use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\Console\Output\ConsoleOutputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Lock\Lock;
 use Symfony\Component\Process\Process;
-
-use function random_int;
 
 abstract class AbstractSyncRunnerCommand extends AbstractSyncCommand
 {
@@ -36,7 +35,7 @@ abstract class AbstractSyncRunnerCommand extends AbstractSyncCommand
             $process = $processGroup['process'];
 
             // 10% chance that refresh will be called
-            if (random_int(1, 100) <= 10) {
+            if (rand(1, 100) <= 10) {
                 $lock->refresh();
             }
 
@@ -56,7 +55,7 @@ abstract class AbstractSyncRunnerCommand extends AbstractSyncCommand
     }
 
     protected function lockAndRunConsoleCommand(
-        SymfonyStyle $io,
+        OutputInterface $output,
         string $processKey,
         string $lockPrefix,
         array $consoleCommand,
@@ -86,11 +85,15 @@ abstract class AbstractSyncRunnerCommand extends AbstractSyncCommand
         $process->setTimeout($timeout);
         $process->setIdleTimeout($timeout);
 
-        $process->start(function ($type, $data) use ($io): void {
+        $stderr = ($output instanceof ConsoleOutputInterface)
+            ? $output->getErrorOutput()
+            : $output;
+
+        $process->start(function ($type, $data) use ($output, $stderr): void {
             if (Process::ERR === $type) {
-                $io->getErrorStyle()->write($data);
+                $stderr->write($data);
             } else {
-                $io->write($data);
+                $output->write($data);
             }
         }, getenv());
 

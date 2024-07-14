@@ -71,12 +71,12 @@ final class FeedbackCommand extends AbstractCommand
         array $payload
     ): SongHistory {
         if (empty($payload['media_id'])) {
-            if (empty($payload['artist'])) {
+            if (empty($payload['artist']) && empty($payload['title'])) {
                 throw new RuntimeException('No payload provided.');
             }
 
             $newSong = Song::createFromArray([
-                'artist' => $payload['artist'],
+                'artist' => $payload['artist'] ?? '',
                 'title' => $payload['title'] ?? '',
             ]);
 

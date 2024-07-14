@@ -1163,17 +1163,41 @@ final class ConfigWriter implements EventSubscriberInterface
 
             # Live Broadcasting
             live = input.harbor({$harborParams})
+            
+            last_live_meta = ref([])
 
             def insert_missing(m) =
-                if m == [] then
-                    [("title", "{$liveBroadcastText}"), ("is_live", "true")]
-                else
-                    [("is_live", "true")]
+                def updates =
+                    if m == [] then
+                        [("title", "{$liveBroadcastText}"), ("is_live", "true")]
+                    else
+                        [("is_live", "true")]
+                    end
                 end
+                last_live_meta := [...m, ...updates]
+                updates
             end
             live = metadata.map(insert_missing, live)
-
-            radio = fallback(id="live_fallback", track_sensitive=false, replay_metadata=true, [live, radio])
+            
+            live = insert_metadata(live)
+            def insert_latest_live_metadata() =
+              live.insert_metadata(last_live_meta())
+            end
+            
+            def transition_to_live(_, s) =
+              insert_latest_live_metadata()
+              s
+            end
+            
+            def transition_to_radio(_, s) = s end
+            
+            radio = fallback(
+              id="live_fallback",
+              track_sensitive=false,
+              replay_metadata=true,
+              transitions=[transition_to_live, transition_to_radio],
+              [live, radio]
+            )
 
             # Skip non-live track when live DJ goes live.
             def check_live() =

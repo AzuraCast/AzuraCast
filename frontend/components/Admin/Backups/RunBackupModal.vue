@@ -140,8 +140,8 @@ const {show: open, hide} = useHasModal($modal);
 
 const {form, resetForm, v$, ifValid} = useVuelidateOnForm(
     {
-        'storage_location': {},
-        'path': {},
+        'storage_location': {required},
+        'path': {required},
         'exclude_media': {}
     },
     {

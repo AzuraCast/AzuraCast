@@ -93,7 +93,8 @@ import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
 import FormGroupMultiCheck from "~/components/Form/FormGroupMultiCheck.vue";
 import FormGroupSelect from "~/components/Form/FormGroupSelect.vue";
 import {ModalFormTemplateRef} from "~/functions/useBaseEditModal.ts";
-import {useHasModal} from "~/functions/useHasModal.ts";
+import { useHasModal } from "~/functions/useHasModal.ts";
+import {required} from "@vuelidate/validators";
 
 const props = defineProps({
     settingsUrl: {
@@ -113,11 +114,11 @@ const loading = ref(true);
 const {form, resetForm, v$, ifValid} = useVuelidateOnForm(
     {
         'backup_enabled': {},
-        'backup_time_code': {},
+        'backup_time_code': {required},
         'backup_exclude_media': {},
-        'backup_keep_copies': {},
-        'backup_storage_location': {},
-        'backup_format': {},
+        'backup_keep_copies': {required},
+        'backup_storage_location': {required},
+        'backup_format': {required},
     },
     {
         backup_enabled: false,

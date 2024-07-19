@@ -113,7 +113,8 @@ import {useAxios} from "~/vendor/axios";
 import {useVuelidateOnForm} from "~/functions/useVuelidateOnForm";
 import Modal from "~/components/Common/Modal.vue";
 import FormGroupSelect from "~/components/Form/FormGroupSelect.vue";
-import {ModalTemplateRef, useHasModal} from "~/functions/useHasModal.ts";
+import { ModalTemplateRef, useHasModal } from "~/functions/useHasModal.ts";
+import {required} from "@vuelidate/validators";
 
 const props = defineProps({
     runBackupUrl: {
@@ -140,8 +141,8 @@ const {show: open, hide} = useHasModal($modal);
 
 const {form, resetForm, v$, ifValid} = useVuelidateOnForm(
     {
-        'storage_location': {},
-        'path': {},
+        'storage_location': {required},
+        'path': {required},
         'exclude_media': {}
     },
     {

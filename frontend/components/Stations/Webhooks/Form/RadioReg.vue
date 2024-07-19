@@ -15,7 +15,7 @@
                 id="form_config_apikey"
                 class="col-md-6"
                 :field="v$.config.apikey"
-                :label="$gettext('RadioRed Organization API Key')"
+                :label="$gettext('RadioReg Organization API Key')"
             />
         </div>
     </tab>

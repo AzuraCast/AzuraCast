@@ -4090,8 +4090,8 @@ msgid "Radio.de Broadcast Subdomain"
 msgstr "Sous-domaine de diffusion Radio.de"
 
 #: src/components/Stations/Webhooks/Form/RadioReg.vue:18
-msgid "RadioRed Organization API Key"
-msgstr "Clé API de l'organisation RadioRed"
+msgid "RadioReg Organization API Key"
+msgstr "Clé API de l'organisation RadioReg"
 
 #: src/components/Stations/Webhooks/Form/RadioReg.vue:11
 msgid "RadioReg Webhook URL"

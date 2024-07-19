@@ -921,7 +921,7 @@
       'Radio.de' => 'Radio.de',
       'Radio.de API Key' => 'Clé API Radio.de',
       'Radio.de Broadcast Subdomain' => 'Sous-domaine de diffusion Radio.de',
-      'RadioRed Organization API Key' => 'Clé API de l\'organisation RadioRed',
+      'RadioReg Organization API Key' => 'Clé API de l\'organisation RadioReg',
       'RadioReg Webhook URL' => 'URL du Webhook RadioReg',
       'RadioReg.net' => 'RadioReg.net',
       'Random' => 'Aléatoire',

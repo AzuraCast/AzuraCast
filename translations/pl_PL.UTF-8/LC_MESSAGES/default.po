@@ -4099,7 +4099,7 @@ msgid "Radio.de Broadcast Subdomain"
 msgstr "Poddomena nadawania w Radio.de"
 
 #: src/components/Stations/Webhooks/Form/RadioReg.vue:18
-msgid "RadioRed Organization API Key"
+msgid "RadioReg Organization API Key"
 msgstr ""
 
 #: src/components/Stations/Webhooks/Form/RadioReg.vue:11

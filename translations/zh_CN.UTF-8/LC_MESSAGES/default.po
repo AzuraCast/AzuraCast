@@ -4086,8 +4086,8 @@ msgid "Radio.de Broadcast Subdomain"
 msgstr "Radio.de 广播子域"
 
 #: src/components/Stations/Webhooks/Form/RadioReg.vue:18
-msgid "RadioRed Organization API Key"
-msgstr "RadioRed 组织 API 密钥"
+msgid "RadioReg Organization API Key"
+msgstr "RadioReg 组织 API 密钥"
 
 #: src/components/Stations/Webhooks/Form/RadioReg.vue:11
 msgid "RadioReg Webhook URL"

@@ -906,7 +906,7 @@
       'Radio.de' => 'Radio.de',
       'Radio.de API Key' => 'Radio.de API 密钥',
       'Radio.de Broadcast Subdomain' => 'Radio.de 广播子域',
-      'RadioRed Organization API Key' => 'RadioRed 组织 API 密钥',
+      'RadioReg Organization API Key' => 'RadioReg 组织 API 密钥',
       'Random' => '随机',
       'Ready to start broadcasting? Click to start your station.' => '准备开始广播了吗？单击以启动您的电台。',
       'Received' => '接收',

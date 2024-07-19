@@ -871,7 +871,7 @@
       'This streamer is not scheduled to play at any times.' => 'Tento streamer nemá naplánované žádné hraní.',
       'This URL is provided within the Discord application.' => 'Tato adresa URL je uvedena v aplikaci Discord.',
       'This web hook will only run when the selected event(s) occur on this specific station.' => 'Tento web hook se spustí pouze tehdy, když na této konkrétní stanici dojde k vybrané události.',
-      'This will be the file name for your backup, include the extension for file type you wish to use.' => 'Toto bude název souboru pro zálohu, uveďte příponu typu souboru, který chcete použít.',
+      'This will be the file name for your backup, include the extension for file type you wish to use. Leave blank to have a name generated automatically.' => 'Toto bude název souboru pro zálohu, uveďte příponu typu souboru, který chcete použít.',
       'This will be used as the label when editing individual songs, and will show in API results.' => 'Toto bude použito jako popisek při úpravách jednotlivých skladeb a bude zobrazeno ve výsledcích API.',
       'This will clear any pending unprocessed messages in all message queues.' => 'Tím se vymažou všechny čekající nezpracované zprávy ve všech frontách zpráv.',
       'This will produce a significantly smaller backup, but you should make sure to back up your media elsewhere. Note that only locally stored media will be backed up.' => 'Vytvoříte tak výrazně menší zálohu, ale měli byste se ujistit, že zálohujete média jinde. Upozorňujeme, že zálohována budou pouze lokálně uložená média.',

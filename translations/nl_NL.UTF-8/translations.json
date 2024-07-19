@@ -1048,7 +1048,7 @@
         "This streamer is not scheduled to play at any times.": "Deze streamer is nog niet opgenomen in de planning.",
         "This URL is provided within the Discord application.": "Deze URL is verstrekt binnen de Discord-applicatie.",
         "This web hook will only run when the selected event(s) occur on this specific station.": "Deze webhook wordt alleen uitgevoerd als de geselecteerde gebeurtenis(en) op dit specifieke station voorkomen.",
-        "This will be the file name for your backup, include the extension for file type you wish to use.": "Dit wordt de bestandsnaam van uw back-up, voeg de extensie toe voor het bestandstype dat u wilt gebruiken.",
+        "This will be the file name for your backup, include the extension for file type you wish to use. Leave blank to have a name generated automatically.": "Dit wordt de bestandsnaam van uw back-up, voeg de extensie toe voor het bestandstype dat u wilt gebruiken.",
         "This will be used as the label when editing individual songs, and will show in API results.": "Dit wordt gebruikt als label bij het bewerken van individuele nummers, en zal worden weergegeven in API resultaten.",
         "This will clear any pending unprocessed messages in all message queues.": "Dit verwijdert alle wachtende en onverwerkte berichten in alle berichtenwachtrijen.",
         "This will produce a significantly smaller backup, but you should make sure to back up your media elsewhere. Note that only locally stored media will be backed up.": "Dit levert een aanzienlijk kleinere back-up op, maar u moet ervoor zorgen dat u ergens anders een back-up van uw media maakt. Merk op dat er alleen een back-up wordt gemaakt van lokaal opgeslagen media.",

@@ -940,7 +940,7 @@
         "This streamer is not scheduled to play at any times.": "Dieser Streamer ist nicht geplant, zu jeder Zeit zu spielen.",
         "This URL is provided within the Discord application.": "Diese URL wird in Discord bereitgestellt.",
         "This web hook will only run when the selected event(s) occur on this specific station.": "Dieser WebHook wird nur ausgef\u00fchrt, wenn die ausgew\u00e4hlten Ereignisse auf diesem Sender eintreten.",
-        "This will be the file name for your backup, include the extension for file type you wish to use.": "Dies wird der Dateiname f\u00fcr das Backup sein, f\u00fcge die Dateiendung des Dateityps hinzu, der verwendet werden soll.",
+        "This will be the file name for your backup, include the extension for file type you wish to use. Leave blank to have a name generated automatically.": "Dies wird der Dateiname f\u00fcr das Backup sein, f\u00fcge die Dateiendung des Dateityps hinzu, der verwendet werden soll.",
         "This will be used as the label when editing individual songs, and will show in API results.": "Dieses Label wird zum Editieren individueller Songs benutzt und wird in den API Resultaten Angezeigt.",
         "This will clear any pending unprocessed messages in all message queues.": "Dies l\u00f6scht ausstehende und unbearbeitete Nachrichten in der Nachrichtenwarteschlange.",
         "This will produce a significantly smaller backup, but you should make sure to back up your media elsewhere. Note that only locally stored media will be backed up.": "Das Ausschlie\u00dfen von Medien bei automatisierten Backups spart Speicherplatz, aber du solltest sicherstellen, dass deine Medien an anderer Stelle gesichert werden. Beachte bitte, dass nur lokal gespeicherte Medien gesichert werden.",

@@ -5750,7 +5750,7 @@ msgid "This will be shown on public player pages if the station is offline. Leav
 msgstr "Zostanie wyświetlone na stronach publicznego odtwarzacza, jeśli stacja jest offline. Pozostaw puste, aby wyświetlać domyślną zlokalizowaną wersję \"%{message}\"."
 
 #: src/components/Admin/Backups/RunBackupModal.vue:41
-msgid "This will be the file name for your backup, include the extension for file type you wish to use."
+msgid "This will be the file name for your backup, include the extension for file type you wish to use. Leave blank to have a name generated automatically."
 msgstr "Będzie to nazwa pliku kopii zapasowej, dołącz typ pliku, którego chcesz użyć."
 
 #: src/components/Admin/CustomFields/Form.vue:8

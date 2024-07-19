@@ -5738,7 +5738,7 @@ msgid "This will be shown on public player pages if the station is offline. Leav
 msgstr "스테이션이 오프라인인 경우 공개 플레이어 페이지에 표시됩니다. \"%{message}\"의 현지화된 버전을 기본값으로 사용하려면 공백으로 남겨두세요."
 
 #: src/components/Admin/Backups/RunBackupModal.vue:41
-msgid "This will be the file name for your backup, include the extension for file type you wish to use."
+msgid "This will be the file name for your backup, include the extension for file type you wish to use. Leave blank to have a name generated automatically."
 msgstr "이는 백업의 파일 이름이 되며 사용하려는 파일 형식의 확장자를 포함합니다."
 
 #: src/components/Admin/CustomFields/Form.vue:8

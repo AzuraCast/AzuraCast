@@ -5737,7 +5737,7 @@ msgid "This will be shown on public player pages if the station is offline. Leav
 msgstr "如果电台处于离线状态，这将显示在公共播放器页面上。留空默认为本地化版本的\"%{message}\"。"
 
 #: src/components/Admin/Backups/RunBackupModal.vue:41
-msgid "This will be the file name for your backup, include the extension for file type you wish to use."
+msgid "This will be the file name for your backup, include the extension for file type you wish to use. Leave blank to have a name generated automatically."
 msgstr "这将是备份的文件名，包括您希望使用的文件类型的扩展名。"
 
 #: src/components/Admin/CustomFields/Form.vue:8

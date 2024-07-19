@@ -265,7 +265,7 @@
       'Create and Continue' => '创建并继续',
       'Create custom fields to store extra metadata about each media file uploaded to your station libraries.' => '创建自定义字段，以存储上传到电台资料库的每个媒体文件的额外元数据。',
       'Create Directory' => '创建目录',
-      'Create New Key' => '创建新密钥',
+      'Create Another Key' => '创建新密钥',
       'Create New Playlist for Each Folder' => '为每个文件夹创建新的播放列表',
       'Create podcast episodes independent of your station\'s media collection.' => '创建独立于电台媒体集的播客剧集。',
       'Create Station' => '创建电台',

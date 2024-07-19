@@ -185,7 +185,7 @@
       'Create and Continue' => 'Vytvořit a pokračovat',
       'Create custom fields to store extra metadata about each media file uploaded to your station libraries.' => 'Vytvořte si vlastní pole pro úkladání extra metadat o každém mediálním souboru nahraném do vaší knihovny stanice.',
       'Create Directory' => 'Vytvořte adresář',
-      'Create New Key' => 'Vytvořit Nový Klíč',
+      'Create Another Key' => 'Vytvořit Nový Klíč',
       'Crossfade Duration (Seconds)' => 'Doba trvání prolínání (Vteřiny)',
       'Crossfade Method' => 'Způsob prolínání',
       'Current Configuration File' => 'Současný konfigurační soubor',

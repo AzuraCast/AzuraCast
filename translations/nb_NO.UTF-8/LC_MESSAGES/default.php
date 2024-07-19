@@ -267,7 +267,7 @@
       'Create and Continue' => 'Lag og Fortsett',
       'Create custom fields to store extra metadata about each media file uploaded to your station libraries.' => 'Lag egendefinerte felt for å lagre ekstra metadata om hver mediefil som lastes opp til stasjonsbibliotekene dine.',
       'Create Directory' => 'Opprett katalog',
-      'Create New Key' => 'Lag Ny Nøkkel',
+      'Create Another Key' => 'Lag Ny Nøkkel',
       'Create New Playlist for Each Folder' => 'Lag Ny Spilleliste For Hver Mappe',
       'Critical' => 'Kritisk',
       'Crossfade Duration (Seconds)' => 'Crossfade-varighet (sekunder)',

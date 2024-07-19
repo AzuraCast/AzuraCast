@@ -280,7 +280,7 @@
       'Create and Continue' => 'Створити та продовжити',
       'Create custom fields to store extra metadata about each media file uploaded to your station libraries.' => 'Створити власні поля для збереження додаткових метаданих про кожний завантажений файл медіа в бібліотеки вашої радіостанції.',
       'Create Directory' => 'Створити каталог',
-      'Create New Key' => 'Створити новий ключ',
+      'Create Another Key' => 'Створити новий ключ',
       'Create New Playlist for Each Folder' => 'Створити новий плейлист для кожної папки',
       'Create Station' => 'Створити станцію',
       'Critical' => 'Критичний',

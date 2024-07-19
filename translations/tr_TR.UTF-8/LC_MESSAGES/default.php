@@ -241,7 +241,7 @@
       'Create and Continue' => 'Oluştur ve Devam Et',
       'Create custom fields to store extra metadata about each media file uploaded to your station libraries.' => 'Radyo müzik dosyalarına yüklenen her müzik dosyası hakkında fazladan meta verisi depolamak için özel alanlar oluşturun.',
       'Create Directory' => 'Dizin Oluştur',
-      'Create New Key' => 'Yeni Anahtar Oluştur',
+      'Create Another Key' => 'Yeni Anahtar Oluştur',
       'Create podcast episodes independent of your station\'s media collection.' => 'Radyonuzun müzik dosyalarından bağımsız olarak podcast bölümleri oluşturun.',
       'Create Station' => 'Radyo Oluştur',
       'Crossfade Duration (Seconds)' => 'Crossfade Süresi (saniye)',

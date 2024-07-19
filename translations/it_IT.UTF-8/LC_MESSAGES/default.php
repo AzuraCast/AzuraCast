@@ -143,7 +143,7 @@
       'Create Account' => 'Crea Account',
       'Create and Continue' => 'Crea e continua',
       'Create Directory' => 'Crea cartella',
-      'Create New Key' => 'Crea Nuova Chiave',
+      'Create Another Key' => 'Crea Nuova Chiave',
       'Crossfade Duration (Seconds)' => 'Durata crossfade (secondi)',
       'Crossfade Method' => 'Metodo di dissolvenza incrociata',
       'Cue' => 'Segnale',

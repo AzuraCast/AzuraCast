@@ -1236,7 +1236,7 @@ msgid "Create Directory"
 msgstr "Створити каталог"
 
 #: src/components/Account/ApiKeyModal.vue:57
-msgid "Create New Key"
+msgid "Create Another Key"
 msgstr "Створити новий ключ"
 
 #: src/components/Stations/Playlists/ApplyToModal.vue:27

@@ -261,7 +261,7 @@
       'Create and Continue' => '생성하고 계속하기',
       'Create custom fields to store extra metadata about each media file uploaded to your station libraries.' => '스테이션 라이브러리에 업로드된 각 미디어 파일에 대한 추가 메타데이터를 저장하려면 사용자 지정 필드를 만드세요.',
       'Create Directory' => '디렉터리 생성',
-      'Create New Key' => '새 키 생성',
+      'Create Another Key' => '새 키 생성',
       'Create New Playlist for Each Folder' => '각 폴더에 대한 새 재생 목록 생성',
       'Create podcast episodes independent of your station\'s media collection.' => '스테이션의 미디어 컬렉션과 별개로 팟캐스트 에피소드를 만드세요.',
       'Create Station' => '스테이션 생성',

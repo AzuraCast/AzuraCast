@@ -279,7 +279,7 @@
       'Create and Continue' => 'Aanmaken en doorgaan',
       'Create custom fields to store extra metadata about each media file uploaded to your station libraries.' => 'Maak aangepaste velden om extra metadata op te slaan over elk mediabestand dat is geüpload naar uw station bibliotheken.',
       'Create Directory' => 'Maak map',
-      'Create New Key' => 'Nieuwe sleutel maken',
+      'Create Another Key' => 'Nieuwe sleutel maken',
       'Create New Playlist for Each Folder' => 'Nieuwe afspeellijst voor elke map aanmaken',
       'Create podcast episodes independent of your station\'s media collection.' => 'Maak podcast afleveringen onafhankelijk van de media collectie van je station aan.',
       'Create Station' => 'Creëer een nieuw radiostation',

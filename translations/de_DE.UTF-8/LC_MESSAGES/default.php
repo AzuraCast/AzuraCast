@@ -264,7 +264,7 @@
       'Create and Continue' => 'Erstellen und fortsetzen',
       'Create custom fields to store extra metadata about each media file uploaded to your station libraries.' => 'Erstelle benutzerdefinierte Felder, um zusätzliche Metadaten über jede Mediendatei zu speichern, die auf deine Sender hochgeladen wird.',
       'Create Directory' => 'Verzeichnis erstellen',
-      'Create New Key' => 'Neuen Schlüssel erstellen',
+      'Create Another Key' => 'Neuen Schlüssel erstellen',
       'Crossfade Duration (Seconds)' => 'Überblendungszeit (Sekunden)',
       'Crossfade Method' => 'Art der Überblendung',
       'Cue' => 'Warteschlange',

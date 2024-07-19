@@ -271,7 +271,7 @@
       'Create and Continue' => 'Δημιουργία και Συνέχεια',
       'Create custom fields to store extra metadata about each media file uploaded to your station libraries.' => 'Δημιουργήστε προσαρμοσμένα πεδία για να αποθηκεύσετε επιπλέον μεταδεδομένα σχετικά με κάθε αρχείο πολυμέσων που φορτώθηκε στις βιβλιοθήκες του σταθμού σας.',
       'Create Directory' => 'Δημιουργία καταλόγου',
-      'Create New Key' => 'Δημιουργία Νέου Κλειδιού',
+      'Create Another Key' => 'Δημιουργία Νέου Κλειδιού',
       'Create New Playlist for Each Folder' => 'Δημιουργία νέας λίστας αναπαραγωγής για κάθε φάκελο',
       'Create Station' => 'Δημιουργία Σταθμού',
       'Critical' => 'Κρίσιμο',

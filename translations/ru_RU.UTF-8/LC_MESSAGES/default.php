@@ -289,7 +289,7 @@
       'Create and Continue' => 'Создать и продолжить',
       'Create custom fields to store extra metadata about each media file uploaded to your station libraries.' => 'Создавайте настраиваемые поля для хранения дополнительных метаданных о каждом медиафайле, загруженном в библиотеку станции.',
       'Create Directory' => 'Создать папку',
-      'Create New Key' => 'Создать новый ключ',
+      'Create Another Key' => 'Создать новый ключ',
       'Create New Playlist for Each Folder' => 'Создать новый плейлист для каждой папки',
       'Create podcast episodes independent of your station\'s media collection.' => 'Создавайте эпизоды подкастов независимо от медиа-коллекции вашей радиостанции.',
       'Create Station' => 'Создать станцию',

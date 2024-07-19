@@ -54,7 +54,7 @@
                     :class="(v$.$invalid) ? 'btn-danger' : 'btn-primary'"
                     @click="doSubmit"
                 >
-                    {{ $gettext('Create New Key') }}
+                    {{ $gettext('Create Another Key') }}
                 </button>
             </slot>
         </template>

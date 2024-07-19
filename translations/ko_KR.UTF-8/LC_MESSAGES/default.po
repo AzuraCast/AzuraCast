@@ -1224,7 +1224,7 @@ msgid "Create Directory"
 msgstr "디렉터리 생성"
 
 #: src/components/Account/ApiKeyModal.vue:57
-msgid "Create New Key"
+msgid "Create Another Key"
 msgstr "새 키 생성"
 
 #: src/components/Stations/Playlists/ApplyToModal.vue:27

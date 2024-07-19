@@ -1229,7 +1229,7 @@ msgstr "إنشاء مجلد"
 
 #: vue/components/Account/ApiKeyModal.vue:45
 #: vue/components/Account/ApiKeyModal.vue:52
-msgid "Create New Key"
+msgid "Create Another Key"
 msgstr "إنشاء رمز جديد"
 
 #: vue/components/Stations/Playlists/ApplyToModal.vue:27

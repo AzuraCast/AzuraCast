@@ -1228,7 +1228,7 @@ msgid "Create Directory"
 msgstr "Dizin Oluştur"
 
 #: src/components/Account/ApiKeyModal.vue:57
-msgid "Create New Key"
+msgid "Create Another Key"
 msgstr "Yeni Anahtar Oluştur"
 
 #: src/components/Stations/Playlists/ApplyToModal.vue:27

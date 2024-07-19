@@ -179,7 +179,7 @@
       'Create and Continue' => 'Skapa och fortsätt',
       'Create custom fields to store extra metadata about each media file uploaded to your station libraries.' => 'Skapa anpassade fält för att lagra extra metadata om varje mediefil som laddas upp till dina stationsbibliotek.',
       'Create Directory' => 'Skapa katalog',
-      'Create New Key' => 'Skapa ny nyckel',
+      'Create Another Key' => 'Skapa ny nyckel',
       'Crossfade Duration (Seconds)' => 'Övertoning varaktighet (sekunder)',
       'Crossfade Method' => 'Övertoningsmetod',
       'Current Configuration File' => 'Nuvarande konfigurationsfil',

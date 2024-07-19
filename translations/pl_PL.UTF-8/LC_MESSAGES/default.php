@@ -285,7 +285,7 @@
       'Create and Continue' => 'Utwórz i kontynuuj',
       'Create custom fields to store extra metadata about each media file uploaded to your station libraries.' => 'Utwórz pola niestandardowe, aby przechowywać dodatkowe metadane o każdym pliku multimedialnym przesłanym do bibliotek stacji.',
       'Create Directory' => 'Utwórz katalog',
-      'Create New Key' => 'Utwórz nowy klucz',
+      'Create Another Key' => 'Utwórz nowy klucz',
       'Create New Playlist for Each Folder' => 'Utwórz nową playlistę dla każdego folderu',
       'Create podcast episodes independent of your station\'s media collection.' => 'Utwórz odcinki podcastu niezależne od kolekcji multimediów twojej stacji.',
       'Create Station' => 'Utwórz stację',

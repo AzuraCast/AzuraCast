@@ -1174,17 +1174,19 @@ final class ConfigWriter implements EventSubscriberInterface
                         [("is_live", "true")]
                     end
                 end
-                last_live_meta := [...m, ...updates]
+                last_live_meta := [...m, ...list.assoc.remove("title", updates)]
                 updates
             end
             live = metadata.map(insert_missing, live)
             
             live = insert_metadata(live)
             def insert_latest_live_metadata() =
+              log("Inserting last live meta: #{last_live_meta()}")
               live.insert_metadata(last_live_meta())
             end
             
             def transition_to_live(_, s) =
+              log("executing transition to live")
               insert_latest_live_metadata()
               s
             end

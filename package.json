@@ -23,7 +23,7 @@
     "@popperjs/core": "^2.11.8",
     "@vuelidate/core": "^2.0.0",
     "@vuelidate/validators": "^2.0.0",
-    "@vuepic/vue-datepicker": "^8",
+    "@vuepic/vue-datepicker": "^9",
     "@vueuse/core": "^10",
     "axios": "^1",
     "bootstrap": "^5.3.0",

@@ -1049,7 +1049,7 @@ final class ConfigWriter implements EventSubscriberInterface
                     end
                 end
 
-                radio = cross(minimum=0., duration={$crossDuration}, live_aware_crossfade, radio)
+                radio = cross(duration={$crossDuration}, live_aware_crossfade, radio)
                 LS
             );
         }

@@ -237,7 +237,10 @@ setup-release() {
 
   local AZURACAST_VERSION="${OLD_RELEASE_CHANNEL}"
 
-  if [[ $AZURACAST_VERSION == "latest" ]]; then
+  if [[ ! -z "${1}" ]]; then
+    echo "Setting release channel to the specific value: ${1}"
+    AZURACAST_VERSION="${1}"
+  elif [[ $AZURACAST_VERSION == "latest" ]]; then
     if ask "Your current release channel is 'Rolling Release'. Switch to 'Stable' release channel?" N; then
       AZURACAST_VERSION="stable"
     fi

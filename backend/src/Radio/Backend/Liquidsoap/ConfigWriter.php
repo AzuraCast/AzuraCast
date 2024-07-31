@@ -326,7 +326,7 @@ final class ConfigWriter implements EventSubscriberInterface
                 <<<LIQ
                 station_media_dir = "{$stationMediaDir}"
                 def azuracast_media_protocol(~rlog=_,~maxtime=_,arg) =
-                    ["#{station_media_dir}/#{arg}"]
+                    "#{station_media_dir}/#{arg}"
                 end
 
                 protocol.add(

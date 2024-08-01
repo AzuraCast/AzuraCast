@@ -1,6 +1,6 @@
 .git
 .github
 .run
-frontend/node_modules
-vendor
+/node_modules
+/vendor
 resources/*.mp3

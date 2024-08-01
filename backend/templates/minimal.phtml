@@ -1,0 +1,69 @@
+<?php
+/**
+ * @var League\Plates\Template\Template $this
+ * @var App\Auth $auth
+ * @var App\Acl $acl
+ * @var App\Http\Router $router
+ * @var App\Session\Flash $flash
+ * @var App\Customization $customization
+ * @var App\Version $version
+ * @var App\Http\ServerRequest $request
+ * @var App\Environment $environment
+ * @var App\View\GlobalSections $sections
+ */
+
+$title ??= null;
+$hide_footer ??= false;
+?>
+<!DOCTYPE html>
+<html lang="<?= $customization->getLocale()->getHtmlLang() ?>"
+      data-bs-theme="<?= $customization->getPublicTheme()?->value ?>">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title><?= $this->e($customization->getPageTitle($title)) ?></title>
+
+    <?= $this->fetch('partials/head') ?>
+
+    <?= $sections->get('head') ?>
+
+    <style>
+        <?=$customization->getCustomPublicCss() ?>
+    </style>
+
+    <?= $sections->get('station_head') ?>
+</head>
+
+<body class="page-minimal <?= $page_class ?? '' ?>">
+
+<?= $sections->get('bodyjs') ?>
+
+<script>
+    <?=$customization->getCustomPublicJs() ?>
+</script>
+
+<?= $sections->get('station_bodyjs') ?>
+
+<div id="page-wrapper">
+    <main id="main">
+        <?= $this->section('content') ?>
+    </main>
+
+    <?php
+    $hide_footer ??= false;
+    if (!$customization->hideProductName() && !$hide_footer): ?>
+        <footer id="footer" class="footer-alt" role="contentinfo" aria-label="<?= __('Footer') ?>">
+            <?= sprintf(
+                __('Powered by %s'),
+                '<a href="https://azuracast.com/" target="_blank">' . $environment->getAppName() . '</a>' . ' '
+            ) ?>
+        </footer>
+    <?php
+    endif; ?>
+</div>
+
+<?= $this->fetch('partials/toasts') ?>
+</body>
+</html>

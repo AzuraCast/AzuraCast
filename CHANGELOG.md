@@ -9,6 +9,51 @@ release channel, you can take advantage of these new features and fixes.
 
 ## Bug Fixes
 
+# AzuraCast 0.20.2 (Aug 1, 2024)
+
+## New Features/Changes
+
+- The streamer broadcasts list is now paginated and you can delete broadcasts in bulk.
+
+- A new setting in the "AutoDJ" tab of the station profile has been added: "Write Playlists to Liquidsoap". This
+  setting, enabled by default, controls whether non-essential (basically, fallback) playlists are defined in
+  Liquidsoap's configuration. Defining these playlists can give you more robust protection against AutoDJ failure, but
+  will greatly increase your initial CPU load if using ReplayGain or AutoCue. Most stations can safely disable this
+  feature to see a significant bump in performance when restarting their stations.
+
+- We now expose a Prometheus metrics endpoint at `GET /api/prometheus`. Prometheus is a popular tool for consuming
+  time-series data; metrics provided by AzuraCast include CPU load, disk and memory usage, and total and unique
+  listeners per-stream and per-station.
+
+## Code Quality/Technical Changes
+
+- We have rewritten the app startup process when the container is started or restarted. The new process is managed by
+  a "launcher" program that waits for core services to be available before starting others. This should dramatically cut
+  down on the number of HTTP 502 "Bad Gateway" errors seen in both web browsers and application logs during startup.
+
+- We continue to work with Moonbase59, maintainer of the AutoCue library we use, to update to the latest version as it
+  is being very rapidly iterated upon.
+
+- We now store a much larger amount of extra metadata associated with each media row; rather than create individual
+  database migrations for each update, we've moved this data into an `extra_metadata` field. If you're calling
+  media-related APIs, update your code accordingly. Currently, this field only includes metadata prefixed with `liq_`
+  or `replaygain_`, used by Liquidsoap, Replaygain, and AutoCue to significantly improve performance.
+
+- When using the Visual Cue Editor, if our script can't generate a waveform for a media file and the frontend javascript
+  library does it instead, we'll cache that generated waveform so future requests load instantly.
+
+- The application code has been restructured so that `package.json` is at the project root (like `composer.json`),
+  backend PHP application code is located in the `backend` folder, and frontend Vue/JS/SCSS code is located in
+  the `frontend` folder. This should not impact normal operations or plugins.
+
+- A minor change has been made to how the CSS styles the "Powered by AzuraCast" footer on public and private pages; the
+  new setup uses Flexbox to achieve a "sticky" footer without complicated CSS rules. If you're using custom CSS, you may
+  need to update your code to reflect this change.
+
+## Bug Fixes
+
+- API calls will always prefer to return JSON, even if not specified by the requesting client.
+
 ---
 
 # AzuraCast 0.20.1 (Jun 2, 2024)

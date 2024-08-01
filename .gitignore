@@ -13,7 +13,7 @@ tmp/cache/*---*
 .gitinfo
 
 # Local development files.
-/config/routes.dev.php
+/backend/config/routes.dev.php
 /env.ini
 /app/env.ini
 /app/.env

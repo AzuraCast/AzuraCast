@@ -50,8 +50,7 @@ and open-source software, and pull requests are always welcome.
 ## Need Help?
 
 If you need help with AzuraCast, the first place you should visit is
-our [Support page](https://www.azuracast.com/docs/help/troubleshooting/)
-, which features solutions to a number of commonly encountered issues and questions, as well as instructions on how to
+our [Support page](https://www.azuracast.com/docs/help/troubleshooting/), which features solutions to a number of commonly encountered issues and questions, as well as instructions on how to
 check your server's log files for more details. If you do need our help via GitHub, supplying these logs is absolutely
 essential in helping us diagnose and resolve your issue.
 

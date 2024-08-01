@@ -10,10 +10,10 @@ parameters:
         objectManagerLoader: util/phpstan-doctrine.php
 
     paths:
-        - bin
-        - config
-        - src
-        - templates
+        - backend/bin
+        - backend/config
+        - backend/src
+        - backend/templates
         - web
 
     fileExtensions:
@@ -21,7 +21,7 @@ parameters:
         - php
 
     excludePaths:
-        - config/routes.dev.php
+        - backend/config/routes.dev.php
 
     bootstrapFiles:
         - ./util/phpstan.php

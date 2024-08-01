@@ -32,8 +32,7 @@ build: # Rebuild all containers and restart
 
 post-update:
 	$(MAKE) down
-	docker-compose run --rm web gosu azuracast composer install
-	docker-compose run --rm web azuracast_cli azuracast:setup --update
+	docker-compose run --rm web azuracast_dev_install --update
 	$(MAKE) up
 
 update: # Update everything (i.e. after a branch update)

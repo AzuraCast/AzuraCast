@@ -8,9 +8,9 @@ RUN apt-get update \
 
 RUN go install github.com/jwilder/dockerize@v0.6.1
 
-RUN go install github.com/aptible/supercronic@v0.2.28
+RUN go install github.com/aptible/supercronic@v0.2.30
 
-RUN go install github.com/centrifugal/centrifugo/v5@v5.4.0
+RUN go install github.com/centrifugal/centrifugo/v5@v5.4.3
 
 #
 # MariaDB dependencies build step
@@ -162,12 +162,8 @@ COPY --chown=azuracast:azuracast . .
 RUN composer install --no-ansi --no-interaction \
     && composer clear-cache
 
-WORKDIR /var/azuracast/www/frontend
-
 RUN npm ci --include=dev \
     && npm cache clean --force
-
-WORKDIR /var/azuracast/www
 
 USER root
 

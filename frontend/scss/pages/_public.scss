@@ -1,0 +1,80 @@
+@use "sass:math";
+
+body.page-minimal {
+  background: var(--bs-body-bg) var(--public-page-bg);
+  background-size: cover;
+  background-attachment: fixed;
+  background-position: center center;
+
+  footer {
+    text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black, 0 0 4px #000;
+  }
+
+  .public-page {
+    .card {
+      margin: auto;
+      width: 500px;
+
+      .card-body {
+        position: relative;
+
+        .card-title {
+          font-weight: normal;
+        }
+      }
+
+      @include media-breakpoint-only('xs') {
+        width: 100%;
+        margin-left: 15px;
+        margin-right: 15px;
+      }
+    }
+  }
+
+  .might-overflow {
+    @include might-overflow();
+  }
+
+  &:not(.embed) {
+    #main {
+      display: flex;
+      align-items: stretch;
+      justify-content: stretch;
+      padding: 1.5rem;
+    }
+
+    #footer {
+      padding-top: 0.5rem;
+    }
+
+    .public-page {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .full-height-wrapper {
+      display: contents;
+
+      .card {
+        flex: 1;
+
+        .card-body {
+          flex: 0 1 auto;
+        }
+
+        // Only make the datatable scrollable if it's the only element in the card.
+        & > .datatable-wrapper {
+          .datatable-main {
+            overflow-y: auto;
+          }
+        }
+
+        & > .full-height-scrollable {
+          overflow-y: auto;
+        }
+      }
+    }
+  }
+}

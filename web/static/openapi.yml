@@ -5,7 +5,7 @@ info:
   license:
     name: 'Apache 2.0'
     url: 'https://www.apache.org/licenses/LICENSE-2.0.html'
-  version: 0.20.1
+  version: 0.20.2
 servers:
   -
     url: 'https://demo.azuracast.com/api'
@@ -994,7 +994,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/StationMedia'
+                  $ref: '#/components/schemas/Api_StationMedia'
         '403':
           $ref: '#/components/responses/AccessDenied'
         '500':
@@ -1021,7 +1021,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/StationMedia'
+                $ref: '#/components/schemas/Api_StationMedia'
         '403':
           $ref: '#/components/responses/AccessDenied'
         '500':
@@ -1052,7 +1052,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/StationMedia'
+                $ref: '#/components/schemas/Api_StationMedia'
         '403':
           $ref: '#/components/responses/AccessDenied'
         '404':
@@ -1082,7 +1082,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/StationMedia'
+              $ref: '#/components/schemas/Api_StationMedia'
       responses:
         '200':
           $ref: '#/components/responses/Success'
@@ -1135,14 +1135,14 @@ paths:
         -
           name: start
           in: query
-          description: 'The start date for records, in YYYY-MM-DD format.'
+          description: 'The start date for records, in PHP-supported date/time format. (https://www.php.net/manual/en/datetime.formats.php)'
           required: false
           schema:
             type: string
         -
           name: end
           in: query
-          description: 'The end date for records, in YYYY-MM-DD format.'
+          description: 'The end date for records, in PHP-supported date/time format. (https://www.php.net/manual/en/datetime.formats.php)'
           required: false
           schema:
             type: string
@@ -3559,6 +3559,43 @@ components:
           type: boolean
           example: false
       type: object
+    Api_FileList:
+      type: object
+      allOf:
+        -
+          $ref: '#/components/schemas/HasLinks'
+        -
+          properties:
+            path:
+              type: string
+            path_short:
+              type: string
+            text:
+              type: string
+            type:
+              $ref: '#/components/schemas/FileTypes'
+            timestamp:
+              type: integer
+            size:
+              type: integer
+              nullable: true
+            media:
+              nullable: true
+              oneOf:
+                -
+                  $ref: '#/components/schemas/Api_StationMedia'
+            dir:
+              nullable: true
+              oneOf:
+                -
+                  $ref: '#/components/schemas/Api_FileListDir'
+          type: object
+    Api_FileListDir:
+      properties:
+        playlists:
+          type: array
+          items: {  }
+      type: object
     Api_Listener:
       properties:
         ip:
@@ -4075,54 +4112,87 @@ components:
           nullable: true
       type: object
     Api_Song:
-      properties:
-        id:
-          description: "The song's 32-character unique identifier hash"
-          type: string
-          example: 9f33bbc912c19603e51be8e0987d076b
-        text:
-          description: 'The song title, usually "Artist - Title"'
-          type: string
-          example: 'Chet Porter - Aluko River'
-        artist:
-          description: 'The song artist.'
-          type: string
-          example: 'Chet Porter'
-          nullable: true
-        title:
-          description: 'The song title.'
-          type: string
-          example: 'Aluko River'
-          nullable: true
-        album:
-          description: 'The song album.'
-          type: string
-          example: 'Moving Castle'
-          nullable: true
-        genre:
-          description: 'The song genre.'
-          type: string
-          example: Rock
-          nullable: true
-        isrc:
-          description: 'The International Standard Recording Code (ISRC) of the file.'
-          type: string
-          example: US28E1600021
-          nullable: true
-        lyrics:
-          description: 'Lyrics to the song.'
-          type: string
-          example: ''
-          nullable: true
-        art:
-          description: 'URL to the album artwork (if available).'
-          example: 'https://picsum.photos/1200/1200'
-        custom_fields:
-          type: array
-          items:
-            type: string
-            example: custom_field_value
       type: object
+      allOf:
+        -
+          $ref: '#/components/schemas/Api_HasSongFields'
+        -
+          properties:
+            id:
+              description: "The song's 32-character unique identifier hash"
+              type: string
+              example: 9f33bbc912c19603e51be8e0987d076b
+            art:
+              description: 'URL to the album artwork (if available).'
+              example: 'https://picsum.photos/1200/1200'
+            custom_fields:
+              type: array
+              items:
+                type: string
+                example: custom_field_value
+          type: object
+    Api_StationMedia:
+      type: object
+      allOf:
+        -
+          $ref: '#/components/schemas/Api_HasSongFields'
+        -
+          $ref: '#/components/schemas/HasLinks'
+        -
+          properties:
+            id:
+              description: "The media's identifier."
+              type: integer
+              example: 1
+            unique_id:
+              description: 'A unique identifier associated with this record.'
+              type: string
+              example: 69b536afc7ebbf16457b8645
+            song_id:
+              description: "The media file's 32-character unique song identifier hash"
+              type: string
+              example: 9f33bbc912c19603e51be8e0987d076b
+            art:
+              description: 'URL to the album art.'
+              type: string
+              example: 'https://picsum.photos/1200/1200'
+            path:
+              description: 'The relative path of the media file.'
+              type: string
+              example: test.mp3
+            mtime:
+              description: 'The UNIX timestamp when the database was last modified.'
+              type: integer
+              example: 1609480800
+            uploaded_at:
+              description: 'The UNIX timestamp when the item was first imported into the database.'
+              type: integer
+              example: 1609480800
+            art_updated_at:
+              description: 'The latest time (UNIX timestamp) when album art was updated.'
+              type: integer
+              example: 1609480800
+            length:
+              description: 'The song duration in seconds.'
+              type: number
+              format: float
+              example: 240
+            length_text:
+              description: 'The formatted song duration (in mm:ss format)'
+              type: string
+              example: '4:00'
+            custom_fields:
+              type: array
+              items:
+                type: string
+                example: custom_field_value
+            extra_metadata:
+              type: array
+              items: {  }
+            playlists:
+              type: array
+              items: {  }
+          type: object
     Api_StationOnDemand:
       properties:
         track_id:
@@ -4384,10 +4454,46 @@ components:
     HasLinks:
       properties:
         links:
-          type: array
-          items:
+          type: object
+          additionalProperties:
             type: string
-            example: 'http://localhost/api/stations/1/queue/1'
+      type: object
+    Api_HasSongFields:
+      properties:
+        text:
+          description: 'The song title, usually "Artist - Title"'
+          type: string
+          example: 'Chet Porter - Aluko River'
+        artist:
+          description: 'The song artist.'
+          type: string
+          example: 'Chet Porter'
+          nullable: true
+        title:
+          description: 'The song title.'
+          type: string
+          example: 'Aluko River'
+          nullable: true
+        album:
+          description: 'The song album.'
+          type: string
+          example: 'Moving Castle'
+          nullable: true
+        genre:
+          description: 'The song genre.'
+          type: string
+          example: Rock
+          nullable: true
+        isrc:
+          description: 'The International Standard Recording Code (ISRC) of the file.'
+          type: string
+          example: US28E1600021
+          nullable: true
+        lyrics:
+          description: 'Lyrics to the song.'
+          type: string
+          example: ''
+          nullable: true
       type: object
     Api_UploadFile:
       properties:
@@ -4417,6 +4523,14 @@ components:
               type: string
               nullable: true
           type: object
+    FileTypes:
+      type: string
+      enum:
+        - directory
+        - media
+        - cover_art
+        - unprocessable_file
+        - other
     Relay:
       type: object
       allOf:
@@ -4727,15 +4841,13 @@ components:
               example: icecast
             frontend_config:
               description: 'An array containing station-specific frontend configuration'
-              type: array
-              items: {  }
+              type: object
             backend_type:
               description: 'The backend adapter (liquidsoap,etc)'
               example: liquidsoap
             backend_config:
               description: 'An array containing station-specific backend configuration'
-              type: array
-              items: {  }
+              type: object
             description:
               type: string
               example: 'A sample radio station.'
@@ -4803,8 +4915,7 @@ components:
               nullable: true
             branding_config:
               description: 'An array containing station-specific branding configuration'
-              type: array
-              items: {  }
+              type: object
           type: object
     StationHlsStream:
       type: object
@@ -4823,98 +4934,6 @@ components:
               type: integer
               example: 128
               nullable: true
-          type: object
-    StationMedia:
-      type: object
-      allOf:
-        -
-          $ref: '#/components/schemas/HasAutoIncrementId'
-        -
-          $ref: '#/components/schemas/HasSongFields'
-        -
-          properties:
-            unique_id:
-              description: 'A unique identifier associated with this record.'
-              type: string
-              example: 69b536afc7ebbf16457b8645
-              nullable: true
-            album:
-              description: "The name of the media file's album."
-              type: string
-              example: 'Test Album'
-              nullable: true
-            genre:
-              description: 'The genre of the media file.'
-              type: string
-              example: Rock
-              nullable: true
-            lyrics:
-              description: 'Full lyrics of the track, if available.'
-              type: string
-              example: '...Never gonna give you up...'
-              nullable: true
-            isrc:
-              description: 'The track ISRC (International Standard Recording Code), used for licensing purposes.'
-              type: string
-              example: GBARL0600786
-              nullable: true
-            length:
-              description: 'The song duration in seconds.'
-              type: string
-              example: 240
-              nullable: true
-            length_text:
-              description: 'The formatted song duration (in mm:ss format)'
-              type: string
-              example: '4:00'
-              nullable: true
-            path:
-              description: 'The relative path of the media file.'
-              type: string
-              example: test.mp3
-            mtime:
-              description: 'The UNIX timestamp when the database was last modified.'
-              type: integer
-              example: 1609480800
-              nullable: true
-            amplify:
-              description: 'The amount of amplification (in dB) to be applied to the radio source (liq_amplify)'
-              type: string
-              example: -14
-              nullable: true
-            fade_start_next:
-              description: 'The length of time (in seconds) from the start of the track before the next song starts in the fade (liq_cross_start_next)'
-              type: string
-              example: 2
-              nullable: true
-            fade_in:
-              description: 'The length of time (in seconds) to fade in the next track (liq_fade_in)'
-              type: string
-              example: 3
-              nullable: true
-            fade_out:
-              description: 'The length of time (in seconds) to fade out the previous track (liq_fade_out)'
-              type: string
-              example: 3
-              nullable: true
-            cue_in:
-              description: 'The length of time (in seconds) from the start of the track to start playing (liq_cue_in)'
-              type: string
-              example: 30
-              nullable: true
-            cue_out:
-              description: 'The length of time (in seconds) from the CUE-IN of the track to stop playing (liq_cue_out)'
-              type: string
-              example: 30
-              nullable: true
-            art_updated_at:
-              description: 'The latest time (UNIX timestamp) when album art was updated.'
-              type: integer
-              example: 1609480800
-            playlists:
-              description: StationPlaylistMedia>
-              type: array
-              items: {  }
           type: object
     StationMount:
       type: object
@@ -5268,8 +5287,6 @@ tags:
   -
     name: 'Stations: Service Control'
   -
-    name: 'Stations: Automation'
-  -
     name: 'Stations: History'
   -
     name: 'Stations: HLS Streams'
@@ -5311,6 +5328,9 @@ tags:
     name: 'Administration: Storage Locations'
   -
     name: Miscellaneous
+  -
+    name: 'Administration: CPU stats'
+    description: 'Administration: CPU stats'
 externalDocs:
   description: 'AzuraCast on GitHub'
   url: 'https://github.com/AzuraCast/AzuraCast'

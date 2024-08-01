@@ -1,0 +1,130 @@
+.offcanvas.navdrawer {
+  width: $navdrawer-width;
+  box-shadow: 0 0 4px 0 rgba(0, 0, 0, .14), 0 3px 4px 0 rgba(0, 0, 0, .12), 0 1px 5px 0 rgba(0, 0, 0, .2);
+}
+
+@include media-breakpoint-up(lg) {
+  #page-wrapper.has-sidebar {
+    margin-left: $navdrawer-width;
+  }
+
+  .offcanvas-backdrop {
+    display: none;
+  }
+
+  .offcanvas.navdrawer {
+    transform: none;
+    visibility: visible;
+    top: $header-nav-height;
+    z-index: auto;
+  }
+}
+
+// Content
+.navdrawer-content {
+  width: 100%;
+}
+
+// Misc
+.navdrawer-body {
+  margin-bottom: $navdrawer-inner-spacer-y;
+  padding-right: $navdrawer-inner-spacer-x;
+  padding-left: $navdrawer-inner-spacer-x;
+}
+
+.navdrawer-header {
+  display: block;
+  border-bottom: 1px solid rgba(0, 0, 0, .2);
+  padding: $navdrawer-inner-spacer-y $navdrawer-inner-spacer-x;
+
+  background-color: var(--bs-secondary-bg);
+
+  .navbar-brand {
+    font-size: 1.25rem;
+
+    @include might-overflow();
+  }
+}
+
+.navdrawer-subheader {
+  @include text-truncate;
+
+  display: block;
+  height: $navdrawer-subheader-height;
+  line-height: 1;
+  margin-top: 0;
+  margin-bottom: 0;
+  padding: ($navdrawer-subheader-height * 0.5) $navdrawer-inner-spacer-x;
+
+  color: var(--bs-secondary-color);
+
+  .navdrawer-divider + & {
+    margin-top: ($navdrawer-inner-spacer-y * -1);
+  }
+}
+
+.navdrawer-alert {
+  display: block;
+  line-height: 1;
+  margin: 0;
+
+  a {
+    display: block;
+    color: inherit;
+    padding: $navdrawer-inner-spacer-x;
+  }
+}
+
+// Nav
+.navdrawer-nav {
+  display: flex;
+  flex-direction: column;
+  list-style: none;
+  margin-top: $navdrawer-inner-spacer-y;
+  margin-bottom: $navdrawer-inner-spacer-y;
+  padding-left: 0;
+
+  .navdrawer-header + &,
+  .navdrawer-subheader + & {
+    margin-top: 0;
+  }
+
+  .nav-link {
+    @include text-truncate;
+
+    display: inline-flex;
+    align-items: center;
+    width: 100%;
+
+    font-size: 1rem;
+    font-weight: 500;
+
+    line-height: 1;
+    padding: .75rem 1rem;
+
+    color: var(--bs-body-color);
+
+    & > .navdrawer-nav-icon {
+      font-size: 1.5rem;
+      margin-right: .75rem;
+    }
+
+    &:focus {
+      outline: 0;
+    }
+
+    &.active,
+    &:active {
+      color: var(--bs-primary);
+    }
+
+    &:hover {
+      background-color: var(--bs-secondary-bg);
+    }
+
+    &.disabled {
+      background-color: transparent;
+      color: var(--bs-nav-link-disabled-color);
+    }
+  }
+}

@@ -5,4 +5,4 @@ if [ `whoami` != 'azuracast' ]; then
 fi
 
 cd /var/azuracast/www
-exec php bin/console "$@"
+exec php backend/bin/console "$@"

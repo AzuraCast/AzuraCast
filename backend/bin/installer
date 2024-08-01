@@ -1,0 +1,24 @@
+#!/usr/bin/env php
+<?php
+
+declare(strict_types=1);
+
+error_reporting(E_ALL & ~E_NOTICE & ~E_STRICT);
+ini_set('display_errors', '1');
+
+$autoloader = require dirname(__DIR__, 2) . '/vendor/autoload.php';
+
+$environment = App\AppFactory::buildEnvironment();
+
+$console = new Symfony\Component\Console\Application(
+        'AzuraCast installer',
+        App\Version::STABLE_VERSION
+);
+
+$installCommand = new App\Installer\Command\InstallCommand();
+$installCommand->setEnvironment($environment);
+$console->add($installCommand);
+
+$console->setDefaultCommand('install');
+
+$console->run();

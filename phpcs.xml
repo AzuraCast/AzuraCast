@@ -2,8 +2,8 @@
 <ruleset name="AzuraCast">
     <description>The AzuraCast PHP coding standard.</description>
 
-    <file>config</file>
-    <file>src</file>
+    <file>backend/config</file>
+    <file>backend/src</file>
     <file>web</file>
     <file>tests/Functional</file>
     <file>tests/Unit</file>

@@ -63,6 +63,7 @@
     "php-di/php-di": "^7.0.1",
     "php-ffmpeg/php-ffmpeg": "^1.2",
     "phpseclib/phpseclib": "^3.0",
+    "promphp/prometheus_client_php": "^2.10",
     "psr/simple-cache": "^3.0",
     "ramsey/uuid": "^4.0",
     "rlanvin/php-ip": "dev-master",
@@ -91,7 +92,7 @@
     "vlucas/phpdotenv": "^5.3",
     "voku/portable-utf8": "^6.0",
     "wikimedia/composer-merge-plugin": "dev-master",
-    "zircote/swagger-php": "dev-master"
+    "zircote/swagger-php": "^4.9.2"
   },
   "replace": {
     "symfony/polyfill-iconv": "1.99",
@@ -117,6 +118,7 @@
     "filp/whoops": "^2",
     "maxmind-db/reader": "^1.11",
     "mockery/mockery": "^1.0",
+    "nette/php-generator": "^4.1",
     "php-parallel-lint/php-console-highlighter": "^1",
     "php-parallel-lint/php-parallel-lint": "^1.3",
     "phpstan/phpstan": "^1",
@@ -158,17 +160,17 @@
   },
   "autoload": {
     "psr-4": {
-      "App\\": "src"
+      "App\\": "backend/src"
     }
   },
   "minimum-stability": "dev",
   "prefer-stable": true,
   "bin": [
-    "bin/console"
+    "backend/bin/console"
   ],
   "scripts": {
     "ci-import-locales": [
-      "bin/console locale:import"
+      "backend/bin/console locale:import"
     ],
     "cleanup-and-test": [
       "@phpcbf",

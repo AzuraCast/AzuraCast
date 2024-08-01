@@ -151,7 +151,7 @@ final class NewVersionCommand extends CommandAbstract
 
         foreach (explode("\n", $changelog) as $changelogLine) {
             // Insert new version before first subheading.
-            if (!$hasNewHeader && str_starts_with('##', $changelogLine)) {
+            if (!$hasNewHeader && str_starts_with($changelogLine, '##')) {
                 $newChangelogLines[] = '## New Features/Changes';
                 $newChangelogLines[] = '';
                 $newChangelogLines[] = '## Code Quality/Technical Changes';
@@ -159,6 +159,7 @@ final class NewVersionCommand extends CommandAbstract
                 $newChangelogLines[] = '## Bug Fixes';
                 $newChangelogLines[] = '';
                 $newChangelogLines[] = '# AzuraCast ' . $version . ' (' . date('M j, Y') . ')';
+                $newChangelogLines[] = '';
 
                 $hasNewHeader = true;
             }

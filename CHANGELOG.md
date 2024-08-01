@@ -9,6 +9,8 @@ release channel, you can take advantage of these new features and fixes.
 
 ## Bug Fixes
 
+---
+
 # AzuraCast 0.20.2 (Aug 1, 2024)
 
 ## New Features/Changes

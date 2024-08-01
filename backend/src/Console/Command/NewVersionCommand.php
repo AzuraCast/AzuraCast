@@ -158,6 +158,8 @@ final class NewVersionCommand extends CommandAbstract
                 $newChangelogLines[] = '';
                 $newChangelogLines[] = '## Bug Fixes';
                 $newChangelogLines[] = '';
+                $newChangelogLines[] = '---';
+                $newChangelogLines[] = '';
                 $newChangelogLines[] = '# AzuraCast ' . $version . ' (' . date('M j, Y') . ')';
                 $newChangelogLines[] = '';
 

@@ -49,7 +49,7 @@ final class BaseUrlCheck
 
             $notification = new Notification();
             $notification->title = sprintf(
-                __('Your "Base URL" setting (%s) does not match the URL you are currently using (%s).'),
+                __('Your "Base URL" setting (<a href="%s">%s</a>) does not match the URL you are currently using (%s).'),
                 (string)$baseUriWithoutRequest,
                 (string)$baseUriWithRequest
             );

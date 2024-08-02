@@ -91,6 +91,14 @@
             </template>
             <template #description>
                 {{ $gettext('Used for "Forgot Password" functionality, web hooks and other functions.') }}
+                <br>
+                {{ $gettext('Mailer errors are logged at the Queue Worker Log in System Logs.') }}
+                <a
+                    href="/admin/logs"
+                    target="_blank"
+                >
+                    {{ $gettext('System Logs') }}
+                </a>
             </template>
 
             <div class="row g-3">

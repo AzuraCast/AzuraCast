@@ -5,7 +5,7 @@ info:
   license:
     name: 'Apache 2.0'
     url: 'https://www.apache.org/licenses/LICENSE-2.0.html'
-  version: 0.20.1
+  version: 0.20.2
 servers:
   -
     url: 'https://demo.azuracast.com/api'
@@ -4164,6 +4164,10 @@ components:
               description: 'The UNIX timestamp when the database was last modified.'
               type: integer
               example: 1609480800
+            uploaded_at:
+              description: 'The UNIX timestamp when the item was first imported into the database.'
+              type: integer
+              example: 1609480800
             art_updated_at:
               description: 'The latest time (UNIX timestamp) when album art was updated.'
               type: integer
@@ -4837,15 +4841,13 @@ components:
               example: icecast
             frontend_config:
               description: 'An array containing station-specific frontend configuration'
-              type: array
-              items: {  }
+              type: object
             backend_type:
               description: 'The backend adapter (liquidsoap,etc)'
               example: liquidsoap
             backend_config:
               description: 'An array containing station-specific backend configuration'
-              type: array
-              items: {  }
+              type: object
             description:
               type: string
               example: 'A sample radio station.'
@@ -4913,8 +4915,7 @@ components:
               nullable: true
             branding_config:
               description: 'An array containing station-specific branding configuration'
-              type: array
-              items: {  }
+              type: object
           type: object
     StationHlsStream:
       type: object
@@ -5286,8 +5287,6 @@ tags:
   -
     name: 'Stations: Service Control'
   -
-    name: 'Stations: Automation'
-  -
     name: 'Stations: History'
   -
     name: 'Stations: HLS Streams'
@@ -5329,6 +5328,9 @@ tags:
     name: 'Administration: Storage Locations'
   -
     name: Miscellaneous
+  -
+    name: 'Administration: CPU stats'
+    description: 'Administration: CPU stats'
 externalDocs:
   description: 'AzuraCast on GitHub'
   url: 'https://github.com/AzuraCast/AzuraCast'

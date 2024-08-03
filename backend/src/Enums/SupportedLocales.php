@@ -41,7 +41,7 @@ enum SupportedLocales: string
             self::Dutch => 'Nederlands',
             self::French => 'Français',
             self::German => 'Deutsch',
-            self::Greek => 'ελληνικά',
+            self::Greek => 'Ελληνικά',
             self::Italian => 'Italiano',
             self::Japanese => '日本語',
             self::Korean => '한국어',

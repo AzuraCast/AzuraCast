@@ -9,7 +9,7 @@ apt-get update
 # Install common scripts
 cp -rT /bd_build/dev/scripts/ /usr/local/bin
 
-# cp -rT /bd_build/dev/startup_scripts/. /etc/my_init.d/
+cp -rT /bd_build/dev/startup_scripts/. /etc/my_init.d/
 
 # cp -rT /bd_build/dev/service.minimal/. /etc/supervisor/minimal.conf.d/
 

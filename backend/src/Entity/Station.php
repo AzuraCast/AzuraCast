@@ -92,8 +92,7 @@ class Station implements Stringable, IdentifiableEntityInterface
     #[
         OA\Property(
             description: "An array containing station-specific frontend configuration",
-            type: "array",
-            items: new OA\Items()
+            type: "object"
         ),
         ORM\Column(type: 'json', nullable: true),
         Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])
@@ -116,8 +115,7 @@ class Station implements Stringable, IdentifiableEntityInterface
     #[
         OA\Property(
             description: "An array containing station-specific backend configuration",
-            type: "array",
-            items: new OA\Items()
+            type: "object"
         ),
         ORM\Column(type: 'json', nullable: true),
         Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])
@@ -287,8 +285,7 @@ class Station implements Stringable, IdentifiableEntityInterface
     #[
         OA\Property(
             description: "An array containing station-specific branding configuration",
-            type: "array",
-            items: new OA\Items()
+            type: "object"
         ),
         ORM\Column(type: 'json', nullable: true),
         Serializer\Groups([EntityGroupsInterface::GROUP_GENERAL, EntityGroupsInterface::GROUP_ALL])

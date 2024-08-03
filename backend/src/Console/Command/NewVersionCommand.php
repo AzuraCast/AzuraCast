@@ -56,6 +56,10 @@ final class NewVersionCommand extends CommandAbstract
 
         $this->addAttributeToLatestMigration($io, $version);
 
+        $io->section('Update changelog.');
+
+        $this->updateChangelog($io, $version);
+
         $io->success(
             'New version tagged successfully! Merge this branch with "stable", then push a new lightweight tag onto ' .
             'the "stable" branch. Remember to switch back to the "main" branch for development!'
@@ -132,5 +136,39 @@ final class NewVersionCommand extends CommandAbstract
         }
 
         return $latestMigration;
+    }
+
+    private function updateChangelog(SymfonyStyle $io, string $version): void
+    {
+        $changelogPath = $this->environment->getBaseDirectory() . '/CHANGELOG.md';
+
+        $fsUtils = new Filesystem();
+
+        $changelog = $fsUtils->readFile($changelogPath);
+
+        $hasNewHeader = false;
+        $newChangelogLines = [];
+
+        foreach (explode("\n", $changelog) as $changelogLine) {
+            // Insert new version before first subheading.
+            if (!$hasNewHeader && str_starts_with($changelogLine, '##')) {
+                $newChangelogLines[] = '## New Features/Changes';
+                $newChangelogLines[] = '';
+                $newChangelogLines[] = '## Code Quality/Technical Changes';
+                $newChangelogLines[] = '';
+                $newChangelogLines[] = '## Bug Fixes';
+                $newChangelogLines[] = '';
+                $newChangelogLines[] = '---';
+                $newChangelogLines[] = '';
+                $newChangelogLines[] = '# AzuraCast ' . $version . ' (' . date('M j, Y') . ')';
+                $newChangelogLines[] = '';
+
+                $hasNewHeader = true;
+            }
+
+            $newChangelogLines[] = $changelogLine;
+        }
+
+        $fsUtils->dumpFile($changelogPath, implode("\n", $newChangelogLines));
     }
 }

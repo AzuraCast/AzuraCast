@@ -2,12 +2,6 @@
 
 echo "AzuraCast Dev Install"
 
-# Set up permissions
-cd /var/azuracast/www
-
-chown -R azuracast:azuracast .
-chmod 777 ./vendor/ ./node_modules/ ./web/static/
-
 azuracast_install "$@"
 
 gosu azuracast npm ci --include=dev

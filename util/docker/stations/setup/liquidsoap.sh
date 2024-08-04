@@ -19,7 +19,7 @@ if [[ "$(uname -m)" = "aarch64" ]]; then
     ARCHITECTURE=arm64
 fi
 
-wget -O /tmp/liquidsoap.deb "https://github.com/savonet/liquidsoap-release-assets/releases/download/rolling-release-v2.3.x/liquidsoap-10453cf_2.3.0-debian-bookworm-1_${ARCHITECTURE}.deb"
+wget -O /tmp/liquidsoap.deb "https://github.com/savonet/liquidsoap-release-assets/releases/download/rolling-release-v2.3.x/liquidsoap-09daaf1_2.3.0-debian-bookworm-1_${ARCHITECTURE}.deb"
 # wget -O /tmp/liquidsoap.deb "https://github.com/savonet/liquidsoap/releases/download/v2.2.5/liquidsoap_2.2.5-debian-bookworm-1_${ARCHITECTURE}.deb"
 
 dpkg -i /tmp/liquidsoap.deb

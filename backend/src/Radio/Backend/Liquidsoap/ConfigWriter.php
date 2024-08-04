@@ -326,7 +326,7 @@ final class ConfigWriter implements EventSubscriberInterface
                 <<<LIQ
                 station_media_dir = "{$stationMediaDir}"
                 def azuracast_media_protocol(~rlog=_,~maxtime=_,arg) =
-                    ["#{station_media_dir}/#{arg}"]
+                    "#{station_media_dir}/#{arg}"
                 end
 
                 protocol.add(
@@ -1049,7 +1049,7 @@ final class ConfigWriter implements EventSubscriberInterface
                     end
                 end
 
-                radio = cross(minimum=0., duration={$crossDuration}, live_aware_crossfade, radio)
+                radio = cross(duration={$crossDuration}, live_aware_crossfade, radio)
                 LS
             );
         }

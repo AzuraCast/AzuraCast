@@ -5,6 +5,16 @@ release channel, you can take advantage of these new features and fixes.
 
 ## New Features/Changes
 
+## Code Quality/Technical Changes
+
+## Bug Fixes
+
+---
+
+# AzuraCast 0.20.2 (Aug 1, 2024)
+
+## New Features/Changes
+
 - The streamer broadcasts list is now paginated and you can delete broadcasts in bulk.
 
 - A new setting in the "AutoDJ" tab of the station profile has been added: "Write Playlists to Liquidsoap". This

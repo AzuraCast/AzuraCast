@@ -74,7 +74,6 @@ We frequently post to social media any time there are significant updates to our
 should be aware of, or upcoming changes to third-party software. You can get these updates in a more timely fashion by
 following our accounts:
 
-- On Twitter at [@AzuraCast](https://twitter.com/azuracast), or
 - On Mastodon at [@AzuraCast@fosstodon.org](https://fosstodon.org/@AzuraCast)
 
 If you are an AzuraCast user, station owner, developer or other contributor, you can also join our Discord community,

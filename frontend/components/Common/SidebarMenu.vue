@@ -15,7 +15,7 @@
                     class="navdrawer-nav-icon"
                     :icon="category.icon"
                 />
-                {{ category.label }}
+                <span class="might-overflow">{{ category.label }}</span>
             </router-link>
             <a
                 v-else
@@ -27,7 +27,7 @@
                     class="navdrawer-nav-icon"
                     :icon="category.icon"
                 />
-                {{ category.label }}
+                <span class="might-overflow">{{ category.label }}</span>
                 <icon
                     v-if="category.external"
                     class="sm ms-2"
@@ -46,28 +46,24 @@
                     <li
                         v-for="item in category.items"
                         :key="item.key"
-                        class="nav-item overflow-hidden text-truncate"
+                        class="nav-item"
                     >
                         <router-link
                             v-if="isRouteLink(item)"
                             :to="item.url"
-                            class="nav-link d-block ps-4 py-2"
+                            class="nav-link might-overflow ps-4 py-2"
                             :class="getLinkClass(item)"
                             :title="item.title"
-                            data-bs-toggle="tooltip"
-                            data-bs-placement="top"
                         >
                             {{ item.label }}
                         </router-link>
                         <a
                             v-else
-                            class="nav-link d-block ps-4 py-2"
+                            class="nav-link might-overflow ps-4 py-2"
                             :class="item.class"
                             :href="item.url"
                             :target="(item.external) ? '_blank' : ''"
                             :title="item.title"
-                            data-bs-toggle="tooltip"
-                            data-bs-placement="top"
                         >
                             {{ item.label }}
                             <icon
@@ -141,3 +137,11 @@ const getCategoryLink = (item) => {
     return linkAttrs;
 }
 </script>
+
+<style lang="scss">
+@import "~/scss/_mixins.scss";
+
+.might-overflow {
+    @include might-overflow();
+}
+</style>

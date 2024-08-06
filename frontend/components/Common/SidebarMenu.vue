@@ -51,21 +51,21 @@
                         <router-link
                             v-if="isRouteLink(item)"
                             :to="item.url"
-                            class="nav-link might-overflow ps-4 py-2"
+                            class="nav-link ps-4 py-2"
                             :class="getLinkClass(item)"
                             :title="item.title"
                         >
-                            {{ item.label }}
+                            <span class="might-overflow">{{ item.label }}</span>
                         </router-link>
                         <a
                             v-else
-                            class="nav-link might-overflow ps-4 py-2"
+                            class="nav-link ps-4 py-2"
                             :class="item.class"
                             :href="item.url"
                             :target="(item.external) ? '_blank' : ''"
                             :title="item.title"
                         >
-                            {{ item.label }}
+                            <span class="might-overflow">{{ item.label }}</span>
                             <icon
                                 v-if="item.external"
                                 class="sm ms-2"

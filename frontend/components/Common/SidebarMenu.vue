@@ -46,23 +46,28 @@
                     <li
                         v-for="item in category.items"
                         :key="item.key"
-                        class="nav-item"
+                        class="nav-item overflow-hidden text-truncate"
                     >
                         <router-link
                             v-if="isRouteLink(item)"
                             :to="item.url"
-                            class="nav-link ps-4 py-2"
+                            class="nav-link d-block ps-4 py-2"
                             :class="getLinkClass(item)"
+                            :title="item.title"
+                            data-bs-toggle="tooltip"
+                            data-bs-placement="top"
                         >
                             {{ item.label }}
                         </router-link>
                         <a
                             v-else
-                            class="nav-link ps-4 py-2"
+                            class="nav-link d-block ps-4 py-2"
                             :class="item.class"
                             :href="item.url"
                             :target="(item.external) ? '_blank' : ''"
                             :title="item.title"
+                            data-bs-toggle="tooltip"
+                            data-bs-placement="top"
                         >
                             {{ item.label }}
                             <icon
